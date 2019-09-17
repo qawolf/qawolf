@@ -1,0 +1,17 @@
+{
+  "name": "qawolf",
+  "version": "0.0.0",
+  "description": "Record and run tests",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jperl/qawolf.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jperl/qawolf/issues"
+  },
+  "homepage": "https://github.com/jperl/qawolf#readme"
+}
