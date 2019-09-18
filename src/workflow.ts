@@ -3,6 +3,7 @@ export type Target = {
 };
 
 export type BrowserAction = {
+  sourceEventId: number;
   target: Target;
   type: "click" | "type";
   value?: string;
