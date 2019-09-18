@@ -1,9 +1,10 @@
 {
   "name": "qawolf",
   "version": "0.0.0",
-  "description": "Easiest way to setup acceptance tests",
+  "description": "Effortless acceptance tests",
   "main": "index.js",
   "scripts": {
+    "build": "tsc -p .",
     "lint": "eslint src/*",
     "selenium": "selenium-standalone start -- -port 5100",
     "selenium:install": "selenium-standalone install --singleDriverInstall=chrome",
@@ -19,12 +20,18 @@
   },
   "homepage": "https://github.com/jperl/qawolf#readme",
   "dependencies": {
+    "chalk": "^2.4.2",
+    "clear": "^0.1.0",
+    "commander": "^3.0.1",
     "dotenv": "^8.1.0",
+    "figlet": "^1.2.4",
     "webdriverio": "^5.13.1",
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "@types/clear": "^0.1.0",
     "@types/dotenv": "^6.1.1",
+    "@types/figlet": "^1.2.0",
     "@types/jest": "^24.0.18",
     "@types/node": "^12.7.5",
     "@types/selenium-standalone": "^6.15.0",
@@ -37,5 +44,8 @@
     "selenium-standalone": "^6.16.0",
     "ts-jest": "^24.1.0",
     "typescript": "^3.6.3"
+  },
+  "bin": {
+    "qawolf": "./build/cli.js"
   }
 }
