@@ -1,3 +1,4 @@
+import fs from "fs-extra";
 import { BrowserObject, remote } from "webdriverio";
 import { CONFIG } from "./config";
 import { logger } from "./logger";
@@ -14,10 +15,19 @@ export type BrowserObservation = {
 
 export default class Browser {
   public _browser: BrowserObject | null = null;
+  private _sdk: string | null = null;
 
   public async close(): Promise<void> {
     logger.debug("Browser: close");
     await this._browser!.closeWindow();
+  }
+
+  public async injectSdk() {
+    if (!this._sdk) {
+      this._sdk = await fs.readFile("build/qawolf.web.js", "utf8");
+    }
+
+    return this._browser!.execute(this._sdk);
   }
 
   public async launch(

@@ -5,12 +5,12 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc -p .",
+    "build:web": "rollup --config rollup.web.ts",
     "lint": "eslint src/*",
-    "rollup:web": "rollup --config rollup.web.ts",
     "selenium": "selenium-standalone start -- -port 5100",
     "selenium:install": "selenium-standalone install --singleDriverInstall=chrome",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "test": "npm run build:web && jest",
+    "test:watch": "npm run build:web && jest --watch"
   },
   "repository": {
     "type": "git",
