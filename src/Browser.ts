@@ -1,6 +1,6 @@
 import { BrowserObject, remote } from "webdriverio";
-import { logger } from "./logger";
 import { CONFIG } from "./config";
+import { logger } from "./logger";
 
 export type Screenshot = {
   name: string;
