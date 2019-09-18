@@ -25,13 +25,17 @@
     "commander": "^3.0.1",
     "dotenv": "^8.1.0",
     "figlet": "^1.2.4",
+    "fs-extra": "^8.1.0",
+    "rrweb": "^0.7.24",
     "webdriverio": "^5.13.1",
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "@jperl/qawolf-fixtures": "^1.0.0",
     "@types/clear": "^0.1.0",
     "@types/dotenv": "^6.1.1",
     "@types/figlet": "^1.2.0",
+    "@types/fs-extra": "^8.0.0",
     "@types/jest": "^24.0.18",
     "@types/node": "^12.7.5",
     "@types/selenium-standalone": "^6.15.0",
