@@ -5,7 +5,7 @@ dotenv.config(dotEnvPath ? { path: dotEnvPath } : {});
 
 const jsonLogging = process.env.LOG_TYPE === "json";
 
-const savePath = process.env.SAVE_PATH || "/tmp/jacob";
+const savePath = process.env.SAVE_PATH || "/tmp/qawolf";
 
 const seleniumPort = parseInt(process.env.SELENIUM_PORT || "", 10) || 5100;
 

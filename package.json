@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc -p .",
     "lint": "eslint src/*",
+    "rollup:web": "rollup --config rollup.web.ts",
     "selenium": "selenium-standalone start -- -port 5100",
     "selenium:install": "selenium-standalone install --singleDriverInstall=chrome",
     "test": "jest",
@@ -45,6 +46,8 @@
     "eslint-plugin-prettier": "^3.1.1",
     "jest": "^24.9.0",
     "prettier": "^1.18.2",
+    "rollup": "^1.21.4",
+    "rollup-plugin-typescript": "^1.0.1",
     "selenium-standalone": "^6.16.0",
     "ts-jest": "^24.1.0",
     "typescript": "^3.6.3"
