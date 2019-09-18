@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "rootDir": "src",
+    "outDir": "build",
+    "lib": ["esnext", "dom"]
+  },
+  "compileOnSave": true,
+  "exclude": ["test"],
+  "include": ["src"]
+}
