@@ -12,7 +12,7 @@ jobs:
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
+      - image: selenium/standalone-chrome:3.141.59
 
     working_directory: ~/repo
 
@@ -34,3 +34,5 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run: npm run lint
+
+      - run: SELENIUM_PORT=4444 npm run test
