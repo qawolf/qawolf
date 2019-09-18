@@ -26,6 +26,10 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
+      - run:
+          name: Authenticate with registry
+          command: echo "//npm.pkg.github.com/:_authToken=$GITHUB_PACKAGE_TOKEN" >> ~/repo/.npmrc
+
       - run: npm install
 
       - save_cache:
