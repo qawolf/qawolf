@@ -1,4 +1,4 @@
-import * as dotenv from "dotenv";
+import dotenv from "dotenv";
 
 const dotEnvPath = process.env.DOTENV_PATH;
 dotenv.config(dotEnvPath ? { path: dotEnvPath } : {});
