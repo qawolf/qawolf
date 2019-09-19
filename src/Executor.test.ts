@@ -1,4 +1,5 @@
 import Browser from "./Browser";
+import { QAWolfWindow } from "./types";
 
 let browser: Browser;
 
@@ -14,7 +15,7 @@ test("Executor clicks on a link", async () => {
 
   await browser._browser!.execute(
     actions => {
-      const { Executor } = (window as any).qawolf;
+      const { Executor } = (window as QAWolfWindow).qawolf;
       const executor = new Executor(actions);
       executor.run();
     },

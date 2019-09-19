@@ -1,11 +1,12 @@
 import { Executor } from "./Executor";
+import { QAWolfWindow } from "./types";
 
 const qawolf = {
   Executor
 };
 
 if (typeof window !== "undefined") {
-  (window as any).qawolf = qawolf;
+  (window as QAWolfWindow).qawolf = qawolf;
   console.log("loaded qawolf");
 }
 
