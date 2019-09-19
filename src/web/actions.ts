@@ -1,4 +1,4 @@
-export const clickElement = (xpath: string): void => {
+export const click = (xpath: string): void => {
   const xpathElement = findElementByXpath(xpath);
 
   const element = findClickableAncestor(xpathElement);
@@ -35,7 +35,7 @@ const findElementByXpath = (xpath: string): HTMLElement => {
   return xpathElement.singleNodeValue as HTMLElement;
 };
 
-export const typeElement = (xpath: string, value: string): void => {
+export const setInputValue = (xpath: string, value: string): void => {
   const xpathElement = findElementByXpath(xpath);
   if (xpathElement.tagName.toLowerCase() !== "input") {
     throw `Cannot type into ${xpathElement.tagName}`;

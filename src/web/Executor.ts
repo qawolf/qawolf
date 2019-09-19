@@ -1,5 +1,5 @@
-import { clickElement, typeElement } from "./browserActions";
-import { BrowserAction } from "./workflow";
+import { click, setInputValue } from "./actions";
+import { BrowserAction } from "../types";
 
 export class Executor {
   private actions: BrowserAction[];
@@ -11,9 +11,9 @@ export class Executor {
   public run(): void {
     this.actions.forEach(action => {
       if (action.type === "click") {
-        clickElement(action.target.xpath);
+        click(action.target.xpath);
       } else {
-        typeElement(action.target.xpath, action.value || "");
+        setInputValue(action.target.xpath, action.value || "");
       }
     });
 

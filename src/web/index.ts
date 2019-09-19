@@ -1,7 +1,9 @@
+import * as actions from "./actions";
+import { QAWolfWindow } from "../types";
 import { Executor } from "./Executor";
-import { QAWolfWindow } from "./types";
 
 const qawolf = {
+  actions,
   Executor
 };
 
