@@ -14,7 +14,7 @@ afterAll(() => browser.close());
 test("Browser launches the internet", async () => {
   const element = await browser._browser!.$(".heading");
   const text = await element.getText();
-  expect(text).toEqual("Welcome to the-internet");
+  expect(text).toBe("Welcome to the-internet");
 });
 
 test("Browser injects sdk", async () => {
@@ -23,5 +23,5 @@ test("Browser injects sdk", async () => {
   const isLoaded = await browser._browser!.execute(
     () => !!(window as QAWolfWindow).qawolf
   );
-  expect(isLoaded).toEqual(true);
+  expect(isLoaded).toBeTruthy();
 });
