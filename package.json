@@ -8,7 +8,7 @@
     "build:web": "rollup --config rollup.web.ts",
     "lint": "eslint src/*",
     "selenium": "selenium-standalone start -- -port 5100",
-    "selenium:install": "selenium-standalone install --singleDriverInstall=chrome",
+    "selenium:install": "selenium-standalone install",
     "test": "npm run build:web && jest",
     "test:watch": "npm run build:web && jest --watch"
   },

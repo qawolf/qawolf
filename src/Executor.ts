@@ -1,3 +1,4 @@
+import { clickElement, typeElement } from "./browserActions";
 import { BrowserAction } from "./workflow";
 
 export class Executor {
@@ -7,8 +8,15 @@ export class Executor {
     this.actions = actions;
   }
 
-  run() {
-    // do action
+  public run(): void {
+    this.actions.forEach(action => {
+      if (action.type === "click") {
+        clickElement(action.target.xpath);
+      } else {
+        typeElement(action.target.xpath, action.value || "");
+      }
+    });
+
     // update supervisor
     // loop
   }
