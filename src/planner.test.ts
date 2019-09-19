@@ -24,7 +24,7 @@ beforeAll(async () => {
 
 test("findHref finds the href from events", () => {
   const href = findHref(events);
-  expect(href).toEqual("https://www.google.com/");
+  expect(href).toBe("https://www.google.com/");
 });
 
 test("planTypeActions squashes consecutive input events", () => {

@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc -p .",
-    "lint": "eslint src/*",
-    "selenium": "selenium-standalone start -- -port 5100",
-    "selenium:install": "selenium-standalone install --singleDriverInstall=chrome",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "build:web": "rollup --config rollup.web.ts",
+    "lint": "eslint src --ext .ts",
+    "test": "npm run build:web && jest",
+    "test:services": "docker-compose up -d",
+    "test:watch": "npm run build:web && jest --watch"
   },
   "repository": {
     "type": "git",
@@ -45,6 +45,8 @@
     "eslint-plugin-prettier": "^3.1.1",
     "jest": "^24.9.0",
     "prettier": "^1.18.2",
+    "rollup": "^1.21.4",
+    "rollup-plugin-typescript": "^1.0.1",
     "selenium-standalone": "^6.16.0",
     "ts-jest": "^24.1.0",
     "typescript": "^3.6.3"
