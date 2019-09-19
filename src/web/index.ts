@@ -1,9 +1,11 @@
 import * as actions from "./actions";
 import { Executor } from "./Executor";
+import * as selector from "./selector";
 
 const qawolf = {
   actions,
-  Executor
+  Executor,
+  selector
 };
 
 if (typeof window !== "undefined") {
