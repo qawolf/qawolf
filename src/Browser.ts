@@ -49,7 +49,6 @@ export default class Browser {
         "--disable-dev-shm-usage",
         "--no-sandbox",
         "--window-position=0,0"
-        // `--window-size=${CONFIG.recordWidth},${CONFIG.recordHeight}`
       ],
 
       // disable "Chrome is being controlled by automated software"
