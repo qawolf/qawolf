@@ -3,17 +3,7 @@ import { BrowserObject, remote } from "webdriverio";
 import { CONFIG } from "./config";
 import { logger } from "./logger";
 
-export type Screenshot = {
-  name: string;
-  path: string;
-};
-
-export type BrowserObservation = {
-  screenshot: Screenshot;
-  url?: string;
-};
-
-export default class Browser {
+export class Browser {
   public _browser: BrowserObject | null = null;
   private _sdk: string | null = null;
 

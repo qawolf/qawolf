@@ -1,4 +1,4 @@
-import Browser from "../Browser";
+import { Browser } from "../Browser";
 import { CONFIG } from "../config";
 import { QAWolf } from "../types";
 

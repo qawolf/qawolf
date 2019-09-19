@@ -9,12 +9,14 @@ const savePath = process.env.SAVE_PATH || "/tmp/qawolf";
 
 const seleniumPort = parseInt(process.env.SELENIUM_PORT || "", 10) || 4444;
 
-const testUrl = process.env.TEST_URL || "http://theinternet:5000";
+const testUrl = process.env.TEST_URL || "";
+const wsUrl = process.env.WS_URL || "";
 
 export const CONFIG = {
   fullScreen: process.env.FULL_SCREEN === "true",
   jsonLogging,
   savePath,
   seleniumPort,
-  testUrl
+  testUrl,
+  wsUrl
 };
