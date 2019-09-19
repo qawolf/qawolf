@@ -41,7 +41,7 @@ test("Executor types into an input", async () => {
 
   await browser._browser!.execute(
     actions => {
-      const { Executor } = (window as any).qawolf;
+      const { Executor } = (window as QAWolfWindow).qawolf;
       const executor = new Executor(actions);
       executor.run();
     },

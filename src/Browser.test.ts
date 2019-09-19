@@ -1,4 +1,5 @@
 import Browser from "./Browser";
+import { QAWolfWindow } from "./types";
 
 let browser: Browser;
 
@@ -20,7 +21,7 @@ test("Browser injects sdk", async () => {
   await browser.injectSdk();
 
   const isLoaded = await browser._browser!.execute(
-    () => !!(window as any).qawolf
+    () => !!(window as QAWolfWindow).qawolf
   );
   expect(isLoaded).toEqual(true);
 });
