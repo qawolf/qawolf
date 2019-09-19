@@ -1,5 +1,5 @@
 export const clickElement = (xpath: string): void => {
-  const xpathElement = getElementByXpath(xpath);
+  const xpathElement = findElementByXpath(xpath);
 
   const element = findClickableAncestor(xpathElement);
   const eventOptions = { bubbles: true };
@@ -20,7 +20,7 @@ const findClickableAncestor = (element: HTMLElement): HTMLElement => {
   return findClickableAncestor(element.parentElement);
 };
 
-const getElementByXpath = (xpath: string): HTMLElement => {
+const findElementByXpath = (xpath: string): HTMLElement => {
   const xpathElement = document.evaluate(
     xpath,
     document,
@@ -36,7 +36,7 @@ const getElementByXpath = (xpath: string): HTMLElement => {
 };
 
 export const typeElement = (xpath: string, value: string): void => {
-  const xpathElement = getElementByXpath(xpath);
+  const xpathElement = findElementByXpath(xpath);
   if (xpathElement.tagName.toLowerCase() !== "input") {
     throw `Cannot type into ${xpathElement.tagName}`;
   }

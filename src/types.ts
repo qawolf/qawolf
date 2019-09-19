@@ -5,6 +5,7 @@ type QAWolf = {
   qawolf: {
     Executor: Function & {
       new (actions: BrowserAction[]): Executor;
+      prototype: Executor;
     };
   };
 };
