@@ -1,5 +1,6 @@
 import Browser from "../Browser";
-import { QAWolf, QAWolfWindow } from "../types";
+import { CONFIG } from "../config";
+import { QAWolf } from "../types";
 
 let browser: Browser;
 
@@ -11,7 +12,7 @@ beforeAll(async () => {
 afterAll(() => browser.close());
 
 test("actions.click works on a link", async () => {
-  await browser._browser!.url("http://localhost:5000");
+  await browser._browser!.url(CONFIG.testUrl);
   await browser.injectSdk();
 
   await browser._browser!.execute(() => {
@@ -21,11 +22,11 @@ test("actions.click works on a link", async () => {
 
   const url = await browser._browser!.getUrl();
 
-  expect(url).toBe("http://localhost:5000/broken_images");
+  expect(url).toBe(`${CONFIG.testUrl}/broken_images`);
 });
 
 test("actions.setInputValue sets an input value", async () => {
-  await browser._browser!.url("http://localhost:5000/login");
+  await browser._browser!.url(`${CONFIG.testUrl}/login`);
   await browser.injectSdk();
 
   await browser._browser!.execute(() => {

@@ -1,5 +1,4 @@
 import * as actions from "./actions";
-import { QAWolfWindow } from "../types";
 import { Executor } from "./Executor";
 
 const qawolf = {
@@ -8,7 +7,7 @@ const qawolf = {
 };
 
 if (typeof window !== "undefined") {
-  (window as QAWolfWindow).qawolf = qawolf;
+  (window as any).qawolf = qawolf;
   console.log("loaded qawolf");
 }
 

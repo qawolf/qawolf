@@ -1,5 +1,5 @@
 import { eventWithTime, metaEvent, mousemoveData } from "rrweb/typings/types";
-import { BrowserAction, Workflow } from "./workflow";
+import { BrowserAction, Workflow } from "./types";
 import { qaEventWithTime } from "./events";
 
 export const findHref = (events: eventWithTime[]): string =>

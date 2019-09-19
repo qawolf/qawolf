@@ -1,5 +1,6 @@
 import Browser from "./Browser";
-import { QAWolfWindow } from "./types";
+import { CONFIG } from "./config";
+import { QAWolf } from "./types";
 
 let browser: Browser;
 
@@ -7,7 +8,7 @@ beforeAll(async () => {
   browser = new Browser();
   // "The Internet" https://github.com/tourdedave/the-internet
   await browser.launch();
-  await browser._browser!.url("http://localhost:5000");
+  await browser._browser!.url(CONFIG.testUrl);
 });
 
 afterAll(() => browser.close());
@@ -21,8 +22,10 @@ test("Browser launches the internet", async () => {
 test("Browser injects sdk", async () => {
   await browser.injectSdk();
 
-  const isLoaded = await browser._browser!.execute(
-    () => !!(window as QAWolfWindow).qawolf
-  );
+  const isLoaded = await browser._browser!.execute(() => {
+    const qawolf: QAWolf = (window as any).qawolf;
+    return !!qawolf;
+  });
+
   expect(isLoaded).toBeTruthy();
 });

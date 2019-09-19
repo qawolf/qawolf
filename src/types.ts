@@ -22,8 +22,6 @@ export type QAWolf = {
   };
 };
 
-export type QAWolfWindow = Window & { qawolf: QAWolf };
-
 export type Workflow = {
   href: string;
   steps: BrowserAction[];

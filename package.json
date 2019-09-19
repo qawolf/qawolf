@@ -7,9 +7,8 @@
     "build": "tsc -p .",
     "build:web": "rollup --config rollup.web.ts",
     "lint": "eslint src --ext .ts",
-    "selenium": "selenium-standalone start -- -port 5100",
-    "selenium:install": "selenium-standalone install",
     "test": "npm run build:web && jest",
+    "test:services": "docker-compose up -d",
     "test:watch": "npm run build:web && jest --watch"
   },
   "repository": {
