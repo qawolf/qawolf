@@ -30,11 +30,8 @@ export default class Browser {
     return this._browser!.execute(this._sdk);
   }
 
-  public async launch(
-    url: string,
-    desiredCapabilities?: WebDriver.DesiredCapabilities
-  ) {
-    logger.debug(`Browser: launch ${url}`);
+  public async launch(desiredCapabilities?: WebDriver.DesiredCapabilities) {
+    logger.debug("Browser: launch");
 
     this._browser = await remote({
       // default to chrome
@@ -44,8 +41,6 @@ export default class Browser {
     });
 
     this._browser!.setTimeout({ script: 300 * 1000 });
-
-    await this._browser.url(url);
   }
 
   private getChromeCapabilities() {

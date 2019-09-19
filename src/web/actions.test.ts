@@ -5,12 +5,13 @@ let browser: Browser;
 
 beforeAll(async () => {
   browser = new Browser();
+  await browser.launch();
 });
 
 afterAll(() => browser.close());
 
-test("Executor clicks on a link", async () => {
-  await browser.launch("http://localhost:5000");
+test("actions.click works on a link", async () => {
+  await browser._browser!.url("http://localhost:5000");
   await browser.injectSdk();
 
   await browser._browser!.execute(() => {
@@ -23,8 +24,8 @@ test("Executor clicks on a link", async () => {
   expect(url).toBe("http://localhost:5000/broken_images");
 });
 
-test("Executor types into an input", async () => {
-  await browser.launch("http://localhost:5000/login");
+test("actions.setInputValue sets an input value", async () => {
+  await browser._browser!.url("http://localhost:5000/login");
   await browser.injectSdk();
 
   await browser._browser!.execute(() => {

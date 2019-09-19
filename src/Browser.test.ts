@@ -6,7 +6,8 @@ let browser: Browser;
 beforeAll(async () => {
   browser = new Browser();
   // "The Internet" https://github.com/tourdedave/the-internet
-  await browser.launch("http://localhost:5000");
+  await browser.launch();
+  await browser._browser!.url("http://localhost:5000");
 });
 
 afterAll(() => browser.close());
