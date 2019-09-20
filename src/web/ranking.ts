@@ -1,7 +1,8 @@
 // import { BrowserAction, ElementProperties } from "./BrowserAction";
 // import { getXpath } from "../web/xpath";
 
-import { ElementSelector } from "../types";
+import { getSelector } from "./selector";
+import { ElementSelector, BrowserAction } from "../types";
 
 const DEFAULT_THRESHOLD = 0.75;
 
@@ -31,44 +32,66 @@ export const computeStringSimilarityScore = (
   return 0;
 };
 
-export const computeSimilarityScore = (): number => {
-  return 0;
+export const computeSimilarityScore = (
+  compare: ElementSelector,
+  base: ElementSelector
+): number => {
+  let score: number = 0;
+
+  score += computeArraySimilarityScore(compare.classList, base.classList);
+  score += computeStringSimilarityScore(compare.href, base.href);
+  score += computeStringSimilarityScore(compare.id, base.id);
+  score += computeStringSimilarityScore(compare.inputType, base.inputType);
+  score += computeArraySimilarityScore(compare.labels, base.labels);
+  score += computeStringSimilarityScore(compare.name, base.name);
+  score += computeArraySimilarityScore(compare.parentText, base.parentText);
+  score += computeStringSimilarityScore(compare.placeholder, base.placeholder);
+  score += computeStringSimilarityScore(compare.tagName, base.tagName);
+  score += computeStringSimilarityScore(compare.textContent, base.textContent);
+
+  return score;
 };
 
-// const computeSimilarityScore = (
-//   compareProperties: ElementProperties,
-//   baseProperties: ElementProperties
-// ): number => {
-//   let score: number = 0;
-//   Object.keys(baseProperties).forEach(key => {
-//     const baseProperty = (baseProperties as BaseElementsProperties)[key];
-//     const compareProperty = (compareProperties as BaseElementsProperties)[key];
+export const computeSimilarityScores = (
+  action: BrowserAction,
+  elements: HTMLCollection
+): number[] => {
+  const base = action.selector;
+  if (!base) {
+    throw "Action does not have associated selector";
+  }
 
-//     if (
-//       typeof baseProperty === "string" &&
-//       typeof compareProperty === "string" &&
-//       baseProperty === compareProperty
-//     ) {
-//       score += 100;
-//     } else if (
-//       baseProperty &&
-//       typeof baseProperty === "object" &&
-//       baseProperty.length &&
-//       compareProperty &&
-//       typeof compareProperty === "object" &&
-//       compareProperty.length
-//     ) {
-//       // both are arrays
-//       const sames = (compareProperty as string[]).filter(item =>
-//         (baseProperty as string[]).includes(item)
-//       );
-//       const percentSame = sames.length / (baseProperty as string[]).length;
-//       score += Math.round(Math.min(percentSame, 1) * 100);
-//     }
-//   });
+  const scores: number[] = [];
 
-//   return score;
-// };
+  for (let i = 0; i < elements.length; i++) {
+    const compare = getSelector(elements[i] as HTMLElement);
+
+    if (!compare) {
+      scores.push(0);
+    } else {
+      const score = computeSimilarityScore(compare, base);
+      scores.push(score);
+    }
+  }
+
+  return scores;
+};
+
+export const computeMaxPossibleScore = (base: ElementSelector): number => {
+  let score: number = 0;
+
+  Object.values(base).forEach(value => {
+    if (value !== null) {
+      score += 100;
+    }
+  });
+
+  if (!score) {
+    throw `Base element ${base} has no recorded properties`;
+  }
+
+  return score;
+};
 
 // const findBestElement = (
 //   action: BrowserAction,

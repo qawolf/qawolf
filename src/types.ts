@@ -1,6 +1,7 @@
 import { Executor } from "./web/Executor";
 
 export type BrowserAction = {
+  selector?: ElementSelector | null;
   sourceEventId: number;
   target: Target;
   type: "click" | "type";
@@ -32,6 +33,12 @@ export type QAWolf = {
   Executor: Function & {
     new (actions: BrowserAction[]): Executor;
     prototype: Executor;
+  };
+  ranking: {
+    computeSimilarityScores: (
+      action: BrowserAction,
+      elements: HTMLCollection
+    ) => number[];
   };
   selector: {
     getLabels: (element: HTMLElement) => string[] | null;

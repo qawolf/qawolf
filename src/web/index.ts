@@ -1,10 +1,12 @@
 import * as actions from "./actions";
 import { Executor } from "./Executor";
+import * as ranking from "./ranking";
 import * as selector from "./selector";
 
 const qawolf = {
   actions,
   Executor,
+  ranking,
   selector
 };
 
