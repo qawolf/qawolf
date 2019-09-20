@@ -35,6 +35,11 @@ export type QAWolf = {
     prototype: Executor;
   };
   ranking: {
+    findCandidateElements: (action: BrowserAction) => HTMLCollection;
+    findHighestMatchXpath: (
+      action: BrowserAction,
+      threshold?: number
+    ) => string;
     computeSimilarityScores: (
       action: BrowserAction,
       elements: HTMLCollection

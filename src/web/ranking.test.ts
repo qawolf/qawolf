@@ -9,6 +9,14 @@ import {
 } from "./ranking";
 import { QAWolf } from "../types";
 
+const action = {
+  sourceEventId: 11,
+  target: {
+    xpath: "xpath"
+  },
+  type: "click" as "click"
+};
+
 const base = {
   classList: ["spirit", "bobcat", "moose"],
   href: null,
@@ -117,13 +125,9 @@ describe("ranking.computeMaxPossibleScore", () => {
 
 describe("ranking.computeScoresForElements", () => {
   test("returns scores for each element", async () => {
-    const action = {
-      selector: { ...base, tagName: "input" },
-      sourceEventId: 11,
-      target: {
-        xpath: "xpath"
-      },
-      type: "click" as "click"
+    const actionWithSelector = {
+      ...action,
+      selector: { ...base, tagName: "input" }
     };
 
     const browser = new Browser();
@@ -138,7 +142,7 @@ describe("ranking.computeScoresForElements", () => {
         action,
         document.getElementsByTagName("input")
       );
-    }, action);
+    }, actionWithSelector);
 
     expect(scores).toEqual([100, 100]);
 
@@ -157,5 +161,130 @@ describe("ranking.computeScoresForElements", () => {
     expect(() => {
       computeSimilarityScores(action, new HTMLCollection());
     }).toThrowError();
+  });
+});
+
+describe("ranking.findCandidateElements", () => {
+  test("returns all elements for click action", async () => {
+    const browser = new Browser();
+    await browser.launch();
+    await browser._browser!.url(`${CONFIG.testUrl}/login`);
+    await browser.injectSdk();
+
+    const elements = await browser._browser!.execute(action => {
+      const qawolf: QAWolf = (window as any).qawolf;
+
+      return qawolf.ranking.findCandidateElements(action);
+    }, action);
+
+    expect(elements.length).toBe(45);
+
+    browser.close();
+  });
+
+  test("returns only inputs for type action", async () => {
+    const browser = new Browser();
+    await browser.launch();
+    await browser._browser!.url(`${CONFIG.testUrl}/login`);
+    await browser.injectSdk();
+
+    const typeAction = {
+      ...action,
+      type: "type" as "type",
+      value: "spirit"
+    };
+
+    const elements = await browser._browser!.execute(action => {
+      const qawolf: QAWolf = (window as any).qawolf;
+
+      return qawolf.ranking.findCandidateElements(action);
+    }, typeAction);
+
+    expect(elements.length).toBe(2);
+
+    browser.close();
+  });
+});
+
+describe("ranking.findHighestMatchXpath", () => {
+  test("returns null if no elements similar enough", async () => {
+    const browser = new Browser();
+    await browser.launch();
+    await browser._browser!.url(`${CONFIG.testUrl}/login`);
+    await browser.injectSdk();
+
+    const actionWithSelector = {
+      ...action,
+      selector: base
+    };
+
+    const highestMatch = await browser._browser!.execute(action => {
+      const qawolf: QAWolf = (window as any).qawolf;
+
+      return qawolf.ranking.findHighestMatchXpath(action);
+    }, actionWithSelector);
+
+    expect(highestMatch).toBeNull();
+
+    browser.close();
+  });
+
+  test("returns null if a tie is found", async () => {
+    const browser = new Browser();
+    await browser.launch();
+    await browser._browser!.url(`${CONFIG.testUrl}/checkboxes`);
+    await browser.injectSdk();
+
+    const actionWithSelector = {
+      ...action,
+      selector: {
+        ...base,
+        classList: null,
+        id: null,
+        inputType: "checkbox",
+        textContent: null
+      },
+      type: "type"
+    };
+
+    const highestMatch = await browser._browser!.execute(action => {
+      const qawolf: QAWolf = (window as any).qawolf;
+
+      return qawolf.ranking.findHighestMatchXpath(action);
+    }, actionWithSelector);
+
+    expect(highestMatch).toBeNull();
+
+    browser.close();
+  });
+
+  test("returns xpath of highest match if one found", async () => {
+    const browser = new Browser();
+    await browser.launch();
+    await browser._browser!.url(`${CONFIG.testUrl}/login`);
+    await browser.injectSdk();
+
+    const actionWithSelector = {
+      ...action,
+      selector: {
+        ...base,
+        classList: null,
+        id: null,
+        inputType: "password",
+        labels: ["password"],
+        textContent: null
+      },
+      type: "type"
+    };
+
+    const highestMatch = await browser._browser!.execute(action => {
+      const qawolf: QAWolf = (window as any).qawolf;
+
+      return qawolf.ranking.findHighestMatchXpath(action);
+    }, actionWithSelector);
+
+    expect(highestMatch).toBe("//*[@id='password']");
+
+    browser.close();
   });
 });
