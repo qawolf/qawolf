@@ -25,35 +25,6 @@ export type Target = {
   xpath: string;
 };
 
-export type QAWolf = {
-  actions: {
-    click: (xpath: string) => void;
-    setInputValue: (xpath: string, value: string) => void;
-  };
-  Executor: Function & {
-    new (actions: BrowserAction[]): Executor;
-    prototype: Executor;
-  };
-  ranking: {
-    findCandidateElements: (action: BrowserAction) => HTMLCollection;
-    findHighestMatchXpath: (
-      action: BrowserAction,
-      threshold?: number
-    ) => string;
-    computeSimilarityScores: (
-      action: BrowserAction,
-      elements: HTMLCollection
-    ) => number[];
-  };
-  selector: {
-    getLabels: (element: HTMLElement) => string[] | null;
-    getParentText: (element: HTMLElement) => string[] | null;
-    getPlaceholder: (element: HTMLElement) => string | null;
-    getSelector: (element: HTMLElement) => ElementSelector | null;
-    getTextContent: (element: HTMLElement) => string | null;
-  };
-};
-
 export type Workflow = {
   href: string;
   steps: BrowserAction[];
