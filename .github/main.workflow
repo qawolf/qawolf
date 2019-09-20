@@ -1,6 +1,6 @@
 workflow "Build and Test" {
+  resolves = ["Lint"]
   on = "push"
-  resolves = ["Test", "Lint"]
 }
 
 action "Build" {
@@ -8,14 +8,9 @@ action "Build" {
   args = "install"
 }
 
-action "Test" {
-  needs = "Build"
-  uses = "actions/npm@master"
-  args = "test"
-}
-
 action "Lint" {
   needs = "Build"
   uses = "actions/npm@master"
   args = "lint"
+  secrets = ["GITHUB_TOKEN"]
 }
