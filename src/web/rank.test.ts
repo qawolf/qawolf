@@ -30,7 +30,6 @@ beforeAll(async () => {
   browser = new Browser();
   // "The Internet" https://github.com/tourdedave/the-internet
   await browser.launch();
-  await browser._browser!.url(CONFIG.testUrl);
 });
 
 afterAll(() => browser.close());
@@ -57,7 +56,10 @@ describe("rank.computeScoresForElements", () => {
     expect(scores).toEqual([100, 100]);
   });
 
-  test("throws error if action does not have selector", () => {
+  test("throws error if action does not have selector", async () => {
+    await browser._browser!.url(`${CONFIG.testUrl}/login`);
+    await browser.injectSdk();
+
     const action = {
       sourceEventId: 11,
       target: {
