@@ -1,19 +1,25 @@
-workflow "Build and Test" {
-  resolves = ["Lint"]
-  on = "push"
-}
+name: Main workflow
+on: [push]
+jobs:
+  run:
+    name: Run
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest, windows-latest]
+    steps:
+    - uses: actions/checkout@master
+    
+    - name: Set Node.js 10.x
+      uses: actions/setup-node@master
+      with:
+        version: 10.x
 
-action "Build" {
-  uses = "actions/npm@master"
-  args = "install"
-  env = {
-    NODE_AUTH_TOKEN = "${{ secrets.GITHUB_TOKEN }}"
-  }
-  secrets = ["GITHUB_TOKEN"]
-}
+    - name: npm install
+      run: npm install
 
-action "Lint" {
-  needs = "Build"
-  uses = "actions/npm@master"
-  args = "lint"
-}
+    - name: Lint
+      run: npm run format-check
+
+    - name: npm test
+      run: npm test
