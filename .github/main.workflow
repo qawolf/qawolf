@@ -1,9 +1,21 @@
-workflow "CI" {
-  resolves = ["npm run lint"]
+workflow "Build and Test" {
   on = "push"
+  resolves = ["Test", "Lint"]
 }
 
-action "npm run lint" {
-  uses = "actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680"
-  runs = "npm run lint"
+action "Build" {
+  uses = "actions/npm@master"
+  args = "install"
+}
+
+action "Test" {
+  needs = "Build"
+  uses = "actions/npm@master"
+  args = "test"
+}
+
+action "Lint" {
+  needs = "Build"
+  uses = "actions/npm@master"
+  args = "lint"
 }
