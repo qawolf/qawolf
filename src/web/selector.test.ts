@@ -7,14 +7,13 @@ let browser: Browser;
 beforeAll(async () => {
   browser = new Browser();
   await browser.launch();
+  await browser._browser!.url(`${CONFIG.testUrl}/login`);
+  await browser.injectSdk();
 });
 
 afterAll(() => browser.close());
 
 test("selector.getLabels correctly returns labels", async () => {
-  await browser._browser!.url(`${CONFIG.testUrl}/login`);
-  await browser.injectSdk();
-
   const nullLabels = await browser._browser!.execute(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
@@ -33,9 +32,6 @@ test("selector.getLabels correctly returns labels", async () => {
 });
 
 test("selector.getParentText correctly returns parent text", async () => {
-  await browser._browser!.url(`${CONFIG.testUrl}/login`);
-  await browser.injectSdk();
-
   const iconParentText = await browser._browser!.execute(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
@@ -46,9 +42,6 @@ test("selector.getParentText correctly returns parent text", async () => {
 });
 
 test("selector.getPlaceholder correctly returns placeholder", async () => {
-  await browser._browser!.url(`${CONFIG.testUrl}/login`);
-  await browser.injectSdk();
-
   const nullPlaceholder = await browser._browser!.execute(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
