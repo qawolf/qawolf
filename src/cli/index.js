@@ -1,7 +1,7 @@
 "use strict";
 const importJsx = require("import-jsx");
 
-const renderSuite = importJsx("./suite.jsx");
+const renderSuite = importJsx("./Suite.jsx");
 
 const names = [
   "Sign in and out",
@@ -15,11 +15,11 @@ const statuses = ["pass", "fail", "pass", "pass", "runs"];
 
 const props = {
   startTime: "2019-09-21T18:18:37.056Z",
-  summary: {
-    fail: 1,
-    pass: 2,
-    total: 3
-  },
+  // summary: {
+  //   fail: 1,
+  //   pass: 2,
+  //   total: 3
+  // },
   workflows: [
     {
       name: "Sign in and out",

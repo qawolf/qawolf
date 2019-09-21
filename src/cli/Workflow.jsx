@@ -3,7 +3,7 @@ const importJsx = require("import-jsx");
 const { Box, Color } = require("ink");
 const React = require("react");
 
-const Steps = importJsx("./steps.jsx");
+const Steps = importJsx("./Steps.jsx");
 
 const getBackgroundForStatus = status => {
   if (status === "runs") {

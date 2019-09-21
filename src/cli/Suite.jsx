@@ -1,30 +1,40 @@
 "use strict";
 const importJsx = require("import-jsx");
-const { Box, render, Static } = require("ink");
+const { Box, Color, render, Static } = require("ink");
 const React = require("react");
 
-const Workflow = importJsx("./workflow.jsx");
+const ProgressBar = importJsx("./ProgressBar.jsx");
+const Workflow = importJsx("./Workflow.jsx");
 
 const Suite = ({ startTime, summary, workflows }) => {
   const completeWorkflows = workflows.filter(workflow => {
     return workflow.status === "pass" || workflow.status === "fail";
   });
-  const runningWorkflows = workflows.filter(
+  const runsWorkflows = workflows.filter(
     workflow => workflow.status === "runs"
+  );
+  const failWorkflows = workflows.filter(
+    workflow => workflow.status === "fail"
   );
 
   const completeWorkflowsHtml = completeWorkflows.map(workflow => {
     return <Workflow key={workflow.name} workflow={workflow} />;
   });
 
-  const runningWorkflowsHtml = runningWorkflows.map(workflow => {
+  const runsWorkflowsHtml = runsWorkflows.map(workflow => {
     return <Workflow key={workflow.name} showSteps workflow={workflow} />;
   });
 
   return (
     <Box flexDirection="column">
       <Static>{completeWorkflowsHtml}</Static>
-      <Box flexDirection="column">{runningWorkflowsHtml}</Box>
+      <Box flexDirection="column">{runsWorkflowsHtml}</Box>
+      {!summary && (
+        <ProgressBar
+          completeCount={completeWorkflows.length}
+          totalCount={workflows.length}
+        />
+      )}
     </Box>
   );
 };
