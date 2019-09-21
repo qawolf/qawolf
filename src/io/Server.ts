@@ -24,4 +24,9 @@ export class Server {
       const emitter = this._ioServer.on("connection", connectionListener);
     });
   }
+
+  public close() {
+    this._ioServer.close();
+    this._httpServer.close();
+  }
 }

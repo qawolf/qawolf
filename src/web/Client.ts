@@ -61,7 +61,8 @@ export class Client {
     const data = await method(...request.args);
 
     const response: Response = { id: request.id, data };
-    this._trackResponse(response);
+    console.log("Client: response", response);
+    sessionStorage.setItem(this._RESPONSE_KEY, response.id.toString());
     this._socket.emit("response", response);
   }
 
@@ -70,7 +71,7 @@ export class Client {
     lastResponseId = lastResponseId === null ? -1 : Number(lastResponseId);
 
     if (request.id <= lastResponseId) {
-      // TODO send back the stored responses...
+      // XXX store response until the next request is issued
       // prevent handling a request twice
       console.log(
         `Client: last response was ${lastResponseId}, ignoring old request:`,
@@ -86,10 +87,5 @@ export class Client {
     }
 
     return true;
-  }
-
-  private async _trackResponse(response: Response) {
-    console.log("Client: response", response);
-    sessionStorage.setItem(this._RESPONSE_KEY, response.id.toString());
   }
 }

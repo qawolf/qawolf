@@ -1,5 +1,4 @@
 import { slug } from "cuid";
-import { remove } from "lodash";
 import { Browser } from "../Browser";
 import { CONFIG } from "../config";
 import { logger } from "../logger";
@@ -23,16 +22,19 @@ export class Connection {
    **/
 
   private _browser: Browser;
+
+  private _closed: boolean = false;
+
   // a unique id for the connection we keep across reloads
   private _connectionId: string = slug();
 
-  private _inflight: InflightRequest[] = [];
+  private _inflight: InflightRequest | null = null;
 
   // increment request ids to ensure order
   private _requestId: number = 0;
 
   private _server: Server;
-  public _socket: SocketIO.Socket; // public for tests
+  public _socket: SocketIO.Socket | null; // public for tests
   private _windowHandle: string;
 
   constructor({ browser, server }: ConstructorArgs) {
@@ -40,33 +42,52 @@ export class Connection {
     this._server = server;
   }
 
-  public async connect() {
-    await this.disconnect();
-    await this._createSocket();
-    this._socket.on("disconnect", this._onDisconnect);
-    this._socket.on("response", this._onResponse);
+  public close() {
+    logger.debug(`Connection ${this._connectionId}: close`);
+    if (this._closed) return;
+
+    this._closed = true;
+    this._disconnect();
   }
 
-  public async disconnect() {
-    if (!this._socket) return;
+  public async connect() {
+    if (this._closed) {
+      throw new Error("Cannot connect after closed");
+    }
 
-    this._socket.removeListener("disconnect", this._onDisconnect);
-    this._socket.removeListener("response", this._onResponse);
-    await this._socket.disconnect();
+    this._disconnect();
+
+    const socket = await this._createSocket();
+    socket.on("disconnect", this._onDisconnect);
+    socket.on("response", this._onResponse);
+
+    return socket;
   }
 
   public async request(name: string, ...args: any) {
+    if (this._inflight) {
+      // only allow one request per Connection at a time to make retry logic easier
+      throw new Error("Cannot send a request while one is inflight");
+    }
+
     const id = this._requestId++;
 
     const request: Request = { id, name, args };
 
-    const responsePromise = new Promise<Response>(resolve =>
-      this._inflight.push({ request, callback: resolve })
+    const responsePromise = new Promise<Response>(resolve => {
+      this._inflight = { request, callback: resolve };
+    });
+
+    logger.debug(
+      `Connection ${this._connectionId}: send request ${JSON.stringify(
+        request
+      )}`
     );
 
-    logger.debug(`send request ${JSON.stringify(request)}`);
-
-    this._socket.emit("request", request);
+    if (this._socket) {
+      // if there is not a socket we will reconnect one
+      this._socket.emit("request", request);
+    }
 
     const response = await responsePromise;
     return response.data;
@@ -80,6 +101,8 @@ export class Connection {
     /**
      * Switch to the window, inject the client/connect, and set the socket.
      */
+    logger.debug(`Connection ${this._connectionId}: create socket`);
+
     const socketPromise = this._server.onConnection(this._connectionId);
 
     if (this._windowHandle) {
@@ -93,26 +116,56 @@ export class Connection {
       uri: CONFIG.wsUrl
     });
 
-    this._socket = await socketPromise;
+    const socket = await socketPromise;
+    this._socket = socket;
+    return socket;
+  }
+
+  private _disconnect() {
+    if (!this._socket) return;
+
+    this._socket.removeListener("disconnect", this._onDisconnect);
+    this._socket.removeListener("response", this._onResponse);
+    this._socket.disconnect(true);
+    this._socket = null;
   }
 
   private _onDisconnect = async (reason: string) => {
-    logger.debug(`disconnected ${reason}, attempting reconnect`);
-    await this.connect();
+    if (this._closed) return;
 
-    logger.debug(`resending ${JSON.stringify(this._inflight)}`);
+    logger.debug(
+      `Connection ${this._connectionId}: reconnecting disconnected socket "${reason}"`
+    );
+    const socket = await this.connect();
 
-    // resend inflight requests
-    // TODO await them??
-    this._inflight.forEach(i => this._socket.emit("request", i.request));
+    if (this._inflight) {
+      logger.debug(
+        `Connection ${this._connectionId}: resending ${JSON.stringify(
+          this._inflight.request
+        )} ${this._connectionId}`
+      );
+      socket.emit("request", this._inflight.request);
+    }
   };
 
   private _onResponse = (response: Response) => {
-    logger.debug(`received response ${JSON.stringify(response)}`);
-    const [inflight] = remove(
-      this._inflight,
-      i => i.request.id === response.id
+    logger.debug(
+      `Connection ${this._connectionId}: received response ${JSON.stringify(
+        response
+      )}`
     );
+
+    const inflight = this._inflight;
+
+    if (!inflight || response.id !== inflight.request.id) {
+      throw new Error(
+        `Response does not match inflight request ${JSON.stringify(
+          this._inflight
+        )}`
+      );
+    }
+
+    this._inflight = null;
     inflight.callback(response);
   };
 }
