@@ -53,7 +53,7 @@ describe("rank.computeScoresForElements", () => {
       );
     }, actionWithSelector);
 
-    expect(scores).toEqual([100, 100]);
+    expect(scores).toEqual([150, 100]);
   });
 
   test("throws error if action does not have selector", async () => {
