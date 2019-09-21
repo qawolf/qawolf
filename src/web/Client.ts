@@ -15,18 +15,14 @@ export type Response = {
   data: any;
 };
 
-// XXX: onunload disconnect to ignore inflight requests
-
 export class Client {
   private _id: string;
   private _socket: SocketIOClient.Socket;
-  private _REQUEST_KEY: string;
   private _RESPONSE_KEY: string;
 
   public connect({ id, uri }: ConnectOptions) {
     this._id = id;
 
-    this._REQUEST_KEY = `${this._id}_request`;
     this._RESPONSE_KEY = `${this._id}_response`;
 
     this._socket = io(uri, {
@@ -45,11 +41,11 @@ export class Client {
     });
   }
 
-  public run(action: BrowserAction): void {
+  public async run(action: BrowserAction) {
     if (action.type === "click") {
-      click(action.target.xpath);
+      await click(action.target.xpath);
     } else {
-      setInputValue(action.target.xpath, action.value || "");
+      await setInputValue(action.target.xpath, action.value || "");
     }
   }
 
@@ -66,38 +62,29 @@ export class Client {
 
     const response: Response = { id: request.id, data };
     this._trackResponse(response);
-    this._socket.emit("result", response);
+    this._socket.emit("response", response);
   }
 
   private _shouldHandleRequest(request: Request) {
-    let lastRequestId: any = sessionStorage.getItem(this._REQUEST_KEY);
-    lastRequestId = lastRequestId === null ? -1 : Number(lastRequestId);
-
     let lastResponseId: any = sessionStorage.getItem(this._RESPONSE_KEY);
     lastResponseId = lastResponseId === null ? -1 : Number(lastResponseId);
 
-    if (lastRequestId !== lastResponseId) {
-      throw new Error(
-        `Mismatch between last request ${lastRequestId} and response ${lastResponseId}`
-      );
-    }
-
-    if (request.id <= lastRequestId) {
+    if (request.id <= lastResponseId) {
+      // TODO send back the stored responses...
       // prevent handling a request twice
       console.log(
-        `Client: last request was ${lastRequestId}, ignoring old request:`,
+        `Client: last response was ${lastResponseId}, ignoring old request:`,
         request
       );
       return false;
     }
 
-    if (request.id - lastRequestId > 1) {
+    if (request.id - lastResponseId > 1) {
       throw new Error(
-        `Last request was ${lastRequestId}. This request ${request.id} is out of order`
+        `Last response was ${lastResponseId}. This request ${request.id} is out of order`
       );
     }
 
-    sessionStorage.setItem(this._REQUEST_KEY, request.id.toString());
     return true;
   }
 

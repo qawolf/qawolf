@@ -1,4 +1,5 @@
 import { slug } from "cuid";
+import { remove } from "lodash";
 import { Browser } from "../Browser";
 import { CONFIG } from "../config";
 import { logger } from "../logger";
@@ -11,6 +12,11 @@ type ConstructorArgs = {
   server: Server;
 };
 
+type InflightRequest = {
+  request: Request;
+  callback: (response: Response) => void;
+};
+
 export class Connection {
   /**
    * A connection to a QAWolf Client residing in a Browser window.
@@ -19,11 +25,14 @@ export class Connection {
   private _browser: Browser;
   // a unique id for the connection we keep across reloads
   private _connectionId: string = slug();
-  // incremented message ids to be aware of order
-  private _messageId: number = 0;
-  private _responseResolver: any = {};
+
+  private _inflight: InflightRequest[] = [];
+
+  // increment request ids to ensure order
+  private _requestId: number = 0;
+
   private _server: Server;
-  public _socket: SocketIO.Socket;
+  public _socket: SocketIO.Socket; // public for tests
   private _windowHandle: string;
 
   constructor({ browser, server }: ConstructorArgs) {
@@ -47,20 +56,20 @@ export class Connection {
   }
 
   public async request(name: string, ...args: any) {
-    const id = this._messageId++;
-
-    // TODO track the messages locally so we can resend them on reconnect...
-    const promise = new Promise(resolve => {
-      // TODO update the resolved message id
-      this._responseResolver[id] = resolve;
-    });
+    const id = this._requestId++;
 
     const request: Request = { id, name, args };
+
+    const responsePromise = new Promise<Response>(resolve =>
+      this._inflight.push({ request, callback: resolve })
+    );
+
     logger.debug(`send request ${JSON.stringify(request)}`);
 
     this._socket.emit("request", request);
 
-    return promise;
+    const response = await responsePromise;
+    return response.data;
   }
 
   public run(action: BrowserAction) {
@@ -90,13 +99,20 @@ export class Connection {
   private _onDisconnect = async (reason: string) => {
     logger.debug(`disconnected ${reason}, attempting reconnect`);
     await this.connect();
+
+    logger.debug(`resending ${JSON.stringify(this._inflight)}`);
+
+    // resend inflight requests
+    // TODO await them??
+    this._inflight.forEach(i => this._socket.emit("request", i.request));
   };
 
-  private _onResponse = (message: Response) => {
-    logger.debug(`received response ${JSON.stringify(message)}`);
-
-    const { id, data } = message;
-    this._responseResolver[id](data);
-    this._responseResolver[id] = null;
+  private _onResponse = (response: Response) => {
+    logger.debug(`received response ${JSON.stringify(response)}`);
+    const [inflight] = remove(
+      this._inflight,
+      i => i.request.id === response.id
+    );
+    inflight.callback(response);
   };
 }

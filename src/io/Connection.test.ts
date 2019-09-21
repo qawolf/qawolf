@@ -35,6 +35,12 @@ test("reconnects on page change", async () => {
     }
   });
 
+  await connection.run({
+    type: "click",
+    target: {
+      xpath: '//*[@id="redirect"]'
+    }
+  });
   // TODO check the socket gets recreated...
 });
 
