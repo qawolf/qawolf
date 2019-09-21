@@ -26,6 +26,9 @@
     "dotenv": "^8.1.0",
     "figlet": "^1.2.4",
     "fs-extra": "^8.1.0",
+    "import-jsx": "^3.0.0",
+    "ink": "^2.3.0",
+    "react": "^16.9.0",
     "rrweb": "^0.7.24",
     "webdriverio": "^5.13.1",
     "winston": "^3.2.1"
