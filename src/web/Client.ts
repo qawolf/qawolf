@@ -43,9 +43,9 @@ export class Client {
 
   public async run(action: BrowserAction) {
     if (action.type === "click") {
-      await click(action.target.xpath);
+      await click(action.selector.xpath!);
     } else {
-      await setInputValue(action.target.xpath, action.value || "");
+      await setInputValue(action.selector.xpath!, action.value || "");
     }
   }
 

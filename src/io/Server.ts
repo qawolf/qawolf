@@ -5,6 +5,7 @@ export class Server {
   private _httpServer: HttpServer;
   private _ioServer: SocketIO.Server;
 
+  // TODO change
   constructor(port: number = 3000) {
     this._httpServer = createServer();
     this._ioServer = SocketIO(this._httpServer);

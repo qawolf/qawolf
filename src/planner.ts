@@ -57,10 +57,10 @@ export const planClickActions = (
     if (!isMouseDownEvent(event)) continue;
 
     actions.push({
-      sourceEventId: event.id,
-      target: {
+      selector: {
         xpath: event.data.xpath!
       },
+      sourceEventId: event.id,
       type: "click"
     });
   }
@@ -81,10 +81,10 @@ export const planTypeActions = (events: qaEventWithTime[]): BrowserAction[] => {
     if (event.data.xpath === lastXpath) continue;
 
     actions.push({
-      sourceEventId: event.id,
-      target: {
+      selector: {
         xpath: event.data.xpath!
       },
+      sourceEventId: event.id,
       type: "type",
       value: event.data.text
     });

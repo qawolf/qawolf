@@ -1,24 +1,19 @@
-import { Browser } from "../Browser";
-import { CONFIG } from "../config";
 import { Server } from "./Server";
+import SocketIO from "socket.io-client";
 
-let browser: Browser;
-let server: Server;
+test("onConnection resolves a socket", async () => {
+  const server = new Server();
 
-beforeAll(async () => {
-  browser = new Browser();
-  await browser.launch();
-  await browser._browser!.url(CONFIG.testUrl);
-  server = new Server();
-});
+  const socketPromise = server.onConnection("testId");
 
-afterAll(async () => {
+  // XXX TODO change this depending on location
+  const connection = SocketIO("http://localhost:3000", {
+    query: { id: "testId" }
+  });
+  const socket = await socketPromise;
+
+  expect(socket).toBeTruthy();
+
+  connection.close();
   server.close();
-  await browser.close();
-});
-
-test("onConnection resolves a connection", async () => {
-  // const connection = await server.onConnection();
-  // expect(connection).toBeTruthy();
-  expect(true).toEqual(true);
 });

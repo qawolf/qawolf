@@ -62,14 +62,14 @@ test("gracefully handles redirects", async () => {
 
   await connection.run({
     type: "click",
-    target: {
+    selector: {
       xpath: '//*[@id="content"]/ul/li[32]/a'
     }
   });
 
   await connection.run({
     type: "click",
-    target: {
+    selector: {
       xpath: '//*[@id="redirect"]'
     }
   });
