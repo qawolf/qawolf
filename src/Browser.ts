@@ -2,6 +2,7 @@ import fs from "fs-extra";
 import { BrowserObject, remote } from "webdriverio";
 import { CONFIG } from "./config";
 import { logger } from "./logger";
+import { ConnectOptions } from "./web/Client";
 
 export class Browser {
   public _browser: BrowserObject | null = null;
@@ -12,12 +13,17 @@ export class Browser {
     await this._browser!.closeWindow();
   }
 
-  public async injectSdk() {
+  public async injectSdk(connect?: ConnectOptions) {
     if (!this._sdk) {
       this._sdk = await fs.readFile("build/qawolf.web.js", "utf8");
     }
 
-    return this._browser!.execute(this._sdk);
+    let script = this._sdk;
+    if (connect) {
+      script += `(new qawolf.Client()).connect(${JSON.stringify(connect)})`;
+    }
+
+    await this._browser!.execute(script);
   }
 
   public async launch(desiredCapabilities?: WebDriver.DesiredCapabilities) {

@@ -3,20 +3,26 @@ import { CONFIG } from "../config";
 import { Server } from "./Server";
 import { Connection } from "./Connection";
 
-let connection: Connection;
 let browser: Browser;
+let connection: Connection;
+let server: Server;
 
 beforeAll(async () => {
   browser = new Browser();
   await browser.launch();
   await browser._browser!.url(CONFIG.testUrl);
-  const server = new Server();
-  connection = await server.injectClient(browser);
+  server = new Server();
 });
 
 afterAll(() => browser.close());
 
-test("Connection responds to a method invokation", async () => {
-  const version = await connection.method("version");
-  expect(version).toEqual("0.0.1");
+test("connect resolves a soket", async () => {
+  connection = new Connection({ browser, server });
+  await connection.connect();
+  expect(connection._socket).toBeTruthy();
+});
+
+test("Connection receives a method result", async () => {
+  const result = await connection.method("version");
+  expect(result).toEqual("0.0.1");
 });

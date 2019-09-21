@@ -1,26 +1,52 @@
 import { slug } from "cuid";
+import { Browser } from "../Browser";
+import { CONFIG } from "../config";
+import { Server } from "./Server";
 import { MethodMessage, ResultMessage } from "../web/Client";
 
-export class Connection {
-  private _callbacks: any = {};
-  private _id: string;
-  private _socket: SocketIO.Socket;
+type ConstructorArgs = {
+  browser: Browser;
+  server: Server;
+};
 
-  constructor(socket: SocketIO.Socket) {
-    this._id = socket.handshake.query.id;
-    this._socket = socket;
-    this._socket.on("result", message => this._onResult(message));
+export class Connection {
+  /**
+   * A connection to a QAWolf Client residing in a Browser window.
+   **/
+
+  private _browser: Browser;
+  // a unique id for the connection we keep across reloads
+  private _id: string = slug();
+  private _resultResolver: any = {};
+  private _server: Server;
+  public _socket: SocketIO.Socket;
+  private _windowHandle: string;
+
+  constructor({ browser, server }: ConstructorArgs) {
+    this._browser = browser;
+    this._server = server;
   }
 
-  public get id() {
-    return this._id;
+  public async connect() {
+    await this.disconnect();
+    await this._createSocket();
+    this._socket.on("disconnect", this._onDisconnect);
+    this._socket.on("result", this._onResult);
+  }
+
+  public async disconnect() {
+    if (!this._socket) return;
+
+    this._socket.removeListener("disconnect", this._onDisconnect);
+    this._socket.removeListener("result", this._onResult);
+    await this._socket.disconnect();
   }
 
   public async method(name: string, ...args: any) {
     const id = slug();
 
     const promise = new Promise(resolve => {
-      this._callbacks[id] = resolve;
+      this._resultResolver[id] = resolve;
     });
 
     const message: MethodMessage = { id, name, args };
@@ -31,11 +57,32 @@ export class Connection {
     return promise;
   }
 
-  private _onResult(message: ResultMessage) {
+  private async _createSocket() {
+    /**
+     * Switch to the window, inject the client/connect, and set the socket.
+     */
+    const socketPromise = this._server.onConnection(this._id);
+
+    if (this._windowHandle) {
+      await this._browser._browser!.switchToWindow(this._windowHandle);
+    } else {
+      this._windowHandle = await this._browser._browser!.getWindowHandle();
+    }
+
+    await this._browser.injectSdk({ id: this._id, uri: CONFIG.wsUrl });
+
+    this._socket = await socketPromise;
+  }
+
+  private _onDisconnect = (reason: string) => {
+    console.log("TODO DISCONNECT LOGICS", reason);
+  };
+
+  private _onResult = (message: ResultMessage) => {
     console.log("Received result", message);
 
     const { id, data } = message;
-    this._callbacks[id](data);
-    this._callbacks[id] = null;
-  }
+    this._resultResolver[id](data);
+    this._resultResolver[id] = null;
+  };
 }

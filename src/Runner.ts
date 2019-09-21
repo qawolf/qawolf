@@ -2,6 +2,7 @@ import { Browser } from "./Browser";
 import { Server } from "./io/Server";
 import { Workflow } from "./types";
 import { connect } from "tls";
+import { Connection } from "./io/Connection";
 
 export class Runner {
   private _browser: Browser;
@@ -12,11 +13,17 @@ export class Runner {
     this._server = server;
   }
 
+  // TODO runner could have multiple connections if there are multiple pages
+  // Look for additional pages when step calls for them
+
   async run(workflow: Workflow) {
     await this._browser.launch();
     await this._browser._browser!.url(workflow.href);
 
-    const connection = await this._server.injectClient(this._browser);
-    await connection.method("run", workflow.steps);
+    const connection = await Connection.create(this._browser, this._server);
+
+    for (let step of workflow.steps) {
+      await connection.method("run", step);
+    }
   }
 }
