@@ -1,9 +1,13 @@
 import * as actions from "./actions";
 import { Client } from "./Client";
+import * as rank from "./rank";
+import * as selector from "./selector";
 
 const qawolf = {
   actions,
-  Client
+  Client,
+  rank,
+  selector
 };
 
 export type QAWolf = typeof qawolf;
