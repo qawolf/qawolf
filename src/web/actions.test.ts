@@ -1,6 +1,6 @@
 import { Browser } from "../Browser";
 import { CONFIG } from "../config";
-import { QAWolf } from "../types";
+import { QAWolf } from ".";
 
 let browser: Browser;
 

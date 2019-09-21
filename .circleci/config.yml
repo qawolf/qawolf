@@ -41,7 +41,8 @@ jobs:
 
       - run: npm run lint
 
-      - run: npm run test
+      - run:
+          command: npm run test
           environment:
             TEST_URL: http://localhost:5000
             WS_URL: http://localhost:3000

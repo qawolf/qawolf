@@ -104,7 +104,7 @@ export const planWorkflow = (originalEvents: eventWithTime[]): Workflow => {
     planTypeActions(events)
   );
 
-  steps.sort((a, b) => a.sourceEventId - b.sourceEventId);
+  steps.sort((a, b) => a.sourceEventId! - b.sourceEventId!);
 
   const workflow = { href, steps };
   return workflow;
