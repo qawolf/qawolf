@@ -44,5 +44,5 @@ jobs:
       - run:
           command: npm run test
           environment:
-            TEST_URL: http://localhost:5000
-            WS_URL: http://localhost:3000
+            TEST_URL: http://127.0.0.1:5000
+            WS_URL: http://127.0.0.1

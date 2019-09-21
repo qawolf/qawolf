@@ -1,15 +1,26 @@
+import getPort from "get-port";
 import { createServer, Server as HttpServer } from "http";
 import SocketIO from "socket.io";
+import { logger } from "../logger";
 
 export class Server {
   private _httpServer: HttpServer;
   private _ioServer: SocketIO.Server;
+  private _port: number | undefined;
 
-  // TODO change
-  constructor(port: number = 3000) {
+  constructor() {
     this._httpServer = createServer();
     this._ioServer = SocketIO(this._httpServer);
-    this._httpServer.listen(port);
+  }
+
+  public get port() {
+    return this._port;
+  }
+
+  public async listen() {
+    this._port = await getPort();
+    this._httpServer.listen(this._port);
+    logger.debug(`Server listening on port ${this._port}`);
   }
 
   public async onConnection(id: string): Promise<SocketIO.Socket> {

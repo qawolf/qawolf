@@ -113,7 +113,7 @@ export class Connection {
 
     await this._browser.injectSdk({
       id: this._connectionId,
-      uri: CONFIG.wsUrl
+      uri: `${CONFIG.wsUrl}:${this._server.port}`
     });
 
     const socket = await socketPromise;

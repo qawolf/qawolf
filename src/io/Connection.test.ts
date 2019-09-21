@@ -9,6 +9,7 @@ let server: Server;
 beforeAll(async () => {
   browser = new Browser();
   server = new Server();
+  await server.listen();
   await browser.launch();
 });
 
