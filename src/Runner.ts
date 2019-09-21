@@ -1,7 +1,6 @@
 import { Browser } from "./Browser";
 import { Server } from "./io/Server";
 import { Workflow } from "./types";
-import { connect } from "tls";
 import { Connection } from "./io/Connection";
 
 export class Runner {
