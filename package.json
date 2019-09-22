@@ -1,7 +1,7 @@
 {
   "name": "qawolf",
   "version": "0.0.0",
-  "description": "Effortless acceptance tests",
+  "description": "Effortless smoke tests",
   "main": "index.js",
   "scripts": {
     "build": "tsc -p .",

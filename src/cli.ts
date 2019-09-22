@@ -11,7 +11,7 @@ console.log(
   chalk.green(figlet.textSync("qawolf", { horizontalLayout: "full" }))
 );
 
-program.version("0.0.1").description("Effortless acceptance tests");
+program.version("0.0.1").description("Effortless smoke tests");
 
 program
   .command("run <source> [destination]")
