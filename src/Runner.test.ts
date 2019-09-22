@@ -46,4 +46,4 @@ test("Runner runs workflow", async () => {
   const header = await runner._browser._browser!.$('//*[@id="content"]/div/h2');
   expect(await header.getText()).toEqual("Secure Area");
   await runner.close();
-});
+}, 10000);
