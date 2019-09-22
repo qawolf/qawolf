@@ -20,7 +20,10 @@ const findClickableAncestor = (element: HTMLElement): HTMLElement => {
   return findClickableAncestor(element.parentElement);
 };
 
-const findElementByXpath = async (xpath: string): Promise<HTMLElement> => {
+const findElementByXpath = async (
+  xpath: string,
+  timeout: number = 5000
+): Promise<HTMLElement> => {
   const result = document.evaluate(
     xpath,
     document,
@@ -48,14 +51,13 @@ const findElementByXpath = async (xpath: string): Promise<HTMLElement> => {
         clearTimeout(rejectId);
         resolve(result.singleNodeValue as HTMLElement);
       }
-    });
+    }, 100);
 
     const rejectId = setTimeout(() => {
-      reject("Not found");
+      reject(`No element found for xpath ${xpath}`);
       clearInterval(intervalId);
-    }, 5000);
+    }, timeout);
   });
-  throw `No element found for xpath ${xpath}`;
 };
 
 export const setInputValue = async (xpath: string, value: string) => {

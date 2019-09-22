@@ -52,10 +52,10 @@ test("planClickActions turns mouse down events into click actions", () => {
       type: "click"
     },
     {
-      sourceEventId: 53,
       selector: {
         xpath: "//*[@id='tsf']/div[2]/div[1]/div[3]/center/input[1]"
       },
+      sourceEventId: 53,
       type: "click"
     }
   ]);
