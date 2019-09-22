@@ -1,10 +1,10 @@
 import { Browser } from "./Browser";
+import { Connection } from "./io/Connection";
 import { Server } from "./io/Server";
 import { Workflow } from "./types";
-import { Connection } from "./io/Connection";
 
 export class Runner {
-  private _browser: Browser;
+  public _browser: Browser;
   private _server: Server;
 
   constructor(server: Server) {
@@ -12,17 +12,28 @@ export class Runner {
     this._server = server;
   }
 
-  // TODO runner could have multiple connections if there are multiple pages
-  // Look for additional pages when step calls for them
+  // XXX: Multiple window support
+  // Look for additional windows when step calls for them
+  // and create another Connection.
 
   async run(workflow: Workflow) {
     await this._browser.launch();
     await this._browser._browser!.url(workflow.href);
 
-    const connection = await Connection.create(this._browser, this._server);
+    const connection = new Connection({
+      browser: this._browser,
+      server: this._server
+    });
+    await connection.connect();
 
     for (let step of workflow.steps) {
-      await connection.method("run", step);
+      await connection.run(step);
     }
+
+    connection.close();
+  }
+
+  async close() {
+    await this._browser.close();
   }
 }
