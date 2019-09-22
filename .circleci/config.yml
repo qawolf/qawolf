@@ -41,4 +41,8 @@ jobs:
 
       - run: npm run lint
 
-      - run: SELENIUM_PORT=4444 TEST_URL="http://localhost:5000" npm run test
+      - run:
+          command: npm run test
+          environment:
+            TEST_URL: http://127.0.0.1:5000
+            WS_URL: http://127.0.0.1

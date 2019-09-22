@@ -1,13 +1,13 @@
-import Browser from "../Browser";
+import { Browser } from "../Browser";
 import { CONFIG } from "../config";
 import { computeSimilarityScores } from "./rank";
 import { QAWolf } from "./index";
 
 const action = {
-  sourceEventId: 11,
-  target: {
+  selector: {
     xpath: "xpath"
   },
+  sourceEventId: 11,
   type: "click" as "click"
 };
 
@@ -61,10 +61,10 @@ describe("rank.computeScoresForElements", () => {
     await browser.injectSdk();
 
     const action = {
-      sourceEventId: 11,
-      target: {
+      selector: {
         xpath: "xpath"
       },
+      sourceEventId: 11,
       type: "click" as "click"
     };
 

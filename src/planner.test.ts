@@ -31,10 +31,10 @@ test("planTypeActions squashes consecutive input events", () => {
   const actions = planTypeActions(events);
   expect(actions).toEqual([
     {
-      sourceEventId: 47,
-      target: {
+      selector: {
         xpath: "//*[@id='tsf']/div[2]/div[1]/div[1]/div/div[2]/input"
       },
+      sourceEventId: 47,
       type: "type",
       value: "qawolf github"
     }
@@ -45,17 +45,17 @@ test("planClickActions turns mouse down events into click actions", () => {
   const actions = planClickActions(events);
   expect(actions).toEqual([
     {
-      sourceEventId: 14,
-      target: {
+      selector: {
         xpath: "//*[@id='tsf']/div[2]/div[1]/div[1]/div/div[2]/input"
       },
+      sourceEventId: 14,
       type: "click"
     },
     {
-      sourceEventId: 53,
-      target: {
+      selector: {
         xpath: "//*[@id='tsf']/div[2]/div[1]/div[3]/center/input[1]"
       },
+      sourceEventId: 53,
       type: "click"
     }
   ]);

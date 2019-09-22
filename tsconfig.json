@@ -10,7 +10,8 @@
     "sourceMap": true,
     "rootDir": "src",
     "outDir": "build",
-    "lib": ["esnext", "dom"]
+    "lib": ["esnext", "dom"],
+    "target": "es5"
   },
   "compileOnSave": true,
   "exclude": ["test"],
