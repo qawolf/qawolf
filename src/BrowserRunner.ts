@@ -9,6 +9,10 @@ type ConstructorArgs = {
   server: Server;
 };
 
+// XXX: Multiple window support
+// Look for additional windows when step calls for them
+// and create another Connection.
+
 export class BrowserRunner extends Runner {
   public _browser: Browser;
   private _connection: Connection | null = null;
@@ -21,14 +25,6 @@ export class BrowserRunner extends Runner {
     this._server = server;
   }
 
-  protected async afterWorkflow(workflow: Workflow): Promise<void> {
-    super.afterWorkflow(workflow);
-
-    if (this._connection) {
-      this._connection.close();
-    }
-  }
-
   protected async beforeWorkflow(workflow: Workflow): Promise<void> {
     await this._browser.launch();
     await this._browser._browser!.url(workflow.href);
@@ -39,7 +35,7 @@ export class BrowserRunner extends Runner {
     });
     await this._connection.connect();
 
-    super.beforeWorkflow(workflow);
+    await super.beforeWorkflow(workflow);
   }
 
   protected async runStep(step: BrowserAction): Promise<void> {
@@ -49,11 +45,13 @@ export class BrowserRunner extends Runner {
     await this._connection.run(step);
   }
 
-  // XXX: Multiple window support
-  // Look for additional windows when step calls for them
-  // and create another Connection.
+  protected async afterWorkflow(workflow: Workflow): Promise<void> {
+    await super.afterWorkflow(workflow);
 
-  public async close() {
+    if (this._connection) {
+      this._connection.close();
+    }
+
     await this._browser.close();
   }
 }

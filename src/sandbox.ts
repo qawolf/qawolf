@@ -37,7 +37,7 @@ import { sleep } from "./utils";
   await server.listen();
 
   const takeScreenshot = async (runner: BrowserRunner) => {
-    await sleep(5000);
+    await sleep(1000);
     await runner._browser._browser!.saveScreenshot(`./tmp/${Date.now()}.png`);
   };
 

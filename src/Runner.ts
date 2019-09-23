@@ -7,37 +7,22 @@ export type Callbacks = {
   onWorkflowEnd?: Callback[];
 };
 
+const runCallbacks = async (
+  runner: Runner,
+  callbacks?: Callback[]
+): Promise<void> => {
+  await Promise.all(
+    (callbacks || []).map(callback => {
+      return callback(runner);
+    })
+  );
+};
+
 export class Runner {
   private _callbacks: Callbacks;
 
   constructor(callbacks?: Callbacks) {
     this._callbacks = callbacks || {};
-  }
-
-  private async runCallbacks(callbacks?: Callback[]): Promise<void> {
-    if (!callbacks || !callbacks.length) return;
-
-    const callbackPromises = callbacks.map(callback => {
-      return callback(this);
-    });
-
-    await Promise.all(callbackPromises);
-  }
-
-  protected async afterWorkflow(workflow: Workflow): Promise<void> {
-    return this.runCallbacks(this._callbacks.onWorkflowEnd);
-  }
-
-  protected async beforeWorkflow(workflow: Workflow): Promise<void> {
-    return;
-  }
-
-  protected async beforeStep(): Promise<void> {
-    return this.runCallbacks(this._callbacks.onStepBegin);
-  }
-
-  protected async runStep(step: BrowserAction): Promise<void> {
-    return;
   }
 
   public async runWorkflow(workflow: Workflow): Promise<void> {
@@ -49,5 +34,21 @@ export class Runner {
     }
 
     await this.afterWorkflow(workflow);
+  }
+
+  protected async beforeWorkflow(workflow: Workflow): Promise<void> {
+    return;
+  }
+
+  protected async beforeStep(): Promise<void> {
+    return runCallbacks(this, this._callbacks.onStepBegin);
+  }
+
+  protected async runStep(step: BrowserAction): Promise<void> {
+    return;
+  }
+
+  protected async afterWorkflow(workflow: Workflow): Promise<void> {
+    return runCallbacks(this, this._callbacks.onWorkflowEnd);
   }
 }
