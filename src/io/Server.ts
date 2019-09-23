@@ -11,8 +11,8 @@ export class Server {
 
   constructor() {
     this._httpServer = createServer({
-      key: fs.readFileSync("./bin/server.key"),
-      cert: fs.readFileSync("./bin/server.cert")
+      cert: fs.readFileSync("./bin/server.cert"),
+      key: fs.readFileSync("./bin/server.key")
     });
 
     this._ioServer = SocketIO(this._httpServer);

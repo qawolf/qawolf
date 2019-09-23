@@ -1,4 +1,4 @@
-export const findElementByXpath = (xpath: string): HTMLElement => {
+export const findElementByXpath = (xpath: string): HTMLElement | null => {
   const result = document.evaluate(
     xpath,
     document,
@@ -11,7 +11,7 @@ export const findElementByXpath = (xpath: string): HTMLElement => {
     return result.singleNodeValue as HTMLElement;
   }
 
-  throw new Error(`No element found for xpath ${xpath}`);
+  return null;
 };
 
 const buildXpath = (element: Element): string => {
@@ -41,4 +41,16 @@ export const getXpath = (element: Element): string => {
   return result
     .replace("svg", "*[name()='svg']")
     .replace("path", "*[name()='path']");
+};
+
+export const compareXpaths = (
+  xpathA?: string | null,
+  xpathB?: string | null
+) => {
+  if (!xpathA || !xpathB) return false;
+  if (xpathA === xpathB) return true;
+
+  const resolveSameElement =
+    findElementByXpath(xpathA) === findElementByXpath(xpathB);
+  return resolveSameElement;
 };

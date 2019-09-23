@@ -1,6 +1,6 @@
 import io from "socket.io-client";
 import { click, setInputValue } from "./actions";
-import { waitForMatchingElement } from "./rank";
+import { waitForElement } from "./rank";
 import { BrowserStep } from "../types";
 
 export type ConnectOptions = { id: string; uri: string };
@@ -44,7 +44,7 @@ export class Client {
   }
 
   public async runStep(step: BrowserStep) {
-    const element = (await waitForMatchingElement(step)) as HTMLElement;
+    const element = (await waitForElement(step)) as HTMLElement;
     if (step.type === "click") {
       click(element);
     } else {

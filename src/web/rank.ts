@@ -1,7 +1,6 @@
-import { getSelector } from "./selector";
+import { getLocator } from "./locator";
 import { computeMaxPossibleScore, computeSimilarityScore } from "./score";
 import { BrowserStep } from "../types";
-import { getXpath } from "./xpath";
 
 const DEFAULT_THRESHOLD = 0.75;
 
@@ -9,15 +8,15 @@ export const computeSimilarityScores = (
   step: BrowserStep,
   elements: HTMLCollection
 ): number[] => {
-  const base = step.selector;
+  const base = step.locator;
   if (!base) {
-    throw "Action does not have associated selector";
+    throw "Action does not have associated locator";
   }
 
   const scores: number[] = [];
 
   for (let i = 0; i < elements.length; i++) {
-    const compare = getSelector(elements[i] as HTMLElement);
+    const compare = getLocator(elements[i] as HTMLElement);
 
     if (!compare) {
       scores.push(0);
@@ -38,15 +37,16 @@ export const findCandidateElements = (step: BrowserStep): HTMLCollection => {
   return document.getElementsByTagName("*");
 };
 
-export const findHighestMatchElement = (
+export const findTopElement = (
   step: BrowserStep,
   threshold: number = DEFAULT_THRESHOLD
 ): Element | null => {
   const elements = findCandidateElements(step);
   const scores = computeSimilarityScores(step, elements);
   const maxScore = Math.max(...scores);
-  const maxPossibleScore = computeMaxPossibleScore(step.selector!);
+  const maxPossibleScore = computeMaxPossibleScore(step.locator!);
 
+  console.log("max score", maxScore, "maxPossibleScore", maxPossibleScore);
   if (maxScore / maxPossibleScore < threshold) {
     return null; // not similar enough
   }
@@ -54,30 +54,21 @@ export const findHighestMatchElement = (
     return null; // it's a tie
   }
 
-  const highestMatch = elements[scores.indexOf(maxScore)];
-  return highestMatch;
+  const topMatch = elements[scores.indexOf(maxScore)];
+  return topMatch;
 };
 
-export const findHighestMatchXpath = (
-  step: BrowserStep,
-  threshold: number = DEFAULT_THRESHOLD
-): string | null => {
-  const highestMatch = findHighestMatchElement(step, threshold);
-  if (!highestMatch) return null;
-
-  return getXpath(highestMatch);
-};
-
-export const waitForMatchingElement = async (
+export const waitForElement = async (
   step: BrowserStep,
   timeout: number = 5000,
   threshold: number = DEFAULT_THRESHOLD
 ): Promise<Element> => {
   return new Promise((resolve, reject) => {
     const intervalId = setInterval(() => {
-      const element = findHighestMatchElement(step, threshold);
+      const element = findTopElement(step, threshold);
+
       if (element) {
-        console.log("Found element", element);
+        console.log("waitForElement: found element", element);
         clearInterval(intervalId);
         clearTimeout(rejectId);
         resolve(element);

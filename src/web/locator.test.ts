@@ -13,11 +13,11 @@ beforeAll(async () => {
 
 afterAll(() => browser.close());
 
-test("selector.getLabels correctly returns labels", async () => {
+test("getLabels correctly returns labels", async () => {
   const nullLabels = await browser._browser!.execute(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
-    return qawolf.selector.getLabels(document.getElementsByTagName("h2")[0]);
+    return qawolf.locator.getLabels(document.getElementsByTagName("h2")[0]);
   });
 
   expect(nullLabels).toBeNull();
@@ -25,27 +25,27 @@ test("selector.getLabels correctly returns labels", async () => {
   const usernameLabels = await browser._browser!.execute(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
-    return qawolf.selector.getLabels(document.getElementsByTagName("input")[0]);
+    return qawolf.locator.getLabels(document.getElementsByTagName("input")[0]);
   });
 
   expect(usernameLabels).toEqual(["username"]);
 });
 
-test("selector.getParentText correctly returns parent text", async () => {
+test("getParentText correctly returns parent text", async () => {
   const iconParentText = await browser._browser!.execute(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
-    return qawolf.selector.getParentText(document.getElementsByTagName("i")[0]);
+    return qawolf.locator.getParentText(document.getElementsByTagName("i")[0]);
   });
 
   expect(iconParentText).toEqual([" login", " login"]);
 });
 
-test("selector.getPlaceholder correctly returns placeholder", async () => {
+test("getPlaceholder correctly returns placeholder", async () => {
   const nullPlaceholder = await browser._browser!.execute(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
-    return qawolf.selector.getPlaceholder(
+    return qawolf.locator.getPlaceholder(
       document.getElementsByTagName("input")[0]
     );
   });
@@ -53,11 +53,11 @@ test("selector.getPlaceholder correctly returns placeholder", async () => {
   expect(nullPlaceholder).toBeNull();
 });
 
-test("selector.getTextContent correctly returns text content", async () => {
+test("getTextContent correctly returns text content", async () => {
   const headerTextContent = await browser._browser!.execute(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
-    return qawolf.selector.getTextContent(
+    return qawolf.locator.getTextContent(
       document.getElementsByTagName("h2")[0]
     );
   });
@@ -67,7 +67,7 @@ test("selector.getTextContent correctly returns text content", async () => {
   const nullTextContent = await browser._browser!.execute(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
-    return qawolf.selector.getTextContent(
+    return qawolf.locator.getTextContent(
       document.getElementsByTagName("input")[0]
     );
   });
@@ -75,16 +75,13 @@ test("selector.getTextContent correctly returns text content", async () => {
   expect(nullTextContent).toBeNull();
 });
 
-test("selector.getSelector correctly returns full element selector", async () => {
-  const inputSelector = await browser._browser!.execute(() => {
+test("getLocator correctly returns full element locator", async () => {
+  const inputLocator = await browser._browser!.execute(() => {
     const qawolf: QAWolf = (window as any).qawolf;
-
-    return qawolf.selector.getSelector(
-      document.getElementsByTagName("input")[0]
-    );
+    return qawolf.locator.getLocator(document.getElementsByTagName("input")[0]);
   });
 
-  expect(inputSelector).toMatchObject({
+  expect(inputLocator).toMatchObject({
     classList: null,
     href: null,
     id: "username",
@@ -95,15 +92,15 @@ test("selector.getSelector correctly returns full element selector", async () =>
     tagName: "input",
     textContent: null
   });
-  expect(inputSelector!.parentText).toContain("username");
+  expect(inputLocator!.parentText).toContain("username");
 
-  const headerSelector = await browser._browser!.execute(() => {
+  const headerLocator = await browser._browser!.execute(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
-    return qawolf.selector.getSelector(document.getElementsByTagName("h2")[0]);
+    return qawolf.locator.getLocator(document.getElementsByTagName("h2")[0]);
   });
 
-  expect(headerSelector).toMatchObject({
+  expect(headerLocator).toMatchObject({
     classList: null,
     href: null,
     id: null,
@@ -114,5 +111,5 @@ test("selector.getSelector correctly returns full element selector", async () =>
     tagName: "h2",
     textContent: "login page"
   });
-  expect(headerSelector!.parentText).toContain("login page");
+  expect(headerLocator!.parentText).toContain("login page");
 });

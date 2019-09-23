@@ -1,4 +1,5 @@
-import { ElementSelector } from "../types";
+import { Locator } from "../types";
+import { compareXpaths } from "./xpath";
 
 export const computeArraySimilarityScore = (
   compare: string[] | null | undefined,
@@ -27,8 +28,8 @@ export const computeStringSimilarityScore = (
 };
 
 export const computeSimilarityScore = (
-  compare: ElementSelector,
-  base: ElementSelector
+  compare: Locator,
+  base: Locator
 ): number => {
   let score: number = 0;
 
@@ -42,11 +43,12 @@ export const computeSimilarityScore = (
   score += computeStringSimilarityScore(compare.placeholder, base.placeholder);
   score += computeStringSimilarityScore(compare.tagName, base.tagName);
   score += computeStringSimilarityScore(compare.textContent, base.textContent);
+  score += compareXpaths(compare.xpath, base.xpath) ? 100 : 0;
 
   return score;
 };
 
-export const computeMaxPossibleScore = (base: ElementSelector): number => {
+export const computeMaxPossibleScore = (base: Locator): number => {
   let score: number = 0;
 
   Object.values(base).forEach(value => {

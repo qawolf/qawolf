@@ -85,6 +85,14 @@ describe("score.computeSimilarityScore", () => {
     const score = computeSimilarityScore(compare, base);
     expect(score).toBe(317);
   });
+
+  test("returns 100 if xpaths are the same", () => {
+    const score = computeSimilarityScore(
+      { xpath: '//*[@id="spirit"]' },
+      { xpath: '//*[@id="spirit"]' }
+    );
+    expect(score).toBe(100);
+  });
 });
 
 describe("score.computeMaxPossibleScore", () => {

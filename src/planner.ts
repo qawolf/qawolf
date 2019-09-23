@@ -55,8 +55,7 @@ export const planClickActions = (events: qaEventWithTime[]): BrowserStep[] => {
     if (!isMouseDownEvent(event)) continue;
 
     actions.push({
-      // XXX rename to locator
-      selector: (event.data as any).properties,
+      locator: (event.data as any).properties,
       sourceEventId: event.id,
       type: "click"
     });
@@ -93,8 +92,7 @@ export const planTypeActions = (events: qaEventWithTime[]): BrowserStep[] => {
     if (event.data.xpath === lastXpath) continue;
 
     actions.push({
-      // XXX rename to locator
-      selector: (event.data as any).properties,
+      locator: (event.data as any).properties,
       sourceEventId: event.id,
       type: "type",
       value: event.data.text

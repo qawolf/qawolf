@@ -7,8 +7,9 @@ test("onConnection resolves a socket", async () => {
 
   const socketPromise = server.onConnection("testId");
 
-  const connection = SocketIO(`http://127.0.0.1:${server.port}`, {
-    query: { id: "testId" }
+  const connection = SocketIO(`https://localhost:${server.port}`, {
+    query: { id: "testId" },
+    rejectUnauthorized: false
   });
 
   const socket = await socketPromise;
