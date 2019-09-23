@@ -1,6 +1,6 @@
+import { BrowserRunner } from "./BrowserRunner";
 import { CONFIG } from "./config";
 import { Server } from "./io/Server";
-import { Runner } from "./Runner";
 import { Workflow, BrowserAction } from "./types";
 
 let server: Server;
@@ -13,7 +13,7 @@ beforeAll(async () => {
 afterAll(() => server.close());
 
 test("Runner runs workflow", async () => {
-  const runner = await new Runner(server);
+  const runner = await new BrowserRunner({ server });
   const steps: BrowserAction[] = [
     {
       selector: {

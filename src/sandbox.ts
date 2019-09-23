@@ -1,7 +1,7 @@
 import { Browser } from "./Browser";
+import { BrowserRunner } from "./BrowserRunner";
 import { CONFIG } from "./config";
 import { Server } from "./io/Server";
-import { Runner } from "./Runner";
 import { BrowserAction, Workflow } from "./types";
 import { sleep } from "./utils";
 
@@ -36,9 +36,9 @@ import { sleep } from "./utils";
   const server = new Server();
   await server.listen();
 
-  const takeScreenshot = async (browser: Browser) => {
+  const takeScreenshot = async (runner: BrowserRunner) => {
     await sleep(5000);
-    await browser._browser!.saveScreenshot(`./tmp/${Date.now()}.png`);
+    await runner._browser._browser!.saveScreenshot(`./tmp/${Date.now()}.png`);
   };
 
   const callbacks = {
@@ -46,6 +46,6 @@ import { sleep } from "./utils";
     onWorkflowEnd: [takeScreenshot]
   };
 
-  const runner = new Runner({ callbacks, server });
-  await runner.run(workflow);
+  const runner = new BrowserRunner({ callbacks, server });
+  await runner.runWorkflow(workflow);
 })();

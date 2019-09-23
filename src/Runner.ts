@@ -1,66 +1,53 @@
-import { Browser } from "./Browser";
-import { Connection } from "./io/Connection";
-import { Server } from "./io/Server";
-import { Workflow } from "./types";
+import { BrowserAction, Workflow } from "./types";
 
-type Callback = (browser: Browser) => void;
+type Callback = (runner: Runner) => void;
 
-type Callbacks = {
+export type Callbacks = {
   onStepBegin?: Callback[];
   onWorkflowEnd?: Callback[];
 };
 
-type ConstructorArgs = {
-  callbacks?: Callbacks;
-  server: Server;
-};
-
 export class Runner {
-  public _browser: Browser;
   private _callbacks: Callbacks;
-  private _server: Server;
 
-  constructor({ callbacks, server }: ConstructorArgs) {
-    this._browser = new Browser();
+  constructor(callbacks?: Callbacks) {
     this._callbacks = callbacks || {};
-    this._server = server;
   }
 
-  // XXX: Multiple window support
-  // Look for additional windows when step calls for them
-  // and create another Connection.
-
-  async runCallbacks(callbacks?: Callback[]): Promise<void> {
+  private async runCallbacks(callbacks?: Callback[]): Promise<void> {
     if (!callbacks || !callbacks.length) return;
 
     const callbackPromises = callbacks.map(callback => {
-      return callback(this._browser);
+      return callback(this);
     });
 
     await Promise.all(callbackPromises);
   }
 
-  async run(workflow: Workflow) {
-    await this._browser.launch();
-    await this._browser._browser!.url(workflow.href);
-
-    const connection = new Connection({
-      browser: this._browser,
-      server: this._server
-    });
-    await connection.connect();
-
-    for (let step of workflow.steps) {
-      await this.runCallbacks(this._callbacks.onStepBegin);
-      await connection.run(step);
-    }
-
-    await this.runCallbacks(this._callbacks.onWorkflowEnd);
-
-    connection.close();
+  protected async afterWorkflow(workflow: Workflow): Promise<void> {
+    return this.runCallbacks(this._callbacks.onWorkflowEnd);
   }
 
-  async close() {
-    await this._browser.close();
+  protected async beforeWorkflow(workflow: Workflow): Promise<void> {
+    return;
+  }
+
+  protected async beforeStep(): Promise<void> {
+    return this.runCallbacks(this._callbacks.onStepBegin);
+  }
+
+  protected async runStep(step: BrowserAction): Promise<void> {
+    return;
+  }
+
+  public async runWorkflow(workflow: Workflow): Promise<void> {
+    await this.beforeWorkflow(workflow);
+
+    for (let step of workflow.steps) {
+      await this.beforeStep();
+      await this.runStep(step);
+    }
+
+    await this.afterWorkflow(workflow);
   }
 }

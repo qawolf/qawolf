@@ -5,7 +5,7 @@ import clear from "clear";
 import program from "commander";
 import figlet from "figlet";
 import fs from "fs-extra";
-import { Runner } from "./Runner";
+import { Runner } from "./BrowserRunner";
 import { Server } from "./io/Server";
 import { planWorkflow } from "./planner";
 
@@ -27,7 +27,7 @@ program
     console.log("workflow", workflow);
 
     const server = new Server();
-    const runner = new Runner(server);
+    const runner = new Runner({ server });
 
     await runner.run(workflow);
   });
