@@ -51,6 +51,7 @@ export class Connection {
   }
 
   public async connect() {
+    logger.debug(`Connection ${this._connectionId}: connect`);
     if (this._closed) {
       throw new Error("Cannot connect after closed");
     }
