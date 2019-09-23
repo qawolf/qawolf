@@ -1,7 +1,7 @@
 import { BrowserRunner } from "./BrowserRunner";
 import { CONFIG } from "./config";
 import { Server } from "./io/Server";
-import { Workflow, BrowserAction } from "./types";
+import { BrowserStep, Job } from "./types";
 
 let server: Server;
 
@@ -14,7 +14,7 @@ afterAll(() => server.close());
 
 test("Runner runs workflow", async () => {
   const runner = await new BrowserRunner({ server });
-  const steps: BrowserAction[] = [
+  const steps: BrowserStep[] = [
     {
       selector: {
         xpath: '//*[@id="username"]'
@@ -37,11 +37,11 @@ test("Runner runs workflow", async () => {
     }
   ];
 
-  const workflow: Workflow = {
+  const job: Job = {
     href: `${CONFIG.testUrl}/login`,
     steps
   };
-  await runner.run(workflow);
+  await runner.run(job);
 
   const header = await runner._browser._browser!.$('//*[@id="content"]/div/h2');
   expect(await header.getText()).toEqual("Secure Area");
