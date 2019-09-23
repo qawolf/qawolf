@@ -5,9 +5,9 @@ import clear from "clear";
 import program from "commander";
 import figlet from "figlet";
 import fs from "fs-extra";
-import { Runner } from "./BrowserRunner";
+import { BrowserRunner } from "./BrowserRunner";
 import { Server } from "./io/Server";
-import { planWorkflow } from "./planner";
+import { planJob } from "./planner";
 
 clear();
 
@@ -22,14 +22,12 @@ program
   .description("run a test")
   .action(async (source, destination) => {
     const events = JSON.parse(await fs.readFile(source, "utf8"));
-    const workflow = planWorkflow(events);
-
-    console.log("workflow", workflow);
+    const job = planJob(events);
 
     const server = new Server();
-    const runner = new Runner({ server });
+    const runner = new BrowserRunner({ server });
 
-    await runner.run(workflow);
+    await runner.run(job);
   });
 
 program.parse(process.argv);

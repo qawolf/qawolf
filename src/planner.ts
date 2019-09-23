@@ -77,8 +77,8 @@ export const planJob = (originalEvents: eventWithTime[]): Job => {
 
   steps.sort((a, b) => a.sourceEventId! - b.sourceEventId!);
 
-  const workflow = { href, steps };
-  return workflow;
+  const job = { href, steps };
+  return job;
 };
 
 export const planTypeActions = (events: qaEventWithTime[]): BrowserStep[] => {

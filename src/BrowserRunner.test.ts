@@ -12,7 +12,7 @@ beforeAll(async () => {
 
 afterAll(() => server.close());
 
-test("Runner runs workflow", async () => {
+test("Runner runs job", async () => {
   const runner = await new BrowserRunner({ server });
   const steps: BrowserStep[] = [
     {
