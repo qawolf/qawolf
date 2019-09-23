@@ -5,8 +5,9 @@ import {
   orderEventsByTime,
   planTypeActions,
   planClickActions,
-  planWorkflow
+  planJob
 } from "./planner";
+import { BrowserStep } from "./types";
 
 let originalEvents: qaEventWithTime[];
 let events: qaEventWithTime[];
@@ -31,10 +32,10 @@ test("planTypeActions squashes consecutive input events", () => {
   const actions = planTypeActions(events);
   expect(actions).toEqual([
     {
-      sourceEventId: 47,
-      target: {
+      selector: {
         xpath: "//*[@id='tsf']/div[2]/div[1]/div[1]/div/div[2]/input"
       },
+      sourceEventId: 47,
       type: "type",
       value: "qawolf github"
     }
@@ -45,23 +46,27 @@ test("planClickActions turns mouse down events into click actions", () => {
   const actions = planClickActions(events);
   expect(actions).toEqual([
     {
-      sourceEventId: 14,
-      target: {
+      selector: {
         xpath: "//*[@id='tsf']/div[2]/div[1]/div[1]/div/div[2]/input"
       },
+      sourceEventId: 14,
       type: "click"
     },
     {
-      sourceEventId: 53,
-      target: {
+      selector: {
         xpath: "//*[@id='tsf']/div[2]/div[1]/div[3]/center/input[1]"
       },
+      sourceEventId: 53,
       type: "click"
     }
   ]);
 });
 
-test("planWorkflow sorts steps by their original time", () => {
-  const workflow = planWorkflow(events);
-  expect(workflow.steps.map(s => s.sourceEventId)).toEqual([14, 47, 53]);
+test("planJob sorts steps by their original time", () => {
+  const job = planJob(events);
+  expect(job.steps.map((s: BrowserStep) => s.sourceEventId)).toEqual([
+    14,
+    47,
+    53
+  ]);
 });

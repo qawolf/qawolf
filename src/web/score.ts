@@ -1,8 +1,8 @@
 import { ElementSelector } from "../types";
 
 export const computeArraySimilarityScore = (
-  compare: string[] | null,
-  base: string[] | null
+  compare: string[] | null | undefined,
+  base: string[] | null | undefined
 ): number => {
   if (!base || !compare || !base.length) return 0;
   let similarityScore: number = 0;
@@ -17,8 +17,8 @@ export const computeArraySimilarityScore = (
 };
 
 export const computeStringSimilarityScore = (
-  compare: string | null,
-  base: string | null
+  compare: string | null | undefined,
+  base: string | null | undefined
 ): number => {
   if (!base || !compare) return 0;
   if (base === compare) return 100;

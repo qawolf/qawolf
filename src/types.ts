@@ -1,31 +1,25 @@
-import { Executor } from "./web/Executor";
-
-export type BrowserAction = {
-  selector?: ElementSelector | null;
-  sourceEventId: number;
-  target: Target;
+export type BrowserStep = {
+  selector: ElementSelector;
+  sourceEventId?: number;
   type: "click" | "type";
   value?: string;
 };
 
 export type ElementSelector = {
-  classList: string[] | null;
-  href: string | null;
-  id: string | null;
-  inputType: string | null;
-  labels: string[] | null;
-  name: string | null;
-  parentText: string[] | null;
-  placeholder: string | null;
-  tagName: string | null;
-  textContent: string | null;
+  classList?: string[] | null;
+  href?: string | null;
+  id?: string | null;
+  inputType?: string | null;
+  labels?: string[] | null;
+  name?: string | null;
+  parentText?: string[] | null;
+  placeholder?: string | null;
+  tagName?: string | null;
+  textContent?: string | null;
+  xpath?: string | null;
 };
 
-export type Target = {
-  xpath: string;
-};
-
-export type Workflow = {
+export type Job = {
   href: string;
-  steps: BrowserAction[];
+  steps: BrowserStep[];
 };
