@@ -11,11 +11,7 @@ const runCallbacks = async (
   runner: Runner,
   callbacks?: Callback[]
 ): Promise<void> => {
-  await Promise.all(
-    (callbacks || []).map(callback => {
-      return callback(runner);
-    })
-  );
+  await Promise.all((callbacks || []).map(callback => callback(runner)));
 };
 
 export class Runner {
