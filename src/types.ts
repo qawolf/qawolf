@@ -23,3 +23,26 @@ export type Job = {
   href: string;
   steps: BrowserStep[];
 };
+
+export type Run = {
+  name: string;
+  status: Status;
+  steps: Step[];
+};
+
+export type RunStatus = {
+  runs: Run[];
+  startTime: string;
+  summary: {
+    fail: number;
+    pass: number;
+    total: number;
+  };
+};
+
+type Status = "fail" | "pass" | "runs";
+
+export type Step = {
+  name: string;
+  status: Status;
+};

@@ -23,8 +23,8 @@ const getBackgroundForStatus = status => {
   };
 };
 
-const Workflow = ({ showSteps, workflow }) => {
-  const { name, status } = workflow;
+const Run = ({ showSteps, run }) => {
+  const { name, status } = run;
 
   return (
     <Box flexDirection="column">
@@ -37,9 +37,9 @@ const Workflow = ({ showSteps, workflow }) => {
           <Color bold>{name}</Color>
         </Box>
       </Box>
-      {!!showSteps && <Steps steps={workflow.steps} />}
+      {!!showSteps && <Steps steps={run.steps} />}
     </Box>
   );
 };
 
-module.exports = Workflow;
+module.exports = Run;
