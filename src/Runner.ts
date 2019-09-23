@@ -1,39 +1,54 @@
-import { Browser } from "./Browser";
-import { Connection } from "./io/Connection";
-import { Server } from "./io/Server";
-import { Workflow } from "./types";
+import { BrowserStep, Job } from "./types";
+
+export type Callback = (runner: Runner) => void;
+
+export type Callbacks = {
+  beforeStep?: Callback[];
+  afterRun?: Callback[];
+};
 
 export class Runner {
-  public _browser: Browser;
-  private _server: Server;
+  private _callbacks: Callbacks;
 
-  constructor(server: Server) {
-    this._browser = new Browser();
-    this._server = server;
+  constructor(callbacks?: Callbacks) {
+    this._callbacks = callbacks || {};
   }
 
-  // XXX: Multiple window support
-  // Look for additional windows when step calls for them
-  // and create another Connection.
+  public async step(step: BrowserStep): Promise<void> {
+    await this.beforeStep();
+    await this.runStep(step);
+  }
 
-  async run(workflow: Workflow) {
-    await this._browser.launch();
-    await this._browser._browser!.url(workflow.href);
+  public async run(job: Job): Promise<void> {
+    await this.beforeRun(job);
 
-    const connection = new Connection({
-      browser: this._browser,
-      server: this._server
-    });
-    await connection.connect();
-
-    for (let step of workflow.steps) {
-      await connection.run(step);
+    for (let step of job.steps) {
+      await this.step(step);
     }
 
-    connection.close();
+    await this.afterRun(job);
   }
 
-  async close() {
-    await this._browser.close();
+  protected async beforeRun(job: Job): Promise<void> {
+    return;
+  }
+
+  protected async beforeStep(): Promise<void> {
+    return runCallbacks(this, this._callbacks.beforeStep);
+  }
+
+  protected async afterRun(job: Job): Promise<void> {
+    return runCallbacks(this, this._callbacks.afterRun);
+  }
+
+  protected async runStep(step: BrowserStep): Promise<void> {
+    return;
   }
 }
+
+const runCallbacks = async (
+  runner: Runner,
+  callbacks?: Callback[]
+): Promise<void> => {
+  await Promise.all((callbacks || []).map(callback => callback(runner)));
+};

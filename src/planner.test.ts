@@ -5,8 +5,9 @@ import {
   orderEventsByTime,
   planTypeActions,
   planClickActions,
-  planWorkflow
+  planJob
 } from "./planner";
+import { BrowserStep } from "./types";
 
 let originalEvents: qaEventWithTime[];
 let events: qaEventWithTime[];
@@ -61,7 +62,11 @@ test("planClickActions turns mouse down events into click actions", () => {
   ]);
 });
 
-test("planWorkflow sorts steps by their original time", () => {
-  const workflow = planWorkflow(events);
-  expect(workflow.steps.map(s => s.sourceEventId)).toEqual([14, 47, 53]);
+test("planJob sorts steps by their original time", () => {
+  const job = planJob(events);
+  expect(job.steps.map((s: BrowserStep) => s.sourceEventId)).toEqual([
+    14,
+    47,
+    53
+  ]);
 });

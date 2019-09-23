@@ -1,49 +1,64 @@
-import { CONFIG } from "./config";
-import { Server } from "./io/Server";
 import { Runner } from "./Runner";
-import { Workflow, BrowserAction } from "./types";
 
-let server: Server;
+const step = {
+  selector: {
+    xpath: "xpath"
+  },
+  sourceEventId: 11,
+  type: "click" as "click"
+};
 
-beforeAll(async () => {
-  server = new Server();
-  await server.listen();
+test("step callbacks called at correct time", async () => {
+  const callback = jest.fn();
+  const callback2 = jest.fn();
+  const callback3 = jest.fn();
+
+  const runner = new Runner({
+    beforeStep: [callback, callback2],
+    afterRun: [callback3]
+  });
+
+  expect(callback).not.toBeCalled();
+  expect(callback2).not.toBeCalled();
+  expect(callback3).not.toBeCalled();
+
+  await runner.step(step);
+
+  expect(callback).toBeCalledTimes(1);
+  expect(callback).toBeCalledWith(runner);
+  expect(callback2).toBeCalledTimes(1);
+  expect(callback2).toBeCalledWith(runner);
+  expect(callback3).not.toBeCalled();
+
+  await runner.step(step);
+
+  expect(callback).toBeCalledTimes(2);
+  expect(callback).toBeCalledWith(runner);
+  expect(callback2).toBeCalledTimes(2);
+  expect(callback2).toBeCalledWith(runner);
+  expect(callback3).not.toBeCalled();
 });
 
-afterAll(() => server.close());
+test("run callbacks called at correct time", async () => {
+  const callback = jest.fn();
+  const callback2 = jest.fn();
+  const callback3 = jest.fn();
 
-test("Runner runs workflow", async () => {
-  const runner = await new Runner(server);
-  const steps: BrowserAction[] = [
-    {
-      selector: {
-        xpath: '//*[@id="username"]'
-      },
-      type: "type",
-      value: "tomsmith"
-    },
-    {
-      selector: {
-        xpath: '//*[@id="password"]'
-      },
-      type: "type",
-      value: "SuperSecretPassword!"
-    },
-    {
-      selector: {
-        xpath: '//*[@id="login"]/button'
-      },
-      type: "click"
-    }
-  ];
+  const runner = new Runner({
+    beforeStep: [callback, callback2],
+    afterRun: [callback3]
+  });
 
-  const workflow: Workflow = {
-    href: `${CONFIG.testUrl}/login`,
-    steps
-  };
-  await runner.run(workflow);
+  expect(callback).not.toBeCalled();
+  expect(callback2).not.toBeCalled();
+  expect(callback3).not.toBeCalled();
 
-  const header = await runner._browser._browser!.$('//*[@id="content"]/div/h2');
-  expect(await header.getText()).toEqual("Secure Area");
-  await runner.close();
-}, 10000);
+  await runner.run({ href: "href", steps: [step, step] });
+
+  expect(callback).toBeCalledTimes(2);
+  expect(callback).toBeCalledWith(runner);
+  expect(callback2).toBeCalledTimes(2);
+  expect(callback2).toBeCalledWith(runner);
+  expect(callback3).toBeCalledTimes(1);
+  expect(callback3).toBeCalledWith(runner);
+});

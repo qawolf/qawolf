@@ -1,15 +1,15 @@
 import { getSelector } from "./selector";
 import { computeMaxPossibleScore, computeSimilarityScore } from "./score";
-import { BrowserAction } from "../types";
+import { BrowserStep } from "../types";
 import { getXpath } from "./xpath";
 
 const DEFAULT_THRESHOLD = 0.75;
 
 export const computeSimilarityScores = (
-  action: BrowserAction,
+  step: BrowserStep,
   elements: HTMLCollection
 ): number[] => {
-  const base = action.selector;
+  const base = step.selector;
   if (!base) {
     throw "Action does not have associated selector";
   }
@@ -30,10 +30,8 @@ export const computeSimilarityScores = (
   return scores;
 };
 
-export const findCandidateElements = (
-  action: BrowserAction
-): HTMLCollection => {
-  if (action.type === "type") {
+export const findCandidateElements = (step: BrowserStep): HTMLCollection => {
+  if (step.type === "type") {
     return document.getElementsByTagName("input");
   }
 
@@ -41,13 +39,13 @@ export const findCandidateElements = (
 };
 
 export const findHighestMatchXpath = (
-  action: BrowserAction,
+  step: BrowserStep,
   threshold: number = DEFAULT_THRESHOLD
 ): string | null => {
-  const elements = findCandidateElements(action);
-  const scores = computeSimilarityScores(action, elements);
+  const elements = findCandidateElements(step);
+  const scores = computeSimilarityScores(step, elements);
   const maxScore = Math.max(...scores);
-  const maxPossibleScore = computeMaxPossibleScore(action.selector!);
+  const maxPossibleScore = computeMaxPossibleScore(step.selector!);
 
   if (maxScore / maxPossibleScore < threshold) {
     return null; // not similar enough

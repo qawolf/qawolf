@@ -4,7 +4,7 @@ import { CONFIG } from "../config";
 import { logger } from "../logger";
 import { Server } from "./Server";
 import { Request, Response } from "../web/Client";
-import { BrowserAction } from "../types";
+import { BrowserStep } from "../types";
 
 type ConstructorArgs = {
   browser: Browser;
@@ -51,6 +51,7 @@ export class Connection {
   }
 
   public async connect() {
+    logger.debug(`Connection ${this._connectionId}: connect`);
     if (this._closed) {
       throw new Error("Cannot connect after closed");
     }
@@ -93,7 +94,7 @@ export class Connection {
     return response.data;
   }
 
-  public run(action: BrowserAction) {
+  public run(action: BrowserStep) {
     return this.request("run", action);
   }
 
