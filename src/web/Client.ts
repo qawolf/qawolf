@@ -1,6 +1,6 @@
 import io from "socket.io-client";
 import { click, setInputValue } from "./actions";
-import { BrowserAction } from "../types";
+import { BrowserStep } from "../types";
 
 export type ConnectOptions = { id: string; uri: string };
 
@@ -41,7 +41,7 @@ export class Client {
     });
   }
 
-  public async run(action: BrowserAction) {
+  public async run(action: BrowserStep) {
     if (action.type === "click") {
       await click(action.selector.xpath!);
     } else {

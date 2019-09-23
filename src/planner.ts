@@ -1,5 +1,5 @@
 import { eventWithTime, metaEvent, mousemoveData } from "rrweb/typings/types";
-import { BrowserAction, Workflow } from "./types";
+import { BrowserStep, Workflow } from "./types";
 import { qaEventWithTime } from "./events";
 
 export const findHref = (events: eventWithTime[]): string =>
@@ -48,10 +48,8 @@ export const isTypeEvent = (event: qaEventWithTime | null): boolean => {
   return !!(data.source === 5 && data.isTrusted && data.text);
 };
 
-export const planClickActions = (
-  events: qaEventWithTime[]
-): BrowserAction[] => {
-  const actions: BrowserAction[] = [];
+export const planClickActions = (events: qaEventWithTime[]): BrowserStep[] => {
+  const actions: BrowserStep[] = [];
 
   for (let event of events) {
     if (!isMouseDownEvent(event)) continue;
@@ -68,8 +66,8 @@ export const planClickActions = (
   return actions;
 };
 
-export const planTypeActions = (events: qaEventWithTime[]): BrowserAction[] => {
-  const actions: BrowserAction[] = [];
+export const planTypeActions = (events: qaEventWithTime[]): BrowserStep[] => {
+  const actions: BrowserStep[] = [];
 
   let lastXpath = null;
 
@@ -100,7 +98,7 @@ export const planWorkflow = (originalEvents: eventWithTime[]): Workflow => {
 
   const events = orderEventsByTime(originalEvents);
 
-  const steps: BrowserAction[] = planClickActions(events).concat(
+  const steps: BrowserStep[] = planClickActions(events).concat(
     planTypeActions(events)
   );
 
