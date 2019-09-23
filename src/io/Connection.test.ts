@@ -61,14 +61,14 @@ test("reconnects on page change", async () => {
 test("gracefully handles redirects", async () => {
   const connection = await createConnection();
 
-  await connection.run({
+  await connection.runStep({
     type: "click",
     selector: {
       xpath: '//*[@id="content"]/ul/li[32]/a'
     }
   });
 
-  await connection.run({
+  await connection.runStep({
     type: "click",
     selector: {
       xpath: '//*[@id="redirect"]'

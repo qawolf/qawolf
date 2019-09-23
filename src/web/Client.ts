@@ -1,5 +1,6 @@
 import io from "socket.io-client";
 import { click, setInputValue } from "./actions";
+import { waitForMatchingElement } from "./rank";
 import { BrowserStep } from "../types";
 
 export type ConnectOptions = { id: string; uri: string };
@@ -42,11 +43,12 @@ export class Client {
     });
   }
 
-  public async run(action: BrowserStep) {
-    if (action.type === "click") {
-      await click(action.selector.xpath!);
+  public async runStep(step: BrowserStep) {
+    const element = (await waitForMatchingElement(step)) as HTMLElement;
+    if (step.type === "click") {
+      click(element);
     } else {
-      await setInputValue(action.selector.xpath!, action.value || "");
+      setInputValue(element as HTMLInputElement, step.value);
     }
   }
 

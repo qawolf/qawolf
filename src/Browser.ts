@@ -62,6 +62,7 @@ export class Browser {
     }
 
     const capabilities: WebDriver.DesiredCapabilities = {
+      // need this sign we self-signed our certificate
       acceptInsecureCerts: true,
       browserName: "chrome",
       "goog:chromeOptions": chromeOptions

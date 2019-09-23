@@ -1,3 +1,19 @@
+export const findElementByXpath = (xpath: string): HTMLElement => {
+  const result = document.evaluate(
+    xpath,
+    document,
+    null,
+    XPathResult.FIRST_ORDERED_NODE_TYPE,
+    null
+  );
+
+  if (result.singleNodeValue) {
+    return result.singleNodeValue as HTMLElement;
+  }
+
+  throw new Error(`No element found for xpath ${xpath}`);
+};
+
 const buildXpath = (element: Element): string => {
   if (!element || element.nodeType !== 1) return "";
 

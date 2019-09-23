@@ -38,10 +38,10 @@ export const findCandidateElements = (step: BrowserStep): HTMLCollection => {
   return document.getElementsByTagName("*");
 };
 
-export const findHighestMatchXpath = (
+export const findHighestMatchElement = (
   step: BrowserStep,
   threshold: number = DEFAULT_THRESHOLD
-): string | null => {
+): Element | null => {
   const elements = findCandidateElements(step);
   const scores = computeSimilarityScores(step, elements);
   const maxScore = Math.max(...scores);
@@ -55,6 +55,38 @@ export const findHighestMatchXpath = (
   }
 
   const highestMatch = elements[scores.indexOf(maxScore)];
+  return highestMatch;
+};
+
+export const findHighestMatchXpath = (
+  step: BrowserStep,
+  threshold: number = DEFAULT_THRESHOLD
+): string | null => {
+  const highestMatch = findHighestMatchElement(step, threshold);
+  if (!highestMatch) return null;
 
   return getXpath(highestMatch);
+};
+
+export const waitForMatchingElement = async (
+  step: BrowserStep,
+  timeout: number = 5000,
+  threshold: number = DEFAULT_THRESHOLD
+): Promise<Element> => {
+  return new Promise((resolve, reject) => {
+    const intervalId = setInterval(() => {
+      const element = findHighestMatchElement(step, threshold);
+      if (element) {
+        console.log("Found element", element);
+        clearInterval(intervalId);
+        clearTimeout(rejectId);
+        resolve(element);
+      }
+    }, 100);
+
+    const rejectId = setTimeout(() => {
+      reject(`No element found for step ${JSON.stringify(step)}`);
+      clearInterval(intervalId);
+    }, timeout);
+  });
 };

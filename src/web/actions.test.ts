@@ -17,7 +17,10 @@ test("actions.click works on a link", async () => {
 
   await browser._browser!.execute(() => {
     const qawolf: QAWolf = (window as any).qawolf;
-    qawolf.actions.click('//*[@id="content"]/ul/li[3]/a');
+    const link = qawolf.xpath.findElementByXpath(
+      '//*[@id="content"]/ul/li[3]/a'
+    );
+    qawolf.actions.click(link);
   });
 
   const url = await browser._browser!.getUrl();
@@ -31,7 +34,10 @@ test("actions.setInputValue sets an input value", async () => {
 
   await browser._browser!.execute(() => {
     const qawolf: QAWolf = (window as any).qawolf;
-    qawolf.actions.setInputValue('//*[@id="username"]', "spirit");
+    const username = qawolf.xpath.findElementByXpath(
+      '//*[@id="username"]'
+    ) as HTMLInputElement;
+    qawolf.actions.setInputValue(username, "spirit");
   });
 
   const inputs = await browser._browser!.$$("input");
