@@ -34,6 +34,10 @@ import { BrowserAction, Workflow } from "./types";
   const server = new Server();
   await server.listen();
 
-  const runner = new Runner(server);
+  const callbacks = {
+    onStepBegin: [() => console.log("callback")]
+  };
+
+  const runner = new Runner({ callbacks, server });
   await runner.run(workflow);
 })();
