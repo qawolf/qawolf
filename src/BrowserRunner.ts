@@ -25,6 +25,14 @@ export class BrowserRunner extends Runner {
     this._server = server;
   }
 
+  public async close(): Promise<void> {
+    if (this._connection) {
+      this._connection.close();
+    }
+
+    await this._browser.close();
+  }
+
   protected async beforeWorkflow(workflow: Workflow): Promise<void> {
     await this._browser.launch();
     await this._browser._browser!.url(workflow.href);
@@ -43,15 +51,5 @@ export class BrowserRunner extends Runner {
       throw "Not Connected";
     }
     await this._connection.run(step);
-  }
-
-  protected async afterWorkflow(workflow: Workflow): Promise<void> {
-    await super.afterWorkflow(workflow);
-
-    if (this._connection) {
-      this._connection.close();
-    }
-
-    await this._browser.close();
   }
 }

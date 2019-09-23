@@ -42,10 +42,10 @@ import { sleep } from "./utils";
   };
 
   const callbacks = {
-    onStepBegin: [takeScreenshot],
-    onWorkflowEnd: [takeScreenshot]
+    beforeStep: [takeScreenshot],
+    afterRun: [takeScreenshot]
   };
 
   const runner = new BrowserRunner({ callbacks, server });
-  await runner.runWorkflow(workflow);
+  await runner.run(workflow);
 })();
