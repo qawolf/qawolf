@@ -1,6 +1,6 @@
 import { BrowserStep, Job } from "./types";
 
-type Callback = (runner: Runner) => void;
+export type Callback = (runner: Runner) => void;
 
 export type Callbacks = {
   beforeStep?: Callback[];
