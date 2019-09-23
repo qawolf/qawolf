@@ -7,13 +7,6 @@ export type Callbacks = {
   afterRun?: Callback[];
 };
 
-const runCallbacks = async (
-  runner: Runner,
-  callbacks?: Callback[]
-): Promise<void> => {
-  await Promise.all((callbacks || []).map(callback => callback(runner)));
-};
-
 export class Runner {
   private _callbacks: Callbacks;
 
@@ -52,3 +45,10 @@ export class Runner {
     return;
   }
 }
+
+const runCallbacks = async (
+  runner: Runner,
+  callbacks?: Callback[]
+): Promise<void> => {
+  await Promise.all((callbacks || []).map(callback => callback(runner)));
+};
