@@ -1,4 +1,4 @@
-import { BrowserAction, Workflow } from "./types";
+import { BrowserStep, Job } from "./types";
 
 type Callback = (runner: Runner) => void;
 
@@ -25,22 +25,22 @@ export class Runner {
     this._callbacks = callbacks || {};
   }
 
-  public async step(step: BrowserAction): Promise<void> {
+  public async step(step: BrowserStep): Promise<void> {
     await this.beforeStep();
     await this.runStep(step);
   }
 
-  public async run(workflow: Workflow): Promise<void> {
-    await this.beforeWorkflow(workflow);
+  public async run(job: Job): Promise<void> {
+    await this.beforeRun(job);
 
-    for (let step of workflow.steps) {
+    for (let step of job.steps) {
       await this.step(step);
     }
 
-    await this.afterWorkflow(workflow);
+    await this.afterRun(job);
   }
 
-  protected async beforeWorkflow(workflow: Workflow): Promise<void> {
+  protected async beforeRun(job: Job): Promise<void> {
     return;
   }
 
@@ -48,11 +48,11 @@ export class Runner {
     return runCallbacks(this, this._callbacks.beforeStep);
   }
 
-  protected async afterWorkflow(workflow: Workflow): Promise<void> {
+  protected async afterRun(job: Job): Promise<void> {
     return runCallbacks(this, this._callbacks.afterRun);
   }
 
-  protected async runStep(step: BrowserAction): Promise<void> {
+  protected async runStep(step: BrowserStep): Promise<void> {
     return;
   }
 }

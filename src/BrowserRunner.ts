@@ -2,7 +2,7 @@ import { Browser } from "./Browser";
 import { Connection } from "./io/Connection";
 import { Server } from "./io/Server";
 import { Callbacks, Runner } from "./Runner";
-import { BrowserAction, Workflow } from "./types";
+import { BrowserStep, Job } from "./types";
 
 type ConstructorArgs = {
   callbacks?: Callbacks;
@@ -33,9 +33,9 @@ export class BrowserRunner extends Runner {
     await this._browser.close();
   }
 
-  protected async beforeWorkflow(workflow: Workflow): Promise<void> {
+  protected async beforeRun(job: Job): Promise<void> {
     await this._browser.launch();
-    await this._browser._browser!.url(workflow.href);
+    await this._browser._browser!.url(job.href);
 
     this._connection = new Connection({
       browser: this._browser,
@@ -43,10 +43,10 @@ export class BrowserRunner extends Runner {
     });
     await this._connection.connect();
 
-    await super.beforeWorkflow(workflow);
+    await super.beforeRun(job);
   }
 
-  protected async runStep(step: BrowserAction): Promise<void> {
+  protected async runStep(step: BrowserStep): Promise<void> {
     if (!this._connection) {
       throw "Not Connected";
     }

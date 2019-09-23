@@ -2,11 +2,11 @@ import { Browser } from "./Browser";
 import { BrowserRunner } from "./BrowserRunner";
 import { CONFIG } from "./config";
 import { Server } from "./io/Server";
-import { BrowserAction, Workflow } from "./types";
+import { BrowserStep, Job } from "./types";
 import { sleep } from "./utils";
 
 (async () => {
-  const steps: BrowserAction[] = [
+  const steps: BrowserStep[] = [
     {
       selector: {
         xpath: '//*[@id="username"]'
@@ -29,7 +29,7 @@ import { sleep } from "./utils";
     }
   ];
 
-  const workflow: Workflow = {
+  const job: Job = {
     href: `${CONFIG.testUrl}/login`,
     steps
   };
@@ -47,5 +47,5 @@ import { sleep } from "./utils";
   };
 
   const runner = new BrowserRunner({ callbacks, server });
-  await runner.run(workflow);
+  await runner.run(job);
 })();

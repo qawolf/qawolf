@@ -1,4 +1,4 @@
-export type BrowserAction = {
+export type BrowserStep = {
   selector: ElementSelector;
   sourceEventId?: number;
   type: "click" | "type";
@@ -19,7 +19,7 @@ export type ElementSelector = {
   xpath?: string | null;
 };
 
-export type Workflow = {
+export type Job = {
   href: string;
-  steps: BrowserAction[];
+  steps: BrowserStep[];
 };
