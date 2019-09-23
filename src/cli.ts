@@ -4,11 +4,11 @@ import chalk from "chalk";
 import clear from "clear";
 import program from "commander";
 import figlet from "figlet";
+import fs from "fs-extra";
 import { BrowserRunner } from "./BrowserRunner";
-import { CONFIG } from "./config";
 import { Server } from "./io/Server";
 import { buildScreenshotCallback } from "./screenshot";
-import { Job, BrowserStep } from "./types";
+import { planJob } from "./planner";
 
 clear();
 
@@ -19,36 +19,11 @@ console.log(
 program.version("0.0.1").description("Effortless smoke tests");
 
 program
-  .command("run")
+  .command("run <source>")
   .description("run a test")
-  .action(async (source, destination) => {
-    const steps: BrowserStep[] = [
-      {
-        selector: {
-          xpath: '//*[@id="username"]'
-        },
-        type: "type",
-        value: "tomsmith"
-      },
-      {
-        selector: {
-          xpath: '//*[@id="password"]'
-        },
-        type: "type",
-        value: "SuperSecretPassword!"
-      },
-      {
-        selector: {
-          xpath: '//*[@id="login"]/button'
-        },
-        type: "click"
-      }
-    ];
-
-    const job: Job = {
-      href: `${CONFIG.testUrl}/login`,
-      steps
-    };
+  .action(async source => {
+    const events = JSON.parse(await fs.readFile(source, "utf8"));
+    const job = planJob(events);
     const server = new Server();
     await server.listen();
 

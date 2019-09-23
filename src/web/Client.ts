@@ -26,7 +26,8 @@ export class Client {
     this._RESPONSE_KEY = `${this._id}_response`;
 
     this._socket = io(uri, {
-      query: { id }
+      query: { id },
+      rejectUnauthorized: false
     });
 
     this._socket.on("request", (request: Request) =>

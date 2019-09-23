@@ -61,7 +61,8 @@ export class Browser {
       chromeOptions.args.push("--kiosk");
     }
 
-    const capabilities = {
+    const capabilities: WebDriver.DesiredCapabilities = {
+      acceptInsecureCerts: true,
       browserName: "chrome",
       "goog:chromeOptions": chromeOptions
     };
