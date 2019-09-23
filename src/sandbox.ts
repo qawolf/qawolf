@@ -1,7 +1,9 @@
+import { Browser } from "./Browser";
 import { CONFIG } from "./config";
 import { Server } from "./io/Server";
 import { Runner } from "./Runner";
 import { BrowserAction, Workflow } from "./types";
+import { sleep } from "./utils";
 
 (async () => {
   const steps: BrowserAction[] = [
@@ -34,8 +36,14 @@ import { BrowserAction, Workflow } from "./types";
   const server = new Server();
   await server.listen();
 
+  const takeScreenshot = async (browser: Browser) => {
+    await sleep(5000);
+    await browser._browser!.saveScreenshot(`./tmp/${Date.now()}.png`);
+  };
+
   const callbacks = {
-    onStepBegin: [() => console.log("callback")]
+    onStepBegin: [takeScreenshot],
+    onWorkflowEnd: [takeScreenshot]
   };
 
   const runner = new Runner({ callbacks, server });

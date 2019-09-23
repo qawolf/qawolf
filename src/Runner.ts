@@ -3,8 +3,11 @@ import { Connection } from "./io/Connection";
 import { Server } from "./io/Server";
 import { Workflow } from "./types";
 
+type Callback = (browser: Browser) => void;
+
 type Callbacks = {
-  onStepBegin?: Array<() => void>;
+  onStepBegin?: Callback[];
+  onWorkflowEnd?: Callback[];
 };
 
 type ConstructorArgs = {
@@ -27,11 +30,11 @@ export class Runner {
   // Look for additional windows when step calls for them
   // and create another Connection.
 
-  async runCallbacks(callbacks?: Array<() => void>): Promise<void> {
-    if (!callbacks) return;
+  async runCallbacks(callbacks?: Callback[]): Promise<void> {
+    if (!callbacks || !callbacks.length) return;
 
     const callbackPromises = callbacks.map(callback => {
-      return callback();
+      return callback(this._browser);
     });
 
     await Promise.all(callbackPromises);
@@ -48,9 +51,11 @@ export class Runner {
     await connection.connect();
 
     for (let step of workflow.steps) {
-      await connection.run(step);
       await this.runCallbacks(this._callbacks.onStepBegin);
+      await connection.run(step);
     }
+
+    await this.runCallbacks(this._callbacks.onWorkflowEnd);
 
     connection.close();
   }
