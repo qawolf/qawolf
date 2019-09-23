@@ -5,7 +5,7 @@ import {
   orderEventsByTime,
   planTypeActions,
   planClickActions,
-  planWorkflow
+  planJob
 } from "./planner";
 import { BrowserStep } from "./types";
 
@@ -62,8 +62,8 @@ test("planClickActions turns mouse down events into click actions", () => {
   ]);
 });
 
-test("planWorkflow sorts steps by their original time", () => {
-  const job = planWorkflow(events);
+test("planJob sorts steps by their original time", () => {
+  const job = planJob(events);
   expect(job.steps.map((s: BrowserStep) => s.sourceEventId)).toEqual([
     14,
     47,

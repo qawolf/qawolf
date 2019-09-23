@@ -1,5 +1,5 @@
 import { eventWithTime, metaEvent, mousemoveData } from "rrweb/typings/types";
-import { BrowserStep, Workflow } from "./types";
+import { BrowserStep, Job } from "./types";
 import { qaEventWithTime } from "./events";
 
 export const findHref = (events: eventWithTime[]): string =>
@@ -66,6 +66,21 @@ export const planClickActions = (events: qaEventWithTime[]): BrowserStep[] => {
   return actions;
 };
 
+export const planJob = (originalEvents: eventWithTime[]): Job => {
+  const href = findHref(originalEvents);
+
+  const events = orderEventsByTime(originalEvents);
+
+  const steps: BrowserStep[] = planClickActions(events).concat(
+    planTypeActions(events)
+  );
+
+  steps.sort((a, b) => a.sourceEventId! - b.sourceEventId!);
+
+  const workflow = { href, steps };
+  return workflow;
+};
+
 export const planTypeActions = (events: qaEventWithTime[]): BrowserStep[] => {
   const actions: BrowserStep[] = [];
 
@@ -91,19 +106,4 @@ export const planTypeActions = (events: qaEventWithTime[]): BrowserStep[] => {
   }
 
   return actions;
-};
-
-export const planWorkflow = (originalEvents: eventWithTime[]): Workflow => {
-  const href = findHref(originalEvents);
-
-  const events = orderEventsByTime(originalEvents);
-
-  const steps: BrowserStep[] = planClickActions(events).concat(
-    planTypeActions(events)
-  );
-
-  steps.sort((a, b) => a.sourceEventId! - b.sourceEventId!);
-
-  const workflow = { href, steps };
-  return workflow;
 };
