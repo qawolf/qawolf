@@ -27,6 +27,7 @@ export class Runner {
     await connection.connect();
 
     for (let step of workflow.steps) {
+      console.log("run step", step);
       await connection.run(step);
     }
 
