@@ -2,14 +2,20 @@
 
 import clear from "clear";
 import program from "commander";
+import { Server } from "./browser/Server";
 import { BrowserRunner } from "./BrowserRunner";
 import { renderCli } from "./callbacks/cli";
 import { buildScreenshotCallback } from "./callbacks/screenshot";
 import { CONFIG } from "./config";
-import { Server } from "./io/Server";
 import { Job, BrowserStep } from "./types";
 
 clear();
+
+// .action(async source => {
+//   const events = JSON.parse(await fs.readFile(source, "utf8"));
+//   const job = planJob(events);
+
+//   console.log("job", JSON.stringify(job));
 
 program
   .command("run <source>")
