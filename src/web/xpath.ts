@@ -1,3 +1,19 @@
+export const findElementByXpath = (xpath: string): HTMLElement | null => {
+  const result = document.evaluate(
+    xpath,
+    document,
+    null,
+    XPathResult.FIRST_ORDERED_NODE_TYPE,
+    null
+  );
+
+  if (result.singleNodeValue) {
+    return result.singleNodeValue as HTMLElement;
+  }
+
+  return null;
+};
+
 const buildXpath = (element: Element): string => {
   if (!element || element.nodeType !== 1) return "";
 
@@ -25,4 +41,16 @@ export const getXpath = (element: Element): string => {
   return result
     .replace("svg", "*[name()='svg']")
     .replace("path", "*[name()='path']");
+};
+
+export const compareXpaths = (
+  xpathA?: string | null,
+  xpathB?: string | null
+) => {
+  if (!xpathA || !xpathB) return false;
+  if (xpathA === xpathB) return true;
+
+  const resolveSameElement =
+    findElementByXpath(xpathA) === findElementByXpath(xpathB);
+  return resolveSameElement;
 };

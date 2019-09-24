@@ -50,6 +50,6 @@ export class BrowserRunner extends Runner {
     if (!this._connection) {
       throw "Not Connected";
     }
-    await this._connection.run(step);
+    await this._connection.runStep(step);
   }
 }

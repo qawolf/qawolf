@@ -94,8 +94,8 @@ export class Connection {
     return response.data;
   }
 
-  public run(action: BrowserStep) {
-    return this.request("run", action);
+  public runStep(step: BrowserStep) {
+    return this.request("runStep", step);
   }
 
   private async _createSocket() {

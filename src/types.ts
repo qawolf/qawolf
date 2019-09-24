@@ -1,11 +1,16 @@
 export type BrowserStep = {
-  selector: ElementSelector;
+  locator: Locator;
   sourceEventId?: number;
   type: "click" | "type";
   value?: string;
 };
 
-export type ElementSelector = {
+export type Job = {
+  href: string;
+  steps: BrowserStep[];
+};
+
+export type Locator = {
   classList?: string[] | null;
   href?: string | null;
   id?: string | null;
@@ -17,9 +22,4 @@ export type ElementSelector = {
   tagName?: string | null;
   textContent?: string | null;
   xpath?: string | null;
-};
-
-export type Job = {
-  href: string;
-  steps: BrowserStep[];
 };
