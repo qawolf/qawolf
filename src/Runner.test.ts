@@ -1,12 +1,7 @@
 import { Runner } from "./Runner";
+import { loginJob } from "./fixtures/job";
 
-const step = {
-  selector: {
-    xpath: "xpath"
-  },
-  sourceEventId: 11,
-  type: "click" as "click"
-};
+const step = loginJob.steps[0];
 
 test("step callbacks called at correct time", async () => {
   const callback = jest.fn();

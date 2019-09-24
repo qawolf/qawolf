@@ -1,6 +1,7 @@
 import { Browser } from "../Browser";
 import { CONFIG } from "../config";
 import { Connection } from "./Connection";
+import { redirectJob } from "../fixtures/job";
 import { Server } from "./Server";
 
 let browser: Browser;
@@ -60,20 +61,8 @@ test("reconnects on page change", async () => {
 
 test("gracefully handles redirects", async () => {
   const connection = await createConnection();
-
-  await connection.run({
-    type: "click",
-    selector: {
-      xpath: '//*[@id="content"]/ul/li[32]/a'
-    }
-  });
-
-  await connection.run({
-    type: "click",
-    selector: {
-      xpath: '//*[@id="redirect"]'
-    }
-  });
+  await connection.runStep(redirectJob.steps[0]);
+  await connection.runStep(redirectJob.steps[1]);
 
   // check we arrive at the correct page
   const header = await browser._browser!.$('//*[@id="content"]/div/h3');

@@ -12,12 +12,12 @@ import { Job, BrowserStep } from "./types";
 clear();
 
 program
-  .command("run")
+  .command("run <source>")
   .description("run a test")
   .action(async (source, destination) => {
     const steps: BrowserStep[] = [
       {
-        selector: {
+        locator: {
           inputType: "text",
           name: "username",
           tagName: "input",
@@ -27,7 +27,7 @@ program
         value: "tomsmith"
       },
       {
-        selector: {
+        locator: {
           inputType: "password",
           name: "password",
           tagName: "input",
@@ -37,7 +37,7 @@ program
         value: "SuperSecretPassword!"
       },
       {
-        selector: {
+        locator: {
           tagName: "button",
           textContent: " login",
           xpath: '//*[@id="login"]/button'

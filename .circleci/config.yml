@@ -28,10 +28,6 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run:
-          name: Authenticate with registry
-          command: echo "//npm.pkg.github.com/:_authToken=$GITHUB_PACKAGE_TOKEN" >> ~/repo/.npmrc
-
       - run: npm install
 
       - save_cache:
@@ -45,4 +41,4 @@ jobs:
           command: npm run test
           environment:
             TEST_URL: http://127.0.0.1:5000
-            WS_URL: http://127.0.0.1
+            WS_URL: https://127.0.0.1

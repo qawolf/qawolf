@@ -1,4 +1,5 @@
-import { ElementSelector } from "../types";
+import { Locator } from "../types";
+import { getXpath } from "./xpath";
 
 export const getLabels = (element: HTMLElement): string[] | null => {
   const labelElements = (element as HTMLInputElement).labels;
@@ -44,9 +45,7 @@ export const getPlaceholder = (element: HTMLElement): string | null => {
   return (element as HTMLInputElement).placeholder.toLowerCase();
 };
 
-export const getSelector = (
-  element: HTMLElement | null
-): ElementSelector | null => {
+export const getLocator = (element: HTMLElement | null): Locator | null => {
   if (!element) {
     return null;
   }
@@ -63,7 +62,8 @@ export const getSelector = (
     parentText: getParentText(element),
     placeholder: getPlaceholder(element),
     tagName: element.tagName ? element.tagName.toLowerCase() : null,
-    textContent: getTextContent(element)
+    textContent: getTextContent(element),
+    xpath: getXpath(element)
   };
 };
 

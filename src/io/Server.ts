@@ -1,5 +1,6 @@
+import fs from "fs-extra";
 import getPort from "get-port";
-import { createServer, Server as HttpServer } from "http";
+import { createServer, Server as HttpServer } from "https";
 import SocketIO from "socket.io";
 import { logger } from "../logger";
 
@@ -9,7 +10,11 @@ export class Server {
   private _port: number | undefined;
 
   constructor() {
-    this._httpServer = createServer();
+    this._httpServer = createServer({
+      cert: fs.readFileSync("./bin/server.cert"),
+      key: fs.readFileSync("./bin/server.key")
+    });
+
     this._ioServer = SocketIO(this._httpServer);
   }
 

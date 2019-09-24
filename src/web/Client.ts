@@ -1,5 +1,6 @@
 import io from "socket.io-client";
 import { click, setInputValue } from "./actions";
+import { waitForElement } from "./rank";
 import { BrowserStep } from "../types";
 
 export type ConnectOptions = { id: string; uri: string };
@@ -26,7 +27,8 @@ export class Client {
     this._RESPONSE_KEY = `${this._id}_response`;
 
     this._socket = io(uri, {
-      query: { id }
+      query: { id },
+      rejectUnauthorized: false
     });
 
     this._socket.on("request", (request: Request) =>
@@ -41,11 +43,12 @@ export class Client {
     });
   }
 
-  public async run(action: BrowserStep) {
-    if (action.type === "click") {
-      await click(action.selector.xpath!);
+  public async runStep(step: BrowserStep) {
+    const element = (await waitForElement(step)) as HTMLElement;
+    if (step.type === "click") {
+      click(element);
     } else {
-      await setInputValue(action.selector.xpath!, action.value || "");
+      setInputValue(element as HTMLInputElement, step.value);
     }
   }
 

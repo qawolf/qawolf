@@ -4,7 +4,7 @@ import { computeSimilarityScores } from "./rank";
 import { QAWolf } from "./index";
 
 const step = {
-  selector: {
+  locator: {
     xpath: "xpath"
   },
   sourceEventId: 11,
@@ -36,9 +36,9 @@ afterAll(() => browser.close());
 
 describe("rank.computeScoresForElements", () => {
   test("returns scores for each element", async () => {
-    const stepWithSelector = {
+    const stepWithLocator = {
       ...step,
-      selector: { ...base, tagName: "input" }
+      locator: { ...base, tagName: "input" }
     };
 
     await browser._browser!.url(`${CONFIG.testUrl}/login`);
@@ -51,17 +51,17 @@ describe("rank.computeScoresForElements", () => {
         step,
         document.getElementsByTagName("input")
       );
-    }, stepWithSelector);
+    }, stepWithLocator);
 
     expect(scores).toEqual([100, 100]);
   });
 
-  test("throws error if step does not have selector", async () => {
+  test("throws error if step does not have locator", async () => {
     await browser._browser!.url(`${CONFIG.testUrl}/login`);
     await browser.injectSdk();
 
     const step = {
-      selector: {
+      locator: {
         xpath: "xpath"
       },
       sourceEventId: 11,
@@ -108,21 +108,21 @@ describe("rank.findCandidateElements", () => {
   });
 });
 
-describe("rank.findHighestMatchXpath", () => {
+describe("rank.findTopElement", () => {
   test("returns null if no elements similar enough", async () => {
     await browser._browser!.url(`${CONFIG.testUrl}/login`);
     await browser.injectSdk();
 
-    const stepWithSelector = {
+    const stepWithLocator = {
       ...step,
-      selector: base
+      locator: base
     };
 
     const highestMatch = await browser._browser!.execute(step => {
       const qawolf: QAWolf = (window as any).qawolf;
 
-      return qawolf.rank.findHighestMatchXpath(step);
-    }, stepWithSelector);
+      return qawolf.rank.findTopElement(step);
+    }, stepWithLocator);
 
     expect(highestMatch).toBeNull();
   });
@@ -131,9 +131,9 @@ describe("rank.findHighestMatchXpath", () => {
     await browser._browser!.url(`${CONFIG.testUrl}/checkboxes`);
     await browser.injectSdk();
 
-    const stepWithSelector = {
+    const stepWithLocator = {
       ...step,
-      selector: {
+      locator: {
         ...base,
         classList: null,
         id: null,
@@ -146,8 +146,8 @@ describe("rank.findHighestMatchXpath", () => {
     const highestMatch = await browser._browser!.execute(step => {
       const qawolf: QAWolf = (window as any).qawolf;
 
-      return qawolf.rank.findHighestMatchXpath(step);
-    }, stepWithSelector);
+      return qawolf.rank.findTopElement(step);
+    }, stepWithLocator);
 
     expect(highestMatch).toBeNull();
   });
@@ -156,9 +156,9 @@ describe("rank.findHighestMatchXpath", () => {
     await browser._browser!.url(`${CONFIG.testUrl}/login`);
     await browser.injectSdk();
 
-    const stepWithSelector = {
+    const stepWithLocator = {
       ...step,
-      selector: {
+      locator: {
         ...base,
         classList: null,
         id: null,
@@ -171,9 +171,9 @@ describe("rank.findHighestMatchXpath", () => {
 
     const highestMatch = await browser._browser!.execute(step => {
       const qawolf: QAWolf = (window as any).qawolf;
-
-      return qawolf.rank.findHighestMatchXpath(step);
-    }, stepWithSelector);
+      const element = qawolf.rank.findTopElement(step);
+      return qawolf.xpath.getXpath(element!);
+    }, stepWithLocator);
 
     expect(highestMatch).toBe("//*[@id='password']");
   });
