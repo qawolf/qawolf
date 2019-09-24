@@ -35,19 +35,16 @@ export class Runner {
     await this.afterRun(job);
   }
 
-  public getRunDetails(): { run: Run; startTime: string } {
-    if (!this._run || !this._startTime) {
+  public getRun(): Run {
+    if (!this._run) {
       throw `Run not created yet`;
     }
-
-    return { run: this._run, startTime: this._startTime };
+    return this._run;
   }
 
   protected async beforeRun(job: Job): Promise<void> {
     this._run = createRunFromJob(job);
     this._run.status = "runs";
-
-    this._startTime = new Date().toISOString();
   }
 
   protected async beforeStep(): Promise<void> {

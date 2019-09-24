@@ -5,13 +5,12 @@ import { Summary } from "../types";
 const WIDTH = 7;
 
 type PropTypes = {
-  startTime: string;
+  startTime: Date;
   summary: Summary | null;
 };
 
-const formatElapsedTime = (startTime: string) => {
-  const elapsedSeconds =
-    (new Date().getTime() - new Date(startTime).getTime()) / 1000;
+const formatElapsedTime = (startTime: Date) => {
+  const elapsedSeconds = (new Date().getTime() - startTime.getTime()) / 1000;
   if (elapsedSeconds < 60) {
     return `${elapsedSeconds}s`;
   }

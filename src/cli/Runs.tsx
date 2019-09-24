@@ -1,4 +1,5 @@
 import { Box, Color, render, Static } from "ink";
+import { min } from "lodash";
 import React from "react";
 import { ProgressBar } from "./ProgressBar";
 import { Results } from "./Results";
@@ -7,7 +8,6 @@ import { Run as RunType, Summary } from "../types";
 
 type PropTypes = {
   runs: RunType[];
-  startTime: string;
   summary: Summary | null;
 };
 
@@ -39,7 +39,7 @@ const renderRuns = ({
   ));
 };
 
-const Runs = ({ startTime, summary, runs }: PropTypes) => {
+const Runs = ({ summary, runs }: PropTypes) => {
   const completeRuns = runs.filter(run => {
     return run.status === "pass" || run.status === "fail";
   });
@@ -58,6 +58,7 @@ const Runs = ({ startTime, summary, runs }: PropTypes) => {
     : null;
 
   const actionText = summary ? "ran" : "is running";
+  const startTime = min(runs.map(run => run.startTime)) as Date;
 
   return (
     <Box flexDirection="column">

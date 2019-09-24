@@ -3,13 +3,7 @@ import render from "../cli/Runs";
 import { Callback } from "../Runner";
 import { BrowserStep, Job, Run, Runs, Step } from "../types";
 
-export const buildRuns = ({
-  run,
-  startTime
-}: {
-  run: Run;
-  startTime: string;
-}): Runs => {
+export const buildRuns = (run: Run): Runs => {
   const summary =
     run.status === "pass" || run.status === "fail"
       ? {
@@ -21,7 +15,6 @@ export const buildRuns = ({
 
   return {
     runs: [{ ...run }],
-    startTime,
     summary
   };
 };
@@ -31,6 +24,7 @@ export const createRunFromJob = (job: Job): Run => {
 
   return {
     status: "queued",
+    startTime: new Date(),
     steps: formattedSteps,
     name: job.name
   };
@@ -61,7 +55,7 @@ export const formatStep = (step: BrowserStep): Step => {
 };
 
 export const renderCli: Callback = (runner: BrowserRunner) => {
-  const runs = buildRuns(runner.getRunDetails());
+  const runs = buildRuns(runner.getRun());
 
   render(runs);
 };

@@ -2,38 +2,50 @@ import { buildRuns, createRunFromJob, formatStep } from "./cli";
 
 describe("buildRuns", () => {
   test("creates runs object without summary if run not complete", () => {
-    const startTime = new Date().toISOString();
-    const run = { name: "Log in", status: "runs" as "runs", steps: [] };
-    const runs = buildRuns({ run, startTime });
+    const startTime = new Date();
+    const run = {
+      name: "Log in",
+      status: "runs" as "runs",
+      startTime,
+      steps: []
+    };
+    const runs = buildRuns(run);
 
     expect(runs).toMatchObject({
       runs: [run],
-      summary: null,
-      startTime
+      summary: null
     });
   });
 
   test("creates runs object with passing summary if run passed", () => {
-    const startTime = new Date().toISOString();
-    const run = { name: "Log in", status: "pass" as "runs", steps: [] };
-    const runs = buildRuns({ run, startTime });
+    const startTime = new Date();
+    const run = {
+      name: "Log in",
+      status: "pass" as "runs",
+      startTime,
+      steps: []
+    };
+    const runs = buildRuns(run);
 
     expect(runs).toMatchObject({
       runs: [run],
-      summary: { fail: 0, pass: 1, total: 1 },
-      startTime
+      summary: { fail: 0, pass: 1, total: 1 }
     });
   });
 
   test("creates runs object with failing summary if run failed", () => {
-    const startTime = new Date().toISOString();
-    const run = { name: "Log in", status: "fail" as "runs", steps: [] };
-    const runs = buildRuns({ run, startTime });
+    const startTime = new Date();
+    const run = {
+      name: "Log in",
+      status: "fail" as "runs",
+      startTime,
+      steps: []
+    };
+    const runs = buildRuns(run);
 
     expect(runs).toMatchObject({
       runs: [run],
-      summary: { fail: 1, pass: 0, total: 1 },
-      startTime
+      summary: { fail: 1, pass: 0, total: 1 }
     });
   });
 });
@@ -79,7 +91,7 @@ describe("createRunFromJob", () => {
 
     const run = createRunFromJob(job);
 
-    expect(run).toEqual({
+    expect(run).toMatchObject({
       status: "queued",
       steps: [
         {
@@ -97,6 +109,7 @@ describe("createRunFromJob", () => {
       ],
       name: "Log in"
     });
+    expect(run.startTime).toBeTruthy();
   });
 });
 

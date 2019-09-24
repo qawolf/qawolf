@@ -27,13 +27,13 @@ export type Locator = {
 
 export type Run = {
   name: string;
+  startTime: Date;
   status: Status;
   steps: Step[];
 };
 
 export type Runs = {
   runs: Run[];
-  startTime: string;
   summary: Summary | null;
 };
 
