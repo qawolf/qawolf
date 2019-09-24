@@ -16,17 +16,17 @@ export const createRunFromJob = (job: Job): Run => {
 export const formatStep = (step: BrowserStep): Step => {
   const stepAction = step.type === "type" ? "enter" : "click";
   const stepValue = step.value ? `${step.value} into ` : "";
-  const targetTagName = step.selector.inputType
-    ? `${step.selector.tagName}[type='${step.selector.inputType}']`
-    : `${step.selector.tagName === "a" ? "link" : step.selector.tagName || ""}`;
-  const label = step.selector.labels ? step.selector.labels[0] : "";
+  const targetTagName = step.locator.inputType
+    ? `${step.locator.tagName}[type='${step.locator.inputType}']`
+    : `${step.locator.tagName === "a" ? "link" : step.locator.tagName || ""}`;
+  const label = step.locator.labels ? step.locator.labels[0] : "";
 
   const targetName =
-    step.selector.textContent ||
+    step.locator.textContent ||
     label ||
-    step.selector.name ||
-    step.selector.placeholder ||
-    step.selector.id ||
+    step.locator.name ||
+    step.locator.placeholder ||
+    step.locator.id ||
     "";
 
   const name = `${stepAction} ${stepValue}${targetName} ${targetTagName}`;

@@ -4,7 +4,7 @@ describe("createRunFromJob", () => {
   test("creates run object from job", () => {
     const steps = [
       {
-        selector: {
+        locator: {
           inputType: "text",
           name: "username",
           tagName: "input",
@@ -14,7 +14,7 @@ describe("createRunFromJob", () => {
         value: "spirit"
       },
       {
-        selector: {
+        locator: {
           inputType: "password",
           name: "password",
           tagName: "input",
@@ -24,7 +24,7 @@ describe("createRunFromJob", () => {
         value: "supersecret"
       },
       {
-        selector: {
+        locator: {
           tagName: "button",
           textContent: "login",
           xpath: '//*[@id="login"]/button'
@@ -65,7 +65,7 @@ describe("createRunFromJob", () => {
 describe("formatStep", () => {
   test("formats click on link step", () => {
     const step = {
-      selector: {
+      locator: {
         tagName: "a",
         textContent: "contact"
       },
@@ -81,7 +81,7 @@ describe("formatStep", () => {
 
   test("formats click on submit input step", () => {
     const step = {
-      selector: {
+      locator: {
         inputType: "submit",
         name: "signin",
         tagName: "input",
@@ -99,7 +99,7 @@ describe("formatStep", () => {
 
   test("formats type into text input", () => {
     const step = {
-      selector: {
+      locator: {
         id: "input1",
         inputType: "text",
         labels: ["username"],
@@ -120,7 +120,7 @@ describe("formatStep", () => {
 
   test("formats type into password input", () => {
     const step = {
-      selector: {
+      locator: {
         id: "input2",
         inputType: "password",
         placeholder: "secret",

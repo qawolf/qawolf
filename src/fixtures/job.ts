@@ -26,11 +26,13 @@ export const loginSteps: BrowserStep[] = [
 
 export const loginJob: Job = {
   href: `${CONFIG.testUrl}/login`,
+  name: "Log in",
   steps: loginSteps
 };
 
 export const redirectJob: Job = {
   href: CONFIG.testUrl,
+  name: "Redirect",
   steps: [
     {
       locator: {
