@@ -2,4 +2,4 @@
 build/
 node_modules/
 tmp/
-*.log
+# *.log
