@@ -21,7 +21,7 @@ export type ElementSelector = {
 
 export type Job = {
   href: string;
-  name?: string;
+  name: string;
   steps: BrowserStep[];
 };
 
@@ -31,7 +31,7 @@ export type Run = {
   steps: Step[];
 };
 
-export type RunStatus = {
+export type Runs = {
   runs: Run[];
   startTime: string;
   summary: Summary | null;

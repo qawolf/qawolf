@@ -63,7 +63,7 @@ test("run callbacks called at correct time", async () => {
   expect(callback3).not.toBeCalled();
   expect(callback4).not.toBeCalled();
 
-  await runner.run({ href: "href", steps: [step, step] });
+  await runner.run({ href: "href", name: "Log in", steps: [step, step] });
 
   expect(callback).toBeCalledTimes(2);
   expect(callback).toBeCalledWith(runner);
@@ -73,4 +73,27 @@ test("run callbacks called at correct time", async () => {
   expect(callback3).toBeCalledWith(runner);
   expect(callback4).toBeCalledTimes(1);
   expect(callback4).toBeCalledWith(runner);
+});
+
+test("runs property throws error if run not created", () => {
+  const runner = new Runner();
+
+  expect(() => runner.runs).toThrowError();
+});
+
+test("runs property is created after job is run", async () => {
+  const runner = new Runner();
+  await runner.run({ href: "href", name: "Log in", steps: [step, step] });
+
+  expect(runner.runs).toMatchObject({
+    runs: [
+      {
+        name: "Log in",
+        status: "pass"
+      }
+    ],
+    summary: { fail: 0, pass: 1, total: 1 }
+  });
+
+  expect(runner.runs.startTime).toBeTruthy();
 });

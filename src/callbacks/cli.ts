@@ -9,7 +9,7 @@ export const createRunFromJob = (job: Job): Run => {
   return {
     status: "queued",
     steps: formattedSteps,
-    name: job.name || "run"
+    name: job.name
   };
 };
 
@@ -18,7 +18,7 @@ export const formatStep = (step: BrowserStep): Step => {
   const stepValue = step.value ? `${step.value} into ` : "";
   const targetTagName = step.selector.inputType
     ? `${step.selector.tagName}[type='${step.selector.inputType}']`
-    : `${step.selector.tagName === "a" ? "link" : step.selector.tagName}`;
+    : `${step.selector.tagName === "a" ? "link" : step.selector.tagName || ""}`;
   const label = step.selector.labels ? step.selector.labels[0] : "";
 
   const targetName =
@@ -38,5 +38,5 @@ export const formatStep = (step: BrowserStep): Step => {
 };
 
 export const renderCli: Callback = (runner: BrowserRunner) => {
-  render(runner.runStatus);
+  render(runner.runs);
 };

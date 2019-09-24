@@ -1,5 +1,5 @@
 import { createRunFromJob } from "./callbacks/cli";
-import { BrowserStep, Job, Run, RunStatus } from "./types";
+import { BrowserStep, Job, Run, Runs } from "./types";
 
 export type Callback = (runner: Runner) => void;
 
@@ -35,7 +35,7 @@ export class Runner {
     await this.afterRun(job);
   }
 
-  public get runStatus(): RunStatus {
+  public get runs(): Runs {
     if (!this._run || !this._startTime) {
       throw `Run not created yet`;
     }
@@ -64,13 +64,17 @@ export class Runner {
   }
 
   protected async beforeStep(): Promise<void> {
-    this._run!.steps[this._stepIndex].status = "runs";
+    if (this._run) {
+      this._run!.steps[this._stepIndex].status = "runs";
+    }
 
     return runCallbacks(this, this._callbacks.beforeStep);
   }
 
   protected async afterStep(): Promise<void> {
-    this._run!.steps[this._stepIndex].status = "pass";
+    if (this._run) {
+      this._run!.steps[this._stepIndex].status = "pass";
+    }
     this._stepIndex += 1;
 
     return runCallbacks(this, this._callbacks.afterStep);

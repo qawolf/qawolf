@@ -39,6 +39,7 @@ test("Runner runs job", async () => {
 
   const job: Job = {
     href: `${CONFIG.testUrl}/login`,
+    name: "Log in",
     steps
   };
   await runner.run(job);

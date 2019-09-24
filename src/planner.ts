@@ -76,8 +76,9 @@ export const planJob = (originalEvents: eventWithTime[]): Job => {
   );
 
   steps.sort((a, b) => a.sourceEventId! - b.sourceEventId!);
+  // TODO: need to get actual name
+  const job = { href, name: "job", steps };
 
-  const job = { href, steps };
   return job;
 };
 
