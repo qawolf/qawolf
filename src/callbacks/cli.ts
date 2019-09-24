@@ -1,7 +1,30 @@
 import { BrowserRunner } from "../BrowserRunner";
 import render from "../cli/Runs";
 import { Callback } from "../Runner";
-import { BrowserStep, Job, Run, Step } from "../types";
+import { BrowserStep, Job, Run, Runs, Step } from "../types";
+
+export const buildRuns = ({
+  run,
+  startTime
+}: {
+  run: Run;
+  startTime: string;
+}): Runs => {
+  const summary =
+    run.status === "pass" || run.status === "fail"
+      ? {
+          fail: run.status === "fail" ? 1 : 0,
+          pass: run.status === "pass" ? 1 : 0,
+          total: 1
+        }
+      : null;
+
+  return {
+    runs: [{ ...run }],
+    startTime,
+    summary
+  };
+};
 
 export const createRunFromJob = (job: Job): Run => {
   const formattedSteps = job.steps.map(step => formatStep(step));
@@ -38,5 +61,7 @@ export const formatStep = (step: BrowserStep): Step => {
 };
 
 export const renderCli: Callback = (runner: BrowserRunner) => {
-  render(runner.runs);
+  const runs = buildRuns(runner.getRunDetails());
+
+  render(runs);
 };

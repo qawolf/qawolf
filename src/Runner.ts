@@ -1,5 +1,5 @@
 import { createRunFromJob } from "./callbacks/cli";
-import { BrowserStep, Job, Run, Runs } from "./types";
+import { BrowserStep, Job, Run } from "./types";
 
 export type Callback = (runner: Runner) => void;
 
@@ -35,25 +35,12 @@ export class Runner {
     await this.afterRun(job);
   }
 
-  public get runs(): Runs {
+  public getRunDetails(): { run: Run; startTime: string } {
     if (!this._run || !this._startTime) {
       throw `Run not created yet`;
     }
 
-    const summary =
-      this._run.status === "pass" || this._run.status === "fail"
-        ? {
-            fail: this._run!.status === "fail" ? 1 : 0,
-            pass: this._run!.status === "pass" ? 1 : 0,
-            total: 1
-          }
-        : null;
-
-    return {
-      runs: [{ ...this._run }],
-      startTime: this._startTime,
-      summary
-    };
+    return { run: this._run, startTime: this._startTime };
   }
 
   protected async beforeRun(job: Job): Promise<void> {
