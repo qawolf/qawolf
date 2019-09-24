@@ -1,5 +1,7 @@
+import { BrowserRunner } from "../BrowserRunner";
 import { Callback } from "../Runner";
 import { BrowserStep, Job, Run, Step } from "../types";
+import render from "../cli/index";
 
 export const createRunFromJob = (job: Job): Run => {
   const formattedSteps = job.steps.map(step => formatStep(step));
@@ -35,4 +37,10 @@ export const formatStep = (step: BrowserStep): Step => {
   };
 };
 
+export const renderCli: Callback = (runner: BrowserRunner) => {
+  render({});
+};
+
 // need something more high level to manage all runs/summary
+// need to know which step to update in runner
+// need to start first with status "runs"

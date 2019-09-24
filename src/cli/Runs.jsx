@@ -47,7 +47,12 @@ const Suite = ({ startTime, summary, runs }) => {
 
   return (
     <Box flexDirection="column">
-      <Static>{completeRunsHtml}</Static>
+      <Static>
+        <Color bold cyan>
+          {"🐺 QA Wolf is running your tests!\n"}
+        </Color>
+        {completeRunsHtml}
+      </Static>
       <Box flexDirection="column">{runsRunsHtml}</Box>
       {!summary && <ProgressBar {...getStepsCounts(runs)} />}
       {!!summary && !!summary.fail && (

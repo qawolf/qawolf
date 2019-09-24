@@ -35,6 +35,13 @@ export class BrowserRunner extends Runner {
     await this._browser.close();
   }
 
+  public get runObject(): Run {
+    if (!this._run) {
+      throw `Run not created yet`;
+    }
+    return this._run;
+  }
+
   protected async beforeRun(job: Job): Promise<void> {
     this._run = createRunFromJob(job);
 
@@ -46,6 +53,9 @@ export class BrowserRunner extends Runner {
       server: this._server
     });
     await this._connection.connect();
+
+    this._run.status = "runs";
+    this._run.steps[0].status = "runs";
 
     await super.beforeRun(job);
   }

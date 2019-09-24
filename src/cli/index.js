@@ -5,11 +5,11 @@ const renderRuns = importJsx("./Runs.jsx");
 
 const props = {
   startTime: "2019-09-23T20:06:43.753Z",
-  summary: {
-    fail: 1,
-    pass: 2,
-    total: 3
-  },
+  // summary: {
+  //   fail: 1,
+  //   pass: 2,
+  //   total: 3
+  // },
   runs: [
     {
       name: "Sign in and out",
