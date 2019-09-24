@@ -1,10 +1,16 @@
-"use strict";
-const { Box, Color } = require("ink");
-const React = require("react");
+import { Box, Color } from "ink";
+import React from "react";
 
 const LENGTH = 40; // characters
 
-const ProgressBar = ({ completeCount, totalCount }) => {
+type PropTypes = {
+  completeCount: number;
+  totalCount: number;
+};
+
+export const ProgressBar = ({ completeCount, totalCount }: PropTypes) => {
+  if (!totalCount) return null;
+
   const completeLength = Math.round((completeCount / totalCount) * LENGTH);
   const remainingLength = LENGTH - completeLength;
 
@@ -16,5 +22,3 @@ const ProgressBar = ({ completeCount, totalCount }) => {
     </Box>
   );
 };
-
-module.exports = ProgressBar;

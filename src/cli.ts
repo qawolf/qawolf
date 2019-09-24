@@ -1,22 +1,15 @@
 #!/usr/bin/env node
 
-import chalk from "chalk";
 import clear from "clear";
 import program from "commander";
-import figlet from "figlet";
 import { BrowserRunner } from "./BrowserRunner";
+import { renderCli } from "./callbacks/cli";
 import { buildScreenshotCallback } from "./callbacks/screenshot";
 import { CONFIG } from "./config";
 import { Server } from "./io/Server";
 import { Job, BrowserStep } from "./types";
 
 clear();
-
-console.log(
-  chalk.green(figlet.textSync("qawolf", { horizontalLayout: "full" }))
-);
-
-program.version("0.0.1").description("Effortless smoke tests");
 
 program
   .command("run")
@@ -64,8 +57,9 @@ program
     const takeScreenshot = buildScreenshotCallback(1000);
 
     const callbacks = {
-      beforeStep: [takeScreenshot],
-      afterRun: [takeScreenshot]
+      beforeStep: [takeScreenshot, renderCli],
+      afterStep: [renderCli],
+      afterRun: [takeScreenshot, renderCli]
     };
 
     const runner = new BrowserRunner({ callbacks, server });
@@ -75,5 +69,3 @@ program
   });
 
 program.parse(process.argv);
-
-program.outputHelp();

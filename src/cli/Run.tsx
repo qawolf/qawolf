@@ -1,11 +1,14 @@
-"use strict";
-const importJsx = require("import-jsx");
-const { Box, Color } = require("ink");
-const React = require("react");
+import { Box, Color } from "ink";
+import React from "react";
+import { Steps } from "./Steps";
+import { Run as RunType, Status } from "../types";
 
-const Steps = importJsx("./Steps.jsx");
+type PropTypes = {
+  run: RunType;
+  showSteps?: boolean;
+};
 
-const getBackgroundForStatus = status => {
+const getBackgroundForStatus = (status: Status): object => {
   if (status === "runs") {
     return {
       bgYellow: true
@@ -23,7 +26,7 @@ const getBackgroundForStatus = status => {
   };
 };
 
-const Run = ({ showSteps, run }) => {
+export const Run = ({ run, showSteps }: PropTypes) => {
   const { name, status } = run;
 
   return (
@@ -41,5 +44,3 @@ const Run = ({ showSteps, run }) => {
     </Box>
   );
 };
-
-module.exports = Run;

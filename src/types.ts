@@ -34,16 +34,18 @@ export type Run = {
 export type RunStatus = {
   runs: Run[];
   startTime: string;
-  summary?: {
-    fail: number;
-    pass: number;
-    total: number;
-  } | null;
+  summary: Summary | null;
 };
 
-type Status = "fail" | "pass" | "queued" | "runs" | "unreached";
+export type Status = "fail" | "pass" | "queued" | "runs" | "unreached";
 
 export type Step = {
   name: string;
   status: Status;
+};
+
+export type Summary = {
+  fail: number;
+  pass: number;
+  total: number;
 };

@@ -1,13 +1,19 @@
-"use strict";
-const importJsx = require("import-jsx");
-const { Box, Color, render, Static } = require("ink");
-const React = require("react");
+import { Box, Color, render, Static } from "ink";
+import React from "react";
+import { ProgressBar } from "./ProgressBar";
+import { Results } from "./Results";
+import { Run } from "./Run";
+import { Run as RunType, Summary } from "../types";
 
-const ProgressBar = importJsx("./ProgressBar.jsx");
-const Run = importJsx("./Run.jsx");
-const Summary = importJsx("./Summary.jsx");
+type PropTypes = {
+  startTime: string;
+  summary: Summary | null;
+  runs: RunType[];
+};
 
-const getStepsCounts = runs => {
+const getStepsCounts = (
+  runs: RunType[]
+): { completeCount: number; totalCount: number } => {
   let completeCount = 0;
   let totalCount = 0;
 
@@ -21,13 +27,19 @@ const getStepsCounts = runs => {
   return { completeCount, totalCount };
 };
 
-const renderRuns = ({ runs, showSteps }) => {
+const renderRuns = ({
+  runs,
+  showSteps
+}: {
+  runs: RunType[];
+  showSteps?: boolean;
+}) => {
   return runs.map(run => (
     <Run key={run.name} showSteps={!!showSteps} run={run} />
   ));
 };
 
-const Suite = ({ startTime, summary, runs }) => {
+const Runs = ({ startTime, summary, runs }: PropTypes) => {
   const completeRuns = runs.filter(run => {
     return run.status === "pass" || run.status === "fail";
   });
@@ -59,11 +71,11 @@ const Suite = ({ startTime, summary, runs }) => {
         <Color bold red>{`\n${summary.fail} failed`}</Color>
       )}
       {failRunsHtml}
-      <Summary startTime={startTime} summary={summary} />
+      <Results startTime={startTime} summary={summary} />
     </Box>
   );
 };
 
-module.exports = props => {
-  render(<Suite {...props} />);
+export default (props: PropTypes) => {
+  render(<Runs {...props} />);
 };

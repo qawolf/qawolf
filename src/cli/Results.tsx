@@ -1,11 +1,17 @@
-"use strict";
-const { Box, Color } = require("ink");
-const React = require("react");
+import { Box, Color } from "ink";
+import React from "react";
+import { Summary } from "../types";
 
 const WIDTH = 7;
 
-const formatElapsedTime = startTime => {
-  const elapsedSeconds = (new Date() - new Date(startTime)) / 1000;
+type PropTypes = {
+  startTime: string;
+  summary: Summary | null;
+};
+
+const formatElapsedTime = (startTime: string) => {
+  const elapsedSeconds =
+    (new Date().getTime() - new Date(startTime).getTime()) / 1000;
   if (elapsedSeconds < 60) {
     return `${elapsedSeconds}s`;
   }
@@ -16,7 +22,7 @@ const formatElapsedTime = startTime => {
   return `${elapsedMinutes}m ${remainingSeconds.toFixed(2)}s`;
 };
 
-const Summary = ({ startTime, summary }) => {
+export const Results = ({ startTime, summary }: PropTypes) => {
   if (!summary) return null;
 
   return (
@@ -41,5 +47,3 @@ const Summary = ({ startTime, summary }) => {
     </Box>
   );
 };
-
-module.exports = Summary;

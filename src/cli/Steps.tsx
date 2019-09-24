@@ -1,8 +1,10 @@
-"use strict";
-const { Box, Color } = require("ink");
-const React = require("react");
+import { Box, Color } from "ink";
+import React from "react";
+import { Status, Step } from "../types";
 
-const getColorForStatus = status => {
+type PropTypes = { steps: Step[] };
+
+const getColorForStatus = (status: Status): object => {
   if (status === "pass") {
     return { green: true };
   }
@@ -13,7 +15,7 @@ const getColorForStatus = status => {
   return {};
 };
 
-const getEmojiForStatus = status => {
+const getEmojiForStatus = (status: Status): string => {
   if (status === "pass") {
     return "✓  ";
   }
@@ -27,7 +29,7 @@ const getEmojiForStatus = status => {
   return "🐺 ";
 };
 
-const Steps = ({ steps }) => {
+export const Steps = ({ steps }: PropTypes) => {
   const stepsHtml = steps.map((step, i) => {
     const { name, status } = step;
 
@@ -49,5 +51,3 @@ const Steps = ({ steps }) => {
     </Box>
   );
 };
-
-module.exports = Steps;

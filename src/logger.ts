@@ -13,7 +13,7 @@ export const logger = createLogger({
   transports: [
     new transports.Console({
       format: loggerFormat,
-      level: "debug"
+      level: "critical"
     })
   ]
 });

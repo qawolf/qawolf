@@ -11,7 +11,8 @@
     "rootDir": "src",
     "outDir": "build",
     "lib": ["esnext", "dom"],
-    "target": "es5"
+    "target": "es5",
+    "jsx": "react"
   },
   "compileOnSave": true,
   "exclude": ["test"],

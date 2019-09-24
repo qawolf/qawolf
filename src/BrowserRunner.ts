@@ -3,7 +3,7 @@ import { createRunFromJob } from "./callbacks/cli";
 import { Connection } from "./io/Connection";
 import { Server } from "./io/Server";
 import { Callbacks, Runner } from "./Runner";
-import { BrowserStep, Job, Run } from "./types";
+import { BrowserStep, Job, Run, RunStatus } from "./types";
 
 type ConstructorArgs = {
   callbacks?: Callbacks;
@@ -19,6 +19,8 @@ export class BrowserRunner extends Runner {
   private _connection: Connection | null = null;
   private _run: Run | null = null;
   private _server: Server;
+  private _startTime: string | null = null;
+  private _stepIndex: number = 0;
 
   constructor({ callbacks, server }: ConstructorArgs) {
     super(callbacks);
@@ -35,11 +37,11 @@ export class BrowserRunner extends Runner {
     await this._browser.close();
   }
 
-  public get runObject(): Run {
-    if (!this._run) {
+  public get runStatus(): RunStatus {
+    if (!this._run || !this._startTime) {
       throw `Run not created yet`;
     }
-    return this._run;
+    return { runs: [this._run], startTime: this._startTime, summary: null };
   }
 
   protected async beforeRun(job: Job): Promise<void> {
@@ -54,16 +56,29 @@ export class BrowserRunner extends Runner {
     });
     await this._connection.connect();
 
-    // this._run.status = "runs";
-    // this._run.steps[0].status = "runs";
+    this._startTime = new Date().toISOString();
+    this._run.status = "runs";
 
     await super.beforeRun(job);
+  }
+
+  protected async beforeStep(): Promise<void> {
+    this._run!.steps[this._stepIndex].status = "runs";
+    await super.beforeStep();
+  }
+
+  protected async afterRun(job: Job): Promise<void> {
+    this._run!.status = "pass";
+    await super.afterRun(job);
   }
 
   protected async runStep(step: BrowserStep): Promise<void> {
     if (!this._connection) {
       throw "Not Connected";
     }
+
     await this._connection.run(step);
+    this._run!.steps[this._stepIndex].status = "pass";
+    this._stepIndex += 1;
   }
 }
