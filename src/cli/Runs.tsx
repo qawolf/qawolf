@@ -6,9 +6,9 @@ import { Run } from "./Run";
 import { Run as RunType, Summary } from "../types";
 
 type PropTypes = {
+  runs: RunType[];
   startTime: string;
   summary: Summary | null;
-  runs: RunType[];
 };
 
 const getStepsCounts = (
@@ -63,7 +63,7 @@ const Runs = ({ startTime, summary, runs }: PropTypes) => {
     <Box flexDirection="column">
       <Static>{completeRunsHtml}</Static>
 
-      <Color bold cyan key="QA Wolf Message">
+      <Color bold cyan>
         {`\n🐺 QA Wolf ${actionText} your tests!\n`}
       </Color>
       <Box flexDirection="column">{runsRunsHtml}</Box>
