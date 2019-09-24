@@ -5,9 +5,9 @@ import clear from "clear";
 import program from "commander";
 import figlet from "figlet";
 import { BrowserRunner } from "./BrowserRunner";
+import { buildScreenshotCallback } from "./callbacks/screenshot";
 import { CONFIG } from "./config";
 import { Server } from "./io/Server";
-import { buildScreenshotCallback } from "./callbacks/screenshot";
 import { Job, BrowserStep } from "./types";
 
 clear();

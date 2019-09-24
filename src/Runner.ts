@@ -4,6 +4,7 @@ export type Callback = (runner: Runner) => void;
 
 export type Callbacks = {
   beforeStep?: Callback[];
+  afterStep?: Callback[];
   afterRun?: Callback[];
 };
 
@@ -17,6 +18,7 @@ export class Runner {
   public async step(step: BrowserStep): Promise<void> {
     await this.beforeStep();
     await this.runStep(step);
+    await this.afterStep();
   }
 
   public async run(job: Job): Promise<void> {
@@ -35,6 +37,10 @@ export class Runner {
 
   protected async beforeStep(): Promise<void> {
     return runCallbacks(this, this._callbacks.beforeStep);
+  }
+
+  protected async afterStep(): Promise<void> {
+    return runCallbacks(this, this._callbacks.afterStep);
   }
 
   protected async afterRun(job: Job): Promise<void> {

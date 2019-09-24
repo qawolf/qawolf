@@ -1,8 +1,9 @@
 import { Browser } from "./Browser";
+import { createRunFromJob } from "./callbacks/cli";
 import { Connection } from "./io/Connection";
 import { Server } from "./io/Server";
 import { Callbacks, Runner } from "./Runner";
-import { BrowserStep, Job } from "./types";
+import { BrowserStep, Job, Run } from "./types";
 
 type ConstructorArgs = {
   callbacks?: Callbacks;
@@ -16,6 +17,7 @@ type ConstructorArgs = {
 export class BrowserRunner extends Runner {
   public _browser: Browser;
   private _connection: Connection | null = null;
+  private _run: Run | null = null;
   private _server: Server;
 
   constructor({ callbacks, server }: ConstructorArgs) {
@@ -34,6 +36,8 @@ export class BrowserRunner extends Runner {
   }
 
   protected async beforeRun(job: Job): Promise<void> {
+    this._run = createRunFromJob(job);
+
     await this._browser.launch();
     await this._browser._browser!.url(job.href);
 

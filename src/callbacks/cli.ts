@@ -35,5 +35,4 @@ export const formatStep = (step: BrowserStep): Step => {
   };
 };
 
-// create run from job, store it on the runner
 // need something more high level to manage all runs/summary
