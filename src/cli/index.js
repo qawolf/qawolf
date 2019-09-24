@@ -4,7 +4,7 @@ const importJsx = require("import-jsx");
 const renderRuns = importJsx("./Runs.jsx");
 
 const props = {
-  startTime: "2019-09-21T18:18:37.056Z",
+  startTime: "2019-09-23T20:06:43.753Z",
   summary: {
     fail: 1,
     pass: 2,

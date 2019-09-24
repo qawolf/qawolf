@@ -21,6 +21,7 @@ export type ElementSelector = {
 
 export type Job = {
   href: string;
+  name?: string;
   steps: BrowserStep[];
 };
 
@@ -33,14 +34,14 @@ export type Run = {
 export type RunStatus = {
   runs: Run[];
   startTime: string;
-  summary: {
+  summary?: {
     fail: number;
     pass: number;
     total: number;
-  };
+  } | null;
 };
 
-type Status = "fail" | "pass" | "runs";
+type Status = "fail" | "pass" | "queued" | "runs" | "unreached";
 
 export type Step = {
   name: string;
