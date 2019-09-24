@@ -11,7 +11,7 @@ describe("createRunFromJob", () => {
           xpath: '//*[@id="username"]'
         },
         type: "type" as "type",
-        value: "tomsmith"
+        value: "spirit"
       },
       {
         selector: {
@@ -45,7 +45,7 @@ describe("createRunFromJob", () => {
       status: "queued",
       steps: [
         {
-          name: "enter tomsmith into username input[type='text']",
+          name: "enter spirit into username input[type='text']",
           status: "queued"
         },
         {

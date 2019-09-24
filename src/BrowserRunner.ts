@@ -54,8 +54,8 @@ export class BrowserRunner extends Runner {
     });
     await this._connection.connect();
 
-    this._run.status = "runs";
-    this._run.steps[0].status = "runs";
+    // this._run.status = "runs";
+    // this._run.steps[0].status = "runs";
 
     await super.beforeRun(job);
   }
