@@ -20,7 +20,7 @@ test("actions.click works on a link", async () => {
     const link = qawolf.xpath.findElementByXpath(
       '//*[@id="content"]/ul/li[3]/a'
     );
-    qawolf.actions.click(link);
+    qawolf.actions.click(link!);
   });
 
   const url = await browser._browser!.getUrl();

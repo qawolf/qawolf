@@ -46,7 +46,6 @@ export const findTopElement = (
   const maxScore = Math.max(...scores);
   const maxPossibleScore = computeMaxPossibleScore(step.locator!);
 
-  console.log("max score", maxScore, "maxPossibleScore", maxPossibleScore);
   if (maxScore / maxPossibleScore < threshold) {
     return null; // not similar enough
   }

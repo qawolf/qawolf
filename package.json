@@ -38,7 +38,6 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
-    "@jperl/qawolf-fixtures": "^1.0.0",
     "@types/clear": "^0.1.0",
     "@types/dotenv": "^6.1.1",
     "@types/figlet": "^1.2.0",
