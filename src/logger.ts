@@ -1,19 +1,14 @@
 import { createLogger, format, transports } from "winston";
 import { CONFIG } from "./config";
 
-const loggerFormat = CONFIG.jsonLogging
-  ? format.json()
-  : format.combine(
-      format.colorize(),
-      format.timestamp(),
-      format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`)
-    );
+// const loggerFormat = CONFIG.jsonLogging
+//   ? format.json()
+//   : format.combine(
+//       format.colorize(),
+//       format.timestamp(),
+//       format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`)
+//     );
 
 export const logger = createLogger({
-  transports: [
-    new transports.Console({
-      format: loggerFormat,
-      level: "critical"
-    })
-  ]
+  transports: [new transports.File({ filename: "logs.log", level: "debug" })]
 });

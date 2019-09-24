@@ -1,0 +1,617 @@
+{"message":"Server listening on port 40963","level":"debug"}
+{"message":"Browser: launch","level":"debug"}
+{"message":"Connection 0d0y780: connect","level":"debug"}
+{"message":"Connection 0d0y780: create socket","level":"debug"}
+{"message":"RUN STATUS SET RUNS","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"runs"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:23:37.320Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"Connection 0d0y780: send request {\"id\":0,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"text\",\"name\":\"username\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"username\\\"]\"},\"type\":\"type\",\"value\":\"tomsmith\"}]}","level":"debug"}
+{"message":"Connection 0d0y780: received response {\"id\":0}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:23:37.320Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"runs"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:23:37.320Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"Connection 0d0y780: send request {\"id\":1,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"password\",\"name\":\"password\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"password\\\"]\"},\"type\":\"type\",\"value\":\"SuperSecretPassword!\"}]}","level":"debug"}
+{"message":"Connection 0d0y780: received response {\"id\":1}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:23:37.320Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"runs"}],"name":"Log in"}],"startTime":"2019-09-24T19:23:37.320Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"Connection 0d0y780: send request {\"id\":2,\"name\":\"run\",\"args\":[{\"selector\":{\"tagName\":\"button\",\"textContent\":\" login\",\"xpath\":\"//*[@id=\\\"login\\\"]/button\"},\"type\":\"click\"}]}","level":"debug"}
+{"message":"Connection 0d0y780: received response {\"id\":2}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:23:37.320Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"step result","level":"debug"}
+{"message":"call after run","level":"debug"}
+{"message":"BrowserRunner: afterRun","level":"debug"}
+{"message":"HERE pass","level":"debug"}
+{"runs":[{"status":"pass","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:23:37.320Z","summary":{"fail":0,"pass":1,"total":1},"level":"debug","message":"RENDER CLI"}
+{"message":"Connection 0d0y780: reconnecting disconnected socket \"transport close\"","level":"debug"}
+{"message":"Connection 0d0y780: connect","level":"debug"}
+{"message":"Connection 0d0y780: create socket","level":"debug"}
+{"message":"Connection 0d0y780: close","level":"debug"}
+{"message":"Browser: close","level":"debug"}
+{"message":"Server listening on port 39467","level":"debug"}
+{"message":"Browser: launch","level":"debug"}
+{"message":"Connection yz097p9: connect","level":"debug"}
+{"message":"Connection yz097p9: create socket","level":"debug"}
+{"message":"RUN STATUS SET RUNS","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"runs"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:25:48.161Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"0":{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"runs"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"},"level":"debug","message":"runs in Runs.tsx"}
+{"message":"Connection yz097p9: send request {\"id\":0,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"text\",\"name\":\"username\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"username\\\"]\"},\"type\":\"type\",\"value\":\"tomsmith\"}]}","level":"debug"}
+{"message":"Connection yz097p9: received response {\"id\":0}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:25:48.161Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"0":{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"},"level":"debug","message":"runs in Runs.tsx"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"runs"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:25:48.161Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"0":{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"runs"},{"name":"click  login button","status":"queued"}],"name":"Log in"},"level":"debug","message":"runs in Runs.tsx"}
+{"message":"Connection yz097p9: send request {\"id\":1,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"password\",\"name\":\"password\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"password\\\"]\"},\"type\":\"type\",\"value\":\"SuperSecretPassword!\"}]}","level":"debug"}
+{"message":"Connection yz097p9: received response {\"id\":1}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:25:48.161Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"0":{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"queued"}],"name":"Log in"},"level":"debug","message":"runs in Runs.tsx"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"runs"}],"name":"Log in"}],"startTime":"2019-09-24T19:25:48.161Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"0":{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"runs"}],"name":"Log in"},"level":"debug","message":"runs in Runs.tsx"}
+{"message":"Connection yz097p9: send request {\"id\":2,\"name\":\"run\",\"args\":[{\"selector\":{\"tagName\":\"button\",\"textContent\":\" login\",\"xpath\":\"//*[@id=\\\"login\\\"]/button\"},\"type\":\"click\"}]}","level":"debug"}
+{"message":"Connection yz097p9: received response {\"id\":2}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:25:48.161Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"0":{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"},"level":"debug","message":"runs in Runs.tsx"}
+{"message":"step result","level":"debug"}
+{"message":"call after run","level":"debug"}
+{"message":"BrowserRunner: afterRun","level":"debug"}
+{"message":"HERE pass","level":"debug"}
+{"runs":[{"status":"pass","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:25:48.161Z","summary":{"fail":0,"pass":1,"total":1},"level":"debug","message":"RENDER CLI"}
+{"0":{"status":"pass","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"},"level":"debug","message":"runs in Runs.tsx"}
+{"message":"Connection yz097p9: reconnecting disconnected socket \"transport close\"","level":"debug"}
+{"message":"Connection yz097p9: connect","level":"debug"}
+{"message":"Connection yz097p9: create socket","level":"debug"}
+{"message":"Connection yz097p9: close","level":"debug"}
+{"message":"Browser: close","level":"debug"}
+{"message":"Server listening on port 40721","level":"debug"}
+{"message":"Browser: launch","level":"debug"}
+{"message":"Connection 910j749: connect","level":"debug"}
+{"message":"Connection 910j749: create socket","level":"debug"}
+{"message":"RUN STATUS SET RUNS","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"runs"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:26:48.134Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"level":"debug","message":"run status in Rusn.tsx"}
+{"message":"Connection 910j749: send request {\"id\":0,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"text\",\"name\":\"username\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"username\\\"]\"},\"type\":\"type\",\"value\":\"tomsmith\"}]}","level":"debug"}
+{"message":"Connection 910j749: received response {\"id\":0}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:26:48.134Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"level":"debug","message":"run status in Rusn.tsx"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"runs"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:26:48.134Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"level":"debug","message":"run status in Rusn.tsx"}
+{"message":"Connection 910j749: send request {\"id\":1,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"password\",\"name\":\"password\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"password\\\"]\"},\"type\":\"type\",\"value\":\"SuperSecretPassword!\"}]}","level":"debug"}
+{"message":"Connection 910j749: received response {\"id\":1}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:26:48.134Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"level":"debug","message":"run status in Rusn.tsx"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"runs"}],"name":"Log in"}],"startTime":"2019-09-24T19:26:48.134Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"level":"debug","message":"run status in Rusn.tsx"}
+{"message":"Connection 910j749: send request {\"id\":2,\"name\":\"run\",\"args\":[{\"selector\":{\"tagName\":\"button\",\"textContent\":\" login\",\"xpath\":\"//*[@id=\\\"login\\\"]/button\"},\"type\":\"click\"}]}","level":"debug"}
+{"message":"Connection 910j749: received response {\"id\":2}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:26:48.134Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"level":"debug","message":"run status in Rusn.tsx"}
+{"message":"step result","level":"debug"}
+{"message":"call after run","level":"debug"}
+{"message":"BrowserRunner: afterRun","level":"debug"}
+{"message":"HERE pass","level":"debug"}
+{"runs":[{"status":"pass","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:26:48.134Z","summary":{"fail":0,"pass":1,"total":1},"level":"debug","message":"RENDER CLI"}
+{"level":"debug","message":"run status in Rusn.tsx"}
+{"message":"Connection 910j749: reconnecting disconnected socket \"transport close\"","level":"debug"}
+{"message":"Connection 910j749: connect","level":"debug"}
+{"message":"Connection 910j749: create socket","level":"debug"}
+{"message":"Connection 910j749: close","level":"debug"}
+{"message":"Browser: close","level":"debug"}
+{"message":"Server listening on port 45459","level":"debug"}
+{"message":"Browser: launch","level":"debug"}
+{"message":"Connection 9g007sh: connect","level":"debug"}
+{"message":"Connection 9g007sh: create socket","level":"debug"}
+{"message":"RUN STATUS SET RUNS","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"runs"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:28:30.545Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"runs"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in","level":"debug","message":"run status in Rusn.tsx"}
+{"message":"Connection 9g007sh: send request {\"id\":0,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"text\",\"name\":\"username\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"username\\\"]\"},\"type\":\"type\",\"value\":\"tomsmith\"}]}","level":"debug"}
+{"message":"Connection 9g007sh: received response {\"id\":0}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:28:30.545Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in","level":"debug","message":"run status in Rusn.tsx"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"runs"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:28:30.545Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"runs"},{"name":"click  login button","status":"queued"}],"name":"Log in","level":"debug","message":"run status in Rusn.tsx"}
+{"message":"Connection 9g007sh: send request {\"id\":1,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"password\",\"name\":\"password\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"password\\\"]\"},\"type\":\"type\",\"value\":\"SuperSecretPassword!\"}]}","level":"debug"}
+{"message":"Connection 9g007sh: received response {\"id\":1}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:28:30.545Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"queued"}],"name":"Log in","level":"debug","message":"run status in Rusn.tsx"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"runs"}],"name":"Log in"}],"startTime":"2019-09-24T19:28:30.545Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"runs"}],"name":"Log in","level":"debug","message":"run status in Rusn.tsx"}
+{"message":"Connection 9g007sh: send request {\"id\":2,\"name\":\"run\",\"args\":[{\"selector\":{\"tagName\":\"button\",\"textContent\":\" login\",\"xpath\":\"//*[@id=\\\"login\\\"]/button\"},\"type\":\"click\"}]}","level":"debug"}
+{"message":"Connection 9g007sh: received response {\"id\":2}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:28:30.545Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in","level":"debug","message":"run status in Rusn.tsx"}
+{"message":"step result","level":"debug"}
+{"message":"call after run","level":"debug"}
+{"message":"BrowserRunner: afterRun","level":"debug"}
+{"message":"HERE pass","level":"debug"}
+{"runs":[{"status":"pass","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:28:30.545Z","summary":{"fail":0,"pass":1,"total":1},"level":"debug","message":"RENDER CLI"}
+{"status":"pass","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in","level":"debug","message":"run status in Rusn.tsx"}
+{"message":"Connection 9g007sh: reconnecting disconnected socket \"transport close\"","level":"debug"}
+{"message":"Connection 9g007sh: connect","level":"debug"}
+{"message":"Connection 9g007sh: create socket","level":"debug"}
+{"message":"Connection 9g007sh: close","level":"debug"}
+{"message":"Browser: close","level":"debug"}
+{"message":"Server listening on port 36905","level":"debug"}
+{"message":"Browser: launch","level":"debug"}
+{"message":"Connection un0a7ov: connect","level":"debug"}
+{"message":"Connection un0a7ov: create socket","level":"debug"}
+{"message":"RUN STATUS SET RUNS","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"runs"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:29:34.802Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"level":"debug","message":"run status in Runs.tsx"}
+{"message":"Connection un0a7ov: send request {\"id\":0,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"text\",\"name\":\"username\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"username\\\"]\"},\"type\":\"type\",\"value\":\"tomsmith\"}]}","level":"debug"}
+{"message":"Connection un0a7ov: received response {\"id\":0}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:29:34.802Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"level":"debug","message":"run status in Runs.tsx"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"runs"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:29:34.802Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"level":"debug","message":"run status in Runs.tsx"}
+{"message":"Connection un0a7ov: send request {\"id\":1,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"password\",\"name\":\"password\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"password\\\"]\"},\"type\":\"type\",\"value\":\"SuperSecretPassword!\"}]}","level":"debug"}
+{"message":"Connection un0a7ov: received response {\"id\":1}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:29:34.802Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"level":"debug","message":"run status in Runs.tsx"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"runs"}],"name":"Log in"}],"startTime":"2019-09-24T19:29:34.802Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"level":"debug","message":"run status in Runs.tsx"}
+{"message":"Connection un0a7ov: send request {\"id\":2,\"name\":\"run\",\"args\":[{\"selector\":{\"tagName\":\"button\",\"textContent\":\" login\",\"xpath\":\"//*[@id=\\\"login\\\"]/button\"},\"type\":\"click\"}]}","level":"debug"}
+{"message":"Connection un0a7ov: received response {\"id\":2}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:29:34.802Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"level":"debug","message":"run status in Runs.tsx"}
+{"message":"step result","level":"debug"}
+{"message":"call after run","level":"debug"}
+{"message":"BrowserRunner: afterRun","level":"debug"}
+{"message":"HERE pass","level":"debug"}
+{"runs":[{"status":"pass","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:29:34.802Z","summary":{"fail":0,"pass":1,"total":1},"level":"debug","message":"RENDER CLI"}
+{"level":"debug","message":"run status in Runs.tsx"}
+{"message":"Connection un0a7ov: reconnecting disconnected socket \"transport close\"","level":"debug"}
+{"message":"Connection un0a7ov: connect","level":"debug"}
+{"message":"Connection un0a7ov: create socket","level":"debug"}
+{"message":"Connection un0a7ov: close","level":"debug"}
+{"message":"Browser: close","level":"debug"}
+{"message":"Server listening on port 40199","level":"debug"}
+{"message":"Browser: launch","level":"debug"}
+{"message":"Connection j00j7nt: connect","level":"debug"}
+{"message":"Connection j00j7nt: create socket","level":"debug"}
+{"message":"RUN STATUS SET RUNS","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"runs"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:30:13.264Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"level":"debug","message":"run status in Runs.tsx"}
+{"message":"Connection j00j7nt: send request {\"id\":0,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"text\",\"name\":\"username\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"username\\\"]\"},\"type\":\"type\",\"value\":\"tomsmith\"}]}","level":"debug"}
+{"message":"Connection j00j7nt: received response {\"id\":0}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:30:13.264Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"level":"debug","message":"run status in Runs.tsx"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"runs"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:30:13.264Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"level":"debug","message":"run status in Runs.tsx"}
+{"message":"Connection j00j7nt: send request {\"id\":1,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"password\",\"name\":\"password\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"password\\\"]\"},\"type\":\"type\",\"value\":\"SuperSecretPassword!\"}]}","level":"debug"}
+{"message":"Connection j00j7nt: received response {\"id\":1}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:30:13.264Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"level":"debug","message":"run status in Runs.tsx"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"runs"}],"name":"Log in"}],"startTime":"2019-09-24T19:30:13.264Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"level":"debug","message":"run status in Runs.tsx"}
+{"message":"Connection j00j7nt: send request {\"id\":2,\"name\":\"run\",\"args\":[{\"selector\":{\"tagName\":\"button\",\"textContent\":\" login\",\"xpath\":\"//*[@id=\\\"login\\\"]/button\"},\"type\":\"click\"}]}","level":"debug"}
+{"message":"Connection j00j7nt: received response {\"id\":2}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:30:13.264Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"level":"debug","message":"run status in Runs.tsx"}
+{"message":"step result","level":"debug"}
+{"message":"call after run","level":"debug"}
+{"message":"BrowserRunner: afterRun","level":"debug"}
+{"message":"HERE pass","level":"debug"}
+{"runs":[{"status":"pass","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:30:13.264Z","summary":{"fail":0,"pass":1,"total":1},"level":"debug","message":"RENDER CLI"}
+{"level":"debug","message":"run status in Runs.tsx"}
+{"message":"Connection j00j7nt: reconnecting disconnected socket \"transport close\"","level":"debug"}
+{"message":"Connection j00j7nt: connect","level":"debug"}
+{"message":"Connection j00j7nt: create socket","level":"debug"}
+{"message":"Connection j00j7nt: close","level":"debug"}
+{"message":"Browser: close","level":"debug"}
+{"message":"Server listening on port 42003","level":"debug"}
+{"message":"Browser: launch","level":"debug"}
+{"message":"Connection er0s7ff: connect","level":"debug"}
+{"message":"Connection er0s7ff: create socket","level":"debug"}
+{"message":"RUN STATUS SET RUNS","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"runs"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:30:50.696Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection er0s7ff: send request {\"id\":0,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"text\",\"name\":\"username\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"username\\\"]\"},\"type\":\"type\",\"value\":\"tomsmith\"}]}","level":"debug"}
+{"message":"Connection er0s7ff: received response {\"id\":0}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:30:50.696Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"runs"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:30:50.696Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection er0s7ff: send request {\"id\":1,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"password\",\"name\":\"password\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"password\\\"]\"},\"type\":\"type\",\"value\":\"SuperSecretPassword!\"}]}","level":"debug"}
+{"message":"Connection er0s7ff: received response {\"id\":1}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:30:50.696Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"runs"}],"name":"Log in"}],"startTime":"2019-09-24T19:30:50.696Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection er0s7ff: send request {\"id\":2,\"name\":\"run\",\"args\":[{\"selector\":{\"tagName\":\"button\",\"textContent\":\" login\",\"xpath\":\"//*[@id=\\\"login\\\"]/button\"},\"type\":\"click\"}]}","level":"debug"}
+{"message":"Connection er0s7ff: received response {\"id\":2}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:30:50.696Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"call after run","level":"debug"}
+{"message":"BrowserRunner: afterRun","level":"debug"}
+{"message":"HERE pass","level":"debug"}
+{"runs":[{"status":"pass","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:30:50.696Z","summary":{"fail":0,"pass":1,"total":1},"level":"debug","message":"RENDER CLI"}
+{"message":"true","level":"debug"}
+{"message":"Connection er0s7ff: reconnecting disconnected socket \"transport close\"","level":"debug"}
+{"message":"Connection er0s7ff: connect","level":"debug"}
+{"message":"Connection er0s7ff: create socket","level":"debug"}
+{"message":"Connection er0s7ff: close","level":"debug"}
+{"message":"Browser: close","level":"debug"}
+{"message":"Server listening on port 36823","level":"debug"}
+{"message":"Browser: launch","level":"debug"}
+{"message":"Connection k6047n9: connect","level":"debug"}
+{"message":"Connection k6047n9: create socket","level":"debug"}
+{"message":"RUN STATUS SET RUNS","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"runs"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:33:32.891Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection k6047n9: send request {\"id\":0,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"text\",\"name\":\"username\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"username\\\"]\"},\"type\":\"type\",\"value\":\"tomsmith\"}]}","level":"debug"}
+{"message":"Connection k6047n9: received response {\"id\":0}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:33:32.891Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"runs"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:33:32.891Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection k6047n9: send request {\"id\":1,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"password\",\"name\":\"password\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"password\\\"]\"},\"type\":\"type\",\"value\":\"SuperSecretPassword!\"}]}","level":"debug"}
+{"message":"Connection k6047n9: received response {\"id\":1}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:33:32.891Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"runs"}],"name":"Log in"}],"startTime":"2019-09-24T19:33:32.891Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection k6047n9: send request {\"id\":2,\"name\":\"run\",\"args\":[{\"selector\":{\"tagName\":\"button\",\"textContent\":\" login\",\"xpath\":\"//*[@id=\\\"login\\\"]/button\"},\"type\":\"click\"}]}","level":"debug"}
+{"message":"Connection k6047n9: received response {\"id\":2}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:33:32.891Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"call after run","level":"debug"}
+{"message":"BrowserRunner: afterRun","level":"debug"}
+{"message":"HERE pass","level":"debug"}
+{"runs":[{"status":"pass","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:33:32.891Z","summary":{"fail":0,"pass":1,"total":1},"level":"debug","message":"RENDER CLI"}
+{"message":"true","level":"debug"}
+{"message":"Connection k6047n9: reconnecting disconnected socket \"transport close\"","level":"debug"}
+{"message":"Connection k6047n9: connect","level":"debug"}
+{"message":"Connection k6047n9: create socket","level":"debug"}
+{"message":"Connection k6047n9: close","level":"debug"}
+{"message":"Browser: close","level":"debug"}
+{"message":"Server listening on port 36205","level":"debug"}
+{"message":"Browser: launch","level":"debug"}
+{"message":"Connection 7u0e7au: connect","level":"debug"}
+{"message":"Connection 7u0e7au: create socket","level":"debug"}
+{"message":"RUN STATUS SET RUNS","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"runs"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:34:00.967Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection 7u0e7au: send request {\"id\":0,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"text\",\"name\":\"username\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"username\\\"]\"},\"type\":\"type\",\"value\":\"tomsmith\"}]}","level":"debug"}
+{"message":"Connection 7u0e7au: received response {\"id\":0}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:34:00.967Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"runs"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:34:00.967Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection 7u0e7au: send request {\"id\":1,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"password\",\"name\":\"password\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"password\\\"]\"},\"type\":\"type\",\"value\":\"SuperSecretPassword!\"}]}","level":"debug"}
+{"message":"Connection 7u0e7au: received response {\"id\":1}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:34:00.967Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"runs"}],"name":"Log in"}],"startTime":"2019-09-24T19:34:00.967Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection 7u0e7au: send request {\"id\":2,\"name\":\"run\",\"args\":[{\"selector\":{\"tagName\":\"button\",\"textContent\":\" login\",\"xpath\":\"//*[@id=\\\"login\\\"]/button\"},\"type\":\"click\"}]}","level":"debug"}
+{"message":"Connection 7u0e7au: received response {\"id\":2}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:34:00.967Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"call after run","level":"debug"}
+{"message":"BrowserRunner: afterRun","level":"debug"}
+{"message":"HERE pass","level":"debug"}
+{"runs":[{"status":"pass","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:34:00.967Z","summary":{"fail":0,"pass":1,"total":1},"level":"debug","message":"RENDER CLI"}
+{"message":"true","level":"debug"}
+{"message":"Connection 7u0e7au: reconnecting disconnected socket \"transport close\"","level":"debug"}
+{"message":"Connection 7u0e7au: connect","level":"debug"}
+{"message":"Connection 7u0e7au: create socket","level":"debug"}
+{"message":"Connection 7u0e7au: close","level":"debug"}
+{"message":"Browser: close","level":"debug"}
+{"message":"Server listening on port 46723","level":"debug"}
+{"message":"Browser: launch","level":"debug"}
+{"message":"Connection cy0r70l: connect","level":"debug"}
+{"message":"Connection cy0r70l: create socket","level":"debug"}
+{"message":"RUN STATUS SET RUNS","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"runs"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:38:39.782Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection cy0r70l: send request {\"id\":0,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"text\",\"name\":\"username\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"username\\\"]\"},\"type\":\"type\",\"value\":\"tomsmith\"}]}","level":"debug"}
+{"message":"Connection cy0r70l: received response {\"id\":0}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:38:39.782Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"runs"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:38:39.782Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection cy0r70l: send request {\"id\":1,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"password\",\"name\":\"password\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"password\\\"]\"},\"type\":\"type\",\"value\":\"SuperSecretPassword!\"}]}","level":"debug"}
+{"message":"Connection cy0r70l: received response {\"id\":1}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:38:39.782Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"runs"}],"name":"Log in"}],"startTime":"2019-09-24T19:38:39.782Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection cy0r70l: send request {\"id\":2,\"name\":\"run\",\"args\":[{\"selector\":{\"tagName\":\"button\",\"textContent\":\" login\",\"xpath\":\"//*[@id=\\\"login\\\"]/button\"},\"type\":\"click\"}]}","level":"debug"}
+{"message":"Connection cy0r70l: received response {\"id\":2}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:38:39.782Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"call after run","level":"debug"}
+{"message":"BrowserRunner: afterRun","level":"debug"}
+{"message":"HERE pass","level":"debug"}
+{"runs":[{"status":"pass","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:38:39.782Z","summary":{"fail":0,"pass":1,"total":1},"level":"debug","message":"RENDER CLI"}
+{"message":"true","level":"debug"}
+{"message":"Connection cy0r70l: reconnecting disconnected socket \"transport close\"","level":"debug"}
+{"message":"Connection cy0r70l: connect","level":"debug"}
+{"message":"Connection cy0r70l: create socket","level":"debug"}
+{"message":"Connection cy0r70l: close","level":"debug"}
+{"message":"Browser: close","level":"debug"}
+{"message":"Server listening on port 40989","level":"debug"}
+{"message":"Browser: launch","level":"debug"}
+{"message":"Connection vh017eg: connect","level":"debug"}
+{"message":"Connection vh017eg: create socket","level":"debug"}
+{"message":"RUN STATUS SET RUNS","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"runs"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:40:26.718Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection vh017eg: send request {\"id\":0,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"text\",\"name\":\"username\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"username\\\"]\"},\"type\":\"type\",\"value\":\"tomsmith\"}]}","level":"debug"}
+{"message":"Connection vh017eg: received response {\"id\":0}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:40:26.718Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"runs"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:40:26.718Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection vh017eg: send request {\"id\":1,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"password\",\"name\":\"password\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"password\\\"]\"},\"type\":\"type\",\"value\":\"SuperSecretPassword!\"}]}","level":"debug"}
+{"message":"Connection vh017eg: received response {\"id\":1}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:40:26.718Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"runs"}],"name":"Log in"}],"startTime":"2019-09-24T19:40:26.718Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection vh017eg: send request {\"id\":2,\"name\":\"run\",\"args\":[{\"selector\":{\"tagName\":\"button\",\"textContent\":\" login\",\"xpath\":\"//*[@id=\\\"login\\\"]/button\"},\"type\":\"click\"}]}","level":"debug"}
+{"message":"Connection vh017eg: received response {\"id\":2}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:40:26.718Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"call after run","level":"debug"}
+{"message":"BrowserRunner: afterRun","level":"debug"}
+{"message":"HERE pass","level":"debug"}
+{"runs":[{"status":"pass","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:40:26.718Z","summary":{"fail":0,"pass":1,"total":1},"level":"debug","message":"RENDER CLI"}
+{"message":"true","level":"debug"}
+{"message":"Connection vh017eg: reconnecting disconnected socket \"transport close\"","level":"debug"}
+{"message":"Connection vh017eg: connect","level":"debug"}
+{"message":"Connection vh017eg: create socket","level":"debug"}
+{"message":"Connection vh017eg: close","level":"debug"}
+{"message":"Browser: close","level":"debug"}
+{"message":"Server listening on port 44199","level":"debug"}
+{"message":"Browser: launch","level":"debug"}
+{"message":"Connection wn0h792: connect","level":"debug"}
+{"message":"Connection wn0h792: create socket","level":"debug"}
+{"message":"RUN STATUS SET RUNS","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"runs"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:49:28.488Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection wn0h792: send request {\"id\":0,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"text\",\"name\":\"username\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"username\\\"]\"},\"type\":\"type\",\"value\":\"tomsmith\"}]}","level":"debug"}
+{"message":"Connection wn0h792: received response {\"id\":0}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:49:28.488Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"runs"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:49:28.488Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection wn0h792: send request {\"id\":1,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"password\",\"name\":\"password\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"password\\\"]\"},\"type\":\"type\",\"value\":\"SuperSecretPassword!\"}]}","level":"debug"}
+{"message":"Connection wn0h792: received response {\"id\":1}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:49:28.488Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"runs"}],"name":"Log in"}],"startTime":"2019-09-24T19:49:28.488Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection wn0h792: send request {\"id\":2,\"name\":\"run\",\"args\":[{\"selector\":{\"tagName\":\"button\",\"textContent\":\" login\",\"xpath\":\"//*[@id=\\\"login\\\"]/button\"},\"type\":\"click\"}]}","level":"debug"}
+{"message":"Connection wn0h792: received response {\"id\":2}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:49:28.488Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"call after run","level":"debug"}
+{"message":"BrowserRunner: afterRun","level":"debug"}
+{"message":"HERE pass","level":"debug"}
+{"runs":[{"status":"pass","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:49:28.488Z","summary":{"fail":0,"pass":1,"total":1},"level":"debug","message":"RENDER CLI"}
+{"message":"true","level":"debug"}
+{"message":"Connection wn0h792: reconnecting disconnected socket \"transport close\"","level":"debug"}
+{"message":"Connection wn0h792: connect","level":"debug"}
+{"message":"Connection wn0h792: create socket","level":"debug"}
+{"message":"Connection wn0h792: close","level":"debug"}
+{"message":"Browser: close","level":"debug"}
+{"message":"Server listening on port 36899","level":"debug"}
+{"message":"Browser: launch","level":"debug"}
+{"message":"Connection kt0r7do: connect","level":"debug"}
+{"message":"Connection kt0r7do: create socket","level":"debug"}
+{"message":"RUN STATUS SET RUNS","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"runs"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:49:46.206Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection kt0r7do: send request {\"id\":0,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"text\",\"name\":\"username\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"username\\\"]\"},\"type\":\"type\",\"value\":\"tomsmith\"}]}","level":"debug"}
+{"message":"Connection kt0r7do: received response {\"id\":0}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:49:46.206Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"runs"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:49:46.206Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection kt0r7do: send request {\"id\":1,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"password\",\"name\":\"password\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"password\\\"]\"},\"type\":\"type\",\"value\":\"SuperSecretPassword!\"}]}","level":"debug"}
+{"message":"Connection kt0r7do: received response {\"id\":1}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:49:46.206Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"runs"}],"name":"Log in"}],"startTime":"2019-09-24T19:49:46.206Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection kt0r7do: send request {\"id\":2,\"name\":\"run\",\"args\":[{\"selector\":{\"tagName\":\"button\",\"textContent\":\" login\",\"xpath\":\"//*[@id=\\\"login\\\"]/button\"},\"type\":\"click\"}]}","level":"debug"}
+{"message":"Connection kt0r7do: received response {\"id\":2}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:49:46.206Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"call after run","level":"debug"}
+{"message":"BrowserRunner: afterRun","level":"debug"}
+{"message":"HERE pass","level":"debug"}
+{"runs":[{"status":"pass","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:49:46.206Z","summary":{"fail":0,"pass":1,"total":1},"level":"debug","message":"RENDER CLI"}
+{"message":"true","level":"debug"}
+{"message":"Connection kt0r7do: reconnecting disconnected socket \"transport close\"","level":"debug"}
+{"message":"Connection kt0r7do: connect","level":"debug"}
+{"message":"Connection kt0r7do: create socket","level":"debug"}
+{"message":"Connection kt0r7do: close","level":"debug"}
+{"message":"Browser: close","level":"debug"}
+{"message":"Server listening on port 43865","level":"debug"}
+{"message":"Browser: launch","level":"debug"}
+{"message":"Connection qn007tr: connect","level":"debug"}
+{"message":"Connection qn007tr: create socket","level":"debug"}
+{"message":"RUN STATUS SET RUNS","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"runs"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:50:29.188Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection qn007tr: send request {\"id\":0,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"text\",\"name\":\"username\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"username\\\"]\"},\"type\":\"type\",\"value\":\"tomsmith\"}]}","level":"debug"}
+{"message":"Connection qn007tr: received response {\"id\":0}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:50:29.188Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"runs"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:50:29.188Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection qn007tr: send request {\"id\":1,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"password\",\"name\":\"password\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"password\\\"]\"},\"type\":\"type\",\"value\":\"SuperSecretPassword!\"}]}","level":"debug"}
+{"message":"Connection qn007tr: received response {\"id\":1}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:50:29.188Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"runs"}],"name":"Log in"}],"startTime":"2019-09-24T19:50:29.188Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection qn007tr: send request {\"id\":2,\"name\":\"run\",\"args\":[{\"selector\":{\"tagName\":\"button\",\"textContent\":\" login\",\"xpath\":\"//*[@id=\\\"login\\\"]/button\"},\"type\":\"click\"}]}","level":"debug"}
+{"message":"Connection qn007tr: received response {\"id\":2}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:50:29.188Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"call after run","level":"debug"}
+{"message":"BrowserRunner: afterRun","level":"debug"}
+{"message":"HERE pass","level":"debug"}
+{"runs":[{"status":"pass","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:50:29.188Z","summary":{"fail":0,"pass":1,"total":1},"level":"debug","message":"RENDER CLI"}
+{"message":"true","level":"debug"}
+{"message":"Connection qn007tr: reconnecting disconnected socket \"transport close\"","level":"debug"}
+{"message":"Connection qn007tr: connect","level":"debug"}
+{"message":"Connection qn007tr: create socket","level":"debug"}
+{"message":"Connection qn007tr: close","level":"debug"}
+{"message":"Browser: close","level":"debug"}
+{"message":"Server listening on port 36181","level":"debug"}
+{"message":"Browser: launch","level":"debug"}
+{"message":"Connection rp097sn: connect","level":"debug"}
+{"message":"Connection rp097sn: create socket","level":"debug"}
+{"message":"RUN STATUS SET RUNS","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"runs"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:51:00.339Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection rp097sn: send request {\"id\":0,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"text\",\"name\":\"username\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"username\\\"]\"},\"type\":\"type\",\"value\":\"tomsmith\"}]}","level":"debug"}
+{"message":"Connection rp097sn: received response {\"id\":0}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:51:00.339Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"runs"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:51:00.339Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection rp097sn: send request {\"id\":1,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"password\",\"name\":\"password\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"password\\\"]\"},\"type\":\"type\",\"value\":\"SuperSecretPassword!\"}]}","level":"debug"}
+{"message":"Connection rp097sn: received response {\"id\":1}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:51:00.339Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"runs"}],"name":"Log in"}],"startTime":"2019-09-24T19:51:00.339Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection rp097sn: send request {\"id\":2,\"name\":\"run\",\"args\":[{\"selector\":{\"tagName\":\"button\",\"textContent\":\" login\",\"xpath\":\"//*[@id=\\\"login\\\"]/button\"},\"type\":\"click\"}]}","level":"debug"}
+{"message":"Connection rp097sn: received response {\"id\":2}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:51:00.339Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"call after run","level":"debug"}
+{"message":"BrowserRunner: afterRun","level":"debug"}
+{"message":"HERE pass","level":"debug"}
+{"runs":[{"status":"pass","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:51:00.339Z","summary":{"fail":0,"pass":1,"total":1},"level":"debug","message":"RENDER CLI"}
+{"message":"true","level":"debug"}
+{"message":"Connection rp097sn: reconnecting disconnected socket \"transport close\"","level":"debug"}
+{"message":"Connection rp097sn: connect","level":"debug"}
+{"message":"Connection rp097sn: create socket","level":"debug"}
+{"message":"Connection rp097sn: close","level":"debug"}
+{"message":"Browser: close","level":"debug"}
+{"message":"Server listening on port 38873","level":"debug"}
+{"message":"Browser: launch","level":"debug"}
+{"message":"Connection tf0h7lp: connect","level":"debug"}
+{"message":"Connection tf0h7lp: create socket","level":"debug"}
+{"message":"RUN STATUS SET RUNS","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"runs"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:51:08.165Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection tf0h7lp: send request {\"id\":0,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"text\",\"name\":\"username\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"username\\\"]\"},\"type\":\"type\",\"value\":\"tomsmith\"}]}","level":"debug"}
+{"message":"Connection tf0h7lp: received response {\"id\":0}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"queued"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:51:08.165Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"runs"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:51:08.165Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection tf0h7lp: send request {\"id\":1,\"name\":\"run\",\"args\":[{\"selector\":{\"inputType\":\"password\",\"name\":\"password\",\"tagName\":\"input\",\"xpath\":\"//*[@id=\\\"password\\\"]\"},\"type\":\"type\",\"value\":\"SuperSecretPassword!\"}]}","level":"debug"}
+{"message":"Connection tf0h7lp: received response {\"id\":1}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"queued"}],"name":"Log in"}],"startTime":"2019-09-24T19:51:08.165Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"stepping","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"runs"}],"name":"Log in"}],"startTime":"2019-09-24T19:51:08.165Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"Connection tf0h7lp: send request {\"id\":2,\"name\":\"run\",\"args\":[{\"selector\":{\"tagName\":\"button\",\"textContent\":\" login\",\"xpath\":\"//*[@id=\\\"login\\\"]/button\"},\"type\":\"click\"}]}","level":"debug"}
+{"message":"Connection tf0h7lp: received response {\"id\":2}","level":"debug"}
+{"runs":[{"status":"runs","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:51:08.165Z","summary":null,"level":"debug","message":"RENDER CLI"}
+{"message":"false","level":"debug"}
+{"message":"step result","level":"debug"}
+{"message":"call after run","level":"debug"}
+{"message":"BrowserRunner: afterRun","level":"debug"}
+{"message":"HERE pass","level":"debug"}
+{"runs":[{"status":"pass","steps":[{"name":"enter tomsmith into username input[type='text']","status":"pass"},{"name":"enter SuperSecretPassword! into password input[type='password']","status":"pass"},{"name":"click  login button","status":"pass"}],"name":"Log in"}],"startTime":"2019-09-24T19:51:08.165Z","summary":{"fail":0,"pass":1,"total":1},"level":"debug","message":"RENDER CLI"}
+{"message":"true","level":"debug"}
+{"message":"Connection tf0h7lp: reconnecting disconnected socket \"transport close\"","level":"debug"}
+{"message":"Connection tf0h7lp: connect","level":"debug"}
+{"message":"Connection tf0h7lp: create socket","level":"debug"}
+{"message":"Connection tf0h7lp: close","level":"debug"}
+{"message":"Browser: close","level":"debug"}

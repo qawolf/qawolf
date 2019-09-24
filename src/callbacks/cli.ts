@@ -1,4 +1,5 @@
 import { BrowserRunner } from "../BrowserRunner";
+import { logger } from "../logger";
 import { Callback } from "../Runner";
 import { BrowserStep, Job, Run, Step } from "../types";
 import render from "../cli/Runs";
@@ -38,5 +39,6 @@ export const formatStep = (step: BrowserStep): Step => {
 };
 
 export const renderCli: Callback = (runner: BrowserRunner) => {
+  logger.debug("RENDER CLI", runner.runStatus);
   render(runner.runStatus);
 };

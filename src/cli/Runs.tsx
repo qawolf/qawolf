@@ -57,14 +57,15 @@ const Runs = ({ startTime, summary, runs }: PropTypes) => {
     ? renderRuns({ runs: failRuns, showSteps: true })
     : null;
 
+  const actionText = summary ? "ran" : "is running";
+
   return (
     <Box flexDirection="column">
-      <Static>
-        <Color bold cyan>
-          {"🐺 QA Wolf is running your tests!\n"}
-        </Color>
-        {completeRunsHtml}
-      </Static>
+      <Static>{completeRunsHtml}</Static>
+
+      <Color bold cyan key="QA Wolf Message">
+        {`\n🐺 QA Wolf ${actionText} your tests!\n`}
+      </Color>
       <Box flexDirection="column">{runsRunsHtml}</Box>
       {!summary && <ProgressBar {...getStepsCounts(runs)} />}
       {!!summary && !!summary.fail && (

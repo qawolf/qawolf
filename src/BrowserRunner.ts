@@ -41,6 +41,7 @@ export class BrowserRunner extends Runner {
     if (!this._run || !this._startTime) {
       throw `Run not created yet`;
     }
+
     const summary =
       this._run.status === "pass" || this._run.status === "fail"
         ? {
@@ -51,7 +52,7 @@ export class BrowserRunner extends Runner {
         : null;
 
     return {
-      runs: [this._run],
+      runs: [{ ...this._run }],
       startTime: this._startTime,
       summary
     };
@@ -71,7 +72,6 @@ export class BrowserRunner extends Runner {
 
     this._startTime = new Date().toISOString();
     this._run.status = "runs";
-
     await super.beforeRun(job);
   }
 
