@@ -7,7 +7,11 @@ const webBundle = fs.readFileSync("build/qawolf.web.js", "utf8");
 export const createPage = async (url?: string) => {
   logger.debug("create Browser");
 
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({
+    // needed for circleci
+    args: ["–no-sandbox", "--disable-setuid-sandbox"],
+    headless: false
+  });
 
   const page = await browser.newPage();
   await page.evaluateOnNewDocument(webBundle);
