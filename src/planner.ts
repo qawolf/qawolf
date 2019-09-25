@@ -49,23 +49,24 @@ export const isTypeEvent = (event: qaEventWithTime | null): boolean => {
 };
 
 export const planClickActions = (events: qaEventWithTime[]): BrowserStep[] => {
-  const actions: BrowserStep[] = [];
+  const steps: BrowserStep[] = [];
 
   for (let event of events) {
     if (!isMouseDownEvent(event)) continue;
 
-    actions.push({
+    steps.push({
       locator: (event.data as any).properties,
+      pageId: (event as any).pageId,
       sourceEventId: event.id,
       type: "click"
     });
   }
 
-  return actions;
+  return steps;
 };
 
 export const planJob = (originalEvents: eventWithTime[]): Job => {
-  const href = findHref(originalEvents);
+  const url = findHref(originalEvents);
 
   const events = orderEventsByTime(originalEvents);
 
@@ -75,13 +76,13 @@ export const planJob = (originalEvents: eventWithTime[]): Job => {
 
   steps.sort((a, b) => a.sourceEventId! - b.sourceEventId!);
   // TODO: need to get actual name
-  const job = { href, name: "job", steps };
+  const job = { name: "job", steps, url };
 
   return job;
 };
 
 export const planTypeActions = (events: qaEventWithTime[]): BrowserStep[] => {
-  const actions: BrowserStep[] = [];
+  const steps: BrowserStep[] = [];
 
   let lastXpath = null;
 
@@ -92,8 +93,9 @@ export const planTypeActions = (events: qaEventWithTime[]): BrowserStep[] => {
     // only include last consecutive type per xpath
     if (event.data.xpath === lastXpath) continue;
 
-    actions.push({
+    steps.push({
       locator: (event.data as any).properties,
+      pageId: (event as any).pageId,
       sourceEventId: event.id,
       type: "type",
       value: event.data.text
@@ -102,5 +104,5 @@ export const planTypeActions = (events: qaEventWithTime[]): BrowserStep[] => {
     lastXpath = event.data.xpath;
   }
 
-  return actions;
+  return steps;
 };

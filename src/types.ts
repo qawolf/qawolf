@@ -1,14 +1,15 @@
 export type BrowserStep = {
   locator: Locator;
+  pageId?: number;
   sourceEventId?: number;
   type: "click" | "type";
   value?: string;
 };
 
 export type Job = {
-  href: string;
   name: string;
   steps: BrowserStep[];
+  url: string;
 };
 
 export type Locator = {

@@ -10,6 +10,7 @@ export class Server {
   private _port: number | undefined;
 
   constructor() {
+    logger.debug(`Server: create`);
     this._httpServer = createServer({
       cert: fs.readFileSync("./bin/server.cert"),
       key: fs.readFileSync("./bin/server.key")
@@ -25,7 +26,7 @@ export class Server {
   public async listen() {
     this._port = await getPort();
     this._httpServer.listen(this._port);
-    logger.debug(`Server listening on port ${this._port}`);
+    logger.debug(`Server: listening on port ${this._port}`);
   }
 
   public async onConnection(id: string): Promise<SocketIO.Socket> {

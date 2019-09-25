@@ -8,7 +8,7 @@
     "build:web": "rollup --config rollup.web.ts",
     "cli": "babel-node --extensions \".ts,.tsx\" -- src/cli.ts",
     "lint": "eslint src --ext .ts",
-    "test": "npm run build:web && jest",
+    "test": "npm run build:web && jest --maxWorkers=75%",
     "test:services": "docker-compose up -d",
     "test:watch": "npm run build:web && jest --watch"
   },

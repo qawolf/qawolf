@@ -1,6 +1,5 @@
-import { Browser } from "./Browser";
-import { Connection } from "./io/Connection";
-import { Server } from "./io/Server";
+import { Pool } from "./browser/Pool";
+import { Server } from "./browser/Server";
 import { Callbacks, Runner } from "./Runner";
 import { BrowserStep, Job } from "./types";
 
@@ -9,47 +8,32 @@ type ConstructorArgs = {
   server: Server;
 };
 
-// XXX: Multiple window support
-// Look for additional windows when step calls for them
-// and create another Connection.
-
 export class BrowserRunner extends Runner {
-  public _browser: Browser;
-  private _connection: Connection | null = null;
+  public _pool: Pool;
   private _server: Server;
 
   constructor({ callbacks, server }: ConstructorArgs) {
     super(callbacks);
-
-    this._browser = new Browser();
     this._server = server;
   }
 
-  public async close(): Promise<void> {
-    if (this._connection) {
-      this._connection.close();
-    }
+  public get browser() {
+    return this._pool.browser;
+  }
 
-    await this._browser.close();
+  public async close(): Promise<void> {
+    await this._pool.close();
   }
 
   protected async beforeRun(job: Job): Promise<void> {
-    await this._browser.launch();
-    await this._browser._browser!.url(job.href);
-
-    this._connection = new Connection({
-      browser: this._browser,
-      server: this._server
-    });
-    await this._connection.connect();
+    this._pool = new Pool({ server: this._server, url: job.url });
+    await this._pool.create();
 
     await super.beforeRun(job);
   }
 
   protected async runStep(step: BrowserStep): Promise<void> {
-    if (!this._connection) {
-      throw "Not Connected";
-    }
-    await this._connection.runStep(step);
+    const connection = await this._pool.getConnection(step.pageId);
+    await connection.runStep(step);
   }
 }
