@@ -26,7 +26,7 @@ export class BrowserRunner extends Runner {
   }
 
   protected async beforeRun(job: Job): Promise<void> {
-    this._pool = new Pool({ server: this._server, url: job.href });
+    this._pool = new Pool({ server: this._server, url: job.url });
     await this._pool.create();
 
     await super.beforeRun(job);

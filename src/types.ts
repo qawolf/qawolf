@@ -7,9 +7,9 @@ export type BrowserStep = {
 };
 
 export type Job = {
-  href: string;
   name: string;
   steps: BrowserStep[];
+  url: string;
 };
 
 export type Locator = {

@@ -84,9 +84,9 @@ describe("createRunFromJob", () => {
     ];
 
     const job = {
-      href: "href",
       name: "Log in",
-      steps
+      steps,
+      url: "url"
     };
 
     const run = createRunFromJob(job);

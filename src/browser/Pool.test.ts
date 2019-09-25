@@ -42,7 +42,7 @@ test("creates a connection per window", async () => {
 }, 10000);
 
 test("replaces a connection when the browser navigates", async () => {
-  const pool = new Pool({ server, url: redirectJob.href });
+  const pool = new Pool({ server, url: redirectJob.url });
   await pool.create();
 
   let connection = await pool.getConnection(0);
