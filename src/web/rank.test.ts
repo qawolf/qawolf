@@ -1,8 +1,8 @@
-import { BrowserObject } from "webdriverio";
-import { createBrowser, injectClient } from "../browser/browserUtils";
+import { Page } from "puppeteer";
+import { createPage } from "../browser/browser";
 import { CONFIG } from "../config";
-import { computeSimilarityScores } from "./rank";
 import { QAWolf } from "./index";
+import { computeSimilarityScores } from "./rank";
 
 const step = {
   locator: {
@@ -25,18 +25,13 @@ const base = {
   textContent: "click me!"
 };
 
-let browser: BrowserObject;
+let page: Page;
 
 beforeAll(async () => {
-  browser = await createBrowser();
+  page = await createPage();
 });
 
-afterAll(() => browser.closeWindow());
-
-const goToInjectClient = async (url: string) => {
-  await browser.url(url);
-  await injectClient(browser);
-};
+afterAll(() => page.browser().close());
 
 describe("rank.computeScoresForElements", () => {
   test("returns scores for each element", async () => {
@@ -45,9 +40,9 @@ describe("rank.computeScoresForElements", () => {
       locator: { ...base, tagName: "input" }
     };
 
-    await goToInjectClient(`${CONFIG.testUrl}/login`);
+    await page.goto(`${CONFIG.testUrl}/login`);
 
-    const scores = await browser.execute(step => {
+    const scores = await page.evaluate(step => {
       const qawolf: QAWolf = (window as any).qawolf;
 
       return qawolf.rank.computeSimilarityScores(
@@ -60,7 +55,7 @@ describe("rank.computeScoresForElements", () => {
   });
 
   test("throws error if step does not have locator", async () => {
-    await goToInjectClient(`${CONFIG.testUrl}/login`);
+    await page.goto(`${CONFIG.testUrl}/login`);
 
     const step = {
       locator: {
@@ -78,19 +73,19 @@ describe("rank.computeScoresForElements", () => {
 
 describe("rank.findCandidateElements", () => {
   test("returns all elements for click step", async () => {
-    await goToInjectClient(`${CONFIG.testUrl}/login`);
+    await page.goto(`${CONFIG.testUrl}/login`);
 
-    const elements = await browser.execute(step => {
+    const numElements = await page.evaluate(step => {
       const qawolf: QAWolf = (window as any).qawolf;
 
-      return qawolf.rank.findCandidateElements(step);
+      return qawolf.rank.findCandidateElements(step).length;
     }, step);
 
-    expect(elements.length).toBe(45);
+    expect(numElements).toBe(45);
   });
 
   test("returns only inputs for type step", async () => {
-    await goToInjectClient(`${CONFIG.testUrl}/login`);
+    await page.goto(`${CONFIG.testUrl}/login`);
 
     const typeAction = {
       ...step,
@@ -98,26 +93,25 @@ describe("rank.findCandidateElements", () => {
       value: "spirit"
     };
 
-    const elements = await browser.execute(step => {
+    const numElements = await page.evaluate(step => {
       const qawolf: QAWolf = (window as any).qawolf;
-
-      return qawolf.rank.findCandidateElements(step);
+      return qawolf.rank.findCandidateElements(step).length;
     }, typeAction);
 
-    expect(elements.length).toBe(2);
+    expect(numElements).toBe(2);
   });
 });
 
 describe("rank.findTopElement", () => {
   test("returns null if no elements similar enough", async () => {
-    await goToInjectClient(`${CONFIG.testUrl}/login`);
+    await page.goto(`${CONFIG.testUrl}/login`);
 
     const stepWithLocator = {
       ...step,
       locator: base
     };
 
-    const highestMatch = await browser.execute(step => {
+    const highestMatch = await page.evaluate(step => {
       const qawolf: QAWolf = (window as any).qawolf;
 
       return qawolf.rank.findTopElement(step);
@@ -127,7 +121,7 @@ describe("rank.findTopElement", () => {
   });
 
   test("returns null if a tie is found", async () => {
-    await goToInjectClient(`${CONFIG.testUrl}/checkboxes`);
+    await page.goto(`${CONFIG.testUrl}/checkboxes`);
 
     const stepWithLocator = {
       ...step,
@@ -141,7 +135,7 @@ describe("rank.findTopElement", () => {
       type: "type"
     };
 
-    const highestMatch = await browser.execute(step => {
+    const highestMatch = await page.evaluate(step => {
       const qawolf: QAWolf = (window as any).qawolf;
 
       return qawolf.rank.findTopElement(step);
@@ -151,7 +145,7 @@ describe("rank.findTopElement", () => {
   });
 
   test("returns xpath of highest match if one found", async () => {
-    await goToInjectClient(`${CONFIG.testUrl}/login`);
+    await page.goto(`${CONFIG.testUrl}/login`);
 
     const stepWithLocator = {
       ...step,
@@ -166,7 +160,7 @@ describe("rank.findTopElement", () => {
       type: "type"
     };
 
-    const highestMatch = await browser.execute(step => {
+    const highestMatch = await page.evaluate(step => {
       const qawolf: QAWolf = (window as any).qawolf;
       const element = qawolf.rank.findTopElement(step);
       return qawolf.xpath.getXpath(element!);

@@ -3,8 +3,7 @@
 import clear from "clear";
 import program from "commander";
 import fs from "fs-extra";
-import { BrowserRunner } from "./BrowserRunner";
-import { Server } from "./browser/Server";
+import { BrowserRunner } from "./browser/BrowserRunner";
 import { renderCli } from "./callbacks/cli";
 import { buildScreenshotCallback } from "./callbacks/screenshot";
 import { planJob } from "./planner";
@@ -22,9 +21,6 @@ program
       job = planJob(events);
     }
 
-    const server = new Server();
-    await server.listen();
-
     const takeScreenshot = buildScreenshotCallback(1000);
 
     const callbacks = {
@@ -33,7 +29,7 @@ program
       afterRun: [takeScreenshot, renderCli]
     };
 
-    const runner = new BrowserRunner({ callbacks, server });
+    const runner = new BrowserRunner({ callbacks });
     await runner.run(job);
 
     await runner.close();
