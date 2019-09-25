@@ -7,6 +7,7 @@ export type BrowserStep = {
 
 export type Job = {
   href: string;
+  name: string;
   steps: BrowserStep[];
 };
 
@@ -22,4 +23,29 @@ export type Locator = {
   tagName?: string | null;
   textContent?: string | null;
   xpath?: string | null;
+};
+
+export type Run = {
+  name: string;
+  startTime: Date;
+  status: Status;
+  steps: Step[];
+};
+
+export type Runs = {
+  runs: Run[];
+  summary: Summary | null;
+};
+
+export type Status = "fail" | "pass" | "queued" | "runs" | "unreached";
+
+export type Step = {
+  name: string;
+  status: Status;
+};
+
+export type Summary = {
+  fail: number;
+  pass: number;
+  total: number;
 };
