@@ -13,6 +13,7 @@ const testUrl = process.env.TEST_URL || "";
 const wsUrl = process.env.WS_URL || "";
 
 export const CONFIG = {
+  disableCsp: process.env.DISABLE_CSP === "true",
   fullScreen: process.env.FULL_SCREEN === "true",
   jsonLogging,
   savePath,

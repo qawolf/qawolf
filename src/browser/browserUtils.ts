@@ -40,15 +40,21 @@ export const injectClient = (
 };
 
 const getChromeCapabilities = () => {
-  const chromeOptions = {
+  const chromeOptions: any = {
     args: ["--disable-dev-shm-usage", "--no-sandbox", "--window-position=0,0"],
     // allow injecting into protected sites
-    extensions: [fs.readFileSync("./bin/disable_csp.zip").toString("base64")],
     // disable "Chrome is being controlled by automated software"
     // https://github.com/GoogleChrome/puppeteer/issues/2070#issuecomment-521313694
     excludeSwitches: ["enable-automation"],
     useAutomationExtension: false
   };
+
+  if (CONFIG.disableCsp) {
+    // this seems to cause issues on CircleCi
+    chromeOptions.extensions = [
+      fs.readFileSync("./bin/disable_csp.zip").toString("base64")
+    ];
+  }
 
   // disable "Chrome is being controlled by automated software"
   // from https://github.com/Codeception/CodeceptJS/issues/563#issuecomment-310688797

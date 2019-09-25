@@ -4,7 +4,7 @@ import { QAWolf } from "../web";
 
 test('createBrowser launches "the internet"', async () => {
   const browser = await createBrowser(CONFIG.testUrl);
-  const element = await browser!.$(".heading");
+  const element = await browser.$(".heading");
 
   const text = await element.getText();
   expect(text).toBe("Welcome to the-internet");

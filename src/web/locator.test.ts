@@ -1,20 +1,19 @@
-import { Browser } from "../Browser";
+import { BrowserObject } from "webdriverio";
+import { createBrowser, injectClient } from "../browser/browserUtils";
 import { CONFIG } from "../config";
 import { QAWolf } from "./index";
 
-let browser: Browser;
+let browser: BrowserObject;
 
 beforeAll(async () => {
-  browser = new Browser();
-  await browser.launch();
-  await browser._browser!.url(`${CONFIG.testUrl}/login`);
-  await browser.injectSdk();
+  browser = await createBrowser(`${CONFIG.testUrl}/login`);
+  await injectClient(browser);
 });
 
-afterAll(() => browser.close());
+afterAll(() => browser.closeWindow());
 
 test("getLabels correctly returns labels", async () => {
-  const nullLabels = await browser._browser!.execute(() => {
+  const nullLabels = await browser.execute(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
     return qawolf.locator.getLabels(document.getElementsByTagName("h2")[0]);
@@ -22,7 +21,7 @@ test("getLabels correctly returns labels", async () => {
 
   expect(nullLabels).toBeNull();
 
-  const usernameLabels = await browser._browser!.execute(() => {
+  const usernameLabels = await browser.execute(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
     return qawolf.locator.getLabels(document.getElementsByTagName("input")[0]);
@@ -32,7 +31,7 @@ test("getLabels correctly returns labels", async () => {
 });
 
 test("getParentText correctly returns parent text", async () => {
-  const iconParentText = await browser._browser!.execute(() => {
+  const iconParentText = await browser.execute(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
     return qawolf.locator.getParentText(document.getElementsByTagName("i")[0]);
@@ -42,7 +41,7 @@ test("getParentText correctly returns parent text", async () => {
 });
 
 test("getPlaceholder correctly returns placeholder", async () => {
-  const nullPlaceholder = await browser._browser!.execute(() => {
+  const nullPlaceholder = await browser.execute(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
     return qawolf.locator.getPlaceholder(
@@ -54,7 +53,7 @@ test("getPlaceholder correctly returns placeholder", async () => {
 });
 
 test("getTextContent correctly returns text content", async () => {
-  const headerTextContent = await browser._browser!.execute(() => {
+  const headerTextContent = await browser.execute(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
     return qawolf.locator.getTextContent(
@@ -64,7 +63,7 @@ test("getTextContent correctly returns text content", async () => {
 
   expect(headerTextContent).toBe("login page");
 
-  const nullTextContent = await browser._browser!.execute(() => {
+  const nullTextContent = await browser.execute(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
     return qawolf.locator.getTextContent(
@@ -76,7 +75,7 @@ test("getTextContent correctly returns text content", async () => {
 });
 
 test("getLocator correctly returns full element locator", async () => {
-  const inputLocator = await browser._browser!.execute(() => {
+  const inputLocator = await browser.execute(() => {
     const qawolf: QAWolf = (window as any).qawolf;
     return qawolf.locator.getLocator(document.getElementsByTagName("input")[0]);
   });
@@ -94,7 +93,7 @@ test("getLocator correctly returns full element locator", async () => {
   });
   expect(inputLocator!.parentText).toContain("username");
 
-  const headerLocator = await browser._browser!.execute(() => {
+  const headerLocator = await browser.execute(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
     return qawolf.locator.getLocator(document.getElementsByTagName("h2")[0]);

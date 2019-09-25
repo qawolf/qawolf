@@ -1,6 +1,6 @@
 import { BrowserRunner } from "./BrowserRunner";
+import { Server } from "./browser/Server";
 import { loginJob } from "./fixtures/job";
-import { Server } from "./io/Server";
 
 let server: Server;
 
@@ -12,10 +12,10 @@ beforeAll(async () => {
 afterAll(() => server.close());
 
 test("Runner runs job", async () => {
-  const runner = await new BrowserRunner({ server });
+  const runner = new BrowserRunner({ server });
   await runner.run(loginJob);
 
-  const header = await runner._browser._browser!.$('//*[@id="content"]/div/h2');
+  const header = await runner._pool.browser.$('//*[@id="content"]/div/h2');
   expect(await header.getText()).toEqual("Secure Area");
   await runner.close();
 }, 10000);

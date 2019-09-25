@@ -15,4 +15,4 @@ test("request receives a response", async () => {
 
   await browser.closeWindow();
   server.close();
-});
+}, 10000);

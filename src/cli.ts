@@ -2,20 +2,14 @@
 
 import clear from "clear";
 import program from "commander";
-import { Server } from "./browser/Server";
 import { BrowserRunner } from "./BrowserRunner";
+import { Server } from "./browser/Server";
 import { renderCli } from "./callbacks/cli";
 import { buildScreenshotCallback } from "./callbacks/screenshot";
 import { CONFIG } from "./config";
 import { Job, BrowserStep } from "./types";
 
 clear();
-
-// .action(async source => {
-//   const events = JSON.parse(await fs.readFile(source, "utf8"));
-//   const job = planJob(events);
-
-//   console.log("job", JSON.stringify(job));
 
 program
   .command("run <source>")
@@ -72,6 +66,8 @@ program
     await runner.run(job);
 
     await runner.close();
+
+    process.exit(0);
   });
 
 program.parse(process.argv);
