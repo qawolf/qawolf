@@ -24,7 +24,7 @@ export class Client {
   public connect({ id, uri }: ConnectOptions) {
     this._id = id;
 
-    this._RESPONSE_KEY = `${this._id}_response`;
+    this._RESPONSE_KEY = `${id}_response`;
 
     this._socket = io(uri, {
       query: { id },

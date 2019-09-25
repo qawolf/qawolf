@@ -14,11 +14,12 @@ export class Connection {
 
   private _id: string;
 
-  // for pool to resend
+  // public for pool to resend
   public _inflight: InflightRequest | null = null;
 
   // increment request ids to ensure order
-  private _requestId: number = 0;
+  // public for pool to use when replacing connection
+  public _requestId: number = 0;
 
   // public for tests
   public _socket: SocketIO.Socket;

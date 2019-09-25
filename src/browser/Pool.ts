@@ -100,6 +100,8 @@ export class Pool {
       windowHandle: connection.windowHandle
     });
 
+    replacement._requestId = connection._requestId;
+
     this._connections[Number(connection.id)] = replacement;
 
     if (connection._inflight) {

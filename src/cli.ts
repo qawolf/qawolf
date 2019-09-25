@@ -2,55 +2,26 @@
 
 import clear from "clear";
 import program from "commander";
+import fs from "fs-extra";
 import { BrowserRunner } from "./BrowserRunner";
 import { Server } from "./browser/Server";
 import { renderCli } from "./callbacks/cli";
 import { buildScreenshotCallback } from "./callbacks/screenshot";
-import { CONFIG } from "./config";
-import { Job, BrowserStep } from "./types";
+import { planJob } from "./planner";
+import { loginJob } from "./fixtures/job";
 
 clear();
 
 program
   .command("run <source>")
   .description("run a test")
-  .action(async (source, destination) => {
-    const steps: BrowserStep[] = [
-      {
-        locator: {
-          inputType: "text",
-          name: "username",
-          tagName: "input",
-          xpath: '//*[@id="username"]'
-        },
-        type: "type",
-        value: "tomsmith"
-      },
-      {
-        locator: {
-          inputType: "password",
-          name: "password",
-          tagName: "input",
-          xpath: '//*[@id="password"]'
-        },
-        type: "type",
-        value: "SuperSecretPassword!"
-      },
-      {
-        locator: {
-          tagName: "button",
-          textContent: " login",
-          xpath: '//*[@id="login"]/button'
-        },
-        type: "click"
-      }
-    ];
+  .action(async source => {
+    let job = loginJob;
+    if (source) {
+      const events = JSON.parse(await fs.readFile(source, "utf8"));
+      job = planJob(events);
+    }
 
-    const job: Job = {
-      href: `${CONFIG.testUrl}/login`,
-      name: "Log in",
-      steps
-    };
     const server = new Server();
     await server.listen();
 
