@@ -1,4 +1,4 @@
-import { BrowserRunner } from "../BrowserRunner";
+import { BrowserRunner } from "../browser/BrowserRunner";
 import render from "../cli/Runs";
 import { Callback } from "../Runner";
 import { BrowserStep, Job, Run, Runs, Step } from "../types";

@@ -1,20 +1,20 @@
 import * as actions from "./actions";
-import { Client } from "./Client";
 import * as locator from "./locator";
 import * as rank from "./rank";
+import { runStep } from "./runStep";
 import * as xpath from "./xpath";
 
 const qawolf = {
   actions,
-  Client,
-  rank,
   locator,
+  rank,
+  runStep,
   xpath
 };
 
 export type QAWolf = typeof qawolf;
 
-if (typeof window !== "undefined") {
+if (typeof window !== "undefined" && !(window as any).qawolf) {
   (window as any).qawolf = qawolf;
   console.log("loaded qawolf");
 }

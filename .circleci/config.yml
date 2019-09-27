@@ -7,13 +7,11 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/node:12.10.0
+      - image: circleci/node:latest-browsers
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
-      - image: selenium/standalone-chrome:3.141.59
-
       - image: gprestes/the-internet@sha256:f741ba048b7232ef90b0f7885de7f6ac42a52a17e73dd82afc484da140398796
 
     working_directory: ~/repo
@@ -40,6 +38,4 @@ jobs:
       - run:
           command: npm run test
           environment:
-            DISABLE_CSP: false
             TEST_URL: http://127.0.0.1:5000
-            WS_URL: https://127.0.0.1

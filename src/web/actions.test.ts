@@ -1,38 +1,34 @@
-import { BrowserObject } from "webdriverio";
-import { createBrowser, injectClient } from "../browser/browserUtils";
+import { Browser } from "../browser/Browser";
 import { CONFIG } from "../config";
 import { QAWolf } from "./index";
 
-let browser: BrowserObject;
+let browser: Browser;
 
 beforeAll(async () => {
-  browser = await createBrowser();
+  browser = await Browser.create();
 });
 
-afterAll(() => browser.closeWindow());
+afterAll(() => browser.close());
 
 test("actions.click works on a link", async () => {
-  await browser.url(CONFIG.testUrl);
-  await injectClient(browser);
+  const page = await browser.goto(CONFIG.testUrl);
 
-  await browser.execute(() => {
+  await page.evaluate(() => {
     const qawolf: QAWolf = (window as any).qawolf;
     const link = qawolf.xpath.findElementByXpath(
       '//*[@id="content"]/ul/li[3]/a'
     );
     qawolf.actions.click(link!);
   });
+  await page.waitForNavigation();
 
-  const url = await browser.getUrl();
-
-  expect(url).toBe(`${CONFIG.testUrl}/broken_images`);
+  expect(page.url()).toBe(`${CONFIG.testUrl}/broken_images`);
 });
 
 test("actions.setInputValue sets an input value", async () => {
-  await browser.url(`${CONFIG.testUrl}/login`);
-  await injectClient(browser);
+  const page = await browser.goto(`${CONFIG.testUrl}/login`);
 
-  await browser.execute(() => {
+  await page.evaluate(() => {
     const qawolf: QAWolf = (window as any).qawolf;
     const username = qawolf.xpath.findElementByXpath(
       '//*[@id="username"]'
@@ -40,9 +36,10 @@ test("actions.setInputValue sets an input value", async () => {
     qawolf.actions.setInputValue(username, "spirit");
   });
 
-  const inputs = await browser.$$("input");
-  const username = await inputs[0].getValue();
-  const password = await inputs[1].getValue();
+  const [username, password] = await page.$$eval(
+    "input",
+    (inputs: HTMLInputElement[]) => inputs.map(i => i.value)
+  );
 
   expect(username).toBe("spirit");
   expect(password).toBeFalsy();
