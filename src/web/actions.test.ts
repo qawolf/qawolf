@@ -1,18 +1,17 @@
-import { Page } from "puppeteer";
-import { createPage } from "../browser/browser";
+import { Browser } from "../browser/Browser";
 import { CONFIG } from "../config";
 import { QAWolf } from "./index";
 
-let page: Page;
+let browser: Browser;
 
 beforeAll(async () => {
-  page = await createPage();
+  browser = await Browser.create();
 });
 
-afterAll(() => page.browser().close());
+afterAll(() => browser.close());
 
 test("actions.click works on a link", async () => {
-  await page.goto(CONFIG.testUrl);
+  const page = await browser.goto(CONFIG.testUrl);
 
   await page.evaluate(() => {
     const qawolf: QAWolf = (window as any).qawolf;
@@ -27,7 +26,7 @@ test("actions.click works on a link", async () => {
 });
 
 test("actions.setInputValue sets an input value", async () => {
-  await page.goto(`${CONFIG.testUrl}/login`);
+  const page = await browser.goto(`${CONFIG.testUrl}/login`);
 
   await page.evaluate(() => {
     const qawolf: QAWolf = (window as any).qawolf;

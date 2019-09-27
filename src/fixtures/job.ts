@@ -48,3 +48,25 @@ export const redirectJob: Job = {
   ],
   url: CONFIG.testUrl
 };
+
+export const windowsJob: Job = {
+  name: "Multiple windows",
+  steps: [
+    // open two windows
+    {
+      locator: {
+        xpath: '//*[@id="content"]/div/a'
+      },
+      pageId: 0,
+      type: "click"
+    },
+    {
+      locator: {
+        xpath: '//*[@id="content"]/div/a'
+      },
+      pageId: 0,
+      type: "click"
+    }
+  ],
+  url: `${CONFIG.testUrl}/windows`
+};

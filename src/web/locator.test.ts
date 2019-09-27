@@ -1,15 +1,17 @@
 import { Page } from "puppeteer";
-import { createPage } from "../browser/browser";
+import { Browser } from "../browser/Browser";
 import { CONFIG } from "../config";
 import { QAWolf } from "./index";
 
+let browser: Browser;
 let page: Page;
 
 beforeAll(async () => {
-  page = await createPage(`${CONFIG.testUrl}/login`);
+  browser = await Browser.create(`${CONFIG.testUrl}/login`);
+  page = await browser.currentPage();
 });
 
-afterAll(() => page.browser().close());
+afterAll(() => browser.close());
 
 test("getLabels correctly returns labels", async () => {
   const nullLabels = await page.evaluate(() => {

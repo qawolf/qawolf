@@ -1,5 +1,4 @@
-import { Page } from "puppeteer";
-import { createPage } from "../browser/browser";
+import { Browser } from "../browser/Browser";
 import { CONFIG } from "../config";
 import { QAWolf } from "./index";
 import { computeSimilarityScores } from "./rank";
@@ -25,22 +24,22 @@ const base = {
   textContent: "click me!"
 };
 
-let page: Page;
+let browser: Browser;
 
 beforeAll(async () => {
-  page = await createPage();
+  browser = await Browser.create();
 });
 
-afterAll(() => page.browser().close());
+afterAll(() => browser.close());
 
 describe("rank.computeScoresForElements", () => {
   test("returns scores for each element", async () => {
+    const page = await browser.goto(`${CONFIG.testUrl}/login`);
+
     const stepWithLocator = {
       ...step,
       locator: { ...base, tagName: "input" }
     };
-
-    await page.goto(`${CONFIG.testUrl}/login`);
 
     const scores = await page.evaluate(step => {
       const qawolf: QAWolf = (window as any).qawolf;
@@ -55,8 +54,6 @@ describe("rank.computeScoresForElements", () => {
   });
 
   test("throws error if step does not have locator", async () => {
-    await page.goto(`${CONFIG.testUrl}/login`);
-
     const step = {
       locator: {
         xpath: "xpath"
@@ -73,7 +70,7 @@ describe("rank.computeScoresForElements", () => {
 
 describe("rank.findCandidateElements", () => {
   test("returns all elements for click step", async () => {
-    await page.goto(`${CONFIG.testUrl}/login`);
+    const page = await browser.goto(`${CONFIG.testUrl}/login`);
 
     const numElements = await page.evaluate(step => {
       const qawolf: QAWolf = (window as any).qawolf;
@@ -85,7 +82,7 @@ describe("rank.findCandidateElements", () => {
   });
 
   test("returns only inputs for type step", async () => {
-    await page.goto(`${CONFIG.testUrl}/login`);
+    const page = await browser.goto(`${CONFIG.testUrl}/login`);
 
     const typeAction = {
       ...step,
@@ -104,7 +101,7 @@ describe("rank.findCandidateElements", () => {
 
 describe("rank.findTopElement", () => {
   test("returns null if no elements similar enough", async () => {
-    await page.goto(`${CONFIG.testUrl}/login`);
+    const page = await browser.goto(`${CONFIG.testUrl}/login`);
 
     const stepWithLocator = {
       ...step,
@@ -121,7 +118,7 @@ describe("rank.findTopElement", () => {
   });
 
   test("returns null if a tie is found", async () => {
-    await page.goto(`${CONFIG.testUrl}/checkboxes`);
+    const page = await browser.goto(`${CONFIG.testUrl}/checkboxes`);
 
     const stepWithLocator = {
       ...step,
@@ -145,7 +142,7 @@ describe("rank.findTopElement", () => {
   });
 
   test("returns xpath of highest match if one found", async () => {
-    await page.goto(`${CONFIG.testUrl}/login`);
+    const page = await browser.goto(`${CONFIG.testUrl}/login`);
 
     const stepWithLocator = {
       ...step,
