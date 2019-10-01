@@ -6,8 +6,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+        with:
+          ref: ${{ github.ref }}
       - name: Test
-        uses: qawolf/qawolf@action
+        uses: ./
         with:
           run: "npm test"
         env:
