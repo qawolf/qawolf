@@ -33,7 +33,7 @@ test("actions.scrollTo scrolls to a given position", async () => {
 
   await page.evaluate(() => {
     const qawolf: QAWolf = (window as any).qawolf;
-    return Promise.resolve(qawolf.actions.scrollTo(1000, 1000));
+    return Promise.resolve(qawolf.actions.scrollTo(1000));
   });
 
   const nextYPosition = await page.evaluate(() => window.pageYOffset);
@@ -41,11 +41,26 @@ test("actions.scrollTo scrolls to a given position", async () => {
 
   await page.evaluate(() => {
     const qawolf: QAWolf = (window as any).qawolf;
-    return Promise.resolve(qawolf.actions.scrollTo(0, 1000));
+    return Promise.resolve(qawolf.actions.scrollTo(0));
   });
 
   const finalYPosition = await page.evaluate(() => window.pageYOffset);
   expect(finalYPosition).toBe(0);
+});
+
+test("actions.scrollTo scrolls in infinite scroll", async () => {
+  const page = await browser.goto(`${CONFIG.testUrl}/infinite_scroll`);
+
+  const initialYPosition = await page.evaluate(() => window.pageYOffset);
+  expect(initialYPosition).toBe(0);
+
+  await page.evaluate(() => {
+    const qawolf: QAWolf = (window as any).qawolf;
+    return Promise.resolve(qawolf.actions.scrollTo(2000));
+  });
+
+  const nextYPosition = await page.evaluate(() => window.pageYOffset);
+  expect(nextYPosition).toBe(2000);
 });
 
 test("actions.setInputValue sets an input value", async () => {

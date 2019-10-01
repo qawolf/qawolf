@@ -20,9 +20,11 @@ const findClickableAncestor = (element: HTMLElement): HTMLElement => {
   return findClickableAncestor(element.parentElement);
 };
 
-export const scrollTo = async (yPosition: number, delayMs: number = 5000) => {
-  await sleep(delayMs);
-  window.scrollTo(0, yPosition);
+export const scrollTo = async (yPosition: number) => {
+  while (window.pageYOffset !== yPosition) {
+    await sleep(100);
+    window.scrollTo(0, yPosition);
+  }
 };
 
 export const setInputValue = (

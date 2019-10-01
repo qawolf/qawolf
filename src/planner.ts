@@ -94,13 +94,17 @@ export const planScrollActions = (
     event => event.data && event.data.source === 3 && event.data.id === 1
   );
   if (!scrollEvents.length) return [];
-
-  let currentBin = getScrollBin(scrollEvents[0].data.y, screenHeight);
+  let currentBin: number;
   let steps: BrowserStep[] = [];
 
-  scrollEvents.forEach(event => {
+  scrollEvents.forEach((event, i) => {
+    const isNewPage =
+      i === 0 || event.data.pathname !== scrollEvents[i - 1].data.pathname;
+    if (isNewPage) {
+      currentBin = getScrollBin(event.data.y, screenHeight);
+    }
     const eventBin = getScrollBin(event.data.y, screenHeight);
-    // TODO: reset currentBin when on new page based on data.y
+
     if (eventBin !== currentBin) {
       steps.push({
         locator: { xpath: SCROLL_XPATH },
