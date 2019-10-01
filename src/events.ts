@@ -8,7 +8,6 @@ import {
 export type qaData = incrementalData &
   mouseInteractionData & {
     isTrusted?: boolean;
-    pathname?: string;
     text?: string;
     xpath?: string;
   };

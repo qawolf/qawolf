@@ -82,35 +82,36 @@ export const planJob = (originalEvents: eventWithTime[]): Job => {
   return job;
 };
 
-export const planScrollActions = (
-  events: qaEventWithTime[],
-  screenHeight: number = 1080
-): BrowserStep[] => {
-  const scrollEvents = events.filter(
-    event => event.data && event.data.source === 3 && event.data.id === 1
-  );
-  if (!scrollEvents.length) return [];
-  let currentBin: number;
+export const planScrollActions = (events: qaEventWithTime[]): BrowserStep[] => {
+  let firstScrollEvent: qaEventWithTime | null = null;
+  let currentScrollEvent: qaEventWithTime | null = null;
+
   const steps: BrowserStep[] = [];
 
-  scrollEvents.forEach((event, i) => {
-    const isNewPage =
-      i === 0 || event.data.pathname !== scrollEvents[i - 1].data.pathname;
-    if (isNewPage) {
-      currentBin = Math.floor(event.data.y / screenHeight);
+  events.forEach((event, i) => {
+    const isScrollEvent =
+      event.data && event.data.source === 3 && event.data.id === 1;
+    if (!isScrollEvent && !isMouseDownEvent(event) && !isTypeEvent(event)) {
+      return;
     }
-    const eventBin = Math.floor(event.data.y / screenHeight);
 
-    if (eventBin !== currentBin) {
+    if (isScrollEvent) {
+      currentScrollEvent = event;
+      if (!firstScrollEvent) {
+        firstScrollEvent = event;
+      }
+    } else if (currentScrollEvent) {
       steps.push({
         locator: { xpath: SCROLL_XPATH },
-        scrollDirection: eventBin > currentBin ? "down" : "up",
-        scrollTo: eventBin * screenHeight,
-        sourceEventId: event.id,
+        scrollDirection:
+          firstScrollEvent!.data.y < currentScrollEvent.data.y ? "down" : "up",
+        scrollTo: currentScrollEvent.data.y,
+        sourceEventId: currentScrollEvent.id,
         type: "scroll"
       });
 
-      currentBin = eventBin;
+      firstScrollEvent = null;
+      currentScrollEvent = null;
     }
   });
 
