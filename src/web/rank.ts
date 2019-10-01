@@ -2,7 +2,7 @@ import { getLocator } from "./locator";
 import { computeMaxPossibleScore, computeSimilarityScore } from "./score";
 import { BrowserStep } from "../types";
 
-const DEFAULT_THRESHOLD = 0.75;
+const DEFAULT_THRESHOLD = 0.6;
 
 export const computeSimilarityScores = (
   step: BrowserStep,
