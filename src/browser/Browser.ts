@@ -4,7 +4,7 @@ import { BrowserStep } from "../types";
 import { sleep } from "../utils";
 import { QAWolf } from "../web";
 
-const webBundle = fs.readFileSync("build/qawolf.web.js", "utf8");
+const webBundle = fs.readFileSync("dist/qawolf.web.js", "utf8");
 
 export class Browser {
   /**

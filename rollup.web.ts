@@ -7,7 +7,7 @@ import typescript from "rollup-plugin-typescript";
 export default {
   input: "./src/web/index.ts",
   output: {
-    file: "./build/qawolf.web.js",
+    file: "./dist/qawolf.web.js",
     format: "iife",
     name: "qawolf"
   },

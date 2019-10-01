@@ -9,7 +9,7 @@
     "preserveConstEnums": true,
     "sourceMap": true,
     "rootDir": "src",
-    "outDir": "build",
+    "outDir": "dist",
     "lib": ["esnext", "dom"],
     "target": "es5",
     "jsx": "react"
