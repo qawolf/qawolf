@@ -91,7 +91,7 @@ export const planScrollActions = (
   );
   if (!scrollEvents.length) return [];
   let currentBin: number;
-  let steps: BrowserStep[] = [];
+  const steps: BrowserStep[] = [];
 
   scrollEvents.forEach((event, i) => {
     const isNewPage =
