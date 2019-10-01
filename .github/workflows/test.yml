@@ -8,6 +8,11 @@ jobs:
         uses: actions/checkout@v1
         with:
           ref: ${{ github.ref }}
+      # build first to partition the action logs
+      - name: Build
+        uses: ./
+        with:
+          run: 'echo "Dockerfile built"'
       - name: Test
         uses: ./
         with:
