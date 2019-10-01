@@ -7,10 +7,6 @@ const SCROLL_XPATH = "scroll";
 export const findHref = (events: eventWithTime[]): string =>
   (events[0] as metaEvent).data.href;
 
-const getScrollBin = (yPosition: number, screenHeight: number): number => {
-  return Math.floor(yPosition / screenHeight);
-};
-
 export const orderEventsByTime = (
   events: eventWithTime[]
 ): qaEventWithTime[] => {
@@ -101,9 +97,9 @@ export const planScrollActions = (
     const isNewPage =
       i === 0 || event.data.pathname !== scrollEvents[i - 1].data.pathname;
     if (isNewPage) {
-      currentBin = getScrollBin(event.data.y, screenHeight);
+      currentBin = 0;
     }
-    const eventBin = getScrollBin(event.data.y, screenHeight);
+    const eventBin = Math.floor(event.data.y / screenHeight);
 
     if (eventBin !== currentBin) {
       steps.push({
