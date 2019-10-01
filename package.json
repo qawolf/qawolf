@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "Effortless smoke tests",
   "main": "index.js",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build:lib": "tsc -p .",
     "build:web": "rollup --config rollup.web.ts",
