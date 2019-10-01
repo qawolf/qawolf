@@ -2,26 +2,43 @@
 
 import clear from "clear";
 import program from "commander";
-import fs from "fs-extra";
+import fs, { ensureDir, writeJson } from "fs-extra";
+import path from "path";
 import { BrowserRunner } from "../browser/BrowserRunner";
 import { renderCli } from "../callbacks/cli";
 import { buildScreenshotCallback } from "../callbacks/screenshot";
-import { loginJob } from "../fixtures/job";
 import { logger } from "../logger";
 import { planJob } from "../planner";
 
 clear();
 
 program
-  .command("run [source]")
-  .description("run a test")
-  .action(async source => {
-    logger.debug(`run test: ${source}`);
-    let job = loginJob;
-    if (source) {
-      const events = JSON.parse(await fs.readFile(source, "utf8"));
-      job = planJob(events);
-    }
+  .command("plan <eventsPath> <name>")
+  .description("plan a job from events")
+  .action(async (eventsPath, name) => {
+    const sourcePath = path.resolve(eventsPath);
+    const destDir = `${process.cwd()}/.qawolf/jobs`;
+    const destPath = `${destDir}/${name}.json`;
+
+    logger.debug(`plan job ${sourcePath} -> ${destPath}`);
+    const events = await fs.readJson(sourcePath);
+
+    const job = planJob(events);
+
+    await ensureDir(destDir);
+    await writeJson(destPath, job, { spaces: " " });
+
+    process.exit(0);
+  });
+
+program
+  .command("run <name>")
+  .description("run a job")
+  .action(async name => {
+    const jobPath = `${process.cwd()}/.qawolf/jobs/${name}.json`;
+
+    logger.debug(`run job ${jobPath}`);
+    const job = await fs.readJson(jobPath);
 
     const takeScreenshot = buildScreenshotCallback(1000);
 
