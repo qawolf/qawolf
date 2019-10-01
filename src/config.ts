@@ -11,6 +11,7 @@ const testUrl = process.env.TEST_URL || "";
 
 export const CONFIG = {
   fullScreen: process.env.FULL_SCREEN === "true",
+  headless: process.env.HEADLESS === "true",
   jsonLogging,
   savePath,
   testUrl
