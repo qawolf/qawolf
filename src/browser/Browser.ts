@@ -21,15 +21,20 @@ export class Browser {
   }
 
   public static async create(url?: string) {
-    const puppeteerBrowser = await puppeteer.launch({
-      // needed for circleci
-      args: ["–no-sandbox", "--disable-setuid-sandbox"],
+    const launchOptions: puppeteer.LaunchOptions = {
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
       headless: CONFIG.headless,
       defaultViewport: {
         height: 1080,
         width: 1920
       }
-    });
+    };
+
+    if (CONFIG.chromeExecutablePath) {
+      launchOptions.executablePath = CONFIG.chromeExecutablePath;
+    }
+
+    const puppeteerBrowser = await puppeteer.launch(launchOptions);
 
     const browser = new Browser(puppeteerBrowser);
     await browser.wrapPages();

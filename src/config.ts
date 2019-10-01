@@ -10,6 +10,7 @@ const savePath = process.env.SAVE_PATH || "/tmp/qawolf";
 const testUrl = process.env.TEST_URL || "";
 
 export const CONFIG = {
+  chromeExecutablePath: process.env.CHROME_EXECUTABLE_PATH,
   fullScreen: process.env.FULL_SCREEN === "true",
   headless: process.env.HEADLESS === "true",
   jsonLogging,
