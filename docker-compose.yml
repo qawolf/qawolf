@@ -8,8 +8,3 @@ services:
     image: gprestes/the-internet@sha256:f741ba048b7232ef90b0f7885de7f6ac42a52a17e73dd82afc484da140398796
     ports:
       - "5000:5000"
-  # selenium:
-  #   image: selenium/standalone-chrome-debug:3.141.59
-  #   ports:
-  #     - "4444:4444"
-  #     - "5900:5900"
