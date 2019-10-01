@@ -18,3 +18,7 @@ jobs:
           CHROME_EXECUTABLE_PATH: "google-chrome-unstable"
           HEADLESS: "true"
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+          TEST_URL: http://theinternet:5000
+    services:
+      theinternet:
+        image: gprestes/the-internet@sha256:f741ba048b7232ef90b0f7885de7f6ac42a52a17e73dd82afc484da140398796
