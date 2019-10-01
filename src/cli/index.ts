@@ -56,4 +56,11 @@ program
     process.exit(0);
   });
 
+program.allowUnknownOption(false);
+
 program.parse(process.argv);
+
+if (!process.argv.slice(2).length) {
+  console.log("\n");
+  program.outputHelp();
+}
