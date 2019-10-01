@@ -12,18 +12,21 @@ RUN apt-get update && \
       apt-get update && apt-get -y install google-chrome-stable && \
       rm -rf /var/lib/apt/lists/*
 
-# Install dependencies
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
-COPY package.json package.json
-COPY package-lock.json package-lock.json
-RUN npm i
+# Copy everything and install dependencies in a static location that is not WORKDIR
+# WORKDIR will be replaced by github action volume
+ENV QAWOLF_DIR "/root/qawolf"
 
-# Build qawolf
-COPY . .
-RUN npm run build
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+COPY package.json ${QAWOLF_DIR}/package.json
+COPY package-lock.json ${QAWOLF_DIR}/package-lock.json
+RUN cd ${QAWOLF_DIR} && npm i
+
+# Copy and build qawolf
+COPY . ${QAWOLF_DIR}/.
+RUN cd ${QAWOLF_DIR} && npm run build
 
 # Set default env variables
 ENV CHROME_EXECUTABLE_PATH "google-chrome-stable"
 ENV HEADLESS "true"
 
-ENTRYPOINT ["bin/entrypoint.sh"]
+ENTRYPOINT ["/root/qawolf/bin/entrypoint.sh"]
