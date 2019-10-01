@@ -1,6 +1,7 @@
 {
   "name": "qawolf",
   "version": "0.0.0",
+  "license": "AGPL-3.0",
   "description": "Effortless smoke tests",
   "main": "index.js",
   "scripts": {
