@@ -12,19 +12,6 @@ RUN apt-get update && \
       apt-get update && apt-get -y install google-chrome-stable && \
       rm -rf /var/lib/apt/lists/*
 
-# Add user so we don't need --no-sandbox.
-RUN groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
-    && mkdir -p /home/pptruser/Downloads \
-    && chown -R pptruser:pptruser /home/pptruser
-
-# Run everything after as non-privileged user.
-USER pptruser
-
-# Configure workdir
-WORKDIR /home/pptruser
-ENV NPM_CONFIG_PREFIX=/home/pptruser/.npm-global
-ENV PATH=$PATH:$NPM_CONFIG_PREFIX/bin
-
 # Install dependencies
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 COPY package.json package.json
@@ -32,7 +19,7 @@ COPY package-lock.json package-lock.json
 RUN npm i
 
 # Build qawolf
-COPY --chown=pptruser:pptruser . .
+COPY . .
 RUN npm run build
 
 # Set default env variables
