@@ -1,0 +1,11 @@
+name: "QA Wolf"
+description: "Run qawolf tests"
+inputs:
+  run:
+    description: "CMD to run inside qawolf container"
+    default: "qawolf run"
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.run }}
