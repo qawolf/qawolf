@@ -1,0 +1,24 @@
+name: Test
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: npm install
+        uses: ianwalter/puppeteer@v2.0.0
+        with:
+          args: npm install
+      - name: npm test
+        uses: ianwalter/puppeteer@v2.0.0
+        with:
+          args: npm test
+        env:
+          CHROME_EXECUTABLE_PATH: "google-chrome-unstable"
+          HEADLESS: "true"
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+          TEST_URL: http://theinternet:5000
+    services:
+      theinternet:
+        image: gprestes/the-internet@sha256:f741ba048b7232ef90b0f7885de7f6ac42a52a17e73dd82afc484da140398796
