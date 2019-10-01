@@ -97,9 +97,7 @@ export const planScrollActions = (
     const isNewPage =
       i === 0 || event.data.pathname !== scrollEvents[i - 1].data.pathname;
     if (isNewPage) {
-      currentBin = Math.floor(
-        Math.max(event.data.y - screenHeight, 0) / screenHeight
-      );
+      currentBin = Math.floor(event.data.y / screenHeight);
     }
     const eventBin = Math.floor(event.data.y / screenHeight);
 
