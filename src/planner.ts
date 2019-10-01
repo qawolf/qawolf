@@ -7,6 +7,10 @@ const SCROLL_XPATH = "scroll";
 export const findHref = (events: eventWithTime[]): string =>
   (events[0] as metaEvent).data.href;
 
+const isScrollEvent = (event: qaEventWithTime): boolean => {
+  return event.data && event.data.source === 3 && event.data.id === 1;
+};
+
 export const orderEventsByTime = (
   events: eventWithTime[]
 ): qaEventWithTime[] => {
@@ -50,6 +54,34 @@ export const isTypeEvent = (event: qaEventWithTime | null): boolean => {
   return !!(data.source === 5 && data.isTrusted && data.text);
 };
 
+const partitionScrollEvents = (
+  events: qaEventWithTime[]
+): qaEventWithTime[][] => {
+  const filteredEvents = events.filter(event => {
+    return (
+      isMouseDownEvent(event) || isScrollEvent(event) || isTypeEvent(event)
+    );
+  });
+
+  const partitionedScrollEvents: qaEventWithTime[][] = [];
+  let currentScrollEvents: qaEventWithTime[] = [];
+
+  filteredEvents.forEach(event => {
+    if (isScrollEvent(event)) {
+      currentScrollEvents.push(event);
+    } else if (currentScrollEvents.length) {
+      partitionedScrollEvents.push(currentScrollEvents);
+      currentScrollEvents = [];
+    }
+  });
+
+  if (currentScrollEvents.length) {
+    partitionedScrollEvents.push(currentScrollEvents);
+  }
+
+  return partitionedScrollEvents;
+};
+
 export const planClickActions = (events: qaEventWithTime[]): BrowserStep[] => {
   const steps: BrowserStep[] = [];
 
@@ -83,36 +115,19 @@ export const planJob = (originalEvents: eventWithTime[]): Job => {
 };
 
 export const planScrollActions = (events: qaEventWithTime[]): BrowserStep[] => {
-  let firstScrollEvent: qaEventWithTime | null = null;
-  let currentScrollEvent: qaEventWithTime | null = null;
-
+  const partitionedScrollEvents = partitionScrollEvents(events);
   const steps: BrowserStep[] = [];
 
-  events.forEach((event, i) => {
-    const isScrollEvent =
-      event.data && event.data.source === 3 && event.data.id === 1;
-    if (!isScrollEvent && !isMouseDownEvent(event) && !isTypeEvent(event)) {
-      return;
-    }
+  partitionedScrollEvents.forEach(eventList => {
+    const lastEvent = eventList[eventList.length - 1];
 
-    if (isScrollEvent) {
-      currentScrollEvent = event;
-      if (!firstScrollEvent) {
-        firstScrollEvent = event;
-      }
-    } else if (currentScrollEvent) {
-      steps.push({
-        locator: { xpath: SCROLL_XPATH },
-        scrollDirection:
-          firstScrollEvent!.data.y < currentScrollEvent.data.y ? "down" : "up",
-        scrollTo: currentScrollEvent.data.y,
-        sourceEventId: currentScrollEvent.id,
-        type: "scroll"
-      });
-
-      firstScrollEvent = null;
-      currentScrollEvent = null;
-    }
+    steps.push({
+      locator: { xpath: SCROLL_XPATH },
+      scrollDirection: eventList[0].data.y <= lastEvent.data.y ? "down" : "up",
+      scrollTo: lastEvent.data.y,
+      sourceEventId: lastEvent.id,
+      type: "scroll"
+    });
   });
 
   return steps;
