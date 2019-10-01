@@ -1,3 +1,5 @@
+import { sleep } from "../utils";
+
 export const click = (element: HTMLElement) => {
   const clickableElement = findClickableAncestor(element);
 
@@ -16,6 +18,11 @@ const findClickableAncestor = (element: HTMLElement): HTMLElement => {
   }
 
   return findClickableAncestor(element.parentElement);
+};
+
+export const scrollTo = async (yPosition: number, delayMs: number = 5000) => {
+  await sleep(delayMs);
+  window.scrollTo(0, yPosition);
 };
 
 export const setInputValue = (

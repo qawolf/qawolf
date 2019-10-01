@@ -1,6 +1,7 @@
 import { Browser } from "../browser/Browser";
 import { CONFIG } from "../config";
 import { QAWolf } from "./index";
+import { sleep } from "../utils";
 
 let browser: Browser;
 
@@ -23,6 +24,29 @@ test("actions.click works on a link", async () => {
   await page.waitForNavigation();
 
   expect(page.url()).toBe(`${CONFIG.testUrl}/broken_images`);
+});
+
+test("actions.scrollTo scrolls to a given position", async () => {
+  const page = await browser.goto(`${CONFIG.testUrl}/large`);
+
+  const initialYPosition = await page.evaluate(() => window.pageYOffset);
+  expect(initialYPosition).toBe(0);
+
+  await page.evaluate(() => {
+    const qawolf: QAWolf = (window as any).qawolf;
+    return Promise.resolve(qawolf.actions.scrollTo(1000, 1000));
+  });
+
+  const nextYPosition = await page.evaluate(() => window.pageYOffset);
+  expect(nextYPosition).toBe(1000);
+
+  await page.evaluate(() => {
+    const qawolf: QAWolf = (window as any).qawolf;
+    return Promise.resolve(qawolf.actions.scrollTo(0, 1000));
+  });
+
+  const finalYPosition = await page.evaluate(() => window.pageYOffset);
+  expect(finalYPosition).toBe(0);
 });
 
 test("actions.setInputValue sets an input value", async () => {

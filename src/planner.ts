@@ -2,8 +2,14 @@ import { eventWithTime, metaEvent, mousemoveData } from "rrweb/typings/types";
 import { BrowserStep, Job } from "./types";
 import { qaEventWithTime } from "./events";
 
+const SCROLL_XPATH = "scroll";
+
 export const findHref = (events: eventWithTime[]): string =>
   (events[0] as metaEvent).data.href;
+
+const getScrollBin = (yPosition: number, screenHeight: number): number => {
+  return Math.floor(yPosition / screenHeight);
+};
 
 export const orderEventsByTime = (
   events: eventWithTime[]
@@ -70,15 +76,45 @@ export const planJob = (originalEvents: eventWithTime[]): Job => {
 
   const events = orderEventsByTime(originalEvents);
 
-  const steps: BrowserStep[] = planClickActions(events).concat(
-    planTypeActions(events)
-  );
-
-  steps.sort((a, b) => a.sourceEventId! - b.sourceEventId!);
+  const steps: BrowserStep[] = planClickActions(events)
+    .concat(planScrollActions(events))
+    .concat(planTypeActions(events));
+  steps.sort((a, b) => a.sourceEventId - b.sourceEventId);
   // TODO: need to get actual name
   const job = { name: "job", steps, url };
 
   return job;
+};
+
+export const planScrollActions = (
+  events: qaEventWithTime[],
+  screenHeight: number = 1080
+): BrowserStep[] => {
+  const scrollEvents = events.filter(
+    event => event.data && event.data.source === 3 && event.data.id === 1
+  );
+  if (!scrollEvents.length) return [];
+
+  let currentBin = getScrollBin(scrollEvents[0].data.y, screenHeight);
+  let steps: BrowserStep[] = [];
+
+  scrollEvents.forEach(event => {
+    const eventBin = getScrollBin(event.data.y, screenHeight);
+    // TODO: reset currentBin when on new page based on data.y
+    if (eventBin !== currentBin) {
+      steps.push({
+        locator: { xpath: SCROLL_XPATH },
+        scrollDirection: eventBin > currentBin ? "down" : "up",
+        scrollTo: eventBin * screenHeight,
+        sourceEventId: event.id,
+        type: "scroll"
+      });
+
+      currentBin = eventBin;
+    }
+  });
+
+  return steps;
 };
 
 export const planTypeActions = (events: qaEventWithTime[]): BrowserStep[] => {

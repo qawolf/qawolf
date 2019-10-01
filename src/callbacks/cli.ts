@@ -31,6 +31,10 @@ export const createRunFromJob = (job: Job): Run => {
 };
 
 export const formatStep = (step: BrowserStep): Step => {
+  if (step.type === "scroll") {
+    return { name: `scroll ${step.scrollDirection!}`, status: "queued" };
+  }
+
   const stepAction = step.type === "type" ? "enter" : "click";
   const stepValue = step.value ? `${step.value} into ` : "";
   const targetTagName = step.locator.inputType
