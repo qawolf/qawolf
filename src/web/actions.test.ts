@@ -1,7 +1,6 @@
 import { Browser } from "../browser/Browser";
 import { CONFIG } from "../config";
 import { QAWolf } from "./index";
-import { sleep } from "../utils";
 
 let browser: Browser;
 
