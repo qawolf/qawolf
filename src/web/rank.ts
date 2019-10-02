@@ -59,7 +59,7 @@ export const findTopElement = (
 
 export const waitForElement = async (
   step: BrowserStep,
-  timeout: number = 5000,
+  timeout: number = 30000,
   threshold: number = DEFAULT_THRESHOLD
 ): Promise<Element> => {
   return new Promise((resolve, reject) => {

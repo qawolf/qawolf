@@ -67,13 +67,17 @@ const groupScrollEvents = (events: qaEventWithTime[]): qaEventWithTime[][] => {
   filteredEvents.forEach(event => {
     if (isScrollEvent(event)) {
       currentScrollEvents.push(event);
-    } else if (currentScrollEvents.length) {
+    } else if (currentScrollEvents.length > 1) {
+      // don't include single scroll events as meaningful scrolls include several events
+      // this ignores situations where fingers are on trackpad but screen actually doesn't move
       groupedScrollEvents.push(currentScrollEvents);
+      currentScrollEvents = [];
+    } else {
       currentScrollEvents = [];
     }
   });
 
-  if (currentScrollEvents.length) {
+  if (currentScrollEvents.length > 1) {
     groupedScrollEvents.push(currentScrollEvents);
   }
 
