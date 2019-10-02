@@ -24,10 +24,10 @@ export const scrollTo = async (
   yPosition: number,
   timeoutMs: number = 10000
 ) => {
-  const startTime = new Date().getTime();
+  const start = Date.now();
 
   while (window.pageYOffset !== yPosition) {
-    if (new Date().getTime() - startTime > timeoutMs) {
+    if (Date.now() - start > timeoutMs) {
       throw "Could not scroll, timeout exceeded";
     }
 

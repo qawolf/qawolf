@@ -30,7 +30,7 @@ export type Locator = {
 
 export type Run = {
   name: string;
-  startTime: Date;
+  startTime: number;
   status: Status;
   steps: Step[];
 };

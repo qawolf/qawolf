@@ -2,7 +2,7 @@ import { buildRuns, createRunFromJob, formatStep } from "./cli";
 
 describe("buildRuns", () => {
   test("creates runs object without summary if run not complete", () => {
-    const startTime = new Date();
+    const startTime = Date.now();
     const run = {
       name: "Log in",
       status: "runs" as "runs",
@@ -18,7 +18,7 @@ describe("buildRuns", () => {
   });
 
   test("creates runs object with passing summary if run passed", () => {
-    const startTime = new Date();
+    const startTime = Date.now();
     const run = {
       name: "Log in",
       status: "pass" as "runs",
@@ -34,7 +34,7 @@ describe("buildRuns", () => {
   });
 
   test("creates runs object with failing summary if run failed", () => {
-    const startTime = new Date();
+    const startTime = Date.now();
     const run = {
       name: "Log in",
       status: "fail" as "runs",

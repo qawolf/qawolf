@@ -24,7 +24,7 @@ export const createRunFromJob = (job: Job): Run => {
 
   return {
     status: "queued",
-    startTime: new Date(),
+    startTime: Date.now(),
     steps: formattedSteps,
     name: job.name
   };
