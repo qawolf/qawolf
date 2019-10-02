@@ -5,8 +5,6 @@ dotenv.config(dotEnvPath ? { path: dotEnvPath } : {});
 
 const jsonLogging = process.env.LOG_TYPE === "json";
 
-const savePath = process.env.SAVE_PATH || "/tmp/qawolf";
-
 const testUrl = process.env.TEST_URL || "";
 
 export const CONFIG = {
@@ -14,6 +12,6 @@ export const CONFIG = {
   fullScreen: process.env.FULL_SCREEN === "true",
   headless: process.env.HEADLESS === "true",
   jsonLogging,
-  savePath,
+  screenshotPath: process.env.SCREENSHOT_PATH,
   testUrl
 };
