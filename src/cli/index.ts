@@ -3,13 +3,14 @@
 import clear from "clear";
 import program from "commander";
 import fs, { ensureDir, writeJson } from "fs-extra";
+import { startCase } from "lodash";
 import path from "path";
 import { BrowserRunner } from "../browser/BrowserRunner";
 import { renderCli } from "../callbacks/cli";
 import { buildScreenshotCallback } from "../callbacks/screenshot";
+import { CONFIG } from "../config";
 import { logger } from "../logger";
 import { planJob } from "../planner";
-import { CONFIG } from "../config";
 
 clear();
 
@@ -24,7 +25,7 @@ program
     logger.debug(`plan job ${sourcePath} -> ${destPath}`);
     const events = await fs.readJson(sourcePath);
 
-    const job = planJob(events);
+    const job = planJob(events, startCase(name));
 
     await ensureDir(destDir);
     await writeJson(destPath, job, { spaces: " " });
