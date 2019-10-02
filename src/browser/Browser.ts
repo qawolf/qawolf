@@ -1,11 +1,15 @@
 import fs from "fs-extra";
+import path from "path";
 import puppeteer, { Page, Serializable } from "puppeteer";
 import { CONFIG } from "../config";
 import { BrowserStep } from "../types";
 import { sleep } from "../utils";
 import { QAWolf } from "../web";
 
-const webBundle = fs.readFileSync("dist/qawolf.web.js", "utf8");
+const webBundle = fs.readFileSync(
+  path.resolve(__dirname, "../../dist/qawolf.web.js"),
+  "utf8"
+);
 
 export class Browser {
   /**

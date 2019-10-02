@@ -12,11 +12,11 @@ jobs:
       - name: Build
         uses: ./
         with:
-          run: 'echo "Dockerfile built"'
+          args: 'echo "Dockerfile built"'
       - name: Test
         uses: ./
         with:
-          run: "npm test"
+          args: "cd $QAWOLF_DIR && npm test"
         env:
           TEST_URL: http://theinternet:5000
     services:
