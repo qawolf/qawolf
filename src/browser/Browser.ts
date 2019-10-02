@@ -28,10 +28,7 @@ export class Browser {
     const launchOptions: puppeteer.LaunchOptions = {
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
       headless: CONFIG.headless,
-      defaultViewport: {
-        height: 1080,
-        width: 1920
-      }
+      defaultViewport: null
     };
 
     if (CONFIG.chromeExecutablePath) {
