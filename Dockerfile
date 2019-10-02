@@ -23,7 +23,7 @@ RUN cd ${QAWOLF_DIR} && npm i
 
 # Copy and build qawolf
 COPY . ${QAWOLF_DIR}/.
-RUN cd ${QAWOLF_DIR} && npm run build
+RUN cd ${QAWOLF_DIR} && npm run build && npm link
 
 # Set default env variables
 ENV CHROME_EXECUTABLE_PATH "google-chrome-stable"
