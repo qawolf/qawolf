@@ -9,6 +9,7 @@ import { renderCli } from "../callbacks/cli";
 import { buildScreenshotCallback } from "../callbacks/screenshot";
 import { logger } from "../logger";
 import { planJob } from "../planner";
+import { CONFIG } from "../config";
 
 clear();
 
@@ -40,13 +41,17 @@ program
     logger.debug(`run job ${jobPath}`);
     const job = await fs.readJson(jobPath);
 
-    const takeScreenshot = buildScreenshotCallback(1000);
-
     const callbacks = {
-      beforeStep: [takeScreenshot, renderCli],
+      beforeStep: [renderCli],
       afterStep: [renderCli],
-      afterRun: [takeScreenshot, renderCli]
+      afterRun: [renderCli]
     };
+
+    if (CONFIG.screenshotPath) {
+      const takeScreenshot = buildScreenshotCallback(1000);
+      callbacks.beforeStep.unshift(takeScreenshot);
+      callbacks.afterRun.unshift(takeScreenshot);
+    }
 
     const runner = new BrowserRunner({ callbacks });
     await runner.run(job);
