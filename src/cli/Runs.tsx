@@ -58,7 +58,7 @@ const Runs = ({ summary, runs }: PropTypes) => {
     : null;
 
   const actionText = summary ? "ran" : "is running";
-  const startTime = min(runs.map(run => run.startTime)) as Date;
+  const startTime = min(runs.map(run => run.startTime)) as number;
 
   return (
     <Box flexDirection="column">
