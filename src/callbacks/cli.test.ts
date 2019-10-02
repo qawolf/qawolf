@@ -230,7 +230,7 @@ describe("formatStep", () => {
       locator: {
         id: "input1",
         inputType: "text",
-        labels: ["\nusername\n"],
+        labels: ["\nusername\n\r"],
         name: "user",
         placeholder: "Jane Doe",
         tagName: "input"
