@@ -1,7 +1,6 @@
 import { Browser } from "../browser/Browser";
 import { CONFIG } from "../config";
 import { QAWolf } from "./index";
-import { computeSimilarityScores } from "./rank";
 
 const step = {
   locator: {
@@ -44,27 +43,16 @@ describe("rank.computeScoresForElements", () => {
     const scores = await page.evaluate(step => {
       const qawolf: QAWolf = (window as any).qawolf;
 
-      return qawolf.rank.computeSimilarityScores(
-        step,
-        document.getElementsByTagName("input")
-      );
+      const collection = document.getElementsByTagName("input");
+      const elements = [];
+      for (let i = 0; i < collection.length; i++) {
+        elements.push(collection[i]);
+      }
+
+      return qawolf.rank.computeSimilarityScores(step, elements);
     }, stepWithLocator);
 
     expect(scores).toEqual([100, 100]);
-  });
-
-  test("throws error if step does not have locator", async () => {
-    const step = {
-      locator: {
-        xpath: "xpath"
-      },
-      sourceEventId: 11,
-      type: "click" as "click"
-    };
-
-    expect(() => {
-      computeSimilarityScores(step, new HTMLCollection());
-    }).toThrowError();
   });
 });
 
@@ -78,7 +66,7 @@ describe("rank.findCandidateElements", () => {
       return qawolf.rank.findCandidateElements(step).length;
     }, step);
 
-    expect(numElements).toBe(45);
+    expect(numElements).toBe(28);
   });
 
   test("returns only inputs for type step", async () => {

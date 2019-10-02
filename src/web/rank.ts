@@ -6,12 +6,9 @@ const DEFAULT_THRESHOLD = 0.6;
 
 export const computeSimilarityScores = (
   step: BrowserStep,
-  elements: HTMLCollection
+  elements: Element[]
 ): number[] => {
   const base = step.locator;
-  if (!base) {
-    throw "Action does not have associated locator";
-  }
 
   const scores: number[] = [];
 
@@ -29,12 +26,20 @@ export const computeSimilarityScores = (
   return scores;
 };
 
-export const findCandidateElements = (step: BrowserStep): HTMLCollection => {
-  if (step.type === "type") {
-    return document.getElementsByTagName("input");
+export const findCandidateElements = (step: BrowserStep): Element[] => {
+  const qualifiedName = step.type === "type" ? "input" : "*";
+
+  const elements = document.getElementsByTagName(qualifiedName);
+
+  const candidates: Element[] = [];
+
+  for (let i = 0; i < elements.length; i++) {
+    const element = elements[i];
+    const rect = element.getBoundingClientRect();
+    if (rect.height && rect.width) candidates.push(element);
   }
 
-  return document.getElementsByTagName("*");
+  return candidates;
 };
 
 export const findTopElement = (
@@ -49,12 +54,20 @@ export const findTopElement = (
   if (maxScore / maxPossibleScore < threshold) {
     return null; // not similar enough
   }
-  if (scores.filter(score => score === maxScore).length > 1) {
+
+  const maxElements: Element[] = [];
+
+  scores.forEach((score, index) => {
+    if (score < maxScore) return;
+
+    maxElements.push(elements[index]);
+  });
+
+  if (maxElements.length > 1) {
     return null; // it's a tie
   }
 
-  const topMatch = elements[scores.indexOf(maxScore)];
-  return topMatch;
+  return maxElements[0];
 };
 
 export const waitForElement = async (
