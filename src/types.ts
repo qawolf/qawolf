@@ -1,8 +1,10 @@
 export type BrowserStep = {
   locator: Locator;
   pageId?: number;
-  sourceEventId?: number;
-  type: "click" | "type";
+  scrollDirection?: "down" | "up";
+  scrollTo?: number;
+  sourceEventId: number;
+  type: "click" | "scroll" | "type";
   value?: string;
 };
 
@@ -28,7 +30,7 @@ export type Locator = {
 
 export type Run = {
   name: string;
-  startTime: Date;
+  startTime: number;
   status: Status;
   steps: Step[];
 };

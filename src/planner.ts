@@ -2,8 +2,14 @@ import { eventWithTime, metaEvent, mousemoveData } from "rrweb/typings/types";
 import { BrowserStep, Job } from "./types";
 import { qaEventWithTime } from "./events";
 
+const SCROLL_XPATH = "scroll";
+
 export const findHref = (events: eventWithTime[]): string =>
   (events[0] as metaEvent).data.href;
+
+const isScrollEvent = (event: qaEventWithTime): boolean => {
+  return event.data && event.data.source === 3 && event.data.id === 1;
+};
 
 export const orderEventsByTime = (
   events: eventWithTime[]
@@ -48,6 +54,32 @@ export const isTypeEvent = (event: qaEventWithTime | null): boolean => {
   return !!(data.source === 5 && data.isTrusted && data.text);
 };
 
+const groupScrollEvents = (events: qaEventWithTime[]): qaEventWithTime[][] => {
+  const filteredEvents = events.filter(event => {
+    return (
+      isMouseDownEvent(event) || isScrollEvent(event) || isTypeEvent(event)
+    );
+  });
+
+  const groupedScrollEvents: qaEventWithTime[][] = [];
+  let currentScrollEvents: qaEventWithTime[] = [];
+
+  filteredEvents.forEach(event => {
+    if (isScrollEvent(event)) {
+      currentScrollEvents.push(event);
+    } else if (currentScrollEvents.length) {
+      groupedScrollEvents.push(currentScrollEvents);
+      currentScrollEvents = [];
+    }
+  });
+
+  if (currentScrollEvents.length) {
+    groupedScrollEvents.push(currentScrollEvents);
+  }
+
+  return groupedScrollEvents;
+};
+
 export const planClickActions = (events: qaEventWithTime[]): BrowserStep[] => {
   const steps: BrowserStep[] = [];
 
@@ -70,15 +102,33 @@ export const planJob = (originalEvents: eventWithTime[]): Job => {
 
   const events = orderEventsByTime(originalEvents);
 
-  const steps: BrowserStep[] = planClickActions(events).concat(
-    planTypeActions(events)
-  );
-
-  steps.sort((a, b) => a.sourceEventId! - b.sourceEventId!);
+  const steps: BrowserStep[] = planClickActions(events)
+    .concat(planScrollActions(events))
+    .concat(planTypeActions(events));
+  steps.sort((a, b) => a.sourceEventId - b.sourceEventId);
   // TODO: need to get actual name
   const job = { name: "job", steps, url };
 
   return job;
+};
+
+export const planScrollActions = (events: qaEventWithTime[]): BrowserStep[] => {
+  const groupedScrollEvents = groupScrollEvents(events);
+  const steps: BrowserStep[] = [];
+
+  groupedScrollEvents.forEach(eventList => {
+    const lastEvent = eventList[eventList.length - 1];
+
+    steps.push({
+      locator: { xpath: SCROLL_XPATH },
+      scrollDirection: eventList[0].data.y <= lastEvent.data.y ? "down" : "up",
+      scrollTo: lastEvent.data.y,
+      sourceEventId: lastEvent.id,
+      type: "scroll"
+    });
+  });
+
+  return steps;
 };
 
 export const planTypeActions = (events: qaEventWithTime[]): BrowserStep[] => {

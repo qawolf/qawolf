@@ -2,7 +2,7 @@ import { buildRuns, createRunFromJob, formatStep } from "./cli";
 
 describe("buildRuns", () => {
   test("creates runs object without summary if run not complete", () => {
-    const startTime = new Date();
+    const startTime = Date.now();
     const run = {
       name: "Log in",
       status: "runs" as "runs",
@@ -18,7 +18,7 @@ describe("buildRuns", () => {
   });
 
   test("creates runs object with passing summary if run passed", () => {
-    const startTime = new Date();
+    const startTime = Date.now();
     const run = {
       name: "Log in",
       status: "pass" as "runs",
@@ -34,7 +34,7 @@ describe("buildRuns", () => {
   });
 
   test("creates runs object with failing summary if run failed", () => {
-    const startTime = new Date();
+    const startTime = Date.now();
     const run = {
       name: "Log in",
       status: "fail" as "runs",
@@ -60,6 +60,7 @@ describe("createRunFromJob", () => {
           tagName: "input",
           xpath: '//*[@id="username"]'
         },
+        sourceEventId: 11,
         type: "type" as "type",
         value: "spirit"
       },
@@ -70,6 +71,7 @@ describe("createRunFromJob", () => {
           tagName: "input",
           xpath: '//*[@id="password"]'
         },
+        sourceEventId: 12,
         type: "type" as "type",
         value: "supersecret"
       },
@@ -79,6 +81,7 @@ describe("createRunFromJob", () => {
           textContent: "login",
           xpath: '//*[@id="login"]/button'
         },
+        sourceEventId: 13,
         type: "click" as "click"
       }
     ];
@@ -120,6 +123,7 @@ describe("formatStep", () => {
         tagName: "a",
         textContent: "contact"
       },
+      sourceEventId: 11,
       type: "click" as "click"
     };
 
@@ -138,12 +142,43 @@ describe("formatStep", () => {
         tagName: "input",
         textContent: "sign in"
       },
+      sourceEventId: 11,
       type: "click" as "click"
     };
 
     const formattedStep = formatStep(step);
     expect(formattedStep).toEqual({
       name: "click sign in input[type='submit']",
+      status: "queued"
+    });
+  });
+
+  test("formats scroll down action", () => {
+    const step = {
+      locator: { xpath: "scroll" },
+      scrollDirection: "down" as "down",
+      sourceEventId: 11,
+      type: "scroll" as "scroll"
+    };
+
+    const formattedStep = formatStep(step);
+    expect(formattedStep).toEqual({
+      name: "scroll down",
+      status: "queued"
+    });
+  });
+
+  test("formats scroll up action", () => {
+    const step = {
+      locator: { xpath: "scroll" },
+      scrollDirection: "up" as "up",
+      sourceEventId: 11,
+      type: "scroll" as "scroll"
+    };
+
+    const formattedStep = formatStep(step);
+    expect(formattedStep).toEqual({
+      name: "scroll up",
       status: "queued"
     });
   });
@@ -158,6 +193,7 @@ describe("formatStep", () => {
         placeholder: "Jane Doe",
         tagName: "input"
       },
+      sourceEventId: 11,
       type: "type" as "type",
       value: "spirit"
     };
@@ -177,6 +213,7 @@ describe("formatStep", () => {
         placeholder: "secret",
         tagName: "input"
       },
+      sourceEventId: 11,
       type: "type" as "type",
       value: "supersecret"
     };
