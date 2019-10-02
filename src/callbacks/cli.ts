@@ -51,9 +51,11 @@ export const formatStep = (step: BrowserStep): Step => {
     "";
 
   const name = `${stepAction} ${stepValue}${targetName} ${targetTagName}`;
+  // remove newlines and excessive whitespace
+  const formattedName = name.replace(/[\r\n]+/g, "").replace(/\s\s+/g, " ");
 
   return {
-    name,
+    name: formattedName,
     status: "queued"
   };
 };

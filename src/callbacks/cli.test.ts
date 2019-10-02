@@ -224,4 +224,48 @@ describe("formatStep", () => {
       status: "queued"
     });
   });
+
+  test("removes newline characters", () => {
+    const step = {
+      locator: {
+        id: "input1",
+        inputType: "text",
+        labels: ["\nusername\n"],
+        name: "user",
+        placeholder: "Jane Doe",
+        tagName: "input"
+      },
+      sourceEventId: 11,
+      type: "type" as "type",
+      value: "spirit"
+    };
+
+    const formattedStep = formatStep(step);
+    expect(formattedStep).toEqual({
+      name: "enter spirit into username input[type='text']",
+      status: "queued"
+    });
+  });
+
+  test("remove excessive whitespace", () => {
+    const step = {
+      locator: {
+        id: "input1",
+        inputType: "text",
+        labels: ["    username    "],
+        name: "user",
+        placeholder: "Jane Doe",
+        tagName: "input"
+      },
+      sourceEventId: 11,
+      type: "type" as "type",
+      value: "spirit"
+    };
+
+    const formattedStep = formatStep(step);
+    expect(formattedStep).toEqual({
+      name: "enter spirit into username input[type='text']",
+      status: "queued"
+    });
+  });
 });
