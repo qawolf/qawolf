@@ -97,7 +97,7 @@ export const planClickActions = (events: qaEventWithTime[]): BrowserStep[] => {
   return steps;
 };
 
-export const planJob = (originalEvents: eventWithTime[]): Job => {
+export const planJob = (originalEvents: eventWithTime[], name: string): Job => {
   const url = findHref(originalEvents);
 
   const events = orderEventsByTime(originalEvents);
@@ -106,8 +106,8 @@ export const planJob = (originalEvents: eventWithTime[]): Job => {
     .concat(planScrollActions(events))
     .concat(planTypeActions(events));
   steps.sort((a, b) => a.sourceEventId - b.sourceEventId);
-  // TODO: need to get actual name
-  const job = { name: "job", steps, url };
+
+  const job = { name, steps, url };
 
   return job;
 };
