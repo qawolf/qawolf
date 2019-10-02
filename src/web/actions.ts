@@ -20,8 +20,17 @@ const findClickableAncestor = (element: HTMLElement): HTMLElement => {
   return findClickableAncestor(element.parentElement);
 };
 
-export const scrollTo = async (yPosition: number) => {
+export const scrollTo = async (
+  yPosition: number,
+  timeoutMs: number = 10000
+) => {
+  const startTime = new Date().getTime();
+
   while (window.pageYOffset !== yPosition) {
+    if (new Date().getTime() - startTime > timeoutMs) {
+      throw "Could not scroll, timeout exceeded";
+    }
+
     await sleep(100);
     window.scrollTo(0, yPosition);
   }

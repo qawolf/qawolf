@@ -82,3 +82,18 @@ test("actions.setInputValue sets an input value", async () => {
   expect(username).toBe("spirit");
   expect(password).toBeFalsy();
 });
+
+test("actions.scrollTo throws error if timeout", async () => {
+  const page = await browser.goto(`${CONFIG.testUrl}/infinite_scroll`);
+
+  const initialYPosition = await page.evaluate(() => window.pageYOffset);
+  expect(initialYPosition).toBe(0);
+
+  const testFn = async () =>
+    await page.evaluate(() => {
+      const qawolf: QAWolf = (window as any).qawolf;
+      return Promise.resolve(qawolf.actions.scrollTo(2000, 0));
+    });
+
+  await expect(testFn()).rejects.toThrowError();
+});
