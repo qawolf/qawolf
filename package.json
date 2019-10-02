@@ -1,6 +1,6 @@
 {
   "name": "qawolf",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "license": "AGPL-3.0",
   "description": "Effortless smoke tests",
   "main": "index.js",
@@ -8,12 +8,12 @@
     "dist"
   ],
   "scripts": {
+    "build": "npm run build:lib && npm run build:web",
     "build:lib": "tsc -p .",
     "build:web": "rollup --config rollup.web.ts",
-    "cli": "babel-node --extensions \".ts,.tsx\" -- src/cli.ts",
+    "cli": "babel-node --extensions \".ts,.tsx\" -- src/cli/index.ts",
     "lint": "eslint src --ext .ts",
-    "prepare": "npm run build:lib && npm run build:web",
-    "test": "npm run build:web && jest --maxWorkers=75%",
+    "test": "jest --maxWorkers=75%",
     "test:services": "docker-compose up -d",
     "test:watch": "npm run build:web && jest --watch"
   },
@@ -70,6 +70,6 @@
     "typescript": "^3.6.3"
   },
   "bin": {
-    "qawolf": "./dist/cli.js"
+    "qawolf": "./dist/cli/index.js"
   }
 }
