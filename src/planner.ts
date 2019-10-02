@@ -54,32 +54,30 @@ export const isTypeEvent = (event: qaEventWithTime | null): boolean => {
   return !!(data.source === 5 && data.isTrusted && data.text);
 };
 
-const partitionScrollEvents = (
-  events: qaEventWithTime[]
-): qaEventWithTime[][] => {
+const groupScrollEvents = (events: qaEventWithTime[]): qaEventWithTime[][] => {
   const filteredEvents = events.filter(event => {
     return (
       isMouseDownEvent(event) || isScrollEvent(event) || isTypeEvent(event)
     );
   });
 
-  const partitionedScrollEvents: qaEventWithTime[][] = [];
+  const groupedScrollEvents: qaEventWithTime[][] = [];
   let currentScrollEvents: qaEventWithTime[] = [];
 
   filteredEvents.forEach(event => {
     if (isScrollEvent(event)) {
       currentScrollEvents.push(event);
     } else if (currentScrollEvents.length) {
-      partitionedScrollEvents.push(currentScrollEvents);
+      groupedScrollEvents.push(currentScrollEvents);
       currentScrollEvents = [];
     }
   });
 
   if (currentScrollEvents.length) {
-    partitionedScrollEvents.push(currentScrollEvents);
+    groupedScrollEvents.push(currentScrollEvents);
   }
 
-  return partitionedScrollEvents;
+  return groupedScrollEvents;
 };
 
 export const planClickActions = (events: qaEventWithTime[]): BrowserStep[] => {
@@ -115,10 +113,10 @@ export const planJob = (originalEvents: eventWithTime[]): Job => {
 };
 
 export const planScrollActions = (events: qaEventWithTime[]): BrowserStep[] => {
-  const partitionedScrollEvents = partitionScrollEvents(events);
+  const groupedScrollEvents = groupScrollEvents(events);
   const steps: BrowserStep[] = [];
 
-  partitionedScrollEvents.forEach(eventList => {
+  groupedScrollEvents.forEach(eventList => {
     const lastEvent = eventList[eventList.length - 1];
 
     steps.push({
