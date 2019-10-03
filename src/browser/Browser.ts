@@ -2,6 +2,7 @@ import fs from "fs-extra";
 import path from "path";
 import puppeteer, { Page, Serializable } from "puppeteer";
 import { CONFIG } from "../config";
+import { getDevice, Size } from "./device";
 import { BrowserStep } from "../types";
 import { sleep } from "../utils";
 import { QAWolf } from "../web";
@@ -15,19 +16,25 @@ export class Browser {
   /**
    * Wrap Browser and inject web library.
    */
-  private _browser: puppeteer.Browser;
+  public _browser: puppeteer.Browser;
+  private _device: puppeteer.devices.Device;
   private _currentPageIndex: number = 0;
   private _pages: Page[] = [];
 
   // protect constructor to force using async Browser.create()
-  protected constructor(browser: puppeteer.Browser) {
+  protected constructor(
+    browser: puppeteer.Browser,
+    device: puppeteer.devices.Device
+  ) {
     this._browser = browser;
+    this._device = device;
   }
 
-  public static async create(url?: string) {
+  public static async create(url?: string, size?: Size) {
     const launchOptions: puppeteer.LaunchOptions = {
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
       headless: CONFIG.headless,
+      ignoreDefaultArgs: ["--enable-automation"],
       defaultViewport: null
     };
 
@@ -37,7 +44,7 @@ export class Browser {
 
     const puppeteerBrowser = await puppeteer.launch(launchOptions);
 
-    const browser = new Browser(puppeteerBrowser);
+    const browser = new Browser(puppeteerBrowser, getDevice(size));
     await browser.wrapPages();
 
     if (url) await browser.goto(url);
@@ -106,18 +113,20 @@ export class Browser {
         page.evaluate(webBundle),
         page.evaluateOnNewDocument(webBundle)
       ]);
+      await page.emulate(this._device);
       this._pages.push(page);
     }
 
     this._browser.on("targetcreated", async target => {
       const page = await target.page();
-      if (page) {
-        await Promise.all([
-          page.evaluate(webBundle),
-          page.evaluateOnNewDocument(webBundle)
-        ]);
-        this._pages.push(page);
-      }
+      if (!page) return;
+
+      await Promise.all([
+        page.evaluate(webBundle),
+        page.evaluateOnNewDocument(webBundle)
+      ]);
+      await page.emulate(this._device);
+      this._pages.push(page);
     });
   }
 }

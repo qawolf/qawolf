@@ -1,3 +1,5 @@
+import { Size } from "./browser/device";
+
 export type BrowserStep = {
   locator: Locator;
   pageId?: number;
@@ -10,6 +12,7 @@ export type BrowserStep = {
 
 export type Job = {
   name: string;
+  size: Size;
   steps: BrowserStep[];
   url: string;
 };
