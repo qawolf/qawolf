@@ -3,7 +3,6 @@ export type BrowserStep = {
   pageId?: number;
   scrollDirection?: "down" | "up";
   scrollTo?: number;
-  sourceEventId: number;
   type: StepType;
   value?: string;
 };

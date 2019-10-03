@@ -102,7 +102,6 @@ export const formatClickSteps = (
       steps.push({
         locator: click.data.properties,
         pageId: click.pageId,
-        sourceEventId: click.data.id,
         type: "click"
       });
     }
@@ -127,7 +126,6 @@ export const formatScrollStep = (
     pageId: lastScroll.pageId,
     scrollDirection: firstScroll.data.y <= lastScroll.data.y ? "down" : "up",
     scrollTo: lastScroll.data.y,
-    sourceEventId: lastScroll.data.id,
     type: "scroll"
   };
 };
@@ -138,7 +136,6 @@ export const formatTypeStep = (typeGroup: ActionGroup): BrowserStep => {
   return {
     locator: lastType.data.properties,
     pageId: lastType.pageId,
-    sourceEventId: lastType.data.id,
     type: "type",
     value: lastType.data.text
   };

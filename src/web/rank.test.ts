@@ -6,7 +6,6 @@ const step = {
   locator: {
     xpath: "xpath"
   },
-  sourceEventId: 11,
   type: "click" as "click"
 };
 

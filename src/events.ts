@@ -17,7 +17,6 @@ export type QAData = incrementalData &
 export type QAEvent = incrementalSnapshotEvent & {
   data: QAData;
   pageId: number;
-  id: number;
 };
 
 // XXX: move these to types file?

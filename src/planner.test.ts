@@ -1,10 +1,6 @@
 import { loadEvents } from "@qawolf/fixtures";
-import {
-  filterEvents,
-  findHref,
-  planClickSteps,
-  planTypeSteps
-} from "./planner";
+import { finalSteps } from "./eventsToSteps.test";
+import { findHref, planJob } from "./planner";
 
 describe("findHref", () => {
   test("returns href of events", async () => {
@@ -14,93 +10,16 @@ describe("findHref", () => {
   });
 });
 
-describe("planClickSteps", () => {
-  test("returns click steps from events", async () => {
+describe("planJob", () => {
+  test("returns job for events", async () => {
     const events = await loadEvents("login");
-    const filteredEvents = filterEvents(events);
-    console.log("EVENTS", filteredEvents);
 
-    const steps = planClickSteps(filteredEvents);
+    const job = planJob(events, "test job");
 
-    expect(steps).toMatchObject([
-      {
-        locator: {
-          href: "http://localhost:5000/login",
-          tagName: "a",
-          textContent: "form authentication",
-          xpath: "//*[@id='content']/ul/li[18]/a"
-        },
-        pageId: 0,
-        type: "click"
-      },
-      {
-        locator: {
-          inputType: "submit",
-          tagName: "button",
-          textContent: " login",
-          xpath: "//*[@id='login']/button"
-        },
-        pageId: 0,
-        type: "click"
-      },
-      {
-        locator: {
-          inputType: "submit",
-          tagName: "button",
-          textContent: " login",
-          xpath: "//*[@id='login']/button"
-        },
-        pageId: 0,
-        type: "click"
-      }
-    ]);
-  });
-});
-
-describe("planTypeSteps", () => {
-  test("returns type steps from events", async () => {
-    const events = await loadEvents("login");
-    const filteredEvents = filterEvents(events);
-
-    const steps = planTypeSteps(filteredEvents);
-
-    expect(steps).toMatchObject([
-      {
-        locator: {
-          id: "username",
-          inputType: "text",
-          name: "username",
-          tagName: "input",
-          xpath: "//*[@id='username']"
-        },
-        pageId: 0,
-        type: "type",
-        value: "tomsmith"
-      },
-      {
-        locator: {
-          id: "username",
-          inputType: "text",
-          name: "username",
-          tagName: "input",
-          xpath: "//*[@id='username']"
-        },
-        pageId: 0,
-        type: "type",
-        value: "tomsmith"
-      },
-      {
-        locator: {
-          id: "password",
-          inputType: "password",
-          name: "password",
-          tagName: "input",
-          xpath: "//*[@id='password']"
-        },
-        pageId: 0,
-        type: "type",
-        value: "SuperSecretPassword!"
-      }
-    ]);
+    expect(job).toMatchObject({
+      name: "test job",
+      steps: finalSteps,
+      url: "http://localhost:5000/"
+    });
   });
 });

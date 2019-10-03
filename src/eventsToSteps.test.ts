@@ -13,13 +13,12 @@ import eventsToSteps, {
   isTypeEvent
 } from "./eventsToSteps";
 
-const finalSteps = [
+export const finalSteps = [
   {
     locator: { xpath: "scroll" },
     pageId: 0,
     scrollDirection: "down",
     scrollTo: 476,
-    sourceEventId: 1,
     type: "scroll"
   },
   {
@@ -30,7 +29,6 @@ const finalSteps = [
       xpath: "//*[@id='content']/ul/li[18]/a"
     },
     pageId: 0,
-    sourceEventId: 134,
     type: "click"
   },
   {
@@ -42,7 +40,6 @@ const finalSteps = [
       xpath: "//*[@id='username']"
     },
     pageId: 0,
-    sourceEventId: 76,
     type: "type",
     value: "tomsmith"
   },
@@ -54,7 +51,6 @@ const finalSteps = [
       xpath: "//*[@id='login']/button"
     },
     pageId: 0,
-    sourceEventId: 91,
     type: "click"
   },
   {
@@ -66,7 +62,6 @@ const finalSteps = [
       xpath: "//*[@id='username']"
     },
     pageId: 0,
-    sourceEventId: 82,
     type: "type",
     value: "tomsmith"
   },
@@ -79,7 +74,6 @@ const finalSteps = [
       xpath: "//*[@id='password']"
     },
     pageId: 0,
-    sourceEventId: 93,
     type: "type",
     value: "SuperSecretPassword!"
   },
@@ -91,7 +85,6 @@ const finalSteps = [
       xpath: "//*[@id='login']/button"
     },
     pageId: 0,
-    sourceEventId: 97,
     type: "click"
   }
 ];
@@ -133,7 +126,6 @@ describe("formatClickSteps", () => {
       actions: [
         {
           data: {
-            id: 11,
             properties: {
               id: "button"
             }
@@ -142,7 +134,6 @@ describe("formatClickSteps", () => {
         } as QAEventWithTime,
         {
           data: {
-            id: 12,
             properties: {
               id: "button"
             }
@@ -158,13 +149,11 @@ describe("formatClickSteps", () => {
       {
         locator: { id: "button" },
         pageId: 0,
-        sourceEventId: 11,
         type: "click"
       },
       {
         locator: { id: "button" },
         pageId: 0,
-        sourceEventId: 12,
         type: "click"
       }
     ]);
@@ -175,7 +164,6 @@ describe("formatClickSteps", () => {
       actions: [
         {
           data: {
-            id: 11,
             properties: {
               id: "button"
             }
@@ -184,7 +172,6 @@ describe("formatClickSteps", () => {
         } as QAEventWithTime,
         {
           data: {
-            id: 12,
             properties: {
               id: "button"
             }
@@ -199,7 +186,7 @@ describe("formatClickSteps", () => {
     const nextGroup = {
       actions: [
         {
-          data: { id: 13, y: 100 },
+          data: { y: 100 },
           pageId: 0
         } as QAEventWithTime
       ],
@@ -211,13 +198,11 @@ describe("formatClickSteps", () => {
       {
         locator: { id: "button" },
         pageId: 0,
-        sourceEventId: 11,
         type: "click"
       },
       {
         locator: { id: "button" },
         pageId: 0,
-        sourceEventId: 12,
         type: "click"
       }
     ]);
@@ -228,7 +213,6 @@ describe("formatClickSteps", () => {
       actions: [
         {
           data: {
-            id: 11,
             properties: {
               id: "button"
             }
@@ -237,7 +221,6 @@ describe("formatClickSteps", () => {
         } as QAEventWithTime,
         {
           data: {
-            id: 12,
             properties: {
               id: "button"
             }
@@ -253,7 +236,6 @@ describe("formatClickSteps", () => {
       actions: [
         {
           data: {
-            id: 13,
             properties: {
               id: "anotherButton"
             }
@@ -269,13 +251,11 @@ describe("formatClickSteps", () => {
       {
         locator: { id: "button" },
         pageId: 0,
-        sourceEventId: 11,
         type: "click"
       },
       {
         locator: { id: "button" },
         pageId: 0,
-        sourceEventId: 12,
         type: "click"
       }
     ]);
@@ -286,7 +266,6 @@ describe("formatClickSteps", () => {
       actions: [
         {
           data: {
-            id: 11,
             properties: {
               id: "input"
             }
@@ -295,7 +274,6 @@ describe("formatClickSteps", () => {
         } as QAEventWithTime,
         {
           data: {
-            id: 12,
             properties: {
               id: "input"
             }
@@ -311,7 +289,6 @@ describe("formatClickSteps", () => {
       actions: [
         {
           data: {
-            id: 13,
             properties: {
               id: "button"
             },
@@ -328,7 +305,6 @@ describe("formatClickSteps", () => {
       {
         locator: { id: "input" },
         pageId: 0,
-        sourceEventId: 11,
         type: "click"
       }
     ]);
@@ -354,15 +330,15 @@ describe("formatScrollStep", () => {
     const actionGroup = {
       actions: [
         {
-          data: { id: 11, y: 0 },
+          data: { y: 0 },
           pageId: 0
         } as QAEventWithTime,
         {
-          data: { id: 12, y: 150 },
+          data: { y: 150 },
           pageId: 0
         } as QAEventWithTime,
         {
-          data: { id: 13, y: 100 },
+          data: { y: 100 },
           pageId: 0
         } as QAEventWithTime
       ],
@@ -375,7 +351,6 @@ describe("formatScrollStep", () => {
       pageId: 0,
       scrollDirection: "down",
       scrollTo: 100,
-      sourceEventId: 13,
       type: "scroll"
     });
   });
@@ -384,15 +359,15 @@ describe("formatScrollStep", () => {
     const actionGroup = {
       actions: [
         {
-          data: { id: 11, y: 100 },
+          data: { y: 100 },
           pageId: 0
         } as QAEventWithTime,
         {
-          data: { id: 12, y: 150 },
+          data: { y: 150 },
           pageId: 0
         } as QAEventWithTime,
         {
-          data: { id: 13, y: 0 },
+          data: { y: 0 },
           pageId: 0
         } as QAEventWithTime
       ],
@@ -405,7 +380,6 @@ describe("formatScrollStep", () => {
       pageId: 0,
       scrollDirection: "up",
       scrollTo: 0,
-      sourceEventId: 13,
       type: "scroll"
     });
   });
@@ -417,7 +391,6 @@ describe("formatTypeStep", () => {
       actions: [
         {
           data: {
-            id: 11,
             properties: {
               id: "username"
             },
@@ -427,7 +400,6 @@ describe("formatTypeStep", () => {
         } as QAEventWithTime,
         {
           data: {
-            id: 12,
             properties: {
               id: "username"
             },
@@ -445,7 +417,6 @@ describe("formatTypeStep", () => {
         id: "username"
       },
       pageId: 0,
-      sourceEventId: 12,
       type: "type",
       value: "sp"
     });
