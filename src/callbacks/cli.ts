@@ -36,9 +36,9 @@ export const formatStep = (step: BrowserStep): Step => {
   }
 
   const stepAction = step.type === "type" ? "enter" : "click";
-  const stepValue = step.value ? `${step.value} into ` : "";
+  const stepValue = step.value ? `"${step.value}" into ` : "";
   const targetTagName = step.locator.inputType
-    ? `${step.locator.tagName}[type='${step.locator.inputType}']`
+    ? `${step.locator.tagName}[type="${step.locator.inputType}"]`
     : `${step.locator.tagName === "a" ? "link" : step.locator.tagName || ""}`;
   const label = step.locator.labels ? step.locator.labels[0] : "";
 

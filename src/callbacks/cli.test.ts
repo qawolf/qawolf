@@ -98,11 +98,11 @@ describe("createRunFromJob", () => {
       status: "queued",
       steps: [
         {
-          name: "enter spirit into username input[type='text']",
+          name: 'enter "spirit" into username input[type="text"]',
           status: "queued"
         },
         {
-          name: "enter supersecret into password input[type='password']",
+          name: 'enter "supersecret" into password input[type="password"]',
           status: "queued"
         },
         {
@@ -148,7 +148,7 @@ describe("formatStep", () => {
 
     const formattedStep = formatStep(step);
     expect(formattedStep).toEqual({
-      name: "click sign in input[type='submit']",
+      name: 'click sign in input[type="submit"]',
       status: "queued"
     });
   });
@@ -200,7 +200,7 @@ describe("formatStep", () => {
 
     const formattedStep = formatStep(step);
     expect(formattedStep).toEqual({
-      name: "enter spirit into username input[type='text']",
+      name: 'enter "spirit" into username input[type="text"]',
       status: "queued"
     });
   });
@@ -220,7 +220,7 @@ describe("formatStep", () => {
 
     const formattedStep = formatStep(step);
     expect(formattedStep).toEqual({
-      name: "enter supersecret into secret input[type='password']",
+      name: 'enter "supersecret" into secret input[type="password"]',
       status: "queued"
     });
   });
@@ -242,7 +242,7 @@ describe("formatStep", () => {
 
     const formattedStep = formatStep(step);
     expect(formattedStep).toEqual({
-      name: "enter spirit into username input[type='text']",
+      name: 'enter "spirit" into username input[type="text"]',
       status: "queued"
     });
   });
@@ -264,7 +264,7 @@ describe("formatStep", () => {
 
     const formattedStep = formatStep(step);
     expect(formattedStep).toEqual({
-      name: "enter spirit into username input[type='text']",
+      name: 'enter "spirit" into username input[type="text"]',
       status: "queued"
     });
   });
