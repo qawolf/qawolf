@@ -1,135 +1,106 @@
-import { qaEventWithTime } from "./events";
-import { isMouseDownEvent, isScrollEvent, isTypeEvent } from "./planner";
+import { loadEvents } from "@qawolf/fixtures";
+import {
+  filterEvents,
+  findHref,
+  planClickSteps,
+  planTypeSteps
+} from "./planner";
 
-describe("isMouseDownEvent", () => {
-  test("returns false if no data", () => {
-    const event = {} as qaEventWithTime;
+describe("findHref", () => {
+  test("returns href of events", async () => {
+    const events = await loadEvents("login");
 
-    expect(isMouseDownEvent(event)).toBe(false);
-  });
-
-  test("returns false if data source not mouse interaction", () => {
-    const event = {
-      data: {
-        source: 1
-      }
-    } as qaEventWithTime;
-
-    expect(isMouseDownEvent(event)).toBe(false);
-  });
-
-  test("returns false if data type not mouse down", () => {
-    const event = {
-      data: {
-        source: 2,
-        type: 2
-      }
-    } as qaEventWithTime;
-
-    expect(isMouseDownEvent(event)).toBe(false);
-  });
-
-  test("returns false if data not trusted", () => {
-    const event = {
-      data: {
-        source: 2,
-        type: 1,
-        isTrusted: false
-      }
-    } as qaEventWithTime;
-
-    expect(isMouseDownEvent(event)).toBe(false);
-  });
-
-  test("returns true if mouse down event", () => {
-    const event = {
-      data: {
-        source: 2,
-        type: 1,
-        isTrusted: true
-      }
-    } as qaEventWithTime;
-
-    expect(isMouseDownEvent(event)).toBe(true);
+    expect(findHref(events)).toBe("http://localhost:5000/");
   });
 });
 
-describe("isScrollEvent", () => {
-  test("returns false if no data", () => {
-    const event = {} as qaEventWithTime;
+describe("planClickSteps", () => {
+  test("returns click steps from events", async () => {
+    const events = await loadEvents("login");
+    const filteredEvents = filterEvents(events);
+    console.log("EVENTS", filteredEvents);
 
-    expect(isScrollEvent(event)).toBe(false);
-  });
+    const steps = planClickSteps(filteredEvents);
 
-  test("returns false if data source not scroll", () => {
-    const event = {
-      data: { source: 2 }
-    } as qaEventWithTime;
-
-    expect(isScrollEvent(event)).toBe(false);
-  });
-
-  test("returns false if scroll not on page body", () => {
-    const event = {
-      data: { source: 3, id: 11 }
-    } as qaEventWithTime;
-
-    expect(isScrollEvent(event)).toBe(false);
-  });
-
-  test("returns true if scroll on page body event", () => {
-    const event = {
-      data: { source: 3, id: 1 }
-    } as qaEventWithTime;
-
-    expect(isScrollEvent(event)).toBe(true);
+    expect(steps).toMatchObject([
+      {
+        locator: {
+          href: "http://localhost:5000/login",
+          tagName: "a",
+          textContent: "form authentication",
+          xpath: "//*[@id='content']/ul/li[18]/a"
+        },
+        pageId: 0,
+        type: "click"
+      },
+      {
+        locator: {
+          inputType: "submit",
+          tagName: "button",
+          textContent: " login",
+          xpath: "//*[@id='login']/button"
+        },
+        pageId: 0,
+        type: "click"
+      },
+      {
+        locator: {
+          inputType: "submit",
+          tagName: "button",
+          textContent: " login",
+          xpath: "//*[@id='login']/button"
+        },
+        pageId: 0,
+        type: "click"
+      }
+    ]);
   });
 });
 
-describe("isTypeEvent", () => {
-  test("returns false if no data", () => {
-    const event = {} as qaEventWithTime;
+describe("planTypeSteps", () => {
+  test("returns type steps from events", async () => {
+    const events = await loadEvents("login");
+    const filteredEvents = filterEvents(events);
 
-    expect(isTypeEvent(event)).toBe(false);
-  });
+    const steps = planTypeSteps(filteredEvents);
 
-  test("returns false if data source not input", () => {
-    const event = {
-      data: { source: 2 }
-    } as qaEventWithTime;
-
-    expect(isTypeEvent(event)).toBe(false);
-  });
-
-  test("returns false if data not trusted", () => {
-    const event = {
-      data: { source: 5, isTrusted: false }
-    } as qaEventWithTime;
-
-    expect(isTypeEvent(event)).toBe(false);
-  });
-
-  test("returns false if no text", () => {
-    const event = {
-      data: { source: 5, isTrusted: true }
-    } as qaEventWithTime;
-
-    expect(isTypeEvent(event)).toBe(false);
-  });
-
-  test("returns true if type event", () => {
-    const event = {
-      data: { source: 5, isTrusted: true, text: "spirit" }
-    } as qaEventWithTime;
-
-    expect(isTypeEvent(event)).toBe(true);
-  });
-
-  test("returns true if type event with empty string", () => {
-    const event = {
-      data: { source: 5, isTrusted: true, text: "" }
-    } as qaEventWithTime;
-
-    expect(isTypeEvent(event)).toBe(true);
+    expect(steps).toMatchObject([
+      {
+        locator: {
+          id: "username",
+          inputType: "text",
+          name: "username",
+          tagName: "input",
+          xpath: "//*[@id='username']"
+        },
+        pageId: 0,
+        type: "type",
+        value: "tomsmith"
+      },
+      {
+        locator: {
+          id: "username",
+          inputType: "text",
+          name: "username",
+          tagName: "input",
+          xpath: "//*[@id='username']"
+        },
+        pageId: 0,
+        type: "type",
+        value: "tomsmith"
+      },
+      {
+        locator: {
+          id: "password",
+          inputType: "password",
+          name: "password",
+          tagName: "input",
+          xpath: "//*[@id='password']"
+        },
+        pageId: 0,
+        type: "type",
+        value: "SuperSecretPassword!"
+      }
+    ]);
   });
 });

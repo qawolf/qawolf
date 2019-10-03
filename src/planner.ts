@@ -1,12 +1,24 @@
-import { isNil } from "lodash";
-import { eventWithTime, metaEvent, mousemoveData } from "rrweb/typings/types";
+import { isNil, last } from "lodash";
+import { metaEvent, mousemoveData } from "rrweb/typings/types";
 import { BrowserStep, Job } from "./types";
-import { qaEventWithTime } from "./events";
+import { QAEventWithTime } from "./events";
 
 const SCROLL_XPATH = "scroll";
 
-export const isMouseDownEvent = (event: qaEventWithTime): boolean => {
-  if (!event.data) return false;
+export const filterEvents = (events: QAEventWithTime[]): QAEventWithTime[] => {
+  return events.filter(event => {
+    return (
+      isMouseDownEvent(event) || isScrollEvent(event) || isTypeEvent(event)
+    );
+  });
+};
+
+export const findHref = (events: QAEventWithTime[]): string => {
+  return (events[0] as metaEvent).data.href;
+};
+
+export const isMouseDownEvent = (event?: QAEventWithTime): boolean => {
+  if (!event || !event.data) return false;
 
   const data = event.data;
   const isMouseInteraction = data.source === 2;
@@ -15,9 +27,9 @@ export const isMouseDownEvent = (event: qaEventWithTime): boolean => {
   return isMouseInteraction && isMouseDown && !!data.isTrusted;
 };
 
-export const isScrollEvent = (event: qaEventWithTime): boolean => {
+export const isScrollEvent = (event?: QAEventWithTime): boolean => {
   // TODO: support scrolling within elements
-  if (!event.data) return false;
+  if (!event || !event.data) return false;
 
   const data = event.data;
   const isScroll = data.source === 3;
@@ -26,8 +38,8 @@ export const isScrollEvent = (event: qaEventWithTime): boolean => {
   return isScroll && isPageBody;
 };
 
-export const isTypeEvent = (event: qaEventWithTime): boolean => {
-  if (!event.data) return false;
+export const isTypeEvent = (event?: QAEventWithTime): boolean => {
+  if (!event || !event.data) return false;
 
   const data = event.data;
   const isInput = data.source === 5;
@@ -35,12 +47,72 @@ export const isTypeEvent = (event: qaEventWithTime): boolean => {
   return isInput && !!data.isTrusted && !isNil(data.text);
 };
 
-// export const findHref = (events: eventWithTime[]): string =>
-//   (events[0] as metaEvent).data.href;
+export const planClickSteps = (
+  filteredEvents: QAEventWithTime[]
+): BrowserStep[] => {
+  const steps: BrowserStep[] = [];
+
+  filteredEvents.forEach((event, i) => {
+    if (!isMouseDownEvent(event)) return;
+    // don't include clicks that are immediately followed by typing into same input
+    const nextEvent = filteredEvents[i + 1] || {};
+    if (isTypeEvent(nextEvent) && nextEvent.data.xpath === event.data.xpath) {
+      return;
+    }
+
+    steps.push({
+      locator: event.data.properties,
+      pageId: event.pageId,
+      sourceEventId: event.id,
+      type: "click"
+    });
+  });
+
+  return steps;
+};
+
+export const planTypeSteps = (
+  filteredEvents: QAEventWithTime[]
+): BrowserStep[] => {
+  const steps: BrowserStep[] = [];
+
+  const groupedEvents: QAEventWithTime[][] = [];
+  let currentGroup: QAEventWithTime[] = [];
+  let lastXpath = null;
+
+  filteredEvents.forEach((event, i) => {
+    const isType = isTypeEvent(event);
+    if (isType) {
+      currentGroup.push(event);
+      lastXpath = event.data.xpath;
+    }
+
+    const isNewXpath =
+      filteredEvents[i + 1] &&
+      filteredEvents[i + 1].data.xpath !== event.data.xpath;
+    if (!isType || isNewXpath) {
+      if (currentGroup.length) groupedEvents.push(currentGroup);
+      currentGroup = [];
+    }
+  });
+
+  groupedEvents.forEach(group => {
+    const lastEvent = last(group) as QAEventWithTime;
+    steps.push({
+      locator: lastEvent.data.properties,
+      pageId: lastEvent.pageId,
+      sourceEventId: lastEvent.id,
+      type: "type",
+      value: lastEvent.data.text
+    });
+  });
+
+  return steps;
+};
 
 // export const orderEventsByTime = (
 //   events: eventWithTime[]
-// ): qaEventWithTime[] => {
+// ): QAEventWithTime[] => {
 //   const orderedEvents = [];
 
 //   for (let originalEvent of events) {
@@ -68,17 +140,17 @@ export const isTypeEvent = (event: qaEventWithTime): boolean => {
 // };
 
 // const groupEvents = (
-//   events: qaEventWithTime[],
+//   events: QaEventWithTime[],
 //   eventType: "scroll" | "type"
-// ): qaEventWithTime[][] => {
+// ): QaEventWithTime[][] => {
 //   const filteredEvents = events.filter(event => {
 //     return (
 //       isMouseDownEvent(event) || isScrollEvent(event) || isTypeEvent(event)
 //     );
 //   });
 
-//   const groupedScrollEvents: qaEventWithTime[][] = [];
-//   let currentScrollEvents: qaEventWithTime[] = [];
+//   const groupedScrollEvents: QaEventWithTime[][] = [];
+//   let currentScrollEvents: QaEventWithTime[] = [];
 //   const checkEventFn = eventType === "scroll" ? isScrollEvent : isTypeEvent;
 
 //   filteredEvents.forEach(event => {
@@ -101,7 +173,7 @@ export const isTypeEvent = (event: qaEventWithTime): boolean => {
 //   return groupedScrollEvents;
 // };
 
-// export const planClickActions = (events: qaEventWithTime[]): BrowserStep[] => {
+// export const planClickActions = (events: QaEventWithTime[]): BrowserStep[] => {
 //   const steps: BrowserStep[] = [];
 
 //   for (let event of events) {
@@ -133,7 +205,7 @@ export const isTypeEvent = (event: qaEventWithTime): boolean => {
 //   return job;
 // };
 
-// export const planScrollActions = (events: qaEventWithTime[]): BrowserStep[] => {
+// export const planScrollActions = (events: QaEventWithTime[]): BrowserStep[] => {
 //   const groupedScrollEvents = groupEvents(events, "scroll");
 //   const steps: BrowserStep[] = [];
 
@@ -153,33 +225,7 @@ export const isTypeEvent = (event: qaEventWithTime): boolean => {
 //   return steps;
 // };
 
-// export const planTypeActions = (events: qaEventWithTime[]): BrowserStep[] => {
-//   const steps: BrowserStep[] = [];
-
-//   let lastXpath = null;
-
-//   for (let i = events.length - 1; i >= 0; i--) {
-//     const event = events[i];
-//     if (!isTypeEvent(event)) continue;
-
-//     // only include last consecutive type per xpath
-//     if (event.data.xpath === lastXpath) continue;
-
-//     steps.push({
-//       locator: (event.data as any).properties,
-//       pageId: (event as any).pageId,
-//       sourceEventId: event.id,
-//       type: "type",
-//       value: event.data.text
-//     });
-
-//     lastXpath = event.data.xpath;
-//   }
-
-//   return steps;
-// };
-
-// export const planTypeActions = (events: qaEventWithTime[]): BrowserStep[] => {
+// export const planTypeActions = (events: QaEventWithTime[]): BrowserStep[] => {
 //   const groupedTypeEvents = groupEvents(events, "type");
 //   const steps: BrowserStep[] = [];
 
