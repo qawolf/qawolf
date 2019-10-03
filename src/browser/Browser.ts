@@ -31,11 +31,18 @@ export class Browser {
   }
 
   public static async create(url?: string, size?: Size) {
+    const device = getDevice(size);
+
     const launchOptions: puppeteer.LaunchOptions = {
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      args: [
+        "--disable-setuid-sandbox",
+        "--no-default-browser-check",
+        "--no-sandbox",
+        `--window-size=${device.viewport.width},${device.viewport.height}`
+      ],
+      defaultViewport: null,
       headless: CONFIG.headless,
-      ignoreDefaultArgs: ["--enable-automation"],
-      defaultViewport: null
+      ignoreDefaultArgs: ["--enable-automation"]
     };
 
     if (CONFIG.chromeExecutablePath) {
@@ -44,7 +51,7 @@ export class Browser {
 
     const puppeteerBrowser = await puppeteer.launch(launchOptions);
 
-    const browser = new Browser(puppeteerBrowser, getDevice(size));
+    const browser = new Browser(puppeteerBrowser, device);
     await browser.wrapPages();
 
     if (url) await browser.goto(url);

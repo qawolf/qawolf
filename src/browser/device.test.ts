@@ -1,5 +1,5 @@
-import { getDevice } from "./device";
 import { devices } from "puppeteer";
+import { getDevice } from "./device";
 
 test('getDevice "desktop" size is correct', () => {
   const device = getDevice("desktop");
