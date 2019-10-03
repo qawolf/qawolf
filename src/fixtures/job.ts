@@ -1,5 +1,6 @@
-import { BrowserStep, Job } from "../types";
+import { Size } from "../browser/device";
 import { CONFIG } from "../config";
+import { BrowserStep, Job } from "../types";
 
 export const loginSteps: BrowserStep[] = [
   {
@@ -26,12 +27,14 @@ export const loginSteps: BrowserStep[] = [
 
 export const loginJob: Job = {
   name: "Log in",
+  size: "desktop" as Size,
   steps: loginSteps,
   url: `${CONFIG.testUrl}/login`
 };
 
 export const redirectJob: Job = {
   name: "Redirect",
+  size: "desktop" as Size,
   steps: [
     {
       locator: {
@@ -51,6 +54,7 @@ export const redirectJob: Job = {
 
 export const windowsJob: Job = {
   name: "Multiple windows",
+  size: "desktop" as Size,
   steps: [
     // open two windows
     {

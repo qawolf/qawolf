@@ -1,5 +1,6 @@
-import { Runner } from "./Runner";
+import { Size } from "./browser/device";
 import { loginJob } from "./fixtures/job";
+import { Runner } from "./Runner";
 
 const step = loginJob.steps[0];
 
@@ -58,7 +59,12 @@ test("run callbacks called at correct time", async () => {
   expect(callback3).not.toBeCalled();
   expect(callback4).not.toBeCalled();
 
-  await runner.run({ name: "Log in", steps: [step, step], url: "url" });
+  await runner.run({
+    name: "Log in",
+    size: "desktop" as Size,
+    steps: [step, step],
+    url: "url"
+  });
 
   expect(callback).toBeCalledTimes(2);
   expect(callback).toBeCalledWith(runner);
@@ -78,7 +84,12 @@ test("getRun throws error if run not created", () => {
 
 test("runs property is created after job is run", async () => {
   const runner = new Runner();
-  await runner.run({ name: "Log in", steps: [step, step], url: "url" });
+  await runner.run({
+    name: "Log in",
+    size: "desktop" as Size,
+    steps: [step, step],
+    url: "url"
+  });
 
   const run = runner.getRun();
 

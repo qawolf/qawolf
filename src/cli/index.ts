@@ -56,9 +56,15 @@ program
     }
 
     const runner = new BrowserRunner({ callbacks });
-    await runner.run(job);
 
-    await runner.close();
+    try {
+      await runner.run(job);
+      await runner.close();
+    } catch (e) {
+      logger.error(`error running job: ${e}`);
+      process.exit(1);
+      return;
+    }
 
     process.exit(0);
   });

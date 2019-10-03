@@ -2,10 +2,14 @@ import { metaEvent, mousemoveData } from "rrweb/typings/types";
 import { Job } from "./types";
 import { QAEventWithTime } from "./events";
 import eventsToSteps from "./eventsToSteps";
+import { Size } from "./browser/device";
 
 export const findHref = (events: QAEventWithTime[]): string => {
   return (events[0] as metaEvent).data.href;
 };
+
+export const findSize = (events: any[]): Size =>
+  events.filter(e => e.type === "size")[0].size;
 
 export const orderEventsByTime = (
   events: QAEventWithTime[]
@@ -39,11 +43,12 @@ export const planJob = (
   name: string
 ): Job => {
   const url = findHref(originalEvents);
+  const size = findSize(originalEvents);
 
   const events = orderEventsByTime(originalEvents);
   const steps = eventsToSteps(events);
 
-  const job = { name, steps, url };
+  const job = { name, size, steps, url };
 
   return job;
 };

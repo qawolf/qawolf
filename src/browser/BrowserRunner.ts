@@ -23,7 +23,7 @@ export class BrowserRunner extends Runner {
   }
 
   protected async beforeRun(job: Job): Promise<void> {
-    this._browser = await Browser.create(job.url);
+    this._browser = await Browser.create(job.url, job.size);
     await super.beforeRun(job);
   }
 

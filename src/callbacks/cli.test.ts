@@ -1,3 +1,4 @@
+import { Size } from "../browser/device";
 import { buildRuns, createRunFromJob, formatStep } from "./cli";
 
 describe("buildRuns", () => {
@@ -86,6 +87,7 @@ describe("createRunFromJob", () => {
     const job = {
       name: "Log in",
       steps,
+      size: "desktop" as Size,
       url: "url"
     };
 
