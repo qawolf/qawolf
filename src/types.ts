@@ -4,7 +4,7 @@ export type BrowserStep = {
   scrollDirection?: "down" | "up";
   scrollTo?: number;
   sourceEventId: number;
-  type: "click" | "scroll" | "type";
+  type: StepType;
   value?: string;
 };
 
@@ -46,6 +46,8 @@ export type Step = {
   name: string;
   status: Status;
 };
+
+export type StepType = "click" | "scroll" | "type";
 
 export type Summary = {
   fail: number;

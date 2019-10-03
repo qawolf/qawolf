@@ -4,17 +4,21 @@ import {
   incrementalSnapshotEvent,
   mouseInteractionData
 } from "rrweb/typings/types";
+import { Locator } from "./types";
 
-export type qaData = incrementalData &
+export type QAData = incrementalData &
   mouseInteractionData & {
     isTrusted?: boolean;
+    properties: Locator;
     text?: string;
     xpath?: string;
   };
 
-export type qaEvent = incrementalSnapshotEvent & {
-  data: qaData;
+export type QAEvent = incrementalSnapshotEvent & {
+  data: QAData;
+  pageId: number;
   id: number;
 };
 
-export type qaEventWithTime = eventWithTime & qaEvent;
+// XXX: move these to types file?
+export type QAEventWithTime = eventWithTime & QAEvent;

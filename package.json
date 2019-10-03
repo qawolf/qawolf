@@ -47,6 +47,7 @@
     "@babel/preset-env": "^7.6.2",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.6.0",
+    "@qawolf/fixtures": "^1.2.2",
     "@types/clear": "^0.1.0",
     "@types/dotenv": "^6.1.1",
     "@types/fs-extra": "^8.0.0",
