@@ -1,11 +1,15 @@
 import { eventWithTime, metaEvent, mousemoveData } from "rrweb/typings/types";
 import { BrowserStep, Job } from "./types";
 import { qaEventWithTime } from "./events";
+import { Size } from "./browser/device";
 
 const SCROLL_XPATH = "scroll";
 
-export const findHref = (events: eventWithTime[]): string =>
-  (events[0] as metaEvent).data.href;
+export const findHref = (events: any[]): string =>
+  events.filter(e => e.data && e.data.href)[0].data.href;
+
+export const findSize = (events: any[]): Size =>
+  events.filter(e => e.type === "size")[0].size;
 
 const isScrollEvent = (event: qaEventWithTime): boolean => {
   return event.data && event.data.source === 3 && event.data.id === 1;
@@ -103,6 +107,7 @@ export const planClickActions = (events: qaEventWithTime[]): BrowserStep[] => {
 
 export const planJob = (originalEvents: eventWithTime[], name: string): Job => {
   const url = findHref(originalEvents);
+  const size = findSize(originalEvents);
 
   const events = orderEventsByTime(originalEvents);
 
@@ -111,7 +116,7 @@ export const planJob = (originalEvents: eventWithTime[], name: string): Job => {
     .concat(planTypeActions(events));
   steps.sort((a, b) => a.sourceEventId - b.sourceEventId);
 
-  const job = { name, steps, url };
+  const job = { name, size, steps, url };
 
   return job;
 };
