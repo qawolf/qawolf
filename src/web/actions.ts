@@ -41,4 +41,7 @@ export const setInputValue = (
   value: string | null = null
 ) => {
   element.value = value || "";
+  // ensure change event fired
+  const changeEvent = new Event("change", { bubbles: true });
+  element.dispatchEvent(changeEvent);
 };
