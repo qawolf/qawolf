@@ -1,0 +1,19 @@
+const { Browser } = require("../../dist/browser/Browser");
+const hooks = require("../../dist/browser/hooks");
+
+describe('{{{name}}}', () => {
+  let browser;
+
+  beforeAll(async () => {
+    browser = await Browser.create("{{{url}}}", "{{{size}}}");
+
+    beforeEach(() => hooks.beforeEach(browser));
+  });
+  afterAll(() => browser.close());
+  {{#each formattedSteps}}
+
+  test('{{{name}}}', async () => {
+    await browser.runStep({{{json}}});
+  });
+  {{/each}}
+});
