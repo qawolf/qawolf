@@ -66,20 +66,20 @@ test("actions.scrollTo scrolls in infinite scroll", async () => {
 test("actions.setInputValue sets an input value", async () => {
   const page = await browser.goto(`${CONFIG.testUrl}/login`);
 
-  const onChangePromise = await page.evaluate(() => {
+  // only resolve after change is triggered
+  await page.evaluate(() => {
     const qawolf: QAWolf = (window as any).qawolf;
     const username = qawolf.xpath.findElementByXpath(
       '//*[@id="username"]'
     ) as HTMLInputElement;
 
-    const onChangePromise = Promise.resolve("resolved");
-    username.onchange = async () => {
-      await onChangePromise;
-    };
+    const promise = new Promise(resolve => {
+      username.onchange = resolve;
+    });
 
     qawolf.actions.setInputValue(username, "spirit");
 
-    return onChangePromise;
+    return promise;
   });
 
   const [username, password] = await page.$$eval(
@@ -87,7 +87,6 @@ test("actions.setInputValue sets an input value", async () => {
     (inputs: HTMLInputElement[]) => inputs.map(i => i.value)
   );
 
-  expect(onChangePromise).toBe("resolved");
   expect(username).toBe("spirit");
   expect(password).toBeFalsy();
 });
