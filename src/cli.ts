@@ -38,13 +38,14 @@ program
     const rootDir = process.cwd();
 
     const jestConfig: any = {
-      roots: ["<rootDir>/.qawolf"]
+      roots: ["<rootDir>/.qawolf"],
+      testTimeout: 30000
     };
     if (name) {
       jestConfig._ = [`${snakeCase(name)}.js`];
     }
 
-    const output = await runCLI(jestConfig as any, [rootDir]);
+    const output = await runCLI(jestConfig, [rootDir]);
     const failed = output.results.numFailedTestSuites > 0;
     process.exit(failed ? 1 : 0);
   });
