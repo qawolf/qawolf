@@ -10,7 +10,7 @@ import { renderCli } from "../callbacks/cli";
 import { buildScreenshotCallback } from "../callbacks/screenshot";
 import { CONFIG } from "../config";
 import { logger } from "../logger";
-import { planJob } from "../planner";
+import { planJob } from "../planJob";
 
 clear();
 

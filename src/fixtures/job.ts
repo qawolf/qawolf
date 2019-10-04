@@ -4,27 +4,24 @@ import { BrowserStep, Job } from "../types";
 
 export const loginSteps: BrowserStep[] = [
   {
+    action: "type",
     locator: {
       xpath: '//*[@id="username"]'
     },
-    sourceEventId: 11,
-    type: "type",
     value: "tomsmith"
   },
   {
+    action: "type",
     locator: {
       xpath: '//*[@id="password"]'
     },
-    sourceEventId: 12,
-    type: "type",
     value: "SuperSecretPassword!"
   },
   {
+    action: "click",
     locator: {
       xpath: '//*[@id="login"]/button'
-    },
-    sourceEventId: 13,
-    type: "click"
+    }
   }
 ];
 
@@ -40,18 +37,16 @@ export const redirectJob: Job = {
   size: "desktop" as Size,
   steps: [
     {
+      action: "click",
       locator: {
         xpath: '//*[@id="content"]/ul/li[32]/a'
-      },
-      sourceEventId: 11,
-      type: "click"
+      }
     },
     {
+      action: "click",
       locator: {
         xpath: '//*[@id="redirect"]'
-      },
-      sourceEventId: 12,
-      type: "click"
+      }
     }
   ],
   url: CONFIG.testUrl
@@ -63,20 +58,18 @@ export const windowsJob: Job = {
   steps: [
     // open two windows
     {
+      action: "click",
       locator: {
         xpath: '//*[@id="content"]/div/a'
       },
-      pageId: 0,
-      sourceEventId: 11,
-      type: "click"
+      pageId: 0
     },
     {
+      action: "click",
       locator: {
         xpath: '//*[@id="content"]/div/a'
       },
-      pageId: 0,
-      sourceEventId: 12,
-      type: "click"
+      pageId: 0
     }
   ],
   url: `${CONFIG.testUrl}/windows`

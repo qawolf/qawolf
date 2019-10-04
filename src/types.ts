@@ -1,12 +1,13 @@
 import { Size } from "./browser/device";
 
+export type Action = "click" | "scroll" | "type";
+
 export type BrowserStep = {
+  action: Action;
   locator: Locator;
   pageId?: number;
   scrollDirection?: "down" | "up";
   scrollTo?: number;
-  sourceEventId: number;
-  type: "click" | "scroll" | "type";
   value?: string;
 };
 

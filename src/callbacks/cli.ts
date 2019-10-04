@@ -31,14 +31,14 @@ export const createRunFromJob = (job: Job): Run => {
 };
 
 export const formatStep = (step: BrowserStep): Step => {
-  if (step.type === "scroll") {
+  if (step.action === "scroll") {
     return { name: `scroll ${step.scrollDirection!}`, status: "queued" };
   }
 
-  const stepAction = step.type === "type" ? "enter" : "click";
-  const stepValue = step.value ? `${step.value} into ` : "";
+  const stepAction = step.action === "type" ? "enter" : "click";
+  const stepValue = step.value ? `"${step.value}" into ` : "";
   const targetTagName = step.locator.inputType
-    ? `${step.locator.tagName}[type='${step.locator.inputType}']`
+    ? `${step.locator.tagName}[type="${step.locator.inputType}"]`
     : `${step.locator.tagName === "a" ? "link" : step.locator.tagName || ""}`;
   const label = step.locator.labels ? step.locator.labels[0] : "";
 

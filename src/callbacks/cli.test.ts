@@ -55,35 +55,32 @@ describe("createRunFromJob", () => {
   test("creates run object from job", () => {
     const steps = [
       {
+        action: "type" as "type",
         locator: {
           inputType: "text",
           name: "username",
           tagName: "input",
           xpath: '//*[@id="username"]'
         },
-        sourceEventId: 11,
-        type: "type" as "type",
         value: "spirit"
       },
       {
+        action: "type" as "type",
         locator: {
           inputType: "password",
           name: "password",
           tagName: "input",
           xpath: '//*[@id="password"]'
         },
-        sourceEventId: 12,
-        type: "type" as "type",
         value: "supersecret"
       },
       {
+        action: "click" as "click",
         locator: {
           tagName: "button",
           textContent: "login",
           xpath: '//*[@id="login"]/button'
-        },
-        sourceEventId: 13,
-        type: "click" as "click"
+        }
       }
     ];
 
@@ -100,11 +97,11 @@ describe("createRunFromJob", () => {
       status: "queued",
       steps: [
         {
-          name: "enter spirit into username input[type='text']",
+          name: 'enter "spirit" into username input[type="text"]',
           status: "queued"
         },
         {
-          name: "enter supersecret into password input[type='password']",
+          name: 'enter "supersecret" into password input[type="password"]',
           status: "queued"
         },
         {
@@ -121,12 +118,11 @@ describe("createRunFromJob", () => {
 describe("formatStep", () => {
   test("formats click on link step", () => {
     const step = {
+      action: "click" as "click",
       locator: {
         tagName: "a",
         textContent: "contact"
-      },
-      sourceEventId: 11,
-      type: "click" as "click"
+      }
     };
 
     const formattedStep = formatStep(step);
@@ -138,29 +134,27 @@ describe("formatStep", () => {
 
   test("formats click on submit input step", () => {
     const step = {
+      action: "click" as "click",
       locator: {
         inputType: "submit",
         name: "signin",
         tagName: "input",
         textContent: "sign in"
-      },
-      sourceEventId: 11,
-      type: "click" as "click"
+      }
     };
 
     const formattedStep = formatStep(step);
     expect(formattedStep).toEqual({
-      name: "click sign in input[type='submit']",
+      name: 'click sign in input[type="submit"]',
       status: "queued"
     });
   });
 
   test("formats scroll down action", () => {
     const step = {
+      action: "scroll" as "scroll",
       locator: { xpath: "scroll" },
-      scrollDirection: "down" as "down",
-      sourceEventId: 11,
-      type: "scroll" as "scroll"
+      scrollDirection: "down" as "down"
     };
 
     const formattedStep = formatStep(step);
@@ -172,10 +166,9 @@ describe("formatStep", () => {
 
   test("formats scroll up action", () => {
     const step = {
+      action: "scroll" as "scroll",
       locator: { xpath: "scroll" },
-      scrollDirection: "up" as "up",
-      sourceEventId: 11,
-      type: "scroll" as "scroll"
+      scrollDirection: "up" as "up"
     };
 
     const formattedStep = formatStep(step);
@@ -187,6 +180,7 @@ describe("formatStep", () => {
 
   test("formats type into text input", () => {
     const step = {
+      action: "type" as "type",
       locator: {
         id: "input1",
         inputType: "text",
@@ -195,40 +189,38 @@ describe("formatStep", () => {
         placeholder: "Jane Doe",
         tagName: "input"
       },
-      sourceEventId: 11,
-      type: "type" as "type",
       value: "spirit"
     };
 
     const formattedStep = formatStep(step);
     expect(formattedStep).toEqual({
-      name: "enter spirit into username input[type='text']",
+      name: 'enter "spirit" into username input[type="text"]',
       status: "queued"
     });
   });
 
   test("formats type into password input", () => {
     const step = {
+      action: "type" as "type",
       locator: {
         id: "input2",
         inputType: "password",
         placeholder: "secret",
         tagName: "input"
       },
-      sourceEventId: 11,
-      type: "type" as "type",
       value: "supersecret"
     };
 
     const formattedStep = formatStep(step);
     expect(formattedStep).toEqual({
-      name: "enter supersecret into secret input[type='password']",
+      name: 'enter "supersecret" into secret input[type="password"]',
       status: "queued"
     });
   });
 
   test("removes newline characters", () => {
     const step = {
+      action: "type" as "type",
       locator: {
         id: "input1",
         inputType: "text",
@@ -237,20 +229,19 @@ describe("formatStep", () => {
         placeholder: "Jane Doe",
         tagName: "input"
       },
-      sourceEventId: 11,
-      type: "type" as "type",
       value: "spirit"
     };
 
     const formattedStep = formatStep(step);
     expect(formattedStep).toEqual({
-      name: "enter spirit into username input[type='text']",
+      name: 'enter "spirit" into username input[type="text"]',
       status: "queued"
     });
   });
 
   test("remove excessive whitespace", () => {
     const step = {
+      action: "type" as "type",
       locator: {
         id: "input1",
         inputType: "text",
@@ -259,14 +250,12 @@ describe("formatStep", () => {
         placeholder: "Jane Doe",
         tagName: "input"
       },
-      sourceEventId: 11,
-      type: "type" as "type",
       value: "spirit"
     };
 
     const formattedStep = formatStep(step);
     expect(formattedStep).toEqual({
-      name: "enter spirit into username input[type='text']",
+      name: 'enter "spirit" into username input[type="text"]',
       status: "queued"
     });
   });

@@ -6,7 +6,6 @@ const step = {
   locator: {
     xpath: "xpath"
   },
-  sourceEventId: 11,
   type: "click" as "click"
 };
 
@@ -73,8 +72,8 @@ describe("rank.findCandidateElements", () => {
     const page = await browser.goto(`${CONFIG.testUrl}/login`);
 
     const typeAction = {
+      action: "type" as "type",
       ...step,
-      type: "type" as "type",
       value: "spirit"
     };
 
