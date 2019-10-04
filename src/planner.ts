@@ -1,11 +1,11 @@
-import { metaEvent, mousemoveData } from "rrweb/typings/types";
+import { mousemoveData } from "rrweb/typings/types";
 import { Job } from "./types";
 import { QAEventWithTime } from "./events";
 import eventsToSteps from "./eventsToSteps";
 import { Size } from "./browser/device";
 
 export const findHref = (events: QAEventWithTime[]): string => {
-  return (events[0] as metaEvent).data.href;
+  return events.filter(e => e.data && e.data.href)[0].data.href!;
 };
 
 export const findSize = (events: any[]): Size =>

@@ -18,7 +18,7 @@ export const finalSteps = [
     locator: { xpath: "scroll" },
     pageId: 0,
     scrollDirection: "down",
-    scrollTo: 476,
+    scrollTo: 334,
     type: "scroll"
   },
   {
@@ -79,10 +79,9 @@ export const finalSteps = [
   },
   {
     locator: {
-      inputType: "submit",
-      tagName: "button",
+      tagName: "i",
       textContent: " login",
-      xpath: "//*[@id='login']/button"
+      xpath: "//*[@id='login']/button/i"
     },
     pageId: 0,
     type: "click"
@@ -110,13 +109,14 @@ describe("eventsToSteps", () => {
     expect(steps).toMatchObject(finalSteps);
   });
 });
+
 describe("findActions", () => {
   test("returns only click, scroll, and type events", async () => {
     const events = await loadEvents("login");
-    expect(events).toHaveLength(146);
+    expect(events).toHaveLength(135);
 
     const filteredEvents = findActions(events);
-    expect(filteredEvents).toHaveLength(85);
+    expect(filteredEvents).toHaveLength(83);
   });
 });
 
@@ -468,7 +468,7 @@ describe("groupActions", () => {
     expect(actionGroups).toHaveLength(10);
 
     expect(actionGroups[0].type).toBe("scroll");
-    expect(actionGroups[0].actions).toHaveLength(43);
+    expect(actionGroups[0].actions).toHaveLength(41);
 
     expect(actionGroups[1]).toMatchObject({
       type: "click",
@@ -520,7 +520,7 @@ describe("groupActions", () => {
 
     expect(actionGroups[9]).toMatchObject({
       type: "click",
-      xpath: "//*[@id='login']/button"
+      xpath: "//*[@id='login']/button/i"
     });
     expect(actionGroups[9].actions).toHaveLength(1);
   });

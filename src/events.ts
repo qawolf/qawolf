@@ -8,6 +8,7 @@ import { Locator } from "./types";
 
 export type QAData = incrementalData &
   mouseInteractionData & {
+    href?: string;
     isTrusted?: boolean;
     properties: Locator;
     text?: string;
