@@ -1,14 +1,12 @@
-#!/usr/bin/env node
-
 import clear from "clear";
 import program from "commander";
 import fs, { ensureDir, writeFile } from "fs-extra";
 import { runCLI } from "jest";
 import { snakeCase } from "lodash";
 import path from "path";
-import { logger } from "./logger";
 import { buildJob } from "./build/buildJob";
 import { buildTest } from "./build/buildTest";
+import { logger } from "./logger";
 
 clear();
 

@@ -1,5 +1,4 @@
-const { Browser } = require("../../dist/browser/Browser");
-const hooks = require("../../dist/browser/hooks");
+const { Browser, hooks } = require("qawolf");
 
 describe('{{{name}}}', () => {
   let browser;
