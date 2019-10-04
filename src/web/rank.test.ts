@@ -68,7 +68,7 @@ describe("rank.findCandidateElements", () => {
     expect(numElements).toBe(28);
   });
 
-  test("returns inputs for type step", async () => {
+  test('returns inputs for "type" step', async () => {
     const page = await browser.goto(`${CONFIG.testUrl}/login`);
 
     const typeAction = {
@@ -85,7 +85,7 @@ describe("rank.findCandidateElements", () => {
     expect(numElements).toBe(2);
   });
 
-  test("returns select for type step", async () => {
+  test('returns select for "type" step', async () => {
     const page = await browser.goto(`${CONFIG.testUrl}/dropdown`);
 
     const typeAction = {
