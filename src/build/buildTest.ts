@@ -4,7 +4,7 @@ import { resolve } from "path";
 import { BrowserStep, Job } from "../types";
 
 const testTemplate = compile(
-  readFileSync(resolve(__dirname, "./test.template"), "utf8")
+  readFileSync(resolve(__dirname, "../../bin/test.template"), "utf8")
 );
 
 export const buildTest = (job: Job) => {
