@@ -63,7 +63,7 @@ test("actions.scrollTo scrolls in infinite scroll", async () => {
   expect(nextYPosition).toBe(2000);
 });
 
-test.only("actions.setInputValue sets an input value", async () => {
+test("actions.setInputValue sets an input value", async () => {
   const page = await browser.goto(`${CONFIG.testUrl}/login`);
 
   const onChangePromise = await page.evaluate(changeHandler => {
