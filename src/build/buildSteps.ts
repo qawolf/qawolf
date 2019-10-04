@@ -1,6 +1,6 @@
 import { first, isNil, last } from "lodash";
-import { QAEventWithTime } from "./events";
-import { Action, BrowserStep } from "./types";
+import { QAEventWithTime } from "../events";
+import { Action, BrowserStep } from "../types";
 
 type EventSequence = {
   action: Action;
@@ -140,7 +140,9 @@ export const buildTypeStep = (typeSequence: EventSequence): BrowserStep => {
   };
 };
 
-export const buildSteps = (eventSequences: EventSequence[]): BrowserStep[] => {
+export const buildSequenceSteps = (
+  eventSequences: EventSequence[]
+): BrowserStep[] => {
   let steps: BrowserStep[] = [];
 
   eventSequences.forEach((eventSequence, i) => {
@@ -158,10 +160,10 @@ export const buildSteps = (eventSequences: EventSequence[]): BrowserStep[] => {
   return steps;
 };
 
-export const planSteps = (events: QAEventWithTime[]): BrowserStep[] => {
+export const buildSteps = (events: QAEventWithTime[]): BrowserStep[] => {
   const actionEvents = findActionEvents(events);
   const eventSequences = groupEventSequences(actionEvents);
-  const steps = buildSteps(eventSequences);
+  const steps = buildSequenceSteps(eventSequences);
 
   return steps;
 };

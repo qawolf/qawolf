@@ -1,11 +1,15 @@
 import { mousemoveData } from "rrweb/typings/types";
-import { Job } from "./types";
-import { QAEventWithTime } from "./events";
-import { planSteps } from "./planSteps";
-import { Size } from "./browser/device";
+import { buildSteps } from "./buildSteps";
+import { Size } from "../browser/device";
+import { QAEventWithTime } from "../events";
+import { Job } from "../types";
 
-export const findHref = (events: QAEventWithTime[]): string => {
-  return events.filter(e => e.data && e.data.href)[0].data.href!;
+export const findUrl = (events: QAEventWithTime[]): string => {
+  for (let e of events) {
+    if (e.data && e.data.href) return e.data.href;
+  }
+
+  throw new Error("No url found");
 };
 
 export const findSize = (events: any[]): Size =>
@@ -38,15 +42,15 @@ export const orderEventsByTime = (
   return orderedEvents;
 };
 
-export const planJob = (
+export const buildJob = (
   originalEvents: QAEventWithTime[],
   name: string
 ): Job => {
-  const url = findHref(originalEvents);
+  const url = findUrl(originalEvents);
   const size = findSize(originalEvents);
 
   const events = orderEventsByTime(originalEvents);
-  const steps = planSteps(events);
+  const steps = buildSteps(events);
 
   const job = { name, size, steps, url };
 

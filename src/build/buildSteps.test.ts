@@ -1,18 +1,18 @@
 import { loadEvents } from "@qawolf/fixtures";
-import { QAEventWithTime } from "./events";
+import { QAEventWithTime } from "../events";
 import {
-  buildSteps,
   buildClickSteps,
   buildScrollStep,
+  buildSequenceSteps,
+  buildSteps,
   buildTypeStep,
   findActionEvents,
   getEventAction,
   groupEventSequences,
   isMouseDownEvent,
   isScrollEvent,
-  isTypeEvent,
-  planSteps
-} from "./planSteps";
+  isTypeEvent
+} from "./buildSteps";
 
 export const finalSteps = [
   {
@@ -348,13 +348,13 @@ describe("buildScrollStep", () => {
   });
 });
 
-describe("buildSteps", () => {
+describe("buildSequenceSteps", () => {
   test("returns correct steps for action groups", async () => {
     const events = await loadEvents("login");
     const actionEvents = findActionEvents(events);
     const eventSequences = groupEventSequences(actionEvents);
 
-    const steps = buildSteps(eventSequences);
+    const steps = buildSequenceSteps(eventSequences);
 
     expect(steps).toMatchObject(finalSteps);
   });
@@ -656,11 +656,11 @@ describe("isTypeEvent", () => {
   });
 });
 
-describe("planSteps", () => {
+describe("buildSteps", () => {
   test("returns steps from events", async () => {
     const events = await loadEvents("login");
 
-    const steps = planSteps(events);
+    const steps = buildSteps(events);
 
     expect(steps).toMatchObject(finalSteps);
   });
