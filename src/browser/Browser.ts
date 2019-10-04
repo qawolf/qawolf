@@ -1,4 +1,5 @@
 import fs from "fs-extra";
+import { platform } from "os";
 import path from "path";
 import puppeteer, { Page, Serializable } from "puppeteer";
 import { CONFIG } from "../config";
@@ -36,15 +37,17 @@ export class Browser {
     const launchOptions: puppeteer.LaunchOptions = {
       args: [
         "--no-default-browser-check",
-        // XXX for linux only?
-        // "--disable-setuid-sandbox",
-        // "--no-sandbox",
         `--window-size=${device.viewport.width},${device.viewport.height}`
       ],
       defaultViewport: null,
       headless: CONFIG.headless,
       ignoreDefaultArgs: ["--enable-automation"]
     };
+
+    if (platform() === "linux") {
+      launchOptions!.args!.push("--disable-setuid-sandbox");
+      launchOptions!.args!.push("--no-sandbox");
+    }
 
     if (CONFIG.chromeExecutablePath) {
       launchOptions.executablePath = CONFIG.chromeExecutablePath;
