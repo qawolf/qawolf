@@ -20,5 +20,4 @@ export type QAEvent = incrementalSnapshotEvent & {
   pageId: number;
 };
 
-// XXX: move these to types file?
 export type QAEventWithTime = eventWithTime & QAEvent;
