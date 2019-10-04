@@ -1,7 +1,7 @@
 import { mousemoveData } from "rrweb/typings/types";
 import { Job } from "./types";
 import { QAEventWithTime } from "./events";
-import eventsToSteps from "./eventsToSteps";
+import { planSteps } from "./planSteps";
 import { Size } from "./browser/device";
 
 export const findHref = (events: QAEventWithTime[]): string => {
@@ -46,7 +46,7 @@ export const planJob = (
   const size = findSize(originalEvents);
 
   const events = orderEventsByTime(originalEvents);
-  const steps = eventsToSteps(events);
+  const steps = planSteps(events);
 
   const job = { name, size, steps, url };
 

@@ -72,8 +72,8 @@ describe("rank.findCandidateElements", () => {
     const page = await browser.goto(`${CONFIG.testUrl}/login`);
 
     const typeAction = {
+      action: "type" as "type",
       ...step,
-      type: "type" as "type",
       value: "spirit"
     };
 

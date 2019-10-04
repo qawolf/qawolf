@@ -1,6 +1,6 @@
 import { loadEvents } from "@qawolf/fixtures";
-import { finalSteps } from "./eventsToSteps.test";
-import { findHref, planJob } from "./planner";
+import { finalSteps } from "./planSteps.test";
+import { findHref, planJob } from "./planJob";
 
 describe("findHref", () => {
   test("returns href of events", async () => {

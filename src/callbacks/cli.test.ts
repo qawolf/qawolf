@@ -55,32 +55,32 @@ describe("createRunFromJob", () => {
   test("creates run object from job", () => {
     const steps = [
       {
+        action: "type" as "type",
         locator: {
           inputType: "text",
           name: "username",
           tagName: "input",
           xpath: '//*[@id="username"]'
         },
-        type: "type" as "type",
         value: "spirit"
       },
       {
+        action: "type" as "type",
         locator: {
           inputType: "password",
           name: "password",
           tagName: "input",
           xpath: '//*[@id="password"]'
         },
-        type: "type" as "type",
         value: "supersecret"
       },
       {
+        action: "click" as "click",
         locator: {
           tagName: "button",
           textContent: "login",
           xpath: '//*[@id="login"]/button'
-        },
-        type: "click" as "click"
+        }
       }
     ];
 
@@ -118,11 +118,11 @@ describe("createRunFromJob", () => {
 describe("formatStep", () => {
   test("formats click on link step", () => {
     const step = {
+      action: "click" as "click",
       locator: {
         tagName: "a",
         textContent: "contact"
-      },
-      type: "click" as "click"
+      }
     };
 
     const formattedStep = formatStep(step);
@@ -134,13 +134,13 @@ describe("formatStep", () => {
 
   test("formats click on submit input step", () => {
     const step = {
+      action: "click" as "click",
       locator: {
         inputType: "submit",
         name: "signin",
         tagName: "input",
         textContent: "sign in"
-      },
-      type: "click" as "click"
+      }
     };
 
     const formattedStep = formatStep(step);
@@ -152,9 +152,9 @@ describe("formatStep", () => {
 
   test("formats scroll down action", () => {
     const step = {
+      action: "scroll" as "scroll",
       locator: { xpath: "scroll" },
-      scrollDirection: "down" as "down",
-      type: "scroll" as "scroll"
+      scrollDirection: "down" as "down"
     };
 
     const formattedStep = formatStep(step);
@@ -166,9 +166,9 @@ describe("formatStep", () => {
 
   test("formats scroll up action", () => {
     const step = {
+      action: "scroll" as "scroll",
       locator: { xpath: "scroll" },
-      scrollDirection: "up" as "up",
-      type: "scroll" as "scroll"
+      scrollDirection: "up" as "up"
     };
 
     const formattedStep = formatStep(step);
@@ -180,6 +180,7 @@ describe("formatStep", () => {
 
   test("formats type into text input", () => {
     const step = {
+      action: "type" as "type",
       locator: {
         id: "input1",
         inputType: "text",
@@ -188,7 +189,6 @@ describe("formatStep", () => {
         placeholder: "Jane Doe",
         tagName: "input"
       },
-      type: "type" as "type",
       value: "spirit"
     };
 
@@ -201,13 +201,13 @@ describe("formatStep", () => {
 
   test("formats type into password input", () => {
     const step = {
+      action: "type" as "type",
       locator: {
         id: "input2",
         inputType: "password",
         placeholder: "secret",
         tagName: "input"
       },
-      type: "type" as "type",
       value: "supersecret"
     };
 
@@ -220,6 +220,7 @@ describe("formatStep", () => {
 
   test("removes newline characters", () => {
     const step = {
+      action: "type" as "type",
       locator: {
         id: "input1",
         inputType: "text",
@@ -228,7 +229,6 @@ describe("formatStep", () => {
         placeholder: "Jane Doe",
         tagName: "input"
       },
-      type: "type" as "type",
       value: "spirit"
     };
 
@@ -241,6 +241,7 @@ describe("formatStep", () => {
 
   test("remove excessive whitespace", () => {
     const step = {
+      action: "type" as "type",
       locator: {
         id: "input1",
         inputType: "text",
@@ -249,7 +250,6 @@ describe("formatStep", () => {
         placeholder: "Jane Doe",
         tagName: "input"
       },
-      type: "type" as "type",
       value: "spirit"
     };
 

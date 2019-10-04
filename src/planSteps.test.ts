@@ -1,37 +1,39 @@
 import { loadEvents } from "@qawolf/fixtures";
 import { QAEventWithTime } from "./events";
-import eventsToSteps, {
-  buildStepsFromActionGroups,
-  findActions,
-  formatClickSteps,
-  formatScrollStep,
-  formatTypeStep,
-  getActionType,
-  groupActions,
+import {
+  buildSteps,
+  buildClickSteps,
+  buildScrollStep,
+  buildTypeStep,
+  findActionEvents,
+  getEventAction,
+  groupEventSequences,
   isMouseDownEvent,
   isScrollEvent,
-  isTypeEvent
-} from "./eventsToSteps";
+  isTypeEvent,
+  planSteps
+} from "./planSteps";
 
 export const finalSteps = [
   {
+    action: "scroll",
     locator: { xpath: "scroll" },
     pageId: 0,
     scrollDirection: "down",
-    scrollTo: 334,
-    type: "scroll"
+    scrollTo: 334
   },
   {
+    action: "click",
     locator: {
       href: "http://localhost:5000/login",
       tagName: "a",
       textContent: "form authentication",
       xpath: "//*[@id='content']/ul/li[18]/a"
     },
-    pageId: 0,
-    type: "click"
+    pageId: 0
   },
   {
+    action: "type",
     locator: {
       id: "username",
       inputType: "text",
@@ -40,20 +42,20 @@ export const finalSteps = [
       xpath: "//*[@id='username']"
     },
     pageId: 0,
-    type: "type",
     value: "tomsmith"
   },
   {
+    action: "click",
     locator: {
       inputType: "submit",
       tagName: "button",
       textContent: " login",
       xpath: "//*[@id='login']/button"
     },
-    pageId: 0,
-    type: "click"
+    pageId: 0
   },
   {
+    action: "type",
     locator: {
       id: "username",
       inputType: "text",
@@ -62,10 +64,11 @@ export const finalSteps = [
       xpath: "//*[@id='username']"
     },
     pageId: 0,
-    type: "type",
+
     value: "tomsmith"
   },
   {
+    action: "type",
     locator: {
       id: "password",
       inputType: "password",
@@ -74,56 +77,25 @@ export const finalSteps = [
       xpath: "//*[@id='password']"
     },
     pageId: 0,
-    type: "type",
+
     value: "SuperSecretPassword!"
   },
   {
+    action: "click",
     locator: {
       tagName: "i",
       textContent: " login",
       xpath: "//*[@id='login']/button/i"
     },
-    pageId: 0,
-    type: "click"
+    pageId: 0
   }
 ];
 
-describe("buildStepsFromActionGroups", () => {
-  test("returns correct steps for action groups", async () => {
-    const events = await loadEvents("login");
-    const actions = findActions(events);
-    const actionGroups = groupActions(actions);
-
-    const steps = buildStepsFromActionGroups(actionGroups);
-
-    expect(steps).toMatchObject(finalSteps);
-  });
-});
-
-describe("eventsToSteps", () => {
-  test("returns correct steps for events", async () => {
-    const events = await loadEvents("login");
-
-    const steps = eventsToSteps(events);
-
-    expect(steps).toMatchObject(finalSteps);
-  });
-});
-
-describe("findActions", () => {
-  test("returns only click, scroll, and type events", async () => {
-    const events = await loadEvents("login");
-    expect(events).toHaveLength(135);
-
-    const filteredEvents = findActions(events);
-    expect(filteredEvents).toHaveLength(83);
-  });
-});
-
-describe("formatClickSteps", () => {
-  test("returns steps for all clicks if no next group", () => {
-    const actionGroup = {
-      actions: [
+describe("buildClickSteps", () => {
+  test("returns steps for all clicks if no next sequence", () => {
+    const eventSequence = {
+      action: "click" as "click",
+      events: [
         {
           data: {
             properties: {
@@ -141,27 +113,27 @@ describe("formatClickSteps", () => {
           pageId: 0
         } as QAEventWithTime
       ],
-      type: "click" as "click",
       xpath: "button"
     };
 
-    expect(formatClickSteps(actionGroup, null)).toMatchObject([
+    expect(buildClickSteps(eventSequence, null)).toMatchObject([
       {
+        action: "click",
         locator: { id: "button" },
-        pageId: 0,
-        type: "click"
+        pageId: 0
       },
       {
+        action: "click",
         locator: { id: "button" },
-        pageId: 0,
-        type: "click"
+        pageId: 0
       }
     ]);
   });
 
   test("returns steps for all clicks if next group not typing", () => {
-    const actionGroup = {
-      actions: [
+    const eventSequence = {
+      action: "click" as "click",
+      events: [
         {
           data: {
             properties: {
@@ -179,38 +151,30 @@ describe("formatClickSteps", () => {
           pageId: 0
         } as QAEventWithTime
       ],
-      type: "click" as "click",
       xpath: "button"
     };
 
     const nextGroup = {
-      actions: [
+      action: "scroll" as "scroll",
+      events: [
         {
           data: { y: 100 },
           pageId: 0
         } as QAEventWithTime
       ],
-      type: "scroll" as "scroll",
       xpath: "button"
     };
 
-    expect(formatClickSteps(actionGroup, nextGroup)).toMatchObject([
-      {
-        locator: { id: "button" },
-        pageId: 0,
-        type: "click"
-      },
-      {
-        locator: { id: "button" },
-        pageId: 0,
-        type: "click"
-      }
+    expect(buildClickSteps(eventSequence, nextGroup)).toMatchObject([
+      { action: "click", locator: { id: "button" }, pageId: 0 },
+      { action: "click", locator: { id: "button" }, pageId: 0 }
     ]);
   });
 
   test("returns steps for all clicks if next group is different element", () => {
-    const actionGroup = {
-      actions: [
+    const eventSequence = {
+      action: "click" as "click",
+      events: [
         {
           data: {
             properties: {
@@ -228,12 +192,12 @@ describe("formatClickSteps", () => {
           pageId: 0
         } as QAEventWithTime
       ],
-      type: "click" as "click",
       xpath: "button"
     };
 
     const nextGroup = {
-      actions: [
+      action: "click" as "click",
+      events: [
         {
           data: {
             properties: {
@@ -243,27 +207,27 @@ describe("formatClickSteps", () => {
           pageId: 0
         } as QAEventWithTime
       ],
-      type: "click" as "click",
       xpath: "anotherButton"
     };
 
-    expect(formatClickSteps(actionGroup, nextGroup)).toMatchObject([
+    expect(buildClickSteps(eventSequence, nextGroup)).toMatchObject([
       {
         locator: { id: "button" },
         pageId: 0,
-        type: "click"
+        action: "click"
       },
       {
         locator: { id: "button" },
         pageId: 0,
-        type: "click"
+        action: "click"
       }
     ]);
   });
 
   test("does not include last click if next group is typing into same element", () => {
-    const actionGroup = {
-      actions: [
+    const eventSequence = {
+      action: "click" as "click",
+      events: [
         {
           data: {
             properties: {
@@ -281,12 +245,12 @@ describe("formatClickSteps", () => {
           pageId: 0
         } as QAEventWithTime
       ],
-      type: "click" as "click",
       xpath: "input"
     };
 
     const nextGroup = {
-      actions: [
+      action: "type" as "type",
+      events: [
         {
           data: {
             properties: {
@@ -297,38 +261,38 @@ describe("formatClickSteps", () => {
           pageId: 0
         } as QAEventWithTime
       ],
-      type: "type" as "type",
       xpath: "input"
     };
 
-    expect(formatClickSteps(actionGroup, nextGroup)).toMatchObject([
+    expect(buildClickSteps(eventSequence, nextGroup)).toMatchObject([
       {
+        action: "click",
         locator: { id: "input" },
-        pageId: 0,
-        type: "click"
+        pageId: 0
       }
     ]);
   });
 });
 
-describe("formatScrollStep", () => {
+describe("buildScrollStep", () => {
   test("returns null if not enough actions", () => {
-    const actionGroup = {
-      actions: [
+    const eventSequence = {
+      action: "scroll" as "scroll",
+      events: [
         {
           data: { y: 0 }
         } as QAEventWithTime
       ],
-      type: "scroll" as "scroll",
       xpath: null
     };
 
-    expect(formatScrollStep(actionGroup)).toBeNull();
+    expect(buildScrollStep(eventSequence)).toBeNull();
   });
 
   test("returns last scroll step if scrolling down", () => {
-    const actionGroup = {
-      actions: [
+    const eventSequence = {
+      action: "scroll" as "scroll",
+      events: [
         {
           data: { y: 0 },
           pageId: 0
@@ -342,22 +306,22 @@ describe("formatScrollStep", () => {
           pageId: 0
         } as QAEventWithTime
       ],
-      type: "scroll" as "scroll",
       xpath: null
     };
 
-    expect(formatScrollStep(actionGroup)).toMatchObject({
+    expect(buildScrollStep(eventSequence)).toMatchObject({
+      action: "scroll",
       locator: { xpath: "scroll" },
       pageId: 0,
       scrollDirection: "down",
-      scrollTo: 100,
-      type: "scroll"
+      scrollTo: 100
     });
   });
 
   test("returns last scroll step if scrolling up", () => {
-    const actionGroup = {
-      actions: [
+    const eventSequence = {
+      action: "scroll" as "scroll",
+      events: [
         {
           data: { y: 100 },
           pageId: 0
@@ -371,24 +335,36 @@ describe("formatScrollStep", () => {
           pageId: 0
         } as QAEventWithTime
       ],
-      type: "scroll" as "scroll",
       xpath: null
     };
 
-    expect(formatScrollStep(actionGroup)).toMatchObject({
+    expect(buildScrollStep(eventSequence)).toMatchObject({
+      action: "scroll",
       locator: { xpath: "scroll" },
       pageId: 0,
       scrollDirection: "up",
-      scrollTo: 0,
-      type: "scroll"
+      scrollTo: 0
     });
   });
 });
 
-describe("formatTypeStep", () => {
-  test("returns formatted type step", () => {
-    const actionGroup = {
-      actions: [
+describe("buildSteps", () => {
+  test("returns correct steps for action groups", async () => {
+    const events = await loadEvents("login");
+    const actionEvents = findActionEvents(events);
+    const eventSequences = groupEventSequences(actionEvents);
+
+    const steps = buildSteps(eventSequences);
+
+    expect(steps).toMatchObject(finalSteps);
+  });
+});
+
+describe("buildTypeStep", () => {
+  test("returns buildted type step", () => {
+    const eventSequence = {
+      action: "type" as "type",
+      events: [
         {
           data: {
             properties: {
@@ -408,32 +384,41 @@ describe("formatTypeStep", () => {
           pageId: 0
         } as QAEventWithTime
       ],
-      type: "type" as "type",
       xpath: "username"
     };
 
-    expect(formatTypeStep(actionGroup)).toMatchObject({
+    expect(buildTypeStep(eventSequence)).toMatchObject({
+      action: "type",
       locator: {
         id: "username"
       },
       pageId: 0,
-      type: "type",
       value: "sp"
     });
   });
 });
 
-describe("getActionType", () => {
+describe("findActionEvents", () => {
+  test("returns only click, scroll, and type events", async () => {
+    const events = await loadEvents("login");
+    expect(events).toHaveLength(135);
+
+    const filteredEvents = findActionEvents(events);
+    expect(filteredEvents).toHaveLength(83);
+  });
+});
+
+describe("getEventAction", () => {
   test("returns click if click action", () => {
     const action = {
       data: {
+        isTrusted: true,
         source: 2,
-        type: 1,
-        isTrusted: true
+        type: 1
       }
     } as QAEventWithTime;
 
-    expect(getActionType(action)).toBe("click");
+    expect(getEventAction(action)).toBe("click");
   });
 
   test("returns scroll if scroll action", () => {
@@ -441,7 +426,7 @@ describe("getActionType", () => {
       data: { source: 3, id: 1 }
     } as QAEventWithTime;
 
-    expect(getActionType(action)).toBe("scroll");
+    expect(getEventAction(action)).toBe("scroll");
   });
 
   test("returns type if type action", () => {
@@ -449,80 +434,80 @@ describe("getActionType", () => {
       data: { source: 5, isTrusted: true, text: "spirit" }
     } as QAEventWithTime;
 
-    expect(getActionType(action)).toBe("type");
+    expect(getEventAction(action)).toBe("type");
   });
 
   test("throws error if action type not found", () => {
     expect(() => {
-      getActionType({ data: { source: 11 } } as QAEventWithTime);
+      getEventAction({ data: { source: 11 } } as QAEventWithTime);
     }).toThrowError();
   });
 });
 
-describe("groupActions", () => {
+describe("groupEventSequences", () => {
   test("returns actions grouped by element and type", async () => {
     const events = await loadEvents("login");
-    const actions = findActions(events);
-    const actionGroups = groupActions(actions);
+    const actions = findActionEvents(events);
+    const eventSequences = groupEventSequences(actions);
 
-    expect(actionGroups).toHaveLength(10);
+    expect(eventSequences).toHaveLength(10);
 
-    expect(actionGroups[0].type).toBe("scroll");
-    expect(actionGroups[0].actions).toHaveLength(41);
+    expect(eventSequences[0].action).toBe("scroll");
+    expect(eventSequences[0].events).toHaveLength(41);
 
-    expect(actionGroups[1]).toMatchObject({
-      type: "click",
+    expect(eventSequences[1]).toMatchObject({
+      action: "click",
       xpath: "//*[@id='content']/ul/li[18]/a"
     });
-    expect(actionGroups[1].actions).toHaveLength(1);
+    expect(eventSequences[1].events).toHaveLength(1);
 
-    expect(actionGroups[2]).toMatchObject({
-      type: "click",
+    expect(eventSequences[2]).toMatchObject({
+      action: "click",
       xpath: "//*[@id='username']"
     });
-    expect(actionGroups[2].actions).toHaveLength(1);
+    expect(eventSequences[2].events).toHaveLength(1);
 
-    expect(actionGroups[3]).toMatchObject({
-      type: "type",
+    expect(eventSequences[3]).toMatchObject({
+      action: "type",
       xpath: "//*[@id='username']"
     });
-    expect(actionGroups[3].actions).toHaveLength(8);
+    expect(eventSequences[3].events).toHaveLength(8);
 
-    expect(actionGroups[4]).toMatchObject({
-      type: "click",
+    expect(eventSequences[4]).toMatchObject({
+      action: "click",
       xpath: "//*[@id='login']/button"
     });
-    expect(actionGroups[4].actions).toHaveLength(1);
+    expect(eventSequences[4].events).toHaveLength(1);
 
-    expect(actionGroups[5]).toMatchObject({
-      type: "click",
+    expect(eventSequences[5]).toMatchObject({
+      action: "click",
       xpath: "//*[@id='username']"
     });
-    expect(actionGroups[5].actions).toHaveLength(1);
+    expect(eventSequences[5].events).toHaveLength(1);
 
-    expect(actionGroups[6]).toMatchObject({
-      type: "type",
+    expect(eventSequences[6]).toMatchObject({
+      action: "type",
       xpath: "//*[@id='username']"
     });
-    expect(actionGroups[6].actions).toHaveLength(8);
+    expect(eventSequences[6].events).toHaveLength(8);
 
-    expect(actionGroups[7]).toMatchObject({
-      type: "click",
+    expect(eventSequences[7]).toMatchObject({
+      action: "click",
       xpath: "//*[@id='password']"
     });
-    expect(actionGroups[7].actions).toHaveLength(1);
+    expect(eventSequences[7].events).toHaveLength(1);
 
-    expect(actionGroups[8]).toMatchObject({
-      type: "type",
+    expect(eventSequences[8]).toMatchObject({
+      action: "type",
       xpath: "//*[@id='password']"
     });
-    expect(actionGroups[8].actions).toHaveLength(20);
+    expect(eventSequences[8].events).toHaveLength(20);
 
-    expect(actionGroups[9]).toMatchObject({
-      type: "click",
+    expect(eventSequences[9]).toMatchObject({
+      action: "click",
       xpath: "//*[@id='login']/button/i"
     });
-    expect(actionGroups[9].actions).toHaveLength(1);
+    expect(eventSequences[9].events).toHaveLength(1);
   });
 });
 
@@ -561,9 +546,9 @@ describe("isMouseDownEvent", () => {
   test("returns false if data not trusted", () => {
     const event = {
       data: {
+        isTrusted: false,
         source: 2,
-        type: 1,
-        isTrusted: false
+        type: 1
       }
     } as QAEventWithTime;
 
@@ -573,9 +558,9 @@ describe("isMouseDownEvent", () => {
   test("returns true if mouse down event", () => {
     const event = {
       data: {
+        isTrusted: true,
         source: 2,
-        type: 1,
-        isTrusted: true
+        type: 1
       }
     } as QAEventWithTime;
 
@@ -668,5 +653,15 @@ describe("isTypeEvent", () => {
     } as QAEventWithTime;
 
     expect(isTypeEvent(event)).toBe(true);
+  });
+});
+
+describe("planSteps", () => {
+  test("returns steps from events", async () => {
+    const events = await loadEvents("login");
+
+    const steps = planSteps(events);
+
+    expect(steps).toMatchObject(finalSteps);
   });
 });
