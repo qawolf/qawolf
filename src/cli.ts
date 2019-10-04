@@ -36,18 +36,19 @@ program
   .command("run [name]")
   .description("run a test")
   .action(async name => {
-    // project root is where qawolf is called from
-    const projectRootPath = process.cwd();
+    // `qawolf run` should be called where .qawolf is
+    const rootDir = process.cwd();
 
-    // TODO filter by test name
-    const jestConfig = {
+    const jestConfig: any = {
       roots: ["<rootDir>/.qawolf"]
     };
+    if (name) {
+      jestConfig._ = [`${snakeCase(name)}.js`];
+    }
 
-    await runCLI(jestConfig as any, [projectRootPath]);
-
-    // TODO change exit code based on results
-    process.exit(0);
+    const output = await runCLI(jestConfig as any, [rootDir]);
+    const failed = output.results.numFailedTestSuites > 0;
+    process.exit(failed ? 1 : 0);
   });
 
 program.allowUnknownOption(false);
