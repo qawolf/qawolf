@@ -27,9 +27,9 @@ export const computeSimilarityScores = (
 };
 
 export const findCandidateElements = (step: BrowserStep): Element[] => {
-  const qualifiedName = step.action === "type" ? "input" : "*";
+  const qualifiedName = step.action === "type" ? "input,textarea,select" : "*";
 
-  const elements = document.getElementsByTagName(qualifiedName);
+  const elements = document.querySelectorAll(qualifiedName);
 
   const candidates: Element[] = [];
 
