@@ -62,7 +62,7 @@
     "typescript": "^3.6.3"
   },
   "bin": {
-    "qawolf": "./dist/cli/index.js"
+    "qawolf": "./dist/cli.js"
   },
   "jest": {
     "roots": [
