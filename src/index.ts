@@ -7,5 +7,5 @@ export { Browser, hooks };
 
 const runningAsScript = !module.parent;
 if (runningAsScript) {
-  require("./cli");
+  require("./cli.js");
 }

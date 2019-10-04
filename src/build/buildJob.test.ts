@@ -1,6 +1,6 @@
 import { loadEvents } from "@qawolf/fixtures";
 import { buildJob, findUrl } from "./buildJob";
-import { finalSteps } from "./buildSteps.test";
+import { loginJob } from "../fixtures/loginJob";
 
 describe("findUrl", () => {
   test("finds starting url of events", async () => {
@@ -13,12 +13,7 @@ describe("findUrl", () => {
 describe("buildJob", () => {
   test("creates a job from events", async () => {
     const events = await loadEvents("login");
-    const job = buildJob(events, "test job");
-
-    expect(job).toMatchObject({
-      name: "test job",
-      steps: finalSteps,
-      url: "http://localhost:5000/"
-    });
+    const job = buildJob(events, "login");
+    expect(job).toMatchObject(loginJob);
   });
 });

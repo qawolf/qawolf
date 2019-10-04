@@ -4,7 +4,7 @@ import { getDevice } from "./device";
 import { QAWolf } from "../web";
 
 test("Browser.create injects qawolf", async () => {
-  const browser = await Browser.create(CONFIG.testUrl);
+  const browser = await Browser.create({ url: CONFIG.testUrl });
 
   const isLoaded = () => {
     const qawolf: QAWolf = (window as any).qawolf;
@@ -23,7 +23,7 @@ test("Browser.create injects qawolf", async () => {
 });
 
 test("Browser.create emulates device", async () => {
-  const browser = await Browser.create(CONFIG.testUrl, "mobile");
+  const browser = await Browser.create({ size: "mobile", url: CONFIG.testUrl });
 
   const expectedViewport = getDevice("mobile").viewport;
   expect((await browser.page(0)).viewport()).toEqual(expectedViewport);

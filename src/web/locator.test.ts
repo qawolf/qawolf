@@ -7,7 +7,7 @@ let browser: Browser;
 let page: Page;
 
 beforeAll(async () => {
-  browser = await Browser.create(`${CONFIG.testUrl}/login`);
+  browser = await Browser.create({ url: `${CONFIG.testUrl}login` });
   page = await browser.currentPage();
 });
 

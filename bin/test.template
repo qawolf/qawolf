@@ -1,18 +1,23 @@
-const { Browser, hooks } = require("qawolf");
+const { Browser, hooks } = require("{{modulePath}}");
+
+let browser;
+
+beforeAll(async () => {
+  browser = await Browser.create({ size: "{{{size}}}", url: "{{{url}}}" });
+  await hooks.beforeAll(browser);
+});
+
+beforeEach(() => hooks.beforeEach(browser));
+
+afterAll(() => hooks.afterAll(browser));
 
 describe('{{{name}}}', () => {
-  let browser;
-
-  beforeAll(async () => {
-    browser = await Browser.create("{{{url}}}", "{{{size}}}");
-
-    beforeEach(() => hooks.beforeEach(browser));
-  });
-  afterAll(() => browser.close());
   {{#each formattedSteps}}
-
   test('{{{name}}}', async () => {
     await browser.runStep({{{json}}});
   });
+  {{#unless @last}}
+  
+  {{/unless}}
   {{/each}}
 });
