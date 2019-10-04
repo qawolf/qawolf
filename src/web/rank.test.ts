@@ -68,7 +68,7 @@ describe("rank.findCandidateElements", () => {
     expect(numElements).toBe(28);
   });
 
-  test("returns only inputs for type step", async () => {
+  test('returns inputs for "type" step', async () => {
     const page = await browser.goto(`${CONFIG.testUrl}/login`);
 
     const typeAction = {
@@ -83,6 +83,23 @@ describe("rank.findCandidateElements", () => {
     }, typeAction);
 
     expect(numElements).toBe(2);
+  });
+
+  test('returns select for "type" step', async () => {
+    const page = await browser.goto(`${CONFIG.testUrl}/dropdown`);
+
+    const typeAction = {
+      action: "type" as "type",
+      ...step,
+      value: "spirit"
+    };
+
+    const numElements = await page.evaluate(step => {
+      const qawolf: QAWolf = (window as any).qawolf;
+      return qawolf.rank.findCandidateElements(step).length;
+    }, typeAction);
+
+    expect(numElements).toBe(1);
   });
 });
 
