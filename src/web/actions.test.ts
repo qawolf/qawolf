@@ -66,7 +66,7 @@ test("actions.scrollTo scrolls in infinite scroll", async () => {
 test("actions.setInputValue sets an input value", async () => {
   const page = await browser.goto(`${CONFIG.testUrl}/login`);
 
-  const onChangePromise = await page.evaluate(changeHandler => {
+  const onChangePromise = await page.evaluate(() => {
     const qawolf: QAWolf = (window as any).qawolf;
     const username = qawolf.xpath.findElementByXpath(
       '//*[@id="username"]'
