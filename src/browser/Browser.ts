@@ -36,7 +36,6 @@ export class Browser {
 
     const launchOptions: puppeteer.LaunchOptions = {
       args: [
-        "--disable-setuid",
         "--no-default-browser-check",
         `--window-size=${device.viewport.width},${device.viewport.height}`
       ],
