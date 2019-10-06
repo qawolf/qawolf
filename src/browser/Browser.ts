@@ -104,9 +104,8 @@ export class Browser {
         if (step.action === "click") {
           return elementHandle.click();
         } else {
-          return elementHandle.type(step.value || "");
+          return this.typeStep(elementHandle, step);
         }
-        // TODO: handle select tag
       }
     } catch (error) {
       if (
@@ -179,6 +178,21 @@ export class Browser {
       },
       step as Serializable
     );
+  }
+
+  private async typeStep(
+    elementHandle: ElementHandle,
+    step: BrowserStep
+  ): Promise<void> {
+    const handleProperty = await elementHandle.getProperty("tagName");
+    const tagName = await handleProperty.jsonValue();
+    const value = step.value || "";
+
+    if (tagName.toLowerCase() === "select") {
+      await elementHandle.select(value); // returns array of strings
+    } else {
+      return elementHandle.type(value);
+    }
   }
 }
 
