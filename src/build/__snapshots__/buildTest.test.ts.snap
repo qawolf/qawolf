@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`buildTest builds a test from a job 1`] = `
-"const { Browser, hooks } = require(\\"/Users/jon/dev/qawolf/dist/index.js\\");
+"const { Browser, hooks } = require(\\"qawolf\\");
 
 let browser;
 

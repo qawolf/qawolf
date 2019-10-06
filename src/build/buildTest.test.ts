@@ -6,7 +6,7 @@ describe("buildTest", () => {
   test("builds a test from a job", async () => {
     const events = await loadEvents("login");
     const job = buildJob(events, "test job");
-    const testString = buildTest(job);
+    const testString = buildTest(job, false);
     expect(testString).toMatchSnapshot();
   });
 });

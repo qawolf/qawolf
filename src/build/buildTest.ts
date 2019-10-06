@@ -36,13 +36,13 @@ export const formatStep = (step: BrowserStep): string => {
   return formattedName;
 };
 
-export const buildTest = (job: Job) => {
+export const buildTest = (job: Job, useLocalModule: boolean = false) => {
   const test = testTemplate({
     formattedSteps: job.steps.map(step => ({
       name: formatStep(step),
       json: JSON.stringify(step)
     })),
-    modulePath: CONFIG.useLocalModule ? `${cwd()}/dist/index.js` : "qawolf",
+    modulePath: useLocalModule ? `${cwd()}/dist/index.js` : "qawolf",
     name: job.name,
     size: job.size,
     url: job.url

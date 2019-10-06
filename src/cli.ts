@@ -5,6 +5,7 @@ import { snakeCase } from "lodash";
 import { resolve } from "path";
 import { buildJob } from "./build/buildJob";
 import { buildTest } from "./build/buildTest";
+import { CONFIG } from "./config";
 import { logger } from "./logger";
 import { runTest } from "./runTest";
 
@@ -21,7 +22,7 @@ program
     logger.debug(`build test for ${sourcePath} -> ${destPath}`);
     const events = await fs.readJson(sourcePath);
     const job = buildJob(events, formattedName);
-    const test = buildTest(job);
+    const test = buildTest(job, CONFIG.useLocalModule);
     await outputFile(destPath, test, "utf8");
 
     process.exit(0);

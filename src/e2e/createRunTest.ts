@@ -9,7 +9,7 @@ import { runTest } from "../runTest";
 import { Job } from "../types";
 
 const saveTempTest = async (job: Job) => {
-  const testData = buildTest(job);
+  const testData = buildTest(job, true);
   const testName = snakeCase(job.name);
 
   const tempRootDir = await mkdtemp(tmpdir());
