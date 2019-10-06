@@ -30,7 +30,6 @@ describe("formatStep", () => {
       action: "click" as "click",
       locator: {
         inputType: "submit",
-        name: "signin",
         tagName: "input",
         textContent: "sign in"
       }
