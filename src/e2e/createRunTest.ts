@@ -31,11 +31,14 @@ export const createRunTest = async (job: Job) => {
   process.env.SAVE_BROWSER_WS_PATH = saveBrowserWsPath;
   const success = await runTest(testName, tempRootDir);
 
+  logger.debug(`${job.name} success: ${success}`);
+
   const json = await readJSON(saveBrowserWsPath);
   const browser = await puppeteer.connect({
     browserWSEndpoint: json.wsEndpoint
   });
 
+  logger.debug(`connected to browser`);
   await remove(tempRootDir);
 
   return { browser, success };

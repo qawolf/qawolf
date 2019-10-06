@@ -8,16 +8,14 @@ test("multiple_windows test works", async () => {
     ...multipleWindowsJob,
     url: `${CONFIG.testUrl}windows`
   });
-
   expect(success).toBeTruthy();
 
   const pages = await browser.pages();
 
-  const pageOneHeader = await $xText(pages[0], '//*[@id="content"]/div/h3');
-  expect(pageOneHeader).toEqual("Opening a new window");
-
-  expect(await $xText(pages[1], "/html/body/div/h3")).toEqual("New Window");
-  expect(await $xText(pages[2], "/html/body/div/h3")).toEqual("New Window");
+  const newWindows = pages.filter(
+    p => p.url() === `${CONFIG.testUrl}windows/new`
+  );
+  expect(newWindows.length).toEqual(2);
 
   await browser.close();
 }, 10000);
