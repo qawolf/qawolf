@@ -104,7 +104,7 @@ export class Browser {
         if (step.action === "click") {
           return elementHandle.click();
         } else {
-          return this.typeStep(elementHandle, step);
+          return this.typeStep(page, elementHandle, step);
         }
       }
     } catch (error) {
@@ -181,6 +181,7 @@ export class Browser {
   }
 
   private async typeStep(
+    page: Page,
     elementHandle: ElementHandle,
     step: BrowserStep
   ): Promise<void> {
@@ -191,6 +192,10 @@ export class Browser {
     if (tagName.toLowerCase() === "select") {
       await elementHandle.select(value); // returns array of strings
     } else {
+      // clear current value
+      await page.evaluate(element => {
+        element.value = "";
+      }, elementHandle);
       return elementHandle.type(value);
     }
   }
