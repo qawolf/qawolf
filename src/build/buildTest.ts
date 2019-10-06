@@ -2,7 +2,6 @@ import { readFileSync } from "fs-extra";
 import { compile } from "handlebars";
 import { resolve } from "path";
 import { BrowserStep, Job } from "../types";
-import { CONFIG } from "../config";
 import { cwd } from "process";
 
 const testTemplate = compile(
@@ -22,14 +21,15 @@ export const formatStep = (step: BrowserStep): string => {
   const label = step.locator.labels ? step.locator.labels[0] : "";
 
   const targetName =
-    step.locator.textContent ||
     label ||
     step.locator.name ||
     step.locator.placeholder ||
+    step.locator.textContent ||
     step.locator.id ||
     "";
+  const truncatedTargetName = targetName.substring(0, 50); // ensure not too long
 
-  const name = `${stepAction} ${stepValue}${targetName} ${targetTagName}`;
+  const name = `${stepAction} ${stepValue}${truncatedTargetName} ${targetTagName}`;
   // remove newlines and excessive whitespace
   const formattedName = name.replace(/[\r\n]+/g, "").replace(/\s\s+/g, " ");
 

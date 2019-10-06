@@ -1,7 +1,7 @@
 import fs from "fs-extra";
 import { platform } from "os";
 import path from "path";
-import puppeteer, { Page, Serializable } from "puppeteer";
+import puppeteer, { ElementHandle, Page, Serializable } from "puppeteer";
 import { CONFIG } from "../config";
 import { getDevice, Size } from "./device";
 import { BrowserStep } from "../types";
@@ -96,13 +96,17 @@ export class Browser {
   public async runStep(step: BrowserStep): Promise<void> {
     const page = await this.page(step.pageId);
     try {
-      await page.evaluate(
-        step => {
-          const qawolf: QAWolf = (window as any).qawolf;
-          return qawolf.runStep(step);
-        },
-        step as Serializable
-      );
+      if (step.action === "scroll") {
+        return this.scrollStep(page, step);
+      } else {
+        const elementHandle = await this.findElementHandleForStep(page, step);
+
+        if (step.action === "click") {
+          return elementHandle.click();
+        } else {
+          return this.typeStep(page, elementHandle, step);
+        }
+      }
     } catch (error) {
       if (
         error.message ===
@@ -145,10 +149,77 @@ export class Browser {
       this._pages.push(page);
     });
   }
+
+  private async findElementHandleForStep(
+    page: Page,
+    step: BrowserStep
+  ): Promise<ElementHandle> {
+    const jsHandle = await page.evaluateHandle(
+      step => {
+        const qawolf: QAWolf = (window as any).qawolf;
+        return qawolf.rank.waitForElement(step);
+      },
+      step as Serializable
+    );
+
+    const elementHandle = jsHandle.asElement()!;
+    if (!elementHandle) {
+      throw new Error(`No element handle found for step ${step}`);
+    }
+
+    return elementHandle;
+  }
+
+  private async scrollStep(page: Page, step: BrowserStep): Promise<void> {
+    await page.evaluate(
+      step => {
+        const qawolf: QAWolf = (window as any).qawolf;
+        return qawolf.actions.scrollTo(step.scrollTo!);
+      },
+      step as Serializable
+    );
+  }
+
+  private async typeStep(
+    page: Page,
+    elementHandle: ElementHandle,
+    step: BrowserStep
+  ): Promise<void> {
+    const handleProperty = await elementHandle.getProperty("tagName");
+    const tagName = await handleProperty.jsonValue();
+    const value = step.value || "";
+
+    if (tagName.toLowerCase() === "select") {
+      await elementHandle.select(value); // returns array of strings
+    } else {
+      // clear current value
+      await page.evaluate(element => {
+        element.value = "";
+      }, elementHandle);
+      return elementHandle.type(value);
+    }
+  }
 }
 
-export const $xText = async (page: Page, xpath: string) => {
-  const elements = await page.$x(xpath);
-  const text = await page.evaluate(element => element.textContent, elements[0]);
-  return text;
+export const $xText = async (page: Page, xpath: string): Promise<string> => {
+  try {
+    const elements = await page.$x(xpath);
+
+    const text = await page.evaluate(
+      element => element.textContent,
+      elements[0]
+    );
+
+    return text;
+  } catch (error) {
+    if (
+      error.message ===
+      "Execution context was destroyed, most likely because of a navigation."
+    ) {
+      // re-run if the page navigates
+      return $xText(page, xpath);
+    }
+
+    throw error;
+  }
 };

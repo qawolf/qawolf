@@ -44,7 +44,7 @@
     "@types/jest": "^24.0.18",
     "@types/lodash": "^4.14.138",
     "@types/node": "^12.7.5",
-    "@types/puppeteer": "^1.19.1",
+    "@types/puppeteer": "^1.20.0",
     "@typescript-eslint/parser": "^2.3.0",
     "eslint": "^6.4.0",
     "eslint-config-prettier": "^6.3.0",
