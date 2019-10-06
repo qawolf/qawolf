@@ -138,4 +138,22 @@ describe("formatStep", () => {
       'enter "spirit" into username input[type="text"]'
     );
   });
+
+  test("shortens target name if needed", () => {
+    const step = {
+      action: "click" as "click",
+      locator: {
+        inputType: "submit",
+        tagName: "input",
+        textContent: `sign in${"x".repeat(200)}`
+      }
+    };
+
+    const formattedTextContent = `sign in${"x".repeat(43)}`;
+
+    const formattedStep = formatStep(step);
+    expect(formattedStep).toEqual(
+      `click ${formattedTextContent} input[type="submit"]`
+    );
+  });
 });
