@@ -3,15 +3,18 @@ import dotenv from "dotenv";
 const dotEnvPath = process.env.DOTENV_PATH;
 dotenv.config(dotEnvPath ? { path: dotEnvPath } : {});
 
-const jsonLogging = process.env.LOG_TYPE === "json";
-
 const testUrl = process.env.TEST_URL || "";
+
+const parseBool = (value: string | undefined) => {
+  return !!value && value !== "false";
+};
 
 export const CONFIG = {
   chromeExecutablePath: process.env.CHROME_EXECUTABLE_PATH,
-  fullScreen: process.env.FULL_SCREEN === "true",
-  headless: process.env.HEADLESS === "true",
-  jsonLogging,
+  headless: parseBool(process.env.HEADLESS),
+  keepBrowserOpen: parseBool(process.env.KEEP_BROWSER_OPEN),
+  saveBrowserWsPath: process.env.SAVE_BROWSER_WS_PATH,
   screenshotPath: process.env.SCREENSHOT_PATH,
-  testUrl
+  testUrl,
+  useLocalModule: parseBool(process.env.USE_LOCAL_MODULE)
 };

@@ -22,11 +22,11 @@ test("actions.click works on a link", async () => {
   });
   await page.waitForNavigation();
 
-  expect(page.url()).toBe(`${CONFIG.testUrl}/broken_images`);
+  expect(page.url()).toBe(`${CONFIG.testUrl}broken_images`);
 });
 
 test("actions.scrollTo scrolls to a given position", async () => {
-  const page = await browser.goto(`${CONFIG.testUrl}/large`);
+  const page = await browser.goto(`${CONFIG.testUrl}large`);
 
   const initialYPosition = await page.evaluate(() => window.pageYOffset);
   expect(initialYPosition).toBe(0);
@@ -49,7 +49,7 @@ test("actions.scrollTo scrolls to a given position", async () => {
 });
 
 test("actions.scrollTo scrolls in infinite scroll", async () => {
-  const page = await browser.goto(`${CONFIG.testUrl}/infinite_scroll`);
+  const page = await browser.goto(`${CONFIG.testUrl}infinite_scroll`);
 
   const initialYPosition = await page.evaluate(() => window.pageYOffset);
   expect(initialYPosition).toBe(0);
@@ -64,7 +64,7 @@ test("actions.scrollTo scrolls in infinite scroll", async () => {
 });
 
 test("actions.setInputValue sets an input value", async () => {
-  const page = await browser.goto(`${CONFIG.testUrl}/login`);
+  const page = await browser.goto(`${CONFIG.testUrl}login`);
 
   // only resolve after change is triggered
   await page.evaluate(() => {
@@ -92,7 +92,7 @@ test("actions.setInputValue sets an input value", async () => {
 });
 
 test("actions.scrollTo throws error if timeout", async () => {
-  const page = await browser.goto(`${CONFIG.testUrl}/infinite_scroll`);
+  const page = await browser.goto(`${CONFIG.testUrl}infinite_scroll`);
 
   const initialYPosition = await page.evaluate(() => window.pageYOffset);
   expect(initialYPosition).toBe(0);

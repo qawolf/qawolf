@@ -32,7 +32,7 @@ afterAll(() => browser.close());
 
 describe("rank.computeScoresForElements", () => {
   test("returns scores for each element", async () => {
-    const page = await browser.goto(`${CONFIG.testUrl}/login`);
+    const page = await browser.goto(`${CONFIG.testUrl}login`);
 
     const stepWithLocator = {
       ...step,
@@ -57,7 +57,7 @@ describe("rank.computeScoresForElements", () => {
 
 describe("rank.findCandidateElements", () => {
   test("returns all elements for click step", async () => {
-    const page = await browser.goto(`${CONFIG.testUrl}/login`);
+    const page = await browser.goto(`${CONFIG.testUrl}login`);
 
     const numElements = await page.evaluate(step => {
       const qawolf: QAWolf = (window as any).qawolf;
@@ -69,7 +69,7 @@ describe("rank.findCandidateElements", () => {
   });
 
   test('returns inputs for "type" step', async () => {
-    const page = await browser.goto(`${CONFIG.testUrl}/login`);
+    const page = await browser.goto(`${CONFIG.testUrl}login`);
 
     const typeAction = {
       action: "type" as "type",
@@ -105,7 +105,7 @@ describe("rank.findCandidateElements", () => {
 
 describe("rank.findTopElement", () => {
   test("returns null if no elements similar enough", async () => {
-    const page = await browser.goto(`${CONFIG.testUrl}/login`);
+    const page = await browser.goto(`${CONFIG.testUrl}login`);
 
     const stepWithLocator = {
       ...step,
@@ -122,7 +122,7 @@ describe("rank.findTopElement", () => {
   });
 
   test("returns null if a tie is found", async () => {
-    const page = await browser.goto(`${CONFIG.testUrl}/checkboxes`);
+    const page = await browser.goto(`${CONFIG.testUrl}checkboxes`);
 
     const stepWithLocator = {
       ...step,
@@ -146,7 +146,7 @@ describe("rank.findTopElement", () => {
   });
 
   test("returns xpath of highest match if one found", async () => {
-    const page = await browser.goto(`${CONFIG.testUrl}/login`);
+    const page = await browser.goto(`${CONFIG.testUrl}login`);
 
     const stepWithLocator = {
       ...step,

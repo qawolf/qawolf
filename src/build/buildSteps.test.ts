@@ -1,5 +1,4 @@
 import { loadEvents } from "@qawolf/fixtures";
-import { QAEventWithTime } from "../events";
 import {
   buildClickSteps,
   buildScrollStep,
@@ -13,83 +12,8 @@ import {
   isScrollEvent,
   isTypeEvent
 } from "./buildSteps";
-
-export const finalSteps = [
-  {
-    action: "scroll",
-    locator: { xpath: "scroll" },
-    pageId: 0,
-    scrollDirection: "down",
-    scrollTo: 334
-  },
-  {
-    action: "click",
-    locator: {
-      href: "http://localhost:5000/login",
-      tagName: "a",
-      textContent: "form authentication",
-      xpath: "//*[@id='content']/ul/li[18]/a"
-    },
-    pageId: 0
-  },
-  {
-    action: "type",
-    locator: {
-      id: "username",
-      inputType: "text",
-      name: "username",
-      tagName: "input",
-      xpath: "//*[@id='username']"
-    },
-    pageId: 0,
-    value: "tomsmith"
-  },
-  {
-    action: "click",
-    locator: {
-      inputType: "submit",
-      tagName: "button",
-      textContent: " login",
-      xpath: "//*[@id='login']/button"
-    },
-    pageId: 0
-  },
-  {
-    action: "type",
-    locator: {
-      id: "username",
-      inputType: "text",
-      name: "username",
-      tagName: "input",
-      xpath: "//*[@id='username']"
-    },
-    pageId: 0,
-
-    value: "tomsmith"
-  },
-  {
-    action: "type",
-    locator: {
-      id: "password",
-      inputType: "password",
-      name: "password",
-      tagName: "input",
-      xpath: "//*[@id='password']"
-    },
-    pageId: 0,
-
-    value: "SuperSecretPassword!"
-  },
-  {
-    action: "click",
-    locator: {
-      tagName: "i",
-      textContent: " login",
-      xpath: "//*[@id='login']/button/i"
-    },
-    pageId: 0
-  }
-];
+import { QAEventWithTime } from "../events";
+import { loginSteps } from "../fixtures/loginJob";
 
 describe("buildClickSteps", () => {
   test("returns steps for all clicks if no next sequence", () => {
@@ -355,8 +279,7 @@ describe("buildSequenceSteps", () => {
     const eventSequences = groupEventSequences(actionEvents);
 
     const steps = buildSequenceSteps(eventSequences);
-
-    expect(steps).toMatchObject(finalSteps);
+    expect(steps).toMatchObject(loginSteps);
   });
 });
 
@@ -661,7 +584,6 @@ describe("buildSteps", () => {
     const events = await loadEvents("login");
 
     const steps = buildSteps(events);
-
-    expect(steps).toMatchObject(finalSteps);
+    expect(steps).toMatchObject(loginSteps);
   });
 });

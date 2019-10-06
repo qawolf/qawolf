@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "license": "AGPL-3.0",
   "description": "Effortless smoke tests",
-  "main": "index.js",
+  "main": "dist/index.js",
   "files": [
     "dist"
   ],
@@ -62,7 +62,7 @@
     "typescript": "^3.6.3"
   },
   "bin": {
-    "qawolf": "./dist/cli.js"
+    "qawolf": "dist/index.js"
   },
   "jest": {
     "roots": [

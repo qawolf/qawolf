@@ -13,6 +13,11 @@ const webBundle = fs.readFileSync(
   "utf8"
 );
 
+type BrowserCreateOptions = {
+  url?: string;
+  size?: Size;
+};
+
 export class Browser {
   /**
    * Wrap Browser and inject web library.
@@ -31,8 +36,8 @@ export class Browser {
     this._device = device;
   }
 
-  public static async create(url?: string, size?: Size) {
-    const device = getDevice(size);
+  public static async create(options: BrowserCreateOptions = {}) {
+    const device = getDevice(options.size);
 
     const launchOptions: puppeteer.LaunchOptions = {
       args: [
@@ -58,7 +63,7 @@ export class Browser {
     const browser = new Browser(puppeteerBrowser, device);
     await browser.wrapPages();
 
-    if (url) await browser.goto(url);
+    if (options.url) await browser.goto(options.url);
 
     return browser;
   }

@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`buildTest builds a test from a job 1`] = `
+"const { Browser, hooks } = require(\\"qawolf\\");
+
+let browser;
+
+beforeAll(async () => {
+  browser = await Browser.create({ size: \\"desktop\\", url: \\"http://localhost:5000/\\" });
+  await hooks.beforeAll(browser);
+});
+
+beforeEach(() => hooks.beforeEach(browser));
+
+afterAll(() => hooks.afterAll(browser));
+
+describe('test job', () => {
+  test('scroll down', async () => {
+    await browser.runStep({\\"action\\":\\"scroll\\",\\"locator\\":{\\"xpath\\":\\"scroll\\"},\\"pageId\\":0,\\"scrollDirection\\":\\"down\\",\\"scrollTo\\":334});
+  });
+  
+  test('click form authentication link', async () => {
+    await browser.runStep({\\"action\\":\\"click\\",\\"locator\\":{\\"classList\\":null,\\"href\\":\\"http://localhost:5000/login\\",\\"id\\":null,\\"inputType\\":null,\\"labels\\":null,\\"name\\":null,\\"parentText\\":[\\"form authentication\\",\\"form authentication\\"],\\"placeholder\\":null,\\"tagName\\":\\"a\\",\\"textContent\\":\\"form authentication\\",\\"xpath\\":\\"//*[@id='content']/ul/li[18]/a\\"},\\"pageId\\":0});
+  });
+  
+  test('enter \\"tomsmith\\" into username input[type=\\"text\\"]', async () => {
+    await browser.runStep({\\"action\\":\\"type\\",\\"locator\\":{\\"classList\\":null,\\"href\\":null,\\"id\\":\\"username\\",\\"inputType\\":\\"text\\",\\"labels\\":[\\"username\\"],\\"name\\":\\"username\\",\\"parentText\\":[\\"username\\",\\"\\\\n        username\\\\n        \\\\n      \\"],\\"placeholder\\":null,\\"tagName\\":\\"input\\",\\"textContent\\":null,\\"xpath\\":\\"//*[@id='username']\\"},\\"pageId\\":0,\\"value\\":\\"tomsmith\\"});
+  });
+  
+  test('click login button[type=\\"submit\\"]', async () => {
+    await browser.runStep({\\"action\\":\\"click\\",\\"locator\\":{\\"classList\\":[\\"radius\\"],\\"href\\":null,\\"id\\":null,\\"inputType\\":\\"submit\\",\\"labels\\":null,\\"name\\":null,\\"parentText\\":[\\"\\\\n      \\\\n        username\\\\n        \\\\n      \\\\n    \\",\\"\\\\n      \\\\n        password\\\\n        \\\\n      \\\\n    \\",\\" login\\",\\"\\\\n     \\\\n      \\\\n        username\\\\n        \\\\n      \\\\n    \\\\n    \\\\n      \\\\n        password\\\\n        \\\\n      \\\\n    \\\\n       login\\\\n  \\"],\\"placeholder\\":null,\\"tagName\\":\\"button\\",\\"textContent\\":\\" login\\",\\"xpath\\":\\"//*[@id='login']/button\\"},\\"pageId\\":0});
+  });
+  
+  test('enter \\"tomsmith\\" into username input[type=\\"text\\"]', async () => {
+    await browser.runStep({\\"action\\":\\"type\\",\\"locator\\":{\\"classList\\":null,\\"href\\":null,\\"id\\":\\"username\\",\\"inputType\\":\\"text\\",\\"labels\\":[\\"username\\"],\\"name\\":\\"username\\",\\"parentText\\":[\\"username\\",\\"\\\\n        username\\\\n        \\\\n      \\"],\\"placeholder\\":null,\\"tagName\\":\\"input\\",\\"textContent\\":null,\\"xpath\\":\\"//*[@id='username']\\"},\\"pageId\\":0,\\"value\\":\\"tomsmith\\"});
+  });
+  
+  test('enter \\"SuperSecretPassword!\\" into password input[type=\\"password\\"]', async () => {
+    await browser.runStep({\\"action\\":\\"type\\",\\"locator\\":{\\"classList\\":null,\\"href\\":null,\\"id\\":\\"password\\",\\"inputType\\":\\"password\\",\\"labels\\":[\\"password\\"],\\"name\\":\\"password\\",\\"parentText\\":[\\"password\\",\\"\\\\n        password\\\\n        \\\\n      \\"],\\"placeholder\\":null,\\"tagName\\":\\"input\\",\\"textContent\\":null,\\"xpath\\":\\"//*[@id='password']\\"},\\"pageId\\":0,\\"value\\":\\"SuperSecretPassword!\\"});
+  });
+  
+  test('click login i', async () => {
+    await browser.runStep({\\"action\\":\\"click\\",\\"locator\\":{\\"classList\\":[\\"fa\\",\\"fa-2x\\",\\"fa-sign-in\\"],\\"href\\":null,\\"id\\":null,\\"inputType\\":null,\\"labels\\":null,\\"name\\":null,\\"parentText\\":[\\" login\\",\\" login\\"],\\"placeholder\\":null,\\"tagName\\":\\"i\\",\\"textContent\\":\\" login\\",\\"xpath\\":\\"//*[@id='login']/button/i\\"},\\"pageId\\":0});
+  });
+});"
+`;
