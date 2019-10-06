@@ -31,6 +31,8 @@
     "dotenv": "^8.1.0",
     "fs-extra": "^8.1.0",
     "handlebars": "^4.4.2",
+    "jasmine-fail-fast": "^2.0.0",
+    "jest": "^24.9.0",
     "lodash": "^4.17.15",
     "puppeteer": "^1.20.0",
     "rrweb": "^0.7.24",
@@ -49,7 +51,6 @@
     "eslint": "^6.4.0",
     "eslint-config-prettier": "^6.3.0",
     "eslint-plugin-prettier": "^3.1.1",
-    "jest": "^24.9.0",
     "prettier": "^1.18.2",
     "rollup": "^1.21.4",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -67,6 +68,9 @@
   "jest": {
     "roots": [
       "<rootDir>/src"
+    ],
+    "setupFilesAfterEnv": [
+      "./src/jest.setup.ts"
     ],
     "transform": {
       "^.+\\.tsx?$": "ts-jest"

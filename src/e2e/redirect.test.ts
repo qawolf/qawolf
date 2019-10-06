@@ -8,10 +8,10 @@ test("redirect test works", async () => {
     ...redirectJob,
     url: CONFIG.testUrl
   });
-
   expect(success).toBeTruthy();
 
   const page = (await browser.pages())[0];
+
   const header = await $xText(page, '//*[@id="content"]/div/h3');
   expect(header).toEqual("Status Codes");
   await browser.close();

@@ -1,15 +1,25 @@
 import { runCLI } from "jest";
+import { resolve } from "path";
 
 export const runTest = async (
   name?: string,
   rootDir: string = process.cwd()
 ) => {
-  // assume .qawolf is relative to the current working directory
+  const setupPath =
+    __dirname.indexOf("dist") > -1
+      ? // relative to dist
+        resolve(__dirname, "./jest.setup.js")
+      : // relative to src
+        resolve(__dirname, "../dist/jest.setup.js");
+
   const jestConfig: any = {
     config: "{}",
+    // assume .qawolf is relative to the current working directory
     roots: [`${rootDir}/.qawolf`],
+    setupFilesAfterEnv: [setupPath],
     testTimeout: 30000
   };
+
   if (name) {
     jestConfig._ = [`${name}.js`];
   }
