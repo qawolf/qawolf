@@ -17,4 +17,4 @@ test("multiple_windows test works", async () => {
   expect(newWindows.length).toEqual(2);
 
   await browser.close();
-}, 10000);
+}, 20000);

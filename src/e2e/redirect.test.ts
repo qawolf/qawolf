@@ -1,4 +1,4 @@
-import { $xText } from "../browser/Browser";
+import { $xText } from "../browser/pageUtils";
 import { CONFIG } from "../config";
 import { createRunTest } from "./createRunTest";
 import { redirectJob } from "../fixtures/redirectJob";
@@ -15,4 +15,4 @@ test("redirect test works", async () => {
   const header = await $xText(page, '//*[@id="content"]/div/h3');
   expect(header).toEqual("Status Codes");
   await browser.close();
-}, 10000);
+}, 20000);
