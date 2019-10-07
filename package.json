@@ -2,7 +2,7 @@
   "name": "qawolf",
   "version": "0.1.1",
   "license": "BSD-3.0",
-  "description": "Effortless smoke tests",
+  "description": "Effortless browser tests",
   "main": "dist/index.js",
   "files": [
     "dist"
