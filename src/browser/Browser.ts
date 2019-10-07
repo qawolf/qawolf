@@ -88,9 +88,13 @@ export class Browser {
       throw new Error(`waiting for page ${index} timed out`);
     }
 
+    const page = this._pages[index];
     this._currentPageIndex = index;
 
-    return this._pages[index];
+    // need this for the evaluation context
+    await page.bringToFront();
+
+    return page;
   }
 
   public async runStep(step: BrowserStep): Promise<void> {
@@ -162,7 +166,7 @@ export class Browser {
       step as Serializable
     );
 
-    const elementHandle = jsHandle.asElement()!;
+    const elementHandle = jsHandle.asElement();
     if (!elementHandle) {
       throw new Error(`No element handle found for step ${step}`);
     }
