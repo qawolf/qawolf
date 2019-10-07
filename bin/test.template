@@ -11,13 +11,11 @@ beforeEach(() => hooks.beforeEach(browser));
 
 afterAll(() => hooks.afterAll(browser));
 
-describe('{{{name}}}', () => {
-  {{#each formattedSteps}}
-  test('{{{name}}}', async () => {
-    await browser.runStep({{{json}}});
-  });
-  {{#unless @last}}
-  
-  {{/unless}}
-  {{/each}}
+{{#each formattedSteps}}
+test('{{{name}}}', async () => {
+  await browser.runStep({{{json}}});
 });
+{{#unless @last}}
+
+{{/unless}}
+{{/each}}
