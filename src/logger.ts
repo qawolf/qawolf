@@ -1,5 +1,17 @@
-import { createLogger, transports } from "winston";
+import winston from "winston";
+import { CONFIG } from "./config";
 
-export const logger = createLogger({
-  transports: [new transports.File({ filename: "logs.log", level: "debug" })]
+const transports = [];
+
+if (CONFIG.logPath) {
+  transports.push(
+    new winston.transports.File({
+      filename: `${CONFIG.logPath}/${Date.now()}.log`,
+      level: "debug"
+    })
+  );
+}
+
+export const logger = winston.createLogger({
+  transports
 });

@@ -19,6 +19,13 @@ jobs:
           args: "cd $QAWOLF_DIR && npm test"
         env:
           TEST_URL: http://theinternet:5000/
+          LOG_PATH: /github/workspace/artifacts/logs
+      - name: Upload Artifacts
+        if: success() || failure()
+        uses: actions/upload-artifact@master
+        with:
+          name: logs
+          path: "./artifacts/logs"
     services:
       theinternet:
         image: gprestes/the-internet@sha256:f741ba048b7232ef90b0f7885de7f6ac42a52a17e73dd82afc484da140398796

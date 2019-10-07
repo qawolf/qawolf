@@ -2,6 +2,7 @@ import { ElementHandle, Page, Serializable } from "puppeteer";
 import { retryAsync } from "./pageUtils";
 import { BrowserStep } from "../types";
 import { QAWolf } from "../web";
+import { logger } from "../logger";
 
 export const findElementHandleForStep = async (
   page: Page,
@@ -58,6 +59,8 @@ export const typeStep = async (
 };
 
 export const runStep = async (page: Page, step: BrowserStep): Promise<void> => {
+  logger.debug(`running step: ${JSON.stringify(step)}`);
+
   return await retryAsync(async () => {
     if (step.action === "scroll") {
       return scrollStep(page, step);

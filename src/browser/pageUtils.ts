@@ -1,4 +1,5 @@
 import { Page } from "puppeteer";
+import { logger } from "../logger";
 
 export const retryAsync = async (
   func: () => Promise<any>,
@@ -9,10 +10,11 @@ export const retryAsync = async (
       return await func();
     } catch (error) {
       if (
-        i < times &&
+        i < times - 1 &&
         error.message ===
           "Execution context was destroyed, most likely because of a navigation."
       ) {
+        logger.debug(`retry ${i + 1} out of ${times} times (${error.message})`);
         continue;
       }
 
