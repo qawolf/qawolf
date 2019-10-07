@@ -4,6 +4,7 @@ import path from "path";
 import puppeteer, { Page } from "puppeteer";
 import { CONFIG } from "../config";
 import { getDevice, Size } from "./device";
+import { logger } from "../logger";
 import { runStep } from "./runStep";
 import { BrowserStep } from "../types";
 import { sleep } from "../utils";
@@ -37,6 +38,7 @@ export class Browser {
   }
 
   public static async create(options: BrowserCreateOptions = {}) {
+    logger.debug(`Browser: create ${JSON.stringify(options)}`);
     const device = getDevice(options.size);
 
     const launchOptions: puppeteer.LaunchOptions = {
@@ -86,6 +88,8 @@ export class Browser {
     index: number = 0,
     timeoutMs: number = 5000
   ): Promise<Page> {
+    logger.debug(`Browser: get page(${index})`);
+
     for (let i = 0; i < timeoutMs / 100 && index >= this._pages.length; i++) {
       await sleep(100);
     }
@@ -100,6 +104,7 @@ export class Browser {
     // when headless = false the page needs to be up
     // front for the execution context to run
     await page.bringToFront();
+    logger.debug(`Browser: page(${index}) activated: ${page.url()}`);
 
     return page;
   }
