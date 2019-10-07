@@ -11,6 +11,7 @@ const parseBool = (value: string | undefined) => {
 
 export const CONFIG = {
   chromeExecutablePath: process.env.CHROME_EXECUTABLE_PATH,
+  dataAttribute: process.env.DATA_ATTRIBUTE || null,
   headless: parseBool(process.env.HEADLESS),
   keepBrowserOpen: parseBool(process.env.KEEP_BROWSER_OPEN),
   saveBrowserWsPath: process.env.SAVE_BROWSER_WS_PATH,

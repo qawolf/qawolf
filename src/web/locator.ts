@@ -1,5 +1,13 @@
+import { CONFIG } from "../config";
 import { Locator } from "../types";
 import { getXpath } from "./xpath";
+
+export const getDataAttribute = (element: HTMLElement): string | null => {
+  const dataAttribute = CONFIG.dataAttribute;
+  if (!dataAttribute) return null;
+
+  return element.getAttribute(dataAttribute) || null;
+};
 
 export const getLabels = (element: HTMLElement): string[] | null => {
   const labelElements = (element as HTMLInputElement).labels;
@@ -54,6 +62,7 @@ export const getLocator = (element: HTMLElement | null): Locator | null => {
     classList: (element.className || "").length
       ? element.className.split(" ")
       : null,
+    dataAttribute: getDataAttribute(element),
     href: (element as HTMLAnchorElement).href || null,
     id: element.id || null,
     inputType: (element as HTMLInputElement).type || null,

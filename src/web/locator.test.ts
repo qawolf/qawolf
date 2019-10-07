@@ -13,6 +13,22 @@ beforeAll(async () => {
 
 afterAll(() => browser.close());
 
+describe("getDataAttribute", () => {
+  test("returns null if data attribute not specified in config", async () => {
+    CONFIG.dataAttribute = null;
+
+    const dataAttribute = await page.evaluate(() => {
+      const qawolf: QAWolf = (window as any).qawolf;
+      const username = document.getElementById("username")!;
+      username.setAttribute("data-qa", "user");
+
+      return qawolf.locator.getDataAttribute(username);
+    });
+
+    expect(dataAttribute).toBeNull();
+  });
+});
+
 test("getLabels correctly returns labels", async () => {
   const nullLabels = await page.evaluate(() => {
     const qawolf: QAWolf = (window as any).qawolf;
