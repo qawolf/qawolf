@@ -14,10 +14,11 @@ export const retryAsync = async (
         error.message ===
           "Execution context was destroyed, most likely because of a navigation."
       ) {
-        logger.debug(`retry ${i + 1} out of ${times} times (${error.message})`);
+        logger.debug(`retry ${i + 1}/${times} error: "${error.message}"`);
         continue;
       }
 
+      logger.error(`will not retry unknown error: "${error.message}"`);
       throw error;
     }
   }

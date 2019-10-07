@@ -21,7 +21,7 @@ jobs:
           TEST_URL: http://theinternet:5000/
           LOG_PATH: /github/workspace/artifacts/logs
       - name: Upload Artifacts
-        if: success() || failure()
+        if: always()
         uses: actions/upload-artifact@master
         with:
           name: logs
