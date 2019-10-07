@@ -1,9 +1,10 @@
-import { CONFIG } from "../config";
+// import { CONFIG } from "../config";
 import { Locator } from "../types";
 import { getXpath } from "./xpath";
 
 export const getDataAttribute = (element: HTMLElement): string | null => {
-  const dataAttribute = CONFIG.dataAttribute;
+  // const dataAttribute = CONFIG.dataAttribute;
+  const dataAttribute = "data-qa";
   if (!dataAttribute) return null;
 
   return element.getAttribute(dataAttribute) || null;

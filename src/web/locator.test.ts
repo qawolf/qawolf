@@ -14,9 +14,33 @@ beforeAll(async () => {
 afterAll(() => browser.close());
 
 describe("getDataAttribute", () => {
-  test("returns null if data attribute not specified in config", async () => {
-    CONFIG.dataAttribute = null;
+  // test("returns null if data attribute not specified in config", async () => {
+  //   // CONFIG.dataAttribute = null;
 
+  //   const dataAttribute = await page.evaluate(() => {
+  //     const qawolf: QAWolf = (window as any).qawolf;
+  //     const username = document.getElementById("username")!;
+  //     username.setAttribute("data-qa", "user");
+
+  //     return qawolf.locator.getDataAttribute(username);
+  //   });
+
+  //   expect(dataAttribute).toBeNull();
+  // });
+
+  test("returns null if element does not have specified data attribute", async () => {
+    const dataAttribute = await page.evaluate(() => {
+      const qawolf: QAWolf = (window as any).qawolf;
+      const username = document.getElementById("username")!;
+      username.setAttribute("data-other", "user");
+
+      return qawolf.locator.getDataAttribute(username);
+    });
+
+    expect(dataAttribute).toBeNull();
+  });
+
+  test("returns data attribute value correctly", async () => {
     const dataAttribute = await page.evaluate(() => {
       const qawolf: QAWolf = (window as any).qawolf;
       const username = document.getElementById("username")!;
@@ -25,7 +49,7 @@ describe("getDataAttribute", () => {
       return qawolf.locator.getDataAttribute(username);
     });
 
-    expect(dataAttribute).toBeNull();
+    expect(dataAttribute).toBe("user");
   });
 });
 
