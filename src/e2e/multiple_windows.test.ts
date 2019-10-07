@@ -1,4 +1,3 @@
-import { $xText } from "../browser/Browser";
 import { CONFIG } from "../config";
 import { createRunTest } from "./createRunTest";
 import { multipleWindowsJob } from "../fixtures/multipleWindowsJob";
