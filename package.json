@@ -13,9 +13,8 @@
     "build:web": "rollup --config rollup.web.ts",
     "cli": "ts-node src/cli.ts",
     "lint": "eslint src --ext .ts",
-    "test": "jest --maxWorkers=75%",
-    "test:services": "docker-compose up -d",
-    "test:watch": "npm run build:web && jest --watch"
+    "test": "npm run build && jest --maxWorkers=75%",
+    "test:services": "docker-compose up -d"
   },
   "repository": {
     "type": "git",
@@ -68,9 +67,6 @@
   "jest": {
     "roots": [
       "<rootDir>/src"
-    ],
-    "setupFilesAfterEnv": [
-      "./src/jest.setup.ts"
     ],
     "transform": {
       "^.+\\.tsx?$": "ts-jest"

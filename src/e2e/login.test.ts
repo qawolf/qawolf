@@ -1,4 +1,4 @@
-import { $xText } from "../browser/Browser";
+import { $xText } from "../browser/pageUtils";
 import { CONFIG } from "../config";
 import { createRunTest } from "./createRunTest";
 import { loginJob } from "../fixtures/loginJob";
@@ -15,4 +15,4 @@ test("login test works", async () => {
   expect(text).toEqual(" Secure Area");
 
   await browser.close();
-}, 10000);
+}, 20000);

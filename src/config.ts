@@ -13,6 +13,7 @@ export const CONFIG = {
   chromeExecutablePath: process.env.CHROME_EXECUTABLE_PATH,
   headless: parseBool(process.env.HEADLESS),
   keepBrowserOpen: parseBool(process.env.KEEP_BROWSER_OPEN),
+  logPath: process.env.LOG_PATH,
   saveBrowserWsPath: process.env.SAVE_BROWSER_WS_PATH,
   screenshotPath: process.env.SCREENSHOT_PATH,
   testUrl,

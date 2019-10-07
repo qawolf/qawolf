@@ -5,18 +5,19 @@ export const runTest = async (
   name?: string,
   rootDir: string = process.cwd()
 ) => {
-  const setupPath =
+  const failFastPath =
     __dirname.indexOf("dist") > -1
       ? // relative to dist
-        resolve(__dirname, "./jest.setup.js")
+        resolve(__dirname, "./jest.failFast.js")
       : // relative to src
-        resolve(__dirname, "../dist/jest.setup.js");
+        resolve(__dirname, "../dist/jest.failFast.js");
 
   const jestConfig: any = {
     config: "{}",
     // assume .qawolf is relative to the current working directory
     roots: [`${rootDir}/.qawolf`],
-    setupFilesAfterEnv: [setupPath],
+    // run with fast fail since we do not want to continue e2e tests when one fails
+    setupFilesAfterEnv: [failFastPath],
     testTimeout: 30000
   };
 
