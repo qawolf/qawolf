@@ -9,6 +9,8 @@ beforeAll(async () => {
 
 beforeEach(() => hooks.beforeEach(browser));
 
+afterEach(() => hooks.afterEach(browser));
+
 afterAll(() => hooks.afterAll(browser));
 
 {{#each formattedSteps}}

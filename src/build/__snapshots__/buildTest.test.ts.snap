@@ -12,6 +12,8 @@ beforeAll(async () => {
 
 beforeEach(() => hooks.beforeEach(browser));
 
+afterEach(() => hooks.afterEach(browser));
+
 afterAll(() => hooks.afterAll(browser));
 
 test('scroll down', async () => {

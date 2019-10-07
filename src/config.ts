@@ -9,6 +9,12 @@ const parseBool = (value: string | undefined) => {
   return !!value && value !== "false";
 };
 
+const parseNumber = (value: string | undefined) => {
+  if (typeof value === "undefined") return value;
+
+  return parseFloat(value);
+};
+
 export const CONFIG = {
   chromeExecutablePath: process.env.CHROME_EXECUTABLE_PATH,
   headless: parseBool(process.env.HEADLESS),
@@ -16,6 +22,7 @@ export const CONFIG = {
   logPath: process.env.LOG_PATH,
   saveBrowserWsPath: process.env.SAVE_BROWSER_WS_PATH,
   screenshotPath: process.env.SCREENSHOT_PATH,
+  sleepAfterEach: parseNumber(process.env.SLEEP_AFTER_EACH),
   testUrl,
   useLocalModule: parseBool(process.env.USE_LOCAL_MODULE)
 };

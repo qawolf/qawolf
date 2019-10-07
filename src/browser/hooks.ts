@@ -27,6 +27,12 @@ export const beforeEach = async (browser: Browser) => {
   await screenshot(browser);
 };
 
+export const afterEach = async (browser: Browser) => {
+  if (CONFIG.sleepAfterEach) {
+    await sleep(CONFIG.sleepAfterEach);
+  }
+};
+
 export const afterAll = async (browser: Browser) => {
   if (!CONFIG.keepBrowserOpen) {
     await browser.close();
