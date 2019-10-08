@@ -1,6 +1,15 @@
 import { Locator } from "../types";
 import { getXpath } from "./xpath";
 
+export const getDataValue = (
+  element: HTMLElement,
+  dataAttribute: string | null
+): string | null => {
+  if (!dataAttribute) return null;
+
+  return element.getAttribute(dataAttribute) || null;
+};
+
 export const getLabels = (element: HTMLElement): string[] | null => {
   const labelElements = (element as HTMLInputElement).labels;
 
@@ -45,7 +54,10 @@ export const getPlaceholder = (element: HTMLElement): string | null => {
   return (element as HTMLInputElement).placeholder.toLowerCase();
 };
 
-export const getLocator = (element: HTMLElement | null): Locator | null => {
+export const getLocator = (
+  element: HTMLElement | null,
+  dataAttribute: string | null
+): Locator | null => {
   if (!element) {
     return null;
   }
@@ -54,6 +66,7 @@ export const getLocator = (element: HTMLElement | null): Locator | null => {
     classList: (element.className || "").length
       ? element.className.split(" ")
       : null,
+    dataValue: getDataValue(element, dataAttribute),
     href: (element as HTMLAnchorElement).href || null,
     id: element.id || null,
     inputType: (element as HTMLInputElement).type || null,

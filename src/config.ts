@@ -17,6 +17,7 @@ const parseNumber = (value: string | undefined) => {
 
 export const CONFIG = {
   chromeExecutablePath: process.env.CHROME_EXECUTABLE_PATH,
+  dataAttribute: process.env.DATA_ATTRIBUTE || null,
   headless: parseBool(process.env.HEADLESS),
   keepBrowserOpen: parseBool(process.env.KEEP_BROWSER_OPEN),
   logPath: process.env.LOG_PATH,
