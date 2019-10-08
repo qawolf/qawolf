@@ -6,7 +6,7 @@ import { $xText } from "./pageUtils";
 describe("runStep", () => {
   test("clicks on link", async () => {
     const browser = await Browser.create({ url: CONFIG.testUrl });
-    const page = await browser.page();
+    const page = await browser.currentPage();
 
     await runStep(page, {
       action: "click",
@@ -22,7 +22,7 @@ describe("runStep", () => {
 
   test("clicks on icon in button", async () => {
     const browser = await Browser.create({ url: `${CONFIG.testUrl}login` });
-    const page = await browser.page();
+    const page = await browser.currentPage();
 
     const messageText = await $xText(page, '//*[@id="flash-messages"]');
     expect(messageText).not.toContain("username is invalid");
@@ -40,7 +40,7 @@ describe("runStep", () => {
 
   test("scrolls to given position", async () => {
     const browser = await Browser.create({ url: `${CONFIG.testUrl}large` });
-    const page = await browser.page();
+    const page = await browser.currentPage();
 
     const initialYPosition = await page.evaluate(() => window.pageYOffset);
     expect(initialYPosition).toBe(0);
@@ -70,7 +70,7 @@ describe("runStep", () => {
     const browser = await Browser.create({
       url: `${CONFIG.testUrl}infinite_scroll`
     });
-    const page = await browser.page();
+    const page = await browser.currentPage();
 
     const initialYPosition = await page.evaluate(() => window.pageYOffset);
     expect(initialYPosition).toBe(0);
@@ -91,7 +91,7 @@ describe("runStep", () => {
     const browser = await Browser.create({
       url: `${CONFIG.testUrl}login`
     });
-    const page = await browser.page();
+    const page = await browser.currentPage();
 
     const [username, password] = await page.$$eval(
       "input",
@@ -136,7 +136,7 @@ describe("runStep", () => {
     const browser = await Browser.create({
       url: `${CONFIG.testUrl}dropdown`
     });
-    const page = await browser.page();
+    const page = await browser.currentPage();
 
     const selectValue = await page.evaluate(() => {
       const select = document.getElementsByTagName("select")[0];
