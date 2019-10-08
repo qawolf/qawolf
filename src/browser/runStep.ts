@@ -1,8 +1,9 @@
 import { ElementHandle, Page, Serializable } from "puppeteer";
+import { CONFIG } from "../config";
+import { logger } from "../logger";
 import { retryAsync } from "./pageUtils";
 import { BrowserStep } from "../types";
 import { QAWolf } from "../web";
-import { logger } from "../logger";
 
 export const findElementHandleForStep = async (
   page: Page,
@@ -11,7 +12,7 @@ export const findElementHandleForStep = async (
   const jsHandle = await page.evaluateHandle(
     step => {
       const qawolf: QAWolf = (window as any).qawolf;
-      return qawolf.rank.waitForElement(step);
+      return qawolf.rank.waitForElement(step, CONFIG.dataAttribute || null);
     },
     step as Serializable
   );
