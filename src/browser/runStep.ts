@@ -10,11 +10,12 @@ export const findElementHandleForStep = async (
   step: BrowserStep
 ): Promise<ElementHandle> => {
   const jsHandle = await page.evaluateHandle(
-    step => {
+    (step, dataAttribute) => {
       const qawolf: QAWolf = (window as any).qawolf;
-      return qawolf.rank.waitForElement(step, CONFIG.dataAttribute || null);
+      return qawolf.rank.waitForElement(step, dataAttribute);
     },
-    step as Serializable
+    step as Serializable,
+    CONFIG.dataAttribute
   );
 
   const elementHandle = jsHandle.asElement();
