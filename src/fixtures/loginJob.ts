@@ -19,7 +19,7 @@ export const loginSteps: BrowserStep[] = [
     pageId: 0
   },
   {
-    action: "type",
+    action: "input",
     locator: {
       id: "username",
       inputType: "text",
@@ -41,7 +41,7 @@ export const loginSteps: BrowserStep[] = [
     pageId: 0
   },
   {
-    action: "type",
+    action: "input",
     locator: {
       id: "username",
       inputType: "text",
@@ -54,7 +54,7 @@ export const loginSteps: BrowserStep[] = [
     value: "tomsmith"
   },
   {
-    action: "type",
+    action: "input",
     locator: {
       id: "password",
       inputType: "password",

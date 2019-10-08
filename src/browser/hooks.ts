@@ -2,7 +2,7 @@ import { ensureDir, writeJSON } from "fs-extra";
 import { resolve } from "path";
 import { Browser } from "./Browser";
 import { CONFIG } from "../config";
-import { sleep } from "../utils";
+import { sleep } from "../web/sleep";
 
 export const screenshot = async (browser: Browser) => {
   if (!CONFIG.screenshotPath) return;

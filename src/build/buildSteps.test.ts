@@ -1,16 +1,16 @@
 import { loadEvents } from "@qawolf/fixtures";
 import {
   buildClickSteps,
+  buildInputStep,
   buildScrollStep,
   buildSequenceSteps,
   buildSteps,
-  buildTypeStep,
   findActionEvents,
   getEventAction,
   groupEventSequences,
+  isInputEvent,
   isMouseDownEvent,
-  isScrollEvent,
-  isTypeEvent
+  isScrollEvent
 } from "./buildSteps";
 import { QAEventWithTime } from "../events";
 import { loginSteps } from "../fixtures/loginJob";
@@ -173,7 +173,7 @@ describe("buildClickSteps", () => {
     };
 
     const nextGroup = {
-      action: "type" as "type",
+      action: "input" as "input",
       events: [
         {
           data: {
@@ -195,6 +195,44 @@ describe("buildClickSteps", () => {
         pageId: 0
       }
     ]);
+  });
+});
+
+describe("buildInputStep", () => {
+  test("returns built input step", () => {
+    const eventSequence = {
+      action: "input" as "input",
+      events: [
+        {
+          data: {
+            properties: {
+              id: "username"
+            },
+            text: "s"
+          },
+          pageId: 0
+        } as QAEventWithTime,
+        {
+          data: {
+            properties: {
+              id: "username"
+            },
+            text: "sp"
+          },
+          pageId: 0
+        } as QAEventWithTime
+      ],
+      xpath: "username"
+    };
+
+    expect(buildInputStep(eventSequence)).toMatchObject({
+      action: "input",
+      locator: {
+        id: "username"
+      },
+      pageId: 0,
+      value: "sp"
+    });
   });
 });
 
@@ -283,44 +321,6 @@ describe("buildSequenceSteps", () => {
   });
 });
 
-describe("buildTypeStep", () => {
-  test("returns buildted type step", () => {
-    const eventSequence = {
-      action: "type" as "type",
-      events: [
-        {
-          data: {
-            properties: {
-              id: "username"
-            },
-            text: "s"
-          },
-          pageId: 0
-        } as QAEventWithTime,
-        {
-          data: {
-            properties: {
-              id: "username"
-            },
-            text: "sp"
-          },
-          pageId: 0
-        } as QAEventWithTime
-      ],
-      xpath: "username"
-    };
-
-    expect(buildTypeStep(eventSequence)).toMatchObject({
-      action: "type",
-      locator: {
-        id: "username"
-      },
-      pageId: 0,
-      value: "sp"
-    });
-  });
-});
-
 describe("findActionEvents", () => {
   test("returns only click, scroll, and type events", async () => {
     const events = await loadEvents("login");
@@ -391,7 +391,7 @@ describe("groupEventSequences", () => {
     expect(eventSequences[2].events).toHaveLength(1);
 
     expect(eventSequences[3]).toMatchObject({
-      action: "type",
+      action: "input",
       xpath: "//*[@id='username']"
     });
     expect(eventSequences[3].events).toHaveLength(8);
@@ -409,7 +409,7 @@ describe("groupEventSequences", () => {
     expect(eventSequences[5].events).toHaveLength(1);
 
     expect(eventSequences[6]).toMatchObject({
-      action: "type",
+      action: "input",
       xpath: "//*[@id='username']"
     });
     expect(eventSequences[6].events).toHaveLength(8);
@@ -421,7 +421,7 @@ describe("groupEventSequences", () => {
     expect(eventSequences[7].events).toHaveLength(1);
 
     expect(eventSequences[8]).toMatchObject({
-      action: "type",
+      action: "input",
       xpath: "//*[@id='password']"
     });
     expect(eventSequences[8].events).toHaveLength(20);
@@ -431,6 +431,58 @@ describe("groupEventSequences", () => {
       xpath: "//*[@id='login']/button/i"
     });
     expect(eventSequences[9].events).toHaveLength(1);
+  });
+});
+
+describe("isInputEvent", () => {
+  test("returns false if event undefined", () => {
+    expect(isInputEvent()).toBe(false);
+  });
+
+  test("returns false if no data", () => {
+    const event = {} as QAEventWithTime;
+
+    expect(isInputEvent(event)).toBe(false);
+  });
+
+  test("returns false if data source not input", () => {
+    const event = {
+      data: { source: 2 }
+    } as QAEventWithTime;
+
+    expect(isInputEvent(event)).toBe(false);
+  });
+
+  test("returns false if data not trusted", () => {
+    const event = {
+      data: { source: 5, isTrusted: false }
+    } as QAEventWithTime;
+
+    expect(isInputEvent(event)).toBe(false);
+  });
+
+  test("returns false if no text", () => {
+    const event = {
+      data: { source: 5, isTrusted: true }
+    } as QAEventWithTime;
+
+    expect(isInputEvent(event)).toBe(false);
+  });
+
+  test("returns true if type event", () => {
+    const event = {
+      data: { source: 5, isTrusted: true, text: "spirit" }
+    } as QAEventWithTime;
+
+    expect(isInputEvent(event)).toBe(true);
+  });
+
+  test("returns true if type event with empty string", () => {
+    const event = {
+      data: { source: 5, isTrusted: true, text: "" }
+    } as QAEventWithTime;
+
+    expect(isInputEvent(event)).toBe(true);
   });
 });
 
@@ -524,58 +576,6 @@ describe("isScrollEvent", () => {
     } as QAEventWithTime;
 
     expect(isScrollEvent(event)).toBe(true);
-  });
-});
-
-describe("isTypeEvent", () => {
-  test("returns false if event undefined", () => {
-    expect(isTypeEvent()).toBe(false);
-  });
-
-  test("returns false if no data", () => {
-    const event = {} as QAEventWithTime;
-
-    expect(isTypeEvent(event)).toBe(false);
-  });
-
-  test("returns false if data source not input", () => {
-    const event = {
-      data: { source: 2 }
-    } as QAEventWithTime;
-
-    expect(isTypeEvent(event)).toBe(false);
-  });
-
-  test("returns false if data not trusted", () => {
-    const event = {
-      data: { source: 5, isTrusted: false }
-    } as QAEventWithTime;
-
-    expect(isTypeEvent(event)).toBe(false);
-  });
-
-  test("returns false if no text", () => {
-    const event = {
-      data: { source: 5, isTrusted: true }
-    } as QAEventWithTime;
-
-    expect(isTypeEvent(event)).toBe(false);
-  });
-
-  test("returns true if type event", () => {
-    const event = {
-      data: { source: 5, isTrusted: true, text: "spirit" }
-    } as QAEventWithTime;
-
-    expect(isTypeEvent(event)).toBe(true);
-  });
-
-  test("returns true if type event with empty string", () => {
-    const event = {
-      data: { source: 5, isTrusted: true, text: "" }
-    } as QAEventWithTime;
-
-    expect(isTypeEvent(event)).toBe(true);
   });
 });
 

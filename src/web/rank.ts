@@ -1,4 +1,4 @@
-import { getLocator } from "./locator";
+import { getSerializedLocator } from "./serializedLocator";
 import { computeMaxPossibleScore, computeSimilarityScore } from "./score";
 import { BrowserStep } from "../types";
 
@@ -14,7 +14,10 @@ export const computeSimilarityScores = (
   const scores: number[] = [];
 
   for (let i = 0; i < elements.length; i++) {
-    const compare = getLocator(elements[i] as HTMLElement, dataAttribute);
+    const compare = getSerializedLocator(
+      elements[i] as HTMLElement,
+      dataAttribute
+    );
 
     if (!compare) {
       scores.push(0);
@@ -28,7 +31,7 @@ export const computeSimilarityScores = (
 };
 
 export const findCandidateElements = (step: BrowserStep): Element[] => {
-  const qualifiedName = step.action === "type" ? "input,textarea,select" : "*";
+  const qualifiedName = step.action === "input" ? "input,textarea,select" : "*";
 
   const elements = document.querySelectorAll(qualifiedName);
 

@@ -72,7 +72,7 @@ describe("rank.findCandidateElements", () => {
     const page = await browser.goto(`${CONFIG.testUrl}login`);
 
     const typeAction = {
-      action: "type" as "type",
+      action: "input" as "input",
       ...step,
       value: "spirit"
     };
@@ -89,7 +89,7 @@ describe("rank.findCandidateElements", () => {
     const page = await browser.goto(`${CONFIG.testUrl}/dropdown`);
 
     const typeAction = {
-      action: "type" as "type",
+      action: "input" as "input",
       ...step,
       value: "spirit"
     };

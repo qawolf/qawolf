@@ -102,7 +102,7 @@ describe("runStep", () => {
     expect(password).toBeFalsy();
 
     await browser.runStep({
-      action: "type",
+      action: "input",
       locator: { xpath: '//*[@id="username"]' },
       value: "spirit"
     });
@@ -116,7 +116,7 @@ describe("runStep", () => {
     expect(password2).toBeFalsy();
 
     await browser.runStep({
-      action: "type",
+      action: "input",
       locator: { xpath: '//*[@id="password"]' },
       value: "password"
     });
@@ -146,7 +146,7 @@ describe("runStep", () => {
     expect(selectValue).toBeFalsy();
 
     await browser.runStep({
-      action: "type",
+      action: "input",
       locator: { tagName: "select" },
       value: "2"
     });

@@ -1,87 +1,42 @@
-import { Locator } from "../types";
-import { getXpath } from "./xpath";
+import { Action, SerializedLocator } from "../types";
+import { sleep } from "./sleep";
 
-export const getDataValue = (
-  element: HTMLElement,
-  dataAttribute: string | null
-): string | null => {
-  if (!dataAttribute) return null;
-
-  return element.getAttribute(dataAttribute) || null;
+type ConstructorArgs = {
+  action: Action;
+  dataAttribute?: string;
+  serializedLocator: SerializedLocator;
 };
 
-export const getLabels = (element: HTMLElement): string[] | null => {
-  const labelElements = (element as HTMLInputElement).labels;
+// XXX: filter out invisible elements
+class Locator {
+  private dataAttribute?: string;
+  private serializedLocator: SerializedLocator;
 
-  if (!labelElements || !labelElements.length) return null;
-
-  const labels: string[] = [];
-
-  for (let i = 0; i < labelElements.length; i++) {
-    const textContent = labelElements[i].textContent;
-    if (textContent) {
-      labels.push(textContent.toLowerCase());
-    }
+  constructor({ dataAttribute, serializedLocator }: ConstructorArgs) {
+    this.dataAttribute = dataAttribute;
+    this.serializedLocator = serializedLocator;
   }
 
-  return labels;
-};
+  public findEligible() {
+    if (this.dataAttribute && this.serializedLocator.dataValue) {
+      const selector = `[${this.dataAttribute}='${this.serializedLocator.dataValue}']`;
+      const elements = document.querySelectorAll(selector);
 
-export const getParentText = (element: HTMLElement): string[] | null => {
-  if (!element.parentElement) return null;
-
-  if (element.parentElement.textContent) {
-    const parentText: string[] = [];
-
-    for (let i = 0; i < element.parentElement.children.length; i++) {
-      const textContent = element.parentElement.children[i].textContent;
-      if (textContent) {
-        parentText.push(textContent.toLowerCase());
+      if (elements.length > 1) {
+        throw new Error(
+          `Can't decide: found ${elements.length} elements with data attribute ${selector}`
+        );
       }
-      // ensure all content gets included (children that aren't elements)
-      parentText.push(element.parentElement.textContent.toLowerCase());
+
+      return elements[0] || null;
     }
-
-    return parentText;
   }
 
-  return getParentText(element.parentElement);
-};
-
-export const getPlaceholder = (element: HTMLElement): string | null => {
-  if (!(element as HTMLInputElement).placeholder) return null;
-
-  return (element as HTMLInputElement).placeholder.toLowerCase();
-};
-
-export const getLocator = (
-  element: HTMLElement | null,
-  dataAttribute: string | null
-): Locator | null => {
-  if (!element) {
-    return null;
+  public findIdeal(): Element | null {
+    throw new Error("findIdeal must be implemented by Locator subclass");
   }
 
-  return {
-    classList: (element.className || "").length
-      ? element.className.split(" ")
-      : null,
-    dataValue: getDataValue(element, dataAttribute),
-    href: (element as HTMLAnchorElement).href || null,
-    id: element.id || null,
-    inputType: (element as HTMLInputElement).type || null,
-    labels: getLabels(element),
-    name: (element as HTMLInputElement).name || null,
-    parentText: getParentText(element),
-    placeholder: getPlaceholder(element),
-    tagName: element.tagName ? element.tagName.toLowerCase() : null,
-    textContent: getTextContent(element),
-    xpath: getXpath(element)
-  };
-};
-
-export const getTextContent = (element: HTMLElement): string | null => {
-  if (!element.textContent) return null;
-
-  return element.textContent.toLowerCase();
-};
+  public serialize(): SerializedLocator {
+    return this.serializedLocator;
+  }
+}

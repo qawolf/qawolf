@@ -1,10 +1,9 @@
-import { sleep } from "../utils";
+import { SerializedLocator } from "../types";
+import { sleep } from "./sleep";
 
 // To Do
 // "type" action -> "input" & "select"
 // locators should stand on their own, no step...
-
-type SerializedLocator = {};
 
 class Locator {
   findEligible() {
@@ -22,7 +21,7 @@ class Locator {
     return {};
   }
 
-  async waitForElement(timeout: number = 30000) {
+  async waitForElement(timeout: number = 30000): Element | null {
     console.log(`Locator: waitForElement ${this.serialize()}`);
 
     for (let i = 0; i < timeout; i += 500) {
@@ -43,6 +42,7 @@ class Locator {
     }
 
     console.log("Locator: no element found");
+    return null;
   }
 }
 

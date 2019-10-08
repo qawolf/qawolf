@@ -85,22 +85,41 @@ test("getParentText correctly returns parent text", async () => {
     return qawolf.locator.getParentText(document.getElementsByTagName("i")[0]);
   });
 
-  expect(iconParentText).toEqual([" login", " login"]);
+  expect(iconParentText).toEqual(["login", "login"]);
 });
 
-test("getPlaceholder correctly returns placeholder", async () => {
-  const nullPlaceholder = await page.evaluate(() => {
-    const qawolf: QAWolf = (window as any).qawolf;
-
-    return qawolf.locator.getPlaceholder(
-      document.getElementsByTagName("input")[0]
-    );
+describe("getPlaceholder", () => {
+  test("returns placeholder if present", async () => {
+    // XXX: update this test
   });
 
-  expect(nullPlaceholder).toBeNull();
+  test("returns null if no placeholder", async () => {
+    const nullPlaceholder = await page.evaluate(() => {
+      const qawolf: QAWolf = (window as any).qawolf;
+
+      return qawolf.locator.getPlaceholder(
+        document.getElementsByTagName("input")[0]
+      );
+    });
+
+    expect(nullPlaceholder).toBeNull();
+  });
+
+  test("returns disabled option text for select", async () => {
+    // XXX: update this test
+    const nullPlaceholder = await page.evaluate(() => {
+      const qawolf: QAWolf = (window as any).qawolf;
+
+      return qawolf.locator.getPlaceholder(
+        document.getElementsByTagName("input")[0]
+      );
+    });
+
+    expect(nullPlaceholder).toBeNull();
+  });
 });
 
-test("getTextContent correctly returns text content", async () => {
+test("getTextContent returns text content", async () => {
   const headerTextContent = await page.evaluate(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
@@ -122,14 +141,14 @@ test("getTextContent correctly returns text content", async () => {
   expect(nullTextContent).toBeNull();
 });
 
-test("getLocator correctly returns full element locator", async () => {
+test("getSerializedLocator correctly returns full element locator", async () => {
   const inputLocator = await page.evaluate(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
     const username = document.getElementById("username")!;
     username.setAttribute("data-qa", "user");
 
-    const result = qawolf.locator.getLocator(
+    const result = qawolf.locator.getSerializedLocator(
       document.getElementsByTagName("input")[0],
       "data-qa"
     );
@@ -156,7 +175,7 @@ test("getLocator correctly returns full element locator", async () => {
   const headerLocator = await page.evaluate(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
-    return qawolf.locator.getLocator(
+    return qawolf.locator.getSerializedLocator(
       document.getElementsByTagName("h2")[0],
       "data-qa"
     );

@@ -29,7 +29,7 @@ export const isScrollEvent = (event?: QAEventWithTime): boolean => {
   return isScroll && isPageBody;
 };
 
-export const isTypeEvent = (event?: QAEventWithTime): boolean => {
+export const isInputEvent = (event?: QAEventWithTime): boolean => {
   if (!event || !event.data) return false;
 
   const data = event.data;
@@ -43,15 +43,15 @@ export const findActionEvents = (
 ): QAEventWithTime[] => {
   return events.filter(event => {
     return (
-      isMouseDownEvent(event) || isScrollEvent(event) || isTypeEvent(event)
+      isMouseDownEvent(event) || isScrollEvent(event) || isInputEvent(event)
     );
   });
 };
 
 export const getEventAction = (event: QAEventWithTime): Action => {
+  if (isInputEvent(event)) return "input";
   if (isMouseDownEvent(event)) return "click";
   if (isScrollEvent(event)) return "scroll";
-  if (isTypeEvent(event)) return "type";
 
   throw new Error(`Action not found for event ${event}`);
 };
@@ -92,15 +92,15 @@ export const buildClickSteps = (
 ): BrowserStep[] => {
   const steps: BrowserStep[] = [];
 
-  const willTypeNext =
+  const willInputNext =
     nextSequence &&
-    nextSequence.action === "type" &&
+    nextSequence.action === "input" &&
     nextSequence.xpath === clickSequence.xpath;
 
   clickSequence.events.forEach((click, i) => {
-    // skip the last click if  we will type in the same element
+    // skip the last click if  we will input value in the same element
     const isLastClick = i === clickSequence.events.length - 1;
-    if (isLastClick && willTypeNext) return;
+    if (isLastClick && willInputNext) return;
 
     steps.push({
       action: "click",
@@ -110,6 +110,17 @@ export const buildClickSteps = (
   });
 
   return steps;
+};
+
+export const buildInputStep = (inputSequence: EventSequence): BrowserStep => {
+  const lastInput = last(inputSequence.events) as QAEventWithTime;
+
+  return {
+    action: "input",
+    locator: lastInput.data.properties,
+    pageId: lastInput.pageId,
+    value: lastInput.data.text
+  };
 };
 
 export const buildScrollStep = (
@@ -129,28 +140,17 @@ export const buildScrollStep = (
   };
 };
 
-export const buildTypeStep = (typeSequence: EventSequence): BrowserStep => {
-  const lastType = last(typeSequence.events) as QAEventWithTime;
-
-  return {
-    action: "type",
-    locator: lastType.data.properties,
-    pageId: lastType.pageId,
-    value: lastType.data.text
-  };
-};
-
 export const buildSequenceSteps = (
   eventSequences: EventSequence[]
 ): BrowserStep[] => {
   let steps: BrowserStep[] = [];
 
   eventSequences.forEach((eventSequence, i) => {
-    if (eventSequence.action === "scroll") {
+    if (eventSequence.action === "input") {
+      steps.push(buildInputStep(eventSequence));
+    } else if (eventSequence.action === "scroll") {
       const scrollStep = buildScrollStep(eventSequence);
       if (scrollStep) steps.push(scrollStep);
-    } else if (eventSequence.action === "type") {
-      steps.push(buildTypeStep(eventSequence));
     } else if (eventSequence.action === "click") {
       const nextSequence = eventSequences[i + 1] || null;
       steps = steps.concat(buildClickSteps(eventSequence, nextSequence));

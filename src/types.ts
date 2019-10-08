@@ -1,10 +1,10 @@
 import { Size } from "./browser/device";
 
-export type Action = "click" | "scroll" | "type";
+export type Action = "click" | "input" | "scroll";
 
 export type BrowserStep = {
   action: Action;
-  locator: Locator;
+  locator: SerializedLocator;
   pageId?: number;
   scrollDirection?: "down" | "up";
   scrollTo?: number;
@@ -18,7 +18,7 @@ export type Job = {
   url: string;
 };
 
-export type Locator = {
+export type SerializedLocator = {
   classList?: string[] | null;
   dataValue?: string | null;
   href?: string | null;

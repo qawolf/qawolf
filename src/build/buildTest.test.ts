@@ -63,7 +63,7 @@ describe("formatStep", () => {
 
   test("formats type into text input", () => {
     const step = {
-      action: "type" as "type",
+      action: "input" as "input",
       locator: {
         id: "input1",
         inputType: "text",
@@ -83,7 +83,7 @@ describe("formatStep", () => {
 
   test("formats type into password input", () => {
     const step = {
-      action: "type" as "type",
+      action: "input" as "input",
       locator: {
         id: "input2",
         inputType: "password",
@@ -101,7 +101,7 @@ describe("formatStep", () => {
 
   test("removes newline characters", () => {
     const step = {
-      action: "type" as "type",
+      action: "input" as "input",
       locator: {
         id: "input1",
         inputType: "text",
@@ -121,7 +121,7 @@ describe("formatStep", () => {
 
   test("remove excessive whitespace", () => {
     const step = {
-      action: "type" as "type",
+      action: "input" as "input",
       locator: {
         id: "input1",
         inputType: "text",
