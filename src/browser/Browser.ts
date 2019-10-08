@@ -1,12 +1,13 @@
 import fs from "fs-extra";
 import { platform } from "os";
 import path from "path";
-import puppeteer, { ElementHandle, Page, Serializable } from "puppeteer";
+import puppeteer, { Page } from "puppeteer";
 import { CONFIG } from "../config";
 import { getDevice, Size } from "./device";
+import { logger } from "../logger";
+import { runStep } from "./runStep";
 import { BrowserStep } from "../types";
 import { sleep } from "../utils";
-import { QAWolf } from "../web";
 
 const webBundle = fs.readFileSync(
   path.resolve(__dirname, "../../dist/qawolf.web.js"),
@@ -37,6 +38,7 @@ export class Browser {
   }
 
   public static async create(options: BrowserCreateOptions = {}) {
+    logger.debug(`Browser: create ${JSON.stringify(options)}`);
     const device = getDevice(options.size);
 
     const launchOptions: puppeteer.LaunchOptions = {
@@ -76,10 +78,18 @@ export class Browser {
     return this.page(this._currentPageIndex);
   }
 
+  public async goto(url: string) {
+    const page = await this.currentPage();
+    await page.goto(url);
+    return page;
+  }
+
   public async page(
     index: number = 0,
     timeoutMs: number = 5000
   ): Promise<Page> {
+    logger.debug(`Browser: get page(${index})`);
+
     for (let i = 0; i < timeoutMs / 100 && index >= this._pages.length; i++) {
       await sleep(100);
     }
@@ -91,43 +101,17 @@ export class Browser {
     const page = this._pages[index];
     this._currentPageIndex = index;
 
-    // need this for the evaluation context
+    // when headless = false the page needs to be up
+    // front for the execution context to run
     await page.bringToFront();
+    logger.debug(`Browser: page(${index}) activated: ${page.url()}`);
 
     return page;
   }
 
   public async runStep(step: BrowserStep): Promise<void> {
     const page = await this.page(step.pageId);
-    try {
-      if (step.action === "scroll") {
-        return this.scrollStep(page, step);
-      } else {
-        const elementHandle = await this.findElementHandleForStep(page, step);
-
-        if (step.action === "click") {
-          return elementHandle.click();
-        } else {
-          return this.typeStep(page, elementHandle, step);
-        }
-      }
-    } catch (error) {
-      if (
-        error.message ===
-        "Execution context was destroyed, most likely because of a navigation."
-      ) {
-        // re-run the step if the page navigates
-        return this.runStep(step);
-      }
-
-      throw error;
-    }
-  }
-
-  public async goto(url: string) {
-    const page = await this.currentPage();
-    await page.goto(url);
-    return page;
+    return runStep(page, step);
   }
 
   protected async wrapPages() {
@@ -153,77 +137,4 @@ export class Browser {
       this._pages.push(page);
     });
   }
-
-  private async findElementHandleForStep(
-    page: Page,
-    step: BrowserStep
-  ): Promise<ElementHandle> {
-    const jsHandle = await page.evaluateHandle(
-      step => {
-        const qawolf: QAWolf = (window as any).qawolf;
-        return qawolf.rank.waitForElement(step, CONFIG.dataAttribute);
-      },
-      step as Serializable
-    );
-
-    const elementHandle = jsHandle.asElement();
-    if (!elementHandle) {
-      throw new Error(`No element handle found for step ${step}`);
-    }
-
-    return elementHandle;
-  }
-
-  private async scrollStep(page: Page, step: BrowserStep): Promise<void> {
-    await page.evaluate(
-      step => {
-        const qawolf: QAWolf = (window as any).qawolf;
-        return qawolf.actions.scrollTo(step.scrollTo!);
-      },
-      step as Serializable
-    );
-  }
-
-  private async typeStep(
-    page: Page,
-    elementHandle: ElementHandle,
-    step: BrowserStep
-  ): Promise<void> {
-    const handleProperty = await elementHandle.getProperty("tagName");
-    const tagName = await handleProperty.jsonValue();
-    const value = step.value || "";
-
-    if (tagName.toLowerCase() === "select") {
-      await elementHandle.select(value); // returns array of strings
-    } else {
-      // clear current value
-      await page.evaluate(element => {
-        element.value = "";
-      }, elementHandle);
-      return elementHandle.type(value);
-    }
-  }
 }
-
-export const $xText = async (page: Page, xpath: string): Promise<string> => {
-  try {
-    const elements = await page.$x(xpath);
-
-    const text = await page.evaluate(
-      element => element.textContent,
-      elements[0]
-    );
-
-    return text;
-  } catch (error) {
-    if (
-      error.message ===
-      "Execution context was destroyed, most likely because of a navigation."
-    ) {
-      // re-run if the page navigates
-      return $xText(page, xpath);
-    }
-
-    throw error;
-  }
-};
