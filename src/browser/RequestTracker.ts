@@ -1,57 +1,77 @@
-import { once } from "lodash";
-import { Page } from "puppeteer";
+import { remove } from "lodash";
+import { Page, Request } from "puppeteer";
 import { logger } from "../logger";
 
 type Callback = () => void;
 
-type Counter = {
+type Tracker = {
   page: Page;
-  requests: number;
+  requests: Request[];
   onComplete: Callback[];
 };
 
 export class RequestTracker {
-  private counters: Counter[] = [];
+  private _trackers: Tracker[] = [];
+
+  // how long until we ignore a request
+  private _timeout: number;
+
+  constructor(timeout: number = 10000) {
+    this._timeout = timeout;
+  }
 
   public track(page: Page) {
-    const counter = {
+    const tracker: Tracker = {
       page,
-      requests: 0,
-      onComplete: [] as Callback[]
+      requests: [],
+      onComplete: []
     };
-    this.counters.push(counter);
+    this._trackers.push(tracker);
 
-    const decrementRequests = () => {
-      counter.requests -= 1;
-      logger.debug(
-        `RequestTracker: requests-- ${counter.requests} ${page.url()}`
+    const removeRequest = (request: Request, reason: string) => {
+      const items = remove(tracker.requests, i => i === request);
+      // ignore since it was already removed
+      if (items.length < 1) return;
+
+      logger.verbose(
+        `RequestTracker: request-- ${reason} ${
+          tracker.requests.length
+        } ${page.url()}`
       );
 
-      if (counter.requests === 0) {
-        counter.onComplete.forEach(done => done());
-        counter.onComplete = [];
+      if (tracker.requests.length === 0) {
+        tracker.onComplete.forEach(done => done());
+        tracker.onComplete = [];
       }
     };
 
-    page.on("request", () => {
-      counter.requests += 1;
-      logger.debug(
-        `RequestTracker: requests++ ${counter.requests} ${page.url()}`
+    page.on("request", (request: Request) => {
+      tracker.requests.push(request);
+
+      logger.verbose(
+        `RequestTracker: request++ ${tracker.requests.length} ${page.url()}`
       );
+
+      setTimeout(() => removeRequest(request, "timeout"), this._timeout);
     });
 
-    page.on("requestfailed", decrementRequests);
-    page.on("requestfinished", decrementRequests);
+    page.on("requestfailed", request =>
+      removeRequest(request, "requestfailed")
+    );
+
+    page.on("requestfinished", request =>
+      removeRequest(request, "requestfinished")
+    );
   }
 
-  public async waitUntilComplete(page: Page, timeout: number = 10000) {
+  public async waitUntilComplete(page: Page) {
     logger.debug(`RequestTracker: waitUntilComplete ${page.url()}`);
 
     return new Promise(resolve => {
-      const counter = this.counters.find(c => c.page === page);
-      if (!counter) throw new Error(`Cannot find counter. Page is not tracked`);
+      const tracker = this._trackers.find(c => c.page === page);
+      if (!tracker) throw new Error(`Cannot find counter. Page is not tracked`);
 
-      if (counter.requests === 0) {
+      if (tracker.requests.length === 0) {
         logger.debug(
           `RequestTracker: waitUntilComplete resolved immediately ${page.url()}`
         );
@@ -59,17 +79,7 @@ export class RequestTracker {
         return;
       }
 
-      counter.onComplete.push(once(resolve));
-
-      const timeoutId = setTimeout(() => {
-        logger.debug(
-          `RequestTracker: waitUntilComplete resolved after timeout ${page.url()}`
-        );
-        counter.onComplete.forEach(done => done());
-        counter.onComplete = [];
-      }, timeout);
-
-      counter.onComplete.push(() => clearTimeout(timeoutId));
+      tracker.onComplete.push(resolve);
     });
   }
 }
