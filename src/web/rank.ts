@@ -6,14 +6,15 @@ const DEFAULT_THRESHOLD = 0.6;
 
 export const computeSimilarityScores = (
   step: BrowserStep,
-  elements: Element[]
+  elements: Element[],
+  dataAttribute: string | null
 ): number[] => {
   const base = step.locator;
 
   const scores: number[] = [];
 
   for (let i = 0; i < elements.length; i++) {
-    const compare = getLocator(elements[i] as HTMLElement);
+    const compare = getLocator(elements[i] as HTMLElement, dataAttribute);
 
     if (!compare) {
       scores.push(0);
@@ -42,12 +43,28 @@ export const findCandidateElements = (step: BrowserStep): Element[] => {
   return candidates;
 };
 
+export const findElementByDataValue = (
+  dataAttribute: string,
+  dataValue: string
+): Element | null => {
+  const selector = `[${dataAttribute}='${dataValue}']`;
+  const elements = document.querySelectorAll(selector);
+  if (elements.length > 1) {
+    throw new Error(
+      `Can't decide: found ${elements.length} elements with data attribute ${selector}`
+    );
+  }
+
+  return elements[0] || null;
+};
+
 export const findTopElement = (
   step: BrowserStep,
+  dataAttribute: string | null,
   threshold: number = DEFAULT_THRESHOLD
 ): Element | null => {
   const elements = findCandidateElements(step);
-  const scores = computeSimilarityScores(step, elements);
+  const scores = computeSimilarityScores(step, elements, dataAttribute);
   const maxScore = Math.max(...scores);
   const maxPossibleScore = computeMaxPossibleScore(step.locator!);
 
@@ -72,12 +89,18 @@ export const findTopElement = (
 
 export const waitForElement = async (
   step: BrowserStep,
+  dataAttribute: string | null,
   timeout: number = 30000,
   threshold: number = DEFAULT_THRESHOLD
 ): Promise<Element> => {
   return new Promise((resolve, reject) => {
     const intervalId = setInterval(() => {
-      const element = findTopElement(step, threshold);
+      let element: Element | null = null;
+      if (dataAttribute && step.locator.dataValue) {
+        element = findElementByDataValue(dataAttribute, step.locator.dataValue);
+      } else {
+        element = findTopElement(step, dataAttribute, threshold);
+      }
 
       if (element) {
         console.log("waitForElement: found element", element);

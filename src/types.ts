@@ -20,7 +20,7 @@ export type Job = {
 
 export type Locator = {
   classList?: string[] | null;
-  dataAttribute?: string | null;
+  dataValue?: string | null;
   href?: string | null;
   id?: string | null;
   inputType?: string | null;

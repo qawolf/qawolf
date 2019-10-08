@@ -13,20 +13,21 @@ beforeAll(async () => {
 
 afterAll(() => browser.close());
 
-describe("getDataAttribute", () => {
-  // test("returns null if data attribute not specified in config", async () => {
-  //   // CONFIG.dataAttribute = null;
+describe("getDataValue", () => {
+  test("returns null if data attribute not specified in config", async () => {
+    const dataAttribute = await page.evaluate(() => {
+      const qawolf: QAWolf = (window as any).qawolf;
+      const username = document.getElementById("username")!;
+      username.setAttribute("data-qa", "user");
 
-  //   const dataAttribute = await page.evaluate(() => {
-  //     const qawolf: QAWolf = (window as any).qawolf;
-  //     const username = document.getElementById("username")!;
-  //     username.setAttribute("data-qa", "user");
+      const result = qawolf.locator.getDataValue(username, null);
+      username.removeAttribute("data-qa");
 
-  //     return qawolf.locator.getDataAttribute(username);
-  //   });
+      return result;
+    });
 
-  //   expect(dataAttribute).toBeNull();
-  // });
+    expect(dataAttribute).toBeNull();
+  });
 
   test("returns null if element does not have specified data attribute", async () => {
     const dataAttribute = await page.evaluate(() => {
@@ -34,7 +35,10 @@ describe("getDataAttribute", () => {
       const username = document.getElementById("username")!;
       username.setAttribute("data-other", "user");
 
-      return qawolf.locator.getDataAttribute(username);
+      const result = qawolf.locator.getDataValue(username, "data-qa");
+      username.removeAttribute("data-other");
+
+      return result;
     });
 
     expect(dataAttribute).toBeNull();
@@ -46,7 +50,10 @@ describe("getDataAttribute", () => {
       const username = document.getElementById("username")!;
       username.setAttribute("data-qa", "user");
 
-      return qawolf.locator.getDataAttribute(username);
+      const result = qawolf.locator.getDataValue(username, "data-qa");
+      username.removeAttribute("data-qa");
+
+      return result;
     });
 
     expect(dataAttribute).toBe("user");
@@ -118,11 +125,23 @@ test("getTextContent correctly returns text content", async () => {
 test("getLocator correctly returns full element locator", async () => {
   const inputLocator = await page.evaluate(() => {
     const qawolf: QAWolf = (window as any).qawolf;
-    return qawolf.locator.getLocator(document.getElementsByTagName("input")[0]);
+
+    const username = document.getElementById("username")!;
+    username.setAttribute("data-qa", "user");
+
+    const result = qawolf.locator.getLocator(
+      document.getElementsByTagName("input")[0],
+      "data-qa"
+    );
+
+    username.removeAttribute("data-qa");
+
+    return result;
   });
 
   expect(inputLocator).toMatchObject({
     classList: null,
+    dataValue: "user",
     href: null,
     id: "username",
     inputType: "text",
@@ -137,11 +156,15 @@ test("getLocator correctly returns full element locator", async () => {
   const headerLocator = await page.evaluate(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
-    return qawolf.locator.getLocator(document.getElementsByTagName("h2")[0]);
+    return qawolf.locator.getLocator(
+      document.getElementsByTagName("h2")[0],
+      "data-qa"
+    );
   });
 
   expect(headerLocator).toMatchObject({
     classList: null,
+    dataValue: null,
     href: null,
     id: null,
     inputType: null,

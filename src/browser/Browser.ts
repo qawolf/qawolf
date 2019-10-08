@@ -161,7 +161,7 @@ export class Browser {
     const jsHandle = await page.evaluateHandle(
       step => {
         const qawolf: QAWolf = (window as any).qawolf;
-        return qawolf.rank.waitForElement(step);
+        return qawolf.rank.waitForElement(step, CONFIG.dataAttribute);
       },
       step as Serializable
     );

@@ -34,6 +34,7 @@ export const computeSimilarityScore = (
   let score: number = 0;
 
   score += computeArraySimilarityScore(compare.classList, base.classList);
+  score += computeStringSimilarityScore(compare.dataValue, base.dataValue);
   score += computeStringSimilarityScore(compare.href, base.href);
   score += computeStringSimilarityScore(compare.id, base.id);
   score += computeStringSimilarityScore(compare.inputType, base.inputType);
