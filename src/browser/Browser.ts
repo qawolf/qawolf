@@ -6,7 +6,7 @@ import { injectWebBundle } from "./pageUtils";
 import { RequestTracker } from "./RequestTracker";
 import { runStep } from "./runStep";
 import { BrowserStep } from "../types";
-import { sleep } from "../web/sleep";
+import { sleep } from "../web/utils";
 
 type CreateOptions = {
   size?: Size;

@@ -1,5 +1,5 @@
 import { SerializedLocator } from "../types";
-import { sleep } from "./sleep";
+import { sleep } from "./utils";
 
 // To Do
 // "type" action -> "input" & "select"

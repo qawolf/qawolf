@@ -90,7 +90,21 @@ test("getParentText correctly returns parent text", async () => {
 
 describe("getPlaceholder", () => {
   test("returns placeholder if present", async () => {
-    // XXX: update this test
+    const placeholder = await page.evaluate(() => {
+      const qawolf: QAWolf = (window as any).qawolf;
+      const input = document.getElementsByTagName("input")[0];
+      input.placeholder = "enter username";
+
+      const result = qawolf.locator.getPlaceholder(
+        document.getElementsByTagName("input")[0]
+      );
+
+      input.removeAttribute("placeholder");
+
+      return result;
+    });
+
+    expect(placeholder).toBe("enter username");
   });
 
   test("returns null if no placeholder", async () => {
@@ -106,16 +120,19 @@ describe("getPlaceholder", () => {
   });
 
   test("returns disabled option text for select", async () => {
-    // XXX: update this test
-    const nullPlaceholder = await page.evaluate(() => {
+    await page.goto(`${CONFIG.testUrl}dropdown`);
+
+    const placeholder = await page.evaluate(() => {
       const qawolf: QAWolf = (window as any).qawolf;
 
       return qawolf.locator.getPlaceholder(
-        document.getElementsByTagName("input")[0]
+        document.getElementsByTagName("select")[0]
       );
     });
 
-    expect(nullPlaceholder).toBeNull();
+    expect(placeholder).toBe("please select an option");
+
+    await page.goto(`${CONFIG.testUrl}login`);
   });
 });
 

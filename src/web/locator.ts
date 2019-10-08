@@ -1,5 +1,5 @@
 import { Action, SerializedLocator } from "../types";
-import { sleep } from "./sleep";
+import { queryVisible } from "./utils";
 
 type ConstructorArgs = {
   action: Action;
@@ -7,29 +7,17 @@ type ConstructorArgs = {
   serializedLocator: SerializedLocator;
 };
 
-// XXX: filter out invisible elements
-class Locator {
-  private dataAttribute?: string;
-  private serializedLocator: SerializedLocator;
+export class Locator {
+  protected dataAttribute?: string;
+  protected serializedLocator: SerializedLocator;
 
   constructor({ dataAttribute, serializedLocator }: ConstructorArgs) {
     this.dataAttribute = dataAttribute;
     this.serializedLocator = serializedLocator;
   }
 
-  public findEligible() {
-    if (this.dataAttribute && this.serializedLocator.dataValue) {
-      const selector = `[${this.dataAttribute}='${this.serializedLocator.dataValue}']`;
-      const elements = document.querySelectorAll(selector);
-
-      if (elements.length > 1) {
-        throw new Error(
-          `Can't decide: found ${elements.length} elements with data attribute ${selector}`
-        );
-      }
-
-      return elements[0] || null;
-    }
+  public findEligible(): Element[] {
+    throw new Error("findEligible must be implemented by Locator subclass");
   }
 
   public findIdeal(): Element | null {
@@ -38,5 +26,18 @@ class Locator {
 
   public serialize(): SerializedLocator {
     return this.serializedLocator;
+  }
+
+  protected findByDataAttribute(): Element[] {
+    const selector = `[${this.dataAttribute}='${this.serializedLocator.dataValue}']`;
+    const elements = queryVisible(selector);
+
+    if (elements.length > 1) {
+      throw new Error(
+        `Can't decide: found ${elements.length} elements with data attribute ${selector}`
+      );
+    }
+
+    return elements.length ? [elements[0]] : [];
   }
 }
