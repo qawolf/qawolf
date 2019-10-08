@@ -3,6 +3,7 @@ import { launchPuppeteerBrowser } from "./browserUtils";
 import { getDevice, Size } from "./device";
 import { logger } from "../logger";
 import { injectWebBundle } from "./pageUtils";
+import { RequestTracker } from "./RequestTracker";
 import { runStep } from "./runStep";
 import { BrowserStep } from "../types";
 import { sleep } from "../utils";
@@ -21,6 +22,7 @@ export class Browser {
   private _device: puppeteer.devices.Device;
   // stored in order of open
   private _pages: Page[] = [];
+  private _requests: RequestTracker = new RequestTracker();
 
   // protect constructor to force using async Browser.create()
   protected constructor() {}
@@ -57,6 +59,7 @@ export class Browser {
 
   public async runStep(step: BrowserStep): Promise<void> {
     const page = await this.waitForPage(step.pageId);
+    await this._requests.waitUntilComplete(page);
     return runStep(page, step);
   }
 
@@ -91,6 +94,7 @@ export class Browser {
   private async managePage(page: Page) {
     await injectWebBundle(page);
     await page.emulate(this._device);
+    this._requests.track(page);
     this._pages.push(page);
   }
 
