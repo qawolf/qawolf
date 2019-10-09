@@ -15,7 +15,7 @@ describe("formatStep", () => {
   test("formats click on link step", () => {
     const step = {
       action: "click" as "click",
-      locator: {
+      target: {
         tagName: "a",
         textContent: "contact"
       }
@@ -28,7 +28,7 @@ describe("formatStep", () => {
   test("formats click on submit input step", () => {
     const step = {
       action: "click" as "click",
-      locator: {
+      target: {
         inputType: "submit",
         tagName: "input",
         textContent: "sign in"
@@ -42,7 +42,7 @@ describe("formatStep", () => {
   test("formats scroll down action", () => {
     const step = {
       action: "scroll" as "scroll",
-      locator: { xpath: "scroll" },
+      target: { xpath: "scroll" },
       scrollDirection: "down" as "down"
     };
 
@@ -53,7 +53,7 @@ describe("formatStep", () => {
   test("formats scroll up action", () => {
     const step = {
       action: "scroll" as "scroll",
-      locator: { xpath: "scroll" },
+      target: { xpath: "scroll" },
       scrollDirection: "up" as "up"
     };
 
@@ -64,7 +64,7 @@ describe("formatStep", () => {
   test("formats type into text input", () => {
     const step = {
       action: "input" as "input",
-      locator: {
+      target: {
         id: "input1",
         inputType: "text",
         labels: ["username"],
@@ -84,7 +84,7 @@ describe("formatStep", () => {
   test("formats type into password input", () => {
     const step = {
       action: "input" as "input",
-      locator: {
+      target: {
         id: "input2",
         inputType: "password",
         placeholder: "secret",
@@ -102,7 +102,7 @@ describe("formatStep", () => {
   test("removes newline characters", () => {
     const step = {
       action: "input" as "input",
-      locator: {
+      target: {
         id: "input1",
         inputType: "text",
         labels: ["\nusername\n\r"],
@@ -122,7 +122,7 @@ describe("formatStep", () => {
   test("remove excessive whitespace", () => {
     const step = {
       action: "input" as "input",
-      locator: {
+      target: {
         id: "input1",
         inputType: "text",
         labels: ["    username    "],
@@ -142,7 +142,7 @@ describe("formatStep", () => {
   test("shortens target name if needed", () => {
     const step = {
       action: "click" as "click",
-      locator: {
+      target: {
         inputType: "submit",
         tagName: "input",
         textContent: `sign in${"x".repeat(200)}`

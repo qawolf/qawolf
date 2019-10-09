@@ -104,7 +104,7 @@ export const buildClickSteps = (
 
     steps.push({
       action: "click",
-      locator: click.data.properties,
+      target: click.data.properties,
       pageId: click.pageId
     });
   });
@@ -117,7 +117,7 @@ export const buildInputStep = (inputSequence: EventSequence): BrowserStep => {
 
   return {
     action: "input",
-    locator: lastInput.data.properties,
+    target: lastInput.data.properties,
     pageId: lastInput.pageId,
     value: lastInput.data.text
   };
@@ -133,7 +133,7 @@ export const buildScrollStep = (
 
   return {
     action: "scroll",
-    locator: { xpath: "scroll" },
+    target: { xpath: "scroll" },
     pageId: lastScroll.pageId,
     scrollDirection: firstScroll.data.y < lastScroll.data.y ? "down" : "up",
     scrollTo: lastScroll.data.y

@@ -81,13 +81,9 @@ export const getTextContent = (element: HTMLElement): string | null => {
 };
 
 export const getDescriptor = (
-  element: HTMLElement | null,
+  element: HTMLElement,
   dataAttribute: string | null
-): ElementDescriptor | null => {
-  if (!element) {
-    return null;
-  }
-
+): ElementDescriptor => {
   return {
     classList: (element.className || "").length
       ? element.className.split(" ")
