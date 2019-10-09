@@ -8,7 +8,7 @@ import {
   findActionEvents,
   getEventAction,
   groupEventSequences,
-  isMouseDownEvent,
+  isClickEvent,
   isScrollEvent,
   isTypeEvent
 } from "./buildSteps";
@@ -337,7 +337,7 @@ describe("getEventAction", () => {
       data: {
         isTrusted: true,
         source: 2,
-        type: 1
+        type: 2
       }
     } as QAEventWithTime;
 
@@ -434,15 +434,15 @@ describe("groupEventSequences", () => {
   });
 });
 
-describe("isMouseDownEvent", () => {
+describe("isClickEvent", () => {
   test("returns false if event undefined", () => {
-    expect(isMouseDownEvent()).toBe(false);
+    expect(isClickEvent()).toBe(false);
   });
 
   test("returns false if no data", () => {
     const event = {} as QAEventWithTime;
 
-    expect(isMouseDownEvent(event)).toBe(false);
+    expect(isClickEvent(event)).toBe(false);
   });
 
   test("returns false if data source not mouse interaction", () => {
@@ -452,18 +452,18 @@ describe("isMouseDownEvent", () => {
       }
     } as QAEventWithTime;
 
-    expect(isMouseDownEvent(event)).toBe(false);
+    expect(isClickEvent(event)).toBe(false);
   });
 
-  test("returns false if data type not mouse down", () => {
+  test("returns false if data type not click", () => {
     const event = {
       data: {
         source: 2,
-        type: 2
+        type: 3
       }
     } as QAEventWithTime;
 
-    expect(isMouseDownEvent(event)).toBe(false);
+    expect(isClickEvent(event)).toBe(false);
   });
 
   test("returns false if data not trusted", () => {
@@ -471,23 +471,23 @@ describe("isMouseDownEvent", () => {
       data: {
         isTrusted: false,
         source: 2,
-        type: 1
+        type: 2
       }
     } as QAEventWithTime;
 
-    expect(isMouseDownEvent(event)).toBe(false);
+    expect(isClickEvent(event)).toBe(false);
   });
 
-  test("returns true if mouse down event", () => {
+  test("returns true if click event", () => {
     const event = {
       data: {
         isTrusted: true,
         source: 2,
-        type: 1
+        type: 2
       }
     } as QAEventWithTime;
 
-    expect(isMouseDownEvent(event)).toBe(true);
+    expect(isClickEvent(event)).toBe(true);
   });
 });
 
