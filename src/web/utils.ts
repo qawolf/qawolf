@@ -76,7 +76,3 @@ export const queryVisible = (selector: string): Element[] => {
 
   return visibleElements;
 };
-
-export const sleep = (milliseconds: number): Promise<void> => {
-  return new Promise(resolve => setTimeout(resolve, milliseconds));
-};

@@ -1,7 +1,7 @@
 import { CONFIG } from "../config";
 import { createRunTest } from "./createRunTest";
 import { multipleWindowsJob } from "../fixtures/multipleWindowsJob";
-import { sleep } from "../utils";
+import { sleep } from "../timer";
 
 test("multiple_windows test works", async () => {
   const { browser, success } = await createRunTest({

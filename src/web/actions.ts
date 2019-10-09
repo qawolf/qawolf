@@ -1,4 +1,4 @@
-import { sleep } from "./utils";
+import { sleep } from "../timer";
 
 export const scrollTo = async (
   yPosition: number,
