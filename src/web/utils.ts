@@ -1,4 +1,4 @@
-import { getLabels, getPlaceholder } from "./serializedLocator";
+import { getLabels, getPlaceholder } from "./element";
 
 const arrayEqual = (array1: string[], array2: string[]): boolean => {
   if (array1.length !== array2.length) return false;

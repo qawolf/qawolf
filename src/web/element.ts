@@ -1,4 +1,4 @@
-import { SerializedLocator } from "../types";
+import { ElementDescriptor } from "../types";
 import { getXpath } from "./xpath";
 
 const cleanText = (text: string): string => {
@@ -74,10 +74,16 @@ export const getPlaceholder = (element: HTMLElement): string | null => {
   }
 };
 
-export const getSerializedLocator = (
+export const getTextContent = (element: HTMLElement): string | null => {
+  if (!element.textContent) return null;
+
+  return cleanText(element.textContent);
+};
+
+export const getDescriptor = (
   element: HTMLElement | null,
   dataAttribute: string | null
-): SerializedLocator | null => {
+): ElementDescriptor | null => {
   if (!element) {
     return null;
   }
@@ -98,10 +104,4 @@ export const getSerializedLocator = (
     textContent: getTextContent(element),
     xpath: getXpath(element)
   };
-};
-
-export const getTextContent = (element: HTMLElement): string | null => {
-  if (!element.textContent) return null;
-
-  return cleanText(element.textContent);
 };

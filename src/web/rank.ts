@@ -1,4 +1,4 @@
-import { getSerializedLocator } from "./serializedLocator";
+import { getDescriptor } from "./element";
 import { computeMaxPossibleScore, computeSimilarityScore } from "./score";
 import { BrowserStep } from "../types";
 
@@ -9,15 +9,12 @@ export const computeSimilarityScores = (
   elements: Element[],
   dataAttribute: string | null
 ): number[] => {
-  const base = step.locator;
+  const base = step.target;
 
   const scores: number[] = [];
 
   for (let i = 0; i < elements.length; i++) {
-    const compare = getSerializedLocator(
-      elements[i] as HTMLElement,
-      dataAttribute
-    );
+    const compare = getDescriptor(elements[i] as HTMLElement, dataAttribute);
 
     if (!compare) {
       scores.push(0);
@@ -69,7 +66,7 @@ export const findTopElement = (
   const elements = findCandidateElements(step);
   const scores = computeSimilarityScores(step, elements, dataAttribute);
   const maxScore = Math.max(...scores);
-  const maxPossibleScore = computeMaxPossibleScore(step.locator!);
+  const maxPossibleScore = computeMaxPossibleScore(step.target!);
 
   if (maxScore / maxPossibleScore < threshold) {
     return null; // not similar enough
@@ -99,8 +96,8 @@ export const waitForElement = async (
   return new Promise((resolve, reject) => {
     const intervalId = setInterval(() => {
       let element: Element | null = null;
-      if (dataAttribute && step.locator.dataValue) {
-        element = findElementByDataValue(dataAttribute, step.locator.dataValue);
+      if (dataAttribute && step.target.dataValue) {
+        element = findElementByDataValue(dataAttribute, step.target.dataValue);
       } else {
         element = findTopElement(step, dataAttribute, threshold);
       }

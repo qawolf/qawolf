@@ -4,10 +4,10 @@ export type Action = "click" | "input" | "scroll";
 
 export type BrowserStep = {
   action: Action;
-  locator: SerializedLocator;
   pageId?: number;
   scrollDirection?: "down" | "up";
   scrollTo?: number;
+  target: ElementDescriptor;
   value?: string;
 };
 
@@ -18,7 +18,7 @@ export type Job = {
   url: string;
 };
 
-export type SerializedLocator = {
+export type ElementDescriptor = {
   classList?: string[] | null;
   dataValue?: string | null;
   href?: string | null;

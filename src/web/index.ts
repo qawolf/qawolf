@@ -1,11 +1,11 @@
 import * as actions from "./actions";
+import * as element from "./element";
 import * as rank from "./rank";
-import * as locator from "./serializedLocator";
 import * as xpath from "./xpath";
 
 const qawolf = {
   actions,
-  locator,
+  element,
   rank,
   xpath
 };
