@@ -16,17 +16,18 @@ type MatchArgs = {
   requireStrongMatch?: boolean;
 };
 
-const isNil = (value: any) => {
+const isNil = (value: any): boolean => {
   return typeof value === "undefined" || value === null;
 };
 
-export const compareArray = (
-  base: string[] | null | undefined,
-  compare: string[] | null | undefined
+export const compareArrays = (
+  base?: string[] | null,
+  compare?: string[] | null
 ): number => {
   if (!base || !base.length || !compare || !compare.length) return 0;
 
   const baseItemsInCompare = base.filter(v => compare.includes(v)).length;
+
   return Math.round((baseItemsInCompare / base.length) * 100);
 };
 
@@ -47,7 +48,7 @@ export const compareDescriptorKey = (
 
     percent = resolveSameElement ? 100 : 0;
   } else if (Array.isArray(targetValue) && Array.isArray(compareValue)) {
-    percent = compareArray(targetValue, compareValue);
+    percent = compareArrays(targetValue, compareValue);
   } else {
     percent = targetValue === compareValue ? 100 : 0;
   }

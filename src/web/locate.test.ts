@@ -59,7 +59,7 @@ describe("queryActionElements", () => {
       const qawolf: QAWolf = (window as any).qawolf;
       const actionElements = qawolf.locate.queryActionElements("input");
 
-      return actionElements.map(el => qawolf.xpath.getXpath(el));
+      return actionElements.map((el: HTMLElement) => qawolf.xpath.getXpath(el));
     });
 
     expect(actionElements).toEqual([
@@ -78,7 +78,7 @@ describe("queryActionElements", () => {
 
       const actionElements = qawolf.locate.queryActionElements("input");
 
-      return actionElements.map(el => qawolf.xpath.getXpath(el));
+      return actionElements.map((el: HTMLElement) => qawolf.xpath.getXpath(el));
     });
 
     expect(actionElementXpaths).toEqual(["//*[@id='password']"]);
@@ -101,7 +101,7 @@ describe("queryDataElements", () => {
       });
       submit.removeAttribute("data-qa");
 
-      return dataElements.map(el => qawolf.xpath.getXpath(el));
+      return dataElements.map((el: HTMLElement) => qawolf.xpath.getXpath(el));
     });
 
     expect(dataElementXpaths).toEqual(["//*[@id='login']/button"]);
@@ -124,7 +124,7 @@ describe("queryDataElements", () => {
       username.removeAttribute("data-qa");
       submit.removeAttribute("data-qa");
 
-      return dataElements.map(el => qawolf.xpath.getXpath(el));
+      return dataElements.map((el: HTMLElement) => qawolf.xpath.getXpath(el));
     });
 
     expect(dataElementXpaths).toEqual(["//*[@id='username']"]);
@@ -149,7 +149,7 @@ describe("queryDataElements", () => {
         dataValue: "username"
       });
 
-      return dataElements.map(el => qawolf.xpath.getXpath(el));
+      return dataElements.map((el: HTMLElement) => qawolf.xpath.getXpath(el));
     });
 
     expect(dataElementXpaths).toEqual(["//*[@id='password']"]);
@@ -169,7 +169,7 @@ describe("queryVisibleElements", () => {
 
       const actionElements = qawolf.locate.queryVisibleElements("input");
 
-      return actionElements.map(el => qawolf.xpath.getXpath(el));
+      return actionElements.map((el: HTMLElement) => qawolf.xpath.getXpath(el));
     });
 
     expect(visibleElementXpaths).toEqual(["//*[@id='password']"]);
@@ -194,7 +194,7 @@ describe("waitForElement", () => {
           target: { dataValue: "username" },
           timeoutMs: 5000
         })
-        .then(element => {
+        .then((element: HTMLElement) => {
           username.removeAttribute("data-qa");
           submit.removeAttribute("data-qa");
 
@@ -220,7 +220,7 @@ describe("waitForElement", () => {
           target: { id: "username" },
           timeoutMs: 5000
         })
-        .then(element => {
+        .then((element: HTMLElement) => {
           username.removeAttribute("data-qa");
           submit.removeAttribute("data-qa");
 
@@ -242,7 +242,7 @@ describe("waitForElement", () => {
           target: { tagName: "button" },
           timeoutMs: 2000
         })
-        .then(element => {
+        .then((element: HTMLElement) => {
           return qawolf.xpath.getXpath(element!);
         });
     });
@@ -261,7 +261,7 @@ describe("waitForElement", () => {
           target: { labels: ["dropdown"], tagName: "select" },
           timeoutMs: 2000
         })
-        .then(element => {
+        .then((element: HTMLElement) => {
           if (!element) return null;
           return qawolf.xpath.getXpath(element);
         });
