@@ -8,14 +8,14 @@ type EventSequence = {
   xpath: string | null;
 };
 
-export const isMouseDownEvent = (event?: QAEventWithTime): boolean => {
+export const isClickEvent = (event?: QAEventWithTime): boolean => {
   if (!event || !event.data) return false;
 
   const data = event.data;
   const isMouseInteraction = data.source === 2;
-  const isMouseDown = data.type === 1;
+  const isClick = data.type === 2;
 
-  return isMouseInteraction && isMouseDown && !!data.isTrusted;
+  return isMouseInteraction && isClick && !!data.isTrusted;
 };
 
 export const isScrollEvent = (event?: QAEventWithTime): boolean => {
@@ -42,14 +42,12 @@ export const findActionEvents = (
   events: QAEventWithTime[]
 ): QAEventWithTime[] => {
   return events.filter(event => {
-    return (
-      isMouseDownEvent(event) || isScrollEvent(event) || isTypeEvent(event)
-    );
+    return isClickEvent(event) || isScrollEvent(event) || isTypeEvent(event);
   });
 };
 
 export const getEventAction = (event: QAEventWithTime): Action => {
-  if (isMouseDownEvent(event)) return "click";
+  if (isClickEvent(event)) return "click";
   if (isScrollEvent(event)) return "scroll";
   if (isTypeEvent(event)) return "type";
 
