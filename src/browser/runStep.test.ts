@@ -29,7 +29,7 @@ describe("runStep", () => {
 
     await runStep(page, {
       action: "click",
-      target: { tagName: "i" }
+      target: { tagName: "i", xpath: "//*[@id='login']/button/i" }
     });
 
     const messageText2 = await $xText(page, '//*[@id="flash"]');
@@ -147,7 +147,7 @@ describe("runStep", () => {
 
     await browser.runStep({
       action: "input",
-      target: { tagName: "select" },
+      target: { id: "dropdown", tagName: "select" },
       value: "2"
     });
 
