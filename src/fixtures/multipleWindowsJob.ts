@@ -7,14 +7,14 @@ export const multipleWindowsJob: Job = {
     // open two windows
     {
       action: "click",
-      locator: {
+      target: {
         xpath: '//*[@id="content"]/div/a'
       },
       pageId: 0
     },
     {
       action: "click",
-      locator: {
+      target: {
         xpath: '//*[@id="content"]/div/a'
       },
       pageId: 0

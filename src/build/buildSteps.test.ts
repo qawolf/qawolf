@@ -43,12 +43,12 @@ describe("buildClickSteps", () => {
     expect(buildClickSteps(eventSequence, null)).toMatchObject([
       {
         action: "click",
-        locator: { id: "button" },
+        target: { id: "button" },
         pageId: 0
       },
       {
         action: "click",
-        locator: { id: "button" },
+        target: { id: "button" },
         pageId: 0
       }
     ]);
@@ -90,8 +90,8 @@ describe("buildClickSteps", () => {
     };
 
     expect(buildClickSteps(eventSequence, nextGroup)).toMatchObject([
-      { action: "click", locator: { id: "button" }, pageId: 0 },
-      { action: "click", locator: { id: "button" }, pageId: 0 }
+      { action: "click", target: { id: "button" }, pageId: 0 },
+      { action: "click", target: { id: "button" }, pageId: 0 }
     ]);
   });
 
@@ -136,12 +136,12 @@ describe("buildClickSteps", () => {
 
     expect(buildClickSteps(eventSequence, nextGroup)).toMatchObject([
       {
-        locator: { id: "button" },
+        target: { id: "button" },
         pageId: 0,
         action: "click"
       },
       {
-        locator: { id: "button" },
+        target: { id: "button" },
         pageId: 0,
         action: "click"
       }
@@ -191,7 +191,7 @@ describe("buildClickSteps", () => {
     expect(buildClickSteps(eventSequence, nextGroup)).toMatchObject([
       {
         action: "click",
-        locator: { id: "input" },
+        target: { id: "input" },
         pageId: 0
       }
     ]);
@@ -227,7 +227,7 @@ describe("buildInputStep", () => {
 
     expect(buildInputStep(eventSequence)).toMatchObject({
       action: "input",
-      locator: {
+      target: {
         id: "username"
       },
       pageId: 0,
@@ -273,7 +273,7 @@ describe("buildScrollStep", () => {
 
     expect(buildScrollStep(eventSequence)).toMatchObject({
       action: "scroll",
-      locator: { xpath: "scroll" },
+      target: { xpath: "scroll" },
       pageId: 0,
       scrollDirection: "down",
       scrollTo: 100
@@ -302,7 +302,7 @@ describe("buildScrollStep", () => {
 
     expect(buildScrollStep(eventSequence)).toMatchObject({
       action: "scroll",
-      locator: { xpath: "scroll" },
+      target: { xpath: "scroll" },
       pageId: 0,
       scrollDirection: "up",
       scrollTo: 0
@@ -322,7 +322,7 @@ describe("buildSequenceSteps", () => {
 });
 
 describe("findActionEvents", () => {
-  test("returns only click, scroll, and type events", async () => {
+  test("returns only click, scroll, and input events", async () => {
     const events = await loadEvents("login");
     expect(events).toHaveLength(135);
 
@@ -352,12 +352,12 @@ describe("getEventAction", () => {
     expect(getEventAction(action)).toBe("scroll");
   });
 
-  test("returns type if type action", () => {
+  test("returns input if input action", () => {
     const action = {
       data: { source: 5, isTrusted: true, text: "spirit" }
     } as QAEventWithTime;
 
-    expect(getEventAction(action)).toBe("type");
+    expect(getEventAction(action)).toBe("input");
   });
 
   test("throws error if action type not found", () => {
@@ -469,7 +469,7 @@ describe("isInputEvent", () => {
     expect(isInputEvent(event)).toBe(false);
   });
 
-  test("returns true if type event", () => {
+  test("returns true if input event", () => {
     const event = {
       data: { source: 5, isTrusted: true, text: "spirit" }
     } as QAEventWithTime;
@@ -477,7 +477,7 @@ describe("isInputEvent", () => {
     expect(isInputEvent(event)).toBe(true);
   });
 
-  test("returns true if type event with empty string", () => {
+  test("returns true if input event with empty string", () => {
     const event = {
       data: { source: 5, isTrusted: true, text: "" }
     } as QAEventWithTime;

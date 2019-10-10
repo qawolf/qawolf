@@ -10,7 +10,7 @@ describe("runStep", () => {
 
     await runStep(page, {
       action: "click",
-      locator: { xpath: '//*[@id="content"]/ul/li[3]/a' }
+      target: { xpath: '//*[@id="content"]/ul/li[3]/a' }
     });
 
     await page.waitForNavigation();
@@ -29,7 +29,7 @@ describe("runStep", () => {
 
     await runStep(page, {
       action: "click",
-      locator: { tagName: "i" }
+      target: { tagName: "i" }
     });
 
     const messageText2 = await $xText(page, '//*[@id="flash"]');
@@ -47,7 +47,7 @@ describe("runStep", () => {
 
     await browser.runStep({
       action: "scroll",
-      locator: { xpath: "scroll" },
+      target: { xpath: "scroll" },
       scrollTo: 1000
     });
 
@@ -56,7 +56,7 @@ describe("runStep", () => {
 
     await browser.runStep({
       action: "scroll",
-      locator: { xpath: "scroll" },
+      target: { xpath: "scroll" },
       scrollTo: 0
     });
 
@@ -77,7 +77,7 @@ describe("runStep", () => {
 
     await browser.runStep({
       action: "scroll",
-      locator: { xpath: "scroll" },
+      target: { xpath: "scroll" },
       scrollTo: 2000
     });
 
@@ -103,7 +103,7 @@ describe("runStep", () => {
 
     await browser.runStep({
       action: "input",
-      locator: { xpath: '//*[@id="username"]' },
+      target: { xpath: '//*[@id="username"]' },
       value: "spirit"
     });
 
@@ -117,7 +117,7 @@ describe("runStep", () => {
 
     await browser.runStep({
       action: "input",
-      locator: { xpath: '//*[@id="password"]' },
+      target: { xpath: '//*[@id="password"]' },
       value: "password"
     });
 
@@ -147,7 +147,7 @@ describe("runStep", () => {
 
     await browser.runStep({
       action: "input",
-      locator: { tagName: "select" },
+      target: { tagName: "select" },
       value: "2"
     });
 

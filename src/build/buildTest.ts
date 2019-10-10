@@ -13,19 +13,19 @@ export const formatStep = (step: BrowserStep): string => {
     return `scroll ${step.scrollDirection!}`;
   }
 
-  const stepAction = step.action === "type" ? "enter" : "click";
+  const stepAction = step.action === "input" ? "enter" : "click";
   const stepValue = step.value ? `"${step.value}" into ` : "";
-  const targetTagName = step.locator.inputType
-    ? `${step.locator.tagName}[type="${step.locator.inputType}"]`
-    : `${step.locator.tagName === "a" ? "link" : step.locator.tagName || ""}`;
-  const label = step.locator.labels ? step.locator.labels[0] : "";
+  const targetTagName = step.target.inputType
+    ? `${step.target.tagName}[type="${step.target.inputType}"]`
+    : `${step.target.tagName === "a" ? "link" : step.target.tagName || ""}`;
+  const label = step.target.labels ? step.target.labels[0] : "";
 
   const targetName =
     label ||
-    step.locator.name ||
-    step.locator.placeholder ||
-    step.locator.textContent ||
-    step.locator.id ||
+    step.target.name ||
+    step.target.placeholder ||
+    step.target.textContent ||
+    step.target.id ||
     "";
   const truncatedTargetName = targetName.substring(0, 50); // ensure not too long
 
