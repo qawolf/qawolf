@@ -1,16 +1,16 @@
 import { loadEvents } from "@qawolf/fixtures";
 import {
   buildClickSteps,
+  buildInputStep,
   buildScrollStep,
   buildSequenceSteps,
   buildSteps,
-  buildTypeStep,
   findActionEvents,
   getEventAction,
   groupEventSequences,
   isClickEvent,
-  isScrollEvent,
-  isTypeEvent
+  isInputEvent,
+  isScrollEvent
 } from "./buildSteps";
 import { QAEventWithTime } from "../events";
 import { loginSteps } from "../fixtures/loginJob";
@@ -43,12 +43,12 @@ describe("buildClickSteps", () => {
     expect(buildClickSteps(eventSequence, null)).toMatchObject([
       {
         action: "click",
-        locator: { id: "button" },
+        target: { id: "button" },
         pageId: 0
       },
       {
         action: "click",
-        locator: { id: "button" },
+        target: { id: "button" },
         pageId: 0
       }
     ]);
@@ -90,8 +90,8 @@ describe("buildClickSteps", () => {
     };
 
     expect(buildClickSteps(eventSequence, nextGroup)).toMatchObject([
-      { action: "click", locator: { id: "button" }, pageId: 0 },
-      { action: "click", locator: { id: "button" }, pageId: 0 }
+      { action: "click", target: { id: "button" }, pageId: 0 },
+      { action: "click", target: { id: "button" }, pageId: 0 }
     ]);
   });
 
@@ -136,12 +136,12 @@ describe("buildClickSteps", () => {
 
     expect(buildClickSteps(eventSequence, nextGroup)).toMatchObject([
       {
-        locator: { id: "button" },
+        target: { id: "button" },
         pageId: 0,
         action: "click"
       },
       {
-        locator: { id: "button" },
+        target: { id: "button" },
         pageId: 0,
         action: "click"
       }
@@ -173,7 +173,7 @@ describe("buildClickSteps", () => {
     };
 
     const nextGroup = {
-      action: "type" as "type",
+      action: "input" as "input",
       events: [
         {
           data: {
@@ -191,10 +191,48 @@ describe("buildClickSteps", () => {
     expect(buildClickSteps(eventSequence, nextGroup)).toMatchObject([
       {
         action: "click",
-        locator: { id: "input" },
+        target: { id: "input" },
         pageId: 0
       }
     ]);
+  });
+});
+
+describe("buildInputStep", () => {
+  test("returns built input step", () => {
+    const eventSequence = {
+      action: "input" as "input",
+      events: [
+        {
+          data: {
+            properties: {
+              id: "username"
+            },
+            text: "s"
+          },
+          pageId: 0
+        } as QAEventWithTime,
+        {
+          data: {
+            properties: {
+              id: "username"
+            },
+            text: "sp"
+          },
+          pageId: 0
+        } as QAEventWithTime
+      ],
+      xpath: "username"
+    };
+
+    expect(buildInputStep(eventSequence)).toMatchObject({
+      action: "input",
+      target: {
+        id: "username"
+      },
+      pageId: 0,
+      value: "sp"
+    });
   });
 });
 
@@ -235,7 +273,7 @@ describe("buildScrollStep", () => {
 
     expect(buildScrollStep(eventSequence)).toMatchObject({
       action: "scroll",
-      locator: { xpath: "scroll" },
+      target: { xpath: "scroll" },
       pageId: 0,
       scrollDirection: "down",
       scrollTo: 100
@@ -264,7 +302,7 @@ describe("buildScrollStep", () => {
 
     expect(buildScrollStep(eventSequence)).toMatchObject({
       action: "scroll",
-      locator: { xpath: "scroll" },
+      target: { xpath: "scroll" },
       pageId: 0,
       scrollDirection: "up",
       scrollTo: 0
@@ -283,46 +321,8 @@ describe("buildSequenceSteps", () => {
   });
 });
 
-describe("buildTypeStep", () => {
-  test("returns buildted type step", () => {
-    const eventSequence = {
-      action: "type" as "type",
-      events: [
-        {
-          data: {
-            properties: {
-              id: "username"
-            },
-            text: "s"
-          },
-          pageId: 0
-        } as QAEventWithTime,
-        {
-          data: {
-            properties: {
-              id: "username"
-            },
-            text: "sp"
-          },
-          pageId: 0
-        } as QAEventWithTime
-      ],
-      xpath: "username"
-    };
-
-    expect(buildTypeStep(eventSequence)).toMatchObject({
-      action: "type",
-      locator: {
-        id: "username"
-      },
-      pageId: 0,
-      value: "sp"
-    });
-  });
-});
-
 describe("findActionEvents", () => {
-  test("returns only click, scroll, and type events", async () => {
+  test("returns only click, scroll, and input events", async () => {
     const events = await loadEvents("login");
     expect(events).toHaveLength(135);
 
@@ -352,12 +352,12 @@ describe("getEventAction", () => {
     expect(getEventAction(action)).toBe("scroll");
   });
 
-  test("returns type if type action", () => {
+  test("returns input if input action", () => {
     const action = {
       data: { source: 5, isTrusted: true, text: "spirit" }
     } as QAEventWithTime;
 
-    expect(getEventAction(action)).toBe("type");
+    expect(getEventAction(action)).toBe("input");
   });
 
   test("throws error if action type not found", () => {
@@ -391,7 +391,7 @@ describe("groupEventSequences", () => {
     expect(eventSequences[2].events).toHaveLength(1);
 
     expect(eventSequences[3]).toMatchObject({
-      action: "type",
+      action: "input",
       xpath: "//*[@id='username']"
     });
     expect(eventSequences[3].events).toHaveLength(8);
@@ -409,7 +409,7 @@ describe("groupEventSequences", () => {
     expect(eventSequences[5].events).toHaveLength(1);
 
     expect(eventSequences[6]).toMatchObject({
-      action: "type",
+      action: "input",
       xpath: "//*[@id='username']"
     });
     expect(eventSequences[6].events).toHaveLength(8);
@@ -421,7 +421,7 @@ describe("groupEventSequences", () => {
     expect(eventSequences[7].events).toHaveLength(1);
 
     expect(eventSequences[8]).toMatchObject({
-      action: "type",
+      action: "input",
       xpath: "//*[@id='password']"
     });
     expect(eventSequences[8].events).toHaveLength(20);
@@ -434,7 +434,59 @@ describe("groupEventSequences", () => {
   });
 });
 
-describe("isClickEvent", () => {
+describe("isInputEvent", () => {
+  test("returns false if event undefined", () => {
+    expect(isInputEvent()).toBe(false);
+  });
+
+  test("returns false if no data", () => {
+    const event = {} as QAEventWithTime;
+
+    expect(isInputEvent(event)).toBe(false);
+  });
+
+  test("returns false if data source not input", () => {
+    const event = {
+      data: { source: 2 }
+    } as QAEventWithTime;
+
+    expect(isInputEvent(event)).toBe(false);
+  });
+
+  test("returns false if data not trusted", () => {
+    const event = {
+      data: { source: 5, isTrusted: false }
+    } as QAEventWithTime;
+
+    expect(isInputEvent(event)).toBe(false);
+  });
+
+  test("returns false if no text", () => {
+    const event = {
+      data: { source: 5, isTrusted: true }
+    } as QAEventWithTime;
+
+    expect(isInputEvent(event)).toBe(false);
+  });
+
+  test("returns true if input event", () => {
+    const event = {
+      data: { source: 5, isTrusted: true, text: "spirit" }
+    } as QAEventWithTime;
+
+    expect(isInputEvent(event)).toBe(true);
+  });
+
+  test("returns true if input event with empty string", () => {
+    const event = {
+      data: { source: 5, isTrusted: true, text: "" }
+    } as QAEventWithTime;
+
+    expect(isInputEvent(event)).toBe(true);
+  });
+});
+
+describe("isMouseDownEvent", () => {
   test("returns false if event undefined", () => {
     expect(isClickEvent()).toBe(false);
   });
@@ -524,58 +576,6 @@ describe("isScrollEvent", () => {
     } as QAEventWithTime;
 
     expect(isScrollEvent(event)).toBe(true);
-  });
-});
-
-describe("isTypeEvent", () => {
-  test("returns false if event undefined", () => {
-    expect(isTypeEvent()).toBe(false);
-  });
-
-  test("returns false if no data", () => {
-    const event = {} as QAEventWithTime;
-
-    expect(isTypeEvent(event)).toBe(false);
-  });
-
-  test("returns false if data source not input", () => {
-    const event = {
-      data: { source: 2 }
-    } as QAEventWithTime;
-
-    expect(isTypeEvent(event)).toBe(false);
-  });
-
-  test("returns false if data not trusted", () => {
-    const event = {
-      data: { source: 5, isTrusted: false }
-    } as QAEventWithTime;
-
-    expect(isTypeEvent(event)).toBe(false);
-  });
-
-  test("returns false if no text", () => {
-    const event = {
-      data: { source: 5, isTrusted: true }
-    } as QAEventWithTime;
-
-    expect(isTypeEvent(event)).toBe(false);
-  });
-
-  test("returns true if type event", () => {
-    const event = {
-      data: { source: 5, isTrusted: true, text: "spirit" }
-    } as QAEventWithTime;
-
-    expect(isTypeEvent(event)).toBe(true);
-  });
-
-  test("returns true if type event with empty string", () => {
-    const event = {
-      data: { source: 5, isTrusted: true, text: "" }
-    } as QAEventWithTime;
-
-    expect(isTypeEvent(event)).toBe(true);
   });
 });
 

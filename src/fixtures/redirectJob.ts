@@ -6,13 +6,13 @@ export const redirectJob: Job = {
   steps: [
     {
       action: "click",
-      locator: {
+      target: {
         xpath: '//*[@id="content"]/ul/li[32]/a'
       }
     },
     {
       action: "click",
-      locator: {
+      target: {
         xpath: '//*[@id="redirect"]'
       }
     }

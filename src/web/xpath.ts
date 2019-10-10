@@ -43,7 +43,7 @@ export const getXpath = (element: Element): string => {
     .replace("path", "*[name()='path']");
 };
 
-export const compareXpaths = (
+export const isXpathEqual = (
   xpathA?: string | null,
   xpathB?: string | null
 ) => {

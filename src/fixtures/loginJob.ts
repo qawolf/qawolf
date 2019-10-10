@@ -3,14 +3,14 @@ import { BrowserStep, Job } from "../types";
 export const loginSteps: BrowserStep[] = [
   {
     action: "scroll",
-    locator: { xpath: "scroll" },
+    target: { xpath: "scroll" },
     pageId: 0,
     scrollDirection: "down",
     scrollTo: 334
   },
   {
     action: "click",
-    locator: {
+    target: {
       href: `http://localhost:5000/login`,
       tagName: "a",
       textContent: "form authentication",
@@ -19,8 +19,8 @@ export const loginSteps: BrowserStep[] = [
     pageId: 0
   },
   {
-    action: "type",
-    locator: {
+    action: "input",
+    target: {
       id: "username",
       inputType: "text",
       name: "username",
@@ -32,7 +32,7 @@ export const loginSteps: BrowserStep[] = [
   },
   {
     action: "click",
-    locator: {
+    target: {
       inputType: "submit",
       tagName: "button",
       textContent: " login",
@@ -41,8 +41,8 @@ export const loginSteps: BrowserStep[] = [
     pageId: 0
   },
   {
-    action: "type",
-    locator: {
+    action: "input",
+    target: {
       id: "username",
       inputType: "text",
       name: "username",
@@ -54,8 +54,8 @@ export const loginSteps: BrowserStep[] = [
     value: "tomsmith"
   },
   {
-    action: "type",
-    locator: {
+    action: "input",
+    target: {
       id: "password",
       inputType: "password",
       name: "password",
@@ -67,7 +67,7 @@ export const loginSteps: BrowserStep[] = [
   },
   {
     action: "click",
-    locator: {
+    target: {
       tagName: "i",
       textContent: " login",
       xpath: "//*[@id='login']/button/i"

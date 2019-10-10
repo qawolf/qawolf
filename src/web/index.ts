@@ -1,12 +1,14 @@
 import * as actions from "./actions";
-import * as locator from "./locator";
-import * as rank from "./rank";
+import * as element from "./element";
+import * as locate from "./locate";
+import * as match from "./match";
 import * as xpath from "./xpath";
 
 const qawolf = {
   actions,
-  locator,
-  rank,
+  element,
+  locate,
+  match,
   xpath
 };
 

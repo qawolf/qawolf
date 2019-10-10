@@ -20,7 +20,7 @@ describe("getDataValue", () => {
       const username = document.getElementById("username")!;
       username.setAttribute("data-qa", "user");
 
-      const result = qawolf.locator.getDataValue(username, null);
+      const result = qawolf.element.getDataValue(username, null);
       username.removeAttribute("data-qa");
 
       return result;
@@ -35,7 +35,7 @@ describe("getDataValue", () => {
       const username = document.getElementById("username")!;
       username.setAttribute("data-other", "user");
 
-      const result = qawolf.locator.getDataValue(username, "data-qa");
+      const result = qawolf.element.getDataValue(username, "data-qa");
       username.removeAttribute("data-other");
 
       return result;
@@ -50,7 +50,7 @@ describe("getDataValue", () => {
       const username = document.getElementById("username")!;
       username.setAttribute("data-qa", "user");
 
-      const result = qawolf.locator.getDataValue(username, "data-qa");
+      const result = qawolf.element.getDataValue(username, "data-qa");
       username.removeAttribute("data-qa");
 
       return result;
@@ -64,7 +64,7 @@ test("getLabels correctly returns labels", async () => {
   const nullLabels = await page.evaluate(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
-    return qawolf.locator.getLabels(document.getElementsByTagName("h2")[0]);
+    return qawolf.element.getLabels(document.getElementsByTagName("h2")[0]);
   });
 
   expect(nullLabels).toBeNull();
@@ -72,7 +72,7 @@ test("getLabels correctly returns labels", async () => {
   const usernameLabels = await page.evaluate(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
-    return qawolf.locator.getLabels(document.getElementsByTagName("input")[0]);
+    return qawolf.element.getLabels(document.getElementsByTagName("input")[0]);
   });
 
   expect(usernameLabels).toEqual(["username"]);
@@ -82,29 +82,65 @@ test("getParentText correctly returns parent text", async () => {
   const iconParentText = await page.evaluate(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
-    return qawolf.locator.getParentText(document.getElementsByTagName("i")[0]);
+    return qawolf.element.getParentText(document.getElementsByTagName("i")[0]);
   });
 
-  expect(iconParentText).toEqual([" login", " login"]);
+  expect(iconParentText).toEqual(["login", "login"]);
 });
 
-test("getPlaceholder correctly returns placeholder", async () => {
-  const nullPlaceholder = await page.evaluate(() => {
-    const qawolf: QAWolf = (window as any).qawolf;
+describe("getPlaceholder", () => {
+  test("returns placeholder if present", async () => {
+    const placeholder = await page.evaluate(() => {
+      const qawolf: QAWolf = (window as any).qawolf;
+      const input = document.getElementsByTagName("input")[0];
+      input.placeholder = "enter username";
 
-    return qawolf.locator.getPlaceholder(
-      document.getElementsByTagName("input")[0]
-    );
+      const result = qawolf.element.getPlaceholder(
+        document.getElementsByTagName("input")[0]
+      );
+
+      input.removeAttribute("placeholder");
+
+      return result;
+    });
+
+    expect(placeholder).toBe("enter username");
   });
 
-  expect(nullPlaceholder).toBeNull();
+  test("returns null if no placeholder", async () => {
+    const nullPlaceholder = await page.evaluate(() => {
+      const qawolf: QAWolf = (window as any).qawolf;
+
+      return qawolf.element.getPlaceholder(
+        document.getElementsByTagName("input")[0]
+      );
+    });
+
+    expect(nullPlaceholder).toBeNull();
+  });
+
+  test("returns disabled option text for select", async () => {
+    await page.goto(`${CONFIG.testUrl}dropdown`);
+
+    const placeholder = await page.evaluate(() => {
+      const qawolf: QAWolf = (window as any).qawolf;
+
+      return qawolf.element.getPlaceholder(
+        document.getElementsByTagName("select")[0]
+      );
+    });
+
+    expect(placeholder).toBe("please select an option");
+
+    await page.goto(`${CONFIG.testUrl}login`);
+  });
 });
 
-test("getTextContent correctly returns text content", async () => {
+test("getTextContent returns text content", async () => {
   const headerTextContent = await page.evaluate(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
-    return qawolf.locator.getTextContent(
+    return qawolf.element.getTextContent(
       document.getElementsByTagName("h2")[0]
     );
   });
@@ -114,7 +150,7 @@ test("getTextContent correctly returns text content", async () => {
   const nullTextContent = await page.evaluate(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
-    return qawolf.locator.getTextContent(
+    return qawolf.element.getTextContent(
       document.getElementsByTagName("input")[0]
     );
   });
@@ -122,14 +158,14 @@ test("getTextContent correctly returns text content", async () => {
   expect(nullTextContent).toBeNull();
 });
 
-test("getLocator correctly returns full element locator", async () => {
-  const inputLocator = await page.evaluate(() => {
+test("getDescriptor correctly returns full element element", async () => {
+  const inputDescriptor = await page.evaluate(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
     const username = document.getElementById("username")!;
     username.setAttribute("data-qa", "user");
 
-    const result = qawolf.locator.getLocator(
+    const result = qawolf.element.getDescriptor(
       document.getElementsByTagName("input")[0],
       "data-qa"
     );
@@ -139,7 +175,7 @@ test("getLocator correctly returns full element locator", async () => {
     return result;
   });
 
-  expect(inputLocator).toMatchObject({
+  expect(inputDescriptor).toMatchObject({
     classList: null,
     dataValue: "user",
     href: null,
@@ -151,18 +187,18 @@ test("getLocator correctly returns full element locator", async () => {
     tagName: "input",
     textContent: null
   });
-  expect(inputLocator!.parentText).toContain("username");
+  expect(inputDescriptor!.parentText).toContain("username");
 
-  const headerLocator = await page.evaluate(() => {
+  const headerDescriptor = await page.evaluate(() => {
     const qawolf: QAWolf = (window as any).qawolf;
 
-    return qawolf.locator.getLocator(
+    return qawolf.element.getDescriptor(
       document.getElementsByTagName("h2")[0],
       "data-qa"
     );
   });
 
-  expect(headerLocator).toMatchObject({
+  expect(headerDescriptor).toMatchObject({
     classList: null,
     dataValue: null,
     href: null,
@@ -174,5 +210,5 @@ test("getLocator correctly returns full element locator", async () => {
     tagName: "h2",
     textContent: "login page"
   });
-  expect(headerLocator!.parentText).toContain("login page");
+  expect(headerDescriptor!.parentText).toContain("login page");
 });

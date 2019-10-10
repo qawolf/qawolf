@@ -4,13 +4,13 @@ import {
   incrementalSnapshotEvent,
   mouseInteractionData
 } from "rrweb/typings/types";
-import { Locator } from "./types";
+import { ElementDescriptor } from "./types";
 
 export type QAData = incrementalData &
   mouseInteractionData & {
     href?: string;
     isTrusted?: boolean;
-    properties: Locator;
+    properties: ElementDescriptor;
     text?: string;
     xpath?: string;
   };

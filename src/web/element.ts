@@ -1,5 +1,9 @@
-import { Locator } from "../types";
+import { ElementDescriptor } from "../types";
 import { getXpath } from "./xpath";
+
+const cleanText = (text: string): string => {
+  return text.trim().toLowerCase();
+};
 
 export const getDataValue = (
   element: HTMLElement,
@@ -20,7 +24,7 @@ export const getLabels = (element: HTMLElement): string[] | null => {
   for (let i = 0; i < labelElements.length; i++) {
     const textContent = labelElements[i].textContent;
     if (textContent) {
-      labels.push(textContent.toLowerCase());
+      labels.push(cleanText(textContent));
     }
   }
 
@@ -36,10 +40,10 @@ export const getParentText = (element: HTMLElement): string[] | null => {
     for (let i = 0; i < element.parentElement.children.length; i++) {
       const textContent = element.parentElement.children[i].textContent;
       if (textContent) {
-        parentText.push(textContent.toLowerCase());
+        parentText.push(cleanText(textContent));
       }
       // ensure all content gets included (children that aren't elements)
-      parentText.push(element.parentElement.textContent.toLowerCase());
+      parentText.push(cleanText(element.parentElement.textContent));
     }
 
     return parentText;
@@ -49,19 +53,37 @@ export const getParentText = (element: HTMLElement): string[] | null => {
 };
 
 export const getPlaceholder = (element: HTMLElement): string | null => {
-  if (!(element as HTMLInputElement).placeholder) return null;
+  if (element.tagName && element.tagName.toLowerCase() === "select") {
+    const options = (element as HTMLSelectElement).options;
+    let placeholderOption: HTMLOptionElement | null = null;
 
-  return (element as HTMLInputElement).placeholder.toLowerCase();
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].disabled) {
+        placeholderOption = options[i];
+        break;
+      }
+    }
+
+    if (!placeholderOption || !placeholderOption.textContent) return null;
+
+    return cleanText(placeholderOption.textContent);
+  } else {
+    if (!(element as HTMLInputElement).placeholder) return null;
+
+    return cleanText((element as HTMLInputElement).placeholder);
+  }
 };
 
-export const getLocator = (
-  element: HTMLElement | null,
-  dataAttribute: string | null
-): Locator | null => {
-  if (!element) {
-    return null;
-  }
+export const getTextContent = (element: HTMLElement): string | null => {
+  if (!element.textContent) return null;
 
+  return cleanText(element.textContent);
+};
+
+export const getDescriptor = (
+  element: HTMLElement,
+  dataAttribute: string | null
+): ElementDescriptor => {
   return {
     classList: (element.className || "").length
       ? element.className.split(" ")
@@ -78,10 +100,4 @@ export const getLocator = (
     textContent: getTextContent(element),
     xpath: getXpath(element)
   };
-};
-
-export const getTextContent = (element: HTMLElement): string | null => {
-  if (!element.textContent) return null;
-
-  return element.textContent.toLowerCase();
 };
