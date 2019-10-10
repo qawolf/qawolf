@@ -10,6 +10,8 @@ if (CONFIG.logPath) {
       level: "debug"
     })
   );
+} else {
+  transports.push(new winston.transports.Console({ level: "error" }));
 }
 
 export const logger = winston.createLogger({
