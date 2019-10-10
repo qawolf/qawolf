@@ -27,7 +27,7 @@ export const formatStep = (step: BrowserStep): string => {
     step.target.textContent ||
     step.target.id ||
     "";
-  const truncatedTargetName = targetName.substring(0, 50); // ensure not too long
+  const truncatedTargetName = targetName.trim().substring(0, 50); // ensure not too long
 
   return `${stepAction} ${stepValue}${truncatedTargetName} ${targetTagName}`;
 };
