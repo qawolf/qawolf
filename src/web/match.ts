@@ -109,7 +109,7 @@ export const topMatch = (args: MatchArgs) => {
     a.value > b.value ? -1 : 1
   );
 
-  if (matches.length <= 0) {
+  if (matches.length <= 0 || matches[0].value <= 0) {
     console.log("no match found");
     return null;
   }
