@@ -10,7 +10,10 @@ describe("runStep", () => {
 
     await runStep(page, {
       action: "click",
-      target: { xpath: '//*[@id="content"]/ul/li[3]/a' }
+      target: {
+        textContent: "broken images",
+        xpath: '//*[@id="content"]/ul/li[3]/a'
+      }
     });
 
     await page.waitForNavigation();
@@ -29,7 +32,7 @@ describe("runStep", () => {
 
     await runStep(page, {
       action: "click",
-      target: { tagName: "i", xpath: "//*[@id='login']/button/i" }
+      target: { tagName: "i", textContent: "login" }
     });
 
     const messageText2 = await $xText(page, '//*[@id="flash"]');
@@ -103,7 +106,7 @@ describe("runStep", () => {
 
     await browser.runStep({
       action: "input",
-      target: { xpath: '//*[@id="username"]' },
+      target: { id: "username" },
       value: "spirit"
     });
 
@@ -117,7 +120,7 @@ describe("runStep", () => {
 
     await browser.runStep({
       action: "input",
-      target: { xpath: '//*[@id="password"]' },
+      target: { id: "password", xpath: '//*[@id="password"]' },
       value: "password"
     });
 
