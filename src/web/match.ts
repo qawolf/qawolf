@@ -16,6 +16,21 @@ type MatchArgs = {
   requireStrongMatch?: boolean;
 };
 
+export type Match = {
+  element: HTMLElement;
+  targetMatches: Array<{ key: keyof ElementDescriptor; percent: number }>;
+  value: number;
+};
+
+const strongMatchKeys: (keyof ElementDescriptor)[] = [
+  "id",
+  "name",
+  "labels",
+  "placeholder",
+  "textContent",
+  "xpath"
+];
+
 const isNil = (value: any): boolean => {
   return typeof value === "undefined" || value === null;
 };
@@ -70,22 +85,15 @@ export const compareDescriptors = (
   return matches;
 };
 
-const strongMatchKeys: (keyof ElementDescriptor)[] = [
-  "id",
-  "name",
-  "labels",
-  "placeholder",
-  "textContent",
-  "xpath"
-];
-
 export const matchElements = ({
   dataAttribute,
   target,
   elements,
   requireStrongMatch = false
-}: MatchArgs) => {
-  return elements.map(element => {
+}: MatchArgs): Match[] => {
+  const matches: Match[] = [];
+
+  elements.forEach(element => {
     const descriptor = getDescriptor(element, dataAttribute);
 
     let targetMatches = compareDescriptors(target, descriptor);
@@ -100,11 +108,16 @@ export const matchElements = ({
       (accumulator, match) => accumulator + match.percent,
       0
     );
-    return { element, targetMatches, value };
+
+    if (value) {
+      matches.push({ element, targetMatches, value });
+    }
   });
+
+  return matches;
 };
 
-export const topMatch = (args: MatchArgs) => {
+export const topMatch = (args: MatchArgs): Match | null => {
   // sort descending by match value
   const matches = matchElements(args).sort((a, b) =>
     a.value > b.value ? -1 : 1
