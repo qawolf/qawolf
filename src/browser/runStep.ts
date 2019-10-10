@@ -17,7 +17,8 @@ export const findElementForStep = async (
     {
       action: step.action,
       dataAttribute: CONFIG.dataAttribute,
-      target: step.target
+      target: step.target,
+      timeoutMs: 30000
     } as Serializable
   );
 

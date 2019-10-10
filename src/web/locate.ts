@@ -1,12 +1,12 @@
 import { waitFor } from "../timer";
 import { Action, ElementDescriptor } from "../types";
-import { topMatchElement } from "./compare";
+import { topMatch } from "./match";
 
 type WaitForElementArgs = {
   action: Action;
   dataAttribute: string;
   target: ElementDescriptor;
-  timeoutMs?: number;
+  timeoutMs: number;
 };
 
 type QueryByDataArgs = {
@@ -56,9 +56,12 @@ export const waitForElement = async ({
   action,
   dataAttribute,
   target,
-  timeoutMs = 30000
+  timeoutMs
 }: WaitForElementArgs) => {
   if (dataAttribute && target.dataValue) {
+    console.log(
+      `finding element by data attribute ${dataAttribute}=${target.dataValue}`
+    );
     return waitFor(() => {
       const elements = queryDataElements({
         action,
@@ -66,21 +69,29 @@ export const waitForElement = async ({
         dataValue: target.dataValue!
       });
 
-      return topMatchElement({ dataAttribute, target, elements });
+      const match = topMatch({ dataAttribute, target, elements });
+      if (match) return match.element;
+
+      return null;
     }, timeoutMs);
   }
 
-  const specificMatch = await waitFor(() => {
+  console.log("waiting for strong match");
+  const strongMatch = await waitFor(() => {
     const elements = queryActionElements(action);
-    return topMatchElement({
+    return topMatch({
       dataAttribute,
       target,
       elements,
-      requireSpecific: true
+      requireStrongMatch: true
     });
   }, timeoutMs);
-  if (specificMatch) return specificMatch;
+  if (strongMatch) return strongMatch.element;
 
+  console.log("no strong match found before timeout, choosing top weak match");
   const elements = queryActionElements(action);
-  return topMatchElement({ dataAttribute, target, elements });
+  const match = topMatch({ dataAttribute, target, elements });
+  if (match) return match.element;
+
+  return null;
 };
