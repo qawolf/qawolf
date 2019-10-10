@@ -130,6 +130,9 @@ describe("matchElements", () => {
       const username = document.getElementById("username")!;
       username.setAttribute("data-qa", "username");
 
+      const password = document.getElementById("password")!;
+      password.setAttribute("data-qa", "username");
+
       const collection = document.querySelectorAll("input,button");
       const elements: HTMLElement[] = [];
 
@@ -139,11 +142,16 @@ describe("matchElements", () => {
 
       const matches = qawolf.match.matchElements({
         dataAttribute: "data-qa",
-        target: { dataValue: "username", tagName: "input" },
+        target: {
+          dataValue: "username",
+          labels: ["username"],
+          tagName: "input"
+        },
         elements
       });
 
       username.removeAttribute("data-qa");
+      password.removeAttribute("data-qa");
 
       return matches.map((match: Match) => {
         return {
@@ -159,14 +167,18 @@ describe("matchElements", () => {
         element: "//*[@id='username']",
         targetMatches: [
           { key: "dataValue", percent: 100 },
+          { key: "labels", percent: 100 },
           { key: "tagName", percent: 100 }
         ],
-        value: 200
+        value: 300
       },
       {
         element: "//*[@id='password']",
-        targetMatches: [{ key: "tagName", percent: 100 }],
-        value: 100
+        targetMatches: [
+          { key: "dataValue", percent: 100 },
+          { key: "tagName", percent: 100 }
+        ],
+        value: 200
       }
     ]);
 
@@ -210,11 +222,6 @@ describe("matchElements", () => {
           { key: "tagName", percent: 100 }
         ],
         value: 200
-      },
-      {
-        element: "//*[@id='password']",
-        targetMatches: [{ key: "tagName", percent: 100 }],
-        value: 100
       }
     ]);
 
