@@ -99,46 +99,6 @@ describe("formatStep", () => {
     );
   });
 
-  test("removes newline characters", () => {
-    const step = {
-      action: "input" as "input",
-      target: {
-        id: "input1",
-        inputType: "text",
-        labels: ["\nusername\n\r"],
-        name: "user",
-        placeholder: "Jane Doe",
-        tagName: "input"
-      },
-      value: "spirit"
-    };
-
-    const formattedStep = formatStep(step);
-    expect(formattedStep).toEqual(
-      'enter "spirit" into username input[type="text"]'
-    );
-  });
-
-  test("remove excessive whitespace", () => {
-    const step = {
-      action: "input" as "input",
-      target: {
-        id: "input1",
-        inputType: "text",
-        labels: ["    username    "],
-        name: "user",
-        placeholder: "Jane Doe",
-        tagName: "input"
-      },
-      value: "spirit"
-    };
-
-    const formattedStep = formatStep(step);
-    expect(formattedStep).toEqual(
-      'enter "spirit" into username input[type="text"]'
-    );
-  });
-
   test("shortens target name if needed", () => {
     const step = {
       action: "click" as "click",

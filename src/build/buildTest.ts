@@ -29,11 +29,7 @@ export const formatStep = (step: BrowserStep): string => {
     "";
   const truncatedTargetName = targetName.substring(0, 50); // ensure not too long
 
-  const name = `${stepAction} ${stepValue}${truncatedTargetName} ${targetTagName}`;
-  // remove newlines and excessive whitespace
-  const formattedName = name.replace(/[\r\n]+/g, "").replace(/\s\s+/g, " ");
-
-  return formattedName;
+  return `${stepAction} ${stepValue}${truncatedTargetName} ${targetTagName}`;
 };
 
 export const buildTest = (job: Job, useLocalModule: boolean = false) => {
