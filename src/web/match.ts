@@ -88,10 +88,19 @@ export const matchElements = ({
     const descriptor = getDescriptor(element, dataAttribute);
 
     let targetMatches = compareDescriptors(target, descriptor);
-    if (
-      requireStrongMatch &&
-      !targetMatches.find(m => strongMatchKeys.includes(m.key))
-    ) {
+
+    const strongMatch = targetMatches.find(m =>
+      strongMatchKeys.includes(m.key)
+    );
+
+    const majorityMatch =
+      targetMatches.length / Object.keys(target).length > 0.5;
+
+    // only consider a match if it matches a strong match key
+    // or a majority of the other keys
+    if (!strongMatch && !majorityMatch) {
+      targetMatches = [];
+    } else if (requireStrongMatch && !strongMatch) {
       targetMatches = [];
     }
 
