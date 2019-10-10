@@ -19,22 +19,9 @@ export const isVisible = (element: HTMLElement): boolean => {
   return !!(element.offsetWidth && element.offsetHeight);
 };
 
-export const queryVisibleElements = (selector: string): HTMLElement[] => {
-  const elements = document.querySelectorAll(selector);
-
-  const visibleElements: HTMLElement[] = [];
-
-  for (let i = 0; i < elements.length; i++) {
-    if (isVisible(elements[i] as HTMLElement)) {
-      visibleElements.push(elements[i] as HTMLElement);
-    }
-  }
-
-  return visibleElements;
-};
-
 export const queryActionElements = (action: Action): HTMLElement[] => {
   const selector = action === "input" ? "input,select,textarea" : "*";
+
   return queryVisibleElements(selector);
 };
 
@@ -50,6 +37,20 @@ export const queryDataElements = ({
   }
 
   return queryVisibleElements(dataSelector);
+};
+
+export const queryVisibleElements = (selector: string): HTMLElement[] => {
+  const elements = document.querySelectorAll(selector);
+
+  const visibleElements: HTMLElement[] = [];
+
+  for (let i = 0; i < elements.length; i++) {
+    if (isVisible(elements[i] as HTMLElement)) {
+      visibleElements.push(elements[i] as HTMLElement);
+    }
+  }
+
+  return visibleElements;
 };
 
 export const waitForElement = async ({
