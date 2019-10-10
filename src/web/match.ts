@@ -24,11 +24,10 @@ export type Match = {
 
 const strongMatchKeys: (keyof ElementDescriptor)[] = [
   "id",
-  "name",
   "labels",
+  "name",
   "placeholder",
-  "textContent",
-  "xpath"
+  "textContent"
 ];
 
 const isNil = (value: any): boolean => {
