@@ -10,7 +10,7 @@ type DescriptorMatch = {
 type DescriptorValue = string | string[] | null | undefined;
 
 type MatchArgs = {
-  dataAttribute: string;
+  dataAttribute: string | null;
   target: ElementDescriptor;
   elements: HTMLElement[];
   requireStrongMatch?: boolean;

@@ -4,7 +4,7 @@ import { topMatch } from "./match";
 
 type WaitForElementArgs = {
   action: Action;
-  dataAttribute: string;
+  dataAttribute: string | null;
   target: ElementDescriptor;
   timeoutMs: number;
 };

@@ -177,3 +177,96 @@ describe("queryVisibleElements", () => {
     await browser.goto(`${CONFIG.testUrl}login`); // reset styles
   });
 });
+
+describe("waitForElement", () => {
+  test("returns top element by data attribute if specified", async () => {
+    const elementXpath = await page.evaluate(() => {
+      const qawolf: QAWolf = (window as any).qawolf;
+      const username = document.getElementById("username")!;
+      const submit = document.getElementsByTagName("button")[0]!;
+      username.setAttribute("data-qa", "username");
+      submit.setAttribute("data-qa", "username");
+
+      return qawolf.locate
+        .waitForElement({
+          action: "input",
+          dataAttribute: "data-qa",
+          target: { dataValue: "username" },
+          timeoutMs: 5000
+        })
+        .then(element => {
+          username.removeAttribute("data-qa");
+          submit.removeAttribute("data-qa");
+
+          return qawolf.xpath.getXpath(element!);
+        });
+    });
+
+    expect(elementXpath).toBe("//*[@id='username']");
+  });
+
+  test("returns top element by strong attribute if specified", async () => {
+    const elementXpath = await page.evaluate(() => {
+      const qawolf: QAWolf = (window as any).qawolf;
+      const username = document.getElementById("username")!;
+      const submit = document.getElementsByTagName("button")[0]!;
+      username.setAttribute("data-qa", "username");
+      submit.setAttribute("data-qa", "username");
+
+      return qawolf.locate
+        .waitForElement({
+          action: "input",
+          dataAttribute: "data-qa",
+          target: { id: "username" },
+          timeoutMs: 5000
+        })
+        .then(element => {
+          username.removeAttribute("data-qa");
+          submit.removeAttribute("data-qa");
+
+          return qawolf.xpath.getXpath(element!);
+        });
+    });
+
+    expect(elementXpath).toBe("//*[@id='username']");
+  });
+
+  test("returns best weak match if no strong matches found", async () => {
+    const elementXpath = await page.evaluate(() => {
+      const qawolf: QAWolf = (window as any).qawolf;
+
+      return qawolf.locate
+        .waitForElement({
+          action: "click",
+          dataAttribute: null,
+          target: { tagName: "button" },
+          timeoutMs: 2000
+        })
+        .then(element => {
+          return qawolf.xpath.getXpath(element!);
+        });
+    });
+
+    expect(elementXpath).toBe("//*[@id='login']/button");
+  });
+
+  test("returns null if no test found", async () => {
+    const elementXpath = await page.evaluate(() => {
+      const qawolf: QAWolf = (window as any).qawolf;
+
+      return qawolf.locate
+        .waitForElement({
+          action: "input",
+          dataAttribute: null,
+          target: { labels: ["dropdown"], tagName: "select" },
+          timeoutMs: 2000
+        })
+        .then(element => {
+          if (!element) return null;
+          return qawolf.xpath.getXpath(element);
+        });
+    });
+
+    expect(elementXpath).toBeNull();
+  });
+});
