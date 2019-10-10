@@ -5,6 +5,7 @@
   "description": "Effortless browser tests",
   "main": "dist/index.js",
   "files": [
+    "bin",
     "dist"
   ],
   "scripts": {
