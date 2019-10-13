@@ -1,0 +1,30 @@
+{
+  "name": "@qawolf/web",
+  "description": "qawolf web library",
+  "version": "0.3.0",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "build": "rollup --config rollup.ts",
+    "prepublish": "npm run build",
+    "pretest": "npm run build",
+    "test": "jest"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@qawolf/browser": "0.3.0",
+    "@qawolf/config": "0.3.0",
+    "@types/puppeteer": "^1.20.2",
+    "puppeteer": "^1.20.0",
+    "rollup": "^1.23.1",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-typescript": "^1.0.1"
+  }
+}

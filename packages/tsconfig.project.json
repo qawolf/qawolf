@@ -9,6 +9,9 @@
     },
     {
       "path": "./logger/tsconfig.package.json"
+    },
+    {
+      "path": "./web/tsconfig.package.json"
     }
   ]
 }

@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 const dotEnvPath = process.env.DOTENV_PATH;
 dotenv.config(dotEnvPath ? { path: dotEnvPath } : {});
 
-const testUrl = process.env.TEST_URL || "";
+const testUrl = process.env.TEST_URL || "http://localhost:5000/";
 
 const parseBool = (value: string | undefined) => {
   return !!value && value !== "false";

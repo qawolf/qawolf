@@ -4,7 +4,7 @@ import { launchPuppeteerBrowser } from "./browserUtils";
 import { getDevice, Size } from "./device";
 import { injectWebBundle } from "./pageUtils";
 import { RequestTracker } from "./RequestTracker";
-import { sleep } from "../timer";
+import { sleep } from "./sleep";
 
 type CreateOptions = {
   size?: Size;

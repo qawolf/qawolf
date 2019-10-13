@@ -5,6 +5,7 @@
     "bootstrap": "npm i && lerna bootstrap --ignore-scripts && npm run build",
     "build": "tsc --build packages/tsconfig.project.json",
     "test": "lerna run test",
+    "test:services": "docker-compose up -d",
     "watch": "tsc --build --watch packages/tsconfig.project.json"
   },
   "dependencies": {

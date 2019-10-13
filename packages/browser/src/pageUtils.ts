@@ -4,7 +4,7 @@ import path from "path";
 import { Page } from "puppeteer";
 
 const webBundle = fs.readFileSync(
-  path.resolve(__dirname, "../../dist/qawolf.web.js"),
+  path.resolve(path.dirname(require.resolve("@qawolf/web")), "./qawolf.web.js"),
   "utf8"
 );
 

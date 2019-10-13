@@ -1,26 +1,26 @@
-import { Browser } from "../src/Browser";
 import { CONFIG } from "@qawolf/config";
+import { QAWolf } from "@qawolf/web";
+import { Browser } from "../src/Browser";
 import { getDevice } from "../src/device";
-// import { QAWolf } from "../web";
 
-// test("Browser.create injects qawolf", async () => {
-//   const browser = await Browser.create({ url: CONFIG.testUrl });
+test("Browser.create injects qawolf", async () => {
+  const browser = await Browser.create({ url: CONFIG.testUrl });
 
-//   const isLoaded = () => {
-//     const qawolf: QAWolf = (window as any).qawolf;
-//     return !!qawolf;
-//   };
+  const isLoaded = () => {
+    const qawolf: QAWolf = (window as any).qawolf;
+    return !!qawolf;
+  };
 
-//   const zeroIsLoaded = await (await browser.waitForPage(0)).evaluate(isLoaded);
-//   expect(zeroIsLoaded).toBeTruthy();
+  const zeroIsLoaded = await (await browser.waitForPage(0)).evaluate(isLoaded);
+  expect(zeroIsLoaded).toBeTruthy();
 
-//   // check it loads on a new page
-//   await browser._browser.newPage();
-//   const oneIsLoaded = await (await browser.waitForPage(1)).evaluate(isLoaded);
-//   expect(oneIsLoaded).toBeTruthy();
+  // check it loads on a new page
+  await browser._browser.newPage();
+  const oneIsLoaded = await (await browser.waitForPage(1)).evaluate(isLoaded);
+  expect(oneIsLoaded).toBeTruthy();
 
-//   await browser.close();
-// });
+  await browser.close();
+});
 
 test("Browser.create emulates device", async () => {
   const browser = await Browser.create({ size: "mobile", url: CONFIG.testUrl });
