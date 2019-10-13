@@ -136,12 +136,6 @@ export const matchElements = ({
     );
 
     const majorityMatch = targetMatches.length / maxPossibleMatches > 0.5;
-    console.log(
-      "MAJORITY",
-      element,
-      targetMatches,
-      countPresentKeys(descriptor)
-    );
     // only consider a match if it matches a strong match key
     // or a majority of the other keys
     if (!strongMatch && !majorityMatch) {
