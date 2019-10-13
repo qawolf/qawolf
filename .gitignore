@@ -1,10 +1,10 @@
 *.DS_Store
 *.log
 *.tsbuildinfo
+.eslintcache
 .qawolf/
 /packages/*/*.tgz
 /packages/*/coverage/
 /packages/*/lib/
 node_modules/
 tmp/
-

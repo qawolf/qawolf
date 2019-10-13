@@ -1,0 +1,27 @@
+name: Node CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: npm install, bootstrap, and test
+        run: |
+          npm install
+          npm run bootstrap
+          npm test
+        env:
+          CI: true
+          HEADLESS: true
+          TEST_URL: http://theinternet:5000/
+
+    services:
+      theinternet:
+        image: gprestes/the-internet@sha256:f741ba048b7232ef90b0f7885de7f6ac42a52a17e73dd82afc484da140398796
