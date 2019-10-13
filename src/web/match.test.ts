@@ -6,6 +6,7 @@ import {
   compareArrays,
   compareDescriptorKey,
   compareDescriptors,
+  countPresentKeys,
   Match
 } from "./match";
 
@@ -120,6 +121,27 @@ describe("compareDescriptors", () => {
   });
 });
 
+describe("countPresentKeys", () => {
+  test("returns number of non-null keys in descriptor", () => {
+    expect(
+      countPresentKeys({
+        dataValue: undefined,
+        inputType: "text",
+        labels: ["username"],
+        placeholder: null,
+        tagName: "input",
+        textContent: null
+      })
+    ).toBe(3);
+  });
+
+  test("throws error if all keys have no value", () => {
+    expect(() => {
+      countPresentKeys({ dataValue: undefined, textContent: null });
+    }).toThrowError();
+  });
+});
+
 describe("isSelectValueAvailable", () => {
   let browser: Browser;
   let page: Page;
@@ -218,7 +240,7 @@ describe("matchElements", () => {
         };
       });
     });
-
+    console.log("RESULT", result);
     expect(result).toEqual([
       {
         element: "//*[@id='username']",
