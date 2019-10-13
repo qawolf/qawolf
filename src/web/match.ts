@@ -35,25 +35,6 @@ const isNil = (value: any): boolean => {
   return typeof value === "undefined" || value === null;
 };
 
-export const isSelectValueAvailable = (
-  element: HTMLElement,
-  value?: string | null
-): boolean => {
-  if (!value || element.tagName.toLowerCase() !== "select") return true;
-
-  let isAvailable: boolean = false;
-  const options = (element as HTMLSelectElement).options;
-
-  for (let i = 0; i < options.length; i++) {
-    if (options[i].value === value) {
-      isAvailable = true;
-      break;
-    }
-  }
-
-  return isAvailable;
-};
-
 export const compareArrays = (
   base?: string[] | null,
   compare?: string[] | null
@@ -102,6 +83,25 @@ export const compareDescriptors = (
   }
 
   return matches;
+};
+
+export const isSelectValueAvailable = (
+  element: HTMLElement,
+  value?: string | null
+): boolean => {
+  if (!value || element.tagName.toLowerCase() !== "select") return true;
+
+  let isAvailable: boolean = false;
+  const options = (element as HTMLSelectElement).options;
+
+  for (let i = 0; i < options.length; i++) {
+    if (options[i].value === value) {
+      isAvailable = true;
+      break;
+    }
+  }
+
+  return isAvailable;
 };
 
 export const matchElements = ({
