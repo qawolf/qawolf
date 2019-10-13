@@ -39,7 +39,7 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
-    "@qawolf/fixtures": "^1.3.0",
+    "@qawolf/fixtures": "^1.5.0",
     "@types/clear": "^0.1.0",
     "@types/dotenv": "^6.1.1",
     "@types/fs-extra": "^8.0.0",

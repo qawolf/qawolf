@@ -7,6 +7,7 @@ describe("buildTest", () => {
     const events = await loadEvents("login");
     const job = buildJob(events, "test job");
     const testString = buildTest(job, false);
+
     expect(testString).toMatchSnapshot();
   });
 });

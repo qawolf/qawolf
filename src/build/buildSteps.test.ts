@@ -324,10 +324,10 @@ describe("buildSequenceSteps", () => {
 describe("findActionEvents", () => {
   test("returns only click, scroll, and input events", async () => {
     const events = await loadEvents("login");
-    expect(events).toHaveLength(135);
+    expect(events).toHaveLength(109);
 
     const filteredEvents = findActionEvents(events);
-    expect(filteredEvents).toHaveLength(83);
+    expect(filteredEvents).toHaveLength(57);
   });
 });
 
@@ -376,7 +376,7 @@ describe("groupEventSequences", () => {
     expect(eventSequences).toHaveLength(10);
 
     expect(eventSequences[0].action).toBe("scroll");
-    expect(eventSequences[0].events).toHaveLength(41);
+    expect(eventSequences[0].events).toHaveLength(15);
 
     expect(eventSequences[1]).toMatchObject({
       action: "click",
@@ -398,7 +398,7 @@ describe("groupEventSequences", () => {
 
     expect(eventSequences[4]).toMatchObject({
       action: "click",
-      xpath: "//*[@id='login']/button"
+      xpath: "//*[@id='login']/button/i"
     });
     expect(eventSequences[4].events).toHaveLength(1);
 
