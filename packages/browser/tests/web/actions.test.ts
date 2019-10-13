@@ -1,6 +1,6 @@
-import { Browser } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
-import { QAWolf } from "../src/index";
+import { QAWolf } from "@qawolf/web";
+import { Browser } from "../../src/Browser";
 
 let browser: Browser;
 

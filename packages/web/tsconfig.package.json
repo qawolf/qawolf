@@ -6,8 +6,6 @@
     "composite": true
   },
   "references": [
-    // we do not reference browser or that will cause a circulare dependency
-    // it is just a dev dependency for tests
     {
       "path": "../config/tsconfig.package.json"
     }

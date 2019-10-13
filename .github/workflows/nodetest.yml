@@ -4,14 +4,16 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node_version: [12.x]
+        os: [ubuntu-latest]
 
     steps:
       - uses: actions/checkout@v1
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
       - name: npm install, bootstrap, and test
         run: |
           npm install
@@ -19,9 +21,12 @@ jobs:
           npm test
         env:
           CI: true
+          CHROME_EXECUTABLE_PATH: /usr/bin/google-chrome
           HEADLESS: true
           TEST_URL: http://theinternet:5000/
 
     services:
       theinternet:
         image: gprestes/the-internet@sha256:f741ba048b7232ef90b0f7885de7f6ac42a52a17e73dd82afc484da140398796
+        ports:
+          - 5000:5000

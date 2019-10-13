@@ -1,13 +1,8 @@
-import { Browser } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
-import { Page } from "puppeteer";
-import { QAWolf } from "../src/index";
-import {
-  compareArrays,
-  compareDescriptorKey,
-  compareDescriptors,
-  Match
-} from "../src/match";
+import { QAWolf, match, Match } from "@qawolf/web";
+import { Browser } from "../../src/Browser";
+
+const { compareArrays, compareDescriptorKey, compareDescriptors } = match;
 
 describe("compareArrays", () => {
   test("returns 0 if either array is null", () => {

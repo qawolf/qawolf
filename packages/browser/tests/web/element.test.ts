@@ -1,7 +1,7 @@
-import { Browser } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
+import { QAWolf } from "@qawolf/web";
 import { Page } from "puppeteer";
-import { QAWolf } from "../src/index";
+import { Browser } from "../../src/Browser";
 
 let browser: Browser;
 let page: Page;
