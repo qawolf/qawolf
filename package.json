@@ -1,74 +1,15 @@
 {
   "name": "qawolf",
-  "version": "0.2.2",
-  "license": "BSD-3.0",
-  "description": "Effortless browser tests",
-  "main": "dist/index.js",
-  "files": [
-    "bin",
-    "dist"
-  ],
+  "private": true,
   "scripts": {
-    "build": "npm run build:lib && npm run build:web",
-    "build:lib": "tsc -p .",
-    "build:web": "rollup --config rollup.web.ts",
-    "cli": "ts-node src/cli.ts",
-    "lint": "eslint src --ext .ts",
-    "test": "npm run build && jest --maxWorkers=75%",
-    "test:services": "docker-compose up -d"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jperl/qawolf.git"
-  },
-  "bugs": {
-    "url": "https://github.com/jperl/qawolf/issues"
-  },
-  "homepage": "https://github.com/jperl/qawolf#readme",
-  "dependencies": {
-    "@qawolf/jasmine-fail-fast": "^2.0.1",
-    "clear": "^0.1.0",
-    "commander": "^3.0.2",
-    "dotenv": "^8.1.0",
-    "fs-extra": "^8.1.0",
-    "handlebars": "^4.4.3",
-    "jest": "^24.9.0",
-    "lodash": "^4.17.15",
-    "puppeteer": "^1.20.0",
-    "rrweb": "^0.7.24",
-    "winston": "^3.2.1"
+    "bootstrap": "npm i && lerna bootstrap --ignore-scripts && npm run build",
+    "build": "tsc --build packages/tsconfig.project.json",
+    "watch": "tsc --build --watch packages/tsconfig.project.json"
   },
   "devDependencies": {
-    "@qawolf/fixtures": "^1.3.0",
-    "@types/clear": "^0.1.0",
-    "@types/dotenv": "^6.1.1",
-    "@types/fs-extra": "^8.0.0",
-    "@types/jest": "^24.0.18",
-    "@types/lodash": "^4.14.144",
     "@types/node": "^12.7.12",
-    "@types/puppeteer": "^1.20.0",
-    "@typescript-eslint/parser": "^2.3.3",
-    "eslint": "^6.5.1",
-    "eslint-config-prettier": "^6.4.0",
-    "eslint-plugin-prettier": "^3.1.1",
-    "prettier": "^1.18.2",
-    "rollup": "^1.23.1",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-typescript": "^1.0.1",
-    "ts-jest": "^24.1.0",
+    "lerna": "^3.17.0",
     "ts-node": "^8.4.1",
     "typescript": "^3.6.4"
-  },
-  "bin": {
-    "qawolf": "dist/index.js"
-  },
-  "jest": {
-    "roots": [
-      "<rootDir>/src"
-    ],
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    }
   }
 }

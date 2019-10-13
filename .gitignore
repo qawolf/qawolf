@@ -1,6 +1,9 @@
-*.DS_STORE
+*.DS_Store
 *.log
+*.tsbuildinfo
 .qawolf/
-dist/
+/packages/*/*.tgz
+/packages/*/lib/
 node_modules/
 tmp/
+

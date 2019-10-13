@@ -1,5 +1,0 @@
-name: "QA Wolf"
-description: "Run qawolf tests"
-runs:
-  using: "docker"
-  image: "Dockerfile"

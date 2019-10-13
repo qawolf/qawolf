@@ -1,0 +1,22 @@
+{
+  "name": "@qawolf/logger",
+  "description": "logger for node",
+  "version": "0.3.0",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc -b ./tsconfig.package.json",
+    "prepublish": "npm run build"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@qawolf/config": "0.3.0",
+    "winston": "^3.2.1"
+  }
+}
