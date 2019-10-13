@@ -1,0 +1,31 @@
+name: Test in Docker
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          ref: ${{ github.ref }}
+      # build first to partition the action logs
+      - name: Build
+        uses: ./
+        with:
+          args: 'echo "Dockerfile built"'
+      - name: Test
+        uses: ./
+        with:
+          args: "cd $QAWOLF_DIR && npm test"
+        env:
+          LOG_PATH: /github/workspace/artifacts/logs
+          TEST_URL: http://theinternet:5000/
+      - name: Upload Artifacts
+        if: always()
+        uses: actions/upload-artifact@master
+        with:
+          name: logs
+          path: "./artifacts/logs"
+    services:
+      theinternet:
+        image: gprestes/the-internet@sha256:f741ba048b7232ef90b0f7885de7f6ac42a52a17e73dd82afc484da140398796
