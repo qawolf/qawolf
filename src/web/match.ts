@@ -14,6 +14,7 @@ type MatchArgs = {
   target: ElementDescriptor;
   elements: HTMLElement[];
   requireStrongMatch?: boolean;
+  value?: string | null;
 };
 
 export type Match = {
@@ -32,6 +33,25 @@ const strongMatchKeys: (keyof ElementDescriptor)[] = [
 
 const isNil = (value: any): boolean => {
   return typeof value === "undefined" || value === null;
+};
+
+export const isSelectValueAvailable = (
+  element: HTMLElement,
+  value?: string | null
+): boolean => {
+  if (!value || element.tagName.toLowerCase() !== "select") return true;
+
+  let isAvailable: boolean = false;
+  const options = (element as HTMLSelectElement).options;
+
+  for (let i = 0; i < options.length; i++) {
+    if (options[i].value === value) {
+      isAvailable = true;
+      break;
+    }
+  }
+
+  return isAvailable;
 };
 
 export const compareArrays = (
@@ -139,6 +159,11 @@ export const topMatch = (args: MatchArgs): Match | null => {
   const equalTopMatches = matches.filter(m => m.value === matches[0].value);
   if (equalTopMatches.length > 1) {
     console.log("no match since all top matches are equal", equalTopMatches);
+    return null;
+  }
+
+  if (!isSelectValueAvailable(matches[0].element, args.value)) {
+    console.log(`desired select value ${args.value} not available yet`);
     return null;
   }
 
