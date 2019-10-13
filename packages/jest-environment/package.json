@@ -1,0 +1,22 @@
+{
+  "name": "@qawolf/jest-environment",
+  "description": "qawolf jest environment",
+  "version": "0.3.0",
+  "main": "./lib/index.js",
+  "types": "./types/index.d.ts",
+  "files": [
+    "lib",
+    "src",
+    "setup.ts",
+    "types/index.d.ts"
+  ],
+  "scripts": {
+    "build": "tsc -b ./tsconfig.package.json",
+    "prepublish": "npm run build",
+    "test": "jest"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {}
+}
