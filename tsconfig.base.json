@@ -1,26 +1,19 @@
 {
   "compilerOptions": {
-    "noImplicitThis": true,
-    "preserveConstEnums": true,
-    "lib": ["es5", "es6", "esnext.asynciterable"],
-    "target": "es2016",
     "module": "commonjs",
-    "moduleResolution": "node",
-    "allowJs": false,
     "esModuleInterop": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "downlevelIteration": true,
     "forceConsistentCasingInFileNames": true,
-    "sourceMap": true,
-    "declarationMap": true,
     "noImplicitAny": true,
-    "declaration": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "stripInternal": true,
-    "pretty": true,
     "strictNullChecks": true,
-    "noUnusedLocals": true
-  }
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "rootDir": "src",
+    "outDir": "dist",
+    "lib": ["esnext", "dom"],
+    "target": "es5"
+  },
+  "compileOnSave": true,
+  "exclude": ["test"],
+  "include": ["src"]
 }

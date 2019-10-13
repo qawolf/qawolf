@@ -3,6 +3,7 @@
 *.tsbuildinfo
 .qawolf/
 /packages/*/*.tgz
+/packages/*/coverage/
 /packages/*/lib/
 node_modules/
 tmp/

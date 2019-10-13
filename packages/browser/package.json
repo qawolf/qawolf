@@ -1,0 +1,29 @@
+{
+  "name": "@qawolf/browser",
+  "description": "qawolf browser manager",
+  "version": "0.3.0",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc -b ./tsconfig.package.json",
+    "prepublish": "npm run build",
+    "test": "jest"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@qawolf/config": "0.3.0",
+    "@qawolf/logger": "0.3.0",
+    "lodash": "^4.17.15",
+    "puppeteer": "^1.20.0"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.144",
+    "@types/puppeteer": "^1.20.2"
+  }
+}

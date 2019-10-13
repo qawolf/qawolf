@@ -1,6 +1,6 @@
 {
   "name": "@qawolf/logger",
-  "description": "logger for node",
+  "description": "qawolf logger (node only)",
   "version": "0.3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",

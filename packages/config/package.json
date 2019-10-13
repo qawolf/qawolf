@@ -1,6 +1,6 @@
 {
   "name": "@qawolf/config",
-  "description": "qawolf config for node",
+  "description": "qawolf config (node only)",
   "version": "0.3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",

@@ -2,6 +2,9 @@
   "files": [],
   "references": [
     {
+      "path": "./browser/tsconfig.package.json"
+    },
+    {
       "path": "./config/tsconfig.package.json"
     },
     {
