@@ -77,7 +77,7 @@ export const waitForElement = async ({
     }, timeoutMs);
   }
 
-  console.log("waiting for strong match");
+  console.log("waiting for strong match for target", target);
   const strongMatch = await waitFor(() => {
     const elements = queryActionElements(action);
     return topMatch({

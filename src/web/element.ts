@@ -85,6 +85,7 @@ export const getDescriptor = (
   dataAttribute: string | null
 ): ElementDescriptor => {
   return {
+    ariaLabel: element.getAttribute("aria-label") || null,
     classList: (element.className || "").length
       ? element.className.split(" ")
       : null,
@@ -98,6 +99,7 @@ export const getDescriptor = (
     placeholder: getPlaceholder(element),
     tagName: element.tagName ? element.tagName.toLowerCase() : null,
     textContent: getTextContent(element),
+    title: element.title || null,
     xpath: getXpath(element)
   };
 };

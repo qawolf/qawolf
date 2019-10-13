@@ -35,7 +35,7 @@ export const loginSteps: BrowserStep[] = [
     target: {
       inputType: "submit",
       tagName: "button",
-      textContent: " login",
+      textContent: "login",
       xpath: "//*[@id='login']/button"
     },
     pageId: 0
@@ -69,7 +69,7 @@ export const loginSteps: BrowserStep[] = [
     action: "click",
     target: {
       tagName: "i",
-      textContent: " login",
+      textContent: "login",
       xpath: "//*[@id='login']/button/i"
     },
     pageId: 0
