@@ -24,7 +24,7 @@ COPY . ${QAWOLF_DIR}/.
 RUN cd ${QAWOLF_DIR} && npm run bootstrap
 
 # Set default env variables
-ENV CHROME_EXECUTABLE_PATH "google-chrome-stable"
-ENV HEADLESS "true"
+ENV QAW_CHROME_EXECUTABLE_PATH "google-chrome-stable"
+ENV QAW_HEADLESS "true"
 
 ENTRYPOINT ["/root/qawolf/entrypoint.sh"]
