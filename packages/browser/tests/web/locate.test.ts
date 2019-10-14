@@ -14,7 +14,7 @@ beforeAll(async () => {
 afterAll(() => browser.close());
 
 describe("isVisible", () => {
-  test("returns true if element visible", async () => {
+  it("returns true if element visible", async () => {
     const isElementVisible = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
@@ -25,7 +25,7 @@ describe("isVisible", () => {
     expect(isElementVisible).toBe(true);
   });
 
-  test("returns false if element has no width", async () => {
+  it("returns false if element has no width", async () => {
     const isElementVisible = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
@@ -43,7 +43,7 @@ describe("isVisible", () => {
 });
 
 describe("queryActionElements", () => {
-  test("returns all elements for click action", async () => {
+  it("returns all elements for click action", async () => {
     const actionElementCount = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const actionElements = qawolf.locate.queryActionElements("click");
@@ -54,7 +54,7 @@ describe("queryActionElements", () => {
     expect(actionElementCount).toBe(28);
   });
 
-  test("returns only input elements for input action", async () => {
+  it("returns only input elements for input action", async () => {
     const actionElements = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const actionElements = qawolf.locate.queryActionElements("input");
@@ -68,7 +68,7 @@ describe("queryActionElements", () => {
     ]);
   });
 
-  test("does not include elements that are not visible", async () => {
+  it("does not include elements that are not visible", async () => {
     const actionElementXpaths = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
@@ -88,7 +88,7 @@ describe("queryActionElements", () => {
 });
 
 describe("queryDataElements", () => {
-  test("returns all elements with given data value for click action", async () => {
+  it("returns all elements with given data value for click action", async () => {
     const dataElementXpaths = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const submit = document.getElementsByTagName("button")[0]!;
@@ -107,7 +107,7 @@ describe("queryDataElements", () => {
     expect(dataElementXpaths).toEqual(["//*[@id='login']/button"]);
   });
 
-  test("returns only input elements with given data value for input action", async () => {
+  it("returns only input elements with given data value for input action", async () => {
     const dataElementXpaths = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
@@ -130,7 +130,7 @@ describe("queryDataElements", () => {
     expect(dataElementXpaths).toEqual(["//*[@id='username']"]);
   });
 
-  test("does not include elements that are not visible", async () => {
+  it("does not include elements that are not visible", async () => {
     const dataElementXpaths = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
@@ -159,7 +159,7 @@ describe("queryDataElements", () => {
 });
 
 describe("queryVisibleElements", () => {
-  test("returns only visible elements for a given selector", async () => {
+  it("returns only visible elements for a given selector", async () => {
     const visibleElementXpaths = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
@@ -179,7 +179,7 @@ describe("queryVisibleElements", () => {
 });
 
 describe("waitForElement", () => {
-  test("returns top element by data attribute if specified", async () => {
+  it("returns top element by data attribute if specified", async () => {
     const elementXpath = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
@@ -205,7 +205,7 @@ describe("waitForElement", () => {
     expect(elementXpath).toBe("//*[@id='username']");
   });
 
-  test("returns top element by strong attribute if specified", async () => {
+  it("returns top element by strong attribute if specified", async () => {
     const elementXpath = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
@@ -231,7 +231,7 @@ describe("waitForElement", () => {
     expect(elementXpath).toBe("//*[@id='username']");
   });
 
-  test("returns best weak match if no strong matches found", async () => {
+  it("returns best weak match if no strong matches found", async () => {
     const elementXpath = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
 
@@ -250,7 +250,7 @@ describe("waitForElement", () => {
     expect(elementXpath).toBe("//*[@id='login']/button");
   });
 
-  test("returns null if no test found", async () => {
+  it("returns null if no test found", async () => {
     const elementXpath = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
 

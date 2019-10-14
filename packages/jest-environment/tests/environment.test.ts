@@ -1,3 +1,3 @@
-test("globals is right", () => {
+it("globals is right", () => {
   console.log(hello);
 });

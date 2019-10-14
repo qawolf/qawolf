@@ -9,24 +9,24 @@ import {
 import { Browser } from "../../src/Browser";
 
 describe("compareArrays", () => {
-  test("returns 0 if either array is null", () => {
+  it("returns 0 if either array is null", () => {
     expect(compareArrays(null, ["spirit"])).toBe(0);
     expect(compareArrays(["spirit"], null)).toBe(0);
   });
 
-  test("returns 0 if either array is empty", () => {
+  it("returns 0 if either array is empty", () => {
     expect(compareArrays([], ["spirit"])).toBe(0);
     expect(compareArrays(["spirit"], [])).toBe(0);
   });
 
-  test("returns the share of base items in compare", () => {
+  it("returns the share of base items in compare", () => {
     expect(compareArrays(["spirit", "bobcat"], ["spirit", "bear"])).toBe(50);
     expect(compareArrays(["spirit", "bobcat"], ["spirit", "spirit"])).toBe(50);
   });
 });
 
 describe("compareDescriptorKey", () => {
-  test("returns 0 if either value is falsy", () => {
+  it("returns 0 if either value is falsy", () => {
     expect(compareDescriptorKey("id", null, "spirit")).toEqual({
       key: "id",
       percent: 0
@@ -37,7 +37,7 @@ describe("compareDescriptorKey", () => {
     });
   });
 
-  test("returns 0 if different xpaths", async () => {
+  it("returns 0 if different xpaths", async () => {
     const browser = await Browser.create({ url: `${CONFIG.testUrl}login` });
     const page = await browser.currentPage();
 
@@ -56,7 +56,7 @@ describe("compareDescriptorKey", () => {
     await browser.close();
   });
 
-  test("returns 100 if same xpaths", () => {
+  it("returns 100 if same xpaths", () => {
     expect(
       compareDescriptorKey(
         "xpath",
@@ -66,20 +66,20 @@ describe("compareDescriptorKey", () => {
     ).toEqual({ key: "xpath", percent: 100 });
   });
 
-  test("returns share of base items in compare if arrays", () => {
+  it("returns share of base items in compare if arrays", () => {
     expect(
       compareDescriptorKey("labels", ["spirit", "bobcat"], ["spirit", "bear"])
     ).toEqual({ key: "labels", percent: 50 });
   });
 
-  test("returns 0 if strings not equal", () => {
+  it("returns 0 if strings not equal", () => {
     expect(compareDescriptorKey("id", "spirit", "bobcat")).toEqual({
       key: "id",
       percent: 0
     });
   });
 
-  test("returns 100 if strings equal", () => {
+  it("returns 100 if strings equal", () => {
     expect(compareDescriptorKey("id", "spirit", "spirit")).toEqual({
       key: "id",
       percent: 100
@@ -88,7 +88,7 @@ describe("compareDescriptorKey", () => {
 });
 
 describe("compareDescriptors", () => {
-  test("returns list of matches between target and compare", () => {
+  it("returns list of matches between target and compare", () => {
     expect(
       compareDescriptors(
         {
@@ -105,7 +105,7 @@ describe("compareDescriptors", () => {
     ]);
   });
 
-  test("returns empty array if no matches", () => {
+  it("returns empty array if no matches", () => {
     expect(
       compareDescriptors(
         {
@@ -120,7 +120,7 @@ describe("compareDescriptors", () => {
 });
 
 describe("matchElements", () => {
-  test("returns elements that match if data attribute specified", async () => {
+  it("returns elements that match if data attribute specified", async () => {
     const browser = await Browser.create({ url: `${CONFIG.testUrl}login` });
     const page = await browser.currentPage();
 
@@ -185,7 +185,7 @@ describe("matchElements", () => {
     await browser.close();
   });
 
-  test("returns elements that match if data attribute not specified", async () => {
+  it("returns elements that match if data attribute not specified", async () => {
     const browser = await Browser.create({ url: `${CONFIG.testUrl}login` });
     const page = await browser.currentPage();
 
@@ -228,7 +228,7 @@ describe("matchElements", () => {
     await browser.close();
   });
 
-  test("returns empty array if strong matches required and none found", async () => {
+  it("returns empty array if strong matches required and none found", async () => {
     const browser = await Browser.create({ url: `${CONFIG.testUrl}login` });
     const page = await browser.currentPage();
 
@@ -265,7 +265,7 @@ describe("matchElements", () => {
 });
 
 describe("topMatch", () => {
-  test("returns null if no matches found", async () => {
+  it("returns null if no matches found", async () => {
     const browser = await Browser.create({ url: `${CONFIG.testUrl}login` });
     const page = await browser.currentPage();
 
@@ -299,7 +299,7 @@ describe("topMatch", () => {
     await browser.close();
   });
 
-  test("returns null if multiple tied matches found", async () => {
+  it("returns null if multiple tied matches found", async () => {
     const browser = await Browser.create({ url: `${CONFIG.testUrl}login` });
     const page = await browser.currentPage();
 
@@ -332,7 +332,7 @@ describe("topMatch", () => {
     await browser.close();
   });
 
-  test("returns top match if one found", async () => {
+  it("returns top match if one found", async () => {
     const browser = await Browser.create({ url: `${CONFIG.testUrl}login` });
     const page = await browser.currentPage();
 
