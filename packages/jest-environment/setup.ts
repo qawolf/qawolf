@@ -1,1 +1,1 @@
-import "./";
+import "./src/types";

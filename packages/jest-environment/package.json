@@ -3,7 +3,7 @@
   "description": "qawolf jest environment",
   "version": "0.3.0",
   "main": "./lib/index.js",
-  "typings": "./src/index.d.ts",
+  "types": "./lib/index.d.ts",
   "files": [
     "lib",
     "src"
