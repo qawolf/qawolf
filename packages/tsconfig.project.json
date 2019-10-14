@@ -11,9 +11,6 @@
       "path": "./jest-environment/tsconfig.package.json"
     },
     {
-      "path": "./jest-tests/tsconfig.package.json"
-    },
-    {
       "path": "./logger/tsconfig.package.json"
     },
     {

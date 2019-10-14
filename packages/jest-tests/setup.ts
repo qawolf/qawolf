@@ -1,1 +1,0 @@
-import "@qawolf/jest-environment";

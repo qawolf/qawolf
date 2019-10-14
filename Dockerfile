@@ -20,14 +20,11 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
 # Copy and build qawolf
 COPY . ${QAWOLF_DIR}/.
-RUN find ${QAWOLF_DIR}
 
 RUN cd ${QAWOLF_DIR} && npm run bootstrap
 
 # Set default env variables
 ENV CHROME_EXECUTABLE_PATH "google-chrome-stable"
 ENV HEADLESS "true"
-ENV TEST_URL "http://host.docker.internal:5000/"
-RUN cd ${QAWOLF_DIR} && npm test
 
 ENTRYPOINT ["/root/qawolf/entrypoint.sh"]
