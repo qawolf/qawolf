@@ -2,6 +2,7 @@ export type Action = "click" | "input" | "scroll";
 
 export type BrowserStep = {
   action: Action;
+  index: number;
   pageId?: number;
   scrollDirection?: "down" | "up";
   scrollTo?: number;

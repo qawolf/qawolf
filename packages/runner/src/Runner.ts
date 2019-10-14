@@ -1,9 +1,12 @@
 import { Browser, click, input, retryAsync, scroll } from "@qawolf/browser";
 import { BrowserStep, Job } from "@qawolf/types";
+import { getStepValues } from "./getStepValues";
 
 export class Runner {
   protected _browser: Browser;
   protected _job: Job;
+  protected _values: (string | undefined)[];
+
   protected constructor() {}
 
   public static async create(job: Job) {
@@ -11,16 +14,24 @@ export class Runner {
      * An async constructor for Runner.
      */
 
-    // TODO get values for job based on name QAW_NAME_0..N
     const self = new Runner();
     self._browser = await Browser.create({ size: job.size, url: job.url });
     self._job = job;
+    self._values = getStepValues(job);
 
     return self;
   }
 
   public get browser() {
     return this._browser;
+  }
+
+  public get job() {
+    return this._job;
+  }
+
+  public get values() {
+    return this._values;
   }
 
   public async click(step: BrowserStep) {
@@ -45,7 +56,17 @@ export class Runner {
 
   public async run() {
     for (let step of this._job.steps) {
-      await this.step(step);
+      await this.runStep(step);
+    }
+  }
+
+  public async runStep(step: BrowserStep) {
+    if (step.action === "click") {
+      await this.click(step);
+    } else if (step.action === "input") {
+      await this.input(step, this._values[step.index]);
+    } else if (step.action === "scroll") {
+      await this.scroll(step);
     }
   }
 
@@ -55,16 +76,6 @@ export class Runner {
       const page = await this._browser.getPage(step.pageId, true);
       await scroll(page, step.scrollTo!);
     });
-  }
-
-  public async step(step: BrowserStep) {
-    if (step.action === "click") {
-      await this.click(step);
-    } else if (step.action === "input") {
-      await this.input(step, step.value);
-    } else if (step.action === "scroll") {
-      await this.scroll(step);
-    }
   }
 
   private async beforeAction() {
