@@ -1,3 +1,2 @@
-import { Browser, BrowserCreateOptions } from "./Browser";
-
-export { Browser, BrowserCreateOptions };
+export * from "./Browser";
+export * from "./actions";

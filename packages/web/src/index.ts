@@ -1,8 +1,8 @@
-import * as actions from "./actions";
 import * as element from "./element";
 import * as locate from "./locate";
 import * as match from "./match";
 import { Match } from "./match";
+import { scrollTo } from "./scrollTo";
 import * as timer from "./timer";
 import * as xpath from "./xpath";
 
@@ -23,10 +23,10 @@ export {
 
 // export the web module for the browser
 const webExports = {
-  actions,
   element,
   locate,
   match,
+  scrollTo,
   timer,
   xpath
 };

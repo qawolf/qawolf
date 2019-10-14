@@ -1,6 +1,6 @@
-import { Browser } from "@qawolf/browser";
+import { Browser, retryAsync } from "@qawolf/browser";
 // todo export this...
-import { retryAsync } from "@qawolf/browser/src/pageUtils";
+import { BrowserStep } from "@qawolf/web";
 
 export class Runner {
   private _browser: Browser;
@@ -25,10 +25,10 @@ export class Runner {
     return this._browser;
   }
 
-  public async click(step) {
+  public async click(step: BrowserStep) {
     await retryAsync(async () => {
       // todo log each step inside their method...
-      const element = await this._browser.element(target, step.pageIndex);
+      const element = await this._browser.element(step);
       await this.beforeAction();
       await click(element);
     });
