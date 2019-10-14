@@ -29,3 +29,4 @@ jobs:
     services:
       theinternet:
         image: gprestes/the-internet@sha256:f741ba048b7232ef90b0f7885de7f6ac42a52a17e73dd82afc484da140398796
+    timeout-minutes: 10
