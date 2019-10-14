@@ -1,10 +1,10 @@
 import { logger } from "@qawolf/logger";
+import { timer } from "@qawolf/web";
 import puppeteer, { Page } from "puppeteer";
 import { launchPuppeteerBrowser } from "./browserUtils";
 import { getDevice, Size } from "./device";
 import { injectWebBundle } from "./pageUtils";
 import { RequestTracker } from "./RequestTracker";
-import { sleep } from "./sleep";
 
 export type BrowserCreateOptions = {
   size?: Size;
@@ -45,8 +45,7 @@ export class Browser {
     await this._browser.close();
   }
 
-  public currentPage(): Promise<Page> {
-    // TODO change to not be async...
+  public async currentPage(): Promise<Page> {
     return this.getPage(this._currentPageIndex);
   }
 
@@ -63,24 +62,23 @@ export class Browser {
     /**
      * Wait for the page at index to be ready and activate it.
      */
-    logger.debug(`Browser: page(${index})`);
+    logger.debug(`Browser: getPage(${index})`);
 
-    // TODO change logic...
-    for (let i = 0; i < timeoutMs / 100 && index >= this._pages.length; i++) {
-      await sleep(100);
+    const page = await timer.waitFor(() => {
+      if (index >= this._pages.length) return null;
+
+      return this._pages[index];
+    }, timeoutMs);
+
+    if (!page) {
+      throw new Error(`Browser: getPage(${index}) timed out`);
     }
-
-    if (index >= this._pages.length) {
-      throw new Error(`Browser: page(${index}) timed out`);
-    }
-
-    const page = this._pages[index];
-    this._currentPageIndex = index;
 
     // when headless = false the tab needs to be activated
     // for the execution context to run
     await page.bringToFront();
-    logger.debug(`Browser: page(${index}) activated ${page.url()}`);
+    this._currentPageIndex = index;
+    logger.debug(`Browser: getPage(${index}) activated ${page.url()}`);
 
     return page;
   }

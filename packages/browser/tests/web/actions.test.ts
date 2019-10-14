@@ -1,5 +1,5 @@
 import { CONFIG } from "@qawolf/config";
-import { QAWolf } from "@qawolf/web";
+import { QAWolfWeb } from "@qawolf/web";
 import { Browser } from "../../src/Browser";
 
 let browser: Browser;
@@ -18,7 +18,7 @@ describe("scrollTo", () => {
     expect(initialYPosition).toBe(0);
 
     await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
       return Promise.resolve(qawolf.actions.scrollTo(1000));
     });
 
@@ -26,7 +26,7 @@ describe("scrollTo", () => {
     expect(nextYPosition).toBe(1000);
 
     await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
       return Promise.resolve(qawolf.actions.scrollTo(0));
     });
 
@@ -41,7 +41,7 @@ describe("scrollTo", () => {
     expect(initialYPosition).toBe(0);
 
     await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
       return Promise.resolve(qawolf.actions.scrollTo(2000));
     });
 
@@ -57,7 +57,7 @@ describe("scrollTo", () => {
 
     const testFn = async () =>
       await page.evaluate(() => {
-        const qawolf: QAWolf = (window as any).qawolf;
+        const qawolf: QAWolfWeb = (window as any).qawolf;
         return Promise.resolve(qawolf.actions.scrollTo(2000, 0));
       });
 

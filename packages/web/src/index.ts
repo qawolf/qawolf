@@ -3,22 +3,26 @@ import * as element from "./element";
 import * as locate from "./locate";
 import * as match from "./match";
 import { Match } from "./match";
+import * as timer from "./timer";
 import * as xpath from "./xpath";
 
-const qawolf = {
+const webModule = {
   actions,
   element,
   locate,
   match,
+  timer,
   xpath
 };
 
 export type Match = Match;
-export type QAWolf = typeof qawolf;
+export type QAWolfWeb = typeof webModule;
 
 if (typeof window !== "undefined" && !(window as any).qawolf) {
-  (window as any).qawolf = qawolf;
+  // set the browser functions on the window
+  (window as any).qawolf = webModule;
   console.log("loaded qawolf");
 }
 
-export { actions, element, locate, match, xpath };
+// export the isomorphic (node & browser) module
+export { match, timer };

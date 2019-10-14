@@ -1,5 +1,5 @@
 import { CONFIG } from "@qawolf/config";
-import { QAWolf } from "@qawolf/web";
+import { QAWolfWeb } from "@qawolf/web";
 import { Page } from "puppeteer";
 import { Browser } from "../../src/Browser";
 
@@ -16,7 +16,7 @@ afterAll(() => browser.close());
 describe("getDataValue", () => {
   test("returns null if data attribute not specified in config", async () => {
     const dataAttribute = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
       username.setAttribute("data-qa", "user");
 
@@ -31,7 +31,7 @@ describe("getDataValue", () => {
 
   test("returns null if element does not have specified data attribute", async () => {
     const dataAttribute = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
       username.setAttribute("data-other", "user");
 
@@ -46,7 +46,7 @@ describe("getDataValue", () => {
 
   test("returns data attribute value correctly", async () => {
     const dataAttribute = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
       username.setAttribute("data-qa", "user");
 
@@ -62,7 +62,7 @@ describe("getDataValue", () => {
 
 test("getLabels correctly returns labels", async () => {
   const nullLabels = await page.evaluate(() => {
-    const qawolf: QAWolf = (window as any).qawolf;
+    const qawolf: QAWolfWeb = (window as any).qawolf;
 
     return qawolf.element.getLabels(document.getElementsByTagName("h2")[0]);
   });
@@ -70,7 +70,7 @@ test("getLabels correctly returns labels", async () => {
   expect(nullLabels).toBeNull();
 
   const usernameLabels = await page.evaluate(() => {
-    const qawolf: QAWolf = (window as any).qawolf;
+    const qawolf: QAWolfWeb = (window as any).qawolf;
 
     return qawolf.element.getLabels(document.getElementsByTagName("input")[0]);
   });
@@ -80,7 +80,7 @@ test("getLabels correctly returns labels", async () => {
 
 test("getParentText correctly returns parent text", async () => {
   const iconParentText = await page.evaluate(() => {
-    const qawolf: QAWolf = (window as any).qawolf;
+    const qawolf: QAWolfWeb = (window as any).qawolf;
 
     return qawolf.element.getParentText(document.getElementsByTagName("i")[0]);
   });
@@ -91,7 +91,7 @@ test("getParentText correctly returns parent text", async () => {
 describe("getPlaceholder", () => {
   test("returns placeholder if present", async () => {
     const placeholder = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
       const input = document.getElementsByTagName("input")[0];
       input.placeholder = "enter username";
 
@@ -109,7 +109,7 @@ describe("getPlaceholder", () => {
 
   test("returns null if no placeholder", async () => {
     const nullPlaceholder = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
 
       return qawolf.element.getPlaceholder(
         document.getElementsByTagName("input")[0]
@@ -123,7 +123,7 @@ describe("getPlaceholder", () => {
     await page.goto(`${CONFIG.testUrl}dropdown`);
 
     const placeholder = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
 
       return qawolf.element.getPlaceholder(
         document.getElementsByTagName("select")[0]
@@ -138,7 +138,7 @@ describe("getPlaceholder", () => {
 
 test("getTextContent returns text content", async () => {
   const headerTextContent = await page.evaluate(() => {
-    const qawolf: QAWolf = (window as any).qawolf;
+    const qawolf: QAWolfWeb = (window as any).qawolf;
 
     return qawolf.element.getTextContent(
       document.getElementsByTagName("h2")[0]
@@ -148,7 +148,7 @@ test("getTextContent returns text content", async () => {
   expect(headerTextContent).toBe("login page");
 
   const nullTextContent = await page.evaluate(() => {
-    const qawolf: QAWolf = (window as any).qawolf;
+    const qawolf: QAWolfWeb = (window as any).qawolf;
 
     return qawolf.element.getTextContent(
       document.getElementsByTagName("input")[0]
@@ -160,7 +160,7 @@ test("getTextContent returns text content", async () => {
 
 test("getDescriptor correctly returns full element element", async () => {
   const inputDescriptor = await page.evaluate(() => {
-    const qawolf: QAWolf = (window as any).qawolf;
+    const qawolf: QAWolfWeb = (window as any).qawolf;
 
     const username = document.getElementById("username")!;
     username.setAttribute("data-qa", "user");
@@ -190,7 +190,7 @@ test("getDescriptor correctly returns full element element", async () => {
   expect(inputDescriptor!.parentText).toContain("username");
 
   const headerDescriptor = await page.evaluate(() => {
-    const qawolf: QAWolf = (window as any).qawolf;
+    const qawolf: QAWolfWeb = (window as any).qawolf;
 
     return qawolf.element.getDescriptor(
       document.getElementsByTagName("h2")[0],

@@ -7,15 +7,15 @@
     {
       "path": "./config/tsconfig.package.json"
     },
-    {
-      "path": "./jest-environment/tsconfig.package.json"
-    },
+    // {
+    //   "path": "./jest-environment/tsconfig.package.json"
+    // },
     {
       "path": "./logger/tsconfig.package.json"
     },
-    {
-      "path": "./runner/tsconfig.package.json"
-    },
+    // {
+    //   "path": "./runner/tsconfig.package.json"
+    // },
     {
       "path": "./web/tsconfig.package.json"
     }

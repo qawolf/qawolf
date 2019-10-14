@@ -1,5 +1,5 @@
 import { CONFIG } from "@qawolf/config";
-import { QAWolf } from "@qawolf/web";
+import { QAWolfWeb } from "@qawolf/web";
 import { Page } from "puppeteer";
 import { Browser } from "../../src/Browser";
 
@@ -16,7 +16,7 @@ afterAll(() => browser.close());
 describe("isVisible", () => {
   test("returns true if element visible", async () => {
     const isElementVisible = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
 
       return qawolf.locate.isVisible(username);
@@ -27,7 +27,7 @@ describe("isVisible", () => {
 
   test("returns false if element has no width", async () => {
     const isElementVisible = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
       username.style.border = "0";
       username.style.padding = "0";
@@ -45,7 +45,7 @@ describe("isVisible", () => {
 describe("queryActionElements", () => {
   test("returns all elements for click action", async () => {
     const actionElementCount = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
       const actionElements = qawolf.locate.queryActionElements("click");
 
       return actionElements.length;
@@ -56,7 +56,7 @@ describe("queryActionElements", () => {
 
   test("returns only input elements for input action", async () => {
     const actionElements = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
       const actionElements = qawolf.locate.queryActionElements("input");
 
       return actionElements.map((el: HTMLElement) => qawolf.xpath.getXpath(el));
@@ -70,7 +70,7 @@ describe("queryActionElements", () => {
 
   test("does not include elements that are not visible", async () => {
     const actionElementXpaths = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
       username.style.border = "0";
       username.style.padding = "0";
@@ -90,7 +90,7 @@ describe("queryActionElements", () => {
 describe("queryDataElements", () => {
   test("returns all elements with given data value for click action", async () => {
     const dataElementXpaths = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
       const submit = document.getElementsByTagName("button")[0]!;
       submit.setAttribute("data-qa", "submit");
 
@@ -109,7 +109,7 @@ describe("queryDataElements", () => {
 
   test("returns only input elements with given data value for input action", async () => {
     const dataElementXpaths = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
       const submit = document.getElementsByTagName("button")[0]!;
       username.setAttribute("data-qa", "username");
@@ -132,7 +132,7 @@ describe("queryDataElements", () => {
 
   test("does not include elements that are not visible", async () => {
     const dataElementXpaths = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
       const password = document.getElementById("password")!;
 
@@ -161,7 +161,7 @@ describe("queryDataElements", () => {
 describe("queryVisibleElements", () => {
   test("returns only visible elements for a given selector", async () => {
     const visibleElementXpaths = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
       username.style.border = "0";
       username.style.padding = "0";
@@ -181,7 +181,7 @@ describe("queryVisibleElements", () => {
 describe("waitForElement", () => {
   test("returns top element by data attribute if specified", async () => {
     const elementXpath = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
       const submit = document.getElementsByTagName("button")[0]!;
       username.setAttribute("data-qa", "username");
@@ -207,7 +207,7 @@ describe("waitForElement", () => {
 
   test("returns top element by strong attribute if specified", async () => {
     const elementXpath = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
       const submit = document.getElementsByTagName("button")[0]!;
       username.setAttribute("data-qa", "username");
@@ -233,7 +233,7 @@ describe("waitForElement", () => {
 
   test("returns best weak match if no strong matches found", async () => {
     const elementXpath = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
 
       return qawolf.locate
         .waitForElement({
@@ -252,7 +252,7 @@ describe("waitForElement", () => {
 
   test("returns null if no test found", async () => {
     const elementXpath = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
 
       return qawolf.locate
         .waitForElement({

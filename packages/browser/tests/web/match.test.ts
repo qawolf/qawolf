@@ -1,5 +1,5 @@
 import { CONFIG } from "@qawolf/config";
-import { QAWolf, match, Match } from "@qawolf/web";
+import { QAWolfWeb, match, Match } from "@qawolf/web";
 import { Browser } from "../../src/Browser";
 
 const { compareArrays, compareDescriptorKey, compareDescriptors } = match;
@@ -38,7 +38,7 @@ describe("compareDescriptorKey", () => {
     const page = await browser.currentPage();
 
     const result = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
 
       return qawolf.match.compareDescriptorKey(
         "xpath",
@@ -121,7 +121,7 @@ describe("matchElements", () => {
     const page = await browser.currentPage();
 
     const result = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
 
       const username = document.getElementById("username")!;
       username.setAttribute("data-qa", "username");
@@ -186,7 +186,7 @@ describe("matchElements", () => {
     const page = await browser.currentPage();
 
     const result = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
 
       const collection = document.querySelectorAll("input,button");
       const elements: HTMLElement[] = [];
@@ -229,7 +229,7 @@ describe("matchElements", () => {
     const page = await browser.currentPage();
 
     const result = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
 
       const collection = document.querySelectorAll("input,button");
       const elements: HTMLElement[] = [];
@@ -266,7 +266,7 @@ describe("topMatch", () => {
     const page = await browser.currentPage();
 
     const result = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
 
       const collection = document.querySelectorAll("input,button");
       const elements: HTMLElement[] = [];
@@ -300,7 +300,7 @@ describe("topMatch", () => {
     const page = await browser.currentPage();
 
     const result = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
 
       const collection = document.querySelectorAll("input,button");
       const elements: HTMLElement[] = [];
@@ -333,7 +333,7 @@ describe("topMatch", () => {
     const page = await browser.currentPage();
 
     const result = await page.evaluate(() => {
-      const qawolf: QAWolf = (window as any).qawolf;
+      const qawolf: QAWolfWeb = (window as any).qawolf;
 
       const collection = document.querySelectorAll("input,button");
       const elements: HTMLElement[] = [];
