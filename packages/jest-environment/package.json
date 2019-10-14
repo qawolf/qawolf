@@ -3,20 +3,16 @@
   "description": "qawolf jest environment",
   "version": "0.3.0",
   "main": "./lib/index.js",
-  "types": "./types/index.d.ts",
+  "typings": "./src/index.d.ts",
   "files": [
     "lib",
-    "src",
-    "setup.ts",
-    "types/index.d.ts"
+    "src"
   ],
   "scripts": {
     "build": "tsc -b ./tsconfig.package.json",
-    "prepublish": "npm run build",
-    "test": "jest"
+    "prepublish": "npm run build"
   },
   "publishConfig": {
     "access": "public"
-  },
-  "dependencies": {}
+  }
 }
