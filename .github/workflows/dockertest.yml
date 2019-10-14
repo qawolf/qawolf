@@ -18,8 +18,8 @@ jobs:
         with:
           args: "cd $QAWOLF_DIR && npm test"
         env:
-          LOG_PATH: /github/workspace/artifacts/logs
-          TEST_URL: http://theinternet:5000/
+          QAW_LOG_PATH: /github/workspace/artifacts/logs
+          QAW_TEST_URL: http://theinternet:5000/
       - name: Upload Artifacts
         if: always()
         uses: actions/upload-artifact@master
