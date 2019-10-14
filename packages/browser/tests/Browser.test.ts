@@ -46,6 +46,7 @@ describe("Browser.element", () => {
 
     const elementHandle = await browser.element({
       action: "click",
+      index: 0,
       target: { id: "login" }
     });
 
