@@ -6,7 +6,23 @@ import { Match } from "./match";
 import * as timer from "./timer";
 import * as xpath from "./xpath";
 
-const webModule = {
+export * from "./types";
+
+export type Match = Match;
+
+// export the isomorphic (node & browser) module for node
+const { compareArrays, compareDescriptorKey, compareDescriptors } = match;
+const { waitFor, sleep } = timer;
+export {
+  compareArrays,
+  compareDescriptorKey,
+  compareDescriptors,
+  waitFor,
+  sleep
+};
+
+// export the web module for the browser
+const webExports = {
   actions,
   element,
   locate,
@@ -15,14 +31,8 @@ const webModule = {
   xpath
 };
 
-export type Match = Match;
-export type QAWolfWeb = typeof webModule;
+export type QAWolfWeb = typeof webExports;
 
-if (typeof window !== "undefined" && !(window as any).qawolf) {
-  // set the browser functions on the window
-  (window as any).qawolf = webModule;
-  console.log("loaded qawolf");
+if (typeof window !== "undefined" && typeof window.document !== "undefined") {
+  exports = webExports;
 }
-
-// export the isomorphic (node & browser) module
-export { match, timer };

@@ -1,8 +1,12 @@
 import { CONFIG } from "@qawolf/config";
-import { QAWolfWeb, match, Match } from "@qawolf/web";
+import {
+  compareArrays,
+  compareDescriptorKey,
+  compareDescriptors,
+  Match,
+  QAWolfWeb
+} from "@qawolf/web";
 import { Browser } from "../../src/Browser";
-
-const { compareArrays, compareDescriptorKey, compareDescriptors } = match;
 
 describe("compareArrays", () => {
   test("returns 0 if either array is null", () => {

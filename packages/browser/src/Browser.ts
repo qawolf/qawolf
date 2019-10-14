@@ -1,6 +1,7 @@
 import { logger } from "@qawolf/logger";
-import { timer } from "@qawolf/web";
-import puppeteer, { Page } from "puppeteer";
+import { CONFIG } from "@qawolf/config";
+import { BrowserStep, Locator, QAWolfWeb, waitFor } from "@qawolf/web";
+import puppeteer, { Page, ElementHandle, Serializable } from "puppeteer";
 import { launchPuppeteerBrowser } from "./browserUtils";
 import { getDevice, Size } from "./device";
 import { injectWebBundle } from "./pageUtils";
@@ -45,11 +46,40 @@ export class Browser {
     await this._browser.close();
   }
 
-  public async currentPage(): Promise<Page> {
+  public currentPage(): Promise<Page> {
     return this.getPage(this._currentPageIndex);
   }
 
+  public async element(step: BrowserStep): Promise<ElementHandle> {
+    logger.debug(`Browser: find element for ${JSON.stringify(step.target)}`);
+
+    const page = await this.getPage(step.pageId);
+
+    await this._requests.waitUntilComplete(page);
+
+    const jsHandle = await page.evaluateHandle(
+      (locator: Locator) => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        return qawolf.locate.waitForElement(locator);
+      },
+      {
+        action: step.action,
+        dataAttribute: CONFIG.dataAttribute,
+        target: step.target,
+        timeoutMs: CONFIG.locatorTimeoutMs
+      } as Serializable
+    );
+
+    const handle = jsHandle.asElement();
+    if (!handle) {
+      throw new Error(`No element handle found for step ${step}`);
+    }
+
+    return handle;
+  }
+
   public async goto(url: string): Promise<Page> {
+    logger.debug(`Browser: goto ${url}`);
     const page = await this.currentPage();
     await page.goto(url);
     return page;
@@ -64,7 +94,7 @@ export class Browser {
      */
     logger.debug(`Browser: getPage(${index})`);
 
-    const page = await timer.waitFor(() => {
+    const page = await waitFor(() => {
       if (index >= this._pages.length) return null;
 
       return this._pages[index];

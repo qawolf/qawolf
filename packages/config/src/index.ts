@@ -9,8 +9,8 @@ const parseBool = (value: string | undefined) => {
   return !!value && value !== "false";
 };
 
-const parseNumber = (value: string | undefined) => {
-  if (typeof value === "undefined") return value;
+const parseNumber = (value: string | undefined, defaultValue: number = 0) => {
+  if (typeof value === "undefined") return defaultValue;
 
   return parseFloat(value);
 };
@@ -20,6 +20,8 @@ export const CONFIG = {
   dataAttribute: process.env.DATA_ATTRIBUTE || null,
   headless: parseBool(process.env.HEADLESS),
   keepBrowserOpen: parseBool(process.env.KEEP_BROWSER_OPEN),
+  locatorTimeoutMs: parseNumber(process.env.locatorTimeoutMs, 30000),
+  logLevel: process.env.LOG_LEVEL,
   logPath: process.env.LOG_PATH,
   saveBrowserWsPath: process.env.SAVE_BROWSER_WS_PATH,
   screenshotPath: process.env.SCREENSHOT_PATH,

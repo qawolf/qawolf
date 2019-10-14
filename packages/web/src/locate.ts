@@ -1,13 +1,6 @@
 import { topMatch } from "./match";
 import { waitFor } from "./timer";
-import { Action, ElementDescriptor } from "./types";
-
-type WaitForElementArgs = {
-  action: Action;
-  dataAttribute: string | null;
-  target: ElementDescriptor;
-  timeoutMs: number;
-};
+import { Action, Locator } from "./types";
 
 type QueryByDataArgs = {
   action: Action;
@@ -58,7 +51,7 @@ export const waitForElement = async ({
   dataAttribute,
   target,
   timeoutMs
-}: WaitForElementArgs) => {
+}: Locator) => {
   if (dataAttribute && target.dataValue) {
     console.log(
       `finding element by data attribute ${dataAttribute}=${target.dataValue}`

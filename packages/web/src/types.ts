@@ -23,3 +23,10 @@ export type ElementDescriptor = {
   textContent?: string | null;
   xpath?: string | null;
 };
+
+export type Locator = {
+  action: Action;
+  dataAttribute: string | null;
+  target: ElementDescriptor;
+  timeoutMs: number;
+};

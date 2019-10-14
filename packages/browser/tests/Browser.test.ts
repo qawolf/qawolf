@@ -34,3 +34,17 @@ test("Browser.create emulates device", async () => {
 
   await browser.close();
 });
+
+test("Browser.element locates an element", async () => {
+  const browser = await Browser.create({ url: `${CONFIG.testUrl}login` });
+
+  const elementHandle = await browser.element({
+    action: "click",
+    target: { id: "login" }
+  });
+
+  expect(elementHandle).toBeTruthy();
+  expect(await elementHandle.evaluate(e => e.id)).toBe("login");
+
+  await browser.close();
+});
