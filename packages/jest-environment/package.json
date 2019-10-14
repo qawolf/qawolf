@@ -10,8 +10,7 @@
   ],
   "scripts": {
     "build": "tsc -b ./tsconfig.package.json",
-    "prepublish": "npm run build",
-    "test": "jest"
+    "prepublish": "npm run build"
   },
   "publishConfig": {
     "access": "public"
