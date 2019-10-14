@@ -54,9 +54,7 @@ export class Browser {
   public async element(step: BrowserStep): Promise<ElementHandle> {
     logger.debug(`Browser: find element for ${JSON.stringify(step.target)}`);
 
-    const page = await this.getPage(step.pageId);
-
-    await this._requests.waitUntilComplete(page);
+    const page = await this.getPage(step.pageId, true);
 
     const jsHandle = await page.evaluateHandle(
       (locator: Locator) => {
@@ -88,6 +86,7 @@ export class Browser {
 
   public async getPage(
     index: number = 0,
+    waitForRequests: boolean = false,
     timeoutMs: number = 5000
   ): Promise<Page> {
     /**
@@ -108,6 +107,10 @@ export class Browser {
     // when headless = false the tab needs to be activated
     // for the execution context to run
     await page.bringToFront();
+    if (waitForRequests) {
+      await this._requests.waitUntilComplete(page);
+    }
+
     this._currentPageIndex = index;
     logger.debug(`Browser: getPage(${index}) activated ${page.url()}`);
 

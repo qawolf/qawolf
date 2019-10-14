@@ -5,6 +5,9 @@
       "path": "./browser/tsconfig.package.json"
     },
     {
+      "path": "./build-job/tsconfig.package.json"
+    },
+    {
       "path": "./config/tsconfig.package.json"
     },
     // {
@@ -13,9 +16,9 @@
     {
       "path": "./logger/tsconfig.package.json"
     },
-    // {
-    //   "path": "./runner/tsconfig.package.json"
-    // },
+    {
+      "path": "./runner/tsconfig.package.json"
+    },
     {
       "path": "./types/tsconfig.package.json"
     },

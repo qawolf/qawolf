@@ -1,23 +1,21 @@
-// TODO export retryAsync
-import { Browser, retryAsync } from "@qawolf/browser";
+import { Browser, click, input, retryAsync, scroll } from "@qawolf/browser";
 import { BrowserStep, Job } from "@qawolf/types";
 
 export class Runner {
-  private _browser: Browser;
+  protected _browser: Browser;
+  protected _job: Job;
+  protected constructor() {}
 
-  protected constructor(browser: Browser) {
-    this._browser = browser;
-  }
-
-  static async create(job: Job) {
+  public static async create(job: Job) {
     /**
      * An async constructor for Runner.
      */
 
-    // TODO BrowserCreateOptions for job
     // TODO get values for job based on name QAW_NAME_0..N
-    const browser = await Browser.create(options);
-    const self = new Runner(browser);
+    const self = new Runner();
+    self._browser = await Browser.create({ size: job.size, url: job.url });
+    self._job = job;
+
     return self;
   }
 
@@ -27,30 +25,46 @@ export class Runner {
 
   public async click(step: BrowserStep) {
     await retryAsync(async () => {
-      // todo log each step inside their method...
       const element = await this._browser.element(step);
       await this.beforeAction();
       await click(element);
     });
-
-    // this._stepIndex += 1
   }
 
   public close() {
     return this._browser.close();
   }
 
-  public async input() {
+  public async input(step: BrowserStep, value?: string) {
     await retryAsync(async () => {
-      const element = await this._browser.element(target, step.pageIndex);
+      const element = await this._browser.element(step);
       await this.beforeAction();
-      await input(element);
+      await input(element, value);
     });
   }
 
   public async run() {
-    // TODO...
-    // this._job.steps.forEach()
+    for (let step of this._job.steps) {
+      await this.step(step);
+    }
+  }
+
+  public async scroll(step: BrowserStep) {
+    await retryAsync(async () => {
+      await this.beforeAction();
+      const page = await this._browser.getPage(step.pageId, true);
+      await scroll(page, step.scrollTo!);
+    });
+  }
+
+  public async step(step: BrowserStep) {
+    if (step.action === "click") {
+      await this.click(step);
+    } else if (step.action === "input") {
+      await this.input(step, step.value);
+    } else if (step.action === "scroll") {
+      await this.scroll(step);
+    }
   }
 
   private async beforeAction() {
