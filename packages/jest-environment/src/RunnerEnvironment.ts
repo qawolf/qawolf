@@ -4,7 +4,6 @@ import { Config } from "@jest/types";
 import NodeEnvironment from "jest-environment-node";
 
 const loadJobForTest = (path: string) => {};
-// TODO loadValuesForTest
 
 export class RunnerEnvironment extends NodeEnvironment {
   private _runner: Runner;
@@ -24,7 +23,9 @@ export class RunnerEnvironment extends NodeEnvironment {
     this.global.click = this._runner.click;
     this.global.input = this._runner.input;
     this.global.job = this._runner.job;
-    this.global.steps = this._runner.steps;
+    this.global.scroll = this._runner.scroll;
+    this.global.steps = this._runner.job.steps;
+    this.global.values = this._runner.values;
 
     const browser = this._runner.browser;
     this.global.browser = browser;

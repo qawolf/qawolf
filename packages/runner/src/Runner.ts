@@ -1,6 +1,7 @@
 import { Browser, click, input, retryAsync, scroll } from "@qawolf/browser";
 import { BrowserStep, Job } from "@qawolf/types";
 import { getStepValues } from "./getStepValues";
+import { getUrl } from "./getUrl";
 
 export class Runner {
   protected _browser: Browser;
@@ -15,6 +16,10 @@ export class Runner {
      */
 
     const self = new Runner();
+
+    // replace the url w/ env variable if it exists
+    job.url = getUrl(job);
+
     self._browser = await Browser.create({ size: job.size, url: job.url });
     self._job = job;
     self._values = getStepValues(job);
