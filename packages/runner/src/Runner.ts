@@ -1,6 +1,6 @@
+// TODO export retryAsync
 import { Browser, retryAsync } from "@qawolf/browser";
-// todo export this...
-import { BrowserStep } from "@qawolf/web";
+import { BrowserStep, Job } from "@qawolf/types";
 
 export class Runner {
   private _browser: Browser;

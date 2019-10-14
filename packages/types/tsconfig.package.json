@@ -5,11 +5,7 @@
     "rootDir": "./src",
     "composite": true
   },
-  "references": [
-    {
-      "path": "../types/tsconfig.package.json"
-    }
-  ],
+  "references": [],
   "include": ["src"],
   "exclude": ["tests", "lib"]
 }

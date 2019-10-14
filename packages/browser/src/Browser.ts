@@ -1,9 +1,10 @@
 import { logger } from "@qawolf/logger";
 import { CONFIG } from "@qawolf/config";
-import { BrowserStep, Locator, QAWolfWeb, waitFor } from "@qawolf/web";
+import { BrowserStep, Locator, Size } from "@qawolf/types";
+import { QAWolfWeb, waitFor } from "@qawolf/web";
 import puppeteer, { Page, ElementHandle, Serializable } from "puppeteer";
 import { launchPuppeteerBrowser } from "./browserUtils";
-import { getDevice, Size } from "./device";
+import { getDevice } from "./device";
 import { injectWebBundle } from "./pageUtils";
 import { RequestTracker } from "./RequestTracker";
 

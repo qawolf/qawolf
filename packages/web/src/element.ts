@@ -1,4 +1,4 @@
-import { ElementDescriptor } from "./types";
+import { ElementDescriptor } from "@qawolf/types";
 import { getXpath } from "./xpath";
 
 const cleanText = (text: string): string => {

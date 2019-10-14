@@ -24,9 +24,18 @@ export type ElementDescriptor = {
   xpath?: string | null;
 };
 
+export type Job = {
+  name: string;
+  size: Size;
+  steps: BrowserStep[];
+  url: string;
+};
+
 export type Locator = {
   action: Action;
   dataAttribute: string | null;
   target: ElementDescriptor;
   timeoutMs: number;
 };
+
+export type Size = "desktop" | "tablet" | "mobile";

@@ -11,7 +11,8 @@
   ],
   "scripts": {
     "build": "tsc -b ./tsconfig.package.json",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -25,7 +26,7 @@
   },
   "dependencies": {
     "@qawolf/browser": "0.3.0",
-    "@qawolf/web": "0.3.0"
+    "@qawolf/types": "0.3.0"
   },
   "devDependencies": {
     "@qawolf/config": "0.3.0"

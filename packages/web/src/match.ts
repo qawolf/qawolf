@@ -1,5 +1,5 @@
+import { ElementDescriptor } from "@qawolf/types";
 import { getDescriptor } from "./element";
-import { ElementDescriptor } from "./types";
 import { isXpathEqual } from "./xpath";
 
 type DescriptorMatch = {

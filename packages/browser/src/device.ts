@@ -1,6 +1,5 @@
+import { Size } from "@qawolf/types";
 import { devices } from "puppeteer";
-
-export type Size = "desktop" | "tablet" | "mobile";
 
 export const getDevice = (size: Size = "desktop"): devices.Device => {
   if (size === "desktop") {

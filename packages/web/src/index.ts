@@ -6,8 +6,6 @@ import { scrollTo } from "./scrollTo";
 import * as timer from "./timer";
 import * as xpath from "./xpath";
 
-export * from "./types";
-
 export type Match = Match;
 
 // export the isomorphic (node & browser) module for node

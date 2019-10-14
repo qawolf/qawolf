@@ -1,6 +1,6 @@
+import { Action, Locator } from "@qawolf/types";
 import { topMatch } from "./match";
 import { waitFor } from "./timer";
-import { Action, Locator } from "./types";
 
 type QueryByDataArgs = {
   action: Action;
