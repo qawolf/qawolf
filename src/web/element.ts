@@ -46,9 +46,9 @@ export const getParentText = (element: HTMLElement): string[] | null => {
       if (textContent) {
         parentText.push(cleanText(textContent));
       }
-      // ensure all content gets included (children that aren't elements)
-      parentText.push(cleanText(element.parentElement.textContent));
     }
+    // ensure all content gets included (children that aren't elements)
+    parentText.push(cleanText(element.parentElement.textContent));
 
     return parentText;
   }
