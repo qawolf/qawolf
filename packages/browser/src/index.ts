@@ -1,3 +1,3 @@
-import { Browser } from "./Browser";
+import { Browser, BrowserCreateOptions } from "./Browser";
 
-export { Browser };
+export { Browser, BrowserCreateOptions };

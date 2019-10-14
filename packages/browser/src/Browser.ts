@@ -6,7 +6,7 @@ import { injectWebBundle } from "./pageUtils";
 import { RequestTracker } from "./RequestTracker";
 import { sleep } from "./sleep";
 
-type CreateOptions = {
+export type BrowserCreateOptions = {
   size?: Size;
   url?: string;
 };
@@ -25,7 +25,7 @@ export class Browser {
   // protect constructor to force using async Browser.create()
   protected constructor() {}
 
-  public static async create(options: CreateOptions = {}) {
+  public static async create(options: BrowserCreateOptions = {}) {
     /**
      * An async constructor for Browser.
      */
@@ -46,7 +46,8 @@ export class Browser {
   }
 
   public currentPage(): Promise<Page> {
-    return this.waitForPage(this._currentPageIndex);
+    // TODO change to not be async...
+    return this.getPage(this._currentPageIndex);
   }
 
   public async goto(url: string): Promise<Page> {
@@ -55,21 +56,22 @@ export class Browser {
     return page;
   }
 
-  public async waitForPage(
+  public async getPage(
     index: number = 0,
     timeoutMs: number = 5000
   ): Promise<Page> {
     /**
      * Wait for the page at index to be ready and activate it.
      */
-    logger.debug(`Browser: waitForPage(${index})`);
+    logger.debug(`Browser: page(${index})`);
 
+    // TODO change logic...
     for (let i = 0; i < timeoutMs / 100 && index >= this._pages.length; i++) {
       await sleep(100);
     }
 
     if (index >= this._pages.length) {
-      throw new Error(`Browser: waitForPage(${index}) timed out`);
+      throw new Error(`Browser: page(${index}) timed out`);
     }
 
     const page = this._pages[index];
@@ -78,7 +80,7 @@ export class Browser {
     // when headless = false the tab needs to be activated
     // for the execution context to run
     await page.bringToFront();
-    logger.debug(`Browser: waitForPage(${index}) activated ${page.url()}`);
+    logger.debug(`Browser: page(${index}) activated ${page.url()}`);
 
     return page;
   }

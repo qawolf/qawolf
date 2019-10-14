@@ -1,6 +1,6 @@
 {
-  "name": "@qawolf/jest-environment",
-  "description": "qawolf jest environment",
+  "name": "@qawolf/runner",
+  "description": "qawolf runner",
   "version": "0.3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -10,13 +10,15 @@
   ],
   "scripts": {
     "build": "tsc -b ./tsconfig.package.json",
-    "prepublish": "npm run build",
-    "test": "jest"
+    "prepublish": "npm run build"
   },
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/runner": "0.3.0"
+    "@qawolf/browser": "0.3.0"
+  },
+  "devDependencies": {
+    "@qawolf/config": "0.3.0"
   }
 }
