@@ -29,11 +29,9 @@
     "@qawolf/logger": "0.3.0",
     "@qawolf/types": "0.3.0",
     "@qawolf/web": "0.3.0",
-    "lodash": "^4.17.15",
     "puppeteer": "^1.20.0"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.144",
     "@types/puppeteer": "^1.20.2"
   }
 }
