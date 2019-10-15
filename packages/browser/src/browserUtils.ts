@@ -7,6 +7,7 @@ import { getDevice } from "./device";
 export const buildOptions = (device: Device) => {
   const launchOptions: LaunchOptions = {
     args: [
+      "--disable-dev-shm-usage",
       "--no-default-browser-check",
       `--window-size=${device.viewport.width},${device.viewport.height}`
     ],
