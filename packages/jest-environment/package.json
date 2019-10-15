@@ -33,6 +33,7 @@
     "@qawolf/browser": "0.3.0",
     "@qawolf/config": "0.3.0",
     "@qawolf/types": "0.3.0",
-    "@types/puppeteer": "^1.20.2"
+    "@types/puppeteer": "^1.20.2",
+    "jest": "^24.9.0"
   }
 }
