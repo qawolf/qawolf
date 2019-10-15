@@ -22,10 +22,4 @@ declare global {
     waitForRequests?: boolean,
     timeoutMs?: number
   ): Promise<Page>;
-
-  // need to export something
-  export const _empty: void;
 }
-
-// need to export something
-export {};

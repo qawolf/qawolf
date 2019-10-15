@@ -7,7 +7,7 @@ import program from "commander";
 import { outputFile, outputJson, readJson } from "fs-extra";
 import { snakeCase } from "lodash";
 import { resolve } from "path";
-// import { runTest } from "./runTest";
+import { runTest } from "./runTest";
 
 program
   .command("build <eventsPath> <name>")
@@ -20,7 +20,7 @@ program
     const destPath = `${process.cwd()}/.qawolf`;
     const formattedName = snakeCase(name);
     const destJobPath = `${destPath}/jobs/${formattedName}.json`;
-    const destTestPath = `${destPath}/tests/${formattedName}.js`;
+    const destTestPath = `${destPath}/tests/${formattedName}.test.js`;
 
     logger.verbose(`build job -> ${destTestPath}`);
     const job = buildJob(events, formattedName);
@@ -47,13 +47,13 @@ program
     process.exit(0);
   });
 
-// program
-//   .command("test [name]")
-//   .description("run a test")
-//   .action(async name => {
-//     const success = await runTest(name ? snakeCase(name) : undefined);
-//     process.exit(success ? 0 : 1);
-//   });
+program
+  .command("test [name]")
+  .description("run a test")
+  .action(async name => {
+    const success = await runTest(name ? snakeCase(name) : undefined);
+    process.exit(success ? 0 : 1);
+  });
 
 program.allowUnknownOption(false);
 

@@ -1,5 +1,6 @@
 import { $xText } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
+import "../src/types";
 
 describe("RunnerEnvironment", () => {
   it("exposes a runner and actions as globals", () => {

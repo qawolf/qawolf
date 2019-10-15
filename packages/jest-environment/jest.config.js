@@ -6,5 +6,5 @@ module.exports = {
   displayName: "@qawolf/jest-environment",
   testEnvironment: "./lib/index.js",
   // needed to injest types
-  setupFilesAfterEnv: ["./setup.ts"]
+  setupFilesAfterEnv: ["./src/setup.ts"]
 };

@@ -25,6 +25,7 @@
     "access": "public"
   },
   "dependencies": {
+    "@qawolf/jasmine-fail-fast": "^2.0.1",
     "@qawolf/logger": "0.3.0",
     "@qawolf/runner": "0.3.0"
   },

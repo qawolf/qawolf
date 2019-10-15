@@ -31,7 +31,8 @@
     "@qawolf/build-test": "0.3.0",
     "@qawolf/jest-environment": "0.3.0",
     "@qawolf/runner": "0.3.0",
-    "commander": "^3.0.2"
+    "commander": "^3.0.2",
+    "jest": "^24.9.0"
   },
   "devDependencies": {
     "@qawolf/types": "0.3.0"
