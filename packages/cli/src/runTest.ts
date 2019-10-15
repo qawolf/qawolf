@@ -2,7 +2,7 @@ import { runCLI } from "jest";
 import path from "path";
 
 export const runTest = async (
-  name?: string,
+  name: string | null = null,
   rootDir: string = process.cwd()
 ) => {
   const modulePath = require.resolve("@qawolf/jest-environment");
