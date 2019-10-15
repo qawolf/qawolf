@@ -1,8 +1,8 @@
+import { EnvironmentContext } from "@jest/environment";
+import { Config } from "@jest/types";
 import { logger } from "@qawolf/logger";
 import { Runner } from "@qawolf/runner";
 import { Job } from "@qawolf/types";
-import { EnvironmentContext } from "@jest/environment";
-import { Config } from "@jest/types";
 import { readJSON } from "fs-extra";
 import NodeEnvironment from "jest-environment-node";
 import path from "path";
