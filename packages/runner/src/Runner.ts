@@ -1,4 +1,10 @@
-import { Browser, click, input, retryAsync, scroll } from "@qawolf/browser";
+import {
+  Browser,
+  click,
+  input,
+  retryExecutionError,
+  scroll
+} from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { BrowserStep, Job } from "@qawolf/types";
 import { sleep } from "@qawolf/web";
@@ -42,7 +48,7 @@ export class Runner {
   }
 
   public async click(step: BrowserStep) {
-    await retryAsync(async () => {
+    await retryExecutionError(async () => {
       const element = await this._browser.element(step);
       await this.beforeAction();
       await click(element);
@@ -54,7 +60,7 @@ export class Runner {
   }
 
   public async input(step: BrowserStep, value?: string) {
-    await retryAsync(async () => {
+    await retryExecutionError(async () => {
       const element = await this._browser.element(step);
       await this.beforeAction();
       await input(element, value);
@@ -78,7 +84,7 @@ export class Runner {
   }
 
   public async scroll(step: BrowserStep) {
-    await retryAsync(async () => {
+    await retryExecutionError(async () => {
       await this.beforeAction();
       const page = await this._browser.getPage(step.pageId, true);
       await scroll(page, step.scrollTo!);

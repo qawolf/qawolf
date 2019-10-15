@@ -15,7 +15,7 @@ export const injectWebBundle = async (page: Page) => {
   ]);
 };
 
-export const retryAsync = async (
+export const retryExecutionError = async (
   func: () => Promise<any>,
   times: number = 3
 ): Promise<any> => {
@@ -41,7 +41,7 @@ export const retryAsync = async (
 };
 
 export const $xText = async (page: Page, xpath: string): Promise<string> => {
-  return await retryAsync(async () => {
+  return await retryExecutionError(async () => {
     const elements = await page.$x(xpath);
 
     const text = await page.evaluate(
