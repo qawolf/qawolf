@@ -1,7 +1,7 @@
 import { Browser } from "@qawolf/browser";
-import { Page } from "puppeteer";
 import { Runner } from "@qawolf/runner";
 import { BrowserStep, Job } from "@qawolf/types";
+import { Page } from "puppeteer";
 
 declare global {
   // declare the globals we expose in RunnerEnvironment
@@ -22,7 +22,10 @@ declare global {
     waitForRequests?: boolean,
     timeoutMs?: number
   ): Promise<Page>;
+
+  // need to export something
+  export const _empty: void;
 }
 
-// need to export an empty module
+// need to export something
 export {};

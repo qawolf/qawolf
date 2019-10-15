@@ -19,7 +19,7 @@ jobs:
           args: "cd $QAWOLF_DIR && npm test"
         env:
           # needed for jest-environment test
-          QAW_ENVIRONMENT_URL: http://theinternet:5000/login
+          QAW_ENVIRONMENT_URL: http://theinternet:5000/
           QAW_LOG_PATH: /github/workspace/artifacts/logs
           QAW_TEST_URL: http://theinternet:5000/
       - name: Upload Artifacts

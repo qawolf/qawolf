@@ -33,21 +33,21 @@ export class RunnerEnvironment extends NodeEnvironment {
     await super.setup();
 
     const job = await loadJob(this._testPath);
-    this._runner = await Runner.create(job);
-    this.global.runner = this._runner;
+    const runner = await Runner.create(job);
+    this.global.runner = this._runner = runner;
 
-    this.global.click = this._runner.click;
-    this.global.input = this._runner.input;
-    this.global.scroll = this._runner.scroll;
+    this.global.click = runner.click.bind(runner);
+    this.global.input = runner.input.bind(runner);
+    this.global.scroll = runner.scroll.bind(runner);
 
-    this.global.job = this._runner.job;
-    this.global.steps = this._runner.job.steps;
-    this.global.values = this._runner.values;
+    this.global.job = runner.job;
+    this.global.steps = runner.job.steps;
+    this.global.values = runner.values;
 
-    const browser = this._runner.browser;
+    const browser = runner.browser;
     this.global.browser = browser;
-    this.global.currentPage = browser.currentPage;
-    this.global.getPage = browser.getPage;
+    this.global.currentPage = browser.currentPage.bind(browser);
+    this.global.getPage = browser.getPage.bind(browser);
   }
 
   async teardown() {

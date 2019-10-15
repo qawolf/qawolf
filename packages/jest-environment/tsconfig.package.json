@@ -10,6 +10,9 @@
       "path": "../browser/tsconfig.package.json"
     },
     {
+      "path": "../config/tsconfig.package.json"
+    },
+    {
       "path": "../logger/tsconfig.package.json"
     },
     {
