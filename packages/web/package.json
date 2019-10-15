@@ -10,8 +10,9 @@
     "src"
   ],
   "scripts": {
-    "build": "rollup --config rollup.ts",
-    "prepublish": "npm run build"
+    "build": "tsc -b ./tsconfig.package.json",
+    "bundle": "rollup --config rollup.ts",
+    "prepublish": "npm run build && npm run bundle"
   },
   "repository": {
     "type": "git",

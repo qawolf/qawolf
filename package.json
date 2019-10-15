@@ -3,7 +3,9 @@
   "private": true,
   "scripts": {
     "bootstrap": "npm i && lerna bootstrap --ignore-scripts && npm run build",
-    "build": "tsc --build packages/tsconfig.project.json && lerna run --scope @qawolf/web build",
+    "build": "npm run build:packages && npm run bundle:web",
+    "build:packages": "tsc --build packages/tsconfig.project.json",
+    "bundle:web": "lerna run --scope @qawolf/web bundle",
     "cli": "ts-node packages/cli/src/index.ts",
     "lint": "eslint packages --ext .ts --ignore-path .gitignore --cache",
     "pretest": "npm run lint",
