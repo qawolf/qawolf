@@ -12,7 +12,13 @@ if (CONFIG.logPath) {
   );
 } else {
   transports.push(
-    new winston.transports.Console({ level: CONFIG.logLevel || "error" })
+    new winston.transports.Console({
+      level: CONFIG.logLevel || "error",
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.simple()
+      )
+    })
   );
 }
 

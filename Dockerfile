@@ -21,6 +21,9 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 # Copy and build qawolf
 COPY . ${QAWOLF_DIR}/.
 
+# uncomment to see what is copied
+# RUN find ${QAWOLF_DIR}
+
 RUN cd ${QAWOLF_DIR} && npm run bootstrap
 
 # Set default env variables

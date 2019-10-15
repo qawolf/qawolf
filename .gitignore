@@ -2,10 +2,9 @@
 **/*.log
 **/*.tsbuildinfo
 **/*.eslintcache
-.qawolf/
-/packages/*/*.tgz
-/packages/*/coverage/
-/packages/*/lib/
-/packages/*/node_modules/
-node_modules/
-tmp/
+**/.qawolf
+**/*.tgz
+**/coverage
+**/lib
+**/node_modules
+**/tmp

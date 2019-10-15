@@ -30,7 +30,7 @@ export const retryAsync = async (
         error.message ===
           "Protocol error (Runtime.callFunctionOn): Execution context was destroyed."
       ) {
-        logger.debug(`retry ${i + 1}/${times} error: "${error.message}"`);
+        logger.verbose(`retry ${i + 1}/${times} error: "${error.message}"`);
         continue;
       }
 

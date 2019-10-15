@@ -35,10 +35,10 @@ export class RequestTracker {
       // ignore since it was already removed
       if (items.length < 1) return;
 
-      logger.verbose(
+      logger.debug(
         `RequestTracker: request-- ${reason} ${
           tracker.requests.length
-        } ${page.url()}`
+        } ${page.url().substring(0, 100)}`
       );
 
       if (tracker.requests.length === 0) {
@@ -50,8 +50,10 @@ export class RequestTracker {
     this.on(page, "request", (request: Request) => {
       tracker.requests.push(request);
 
-      logger.verbose(
-        `RequestTracker: request++ ${tracker.requests.length} ${page.url()}`
+      logger.debug(
+        `RequestTracker: request++ ${
+          tracker.requests.length
+        } ${page.url().substring(0, 100)}`
       );
 
       const intervalId = setTimeout(
@@ -71,14 +73,14 @@ export class RequestTracker {
   }
 
   public async waitUntilComplete(page: Page) {
-    logger.debug(`RequestTracker: waitUntilComplete ${page.url()}`);
+    logger.verbose(`RequestTracker: waitUntilComplete ${page.url()}`);
 
     return new Promise(resolve => {
       const tracker = this._trackers.find(c => c.page === page);
       if (!tracker) throw new Error(`Cannot find counter. Page is not tracked`);
 
       if (tracker.requests.length === 0) {
-        logger.debug(
+        logger.verbose(
           `RequestTracker: waitUntilComplete resolved immediately ${page.url()}`
         );
         resolve();

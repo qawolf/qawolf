@@ -33,7 +33,7 @@ export class Browser {
     /**
      * An async constructor for Browser.
      */
-    logger.debug(`Browser: create ${JSON.stringify(options)}`);
+    logger.verbose(`Browser: create ${JSON.stringify(options)}`);
 
     const self = new Browser();
     self._device = getDevice(options.size);
@@ -48,7 +48,7 @@ export class Browser {
   public async close(): Promise<void> {
     this._requests.dispose();
     await this._browser.close();
-    logger.debug("Browser: closed");
+    logger.verbose("Browser: closed");
   }
 
   public currentPage(): Promise<Page> {
@@ -56,7 +56,12 @@ export class Browser {
   }
 
   public async element(step: BrowserStep): Promise<ElementHandle> {
-    logger.debug(`Browser: find element for ${JSON.stringify(step.target)}`);
+    logger.verbose(
+      `Browser: find element for ${JSON.stringify(step.target).substring(
+        0,
+        100
+      )}`
+    );
 
     const page = await this.getPage(step.pageId, true);
 
@@ -82,7 +87,7 @@ export class Browser {
   }
 
   public async goto(url: string): Promise<Page> {
-    logger.debug(`Browser: goto ${url}`);
+    logger.verbose(`Browser: goto ${url}`);
     const page = await this.currentPage();
     await page.goto(url);
     return page;
@@ -96,7 +101,7 @@ export class Browser {
     /**
      * Wait for the page at index to be ready and activate it.
      */
-    logger.debug(`Browser: getPage(${index})`);
+    logger.verbose(`Browser: getPage(${index})`);
 
     const page = await waitFor(() => {
       if (index >= this._pages.length) return null;
@@ -116,7 +121,7 @@ export class Browser {
     }
 
     this._currentPageIndex = index;
-    logger.debug(`Browser: getPage(${index}) activated ${page.url()}`);
+    logger.verbose(`Browser: getPage(${index}) activated ${page.url()}`);
 
     return page;
   }

@@ -15,7 +15,7 @@ const loadJob = async (testPath: string) => {
     "../jobs",
     `${testName}.json`
   );
-  logger.debug(`load job for test ${testPath} ${jobPath}`);
+  logger.verbose(`load job for test ${testPath} ${jobPath}`);
   const json = await readJSON(jobPath);
   return json as Job;
 };
