@@ -11,7 +11,10 @@ describe("click", () => {
     const element = await browser.element({
       action: "click",
       index: 0,
-      target: { xpath: '//*[@id="content"]/ul/li[3]/a' }
+      target: {
+        textContent: "broken images",
+        xpath: '//*[@id="content"]/ul/li[3]/a'
+      }
     });
 
     await click(element);
@@ -31,7 +34,11 @@ describe("click", () => {
     const element = await browser.element({
       action: "click",
       index: 0,
-      target: { tagName: "i", xpath: "//*[@id='login']/button/i" }
+      target: {
+        tagName: "i",
+        textContent: "login",
+        xpath: "//*[@id='login']/button/i"
+      }
     });
     await click(element);
 
@@ -60,7 +67,7 @@ describe("input", () => {
     let element = await browser.element({
       action: "input",
       index: 0,
-      target: { xpath: '//*[@id="username"]' }
+      target: { id: "username" }
     });
     await input(element, "spirit");
 
@@ -75,7 +82,7 @@ describe("input", () => {
     element = await browser.element({
       action: "input",
       index: 0,
-      target: { xpath: '//*[@id="password"]' }
+      target: { id: "password", xpath: '//*[@id="password"]' }
     });
     await input(element, "password");
 

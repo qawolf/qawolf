@@ -27,8 +27,7 @@ const strongMatchKeys: (keyof ElementDescriptor)[] = [
   "name",
   "labels",
   "placeholder",
-  "textContent",
-  "xpath"
+  "textContent"
 ];
 
 const isNil = (value: any): boolean => {
