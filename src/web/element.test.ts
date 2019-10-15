@@ -60,6 +60,44 @@ describe("getDataValue", () => {
   });
 });
 
+describe("getIconContent", async () => {
+  test("returns icon content on i tag", async () => {
+    const iconContent = await page.evaluate(() => {
+      const qawolf: QAWolf = (window as any).qawolf;
+
+      return qawolf.element.getIconContent(
+        document.getElementsByTagName("i")[0]
+      );
+    });
+
+    expect(iconContent).toEqual(["fa", "fa-2x", "fa-sign-in"]);
+  });
+
+  test("returns child icon content", async () => {
+    const iconContent = await page.evaluate(() => {
+      const qawolf: QAWolf = (window as any).qawolf;
+
+      return qawolf.element.getIconContent(
+        document.getElementsByTagName("button")[0]
+      );
+    });
+
+    expect(iconContent).toEqual(["fa", "fa-2x", "fa-sign-in"]);
+  });
+
+  test("returns null if no icon content", async () => {
+    const iconContent = await page.evaluate(() => {
+      const qawolf: QAWolf = (window as any).qawolf;
+
+      return qawolf.element.getIconContent(
+        document.getElementsByTagName("input")[0]
+      );
+    });
+
+    expect(iconContent).toBeNull();
+  });
+});
+
 test("getLabels correctly returns labels", async () => {
   const nullLabels = await page.evaluate(() => {
     const qawolf: QAWolf = (window as any).qawolf;
@@ -179,6 +217,7 @@ test("getDescriptor correctly returns full element element", async () => {
     classList: null,
     dataValue: "user",
     href: null,
+    iconContent: null,
     id: "username",
     inputType: "text",
     labels: ["username"],
@@ -202,6 +241,7 @@ test("getDescriptor correctly returns full element element", async () => {
     classList: null,
     dataValue: null,
     href: null,
+    iconContent: null,
     id: null,
     inputType: null,
     labels: null,

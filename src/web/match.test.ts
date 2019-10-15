@@ -240,7 +240,7 @@ describe("matchElements", () => {
         };
       });
     });
-    console.log("RESULT", result);
+
     expect(result).toEqual([
       {
         element: "//*[@id='username']",

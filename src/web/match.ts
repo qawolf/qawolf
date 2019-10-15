@@ -24,7 +24,7 @@ export type Match = {
 };
 
 const strongMatchKeys: (keyof ElementDescriptor)[] = [
-  "classList",
+  "iconContent",
   "id",
   "labels",
   "name",
