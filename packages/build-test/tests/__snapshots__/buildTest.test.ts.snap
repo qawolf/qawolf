@@ -3,7 +3,7 @@
 exports[`buildTest builds a test from a job 1`] = `
 "describe('login', () => {
   it('can scroll down', async () => {
-    await scroll(steps[0]};
+    await scroll(steps[0]);
   });
 
   it('can click form authentication link', async () => {
@@ -49,14 +49,14 @@ Object {
 exports[`formatStep formats scroll down action 1`] = `
 Object {
   "it": "can scroll down",
-  "method": "scroll(steps[0]}",
+  "method": "scroll(steps[0])",
 }
 `;
 
 exports[`formatStep formats scroll up action 1`] = `
 Object {
   "it": "can scroll up",
-  "method": "scroll(steps[0]}",
+  "method": "scroll(steps[0])",
 }
 `;
 
