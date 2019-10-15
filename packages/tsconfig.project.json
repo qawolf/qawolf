@@ -8,6 +8,9 @@
       "path": "./build-job/tsconfig.package.json"
     },
     {
+      "path": "./build-test/tsconfig.package.json"
+    },
+    {
       "path": "./config/tsconfig.package.json"
     },
     // {

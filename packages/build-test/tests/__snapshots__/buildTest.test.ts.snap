@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`buildTest builds a test from a job 1`] = `
+"describe('login', () => {
+  it('can scroll down', async () => {
+    await scroll(steps[0]};
+  });
+
+  it('can click form authentication link', async () => {
+    await click(steps[1]);
+  });
+
+  it('can input into username input', async () => {
+    await input(steps[2], values[2]);
+  });
+
+  it('can click login button', async () => {
+    await click(steps[3]);
+  });
+
+  it('can input into username input', async () => {
+    await input(steps[4], values[4]);
+  });
+
+  it('can input into password input', async () => {
+    await input(steps[5], values[5]);
+  });
+
+  it('can click login i', async () => {
+    await click(steps[6]);
+  });
+});"
+`;
+
+exports[`formatStep formats click on link step 1`] = `
+Object {
+  "it": "can click contact link",
+  "method": "click(steps[0])",
+}
+`;
+
+exports[`formatStep formats click on submit input step 1`] = `
+Object {
+  "it": "can click sign in input",
+  "method": "click(steps[1])",
+}
+`;
+
+exports[`formatStep formats scroll down action 1`] = `
+Object {
+  "it": "can scroll down",
+  "method": "scroll(steps[0]}",
+}
+`;
+
+exports[`formatStep formats scroll up action 1`] = `
+Object {
+  "it": "can scroll up",
+  "method": "scroll(steps[0]}",
+}
+`;
+
+exports[`formatStep formats type into password input 1`] = `
+Object {
+  "it": "can input into secret input",
+  "method": "input(steps[10], values[10])",
+}
+`;
+
+exports[`formatStep formats type into text input 1`] = `
+Object {
+  "it": "can input into username input",
+  "method": "input(steps[0], values[0])",
+}
+`;
+
+exports[`formatStep shortens target name if needed 1`] = `
+Object {
+  "it": "can click sign inxxxxxxxxxxxxx input",
+  "method": "click(steps[0])",
+}
+`;
