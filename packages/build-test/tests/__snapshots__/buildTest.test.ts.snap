@@ -14,7 +14,7 @@ exports[`buildTest builds a test from a job 1`] = `
     await input(steps[2], values[2]);
   });
 
-  it('can click login button', async () => {
+  it('can click login i', async () => {
     await click(steps[3]);
   });
 

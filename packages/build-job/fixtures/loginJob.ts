@@ -6,7 +6,7 @@ export const loginSteps: BrowserStep[] = [
     index: 0,
     pageId: 0,
     scrollDirection: "down",
-    scrollTo: 334,
+    scrollTo: 366,
     target: { xpath: "scroll" }
   },
   {
@@ -38,10 +38,10 @@ export const loginSteps: BrowserStep[] = [
     index: 3,
     pageId: 0,
     target: {
-      inputType: "submit",
-      tagName: "button",
-      textContent: " login",
-      xpath: "//*[@id='login']/button"
+      inputType: null,
+      tagName: "i",
+      textContent: "login",
+      xpath: "//*[@id='login']/button/i"
     }
   },
   {
@@ -76,7 +76,7 @@ export const loginSteps: BrowserStep[] = [
     pageId: 0,
     target: {
       tagName: "i",
-      textContent: " login",
+      textContent: "login",
       xpath: "//*[@id='login']/button/i"
     }
   }
