@@ -1,5 +1,5 @@
-import { logger } from "@qawolf/logger";
 import { CONFIG } from "@qawolf/config";
+import { logger } from "@qawolf/logger";
 import { BrowserStep, Locator, Size } from "@qawolf/types";
 import { QAWolfWeb, waitFor } from "@qawolf/web";
 import puppeteer, { Page, ElementHandle, Serializable } from "puppeteer";
