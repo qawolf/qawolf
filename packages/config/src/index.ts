@@ -22,5 +22,6 @@ export const CONFIG = {
   locatorTimeoutMs: parseNumber(process.env.QAW_LOCATOR_TIMEOUT_MS, 30000),
   logLevel: process.env.QAW_LOG_LEVEL,
   logPath: process.env.QAW_LOG_PATH,
+  sleepMs: parseNumber(process.env.QAW_SLEEP_MS, 0),
   testUrl
 };

@@ -1,5 +1,7 @@
 import { Browser, click, input, retryAsync, scroll } from "@qawolf/browser";
+import { CONFIG } from "@qawolf/config";
 import { BrowserStep, Job } from "@qawolf/types";
+import { sleep } from "@qawolf/web";
 import { getStepValues } from "./getStepValues";
 import { getUrl } from "./getUrl";
 
@@ -84,6 +86,8 @@ export class Runner {
   }
 
   private async beforeAction() {
-    // TODO screenshot(this._stepIndex)
+    if (CONFIG.sleepMs) {
+      await sleep(CONFIG.sleepMs);
+    }
   }
 }
