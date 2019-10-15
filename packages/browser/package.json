@@ -1,0 +1,37 @@
+{
+  "name": "@qawolf/browser",
+  "description": "qawolf browser manager",
+  "version": "0.3.0",
+  "license": "BSD-3.0",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc -b ./tsconfig.package.json",
+    "prepublish": "npm run build",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qawolf/qawolf.git"
+  },
+  "bugs": {
+    "url": "https://github.com/qawolf/qawolf/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@qawolf/config": "0.3.0",
+    "@qawolf/logger": "0.3.0",
+    "@qawolf/types": "0.3.0",
+    "@qawolf/web": "0.3.0",
+    "puppeteer": "^1.20.0"
+  },
+  "devDependencies": {
+    "@types/puppeteer": "^1.20.2"
+  }
+}

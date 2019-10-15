@@ -1,0 +1,35 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./browser/tsconfig.package.json"
+    },
+    {
+      "path": "./build-job/tsconfig.package.json"
+    },
+    {
+      "path": "./build-test/tsconfig.package.json"
+    },
+    {
+      "path": "./cli/tsconfig.package.json"
+    },
+    {
+      "path": "./config/tsconfig.package.json"
+    },
+    {
+      "path": "./jest-environment/tsconfig.package.json"
+    },
+    {
+      "path": "./logger/tsconfig.package.json"
+    },
+    {
+      "path": "./runner/tsconfig.package.json"
+    },
+    {
+      "path": "./types/tsconfig.package.json"
+    },
+    {
+      "path": "./web/tsconfig.package.json"
+    }
+  ]
+}

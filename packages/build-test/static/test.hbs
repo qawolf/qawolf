@@ -1,0 +1,10 @@
+describe('{{{name}}}', () => {
+{{#each steps}}
+  it('{{{it}}}', async () => {
+    await {{{method}}};
+  });
+{{#unless @last}}
+
+{{/unless}}
+{{/each}}
+});

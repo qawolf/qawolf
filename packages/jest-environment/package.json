@@ -1,0 +1,38 @@
+{
+  "name": "@qawolf/jest-environment",
+  "description": "qawolf jest environment",
+  "version": "0.3.0",
+  "license": "BSD-3.0",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc -b ./tsconfig.package.json",
+    "prepublish": "npm run build",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qawolf/qawolf.git"
+  },
+  "bugs": {
+    "url": "https://github.com/qawolf/qawolf/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@qawolf/jasmine-fail-fast": "^2.0.1",
+    "@qawolf/logger": "0.3.0",
+    "@qawolf/runner": "0.3.0"
+  },
+  "devDependencies": {
+    "@qawolf/browser": "0.3.0",
+    "@qawolf/config": "0.3.0",
+    "@qawolf/types": "0.3.0",
+    "@types/puppeteer": "^1.20.2"
+  }
+}

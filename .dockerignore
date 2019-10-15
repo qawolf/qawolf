@@ -1,6 +1,14 @@
-.DS_Store
-.github/
-.qawolf/
-dist/
-node_modules/
-tmp/
+# .gitignore
+**/*.DS_Store
+**/*.log
+**/*.tsbuildinfo
+**/*.eslintcache
+**/.qawolf
+**/*.tgz
+**/coverage
+**/lib
+**/node_modules
+**/tmp
+
+# .dockerignore
+.git/

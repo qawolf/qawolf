@@ -1,19 +1,6 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "removeComments": true,
-    "preserveConstEnums": true,
-    "sourceMap": true,
-    "rootDir": "src",
-    "outDir": "dist",
-    "lib": ["esnext", "dom"],
-    "target": "es5"
-  },
-  "compileOnSave": true,
-  "exclude": ["test"],
-  "include": ["src"]
+    "noEmit": true
+  }
 }
