@@ -2,7 +2,7 @@
   "name": "qawolf-root",
   "private": true,
   "scripts": {
-    "bootstrap": "npm i && lerna bootstrap --ignore-scripts && npm run build",
+    "bootstrap": "npm i && lerna bootstrap --hoist && npm run build",
     "build": "npm run build:packages && npm run bundle:web",
     "build:packages": "tsc --build packages/tsconfig.project.json",
     "bundle:web": "lerna run --scope @qawolf/web bundle",
