@@ -47,8 +47,8 @@ export class Runner {
     });
   }
 
-  public close() {
-    return this._browser.close();
+  public async close() {
+    await this._browser.close();
   }
 
   public async input(step: BrowserStep, value?: string) {

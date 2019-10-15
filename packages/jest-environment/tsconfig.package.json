@@ -5,7 +5,20 @@
     "rootDir": "./src",
     "composite": true
   },
-  "references": [],
-  "include": ["src", "types"],
+  "references": [
+    {
+      "path": "../browser/tsconfig.package.json"
+    },
+    {
+      "path": "../logger/tsconfig.package.json"
+    },
+    {
+      "path": "../runner/tsconfig.package.json"
+    },
+    {
+      "path": "../types/tsconfig.package.json"
+    }
+  ],
+  "include": ["src"],
   "exclude": ["tests", "lib"]
 }

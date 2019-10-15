@@ -8,9 +8,14 @@ export const getUrl = (job: Job) => {
    */
   const key = `QAW_${upperCase(job.name)}_URL`;
 
-  const envValue = process.env[key];
-  if (typeof envValue !== "undefined") {
-    return envValue;
+  const jobUrlValue = process.env[key];
+  if (typeof jobUrlValue !== "undefined") {
+    return jobUrlValue;
+  }
+
+  const globalUrlValue = process.env.QAW_URL;
+  if (typeof globalUrlValue !== "undefined") {
+    return globalUrlValue;
   }
 
   return job.url;

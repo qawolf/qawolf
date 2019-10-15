@@ -1,6 +1,6 @@
 import { logger } from "@qawolf/logger";
 import { remove } from "lodash";
-import { Page, Request } from "puppeteer";
+import { Page, Request, PageEventObj } from "puppeteer";
 
 type Callback = () => void;
 
@@ -11,6 +11,8 @@ type Tracker = {
 };
 
 export class RequestTracker {
+  private _onDispose: (() => void)[] = [];
+
   private _trackers: Tracker[] = [];
 
   // how long until we ignore a request
@@ -45,21 +47,25 @@ export class RequestTracker {
       }
     };
 
-    page.on("request", (request: Request) => {
+    this.on(page, "request", (request: Request) => {
       tracker.requests.push(request);
 
       logger.verbose(
         `RequestTracker: request++ ${tracker.requests.length} ${page.url()}`
       );
 
-      setTimeout(() => removeRequest(request, "timeout"), this._timeout);
+      const intervalId = setTimeout(
+        () => removeRequest(request, "timeout"),
+        this._timeout
+      );
+      this._onDispose.push(() => clearInterval(intervalId));
     });
 
-    page.on("requestfailed", request =>
+    this.on(page, "requestfailed", request =>
       removeRequest(request, "requestfailed")
     );
 
-    page.on("requestfinished", request =>
+    this.on(page, "requestfinished", request =>
       removeRequest(request, "requestfinished")
     );
   }
@@ -81,5 +87,19 @@ export class RequestTracker {
 
       tracker.onComplete.push(resolve);
     });
+  }
+
+  public dispose() {
+    this._onDispose.forEach(f => f());
+  }
+
+  private on<K extends keyof PageEventObj>(
+    page: Page,
+    eventName: K,
+    handler: (e: PageEventObj[K], ...args: any[]) => void
+  ) {
+    page.on(eventName, handler);
+
+    this._onDispose.push(() => page.removeListener(eventName, handler));
   }
 }

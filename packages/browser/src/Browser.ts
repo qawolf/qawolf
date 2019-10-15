@@ -22,10 +22,12 @@ export class Browser {
   private _device: puppeteer.devices.Device;
   // stored in order of open
   private _pages: Page[] = [];
-  private _requests: RequestTracker = new RequestTracker();
+  private _requests: RequestTracker;
 
   // protect constructor to force using async Browser.create()
-  protected constructor() {}
+  protected constructor() {
+    this._requests = new RequestTracker();
+  }
 
   public static async create(options: BrowserCreateOptions = {}) {
     /**
@@ -44,7 +46,9 @@ export class Browser {
   }
 
   public async close(): Promise<void> {
+    this._requests.dispose();
     await this._browser.close();
+    logger.debug("Browser: closed");
   }
 
   public currentPage(): Promise<Page> {
