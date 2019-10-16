@@ -9,14 +9,22 @@ import * as xpath from "./xpath";
 export type Match = Match;
 
 // export the isomorphic (node & browser) module for node
-const { compareArrays, compareDescriptorKey, compareDescriptors } = match;
+const {
+  compareArrays,
+  compareDescriptorKey,
+  compareDescriptors,
+  countPresentKeys,
+  isNil
+} = match;
 const { waitFor, sleep } = timer;
 export {
   compareArrays,
   compareDescriptorKey,
   compareDescriptors,
-  waitFor,
-  sleep
+  countPresentKeys,
+  isNil,
+  sleep,
+  waitFor
 };
 
 // export the web module for the browser

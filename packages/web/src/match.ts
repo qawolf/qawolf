@@ -31,10 +31,6 @@ const strongMatchKeys: (keyof ElementDescriptor)[] = [
   "textContent"
 ];
 
-const isNil = (value: any): boolean => {
-  return typeof value === "undefined" || value === null;
-};
-
 export const compareArrays = (
   base?: string[] | null,
   compare?: string[] | null
@@ -85,6 +81,23 @@ export const compareDescriptors = (
   return matches;
 };
 
+export const countPresentKeys = (descriptor: ElementDescriptor): number => {
+  const presentKeys = Object.keys(descriptor).filter(
+    (key: keyof ElementDescriptor) => {
+      return !isNil(descriptor[key]);
+    }
+  );
+
+  if (!presentKeys.length) {
+    throw new Error(`No keys with truthy value in descriptor: ${descriptor}`);
+  }
+  return presentKeys.length;
+};
+
+export const isNil = (value?: any): boolean => {
+  return typeof value === "undefined" || value === null;
+};
+
 export const isSelectValueAvailable = (
   element: HTMLElement,
   value?: string | null
@@ -111,6 +124,7 @@ export const matchElements = ({
   requireStrongMatch = false
 }: MatchArgs): Match[] => {
   const matches: Match[] = [];
+  const maxPossibleMatches = countPresentKeys(target);
 
   elements.forEach(element => {
     const descriptor = getDescriptor(element, dataAttribute);
@@ -121,8 +135,7 @@ export const matchElements = ({
       strongMatchKeys.includes(m.key)
     );
 
-    const majorityMatch =
-      targetMatches.length / Object.keys(target).length > 0.5;
+    const majorityMatch = targetMatches.length / maxPossibleMatches > 0.5;
 
     // only consider a match if it matches a strong match key
     // or a majority of the other keys
