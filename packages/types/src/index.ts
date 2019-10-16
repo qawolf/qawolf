@@ -11,6 +11,7 @@ export type BrowserStep = {
 };
 
 export type ElementDescriptor = {
+  ariaLabel?: string | null;
   classList?: string[] | null;
   dataValue?: string | null;
   href?: string | null;
@@ -23,6 +24,7 @@ export type ElementDescriptor = {
   placeholder?: string | null;
   tagName?: string | null;
   textContent?: string | null;
+  title?: string | null;
   xpath?: string | null;
 };
 
