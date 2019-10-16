@@ -14,7 +14,7 @@ describe("isSelectValueAvailable", () => {
 
   afterAll(() => browser.close());
 
-  test("returns true if value not specified", async () => {
+  it("returns true if value not specified", async () => {
     const isAvailable = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const dropdown = document.getElementById("dropdown")!;
@@ -25,7 +25,7 @@ describe("isSelectValueAvailable", () => {
     expect(isAvailable).toBe(true);
   });
 
-  test("returns true if element not select", async () => {
+  it("returns true if element not select", async () => {
     const isAvailable = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const h3 = document.getElementsByTagName("h3")[0]!;
@@ -36,7 +36,7 @@ describe("isSelectValueAvailable", () => {
     expect(isAvailable).toBe(true);
   });
 
-  test("returns true if specified value is option in select", async () => {
+  it("returns true if specified value is option in select", async () => {
     const isAvailable = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const dropdown = document.getElementById("dropdown")!;
@@ -47,7 +47,7 @@ describe("isSelectValueAvailable", () => {
     expect(isAvailable).toBe(true);
   });
 
-  test("returns false if specified value is not option in select", async () => {
+  it("returns false if specified value is not option in select", async () => {
     const isAvailable = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const dropdown = document.getElementById("dropdown")!;
