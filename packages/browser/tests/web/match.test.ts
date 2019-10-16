@@ -1,3 +1,4 @@
+import { Page } from "puppeteer";
 import { CONFIG } from "@qawolf/config";
 import {
   compareArrays,
@@ -116,6 +117,62 @@ describe("compareDescriptors", () => {
         { id: "bobcat", labels: ["bobcat"], tagName: "div" }
       )
     ).toEqual([]);
+  });
+});
+
+describe("isSelectValueAvailable", () => {
+  let browser: Browser;
+  let page: Page;
+
+  beforeAll(async () => {
+    browser = await Browser.create({ url: `${CONFIG.testUrl}dropdown` });
+    page = await browser.currentPage();
+  });
+
+  afterAll(() => browser.close());
+
+  test("returns true if value not specified", async () => {
+    const isAvailable = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      const dropdown = document.getElementById("dropdown")!;
+
+      return qawolf.match.isSelectValueAvailable(dropdown);
+    });
+
+    expect(isAvailable).toBe(true);
+  });
+
+  test("returns true if element not select", async () => {
+    const isAvailable = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      const h3 = document.getElementsByTagName("h3")[0]!;
+
+      return qawolf.match.isSelectValueAvailable(h3, "2");
+    });
+
+    expect(isAvailable).toBe(true);
+  });
+
+  test("returns true if specified value is option in select", async () => {
+    const isAvailable = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      const dropdown = document.getElementById("dropdown")!;
+
+      return qawolf.match.isSelectValueAvailable(dropdown, "2");
+    });
+
+    expect(isAvailable).toBe(true);
+  });
+
+  test("returns false if specified value is not option in select", async () => {
+    const isAvailable = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      const dropdown = document.getElementById("dropdown")!;
+
+      return qawolf.match.isSelectValueAvailable(dropdown, "11");
+    });
+
+    expect(isAvailable).toBe(false);
   });
 });
 
@@ -332,6 +389,40 @@ describe("topMatch", () => {
     await browser.close();
   });
 
+  it("returns null if top match found but select value not available", async () => {
+    const browser = await Browser.create({ url: `${CONFIG.testUrl}dropdown` });
+    const page = await browser.currentPage();
+
+    const result = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+
+      const collection = document.querySelectorAll("select");
+      const elements: HTMLElement[] = [];
+
+      for (let i = 0; i < collection.length; i++) {
+        elements.push(collection[i] as HTMLElement);
+      }
+
+      const match = qawolf.match.topMatch({
+        dataAttribute: null,
+        target: { id: "dropdown", tagName: "select" },
+        elements,
+        value: "11"
+      });
+
+      if (!match) return null;
+      return {
+        element: qawolf.xpath.getXpath(match.element),
+        targetMatches: match.targetMatches,
+        value: match.value
+      };
+    });
+
+    expect(result).toBeNull();
+
+    await browser.close();
+  });
+
   it("returns top match if one found", async () => {
     const browser = await Browser.create({ url: `${CONFIG.testUrl}login` });
     const page = await browser.currentPage();
@@ -364,6 +455,47 @@ describe("topMatch", () => {
       element: "//*[@id='username']",
       targetMatches: [
         { key: "labels", percent: 100 },
+        { key: "tagName", percent: 100 }
+      ],
+      value: 200
+    });
+
+    await browser.close();
+  });
+
+  it("returns top match if select value available", async () => {
+    const browser = await Browser.create({ url: `${CONFIG.testUrl}dropdown` });
+    const page = await browser.currentPage();
+
+    const result = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+
+      const collection = document.querySelectorAll("select");
+      const elements: HTMLElement[] = [];
+
+      for (let i = 0; i < collection.length; i++) {
+        elements.push(collection[i] as HTMLElement);
+      }
+
+      const match = qawolf.match.topMatch({
+        dataAttribute: null,
+        target: { id: "dropdown", tagName: "select" },
+        elements,
+        value: "2"
+      });
+
+      if (!match) return null;
+      return {
+        element: qawolf.xpath.getXpath(match.element),
+        targetMatches: match.targetMatches,
+        value: match.value
+      };
+    });
+
+    expect(result).toEqual({
+      element: "//*[@id='dropdown']",
+      targetMatches: [
+        { key: "id", percent: 100 },
         { key: "tagName", percent: 100 }
       ],
       value: 200

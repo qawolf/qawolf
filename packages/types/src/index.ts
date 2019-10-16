@@ -37,6 +37,7 @@ export type Locator = {
   dataAttribute: string | null;
   target: ElementDescriptor;
   timeoutMs: number;
+  value?: string | null;
 };
 
 export type Size = "desktop" | "tablet" | "mobile";

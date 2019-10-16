@@ -74,7 +74,8 @@ export class Browser {
         action: step.action,
         dataAttribute: CONFIG.dataAttribute,
         target: step.target,
-        timeoutMs: CONFIG.locatorTimeoutMs
+        timeoutMs: CONFIG.locatorTimeoutMs,
+        value: step.value
       } as Serializable
     );
 
