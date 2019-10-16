@@ -79,6 +79,7 @@ describe("getDescriptor", () => {
     });
 
     expect(inputDescriptor).toMatchObject({
+      ariaLabel: null,
       classList: null,
       dataValue: "user",
       href: null,
@@ -89,12 +90,15 @@ describe("getDescriptor", () => {
       name: "username",
       placeholder: null,
       tagName: "input",
-      textContent: null
+      textContent: null,
+      title: null
     });
     expect(inputDescriptor!.parentText).toContain("username");
 
     const headerDescriptor = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
+      const h2 = document.getElementsByTagName("h2")[0]!;
+      h2.setAttribute("aria-label", "header");
 
       return qawolf.element.getDescriptor(
         document.getElementsByTagName("h2")[0],
@@ -103,6 +107,7 @@ describe("getDescriptor", () => {
     });
 
     expect(headerDescriptor).toMatchObject({
+      ariaLabel: "header",
       classList: null,
       dataValue: null,
       href: null,
@@ -113,12 +118,15 @@ describe("getDescriptor", () => {
       name: null,
       placeholder: null,
       tagName: "h2",
-      textContent: "login page"
+      textContent: "login page",
+      title: null
     });
     expect(headerDescriptor!.parentText).toContain("login page");
 
     const buttonDescriptor = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
+      const button = document.getElementsByTagName("button")[0]!;
+      button.setAttribute("title", "some-title");
 
       return qawolf.element.getDescriptor(
         document.getElementsByTagName("button")[0],
@@ -127,11 +135,13 @@ describe("getDescriptor", () => {
     });
 
     expect(buttonDescriptor).toMatchObject({
+      ariaLabel: null,
       classList: ["radius"],
       iconContent: ["fa", "fa-2x", "fa-sign-in"],
       inputType: "submit",
       tagName: "button",
-      textContent: "login"
+      textContent: "login",
+      title: "some-title"
     });
   });
 });
