@@ -14,6 +14,7 @@ export type ElementDescriptor = {
   classList?: string[] | null;
   dataValue?: string | null;
   href?: string | null;
+  iconContent?: string[] | null;
   id?: string | null;
   inputType?: string | null;
   labels?: string[] | null;

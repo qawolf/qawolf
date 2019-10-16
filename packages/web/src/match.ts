@@ -24,9 +24,10 @@ export type Match = {
 };
 
 const strongMatchKeys: (keyof ElementDescriptor)[] = [
+  "iconContent",
   "id",
-  "name",
   "labels",
+  "name",
   "placeholder",
   "textContent"
 ];
