@@ -190,6 +190,7 @@ describe("getDescriptor", () => {
       classList: null,
       dataValue: "user",
       href: null,
+      iconContent: null,
       id: "username",
       inputType: "text",
       labels: ["username"],
@@ -213,6 +214,7 @@ describe("getDescriptor", () => {
       classList: null,
       dataValue: null,
       href: null,
+      iconContent: null,
       id: null,
       inputType: null,
       labels: null,
@@ -222,5 +224,60 @@ describe("getDescriptor", () => {
       textContent: "login page"
     });
     expect(headerDescriptor!.parentText).toContain("login page");
+
+    const buttonDescriptor = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+
+      return qawolf.element.getDescriptor(
+        document.getElementsByTagName("button")[0],
+        null
+      );
+    });
+
+    expect(buttonDescriptor).toMatchObject({
+      classList: ["radius"],
+      iconContent: ["fa", "fa-2x", "fa-sign-in"],
+      inputType: "submit",
+      tagName: "button",
+      textContent: "login"
+    });
+  });
+});
+
+describe("getIconContent", () => {
+  it("returns icon content on i tag", async () => {
+    const iconContent = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+
+      return qawolf.element.getIconContent(
+        document.getElementsByTagName("i")[0]
+      );
+    });
+
+    expect(iconContent).toEqual(["fa", "fa-2x", "fa-sign-in"]);
+  });
+
+  it("returns child icon content", async () => {
+    const iconContent = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+
+      return qawolf.element.getIconContent(
+        document.getElementsByTagName("button")[0]
+      );
+    });
+
+    expect(iconContent).toEqual(["fa", "fa-2x", "fa-sign-in"]);
+  });
+
+  it("returns null if no icon content", async () => {
+    const iconContent = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+
+      return qawolf.element.getIconContent(
+        document.getElementsByTagName("input")[0]
+      );
+    });
+
+    expect(iconContent).toBeNull();
   });
 });
