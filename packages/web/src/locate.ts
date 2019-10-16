@@ -50,7 +50,8 @@ export const waitForElement = async ({
   action,
   dataAttribute,
   target,
-  timeoutMs
+  timeoutMs,
+  value
 }: Locator) => {
   if (dataAttribute && target.dataValue) {
     console.log(
@@ -63,7 +64,7 @@ export const waitForElement = async ({
         dataValue: target.dataValue!
       });
 
-      const match = topMatch({ dataAttribute, target, elements });
+      const match = topMatch({ dataAttribute, target, elements, value });
       if (match) return match.element;
 
       return null;
@@ -77,14 +78,15 @@ export const waitForElement = async ({
       dataAttribute,
       target,
       elements,
-      requireStrongMatch: true
+      requireStrongMatch: true,
+      value
     });
   }, timeoutMs);
   if (strongMatch) return strongMatch.element;
 
   console.log("no strong match found before timeout, choosing top weak match");
   const elements = queryActionElements(action);
-  const match = topMatch({ dataAttribute, target, elements });
+  const match = topMatch({ dataAttribute, target, elements, value });
   if (match) return match.element;
 
   return null;
