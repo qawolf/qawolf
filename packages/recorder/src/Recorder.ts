@@ -4,28 +4,30 @@ import { sleep } from "@qawolf/web";
 import { spawn, ChildProcessWithoutNullStreams } from "child_process";
 import { ensureDir } from "fs-extra";
 import { resolve } from "path";
+import { createGif } from "./createGif";
 
 export class Recorder {
   /**
    * Records the x11 display with ffmpeg in a child process.
    */
+  private _closed: boolean = false;
   private _ffmpeg: ChildProcessWithoutNullStreams;
-  private _stopped: boolean = false;
+  private _gifPath: string;
   private _videoPath: string;
 
   protected constructor(savePath: string) {
+    logger.debug(`Recorder: recording to ${savePath}`);
+    this._gifPath = `${savePath}/video.gif`;
     this._videoPath = `${savePath}/video.mp4`;
 
     this._ffmpeg = spawn("ffmpeg", this.buildArgs());
 
     this._ffmpeg.stdout.on("data", function(data) {
-      console.log("data", data.toString());
+      logger.debug(`ffmpeg: ${data.toString()}`);
     });
+
     this._ffmpeg.stderr.on("data", function(data) {
-      console.log("error", data.toString());
-    });
-    this._ffmpeg.on("close", function() {
-      console.log("finished");
+      logger.debug(`ffmpeg: ${data.toString()}`);
     });
   }
 
@@ -58,7 +60,7 @@ export class Recorder {
       // input
       "-i",
       //:display+x,y offset
-      ":1.0+0,0",
+      `${CONFIG.display}+0,0`,
       // overwrite output
       "-y",
       // balance high quality and good compression https://superuser.com/a/582327/856890
@@ -78,21 +80,21 @@ export class Recorder {
   }
 
   public async stop() {
-    if (this._stopped) throw new Error("Recorder already stopped.");
-    this._stopped = true;
+    if (this._closed) throw new Error("Recorder already stopped.");
+    this._closed = true;
 
     logger.debug(`Recorder: stopping`);
 
-    // stop and finish recorder
-    // from https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/662#issuecomment-278375650
-    this._ffmpeg.stdin.write("q");
+    return new Promise(resolve => {
+      this._ffmpeg.on("close", async () => {
+        logger.debug(`Recorder: stopped`);
+        await createGif(this._videoPath, this._gifPath);
+        resolve();
+      });
 
-    // give ffmpeg time to finalize
-    await sleep(100);
-    this._ffmpeg.kill("SIGTERM");
-
-    // ensure ffmpeg is killed
-    await sleep(2000);
-    logger.debug(`Recorder: stopped`);
+      // stop and finish recorder
+      // from https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/662#issuecomment-278375650
+      this._ffmpeg.stdin.write("q");
+    });
   }
 }

@@ -16,7 +16,7 @@ jobs:
       - name: Test
         uses: ./
         with:
-          args: "cd $QAWOLF_DIR && npm test"
+          args: "cd $QAWOLF_DIR && npm test && npm test:linux"
         env:
           # needed for jest-environment test
           QAW_ENVIRONMENT_URL: http://theinternet:5000/
