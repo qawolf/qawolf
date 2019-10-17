@@ -1,6 +1,5 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { sleep } from "@qawolf/web";
 import { spawn, ChildProcessWithoutNullStreams } from "child_process";
 import { ensureDir } from "fs-extra";
 import { resolve } from "path";
@@ -16,7 +15,7 @@ export class Recorder {
   private _videoPath: string;
 
   protected constructor(savePath: string) {
-    logger.debug(`Recorder: recording to ${savePath}`);
+    logger.verbose(`Recorder: recording to ${savePath}`);
     this._gifPath = `${savePath}/video.gif`;
     this._videoPath = `${savePath}/video.mp4`;
 
@@ -36,6 +35,11 @@ export class Recorder {
   }
 
   public static async start(savePath: string) {
+    if (!CONFIG.docker) {
+      logger.error(`Recorder: disabled outside of qawolf docker`);
+      return null;
+    }
+
     const path = resolve(savePath);
     await ensureDir(path);
 
@@ -80,14 +84,17 @@ export class Recorder {
   }
 
   public async stop() {
-    if (this._closed) throw new Error("Recorder already stopped.");
-    this._closed = true;
+    if (this._closed) {
+      logger.error("Recorder already stopped");
+      return;
+    }
 
-    logger.debug(`Recorder: stopping`);
+    this._closed = true;
+    logger.verbose("Recorder: stopping");
 
     return new Promise(resolve => {
       this._ffmpeg.on("close", async () => {
-        logger.debug(`Recorder: stopped`);
+        logger.verbose("Recorder: stopped");
         await createGif(this._videoPath, this._gifPath);
         resolve();
       });

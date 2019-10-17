@@ -12,7 +12,7 @@ it("records a video and gif", async () => {
   const tempDir = await makeTempDir();
   const recorder = await Recorder.start(tempDir);
   await sleep(1000);
-  await recorder.stop();
+  await recorder!.stop();
   expect(await pathExists(`${tempDir}/video.mp4`)).toBeTruthy();
   expect(await pathExists(`${tempDir}/video.gif`)).toBeTruthy();
   await remove(tempDir);

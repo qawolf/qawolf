@@ -19,11 +19,13 @@ export const CONFIG = {
   chromeExecutablePath: process.env.QAW_CHROME_EXECUTABLE_PATH,
   dataAttribute: process.env.QAW_DATA_ATTRIBUTE || null,
   display: process.env.DISPLAY || ":1.0",
+  docker: parseBool(process.env.QAW_DOCKER),
   headless: parseBool(process.env.QAW_HEADLESS),
   locatorTimeoutMs: parseNumber(process.env.QAW_LOCATOR_TIMEOUT_MS, 30000),
   logLevel: process.env.QAW_LOG_LEVEL,
   logPath: process.env.QAW_LOG_PATH,
   serial: parseBool(process.env.QAW_SERIAL),
   sleepMs: parseNumber(process.env.QAW_SLEEP_MS, 0),
-  testUrl
+  testUrl,
+  videoPath: process.env.QAW_VIDEO_PATH
 };

@@ -27,6 +27,7 @@
   "dependencies": {
     "@qawolf/browser": "0.3.0",
     "@qawolf/config": "0.3.0",
+    "@qawolf/recorder": "0.3.0",
     "@qawolf/web": "0.3.0"
   },
   "devDependencies": {
