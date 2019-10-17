@@ -8,6 +8,7 @@ export const buildOptions = (device: Device) => {
   const launchOptions: LaunchOptions = {
     args: [
       "--disable-dev-shm-usage",
+      "--disable-infobars",
       "--no-default-browser-check",
       `--window-size=${device.viewport.width},${device.viewport.height}`
     ],

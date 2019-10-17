@@ -1,0 +1,35 @@
+{
+  "name": "@qawolf/recorder",
+  "description": "recorder used in qawolf docker",
+  "version": "0.3.0",
+  "license": "BSD-3.0",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc -b ./tsconfig.package.json",
+    "prepublish": "npm run build",
+    "test:linux": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qawolf/qawolf.git"
+  },
+  "bugs": {
+    "url": "https://github.com/qawolf/qawolf/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@qawolf/config": "0.3.0",
+    "@qawolf/logger": "0.3.0",
+    "@qawolf/web": "0.3.0"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0"
+  }
+}
