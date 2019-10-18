@@ -1,7 +1,7 @@
 {
   "name": "qawolf",
   "description": "Effortless browser tests",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
