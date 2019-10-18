@@ -10,18 +10,13 @@ RUN apt-get -qqy update && \
     wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
     sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' && \
     apt-get update && apt-get -y install google-chrome-stable && \
-    # Install opencv dependencies
-    apt-get install -y libsm6 libxext6 libxrender-dev \
-    # Install ffmpeg, nano, java, xvfb
-    ffmpeg \
+    # Install ffmpeg, nano, xvfb
+    apt-get install -y ffmpeg \
     nano \
-    netcat \
-    openjdk-8-jre-headless \
-    xvfb \
     xfonts-100dpi \
     xfonts-75dpi \
     xfonts-scalable \
-    xfonts-cyrillic && \
+    xvfb && \
     # Free up space
     apt-get clean
 
