@@ -4,13 +4,18 @@ FROM node:12.6.0-stretch
 ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn
 
 RUN apt-get -qqy update && \
-    # Install chrome
-    apt-get install -y wget && \
+    # https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#running-puppeteer-in-docker
+    # Install latest chrome dev package, which installs the necessary libs to
+    # make the bundled version of Chromium that Puppeteer installs work.
+    apt-get install -y --no-install-recommends wget && \
     wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
-    echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list && \
-    apt-get update && apt-get -y install google-chrome-stable && \
+    sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends google-chrome-unstable fonts-ipafont-gothic fonts-freefont-ttf \
+    # https://github.com/GoogleChrome/puppeteer/issues/1598#issuecomment-473436669
+    # libatk-bridge2.0-0 libgtk-3.0
     # Install opencv dependencies
-    apt-get install -y libsm6 libxext6 libxrender-dev \
+    libsm6 libxext6 libxrender-dev \
     # Install ffmpeg, nano, java, xvfb
     ffmpeg \
     nano \
@@ -28,8 +33,6 @@ RUN apt-get -qqy update && \
 # WORKDIR will be replaced by github action volume
 ENV QAWOLF_DIR "/root/qawolf"
 
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
-
 # Copy and build qawolf
 COPY . ${QAWOLF_DIR}/.
 
@@ -39,8 +42,7 @@ COPY . ${QAWOLF_DIR}/.
 RUN cd ${QAWOLF_DIR} && npm run bootstrap
 
 # Set default env variables
-ENV QAW_CHROME_EXECUTABLE_PATH="google-chrome-stable" \
-    QAW_CHROME_OFFSET_Y=72 \
+ENV QAW_CHROME_OFFSET_Y=72 \
     QAW_DOCKER="true" \
     # for recording
     QAW_DISPLAY_HEIGHT=1080 \
