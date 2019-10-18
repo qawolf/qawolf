@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/build-test",
   "description": "build qawolf test from job",
-  "version": "0.3.0",
+  "version": "0.3.4",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",

@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/recorder",
   "description": "recorder used in qawolf docker",
-  "version": "0.3.0",
+  "version": "0.3.4",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -23,8 +23,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/config": "^0.3.0",
-    "@qawolf/logger": "^0.3.0",
+    "@qawolf/config": "^0.3.4",
+    "@qawolf/logger": "^0.3.4",
     "@qawolf/web": "^0.3.0",
     "fs-extra": "^8.1.0"
   },
