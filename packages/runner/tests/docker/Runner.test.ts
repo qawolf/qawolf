@@ -23,4 +23,4 @@ it("records a video for the browser size", async () => {
 
   // 668 instead of 667 since Recorder rounds up to even numbers
   expect(runner.recorder!.size).toMatchObject({ height: 668, width: 376 });
-});
+}, 10000);
