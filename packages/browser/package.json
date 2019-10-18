@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/browser",
   "description": "qawolf browser manager",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -23,8 +23,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/config": "^0.3.4",
-    "@qawolf/logger": "^0.3.4",
+    "@qawolf/config": "^0.3.5",
+    "@qawolf/logger": "^0.3.5",
     "@qawolf/types": "^0.3.0",
     "@qawolf/web": "^0.3.0",
     "fs-extra": "^8.1.0",
