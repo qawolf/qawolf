@@ -12,7 +12,8 @@
   "scripts": {
     "build": "tsc -b ./tsconfig.package.json",
     "prepublish": "npm run build",
-    "test": "jest"
+    "test": "jest --testPathIgnorePatterns=/docker/",
+    "test:docker": "QAW_DOCKER=true jest --testRegex=\"(/tests/docker/.*.test.ts)$\""
   },
   "repository": {
     "type": "git",

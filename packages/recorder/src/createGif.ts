@@ -1,14 +1,25 @@
 import { logger } from "@qawolf/logger";
 import { spawn } from "child_process";
+import { RecordingSize } from "./types";
 
-export const createGif = (videoPath: string, gifPath: string) => {
-  logger.debug(`createGif: creating for ${videoPath} -> ${gifPath}`);
+type CreateGifOptions = {
+  gifPath: string;
+  size: RecordingSize;
+  videoPath: string;
+};
+
+export const createGif = (options: CreateGifOptions) => {
+  logger.debug(
+    `createGif: creating for ${options.videoPath} -> ${options.gifPath}`
+  );
 
   return new Promise(resolve => {
+    const shrunkHeight = Math.min(options.size.height, 640);
+
     const ffmpeg = spawn("sh", [
       "-c",
       // https://superuser.com/a/556031/856890
-      `ffmpeg -i ${videoPath} -vf "fps=10,scale=640:-1:flags=lanczos,setpts=0.25*PTS" -c:v pam -f image2pipe - | convert -delay 10 - -loop 0 -layers optimize ${gifPath}`
+      `ffmpeg -i ${options.videoPath} -vf "fps=10,scale=${shrunkHeight}:-1:flags=lanczos" -c:v pam -f image2pipe - | convert -delay 10 - -loop 0 -layers optimize ${options.gifPath}`
     ]);
 
     ffmpeg.on("close", () => {

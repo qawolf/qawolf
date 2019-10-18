@@ -12,7 +12,7 @@
   "scripts": {
     "build": "tsc -b ./tsconfig.package.json",
     "prepublish": "npm run build",
-    "test:linux": "jest"
+    "test:docker": "QAW_DOCKER=true jest"
   },
   "repository": {
     "type": "git",

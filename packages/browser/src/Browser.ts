@@ -45,6 +45,10 @@ export class Browser {
     return self;
   }
 
+  public get device() {
+    return this._device;
+  }
+
   public async close(): Promise<void> {
     this._requests.dispose();
     await this._browser.close();

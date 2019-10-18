@@ -10,7 +10,9 @@ export const buildOptions = (device: Device) => {
       "--disable-dev-shm-usage",
       "--disable-infobars",
       "--no-default-browser-check",
-      `--window-size=${device.viewport.width},${device.viewport.height}`
+      "--window-position=0,0",
+      `--window-size=${device.viewport.width + CONFIG.chromeOffsetX},${device
+        .viewport.height + CONFIG.chromeOffsetY}`
     ],
     defaultViewport: null,
     headless: CONFIG.headless,
@@ -18,6 +20,7 @@ export const buildOptions = (device: Device) => {
   };
 
   if (platform() === "linux") {
+    launchOptions!.args!.push("--disable-gpu");
     launchOptions!.args!.push("--disable-setuid-sandbox");
     launchOptions!.args!.push("--no-sandbox");
   }

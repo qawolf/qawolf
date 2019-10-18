@@ -11,8 +11,9 @@ RUN apt-get -qqy update && \
     apt-get update && apt-get -y install google-chrome-stable && \
     # Install opencv dependencies
     apt-get install -y libsm6 libxext6 libxrender-dev \
-    # Install ffmpeg, java, xvfb
+    # Install ffmpeg, nano, java, xvfb
     ffmpeg \
+    nano \
     netcat \
     openjdk-8-jre-headless \
     xvfb \
@@ -39,6 +40,7 @@ RUN cd ${QAWOLF_DIR} && npm run bootstrap
 
 # Set default env variables
 ENV QAW_CHROME_EXECUTABLE_PATH="google-chrome-stable" \
+    QAW_CHROME_OFFSET_Y=72 \
     QAW_DOCKER="true" \
     # for recording
     QAW_DISPLAY_HEIGHT=1080 \

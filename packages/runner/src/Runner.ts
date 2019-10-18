@@ -35,7 +35,19 @@ export class Runner {
     self._values = getStepValues(job);
 
     if (CONFIG.videoPath) {
-      self._recorder = await Recorder.start(`${CONFIG.videoPath}/${job.name}`);
+      const device = self._browser.device;
+
+      self._recorder = await Recorder.start({
+        offset: {
+          x: CONFIG.chromeOffsetX,
+          y: CONFIG.chromeOffsetY
+        },
+        savePath: `${CONFIG.videoPath}/${job.name}`,
+        size: {
+          height: device.viewport.height,
+          width: device.viewport.width
+        }
+      });
     }
 
     await self._browser.goto(job.url);
@@ -49,6 +61,10 @@ export class Runner {
 
   public get job() {
     return this._job;
+  }
+
+  public get recorder() {
+    return this._recorder;
   }
 
   public get values() {
