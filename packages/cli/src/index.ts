@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { buildJob } from "@qawolf/build-job";
 import { buildTest } from "@qawolf/build-test";
 import { logger } from "@qawolf/logger";
