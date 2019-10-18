@@ -1,4 +1,4 @@
-# ubuntu & node
+# node, debian stretch
 FROM node:12.6.0-stretch
 
 ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn \
@@ -40,10 +40,9 @@ RUN cd ${QAWOLF_DIR} && npm run bootstrap
 # Set default env variables
 ENV QAW_CHROME_EXECUTABLE_PATH="google-chrome-stable" \
     QAW_CHROME_OFFSET_Y=72 \
-    QAW_DOCKER="true" \
-    # for recording
     QAW_DISPLAY_HEIGHT=1080 \
     QAW_DISPLAY_WIDTH=1920 \ 
+    QAW_DOCKER="true" \
     QAW_HEADLESS="false" \
     QAW_SERIAL="true"
 

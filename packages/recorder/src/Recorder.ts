@@ -74,6 +74,9 @@ export class Recorder {
       // grab the X11 display
       "-f",
       "x11grab",
+      // hide mouse
+      "-draw_mouse",
+      "0",
       // 20 fps
       "-framerate",
       "20",
