@@ -16,18 +16,19 @@ jobs:
       - name: Test
         uses: ./
         with:
-          args: "cd $QAWOLF_DIR && npm test"
+          args: "cd $QAWOLF_DIR && npm test && npm run test:docker"
         env:
           # needed for jest-environment test
           QAW_ENVIRONMENT_URL: http://theinternet:5000/
           QAW_LOG_PATH: /github/workspace/artifacts/logs
           QAW_TEST_URL: http://theinternet:5000/
+          QAW_VIDEO_PATH: /github/workspace/artifacts
       - name: Upload Artifacts
         if: always()
         uses: actions/upload-artifact@master
         with:
-          name: logs
-          path: "./artifacts/logs"
+          name: qawolf
+          path: "./artifacts"
     services:
       theinternet:
         image: gprestes/the-internet@sha256:f741ba048b7232ef90b0f7885de7f6ac42a52a17e73dd82afc484da140398796

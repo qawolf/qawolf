@@ -6,6 +6,7 @@ import {
   scroll
 } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
+import { Recorder } from "@qawolf/recorder";
 import { BrowserStep, Job } from "@qawolf/types";
 import { sleep } from "@qawolf/web";
 import { getStepValues } from "./getStepValues";
@@ -14,6 +15,7 @@ import { getUrl } from "./getUrl";
 export class Runner {
   protected _browser: Browser;
   protected _job: Job;
+  protected _recorder: Recorder | null = null;
   protected _values: (string | undefined)[];
 
   protected constructor() {}
@@ -28,9 +30,27 @@ export class Runner {
     // replace the url w/ env variable if it exists
     job.url = getUrl(job);
 
-    self._browser = await Browser.create({ size: job.size, url: job.url });
+    self._browser = await Browser.create({ size: job.size });
     self._job = job;
     self._values = getStepValues(job);
+
+    if (CONFIG.videoPath) {
+      const device = self._browser.device;
+
+      self._recorder = await Recorder.start({
+        offset: {
+          x: CONFIG.chromeOffsetX,
+          y: CONFIG.chromeOffsetY
+        },
+        savePath: `${CONFIG.videoPath}/${job.name}`,
+        size: {
+          height: device.viewport.height,
+          width: device.viewport.width
+        }
+      });
+    }
+
+    await self._browser.goto(job.url);
 
     return self;
   }
@@ -41,6 +61,10 @@ export class Runner {
 
   public get job() {
     return this._job;
+  }
+
+  public get recorder() {
+    return this._recorder;
   }
 
   public get values() {
@@ -56,6 +80,10 @@ export class Runner {
   }
 
   public async close() {
+    if (this._recorder) {
+      await this._recorder.stop();
+    }
+
     await this._browser.close();
   }
 

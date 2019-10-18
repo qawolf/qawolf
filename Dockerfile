@@ -1,22 +1,33 @@
-FROM node:12
+# node, debian stretch
+FROM node:12.6.0-stretch
 
-RUN apt-get update && \
-    apt-get -y install xvfb gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 \
-    libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 \
-    libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 \
-    libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 \
-    libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget && \
+ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn \
+    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+
+RUN apt-get -qqy update && \
     # Install chrome
+    apt-get install -y wget && \
     wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
-    echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list && \
+    sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' && \
     apt-get update && apt-get -y install google-chrome-stable && \
-    rm -rf /var/lib/apt/lists/*
+    # Install ffmpeg, nano, xvfb
+    apt-get install -y ffmpeg \
+    nano \
+    xfonts-100dpi \
+    xfonts-75dpi \
+    xfonts-scalable \
+    xvfb && \
+    # Free up space
+    apt-get clean
+
+# disable "Chrome is being controlled by automated test software"
+# https://github.com/jitsi/jibri/issues/208#issuecomment-518285349
+# https://www.chromium.org/administrators/linux-quick-start
+RUN mkdir -p /etc/opt/chrome/policies/managed && echo "{ \"CommandLineFlagSecurityWarningsEnabled\": false }" > /etc/opt/chrome/policies/managed/managed_policies.json
 
 # Copy everything and install dependencies in a static location that is not WORKDIR
 # WORKDIR will be replaced by github action volume
 ENV QAWOLF_DIR "/root/qawolf"
-
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
 # Copy and build qawolf
 COPY . ${QAWOLF_DIR}/.
@@ -27,7 +38,12 @@ COPY . ${QAWOLF_DIR}/.
 RUN cd ${QAWOLF_DIR} && npm run bootstrap
 
 # Set default env variables
-ENV QAW_CHROME_EXECUTABLE_PATH "google-chrome-stable"
-ENV QAW_HEADLESS "true"
+ENV QAW_CHROME_EXECUTABLE_PATH="google-chrome-stable" \
+    QAW_CHROME_OFFSET_Y=72 \
+    QAW_DISPLAY_HEIGHT=1080 \
+    QAW_DISPLAY_WIDTH=1920 \ 
+    QAW_DOCKER="true" \
+    QAW_HEADLESS="false" \
+    QAW_SERIAL="true"
 
 ENTRYPOINT ["/root/qawolf/entrypoint.sh"]

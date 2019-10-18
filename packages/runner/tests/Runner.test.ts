@@ -17,4 +17,4 @@ it("runs a job", async () => {
   expect(text).toEqual(" Secure Area");
 
   await runner.close();
-});
+}, 10000);
