@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/cli",
   "description": "qawolf cli for running tests",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
