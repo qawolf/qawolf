@@ -11,8 +11,6 @@
     "static"
   ],
   "scripts": {
-    "build": "tsc -b ./tsconfig.package.json",
-    "prepublish": "npm run build",
     "test": "jest"
   },
   "repository": {

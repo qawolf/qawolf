@@ -23,6 +23,9 @@
       "path": "./logger/tsconfig.package.json"
     },
     {
+      "path": "./qawolf/tsconfig.package.json"
+    },
+    {
       "path": "./runner/tsconfig.package.json"
     },
     {

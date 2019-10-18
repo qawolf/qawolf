@@ -9,10 +9,6 @@
     "lib",
     "src"
   ],
-  "scripts": {
-    "build": "tsc -b ./tsconfig.package.json",
-    "prepublish": "npm run build"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/qawolf/qawolf.git"

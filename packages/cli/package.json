@@ -10,8 +10,6 @@
     "src"
   ],
   "scripts": {
-    "build": "tsc -b ./tsconfig.package.json",
-    "prepublish": "npm run build",
     "cli": "ts-node ./src/index"
   },
   "repository": {
@@ -36,5 +34,8 @@
   },
   "devDependencies": {
     "@qawolf/types": "0.3.0"
+  },
+  "bin": {
+    "qawolf": "lib/index.js"
   }
 }
