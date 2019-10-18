@@ -23,9 +23,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/config": "0.3.0",
-    "@qawolf/logger": "0.3.0",
-    "@qawolf/web": "0.3.0"
+    "@qawolf/config": "^0.3.0",
+    "@qawolf/logger": "^0.3.0",
+    "@qawolf/web": "^0.3.0"
   },
   "devDependencies": {
     "jest": "^24.9.0"

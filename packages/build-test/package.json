@@ -27,7 +27,7 @@
     "handlebars": "^4.4.3"
   },
   "devDependencies": {
-    "@qawolf/types": "0.3.0",
+    "@qawolf/types": "^0.3.0",
     "jest": "^24.9.0"
   }
 }

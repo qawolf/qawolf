@@ -20,7 +20,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/config": "0.3.0",
+    "@qawolf/config": "^0.3.0",
     "winston": "^3.2.1"
   }
 }

@@ -18,6 +18,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "dependencies": {}
+  }
 }

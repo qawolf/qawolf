@@ -22,10 +22,9 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {},
   "devDependencies": {
     "@qawolf/fixtures": "1.5.0",
-    "@qawolf/types": "0.3.0",
+    "@qawolf/types": "^0.3.0",
     "jest": "^24.9.0",
     "rrweb": "^0.7.24"
   }

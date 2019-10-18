@@ -20,7 +20,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/cli": "0.3.0"
+    "@qawolf/cli": "^0.3.0"
   },
   "bin": {
     "qawolf": "./lib/qawolf.js"
