@@ -8,22 +8,19 @@ export const buildOptions = (device: Device) => {
   const launchOptions: LaunchOptions = {
     args: [
       "--disable-dev-shm-usage",
-      "--disable-infobars",
       "--no-default-browser-check",
-      "--test-type",
       "--window-position=0,0",
       `--window-size=${device.viewport.width + CONFIG.chromeOffsetX},${device
         .viewport.height + CONFIG.chromeOffsetY}`
     ],
     defaultViewport: null,
-    headless: CONFIG.headless,
-    ignoreDefaultArgs: ["--enable-automation"]
+    headless: CONFIG.headless
   };
 
   if (platform() === "linux") {
     launchOptions!.args!.push("--disable-gpu");
-    launchOptions!.args!.push("--no-sandbox");
     launchOptions!.args!.push("--disable-setuid-sandbox");
+    launchOptions!.args!.push("--no-sandbox");
   }
 
   if (CONFIG.chromeExecutablePath) {
