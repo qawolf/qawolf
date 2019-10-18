@@ -20,7 +20,8 @@
     "access": "public"
   },
   "dependencies": {
-    "dotenv": "^8.1.0"
+    "dotenv": "^8.1.0",
+    "fs-extra": "^8.1.0"
   },
   "devDependencies": {
     "@types/dotenv": "^6.1.1"

@@ -24,6 +24,7 @@
     "access": "public"
   },
   "dependencies": {
+    "fs-extra": "^8.1.0",
     "handlebars": "^4.4.3"
   },
   "devDependencies": {

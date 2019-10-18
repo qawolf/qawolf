@@ -22,6 +22,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "dependencies": {
+    "lodash": "^4.17.15"
+  },
   "devDependencies": {
     "@qawolf/fixtures": "1.5.0",
     "@qawolf/types": "^0.3.0",

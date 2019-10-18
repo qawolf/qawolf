@@ -9,7 +9,7 @@
     "cli": "ts-node packages/cli/src/index.ts",
     "install:puppeteer": "node ./packages/browser/node_modules/puppeteer/install.js",
     "lint": "eslint packages --ext .ts --ignore-path .gitignore --cache",
-    "prepublish": "npm run build",
+    "prepublish": "npm run bootstrap",
     "pretest": "npm run lint",
     "test": "lerna run test --stream",
     "test:docker": "lerna run test:docker --stream",
