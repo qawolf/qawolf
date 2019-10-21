@@ -18,7 +18,7 @@ export const formatIt = (step: BrowserStep): string => {
     step.target.tagName === "a" ? "link" : step.target.tagName || ""
   }`;
 
-  const label = step.target.labels ? step.target.labels[0] : "";
+  const label = step.target.labels ? step.target.labels.join(" ") : "";
 
   const targetName =
     label ||
@@ -27,9 +27,12 @@ export const formatIt = (step: BrowserStep): string => {
     step.target.textContent ||
     step.target.id ||
     "";
-  const truncatedTargetName = targetName.trim().substring(0, 20); // ensure not too long
+  let truncatedTargetName = targetName.trim();
+  if (truncatedTargetName.length > 40) {
+    truncatedTargetName = `${truncatedTargetName.substring(0, 40)}...`;
+  }
 
-  return `can ${step.action}${stepValue} ${truncatedTargetName} ${targetTagName}`;
+  return `can ${step.action}${stepValue} "${truncatedTargetName}" ${targetTagName}`;
 };
 
 export const formatMethod = (action: Action, index: number): string => {

@@ -1,12 +1,41 @@
 import { BrowserStep } from "@qawolf/types";
 // import directly since fixtures are not exported
 import { loginWorkflow } from "../../build-workflow/fixtures/loginWorkflow";
-import { buildTest, formatStep } from "../src/buildTest";
+import {
+  buildTest,
+  formatIt,
+  formatMethod,
+  formatStep
+} from "../src/buildTest";
 
 describe("buildTest", () => {
   it("builds a test from a workflow", async () => {
     const testString = buildTest(loginWorkflow);
     expect(testString).toMatchSnapshot();
+  });
+});
+
+describe("formatIt", () => {
+  it("formats labels", () => {
+    const step: BrowserStep = {
+      action: "input",
+      index: 0,
+      target: {
+        labels: ["name", "username"],
+        name: "other",
+        tagName: "input"
+      }
+    };
+
+    expect(formatIt(step)).toBe('can input "name username" input');
+  });
+});
+
+describe("formatMethod", () => {
+  it("throws error if invalid step action", () => {
+    expect(() => {
+      formatMethod("drag" as any, 0);
+    }).toThrowError();
   });
 });
 
