@@ -10,6 +10,7 @@ import { outputFile, outputJson, readJson } from "fs-extra";
 import { snakeCase } from "lodash";
 import { resolve } from "path";
 import { runTest } from "./runTest";
+import { parseUrl, getUrlRoot } from "./utils";
 
 program
   .command("build <eventsPath> <name>")
@@ -32,6 +33,16 @@ program
     const test = buildTest(workflow);
     await outputFile(destTestPath, test, "utf8");
 
+    process.exit(0);
+  });
+
+program
+  .command("record <url> [name]")
+  .description("record a workflow and create a test")
+  .action(async (urlArgument, optionalName) => {
+    const url = parseUrl(urlArgument);
+    const name = optionalName || getUrlRoot(url);
+    logger.verbose(`record url "${url.href}" and create test "${name}"`);
     process.exit(0);
   });
 
