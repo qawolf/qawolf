@@ -21,6 +21,9 @@ it("records a video for the browser size", async () => {
   expect(await pathExists(`${savePath}/video.gif`)).toBeTruthy();
   await remove(CONFIG.videoPath);
 
-  // 668 instead of 667 since Recorder rounds up to even numbers
-  expect(runner.recorder!.size).toMatchObject({ height: 668, width: 376 });
+  // 668 instead of 667 since it rounds up to even numbers
+  expect(runner.screenCapture!.size).toMatchObject({
+    height: 668,
+    width: 376
+  });
 }, 10000);

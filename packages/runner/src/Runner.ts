@@ -6,7 +6,7 @@ import {
   scroll
 } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
-import { Recorder } from "@qawolf/recorder";
+import { ScreenCapture } from "@qawolf/screen";
 import { BrowserStep, Job } from "@qawolf/types";
 import { sleep } from "@qawolf/web";
 import { getStepValues } from "./getStepValues";
@@ -15,7 +15,7 @@ import { getUrl } from "./getUrl";
 export class Runner {
   protected _browser: Browser;
   protected _job: Job;
-  protected _recorder: Recorder | null = null;
+  protected _screenCapture: ScreenCapture | null = null;
   protected _values: (string | undefined)[];
 
   protected constructor() {}
@@ -37,7 +37,7 @@ export class Runner {
     if (CONFIG.videoPath) {
       const device = self._browser.device;
 
-      self._recorder = await Recorder.start({
+      self._screenCapture = await ScreenCapture.start({
         offset: {
           x: CONFIG.chromeOffsetX,
           y: CONFIG.chromeOffsetY
@@ -63,8 +63,8 @@ export class Runner {
     return this._job;
   }
 
-  public get recorder() {
-    return this._recorder;
+  public get screenCapture() {
+    return this._screenCapture;
   }
 
   public get values() {
@@ -80,8 +80,8 @@ export class Runner {
   }
 
   public async close() {
-    if (this._recorder) {
-      await this._recorder.stop();
+    if (this._screenCapture) {
+      await this._screenCapture.stop();
     }
 
     await this._browser.close();

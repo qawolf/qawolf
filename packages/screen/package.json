@@ -1,6 +1,6 @@
 {
-  "name": "@qawolf/recorder",
-  "description": "recorder used in qawolf docker",
+  "name": "@qawolf/screen",
+  "description": "qawolf screen capture",
   "version": "0.3.5",
   "license": "BSD-3.0",
   "main": "./lib/index.js",

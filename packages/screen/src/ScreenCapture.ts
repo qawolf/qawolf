@@ -7,13 +7,13 @@ import { resolve } from "path";
 import { createGif } from "./createGif";
 import { RecordingOffset, RecordingSize } from "./types";
 
-type RecorderStartOptions = {
+type ScreenCaptureStartOptions = {
   offset?: RecordingOffset;
   savePath: string;
   size: RecordingSize;
 };
 
-export class Recorder {
+export class ScreenCapture {
   /**
    * Records the x11 display with ffmpeg in a child process.
    */
@@ -24,7 +24,7 @@ export class Recorder {
   private _videoPath: string;
   private _size: RecordingSize;
 
-  protected constructor(options: RecorderStartOptions) {
+  protected constructor(options: ScreenCaptureStartOptions) {
     this._gifPath = `${options.savePath}/video.gif`;
     this._videoPath = `${options.savePath}/video.mp4`;
 
@@ -50,9 +50,9 @@ export class Recorder {
     return this._videoPath;
   }
 
-  public static async start(options: RecorderStartOptions) {
+  public static async start(options: ScreenCaptureStartOptions) {
     if (!CONFIG.docker) {
-      logger.error(`Recorder: disabled outside of qawolf docker`);
+      logger.error(`ScreenCapture: disabled outside of qawolf docker`);
       return null;
     }
 
@@ -60,13 +60,13 @@ export class Recorder {
     options.size.height = makeEven(options.size.height);
     options.size.width = makeEven(options.size.width);
 
-    logger.verbose(`Recorder: start ${JSON.stringify(options)}`);
+    logger.verbose(`ScreenCapture: start ${JSON.stringify(options)}`);
 
     const path = resolve(options.savePath);
     await ensureDir(path);
 
-    const recorder = new Recorder(options);
-    return recorder;
+    const screenCapture = new ScreenCapture(options);
+    return screenCapture;
   }
 
   private buildArgs() {
@@ -112,11 +112,11 @@ export class Recorder {
     }
 
     this._closed = true;
-    logger.verbose("Recorder: stopping");
+    logger.verbose("ScreenCapture: stopping");
 
     return new Promise(async resolve => {
       this._ffmpeg.on("close", async () => {
-        logger.verbose("Recorder: stopped");
+        logger.verbose("ScreenCapture: stopped");
         await createGif({
           gifPath: this._gifPath,
           size: this._size,
@@ -128,7 +128,7 @@ export class Recorder {
       // give ffmpeg time to process last frames
       await sleep(500);
 
-      // stop and finish recorder
+      // stop and finish ScreenCapture
       // from https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/662#issuecomment-278375650
       this._ffmpeg.stdin.write("q");
     });
