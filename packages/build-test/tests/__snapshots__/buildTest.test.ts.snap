@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`buildTest builds a test from a job 1`] = `
+exports[`buildTest builds a test from a workflow 1`] = `
 "describe('login', () => {
   it('can scroll down', async () => {
     await scroll(steps[0]);

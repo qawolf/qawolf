@@ -1,4 +1,4 @@
-import { BrowserStep, Job } from "@qawolf/types";
+import { BrowserStep, Workflow } from "@qawolf/types";
 
 export const loginSteps: BrowserStep[] = [
   {
@@ -82,7 +82,7 @@ export const loginSteps: BrowserStep[] = [
   }
 ];
 
-export const loginJob: Job = {
+export const loginWorkflow: Workflow = {
   name: "login",
   size: "desktop",
   steps: loginSteps,

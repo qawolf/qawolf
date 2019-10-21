@@ -1,6 +1,6 @@
 {
-  "name": "@qawolf/build-job",
-  "description": "build qawolf job from events",
+  "name": "@qawolf/build-workflow",
+  "description": "build qawolf workflow from events",
   "version": "0.3.4",
   "license": "BSD-3.0",
   "main": "./lib/index.js",

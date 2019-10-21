@@ -1,4 +1,4 @@
-import { Job, Size } from "@qawolf/types";
+import { Size, Workflow } from "@qawolf/types";
 import { mousemoveData } from "rrweb/typings/types";
 import { buildSteps } from "./buildSteps";
 import { QAEventWithTime } from "./events";
@@ -41,17 +41,17 @@ export const orderEventsByTime = (
   return orderedEvents;
 };
 
-export const buildJob = (
+export const buildWorkflow = (
   originalEvents: QAEventWithTime[],
   name: string
-): Job => {
+): Workflow => {
   const url = findUrl(originalEvents);
   const size = findSize(originalEvents);
 
   const events = orderEventsByTime(originalEvents);
   const steps = buildSteps(events);
 
-  const job = { name, size, steps, url };
+  const workflow = { name, size, steps, url };
 
-  return job;
+  return workflow;
 };

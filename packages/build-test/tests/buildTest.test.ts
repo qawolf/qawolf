@@ -1,12 +1,11 @@
+import { BrowserStep } from "@qawolf/types";
+// import directly since fixtures are not exported
+import { loginWorkflow } from "../../build-workflow/fixtures/loginWorkflow";
 import { buildTest, formatStep } from "../src/buildTest";
 
-// import directly since fixtures are note exported from @qawolf/build-job
-import { loginJob } from "../../build-job/fixtures/loginJob";
-import { BrowserStep } from "@qawolf/types";
-
 describe("buildTest", () => {
-  it("builds a test from a job", async () => {
-    const testString = buildTest(loginJob);
+  it("builds a test from a workflow", async () => {
+    const testString = buildTest(loginWorkflow);
     expect(testString).toMatchSnapshot();
   });
 });

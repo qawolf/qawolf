@@ -7,20 +7,20 @@ import {
 } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { ScreenCapture } from "@qawolf/screen";
-import { BrowserStep, Job } from "@qawolf/types";
+import { BrowserStep, Workflow } from "@qawolf/types";
 import { sleep } from "@qawolf/web";
 import { getStepValues } from "./getStepValues";
 import { getUrl } from "./getUrl";
 
 export class Runner {
   protected _browser: Browser;
-  protected _job: Job;
   protected _screenCapture: ScreenCapture | null = null;
   protected _values: (string | undefined)[];
+  protected _workflow: Workflow;
 
   protected constructor() {}
 
-  public static async create(job: Job) {
+  public static async create(workflow: Workflow) {
     /**
      * An async constructor for Runner.
      */
@@ -28,11 +28,11 @@ export class Runner {
     const self = new Runner();
 
     // replace the url w/ env variable if it exists
-    job.url = getUrl(job);
+    workflow.url = getUrl(workflow);
 
-    self._browser = await Browser.create({ size: job.size });
-    self._job = job;
-    self._values = getStepValues(job);
+    self._browser = await Browser.create({ size: workflow.size });
+    self._values = getStepValues(workflow);
+    self._workflow = workflow;
 
     if (CONFIG.videoPath) {
       const device = self._browser.device;
@@ -42,7 +42,7 @@ export class Runner {
           x: CONFIG.chromeOffsetX,
           y: CONFIG.chromeOffsetY
         },
-        savePath: `${CONFIG.videoPath}/${job.name}`,
+        savePath: `${CONFIG.videoPath}/${workflow.name}`,
         size: {
           height: device.viewport.height,
           width: device.viewport.width
@@ -50,7 +50,7 @@ export class Runner {
       });
     }
 
-    await self._browser.goto(job.url);
+    await self._browser.goto(workflow.url);
 
     return self;
   }
@@ -59,8 +59,8 @@ export class Runner {
     return this._browser;
   }
 
-  public get job() {
-    return this._job;
+  public get workflow() {
+    return this._workflow;
   }
 
   public get screenCapture() {
@@ -96,7 +96,7 @@ export class Runner {
   }
 
   public async run() {
-    for (let step of this._job.steps) {
+    for (let step of this._workflow.steps) {
       await this.runStep(step);
     }
   }

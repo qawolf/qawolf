@@ -1,4 +1,5 @@
 import { loadEvents } from "@qawolf/fixtures";
+import { loginSteps } from "../fixtures/loginWorkflow";
 import {
   buildClickSteps,
   buildInputStep,
@@ -13,7 +14,6 @@ import {
   isScrollEvent
 } from "../src/buildSteps";
 import { QAEventWithTime } from "../src/events";
-import { loginSteps } from "../fixtures/loginJob";
 
 describe("buildClickSteps", () => {
   test("returns steps for all clicks if no next sequence", () => {

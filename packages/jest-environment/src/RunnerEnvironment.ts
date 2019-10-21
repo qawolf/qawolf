@@ -2,22 +2,22 @@ import { EnvironmentContext } from "@jest/environment";
 import { Config } from "@jest/types";
 import { logger } from "@qawolf/logger";
 import { Runner } from "@qawolf/runner";
-import { Job } from "@qawolf/types";
+import { Workflow } from "@qawolf/types";
 import { readJSON } from "fs-extra";
 import NodeEnvironment from "jest-environment-node";
 import path from "path";
 
-const loadJob = async (testPath: string) => {
+const loadWorkflow = async (testPath: string) => {
   const testName = path.basename(testPath).split(".")[0];
-  // the job should be in a sibling folder ../jobs/testName.json
-  const jobPath = path.join(
+  // the workflow should be in a sibling folder ../workflows/testName.json
+  const workflowPath = path.join(
     path.dirname(testPath),
-    "../jobs",
+    "../workflows",
     `${testName}.json`
   );
-  logger.verbose(`load job for test ${testPath} ${jobPath}`);
-  const json = await readJSON(jobPath);
-  return json as Job;
+  logger.verbose(`load workflow for test ${testPath} ${workflowPath}`);
+  const json = await readJSON(workflowPath);
+  return json as Workflow;
 };
 
 export class RunnerEnvironment extends NodeEnvironment {
@@ -32,17 +32,17 @@ export class RunnerEnvironment extends NodeEnvironment {
   async setup() {
     await super.setup();
 
-    const job = await loadJob(this._testPath);
-    const runner = await Runner.create(job);
+    const workflow = await loadWorkflow(this._testPath);
+    const runner = await Runner.create(workflow);
     this.global.runner = this._runner = runner;
 
     this.global.click = runner.click.bind(runner);
     this.global.input = runner.input.bind(runner);
     this.global.scroll = runner.scroll.bind(runner);
 
-    this.global.job = runner.job;
-    this.global.steps = runner.job.steps;
+    this.global.steps = runner.workflow.steps;
     this.global.values = runner.values;
+    this.global.workflow = runner.workflow;
 
     const browser = runner.browser;
     this.global.browser = browser;

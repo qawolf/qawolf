@@ -1,6 +1,6 @@
 import { Browser } from "@qawolf/browser";
 import { Runner } from "@qawolf/runner";
-import { BrowserStep, Job } from "@qawolf/types";
+import { BrowserStep, Workflow } from "@qawolf/types";
 import { Page } from "puppeteer";
 
 declare global {
@@ -11,9 +11,9 @@ declare global {
   function input(step: BrowserStep, value?: string): Promise<void>;
   function scroll(step: BrowserStep): Promise<void>;
 
-  const job: Job;
   const steps: BrowserStep[];
   const values: (string | undefined)[];
+  const workflow: Workflow;
 
   const browser: Browser;
   function currentPage(): Promise<Page>;
