@@ -1,4 +1,4 @@
-import { BrowserStep, Job, Action } from "@qawolf/types";
+import { Action, BrowserStep, Workflow } from "@qawolf/types";
 import { readFileSync } from "fs-extra";
 import { compile } from "handlebars";
 import { resolve } from "path";
@@ -57,10 +57,10 @@ export const formatStep = (step: BrowserStep) => {
   };
 };
 
-export const buildTest = (job: Job) => {
+export const buildTest = (workflow: Workflow) => {
   const test = testTemplate({
-    name: job.name,
-    steps: job.steps.map(step => formatStep(step))
+    name: workflow.name,
+    steps: workflow.steps.map(step => formatStep(step))
   });
 
   return test;

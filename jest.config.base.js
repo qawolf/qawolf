@@ -7,5 +7,6 @@ module.exports = {
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   collectCoverage: true,
   coveragePathIgnorePatterns: ["(tests/.*.mock).(jsx?|tsx?)$"],
+  testTimeout: 15000,
   verbose: true
 };

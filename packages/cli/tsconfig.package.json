@@ -13,10 +13,10 @@
       "path": "../logger/tsconfig.package.json"
     },
     {
-      "path": "../build-job/tsconfig.package.json"
+      "path": "../build-test/tsconfig.package.json"
     },
     {
-      "path": "../build-test/tsconfig.package.json"
+      "path": "../build-workflow/tsconfig.package.json"
     },
     {
       "path": "../jest-environment/tsconfig.package.json"

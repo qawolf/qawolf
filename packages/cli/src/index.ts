@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-import { buildJob } from "@qawolf/build-job";
 import { buildTest } from "@qawolf/build-test";
+import { buildWorkflow } from "@qawolf/build-workflow";
 import { logger } from "@qawolf/logger";
 import { Runner } from "@qawolf/runner";
-import { Job } from "@qawolf/types";
+import { Workflow } from "@qawolf/types";
 import program from "commander";
 import { outputFile, outputJson, readJson } from "fs-extra";
 import { snakeCase } from "lodash";
@@ -21,15 +21,15 @@ program
 
     const destPath = `${process.cwd()}/.qawolf`;
     const formattedName = snakeCase(name);
-    const destJobPath = `${destPath}/jobs/${formattedName}.json`;
+    const destWorkflowPath = `${destPath}/workflows/${formattedName}.json`;
     const destTestPath = `${destPath}/tests/${formattedName}.test.js`;
 
-    logger.verbose(`build job -> ${destTestPath}`);
-    const job = buildJob(events, formattedName);
-    await outputJson(destJobPath, job, { spaces: " " });
+    logger.verbose(`build workflow -> ${destTestPath}`);
+    const workflow = buildWorkflow(events, formattedName);
+    await outputJson(destWorkflowPath, workflow, { spaces: " " });
 
     logger.verbose(`build test -> ${destTestPath}`);
-    const test = buildTest(job);
+    const test = buildTest(workflow);
     await outputFile(destTestPath, test, "utf8");
 
     process.exit(0);
@@ -37,11 +37,13 @@ program
 
 program
   .command("run [name]")
-  .description("run a job")
+  .description("run a workflow")
   .action(async name => {
-    const jobPath = `${process.cwd()}/.qawolf/jobs/${snakeCase(name)}.json`;
-    const job = (await readJson(jobPath)) as Job;
-    const runner = await Runner.create(job);
+    const workflowPath = `${process.cwd()}/.qawolf/workflows/${snakeCase(
+      name
+    )}.json`;
+    const workflow = (await readJson(workflowPath)) as Workflow;
+    const runner = await Runner.create(workflow);
 
     await runner.run();
     await runner.close();

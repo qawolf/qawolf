@@ -28,13 +28,6 @@ export type ElementDescriptor = {
   xpath?: string | null;
 };
 
-export type Job = {
-  name: string;
-  size: Size;
-  steps: BrowserStep[];
-  url: string;
-};
-
 export type Locator = {
   action: Action;
   dataAttribute: string | null;
@@ -44,3 +37,10 @@ export type Locator = {
 };
 
 export type Size = "desktop" | "tablet" | "mobile";
+
+export type Workflow = {
+  name: string;
+  size: Size;
+  steps: BrowserStep[];
+  url: string;
+};

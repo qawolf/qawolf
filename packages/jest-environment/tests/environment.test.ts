@@ -10,10 +10,10 @@ describe("RunnerEnvironment", () => {
     expect(scroll).toBeTruthy();
   });
 
-  it("exposes job, steps and values as globals", () => {
-    expect(job.url).toEqual(CONFIG.testUrl);
+  it("exposes steps, values, and workflow as globals", () => {
     expect(steps.length).toEqual(7);
     expect(values.length).toEqual(7);
+    expect(workflow.url).toEqual(CONFIG.testUrl);
   });
 
   it("exposes browser, currentPage, and getPage as globals", async () => {
@@ -25,7 +25,7 @@ describe("RunnerEnvironment", () => {
     expect(page.url()).toEqual(CONFIG.testUrl);
   });
 
-  it("runs a job", async () => {
+  it("runs a workflow", async () => {
     await runner.run();
 
     const page = await currentPage();

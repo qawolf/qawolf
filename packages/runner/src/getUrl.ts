@@ -1,17 +1,17 @@
-import { Job } from "@qawolf/types";
+import { Workflow } from "@qawolf/types";
 import { upperCase } from "lodash";
 
-export const getUrl = (job: Job) => {
+export const getUrl = (workflow: Workflow) => {
   /**
-   * Use QAW_JOBNAME_URL environment variable if it is defined. Ex. QAW_LOGIN_URL=...
+   * Use QAW_WORKFLOWNAME_URL environment variable if it is defined. Ex. QAW_LOGIN_URL=...
    * Otherwise use QAW_URL environment variable if it is defined.
-   * Otherwise use the original job url.
+   * Otherwise use the original workflow url.
    */
-  const key = `QAW_${upperCase(job.name)}_URL`;
+  const key = `QAW_${upperCase(workflow.name)}_URL`;
 
-  const jobUrlValue = process.env[key];
-  if (typeof jobUrlValue !== "undefined") {
-    return jobUrlValue;
+  const workflowUrlValue = process.env[key];
+  if (typeof workflowUrlValue !== "undefined") {
+    return workflowUrlValue;
   }
 
   const globalUrlValue = process.env.QAW_URL;
@@ -19,5 +19,5 @@ export const getUrl = (job: Job) => {
     return globalUrlValue;
   }
 
-  return job.url;
+  return workflow.url;
 };

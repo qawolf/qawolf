@@ -2,12 +2,12 @@ import { $xText } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { Runner } from "../src/Runner";
 
-// import directly since fixtures are note exported from @qawolf/build-job
-import { loginJob } from "../../build-job/fixtures/loginJob";
+// import directly since fixtures are note exported from @qawolf/build-workflow
+import { loginWorkflow } from "../../build-workflow/fixtures/loginWorkflow";
 
-it("runs a job", async () => {
+it("runs a workflow", async () => {
   const runner = await Runner.create({
-    ...loginJob,
+    ...loginWorkflow,
     url: CONFIG.testUrl
   });
   await runner.run();
@@ -17,4 +17,4 @@ it("runs a job", async () => {
   expect(text).toEqual(" Secure Area");
 
   await runner.close();
-}, 10000);
+});
