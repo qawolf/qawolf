@@ -3,7 +3,7 @@ import { sleep } from "@qawolf/web";
 import { pathExists, remove } from "fs-extra";
 import { ScreenCapture } from "../src/ScreenCapture";
 
-it("records a video and gif", async () => {
+it("captures a video and gif", async () => {
   const tempDir = await makeTempDir();
   const screenCapture = await ScreenCapture.start({
     savePath: tempDir,

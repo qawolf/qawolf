@@ -5,24 +5,24 @@ import { spawn, ChildProcessWithoutNullStreams } from "child_process";
 import { ensureDir } from "fs-extra";
 import { resolve } from "path";
 import { createGif } from "./createGif";
-import { RecordingOffset, RecordingSize } from "./types";
+import { CaptureOffset, CaptureSize } from "./types";
 
 type ScreenCaptureStartOptions = {
-  offset?: RecordingOffset;
+  offset?: CaptureOffset;
   savePath: string;
-  size: RecordingSize;
+  size: CaptureSize;
 };
 
 export class ScreenCapture {
   /**
-   * Records the x11 display with ffmpeg in a child process.
+   * Captures the x11 display with ffmpeg in a child process.
    */
   private _closed: boolean = false;
   private _ffmpeg: ChildProcessWithoutNullStreams;
   private _gifPath: string;
-  private _offset: RecordingOffset;
+  private _offset: CaptureOffset;
   private _videoPath: string;
-  private _size: RecordingSize;
+  private _size: CaptureSize;
 
   protected constructor(options: ScreenCaptureStartOptions) {
     this._gifPath = `${options.savePath}/video.gif`;
@@ -107,7 +107,7 @@ export class ScreenCapture {
 
   public async stop() {
     if (this._closed) {
-      logger.error("videoer already stopped");
+      logger.error("ScreenCapture: already stopped");
       return;
     }
 

@@ -1,10 +1,10 @@
 import { logger } from "@qawolf/logger";
 import { spawn } from "child_process";
-import { RecordingSize } from "./types";
+import { CaptureSize } from "./types";
 
 type CreateGifOptions = {
   gifPath: string;
-  size: RecordingSize;
+  size: CaptureSize;
   videoPath: string;
 };
 

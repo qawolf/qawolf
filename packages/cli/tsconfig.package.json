@@ -7,19 +7,19 @@
   },
   "references": [
     {
-      "path": "../config/tsconfig.package.json"
-    },
-    {
-      "path": "../logger/tsconfig.package.json"
-    },
-    {
       "path": "../build-test/tsconfig.package.json"
     },
     {
       "path": "../build-workflow/tsconfig.package.json"
     },
     {
+      "path": "../config/tsconfig.package.json"
+    },
+    {
       "path": "../jest-environment/tsconfig.package.json"
+    },
+    {
+      "path": "../logger/tsconfig.package.json"
     },
     {
       "path": "../runner/tsconfig.package.json"
