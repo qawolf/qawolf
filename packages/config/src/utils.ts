@@ -3,5 +3,5 @@ import { tmpdir } from "os";
 import { join } from "path";
 
 export const makeTempDir = () => {
-  return mkdtemp(join(tmpdir(), "recorder-"));
+  return mkdtemp(join(tmpdir(), "qawolf-"));
 };
