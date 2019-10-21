@@ -1,0 +1,32 @@
+{
+  "name": "@qawolf/github",
+  "description": "QA Wolf GitHub integration",
+  "version": "0.3.5",
+  "license": "BSD-3.0",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "test": "jest --testPathIgnorePatterns=/docker/",
+    "test:docker": "QAW_DOCKER=true jest --testRegex=\"(/tests/docker/.*.test.ts)$\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qawolf/qawolf.git"
+  },
+  "bugs": {
+    "url": "https://github.com/qawolf/qawolf/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@octokit/rest": "^16.33.1"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0"
+  }
+}
