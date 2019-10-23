@@ -3,11 +3,11 @@ import { Config } from "@jest/types";
 import { logger } from "@qawolf/logger";
 import { Runner } from "@qawolf/runner";
 import { Workflow } from "@qawolf/types";
-import { readJSON } from "fs-extra";
+import { pathExists, readJSON } from "fs-extra";
 import NodeEnvironment from "jest-environment-node";
 import path from "path";
 
-const loadWorkflow = async (testPath: string) => {
+const loadWorkflow = async (testPath: string): Promise<Workflow | null> => {
   const testName = path.basename(testPath).split(".")[0];
   // the workflow should be in a sibling folder ../workflows/testName.json
   const workflowPath = path.join(
@@ -15,6 +15,13 @@ const loadWorkflow = async (testPath: string) => {
     "../workflows",
     `${testName}.json`
   );
+
+  const isPath = await pathExists(workflowPath);
+  if (!isPath) {
+    logger.verbose(`test ${testPath} not found in workflows directory`);
+    return null;
+  }
+
   logger.verbose(`load workflow for test ${testPath} ${workflowPath}`);
   const json = await readJSON(workflowPath);
   return json as Workflow;
