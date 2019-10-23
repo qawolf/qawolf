@@ -28,6 +28,27 @@ export type ElementDescriptor = {
   xpath?: string | null;
 };
 
+export interface Event {
+  action: Action;
+  isTrusted: boolean;
+  target: ElementDescriptor;
+}
+
+export interface InputEvent extends Event {
+  action: "input";
+  value?: string | null;
+}
+
+export type ScrollValue = {
+  x: number;
+  y: number;
+};
+
+export interface ScrollEvent extends Event {
+  action: "scroll";
+  value: ScrollValue;
+}
+
 export type Locator = {
   action: Action;
   dataAttribute: string | null;

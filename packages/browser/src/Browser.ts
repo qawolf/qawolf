@@ -1,13 +1,14 @@
 import { logger } from "@qawolf/logger";
 import { BrowserStep, Size } from "@qawolf/types";
 import { waitFor } from "@qawolf/web";
-import puppeteer, { Page, ElementHandle } from "puppeteer";
+import puppeteer, { devices, Page, ElementHandle } from "puppeteer";
 import { launchPuppeteerBrowser } from "./browserUtils";
 import { getDevice } from "./device";
 import { findElement } from "./pageUtils";
-import { QAWolfPage } from "./QAWolfPage";
+import { DecoratedPage, QAWolfPage } from "./QAWolfPage";
 
 export type BrowserCreateOptions = {
+  record?: boolean;
   size?: Size;
   url?: string;
 };
@@ -16,9 +17,11 @@ export class Browser {
   /**
    * Wrap Browser and manage it's pages.
    */
-  public _browser: puppeteer.Browser;
+  private _browser: puppeteer.Browser;
   private _currentPageIndex: number = 0;
-  private _device: puppeteer.devices.Device;
+  private _device: devices.Device;
+  private _record: boolean;
+
   // stored in order of open
   private _pages: QAWolfPage[] = [];
 
@@ -34,6 +37,7 @@ export class Browser {
     const self = new Browser();
     self._device = getDevice(options.size);
     self._browser = await launchPuppeteerBrowser(self._device);
+    self._record = !!options.record;
     await self.managePages();
 
     if (options.url) await self.goto(options.url);
@@ -50,7 +54,7 @@ export class Browser {
     logger.verbose("Browser: closed");
   }
 
-  public currentPage(): Promise<Page> {
+  public currentPage(): Promise<DecoratedPage> {
     return this.getPage(this._currentPageIndex);
   }
 
@@ -63,7 +67,7 @@ export class Browser {
     return findElement(page, step);
   }
 
-  public async goto(url: string): Promise<Page> {
+  public async goto(url: string): Promise<DecoratedPage> {
     logger.verbose(`Browser: goto ${url}`);
     const page = await this.currentPage();
     await page.goto(url);
@@ -74,7 +78,7 @@ export class Browser {
     index: number = 0,
     waitForRequests: boolean = false,
     timeoutMs: number = 5000
-  ): Promise<Page> {
+  ): Promise<DecoratedPage> {
     /**
      * Wait for the page at index to be ready and activate it.
      */
@@ -103,6 +107,10 @@ export class Browser {
     return page.super;
   }
 
+  public get super() {
+    return this._browser;
+  }
+
   private async managePages() {
     const pages = await this._browser.pages();
     if (pages.length !== 1) {
@@ -110,11 +118,14 @@ export class Browser {
       // when there are multiple pages open at the start
       throw new Error("Must managePages before opening pages");
     }
-    this._pages.push(await QAWolfPage.create(pages[0], this._device));
+
+    const options = { device: this._device, record: this._record };
+
+    this._pages.push(await QAWolfPage.create({ ...options, page: pages[0] }));
 
     this._browser.on("targetcreated", async target => {
       const page = await target.page();
-      if (page) this._pages.push(await QAWolfPage.create(page, this._device));
+      if (page) this._pages.push(await QAWolfPage.create({ ...options, page }));
     });
   }
 }
