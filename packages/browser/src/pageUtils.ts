@@ -1,18 +1,50 @@
+import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import fs from "fs-extra";
-import path from "path";
-import { Page } from "puppeteer";
+import { BrowserStep, Locator } from "@qawolf/types";
+import { QAWolfWeb } from "@qawolf/web";
+import { ElementHandle, Page, Serializable } from "puppeteer";
 
-const webBundle = fs.readFileSync(
-  path.resolve(path.dirname(require.resolve("@qawolf/web")), "./qawolf.web.js"),
-  "utf8"
-);
+export const $xText = async (page: Page, xpath: string): Promise<string> => {
+  return await retryExecutionError(async () => {
+    const elements = await page.$x(xpath);
 
-export const injectWebBundle = async (page: Page) => {
-  await Promise.all([
-    page.evaluate(webBundle),
-    page.evaluateOnNewDocument(webBundle)
-  ]);
+    const text = await page.evaluate(
+      element => element.textContent,
+      elements[0]
+    );
+
+    return text;
+  });
+};
+
+export const findElement = async (
+  page: Page,
+  step: BrowserStep
+): Promise<ElementHandle> => {
+  logger.verbose(
+    `findElement: ${JSON.stringify(step.target).substring(0, 100)}`
+  );
+
+  const jsHandle = await page.evaluateHandle(
+    (locator: Locator) => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      return qawolf.locate.waitForElement(locator);
+    },
+    {
+      action: step.action,
+      dataAttribute: CONFIG.dataAttribute,
+      target: step.target,
+      timeoutMs: CONFIG.locatorTimeoutMs,
+      value: step.value
+    } as Serializable
+  );
+
+  const handle = jsHandle.asElement();
+  if (!handle) {
+    throw new Error(`No element handle found for step ${step}`);
+  }
+
+  return handle;
 };
 
 export const retryExecutionError = async (
@@ -38,17 +70,4 @@ export const retryExecutionError = async (
       throw error;
     }
   }
-};
-
-export const $xText = async (page: Page, xpath: string): Promise<string> => {
-  return await retryExecutionError(async () => {
-    const elements = await page.$x(xpath);
-
-    const text = await page.evaluate(
-      element => element.textContent,
-      elements[0]
-    );
-
-    return text;
-  });
 };

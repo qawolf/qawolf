@@ -15,11 +15,10 @@ describe("waitUntilComplete", () => {
   afterAll(() => page.browser().close());
 
   it("resolves when there are no outstanding requests", () => {
-    const counter = new RequestTracker();
-    counter.track(page);
+    const counter = new RequestTracker(page);
 
     const callback = jest.fn();
-    counter.waitUntilComplete(page).then(callback);
+    counter.waitUntilComplete().then(callback);
 
     return new Promise(resolve => {
       process.nextTick(() => {
@@ -30,14 +29,13 @@ describe("waitUntilComplete", () => {
   });
 
   it("resolves after outstanding requests are 0", async () => {
-    const counter = new RequestTracker();
-    counter.track(page);
+    const counter = new RequestTracker(page);
 
     page.emit("request", 1);
     page.emit("request", 2);
 
     const callback = jest.fn();
-    counter.waitUntilComplete(page).then(callback);
+    counter.waitUntilComplete().then(callback);
 
     expect(callback).not.toBeCalled();
     page.emit("requestfinished", 1);
@@ -52,13 +50,12 @@ describe("waitUntilComplete", () => {
   });
 
   it("resolves after timeout", () => {
-    const counter = new RequestTracker(30000);
-    counter.track(page);
+    const counter = new RequestTracker(page, 30000);
 
     page.emit("request", {});
 
     const callback = jest.fn();
-    counter.waitUntilComplete(page).then(callback);
+    counter.waitUntilComplete().then(callback);
     expect(callback).not.toBeCalled();
 
     expect(callback).not.toBeCalled();
