@@ -60,6 +60,11 @@ export class RunnerEnvironment extends NodeEnvironment {
   }
 
   async teardown() {
-    await Promise.all([this._runner.close(), super.teardown()]);
+    const promises = [super.teardown()];
+    if (this._runner) {
+      promises.push(this._runner.close());
+    }
+
+    await Promise.all(promises);
   }
 }
