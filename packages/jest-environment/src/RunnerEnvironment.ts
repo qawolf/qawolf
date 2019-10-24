@@ -40,6 +40,8 @@ export class RunnerEnvironment extends NodeEnvironment {
     await super.setup();
 
     const workflow = await loadWorkflow(this._testPath);
+    if (!workflow) return;
+
     const runner = await Runner.create(workflow);
     this.global.runner = this._runner = runner;
 
