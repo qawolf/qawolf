@@ -1,4 +1,4 @@
-describe("success", () => {
+describe("failure", () => {
   it("step 1", () => {});
 
   it("step 2", () => {});

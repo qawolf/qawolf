@@ -1,3 +1,4 @@
+import { AggregatedResult } from "@jest/test-result";
 import { CONFIG } from "@qawolf/config";
 import { runCLI } from "jest";
 import path from "path";
@@ -5,7 +6,7 @@ import path from "path";
 export const runTest = async (
   name: string | null = null,
   rootDir: string = process.cwd()
-) => {
+): Promise<AggregatedResult> => {
   const modulePath = require.resolve("@qawolf/jest-environment");
   const setupFailFast = path.resolve(path.dirname(modulePath), "./setup.js");
 
