@@ -36,7 +36,7 @@ export class RunnerEnvironment extends NodeEnvironment {
     this._testPath = context.testPath!;
   }
 
-  async setup() {
+  async setup(): Promise<void> {
     await super.setup();
 
     const workflow = await loadWorkflow(this._testPath);
@@ -59,7 +59,7 @@ export class RunnerEnvironment extends NodeEnvironment {
     this.global.getPage = browser.getPage.bind(browser);
   }
 
-  async teardown() {
+  async teardown(): Promise<void> {
     const promises = [super.teardown()];
     if (this._runner) {
       promises.push(this._runner.close());
