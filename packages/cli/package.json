@@ -10,7 +10,8 @@
     "src"
   ],
   "scripts": {
-    "cli": "ts-node ./src/index"
+    "cli": "ts-node ./src/index",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
