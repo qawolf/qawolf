@@ -16,8 +16,8 @@ const loadWorkflow = async (testPath: string): Promise<Workflow | null> => {
     `${testName}.json`
   );
 
-  const isPath = await pathExists(workflowPath);
-  if (!isPath) {
+  const hasWorkflowPath = await pathExists(workflowPath);
+  if (!hasWorkflowPath) {
     logger.verbose(`test ${testPath} not found in workflows directory`);
     return null;
   }
