@@ -55,7 +55,9 @@ program
   .command("test [name]")
   .description("run a test")
   .action(async name => {
-    const success = await runTest(name ? snakeCase(name) : null);
+    const results = await runTest(name ? snakeCase(name) : null);
+    const success = results.numFailedTestSuites < 1;
+
     process.exit(success ? 0 : 1);
   });
 

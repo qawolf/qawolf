@@ -25,6 +25,6 @@ export const runTest = async (
   }
 
   const output = await runCLI(jestConfig, [rootDir]);
-  const success = output.results.numFailedTestSuites < 1;
-  return success;
+
+  return output.results;
 };
