@@ -83,8 +83,17 @@ describe("Recorder", () => {
       url: `${CONFIG.testUrl}large`
     });
 
-    const page = await browser.currentPage();
-    await scroll(page, 1000);
+    const page = await browser.currentPage(false);
+
+    const body = await browser.element(
+      {
+        action: "scroll",
+        index: 0,
+        target: { xpath: "/html" }
+      },
+      false
+    );
+    await scroll(body, { x: 0, y: 1000 });
 
     // give time for the scroll event to trigger
     await sleep(100);

@@ -54,16 +54,19 @@ export class Browser {
     logger.verbose("Browser: closed");
   }
 
-  public currentPage(): Promise<DecoratedPage> {
-    return this.getPage(this._currentPageIndex);
+  public currentPage(waitForRequests: boolean = true): Promise<DecoratedPage> {
+    return this.getPage(this._currentPageIndex, waitForRequests);
   }
 
   public get device() {
     return this._device;
   }
 
-  public async element(step: BrowserStep): Promise<ElementHandle> {
-    const page = await this.getPage(step.pageId, true);
+  public async element(
+    step: BrowserStep,
+    waitForRequests: boolean = true
+  ): Promise<ElementHandle> {
+    const page = await this.getPage(step.pageId, waitForRequests);
     return findElement(page, step);
   }
 

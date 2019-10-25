@@ -1,6 +1,7 @@
 import { Action, Locator } from "@qawolf/types";
 import { topMatch } from "./match";
 import { waitFor } from "./timer";
+import { findElementByXpath } from "./xpath";
 
 type QueryByDataArgs = {
   action: Action;
@@ -71,8 +72,11 @@ export const waitForElement = async ({
     }, timeoutMs);
   }
 
-  console.log("waiting for strong match");
+  // return root elements right away
+  if (target.xpath === "/html") return findElementByXpath("/html");
+
   const strongMatch = await waitFor(() => {
+    console.log("waiting for strong match");
     const elements = queryActionElements(action);
     return topMatch({
       dataAttribute,

@@ -7,7 +7,7 @@ import {
 } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { ScreenCapture } from "@qawolf/screen";
-import { BrowserStep, Workflow } from "@qawolf/types";
+import { BrowserStep, ScrollValue, Workflow } from "@qawolf/types";
 import { sleep } from "@qawolf/web";
 import { getStepValues } from "./getStepValues";
 import { getUrl } from "./getUrl";
@@ -15,7 +15,7 @@ import { getUrl } from "./getUrl";
 export class Runner {
   protected _browser: Browser;
   protected _screenCapture: ScreenCapture | null = null;
-  protected _values: (string | null | undefined)[];
+  protected _values: (string | null | undefined | ScrollValue)[];
   protected _workflow: Workflow;
 
   protected constructor() {}
@@ -105,17 +105,20 @@ export class Runner {
     if (step.action === "click") {
       await this.click(step);
     } else if (step.action === "input") {
-      await this.input(step, this._values[step.index]);
+      await this.input(step, this._values[step.index] as
+        | string
+        | null
+        | undefined);
     } else if (step.action === "scroll") {
-      await this.scroll(step);
+      await this.scroll(step, this._values[step.index] as ScrollValue);
     }
   }
 
-  public async scroll(step: BrowserStep) {
+  public async scroll(step: BrowserStep, value: ScrollValue) {
     await retryExecutionError(async () => {
+      const element = await this._browser.element(step);
       await this.beforeAction();
-      const page = await this._browser.getPage(step.pageId, true);
-      await scroll(page, step.scrollTo!);
+      await scroll(element, value);
     });
   }
 

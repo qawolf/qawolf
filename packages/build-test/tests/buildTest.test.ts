@@ -69,24 +69,12 @@ describe("formatStep", () => {
     expect(formattedStep).toMatchSnapshot();
   });
 
-  it("formats scroll down action", () => {
+  it("formats scroll action", () => {
     const step: BrowserStep = {
       action: "scroll",
       index: 0,
-      scrollDirection: "down",
-      target: { xpath: "scroll" }
-    };
-
-    const formattedStep = formatStep(step);
-    expect(formattedStep).toMatchSnapshot();
-  });
-
-  it("formats scroll up action", () => {
-    const step: BrowserStep = {
-      action: "scroll",
-      index: 0,
-      scrollDirection: "up",
-      target: { xpath: "scroll" }
+      target: { xpath: "/html" },
+      value: { x: 0, y: 10 }
     };
 
     const formattedStep = formatStep(step);

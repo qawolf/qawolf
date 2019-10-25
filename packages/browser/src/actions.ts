@@ -1,5 +1,6 @@
-import { QAWolfWeb, sleep } from "@qawolf/web";
-import { ElementHandle, Page } from "puppeteer";
+import { QAWolfWeb } from "@qawolf/web";
+import { ScrollValue } from "@qawolf/types";
+import { ElementHandle } from "puppeteer";
 
 export const click = async (element: ElementHandle): Promise<void> => {
   await element.click();
@@ -36,16 +37,16 @@ export const input = async (
 };
 
 export const scroll = async (
-  page: Page,
-  yPosition: number,
+  elementHandle: ElementHandle,
+  value: ScrollValue,
   timeoutMs: number = 10000
 ): Promise<void> => {
-  await page.evaluate(
-    (yPosition, timeoutMs) => {
+  await elementHandle.evaluate(
+    (element, value, timeoutMs) => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
-      return qawolf.scrollTo(yPosition, timeoutMs);
+      return qawolf.scroll(element, value, timeoutMs);
     },
-    yPosition,
+    value,
     timeoutMs
   );
 };

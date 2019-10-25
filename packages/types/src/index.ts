@@ -6,10 +6,8 @@ export type BrowserStep = {
   action: Action;
   index: number;
   pageId?: number;
-  scrollDirection?: "down" | "up";
-  scrollTo?: number;
   target: ElementDescriptor;
-  value?: string | null;
+  value?: string | ScrollValue | null;
 };
 
 export type ElementDescriptor = {

@@ -3,7 +3,7 @@ import * as locate from "./locate";
 import * as match from "./match";
 import { Match } from "./match";
 import { Recorder } from "./Recorder";
-import { scrollTo } from "./scrollTo";
+import { scroll } from "./scroll";
 import * as timer from "./timer";
 import * as xpath from "./xpath";
 
@@ -34,7 +34,7 @@ const webExports = {
   locate,
   match,
   Recorder,
-  scrollTo,
+  scroll,
   timer,
   xpath
 };
