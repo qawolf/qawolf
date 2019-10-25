@@ -15,7 +15,7 @@ import { getUrl } from "./getUrl";
 export class Runner {
   protected _browser: Browser;
   protected _screenCapture: ScreenCapture | null = null;
-  protected _values: (string | undefined)[];
+  protected _values: (string | null | undefined)[];
   protected _workflow: Workflow;
 
   protected constructor() {}
@@ -87,7 +87,7 @@ export class Runner {
     await this._browser.close();
   }
 
-  public async input(step: BrowserStep, value?: string) {
+  public async input(step: BrowserStep, value?: string | null) {
     await retryExecutionError(async () => {
       const element = await this._browser.element(step);
       await this.beforeAction();

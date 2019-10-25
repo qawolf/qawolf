@@ -19,7 +19,5 @@ export const getUrlRoot = (url: UrlWithStringQuery) => {
   if (!url.hostname) throw new Error(`Invalid url ${url.href}`);
 
   const parts = url.hostname.split(".");
-  if (parts.length < 2) throw new Error(`Invalid url ${url.href}`);
-
-  return parts[parts.length - 2];
+  return parts[Math.max(0, parts.length - 2)];
 };

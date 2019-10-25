@@ -9,7 +9,7 @@ export type BrowserStep = {
   scrollDirection?: "down" | "up";
   scrollTo?: number;
   target: ElementDescriptor;
-  value?: string;
+  value?: string | null;
 };
 
 export type ElementDescriptor = {

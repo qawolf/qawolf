@@ -8,7 +8,7 @@ declare global {
   const runner: Runner;
 
   function click(step: BrowserStep): Promise<void>;
-  function input(step: BrowserStep, value?: string): Promise<void>;
+  function input(step: BrowserStep, value?: string | null): Promise<void>;
   function scroll(step: BrowserStep): Promise<void>;
 
   const steps: BrowserStep[];

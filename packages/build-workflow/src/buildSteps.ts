@@ -1,174 +1,93 @@
-import { Action, BrowserStep } from "@qawolf/types";
-import { first, isNil, last } from "lodash";
-import { QAEventWithTime } from "./events";
+import { BrowserStep, Event, InputEvent } from "@qawolf/types";
+import { parseDate } from "chrono-node";
+import { concat, sortBy } from "lodash";
 
-type EventSequence = {
-  action: Action;
-  events: QAEventWithTime[];
-  xpath: string | null;
+const isDateInputEvent = (event: Event) => {
+  const inputEvent = event as InputEvent;
+  return (
+    event.action === "input" && inputEvent.value && parseDate(inputEvent.value)
+  );
 };
 
-export const isClickEvent = (event?: QAEventWithTime): boolean => {
-  if (!event || !event.data) return false;
-
-  const data = event.data;
-  const isMouseInteraction = data.source === 2;
-  const isClick = data.type === 2;
-
-  return isMouseInteraction && isClick && !!data.isTrusted;
-};
-
-export const isScrollEvent = (event?: QAEventWithTime): boolean => {
-  // TODO: support scrolling within elements
-  if (!event || !event.data) return false;
-
-  const data = event.data;
-  const isScroll = data.source === 3;
-  const isPageBody = data.id === 1;
-
-  return isScroll && isPageBody;
-};
-
-export const isInputEvent = (event?: QAEventWithTime): boolean => {
-  if (!event || !event.data) return false;
-
-  const data = event.data;
-  const isInput = data.source === 5;
-
-  return isInput && !!data.isTrusted && !isNil(data.text);
-};
-
-export const findActionEvents = (
-  events: QAEventWithTime[]
-): QAEventWithTime[] => {
-  return events.filter(event => {
-    return isClickEvent(event) || isInputEvent(event) || isScrollEvent(event);
-  });
-};
-
-export const getEventAction = (event: QAEventWithTime): Action => {
-  if (isClickEvent(event)) return "click";
-  if (isInputEvent(event)) return "input";
-  if (isScrollEvent(event)) return "scroll";
-
-  throw new Error(`Action not found for event ${event}`);
-};
-
-export const groupEventSequences = (
-  events: QAEventWithTime[]
-): EventSequence[] => {
-  const sequences: EventSequence[] = [];
-
-  let sequence: EventSequence | null = null;
-  events.forEach(event => {
-    const action = getEventAction(event);
-    const eventXpath = event.data.xpath || null;
-
-    // create an event sequence for consecutive events to the same element
-    if (
-      !sequence ||
-      action !== sequence.action ||
-      eventXpath !== sequence.xpath
-    ) {
-      sequence = {
-        action,
-        events: [event],
-        xpath: eventXpath
-      };
-      sequences.push(sequence);
-    } else {
-      sequence.events.push(event);
-    }
-  });
-
-  return sequences;
-};
-
-export const buildClickSteps = (
-  clickSequence: EventSequence,
-  nextSequence: EventSequence | null
-): BrowserStep[] => {
+export const buildClickSteps = (events: Event[]): BrowserStep[] => {
   const steps: BrowserStep[] = [];
 
-  const willInputNext =
-    nextSequence &&
-    nextSequence.action === "input" &&
-    nextSequence.xpath === clickSequence.xpath;
+  for (let i = 0; i < events.length; i++) {
+    const event = events[i];
 
-  clickSequence.events.forEach((click, i) => {
-    // skip the last click if  we will input value in the same element
-    const isLastClick = i === clickSequence.events.length - 1;
-    if (isLastClick && willInputNext) return;
+    // ignore other actions
+    if (event.action !== "click") continue;
+
+    // ignore system initiated clicks
+    if (!event.isTrusted) continue;
+
+    // ignore clicks on (most) inputs
+    if (
+      event.target.inputType &&
+      event.target.inputType !== "button" &&
+      event.target.inputType !== "submit"
+    )
+      continue;
+
+    // skip clicks before a date input
+    // since we assume it triggers the date input event
+    // ex. a date picker button
+    if (i + 1 < events.length && isDateInputEvent(events[i + 1])) continue;
 
     steps.push({
       action: "click",
-      index: -1, // index at end
-      pageId: click.pageId,
-      target: click.data.properties
+      // include event index so we can sort in buildSteps
+      index: i,
+      pageId: event.pageId,
+      target: event.target
     });
-  });
+  }
 
   return steps;
 };
 
-export const buildInputStep = (inputSequence: EventSequence): BrowserStep => {
-  const lastInput = last(inputSequence.events) as QAEventWithTime;
+export const buildInputSteps = (events: Event[]): BrowserStep[] => {
+  const steps: BrowserStep[] = [];
 
-  return {
-    action: "input",
-    index: -1, // index at end
-    pageId: lastInput.pageId,
-    target: lastInput.data.properties,
-    value: lastInput.data.text
-  };
-};
+  for (let i = 0; i < events.length; i++) {
+    const event = events[i] as InputEvent;
 
-export const buildScrollStep = (
-  scrollSequence: EventSequence
-): BrowserStep | null => {
-  const firstScroll = first(scrollSequence.events) as QAEventWithTime;
-  const lastScroll = last(scrollSequence.events) as QAEventWithTime;
-  // don't include scrolls where you start and end in same place
-  if (firstScroll.data.y === lastScroll.data.y) return null;
+    // ignore other actions
+    if (event.action !== "input") continue;
 
-  return {
-    action: "scroll",
-    index: -1, // index at end
-    pageId: lastScroll.pageId,
-    scrollDirection: firstScroll.data.y < lastScroll.data.y ? "down" : "up",
-    scrollTo: lastScroll.data.y,
-    target: { xpath: "scroll" }
-  };
-};
+    const nextEvent = i + 1 < events.length ? events[i + 1] : null;
+    const lastInputToTarget =
+      !nextEvent || event.target.xpath !== nextEvent.target.xpath;
+    // skip to the last input on this target
+    if (!lastInputToTarget) continue;
 
-export const buildSequenceSteps = (
-  eventSequences: EventSequence[]
-): BrowserStep[] => {
-  let steps: BrowserStep[] = [];
-
-  eventSequences.forEach((eventSequence, i) => {
-    if (eventSequence.action === "input") {
-      steps.push(buildInputStep(eventSequence));
-    } else if (eventSequence.action === "scroll") {
-      const scrollStep = buildScrollStep(eventSequence);
-      if (scrollStep) steps.push(scrollStep);
-    } else if (eventSequence.action === "click") {
-      const nextSequence = eventSequences[i + 1] || null;
-      steps = steps.concat(buildClickSteps(eventSequence, nextSequence));
+    // include user events and date input events
+    if (event.isTrusted || isDateInputEvent(event)) {
+      steps.push({
+        action: "input",
+        // include event index so we can sort in buildSteps
+        index: i,
+        pageId: event.pageId,
+        target: event.target,
+        value: event.value
+      });
     }
-  });
-
-  steps.forEach((step, i) => (step.index = i));
+  }
 
   return steps;
 };
 
-export const buildSteps = (events: QAEventWithTime[]): BrowserStep[] => {
-  const actionEvents = findActionEvents(events);
-  const eventSequences = groupEventSequences(actionEvents);
-  const steps = buildSequenceSteps(eventSequences);
+export const buildSteps = (events: Event[]): BrowserStep[] => {
+  const unorderedSteps = concat(
+    buildClickSteps(events),
+    buildInputSteps(events)
+  );
 
-  steps.forEach((step, i) => (step.index = i));
+  const steps = sortBy(
+    unorderedSteps,
+    // ordered by the event index
+    step => step.index
+  ).map<BrowserStep>((step, index) => ({ ...step, index }));
 
   return steps;
 };

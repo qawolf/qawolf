@@ -7,20 +7,21 @@ export const click = async (element: ElementHandle): Promise<void> => {
 
 export const input = async (
   elementHandle: ElementHandle,
-  value: string = ""
+  value?: string | null
 ): Promise<void> => {
+  const strValue = value || "";
   const handleProperty = await elementHandle.getProperty("tagName");
   const tagName = await handleProperty.jsonValue();
 
   if (tagName.toLowerCase() === "select") {
-    await elementHandle.select(value);
+    await elementHandle.select(strValue);
   } else {
     // clear current value
     await elementHandle.evaluate(element => {
       (element as HTMLInputElement).value = "";
     });
 
-    await elementHandle.type(value);
+    await elementHandle.type(strValue);
   }
 };
 
