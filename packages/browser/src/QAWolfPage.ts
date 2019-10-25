@@ -30,7 +30,7 @@ export class QAWolfPage {
   protected constructor(options: CreateOptions) {
     // decorate the page with this parent
     const page = options.page as DecoratedPage;
-    (page as any).qawolf = this;
+    page.qawolf = this;
     this._page = page;
 
     this._requests = new RequestTracker(this._page);
