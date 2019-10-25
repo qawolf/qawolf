@@ -23,6 +23,9 @@
     "access": "public"
   },
   "dependencies": {
+    "@actions/core": "^1.2.0",
+    "@actions/github": "^1.1.0",
+    "@qawolf/config": "^0.3.5",
     "fs-extra": "^8.1.0",
     "handlebars": "^4.4.3"
   },

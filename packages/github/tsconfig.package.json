@@ -3,7 +3,9 @@
   "compilerOptions": {
     "outDir": "./lib",
     "rootDir": "./src",
-    "composite": true
+    "composite": true,
+    // resolves issue with @actions/github using an old version of @octokit/graphql
+    "skipLibCheck": true
   },
   "include": ["src"],
   "exclude": ["tests", "lib"]

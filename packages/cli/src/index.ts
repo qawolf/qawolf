@@ -2,6 +2,7 @@
 
 import { buildTest } from "@qawolf/build-test";
 import { buildWorkflow } from "@qawolf/build-workflow";
+import { createCheckRun, updateCheckRun } from "@qawolf/github";
 import { logger } from "@qawolf/logger";
 import { Runner } from "@qawolf/runner";
 import { Workflow } from "@qawolf/types";
@@ -55,8 +56,14 @@ program
   .command("test [name]")
   .description("run a test")
   .action(async name => {
+    const checkRunId = await createCheckRun();
+
     const results = await runTest(name ? snakeCase(name) : null);
     const success = results.numFailedTestSuites < 1;
+
+    if (checkRunId) {
+      await updateCheckRun(checkRunId, results);
+    }
 
     process.exit(success ? 0 : 1);
   });
