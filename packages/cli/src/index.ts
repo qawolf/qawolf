@@ -2,6 +2,8 @@
 
 import { buildTest } from "@qawolf/build-test";
 import { buildWorkflow } from "@qawolf/build-workflow";
+import { Browser } from "@qawolf/browser";
+import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { Runner } from "@qawolf/runner";
 import { Workflow } from "@qawolf/types";
@@ -36,15 +38,38 @@ program
     process.exit(0);
   });
 
-program
+let recordCommand = program
   .command("record <url> [name]")
-  .description("record a workflow and create a test")
-  .action(async (urlArgument, optionalName) => {
-    const url = parseUrl(urlArgument);
-    const name = optionalName || getUrlRoot(url);
-    logger.verbose(`record url "${url.href}" and create test "${name}"`);
-    process.exit(0);
-  });
+  .description("record a workflow and create a test");
+
+if (CONFIG.development) {
+  recordCommand = recordCommand.option(
+    "-e, --events",
+    "record events (for debugging)"
+  );
+}
+
+recordCommand.action(async (urlArgument, optionalName, cmd) => {
+  const url = parseUrl(urlArgument);
+  const name = optionalName || getUrlRoot(url);
+  logger.verbose(`record url "${url.href}"`);
+
+  const browser = await Browser.create({ record: true, url: url.href });
+  await browser.waitForClose();
+
+  const destPath = `${process.cwd()}/.qawolf`;
+  const formattedName = snakeCase(name);
+
+  if (cmd.events) {
+    const destEventsPath = `${destPath}/events/${formattedName}.json`;
+    logger.verbose(`create events "${name}" -> ${destEventsPath}`);
+    await outputJson(destEventsPath, browser.events, { spaces: " " });
+  } else {
+    logger.verbose(`create test "${name}"`);
+  }
+
+  process.exit(0);
+});
 
 program
   .command("run [name]")

@@ -1,8 +1,7 @@
 import { logger } from "@qawolf/logger";
+import { Callback } from "@qawolf/types";
 import { remove } from "lodash";
 import { Page, Request, PageEventObj } from "puppeteer";
-
-type Callback = () => void;
 
 export class RequestTracker {
   private _onComplete: Callback[] = [];

@@ -1,3 +1,5 @@
+export type Callback<S = void, T = void> = (data?: S) => T;
+
 export type Action = "click" | "input" | "scroll";
 
 export type BrowserStep = {
@@ -31,7 +33,9 @@ export type ElementDescriptor = {
 export interface Event {
   action: Action;
   isTrusted: boolean;
+  pageId?: number;
   target: ElementDescriptor;
+  time: number;
 }
 
 export interface InputEvent extends Event {

@@ -1,17 +1,16 @@
 import * as types from "@qawolf/types";
 import { getDescriptor } from "./element";
 
-type EventCallback = (event: types.Event) => void;
-type Callback = () => void;
+type EventCallback = types.Callback<types.Event>;
 
 export class Recorder {
   private _dataAttribute: string;
-  private _onDispose: Callback[] = [];
-  private _recordEvent: EventCallback;
+  private _onDispose: types.Callback[] = [];
+  private _sendEvent: EventCallback;
 
-  constructor(dataAttribute: string, recordEvent: EventCallback) {
+  constructor(dataAttribute: string, sendEvent: EventCallback) {
     this._dataAttribute = dataAttribute;
-    this._recordEvent = recordEvent;
+    this._sendEvent = sendEvent;
 
     this.recordEvents();
 
@@ -40,7 +39,7 @@ export class Recorder {
         "recorded:",
         event
       );
-      this._recordEvent(event);
+      this._sendEvent(event);
     };
 
     document.addEventListener(eventName, listener, {
@@ -57,7 +56,8 @@ export class Recorder {
     this.recordEvent("click", event => ({
       action: "click",
       isTrusted: event.isTrusted,
-      target: getDescriptor(event.target as HTMLElement, this._dataAttribute)
+      target: getDescriptor(event.target as HTMLElement, this._dataAttribute),
+      time: Date.now()
     }));
 
     const onInput = (event: Event) => {
@@ -66,6 +66,7 @@ export class Recorder {
         action: "input",
         isTrusted: event.isTrusted,
         target: getDescriptor(element, this._dataAttribute),
+        time: Date.now(),
         value: element.value
       } as types.InputEvent;
     };
@@ -84,6 +85,7 @@ export class Recorder {
         action: "scroll",
         isTrusted: event.isTrusted,
         target: getDescriptor(element, this._dataAttribute),
+        time: Date.now(),
         value: {
           x: element.scrollLeft,
           y: element.scrollTop
@@ -113,6 +115,7 @@ export class Recorder {
             action: "input",
             isTrusted: false,
             target: getDescriptor(element, recorder._dataAttribute),
+            time: Date.now(),
             value: element.value
           };
 
@@ -122,7 +125,7 @@ export class Recorder {
             "recorded:",
             inputEvent
           );
-          recorder._recordEvent(inputEvent);
+          recorder._sendEvent(inputEvent);
         }
       }
     });

@@ -1,7 +1,8 @@
 import { logger } from "@qawolf/logger";
-import { BrowserStep, Size } from "@qawolf/types";
+import { BrowserStep, Callback, Event, Size } from "@qawolf/types";
 import { waitFor } from "@qawolf/web";
-import puppeteer, { devices, Page, ElementHandle } from "puppeteer";
+import { sortBy } from "lodash";
+import puppeteer, { devices, ElementHandle } from "puppeteer";
 import { launchPuppeteerBrowser } from "./browserUtils";
 import { getDevice } from "./device";
 import { findElement } from "./pageUtils";
@@ -20,6 +21,7 @@ export class Browser {
   private _browser: puppeteer.Browser;
   private _currentPageIndex: number = 0;
   private _device: devices.Device;
+  private _onClose: Callback[] = [];
   private _record: boolean;
 
   // stored in order of open
@@ -46,11 +48,9 @@ export class Browser {
   }
 
   public async close(): Promise<void> {
-    for (let page of this._pages) {
-      page.dispose();
-    }
-
+    this._pages.forEach(page => page.dispose());
     await this._browser.close();
+    this._onClose.forEach(c => c());
     logger.verbose("Browser: closed");
   }
 
@@ -65,6 +65,16 @@ export class Browser {
   public async element(step: BrowserStep): Promise<ElementHandle> {
     const page = await this.getPage(step.pageId, true);
     return findElement(page, step);
+  }
+
+  public get events() {
+    const events: Event[] = [];
+
+    this._pages.forEach((page, index) =>
+      page.events.forEach(event => events.push({ ...event, pageId: index }))
+    );
+
+    return sortBy(events, e => e.time);
   }
 
   public async goto(url: string): Promise<DecoratedPage> {
@@ -111,6 +121,12 @@ export class Browser {
     return this._browser;
   }
 
+  public waitForClose() {
+    return new Promise(resolve => {
+      this._onClose.push(resolve);
+    });
+  }
+
   private async managePages() {
     const pages = await this._browser.pages();
     if (pages.length !== 1) {
@@ -126,6 +142,14 @@ export class Browser {
     this._browser.on("targetcreated", async target => {
       const page = await target.page();
       if (page) this._pages.push(await QAWolfPage.create({ ...options, page }));
+    });
+
+    this._browser.on("targetdestroyed", async () => {
+      // close the browser all pages are closed
+      const pages = await this._browser.pages();
+      if (pages.length === 0) {
+        await this.close();
+      }
     });
   }
 }
