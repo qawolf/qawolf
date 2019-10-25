@@ -44,7 +44,7 @@ export class QAWolfPage {
     let bundle = webBundle;
     if (options.record) {
       // create the web Recorder and connect to this.onEvent
-      await page.exposeFunction("qaw_onEvent", (event: any) => {
+      await page.exposeFunction("qaw_onEvent", (event: Event) => {
         logger.debug(`QAWolfPage: received event ${JSON.stringify(event)}`);
         qawolfPage._events.push(event);
       });
