@@ -16,7 +16,7 @@ describe("Browser.create", () => {
     expect(zeroIsLoaded).toBeTruthy();
 
     // check it loads on a new page
-    await browser._browser.newPage();
+    await browser.super.newPage();
     const oneIsLoaded = await (await browser.getPage(1)).evaluate(isLoaded);
     expect(oneIsLoaded).toBeTruthy();
 
@@ -33,7 +33,7 @@ describe("Browser.create", () => {
     expect((await browser.getPage(0)).viewport()).toEqual(expectedViewport);
 
     // check it emulates on a new page
-    await browser._browser.newPage();
+    await browser.super.newPage();
     expect((await browser.getPage(1)).viewport()).toEqual(expectedViewport);
 
     await browser.close();

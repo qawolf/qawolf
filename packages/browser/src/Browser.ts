@@ -1,13 +1,15 @@
 import { logger } from "@qawolf/logger";
-import { BrowserStep, Size } from "@qawolf/types";
+import { BrowserStep, Callback, Event, Size } from "@qawolf/types";
 import { waitFor } from "@qawolf/web";
-import puppeteer, { Page, ElementHandle } from "puppeteer";
+import { sortBy } from "lodash";
+import puppeteer, { devices, ElementHandle } from "puppeteer";
 import { launchPuppeteerBrowser } from "./browserUtils";
 import { getDevice } from "./device";
 import { findElement } from "./pageUtils";
-import { QAWolfPage } from "./QAWolfPage";
+import { DecoratedPage, QAWolfPage } from "./QAWolfPage";
 
 export type BrowserCreateOptions = {
+  record?: boolean;
   size?: Size;
   url?: string;
 };
@@ -16,9 +18,12 @@ export class Browser {
   /**
    * Wrap Browser and manage it's pages.
    */
-  public _browser: puppeteer.Browser;
+  private _browser: puppeteer.Browser;
   private _currentPageIndex: number = 0;
-  private _device: puppeteer.devices.Device;
+  private _device: devices.Device;
+  private _onClose: Callback[] = [];
+  private _record: boolean;
+
   // stored in order of open
   private _pages: QAWolfPage[] = [];
 
@@ -34,6 +39,7 @@ export class Browser {
     const self = new Browser();
     self._device = getDevice(options.size);
     self._browser = await launchPuppeteerBrowser(self._device);
+    self._record = !!options.record;
     await self.managePages();
 
     if (options.url) await self.goto(options.url);
@@ -42,28 +48,39 @@ export class Browser {
   }
 
   public async close(): Promise<void> {
-    for (let page of this._pages) {
-      page.dispose();
-    }
-
+    this._pages.forEach(page => page.dispose());
     await this._browser.close();
+    this._onClose.forEach(c => c());
     logger.verbose("Browser: closed");
   }
 
-  public currentPage(): Promise<Page> {
-    return this.getPage(this._currentPageIndex);
+  public currentPage(waitForRequests: boolean = true): Promise<DecoratedPage> {
+    return this.getPage(this._currentPageIndex, waitForRequests);
   }
 
   public get device() {
     return this._device;
   }
 
-  public async element(step: BrowserStep): Promise<ElementHandle> {
-    const page = await this.getPage(step.pageId, true);
+  public async element(
+    step: BrowserStep,
+    waitForRequests: boolean = true
+  ): Promise<ElementHandle> {
+    const page = await this.getPage(step.pageId, waitForRequests);
     return findElement(page, step);
   }
 
-  public async goto(url: string): Promise<Page> {
+  public get events() {
+    const events: Event[] = [];
+
+    this._pages.forEach((page, index) =>
+      page.events.forEach(event => events.push({ ...event, pageId: index }))
+    );
+
+    return sortBy(events, e => e.time);
+  }
+
+  public async goto(url: string): Promise<DecoratedPage> {
     logger.verbose(`Browser: goto ${url}`);
     const page = await this.currentPage();
     await page.goto(url);
@@ -74,7 +91,7 @@ export class Browser {
     index: number = 0,
     waitForRequests: boolean = false,
     timeoutMs: number = 5000
-  ): Promise<Page> {
+  ): Promise<DecoratedPage> {
     /**
      * Wait for the page at index to be ready and activate it.
      */
@@ -103,6 +120,16 @@ export class Browser {
     return page.super;
   }
 
+  public get super() {
+    return this._browser;
+  }
+
+  public waitForClose() {
+    return new Promise(resolve => {
+      this._onClose.push(resolve);
+    });
+  }
+
   private async managePages() {
     const pages = await this._browser.pages();
     if (pages.length !== 1) {
@@ -110,11 +137,22 @@ export class Browser {
       // when there are multiple pages open at the start
       throw new Error("Must managePages before opening pages");
     }
-    this._pages.push(await QAWolfPage.create(pages[0], this._device));
+
+    const options = { device: this._device, record: this._record };
+
+    this._pages.push(await QAWolfPage.create({ ...options, page: pages[0] }));
 
     this._browser.on("targetcreated", async target => {
       const page = await target.page();
-      if (page) this._pages.push(await QAWolfPage.create(page, this._device));
+      if (page) this._pages.push(await QAWolfPage.create({ ...options, page }));
+    });
+
+    this._browser.on("targetdestroyed", async () => {
+      // close the browser all pages are closed
+      const pages = await this._browser.pages();
+      if (pages.length === 0) {
+        await this.close();
+      }
     });
   }
 }

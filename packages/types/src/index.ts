@@ -1,13 +1,13 @@
+export type Callback<S = void, T = void> = (data?: S) => T;
+
 export type Action = "click" | "input" | "scroll";
 
 export type BrowserStep = {
   action: Action;
   index: number;
   pageId?: number;
-  scrollDirection?: "down" | "up";
-  scrollTo?: number;
   target: ElementDescriptor;
-  value?: string;
+  value?: string | ScrollValue | null;
 };
 
 export type ElementDescriptor = {
@@ -27,6 +27,29 @@ export type ElementDescriptor = {
   title?: string | null;
   xpath?: string | null;
 };
+
+export interface Event {
+  action: Action;
+  isTrusted: boolean;
+  pageId?: number;
+  target: ElementDescriptor;
+  time: number;
+}
+
+export interface InputEvent extends Event {
+  action: "input";
+  value?: string | null;
+}
+
+export type ScrollValue = {
+  x: number;
+  y: number;
+};
+
+export interface ScrollEvent extends Event {
+  action: "scroll";
+  value: ScrollValue;
+}
 
 export type Locator = {
   action: Action;

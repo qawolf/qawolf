@@ -10,7 +10,8 @@
     "src"
   ],
   "scripts": {
-    "bundle": "rollup --config rollup.ts"
+    "bundle": "rollup --config rollup.ts",
+    "watch": "rollup --watch --config rollup.ts"
   },
   "repository": {
     "type": "git",

@@ -5,9 +5,8 @@ export const loginSteps: BrowserStep[] = [
     action: "scroll",
     index: 0,
     pageId: 0,
-    scrollDirection: "down",
-    scrollTo: 366,
-    target: { xpath: "scroll" }
+    target: { xpath: "/html" },
+    value: { x: 0, y: 366 }
   },
   {
     action: "click",

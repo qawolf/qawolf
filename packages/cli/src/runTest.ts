@@ -18,7 +18,7 @@ export const runTest = async (
     // run with fast fail since we do not want to continue e2e tests when one fails
     setupFilesAfterEnv: [setupFailFast],
     testEnvironment: modulePath,
-    testTimeout: 30000
+    testTimeout: 60000
   };
 
   if (name) {
