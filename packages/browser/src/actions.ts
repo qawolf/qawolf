@@ -1,4 +1,4 @@
-import { QAWolfWeb } from "@qawolf/web";
+import { QAWolfWeb, sleep } from "@qawolf/web";
 import { ElementHandle, Page } from "puppeteer";
 
 export const click = async (element: ElementHandle): Promise<void> => {
@@ -16,10 +16,20 @@ export const input = async (
   if (tagName.toLowerCase() === "select") {
     await elementHandle.select(strValue);
   } else {
-    // clear current value
-    await elementHandle.evaluate(element => {
-      (element as HTMLInputElement).value = "";
-    });
+    await elementHandle.focus();
+
+    const currentValue = await elementHandle.evaluate(
+      element => (element as HTMLInputElement).value
+    );
+
+    if (currentValue) {
+      // select all so we replace the text
+      // from https://github.com/GoogleChrome/puppeteer/issues/1313#issuecomment-471732011
+      await elementHandle.evaluate(() =>
+        document.execCommand("selectall", false, "")
+      );
+      await elementHandle.press("Backspace");
+    }
 
     await elementHandle.type(strValue);
   }

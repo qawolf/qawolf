@@ -14,7 +14,7 @@ export class RequestTracker {
   // how long until we ignore a request
   private _timeout: number;
 
-  constructor(page: Page, timeout: number = 10000) {
+  constructor(page: Page, timeout: number = 5000) {
     this._page = page;
     this._timeout = timeout;
 
