@@ -17,7 +17,7 @@ export const buildMarkdown = (results: AggregatedResult): string => {
   const passedTests: FormattedTest[] = [];
 
   results.testResults.forEach(testResult => {
-    const test = buildTest(testResult);
+    const test = formatTest(testResult);
 
     if (testResult.numFailingTests) {
       failedTests.push(test);
@@ -36,7 +36,7 @@ export const buildMarkdown = (results: AggregatedResult): string => {
   return markdown;
 };
 
-const buildTest = (result: TestResult): FormattedTest => {
+const formatTest = (result: TestResult): FormattedTest => {
   const steps = result.testResults.map(step => {
     const emoji = step.status === "passed" ? ":white_check_mark:" : ":x:";
 
