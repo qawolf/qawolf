@@ -1,7 +1,86 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`buildMarkdown returns correct markdown for test suite with multiple tests 1`] = `"<h2>1 Failed</h2><details><summary>:x: failure</summary><br /><b>Steps</b><br /><ol><li>:white_check_mark: step 1</li><li>:white_check_mark: step 2</li><li>:x: step 3</li><li>:x: <s>step 4</s></li></ol></details><h2>1 Passed</h2><details><summary>:white_check_mark: success</summary><br /><b>Steps</b><br /><ol><li>:white_check_mark: step 1</li><li>:white_check_mark: step 2</li><li>:white_check_mark: step 3</li></ol></details>"`;
+exports[`buildMarkdown returns correct markdown for test suite with multiple tests 1`] = `
+"<h2>1 Failed</h2>
+<details>
+    <summary>:x: failure</summary>
+    <br />
+    <b>Steps</b>
+    <ol>
+        <li>
+            :white_check_mark:
+            step 1
+        </li>
+        <li>
+            :white_check_mark:
+            step 2
+        </li>
+        <li>
+            :x:
+            step 3
+        </li>
+        <li>
+            :x:
+            <s>step 4</s>
+        </li>
+    </ol>
+</details>
 
-exports[`buildMarkdown returns correct markdown for test suite with single failed test 1`] = `"<h2>1 Failed</h2><details><summary>:x: failure</summary><br /><b>Steps</b><br /><ol><li>:white_check_mark: step 1</li><li>:white_check_mark: step 2</li><li>:x: step 3</li><li>:x: <s>step 4</s></li></ol></details>"`;
+<h2>1 Passed</h2>
+<details>
+    <summary>:white_check_mark: success</summary>
+    <br />
+    <b>Steps</b>
+    <ol>
+        <li>:white_check_mark: step 1</li>
+        <li>:white_check_mark: step 2</li>
+        <li>:white_check_mark: step 3</li>
+    </ol>
+</details>
+"
+`;
 
-exports[`buildMarkdown returns correct markdown for test suite with single passed test 1`] = `"<h2>1 Passed</h2><details><summary>:white_check_mark: success</summary><br /><b>Steps</b><br /><ol><li>:white_check_mark: step 1</li><li>:white_check_mark: step 2</li><li>:white_check_mark: step 3</li></ol></details>"`;
+exports[`buildMarkdown returns correct markdown for test suite with single failed test 1`] = `
+"<h2>1 Failed</h2>
+<details>
+    <summary>:x: failure</summary>
+    <br />
+    <b>Steps</b>
+    <ol>
+        <li>
+            :white_check_mark:
+            step 1
+        </li>
+        <li>
+            :white_check_mark:
+            step 2
+        </li>
+        <li>
+            :x:
+            step 3
+        </li>
+        <li>
+            :x:
+            <s>step 4</s>
+        </li>
+    </ol>
+</details>
+
+"
+`;
+
+exports[`buildMarkdown returns correct markdown for test suite with single passed test 1`] = `
+"
+<h2>1 Passed</h2>
+<details>
+    <summary>:white_check_mark: success</summary>
+    <br />
+    <b>Steps</b>
+    <ol>
+        <li>:white_check_mark: step 1</li>
+        <li>:white_check_mark: step 2</li>
+        <li>:white_check_mark: step 3</li>
+    </ol>
+</details>
+"
+`;

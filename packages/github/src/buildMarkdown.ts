@@ -1,58 +1,56 @@
-import {
-  AggregatedResult,
-  AssertionResult,
-  TestResult
-} from "@jest/test-result";
+import { AggregatedResult, TestResult } from "@jest/test-result";
+import { readFileSync } from "fs-extra";
+import { compile } from "handlebars";
+import { resolve } from "path";
+
+type FormattedTest = {
+  name: string;
+  steps: Array<{ emoji: string; name: string; strikethrough: boolean }>;
+};
+
+const markdownTemplate = compile(
+  readFileSync(resolve(__dirname, "../static/markdown.hbs"), "utf8")
+);
 
 export const buildMarkdown = (results: AggregatedResult): string => {
-  const markdown: string[] = [];
-
-  if (results.numFailedTestSuites) {
-    markdown.push(`<h2>${results.numFailedTests} Failed</h2>`);
-  }
+  const failedTests: FormattedTest[] = [];
+  const passedTests: FormattedTest[] = [];
 
   results.testResults.forEach(testResult => {
+    const test = buildTest(testResult);
+
     if (testResult.numFailingTests) {
-      markdown.push(buildWorkflowMarkdown(testResult));
+      failedTests.push(test);
+    } else {
+      passedTests.push(test);
     }
   });
 
-  if (results.numPassedTestSuites) {
-    markdown.push(`<h2>${results.numPassedTestSuites} Passed</h2>`);
-  }
-
-  results.testResults.forEach(testResult => {
-    if (!testResult.numFailingTests) {
-      markdown.push(buildWorkflowMarkdown(testResult));
-    }
+  const markdown = markdownTemplate({
+    failedCount: results.numFailedTestSuites || null,
+    failedTests,
+    passedCount: results.numPassedTestSuites || null,
+    passedTests
   });
 
-  return markdown.join("");
+  return markdown;
 };
 
-const buildStepsMarkdown = (assertionResults: AssertionResult[]): string => {
-  const markdown: string[] = ["<br /><b>Steps</b><br /><ol>"];
+const buildTest = (result: TestResult): FormattedTest => {
+  const steps = result.testResults.map(step => {
+    const emoji = step.status === "passed" ? ":white_check_mark:" : ":x:";
 
-  assertionResults.forEach(result => {
-    const emoji = result.status === "passed" ? ":white_check_mark:" : ":x:";
-    const stepName =
-      result.status === "pending" ? `<s>${result.title}</s>` : result.title;
-
-    markdown.push(`<li>${emoji} ${stepName}</li>`);
+    return {
+      emoji,
+      name: step.title,
+      strikethrough: step.status === "pending"
+    };
   });
 
-  markdown.push("</ol>");
-
-  return markdown.join("");
-};
-
-const buildWorkflowMarkdown = (testResult: TestResult): string => {
-  const emoji = testResult.numFailingTests ? ":x:" : ":white_check_mark:";
-
-  const testName = getTestNameFromFile(testResult.testFilePath);
-  const steps = buildStepsMarkdown(testResult.testResults);
-
-  return `<details><summary>${emoji} ${testName}</summary>${steps}</details>`;
+  return {
+    name: getTestNameFromFile(result.testFilePath),
+    steps
+  };
 };
 
 const getTestNameFromFile = (testFilePath: string): string => {
