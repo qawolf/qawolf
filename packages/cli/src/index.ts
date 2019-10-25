@@ -10,7 +10,6 @@ import { Workflow } from "@qawolf/types";
 import program from "commander";
 import { outputFile, outputJson, readJson } from "fs-extra";
 import { snakeCase } from "lodash";
-import { resolve } from "path";
 import { runTest } from "./runTest";
 import { parseUrl, getUrlRoot } from "./utils";
 
