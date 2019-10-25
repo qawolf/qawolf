@@ -1,0 +1,266 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`buildSteps orders airbnb events properly 1`] = `
+Array [
+  Object {
+    "action": "input",
+    "index": 0,
+    "pageId": 0,
+    "target": Object {
+      "ariaLabel": null,
+      "classList": Array [
+        "_14fdu48d",
+      ],
+      "dataValue": null,
+      "href": null,
+      "iconContent": null,
+      "id": "checkin_input",
+      "inputType": "text",
+      "labels": Array [
+        "check-in",
+      ],
+      "name": "checkin",
+      "parentText": Array [
+        "check-in",
+        "check-in",
+      ],
+      "placeholder": "mm/dd/yyyy",
+      "tagName": "input",
+      "textContent": null,
+      "title": null,
+      "xpath": "//*[@id='checkin_input']",
+    },
+    "value": "Fri, Oct 25",
+  },
+  Object {
+    "action": "input",
+    "index": 1,
+    "pageId": 0,
+    "target": Object {
+      "ariaLabel": null,
+      "classList": Array [
+        "_14fdu48d",
+      ],
+      "dataValue": null,
+      "href": null,
+      "iconContent": null,
+      "id": "checkout_input",
+      "inputType": "text",
+      "labels": Array [
+        "checkout",
+      ],
+      "name": "checkout",
+      "parentText": Array [
+        "checkout",
+        "checkout",
+      ],
+      "placeholder": "mm/dd/yyyy",
+      "tagName": "input",
+      "textContent": null,
+      "title": null,
+      "xpath": "//*[@id='checkout_input']",
+    },
+    "value": "Sat, Oct 26",
+  },
+  Object {
+    "action": "input",
+    "index": 2,
+    "pageId": 0,
+    "target": Object {
+      "ariaLabel": null,
+      "classList": Array [
+        "_1f8ev6q",
+        "focus-visible",
+      ],
+      "dataValue": null,
+      "href": null,
+      "iconContent": null,
+      "id": "Koan-magic-carpet-koan-search-bar__input",
+      "inputType": "text",
+      "labels": Array [
+        "where",
+      ],
+      "name": "query",
+      "parentText": Array [
+        "where",
+        "where",
+      ],
+      "placeholder": "anywhere",
+      "tagName": "input",
+      "textContent": null,
+      "title": null,
+      "xpath": "//*[@id='Koan-magic-carpet-koan-search-bar__input']",
+    },
+    "value": "nyc",
+  },
+  Object {
+    "action": "click",
+    "index": 3,
+    "pageId": 0,
+    "target": Object {
+      "ariaLabel": null,
+      "classList": Array [
+        "_1avdemu",
+      ],
+      "dataValue": null,
+      "href": null,
+      "iconContent": null,
+      "id": null,
+      "inputType": null,
+      "labels": null,
+      "name": null,
+      "parentText": Array [
+        "󰀐",
+        "nyc, ny",
+        "󰀐nyc, ny",
+      ],
+      "placeholder": null,
+      "tagName": "div",
+      "textContent": "nyc, ny",
+      "title": null,
+      "xpath": "//*[@id='Koan-magic-carpet-koan-search-bar__option-0']/div[2]",
+    },
+  },
+  Object {
+    "action": "click",
+    "index": 4,
+    "pageId": 0,
+    "target": Object {
+      "ariaLabel": null,
+      "classList": Array [
+        "_1vs0x720",
+      ],
+      "dataValue": null,
+      "href": null,
+      "iconContent": null,
+      "id": null,
+      "inputType": "submit",
+      "labels": null,
+      "name": null,
+      "parentText": Array [
+        "search",
+        "search",
+      ],
+      "placeholder": null,
+      "tagName": "button",
+      "textContent": "search",
+      "title": null,
+      "xpath": "//*[@id='FMP-target']/div/div[1]/div/div/div/div/div/div[2]/div/form/div[4]/div/button",
+    },
+  },
+]
+`;
+
+exports[`buildSteps orders google events properly 1`] = `
+Array [
+  Object {
+    "action": "input",
+    "index": 0,
+    "pageId": 0,
+    "target": Object {
+      "ariaLabel": "Search",
+      "classList": Array [
+        "gLFyf",
+        "gsfi",
+      ],
+      "dataValue": null,
+      "href": null,
+      "iconContent": null,
+      "id": null,
+      "inputType": "text",
+      "labels": null,
+      "name": "q",
+      "parentText": Array [
+        ".glfyf{background-color:transparent;border:none;margin:0;padding:0;color:rgba(0,0,0,.87);word-wrap:break-word;outline:none;display:flex;flex:100%;-webkit-tap-highlight-color:transparent;margin-top:-37px}.minidiv .glfyf{margin-top:-35px;}.a4bic{display:flex;flex:1;flex-wrap:wrap}.vdlsw{color:transparent;flex:100%;white-space:pre}.vdlsw span{background:url(\\"/images/experiments/wavy-underline.png\\") repeat-x scroll 0 100% transparent;padding:0 0 10px 0;}",
+        ".glfyf{background-color:transparent;border:none;margin:0;padding:0;color:rgba(0,0,0,.87);word-wrap:break-word;outline:none;display:flex;flex:100%;-webkit-tap-highlight-color:transparent;margin-top:-37px}.minidiv .glfyf{margin-top:-35px;}.a4bic{display:flex;flex:1;flex-wrap:wrap}.vdlsw{color:transparent;flex:100%;white-space:pre}.vdlsw span{background:url(\\"/images/experiments/wavy-underline.png\\") repeat-x scroll 0 100% transparent;padding:0 0 10px 0;}",
+      ],
+      "placeholder": null,
+      "tagName": "input",
+      "textContent": null,
+      "title": "Search",
+      "xpath": "//*[@id='tsf']/div[2]/div[1]/div[1]/div/div[2]/input",
+    },
+    "value": "qawolf",
+  },
+  Object {
+    "action": "click",
+    "index": 1,
+    "pageId": 0,
+    "target": Object {
+      "ariaLabel": "Google Search",
+      "classList": Array [
+        "gNO89b",
+      ],
+      "dataValue": null,
+      "href": null,
+      "iconContent": null,
+      "id": null,
+      "inputType": "submit",
+      "labels": null,
+      "name": "btnK",
+      "parentText": Array [
+        "",
+      ],
+      "placeholder": null,
+      "tagName": "input",
+      "textContent": null,
+      "title": null,
+      "xpath": "//*[@id='tsf']/div[2]/div[1]/div[2]/div[2]/div[2]/center/input[1]",
+    },
+  },
+  Object {
+    "action": "scroll",
+    "index": 2,
+    "pageId": 0,
+    "target": Object {
+      "xpath": "/html",
+    },
+    "value": Object {
+      "x": 0,
+      "y": 718,
+    },
+  },
+  Object {
+    "action": "click",
+    "index": 3,
+    "pageId": 0,
+    "target": Object {
+      "ariaLabel": null,
+      "classList": Array [
+        "csb",
+        "ch",
+      ],
+      "dataValue": null,
+      "href": null,
+      "iconContent": Array [
+        "csb",
+        "ch",
+      ],
+      "id": null,
+      "inputType": null,
+      "labels": null,
+      "name": null,
+      "parentText": Array [
+        "2",
+      ],
+      "placeholder": null,
+      "tagName": "span",
+      "textContent": null,
+      "title": null,
+      "xpath": "//*[@id='nav']/tbody/tr/td[3]/a/span",
+    },
+  },
+  Object {
+    "action": "scroll",
+    "index": 4,
+    "pageId": 0,
+    "target": Object {
+      "xpath": "/html",
+    },
+    "value": Object {
+      "x": 0,
+      "y": 780,
+    },
+  },
+]
+`;

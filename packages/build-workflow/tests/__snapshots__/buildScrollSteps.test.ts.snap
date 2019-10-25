@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`buildScrollSteps builds correct steps for scroll google 1`] = `
+Array [
+  Object {
+    "action": "scroll",
+    "index": 121,
+    "pageId": 0,
+    "target": Object {
+      "xpath": "/html",
+    },
+    "value": Object {
+      "x": 0,
+      "y": 718,
+    },
+  },
+  Object {
+    "action": "scroll",
+    "index": 202,
+    "pageId": 0,
+    "target": Object {
+      "xpath": "/html",
+    },
+    "value": Object {
+      "x": 0,
+      "y": 780,
+    },
+  },
+]
+`;

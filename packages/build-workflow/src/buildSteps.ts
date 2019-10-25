@@ -1,4 +1,4 @@
-import { BrowserStep, Event, InputEvent } from "@qawolf/types";
+import { BrowserStep, Event, InputEvent, ScrollEvent } from "@qawolf/types";
 import { parseDate } from "chrono-node";
 import { concat, sortBy } from "lodash";
 
@@ -77,10 +77,45 @@ export const buildInputSteps = (events: Event[]): BrowserStep[] => {
   return steps;
 };
 
+export const buildScrollSteps = (events: Event[]): BrowserStep[] => {
+  const steps: BrowserStep[] = [];
+
+  for (let i = 0; i < events.length; i++) {
+    const event = events[i] as ScrollEvent;
+
+    // ignore other actions
+    if (event.action !== "scroll") continue;
+
+    // ignore system initiated scrolls
+    if (!event.isTrusted) continue;
+
+    // skip to the last scroll on this target
+    const nextEvent = i + 1 < events.length ? events[i + 1] : null;
+    if (
+      nextEvent &&
+      nextEvent.action === "scroll" &&
+      event.target.xpath === nextEvent.target.xpath
+    )
+      continue;
+
+    steps.push({
+      action: "scroll",
+      // include event index so we can sort in buildSteps
+      index: i,
+      pageId: event.pageId,
+      target: event.target,
+      value: event.value
+    });
+  }
+
+  return steps;
+};
+
 export const buildSteps = (events: Event[]): BrowserStep[] => {
   const unorderedSteps = concat(
     buildClickSteps(events),
-    buildInputSteps(events)
+    buildInputSteps(events),
+    buildScrollSteps(events)
   );
 
   const steps = sortBy(
