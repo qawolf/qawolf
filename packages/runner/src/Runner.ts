@@ -3,7 +3,7 @@ import {
   click,
   input,
   retryExecutionError,
-  scroll
+  scrollElement
 } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { ScreenCapture } from "@qawolf/screen";
@@ -110,15 +110,15 @@ export class Runner {
         | null
         | undefined);
     } else if (step.action === "scroll") {
-      await this.scroll(step, this._values[step.index] as ScrollValue);
+      await this.scrollElement(step, this._values[step.index] as ScrollValue);
     }
   }
 
-  public async scroll(step: BrowserStep, value: ScrollValue) {
+  public async scrollElement(step: BrowserStep, value: ScrollValue) {
     await retryExecutionError(async () => {
       const element = await this._browser.element(step);
       await this.beforeAction();
-      await scroll(element, value);
+      await scrollElement(element, value);
     });
   }
 

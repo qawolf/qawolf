@@ -47,7 +47,7 @@ export const formatMethod = (action: Action, index: number): string => {
   }
 
   if (action === "scroll") {
-    return `scroll(${stepParam}, values[${index}])`;
+    return `scrollElement(${stepParam}, values[${index}])`;
   }
 
   throw new Error(`Invalid step action ${action}`);

@@ -1,7 +1,7 @@
 import { ScrollValue } from "@qawolf/types";
 import { sleep } from "./timer";
 
-export const scroll = async (
+export const scrollElement = async (
   element: Element,
   value: ScrollValue,
   timeoutMs: number = 10000

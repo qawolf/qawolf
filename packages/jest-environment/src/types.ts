@@ -9,10 +9,10 @@ declare global {
 
   function click(step: BrowserStep): Promise<void>;
   function input(step: BrowserStep, value?: string | null): Promise<void>;
-  function scroll(step: BrowserStep, value: ScrollValue): Promise<void>;
+  function scrollElement(step: BrowserStep, value: ScrollValue): Promise<void>;
 
   const steps: BrowserStep[];
-  const values: (string | undefined)[];
+  const values: (string | undefined | ScrollValue)[];
   const workflow: Workflow;
 
   const browser: Browser;
