@@ -1,18 +1,18 @@
 import { Browser } from "@qawolf/browser";
 import { Runner } from "@qawolf/runner";
-import { BrowserStep, ScrollValue, Workflow } from "@qawolf/types";
+import { Step, StepValue, Workflow } from "@qawolf/types";
 import { Page } from "puppeteer";
 
 declare global {
   // declare the globals we expose in RunnerEnvironment
   const runner: Runner;
 
-  function click(step: BrowserStep): Promise<void>;
-  function input(step: BrowserStep, value?: string | null): Promise<void>;
-  function scrollElement(step: BrowserStep, value: ScrollValue): Promise<void>;
+  function click(step: Step): Promise<void>;
+  function input(step: Step, value?: StepValue): Promise<void>;
+  function scrollElement(step: Step, value: StepValue): Promise<void>;
 
-  const steps: BrowserStep[];
-  const values: (string | undefined | ScrollValue)[];
+  const steps: Step[];
+  const values: StepValue[];
   const workflow: Workflow;
 
   const browser: Browser;

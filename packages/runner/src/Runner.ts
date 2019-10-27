@@ -8,7 +8,7 @@ import {
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { ScreenCapture } from "@qawolf/screen";
-import { BrowserStep, ScrollValue, Workflow } from "@qawolf/types";
+import { ScrollValue, Step, StepValue, Workflow } from "@qawolf/types";
 import { sleep } from "@qawolf/web";
 import { getStepValues } from "./getStepValues";
 import { getUrl } from "./getUrl";
@@ -16,7 +16,7 @@ import { getUrl } from "./getUrl";
 export class Runner {
   protected _browser: Browser;
   protected _screenCapture: ScreenCapture | null = null;
-  protected _values: (string | null | undefined | ScrollValue)[];
+  protected _values: StepValue[];
   protected _workflow: Workflow;
 
   protected constructor() {}
@@ -72,7 +72,7 @@ export class Runner {
     return this._values;
   }
 
-  public async click(step: BrowserStep) {
+  public async click(step: Step) {
     await retryExecutionError(async () => {
       const element = await this._browser.element(step);
       await this.beforeAction();
@@ -88,11 +88,11 @@ export class Runner {
     await this._browser.close();
   }
 
-  public async input(step: BrowserStep, value?: string | null) {
+  public async input(step: Step, value?: StepValue) {
     await retryExecutionError(async () => {
       const element = await this._browser.element(step);
       await this.beforeAction();
-      await input(element, value);
+      await input(element, value as (string | null));
     });
   }
 
@@ -102,7 +102,7 @@ export class Runner {
     }
   }
 
-  public async runStep(step: BrowserStep) {
+  public async runStep(step: Step) {
     logger.verbose(`Runner: runStep ${step.index}`);
 
     if (step.action === "click") {
@@ -117,11 +117,11 @@ export class Runner {
     }
   }
 
-  public async scrollElement(step: BrowserStep, value: ScrollValue) {
+  public async scrollElement(step: Step, value: StepValue) {
     await retryExecutionError(async () => {
       const element = await this._browser.element(step);
       await this.beforeAction();
-      await scrollElement(element, value);
+      await scrollElement(element, value as ScrollValue);
     });
   }
 

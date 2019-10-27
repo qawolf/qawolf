@@ -1,4 +1,4 @@
-import { BrowserStep, Event, InputEvent, ScrollEvent } from "@qawolf/types";
+import { Event, InputEvent, ScrollEvent, Step } from "@qawolf/types";
 import { parseDate } from "chrono-node";
 import { concat, sortBy } from "lodash";
 
@@ -9,8 +9,8 @@ const isDateInputEvent = (event: Event) => {
   );
 };
 
-export const buildClickSteps = (events: Event[]): BrowserStep[] => {
-  const steps: BrowserStep[] = [];
+export const buildClickSteps = (events: Event[]): Step[] => {
+  const steps: Step[] = [];
 
   for (let i = 0; i < events.length; i++) {
     const event = events[i];
@@ -46,8 +46,8 @@ export const buildClickSteps = (events: Event[]): BrowserStep[] => {
   return steps;
 };
 
-export const buildInputSteps = (events: Event[]): BrowserStep[] => {
-  const steps: BrowserStep[] = [];
+export const buildInputSteps = (events: Event[]): Step[] => {
+  const steps: Step[] = [];
 
   for (let i = 0; i < events.length; i++) {
     const event = events[i] as InputEvent;
@@ -77,8 +77,8 @@ export const buildInputSteps = (events: Event[]): BrowserStep[] => {
   return steps;
 };
 
-export const buildScrollSteps = (events: Event[]): BrowserStep[] => {
-  const steps: BrowserStep[] = [];
+export const buildScrollSteps = (events: Event[]): Step[] => {
+  const steps: Step[] = [];
 
   for (let i = 0; i < events.length; i++) {
     const event = events[i] as ScrollEvent;
@@ -111,7 +111,7 @@ export const buildScrollSteps = (events: Event[]): BrowserStep[] => {
   return steps;
 };
 
-export const buildSteps = (events: Event[]): BrowserStep[] => {
+export const buildSteps = (events: Event[]): Step[] => {
   const unorderedSteps = concat(
     buildClickSteps(events),
     buildInputSteps(events),
@@ -122,7 +122,7 @@ export const buildSteps = (events: Event[]): BrowserStep[] => {
     unorderedSteps,
     // ordered by the event index
     step => step.index
-  ).map<BrowserStep>((step, index) => ({ ...step, index }));
+  ).map<Step>((step, index) => ({ ...step, index }));
 
   return steps;
 };

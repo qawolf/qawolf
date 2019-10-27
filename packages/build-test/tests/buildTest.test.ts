@@ -1,4 +1,4 @@
-import { BrowserStep } from "@qawolf/types";
+import { Step } from "@qawolf/types";
 // import directly since fixtures are not exported
 import { loginWorkflow } from "../../build-workflow/fixtures/loginWorkflow";
 import {
@@ -17,7 +17,7 @@ describe("buildTest", () => {
 
 describe("formatIt", () => {
   it("formats labels", () => {
-    const step: BrowserStep = {
+    const step: Step = {
       action: "input",
       index: 0,
       target: {
@@ -41,7 +41,7 @@ describe("formatMethod", () => {
 
 describe("formatStep", () => {
   it("formats click on link step", () => {
-    const step: BrowserStep = {
+    const step: Step = {
       action: "click",
       index: 0,
       target: {
@@ -55,7 +55,7 @@ describe("formatStep", () => {
   });
 
   it("formats click on submit input step", () => {
-    const step: BrowserStep = {
+    const step: Step = {
       action: "click",
       index: 1,
       target: {
@@ -70,7 +70,7 @@ describe("formatStep", () => {
   });
 
   it("formats scroll action", () => {
-    const step: BrowserStep = {
+    const step: Step = {
       action: "scroll",
       index: 0,
       target: { xpath: "/html" },
@@ -82,7 +82,7 @@ describe("formatStep", () => {
   });
 
   it("formats type into text input", () => {
-    const step: BrowserStep = {
+    const step: Step = {
       action: "input",
       index: 0,
       target: {
@@ -101,7 +101,7 @@ describe("formatStep", () => {
   });
 
   it("formats type into password input", () => {
-    const step: BrowserStep = {
+    const step: Step = {
       action: "input",
       index: 10,
       target: {
@@ -118,7 +118,7 @@ describe("formatStep", () => {
   });
 
   it("shortens target name if needed", () => {
-    const step: BrowserStep = {
+    const step: Step = {
       action: "click",
       index: 0,
       target: {
@@ -133,7 +133,7 @@ describe("formatStep", () => {
   });
 
   it("excludes target name if it does not exist", () => {
-    const step: BrowserStep = {
+    const step: Step = {
       action: "click",
       index: 0,
       target: {

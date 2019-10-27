@@ -1,14 +1,6 @@
-export type Callback<S = void, T = void> = (data?: S) => T;
-
 export type Action = "click" | "input" | "scroll";
 
-export type BrowserStep = {
-  action: Action;
-  index: number;
-  pageId?: number;
-  target: ElementDescriptor;
-  value?: string | ScrollValue | null;
-};
+export type Callback<S = void, T = void> = (data?: S) => T;
 
 export type ElementDescriptor = {
   ariaLabel?: string | null;
@@ -41,16 +33,6 @@ export interface InputEvent extends Event {
   value?: string | null;
 }
 
-export type ScrollValue = {
-  x: number;
-  y: number;
-};
-
-export interface ScrollEvent extends Event {
-  action: "scroll";
-  value: ScrollValue;
-}
-
 export type Locator = {
   action: Action;
   dataAttribute: string | null;
@@ -59,11 +41,31 @@ export type Locator = {
   value?: string | null;
 };
 
+export interface ScrollEvent extends Event {
+  action: "scroll";
+  value: ScrollValue;
+}
+
+export type ScrollValue = {
+  x: number;
+  y: number;
+};
+
 export type Size = "desktop" | "tablet" | "mobile";
+
+export type Step = {
+  action: Action;
+  index: number;
+  pageId?: number;
+  target: ElementDescriptor;
+  value?: StepValue;
+};
+
+export type StepValue = string | ScrollValue | null | undefined;
 
 export type Workflow = {
   name: string;
   size: Size;
-  steps: BrowserStep[];
+  steps: Step[];
   url: string;
 };

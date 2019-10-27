@@ -1,7 +1,7 @@
-import { Workflow } from "@qawolf/types";
+import { StepValue, Workflow } from "@qawolf/types";
 import { upperCase } from "lodash";
 
-export const getStepValues = (workflow: Workflow) => {
+export const getStepValues = (workflow: Workflow): StepValue[] => {
   /**
    * Use QAW_WORKFLOWNAME_STEPINDEX environment variable for step value if it is defined.
    * Ex. QAW_LOGIN_0=...
