@@ -1,5 +1,5 @@
 import { logger } from "@qawolf/logger";
-import { BrowserStep, Callback, Event, Size } from "@qawolf/types";
+import { Callback, Event, Size, Step } from "@qawolf/types";
 import { waitFor } from "@qawolf/web";
 import { sortBy } from "lodash";
 import puppeteer, { devices, ElementHandle } from "puppeteer";
@@ -63,7 +63,7 @@ export class Browser {
   }
 
   public async element(
-    step: BrowserStep,
+    step: Step,
     waitForRequests: boolean = true
   ): Promise<ElementHandle> {
     const page = await this.getPage(step.pageId, waitForRequests);

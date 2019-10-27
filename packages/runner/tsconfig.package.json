@@ -7,10 +7,13 @@
   },
   "references": [
     {
+      "path": "../browser/tsconfig.package.json"
+    },
+    {
       "path": "../config/tsconfig.package.json"
     },
     {
-      "path": "../browser/tsconfig.package.json"
+      "path": "../logger/tsconfig.package.json"
     },
     {
       "path": "../screen/tsconfig.package.json"

@@ -1,4 +1,4 @@
-import { Action, BrowserStep, Workflow } from "@qawolf/types";
+import { Action, Step, Workflow } from "@qawolf/types";
 import { readFileSync } from "fs-extra";
 import { compile } from "handlebars";
 import { resolve } from "path";
@@ -7,7 +7,7 @@ const testTemplate = compile(
   readFileSync(resolve(__dirname, "../static/test.hbs"), "utf8")
 );
 
-export const formatIt = (step: BrowserStep): string => {
+export const formatIt = (step: Step): string => {
   if (step.action === "scroll") {
     return `can scroll`;
   }
@@ -32,7 +32,11 @@ export const formatIt = (step: BrowserStep): string => {
     truncatedTargetName = `${truncatedTargetName.substring(0, 40)}...`;
   }
 
-  return `can ${step.action}${stepValue} "${truncatedTargetName}" ${targetTagName}`;
+  if (truncatedTargetName.length > 0) {
+    truncatedTargetName = `"${truncatedTargetName}" `;
+  }
+
+  return `can ${step.action}${stepValue} ${truncatedTargetName}${targetTagName}`;
 };
 
 export const formatMethod = (action: Action, index: number): string => {
@@ -47,13 +51,13 @@ export const formatMethod = (action: Action, index: number): string => {
   }
 
   if (action === "scroll") {
-    return `scroll(${stepParam}, values[${index}])`;
+    return `scrollElement(${stepParam}, values[${index}])`;
   }
 
   throw new Error(`Invalid step action ${action}`);
 };
 
-export const formatStep = (step: BrowserStep) => {
+export const formatStep = (step: Step) => {
   return {
     it: formatIt(step),
     method: formatMethod(step.action, step.index)

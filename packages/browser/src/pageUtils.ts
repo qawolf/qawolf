@@ -1,6 +1,6 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { BrowserStep, Locator } from "@qawolf/types";
+import { Locator, Step } from "@qawolf/types";
 import { QAWolfWeb } from "@qawolf/web";
 import { ElementHandle, Page, Serializable } from "puppeteer";
 
@@ -19,7 +19,7 @@ export const $xText = async (page: Page, xpath: string): Promise<string> => {
 
 export const findElement = async (
   page: Page,
-  step: BrowserStep
+  step: Step
 ): Promise<ElementHandle> => {
   logger.verbose(
     `findElement: ${JSON.stringify(step.target).substring(0, 100)}`

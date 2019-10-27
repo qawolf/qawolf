@@ -1,6 +1,6 @@
-import { BrowserStep, Workflow } from "@qawolf/types";
+import { Step, Workflow } from "@qawolf/types";
 
-export const loginSteps: BrowserStep[] = [
+export const loginSteps: Step[] = [
   {
     action: "scroll",
     index: 0,

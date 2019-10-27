@@ -7,7 +7,7 @@ describe("RunnerEnvironment", () => {
     expect(runner).toBeTruthy();
     expect(click).toBeTruthy();
     expect(input).toBeTruthy();
-    expect(scroll).toBeTruthy();
+    expect(scrollElement).toBeTruthy();
   });
 
   it("exposes steps, values, and workflow as globals", () => {

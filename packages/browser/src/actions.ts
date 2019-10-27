@@ -36,7 +36,7 @@ export const input = async (
   }
 };
 
-export const scroll = async (
+export const scrollElement = async (
   elementHandle: ElementHandle,
   value: ScrollValue,
   timeoutMs: number = 10000
@@ -44,7 +44,7 @@ export const scroll = async (
   await elementHandle.evaluate(
     (element, value, timeoutMs) => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
-      return qawolf.scroll(element, value, timeoutMs);
+      return qawolf.scrollElement(element, value, timeoutMs);
     },
     value,
     timeoutMs
