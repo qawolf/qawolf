@@ -7,6 +7,11 @@
     // resolves issue with @actions/github using an old version of @octokit/graphql
     "skipLibCheck": true
   },
+  "references": [
+    {
+      "path": "../config/tsconfig.package.json"
+    }
+  ],
   "include": ["src"],
   "exclude": ["tests", "lib"]
 }
