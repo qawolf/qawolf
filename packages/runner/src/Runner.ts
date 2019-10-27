@@ -6,6 +6,7 @@ import {
   scrollElement
 } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
+import { logger } from "@qawolf/logger";
 import { ScreenCapture } from "@qawolf/screen";
 import { BrowserStep, ScrollValue, Workflow } from "@qawolf/types";
 import { sleep } from "@qawolf/web";
@@ -102,6 +103,8 @@ export class Runner {
   }
 
   public async runStep(step: BrowserStep) {
+    logger.verbose(`Runner: runStep ${step.index}`);
+
     if (step.action === "click") {
       await this.click(step);
     } else if (step.action === "input") {
