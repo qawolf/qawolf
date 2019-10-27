@@ -56,7 +56,8 @@ export const waitForElement = async ({
 }: Locator) => {
   if (dataAttribute && target.dataValue) {
     console.log(
-      `finding element by data attribute ${dataAttribute}=${target.dataValue}`
+      `finding element by data attribute ${dataAttribute}=${target.dataValue}`,
+      target
     );
     return waitFor(() => {
       const elements = queryDataElements({
@@ -76,7 +77,7 @@ export const waitForElement = async ({
   if (target.xpath === "/html") return findElementByXpath("/html");
 
   const strongMatch = await waitFor(() => {
-    console.log("waiting for strong match");
+    console.log("waiting for top strong match", target);
     const elements = queryActionElements(action);
     return topMatch({
       dataAttribute,
@@ -88,7 +89,10 @@ export const waitForElement = async ({
   }, timeoutMs);
   if (strongMatch) return strongMatch.element;
 
-  console.log("no strong match found before timeout, choosing top weak match");
+  console.log(
+    "no strong match found before timeout, choosing top weak match",
+    target
+  );
   const elements = queryActionElements(action);
   const match = topMatch({ dataAttribute, target, elements, value });
   if (match) return match.element;

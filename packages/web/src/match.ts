@@ -166,21 +166,25 @@ export const topMatch = (args: MatchArgs): Match | null => {
   );
 
   if (matches.length <= 0 || matches[0].value <= 0) {
-    console.log("no match found");
+    console.log("no top match found", args);
     return null;
   }
 
   const equalTopMatches = matches.filter(m => m.value === matches[0].value);
   if (equalTopMatches.length > 1) {
-    console.log("no match since all top matches are equal", equalTopMatches);
+    console.log(
+      "no top match since all top matches are equal",
+      args,
+      equalTopMatches
+    );
     return null;
   }
 
   if (!isSelectValueAvailable(matches[0].element, args.value)) {
-    console.log(`desired select value ${args.value} not available yet`);
+    console.log(`desired select value ${args.value} not available yet`, args);
     return null;
   }
 
-  console.log("top match found", matches[0]);
+  console.log("top match found", args, matches[0]);
   return matches[0];
 };
