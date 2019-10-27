@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/jest-environment",
   "description": "qawolf jest environment",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -25,7 +25,7 @@
   "dependencies": {
     "@qawolf/jasmine-fail-fast": "^2.0.1",
     "@qawolf/logger": "^0.4.0",
-    "@qawolf/runner": "^0.4.1",
+    "@qawolf/runner": "^0.4.2",
     "fs-extra": "^8.1.0"
   },
   "devDependencies": {
