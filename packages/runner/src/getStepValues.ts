@@ -1,5 +1,4 @@
 import { StepValue, Workflow } from "@qawolf/types";
-import { upperCase } from "lodash";
 
 export const getStepValues = (workflow: Workflow): StepValue[] => {
   /**
@@ -7,7 +6,7 @@ export const getStepValues = (workflow: Workflow): StepValue[] => {
    * Ex. QAW_LOGIN_0=...
    */
   const values = workflow.steps.map((step, index) => {
-    const key = `QAW_${upperCase(workflow.name)}_${index}`;
+    const key = `QAW_${workflow.name.toUpperCase()}_${index}`;
 
     const envValue = process.env[key];
     if (typeof envValue !== "undefined") {

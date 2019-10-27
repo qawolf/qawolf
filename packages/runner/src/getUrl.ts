@@ -1,5 +1,4 @@
 import { Workflow } from "@qawolf/types";
-import { upperCase } from "lodash";
 
 export const getUrl = (workflow: Workflow) => {
   /**
@@ -7,7 +6,7 @@ export const getUrl = (workflow: Workflow) => {
    * Otherwise use QAW_URL environment variable if it is defined.
    * Otherwise use the original workflow url.
    */
-  const key = `QAW_${upperCase(workflow.name)}_URL`;
+  const key = `QAW_${workflow.name.toUpperCase()}_URL`;
 
   const workflowUrlValue = process.env[key];
   if (typeof workflowUrlValue !== "undefined") {
