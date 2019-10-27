@@ -1,4 +1,4 @@
-name: Test in Docker
+name: npm test
 on: push
 jobs:
   build:
