@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/build-workflow",
   "description": "build qawolf workflow from events",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@qawolf/fixtures": "1.8.0",
-    "@qawolf/types": "^0.4.0",
+    "@qawolf/types": "^0.4.1",
     "jest": "^24.9.0"
   }
 }
