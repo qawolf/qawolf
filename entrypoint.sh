@@ -4,9 +4,6 @@ set -e
 
 export QAW_XVFB_ARGS=${QAW_DISPLAY_WIDTH}x${QAW_DISPLAY_HEIGHT}x24
 
-# alias qawolf so we can call it globally
-alias qawolf="node ${QAWOLF_DIR}/packages/cli/lib/index.js"
-
 # eventually support running multiple displays/scripts
 # https://stackoverflow.com/a/30336424/230462
 export DISPLAY=:99

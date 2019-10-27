@@ -37,6 +37,10 @@ COPY . ${QAWOLF_DIR}/.
 
 RUN cd ${QAWOLF_DIR} && npm run bootstrap
 
+# alias qawolf so we can call it globally
+RUN echo '#!/bin/bash\nnode ${QAWOLF_DIR}/packages/cli/lib/index.js "$@"' > /usr/bin/qawolf && \
+    chmod +x /usr/bin/qawolf
+
 # Set default env variables
 ENV QAW_CHROME_EXECUTABLE_PATH="google-chrome-stable" \
     QAW_CHROME_OFFSET_Y=72 \

@@ -12,6 +12,7 @@
 
 # .dockerignore
 .git/
+Dockerfile
 
 # used in tests
 !packages/cli/.qawolf
