@@ -73,6 +73,8 @@ export class Runner {
   }
 
   public async click(step: Step) {
+    logger.verbose(`Runner: click step ${step.index}`);
+
     await retryExecutionError(async () => {
       const element = await this._browser.element(step);
       await this.beforeAction();
@@ -89,6 +91,8 @@ export class Runner {
   }
 
   public async input(step: Step, value?: StepValue) {
+    logger.verbose(`Runner: input step ${step.index}`);
+
     await retryExecutionError(async () => {
       const element = await this._browser.element(step);
       await this.beforeAction();
@@ -103,8 +107,6 @@ export class Runner {
   }
 
   public async runStep(step: Step) {
-    logger.verbose(`Runner: runStep ${step.index}`);
-
     if (step.action === "click") {
       await this.click(step);
     } else if (step.action === "input") {
@@ -118,6 +120,8 @@ export class Runner {
   }
 
   public async scrollElement(step: Step, value: StepValue) {
+    logger.verbose(`Runner: scroll step ${step.index}`);
+
     await retryExecutionError(async () => {
       const element = await this._browser.element(step);
       await this.beforeAction();
