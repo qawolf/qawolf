@@ -9,7 +9,7 @@ const testTemplate = compile(
 
 export const formatIt = (step: BrowserStep): string => {
   if (step.action === "scroll") {
-    return `can scroll ${step.scrollDirection!}`;
+    return `can scroll`;
   }
 
   const stepValue = step.value ? ` into` : "";
@@ -47,7 +47,7 @@ export const formatMethod = (action: Action, index: number): string => {
   }
 
   if (action === "scroll") {
-    return `scroll(${stepParam})`;
+    return `scroll(${stepParam}, values[${index}])`;
   }
 
   throw new Error(`Invalid step action ${action}`);

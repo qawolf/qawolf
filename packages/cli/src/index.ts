@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
 import { buildTest } from "@qawolf/build-test";
+import { Browser } from "@qawolf/browser";
 import { buildWorkflow } from "@qawolf/build-workflow";
+import { CONFIG } from "@qawolf/config";
 import { createCheckRun, updateCheckRun } from "@qawolf/github";
 import { logger } from "@qawolf/logger";
 import { Runner } from "@qawolf/runner";
@@ -9,32 +11,56 @@ import { Workflow } from "@qawolf/types";
 import program from "commander";
 import { outputFile, outputJson, readJson } from "fs-extra";
 import { snakeCase } from "lodash";
-import { resolve } from "path";
 import { runTest } from "./runTest";
+import { parseUrl, getUrlRoot } from "./utils";
 
-program
-  .command("build <eventsPath> <name>")
-  .description("build a test from events")
-  .action(async (eventsPath, name) => {
-    const sourcePath = resolve(eventsPath);
-    logger.verbose(`read events from ${sourcePath}`);
-    const events = await readJson(sourcePath);
+let recordCommand = program
+  .command("record <url> [name]")
+  .description("record a workflow and create a test");
 
-    const destPath = `${process.cwd()}/.qawolf`;
-    const formattedName = snakeCase(name);
+if (CONFIG.development) {
+  recordCommand = recordCommand.option(
+    "-e, --events",
+    "record events (for debugging)"
+  );
+}
+
+recordCommand.action(async (urlArgument, optionalName, cmd) => {
+  const url = parseUrl(urlArgument);
+  const name = optionalName || getUrlRoot(url);
+  logger.verbose(`record url "${url.href}"`);
+
+  const browser = await Browser.create({ record: true, url: url.href });
+  await browser.waitForClose();
+
+  const destPath = `${process.cwd()}/.qawolf`;
+  const formattedName = snakeCase(name);
+
+  if (cmd.events) {
+    // save events
+    const destEventsPath = `${destPath}/events/${formattedName}.json`;
+    logger.verbose(`save events "${name}" -> ${destEventsPath}`);
+    await outputJson(destEventsPath, browser.events, { spaces: " " });
+  } else {
+    // save workflow
     const destWorkflowPath = `${destPath}/workflows/${formattedName}.json`;
-    const destTestPath = `${destPath}/tests/${formattedName}.test.js`;
-
-    logger.verbose(`build workflow -> ${destTestPath}`);
-    const workflow = buildWorkflow(events, formattedName);
+    logger.verbose(`save workflow -> ${destWorkflowPath}`);
+    const workflow = buildWorkflow({
+      events: browser.events,
+      name: formattedName,
+      url: url.href!
+    });
     await outputJson(destWorkflowPath, workflow, { spaces: " " });
 
-    logger.verbose(`build test -> ${destTestPath}`);
+    // save test
+    const destTestPath = `${destPath}/tests/${formattedName}.test.js`;
+    logger.verbose(`save test -> ${destTestPath}`);
     const test = buildTest(workflow);
     await outputFile(destTestPath, test, "utf8");
+  }
 
-    process.exit(0);
-  });
+  process.exit(0);
+});
 
 program
   .command("run [name]")

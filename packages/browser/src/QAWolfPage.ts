@@ -1,3 +1,6 @@
+import { CONFIG } from "@qawolf/config";
+import { logger } from "@qawolf/logger";
+import { Event } from "@qawolf/types";
 import fs from "fs-extra";
 import path from "path";
 import { devices, Page } from "puppeteer";
@@ -8,31 +11,66 @@ const webBundle = fs.readFileSync(
   "utf8"
 );
 
+type CreateOptions = {
+  device: devices.Device;
+  page: Page;
+  record: boolean;
+};
+
+export interface DecoratedPage extends Page {
+  qawolf: QAWolfPage;
+}
+
 export class QAWolfPage {
-  private _page: Page;
+  protected _events: Event[] = [];
+  private _page: DecoratedPage;
   private _requests: RequestTracker;
 
   // protect constructor to force using async create()
-  protected constructor(page: Page) {
+  protected constructor(options: CreateOptions) {
+    // decorate the page with this parent
+    const page = options.page as DecoratedPage;
+    page.qawolf = this;
     this._page = page;
-    this._requests = new RequestTracker(page);
+
+    this._requests = new RequestTracker(this._page);
   }
 
-  public static async create(page: Page, device: devices.Device) {
+  public static async create(options: CreateOptions) {
+    const { device, page } = options;
+
+    const qawolfPage = new QAWolfPage(options);
+
+    let bundle = webBundle;
+    if (options.record) {
+      // create the web Recorder and connect to this.onEvent
+      await page.exposeFunction("qaw_onEvent", (event: Event) => {
+        logger.debug(`QAWolfPage: received event ${JSON.stringify(event)}`);
+        qawolfPage._events.push(event);
+      });
+
+      bundle += `window.qaw_recorder = window.qaw_recorder || new qawolf.Recorder("${CONFIG.dataAttribute}", (event) => qaw_onEvent(event));`;
+    }
+
     await Promise.all([
-      page.evaluate(webBundle),
-      page.evaluateOnNewDocument(webBundle),
+      page.evaluate(bundle),
+      page.evaluateOnNewDocument(bundle),
       page.emulate(device)
     ]);
 
-    return new QAWolfPage(page);
+    return qawolfPage;
   }
 
   public dispose() {
     this._requests.dispose();
   }
 
-  public get super() {
+  public get events() {
+    return this._events;
+  }
+
+  public get super(): DecoratedPage {
+    // return the super Page decorated with this as .qawolf
     return this._page;
   }
 

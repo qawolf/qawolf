@@ -6,9 +6,8 @@
       "action": "scroll",
       "index": 0,
       "pageId": 0,
-      "scrollDirection": "down",
-      "scrollTo": 334,
-      "target": { "xpath": "scroll" }
+      "target": { "xpath": "/html" },
+      "value": { "x": 0, "y": 334 }
     },
     {
       "action": "click",

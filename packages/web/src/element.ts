@@ -133,6 +133,13 @@ export const getDescriptor = (
   element: HTMLElement,
   dataAttribute: string | null
 ): ElementDescriptor => {
+  const xpath = getXpath(element);
+
+  // if a root element just return the xpath
+  // since we know it will match properly
+  // to avoid collecting a lot of superfluous info
+  if (xpath === "/html") return { xpath };
+
   return {
     ariaLabel: element.getAttribute("aria-label") || null,
     classList: (element.className || "").length
@@ -150,6 +157,6 @@ export const getDescriptor = (
     tagName: element.tagName ? element.tagName.toLowerCase() : null,
     textContent: getTextContent(element),
     title: element.title || null,
-    xpath: getXpath(element)
+    xpath
   };
 };
