@@ -32,7 +32,11 @@ export const formatIt = (step: BrowserStep): string => {
     truncatedTargetName = `${truncatedTargetName.substring(0, 40)}...`;
   }
 
-  return `can ${step.action}${stepValue} "${truncatedTargetName}" ${targetTagName}`;
+  if (truncatedTargetName.length > 0) {
+    truncatedTargetName = `"${truncatedTargetName}" `;
+  }
+
+  return `can ${step.action}${stepValue} ${truncatedTargetName}${targetTagName}`;
 };
 
 export const formatMethod = (action: Action, index: number): string => {

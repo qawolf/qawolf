@@ -131,4 +131,18 @@ describe("formatStep", () => {
     const formattedStep = formatStep(step);
     expect(formattedStep).toMatchSnapshot();
   });
+
+  it("excludes target name if it does not exist", () => {
+    const step: BrowserStep = {
+      action: "click",
+      index: 0,
+      target: {
+        inputType: "submit",
+        tagName: "input"
+      }
+    };
+
+    const formattedStep = formatStep(step);
+    expect(formattedStep).toMatchSnapshot();
+  });
 });
