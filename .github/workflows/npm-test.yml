@@ -9,19 +9,17 @@ jobs:
           fetch-depth: 1 # shallow clone
       # build first to partition the action logs
       - name: Build
-        uses: ./
+        uses: ./.github/actions/local-docker
         with:
           args: 'echo "Dockerfile built"'
       - name: Test
-        uses: ./
+        uses: ./.github/actions/local-docker
         with:
           args: "cd $QAWOLF_DIR && npm test && npm run test:docker"
         env:
           # needed for jest-environment test
           QAW_ENVIRONMENT_URL: http://theinternet:5000/
-          QAW_LOG_PATH: /github/workspace/artifacts/logs
           QAW_TEST_URL: http://theinternet:5000/
-          QAW_VIDEO_PATH: /github/workspace/artifacts
       - name: Upload Artifacts
         if: always()
         uses: actions/upload-artifact@master

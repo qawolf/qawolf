@@ -1,5 +1,10 @@
-name: "QA Wolf"
-description: "Run qawolf tests"
+name: "qawolf test"
+description: "run qawolf test"
 runs:
   using: "docker"
-  image: "Dockerfile"
+  image: "docker://qawolf/qawolf:latest"
+  args: ["qawolf", "test"]
+  env:
+    QAW_LOG_PATH: /github/workspace/artifacts/logs
+    QAW_SLEEP_MS: 2000
+    QAW_VIDEO_PATH: /github/workspace/artifacts
