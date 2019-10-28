@@ -18,7 +18,7 @@ const parseNumber = (value: string | undefined, defaultValue: number = 0) => {
 export const CONFIG = {
   chromeExecutablePath: process.env.QAW_CHROME_EXECUTABLE_PATH,
   chromeOffsetX: parseNumber(process.env.QAW_CHROME_OFFSET_X, 0),
-  chromeOffsetY: parseNumber(process.env.QAW_CHROME_OFFSET_Y, 0),
+  chromeOffsetY: parseNumber(process.env.QAW_CHROME_OFFSET_Y, 125),
   dataAttribute: process.env.QAW_DATA_ATTRIBUTE || null,
   development: parseBool(process.env.QAW_DEVELOPMENT),
   display: process.env.DISPLAY || ":1.0",
