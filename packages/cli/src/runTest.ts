@@ -11,7 +11,6 @@ export const runTest = async (
   const setupFailFast = path.resolve(path.dirname(modulePath), "./setup.js");
 
   const jestConfig: any = {
-    // 5
     clearCache: true,
     config: "{}",
     // assume .qawolf is relative to the current working directory
