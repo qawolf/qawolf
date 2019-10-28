@@ -3,10 +3,15 @@ import { CONFIG } from "@qawolf/config";
 
 const transports = [];
 
+const formatPrint = winston.format.printf(
+  ({ level, message, timestamp }) => `${timestamp} ${level}: ${message}`
+);
+
 if (CONFIG.logPath) {
   transports.push(
     new winston.transports.File({
       filename: `${CONFIG.logPath}/${Date.now()}.log`,
+      format: winston.format.combine(winston.format.timestamp(), formatPrint),
       level: CONFIG.logLevel || "debug"
     })
   );
@@ -16,7 +21,8 @@ if (CONFIG.logPath) {
       level: CONFIG.logLevel || "error",
       format: winston.format.combine(
         winston.format.colorize(),
-        winston.format.simple()
+        winston.format.timestamp(),
+        formatPrint
       )
     })
   );
