@@ -25,7 +25,6 @@ export class Runner {
     /**
      * An async constructor for Runner.
      */
-
     const self = new Runner();
 
     // replace the url w/ env variable if it exists
@@ -83,6 +82,8 @@ export class Runner {
   }
 
   public async close() {
+    logger.verbose("Runner: close");
+
     if (this._screenCapture) {
       await this._screenCapture.stop();
     }

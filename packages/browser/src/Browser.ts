@@ -1,3 +1,4 @@
+import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { Callback, Event, Size, Step } from "@qawolf/types";
 import { waitFor } from "@qawolf/web";
@@ -48,6 +49,12 @@ export class Browser {
   }
 
   public async close(): Promise<void> {
+    if (CONFIG.debug) {
+      logger.verbose("Browser: skipping close in debug mode");
+      return;
+    }
+
+    logger.verbose("Browser: close");
     this._pages.forEach(page => page.dispose());
     await this._browser.close();
     this._onClose.forEach(c => c());

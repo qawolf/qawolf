@@ -1,5 +1,6 @@
 import { EnvironmentContext } from "@jest/environment";
 import { Config } from "@jest/types";
+import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { Runner } from "@qawolf/runner";
 import { Workflow } from "@qawolf/types";
@@ -18,11 +19,15 @@ const loadWorkflow = async (testPath: string): Promise<Workflow | null> => {
 
   const hasWorkflowPath = await pathExists(workflowPath);
   if (!hasWorkflowPath) {
-    logger.verbose(`test ${testPath} not found in workflows directory`);
+    logger.verbose(
+      `RunnerEnvironment: test ${testPath} not found in workflows directory`
+    );
     return null;
   }
 
-  logger.verbose(`load workflow for test ${testPath} ${workflowPath}`);
+  logger.verbose(
+    `RunnerEnvironment: load workflow for test ${testPath} ${workflowPath}`
+  );
   const json = await readJSON(workflowPath);
   return json as Workflow;
 };
@@ -37,6 +42,7 @@ export class RunnerEnvironment extends NodeEnvironment {
   }
 
   async setup(): Promise<void> {
+    logger.verbose("RunnerEnvironment: setup");
     await super.setup();
 
     const workflow = await loadWorkflow(this._testPath);
@@ -60,11 +66,25 @@ export class RunnerEnvironment extends NodeEnvironment {
   }
 
   async teardown(): Promise<void> {
+    logger.verbose("RunnerEnvironment: teardown");
+
     const promises = [super.teardown()];
+
+    // if there is a sleep ms, wait after the last step
+    await new Promise(resolve => setTimeout(resolve, CONFIG.sleepMs));
+
     if (this._runner) {
       promises.push(this._runner.close());
     }
 
     await Promise.all(promises);
+
+    // give logs time to output
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    if (CONFIG.debug) {
+      // stay open
+      await new Promise(resolve => setTimeout(resolve, 24 * 60 * 1000));
+    }
   }
 }
