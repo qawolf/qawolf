@@ -6,7 +6,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
         with:
-          fetch-depth: 1 # shallow clone
+          fetch-depth: 25
       # build first to partition the action logs
       - name: Build
         uses: ./.github/actions/local-docker
