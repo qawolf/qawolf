@@ -6,7 +6,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
         with:
-          fetch-depth: 1 # shallow clone
+          fetch-depth: 25
       - name: build and publish to docker hub
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
