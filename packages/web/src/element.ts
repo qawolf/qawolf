@@ -109,15 +109,7 @@ const getSvgIconContent = (element: HTMLElement): string[] | null => {
   const iconContent: string[] = [];
 
   for (let i = 0; i < element.children.length; i++) {
-    const childTagName = element.children[i].tagName.toLowerCase();
-    if (childTagName === "path" && element.children[i].getAttribute("d")) {
-      iconContent.push(element.children[i].getAttribute("d")!);
-    } else if (
-      childTagName === "use" &&
-      element.children[i].getAttribute("href")
-    ) {
-      iconContent.push(element.children[i].getAttribute("href")!);
-    }
+    iconContent.push(element.children[i].outerHTML);
   }
 
   return iconContent.length ? iconContent : null;
