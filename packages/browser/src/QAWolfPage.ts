@@ -76,14 +76,20 @@ export class QAWolfPage {
       }, jsHandle);
 
     this._page.on("console", async msg => {
-      const args = await Promise.all(msg.args().map(arg => toString(arg)));
-      const consoleMessage = args.filter(v => !!v).join(", ");
-      if (consoleMessage.length) {
-        logger.verbose(
-          `${this._page
-            .url()
-            .substring(0, 40)} console.${msg.type()}(${consoleMessage})`
-        );
+      try {
+        const args = await Promise.all(msg.args().map(arg => toString(arg)));
+        const consoleMessage = args.filter(v => !!v).join(", ");
+        if (consoleMessage.length) {
+          logger.verbose(
+            `${this._page
+              .url()
+              .substring(0, 40)} console.${msg.type()}(${consoleMessage})`
+          );
+        }
+      } catch (e) {
+        // if argument parsing crashes log the original message
+        // ex. when the context is destroyed due to page navigation
+        logger.verbose(`${this._page.url().substring(0, 40)}: ${msg.text()}`);
       }
     });
 
