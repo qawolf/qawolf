@@ -87,8 +87,10 @@ export class QAWolfPage {
     });
 
     const logError = (e: Error) => {
-      logger.error(
-        `page ${this._page.url().substring(0, 40)}: ${e.toString()}`
+      logger.verbose(
+        `page ${this._page
+          .url()
+          .substring(0, 40)}: console.error("${e.toString()}")`
       );
     };
     this._page.on("error", logError);

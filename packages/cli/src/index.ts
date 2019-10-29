@@ -1,15 +1,13 @@
 #!/usr/bin/env node
 
-import { buildTest } from "@qawolf/build-test";
-import { buildWorkflow } from "@qawolf/build-workflow";
-import { Browser } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { Runner } from "@qawolf/runner";
 import { Workflow } from "@qawolf/types";
 import program from "commander";
-import { outputFile, outputJson, readJson } from "fs-extra";
+import { readJson } from "fs-extra";
 import { snakeCase } from "lodash";
+import { record } from "./record";
 import { runTest } from "./runTest";
 import { parseUrl, getUrlRoot } from "./utils";
 
@@ -26,39 +24,10 @@ if (CONFIG.development) {
 
 recordCommand.action(async (urlArgument, optionalName, cmd) => {
   const url = parseUrl(urlArgument);
-  const name = optionalName || getUrlRoot(url);
   logger.verbose(`record url "${url.href}"`);
 
-  const browser = await Browser.create({ record: true, url: url.href });
-  await browser.waitForClose();
-
-  const destPath = `${process.cwd()}/.qawolf`;
-  const formattedName = snakeCase(name);
-
-  if (cmd.events) {
-    // save events
-    const destEventsPath = `${destPath}/events/${formattedName}.json`;
-    logger.verbose(`save events "${name}" -> ${destEventsPath}`);
-    await outputJson(destEventsPath, browser.events, { spaces: " " });
-  } else {
-    // save workflow
-    const destWorkflowPath = `${destPath}/workflows/${formattedName}.json`;
-    logger.verbose(`save workflow -> ${destWorkflowPath}`);
-    const workflow = buildWorkflow({
-      events: browser.events,
-      name: formattedName,
-      url: url.href!
-    });
-    await outputJson(destWorkflowPath, workflow, { spaces: " " });
-
-    // save test
-    const destTestPath = `${destPath}/tests/${formattedName}.test.js`;
-    logger.verbose(`save test -> ${destTestPath}`);
-    const test = buildTest(workflow);
-    await outputFile(destTestPath, test, "utf8");
-  }
-
-  process.exit(0);
+  const name = snakeCase(optionalName || getUrlRoot(url));
+  await record(url, name, cmd.events);
 });
 
 program
@@ -83,7 +52,6 @@ program
   .action(async name => {
     const results = await runTest(name ? snakeCase(name) : null);
     const success = results.numFailedTestSuites < 1;
-
     process.exit(success ? 0 : 1);
   });
 
