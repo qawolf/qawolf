@@ -34,7 +34,7 @@ describe("runTest", () => {
     );
   });
 
-  it("returns results when running multiple tests", async () => {
+  it("returns results from multiple tests", async () => {
     const results = await runTest("u");
 
     expect(results.numFailedTests).toBe(1);
