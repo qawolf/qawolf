@@ -43,13 +43,11 @@ export const record = async (
         }
 
         if (eventsOnly) {
-          // save events
           logger.verbose(`save events "${name}" -> ${eventsPath}`);
           await outputJson(eventsPath, browser.events, { spaces: " " });
           return;
         }
 
-        // save workflow
         logger.verbose(`save workflow -> ${workflowPath}`);
         const workflow = buildWorkflow({
           events: browser.events,
@@ -58,7 +56,6 @@ export const record = async (
         });
         await outputJson(workflowPath, workflow, { spaces: " " });
 
-        // save test
         logger.verbose(`save test -> ${testPath}`);
         const test = buildTest(workflow);
         await outputFile(testPath, test, "utf8");
