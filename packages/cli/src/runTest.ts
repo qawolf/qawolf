@@ -24,6 +24,7 @@ export const runTest = async (
 
   if (name) {
     jestConfig._ = [name];
+    process.env.QAW_TEST_NAME = name;
   }
 
   const output = await runCLI(jestConfig, [rootDir]);

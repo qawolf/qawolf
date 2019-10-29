@@ -8,9 +8,13 @@ const formatPrint = winston.format.printf(
 );
 
 if (CONFIG.logPath) {
+  // set in runTest
+  const testName = process.env.QAW_TEST_NAME;
+  const logNamePrefix = testName ? `${testName}_` : "";
+
   transports.push(
     new winston.transports.File({
-      filename: `${CONFIG.logPath}/${Date.now()}.log`,
+      filename: `${CONFIG.logPath}/${logNamePrefix}${Date.now()}.log`,
       format: winston.format.combine(winston.format.timestamp(), formatPrint),
       level: CONFIG.logLevel || "debug"
     })
