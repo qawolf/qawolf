@@ -68,28 +68,20 @@ export class QAWolfPage {
   }
 
   private async captureLogs() {
-    const toString = (jsHandle: JSHandle) =>
-      jsHandle.executionContext().evaluate(obj => {
-        return obj instanceof HTMLElement
-          ? obj.outerHTML.replace(/(\r\n|\n|\r)/gm, "").substring(0, 100)
-          : JSON.stringify(obj);
-      }, jsHandle);
-
     this._page.on("console", async msg => {
+      const url = this._page.url().substring(0, 40);
       try {
-        const args = await Promise.all(msg.args().map(arg => toString(arg)));
+        const args = await Promise.all(
+          msg.args().map(arg => formatJsHandle(arg))
+        );
         const consoleMessage = args.filter(v => !!v).join(", ");
-        if (consoleMessage.length) {
-          logger.verbose(
-            `${this._page
-              .url()
-              .substring(0, 40)} console.${msg.type()}(${consoleMessage})`
-          );
-        }
+        if (!consoleMessage.length) return;
+
+        logger.verbose(`${url} console.${msg.type()}(${consoleMessage})`);
       } catch (e) {
         // if argument parsing crashes log the original message
         // ex. when the context is destroyed due to page navigation
-        logger.verbose(`${this._page.url().substring(0, 40)}: ${msg.text()}`);
+        logger.verbose(`${url}: ${msg.text()}`);
       }
     });
 
@@ -120,3 +112,13 @@ export class QAWolfPage {
     ]);
   }
 }
+
+const formatJsHandle = (jsHandle: JSHandle) =>
+  // format a jsHandle to a string so we can log it
+  jsHandle.executionContext().evaluate(obj => {
+    return obj instanceof HTMLElement
+      ? // log html elements by their html, without newlines
+        obj.outerHTML.replace(/(\r\n|\n|\r)/gm, "").substring(0, 100)
+      : // log other objects by their JSON string
+        JSON.stringify(obj);
+  }, jsHandle);
