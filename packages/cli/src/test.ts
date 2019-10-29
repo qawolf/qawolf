@@ -1,8 +1,8 @@
+import { readdir } from "fs-extra";
+import { prompt } from "inquirer";
 import { snakeCase } from "lodash";
 import { basename } from "path";
 import { runTest } from "./runTest";
-import { readdir } from "fs-extra";
-import { prompt } from "inquirer";
 
 export const test = async (optionalName?: string) => {
   const testPath = `${process.cwd()}/.qawolf/tests`;
