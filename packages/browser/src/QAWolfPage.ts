@@ -77,6 +77,7 @@ export class QAWolfPage {
         const consoleMessage = args.filter(v => !!v).join(", ");
         if (!consoleMessage.length) return;
 
+        // log as console.verbose(arg1, ...)
         logger.verbose(`${url} console.${msg.type()}(${consoleMessage})`);
       } catch (e) {
         // if argument parsing crashes log the original message
