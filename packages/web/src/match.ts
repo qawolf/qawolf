@@ -166,17 +166,13 @@ export const topMatch = (args: MatchArgs): Match | null => {
   );
 
   if (matches.length <= 0 || matches[0].value <= 0) {
-    console.log("no top match found", args);
+    console.log("no top match", args);
     return null;
   }
 
   const equalTopMatches = matches.filter(m => m.value === matches[0].value);
   if (equalTopMatches.length > 1) {
-    console.log(
-      "no top match since all top matches are equal",
-      args,
-      equalTopMatches
-    );
+    console.log("no top match, all matches are equal", args, equalTopMatches);
     return null;
   }
 
@@ -185,6 +181,16 @@ export const topMatch = (args: MatchArgs): Match | null => {
     return null;
   }
 
-  console.log("top match found", args, matches[0]);
-  return matches[0];
+  const selected = matches[0];
+  console.log(
+    "top match",
+    selected.element,
+    "for",
+    args,
+    "targetMatches",
+    selected.targetMatches,
+    "value",
+    selected.value
+  );
+  return selected;
 };

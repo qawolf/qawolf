@@ -3,7 +3,7 @@ import { logger } from "@qawolf/logger";
 import { Event } from "@qawolf/types";
 import fs from "fs-extra";
 import path from "path";
-import { devices, Page } from "puppeteer";
+import { devices, JSHandle, Page } from "puppeteer";
 import { RequestTracker } from "./RequestTracker";
 
 const webBundle = fs.readFileSync(
@@ -41,20 +41,9 @@ export class QAWolfPage {
 
     const qawolfPage = new QAWolfPage(options);
 
-    let bundle = webBundle;
-    if (options.record) {
-      // create the web Recorder and connect to this.onEvent
-      await page.exposeFunction("qaw_onEvent", (event: Event) => {
-        logger.debug(`QAWolfPage: received event ${JSON.stringify(event)}`);
-        qawolfPage._events.push(event);
-      });
-
-      bundle += `window.qaw_recorder = window.qaw_recorder || new qawolf.Recorder("${CONFIG.dataAttribute}", (event) => qaw_onEvent(event));`;
-    }
-
     await Promise.all([
-      page.evaluate(bundle),
-      page.evaluateOnNewDocument(bundle),
+      qawolfPage.captureLogs(),
+      qawolfPage.injectBundle(options.record),
       page.emulate(device)
     ]);
 
@@ -76,5 +65,52 @@ export class QAWolfPage {
 
   public waitForRequests() {
     return this._requests.waitUntilComplete();
+  }
+
+  private async captureLogs() {
+    const toString = (jsHandle: JSHandle) =>
+      jsHandle.executionContext().evaluate(obj => {
+        return obj instanceof HTMLElement
+          ? obj.outerHTML.replace(/(\r\n|\n|\r)/gm, "").substring(0, 100)
+          : JSON.stringify(obj);
+      }, jsHandle);
+
+    this._page.on("console", async msg => {
+      const args = await Promise.all(msg.args().map(arg => toString(arg)));
+      const consoleMessage = args.filter(v => !!v).join(", ");
+      if (consoleMessage.length) {
+        logger.verbose(
+          `${this._page
+            .url()
+            .substring(0, 40)} console.${msg.type()}(${consoleMessage})`
+        );
+      }
+    });
+
+    const logError = (e: Error) => {
+      logger.error(
+        `page ${this._page.url().substring(0, 40)}: ${e.toString()}`
+      );
+    };
+    this._page.on("error", logError);
+    this._page.on("pageerror", logError);
+  }
+
+  private async injectBundle(record: boolean) {
+    let bundle = webBundle;
+    if (record) {
+      // create the web Recorder and connect to this.onEvent
+      await this._page.exposeFunction("qaw_onEvent", (event: Event) => {
+        logger.debug(`QAWolfPage: received event ${JSON.stringify(event)}`);
+        this._events.push(event);
+      });
+
+      bundle += `window.qaw_recorder = window.qaw_recorder || new qawolf.Recorder("${CONFIG.dataAttribute}", (event) => qaw_onEvent(event));`;
+    }
+
+    await Promise.all([
+      this._page.evaluate(bundle),
+      this._page.evaluateOnNewDocument(bundle)
+    ]);
   }
 }
