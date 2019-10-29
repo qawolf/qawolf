@@ -29,10 +29,6 @@ export class RunnerEnvironment extends NodeEnvironment {
     const workflow = await this.loadWorkflow();
     if (!workflow) return;
 
-    // name the logger
-    if (workflow) {
-    }
-
     const runner = await Runner.create(workflow);
     this.global.runner = this._runner = runner;
 
