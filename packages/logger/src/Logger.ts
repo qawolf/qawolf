@@ -54,6 +54,6 @@ const createFileTransport = (name?: string | null) => {
   return new winston.transports.File({
     filename,
     format: winston.format.combine(winston.format.timestamp(), formatPrint),
-    level: CONFIG.logLevel || "debug"
+    level: CONFIG.logLevel || "verbose"
   });
 };

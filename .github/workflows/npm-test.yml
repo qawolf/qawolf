@@ -17,6 +17,7 @@ jobs:
         with:
           args: "cd $QAWOLF_DIR && npm test && npm run test:docker"
         env:
+          QAW_SLEEP_MS: 0
           # needed for jest-environment test
           QAW_ENVIRONMENT_URL: http://theinternet:5000/
           QAW_TEST_URL: http://theinternet:5000/
