@@ -10,6 +10,10 @@ import path from "path";
 
 const loadWorkflow = async (testPath: string): Promise<Workflow | null> => {
   const testName = path.basename(testPath).split(".")[0];
+
+  // set the name of the logger to the test
+  logger.setName(testName);
+
   // the workflow should be in a sibling folder ../workflows/testName.json
   const workflowPath = path.join(
     path.dirname(testPath),
@@ -47,6 +51,10 @@ export class RunnerEnvironment extends NodeEnvironment {
 
     const workflow = await loadWorkflow(this._testPath);
     if (!workflow) return;
+
+    // name the logger
+    if (workflow) {
+    }
 
     const runner = await Runner.create(workflow);
     this.global.runner = this._runner = runner;
