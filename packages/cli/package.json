@@ -33,13 +33,15 @@
     "@qawolf/runner": "^0.4.2",
     "commander": "^3.0.2",
     "fs-extra": "^8.1.0",
+    "inquirer": "^7.0.0",
     "jest": "^24.9.0",
     "listr": "^0.14.3",
     "listr-input": "^0.2.0",
     "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "@qawolf/types": "^0.4.1"
+    "@qawolf/types": "^0.4.1",
+    "@types/inquirer": "^6.5.0"
   },
   "bin": {
     "qawolf": "lib/index.js"
