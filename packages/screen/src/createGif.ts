@@ -9,7 +9,7 @@ type CreateGifOptions = {
 };
 
 export const createGif = (options: CreateGifOptions) => {
-  logger.debug(
+  logger.verbose(
     `createGif: creating for ${options.videoPath} -> ${options.gifPath}`
   );
 
@@ -23,7 +23,7 @@ export const createGif = (options: CreateGifOptions) => {
     ]);
 
     ffmpeg.on("close", () => {
-      logger.debug("createGif: done");
+      logger.verbose("createGif: done");
       resolve();
     });
 

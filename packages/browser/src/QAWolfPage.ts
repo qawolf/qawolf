@@ -3,7 +3,7 @@ import { logger } from "@qawolf/logger";
 import { Event } from "@qawolf/types";
 import fs from "fs-extra";
 import path from "path";
-import { devices, Page } from "puppeteer";
+import { devices, JSHandle, Page } from "puppeteer";
 import { RequestTracker } from "./RequestTracker";
 
 const webBundle = fs.readFileSync(
@@ -41,20 +41,9 @@ export class QAWolfPage {
 
     const qawolfPage = new QAWolfPage(options);
 
-    let bundle = webBundle;
-    if (options.record) {
-      // create the web Recorder and connect to this.onEvent
-      await page.exposeFunction("qaw_onEvent", (event: Event) => {
-        logger.debug(`QAWolfPage: received event ${JSON.stringify(event)}`);
-        qawolfPage._events.push(event);
-      });
-
-      bundle += `window.qaw_recorder = window.qaw_recorder || new qawolf.Recorder("${CONFIG.dataAttribute}", (event) => qaw_onEvent(event));`;
-    }
-
     await Promise.all([
-      page.evaluate(bundle),
-      page.evaluateOnNewDocument(bundle),
+      qawolfPage.captureLogs(),
+      qawolfPage.injectBundle(options.record),
       page.emulate(device)
     ]);
 
@@ -77,4 +66,60 @@ export class QAWolfPage {
   public waitForRequests() {
     return this._requests.waitUntilComplete();
   }
+
+  private async captureLogs() {
+    this._page.on("console", async msg => {
+      const url = this._page.url().substring(0, 40);
+      try {
+        const args = await Promise.all(
+          msg.args().map(arg => formatJsHandle(arg))
+        );
+        const consoleMessage = args.filter(v => !!v).join(", ");
+        if (!consoleMessage.length) return;
+
+        // log as console.verbose(arg1, ...)
+        logger.verbose(`${url} console.${msg.type()}(${consoleMessage})`);
+      } catch (e) {
+        // if argument parsing crashes log the original message
+        // ex. when the context is destroyed due to page navigation
+        logger.verbose(`${url}: ${msg.text()}`);
+      }
+    });
+
+    const logError = (e: Error) => {
+      logger.error(
+        `page ${this._page.url().substring(0, 40)}: ${e.toString()}`
+      );
+    };
+    this._page.on("error", logError);
+    this._page.on("pageerror", logError);
+  }
+
+  private async injectBundle(record: boolean) {
+    let bundle = webBundle;
+    if (record) {
+      // create the web Recorder and connect to this.onEvent
+      await this._page.exposeFunction("qaw_onEvent", (event: Event) => {
+        logger.debug(`QAWolfPage: received event ${JSON.stringify(event)}`);
+        this._events.push(event);
+      });
+
+      bundle += `window.qaw_recorder = window.qaw_recorder || new qawolf.Recorder("${CONFIG.dataAttribute}", (event) => qaw_onEvent(event));`;
+    }
+
+    await Promise.all([
+      this._page.evaluate(bundle),
+      this._page.evaluateOnNewDocument(bundle)
+    ]);
+  }
 }
+
+const formatJsHandle = (jsHandle: JSHandle) =>
+  // format a jsHandle to a string so we can log it
+  jsHandle.executionContext().evaluate(obj => {
+    return obj instanceof HTMLElement
+      ? // log html elements by their html, without newlines
+        obj.outerHTML.replace(/(\r\n|\n|\r)/gm, "").substring(0, 100)
+      : // log other objects by their JSON string
+        JSON.stringify(obj);
+  }, jsHandle);
