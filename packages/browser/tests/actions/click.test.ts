@@ -12,7 +12,7 @@ describe("click", () => {
       action: "click",
       index: 0,
       target: {
-        textContent: "broken images",
+        innerText: "broken images",
         xpath: '//*[@id="content"]/ul/li[3]/a'
       }
     });
@@ -35,8 +35,8 @@ describe("click", () => {
       action: "click",
       index: 0,
       target: {
+        innerText: "login",
         tagName: "i",
-        textContent: "login",
         xpath: "//*[@id='login']/button/i"
       }
     });

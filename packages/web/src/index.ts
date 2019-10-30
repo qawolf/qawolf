@@ -1,3 +1,4 @@
+import * as assertions from "./assertions";
 import * as element from "./element";
 import * as locate from "./locate";
 import * as match from "./match";
@@ -30,6 +31,7 @@ export {
 
 // export the web module for the browser
 const webExports = {
+  assertions,
   element,
   locate,
   match,

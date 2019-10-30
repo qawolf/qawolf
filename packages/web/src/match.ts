@@ -26,10 +26,10 @@ export type Match = {
 const strongMatchKeys: (keyof ElementDescriptor)[] = [
   "iconContent",
   "id",
+  "innerText",
   "labels",
   "name",
-  "placeholder",
-  "textContent"
+  "placeholder"
 ];
 
 export const compareArrays = (

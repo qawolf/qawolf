@@ -8,10 +8,7 @@ export const $xText = async (page: Page, xpath: string): Promise<string> => {
   return await retryExecutionError(async () => {
     const elements = await page.$x(xpath);
 
-    const text = await page.evaluate(
-      element => element.textContent,
-      elements[0]
-    );
+    const text = await page.evaluate(element => element.innerText, elements[0]);
 
     return text;
   });

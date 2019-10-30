@@ -23,7 +23,7 @@ export const getIconContent = (element: HTMLElement): string[] | null => {
 
   if (tagName === "i" && element.className) {
     return element.className.split(" ");
-  } else if (tagName === "span" && element.className && !element.textContent) {
+  } else if (tagName === "span" && element.className && !element.innerText) {
     return element.className.split(" ");
   } else if (tagName === "svg" && element.children.length) {
     return getSvgIconContent(element);
@@ -52,9 +52,9 @@ export const getLabels = (element: HTMLElement): string[] | null => {
   const labels: string[] = [];
 
   for (let i = 0; i < labelElements.length; i++) {
-    const textContent = labelElements[i].textContent;
-    if (textContent) {
-      labels.push(cleanText(textContent));
+    const innerText = labelElements[i].innerText;
+    if (innerText) {
+      labels.push(cleanText(innerText));
     }
   }
 
@@ -64,18 +64,19 @@ export const getLabels = (element: HTMLElement): string[] | null => {
 export const getParentText = (element: HTMLElement): string[] | null => {
   if (!element.parentElement) return null;
 
-  if (element.parentElement.textContent) {
+  if (element.parentElement.innerText) {
     const parentText: string[] = [];
 
     for (let i = 0; i < element.parentElement.children.length; i++) {
-      const textContent = element.parentElement.children[i].textContent;
-      if (textContent) {
-        parentText.push(cleanText(textContent));
+      const innerText = (element.parentElement.children[i] as HTMLElement)
+        .innerText;
+      if (innerText) {
+        parentText.push(cleanText(innerText));
       }
     }
 
     // ensure all content gets included (children that aren't elements)
-    parentText.push(cleanText(element.parentElement.textContent));
+    parentText.push(cleanText(element.parentElement.innerText));
 
     return parentText;
   }
@@ -95,9 +96,9 @@ export const getPlaceholder = (element: HTMLElement): string | null => {
       }
     }
 
-    if (!placeholderOption || !placeholderOption.textContent) return null;
+    if (!placeholderOption || !placeholderOption.innerText) return null;
 
-    return cleanText(placeholderOption.textContent);
+    return cleanText(placeholderOption.innerText);
   } else {
     if (!(element as HTMLInputElement).placeholder) return null;
 
@@ -116,9 +117,9 @@ const getSvgIconContent = (element: HTMLElement): string[] | null => {
 };
 
 export const getTextContent = (element: HTMLElement): string | null => {
-  if (!element.textContent) return null;
+  if (!element.innerText) return null;
 
-  return cleanText(element.textContent);
+  return cleanText(element.innerText);
 };
 
 export const getDescriptor = (
@@ -147,7 +148,7 @@ export const getDescriptor = (
     parentText: getParentText(element),
     placeholder: getPlaceholder(element),
     tagName: element.tagName ? element.tagName.toLowerCase() : null,
-    textContent: getTextContent(element),
+    innerText: getTextContent(element),
     title: element.title || null,
     xpath
   };

@@ -15,8 +15,8 @@
       "pageId": 0,
       "target": {
         "href": "http://localhost:5000/login",
+        "innerText": "form authentication",
         "tagName": "a",
-        "textContent": "form authentication",
         "xpath": "//*[@id='content']/ul/li[18]/a"
       }
     },
@@ -40,7 +40,7 @@
       "target": {
         "inputType": "submit",
         "tagName": "button",
-        "textContent": "login",
+        "innerText": "login",
         "xpath": "//*[@id='login']/button"
       }
     },
@@ -75,8 +75,8 @@
       "index": 6,
       "pageId": 0,
       "target": {
+        "innerText": "login",
         "tagName": "i",
-        "textContent": "login",
         "xpath": "//*[@id='login']/button/i"
       }
     }

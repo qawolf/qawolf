@@ -14,8 +14,8 @@ export const loginSteps: Step[] = [
     pageId: 0,
     target: {
       href: `http://localhost:5000/login`,
+      innerText: "form authentication",
       tagName: "a",
-      textContent: "form authentication",
       xpath: "//*[@id='content']/ul/li[18]/a"
     }
   },
@@ -37,9 +37,9 @@ export const loginSteps: Step[] = [
     index: 3,
     pageId: 0,
     target: {
+      innerText: "login",
       inputType: null,
       tagName: "i",
-      textContent: "login",
       xpath: "//*[@id='login']/button/i"
     }
   },
@@ -75,7 +75,7 @@ export const loginSteps: Step[] = [
     pageId: 0,
     target: {
       tagName: "i",
-      textContent: "login",
+      innerText: "login",
       xpath: "//*[@id='login']/button/i"
     }
   }
