@@ -4,16 +4,6 @@ import { Locator, Step } from "@qawolf/types";
 import { QAWolfWeb } from "@qawolf/web";
 import { ElementHandle, Page, Serializable } from "puppeteer";
 
-export const $xText = async (page: Page, xpath: string): Promise<string> => {
-  return await retryExecutionError(async () => {
-    const elements = await page.$x(xpath);
-
-    const text = await page.evaluate(element => element.innerText, elements[0]);
-
-    return text;
-  });
-};
-
 export const findElement = async (
   page: Page,
   step: Step
@@ -31,7 +21,7 @@ export const findElement = async (
       action: step.action,
       dataAttribute: CONFIG.dataAttribute,
       target: step.target,
-      timeoutMs: CONFIG.locatorTimeoutMs,
+      timeoutMs: CONFIG.findTimeoutMs,
       value: step.value
     } as Serializable
   );

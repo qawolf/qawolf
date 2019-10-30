@@ -21,7 +21,7 @@ describe("hasText", () => {
   });
 
   it("returns false if page does not have text", async () => {
-    const result = await hasText(page, "janedoe", { timeoutMs: 2000 });
+    const result = await hasText(page, "janedoe", { timeoutMs: 250 });
 
     expect(result).toBe(false);
   });

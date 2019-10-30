@@ -1,7 +1,7 @@
 import { CONFIG } from "@qawolf/config";
 import { Browser } from "../../src/Browser";
 import { click } from "../../src/actions";
-import { $xText } from "../../src/pageUtils";
+import { hasText } from "../../src/assertions";
 
 describe("click", () => {
   it("clicks on link", async () => {
@@ -28,8 +28,10 @@ describe("click", () => {
     const browser = await Browser.create({ url: `${CONFIG.testUrl}login` });
     const page = await browser.currentPage();
 
-    const messageText = await $xText(page, '//*[@id="flash-messages"]');
-    expect(messageText).not.toContain("username is invalid");
+    const hasInvalidUsernameText = await hasText(page, "username is invalid", {
+      timeoutMs: 250
+    });
+    expect(hasInvalidUsernameText).toBe(false);
 
     const element = await browser.element({
       action: "click",
@@ -42,8 +44,8 @@ describe("click", () => {
     });
     await click(element);
 
-    const messageText2 = await $xText(page, '//*[@id="flash"]');
-    expect(messageText2).toContain("username is invalid");
+    const hasInvalidUsernameText2 = await hasText(page, "username is invalid");
+    expect(hasInvalidUsernameText2).toBe(true);
 
     await browser.close();
   });

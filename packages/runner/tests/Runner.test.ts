@@ -1,4 +1,4 @@
-import { $xText } from "@qawolf/browser";
+import { hasText } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { Runner } from "../src/Runner";
 
@@ -14,8 +14,8 @@ describe("Runner", () => {
     await runner.run();
 
     const page = await runner.browser.currentPage();
-    const text = await $xText(page, '//*[@id="content"]/div/h2');
-    expect(text).toEqual("Secure Area");
+    const hasSecureText = await hasText(page, "Secure Area");
+    expect(hasSecureText).toBe(true);
 
     await runner.close();
   });
