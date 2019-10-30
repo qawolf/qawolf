@@ -85,12 +85,12 @@ describe("getDescriptor", () => {
       href: null,
       iconContent: null,
       id: "username",
+      innerText: null,
       inputType: "text",
       labels: ["username"],
       name: "username",
       placeholder: null,
       tagName: "input",
-      textContent: null,
       title: null
     });
     expect(inputDescriptor!.parentText).toContain("username");
@@ -113,12 +113,12 @@ describe("getDescriptor", () => {
       href: null,
       iconContent: null,
       id: null,
+      innerText: "login page",
       inputType: null,
       labels: null,
       name: null,
       placeholder: null,
       tagName: "h2",
-      textContent: "login page",
       title: null
     });
     expect(headerDescriptor!.parentText).toContain("login page");
@@ -138,9 +138,9 @@ describe("getDescriptor", () => {
       ariaLabel: null,
       classList: ["radius"],
       iconContent: ["fa", "fa-2x", "fa-sign-in"],
+      innerText: "login",
       inputType: "submit",
       tagName: "button",
-      textContent: "login",
       title: "some-title"
     });
   });

@@ -5,18 +5,18 @@ describe("countPresentKeys", () => {
     expect(
       countPresentKeys({
         dataValue: undefined,
+        innerText: null,
         inputType: "text",
         labels: ["username"],
         placeholder: null,
-        tagName: "input",
-        textContent: null
+        tagName: "input"
       })
     ).toBe(3);
   });
 
   it("throws error if all keys have no value", () => {
     expect(() => {
-      countPresentKeys({ dataValue: undefined, textContent: null });
+      countPresentKeys({ dataValue: undefined, innerText: null });
     }).toThrowError();
 
     expect(() => {

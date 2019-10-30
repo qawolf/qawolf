@@ -24,7 +24,7 @@ export const formatIt = (step: Step): string => {
     label ||
     step.target.name ||
     step.target.placeholder ||
-    step.target.textContent ||
+    step.target.innerText ||
     step.target.id ||
     "";
   let truncatedTargetName = targetName.trim();

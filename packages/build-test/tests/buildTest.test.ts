@@ -45,8 +45,8 @@ describe("formatStep", () => {
       action: "click",
       index: 0,
       target: {
-        tagName: "a",
-        textContent: "contact"
+        innerText: "contact",
+        tagName: "a"
       }
     };
 
@@ -59,9 +59,9 @@ describe("formatStep", () => {
       action: "click",
       index: 1,
       target: {
+        innerText: "sign in",
         inputType: "submit",
-        tagName: "input",
-        textContent: "sign in"
+        tagName: "input"
       }
     };
 
@@ -124,7 +124,7 @@ describe("formatStep", () => {
       target: {
         inputType: "submit",
         tagName: "input",
-        textContent: `sign in${"x".repeat(200)}`
+        innerText: `sign in${"x".repeat(200)}`
       }
     };
 

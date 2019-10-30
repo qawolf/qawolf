@@ -1,3 +1,4 @@
+import * as assertions from "./assertions";
 import * as element from "./element";
 import * as locate from "./locate";
 import * as match from "./match";
@@ -10,6 +11,7 @@ import * as xpath from "./xpath";
 export type Match = Match;
 
 // export the isomorphic (node & browser) module for node
+const { hasText } = assertions;
 const {
   compareArrays,
   compareDescriptorKey,
@@ -23,6 +25,7 @@ export {
   compareDescriptorKey,
   compareDescriptors,
   countPresentKeys,
+  hasText,
   isNil,
   sleep,
   waitFor
@@ -30,6 +33,7 @@ export {
 
 // export the web module for the browser
 const webExports = {
+  assertions,
   element,
   locate,
   match,

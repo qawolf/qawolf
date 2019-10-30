@@ -1,6 +1,6 @@
 import { Browser } from "@qawolf/browser";
 import { Runner } from "@qawolf/runner";
-import { Step, StepValue, Workflow } from "@qawolf/types";
+import { AssertOptions, Step, StepValue, Workflow } from "@qawolf/types";
 import { Page } from "puppeteer";
 
 declare global {
@@ -8,6 +8,7 @@ declare global {
   const runner: Runner;
 
   function click(step: Step): Promise<void>;
+  function hasText(text: string, options?: AssertOptions): Promise<boolean>;
   function input(step: Step, value?: StepValue): Promise<void>;
   function scrollElement(step: Step, value: StepValue): Promise<void>;
 

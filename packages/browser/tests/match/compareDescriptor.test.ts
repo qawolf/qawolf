@@ -6,9 +6,9 @@ describe("compareDescriptors", () => {
       compareDescriptors(
         {
           id: "spirit",
+          innerText: "spirit",
           labels: ["spirit", "wolf"],
-          tagName: "div",
-          textContent: "spirit"
+          tagName: "div"
         },
         { id: "bobcat", labels: ["spirit"], tagName: "div" }
       )
@@ -23,8 +23,8 @@ describe("compareDescriptors", () => {
       compareDescriptors(
         {
           id: "spirit",
-          labels: ["spirit"],
-          textContent: "spirit"
+          innerText: "spirit",
+          labels: ["spirit"]
         },
         { id: "bobcat", labels: ["bobcat"], tagName: "div" }
       )

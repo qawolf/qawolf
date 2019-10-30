@@ -11,7 +11,7 @@ describe("Recorder", () => {
       action: "click",
       index: 0,
       target: {
-        textContent: "broken images",
+        innerText: "broken images",
         xpath: '//*[@id="content"]/ul/li[3]/a'
       }
     });
