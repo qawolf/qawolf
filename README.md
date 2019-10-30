@@ -2,7 +2,7 @@
 
 :construction: More documentation coming soon
 
-Setup browser tests with one command, using [Jest](https://jestjs.io) and [Puppeteer](https://pptr.dev).
+Record browser tests with one command, using [Jest](https://jestjs.io) and [Puppeteer](https://pptr.dev).
 
 ```sh
 npm i qawolf && npx qawolf record google.com
@@ -17,4 +17,4 @@ npm i qawolf && npx qawolf record google.com
 
 ### `npx qawolf test` or `npx qawolf test [name]`
 
-Runs your `.qawolf/tests` Jest tests.
+- Runs your `.qawolf/tests` Jest tests.
