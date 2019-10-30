@@ -15,7 +15,7 @@ let recordCommand = program
 if (CONFIG.development) {
   recordCommand = recordCommand.option(
     "-e, --events",
-    "record events (for debugging)"
+    "save events (for debugging)"
   );
 }
 

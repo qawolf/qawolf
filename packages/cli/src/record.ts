@@ -8,7 +8,7 @@ import { Url } from "url";
 export const record = async (
   url: Url,
   name: string,
-  eventsOnly: boolean = false
+  saveEvents: boolean = false
 ) => {
   const Listr = require("listr");
   const input = require("listr-input");
@@ -42,10 +42,9 @@ export const record = async (
           return;
         }
 
-        if (eventsOnly) {
+        if (saveEvents) {
           logger.verbose(`save events "${name}" -> ${eventsPath}`);
           await outputJson(eventsPath, browser.events, { spaces: " " });
-          return;
         }
 
         logger.verbose(`save workflow -> ${workflowPath}`);
