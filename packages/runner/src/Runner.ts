@@ -1,6 +1,7 @@
 import {
   Browser,
   click,
+  hasText,
   input,
   retryExecutionError,
   scrollElement
@@ -8,7 +9,13 @@ import {
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { ScreenCapture } from "@qawolf/screen";
-import { ScrollValue, Step, StepValue, Workflow } from "@qawolf/types";
+import {
+  AssertOptions,
+  ScrollValue,
+  Step,
+  StepValue,
+  Workflow
+} from "@qawolf/types";
 import { sleep } from "@qawolf/web";
 import { getStepValues } from "./getStepValues";
 import { getUrl } from "./getUrl";
@@ -89,6 +96,16 @@ export class Runner {
     }
 
     await this._browser.close();
+  }
+
+  public async hasText(
+    text: string,
+    options?: AssertOptions
+  ): Promise<boolean> {
+    logger.verbose(`Assertion: current page has text ${text}`);
+    const page = await this._browser.currentPage();
+
+    return hasText(page, text, options);
   }
 
   public async input(step: Step, value?: StepValue) {

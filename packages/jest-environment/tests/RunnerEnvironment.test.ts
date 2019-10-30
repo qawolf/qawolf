@@ -6,6 +6,7 @@ describe("RunnerEnvironment", () => {
   it("exposes a runner and actions as globals", () => {
     expect(runner).toBeTruthy();
     expect(click).toBeTruthy();
+    expect(hasText).toBeTruthy();
     expect(input).toBeTruthy();
     expect(scrollElement).toBeTruthy();
   });
@@ -30,6 +31,6 @@ describe("RunnerEnvironment", () => {
 
     const page = await currentPage();
     const text = await $xText(page, '//*[@id="content"]/div/h2');
-    expect(text).toEqual(" Secure Area");
+    expect(text).toEqual("Secure Area");
   });
 });

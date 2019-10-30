@@ -11,6 +11,7 @@ import * as xpath from "./xpath";
 export type Match = Match;
 
 // export the isomorphic (node & browser) module for node
+const { hasText } = assertions;
 const {
   compareArrays,
   compareDescriptorKey,
@@ -24,6 +25,7 @@ export {
   compareDescriptorKey,
   compareDescriptors,
   countPresentKeys,
+  hasText,
   isNil,
   sleep,
   waitFor
