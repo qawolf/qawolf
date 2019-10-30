@@ -29,7 +29,9 @@ export const CONFIG = {
   logLevel: process.env.QAW_LOG_LEVEL,
   logPath: process.env.QAW_LOG_PATH,
   serial: parseBool(process.env.QAW_SERIAL),
-  sleepMs: parseNumber(process.env.QAW_SLEEP_MS, 0),
+  // slow down each step by 2s to make it watchable
+  // this also gives sites time to setup their handlers
+  sleepMs: parseNumber(process.env.QAW_SLEEP_MS, 2000),
   testUrl,
   videoPath: process.env.QAW_VIDEO_PATH
 };

@@ -6,5 +6,4 @@ runs:
   args: ["qawolf", "test"]
   env:
     QAW_LOG_PATH: /github/workspace/artifacts/logs
-    QAW_SLEEP_MS: 2000
     QAW_VIDEO_PATH: /github/workspace/artifacts

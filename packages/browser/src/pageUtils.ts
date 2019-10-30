@@ -47,13 +47,20 @@ export const retryExecutionError = async (
           error.message ===
             "Execution context was destroyed, most likely because of a navigation.") ||
         error.message ===
-          "Protocol error (Runtime.callFunctionOn): Execution context was destroyed."
+          "Protocol error (Runtime.callFunctionOn): Execution context was destroyed." ||
+        error.message === "Node is detached from document"
       ) {
-        logger.verbose(`retry ${i + 1}/${times} error: "${error.message}"`);
+        logger.verbose(
+          `retryExecutionError: retrying ${i + 1}/${times} error: "${
+            error.message
+          }"`
+        );
         continue;
       }
 
-      logger.error(`will not retry unknown error: "${error.message}"`);
+      logger.error(
+        `retryExecutionError: will not retry unknown error: "${error.message}"`
+      );
       throw error;
     }
   }

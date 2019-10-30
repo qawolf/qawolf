@@ -17,7 +17,12 @@ export const findElementByXpath = (xpath: string): HTMLElement | null => {
 const buildXpath = (element: Element): string => {
   if (!element || element.nodeType !== 1) return "";
 
-  if (element.id) return "//*[@id='" + element.id + "']";
+  if (element.id) {
+    // xpath has no way to escape quotes so use the opposite
+    // https://stackoverflow.com/a/14822893
+    const quote = element.id.indexOf(`'`) > -1 ? `"` : `'`;
+    return `//*[@id=${quote}${element.id}${quote}]`;
+  }
 
   const children = element.parentNode ? element.parentNode.children : [];
   const sames = [].filter.call(children, (x: Element) => {
