@@ -1,13 +1,5 @@
 import { Event, InputEvent, ScrollEvent, Step } from "@qawolf/types";
-import { parseDate } from "chrono-node";
 import { concat, sortBy } from "lodash";
-
-const isDateInputEvent = (event: Event) => {
-  const inputEvent = event as InputEvent;
-  return (
-    event.action === "input" && inputEvent.value && parseDate(inputEvent.value)
-  );
-};
 
 export const buildClickSteps = (events: Event[]): Step[] => {
   const steps: Step[] = [];
@@ -28,11 +20,6 @@ export const buildClickSteps = (events: Event[]): Step[] => {
       event.target.inputType !== "submit"
     )
       continue;
-
-    // skip clicks before a date input
-    // since we assume it triggers the date input event
-    // ex. a date picker button
-    if (i + 1 < events.length && isDateInputEvent(events[i + 1])) continue;
 
     steps.push({
       action: "click",
@@ -55,23 +42,23 @@ export const buildInputSteps = (events: Event[]): Step[] => {
     // ignore other actions
     if (event.action !== "input") continue;
 
+    // ignore system initiated clicks
+    if (!event.isTrusted) continue;
+
     const nextEvent = i + 1 < events.length ? events[i + 1] : null;
     const lastInputToTarget =
       !nextEvent || event.target.xpath !== nextEvent.target.xpath;
     // skip to the last input on this target
     if (!lastInputToTarget) continue;
 
-    // include user events and date input events
-    if (event.isTrusted || isDateInputEvent(event)) {
-      steps.push({
-        action: "input",
-        // include event index so we can sort in buildSteps
-        index: i,
-        pageId: event.pageId,
-        target: event.target,
-        value: event.value
-      });
-    }
+    steps.push({
+      action: "input",
+      // include event index so we can sort in buildSteps
+      index: i,
+      pageId: event.pageId,
+      target: event.target,
+      value: event.value
+    });
   }
 
   return steps;
