@@ -143,7 +143,7 @@ export class Runner {
     await retryExecutionError(async () => {
       const element = await this._browser.element(step);
       await this.beforeAction();
-      await scrollElement(element, value as ScrollValue);
+      await scrollElement(element, value as ScrollValue, CONFIG.findTimeoutMs);
     });
   }
 
