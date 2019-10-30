@@ -14,7 +14,7 @@ it("runs a workflow", async () => {
 
   const page = await runner.browser.currentPage();
   const text = await $xText(page, '//*[@id="content"]/div/h2');
-  expect(text).toEqual(" Secure Area");
+  expect(text).toEqual("Secure Area");
 
   await runner.close();
 });
