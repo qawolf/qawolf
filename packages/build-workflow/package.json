@@ -23,11 +23,10 @@
     "access": "public"
   },
   "dependencies": {
-    "chrono-node": "^1.3.11",
     "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "@qawolf/fixtures": "1.8.0",
+    "@qawolf/fixtures": "1.9.0",
     "@qawolf/types": "^0.4.3",
     "jest": "^24.9.0"
   }

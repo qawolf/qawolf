@@ -13,13 +13,6 @@ export class Recorder {
     this._sendEvent = sendEvent;
 
     this.recordEvents();
-
-    this.recordValueChanged(HTMLInputElement.prototype);
-    this.recordValueChanged(HTMLSelectElement.prototype);
-    this.recordValueChanged(HTMLTextAreaElement.prototype);
-
-    // XXX do we need to intercept this?
-    // this.recordValueChanged(HTMLInputElement.prototype, "checked");
   }
 
   public dispose() {
@@ -92,46 +85,5 @@ export class Recorder {
         }
       };
     });
-  }
-
-  private recordValueChanged<T>(target: T) {
-    const recorder = this;
-
-    const valueProperty = Object.getOwnPropertyDescriptor(target, "value");
-
-    // overwrite the property to intercept value changes
-    Object.defineProperty(target, "value", {
-      set(value) {
-        const originalValue = this.value;
-        // call original
-        if (valueProperty && valueProperty.set) {
-          valueProperty.set.call(this, value);
-        }
-
-        if (originalValue !== value) {
-          const element = this as HTMLInputElement;
-
-          const inputEvent: types.InputEvent = {
-            action: "input",
-            isTrusted: false,
-            target: getDescriptor(element, recorder._dataAttribute),
-            time: Date.now(),
-            value: element.value
-          };
-
-          console.log(
-            `Recorder: value change ${originalValue} -> ${value}`,
-            element,
-            "recorded:",
-            inputEvent
-          );
-          recorder._sendEvent(inputEvent);
-        }
-      }
-    });
-
-    this._onDispose.push(() =>
-      Object.defineProperty(target, "value", valueProperty || {})
-    );
   }
 }
