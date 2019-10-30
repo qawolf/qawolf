@@ -5,12 +5,12 @@
 Setup browser tests with one command, using [Jest](https://jestjs.io) and [Puppeteer](https://pptr.dev).
 
 ```sh
-npm i qawolf && npx qawolf record google.com
+npm i -g qawolf && qawolf record google.com
 ```
 
 ## CLI
 
-### `npx qawolf record <url> [name]`
+### `qawolf record <url> [name]`
 
 - opens a browser to record your actions
 - creates a [Jest](https://jestjs.io) and [Puppeteer](https://pptr.dev) test in `.qawolf/tests` after you close the browser
