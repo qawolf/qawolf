@@ -2,7 +2,7 @@ import {
   Browser,
   click,
   hasText,
-  getElementProperty,
+  getProperty,
   input,
   retryExecutionError,
   scrollElement
@@ -12,6 +12,7 @@ import { logger } from "@qawolf/logger";
 import { ScreenCapture } from "@qawolf/screen";
 import {
   AssertOptions,
+  GetPropertyArgs,
   ScrollValue,
   Step,
   StepValue,
@@ -109,9 +110,8 @@ export class Runner {
     return hasText(page, text, options);
   }
 
-  public async getElementProperty(
-    selector: string,
-    property: string,
+  public async getProperty(
+    { property, selector }: GetPropertyArgs,
     options?: AssertOptions
   ): Promise<string | null | undefined> {
     logger.verbose(
@@ -119,7 +119,7 @@ export class Runner {
     );
     const page = await this._browser.currentPage();
 
-    return getElementProperty(page, selector, property, options);
+    return getProperty(page, { property, selector }, options);
   }
 
   public async input(step: Step, value?: StepValue) {

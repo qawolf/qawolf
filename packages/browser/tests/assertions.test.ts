@@ -1,6 +1,6 @@
 import { CONFIG } from "@qawolf/config";
 import { Page } from "puppeteer";
-import { hasText, getElementProperty } from "../src/assertions";
+import { hasText, getProperty } from "../src/assertions";
 import { Browser } from "../src/Browser";
 
 let browser: Browser;
@@ -30,7 +30,7 @@ describe("hasText", () => {
   });
 });
 
-describe("getElementProperty", () => {
+describe("getProperty", () => {
   beforeAll(async () => {
     browser = await Browser.create({ url: `${CONFIG.testUrl}dropdown` });
     page = await browser.currentPage();
@@ -39,32 +39,40 @@ describe("getElementProperty", () => {
   afterAll(() => browser.close());
 
   it("returns element attribute if it exists", async () => {
-    const id = await getElementProperty(page, "select", "id");
+    const id = await getProperty(page, { selector: "select", property: "id" });
     expect(id).toBe("dropdown");
 
-    const tagName = await getElementProperty(page, "#dropdown", "tagName");
+    const tagName = await getProperty(page, {
+      selector: "#dropdown",
+      property: "tagName"
+    });
     expect(tagName).toBe("SELECT");
 
-    const value = await getElementProperty(page, "#dropdown", "value");
+    const value = await getProperty(page, {
+      selector: "#dropdown",
+      property: "value"
+    });
     expect(value).toBe("");
   });
 
   it("returns undefined if element does not have property", async () => {
-    const placeholder = await getElementProperty(
-      page,
-      "#dropdown",
-      "placeholder"
-    );
+    const placeholder = await getProperty(page, {
+      selector: "#dropdown",
+      property: "placeholder"
+    });
     expect(placeholder).toBeUndefined();
   });
 
   it("returns null if no elements match selector", async () => {
-    const tagName = await getElementProperty(page, "#wrongId", "tagName");
+    const tagName = await getProperty(page, {
+      selector: "#wrongId",
+      property: "tagName"
+    });
     expect(tagName).toBeNull();
   });
 
   it("returns null if multiple elements match selector", async () => {
-    const id = await getElementProperty(page, "option", "id");
+    const id = await getProperty(page, { selector: "option", property: "id" });
     expect(id).toBeNull();
   });
 });

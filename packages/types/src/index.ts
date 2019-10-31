@@ -27,6 +27,11 @@ export type ElementDescriptor = {
   xpath?: string | null;
 };
 
+export type GetPropertyArgs = {
+  property: string;
+  selector: string;
+};
+
 export interface Event {
   action: Action;
   isTrusted: boolean;

@@ -26,7 +26,7 @@ describe("Runner", () => {
       url: `${CONFIG.testUrl}dropdown`
     });
 
-    const id = await runner.getElementProperty("select", "id");
+    const id = await runner.getProperty({ selector: "select", property: "id" });
 
     expect(id).toBe("dropdown");
 

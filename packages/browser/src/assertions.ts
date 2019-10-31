@@ -1,5 +1,5 @@
 import { CONFIG } from "@qawolf/config";
-import { AssertOptions } from "@qawolf/types";
+import { AssertOptions, GetPropertyArgs } from "@qawolf/types";
 import { QAWolfWeb, waitFor } from "@qawolf/web";
 import { Page } from "puppeteer";
 import { retryExecutionError } from "./pageUtils";
@@ -27,10 +27,9 @@ export const hasText = async (
   return result;
 };
 
-export const getElementProperty = async (
+export const getProperty = async (
   page: Page,
-  selector: string,
-  property: string,
+  { property, selector }: GetPropertyArgs,
   options?: AssertOptions
 ): Promise<string | null | undefined> => {
   const result = await retryExecutionError(async () => {

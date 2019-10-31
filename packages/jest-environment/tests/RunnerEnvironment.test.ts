@@ -7,7 +7,7 @@ describe("RunnerEnvironment", () => {
     expect(runner).toBeTruthy();
     expect(click).toBeTruthy();
     expect(hasText).toBeTruthy();
-    expect(getElementProperty).toBeTruthy();
+    expect(getProperty).toBeTruthy();
     expect(input).toBeTruthy();
     expect(scrollElement).toBeTruthy();
     expect(waitUntil).toBeTruthy();
