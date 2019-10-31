@@ -10,6 +10,10 @@ export const scroll = async (
   console.log("scroll to", value, element);
 
   while (element.scrollLeft !== value.x || element.scrollTop !== value.y) {
+    console.log("current scroll", {
+      x: element.scrollLeft,
+      y: element.scrollTop
+    });
     if (Date.now() - start > timeoutMs) {
       throw "Could not scroll, timeout exceeded";
     }
