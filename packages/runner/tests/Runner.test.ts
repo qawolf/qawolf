@@ -19,4 +19,21 @@ describe("Runner", () => {
 
     await runner.close();
   });
+
+  it("finds property of element", async () => {
+    const runner = await Runner.create({
+      ...loginWorkflow,
+      // need to rename for the video to have a separate path
+      name: "dropdown",
+      url: `${CONFIG.testUrl}dropdown`
+    });
+
+    const id = await runner.findProperty({
+      selector: "select",
+      property: "id"
+    });
+    expect(id).toBe("dropdown");
+
+    await runner.close();
+  });
 });

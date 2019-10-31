@@ -4,9 +4,9 @@ import { Callback, Event, Size, Step } from "@qawolf/types";
 import { waitFor } from "@qawolf/web";
 import { sortBy } from "lodash";
 import puppeteer, { devices, ElementHandle } from "puppeteer";
-import { launchPuppeteerBrowser } from "./browserUtils";
 import { getDevice } from "./device";
-import { findElement } from "./pageUtils";
+import { findElement } from "./find";
+import { launchPuppeteerBrowser } from "./launch";
 import { DecoratedPage, QAWolfPage } from "./QAWolfPage";
 
 export type BrowserCreateOptions = {

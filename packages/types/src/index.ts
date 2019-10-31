@@ -1,12 +1,5 @@
 export type Action = "click" | "input" | "scroll";
 
-export type AssertOptions = {
-  timeoutMs?: number;
-};
-export type AssertParams = {
-  timeoutMs: number;
-};
-
 export type Callback<S = void, T = void> = (data?: S) => T;
 
 export type ElementDescriptor = {

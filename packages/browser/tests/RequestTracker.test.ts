@@ -1,5 +1,5 @@
 import { Page } from "puppeteer";
-import { launchPuppeteerBrowser } from "../src/browserUtils";
+import { launchPuppeteerBrowser } from "../src/launch";
 import { RequestTracker } from "../src/RequestTracker";
 
 jest.useFakeTimers();

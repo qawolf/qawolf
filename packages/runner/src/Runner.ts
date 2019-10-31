@@ -1,6 +1,8 @@
 import {
   Browser,
   click,
+  findProperty,
+  FindPropertyArgs,
   hasText,
   input,
   retryExecutionError,
@@ -9,13 +11,7 @@ import {
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { ScreenCapture } from "@qawolf/screen";
-import {
-  AssertOptions,
-  ScrollValue,
-  Step,
-  StepValue,
-  Workflow
-} from "@qawolf/types";
+import { ScrollValue, Step, StepValue, Workflow } from "@qawolf/types";
 import { sleep } from "@qawolf/web";
 import { getStepValues } from "./getStepValues";
 import { getUrl } from "./getUrl";
@@ -98,14 +94,21 @@ export class Runner {
     await this._browser.close();
   }
 
-  public async hasText(
-    text: string,
-    options?: AssertOptions
-  ): Promise<boolean> {
-    logger.verbose(`Assertion: current page has text ${text}`);
+  public async findProperty(
+    { property, selector }: FindPropertyArgs,
+    timeoutMs?: number
+  ): Promise<string | null | undefined> {
+    logger.verbose(`Runner: findProperty ${property} of element ${selector}`);
     const page = await this._browser.currentPage();
 
-    return hasText(page, text, options);
+    return findProperty(page, { property, selector }, timeoutMs);
+  }
+
+  public async hasText(text: string, timeoutMs?: number): Promise<boolean> {
+    logger.verbose(`Runner: hasText ${text}`);
+
+    const page = await this._browser.currentPage();
+    return hasText(page, text, timeoutMs);
   }
 
   public async input(step: Step, value?: StepValue) {

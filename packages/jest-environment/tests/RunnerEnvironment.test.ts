@@ -6,9 +6,11 @@ describe("RunnerEnvironment", () => {
   it("exposes a runner and actions as globals", () => {
     expect(runner).toBeTruthy();
     expect(click).toBeTruthy();
+    expect(findProperty).toBeTruthy();
     expect(hasText).toBeTruthy();
     expect(input).toBeTruthy();
     expect(scrollElement).toBeTruthy();
+    expect(waitUntil).toBeTruthy();
   });
 
   it("exposes steps, values, and workflow as globals", () => {

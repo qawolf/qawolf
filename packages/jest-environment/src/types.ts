@@ -1,6 +1,6 @@
-import { Browser } from "@qawolf/browser";
+import { Browser, FindPropertyArgs } from "@qawolf/browser";
 import { Runner } from "@qawolf/runner";
-import { AssertOptions, Step, StepValue, Workflow } from "@qawolf/types";
+import { Step, StepValue, Workflow } from "@qawolf/types";
 import { Page } from "puppeteer";
 
 declare global {
@@ -8,9 +8,17 @@ declare global {
   const runner: Runner;
 
   function click(step: Step): Promise<void>;
-  function hasText(text: string, options?: AssertOptions): Promise<boolean>;
+  function findProperty(
+    args: FindPropertyArgs,
+    timeoutMs?: number
+  ): Promise<string | null | undefined>;
+  function hasText(text: string, timeoutMs?: number): Promise<boolean>;
   function input(step: Step, value?: StepValue): Promise<void>;
   function scrollElement(step: Step, value: StepValue): Promise<void>;
+  function waitUntil(
+    booleanFn: () => boolean,
+    timeoutMs?: number
+  ): Promise<void>;
 
   const steps: Step[];
   const values: StepValue[];
