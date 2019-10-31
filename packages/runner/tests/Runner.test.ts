@@ -19,17 +19,4 @@ describe("Runner", () => {
 
     await runner.close();
   });
-
-  it("asserts text on page", async () => {
-    const runner = await Runner.create({
-      ...loginWorkflow,
-      url: `${CONFIG.testUrl}login`
-    });
-
-    const hasText = await runner.hasText("tomsmith");
-
-    expect(hasText).toBe(true);
-
-    await runner.close();
-  });
 });

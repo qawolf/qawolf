@@ -18,8 +18,8 @@ export const createGif = (options: CreateGifOptions) => {
 
     const ffmpeg = spawn("sh", [
       "-c",
-      // https://superuser.com/a/556031/856890
-      `ffmpeg -i ${options.videoPath} -vf "fps=10,scale=${shrunkHeight}:-1:flags=lanczos,setpts=0.5*PTS" -c:v pam -f image2pipe - | convert -delay 10 - -loop 0 -layers optimize ${options.gifPath}`
+      // https://askubuntu.com/a/837574/856776
+      `ffmpeg -i ${options.videoPath} -vf "fps=10,scale=${shrunkHeight}:-1:flags=lanczos,setpts=0.5*PTS" ${options.gifPath}`
     ]);
 
     ffmpeg.on("close", () => {
