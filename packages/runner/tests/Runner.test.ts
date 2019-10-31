@@ -20,14 +20,16 @@ describe("Runner", () => {
     await runner.close();
   });
 
-  it("gets property of element", async () => {
+  it("finds property of element", async () => {
     const runner = await Runner.create({
       ...loginWorkflow,
       url: `${CONFIG.testUrl}dropdown`
     });
 
-    const id = await runner.getProperty({ selector: "select", property: "id" });
-
+    const id = await runner.findProperty({
+      selector: "select",
+      property: "id"
+    });
     expect(id).toBe("dropdown");
 
     await runner.close();

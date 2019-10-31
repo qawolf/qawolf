@@ -1,7 +1,7 @@
 import { CONFIG } from "@qawolf/config";
 import { Browser } from "../../src/Browser";
 import { click } from "../../src/actions";
-import { hasText } from "../../src/assertions";
+import { hasText } from "../../src/find";
 
 describe("click", () => {
   it("clicks on link", async () => {
@@ -28,9 +28,11 @@ describe("click", () => {
     const browser = await Browser.create({ url: `${CONFIG.testUrl}login` });
     const page = await browser.currentPage();
 
-    const hasInvalidUsernameText = await hasText(page, "username is invalid", {
-      timeoutMs: 250
-    });
+    const hasInvalidUsernameText = await hasText(
+      page,
+      "username is invalid",
+      250
+    );
     expect(hasInvalidUsernameText).toBe(false);
 
     const element = await browser.element({

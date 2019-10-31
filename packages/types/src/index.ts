@@ -1,12 +1,5 @@
 export type Action = "click" | "input" | "scroll";
 
-export type AssertOptions = {
-  timeoutMs?: number;
-};
-export type AssertParams = {
-  timeoutMs: number;
-};
-
 export type Callback<S = void, T = void> = (data?: S) => T;
 
 export type ElementDescriptor = {
@@ -25,11 +18,6 @@ export type ElementDescriptor = {
   innerText?: string | null;
   title?: string | null;
   xpath?: string | null;
-};
-
-export type GetPropertyArgs = {
-  property: string;
-  selector: string;
 };
 
 export interface Event {

@@ -1,17 +1,15 @@
-import * as assertions from "./assertions";
 import * as element from "./element";
-import * as locate from "./locate";
+import * as find from "./find";
 import * as match from "./match";
 import { Match } from "./match";
 import { Recorder } from "./Recorder";
 import { scrollElement } from "./scrollElement";
-import * as timer from "./timer";
+import * as wait from "./wait";
 import * as xpath from "./xpath";
 
 export type Match = Match;
 
 // export the isomorphic (node & browser) module for node
-const { hasText } = assertions;
 const {
   compareArrays,
   compareDescriptorKey,
@@ -19,13 +17,12 @@ const {
   countPresentKeys,
   isNil
 } = match;
-const { sleep, waitFor, waitUntil } = timer;
+const { sleep, waitFor, waitUntil } = wait;
 export {
   compareArrays,
   compareDescriptorKey,
   compareDescriptors,
   countPresentKeys,
-  hasText,
   isNil,
   sleep,
   waitFor,
@@ -34,13 +31,12 @@ export {
 
 // export the web module for the browser
 const webExports = {
-  assertions,
   element,
-  locate,
+  find,
   match,
   Recorder,
   scrollElement,
-  timer,
+  wait,
   xpath
 };
 
