@@ -41,7 +41,14 @@ export class RunnerEnvironment extends NodeEnvironment {
 
     this.global.steps = runner.workflow.steps;
     this.global.values = runner.values;
-    this.global.waitUntil = waitUntil;
+
+    // default timeoutMs to CONFIG
+    this.global.waitUntil = (
+      booleanFn: () => boolean,
+      timeoutMs?: number,
+      sleepMs?: number
+    ) => waitUntil(booleanFn, timeoutMs || CONFIG.findTimeoutMs, sleepMs);
+
     this.global.workflow = runner.workflow;
 
     const browser = runner.browser;
