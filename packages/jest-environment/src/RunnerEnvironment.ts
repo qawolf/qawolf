@@ -4,6 +4,7 @@ import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { Runner } from "@qawolf/runner";
 import { Workflow } from "@qawolf/types";
+import { waitUntil } from "@qawolf/web";
 import { pathExists, readJSON } from "fs-extra";
 import NodeEnvironment from "jest-environment-node";
 import path from "path";
@@ -37,6 +38,7 @@ export class RunnerEnvironment extends NodeEnvironment {
     this.global.getElementProperty = runner.getElementProperty.bind(runner);
     this.global.input = runner.input.bind(runner);
     this.global.scrollElement = runner.scrollElement.bind(runner);
+    this.global.waitUntil = waitUntil;
 
     this.global.steps = runner.workflow.steps;
     this.global.values = runner.values;

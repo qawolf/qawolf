@@ -1,3 +1,5 @@
+import { AssertOptions } from "@qawolf/types";
+
 export const sleep = (milliseconds: number): Promise<void> => {
   return new Promise(resolve => setTimeout(resolve, milliseconds));
 };
@@ -17,4 +19,24 @@ export const waitFor = async <T>(
   }
 
   return null;
+};
+
+export const waitUntil = async (
+  booleanFn: () => boolean,
+  options?: AssertOptions,
+  sleepMs: number = 500
+): Promise<void> => {
+  const timeoutMs = (options || {}).timeoutMs || 30000;
+  const startTime = Date.now();
+
+  while (Date.now() - startTime < timeoutMs) {
+    const conditionMet = booleanFn();
+    if (conditionMet) return;
+
+    await sleep(sleepMs);
+  }
+
+  throw new Error(
+    `waitUntil: waited ${timeoutMs} milliseconds but condition never met`
+  );
 };

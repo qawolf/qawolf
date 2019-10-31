@@ -16,6 +16,10 @@ declare global {
   ): Promise<string | null | undefined>;
   function input(step: Step, value?: StepValue): Promise<void>;
   function scrollElement(step: Step, value: StepValue): Promise<void>;
+  function waitUntil(
+    booleanFn: () => boolean,
+    options?: AssertOptions
+  ): Promise<void>;
 
   const steps: Step[];
   const values: StepValue[];

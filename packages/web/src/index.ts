@@ -19,7 +19,7 @@ const {
   countPresentKeys,
   isNil
 } = match;
-const { waitFor, sleep } = timer;
+const { sleep, waitFor, waitUntil } = timer;
 export {
   compareArrays,
   compareDescriptorKey,
@@ -28,7 +28,8 @@ export {
   hasText,
   isNil,
   sleep,
-  waitFor
+  waitFor,
+  waitUntil
 };
 
 // export the web module for the browser

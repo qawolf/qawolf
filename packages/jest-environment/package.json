@@ -26,6 +26,7 @@
     "@qawolf/jasmine-fail-fast": "^2.0.1",
     "@qawolf/logger": "^0.4.3",
     "@qawolf/runner": "^0.4.3",
+    "@qawolf/web": "^0.4.3",
     "fs-extra": "^8.1.0"
   },
   "devDependencies": {
