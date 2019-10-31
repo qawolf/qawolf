@@ -32,4 +32,17 @@ describe("Runner", () => {
 
     await runner.close();
   });
+
+  it("gets property of element", async () => {
+    const runner = await Runner.create({
+      ...loginWorkflow,
+      url: `${CONFIG.testUrl}dropdown`
+    });
+
+    const id = await runner.getElementProperty("select", "id");
+
+    expect(id).toBe("dropdown");
+
+    await runner.close();
+  });
 });

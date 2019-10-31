@@ -9,6 +9,11 @@ declare global {
 
   function click(step: Step): Promise<void>;
   function hasText(text: string, options?: AssertOptions): Promise<boolean>;
+  function getElementProperty(
+    selector: string,
+    property: string,
+    options?: AssertOptions
+  ): Promise<string | null | undefined>;
   function input(step: Step, value?: StepValue): Promise<void>;
   function scrollElement(step: Step, value: StepValue): Promise<void>;
 

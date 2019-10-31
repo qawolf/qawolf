@@ -2,6 +2,7 @@ import {
   Browser,
   click,
   hasText,
+  getElementProperty,
   input,
   retryExecutionError,
   scrollElement
@@ -106,6 +107,19 @@ export class Runner {
     const page = await this._browser.currentPage();
 
     return hasText(page, text, options);
+  }
+
+  public async getElementProperty(
+    selector: string,
+    property: string,
+    options?: AssertOptions
+  ): Promise<string | null | undefined> {
+    logger.verbose(
+      `Assertion: get property ${property} of element ${selector}`
+    );
+    const page = await this._browser.currentPage();
+
+    return getElementProperty(page, selector, property, options);
   }
 
   public async input(step: Step, value?: StepValue) {
