@@ -9,7 +9,7 @@ describe("RunnerEnvironment", () => {
     expect(findProperty).toBeTruthy();
     expect(hasText).toBeTruthy();
     expect(input).toBeTruthy();
-    expect(scrollElement).toBeTruthy();
+    expect(scroll).toBeTruthy();
     expect(waitUntil).toBeTruthy();
   });
 

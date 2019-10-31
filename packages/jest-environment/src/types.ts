@@ -14,7 +14,7 @@ declare global {
   ): Promise<string | null | undefined>;
   function hasText(text: string, timeoutMs?: number): Promise<boolean>;
   function input(step: Step, value?: StepValue): Promise<void>;
-  function scrollElement(step: Step, value: StepValue): Promise<void>;
+  function scroll(step: Step, value: StepValue): Promise<void>;
   function waitUntil(
     booleanFn: () => boolean,
     timeoutMs?: number
