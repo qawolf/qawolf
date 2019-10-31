@@ -6,7 +6,7 @@ import {
   hasText,
   input,
   retryExecutionError,
-  scrollElement
+  scroll
 } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
@@ -136,17 +136,17 @@ export class Runner {
         | null
         | undefined);
     } else if (step.action === "scroll") {
-      await this.scrollElement(step, this._values[step.index] as ScrollValue);
+      await this.scroll(step, this._values[step.index] as ScrollValue);
     }
   }
 
-  public async scrollElement(step: Step, value: StepValue) {
+  public async scroll(step: Step, value: StepValue) {
     logger.verbose(`Runner: scroll step ${step.index}`);
 
     await retryExecutionError(async () => {
       const element = await this._browser.element(step);
       await this.beforeAction();
-      await scrollElement(element, value as ScrollValue, CONFIG.findTimeoutMs);
+      await scroll(element, value as ScrollValue, CONFIG.findTimeoutMs);
     });
   }
 

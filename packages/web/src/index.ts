@@ -3,7 +3,7 @@ import * as find from "./find";
 import * as match from "./match";
 import { Match } from "./match";
 import { Recorder } from "./Recorder";
-import { scrollElement } from "./scrollElement";
+import { scroll } from "./scroll";
 import * as wait from "./wait";
 import * as xpath from "./xpath";
 
@@ -35,7 +35,7 @@ const webExports = {
   find,
   match,
   Recorder,
-  scrollElement,
+  scroll,
   wait,
   xpath
 };

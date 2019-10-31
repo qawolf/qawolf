@@ -37,11 +37,11 @@ export class RunnerEnvironment extends NodeEnvironment {
     this.global.findProperty = runner.findProperty.bind(runner);
     this.global.hasText = runner.hasText.bind(runner);
     this.global.input = runner.input.bind(runner);
-    this.global.scrollElement = runner.scrollElement.bind(runner);
-    this.global.waitUntil = waitUntil;
+    this.global.scroll = runner.scroll.bind(runner);
 
     this.global.steps = runner.workflow.steps;
     this.global.values = runner.values;
+    this.global.waitUntil = waitUntil;
     this.global.workflow = runner.workflow;
 
     const browser = runner.browser;

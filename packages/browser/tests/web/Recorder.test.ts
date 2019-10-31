@@ -1,7 +1,7 @@
 import { CONFIG } from "@qawolf/config";
 import { InputEvent, ScrollEvent } from "@qawolf/types";
 import { sleep } from "@qawolf/web";
-import { click, input, scrollElement } from "../../src/actions";
+import { click, input, scroll } from "../../src/actions";
 import { Browser } from "../../src/Browser";
 
 describe("Recorder", () => {
@@ -93,7 +93,7 @@ describe("Recorder", () => {
       },
       false
     );
-    await scrollElement(body, { x: 0, y: 1000 });
+    await scroll(body, { x: 0, y: 1000 });
 
     // give time for the scroll event to trigger
     await sleep(100);
