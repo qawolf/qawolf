@@ -23,6 +23,8 @@ describe("Runner", () => {
   it("finds property of element", async () => {
     const runner = await Runner.create({
       ...loginWorkflow,
+      // need to rename for the video to have a separate path
+      name: "dropdown",
       url: `${CONFIG.testUrl}dropdown`
     });
 
