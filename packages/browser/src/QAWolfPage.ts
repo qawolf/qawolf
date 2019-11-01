@@ -5,6 +5,7 @@ import fs from "fs-extra";
 import path from "path";
 import { devices, JSHandle, Page } from "puppeteer";
 import { RequestTracker } from "./RequestTracker";
+import { retryExecutionError } from "./retry";
 
 const webBundle = fs.readFileSync(
   path.resolve(path.dirname(require.resolve("@qawolf/web")), "./qawolf.web.js"),
@@ -110,7 +111,7 @@ export class QAWolfPage {
     }
 
     await Promise.all([
-      this._page.evaluate(bundle),
+      retryExecutionError(() => this._page.evaluate(bundle)),
       this._page.evaluateOnNewDocument(bundle)
     ]);
   }
