@@ -50,7 +50,7 @@ describe("scroll", () => {
     expect(nextYPosition).toBe(2000);
   });
 
-  it("throws error if timeout", async () => {
+  it("throws error if timeout and not able to scroll", async () => {
     const page = await browser.goto(`${CONFIG.testUrl}infinite_scroll`);
 
     const initialYPosition = await page.evaluate(() => window.pageYOffset);
@@ -62,7 +62,7 @@ describe("scroll", () => {
       target: { xpath: "/html" }
     });
 
-    const testFn = async () => await scroll(element, { x: 0, y: 2000 }, 0);
+    const testFn = async () => await scroll(element, { x: 0, y: 2000 }, -1);
     await expect(testFn()).rejects.toThrowError();
   });
 });
