@@ -1,4 +1,4 @@
-import { parse, UrlWithStringQuery } from "url";
+import { parse } from "url";
 
 export const parseUrl = (urlString: string) => {
   let url = parse(urlString);
@@ -13,11 +13,4 @@ export const parseUrl = (urlString: string) => {
   }
 
   return url;
-};
-
-export const getUrlRoot = (url: UrlWithStringQuery) => {
-  if (!url.hostname) throw new Error(`Invalid url ${url.href}`);
-
-  const parts = url.hostname.split(".");
-  return parts[Math.max(0, parts.length - 2)];
 };

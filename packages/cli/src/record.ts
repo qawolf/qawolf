@@ -33,7 +33,7 @@ export const record = async (
         })
     },
     {
-      title: `Saving test to ${testPath}`,
+      title: `Saving "${name}" test`,
       task: async (_: any, task: any) => {
         await browser.close();
 

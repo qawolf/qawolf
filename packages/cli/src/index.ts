@@ -6,7 +6,7 @@ import program from "commander";
 import { snakeCase } from "lodash";
 import { record } from "./record";
 import { test } from "./test";
-import { parseUrl, getUrlRoot } from "./utils";
+import { parseUrl } from "./utils";
 
 let recordCommand = program
   .command("record <url> [name]")
@@ -23,7 +23,7 @@ recordCommand.action(async (urlArgument, optionalName, cmd) => {
   const url = parseUrl(urlArgument);
   logger.verbose(`record url "${url.href}"`);
 
-  const name = snakeCase(optionalName || getUrlRoot(url));
+  const name = snakeCase(optionalName || url.hostname!);
   await record(url, name, cmd.events);
 });
 
