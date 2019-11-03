@@ -1,5 +1,6 @@
 import {
   Browser,
+  BrowserCreateOptions,
   click,
   findProperty,
   FindPropertyArgs,
@@ -33,7 +34,10 @@ export class Runner {
     // replace the url w/ env variable if it exists
     workflow.url = getUrl(workflow);
 
-    self._browser = await Browser.create({ size: workflow.size });
+    const options: BrowserCreateOptions = { size: workflow.size };
+    if (CONFIG.domPath) options.domPath = `${CONFIG.domPath}/${workflow.name}`;
+
+    self._browser = await Browser.create(options);
     self._values = getStepValues(workflow);
     self._workflow = workflow;
 

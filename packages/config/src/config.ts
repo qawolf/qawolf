@@ -24,6 +24,7 @@ export const CONFIG = {
   development: parseBool(process.env.QAW_DEVELOPMENT),
   display: process.env.DISPLAY || ":1.0",
   docker: parseBool(process.env.QAW_DOCKER),
+  domPath: process.env.QAW_DOM_PATH,
   findTimeoutMs: parseNumber(process.env.QAW_FIND_TIMEOUT_MS, 30000),
   headless: parseBool(process.env.QAW_HEADLESS),
   logLevel: process.env.QAW_LOG_LEVEL,

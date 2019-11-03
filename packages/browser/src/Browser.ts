@@ -10,7 +10,8 @@ import { launchPuppeteerBrowser } from "./launch";
 import { DecoratedPage, QAWolfPage } from "./QAWolfPage";
 
 export type BrowserCreateOptions = {
-  record?: boolean;
+  domPath?: string;
+  recordEvents?: boolean;
   size?: Size;
   url?: string;
 };
@@ -22,11 +23,11 @@ export class Browser {
   private _browser: puppeteer.Browser;
   private _currentPageIndex: number = 0;
   private _device: devices.Device;
+  private _domPath?: string;
   private _onClose: Callback[] = [];
-  private _record: boolean;
-
   // stored in order of open
   private _pages: QAWolfPage[] = [];
+  private _recordEvents: boolean;
 
   // protect constructor to force using async create()
   protected constructor() {}
@@ -38,9 +39,12 @@ export class Browser {
     logger.verbose(`Browser: create ${JSON.stringify(options)}`);
 
     const self = new Browser();
-    self._device = getDevice(options.size);
-    self._browser = await launchPuppeteerBrowser(self._device);
-    self._record = !!options.record;
+
+    const device = getDevice(options.size);
+    self._browser = await launchPuppeteerBrowser(device);
+    self._device = device;
+    self._domPath = options.domPath;
+    self._recordEvents = !!options.recordEvents;
     await self.managePages();
 
     if (options.url) await self.goto(options.url);
@@ -55,7 +59,16 @@ export class Browser {
     }
 
     logger.verbose("Browser: close");
+
+    if (this._domPath) {
+      await Promise.all(
+        this._pages.map((page, index) =>
+          page.createDomReplayer(`${this._domPath}/page_${index}.html`)
+        )
+      );
+    }
     this._pages.forEach(page => page.dispose());
+
     await this._browser.close();
     this._onClose.forEach(c => c());
     logger.verbose("Browser: closed");
@@ -145,7 +158,11 @@ export class Browser {
       throw new Error("Must managePages before opening pages");
     }
 
-    const options = { device: this._device, record: this._record };
+    const options = {
+      device: this._device,
+      recordDom: !!this._domPath,
+      recordEvents: this._recordEvents
+    };
 
     this._pages.push(await QAWolfPage.create({ ...options, page: pages[0] }));
 

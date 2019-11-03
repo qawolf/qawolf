@@ -10,8 +10,8 @@
     "src"
   ],
   "scripts": {
-    "test": "QAW_SLEEP_MS=0 jest --testPathIgnorePatterns=/docker/",
-    "test:docker": "QAW_DOCKER=true QAW_SLEEP_MS=0 jest --testRegex=\"(/tests/docker/.*.test.ts)$\""
+    "test": "jest --testPathIgnorePatterns=/docker/",
+    "test:docker": "QAW_DOCKER=true jest --testRegex=\"(/tests/docker/.*.test.ts)$\""
   },
   "repository": {
     "type": "git",

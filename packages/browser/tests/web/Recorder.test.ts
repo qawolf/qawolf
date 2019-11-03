@@ -6,7 +6,10 @@ import { Browser } from "../../src/Browser";
 
 describe("Recorder", () => {
   it("records click on a link", async () => {
-    const browser = await Browser.create({ record: true, url: CONFIG.testUrl });
+    const browser = await Browser.create({
+      recordEvents: true,
+      url: CONFIG.testUrl
+    });
     const element = await browser.element({
       action: "click",
       index: 0,
@@ -30,7 +33,7 @@ describe("Recorder", () => {
 
   it("records input", async () => {
     const browser = await Browser.create({
-      record: true,
+      recordEvents: true,
       url: `${CONFIG.testUrl}login`
     });
 
@@ -54,7 +57,7 @@ describe("Recorder", () => {
 
   it("records select option", async () => {
     const browser = await Browser.create({
-      record: true,
+      recordEvents: true,
       url: `${CONFIG.testUrl}dropdown`
     });
 
@@ -79,7 +82,7 @@ describe("Recorder", () => {
 
   it("records scroll", async () => {
     const browser = await Browser.create({
-      record: true,
+      recordEvents: true,
       url: `${CONFIG.testUrl}large`
     });
 

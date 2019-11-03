@@ -5,5 +5,6 @@ runs:
   image: "docker://qawolf/qawolf:latest"
   args: ["qawolf", "test"]
   env:
+    QAW_DOM_PATH: /github/workspace/artifacts
     QAW_LOG_PATH: /github/workspace/artifacts/logs
     QAW_VIDEO_PATH: /github/workspace/artifacts
