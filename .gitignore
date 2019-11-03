@@ -8,6 +8,7 @@
 **/lib
 **/node_modules
 **/tmp
+packages/**/logs
 
 # used in tests
 !packages/cli/.qawolf

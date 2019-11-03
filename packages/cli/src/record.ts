@@ -1,6 +1,7 @@
 import { buildTest } from "@qawolf/build-test";
 import { buildWorkflow } from "@qawolf/build-workflow";
-import { Browser } from "@qawolf/browser";
+import { Browser, BrowserCreateOptions } from "@qawolf/browser";
+import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { outputFile, outputJson } from "fs-extra";
 import { Url } from "url";
@@ -13,7 +14,10 @@ export const record = async (
   const Listr = require("listr");
   const input = require("listr-input");
 
-  const browser = await Browser.create({ record: true, url: url.href });
+  const options: BrowserCreateOptions = { recordEvents: true, url: url.href };
+  if (CONFIG.domPath) options.domPath = `${CONFIG.domPath}/${name}`;
+
+  const browser = await Browser.create(options);
 
   let saveTest = true;
 

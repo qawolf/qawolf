@@ -5,7 +5,7 @@ import { pathExists, remove } from "fs-extra";
 import { loginWorkflow } from "../../../build-workflow/fixtures/loginWorkflow";
 import { Runner } from "../../src/Runner";
 
-it("records a video for the browser size", async () => {
+it("records dom replayer and a video", async () => {
   CONFIG.videoPath = await makeTempDir();
 
   const runner = await Runner.create({
@@ -26,4 +26,6 @@ it("records a video for the browser size", async () => {
     height: 668,
     width: 376
   });
+
+  expect(await pathExists(`${savePath}/page_0.html`)).toBeTruthy();
 });

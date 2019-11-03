@@ -9,6 +9,7 @@
 **/lib
 **/node_modules
 **/tmp
+packages/**/logs
 
 # .dockerignore
 .git/

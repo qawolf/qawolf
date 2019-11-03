@@ -1,52 +1,59 @@
-import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { Event } from "@qawolf/types";
-import fs from "fs-extra";
-import path from "path";
+import { readFileSync, outputFile } from "fs-extra";
+import { compile } from "handlebars";
+import { resolve } from "path";
 import { devices, JSHandle, Page } from "puppeteer";
+import { eventWithTime } from "rrweb/typings/types";
+import { bundleJs } from "./bundleJs";
 import { RequestTracker } from "./RequestTracker";
 import { retryExecutionError } from "./retry";
-import { rrwebBundle } from "./rrweb";
 
-const webBundle = fs.readFileSync(
-  path.resolve(path.dirname(require.resolve("@qawolf/web")), "./qawolf.web.js"),
-  "utf8"
-);
-
-type CreateOptions = {
+export type PageCreateOptions = {
   device: devices.Device;
   page: Page;
-  record: boolean;
+  recordDom: boolean;
+  recordEvents: boolean;
 };
 
 export interface DecoratedPage extends Page {
   qawolf: QAWolfPage;
 }
 
+const replayerTemplate = compile(
+  readFileSync(resolve(__dirname, "../static/replayer.hbs"), "utf8")
+);
+
 export class QAWolfPage {
-  protected _events: Event[] = [];
+  private _domEvents: eventWithTime[] = [];
+  private _events: Event[] = [];
   private _page: DecoratedPage;
+  private _recordDom: boolean;
+  private _recordEvents: boolean;
   private _requests: RequestTracker;
-  private _rrwebEvents: any[] = [];
 
   // protect constructor to force using async create()
-  protected constructor(options: CreateOptions) {
+  protected constructor(options: PageCreateOptions) {
     // decorate the page with this parent
     const page = options.page as DecoratedPage;
     page.qawolf = this;
     this._page = page;
 
+    this._recordDom = options.recordDom;
+    this._recordEvents = options.recordEvents;
     this._requests = new RequestTracker(this._page);
   }
 
-  public static async create(options: CreateOptions) {
+  public static async create(options: PageCreateOptions) {
     const { device, page } = options;
 
     const qawolfPage = new QAWolfPage(options);
 
+    await qawolfPage.exposeCallbacks();
+
     await Promise.all([
       qawolfPage.captureLogs(),
-      qawolfPage.injectBundle(options.record),
+      qawolfPage.injectBundle(),
       page.emulate(device)
     ]);
 
@@ -61,10 +68,6 @@ export class QAWolfPage {
     return this._events;
   }
 
-  public get rrwebEvents() {
-    return this._rrwebEvents;
-  }
-
   public get super(): DecoratedPage {
     // return the super Page decorated with this as .qawolf
     return this._page;
@@ -74,7 +77,30 @@ export class QAWolfPage {
     return this._requests.waitUntilComplete();
   }
 
+  public async createDomReplayer(path: string) {
+    logger.debug(
+      `QAWolfPage: create dom replayer for ${this._domEvents.length} events: ${path}`
+    );
+    if (!this._domEvents.length) return;
+
+    // cycle event loop to ensure we get all events
+    await this._page.evaluate(
+      () => new Promise(resolve => setTimeout(resolve, 0))
+    );
+
+    const replayer = replayerTemplate({
+      eventsJson: JSON.stringify(this._domEvents).replace(
+        /<\/script>/g,
+        "<\\/script>"
+      ),
+      url: this._page.url()
+    });
+
+    await outputFile(path, replayer);
+  }
+
   private async captureLogs() {
+    // XXX port to rrweb
     this._page.on("console", async msg => {
       const url = this._page.url().substring(0, 40);
       try {
@@ -104,30 +130,31 @@ export class QAWolfPage {
     this._page.on("pageerror", logError);
   }
 
-  private async injectBundle(record: boolean) {
-    let bundle = webBundle + rrwebBundle;
+  private async exposeCallbacks() {
+    const promises = [];
 
-    if (record) {
-      // create the web Recorder and connect to this.onEvent
-      await this._page.exposeFunction("qaw_onEvent", (event: Event) => {
-        logger.debug(`QAWolfPage: received event ${JSON.stringify(event)}`);
-        this._events.push(event);
-      });
-
-      bundle += `window.qaw_recorder = window.qaw_recorder || new qawolf.Recorder("${CONFIG.dataAttribute}", (event) => qaw_onEvent(event));`;
+    if (this._recordDom) {
+      promises.push(
+        this._page.exposeFunction("qaw_onDomEvent", (event: eventWithTime) =>
+          this._domEvents.push(event)
+        )
+      );
     }
 
-    // record rrweb events
-    await this._page.exposeFunction("qaw_onRrwebEvent", (event: any) =>
-      this._rrwebEvents.push(event)
-    );
-    bundle += `
-    if (!window.qaw_rrweb) {
-      window.qaw_rrweb = true;
-      rrweb.record({ emit: event => qaw_onRrwebEvent(event) });
+    if (this._recordEvents) {
+      promises.push(
+        this._page.exposeFunction("qaw_onEvent", (event: Event) => {
+          logger.debug(`QAWolfPage: received event ${JSON.stringify(event)}`);
+          this._events.push(event);
+        })
+      );
     }
-    `;
 
+    await Promise.all(promises);
+  }
+
+  private async injectBundle() {
+    const bundle = bundleJs(this._recordDom, this._recordEvents);
     await Promise.all([
       retryExecutionError(() => this._page.evaluate(bundle)),
       this._page.evaluateOnNewDocument(bundle)
