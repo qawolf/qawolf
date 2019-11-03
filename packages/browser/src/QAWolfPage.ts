@@ -84,9 +84,13 @@ export class QAWolfPage {
     if (!this._domEvents.length) return;
 
     // cycle event loop to ensure we get all events
-    await this._page.evaluate(
-      () => new Promise(resolve => setTimeout(resolve, 0))
-    );
+    try {
+      await this._page.evaluate(
+        () => new Promise(resolve => setTimeout(resolve, 0))
+      );
+    } catch (e) {
+      // ignore errors because the page could already be disposed
+    }
 
     const replayer = replayerTemplate({
       eventsJson: JSON.stringify(this._domEvents).replace(
