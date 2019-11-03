@@ -6,6 +6,7 @@ import path from "path";
 import { devices, JSHandle, Page } from "puppeteer";
 import { RequestTracker } from "./RequestTracker";
 import { retryExecutionError } from "./retry";
+import { rrwebBundle } from "./rrweb";
 
 const webBundle = fs.readFileSync(
   path.resolve(path.dirname(require.resolve("@qawolf/web")), "./qawolf.web.js"),
@@ -26,6 +27,7 @@ export class QAWolfPage {
   protected _events: Event[] = [];
   private _page: DecoratedPage;
   private _requests: RequestTracker;
+  private _rrwebEvents: any[] = [];
 
   // protect constructor to force using async create()
   protected constructor(options: CreateOptions) {
@@ -57,6 +59,10 @@ export class QAWolfPage {
 
   public get events() {
     return this._events;
+  }
+
+  public get rrwebEvents() {
+    return this._rrwebEvents;
   }
 
   public get super(): DecoratedPage {
@@ -99,7 +105,8 @@ export class QAWolfPage {
   }
 
   private async injectBundle(record: boolean) {
-    let bundle = webBundle;
+    let bundle = webBundle + rrwebBundle;
+
     if (record) {
       // create the web Recorder and connect to this.onEvent
       await this._page.exposeFunction("qaw_onEvent", (event: Event) => {
@@ -109,6 +116,17 @@ export class QAWolfPage {
 
       bundle += `window.qaw_recorder = window.qaw_recorder || new qawolf.Recorder("${CONFIG.dataAttribute}", (event) => qaw_onEvent(event));`;
     }
+
+    // record rrweb events
+    await this._page.exposeFunction("qaw_onRrwebEvent", (event: any) =>
+      this._rrwebEvents.push(event)
+    );
+    bundle += `
+    if (!window.qaw_rrweb) {
+      window.qaw_rrweb = true;
+      rrweb.record({ emit: event => qaw_onRrwebEvent(event) });
+    }
+    `;
 
     await Promise.all([
       retryExecutionError(() => this._page.evaluate(bundle)),

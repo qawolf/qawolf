@@ -29,7 +29,8 @@
     "@qawolf/web": "^0.4.3",
     "fs-extra": "^8.1.0",
     "lodash": "^4.17.15",
-    "puppeteer": "^1.20.0"
+    "puppeteer": "^1.20.0",
+    "rrweb": "^0.7.25"
   },
   "devDependencies": {
     "@types/puppeteer": "^1.20.2",

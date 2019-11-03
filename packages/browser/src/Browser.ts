@@ -8,6 +8,7 @@ import { getDevice } from "./device";
 import { findElement } from "./find";
 import { launchPuppeteerBrowser } from "./launch";
 import { DecoratedPage, QAWolfPage } from "./QAWolfPage";
+import { createHtml } from "./rrweb";
 
 export type BrowserCreateOptions = {
   record?: boolean;
@@ -56,6 +57,11 @@ export class Browser {
 
     logger.verbose("Browser: close");
     this._pages.forEach(page => page.dispose());
+
+    this._pages.forEach((page, index) => {
+      if (page.rrwebEvents.length) createHtml(index, page.rrwebEvents);
+    });
+
     await this._browser.close();
     this._onClose.forEach(c => c());
     logger.verbose("Browser: closed");
