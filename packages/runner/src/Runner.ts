@@ -134,7 +134,7 @@ export class Runner {
   public async runStep(step: Step) {
     if (step.action === "click") {
       await this.click(step);
-    } else if (step.action === "input") {
+    } else if (step.action === "type") {
       await this.input(step, this._values[step.index] as
         | string
         | null

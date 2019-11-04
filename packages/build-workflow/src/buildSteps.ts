@@ -1,4 +1,4 @@
-import { Event, InputEvent, ScrollEvent, Step } from "@qawolf/types";
+import { Event, KeyupEvent, ScrollEvent, Step } from "@qawolf/types";
 import { concat, sortBy } from "lodash";
 
 export const buildClickSteps = (events: Event[]): Step[] => {
@@ -8,7 +8,7 @@ export const buildClickSteps = (events: Event[]): Step[] => {
     const event = events[i];
 
     // ignore other actions
-    if (event.action !== "click") continue;
+    if (event.name !== "click") continue;
 
     // ignore system initiated clicks
     if (!event.isTrusted) continue;
@@ -37,10 +37,10 @@ export const buildInputSteps = (events: Event[]): Step[] => {
   const steps: Step[] = [];
 
   for (let i = 0; i < events.length; i++) {
-    const event = events[i] as InputEvent;
+    const event = events[i] as KeyupEvent;
 
     // ignore other actions
-    if (event.action !== "input") continue;
+    if (event.name !== "keyup") continue;
 
     // ignore system initiated clicks
     if (!event.isTrusted) continue;
@@ -52,7 +52,7 @@ export const buildInputSteps = (events: Event[]): Step[] => {
     if (!lastInputToTarget) continue;
 
     steps.push({
-      action: "input",
+      action: "type",
       // include event index so we can sort in buildSteps
       index: i,
       pageId: event.pageId,
@@ -71,7 +71,7 @@ export const buildScrollSteps = (events: Event[]): Step[] => {
     const event = events[i] as ScrollEvent;
 
     // ignore other actions
-    if (event.action !== "scroll") continue;
+    if (event.name !== "scroll") continue;
 
     // ignore system initiated scrolls
     if (!event.isTrusted) continue;
@@ -80,7 +80,7 @@ export const buildScrollSteps = (events: Event[]): Step[] => {
     const nextEvent = i + 1 < events.length ? events[i + 1] : null;
     if (
       nextEvent &&
-      nextEvent.action === "scroll" &&
+      nextEvent.name === "scroll" &&
       event.target.xpath === nextEvent.target.xpath
     )
       continue;

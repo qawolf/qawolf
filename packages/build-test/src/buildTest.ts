@@ -46,8 +46,8 @@ export const formatMethod = (action: Action, index: number): string => {
     return `click(${stepParam})`;
   }
 
-  if (action === "input") {
-    return `input(${stepParam}, values[${index}])`;
+  if (action === "type") {
+    return `type(${stepParam}, values[${index}])`;
   }
 
   if (action === "scroll") {

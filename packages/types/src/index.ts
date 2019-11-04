@@ -1,4 +1,4 @@
-export type Action = "click" | "keyup" | "scroll";
+export type Action = "click" | "type" | "scroll";
 
 export type Callback<S = void, T = void> = (data?: S) => T;
 
@@ -20,8 +20,10 @@ export type ElementDescriptor = {
   xpath?: string | null;
 };
 
+export type EventName = "click" | "keyup" | "scroll";
+
 export interface Event {
-  action: Action;
+  name: EventName;
   isTrusted: boolean;
   pageId?: number;
   target: ElementDescriptor;
@@ -29,7 +31,7 @@ export interface Event {
 }
 
 export interface KeyupEvent extends Event {
-  action: "keyup";
+  name: "keyup";
   value?: string | null;
 }
 
@@ -42,7 +44,7 @@ export type Locator = {
 };
 
 export interface ScrollEvent extends Event {
-  action: "scroll";
+  name: "scroll";
   value: ScrollValue;
 }
 

@@ -47,15 +47,15 @@ export class Recorder {
 
   private recordEvents() {
     this.recordEvent("click", event => ({
-      action: "click",
       isTrusted: event.isTrusted,
+      name: "click",
       target: getDescriptor(event.target as HTMLElement, this._dataAttribute),
       time: Date.now()
     }));
 
     this.recordEvent("keyup", event => ({
-      action: "keyup",
       isTrusted: event.isTrusted,
+      name: "keyup",
       target: getDescriptor(event.target as HTMLElement, this._dataAttribute),
       time: Date.now(),
       value: event.which
@@ -69,8 +69,8 @@ export class Recorder {
       }
 
       return {
-        action: "scroll",
         isTrusted: event.isTrusted,
+        name: "scroll",
         target: getDescriptor(element, this._dataAttribute),
         time: Date.now(),
         value: {
