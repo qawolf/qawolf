@@ -53,19 +53,13 @@ export class Recorder {
       time: Date.now()
     }));
 
-    const onInput = (event: Event) => {
-      const element = event.target as HTMLInputElement;
-      return {
-        action: "input",
-        isTrusted: event.isTrusted,
-        target: getDescriptor(element, this._dataAttribute),
-        time: Date.now(),
-        value: element.value
-      } as types.InputEvent;
-    };
-
-    this.recordEvent("change", onInput);
-    this.recordEvent("input", onInput);
+    this.recordEvent("keyup", event => ({
+      action: "keyup",
+      isTrusted: event.isTrusted,
+      target: getDescriptor(event.target as HTMLElement, this._dataAttribute),
+      time: Date.now(),
+      value: event.which
+    }));
 
     this.recordEvent("scroll", event => {
       let element = event.target as HTMLElement;

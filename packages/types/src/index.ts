@@ -1,4 +1,4 @@
-export type Action = "click" | "input" | "scroll";
+export type Action = "click" | "keyup" | "scroll";
 
 export type Callback<S = void, T = void> = (data?: S) => T;
 
@@ -28,8 +28,8 @@ export interface Event {
   time: number;
 }
 
-export interface InputEvent extends Event {
-  action: "input";
+export interface KeyupEvent extends Event {
+  action: "keyup";
   value?: string | null;
 }
 
