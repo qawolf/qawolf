@@ -1,4 +1,10 @@
-import { Event, KeyupEvent, ScrollEvent, Step } from "@qawolf/types";
+import {
+  ElementDescriptor,
+  Event,
+  KeyEvent,
+  ScrollEvent,
+  Step
+} from "@qawolf/types";
 import { concat, sortBy } from "lodash";
 
 export const buildClickSteps = (events: Event[]): Step[] => {
@@ -33,32 +39,48 @@ export const buildClickSteps = (events: Event[]): Step[] => {
   return steps;
 };
 
-export const buildInputSteps = (events: Event[]): Step[] => {
+export const buildTypeSteps = (events: Event[]): Step[] => {
   const steps: Step[] = [];
 
+  // group keyup events into one type step
+  let target: ElementDescriptor | null = null;
+  let keys: any[] = [];
+
   for (let i = 0; i < events.length; i++) {
-    const event = events[i] as KeyupEvent;
+    const event = events[i] as KeyEvent;
 
-    // ignore other actions
-    if (event.name !== "keyup") continue;
+    // ignore other events & system initiated clicks
+    if (
+      !event.isTrusted ||
+      (event.name !== "keydown" && event.name !== "keyup")
+    )
+      continue;
 
-    // ignore system initiated clicks
-    if (!event.isTrusted) continue;
+    keys.push(`${event.name === "keydown" ? "↓" : "↑"}${event.value}`);
+
+    // set the target on the first event
+    if (target === null) target = event.target;
 
     const nextEvent = i + 1 < events.length ? events[i + 1] : null;
-    const lastInputToTarget =
-      !nextEvent || event.target.xpath !== nextEvent.target.xpath;
-    // skip to the last input on this target
-    if (!lastInputToTarget) continue;
+    const lastKeyEvent =
+      !nextEvent ||
+      (nextEvent.name !== "keyup" && nextEvent.name !== "keydown");
 
+    // skip to the last key event
+    if (!lastKeyEvent) continue;
+
+    // on the last keyup on this target create the type step
     steps.push({
       action: "type",
       // include event index so we can sort in buildSteps
       index: i,
       pageId: event.pageId,
-      target: event.target,
-      value: event.value
+      target: target,
+      value: keys
     });
+
+    keys = [];
+    target = null;
   }
 
   return steps;
@@ -101,7 +123,7 @@ export const buildScrollSteps = (events: Event[]): Step[] => {
 export const buildSteps = (events: Event[]): Step[] => {
   const unorderedSteps = concat(
     buildClickSteps(events),
-    buildInputSteps(events),
+    buildTypeSteps(events),
     buildScrollSteps(events)
   );
 

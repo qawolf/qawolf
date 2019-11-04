@@ -1,38 +1,52 @@
-import { QAWolfWeb } from "@qawolf/web";
+import { QAWolfWeb, sleep } from "@qawolf/web";
 import { ScrollValue } from "@qawolf/types";
-import { ElementHandle } from "puppeteer";
+import { ElementHandle, Page } from "puppeteer";
 
 export const click = async (element: ElementHandle): Promise<void> => {
   await element.click();
 };
 
+// TODO -> type
 export const input = async (
+  page: Page,
   elementHandle: ElementHandle,
-  value?: string | null
+  value?: string | string[] | null
 ): Promise<void> => {
-  const strValue = value || "";
-  const handleProperty = await elementHandle.getProperty("tagName");
-  const tagName = await handleProperty.jsonValue();
+  // const strValue = value || "";
+  // const handleProperty = await elementHandle.getProperty("tagName");
+  // const tagName = await handleProperty.jsonValue();
 
-  if (tagName.toLowerCase() === "select") {
-    await elementHandle.select(strValue);
-  } else {
-    await elementHandle.focus();
+  // TODO
+  // if (tagName.toLowerCase() === "select") {
+  // await elementHandle.select(strValue);
+  // } else {
+  await elementHandle.focus();
 
-    const currentValue = await elementHandle.evaluate(
-      element => (element as HTMLInputElement).value
+  const currentValue = await elementHandle.evaluate(
+    element => (element as HTMLInputElement).value
+  );
+
+  if (currentValue) {
+    // select all so we replace the text
+    // from https://github.com/GoogleChrome/puppeteer/issues/1313#issuecomment-471732011
+    await elementHandle.evaluate(() =>
+      document.execCommand("selectall", false, "")
     );
+    await elementHandle.press("Backspace");
+  }
 
-    if (currentValue) {
-      // select all so we replace the text
-      // from https://github.com/GoogleChrome/puppeteer/issues/1313#issuecomment-471732011
-      await elementHandle.evaluate(() =>
-        document.execCommand("selectall", false, "")
-      );
-      await elementHandle.press("Backspace");
+  // TODO down & up so we can handle @ etc
+  for (let key of value as any) {
+    const code = (key as string).substring(1);
+
+    console.log("type", key);
+    if (key[0] === "↓") {
+      await page.keyboard.down(code);
+    } else {
+      await page.keyboard.up(code);
     }
 
-    await elementHandle.type(strValue);
+    await sleep(100);
   }
 };
 

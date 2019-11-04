@@ -20,8 +20,6 @@ export type ElementDescriptor = {
   xpath?: string | null;
 };
 
-export type EventName = "click" | "keyup" | "scroll";
-
 export interface Event {
   name: EventName;
   isTrusted: boolean;
@@ -30,9 +28,12 @@ export interface Event {
   time: number;
 }
 
-export interface KeyupEvent extends Event {
-  name: "keyup";
-  value?: string | null;
+export type EventName = "click" | "keydown" | "keyup" | "scroll";
+
+export interface KeyEvent extends Event {
+  name: "keydown" | "keyup";
+  // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
+  value: string;
 }
 
 export type Locator = {
@@ -63,7 +64,7 @@ export type Step = {
   value?: StepValue;
 };
 
-export type StepValue = string | ScrollValue | null | undefined;
+export type StepValue = string | string[] | ScrollValue | null | undefined;
 
 export type Workflow = {
   name: string;

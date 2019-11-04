@@ -47,7 +47,8 @@ export const formatMethod = (action: Action, index: number): string => {
   }
 
   if (action === "type") {
-    return `type(${stepParam}, values[${index}])`;
+    // TODO -> type
+    return `input(${stepParam}, values[${index}])`;
   }
 
   if (action === "scroll") {

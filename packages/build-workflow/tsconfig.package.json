@@ -7,6 +7,9 @@
   },
   "references": [
     {
+      "path": "../browser/tsconfig.package.json"
+    },
+    {
       "path": "../types/tsconfig.package.json"
     }
   ],

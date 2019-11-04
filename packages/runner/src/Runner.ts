@@ -119,9 +119,10 @@ export class Runner {
     logger.verbose(`Runner: input step ${step.index}`);
 
     await retryExecutionError(async () => {
+      const page = await this._browser.currentPage();
       const element = await this._browser.element(step);
       await this.beforeAction();
-      await input(element, value as (string | null));
+      await input(page, element, value as (string | null));
     });
   }
 

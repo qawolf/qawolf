@@ -23,6 +23,7 @@
     "access": "public"
   },
   "dependencies": {
+    "@qawolf/browser": "^0.4.4",
     "lodash": "^4.17.15"
   },
   "devDependencies": {

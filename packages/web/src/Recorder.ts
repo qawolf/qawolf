@@ -53,12 +53,20 @@ export class Recorder {
       time: Date.now()
     }));
 
+    this.recordEvent("keydown", event => ({
+      isTrusted: event.isTrusted,
+      name: "keydown",
+      target: getDescriptor(event.target as HTMLElement, this._dataAttribute),
+      time: Date.now(),
+      value: event.code
+    }));
+
     this.recordEvent("keyup", event => ({
       isTrusted: event.isTrusted,
       name: "keyup",
       target: getDescriptor(event.target as HTMLElement, this._dataAttribute),
       time: Date.now(),
-      value: event.which
+      value: event.code
     }));
 
     this.recordEvent("scroll", event => {
