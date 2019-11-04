@@ -35,8 +35,9 @@ export const input = async (
     await elementHandle.press("Backspace");
   }
 
-  // TODO down & up so we can handle @ etc
-  for (let key of value as any) {
+  // down & up so we can handle @ etc
+  // split by ↓,↑ with positive lookahead https://stackoverflow.com/a/12001989
+  for (let key of (value as string).split(/(?=↓|↑)/)) {
     const code = (key as string).substring(1);
 
     console.log("type", key);

@@ -76,7 +76,7 @@ export const buildTypeSteps = (events: Event[]): Step[] => {
       index: i,
       pageId: event.pageId,
       target: target,
-      value: keys
+      value: keys.join("")
     });
 
     keys = [];
