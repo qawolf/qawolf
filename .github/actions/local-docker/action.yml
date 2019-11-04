@@ -5,5 +5,5 @@ runs:
   image: "../../../Dockerfile"
   env:
     QAW_DOM_PATH: /github/workspace/artifacts
-    QAW_LOG_PATH: /github/workspace/artifacts/logs
+    QAW_LOG_PATH: /github/workspace/artifacts
     QAW_VIDEO_PATH: /github/workspace/artifacts
