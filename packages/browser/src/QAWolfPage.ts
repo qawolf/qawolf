@@ -1,5 +1,6 @@
 import { logger } from "@qawolf/logger";
 import { Event } from "@qawolf/types";
+import { QAWolfWeb } from "@qawolf/web";
 import { readFileSync, outputFile } from "fs-extra";
 import { compile } from "handlebars";
 import { resolve } from "path";
@@ -107,6 +108,7 @@ export class QAWolfPage {
     // XXX port to rrweb
     this._page.on("console", async msg => {
       const url = this._page.url().substring(0, 40);
+
       try {
         const args = await Promise.all(
           msg.args().map(arg => formatJsHandle(arg))
@@ -119,6 +121,7 @@ export class QAWolfPage {
       } catch (e) {
         // if argument parsing crashes log the original message
         // ex. when the context is destroyed due to page navigation
+        // XXX this is why we need to change logging to be intercepted on the client
         logger.verbose(`${url}: ${msg.text()}`);
       }
     });
@@ -166,12 +169,24 @@ export class QAWolfPage {
   }
 }
 
-const formatJsHandle = (jsHandle: JSHandle) =>
-  // format a jsHandle to a string so we can log it
-  jsHandle.executionContext().evaluate(obj => {
-    return obj instanceof HTMLElement
-      ? // log html elements by their html, without newlines
-        obj.outerHTML.replace(/(\r\n|\n|\r)/gm, "").substring(0, 100)
-      : // log other objects by their JSON string
-        JSON.stringify(obj);
-  }, jsHandle);
+const formatJsHandle = (jsHandle: JSHandle) => {
+  const element = jsHandle.asElement();
+
+  return jsHandle.executionContext().evaluate(
+    (obj, element) => {
+      try {
+        if (element) {
+          // log elements by their xpath
+          const qawolf: QAWolfWeb = (window as any).qawolf;
+          return qawolf.xpath.getXpath(element);
+        }
+
+        return JSON.stringify(obj);
+      } catch (e) {
+        return obj.toString();
+      }
+    },
+    jsHandle,
+    element
+  );
+};

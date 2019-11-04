@@ -1,5 +1,5 @@
-import winston from "winston";
 import { CONFIG } from "@qawolf/config";
+import winston from "winston";
 
 export class Logger {
   private _logger: winston.Logger;
