@@ -1,11 +1,11 @@
 ## 🐺 qawolf ![](https://github.com/qawolf/qawolf/workflows/Test/badge.svg) [![Gitter chat](https://badges.gitter.im/qawolf/gitter.png)](https://gitter.im/qawolf/community)
 
-:construction: More documentation coming soon
+:construction: [More documentation coming soon](https://github.com/qawolf/qawolf/issues/120)
 
 Record browser tests with one command, using [Jest](https://jestjs.io) and [Puppeteer](https://pptr.dev).
 
 ```sh
-npm i qawolf && npx qawolf record google.com
+npm i -D qawolf && npx qawolf record google.com
 ```
 
 ## CLI
