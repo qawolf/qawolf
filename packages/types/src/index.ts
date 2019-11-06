@@ -28,7 +28,12 @@ export interface Event {
   time: number;
 }
 
-export type EventName = "click" | "keydown" | "keyup" | "scroll";
+export type EventName = "click" | "input" | "keydown" | "keyup" | "scroll";
+
+export interface InputEvent extends Event {
+  name: "input";
+  value: string | null;
+}
 
 export interface KeyEvent extends Event {
   name: "keydown" | "keyup";

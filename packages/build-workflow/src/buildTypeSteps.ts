@@ -4,11 +4,7 @@ import {
   serializeStrokes
 } from "@qawolf/browser";
 import { Event, KeyEvent, Step } from "@qawolf/types";
-
-const isKeyEvent = (event: Event | null) =>
-  event &&
-  event.isTrusted &&
-  (event.name === "keydown" || event.name === "keyup");
+import { isKeyEvent } from "@qawolf/web";
 
 export const convertEventsToPresses = (events: Event[]): Press[] => {
   const presses: Press[] = [];

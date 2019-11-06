@@ -21,10 +21,12 @@ export class Recorder {
 
   private recordEvent<K extends keyof DocumentEventMap>(
     eventName: K,
-    handler: (ev: DocumentEventMap[K]) => types.Event
+    handler: (ev: DocumentEventMap[K]) => types.Event | undefined
   ) {
     const listener = (ev: DocumentEventMap[K]) => {
       const event = handler(ev);
+      if (!event) return;
+
       console.log(
         `Recorder: ${eventName} event`,
         ev,
@@ -53,6 +55,20 @@ export class Recorder {
       time: Date.now()
     }));
 
+    this.recordEvent("input", event => {
+      const element = event.target as HTMLInputElement;
+      // ignore input events except on selects
+      if (element.tagName.toLowerCase() !== "select") return;
+
+      return {
+        isTrusted: event.isTrusted,
+        name: "input",
+        target: getDescriptor(element, this._dataAttribute),
+        time: Date.now(),
+        value: element.value
+      };
+    });
+
     this.recordEvent("keydown", event => ({
       isTrusted: event.isTrusted,
       name: "keydown",
@@ -71,7 +87,7 @@ export class Recorder {
 
     this.recordEvent("wheel", event => {
       let element = event.target as HTMLElement;
-      if (event.target === document) {
+      if (event.target === document || event.target === document.body) {
         element = (document.scrollingElement ||
           document.documentElement) as HTMLElement;
       }
