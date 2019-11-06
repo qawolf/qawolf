@@ -2,7 +2,7 @@ import { logger } from "@qawolf/logger";
 import { QAWolfWeb, sleep } from "@qawolf/web";
 import { ScrollValue } from "@qawolf/types";
 import { ElementHandle, Page } from "puppeteer";
-import { buildCodeString } from "./keyboard";
+import { convertStringToStrokes } from "./keyboard";
 
 export const click = async (element: ElementHandle): Promise<void> => {
   logger.verbose("actions.click");
@@ -56,17 +56,11 @@ export const select = async (
 export const type = async (page: Page, value: string): Promise<void> => {
   logger.verbose("actions.type");
 
-  const codes = buildCodeString(value);
-
-  // down & up so we can handle @ etc
-  // split by ↓,↑ with positive lookahead https://stackoverflow.com/a/12001989
-  for (let key of codes.split(/(?=↓|↑)/)) {
-    const code = (key as string).substring(1);
-
-    if (key[0] === "↓") {
-      await page.keyboard.down(code);
+  for (const stroke of convertStringToStrokes(value)) {
+    if (stroke.prefix === "↓") {
+      await page.keyboard.down(stroke.code);
     } else {
-      await page.keyboard.up(code);
+      await page.keyboard.up(stroke.code);
     }
 
     await sleep(50);

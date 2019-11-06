@@ -1,26 +1,16 @@
+import {
+  convertPressesToStrokes,
+  Press,
+  serializeStrokes
+} from "@qawolf/browser";
 import { Event, KeyEvent, Step } from "@qawolf/types";
-
-// A Press is the pair of corresponding down and up key events
-type Press = {
-  code: string;
-  downEvent: Event;
-  downEventIndex: number;
-  upEventIndex: number | null;
-  xpath: string;
-};
-
-type Stroke = {
-  code: string;
-  index: number;
-  prefix: string;
-};
 
 const isKeyEvent = (event: Event | null) =>
   event &&
   event.isTrusted &&
   (event.name === "keydown" || event.name === "keyup");
 
-export const pairKeyEvents = (events: Event[]): Press[] => {
+export const convertEventsToPresses = (events: Event[]): Press[] => {
   const presses: Press[] = [];
 
   events.forEach((e, index) => {
@@ -48,29 +38,12 @@ export const pairKeyEvents = (events: Event[]): Press[] => {
   return presses;
 };
 
-const buildTypeValue = (presses: Press[]) => {
-  const strokes: Stroke[] = [];
-
-  presses.forEach(p => {
-    strokes.push({ code: p.code, index: p.downEventIndex, prefix: "↓" });
-
-    if (p.upEventIndex !== null) {
-      strokes.push({ code: p.code, index: p.upEventIndex, prefix: "↑" });
-    }
-  });
-
-  return strokes
-    .sort((a, b) => a.index - b.index)
-    .map(s => `${s.prefix}${s.code}`)
-    .join("");
-};
-
 export const buildTypeSteps = (events: Event[]) => {
-  const presses = pairKeyEvents(events);
+  const presses = convertEventsToPresses(events);
 
   const steps: Step[] = [];
 
-  // group consecutive keystrokes to one action
+  // group consecutive presses per action
   let stepPresses: Press[] = [];
 
   for (let i = 0; i < presses.length; i++) {
@@ -91,6 +64,7 @@ export const buildTypeSteps = (events: Event[]) => {
 
     if (shouldBuildStep) {
       const event = stepPresses[0].downEvent;
+      const strokes = convertPressesToStrokes(stepPresses);
 
       steps.push({
         action: "type",
@@ -98,7 +72,7 @@ export const buildTypeSteps = (events: Event[]) => {
         index: stepPresses[0].downEventIndex,
         pageId: event.pageId,
         target: event.target,
-        value: buildTypeValue(stepPresses)
+        value: serializeStrokes(strokes)
       });
 
       stepPresses = [];
