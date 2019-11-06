@@ -31,7 +31,7 @@ describe("Recorder", () => {
     expect(events[0].target.xpath).toEqual("//*[@id='content']/ul/li[3]/a");
   });
 
-  it.only("records type", async () => {
+  it("records type", async () => {
     const browser = await Browser.create({
       recordEvents: true,
       url: `${CONFIG.testUrl}login`

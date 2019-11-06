@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`formatStep formats clear an input 1`] = `
+Object {
+  "it": "can clear input",
+  "method": "type(steps[0], values[0])",
+}
+`;
+
+exports[`formatStep formats click on link step 1`] = `
+Object {
+  "it": "can click \\"contact\\" link",
+  "method": "click(steps[0])",
+}
+`;
+
+exports[`formatStep formats click on submit input step 1`] = `
+Object {
+  "it": "can click \\"sign in\\" input",
+  "method": "click(steps[1])",
+}
+`;
+
+exports[`formatStep formats scroll action 1`] = `
+Object {
+  "it": "can scroll",
+  "method": "scroll(steps[0], values[0])",
+}
+`;
+
+exports[`formatStep formats type into password input 1`] = `
+Object {
+  "it": "can type into \\"secret\\" input",
+  "method": "type(steps[10], values[10])",
+}
+`;
+
+exports[`formatStep formats type into text input 1`] = `
+Object {
+  "it": "can type into \\"username\\" input",
+  "method": "type(steps[0], values[0])",
+}
+`;
