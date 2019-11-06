@@ -69,7 +69,7 @@ export class Recorder {
       value: event.code
     }));
 
-    this.recordEvent("scroll", event => {
+    this.recordEvent("wheel", event => {
       let element = event.target as HTMLElement;
       if (event.target === document) {
         element = (document.scrollingElement ||
