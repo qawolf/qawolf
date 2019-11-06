@@ -64,7 +64,7 @@ export type Step = {
   value?: StepValue;
 };
 
-export type StepValue = string | string[] | ScrollValue | null | undefined;
+export type StepValue = string | ScrollValue | null | undefined;
 
 export type Workflow = {
   name: string;

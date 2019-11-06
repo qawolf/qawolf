@@ -1,7 +1,7 @@
 import { CONFIG } from "@qawolf/config";
-import { KeyupEvent, ScrollEvent } from "@qawolf/types";
+import { KeyEvent, ScrollEvent } from "@qawolf/types";
 import { sleep } from "@qawolf/web";
-import { click, input, scroll } from "../../src/actions";
+import { click, focusClearInput, scroll, type } from "../../src/actions";
 import { Browser } from "../../src/Browser";
 
 describe("Recorder", () => {
@@ -27,22 +27,24 @@ describe("Recorder", () => {
 
     const events = page.qawolf.events.filter(e => e.isTrusted);
     expect(events.length).toEqual(1);
-    expect(events[0].action).toEqual("click");
+    expect(events[0].name).toEqual("click");
     expect(events[0].target.xpath).toEqual("//*[@id='content']/ul/li[3]/a");
   });
 
-  it("records input", async () => {
+  it.only("records type", async () => {
     const browser = await Browser.create({
       recordEvents: true,
       url: `${CONFIG.testUrl}login`
     });
 
     const element = await browser.element({
-      action: "input",
+      action: "type",
       index: 0,
       target: { id: "password", xpath: "//*[@id='password']" }
     });
-    await input(element, "secret");
+
+    await focusClearInput(element);
+    await type(await browser.currentPage(), "secret");
 
     const page = await browser.currentPage();
 
@@ -50,35 +52,49 @@ describe("Recorder", () => {
     await browser.close();
 
     const events = page.qawolf.events.filter(e => e.isTrusted);
-    const lastEvent = events[events.length - 1] as KeyupEvent;
-    expect(lastEvent.target.xpath).toEqual("//*[@id='password']");
-    expect(lastEvent.value).toEqual("secret");
+
+    expect(events[0].target.xpath).toEqual("//*[@id='password']");
+    expect((events as KeyEvent[]).map(e => e.value)).toEqual([
+      "KeyS",
+      "KeyS",
+      "KeyE",
+      "KeyE",
+      "KeyC",
+      "KeyC",
+      "KeyR",
+      "KeyR",
+      "KeyE",
+      "KeyE",
+      "KeyT",
+      "KeyT"
+    ]);
   });
 
-  it("records select option", async () => {
-    const browser = await Browser.create({
-      recordEvents: true,
-      url: `${CONFIG.testUrl}dropdown`
-    });
+  // TODO...
+  // it("records select option", async () => {
+  //   const browser = await Browser.create({
+  //     recordEvents: true,
+  //     url: `${CONFIG.testUrl}dropdown`
+  //   });
 
-    const element = await browser.element({
-      action: "input",
-      index: 0,
-      target: { id: "dropdown", tagName: "select" }
-    });
-    await input(element, "2");
+  //   const element = await browser.element({
+  //     action: "type",
+  //     index: 0,
+  //     target: { id: "dropdown", tagName: "select" }
+  //   });
+  //   await input(element, "2");
 
-    const page = await browser.currentPage();
+  //   const page = await browser.currentPage();
 
-    // close the browser to ensure events are transmitted
-    await browser.close();
+  //   // close the browser to ensure events are transmitted
+  //   await browser.close();
 
-    const events = page.qawolf.events;
-    const lastEvent = events[events.length - 1] as InputEvent;
-    expect(lastEvent.isTrusted).toEqual(false);
-    expect(lastEvent.target.xpath).toEqual("//*[@id='dropdown']");
-    expect(lastEvent.value).toEqual("2");
-  });
+  //   const events = page.qawolf.events;
+  //   const lastEvent = events[events.length - 1] as InputEvent;
+  //   expect(lastEvent.isTrusted).toEqual(false);
+  //   expect(lastEvent.target.xpath).toEqual("//*[@id='dropdown']");
+  //   expect(lastEvent.value).toEqual("2");
+  // });
 
   it("records scroll", async () => {
     const browser = await Browser.create({

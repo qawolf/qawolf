@@ -36,8 +36,8 @@ export class RunnerEnvironment extends NodeEnvironment {
     this.global.click = runner.click.bind(runner);
     this.global.findProperty = runner.findProperty.bind(runner);
     this.global.hasText = runner.hasText.bind(runner);
-    this.global.input = runner.input.bind(runner);
     this.global.scroll = runner.scroll.bind(runner);
+    this.global.type = runner.type.bind(runner);
 
     this.global.steps = runner.workflow.steps;
     this.global.values = runner.values;

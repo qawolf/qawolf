@@ -18,7 +18,7 @@ describe("buildTest", () => {
 describe("formatIt", () => {
   it("formats labels", () => {
     const step: Step = {
-      action: "input",
+      action: "type",
       index: 0,
       target: {
         labels: ["name", "username"],
@@ -83,7 +83,7 @@ describe("formatStep", () => {
 
   it("formats type into text input", () => {
     const step: Step = {
-      action: "input",
+      action: "type",
       index: 0,
       target: {
         id: "input1",
@@ -102,7 +102,7 @@ describe("formatStep", () => {
 
   it("formats type into password input", () => {
     const step: Step = {
-      action: "input",
+      action: "type",
       index: 10,
       target: {
         id: "input2",

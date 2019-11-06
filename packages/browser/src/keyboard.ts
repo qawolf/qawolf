@@ -1,17 +1,24 @@
-// import KeyDefinitions from "puppeteer/lib/USKeyboardLayout";
+import "./types";
+import KeyDefinitions, { KeyDefinition } from "puppeteer/lib/USKeyboardLayout";
 
-// const codeToKeyMap: { [keyCode: number]: string } = {};
+const keyToDefinition: { [key: string]: KeyDefinition } = {};
 
-// Object.keys(KeyDefinitions).forEach(key => {
-//   const definition = KeyDefinitions[key];
-//   if (
-//     typeof definition.keyCode !== "number" &&
-//     // only map the first key
-//     !codeToKeyMap[definition.keyCode]
-//   )
-//     return;
+Object.keys(KeyDefinitions).forEach(key => {
+  const definition = KeyDefinitions[key];
+  // only map each key once
+  if (keyToDefinition[definition.key]) return;
 
-//   codeToKeyMap[definition.keyCode as number] = key;
-// });
+  keyToDefinition[definition.key] = definition;
+});
 
-// export const getKeyForCode = (keyCode: number) => codeToKeyMap[keyCode];
+export const buildCodeString = (value: string) => {
+  if (value.indexOf("↓") === 0) return value;
+
+  return value
+    .split("")
+    .map(key => {
+      const code = keyToDefinition[key].code;
+      return `↓${code}↑${code}`;
+    })
+    .join("");
+};

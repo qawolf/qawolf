@@ -4,10 +4,11 @@ import {
   click,
   findProperty,
   FindPropertyArgs,
+  focusClearInput,
   hasText,
-  input,
   retryExecutionError,
-  scroll
+  scroll,
+  type
 } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
@@ -115,14 +116,26 @@ export class Runner {
     return hasText(page, text, timeoutMs);
   }
 
-  public async input(step: Step, value?: StepValue) {
-    logger.verbose(`Runner: input step ${step.index}`);
+  public async type(step: Step, value?: StepValue) {
+    logger.verbose(`Runner: type step ${step.index}`);
+
+    const typeValue = value as (string | null);
 
     await retryExecutionError(async () => {
       const page = await this._browser.currentPage();
-      const element = await this._browser.element(step);
+
+      const shouldClear =
+        !typeValue ||
+        (typeValue.indexOf("↓Enter") !== 0 && typeValue.indexOf("↓Tab") !== 0);
+
+      if (shouldClear) {
+        const element = await this._browser.element(step);
+        await focusClearInput(element);
+      }
+
       await this.beforeAction();
-      await input(page, element, value as (string | null));
+
+      if (typeValue) await type(page, typeValue);
     });
   }
 
@@ -136,7 +149,7 @@ export class Runner {
     if (step.action === "click") {
       await this.click(step);
     } else if (step.action === "type") {
-      await this.input(step, this._values[step.index] as
+      await this.type(step, this._values[step.index] as
         | string
         | null
         | undefined);

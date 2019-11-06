@@ -1,25 +1,18 @@
+import { logger } from "@qawolf/logger";
 import { QAWolfWeb, sleep } from "@qawolf/web";
 import { ScrollValue } from "@qawolf/types";
 import { ElementHandle, Page } from "puppeteer";
+import { buildCodeString } from "./keyboard";
 
 export const click = async (element: ElementHandle): Promise<void> => {
+  logger.verbose("actions.click");
   await element.click();
 };
 
-// TODO -> type
-export const input = async (
-  page: Page,
-  elementHandle: ElementHandle,
-  value?: string | string[] | null
+export const focusClearInput = async (
+  elementHandle: ElementHandle
 ): Promise<void> => {
-  // const strValue = value || "";
-  // const handleProperty = await elementHandle.getProperty("tagName");
-  // const tagName = await handleProperty.jsonValue();
-
-  // TODO
-  // if (tagName.toLowerCase() === "select") {
-  // await elementHandle.select(strValue);
-  // } else {
+  logger.verbose("actions.focusClearInput");
   await elementHandle.focus();
 
   const currentValue = await elementHandle.evaluate(
@@ -34,21 +27,6 @@ export const input = async (
     );
     await elementHandle.press("Backspace");
   }
-
-  // down & up so we can handle @ etc
-  // split by ↓,↑ with positive lookahead https://stackoverflow.com/a/12001989
-  for (let key of (value as string).split(/(?=↓|↑)/)) {
-    const code = (key as string).substring(1);
-
-    console.log("type", key);
-    if (key[0] === "↓") {
-      await page.keyboard.down(code);
-    } else {
-      await page.keyboard.up(code);
-    }
-
-    await sleep(100);
-  }
 };
 
 export const scroll = async (
@@ -56,6 +34,7 @@ export const scroll = async (
   value: ScrollValue,
   timeoutMs: number = 10000
 ): Promise<void> => {
+  logger.verbose("actions.scroll");
   await elementHandle.evaluate(
     (element, value, timeoutMs) => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
@@ -64,4 +43,32 @@ export const scroll = async (
     value,
     timeoutMs
   );
+};
+
+export const select = async (
+  elementHandle: ElementHandle,
+  value: string | null
+): Promise<void> => {
+  logger.verbose("actions.select");
+  await elementHandle.select(value || "");
+};
+
+export const type = async (page: Page, value: string): Promise<void> => {
+  logger.verbose("actions.type");
+
+  const codes = buildCodeString(value);
+
+  // down & up so we can handle @ etc
+  // split by ↓,↑ with positive lookahead https://stackoverflow.com/a/12001989
+  for (let key of codes.split(/(?=↓|↑)/)) {
+    const code = (key as string).substring(1);
+
+    if (key[0] === "↓") {
+      await page.keyboard.down(code);
+    } else {
+      await page.keyboard.up(code);
+    }
+
+    await sleep(50);
+  }
 };

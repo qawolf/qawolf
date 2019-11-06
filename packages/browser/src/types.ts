@@ -1,16 +1,17 @@
 declare module "puppeteer/lib/USKeyboardLayout" {
-  type KeyDefinition = {
+  export interface KeyDefinition {
     code: string;
     key: string;
     keyCode?: number;
     location?: number;
     shiftKey?: string;
     shiftKeyCode?: number;
-  };
+  }
 
-  type KeyDefinitionsType = { [key: string]: KeyDefinition };
+  export interface KeyDefinitionsType {
+    [key: string]: KeyDefinition;
+  }
 
   const map: KeyDefinitionsType;
-
-  export = map;
+  export default map;
 }
