@@ -1,8 +1,9 @@
-// TODO... -> buildTypeSteps
-// import { loadEvents } from "@qawolf/fixtures";
-// import { buildInputSteps } from "../";
+// TODO update login events fixture
 
-// describe("buildInputSteps", () => {
+// import { loadEvents } from "@qawolf/fixtures";
+// import { buildTypeSteps } from "../";
+
+// describe("buildTypeSteps", () => {
 //   let loginEvents: any[];
 
 //   beforeAll(async () => {
