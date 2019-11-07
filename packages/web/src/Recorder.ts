@@ -95,7 +95,7 @@ export class Recorder {
       }
 
       // sleep to allow element scrollLeft & scrollTop to update
-      await sleep(100);
+      await sleep(500);
 
       return {
         isTrusted: event.isTrusted,

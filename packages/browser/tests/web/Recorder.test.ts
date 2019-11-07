@@ -120,7 +120,7 @@ describe("Recorder", () => {
         y: 0
       });
 
-      await sleep(200);
+      await sleep(1000);
     }
 
     // close the browser to ensure events are transmitted
