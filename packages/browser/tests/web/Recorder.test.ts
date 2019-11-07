@@ -119,7 +119,7 @@ describe("Recorder", () => {
     });
 
     // give a little time for event to emit
-    await sleep(500);
+    await sleep(2000);
 
     // close the browser to ensure events are transmitted
     await browser.close();
