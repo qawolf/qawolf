@@ -45,7 +45,7 @@
       }
     },
     {
-      "action": "input",
+      "action": "type",
       "index": 4,
       "pageId": 0,
       "target": {
@@ -58,7 +58,7 @@
       "value": "tomsmith"
     },
     {
-      "action": "input",
+      "action": "type",
       "index": 5,
       "pageId": 0,
       "target": {

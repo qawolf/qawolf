@@ -117,29 +117,6 @@ export class Runner {
     return hasText(page, text, timeoutMs);
   }
 
-  public async type(step: Step, value?: StepValue) {
-    logger.verbose(`Runner: type step ${step.index}`);
-
-    const typeValue = value as (string | null);
-
-    await retryExecutionError(async () => {
-      const page = await this._browser.currentPage();
-
-      const shouldClear =
-        !typeValue ||
-        (typeValue.indexOf("↓Enter") !== 0 && typeValue.indexOf("↓Tab") !== 0);
-
-      if (shouldClear) {
-        const element = await this._browser.element(step);
-        await focusClearInput(element);
-      }
-
-      await this.beforeAction();
-
-      if (typeValue) await type(page, typeValue);
-    });
-  }
-
   public async run() {
     for (let step of this._workflow.steps) {
       await this.runStep(step);
@@ -178,6 +155,30 @@ export class Runner {
       await select(element, value as string);
     });
   }
+
+  public async type(step: Step, value?: StepValue) {
+    logger.verbose(`Runner: type step ${step.index}`);
+
+    const typeValue = value as (string | null);
+
+    await retryExecutionError(async () => {
+      const page = await this._browser.currentPage();
+
+      const shouldClear =
+        !typeValue ||
+        (typeValue.indexOf("↓Enter") !== 0 && typeValue.indexOf("↓Tab") !== 0);
+
+      if (shouldClear) {
+        const element = await this._browser.element(step);
+        await focusClearInput(element);
+      }
+
+      await this.beforeAction();
+
+      if (typeValue) await type(page, typeValue);
+    });
+  }
+
   private async beforeAction() {
     if (CONFIG.sleepMs) {
       await sleep(CONFIG.sleepMs);

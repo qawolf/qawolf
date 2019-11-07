@@ -16,6 +16,8 @@ declare global {
   function input(step: Step, value?: StepValue): Promise<void>;
   function scroll(step: Step, value: StepValue): Promise<void>;
   function select(step: Step, value: StepValue): Promise<void>;
+  function type(step: Step, value?: StepValue): Promise<void>;
+
   function waitUntil(
     booleanFn: () => boolean,
     timeoutMs?: number
