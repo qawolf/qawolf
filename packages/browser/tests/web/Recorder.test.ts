@@ -107,19 +107,21 @@ describe("Recorder", () => {
       url: `${CONFIG.testUrl}large`
     });
 
-    const page = await browser.currentPage(false);
+    const page = await browser.currentPage();
 
-    // from https://github.com/GoogleChrome/puppeteer/issues/4119#issue-417279184
-    await (page as any)._client.send("Input.dispatchMouseEvent", {
-      type: "mouseWheel",
-      deltaX: 0,
-      deltaY: 1000,
-      x: 0,
-      y: 0
-    });
+    // simulate scrolling
+    for (let i = 0; i < 5; i++) {
+      // from https://github.com/GoogleChrome/puppeteer/issues/4119#issue-417279184
+      await (page as any)._client.send("Input.dispatchMouseEvent", {
+        type: "mouseWheel",
+        deltaX: 0,
+        deltaY: 200,
+        x: 0,
+        y: 0
+      });
 
-    // give a little time for event to emit
-    await sleep(2000);
+      await sleep(200);
+    }
 
     // close the browser to ensure events are transmitted
     await browser.close();

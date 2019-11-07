@@ -1,5 +1,6 @@
 import * as types from "@qawolf/types";
 import { getDescriptor } from "./element";
+import { sleep } from "./wait";
 
 type EventCallback = types.Callback<types.Event>;
 
@@ -21,10 +22,10 @@ export class Recorder {
 
   private recordEvent<K extends keyof DocumentEventMap>(
     eventName: K,
-    handler: (ev: DocumentEventMap[K]) => types.Event | undefined
+    handler: (ev: DocumentEventMap[K]) => Promise<types.Event | undefined>
   ) {
-    const listener = (ev: DocumentEventMap[K]) => {
-      const event = handler(ev);
+    const listener = async (ev: DocumentEventMap[K]) => {
+      const event = await handler(ev);
       if (!event) return;
 
       console.log(
@@ -48,14 +49,14 @@ export class Recorder {
   }
 
   private recordEvents() {
-    this.recordEvent("click", event => ({
+    this.recordEvent("click", async event => ({
       isTrusted: event.isTrusted,
       name: "click",
       target: getDescriptor(event.target as HTMLElement, this._dataAttribute),
       time: Date.now()
     }));
 
-    this.recordEvent("input", event => {
+    this.recordEvent("input", async event => {
       const element = event.target as HTMLInputElement;
       // ignore input events except on selects
       if (element.tagName.toLowerCase() !== "select") return;
@@ -69,7 +70,7 @@ export class Recorder {
       };
     });
 
-    this.recordEvent("keydown", event => ({
+    this.recordEvent("keydown", async event => ({
       isTrusted: event.isTrusted,
       name: "keydown",
       target: getDescriptor(event.target as HTMLElement, this._dataAttribute),
@@ -77,7 +78,7 @@ export class Recorder {
       value: event.code
     }));
 
-    this.recordEvent("keyup", event => ({
+    this.recordEvent("keyup", async event => ({
       isTrusted: event.isTrusted,
       name: "keyup",
       target: getDescriptor(event.target as HTMLElement, this._dataAttribute),
@@ -85,12 +86,16 @@ export class Recorder {
       value: event.code
     }));
 
-    this.recordEvent("wheel", event => {
+    this.recordEvent("wheel", async event => {
       let element = event.target as HTMLElement;
+
       if (event.target === document || event.target === document.body) {
         element = (document.scrollingElement ||
           document.documentElement) as HTMLElement;
       }
+
+      // sleep to allow element scrollLeft & scrollTop to update
+      await sleep(100);
 
       return {
         isTrusted: event.isTrusted,
