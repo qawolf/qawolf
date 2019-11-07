@@ -27,7 +27,7 @@
     "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "@qawolf/fixtures": "1.10.0",
+    "@qawolf/fixtures": "1.11.0",
     "@qawolf/types": "^0.4.4",
     "@qawolf/web": "^0.4.4",
     "jest": "^24.9.0"

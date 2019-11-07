@@ -55,6 +55,11 @@ export type Locator = {
   value?: string | null;
 };
 
+export interface PasteEvent extends Event {
+  name: "paste";
+  value: string;
+}
+
 export interface ScrollEvent extends Event {
   name: "scroll";
   value: ScrollValue;

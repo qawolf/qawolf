@@ -15,7 +15,7 @@ export type Press = {
 export type Stroke = {
   code: string;
   index: number;
-  prefix: string;
+  prefix: "↓" | "↑";
 };
 
 // organizes the KeyDefinitions from USKeyboardLayout
@@ -111,7 +111,7 @@ export const deserializeStrokes = (serialized: string) => {
     strokes.push({
       code,
       index: strokes.length,
-      prefix: key[0]
+      prefix: key[0] as "↓" | "↑"
     });
   }
 

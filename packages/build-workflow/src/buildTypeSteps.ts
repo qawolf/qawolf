@@ -5,6 +5,7 @@ import {
 } from "@qawolf/browser";
 import { Event, KeyEvent, Step } from "@qawolf/types";
 import { isKeyEvent } from "@qawolf/web";
+import { replacePasteEvents } from "./replacePasteEvents";
 
 export const convertEventsToPresses = (events: Event[]): Press[] => {
   const presses: Press[] = [];
@@ -34,7 +35,8 @@ export const convertEventsToPresses = (events: Event[]): Press[] => {
   return presses;
 };
 
-export const buildTypeSteps = (events: Event[]) => {
+export const buildTypeSteps = (originalEvents: Event[]) => {
+  const events = replacePasteEvents(originalEvents);
   const presses = convertEventsToPresses(events);
 
   const steps: Step[] = [];
