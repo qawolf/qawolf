@@ -12,13 +12,15 @@ export const buildClickSteps = (events: Event[]): Step[] => {
     // ignore system initiated clicks
     if (!event.isTrusted) continue;
 
-    // ignore clicks on (most) inputs
+    // ignore clicks on selects
     if (
-      event.target.inputType &&
-      event.target.inputType !== "button" &&
-      event.target.inputType !== "submit"
+      event.target.tagName &&
+      event.target.tagName!.toLowerCase() === "select"
     )
       continue;
+
+    // ignore clicks on (most) inputs
+    if (event.target.inputType && event.target.inputType !== "button") continue;
 
     steps.push({
       action: "click",

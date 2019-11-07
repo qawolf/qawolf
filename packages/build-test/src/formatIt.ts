@@ -39,9 +39,9 @@ export const formatIt = (step: Step): string => {
     return `can click ${target}`;
   }
 
-  //   if (step.action === "select") {
-  //     return `can input into ${target}`;
-  //   }
+  if (step.action === "select") {
+    return `can select ${target}`;
+  }
 
   if (step.action === "type") {
     if (!step.value) {

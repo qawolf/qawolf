@@ -8,6 +8,7 @@ import {
   hasText,
   retryExecutionError,
   scroll,
+  select,
   type
 } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
@@ -168,6 +169,15 @@ export class Runner {
     });
   }
 
+  public async select(step: Step, value: StepValue) {
+    logger.verbose(`Runner: select step ${step.index}`);
+
+    await retryExecutionError(async () => {
+      const element = await this._browser.element(step);
+      await this.beforeAction();
+      await select(element, value as string);
+    });
+  }
   private async beforeAction() {
     if (CONFIG.sleepMs) {
       await sleep(CONFIG.sleepMs);

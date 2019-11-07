@@ -7,12 +7,16 @@ export const formatMethod = (action: Action, index: number): string => {
     return `click(${stepParam})`;
   }
 
-  if (action === "type") {
-    return `type(${stepParam}, values[${index}])`;
-  }
-
   if (action === "scroll") {
     return `scroll(${stepParam}, values[${index}])`;
+  }
+
+  if (action === "select") {
+    return `select(${stepParam}, values[${index}])`;
+  }
+
+  if (action === "type") {
+    return `type(${stepParam}, values[${index}])`;
   }
 
   throw new Error(`Invalid step action ${action}`);
