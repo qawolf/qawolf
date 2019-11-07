@@ -63,6 +63,6 @@ export const type = async (page: Page, value: string): Promise<void> => {
       await page.keyboard.up(stroke.code);
     }
 
-    await sleep(50);
+    await sleep(10);
   }
 };

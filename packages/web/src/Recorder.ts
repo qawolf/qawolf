@@ -1,6 +1,5 @@
 import * as types from "@qawolf/types";
 import { getDescriptor } from "./element";
-import { sleep } from "./wait";
 
 type EventCallback = types.Callback<types.Event>;
 
@@ -20,12 +19,26 @@ export class Recorder {
     this._onDispose.forEach(d => d());
   }
 
+  private listen<K extends keyof DocumentEventMap>(
+    eventName: K,
+    handler: (ev: DocumentEventMap[K]) => any
+  ) {
+    document.addEventListener(eventName, handler, {
+      capture: true,
+      passive: true
+    });
+
+    this._onDispose.push(() =>
+      document.removeEventListener(eventName, handler)
+    );
+  }
+
   private recordEvent<K extends keyof DocumentEventMap>(
     eventName: K,
-    handler: (ev: DocumentEventMap[K]) => Promise<types.Event | undefined>
+    handler: (ev: DocumentEventMap[K]) => types.Event | undefined
   ) {
-    const listener = async (ev: DocumentEventMap[K]) => {
-      const event = await handler(ev);
+    this.listen(eventName, (ev: DocumentEventMap[K]) => {
+      const event = handler(ev);
       if (!event) return;
 
       console.log(
@@ -36,27 +49,18 @@ export class Recorder {
         event
       );
       this._sendEvent(event);
-    };
-
-    document.addEventListener(eventName, listener, {
-      capture: true,
-      passive: true
     });
-
-    this._onDispose.push(() =>
-      document.removeEventListener(eventName, listener)
-    );
   }
 
   private recordEvents() {
-    this.recordEvent("click", async event => ({
+    this.recordEvent("click", event => ({
       isTrusted: event.isTrusted,
       name: "click",
       target: getDescriptor(event.target as HTMLElement, this._dataAttribute),
       time: Date.now()
     }));
 
-    this.recordEvent("input", async event => {
+    this.recordEvent("input", event => {
       const element = event.target as HTMLInputElement;
       // ignore input events except on selects
       if (element.tagName.toLowerCase() !== "select") return;
@@ -70,7 +74,7 @@ export class Recorder {
       };
     });
 
-    this.recordEvent("keydown", async event => ({
+    this.recordEvent("keydown", event => ({
       isTrusted: event.isTrusted,
       name: "keydown",
       target: getDescriptor(event.target as HTMLElement, this._dataAttribute),
@@ -78,7 +82,7 @@ export class Recorder {
       value: event.code
     }));
 
-    this.recordEvent("keyup", async event => ({
+    this.recordEvent("keyup", event => ({
       isTrusted: event.isTrusted,
       name: "keyup",
       target: getDescriptor(event.target as HTMLElement, this._dataAttribute),
@@ -86,16 +90,25 @@ export class Recorder {
       value: event.code
     }));
 
-    this.recordEvent("wheel", async event => {
-      let element = event.target as HTMLElement;
+    this.recordScrollEvent();
+  }
 
+  private recordScrollEvent() {
+    let lastWheelEvent: WheelEvent | null = null;
+
+    this.listen("wheel", ev => (lastWheelEvent = ev));
+
+    this.recordEvent("scroll", event => {
+      if (!lastWheelEvent || event.timeStamp - lastWheelEvent.timeStamp > 100) {
+        console.log("ignore non-wheel scroll event", event);
+        return;
+      }
+
+      let element = event.target as HTMLElement;
       if (event.target === document || event.target === document.body) {
         element = (document.scrollingElement ||
           document.documentElement) as HTMLElement;
       }
-
-      // sleep to allow element scrollLeft & scrollTop to update
-      await sleep(500);
 
       return {
         isTrusted: event.isTrusted,
