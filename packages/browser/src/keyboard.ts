@@ -28,12 +28,35 @@ Object.keys(KeyDefinitions).forEach(key => {
   keyToDefinition[definition.key] = definition;
 });
 
+const shiftKeyToDefinitions: { [key: string]: KeyDefinition } = {};
+Object.values(KeyDefinitions).forEach(definition => {
+  if (!definition.shiftKey) return;
+  // only map each key once
+  if (shiftKeyToDefinitions[definition.shiftKey]) return;
+
+  shiftKeyToDefinitions[definition.shiftKey] = definition;
+});
+
 export const buildStrokesForString = (keysToType: string) => {
   // convert a regular string to Strokes
   const strokes: Stroke[] = [];
 
   keysToType.split("").forEach(key => {
-    const code = keyToDefinition[key].code;
+    // null if not a shift key
+    const shiftKeyDefinition = shiftKeyToDefinitions[key];
+
+    const code = shiftKeyDefinition
+      ? shiftKeyDefinition.code
+      : keyToDefinition[key].code;
+
+    if (shiftKeyDefinition) {
+      strokes.push({
+        code: "Shift",
+        index: strokes.length,
+        prefix: "↓"
+      });
+    }
+
     strokes.push({
       code,
       index: strokes.length,
@@ -45,6 +68,14 @@ export const buildStrokesForString = (keysToType: string) => {
       index: strokes.length,
       prefix: "↑"
     });
+
+    if (shiftKeyDefinition) {
+      strokes.push({
+        code: "Shift",
+        index: strokes.length,
+        prefix: "↑"
+      });
+    }
   });
 
   return strokes;
