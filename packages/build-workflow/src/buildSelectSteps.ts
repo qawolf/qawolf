@@ -9,13 +9,6 @@ export const buildSelectSteps = (events: Event[]): Step[] => {
     // ignore system initiated actions & other non-input actions
     if (!event.isTrusted || event.name !== "input") continue;
 
-    // XXX maybe?
-    // const nextEvent = i + 1 < events.length ? events[i + 1] : null;
-    // const lastInputToTarget =
-    //   !nextEvent || event.target.xpath !== nextEvent.target.xpath;
-    // // skip to the last input on this target
-    // if (!lastInputToTarget) continue;
-
     steps.push({
       action: "select",
       // include event index so we can sort in buildSteps
