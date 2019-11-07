@@ -107,11 +107,16 @@ export class Recorder {
 
   private recordScrollEvent() {
     let lastWheelEvent: WheelEvent | null = null;
-
     this.listen("wheel", ev => (lastWheelEvent = ev));
 
+    // We record the scroll event and not the wheel event
+    // because it fires after the element.scrollLeft & element.scrollTop are updated
     this.recordEvent("scroll", event => {
       if (!lastWheelEvent || event.timeStamp - lastWheelEvent.timeStamp > 100) {
+        // We record mouse wheel initiated scrolls only
+        // to avoid recording system initiated scrolls (after selecting an item/etc).
+        // This will not capture scrolls triggered by the keyboard (PgUp/PgDown/Space)
+        // however we already record key events so that encompasses those.
         console.log("ignore non-wheel scroll event", event);
         return;
       }
