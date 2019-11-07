@@ -31,6 +31,39 @@ describe("Recorder", () => {
     expect(events[0].target.xpath).toEqual("//*[@id='content']/ul/li[3]/a");
   });
 
+  it("records paste", async () => {
+    const browser = await Browser.create({
+      recordEvents: true,
+      url: `${CONFIG.testUrl}login`
+    });
+
+    const element = await browser.element({
+      action: "type",
+      index: 0,
+      target: { id: "password", xpath: "//*[@id='password']" }
+    });
+
+    const page = await browser.currentPage();
+    await focusClearInput(element);
+
+    // tried a lot of ways to test this
+    // sending Meta+V did not work
+    // robotjs was not able to install for node v12
+    // so we simulate a paste event instead
+    await page.evaluate(() => {
+      const event = new Event("paste") as any;
+      event.clipboardData = { getData: () => "secret" };
+      document.activeElement!.dispatchEvent(event);
+    });
+
+    // close the browser to ensure events are transmitted
+    await browser.close();
+
+    const events = page.qawolf.events;
+    expect(events[0].target.xpath).toEqual("//*[@id='password']");
+    expect((events[0] as InputEvent).value).toEqual("secret");
+  });
+
   it("records type", async () => {
     const browser = await Browser.create({
       recordEvents: true,
@@ -43,10 +76,10 @@ describe("Recorder", () => {
       target: { id: "password", xpath: "//*[@id='password']" }
     });
 
-    await focusClearInput(element);
-    await type(await browser.currentPage(), "secret");
-
     const page = await browser.currentPage();
+
+    await focusClearInput(element);
+    await type(page, "secret");
 
     // close the browser to ensure events are transmitted
     await browser.close();

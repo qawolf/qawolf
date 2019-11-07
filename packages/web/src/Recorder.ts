@@ -90,6 +90,18 @@ export class Recorder {
       value: event.code
     }));
 
+    this.recordEvent("paste", event => {
+      if (!event.clipboardData) return;
+
+      return {
+        isTrusted: event.isTrusted,
+        name: "paste",
+        target: getDescriptor(event.target as HTMLElement, this._dataAttribute),
+        time: Date.now(),
+        value: event.clipboardData.getData("text")
+      };
+    });
+
     this.recordScrollEvent();
   }
 
