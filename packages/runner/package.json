@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/runner",
   "description": "qawolf runner",
-  "version": "0.4.4",
+  "version": "0.5.0",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -24,15 +24,15 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/browser": "^0.4.4",
-    "@qawolf/config": "^0.4.4",
-    "@qawolf/logger": "^0.4.4",
-    "@qawolf/screen": "^0.4.4",
-    "@qawolf/web": "^0.4.4",
+    "@qawolf/browser": "^0.5.0",
+    "@qawolf/config": "^0.5.0",
+    "@qawolf/logger": "^0.5.0",
+    "@qawolf/screen": "^0.5.0",
+    "@qawolf/web": "^0.5.0",
     "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "@qawolf/types": "^0.4.4",
+    "@qawolf/types": "^0.5.0",
     "jest": "^24.9.0"
   }
 }

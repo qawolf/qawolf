@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/build-test",
   "description": "build qawolf test from workflow",
-  "version": "0.4.4",
+  "version": "0.5.0",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -28,7 +28,7 @@
     "handlebars": "^4.4.3"
   },
   "devDependencies": {
-    "@qawolf/types": "^0.4.4",
+    "@qawolf/types": "^0.5.0",
     "jest": "^24.9.0"
   }
 }
