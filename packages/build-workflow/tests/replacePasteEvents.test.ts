@@ -49,7 +49,7 @@ describe("findPasteKeyEvents", () => {
     );
 
     const pasteEvents1 = findPasteKeyEvents(events, pasteIndex1);
-    expect(pasteEvents1.map(e => e.time)).toEqual([
+    expect(pasteEvents1.map(e => e!.time)).toEqual([
       1573155008974,
       1573155009100,
       1573155009219,
@@ -57,7 +57,7 @@ describe("findPasteKeyEvents", () => {
     ]);
 
     const pasteEvents2 = findPasteKeyEvents(events, pasteIndex2);
-    expect(pasteEvents2.map(e => e.time)).toEqual([
+    expect(pasteEvents2.map(e => e!.time)).toEqual([
       1573155014683,
       1573155014815,
       1573155014894,
