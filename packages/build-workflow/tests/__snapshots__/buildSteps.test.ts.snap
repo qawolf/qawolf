@@ -39,6 +39,33 @@ Array [
     "index": 1,
     "pageId": 0,
     "target": Object {
+      "ariaLabel": "Google Search",
+      "classList": Array [
+        "gNO89b",
+      ],
+      "dataValue": null,
+      "href": null,
+      "iconContent": null,
+      "id": null,
+      "innerText": null,
+      "inputType": "submit",
+      "labels": null,
+      "name": "btnK",
+      "parentText": Array [
+        "i'm feeling doodleyi'm feeling artistici'm feeling hungryi'm feeling puzzledi'm feeling trendyi'm feeling stellari'm feeling playfuli'm feeling wonderfuli'm feeling generousi'm feeling curiousi'm feeling adventurousi'm feeling adventurous",
+        "",
+      ],
+      "placeholder": null,
+      "tagName": "input",
+      "title": null,
+      "xpath": "//*[@id='tsf']/div[2]/div[1]/div[3]/center/input[1]",
+    },
+  },
+  Object {
+    "action": "click",
+    "index": 2,
+    "pageId": 0,
+    "target": Object {
       "ariaLabel": null,
       "classList": Array [
         "LC20lb",
@@ -64,7 +91,7 @@ Array [
   },
   Object {
     "action": "scroll",
-    "index": 2,
+    "index": 3,
     "pageId": 0,
     "target": Object {
       "ariaLabel": null,
