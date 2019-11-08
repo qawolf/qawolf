@@ -54,7 +54,6 @@ export const buildTypeSteps = (events: Event[]) => {
 
     const shouldBuildStep =
       !nextPressIsConsecutive ||
-      press.xpath !== nextPress!.xpath ||
       nextPress!.code === "Enter" ||
       nextPress!.code === "Tab";
 
