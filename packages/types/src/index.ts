@@ -10,6 +10,7 @@ export type ElementDescriptor = {
   iconContent?: string[] | null;
   id?: string | null;
   inputType?: string | null;
+  isContentEditable?: boolean | null;
   labels?: string[] | null;
   name?: string | null;
   parentText?: string[] | null;

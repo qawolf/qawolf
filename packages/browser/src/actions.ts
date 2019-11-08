@@ -1,6 +1,6 @@
 import { logger } from "@qawolf/logger";
-import { QAWolfWeb, sleep } from "@qawolf/web";
 import { ScrollValue } from "@qawolf/types";
+import { QAWolfWeb, sleep } from "@qawolf/web";
 import { ElementHandle, Page } from "puppeteer";
 import { convertStringToStrokes } from "./keyboard";
 
@@ -15,9 +15,12 @@ export const focusClearInput = async (
   logger.verbose("actions.focusClearInput");
   await elementHandle.focus();
 
-  const currentValue = await elementHandle.evaluate(
-    element => (element as HTMLInputElement).value
-  );
+  const currentValue = await elementHandle.evaluate(e => {
+    const element = e as HTMLInputElement;
+    if (element.isContentEditable) return element.innerText;
+
+    return element.value;
+  });
 
   if (currentValue) {
     // select all so we replace the text
@@ -58,8 +61,10 @@ export const type = async (page: Page, value: string): Promise<void> => {
 
   for (const stroke of convertStringToStrokes(value)) {
     if (stroke.prefix === "↓") {
+      logger.debug(`keyboard.down("${stroke.code}")`);
       await page.keyboard.down(stroke.code);
     } else {
+      logger.debug(`keyboard.up("${stroke.code}")`);
       await page.keyboard.up(stroke.code);
     }
 

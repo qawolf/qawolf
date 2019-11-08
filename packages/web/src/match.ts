@@ -7,7 +7,7 @@ type DescriptorMatch = {
   percent: number;
 };
 
-type DescriptorValue = string | string[] | null | undefined;
+type DescriptorValue = boolean | string | string[] | null | undefined;
 
 type MatchArgs = {
   dataAttribute: string | null;

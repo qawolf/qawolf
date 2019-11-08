@@ -22,6 +22,9 @@ export const buildClickSteps = (events: Event[]): Step[] => {
     // ignore clicks on (most) inputs
     if (event.target.inputType && event.target.inputType !== "button") continue;
 
+    // ignore clicks on contented itables
+    if (event.target.isContentEditable) continue;
+
     steps.push({
       action: "click",
       // include event index so we can sort in buildSteps
