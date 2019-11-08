@@ -1,5 +1,5 @@
 import { CONFIG } from "@qawolf/config";
-import { InputEvent, KeyEvent, ScrollEvent } from "@qawolf/types";
+import { InputEvent, KeyEvent, PasteEvent, ScrollEvent } from "@qawolf/types";
 import { isKeyEvent, sleep } from "@qawolf/web";
 import { click, focusClear, select, type } from "../../src/actions";
 import { Browser } from "../../src/Browser";
@@ -61,7 +61,7 @@ describe("Recorder", () => {
 
     const events = page.qawolf.events;
     expect(events[0].target.xpath).toEqual("//*[@id='password']");
-    expect((events[0] as InputEvent).value).toEqual("secret");
+    expect((events[0] as PasteEvent).value).toEqual("secret");
   });
 
   it("records scroll", async () => {
