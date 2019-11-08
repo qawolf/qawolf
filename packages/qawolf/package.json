@@ -1,7 +1,7 @@
 {
   "name": "qawolf",
   "description": "Effortless browser tests",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -20,7 +20,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/cli": "^0.5.0"
+    "@qawolf/cli": "^0.5.1"
   },
   "bin": {
     "qawolf": "./lib/index.js"
