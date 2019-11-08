@@ -51,11 +51,11 @@ export const findPasteKeyEvents = (events: Event[], pasteIndex: number) => {
       (event as KeyEvent).value == "KeyV"
   );
 
-  if (!downCmd || !downV || !upV || !upCmd) {
+  if (!downCmd || !downV) {
     throw new Error("Could not find matching paste shortcut");
   }
 
-  return [downCmd, downV, upV, upCmd];
+  return [downCmd, downV, upV, upCmd].filter(e => e);
 };
 
 export const replacePasteEvents = (events: Event[]) => {
