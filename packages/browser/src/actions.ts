@@ -60,6 +60,9 @@ export const select = async (
 export const type = async (page: Page, value: string): Promise<void> => {
   logger.verbose("actions.type");
 
+  // logging the keyboard codes below will leak secrets
+  // which is why we have it hidden behind the DEBUG flag
+  // since we default logs to VERBOSE
   for (const stroke of convertStringToStrokes(value)) {
     if (stroke.prefix === "↓") {
       logger.debug(`keyboard.down("${stroke.code}")`);
