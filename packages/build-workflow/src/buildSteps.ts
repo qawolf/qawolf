@@ -1,108 +1,19 @@
-import { Event, InputEvent, ScrollEvent, Step } from "@qawolf/types";
+import { Event, Step } from "@qawolf/types";
 import { concat, sortBy } from "lodash";
+import { buildClickSteps } from "./buildClickSteps";
+import { buildScrollSteps } from "./buildScrollSteps";
+import { buildSelectSteps } from "./buildSelectSteps";
+import { buildTypeSteps } from "./buildTypeSteps";
+import { replacePasteEvents } from "./replacePasteEvents";
 
-export const buildClickSteps = (events: Event[]): Step[] => {
-  const steps: Step[] = [];
+export const buildSteps = (originalEvents: Event[]): Step[] => {
+  const events = replacePasteEvents(originalEvents);
 
-  for (let i = 0; i < events.length; i++) {
-    const event = events[i];
-
-    // ignore other actions
-    if (event.action !== "click") continue;
-
-    // ignore system initiated clicks
-    if (!event.isTrusted) continue;
-
-    // ignore clicks on (most) inputs
-    if (
-      event.target.inputType &&
-      event.target.inputType !== "button" &&
-      event.target.inputType !== "submit"
-    )
-      continue;
-
-    steps.push({
-      action: "click",
-      // include event index so we can sort in buildSteps
-      index: i,
-      pageId: event.pageId,
-      target: event.target
-    });
-  }
-
-  return steps;
-};
-
-export const buildInputSteps = (events: Event[]): Step[] => {
-  const steps: Step[] = [];
-
-  for (let i = 0; i < events.length; i++) {
-    const event = events[i] as InputEvent;
-
-    // ignore other actions
-    if (event.action !== "input") continue;
-
-    // ignore system initiated clicks
-    if (!event.isTrusted) continue;
-
-    const nextEvent = i + 1 < events.length ? events[i + 1] : null;
-    const lastInputToTarget =
-      !nextEvent || event.target.xpath !== nextEvent.target.xpath;
-    // skip to the last input on this target
-    if (!lastInputToTarget) continue;
-
-    steps.push({
-      action: "input",
-      // include event index so we can sort in buildSteps
-      index: i,
-      pageId: event.pageId,
-      target: event.target,
-      value: event.value
-    });
-  }
-
-  return steps;
-};
-
-export const buildScrollSteps = (events: Event[]): Step[] => {
-  const steps: Step[] = [];
-
-  for (let i = 0; i < events.length; i++) {
-    const event = events[i] as ScrollEvent;
-
-    // ignore other actions
-    if (event.action !== "scroll") continue;
-
-    // ignore system initiated scrolls
-    if (!event.isTrusted) continue;
-
-    // skip to the last scroll on this target
-    const nextEvent = i + 1 < events.length ? events[i + 1] : null;
-    if (
-      nextEvent &&
-      nextEvent.action === "scroll" &&
-      event.target.xpath === nextEvent.target.xpath
-    )
-      continue;
-
-    steps.push({
-      action: "scroll",
-      // include event index so we can sort in buildSteps
-      index: i,
-      pageId: event.pageId,
-      target: event.target,
-      value: event.value
-    });
-  }
-
-  return steps;
-};
-
-export const buildSteps = (events: Event[]): Step[] => {
   const unorderedSteps = concat(
     buildClickSteps(events),
-    buildInputSteps(events),
-    buildScrollSteps(events)
+    buildScrollSteps(events),
+    buildSelectSteps(events),
+    buildTypeSteps(events)
   );
 
   const steps = sortBy(

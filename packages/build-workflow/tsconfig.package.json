@@ -7,7 +7,13 @@
   },
   "references": [
     {
+      "path": "../browser/tsconfig.package.json"
+    },
+    {
       "path": "../types/tsconfig.package.json"
+    },
+    {
+      "path": "../web/tsconfig.package.json"
     }
   ],
   "include": ["src"],

@@ -24,7 +24,7 @@ describe("findElement", () => {
 
       return qawolf.find
         .findElement({
-          action: "input",
+          action: "type",
           dataAttribute: "data-qa",
           target: { dataValue: "username" },
           timeoutMs: 5000
@@ -50,7 +50,7 @@ describe("findElement", () => {
 
       return qawolf.find
         .findElement({
-          action: "input",
+          action: "type",
           dataAttribute: "data-qa",
           target: { id: "username" },
           timeoutMs: 5000
@@ -91,7 +91,7 @@ describe("findElement", () => {
 
       return qawolf.find
         .findElement({
-          action: "input",
+          action: "type",
           dataAttribute: null,
           target: { labels: ["dropdown"], tagName: "select" },
           timeoutMs: 2000

@@ -57,7 +57,7 @@ describe("queryActionElements", () => {
   it("returns only input elements for input action", async () => {
     const actionElements = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
-      const actionElements = qawolf.find.queryActionElements("input");
+      const actionElements = qawolf.find.queryActionElements("type");
 
       return actionElements.map((el: HTMLElement) => qawolf.xpath.getXpath(el));
     });
@@ -76,7 +76,7 @@ describe("queryActionElements", () => {
       username.style.padding = "0";
       username.style.width = "0";
 
-      const actionElements = qawolf.find.queryActionElements("input");
+      const actionElements = qawolf.find.queryActionElements("type");
 
       return actionElements.map((el: HTMLElement) => qawolf.xpath.getXpath(el));
     });
@@ -116,7 +116,7 @@ describe("queryDataElements", () => {
       submit.setAttribute("data-qa", "username");
 
       const dataElements = qawolf.find.queryDataElements({
-        action: "input",
+        action: "type",
         dataAttribute: "data-qa",
         dataValue: "username"
       });
@@ -144,7 +144,7 @@ describe("queryDataElements", () => {
       password.setAttribute("data-qa", "username");
 
       const dataElements = qawolf.find.queryDataElements({
-        action: "input",
+        action: "type",
         dataAttribute: "data-qa",
         dataValue: "username"
       });

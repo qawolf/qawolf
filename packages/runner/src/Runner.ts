@@ -4,10 +4,12 @@ import {
   click,
   findProperty,
   FindPropertyArgs,
+  focusClear,
   hasText,
-  input,
   retryExecutionError,
-  scroll
+  scroll,
+  select,
+  type
 } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
@@ -115,16 +117,6 @@ export class Runner {
     return hasText(page, text, timeoutMs);
   }
 
-  public async input(step: Step, value?: StepValue) {
-    logger.verbose(`Runner: input step ${step.index}`);
-
-    await retryExecutionError(async () => {
-      const element = await this._browser.element(step);
-      await this.beforeAction();
-      await input(element, value as (string | null));
-    });
-  }
-
   public async run() {
     for (let step of this._workflow.steps) {
       await this.runStep(step);
@@ -134,8 +126,8 @@ export class Runner {
   public async runStep(step: Step) {
     if (step.action === "click") {
       await this.click(step);
-    } else if (step.action === "input") {
-      await this.input(step, this._values[step.index] as
+    } else if (step.action === "type") {
+      await this.type(step, this._values[step.index] as
         | string
         | null
         | undefined);
@@ -151,6 +143,39 @@ export class Runner {
       const element = await this._browser.element(step);
       await this.beforeAction();
       await scroll(element, value as ScrollValue, CONFIG.findTimeoutMs);
+    });
+  }
+
+  public async select(step: Step, value: StepValue) {
+    logger.verbose(`Runner: select step ${step.index}`);
+
+    await retryExecutionError(async () => {
+      const element = await this._browser.element(step);
+      await this.beforeAction();
+      await select(element, value as string);
+    });
+  }
+
+  public async type(step: Step, value?: StepValue) {
+    logger.verbose(`Runner: type step ${step.index}`);
+
+    const typeValue = value as (string | null);
+
+    await retryExecutionError(async () => {
+      const page = await this._browser.currentPage();
+
+      const shouldClear =
+        !typeValue ||
+        (typeValue.indexOf("↓Enter") !== 0 && typeValue.indexOf("↓Tab") !== 0);
+
+      if (shouldClear) {
+        const element = await this._browser.element(step);
+        await focusClear(element);
+      }
+
+      await this.beforeAction();
+
+      if (typeValue) await type(page, typeValue);
     });
   }
 

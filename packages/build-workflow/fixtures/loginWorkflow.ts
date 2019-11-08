@@ -20,7 +20,7 @@ export const loginSteps: Step[] = [
     }
   },
   {
-    action: "input",
+    action: "type",
     index: 2,
     pageId: 0,
     target: {
@@ -44,7 +44,7 @@ export const loginSteps: Step[] = [
     }
   },
   {
-    action: "input",
+    action: "type",
     index: 4,
     pageId: 0,
     target: {
@@ -57,7 +57,7 @@ export const loginSteps: Step[] = [
     value: "tomsmith"
   },
   {
-    action: "input",
+    action: "type",
     index: 5,
     pageId: 0,
     target: {

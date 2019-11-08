@@ -8,8 +8,9 @@ describe("RunnerEnvironment", () => {
     expect(click).toBeTruthy();
     expect(findProperty).toBeTruthy();
     expect(hasText).toBeTruthy();
-    expect(input).toBeTruthy();
     expect(scroll).toBeTruthy();
+    expect(select).toBeTruthy();
+    expect(type).toBeTruthy();
     expect(waitUntil).toBeTruthy();
   });
 

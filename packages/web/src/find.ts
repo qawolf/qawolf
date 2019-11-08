@@ -14,7 +14,8 @@ export const isVisible = (element: HTMLElement): boolean => {
 };
 
 export const queryActionElements = (action: Action): HTMLElement[] => {
-  const selector = action === "input" ? "input,select,textarea" : "*";
+  const selector =
+    action === "type" ? "input,select,textarea,[contenteditable='true']" : "*";
 
   return queryVisibleElements(selector);
 };
@@ -25,8 +26,8 @@ export const queryDataElements = ({
   dataValue
 }: QueryByDataArgs): HTMLElement[] => {
   let dataSelector = `[${dataAttribute}='${dataValue}']`;
-  if (action === "input") {
-    const selector = `input${dataSelector},select${dataSelector},textarea${dataSelector}`;
+  if (action === "type") {
+    const selector = `input${dataSelector},select${dataSelector},textarea${dataSelector},[contenteditable="true"]${dataSelector}`;
     return queryVisibleElements(selector);
   }
 

@@ -143,6 +143,7 @@ export const getDescriptor = (
     iconContent: getIconContent(element),
     id: element.id || null,
     inputType: (element as HTMLInputElement).type || null,
+    isContentEditable: element.isContentEditable,
     labels: getLabels(element),
     name: (element as HTMLInputElement).name || null,
     parentText: getParentText(element),

@@ -1,7 +1,7 @@
 import { CONFIG } from "@qawolf/config";
-import { InputEvent, ScrollEvent } from "@qawolf/types";
-import { sleep } from "@qawolf/web";
-import { click, input, scroll } from "../../src/actions";
+import { InputEvent, KeyEvent, PasteEvent, ScrollEvent } from "@qawolf/types";
+import { isKeyEvent, sleep } from "@qawolf/web";
+import { click, focusClear, select, type } from "../../src/actions";
 import { Browser } from "../../src/Browser";
 
 describe("Recorder", () => {
@@ -27,57 +27,41 @@ describe("Recorder", () => {
 
     const events = page.qawolf.events.filter(e => e.isTrusted);
     expect(events.length).toEqual(1);
-    expect(events[0].action).toEqual("click");
+    expect(events[0].name).toEqual("click");
     expect(events[0].target.xpath).toEqual("//*[@id='content']/ul/li[3]/a");
   });
 
-  it("records input", async () => {
+  it("records paste", async () => {
     const browser = await Browser.create({
       recordEvents: true,
       url: `${CONFIG.testUrl}login`
     });
 
     const element = await browser.element({
-      action: "input",
+      action: "type",
       index: 0,
       target: { id: "password", xpath: "//*[@id='password']" }
     });
-    await input(element, "secret");
 
     const page = await browser.currentPage();
+    await focusClear(element);
 
-    // close the browser to ensure events are transmitted
-    await browser.close();
-
-    const events = page.qawolf.events.filter(e => e.isTrusted);
-    const lastEvent = events[events.length - 1] as InputEvent;
-    expect(lastEvent.target.xpath).toEqual("//*[@id='password']");
-    expect(lastEvent.value).toEqual("secret");
-  });
-
-  it("records select option", async () => {
-    const browser = await Browser.create({
-      recordEvents: true,
-      url: `${CONFIG.testUrl}dropdown`
+    // tried a lot of ways to test this
+    // sending Meta+V did not work
+    // robotjs was not able to install for node v12
+    // so we simulate a paste event instead
+    await page.evaluate(() => {
+      const event = new Event("paste") as any;
+      event.clipboardData = { getData: () => "secret" };
+      document.activeElement!.dispatchEvent(event);
     });
-
-    const element = await browser.element({
-      action: "input",
-      index: 0,
-      target: { id: "dropdown", tagName: "select" }
-    });
-    await input(element, "2");
-
-    const page = await browser.currentPage();
 
     // close the browser to ensure events are transmitted
     await browser.close();
 
     const events = page.qawolf.events;
-    const lastEvent = events[events.length - 1] as InputEvent;
-    expect(lastEvent.isTrusted).toEqual(false);
-    expect(lastEvent.target.xpath).toEqual("//*[@id='dropdown']");
-    expect(lastEvent.value).toEqual("2");
+    expect(events[0].target.xpath).toEqual("//*[@id='password']");
+    expect((events[0] as PasteEvent).value).toEqual("secret");
   });
 
   it("records scroll", async () => {
@@ -86,31 +70,102 @@ describe("Recorder", () => {
       url: `${CONFIG.testUrl}large`
     });
 
-    const page = await browser.currentPage(false);
+    const page = await browser.currentPage();
 
-    const body = await browser.element(
-      {
-        action: "scroll",
-        index: 0,
-        target: { xpath: "/html" }
-      },
-      false
-    );
-    await scroll(body, { x: 0, y: 1000 });
+    // from https://github.com/GoogleChrome/puppeteer/issues/4119#issue-417279184
+    await (page as any)._client.send("Input.dispatchMouseEvent", {
+      type: "mouseWheel",
+      deltaX: 0,
+      deltaY: 1000,
+      x: 0,
+      y: 0
+    });
 
-    // give time for the scroll event to trigger
-    await sleep(100);
+    // give enough time for scroll event to fire on CI browser
+    await sleep(1000);
 
     // close the browser to ensure events are transmitted
     await browser.close();
 
     const events = page.qawolf.events;
-    const lastEvent = events[events.length - 1] as ScrollEvent;
-    expect(lastEvent).toMatchObject({
-      action: "scroll",
-      isTrusted: true,
-      target: { xpath: "/html" },
-      value: { x: 0, y: 1000 }
+
+    const { isTrusted, name, target, value } = events[
+      events.length - 1
+    ] as ScrollEvent;
+
+    expect(name).toEqual("scroll");
+    expect(target.xpath).toEqual("/html");
+    expect(value).toMatchObject({ x: 0, y: 1000 });
+    expect(isTrusted).toEqual(true);
+  });
+
+  it("records select option", async () => {
+    const browser = await Browser.create({
+      recordEvents: true,
+      url: `${CONFIG.testUrl}dropdown`
     });
+    const page = await browser.currentPage();
+
+    const element = await browser.element({
+      action: "type",
+      index: 0,
+      target: { id: "dropdown", tagName: "select" }
+    });
+
+    await select(element, "2");
+
+    // close the browser to ensure events are transmitted
+    await browser.close();
+
+    const events = page.qawolf.events;
+
+    const { isTrusted, target, value } = events[
+      events.length - 1
+    ] as InputEvent;
+
+    expect(isTrusted).toEqual(false);
+    expect(target.xpath).toEqual("//*[@id='dropdown']");
+    expect(value).toEqual("2");
+  });
+
+  it("records type", async () => {
+    const browser = await Browser.create({
+      recordEvents: true,
+      url: `${CONFIG.testUrl}login`
+    });
+
+    const element = await browser.element({
+      action: "type",
+      index: 0,
+      target: { id: "password", xpath: "//*[@id='password']" }
+    });
+
+    const page = await browser.currentPage();
+
+    await focusClear(element);
+    await type(page, "secret");
+
+    // close the browser to ensure events are transmitted
+    await browser.close();
+
+    const events = page.qawolf.events.filter(e => e.isTrusted);
+
+    expect(events[0].target.xpath).toEqual("//*[@id='password']");
+    expect(
+      (events.filter(e => isKeyEvent(e)) as KeyEvent[]).map(e => e.value)
+    ).toEqual([
+      "KeyS",
+      "KeyS",
+      "KeyE",
+      "KeyE",
+      "KeyC",
+      "KeyC",
+      "KeyR",
+      "KeyR",
+      "KeyE",
+      "KeyE",
+      "KeyT",
+      "KeyT"
+    ]);
   });
 });

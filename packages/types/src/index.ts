@@ -1,4 +1,4 @@
-export type Action = "click" | "input" | "scroll";
+export type Action = "click" | "type" | "scroll" | "select";
 
 export type Callback<S = void, T = void> = (data?: S) => T;
 
@@ -10,6 +10,7 @@ export type ElementDescriptor = {
   iconContent?: string[] | null;
   id?: string | null;
   inputType?: string | null;
+  isContentEditable?: boolean | null;
   labels?: string[] | null;
   name?: string | null;
   parentText?: string[] | null;
@@ -21,16 +22,30 @@ export type ElementDescriptor = {
 };
 
 export interface Event {
-  action: Action;
+  name: EventName;
   isTrusted: boolean;
   pageId?: number;
   target: ElementDescriptor;
   time: number;
 }
 
+export type EventName =
+  | "click"
+  | "input"
+  | "keydown"
+  | "keyup"
+  | "paste"
+  | "scroll";
+
 export interface InputEvent extends Event {
-  action: "input";
-  value?: string | null;
+  name: "input";
+  value: string | null;
+}
+
+export interface KeyEvent extends Event {
+  name: "keydown" | "keyup";
+  // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
+  value: string;
 }
 
 export type Locator = {
@@ -41,8 +56,13 @@ export type Locator = {
   value?: string | null;
 };
 
+export interface PasteEvent extends Event {
+  name: "paste";
+  value: string;
+}
+
 export interface ScrollEvent extends Event {
-  action: "scroll";
+  name: "scroll";
   value: ScrollValue;
 }
 

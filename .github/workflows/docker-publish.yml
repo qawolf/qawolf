@@ -1,5 +1,8 @@
 name: publish to docker hub
-on: push
+on:
+  push:
+    branches:
+      - master
 jobs:
   publish:
     runs-on: ubuntu-latest

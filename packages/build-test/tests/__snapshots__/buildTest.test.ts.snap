@@ -10,73 +10,24 @@ exports[`buildTest builds a test from a workflow 1`] = `
     await click(steps[1]);
   });
 
-  it('can input into \\"username\\" input', async () => {
-    await input(steps[2], values[2]);
+  it('can type into \\"username\\" input', async () => {
+    await type(steps[2], values[2]);
   });
 
   it('can click \\"login\\" i', async () => {
     await click(steps[3]);
   });
 
-  it('can input into \\"username\\" input', async () => {
-    await input(steps[4], values[4]);
+  it('can type into \\"username\\" input', async () => {
+    await type(steps[4], values[4]);
   });
 
-  it('can input into \\"password\\" input', async () => {
-    await input(steps[5], values[5]);
+  it('can type into \\"password\\" input', async () => {
+    await type(steps[5], values[5]);
   });
 
   it('can click \\"login\\" i', async () => {
     await click(steps[6]);
   });
 });"
-`;
-
-exports[`formatStep excludes target name if it does not exist 1`] = `
-Object {
-  "it": "can click input",
-  "method": "click(steps[0])",
-}
-`;
-
-exports[`formatStep formats click on link step 1`] = `
-Object {
-  "it": "can click \\"contact\\" link",
-  "method": "click(steps[0])",
-}
-`;
-
-exports[`formatStep formats click on submit input step 1`] = `
-Object {
-  "it": "can click \\"sign in\\" input",
-  "method": "click(steps[1])",
-}
-`;
-
-exports[`formatStep formats scroll action 1`] = `
-Object {
-  "it": "can scroll",
-  "method": "scroll(steps[0], values[0])",
-}
-`;
-
-exports[`formatStep formats type into password input 1`] = `
-Object {
-  "it": "can input into \\"secret\\" input",
-  "method": "input(steps[10], values[10])",
-}
-`;
-
-exports[`formatStep formats type into text input 1`] = `
-Object {
-  "it": "can input into \\"username\\" input",
-  "method": "input(steps[0], values[0])",
-}
-`;
-
-exports[`formatStep shortens target name if needed 1`] = `
-Object {
-  "it": "can click \\"sign inxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...\\" input",
-  "method": "click(steps[0])",
-}
 `;

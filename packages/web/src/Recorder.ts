@@ -19,12 +19,28 @@ export class Recorder {
     this._onDispose.forEach(d => d());
   }
 
+  private listen<K extends keyof DocumentEventMap>(
+    eventName: K,
+    handler: (ev: DocumentEventMap[K]) => any
+  ) {
+    document.addEventListener(eventName, handler, {
+      capture: true,
+      passive: true
+    });
+
+    this._onDispose.push(() =>
+      document.removeEventListener(eventName, handler)
+    );
+  }
+
   private recordEvent<K extends keyof DocumentEventMap>(
     eventName: K,
-    handler: (ev: DocumentEventMap[K]) => types.Event
+    handler: (ev: DocumentEventMap[K]) => types.Event | undefined
   ) {
-    const listener = (ev: DocumentEventMap[K]) => {
+    this.listen(eventName, (ev: DocumentEventMap[K]) => {
       const event = handler(ev);
+      if (!event) return;
+
       console.log(
         `Recorder: ${eventName} event`,
         ev,
@@ -33,50 +49,87 @@ export class Recorder {
         event
       );
       this._sendEvent(event);
-    };
-
-    document.addEventListener(eventName, listener, {
-      capture: true,
-      passive: true
     });
-
-    this._onDispose.push(() =>
-      document.removeEventListener(eventName, listener)
-    );
   }
 
   private recordEvents() {
     this.recordEvent("click", event => ({
-      action: "click",
       isTrusted: event.isTrusted,
+      name: "click",
       target: getDescriptor(event.target as HTMLElement, this._dataAttribute),
       time: Date.now()
     }));
 
-    const onInput = (event: Event) => {
+    this.recordEvent("input", event => {
       const element = event.target as HTMLInputElement;
+      // ignore input events except on selects
+      if (element.tagName.toLowerCase() !== "select") return;
+
       return {
-        action: "input",
         isTrusted: event.isTrusted,
+        name: "input",
         target: getDescriptor(element, this._dataAttribute),
         time: Date.now(),
         value: element.value
-      } as types.InputEvent;
-    };
+      };
+    });
 
-    this.recordEvent("change", onInput);
-    this.recordEvent("input", onInput);
+    this.recordEvent("keydown", event => ({
+      isTrusted: event.isTrusted,
+      name: "keydown",
+      target: getDescriptor(event.target as HTMLElement, this._dataAttribute),
+      time: Date.now(),
+      value: event.code
+    }));
 
+    this.recordEvent("keyup", event => ({
+      isTrusted: event.isTrusted,
+      name: "keyup",
+      target: getDescriptor(event.target as HTMLElement, this._dataAttribute),
+      time: Date.now(),
+      value: event.code
+    }));
+
+    this.recordEvent("paste", event => {
+      if (!event.clipboardData) return;
+
+      return {
+        isTrusted: event.isTrusted,
+        name: "paste",
+        target: getDescriptor(event.target as HTMLElement, this._dataAttribute),
+        time: Date.now(),
+        value: event.clipboardData.getData("text")
+      };
+    });
+
+    this.recordScrollEvent();
+  }
+
+  private recordScrollEvent() {
+    let lastWheelEvent: WheelEvent | null = null;
+    this.listen("wheel", ev => (lastWheelEvent = ev));
+
+    // We record the scroll event and not the wheel event
+    // because it fires after the element.scrollLeft & element.scrollTop are updated
     this.recordEvent("scroll", event => {
+      if (!lastWheelEvent || event.timeStamp - lastWheelEvent.timeStamp > 100) {
+        // We record mouse wheel initiated scrolls only
+        // to avoid recording system initiated scrolls (after selecting an item/etc).
+        // This will not capture scrolls triggered by the keyboard (PgUp/PgDown/Space)
+        // however we already record key events so that encompasses those.
+        console.log("ignore non-wheel scroll event", event);
+        return;
+      }
+
       let element = event.target as HTMLElement;
-      if (event.target === document) {
+      if (event.target === document || event.target === document.body) {
         element = (document.scrollingElement ||
           document.documentElement) as HTMLElement;
       }
 
       return {
-        action: "scroll",
         isTrusted: event.isTrusted,
+        name: "scroll",
         target: getDescriptor(element, this._dataAttribute),
         time: Date.now(),
         value: {
