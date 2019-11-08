@@ -1,7 +1,7 @@
 import { CONFIG } from "@qawolf/config";
 import { InputEvent, KeyEvent, ScrollEvent } from "@qawolf/types";
 import { isKeyEvent, sleep } from "@qawolf/web";
-import { click, focusClearInput, select, type } from "../../src/actions";
+import { click, focusClear, select, type } from "../../src/actions";
 import { Browser } from "../../src/Browser";
 
 describe("Recorder", () => {
@@ -44,7 +44,7 @@ describe("Recorder", () => {
     });
 
     const page = await browser.currentPage();
-    await focusClearInput(element);
+    await focusClear(element);
 
     // tried a lot of ways to test this
     // sending Meta+V did not work
@@ -142,7 +142,7 @@ describe("Recorder", () => {
 
     const page = await browser.currentPage();
 
-    await focusClearInput(element);
+    await focusClear(element);
     await type(page, "secret");
 
     // close the browser to ensure events are transmitted

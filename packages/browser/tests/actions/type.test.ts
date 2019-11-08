@@ -1,8 +1,8 @@
 import { CONFIG } from "@qawolf/config";
-import { focusClearInput, type } from "../../src/actions";
+import { focusClear, type } from "../../src/actions";
 import { Browser } from "../../src/Browser";
 
-describe("focusClearInput and type", () => {
+describe("focusClear and type", () => {
   it("sets input value", async () => {
     const browser = await Browser.create({
       url: `${CONFIG.testUrl}login`
@@ -21,7 +21,7 @@ describe("focusClearInput and type", () => {
       target: { id: "password", xpath: '//*[@id="password"]' }
     });
 
-    await focusClearInput(usernameElement);
+    await focusClear(usernameElement);
     await type(page, "spirit");
 
     const [username1, password1] = await page.$$eval(
@@ -31,7 +31,7 @@ describe("focusClearInput and type", () => {
     expect(username1).toBe("spirit");
     expect(password1).toBeFalsy();
 
-    await focusClearInput(passwordElement);
+    await focusClear(passwordElement);
     await type(page, "password");
 
     const [username2, password2] = await page.$$eval(

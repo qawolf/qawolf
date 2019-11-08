@@ -9,22 +9,23 @@ export const click = async (element: ElementHandle): Promise<void> => {
   await element.click();
 };
 
-export const focusClearInput = async (
+export const focusClear = async (
   elementHandle: ElementHandle
 ): Promise<void> => {
-  logger.verbose("actions.focusClearInput");
+  logger.verbose("actions.focusClear");
   await elementHandle.focus();
 
-  const currentValue = await elementHandle.evaluate(e => {
-    const element = e as HTMLInputElement;
+  const currentValue = await elementHandle.evaluate((element: HTMLElement) => {
     if (element.isContentEditable) return element.innerText;
 
-    return element.value;
+    return (element as HTMLInputElement).value;
   });
 
   if (currentValue) {
-    // select all so we replace the text
+    // Select all so we replace the text
     // from https://github.com/GoogleChrome/puppeteer/issues/1313#issuecomment-471732011
+    // We do this instead of setting the value directly since that does not mimic user behavior.
+    // Ex. Some sites might rely on an isTrusted change event which we cannot simulate.
     await elementHandle.evaluate(() =>
       document.execCommand("selectall", false, "")
     );

@@ -4,7 +4,7 @@ import {
   click,
   findProperty,
   FindPropertyArgs,
-  focusClearInput,
+  focusClear,
   hasText,
   retryExecutionError,
   scroll,
@@ -170,7 +170,7 @@ export class Runner {
 
       if (shouldClear) {
         const element = await this._browser.element(step);
-        await focusClearInput(element);
+        await focusClear(element);
       }
 
       await this.beforeAction();
