@@ -12,7 +12,8 @@ export type FindPropertyArgs = {
 
 export const findElement = async (
   page: Page,
-  step: Step
+  step: Step,
+  timeoutMs?: number
 ): Promise<ElementHandle> => {
   logger.verbose(
     `findElement: ${JSON.stringify(step.target).substring(0, 100)}`
@@ -27,7 +28,7 @@ export const findElement = async (
       action: step.action,
       dataAttribute: CONFIG.dataAttribute,
       target: step.target,
-      timeoutMs: CONFIG.findTimeoutMs,
+      timeoutMs: timeoutMs || CONFIG.findTimeoutMs,
       value: step.value
     } as Serializable
   );

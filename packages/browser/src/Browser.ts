@@ -84,10 +84,11 @@ export class Browser {
 
   public async element(
     step: Step,
-    waitForRequests: boolean = true
+    waitForRequests: boolean = true,
+    timeoutMs?: number
   ): Promise<ElementHandle> {
     const page = await this.getPage(step.pageId, waitForRequests);
-    return findElement(page, step);
+    return findElement(page, step, timeoutMs);
   }
 
   public get events() {

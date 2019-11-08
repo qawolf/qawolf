@@ -84,9 +84,8 @@ export class Runner {
     logger.verbose(`Runner: click step ${step.index}`);
 
     await retryExecutionError(async () => {
-      const element = await this._browser.element(step);
-      await this.beforeAction();
-      await click(element);
+      const element = await this.beforeAction(step);
+      await click(element!);
     });
   }
 
@@ -140,9 +139,8 @@ export class Runner {
     logger.verbose(`Runner: scroll step ${step.index}`);
 
     await retryExecutionError(async () => {
-      const element = await this._browser.element(step);
-      await this.beforeAction();
-      await scroll(element, value as ScrollValue, CONFIG.findTimeoutMs);
+      const element = await this.beforeAction(step);
+      await scroll(element!, value as ScrollValue, CONFIG.findTimeoutMs);
     });
   }
 
@@ -150,9 +148,8 @@ export class Runner {
     logger.verbose(`Runner: select step ${step.index}`);
 
     await retryExecutionError(async () => {
-      const element = await this._browser.element(step);
-      await this.beforeAction();
-      await select(element, value as string);
+      const element = await this.beforeAction(step);
+      await select(element!, value as string);
     });
   }
 
@@ -163,24 +160,35 @@ export class Runner {
 
     await retryExecutionError(async () => {
       // do not focus or clear for Enter or Tab
-      if (
+      const shouldFocusClear =
         !typeValue ||
-        (typeValue.indexOf("↓Enter") !== 0 && typeValue.indexOf("↓Tab") !== 0)
-      ) {
-        const element = await this._browser.element(step);
-        await focusClear(element);
-      }
+        (typeValue.indexOf("↓Enter") !== 0 && typeValue.indexOf("↓Tab") !== 0);
 
-      await this.beforeAction();
+      const element = await this.beforeAction(shouldFocusClear ? step : null);
+      if (shouldFocusClear) {
+        await focusClear(element!);
+      }
 
       const page = await this._browser.getPage(step.pageId);
       if (typeValue) await type(page, typeValue);
     });
   }
 
-  private async beforeAction() {
+  private async beforeAction(step: Step | null) {
+    logger.verbose(`Runner: beforeAction`);
+    let element = step ? await this._browser.element(step) : null;
+
     if (CONFIG.sleepMs) {
+      logger.verbose(`Runner: beforeAction sleep ${CONFIG.sleepMs} ms`);
       await sleep(CONFIG.sleepMs);
+
+      // reload the element in case it changed since the sleep
+      if (step) {
+        logger.verbose("Runner: beforeAction reload element after sleep");
+        element = await this._browser.element(step, false, 0);
+      }
     }
+
+    return element;
   }
 }
