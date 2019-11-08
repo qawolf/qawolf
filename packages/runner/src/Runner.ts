@@ -162,11 +162,11 @@ export class Runner {
     const typeValue = value as (string | null);
 
     await retryExecutionError(async () => {
-      const shouldClear =
+      // do not focus or clear for Enter or Tab
+      if (
         !typeValue ||
-        (typeValue.indexOf("↓Enter") !== 0 && typeValue.indexOf("↓Tab") !== 0);
-
-      if (shouldClear) {
+        (typeValue.indexOf("↓Enter") !== 0 && typeValue.indexOf("↓Tab") !== 0)
+      ) {
         const element = await this._browser.element(step);
         await focusClear(element);
       }
