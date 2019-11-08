@@ -128,10 +128,17 @@ export const getDescriptor = (
 ): ElementDescriptor => {
   const xpath = getXpath(element);
 
-  // if a root element just return the xpath
-  // since we know it will match properly
-  // to avoid collecting a lot of superfluous info
-  if (xpath === "/html") return { xpath };
+  const tagName = element.tagName ? element.tagName.toLowerCase() : null;
+
+  // if a root element avoid collecting a lot of superfluous info
+  // just return the xpath for matching
+  // and tagName for test naming
+  if (xpath === "/html" || xpath === "/html/body") {
+    return {
+      tagName,
+      xpath
+    };
+  }
 
   return {
     ariaLabel: element.getAttribute("aria-label") || null,
@@ -148,8 +155,8 @@ export const getDescriptor = (
     name: (element as HTMLInputElement).name || null,
     parentText: getParentText(element),
     placeholder: getPlaceholder(element),
-    tagName: element.tagName ? element.tagName.toLowerCase() : null,
     innerText: getTextContent(element),
+    tagName,
     title: element.title || null,
     xpath
   };

@@ -75,7 +75,8 @@ export const findElement = async ({
   }
 
   // return root elements right away
-  if (target.xpath === "/html") return findElementByXpath("/html");
+  if (target.xpath === "/html" || target.xpath === "/html/body")
+    return findElementByXpath(target.xpath);
 
   const strongMatch = await waitFor(() => {
     console.log("waiting for top strong match", target);
