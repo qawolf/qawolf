@@ -22,7 +22,7 @@ export const buildClickSteps = (events: Event[]): Step[] => {
     // ignore clicks on (most) inputs
     if (event.target.inputType && event.target.inputType !== "button") continue;
 
-    // ignore clicks on contented itables
+    // ignore clicks on content editables
     if (event.target.isContentEditable) continue;
 
     steps.push({
