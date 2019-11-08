@@ -8,6 +8,7 @@ export const buildKeyEvents = (event: PasteEvent): KeyEvent[] => {
   const keyEvents = strokes.map<KeyEvent>(stroke => ({
     isTrusted: true,
     name: stroke.prefix === "↓" ? "keydown" : "keyup",
+    pageId: event.pageId,
     target: event.target,
     time: event.time,
     value: stroke.code

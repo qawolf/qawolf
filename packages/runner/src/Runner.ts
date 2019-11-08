@@ -162,8 +162,6 @@ export class Runner {
     const typeValue = value as (string | null);
 
     await retryExecutionError(async () => {
-      const page = await this._browser.currentPage();
-
       const shouldClear =
         !typeValue ||
         (typeValue.indexOf("↓Enter") !== 0 && typeValue.indexOf("↓Tab") !== 0);
@@ -175,6 +173,7 @@ export class Runner {
 
       await this.beforeAction();
 
+      const page = await this._browser.getPage(step.pageId);
       if (typeValue) await type(page, typeValue);
     });
   }

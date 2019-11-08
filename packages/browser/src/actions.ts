@@ -12,7 +12,7 @@ export const click = async (element: ElementHandle): Promise<void> => {
 export const focusClear = async (
   elementHandle: ElementHandle
 ): Promise<void> => {
-  logger.verbose("actions.focusClear");
+  logger.verbose("actions.focusClear: focus element");
   await elementHandle.focus();
 
   const currentValue = await elementHandle.evaluate((element: HTMLElement) => {
@@ -22,6 +22,8 @@ export const focusClear = async (
   });
 
   if (currentValue) {
+    logger.verbose("actions.focusClear: clearing value");
+
     // Select all so we replace the text
     // from https://github.com/GoogleChrome/puppeteer/issues/1313#issuecomment-471732011
     // We do this instead of setting the value directly since that does not mimic user behavior.
@@ -72,6 +74,6 @@ export const type = async (page: Page, value: string): Promise<void> => {
       await page.keyboard.up(stroke.code);
     }
 
-    await sleep(50);
+    await sleep(25);
   }
 };
