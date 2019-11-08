@@ -1,4 +1,5 @@
-import { Event, Step } from "@qawolf/types";
+import { Event, KeyEvent, Step } from "@qawolf/types";
+import { isKeyEvent } from "@qawolf/web";
 
 export const buildClickSteps = (events: Event[]): Step[] => {
   const steps: Step[] = [];
@@ -20,7 +21,20 @@ export const buildClickSteps = (events: Event[]): Step[] => {
       continue;
 
     // ignore clicks on (most) inputs
-    if (event.target.inputType && event.target.inputType !== "button") continue;
+    if (
+      event.target.inputType &&
+      event.target.inputType !== "button" &&
+      event.target.inputType !== "submit"
+    )
+      continue;
+
+    // ignore click on submit inputs after an "Enter"
+    // they trigger a click we do not want to duplicate
+    const isSubmitAfterEnter =
+      event.target.inputType === "submit" &&
+      isKeyEvent(events[i - 1]) &&
+      (events[i - 1] as KeyEvent).value === "Enter";
+    if (isSubmitAfterEnter) continue;
 
     // ignore clicks on content editables
     if (event.target.isContentEditable) continue;
