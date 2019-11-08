@@ -54,6 +54,9 @@ export const buildTypeSteps = (events: Event[]) => {
 
     const shouldBuildStep =
       !nextPressIsConsecutive ||
+      // separate Enter and Tab to their own steps
+      press!.code === "Enter" ||
+      press!.code === "Tab" ||
       nextPress!.code === "Enter" ||
       nextPress!.code === "Tab";
 
