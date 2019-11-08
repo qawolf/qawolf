@@ -23,7 +23,7 @@ Object {
 
 exports[`formatStep select formats select action 1`] = `
 Object {
-  "it": "can select \\"select1\\" select",
+  "it": "can select \\"select1\\"",
   "method": "select(steps[0], values[0])",
 }
 `;

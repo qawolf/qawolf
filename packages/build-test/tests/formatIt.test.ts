@@ -1,7 +1,7 @@
 import { Step } from "@qawolf/types";
-import { formatTarget, formatIt } from "../src/formatIt";
+import { formatDescription, formatIt } from "../src/formatIt";
 
-describe("formatTarget", () => {
+describe("formatDescription", () => {
   it("formats labels", () => {
     const step: Step = {
       action: "type",
@@ -13,20 +13,7 @@ describe("formatTarget", () => {
       }
     };
 
-    expect(formatTarget(step)).toBe('"name username" input');
-  });
-
-  it("excludes target name if it does not exist", () => {
-    const step: Step = {
-      action: "click",
-      index: 0,
-      target: {
-        inputType: "submit",
-        tagName: "input"
-      }
-    };
-
-    expect(formatTarget(step)).toBe("input");
+    expect(formatDescription(step)).toBe(' "name username"');
   });
 
   it("shortens target name if needed", () => {
@@ -40,13 +27,26 @@ describe("formatTarget", () => {
       }
     };
 
-    expect(formatTarget(step)).toBe(
-      '"sign inxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx..." input'
+    expect(formatDescription(step)).toBe(
+      ' "sign inxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx..."'
     );
   });
 });
 
 describe("formatIt", () => {
+  it("excludes target name if it does not exist", () => {
+    const step: Step = {
+      action: "click",
+      index: 0,
+      target: {
+        inputType: "submit",
+        tagName: "input"
+      }
+    };
+
+    expect(formatIt(step)).toBe("can click input");
+  });
+
   it("formats Enter", () => {
     const step: Step = {
       action: "type",
