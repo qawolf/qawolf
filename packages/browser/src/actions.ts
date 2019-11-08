@@ -22,7 +22,7 @@ export const focusClear = async (
   });
 
   if (currentValue) {
-    logger.verbose("actions.focusClear: clearing value");
+    logger.verbose("actions.focusClear: clear element");
 
     // Select all so we replace the text
     // from https://github.com/GoogleChrome/puppeteer/issues/1313#issuecomment-471732011
