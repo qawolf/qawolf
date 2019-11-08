@@ -6,14 +6,16 @@ import { runTest } from "./runTest";
 
 export const test = async (optionalName?: string) => {
   const testPath = `${process.cwd()}/.qawolf/tests`;
-  const availableTests = (await readdir(testPath)).map(f =>
-    basename(
-      f
-        .replace(".test", "")
-        .replace(".ts", "")
-        .replace(".js", "")
-    )
-  );
+  const availableTests = (await readdir(testPath))
+    .filter(f => f.indexOf(".test") > -1)
+    .map(f =>
+      basename(
+        f
+          .replace(".test", "")
+          .replace(".ts", "")
+          .replace(".js", "")
+      )
+    );
 
   if (!availableTests.length) {
     console.log(`No tests found in ${testPath}`);
