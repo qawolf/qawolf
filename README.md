@@ -1,4 +1,4 @@
-## 🐺 qawolf ![](https://github.com/qawolf/qawolf/workflows/Test/badge.svg) [![Gitter chat](https://badges.gitter.im/qawolf/gitter.png)](https://gitter.im/qawolf/community)
+## 🐺 qawolf ![](https://github.com/qawolf/qawolf/workflows/npm%20test/badge.svg) [![examples](https://github.com/qawolf/examples/workflows/qawolf%20examples/badge.svg)](https://github.com/qawolf/examples) [![Gitter chat](https://badges.gitter.im/qawolf/gitter.png)](https://gitter.im/qawolf/community)
 
 :construction: [More documentation coming soon](https://github.com/qawolf/qawolf/issues/120)
 
