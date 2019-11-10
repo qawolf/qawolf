@@ -4,6 +4,7 @@ import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import program from "commander";
 import { snakeCase } from "lodash";
+import { githubAction } from "./githubAction";
 import { record } from "./record";
 import { test } from "./test";
 import { parseUrl } from "./utils";
@@ -32,6 +33,13 @@ program
   .description("run a test")
   .action(async optionalName => {
     await test(optionalName);
+  });
+
+program
+  .command("github")
+  .description("Generate workflow file for GitHub Actions")
+  .action(async () => {
+    await githubAction();
   });
 
 program.allowUnknownOption(false);

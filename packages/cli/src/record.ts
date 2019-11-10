@@ -10,7 +10,7 @@ export const record = async (
   url: Url,
   name: string,
   saveEvents: boolean = false
-) => {
+): Promise<void> => {
   const Listr = require("listr");
   const input = require("listr-input");
 

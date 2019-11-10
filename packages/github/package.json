@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/github",
   "description": "QA Wolf GitHub integration",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
