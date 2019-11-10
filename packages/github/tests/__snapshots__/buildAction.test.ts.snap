@@ -16,20 +16,20 @@ jobs:
     steps:
       - uses: actions/checkout@v1
         with:
-            # copy only latest version of repo
-            fetch-depth: 1
+            fetch-depth: 50
       - name: qawolf test
         uses: qawolf/qawolf@master
         env:
             # parameterize test values with env variables
-            # edit QAW_URL to have all tests go to different url than recording url
+            # QAW_URL will override the test url for all tests
             # QAW_URL: www.my_staging_url.com
-            # edit these env variables to change url for specific test (example: QAW_LOGIN_URL)
-            # QAW_TESTNAME_URL: www.my_login_test_url.com
-            # edit these env variables to change input value for test step (example: QAW_LOGIN_1)
-            # QAW_TESTNAME_STEP: \\"my new input value\\"
-            # pass a secret as env variable (create secret in GitHub repo settings)
-            # QAW_TESTNAME_STEP: \${{ secrets.PASSWORD }}
+            # QAW_TESTNAME_URL will override the url of the test named \\"testname\\"
+            # QAW_LOGIN_URL: www.my_login_test_url.com
+            # QAW_TESTNAME_STEP_0 will override the step 0 value of the test named \\"testname\\"
+            # QAW_LOGIN_0: \\"my new input value\\"
+            # you can use GitHub secrets for sensitive parameters
+            # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets
+            # QAW_LOGIN_1: \${{ secrets.PASSWORD }}
       - name: Upload Artifacts
         # include test artifacts
         # edit below to only include artifacts in certain scenarios
@@ -37,5 +37,9 @@ jobs:
         uses: actions/upload-artifact@master
         with:
             name: qawolf
-            path: './artifacts'"
+            path: './artifacts'
+    ## use service container in workflow
+    # services:
+      # my_service:
+        # image: image_owner/image:tag"
 `;
