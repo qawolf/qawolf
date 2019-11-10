@@ -8,7 +8,7 @@ export const githubAction = async (): Promise<void> => {
 
   const tasks = new Listr([
     {
-      title: "Saving GitHub Action file qawolf.yml to .github/workflows",
+      title: "Saving GitHub Action to '.github/workflows/qawolf.yml'",
       task: async () => {
         const action = buildAction();
 
