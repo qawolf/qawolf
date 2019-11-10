@@ -17,14 +17,14 @@ jobs:
       - name: qawolf test
         uses: qawolf/qawolf@master
         env:
-            # parameterize test values with env variables
-            # QAW_URL will override the test url for all tests
+            # configure tests with environment variables
+            # set "QAW_URL" to override the url for all tests
             # QAW_URL: www.my_staging_url.com
-            # QAW_TESTNAME_URL will override the url of the test named "testname"
-            # QAW_LOGIN_URL: www.my_login_test_url.com
-            # QAW_TESTNAME_STEP will override the step value of the test named "testname"
-            # QAW_LOGIN_0: "my new input value"
-            # you can use GitHub secrets for sensitive parameters
+            # set "QAW_TESTNAME_URL" to override the url for the test named "testname"
+            # QAW_CREATE_ACCOUNT_URL: www.mysite.com/createaccount
+            # set "QAW_TESTNAME_0" to override values[0] for the test named "testname"
+            # QAW_LOGIN_0: "my_username"
+            # you can also use GitHub secrets for environment variables
             # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets
             # QAW_LOGIN_1: $\{{ secrets.PASSWORD }}
       - name: Upload Artifacts
@@ -35,7 +35,7 @@ jobs:
         with:
             name: qawolf
             path: './artifacts'
-    ## use service container in workflow
+    ## use your container in the workflow
     # services:
       # my_service:
         # image: owner/image:tag
