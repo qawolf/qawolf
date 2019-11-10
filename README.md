@@ -2,10 +2,11 @@
 
 <p align="center">
     <a href="https://docs.qawolf.com">Documentation</a> |
+    <a href="https://gitter.im/qawolf/community">Gitter</a> |
     <a href="https://github.com/qawolf/qawolf/projects/4">Roadmap</a>
 </p>
 
-<a href="https://qawolf.com"><img src="https://storage.googleapis.com/docs.qawolf.com/home/record-small.gif" alt="QA Wolf"></a>
+<a href="https://qawolf.com"><img src="https://storage.googleapis.com/docs.qawolf.com/home/record-smaller.gif" alt="QA Wolf"></a>
 
 <p align="center">
   <a href="https://gitter.im/qawolf/community" alt="Gitter chat"><img src="https://badges.gitter.im/qawolf/gitter.png" /></a>
