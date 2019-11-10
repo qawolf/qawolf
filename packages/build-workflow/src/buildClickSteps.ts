@@ -24,6 +24,8 @@ export const buildClickSteps = (events: Event[]): Step[] => {
     if (
       event.target.inputType &&
       event.target.inputType !== "button" &&
+      event.target.inputType !== "checkbox" &&
+      event.target.inputType !== "radio" &&
       event.target.inputType !== "submit"
     )
       continue;
