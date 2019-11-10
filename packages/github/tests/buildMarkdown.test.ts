@@ -6,19 +6,19 @@ import {
 } from "../fixtures/jestResults";
 
 describe("buildMarkdown", () => {
-  it("returns correct markdown for test suite with single failed test", async () => {
+  it("returns correct markdown for test suite with single failed test", () => {
     const markdown = buildMarkdown(jestResultsSingleFailed);
 
     expect(markdown).toMatchSnapshot();
   });
 
-  it("returns correct markdown for test suite with single passed test", async () => {
+  it("returns correct markdown for test suite with single passed test", () => {
     const markdown = buildMarkdown(jestResultsSinglePassed);
 
     expect(markdown).toMatchSnapshot();
   });
 
-  it("returns correct markdown for test suite with multiple tests", async () => {
+  it("returns correct markdown for test suite with multiple tests", () => {
     const markdown = buildMarkdown(jestResults);
 
     expect(markdown).toMatchSnapshot();

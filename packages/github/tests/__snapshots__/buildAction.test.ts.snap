@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`buildAction returns action template 1`] = `
+"name: qawolf
+    on:
+        push:
+            # test every branch
+            # edit below if you only want certain branches tested
+            branches: '*'
+        # schedule:
+            ## test on schedule using cron syntax
+            # - cron \\"0 * * * *\\"
+jobs:
+    test:
+        runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+            # copy only latest version of repo
+            fetch-depth: 1
+      - name: qawolf test
+        uses: qawolf/qawolf@master
+        env:
+            # parameterize test values with env variables
+            # edit QAW_URL to have all tests go to different url than recording url
+            # QAW_URL: www.my_staging_url.com
+            # edit these env variables to change url for specific test (example: QAW_LOGIN_URL)
+            # QAW_TESTNAME_URL: www.my_login_test_url.com
+            # edit these env variables to change input value for test step (example: QAW_LOGIN_1)
+            # QAW_TESTNAME_STEP: \\"my new input value\\"
+            # pass a secret as env variable (create secret in GitHub repo settings)
+            # QAW_TESTNAME_STEP: \${{ secrets.PASSWORD }}
+      - name: Upload Artifacts
+        # include test artifacts
+        # edit below to only include artifacts in certain scenarios
+        if: always()
+        uses: actions/upload-artifact@master
+        with:
+            name: qawolf
+            path: './artifacts'"
+`;
