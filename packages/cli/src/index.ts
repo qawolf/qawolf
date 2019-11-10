@@ -37,7 +37,7 @@ program
 
 program
   .command("github")
-  .description("Generate workflow file for GitHub Actions")
+  .description("set up a GitHub Action")
   .action(async () => {
     await githubAction();
   });
