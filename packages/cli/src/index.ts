@@ -9,8 +9,7 @@ import { record } from "./record";
 import { test } from "./test";
 import { parseUrl } from "./utils";
 
-program
-  .usage('<command> [options]');
+program.usage("<command> [options]");
 
 let recordCommand = program
   .command("record <url> [name]")
