@@ -28,4 +28,4 @@ npm i -D qawolf && npx qawolf record google.com
 
 ## Acknowledgements
 
-The DOM Recording artifact is using @Yuyz0112's awesome [rrweb](https://github.com/rrweb-io/rrweb) library!
+The DOM Recording artifact is using [@Yuyz0112](https://github.com/Yuyz0112)'s awesome [rrweb](https://github.com/rrweb-io/rrweb) library!
