@@ -20,14 +20,14 @@ export const waitFor = async <T>(
 };
 
 export const waitUntil = async (
-  booleanFn: () => boolean | Promise<boolean>,
+  booleanFn: () => boolean,
   timeoutMs: number,
   sleepMs: number = 500
 ): Promise<void> => {
   const startTime = Date.now();
 
   while (Date.now() - startTime < timeoutMs) {
-    const conditionMet = await booleanFn();
+    const conditionMet = booleanFn();
     if (conditionMet) return;
 
     await sleep(sleepMs);

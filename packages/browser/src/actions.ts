@@ -59,9 +59,10 @@ export const select = async (
 ): Promise<void> => {
   logger.verbose("actions.select");
   // ensure option with desired value is loaded before selecting
-  await waitUntil(async () => {
-    const isOptionAvailable = await elementHandle.evaluate(
-      (element: HTMLSelectElement, value: string | null) => {
+  await elementHandle.evaluate(
+    (element: HTMLSelectElement, value: string | null, timeoutMs: number) => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      return qawolf.wait.waitUntil(() => {
         const options = element.options;
         for (let i = 0; i < options.length; i++) {
           if (!options[i].disabled && options[i].value === value) {
@@ -69,12 +70,11 @@ export const select = async (
           }
         }
         return false;
-      },
-      value
-    );
-
-    return isOptionAvailable;
-  }, timeoutMs || CONFIG.findTimeoutMs);
+      }, timeoutMs);
+    },
+    value,
+    timeoutMs || CONFIG.findTimeoutMs
+  );
 
   await elementHandle.select(value || "");
 };
