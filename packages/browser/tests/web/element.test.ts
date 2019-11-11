@@ -13,6 +13,35 @@ beforeAll(async () => {
 
 afterAll(() => browser.close());
 
+describe("isVisible", () => {
+  it("returns true if element visible", async () => {
+    const isElementVisible = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      const username = document.getElementById("username")!;
+
+      return qawolf.element.isVisible(username);
+    });
+
+    expect(isElementVisible).toBe(true);
+  });
+
+  it("returns false if element has no width", async () => {
+    const isElementVisible = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      const username = document.getElementById("username")!;
+      username.style.border = "0";
+      username.style.padding = "0";
+      username.style.width = "0";
+
+      return qawolf.element.isVisible(username);
+    });
+
+    expect(isElementVisible).toBe(false);
+
+    await browser.goto(`${CONFIG.testUrl}login`); // reset styles
+  });
+});
+
 describe("getDataValue", () => {
   it("returns null if data attribute not specified in config", async () => {
     const dataAttribute = await page.evaluate(() => {
