@@ -170,9 +170,10 @@ describe("getDescriptor", () => {
 
     expect(imgDescriptor).toMatchObject({
       alt: "Alt text",
-      src: "http://localhost:5000/img/avatar-blank.jpg",
       tagName: "img"
     });
+    // hostname differs depending on where tests are run
+    expect(imgDescriptor.src).toMatch("img/avatar-blank.jpg");
 
     await browser.goto(`${CONFIG.testUrl}login`);
   });
