@@ -42,12 +42,10 @@ program
     await githubAction();
   });
 
-program
-  .arguments('<command>')
-  .action((cmd) => {
-    console.log(`Invalid command ${cmd}`);
-    program.help();	
-  });
+program.arguments("<command>").action(cmd => {
+  console.log(`Invalid command ${cmd}`);
+  program.help();
+});
 
 program.allowUnknownOption(false);
 
