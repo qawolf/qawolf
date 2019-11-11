@@ -10,6 +10,7 @@ export const formatDescription = (step: Step): string => {
     step.target.placeholder ||
     step.target.innerText ||
     step.target.id ||
+    step.target.alt ||
     "";
 
   description = description.trim();
