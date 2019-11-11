@@ -2,6 +2,7 @@
 
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
+import { yellow } from "kleur";
 import program from "commander";
 import { snakeCase } from "lodash";
 import { githubAction } from "./githubAction";
@@ -41,6 +42,11 @@ program
   .action(async () => {
     await githubAction();
   });
+
+program.arguments("<command>").action(cmd => {
+  console.log(yellow(`Invalid command "${cmd}"\n`));
+  program.help();
+});
 
 program.allowUnknownOption(false);
 
