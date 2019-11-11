@@ -8,7 +8,7 @@ import { githubAction } from "./githubAction";
 import { record } from "./record";
 import { test } from "./test";
 import { parseUrl } from "./utils";
-const { version } = require("./package");
+const { version } = require("../package");
 
 program.version(version);
 
