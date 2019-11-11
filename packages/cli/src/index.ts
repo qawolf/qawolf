@@ -13,6 +13,8 @@ const { version } = require("../package");
 
 program.version(version);
 
+program.usage("<command> [options]");
+
 let recordCommand = program
   .command("record <url> [name]")
   .description("record a workflow and create a test");
