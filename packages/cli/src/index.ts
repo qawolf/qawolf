@@ -9,6 +9,9 @@ import { record } from "./record";
 import { test } from "./test";
 import { parseUrl } from "./utils";
 
+program
+  .usage('<command> [options]');
+
 let recordCommand = program
   .command("record <url> [name]")
   .description("record a workflow and create a test");
