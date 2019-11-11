@@ -16,7 +16,7 @@
 
 ## Introduction
 
-[QA Wolf](https://www.qawolf.com/) is an [open-source](https://github.com/qawolf/qawolf) Node library for recording browser tests. It translates your browser actions into [Puppeteer](https://pptr.dev/) and [Jest](https://jestjs.io/) test code.
+[QA Wolf](https://www.qawolf.com/) is an [open-source](https://github.com/qawolf/qawolf) [Node library](https://www.npmjs.com/qawolf) for recording browser tests. It translates your browser actions into [Puppeteer](https://pptr.dev/) and [Jest](https://jestjs.io/) test code.
 
 ## Get Started
 
