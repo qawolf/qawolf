@@ -2,7 +2,7 @@
 
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import chalk from "chalk";
+import { yellow } from "kleur";
 import program from "commander";
 import { snakeCase } from "lodash";
 import { githubAction } from "./githubAction";
@@ -44,7 +44,7 @@ program
   });
 
 program.arguments("<command>").action(cmd => {
-  console.log(chalk.yellow(`Invalid command "${cmd}"\n`));
+  console.log(yellow(`Invalid command "${cmd}"\n`));
   program.help();
 });
 
