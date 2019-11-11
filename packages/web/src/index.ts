@@ -4,6 +4,7 @@ import * as find from "./find";
 import * as match from "./match";
 import { Match } from "./match";
 import { Recorder } from "./Recorder";
+import * as select from "./select";
 import { scroll } from "./scroll";
 import * as wait from "./wait";
 import * as xpath from "./xpath";
@@ -40,6 +41,7 @@ const webExports = {
   match,
   Recorder,
   scroll,
+  select,
   wait,
   xpath
 };

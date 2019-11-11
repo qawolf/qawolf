@@ -62,15 +62,7 @@ export const select = async (
   await elementHandle.evaluate(
     (element: HTMLSelectElement, value: string | null, timeoutMs: number) => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
-      return qawolf.wait.waitUntil(() => {
-        const options = element.options;
-        for (let i = 0; i < options.length; i++) {
-          if (!options[i].disabled && options[i].value === value) {
-            return true;
-          }
-        }
-        return false;
-      }, timeoutMs);
+      return qawolf.select.waitForOption(element, value, timeoutMs);
     },
     value,
     timeoutMs || CONFIG.findTimeoutMs

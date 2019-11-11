@@ -2,9 +2,9 @@ import { CONFIG } from "@qawolf/config";
 import { Browser } from "../../src/Browser";
 import { select } from "../../src/actions";
 
-describe("select", () => {
-  let browser: Browser;
+let browser: Browser;
 
+describe("select", () => {
   beforeAll(async () => {
     browser = await Browser.create({
       url: `${CONFIG.testUrl}dropdown`
