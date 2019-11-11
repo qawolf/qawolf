@@ -2,11 +2,18 @@ import { CONFIG } from "@qawolf/config";
 import { Browser } from "../../src/Browser";
 import { select } from "../../src/actions";
 
+let browser: Browser;
+
 describe("select", () => {
-  it("selects option", async () => {
-    const browser = await Browser.create({
+  beforeAll(async () => {
+    browser = await Browser.create({
       url: `${CONFIG.testUrl}dropdown`
     });
+  });
+
+  afterAll(() => browser.close());
+
+  it("selects option", async () => {
     const page = await browser.currentPage();
 
     const selectValue = await page.evaluate(() => {
@@ -27,7 +34,27 @@ describe("select", () => {
       return select.value;
     });
     expect(selectValue2).toBe("2");
+  });
 
-    await browser.close();
+  it("throws error if option with value not available before timeout", async () => {
+    const element = await browser.element({
+      action: "type",
+      index: 0,
+      target: { id: "dropdown", tagName: "select" }
+    });
+
+    const testFn = async () => await select(element, "3", 2000);
+    await expect(testFn()).rejects.toThrowError();
+  });
+
+  it("throws error if option with value available but disabled before timeout", async () => {
+    const element = await browser.element({
+      action: "type",
+      index: 0,
+      target: { id: "dropdown", tagName: "select" }
+    });
+
+    const testFn = async () => await select(element, "", 2000);
+    await expect(testFn()).rejects.toThrowError();
   });
 });

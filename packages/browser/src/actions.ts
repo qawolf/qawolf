@@ -1,6 +1,7 @@
+import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { ScrollValue } from "@qawolf/types";
-import { QAWolfWeb, sleep } from "@qawolf/web";
+import { QAWolfWeb, sleep, waitUntil } from "@qawolf/web";
 import { ElementHandle, Page } from "puppeteer";
 import { convertStringToStrokes } from "./keyboard";
 
@@ -53,9 +54,20 @@ export const scroll = async (
 
 export const select = async (
   elementHandle: ElementHandle,
-  value: string | null
+  value: string | null,
+  timeoutMs?: number
 ): Promise<void> => {
   logger.verbose("actions.select");
+  // ensure option with desired value is loaded before selecting
+  await elementHandle.evaluate(
+    (element: HTMLSelectElement, value: string | null, timeoutMs: number) => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      return qawolf.select.waitForOption(element, value, timeoutMs);
+    },
+    value,
+    timeoutMs || CONFIG.findTimeoutMs
+  );
+
   await elementHandle.select(value || "");
 };
 
