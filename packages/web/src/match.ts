@@ -24,12 +24,14 @@ export type Match = {
 };
 
 const strongMatchKeys: (keyof ElementDescriptor)[] = [
+  "alt",
   "iconContent",
   "id",
   "innerText",
   "labels",
   "name",
-  "placeholder"
+  "placeholder",
+  "src"
 ];
 
 export const compareArrays = (

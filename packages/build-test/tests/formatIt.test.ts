@@ -47,6 +47,19 @@ describe("formatIt", () => {
     expect(formatIt(step)).toBe("can click input");
   });
 
+  it("uses alt attribute if no other attributes specified", () => {
+    const step: Step = {
+      action: "click",
+      index: 0,
+      target: {
+        alt: "spirit",
+        tagName: "img"
+      }
+    };
+
+    expect(formatIt(step)).toBe('can click "spirit" img');
+  });
+
   it("formats Enter", () => {
     const step: Step = {
       action: "type",

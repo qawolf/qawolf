@@ -61,7 +61,7 @@ describe("getDataValue", () => {
 });
 
 describe("getDescriptor", () => {
-  it("correctly returns full element element", async () => {
+  it("correctly returns full element descriptor", async () => {
     const inputDescriptor = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
 
@@ -79,6 +79,7 @@ describe("getDescriptor", () => {
     });
 
     expect(inputDescriptor).toMatchObject({
+      alt: null,
       ariaLabel: null,
       classList: null,
       dataValue: "user",
@@ -90,6 +91,7 @@ describe("getDescriptor", () => {
       labels: ["username"],
       name: "username",
       placeholder: null,
+      src: null,
       tagName: "input",
       title: null
     });
@@ -107,6 +109,7 @@ describe("getDescriptor", () => {
     });
 
     expect(headerDescriptor).toMatchObject({
+      alt: null,
       ariaLabel: "header",
       classList: null,
       dataValue: null,
@@ -118,6 +121,7 @@ describe("getDescriptor", () => {
       labels: null,
       name: null,
       placeholder: null,
+      src: null,
       tagName: "h2",
       title: null
     });
@@ -135,14 +139,43 @@ describe("getDescriptor", () => {
     });
 
     expect(buttonDescriptor).toMatchObject({
+      alt: null,
       ariaLabel: null,
       classList: ["radius"],
       iconContent: ["fa", "fa-2x", "fa-sign-in"],
       innerText: "login",
       inputType: "submit",
+      src: null,
       tagName: "button",
       title: "some-title"
     });
+  });
+
+  it("includes src and alt in image descriptor", async () => {
+    await browser.goto(`${CONFIG.testUrl}broken_images`);
+
+    const imgDescriptor = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+
+      const images = document.getElementsByTagName("img");
+      images[3].alt = "Alt text";
+
+      const result = qawolf.element.getDescriptor(
+        document.getElementsByTagName("img")[3],
+        "data-qa"
+      );
+
+      return result;
+    });
+
+    expect(imgDescriptor).toMatchObject({
+      alt: "Alt text",
+      tagName: "img"
+    });
+    // hostname differs depending on where tests are run
+    expect(imgDescriptor.src).toMatch("img/avatar-blank.jpg");
+
+    await browser.goto(`${CONFIG.testUrl}login`);
   });
 });
 

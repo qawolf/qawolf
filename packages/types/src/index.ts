@@ -3,6 +3,7 @@ export type Action = "click" | "type" | "scroll" | "select";
 export type Callback<S = void, T = void> = (data?: S) => T;
 
 export type ElementDescriptor = {
+  alt?: string | null;
   ariaLabel?: string | null;
   classList?: string[] | null;
   dataValue?: string | null;
@@ -15,6 +16,7 @@ export type ElementDescriptor = {
   name?: string | null;
   parentText?: string[] | null;
   placeholder?: string | null;
+  src?: string | null;
   tagName?: string | null;
   innerText?: string | null;
   title?: string | null;

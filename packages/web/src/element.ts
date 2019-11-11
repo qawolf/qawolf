@@ -141,6 +141,7 @@ export const getDescriptor = (
   }
 
   return {
+    alt: (element as HTMLImageElement).alt || null,
     ariaLabel: element.getAttribute("aria-label") || null,
     classList: (element.className || "").length
       ? element.className.split(" ")
@@ -155,6 +156,7 @@ export const getDescriptor = (
     name: (element as HTMLInputElement).name || null,
     parentText: getParentText(element),
     placeholder: getPlaceholder(element),
+    src: (element as HTMLImageElement).src || null,
     innerText: getTextContent(element),
     tagName,
     title: element.title || null,
