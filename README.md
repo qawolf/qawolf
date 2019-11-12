@@ -16,15 +16,51 @@
 
 ## Introduction
 
-[QA Wolf](https://www.qawolf.com/) is an [open-source](https://github.com/qawolf/qawolf) [Node library](https://www.npmjs.com/qawolf) for recording browser tests. It translates your browser actions into [Puppeteer](https://pptr.dev/) and [Jest](https://jestjs.io/) test code.
+🐺[QA Wolf](https://www.qawolf.com/) is an [open-source](https://github.com/qawolf/qawolf) [Node library](https://www.npmjs.com/qawolf) for recording browser tests. It translates your browser actions into [Puppeteer](https://pptr.dev/) and [Jest](https://jestjs.io/) test code.
+
+#### [Quickstart](https://www.qawolf.com/docs/your_first_test)
+
+**Record Your Tests:** Generate Jest & Puppeteer test code from your browser interactions. QA Wolf supports multiple windows, third party sites, and changing input values with environment variables.
+
+**Set up CI:** Set up a GitHub action to run your tests with `npx qawolf github`. Artifacts for debugging are generated per test.
+
+**Debug with Ease:** Each test run includes a video, gif, interactive DOM recording, and browser logs as artifacts.
+
+**Avoid Flakes:** QA Wolf waits for the next element or assertion to avoid loading flakes. It finds elements with multiple attributes, or a test attribute you specify (like "data-qa"), to avoid selector flakes. We [battle test QA Wolf against public sites](https://github.com/qawolf/examples) on a schedule to keep improving stability.
 
 ## Get Started
 
-Record [your first test](https://www.qawolf.com/docs/your_first_test) with one command:
+[Documentation](https://www.qawolf.com/docs/your_first_test)
 
-```sh
-npm i -D qawolf && npx qawolf record google.com
+1. Install QA Wolf as a dev dependency
+
+```bash
+npm i -D qawolf
 ```
+
+2. Record your test
+
+```bash
+npx qawolf record <url> [name]
+```
+
+3. Run your test!
+
+```bash
+npx qawolf test [name]
+```
+
+## Set up CI
+
+[Documentation](https://www.qawolf.com/docs/set_up_ci)
+
+Set up CI with GitHub Actions:
+
+```bash
+npx qawolf github
+```
+
+This will generate a file called `qawolf.yml` in the `.github/workflows` directory at the root of your project. Edit this file as you like!
 
 ## Acknowledgements
 
