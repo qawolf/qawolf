@@ -54,7 +54,7 @@ npx qawolf test [name]
 
 [Documentation](https://www.qawolf.com/docs/set_up_ci)
 
-Set up CI with GitHub Actions:
+Set up CI with [GitHub Actions](https://github.com/features/actions):
 
 ```bash
 npx qawolf github
