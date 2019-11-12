@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/web",
   "description": "qawolf web library",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
