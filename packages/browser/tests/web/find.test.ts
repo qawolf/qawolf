@@ -13,32 +13,31 @@ beforeAll(async () => {
 
 afterAll(() => browser.close());
 
-describe("isVisible", () => {
-  it("returns true if element visible", async () => {
-    const isElementVisible = await page.evaluate(() => {
+describe("findClickableAncestor", () => {
+  it("chooses the top most clickable ancestor", async () => {
+    const xpath = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
-      const username = document.getElementById("username")!;
-
-      return qawolf.find.isVisible(username);
+      const submitIcon = document.getElementsByTagName("i")[0]!;
+      const ancestor = qawolf.find.findClickableAncestor(submitIcon, "data-qa");
+      return qawolf.xpath.getXpath(ancestor);
     });
 
-    expect(isElementVisible).toBe(true);
+    expect(xpath).toEqual("//*[@id='login']/button");
   });
 
-  it("returns false if element has no width", async () => {
-    const isElementVisible = await page.evaluate(() => {
+  it("short-circuits on an element with the data attribute", async () => {
+    const xpath = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
-      const username = document.getElementById("username")!;
-      username.style.border = "0";
-      username.style.padding = "0";
-      username.style.width = "0";
+      const submitIcon = document.getElementsByTagName("i")[0]!;
+      submitIcon.setAttribute("data-qa", "submit");
 
-      return qawolf.find.isVisible(username);
+      const ancestor = qawolf.find.findClickableAncestor(submitIcon, "data-qa");
+      submitIcon.removeAttribute("data-qa");
+
+      return qawolf.xpath.getXpath(ancestor);
     });
 
-    expect(isElementVisible).toBe(false);
-
-    await browser.goto(`${CONFIG.testUrl}login`); // reset styles
+    expect(xpath).toEqual("//*[@id='login']/button/i");
   });
 });
 

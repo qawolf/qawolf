@@ -1,16 +1,13 @@
 import { Action, Locator } from "@qawolf/types";
+import { getDataValue, isClickable, isVisible } from "./element";
 import { topMatch } from "./match";
 import { waitFor } from "./wait";
-import { findElementByXpath } from "./xpath";
+import { findElementByXpath, getXpath } from "./xpath";
 
 type QueryByDataArgs = {
   action: Action;
   dataAttribute?: string;
   dataValue?: string;
-};
-
-export const isVisible = (element: HTMLElement): boolean => {
-  return !!(element.offsetWidth && element.offsetHeight);
 };
 
 export const queryActionElements = (action: Action): HTMLElement[] => {
@@ -40,12 +37,52 @@ export const queryVisibleElements = (selector: string): HTMLElement[] => {
   const visibleElements: HTMLElement[] = [];
 
   for (let i = 0; i < elements.length; i++) {
+    // we do not pass computedStyle because doing
+    // that for every element would be very expensive
     if (isVisible(elements[i] as HTMLElement)) {
       visibleElements.push(elements[i] as HTMLElement);
     }
   }
 
   return visibleElements;
+};
+
+export const findClickableAncestor = (
+  element: HTMLElement,
+  dataAttribute: string
+): HTMLElement => {
+  /**
+   * Crawl up until we reach the top "clickable" ancestor
+   */
+  let ancestor = element;
+  console.log("find clickable ancestor for", getXpath(element));
+
+  while (ancestor.parentElement) {
+    // short-circuit when we encounter a data value
+    const dataValue = getDataValue(ancestor, dataAttribute);
+    if (dataValue) {
+      console.log(
+        `found clickable ancestor with ${dataAttribute}="${dataValue}"`,
+        getXpath(ancestor)
+      );
+      return ancestor;
+    }
+
+    // short-circuit when parent is not clickable
+    if (
+      !isClickable(
+        ancestor.parentElement,
+        window.getComputedStyle(ancestor.parentElement)
+      )
+    ) {
+      console.log("found clickable ancestor", getXpath(ancestor));
+      return ancestor;
+    }
+
+    ancestor = ancestor.parentElement;
+  }
+
+  return ancestor;
 };
 
 export const findElement = async ({
@@ -78,8 +115,9 @@ export const findElement = async ({
   if (target.xpath === "/html" || target.xpath === "/html/body")
     return findElementByXpath(target.xpath);
 
+  console.log("waiting for top strong match", target);
+
   const strongMatch = await waitFor(() => {
-    console.log("waiting for top strong match", target);
     const elements = queryActionElements(action);
     return topMatch({
       dataAttribute,

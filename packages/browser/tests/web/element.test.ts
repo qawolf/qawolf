@@ -324,3 +324,61 @@ describe("getTextContent", () => {
     expect(nullTextContent).toBeNull();
   });
 });
+
+describe("isVisible", () => {
+  it("returns true if element is visible", async () => {
+    const isElementVisible = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      const username = document.getElementById("username")!;
+
+      return qawolf.element.isVisible(username);
+    });
+
+    expect(isElementVisible).toBe(true);
+  });
+
+  it("returns false if element has no width", async () => {
+    const isElementVisible = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      const username = document.getElementById("username")!;
+      username.style.border = "0";
+      username.style.padding = "0";
+      username.style.width = "0";
+
+      return qawolf.element.isVisible(username);
+    });
+
+    expect(isElementVisible).toBe(false);
+
+    await browser.goto(`${CONFIG.testUrl}login`); // reset styles
+  });
+});
+
+describe("isClickable", () => {
+  it("returns true if element is clickable", async () => {
+    const isClickable = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+
+      const loginButton = document.getElementsByTagName("button")[0];
+      return qawolf.element.isClickable(
+        loginButton,
+        window.getComputedStyle(loginButton)
+      );
+    });
+
+    expect(isClickable).toBe(true);
+  });
+
+  it("returns false if element is not clickable", async () => {
+    const isClickable = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      const username = document.getElementById("username")!;
+      return qawolf.element.isClickable(
+        username,
+        window.getComputedStyle(username)
+      );
+    });
+
+    expect(isClickable).toBe(false);
+  });
+});
