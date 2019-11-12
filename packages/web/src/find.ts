@@ -62,7 +62,7 @@ export const findClickableAncestor = (
     const dataValue = getDataValue(ancestor, dataAttribute);
     if (dataValue) {
       console.log(
-        `found clickable ancestor with [${dataAttribute}="${dataValue}"]`,
+        `found clickable ancestor with ${dataAttribute}="${dataValue}"`,
         getXpath(ancestor)
       );
       return ancestor;

@@ -1,3 +1,4 @@
+import { logger } from "@qawolf/logger";
 import { Event, KeyEvent, Step } from "@qawolf/types";
 import { isKeyEvent } from "@qawolf/web";
 
@@ -35,8 +36,15 @@ export const buildClickSteps = (events: Event[]): Step[] => {
     const isSubmitAfterEnter =
       event.target.inputType === "submit" &&
       isKeyEvent(events[i - 1]) &&
-      (events[i - 1] as KeyEvent).value === "Enter";
-    if (isSubmitAfterEnter) continue;
+      (events[i - 1] as KeyEvent).value === "Enter" &&
+      // the events should trigger very closely
+      event.time - events[i - 1].time < 100;
+    if (isSubmitAfterEnter) {
+      logger.verbose(
+        `skipping submit ${event.time} after enter ${events[i - 1].time}`
+      );
+      continue;
+    }
 
     // ignore clicks on content editables
     if (event.target.isContentEditable) continue;
