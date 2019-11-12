@@ -62,6 +62,14 @@ npx qawolf github
 
 This will generate a file called `qawolf.yml` in the `.github/workflows` directory at the root of your project. Edit this file as you like!
 
+## Support
+
+We want QA Wolf to work for you, so please reach out to get help!
+
+[Gitter](https://gitter.im/qawolf/community)
+
+[E-mail](mailto:jon@qawolf.com)
+
 ## Acknowledgements
 
 The DOM Recording artifact is using [@Yuyz0112](https://github.com/Yuyz0112)'s awesome [rrweb](https://github.com/rrweb-io/rrweb) library!
