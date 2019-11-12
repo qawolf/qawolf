@@ -179,10 +179,6 @@ export const isVisible = (
 ): boolean => {
   if (element.offsetWidth <= 0 || element.offsetHeight <= 0) return false;
 
-  // make sure the element is large enough to interact with
-  const rect = element.getBoundingClientRect();
-  if (rect.width <= 0 || rect.height <= 0) return false;
-
   if (computedStyle && computedStyle.visibility === "hidden") return false;
 
   return true;
