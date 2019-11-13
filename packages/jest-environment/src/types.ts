@@ -1,7 +1,6 @@
-import { Browser, FindPropertyArgs } from "@qawolf/browser";
+import { Browser, FindPropertyArgs, Page } from "@qawolf/browser";
 import { Runner } from "@qawolf/runner";
 import { Step, StepValue, Workflow } from "@qawolf/types";
-import { Page } from "puppeteer";
 
 declare global {
   // declare the globals we expose in RunnerEnvironment
