@@ -68,7 +68,13 @@ export const findClickableAncestor = (
       return ancestor;
     }
 
-    // short-circuit when parent is not clickable
+    // short-circuit when we encounter a common clickable element type
+    // there may be a parent that is still clickable but does something else
+    if (["a", "button", "input"].indexOf(ancestor.tagName.toLowerCase()) > -1) {
+      return ancestor;
+    }
+
+    // stop at the top clickable ancestor
     if (
       !isClickable(
         ancestor.parentElement,
