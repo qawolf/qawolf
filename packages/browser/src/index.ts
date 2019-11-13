@@ -3,3 +3,4 @@ export * from "./Browser";
 export * from "./find";
 export * from "./keyboard";
 export * from "./retry";
+export { Page } from "puppeteer";
