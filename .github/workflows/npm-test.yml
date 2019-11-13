@@ -24,7 +24,7 @@ jobs:
       - name: Test
         uses: ./.github/actions/local-docker
         with:
-          args: "cd $QAWOLF_DIR && npm test && npm run test:docker"
+          args: 'bash -c "cd $QAWOLF_DIR && xvfb-run-safe npm run test && npm run test:docker"'
         env:
           QAW_SLEEP_MS: 0
           # needed for jest-environment test
