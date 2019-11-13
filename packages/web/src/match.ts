@@ -31,7 +31,8 @@ const strongMatchKeys: (keyof ElementDescriptor)[] = [
   "labels",
   "name",
   "placeholder",
-  "src"
+  "src",
+  "title"
 ];
 
 export const compareArrays = (
