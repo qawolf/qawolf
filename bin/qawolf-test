@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd $QAWOLF_DIR 
+xvfb-run-safe npm run test
+xvfb-run-safe npm run test:docker

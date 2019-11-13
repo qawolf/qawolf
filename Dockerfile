@@ -39,7 +39,7 @@ RUN cd ${QAWOLF_DIR} && npm run bootstrap
 
 # alias qawolf so we can call it globally
 COPY bin /usr/bin
-RUN chmod +x /usr/bin/qawolf && chmod +x /usr/bin/xvfb-run-safe
+RUN chmod +x /usr/bin/qawolf && chmod +x /usr/bin/qawolf-test && chmod +x /usr/bin/xvfb-run-safe
 
 # Set default env variables
 ENV QAW_CHROME_EXECUTABLE_PATH="google-chrome-stable" \
