@@ -59,7 +59,16 @@ export class Runner {
       });
     }
 
-    await self._browser.goto(workflow.url);
+    try {
+      await self._browser.goto(workflow.url);
+    } catch (error) {
+      logger.error(`Runner: could not goto ${workflow.url}: ${error}`);
+
+      // finish the video
+      await self.close();
+
+      throw error;
+    }
 
     return self;
   }

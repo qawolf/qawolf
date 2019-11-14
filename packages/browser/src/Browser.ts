@@ -101,10 +101,16 @@ export class Browser {
     return sortBy(events, e => e.time);
   }
 
-  public async goto(url: string): Promise<DecoratedPage> {
+  public async goto(
+    url: string,
+    options?: puppeteer.DirectNavigationOptions
+  ): Promise<DecoratedPage> {
     logger.verbose(`Browser: goto ${url}`);
     const page = await this.currentPage();
-    await page.goto(url);
+    await page.goto(url, {
+      timeout: CONFIG.navigationTimeout,
+      ...options
+    });
     return page;
   }
 

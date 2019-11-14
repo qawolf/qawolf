@@ -10,7 +10,7 @@ RUN apt-get -qqy update && \
     wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
     sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' && \
     apt-get update && apt-get -y install google-chrome-stable && \
-    # Install ffmpeg, nano, sudo, xvfb
+    # Install ffmpeg, nano, xvfb
     apt-get install -y ffmpeg \
     nano \
     xfonts-100dpi \
@@ -39,7 +39,7 @@ RUN cd ${QAWOLF_DIR} && npm run bootstrap
 
 # alias qawolf so we can call it globally
 COPY bin /usr/bin
-RUN chmod +x /usr/bin/qawolf && chmod +x /usr/bin/qawolf-test && chmod +x /usr/bin/xvfb-run-safe
+RUN chmod +x /usr/bin/qawolf && chmod +x /usr/bin/qawolf-npm-test && chmod +x /usr/bin/qawolf-xvfb-run
 
 # Set default env variables
 ENV QAW_CHROME_EXECUTABLE_PATH="google-chrome-stable" \
