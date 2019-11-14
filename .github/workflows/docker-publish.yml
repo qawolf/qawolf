@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - xvfb-refactor
 jobs:
   publish:
     runs-on: ubuntu-latest
