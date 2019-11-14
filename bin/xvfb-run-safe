@@ -18,7 +18,7 @@ while (( i < xvfb_display_max )); do
   fi
   exec 5>"$xvfb_lockdir/$i" || continue           # open a lockfile
   if flock -x -n 5; then                          # try to lock it
-    echo 'xvfb-run on display $i: "$@"'
+    echo "xvfb-run on display $i: $@"
     exec xvfb-run --server-num="$i" --server-args="-shmem -screen 0 ${QAW_DISPLAY_WIDTH}x${QAW_DISPLAY_HEIGHT}x24" "$@" || exit  # if locked, run xvfb-run
   fi
   (( i++ ))
