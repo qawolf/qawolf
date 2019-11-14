@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd $QAWOLF_DIR
+qawolf-xvfb-run npm run test
+qawolf-xvfb-run npm run test:docker

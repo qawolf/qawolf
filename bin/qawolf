@@ -1,0 +1,3 @@
+#!/bin/bash
+
+qawolf-xvfb-run node ${QAWOLF_DIR}/packages/cli/lib/index.js "$@"

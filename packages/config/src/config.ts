@@ -29,6 +29,7 @@ export const CONFIG = {
   headless: parseBool(process.env.QAW_HEADLESS),
   logLevel: process.env.QAW_LOG_LEVEL,
   logPath: process.env.QAW_LOG_PATH,
+  navigationTimeout: parseNumber(process.env.QAW_NAVIGATION_TIMEOUT, 60000),
   serial: parseBool(process.env.QAW_SERIAL),
   // slow down each step by 2s to make it watchable
   // this also gives sites time to setup their handlers
