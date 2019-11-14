@@ -29,7 +29,7 @@ RUN mkdir -p /etc/opt/chrome/policies/managed && echo "{ \"CommandLineFlagSecuri
 
 # Copy everything and install dependencies in a static location that is not WORKDIR
 # WORKDIR will be replaced by github action volume
-ENV QAWOLF_DIR "/root/qawolf"
+ENV QAWOLF_DIR "/qawolf/src"
 
 # Copy and build qawolf
 COPY . ${QAWOLF_DIR}/.
