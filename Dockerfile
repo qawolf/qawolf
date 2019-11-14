@@ -13,8 +13,6 @@ RUN apt-get -qqy update && \
     # Install ffmpeg, nano, sudo, xvfb
     apt-get install -y ffmpeg \
     nano \
-    # Needed for azure pipelines :/
-    sudo \
     xfonts-100dpi \
     xfonts-75dpi \
     xfonts-scalable \
