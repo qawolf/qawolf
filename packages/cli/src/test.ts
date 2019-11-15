@@ -7,7 +7,7 @@ import { runTest } from "./runTest";
 export const test = async (optionalName?: string) => {
   const testPath = `${process.cwd()}/.qawolf/tests`;
   const availableTests = (await readdir(testPath))
-    .filter(f => f.indexOf(".test") > -1)
+    .filter(f => f.includes(".test"))
     .map(f =>
       basename(
         f
@@ -26,7 +26,7 @@ export const test = async (optionalName?: string) => {
 
   if (optionalName) {
     testName = snakeCase(optionalName);
-    if (availableTests.indexOf(testName) < 0) {
+    if (availableTests.includes(testName)) {
       const { selectedName } = await prompt<{ selectedName: string }>([
         {
           choices: availableTests,
