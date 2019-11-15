@@ -118,7 +118,7 @@ export const deserializeStrokes = (serialized: string) => {
   return strokes;
 };
 
-export const isSerializedStrokes = (value: string) => value.indexOf("↓") === 0;
+export const isSerializedStrokes = (value: string) => value.includes("↓");
 
 export const serializeStrokes = (strokes: Stroke[]) => {
   return strokes
