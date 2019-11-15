@@ -14,6 +14,8 @@ export const retryExecutionError = async (
             "Execution context was destroyed, most likely because of a navigation.") ||
         error.message ===
           "Protocol error (Runtime.callFunctionOn): Execution context was destroyed." ||
+        error.message ===
+          "Protocol error (Runtime.callFunctionOn): Inspected target navigated or closed" ||
         error.message === "Node is detached from document"
       ) {
         logger.verbose(
