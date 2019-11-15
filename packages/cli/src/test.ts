@@ -26,7 +26,7 @@ export const test = async (optionalName?: string) => {
 
   if (optionalName) {
     testName = snakeCase(optionalName);
-    if (availableTests.includes(testName)) {
+    if (!availableTests.includes(testName)) {
       const { selectedName } = await prompt<{ selectedName: string }>([
         {
           choices: availableTests,
