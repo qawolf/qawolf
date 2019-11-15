@@ -70,7 +70,7 @@ export const findClickableAncestor = (
 
     // short-circuit when we encounter a common clickable element type
     // there may be a parent that is still clickable but does something else
-    if (["a", "button", "input"].indexOf(ancestor.tagName.toLowerCase()) > -1) {
+    if (["a", "button", "input"].includes(ancestor.tagName.toLowerCase())) {
       return ancestor;
     }
 

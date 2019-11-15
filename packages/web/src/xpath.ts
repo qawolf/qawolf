@@ -20,7 +20,7 @@ const buildXpath = (element: Element): string => {
   if (element.id) {
     // xpath has no way to escape quotes so use the opposite
     // https://stackoverflow.com/a/14822893
-    const quote = element.id.indexOf(`'`) > -1 ? `"` : `'`;
+    const quote = element.id.includes(`'`) ? `"` : `'`;
     return `//*[@id=${quote}${element.id}${quote}]`;
   }
 
