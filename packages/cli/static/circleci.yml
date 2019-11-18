@@ -1,0 +1,29 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: qawolf/qawolf:latest
+        environment:
+          # output artifacts
+          QAW_DOM_PATH: /tmp/artifacts
+          QAW_LOG_PATH: /tmp/artifacts
+          QAW_VIDEO_PATH: /tmp/artifacts
+          # # configure tests with environment variables
+          # # set "QAW_URL" to override the url for all tests
+          # QAW_URL: www.my_staging_url.com
+          # # set "QAW_TESTNAME_URL" to override the url for the test named "testname"
+          # QAW_CREATE_ACCOUNT_URL: www.mysite.com/createaccount
+          # # set "QAW_TESTNAME_0" to override values[0] for the test named "testname"
+          # QAW_LOGIN_0: "my_username"
+
+      # # use your container in the workflow
+      # - image: owner/image:tag
+    steps:
+      # checkout to include the .qawolf/ folder
+      - checkout
+
+      - run:
+          command: qawolf test
+
+      - store_artifacts:
+          path: /tmp/artifacts

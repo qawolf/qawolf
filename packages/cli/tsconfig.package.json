@@ -16,9 +16,6 @@
       "path": "../config/tsconfig.package.json"
     },
     {
-      "path": "../github/tsconfig.package.json"
-    },
-    {
       "path": "../jest-environment/tsconfig.package.json"
     },
     {
