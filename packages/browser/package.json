@@ -34,6 +34,7 @@
     "rrweb": "^0.7.25"
   },
   "devDependencies": {
+    "@types/puppeteer": "^1.20.2",
     "jest": "^24.9.0"
   }
 }
