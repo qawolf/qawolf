@@ -30,11 +30,10 @@
     "@qawolf/web": "^0.5.8",
     "fs-extra": "^8.1.0",
     "lodash": "^4.17.15",
-    "puppeteer": "^1.20.0",
+    "puppeteer": "^2.0.0",
     "rrweb": "^0.7.25"
   },
   "devDependencies": {
-    "@types/puppeteer": "^1.20.2",
     "jest": "^24.9.0"
   }
 }
