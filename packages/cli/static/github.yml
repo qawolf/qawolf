@@ -26,7 +26,7 @@ jobs:
         #   QAW_LOGIN_0: "my_username"
         #   # you can also use GitHub secrets for environment variables
         #   # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets
-        #   QAW_LOGIN_1: $\{{ secrets.PASSWORD }}
+        #   QAW_LOGIN_1: ${{ secrets.PASSWORD }}
       - name: Upload Artifacts
         # include test artifacts
         # edit below to only include artifacts in certain scenarios
