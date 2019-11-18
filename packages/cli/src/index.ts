@@ -5,7 +5,7 @@ import { logger } from "@qawolf/logger";
 import { yellow } from "kleur";
 import program from "commander";
 import { snakeCase } from "lodash";
-import { githubAction } from "./githubAction";
+import { saveCiTemplate } from "./ci";
 import { record } from "./record";
 import { test } from "./test";
 import { parseUrl } from "./utils";
@@ -42,10 +42,24 @@ program
   });
 
 program
+  .command("azure")
+  .description("set up an Azure Pipeline")
+  .action(async () => {
+    await saveCiTemplate("azure");
+  });
+
+program
+  .command("circleci")
+  .description("set up CircleCI")
+  .action(async () => {
+    await saveCiTemplate("circleci");
+  });
+
+program
   .command("github")
   .description("set up a GitHub Action")
   .action(async () => {
-    await githubAction();
+    await saveCiTemplate("github");
   });
 
 program.arguments("<command>").action(cmd => {

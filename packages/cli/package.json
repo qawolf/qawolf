@@ -7,7 +7,8 @@
   "types": "./lib/index.d.ts",
   "files": [
     "lib",
-    "src"
+    "src",
+    "static"
   ],
   "scripts": {
     "cli": "ts-node ./src/index",
@@ -28,7 +29,6 @@
     "@qawolf/build-test": "^0.5.6",
     "@qawolf/build-workflow": "^0.5.8",
     "@qawolf/config": "^0.5.0",
-    "@qawolf/github": "^0.5.9",
     "@qawolf/jest-environment": "^0.5.8",
     "@qawolf/logger": "^0.5.0",
     "@qawolf/runner": "^0.5.8",
