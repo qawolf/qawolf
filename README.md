@@ -23,7 +23,7 @@
 
 **Record Your Tests:** Generate Jest & Puppeteer test code from your browser interactions. QA Wolf supports multiple windows, third party sites, and changing input values with environment variables.
 
-**Set up CI:** Set up a GitHub action to run your tests with `npx qawolf github`. Artifacts for debugging are generated per test.
+**Set up CI:** Run your tests in CI with one command. We support CircleCI, Azure DevOps, and GitHub Actions (with more coming soon!). Artifacts for debugging are created per test.
 
 **Debug with Ease:** Each test run includes a video, gif, interactive DOM recording, and browser logs as artifacts.
 
@@ -55,13 +55,25 @@ npx qawolf test [name]
 
 [Documentation](https://www.qawolf.com/docs/set_up_ci)
 
+Set up CI with [CircleCI](https://circleci.com):
+
+```bash
+npx qawolf circleci
+```
+
+Set up CI with [Azure DevOps](https://azure.microsoft.com/en-us/services/devops):
+
+```bash
+npx qawolf azure
+```
+
 Set up CI with [GitHub Actions](https://github.com/features/actions):
 
 ```bash
 npx qawolf github
 ```
 
-This will generate a file called `qawolf.yml` in the `.github/workflows` directory at the root of your project. Edit this file as you like!
+This will generate the relevant config file in your project. Edit this file as you like!
 
 ## Support
 
