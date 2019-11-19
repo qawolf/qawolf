@@ -9,6 +9,18 @@ const cleanText = (text: string): string => {
     .toLowerCase();
 };
 
+export const getAlt = (element: HTMLElement): string | null => {
+  if ((element as HTMLImageElement).alt) {
+    return (element as HTMLImageElement).alt;
+  }
+
+  // see if element has image child and if so grab its alt
+  const imgChild = element.querySelector("img");
+  if (!imgChild) return null;
+
+  return imgChild.alt || null;
+};
+
 export const getDataValue = (
   element: HTMLElement,
   dataAttribute: string | null
@@ -106,6 +118,18 @@ export const getPlaceholder = (element: HTMLElement): string | null => {
   }
 };
 
+export const getSrc = (element: HTMLElement): string | null => {
+  if ((element as HTMLImageElement).src) {
+    return (element as HTMLImageElement).src;
+  }
+
+  // see if element has image child and if so grab its src
+  const imgChild = element.querySelector("img");
+  if (!imgChild) return null;
+
+  return imgChild.src || null;
+};
+
 const getSvgIconContent = (element: HTMLElement): string[] | null => {
   const iconContent: string[] = [];
 
@@ -141,7 +165,7 @@ export const getDescriptor = (
   }
 
   return {
-    alt: (element as HTMLImageElement).alt || null,
+    alt: getAlt(element),
     ariaLabel: element.getAttribute("aria-label") || null,
     classList: (element.className || "").length
       ? element.className.split(" ")
@@ -156,7 +180,7 @@ export const getDescriptor = (
     name: (element as HTMLInputElement).name || null,
     parentText: getParentText(element),
     placeholder: getPlaceholder(element),
-    src: (element as HTMLImageElement).src || null,
+    src: getSrc(element),
     innerText: getTextContent(element),
     tagName,
     title: element.title || null,
