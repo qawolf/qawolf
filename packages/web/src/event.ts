@@ -4,3 +4,6 @@ export const isKeyEvent = (event: Event | null) =>
   event &&
   event.isTrusted &&
   (event.name === "keydown" || event.name === "keyup");
+
+export const isPasteEvent = (event: Event | null) =>
+  event && event.isTrusted && event.name === "paste";

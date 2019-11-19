@@ -4,11 +4,8 @@ import { buildClickSteps } from "./buildClickSteps";
 import { buildScrollSteps } from "./buildScrollSteps";
 import { buildSelectSteps } from "./buildSelectSteps";
 import { buildTypeSteps } from "./buildTypeSteps";
-import { replacePasteEvents } from "./replacePasteEvents";
 
-export const buildSteps = (originalEvents: Event[]): Step[] => {
-  const events = replacePasteEvents(originalEvents);
-
+export const buildSteps = (events: Event[]): Step[] => {
   const unorderedSteps = concat(
     buildClickSteps(events),
     buildScrollSteps(events),

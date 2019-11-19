@@ -9,6 +9,10 @@ export const buildSelectSteps = (events: Event[]): Step[] => {
     // ignore system initiated actions & other non-input actions
     if (!event.isTrusted || event.name !== "input") continue;
 
+    // ignore input events not on selects
+    const tagName = (event.target.tagName || "").toLowerCase();
+    if (tagName !== "select") continue;
+
     steps.push({
       action: "select",
       // include event index so we can sort in buildSteps

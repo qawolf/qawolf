@@ -1,21 +1,16 @@
-import { Event } from "@qawolf/types";
+import { flatten } from "lodash";
 import KeyDefinitions, { KeyDefinition } from "puppeteer/lib/USKeyboardLayout";
 import "./types";
 
-// A Press is the pair of corresponding down and up key events
-export type Press = {
-  code: string;
-  downEvent: Event;
-  downEventIndex: number;
-  upEventIndex: number | null;
-  xpath: string;
-};
+// → keyboard.sendCharacter(char)
+// ↓ keyboard.down(key)
+// ↑ keyboard.up(key)
+type StrokeType = "→" | "↓" | "↑";
 
-// A Stroke is a single keydown or keyup
 export type Stroke = {
-  code: string;
   index: number;
-  prefix: "↓" | "↑";
+  type: StrokeType;
+  value: string;
 };
 
 // organizes the KeyDefinitions from USKeyboardLayout
@@ -37,97 +32,97 @@ Object.values(KeyDefinitions).forEach(definition => {
   shiftKeyToDefinitions[definition.shiftKey] = definition;
 });
 
-export const buildStrokesForString = (keysToType: string) => {
-  // convert a regular string to Strokes
+export const characterToStrokes = (character: string): Stroke[] => {
   const strokes: Stroke[] = [];
 
-  keysToType.split("").forEach(key => {
-    // null if not a shift key
-    const shiftKeyDefinition = shiftKeyToDefinitions[key];
-    const keyDefinition = keyToDefinition[key];
+  const shiftKeyDefinition = shiftKeyToDefinitions[character];
+  const keyDefinition = keyToDefinition[character];
 
-    if (!shiftKeyDefinition && !keyDefinition) {
-      throw new Error(`Unrecognized key "${key}"`);
-    }
-
-    const code = shiftKeyDefinition
-      ? shiftKeyDefinition.code
-      : keyDefinition.code;
-
-    if (shiftKeyDefinition) {
-      strokes.push({
-        code: "Shift",
-        index: strokes.length,
-        prefix: "↓"
-      });
-    }
-
+  if (!shiftKeyDefinition && !keyDefinition) {
+    // sendCharacter
     strokes.push({
-      code,
       index: strokes.length,
-      prefix: "↓"
+      type: "→",
+      value: character
     });
 
+    return strokes;
+  }
+
+  const code = shiftKeyDefinition
+    ? shiftKeyDefinition.code
+    : keyDefinition.code;
+
+  if (shiftKeyDefinition) {
     strokes.push({
-      code,
       index: strokes.length,
-      prefix: "↑"
+      type: "↓",
+      value: "Shift"
     });
+  }
 
-    if (shiftKeyDefinition) {
-      strokes.push({
-        code: "Shift",
-        index: strokes.length,
-        prefix: "↑"
-      });
-    }
+  strokes.push({
+    index: strokes.length,
+    type: "↓",
+    value: code
   });
 
-  return strokes;
-};
-
-export const convertPressesToStrokes = (presses: Press[]) => {
-  const strokes: Stroke[] = [];
-
-  presses.forEach(p => {
-    strokes.push({ code: p.code, index: p.downEventIndex, prefix: "↓" });
-
-    if (p.upEventIndex !== null) {
-      strokes.push({ code: p.code, index: p.upEventIndex, prefix: "↑" });
-    }
+  strokes.push({
+    index: strokes.length,
+    type: "↑",
+    value: code
   });
 
-  return strokes.sort((a, b) => a.index - b.index);
-};
-
-export const convertStringToStrokes = (value: string): Stroke[] => {
-  if (isSerializedStrokes(value)) return deserializeStrokes(value);
-
-  return buildStrokesForString(value);
-};
-
-export const deserializeStrokes = (serialized: string) => {
-  const strokes: Stroke[] = [];
-
-  // split by ↓,↑ with positive lookahead https://stackoverflow.com/a/12001989
-  for (let key of serialized.split(/(?=↓|↑)/)) {
-    const code = key.substring(1);
-
+  if (shiftKeyDefinition) {
     strokes.push({
-      code,
       index: strokes.length,
-      prefix: key[0] as "↓" | "↑"
+      type: "↑",
+      value: "Shift"
     });
   }
 
   return strokes;
 };
 
-export const isSerializedStrokes = (value: string) => value.startsWith("↓");
+export const deserializeStrokes = (serialized: string) => {
+  const strokes: Stroke[] = [];
+
+  // split by ↓,↑ with positive lookahead https://stackoverflow.com/a/12001989
+  for (let key of serialized.split(/(?=→|↓|↑)/)) {
+    const code = key.substring(1);
+
+    strokes.push({
+      index: strokes.length,
+      type: key[0] as StrokeType,
+      value: code
+    });
+  }
+
+  return strokes;
+};
+
+export const keyToCode = (key: string): string | null => {
+  const keyDefinition = keyToDefinition[key];
+  return keyDefinition ? keyDefinition.code : null;
+};
 
 export const serializeStrokes = (strokes: Stroke[]) => {
   return strokes
     .sort((a, b) => a.index - b.index)
-    .map(s => `${s.prefix}${s.code}`)
+    .map(s => `${s.type}${s.value}`)
     .join("");
+};
+
+export const stringToStrokes = (value: string): Stroke[] => {
+  return flatten(
+    value.split("").map(character => characterToStrokes(character))
+  );
+};
+
+export const valueToStrokes = (value: string): Stroke[] => {
+  if (value.startsWith("→") || value.startsWith("↓") || value.startsWith("↑")) {
+    return deserializeStrokes(value);
+  }
+
+  return stringToStrokes(value);
 };

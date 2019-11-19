@@ -1,44 +1,14 @@
 import { loadEvents } from "@qawolf/fixtures";
-import { Event, PasteEvent, KeyEvent } from "@qawolf/types";
+import { Event, KeyEvent } from "@qawolf/types";
 import {
-  buildKeyEvents,
   findPasteKeyEvents,
-  replacePasteEvents
-} from "../src/replacePasteEvents";
+  removePasteKeyEvents
+} from "../src/removePasteKeyEvents";
 
 let events: Event[];
 
 beforeAll(async () => {
   events = await loadEvents("paste");
-});
-
-describe("buildKeyEvents", () => {
-  it("builds key events for a paste event", () => {
-    const keyEvents = buildKeyEvents({
-      isTrusted: true,
-      name: "paste",
-      target: {},
-      time: 0,
-      value: "Hey!"
-    });
-
-    expect(
-      keyEvents.map(k => `${k.name === "keydown" ? "↓" : "↑"}${k.value}`)
-    ).toEqual([
-      "↓Shift",
-      "↓KeyH",
-      "↑KeyH",
-      "↑Shift",
-      "↓KeyE",
-      "↑KeyE",
-      "↓KeyY",
-      "↑KeyY",
-      "↓Shift",
-      "↓Digit1",
-      "↑Digit1",
-      "↑Shift"
-    ]);
-  });
 });
 
 describe("findPasteKeyEvents", () => {
@@ -66,9 +36,9 @@ describe("findPasteKeyEvents", () => {
   });
 });
 
-describe("replacePasteEvents", () => {
-  it("replaces CMD+V shortcuts with key events", () => {
-    const replacedEvents = replacePasteEvents(events);
+describe("removePasteKeyEvents", () => {
+  it("removes CMD+V key events", () => {
+    const replacedEvents = removePasteKeyEvents(events);
     expect(
       replacedEvents
         .filter(e => e.name === "keydown" || e.name === "keyup")

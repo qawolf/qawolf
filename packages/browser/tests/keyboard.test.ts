@@ -1,9 +1,20 @@
-import { buildStrokesForString, deserializeStrokes } from "../src/keyboard";
+import { deserializeStrokes, stringToStrokes } from "../src/keyboard";
 
-describe("buildStrokesForString", () => {
+describe("deserializeStrokes", () => {
+  it("converts a string to strokes", () => {
+    const strokes = deserializeStrokes("↓Shift↓KeyY↑KeyY");
+    expect(strokes.map(s => `${s.type}${s.value}`)).toEqual([
+      "↓Shift",
+      "↓KeyY",
+      "↑KeyY"
+    ]);
+  });
+});
+
+describe("stringToStrokes", () => {
   it("handles lower case characters", () => {
-    const strokes = buildStrokesForString("hey");
-    expect(strokes.map(s => `${s.prefix}${s.code}`)).toEqual([
+    const strokes = stringToStrokes("hey");
+    expect(strokes.map(s => `${s.type}${s.value}`)).toEqual([
       "↓KeyH",
       "↑KeyH",
       "↓KeyE",
@@ -14,8 +25,8 @@ describe("buildStrokesForString", () => {
   });
 
   it("handles shift characters", () => {
-    const strokes = buildStrokesForString("YO!");
-    expect(strokes.map(s => `${s.prefix}${s.code}`)).toEqual([
+    const strokes = stringToStrokes("YO!");
+    expect(strokes.map(s => `${s.type}${s.value}`)).toEqual([
       "↓Shift",
       "↓KeyY",
       "↑KeyY",
@@ -30,15 +41,8 @@ describe("buildStrokesForString", () => {
       "↑Shift"
     ]);
   });
-});
 
-describe("deserializeStrokes", () => {
-  it("converts a string to strokes", () => {
-    const strokes = deserializeStrokes("↓Shift↓KeyY↑KeyY");
-    expect(strokes.map(s => `${s.prefix}${s.code}`)).toEqual([
-      "↓Shift",
-      "↓KeyY",
-      "↑KeyY"
-    ]);
+  it("handles special characters", () => {
+    throw new Error("TO DO");
   });
 });

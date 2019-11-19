@@ -78,7 +78,8 @@ export class Recorder {
 
     this.recordEvent("input", event => {
       const element = event.target as HTMLInputElement;
-      // ignore input events except on selects
+
+      // ignore input events not on selects
       if (element.tagName.toLowerCase() !== "select") return;
 
       return {
@@ -95,7 +96,7 @@ export class Recorder {
       name: "keydown",
       target: getDescriptor(event.target as HTMLElement, this._dataAttribute),
       time: Date.now(),
-      value: event.code
+      value: event.key
     }));
 
     this.recordEvent("keyup", event => ({
@@ -103,7 +104,7 @@ export class Recorder {
       name: "keyup",
       target: getDescriptor(event.target as HTMLElement, this._dataAttribute),
       time: Date.now(),
-      value: event.code
+      value: event.key
     }));
 
     this.recordEvent("paste", event => {
