@@ -162,7 +162,7 @@ export class Runner {
       // do not focus or clear for Enter or Tab
       const shouldFocusClear =
         !typeValue ||
-        (!typeValue.includes("↓Enter") && !typeValue.includes("↓Tab"));
+        !(typeValue.startsWith("↓Enter") || typeValue.startsWith("↓Tab"));
 
       const element = await this.beforeAction(shouldFocusClear ? step : null);
       if (shouldFocusClear) {
