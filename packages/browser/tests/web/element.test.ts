@@ -177,6 +177,33 @@ describe("getDescriptor", () => {
 
     await browser.goto(`${CONFIG.testUrl}login`);
   });
+
+  it("includes src and alt of child image if applicable", async () => {
+    await browser.goto(`${CONFIG.testUrl}broken_images`);
+
+    const imgDescriptor = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+
+      const images = document.getElementsByTagName("img");
+      images[1].alt = "Alt text";
+
+      const result = qawolf.element.getDescriptor(
+        document.querySelector(".example") as HTMLElement,
+        "data-qa"
+      );
+
+      return result;
+    });
+
+    expect(imgDescriptor).toMatchObject({
+      alt: "Alt text",
+      tagName: "div"
+    });
+    // hostname differs depending on where tests are run
+    expect(imgDescriptor.src).toMatch("asdf.jpg");
+
+    await browser.goto(`${CONFIG.testUrl}login`);
+  });
 });
 
 describe("getIconContent", () => {
