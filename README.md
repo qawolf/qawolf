@@ -55,19 +55,19 @@ npx qawolf test [name]
 
 [Documentation](https://www.qawolf.com/docs/set_up_ci)
 
-Set up CI with [CircleCI](https://circleci.com):
+Set up CI with [CircleCI](https://www.qawolf.com/docs/set_up_ci#circleci):
 
 ```bash
 npx qawolf circleci
 ```
 
-Set up CI with [Azure DevOps](https://azure.microsoft.com/en-us/services/devops):
+Set up CI with [Azure DevOps](https://www.qawolf.com/docs/set_up_ci#azure-devops):
 
 ```bash
 npx qawolf azure
 ```
 
-Set up CI with [GitHub Actions](https://github.com/features/actions):
+Set up CI with [GitHub Actions](https://www.qawolf.com/docs/set_up_ci#github-actions):
 
 ```bash
 npx qawolf github
