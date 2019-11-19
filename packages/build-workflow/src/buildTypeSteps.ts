@@ -18,6 +18,7 @@ const keyEventToStroke = (event: KeyEvent, index: number): Stroke => {
   return { index, type: "→", value: event.value };
 };
 
+// TODO refactor this eww code
 export const buildTypeSteps = (allEvents: Event[]) => {
   const steps: Step[] = [];
 
@@ -25,39 +26,61 @@ export const buildTypeSteps = (allEvents: Event[]) => {
 
   let strokes: Stroke[] = [];
 
+  const buildTypeStep = (event: Event) => {
+    if (!strokes.length) return;
+
+    steps.push({
+      action: "type",
+      // include event index so we can sort in buildSteps
+      index: events.indexOf(event),
+      pageId: event.pageId,
+      target: event.target,
+      value: serializeStrokes(strokes)
+    });
+
+    strokes = [];
+  };
+
   for (let i = 0; i < events.length; i++) {
     const event = events[i];
 
     if (isKeyEvent(event)) {
-      strokes.push(keyEventToStroke(event as KeyEvent, i));
+      const keyEvent = event as KeyEvent;
+
+      if (keyEvent.value === "Enter" || keyEvent.value === "Tab") {
+        // ignore keyup
+        if (keyEvent.name === "keyup") continue;
+
+        // build the previous strokes as a separate step
+        if (i > 0) {
+          buildTypeStep(events[i - 1]);
+        }
+
+        strokes = [
+          {
+            index: 0,
+            type: "↓",
+            value: keyEvent.value
+          },
+          {
+            index: 1,
+            type: "↑",
+            value: keyEvent.value
+          }
+        ];
+
+        buildTypeStep(keyEvent);
+      } else {
+        strokes.push(keyEventToStroke(keyEvent, i));
+      }
     } else if (isPasteEvent(event)) {
       strokes = strokes.concat(stringToStrokes((event as PasteEvent).value));
     } else if (strokes.length) {
-      steps.push({
-        action: "type",
-        // include event index so we can sort in buildSteps
-        index: i,
-        pageId: event.pageId,
-        target: event.target,
-        value: serializeStrokes(strokes)
-      });
-
-      strokes = [];
+      buildTypeStep(event);
     }
-
-    // TODO separate Enter/Tab steps -- and include them
   }
 
-  if (strokes.length) {
-    steps.push({
-      action: "type",
-      // include event index so we can sort in buildSteps
-      index: events.length,
-      pageId: events[events.length - 1].pageId,
-      target: events[events.length - 1].target,
-      value: serializeStrokes(strokes)
-    });
-  }
+  buildTypeStep(events[events.length - 1]);
 
   return steps;
 };

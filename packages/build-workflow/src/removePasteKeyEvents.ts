@@ -19,7 +19,7 @@ export const findPasteKeyEvents = (events: Event[], pasteIndex: number) => {
     (event, eventIndex) =>
       eventIndex < pasteIndex &&
       event.name === "keydown" &&
-      (event as KeyEvent).value == "KeyV"
+      (event as KeyEvent).value == "v"
   );
 
   const upCmd = find(
@@ -35,7 +35,7 @@ export const findPasteKeyEvents = (events: Event[], pasteIndex: number) => {
     (event, eventIndex) =>
       eventIndex > pasteIndex &&
       event.name === "keyup" &&
-      (event as KeyEvent).value == "KeyV"
+      (event as KeyEvent).value == "v"
   );
 
   if (!downCmd || !downV) {
