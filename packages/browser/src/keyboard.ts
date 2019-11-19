@@ -44,10 +44,15 @@ export const buildStrokesForString = (keysToType: string) => {
   keysToType.split("").forEach(key => {
     // null if not a shift key
     const shiftKeyDefinition = shiftKeyToDefinitions[key];
+    const keyDefinition = keyToDefinition[key];
+
+    if (!shiftKeyDefinition && !keyDefinition) {
+      throw new Error(`Unrecognized key "${key}"`);
+    }
 
     const code = shiftKeyDefinition
       ? shiftKeyDefinition.code
-      : keyToDefinition[key].code;
+      : keyDefinition.code;
 
     if (shiftKeyDefinition) {
       strokes.push({
