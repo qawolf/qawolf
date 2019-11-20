@@ -44,7 +44,7 @@ export const characterToStrokes = (character: string): Stroke[] => {
   const keyDefinition = keyToDefinition[character];
 
   if (!shiftKeyDefinition && !keyDefinition) {
-    // sendCharacter
+    // sendCharacter if we cannot find the key definition
     strokes.push({
       index: strokes.length,
       type: "→",
@@ -92,7 +92,7 @@ export const characterToStrokes = (character: string): Stroke[] => {
 export const deserializeStrokes = (serialized: string) => {
   const strokes: Stroke[] = [];
 
-  // split by ↓,↑ with positive lookahead https://stackoverflow.com/a/12001989
+  // split by prefix with positive lookahead https://stackoverflow.com/a/12001989
   for (let key of serialized.split(/(?=→|↓|↑)/)) {
     const code = key.substring(1);
 
@@ -120,7 +120,7 @@ export const stringToStrokes = (value: string): Stroke[] => {
 };
 
 export const valueToStrokes = (value: string): Stroke[] => {
-  if (value.startsWith("→") || value.startsWith("↓") || value.startsWith("↑")) {
+  if (["→", "↓", "↑"].some(prefix => value.startsWith(prefix))) {
     return deserializeStrokes(value);
   }
 

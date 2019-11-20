@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`buildSelectSteps builds expected steps 1`] = `
+Array [
+  Object {
+    "action": "select",
+    "index": 2,
+    "pageId": 0,
+    "target": Object {
+      "ariaLabel": null,
+      "classList": null,
+      "dataValue": null,
+      "href": null,
+      "iconContent": null,
+      "id": "dropdown",
+      "innerText": "please select an option option 1 option 2",
+      "inputType": "select-one",
+      "labels": null,
+      "name": null,
+      "parentText": Array [
+        "dropdown list",
+        "please select an option option 1 option 2",
+        "dropdown list please select an option option 1 option 2",
+      ],
+      "placeholder": "please select an option",
+      "tagName": "select",
+      "title": null,
+      "xpath": "//*[@id='dropdown']",
+    },
+    "value": "2",
+  },
+]
+`;

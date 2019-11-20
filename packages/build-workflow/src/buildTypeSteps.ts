@@ -5,7 +5,6 @@ import {
   Stroke,
   StrokeType
 } from "@qawolf/browser";
-import { logger } from "@qawolf/logger";
 import { Event, Step, KeyEvent, PasteEvent } from "@qawolf/types";
 import { isKeyEvent, isPasteEvent } from "@qawolf/web";
 import { removePasteKeyEvents } from "./removePasteKeyEvents";
@@ -87,8 +86,6 @@ export class TypeStepFactory {
 
   buildPasteStrokes(event: PasteEvent, index: number) {
     const strokes = stringToStrokes(event.value);
-    logger.debug(`TypeStepFactory: paste strokes ${strokes}`);
-
     if (!this.pendingEvent) this.pendingEvent = event;
 
     strokes.forEach(stroke => {

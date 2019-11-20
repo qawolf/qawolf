@@ -8,11 +8,8 @@ describe("buildSelectSteps", () => {
     selectEvents = await loadEvents("select");
   });
 
-  it("builds correct steps for login", async () => {
+  it("builds expected steps", async () => {
     const steps = buildSelectSteps(selectEvents);
-    expect(steps.length).toEqual(1);
-
-    expect(steps[0].target.xpath).toEqual("//*[@id='dropdown']");
-    expect(steps[0].value).toEqual("2");
+    expect(steps).toMatchSnapshot();
   });
 });
