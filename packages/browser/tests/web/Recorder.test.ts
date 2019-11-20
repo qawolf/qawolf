@@ -144,6 +144,7 @@ describe("Recorder", () => {
 
     await focusClear(element);
     await type(page, "secret");
+    await type(page, "↓Enter↑Enter→嗨");
 
     // close the browser to ensure events are transmitted
     await browser.close();
@@ -154,18 +155,20 @@ describe("Recorder", () => {
     expect(
       (events.filter(e => isKeyEvent(e)) as KeyEvent[]).map(e => e.value)
     ).toEqual([
-      "KeyS",
-      "KeyS",
-      "KeyE",
-      "KeyE",
-      "KeyC",
-      "KeyC",
-      "KeyR",
-      "KeyR",
-      "KeyE",
-      "KeyE",
-      "KeyT",
-      "KeyT"
+      "s",
+      "s",
+      "e",
+      "e",
+      "c",
+      "c",
+      "r",
+      "r",
+      "e",
+      "e",
+      "t",
+      "t",
+      "Enter",
+      "Enter"
     ]);
   });
 });

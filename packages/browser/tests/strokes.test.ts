@@ -1,4 +1,18 @@
-import { deserializeStrokes, stringToStrokes } from "../src/keyboard";
+import {
+  characterToCode,
+  deserializeStrokes,
+  stringToStrokes
+} from "../src/strokes";
+
+describe("characterToCode", () => {
+  it("converts a character to it's USKeyboard code", () => {
+    expect(characterToCode("S")).toEqual("KeyS");
+  });
+
+  it("converts a non-USKeyboard character to null", () => {
+    expect(characterToCode("嗨")).toEqual(null);
+  });
+});
 
 describe("deserializeStrokes", () => {
   it("converts a string to strokes", () => {
@@ -43,6 +57,18 @@ describe("stringToStrokes", () => {
   });
 
   it("handles special characters", () => {
-    throw new Error("TO DO");
+    const strokes = stringToStrokes("嗨!嗨!");
+    expect(strokes.map(s => `${s.type}${s.value}`)).toEqual([
+      "→嗨",
+      "↓Shift",
+      "↓Digit1",
+      "↑Digit1",
+      "↑Shift",
+      "→嗨",
+      "↓Shift",
+      "↓Digit1",
+      "↑Digit1",
+      "↑Shift"
+    ]);
   });
 });
