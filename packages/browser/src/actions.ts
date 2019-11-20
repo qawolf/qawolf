@@ -3,7 +3,7 @@ import { logger } from "@qawolf/logger";
 import { ScrollValue } from "@qawolf/types";
 import { QAWolfWeb, sleep } from "@qawolf/web";
 import { ElementHandle, Page } from "puppeteer";
-import { valueToStrokes } from "./keyboard";
+import { valueToStrokes } from "./strokes";
 
 export const click = async (element: ElementHandle): Promise<void> => {
   logger.verbose("actions.click");

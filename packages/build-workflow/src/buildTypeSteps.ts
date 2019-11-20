@@ -1,86 +1,134 @@
 import {
-  keyToCode,
+  characterToCode,
   serializeStrokes,
   stringToStrokes,
-  Stroke
+  Stroke,
+  StrokeType
 } from "@qawolf/browser";
+import { logger } from "@qawolf/logger";
 import { Event, Step, KeyEvent, PasteEvent } from "@qawolf/types";
 import { isKeyEvent, isPasteEvent } from "@qawolf/web";
 import { removePasteKeyEvents } from "./removePasteKeyEvents";
 
-const keyEventToStroke = (event: KeyEvent, index: number): Stroke => {
-  const code = keyToCode(event.value);
+const SEPARATE_KEYS = ["Enter", "Tab"];
 
-  if (code) {
-    return { index, type: event.name === "keydown" ? "↓" : "↑", value: code };
+export class TypeStepFactory {
+  private events: Event[];
+
+  private steps: Step[] = [];
+
+  // the event of the first pending Stroke
+  private pendingEvent: Event | null = null;
+  private pendingStrokes: Stroke[] = [];
+
+  constructor(events: Event[]) {
+    this.events = events;
   }
 
-  return { index, type: "→", value: event.value };
-};
+  buildPendingStrokesStep() {
+    /**
+     * Build a type step for pending strokes.
+     */
+    if (!this.pendingStrokes.length) return;
+    if (!this.pendingEvent) throw new Error("pendingEvent not set");
 
-// TODO refactor this eww code
-export const buildTypeSteps = (allEvents: Event[]) => {
-  const steps: Step[] = [];
+    const event = this.pendingEvent;
 
-  const events = removePasteKeyEvents(allEvents);
-
-  let strokes: Stroke[] = [];
-
-  const buildTypeStep = (event: Event) => {
-    if (!strokes.length) return;
-
-    steps.push({
+    this.steps.push({
       action: "type",
       // include event index so we can sort in buildSteps
-      index: events.indexOf(event),
+      index: this.events.indexOf(event),
       pageId: event.pageId,
       target: event.target,
-      value: serializeStrokes(strokes)
+      value: serializeStrokes(this.pendingStrokes)
     });
 
-    strokes = [];
-  };
-
-  for (let i = 0; i < events.length; i++) {
-    const event = events[i];
-
-    if (isKeyEvent(event)) {
-      const keyEvent = event as KeyEvent;
-
-      if (keyEvent.value === "Enter" || keyEvent.value === "Tab") {
-        // ignore keyup
-        if (keyEvent.name === "keyup") continue;
-
-        // build the previous strokes as a separate step
-        if (i > 0) {
-          buildTypeStep(events[i - 1]);
-        }
-
-        strokes = [
-          {
-            index: 0,
-            type: "↓",
-            value: keyEvent.value
-          },
-          {
-            index: 1,
-            type: "↑",
-            value: keyEvent.value
-          }
-        ];
-
-        buildTypeStep(keyEvent);
-      } else {
-        strokes.push(keyEventToStroke(keyEvent, i));
-      }
-    } else if (isPasteEvent(event)) {
-      strokes = strokes.concat(stringToStrokes((event as PasteEvent).value));
-    } else if (strokes.length) {
-      buildTypeStep(event);
-    }
+    this.pendingEvent = null;
+    this.pendingStrokes = [];
   }
 
-  buildTypeStep(events[events.length - 1]);
+  buildSeparateStep(event: KeyEvent, index: number) {
+    // ignore keyup event we build the separate step for the keydown
+    // and include the up stroke as part of it
+    if (event.name === "keyup") return;
 
-  return steps;
+    this.buildPendingStrokesStep();
+
+    this.pendingEvent = event;
+    this.pendingStrokes = ["↓", "↑"].map((type: StrokeType) => ({
+      index,
+      type,
+      value: event.value
+    }));
+    this.buildPendingStrokesStep();
+  }
+
+  buildKeyStroke(event: KeyEvent, index: number) {
+    if (SEPARATE_KEYS.some(special => event.value === special)) {
+      this.buildSeparateStep(event, index);
+      return;
+    }
+
+    const code = characterToCode(event.value);
+    let type: StrokeType = event.name === "keydown" ? "↓" : "↑";
+    if (!code) {
+      // sendCharacter if we cannot find the key's code
+      type = "→";
+    }
+
+    if (!this.pendingEvent) this.pendingEvent = event;
+
+    this.pendingStrokes.push({
+      index,
+      type,
+      value: code ? code : event.value
+    });
+  }
+
+  buildPasteStrokes(event: PasteEvent, index: number) {
+    const strokes = stringToStrokes(event.value);
+    logger.debug(`TypeStepFactory: paste strokes ${strokes}`);
+
+    if (!this.pendingEvent) this.pendingEvent = event;
+
+    strokes.forEach(stroke => {
+      this.pendingStrokes.push({
+        ...stroke,
+        index
+      });
+    });
+  }
+
+  buildSteps() {
+    const filteredEvents = removePasteKeyEvents(this.events);
+
+    filteredEvents.forEach(event => {
+      // find the index from the unfiltered list
+      const index = this.events.indexOf(event);
+
+      if (this.pendingEvent && event.pageId !== this.pendingEvent.pageId) {
+        // build the step when the page changes
+        this.buildPendingStrokesStep();
+      }
+
+      if (isPasteEvent(event)) {
+        this.buildPasteStrokes(event as PasteEvent, index);
+      } else if (isKeyEvent(event)) {
+        this.buildKeyStroke(event as KeyEvent, index);
+      } else {
+        // build the step when typing is interrupted
+        this.buildPendingStrokesStep();
+      }
+    });
+
+    // build steps at the end
+    this.buildPendingStrokesStep();
+
+    return this.steps;
+  }
+}
+
+export const buildTypeSteps = (events: Event[]) => {
+  const factory = new TypeStepFactory(events);
+  return factory.buildSteps();
 };

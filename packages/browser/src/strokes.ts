@@ -5,7 +5,7 @@ import "./types";
 // → keyboard.sendCharacter(char)
 // ↓ keyboard.down(key)
 // ↑ keyboard.up(key)
-type StrokeType = "→" | "↓" | "↑";
+export type StrokeType = "→" | "↓" | "↑";
 
 export type Stroke = {
   index: number;
@@ -31,6 +31,11 @@ Object.values(KeyDefinitions).forEach(definition => {
 
   shiftKeyToDefinitions[definition.shiftKey] = definition;
 });
+
+export const characterToCode = (character: string): string | null => {
+  const definition = keyToDefinition[character];
+  return definition ? definition.code : null;
+};
 
 export const characterToStrokes = (character: string): Stroke[] => {
   const strokes: Stroke[] = [];
@@ -99,11 +104,6 @@ export const deserializeStrokes = (serialized: string) => {
   }
 
   return strokes;
-};
-
-export const keyToCode = (key: string): string | null => {
-  const keyDefinition = keyToDefinition[key];
-  return keyDefinition ? keyDefinition.code : null;
 };
 
 export const serializeStrokes = (strokes: Stroke[]) => {

@@ -1,6 +1,7 @@
+export { Page } from "puppeteer";
+
 export * from "./actions";
 export * from "./Browser";
 export * from "./find";
-export * from "./keyboard";
 export * from "./retry";
-export { Page } from "puppeteer";
+export * from "./strokes";
