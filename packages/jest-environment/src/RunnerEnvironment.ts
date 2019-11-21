@@ -4,7 +4,7 @@ import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { Runner } from "@qawolf/runner";
 import { Workflow } from "@qawolf/types";
-import { waitUntil } from "@qawolf/web";
+import { isNil, waitUntil } from "@qawolf/web";
 import { pathExists, readJSON } from "fs-extra";
 import NodeEnvironment from "jest-environment-node";
 import path from "path";
@@ -43,12 +43,17 @@ export class RunnerEnvironment extends NodeEnvironment {
     this.global.steps = runner.workflow.steps;
     this.global.values = runner.values;
 
-    // default timeoutMs to CONFIG
     this.global.waitUntil = (
       booleanFn: () => boolean,
       timeoutMs?: number,
       sleepMs?: number
-    ) => waitUntil(booleanFn, timeoutMs || CONFIG.findTimeoutMs, sleepMs);
+    ) =>
+      waitUntil(
+        booleanFn,
+        // default timeoutMs to CONFIG.findTimeoutMs
+        (isNil(timeoutMs) ? CONFIG.findTimeoutMs : timeoutMs)!,
+        sleepMs
+      );
 
     this.global.workflow = runner.workflow;
 

@@ -5,9 +5,10 @@ describe("waitUntil", () => {
     const booleanFn = jest.fn();
     booleanFn.mockReturnValue(true);
 
+    await waitUntil(booleanFn, 0);
     await waitUntil(booleanFn, 250);
 
-    expect(booleanFn).toBeCalledTimes(1);
+    expect(booleanFn).toBeCalledTimes(2);
   });
 
   it("throws error if condition never met", async () => {
