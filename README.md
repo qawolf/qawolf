@@ -12,7 +12,6 @@
   <a href="https://gitter.im/qawolf/community" alt="Gitter chat"><img src="https://badges.gitter.im/qawolf/gitter.png" /></a>
   <a href="https://github.com/qawolf/qawolf/actions?query=workflow%3A%22npm+test%22"><img src="https://github.com/qawolf/qawolf/workflows/npm%20test/badge.svg" /></a>
   <a href="https://github.com/qawolf/examples" alt="Examples"><img src="https://github.com/qawolf/examples/workflows/qawolf%20examples/badge.svg" /></a>
-  <a href="https://github.com/qawolf/examples" alt="Examples"><img src="https://circleci.com/gh/qawolf/examples.svg?style=svg" /></a>
 </p>
 
 ## Introduction
