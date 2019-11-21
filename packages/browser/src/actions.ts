@@ -1,7 +1,7 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { ScrollValue } from "@qawolf/types";
-import { QAWolfWeb, sleep } from "@qawolf/web";
+import { isNil, QAWolfWeb, sleep } from "@qawolf/web";
 import { ElementHandle, Page } from "puppeteer";
 import { valueToStrokes } from "./strokes";
 
@@ -58,6 +58,8 @@ export const select = async (
   timeoutMs?: number
 ): Promise<void> => {
   logger.verbose("actions.select");
+  const findTimeoutMs = (isNil(timeoutMs) ? CONFIG.findTimeoutMs : timeoutMs)!;
+
   // ensure option with desired value is loaded before selecting
   await elementHandle.evaluate(
     (element: HTMLSelectElement, value: string | null, timeoutMs: number) => {
@@ -65,7 +67,7 @@ export const select = async (
       return qawolf.select.waitForOption(element, value, timeoutMs);
     },
     value,
-    timeoutMs || CONFIG.findTimeoutMs
+    findTimeoutMs
   );
 
   await elementHandle.select(value || "");

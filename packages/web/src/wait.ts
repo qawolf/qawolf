@@ -9,12 +9,12 @@ export const waitFor = async <T>(
 ): Promise<T | null> => {
   const startTime = Date.now();
 
-  while (Date.now() - startTime < timeoutMs) {
+  do {
     const value = valueFn();
     if (value) return value;
 
     await sleep(sleepMs);
-  }
+  } while (Date.now() - startTime < timeoutMs);
 
   return null;
 };
@@ -26,12 +26,12 @@ export const waitUntil = async (
 ): Promise<void> => {
   const startTime = Date.now();
 
-  while (Date.now() - startTime < timeoutMs) {
+  do {
     const conditionMet = await booleanFn();
     if (conditionMet) return;
 
     await sleep(sleepMs);
-  }
+  } while (Date.now() - startTime < timeoutMs);
 
   throw new Error(
     `waitUntil: waited ${timeoutMs} milliseconds but condition never met`

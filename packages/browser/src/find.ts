@@ -1,6 +1,6 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { QAWolfWeb, waitFor } from "@qawolf/web";
+import { isNil, QAWolfWeb, waitFor } from "@qawolf/web";
 import { Locator, Step } from "@qawolf/types";
 import { ElementHandle, Page, Serializable } from "puppeteer";
 import { retryExecutionError } from "./retry";
@@ -18,6 +18,7 @@ export const findElement = async (
   logger.verbose(
     `findElement: ${JSON.stringify(step.target).substring(0, 100)}`
   );
+  const findTimeoutMs = (isNil(timeoutMs) ? CONFIG.findTimeoutMs : timeoutMs)!;
 
   const jsHandle = await page.evaluateHandle(
     (locator: Locator) => {
@@ -28,7 +29,7 @@ export const findElement = async (
       action: step.action,
       dataAttribute: CONFIG.dataAttribute,
       target: step.target,
-      timeoutMs: timeoutMs || CONFIG.findTimeoutMs,
+      timeoutMs: findTimeoutMs,
       value: step.value
     } as Serializable
   );
@@ -46,7 +47,7 @@ export const findProperty = async (
   { property, selector }: FindPropertyArgs,
   timeoutMs?: number
 ): Promise<string | null | undefined> => {
-  const waitForTimeoutMs = timeoutMs || CONFIG.findTimeoutMs;
+  const findTimeoutMs = (isNil(timeoutMs) ? CONFIG.findTimeoutMs : timeoutMs)!;
 
   const result = await retryExecutionError(async () => {
     const elementHandle = await waitFor(
@@ -57,7 +58,7 @@ export const findProperty = async (
 
         return elementHandles[0];
       },
-      waitForTimeoutMs,
+      findTimeoutMs,
       100
     );
     if (!elementHandle) return null;
@@ -76,7 +77,7 @@ export const hasText = async (
   text: string,
   timeoutMs?: number
 ): Promise<boolean> => {
-  const waitForTimeoutMs = timeoutMs || CONFIG.findTimeoutMs;
+  const findTimeoutMs = (isNil(timeoutMs) ? CONFIG.findTimeoutMs : timeoutMs)!;
 
   const result = await retryExecutionError(async () => {
     const pageHasText = await page.evaluate(
@@ -85,7 +86,7 @@ export const hasText = async (
 
         return qawolf.find.hasText(text, timeoutMs);
       },
-      { text, timeoutMs: waitForTimeoutMs }
+      { text, timeoutMs: findTimeoutMs }
     );
 
     return pageHasText;

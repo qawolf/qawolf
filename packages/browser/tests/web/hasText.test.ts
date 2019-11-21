@@ -25,7 +25,7 @@ describe("hasText", () => {
   });
 
   it("returns false if timeout reached", async () => {
-    const result = await hasText(page, "tomsmith", -1);
+    const result = await hasText(page, "sup", 0);
     expect(result).toBe(false);
   });
 });
