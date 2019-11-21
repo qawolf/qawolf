@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`buildClickSteps builds expected steps 1`] = `
+Array [
+  Object {
+    "action": "click",
+    "index": 10,
+    "pageId": 0,
+    "target": Object {
+      "alt": null,
+      "ariaLabel": null,
+      "classList": null,
+      "dataValue": null,
+      "href": "http://localhost:5000/login",
+      "iconContent": null,
+      "id": null,
+      "innerText": "form authentication",
+      "inputType": null,
+      "isContentEditable": false,
+      "labels": null,
+      "name": null,
+      "parentText": Array [
+        "form authentication",
+        "form authentication",
+      ],
+      "placeholder": null,
+      "src": null,
+      "tagName": "a",
+      "title": null,
+      "xpath": "//*[@id='content']/ul/li[18]/a",
+    },
+  },
+  Object {
+    "action": "click",
+    "index": 38,
+    "pageId": 0,
+    "target": Object {
+      "alt": null,
+      "ariaLabel": null,
+      "classList": Array [
+        "button",
+        "secondary",
+        "radius",
+      ],
+      "dataValue": null,
+      "href": "http://localhost:5000/logout",
+      "iconContent": Array [
+        "icon-2x",
+        "icon-signout",
+      ],
+      "id": null,
+      "innerText": "logout",
+      "inputType": null,
+      "isContentEditable": false,
+      "labels": null,
+      "name": null,
+      "parentText": Array [
+        "secure area",
+        "welcome to the secure area. when you are done click logout below.",
+        "logout",
+        "secure area welcome to the secure area. when you are done click logout below. logout",
+      ],
+      "placeholder": null,
+      "src": null,
+      "tagName": "a",
+      "title": null,
+      "xpath": "//*[@id='content']/div/a",
+    },
+  },
+]
+`;

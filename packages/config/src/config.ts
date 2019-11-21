@@ -27,13 +27,14 @@ export const CONFIG = {
   domPath: process.env.QAW_DOM_PATH,
   findTimeoutMs: parseNumber(process.env.QAW_FIND_TIMEOUT_MS, 30000),
   headless: parseBool(process.env.QAW_HEADLESS),
+  keyDelayMs: parseNumber(process.env.QAW_KEY_DELAY_MS, 0),
   logLevel: process.env.QAW_LOG_LEVEL,
   logPath: process.env.QAW_LOG_PATH,
   navigationTimeout: parseNumber(process.env.QAW_NAVIGATION_TIMEOUT, 60000),
   serial: parseBool(process.env.QAW_SERIAL),
-  // slow down each step by 2s to make it watchable
+  // slow down each step by 1s to make it watchable
   // this also gives sites time to setup their handlers
-  sleepMs: parseNumber(process.env.QAW_SLEEP_MS, 2000),
+  sleepMs: parseNumber(process.env.QAW_SLEEP_MS, 1000),
   testUrl,
   videoPath: process.env.QAW_VIDEO_PATH
 };

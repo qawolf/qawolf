@@ -1,9 +1,9 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { ScrollValue } from "@qawolf/types";
-import { QAWolfWeb, sleep, waitUntil } from "@qawolf/web";
+import { QAWolfWeb, sleep } from "@qawolf/web";
 import { ElementHandle, Page } from "puppeteer";
-import { convertStringToStrokes } from "./keyboard";
+import { valueToStrokes } from "./strokes";
 
 export const click = async (element: ElementHandle): Promise<void> => {
   logger.verbose("actions.click");
@@ -77,15 +77,18 @@ export const type = async (page: Page, value: string): Promise<void> => {
   // logging the keyboard codes below will leak secrets
   // which is why we have it hidden behind the DEBUG flag
   // since we default logs to VERBOSE
-  for (const stroke of convertStringToStrokes(value)) {
-    if (stroke.prefix === "↓") {
-      logger.debug(`keyboard.down("${stroke.code}")`);
-      await page.keyboard.down(stroke.code);
-    } else {
-      logger.debug(`keyboard.up("${stroke.code}")`);
-      await page.keyboard.up(stroke.code);
+  for (const stroke of valueToStrokes(value)) {
+    if (stroke.type === "↓") {
+      logger.debug(`keyboard.down("${stroke.value}")`);
+      await page.keyboard.down(stroke.value);
+    } else if (stroke.type === "↑") {
+      logger.debug(`keyboard.up("${stroke.value}")`);
+      await page.keyboard.up(stroke.value);
+    } else if (stroke.type === "→") {
+      logger.debug(`keyboard.sendCharacter("${stroke.value}")`);
+      await page.keyboard.sendCharacter(stroke.value);
     }
 
-    await sleep(25);
+    await sleep(CONFIG.keyDelayMs);
   }
 };

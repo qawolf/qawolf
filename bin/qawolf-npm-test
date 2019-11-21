@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# stop on failure
+set -e
+
 cd $QAWOLF_DIR
 qawolf-xvfb-run npm run test
 qawolf-xvfb-run npm run test:docker

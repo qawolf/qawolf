@@ -1,81 +1,131 @@
 import {
-  convertPressesToStrokes,
-  Press,
-  serializeStrokes
+  characterToCode,
+  serializeStrokes,
+  stringToStrokes,
+  Stroke,
+  StrokeType
 } from "@qawolf/browser";
-import { Event, KeyEvent, Step } from "@qawolf/types";
-import { isKeyEvent } from "@qawolf/web";
+import { Event, Step, KeyEvent, PasteEvent } from "@qawolf/types";
+import { isKeyEvent, isPasteEvent } from "@qawolf/web";
+import { removePasteKeyEvents } from "./removePasteKeyEvents";
 
-export const convertEventsToPresses = (events: Event[]): Press[] => {
-  const presses: Press[] = [];
+const SEPARATE_KEYS = ["Enter", "Tab"];
 
-  events.forEach((e, index) => {
-    if (!isKeyEvent(e)) return;
+export class TypeStepFactory {
+  private events: Event[];
 
-    const event = e as KeyEvent;
-    if (event.name === "keydown") {
-      // create a new press per keydown
-      presses.push({
-        code: event.value,
-        downEvent: event,
-        downEventIndex: index,
-        upEventIndex: null,
-        xpath: e.target.xpath!
-      });
-    } else {
-      // match keyup with it's corresponding press
-      const press = presses.find(
-        s => s.code === event.value && s.upEventIndex === null
-      )!;
-      press.upEventIndex = index;
-    }
-  });
+  private steps: Step[] = [];
 
-  return presses;
-};
+  // the event of the first pending Stroke
+  private pendingEvent: Event | null = null;
+  private pendingStrokes: Stroke[] = [];
 
-export const buildTypeSteps = (events: Event[]) => {
-  const presses = convertEventsToPresses(events);
-
-  const steps: Step[] = [];
-
-  // group consecutive presses per action
-  let stepPresses: Press[] = [];
-
-  for (let i = 0; i < presses.length; i++) {
-    const press = presses[i];
-    stepPresses.push(press);
-
-    const nextPress = i + 1 < presses.length ? presses[i + 1] : null;
-
-    // check the next press does not have another action in-between
-    const nextPressIsConsecutive =
-      nextPress && isKeyEvent(events[nextPress.downEventIndex - 1]);
-
-    const shouldBuildStep =
-      !nextPressIsConsecutive ||
-      // separate Enter and Tab to their own steps
-      press!.code === "Enter" ||
-      press!.code === "Tab" ||
-      nextPress!.code === "Enter" ||
-      nextPress!.code === "Tab";
-
-    if (shouldBuildStep) {
-      const event = stepPresses[0].downEvent;
-      const strokes = convertPressesToStrokes(stepPresses);
-
-      steps.push({
-        action: "type",
-        // include event index so we can sort in buildSteps
-        index: stepPresses[0].downEventIndex,
-        pageId: event.pageId,
-        target: event.target,
-        value: serializeStrokes(strokes)
-      });
-
-      stepPresses = [];
-    }
+  constructor(events: Event[]) {
+    this.events = events;
   }
 
-  return steps;
+  buildPendingStrokesStep() {
+    /**
+     * Build a type step for pending strokes.
+     */
+    if (!this.pendingStrokes.length) return;
+    if (!this.pendingEvent) throw new Error("pendingEvent not set");
+
+    const event = this.pendingEvent;
+
+    this.steps.push({
+      action: "type",
+      // include event index so we can sort in buildSteps
+      index: this.events.indexOf(event),
+      pageId: event.pageId,
+      target: event.target,
+      value: serializeStrokes(this.pendingStrokes)
+    });
+
+    this.pendingEvent = null;
+    this.pendingStrokes = [];
+  }
+
+  buildSeparateStep(event: KeyEvent, index: number) {
+    // ignore keyup event we build the separate step for the keydown
+    // and include the up stroke as part of it
+    if (event.name === "keyup") return;
+
+    this.buildPendingStrokesStep();
+
+    this.pendingEvent = event;
+    this.pendingStrokes = ["↓", "↑"].map((type: StrokeType) => ({
+      index,
+      type,
+      value: event.value
+    }));
+    this.buildPendingStrokesStep();
+  }
+
+  buildKeyStroke(event: KeyEvent, index: number) {
+    if (SEPARATE_KEYS.some(special => event.value === special)) {
+      this.buildSeparateStep(event, index);
+      return;
+    }
+
+    const code = characterToCode(event.value);
+    let type: StrokeType = event.name === "keydown" ? "↓" : "↑";
+    if (!code) {
+      // sendCharacter if we cannot find the key's code
+      type = "→";
+    }
+
+    if (!this.pendingEvent) this.pendingEvent = event;
+
+    this.pendingStrokes.push({
+      index,
+      type,
+      value: code ? code : event.value
+    });
+  }
+
+  buildPasteStrokes(event: PasteEvent, index: number) {
+    const strokes = stringToStrokes(event.value);
+    if (!this.pendingEvent) this.pendingEvent = event;
+
+    strokes.forEach(stroke => {
+      this.pendingStrokes.push({
+        ...stroke,
+        index
+      });
+    });
+  }
+
+  buildSteps() {
+    const filteredEvents = removePasteKeyEvents(this.events);
+
+    filteredEvents.forEach(event => {
+      // find the index from the unfiltered list
+      const index = this.events.indexOf(event);
+
+      if (this.pendingEvent && event.pageId !== this.pendingEvent.pageId) {
+        // build the step when the page changes
+        this.buildPendingStrokesStep();
+      }
+
+      if (isPasteEvent(event)) {
+        this.buildPasteStrokes(event as PasteEvent, index);
+      } else if (isKeyEvent(event)) {
+        this.buildKeyStroke(event as KeyEvent, index);
+      } else {
+        // build the step when typing is interrupted
+        this.buildPendingStrokesStep();
+      }
+    });
+
+    // build steps at the end
+    this.buildPendingStrokesStep();
+
+    return this.steps;
+  }
+}
+
+export const buildTypeSteps = (events: Event[]) => {
+  const factory = new TypeStepFactory(events);
+  return factory.buildSteps();
 };

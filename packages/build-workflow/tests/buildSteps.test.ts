@@ -2,14 +2,14 @@ import { loadEvents } from "@qawolf/fixtures";
 import { buildSteps } from "../";
 
 describe("buildSteps", () => {
-  let scrollGoogle: any[];
+  let scrollClickType: any[];
 
   beforeAll(async () => {
-    scrollGoogle = await loadEvents("google");
+    scrollClickType = await loadEvents("scroll_click_type");
   });
 
-  it("orders google events properly", () => {
-    const steps = buildSteps(scrollGoogle);
+  it("builds expected steps", () => {
+    const steps = buildSteps(scrollClickType);
     expect(steps).toMatchSnapshot();
   });
 });

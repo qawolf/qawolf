@@ -12,7 +12,7 @@ import * as xpath from "./xpath";
 export type Match = Match;
 
 // export the isomorphic (node & browser) module for node
-const { isKeyEvent } = event;
+const { isKeyEvent, isPasteEvent } = event;
 const {
   compareArrays,
   compareDescriptorKey,
@@ -28,6 +28,7 @@ export {
   countPresentKeys,
   isKeyEvent,
   isNil,
+  isPasteEvent,
   sleep,
   waitFor,
   waitUntil
