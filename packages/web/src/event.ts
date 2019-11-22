@@ -7,3 +7,6 @@ export const isKeyEvent = (event: Event | null) =>
 
 export const isPasteEvent = (event: Event | null) =>
   event && event.isTrusted && event.name === "paste";
+
+export const isTypeEvent = (event: Event | null) =>
+  isKeyEvent(event) || isPasteEvent(event);
