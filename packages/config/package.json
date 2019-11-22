@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/config",
   "description": "qawolf config (node only)",
-  "version": "0.5.12",
+  "version": "0.5.14",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
