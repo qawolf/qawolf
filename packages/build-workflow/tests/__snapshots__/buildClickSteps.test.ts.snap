@@ -1,5 +1,76 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`buildClickSteps builds a click step on an input if it is not followed by a type event 1`] = `
+Array [
+  Object {
+    "action": "click",
+    "index": 17,
+    "pageId": 0,
+    "target": Object {
+      "alt": null,
+      "ariaLabel": null,
+      "classList": null,
+      "dataValue": null,
+      "href": null,
+      "iconContent": null,
+      "id": "password",
+      "innerText": null,
+      "inputType": "password",
+      "isContentEditable": false,
+      "labels": Array [
+        "password",
+      ],
+      "name": "password",
+      "parentText": Array [
+        "password",
+        "password",
+      ],
+      "placeholder": null,
+      "src": null,
+      "tagName": "input",
+      "title": null,
+      "xpath": "//*[@id='password']",
+    },
+  },
+  Object {
+    "action": "click",
+    "index": 18,
+    "pageId": 0,
+    "target": Object {
+      "alt": null,
+      "ariaLabel": null,
+      "classList": Array [
+        "radius",
+      ],
+      "dataValue": null,
+      "href": null,
+      "iconContent": Array [
+        "fa",
+        "fa-2x",
+        "fa-sign-in",
+      ],
+      "id": null,
+      "innerText": "login",
+      "inputType": "submit",
+      "isContentEditable": false,
+      "labels": null,
+      "name": null,
+      "parentText": Array [
+        "username",
+        "password",
+        "login",
+        "username password login",
+      ],
+      "placeholder": null,
+      "src": null,
+      "tagName": "button",
+      "title": null,
+      "xpath": "//*[@id='login']/button",
+    },
+  },
+]
+`;
+
 exports[`buildClickSteps builds expected steps 1`] = `
 Array [
   Object {
