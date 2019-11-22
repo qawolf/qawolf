@@ -36,7 +36,7 @@ export const findElement = async (
 
   const handle = jsHandle.asElement();
   if (!handle) {
-    throw new Error(`No element handle found for step ${step}`);
+    throw new Error(`No element handle found for step ${step.index}`);
   }
 
   return handle;

@@ -14,29 +14,29 @@ export const scroll = async (
 
   console.log("scroll to", value, element);
 
-  while (element.scrollLeft !== value.x || element.scrollTop !== value.y) {
-    if (Date.now() - start > timeoutMs) {
-      console.log("scroll timeout exceeded", {
-        x: element.scrollLeft,
-        y: element.scrollTop
-      });
+  const isScrolled = () =>
+    element.scrollLeft === value.x && element.scrollTop === value.y;
 
-      if (
-        element.scrollLeft === startScroll.x &&
-        element.scrollTop === startScroll.y
-      ) {
-        throw new Error("could not scroll");
-      }
-
-      return;
-    }
-
-    await sleep(100);
+  do {
     element.scroll(value.x, value.y);
+    await sleep(100);
+  } while (!isScrolled() && Date.now() - start < timeoutMs);
+
+  if (isScrolled()) {
+    console.log("scroll succeeeded");
+    return;
   }
 
-  console.log("scroll succeeeded", {
+  console.log("scroll timeout exceeded", {
     x: element.scrollLeft,
     y: element.scrollTop
   });
+
+  // only throw an error if it could not scroll at all
+  if (
+    element.scrollLeft === startScroll.x &&
+    element.scrollTop === startScroll.y
+  ) {
+    throw new Error("could not scroll");
+  }
 };
