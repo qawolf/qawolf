@@ -108,7 +108,7 @@ export class Browser {
     logger.verbose(`Browser: goto ${url}`);
     const page = await this.currentPage();
     await page.goto(url, {
-      timeout: CONFIG.navigationTimeout,
+      timeout: CONFIG.navigationTimeoutMs,
       ...options
     });
     return page;

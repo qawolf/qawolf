@@ -30,7 +30,10 @@ export const CONFIG = {
   keyDelayMs: parseNumber(process.env.QAW_KEY_DELAY_MS, 0),
   logLevel: process.env.QAW_LOG_LEVEL,
   logPath: process.env.QAW_LOG_PATH,
-  navigationTimeout: parseNumber(process.env.QAW_NAVIGATION_TIMEOUT, 60000),
+  navigationTimeoutMs: parseNumber(
+    process.env.QAW_NAVIGATION_TIMEOUT_MS,
+    60000
+  ),
   serial: parseBool(process.env.QAW_SERIAL),
   // slow down each step by 1s to make it watchable
   // this also gives sites time to setup their handlers
