@@ -1,4 +1,5 @@
 import { CONFIG } from "@qawolf/config";
+import { QAWolfWeb } from "@qawolf/web";
 import { scroll } from "../../src/actions";
 import { Browser } from "../../src/Browser";
 
@@ -56,13 +57,26 @@ describe("scroll", () => {
     const initialYPosition = await page.evaluate(() => window.pageYOffset);
     expect(initialYPosition).toBe(0);
 
+    await page.evaluate(() => {
+      // prevent scrolling
+      const html = document.getElementsByTagName("html")[0];
+      (html as any)._scroll = html.scroll;
+      html.scroll = () => {};
+    });
+
     const element = await browser.element({
       action: "scroll",
       index: 0,
       target: { xpath: "/html" }
     });
 
-    const testFn = async () => await scroll(element, { x: 0, y: 2000 }, -1);
+    const testFn = async () => await scroll(element, { x: 0, y: 2000 }, 0);
     await expect(testFn()).rejects.toThrowError();
+
+    await page.evaluate(() => {
+      // restore scrolling
+      const html = document.getElementsByTagName("html")[0];
+      html.scroll = (html as any)._scroll;
+    });
   });
 });
