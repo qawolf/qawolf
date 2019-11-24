@@ -1,6 +1,7 @@
 import * as element from "./element";
 import * as event from "./event";
 import * as find from "./find";
+import * as lang from "./lang";
 import * as match from "./match";
 import { Match } from "./match";
 import { Recorder } from "./Recorder";
@@ -17,9 +18,10 @@ const {
   compareArrays,
   compareDescriptorKey,
   compareDescriptors,
-  countPresentKeys,
-  isNil
+  countPresentKeys
 } = match;
+
+const { isNil } = lang;
 const { sleep, waitFor, waitUntil } = wait;
 export {
   compareArrays,

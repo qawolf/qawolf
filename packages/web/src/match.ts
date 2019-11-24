@@ -1,5 +1,6 @@
 import { ElementDescriptor } from "@qawolf/types";
 import { getDescriptor } from "./element";
+import { isNil } from "./lang";
 import { isXpathEqual } from "./xpath";
 
 type DescriptorMatch = {
@@ -96,10 +97,6 @@ export const countPresentKeys = (descriptor: ElementDescriptor): number => {
     throw new Error(`No keys with truthy value in descriptor: ${descriptor}`);
   }
   return presentKeys.length;
-};
-
-export const isNil = (value?: any): boolean => {
-  return typeof value === "undefined" || value === null;
 };
 
 export const isSelectValueAvailable = (
