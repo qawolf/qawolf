@@ -6,24 +6,22 @@ export const nodeToString = (node: Node) => {
     .replace(/(\r\n|\n|\r)/gm, ""); // remove newlines
 };
 
-export const cloneWithAncestors = (target: Node, numAncestors: number = 2) => {
+export const serializeNode = (target: Node, numAncestors: number = 2) => {
   /**
-   * Clone a node deep with ancestors, without siblings.
+   * Serialize a node deep and it's ancestors shallow.
    */
-  let clone = target.cloneNode(true);
+  const serialized: string[] = [];
+
+  // the target is the first item
+  // so we can easily identify it amongst variable ancestors
+  serialized.push(nodeToString(target));
 
   let ancestor = target.parentNode;
   for (let i = 0; ancestor && i < numAncestors; i++) {
-    // clone the ancestor shallow
-    let ancestorClone = ancestor.cloneNode(false);
-    ancestorClone.appendChild(clone);
-    clone = ancestorClone;
+    let ancestorWithoutSiblings = ancestor.cloneNode(false);
+    serialized.push(nodeToString(ancestorWithoutSiblings));
     ancestor = ancestor.parentNode;
   }
 
-  return clone;
-};
-
-export const serializeNode = (node: Node) => {
-  return nodeToString(cloneWithAncestors(node));
+  return serialized;
 };
