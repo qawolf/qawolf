@@ -1,5 +1,5 @@
 import * as types from "@qawolf/types";
-import { getDescriptor } from "./element";
+import { getDescriptor } from "./element.remove";
 import { findClickableAncestor } from "./find";
 
 type EventCallback = types.Callback<types.Event>;

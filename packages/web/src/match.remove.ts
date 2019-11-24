@@ -1,6 +1,7 @@
 import { ElementDescriptor } from "@qawolf/types";
-import { getDescriptor } from "./element";
+import { getDescriptor } from "./element.remove";
 import { isNil } from "./lang";
+import { isSelectValueAvailable } from "./select";
 import { isXpathEqual } from "./xpath";
 
 type DescriptorMatch = {
@@ -97,25 +98,6 @@ export const countPresentKeys = (descriptor: ElementDescriptor): number => {
     throw new Error(`No keys with truthy value in descriptor: ${descriptor}`);
   }
   return presentKeys.length;
-};
-
-export const isSelectValueAvailable = (
-  element: HTMLElement,
-  value?: string | null
-): boolean => {
-  if (!value || element.tagName.toLowerCase() !== "select") return true;
-
-  let isAvailable: boolean = false;
-  const options = (element as HTMLSelectElement).options;
-
-  for (let i = 0; i < options.length; i++) {
-    if (options[i].value === value) {
-      isAvailable = true;
-      break;
-    }
-  }
-
-  return isAvailable;
 };
 
 export const matchElements = ({

@@ -23,6 +23,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "dependencies": {
+    "html-parse-stringify": "^1.0.3"
+  },
   "devDependencies": {
     "@qawolf/types": "^0.5.6",
     "rollup": "^1.23.1",
