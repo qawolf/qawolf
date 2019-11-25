@@ -13,6 +13,40 @@ beforeAll(async () => {
 
 afterAll(() => browser.close());
 
+describe("getClickableAncestor", () => {
+  it("chooses the top most clickable ancestor", async () => {
+    const xpath = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      const submitIcon = document.getElementsByTagName("i")[0]!;
+      const ancestor = qawolf.element.getClickableAncestor(
+        submitIcon,
+        "data-qa"
+      );
+      return qawolf.xpath.getXpath(ancestor);
+    });
+
+    expect(xpath).toEqual("//*[@id='login']/button");
+  });
+
+  it("short-circuits on an element with the data attribute", async () => {
+    const xpath = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      const submitIcon = document.getElementsByTagName("i")[0]!;
+      submitIcon.setAttribute("data-qa", "submit");
+
+      const ancestor = qawolf.element.getClickableAncestor(
+        submitIcon,
+        "data-qa"
+      );
+      submitIcon.removeAttribute("data-qa");
+
+      return qawolf.xpath.getXpath(ancestor);
+    });
+
+    expect(xpath).toEqual("//*[@id='login']/button/i");
+  });
+});
+
 describe("getDataValue", () => {
   it("returns null if data attribute not specified in config", async () => {
     const dataAttribute = await page.evaluate(() => {
