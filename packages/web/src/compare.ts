@@ -1,9 +1,13 @@
-import { parse, IDoc } from "html-parse-stringify";
-import "./html-parse-stringify";
+import { IDoc } from "html-parse-stringify";
 import { cleanText } from "./lang";
 
 export interface Comparison {
   [K: string]: boolean | Comparison;
+}
+
+export interface ComparisonCount {
+  matches: string[];
+  total: number;
 }
 
 export const compareAttributes = (a: any, b: any): Comparison => {
@@ -41,7 +45,7 @@ export const compareDoc = (a: IDoc, b: IDoc | null): Comparison => {
 
   if (a.children) {
     a.children.forEach((childA, index) => {
-      result[`child[${index}]`] = compareDoc(
+      result[`children[${index}]`] = compareDoc(
         childA,
         b ? b.children[index] : null
       );
@@ -53,11 +57,46 @@ export const compareDoc = (a: IDoc, b: IDoc | null): Comparison => {
   return result;
 };
 
-export const parseHtml = (html: string): IDoc => {
-  const result = parse(html);
-  if (result.length !== 1) {
-    throw new Error("parseHtml: was not passed a single node string");
-  }
+export const countComparison = (
+  comparison: Comparison,
+  prefix: string = ""
+): ComparisonCount => {
+  const count: ComparisonCount = {
+    matches: [],
+    total: 0
+  };
 
-  return result[0];
+  Object.keys(comparison).forEach(k => {
+    // prefix the key with the provided prefix
+    const key = prefix + k;
+    const value = comparison[k];
+    if (typeof value === "boolean") {
+      count.total += 1;
+      if (value === true) count.matches.push(key);
+    } else {
+      // append "." to the prefix
+      // eg. children[0]class -> children[0].class
+      const subcount = countComparison(value, key + ".");
+      count.matches = count.matches.concat(subcount.matches);
+      count.total += subcount.total;
+    }
+  });
+
+  return count;
 };
+
+// TODO: make Target more explicit -> HtmlTarget, DocTarget
+// // { html: "<a>sup</a>", ancestors: ["", ""] }
+
+// // TODO strong matches
+// // can strong matches be on ancestors instead of the target?
+
+// type Match = {};
+
+// export const matchDocs = (aDocs: IDoc[], bDocs: IDoc[]): Match => {
+//   aDocs.forEach((aDoc, index) => {
+//     const bDoc = bDocs[index];
+//     const comparison = compareDoc(aDoc, bDoc);
+//     const reduced = countComparison(comparison);
+//   });
+// };

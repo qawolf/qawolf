@@ -2,10 +2,11 @@ import {
   compareAttributes,
   compareContent,
   compareDoc,
-  parseHtml
+  countComparison,
+  htmlToDoc
 } from "@qawolf/web";
 
-const doc = parseHtml;
+const doc = htmlToDoc;
 
 describe("compareAttributes", () => {
   it("compares attributes", () => {
@@ -59,15 +60,15 @@ describe("compareDoc", () => {
         doc("<a><p>Hello</p></a>")
       )
     ).toEqual({
-      "child[0]": {
-        "child[0]": {
+      "children[0]": {
+        "children[0]": {
           content: true,
           name: true
         },
         name: true
       },
-      "child[1]": {
-        "child[0]": {
+      "children[1]": {
+        "children[0]": {
           content: false,
           name: false
         },
@@ -86,6 +87,34 @@ describe("compareDoc", () => {
 
     expect(compareDoc(doc("<a></a>"), doc("<p></p>"))).toEqual({
       name: false
+    });
+  });
+});
+
+describe("countComparison", () => {
+  it("counts children keys", () => {
+    const comparison = compareDoc(
+      doc(
+        "<a><p class='small bold'>Hello</p><p class='small bold'>Sup</p></a>"
+      ),
+      doc("<a><p class='small bold'>Hello</p><p class='small bold'>Sup</p></a>")
+    );
+
+    expect(countComparison(comparison)).toEqual({
+      matches: [
+        "children[0].class.small",
+        "children[0].class.bold",
+        "children[0].children[0].content",
+        "children[0].children[0].name",
+        "children[0].name",
+        "children[1].class.small",
+        "children[1].class.bold",
+        "children[1].children[0].content",
+        "children[1].children[0].name",
+        "children[1].name",
+        "name"
+      ],
+      total: 11
     });
   });
 });

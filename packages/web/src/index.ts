@@ -4,6 +4,7 @@ import * as lang from "./lang";
 import * as query from "./query";
 import { Recorder } from "./Recorder";
 import * as select from "./select";
+import * as serialize from "./serialize";
 import { scroll } from "./scroll";
 import * as wait from "./wait";
 import * as xpath from "./xpath";
@@ -21,7 +22,13 @@ import { Match } from "./match.remove";
 export type Match = Match;
 
 // export the isomorphic (node & browser) module for node
-const { compareAttributes, compareContent, compareDoc, parseHtml } = compare;
+const {
+  compareAttributes,
+  compareContent,
+  compareDoc,
+  countComparison
+} = compare;
+const { htmlToDoc } = serialize;
 const { isKeyEvent, isPasteEvent, isTypeEvent } = event;
 const {
   compareArrays,
@@ -36,11 +43,12 @@ export {
   compareAttributes,
   compareContent,
   compareDoc,
+  htmlToDoc,
   isKeyEvent,
   isNil,
   isPasteEvent,
   isTypeEvent,
-  parseHtml,
+  countComparison,
   sleep,
   waitFor,
   waitUntil,
@@ -63,6 +71,7 @@ const webExports = {
   Recorder,
   scroll,
   select,
+  serialize,
   wait,
   xpath
 };
