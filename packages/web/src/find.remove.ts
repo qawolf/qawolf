@@ -1,51 +1,8 @@
-import { Action, Locator } from "@qawolf/types";
-import { getDataValue, isVisible } from "./element";
+import { Locator } from "@qawolf/types";
 import { topMatch } from "./match.remove";
+import { queryActionElements, queryDataElements } from "./query";
 import { waitFor } from "./wait";
-import { findElementByXpath, getXpath } from "./xpath";
-
-type QueryByDataArgs = {
-  action: Action;
-  dataAttribute?: string;
-  dataValue?: string;
-};
-
-export const queryActionElements = (action: Action): HTMLElement[] => {
-  const selector =
-    action === "type" ? "input,select,textarea,[contenteditable='true']" : "*";
-
-  return queryVisibleElements(selector);
-};
-
-export const queryDataElements = ({
-  action,
-  dataAttribute,
-  dataValue
-}: QueryByDataArgs): HTMLElement[] => {
-  let dataSelector = `[${dataAttribute}='${dataValue}']`;
-  if (action === "type") {
-    const selector = `input${dataSelector},select${dataSelector},textarea${dataSelector},[contenteditable="true"]${dataSelector}`;
-    return queryVisibleElements(selector);
-  }
-
-  return queryVisibleElements(dataSelector);
-};
-
-export const queryVisibleElements = (selector: string): HTMLElement[] => {
-  const elements = document.querySelectorAll(selector);
-
-  const visibleElements: HTMLElement[] = [];
-
-  for (let i = 0; i < elements.length; i++) {
-    // we do not pass computedStyle because doing
-    // that for every element would be very expensive
-    if (isVisible(elements[i] as HTMLElement)) {
-      visibleElements.push(elements[i] as HTMLElement);
-    }
-  }
-
-  return visibleElements;
-};
+import { findElementByXpath } from "./xpath";
 
 export const findElement = async ({
   action,

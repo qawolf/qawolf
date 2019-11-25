@@ -1,6 +1,7 @@
 import * as compare from "./compare";
 import * as event from "./event";
 import * as lang from "./lang";
+import * as query from "./query";
 import { Recorder } from "./Recorder";
 import * as select from "./select";
 import { scroll } from "./scroll";
@@ -58,6 +59,7 @@ const webExports = {
   event,
   find,
   match,
+  query,
   Recorder,
   scroll,
   select,
