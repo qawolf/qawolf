@@ -1,49 +1,62 @@
-import { getDataValue, isClickable } from "./element";
+import { Locator } from "@qawolf/types";
+import { matchElements } from "./match";
+import { queryElements } from "./query";
 import { waitFor } from "./wait";
 import { getXpath } from "./xpath";
 
-export const findClickableAncestor = (
-  element: HTMLElement,
-  dataAttribute: string
-): HTMLElement => {
-  /**
-   * Crawl up until we reach the top "clickable" ancestor
-   */
-  let ancestor = element;
-  console.log("find clickable ancestor for", getXpath(element));
+// XXX strong match, action === click & xpath === /html || /html/body
+export const findElementNew = async (locator: Locator) => {
+  let threshold = 1;
 
-  while (ancestor.parentElement) {
-    // short-circuit when we encounter a data value
-    const dataValue = getDataValue(ancestor, dataAttribute);
-    if (dataValue) {
+  let topMatch = null;
+
+  const match = await waitFor(
+    () => {
+      const elements = queryElements(locator);
+      const matches = matchElements(elements, locator);
+
+      if (matches.length < 1) return;
+
+      topMatch = matches[0];
+      if (topMatch.strongKeys.length) {
+        console.log(
+          `matched: ${topMatch.strongKeys}`,
+          `${topMatch.percent}%`,
+          getXpath(topMatch.element),
+          topMatch.comparison
+        );
+        return topMatch;
+      }
+
+      if (topMatch.percent >= threshold) {
+        console.log(
+          `matched: ${topMatch.percent}% > ${threshold}% threshold`,
+          getXpath(topMatch.element),
+          topMatch.comparison
+        );
+        return topMatch;
+      }
+
+      // reduce threshold 1% per second
+      threshold = Math.max(0.75, threshold - 0.001);
+    },
+    locator.timeoutMs,
+    100
+  );
+
+  if (!match) {
+    console.log("no match :(");
+
+    if (topMatch) {
       console.log(
-        `found clickable ancestor with ${dataAttribute}="${dataValue}"`,
-        getXpath(ancestor)
+        `closest match: ${topMatch.percent}%`,
+        getXpath(topMatch.element),
+        topMatch.comparison
       );
-      return ancestor;
     }
-
-    // short-circuit when we encounter a common clickable element type
-    // there may be a parent that is still clickable but does something else
-    if (["a", "button", "input"].includes(ancestor.tagName.toLowerCase())) {
-      return ancestor;
-    }
-
-    // stop at the top clickable ancestor
-    if (
-      !isClickable(
-        ancestor.parentElement,
-        window.getComputedStyle(ancestor.parentElement)
-      )
-    ) {
-      console.log("found clickable ancestor", getXpath(ancestor));
-      return ancestor;
-    }
-
-    ancestor = ancestor.parentElement;
   }
 
-  return ancestor;
+  return match;
 };
 
 export const hasText = async (
