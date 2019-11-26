@@ -1,16 +1,20 @@
 import { Step } from "@qawolf/types";
 
 export const formatDescription = (step: Step): string => {
-  const label = step.target.labels ? step.target.labels.join(" ") : "";
+  const target = step.target.node;
+
+  // TODO
+  // const label = target.labels ? target.labels.join(" ") : "";
 
   // ex. "departure date"
   let description =
-    label ||
-    step.target.name ||
-    step.target.placeholder ||
-    step.target.innerText ||
-    step.target.id ||
-    step.target.alt ||
+    // label ||
+    target.attrs.name ||
+    target.attrs.placeholder ||
+    // TODO
+    // target.innerText ||
+    target.attrs.id ||
+    target.attrs.alt ||
     "";
 
   description = description.trim();
@@ -31,10 +35,10 @@ export const formatIt = (step: Step): string => {
 
   const description = formatDescription(step);
 
+  const target = step.target.node;
+
   // link/input
-  const tagName = `${
-    step.target.tagName === "a" ? " link" : ` ${step.target.tagName}` || ""
-  }`;
+  const tagName = `${target.name === "a" ? " link" : ` ${target.name}` || ""}`;
 
   if (step.action === "click") {
     return `can click${description}${tagName}`;

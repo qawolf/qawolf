@@ -3,21 +3,28 @@ import { DocMatch, matchTarget } from "./compare";
 import { queryElements } from "./query";
 import { nodeToDocTarget } from "./serialize";
 import { waitFor } from "./wait";
-// import { getXpath } from "./xpath";
+import { getXpath } from "./xpath";
+
+type ElementMatch = {
+  element: HTMLElement;
+  match: DocMatch;
+};
 
 export const matchElements = (
   elements: HTMLElement[],
   target: DocTarget
-): DocMatch[] => {
-  // TODO include elements with matches
-  let matches: DocMatch[] = [];
+): ElementMatch[] => {
+  let matches: ElementMatch[] = [];
+
   elements.forEach(element => {
     const elementDoc = nodeToDocTarget(element);
-    matches.push(matchTarget(target, elementDoc));
+
+    const match = matchTarget(target, elementDoc);
+    matches.push({ element, match });
   });
 
   // sort descending
-  matches.sort((a, b) => b.percent - a.percent);
+  matches.sort((a, b) => b.match.percent - a.match.percent);
 
   return matches;
 };
@@ -25,33 +32,34 @@ export const matchElements = (
 export const findElement = async (locator: Locator) => {
   let threshold = 1;
 
-  let topMatch: DocMatch | null = null;
+  let topElementMatch: ElementMatch | null = null;
 
-  const match = await waitFor(
+  const elementMatch = await waitFor(
     () => {
       const elements = queryElements(locator);
       const matches = matchElements(elements, locator.target);
 
       if (matches.length < 1) return;
+      topElementMatch = matches[0];
 
-      topMatch = matches[0];
+      const topMatch = topElementMatch.match;
       if (topMatch.strongKeys.length) {
         console.log(
           `matched: ${topMatch.strongKeys}`,
           `${topMatch.percent}%`,
-          // getXpath(topMatch.element),
+          // getXpath(top.element),
           topMatch.nodeComparison
         );
-        return topMatch;
+        return topElementMatch;
       }
 
       if (topMatch.percent >= threshold) {
         console.log(
           `matched: ${topMatch.percent}% > ${threshold}% threshold`,
-          // getXpath(topMatch.element),
+          // getXpath(top.element),
           topMatch.nodeComparison
         );
-        return topMatch;
+        return topElementMatch;
       }
 
       // reduce threshold 1% per second
@@ -61,19 +69,21 @@ export const findElement = async (locator: Locator) => {
     100
   );
 
-  if (!match) {
+  if (!elementMatch) {
     console.log("no match :(");
 
-    if (topMatch) {
+    if (topElementMatch) {
       console.log(
-        `closest match: ${topMatch!.percent}%`,
-        // getXpath(topMatch.element),
-        topMatch!.nodeComparison
+        `closest match`,
+        getXpath(topElementMatch!.element),
+        topElementMatch!.match
       );
     }
+
+    return null;
   }
 
-  return match;
+  return elementMatch.element;
 };
 
 export const hasText = async (

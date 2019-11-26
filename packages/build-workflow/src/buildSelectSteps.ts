@@ -1,27 +1,26 @@
-// import { Event, InputEvent, Step } from "@qawolf/types";
+import { Event, InputEvent, Step } from "@qawolf/types";
 
-// export const buildSelectSteps = (events: Event[]): Step[] => {
-//   const steps: Step[] = [];
+export const buildSelectSteps = (events: Event[]): Step[] => {
+  const steps: Step[] = [];
 
-//   for (let i = 0; i < events.length; i++) {
-//     const event = events[i] as InputEvent;
+  for (let i = 0; i < events.length; i++) {
+    const event = events[i] as InputEvent;
 
-//     // ignore system initiated actions & other non-input actions
-//     if (!event.isTrusted || event.name !== "input") continue;
+    // ignore system initiated actions & other non-input actions
+    if (!event.isTrusted || event.name !== "input") continue;
 
-//     // ignore input events not on selects
-//     const tagName = (event.target.tagName || "").toLowerCase();
-//     if (tagName !== "select") continue;
+    // ignore input events not on selects
+    if (event.target.node.name !== "select") continue;
 
-//     steps.push({
-//       action: "select",
-//       // include event index so we can sort in buildSteps
-//       index: i,
-//       pageId: event.pageId,
-//       target: event.target,
-//       value: event.value
-//     });
-//   }
+    steps.push({
+      action: "select",
+      // include event index so we can sort in buildSteps
+      index: i,
+      pageId: event.pageId,
+      target: event.target,
+      value: event.value
+    });
+  }
 
-//   return steps;
-// };
+  return steps;
+};

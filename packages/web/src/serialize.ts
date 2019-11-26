@@ -5,6 +5,8 @@ import "./html-parse-stringify";
 export const htmlToDoc = (html: string): Doc => {
   const result = parseHtml(html);
   if (result.length !== 1) {
+    console.log("invalid html", html);
+    debugger;
     throw new Error("htmlToDoc: only supports individual nodes");
   }
 
@@ -33,7 +35,9 @@ export const nodeToHtmlTarget = (
   let ancestor = node.parentNode;
   for (let i = 0; ancestor && i < numAncestors; i++) {
     let ancestorWithoutSiblings = ancestor.cloneNode(false);
-    ancestorsHtml.push(nodeToHtml(ancestorWithoutSiblings));
+    const ancestorHtml = nodeToHtml(ancestorWithoutSiblings);
+
+    if (ancestorHtml.length) ancestorsHtml.push(ancestorHtml);
     ancestor = ancestor.parentNode;
   }
 

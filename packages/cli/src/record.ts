@@ -1,5 +1,5 @@
 import { buildTest } from "@qawolf/build-test";
-// import { buildWorkflow } from "@qawolf/build-workflow";
+import { buildWorkflow } from "@qawolf/build-workflow";
 import { Browser, BrowserCreateOptions } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
@@ -51,17 +51,17 @@ export const record = async (
           await outputJson(eventsPath, browser.events, { spaces: " " });
         }
 
-        // logger.verbose(`save workflow -> ${workflowPath}`);
-        // const workflow = buildWorkflow({
-        //   events: browser.events,
-        //   name: name,
-        //   url: url.href!
-        // });
-        // await outputJson(workflowPath, workflow, { spaces: " " });
+        logger.verbose(`save workflow -> ${workflowPath}`);
+        const workflow = buildWorkflow({
+          events: browser.events,
+          name: name,
+          url: url.href!
+        });
+        await outputJson(workflowPath, workflow, { spaces: " " });
 
-        // logger.verbose(`save test -> ${testPath}`);
-        // const test = buildTest(workflow);
-        // await outputFile(testPath, test, "utf8");
+        logger.verbose(`save test -> ${testPath}`);
+        const test = buildTest(workflow);
+        await outputFile(testPath, test, "utf8");
       }
     }
   ]);

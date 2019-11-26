@@ -10,6 +10,32 @@ export interface ComparisonCount {
   total: number;
 }
 
+// // TODO strong matches
+// // can strong matches be on ancestors instead of the target?
+
+export type DocMatch = {
+  nodeComparison: Comparison;
+  // ancestorsComparison: Comparison[];
+  percent: number;
+  strongKeys: string[];
+};
+
+// TODO strong matches:
+// data attribute
+// label
+// action === click & xpath === /html || /html/body
+const strongMatchKeys = [
+  "alt",
+  "content",
+  "id",
+  // TODO inline labels w/ serialization
+  "labels",
+  "name",
+  "placeholder",
+  "src",
+  "title"
+];
+
 export const compareAttributes = (a: any, b: any): Comparison => {
   const result: Comparison = {};
 
@@ -85,32 +111,6 @@ export const countComparison = (
   return count;
 };
 
-// // TODO strong matches
-// // can strong matches be on ancestors instead of the target?
-
-export type DocMatch = {
-  nodeComparison: Comparison;
-  // ancestorsComparison: Comparison[];
-  percent: number;
-  strongKeys: string[];
-};
-
-const strongMatchKeys = [
-  "alt",
-  "content",
-  "id",
-  // TODO inline labels w/ serialization
-  "labels",
-  "name",
-  "placeholder",
-  "src",
-  "title"
-];
-
-// TODO strong matches:
-// data attribute
-// label
-// action === click & xpath === /html || /html/body
 export const matchTarget = (a: DocTarget, b: DocTarget): DocMatch => {
   const nodeComparison = compareDoc(a.node, b.node);
   const nodeCount = countComparison(nodeComparison);
@@ -118,7 +118,6 @@ export const matchTarget = (a: DocTarget, b: DocTarget): DocMatch => {
   const strongKeys = nodeCount.matches.filter(m => strongMatchKeys.includes(m));
 
   // TODO ancestors ...
-
-  const percent = nodeCount.matches.length / nodeCount.total;
+  const percent = (nodeCount.matches.length / nodeCount.total) * 100;
   return { nodeComparison, percent, strongKeys };
 };
