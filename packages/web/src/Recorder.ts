@@ -1,6 +1,6 @@
 import * as types from "@qawolf/types";
 import { getClickableAncestor } from "./element";
-import { nodeToHtmlTarget } from "./serialize";
+import { nodeToDocTarget } from "./serialize";
 
 type EventCallback = types.Callback<types.Event>;
 
@@ -71,7 +71,7 @@ export class Recorder {
       return {
         isTrusted: event.isTrusted,
         name: "click",
-        target: nodeToHtmlTarget(target),
+        target: nodeToDocTarget(target),
         time: Date.now()
       };
     });
@@ -85,7 +85,7 @@ export class Recorder {
       return {
         isTrusted: event.isTrusted,
         name: "input",
-        target: nodeToHtmlTarget(element),
+        target: nodeToDocTarget(element),
         time: Date.now(),
         value: element.value
       };
@@ -94,7 +94,7 @@ export class Recorder {
     this.recordEvent("keydown", event => ({
       isTrusted: event.isTrusted,
       name: "keydown",
-      target: nodeToHtmlTarget(event.target as HTMLElement),
+      target: nodeToDocTarget(event.target as HTMLElement),
       time: Date.now(),
       value: event.key
     }));
@@ -102,7 +102,7 @@ export class Recorder {
     this.recordEvent("keyup", event => ({
       isTrusted: event.isTrusted,
       name: "keyup",
-      target: nodeToHtmlTarget(event.target as HTMLElement),
+      target: nodeToDocTarget(event.target as HTMLElement),
       time: Date.now(),
       value: event.key
     }));
@@ -113,7 +113,7 @@ export class Recorder {
       return {
         isTrusted: event.isTrusted,
         name: "paste",
-        target: nodeToHtmlTarget(event.target as HTMLElement),
+        target: nodeToDocTarget(event.target as HTMLElement),
         time: Date.now(),
         value: event.clipboardData.getData("text")
       };
@@ -147,7 +147,7 @@ export class Recorder {
       return {
         isTrusted: event.isTrusted,
         name: "scroll",
-        target: nodeToHtmlTarget(element),
+        target: nodeToDocTarget(element),
         time: Date.now(),
         value: {
           x: element.scrollLeft,

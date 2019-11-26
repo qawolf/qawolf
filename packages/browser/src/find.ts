@@ -2,7 +2,7 @@ import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { isNil, QAWolfWeb, waitFor } from "@qawolf/web";
 import { Locator, Step } from "@qawolf/types";
-import { ElementHandle, Page, Serializable } from "puppeteer";
+import { ElementHandle, Page } from "puppeteer";
 import { retryExecutionError } from "./retry";
 
 export type FindPropertyArgs = {
@@ -31,7 +31,7 @@ export const findElement = async (
       target: step.target,
       timeoutMs: findTimeoutMs,
       value: step.value
-    } as Serializable
+    } as any
   );
 
   const handle = jsHandle.asElement();

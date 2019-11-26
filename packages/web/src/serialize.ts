@@ -1,13 +1,8 @@
-import { HtmlTarget } from "@qawolf/types";
-import { parse as parseHtml, IDoc } from "html-parse-stringify";
+import { Doc, DocTarget, HtmlTarget } from "@qawolf/types";
+import { parse as parseHtml } from "html-parse-stringify";
 import "./html-parse-stringify";
 
-export type DocTarget = {
-  node: IDoc;
-  ancestors: IDoc[];
-};
-
-export const htmlToDoc = (html: string): IDoc => {
+export const htmlToDoc = (html: string): Doc => {
   const result = parseHtml(html);
   if (result.length !== 1) {
     throw new Error("htmlToDoc: only supports individual nodes");
@@ -20,7 +15,7 @@ export const nodeToHtml = (node: Node): string => {
   var serializer = new XMLSerializer();
   return serializer
     .serializeToString(node)
-    .replace(/xmlns=\"(.*?)\" /g, "") // remove namespace
+    .replace(/ xmlns=\"(.*?)\"/g, "") // remove namespace
     .replace(/(\r\n|\n|\r)/gm, ""); // remove newlines
 };
 
@@ -31,7 +26,6 @@ export const nodeToHtmlTarget = (
   /**
    * Serialize a node (deep) and it's ancestors (shallow).
    */
-
   const nodeHtml: string = nodeToHtml(node);
 
   let ancestorsHtml: string[] = [];
@@ -46,12 +40,21 @@ export const nodeToHtmlTarget = (
   return { node: nodeHtml, ancestors: ancestorsHtml };
 };
 
-export const htmlTargetToDoc = (target: HtmlTarget): DocTarget => {
-  const nodeDoc = htmlToDoc(target.node);
-  const ancestorsDoc = target.ancestors.map(a => htmlToDoc(a));
+export const nodeToDocTarget = (
+  node: Node,
+  numAncestors: number = 2
+): DocTarget => {
+  const htmlTarget = nodeToHtmlTarget(node, numAncestors);
+  return htmlToDocTarget(htmlTarget);
+};
 
-  return {
-    node: nodeDoc,
-    ancestors: ancestorsDoc
+export const htmlToDocTarget = (target: HtmlTarget): DocTarget => {
+  const node = htmlToDoc(target.node);
+  const ancestors = target.ancestors.map(a => htmlToDoc(a));
+
+  const docTarget = {
+    node,
+    ancestors
   };
+  return docTarget;
 };

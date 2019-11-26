@@ -1,21 +1,19 @@
-import { HtmlTarget, LocatorNew } from "@qawolf/types";
+import { DocTarget, Locator } from "@qawolf/types";
 import { DocMatch, matchTarget } from "./compare";
 import { queryElements } from "./query";
-import { htmlTargetToDoc, nodeToHtmlTarget } from "./serialize";
+import { nodeToDocTarget } from "./serialize";
 import { waitFor } from "./wait";
 // import { getXpath } from "./xpath";
 
 export const matchElements = (
   elements: HTMLElement[],
-  target: HtmlTarget
+  target: DocTarget
 ): DocMatch[] => {
-  const targetDoc = htmlTargetToDoc(target);
-
   // TODO include elements with matches
   let matches: DocMatch[] = [];
   elements.forEach(element => {
-    const elementDoc = htmlTargetToDoc(nodeToHtmlTarget(element));
-    matches.push(matchTarget(targetDoc, elementDoc));
+    const elementDoc = nodeToDocTarget(element);
+    matches.push(matchTarget(target, elementDoc));
   });
 
   // sort descending
@@ -24,7 +22,7 @@ export const matchElements = (
   return matches;
 };
 
-export const findElementNew = async (locator: LocatorNew) => {
+export const findElement = async (locator: Locator) => {
   let threshold = 1;
 
   let topMatch: DocMatch | null = null;

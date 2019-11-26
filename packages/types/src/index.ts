@@ -2,32 +2,25 @@ export type Action = "click" | "type" | "scroll" | "select";
 
 export type Callback<S = void, T = void> = (data?: S) => T;
 
-export type ElementDescriptor = {
-  alt?: string | null;
-  ariaLabel?: string | null;
-  classList?: string[] | null;
-  dataValue?: string | null;
-  href?: string | null;
-  iconContent?: string[] | null;
-  id?: string | null;
-  inputType?: string | null;
-  isContentEditable?: boolean | null;
-  labels?: string[] | null;
-  name?: string | null;
-  parentText?: string[] | null;
-  placeholder?: string | null;
-  src?: string | null;
-  tagName?: string | null;
-  innerText?: string | null;
-  title?: string | null;
-  xpath?: string | null;
+export interface Doc {
+  type: string;
+  content?: string;
+  voidElement: boolean;
+  name: string;
+  attrs: {};
+  children: Doc[];
+}
+
+export type DocTarget = {
+  node: Doc;
+  ancestors: Doc[];
 };
 
 export interface Event {
   name: EventName;
   isTrusted: boolean;
   pageId?: number;
-  target: HtmlTarget;
+  target: DocTarget;
   time: number;
 }
 
@@ -58,15 +51,7 @@ export interface KeyEvent extends Event {
 export type Locator = {
   action: Action;
   dataAttribute: string | null;
-  target: ElementDescriptor;
-  timeoutMs: number;
-  value?: string | null;
-};
-
-export type LocatorNew = {
-  action: Action;
-  dataAttribute: string | null;
-  target: HtmlTarget;
+  target: DocTarget;
   timeoutMs: number;
   value?: string | null;
 };
@@ -92,7 +77,7 @@ export type Step = {
   action: Action;
   index: number;
   pageId?: number;
-  target: ElementDescriptor;
+  target: DocTarget;
   value?: StepValue;
 };
 

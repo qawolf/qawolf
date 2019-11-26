@@ -1,4 +1,4 @@
-import { Action, Locator, LocatorNew } from "@qawolf/types";
+import { Action, Locator } from "@qawolf/types";
 import { isVisible } from "./element";
 
 type QueryByDataArgs = {
@@ -28,11 +28,7 @@ export const queryDataElements = ({
   return queryVisibleElements(dataSelector);
 };
 
-export const queryElements = ({
-  action,
-  dataAttribute,
-  target
-}: Locator | LocatorNew) => {
+export const queryElements = ({ action, dataAttribute, target }: Locator) => {
   // TODO ...
   // if (dataAttribute && target.dataValue) {
   //   return queryDataElements({

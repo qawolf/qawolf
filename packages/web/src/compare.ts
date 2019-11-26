@@ -1,6 +1,5 @@
-import { IDoc } from "html-parse-stringify";
+import { Doc, DocTarget } from "@qawolf/types";
 import { cleanText } from "./lang";
-import { DocTarget } from "./serialize";
 
 export interface Comparison {
   [K: string]: boolean | Comparison;
@@ -37,7 +36,7 @@ export const compareContent = (
   return cleanText(a || "") === cleanText(b || "");
 };
 
-export const compareDoc = (a: IDoc, b: IDoc | null): Comparison => {
+export const compareDoc = (a: Doc, b: Doc | null): Comparison => {
   const result: Comparison = compareAttributes(a.attrs, b ? b.attrs : {});
 
   if (a.content) {
