@@ -63,30 +63,46 @@ describe("compareDoc", () => {
       "children[0]": {
         "children[0]": {
           content: true,
-          name: true
+          tag: true
         },
-        name: true
+        tag: true
       },
       "children[1]": {
         "children[0]": {
           content: false,
-          name: false
+          tag: false
         },
         "class.bold": false,
         "class.small": false,
-        name: false
+        tag: false
       },
-      name: true
+      tag: true
     });
   });
 
   it("compares the tag", () => {
     expect(compareDoc(doc("<a></a>"), doc("<a></a>"))).toEqual({
-      name: true
+      tag: true
     });
 
     expect(compareDoc(doc("<a></a>"), doc("<p></p>"))).toEqual({
-      name: false
+      tag: false
+    });
+  });
+
+  it("compares the name separately from the tag", () => {
+    expect(
+      compareDoc(doc('<a name="hello"></a>'), doc('<a name="hello"></a>'))
+    ).toEqual({
+      name: true,
+      tag: true
+    });
+
+    expect(
+      compareDoc(doc('<a name="hello"></a>'), doc('<a name="goodbye"></p>'))
+    ).toEqual({
+      name: false,
+      tag: true
     });
   });
 });
@@ -95,26 +111,29 @@ describe("countComparison", () => {
   it("counts children keys", () => {
     const comparison = compareDoc(
       doc(
-        "<a><p class='small bold'>Hello</p><p class='small bold'>Sup</p></a>"
+        "<a><p class='small bold' name='hello'>Hello</p><p class='small bold'>Sup</p></a>"
       ),
-      doc("<a><p class='small bold'>Hello</p><p class='small bold'>Sup</p></a>")
+      doc(
+        "<a><p class='small bold' name='hello'>Hello</p><p class='small bold'>Sup</p></a>"
+      )
     );
 
     expect(countComparison(comparison)).toEqual({
       matches: [
         "children[0].class.small",
         "children[0].class.bold",
-        "children[0].children[0].content",
-        "children[0].children[0].name",
         "children[0].name",
+        "children[0].children[0].content",
+        "children[0].children[0].tag",
+        "children[0].tag",
         "children[1].class.small",
         "children[1].class.bold",
         "children[1].children[0].content",
-        "children[1].children[0].name",
-        "children[1].name",
-        "name"
+        "children[1].children[0].tag",
+        "children[1].tag",
+        "tag"
       ],
-      total: 11
+      total: 12
     });
   });
 });

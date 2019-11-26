@@ -80,7 +80,8 @@ export const compareDoc = (a: Doc, b: Doc | null): Comparison => {
     });
   }
 
-  result.name = b ? a.name === b.name : false;
+  // name it tag to not conflict with attrs.name
+  result.tag = b ? a.name === b.name : false;
 
   return result;
 };
@@ -116,10 +117,20 @@ export const countComparison = (
 export const matchTarget = (a: DocTarget, b: DocTarget): DocMatch => {
   const nodeComparison = compareDoc(a.node, b.node);
   const nodeCount = countComparison(nodeComparison);
-
   const strongKeys = nodeCount.matches.filter(m => strongMatchKeys.includes(m));
 
-  // TODO ancestors ...
-  const percent = (nodeCount.matches.length / nodeCount.total) * 100;
+  let matches = nodeCount.matches.length;
+  let total = nodeCount.total;
+
+  a.ancestors.forEach((ancestor, index) => {
+    const ancestorComparison = compareDoc(ancestor, b.ancestors[index]);
+    const ancestorCount = countComparison(ancestorComparison);
+    // half the value of ancestor matches every level
+    const weight = 1 / (index + 1 * 2);
+    matches += ancestorCount.matches.length * weight;
+    total += ancestorCount.total * weight;
+  });
+
+  const percent = (matches / total) * 100;
   return { nodeComparison, percent, strongKeys };
 };
