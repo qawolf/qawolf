@@ -1,5 +1,6 @@
 import { IDoc } from "html-parse-stringify";
 import { cleanText } from "./lang";
+import { DocTarget } from "./serialize";
 
 export interface Comparison {
   [K: string]: boolean | Comparison;
@@ -85,18 +86,37 @@ export const countComparison = (
   return count;
 };
 
-// TODO: make Target more explicit -> HtmlTarget, DocTarget
-// // { html: "<a>sup</a>", ancestors: ["", ""] }
-
 // // TODO strong matches
 // // can strong matches be on ancestors instead of the target?
 
-// type Match = {};
+export type DocMatch = {
+  nodeComparison: Comparison;
+  // ancestorsComparison: Comparison[];
+  percent: number;
+  strongKeys: string[];
+};
 
-// export const matchDocs = (aDocs: IDoc[], bDocs: IDoc[]): Match => {
-//   aDocs.forEach((aDoc, index) => {
-//     const bDoc = bDocs[index];
-//     const comparison = compareDoc(aDoc, bDoc);
-//     const reduced = countComparison(comparison);
-//   });
-// };
+const strongMatchKeys = [
+  "alt",
+  "content",
+  "id",
+  // TODO inline labels w/ serialization
+  "labels",
+  "name",
+  "placeholder",
+  "src",
+  "title"
+];
+
+// TODO strong match, action === click & xpath === /html || /html/body
+export const matchTarget = (a: DocTarget, b: DocTarget): DocMatch => {
+  const nodeComparison = compareDoc(a.node, b.node);
+  const nodeCount = countComparison(nodeComparison);
+
+  const strongKeys = nodeCount.matches.filter(m => strongMatchKeys.includes(m));
+
+  // TODO ancestors ...
+
+  const percent = nodeCount.matches.length / nodeCount.total;
+  return { nodeComparison, percent, strongKeys };
+};

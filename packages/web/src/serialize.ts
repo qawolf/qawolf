@@ -1,7 +1,15 @@
 import { parse as parseHtml, IDoc } from "html-parse-stringify";
 import "./html-parse-stringify";
 
-export type Target = string[];
+export type DocTarget = {
+  node: IDoc;
+  ancestors: IDoc[];
+};
+
+export type HtmlTarget = {
+  node: string;
+  ancestors: string[];
+};
 
 export const htmlToDoc = (html: string): IDoc => {
   const result = parseHtml(html);
@@ -20,29 +28,34 @@ export const nodeToHtml = (node: Node): string => {
     .replace(/(\r\n|\n|\r)/gm, ""); // remove newlines
 };
 
-export const nodeToTarget = (
-  targetNode: Node,
+export const nodeToHtmlTarget = (
+  node: Node,
   numAncestors: number = 2
-): Target => {
+): HtmlTarget => {
   /**
    * Serialize a node (deep) and it's ancestors (shallow).
    */
-  const serialized: string[] = [];
 
-  // the targetNode is the first item
-  // so we can easily identify it amongst variable ancestors
-  serialized.push(nodeToHtml(targetNode));
+  const nodeHtml: string = nodeToHtml(node);
 
-  let ancestor = targetNode.parentNode;
+  let ancestorsHtml: string[] = [];
+
+  let ancestor = node.parentNode;
   for (let i = 0; ancestor && i < numAncestors; i++) {
     let ancestorWithoutSiblings = ancestor.cloneNode(false);
-    serialized.push(nodeToHtml(ancestorWithoutSiblings));
+    ancestorsHtml.push(nodeToHtml(ancestorWithoutSiblings));
     ancestor = ancestor.parentNode;
   }
 
-  return serialized;
+  return { node: nodeHtml, ancestors: ancestorsHtml };
 };
 
-export const targetToDocs = (target: Target): IDoc[] => {
-  return target.map(html => htmlToDoc(html));
+export const htmlTargetToDoc = (target: HtmlTarget): DocTarget => {
+  const nodeDoc = htmlToDoc(target.node);
+  const ancestorsDoc = target.ancestors.map(a => htmlToDoc(a));
+
+  return {
+    node: nodeDoc,
+    ancestors: ancestorsDoc
+  };
 };
