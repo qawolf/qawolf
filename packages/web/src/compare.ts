@@ -108,7 +108,10 @@ const strongMatchKeys = [
   "title"
 ];
 
-// TODO strong match, action === click & xpath === /html || /html/body
+// TODO strong matches:
+// data attribute
+// label
+// action === click & xpath === /html || /html/body
 export const matchTarget = (a: DocTarget, b: DocTarget): DocMatch => {
   const nodeComparison = compareDoc(a.node, b.node);
   const nodeCount = countComparison(nodeComparison);

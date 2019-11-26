@@ -27,7 +27,7 @@ export interface Event {
   name: EventName;
   isTrusted: boolean;
   pageId?: number;
-  target: ElementDescriptor;
+  target: HtmlTarget;
   time: number;
 }
 
@@ -38,6 +38,11 @@ export type EventName =
   | "keyup"
   | "paste"
   | "scroll";
+
+export type HtmlTarget = {
+  node: string;
+  ancestors: string[];
+};
 
 export interface InputEvent extends Event {
   name: "input";
@@ -54,6 +59,14 @@ export type Locator = {
   action: Action;
   dataAttribute: string | null;
   target: ElementDescriptor;
+  timeoutMs: number;
+  value?: string | null;
+};
+
+export type LocatorNew = {
+  action: Action;
+  dataAttribute: string | null;
+  target: HtmlTarget;
   timeoutMs: number;
   value?: string | null;
 };

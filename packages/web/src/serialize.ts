@@ -1,14 +1,10 @@
+import { HtmlTarget } from "@qawolf/types";
 import { parse as parseHtml, IDoc } from "html-parse-stringify";
 import "./html-parse-stringify";
 
 export type DocTarget = {
   node: IDoc;
   ancestors: IDoc[];
-};
-
-export type HtmlTarget = {
-  node: string;
-  ancestors: string[];
 };
 
 export const htmlToDoc = (html: string): IDoc => {

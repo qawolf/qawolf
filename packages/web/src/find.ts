@@ -1,6 +1,9 @@
+import { HtmlTarget, LocatorNew } from "@qawolf/types";
 import { DocMatch, matchTarget } from "./compare";
-import { htmlTargetToDoc, HtmlTarget, nodeToHtmlTarget } from "./serialize";
+import { queryElements } from "./query";
+import { htmlTargetToDoc, nodeToHtmlTarget } from "./serialize";
 import { waitFor } from "./wait";
+// import { getXpath } from "./xpath";
 
 export const matchElements = (
   elements: HTMLElement[],
@@ -8,6 +11,7 @@ export const matchElements = (
 ): DocMatch[] => {
   const targetDoc = htmlTargetToDoc(target);
 
+  // TODO include elements with matches
   let matches: DocMatch[] = [];
   elements.forEach(element => {
     const elementDoc = htmlTargetToDoc(nodeToHtmlTarget(element));
@@ -20,15 +24,15 @@ export const matchElements = (
   return matches;
 };
 
-export const findElementNew = async (locator: Locator) => {
+export const findElementNew = async (locator: LocatorNew) => {
   let threshold = 1;
 
-  let topMatch = null;
+  let topMatch: DocMatch | null = null;
 
   const match = await waitFor(
     () => {
       const elements = queryElements(locator);
-      const matches = matchElements(elements, locator);
+      const matches = matchElements(elements, locator.target);
 
       if (matches.length < 1) return;
 
@@ -37,8 +41,8 @@ export const findElementNew = async (locator: Locator) => {
         console.log(
           `matched: ${topMatch.strongKeys}`,
           `${topMatch.percent}%`,
-          getXpath(topMatch.element),
-          topMatch.comparison
+          // getXpath(topMatch.element),
+          topMatch.nodeComparison
         );
         return topMatch;
       }
@@ -46,8 +50,8 @@ export const findElementNew = async (locator: Locator) => {
       if (topMatch.percent >= threshold) {
         console.log(
           `matched: ${topMatch.percent}% > ${threshold}% threshold`,
-          getXpath(topMatch.element),
-          topMatch.comparison
+          // getXpath(topMatch.element),
+          topMatch.nodeComparison
         );
         return topMatch;
       }
@@ -64,9 +68,9 @@ export const findElementNew = async (locator: Locator) => {
 
     if (topMatch) {
       console.log(
-        `closest match: ${topMatch.percent}%`,
-        getXpath(topMatch.element),
-        topMatch.comparison
+        `closest match: ${topMatch!.percent}%`,
+        // getXpath(topMatch.element),
+        topMatch!.nodeComparison
       );
     }
   }
