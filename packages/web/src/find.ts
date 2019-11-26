@@ -34,6 +34,8 @@ export const findElement = async (locator: Locator) => {
 
   let topElementMatch: ElementMatch | null = null;
 
+  console.log("findElement", locator);
+
   const elementMatch = await waitFor(
     () => {
       const elements = queryElements(locator);

@@ -40,15 +40,17 @@ export const compareAttributes = (a: any, b: any): Comparison => {
   const result: Comparison = {};
 
   Object.keys(a || {}).forEach(key => {
+    const bValue = (b || {})[key];
+
     if (key === "class") {
       const aClasses: string[] = (a[key] || "").split(" ");
-      const bClasses: string[] = (b[key] || "").split(" ");
+      const bClasses: string[] = (bValue || "").split(" ");
 
       aClasses.forEach(name => {
         result[`class.${name}`] = bClasses.includes(name);
       });
     } else {
-      result[key] = a[key] === b[key];
+      result[key] = a[key] === bValue;
     }
   });
 
@@ -73,7 +75,7 @@ export const compareDoc = (a: Doc, b: Doc | null): Comparison => {
     a.children.forEach((childA, index) => {
       result[`children[${index}]`] = compareDoc(
         childA,
-        b ? b.children[index] : null
+        b && b.children ? b.children[index] : null
       );
     });
   }
