@@ -1,43 +1,31 @@
-import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { isNil, DocSelector } from "@qawolf/web";
+import { FindOptions, HtmlSelector } from "@qawolf/types";
 import { ElementHandle, Page } from "puppeteer";
 import { findHtml } from "./findHtml";
 
-export type Locator =
-  // a selector string
-  | string
-  | {
-      docSelector?: DocSelector;
-      html?: string;
-      selector?: string;
-      text?: string;
-    };
+export type Selector = {
+  html?: HtmlSelector;
+  text?: string;
+};
 
-// TODO..
 export const find = async (
   page: Page,
-  locator: Locator,
-  timeoutMs?: number
+  selector: string | Selector,
+  options: FindOptions
 ): Promise<ElementHandle> => {
-  logger.verbose(`find: ${JSON.stringify(locator).substring(0, 100)}`);
-  const findTimeoutMs = (isNil(timeoutMs) ? CONFIG.findTimeoutMs : timeoutMs)!;
+  logger.verbose(`find: ${JSON.stringify(selector).substring(0, 100)}`);
 
-  //   if (typeof locator === "string") {
-  //     return findSelector(page, locator, findTimeoutMs);
+  //   if (typeof selector === "string") {
+  //     return findSelector(page, selector, findTimeoutMs);
   //   }
 
-  //   if (locator.selector) {
-  //     return findSelector(page, locator.selector, findTimeoutMs);
-  //   }
-
-  if (locator.html) {
-    return findHtml(page, locator.html, findTimeoutMs);
+  if (selector.html) {
+    return findHtml(page, selector.html, options);
   }
 
-  //   if (locator.text) {
-  //     return findText(page, locator.text, findTimeoutMs);
+  //   if (selector.text) {
+  //     return findText(page, selector.text, findTimeoutMs);
   //   }
 
-  throw new Error(`Invalid locator ${locator}`);
+  throw new Error(`Invalid selector ${selector}`);
 };

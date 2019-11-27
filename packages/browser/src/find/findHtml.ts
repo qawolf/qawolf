@@ -1,41 +1,31 @@
 import { CONFIG } from "@qawolf/config";
-import { DocSelector, Locator } from "@qawolf/types";
-import { htmlToDocSelector, QAWolfWeb } from "@qawolf/web";
+import { DocSelector, FindOptions } from "@qawolf/types";
+import { htmlToDoc, QAWolfWeb } from "@qawolf/web";
 import { ElementHandle, Page } from "puppeteer";
 
-export type FindHtmlSelecotr = string | DocSelector;
+export type HtmlSelector = string | DocSelector;
 
-// TODO how to get action & value ....
-// TODO selector vs locator
 export const findHtml = async (
   page: Page,
-  locator: HtmlLocator,
-  timeoutMs: number
+  selector: HtmlSelector,
+  options: FindOptions
 ): Promise<ElementHandle> => {
-  const selector =
-    typeof locator === "string"
-      ? // convert the html string to a doc selector
-        htmlToDocSelector({ node: locator, ancestors: [] })
-      : locator;
+  const docSelector =
+    typeof selector === "string"
+      ? { node: htmlToDoc(selector), ancestors: [] }
+      : selector;
 
   const jsHandle = await page.evaluateHandle(
-    (locator: Locator) => {
+    (docSelector, options) => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
-      return qawolf.find.findElement(locator);
+      return qawolf.find.findHtml(docSelector, options);
     },
+    docSelector as any,
     {
-      action,
-      dataAttribute: CONFIG.dataAttribute,
-      selector,
-      timeoutMs: findTimeoutMs,
-      value: step.value
-    } as any
+      ...options,
+      dataAttribute: CONFIG.dataAttribute
+    }
   );
 
-  const handle = jsHandle.asElement();
-  if (!handle) {
-    throw new Error(`No element handle found for step ${step.index}`);
-  }
-
-  return handle;
+  return jsHandle.asElement();
 };

@@ -87,7 +87,7 @@ export class Browser {
   //   waitForRequests: boolean = true,
   //   timeoutMs?: number
   // ): Promise<ElementHandle> {
-  //   const page = await this.getPage(step.pageId, waitForRequests);
+  //   const page = await this.getPage(step.page, waitForRequests);
   //   return findElement(page, step, timeoutMs);
   // }
 
@@ -95,7 +95,7 @@ export class Browser {
     const events: Event[] = [];
 
     this._pages.forEach((page, index) =>
-      page.events.forEach(event => events.push({ ...event, pageId: index }))
+      page.events.forEach(event => events.push({ ...event, page: index }))
     );
 
     return sortBy(events, e => e.time);

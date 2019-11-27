@@ -16,10 +16,15 @@ export type DocSelector = {
   ancestors: Doc[];
 };
 
+export type DocSelectorSerialized = {
+  node: string;
+  ancestors: string[];
+};
+
 export interface Event {
   name: EventName;
   isTrusted: boolean;
-  pageId?: number;
+  page?: number;
   target: DocSelector;
   time: number;
 }
@@ -32,9 +37,10 @@ export type EventName =
   | "paste"
   | "scroll";
 
-export type HtmlSelector = {
-  node: string;
-  ancestors: string[];
+export type FindOptions = {
+  action?: Action;
+  timeoutMs?: number;
+  value?: string;
 };
 
 export interface InputEvent extends Event {
@@ -47,14 +53,6 @@ export interface KeyEvent extends Event {
   // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
   value: string;
 }
-
-export type Locator = {
-  action: Action;
-  dataAttribute: string | null;
-  target: DocTarget;
-  timeoutMs: number;
-  value?: string | null;
-};
 
 export interface PasteEvent extends Event {
   name: "paste";
@@ -76,8 +74,8 @@ export type Size = "desktop" | "tablet" | "mobile";
 export type Step = {
   action: Action;
   index: number;
-  pageId?: number;
-  target: DocTarget;
+  page?: number;
+  selector: DocSelector;
   value?: StepValue;
 };
 

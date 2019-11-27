@@ -178,7 +178,7 @@ export class Runner {
         await focusClear(element!);
       }
 
-      const page = await this._browser.getPage(step.pageId);
+      const page = await this._browser.getPage(step.page);
       if (typeValue) await type(page, typeValue);
     });
   }
