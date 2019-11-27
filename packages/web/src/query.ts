@@ -29,12 +29,12 @@ export const queryDataElements = ({
 };
 
 export const queryElements = ({ action, dataAttribute, target }: Locator) => {
-  // TODO ...
-  // if (dataAttribute && target.dataValue) {
+  // const dataValue = target.node.attrs[dataAttribute];
+  // if (dataValue) {
   //   return queryDataElements({
   //     action,
   //     dataAttribute,
-  //     dataValue: target.dataValue!
+  //     dataValue
   //   });
   // }
 

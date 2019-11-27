@@ -30,7 +30,8 @@ export const matchElements = (
 };
 
 export const findElement = async (locator: Locator) => {
-  let threshold = 1;
+  // if there is no timeout -- set the min threshold
+  let threshold = locator.timeoutMs ? 100 : 75;
 
   let topElementMatch: ElementMatch | null = null;
 
@@ -49,7 +50,7 @@ export const findElement = async (locator: Locator) => {
         console.log(
           `matched: ${topMatch.strongKeys}`,
           `${topMatch.percent}%`,
-          // getXpath(top.element),
+          getXpath(topElementMatch!.element),
           topMatch.nodeComparison
         );
         return topElementMatch;
@@ -58,14 +59,14 @@ export const findElement = async (locator: Locator) => {
       if (topMatch.percent >= threshold) {
         console.log(
           `matched: ${topMatch.percent}% > ${threshold}% threshold`,
-          // getXpath(top.element),
+          getXpath(topElementMatch!.element),
           topMatch.nodeComparison
         );
         return topElementMatch;
       }
 
       // reduce threshold 1% per second
-      threshold = Math.max(0.75, threshold - 0.001);
+      threshold = Math.max(75, threshold - 0.1);
     },
     locator.timeoutMs,
     100

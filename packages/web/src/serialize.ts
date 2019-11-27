@@ -1,12 +1,11 @@
-import { Doc, DocTarget, HtmlTarget } from "@qawolf/types";
+import { Doc, DocSelector, HtmlSelector } from "@qawolf/types";
 import { parse as parseHtml } from "html-parse-stringify";
 import "./html-parse-stringify";
 
 export const htmlToDoc = (html: string): Doc => {
   const result = parseHtml(html);
   if (result.length !== 1) {
-    console.log("invalid html", html);
-    debugger;
+    console.log("invalid html", html, result);
     throw new Error("htmlToDoc: only supports individual nodes");
   }
 
@@ -21,10 +20,10 @@ export const nodeToHtml = (node: Node): string => {
     .replace(/(\r\n|\n|\r)/gm, ""); // remove newlines
 };
 
-export const nodeToHtmlTarget = (
+export const nodeToHtmlSelector = (
   node: Node,
   numAncestors: number = 2
-): HtmlTarget => {
+): HtmlSelector => {
   /**
    * Serialize a node (deep) and it's ancestors (shallow).
    */
@@ -44,21 +43,21 @@ export const nodeToHtmlTarget = (
   return { node: nodeHtml, ancestors: ancestorsHtml };
 };
 
-export const nodeToDocTarget = (
+export const nodeToDocSelector = (
   node: Node,
   numAncestors: number = 2
-): DocTarget => {
-  const htmlTarget = nodeToHtmlTarget(node, numAncestors);
-  return htmlToDocTarget(htmlTarget);
+): DocSelector => {
+  const htmlSelector = nodeToHtmlSelector(node, numAncestors);
+  return htmlToDocSelector(htmlSelector);
 };
 
-export const htmlToDocTarget = (target: HtmlTarget): DocTarget => {
-  const node = htmlToDoc(target.node);
-  const ancestors = target.ancestors.map(a => htmlToDoc(a));
+export const htmlToDocSelector = (selector: HtmlSelector): DocSelector => {
+  const node = htmlToDoc(selector.node);
+  const ancestors = selector.ancestors.map(a => htmlToDoc(a));
 
-  const docTarget = {
+  const docSelector = {
     node,
     ancestors
   };
-  return docTarget;
+  return docSelector;
 };

@@ -5,7 +5,6 @@ import { waitFor } from "@qawolf/web";
 import { sortBy } from "lodash";
 import puppeteer, { devices, ElementHandle } from "puppeteer";
 import { getDevice } from "./device";
-import { findElement } from "./find";
 import { launchPuppeteerBrowser } from "./launch";
 import { DecoratedPage, QAWolfPage } from "./QAWolfPage";
 
@@ -82,14 +81,15 @@ export class Browser {
     return this._device;
   }
 
-  public async element(
-    step: Step,
-    waitForRequests: boolean = true,
-    timeoutMs?: number
-  ): Promise<ElementHandle> {
-    const page = await this.getPage(step.pageId, waitForRequests);
-    return findElement(page, step, timeoutMs);
-  }
+  // TODO...
+  // public async find(
+  //   step: Step,
+  //   waitForRequests: boolean = true,
+  //   timeoutMs?: number
+  // ): Promise<ElementHandle> {
+  //   const page = await this.getPage(step.pageId, waitForRequests);
+  //   return findElement(page, step, timeoutMs);
+  // }
 
   public get events() {
     const events: Event[] = [];

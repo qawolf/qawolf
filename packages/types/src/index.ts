@@ -11,7 +11,7 @@ export interface Doc {
   children: Doc[];
 }
 
-export type DocTarget = {
+export type DocSelector = {
   node: Doc;
   ancestors: Doc[];
 };
@@ -20,7 +20,7 @@ export interface Event {
   name: EventName;
   isTrusted: boolean;
   pageId?: number;
-  target: DocTarget;
+  target: DocSelector;
   time: number;
 }
 
@@ -32,7 +32,7 @@ export type EventName =
   | "paste"
   | "scroll";
 
-export type HtmlTarget = {
+export type HtmlSelector = {
   node: string;
   ancestors: string[];
 };

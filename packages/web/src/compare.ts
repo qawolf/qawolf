@@ -115,6 +115,8 @@ export const countComparison = (
 };
 
 export const matchTarget = (a: DocTarget, b: DocTarget): DocMatch => {
+  // TODO if body/html return 100% --
+
   const nodeComparison = compareDoc(a.node, b.node);
   const nodeCount = countComparison(nodeComparison);
   const strongKeys = nodeCount.matches.filter(m => strongMatchKeys.includes(m));
