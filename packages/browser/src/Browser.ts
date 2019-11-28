@@ -1,12 +1,13 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { Callback, Event, Size, Step } from "@qawolf/types";
+import { Callback, Event, FindOptions, Size, Step } from "@qawolf/types";
 import { waitFor } from "@qawolf/web";
 import { sortBy } from "lodash";
 import puppeteer, { devices, ElementHandle } from "puppeteer";
 import { getDevice } from "./device";
 import { launchPuppeteerBrowser } from "./launch";
 import { DecoratedPage, QAWolfPage } from "./QAWolfPage";
+import { findElement, Selector } from "./find";
 
 export type BrowserCreateOptions = {
   domPath?: string;
@@ -81,16 +82,6 @@ export class Browser {
     return this._device;
   }
 
-  // TODO...
-  // public async find(
-  //   step: Step,
-  //   waitForRequests: boolean = true,
-  //   timeoutMs?: number
-  // ): Promise<ElementHandle> {
-  //   const page = await this.getPage(step.page, waitForRequests);
-  //   return findElement(page, step, timeoutMs);
-  // }
-
   public get events() {
     const events: Event[] = [];
 
@@ -99,6 +90,21 @@ export class Browser {
     );
 
     return sortBy(events, e => e.time);
+  }
+
+  public async findElement(
+    selectorOrStep: Selector | Step,
+    options?: FindOptions
+  ): Promise<ElementHandle | null> {
+    const findOptions = options || { timeoutMs: CONFIG.findTimeoutMs };
+
+    const page = await this.getPage(
+      (selectorOrStep as Step).page || 0,
+      findOptions.waitForRequests,
+      findOptions.timeoutMs
+    );
+
+    return findElement(page, selectorOrStep, findOptions);
   }
 
   public async goto(

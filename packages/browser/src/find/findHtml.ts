@@ -1,4 +1,5 @@
 import { CONFIG } from "@qawolf/config";
+import { logger } from "@qawolf/logger";
 import { DocSelector, FindOptions } from "@qawolf/types";
 import { htmlToDoc, QAWolfWeb } from "@qawolf/web";
 import { ElementHandle, Page } from "puppeteer";
@@ -10,9 +11,13 @@ export const findHtml = async (
   selector: HtmlSelector,
   options: FindOptions
 ): Promise<ElementHandle | null> => {
+  // XXX logging the html would be prettier...
+  logger.verbose(`findHtml: ${JSON.stringify(selector)}`);
+
   const docSelector =
     typeof selector === "string"
-      ? { node: htmlToDoc(selector), ancestors: [] }
+      ? // convert the html to a document
+        { node: htmlToDoc(selector), ancestors: [] }
       : selector;
 
   const jsHandle = await page.evaluateHandle(

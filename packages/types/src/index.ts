@@ -41,6 +41,7 @@ export type FindOptions = {
   action?: Action;
   timeoutMs: number;
   value?: string;
+  waitForRequests?: boolean;
 };
 
 export interface InputEvent extends Event {
@@ -73,9 +74,9 @@ export type Size = "desktop" | "tablet" | "mobile";
 
 export type Step = {
   action: Action;
+  html: DocSelector;
   index: number;
   page?: number;
-  selector: DocSelector;
   value?: StepValue;
 };
 

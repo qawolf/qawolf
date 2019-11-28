@@ -1,7 +1,7 @@
 import { Step } from "@qawolf/types";
 
 export const formatDescription = (step: Step): string => {
-  const target = step.selector.node;
+  const target = step.html.node;
 
   // TODO
   // const label = target.labels ? target.labels.join(" ") : "";
@@ -35,7 +35,7 @@ export const formatIt = (step: Step): string => {
 
   const description = formatDescription(step);
 
-  const target = step.selector.node;
+  const target = step.html.node;
 
   // link/input
   const tagName = `${target.name === "a" ? " link" : ` ${target.name}` || ""}`;

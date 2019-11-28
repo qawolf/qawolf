@@ -185,7 +185,7 @@ export class Runner {
 
   private async beforeAction(step: Step | null) {
     logger.verbose(`Runner: beforeAction`);
-    let element = step ? await this._browser.element(step) : null;
+    let element = step ? await this._browser.findElement(step) : null;
 
     if (CONFIG.sleepMs) {
       logger.verbose(`Runner: beforeAction sleep ${CONFIG.sleepMs} ms`);
@@ -194,7 +194,10 @@ export class Runner {
       // reload the element in case it changed since the sleep
       if (step) {
         logger.verbose("Runner: beforeAction reload element after sleep");
-        element = await this._browser.element(step, false, 0);
+        element = await this._browser.findElement(step, {
+          timeoutMs: 0,
+          waitForRequests: false
+        });
       }
     }
 

@@ -35,10 +35,10 @@ export class TypeStepFactory {
 
     this.steps.push({
       action: "type",
+      html: event.target,
       // include event index so we can sort in buildSteps
       index: this.events.indexOf(event),
       page: event.page,
-      selector: event.target,
       value: serializeStrokes(this.pendingStrokes)
     });
 

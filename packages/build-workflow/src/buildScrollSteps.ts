@@ -24,9 +24,9 @@ export const buildScrollSteps = (events: Event[]): Step[] => {
 
     steps.push({
       action: "scroll",
+      html: event.target,
       // include event index so we can sort in buildSteps
       index: i,
-      selector: event.target,
       page: event.page,
       value: event.value
     });

@@ -14,10 +14,10 @@ export const buildSelectSteps = (events: Event[]): Step[] => {
 
     steps.push({
       action: "select",
+      html: event.target,
       // include event index so we can sort in buildSteps
       index: i,
       page: event.page,
-      selector: event.target,
       value: event.value
     });
   }
