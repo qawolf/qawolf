@@ -9,6 +9,7 @@ import {
   retryExecutionError,
   scroll,
   select,
+  Selector,
   type
 } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
@@ -89,11 +90,11 @@ export class Runner {
     return this._values;
   }
 
-  public async click(step: Step) {
-    logger.verbose(`Runner: click step ${step.index}`);
+  public async click(selectorOrStep: Selector | Step) {
+    // logger.verbose(`Runner: click step ${toString(selectorOrStep)}`);
 
     await retryExecutionError(async () => {
-      const element = await this.beforeAction(step);
+      const element = await this.beforeAction(selectorOrStep);
       await click(element!);
     });
   }
@@ -162,8 +163,8 @@ export class Runner {
     });
   }
 
-  public async type(step: Step, value?: StepValue) {
-    logger.verbose(`Runner: type step ${step.index}`);
+  public async type(selectorOrStep: Selector | Step, value?: StepValue) {
+    // logger.verbose(`Runner: type step ${toString(selectorOrStep)}`);
 
     const typeValue = value as (string | null);
 
@@ -173,28 +174,34 @@ export class Runner {
         !typeValue ||
         !(typeValue.startsWith("↓Enter") || typeValue.startsWith("↓Tab"));
 
-      const element = await this.beforeAction(shouldFocusClear ? step : null);
+      const element = await this.beforeAction(
+        shouldFocusClear ? selectorOrStep : null
+      );
       if (shouldFocusClear) {
         await focusClear(element!);
       }
 
-      const page = await this._browser.getPage(step.page);
+      const page = await this._browser.getPage(
+        (selectorOrStep as Step).page || 0
+      );
       if (typeValue) await type(page, typeValue);
     });
   }
 
-  private async beforeAction(step: Step | null) {
+  private async beforeAction(selectorOrStep: Selector | Step | null) {
     logger.verbose(`Runner: beforeAction`);
-    let element = step ? await this._browser.findElement(step) : null;
+    let element = selectorOrStep
+      ? await this._browser.findElement(selectorOrStep)
+      : null;
 
     if (CONFIG.sleepMs) {
       logger.verbose(`Runner: beforeAction sleep ${CONFIG.sleepMs} ms`);
       await sleep(CONFIG.sleepMs);
 
       // reload the element in case it changed since the sleep
-      if (step) {
+      if (selectorOrStep) {
         logger.verbose("Runner: beforeAction reload element after sleep");
-        element = await this._browser.findElement(step, {
+        element = await this._browser.findElement(selectorOrStep, {
           timeoutMs: 0,
           waitForRequests: false
         });
