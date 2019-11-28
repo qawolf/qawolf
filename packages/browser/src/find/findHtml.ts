@@ -10,8 +10,8 @@ export const findHtml = async (
   page: Page,
   selector: HtmlSelector,
   options: FindOptions
-): Promise<ElementHandle | null> => {
-  // XXX logging the html would be prettier...
+): Promise<ElementHandle<Element> | null> => {
+  // TODO logging the html would be prettier...
   logger.verbose(`findHtml: ${JSON.stringify(selector)}`);
 
   const docSelector =
