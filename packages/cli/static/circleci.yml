@@ -27,3 +27,18 @@ jobs:
 
       - store_artifacts:
           path: /tmp/artifacts
+# # example for running on a schedule, edit to suit your use case
+# # documentation: https://circleci.com/docs/2.0/configuration-reference/#schedule
+# workflows:
+#   version: 2
+#   on_schedule:
+#     jobs:
+#       - build
+#     triggers:
+#       - schedule:
+#           # test on schedule using cron syntax
+#           cron: "0 * * * *" # every hour
+#           filters:
+#             branches:
+#               only:
+#                 - master
