@@ -62,6 +62,13 @@ program
     await saveCiTemplate("github");
   });
 
+program
+  .command("gitlab")
+  .description("set up GitLab CI/CD")
+  .action(async () => {
+    await saveCiTemplate("gitlab");
+  });
+
 program.arguments("<command>").action(cmd => {
   console.log(yellow(`Invalid command "${cmd}"\n`));
   program.help();
