@@ -1,0 +1,11 @@
+qawolf:
+  image: qawolf/qawolf:latest
+  script: qawolf test
+  variables:
+    # output artifacts
+    - QAW_DOM_PATH: /tmp/artifacts
+    - QAW_LOG_PATH: /tmp/artifacts
+    - QAW_VIDEO_PATH: /tmp/artifacts
+  artifacts:
+    paths:
+      - /tmp/artifacts

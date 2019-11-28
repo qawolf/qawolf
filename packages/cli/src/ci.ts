@@ -2,12 +2,13 @@ import { copy, pathExists } from "fs-extra";
 import { prompt } from "inquirer";
 import path from "path";
 
-type CiProvider = "azure" | "circleci" | "github";
+type CiProvider = "azure" | "circleci" | "github" | "gitlab";
 
 const paths = {
   azure: "azure-pipelines.yml",
   circleci: ".circleci/config.yml",
-  github: ".github/workflows/qawolf.yml"
+  github: ".github/workflows/qawolf.yml",
+  gitlab: ".gitlab-ci.yml"
 };
 
 export const saveCiTemplate = async (provider: CiProvider): Promise<void> => {
