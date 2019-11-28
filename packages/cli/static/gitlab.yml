@@ -3,9 +3,19 @@ qawolf:
   script: qawolf test
   variables:
     # output artifacts
-    - QAW_DOM_PATH: /tmp/artifacts
-    - QAW_LOG_PATH: /tmp/artifacts
-    - QAW_VIDEO_PATH: /tmp/artifacts
+    QAW_DOM_PATH: $CI_PROJECT_DIR/artifacts
+    QAW_LOG_PATH: $CI_PROJECT_DIR/artifacts
+    QAW_VIDEO_PATH: $CI_PROJECT_DIR/artifacts
+    ## configure tests with environment variables
+    ## set "QAW_URL" to override the url for all tests
+    # QAW_URL: www.my_staging_url.com
+    ## set "QAW_TESTNAME_URL" to override the url for the test named "testname"
+    # QAW_CREATE_ACCOUNT_URL: www.mysite.com/createaccount
+    ## set "QAW_TESTNAME_0" to override values[0] for the test named "testname"
+    # QAW_LOGIN_0: "my_username"
+    ## you can also use GitLab protected environment variables
+    ## https://docs.gitlab.com/ee/ci/variables/#protected-environment-variables
+    # QAW_LOGIN_1: $SECRET_PASSWORD
   artifacts:
     paths:
-      - /tmp/artifacts
+      - $CI_PROJECT_DIR/artifacts
