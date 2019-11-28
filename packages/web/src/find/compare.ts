@@ -1,5 +1,5 @@
-import { Doc, DocTarget } from "@qawolf/types";
-import { cleanText } from "./lang";
+import { Doc, DocSelector } from "@qawolf/types";
+import { cleanText } from "../lang";
 
 export interface Comparison {
   [K: string]: boolean | Comparison;
@@ -114,7 +114,7 @@ export const countComparison = (
   return count;
 };
 
-export const matchTarget = (a: DocTarget, b: DocTarget): DocMatch => {
+export const matchTarget = (a: DocSelector, b: DocSelector): DocMatch => {
   // TODO if body/html return 100% --
 
   const nodeComparison = compareDoc(a.node, b.node);

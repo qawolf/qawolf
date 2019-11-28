@@ -17,7 +17,7 @@ describe("queryActionElements", () => {
   it("returns all elements for click action", async () => {
     const actionElementCount = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
-      const actionElements = qawolf.query.queryActionElements("click");
+      const actionElements = qawolf.find.queryActionElements("click");
 
       return actionElements.length;
     });
@@ -28,7 +28,7 @@ describe("queryActionElements", () => {
   it("returns only input elements for input action", async () => {
     const actionElements = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
-      const actionElements = qawolf.query.queryActionElements("type");
+      const actionElements = qawolf.find.queryActionElements("type");
 
       return actionElements.map((el: HTMLElement) => qawolf.xpath.getXpath(el));
     });
@@ -47,7 +47,7 @@ describe("queryActionElements", () => {
       username.style.padding = "0";
       username.style.width = "0";
 
-      const actionElements = qawolf.query.queryActionElements("type");
+      const actionElements = qawolf.find.queryActionElements("type");
 
       return actionElements.map((el: HTMLElement) => qawolf.xpath.getXpath(el));
     });
@@ -65,7 +65,7 @@ describe("queryDataElements", () => {
       const submit = document.getElementsByTagName("button")[0]!;
       submit.setAttribute("data-qa", "submit");
 
-      const dataElements = qawolf.query.queryDataElements({
+      const dataElements = qawolf.find.queryDataElements({
         action: "click",
         dataAttribute: "data-qa",
         dataValue: "submit"
@@ -86,7 +86,7 @@ describe("queryDataElements", () => {
       username.setAttribute("data-qa", "username");
       submit.setAttribute("data-qa", "username");
 
-      const dataElements = qawolf.query.queryDataElements({
+      const dataElements = qawolf.find.queryDataElements({
         action: "type",
         dataAttribute: "data-qa",
         dataValue: "username"
@@ -114,7 +114,7 @@ describe("queryDataElements", () => {
       username.setAttribute("data-qa", "username");
       password.setAttribute("data-qa", "username");
 
-      const dataElements = qawolf.query.queryDataElements({
+      const dataElements = qawolf.find.queryDataElements({
         action: "type",
         dataAttribute: "data-qa",
         dataValue: "username"
@@ -138,7 +138,7 @@ describe("queryVisibleElements", () => {
       username.style.padding = "0";
       username.style.width = "0";
 
-      const actionElements = qawolf.query.queryVisibleElements("input");
+      const actionElements = qawolf.find.queryVisibleElements("input");
 
       return actionElements.map((el: HTMLElement) => qawolf.xpath.getXpath(el));
     });

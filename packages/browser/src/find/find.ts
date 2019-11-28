@@ -1,7 +1,7 @@
 import { logger } from "@qawolf/logger";
-import { FindOptions, HtmlSelector } from "@qawolf/types";
+import { FindOptions } from "@qawolf/types";
 import { ElementHandle, Page } from "puppeteer";
-import { findHtml } from "./findHtml";
+import { findHtml, HtmlSelector } from "./findHtml";
 
 export type Selector = {
   html?: HtmlSelector;
@@ -12,12 +12,13 @@ export const find = async (
   page: Page,
   selector: string | Selector,
   options: FindOptions
-): Promise<ElementHandle> => {
+): Promise<ElementHandle | null> => {
   logger.verbose(`find: ${JSON.stringify(selector).substring(0, 100)}`);
 
-  //   if (typeof selector === "string") {
-  //     return findSelector(page, selector, findTimeoutMs);
-  //   }
+  if (typeof selector === "string") {
+    throw new Error("TODO");
+    // return findSelector(page, selector, findTimeoutMs);
+  }
 
   if (selector.html) {
     return findHtml(page, selector.html, options);

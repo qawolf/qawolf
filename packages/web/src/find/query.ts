@@ -1,5 +1,5 @@
-import { Action, Locator } from "@qawolf/types";
-import { isVisible } from "./element";
+import { Action, FindOptions, DocSelector } from "@qawolf/types";
+import { isVisible } from "../element";
 
 type QueryByDataArgs = {
   action: Action;
@@ -28,7 +28,10 @@ export const queryDataElements = ({
   return queryVisibleElements(dataSelector);
 };
 
-export const queryElements = ({ action, dataAttribute, target }: Locator) => {
+export const queryElements = (
+  selector: DocSelector,
+  { action }: FindOptions
+) => {
   // const dataValue = target.node.attrs[dataAttribute];
   // if (dataValue) {
   //   return queryDataElements({
@@ -38,7 +41,8 @@ export const queryElements = ({ action, dataAttribute, target }: Locator) => {
   //   });
   // }
 
-  return queryActionElements(action);
+  // default to click since it will query all elements
+  return queryActionElements(action || "click");
 };
 
 export const queryVisibleElements = (selector: string): HTMLElement[] => {

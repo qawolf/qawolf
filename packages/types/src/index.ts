@@ -39,7 +39,7 @@ export type EventName =
 
 export type FindOptions = {
   action?: Action;
-  timeoutMs?: number;
+  timeoutMs: number;
   value?: string;
 };
 

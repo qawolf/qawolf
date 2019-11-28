@@ -1,6 +1,6 @@
 import { Doc, DocSelector, DocSelectorSerialized } from "@qawolf/types";
 import { parse as parseHtml } from "html-parse-stringify";
-import "./html-parse-stringify";
+import "./types";
 
 export const deserializeDocSelector = (
   serialized: DocSelectorSerialized

@@ -9,7 +9,7 @@ export const findHtml = async (
   page: Page,
   selector: HtmlSelector,
   options: FindOptions
-): Promise<ElementHandle> => {
+): Promise<ElementHandle | null> => {
   const docSelector =
     typeof selector === "string"
       ? { node: htmlToDoc(selector), ancestors: [] }
@@ -24,7 +24,7 @@ export const findHtml = async (
     {
       ...options,
       dataAttribute: CONFIG.dataAttribute
-    }
+    } as any
   );
 
   return jsHandle.asElement();
