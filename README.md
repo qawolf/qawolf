@@ -54,22 +54,28 @@ npx qawolf test [name]
 
 [Documentation](https://www.qawolf.com/docs/set_up_ci)
 
-Set up CI with [CircleCI](https://www.qawolf.com/docs/set_up_ci#circleci):
-
-```bash
-npx qawolf circleci
-```
-
 Set up CI with [Azure DevOps](https://www.qawolf.com/docs/set_up_ci#azure-devops):
 
 ```bash
 npx qawolf azure
 ```
 
+Set up CI with [CircleCI](https://www.qawolf.com/docs/set_up_ci#circleci):
+
+```bash
+npx qawolf circleci
+```
+
 Set up CI with [GitHub Actions](https://www.qawolf.com/docs/set_up_ci#github-actions):
 
 ```bash
 npx qawolf github
+```
+
+Set up CI with [GitLab CI/CD](https://docs.gitlab.com/ee/ci/README.html):
+
+```bash
+npx qawolf gitlab
 ```
 
 This will generate the relevant config file in your project. Edit this file as you like!
