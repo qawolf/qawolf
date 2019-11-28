@@ -18,7 +18,7 @@ describe("scroll", () => {
     const initialYPosition = await page.evaluate(() => window.pageYOffset);
     expect(initialYPosition).toBe(0);
 
-    const element = await browser.element({
+    const element = await browser.findElement({
       action: "scroll",
       index: 0,
       target: { xpath: "/html" }
@@ -40,7 +40,7 @@ describe("scroll", () => {
     const initialYPosition = await page.evaluate(() => window.pageYOffset);
     expect(initialYPosition).toBe(0);
 
-    const element = await browser.element({
+    const element = await browser.findElement({
       action: "scroll",
       index: 0,
       target: { xpath: "/html" }
@@ -64,7 +64,7 @@ describe("scroll", () => {
       html.scroll = () => {};
     });
 
-    const element = await browser.element({
+    const element = await browser.findElement({
       action: "scroll",
       index: 0,
       target: { xpath: "/html" }

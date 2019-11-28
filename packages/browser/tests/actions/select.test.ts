@@ -22,7 +22,7 @@ describe("select", () => {
     });
     expect(selectValue).toBeFalsy();
 
-    const element = await browser.element({
+    const element = await browser.findElement({
       action: "type",
       index: 0,
       target: { id: "dropdown", tagName: "select" }
@@ -37,7 +37,7 @@ describe("select", () => {
   });
 
   it("throws error if option with value not available before timeout", async () => {
-    const element = await browser.element({
+    const element = await browser.findElement({
       action: "type",
       index: 0,
       target: { id: "dropdown", tagName: "select" }
@@ -48,7 +48,7 @@ describe("select", () => {
   });
 
   it("throws error if option with value available but disabled before timeout", async () => {
-    const element = await browser.element({
+    const element = await browser.findElement({
       action: "type",
       index: 0,
       target: { id: "dropdown", tagName: "select" }

@@ -44,7 +44,7 @@ describe("Browser.element", () => {
   it("locates an element", async () => {
     const browser = await Browser.create({ url: `${CONFIG.testUrl}login` });
 
-    const elementHandle = await browser.element({
+    const elementHandle = await browser.findElement({
       action: "click",
       index: 0,
       target: { id: "login" }

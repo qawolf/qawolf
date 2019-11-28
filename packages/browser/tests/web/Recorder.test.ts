@@ -10,7 +10,7 @@ describe("Recorder", () => {
       recordEvents: true,
       url: CONFIG.testUrl
     });
-    const element = await browser.element({
+    const element = await browser.findElement({
       action: "click",
       index: 0,
       target: {
@@ -37,7 +37,7 @@ describe("Recorder", () => {
       url: `${CONFIG.testUrl}login`
     });
 
-    const element = await browser.element({
+    const element = await browser.findElement({
       action: "type",
       index: 0,
       target: { id: "password", xpath: "//*[@id='password']" }
@@ -106,7 +106,7 @@ describe("Recorder", () => {
     });
     const page = await browser.currentPage();
 
-    const element = await browser.element({
+    const element = await browser.findElement({
       action: "type",
       index: 0,
       target: { id: "dropdown", tagName: "select" }
@@ -134,7 +134,7 @@ describe("Recorder", () => {
       url: `${CONFIG.testUrl}login`
     });
 
-    const element = await browser.element({
+    const element = await browser.findElement({
       action: "type",
       index: 0,
       target: { id: "password", xpath: "//*[@id='password']" }

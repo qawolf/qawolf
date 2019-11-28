@@ -9,13 +9,13 @@ describe("focusClear and type", () => {
     });
     const page = await browser.currentPage();
 
-    const usernameElement = await browser.element({
+    const usernameElement = await browser.findElement({
       action: "type",
       index: 0,
       target: { id: "username" }
     });
 
-    const passwordElement = await browser.element({
+    const passwordElement = await browser.findElement({
       action: "type",
       index: 0,
       target: { id: "password", xpath: '//*[@id="password"]' }

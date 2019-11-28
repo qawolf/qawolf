@@ -8,10 +8,7 @@ describe("click", () => {
     const browser = await Browser.create({ url: CONFIG.testUrl });
     const page = await browser.currentPage();
 
-    // TODO targetString -> (html/css)
-    // TODO click(targetString)
-    // TODO Browser.element step -> locator (html?, css?, action?, page?)
-    const element = await browser.find({ text: "broken images" });
+    const element = await browser.findElement({ text: "broken images" });
     await click(element);
 
     await page.waitForNavigation();
@@ -31,7 +28,7 @@ describe("click", () => {
     );
     expect(hasInvalidUsernameText).toBe(false);
 
-    const element = await browser.find({ html: "<i>Login</i>" });
+    const element = await browser.findElement({ html: "<i>Login</i>" });
     await click(element);
 
     const hasInvalidUsernameText2 = await hasText(page, "username is invalid");
