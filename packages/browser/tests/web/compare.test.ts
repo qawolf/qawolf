@@ -2,7 +2,6 @@ import {
   compareAttributes,
   compareContent,
   compareDoc,
-  countComparison,
   htmlToDoc
 } from "@qawolf/web";
 
@@ -16,8 +15,12 @@ describe("compareAttributes", () => {
         doc("<a href='https://google.com' target='_parent'></a>").attrs
       )
     ).toEqual({
-      href: true,
-      target: false
+      attrs: {
+        href: true,
+        target: false
+      },
+      matches: ["href"],
+      total: 2
     });
   });
 
@@ -25,11 +28,15 @@ describe("compareAttributes", () => {
     expect(
       compareAttributes(
         doc("<a class='small bold'></a>").attrs,
-        doc("<a class='small italics'></a>").attrs
+        doc("<a class='italics small'></a>").attrs
       )
     ).toEqual({
-      "class.small": true,
-      "class.bold": false
+      attrs: {
+        "class.bold": false,
+        "class.small": true
+      },
+      matches: ["class.small"],
+      total: 2
     });
   });
 });
@@ -60,33 +67,70 @@ describe("compareDoc", () => {
         doc("<a><p>Hello</p></a>")
       )
     ).toEqual({
-      "children[0]": {
-        "children[0]": {
-          content: true,
-          tag: true
+      attrs: {},
+      children: [
+        {
+          attrs: {},
+          children: [
+            {
+              attrs: {},
+              children: [],
+              content: true,
+              matches: ["tag", "content"],
+              name: true,
+              total: 2
+            }
+          ],
+          matches: ["tag", "children[0].tag", "children[0].content"],
+          name: true,
+          total: 3
         },
-        tag: true
-      },
-      "children[1]": {
-        "children[0]": {
-          content: false,
-          tag: false
-        },
-        "class.bold": false,
-        "class.small": false,
-        tag: false
-      },
-      tag: true
+        {
+          attrs: {
+            "class.bold": false,
+            "class.small": false
+          },
+          children: [
+            {
+              attrs: {},
+              children: [],
+              content: false,
+              matches: [],
+              name: false,
+              total: 2
+            }
+          ],
+          matches: [],
+          name: false,
+          total: 5
+        }
+      ],
+      matches: [
+        "tag",
+        "children[0].tag",
+        "children[0].children[0].tag",
+        "children[0].children[0].content"
+      ],
+      name: true,
+      total: 9
     });
   });
 
   it("compares the tag", () => {
     expect(compareDoc(doc("<a></a>"), doc("<a></a>"))).toEqual({
-      tag: true
+      attrs: {},
+      children: [],
+      matches: ["tag"],
+      name: true,
+      total: 1
     });
 
     expect(compareDoc(doc("<a></a>"), doc("<p></p>"))).toEqual({
-      tag: false
+      attrs: {},
+      children: [],
+      matches: [],
+      name: false,
+      total: 1
     });
   });
 
@@ -94,46 +138,25 @@ describe("compareDoc", () => {
     expect(
       compareDoc(doc('<a name="hello"></a>'), doc('<a name="hello"></a>'))
     ).toEqual({
+      attrs: {
+        name: true
+      },
+      children: [],
+      matches: ["name", "tag"],
       name: true,
-      tag: true
+      total: 2
     });
 
     expect(
       compareDoc(doc('<a name="hello"></a>'), doc('<a name="goodbye"></p>'))
     ).toEqual({
-      name: false,
-      tag: true
-    });
-  });
-});
-
-describe("countComparison", () => {
-  it("counts children keys", () => {
-    const comparison = compareDoc(
-      doc(
-        "<a><p class='small bold' name='hello'>Hello</p><p class='small bold'>Sup</p></a>"
-      ),
-      doc(
-        "<a><p class='small bold' name='hello'>Hello</p><p class='small bold'>Sup</p></a>"
-      )
-    );
-
-    expect(countComparison(comparison)).toEqual({
-      matches: [
-        "children[0].class.small",
-        "children[0].class.bold",
-        "children[0].name",
-        "children[0].children[0].content",
-        "children[0].children[0].tag",
-        "children[0].tag",
-        "children[1].class.small",
-        "children[1].class.bold",
-        "children[1].children[0].content",
-        "children[1].children[0].tag",
-        "children[1].tag",
-        "tag"
-      ],
-      total: 12
+      attrs: {
+        name: false
+      },
+      children: [],
+      matches: ["tag"],
+      name: true,
+      total: 2
     });
   });
 });

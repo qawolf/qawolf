@@ -50,7 +50,7 @@ export const findHtml = async (selector: DocSelector, options: FindOptions) => {
           `matched: ${topMatch.strongKeys}`,
           `${topMatch.percent}%`,
           getXpath(topElementMatch!.element),
-          topMatch.nodeComparison
+          topMatch.comparison
         );
         return topElementMatch;
       }
@@ -59,7 +59,7 @@ export const findHtml = async (selector: DocSelector, options: FindOptions) => {
         console.log(
           `matched: ${topMatch.percent}% > ${threshold}% threshold`,
           getXpath(topElementMatch!.element),
-          topMatch.nodeComparison
+          topMatch.comparison
         );
         return topElementMatch;
       }

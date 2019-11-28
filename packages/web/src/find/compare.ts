@@ -1,26 +1,28 @@
 import { Doc, DocSelector } from "@qawolf/types";
 import { cleanText } from "../lang";
 
-export interface Comparison {
-  [K: string]: boolean | Comparison;
-}
+type BooleanDict = { [K: string]: boolean };
 
-export interface ComparisonCount {
+export type DocComparison = {
+  attrs: BooleanDict;
+  children: DocComparison[];
+  content?: boolean;
   matches: string[];
+  name: boolean;
   total: number;
-}
-
-// // TODO strong matches
-// // can strong matches be on ancestors instead of the target?
+};
 
 export type DocMatch = {
-  nodeComparison: Comparison;
-  // ancestorsComparison: Comparison[];
+  comparison: {
+    node: DocComparison;
+    ancestors: DocComparison[];
+  };
   percent: number;
   strongKeys: string[];
 };
 
 // TODO strong matches:
+// can strong matches be on ancestors instead of the target?
 // data attribute
 // label
 // action === click & xpath === /html || /html/body
@@ -36,8 +38,10 @@ const strongMatchKeys = [
   "title"
 ];
 
-export const compareAttributes = (a: any, b: any): Comparison => {
-  const result: Comparison = {};
+export const compareAttributes = (a: any, b: any) => {
+  const attrs: BooleanDict = {};
+  const matches: string[] = [];
+  let total = 0;
 
   Object.keys(a || {}).forEach(key => {
     const bValue = (b || {})[key];
@@ -47,92 +51,99 @@ export const compareAttributes = (a: any, b: any): Comparison => {
       const bClasses: string[] = (bValue || "").split(" ");
 
       aClasses.forEach(name => {
-        result[`class.${name}`] = bClasses.includes(name);
+        const matchKey = `class.${name}`;
+        attrs[matchKey] = bClasses.includes(name);
+
+        total += 1;
+        if (attrs[matchKey]) matches.push(matchKey);
       });
     } else {
-      result[key] = a[key] === bValue;
+      attrs[key] = a[key] === bValue;
+
+      total += 1;
+      if (attrs[key]) matches.push(key);
     }
   });
 
-  return result;
+  return { attrs, matches, total };
 };
 
 export const compareContent = (
   a: string | undefined,
   b: string | undefined
-) => {
+): boolean => {
   return cleanText(a || "") === cleanText(b || "");
 };
 
-export const compareDoc = (a: Doc, b: Doc | null): Comparison => {
-  const result: Comparison = compareAttributes(a.attrs, b ? b.attrs : {});
+export const compareDoc = (a: Doc, b: Doc | null): DocComparison => {
+  const attrComparison = compareAttributes(a.attrs, b ? b.attrs : {});
+
+  const result: DocComparison = {
+    attrs: attrComparison.attrs,
+    children: [],
+    matches: attrComparison.matches,
+    name: b ? a.name === b.name : false,
+    total: attrComparison.total + 1 // name
+  };
+
+  if (result.name) {
+    // name it tag to not conflict with attrs.name
+    result.matches.push("tag");
+  }
 
   if (a.content) {
     result.content = compareContent(a.content, b ? b.content : "");
+    result.total += 1;
+
+    if (result.content) {
+      result.matches.push("content");
+    }
   }
 
   if (a.children) {
     a.children.forEach((childA, index) => {
-      result[`children[${index}]`] = compareDoc(
+      const childComparison = compareDoc(
         childA,
         b && b.children ? b.children[index] : null
       );
+      result.children.push(childComparison);
+
+      result.matches = result.matches.concat(
+        childComparison.matches.map(key => `children[${index}].${key}`)
+      );
+      result.total += childComparison.total;
     });
   }
-
-  // name it tag to not conflict with attrs.name
-  result.tag = b ? a.name === b.name : false;
 
   return result;
 };
 
-export const countComparison = (
-  comparison: Comparison,
-  prefix: string = ""
-): ComparisonCount => {
-  const count: ComparisonCount = {
-    matches: [],
-    total: 0
-  };
-
-  Object.keys(comparison).forEach(k => {
-    // prefix the key with the provided prefix
-    const key = prefix + k;
-    const value = comparison[k];
-    if (typeof value === "boolean") {
-      count.total += 1;
-      if (value === true) count.matches.push(key);
-    } else {
-      // append "." to the prefix
-      // eg. children[0]class -> children[0].class
-      const subcount = countComparison(value, key + ".");
-      count.matches = count.matches.concat(subcount.matches);
-      count.total += subcount.total;
-    }
-  });
-
-  return count;
-};
-
 export const matchTarget = (a: DocSelector, b: DocSelector): DocMatch => {
   // TODO if body/html return 100% --
+  const ancestorsComparison: DocComparison[] = [];
 
   const nodeComparison = compareDoc(a.node, b.node);
-  const nodeCount = countComparison(nodeComparison);
-  const strongKeys = nodeCount.matches.filter(m => strongMatchKeys.includes(m));
+  const strongKeys = nodeComparison.matches.filter(m =>
+    strongMatchKeys.includes(m)
+  );
 
-  let matches = nodeCount.matches.length;
-  let total = nodeCount.total;
+  let matches = nodeComparison.matches.length;
+  let total = nodeComparison.total;
 
   a.ancestors.forEach((ancestor, index) => {
     const ancestorComparison = compareDoc(ancestor, b.ancestors[index]);
-    const ancestorCount = countComparison(ancestorComparison);
+    ancestorsComparison.push(ancestorComparison);
+
     // half the value of ancestor matches every level
     const weight = 1 / (index + 1 * 2);
-    matches += ancestorCount.matches.length * weight;
-    total += ancestorCount.total * weight;
+    matches += ancestorComparison.matches.length * weight;
+    total += ancestorComparison.total * weight;
   });
 
   const percent = (matches / total) * 100;
-  return { nodeComparison, percent, strongKeys };
+  return {
+    comparison: { node: nodeComparison, ancestors: ancestorsComparison },
+    percent,
+    strongKeys
+  };
 };
