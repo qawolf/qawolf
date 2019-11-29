@@ -98,8 +98,13 @@ export class Browser {
   ): Promise<ElementHandle | null> {
     const findOptions = options || { timeoutMs: CONFIG.findTimeoutMs };
 
+    const step = selectorOrStep as Step;
+    if (step.action) {
+      findOptions.action = step.action;
+    }
+
     const page = await this.getPage(
-      (selectorOrStep as Step).page || 0,
+      step.page || 0,
       findOptions.waitForRequests,
       findOptions.timeoutMs
     );

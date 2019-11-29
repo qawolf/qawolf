@@ -184,6 +184,16 @@ describe("matchTarget", () => {
       ).toEqual(["children[0].content"]);
     });
 
+    it("matches data attribute", () => {
+      expect(
+        matchTarget(
+          selector('<img data-qa="apple">'),
+          selector('<button data-qa="apple"></button>'),
+          "data-qa"
+        ).strongKeys
+      ).toEqual(["data-qa"]);
+    });
+
     it("matches id", () => {
       expect(
         matchTarget(

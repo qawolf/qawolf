@@ -12,18 +12,24 @@ type ElementMatch = {
 
 export const matchElements = (
   elements: HTMLElement[],
-  target: DocSelector
+  target: DocSelector,
+  dataAttribute?: string
 ): ElementMatch[] => {
   let matches: ElementMatch[] = [];
 
   elements.forEach(element => {
     const selector = nodeToDocSelector(element);
-    const match = matchTarget(target, selector);
+    const match = matchTarget(target, selector, dataAttribute);
     matches.push({ element, match });
   });
 
   // sort descending
-  matches.sort((a, b) => b.match.percent - a.match.percent);
+  matches.sort((a, b) => {
+    // sort values with strong matches first
+    const aStrongValue = a.match.strongKeys.length > 0 ? 200 : 0;
+    const bStrongValue = b.match.strongKeys.length > 0 ? 200 : 0;
+    return b.match.percent + bStrongValue - (a.match.percent + aStrongValue);
+  });
 
   return matches;
 };
@@ -34,12 +40,12 @@ export const findHtml = async (selector: DocSelector, options: FindOptions) => {
 
   let topElementMatch: ElementMatch | null = null;
 
-  console.log("findElement", selector);
+  console.log("findHtml", selector, "opts", options);
 
   const elementMatch = await waitFor(
     () => {
       const elements = queryElements(selector, options);
-      const matches = matchElements(elements, selector);
+      const matches = matchElements(elements, selector, options.dataAttribute);
 
       if (matches.length < 1) return;
       topElementMatch = matches[0];

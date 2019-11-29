@@ -28,7 +28,7 @@ export const findHtml = async (
     docSelector as any,
     {
       ...options,
-      dataAttribute: CONFIG.dataAttribute
+      dataAttribute: options.dataAttribute || CONFIG.dataAttribute
     } as any
   );
 

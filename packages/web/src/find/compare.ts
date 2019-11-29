@@ -21,14 +21,6 @@ export type DocMatch = {
   strongKeys: string[];
 };
 
-// TODO strong matches:
-// can strong matches be on ancestors instead of the target?
-// data attribute
-// label
-// action === click & xpath === /html || /html/body
-// TODO inline labels w/ serialization
-// "labels",
-
 const strongMatchKeys = [
   "alt",
   "children[0].content",
@@ -119,13 +111,17 @@ export const compareDoc = (a: Doc, b: Doc | null): DocComparison => {
   return result;
 };
 
-export const matchTarget = (a: DocSelector, b: DocSelector): DocMatch => {
+export const matchTarget = (
+  a: DocSelector,
+  b: DocSelector,
+  dataAttribute?: string
+): DocMatch => {
   // TODO if body/html return 100% --
   const ancestorsComparison: DocComparison[] = [];
 
   const nodeComparison = compareDoc(a.node, b.node);
-  const strongKeys = nodeComparison.matches.filter(m =>
-    strongMatchKeys.includes(m)
+  const strongKeys = nodeComparison.matches.filter(
+    m => strongMatchKeys.includes(m) || dataAttribute === m
   );
 
   let matches = nodeComparison.matches.length;

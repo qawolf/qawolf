@@ -3,27 +3,27 @@ export type Action = "click" | "type" | "scroll" | "select";
 export type Callback<S = void, T = void> = (data?: S) => T;
 
 export interface Doc {
-  type: string;
-  content?: string;
-  voidElement: boolean;
-  name: string;
   attrs: any;
   children: Doc[];
+  content?: string;
+  name: string;
+  type: string;
+  voidElement: boolean;
 }
 
 export type DocSelector = {
-  node: Doc;
   ancestors: Doc[];
+  node: Doc;
 };
 
 export type DocSelectorSerialized = {
-  node: string;
   ancestors: string[];
+  node: string;
 };
 
 export interface Event {
-  name: EventName;
   isTrusted: boolean;
+  name: EventName;
   page?: number;
   target: DocSelector;
   time: number;
@@ -39,6 +39,7 @@ export type EventName =
 
 export type FindOptions = {
   action?: Action;
+  dataAttribute?: string;
   timeoutMs: number;
   value?: string;
   waitForRequests?: boolean;

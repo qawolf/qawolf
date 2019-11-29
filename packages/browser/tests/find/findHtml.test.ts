@@ -33,46 +33,34 @@ describe("findHtml", () => {
   });
 
   it("finds an element by data attribute", async () => {
-    throw new Error("To Do");
-    //   //     const elementXpath = await page.evaluate(() => {
-    //   //       const qawolf: QAWolfWeb = (window as any).qawolf;
-    //   //       const username = document.getElementById("username")!;
-    //   //       const submit = document.getElementsByTagName("button")[0]!;
-    //   //       username.setAttribute("data-qa", "username");
-    //   //       submit.setAttribute("data-qa", "username");
-    //   //       return qawolf.find
-    //   //         .findElement({
-    //   //           action: "type",
-    //   //           dataAttribute: "data-qa",
-    //   //           target: { dataValue: "username" },
-    //   //           timeoutMs: 5000
-    //   //         })
-    //   //         .then((element: HTMLElement) => {
-    //   //           username.removeAttribute("data-qa");
-    //   //           submit.removeAttribute("data-qa");
-    //   //           return qawolf.xpath.getXpath(element!);
-    //   //         });
-    //   //     });
-    //   //     expect(elementXpath).toBe("//*[@id='username']");
+    await page.evaluate(() =>
+      document.getElementById("password")!.setAttribute("data-qa", "password")
+    );
+
+    const element = await findHtml(
+      page,
+      '<button data-qa="password"></button>',
+      {
+        dataAttribute: "data-qa",
+        timeoutMs: 0
+      }
+    );
+    expect(await getXpath(element)).toBe("//*[@id='password']");
+
+    await page.evaluate(() =>
+      document.getElementById("password")!.removeAttribute("data-qa")
+    );
   });
 
-  it("returns null for a match below the threshold", async () => {
-    throw new Error("To Do");
-
-    //   //     const elementXpath = await page.evaluate(() => {
-    //   //       const qawolf: QAWolfWeb = (window as any).qawolf;
-    //   //       return qawolf.find
-    //   //         .findElement({
-    //   //           action: "type",
-    //   //           dataAttribute: null,
-    //   //           target: { labels: ["dropdown"], tagName: "select" },
-    //   //           timeoutMs: 2000
-    //   //         })
-    //   //         .then((element: HTMLElement) => {
-    //   //           if (!element) return null;
-    //   //           return qawolf.xpath.getXpath(element);
-    //   //         });
-    //   //     });
-    //   //     expect(elementXpath).toBeNull();
+  it("returns null if the data-attribute is not found", async () => {
+    const element = await findHtml(
+      page,
+      '<input data-qa="password" name="password">',
+      {
+        dataAttribute: "data-qa",
+        timeoutMs: 0
+      }
+    );
+    expect(element).toBe(null);
   });
 });

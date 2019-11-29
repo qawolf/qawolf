@@ -30,16 +30,18 @@ export const queryDataElements = ({
 
 export const queryElements = (
   selector: DocSelector,
-  { action }: FindOptions
+  { action, dataAttribute }: FindOptions
 ) => {
-  // const dataValue = target.node.attrs[dataAttribute];
-  // if (dataValue) {
-  //   return queryDataElements({
-  //     action,
-  //     dataAttribute,
-  //     dataValue
-  //   });
-  // }
+  if (dataAttribute) {
+    const dataValue = selector.node.attrs[dataAttribute];
+    if (dataValue) {
+      return queryDataElements({
+        action: action || "click",
+        dataAttribute,
+        dataValue
+      });
+    }
+  }
 
   // default to click since it will query all elements
   return queryActionElements(action || "click");
