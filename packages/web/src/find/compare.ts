@@ -26,12 +26,13 @@ export type DocMatch = {
 // data attribute
 // label
 // action === click & xpath === /html || /html/body
+// TODO inline labels w/ serialization
+// "labels",
+
 const strongMatchKeys = [
   "alt",
-  "content",
+  "children[0].content",
   "id",
-  // TODO inline labels w/ serialization
-  "labels",
   "name",
   "placeholder",
   "src",

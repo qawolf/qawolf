@@ -2,10 +2,13 @@ import {
   compareAttributes,
   compareContent,
   compareDoc,
-  htmlToDoc
+  htmlToDoc,
+  matchTarget
 } from "@qawolf/web";
 
 const doc = htmlToDoc;
+
+const selector = (html: string) => ({ node: doc(html), ancestors: [] });
 
 describe("compareAttributes", () => {
   it("compares attributes", () => {
@@ -157,6 +160,73 @@ describe("compareDoc", () => {
       matches: ["tag"],
       name: true,
       total: 2
+    });
+  });
+});
+
+describe("matchTarget", () => {
+  describe("strong keys", () => {
+    it("matches alt", () => {
+      expect(
+        matchTarget(
+          selector('<img alt="a grapefruit">'),
+          selector('<img alt="a grapefruit">')
+        ).strongKeys
+      ).toEqual(["alt"]);
+    });
+
+    it("matches content", () => {
+      expect(
+        matchTarget(
+          selector("<a>grapefruit</a>"),
+          selector("<a>grapefruit</a>")
+        ).strongKeys
+      ).toEqual(["children[0].content"]);
+    });
+
+    it("matches id", () => {
+      expect(
+        matchTarget(
+          selector('<img alt="a grapefruit">'),
+          selector('<img alt="a grapefruit">')
+        ).strongKeys
+      ).toEqual(["alt"]);
+    });
+
+    it("matches name", () => {
+      expect(
+        matchTarget(
+          selector('<img name="grapefruit">'),
+          selector('<img name="grapefruit">')
+        ).strongKeys
+      ).toEqual(["name"]);
+    });
+
+    it("matches placeholder", () => {
+      expect(
+        matchTarget(
+          selector('<input placeholder="qawolf">'),
+          selector('<input placeholder="qawolf">')
+        ).strongKeys
+      ).toEqual(["placeholder"]);
+    });
+
+    it("matches src", () => {
+      expect(
+        matchTarget(
+          selector('<img src="https://cdn.com/Grapefruit.jpg">'),
+          selector('<img src="https://cdn.com/Grapefruit.jpg">')
+        ).strongKeys
+      ).toEqual(["src"]);
+    });
+
+    it("matches title", () => {
+      expect(
+        matchTarget(
+          selector('<img title="a grapefruit">'),
+          selector('<img title="a grapefruit">')
+        ).strongKeys
+      ).toEqual(["title"]);
     });
   });
 });
