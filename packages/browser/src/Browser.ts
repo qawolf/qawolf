@@ -7,7 +7,7 @@ import puppeteer, { devices, ElementHandle } from "puppeteer";
 import { getDevice } from "./device";
 import { launchPuppeteerBrowser } from "./launch";
 import { DecoratedPage, QAWolfPage } from "./QAWolfPage";
-import { findElement, Selector } from "./find";
+import { find, Selector } from "./find";
 
 export type BrowserCreateOptions = {
   domPath?: string;
@@ -92,10 +92,10 @@ export class Browser {
     return sortBy(events, e => e.time);
   }
 
-  public async findElement(
+  public async find(
     selectorOrStep: Selector | Step,
     options?: FindOptions
-  ): Promise<ElementHandle | null> {
+  ): Promise<ElementHandle> {
     const findOptions = options || { timeoutMs: CONFIG.findTimeoutMs };
 
     const step = selectorOrStep as Step;
@@ -109,7 +109,10 @@ export class Browser {
       findOptions.timeoutMs
     );
 
-    return findElement(page, selectorOrStep, findOptions);
+    const element = await find(page, selectorOrStep, findOptions);
+    if (!element) throw new Error("No element found");
+
+    return element;
   }
 
   public async goto(

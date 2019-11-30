@@ -191,7 +191,7 @@ export class Runner {
   private async beforeAction(selectorOrStep: Selector | Step | null) {
     logger.verbose(`Runner: beforeAction`);
     let element = selectorOrStep
-      ? await this._browser.findElement(selectorOrStep)
+      ? await this._browser.find(selectorOrStep)
       : null;
 
     if (CONFIG.sleepMs) {
@@ -201,7 +201,7 @@ export class Runner {
       // reload the element in case it changed since the sleep
       if (selectorOrStep) {
         logger.verbose("Runner: beforeAction reload element after sleep");
-        element = await this._browser.findElement(selectorOrStep, {
+        element = await this._browser.find(selectorOrStep, {
           timeoutMs: 0,
           waitForRequests: false
         });

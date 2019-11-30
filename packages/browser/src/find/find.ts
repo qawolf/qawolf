@@ -13,7 +13,7 @@ export type Selector =
       // text?: string;
     };
 
-export const findElement = async (
+export const find = async (
   page: Page,
   selector: Selector,
   options: FindOptions

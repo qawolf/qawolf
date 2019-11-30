@@ -1,5 +1,4 @@
 import { CONFIG } from "@qawolf/config";
-import { QAWolfWeb } from "@qawolf/web";
 import { scroll } from "../../src/actions";
 import { Browser } from "../../src/Browser";
 
@@ -18,10 +17,8 @@ describe("scroll", () => {
     const initialYPosition = await page.evaluate(() => window.pageYOffset);
     expect(initialYPosition).toBe(0);
 
-    const element = await browser.findElement({
-      action: "scroll",
-      index: 0,
-      target: { xpath: "/html" }
+    const element = await browser.find({
+      html: "<html></html>"
     });
     await scroll(element, { x: 0, y: 1000 });
 
@@ -40,11 +37,7 @@ describe("scroll", () => {
     const initialYPosition = await page.evaluate(() => window.pageYOffset);
     expect(initialYPosition).toBe(0);
 
-    const element = await browser.findElement({
-      action: "scroll",
-      index: 0,
-      target: { xpath: "/html" }
-    });
+    const element = await browser.find("html");
     await scroll(element, { x: 0, y: 2000 });
 
     const nextYPosition = await page.evaluate(() => window.pageYOffset);
@@ -64,11 +57,7 @@ describe("scroll", () => {
       html.scroll = () => {};
     });
 
-    const element = await browser.findElement({
-      action: "scroll",
-      index: 0,
-      target: { xpath: "/html" }
-    });
+    const element = await browser.find("html");
 
     const testFn = async () => await scroll(element, { x: 0, y: 2000 }, 0);
     await expect(testFn()).rejects.toThrowError();
