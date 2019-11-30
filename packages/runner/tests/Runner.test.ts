@@ -1,11 +1,16 @@
 import { hasText } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
+import { loadWorkflow } from "@qawolf/fixtures";
+import { Workflow } from "@qawolf/types";
 import { Runner } from "../src/Runner";
 
-// import directly since fixtures are note exported from @qawolf/build-workflow
-import { loginWorkflow } from "../../build-workflow/fixtures/loginWorkflow";
-
 describe("Runner", () => {
+  let loginWorkflow: Workflow;
+
+  beforeAll(async () => {
+    loginWorkflow = await loadWorkflow("scroll_login");
+  });
+
   it("runs a workflow", async () => {
     const runner = await Runner.create({
       ...loginWorkflow,
@@ -14,7 +19,10 @@ describe("Runner", () => {
     await runner.run();
 
     const page = await runner.browser.currentPage();
-    const hasSecureText = await hasText(page, "Secure Area");
+    const hasSecureText = await hasText(
+      page,
+      "You logged out of the secure area!"
+    );
     expect(hasSecureText).toBe(true);
 
     await runner.close();

@@ -1,9 +1,15 @@
 import { CONFIG, makeTempDir } from "@qawolf/config";
+import { loadWorkflow } from "@qawolf/fixtures";
+import { Workflow } from "@qawolf/types";
 import { sleep } from "@qawolf/web";
 import { pathExists, remove } from "fs-extra";
-// import directly since fixtures are not exported
-import { loginWorkflow } from "../../../build-workflow/fixtures/loginWorkflow";
 import { Runner } from "../../src/Runner";
+
+let loginWorkflow: Workflow;
+
+beforeAll(async () => {
+  loginWorkflow = await loadWorkflow("scroll_login");
+});
 
 it("records dom replayer and a video", async () => {
   CONFIG.domPath = await makeTempDir();
