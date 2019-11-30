@@ -3,14 +3,13 @@ import { Step } from "@qawolf/types";
 export const formatDescription = (step: Step): string => {
   const target = step.html.node;
 
-  // TODO
-  // const label = target.labels ? target.labels.join(" ") : "";
-
   const attrs = target.attrs || {};
+
+  const label = attrs.labels ? attrs.labels.join(" ") : "";
 
   // ex. "departure date"
   let description =
-    // label ||
+    label ||
     attrs.name ||
     attrs.placeholder ||
     attrs.innerText ||

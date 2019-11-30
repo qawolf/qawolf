@@ -2,20 +2,23 @@ import { Step } from "@qawolf/types";
 import { formatDescription, formatIt } from "../src/formatIt";
 
 describe("formatDescription", () => {
-  // TODO
-  // it("formats labels", () => {
-  //   const step: Step = {
-  //     action: "type",
-  //     index: 0,
-  //     target: {
-  //       labels: ["name", "username"],
-  //       name: "other",
-  //       tagName: "input"
-  //     }
-  //   };
+  it("formats labels", () => {
+    const step: Step = {
+      action: "type",
+      index: 0,
+      html: {
+        ancestors: [],
+        node: {
+          attrs: { labels: ["name", "username"] },
+          name: "input",
+          type: "tag",
+          voidElement: false
+        }
+      }
+    };
 
-  //   expect(formatDescription(step)).toBe(' "name username"');
-  // });
+    expect(formatDescription(step)).toBe(' "name username"');
+  });
 
   it("shortens target name if needed", () => {
     const step: Step = {

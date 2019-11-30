@@ -120,7 +120,6 @@ export const matchTarget = (
   b: DocSelector,
   dataAttribute?: string
 ): DocMatch => {
-  // TODO if body/html return 100% --
   const ancestorsComparison: DocComparison[] = [];
 
   const nodeComparison = compareDoc(a.node, b.node);
