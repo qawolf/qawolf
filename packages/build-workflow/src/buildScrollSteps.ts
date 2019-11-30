@@ -14,13 +14,7 @@ export const buildScrollSteps = (events: Event[]): Step[] => {
 
     // skip to the last scroll on this target
     const nextEvent = i + 1 < events.length ? events[i + 1] : null;
-    if (
-      nextEvent &&
-      nextEvent.name === "scroll" //&&
-      // TODO add xpath to target
-      //   event.target.xpath === nextEvent.target.xpath
-    )
-      continue;
+    if (nextEvent && nextEvent.name === "scroll") continue;
 
     steps.push({
       action: "scroll",
