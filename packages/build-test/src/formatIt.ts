@@ -6,15 +6,16 @@ export const formatDescription = (step: Step): string => {
   // TODO
   // const label = target.labels ? target.labels.join(" ") : "";
 
+  const attrs = target.attrs || {};
+
   // ex. "departure date"
   let description =
     // label ||
-    target.attrs.name ||
-    target.attrs.placeholder ||
-    // TODO
-    // target.innerText ||
-    target.attrs.id ||
-    target.attrs.alt ||
+    attrs.name ||
+    attrs.placeholder ||
+    attrs.innerText ||
+    attrs.id ||
+    attrs.alt ||
     "";
 
   description = description.trim();

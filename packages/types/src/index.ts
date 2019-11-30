@@ -3,12 +3,12 @@ export type Action = "click" | "type" | "scroll" | "select";
 export type Callback<S = void, T = void> = (data?: S) => T;
 
 export interface Doc {
-  attrs: any;
-  children: Doc[];
+  attrs?: any;
+  children?: Doc[];
   content?: string;
-  name: string;
+  name?: string;
   type: string;
-  voidElement: boolean;
+  voidElement?: boolean;
 }
 
 export type DocSelector = {

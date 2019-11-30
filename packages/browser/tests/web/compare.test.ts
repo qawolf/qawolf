@@ -42,21 +42,36 @@ describe("compareAttributes", () => {
       total: 2
     });
   });
+
+  it("ignores attrs.innerText newlines, whitespace, extra spaces", () => {
+    expect(
+      compareAttributes(
+        doc('<a innerText=" Hello world  "> Hello world  </a>').attrs,
+        doc('<a innerText="hello World">hello World</a>').attrs
+      )
+    ).toEqual({
+      attrs: {
+        innerText: true
+      },
+      matches: ["innerText"],
+      total: 1
+    });
+  });
 });
 
 describe("compareContent", () => {
   it("ignores newlines, whitespace, extra spaces", () => {
     expect(
       compareContent(
-        doc("<a>\ngit is great   </a>").children[0].content,
-        doc("<a>git is   great</a>").children[0].content
+        doc("<a>\ngit is great   </a>").children![0].content,
+        doc("<a>git is   great</a>").children![0].content
       )
     ).toEqual(true);
 
     expect(
       compareContent(
-        doc("<a>git is great</a>").children[0].content,
-        doc("<a>gitter is great</a>").children[0].content
+        doc("<a>git is great</a>").children![0].content,
+        doc("<a>gitter is great</a>").children![0].content
       )
     ).toEqual(false);
   });

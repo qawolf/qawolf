@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`buildTest builds a test from a workflow 1`] = `
-"describe('login', () => {
+"describe('scroll_login', () => {
   it('can scroll', async () => {
     await scroll(steps[0], values[0]);
   });
 
-  it('can click \\"form authentication\\" link', async () => {
+  it('can click link', async () => {
     await click(steps[1]);
   });
 
@@ -14,19 +14,19 @@ exports[`buildTest builds a test from a workflow 1`] = `
     await type(steps[2], values[2]);
   });
 
-  it('can click \\"login\\" i', async () => {
-    await click(steps[3]);
-  });
-
-  it('can type into \\"username\\" input', async () => {
-    await type(steps[4], values[4]);
+  it('can Tab', async () => {
+    await type(steps[3], values[3]);
   });
 
   it('can type into \\"password\\" input', async () => {
+    await type(steps[4], values[4]);
+  });
+
+  it('can Enter', async () => {
     await type(steps[5], values[5]);
   });
 
-  it('can click \\"login\\" i', async () => {
+  it('can click link', async () => {
     await click(steps[6]);
   });
 });"

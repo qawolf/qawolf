@@ -35,6 +35,7 @@ const webExports = {
   element,
   event,
   find,
+  lang,
   Recorder,
   scroll,
   select,

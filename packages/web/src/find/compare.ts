@@ -51,7 +51,11 @@ export const compareAttributes = (a: any, b: any) => {
         if (attrs[matchKey]) matches.push(matchKey);
       });
     } else {
-      attrs[key] = a[key] === bValue;
+      if (key === "innerText") {
+        attrs[key] = cleanText(a[key]) === cleanText(bValue);
+      } else {
+        attrs[key] = a[key] === bValue;
+      }
 
       total += 1;
       if (attrs[key]) matches.push(key);

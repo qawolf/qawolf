@@ -1,4 +1,4 @@
-export const cleanText = (text: string): string => {
+export const cleanText = (text: string = ""): string => {
   return text
     .trim()
     .replace(/[\r\n\t]+/g, " ") // remove extra newlines

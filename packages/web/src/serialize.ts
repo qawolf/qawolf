@@ -31,7 +31,7 @@ export const nodeToDocSelector = (
   /**
    * Serialize a node (deep) and it's ancestors (shallow).
    */
-  const nodeHtml: string = nodeToHtml(node);
+  const nodeHtml: string = nodeToHtml(node, true);
 
   let ancestorsHtml: string[] = [];
 
@@ -47,10 +47,25 @@ export const nodeToDocSelector = (
   return deserializeDocSelector({ node: nodeHtml, ancestors: ancestorsHtml });
 };
 
-export const nodeToHtml = (node: Node): string => {
-  var serializer = new XMLSerializer();
-  return serializer
+export const nodeToHtml = (
+  node: Node,
+  includeInnerText: boolean = false
+): string => {
+  const serializer = new XMLSerializer();
+
+  const element = node as HTMLElement;
+  if (includeInnerText && element.innerText) {
+    element.setAttribute("innerText", element.innerText);
+  }
+
+  const serialized = serializer
     .serializeToString(node)
     .replace(/ xmlns=\"(.*?)\"/g, "") // remove namespace
     .replace(/(\r\n|\n|\r)/gm, ""); // remove newlines
+
+  if (includeInnerText && element.innerText) {
+    element.removeAttribute("innerText");
+  }
+
+  return serialized;
 };
