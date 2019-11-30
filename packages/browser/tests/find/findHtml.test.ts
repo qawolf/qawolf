@@ -54,4 +54,16 @@ describe("findHtml", () => {
     );
     expect(element).toBe(null);
   });
+
+  it("finds html and body elements", async () => {
+    let element = await findHtml(page, "<html />", {
+      timeoutMs: 0
+    });
+    expect(await getXpath(element)).toEqual("/html");
+
+    element = await findHtml(page, "<body />", {
+      timeoutMs: 0
+    });
+    expect(await getXpath(element)).toEqual("/html/body");
+  });
 });

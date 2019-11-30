@@ -2,58 +2,61 @@ import { CONFIG } from "@qawolf/config";
 import { QAWolfWeb } from "@qawolf/web";
 import { Page } from "puppeteer";
 import { Browser } from "../../src/Browser";
-import { htmlToDoc } from "@qawolf/web";
 
-describe("htmlToDoc", () => {
-  it("serializes an input", () => {
-    expect(
-      htmlToDoc(
-        '<input type="text" name="username" id="username" autocomplete="off" >'
-      )
-    ).toEqual({
-      attrs: {
-        autocomplete: "off",
-        id: "username",
-        name: "username",
-        type: "text"
-      },
-      children: [],
-      name: "input",
-      type: "tag",
-      voidElement: true
+let browser: Browser;
+let page: Page;
+
+beforeAll(async () => {
+  browser = await Browser.create({ url: `${CONFIG.testUrl}login` });
+  page = await browser.currentPage();
+});
+
+afterAll(() => browser.close());
+
+describe("nodeToDocSelector", () => {
+  it("serializes html and body elements by their tag only", async () => {
+    let doc = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      return qawolf.serialize.nodeToDocSelector(
+        document.querySelector("html")!
+      );
     });
-  });
 
-  it("serializes an element with content", () => {
-    expect(htmlToDoc('<h2 contentEditable="true">Login Page</h2>')).toEqual({
-      attrs: {
-        contentEditable: "true"
-      },
-      children: [
-        {
-          content: "Login Page",
-          type: "text"
-        }
-      ],
-      name: "h2",
-      type: "tag",
-      voidElement: false
+    expect(doc).toEqual({
+      ancestors: [],
+      node: {
+        attrs: {},
+        children: [],
+        name: "html",
+        type: "tag",
+        voidElement: true
+      }
+    });
+
+    doc = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      return qawolf.serialize.nodeToDocSelector(
+        document.querySelector("body")!
+      );
+    });
+
+    expect(doc).toEqual({
+      ancestors: [],
+      node: {
+        attrs: {},
+        children: [],
+        name: "body",
+        type: "tag",
+        voidElement: true
+      }
     });
   });
 });
 
 describe("nodeToHtml", () => {
-  let browser: Browser;
-  let page: Page;
-
-  beforeAll(async () => {
-    browser = await Browser.create({ url: `${CONFIG.testUrl}login` });
-    page = await browser.currentPage();
-  });
-
-  afterAll(() => browser.close());
-
   it("serializes innerText as an attribute", async () => {
+    await browser.goto(`${CONFIG.testUrl}login`);
+
     const html = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       return qawolf.serialize.nodeToHtml(

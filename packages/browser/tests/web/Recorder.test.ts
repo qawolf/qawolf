@@ -61,6 +61,8 @@ describe("Recorder", () => {
 
     const page = await browser.currentPage();
 
+    await sleep(1000);
+
     // from https://github.com/GoogleChrome/puppeteer/issues/4119#issue-417279184
     await (page as any)._client.send("Input.dispatchMouseEvent", {
       type: "mouseWheel",
@@ -71,7 +73,7 @@ describe("Recorder", () => {
     });
 
     // give enough time for scroll event to fire on CI browser
-    await sleep(2000);
+    await sleep(3000);
 
     // close the browser to ensure events are transmitted
     await browser.close();

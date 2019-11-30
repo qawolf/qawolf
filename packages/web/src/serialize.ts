@@ -24,16 +24,8 @@ export const htmlToDoc = (html: string): Doc => {
   return result[0];
 };
 
-export const nodeToDocSelector = (
-  node: Node,
-  numAncestors: number = 2
-): DocSelector => {
-  /**
-   * Serialize a node (deep) and it's ancestors (shallow).
-   */
-  const nodeHtml: string = nodeToHtml(node, true);
-
-  let ancestorsHtml: string[] = [];
+const getAncestorsHtml = (node: Node, numAncestors: number): string[] => {
+  const ancestorsHtml: string[] = [];
 
   let ancestor = node.parentNode;
   for (let i = 0; ancestor && i < numAncestors; i++) {
@@ -44,7 +36,37 @@ export const nodeToDocSelector = (
     ancestor = ancestor.parentNode;
   }
 
-  return deserializeDocSelector({ node: nodeHtml, ancestors: ancestorsHtml });
+  return ancestorsHtml;
+};
+
+export const nodeToDocSelector = (
+  node: Node,
+  numAncestors: number = 2
+): DocSelector => {
+  /**
+   * Serialize a node (deep) and it's ancestors (shallow).
+   */
+
+  const element = node as HTMLElement;
+
+  let ancestors: string[] = [];
+  let nodeHtml: string;
+
+  // serialize body & html just by their tags
+  // this is to prevent serializing a bunch of unnecessary metadata
+  if (element.tagName === "BODY") {
+    nodeHtml = "<body />";
+  } else if (element.tagName === "HTML") {
+    nodeHtml = "<html />";
+  } else {
+    nodeHtml = nodeToHtml(node, true);
+    ancestors = getAncestorsHtml(node, numAncestors);
+  }
+
+  return deserializeDocSelector({
+    node: nodeHtml,
+    ancestors
+  });
 };
 
 export const nodeToHtml = (
@@ -54,6 +76,7 @@ export const nodeToHtml = (
   const serializer = new XMLSerializer();
 
   const element = node as HTMLElement;
+
   if (includeInnerText && element.innerText) {
     element.setAttribute("innerText", element.innerText);
   }
