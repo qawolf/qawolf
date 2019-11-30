@@ -54,17 +54,10 @@ export const nodeToDocSelector = (
 
   const element = node as HTMLElement;
 
-  let ancestors: string[] = [];
-  let nodeHtml: string;
+  const nodeHtml: string = nodeToHtml(node, { innerText: true, labels: true });
 
-  // serialize body & html just by their tags
-  // this is to prevent serializing a bunch of unnecessary metadata
-  if (element.tagName === "BODY") {
-    nodeHtml = "<body />";
-  } else if (element.tagName === "HTML") {
-    nodeHtml = "<html />";
-  } else {
-    nodeHtml = nodeToHtml(node, { innerText: true, labels: true });
+  let ancestors: string[] = [];
+  if (element.tagName !== "BODY" && element.tagName !== "HTML") {
     ancestors = getAncestorsHtml(node, numAncestors);
   }
 
@@ -81,6 +74,14 @@ export const nodeToHtml = (
   const serializer = new XMLSerializer();
 
   const element = node as HTMLInputElement;
+
+  if (element.tagName === "HTML") {
+    return "<html />";
+  }
+
+  if (element.tagName === "BODY") {
+    return "<body />";
+  }
 
   if (options.innerText && element.innerText) {
     element.setAttribute("innerText", element.innerText);

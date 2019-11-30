@@ -20,7 +20,7 @@
     "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "@qawolf/fixtures": "1.15.1",
+    "@qawolf/fixtures": "1.16.0",
     "@types/fs-extra": "^8.0.1",
     "@types/jest": "^24.0.18",
     "@types/lodash": "^4.14.144",

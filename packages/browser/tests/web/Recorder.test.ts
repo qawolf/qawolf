@@ -61,19 +61,17 @@ describe("Recorder", () => {
 
     const page = await browser.currentPage();
 
-    await sleep(1000);
-
     // from https://github.com/GoogleChrome/puppeteer/issues/4119#issue-417279184
     await (page as any)._client.send("Input.dispatchMouseEvent", {
       type: "mouseWheel",
       deltaX: 0,
-      deltaY: 200,
+      deltaY: 500,
       x: 0,
       y: 0
     });
 
     // give enough time for scroll event to fire on CI browser
-    await sleep(3000);
+    await sleep(200);
 
     // close the browser to ensure events are transmitted
     await browser.close();
@@ -86,7 +84,10 @@ describe("Recorder", () => {
 
     expect(name).toEqual("scroll");
     expect(target.node.name).toEqual("html");
-    expect(value).toMatchObject({ x: 0, y: 200 });
+    expect(value.x).toEqual(0);
+
+    // the page doesn't scroll perfectly so we can't check the exact y
+    expect(value.y).toBeGreaterThan(200);
     expect(isTrusted).toEqual(true);
   });
 
