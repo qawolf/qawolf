@@ -15,8 +15,8 @@ describe("RunnerEnvironment", () => {
   });
 
   it("exposes steps, values, and workflow as globals", () => {
-    expect(steps.length).toEqual(7);
-    expect(values.length).toEqual(7);
+    expect(steps.length).toEqual(1);
+    expect(values.length).toEqual(1);
     expect(workflow.url).toEqual(CONFIG.testUrl);
   });
 
@@ -33,7 +33,7 @@ describe("RunnerEnvironment", () => {
     await runner.run();
 
     const page = await currentPage();
-    const hasSecureText = await hasText(page, "Secure Area");
+    const hasSecureText = await hasText(page, "Login Page");
 
     expect(hasSecureText).toBe(true);
   });

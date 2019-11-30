@@ -3,82 +3,19 @@
   "size": "desktop",
   "steps": [
     {
-      "action": "scroll",
+      "action": "click",
+      "html": {
+        "ancestors": [],
+        "node": {
+          "attrs": {
+            "href": "/login"
+          },
+          "name": "a",
+          "type": "tag"
+        }
+      },
       "index": 0,
-      "pageId": 0,
-      "target": { "xpath": "/html" },
-      "value": { "x": 0, "y": 334 }
-    },
-    {
-      "action": "click",
-      "index": 1,
-      "pageId": 0,
-      "target": {
-        "href": "http://localhost:5000/login",
-        "innerText": "form authentication",
-        "tagName": "a",
-        "xpath": "//*[@id='content']/ul/li[18]/a"
-      }
-    },
-    {
-      "action": "input",
-      "index": 2,
-      "pageId": 0,
-      "target": {
-        "id": "username",
-        "inputType": "text",
-        "name": "username",
-        "tagName": "input",
-        "xpath": "//*[@id='username']"
-      },
-      "value": "tomsmith"
-    },
-    {
-      "action": "click",
-      "index": 3,
-      "pageId": 0,
-      "target": {
-        "inputType": "submit",
-        "tagName": "button",
-        "innerText": "login",
-        "xpath": "//*[@id='login']/button"
-      }
-    },
-    {
-      "action": "type",
-      "index": 4,
-      "pageId": 0,
-      "target": {
-        "id": "username",
-        "inputType": "text",
-        "name": "username",
-        "tagName": "input",
-        "xpath": "//*[@id='username']"
-      },
-      "value": "tomsmith"
-    },
-    {
-      "action": "type",
-      "index": 5,
-      "pageId": 0,
-      "target": {
-        "id": "password",
-        "inputType": "password",
-        "name": "password",
-        "tagName": "input",
-        "xpath": "//*[@id='password']"
-      },
-      "value": "SuperSecretPassword!"
-    },
-    {
-      "action": "click",
-      "index": 6,
-      "pageId": 0,
-      "target": {
-        "innerText": "login",
-        "tagName": "i",
-        "xpath": "//*[@id='login']/button/i"
-      }
+      "page": 0
     }
   ],
   "url": "http://localhost:5000/"
