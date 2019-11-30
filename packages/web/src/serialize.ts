@@ -2,6 +2,11 @@ import { Doc, DocSelector, DocSelectorSerialized } from "@qawolf/types";
 import { parse as parseHtml } from "html-parse-stringify";
 import "./types";
 
+type SerializeNodeOptions = {
+  innerText?: boolean;
+  labels?: boolean;
+};
+
 export const deserializeDocSelector = (
   serialized: DocSelectorSerialized
 ): DocSelector => {
@@ -59,7 +64,7 @@ export const nodeToDocSelector = (
   } else if (element.tagName === "HTML") {
     nodeHtml = "<html />";
   } else {
-    nodeHtml = nodeToHtml(node, true);
+    nodeHtml = nodeToHtml(node, { innerText: true, labels: true });
     ancestors = getAncestorsHtml(node, numAncestors);
   }
 
@@ -71,14 +76,26 @@ export const nodeToDocSelector = (
 
 export const nodeToHtml = (
   node: Node,
-  includeInnerText: boolean = false
+  options: SerializeNodeOptions = {}
 ): string => {
   const serializer = new XMLSerializer();
 
-  const element = node as HTMLElement;
+  const element = node as HTMLInputElement;
 
-  if (includeInnerText && element.innerText) {
+  if (options.innerText && element.innerText) {
     element.setAttribute("innerText", element.innerText);
+  }
+
+  if (options.labels && element.labels) {
+    const labels: string[] = [];
+
+    element.labels.forEach(label => {
+      if (label.innerText.length) labels.push(label.innerText);
+    });
+
+    if (labels.length) {
+      element.setAttribute("labels", labels.join(" "));
+    }
   }
 
   const serialized = serializer
@@ -86,8 +103,12 @@ export const nodeToHtml = (
     .replace(/ xmlns=\"(.*?)\"/g, "") // remove namespace
     .replace(/(\r\n|\n|\r)/gm, ""); // remove newlines
 
-  if (includeInnerText && element.innerText) {
+  if (options.innerText) {
     element.removeAttribute("innerText");
+  }
+
+  if (options.labels) {
+    element.removeAttribute("labels");
   }
 
   return serialized;

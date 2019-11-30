@@ -129,6 +129,9 @@ describe("Recorder", () => {
     await type(page, "secret");
     await type(page, "↓Enter↑Enter→嗨");
 
+    // give enough time for event to fire on CI browser
+    await sleep(1000);
+
     // close the browser to ensure events are transmitted
     await browser.close();
 

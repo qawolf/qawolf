@@ -59,10 +59,9 @@ describe("nodeToHtml", () => {
 
     const html = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
-      return qawolf.serialize.nodeToHtml(
-        document.querySelector("button")!,
-        true
-      );
+      return qawolf.serialize.nodeToHtml(document.querySelector("button")!, {
+        innerText: true
+      });
     });
 
     expect(html).toEqual(
@@ -87,41 +86,21 @@ describe("nodeToHtml", () => {
       '<img style="position: absolute; top: 0; right: 0; border: 0;" src="/myurl" alt="Alt text" />'
     );
   });
+
+  it("serializes labels", async () => {
+    await browser.goto(`${CONFIG.testUrl}login`);
+
+    const html = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+
+      const input = document.querySelector("input")!;
+      return qawolf.serialize.nodeToHtml(input, {
+        labels: true
+      });
+    });
+
+    expect(html).toEqual(
+      '<input type="text" name="username" id="username" labels="Username" />'
+    );
+  });
 });
-
-// describe("getLabels", () => {
-// it("correctly returns labels", async () => {
-//   const nullLabels = await page.evaluate(() => {
-//     const qawolf: QAWolfWeb = (window as any).qawolf;
-
-//     return qawolf.element.getLabels(document.getElementsByTagName("h2")[0]);
-//   });
-
-//   expect(nullLabels).toBeNull();
-
-//   const usernameLabels = await page.evaluate(() => {
-//     const qawolf: QAWolfWeb = (window as any).qawolf;
-
-//     return qawolf.element.getLabels(
-//       document.getElementsByTagName("input")[0]
-//     );
-//   });
-
-//   expect(usernameLabels).toEqual(["username"]);
-// });
-// });
-
-// it("returns disabled option text for select", async () => {
-//   await page.goto(`${CONFIG.testUrl}dropdown`);
-
-//   const placeholder = await page.evaluate(() => {
-//     const qawolf: QAWolfWeb = (window as any).qawolf;
-
-//     return qawolf.element.getPlaceholder(
-//       document.getElementsByTagName("select")[0]
-//     );
-//   });
-
-//   expect(placeholder).toBe("please select an option");
-//   await page.goto(`${CONFIG.testUrl}login`);
-// });
