@@ -19,10 +19,12 @@ export const buildClickSteps = (events: Event[]): Step[] => {
     // ignore clicks on selects
     if (target.name!.toLowerCase() === "select") continue;
 
-    // ignore clicks on (most) inputs
-    // when the click is followed by a type event
+    // ignore click followed by a type with the same target
     const nextEvent = i + 1 < events.length ? events[i + 1] : null;
-    if (isTypeEvent(nextEvent) && event.target === nextEvent!.target) {
+    if (
+      isTypeEvent(nextEvent) &&
+      JSON.stringify(event.target) === JSON.stringify(nextEvent!.target)
+    ) {
       logger.verbose("skipping click before type");
       continue;
     }
