@@ -1,5 +1,6 @@
 import { FindOptions } from "@qawolf/types";
 import { ElementHandle, Page } from "puppeteer";
+import { findCss } from "./findCss";
 import { findHtml, HtmlSelector } from "./findHtml";
 
 // https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors
@@ -9,7 +10,7 @@ export type Selector =
   | CssSelector
   | {
       html?: HtmlSelector;
-      text?: string;
+      // text?: string;
     };
 
 export const findElement = async (
@@ -18,8 +19,7 @@ export const findElement = async (
   options: FindOptions
 ): Promise<ElementHandle | null> => {
   if (typeof selector === "string") {
-    // return findCss(page, selector, findTimeoutMs);
-    throw new Error("TODO");
+    return findCss(page, selector, options);
   }
 
   if (selector.html) {

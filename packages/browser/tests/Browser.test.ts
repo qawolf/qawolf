@@ -40,15 +40,11 @@ describe("Browser.create", () => {
   });
 });
 
-describe("Browser.element", () => {
-  it("locates an element", async () => {
+describe("Browser.findElement", () => {
+  it("finds an element", async () => {
     const browser = await Browser.create({ url: `${CONFIG.testUrl}login` });
 
-    const elementHandle = await browser.findElement({
-      action: "click",
-      index: 0,
-      target: { id: "login" }
-    });
+    const elementHandle = await browser.findElement("#login");
 
     expect(elementHandle).toBeTruthy();
     expect(await elementHandle.evaluate(e => e.id)).toBe("login");

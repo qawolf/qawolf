@@ -1,8 +1,8 @@
 import { CONFIG } from "@qawolf/config";
-import { QAWolfWeb } from "@qawolf/web";
-import { Page, ElementHandle } from "puppeteer";
+import { Page } from "puppeteer";
 import { Browser } from "../../src/Browser";
 import { findHtml } from "../../src/find";
+import { getXpath } from "./utils";
 
 let browser: Browser;
 let page: Page;
@@ -13,15 +13,6 @@ beforeAll(async () => {
 });
 
 afterAll(() => browser.close());
-
-const getXpath = async (element: ElementHandle<Element> | null) => {
-  if (!element) return null;
-
-  return element.evaluate(element => {
-    const qawolf: QAWolfWeb = (window as any).qawolf;
-    return qawolf.xpath.getXpath(element!);
-  });
-};
 
 describe("findHtml", () => {
   it("finds an element by a strong key (name)", async () => {
