@@ -190,15 +190,6 @@ describe("matchTarget", () => {
       ).toEqual(["alt"]);
     });
 
-    it("matches content", () => {
-      expect(
-        matchTarget(
-          selector("<a>grapefruit</a>"),
-          selector("<a>grapefruit</a>")
-        ).strongKeys
-      ).toEqual(["children[0].content"]);
-    });
-
     it("matches data attribute", () => {
       expect(
         matchTarget(
@@ -216,6 +207,24 @@ describe("matchTarget", () => {
           selector('<img alt="a grapefruit">')
         ).strongKeys
       ).toEqual(["alt"]);
+    });
+
+    it("matches innerText", () => {
+      expect(
+        matchTarget(
+          selector('<a innerText=" Hello world  "> Hello world  </a>'),
+          selector('<a innerText="hello World">hello World</a>')
+        ).strongKeys
+      ).toEqual(["innerText"]);
+    });
+
+    it("matches labels", () => {
+      expect(
+        matchTarget(
+          selector('<a labels="hey SUP yo" />'),
+          selector('<a labels="yo sup" />')
+        ).strongKeys
+      ).toEqual(["labels.yo"]);
     });
 
     it("matches name", () => {

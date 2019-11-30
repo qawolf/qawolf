@@ -23,8 +23,8 @@ export type DocMatch = {
 
 const strongMatchKeys = [
   "alt",
-  "children[0].content",
   "id",
+  "innerText",
   "name",
   "placeholder",
   "src",
@@ -39,13 +39,13 @@ export const compareAttributes = (a: any, b: any) => {
   Object.keys(a || {}).forEach(key => {
     const bValue = (b || {})[key];
 
-    if (key === "class") {
-      const aClasses: string[] = (a[key] || "").split(" ");
-      const bClasses: string[] = (bValue || "").split(" ");
+    if (key === "class" || key === "labels") {
+      const aValues: string[] = (a[key] || "").split(" ");
+      const bValues: string[] = (bValue || "").split(" ");
 
-      aClasses.forEach(name => {
-        const matchKey = `class.${name}`;
-        attrs[matchKey] = bClasses.includes(name);
+      aValues.forEach(name => {
+        const matchKey = `${key}.${name}`;
+        attrs[matchKey] = bValues.includes(name);
 
         total += 1;
         if (attrs[matchKey]) matches.push(matchKey);
@@ -125,7 +125,10 @@ export const matchTarget = (
 
   const nodeComparison = compareDoc(a.node, b.node);
   const strongKeys = nodeComparison.matches.filter(
-    m => strongMatchKeys.includes(m) || dataAttribute === m
+    m =>
+      strongMatchKeys.includes(m) ||
+      dataAttribute === m ||
+      m.includes("labels.")
   );
 
   let matches = nodeComparison.matches.length;

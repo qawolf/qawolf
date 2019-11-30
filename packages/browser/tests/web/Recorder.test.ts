@@ -67,7 +67,7 @@ describe("Recorder", () => {
     await (page as any)._client.send("Input.dispatchMouseEvent", {
       type: "mouseWheel",
       deltaX: 0,
-      deltaY: 500,
+      deltaY: 200,
       x: 0,
       y: 0
     });
@@ -86,7 +86,7 @@ describe("Recorder", () => {
 
     expect(name).toEqual("scroll");
     expect(target.node.name).toEqual("html");
-    expect(value).toMatchObject({ x: 0, y: 500 });
+    expect(value).toMatchObject({ x: 0, y: 200 });
     expect(isTrusted).toEqual(true);
   });
 
