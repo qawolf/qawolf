@@ -4,29 +4,89 @@ exports[`buildSelectSteps builds expected steps 1`] = `
 Array [
   Object {
     "action": "select",
-    "index": 2,
-    "pageId": 0,
-    "target": Object {
-      "ariaLabel": null,
-      "classList": null,
-      "dataValue": null,
-      "href": null,
-      "iconContent": null,
-      "id": "dropdown",
-      "innerText": "please select an option option 1 option 2",
-      "inputType": "select-one",
-      "labels": null,
-      "name": null,
-      "parentText": Array [
-        "dropdown list",
-        "please select an option option 1 option 2",
-        "dropdown list please select an option option 1 option 2",
+    "html": Object {
+      "ancestors": Array [
+        Object {
+          "attrs": Object {
+            "class": "example",
+          },
+          "children": Array [],
+          "name": "div",
+          "type": "tag",
+          "voidElement": false,
+        },
+        Object {
+          "attrs": Object {
+            "class": "large-12 columns",
+            "id": "content",
+          },
+          "children": Array [],
+          "name": "div",
+          "type": "tag",
+          "voidElement": false,
+        },
       ],
-      "placeholder": "please select an option",
-      "tagName": "select",
-      "title": null,
-      "xpath": "//*[@id='dropdown']",
+      "node": Object {
+        "attrs": Object {
+          "id": "dropdown",
+        },
+        "children": Array [
+          Object {
+            "content": "      ",
+            "type": "text",
+          },
+          Object {
+            "attrs": Object {
+              "disabled": "disabled",
+              "selected": "selected",
+              "value": "",
+            },
+            "children": Array [
+              Object {
+                "content": "Please select an option",
+                "type": "text",
+              },
+            ],
+            "name": "option",
+            "type": "tag",
+            "voidElement": false,
+          },
+          Object {
+            "attrs": Object {
+              "value": "1",
+            },
+            "children": Array [
+              Object {
+                "content": "Option 1",
+                "type": "text",
+              },
+            ],
+            "name": "option",
+            "type": "tag",
+            "voidElement": false,
+          },
+          Object {
+            "attrs": Object {
+              "value": "2",
+            },
+            "children": Array [
+              Object {
+                "content": "Option 2",
+                "type": "text",
+              },
+            ],
+            "name": "option",
+            "type": "tag",
+            "voidElement": false,
+          },
+        ],
+        "name": "select",
+        "type": "tag",
+        "voidElement": false,
+      },
     },
+    "index": 1,
+    "page": 0,
     "value": "2",
   },
 ]

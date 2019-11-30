@@ -2,14 +2,14 @@ import { loadEvents } from "@qawolf/fixtures";
 import { buildScrollSteps } from "../";
 
 describe("buildScrollSteps", () => {
-  let scroll: any[];
+  let events: any[];
 
   beforeAll(async () => {
-    scroll = await loadEvents("scroll_click_type");
+    events = await loadEvents("scroll_login");
   });
 
   it("builds expected steps", async () => {
-    const steps = buildScrollSteps(scroll);
+    const steps = buildScrollSteps(events);
     expect(steps).toMatchSnapshot();
   });
 });

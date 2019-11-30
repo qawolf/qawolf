@@ -2,14 +2,14 @@ import { loadEvents } from "@qawolf/fixtures";
 import { buildSelectSteps } from "../";
 
 describe("buildSelectSteps", () => {
-  let selectEvents: any[];
+  let events: any[];
 
   beforeAll(async () => {
-    selectEvents = await loadEvents("select");
+    events = await loadEvents("dropdown");
   });
 
   it("builds expected steps", async () => {
-    const steps = buildSelectSteps(selectEvents);
+    const steps = buildSelectSteps(events);
     expect(steps).toMatchSnapshot();
   });
 });

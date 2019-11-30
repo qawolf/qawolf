@@ -4,69 +4,41 @@ exports[`buildClickSteps builds a click step on an input if it is not followed b
 Array [
   Object {
     "action": "click",
-    "index": 17,
-    "pageId": 0,
-    "target": Object {
-      "alt": null,
-      "ariaLabel": null,
-      "classList": null,
-      "dataValue": null,
-      "href": null,
-      "iconContent": null,
-      "id": "password",
-      "innerText": null,
-      "inputType": "password",
-      "isContentEditable": false,
-      "labels": Array [
-        "password",
+    "html": Object {
+      "ancestors": Array [
+        Object {
+          "attrs": Object {
+            "class": "large-6 small-12 columns",
+          },
+          "children": Array [],
+          "name": "div",
+          "type": "tag",
+          "voidElement": false,
+        },
+        Object {
+          "attrs": Object {
+            "class": "row",
+          },
+          "children": Array [],
+          "name": "div",
+          "type": "tag",
+          "voidElement": false,
+        },
       ],
-      "name": "password",
-      "parentText": Array [
-        "password",
-        "password",
-      ],
-      "placeholder": null,
-      "src": null,
-      "tagName": "input",
-      "title": null,
-      "xpath": "//*[@id='password']",
+      "node": Object {
+        "attrs": Object {
+          "id": "username",
+          "name": "username",
+          "type": "text",
+        },
+        "children": Array [],
+        "name": "input",
+        "type": "tag",
+        "voidElement": true,
+      },
     },
-  },
-  Object {
-    "action": "click",
-    "index": 18,
-    "pageId": 0,
-    "target": Object {
-      "alt": null,
-      "ariaLabel": null,
-      "classList": Array [
-        "radius",
-      ],
-      "dataValue": null,
-      "href": null,
-      "iconContent": Array [
-        "fa",
-        "fa-2x",
-        "fa-sign-in",
-      ],
-      "id": null,
-      "innerText": "login",
-      "inputType": "submit",
-      "isContentEditable": false,
-      "labels": null,
-      "name": null,
-      "parentText": Array [
-        "username",
-        "password",
-        "login",
-        "username password login",
-      ],
-      "placeholder": null,
-      "src": null,
-      "tagName": "button",
-      "title": null,
-      "xpath": "//*[@id='login']/button",
-    },
+    "index": 0,
+    "page": 0,
   },
 ]
 `;
@@ -75,68 +47,93 @@ exports[`buildClickSteps builds expected steps 1`] = `
 Array [
   Object {
     "action": "click",
-    "index": 10,
-    "pageId": 0,
-    "target": Object {
-      "alt": null,
-      "ariaLabel": null,
-      "classList": null,
-      "dataValue": null,
-      "href": "http://localhost:5000/login",
-      "iconContent": null,
-      "id": null,
-      "innerText": "form authentication",
-      "inputType": null,
-      "isContentEditable": false,
-      "labels": null,
-      "name": null,
-      "parentText": Array [
-        "form authentication",
-        "form authentication",
+    "html": Object {
+      "ancestors": Array [
+        Object {
+          "attrs": Object {},
+          "children": Array [],
+          "name": "li",
+          "type": "tag",
+          "voidElement": false,
+        },
+        Object {
+          "attrs": Object {},
+          "children": Array [],
+          "name": "ul",
+          "type": "tag",
+          "voidElement": false,
+        },
       ],
-      "placeholder": null,
-      "src": null,
-      "tagName": "a",
-      "title": null,
-      "xpath": "//*[@id='content']/ul/li[18]/a",
+      "node": Object {
+        "attrs": Object {
+          "href": "/login",
+        },
+        "children": Array [
+          Object {
+            "content": "Form Authentication",
+            "type": "text",
+          },
+        ],
+        "name": "a",
+        "type": "tag",
+        "voidElement": false,
+      },
     },
+    "index": 11,
+    "page": 0,
   },
   Object {
     "action": "click",
-    "index": 38,
-    "pageId": 0,
-    "target": Object {
-      "alt": null,
-      "ariaLabel": null,
-      "classList": Array [
-        "button",
-        "secondary",
-        "radius",
+    "html": Object {
+      "ancestors": Array [
+        Object {
+          "attrs": Object {
+            "class": "example",
+          },
+          "children": Array [],
+          "name": "div",
+          "type": "tag",
+          "voidElement": false,
+        },
+        Object {
+          "attrs": Object {
+            "class": "large-12 columns",
+            "id": "content",
+          },
+          "children": Array [],
+          "name": "div",
+          "type": "tag",
+          "voidElement": false,
+        },
       ],
-      "dataValue": null,
-      "href": "http://localhost:5000/logout",
-      "iconContent": Array [
-        "icon-2x",
-        "icon-signout",
-      ],
-      "id": null,
-      "innerText": "logout",
-      "inputType": null,
-      "isContentEditable": false,
-      "labels": null,
-      "name": null,
-      "parentText": Array [
-        "secure area",
-        "welcome to the secure area. when you are done click logout below.",
-        "logout",
-        "secure area welcome to the secure area. when you are done click logout below. logout",
-      ],
-      "placeholder": null,
-      "src": null,
-      "tagName": "a",
-      "title": null,
-      "xpath": "//*[@id='content']/div/a",
+      "node": Object {
+        "attrs": Object {
+          "class": "button secondary radius",
+          "href": "/logout",
+        },
+        "children": Array [
+          Object {
+            "attrs": Object {
+              "class": "icon-2x icon-signout",
+            },
+            "children": Array [
+              Object {
+                "content": " Logout",
+                "type": "text",
+              },
+            ],
+            "name": "i",
+            "type": "tag",
+            "voidElement": false,
+          },
+        ],
+        "name": "a",
+        "type": "tag",
+        "voidElement": false,
+      },
     },
+    "index": 39,
+    "page": 0,
   },
 ]
 `;

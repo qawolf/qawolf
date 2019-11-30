@@ -1,5 +1,5 @@
 import { logger } from "@qawolf/logger";
-import { Event, KeyEvent, Step } from "@qawolf/types";
+import { Event, KeyEvent, Step, Doc } from "@qawolf/types";
 import { isKeyEvent, isTypeEvent } from "@qawolf/web";
 
 export const buildClickSteps = (events: Event[]): Step[] => {
@@ -22,16 +22,8 @@ export const buildClickSteps = (events: Event[]): Step[] => {
     // ignore clicks on (most) inputs
     // when the click is followed by a type event
     const nextEvent = i + 1 < events.length ? events[i + 1] : null;
-
-    const targetType = target.attrs.type;
-    if (
-      isTypeEvent(nextEvent) &&
-      targetType &&
-      targetType !== "button" &&
-      targetType !== "checkbox" &&
-      targetType !== "radio" &&
-      targetType !== "submit"
-    ) {
+    if (isTypeEvent(nextEvent) && event.target === nextEvent.target) {
+      logger.verbose("skipping click before type");
       continue;
     }
 
@@ -39,7 +31,7 @@ export const buildClickSteps = (events: Event[]): Step[] => {
     // they trigger a click we do not want to duplicate
     const previousEvent = events[i - 1];
     const isSubmitAfterEnter =
-      targetType === "submit" &&
+      target.attrs.type === "submit" &&
       isKeyEvent(previousEvent) &&
       (previousEvent as KeyEvent).value === "Enter" &&
       // the events should trigger very closely
@@ -50,9 +42,6 @@ export const buildClickSteps = (events: Event[]): Step[] => {
       );
       continue;
     }
-
-    // ignore clicks on content editables
-    if (target.attrs.contentEditable === "true") continue;
 
     steps.push({
       action: "click",

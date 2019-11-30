@@ -5,7 +5,7 @@ describe("buildTypeSteps", () => {
   let events: any[];
 
   beforeAll(async () => {
-    events = await loadEvents("login");
+    events = await loadEvents("scroll_login");
   });
 
   it("builds expected steps", async () => {
