@@ -116,7 +116,7 @@ describe("Recorder", () => {
     expect(value).toEqual("2");
   });
 
-  it("records type", async () => {
+  it.only("records type", async () => {
     const browser = await Browser.create({
       recordEvents: true,
       url: `${CONFIG.testUrl}login`
@@ -130,8 +130,8 @@ describe("Recorder", () => {
     await type(page, "secret");
     await type(page, "↓Enter↑Enter→嗨");
 
-    // give enough time for event to fire on CI browser
-    await sleep(1000);
+    // force navigate to make sure we capture everything
+    await browser.goto(CONFIG.testUrl);
 
     // close the browser to ensure events are transmitted
     await browser.close();
