@@ -116,7 +116,7 @@ describe("Recorder", () => {
     expect(value).toEqual("2");
   });
 
-  it.only("records type", async () => {
+  it("records type", async () => {
     const browser = await Browser.create({
       recordEvents: true,
       url: `${CONFIG.testUrl}login`
