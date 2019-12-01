@@ -11,14 +11,14 @@ Array [
         "children": Array [],
         "name": "html",
         "type": "tag",
-        "voidElement": false,
+        "voidElement": true,
       },
     },
-    "index": 10,
+    "index": 23,
     "page": 0,
     "value": Object {
       "x": 0,
-      "y": 457,
+      "y": 118,
     },
   },
 ]

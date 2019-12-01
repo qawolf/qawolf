@@ -1,14 +1,14 @@
 import { CONFIG, makeTempDir } from "@qawolf/config";
 import { loadWorkflow } from "@qawolf/fixtures";
 import { Workflow } from "@qawolf/types";
-import { sleep } from "@qawolf/web";
+import { deserializeWorkflow, sleep } from "@qawolf/web";
 import { pathExists, remove } from "fs-extra";
 import { Runner } from "../../src/Runner";
 
 let workflow: Workflow;
 
 beforeAll(async () => {
-  workflow = await loadWorkflow("click_input");
+  workflow = deserializeWorkflow(await loadWorkflow("click_input"));
 });
 
 it("records dom replayer and a video", async () => {

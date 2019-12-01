@@ -11,14 +11,14 @@ Array [
         "children": Array [],
         "name": "html",
         "type": "tag",
-        "voidElement": false,
+        "voidElement": true,
       },
     },
     "index": 0,
     "page": 0,
     "value": Object {
       "x": 0,
-      "y": 457,
+      "y": 118,
     },
   },
   Object {
@@ -43,6 +43,7 @@ Array [
       "node": Object {
         "attrs": Object {
           "href": "/login",
+          "innertext": "Form Authentication",
         },
         "children": Array [
           Object {
@@ -84,6 +85,7 @@ Array [
       "node": Object {
         "attrs": Object {
           "id": "username",
+          "labels": "Username",
           "name": "username",
           "type": "text",
         },
@@ -95,7 +97,7 @@ Array [
     },
     "index": 2,
     "page": 0,
-    "value": "↓KeyT↑KeyT↓KeyO↑KeyO↓KeyM↑KeyM↓KeyS↓KeyM↑KeyS↑KeyM↓KeyI↑KeyI↓KeyT↑KeyT↓KeyH↑KeyH",
+    "value": "↓KeyT↑KeyT↓KeyO↑KeyO↓KeyM↑KeyM↓KeyS↑KeyS↓KeyM↑KeyM↓KeyI↑KeyI↓KeyT↑KeyT↓KeyH↑KeyH",
   },
   Object {
     "action": "type",
@@ -123,6 +125,7 @@ Array [
       "node": Object {
         "attrs": Object {
           "id": "username",
+          "labels": "Username",
           "name": "username",
           "type": "text",
         },
@@ -162,6 +165,7 @@ Array [
       "node": Object {
         "attrs": Object {
           "id": "password",
+          "labels": "Password",
           "name": "password",
           "type": "password",
         },
@@ -201,6 +205,7 @@ Array [
       "node": Object {
         "attrs": Object {
           "id": "password",
+          "labels": "Password",
           "name": "password",
           "type": "password",
         },
@@ -242,6 +247,7 @@ Array [
         "attrs": Object {
           "class": "button secondary radius",
           "href": "/logout",
+          "innertext": "Logout",
         },
         "children": Array [
           Object {

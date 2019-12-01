@@ -71,7 +71,7 @@ describe("Recorder", () => {
     });
 
     // give enough time for scroll event to fire on CI browser
-    await sleep(200);
+    await sleep(2000);
 
     // close the browser to ensure events are transmitted
     await browser.close();

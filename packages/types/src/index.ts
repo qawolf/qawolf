@@ -81,11 +81,26 @@ export type Step = {
   value?: StepValue;
 };
 
+export type StepSerialized = {
+  action: Action;
+  html: DocSelectorSerialized;
+  index: number;
+  page?: number;
+  value?: StepValue;
+};
+
 export type StepValue = string | ScrollValue | null | undefined;
 
 export type Workflow = {
   name: string;
   size: Size;
   steps: Step[];
+  url: string;
+};
+
+export type WorkflowSerialized = {
+  name: string;
+  size: Size;
+  steps: StepSerialized[];
   url: string;
 };

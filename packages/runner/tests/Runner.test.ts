@@ -1,14 +1,14 @@
-import { hasText } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { loadWorkflow } from "@qawolf/fixtures";
 import { Workflow } from "@qawolf/types";
+import { deserializeWorkflow } from "@qawolf/web";
 import { Runner } from "../src/Runner";
 
 describe("Runner", () => {
   let workflow: Workflow;
 
   beforeAll(async () => {
-    workflow = await loadWorkflow("click_input");
+    workflow = deserializeWorkflow(await loadWorkflow("click_input"));
   });
 
   it("runs a workflow", async () => {

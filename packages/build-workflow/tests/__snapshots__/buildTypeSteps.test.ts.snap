@@ -28,6 +28,7 @@ Array [
       "node": Object {
         "attrs": Object {
           "id": "username",
+          "labels": "Username",
           "name": "username",
           "type": "text",
         },
@@ -37,9 +38,9 @@ Array [
         "voidElement": true,
       },
     },
-    "index": 13,
+    "index": 26,
     "page": 0,
-    "value": "↓KeyT↑KeyT↓KeyO↑KeyO↓KeyM↑KeyM↓KeyS↓KeyM↑KeyS↑KeyM↓KeyI↑KeyI↓KeyT↑KeyT↓KeyH↑KeyH",
+    "value": "↓KeyT↑KeyT↓KeyO↑KeyO↓KeyM↑KeyM↓KeyS↑KeyS↓KeyM↑KeyM↓KeyI↑KeyI↓KeyT↑KeyT↓KeyH↑KeyH",
   },
   Object {
     "action": "type",
@@ -67,6 +68,7 @@ Array [
       "node": Object {
         "attrs": Object {
           "id": "username",
+          "labels": "Username",
           "name": "username",
           "type": "text",
         },
@@ -76,7 +78,7 @@ Array [
         "voidElement": true,
       },
     },
-    "index": 29,
+    "index": 42,
     "page": 0,
     "value": "↓Tab↑Tab",
   },
@@ -106,6 +108,7 @@ Array [
       "node": Object {
         "attrs": Object {
           "id": "password",
+          "labels": "Password",
           "name": "password",
           "type": "password",
         },
@@ -115,7 +118,7 @@ Array [
         "voidElement": true,
       },
     },
-    "index": 33,
+    "index": 46,
     "page": 0,
     "value": "↓Shift↓KeyS↑KeyS↑Shift↓KeyU↑KeyU↓KeyP↑KeyP↓KeyE↑KeyE↓KeyR↑KeyR↓Shift↓KeyS↑KeyS↑Shift↓KeyE↑KeyE↓KeyC↑KeyC↓KeyR↑KeyR↓KeyE↑KeyE↓KeyT↑KeyT↓Shift↓KeyP↑KeyP↑Shift↓KeyA↑KeyA↓KeyS↑KeyS↓KeyS↑KeyS↓KeyW↑KeyW↓KeyO↑KeyO↓KeyR↑KeyR↓KeyD↑KeyD↓Shift↓Digit1↑Digit1↑Shift",
   },
@@ -145,6 +148,7 @@ Array [
       "node": Object {
         "attrs": Object {
           "id": "password",
+          "labels": "Password",
           "name": "password",
           "type": "password",
         },
@@ -154,7 +158,7 @@ Array [
         "voidElement": true,
       },
     },
-    "index": 36,
+    "index": 49,
     "page": 0,
     "value": "↓Enter↑Enter",
   },

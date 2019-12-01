@@ -1,5 +1,14 @@
-import { Doc, DocSelector, DocSelectorSerialized } from "@qawolf/types";
-import { parse as parseHtml } from "html-parse-stringify";
+import {
+  Doc,
+  DocSelector,
+  DocSelectorSerialized,
+  Workflow,
+  WorkflowSerialized
+} from "@qawolf/types";
+import {
+  parse as parseHtml,
+  stringify as stringifyHtml
+} from "html-parse-stringify";
 import "./types";
 
 type SerializeNodeOptions = {
@@ -16,6 +25,16 @@ export const deserializeDocSelector = (
   return {
     node,
     ancestors
+  };
+};
+
+export const deserializeWorkflow = (workflow: WorkflowSerialized) => {
+  return {
+    ...workflow,
+    steps: workflow.steps.map(step => ({
+      ...step,
+      html: deserializeDocSelector(step.html)
+    }))
   };
 };
 
@@ -62,8 +81,8 @@ export const nodeToDocSelector = (
   }
 
   return deserializeDocSelector({
-    node: nodeHtml,
-    ancestors
+    ancestors,
+    node: nodeHtml
   });
 };
 
@@ -113,4 +132,23 @@ export const nodeToHtml = (
   }
 
   return serialized;
+};
+
+export const serializeDocSelector = (
+  selector: DocSelector
+): DocSelectorSerialized => {
+  return {
+    ancestors: selector.ancestors.map(ancestor => stringifyHtml([ancestor])),
+    node: stringifyHtml([selector.node])
+  };
+};
+
+export const serializeWorkflow = (workflow: Workflow): WorkflowSerialized => {
+  return {
+    ...workflow,
+    steps: workflow.steps.map(step => ({
+      ...step,
+      html: serializeDocSelector(step.html)
+    }))
+  };
 };

@@ -9,5 +9,5 @@ declare module "html-parse-stringify" {
 
   export function parse(html: string, options?: IOptions): Array<any>;
 
-  export function stringify(doc: Doc): string;
+  export function stringify(docs: Doc[]): string;
 }

@@ -10,7 +10,7 @@ exports[`buildTest builds a test from a workflow 1`] = `
     await click(steps[1]);
   });
 
-  it('can type into \\"username\\" input', async () => {
+  it('can type into \\"Username\\" input', async () => {
     await type(steps[2], values[2]);
   });
 
@@ -18,7 +18,7 @@ exports[`buildTest builds a test from a workflow 1`] = `
     await type(steps[3], values[3]);
   });
 
-  it('can type into \\"password\\" input', async () => {
+  it('can type into \\"Password\\" input', async () => {
     await type(steps[4], values[4]);
   });
 

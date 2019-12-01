@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@qawolf/types": "^0.5.6",
+    "@qawolf/web": "^0.5.6",
     "jest": "^24.9.0"
   }
 }

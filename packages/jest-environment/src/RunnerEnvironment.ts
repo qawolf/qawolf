@@ -4,7 +4,7 @@ import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { Runner } from "@qawolf/runner";
 import { Workflow } from "@qawolf/types";
-import { isNil, waitUntil } from "@qawolf/web";
+import { deserializeWorkflow, isNil, waitUntil } from "@qawolf/web";
 import { pathExists, readJSON } from "fs-extra";
 import NodeEnvironment from "jest-environment-node";
 import path from "path";
@@ -106,6 +106,6 @@ export class RunnerEnvironment extends NodeEnvironment {
       `RunnerEnvironment: load workflow for test ${this._testPath} ${workflowPath}`
     );
     const json = await readJSON(workflowPath);
-    return json as Workflow;
+    return deserializeWorkflow(json) as Workflow;
   }
 }

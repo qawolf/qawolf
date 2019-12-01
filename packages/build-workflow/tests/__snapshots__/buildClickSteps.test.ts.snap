@@ -68,6 +68,7 @@ Array [
       "node": Object {
         "attrs": Object {
           "href": "/login",
+          "innertext": "Form Authentication",
         },
         "children": Array [
           Object {
@@ -80,7 +81,7 @@ Array [
         "voidElement": false,
       },
     },
-    "index": 11,
+    "index": 24,
     "page": 0,
   },
   Object {
@@ -111,6 +112,7 @@ Array [
         "attrs": Object {
           "class": "button secondary radius",
           "href": "/logout",
+          "innertext": "Logout",
         },
         "children": Array [
           Object {
@@ -133,7 +135,7 @@ Array [
         "voidElement": false,
       },
     },
-    "index": 39,
+    "index": 52,
     "page": 0,
   },
 ]

@@ -6,13 +6,7 @@
       "action": "click",
       "html": {
         "ancestors": [],
-        "node": {
-          "attrs": {
-            "href": "/login"
-          },
-          "name": "a",
-          "type": "tag"
-        }
+        "node": "<a href=\"/login\"></a>"
       },
       "index": 0,
       "page": 0

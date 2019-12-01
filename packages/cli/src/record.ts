@@ -3,6 +3,7 @@ import { buildWorkflow } from "@qawolf/build-workflow";
 import { Browser, BrowserCreateOptions } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
+import { serializeWorkflow } from "@qawolf/web";
 import { outputFile, outputJson } from "fs-extra";
 import { Url } from "url";
 
@@ -57,7 +58,9 @@ export const record = async (
           name: name,
           url: url.href!
         });
-        await outputJson(workflowPath, workflow, { spaces: " " });
+        await outputJson(workflowPath, serializeWorkflow(workflow), {
+          spaces: " "
+        });
 
         logger.verbose(`save test -> ${testPath}`);
         const test = buildTest(workflow);

@@ -32,6 +32,7 @@
     "@qawolf/jest-environment": "^0.5.14",
     "@qawolf/logger": "^0.5.14",
     "@qawolf/runner": "^0.5.14",
+    "@qawolf/web": "^0.5.14",
     "commander": "^3.0.2",
     "fs-extra": "^8.1.0",
     "inquirer": "^7.0.0",
