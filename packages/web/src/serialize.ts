@@ -7,7 +7,7 @@ import {
 } from "@qawolf/types";
 import {
   parse as parseHtml,
-  stringify as stringifyHtml
+  stringify as stringifyDocArray
 } from "html-parse-stringify";
 import "./types";
 
@@ -37,6 +37,8 @@ export const deserializeWorkflow = (workflow: WorkflowSerialized) => {
     }))
   };
 };
+
+export const docToHtml = (doc: Doc) => stringifyDocArray([doc]);
 
 export const htmlToDoc = (html: string): Doc => {
   const result = parseHtml(html);
@@ -138,8 +140,8 @@ export const serializeDocSelector = (
   selector: DocSelector
 ): DocSelectorSerialized => {
   return {
-    ancestors: selector.ancestors.map(ancestor => stringifyHtml([ancestor])),
-    node: stringifyHtml([selector.node])
+    ancestors: selector.ancestors.map(ancestor => docToHtml(ancestor)),
+    node: docToHtml(selector.node)
   };
 };
 
