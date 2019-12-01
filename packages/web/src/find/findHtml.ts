@@ -1,5 +1,5 @@
 import { DocSelector, FindOptions } from "@qawolf/types";
-import { DocMatch, matchTarget } from "./compare";
+import { DocMatch, matchDocSelector } from "./compare";
 import { queryElements } from "./query";
 import { nodeToDocSelector } from "../serialize";
 import { waitFor } from "../wait";
@@ -19,7 +19,7 @@ export const matchElements = (
 
   elements.forEach(element => {
     const selector = nodeToDocSelector(element);
-    const match = matchTarget(target, selector, dataAttribute);
+    const match = matchDocSelector(target, selector, dataAttribute);
     matches.push({ element, match });
   });
 

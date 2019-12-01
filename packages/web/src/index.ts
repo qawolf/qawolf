@@ -12,7 +12,12 @@ import * as xpath from "./xpath";
 // export the isomorphic (node & browser) module for node
 const { deserializeWorkflow, htmlToDoc, serializeWorkflow } = serialize;
 const { isKeyEvent, isPasteEvent, isTypeEvent } = event;
-const { compareAttributes, compareContent, compareDoc, matchTarget } = find;
+const {
+  compareAttributes,
+  compareContent,
+  compareDoc,
+  matchDocSelector
+} = find;
 const { isNil } = lang;
 const { sleep, waitFor, waitUntil } = wait;
 export {
@@ -25,7 +30,7 @@ export {
   isNil,
   isPasteEvent,
   isTypeEvent,
-  matchTarget,
+  matchDocSelector,
   serializeWorkflow,
   sleep,
   waitFor,

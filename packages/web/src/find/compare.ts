@@ -115,7 +115,7 @@ export const compareDoc = (a: Doc, b: Doc | null): DocComparison => {
   return result;
 };
 
-export const matchTarget = (
+export const matchDocSelector = (
   a: DocSelector,
   b: DocSelector,
   dataAttribute?: string

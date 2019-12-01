@@ -3,7 +3,7 @@ import {
   compareContent,
   compareDoc,
   htmlToDoc,
-  matchTarget
+  matchDocSelector
 } from "@qawolf/web";
 
 const doc = htmlToDoc;
@@ -179,11 +179,11 @@ describe("compareDoc", () => {
   });
 });
 
-describe("matchTarget", () => {
+describe("matchDocSelector", () => {
   describe("strong keys", () => {
     it("matches alt", () => {
       expect(
-        matchTarget(
+        matchDocSelector(
           selector('<img alt="a grapefruit">'),
           selector('<img alt="a grapefruit">')
         ).strongKeys
@@ -192,7 +192,7 @@ describe("matchTarget", () => {
 
     it("matches data attribute", () => {
       expect(
-        matchTarget(
+        matchDocSelector(
           selector('<img data-qa="apple">'),
           selector('<button data-qa="apple"></button>'),
           "data-qa"
@@ -202,7 +202,7 @@ describe("matchTarget", () => {
 
     it("matches id", () => {
       expect(
-        matchTarget(
+        matchDocSelector(
           selector('<img alt="a grapefruit">'),
           selector('<img alt="a grapefruit">')
         ).strongKeys
@@ -211,7 +211,7 @@ describe("matchTarget", () => {
 
     it("matches innerText", () => {
       expect(
-        matchTarget(
+        matchDocSelector(
           selector('<a innerText=" Hello world  "> Hello world  </a>'),
           selector('<a innerText="hello World">hello World</a>')
         ).strongKeys
@@ -220,7 +220,7 @@ describe("matchTarget", () => {
 
     it("matches labels", () => {
       expect(
-        matchTarget(
+        matchDocSelector(
           selector('<a labels="hey SUP yo" />'),
           selector('<a labels="yo sup" />')
         ).strongKeys
@@ -229,7 +229,7 @@ describe("matchTarget", () => {
 
     it("matches name", () => {
       expect(
-        matchTarget(
+        matchDocSelector(
           selector('<img name="grapefruit">'),
           selector('<img name="grapefruit">')
         ).strongKeys
@@ -238,7 +238,7 @@ describe("matchTarget", () => {
 
     it("matches placeholder", () => {
       expect(
-        matchTarget(
+        matchDocSelector(
           selector('<input placeholder="qawolf">'),
           selector('<input placeholder="qawolf">')
         ).strongKeys
@@ -247,7 +247,7 @@ describe("matchTarget", () => {
 
     it("matches src", () => {
       expect(
-        matchTarget(
+        matchDocSelector(
           selector('<img src="https://cdn.com/Grapefruit.jpg">'),
           selector('<img src="https://cdn.com/Grapefruit.jpg">')
         ).strongKeys
@@ -256,7 +256,7 @@ describe("matchTarget", () => {
 
     it("matches title", () => {
       expect(
-        matchTarget(
+        matchDocSelector(
           selector('<img title="a grapefruit">'),
           selector('<img title="a grapefruit">')
         ).strongKeys
