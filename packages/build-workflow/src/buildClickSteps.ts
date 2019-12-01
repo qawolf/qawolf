@@ -1,5 +1,5 @@
 import { logger } from "@qawolf/logger";
-import { Event, KeyEvent, Step } from "@qawolf/types";
+import { Event, KeyEvent, Step, Doc } from "@qawolf/types";
 import { isKeyEvent, isTypeEvent } from "@qawolf/web";
 
 export const buildClickSteps = (events: Event[]): Step[] => {
@@ -14,24 +14,18 @@ export const buildClickSteps = (events: Event[]): Step[] => {
     // ignore system initiated clicks
     if (!event.isTrusted) continue;
 
-    // ignore clicks on selects
-    if (
-      event.target.tagName &&
-      event.target.tagName!.toLowerCase() === "select"
-    )
-      continue;
+    const target = event.target.node;
 
-    // ignore clicks on (most) inputs
-    // when the click is followed by a type event
+    // ignore clicks on selects
+    if (target.name!.toLowerCase() === "select") continue;
+
+    // ignore click followed by a type with the same target
     const nextEvent = i + 1 < events.length ? events[i + 1] : null;
     if (
       isTypeEvent(nextEvent) &&
-      event.target.inputType &&
-      event.target.inputType !== "button" &&
-      event.target.inputType !== "checkbox" &&
-      event.target.inputType !== "radio" &&
-      event.target.inputType !== "submit"
+      JSON.stringify(event.target) === JSON.stringify(nextEvent!.target)
     ) {
+      logger.verbose("skipping click before type");
       continue;
     }
 
@@ -39,7 +33,7 @@ export const buildClickSteps = (events: Event[]): Step[] => {
     // they trigger a click we do not want to duplicate
     const previousEvent = events[i - 1];
     const isSubmitAfterEnter =
-      event.target.inputType === "submit" &&
+      target.attrs.type === "submit" &&
       isKeyEvent(previousEvent) &&
       (previousEvent as KeyEvent).value === "Enter" &&
       // the events should trigger very closely
@@ -51,15 +45,12 @@ export const buildClickSteps = (events: Event[]): Step[] => {
       continue;
     }
 
-    // ignore clicks on content editables
-    if (event.target.isContentEditable) continue;
-
     steps.push({
       action: "click",
+      html: event.target,
       // include event index so we can sort in buildSteps
       index: i,
-      pageId: event.pageId,
-      target: event.target
+      page: event.page
     });
   }
 

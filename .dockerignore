@@ -1,4 +1,5 @@
 # .gitignore
+.vscode
 **/*.DS_Store
 **/*.log
 **/*.tsbuildinfo

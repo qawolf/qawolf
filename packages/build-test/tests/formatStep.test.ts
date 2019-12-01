@@ -6,11 +6,15 @@ describe("formatStep", () => {
     it("formats click on link step", () => {
       const step: Step = {
         action: "click",
-        index: 0,
-        target: {
-          innerText: "contact",
-          tagName: "a"
-        }
+        html: {
+          ancestors: [],
+          node: {
+            attrs: { innerText: "contact" },
+            name: "a",
+            type: "tag"
+          }
+        },
+        index: 0
       };
 
       const formattedStep = formatStep(step);
@@ -20,12 +24,15 @@ describe("formatStep", () => {
     it("formats click on submit input step", () => {
       const step: Step = {
         action: "click",
-        index: 1,
-        target: {
-          innerText: "sign in",
-          inputType: "submit",
-          tagName: "input"
-        }
+        html: {
+          ancestors: [],
+          node: {
+            attrs: { innerText: "sign in" },
+            name: "input",
+            type: "tag"
+          }
+        },
+        index: 1
       };
 
       const formattedStep = formatStep(step);
@@ -37,8 +44,14 @@ describe("formatStep", () => {
     it("formats scroll action", () => {
       const step: Step = {
         action: "scroll",
+        html: {
+          ancestors: [],
+          node: {
+            name: "html",
+            type: "tag"
+          }
+        },
         index: 0,
-        target: { xpath: "/html" },
         value: { x: 0, y: 10 }
       };
 
@@ -51,11 +64,17 @@ describe("formatStep", () => {
     it("formats select action", () => {
       const step: Step = {
         action: "select",
-        index: 0,
-        target: {
-          id: "select1",
-          tagName: "select"
+        html: {
+          ancestors: [],
+          node: {
+            attrs: {
+              name: "select1"
+            },
+            name: "select",
+            type: "tag"
+          }
         },
+        index: 0,
         value: "spirit"
       };
 
@@ -68,10 +87,14 @@ describe("formatStep", () => {
     it("formats clear an input", () => {
       const step: Step = {
         action: "type",
-        index: 0,
-        target: {
-          tagName: "input"
+        html: {
+          ancestors: [],
+          node: {
+            name: "input",
+            type: "tag"
+          }
         },
+        index: 0,
         value: null
       };
 
@@ -82,15 +105,19 @@ describe("formatStep", () => {
     it("formats type into text input", () => {
       const step: Step = {
         action: "type",
-        index: 0,
-        target: {
-          id: "input1",
-          inputType: "text",
-          labels: ["username"],
-          name: "user",
-          placeholder: "Jane Doe",
-          tagName: "input"
+        html: {
+          ancestors: [],
+          node: {
+            attrs: {
+              id: "input1",
+              name: "username",
+              placeholder: "Jane Doe"
+            },
+            name: "input",
+            type: "tag"
+          }
         },
+        index: 0,
         value: "spirit"
       };
 
@@ -101,13 +128,18 @@ describe("formatStep", () => {
     it("formats type into password input", () => {
       const step: Step = {
         action: "type",
-        index: 10,
-        target: {
-          id: "input2",
-          inputType: "password",
-          placeholder: "secret",
-          tagName: "input"
+        html: {
+          ancestors: [],
+          node: {
+            attrs: {
+              id: "input2",
+              placeholder: "secret"
+            },
+            name: "input",
+            type: "tag"
+          }
         },
+        index: 10,
         value: "supersecret"
       };
 

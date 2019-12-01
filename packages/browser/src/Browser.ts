@@ -1,11 +1,11 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { Callback, Event, Size, Step } from "@qawolf/types";
+import { Callback, Event, FindOptions, Size, Step } from "@qawolf/types";
 import { waitFor } from "@qawolf/web";
 import { sortBy } from "lodash";
 import puppeteer, { devices, ElementHandle } from "puppeteer";
 import { getDevice } from "./device";
-import { findElement } from "./find";
+import { find, Selector } from "./find";
 import { launchPuppeteerBrowser } from "./launch";
 import { DecoratedPage, QAWolfPage } from "./QAWolfPage";
 
@@ -82,23 +82,39 @@ export class Browser {
     return this._device;
   }
 
-  public async element(
-    step: Step,
-    waitForRequests: boolean = true,
-    timeoutMs?: number
-  ): Promise<ElementHandle> {
-    const page = await this.getPage(step.pageId, waitForRequests);
-    return findElement(page, step, timeoutMs);
-  }
-
   public get events() {
     const events: Event[] = [];
 
     this._pages.forEach((page, index) =>
-      page.events.forEach(event => events.push({ ...event, pageId: index }))
+      page.events.forEach(event => events.push({ ...event, page: index }))
     );
 
     return sortBy(events, e => e.time);
+  }
+
+  public async find(
+    selectorOrStep: Selector | Step,
+    options?: FindOptions
+  ): Promise<ElementHandle> {
+    const findOptions = options || { timeoutMs: CONFIG.findTimeoutMs };
+
+    const step = selectorOrStep as Step;
+    if (step.action) {
+      logger.verbose(`Browser.find: step ${step.action} ${step.index}`);
+
+      findOptions.action = step.action;
+    }
+
+    const page = await this.getPage(
+      step.page || 0,
+      findOptions.waitForRequests,
+      findOptions.timeoutMs
+    );
+
+    const element = await find(page, selectorOrStep, findOptions);
+    if (!element) throw new Error("No element found");
+
+    return element;
   }
 
   public async goto(

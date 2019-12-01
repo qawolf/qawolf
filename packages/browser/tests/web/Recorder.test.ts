@@ -10,14 +10,7 @@ describe("Recorder", () => {
       recordEvents: true,
       url: CONFIG.testUrl
     });
-    const element = await browser.element({
-      action: "click",
-      index: 0,
-      target: {
-        innerText: "broken images",
-        xpath: '//*[@id="content"]/ul/li[3]/a'
-      }
-    });
+    const element = await browser.find({ html: "<a>broken images</a>" });
     await click(element);
 
     const page = await browser.currentPage();
@@ -28,7 +21,7 @@ describe("Recorder", () => {
     const events = page.qawolf.events.filter(e => e.isTrusted);
     expect(events.length).toEqual(1);
     expect(events[0].name).toEqual("click");
-    expect(events[0].target.xpath).toEqual("//*[@id='content']/ul/li[3]/a");
+    expect(events[0].target.node.attrs.href).toEqual("/broken_images");
   });
 
   it("records paste", async () => {
@@ -37,11 +30,7 @@ describe("Recorder", () => {
       url: `${CONFIG.testUrl}login`
     });
 
-    const element = await browser.element({
-      action: "type",
-      index: 0,
-      target: { id: "password", xpath: "//*[@id='password']" }
-    });
+    const element = await browser.find("#password");
 
     const page = await browser.currentPage();
     await focusClear(element);
@@ -60,7 +49,7 @@ describe("Recorder", () => {
     await browser.close();
 
     const events = page.qawolf.events;
-    expect(events[0].target.xpath).toEqual("//*[@id='password']");
+    expect(events[0].target.node.attrs.id).toEqual("password");
     expect((events[0] as PasteEvent).value).toEqual("secret");
   });
 
@@ -76,13 +65,13 @@ describe("Recorder", () => {
     await (page as any)._client.send("Input.dispatchMouseEvent", {
       type: "mouseWheel",
       deltaX: 0,
-      deltaY: 1000,
+      deltaY: 500,
       x: 0,
       y: 0
     });
 
     // give enough time for scroll event to fire on CI browser
-    await sleep(1000);
+    await sleep(2000);
 
     // close the browser to ensure events are transmitted
     await browser.close();
@@ -94,8 +83,11 @@ describe("Recorder", () => {
     ] as ScrollEvent;
 
     expect(name).toEqual("scroll");
-    expect(target.xpath).toEqual("/html");
-    expect(value).toMatchObject({ x: 0, y: 1000 });
+    expect(target.node.name).toEqual("html");
+    expect(value.x).toEqual(0);
+
+    // the page doesn't scroll perfectly so we can't check the exact y
+    expect(value.y).toBeGreaterThan(200);
     expect(isTrusted).toEqual(true);
   });
 
@@ -106,11 +98,7 @@ describe("Recorder", () => {
     });
     const page = await browser.currentPage();
 
-    const element = await browser.element({
-      action: "type",
-      index: 0,
-      target: { id: "dropdown", tagName: "select" }
-    });
+    const element = await browser.find("#dropdown");
 
     await select(element, "2");
 
@@ -124,7 +112,7 @@ describe("Recorder", () => {
     ] as InputEvent;
 
     expect(isTrusted).toEqual(false);
-    expect(target.xpath).toEqual("//*[@id='dropdown']");
+    expect(target.node.attrs.id).toEqual("dropdown");
     expect(value).toEqual("2");
   });
 
@@ -134,11 +122,7 @@ describe("Recorder", () => {
       url: `${CONFIG.testUrl}login`
     });
 
-    const element = await browser.element({
-      action: "type",
-      index: 0,
-      target: { id: "password", xpath: "//*[@id='password']" }
-    });
+    const element = await browser.find("#password");
 
     const page = await browser.currentPage();
 
@@ -146,12 +130,15 @@ describe("Recorder", () => {
     await type(page, "secret");
     await type(page, "↓Enter↑Enter→嗨");
 
+    // force navigate to make sure we capture everything
+    await browser.goto(CONFIG.testUrl);
+
     // close the browser to ensure events are transmitted
     await browser.close();
 
     const events = page.qawolf.events.filter(e => e.isTrusted);
 
-    expect(events[0].target.xpath).toEqual("//*[@id='password']");
+    expect(events[0].target.node.attrs.id).toEqual("password");
     expect(
       (events.filter(e => isKeyEvent(e)) as KeyEvent[]).map(e => e.value)
     ).toEqual([

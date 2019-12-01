@@ -1,10 +1,12 @@
 // import directly since fixtures are not exported
-import { loginWorkflow } from "../../build-workflow/fixtures/loginWorkflow";
+import { loadWorkflow } from "@qawolf/fixtures";
+import { deserializeWorkflow } from "@qawolf/web";
 import { buildTest } from "../src/buildTest";
 
 describe("buildTest", () => {
   it("builds a test from a workflow", async () => {
-    const testString = buildTest(loginWorkflow);
+    const workflow = deserializeWorkflow(await loadWorkflow("scroll_login"));
+    const testString = buildTest(workflow);
     expect(testString).toMatchSnapshot();
   });
 });

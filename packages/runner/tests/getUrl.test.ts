@@ -1,12 +1,18 @@
-import { loginWorkflow } from "../../build-workflow/fixtures/loginWorkflow";
+import { loadWorkflow } from "@qawolf/fixtures";
+import { Workflow } from "@qawolf/types";
 import { getUrl } from "../src/getUrl";
 
-describe("getUrl", () => {
-  const workflow = {
+let workflow: Workflow;
+
+beforeAll(async () => {
+  const loginWorkflow = await loadWorkflow("scroll_login");
+  workflow = {
     ...loginWorkflow,
     name: "the_login"
   };
+});
 
+describe("getUrl", () => {
   it("uses test environment variable if it is defined", () => {
     process.env.QAW_THE_LOGIN_URL = "http://QAW_THE_LOGIN_URL";
     let url = getUrl(workflow);

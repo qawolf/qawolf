@@ -10,15 +10,14 @@ export const buildSelectSteps = (events: Event[]): Step[] => {
     if (!event.isTrusted || event.name !== "input") continue;
 
     // ignore input events not on selects
-    const tagName = (event.target.tagName || "").toLowerCase();
-    if (tagName !== "select") continue;
+    if (event.target.node.name !== "select") continue;
 
     steps.push({
       action: "select",
+      html: event.target,
       // include event index so we can sort in buildSteps
       index: i,
-      pageId: event.pageId,
-      target: event.target,
+      page: event.page,
       value: event.value
     });
   }

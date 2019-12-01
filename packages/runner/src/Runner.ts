@@ -9,6 +9,7 @@ import {
   retryExecutionError,
   scroll,
   select,
+  Selector,
   type
 } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
@@ -31,6 +32,8 @@ export class Runner {
     /**
      * An async constructor for Runner.
      */
+    logger.verbose(`Runner: create for ${workflow.name}`);
+
     const self = new Runner();
 
     // replace the url w/ env variable if it exists
@@ -89,11 +92,11 @@ export class Runner {
     return this._values;
   }
 
-  public async click(step: Step) {
-    logger.verbose(`Runner: click step ${step.index}`);
+  public async click(selectorOrStep: Selector | Step) {
+    logger.verbose("Runner: click");
 
     await retryExecutionError(async () => {
-      const element = await this.beforeAction(step);
+      const element = await this.beforeAction(selectorOrStep);
       await click(element!);
     });
   }
@@ -132,6 +135,8 @@ export class Runner {
   }
 
   public async runStep(step: Step) {
+    logger.verbose(`Runner: runStep ${step.index}`);
+
     if (step.action === "click") {
       await this.click(step);
     } else if (step.action === "type") {
@@ -144,26 +149,26 @@ export class Runner {
     }
   }
 
-  public async scroll(step: Step, value: StepValue) {
-    logger.verbose(`Runner: scroll step ${step.index}`);
+  public async scroll(selectorOrStep: Selector | Step, value: StepValue) {
+    logger.verbose("Runner: scroll");
 
     await retryExecutionError(async () => {
-      const element = await this.beforeAction(step);
+      const element = await this.beforeAction(selectorOrStep);
       await scroll(element!, value as ScrollValue, CONFIG.findTimeoutMs);
     });
   }
 
-  public async select(step: Step, value: StepValue) {
-    logger.verbose(`Runner: select step ${step.index}`);
+  public async select(selectorOrStep: Selector | Step, value: StepValue) {
+    logger.verbose("Runner: select");
 
     await retryExecutionError(async () => {
-      const element = await this.beforeAction(step);
+      const element = await this.beforeAction(selectorOrStep);
       await select(element!, value as string);
     });
   }
 
-  public async type(step: Step, value?: StepValue) {
-    logger.verbose(`Runner: type step ${step.index}`);
+  public async type(selectorOrStep: Selector | Step, value?: StepValue) {
+    logger.verbose("Runner: type");
 
     const typeValue = value as (string | null);
 
@@ -173,28 +178,38 @@ export class Runner {
         !typeValue ||
         !(typeValue.startsWith("↓Enter") || typeValue.startsWith("↓Tab"));
 
-      const element = await this.beforeAction(shouldFocusClear ? step : null);
+      const element = await this.beforeAction(
+        shouldFocusClear ? selectorOrStep : null
+      );
       if (shouldFocusClear) {
         await focusClear(element!);
       }
 
-      const page = await this._browser.getPage(step.pageId);
+      const page = await this._browser.getPage(
+        (selectorOrStep as Step).page || 0
+      );
       if (typeValue) await type(page, typeValue);
     });
   }
 
-  private async beforeAction(step: Step | null) {
-    logger.verbose(`Runner: beforeAction`);
-    let element = step ? await this._browser.element(step) : null;
+  private async beforeAction(selectorOrStep: Selector | Step | null) {
+    logger.verbose("Runner: beforeAction");
+
+    let element = selectorOrStep
+      ? await this._browser.find(selectorOrStep)
+      : null;
 
     if (CONFIG.sleepMs) {
       logger.verbose(`Runner: beforeAction sleep ${CONFIG.sleepMs} ms`);
       await sleep(CONFIG.sleepMs);
 
       // reload the element in case it changed since the sleep
-      if (step) {
+      if (selectorOrStep) {
         logger.verbose("Runner: beforeAction reload element after sleep");
-        element = await this._browser.element(step, false, 0);
+        element = await this._browser.find(selectorOrStep, {
+          timeoutMs: 0,
+          waitForRequests: false
+        });
       }
     }
 

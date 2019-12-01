@@ -1,35 +1,43 @@
 import * as element from "./element";
 import * as event from "./event";
 import * as find from "./find";
-import * as match from "./match";
-import { Match } from "./match";
+import * as lang from "./lang";
 import { Recorder } from "./Recorder";
 import * as select from "./select";
+import * as serialize from "./serialize";
 import { scroll } from "./scroll";
 import * as wait from "./wait";
 import * as xpath from "./xpath";
 
-export type Match = Match;
-
 // export the isomorphic (node & browser) module for node
+const {
+  deserializeWorkflow,
+  htmlToDoc,
+  serializeDocSelector,
+  serializeWorkflow
+} = serialize;
 const { isKeyEvent, isPasteEvent, isTypeEvent } = event;
 const {
-  compareArrays,
-  compareDescriptorKey,
-  compareDescriptors,
-  countPresentKeys,
-  isNil
-} = match;
+  compareAttributes,
+  compareContent,
+  compareDoc,
+  matchDocSelector
+} = find;
+const { isNil } = lang;
 const { sleep, waitFor, waitUntil } = wait;
 export {
-  compareArrays,
-  compareDescriptorKey,
-  compareDescriptors,
-  countPresentKeys,
+  compareAttributes,
+  compareContent,
+  compareDoc,
+  deserializeWorkflow,
+  htmlToDoc,
   isKeyEvent,
   isNil,
   isPasteEvent,
   isTypeEvent,
+  matchDocSelector,
+  serializeDocSelector,
+  serializeWorkflow,
   sleep,
   waitFor,
   waitUntil
@@ -40,10 +48,11 @@ const webExports = {
   element,
   event,
   find,
-  match,
+  lang,
   Recorder,
   scroll,
   select,
+  serialize,
   wait,
   xpath
 };

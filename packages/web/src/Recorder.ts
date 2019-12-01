@@ -1,6 +1,6 @@
 import * as types from "@qawolf/types";
-import { getDescriptor } from "./element";
-import { findClickableAncestor } from "./find";
+import { getClickableAncestor } from "./element";
+import { nodeToDocSelector } from "./serialize";
 
 type EventCallback = types.Callback<types.Event>;
 
@@ -55,7 +55,7 @@ export class Recorder {
 
   private recordEvents() {
     this.recordEvent("click", event => {
-      // findClickableAncestor chooses the ancestor if it has a data-attribute
+      // getClickableAncestor chooses the ancestor if it has a data-attribute
       // which is very likely the target we want to click on.
       // If there is not a data-attribute on any of the clickable ancestors
       // it will take the top most clickable ancestor.
@@ -63,7 +63,7 @@ export class Recorder {
       // Ex. when you click on the i (button > i) or rect (a > svg > rect)
       // chances are the ancestor (button, a) is a better target to find.
       // XXX if anyone runs into issues with this behavior we can allow disabling it from a flag.
-      const target = findClickableAncestor(
+      const target = getClickableAncestor(
         event.target as HTMLElement,
         this._dataAttribute
       );
@@ -71,7 +71,7 @@ export class Recorder {
       return {
         isTrusted: event.isTrusted,
         name: "click",
-        target: getDescriptor(target, this._dataAttribute),
+        target: nodeToDocSelector(target),
         time: Date.now()
       };
     });
@@ -85,7 +85,7 @@ export class Recorder {
       return {
         isTrusted: event.isTrusted,
         name: "input",
-        target: getDescriptor(element, this._dataAttribute),
+        target: nodeToDocSelector(element),
         time: Date.now(),
         value: element.value
       };
@@ -94,7 +94,7 @@ export class Recorder {
     this.recordEvent("keydown", event => ({
       isTrusted: event.isTrusted,
       name: "keydown",
-      target: getDescriptor(event.target as HTMLElement, this._dataAttribute),
+      target: nodeToDocSelector(event.target as HTMLElement),
       time: Date.now(),
       value: event.key
     }));
@@ -102,7 +102,7 @@ export class Recorder {
     this.recordEvent("keyup", event => ({
       isTrusted: event.isTrusted,
       name: "keyup",
-      target: getDescriptor(event.target as HTMLElement, this._dataAttribute),
+      target: nodeToDocSelector(event.target as HTMLElement),
       time: Date.now(),
       value: event.key
     }));
@@ -113,7 +113,7 @@ export class Recorder {
       return {
         isTrusted: event.isTrusted,
         name: "paste",
-        target: getDescriptor(event.target as HTMLElement, this._dataAttribute),
+        target: nodeToDocSelector(event.target as HTMLElement),
         time: Date.now(),
         value: event.clipboardData.getData("text")
       };
@@ -147,7 +147,7 @@ export class Recorder {
       return {
         isTrusted: event.isTrusted,
         name: "scroll",
-        target: getDescriptor(element, this._dataAttribute),
+        target: nodeToDocSelector(element),
         time: Date.now(),
         value: {
           x: element.scrollLeft,

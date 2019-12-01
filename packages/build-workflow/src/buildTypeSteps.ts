@@ -35,10 +35,10 @@ export class TypeStepFactory {
 
     this.steps.push({
       action: "type",
+      html: event.target,
       // include event index so we can sort in buildSteps
       index: this.events.indexOf(event),
-      pageId: event.pageId,
-      target: event.target,
+      page: event.page,
       value: serializeStrokes(this.pendingStrokes)
     });
 
@@ -103,7 +103,7 @@ export class TypeStepFactory {
       // find the index from the unfiltered list
       const index = this.events.indexOf(event);
 
-      if (this.pendingEvent && event.pageId !== this.pendingEvent.pageId) {
+      if (this.pendingEvent && event.page !== this.pendingEvent.page) {
         // build the step when the page changes
         this.buildPendingStrokesStep();
       }

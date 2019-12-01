@@ -4,15 +4,21 @@ exports[`buildScrollSteps builds expected steps 1`] = `
 Array [
   Object {
     "action": "scroll",
-    "index": 9,
-    "pageId": 0,
-    "target": Object {
-      "tagName": "html",
-      "xpath": "/html",
+    "html": Object {
+      "ancestors": Array [],
+      "node": Object {
+        "attrs": Object {},
+        "children": Array [],
+        "name": "html",
+        "type": "tag",
+        "voidElement": true,
+      },
     },
+    "index": 23,
+    "page": 0,
     "value": Object {
       "x": 0,
-      "y": 457,
+      "y": 118,
     },
   },
 ]

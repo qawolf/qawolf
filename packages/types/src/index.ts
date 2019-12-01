@@ -2,32 +2,30 @@ export type Action = "click" | "type" | "scroll" | "select";
 
 export type Callback<S = void, T = void> = (data?: S) => T;
 
-export type ElementDescriptor = {
-  alt?: string | null;
-  ariaLabel?: string | null;
-  classList?: string[] | null;
-  dataValue?: string | null;
-  href?: string | null;
-  iconContent?: string[] | null;
-  id?: string | null;
-  inputType?: string | null;
-  isContentEditable?: boolean | null;
-  labels?: string[] | null;
-  name?: string | null;
-  parentText?: string[] | null;
-  placeholder?: string | null;
-  src?: string | null;
-  tagName?: string | null;
-  innerText?: string | null;
-  title?: string | null;
-  xpath?: string | null;
+export interface Doc {
+  attrs?: any;
+  children?: Doc[];
+  content?: string;
+  name?: string;
+  type: string;
+  voidElement?: boolean;
+}
+
+export type DocSelector = {
+  ancestors: Doc[];
+  node: Doc;
+};
+
+export type DocSelectorSerialized = {
+  ancestors: string[];
+  node: string;
 };
 
 export interface Event {
-  name: EventName;
   isTrusted: boolean;
-  pageId?: number;
-  target: ElementDescriptor;
+  name: EventName;
+  page?: number;
+  target: DocSelector;
   time: number;
 }
 
@@ -39,6 +37,14 @@ export type EventName =
   | "paste"
   | "scroll";
 
+export type FindOptions = {
+  action?: Action;
+  dataAttribute?: string;
+  timeoutMs: number;
+  value?: string;
+  waitForRequests?: boolean;
+};
+
 export interface InputEvent extends Event {
   name: "input";
   value: string | null;
@@ -49,14 +55,6 @@ export interface KeyEvent extends Event {
   // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
   value: string;
 }
-
-export type Locator = {
-  action: Action;
-  dataAttribute: string | null;
-  target: ElementDescriptor;
-  timeoutMs: number;
-  value?: string | null;
-};
 
 export interface PasteEvent extends Event {
   name: "paste";
@@ -77,9 +75,17 @@ export type Size = "desktop" | "tablet" | "mobile";
 
 export type Step = {
   action: Action;
+  html: DocSelector;
   index: number;
-  pageId?: number;
-  target: ElementDescriptor;
+  page?: number;
+  value?: StepValue;
+};
+
+export type StepSerialized = {
+  action: Action;
+  html: DocSelectorSerialized;
+  index: number;
+  page?: number;
   value?: StepValue;
 };
 
@@ -89,5 +95,12 @@ export type Workflow = {
   name: string;
   size: Size;
   steps: Step[];
+  url: string;
+};
+
+export type WorkflowSerialized = {
+  name: string;
+  size: Size;
+  steps: StepSerialized[];
   url: string;
 };

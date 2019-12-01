@@ -19,7 +19,7 @@ describe("isSelectValueAvailable", () => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const dropdown = document.getElementById("dropdown")!;
 
-      return qawolf.match.isSelectValueAvailable(dropdown);
+      return qawolf.select.isSelectValueAvailable(dropdown);
     });
 
     expect(isAvailable).toBe(true);
@@ -30,7 +30,7 @@ describe("isSelectValueAvailable", () => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const h3 = document.getElementsByTagName("h3")[0]!;
 
-      return qawolf.match.isSelectValueAvailable(h3, "2");
+      return qawolf.select.isSelectValueAvailable(h3, "2");
     });
 
     expect(isAvailable).toBe(true);
@@ -41,7 +41,7 @@ describe("isSelectValueAvailable", () => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const dropdown = document.getElementById("dropdown")!;
 
-      return qawolf.match.isSelectValueAvailable(dropdown, "2");
+      return qawolf.select.isSelectValueAvailable(dropdown, "2");
     });
 
     expect(isAvailable).toBe(true);
@@ -52,7 +52,7 @@ describe("isSelectValueAvailable", () => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const dropdown = document.getElementById("dropdown")!;
 
-      return qawolf.match.isSelectValueAvailable(dropdown, "11");
+      return qawolf.select.isSelectValueAvailable(dropdown, "11");
     });
 
     expect(isAvailable).toBe(false);

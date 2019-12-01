@@ -14,19 +14,14 @@ export const buildScrollSteps = (events: Event[]): Step[] => {
 
     // skip to the last scroll on this target
     const nextEvent = i + 1 < events.length ? events[i + 1] : null;
-    if (
-      nextEvent &&
-      nextEvent.name === "scroll" &&
-      event.target.xpath === nextEvent.target.xpath
-    )
-      continue;
+    if (nextEvent && nextEvent.name === "scroll") continue;
 
     steps.push({
       action: "scroll",
+      html: event.target,
       // include event index so we can sort in buildSteps
       index: i,
-      pageId: event.pageId,
-      target: event.target,
+      page: event.page,
       value: event.value
     });
   }

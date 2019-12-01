@@ -1,23 +1,29 @@
 import { CONFIG, makeTempDir } from "@qawolf/config";
-import { sleep } from "@qawolf/web";
+import { loadWorkflow } from "@qawolf/fixtures";
+import { Workflow } from "@qawolf/types";
+import { deserializeWorkflow, sleep } from "@qawolf/web";
 import { pathExists, remove } from "fs-extra";
-// import directly since fixtures are not exported
-import { loginWorkflow } from "../../../build-workflow/fixtures/loginWorkflow";
 import { Runner } from "../../src/Runner";
+
+let workflow: Workflow;
+
+beforeAll(async () => {
+  workflow = deserializeWorkflow(await loadWorkflow("click_input"));
+});
 
 it("records dom replayer and a video", async () => {
   CONFIG.domPath = await makeTempDir();
   CONFIG.videoPath = await makeTempDir();
 
   const runner = await Runner.create({
-    ...loginWorkflow,
+    ...workflow,
     size: "mobile",
-    url: CONFIG.testUrl
+    url: `${CONFIG.testUrl}login`
   });
   await sleep(500);
   await runner.close();
 
-  const videoPath = `${CONFIG.videoPath}/${loginWorkflow.name}`;
+  const videoPath = `${CONFIG.videoPath}/${workflow.name}`;
   expect(await pathExists(`${videoPath}/video.mp4`)).toBeTruthy();
   expect(await pathExists(`${videoPath}/video.gif`)).toBeTruthy();
   await remove(CONFIG.videoPath);
@@ -28,6 +34,6 @@ it("records dom replayer and a video", async () => {
     width: 376
   });
 
-  const domPath = `${CONFIG.domPath}/${loginWorkflow.name}`;
+  const domPath = `${CONFIG.domPath}/${workflow.name}`;
   expect(await pathExists(`${domPath}/page_0.html`)).toBeTruthy();
 });

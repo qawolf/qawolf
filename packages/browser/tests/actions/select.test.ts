@@ -22,11 +22,7 @@ describe("select", () => {
     });
     expect(selectValue).toBeFalsy();
 
-    const element = await browser.element({
-      action: "type",
-      index: 0,
-      target: { id: "dropdown", tagName: "select" }
-    });
+    const element = await browser.find("#dropdown");
     await select(element, "2");
 
     const selectValue2 = await page.evaluate(() => {
@@ -37,22 +33,14 @@ describe("select", () => {
   });
 
   it("throws error if option with value not available before timeout", async () => {
-    const element = await browser.element({
-      action: "type",
-      index: 0,
-      target: { id: "dropdown", tagName: "select" }
-    });
+    const element = await browser.find("#dropdown");
 
     const testFn = async () => await select(element, "3", 2000);
     await expect(testFn()).rejects.toThrowError();
   });
 
   it("throws error if option with value available but disabled before timeout", async () => {
-    const element = await browser.element({
-      action: "type",
-      index: 0,
-      target: { id: "dropdown", tagName: "select" }
-    });
+    const element = await browser.find("#dropdown");
 
     const testFn = async () => await select(element, "", 2000);
     await expect(testFn()).rejects.toThrowError();
