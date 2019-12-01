@@ -93,7 +93,7 @@ export class Runner {
   }
 
   public async click(selectorOrStep: Selector | Step) {
-    // logger.verbose(`Runner: click step ${toString(selectorOrStep)}`);
+    logger.verbose("Runner: click");
 
     await retryExecutionError(async () => {
       const element = await this.beforeAction(selectorOrStep);
@@ -135,6 +135,8 @@ export class Runner {
   }
 
   public async runStep(step: Step) {
+    logger.verbose(`Runner: runStep ${step.index}`);
+
     if (step.action === "click") {
       await this.click(step);
     } else if (step.action === "type") {
@@ -147,26 +149,26 @@ export class Runner {
     }
   }
 
-  public async scroll(step: Step, value: StepValue) {
-    logger.verbose(`Runner: scroll step ${step.index}`);
+  public async scroll(selectorOrStep: Selector | Step, value: StepValue) {
+    logger.verbose("Runner: scroll");
 
     await retryExecutionError(async () => {
-      const element = await this.beforeAction(step);
+      const element = await this.beforeAction(selectorOrStep);
       await scroll(element!, value as ScrollValue, CONFIG.findTimeoutMs);
     });
   }
 
-  public async select(step: Step, value: StepValue) {
-    logger.verbose(`Runner: select step ${step.index}`);
+  public async select(selectorOrStep: Selector | Step, value: StepValue) {
+    logger.verbose("Runner: select");
 
     await retryExecutionError(async () => {
-      const element = await this.beforeAction(step);
+      const element = await this.beforeAction(selectorOrStep);
       await select(element!, value as string);
     });
   }
 
   public async type(selectorOrStep: Selector | Step, value?: StepValue) {
-    // logger.verbose(`Runner: type step ${toString(selectorOrStep)}`);
+    logger.verbose("Runner: type");
 
     const typeValue = value as (string | null);
 
@@ -191,7 +193,8 @@ export class Runner {
   }
 
   private async beforeAction(selectorOrStep: Selector | Step | null) {
-    logger.verbose(`Runner: beforeAction`);
+    logger.verbose("Runner: beforeAction");
+
     let element = selectorOrStep
       ? await this._browser.find(selectorOrStep)
       : null;

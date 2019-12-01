@@ -100,6 +100,8 @@ export class Browser {
 
     const step = selectorOrStep as Step;
     if (step.action) {
+      logger.verbose(`Browser.find: step ${step.action} ${step.index}`);
+
       findOptions.action = step.action;
     }
 
