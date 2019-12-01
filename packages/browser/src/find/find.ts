@@ -2,6 +2,7 @@ import { FindOptions } from "@qawolf/types";
 import { ElementHandle, Page } from "puppeteer";
 import { findCss } from "./findCss";
 import { findHtml, HtmlSelector } from "./findHtml";
+import { findText } from "./findText";
 
 // https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors
 export type CssSelector = string;
@@ -10,7 +11,7 @@ export type Selector =
   | CssSelector
   | {
       html?: HtmlSelector;
-      // text?: string;
+      text?: string;
     };
 
 export const find = async (
@@ -26,9 +27,9 @@ export const find = async (
     return findHtml(page, selector.html, options);
   }
 
-  // if (selector.text) {
-  //   return findText(page, selector.text, findTimeoutMs);
-  // }
+  if (selector.text) {
+    return findText(page, selector.text, options);
+  }
 
   throw new Error(`Invalid selector ${selector}`);
 };
