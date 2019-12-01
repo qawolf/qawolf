@@ -5,15 +5,20 @@ import { Workflow } from "@qawolf/types";
 import { Runner } from "../src/Runner";
 
 describe("Runner", () => {
-  let loginWorkflow: Workflow;
+  let workflow: Workflow;
 
   beforeAll(async () => {
-    loginWorkflow = await loadWorkflow("scroll_login");
+    workflow = await loadWorkflow("scroll_login");
   });
 
   it("runs a workflow", async () => {
+    console.log("runs a workflow", {
+      ...workflow,
+      url: CONFIG.testUrl
+    });
+
     const runner = await Runner.create({
-      ...loginWorkflow,
+      ...workflow,
       url: CONFIG.testUrl
     });
     await runner.run();
@@ -30,7 +35,7 @@ describe("Runner", () => {
 
   it("finds property of element", async () => {
     const runner = await Runner.create({
-      ...loginWorkflow,
+      ...workflow,
       // need to rename for the video to have a separate path
       name: "dropdown",
       url: `${CONFIG.testUrl}dropdown`

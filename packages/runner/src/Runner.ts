@@ -32,6 +32,8 @@ export class Runner {
     /**
      * An async constructor for Runner.
      */
+    logger.verbose(`Runner: create for ${workflow.name}`);
+
     const self = new Runner();
 
     // replace the url w/ env variable if it exists

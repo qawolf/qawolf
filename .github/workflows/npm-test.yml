@@ -26,7 +26,7 @@ jobs:
         with:
           args: "qawolf-npm-test"
         env:
-          QAW_NAVIGATION_TIMEOUT_MS: 30000
+          QAW_NAVIGATION_TIMEOUT_MS: 20000
           QAW_SLEEP_MS: 0
           # needed for jest-environment test
           QAW_ENVIRONMENT_URL: http://theinternet:5000/
