@@ -6,17 +6,17 @@ import { ElementHandle, Page } from "puppeteer";
 
 export const findCss = async (
   page: Page,
-  selector: string,
+  cssSelector: string,
   options: FindOptions
 ): Promise<ElementHandle<Element> | null> => {
-  logger.verbose(`findCss: ${selector}`);
+  logger.verbose(`findCss: ${cssSelector}`);
 
   const jsHandle = await page.evaluateHandle(
-    (docSelector, options) => {
+    (cssSelector, options) => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
-      return qawolf.find.findCss(docSelector, options);
+      return qawolf.find.findCss(cssSelector, options);
     },
-    selector,
+    cssSelector,
     options as any
   );
 

@@ -5,9 +5,9 @@ import { waitFor } from "@qawolf/web";
 import { sortBy } from "lodash";
 import puppeteer, { devices, ElementHandle } from "puppeteer";
 import { getDevice } from "./device";
+import { find, Selector } from "./find";
 import { launchPuppeteerBrowser } from "./launch";
 import { DecoratedPage, QAWolfPage } from "./QAWolfPage";
-import { find, Selector } from "./find";
 
 export type BrowserCreateOptions = {
   domPath?: string;
