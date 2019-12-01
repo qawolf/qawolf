@@ -5,10 +5,10 @@ import { sleep } from "@qawolf/web";
 import { pathExists, remove } from "fs-extra";
 import { Runner } from "../../src/Runner";
 
-let loginWorkflow: Workflow;
+let workflow: Workflow;
 
 beforeAll(async () => {
-  loginWorkflow = await loadWorkflow("scroll_login");
+  workflow = await loadWorkflow("click_input");
 });
 
 it("records dom replayer and a video", async () => {
@@ -16,14 +16,14 @@ it("records dom replayer and a video", async () => {
   CONFIG.videoPath = await makeTempDir();
 
   const runner = await Runner.create({
-    ...loginWorkflow,
+    ...workflow,
     size: "mobile",
-    url: CONFIG.testUrl
+    url: `${CONFIG.testUrl}login`
   });
   await sleep(500);
   await runner.close();
 
-  const videoPath = `${CONFIG.videoPath}/${loginWorkflow.name}`;
+  const videoPath = `${CONFIG.videoPath}/${workflow.name}`;
   expect(await pathExists(`${videoPath}/video.mp4`)).toBeTruthy();
   expect(await pathExists(`${videoPath}/video.gif`)).toBeTruthy();
   await remove(CONFIG.videoPath);
@@ -34,6 +34,6 @@ it("records dom replayer and a video", async () => {
     width: 376
   });
 
-  const domPath = `${CONFIG.domPath}/${loginWorkflow.name}`;
+  const domPath = `${CONFIG.domPath}/${workflow.name}`;
   expect(await pathExists(`${domPath}/page_0.html`)).toBeTruthy();
 });

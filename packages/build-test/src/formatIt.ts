@@ -5,11 +5,9 @@ export const formatDescription = (step: Step): string => {
 
   const attrs = target.attrs || {};
 
-  const label = attrs.labels ? attrs.labels.join(" ") : "";
-
   // ex. "departure date"
   let description =
-    label ||
+    attrs.labels ||
     attrs.name ||
     attrs.placeholder ||
     attrs.innerText ||

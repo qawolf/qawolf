@@ -9,7 +9,7 @@ describe("formatDescription", () => {
       html: {
         ancestors: [],
         node: {
-          attrs: { labels: ["name", "username"] },
+          attrs: { labels: "name username" },
           name: "input",
           type: "tag",
           voidElement: false

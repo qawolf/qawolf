@@ -8,28 +8,16 @@ describe("Runner", () => {
   let workflow: Workflow;
 
   beforeAll(async () => {
-    workflow = await loadWorkflow("scroll_login");
+    workflow = await loadWorkflow("click_input");
   });
 
   it("runs a workflow", async () => {
-    console.log("runs a workflow", {
-      ...workflow,
-      url: CONFIG.testUrl
-    });
-
     const runner = await Runner.create({
       ...workflow,
-      url: CONFIG.testUrl
+      steps: workflow.steps,
+      url: `${CONFIG.testUrl}login`
     });
     await runner.run();
-
-    const page = await runner.browser.currentPage();
-    const hasSecureText = await hasText(
-      page,
-      "You logged out of the secure area!"
-    );
-    expect(hasSecureText).toBe(true);
-
     await runner.close();
   });
 
