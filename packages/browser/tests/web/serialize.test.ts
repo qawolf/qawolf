@@ -65,7 +65,7 @@ describe("nodeToHtml", () => {
     });
 
     expect(html).toEqual(
-      '<button class="radius" type="submit" innertext=" Login"><i class="fa fa-2x fa-sign-in"> Login</i></button>'
+      '<button class="radius" type="submit" innertext="login"><i class="fa fa-2x fa-sign-in"> Login</i></button>'
     );
   });
 
