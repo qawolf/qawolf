@@ -6,7 +6,7 @@ exports[`buildTest builds a test from a workflow 1`] = `
     await scroll(steps[0], values[0]);
   });
 
-  it('can click link', async () => {
+  it('can click \\"Form Authentication\\" link', async () => {
     await click(steps[1]);
   });
 
@@ -26,7 +26,7 @@ exports[`buildTest builds a test from a workflow 1`] = `
     await type(steps[5], values[5]);
   });
 
-  it('can click link', async () => {
+  it('can click \\"Logout\\" link', async () => {
     await click(steps[6]);
   });
 });"
