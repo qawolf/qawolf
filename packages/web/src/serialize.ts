@@ -9,6 +9,7 @@ import {
   parse as parseHtml,
   stringify as stringifyDocArray
 } from "@jperl/html-parse-stringify";
+import { cleanText } from "./lang";
 import "./types";
 
 type SerializeNodeOptions = {
@@ -105,7 +106,8 @@ export const nodeToHtml = (
   }
 
   if (options.innerText && element.innerText) {
-    element.setAttribute("innertext", element.innerText);
+    // clean the text to prevent weird serialization of line breaks
+    element.setAttribute("innertext", cleanText(element.innerText));
   }
 
   if (options.labels && element.labels) {
