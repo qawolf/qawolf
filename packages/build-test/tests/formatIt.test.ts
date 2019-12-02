@@ -26,7 +26,7 @@ describe("formatDescription", () => {
       html: {
         ancestors: [],
         node: {
-          attrs: { innerText: `sign in${"x".repeat(200)}` },
+          attrs: { innertext: `sign in${"x".repeat(200)}` },
           name: "input",
           type: "tag",
           voidElement: false

@@ -24,7 +24,7 @@ export type DocMatch = {
 const strongMatchKeys = [
   "alt",
   "id",
-  "innerText",
+  "innertext",
   "name",
   "placeholder",
   "src",
@@ -51,7 +51,7 @@ export const compareAttributes = (a: any, b: any) => {
         if (attrs[matchKey]) matches.push(matchKey);
       });
     } else {
-      if (key === "innerText") {
+      if (key === "innertext") {
         attrs[key] = cleanText(a[key]) === cleanText(bValue);
       } else {
         attrs[key] = a[key] === bValue;

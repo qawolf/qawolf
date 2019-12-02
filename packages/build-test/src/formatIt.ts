@@ -10,7 +10,7 @@ export const formatDescription = (step: Step): string => {
     attrs.labels ||
     attrs.name ||
     attrs.placeholder ||
-    attrs.innerText ||
+    attrs.innertext ||
     attrs.id ||
     attrs.alt ||
     "";

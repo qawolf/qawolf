@@ -105,7 +105,7 @@ export const nodeToHtml = (
   }
 
   if (options.innerText && element.innerText) {
-    element.setAttribute("innerText", element.innerText);
+    element.setAttribute("innertext", element.innerText);
   }
 
   if (options.labels && element.labels) {
@@ -126,7 +126,7 @@ export const nodeToHtml = (
     .replace(/(\r\n|\n|\r)/gm, ""); // remove newlines
 
   if (options.innerText) {
-    element.removeAttribute("innerText");
+    element.removeAttribute("innertext");
   }
 
   if (options.labels) {
