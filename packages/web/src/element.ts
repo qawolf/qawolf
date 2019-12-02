@@ -5,37 +5,43 @@ export const getClickableAncestor = (
   dataAttribute: string
 ): HTMLElement => {
   /**
-   * Crawl up until we reach the top "clickable" ancestor
+   * Crawl up until we reach the top "clickable" ancestor.
+   * If a target is the descendant of a clickable element with the data attribute choose it.
+   * If the target is the descendant of "a"/"button"/"input" choose it.
+   * Otherwise choose the original element as the target.
    */
   let ancestor = element;
   console.log("get clickable ancestor for", getXpath(element));
 
   while (ancestor.parentElement) {
-    // short-circuit when we encounter a data value
+    // choose the data value element as the clickable ancestor
     const dataValue = getDataValue(ancestor, dataAttribute);
     if (dataValue) {
       console.log(
-        `get clickable ancestor with ${dataAttribute}="${dataValue}"`,
+        `found clickable ancestor: ${dataAttribute}="${dataValue}"`,
         getXpath(ancestor)
       );
       return ancestor;
     }
 
-    // short-circuit when we encounter a common clickable element type
-    // there may be a parent that is still clickable but does something else
+    // choose the common clickable element type as the clickable ancestor
     if (["a", "button", "input"].includes(ancestor.tagName.toLowerCase())) {
+      console.log(
+        `found clickable ancestor: ${ancestor.tagName}`,
+        getXpath(ancestor)
+      );
       return ancestor;
     }
 
-    // stop at the top clickable ancestor
+    // stop crawling at the first non-clickable element
     if (
       !isClickable(
         ancestor.parentElement,
         window.getComputedStyle(ancestor.parentElement)
       )
     ) {
-      console.log("got clickable ancestor", getXpath(ancestor));
-      return ancestor;
+      console.log("no clickable ancestor, use target", getXpath(element));
+      return element;
     }
 
     ancestor = ancestor.parentElement;
