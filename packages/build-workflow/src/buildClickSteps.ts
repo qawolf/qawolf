@@ -25,23 +25,16 @@ export const buildClickSteps = (events: Event[]): Step[] => {
       isTypeEvent(nextEvent) &&
       JSON.stringify(event.target) === JSON.stringify(nextEvent!.target)
     ) {
-      logger.verbose("skipping click before type");
+      logger.verbose(`skip click before type ${event.time}`);
       continue;
     }
 
-    // ignore clicks on submit inputs after an "Enter"
-    // they trigger a click we do not want to duplicate
     const previousEvent = events[i - 1];
-    const isSubmitAfterEnter =
-      target.attrs.type === "submit" &&
-      isKeyEvent(previousEvent) &&
-      (previousEvent as KeyEvent).value === "Enter" &&
-      // the events should trigger very closely
-      event.time - previousEvent.time < 100;
-    if (isSubmitAfterEnter) {
-      logger.verbose(
-        `skipping submit ${event.time} after enter ${events[i - 1].time}`
-      );
+    if (previousEvent && event.time - previousEvent.time < 50) {
+      // skip system-initiated clicks -- those shortly after the previous event
+      // - "Enter" triggers a click on a submit input
+      // - click on a label triggers click on a checkbox
+      logger.verbose(`skip click shortly after previous event ${event.time}`);
       continue;
     }
 
