@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - master
+    tags:
+      - "*"
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -16,3 +18,4 @@ jobs:
           name: qawolf/qawolf
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+          tag_names: true
