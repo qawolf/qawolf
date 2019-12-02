@@ -1,4 +1,4 @@
-declare module "html-parse-stringify" {
+declare module "@jperl/html-parse-stringify" {
   import { Doc } from "@qawolf/types";
 
   export interface IOptions {

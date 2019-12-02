@@ -8,7 +8,7 @@ import {
 import {
   parse as parseHtml,
   stringify as stringifyDocArray
-} from "html-parse-stringify";
+} from "@jperl/html-parse-stringify";
 import "./types";
 
 type SerializeNodeOptions = {

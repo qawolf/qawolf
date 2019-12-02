@@ -24,7 +24,7 @@
     "access": "public"
   },
   "dependencies": {
-    "html-parse-stringify": "^1.0.3"
+    "@jperl/html-parse-stringify": "1.0.4"
   },
   "devDependencies": {
     "@qawolf/types": "^0.5.6",
