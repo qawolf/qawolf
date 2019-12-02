@@ -17,34 +17,34 @@ Object {
 exports[`formatStep scroll formats scroll action 1`] = `
 Object {
   "it": "can scroll",
-  "method": "scroll(steps[0], values[0])",
+  "method": "scroll(steps[0], { x: 0, y: 10 })",
 }
 `;
 
 exports[`formatStep select formats select action 1`] = `
 Object {
   "it": "can select \\"select1\\"",
-  "method": "select(steps[0], values[0])",
+  "method": "select(steps[0], \\"spirit\\")",
 }
 `;
 
 exports[`formatStep type formats clear an input 1`] = `
 Object {
   "it": "can clear input",
-  "method": "type(steps[0], values[0])",
+  "method": "type(steps[0], null)",
 }
 `;
 
 exports[`formatStep type formats type into password input 1`] = `
 Object {
   "it": "can type into \\"secret\\" input",
-  "method": "type(steps[10], values[10])",
+  "method": "type(steps[10], \\"supersecret\\")",
 }
 `;
 
 exports[`formatStep type formats type into text input 1`] = `
 Object {
   "it": "can type into \\"username\\" input",
-  "method": "type(steps[0], values[0])",
+  "method": "type(steps[0], \\"spirit\\")",
 }
 `;

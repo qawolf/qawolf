@@ -1,6 +1,10 @@
-import { Action } from "@qawolf/types";
+import { Action, ScrollValue, StepValue } from "@qawolf/types";
 
-export const formatMethod = (action: Action, index: number): string => {
+export const formatMethod = (
+  action: Action,
+  index: number,
+  value?: StepValue
+): string => {
   const stepParam = `steps[${index}]`;
 
   if (action === "click") {
@@ -8,15 +12,16 @@ export const formatMethod = (action: Action, index: number): string => {
   }
 
   if (action === "scroll") {
-    return `scroll(${stepParam}, values[${index}])`;
+    const scrollValue = value as ScrollValue;
+    return `scroll(${stepParam}, { x: ${scrollValue.x}, y: ${scrollValue.y} })`;
   }
 
   if (action === "select") {
-    return `select(${stepParam}, values[${index}])`;
+    return `select(${stepParam}, ${JSON.stringify(value)})`;
   }
 
   if (action === "type") {
-    return `type(${stepParam}, values[${index}])`;
+    return `type(${stepParam}, ${JSON.stringify(value)})`;
   }
 
   throw new Error(`Invalid step action ${action}`);

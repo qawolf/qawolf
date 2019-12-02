@@ -86,7 +86,6 @@ export type StepSerialized = {
   html: DocSelectorSerialized;
   index: number;
   page?: number;
-  value?: StepValue;
 };
 
 export type StepValue = string | ScrollValue | null | undefined;
