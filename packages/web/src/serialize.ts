@@ -107,7 +107,7 @@ export const nodeToHtml = (
 
   if (options.innerText && element.innerText) {
     // clean the text to prevent weird serialization of line breaks
-    element.setAttribute("innertext", cleanText(element.innerText));
+    element.setAttribute("innertext", cleanText(element.innerText, false));
   }
 
   if (options.labels && element.labels) {
