@@ -28,7 +28,7 @@ describe("getClickableAncestor", () => {
     expect(xpath).toEqual("//*[@id='login']/button");
   });
 
-  it("short-circuits on an element with the data attribute", async () => {
+  it("chooses the element with the data attribute if it finds one", async () => {
     const xpath = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const submitIcon = document.getElementsByTagName("i")[0]!;
@@ -44,6 +44,17 @@ describe("getClickableAncestor", () => {
     });
 
     expect(xpath).toEqual("//*[@id='login']/button/i");
+  });
+
+  it("chooses the original element when there is no clickable ancestor", async () => {
+    const xpath = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      const button = document.getElementsByTagName("button")[0]!;
+      const ancestor = qawolf.element.getClickableAncestor(button, "data-qa");
+      return qawolf.xpath.getXpath(ancestor);
+    });
+
+    expect(xpath).toEqual("//*[@id='login']/button");
   });
 });
 
