@@ -23,12 +23,13 @@ const {
   compareDoc,
   matchDocSelector
 } = find;
-const { isNil } = lang;
+const { decodeHtml, isNil } = lang;
 const { sleep, waitFor, waitUntil } = wait;
 export {
   compareAttributes,
   compareContent,
   compareDoc,
+  decodeHtml,
   deserializeWorkflow,
   htmlToDoc,
   isKeyEvent,

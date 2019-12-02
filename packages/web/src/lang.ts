@@ -12,6 +12,13 @@ export const cleanText = (
   return cleaned;
 };
 
+export const decodeHtml = (text: string = "") => {
+  return text
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">");
+};
+
 export const isNil = (value?: any): boolean => {
   return typeof value === "undefined" || value === null;
 };

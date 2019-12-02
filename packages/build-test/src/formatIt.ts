@@ -1,4 +1,5 @@
 import { Step } from "@qawolf/types";
+import { decodeHtml } from "@qawolf/web";
 
 export const formatDescription = (step: Step): string => {
   const target = step.html.node;
@@ -10,7 +11,7 @@ export const formatDescription = (step: Step): string => {
     attrs.labels ||
     attrs.name ||
     attrs.placeholder ||
-    attrs.innertext ||
+    decodeHtml(attrs.innertext) ||
     attrs.id ||
     attrs.alt ||
     "";

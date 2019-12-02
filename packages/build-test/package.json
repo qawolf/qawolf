@@ -24,12 +24,12 @@
     "access": "public"
   },
   "dependencies": {
+    "@qawolf/web": "^0.5.6",
     "fs-extra": "^8.1.0",
     "handlebars": "^4.4.3"
   },
   "devDependencies": {
     "@qawolf/types": "^0.5.6",
-    "@qawolf/web": "^0.5.6",
     "jest": "^24.9.0"
   }
 }
