@@ -43,17 +43,17 @@ describe("compareAttributes", () => {
     });
   });
 
-  it("ignores attrs.innerText newlines, whitespace, extra spaces", () => {
+  it("ignores attrs.innertext newlines, whitespace, extra spaces", () => {
     expect(
       compareAttributes(
-        doc('<a innerText=" Hello world  "> Hello world  </a>').attrs,
-        doc('<a innerText="hello World">hello World</a>').attrs
+        doc('<a innertext=" Hello world  "> Hello world  </a>').attrs,
+        doc('<a innertext="hello World">hello World</a>').attrs
       )
     ).toEqual({
       attrs: {
-        innerText: true
+        innertext: true
       },
-      matches: ["innerText"],
+      matches: ["innertext"],
       total: 1
     });
   });
@@ -209,13 +209,13 @@ describe("matchDocSelector", () => {
       ).toEqual(["alt"]);
     });
 
-    it("matches innerText", () => {
+    it("matches innertext", () => {
       expect(
         matchDocSelector(
-          selector('<a innerText=" Hello world  "> Hello world  </a>'),
-          selector('<a innerText="hello World">hello World</a>')
+          selector('<a innertext=" Hello world  "> Hello world  </a>'),
+          selector('<a innertext="hello World">hello World</a>')
         ).strongKeys
-      ).toEqual(["innerText"]);
+      ).toEqual(["innertext"]);
     });
 
     it("matches labels", () => {
