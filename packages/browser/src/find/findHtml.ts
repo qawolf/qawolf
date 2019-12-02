@@ -24,7 +24,10 @@ export const findHtml = async (
   const jsHandle = await page.evaluateHandle(
     (docSelector, options) => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
-      return qawolf.find.findHtml(docSelector, options);
+      const findCmd = () => qawolf.find.findHtml(docSelector, options);
+      // store the last find on the window for easy debugging
+      (window as any).qaw_find = findCmd;
+      return findCmd();
     },
     docSelector as any,
     {

@@ -18,9 +18,14 @@ export const matchElements = (
   let matches: ElementMatch[] = [];
 
   elements.forEach(element => {
-    const selector = nodeToDocSelector(element);
-    const match = matchDocSelector(target, selector, dataAttribute);
-    matches.push({ element, match });
+    try {
+      const selector = nodeToDocSelector(element);
+      const match = matchDocSelector(target, selector, dataAttribute);
+      matches.push({ element, match });
+    } catch (e) {
+      // catch parsing errors on malformed elements
+      console.log("could not match element", element, e);
+    }
   });
 
   // sort descending
