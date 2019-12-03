@@ -1,4 +1,5 @@
-import { copy, pathExists } from "fs-extra";
+import { copy, outputFile, pathExists, readFileSync } from "fs-extra";
+import { compile } from "handlebars";
 import { prompt } from "inquirer";
 import path from "path";
 
@@ -14,8 +15,6 @@ const paths = {
 export const saveCiTemplate = async (provider: CiProvider): Promise<void> => {
   const providerPath = paths[provider];
 
-  const sourcePath = path.join(__dirname, `../static/${provider}.yml`);
-
   const outputPath = path.join(process.cwd(), providerPath);
 
   if (await pathExists(outputPath)) {
@@ -29,6 +28,14 @@ export const saveCiTemplate = async (provider: CiProvider): Promise<void> => {
     if (!overwrite) return;
   }
 
-  await copy(sourcePath, outputPath);
+  const ciTemplate = compile(
+    readFileSync(path.resolve(__dirname, `../static/${provider}.hbs`), "utf8")
+  );
+  const ci = ciTemplate({
+    version: "latest"
+  });
+
+  await outputFile(outputPath, ci, "utf8");
+
   console.log(`Saved ${provider} template to ${outputPath}`);
 };

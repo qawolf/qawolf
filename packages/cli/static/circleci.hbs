@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: qawolf/qawolf:latest
+      - image: qawolf/qawolf:{{{version}}}
         environment:
           # output artifacts
           QAW_DOM_PATH: /tmp/artifacts
@@ -15,6 +15,9 @@ jobs:
           # QAW_CREATE_ACCOUNT_URL: www.mysite.com/createaccount
           # # set "QAW_TESTNAME_0" to override values[0] for the test named "testname"
           # QAW_LOGIN_0: "my_username"
+          # # you can also use CircleCI environment variables
+          # # https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project
+          # QAW_LOGIN_1: ${SECRET_PASSWORD}
 
       # # use your container in the workflow
       # - image: owner/image:tag

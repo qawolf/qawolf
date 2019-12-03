@@ -6,7 +6,7 @@ trigger:
 resources:
   containers:
     - container: qawolf
-      image: qawolf/qawolf:latest
+      image: qawolf/qawolf:{{{version}}}
 
 pool:
   vmImage: "ubuntu-16.04"
@@ -27,6 +27,9 @@ steps:
       # QAW_CREATE_ACCOUNT_URL: www.mysite.com/createaccount
       # # set "QAW_TESTNAME_0" to override values[0] for the test named "testname"
       # QAW_LOGIN_0: "my_username"
+      # # you can also use secret environment variables
+      # # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#secret-variables
+      # QAW_LOGIN_1: $(SECRET_PASSWORD)
 
   - publish: $(System.DefaultWorkingDirectory)/artifacts
     artifact: artifacts
