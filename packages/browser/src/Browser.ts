@@ -75,7 +75,14 @@ export class Browser {
   }
 
   public currentPage(waitForRequests: boolean = true): Promise<DecoratedPage> {
-    return this.getPage(this._currentPageIndex, waitForRequests);
+    let index = this._currentPageIndex;
+
+    // if the current page is closed, choose the first open page
+    if (this._pages[index].super.isClosed()) {
+      index = this._pages.findIndex(p => !p.super.isClosed());
+    }
+
+    return this.getPage(index, waitForRequests);
   }
 
   public get device() {

@@ -40,6 +40,25 @@ describe("Browser.create", () => {
   });
 });
 
+describe("Browser.currentPage", () => {
+  it("chooses the first open page if the current page is closed", async () => {
+    const browser = await Browser.create({ url: CONFIG.testUrl });
+
+    const pageTwo = await browser.super.newPage();
+
+    await browser.getPage(1);
+    let currentPage = await browser.currentPage();
+    expect(currentPage).toEqual(pageTwo);
+
+    await pageTwo.close();
+
+    currentPage = await browser.currentPage();
+    expect(currentPage).not.toEqual(pageTwo);
+
+    await browser.close();
+  });
+});
+
 describe("Browser.findElement", () => {
   it("finds an element", async () => {
     const browser = await Browser.create({ url: `${CONFIG.testUrl}login` });
