@@ -1,4 +1,3 @@
-import { flatten } from "lodash";
 import KeyDefinitions, { KeyDefinition } from "puppeteer/lib/USKeyboardLayout";
 import "./types";
 
@@ -14,19 +13,49 @@ export type Stroke = {
 };
 
 // organizes the KeyDefinitions from USKeyboardLayout
+const codeToDefinition: { [code: string]: KeyDefinition } = {};
 const keyToDefinition: { [key: string]: KeyDefinition } = {};
+const shiftCodeToDefinition: { [code: string]: KeyDefinition } = {};
 
 Object.keys(KeyDefinitions).forEach(key => {
   const definition = KeyDefinitions[key];
+
   // only map each key once
+  if (!codeToDefinition[definition.code]) {
+    codeToDefinition[definition.code] = definition;
+  }
+
   if (!keyToDefinition[definition.key]) {
     keyToDefinition[definition.key] = definition;
+  }
+
+  if (definition.shiftKey && !shiftCodeToDefinition[definition.code]) {
+    shiftCodeToDefinition[definition.code] = definition;
   }
 });
 
 export const characterToCode = (character: string): string | null => {
   const definition = keyToDefinition[character];
   return definition ? definition.code : null;
+};
+
+export const codeToCharacter = (
+  code: string,
+  shift: boolean = false
+): string => {
+  let character: string;
+
+  if (shift) {
+    character = shiftCodeToDefinition[code]!.shiftKey!;
+  } else {
+    character = codeToDefinition[code]!.key;
+  }
+
+  if (character.length > 1) {
+    throw new Error("cannot convert special code to character");
+  }
+
+  return character;
 };
 
 export const deserializeStrokes = (serialized: string) => {
@@ -46,12 +75,55 @@ export const deserializeStrokes = (serialized: string) => {
   return strokes;
 };
 
+export const serializeSimpleStrokes = (strokes: Stroke[]): string => {
+  let str = "";
+
+  let downStroke: Stroke | null = null;
+  let shift = false;
+
+  for (let index = 0; index < strokes.length; index++) {
+    const stroke = strokes[index];
+
+    if (stroke.type === "→") {
+      str += stroke.value;
+    } else if (stroke.type === "↓") {
+      if (stroke.value === "Shift") {
+        if (shift) {
+          throw new Error("sequential shifts");
+        }
+
+        shift = true;
+        continue;
+      }
+
+      if (downStroke) {
+        throw new Error("sequential down strokes");
+      }
+
+      str += codeToCharacter(stroke.value, shift);
+      downStroke = stroke;
+    } else if (stroke.type === "↑") {
+      if (stroke.value === "Shift") {
+        shift = false;
+      } else if (!downStroke || downStroke!.value !== stroke.value) {
+        throw new Error(
+          `up stroke ${stroke.value} does not match down stroke ${downStroke}`
+        );
+      }
+
+      downStroke = null;
+    }
+  }
+
+  return str;
+};
+
 export const serializeStrokes = (strokes: Stroke[]) => {
   const sortedStrokes = strokes.sort((a, b) => a.index - b.index);
 
-  if (sortedStrokes.every(s => s.type === "↓")) {
-    return sortedStrokes.map(s => s.value).join("");
-  }
+  try {
+    return serializeSimpleStrokes(sortedStrokes);
+  } catch (e) {}
 
   return sortedStrokes.map(s => `${s.type}${s.value}`).join("");
 };
@@ -59,7 +131,7 @@ export const serializeStrokes = (strokes: Stroke[]) => {
 export const stringToStrokes = (value: string): Stroke[] => {
   return value.split("").map((character, index) => ({
     index,
-    type: "↓",
+    type: "→",
     value: character
   }));
 };
