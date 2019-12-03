@@ -141,6 +141,21 @@ describe("Recorder", () => {
     expect(events[0].target.node.attrs.id).toEqual("password");
     expect(
       (events.filter(e => isKeyEvent(e)) as KeyEvent[]).map(e => e.value)
-    ).toEqual(["s", "e", "c", "r", "e", "t", "Enter", "Enter"]);
+    ).toEqual([
+      "s",
+      "s",
+      "e",
+      "e",
+      "c",
+      "c",
+      "r",
+      "r",
+      "e",
+      "e",
+      "t",
+      "t",
+      "Enter",
+      "Enter"
+    ]);
   });
 });
