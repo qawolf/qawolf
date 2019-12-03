@@ -3,9 +3,11 @@ export const cleanText = (
   toLower: boolean = true
 ): string => {
   const cleaned = text
-    .trim()
-    .replace(/[\r\n\t]+/g, " ") // remove extra newlines
-    .replace(/\s\s+/g, " "); // remove excessive whitespace
+    // remove newlines
+    .replace(/[\r\n\t]+/gm, " ")
+    // remove excessive whitespace
+    .replace(/\s+/gm, " ")
+    .trim();
 
   if (toLower) return cleaned.toLowerCase();
 
