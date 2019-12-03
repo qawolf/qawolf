@@ -15,78 +15,18 @@ export type Stroke = {
 
 // organizes the KeyDefinitions from USKeyboardLayout
 const keyToDefinition: { [key: string]: KeyDefinition } = {};
+
 Object.keys(KeyDefinitions).forEach(key => {
   const definition = KeyDefinitions[key];
   // only map each key once
-  if (keyToDefinition[definition.key]) return;
-
-  keyToDefinition[definition.key] = definition;
-});
-
-const shiftKeyToDefinitions: { [key: string]: KeyDefinition } = {};
-Object.values(KeyDefinitions).forEach(definition => {
-  if (!definition.shiftKey) return;
-  // only map each key once
-  if (shiftKeyToDefinitions[definition.shiftKey]) return;
-
-  shiftKeyToDefinitions[definition.shiftKey] = definition;
+  if (!keyToDefinition[definition.key]) {
+    keyToDefinition[definition.key] = definition;
+  }
 });
 
 export const characterToCode = (character: string): string | null => {
   const definition = keyToDefinition[character];
   return definition ? definition.code : null;
-};
-
-export const characterToStrokes = (character: string): Stroke[] => {
-  const strokes: Stroke[] = [];
-
-  const shiftKeyDefinition = shiftKeyToDefinitions[character];
-  const keyDefinition = keyToDefinition[character];
-
-  if (!shiftKeyDefinition && !keyDefinition) {
-    // sendCharacter if we cannot find the key definition
-    strokes.push({
-      index: strokes.length,
-      type: "→",
-      value: character
-    });
-
-    return strokes;
-  }
-
-  const code = shiftKeyDefinition
-    ? shiftKeyDefinition.code
-    : keyDefinition.code;
-
-  if (shiftKeyDefinition) {
-    strokes.push({
-      index: strokes.length,
-      type: "↓",
-      value: "Shift"
-    });
-  }
-
-  strokes.push({
-    index: strokes.length,
-    type: "↓",
-    value: code
-  });
-
-  strokes.push({
-    index: strokes.length,
-    type: "↑",
-    value: code
-  });
-
-  if (shiftKeyDefinition) {
-    strokes.push({
-      index: strokes.length,
-      type: "↑",
-      value: "Shift"
-    });
-  }
-
-  return strokes;
 };
 
 export const deserializeStrokes = (serialized: string) => {
@@ -107,16 +47,21 @@ export const deserializeStrokes = (serialized: string) => {
 };
 
 export const serializeStrokes = (strokes: Stroke[]) => {
-  return strokes
-    .sort((a, b) => a.index - b.index)
-    .map(s => `${s.type}${s.value}`)
-    .join("");
+  const sortedStrokes = strokes.sort((a, b) => a.index - b.index);
+
+  if (sortedStrokes.every(s => s.type === "↓")) {
+    return sortedStrokes.map(s => s.value).join("");
+  }
+
+  return sortedStrokes.map(s => `${s.type}${s.value}`).join("");
 };
 
 export const stringToStrokes = (value: string): Stroke[] => {
-  return flatten(
-    value.split("").map(character => characterToStrokes(character))
-  );
+  return value.split("").map((character, index) => ({
+    index,
+    type: "↓",
+    value: character
+  }));
 };
 
 export const valueToStrokes = (value: string): Stroke[] => {

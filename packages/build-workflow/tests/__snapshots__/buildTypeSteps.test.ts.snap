@@ -120,7 +120,7 @@ Array [
     },
     "index": 46,
     "page": 0,
-    "value": "↓Shift↓KeyS↑KeyS↑Shift↓KeyU↑KeyU↓KeyP↑KeyP↓KeyE↑KeyE↓KeyR↑KeyR↓Shift↓KeyS↑KeyS↑Shift↓KeyE↑KeyE↓KeyC↑KeyC↓KeyR↑KeyR↓KeyE↑KeyE↓KeyT↑KeyT↓Shift↓KeyP↑KeyP↑Shift↓KeyA↑KeyA↓KeyS↑KeyS↓KeyS↑KeyS↓KeyW↑KeyW↓KeyO↑KeyO↓KeyR↑KeyR↓KeyD↑KeyD↓Shift↓Digit1↑Digit1↑Shift",
+    "value": "SuperSecretPassword!",
   },
   Object {
     "action": "type",

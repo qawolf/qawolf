@@ -1,6 +1,7 @@
 import {
   characterToCode,
   deserializeStrokes,
+  serializeStrokes,
   stringToStrokes
 } from "../src/strokes";
 
@@ -25,50 +26,30 @@ describe("deserializeStrokes", () => {
   });
 });
 
+describe("serializeStrokes", () => {
+  it("serializes to a plain string if all strokes are ↓", () => {
+    expect(serializeStrokes(stringToStrokes("嗨! 嗨!"))).toEqual("嗨! 嗨!");
+  });
+});
+
 describe("stringToStrokes", () => {
   it("handles lower case characters", () => {
     const strokes = stringToStrokes("hey");
-    expect(strokes.map(s => `${s.type}${s.value}`)).toEqual([
-      "↓KeyH",
-      "↑KeyH",
-      "↓KeyE",
-      "↑KeyE",
-      "↓KeyY",
-      "↑KeyY"
-    ]);
+    expect(strokes.map(s => `${s.type}${s.value}`)).toEqual(["↓h", "↓e", "↓y"]);
   });
 
   it("handles shift characters", () => {
     const strokes = stringToStrokes("YO!");
-    expect(strokes.map(s => `${s.type}${s.value}`)).toEqual([
-      "↓Shift",
-      "↓KeyY",
-      "↑KeyY",
-      "↑Shift",
-      "↓Shift",
-      "↓KeyO",
-      "↑KeyO",
-      "↑Shift",
-      "↓Shift",
-      "↓Digit1",
-      "↑Digit1",
-      "↑Shift"
-    ]);
+    expect(strokes.map(s => `${s.type}${s.value}`)).toEqual(["↓Y", "↓O", "↓!"]);
   });
 
   it("handles special characters", () => {
     const strokes = stringToStrokes("嗨!嗨!");
     expect(strokes.map(s => `${s.type}${s.value}`)).toEqual([
-      "→嗨",
-      "↓Shift",
-      "↓Digit1",
-      "↑Digit1",
-      "↑Shift",
-      "→嗨",
-      "↓Shift",
-      "↓Digit1",
-      "↑Digit1",
-      "↑Shift"
+      "↓嗨",
+      "↓!",
+      "↓嗨",
+      "↓!"
     ]);
   });
 });
