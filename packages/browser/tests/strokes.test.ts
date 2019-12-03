@@ -1,6 +1,7 @@
 import {
   characterToCode,
   deserializeStrokes,
+  serializeStrokes,
   stringToStrokes
 } from "../src/strokes";
 
@@ -22,6 +23,32 @@ describe("deserializeStrokes", () => {
       "↓KeyY",
       "↑KeyY"
     ]);
+  });
+});
+
+describe("serializeStrokes", () => {
+  it("serializes to a plain string if all strokes are →", () => {
+    expect(serializeStrokes(stringToStrokes("嗨! 嗨!"))).toEqual("嗨! 嗨!");
+  });
+
+  it("serializes to a plain string if all strokes are sequential", () => {
+    expect(
+      serializeStrokes(
+        deserializeStrokes(
+          "↓Shift↓KeyS→嗨↑KeyS↑Shift↓KeyU↑KeyU↓KeyP↑KeyP↓KeyE↑KeyE↓KeyR↑KeyR↓Shift↓KeyS↑KeyS↑Shift↓KeyE↑KeyE↓KeyC↑KeyC↓KeyR↑KeyR↓KeyE↑KeyE↓KeyT↑KeyT↓Shift↓KeyP↑KeyP↑Shift↓KeyA↑KeyA↓KeyS↑KeyS↓KeyS↑KeyS↓KeyW↑KeyW↓KeyO↑KeyO↓KeyR↑KeyR↓KeyD↑KeyD↓Shift↓Digit1↑Digit1↑Shift"
+        )
+      )
+    ).toEqual("S嗨uperSecretPassword!");
+  });
+
+  it("serializes special keys to prefixed value", () => {
+    expect(serializeStrokes(deserializeStrokes("↓Enter↑Enter"))).toEqual(
+      "↓Enter↑Enter"
+    );
+
+    expect(serializeStrokes(deserializeStrokes("↓Tab↑Tab"))).toEqual(
+      "↓Tab↑Tab"
+    );
   });
 });
 
@@ -57,13 +84,15 @@ describe("stringToStrokes", () => {
   });
 
   it("handles special characters", () => {
-    const strokes = stringToStrokes("嗨!嗨!");
+    const strokes = stringToStrokes("嗨! 嗨!");
     expect(strokes.map(s => `${s.type}${s.value}`)).toEqual([
       "→嗨",
       "↓Shift",
       "↓Digit1",
       "↑Digit1",
       "↑Shift",
+      "↓Space",
+      "↑Space",
       "→嗨",
       "↓Shift",
       "↓Digit1",

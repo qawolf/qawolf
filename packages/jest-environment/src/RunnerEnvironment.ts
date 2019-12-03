@@ -41,7 +41,6 @@ export class RunnerEnvironment extends NodeEnvironment {
     this.global.type = runner.type.bind(runner);
 
     this.global.steps = runner.workflow.steps;
-    this.global.values = runner.values;
 
     this.global.waitUntil = (
       booleanFn: () => boolean,

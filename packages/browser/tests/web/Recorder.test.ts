@@ -128,7 +128,7 @@ describe("Recorder", () => {
 
     await focusClear(element);
     await type(page, "secret");
-    await type(page, "↓Enter↑Enter→嗨");
+    await type(page, "↓Enter↑Enter");
 
     // force navigate to make sure we capture everything
     await browser.goto(CONFIG.testUrl);

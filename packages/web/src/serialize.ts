@@ -150,9 +150,13 @@ export const serializeDocSelector = (
 export const serializeWorkflow = (workflow: Workflow): WorkflowSerialized => {
   return {
     ...workflow,
-    steps: workflow.steps.map(step => ({
-      ...step,
-      html: serializeDocSelector(step.html)
-    }))
+    steps: workflow.steps.map(s => {
+      // omit value, it is already inlined in the test
+      const { value, ...step } = s;
+      return {
+        ...step,
+        html: serializeDocSelector(step.html)
+      };
+    })
   };
 };

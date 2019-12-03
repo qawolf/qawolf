@@ -11,16 +11,6 @@ describe("Runner", () => {
     workflow = deserializeWorkflow(await loadWorkflow("click_input"));
   });
 
-  it("runs a workflow", async () => {
-    const runner = await Runner.create({
-      ...workflow,
-      steps: workflow.steps,
-      url: `${CONFIG.testUrl}login`
-    });
-    await runner.run();
-    await runner.close();
-  });
-
   it("finds property of element", async () => {
     const runner = await Runner.create({
       ...workflow,

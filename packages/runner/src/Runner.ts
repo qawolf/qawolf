@@ -15,15 +15,15 @@ import {
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { ScreenCapture } from "@qawolf/screen";
-import { ScrollValue, Step, StepValue, Workflow } from "@qawolf/types";
-import { sleep } from "@qawolf/web";
-import { getStepValues } from "./getStepValues";
+import { Action, ScrollValue, Step, StepValue, Workflow } from "@qawolf/types";
+import { isNil, sleep } from "@qawolf/web";
+import { getEnvValues } from "./getEnvValues";
 import { getUrl } from "./getUrl";
 
 export class Runner {
   protected _browser: Browser;
+  protected _envValues: StepValue[];
   protected _screenCapture: ScreenCapture | null = null;
-  protected _values: StepValue[];
   protected _workflow: Workflow;
 
   protected constructor() {}
@@ -43,7 +43,7 @@ export class Runner {
     if (CONFIG.domPath) options.domPath = `${CONFIG.domPath}/${workflow.name}`;
 
     self._browser = await Browser.create(options);
-    self._values = getStepValues(workflow);
+    self._envValues = getEnvValues(workflow);
     self._workflow = workflow;
 
     if (CONFIG.videoPath) {
@@ -88,15 +88,11 @@ export class Runner {
     return this._screenCapture;
   }
 
-  public get values() {
-    return this._values;
-  }
-
   public async click(selectorOrStep: Selector | Step) {
     logger.verbose("Runner: click");
 
     await retryExecutionError(async () => {
-      const element = await this.beforeAction(selectorOrStep);
+      const element = await this.beforeAction(selectorOrStep, "click");
       await click(element!);
     });
   }
@@ -121,6 +117,15 @@ export class Runner {
     return findProperty(page, { property, selector }, timeoutMs);
   }
 
+  public getValue<T extends StepValue>(index: number | undefined, value: T): T {
+    if (isNil(index)) return value;
+
+    const envValue = this._envValues[index!] as T;
+    if (isNil(envValue)) return value;
+
+    return envValue;
+  }
+
   public async hasText(text: string, timeoutMs?: number): Promise<boolean> {
     logger.verbose(`Runner: hasText ${text}`);
 
@@ -128,58 +133,49 @@ export class Runner {
     return hasText(page, text, timeoutMs);
   }
 
-  public async run() {
-    for (let step of this._workflow.steps) {
-      await this.runStep(step);
-    }
-  }
-
-  public async runStep(step: Step) {
-    logger.verbose(`Runner: runStep ${step.index}`);
-
-    if (step.action === "click") {
-      await this.click(step);
-    } else if (step.action === "type") {
-      await this.type(step, this._values[step.index] as
-        | string
-        | null
-        | undefined);
-    } else if (step.action === "scroll") {
-      await this.scroll(step, this._values[step.index] as ScrollValue);
-    }
-  }
-
-  public async scroll(selectorOrStep: Selector | Step, value: StepValue) {
+  public async scroll(selectorOrStep: Selector | Step, value: ScrollValue) {
     logger.verbose("Runner: scroll");
 
     await retryExecutionError(async () => {
-      const element = await this.beforeAction(selectorOrStep);
-      await scroll(element!, value as ScrollValue, CONFIG.findTimeoutMs);
+      const element = await this.beforeAction(selectorOrStep, "scroll");
+      await scroll(
+        element!,
+        this.getValue((selectorOrStep as Step).index, value),
+        CONFIG.findTimeoutMs
+      );
     });
   }
 
-  public async select(selectorOrStep: Selector | Step, value: StepValue) {
+  public async select(selectorOrStep: Selector | Step, value: string | null) {
     logger.verbose("Runner: select");
 
     await retryExecutionError(async () => {
-      const element = await this.beforeAction(selectorOrStep);
-      await select(element!, value as string);
+      const element = await this.beforeAction(selectorOrStep, "select");
+      await select(
+        element!,
+        this.getValue((selectorOrStep as Step).index, value)
+      );
     });
   }
 
-  public async type(selectorOrStep: Selector | Step, value?: StepValue) {
+  public async type(
+    selectorOrStep: Selector | Step,
+    value: string | null = null
+  ) {
     logger.verbose("Runner: type");
 
-    const typeValue = value as (string | null);
+    const typeValue = this.getValue((selectorOrStep as Step).index, value);
 
     await retryExecutionError(async () => {
-      // do not focus or clear for Enter or Tab
       const shouldFocusClear =
+        // clear when there is no type value
         !typeValue ||
+        // do not focus or clear for Enter or Tab
         !(typeValue.startsWith("↓Enter") || typeValue.startsWith("↓Tab"));
 
       const element = await this.beforeAction(
-        shouldFocusClear ? selectorOrStep : null
+        shouldFocusClear ? selectorOrStep : null,
+        "type"
       );
       if (shouldFocusClear) {
         await focusClear(element!);
@@ -192,11 +188,17 @@ export class Runner {
     });
   }
 
-  private async beforeAction(selectorOrStep: Selector | Step | null) {
+  private async beforeAction(
+    selectorOrStep: Selector | Step | null,
+    action: Action
+  ) {
     logger.verbose("Runner: beforeAction");
 
     let element = selectorOrStep
-      ? await this._browser.find(selectorOrStep)
+      ? await this._browser.find(selectorOrStep, {
+          action,
+          timeoutMs: CONFIG.findTimeoutMs
+        })
       : null;
 
     if (CONFIG.sleepMs) {
@@ -207,6 +209,7 @@ export class Runner {
       if (selectorOrStep) {
         logger.verbose("Runner: beforeAction reload element after sleep");
         element = await this._browser.find(selectorOrStep, {
+          action,
           timeoutMs: 0,
           waitForRequests: false
         });
