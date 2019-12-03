@@ -15,7 +15,7 @@ jobs:
         with:
           fetch-depth: 50
       - name: qawolf test
-        uses: docker://qawolf/qawolf:{{{version}}}
+        uses: docker://qawolf/qawolf:v{{{version}}}
         with:
           args: "qawolf test"
         env:

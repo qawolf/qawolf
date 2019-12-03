@@ -2,6 +2,7 @@ import { copy, outputFile, pathExists, readFileSync } from "fs-extra";
 import { compile } from "handlebars";
 import { prompt } from "inquirer";
 import path from "path";
+const { version } = require("../package");
 
 type CiProvider = "azure" | "circleci" | "github" | "gitlab";
 
@@ -31,9 +32,7 @@ export const saveCiTemplate = async (provider: CiProvider): Promise<void> => {
   const ciTemplate = compile(
     readFileSync(path.resolve(__dirname, `../static/${provider}.hbs`), "utf8")
   );
-  const ci = ciTemplate({
-    version: "latest"
-  });
+  const ci = ciTemplate({ version });
 
   await outputFile(outputPath, ci, "utf8");
 
