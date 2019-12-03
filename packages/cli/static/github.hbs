@@ -15,8 +15,14 @@ jobs:
         with:
           fetch-depth: 50
       - name: qawolf test
-        uses: qawolf/qawolf@master
-        # env:
+        uses: docker://qawolf/qawolf:v{{{version}}}
+        with:
+          args: "qawolf test"
+        env:
+          # output artifacts
+          QAW_DOM_PATH: /github/workspace/artifacts
+          QAW_LOG_PATH: /github/workspace/artifacts
+          QAW_VIDEO_PATH: /github/workspace/artifacts
         #   # configure tests with environment variables
         #   # set "QAW_URL" to override the url for all tests
         #   QAW_URL: www.my_staging_url.com
@@ -26,7 +32,7 @@ jobs:
         #   QAW_LOGIN_0: "my_username"
         #   # you can also use GitHub secrets for environment variables
         #   # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets
-        #   QAW_LOGIN_1: ${{ secrets.PASSWORD }}
+        #   QAW_LOGIN_1: $\{{ secrets.PASSWORD }}
       - name: Upload Artifacts
         # include test artifacts
         # edit below to only include artifacts in certain scenarios
