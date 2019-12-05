@@ -1,39 +1,25 @@
-import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { FindOptions, HtmlSelector } from "@qawolf/types";
-import { htmlToDoc, QAWolfWeb, serializeDocSelector } from "@qawolf/web";
-import { ElementHandle, Page } from "puppeteer";
+import { FindOptions, Selector } from "@qawolf/types";
+import { QAWolfWeb } from "@qawolf/web";
+import { ElementHandle, Page, Serializable } from "puppeteer";
 
 export const findHtml = async (
   page: Page,
-  selector: HtmlSelector,
+  selector: Selector,
   options: FindOptions
 ): Promise<ElementHandle<Element> | null> => {
-  const docSelector =
-    typeof selector === "string"
-      ? // convert the html to a document
-        { ancestors: [], node: htmlToDoc(selector) }
-      : selector;
-
-  logger.verbose(
-    `findHtml: ${JSON.stringify(
-      serializeDocSelector(docSelector)
-    )} ${JSON.stringify(options)}`
-  );
+  logger.verbose("findHtml");
 
   const jsHandle = await page.evaluateHandle(
-    (docSelector, options) => {
+    (selector, options) => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
-      const findCmd = () => qawolf.find.findHtml(docSelector, options);
+      const findCmd = () => qawolf.find.findHtml(selector, options);
       // store the last find on the window for easy debugging
       (window as any).qaw_find = findCmd;
       return findCmd();
     },
-    docSelector as any,
-    {
-      ...options,
-      dataAttribute: options.dataAttribute || CONFIG.dataAttribute
-    } as any
+    selector as Serializable,
+    options as Serializable
   );
 
   return jsHandle.asElement();

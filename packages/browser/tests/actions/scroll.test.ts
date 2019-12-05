@@ -38,7 +38,7 @@ describe("scrollElement", () => {
     expect(initialYPosition).toBe(0);
 
     const element = await browser.find({ css: "html" });
-    await scrollElement(element, { x: 0, y: 2000 });
+    await scrollElement(element, { x: 0, y: 2000 }, { timeoutMs: 2000 });
 
     const nextYPosition = await page.evaluate(() => window.pageYOffset);
     expect(nextYPosition).toBe(2000);
@@ -60,7 +60,7 @@ describe("scrollElement", () => {
     const element = await browser.find({ css: "html" });
 
     const testFn = async () =>
-      await scrollElement(element, { x: 0, y: 2000 }, 0);
+      await scrollElement(element, { x: 0, y: 2000 }, { timeoutMs: 0 });
     await expect(testFn()).rejects.toThrowError();
 
     await page.evaluate(() => {

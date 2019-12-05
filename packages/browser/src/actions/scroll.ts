@@ -1,12 +1,14 @@
 import { logger } from "@qawolf/logger";
-import { ScrollValue } from "@qawolf/types";
+import { ScrollValue, Selector, FindOptions } from "@qawolf/types";
 import { QAWolfWeb } from "@qawolf/web";
 import { ElementHandle } from "puppeteer";
+import { find, FindOptionsBrowser } from "../find";
+import { retryExecutionError } from "../retry";
 
 export const scrollElement = async (
   elementHandle: ElementHandle,
   value: ScrollValue,
-  timeoutMs: number = 10000
+  options: FindOptions = {}
 ): Promise<void> => {
   logger.verbose("scrollElement");
 
@@ -16,6 +18,19 @@ export const scrollElement = async (
       return qawolf.scroll(element, value, timeoutMs);
     },
     value,
-    timeoutMs
+    options.timeoutMs || 0
   );
+};
+
+export const scroll = async (
+  selector: Selector,
+  value: ScrollValue,
+  options: FindOptionsBrowser
+) => {
+  logger.verbose("scroll");
+
+  await retryExecutionError(async () => {
+    const element = await find({ ...selector, action: "scroll" }, options);
+    await scrollElement(element, value, options);
+  });
 };

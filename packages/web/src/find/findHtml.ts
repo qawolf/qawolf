@@ -1,13 +1,89 @@
-import { DocSelector, FindOptions } from "@qawolf/types";
+import { DocSelector, FindOptions, Selector } from "@qawolf/types";
 import { DocMatch, matchDocSelector } from "./compare";
 import { queryElements } from "./query";
-import { nodeToDocSelector } from "../serialize";
+import { htmlToDoc, nodeToDocSelector } from "../serialize";
 import { waitFor } from "../wait";
 import { getXpath } from "../xpath";
 
 type ElementMatch = {
   element: HTMLElement;
   match: DocMatch;
+};
+
+export const findHtml = async (selector: Selector, options: FindOptions) => {
+  console.log("findHtml", selector, "options", options);
+  if (!selector.html) {
+    throw new Error("findHtml: selector must include html property");
+  }
+
+  const docSelector =
+    typeof selector.html === "string"
+      ? // convert the html to a document
+        { ancestors: [], node: htmlToDoc(selector.html) }
+      : selector.html;
+
+  let topElementMatch: ElementMatch | null = null;
+
+  // if there is no timeout -- start at the min threshold
+  let threshold = options.timeoutMs ? 100 : 75;
+
+  const elementMatch = await waitFor(
+    () => {
+      const elements = queryElements(docSelector, {
+        action: selector.action,
+        dataAttribute: options.dataAttribute
+      });
+      const matches = matchElements(
+        elements,
+        docSelector,
+        options.dataAttribute
+      );
+
+      if (matches.length < 1) return;
+      topElementMatch = matches[0];
+
+      const topMatch = topElementMatch.match;
+      if (topMatch.strongKeys.length) {
+        console.log(
+          `matched: ${topMatch.strongKeys}`,
+          `${topMatch.percent}%`,
+          getXpath(topElementMatch!.element),
+          topMatch.comparison
+        );
+        return topElementMatch;
+      }
+
+      if (topMatch.percent >= threshold) {
+        console.log(
+          `matched: ${topMatch.percent}% > ${threshold}% threshold`,
+          getXpath(topElementMatch!.element),
+          topMatch.comparison
+        );
+        return topElementMatch;
+      }
+
+      // reduce threshold 1% per second
+      threshold = Math.max(75, threshold - 0.1);
+    },
+    options.timeoutMs || 0,
+    100
+  );
+
+  if (!elementMatch) {
+    console.log("no match :(");
+
+    if (topElementMatch) {
+      console.log(
+        `closest match`,
+        getXpath(topElementMatch!.element),
+        topElementMatch!.match
+      );
+    }
+
+    return null;
+  }
+
+  return elementMatch.element;
 };
 
 export const matchElements = (
@@ -37,64 +113,4 @@ export const matchElements = (
   });
 
   return matches;
-};
-
-export const findHtml = async (selector: DocSelector, options: FindOptions) => {
-  // if there is no timeout -- start at the min threshold
-  let threshold = options.timeoutMs ? 100 : 75;
-
-  let topElementMatch: ElementMatch | null = null;
-
-  console.log("findHtml", selector, "opts", options);
-
-  const elementMatch = await waitFor(
-    () => {
-      const elements = queryElements(selector, options);
-      const matches = matchElements(elements, selector, options.dataAttribute);
-
-      if (matches.length < 1) return;
-      topElementMatch = matches[0];
-
-      const topMatch = topElementMatch.match;
-      if (topMatch.strongKeys.length) {
-        console.log(
-          `matched: ${topMatch.strongKeys}`,
-          `${topMatch.percent}%`,
-          getXpath(topElementMatch!.element),
-          topMatch.comparison
-        );
-        return topElementMatch;
-      }
-
-      if (topMatch.percent >= threshold) {
-        console.log(
-          `matched: ${topMatch.percent}% > ${threshold}% threshold`,
-          getXpath(topElementMatch!.element),
-          topMatch.comparison
-        );
-        return topElementMatch;
-      }
-
-      // reduce threshold 1% per second
-      threshold = Math.max(75, threshold - 0.1);
-    },
-    options.timeoutMs,
-    100
-  );
-
-  if (!elementMatch) {
-    console.log("no match :(");
-
-    if (topElementMatch) {
-      console.log(
-        `closest match`,
-        getXpath(topElementMatch!.element),
-        topElementMatch!.match
-      );
-    }
-
-    return null;
-  }
-
-  return elementMatch.element;
 };

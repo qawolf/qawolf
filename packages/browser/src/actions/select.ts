@@ -1,15 +1,16 @@
-import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { isNil, QAWolfWeb } from "@qawolf/web";
+import { Selector } from "@qawolf/types";
+import { QAWolfWeb } from "@qawolf/web";
 import { ElementHandle } from "puppeteer";
+import { find, FindOptionsBrowser } from "../find";
+import { retryExecutionError } from "../retry";
 
 export const selectElement = async (
   elementHandle: ElementHandle,
   value: string | null,
-  timeoutMs?: number
+  options: FindOptionsBrowser = {}
 ): Promise<void> => {
-  logger.verbose("selectElement");
-  const findTimeoutMs = (isNil(timeoutMs) ? CONFIG.findTimeoutMs : timeoutMs)!;
+  logger.verbose("selectElement: waitForOption");
 
   // ensure option with desired value is loaded before selecting
   await elementHandle.evaluate(
@@ -18,8 +19,22 @@ export const selectElement = async (
       return qawolf.select.waitForOption(element, value, timeoutMs);
     },
     value,
-    findTimeoutMs
+    options.timeoutMs || 0
   );
 
+  logger.verbose("selectElement: element.select");
   await elementHandle.select(value || "");
+};
+
+export const select = async (
+  selector: Selector,
+  value: string | null,
+  options: FindOptionsBrowser
+) => {
+  logger.verbose("select");
+
+  await retryExecutionError(async () => {
+    const element = await find({ ...selector, action: "select" }, options);
+    await selectElement(element, value, options);
+  });
 };

@@ -1,22 +1,22 @@
 import { logger } from "@qawolf/logger";
-import { FindOptions } from "@qawolf/types";
+import { FindOptions, Selector } from "@qawolf/types";
 import { QAWolfWeb } from "@qawolf/web";
-import { ElementHandle, Page } from "puppeteer";
+import { ElementHandle, Page, Serializable } from "puppeteer";
 
 export const findText = async (
   page: Page,
-  text: string,
-  options: FindOptions
+  selector: Selector,
+  options: FindOptions = {}
 ): Promise<ElementHandle<Element> | null> => {
-  logger.verbose(`findText: "${text}" until timeout ${options.timeoutMs}`);
+  logger.verbose("findText");
 
   const jsHandle = await page.evaluateHandle(
-    (text, options) => {
+    (selector, options) => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
-      return qawolf.find.findText(text, options);
+      return qawolf.find.findText(selector, options);
     },
-    text,
-    options as any
+    selector as Serializable,
+    options as Serializable
   );
 
   return jsHandle.asElement();

@@ -1,21 +1,15 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import {
-  Callback,
-  Event,
-  FindOptions,
-  Selector,
-  Size,
-  Step
-} from "@qawolf/types";
+import { Callback, Event, Selector, Size } from "@qawolf/types";
 import { waitFor } from "@qawolf/web";
 import { sortBy } from "lodash";
 import puppeteer, { devices, ElementHandle } from "puppeteer";
 import { getDevice } from "./device";
-import { find } from "./find";
+import { find, FindOptionsBrowser } from "./find";
 import { launchPuppeteerBrowser } from "./launch";
 import { createDomReplayer } from "./page/domReplayer";
 import { DecoratedPage, Page } from "./page/Page";
+import { registry } from "./registry";
 
 export type BrowserCreateOptions = {
   domPath?: string;
@@ -56,6 +50,8 @@ export class Browser {
     await self.managePages();
 
     if (options.url) await self.goto(options.url);
+
+    registry.register(self);
 
     return self;
   }
@@ -108,28 +104,10 @@ export class Browser {
   }
 
   public async find(
-    selectorOrStep: Selector | Step,
-    options?: FindOptions
+    selector: Selector,
+    options: FindOptionsBrowser = {}
   ): Promise<ElementHandle> {
-    const findOptions = options || { timeoutMs: CONFIG.findTimeoutMs };
-
-    const step = selectorOrStep as Step;
-    if (step.action) {
-      logger.verbose(`Browser.find: step ${step.action} ${step.index}`);
-
-      findOptions.action = step.action;
-    }
-
-    const page = await this.getPage(
-      step.page || 0,
-      findOptions.waitForRequests,
-      findOptions.timeoutMs
-    );
-
-    const element = await find(page, selectorOrStep, findOptions);
-    if (!element) throw new Error("No element found");
-
-    return element;
+    return find(selector, { ...options, browser: this });
   }
 
   public async goto(

@@ -7,6 +7,7 @@ export type Size = "desktop" | "tablet" | "mobile";
 export interface Step extends Selector {
   action: Action;
   html: DocSelector;
+  // TODO maybe id instead?
   index: number;
   page: number;
   value?: StepValue;

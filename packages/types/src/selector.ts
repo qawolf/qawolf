@@ -23,10 +23,11 @@ export interface DocSelectorSerialized {
 }
 
 export interface FindOptions {
-  action?: Action;
   dataAttribute?: string;
-  timeoutMs: number;
-  value?: string;
+  // how long to sleep after finding the element
+  sleepMs?: number;
+  // how long to wait for the element
+  timeoutMs?: number;
   waitForRequests?: boolean;
 }
 
@@ -39,4 +40,5 @@ export interface Selector {
   html?: HtmlSelector;
   text?: string;
   page?: number;
+  value?: any;
 }

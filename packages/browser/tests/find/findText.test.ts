@@ -16,9 +16,7 @@ afterAll(() => browser.close());
 
 describe("findText", () => {
   it("finds an element by text", async () => {
-    const element = await findText(page, "form authentication", {
-      timeoutMs: 0
-    });
+    const element = await findText(page, { text: "form authentication" });
 
     expect(await getXpath(element)).toEqual("//*[@id='content']/ul/li[18]");
   });

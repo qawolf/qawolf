@@ -13,7 +13,7 @@ describe("typeElement", () => {
     const passwordElement = await browser.find({ css: "#password" });
 
     await usernameElement.focus();
-    await typeElement(page, "spirit");
+    await typeElement(page, usernameElement, "spirit");
 
     const [username1, password1] = await page.$$eval(
       "input",
@@ -23,7 +23,7 @@ describe("typeElement", () => {
     expect(password1).toBeFalsy();
 
     await passwordElement.focus();
-    await typeElement(page, "password");
+    await typeElement(page, passwordElement, "password");
 
     const [username2, password2] = await page.$$eval(
       "input",

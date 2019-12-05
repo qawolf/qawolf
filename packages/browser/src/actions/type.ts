@@ -1,11 +1,25 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
+import { Selector } from "@qawolf/types";
 import { sleep } from "@qawolf/web";
-import { Page } from "puppeteer";
+import { Page, ElementHandle } from "puppeteer";
+import { clearElement } from "./clear";
+import { find, FindOptionsBrowser } from "../find";
+import { retryExecutionError } from "../retry";
 import { valueToStrokes } from "../strokes";
+import { getPage } from "../getPage";
 
-export const typeElement = async (page: Page, value: string): Promise<void> => {
+export const typeElement = async (
+  page: Page,
+  element: ElementHandle,
+  value: string | null
+): Promise<void> => {
   logger.verbose("typeElement");
+
+  // focus and clear the element
+  await clearElement(element);
+
+  if (!value) return;
 
   // logging the keyboard codes below will leak secrets
   // which is why we have it hidden behind the DEBUG flag
@@ -24,4 +38,25 @@ export const typeElement = async (page: Page, value: string): Promise<void> => {
 
     await sleep(CONFIG.keyDelayMs);
   }
+};
+
+export const type = async (
+  selector: Selector,
+  value: string | null,
+  options: FindOptionsBrowser
+) => {
+  logger.verbose("type");
+
+  const page = await getPage({
+    ...options,
+    pageIndex: selector.page
+  });
+
+  await retryExecutionError(async () => {
+    const element = await find(
+      { ...selector, action: "type" },
+      { ...options, page }
+    );
+    await typeElement(page.super, element, value);
+  });
 };

@@ -16,9 +16,13 @@ afterAll(() => browser.close());
 
 describe("findCss", () => {
   it("finds an element with a css selector", async () => {
-    const element = await findCss(page, "#password", {
-      timeoutMs: 0
-    });
+    const element = await findCss(
+      page,
+      { css: "#password" },
+      {
+        timeoutMs: 0
+      }
+    );
 
     expect(await getXpath(element)).toEqual("//*[@id='password']");
   });
