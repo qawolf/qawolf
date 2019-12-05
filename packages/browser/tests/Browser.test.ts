@@ -59,7 +59,7 @@ describe("Browser.currentPage", () => {
   });
 });
 
-describe("Browser.findElement", () => {
+describe("Browser.find", () => {
   it("finds an element", async () => {
     const browser = await Browser.create({ url: `${CONFIG.testUrl}login` });
 

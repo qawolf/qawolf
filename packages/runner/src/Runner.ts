@@ -208,11 +208,22 @@ export class Runner {
       // reload the element in case it changed since the sleep
       if (selectorOrStep) {
         logger.verbose("Runner: beforeAction reload element after sleep");
-        element = await this._browser.find(selectorOrStep, {
-          action,
-          timeoutMs: 0,
-          waitForRequests: false
-        });
+
+        try {
+          // try to find it immediately
+          element = await this._browser.find(selectorOrStep, {
+            action,
+            timeoutMs: 0,
+            waitForRequests: false
+          });
+        } catch (e) {
+          // if it cannot be found immediately wait longer
+          element = await this._browser.find(selectorOrStep, {
+            action,
+            timeoutMs: CONFIG.findTimeoutMs,
+            waitForRequests: false
+          });
+        }
       }
     }
 

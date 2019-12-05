@@ -1,5 +1,6 @@
 import { FindOptions } from "@qawolf/types";
 import { cleanText } from "../lang";
+import { queryActionElements } from "./query";
 import { waitFor } from "../wait";
 
 export const findText = async (
@@ -11,10 +12,14 @@ export const findText = async (
 
   return waitFor(
     () => {
-      const elements = document.querySelectorAll("*");
+      const elements = queryActionElements(options.action || "click");
+
       for (let i = 0; i < elements.length; i++) {
         const element = elements[i] as HTMLElement;
-        if (cleanText(element.innerText) === selector) return element;
+        if (cleanText(element.innerText) === selector) {
+          console.log("found text", element);
+          return element;
+        }
       }
 
       return null;
