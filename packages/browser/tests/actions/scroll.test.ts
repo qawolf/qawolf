@@ -1,8 +1,8 @@
 import { CONFIG } from "@qawolf/config";
-import { scroll } from "../../src/actions";
+import { scrollElement } from "../../src/actions";
 import { Browser } from "../../src/Browser";
 
-describe("scroll", () => {
+describe("scrollElement", () => {
   let browser: Browser;
 
   beforeAll(async () => {
@@ -20,12 +20,12 @@ describe("scroll", () => {
     const element = await browser.find({
       html: "<html></html>"
     });
-    await scroll(element, { x: 0, y: 1000 });
+    await scrollElement(element, { x: 0, y: 1000 });
 
     const nextYPosition = await page.evaluate(() => window.pageYOffset);
     expect(nextYPosition).toBe(1000);
 
-    await scroll(element, { x: 0, y: 0 });
+    await scrollElement(element, { x: 0, y: 0 });
 
     const finalYPosition = await page.evaluate(() => window.pageYOffset);
     expect(finalYPosition).toBe(0);
@@ -38,7 +38,7 @@ describe("scroll", () => {
     expect(initialYPosition).toBe(0);
 
     const element = await browser.find({ css: "html" });
-    await scroll(element, { x: 0, y: 2000 });
+    await scrollElement(element, { x: 0, y: 2000 });
 
     const nextYPosition = await page.evaluate(() => window.pageYOffset);
     expect(nextYPosition).toBe(2000);
@@ -59,7 +59,8 @@ describe("scroll", () => {
 
     const element = await browser.find({ css: "html" });
 
-    const testFn = async () => await scroll(element, { x: 0, y: 2000 }, 0);
+    const testFn = async () =>
+      await scrollElement(element, { x: 0, y: 2000 }, 0);
     await expect(testFn()).rejects.toThrowError();
 
     await page.evaluate(() => {
