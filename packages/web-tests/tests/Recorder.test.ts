@@ -1,4 +1,4 @@
-import { Browser, Page } from "@qawolf/browser";
+import { Browser, PuppeteerPage } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { InputEvent, KeyEvent, PasteEvent, ScrollEvent } from "@qawolf/types";
 import { isKeyEvent, sleep } from "@qawolf/web";

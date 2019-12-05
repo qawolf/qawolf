@@ -1,9 +1,9 @@
-import { Browser, Page } from "@qawolf/browser";
+import { Browser, PuppeteerPage } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { QAWolfWeb } from "@qawolf/web";
 
 let browser: Browser;
-let page: Page;
+let page: PuppeteerPage;
 
 beforeAll(async () => {
   browser = await Browser.create({ url: `${CONFIG.testUrl}login` });

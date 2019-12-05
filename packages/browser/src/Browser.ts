@@ -7,6 +7,7 @@ import puppeteer, { devices, ElementHandle } from "puppeteer";
 import { getDevice } from "./device";
 import { find, Selector } from "./find";
 import { launchPuppeteerBrowser } from "./launch";
+import { createDomReplayer } from "./page/domReplayer";
 import { DecoratedPage, Page } from "./page/Page";
 
 export type BrowserCreateOptions = {
@@ -63,7 +64,7 @@ export class Browser {
     if (this._domPath) {
       await Promise.all(
         this._pages.map((page, index) =>
-          page.createDomReplayer(`${this._domPath}/page_${index}.html`)
+          createDomReplayer(page, `${this._domPath}/page_${index}.html`)
         )
       );
     }
