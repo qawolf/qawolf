@@ -1,7 +1,6 @@
-import { Page } from "puppeteer";
+import { Browser, Page } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { QAWolfWeb } from "@qawolf/web";
-import { Browser } from "../../src/Browser";
 
 describe("isSelectValueAvailable", () => {
   let browser: Browser;

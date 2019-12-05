@@ -1,7 +1,6 @@
+import { Browser, Page } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { QAWolfWeb } from "@qawolf/web";
-import { Page } from "puppeteer";
-import { Browser } from "../../src/Browser";
 
 let browser: Browser;
 let page: Page;

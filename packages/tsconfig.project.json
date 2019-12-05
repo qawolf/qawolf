@@ -36,6 +36,9 @@
     },
     {
       "path": "./web/tsconfig.package.json"
+    },
+    {
+      "path": "./web-tests/tsconfig.package.json"
     }
   ]
 }
