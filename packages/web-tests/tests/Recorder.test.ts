@@ -115,7 +115,7 @@ describe("Recorder", () => {
     //     url: `${CONFIG.testUrl}login`
     //   });
 
-    //   const element = await browser.find("#password");
+    //   const element = await browser.find({ css: "#password" });
 
     //   const page = await browser.currentPage();
     //   await page.type("#password", "secret");

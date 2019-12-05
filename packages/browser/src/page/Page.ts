@@ -8,6 +8,7 @@ import { RequestTracker } from "./RequestTracker";
 export type PageCreateOptions = {
   device: devices.Device;
   page: PuppeteerPage;
+  index: number;
   recordDom: boolean;
   recordEvents: boolean;
 };
@@ -19,6 +20,7 @@ export interface DecoratedPage extends PuppeteerPage {
 export class Page {
   private _domEvents: eventWithTime[] = [];
   private _events: Event[] = [];
+  private _index: number;
   private _page: DecoratedPage;
   private _recordDom: boolean;
   private _recordEvents: boolean;
@@ -31,6 +33,7 @@ export class Page {
     page.qawolf = this;
     this._page = page;
 
+    this._index = options.index;
     this._recordDom = options.recordDom;
     this._recordEvents = options.recordEvents;
     this._requests = new RequestTracker(this._page);
@@ -60,6 +63,10 @@ export class Page {
 
   public get events() {
     return this._events;
+  }
+
+  public get index() {
+    return this._index;
   }
 
   public get super(): DecoratedPage {

@@ -23,9 +23,13 @@ if (!window.qaw_rrweb) {
 }
 `;
 
-const recordEventsJs = `window.qaw_recorder = window.qaw_recorder || new qawolf.Recorder("${CONFIG.dataAttribute}", (event) => qaw_onEvent(event));`;
+export const bundleJs = (
+  recordDom: boolean,
+  recordEvents: boolean,
+  pageIndex: number
+) => {
+  const recordEventsJs = `window.qaw_recorder = window.qaw_recorder || new qawolf.Recorder("${CONFIG.dataAttribute}", ${pageIndex}, (event) => qaw_onEvent(event));`;
 
-export const bundleJs = (recordDom: boolean, recordEvents: boolean) => {
   let bundle = qawolfJs;
   if (recordDom) bundle += recordDomJs;
   if (recordEvents) bundle += recordEventsJs;
@@ -50,7 +54,7 @@ export const injectBundle = async (
   recordDom: boolean,
   recordEvents: boolean
 ) => {
-  const bundle = bundleJs(recordDom, recordEvents);
+  const bundle = bundleJs(recordDom, recordEvents, page.index);
 
   if (recordDom) {
     await captureDomEvents(page);

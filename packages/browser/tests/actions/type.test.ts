@@ -9,8 +9,8 @@ describe("focusClear and type", () => {
     });
     const page = await browser.currentPage();
 
-    const usernameElement = await browser.find("#username");
-    const passwordElement = await browser.find("#password");
+    const usernameElement = await browser.find({ css: "#username" });
+    const passwordElement = await browser.find({ css: "#password" });
 
     await focusClear(usernameElement);
     await type(page, "spirit");

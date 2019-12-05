@@ -63,7 +63,7 @@ describe("Browser.find", () => {
   it("finds an element", async () => {
     const browser = await Browser.create({ url: `${CONFIG.testUrl}login` });
 
-    const elementHandle = await browser.find("#login > button");
+    const elementHandle = await browser.find({ css: "#login > button" });
     expect(elementHandle).toBeTruthy();
     expect(
       await elementHandle!.evaluate(e => (e as HTMLButtonElement).type)

@@ -5,7 +5,6 @@ describe("formatDescription", () => {
   it("formats labels", () => {
     const step: Step = {
       action: "type",
-      index: 0,
       html: {
         ancestors: [],
         node: {
@@ -14,7 +13,9 @@ describe("formatDescription", () => {
           type: "tag",
           voidElement: false
         }
-      }
+      },
+      index: 0,
+      page: 0
     };
 
     expect(formatDescription(step)).toBe(' "name username"');
@@ -32,7 +33,8 @@ describe("formatDescription", () => {
           voidElement: false
         }
       },
-      index: 0
+      index: 0,
+      page: 0
     };
 
     expect(formatDescription(step)).toBe(
@@ -52,7 +54,8 @@ describe("formatIt", () => {
           type: "tag"
         }
       },
-      index: 0
+      index: 0,
+      page: 0
     };
 
     expect(formatIt(step)).toBe("can click input");
@@ -71,7 +74,8 @@ describe("formatIt", () => {
           type: "tag"
         }
       },
-      index: 0
+      index: 0,
+      page: 0
     };
 
     expect(formatIt(step)).toBe('can click "spirit" img');
@@ -88,6 +92,7 @@ describe("formatIt", () => {
         }
       },
       index: 0,
+      page: 0,
       value: "↓Enter"
     };
 
@@ -105,6 +110,7 @@ describe("formatIt", () => {
         }
       },
       index: 0,
+      page: 0,
       value: "↓Tab"
     };
 

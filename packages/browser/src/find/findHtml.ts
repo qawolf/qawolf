@@ -1,10 +1,8 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { DocSelector, FindOptions } from "@qawolf/types";
+import { FindOptions, HtmlSelector } from "@qawolf/types";
 import { htmlToDoc, QAWolfWeb, serializeDocSelector } from "@qawolf/web";
 import { ElementHandle, Page } from "puppeteer";
-
-export type HtmlSelector = string | DocSelector;
 
 export const findHtml = async (
   page: Page,

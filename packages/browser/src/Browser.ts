@@ -1,11 +1,18 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { Callback, Event, FindOptions, Size, Step } from "@qawolf/types";
+import {
+  Callback,
+  Event,
+  FindOptions,
+  Selector,
+  Size,
+  Step
+} from "@qawolf/types";
 import { waitFor } from "@qawolf/web";
 import { sortBy } from "lodash";
 import puppeteer, { devices, ElementHandle } from "puppeteer";
 import { getDevice } from "./device";
-import { find, Selector } from "./find";
+import { find } from "./find";
 import { launchPuppeteerBrowser } from "./launch";
 import { createDomReplayer } from "./page/domReplayer";
 import { DecoratedPage, Page } from "./page/Page";
@@ -93,8 +100,8 @@ export class Browser {
   public get events() {
     const events: Event[] = [];
 
-    this._pages.forEach((page, index) =>
-      page.events.forEach(event => events.push({ ...event, page: index }))
+    this._pages.forEach(page =>
+      page.events.forEach(event => events.push(event))
     );
 
     return sortBy(events, e => e.time);
@@ -195,11 +202,16 @@ export class Browser {
       recordEvents: this._recordEvents
     };
 
-    this._pages.push(await Page.create({ ...options, page: pages[0] }));
+    this._pages.push(
+      await Page.create({ ...options, page: pages[0], index: 0 })
+    );
 
     this._browser.on("targetcreated", async target => {
       const page = await target.page();
-      if (page) this._pages.push(await Page.create({ ...options, page }));
+      if (page)
+        this._pages.push(
+          await Page.create({ ...options, page, index: pages.length })
+        );
     });
 
     this._browser.on("targetdestroyed", async () => {

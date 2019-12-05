@@ -14,7 +14,8 @@ describe("formatStep", () => {
             type: "tag"
           }
         },
-        index: 0
+        index: 0,
+        page: 0
       };
 
       const formattedStep = formatStep(step);
@@ -32,7 +33,8 @@ describe("formatStep", () => {
             type: "tag"
           }
         },
-        index: 1
+        index: 1,
+        page: 0
       };
 
       const formattedStep = formatStep(step);
@@ -52,6 +54,7 @@ describe("formatStep", () => {
           }
         },
         index: 0,
+        page: 0,
         value: { x: 0, y: 10 }
       };
 
@@ -75,6 +78,7 @@ describe("formatStep", () => {
           }
         },
         index: 0,
+        page: 0,
         value: "spirit"
       };
 
@@ -95,6 +99,7 @@ describe("formatStep", () => {
           }
         },
         index: 0,
+        page: 0,
         value: null
       };
 
@@ -118,6 +123,7 @@ describe("formatStep", () => {
           }
         },
         index: 0,
+        page: 0,
         value: "spirit"
       };
 
@@ -140,6 +146,7 @@ describe("formatStep", () => {
           }
         },
         index: 10,
+        page: 0,
         value: "supersecret"
       };
 
