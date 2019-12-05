@@ -7,7 +7,7 @@ import puppeteer, { devices, ElementHandle } from "puppeteer";
 import { getDevice } from "./device";
 import { find, Selector } from "./find";
 import { launchPuppeteerBrowser } from "./launch";
-import { DecoratedPage, QAWolfPage } from "./QAWolfPage";
+import { DecoratedPage, Page } from "./page/Page";
 
 export type BrowserCreateOptions = {
   domPath?: string;
@@ -26,7 +26,7 @@ export class Browser {
   private _domPath?: string;
   private _onClose: Callback[] = [];
   // stored in order of open
-  private _pages: QAWolfPage[] = [];
+  private _pages: Page[] = [];
   private _recordEvents: boolean;
 
   // protect constructor to force using async create()
@@ -194,11 +194,11 @@ export class Browser {
       recordEvents: this._recordEvents
     };
 
-    this._pages.push(await QAWolfPage.create({ ...options, page: pages[0] }));
+    this._pages.push(await Page.create({ ...options, page: pages[0] }));
 
     this._browser.on("targetcreated", async target => {
       const page = await target.page();
-      if (page) this._pages.push(await QAWolfPage.create({ ...options, page }));
+      if (page) this._pages.push(await Page.create({ ...options, page }));
     });
 
     this._browser.on("targetdestroyed", async () => {

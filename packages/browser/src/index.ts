@@ -1,5 +1,4 @@
-export { Page } from "puppeteer";
-
+export { Page as PuppeteerPage } from "puppeteer";
 export * from "./actions";
 export * from "./Browser";
 export * from "./find";

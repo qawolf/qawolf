@@ -4,28 +4,28 @@ import { QAWolfWeb } from "@qawolf/web";
 import { readFileSync, outputFile } from "fs-extra";
 import { compile } from "handlebars";
 import { resolve } from "path";
-import { devices, JSHandle, Page } from "puppeteer";
+import { devices, JSHandle, Page as PuppeteerPage } from "puppeteer";
 import { eventWithTime } from "rrweb/typings/types";
 import { bundleJs } from "./bundleJs";
 import { RequestTracker } from "./RequestTracker";
-import { retryExecutionError } from "./retry";
+import { retryExecutionError } from "../retry";
 
 export type PageCreateOptions = {
   device: devices.Device;
-  page: Page;
+  page: PuppeteerPage;
   recordDom: boolean;
   recordEvents: boolean;
 };
 
-export interface DecoratedPage extends Page {
-  qawolf: QAWolfPage;
+export interface DecoratedPage extends PuppeteerPage {
+  qawolf: Page;
 }
 
 const replayerTemplate = compile(
-  readFileSync(resolve(__dirname, "../static/replayer.hbs"), "utf8")
+  readFileSync(resolve(__dirname, "../../static/replayer.hbs"), "utf8")
 );
 
-export class QAWolfPage {
+export class Page {
   private _domEvents: eventWithTime[] = [];
   private _events: Event[] = [];
   private _page: DecoratedPage;
@@ -46,19 +46,18 @@ export class QAWolfPage {
   }
 
   public static async create(options: PageCreateOptions) {
-    const { device, page } = options;
+    const { device, page: puppeteerPage } = options;
 
-    const qawolfPage = new QAWolfPage(options);
-
-    await qawolfPage.exposeCallbacks();
+    const page = new Page(options);
+    await page.exposeCallbacks();
 
     await Promise.all([
-      qawolfPage.captureLogs(),
-      qawolfPage.injectBundle(),
-      page.emulate(device)
+      page.captureLogs(),
+      page.injectBundle(),
+      puppeteerPage.emulate(device)
     ]);
 
-    return qawolfPage;
+    return page;
   }
 
   public dispose() {
@@ -80,7 +79,7 @@ export class QAWolfPage {
 
   public async createDomReplayer(path: string) {
     logger.debug(
-      `QAWolfPage: create dom replayer for ${this._domEvents.length} events: ${path}`
+      `Page: create dom replayer for ${this._domEvents.length} events: ${path}`
     );
     if (!this._domEvents.length) return;
 
@@ -151,7 +150,7 @@ export class QAWolfPage {
     if (this._recordEvents) {
       promises.push(
         this._page.exposeFunction("qaw_onEvent", (event: Event) => {
-          logger.debug(`QAWolfPage: received event ${JSON.stringify(event)}`);
+          logger.debug(`Page: received event ${JSON.stringify(event)}`);
           this._events.push(event);
         })
       );
