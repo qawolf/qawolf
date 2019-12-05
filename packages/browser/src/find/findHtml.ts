@@ -18,7 +18,9 @@ export const findHtml = async (
       : selector;
 
   logger.verbose(
-    `findHtml: ${serializeDocSelector(docSelector)} ${JSON.stringify(options)}`
+    `findHtml: ${JSON.stringify(
+      serializeDocSelector(docSelector)
+    )} ${JSON.stringify(options)}`
   );
 
   const jsHandle = await page.evaluateHandle(

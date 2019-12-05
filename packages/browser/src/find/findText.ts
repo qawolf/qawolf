@@ -8,7 +8,7 @@ export const findText = async (
   text: string,
   options: FindOptions
 ): Promise<ElementHandle<Element> | null> => {
-  logger.verbose(`findText: ${text}`);
+  logger.verbose(`findText: "${text}" until timeout ${options.timeoutMs}`);
 
   const jsHandle = await page.evaluateHandle(
     (text, options) => {
