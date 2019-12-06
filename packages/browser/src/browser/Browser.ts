@@ -40,5 +40,5 @@ export interface Browser extends PuppeteerBrowser {
   ): Promise<ElementHandle>;
 
   // reference to our InternalBrowser for internal use
-  _qawolf: InternalBrowser;
+  qawolf: InternalBrowser;
 }
