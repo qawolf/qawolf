@@ -1,6 +1,12 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { Callback, Event, Selector } from "@qawolf/types";
+import {
+  Callback,
+  Event,
+  Selector,
+  FindOptions,
+  ScrollValue
+} from "@qawolf/types";
 import { sortBy } from "lodash";
 import { devices, DirectNavigationOptions, ElementHandle } from "puppeteer";
 import { Browser } from "./Browser";
@@ -32,6 +38,14 @@ export class InternalBrowser {
 
   public get browser(): Browser {
     return this._options.browser;
+  }
+
+  public async click(
+    selector: Selector,
+    options: FindOptions = {}
+  ): Promise<ElementHandle> {
+    const page = await this.page(selector.page, options.timeoutMs);
+    return page.qawolf.click(selector, options);
   }
 
   public async close() {
@@ -80,7 +94,7 @@ export class InternalBrowser {
     selector: Selector,
     options: FindPageOptions = {}
   ): Promise<ElementHandle> {
-    const page = await findPage(this.browser, options);
+    const page = await this.page(selector.page, options.timeoutMs);
     return find(page, selector, options);
   }
 
@@ -109,6 +123,33 @@ export class InternalBrowser {
 
   public get recordEvents() {
     return this._options.recordEvents;
+  }
+
+  public async scroll(
+    selector: Selector,
+    value: ScrollValue,
+    options: FindOptions = {}
+  ): Promise<ElementHandle> {
+    const page = await this.page(selector.page, options.timeoutMs);
+    return page.qawolf.scroll(selector, value, options);
+  }
+
+  public async select(
+    selector: Selector,
+    value: string | null,
+    options: FindOptions = {}
+  ): Promise<ElementHandle> {
+    const page = await this.page(selector.page, options.timeoutMs);
+    return page.qawolf.select(selector, value, options);
+  }
+
+  public async type(
+    selector: Selector,
+    value: string | null,
+    options: FindOptions = {}
+  ): Promise<ElementHandle> {
+    const page = await this.page(selector.page, options.timeoutMs);
+    return page.qawolf.type(selector, value, options);
   }
 
   public waitForClose() {

@@ -44,6 +44,22 @@ export class InternalPage {
     });
   }
 
+  public dispose() {
+    this._requests.dispose();
+  }
+
+  public get domEvents() {
+    return this._domEvents;
+  }
+
+  public get events() {
+    return this._events;
+  }
+
+  public get index() {
+    return this._index;
+  }
+
   public scroll(
     selector: Selector,
     value: ScrollValue,
@@ -102,22 +118,6 @@ export class InternalPage {
 
       return element;
     });
-  }
-
-  public dispose() {
-    this._requests.dispose();
-  }
-
-  public get domEvents() {
-    return this._domEvents;
-  }
-
-  public get events() {
-    return this._events;
-  }
-
-  public get index() {
-    return this._index;
   }
 
   public waitForRequests() {

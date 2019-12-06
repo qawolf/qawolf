@@ -61,9 +61,13 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
   });
 
   // decorate Browser with our helpers
+  browser.click = internal.click.bind(internal);
   browser.find = internal.find.bind(internal);
   browser.goto = internal.goto.bind(internal);
   browser.page = internal.page.bind(internal);
+  browser.scroll = internal.scroll.bind(internal);
+  browser.select = internal.select.bind(internal);
+  browser.type = internal.type.bind(internal);
   browser._qawolf = internal;
 
   await managePages(browser);

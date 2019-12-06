@@ -1,4 +1,4 @@
-import { FindOptions, Selector } from "@qawolf/types";
+import { FindOptions, Selector, ScrollValue } from "@qawolf/types";
 import {
   Browser as PuppeteerBrowser,
   DirectNavigationOptions,
@@ -10,6 +10,8 @@ import { FindPageOptions } from "../page/findPage";
 
 // PuppeteerBrowser decorated with our helpers
 export interface Browser extends PuppeteerBrowser {
+  click(selector: Selector, options?: FindOptions): Promise<ElementHandle>;
+
   find: (selector: Selector, options?: FindOptions) => Promise<ElementHandle>;
 
   goto(
@@ -18,6 +20,24 @@ export interface Browser extends PuppeteerBrowser {
   ): Promise<Page>;
 
   page: (index?: number, timeoutMs?: number) => Promise<Page>;
+
+  scroll(
+    selector: Selector,
+    value: ScrollValue,
+    options?: FindOptions
+  ): Promise<ElementHandle>;
+
+  select(
+    selector: Selector,
+    value: string | null,
+    options?: FindOptions
+  ): Promise<ElementHandle>;
+
+  type(
+    selector: Selector,
+    value: string | null,
+    options?: FindOptions
+  ): Promise<ElementHandle>;
 
   // reference to our InternalBrowser for internal use
   _qawolf: InternalBrowser;

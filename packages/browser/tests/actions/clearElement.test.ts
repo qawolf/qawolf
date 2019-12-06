@@ -1,6 +1,6 @@
 import { CONFIG } from "@qawolf/config";
-import { clearElement } from "../src/actions";
-import { launch } from "../src/browser/launch";
+import { clearElement } from "../../src/actions";
+import { launch } from "../../src/browser/launch";
 
 describe("clearElement", () => {
   it("clears the input value", async () => {
