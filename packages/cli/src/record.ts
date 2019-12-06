@@ -49,12 +49,12 @@ export const record = async (
 
         if (saveEvents) {
           logger.verbose(`save events "${name}" -> ${eventsPath}`);
-          await outputJson(eventsPath, browser.events, { spaces: " " });
+          await outputJson(eventsPath, browser._qawolf.events, { spaces: " " });
         }
 
         logger.verbose(`save workflow -> ${workflowPath}`);
         const workflow = buildWorkflow({
-          events: browser.events,
+          events: browser._qawolf.events,
           name: name,
           url: url.href!
         });

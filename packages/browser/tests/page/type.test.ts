@@ -1,6 +1,5 @@
 import { CONFIG } from "@qawolf/config";
-import { Browser, launch } from "../../src";
-import { typeElement } from "../../src/actions/type";
+import { launch } from "../../src";
 
 describe("typeElement", () => {
   it("sets input value", async () => {
@@ -9,11 +8,7 @@ describe("typeElement", () => {
     });
     const page = await browser.page();
 
-    const usernameElement = await browser.find({ css: "#username" });
-    const passwordElement = await browser.find({ css: "#password" });
-
-    await usernameElement.focus();
-    await typeElement(page, usernameElement, "spirit");
+    await page.qawolf.type({ css: "#username" }, "spirit");
 
     const [username1, password1] = await page.$$eval(
       "input",
@@ -22,8 +17,7 @@ describe("typeElement", () => {
     expect(username1).toBe("spirit");
     expect(password1).toBeFalsy();
 
-    await passwordElement.focus();
-    await typeElement(page, passwordElement, "password");
+    await page.qawolf.type({ css: "#password" }, "password");
 
     const [username2, password2] = await page.$$eval(
       "input",

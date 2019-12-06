@@ -11,7 +11,6 @@ import { Browser } from "./Browser";
 import { getDevice } from "./device";
 import { InternalBrowser } from "./InternalBrowser";
 import { managePages } from "./managePages";
-import { registry } from "./registry";
 
 export type LaunchOptions = {
   domPath?: string;
@@ -68,8 +67,6 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
   browser._qawolf = internal;
 
   await managePages(browser);
-
-  registry.register(browser);
 
   if (options.url) await internal.goto(options.url);
 

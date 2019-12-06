@@ -1,11 +1,10 @@
 import { logger } from "@qawolf/logger";
+import { FindOptions } from "@qawolf/types";
 import { isNil, waitFor } from "@qawolf/web";
 import { Browser } from "../browser/Browser";
-import { registry } from "../browser/registry";
-import { FindOptionsBrowser } from "../find/FindOptionsBrowser";
 import { Page } from "./Page";
 
-export interface FindPageOptions extends FindOptionsBrowser {
+export interface FindPageOptions extends FindOptions {
   index?: number;
 }
 
@@ -27,27 +26,24 @@ const getIndex = (browser: Browser, pageIndex?: number): number => {
   return index!;
 };
 
-export const findPage = async (options: FindPageOptions): Promise<Page> => {
+export const findPage = async (
+  browser: Browser,
+  options: FindPageOptions
+): Promise<Page> => {
   /**
    * Wait for the page and activate it.
    */
-  const browser = options.browser || registry.single();
-
   const internal = browser._qawolf;
 
-  let page = options.page || null;
+  let index: number = getIndex(browser, options.index);
+
+  const page = await waitFor(() => {
+    if (index >= internal.pages.length) return null;
+    return internal.pages[index];
+  }, options.timeoutMs || 0);
 
   if (!page) {
-    let index: number = getIndex(browser, options.index);
-
-    page = await waitFor(() => {
-      if (index >= internal.pages.length) return null;
-      return internal.pages[index];
-    }, options.timeoutMs || 0);
-
-    if (!page) {
-      throw new Error(`findPage: ${index} not found`);
-    }
+    throw new Error(`findPage: ${index} not found`);
   }
 
   // when headless = false the tab needs to be activated

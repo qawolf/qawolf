@@ -5,16 +5,13 @@ import "@qawolf/cli";
 
 // export public API
 export {
-  // actions
-  click,
+  // Browser
   Browser,
-  scroll,
-  select,
-  type,
+  launch,
+  LaunchOptions,
   // find
   findProperty,
   hasText,
-  // Browser
-  close,
-  launch
+  // page
+  Page
 } from "@qawolf/browser";

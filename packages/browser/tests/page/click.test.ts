@@ -1,15 +1,13 @@
 import { CONFIG } from "@qawolf/config";
-import { clickElement } from "../../src/actions/click";
 import { launch } from "../../src/browser/launch";
 import { hasText } from "../../src/find/hasText";
 
-describe("clickElement", () => {
+describe("Page.qawolf.click", () => {
   it("clicks on link", async () => {
     const browser = await launch({ url: CONFIG.testUrl });
     const page = await browser.page();
 
-    const element = await browser.find({ html: "<a>broken images</a>" });
-    await clickElement(element);
+    await page.qawolf.click({ html: "<a>broken images</a>" });
 
     await page.waitForNavigation();
     expect(page.url()).toBe(`${CONFIG.testUrl}broken_images`);
@@ -28,8 +26,7 @@ describe("clickElement", () => {
     );
     expect(hasInvalidUsernameText).toBe(false);
 
-    const element = await browser.find({ html: "<i>Login</i>" });
-    await clickElement(element);
+    await page.qawolf.click({ html: "<i>Login</i>" });
 
     const hasInvalidUsernameText2 = await hasText(page, "username is invalid");
     expect(hasInvalidUsernameText2).toBe(true);

@@ -1,12 +1,8 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { Selector } from "@qawolf/types";
 import { sleep } from "@qawolf/web";
-import { Page as PuppeteerPage, ElementHandle } from "puppeteer";
-import { clearElement } from "./clear";
-import { find, FindOptionsBrowser } from "../find";
-import { findPage } from "../page/findPage";
-import { retryExecutionError } from "../retry";
+import { ElementHandle, Page as PuppeteerPage } from "puppeteer";
+import { clearElement } from "./clearElement";
 import { valueToStrokes } from "../strokes";
 
 export const typeElement = async (
@@ -38,25 +34,4 @@ export const typeElement = async (
 
     await sleep(CONFIG.keyDelayMs);
   }
-};
-
-export const type = async (
-  selector: Selector,
-  value: string | null,
-  options: FindOptionsBrowser
-) => {
-  logger.verbose("type");
-
-  const page = await findPage({
-    ...options,
-    index: selector.page
-  });
-
-  await retryExecutionError(async () => {
-    const element = await find(
-      { ...selector, action: "type" },
-      { ...options, page }
-    );
-    await typeElement(page, element, value);
-  });
 };

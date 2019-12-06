@@ -1,14 +1,12 @@
 import { logger } from "@qawolf/logger";
-import { Selector } from "@qawolf/types";
+import { FindOptions } from "@qawolf/types";
 import { QAWolfWeb } from "@qawolf/web";
 import { ElementHandle } from "puppeteer";
-import { find, FindOptionsBrowser } from "../find";
-import { retryExecutionError } from "../retry";
 
 export const selectElement = async (
   elementHandle: ElementHandle,
   value: string | null,
-  options: FindOptionsBrowser = {}
+  options: FindOptions = {}
 ): Promise<void> => {
   logger.verbose("selectElement: waitForOption");
 
@@ -24,17 +22,4 @@ export const selectElement = async (
 
   logger.verbose("selectElement: element.select");
   await elementHandle.select(value || "");
-};
-
-export const select = async (
-  selector: Selector,
-  value: string | null,
-  options: FindOptionsBrowser
-) => {
-  logger.verbose("select");
-
-  await retryExecutionError(async () => {
-    const element = await find({ ...selector, action: "select" }, options);
-    await selectElement(element, value, options);
-  });
 };

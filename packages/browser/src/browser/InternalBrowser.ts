@@ -4,7 +4,7 @@ import { Callback, Event, Selector } from "@qawolf/types";
 import { sortBy } from "lodash";
 import { devices, DirectNavigationOptions, ElementHandle } from "puppeteer";
 import { Browser } from "./Browser";
-import { find, FindOptionsBrowser } from "../find";
+import { find } from "../find/find";
 import { createDomReplayer } from "../page/createDomReplayer";
 import { findPage, FindPageOptions } from "../page/findPage";
 import { Page } from "../page/Page";
@@ -78,9 +78,10 @@ export class InternalBrowser {
 
   public async find(
     selector: Selector,
-    options: FindOptionsBrowser = {}
+    options: FindPageOptions = {}
   ): Promise<ElementHandle> {
-    return find(selector, { ...options, browser: this.browser });
+    const page = await findPage(this.browser, options);
+    return find(page, selector, options);
   }
 
   public async goto(
@@ -88,10 +89,7 @@ export class InternalBrowser {
     options: FindPageOptions & DirectNavigationOptions = {}
   ): Promise<Page> {
     logger.verbose(`Browser: goto ${url}`);
-    const page = await findPage({
-      ...options,
-      browser: this.browser
-    });
+    const page = await findPage(this.browser, options);
 
     await page.goto(url, {
       timeout: CONFIG.navigationTimeoutMs,
@@ -102,7 +100,7 @@ export class InternalBrowser {
   }
 
   public page(index?: number, timeoutMs: number = 5000) {
-    return findPage({ browser: this.browser, index, timeoutMs });
+    return findPage(this.browser, { index, timeoutMs });
   }
 
   public get pages() {

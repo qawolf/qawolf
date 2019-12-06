@@ -1,10 +1,10 @@
 import { CONFIG } from "@qawolf/config";
 import { Browser, launch } from "../../src";
-import { selectElement } from "../../src/actions/select";
+import { selectElement } from "../../src/actions";
 
 let browser: Browser;
 
-describe("selectElement", () => {
+describe("select", () => {
   beforeAll(async () => {
     browser = await launch({
       url: `${CONFIG.testUrl}dropdown`
@@ -22,8 +22,7 @@ describe("selectElement", () => {
     });
     expect(selectValue).toBeFalsy();
 
-    const element = await browser.find({ css: "#dropdown" });
-    await selectElement(element, "2");
+    await page.qawolf.select({ css: "#dropdown" }, "2");
 
     const selectValue2 = await page.evaluate(() => {
       const select = document.getElementsByTagName("select")[0];

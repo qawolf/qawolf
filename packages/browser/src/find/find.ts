@@ -3,10 +3,8 @@ import { logger } from "@qawolf/logger";
 import { FindOptions, Selector } from "@qawolf/types";
 import { isNil, sleep } from "@qawolf/web";
 import { ElementHandle, Page as PuppeteerPage } from "puppeteer";
-import { findPage } from "../page/findPage";
 import { findCss } from "./findCss";
 import { findHtml } from "./findHtml";
-import { FindOptionsBrowser } from "./FindOptionsBrowser";
 import { findText } from "./findText";
 import { retryExecutionError } from "../retry";
 
@@ -33,24 +31,14 @@ export const findElement = (
 };
 
 export const find = async (
+  page: PuppeteerPage,
   selector: Selector,
-  options: FindOptionsBrowser = {}
+  options: FindOptions = {}
 ) => {
-  const {
-    // remove non-serializable options from findOptions
-    browser: browserOption,
-    page: pageOption,
-    ...findOptions
-  } = getConfigOptions(options);
+  const findOptions = getConfigOptions(options);
   logger.verbose(
     `find: ${JSON.stringify(selector)} ${JSON.stringify(findOptions)}`
   );
-
-  const page = await findPage({
-    browser: browserOption,
-    index: selector.page,
-    page: pageOption
-  });
 
   let element = await findElement(page, selector, findOptions);
 
