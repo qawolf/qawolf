@@ -4,5 +4,5 @@
 set -e
 
 cd $QAWOLF_DIR
-qawolf-xvfb-run npm run test
+QAW_HEADLESS=true npm run test
 qawolf-xvfb-run npm run test:docker
