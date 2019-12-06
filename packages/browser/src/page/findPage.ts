@@ -1,0 +1,67 @@
+import { logger } from "@qawolf/logger";
+import { isNil, waitFor } from "@qawolf/web";
+import { DecoratedBrowser } from "../browser/Browser";
+import { registry } from "../browser/registry";
+import { FindOptionsBrowser } from "../find/FindOptionsBrowser";
+import { DecoratedPage } from "./Page";
+
+export interface FindPageOptions extends FindOptionsBrowser {
+  index?: number;
+}
+
+const getIndex = (browser: DecoratedBrowser, pageIndex?: number): number => {
+  let index = pageIndex;
+
+  if (isNil(pageIndex)) {
+    // if no index is specified use the current page
+    index = browser.qawolf._currentPageIndex;
+
+    // if the current page is closed, choose the first open page
+    if (browser.qawolf.pages[index].isClosed()) {
+      index = browser.qawolf.pages.findIndex(p => !p.isClosed());
+
+      if (index < 0) throw new Error("No open pages");
+    }
+  }
+
+  return index!;
+};
+
+export const findPage = async (
+  options: FindPageOptions
+): Promise<DecoratedPage> => {
+  /**
+   * Wait for the page and activate it.
+   */
+  const browser = options.browser || registry.single();
+
+  let page = options.page || null;
+
+  if (!page) {
+    let index: number = getIndex(browser, options.index);
+
+    page = await waitFor(() => {
+      if (index >= browser.qawolf.pages.length) return null;
+      return browser.qawolf.pages[index];
+    }, options.timeoutMs || 0);
+
+    if (!page) {
+      throw new Error(`findPage: ${index} not found`);
+    }
+  }
+
+  // when headless = false the tab needs to be activated
+  // for the execution context to run
+  await page.bringToFront();
+
+  if (options.waitForRequests) {
+    await page.qawolf.waitForRequests();
+  }
+
+  browser.qawolf._currentPageIndex = browser.qawolf.pages.indexOf(page);
+  logger.verbose(
+    `findPage: activated ${browser.qawolf._currentPageIndex} ${page.url()}`
+  );
+
+  return page;
+};

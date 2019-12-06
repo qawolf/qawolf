@@ -13,44 +13,51 @@ export type PageCreateOptions = {
   recordEvents: boolean;
 };
 
+// PuppeteerPage decorated with .qawolf: Page
 export interface DecoratedPage extends PuppeteerPage {
   qawolf: Page;
 }
 
 export class Page {
+  private _decorated: DecoratedPage;
   private _domEvents: eventWithTime[] = [];
   private _events: Event[] = [];
   private _index: number;
-  private _page: DecoratedPage;
   private _recordDom: boolean;
   private _recordEvents: boolean;
   private _requests: RequestTracker;
 
   // protect constructor to force using async create()
   protected constructor(options: PageCreateOptions) {
-    // decorate the page with this parent
-    const page = options.page as DecoratedPage;
-    page.qawolf = this;
-    this._page = page;
+    // decorate the PuppeteerPage with this as .qawolf
+    const decorated = options.page as DecoratedPage;
+    decorated.qawolf = this;
+    this._decorated = decorated;
 
     this._index = options.index;
     this._recordDom = options.recordDom;
     this._recordEvents = options.recordEvents;
-    this._requests = new RequestTracker(this._page);
+    this._requests = new RequestTracker(this._decorated);
   }
 
-  public static async create(options: PageCreateOptions) {
+  public static async create(
+    options: PageCreateOptions
+  ): Promise<DecoratedPage> {
     const { device, page: puppeteerPage } = options;
 
     const page = new Page(options);
 
     await Promise.all([
       captureLogs(puppeteerPage),
-      injectBundle(page, page._recordDom, page._recordEvents),
+      injectBundle(page.decorated, page._recordDom, page._recordEvents),
       puppeteerPage.emulate(device)
     ]);
 
-    return page;
+    return page.decorated;
+  }
+
+  public get decorated(): DecoratedPage {
+    return this._decorated;
   }
 
   public dispose() {
@@ -67,11 +74,6 @@ export class Page {
 
   public get index() {
     return this._index;
-  }
-
-  public get super(): DecoratedPage {
-    // return the super Page decorated with this as .qawolf
-    return this._page;
   }
 
   public waitForRequests() {

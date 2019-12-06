@@ -1,7 +1,7 @@
 import { CONFIG } from "@qawolf/config";
 import { QAWolfWeb } from "@qawolf/web";
 import { Browser } from "../src/Browser";
-import { getDevice } from "../src/device";
+import { getDevice } from "../src/Browser/device";
 
 describe("Browser.create", () => {
   it("injects qawolf", async () => {
@@ -12,12 +12,14 @@ describe("Browser.create", () => {
       return !!qawolf;
     };
 
-    const zeroIsLoaded = await (await browser.getPage(0)).evaluate(isLoaded);
+    const pageZero = await browser.page(0);
+    const zeroIsLoaded = await pageZero.evaluate(isLoaded);
     expect(zeroIsLoaded).toBeTruthy();
 
     // check it loads on a new page
-    await browser.super.newPage();
-    const oneIsLoaded = await (await browser.getPage(1)).evaluate(isLoaded);
+    await browser.newPage();
+    const pageOne = await browser.page(1);
+    const oneIsLoaded = await pageOne.evaluate(isLoaded);
     expect(oneIsLoaded).toBeTruthy();
 
     await browser.close();
@@ -30,30 +32,31 @@ describe("Browser.create", () => {
     });
 
     const expectedViewport = getDevice("mobile").viewport;
-    expect((await browser.getPage(0)).viewport()).toEqual(expectedViewport);
+    expect((await browser.page(0)).viewport()).toEqual(expectedViewport);
 
     // check it emulates on a new page
-    await browser.super.newPage();
-    expect((await browser.getPage(1)).viewport()).toEqual(expectedViewport);
+    await browser.newPage();
+    expect((await browser.page(1)).viewport()).toEqual(expectedViewport);
 
     await browser.close();
   });
 });
 
-describe("Browser.currentPage", () => {
+describe("Browser.page", () => {
   it("chooses the first open page if the current page is closed", async () => {
     const browser = await Browser.create({ url: CONFIG.testUrl });
 
-    const pageTwo = await browser.super.newPage();
+    const pageOne = await browser.newPage();
 
-    await browser.getPage(1);
-    let currentPage = await browser.currentPage();
-    expect(currentPage).toEqual(pageTwo);
+    // change the current page to 1
+    await browser.page(1);
+    let currentPage = await browser.page();
+    expect(currentPage).toEqual(pageOne);
 
-    await pageTwo.close();
+    await pageOne.close();
 
-    currentPage = await browser.currentPage();
-    expect(currentPage).not.toEqual(pageTwo);
+    currentPage = await browser.page();
+    expect(currentPage).not.toEqual(pageOne);
 
     await browser.close();
   });

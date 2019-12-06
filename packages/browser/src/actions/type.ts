@@ -2,15 +2,15 @@ import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { Selector } from "@qawolf/types";
 import { sleep } from "@qawolf/web";
-import { Page, ElementHandle } from "puppeteer";
+import { Page as PuppeteerPage, ElementHandle } from "puppeteer";
 import { clearElement } from "./clear";
 import { find, FindOptionsBrowser } from "../find";
+import { findPage } from "../page/findPage";
 import { retryExecutionError } from "../retry";
 import { valueToStrokes } from "../strokes";
-import { getPage } from "../getPage";
 
 export const typeElement = async (
-  page: Page,
+  page: PuppeteerPage,
   element: ElementHandle,
   value: string | null
 ): Promise<void> => {
@@ -47,9 +47,9 @@ export const type = async (
 ) => {
   logger.verbose("type");
 
-  const page = await getPage({
+  const page = await findPage({
     ...options,
-    pageIndex: selector.page
+    index: selector.page
   });
 
   await retryExecutionError(async () => {
@@ -57,6 +57,6 @@ export const type = async (
       { ...selector, action: "type" },
       { ...options, page }
     );
-    await typeElement(page.super, element, value);
+    await typeElement(page, element, value);
   });
 };

@@ -1,8 +1,8 @@
 import { FindOptions } from "@qawolf/types";
-import { Browser } from "../Browser";
-import { Page } from "../page/Page";
+import { DecoratedBrowser } from "../browser/Browser";
+import { DecoratedPage } from "../page/Page";
 
 export interface FindOptionsBrowser extends FindOptions {
-  browser?: Browser;
-  page?: Page;
+  browser?: DecoratedBrowser;
+  page?: DecoratedPage;
 }

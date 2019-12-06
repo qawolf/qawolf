@@ -3,11 +3,11 @@ import { logger } from "@qawolf/logger";
 import { FindOptions, Selector } from "@qawolf/types";
 import { isNil, sleep } from "@qawolf/web";
 import { ElementHandle, Page as PuppeteerPage } from "puppeteer";
+import { findPage } from "../page/findPage";
 import { findCss } from "./findCss";
 import { findHtml } from "./findHtml";
 import { FindOptionsBrowser } from "./FindOptionsBrowser";
 import { findText } from "./findText";
-import { getPage } from "../getPage";
 import { retryExecutionError } from "../retry";
 
 export const findElement = (
@@ -46,13 +46,13 @@ export const find = async (
     `find: ${JSON.stringify(selector)} ${JSON.stringify(findOptions)}`
   );
 
-  const page = await getPage({
+  const page = await findPage({
     browser: browserOption,
-    page: pageOption,
-    pageIndex: selector.page
+    index: selector.page,
+    page: pageOption
   });
 
-  let element = await findElement(page.super, selector, findOptions);
+  let element = await findElement(page, selector, findOptions);
 
   if (findOptions.sleepMs) {
     logger.verbose(`find: sleep ${findOptions.sleepMs} ms`);
@@ -62,13 +62,13 @@ export const find = async (
     // reload the element in case it changed since the sleep
     try {
       // try to find it immediately
-      element = await findElement(page.super, selector, {
+      element = await findElement(page, selector, {
         ...findOptions,
         timeoutMs: 0
       });
     } catch (e) {
       // if it cannot be found immediately wait longer
-      element = await findElement(page.super, selector, findOptions);
+      element = await findElement(page, selector, findOptions);
     }
   }
 
