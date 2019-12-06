@@ -1,15 +1,14 @@
 import { CONFIG } from "@qawolf/config";
-import { Page } from "puppeteer";
-import { Browser } from "../../src/Browser";
-import { findProperty } from "../../src/find";
+import { Browser, launch, Page } from "../../src";
+import { findProperty } from "../../src/find/findProperty";
 
 let browser: Browser;
 let page: Page;
 
 describe("findProperty", () => {
   beforeAll(async () => {
-    browser = await Browser.create({ url: `${CONFIG.testUrl}dropdown` });
-    page = await browser.currentPage();
+    browser = await launch({ url: `${CONFIG.testUrl}dropdown` });
+    page = await browser.page();
   });
 
   afterAll(() => browser.close());

@@ -1,15 +1,14 @@
 import { CONFIG } from "@qawolf/config";
-import { Page } from "puppeteer";
-import { Browser } from "../../src/Browser";
-import { findHtml } from "../../src/find";
+import { Browser, launch, Page } from "../../src";
+import { findHtml } from "../../src/find/findHtml";
 import { getXpath } from "./utils";
 
 let browser: Browser;
 let page: Page;
 
 beforeAll(async () => {
-  browser = await Browser.create({ url: `${CONFIG.testUrl}login` });
-  page = await browser.currentPage();
+  browser = await launch({ url: `${CONFIG.testUrl}login` });
+  page = await browser.page();
 });
 
 afterAll(() => browser.close());

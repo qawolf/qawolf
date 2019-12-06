@@ -3,9 +3,9 @@ import { logger } from "@qawolf/logger";
 import { Event } from "@qawolf/types";
 import fs from "fs-extra";
 import path from "path";
-import { DecoratedPage } from "./Page";
-import { retryExecutionError } from "../retry";
 import { eventWithTime } from "rrweb/typings/types";
+import { Page } from "./Page";
+import { retryExecutionError } from "../retry";
 
 const qawolfJs = fs.readFileSync(
   path.resolve(path.dirname(require.resolve("@qawolf/web")), "./qawolf.web.js"),
@@ -36,13 +36,13 @@ export const bundleJs = (
   return bundle;
 };
 
-export const captureDomEvents = async (page: DecoratedPage) => {
+export const captureDomEvents = async (page: Page) => {
   await page.exposeFunction("qaw_onDomEvent", (event: eventWithTime) => {
     page.qawolf.domEvents.push(event);
   });
 };
 
-export const captureEvents = async (page: DecoratedPage) => {
+export const captureEvents = async (page: Page) => {
   await page.exposeFunction("qaw_onEvent", (event: Event) => {
     logger.debug(`Page: received event ${JSON.stringify(event)}`);
     page.qawolf.events.push(event);
@@ -50,7 +50,7 @@ export const captureEvents = async (page: DecoratedPage) => {
 };
 
 export const injectBundle = async (
-  page: DecoratedPage,
+  page: Page,
   recordDom: boolean,
   recordEvents: boolean
 ) => {

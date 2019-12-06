@@ -2,13 +2,13 @@ import { logger } from "@qawolf/logger";
 import { readFileSync, outputFile } from "fs-extra";
 import { compile } from "handlebars";
 import { resolve } from "path";
-import { DecoratedPage } from "./Page";
+import { Page } from "./Page";
 
 const replayerTemplate = compile(
   readFileSync(resolve(__dirname, "../../static/replayer.hbs"), "utf8")
 );
 
-export const createDomReplayer = async (page: DecoratedPage, path: string) => {
+export const createDomReplayer = async (page: Page, path: string) => {
   logger.debug(
     `Page: create dom replayer for ${page.qawolf.domEvents.length} events: ${path}`
   );

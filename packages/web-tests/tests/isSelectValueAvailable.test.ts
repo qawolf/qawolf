@@ -1,4 +1,4 @@
-import { Browser, PuppeteerPage } from "@qawolf/browser";
+import { Browser, launch, PuppeteerPage } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { QAWolfWeb } from "@qawolf/web";
 
@@ -7,8 +7,8 @@ describe("isSelectValueAvailable", () => {
   let page: PuppeteerPage;
 
   beforeAll(async () => {
-    browser = await Browser.create({ url: `${CONFIG.testUrl}dropdown` });
-    page = await browser.currentPage();
+    browser = await launch({ url: `${CONFIG.testUrl}dropdown` });
+    page = await browser.page();
   });
 
   afterAll(() => browser.close());

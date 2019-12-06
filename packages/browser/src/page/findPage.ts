@@ -1,24 +1,24 @@
 import { logger } from "@qawolf/logger";
 import { isNil, waitFor } from "@qawolf/web";
-import { DecoratedBrowser } from "../browser/Browser";
+import { Browser } from "../browser/Browser";
 import { registry } from "../browser/registry";
 import { FindOptionsBrowser } from "../find/FindOptionsBrowser";
-import { DecoratedPage } from "./Page";
+import { Page } from "./Page";
 
 export interface FindPageOptions extends FindOptionsBrowser {
   index?: number;
 }
 
-const getIndex = (browser: DecoratedBrowser, pageIndex?: number): number => {
+const getIndex = (browser: Browser, pageIndex?: number): number => {
   let index = pageIndex;
 
   if (isNil(pageIndex)) {
     // if no index is specified use the current page
-    index = browser.qawolf._currentPageIndex;
+    index = browser._qawolf._currentPageIndex;
 
     // if the current page is closed, choose the first open page
-    if (browser.qawolf.pages[index].isClosed()) {
-      index = browser.qawolf.pages.findIndex(p => !p.isClosed());
+    if (browser._qawolf.pages[index].isClosed()) {
+      index = browser._qawolf.pages.findIndex(p => !p.isClosed());
 
       if (index < 0) throw new Error("No open pages");
     }
@@ -27,13 +27,13 @@ const getIndex = (browser: DecoratedBrowser, pageIndex?: number): number => {
   return index!;
 };
 
-export const findPage = async (
-  options: FindPageOptions
-): Promise<DecoratedPage> => {
+export const findPage = async (options: FindPageOptions): Promise<Page> => {
   /**
    * Wait for the page and activate it.
    */
   const browser = options.browser || registry.single();
+
+  const internal = browser._qawolf;
 
   let page = options.page || null;
 
@@ -41,8 +41,8 @@ export const findPage = async (
     let index: number = getIndex(browser, options.index);
 
     page = await waitFor(() => {
-      if (index >= browser.qawolf.pages.length) return null;
-      return browser.qawolf.pages[index];
+      if (index >= internal.pages.length) return null;
+      return internal.pages[index];
     }, options.timeoutMs || 0);
 
     if (!page) {
@@ -58,9 +58,9 @@ export const findPage = async (
     await page.qawolf.waitForRequests();
   }
 
-  browser.qawolf._currentPageIndex = browser.qawolf.pages.indexOf(page);
+  internal._currentPageIndex = internal.pages.indexOf(page);
   logger.verbose(
-    `findPage: activated ${browser.qawolf._currentPageIndex} ${page.url()}`
+    `findPage: activated ${internal._currentPageIndex} ${page.url()}`
   );
 
   return page;

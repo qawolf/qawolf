@@ -1,5 +1,5 @@
 import { devices } from "puppeteer";
-import { getDevice } from "../src/device";
+import { getDevice } from "../../src/browser/device";
 
 describe("getDevice", () => {
   it('returns correct "desktop" size', () => {

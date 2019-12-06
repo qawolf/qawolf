@@ -1,12 +1,12 @@
 import { CONFIG } from "@qawolf/config";
-import { Browser } from "../../src/Browser";
-import { selectElement } from "../../src/actions";
+import { Browser, launch } from "../../src";
+import { selectElement } from "../../src/actions/select";
 
 let browser: Browser;
 
-describe("select", () => {
+describe("selectElement", () => {
   beforeAll(async () => {
-    browser = await Browser.create({
+    browser = await launch({
       url: `${CONFIG.testUrl}dropdown`
     });
   });
@@ -14,7 +14,7 @@ describe("select", () => {
   afterAll(() => browser.close());
 
   it("selects option", async () => {
-    const page = await browser.currentPage();
+    const page = await browser.page();
 
     const selectValue = await page.evaluate(() => {
       const select = document.getElementsByTagName("select")[0];

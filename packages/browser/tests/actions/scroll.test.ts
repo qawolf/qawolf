@@ -1,12 +1,12 @@
 import { CONFIG } from "@qawolf/config";
-import { scrollElement } from "../../src/actions";
-import { Browser } from "../../src/Browser";
+import { Browser, launch } from "../../src";
+import { scrollElement } from "../../src/actions/scroll";
 
 describe("scrollElement", () => {
   let browser: Browser;
 
   beforeAll(async () => {
-    browser = await Browser.create();
+    browser = await launch();
   });
 
   afterAll(() => browser.close());

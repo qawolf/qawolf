@@ -1,11 +1,11 @@
-import { Browser, PuppeteerPage } from "@qawolf/browser";
+import { Browser, launch, PuppeteerPage } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { InputEvent, KeyEvent, PasteEvent, ScrollEvent } from "@qawolf/types";
 import { isKeyEvent, sleep } from "@qawolf/web";
 
 describe("Recorder", () => {
   it("records click on a link", async () => {
-    const browser = await Browser.create({
+    const browser = await launch({
       recordEvents: true,
       url: CONFIG.testUrl
     });

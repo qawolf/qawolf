@@ -1,13 +1,13 @@
 import { CONFIG } from "@qawolf/config";
-import { clearElement } from "../../src/actions";
-import { Browser } from "../../src/Browser";
+import { clearElement } from "../../src/actions/clear";
+import { launch } from "../../src/browser/launch";
 
 describe("clearElement", () => {
   it("clears the input value", async () => {
-    const browser = await Browser.create({
+    const browser = await launch({
       url: `${CONFIG.testUrl}login`
     });
-    const page = await browser.currentPage();
+    const page = await browser.page();
 
     const usernameElement = await browser.find({ css: "#username" });
     await usernameElement.evaluate(

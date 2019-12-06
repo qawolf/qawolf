@@ -1,13 +1,13 @@
 import { CONFIG } from "@qawolf/config";
-import { typeElement } from "../../src/actions";
-import { Browser } from "../../src/Browser";
+import { Browser, launch } from "../../src";
+import { typeElement } from "../../src/actions/type";
 
 describe("typeElement", () => {
   it("sets input value", async () => {
-    const browser = await Browser.create({
+    const browser = await launch({
       url: `${CONFIG.testUrl}login`
     });
-    const page = await browser.currentPage();
+    const page = await browser.page();
 
     const usernameElement = await browser.find({ css: "#username" });
     const passwordElement = await browser.find({ css: "#password" });

@@ -1,10 +1,14 @@
-import { DecoratedBrowser } from "./Browser";
+import { Browser } from "./Browser";
 
 class Registry {
-  private _browsers: DecoratedBrowser[] = [];
+  private _browsers: Browser[] = [];
 
   public get browsers() {
     return this._browsers;
+  }
+
+  public clear() {
+    this._browsers = [];
   }
 
   public single() {
@@ -17,7 +21,7 @@ class Registry {
     return this._browsers[0];
   }
 
-  public register(browser: DecoratedBrowser) {
+  public register(browser: Browser) {
     this._browsers.push(browser);
   }
 }

@@ -1,4 +1,4 @@
-import { Browser, PuppeteerPage } from "@qawolf/browser";
+import { Browser, launch, PuppeteerPage } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { QAWolfWeb } from "@qawolf/web";
 
@@ -6,8 +6,8 @@ let browser: Browser;
 let page: PuppeteerPage;
 
 beforeAll(async () => {
-  browser = await Browser.create({ url: `${CONFIG.testUrl}login` });
-  page = await browser.currentPage();
+  browser = await launch({ url: `${CONFIG.testUrl}login` });
+  page = await browser.page();
 });
 
 afterAll(() => browser.close());

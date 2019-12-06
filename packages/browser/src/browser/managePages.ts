@@ -1,7 +1,7 @@
-import { DecoratedBrowser } from "./Browser";
-import { Page } from "../page/Page";
+import { Browser } from "./Browser";
+import { createPage } from "../page/createPage";
 
-export const managePages = async (browser: DecoratedBrowser) => {
+export const managePages = async (browser: Browser) => {
   const pages = await browser.pages();
 
   if (pages.length !== 1) {
@@ -11,20 +11,20 @@ export const managePages = async (browser: DecoratedBrowser) => {
   }
 
   const options = {
-    device: browser.qawolf.device,
-    recordDom: !!browser.qawolf.domPath,
-    recordEvents: browser.qawolf.recordEvents
+    device: browser._qawolf.device,
+    recordDom: !!browser._qawolf.domPath,
+    recordEvents: browser._qawolf.recordEvents
   };
 
-  browser.qawolf.pages.push(
-    await Page.create({ ...options, page: pages[0], index: 0 })
+  browser._qawolf.pages.push(
+    await createPage({ ...options, page: pages[0], index: 0 })
   );
 
   browser.on("targetcreated", async target => {
     const page = await target.page();
     if (page) {
-      browser.qawolf.pages.push(
-        await Page.create({ ...options, page, index: pages.length })
+      browser._qawolf.pages.push(
+        await createPage({ ...options, page, index: pages.length })
       );
     }
   });
