@@ -66,7 +66,7 @@ export class InternalBrowser {
 
     this.pages.forEach(page => page.qawolf.dispose());
 
-    await this.close();
+    await this.browser._close();
     logger.verbose("Browser: closed");
 
     this._onClose.forEach(c => c());

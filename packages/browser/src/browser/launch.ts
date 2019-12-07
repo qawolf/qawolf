@@ -53,6 +53,8 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
   const browser = (await launchPuppeteerBrowser(
     buildPuppeteerOptions(device)
   )) as Browser;
+  // set original _close method before we clobber it
+  browser._close = browser.close;
 
   const internal = new InternalBrowser({
     ...options,
@@ -62,6 +64,7 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
 
   // decorate Browser with our helpers
   browser.click = internal.click.bind(internal);
+  browser.close = internal.close.bind(internal);
   browser.find = internal.find.bind(internal);
   browser.goto = internal.goto.bind(internal);
   browser.page = internal.page.bind(internal);

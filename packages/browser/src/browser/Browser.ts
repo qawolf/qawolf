@@ -5,8 +5,8 @@ import {
   ElementHandle
 } from "puppeteer";
 import { InternalBrowser } from "./InternalBrowser";
-import { Page } from "../page/Page";
 import { FindPageOptions } from "../page/findPage";
+import { Page } from "../page/Page";
 
 // PuppeteerBrowser decorated with our helpers
 export interface Browser extends PuppeteerBrowser {
@@ -41,4 +41,7 @@ export interface Browser extends PuppeteerBrowser {
 
   // reference to our InternalBrowser for internal use
   qawolf: InternalBrowser;
+
+  // reference to original PuppeteerBrowser.close method
+  _close(): Promise<void>;
 }
