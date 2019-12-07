@@ -25,6 +25,12 @@ export interface Browser extends PuppeteerBrowser {
     options?: FindPageOptions & DirectNavigationOptions
   ): Promise<Page>;
 
+  hasText(
+    text: string,
+    options?: FindOptions,
+    pageIndex?: number
+  ): Promise<boolean>;
+
   page: (index?: number, timeoutMs?: number) => Promise<Page>;
 
   scroll(

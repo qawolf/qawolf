@@ -10,6 +10,7 @@ import {
 } from "../actions";
 import { find } from "../find/find";
 import { findProperty } from "../find/findProperty";
+import { hasText } from "../find/hasText";
 import { Page } from "./Page";
 import { RequestTracker } from "./RequestTracker";
 import { retryExecutionError } from "../retry";
@@ -30,9 +31,7 @@ export class InternalPage {
     selector: Selector,
     options: FindOptions = {}
   ): Promise<ElementHandle> {
-    logger.verbose("click");
-
-    console.log("clickElement", clickElement, "scrollElement", scrollElement);
+    logger.verbose(`Page ${this._index}: click`);
 
     return retryExecutionError(async () => {
       const element = await find(
@@ -64,10 +63,18 @@ export class InternalPage {
     property: string,
     options: FindOptions = {}
   ): Promise<ElementHandle> {
-    logger.verbose("findProperty");
+    logger.verbose(`Page ${this._index}: findProperty`);
 
     return retryExecutionError(async () => {
       return findProperty(this._page, selector, property, options);
+    });
+  }
+
+  public hasText(text: string, options: FindOptions = {}): Promise<boolean> {
+    logger.verbose(`Page ${this._index}: hasText`);
+
+    return retryExecutionError(async () => {
+      return hasText(this._page, text, options);
     });
   }
 
@@ -80,7 +87,7 @@ export class InternalPage {
     value: ScrollValue,
     options: FindOptions = {}
   ): Promise<ElementHandle> {
-    logger.verbose("scroll");
+    logger.verbose(`Page ${this._index}: scroll`);
 
     return retryExecutionError(async () => {
       const element = await find(
@@ -100,7 +107,7 @@ export class InternalPage {
     value: string | null,
     options: FindOptions = {}
   ): Promise<ElementHandle> {
-    logger.verbose("select");
+    logger.verbose(`Page ${this._index}: select`);
 
     return retryExecutionError(async () => {
       const element = await find(
@@ -120,7 +127,7 @@ export class InternalPage {
     value: string | null,
     options: FindOptions = {}
   ): Promise<ElementHandle> {
-    logger.verbose("type");
+    logger.verbose(`Page ${this._index}: type`);
 
     return retryExecutionError(async () => {
       const element = await find(

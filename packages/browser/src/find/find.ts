@@ -1,11 +1,11 @@
-import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { FindOptions, Selector } from "@qawolf/types";
-import { isNil, sleep } from "@qawolf/web";
+import { sleep } from "@qawolf/web";
 import { ElementHandle, Page as PuppeteerPage } from "puppeteer";
 import { findCss } from "./findCss";
 import { findHtml } from "./findHtml";
 import { findText } from "./findText";
+import { getFindOptions } from "./getFindOptions";
 import { retryExecutionError } from "../retry";
 
 export const findElement = (
@@ -35,7 +35,7 @@ export const find = async (
   selector: Selector,
   options: FindOptions = {}
 ) => {
-  const findOptions = getConfigOptions(options);
+  const findOptions = getFindOptions(options);
   logger.verbose(
     `find: ${JSON.stringify(selector)} ${JSON.stringify(findOptions)}`
   );
@@ -63,18 +63,4 @@ export const find = async (
   if (!element) throw new Error("Element not found");
 
   return element;
-};
-
-const getConfigOptions = <T extends FindOptions>(options: T) => {
-  const findOptions = { ...options };
-
-  if (isNil(options.sleepMs)) {
-    findOptions.sleepMs = CONFIG.sleepMs;
-  }
-
-  if (isNil(options.timeoutMs)) {
-    findOptions.timeoutMs = CONFIG.findTimeoutMs;
-  }
-
-  return findOptions;
 };

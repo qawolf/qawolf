@@ -122,6 +122,15 @@ export class InternalBrowser {
     return page;
   }
 
+  public async hasText(
+    text: string,
+    options?: FindOptions,
+    pageIndex?: number
+  ): Promise<boolean> {
+    const page = await this.page(pageIndex);
+    return page.qawolf.hasText(text, options);
+  }
+
   public page(index?: number, timeoutMs: number = 5000) {
     return findPage(this.browser, { index, timeoutMs });
   }

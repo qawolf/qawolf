@@ -11,25 +11,22 @@ beforeAll(async () => {
 
 afterAll(() => browser.close());
 
-describe("Page.findProperty", () => {
+describe("Browser.findProperty", () => {
   it("returns element attribute if it exists", async () => {
-    const id = await page.qawolf.findProperty({ css: "select" }, "id");
+    const id = await browser.findProperty({ css: "select" }, "id");
     expect(id).toBe("dropdown");
 
-    const tagName = await page.qawolf.findProperty(
-      { css: "#dropdown" },
-      "tagName"
-    );
+    const tagName = await browser.findProperty({ css: "#dropdown" }, "tagName");
     expect(tagName).toBe("SELECT");
 
-    const value = await page.qawolf.findProperty({ css: "#dropdown" }, "value");
+    const value = await browser.findProperty({ css: "#dropdown" }, "value");
     expect(value).toBe("");
   });
 });
 
-describe("Browser.findProperty", () => {
+describe("Page.findProperty", () => {
   it("returns undefined if element does not have property", async () => {
-    const placeholder = await browser.findProperty(
+    const placeholder = await page.qawolf.findProperty(
       { css: "#dropdown" },
       "placeholder"
     );
@@ -37,14 +34,18 @@ describe("Browser.findProperty", () => {
   });
 
   it("returns null if no elements match selector", async () => {
-    const tagName = await browser.findProperty({ css: "#wrongId" }, "tagName", {
-      timeoutMs: 0
-    });
+    const tagName = await page.qawolf.findProperty(
+      { css: "#wrongId" },
+      "tagName",
+      {
+        timeoutMs: 0
+      }
+    );
     expect(tagName).toBeNull();
   });
 
   it("returns the first element's property if multiple match selector", async () => {
-    const id = await browser.findProperty({ css: "option" }, "selected");
+    const id = await page.qawolf.findProperty({ css: "option" }, "selected");
     expect(id).toEqual(true);
   });
 });
