@@ -31,6 +31,8 @@ export class InternalPage {
   ): Promise<ElementHandle> {
     logger.verbose("click");
 
+    console.log("clickElement", clickElement, "scrollElement", scrollElement);
+
     return retryExecutionError(async () => {
       const element = await find(
         this._page,
