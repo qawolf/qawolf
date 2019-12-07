@@ -14,6 +14,12 @@ export interface Browser extends PuppeteerBrowser {
 
   find: (selector: Selector, options?: FindOptions) => Promise<ElementHandle>;
 
+  findProperty: (
+    selector: Selector,
+    property: string,
+    options?: FindOptions
+  ) => Promise<ElementHandle>;
+
   goto(
     url: string,
     options?: FindPageOptions & DirectNavigationOptions

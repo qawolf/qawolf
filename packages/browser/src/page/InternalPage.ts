@@ -9,6 +9,7 @@ import {
   typeElement
 } from "../actions";
 import { find } from "../find/find";
+import { findProperty } from "../find/findProperty";
 import { Page } from "./Page";
 import { RequestTracker } from "./RequestTracker";
 import { retryExecutionError } from "../retry";
@@ -56,6 +57,18 @@ export class InternalPage {
 
   public get events() {
     return this._events;
+  }
+
+  public findProperty(
+    selector: Selector,
+    property: string,
+    options: FindOptions = {}
+  ): Promise<ElementHandle> {
+    logger.verbose("findProperty");
+
+    return retryExecutionError(async () => {
+      return findProperty(this._page, selector, property, options);
+    });
   }
 
   public get index() {

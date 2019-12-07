@@ -66,6 +66,7 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
   browser.click = internal.click.bind(internal);
   browser.close = internal.close.bind(internal);
   browser.find = internal.find.bind(internal);
+  browser.findProperty = internal.findProperty.bind(internal);
   browser.goto = internal.goto.bind(internal);
   browser.page = internal.page.bind(internal);
   browser.scroll = internal.scroll.bind(internal);

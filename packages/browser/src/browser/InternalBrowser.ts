@@ -98,6 +98,15 @@ export class InternalBrowser {
     return find(page, selector, options);
   }
 
+  public async findProperty(
+    selector: Selector,
+    property: string,
+    options: FindOptions = {}
+  ): Promise<ElementHandle> {
+    const page = await this.page(selector.page, options.timeoutMs);
+    return page.qawolf.findProperty(selector, property, options);
+  }
+
   public async goto(
     url: string,
     options: FindPageOptions & DirectNavigationOptions = {}

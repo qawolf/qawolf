@@ -1,39 +1,24 @@
-import { CONFIG } from "@qawolf/config";
-import { isNil, waitFor } from "@qawolf/web";
+import { FindOptions, Selector } from "@qawolf/types";
 import { Page } from "puppeteer";
-import { retryExecutionError } from "../retry";
-
-export type FindPropertyArgs = {
-  property: string;
-  selector: string;
-};
+import { find } from "./find";
 
 export const findProperty = async (
   page: Page,
-  { property, selector }: FindPropertyArgs,
-  timeoutMs?: number
+  selector: Selector,
+  property: string,
+  options: FindOptions
 ): Promise<string | null | undefined> => {
-  const findTimeoutMs = (isNil(timeoutMs) ? CONFIG.findTimeoutMs : timeoutMs)!;
+  try {
+    const element = await find(page, selector, options);
 
-  const result = await retryExecutionError(async () => {
-    const elementHandle = await waitFor(
-      async () => {
-        const elementHandles = await page.$$(selector);
-        // either no element found or too many matching elements found
-        if (elementHandles.length !== 1) return null;
-
-        return elementHandles[0];
-      },
-      findTimeoutMs,
-      100
-    );
-    if (!elementHandle) return null;
-
-    const propertyHandle = await elementHandle.getProperty(property);
+    const propertyHandle = await element.getProperty(property);
     const propertyValue = await propertyHandle.jsonValue();
 
     return propertyValue;
-  });
+  } catch (e) {
+    // return null if the element is not found
+    if ((e as Error).message === "Element not found") return null;
 
-  return result;
+    throw e;
+  }
 };

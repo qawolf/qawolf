@@ -9,9 +9,6 @@ export {
   Browser,
   launch,
   LaunchOptions,
-  // find
-  findProperty,
-  hasText,
   // page
   Page
 } from "@qawolf/browser";

@@ -1,53 +1,50 @@
 import { CONFIG } from "@qawolf/config";
 import { Browser, launch, Page } from "../../src";
-import { findProperty } from "../../src/find/findProperty";
 
 let browser: Browser;
 let page: Page;
 
-describe("findProperty", () => {
-  beforeAll(async () => {
-    browser = await launch({ url: `${CONFIG.testUrl}dropdown` });
-    page = await browser.page();
-  });
+beforeAll(async () => {
+  browser = await launch({ url: `${CONFIG.testUrl}dropdown` });
+  page = await browser.page();
+});
 
-  afterAll(() => browser.close());
+afterAll(() => browser.close());
 
+describe("Page.findProperty", () => {
   it("returns element attribute if it exists", async () => {
-    const id = await findProperty(page, { selector: "select", property: "id" });
+    const id = await page.qawolf.findProperty({ css: "select" }, "id");
     expect(id).toBe("dropdown");
 
-    const tagName = await findProperty(page, {
-      selector: "#dropdown",
-      property: "tagName"
-    });
+    const tagName = await page.qawolf.findProperty(
+      { css: "#dropdown" },
+      "tagName"
+    );
     expect(tagName).toBe("SELECT");
 
-    const value = await findProperty(page, {
-      selector: "#dropdown",
-      property: "value"
-    });
+    const value = await page.qawolf.findProperty({ css: "#dropdown" }, "value");
     expect(value).toBe("");
   });
+});
 
+describe("Browser.findProperty", () => {
   it("returns undefined if element does not have property", async () => {
-    const placeholder = await findProperty(page, {
-      selector: "#dropdown",
-      property: "placeholder"
-    });
+    const placeholder = await browser.findProperty(
+      { css: "#dropdown" },
+      "placeholder"
+    );
     expect(placeholder).toBeUndefined();
   });
 
   it("returns null if no elements match selector", async () => {
-    const tagName = await findProperty(page, {
-      selector: "#wrongId",
-      property: "tagName"
+    const tagName = await browser.findProperty({ css: "#wrongId" }, "tagName", {
+      timeoutMs: 0
     });
     expect(tagName).toBeNull();
   });
 
-  it("returns null if multiple elements match selector", async () => {
-    const id = await findProperty(page, { selector: "option", property: "id" });
-    expect(id).toBeNull();
+  it("returns the first element's property if multiple match selector", async () => {
+    const id = await browser.findProperty({ css: "option" }, "selected");
+    expect(id).toEqual(true);
   });
 });
