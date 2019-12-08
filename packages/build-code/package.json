@@ -1,6 +1,6 @@
 {
-  "name": "@qawolf/build-test",
-  "description": "build qawolf test from workflow",
+  "name": "@qawolf/build-code",
+  "description": "qawolf: build code from workflow",
   "version": "0.6.0",
   "license": "BSD-3.0",
   "main": "./lib/index.js",

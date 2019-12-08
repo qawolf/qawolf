@@ -2,6 +2,6 @@ const base = require("../../jest.config.base.js");
 
 module.exports = {
   ...base,
-  displayName: "@qawolf/build-test",
-  name: "@qawolf/build-test"
+  displayName: "@qawolf/build-code",
+  name: "@qawolf/build-code"
 };

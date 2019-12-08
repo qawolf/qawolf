@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@qawolf/browser": "^0.6.0",
-    "@qawolf/build-test": "^0.6.0",
+    "@qawolf/build-code": "^0.6.0",
     "@qawolf/build-workflow": "^0.6.0",
     "@qawolf/config": "^0.6.0",
     "@qawolf/jasmine-fail-fast": "^2.0.1",

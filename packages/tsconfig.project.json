@@ -5,7 +5,7 @@
       "path": "./browser/tsconfig.package.json"
     },
     {
-      "path": "./build-test/tsconfig.package.json"
+      "path": "./build-code/tsconfig.package.json"
     },
     {
       "path": "./build-workflow/tsconfig.package.json"

@@ -1,4 +1,4 @@
-import { buildTest } from "@qawolf/build-test";
+import { buildTest } from "@qawolf/build-code";
 import { buildWorkflow } from "@qawolf/build-workflow";
 import { launch, LaunchOptions } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
