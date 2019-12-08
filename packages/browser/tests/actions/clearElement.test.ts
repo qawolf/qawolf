@@ -1,8 +1,8 @@
 import { CONFIG } from "@qawolf/config";
-import { clearElement } from "../../src/actions";
+import { focusClearElement } from "../../src/actions";
 import { launch } from "../../src/browser/launch";
 
-describe("clearElement", () => {
+describe("focusClearElement", () => {
   it("clears the input value", async () => {
     const browser = await launch({
       url: `${CONFIG.testUrl}login`
@@ -20,7 +20,7 @@ describe("clearElement", () => {
     );
     expect(username1).toBe("spirit");
 
-    await clearElement(usernameElement);
+    await focusClearElement(usernameElement);
 
     const username2 = await page.$eval(
       "#username",

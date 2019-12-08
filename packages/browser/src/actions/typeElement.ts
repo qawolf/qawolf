@@ -2,7 +2,7 @@ import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { sleep } from "@qawolf/web";
 import { ElementHandle, Page as PuppeteerPage } from "puppeteer";
-import { clearElement } from "./clearElement";
+import { focusClearElement } from "./focusClearElement";
 import { valueToStrokes } from "../strokes";
 
 export const typeElement = async (
@@ -12,8 +12,7 @@ export const typeElement = async (
 ): Promise<void> => {
   logger.verbose("typeElement");
 
-  // focus and clear the element
-  await clearElement(element);
+  await focusClearElement(element);
 
   if (!value) return;
 
