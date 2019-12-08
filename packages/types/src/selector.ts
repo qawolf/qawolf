@@ -31,9 +31,8 @@ export interface FindOptions {
   waitForRequests?: boolean;
 }
 
-export type HtmlSelector = string | DocSelector;
+export type HtmlSelector = string | DocSelector | DocSelectorSerialized;
 
-// TODO should index, or id, be here?
 export interface Selector {
   action?: Action;
   css?: CssSelector;

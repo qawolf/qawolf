@@ -4,11 +4,4 @@
 import "@qawolf/cli";
 
 // export public API
-export {
-  // Browser
-  Browser,
-  launch,
-  LaunchOptions,
-  // page
-  Page
-} from "@qawolf/browser";
+export { Browser, launch, LaunchOptions, Page } from "@qawolf/browser";

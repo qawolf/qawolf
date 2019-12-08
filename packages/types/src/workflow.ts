@@ -7,14 +7,12 @@ export type Size = "desktop" | "tablet" | "mobile";
 export interface Step extends Selector {
   action: Action;
   html: DocSelector;
-  // TODO maybe id instead?
   index: number;
   page: number;
   value?: StepValue;
 }
 
-// TODO remove or replace w/ selector?
-export interface StepSerialized {
+export interface StepSerialized extends Selector {
   action: Action;
   html: DocSelectorSerialized;
   index: number;
@@ -27,13 +25,5 @@ export interface Workflow {
   name: string;
   size: Size;
   steps: Step[];
-  url: string;
-}
-
-// TODO remove
-export interface WorkflowSerialized {
-  name: string;
-  size: Size;
-  steps: StepSerialized[];
   url: string;
 }

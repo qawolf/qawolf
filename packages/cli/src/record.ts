@@ -3,14 +3,14 @@ import { buildWorkflow } from "@qawolf/build-workflow";
 import { launch, LaunchOptions } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { serializeWorkflow } from "@qawolf/web";
+import { serializeStep } from "@qawolf/web";
 import { outputFile, outputJson } from "fs-extra";
 import { Url } from "url";
 
 export const record = async (
   url: Url,
   name: string,
-  saveEvents: boolean = false
+  saveAll: boolean = false
 ): Promise<void> => {
   const Listr = require("listr");
   const input = require("listr-input");
@@ -20,12 +20,20 @@ export const record = async (
 
   const browser = await launch(options);
 
-  let saveTest = true;
+  let shouldSave = true;
 
   const destFolder = `${process.cwd()}/.qawolf`;
-  const eventsPath = `${destFolder}/events/${name}.json`;
-  const testPath = `${destFolder}/tests/${name}.test.js`;
-  const workflowPath = `${destFolder}/workflows/${name}.json`;
+
+  const saveFile = (type: string, data: any, ext: string = "json") => {
+    const path = `${destFolder}/${type}/${name}.${ext}`;
+    logger.verbose(`save ${path}`);
+
+    if (ext === "json") {
+      return outputJson(path, data, { spaces: " " });
+    }
+
+    return outputFile(path, data, "utf8");
+  };
 
   const tasks = new Listr([
     {
@@ -33,7 +41,7 @@ export const record = async (
       task: () =>
         input("Save the test [Y/n]", {
           done: (value: string) => {
-            saveTest = value.toLowerCase().trim() !== "n";
+            shouldSave = value.toLowerCase().trim() !== "n";
           }
         })
     },
@@ -42,29 +50,28 @@ export const record = async (
       task: async (_: any, task: any) => {
         await browser.close();
 
-        if (!saveTest) {
+        if (!shouldSave) {
           task.skip();
           return;
         }
 
-        if (saveEvents) {
-          logger.verbose(`save events "${name}" -> ${eventsPath}`);
-          await outputJson(eventsPath, browser.qawolf.events, { spaces: " " });
+        if (saveAll) {
+          await saveFile("events", browser.qawolf.events);
         }
 
-        logger.verbose(`save workflow -> ${workflowPath}`);
         const workflow = buildWorkflow({
           events: browser.qawolf.events,
           name: name,
           url: url.href!
         });
-        await outputJson(workflowPath, serializeWorkflow(workflow), {
-          spaces: " "
-        });
 
-        logger.verbose(`save test -> ${testPath}`);
-        const test = buildTest(workflow);
-        await outputFile(testPath, test, "utf8");
+        if (saveAll) {
+          await saveFile("workflows", workflow);
+        }
+
+        await saveFile("selectors", workflow.steps.map(s => serializeStep(s)));
+
+        await saveFile("tests", buildTest(workflow), "js");
       }
     }
   ]);

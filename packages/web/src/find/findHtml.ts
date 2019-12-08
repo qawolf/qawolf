@@ -1,7 +1,7 @@
 import { DocSelector, FindOptions, Selector } from "@qawolf/types";
 import { DocMatch, matchDocSelector } from "./compare";
 import { queryElements } from "./query";
-import { htmlToDoc, nodeToDocSelector } from "../serialize";
+import { htmlSelectorToDocSelector, nodeToDocSelector } from "../serialize";
 import { waitFor } from "../wait";
 import { getXpath } from "../xpath";
 
@@ -16,11 +16,7 @@ export const findHtml = async (selector: Selector, options: FindOptions) => {
     throw new Error("findHtml: selector must include html property");
   }
 
-  const docSelector =
-    typeof selector.html === "string"
-      ? // convert the html to a document
-        { ancestors: [], node: htmlToDoc(selector.html) }
-      : selector.html;
+  const docSelector = htmlSelectorToDocSelector(selector.html);
 
   let topElementMatch: ElementMatch | null = null;
 

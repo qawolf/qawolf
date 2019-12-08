@@ -15,24 +15,17 @@ program.version(version);
 
 program.usage("<command> [options]");
 
-let recordCommand = program
+program
   .command("record <url> [name]")
-  .description("record a workflow and create a test");
+  .option("-d, --debug", "save events and workflow json for debugging")
+  .description("record a workflow and create a test")
+  .action(async (urlArgument, optionalName, cmd) => {
+    const url = parseUrl(urlArgument);
+    logger.verbose(`record url "${url.href}"`);
 
-if (CONFIG.development) {
-  recordCommand = recordCommand.option(
-    "-e, --events",
-    "save events (for debugging)"
-  );
-}
-
-recordCommand.action(async (urlArgument, optionalName, cmd) => {
-  const url = parseUrl(urlArgument);
-  logger.verbose(`record url "${url.href}"`);
-
-  const name = snakeCase(optionalName || url.hostname!);
-  await record(url, name, cmd.events);
-});
+    const name = snakeCase(optionalName || url.hostname!);
+    await record(url, name, cmd.debug);
+  });
 
 program
   .command("test [name]")

@@ -21,7 +21,6 @@ export const CONFIG = {
   chromeOffsetY: parseNumber(process.env.QAW_CHROME_OFFSET_Y, 125),
   dataAttribute: process.env.QAW_DATA_ATTRIBUTE || null,
   debug: parseBool(process.env.QAW_DEBUG),
-  development: parseBool(process.env.QAW_DEVELOPMENT),
   display: process.env.DISPLAY || ":1.0",
   docker: parseBool(process.env.QAW_DOCKER),
   domPath: process.env.QAW_DOM_PATH,
