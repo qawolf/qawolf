@@ -1,7 +1,9 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
+import { ScreenCapture } from "@qawolf/screen";
 import { Size } from "@qawolf/types";
 import { platform } from "os";
+import { basename } from "path";
 import {
   launch as launchPuppeteerBrowser,
   LaunchOptions as PuppeteerLaunchOptions
@@ -17,6 +19,7 @@ export type LaunchOptions = {
   recordEvents?: boolean;
   size?: Size;
   url?: string;
+  videoPath?: string;
 };
 
 const buildPuppeteerOptions = (device: Device) => {
@@ -78,6 +81,22 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
   await managePages(browser);
 
   if (options.url) await internal.goto(options.url);
+
+  const videoPath = options.videoPath || CONFIG.videoPath;
+  if (videoPath) {
+    // start capture after goto
+    internal._screenCapture = await ScreenCapture.start({
+      offset: {
+        x: CONFIG.chromeOffsetX,
+        y: CONFIG.chromeOffsetY
+      },
+      savePath: `${CONFIG.videoPath}/${basename(require.main!.filename)}`,
+      size: {
+        height: device.viewport.height,
+        width: device.viewport.width
+      }
+    });
+  }
 
   return browser;
 };

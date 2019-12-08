@@ -1,5 +1,6 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
+import { ScreenCapture } from "@qawolf/screen";
 import {
   Callback,
   Event,
@@ -24,6 +25,7 @@ type ConstructorOptions = {
 };
 
 export class InternalBrowser {
+  private _createdAt: number;
   private _options: ConstructorOptions;
   // stored in order of open
   private _pages: Page[] = [];
@@ -31,10 +33,13 @@ export class InternalBrowser {
 
   // used internally by findPage
   public _currentPageIndex: number = 0;
+  // used internally by launch
+  public _screenCapture: ScreenCapture | null = null;
 
   public constructor(options: ConstructorOptions) {
     const { ...clonedOptions } = options;
     this._options = clonedOptions;
+    this._createdAt = Date.now();
   }
 
   public get browser(): Browser {
@@ -50,6 +55,10 @@ export class InternalBrowser {
   }
 
   public async close() {
+    if (this._screenCapture) {
+      await this._screenCapture.stop();
+    }
+
     if (CONFIG.debug) {
       logger.verbose("Browser: skipping close in debug mode");
       return;
@@ -61,7 +70,10 @@ export class InternalBrowser {
     if (domPath) {
       await Promise.all(
         this.pages.map((page, index) =>
-          createDomReplayer(page, `${domPath}/page_${index}_${Date.now()}.html`)
+          createDomReplayer(
+            page,
+            `${domPath}/page_${index}__${this._createdAt}.html`
+          )
         )
       );
     }

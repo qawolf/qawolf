@@ -1,7 +1,7 @@
 import { makeTempDir } from "@qawolf/config";
 import { sleep } from "@qawolf/web";
 import { pathExists, remove } from "fs-extra";
-import { ScreenCapture } from "../src/ScreenCapture";
+import { ScreenCapture } from "../../src/ScreenCapture";
 
 it("captures a video and gif", async () => {
   const tempDir = await makeTempDir();
@@ -11,7 +11,7 @@ it("captures a video and gif", async () => {
   });
   await sleep(1000);
   await screenCapture!.stop();
-  expect(await pathExists(`${tempDir}/video.mp4`)).toBeTruthy();
-  expect(await pathExists(`${tempDir}/video.gif`)).toBeTruthy();
+  expect(await pathExists(screenCapture.videoPath)).toBeTruthy();
+  expect(await pathExists(screenCapture.gifPath)).toBeTruthy();
   await remove(tempDir);
 });

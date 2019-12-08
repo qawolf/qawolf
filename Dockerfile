@@ -46,6 +46,5 @@ ENV QAW_CHROME_EXECUTABLE_PATH="google-chrome-stable" \
     QAW_CHROME_OFFSET_Y=72 \
     QAW_DISPLAY_HEIGHT=1080 \
     QAW_DISPLAY_WIDTH=1920 \ 
-    QAW_DOCKER="true" \
     QAW_HEADLESS="false" \
     QAW_SERIAL="true"
