@@ -1,4 +1,4 @@
-import { Browser, launch, PuppeteerPage } from "@qawolf/browser";
+import { launch } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { InputEvent, KeyEvent, PasteEvent, ScrollEvent } from "@qawolf/types";
 import { isKeyEvent, sleep } from "@qawolf/web";
@@ -116,7 +116,9 @@ describe("Recorder", () => {
     const page = await browser.page();
 
     await browser.type({ css: "#password" }, "secret");
-    await browser.type({ css: "html" }, "↓Enter↑Enter");
+    await browser.type({ css: "#password" }, "↓Enter↑Enter");
+
+    await sleep(1000);
 
     // force navigate to make sure we capture everything
     await browser.goto(CONFIG.testUrl);

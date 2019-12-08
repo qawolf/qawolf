@@ -24,15 +24,10 @@ export const record = async (
 
   const destFolder = `${process.cwd()}/.qawolf`;
 
-  const saveFile = (type: string, data: any, ext: string = "json") => {
-    const path = `${destFolder}/${type}/${name}.${ext}`;
+  const saveJson = (type: string, data: any) => {
+    const path = `${destFolder}/${type}/${name}.json`;
     logger.verbose(`save ${path}`);
-
-    if (ext === "json") {
-      return outputJson(path, data, { spaces: " " });
-    }
-
-    return outputFile(path, data, "utf8");
+    return outputJson(path, data, { spaces: " " });
   };
 
   const tasks = new Listr([
@@ -56,7 +51,7 @@ export const record = async (
         }
 
         if (saveAll) {
-          await saveFile("events", browser.qawolf.events);
+          await saveJson("events", browser.qawolf.events);
         }
 
         const workflow = buildWorkflow({
@@ -66,12 +61,14 @@ export const record = async (
         });
 
         if (saveAll) {
-          await saveFile("workflows", workflow);
+          await saveJson("workflows", workflow);
         }
 
-        await saveFile("selectors", workflow.steps.map(s => serializeStep(s)));
+        await saveJson("selectors", workflow.steps.map(s => serializeStep(s)));
 
-        await saveFile("tests", buildTest(workflow), "js");
+        const testPath = `${destFolder}/tests/${name}.test.js`;
+        logger.verbose(`save ${testPath}`);
+        await outputFile(testPath, buildTest(workflow), "utf8");
       }
     }
   ]);

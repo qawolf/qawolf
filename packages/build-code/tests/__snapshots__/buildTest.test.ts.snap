@@ -1,33 +1,44 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`buildTest builds a test from a workflow 1`] = `
-"describe('scroll_login', () => {
+"const { launch } = require(\\"qawolf\\");
+const selectors = require(\\"../selectors/scroll_login\\");
+
+describe('scroll_login', () => {
+  let browser;
+
+  beforeAll(async () => {
+    browser = await launch({ url: \\"localhost:5000\\" });
+  });
+
+  afterAll(() => browser.close());
+
   it('can scroll', async () => {
-    await scroll(steps[0], { x: 0, y: 378 });
+    await browser.scroll(selectors[0], { x: 0, y: 378 });
   });
 
   it('can click \\"Form Authentication\\" link', async () => {
-    await click(steps[1]);
+    await browser.click(selectors[1]);
   });
 
   it('can type into \\"Username\\" input', async () => {
-    await type(steps[2], \\"tomsmith\\");
+    await browser.type(selectors[2], \\"tomsmith\\");
   });
 
   it('can Tab', async () => {
-    await type(steps[3], \\"↓Tab↑Tab\\");
+    await browser.type(selectors[3], \\"↓Tab↑Tab\\");
   });
 
   it('can type into \\"Password\\" input', async () => {
-    await type(steps[4], \\"SuperSecretPassword!\\");
+    await browser.type(selectors[4], \\"SuperSecretPassword!\\");
   });
 
   it('can Enter', async () => {
-    await type(steps[5], \\"↓Enter↑Enter\\");
+    await browser.type(selectors[5], \\"↓Enter↑Enter\\");
   });
 
   it('can click \\"Logout\\" link', async () => {
-    await click(steps[6]);
+    await browser.click(selectors[6]);
   });
 });"
 `;

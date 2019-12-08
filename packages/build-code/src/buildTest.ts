@@ -11,7 +11,8 @@ const testTemplate = compile(
 export const buildTest = (workflow: Workflow) => {
   const test = testTemplate({
     name: workflow.name,
-    steps: workflow.steps.map(step => formatStep(step))
+    steps: workflow.steps.map(step => formatStep(step)),
+    url: workflow.url
   });
 
   return test;

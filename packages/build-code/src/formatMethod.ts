@@ -5,23 +5,23 @@ export const formatMethod = (
   index: number,
   value?: StepValue
 ): string => {
-  const stepParam = `steps[${index}]`;
+  const selector = `selectors[${index}]`;
 
   if (action === "click") {
-    return `click(${stepParam})`;
+    return `browser.click(${selector})`;
   }
 
   if (action === "scroll") {
     const scrollValue = value as ScrollValue;
-    return `scroll(${stepParam}, { x: ${scrollValue.x}, y: ${scrollValue.y} })`;
+    return `browser.scroll(${selector}, { x: ${scrollValue.x}, y: ${scrollValue.y} })`;
   }
 
   if (action === "select") {
-    return `select(${stepParam}, ${JSON.stringify(value)})`;
+    return `browser.select(${selector}, ${JSON.stringify(value)})`;
   }
 
   if (action === "type") {
-    return `type(${stepParam}, ${JSON.stringify(value)})`;
+    return `browser.type(${selector}, ${JSON.stringify(value)})`;
   }
 
   throw new Error(`Invalid step action ${action}`);
