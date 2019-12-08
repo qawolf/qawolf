@@ -1,7 +1,7 @@
 const { launch } = require("qawolf");
 const selectors = require("../selectors/{{{name}}}");
 
-const {{{nameCamelCase}}} = async () => {
+const {{{name}}} = async () => {
   const browser = await launch({ url: "{{{url}}}" });
 {{#each steps}}
   await {{{method}}};
@@ -11,4 +11,4 @@ const {{{nameCamelCase}}} = async () => {
   await browser.close();
 };
 
-{{{nameCamelCase}}}();
+{{{name}}}();

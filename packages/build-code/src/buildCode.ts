@@ -24,8 +24,7 @@ export const buildCode = (options: BuildCodeOptions) => {
   const template = options.test ? testTemplate : scriptTemplate;
 
   const code = template({
-    name: workflow.name,
-    nameCamelCase: camelCase(workflow.name),
+    name: camelCase(workflow.name),
     steps: workflow.steps.map(step => formatStep(step)),
     url: workflow.url
   });

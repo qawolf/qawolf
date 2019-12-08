@@ -1,6 +1,6 @@
 import { readdir } from "fs-extra";
 import { prompt } from "inquirer";
-import { snakeCase } from "lodash";
+import { camelCase } from "lodash";
 import { basename } from "path";
 import { runTest } from "./runTest";
 
@@ -25,7 +25,7 @@ export const test = async (optionalName?: string) => {
   let testName: string | null = null;
 
   if (optionalName) {
-    testName = snakeCase(optionalName);
+    testName = camelCase(optionalName);
     if (!availableTests.includes(testName)) {
       const { selectedName } = await prompt<{ selectedName: string }>([
         {
