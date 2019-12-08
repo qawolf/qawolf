@@ -12,14 +12,24 @@ export const typeElement = async (
 ): Promise<void> => {
   logger.verbose("typeElement");
 
-  await focusClearElement(element);
+  if (!value) {
+    await focusClearElement(element);
+    return;
+  }
 
-  if (!value) return;
+  const strokes = valueToStrokes(value);
+
+  if (strokes[0].value.length > 0) {
+    // do not clear the element if the first character is a special key
+    await element.focus();
+  } else {
+    await focusClearElement(element);
+  }
 
   // logging the keyboard codes below will leak secrets
   // which is why we have it hidden behind the DEBUG flag
   // since we default logs to VERBOSE
-  for (const stroke of valueToStrokes(value)) {
+  for (const stroke of strokes) {
     if (stroke.type === "↓") {
       logger.debug(`keyboard.down("${stroke.value}")`);
       await page.keyboard.down(stroke.value);

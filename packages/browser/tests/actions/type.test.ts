@@ -1,12 +1,15 @@
 import { CONFIG } from "@qawolf/config";
-import { Browser, launch } from "../../src";
+import { Browser, launch, Page } from "../../src";
 
 let browser: Browser;
+let page: Page;
 
 beforeAll(async () => {
   browser = await launch({
     url: `${CONFIG.testUrl}login`
   });
+
+  page = await browser.page();
 });
 
 afterAll(() => browser.close());
@@ -25,8 +28,17 @@ describe("Browser.type", () => {
 });
 
 describe("Page.type", () => {
-  it("clears input value", async () => {
-    const page = await browser.page();
+  it("does not clear input value for special keys", async () => {
+    await page.qawolf.type({ css: "#username" }, "↓Tab↑Tab");
+
+    const username = await page.$eval(
+      "#username",
+      (input: HTMLInputElement) => input.value
+    );
+    expect(username).toEqual("spirit");
+  });
+
+  it("clears input value for null", async () => {
     await page.qawolf.type({ css: "#username" }, null);
 
     const username = await page.$eval(
