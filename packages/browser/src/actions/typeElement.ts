@@ -19,8 +19,8 @@ export const typeElement = async (
 
   const strokes = valueToStrokes(value);
 
-  if (strokes[0].value.length > 0) {
-    // do not clear the element if the first character is a special key
+  if (strokes[0].value === "Enter" || strokes[0].value === "Tab") {
+    // do not clear the element if the first character is Enter or Tab
     await element.focus();
   } else {
     await focusClearElement(element);
