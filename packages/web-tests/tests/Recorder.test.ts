@@ -12,6 +12,7 @@ describe("Recorder", () => {
     await browser.click({ html: "<a>broken images</a>" });
 
     // close the browser to ensure events are transmitted
+    await sleep(1000);
     await browser.close();
 
     const events = browser.qawolf.events.filter(e => e.isTrusted);
@@ -39,6 +40,7 @@ describe("Recorder", () => {
     });
 
     // close the browser to ensure events are transmitted
+    await sleep(1000);
     await browser.close();
 
     const events = page.qawolf.events;
@@ -94,6 +96,7 @@ describe("Recorder", () => {
     const page = await browser.page();
 
     // close the browser to ensure events are transmitted
+    await sleep(1000);
     await browser.close();
 
     const events = page.qawolf.events;
@@ -116,14 +119,10 @@ describe("Recorder", () => {
     const page = await browser.page();
 
     await browser.type({ css: "#password" }, "secret");
-    await browser.type({ css: "#password" }, "↓Enter↑Enter");
-
-    await sleep(1000);
-
-    // force navigate to make sure we capture everything
-    await browser.goto(CONFIG.testUrl);
+    await browser.type({ css: "#password" }, "↓Enter");
 
     // close the browser to ensure events are transmitted
+    await sleep(1000);
     await browser.close();
 
     const events = page.qawolf.events.filter(e => e.isTrusted);
@@ -144,7 +143,6 @@ describe("Recorder", () => {
       "e",
       "t",
       "t",
-      "Enter",
       "Enter"
     ]);
   });
