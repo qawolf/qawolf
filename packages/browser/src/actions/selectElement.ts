@@ -2,13 +2,18 @@ import { logger } from "@qawolf/logger";
 import { FindOptions } from "@qawolf/types";
 import { QAWolfWeb } from "@qawolf/web";
 import { ElementHandle } from "puppeteer";
+import { getFindOptions } from "../find/getFindOptions";
 
 export const selectElement = async (
   elementHandle: ElementHandle,
   value: string | null,
   options: FindOptions = {}
 ): Promise<void> => {
-  logger.verbose("selectElement: waitForOption");
+  const findOptions = getFindOptions(options);
+
+  logger.verbose(
+    `selectElement: waitForOption ${value} ${JSON.stringify(findOptions)}`
+  );
 
   // ensure option with desired value is loaded before selecting
   await elementHandle.evaluate(
@@ -17,7 +22,7 @@ export const selectElement = async (
       return qawolf.select.waitForOption(element, value, timeoutMs);
     },
     value,
-    options.timeoutMs || 0
+    findOptions.timeoutMs || 0
   );
 
   logger.verbose("selectElement: element.select");

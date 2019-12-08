@@ -22,5 +22,7 @@ export const findHtml = async (
     options as Serializable
   );
 
-  return jsHandle.asElement();
+  const element = jsHandle.asElement();
+  logger.verbose("findHtml: found element");
+  return element;
 };

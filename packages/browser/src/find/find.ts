@@ -43,19 +43,24 @@ export const find = async (
   let element = await findElement(page, selector, findOptions);
 
   if (findOptions.sleepMs) {
-    logger.verbose(`find: sleep ${findOptions.sleepMs} ms`);
-
+    logger.verbose(`find: found element, sleeping ${findOptions.sleepMs}ms`);
     await sleep(findOptions.sleepMs);
 
     // reload the element in case it changed since the sleep
     try {
       // try to find it immediately
+      logger.verbose(`find: find element after sleep (timeoutMs: 0)`);
       element = await findElement(page, selector, {
         ...findOptions,
         timeoutMs: 0
       });
     } catch (e) {
       // if it cannot be found immediately wait longer
+      logger.verbose(
+        `find: element not found immediately, try slower ${JSON.stringify(
+          findOptions
+        )}`
+      );
       element = await findElement(page, selector, findOptions);
     }
   }

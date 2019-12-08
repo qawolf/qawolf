@@ -6,7 +6,8 @@ export const retryExecutionError = async (
 ): Promise<any> => {
   for (let i = 0; i < times; i++) {
     try {
-      return await func();
+      const result = await func();
+      return result;
     } catch (error) {
       if (
         (i < times - 1 &&

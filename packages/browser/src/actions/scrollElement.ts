@@ -2,13 +2,16 @@ import { logger } from "@qawolf/logger";
 import { ScrollValue, FindOptions } from "@qawolf/types";
 import { QAWolfWeb } from "@qawolf/web";
 import { ElementHandle } from "puppeteer";
+import { getFindOptions } from "../find/getFindOptions";
 
 export const scrollElement = async (
   elementHandle: ElementHandle,
   value: ScrollValue,
   options: FindOptions = {}
 ): Promise<void> => {
-  logger.verbose("scrollElement");
+  const findOptions = getFindOptions(options);
+
+  logger.verbose(`scrollElement: ${value} ${JSON.stringify(findOptions)}`);
 
   await elementHandle.evaluate(
     (element, value, timeoutMs) => {
@@ -16,6 +19,6 @@ export const scrollElement = async (
       return qawolf.scroll(element, value, timeoutMs);
     },
     value,
-    options.timeoutMs || 0
+    findOptions.timeoutMs || 0
   );
 };
