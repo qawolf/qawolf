@@ -22,8 +22,9 @@ export class InternalPage {
   private _page: Page;
   private _requests: RequestTracker;
 
-  public constructor(page: Page) {
+  public constructor(page: Page, index: number) {
     this._page = page;
+    this._index = index;
     this._requests = new RequestTracker(page);
   }
 

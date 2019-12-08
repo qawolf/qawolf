@@ -17,7 +17,7 @@ export const createPage = async (options: CreatePageOptions): Promise<Page> => {
 
   const page = puppeteerPage as Page;
 
-  page.qawolf = new InternalPage(page);
+  page.qawolf = new InternalPage(page, options.index);
 
   await Promise.all([
     captureLogs(page),

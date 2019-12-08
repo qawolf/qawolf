@@ -17,10 +17,10 @@ describe("findPasteKeyEvents", () => {
 
     const pasteEvents1 = findPasteKeyEvents(events, pasteIndex1);
     expect(pasteEvents1.map(e => e!.time)).toEqual([
-      1575164064951,
-      1575164065117,
-      1575164065254,
-      1575164065253
+      1575828034561,
+      1575828034757,
+      1575828034900,
+      1575828034899
     ]);
   });
 });

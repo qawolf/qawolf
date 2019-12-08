@@ -29,7 +29,7 @@ Array [
       "node": Object {
         "attrs": Object {
           "id": "dropdown",
-          "innertext": "Please select an option&#10;Option 1&#10;Option 2",
+          "innertext": "Please select an option Option 1 Option 2",
         },
         "children": Array [
           Object {
