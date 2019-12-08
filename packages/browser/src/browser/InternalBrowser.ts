@@ -8,6 +8,7 @@ import {
   ScrollValue
 } from "@qawolf/types";
 import { sortBy } from "lodash";
+import { basename } from "path";
 import { devices, DirectNavigationOptions, ElementHandle } from "puppeteer";
 import { Browser } from "./Browser";
 import { find } from "../find/find";
@@ -56,10 +57,11 @@ export class InternalBrowser {
 
     logger.verbose("Browser: close");
 
-    if (this._options.domPath) {
+    const domPath = this.domPath;
+    if (domPath) {
       await Promise.all(
         this.pages.map((page, index) =>
-          createDomReplayer(page, `${this._options.domPath}/page_${index}.html`)
+          createDomReplayer(page, `${domPath}/page_${index}.html`)
         )
       );
     }
@@ -77,7 +79,12 @@ export class InternalBrowser {
   }
 
   public get domPath() {
-    return this._options.domPath;
+    const path = this._options.domPath || CONFIG.domPath;
+    if (!path) return;
+
+    // name the dom path based on the main script filename
+    // ex. /login.test.js/page_0.html
+    return `${path}/${basename(require.main!.filename)}`;
   }
 
   public get events() {
