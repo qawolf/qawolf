@@ -61,7 +61,7 @@ export class InternalBrowser {
     if (domPath) {
       await Promise.all(
         this.pages.map((page, index) =>
-          createDomReplayer(page, `${domPath}/page_${index}.html`)
+          createDomReplayer(page, `${domPath}/page_${index}_${Date.now()}.html`)
         )
       );
     }
