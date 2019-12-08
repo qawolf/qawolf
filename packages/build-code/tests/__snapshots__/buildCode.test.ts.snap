@@ -1,6 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`buildTest builds a test from a workflow 1`] = `
+exports[`buildCode builds a script for a workflow 1`] = `
+"const { launch } = require(\\"qawolf\\");
+const selectors = require(\\"../selectors/scroll_login\\");
+
+const scroll_login = async () => {
+  const browser = await launch({ url: \\"localhost:5000\\" });
+  await browser.scroll(selectors[0], { x: 0, y: 378 });
+  await browser.click(selectors[1]);
+  await browser.type(selectors[2], \\"tomsmith\\");
+  await browser.type(selectors[3], \\"↓Tab↑Tab\\");
+  await browser.type(selectors[4], \\"SuperSecretPassword!\\");
+  await browser.type(selectors[5], \\"↓Enter↑Enter\\");
+  await browser.click(selectors[6]);
+  await browser.close();
+};
+
+scroll_login();"
+`;
+
+exports[`buildCode builds a test for a workflow 1`] = `
 "const { launch } = require(\\"qawolf\\");
 const selectors = require(\\"../selectors/scroll_login\\");
 

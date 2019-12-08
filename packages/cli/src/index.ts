@@ -18,13 +18,14 @@ program.usage("<command> [options]");
 program
   .command("record <url> [name]")
   .option("-d, --debug", "save events and workflow json for debugging")
+  .option("-s, --script", "save a script instead of a test")
   .description("record a workflow and create a test")
   .action(async (urlArgument, optionalName, cmd) => {
     const url = parseUrl(urlArgument);
     logger.verbose(`record url "${url.href}"`);
 
     const name = snakeCase(optionalName || url.hostname!);
-    await record(url, name, cmd.debug);
+    await record({ debug: cmd.debug, name, test: !cmd.script, url });
   });
 
 program
