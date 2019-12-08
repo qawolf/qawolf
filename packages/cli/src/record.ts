@@ -26,23 +26,25 @@ export const record = async (options: RecordOptions): Promise<void> => {
     url: options.url.href
   });
 
-  const destFolder = `${process.cwd()}/.qawolf`;
+  const qawolfPath = `${process.cwd()}/.qawolf`;
 
   const saveJson = (type: string, data: any) => {
-    const path = `${destFolder}/${type}/${name}.json`;
+    const path = `${qawolfPath}/${type}/${name}.json`;
     logger.verbose(`save ${path}`);
     return outputJson(path, data, { spaces: " " });
   };
 
-  let skipSave = false;
+  const codeFileName = options.test ? `${name}.test.js` : `${name}.js`;
 
   const codePath = options.test
-    ? `${destFolder}/tests/${name}.test.js`
-    : `${destFolder}/scripts/${name}.js`;
+    ? `${qawolfPath}/tests/${codeFileName}`
+    : `${qawolfPath}/scripts/${codeFileName}`;
+
+  let skipSave = false;
 
   const tasks = new Listr([
     {
-      title: "Recording browser actions",
+      title: `Recording browser actions for "${codeFileName}"`,
       task: () =>
         input("Save [Y/n]", {
           done: (value: string) => {

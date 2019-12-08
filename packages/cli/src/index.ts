@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 import { logger } from "@qawolf/logger";
-import { yellow } from "kleur";
 import program from "commander";
+import { yellow } from "kleur";
 import { camelCase } from "lodash";
 import { saveCiTemplate } from "./ci";
 import { record } from "./record";
@@ -23,7 +23,7 @@ program
     const url = parseUrl(urlArgument);
     logger.verbose(`record url "${url.href}"`);
 
-    const name = camelCase(optionalName || url.hostname!);
+    const name = camelCase(optionalName || url.hostname!.replace(/\..*/g, ""));
     await record({ debug: cmd.debug, name, test: !cmd.script, url });
   });
 

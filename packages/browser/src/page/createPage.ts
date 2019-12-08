@@ -20,9 +20,9 @@ export const createPage = async (options: CreatePageOptions): Promise<Page> => {
   page.qawolf = new InternalPage(page, options.index);
 
   await Promise.all([
+    puppeteerPage.emulate(device),
     captureLogs(page),
-    injectBundle(page, !!options.recordDom, !!options.recordEvents),
-    puppeteerPage.emulate(device)
+    injectBundle(page, !!options.recordDom, !!options.recordEvents)
   ]);
 
   return page;
