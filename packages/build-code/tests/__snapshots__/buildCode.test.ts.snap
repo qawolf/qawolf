@@ -4,7 +4,7 @@ exports[`buildCode builds a script for a workflow 1`] = `
 "const { launch } = require(\\"qawolf\\");
 const selectors = require(\\"../selectors/scroll_login\\");
 
-const scroll_login = async () => {
+const scrollLogin = async () => {
   const browser = await launch({ url: \\"localhost:5000\\" });
   await browser.scroll(selectors[0], { x: 0, y: 378 });
   await browser.click(selectors[1]);
@@ -16,7 +16,7 @@ const scroll_login = async () => {
   await browser.close();
 };
 
-scroll_login();"
+scrollLogin();"
 `;
 
 exports[`buildCode builds a test for a workflow 1`] = `

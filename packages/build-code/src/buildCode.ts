@@ -1,6 +1,7 @@
 import { Workflow } from "@qawolf/types";
 import { readFileSync } from "fs-extra";
 import { compile } from "handlebars";
+import { camelCase } from "lodash";
 import { resolve } from "path";
 import { formatStep } from "./formatStep";
 
@@ -24,6 +25,7 @@ export const buildCode = (options: BuildCodeOptions) => {
 
   const code = template({
     name: workflow.name,
+    nameCamelCase: camelCase(workflow.name),
     steps: workflow.steps.map(step => formatStep(step)),
     url: workflow.url
   });
