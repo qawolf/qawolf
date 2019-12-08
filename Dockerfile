@@ -37,12 +37,14 @@ COPY . ${QAWOLF_DIR}/.
 
 RUN cd ${QAWOLF_DIR} && npm run bootstrap
 
-# alias qawolf so we can call it globally
+# create bin scripts
 COPY bin /usr/bin
 RUN chmod +x /usr/bin/qawolf && chmod +x /usr/bin/qawolf-npm-test && chmod +x /usr/bin/qawolf-xvfb-run
 
-# Set default env variables
-ENV QAW_CHROME_EXECUTABLE_PATH="google-chrome-stable" \
+# include packages globally
+ENV NODE_PATH=${QAWOLF_DIR}/packages \
+    # Set default env variables
+    QAW_CHROME_EXECUTABLE_PATH="google-chrome-stable" \
     QAW_CHROME_OFFSET_Y=72 \
     QAW_DISPLAY_HEIGHT=1080 \
     QAW_DISPLAY_WIDTH=1920 \ 
