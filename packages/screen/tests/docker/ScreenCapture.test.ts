@@ -11,7 +11,7 @@ it("captures a video and gif", async () => {
   });
   await sleep(1000);
   await screenCapture!.stop();
-  expect(await pathExists(screenCapture.videoPath)).toBeTruthy();
-  expect(await pathExists(screenCapture.gifPath)).toBeTruthy();
+  expect(await pathExists(screenCapture!.videoPath)).toBeTruthy();
+  expect(await pathExists(screenCapture!.gifPath)).toBeTruthy();
   await remove(tempDir);
 });
