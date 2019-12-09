@@ -12,7 +12,7 @@ export const findElement = (
   page: PuppeteerPage,
   selector: Selector,
   options: FindOptions
-): Promise<ElementHandle | null> => {
+): Promise<ElementHandle> => {
   return retryExecutionError(async () => {
     if (selector.css) {
       return findCss(page, selector, options);
@@ -34,7 +34,7 @@ export const find = async (
   page: PuppeteerPage,
   selector: Selector,
   options: FindOptions = {}
-) => {
+): Promise<ElementHandle> => {
   const findOptions = getFindOptions(options);
   logger.verbose(
     `find: ${JSON.stringify(selector)} ${JSON.stringify(findOptions)}`
@@ -64,8 +64,6 @@ export const find = async (
       element = await findElement(page, selector, findOptions);
     }
   }
-
-  if (!element) throw new Error("Element not found");
 
   return element;
 };

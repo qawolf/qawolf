@@ -7,7 +7,7 @@ export const findCss = async (
   page: Page,
   selector: Selector,
   options: FindOptions
-): Promise<ElementHandle<Element> | null> => {
+): Promise<ElementHandle<Element>> => {
   logger.verbose("findCss");
 
   const jsHandle = await page.evaluateHandle(
@@ -19,5 +19,8 @@ export const findCss = async (
     options as Serializable
   );
 
-  return jsHandle.asElement();
+  const element = jsHandle.asElement();
+  if (!element) throw new Error("Element not found");
+
+  return element;
 };

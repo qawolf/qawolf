@@ -46,16 +46,22 @@ describe("findHtml", () => {
     );
   });
 
-  it("returns null if the data-attribute is not found", async () => {
-    const element = await findHtml(
-      page,
-      { html: '<input data-qa="password" name="password">' },
-      {
-        dataAttribute: "data-qa",
-        timeoutMs: 0
-      }
-    );
-    expect(element).toBe(null);
+  it("throws Element not found if the data-attribute is not found", async () => {
+    let message = false;
+    try {
+      await findHtml(
+        page,
+        { html: '<input data-qa="password" name="password">' },
+        {
+          dataAttribute: "data-qa",
+          timeoutMs: 0
+        }
+      );
+    } catch (e) {
+      message = e.message;
+    }
+
+    expect(message).toEqual("Element not found");
   });
 
   it("finds html and body elements", async () => {

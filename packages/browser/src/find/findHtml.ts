@@ -7,7 +7,7 @@ export const findHtml = async (
   page: Page,
   selector: Selector,
   options: FindOptions
-): Promise<ElementHandle<Element> | null> => {
+): Promise<ElementHandle<Element>> => {
   logger.verbose("findHtml");
 
   const jsHandle = await page.evaluateHandle(
@@ -23,6 +23,7 @@ export const findHtml = async (
   );
 
   const element = jsHandle.asElement();
-  logger.verbose("findHtml: found element");
+  if (!element) throw new Error("Element not found");
+
   return element;
 };
