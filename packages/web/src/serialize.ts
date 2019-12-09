@@ -153,8 +153,8 @@ export const serializeDocSelector = (
 };
 
 export const serializeStep = (step: Step): StepSerialized => {
-  // omit value, it is inlined in the test
-  const { html, value, ...s } = step;
+  // omit action, value, they are inlined in the test
+  const { action, html, value, ...s } = step;
   return {
     ...s,
     html: serializeDocSelector(html)

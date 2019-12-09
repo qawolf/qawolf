@@ -13,7 +13,6 @@ export interface Step extends Selector {
 }
 
 export interface StepSerialized extends Selector {
-  action: Action;
   html: DocSelectorSerialized;
   index: number;
   page: number;
