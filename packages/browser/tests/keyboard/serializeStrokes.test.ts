@@ -16,18 +16,8 @@ describe("deserializeStrokes", () => {
 });
 
 describe("serializeStrokes", () => {
-  it("serializes to a plain string if all strokes are →", () => {
+  it("serializes to a plain string if possible", () => {
     expect(serializeStrokes(stringToStrokes("嗨! 嗨!"))).toEqual("嗨! 嗨!");
-  });
-
-  it("serializes to a plain string if all strokes are sequential", () => {
-    expect(
-      serializeStrokes(
-        deserializeStrokes(
-          "↓Shift↓KeyS→嗨↑KeyS↑Shift↓KeyU↑KeyU↓KeyP↑KeyP↓KeyE↑KeyE↓KeyR↑KeyR↓Shift↓KeyS↑KeyS↑Shift↓KeyE↑KeyE↓KeyC↑KeyC↓KeyR↑KeyR↓KeyE↑KeyE↓KeyT↑KeyT↓Shift↓KeyP↑KeyP↑Shift↓KeyA↑KeyA↓KeyS↑KeyS↓KeyS↑KeyS↓KeyW↑KeyW↓KeyO↑KeyO↓KeyR↑KeyR↓KeyD↑KeyD↓Shift↓Digit1↑Digit1↑Shift"
-        )
-      )
-    ).toEqual("S嗨uperSecretPassword!");
   });
 
   it("serializes special keys to prefixed value", () => {

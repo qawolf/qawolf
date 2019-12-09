@@ -1,6 +1,6 @@
 import { flatten } from "lodash";
 import { characterToStrokes } from "./keys";
-import { serializeSimpleStrokes } from "./serializeSimpleStrokes";
+import { simplifyStrokes } from "./simplifyStrokes";
 import { Stroke, StrokeType } from "./Stroke";
 
 export const deserializeStrokes = (serialized: string) => {
@@ -24,7 +24,7 @@ export const serializeStrokes = (strokes: Stroke[]) => {
   const sortedStrokes = strokes.sort((a, b) => a.index - b.index);
 
   try {
-    return serializeSimpleStrokes(sortedStrokes);
+    return simplifyStrokes(sortedStrokes);
   } catch (e) {}
 
   return sortedStrokes.map(s => `${s.type}${s.value}`).join("");
