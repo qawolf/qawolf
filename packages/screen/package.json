@@ -10,7 +10,7 @@
     "src"
   ],
   "scripts": {
-    "test:docker": "QAW_DOCKER=true jest"
+    "test:docker": "jest --testRegex=\"(/tests/docker/.*.test.ts)$\""
   },
   "repository": {
     "type": "git",

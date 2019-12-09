@@ -3,11 +3,11 @@ import { buildClickSteps } from "../";
 
 describe("buildClickSteps", () => {
   let loginEvents: any[];
-  let clickInputEvents: any[];
+  let clickEvents: any[];
 
   beforeAll(async () => {
     loginEvents = await loadEvents("scroll_login");
-    clickInputEvents = await loadEvents("click_input");
+    clickEvents = await loadEvents("click_username");
   });
 
   it("builds expected steps", async () => {
@@ -16,7 +16,7 @@ describe("buildClickSteps", () => {
   });
 
   it("builds a click step on an input if it is not followed by a type event", async () => {
-    const steps = buildClickSteps(clickInputEvents);
+    const steps = buildClickSteps(clickEvents);
     expect(steps).toMatchSnapshot();
   });
 });

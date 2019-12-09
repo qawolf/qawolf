@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 
-import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { yellow } from "kleur";
 import program from "commander";
-import { snakeCase } from "lodash";
+import { yellow } from "kleur";
+import { camelCase } from "lodash";
 import { saveCiTemplate } from "./ci";
 import { record } from "./record";
 import { test } from "./test";
@@ -15,24 +14,18 @@ program.version(version);
 
 program.usage("<command> [options]");
 
-let recordCommand = program
+program
   .command("record <url> [name]")
-  .description("record a workflow and create a test");
+  .option("-d, --debug", "save events and workflow json for debugging")
+  .option("-s, --script", "save a script instead of a test")
+  .description("record a workflow and create a test")
+  .action(async (urlArgument, optionalName, cmd) => {
+    const url = parseUrl(urlArgument);
+    logger.verbose(`record url "${url.href}"`);
 
-if (CONFIG.development) {
-  recordCommand = recordCommand.option(
-    "-e, --events",
-    "save events (for debugging)"
-  );
-}
-
-recordCommand.action(async (urlArgument, optionalName, cmd) => {
-  const url = parseUrl(urlArgument);
-  logger.verbose(`record url "${url.href}"`);
-
-  const name = snakeCase(optionalName || url.hostname!);
-  await record(url, name, cmd.events);
-});
+    const name = camelCase(optionalName || url.hostname!.replace(/\..*/g, ""));
+    await record({ debug: cmd.debug, name, test: !cmd.script, url });
+  });
 
 program
   .command("test [name]")

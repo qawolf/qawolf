@@ -1,24 +1,26 @@
-import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { FindOptions } from "@qawolf/types";
+import { FindOptions, Selector } from "@qawolf/types";
 import { QAWolfWeb } from "@qawolf/web";
-import { ElementHandle, Page } from "puppeteer";
+import { ElementHandle, Page, Serializable } from "puppeteer";
 
 export const findCss = async (
   page: Page,
-  cssSelector: string,
+  selector: Selector,
   options: FindOptions
-): Promise<ElementHandle<Element> | null> => {
-  logger.verbose(`findCss: ${cssSelector}`);
+): Promise<ElementHandle<Element>> => {
+  logger.verbose("findCss");
 
   const jsHandle = await page.evaluateHandle(
-    (cssSelector, options) => {
+    (selector, options) => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
-      return qawolf.find.findCss(cssSelector, options);
+      return qawolf.find.findCss(selector, options);
     },
-    cssSelector,
-    options as any
+    selector as Serializable,
+    options as Serializable
   );
 
-  return jsHandle.asElement();
+  const element = jsHandle.asElement();
+  if (!element) throw new Error("Element not found");
+
+  return element;
 };

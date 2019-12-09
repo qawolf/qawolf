@@ -1,15 +1,18 @@
-import { FindOptions } from "@qawolf/types";
+import { FindOptions, Selector } from "@qawolf/types";
 import { waitFor } from "../wait";
 
 export const findCss = async (
-  cssSelector: string,
+  selector: Selector,
   options: FindOptions
 ): Promise<Element | null> => {
-  console.log("findCss", cssSelector, "opts", options);
+  console.log("findCss", selector, "options", options);
+  if (!selector.css) {
+    throw new Error("findCss: selector must include css property");
+  }
 
   return waitFor(
-    () => document.querySelector(cssSelector),
-    options.timeoutMs,
+    () => document.querySelector(selector.css!),
+    options.timeoutMs || 0,
     100
   );
 };

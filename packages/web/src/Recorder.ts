@@ -7,10 +7,16 @@ type EventCallback = types.Callback<types.Event>;
 export class Recorder {
   private _dataAttribute: string;
   private _onDispose: types.Callback[] = [];
+  private _pageIndex: number;
   private _sendEvent: EventCallback;
 
-  constructor(dataAttribute: string, sendEvent: EventCallback) {
+  constructor(
+    dataAttribute: string,
+    pageIndex: number,
+    sendEvent: EventCallback
+  ) {
     this._dataAttribute = dataAttribute;
+    this._pageIndex = pageIndex;
     this._sendEvent = sendEvent;
 
     this.recordEvents();
@@ -71,6 +77,7 @@ export class Recorder {
       return {
         isTrusted: event.isTrusted,
         name: "click",
+        page: this._pageIndex,
         target: nodeToDocSelector(target),
         time: Date.now()
       };
@@ -85,6 +92,7 @@ export class Recorder {
       return {
         isTrusted: event.isTrusted,
         name: "input",
+        page: this._pageIndex,
         target: nodeToDocSelector(element),
         time: Date.now(),
         value: element.value
@@ -94,6 +102,7 @@ export class Recorder {
     this.recordEvent("keydown", event => ({
       isTrusted: event.isTrusted,
       name: "keydown",
+      page: this._pageIndex,
       target: nodeToDocSelector(event.target as HTMLElement),
       time: Date.now(),
       value: event.key
@@ -102,6 +111,7 @@ export class Recorder {
     this.recordEvent("keyup", event => ({
       isTrusted: event.isTrusted,
       name: "keyup",
+      page: this._pageIndex,
       target: nodeToDocSelector(event.target as HTMLElement),
       time: Date.now(),
       value: event.key
@@ -113,6 +123,7 @@ export class Recorder {
       return {
         isTrusted: event.isTrusted,
         name: "paste",
+        page: this._pageIndex,
         target: nodeToDocSelector(event.target as HTMLElement),
         time: Date.now(),
         value: event.clipboardData.getData("text")
@@ -147,6 +158,7 @@ export class Recorder {
       return {
         isTrusted: event.isTrusted,
         name: "scroll",
+        page: this._pageIndex,
         target: nodeToDocSelector(element),
         time: Date.now(),
         value: {

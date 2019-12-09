@@ -1,0 +1,35 @@
+{
+  "name": "@qawolf/build-code",
+  "description": "qawolf: build code from workflow",
+  "version": "0.6.0",
+  "license": "BSD-3.0",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib",
+    "src",
+    "static"
+  ],
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qawolf/qawolf.git"
+  },
+  "bugs": {
+    "url": "https://github.com/qawolf/qawolf/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@qawolf/web": "^0.6.0",
+    "fs-extra": "^8.1.0",
+    "handlebars": "^4.4.3"
+  },
+  "devDependencies": {
+    "@qawolf/types": "^0.6.0",
+    "jest": "^24.9.0"
+  }
+}

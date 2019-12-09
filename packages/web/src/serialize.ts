@@ -2,8 +2,9 @@ import {
   Doc,
   DocSelector,
   DocSelectorSerialized,
-  Workflow,
-  WorkflowSerialized
+  HtmlSelector,
+  Step,
+  StepSerialized
 } from "@qawolf/types";
 import {
   parse as parseHtml,
@@ -29,17 +30,21 @@ export const deserializeDocSelector = (
   };
 };
 
-export const deserializeWorkflow = (workflow: WorkflowSerialized) => {
-  return {
-    ...workflow,
-    steps: workflow.steps.map(step => ({
-      ...step,
-      html: deserializeDocSelector(step.html)
-    }))
-  };
-};
-
 export const docToHtml = (doc: Doc) => stringifyDocArray([doc]);
+
+export const htmlSelectorToDocSelector = (
+  selector: HtmlSelector
+): DocSelector => {
+  if (typeof selector === "string") {
+    return { ancestors: [], node: htmlToDoc(selector) };
+  }
+
+  if (typeof selector.node === "string") {
+    return deserializeDocSelector(selector as DocSelectorSerialized);
+  }
+
+  return selector as DocSelector;
+};
 
 export const htmlToDoc = (html: string): Doc => {
   const result = parseHtml(html);
@@ -147,16 +152,11 @@ export const serializeDocSelector = (
   };
 };
 
-export const serializeWorkflow = (workflow: Workflow): WorkflowSerialized => {
+export const serializeStep = (step: Step): StepSerialized => {
+  // omit action, value, they are inlined in the test
+  const { action, html, value, ...s } = step;
   return {
-    ...workflow,
-    steps: workflow.steps.map(s => {
-      // omit value, it is already inlined in the test
-      const { value, ...step } = s;
-      return {
-        ...step,
-        html: serializeDocSelector(step.html)
-      };
-    })
+    ...s,
+    html: serializeDocSelector(html)
   };
 };

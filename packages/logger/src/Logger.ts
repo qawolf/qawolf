@@ -1,4 +1,5 @@
 import { CONFIG } from "@qawolf/config";
+import { basename } from "path";
 import winston from "winston";
 
 export class Logger {
@@ -6,7 +7,8 @@ export class Logger {
   private _path: string = "";
 
   constructor() {
-    this.setName();
+    // name the logger based on the main filename
+    this.setName(basename(require.main!.filename));
   }
 
   setName(name?: string | null) {

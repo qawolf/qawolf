@@ -1,13 +1,18 @@
-import { Action, FindOptions, DocSelector } from "@qawolf/types";
+import { Action, DocSelector } from "@qawolf/types";
 import { isVisible } from "../element";
 
-type QueryByDataArgs = {
-  action: Action;
+type QueryDataElementsOptions = {
+  action?: Action;
   dataAttribute?: string;
   dataValue?: string;
 };
 
-export const queryActionElements = (action: Action): HTMLElement[] => {
+type QueryElementsOptions = {
+  action?: Action;
+  dataAttribute?: string;
+};
+
+export const queryActionElements = (action?: Action): HTMLElement[] => {
   const selector =
     action === "type" ? "input,select,textarea,[contenteditable='true']" : "*";
 
@@ -18,7 +23,7 @@ export const queryDataElements = ({
   action,
   dataAttribute,
   dataValue
-}: QueryByDataArgs): HTMLElement[] => {
+}: QueryDataElementsOptions): HTMLElement[] => {
   let dataSelector = `[${dataAttribute}='${dataValue}']`;
   if (action === "type") {
     const selector = `input${dataSelector},select${dataSelector},textarea${dataSelector},[contenteditable="true"]${dataSelector}`;
@@ -30,13 +35,13 @@ export const queryDataElements = ({
 
 export const queryElements = (
   selector: DocSelector,
-  { action, dataAttribute }: FindOptions
+  { action, dataAttribute }: QueryElementsOptions
 ) => {
   if (dataAttribute) {
     const dataValue = selector.node.attrs[dataAttribute];
     if (dataValue) {
       return queryDataElements({
-        action: action || "click",
+        action,
         dataAttribute,
         dataValue
       });
@@ -44,7 +49,7 @@ export const queryElements = (
   }
 
   // default to click since it will query all elements
-  return queryActionElements(action || "click");
+  return queryActionElements(action);
 };
 
 export const queryVisibleElements = (selector: string): HTMLElement[] => {

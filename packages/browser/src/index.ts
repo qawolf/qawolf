@@ -1,7 +1,9 @@
-export { Page } from "puppeteer";
+export { Page as PuppeteerPage } from "puppeteer";
 
-export * from "./actions";
-export * from "./Browser";
-export * from "./find";
-export * from "./retry";
+// public API
+export { Browser } from "./browser/Browser";
+export { launch, LaunchOptions } from "./browser/launch";
+export { Page } from "./page/Page";
+
+// internal API
 export * from "./strokes";

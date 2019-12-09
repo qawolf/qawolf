@@ -11,10 +11,10 @@ import * as xpath from "./xpath";
 
 // export the isomorphic (node & browser) module for node
 const {
-  deserializeWorkflow,
+  htmlSelectorToDocSelector,
   htmlToDoc,
   serializeDocSelector,
-  serializeWorkflow
+  serializeStep
 } = serialize;
 const { isKeyEvent, isPasteEvent, isTypeEvent } = event;
 const {
@@ -30,7 +30,7 @@ export {
   compareContent,
   compareDoc,
   decodeHtml,
-  deserializeWorkflow,
+  htmlSelectorToDocSelector,
   htmlToDoc,
   isKeyEvent,
   isNil,
@@ -38,7 +38,7 @@ export {
   isTypeEvent,
   matchDocSelector,
   serializeDocSelector,
-  serializeWorkflow,
+  serializeStep,
   sleep,
   waitFor,
   waitUntil

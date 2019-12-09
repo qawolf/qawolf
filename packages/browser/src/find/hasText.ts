@@ -1,27 +1,23 @@
-import { CONFIG } from "@qawolf/config";
-import { isNil, QAWolfWeb, waitFor } from "@qawolf/web";
+import { FindOptions } from "@qawolf/types";
+import { QAWolfWeb } from "@qawolf/web";
 import { Page } from "puppeteer";
-import { retryExecutionError } from "../retry";
+import { getFindOptions } from "./getFindOptions";
 
 export const hasText = async (
   page: Page,
   text: string,
-  timeoutMs?: number
+  options: FindOptions = {}
 ): Promise<boolean> => {
-  const findTimeoutMs = (isNil(timeoutMs) ? CONFIG.findTimeoutMs : timeoutMs)!;
+  const findOptions = getFindOptions(options);
 
-  const result = await retryExecutionError(async () => {
-    const pageHasText = await page.evaluate(
-      ({ text, timeoutMs }) => {
-        const qawolf: QAWolfWeb = (window as any).qawolf;
-
-        return qawolf.find.hasText(text, timeoutMs);
-      },
-      { text, timeoutMs: findTimeoutMs }
-    );
-
-    return pageHasText;
-  });
+  const result = await page.evaluate(
+    (text, timeoutMs) => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      return qawolf.find.hasText(text, timeoutMs);
+    },
+    text,
+    findOptions.timeoutMs || 0
+  );
 
   return result;
 };

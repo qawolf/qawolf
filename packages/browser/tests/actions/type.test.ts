@@ -1,37 +1,50 @@
 import { CONFIG } from "@qawolf/config";
-import { focusClear, type } from "../../src/actions";
-import { Browser } from "../../src/Browser";
+import { Browser, launch, Page } from "../../src";
 
-describe("focusClear and type", () => {
+let browser: Browser;
+let page: Page;
+
+beforeAll(async () => {
+  browser = await launch({
+    url: `${CONFIG.testUrl}login`
+  });
+
+  page = await browser.page();
+});
+
+afterAll(() => browser.close());
+
+describe("Browser.type", () => {
   it("sets input value", async () => {
-    const browser = await Browser.create({
-      url: `${CONFIG.testUrl}login`
-    });
-    const page = await browser.currentPage();
+    await browser.type({ css: "#username" }, "spirit");
 
-    const usernameElement = await browser.find("#username");
-    const passwordElement = await browser.find("#password");
-
-    await focusClear(usernameElement);
-    await type(page, "spirit");
-
-    const [username1, password1] = await page.$$eval(
-      "input",
-      (inputs: HTMLInputElement[]) => inputs.map(i => i.value)
+    const page = await browser.page();
+    const username = await page.$eval(
+      "#username",
+      (input: HTMLInputElement) => input.value
     );
-    expect(username1).toBe("spirit");
-    expect(password1).toBeFalsy();
+    expect(username).toBe("spirit");
+  });
+});
 
-    await focusClear(passwordElement);
-    await type(page, "password");
+describe("Page.type", () => {
+  it("does not clear input value for special keys", async () => {
+    await page.qawolf.type({ css: "#username" }, "↓Tab↑Tab");
 
-    const [username2, password2] = await page.$$eval(
-      "input",
-      (inputs: HTMLInputElement[]) => inputs.map(i => i.value)
+    const username = await page.$eval(
+      "#username",
+      (input: HTMLInputElement) => input.value
     );
-    expect(username2).toBe("spirit");
-    expect(password2).toBe("password");
+    expect(username).toEqual("spirit");
+  });
 
-    await browser.close();
+  it("clears input value for null", async () => {
+    await page.qawolf.type({ css: "#username" }, null);
+
+    const username = await page.$eval(
+      "#username",
+      (input: HTMLInputElement) => input.value
+    );
+    expect(username).toBeFalsy();
   });
 });

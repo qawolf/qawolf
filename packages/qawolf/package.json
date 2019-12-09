@@ -20,6 +20,7 @@
     "access": "public"
   },
   "dependencies": {
+    "@qawolf/browser": "^0.6.0",
     "@qawolf/cli": "^0.6.0"
   },
   "bin": {

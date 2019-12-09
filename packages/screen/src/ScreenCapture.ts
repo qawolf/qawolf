@@ -25,8 +25,9 @@ export class ScreenCapture {
   private _size: CaptureSize;
 
   protected constructor(options: ScreenCaptureStartOptions) {
-    this._gifPath = `${options.savePath}/video.gif`;
-    this._videoPath = `${options.savePath}/video.mp4`;
+    const startedAt = Date.now();
+    this._gifPath = `${options.savePath}/video_${startedAt}.gif`;
+    this._videoPath = `${options.savePath}/video_${startedAt}.mp4`;
 
     this._offset = options.offset || { x: 0, y: 0 };
     this._size = options.size;
@@ -42,6 +43,10 @@ export class ScreenCapture {
     });
   }
 
+  public get gifPath() {
+    return this._gifPath;
+  }
+
   public get size() {
     return this._size;
   }
@@ -51,8 +56,10 @@ export class ScreenCapture {
   }
 
   public static async start(options: ScreenCaptureStartOptions) {
-    if (!CONFIG.docker) {
-      logger.error(`ScreenCapture: disabled outside of qawolf docker`);
+    if (!CONFIG.display) {
+      logger.error(
+        "ScreenCapture: cannot start if no xvfb display is specified (process.env.DISPLAY)"
+      );
       return null;
     }
 

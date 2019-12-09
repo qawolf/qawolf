@@ -1,0 +1,21 @@
+const { launch } = require("qawolf");
+const selectors = require("../selectors/{{{name}}}");
+
+describe('{{{name}}}', () => {
+  let browser;
+
+  beforeAll(async () => {
+    browser = await launch({ url: "{{{url}}}" });
+  });
+
+  afterAll(() => browser.close());
+
+{{#each steps}}
+  it('{{{it}}}', async () => {
+    await {{{method}}};
+  });
+{{#unless @last}}
+
+{{/unless}}
+{{/each}}
+});

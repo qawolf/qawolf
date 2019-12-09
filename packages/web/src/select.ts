@@ -24,6 +24,8 @@ export const waitForOption = async (
   value: string | null,
   timeoutMs: number = 10000
 ) => {
+  if (!value) return;
+
   console.log("wait for option", value, element);
 
   await waitUntil(() => {
