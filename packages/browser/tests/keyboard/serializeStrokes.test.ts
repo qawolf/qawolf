@@ -1,19 +1,8 @@
 import {
-  characterToCode,
   deserializeStrokes,
   serializeStrokes,
   stringToStrokes
-} from "../src/strokes";
-
-describe("characterToCode", () => {
-  it("converts a character to it's USKeyboard code", () => {
-    expect(characterToCode("S")).toEqual("KeyS");
-  });
-
-  it("converts a non-USKeyboard character to null", () => {
-    expect(characterToCode("嗨")).toEqual(null);
-  });
-});
+} from "../../src/keyboard/serializeStrokes";
 
 describe("deserializeStrokes", () => {
   it("converts a string to strokes", () => {

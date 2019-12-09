@@ -6,4 +6,4 @@ export { launch, LaunchOptions } from "./browser/launch";
 export { Page } from "./page/Page";
 
 // internal API
-export * from "./strokes";
+export * from "./keyboard";
