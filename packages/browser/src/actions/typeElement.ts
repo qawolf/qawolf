@@ -3,7 +3,7 @@ import { logger } from "@qawolf/logger";
 import { sleep } from "@qawolf/web";
 import { ElementHandle, Page as PuppeteerPage } from "puppeteer";
 import { focusClearElement } from "./focusClearElement";
-import { valueToStrokes } from "../strokes";
+import { valueToStrokes } from "../keyboard";
 
 export const typeElement = async (
   page: PuppeteerPage,
