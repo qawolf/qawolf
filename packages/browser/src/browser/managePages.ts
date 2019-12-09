@@ -10,22 +10,20 @@ export const managePages = async (browser: Browser) => {
     throw new Error("Must managePages before opening pages");
   }
 
-  const internal = browser.qawolf;
+  const qawolf = browser.qawolf;
 
   const options = {
-    device: internal.device,
-    recordDom: !!internal.domPath,
-    recordEvents: internal.recordEvents
+    device: qawolf.device,
+    recordDom: !!qawolf.domPath,
+    recordEvents: qawolf.recordEvents
   };
 
-  internal.pages.push(
-    await createPage({ ...options, page: pages[0], index: 0 })
-  );
+  qawolf.pages.push(await createPage({ ...options, page: pages[0], index: 0 }));
 
   browser.on("targetcreated", async target => {
     const page = await target.page();
     if (page) {
-      internal.pages.push(
+      qawolf.pages.push(
         await createPage({ ...options, page, index: pages.length })
       );
     }

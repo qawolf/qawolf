@@ -1,8 +1,8 @@
 import { devices, Page as PuppeteerPage } from "puppeteer";
 import { captureLogs } from "./captureLogs";
 import { injectBundle } from "./injectBundle";
-import { InternalPage } from "./InternalPage";
 import { Page } from "./Page";
+import { QAWolfPage } from "./QAWolfPage";
 
 export type CreatePageOptions = {
   device: devices.Device;
@@ -17,7 +17,7 @@ export const createPage = async (options: CreatePageOptions): Promise<Page> => {
 
   const page = puppeteerPage as Page;
 
-  page.qawolf = new InternalPage(page, options.index);
+  page.qawolf = new QAWolfPage(page, options.index);
 
   await Promise.all([
     puppeteerPage.emulate(device),

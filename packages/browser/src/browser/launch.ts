@@ -11,8 +11,8 @@ import {
 import { Device } from "puppeteer/DeviceDescriptors";
 import { Browser } from "./Browser";
 import { getDevice } from "./device";
-import { InternalBrowser } from "./InternalBrowser";
 import { managePages } from "./managePages";
+import { QAWolfBrowser } from "./QAWolfBrowser";
 
 export type LaunchOptions = {
   domPath?: string;
@@ -59,33 +59,33 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
   // set original _close method before we clobber it
   browser._close = browser.close;
 
-  const internal = new InternalBrowser({
+  const qawolf = new QAWolfBrowser({
     ...options,
     browser,
     device
   });
 
   // decorate Browser with our helpers
-  browser.click = internal.click.bind(internal);
-  browser.close = internal.close.bind(internal);
-  browser.find = internal.find.bind(internal);
-  browser.findProperty = internal.findProperty.bind(internal);
-  browser.goto = internal.goto.bind(internal);
-  browser.hasText = internal.hasText.bind(internal);
-  browser.page = internal.page.bind(internal);
-  browser.scroll = internal.scroll.bind(internal);
-  browser.select = internal.select.bind(internal);
-  browser.type = internal.type.bind(internal);
-  browser.qawolf = internal;
+  browser.click = qawolf.click.bind(qawolf);
+  browser.close = qawolf.close.bind(qawolf);
+  browser.find = qawolf.find.bind(qawolf);
+  browser.findProperty = qawolf.findProperty.bind(qawolf);
+  browser.goto = qawolf.goto.bind(qawolf);
+  browser.hasText = qawolf.hasText.bind(qawolf);
+  browser.page = qawolf.page.bind(qawolf);
+  browser.scroll = qawolf.scroll.bind(qawolf);
+  browser.select = qawolf.select.bind(qawolf);
+  browser.type = qawolf.type.bind(qawolf);
+  browser.qawolf = qawolf;
 
   await managePages(browser);
 
-  if (options.url) await internal.goto(options.url);
+  if (options.url) await qawolf.goto(options.url);
 
   const videoPath = options.videoPath || CONFIG.videoPath;
   if (videoPath) {
     // start capture after goto
-    internal._screenCapture = await ScreenCapture.start({
+    qawolf._screenCapture = await ScreenCapture.start({
       offset: {
         x: CONFIG.chromeOffsetX,
         y: CONFIG.chromeOffsetY

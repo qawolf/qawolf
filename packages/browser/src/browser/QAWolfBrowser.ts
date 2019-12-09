@@ -24,7 +24,7 @@ type ConstructorOptions = {
   recordEvents?: boolean;
 };
 
-export class InternalBrowser {
+export class QAWolfBrowser {
   private _createdAt: number;
   private _options: ConstructorOptions;
   // stored in order of open

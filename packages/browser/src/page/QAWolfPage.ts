@@ -15,7 +15,7 @@ import { Page } from "./Page";
 import { RequestTracker } from "./RequestTracker";
 import { retryExecutionError } from "../retry";
 
-export class InternalPage {
+export class QAWolfPage {
   private _domEvents: eventWithTime[] = [];
   private _events: Event[] = [];
   private _index: number;

@@ -12,14 +12,14 @@ const getIndex = (browser: Browser, pageIndex?: number): number => {
   let index = pageIndex;
 
   if (isNil(pageIndex)) {
-    const internal = browser.qawolf;
+    const qawolf = browser.qawolf;
 
     // if no index is specified use the current page
-    index = internal._currentPageIndex;
+    index = qawolf._currentPageIndex;
 
     // if the current page is closed, choose the first open page
-    if (internal.pages[index].isClosed()) {
-      index = internal.pages.findIndex(p => !p.isClosed());
+    if (qawolf.pages[index].isClosed()) {
+      index = qawolf.pages.findIndex(p => !p.isClosed());
 
       if (index < 0) throw new Error("No open pages");
     }
@@ -35,13 +35,13 @@ export const findPage = async (
   /**
    * Wait for the page and activate it.
    */
-  const internal = browser.qawolf;
+  const qawolf = browser.qawolf;
 
   let index: number = getIndex(browser, options.index);
 
   const page = await waitFor(() => {
-    if (index >= internal.pages.length) return null;
-    return internal.pages[index];
+    if (index >= qawolf.pages.length) return null;
+    return qawolf.pages[index];
   }, options.timeoutMs || 0);
 
   if (!page) {
@@ -56,9 +56,9 @@ export const findPage = async (
     await page.qawolf.waitForRequests();
   }
 
-  internal._currentPageIndex = internal.pages.indexOf(page);
+  qawolf._currentPageIndex = qawolf.pages.indexOf(page);
   logger.verbose(
-    `findPage: activated ${internal._currentPageIndex} ${page.url()}`
+    `findPage: activated ${qawolf._currentPageIndex} ${page.url()}`
   );
 
   return page;
