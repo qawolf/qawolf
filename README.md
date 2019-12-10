@@ -14,11 +14,11 @@
   <a href="https://github.com/qawolf/qawolf/actions?query=workflow%3A%22npm+test%22"><img src="https://github.com/qawolf/qawolf/workflows/npm%20test/badge.svg" /></a>
 </p>
 
-> QA Wolf is a browser recorder that translates your actions into [Puppeteer](https://github.com/puppeteer/puppeteer) code. It [automatically waits](https://docs.qawolf.com/docs/how_it_works#automatic-waiting) for elements and assertions, and builds a [smart element selector](https://docs.qawolf.com/docs/how_it_works#element-selectors) to ensure stability. QA Wolf supports multiple windows, hot keys, and other complex scenarios.
+> QA Wolf is a delightful browser recorder that translates your actions into [Puppeteer](https://github.com/puppeteer/puppeteer) code. It [automatically waits](https://docs.qawolf.com/docs/how_it_works#automatic-waiting) for elements and assertions, and builds a [smart element selector](https://docs.qawolf.com/docs/how_it_works#element-selectors) to ensure stability. QA Wolf supports multiple windows, hot keys, and other complex scenarios.
 
 ### What can I do?
 
-[**✅ Record an end-to-end test**](#-record-an-end-to-end-test): Test the browser using [Jest](https://jestjs.io/) and [Puppeteer](https://github.com/puppeteer/puppeteer).
+[**✅ Record a browser test**](#-record-a-browser-test): Test the browser using [Jest](https://jestjs.io/) and [Puppeteer](https://github.com/puppeteer/puppeteer).
 
 [**🤖 Record a browser script**](#-record-a-browser-script): Automate the browser using [Puppeteer](https://github.com/puppeteer/puppeteer).
 
@@ -26,15 +26,20 @@
 
 ## Quick Start
 
+<a href="https://docs.qawolf.com/docs/get_started">📖 Doc</a>
+
 ### 🖥️ Install QA Wolf
 
+Install QA Wolf as a dev dependency with [`npm`](https://www.npmjs.com):
+
 ```bash
+cd /my/awesome/project
 npm install --save-dev qawolf
 ```
 
-### ✅ Record an end-to-end test
+### [✅ Record a browser test](http://docs.qawolf.com/docs/get_started#-record-a-browser-test)
 
-Test the browser using [Jest](https://jestjs.io/) and [Puppeteer](https://github.com/puppeteer/puppeteer):
+Record your test:
 
 ```bash
 npx qawolf record <url> [name]
@@ -46,9 +51,15 @@ Run your test:
 npx qawolf test [name]
 ```
 
-### 🤖 Record a browser script
+Run all tests:
 
-Automate the browser using [Puppeteer](https://github.com/puppeteer/puppeteer):
+```bash
+qawolf test
+```
+
+### [🤖 Record a browser script](http://docs.qawolf.com/docs/get_started#-record-a-browser-script)
+
+Record your script:
 
 ```bash
 npx qawolf record --script <url> [name]
