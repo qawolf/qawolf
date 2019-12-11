@@ -7,10 +7,10 @@
     <a href="https://github.com/qawolf/qawolf/projects/4">🗺️ Roadmap</a>
 </p>
 
-<a align="center" height="200" href="https://qawolf.com"><img src="https://storage.googleapis.com/docs.qawolf.com/home/record-small.gif" alt="QA Wolf"></a>
+<a align="center" height="200" href="https://qawolf.com"><img src="https://storage.googleapis.com/docs.qawolf.com/home/record-small.gif" alt="QA Wolf" /></a>
 
 <p align="center">
-  <a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version"></a>
+  <a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version" /></a>
   <a href="https://github.com/qawolf/qawolf/actions?query=workflow%3A%22npm+test%22"><img src="https://github.com/qawolf/qawolf/workflows/npm%20test/badge.svg" /></a>
 </p>
 
@@ -73,7 +73,7 @@ node .qawolf/scripts/name.js
 
 ### 🎥 Set up CI
 
-<a align="center" height="200" href="https://qawolf.com"><img src="https://storage.googleapis.com/docs.qawolf.com/home/debug.gif" alt="QA Wolf"></a>
+<a align="center" height="200" href="https://qawolf.com"><img src="https://storage.googleapis.com/docs.qawolf.com/home/debug.gif" alt="QA Wolf" /></a>
 
 Watch the video, gif, and dom artifacts from your CI runs.
 
