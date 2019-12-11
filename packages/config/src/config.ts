@@ -1,7 +1,7 @@
-import dotenv from "dotenv";
+import { config as configDotenv } from "dotenv";
 
 const dotEnvPath = process.env.QAW_DOTENV_PATH;
-dotenv.config(dotEnvPath ? { path: dotEnvPath } : {});
+configDotenv(dotEnvPath ? { path: dotEnvPath } : {});
 
 const testUrl = process.env.QAW_TEST_URL || "http://localhost:5000/";
 

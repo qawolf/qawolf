@@ -1,19 +1,19 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { Event } from "@qawolf/types";
-import fs from "fs-extra";
-import path from "path";
+import { readFileSync } from "fs-extra";
+import { dirname, resolve } from "path";
 import { eventWithTime } from "rrweb/typings/types";
 import { Page } from "./Page";
 import { retryExecutionError } from "../retry";
 
-const qawolfJs = fs.readFileSync(
-  path.resolve(path.dirname(require.resolve("@qawolf/web")), "./qawolf.web.js"),
+const qawolfJs = readFileSync(
+  resolve(dirname(require.resolve("@qawolf/web")), "./qawolf.web.js"),
   "utf8"
 );
 
-const recordDomJs = `${fs.readFileSync(
-  path.resolve(path.dirname(require.resolve("rrweb")), "../dist/rrweb.min.js"),
+const recordDomJs = `${readFileSync(
+  resolve(dirname(require.resolve("rrweb")), "../dist/rrweb.min.js"),
   "utf8"
 )}
 
