@@ -1,7 +1,7 @@
 {
   "name": "qawolf",
   "description": "Record browser tests with one command",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -20,8 +20,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/browser": "^0.7.0",
-    "@qawolf/cli": "^0.7.0",
+    "@qawolf/browser": "^0.7.1",
+    "@qawolf/cli": "^0.7.1",
     "@qawolf/web": "^0.7.0"
   },
   "bin": {
