@@ -7,3 +7,4 @@ if (isCLI) {
 
 // export public API
 export { Browser, launch, LaunchOptions, Page } from "@qawolf/browser";
+export { waitUntil } from "@qawolf/web";

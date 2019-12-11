@@ -20,9 +20,12 @@ export type LaunchOptions = {
   size?: Size;
   url?: string;
   videoPath?: string;
-};
+} & PuppeteerLaunchOptions;
 
-const buildPuppeteerOptions = (device: Device) => {
+const buildPuppeteerOptions = (
+  options: PuppeteerLaunchOptions,
+  device: Device
+) => {
   const launchOptions: PuppeteerLaunchOptions = {
     args: [
       "--disable-dev-shm-usage",
@@ -32,7 +35,8 @@ const buildPuppeteerOptions = (device: Device) => {
         .viewport.height + CONFIG.chromeOffsetY}`
     ],
     defaultViewport: null,
-    headless: CONFIG.headless
+    headless: CONFIG.headless,
+    ...options
   };
 
   if (platform() === "linux") {
@@ -54,7 +58,7 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
   const device = getDevice(options.size);
 
   const browser = (await launchPuppeteerBrowser(
-    buildPuppeteerOptions(device)
+    buildPuppeteerOptions(options, device)
   )) as Browser;
   // set original _close method before we clobber it
   browser._close = browser.close;
