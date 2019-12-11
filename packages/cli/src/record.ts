@@ -23,6 +23,7 @@ export const record = async (options: RecordOptions): Promise<void> => {
   const browser = await launch({
     domPath: CONFIG.domPath ? `${CONFIG.domPath}/${name}` : undefined,
     recordEvents: true,
+    timeout: 0,
     url: options.url.href
   });
 

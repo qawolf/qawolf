@@ -11,6 +11,9 @@
     },
     {
       "path": "../cli/tsconfig.package.json"
+    },
+    {
+      "path": "../web/tsconfig.package.json"
     }
   ],
   "include": ["src"],

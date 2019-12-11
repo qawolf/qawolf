@@ -21,7 +21,8 @@
   },
   "dependencies": {
     "@qawolf/browser": "^0.7.0",
-    "@qawolf/cli": "^0.7.0"
+    "@qawolf/cli": "^0.7.0",
+    "@qawolf/web": "^0.7.0"
   },
   "bin": {
     "qawolf": "./lib/index.js"

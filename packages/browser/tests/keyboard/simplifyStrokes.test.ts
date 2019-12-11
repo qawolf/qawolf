@@ -18,6 +18,14 @@ describe("simplifyStrokes", () => {
         )
       )
     ).toEqual("S嗨up!");
+
+    expect(
+      serializeStrokes(
+        deserializeStrokes(
+          "↓KeyL↑KeyL↓KeyA↓KeyU↑KeyA↓KeyR↑KeyU↑KeyR↓KeyA↑KeyA↓ShiftLeft↓Digit2↑ShiftLeft↑Digit2↓KeyG↑KeyG↓KeyM↑KeyM↓KeyA↓KeyI↑KeyA↓KeyL↑KeyI↑KeyL↓Period↑Period↓KeyC↓KeyO↑KeyC↓KeyM↑KeyO↑KeyM"
+        )
+      )
+    ).toEqual("laura@gmail.com");
   });
 
   it("throws an error if there are special keys", () => {

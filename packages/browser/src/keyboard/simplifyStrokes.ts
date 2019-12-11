@@ -11,7 +11,7 @@ class StrokeParser {
   }
 
   parseDown(stroke: Stroke) {
-    if (stroke.value === "Shift") {
+    if (stroke.value.includes("Shift")) {
       if (this._shiftDown) {
         throw new Error("sequential shifts");
       }
@@ -29,7 +29,7 @@ class StrokeParser {
   }
 
   parseUp(stroke: Stroke) {
-    if (stroke.value === "Shift") {
+    if (stroke.value.includes("Shift")) {
       this._shiftDown = false;
     }
   }
