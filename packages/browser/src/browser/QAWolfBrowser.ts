@@ -115,7 +115,7 @@ export class QAWolfBrowser {
     options: FindElementOptions = {}
   ): Promise<ElementHandle> {
     const page = await this.page({ ...options, page: selector.page });
-    return find(page, selector, options);
+    return page.qawolf.find(selector, options);
   }
 
   public async findProperty(

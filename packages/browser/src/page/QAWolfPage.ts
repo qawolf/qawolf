@@ -40,8 +40,7 @@ export class QAWolfPage {
     logger.verbose(`Page ${this._index}: click`);
 
     return retryExecutionError(async () => {
-      const element = await find(
-        this._page,
+      const element = await this.find(
         { ...selector, action: "click" },
         options
       );
@@ -62,6 +61,13 @@ export class QAWolfPage {
 
   public get events() {
     return this._events;
+  }
+
+  public find(
+    selector: Selector,
+    options: FindElementOptions = {}
+  ): Promise<ElementHandle> {
+    return find(this._page, selector, options);
   }
 
   public findProperty(
@@ -99,8 +105,7 @@ export class QAWolfPage {
     logger.verbose(`Page ${this._index}: scroll`);
 
     return retryExecutionError(async () => {
-      const element = await find(
-        this._page,
+      const element = await this.find(
         { ...selector, action: "scroll" },
         options
       );
@@ -119,8 +124,7 @@ export class QAWolfPage {
     logger.verbose(`Page ${this._index}: select`);
 
     return retryExecutionError(async () => {
-      const element = await find(
-        this._page,
+      const element = await this.find(
         { ...selector, action: "select" },
         options
       );
@@ -139,8 +143,7 @@ export class QAWolfPage {
     logger.verbose(`Page ${this._index}: type`);
 
     return retryExecutionError(async () => {
-      const element = await find(
-        this._page,
+      const element = await this.find(
         { ...selector, action: "type" },
         { ...options }
       );
