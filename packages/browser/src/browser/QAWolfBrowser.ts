@@ -13,7 +13,6 @@ import { sortBy } from "lodash";
 import { basename } from "path";
 import { devices, DirectNavigationOptions, ElementHandle } from "puppeteer";
 import { Browser } from "./Browser";
-import { find } from "../find/find";
 import { createDomReplayer } from "../page/createDomReplayer";
 import { findPage } from "../page/findPage";
 import { Page } from "../page/Page";
