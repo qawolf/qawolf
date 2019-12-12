@@ -12,7 +12,7 @@ export const getFindElementOptions = <T extends FindElementOptions>(
   }
 
   if (isNil(options.timeoutMs)) {
-    findOptions.timeoutMs = CONFIG.findTimeoutMs;
+    findOptions.timeoutMs = CONFIG.timeoutMs;
   }
 
   return findOptions;

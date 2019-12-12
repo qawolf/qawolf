@@ -23,7 +23,6 @@ export const CONFIG = {
   debug: parseBool(process.env.QAW_DEBUG),
   display: process.env.DISPLAY,
   domPath: process.env.QAW_DOM_PATH,
-  findTimeoutMs: parseNumber(process.env.QAW_FIND_TIMEOUT_MS, 30000),
   headless: parseBool(process.env.QAW_HEADLESS),
   keyDelayMs: parseNumber(process.env.QAW_KEY_DELAY_MS, 0),
   logLevel: process.env.QAW_LOG_LEVEL,
@@ -37,5 +36,6 @@ export const CONFIG = {
   // this also gives sites time to setup their handlers
   sleepMs: parseNumber(process.env.QAW_SLEEP_MS, 1000),
   testUrl,
+  timeoutMs: parseNumber(process.env.QAW_TIMEOUT_MS, 30000),
   videoPath: process.env.QAW_VIDEO_PATH
 };
