@@ -1,8 +1,10 @@
 import { CONFIG } from "@qawolf/config";
-import { FindOptions } from "@qawolf/types";
+import { FindElementOptions } from "@qawolf/types";
 import { isNil } from "@qawolf/web";
 
-export const getFindOptions = <T extends FindOptions>(options: T) => {
+export const getFindElementOptions = <T extends FindElementOptions>(
+  options: T
+) => {
   const findOptions = { ...options };
 
   if (isNil(options.sleepMs)) {

@@ -1,11 +1,11 @@
-import { FindOptions, Selector } from "@qawolf/types";
+import { FindElementOptions, Selector } from "@qawolf/types";
 import { cleanText } from "../lang";
 import { queryActionElements } from "./query";
 import { waitFor } from "../wait";
 
 export const findText = async (
   selector: Selector,
-  options: FindOptions
+  options: FindElementOptions
 ): Promise<Element | null> => {
   console.log("findText", selector, "options", options);
   if (!selector.text) {

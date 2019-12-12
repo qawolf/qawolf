@@ -1,4 +1,4 @@
-import { FindOptions, Selector } from "@qawolf/types";
+import { FindElementOptions, Selector } from "@qawolf/types";
 import { Page } from "puppeteer";
 import { find } from "./find";
 
@@ -6,7 +6,7 @@ export const findProperty = async (
   page: Page,
   selector: Selector,
   property: string,
-  options: FindOptions
+  options: FindElementOptions
 ): Promise<string | null | undefined> => {
   const element = await find(page, selector, options);
 

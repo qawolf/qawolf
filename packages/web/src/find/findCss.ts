@@ -1,9 +1,9 @@
-import { FindOptions, Selector } from "@qawolf/types";
+import { FindElementOptions, Selector } from "@qawolf/types";
 import { waitFor } from "../wait";
 
 export const findCss = async (
   selector: Selector,
-  options: FindOptions
+  options: FindElementOptions
 ): Promise<Element | null> => {
   console.log("findCss", selector, "options", options);
   if (!selector.css) {

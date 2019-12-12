@@ -4,8 +4,9 @@ import { ScreenCapture } from "@qawolf/screen";
 import {
   Callback,
   Event,
+  FindElementOptions,
+  FindPageOptions,
   Selector,
-  FindOptions,
   ScrollValue
 } from "@qawolf/types";
 import { sortBy } from "lodash";
@@ -14,7 +15,7 @@ import { devices, DirectNavigationOptions, ElementHandle } from "puppeteer";
 import { Browser } from "./Browser";
 import { find } from "../find/find";
 import { createDomReplayer } from "../page/createDomReplayer";
-import { findPage, FindPageOptions } from "../page/findPage";
+import { findPage } from "../page/findPage";
 import { Page } from "../page/Page";
 
 type ConstructorOptions = {
@@ -48,9 +49,9 @@ export class QAWolfBrowser {
 
   public async click(
     selector: Selector,
-    options: FindOptions = {}
+    options: FindElementOptions = {}
   ): Promise<ElementHandle> {
-    const page = await this.page(selector.page, options.timeoutMs);
+    const page = await this.page({ ...options, page: selector.page });
     return page.qawolf.click(selector, options);
   }
 
@@ -111,18 +112,18 @@ export class QAWolfBrowser {
 
   public async find(
     selector: Selector,
-    options: FindOptions = {}
+    options: FindElementOptions = {}
   ): Promise<ElementHandle> {
-    const page = await this.page(selector.page, options.timeoutMs);
+    const page = await this.page({ ...options, page: selector.page });
     return find(page, selector, options);
   }
 
   public async findProperty(
     selector: Selector,
     property: string,
-    options: FindOptions = {}
+    options: FindElementOptions = {}
   ): Promise<ElementHandle> {
-    const page = await this.page(selector.page, options.timeoutMs);
+    const page = await this.page({ ...options, page: selector.page });
     return page.qawolf.findProperty(selector, property, options);
   }
 
@@ -145,12 +146,12 @@ export class QAWolfBrowser {
     text: string,
     options: FindPageOptions = {}
   ): Promise<boolean> {
-    const page = await this.page(options.page, options.timeoutMs);
+    const page = await this.page(options);
     return page.qawolf.hasText(text, options);
   }
 
-  public page(page?: number, timeoutMs: number = 5000) {
-    return findPage(this.browser, { page, timeoutMs });
+  public page(options: FindPageOptions = {}) {
+    return findPage(this.browser, options);
   }
 
   public get pages() {
@@ -164,27 +165,27 @@ export class QAWolfBrowser {
   public async scroll(
     selector: Selector,
     value: ScrollValue,
-    options: FindOptions = {}
+    options: FindElementOptions = {}
   ): Promise<ElementHandle> {
-    const page = await this.page(selector.page, options.timeoutMs);
+    const page = await this.page({ ...options, page: selector.page });
     return page.qawolf.scroll(selector, value, options);
   }
 
   public async select(
     selector: Selector,
     value: string | null,
-    options: FindOptions = {}
+    options: FindElementOptions = {}
   ): Promise<ElementHandle> {
-    const page = await this.page(selector.page, options.timeoutMs);
+    const page = await this.page({ ...options, page: selector.page });
     return page.qawolf.select(selector, value, options);
   }
 
   public async type(
     selector: Selector,
     value: string | null,
-    options: FindOptions = {}
+    options: FindElementOptions = {}
   ): Promise<ElementHandle> {
-    const page = await this.page(selector.page, options.timeoutMs);
+    const page = await this.page({ ...options, page: selector.page });
     return page.qawolf.type(selector, value, options);
   }
 
