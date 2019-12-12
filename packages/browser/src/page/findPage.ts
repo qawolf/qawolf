@@ -5,7 +5,7 @@ import { Browser } from "../browser/Browser";
 import { Page } from "./Page";
 
 export interface FindPageOptions extends FindOptions {
-  index?: number;
+  page?: number;
 }
 
 const getIndex = (browser: Browser, pageIndex?: number): number => {
@@ -37,7 +37,7 @@ export const findPage = async (
    */
   const qawolf = browser.qawolf;
 
-  let index: number = getIndex(browser, options.index);
+  let index: number = getIndex(browser, options.page);
 
   const page = await waitFor(() => {
     if (index >= qawolf.pages.length) return null;

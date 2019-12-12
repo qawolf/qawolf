@@ -111,7 +111,7 @@ export class QAWolfBrowser {
 
   public async find(
     selector: Selector,
-    options: FindPageOptions = {}
+    options: FindOptions = {}
   ): Promise<ElementHandle> {
     const page = await this.page(selector.page, options.timeoutMs);
     return find(page, selector, options);
@@ -143,15 +143,14 @@ export class QAWolfBrowser {
 
   public async hasText(
     text: string,
-    options?: FindOptions,
-    pageIndex?: number
+    options: FindPageOptions = {}
   ): Promise<boolean> {
-    const page = await this.page(pageIndex);
+    const page = await this.page(options.page, options.timeoutMs);
     return page.qawolf.hasText(text, options);
   }
 
-  public page(index?: number, timeoutMs: number = 5000) {
-    return findPage(this.browser, { index, timeoutMs });
+  public page(page?: number, timeoutMs: number = 5000) {
+    return findPage(this.browser, { page, timeoutMs });
   }
 
   public get pages() {
