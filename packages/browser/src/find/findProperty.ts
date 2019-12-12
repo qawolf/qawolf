@@ -8,17 +8,10 @@ export const findProperty = async (
   property: string,
   options: FindOptions
 ): Promise<string | null | undefined> => {
-  try {
-    const element = await find(page, selector, options);
+  const element = await find(page, selector, options);
 
-    const propertyHandle = await element.getProperty(property);
-    const propertyValue = await propertyHandle.jsonValue();
+  const propertyHandle = await element.getProperty(property);
+  const propertyValue = await propertyHandle.jsonValue();
 
-    return propertyValue;
-  } catch (e) {
-    // return null if the element is not found
-    if ((e as Error).message === "Element not found") return null;
-
-    throw e;
-  }
+  return propertyValue;
 };
