@@ -22,11 +22,17 @@ export interface DocSelectorSerialized {
   node: string;
 }
 
-export interface FindOptions {
+export interface FindElementOptions {
   dataAttribute?: string;
   // how long to sleep after finding the element
   sleepMs?: number;
   // how long to wait for the element
+  timeoutMs?: number;
+  waitForRequests?: boolean;
+}
+
+export interface FindPageOptions {
+  page?: number;
   timeoutMs?: number;
   waitForRequests?: boolean;
 }

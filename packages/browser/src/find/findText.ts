@@ -1,12 +1,12 @@
 import { logger } from "@qawolf/logger";
-import { FindOptions, Selector } from "@qawolf/types";
+import { FindElementOptions, Selector } from "@qawolf/types";
 import { QAWolfWeb } from "@qawolf/web";
 import { ElementHandle, Page, Serializable } from "puppeteer";
 
 export const findText = async (
   page: Page,
   selector: Selector,
-  options: FindOptions = {}
+  options: FindElementOptions = {}
 ): Promise<ElementHandle<Element>> => {
   logger.verbose("findText");
 

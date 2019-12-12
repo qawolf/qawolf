@@ -1,15 +1,15 @@
 import { logger } from "@qawolf/logger";
-import { ScrollValue, FindOptions } from "@qawolf/types";
+import { FindElementOptions, ScrollValue } from "@qawolf/types";
 import { QAWolfWeb } from "@qawolf/web";
 import { ElementHandle } from "puppeteer";
-import { getFindOptions } from "../find/getFindOptions";
+import { getFindElementOptions } from "../find/getFindElementOptions";
 
 export const scrollElement = async (
   elementHandle: ElementHandle,
   value: ScrollValue,
-  options: FindOptions = {}
+  options: FindElementOptions = {}
 ): Promise<void> => {
-  const findOptions = getFindOptions(options);
+  const findOptions = getFindElementOptions(options);
 
   logger.verbose(`scrollElement: ${value} ${JSON.stringify(findOptions)}`);
 

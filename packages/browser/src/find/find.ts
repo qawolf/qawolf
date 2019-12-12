@@ -1,17 +1,17 @@
 import { logger } from "@qawolf/logger";
-import { FindOptions, Selector } from "@qawolf/types";
+import { FindElementOptions, Selector } from "@qawolf/types";
 import { sleep } from "@qawolf/web";
 import { ElementHandle, Page as PuppeteerPage } from "puppeteer";
 import { findCss } from "./findCss";
 import { findHtml } from "./findHtml";
 import { findText } from "./findText";
-import { getFindOptions } from "./getFindOptions";
+import { getFindElementOptions } from "./getFindElementOptions";
 import { retryExecutionError } from "../retry";
 
 export const findElement = (
   page: PuppeteerPage,
   selector: Selector,
-  options: FindOptions
+  options: FindElementOptions
 ): Promise<ElementHandle> => {
   return retryExecutionError(async () => {
     if (selector.css) {
@@ -33,9 +33,9 @@ export const findElement = (
 export const find = async (
   page: PuppeteerPage,
   selector: Selector,
-  options: FindOptions = {}
+  options: FindElementOptions = {}
 ): Promise<ElementHandle> => {
-  const findOptions = getFindOptions(options);
+  const findOptions = getFindElementOptions(options);
   logger.verbose(
     `find: ${JSON.stringify(selector)} ${JSON.stringify(findOptions)}`
   );

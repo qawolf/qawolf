@@ -1,5 +1,10 @@
 import { logger } from "@qawolf/logger";
-import { Event, FindOptions, Selector, ScrollValue } from "@qawolf/types";
+import {
+  Event,
+  FindElementOptions,
+  Selector,
+  ScrollValue
+} from "@qawolf/types";
 import { ElementHandle } from "puppeteer";
 import { eventWithTime } from "rrweb/typings/types";
 import {
@@ -30,7 +35,7 @@ export class QAWolfPage {
 
   public click(
     selector: Selector,
-    options: FindOptions = {}
+    options: FindElementOptions = {}
   ): Promise<ElementHandle> {
     logger.verbose(`Page ${this._index}: click`);
 
@@ -62,7 +67,7 @@ export class QAWolfPage {
   public findProperty(
     selector: Selector,
     property: string,
-    options: FindOptions = {}
+    options: FindElementOptions = {}
   ): Promise<ElementHandle> {
     logger.verbose(`Page ${this._index}: findProperty`);
 
@@ -71,7 +76,10 @@ export class QAWolfPage {
     });
   }
 
-  public hasText(text: string, options: FindOptions = {}): Promise<boolean> {
+  public hasText(
+    text: string,
+    options: FindElementOptions = {}
+  ): Promise<boolean> {
     logger.verbose(`Page ${this._index}: hasText`);
 
     return retryExecutionError(async () => {
@@ -86,7 +94,7 @@ export class QAWolfPage {
   public scroll(
     selector: Selector,
     value: ScrollValue,
-    options: FindOptions = {}
+    options: FindElementOptions = {}
   ): Promise<ElementHandle> {
     logger.verbose(`Page ${this._index}: scroll`);
 
@@ -106,7 +114,7 @@ export class QAWolfPage {
   public select(
     selector: Selector,
     value: string | null,
-    options: FindOptions = {}
+    options: FindElementOptions = {}
   ): Promise<ElementHandle> {
     logger.verbose(`Page ${this._index}: select`);
 
@@ -126,7 +134,7 @@ export class QAWolfPage {
   public type(
     selector: Selector,
     value: string | null,
-    options: FindOptions = {}
+    options: FindElementOptions = {}
   ): Promise<ElementHandle> {
     logger.verbose(`Page ${this._index}: type`);
 

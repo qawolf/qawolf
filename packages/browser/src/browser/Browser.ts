@@ -1,23 +1,33 @@
-import { FindOptions, Selector, ScrollValue } from "@qawolf/types";
+import {
+  FindElementOptions,
+  FindPageOptions,
+  Selector,
+  ScrollValue
+} from "@qawolf/types";
 import {
   Browser as PuppeteerBrowser,
   DirectNavigationOptions,
   ElementHandle
 } from "puppeteer";
-import { FindPageOptions } from "../page/findPage";
 import { Page } from "../page/Page";
 import { QAWolfBrowser } from "./QAWolfBrowser";
 
 // PuppeteerBrowser decorated with our helpers
 export interface Browser extends PuppeteerBrowser {
-  click(selector: Selector, options?: FindOptions): Promise<ElementHandle>;
+  click(
+    selector: Selector,
+    options?: FindElementOptions
+  ): Promise<ElementHandle>;
 
-  find: (selector: Selector, options?: FindOptions) => Promise<ElementHandle>;
+  find: (
+    selector: Selector,
+    options?: FindElementOptions
+  ) => Promise<ElementHandle>;
 
   findProperty: (
     selector: Selector,
     property: string,
-    options?: FindOptions
+    options?: FindElementOptions
   ) => Promise<ElementHandle>;
 
   goto(
@@ -25,30 +35,26 @@ export interface Browser extends PuppeteerBrowser {
     options?: FindPageOptions & DirectNavigationOptions
   ): Promise<Page>;
 
-  hasText(
-    text: string,
-    options?: FindOptions,
-    pageIndex?: number
-  ): Promise<boolean>;
+  hasText(text: string, options?: FindPageOptions): Promise<boolean>;
 
-  page: (index?: number, timeoutMs?: number) => Promise<Page>;
+  page: (options?: FindPageOptions) => Promise<Page>;
 
   scroll(
     selector: Selector,
     value: ScrollValue,
-    options?: FindOptions
+    options?: FindElementOptions
   ): Promise<ElementHandle>;
 
   select(
     selector: Selector,
     value: string | null,
-    options?: FindOptions
+    options?: FindElementOptions
   ): Promise<ElementHandle>;
 
   type(
     selector: Selector,
     value: string | null,
-    options?: FindOptions
+    options?: FindElementOptions
   ): Promise<ElementHandle>;
 
   // reference to our QAWolfBrowser for internal use

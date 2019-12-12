@@ -14,10 +14,10 @@ describe("simplifyStrokes", () => {
     expect(
       serializeStrokes(
         deserializeStrokes(
-          "↓Shift↓KeyS→嗨↑Shift↑KeyS↓KeyU↑KeyU↓KeyP↓Shift↑KeyP↓Digit1↑Digit1↑Shift"
+          "→嗨↓Shift↓KeyS↑Shift↑KeyS↓KeyU↑KeyU↓KeyP↓Shift↑KeyP↓Digit1↑Digit1↑Shift"
         )
       )
-    ).toEqual("S嗨up!");
+    ).toEqual("嗨Sup!");
 
     expect(
       serializeStrokes(

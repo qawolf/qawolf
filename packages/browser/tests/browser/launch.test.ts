@@ -12,13 +12,13 @@ describe("launch", () => {
       return !!qawolf;
     };
 
-    const pageZero = await browser.page(0);
+    const pageZero = await browser.page({ page: 0 });
     const zeroIsLoaded = await pageZero.evaluate(isLoaded);
     expect(zeroIsLoaded).toBeTruthy();
 
     // check it loads on a new page
     await browser.newPage();
-    const pageOne = await browser.page(1);
+    const pageOne = await browser.page({ page: 1 });
     const oneIsLoaded = await pageOne.evaluate(isLoaded);
     expect(oneIsLoaded).toBeTruthy();
 
@@ -32,11 +32,15 @@ describe("launch", () => {
     });
 
     const expectedViewport = getDevice("mobile").viewport;
-    expect((await browser.page(0)).viewport()).toEqual(expectedViewport);
+    expect((await browser.page({ page: 0 })).viewport()).toEqual(
+      expectedViewport
+    );
 
     // check it emulates on a new page
     await browser.newPage();
-    expect((await browser.page(1)).viewport()).toEqual(expectedViewport);
+    expect((await browser.page({ page: 1 })).viewport()).toEqual(
+      expectedViewport
+    );
 
     await browser.close();
   });

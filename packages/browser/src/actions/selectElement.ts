@@ -1,15 +1,15 @@
 import { logger } from "@qawolf/logger";
-import { FindOptions } from "@qawolf/types";
+import { FindElementOptions } from "@qawolf/types";
 import { QAWolfWeb } from "@qawolf/web";
 import { ElementHandle } from "puppeteer";
-import { getFindOptions } from "../find/getFindOptions";
+import { getFindElementOptions } from "../find/getFindElementOptions";
 
 export const selectElement = async (
   elementHandle: ElementHandle,
   value: string | null,
-  options: FindOptions = {}
+  options: FindElementOptions = {}
 ): Promise<void> => {
-  const findOptions = getFindOptions(options);
+  const findOptions = getFindElementOptions(options);
 
   logger.verbose(
     `selectElement: waitForOption ${value} ${JSON.stringify(findOptions)}`

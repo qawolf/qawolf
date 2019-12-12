@@ -8,7 +8,7 @@ describe("Browser.page", () => {
     const pageOne = await browser.newPage();
 
     // change the current page to 1
-    await browser.page(1);
+    await browser.page({ page: 1 });
     let currentPage = await browser.page();
     expect(currentPage).toEqual(pageOne);
 

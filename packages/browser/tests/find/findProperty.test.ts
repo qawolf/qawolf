@@ -33,15 +33,18 @@ describe("Page.findProperty", () => {
     expect(placeholder).toBeUndefined();
   });
 
-  it("returns null if no elements match selector", async () => {
-    const tagName = await page.qawolf.findProperty(
-      { css: "#wrongId" },
-      "tagName",
-      {
+  it("throws an error if no elements match selector", async () => {
+    let message = false;
+
+    try {
+      await page.qawolf.findProperty({ css: "#wrongId" }, "tagName", {
         timeoutMs: 0
-      }
-    );
-    expect(tagName).toBeNull();
+      });
+    } catch (e) {
+      message = e.message;
+    }
+
+    expect(message).toEqual("Element not found");
   });
 
   it("returns the first element's property if multiple match selector", async () => {

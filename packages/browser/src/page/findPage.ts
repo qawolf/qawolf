@@ -1,12 +1,8 @@
 import { logger } from "@qawolf/logger";
-import { FindOptions } from "@qawolf/types";
+import { FindPageOptions } from "@qawolf/types";
 import { isNil, waitFor } from "@qawolf/web";
 import { Browser } from "../browser/Browser";
 import { Page } from "./Page";
-
-export interface FindPageOptions extends FindOptions {
-  index?: number;
-}
 
 const getIndex = (browser: Browser, pageIndex?: number): number => {
   let index = pageIndex;
@@ -37,12 +33,15 @@ export const findPage = async (
    */
   const qawolf = browser.qawolf;
 
-  let index: number = getIndex(browser, options.index);
+  let index: number = getIndex(browser, options.page);
 
-  const page = await waitFor(() => {
-    if (index >= qawolf.pages.length) return null;
-    return qawolf.pages[index];
-  }, options.timeoutMs || 0);
+  const page = await waitFor(
+    () => {
+      if (index >= qawolf.pages.length) return null;
+      return qawolf.pages[index];
+    },
+    isNil(options.timeoutMs) ? 5000 : options.timeoutMs!
+  );
 
   if (!page) {
     throw new Error(`findPage: ${index} not found`);

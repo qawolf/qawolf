@@ -1,4 +1,4 @@
-import { DocSelector, FindOptions, Selector } from "@qawolf/types";
+import { DocSelector, FindElementOptions, Selector } from "@qawolf/types";
 import { DocMatch, matchDocSelector } from "./compare";
 import { queryElements } from "./query";
 import { htmlSelectorToDocSelector, nodeToDocSelector } from "../serialize";
@@ -10,7 +10,10 @@ type ElementMatch = {
   match: DocMatch;
 };
 
-export const findHtml = async (selector: Selector, options: FindOptions) => {
+export const findHtml = async (
+  selector: Selector,
+  options: FindElementOptions
+) => {
   console.log("findHtml", selector, "options", options);
   if (!selector.html) {
     throw new Error("findHtml: selector must include html property");

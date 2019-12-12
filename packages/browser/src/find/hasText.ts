@@ -1,14 +1,14 @@
-import { FindOptions } from "@qawolf/types";
+import { FindElementOptions } from "@qawolf/types";
 import { QAWolfWeb } from "@qawolf/web";
 import { Page } from "puppeteer";
-import { getFindOptions } from "./getFindOptions";
+import { getFindElementOptions } from "./getFindElementOptions";
 
 export const hasText = async (
   page: Page,
   text: string,
-  options: FindOptions = {}
+  options: FindElementOptions = {}
 ): Promise<boolean> => {
-  const findOptions = getFindOptions(options);
+  const findOptions = getFindElementOptions(options);
 
   const result = await page.evaluate(
     (text, timeoutMs) => {
