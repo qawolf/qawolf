@@ -18,7 +18,7 @@ const TUTORIALS = [
     videoLink: "https://storage.googleapis.com/docs.qawolf.com/home/github.gif"
   },
   {
-    label: "🐛 debug easily",
+    label: "🐛 easy to debug",
     title: "🐛 Watch a video, gif, or dom recording",
     videoLink: "https://storage.googleapis.com/docs.qawolf.com/home/debug.gif"
   }
