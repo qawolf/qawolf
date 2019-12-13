@@ -14,7 +14,7 @@
   <a href="https://github.com/qawolf/qawolf/actions?query=workflow%3A%22npm+test%22"><img src="https://github.com/qawolf/qawolf/workflows/npm%20test/badge.svg" /></a>
 </p>
 
-> QA Wolf is a delightful [open source](https://github.com/qawolf/qawolf) recorder that translates your browser actions into [Puppeteer](https://github.com/puppeteer/puppeteer) and [Jest](https://jestjs.io/) code. It [automatically waits](https://docs.qawolf.com/docs/how_it_works#automatic-waiting) for elements and assertions and builds a [smart element selector](https://docs.qawolf.com/docs/how_it_works#element-selectors) to ensure stability. QA Wolf supports multiple windows, hot keys, and other complex scenarios.
+> QA Wolf is a delightful [open source](https://github.com/qawolf/qawolf) recorder that translates your browser actions into [Puppeteer](https://github.com/puppeteer/puppeteer) and [Jest](https://jestjs.io/) code. It [automatically waits](https://docs.qawolf.com/docs/how_it_works#-automatic-waiting) for elements and assertions and builds a [smart element selector](https://docs.qawolf.com/docs/how_it_works#-element-selectors) to ensure stability. QA Wolf supports multiple windows, hot keys, and other complex scenarios.
 
 ### What can I do?
 
@@ -71,11 +71,12 @@ Run your script:
 node .qawolf/scripts/name.js
 ```
 
-### 🎥 Set up CI
+### ☁️ Set up CI
 
-<a align="center" height="200" href="https://qawolf.com"><img src="https://storage.googleapis.com/docs.qawolf.com/home/debug.gif" alt="QA Wolf" /></a>
+<!-- To Do: Shrink GIF so github camo will work
+<a align="center" height="200" href="https://qawolf.com"><img src="https://storage.googleapis.com/docs.qawolf.com/home/debug.gif" alt="QA Wolf" /></a> -->
 
-Watch the video, gif, and dom artifacts from your CI runs.
+Watch the [video, gif, and dom artifacts](https://docs.qawolf.com/docs/set_up_ci#debug) from your CI runs.
 
 [<img align="center" height="20px" src="https://cdn.iconscout.com/icon/free/png-256/azure-190760.png" /> Azure](https://docs.qawolf.com/docs/set_up_ci#azure)
 

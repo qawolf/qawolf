@@ -14,6 +14,7 @@ packages/**/logs
 
 # .dockerignore
 .git/
+docs/
 Dockerfile
 
 # used in tests

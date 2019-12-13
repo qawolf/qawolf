@@ -1,0 +1,35 @@
+.code {
+  background: rgb(28, 30, 33);
+  border: none;
+  border-radius: 8px;
+  color: rgb(245, 246, 247);
+  cursor: pointer;
+  display: block;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 16px;
+  padding: 16px 16px 8px;
+  text-align: start;
+}
+
+.code p {
+  margin: 0;
+  margin-bottom: 8px;
+}
+
+.codeContainer {
+  position: relative;
+}
+
+.copy {
+  cursor: default;
+  position: absolute;
+  top: 84px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@media screen and (max-width: 966px) {
+  .code {
+    font-size: 12px;
+  }
+}

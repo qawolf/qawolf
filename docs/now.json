@@ -1,0 +1,7 @@
+{
+  "build": {
+    "env": {
+      "ALGOLIA_API_KEY": "@algolia_api_key"
+    }
+  }
+}

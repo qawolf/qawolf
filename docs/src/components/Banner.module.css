@@ -1,0 +1,41 @@
+.animate {
+  overflow: hidden;
+  transition: width 400ms linear;
+  -webkit-transition: width 400ms linear;
+  -moz-transition: width 400ms linear;
+  -o-transition: width 400ms linear;
+}
+
+.banner {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 160px;
+  text-align: center;
+}
+
+.bannerTitle,
+.cursor {
+  font-weight: 200;
+}
+
+.cursor {
+  color: var(--ifm-color-primary);
+  font-size: 40px;
+}
+
+.hidden {
+  width: 0;
+}
+
+.useCase {
+  align-items: flex-end;
+  display: flex;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.visible {
+  width: 100%;
+}
