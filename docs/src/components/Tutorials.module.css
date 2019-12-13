@@ -1,0 +1,35 @@
+.tutorials {
+  margin-top: 160px;
+  width: 64%;
+}
+
+.tutorialsHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.video {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  height: 0;
+}
+.video iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@media screen and (max-width: 1400px) {
+  .tutorialsHeader {
+    flex-direction: column-reverse;
+  }
+}
+
+@media screen and (max-width: 966px) {
+  .tutorials {
+    margin-top: 64px;
+    width: 80%;
+  }
+}

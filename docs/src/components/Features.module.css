@@ -1,0 +1,35 @@
+.features {
+  display: flex;
+  flex-direction: column;
+  margin: 80px 0 16px;
+  width: 80%;
+}
+
+.feature {
+  margin-bottom: 64px;
+  width: 280px;
+}
+
+.feature h4 {
+  margin-bottom: 24px;
+}
+
+.feature p {
+  margin: 0;
+  margin-bottom: 8px;
+}
+
+.featureRow {
+  display: flex;
+  justify-content: space-around;
+}
+
+@media screen and (max-width: 966px) {
+  .feature {
+    width: 100%;
+  }
+
+  .featureRow {
+    flex-direction: column;
+  }
+}
