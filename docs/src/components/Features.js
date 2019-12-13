@@ -23,13 +23,13 @@ function Features() {
           <h4>⚓ stable</h4>
           <p>
             {" "}
-            <Link href={useBaseUrl("docs/how_it_works#element-selectors")}>
+            <Link href={useBaseUrl("docs/how_it_works#-element-selectors")}>
               Automatically find
             </Link>{" "}
             elements.
           </p>
           <p>
-            <Link href={useBaseUrl("docs/how_it_works#automatic-waiting")}>
+            <Link href={useBaseUrl("docs/how_it_works#-automatic-waiting")}>
               Automatically wait
             </Link>{" "}
             for assertions

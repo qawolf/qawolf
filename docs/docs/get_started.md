@@ -3,7 +3,7 @@ id: get_started
 title: 🏁 Get Started
 ---
 
-QA Wolf is a delightful [open source](https://github.com/qawolf/qawolf) recorder that translates your browser actions into [Puppeteer](https://github.com/puppeteer/puppeteer) and [Jest](https://jestjs.io/) code. It [automatically waits](how_it_works#automatic-waiting) for elements and assertions and builds a [smart element selector](how_it_works#element-selectors) to ensure stability. QA Wolf supports multiple windows, hot keys, and other complex scenarios.
+QA Wolf is a delightful [open source](https://github.com/qawolf/qawolf) recorder that translates your browser actions into [Puppeteer](https://github.com/puppeteer/puppeteer) and [Jest](https://jestjs.io/) code. It [automatically waits](how_it_works#-automatic-waiting) for elements and assertions and builds a [smart element selector](how_it_works#-element-selectors) to ensure stability. QA Wolf supports multiple windows, hot keys, and other complex scenarios.
 
 ### 🖥️ Install QA Wolf
 

@@ -58,7 +58,7 @@ env:
 
 - default: `null`
 
-When a recorded element selector has the `QAW_DATA_ATTRIBUTE`, it will only find an element with that same attribute value. If the recorded element does not have that attribute, it will use the default [selector logic](how_it_works#element-selectors).
+When a recorded element selector has the `QAW_DATA_ATTRIBUTE`, it will only find an element with that same attribute value. If the recorded element does not have that attribute, it will use the default [selector logic](how_it_works#-element-selectors).
 
 **Example**
 

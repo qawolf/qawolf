@@ -22,7 +22,7 @@ The second file that is created is `.qawolf/selectors/name.json` which contains 
 
 If you have any additional questions about how QA Wolf works, please [reach out to us](https://gitter.im/qawolf/community)!
 
-### Automatic Waiting
+### ⏱️ Automatic Waiting
 
 QA Wolf automatically waits for network requests to finish or time out, and elements and assertions to appear before proceeding to dramatically improve stability.
 
@@ -30,7 +30,7 @@ QA Wolf waits to find a good match for the [target element](#element-selectors) 
 
 One caveat is that elements may appear on the page before event handlers are attached. By default we [sleep for 1 second](http://localhost:3000/docs/api#qaw_sleep_ms) after an element is found to avoid this issue. However you can [edit your test code](edit_your_code) to include custom wait logic instead for these scenarios. [The `waitUntil` helper](api#qawolfwaituntilpredicate-timeoutms-sleepms) will likely be useful here.
 
-### Element Selectors
+### 🔍 Element Selectors
 
 Rather than rely on one specific attribute like an xpath to locate elements, QA Wolf serializes the entire element, its [parent](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement) and parent's parent, to make your tests robust to changes. You can also [specify a data attribute](api#qaw_data_attribute) like `data-qa` to use instead of the default selector logic, or [replace the generated selector](edit_your_code#custom-element-selectors) with a [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) or text selector.
 
@@ -47,7 +47,7 @@ If you [replace the generated selector](edit_your_code#custom-element-selectors)
 
 If you have [specified a data attribute](api#qaw_data_attribute) like `data-qa`, QA Wolf will only proceed when an element with the matching data value (for example, `data-qa="my-input"`) is found. You do not need to include the data attribute on every element in your workflow. If it is included, QA Wolf will only proceed if an element with that attribute is found. Otherwise, it will use the default selector logic.
 
-### Keyboard Events
+### ⌨️ Keyboard Events
 
 QA Wolf captures `keydown` and `keyup` events so it can perfectly match the original keystrokes. This allows us to support special keys like `Tab` and `Enter` and hotkeys.
 
