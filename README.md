@@ -14,7 +14,7 @@
   <a href="https://github.com/qawolf/qawolf/actions?query=workflow%3A%22npm+test%22"><img src="https://github.com/qawolf/qawolf/workflows/npm%20test/badge.svg" /></a>
 </p>
 
-> QA Wolf is a delightful [open source](https://github.com/qawolf/qawolf) recorder that translates your browser actions into [Puppeteer](https://github.com/puppeteer/puppeteer) and [Jest](https://jestjs.io/) code. It [automatically waits](how_it_works#automatic-waiting) for elements and assertions and builds a [smart element selector](how_it_works#element-selectors) to ensure stability. QA Wolf supports multiple windows, hot keys, and other complex scenarios.
+> QA Wolf is a delightful [open source](https://github.com/qawolf/qawolf) recorder that translates your browser actions into [Puppeteer](https://github.com/puppeteer/puppeteer) and [Jest](https://jestjs.io/) code. It [automatically waits](https://docs.qawolf.com/docs/how_it_works#automatic-waiting) for elements and assertions and builds a [smart element selector](https://docs.qawolf.com/docs/how_it_works#element-selectors) to ensure stability. QA Wolf supports multiple windows, hot keys, and other complex scenarios.
 
 ### What can I do?
 
