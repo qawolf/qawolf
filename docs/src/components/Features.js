@@ -41,7 +41,7 @@ function Features() {
           <h4>🐛 easy to debug</h4>
           <p>
             Watch the{" "}
-            <Link href={useBaseUrl("docs/set_up_ci#debug")}>
+            <Link href={useBaseUrl("docs/set_up_ci#-debug")}>
               video, gif, or dom recording.
             </Link>
           </p>

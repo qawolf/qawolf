@@ -18,7 +18,7 @@ The second file that is created is `.qawolf/selectors/name.json` which contains 
 
 **When you run the code**, it automatically waits for the elements and assertions using the [`qawolf` api](api), which just extends [Puppeteer](https://pptr.dev/).
 
-**When you run the code [in CI](set_up_ci)**, [debugging artifacts](set_up_ci#debug) are generated. These include a video, gif, interactive DOM recording, and browser logs.
+**When you run the code [in CI](set_up_ci)**, [debugging artifacts](set_up_ci#-debug) are generated. These include a video, gif, interactive DOM recording, and browser logs.
 
 If you have any additional questions about how QA Wolf works, please [reach out to us](https://gitter.im/qawolf/community)!
 

@@ -3,7 +3,7 @@ id: set_up_ci
 title: ☁️ Set Up CI
 ---
 
-Run your [browser script 🤖](get_started#-record-a-browser-script) or [browser test ✅](get_started#-record-a-browser-test) in CI with one command. 
+Run your [browser script 🤖](get_started#-record-a-browser-script) or [browser test ✅](get_started#-record-a-browser-test) in CI with one command.
 
 ![](https://storage.googleapis.com/docs.qawolf.com/home/github.gif)
 
@@ -191,7 +191,7 @@ qawolf:
 
 To learn more about configuring pipelines in GitLab, see [GitLab's documentation](https://docs.gitlab.com/ee/ci/yaml/).
 
-## <a name="debug"></a> 🕵️ Debug
+## 🕵️ Debug
 
 Each test generates debugging artifacts that you can use to understand failures. These include a video, gif, interactive DOM recording, and browser logs.
 

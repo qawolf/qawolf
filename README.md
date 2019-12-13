@@ -76,7 +76,7 @@ node .qawolf/scripts/name.js
 <!-- To Do: Shrink GIF so github camo will work
 <a align="center" height="200" href="https://qawolf.com"><img src="https://storage.googleapis.com/docs.qawolf.com/home/debug.gif" alt="QA Wolf" /></a> -->
 
-Watch the [video, gif, and dom artifacts](https://docs.qawolf.com/docs/set_up_ci#debug) from your CI runs.
+Watch the [video, gif, and dom artifacts](https://docs.qawolf.com/docs/set_up_ci#-debug) from your CI runs.
 
 [<img align="center" height="20px" src="https://cdn.iconscout.com/icon/free/png-256/azure-190760.png" /> Azure](https://docs.qawolf.com/docs/set_up_ci#azure)
 
