@@ -1,5 +1,4 @@
 import { FindElementOptions, Selector } from "@qawolf/types";
-import { cleanText } from "../lang";
 import { queryActionElements } from "./query";
 import { waitFor } from "../wait";
 
@@ -20,6 +19,9 @@ export const findText = async (
 
       for (let i = 0; i < elements.length; i++) {
         const element = elements[i] as HTMLElement;
+
+        // skip non-HTML elements
+        if (!element.innerText) continue;
 
         if (
           // check the innerText includes the selector.text

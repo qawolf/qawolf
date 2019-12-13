@@ -69,12 +69,17 @@ export const isClickable = (
 };
 
 export const isVisible = (
-  element: HTMLElement,
+  element: Element,
   computedStyle?: CSSStyleDeclaration
 ): boolean => {
-  if (element.offsetWidth <= 0 || element.offsetHeight <= 0) return false;
+  const htmlElement = element as HTMLElement;
+  if (htmlElement.offsetWidth <= 0 || htmlElement.offsetHeight <= 0) {
+    return false;
+  }
 
-  if (computedStyle && computedStyle.visibility === "hidden") return false;
+  if (computedStyle && computedStyle.visibility === "hidden") {
+    return false;
+  }
 
   return true;
 };

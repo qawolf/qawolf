@@ -6,7 +6,7 @@ import { waitFor } from "../wait";
 import { getXpath } from "../xpath";
 
 type ElementMatch = {
-  element: HTMLElement;
+  element: Element;
   match: DocMatch;
 };
 
@@ -86,7 +86,7 @@ export const findHtml = async (
 };
 
 export const matchElements = (
-  elements: HTMLElement[],
+  elements: Element[],
   target: DocSelector,
   dataAttribute?: string
 ): ElementMatch[] => {

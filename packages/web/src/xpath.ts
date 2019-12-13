@@ -14,9 +14,11 @@ export const findElementByXpath = (xpath: string): HTMLElement | null => {
   return null;
 };
 
-const buildXpath = (element: Element): string => {
-  if (!element || element.nodeType !== 1) return "";
+const buildXpath = (node: Node | null): string => {
+  // only build xpaths for elements
+  if (!node || node.nodeType !== 1) return "";
 
+  const element = node as Element;
   if (element.id) {
     // xpath has no way to escape quotes so use the opposite
     // https://stackoverflow.com/a/14822893
@@ -30,7 +32,7 @@ const buildXpath = (element: Element): string => {
   });
 
   const result =
-    buildXpath(element.parentNode as Element) +
+    buildXpath(element.parentNode) +
     "/" +
     element.tagName.toLowerCase() +
     (sames.length > 1
@@ -40,8 +42,8 @@ const buildXpath = (element: Element): string => {
   return result;
 };
 
-export const getXpath = (element: Element): string => {
-  const result = buildXpath(element);
+export const getXpath = (node: Node): string => {
+  const result = buildXpath(node);
 
   return result
     .replace("svg", "*[name()='svg']")

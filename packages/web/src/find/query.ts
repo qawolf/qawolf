@@ -12,7 +12,7 @@ type QueryElementsOptions = {
   dataAttribute?: string;
 };
 
-export const queryActionElements = (action?: Action): HTMLElement[] => {
+export const queryActionElements = (action?: Action): Element[] => {
   const selector =
     action === "type" ? "input,select,textarea,[contenteditable='true']" : "*";
 
@@ -23,7 +23,7 @@ export const queryDataElements = ({
   action,
   dataAttribute,
   dataValue
-}: QueryDataElementsOptions): HTMLElement[] => {
+}: QueryDataElementsOptions): Element[] => {
   let dataSelector = `[${dataAttribute}='${dataValue}']`;
   if (action === "type") {
     const selector = `input${dataSelector},select${dataSelector},textarea${dataSelector},[contenteditable="true"]${dataSelector}`;
@@ -52,16 +52,16 @@ export const queryElements = (
   return queryActionElements(action);
 };
 
-export const queryVisibleElements = (selector: string): HTMLElement[] => {
+export const queryVisibleElements = (selector: string): Element[] => {
   const elements = document.querySelectorAll(selector);
 
-  const visibleElements: HTMLElement[] = [];
+  const visibleElements: Element[] = [];
 
   for (let i = 0; i < elements.length; i++) {
     // we do not pass computedStyle because doing
     // that for every element would be very expensive
-    if (isVisible(elements[i] as HTMLElement)) {
-      visibleElements.push(elements[i] as HTMLElement);
+    if (isVisible(elements[i])) {
+      visibleElements.push(elements[i]);
     }
   }
 
