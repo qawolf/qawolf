@@ -16,7 +16,7 @@ export const hasText = async (
       return qawolf.find.hasText(text, timeoutMs);
     },
     text,
-    findOptions.timeoutMs || 0
+    findOptions.timeoutMs!
   );
 
   return result;
