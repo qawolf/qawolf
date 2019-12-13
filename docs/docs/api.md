@@ -3,7 +3,7 @@ id: api
 title: API
 ---
 
-### [qawolf@v0.7.2](https://www.npmjs.com/package/qawolf/v/0.7.2)
+### [qawolf@v0.7.3](https://www.npmjs.com/package/qawolf/v/0.7.3)
 
 ##### Table of Contents
 
