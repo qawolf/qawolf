@@ -12,21 +12,30 @@ export const findText = async (
     throw new Error("findText: selector must include text property");
   }
 
-  const cleanedText = cleanText(selector.text);
-
   return waitFor(
     () => {
       const elements = queryActionElements(selector.action);
 
+      let match = null;
+
       for (let i = 0; i < elements.length; i++) {
         const element = elements[i] as HTMLElement;
-        if (cleanText(element.innerText) === cleanedText) {
-          console.log("found text", element);
-          return element;
+
+        if (
+          // check the innerText includes the selector.text
+          element.innerText.includes(selector.text!) &&
+          // check the match is better than the current match (has less extra text)
+          (!match || match.innerText.length > element.innerText.length)
+        ) {
+          match = element;
         }
       }
 
-      return null;
+      if (match) {
+        console.log("found text", match);
+      }
+
+      return match;
     },
     options.timeoutMs || 0,
     100
