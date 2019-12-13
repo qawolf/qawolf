@@ -7,16 +7,30 @@ let browser: Browser;
 let page: Page;
 
 beforeAll(async () => {
-  browser = await launch({ url: CONFIG.testUrl });
+  browser = await launch({ url: `${CONFIG.testUrl}/checkboxes` });
   page = await browser.page();
 });
 
 afterAll(() => browser.close());
 
 describe("findText", () => {
-  it("finds an element by text", async () => {
-    const element = await findText(page, { text: "form authentication" });
+  it("finds the element with the least extra text", async () => {
+    let element = await findText(page, { text: "Checkbox" });
+    expect(await getXpath(element)).toEqual("//*[@id='content']/div/h3");
 
-    expect(await getXpath(element)).toEqual("//*[@id='content']/ul/li[18]");
+    element = await findText(page, { text: "checkbox 1" });
+    expect(await getXpath(element)).toEqual("//*[@id='checkboxes']");
+  });
+
+  it("does not find an element with the incorrect case", async () => {
+    let message = false;
+
+    try {
+      await findText(page, { text: "checkboxes" });
+    } catch (e) {
+      message = e.message;
+    }
+
+    expect(message).toEqual("Element not found");
   });
 });
