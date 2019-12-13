@@ -31,6 +31,8 @@ Why not stub out those situations? You still can - just edit the generated Puppe
 
 By running our [@qawolf/web](https://github.com/qawolf/qawolf/tree/master/packages/web) code in the browser we get the best of Cypress (fast in the browser) and [Puppeteer](https://pptr.dev/)/[DevTools](https://chromedevtools.github.io/devtools-protocol/) (rich APIs and well-supported DevTools protocol).
 
-## Could you support other testing tools in the future?
+## Can you support [some other framework]?
 
-Yes, if it will create a better end-to-end browser testing and scripting experience for the community. However, we want to make sure there is sufficient interest in doing so before supporting additional frameworks. If you have a framework you'd like us to support, please [chat](https://gitter.im/qawolf/community) or [email](mailto:jon@qawolf.com) us!
+You can already [edit your code](edit_your_code) to use any node package or framework.
+
+In terms of generating the browser code for a framework other than [Puppeteer](https://pptr.dev/), or testing code for a framework other than [Jest](https://jestjs.io/), we would consider it to create a better experience for the community. If you have a framework you'd like us to support, please [chat](https://gitter.im/qawolf/community) or [email](mailto:jon@qawolf.com) us!
