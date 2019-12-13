@@ -61,7 +61,13 @@ class Banner extends React.Component {
 
     return (
       <div className={styles.banner}>
-        <h1 className={classnames("hero__title", styles.bannerTitle)}>
+        <h1
+          className={classnames(
+            "hero__title",
+            styles.bannerTitle,
+            styles.bannerPadding
+          )}
+        >
           Delightful open source recorder for
         </h1>
         <div className={styles.useCase}>

@@ -15,6 +15,11 @@
   text-align: center;
 }
 
+.bannerPadding {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
 .bannerTitle,
 .cursor {
   font-weight: 200;
