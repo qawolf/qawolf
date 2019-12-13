@@ -5,6 +5,8 @@ title: API
 
 ### [qawolf@v0.7.3](https://www.npmjs.com/package/qawolf/v/0.7.3)
 
+The generated code imports the `qawolf` node package, which extends the [Puppeteer API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md) with [automatic waiting](how_it_works#-automatic-waiting) for elements and assertions, and [smart element selectors](how_it_works#-element-selectors).
+
 ##### Table of Contents
 
 - [Environment Variables](#environment-variables)

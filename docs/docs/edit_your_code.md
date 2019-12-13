@@ -23,7 +23,7 @@ await page.setCookie({
 await page.reload();
 // custom code ends
 
-await click(steps[0]);
+await click(selectors[0]);
 ```
 
 ## Jest
@@ -44,7 +44,7 @@ describe("my_workflow", () => {
     expect(count).toBe("0");
     // custom code ends
 
-    await click(steps[0]);
+    await click(selectors[0]);
   });
 });
 ```
