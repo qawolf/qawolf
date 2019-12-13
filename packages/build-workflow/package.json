@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/build-workflow",
   "description": "build qawolf workflow from events",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -23,14 +23,14 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/browser": "^0.7.1",
-    "@qawolf/logger": "^0.7.0",
+    "@qawolf/browser": "^0.7.2",
+    "@qawolf/logger": "^0.7.2",
     "lodash": "^4.17.15"
   },
   "devDependencies": {
     "@qawolf/fixtures": "1.19.0",
-    "@qawolf/types": "^0.7.0",
-    "@qawolf/web": "^0.7.0",
+    "@qawolf/types": "^0.7.2",
+    "@qawolf/web": "^0.7.2",
     "jest": "^24.9.0"
   }
 }

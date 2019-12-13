@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/browser",
   "description": "qawolf browser manager",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -25,11 +25,11 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/config": "^0.7.0",
-    "@qawolf/logger": "^0.7.0",
-    "@qawolf/screen": "^0.7.0",
-    "@qawolf/types": "^0.7.0",
-    "@qawolf/web": "^0.7.0",
+    "@qawolf/config": "^0.7.2",
+    "@qawolf/logger": "^0.7.2",
+    "@qawolf/screen": "^0.7.2",
+    "@qawolf/types": "^0.7.2",
+    "@qawolf/web": "^0.7.2",
     "fs-extra": "^8.1.0",
     "lodash": "^4.17.15",
     "puppeteer": "^2.0.0",
