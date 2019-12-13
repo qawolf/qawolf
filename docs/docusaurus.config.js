@@ -31,6 +31,10 @@ module.exports = {
           label: "Chat"
         },
         {
+          href: "mailto:jon@qawolf.com",
+          label: "Email"
+        },
+        {
           href: "https://github.com/qawolf/qawolf",
           label: "GitHub",
           position: "right"
