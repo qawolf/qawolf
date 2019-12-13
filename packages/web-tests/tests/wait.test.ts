@@ -1,14 +1,14 @@
 import { waitUntil } from "@qawolf/web";
 
 describe("waitUntil", () => {
-  it("calls function and exits when true is returned", async () => {
-    const booleanFn = jest.fn();
-    booleanFn.mockReturnValue(true);
+  it("calls predicate and exits when true is returned", async () => {
+    const predicate = jest.fn();
+    predicate.mockReturnValue(true);
 
-    await waitUntil(booleanFn, 0);
-    await waitUntil(booleanFn, 250);
+    await waitUntil(predicate, 0);
+    await waitUntil(predicate, 250);
 
-    expect(booleanFn).toBeCalledTimes(2);
+    expect(predicate).toBeCalledTimes(2);
   });
 
   it("throws error if condition never met", async () => {

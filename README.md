@@ -1,92 +1,116 @@
-<h1 align="center">qawolf</h1>
+<h1 align="center">🐺 Delightful Browser Recorder</h1>
 
 <p align="center">
-    <a href="https://docs.qawolf.com">Documentation</a> |
-    <a href="https://gitter.im/qawolf/community">Gitter</a> |
-    <a href="https://github.com/qawolf/qawolf/projects/4">Roadmap</a>
+    <a href="https://docs.qawolf.com">📖 Docs</a> |
+    <a href="https://docs.qawolf.com/docs/faq">🧐 FAQ</a> |
+    <a href="https://gitter.im/qawolf/community">👋 Chat</a> |
+    <a href="https://github.com/qawolf/qawolf/projects/4">🗺️ Roadmap</a>
 </p>
 
-<a align="center" href="https://qawolf.com"><img src="https://storage.googleapis.com/docs.qawolf.com/home/record-small.gif" alt="QA Wolf"></a>
+<a align="center" height="200" href="https://qawolf.com"><img src="https://storage.googleapis.com/docs.qawolf.com/home/record-small.gif" alt="QA Wolf" /></a>
 
 <p align="center">
-  <a href="https://gitter.im/qawolf/community" alt="Gitter chat"><img src="https://badges.gitter.im/qawolf/gitter.png" /></a>
+  <a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version" /></a>
   <a href="https://github.com/qawolf/qawolf/actions?query=workflow%3A%22npm+test%22"><img src="https://github.com/qawolf/qawolf/workflows/npm%20test/badge.svg" /></a>
-  <a href="https://github.com/qawolf/examples" alt="Examples"><img src="https://github.com/qawolf/examples/workflows/qawolf%20examples/badge.svg" /></a>
 </p>
 
-## Introduction
+> QA Wolf is a delightful [open source](https://github.com/qawolf/qawolf) recorder that translates your browser actions into [Puppeteer](https://github.com/puppeteer/puppeteer) and [Jest](https://jestjs.io/) code. It [automatically waits](how_it_works#automatic-waiting) for elements and assertions and builds a [smart element selector](how_it_works#element-selectors) to ensure stability. QA Wolf supports multiple windows, hot keys, and other complex scenarios.
 
-🐺[QA Wolf](https://www.qawolf.com/) is an open-source [Node package](https://www.npmjs.com/qawolf) for recording browser tests. It translates your browser actions into [Puppeteer](https://pptr.dev/) and [Jest](https://jestjs.io/) test code.
+### What can I do?
 
-#### [Quickstart](https://www.qawolf.com/docs/your_first_test)
+[**✅ Record a browser test**](#-record-a-browser-test): Test the browser using [Jest](https://jestjs.io/) and [Puppeteer](https://github.com/puppeteer/puppeteer).
 
-**Record Your Tests:** Generate Jest & Puppeteer test code from your browser interactions. QA Wolf supports multiple windows, third party sites, and changing input values with environment variables.
+[**🤖 Record a browser script**](#-record-a-browser-script): Automate the browser using [Puppeteer](https://github.com/puppeteer/puppeteer).
 
-**Set up CI:** Run your tests in CI with one command. We support CircleCI, Azure DevOps, and GitHub Actions (with more coming soon!). Artifacts for debugging are created per test.
+[**🎥 Set up CI**](#-set-up-ci): Watch the video, gif, and dom artifacts from your CI runs.
 
-**Debug with Ease:** Each test run includes a video, gif, interactive DOM recording, and browser logs as artifacts.
+## Quick Start
 
-**Avoid Flakes:** QA Wolf waits for the next element or assertion to avoid loading flakes. It finds elements with multiple attributes, or a test attribute you specify (like "data-qa"), to avoid selector flakes. We [battle test QA Wolf against public sites](https://github.com/qawolf/examples) on a schedule to keep improving stability.
+<a href="https://docs.qawolf.com/docs/get_started">📖 Doc</a>
 
-## Get Started
+### 🖥️ Install QA Wolf
 
-[Documentation](https://www.qawolf.com/docs/your_first_test)
-
-1. Install QA Wolf as a dev dependency
+Install QA Wolf as a dev dependency with [`npm`](https://www.npmjs.com):
 
 ```bash
-npm i -D qawolf
+cd /my/awesome/project
+npm install --save-dev qawolf
 ```
 
-2. Record your test
+### [✅ Record a browser test](http://docs.qawolf.com/docs/get_started#-record-a-browser-test)
+
+Record your test:
 
 ```bash
 npx qawolf record <url> [name]
 ```
 
-3. Run your test!
+Run your test:
 
 ```bash
 npx qawolf test [name]
 ```
 
-## Set up CI
+Run all tests:
 
-[Documentation](https://www.qawolf.com/docs/set_up_ci)
+```bash
+qawolf test
+```
 
-Set up CI with [Azure DevOps](https://www.qawolf.com/docs/set_up_ci#azure-devops):
+### [🤖 Record a browser script](http://docs.qawolf.com/docs/get_started#-record-a-browser-script)
+
+Record your script:
+
+```bash
+npx qawolf record --script <url> [name]
+```
+
+Run your script:
+
+```bash
+node .qawolf/scripts/name.js
+```
+
+### 🎥 Set up CI
+
+<a align="center" height="200" href="https://qawolf.com"><img src="https://storage.googleapis.com/docs.qawolf.com/home/debug.gif" alt="QA Wolf" /></a>
+
+Watch the video, gif, and dom artifacts from your CI runs.
+
+[<img align="center" height="20px" src="https://cdn.iconscout.com/icon/free/png-256/azure-190760.png" /> Azure](https://docs.qawolf.com/docs/set_up_ci#azure)
 
 ```bash
 npx qawolf azure
 ```
 
-Set up CI with [CircleCI](https://www.qawolf.com/docs/set_up_ci#circleci):
+[<img align="center" height="20px" src="https://cdn.iconscout.com/icon/free/png-256/circleci-283066.png" /> CircleCI](https://docs.qawolf.com/docs/set_up_ci#circleci)
 
 ```bash
 npx qawolf circleci
 ```
 
-Set up CI with [GitHub Actions](https://www.qawolf.com/docs/set_up_ci#github-actions):
+[<img align="center" height="20px" src="https://camo.githubusercontent.com/7710b43d0476b6f6d4b4b2865e35c108f69991f3/68747470733a2f2f7777772e69636f6e66696e6465722e636f6d2f646174612f69636f6e732f6f637469636f6e732f313032342f6d61726b2d6769746875622d3235362e706e67" /> GitHub](https://docs.qawolf.com/docs/set_up_ci#github)
 
 ```bash
 npx qawolf github
 ```
 
-Set up CI with [GitLab CI/CD](https://docs.gitlab.com/ee/ci/README.html):
+[🦊 GitLab](https://docs.qawolf.com/docs/set_up_ci#gitlab)
 
 ```bash
 npx qawolf gitlab
 ```
 
-This will generate the relevant config file in your project. Edit this file as you like!
+QA Wolf will run anywhere that supports Docker. Just [ping us](https://gitter.im/qawolf/community) if you want to run [QA Wolf Docker](https://hub.docker.com/r/qawolf/qawolf) somewhere else.
 
 ## Support
 
+<p align="left">
+    <a href="https://gitter.im/qawolf/community">👋 Chat</a> |
+    <a href="mailto:jon@qawolf.com">📬 E-mail</a>
+</p>
+
 We want QA Wolf to work for you, so please reach out to get help!
-
-[Gitter](https://gitter.im/qawolf/community)
-
-[E-mail](mailto:jon@qawolf.com)
 
 ## Acknowledgements
 

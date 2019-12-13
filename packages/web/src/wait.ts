@@ -3,14 +3,14 @@ export const sleep = (milliseconds: number): Promise<void> => {
 };
 
 export const waitFor = async <T>(
-  valueFn: () => T | null,
+  valueFunction: () => T | null,
   timeoutMs: number,
   sleepMs: number = 500
 ): Promise<T | null> => {
   const startTime = Date.now();
 
   do {
-    const value = valueFn();
+    const value = valueFunction();
     if (value) return value;
 
     await sleep(sleepMs);
@@ -20,14 +20,14 @@ export const waitFor = async <T>(
 };
 
 export const waitUntil = async (
-  booleanFn: () => boolean | Promise<boolean>,
+  predicate: () => boolean | Promise<boolean>,
   timeoutMs: number,
   sleepMs: number = 500
 ): Promise<void> => {
   const startTime = Date.now();
 
   do {
-    const conditionMet = await booleanFn();
+    const conditionMet = await predicate();
     if (conditionMet) return;
 
     await sleep(sleepMs);
