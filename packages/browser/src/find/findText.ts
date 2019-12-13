@@ -13,7 +13,10 @@ export const findText = async (
   const jsHandle = await page.evaluateHandle(
     (selector, options) => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
-      return qawolf.find.findText(selector, options);
+      const findCmd = () => qawolf.find.findText(selector, options);
+      // store the last find on the window for easy debugging
+      (window as any).qaw_find = findCmd;
+      return findCmd();
     },
     selector as Serializable,
     options as Serializable
