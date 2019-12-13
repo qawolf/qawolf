@@ -20,7 +20,12 @@ describe("Browser.hasText", () => {
 
 describe("Page.hasText", () => {
   it("returns true if page has text", async () => {
-    const result = await page.qawolf.hasText("tomsmith");
+    const result = await page.qawolf.hasText("tomsmith", { timeoutMs: 0 });
     expect(result).toBe(true);
+  });
+
+  it("is case sensitive", async () => {
+    const result = await page.qawolf.hasText("Tomsmith", { timeoutMs: 0 });
+    expect(result).toBe(false);
   });
 });
