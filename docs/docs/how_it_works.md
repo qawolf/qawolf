@@ -28,7 +28,7 @@ QA Wolf automatically waits for network requests to finish or time out, and elem
 
 QA Wolf waits to find a good match for the [target element](#element-selectors) before proceeding. This removes the need for you to write custom waiting logic or sleep statements in your tests. If you include an assertion using [one of our helper methods](api#helpers), QA Wolf will also automatically wait to get the data you asked for before moving on.
 
-One caveat is that elements may appear on the page before event handlers are attached. By default we [sleep for 1 second](http://localhost:3000/docs/api#qaw_sleep_ms) after an element is found to avoid this issue. However you can [edit your test code](edit_your_code) to include custom wait logic instead for these scenarios. [The `waitUntil` helper](api#qawolfwaituntilpredicate-timeoutms-sleepms) will likely be useful here.
+One caveat is that elements may appear on the page before event handlers are attached. By default we [sleep for 1 second](api#qaw_sleep_ms) after an element is found to avoid this issue. However you can [edit your test code](edit_your_code) to include custom wait logic instead for these scenarios. [The `waitUntil` helper](api#qawolfwaituntilpredicate-timeoutms-sleepms) will likely be useful here.
 
 ### 🔍 Element Selectors
 

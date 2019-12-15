@@ -3,7 +3,7 @@ id: edit_your_code
 title: ✏️ Edit Your Code
 ---
 
-QA Wolf generates code you can edit. The code imports the [`qawolf` node package](http://localhost:3000/docs/api), which extends the [Puppeteer API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md) with [automatic waiting](how_it_works#-automatic-waiting) for elements and assertions, and [smart element selectors](how_it_works#-element-selectors).
+QA Wolf generates code you can edit. The code imports the [`qawolf` node package](api), which extends the [Puppeteer API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md) with [automatic waiting](how_it_works#-automatic-waiting) for elements and assertions, and [smart element selectors](how_it_works#-element-selectors).
 
 ## Puppeteer
 
