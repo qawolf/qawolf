@@ -47,7 +47,17 @@ module.exports = {
         alt: "Spirit the QA Wolf",
         src: "img/logo_small.png"
       },
-      copyright: `Copyright © ${new Date().getFullYear()} QA Wolf. Built with Docusaurus.`
+      copyright: `Copyright © ${new Date().getFullYear()} QA Wolf. Built with Docusaurus.`,
+      links: [
+        {
+          items: [
+            {
+              to: "http://eepurl.com/gM47dD",
+              label: "Subscribe to Updates"
+            }
+          ]
+        }
+      ]
     },
     algolia: {
       apiKey: process.env.ALGOLIA_API_KEY,
