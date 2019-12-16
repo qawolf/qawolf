@@ -22,7 +22,10 @@ export const formatDescription = (step: Step): string => {
     description = `${description.substring(0, 40)}...`;
   }
 
-  if (description.length) return ` "${description}"`;
+  if (description.length) {
+    // strip single quotes so the description is valid javascript
+    return ` "${description}"`.replace("'", "");
+  }
 
   return "";
 };

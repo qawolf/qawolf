@@ -28,7 +28,7 @@ describe("formatStep", () => {
         html: {
           ancestors: [],
           node: {
-            attrs: { innertext: "sign in" },
+            attrs: { innertext: "someone's" },
             name: "input",
             type: "tag"
           }
