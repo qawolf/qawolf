@@ -23,6 +23,7 @@ export const formatDescription = (step: Step): string => {
   }
 
   if (description.length) {
+    // strip single quotes so they don't mess up formatting
     return ` "${description}"`.replace("'", "");
   }
 
