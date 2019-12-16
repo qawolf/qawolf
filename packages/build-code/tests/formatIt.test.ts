@@ -41,6 +41,25 @@ describe("formatDescription", () => {
       ' "sign inxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx..."'
     );
   });
+
+  it("escapes single quotes", () => {
+    const step: Step = {
+      action: "type",
+      html: {
+        ancestors: [],
+        node: {
+          attrs: { labels: "someone's" },
+          name: "input",
+          type: "tag",
+          voidElement: false
+        }
+      },
+      index: 0,
+      page: 0
+    };
+
+    expect(formatDescription(step)).toBe(` "someone\\'s"`);
+  });
 });
 
 describe("formatIt", () => {

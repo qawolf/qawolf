@@ -22,7 +22,9 @@ export const formatDescription = (step: Step): string => {
     description = `${description.substring(0, 40)}...`;
   }
 
-  if (description.length) return ` "${description}"`;
+  if (description.length) {
+    return ` "${description}"`.replace(/'/g, "\\'");
+  }
 
   return "";
 };

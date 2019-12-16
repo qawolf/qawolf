@@ -9,7 +9,7 @@ Object {
 
 exports[`formatStep click formats click on submit input step 1`] = `
 Object {
-  "it": "can click \\"sign in\\" input",
+  "it": "can click \\"someone\\\\'s\\" input",
   "method": "browser.click(selectors[1])",
 }
 `;
