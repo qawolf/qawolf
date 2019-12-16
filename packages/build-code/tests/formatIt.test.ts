@@ -58,7 +58,7 @@ describe("formatDescription", () => {
       page: 0
     };
 
-    expect(formatDescription(step)).toBe(` "someone\\'s"`);
+    expect(formatDescription(step)).toBe(` "someones"`);
   });
 });
 

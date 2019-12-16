@@ -23,7 +23,7 @@ export const formatDescription = (step: Step): string => {
   }
 
   if (description.length) {
-    return ` "${description}"`.replace(/'/g, "\\'");
+    return ` "${description}"`.replace("'", "");
   }
 
   return "";
