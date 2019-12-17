@@ -15,7 +15,6 @@
     "test:services": "docker-compose up -d",
     "watch": "tsc --build --watch packages/tsconfig.project.json"
   },
-
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
