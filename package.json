@@ -15,6 +15,15 @@
     "test:services": "docker-compose up -d",
     "watch": "tsc --build --watch packages/tsconfig.project.json"
   },
+
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+      "*.ts": "npm run lint"
+  },
   "dependencies": {
     "fs-extra": "^8.1.0",
     "lodash": "^4.17.15"
