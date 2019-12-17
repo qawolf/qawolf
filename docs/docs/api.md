@@ -3,7 +3,10 @@ id: api
 title: API
 ---
 
-### [qawolf@v0.7.3](https://www.npmjs.com/package/qawolf/v/0.7.3)
+### [`qawolf@v0.7.3`](https://www.npmjs.com/package/qawolf/v/0.7.3)
+
+<a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version" /></a>
+<br/>
 
 The generated code imports the `qawolf` node package, which extends the [Puppeteer API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md) with [automatic waiting](how_it_works#-automatic-waiting) for elements and assertions, and [smart element selectors](how_it_works#-element-selectors).
 
