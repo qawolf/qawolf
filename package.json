@@ -22,7 +22,7 @@
     }
   },
   "lint-staged": {
-      "*.ts": "npm run lint"
+    "*.ts": "npm run lint"
   },
   "dependencies": {
     "fs-extra": "^8.1.0",
