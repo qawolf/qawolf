@@ -68,7 +68,7 @@ class Banner extends React.Component {
             styles.bannerPadding
           )}
         >
-          Delightful open source recorder for
+          Free and open source recorder for
         </h1>
         <div className={styles.useCase}>
           <h1 className={useCaseClass}>{USE_CASES[useCaseIndex]}</h1>

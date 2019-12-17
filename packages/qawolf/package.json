@@ -1,6 +1,6 @@
 {
   "name": "qawolf",
-  "description": "Record browser tests with one command",
+  "description": "Delightful browser recorder for testing and automation",
   "version": "0.7.3",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
