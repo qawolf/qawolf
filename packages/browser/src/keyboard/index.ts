@@ -1,6 +1,7 @@
-export { characterToCode } from "./keys";
+export { keyToCode } from "./keys";
 
 export {
+  keyEventToStroke,
   serializeStrokes,
   stringToStrokes,
   valueToStrokes

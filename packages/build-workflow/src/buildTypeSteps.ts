@@ -1,5 +1,5 @@
 import {
-  characterToCode,
+  keyEventToStroke,
   serializeStrokes,
   stringToStrokes,
   Stroke,
@@ -68,20 +68,11 @@ export class TypeStepFactory {
       return;
     }
 
-    const code = characterToCode(event.value);
-    let type: StrokeType = event.name === "keydown" ? "↓" : "↑";
-    if (!code) {
-      // sendCharacter if we cannot find the key's code
-      type = "→";
-    }
+    const stroke = keyEventToStroke(event.name, event.value, index);
+    if (!stroke) return;
 
     if (!this.pendingEvent) this.pendingEvent = event;
-
-    this.pendingStrokes.push({
-      index,
-      type,
-      value: code ? code : event.value
-    });
+    this.pendingStrokes.push(stroke);
   }
 
   buildPasteStrokes(event: PasteEvent, index: number) {
