@@ -3,7 +3,7 @@ import { logger } from "@qawolf/logger";
 import { sleep } from "@qawolf/web";
 import { ElementHandle, Page as PuppeteerPage } from "puppeteer";
 import { focusClearElement } from "./focusClearElement";
-import { valueToStrokes } from "../keyboard";
+import { deserializeStrokes } from "../keyboard";
 
 export const typeElement = async (
   page: PuppeteerPage,
@@ -17,7 +17,7 @@ export const typeElement = async (
     return;
   }
 
-  const strokes = valueToStrokes(value);
+  const strokes = deserializeStrokes(value);
 
   if (strokes[0].value === "Enter" || strokes[0].value === "Tab") {
     // do not clear the element if the first character is Enter or Tab
