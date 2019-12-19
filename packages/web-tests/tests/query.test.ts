@@ -58,14 +58,13 @@ describe("queryActionElements", () => {
 });
 
 describe("queryDataElements", () => {
-  it("returns all elements with given data value for click action", async () => {
+  it("returns all elements with given data value", async () => {
     const dataElementXpaths = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const submit = document.getElementsByTagName("button")[0]!;
       submit.setAttribute("data-qa", "submit");
 
       const dataElements = qawolf.find.queryDataElements({
-        action: "click",
         dataAttribute: "data-qa",
         dataValue: "submit"
       });
@@ -75,29 +74,6 @@ describe("queryDataElements", () => {
     });
 
     expect(dataElementXpaths).toEqual(["//*[@id='login']/button"]);
-  });
-
-  it("returns only input elements with given data value for input action", async () => {
-    const dataElementXpaths = await page.evaluate(() => {
-      const qawolf: QAWolfWeb = (window as any).qawolf;
-      const username = document.getElementById("username")!;
-      const submit = document.getElementsByTagName("button")[0]!;
-      username.setAttribute("data-qa", "username");
-      submit.setAttribute("data-qa", "username");
-
-      const dataElements = qawolf.find.queryDataElements({
-        action: "type",
-        dataAttribute: "data-qa",
-        dataValue: "username"
-      });
-
-      username.removeAttribute("data-qa");
-      submit.removeAttribute("data-qa");
-
-      return dataElements.map((el: HTMLElement) => qawolf.xpath.getXpath(el));
-    });
-
-    expect(dataElementXpaths).toEqual(["//*[@id='username']"]);
   });
 
   it("does not include elements that are not visible", async () => {
