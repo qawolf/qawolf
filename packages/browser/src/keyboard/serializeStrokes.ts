@@ -28,9 +28,9 @@ export const keyEventToStroke = (
   index: number
 ): Stroke | null => {
   if (key.length === 1) {
-    // if the key is once character use sendCharacter
-    // this allows us to support international characters
-    // and skip keyup strokes
+    // If the key is once character
+    // for keydown: use sendCharacter to support international characters
+    // for keyup: skip the event
     if (name === "keyup") return null;
 
     return {
