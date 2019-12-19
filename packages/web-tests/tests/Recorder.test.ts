@@ -128,22 +128,9 @@ describe("Recorder", () => {
     const events = page.qawolf.events.filter(e => e.isTrusted);
 
     expect(events[0].target.node.attrs.id).toEqual("password");
+    // we will not receive any events for "secret" since it is all sendCharacter
     expect(
       (events.filter(e => isKeyEvent(e)) as KeyEvent[]).map(e => e.value)
-    ).toEqual([
-      "s",
-      "s",
-      "e",
-      "e",
-      "c",
-      "c",
-      "r",
-      "r",
-      "e",
-      "e",
-      "t",
-      "t",
-      "Enter"
-    ]);
+    ).toEqual(["Enter"]);
   });
 });

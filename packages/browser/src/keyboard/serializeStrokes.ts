@@ -1,5 +1,5 @@
-import { flatten } from "lodash";
-import { characterToStrokes } from "./keys";
+import { KeyEvent } from "@qawolf/types";
+import { keyToCode } from "./keys";
 import { simplifyStrokes } from "./simplifyStrokes";
 import { Stroke, StrokeType } from "./Stroke";
 
@@ -20,6 +20,38 @@ export const deserializeStrokes = (serialized: string) => {
   return strokes;
 };
 
+export const keyEventToStroke = (
+  name: "keydown" | "keyup",
+  // KeyboardEvent.key
+  // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+  key: string,
+  index: number
+): Stroke | null => {
+  if (key.length === 1) {
+    // If the key is once character
+    // for keydown: use sendCharacter to support international characters
+    // for keyup: skip the event
+    if (name === "keyup") return null;
+
+    return {
+      index,
+      type: "→",
+      value: key
+    };
+  }
+
+  // if the key is longer than a character it's a special key
+  // so use keyboard.up(code)/ keyboard.down(code)
+  const code = keyToCode(key);
+  if (!code) throw new Error(`${key} was not recognized`);
+
+  return {
+    index,
+    type: name === "keydown" ? "↓" : "↑",
+    value: code
+  };
+};
+
 export const serializeStrokes = (strokes: Stroke[]) => {
   const sortedStrokes = strokes.sort((a, b) => a.index - b.index);
 
@@ -31,11 +63,11 @@ export const serializeStrokes = (strokes: Stroke[]) => {
 };
 
 export const stringToStrokes = (value: string): Stroke[] => {
-  const strokes = flatten(
-    value.split("").map(character => characterToStrokes(character))
-  );
-
-  strokes.forEach((s, i) => (s.index = i));
+  const strokes = value.split("").map<Stroke>((character, i) => ({
+    index: i,
+    type: "→",
+    value: character
+  }));
 
   return strokes;
 };

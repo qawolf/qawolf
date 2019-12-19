@@ -2,6 +2,10 @@ import { codeToCharacter } from "./keys";
 import { Stroke } from "./Stroke";
 
 class StrokeParser {
+  /**
+   * It is possible to simplify strokes to a plain string when Shift is the only special key
+   * because we can map the down strokes to their shift values.
+   */
   private _strokes: Stroke[];
   private _simplified: string = "";
   private _shiftDown: boolean = false;

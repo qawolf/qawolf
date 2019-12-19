@@ -1,12 +1,10 @@
 import KeyDefinitions, { KeyDefinition } from "puppeteer/lib/USKeyboardLayout";
-import { Stroke } from "./Stroke";
 import "../types";
 
 // organizes the KeyDefinitions from USKeyboardLayout
 const codeToDefinition: { [code: string]: KeyDefinition } = {};
 const keyToDefinition: { [key: string]: KeyDefinition } = {};
 const shiftCodeToDefinition: { [code: string]: KeyDefinition } = {};
-const shiftKeyToDefinition: { [key: string]: KeyDefinition } = {};
 
 Object.keys(KeyDefinitions).forEach(key => {
   const definition = KeyDefinitions[key];
@@ -24,69 +22,8 @@ Object.keys(KeyDefinitions).forEach(key => {
     if (!shiftCodeToDefinition[definition.code]) {
       shiftCodeToDefinition[definition.code] = definition;
     }
-
-    if (!shiftKeyToDefinition[definition.shiftKey]) {
-      shiftKeyToDefinition[definition.shiftKey] = definition;
-    }
   }
 });
-
-export const characterToCode = (character: string): string | null => {
-  const definition = keyToDefinition[character];
-  return definition ? definition.code : null;
-};
-
-export const characterToStrokes = (character: string): Stroke[] => {
-  const strokes: Stroke[] = [];
-
-  const shiftKeyDefinition = shiftKeyToDefinition[character];
-  const keyDefinition = keyToDefinition[character];
-
-  if (!shiftKeyDefinition && !keyDefinition) {
-    // sendCharacter if we cannot find the key definition
-    strokes.push({
-      index: strokes.length,
-      type: "→",
-      value: character
-    });
-
-    return strokes;
-  }
-
-  const code = shiftKeyDefinition
-    ? shiftKeyDefinition.code
-    : keyDefinition.code;
-
-  if (shiftKeyDefinition) {
-    strokes.push({
-      index: strokes.length,
-      type: "↓",
-      value: "Shift"
-    });
-  }
-
-  strokes.push({
-    index: strokes.length,
-    type: "↓",
-    value: code
-  });
-
-  strokes.push({
-    index: strokes.length,
-    type: "↑",
-    value: code
-  });
-
-  if (shiftKeyDefinition) {
-    strokes.push({
-      index: strokes.length,
-      type: "↑",
-      value: "Shift"
-    });
-  }
-
-  return strokes;
-};
 
 export const codeToCharacter = (
   code: string,
@@ -105,4 +42,9 @@ export const codeToCharacter = (
   }
 
   return character;
+};
+
+export const keyToCode = (key: string): string | null => {
+  const definition = keyToDefinition[key];
+  return definition ? definition.code : null;
 };
