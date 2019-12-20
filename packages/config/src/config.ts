@@ -24,7 +24,6 @@ export const CONFIG = {
   display: process.env.DISPLAY,
   domPath: process.env.QAW_DOM_PATH,
   headless: parseBool(process.env.QAW_HEADLESS),
-  keyDelayMs: parseNumber(process.env.QAW_KEY_DELAY_MS, 0),
   logLevel: process.env.QAW_LOG_LEVEL,
   logPath: process.env.QAW_LOG_PATH,
   navigationTimeoutMs: parseNumber(
