@@ -255,7 +255,7 @@ const page = await browser.goto("https://youtube.com", {
 - `text` <[string]> the text to find on the page.
 - `options` <[FindPageOptions]> find the page with these options.
   - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
-  - `timeoutMs` <?[number]> maximum time to wait for a page to open. Defaults to `5000`.
+  - `timeoutMs` <?[number]> maximum time to wait for text to appear. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
 - returns: <[Promise]<[boolean]>>
 
