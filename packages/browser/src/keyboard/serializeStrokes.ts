@@ -34,16 +34,11 @@ export const isKeyHeld = (
   thresholdMs: number = 200
 ): boolean => {
   /**
-   * Check if a key is held down while another key is pressed
-   * and not released > threshold and after another key
+   * Check if any key is held down for > threshold.
    */
   for (let i = 0; i < events.length - 1; i++) {
     const keydownEvent = events[i];
     if (keydownEvent.name !== "keydown") continue;
-
-    // continue if another key was not pressed
-    const nextEvent = events[i + 1];
-    if (nextEvent.name !== "keydown") continue;
 
     // find the matching keyup event
     const keyupEvent = events.find(
@@ -52,7 +47,6 @@ export const isKeyHeld = (
 
     const heldTime = keyupEvent ? keyupEvent.time - keydownEvent.time : 0;
     if (heldTime > thresholdMs) {
-      // the key was held
       logger.debug(`${keydownEvent.value} was held for ${heldTime}`);
       return true;
     }
