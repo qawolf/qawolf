@@ -90,7 +90,6 @@ describe("queryDataElements", () => {
       password.setAttribute("data-qa", "username");
 
       const dataElements = qawolf.find.queryDataElements({
-        action: "type",
         dataAttribute: "data-qa",
         dataValue: "username"
       });
