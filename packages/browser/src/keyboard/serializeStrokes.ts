@@ -15,20 +15,6 @@ Object.keys(KeyDefinitions).forEach(key => {
   }
 });
 
-export const keyToCode = (key: string): string => {
-  const definition = keyToDefinition[key];
-  if (!definition) throw new Error(`No code found for ${key}`);
-
-  const code = definition.code;
-
-  // simplify Enter and Tab
-  // TODO test
-  if (code.includes("Enter")) return "Enter";
-  if (code.includes("Tab")) return "Tab";
-
-  return code;
-};
-
 export const isKeyHeld = (
   events: KeyEvent[],
   thresholdMs: number = 200
@@ -61,6 +47,15 @@ export const isSpecialKey = (key: string): boolean => {
 
 export const isUSKey = (key: string): boolean => {
   return !!keyToDefinition[key];
+};
+
+export const keyToCode = (key: string): string => {
+  const definition = keyToDefinition[key];
+
+  if (!definition) throw new Error(`No code found for ${key}`);
+  if (definition.code === "NumpadEnter") return "Enter";
+
+  return definition.code;
 };
 
 export const serializeCharacterStrokes = (events: KeyEvent[]): string => {
@@ -97,7 +92,7 @@ export const serializeKeyEvents = (events: KeyEvent[]): string => {
   /**
    * Serialize key events as character strokes or key strokes.
    */
-  const hasNotUSKey = !!events.find(e => !isUSKey(e.value));
+  const hasNotUSKey = events.some(e => !isUSKey(e.value));
   if (hasNotUSKey) {
     logger.debug("serializeKeyEvents: not US key found");
     // Serialize as character strokes since it was not recorded
