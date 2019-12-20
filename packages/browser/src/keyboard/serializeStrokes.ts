@@ -11,7 +11,7 @@ const USKeys = uniq(
 
 export const isKeyHeld = (
   events: KeyEvent[],
-  thresholdMs: number = 200
+  thresholdMs: number = 500
 ): boolean => {
   /**
    * Check if any key is held down for > threshold.
