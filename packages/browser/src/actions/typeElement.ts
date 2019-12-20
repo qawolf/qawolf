@@ -6,7 +6,7 @@ import { clearElement } from "./clearElement";
 import { deserializeStrokes, Stroke } from "../keyboard";
 
 const shouldClear = (strokes: Stroke[]) => {
-  if (strokes.length < 1) return true;
+  if (!strokes.length) return true;
 
   const value = strokes[0].value;
   return value !== "Enter" && value !== "Tab";
