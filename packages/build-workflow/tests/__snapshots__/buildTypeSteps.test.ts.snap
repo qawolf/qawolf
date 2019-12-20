@@ -1,6 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`buildTypeSteps builds expected steps 1`] = `
+exports[`buildTypeSteps builds expected steps for hotkeys 1`] = `
+Array [
+  Object {
+    "action": "type",
+    "html": Object {
+      "ancestors": Array [],
+      "node": Object {
+        "attrs": Object {},
+        "children": Array [],
+        "name": "body",
+        "type": "tag",
+        "voidElement": true,
+      },
+    },
+    "index": 0,
+    "page": 0,
+    "value": "↓KeyG↓KeyI↑KeyI↑KeyG",
+  },
+]
+`;
+
+exports[`buildTypeSteps builds expected steps for login 1`] = `
 Array [
   Object {
     "action": "type",
