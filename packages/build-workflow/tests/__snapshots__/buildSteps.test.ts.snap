@@ -60,7 +60,7 @@ Array [
     "page": 0,
   },
   Object {
-    "action": "type",
+    "action": "click",
     "html": Object {
       "ancestors": Array [
         Object {
@@ -97,7 +97,6 @@ Array [
     },
     "index": 2,
     "page": 0,
-    "value": "tomsmith",
   },
   Object {
     "action": "type",
@@ -137,6 +136,46 @@ Array [
     },
     "index": 3,
     "page": 0,
+    "value": "tomsmith",
+  },
+  Object {
+    "action": "type",
+    "html": Object {
+      "ancestors": Array [
+        Object {
+          "attrs": Object {
+            "class": "large-6 small-12 columns",
+          },
+          "children": Array [],
+          "name": "div",
+          "type": "tag",
+          "voidElement": false,
+        },
+        Object {
+          "attrs": Object {
+            "class": "row",
+          },
+          "children": Array [],
+          "name": "div",
+          "type": "tag",
+          "voidElement": false,
+        },
+      ],
+      "node": Object {
+        "attrs": Object {
+          "id": "username",
+          "labels": "Username",
+          "name": "username",
+          "type": "text",
+        },
+        "children": Array [],
+        "name": "input",
+        "type": "tag",
+        "voidElement": true,
+      },
+    },
+    "index": 4,
+    "page": 0,
     "value": "↓Tab↑Tab",
   },
   Object {
@@ -175,7 +214,7 @@ Array [
         "voidElement": true,
       },
     },
-    "index": 4,
+    "index": 5,
     "page": 0,
     "value": "SuperSecretPassword!",
   },
@@ -215,7 +254,7 @@ Array [
         "voidElement": true,
       },
     },
-    "index": 5,
+    "index": 6,
     "page": 0,
     "value": "↓Enter↑Enter",
   },
@@ -270,7 +309,7 @@ Array [
         "voidElement": false,
       },
     },
-    "index": 6,
+    "index": 7,
     "page": 0,
   },
 ]

@@ -90,6 +90,45 @@ Array [
       "ancestors": Array [
         Object {
           "attrs": Object {
+            "class": "large-6 small-12 columns",
+          },
+          "children": Array [],
+          "name": "div",
+          "type": "tag",
+          "voidElement": false,
+        },
+        Object {
+          "attrs": Object {
+            "class": "row",
+          },
+          "children": Array [],
+          "name": "div",
+          "type": "tag",
+          "voidElement": false,
+        },
+      ],
+      "node": Object {
+        "attrs": Object {
+          "id": "username",
+          "labels": "Username",
+          "name": "username",
+          "type": "text",
+        },
+        "children": Array [],
+        "name": "input",
+        "type": "tag",
+        "voidElement": true,
+      },
+    },
+    "index": 27,
+    "page": 0,
+  },
+  Object {
+    "action": "click",
+    "html": Object {
+      "ancestors": Array [
+        Object {
+          "attrs": Object {
             "class": "example",
           },
           "children": Array [],

@@ -24,24 +24,10 @@ describe("Browser.type", () => {
     );
     expect(username).toBe("spirit");
   });
-
-  it("uses click to activate element", async () => {
-    const usernameClicked = page.evaluate(
-      () =>
-        new Promise(resolve => {
-          document
-            .querySelector("#username")!
-            .addEventListener("click", () => resolve(true));
-        })
-    );
-
-    await browser.type({ css: "#username" }, "spirit", { activate: "click" });
-    expect(usernameClicked).resolves.toEqual(true);
-  });
 });
 
 describe("Page.type", () => {
-  it("does not clear input value for Enter or Tab", async () => {
+  it("does not clear input value for Tab (or Enter)", async () => {
     await page.qawolf.type({ css: "#username" }, "↓Tab↑Tab");
 
     const username = await page.$eval(
@@ -49,6 +35,17 @@ describe("Page.type", () => {
       (input: HTMLInputElement) => input.value
     );
     expect(username).toEqual("spirit");
+  });
+
+  it("does not clear input value when skipClear = true", async () => {
+    await browser.type({ css: "#username" }, "2", { skipClear: true });
+
+    const username = await page.$eval(
+      "#username",
+      (input: HTMLInputElement) => input.value
+    );
+
+    expect(username).toEqual("spirit2");
   });
 
   it("clears input value for null", async () => {

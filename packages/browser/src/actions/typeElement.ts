@@ -18,16 +18,8 @@ export const typeElement = async (
   value: string | null,
   options: TypeOptions = {}
 ): Promise<void> => {
-  logger.verbose("typeElement");
-
-  if (options.activate === "click") {
-    logger.verbose("typeElement: click");
-    await element.click();
-  } else {
-    // default to focus
-    logger.verbose("typeElement: focus");
-    await element.focus();
-  }
+  logger.verbose("typeElement: focus");
+  await element.focus();
 
   const strokes = deserializeStrokes(value || "");
 

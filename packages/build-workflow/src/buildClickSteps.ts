@@ -19,16 +19,6 @@ export const buildClickSteps = (events: Event[]): Step[] => {
     // ignore clicks on selects
     if (target.name!.toLowerCase() === "select") continue;
 
-    // ignore click followed by a type with the same target
-    const nextEvent = i + 1 < events.length ? events[i + 1] : null;
-    if (
-      isTypeEvent(nextEvent) &&
-      JSON.stringify(event.target) === JSON.stringify(nextEvent!.target)
-    ) {
-      logger.verbose(`skip click before type ${event.time}`);
-      continue;
-    }
-
     const previousEvent = events[i - 1];
     if (previousEvent && event.time - previousEvent.time < 50) {
       // skip system-initiated clicks -- those shortly after the previous event
