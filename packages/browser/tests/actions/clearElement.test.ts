@@ -20,6 +20,7 @@ describe("clearElement", () => {
     );
     expect(username1).toBe("spirit");
 
+    await usernameElement.focus();
     await clearElement(usernameElement);
 
     const username2 = await page.$eval(
