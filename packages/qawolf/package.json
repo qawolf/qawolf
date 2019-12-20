@@ -1,7 +1,7 @@
 {
   "name": "qawolf",
   "description": "Delightful browser recorder for testing and automation",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -20,9 +20,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/browser": "^0.7.4",
-    "@qawolf/cli": "^0.7.4",
-    "@qawolf/web": "^0.7.3"
+    "@qawolf/browser": "^0.7.5",
+    "@qawolf/cli": "^0.7.5",
+    "@qawolf/web": "^0.7.5"
   },
   "bin": {
     "qawolf": "./lib/index.js"
