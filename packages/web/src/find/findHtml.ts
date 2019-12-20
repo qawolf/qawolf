@@ -1,5 +1,6 @@
 import { DocSelector, FindElementOptions, Selector } from "@qawolf/types";
 import { DocMatch, matchDocSelector } from "./compare";
+import { findCss } from "./findCss";
 import { queryElements } from "./query";
 import { htmlSelectorToDocSelector, nodeToDocSelector } from "../serialize";
 import { waitFor } from "../wait";
@@ -20,6 +21,12 @@ export const findHtml = async (
   }
 
   const docSelector = htmlSelectorToDocSelector(selector.html);
+
+  const nodeName = docSelector.node.name;
+  if (nodeName === "body" || nodeName === "html") {
+    // use css selector for top level nodes
+    return findCss({ css: nodeName }, options);
+  }
 
   let topElementMatch: ElementMatch | null = null;
 

@@ -2,7 +2,8 @@ import {
   FindElementOptions,
   FindPageOptions,
   Selector,
-  ScrollValue
+  ScrollValue,
+  TypeOptions
 } from "@qawolf/types";
 import {
   Browser as PuppeteerBrowser,
@@ -54,7 +55,7 @@ export interface Browser extends PuppeteerBrowser {
   type(
     selector: Selector,
     value: string | null,
-    options?: FindElementOptions
+    options?: FindElementOptions & TypeOptions
   ): Promise<ElementHandle>;
 
   // reference to our QAWolfBrowser for internal use

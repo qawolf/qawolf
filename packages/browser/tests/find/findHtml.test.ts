@@ -65,22 +65,24 @@ describe("findHtml", () => {
   });
 
   it("finds html and body elements", async () => {
+    // Use action "type" to make sure findHtml skips
+    // queryActionElements for body and html
     let element = await findHtml(
       page,
-      { html: "<html />" },
-      {
-        timeoutMs: 0
-      }
-    );
-    expect(await getXpath(element)).toEqual("/html");
-
-    element = await findHtml(
-      page,
-      { html: "<body />" },
+      { action: "type", html: "<body />" },
       {
         timeoutMs: 0
       }
     );
     expect(await getXpath(element)).toEqual("/html/body");
+
+    element = await findHtml(
+      page,
+      { action: "type", html: "<html />" },
+      {
+        timeoutMs: 0
+      }
+    );
+    expect(await getXpath(element)).toEqual("/html");
   });
 });

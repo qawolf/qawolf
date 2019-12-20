@@ -2,7 +2,6 @@ import { Action, DocSelector } from "@qawolf/types";
 import { isVisible } from "../element";
 
 type QueryDataElementsOptions = {
-  action?: Action;
   dataAttribute?: string;
   dataValue?: string;
 };
@@ -20,17 +19,10 @@ export const queryActionElements = (action?: Action): Element[] => {
 };
 
 export const queryDataElements = ({
-  action,
   dataAttribute,
   dataValue
 }: QueryDataElementsOptions): Element[] => {
-  let dataSelector = `[${dataAttribute}='${dataValue}']`;
-  if (action === "type") {
-    const selector = `input${dataSelector},select${dataSelector},textarea${dataSelector},[contenteditable="true"]${dataSelector}`;
-    return queryVisibleElements(selector);
-  }
-
-  return queryVisibleElements(dataSelector);
+  return queryVisibleElements(`[${dataAttribute}='${dataValue}']`);
 };
 
 export const queryElements = (
@@ -41,7 +33,6 @@ export const queryElements = (
     const dataValue = selector.node.attrs[dataAttribute];
     if (dataValue) {
       return queryDataElements({
-        action,
         dataAttribute,
         dataValue
       });

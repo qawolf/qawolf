@@ -1,118 +1,122 @@
-import {
-  keyEventToStroke,
-  serializeStrokes,
-  stringToStrokes,
-  Stroke,
-  StrokeType
-} from "@qawolf/browser";
+import { serializeKeyEvents } from "@qawolf/browser";
+import { logger } from "@qawolf/logger";
 import { Event, Step, KeyEvent, PasteEvent } from "@qawolf/types";
 import { isKeyEvent, isPasteEvent } from "@qawolf/web";
 import { removePasteKeyEvents } from "./removePasteKeyEvents";
 
 const SEPARATE_KEYS = ["Enter", "Tab"];
 
+const buildTypeStep = (
+  firstEvent: Event,
+  allEvents: Event[],
+  value: string
+): Step => {
+  return {
+    action: "type",
+    html: firstEvent.target,
+    // include event index so we can sort in buildSteps
+    index: allEvents.indexOf(firstEvent),
+    page: firstEvent.page,
+    value
+  };
+};
+
 export class TypeStepFactory {
   private events: Event[];
 
   private steps: Step[] = [];
 
-  // the event of the first pending Stroke
-  private pendingEvent: Event | null = null;
-  private pendingStrokes: Stroke[] = [];
+  private pendingEvents: KeyEvent[] = [];
 
   constructor(events: Event[]) {
     this.events = events;
   }
 
-  buildPendingStrokesStep() {
-    /**
-     * Build a type step for pending strokes.
-     */
-    if (!this.pendingStrokes.length) return;
-    if (!this.pendingEvent) throw new Error("pendingEvent not set");
+  buildPasteStep(event: PasteEvent) {
+    const value = event.value;
+    if (value.length <= 0) return;
 
-    const event = this.pendingEvent;
+    logger.debug("TypeStepFactory: buildPasteStep");
 
-    this.steps.push({
-      action: "type",
-      html: event.target,
-      // include event index so we can sort in buildSteps
-      index: this.events.indexOf(event),
-      page: event.page,
-      value: serializeStrokes(this.pendingStrokes)
-    });
-
-    this.pendingEvent = null;
-    this.pendingStrokes = [];
+    const step = buildTypeStep(event, this.events, value);
+    this.steps.push(step);
   }
 
-  buildSeparateStep(event: KeyEvent, index: number) {
-    // ignore keyup event we build the separate step for the keydown
+  buildPendingStep() {
+    /**
+     * Build a type step for pending events.
+     */
+    if (!this.pendingEvents.length) return;
+
+    logger.debug(
+      `TypeStepFactory: buildPendingStep ${this.pendingEvents.length}`
+    );
+
+    const step = buildTypeStep(
+      this.pendingEvents[0],
+      this.events,
+      serializeKeyEvents(this.pendingEvents)
+    );
+    this.steps.push(step);
+    this.pendingEvents = [];
+  }
+
+  buildSeparateStep(event: KeyEvent) {
+    // ignore keyup event, we build the separate step for the keydown
     // and include the up stroke as part of it
     if (event.name === "keyup") return;
 
-    this.buildPendingStrokesStep();
+    logger.debug("TypeStepFactory: buildSeparateStep");
 
-    this.pendingEvent = event;
-    this.pendingStrokes = ["↓", "↑"].map((type: StrokeType) => ({
-      index,
-      type,
-      value: event.value
-    }));
-    this.buildPendingStrokesStep();
-  }
-
-  buildKeyStroke(event: KeyEvent, index: number) {
-    if (SEPARATE_KEYS.some(special => event.value === special)) {
-      this.buildSeparateStep(event, index);
-      return;
-    }
-
-    const stroke = keyEventToStroke(event.name, event.value, index);
-    if (!stroke) return;
-
-    if (!this.pendingEvent) this.pendingEvent = event;
-    this.pendingStrokes.push(stroke);
-  }
-
-  buildPasteStrokes(event: PasteEvent, index: number) {
-    const strokes = stringToStrokes(event.value);
-    if (!this.pendingEvent) this.pendingEvent = event;
-
-    strokes.forEach(stroke => {
-      this.pendingStrokes.push({
-        ...stroke,
-        index
-      });
-    });
+    this.buildPendingStep();
+    this.pendingEvents.push(event);
+    this.pendingEvents.push({ ...event, name: "keyup" });
+    this.buildPendingStep();
   }
 
   buildSteps() {
     const filteredEvents = removePasteKeyEvents(this.events);
 
     filteredEvents.forEach(event => {
-      // find the index from the unfiltered list
-      const index = this.events.indexOf(event);
+      if (!event.isTrusted) return;
 
-      if (this.pendingEvent && event.page !== this.pendingEvent.page) {
+      if (
+        this.pendingEvents.length &&
+        event.page !== this.pendingEvents[0].page
+      ) {
         // build the step when the page changes
-        this.buildPendingStrokesStep();
+        logger.debug("TypeStepFactory: buildPendingStep for page change");
+        this.buildPendingStep();
       }
 
       if (isPasteEvent(event)) {
-        this.buildPasteStrokes(event as PasteEvent, index);
+        this.buildPasteStep(event as PasteEvent);
       } else if (isKeyEvent(event)) {
-        this.buildKeyStroke(event as KeyEvent, index);
+        this.handleKeyEvent(event as KeyEvent);
       } else {
+        logger.debug(
+          `TypeStepFactory: buildPendingStep for event change ${event.name}`
+        );
+
         // build the step when typing is interrupted
-        this.buildPendingStrokesStep();
+        this.buildPendingStep();
       }
     });
 
+    logger.debug(`TypeStepFactory: buildPendingStep at end`);
     // build steps at the end
-    this.buildPendingStrokesStep();
+    this.buildPendingStep();
 
     return this.steps;
+  }
+
+  handleKeyEvent(event: KeyEvent) {
+    if (SEPARATE_KEYS.some(separateKey => event.value.includes(separateKey))) {
+      this.buildSeparateStep(event);
+      return;
+    }
+
+    this.pendingEvents.push(event);
   }
 }
 
