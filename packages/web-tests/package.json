@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/web-tests",
   "description": "@qawolf/web tests",
-  "version": "0.7.5",
+  "version": "0.7.6",
   "license": "BSD-3.0",
   "scripts": {
     "test": "jest"
@@ -17,10 +17,10 @@
     "access": "public"
   },
   "devDependencies": {
-    "@qawolf/browser": "^0.7.5",
+    "@qawolf/browser": "^0.7.6",
     "@qawolf/config": "^0.7.5",
-    "@qawolf/types": "^0.7.5",
-    "@qawolf/web": "^0.7.5",
+    "@qawolf/types": "^0.7.6",
+    "@qawolf/web": "^0.7.6",
     "jest": "^24.9.0"
   }
 }
