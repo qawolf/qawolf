@@ -3,7 +3,7 @@ id: api
 title: API
 ---
 
-### [`qawolf@v0.7.4`](https://www.npmjs.com/package/qawolf/v/0.7.4)
+### [`qawolf@vnext`](https://www.npmjs.com/package/qawolf/v/next)
 
 <a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version" /></a>
 <br/>
@@ -17,7 +17,6 @@ The generated code imports the `qawolf` node package, which extends the [Puppete
   - [QAW_DEBUG](#qaw_debug)
   - [QAW_TIMEOUT_MS](#qaw_timeout_ms)
   - [QAW_HEADLESS](#qaw_headless)
-  - [QAW_KEY_DELAY_MS](#qaw_key_delay_ms)
   - [QAW_SLEEP_MS](#qaw_sleep_ms)
 - [class: QAWolf](#class-qawolf)
   - [qawolf.launch([options])](#qawolflaunchoptions)
@@ -108,12 +107,6 @@ The default maximum time to wait for [FindElementOptions].
 - default: `false`
 
 Run the browser in [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome).
-
-### QAW_KEY_DELAY_MS
-
-- default: `0`
-
-Time to wait in milliseconds after typing a key.
 
 ### QAW_SLEEP_MS
 
@@ -343,15 +336,16 @@ await browser.select(selectors[0], null);
   - `html` <?[string]> find the closest match to this html element.
   - `text` <?[string]> find an element with this text.
   - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
-- `value` <[string]> type this value. To clear the element value pass `null`. You can also specify a sequence of keystrokes by prefixing the [key](https://github.com/puppeteer/puppeteer/blob/v2.0.0/lib/USKeyboardLayout.js) with the direction: [↓ keyboard.down](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#keyboarddownkey-options), [↑ keyboard.up](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#keyboardupkey-options), or [→ sendCharacter](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#keyboardsendcharacterchar). This is useful for testing hotkeys.
-- `options` <[FindElementOptions]> find the element with these options.
+- `value` <[string]> type this value. To clear the element value pass `null`. You can also specify a sequence of keystrokes by prefixing the [key](https://github.com/puppeteer/puppeteer/blob/v2.0.0/lib/USKeyboardLayout.js) with the direction: ↓[keyboard.down] and ↑[keyboard.up], or →[sendCharacter]. This is useful for testing hotkeys.
+- `options` <[FindElementOptions] & TypeOptions> find the element with these options.
   - `dataAttribute` <?[string]> prioritize this data attribute. Defaults to [QAW_DATA_ATTRIBUTE](#qaw_data_attribute).
+  - `delayMs` <?[number]> time to wait between key presses in milliseconds. Defaults to 300ms for ↓[keyboard.down], ↑[keyboard.up]. Defaults to 0ms for →[sendCharacter].
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
   - `timeoutMs` <?[number]> maximum time to wait for an element. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
 - returns: <[Promise]<[ElementHandle]>> Resolves the element.
 
-Find an element, focus it and type the value. It will wait [QAW_KEY_DELAY_MS](#qaw_key_delay_ms) (defaults to `0`) milliseconds in between key presses.
+Find an element, focus it and type the value.
 
 If `value` does not have special keys, it will clear `element.value` before typing. It will throw an error if the element is not found.
 
@@ -425,10 +419,13 @@ await browser.type(selectors[1], "my@email.com");
 [findelementoptions]: #interface-findelementoptions "FindElementOptions"
 [findpageoptions]: #interface-findpageoptions "FindPageOptions"
 [function]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function "Function"
+[keyboard.down]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#keyboarddownkey-options "keyboard.down"
+[keyboard.up]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#keyboardupkey-options "keyboard.up"
 [number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "number"
 [object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object"
 [page]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#class-page "Page"
 [promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise"
 [puppeteer.browser]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#class-browser "puppeteer.Browser"
 [selector]: #interface-selector "Selector"
+[sendcharacter]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#keyboardsendcharacterchar" "sendCharacter"
 [string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "String"

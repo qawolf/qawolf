@@ -3,7 +3,8 @@ import {
   Event,
   FindElementOptions,
   Selector,
-  ScrollValue
+  ScrollValue,
+  TypeOptions
 } from "@qawolf/types";
 import { ElementHandle } from "puppeteer";
 import { eventWithTime } from "rrweb/typings/types";
@@ -138,7 +139,7 @@ export class QAWolfPage {
   public type(
     selector: Selector,
     value: string | null,
-    options: FindElementOptions = {}
+    options: FindElementOptions & TypeOptions = {}
   ): Promise<ElementHandle> {
     logger.verbose(`Page ${this._index}: type`);
 
@@ -148,7 +149,7 @@ export class QAWolfPage {
         { ...options }
       );
 
-      await typeElement(this._page, element, value);
+      await typeElement(this._page, element, value, options);
 
       return element;
     });

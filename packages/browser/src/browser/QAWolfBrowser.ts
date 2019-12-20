@@ -7,7 +7,8 @@ import {
   FindElementOptions,
   FindPageOptions,
   Selector,
-  ScrollValue
+  ScrollValue,
+  TypeOptions
 } from "@qawolf/types";
 import { sortBy } from "lodash";
 import { basename } from "path";
@@ -182,7 +183,7 @@ export class QAWolfBrowser {
   public async type(
     selector: Selector,
     value: string | null,
-    options: FindElementOptions = {}
+    options: FindElementOptions & TypeOptions = {}
   ): Promise<ElementHandle> {
     const page = await this.page({ ...options, page: selector.page });
     return page.qawolf.type(selector, value, options);

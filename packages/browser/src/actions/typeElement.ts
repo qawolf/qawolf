@@ -1,6 +1,6 @@
-import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { sleep } from "@qawolf/web";
+import { TypeOptions } from "@qawolf/types";
+import { isNil, sleep } from "@qawolf/web";
 import { ElementHandle, Page as PuppeteerPage } from "puppeteer";
 import { focusClearElement } from "./focusClearElement";
 import { deserializeStrokes } from "../keyboard";
@@ -8,7 +8,8 @@ import { deserializeStrokes } from "../keyboard";
 export const typeElement = async (
   page: PuppeteerPage,
   element: ElementHandle,
-  value: string | null
+  value: string | null,
+  options: TypeOptions = {}
 ): Promise<void> => {
   logger.verbose("typeElement");
 
@@ -33,14 +34,15 @@ export const typeElement = async (
     if (stroke.type === "↓") {
       logger.debug(`keyboard.down("${stroke.value}")`);
       await page.keyboard.down(stroke.value);
+      await sleep(isNil(options.delayMs) ? 300 : 0);
     } else if (stroke.type === "↑") {
       logger.debug(`keyboard.up("${stroke.value}")`);
       await page.keyboard.up(stroke.value);
+      await sleep(isNil(options.delayMs) ? 300 : 0);
     } else if (stroke.type === "→") {
       logger.debug(`keyboard.sendCharacter("${stroke.value}")`);
       await page.keyboard.sendCharacter(stroke.value);
+      await sleep(options.delayMs || 0);
     }
-
-    await sleep(CONFIG.keyDelayMs);
   }
 };
