@@ -18,17 +18,30 @@ describe("Browser.type", () => {
   it("sets input value", async () => {
     await browser.type({ css: "#username" }, "spirit");
 
-    const page = await browser.page();
     const username = await page.$eval(
       "#username",
       (input: HTMLInputElement) => input.value
     );
     expect(username).toBe("spirit");
   });
+
+  it("uses click to activate element", async () => {
+    const usernameClicked = page.evaluate(
+      () =>
+        new Promise(resolve => {
+          document
+            .querySelector("#username")!
+            .addEventListener("click", () => resolve(true));
+        })
+    );
+
+    await browser.type({ css: "#username" }, "spirit", { activate: "click" });
+    expect(usernameClicked).resolves.toEqual(true);
+  });
 });
 
 describe("Page.type", () => {
-  it("does not clear input value for special keys", async () => {
+  it("does not clear input value for Enter or Tab", async () => {
     await page.qawolf.type({ css: "#username" }, "↓Tab↑Tab");
 
     const username = await page.$eval(
