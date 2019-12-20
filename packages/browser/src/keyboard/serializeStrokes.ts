@@ -1,19 +1,13 @@
-import KeyDefinitions, { KeyDefinition } from "puppeteer/lib/USKeyboardLayout";
 import { logger } from "@qawolf/logger";
 import { KeyEvent } from "@qawolf/types";
-import "../types"; // for USKeyboardLayout ^
+import { uniq } from "lodash";
+import KeyDefinitions from "puppeteer/lib/USKeyboardLayout";
 import { Stroke } from "./Stroke";
+import "../USKeyboardLayoutTypes";
 
-// organize the KeyDefinitions from USKeyboardLayout
-const keyToDefinition: { [key: string]: KeyDefinition } = {};
-
-Object.keys(KeyDefinitions).forEach(key => {
-  const definition = KeyDefinitions[key];
-
-  if (!keyToDefinition[definition.key]) {
-    keyToDefinition[definition.key] = definition;
-  }
-});
+const USKeys = uniq(
+  Object.values(KeyDefinitions).map(definition => definition.key)
+);
 
 export const isKeyHeld = (
   events: KeyEvent[],
@@ -46,11 +40,11 @@ export const isSpecialKey = (key: string): boolean => {
 };
 
 export const isUSKey = (key: string): boolean => {
-  return !!keyToDefinition[key];
+  return USKeys.includes(key);
 };
 
 export const keyToCode = (key: string): string => {
-  const definition = keyToDefinition[key];
+  const definition = KeyDefinitions[key];
 
   if (!definition) throw new Error(`No code found for ${key}`);
   if (definition.code === "NumpadEnter") return "Enter";

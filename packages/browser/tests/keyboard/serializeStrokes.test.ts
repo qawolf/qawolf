@@ -64,8 +64,11 @@ describe("keyToCode", () => {
     expect(keyToCode("S")).toEqual("KeyS");
   });
 
-  it("serializes Enter properly", () => {
-    expect(keyToCode("Enter")).not.toEqual("NumpadEnter");
+  it("serializes special keys properly", () => {
+    // ArrowDown not Numpad2
+    expect(keyToCode("ArrowDown")).toEqual("ArrowDown");
+
+    // Enter not NumpadEnter
     expect(keyToCode("Enter")).toEqual("Enter");
   });
 
