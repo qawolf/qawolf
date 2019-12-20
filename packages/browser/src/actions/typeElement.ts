@@ -2,8 +2,15 @@ import { logger } from "@qawolf/logger";
 import { TypeOptions } from "@qawolf/types";
 import { isNil, sleep } from "@qawolf/web";
 import { ElementHandle, Page as PuppeteerPage } from "puppeteer";
-import { focusClearElement } from "./focusClearElement";
-import { deserializeStrokes } from "../keyboard";
+import { clearElement } from "./clearElement";
+import { deserializeStrokes, Stroke } from "../keyboard";
+
+const shouldClear = (strokes: Stroke[]) => {
+  if (!strokes.length) return true;
+
+  const value = strokes[0].value;
+  return value !== "Enter" && value !== "Tab";
+};
 
 export const typeElement = async (
   page: PuppeteerPage,
@@ -11,20 +18,13 @@ export const typeElement = async (
   value: string | null,
   options: TypeOptions = {}
 ): Promise<void> => {
-  logger.verbose("typeElement");
+  logger.verbose("typeElement: focus");
+  await element.focus();
 
-  if (!value) {
-    await focusClearElement(element);
-    return;
-  }
+  const strokes = deserializeStrokes(value || "");
 
-  const strokes = deserializeStrokes(value);
-
-  if (strokes[0].value === "Enter" || strokes[0].value === "Tab") {
-    // do not clear the element if the first character is Enter or Tab
-    await element.focus();
-  } else {
-    await focusClearElement(element);
+  if (!options.skipClear && shouldClear(strokes)) {
+    await clearElement(element);
   }
 
   // logging the keyboard codes below will leak secrets

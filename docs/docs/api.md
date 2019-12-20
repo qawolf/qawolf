@@ -340,6 +340,7 @@ await browser.select(selectors[0], null);
 - `options` <[FindElementOptions] & TypeOptions> find the element with these options.
   - `dataAttribute` <?[string]> prioritize this data attribute. Defaults to [QAW_DATA_ATTRIBUTE](#qaw_data_attribute).
   - `delayMs` <?[number]> time to wait between key presses in milliseconds. Defaults to 300ms for ↓[keyboard.down] and ↑[keyboard.up]. Defaults to 0ms for →[sendCharacter].
+  - `skipClear` <?[boolean]> do not clear the element. Defaults to `false`.
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
   - `timeoutMs` <?[number]> maximum time to wait for an element. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
@@ -347,7 +348,7 @@ await browser.select(selectors[0], null);
 
 Find an element, focus it and type the value.
 
-If `value` does not have special keys, it will clear `element.value` before typing. It will throw an error if the element is not found.
+It will clear the element before typing if `value` does not start with `Enter` or `Tab` keys and `skipClear` is not specified. It will throw an error if the element is not found.
 
 ```js
 await browser.type(selectors[0], "hello");

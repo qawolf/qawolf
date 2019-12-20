@@ -1,20 +1,20 @@
 import { logger } from "@qawolf/logger";
 import { ElementHandle } from "puppeteer";
 
-export const focusClearElement = async (
+export const clearElement = async (
   elementHandle: ElementHandle
 ): Promise<void> => {
-  logger.verbose("focusClearElement: focus");
-  await elementHandle.focus();
-
   const currentValue = await elementHandle.evaluate((element: HTMLElement) => {
     if (element.isContentEditable) return element.innerText;
     return (element as HTMLInputElement).value;
   });
 
-  if (!currentValue) return;
+  if (!currentValue) {
+    logger.verbose("clearElement: nothing to clear");
+    return;
+  }
 
-  logger.verbose("focusClearElement: clear");
+  logger.verbose("clearElement: clear value");
 
   // Select all so we replace the text
   // from https://github.com/GoogleChrome/puppeteer/issues/1313#issuecomment-471732011
