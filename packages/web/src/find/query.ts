@@ -12,12 +12,8 @@ type QueryElementsOptions = {
 };
 
 export const queryActionElements = (action?: Action): Element[] => {
-  // TODO test html & body
   const selector =
-    action === "type"
-      ? // include html & body for hotkeys
-        "html,body,input,select,textarea,[contenteditable='true']"
-      : "*";
+    action === "type" ? "input,select,textarea,[contenteditable='true']" : "*";
 
   return queryVisibleElements(selector);
 };
