@@ -85,7 +85,7 @@ npx qawolf test [name]
 
 [Documentation](https://docs.qawolf.com/docs/set_up_ci)
 
-Watch the [video, gif, and dom artifacts](https://docs.qawolf.com/docs/set_up_ci#-debug) from your CI runs.
+Watch the [video, gif, and dom artifacts](https://docs.qawolf.com/docs/set_up_ci#%EF%B8%8F-debug) from your CI runs.
 
 [<img align="center" height="20px" src="https://cdn.iconscout.com/icon/free/png-256/azure-190760.png" /> Azure](https://docs.qawolf.com/docs/set_up_ci#azure)
 
