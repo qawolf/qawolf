@@ -61,7 +61,9 @@ npm install --save-dev qawolf
 
 <br/>
 
-## [✅ Create a browser test](http://docs.qawolf.com/docs/get_started#-record-a-browser-test)
+## ✅ Create a browser test
+
+[Documentation](http://docs.qawolf.com/docs/get_started#-record-a-browser-test)
 
 Create a [Puppeteer](https://github.com/puppeteer/puppeteer) and [Jest](https://jestjs.io/) test:
 
@@ -79,7 +81,9 @@ npx qawolf test [name]
 
 <br/>
 
-## [☁️ Set up CI](https://docs.qawolf.com/docs/set_up_ci)
+## ☁️ Set up CI
+
+[Documentation](https://docs.qawolf.com/docs/set_up_ci)
 
 Watch the [video, gif, and dom artifacts](https://docs.qawolf.com/docs/set_up_ci#-debug) from your CI runs.
 
