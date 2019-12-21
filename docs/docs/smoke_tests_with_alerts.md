@@ -37,6 +37,14 @@ npm i -D qawolf
 
 ## Creating a smoke test
 
+Now let's generate our smoke test code. This tutorial will record a test on a [simple todo application](http://todomvc.com/examples/react). Specifically, we'll create a todo item, complete it, and clear completed todos.
+
+When we run the following in the command line, a Chromium browser will open and capture any actions we take (clicking, typing, etc.). You can optionally replace `http://todomvc.com/examples/react` with a different URL, and `myFirstSmokeTest` with a different name.
+
+```bash
+npx qawolf record http://todomvc.com/examples/react myFirstSmokeTest
+```
+
 ## Reviewing smoke test code
 
 ## Running smoke tests on a schedule
