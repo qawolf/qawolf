@@ -12,10 +12,19 @@ const headStyles = `
   display: none;
 }
 
+#mc_embed_signup input.button {
+  background-color: var(--ifm-color-primary);
+}
+
+#mc_embed_signup input.button:hover {
+  background-color: var(--ifm-color-primary-darker);
+}
+
 #mc_embed_signup { 
-  background:#fff; 
-  clear:left; 
-  width:100%;
+  background: #fff; 
+  clear: left; 
+  font-family: var(--ifm-font-family-base);
+  width: 100%;
 }
 `;
 
