@@ -1,6 +1,6 @@
 {
   "name": "qawolf",
-  "description": "Delightful browser recorder for testing and automation",
+  "description": "Create browser tests 10x faster",
   "version": "0.7.7",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
