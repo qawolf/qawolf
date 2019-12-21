@@ -111,6 +111,8 @@ npx qawolf github
 npx qawolf gitlab
 ```
 
+![Set up CI](https://storage.googleapis.com/docs.qawolf.com/home/github.gif)
+
 Just [ping us](https://gitter.im/qawolf/community) if you want to run [QA Wolf Docker](https://hub.docker.com/r/qawolf/qawolf) somewhere else.
 
 <br/>
