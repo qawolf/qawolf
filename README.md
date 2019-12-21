@@ -1,13 +1,50 @@
-<h1 align="center">🐺 QA Wolf: Set up browser tests 10x faster</h1>
+<p align="center"><img src="https://docs.qawolf.com/img/logo_small.png" height="80" /></p>
+
+<h1 align="center">QA Wolf</h1>
+
+<h2 align="center">Create browser tests 10x faster</h2>
+
+<p align="center">QA Wolf is a free and open source library for creating <a href="https://github.com/puppeteer/puppeteer">Puppeteer</a> and <a href="https://jestjs.io">Jest</a> browser tests and running them in CI</p>
 
 <p align="center">
+  <a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version" /></a>
+  <a href="https://github.com/qawolf/qawolf/actions?query=workflow%3A%22npm+test%22"><img src="https://github.com/qawolf/qawolf/workflows/npm%20test/badge.svg" /></a>
+</p>
+
+<p align="center">
+    <a href="https://docs.qawolf.com/docs/get_started">🚀 Quickstart</a> |
     <a href="https://docs.qawolf.com/docs/api">📖 API</a> |
     <a href="https://docs.qawolf.com/docs/faq">🧐 FAQ</a> |
     <a href="https://gitter.im/qawolf/community">👋 Chat</a> |
     <a href="https://github.com/qawolf/qawolf/projects/4">🗺️ Roadmap</a>
-    <a href="http://badge.fury.io/js/qawolf"></a> |  
-<img src="https://badge.fury.io/js/qawolf.svg" alt="npm version"/></a>
 </p>
+
+<p>QA Wolf is an open source node library for creating browser tests 10x faster:</p>
+
+<ul>
+<li><b>No more boilerplate.</b> Your browser interactions are converted to Puppeteer and Jest code.
+</li>
+<li><b>Built for stability.</b> Avoid flaky tests with automatic waiting and smart element selectors.
+</li>
+<li><b>Test complex scenarios.</b> Test your application like a user. Use third party sites, multiple windows, and hot keys.
+</li>
+<li><b>One command CI.</b> Run your tests in CI with one command, on push or on a schedule.
+</li>
+<li><b>Debug easily.</b> Each test run in CI includes a video, GIF, interactive DOM recording, and detailed logs.
+</li>
+</ul>
+<p>We're working to build a world where browser testing is effortless. We hope you'll join us!</p>
+
+## Table of Contents
+
+- 🖥️ Install QA Wolf
+- ✅ Create a browser test
+- ☁️ Set up CI
+- 🙋 Get Help
+- 📝 License
+- 🙏 Acknowledgments
+
+## 🖥️ Install QA Wolf
 
 Install QA Wolf as a dev dependency with [`npm`](https://www.npmjs.com):
 
@@ -16,11 +53,9 @@ cd /my/awesome/project
 npm install --save-dev qawolf
 ```
 
-## [✅ Create a browser test from your actions](http://docs.qawolf.com/docs/get_started#-record-a-browser-test)
+## [✅ Create a browser test](http://docs.qawolf.com/docs/get_started#-record-a-browser-test)
 
-> QA Wolf supports multiple windows, hot keys, and other complex scenarios. The generated code [automatically waits](https://docs.qawolf.com/docs/how_it_works#-automatic-waiting) for elements and assertions and builds a [smart element selector](https://docs.qawolf.com/docs/how_it_works#-element-selectors) to ensure stability.
-
-Create a [Puppeteer](https://github.com/puppeteer/puppeteer) and [Jest](https://jestjs.io/) test from your actions:
+Create a [Puppeteer](https://github.com/puppeteer/puppeteer) and [Jest](https://jestjs.io/) test:
 
 ```bash
 npx qawolf record <url> [name]
@@ -34,9 +69,9 @@ Run your test:
 npx qawolf test [name]
 ```
 
-## [☁️ Set up CI with one command](https://docs.qawolf.com/docs/set_up_ci)
+## [☁️ Set up CI](https://docs.qawolf.com/docs/set_up_ci)
 
-> Watch the [video, gif, and dom artifacts](https://docs.qawolf.com/docs/set_up_ci#-debug) from your CI runs.
+Watch the [video, gif, and dom artifacts](https://docs.qawolf.com/docs/set_up_ci#-debug) from your CI runs.
 
 [<img align="center" height="20px" src="https://cdn.iconscout.com/icon/free/png-256/azure-190760.png" /> Azure](https://docs.qawolf.com/docs/set_up_ci#azure)
 
@@ -64,7 +99,7 @@ npx qawolf gitlab
 
 Just [ping us](https://gitter.im/qawolf/community) if you want to run [QA Wolf Docker](https://hub.docker.com/r/qawolf/qawolf) somewhere else.
 
-## Support
+## 🙋 Get Help
 
 <p align="left">
     <a href="https://gitter.im/qawolf/community">👋 Chat</a> |
@@ -73,6 +108,10 @@ Just [ping us](https://gitter.im/qawolf/community) if you want to run [QA Wolf D
 
 We want QA Wolf to work for you, so please reach out to get help!
 
-## Acknowledgements
+## 📝 License
+
+QA Wolf is licensed under [BSD-3-Clause](https://github.com/qawolf/qawolf/blob/master/LICENSE.md).
+
+## 🙏 Acknowledgements
 
 The DOM Recording artifact is using [@Yuyz0112](https://github.com/Yuyz0112)'s awesome [rrweb](https://github.com/rrweb-io/rrweb) library!
