@@ -36,7 +36,7 @@ function SetUpCI() {
       idx === tabIndex ? "pill-item pill-item--active" : "pill-item";
 
     return (
-      <li className={className} onClick={() => setTabIndex(idx)}>
+      <li className={className} key={idx} onClick={() => setTabIndex(idx)}>
         <div className={styles.tabContainer}>
           <div className={styles.tab}>
             <img className={styles.logo} src={provider.logo} />
@@ -57,7 +57,7 @@ function SetUpCI() {
         <div className={styles.stepText}>
           <h3>One command CI</h3>
           <p className={styles.stepDirection}>
-            Run your tests in CI with one command:
+            Set up running your tests in CI:
           </p>
           <CodeBlock value={`npx qawolf ${CI_PROVIDERS[tabIndex].command}`} />
           <p className={styles.stepDirection}>

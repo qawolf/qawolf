@@ -17,7 +17,7 @@ function Banner() {
         </p>
         <div className={styles.getStarted}>
           <button
-            class="button button--primary button--outline button--lg"
+            className="button button--primary button--outline button--lg"
             onClick={handleClick}
           >
             Get Started

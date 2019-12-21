@@ -33,8 +33,8 @@ function GetStarted() {
           <h3>3. Get code!</h3>
           <p className={styles.stepDirection}>
             A file called <code>.qawolf/tests/yourTestName.test.js</code> will
-            be automatically created in your project. Edit this file as you
-            like!
+            be created in your project. By default it includes automatic waiting
+            and smart element selectors. Edit this file as you like!
           </p>
         </div>
         <img src="https://data.whicdn.com/images/303699460/original.gif" />
