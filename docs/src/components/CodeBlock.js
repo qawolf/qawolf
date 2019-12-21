@@ -2,13 +2,6 @@ import classnames from "classnames";
 import React from "react";
 import styles from "./CodeBlock.module.css";
 
-const CODE_BLOCKS = [
-  "npx qawolf record <url> [name]",
-  "npx qawolf record --script <url> [name]",
-  "npx qawolf github",
-  "npx qawolf github"
-];
-
 class CodeBlock extends React.Component {
   constructor(props) {
     super(props);
@@ -29,10 +22,10 @@ class CodeBlock extends React.Component {
 
   handleClick() {
     const { useCaseIndex } = this.props;
-    const currentCode = CODE_BLOCKS[useCaseIndex];
+
     try {
       const textarea = document.createElement("textarea");
-      textarea.value = `npm i -D qawolf && ${currentCode}`;
+      textarea.value = "npm i -D qawolf";
       textarea.setAttribute("readonly", "");
       textarea.style.position = "absolute";
       textarea.style.left = "-9999px";
@@ -54,10 +47,9 @@ class CodeBlock extends React.Component {
   }
 
   render() {
-    const { useCaseIndex } = this.props;
     const { copySucceeded } = this.state;
     const showCopySuccess = copySucceeded !== null;
-    const copyClass = copySucceeded ? "success" : "danger";
+    const copyClass = copySucceeded ? "primary" : "danger";
     const copySuccessMessage = copySucceeded
       ? "Copied to clipboard!"
       : "Error copying to clipboard :(";
@@ -66,7 +58,6 @@ class CodeBlock extends React.Component {
       <div className={styles.codeContainer}>
         <button className={styles.code} onClick={this.handleClick}>
           <p>npm i -D qawolf</p>
-          <p>{CODE_BLOCKS[useCaseIndex]}</p>
         </button>
         {showCopySuccess && (
           <button

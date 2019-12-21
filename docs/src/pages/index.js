@@ -3,14 +3,10 @@ import Head from "@docusaurus/Head";
 import Layout from "@theme/Layout";
 import React from "react";
 import Banner from "../components/Banner";
+import Features from "../components/Features";
 import Subscribe from "../components/Subscribe";
-import UseCases from "../components/UseCases";
 
 const headStyles = `
-.navbar.navbar--fixed-top { 
-  box-shadow: none; 
-}
-
 .react-toggle {
   display: none;
 }
@@ -36,7 +32,7 @@ function Home() {
         <Banner />
       </header>
       <main>
-        <UseCases />
+        <Features />
         <Subscribe />
       </main>
     </Layout>

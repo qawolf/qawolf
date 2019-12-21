@@ -32,7 +32,7 @@
 </li>
 <li><b>One command CI.</b> Run your tests in CI with one command, on push or on a schedule.
 </li>
-<li><b>Debug easily.</b> Each test run in CI includes a video, GIF, interactive DOM recording, and detailed logs.
+<li><b>Easy debugging.</b> Each test run in CI includes a video, GIF, interactive DOM recording, and detailed logs.
 </li>
 </ul>
 <p>We're working to build a world where browser testing is effortless. We hope you'll join us!</p>

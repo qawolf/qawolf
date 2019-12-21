@@ -5,60 +5,41 @@ import styles from "./Features.module.css";
 
 function Features() {
   return (
-    <section className={styles.features}>
-      <div className={styles.featureRow}>
+    <section className={styles.featuresContainer}>
+      <div className={styles.features}>
         <div className={styles.feature}>
-          <h4>😌 effortless</h4>
+          <h4>😌 No more boilerplate</h4>
+          <p>Your browser actions are converted to Puppeteer and Jest code</p>
+        </div>
+        <div className={styles.feature}>
+          <h4>⚓ Built for stability</h4>
           <p>
-            Generate{" "}
-            <Link href={useBaseUrl("docs/edit_your_code")}>Puppeteer code</Link>{" "}
-            you can edit.
-          </p>
-          <p>
-            <Link href={useBaseUrl("docs/set_up_ci")}>Set up CI</Link> with one
-            command.
+            Avoid flaky tests with automatic waiting and smart element selectors
           </p>
         </div>
         <div className={styles.feature}>
-          <h4>⚓ stable</h4>
+          <h4>👷 Test complex scenarios</h4>
           <p>
-            {" "}
-            <Link href={useBaseUrl("docs/how_it_works#-element-selectors")}>
-              Automatically find
-            </Link>{" "}
-            elements.
-          </p>
-          <p>
-            <Link href={useBaseUrl("docs/how_it_works#-automatic-waiting")}>
-              Automatically wait
-            </Link>{" "}
-            for assertions
+            Test your application like a user - use third party sites, multiple
+            windows, and hot keys
           </p>
         </div>
-      </div>
-      <div className={styles.featureRow}>
         <div className={styles.feature}>
-          <h4>🐛 easy to debug</h4>
-          <p>
-            Watch the{" "}
-            <Link href={useBaseUrl("docs/set_up_ci#-debug")}>
-              video, gif, or dom recording.
-            </Link>
-          </p>
-          <p>Read detailed logs.</p>
+          <h4>☁️ One command CI</h4>
+          <p>Run your tests in CI with one command, on push or on a schedule</p>
         </div>
         <div className={styles.feature}>
-          <h4>📖 open source</h4>
+          <h4>🐛 Easy debugging</h4>
           <p>
-            Inspect (and contribute to!) the{" "}
-            <Link href="https://github.com/qawolf/qawolf">code.</Link>
+            Each test run in CI includes a video, GIF, interactive DOM
+            recording, and detailed logs
           </p>
+        </div>
+        <div className={styles.feature}>
+          <h4>📖 Open source</h4>
           <p>
-            {" "}
-            <Link href="https://gitter.im/qawolf/community">
-              Reach out
-            </Link>{" "}
-            with feedback or requests.
+            Inspect (and contribute to!) the code, and reach out with feedback
+            and requests
           </p>
         </div>
       </div>

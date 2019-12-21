@@ -7,8 +7,8 @@
 
 module.exports = {
   title: "QA Wolf",
-  tagline: "Find bugs before your users do",
-  url: "https://your-docusaurus-test-site.com",
+  tagline: "Create browser tests 10x faster",
+  url: "https://docs.qawolf.com",
   baseUrl: "/",
   favicon: "img/favicon.ico",
   organizationName: "qawolf", // Usually your GitHub org/user name.

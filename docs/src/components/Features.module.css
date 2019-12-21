@@ -1,35 +1,25 @@
+.feature {
+  margin-bottom: 64px;
+  width: 30%;
+}
+
 .features {
+  border-bottom: 1px solid #ebedf0;
   display: flex;
-  flex-direction: column;
-  margin: 80px 0 16px;
+  flex-wrap: wrap;
+  justify-content: space-between;
   width: 80%;
 }
 
-.feature {
-  margin-bottom: 64px;
-  width: 280px;
-}
-
-.feature h4 {
-  margin-bottom: 24px;
-}
-
-.feature p {
-  margin: 0;
-  margin-bottom: 8px;
-}
-
-.featureRow {
+.featuresContainer {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  margin: 80px 0;
 }
 
 @media screen and (max-width: 966px) {
   .feature {
+    padding: 0;
     width: 100%;
-  }
-
-  .featureRow {
-    flex-direction: column;
   }
 }

@@ -23,13 +23,7 @@
 .copy {
   cursor: default;
   position: absolute;
-  top: 84px;
+  top: 72px;
   left: 50%;
   transform: translateX(-50%);
-}
-
-@media screen and (max-width: 966px) {
-  .code {
-    font-size: 12px;
-  }
 }
