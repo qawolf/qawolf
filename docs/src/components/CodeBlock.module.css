@@ -26,3 +26,16 @@
   height: 36px;
   margin-left: 16px;
 }
+
+@media screen and (max-width: 700px) {
+  .codeContainer {
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .copy {
+    margin-left: 0;
+    margin-top: 16px;
+  }
+}
