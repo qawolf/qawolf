@@ -28,6 +28,8 @@ Create a [Puppeteer](https://github.com/puppeteer/puppeteer) and [Jest](https://
 npx qawolf record <url> [name]
 ```
 
+![Create a test](https://storage.googleapis.com/docs.qawolf.com/home/create-test-small.gif)
+
 Run your test:
 
 ```bash
