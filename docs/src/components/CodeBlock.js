@@ -21,11 +21,9 @@ class CodeBlock extends React.Component {
   }
 
   handleClick() {
-    const { useCaseIndex } = this.props;
-
     try {
       const textarea = document.createElement("textarea");
-      textarea.value = "npm i -D qawolf";
+      textarea.value = this.props.value;
       textarea.setAttribute("readonly", "");
       textarea.style.position = "absolute";
       textarea.style.left = "-9999px";
@@ -57,7 +55,7 @@ class CodeBlock extends React.Component {
     return (
       <div className={styles.codeContainer}>
         <button className={styles.code} onClick={this.handleClick}>
-          <p>npm i -D qawolf</p>
+          <p>{this.props.value}</p>
         </button>
         {showCopySuccess && (
           <button

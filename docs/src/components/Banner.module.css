@@ -7,8 +7,6 @@
 }
 
 .bannerContainer {
-  background: rgba(48, 56, 70, 0.72);
-  color: #fff;
   padding: 80px 0;
 }
 
@@ -19,31 +17,14 @@
   margin-top: 32px;
 }
 
-.container {
-  overflow: hidden;
-  position: relative;
-}
-
-.codeblock {
+.getStarted {
   display: flex;
   justify-content: center;
   margin-top: 80px;
 }
 
-.wolf {
-  min-height: 100%;
-  object-fit: cover;
-  position: absolute;
-  top: -120px;
-  z-index: -1;
-}
-
 @media screen and (max-width: 966px) {
   .banner h1 {
     font-size: 40px;
-  }
-
-  .wolf {
-    top: 0;
   }
 }

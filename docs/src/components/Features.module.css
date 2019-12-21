@@ -14,7 +14,7 @@
 .featuresContainer {
   display: flex;
   justify-content: center;
-  margin: 80px 0;
+  margin-top: 80px;
 }
 
 @media screen and (max-width: 966px) {

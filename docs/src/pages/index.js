@@ -4,6 +4,7 @@ import Layout from "@theme/Layout";
 import React from "react";
 import Banner from "../components/Banner";
 import Features from "../components/Features";
+import HowItWorks from "../components/HowItWorks";
 import Subscribe from "../components/Subscribe";
 
 const headStyles = `
@@ -14,7 +15,6 @@ const headStyles = `
 #mc_embed_signup { 
   background:#fff; 
   clear:left; 
-  font:14px Helvetica,Arial,sans-serif; 
   width:100%;
 }
 `;
@@ -33,6 +33,7 @@ function Home() {
       </header>
       <main>
         <Features />
+        <HowItWorks />
         <Subscribe />
       </main>
     </Layout>

@@ -6,7 +6,7 @@
   cursor: pointer;
   display: block;
   font-family: var(--ifm-font-family-monospace);
-  font-size: 16px;
+  font-size: 14px;
   padding: 16px 16px 8px;
   text-align: start;
 }
@@ -17,13 +17,12 @@
 }
 
 .codeContainer {
-  position: relative;
+  align-items: center;
+  display: flex;
 }
 
 .copy {
   cursor: default;
-  position: absolute;
-  top: 72px;
-  left: 50%;
-  transform: translateX(-50%);
+  height: 36px;
+  margin-left: 16px;
 }
