@@ -2,7 +2,7 @@
 
 <h1 align="center">QA Wolf</h1>
 
-<h2 align="center">Create browser tests 10x faster</h2>
+<h3 align="center">Create browser tests 10x faster</h3>
 
 <p align="center">QA Wolf is a free and open source library for creating <a href="https://github.com/puppeteer/puppeteer">Puppeteer</a> and <a href="https://jestjs.io">Jest</a> browser tests and running them in CI</p>
 
@@ -19,12 +19,14 @@
     <a href="https://github.com/qawolf/qawolf/projects/4">🗺️ Roadmap</a>
 </p>
 
+<br/>
+
 <p>QA Wolf is an open source node library for creating browser tests 10x faster:</p>
 
 <ul>
 <li><b>No more boilerplate.</b> Your browser interactions are converted to Puppeteer and Jest code.
 </li>
-<li><b>Built for stability.</b> Avoid flaky tests with automatic waiting and smart element selectors.
+<li><b>Built for stability.</b> Avoid flaky tests with <a href="https://docs.qawolf.com/docs/how_it_works#%EF%B8%8F-automatic-waiting">automatic waiting</a> and <a href="https://docs.qawolf.com/docs/how_it_works#-element-selectors">smart element selectors</a>.
 </li>
 <li><b>Test complex scenarios.</b> Test your application like a user. Use third party sites, multiple windows, and hot keys.
 </li>
@@ -35,14 +37,18 @@
 </ul>
 <p>We're working to build a world where browser testing is effortless. We hope you'll join us!</p>
 
+<br/>
+
 ## Table of Contents
 
-- 🖥️ Install QA Wolf
-- ✅ Create a browser test
-- ☁️ Set up CI
-- 🙋 Get Help
-- 📝 License
-- 🙏 Acknowledgments
+- [🖥️ Install QA Wolf](#%EF%B8%8F-install-qa-wolf)
+- [✅ Create a browser test](#-create-a-browser-test)
+- [☁️ Set up CI](#%EF%B8%8F-set-up-ci)
+- [🙋 Get Help](#-get-help)
+- [📝 License](#-license)
+- [🙏 Acknowledgments](#-acknowledgements)
+
+<br/>
 
 ## 🖥️ Install QA Wolf
 
@@ -52,6 +58,8 @@ Install QA Wolf as a dev dependency with [`npm`](https://www.npmjs.com):
 cd /my/awesome/project
 npm install --save-dev qawolf
 ```
+
+<br/>
 
 ## [✅ Create a browser test](http://docs.qawolf.com/docs/get_started#-record-a-browser-test)
 
@@ -68,6 +76,8 @@ Run your test:
 ```bash
 npx qawolf test [name]
 ```
+
+<br/>
 
 ## [☁️ Set up CI](https://docs.qawolf.com/docs/set_up_ci)
 
@@ -99,6 +109,8 @@ npx qawolf gitlab
 
 Just [ping us](https://gitter.im/qawolf/community) if you want to run [QA Wolf Docker](https://hub.docker.com/r/qawolf/qawolf) somewhere else.
 
+<br/>
+
 ## 🙋 Get Help
 
 <p align="left">
@@ -108,9 +120,13 @@ Just [ping us](https://gitter.im/qawolf/community) if you want to run [QA Wolf D
 
 We want QA Wolf to work for you, so please reach out to get help!
 
+<br/>
+
 ## 📝 License
 
 QA Wolf is licensed under [BSD-3-Clause](https://github.com/qawolf/qawolf/blob/master/LICENSE.md).
+
+<br/>
 
 ## 🙏 Acknowledgements
 
