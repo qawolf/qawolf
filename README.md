@@ -9,8 +9,6 @@
 <img src="https://badge.fury.io/js/qawolf.svg" alt="npm version"/></a>
 </p>
 
-# Quickstart
-
 Install QA Wolf as a dev dependency with [`npm`](https://www.npmjs.com):
 
 ```bash
