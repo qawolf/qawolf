@@ -1,0 +1,84 @@
+.howItWorksContainer {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 80px;
+  text-align: center;
+}
+
+.howItWorks {
+  border-bottom: 1px solid #ebedf0;
+  display: flex;
+  flex-direction: column;
+  padding: 80px 0;
+  width: 80%;
+}
+
+.howItWorks h1 {
+  margin: 0;
+}
+
+.logo {
+  height: 20px;
+  margin-right: 8px;
+}
+
+.step {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 80px;
+  width: 100%;
+}
+
+.step h3 {
+  margin: 0;
+}
+
+.step img {
+  width: 560px;
+}
+
+.stepDirection {
+  margin: 24px 80px 24px 0;
+  text-align: left;
+}
+
+.stepText {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+}
+
+.tab {
+  align-items: center;
+  display: flex;
+  padding: 8px 0;
+}
+
+.tabContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.tabs {
+  margin-top: 80px;
+}
+
+p.noBottomMargin {
+  margin-bottom: 0;
+}
+
+@media screen and (max-width: 1200px) {
+  .step {
+    flex-direction: column;
+  }
+
+  .step img {
+    margin-top: 40px;
+    width: 100%;
+  }
+
+  .stepDirection {
+    margin: 24px 0;
+  }
+}

@@ -3,23 +3,28 @@ import Head from "@docusaurus/Head";
 import Layout from "@theme/Layout";
 import React from "react";
 import Banner from "../components/Banner";
+import Features from "../components/Features";
+import HowItWorks from "../components/HowItWorks";
 import Subscribe from "../components/Subscribe";
-import UseCases from "../components/UseCases";
 
 const headStyles = `
-.navbar.navbar--fixed-top { 
-  box-shadow: none; 
-}
-
 .react-toggle {
   display: none;
 }
 
+#mc_embed_signup input.button {
+  background-color: var(--ifm-color-primary);
+}
+
+#mc_embed_signup input.button:hover {
+  background-color: var(--ifm-color-primary-darker);
+}
+
 #mc_embed_signup { 
-  background:#fff; 
-  clear:left; 
-  font:14px Helvetica,Arial,sans-serif; 
-  width:100%;
+  background: #fff; 
+  clear: left; 
+  font-family: var(--ifm-font-family-base);
+  width: 100%;
 }
 `;
 
@@ -36,7 +41,8 @@ function Home() {
         <Banner />
       </header>
       <main>
-        <UseCases />
+        <Features />
+        <HowItWorks />
         <Subscribe />
       </main>
     </Layout>

@@ -24,7 +24,7 @@
 <p>QA Wolf is an open source node library for creating browser tests 10x faster:</p>
 
 <ul>
-<li><b>No more boilerplate.</b> Your browser actions are converted to Puppeteer and Jest code.
+<li><b>Skip writing boilerplate.</b> Your browser actions are converted to Puppeteer and Jest code.
 </li>
 <li><b>Built for stability.</b> Avoid flaky tests with <a href="https://docs.qawolf.com/docs/how_it_works#%EF%B8%8F-automatic-waiting">automatic waiting</a> and <a href="https://docs.qawolf.com/docs/how_it_works#-element-selectors">smart element selectors</a>.
 </li>
@@ -32,7 +32,7 @@
 </li>
 <li><b>One command CI.</b> Run your tests in CI with one command, on push or on a schedule.
 </li>
-<li><b>Debug easily.</b> Each test run in CI includes a video, GIF, interactive DOM recording, and detailed logs.
+<li><b>Easy debugging.</b> Each test run in CI includes a video, GIF, interactive DOM recording, and detailed logs.
 </li>
 </ul>
 <p>We're working to build a world where browser testing is effortless. We hope you'll join us!</p>

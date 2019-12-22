@@ -1,46 +1,33 @@
-.animate {
-  overflow: hidden;
-  transition: width 400ms linear;
-  -webkit-transition: width 400ms linear;
-  -moz-transition: width 400ms linear;
-  -o-transition: width 400ms linear;
-}
-
 .banner {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: 160px;
   text-align: center;
 }
 
-.bannerPadding {
-  padding-left: 16px;
-  padding-right: 16px;
+.banner h1 {
+  font-size: 48px;
+  margin-bottom: 0;
 }
 
-.bannerTitle,
-.cursor {
+.bannerContainer {
+  padding: 80px 0;
+  /* important to override their important */
+  box-shadow: none !important;
+}
+
+.banner .tagline {
+  font-size: 20px;
   font-weight: 200;
+  margin: 0;
+  margin-top: 32px;
 }
 
-.cursor {
-  color: var(--ifm-color-primary);
-  font-size: 40px;
-}
-
-.hidden {
-  width: 0;
-}
-
-.useCase {
-  align-items: flex-end;
+.getStarted {
   display: flex;
   justify-content: center;
-  white-space: nowrap;
+  margin-top: 48px;
 }
 
-.visible {
-  width: 100%;
+@media screen and (max-width: 966px) {
+  .banner h1 {
+    font-size: 40px;
+  }
 }
