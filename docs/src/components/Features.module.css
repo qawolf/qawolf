@@ -1,10 +1,22 @@
 .feature {
-  margin-bottom: 64px;
+  margin: 80px 0;
   width: 30%;
+}
+
+.feature h4 {
+  font-size: 22px;
+  font-weight: 400;
+}
+
+.feature p {
+  font-size: 18px;
+  font-weight: 200;
+  margin: 0;
 }
 
 .features {
   border-bottom: 1px solid #ebedf0;
+  border-top: 1px solid #ebedf0;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -14,7 +26,7 @@
 .featuresContainer {
   display: flex;
   justify-content: center;
-  margin-top: 80px;
+  margin-top: 48px;
 }
 
 @media screen and (max-width: 966px) {

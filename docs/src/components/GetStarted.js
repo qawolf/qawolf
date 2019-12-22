@@ -8,34 +8,38 @@ function GetStarted() {
       <h1>Get Started</h1>
       <div className={styles.step}>
         <div className={styles.stepText}>
-          <h3>1. Open your web application</h3>
-          <p className={styles.stepDirection}>Install QA Wolf if needed:</p>
-          <CodeBlock value="npm i -D qawolf" />
+          <h3>1. Install QA Wolf</h3>
           <p className={styles.stepDirection}>
-            Open Chromium browser with injected QA Wolf library:
+            Install QA Wolf as a dev dependency of your project:
+          </p>
+          <CodeBlock value="npm i -D qawolf" />
+          <p className={styles.stepDirection}></p>
+        </div>
+        <img src="https://data.whicdn.com/images/303699460/original.gif" />
+      </div>
+      <div className={styles.step}>
+        <div className={styles.stepText}>
+          <h3>2. Create your test</h3>
+          <p className={styles.stepDirection}>
+            Use the browser and your actions will be converted into a Puppeteer
+            and Jest test:
           </p>
           <CodeBlock value="npx qawolf record <url> [name]" />
-        </div>
-        <img src="https://data.whicdn.com/images/303699460/original.gif" />
-      </div>
-      <div className={styles.step}>
-        <div className={styles.stepText}>
-          <h3>2. Go through workflow</h3>
           <p className={styles.stepDirection}>
-            Your browser actions (like clicking and typing) will be captured to
-            convert to Puppeteer and Jest code.
+            Your test code is saved at
+            <code>.qawolf/tests/yourTestName.test.js</code>. Edit your code
+            however you like!
           </p>
         </div>
         <img src="https://data.whicdn.com/images/303699460/original.gif" />
       </div>
       <div className={styles.step}>
         <div className={styles.stepText}>
-          <h3>3. Get code!</h3>
+          <h3>3. Run your test</h3>
           <p className={styles.stepDirection}>
-            A file called <code>.qawolf/tests/yourTestName.test.js</code> will
-            be created in your project. By default it includes automatic waiting
-            and smart element selectors. Edit this file as you like!
+            Use the CLI to run your test locally:
           </p>
+          <CodeBlock value="npx qawolf test [name]" />
         </div>
         <img src="https://data.whicdn.com/images/303699460/original.gif" />
       </div>

@@ -8,19 +8,19 @@ function Features() {
     <section className={styles.featuresContainer}>
       <div className={styles.features}>
         <div className={styles.feature}>
-          <h4>😌 No more boilerplate</h4>
+          <h4>😌 Skip writing boilerplate</h4>
           <p>
-            Your browser actions are converted to Puppeteer and Jest code. Test
-            your application like a user - QA Wolf supports third party sites,
-            multiple windows, and hot keys.
+            Convert your browser actions into code. QA Wolf supports complex
+            workflows including third party sites, multiple windows, and hot
+            keys.
           </p>
         </div>
         <div className={styles.feature}>
           <h4>⚓ Built for stability</h4>
           <p>
-            Avoid flaky tests. Generated test code automatically waits for the
-            next element or assertion. Smart element selectors target elements
-            using multiple attributes.
+            Avoid flaky tests. The qawolf node library automatically waits for
+            the next element or assertion. Smart element selectors target
+            elements using multiple attributes.
           </p>
         </div>
         <div className={styles.feature}>

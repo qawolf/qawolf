@@ -4,10 +4,13 @@
 
 .banner h1 {
   font-size: 48px;
+  margin-bottom: 0;
 }
 
 .bannerContainer {
   padding: 80px 0;
+  /* important to override their important */
+  box-shadow: none !important;
 }
 
 .banner .tagline {
@@ -20,7 +23,7 @@
 .getStarted {
   display: flex;
   justify-content: center;
-  margin-top: 80px;
+  margin-top: 48px;
 }
 
 @media screen and (max-width: 966px) {

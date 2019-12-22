@@ -9,7 +9,7 @@ function Banner() {
   };
 
   return (
-    <div className={classnames("hero hero--dark", styles.bannerContainer)}>
+    <div className={classnames("hero shadow--lw", styles.bannerContainer)}>
       <div className={classnames("container", styles.banner)}>
         <h1 className="hero__title">Create browser tests 10x faster</h1>
         <p className={classnames("hero__subtitle", styles.tagline)}>

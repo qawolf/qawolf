@@ -69,4 +69,8 @@
     margin-top: 40px;
     width: 100%;
   }
+
+  .stepDirection {
+    margin: 24px 0;
+  }
 }

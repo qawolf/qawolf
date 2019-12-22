@@ -57,12 +57,11 @@ function SetUpCI() {
         <div className={styles.stepText}>
           <h3>One command CI</h3>
           <p className={styles.stepDirection}>
-            Set up running your tests in CI:
+            Create a config file to run your tests in CI:
           </p>
           <CodeBlock value={`npx qawolf ${CI_PROVIDERS[tabIndex].command}`} />
           <p className={styles.stepDirection}>
             A config file for your CI provider will be created in your project.
-            Edit this file to suit your use case.
           </p>
         </div>
         <img src="https://data.whicdn.com/images/303699460/original.gif" />
