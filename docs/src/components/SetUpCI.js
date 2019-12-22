@@ -1,3 +1,5 @@
+import Link from "@docusaurus/Link";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import classnames from "classnames";
 import React, { useState } from "react";
 import CodeBlock from "./CodeBlock";
@@ -57,7 +59,11 @@ function SetUpCI() {
         <div className={styles.stepText}>
           <h3>One command CI</h3>
           <p className={styles.stepDirection}>
-            Create a config file to run your tests in CI:
+            Create a config file to{" "}
+            <Link href={useBaseUrl("docs/set_up_ci")}>
+              run your tests in CI
+            </Link>
+            :
           </p>
           <CodeBlock value={`npx qawolf ${CI_PROVIDERS[tabIndex].command}`} />
           <p className={styles.stepDirection}>

@@ -18,17 +18,32 @@ function Features() {
         <div className={styles.feature}>
           <h4>⚓ Built for stability</h4>
           <p>
-            Avoid flaky tests. The qawolf node library automatically waits for
-            the next element or assertion. Smart element selectors target
-            elements using multiple attributes.
+            Avoid flaky tests. The{" "}
+            <a href="https://www.npmjs.com/package/qawolf" target="_blank">
+              qawolf node
+            </a>{" "}
+            library{" "}
+            <Link href={useBaseUrl("docs/how_it_works#️-automatic-waiting")}>
+              automatically waits
+            </Link>{" "}
+            for the next element or assertion.{" "}
+            <Link href={useBaseUrl("docs/how_it_works#-element-selectors")}>
+              Smart element selectors
+            </Link>{" "}
+            target elements using multiple attributes.
           </p>
         </div>
         <div className={styles.feature}>
           <h4>☁️ One command CI</h4>
           <p>
-            Run your tests in CI with one command, on push or on a schedule.
-            Debug easily with a video, GIF, interactive DOM recording, and
-            detailed logs.
+            <Link href={useBaseUrl("docs/set_up_ci")}>
+              Run your tests in CI
+            </Link>{" "}
+            with one command, on push or on a schedule.{" "}
+            <Link href={useBaseUrl("docs/set_up_ci#️-debug")}>
+              Debug easily
+            </Link>{" "}
+            with a video, GIF, interactive DOM recording, and detailed logs.
           </p>
         </div>
       </div>

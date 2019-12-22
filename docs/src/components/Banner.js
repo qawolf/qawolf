@@ -13,7 +13,15 @@ function Banner() {
       <div className={classnames("container", styles.banner)}>
         <h1 className="hero__title">Create browser tests 10x faster</h1>
         <p className={classnames("hero__subtitle", styles.tagline)}>
-          Open source library for creating Puppeteer and Jest browser tests
+          Open source library for creating{" "}
+          <a href="https://pptr.dev/" target="_blank">
+            Puppeteer
+          </a>{" "}
+          and{" "}
+          <a href="https://jestjs.io" target="_blank">
+            Jest
+          </a>{" "}
+          browser tests
         </p>
         <div className={styles.getStarted}>
           <button
