@@ -31,7 +31,12 @@
 
 @media screen and (max-width: 966px) {
   .feature {
+    margin: 80px 0 0;
     padding: 0;
     width: 100%;
+  }
+
+  .feature:last-child {
+    margin-bottom: 80px;
   }
 }
