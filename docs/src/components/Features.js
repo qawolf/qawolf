@@ -34,7 +34,7 @@ function Features() {
           </p>
         </div>
         <div className={styles.feature}>
-          <h4>☁️ Easy CI Setup</h4>
+          <h4>☁️ Easy CI setup</h4>
           <p>
             <Link href={useBaseUrl("docs/set_up_ci")}>
               Run your tests in CI

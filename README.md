@@ -30,7 +30,7 @@
 </li>
 <li><b>Test complex scenarios.</b> Test your application like a user. Use third party sites, multiple windows, and hot keys.
 </li>
-<li><b>Easy CI Setup.</b> Run your tests in CI with one command, on push or on a schedule.
+<li><b>Easy CI setup.</b> Run your tests in CI with one command, on push or on a schedule.
 </li>
 <li><b>Easy debugging.</b> Each test run in CI includes a video, GIF, interactive DOM recording, and detailed logs.
 </li>
