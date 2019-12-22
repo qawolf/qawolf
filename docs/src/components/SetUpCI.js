@@ -62,7 +62,7 @@ function SetUpCI() {
       </ul>
       <div className={styles.step}>
         <div className={styles.stepText}>
-          <h3>One command CI</h3>
+          <h3>Easy CI Setup</h3>
           <p className={styles.stepDirection}>
             Create a config file to{" "}
             <Link href={useBaseUrl("docs/set_up_ci")}>
