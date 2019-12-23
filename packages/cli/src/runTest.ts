@@ -15,7 +15,8 @@ export const runTest = async (
 
   const jestConfig: any = {
     cache: false,
-    config: "{}",
+    // override transform to prevent using external babel-jest
+    config: '{"transform": {}}',
     // assume .qawolf is relative to the current working directory
     roots: [`<rootDir>/.qawolf`],
     runInBand: CONFIG.serial,
