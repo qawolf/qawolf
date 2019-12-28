@@ -5,7 +5,7 @@ title: ⚙️ How It Works
 
 ## Overview
 
-**When you run [record](cli#npx-qawolf-record---script-url-name)**, a [Puppeteer](https://pptr.dev/) Chromium browser opens with the [@qawolf/web](https://github.com/qawolf/qawolf/tree/master/packages/web) library injected. The `Recorder` intercepts your click, type, select, and scroll events to convert into workflow steps later. These events include the html of the target element and it's ancestors which is used to find the element when running the test. [Learn more about element selectors.](#-element-selectors)
+**When you run [record](cli#npx-qawolf-record-url-name)**, a [Puppeteer](https://pptr.dev/) Chromium browser opens with the [@qawolf/web](https://github.com/qawolf/qawolf/tree/master/packages/web) library injected. The `Recorder` intercepts your click, type, select, and scroll events to convert into workflow steps later. These events include the html of the target element and it's ancestors which is used to find the element when running the test. [Learn more about element selectors.](#-element-selectors)
 
 **When you finish recording**, the events are converted to a workflow in [@qawolf/build-workflow](https://github.com/qawolf/qawolf/tree/master/packages/build-workflow) and to code in [@qawolf/build-code](https://github.com/qawolf/qawolf/tree/master/packages/build-code).
 
