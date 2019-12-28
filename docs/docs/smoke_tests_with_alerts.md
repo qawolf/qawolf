@@ -164,7 +164,7 @@ At this point, feel free to create additional smoke tests before moving on.
 
 You can use the test code as is to verify that the workflow isn't broken. If a step of the workflow cannot be executed because no match is found for the target element, the test will fail.
 
-However, you can still edit the test code to suit your use case. This section provides examples for [adding an assertion](smoke_tests_with_alerts#add-an-assertion), [using a custom CSS or text selector](smoke_tests_with_alerts#use-custom-selector) for an element, or [changing an input value](smoke_tests_with_alerts#change-input-value). Each section is self-contained, so feel free to skip to the section(s) of interest.
+However, you can still edit the test code to suit your use case. This section provides examples for [adding an assertion](smoke_tests_with_alerts#add-an-assertion), [using a custom CSS or text selector](smoke_tests_with_alerts#use-custom-selector) to locate an element, or [changing an input value](smoke_tests_with_alerts#change-input-value). Each section is self-contained, so feel free to skip to the section(s) of interest.
 
 ### Add an assertion
 
