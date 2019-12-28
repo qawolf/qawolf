@@ -17,7 +17,8 @@ program.usage("<command> [options]");
 
 program
   .command("record <url> [name]")
-  .option("-d, --debug", "save events and workflow json for debugging")
+  .option("--debug", "save events and workflow json for debugging")
+  .option("-d, --device", "emulate using a puppeteer.device")
   .option("-s, --script", "save a script instead of a test")
   .description("record a workflow and create a test")
   .action(async (urlArgument, optionalName, cmd) => {
@@ -25,7 +26,13 @@ program
     logger.verbose(`record url "${url.href}"`);
 
     const name = camelCase(optionalName || url.hostname!.replace(/\..*/g, ""));
-    await record({ debug: cmd.debug, name, test: !cmd.script, url });
+    await record({
+      debug: cmd.debug,
+      device: cmd.device,
+      name,
+      test: !cmd.script,
+      url
+    });
   });
 
 program
