@@ -129,7 +129,7 @@ const { browser, waitFor } = require("qawolf");
 
 - `options` <[Object]>
   - `device` <[device]> Emulate this [device].
-  - `size` <"desktop" | "phone" | "tablet"> Emulate a device based on a [default size](https://github.com/qawolf/qawolf/blob/master/packages/browser/src/browser/device.ts). If `device` is specified `size` is ignored. Defaults to `"desktop"`.
+  - `size` <"desktop" | "phone" | "tablet"> Emulate a device for a [default size](https://github.com/qawolf/qawolf/blob/master/packages/browser/src/browser/device.ts). If `device` is specified `size` is ignored. Defaults to `"desktop"`.
   - `url` <[string]> The url to go to.
 - returns: <[Promise]<[Browser]>>
 
