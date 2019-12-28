@@ -27,7 +27,7 @@ cd smoke-tests
 npm init -y
 ```
 
-You can follow along in this example GitHub repository. [Your code base should now look like this.](https://github.com/qawolf/tutorials-smoke-tests/tree/fd9b2f7f5c1c42ab5639172243317b6c6c336b00)
+You can follow along in this example GitHub repository. [Your code base should now look like this.](https://github.com/qawolf/tutorials-smoke-tests/tree/f027d2d46e890137dcdbb20f12896422a6849a4d)
 
 Now we need to install the `qawolf` [npm package](https://www.npmjs.com/package/qawolf). `qawolf` is an open source Node.js library that generates [Puppeteer](https://pptr.dev/) and [Jest](https://jestjs.io/) test code from your browser interactions. It also allows you to quickly [set up running your tests on a schedule in various CI providers](set_up_ci).
 
@@ -37,22 +37,32 @@ In the command line, run the following to install `qawolf` as a dev dependency i
 npm i -D qawolf
 ```
 
-[Your code base should now look like this.](https://github.com/qawolf/tutorials-smoke-tests/tree/ee0ed9f579bdb7110b7a5b4f2a730de4616b8025)
+[Your code base should now look like this.](https://github.com/qawolf/tutorials-smoke-tests/tree/5e6e96fdf26514d8d3f589b555dbf48d9af51b6d)
 
-## Creating a smoke test
+## Create a smoke test
 
-Now let's generate our smoke test code. This tutorial will record a test on a [simple todo application](http://todomvc.com/examples/react). Specifically, we'll create a todo item, complete it, and clear completed todos.
+Now let's create our first smoke test. In this tutorial, we'll smoke test  [TodoMVC](http://todomvc.com/examples/react), a simple todo application. Specifically, we'll create a todo item, complete it, and clear completed todos.
 
-When we run the following in the command line, a Chromium browser will open and capture any actions we take (clicking, typing, etc.). You can optionally replace `http://todomvc.com/examples/react` with a different URL, and `myFirstSmokeTest` with a different name.
+When we run the `npx qawolf record` command, a [Chromium](https://www.chromium.org/Home) browser will open and capture our actions such as clicks and typing into inputs. These actions will then be converted to [Puppeteer](https://pptr.dev/) and [Jest](https://jestjs.io/) test code (more on this in a bit).
+
+To record your test, run the following in the command line. You can optionally replace `http://todomvc.com/examples/react` with a different URL, and `myFirstSmokeTest` with a different name.
 
 ```bash
 npx qawolf record http://todomvc.com/examples/react myFirstSmokeTest
 ```
 
-## Reviewing smoke test code
+Inside the Chromium browser, go through the workflow you want to test as a user would. In our example, we'll 1) create a todo item, 2) mark it as complete, and 3) clear completed todos. After you are done, return to the terminal and hit Enter to save your test. See the video below for an illustration.
 
-## Running smoke tests on a schedule
+TODO: INSERT VIDEO
 
-## Setting up alerts on failure
+[Your code base should now look like this.](https://github.com/qawolf/tutorials-smoke-tests/tree/b54bd80b7614dabbde186c59cd1db4896292772e) In the next section, we'll dive deeper into the test code.
+
+## Review smoke test code
+
+Feel free to create additional smoke tests before moving on!
+
+## Run smoke tests on a schedule
+
+## Set up alerts on failure
 
 ## Next steps
