@@ -2,7 +2,7 @@ import { Action } from "./common";
 import { ScrollValue } from "./event";
 import { DocSelector, DocSelectorSerialized, Selector } from "./selector";
 
-export type Size = "desktop" | "tablet" | "mobile";
+export type Size = "desktop" | "tablet" | "phone";
 
 export interface Step extends Selector {
   action: Action;
