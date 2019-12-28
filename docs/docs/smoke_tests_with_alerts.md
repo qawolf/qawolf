@@ -154,7 +154,7 @@ You can optionally replace the default selector with a custom CSS or text select
 
 ### Automatic Waiting
 
-Second, the `click` and `type` methods on the `browser` automatically wait for element to appear before moving on. For example, after we click to complete our todo, it takes a bit of time for the "Clear completed" button to appear on the page. In this case, the `qawolf` library will keep looking for the "Clear completed" button until it appears, at which point it will be clicked.
+QA Wolf is built for stability, so automatic waiting comes out of the box. This means that the `click` and `type` methods on the `browser` automatically wait for element to appear before moving on. For example, after we click to complete our todo, it takes a bit of time for the "Clear completed" button to appear on the page. In this case, the `qawolf` library will keep looking for the "Clear completed" button until it appears, at which point it will be clicked.
 
 Automatic waiting allows us to avoid writing custom waiting logic or arbitrary sleep statements. See documentation on the [QA Wolf Browser class](api#class-browser) and on [automatic waiting](how_it_works#️-automatic-waiting) to learn more.
 
