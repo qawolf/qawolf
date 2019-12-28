@@ -15,6 +15,7 @@ import { managePages } from "./managePages";
 import { QAWolfBrowser } from "./QAWolfBrowser";
 
 export type LaunchOptions = {
+  device?: Device;
   domPath?: string;
   recordEvents?: boolean;
   size?: Size;
@@ -55,7 +56,7 @@ const buildPuppeteerOptions = (
 export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
   logger.verbose(`launch: ${JSON.stringify(options)}`);
 
-  const device = getDevice(options.size);
+  const device = options.device || getDevice(options.size);
 
   const browser = (await launchPuppeteerBrowser(
     buildPuppeteerOptions(options, device)
