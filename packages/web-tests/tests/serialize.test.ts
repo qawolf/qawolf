@@ -1,9 +1,9 @@
-import { Browser, launch, PuppeteerPage } from "@qawolf/browser";
+import { Browser, launch, puppeteer } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { QAWolfWeb } from "@qawolf/web";
 
 let browser: Browser;
-let page: PuppeteerPage;
+let page: puppeteer.Page;
 
 beforeAll(async () => {
   browser = await launch({ url: `${CONFIG.testUrl}login` });
