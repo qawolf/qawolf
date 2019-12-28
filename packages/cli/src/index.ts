@@ -18,7 +18,7 @@ program.usage("<command> [options]");
 program
   .command("record <url> [name]")
   .option("--debug", "save events and workflow json for debugging")
-  .option("-d, --device", "emulate using a puppeteer.device")
+  .option("-d, --device <device>", "emulate using a puppeteer.device")
   .option("-s, --script", "save a script instead of a test")
   .description("record a workflow and create a test")
   .action(async (urlArgument, optionalName, cmd) => {
