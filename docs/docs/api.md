@@ -128,7 +128,7 @@ const { browser, waitFor } = require("qawolf");
 ### qawolf.launch([options])
 
 - `options` <[Object]>
-  - `device` <[device] | [string]> Emulate this [device]. If you pass a string it will lookup a device with that key in `puppeteer.devices[options.device]`. Defaults to ["desktop"](https://github.com/qawolf/qawolf/blob/add5be096ca054cbafcd440fac5e95f60098246f/packages/browser/src/browser/device.ts#L5-L20).
+  - `device` <[device] | [string]> Emulate this [device]. If you pass a string it will lookup a device with that key in `puppeteer.devices[options.device]`. Defaults to ["desktop"](https://github.com/qawolf/qawolf/blob/3256831cd93c172e81c9f7eb1fdeb347733d72ec/packages/browser/src/browser/device.ts#L9-L24).
   - `url` <[string]> The url to go to.
 - returns: <[Promise]<[Browser]>>
 
