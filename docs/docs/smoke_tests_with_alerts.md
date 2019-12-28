@@ -83,7 +83,7 @@ Here we'll review our test code and optionally edit it. You'll notice that a fol
 
 Let's look at the generated test code in `.qawolf/tests/myFirstSmokeTest.test.js`. The test code includes the `qawolf` library, which is built on top of [Puppeteer](https://pptr.dev/) to automate browser actions.
 
-In short, the following code will first open a Chromium browser with our desired URL. It then goes through each step in our workflow. In our case, we 1) type our todo item into the first element we interacted with, 2) hit Enter, 3) click to complete the todo, and 4) click the "clear completed" button. Each of these steps corresponds to a [Jest test case](https://jestjs.io/docs/en/api#testname-fn-timeout). After the test is complete, the browser is closed.
+In short, the following code will first open a Chromium browser with our desired URL. It then goes through each step in our workflow. In our case, we 1) type our todo item into the first element we interacted with, 2) hit Enter, 3) click to complete the todo, and 4) click the "Clear completed" button. Each of these steps corresponds to a [Jest test case](https://jestjs.io/docs/en/api#testname-fn-timeout). After the test is complete, the browser is closed.
 
 ```js
 const { launch } = require("qawolf");
@@ -154,7 +154,7 @@ You can optionally replace the default selector with a custom CSS or text select
 
 ### Automatic Waiting
 
-Second, the `click` and `type` methods on the `browser` automatically wait for element to appear before moving on. For example, after we click to complete our todo, it takes a bit of time for the "clear completed" button to appear on the page. In this case, the `qawolf` library will keep looking for the "clear completed" button until it appears, at which point it will be clicked.
+Second, the `click` and `type` methods on the `browser` automatically wait for element to appear before moving on. For example, after we click to complete our todo, it takes a bit of time for the "Clear completed" button to appear on the page. In this case, the `qawolf` library will keep looking for the "Clear completed" button until it appears, at which point it will be clicked.
 
 Automatic waiting allows us to avoid writing custom waiting logic or arbitrary sleep statements. See documentation on the [QA Wolf Browser class](api#class-browser) and on [automatic waiting](how_it_works#️-automatic-waiting) to learn more.
 
@@ -164,13 +164,70 @@ At this point, feel free to create additional smoke tests before moving on.
 
 You can use the test code as is to verify that the workflow isn't broken. If a step of the workflow cannot be executed because no match is found for the target element, the test will fail.
 
-However, you can still edit the test code to suit your use case. This section provides examples for [adding an assertion](smoke_tests_with_alerts#add-an-assertion), [using a custom CSS or text selector](smoke_tests_with_alerts#use-custom-selector) for an element, or [changing an input value](smoke_tests_with_alerts#change-input-values). Each section is self-contained, so feel free to skip to the section(s) of interest.
+However, you can still edit the test code to suit your use case. This section provides examples for [adding an assertion](smoke_tests_with_alerts#add-an-assertion), [using a custom CSS or text selector](smoke_tests_with_alerts#use-custom-selector) for an element, or [changing an input value](smoke_tests_with_alerts#change-input-value). Each section is self-contained, so feel free to skip to the section(s) of interest.
 
 ### Add an assertion
 
+Let's beef up our test by adding a few assertions. First, we'll add an assertion that the "Clear completed" text appears after we complete our todo.
+
+To do this, we'll use the [`browser.hasText` method](docs/api#browserhastexttext-options). This method automatically waits for the given text to appear on the page. It returns `true` if the text is found, and `false` if the text does not appear before timing out.
+
+In our test code, update the following step where we click to complete the todo. We'll call `browser.hasText("Clear completed")`, assign the result to a variable called `hasClearCompletedText`, and assert that `hasClearCompletedText` is `true`. See [Jest documentation](https://jestjs.io/docs/en/expect) to learn more about assertions.
+
+```js
+it("can click input", async () => {
+  await browser.click(selectors[2]);
+
+  // custom code starts
+  const hasClearCompletedText = await browser.hasText("Clear completed");
+  expect(hasClearCompletedText).toBe(true);
+  // custom code ends
+});
+```
+
+If you run the test again (`npx qawolf test myFirstSmokeTest`), you'll see that it still passes.
+
+After we clear completed todos, we should no longer see any todos on the page. We'll add code that waits until the todo `<section>` no longer exists on the page to verify that it disappears. To do so, we'll use the [`waitUntil` helper method](api#qawolfwaituntilpredicate-timeoutms-sleepms), which takes a function and a timeout in milliseconds. It waits until the function returns `true`, throwing an error if the timeout is reached. We'll also use the [Puppeteer API](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md).
+
+Now let's update the test code. We'll use the [`browser.page` method](api#browserpageoptions) to get the current [Puppeteer `page` instance](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#class-page). We'll then call [`waitUntil`](api#qawolfwaituntilpredicate-timeoutms-sleepms), passing it a function that calls [Puppeteer's `page.$` method](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#pageselector) to find the todos `<section>` (in TodoMVC the [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) `section.main` will work). Once the todos `<section>` no longer exists because the todos have been cleared, we will end the test. If the section never disappears, the test will fail.
+
+First, update the first line of your test file to also import `waitUntil` from `qawolf`:
+
+```js
+// change this
+const { launch } = require("qawolf");
+// to this
+const { launch, waitUntil } = require("qawolf");
+```
+
+Then update the final step of the test:
+
+```js
+it('can click "Clear completed" button', async () => {
+  await browser.click(selectors[3]);
+
+  // custom code starts
+  // get current Puppeteer page instance
+  const page = await browser.page();
+
+  // verify that todos disappear after clearing completed
+  await waitUntil(async () => {
+    // find the todos section on the page
+    const todosSection = await page.$("section.main");
+    // return true once the secton is null, i.e. no longer exists
+    return todosSection === null;
+  }, 15000); // wait 15 seconds
+  // custom code ends
+});
+```
+
+If you run the test again (`npx qawolf test myFirstSmokeTest`), you'll see that it still passes.
+
+See [QA Wolf API documentation](docs/api) for a full list of methods you can use to write assertions.
+
 ### Use custom selector
 
-### Change input values
+### Change input value
 
 ## Run smoke tests on a schedule
 
