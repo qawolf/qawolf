@@ -179,6 +179,7 @@ it("can click input", async () => {
   await browser.click(selectors[2]);
 
   // custom code starts
+  // verify that "Clear completed" text appears
   const hasClearCompletedText = await browser.hasText("Clear completed");
   expect(hasClearCompletedText).toBe(true);
   // custom code ends
@@ -187,9 +188,15 @@ it("can click input", async () => {
 
 If you run the test again (`npx qawolf test myFirstSmokeTest`), you'll see that it still passes.
 
-After we clear completed todos, we should no longer see any todos on the page. We'll add code that waits until the todo `<section>` no longer exists on the page to verify that it disappears. To do so, we'll use the [`waitUntil` helper method](api#qawolfwaituntilpredicate-timeoutms-sleepms), which takes a function and a timeout in milliseconds. It waits until the function returns `true`, throwing an error if the timeout is reached. We'll also use the [Puppeteer API](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md).
+After we clear completed todos, we should no longer see any todos on the page. We'll add code that waits until the todos `<section>` no longer exists on the page to verify that it disappears. To do so, we'll use the [`waitUntil` helper method](api#qawolfwaituntilpredicate-timeoutms-sleepms), which takes a function and a timeout in milliseconds. It waits until the function returns `true`, throwing an error if the timeout is reached. We'll also use the [Puppeteer API](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md).
 
-Now let's update the test code. We'll use the [`browser.page` method](api#browserpageoptions) to get the current [Puppeteer `page` instance](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#class-page). We'll then call [`waitUntil`](api#qawolfwaituntilpredicate-timeoutms-sleepms), passing it a function that calls [Puppeteer's `page.$` method](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#pageselector) to find the todos `<section>` (in TodoMVC the [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) `section.main` will work). Once the todos `<section>` no longer exists because the todos have been cleared, we will end the test. If the section never disappears, the test will fail.
+Now let's update the test code. Here is a summary of what we'll do:
+
+1. Use the [`browser.page` method](api#browserpageoptions) to get the current [Puppeteer `page` instance](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#class-page).
+2. Call [`waitUntil`](api#qawolfwaituntilpredicate-timeoutms-sleepms), passing it a function that calls [Puppeteer's `page.$` method](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#pageselector) to find the todos `<section>`. The `page.$` method runs [`document.querySelector`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector) with the given [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) and returns the matching [Puppeteer `ElementHandle`](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-elementhandle) or null if none found.
+3. Pass the [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) `section.main` to [Puppeteer's `page.$` method](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#pageselector). In [TodoMVC](http://todomvc.com/examples/react), `section.main` contains the todos and will disappear from the page once todos have been cleared.
+
+Once the todos `<section>` no longer exists because the todos have been cleared, we will end the test. If a bug on the application prevents the todos from being cleared, the test will fail.
 
 First, update the first line of your test file to also import `waitUntil` from `qawolf`:
 
@@ -216,12 +223,14 @@ it('can click "Clear completed" button', async () => {
     const todosSection = await page.$("section.main");
     // return true once the secton is null, i.e. no longer exists
     return todosSection === null;
-  }, 15000); // wait 15 seconds
+  }, 15000); // wait 15 seconds before timing out
   // custom code ends
 });
 ```
 
 If you run the test again (`npx qawolf test myFirstSmokeTest`), you'll see that it still passes.
+
+[Your code base should now look like this.](https://github.com/qawolf/tutorials-smoke-tests/tree/3ee8e15bf4c10d87549e2a5b2d6549e8c598d95d)
 
 See [QA Wolf API documentation](docs/api) for a full list of methods you can use to write assertions.
 
