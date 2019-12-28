@@ -12,8 +12,8 @@ export const buildWorkflow = (options: Options): Workflow => {
   const steps = buildSteps(options.events);
 
   const workflow = {
-    name: options.name,
     device: options.device,
+    name: options.name,
     steps,
     url: options.url
   };
