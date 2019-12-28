@@ -5,6 +5,7 @@ import program from "commander";
 import { yellow } from "kleur";
 import { camelCase } from "lodash";
 import { saveCiTemplate } from "./ci";
+import { howl } from "./howl";
 import { record } from "./record";
 import { test } from "./test";
 import { parseUrl } from "./utils";
@@ -61,6 +62,11 @@ program
   .action(async () => {
     await saveCiTemplate("gitlab");
   });
+
+program
+  .command("howl")
+  .description("🐺")
+  .action(howl);
 
 program.arguments("<command>").action(cmd => {
   console.log(yellow(`Invalid command "${cmd}"\n`));

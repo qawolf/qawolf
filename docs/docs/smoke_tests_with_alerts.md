@@ -11,11 +11,15 @@ In this tutorial, we’ll learn about smoke testing as a line of defense against
 
 Smoke tests are tests that cover the most important functionality of an application. For example, on Netflix the critical user workflows include signing in, searching for a show, and watching a show. The term “smoke test” originated in hardware repair, where a machine would fail the smoke test if it caught on fire when turned on. 🔥
 
-[According to Microsoft](<https://docs.microsoft.com/en-us/previous-versions/ms182613(v=vs.80)?redirectedfrom=MSDN>), “smoke testing is the most cost-effective method for identifying and fixing defects in software” after code reviews. This is because smoke tests are NOT intended to cover every permutation and edge case. Only the most critical functionality is tested to get the most bang for your testing buck. After all, if your application’s sign in flow is broken, does it really matter if the padding on the buttons isn’t quite right?
+[According to Microsoft](<https://docs.microsoft.com/en-us/previous-versions/ms182613(v=vs.80)?redirectedfrom=MSDN>), “smoke testing is the most cost-effective method for identifying and fixing defects in software” after code reviews. This is because smoke tests are **not** intended to cover every permutation and edge case. Instead, smoke tests verify that the critical functionality isn't broken to the point where further testing would be unnecessary.
+
+The book [<i>Lessons Learned in Software Testing</i>](https://www.oreilly.com/library/view/lessons-learned-in/9780471081128/) summarizes it well: "smoke tests broadly cover product features in a limited time...if key features don't work or if key bugs haven't yet been fixed, your team won't waste further time installing or testing."
 
 ## Get started
 
-Now let’s create our first smoke test! To get started, either create a new [Node.js](ttps://nodejs.org) project, or change directories into an existing one. To create a new project, run the following in the command line (make sure you have [Node.js installed](https://nodejs.org/en/download/)):
+Now let’s create our first smoke test! First, make sure that you have [Node.js installed](https://nodejs.org/en/download/). To get started, either create a new [Node.js](ttps://nodejs.org) project, or change directories into an existing one.
+
+To create a new project, run the following in the command line:
 
 ```bash
 mkdir smoke-tests
@@ -23,7 +27,7 @@ cd smoke-tests
 npm init -y
 ```
 
-[Your code base should now look like this.](https://github.com/qawolf/smoke-tests-example/tree/c3a20db89eee5cf5088ec304b1b8fc69c85d8c27)
+You can follow along in this example GitHub repository. [Your code base should now look like this.](https://github.com/qawolf/tutorials-smoke-tests/tree/fd9b2f7f5c1c42ab5639172243317b6c6c336b00)
 
 Now we need to install the `qawolf` [npm package](https://www.npmjs.com/package/qawolf). `qawolf` is an open source Node.js library that generates [Puppeteer](https://pptr.dev/) and [Jest](https://jestjs.io/) test code from your browser interactions. It also allows you to quickly [set up running your tests on a schedule in various CI providers](set_up_ci).
 
@@ -33,7 +37,7 @@ In the command line, run the following to install `qawolf` as a dev dependency i
 npm i -D qawolf
 ```
 
-[Your code base should now look like this.](https://github.com/qawolf/smoke-tests-example/tree/862744cb369b41d845321d5c03e60eb1aef42e05)
+[Your code base should now look like this.](https://github.com/qawolf/tutorials-smoke-tests/tree/ee0ed9f579bdb7110b7a5b4f2a730de4616b8025)
 
 ## Creating a smoke test
 

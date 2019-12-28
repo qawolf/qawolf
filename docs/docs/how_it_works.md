@@ -5,7 +5,7 @@ title: ⚙️ How It Works
 
 ## Overview
 
-**When you run [record](cli#npx-qawolf-record---script-url-name)**, a [Puppeteer](https://pptr.dev/) Chromium browser opens with the [@qawolf/web](https://github.com/qawolf/qawolf/tree/master/packages/web) library injected. The `Recorder` intercepts your click, type, select, and scroll events to convert into workflow steps later. These events include the html of the target element and it's ancestors which is used to find the element when running the test. [Learn more about element selectors.](#element-selectors)
+**When you run [record](cli#npx-qawolf-record---script-url-name)**, a [Puppeteer](https://pptr.dev/) Chromium browser opens with the [@qawolf/web](https://github.com/qawolf/qawolf/tree/master/packages/web) library injected. The `Recorder` intercepts your click, type, select, and scroll events to convert into workflow steps later. These events include the html of the target element and it's ancestors which is used to find the element when running the test. [Learn more about element selectors.](#-element-selectors)
 
 **When you finish recording**, the events are converted to a workflow in [@qawolf/build-workflow](https://github.com/qawolf/qawolf/tree/master/packages/build-workflow) and to code in [@qawolf/build-code](https://github.com/qawolf/qawolf/tree/master/packages/build-code).
 
@@ -14,7 +14,7 @@ The code file is created as either:
 - a `.qawolf/tests/yourTest.test.js` [Puppeteer](https://pptr.dev/) and [Jest](https://jestjs.io/) test
 - a `.qawolf/scripts/yourScript.js` [Puppeteer](https://pptr.dev/) node script
 
-The second file that is created is `.qawolf/selectors/name.json` which contains the [element selectors](#element-selectors).
+The second file that is created is `.qawolf/selectors/name.json` which contains the [element selectors](#-element-selectors).
 
 **When you run the code**, it automatically waits for the elements and assertions using the [`qawolf` api](api), which just extends [Puppeteer](https://pptr.dev/).
 
@@ -26,7 +26,7 @@ If you have any additional questions about how QA Wolf works, please [reach out 
 
 QA Wolf automatically waits for network requests to finish or time out, and elements and assertions to appear before proceeding to dramatically improve stability.
 
-QA Wolf waits to find a good match for the [target element](#element-selectors) before proceeding. This removes the need for you to write custom waiting logic or sleep statements in your tests. If you include an assertion using [one of our helper methods](api#helpers), QA Wolf will also automatically wait to get the data you asked for before moving on.
+QA Wolf waits to find a good match for the [target element](#-element-selectors) before proceeding. This removes the need for you to write custom waiting logic or sleep statements in your tests. If you include an assertion using [one of our helper methods](api#helpers), QA Wolf will also automatically wait to get the data you asked for before moving on.
 
 One caveat is that elements may appear on the page before event handlers are attached. By default we [sleep for 1 second](api#qaw_sleep_ms) after an element is found to avoid this issue. However you can [edit your test code](edit_your_code) to include custom wait logic instead for these scenarios. [The `waitUntil` helper](api#qawolfwaituntilpredicate-timeoutms-sleepms) will likely be useful here.
 

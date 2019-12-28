@@ -1,4 +1,3 @@
-import { KeyEvent } from "@qawolf/types";
 import {
   isKeyHeld,
   isSpecialKey,
@@ -10,21 +9,27 @@ import {
 } from "../../src/keyboard/serializeStrokes";
 
 describe("isKeyHeld", () => {
-  it("returns true if a key is held for > 200ms", () => {
+  it("returns true if a key is held for > threshold", () => {
     expect(
-      isKeyHeld([
-        { name: "keydown", time: 0, value: "s" },
-        { name: "keyup", time: 201, value: "s" }
-      ] as any)
+      isKeyHeld(
+        [
+          { name: "keydown", time: 0, value: "s" },
+          { name: "keyup", time: 501, value: "s" }
+        ] as any,
+        500
+      )
     ).toEqual(true);
   });
 
-  it("returns false if a key is released within 200ms", () => {
+  it("returns false if a key is released <= threshold", () => {
     expect(
-      isKeyHeld([
-        { name: "keydown", time: 0, value: "s" },
-        { name: "keyup", time: 200, value: "s" }
-      ] as any)
+      isKeyHeld(
+        [
+          { name: "keydown", time: 0, value: "s" },
+          { name: "keyup", time: 10, value: "s" }
+        ] as any,
+        10
+      )
     ).toEqual(false);
   });
 
@@ -128,10 +133,10 @@ describe("serializeKeyEvents", () => {
     ).toEqual("↓ControlLeft↓KeyS↑KeyS↑ControlLeft");
   });
 
-  it("serializes to key strokes: if a key (other than Shift) is held down for > 200 ms", () => {
+  it("serializes to key strokes: if a key (other than Shift) is held down for > 500 ms", () => {
     const events = [
       { name: "keydown", time: 0, value: "s" },
-      { name: "keyup", time: 201, value: "s" }
+      { name: "keyup", time: 501, value: "s" }
     ];
     expect(serializeKeyEvents(events as any)).toEqual("↓KeyS↑KeyS");
   });

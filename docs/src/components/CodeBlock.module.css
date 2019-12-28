@@ -6,7 +6,7 @@
   cursor: pointer;
   display: block;
   font-family: var(--ifm-font-family-monospace);
-  font-size: 16px;
+  font-size: 14px;
   padding: 16px 16px 8px;
   text-align: start;
 }
@@ -17,19 +17,25 @@
 }
 
 .codeContainer {
-  position: relative;
+  align-items: center;
+  display: flex;
 }
 
 .copy {
   cursor: default;
-  position: absolute;
-  top: 84px;
-  left: 50%;
-  transform: translateX(-50%);
+  height: 36px;
+  margin-left: 16px;
 }
 
-@media screen and (max-width: 966px) {
-  .code {
-    font-size: 12px;
+@media screen and (max-width: 700px) {
+  .codeContainer {
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .copy {
+    margin-left: 0;
+    margin-top: 16px;
   }
 }
