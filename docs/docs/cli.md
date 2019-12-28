@@ -39,7 +39,7 @@ Generate a pipeline file for [Azure DevOps](https://azure.microsoft.com/en-us/se
 
 ### npx qawolf circleci
 
-Generate a workflow file for [CircleCI](https://circleci.com). See [Set Up <img align="center" height="20px" src="https://cdn.iconscout.com/icon/free/png-256/circleci-283066.png" />  CircleCI](set_up_ci#circleci) for more details.
+Generate a workflow file for [CircleCI](https://circleci.com). See [Set Up <img align="center" height="20px" src="https://cdn.iconscout.com/icon/free/png-256/circleci-283066.png" /> CircleCI](set_up_ci#circleci) for more details.
 
 ### npx qawolf github
 
@@ -48,3 +48,7 @@ Generate a workflow file for [GitHub Actions](https://github.com/features/action
 ### npx qawolf gitlab
 
 Generate a workflow file for [GitLab CI/CD](https://docs.gitlab.com/ee/ci/README.html). See [Set Up 🦊 GitLab](set_up_ci#gitlab) for more details.
+
+### npx qawolf howl
+
+🐺😉
