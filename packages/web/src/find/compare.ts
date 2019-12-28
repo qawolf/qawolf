@@ -51,6 +51,10 @@ export const compareAttributes = (a: any, b: any) => {
         if (attrs[matchKey]) matches.push(matchKey);
       });
     } else {
+      // ignore dynamic attributes
+      // XXX would be nice to build a dynamic profile of these over time
+      if (key === "data-reactid") return;
+
       if (key === "innertext") {
         attrs[key] = cleanText(a[key]) === cleanText(bValue);
       } else {

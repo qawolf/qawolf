@@ -9,6 +9,7 @@ import { Url } from "url";
 
 type RecordOptions = {
   debug?: boolean;
+  device?: string;
   name: string;
   test?: boolean;
   url: Url;
@@ -21,6 +22,7 @@ export const record = async (options: RecordOptions): Promise<void> => {
   const { name } = options;
 
   const browser = await launch({
+    device: options.device,
     domPath: CONFIG.domPath ? `${CONFIG.domPath}/${name}` : undefined,
     recordEvents: true,
     timeout: 0,
@@ -68,6 +70,7 @@ export const record = async (options: RecordOptions): Promise<void> => {
         }
 
         const workflow = buildWorkflow({
+          device: options.device,
           events: browser.qawolf.events,
           name: name,
           url: options.url.href!

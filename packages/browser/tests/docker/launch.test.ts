@@ -8,7 +8,7 @@ describe("launch", () => {
     CONFIG.domPath = await makeTempDir();
     CONFIG.videoPath = await makeTempDir();
 
-    const browser = await launch({ size: "phone", url: CONFIG.testUrl });
+    const browser = await launch({ device: "iPhone 7", url: CONFIG.testUrl });
 
     const screenCapture = browser.qawolf._screenCapture;
     expect(screenCapture).toBeTruthy();

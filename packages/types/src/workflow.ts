@@ -2,8 +2,6 @@ import { Action } from "./common";
 import { ScrollValue } from "./event";
 import { DocSelector, DocSelectorSerialized, Selector } from "./selector";
 
-export type Size = "desktop" | "tablet" | "phone";
-
 export interface Step extends Selector {
   action: Action;
   html: DocSelector;
@@ -21,8 +19,8 @@ export interface StepSerialized extends Selector {
 export type StepValue = string | ScrollValue | null | undefined;
 
 export interface Workflow {
+  device?: string;
   name: string;
-  size: Size;
   steps: Step[];
   url: string;
 }

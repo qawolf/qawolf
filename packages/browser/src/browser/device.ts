@@ -1,8 +1,12 @@
-import { Size } from "@qawolf/types";
 import { devices } from "puppeteer";
+import { Device } from "puppeteer/DeviceDescriptors";
 
-export const getDevice = (size: Size = "desktop"): devices.Device => {
-  if (size === "desktop") {
+export const getDevice = (device: string | Device = "desktop"): Device => {
+  if (typeof device !== "string") {
+    return device;
+  }
+
+  if (device === "desktop") {
     return {
       name: "Desktop",
       userAgent:
@@ -19,13 +23,9 @@ export const getDevice = (size: Size = "desktop"): devices.Device => {
     };
   }
 
-  if (size === "tablet") {
-    // https://gs.statcounter.com/screen-resolution-stats/tablet/worldwide
-    return devices["iPad"];
-  } else if (size === "phone") {
-    // https://deviceatlas.com/blog/most-popular-smartphones#us
-    return devices["iPhone 7"];
+  if (devices[device]) {
+    return devices[device];
   }
 
-  throw new Error(`invalid size ${size}`);
+  throw new Error(`puppeteer.devices["${device}"] was not found`);
 };

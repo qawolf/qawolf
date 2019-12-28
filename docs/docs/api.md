@@ -128,8 +128,7 @@ const { browser, waitFor } = require("qawolf");
 ### qawolf.launch([options])
 
 - `options` <[Object]>
-  - `device` <[device]> Emulate this [device].
-  - `size` <"desktop" | "phone" | "tablet"> Emulate a device for a [default size](https://github.com/qawolf/qawolf/blob/master/packages/browser/src/browser/device.ts). If `device` is specified `size` is ignored. Defaults to `"desktop"`.
+  - `device` <[device] | [string]> Emulate this [device]. You can pass a [string] or [device]. If you pass a [string], it will lookup that key in `puppeteer.devices`. Defaults to ["desktop"](https://github.com/qawolf/qawolf/blob/add5be096ca054cbafcd440fac5e95f60098246f/packages/browser/src/browser/device.ts#L5-L20).
   - `url` <[string]> The url to go to.
 - returns: <[Promise]<[Browser]>>
 
@@ -139,7 +138,10 @@ Launch a [Browser](#class-browser):
 const { devices } = require("puppeteer");
 const { launch } = require("qawolf");
 
-const browser = await launch({ size: "phone", url: "https://nytimes.com" });
+const browser = await launch({
+  device: "iPhone 7",
+  url: "https://nytimes.com"
+});
 
 const browser = await launch({
   device: devices["iPhone 7"],
@@ -425,7 +427,7 @@ await browser.type(selectors[1], "my@email.com");
 [boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean"
 [browser]: #class-browser "Browser"
 [cssselector]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors "CssSelector"
-[device]: https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerdevices "device"
+[device]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#puppeteerdevices "device"
 [directnavigationoptions]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pagegotourl-options "DirectNavigationOptions"
 [elementhandle]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#class-elementhandle "ElementHandle"
 [findelementoptions]: #interface-findelementoptions "FindElementOptions"

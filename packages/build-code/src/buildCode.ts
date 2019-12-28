@@ -3,6 +3,7 @@ import { readFileSync } from "fs-extra";
 import { compile } from "handlebars";
 import { camelCase } from "lodash";
 import { resolve } from "path";
+import { formatLaunch } from "./formatLaunch";
 import { formatStep } from "./formatStep";
 
 type BuildCodeOptions = {
@@ -24,6 +25,7 @@ export const buildCode = (options: BuildCodeOptions) => {
   const template = options.test ? testTemplate : scriptTemplate;
 
   const code = template({
+    launch: formatLaunch(workflow.url, workflow.device),
     name: camelCase(workflow.name),
     steps: workflow.steps.map(step => formatStep(step)),
     url: workflow.url
