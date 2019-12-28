@@ -13,8 +13,8 @@ describe("getDevice", () => {
     expect(device).toEqual(devices["iPad"]);
   });
 
-  it('returns an iPhone for "mobile"', () => {
-    const device = getDevice("mobile");
+  it('returns an iPhone 7 for "phone"', () => {
+    const device = getDevice("phone");
     expect(device).toEqual(devices["iPhone 7"]);
   });
 });

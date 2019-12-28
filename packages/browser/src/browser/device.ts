@@ -22,7 +22,7 @@ export const getDevice = (size: Size = "desktop"): devices.Device => {
   if (size === "tablet") {
     // https://gs.statcounter.com/screen-resolution-stats/tablet/worldwide
     return devices["iPad"];
-  } else if (size === "mobile") {
+  } else if (size === "phone") {
     // https://deviceatlas.com/blog/most-popular-smartphones#us
     return devices["iPhone 7"];
   }
