@@ -427,7 +427,7 @@ await browser.type(selectors[1], "my@email.com");
 [boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean"
 [browser]: #class-browser "Browser"
 [cssselector]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors "CssSelector"
-[device]: https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerdevices "device"
+[device]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#puppeteerdevices "device"
 [directnavigationoptions]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pagegotourl-options "DirectNavigationOptions"
 [elementhandle]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#class-elementhandle "ElementHandle"
 [findelementoptions]: #interface-findelementoptions "FindElementOptions"
