@@ -122,7 +122,7 @@ We default to 1s to:
 ## class: QAWolf
 
 ```js
-const { browser, waitFor } = require("qawolf");
+const { browser, puppeteer, waitFor } = require("qawolf");
 ```
 
 ### qawolf.launch([options])
@@ -136,6 +136,8 @@ const { browser, waitFor } = require("qawolf");
 Launch a [Browser](#class-browser):
 
 ```js
+const { launch, puppeteer } = require("qawolf");
+
 const browser = await launch({ size: "phone", url: "https://nytimes.com" });
 
 const browser = await launch({
@@ -143,6 +145,10 @@ const browser = await launch({
   url: "https://nytimes.com"
 });
 ```
+
+### qawolf.puppeteer
+
+Reference to [`puppeteer@v2.0.0`](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md) API.
 
 ### qawolf.waitUntil(predicate, timeoutMs[, sleepMs])
 
