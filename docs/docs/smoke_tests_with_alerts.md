@@ -512,4 +512,89 @@ You should see a message post to the channel you specified when setting up your 
 
 ### Post to webhook on failure
 
+The final step is configuring our workflow to post a message to Slack when tests fail. Thankfully, we can accomplish this in just a few lines of code.
+
+Let's revisit our `.github/workflows/qawolf.yml` file. After our step to Upload Artifacts, we will add another step to post a message to Slack only on failure.
+
+The lines we will add look like the following. Make sure to replace the sample webhook URL with your actual webhook URL.
+
+```yaml
+- name: Post Message to Slack
+  # if smoke tests fails trigger alert in Slack
+  if: failure()
+  run: curl -d '{"text":"Smoke tests failed!"}' -X POST https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
+  shell: bash
+```
+
+Let's dissect this code a bit:
+
+- `name`: the name of our step, in this case "Post Message to Slack" ([documentation](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idstepsname))
+- `if`: defines the condition that must be met for the step to run, in our case test failure ([documentation](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idstepsif))
+- `run`: allows us to provide a command to run using the operating system's shell ([documentation](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idstepsrun))
+- `shell`: which shell to use to run the command, defaults to `bash` on non-Windows platforms ([documentation](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#using-a-specific-shell))
+
+We should add these lines after the `Upload Artifacts` step, as shown below. Again make sure to replace the sample webhook URL with your actual webhook URL.
+
+```yaml
+# ...
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      # ...
+      - name: Upload Artifacts
+        # include test artifacts
+        # edit below to only include artifacts in certain scenarios
+        if: failure()
+        uses: actions/upload-artifact@master
+        with:
+          name: qawolf
+          path: "./artifacts"
+      # new code starts
+      - name: Post Message to Slack
+        # if smoke tests fails trigger alert in Slack
+        if: failure()
+        run: curl -d '{"text":"Smoke tests failed!"}' -X POST https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
+        shell: bash
+      # new code ends
+```
+
+One final consideration: **you probably don't want your webhook URL to be visible in your code, especially if you have a public repository.** Let's replace it with a [GitHub secret](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets#creating-encrypted-secrets) so that we don't need to worry about someone gaining access to our webhook URL and spamming our Slack channel.
+
+[Add a GitHub secret to your repository following these steps.](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets#creating-encrypted-secrets) In our example, we'll call our secret `SLACK_WEBHOOK_URL`. For the value of your secret, use your Slack webhook URL.
+
+TODO: INSERT IMAGE
+
+We now need to replace the Slack webhook URL with `${{ secrets.SLACK_WEBHOOK_URL }}` in our workflow file:
+
+```yaml
+- name: Post Message to Slack
+  # if smoke tests fails trigger alert in Slack
+  if: failure()
+  # change this
+  run: curl -d '{"text":"Smoke tests failed!"}' -X POST https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
+  # to this
+  run: curl -d '{"text":"Smoke tests failed!"}' -X POST ${{ secrets.SLACK_WEBHOOK_URL }}
+  shell: bash
+```
+
+[Your code base should now look like this.](https://github.com/qawolf/tutorials-smoke-tests/tree/1a8d8ee047c3e9862ebcf3489963f61c500ecb3b)
+
+If you want to test that your alerting system works, change `if: failure()` to `if: always()` and push to your remote repository. This will configure your tests to always post a message to Slack. Once you're satisfied that it works, change it back to `if: failure()`.
+
+```yaml
+- name: Post Message to Slack
+  # if smoke tests fails trigger alert in Slack
+  # change this
+  if: failure()
+  # to this
+  if: always()
+  run: curl -d '{"text":"Smoke tests failed!"}' -X POST ${{ secrets.SLACK_WEBHOOK_URL }}
+  shell: bash
+```
+
 ## Conclusion
+
+If you've made it this far, congratulations! 🎉
+
+TODO: FINISH
