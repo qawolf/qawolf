@@ -428,7 +428,7 @@ on:
   # ...
 ```
 
-[Your code base should now look like this.](https://github.com/qawolf/tutorials-smoke-tests/tree/4a6e345b950430beb8ed0ab82727774321248f30)
+[Your code base should now look like this.](https://github.com/qawolf/tutorials-smoke-tests/tree/4a6e345b950430beb8ed0ab82727774321248f30) Make sure to push your latest workflow file to your remote repository.
 
 ### Optional: Upload artifacts only on failure
 
@@ -463,5 +463,53 @@ jobs:
 Now our artifacts will only be uploaded when tests fail. See [GitHub Actions documentation](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idstepsif) to learn more.
 
 ## Set up alerts on failure
+
+We are now running smoke tests against an application on a schedule. These tests will verify that the critical functionality is working on an ongoing basis. To finish this tutorial, we will set up an alerting system so that we are notified when our smoke tests fail.
+
+In this tutorial, we'll post messages to [Slack](https://slack.com/) when tests fail. Slack has a free plan, so it's easy to get started. You can also use services like [PagerDuty](https://www.pagerduty.com/), and the setup will be very similar to the examples below.
+
+If you'd like to follow along and you don't already have a Slack workspace, [get started here](https://slack.com/get-started#/email).
+
+### Create Slack webhook
+
+We first need to create an incoming webhook, which is a unique URL that we can use to programmatically post messages to Slack. In our case, we'll make a POST request to this URL when our tests fail, so that we are notified of the failure in Slack. We'll be following [Slack's documentation](https://api.slack.com/messaging/webhooks) here, so use this as a reference if needed.
+
+The first step is to create a Slack app. Our app will be able to receive incoming webhooks, which we will use to post a message when tests fail. If you don't have a Slack app for your workspace yet, [create one here](https://api.slack.com/apps?new_app=1). In our example, we named our app "Smoke Tests", and made sure to select the correct workspace from the dropdown.
+
+TODO: INSERT IMAGE
+
+After you create your Slack app, you'll be redirected to its settings page. On this page, click on the "Incoming Webhooks" feature.
+
+TODO: INSERT IMAGE
+
+Make sure the "Activate Incoming Webhooks" toggle is switched to on to enable incoming webhooks.
+
+TODO: INSERT IMAGE
+
+You'll notice then when you switch the "Activate Incoming Webhooks" toggle to on, some extra options will appear. Scroll down to the bottom of the page and click the "Add New Webhook to Workspace" button.
+
+TODO: INSERT IMAGE
+
+A new page will appear where you can choose a channel that your messages will post to. In our example we chose the `#general` channel, but choose whatever channel you like. Then click the "Allow" button.
+
+TODO: INSERT IMAGE
+
+You'll then be redirected back to your app settings. You'll notice a new entry under "Webhook URLs for Your Workspace" on the "Incoming Webhooks" page. The URL will have a format like:
+
+```
+https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
+```
+
+TODO: INSERT IMAGE
+
+Now we have a URL that we can use to programmatically post messages to Slack when our tests fail. If you'd like to try it out now, run the following command in your terminal. Make sure to replace the sample URL with your webhook URL.
+
+```bash
+curl -d '{"text":"Hello, World!"}' -X POST https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
+```
+
+You should see a message post to the channel you specified when setting up your webhook!
+
+### Post to webhook on failure
 
 ## Conclusion
