@@ -430,6 +430,38 @@ on:
 
 [Your code base should now look like this.](https://github.com/qawolf/tutorials-smoke-tests/tree/4a6e345b950430beb8ed0ab82727774321248f30)
 
+### Optional: Upload artifacts only on failure
+
+Depending on how often you're running your tests and on your CI provider, you may hit artifact storage limits. For example, GitHub Actions will prevent you from uploading additional artifacts once the storage limit is reached.
+
+One way to mitigate this is to only upload artifacts when your tests fail, since you probably won't view them when tests pass.
+
+To upload artifacts only when your tests fail, you just need to change one word. In the `.github/workflows/qawolf.yml` file, change the line `if: always()` to `if: failure()`. For example:
+
+```yaml
+# ...
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      # ...
+      - name: Upload Artifacts
+        # include test artifacts
+        # edit below to only include artifacts in certain scenarios
+        # change this
+        if: always()
+        # to this
+        if: failure()
+        uses: actions/upload-artifact@master
+        with:
+          name: qawolf
+          path: "./artifacts"
+```
+
+[Your code base should now look like this.](https://github.com/qawolf/tutorials-smoke-tests/tree/b17e807b95967f1145f6a37eb2b1f0b80b831460)
+
+Now our artifacts will only be uploaded when tests fail. See [GitHub Actions documentation](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idstepsif) to learn more.
+
 ## Set up alerts on failure
 
 ## Conclusion
