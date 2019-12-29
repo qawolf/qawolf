@@ -154,9 +154,9 @@ You can optionally replace the default selector with a custom CSS or text select
 
 ### Automatic Waiting
 
-QA Wolf is built to avoid [flaky tests](https://whatis.techtarget.com/definition/flaky-test), so automatic waiting comes out of the box. This means that the `click` and `type` methods on the `browser` automatically wait for element to appear before moving on. For example, after we click to complete our todo, it takes a bit of time for the "Clear completed" button to appear on the page. In this case, the `qawolf` library will keep looking for the "Clear completed" button until it appears, at which point it will be clicked.
+QA Wolf is built to avoid [flaky tests](https://whatis.techtarget.com/definition/flaky-test), so automatic waiting comes out of the box. This means that the `click` and `type` methods on the `browser` automatically wait for the target element to appear before moving on. For example, after we click to complete our todo, it takes a bit of time for the "Clear completed" button to appear on the page. In this case, the `qawolf` library will keep looking for the "Clear completed" button until it appears, at which point it will be clicked.
 
-Automatic waiting allows us to avoid writing custom waiting logic or arbitrary sleep statements. See documentation on the [QA Wolf Browser class](api#class-browser) and on [automatic waiting](how_it_works#️-automatic-waiting) to learn more.
+Automatic waiting allows us to avoid writing custom wait logic or arbitrary sleep statements. See documentation on the [QA Wolf Browser class](api#class-browser) and on [automatic waiting](how_it_works#️-automatic-waiting) to learn more.
 
 At this point, feel free to create additional smoke tests before moving on.
 
@@ -164,7 +164,7 @@ At this point, feel free to create additional smoke tests before moving on.
 
 You can use the test code as is to verify that the workflow isn't broken. If a step of the workflow cannot be executed because no match is found for the target element, the test will fail.
 
-However, you can still edit the test code to suit your use case. This section provides examples for [adding an assertion](smoke_tests_with_alerts#add-an-assertion), [using a custom CSS or text selector](smoke_tests_with_alerts#use-custom-selectors) to locate an element, or [changing an input value](smoke_tests_with_alerts#change-input-value). Each section is self-contained, so feel free to skip to the section(s) of interest.
+However, you can still edit the test code to suit your use case. This section provides examples for [adding an assertion](smoke_tests_with_alerts#add-an-assertion), [using a custom CSS or text selector](smoke_tests_with_alerts#use-custom-selectors) to locate an element, or [changing an input value](smoke_tests_with_alerts#change-input-values). Each section is self-contained, so feel free to skip to the section(s) of interest.
 
 ### Add an assertion
 
@@ -242,10 +242,10 @@ You may want to edit the test code to use selectors of your choosing rather than
 
 The two supported custom selectors are [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) and text selectors:
 
-- [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) use CSS rules, for example: `#my-id`, `.my-class`, `div.my-class`, `[data-qa="my-input"]`
+- [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) find the element matching the CSS selector, for example: `#my-id`, `.my-class`, `div.my-class`, `[data-qa="my-input"]`
 - Text selectors find the element that contains the given text
 
-In your test code, replace the default selector (for example, `selectors[0]`) with an object containing either the `css` or `text` key and the desired target value. For example:
+In your test code, replace the default selector (for example, `selectors[0]`) with an object containing either the `css` or `text` key and the desired target value ([learn more about custom selectors here](api#interface-selector)). For example:
 
 ```js
 it('can click "Clear completed" button', async () => {
@@ -258,7 +258,7 @@ it('can click "Clear completed" button', async () => {
 });
 ```
 
-If you change the default selector to either of the above examples, your test will still pass.
+Try changing the default selector to either of the above examples. Then run your test again (`npx qawolf test myFirstSmokeTest`) and notice that it still passes.
 
 Whenever you target an element with a CSS or text selector, make sure that your selector is as specific as possible. If your selector matches multiple elements on the page, you could end up with the wrong element being acted upon in your test.
 
@@ -290,10 +290,54 @@ QAW_DATA_ATTRIBUTE=data-qa npx qawolf record www.myawesomesite.com myTest
 
 See [QA Wolf documentation](api#qaw_data_attribute) to learn more about the `QAW_DATA_ATTRIBUTE` environment variable.
 
-### Change input value
+### Change input values
+
+You'll notice that the initial step for typing the todo captured the value we typed as the second argument to [`browser.type`](api#browsertypeselector-value-options). In our example, we typed "create smoke test!" as our todo item. The following code was then generated:
+
+```js
+it('can type into "What needs to be done?" input', async () => {
+  await browser.type(selectors[0], "create smoke test!");
+});
+```
+
+However, you may want to change this input value to something else. The simplest way to do this is to change that second argument to [`browser.type`](api#browsertypeselector-value-options) in the code:
+
+```js
+it('can type into "What needs to be done?" input', async () => {
+  // change this
+  await browser.type(selectors[0], "create smoke test!");
+  // to this
+  await browser.type(selectors[0], "update smoke test!");
+});
+```
+
+If you run the test again (`npx qawolf test myFirstSmokeTest`) you'll see that it now types "update smoke test!" in the first step.
+
+You can also pass an environment variable to [`browser.type`](api#browsertypeselector-value-options). To do this, update the code to use `process.env.YOUR_ENV_VARIABLE`:
+
+```js
+it('can type into "What needs to be done?" input', async () => {
+  // change this
+  await browser.type(selectors[0], "create smoke test!");
+  // to this
+  await browser.type(selectors[0], process.env.TODO_VALUE);
+});
+```
+
+You can then run your test again, passing the appropriate environment variable. It will now type the value of your environment variable in the first step.
+
+```bash
+TODO_VALUE="create environment variable!" npx qawolf test myFirstSmokeTest
+```
+
+One final note: **you should always replace sensitive input values like passwords with environment variables.** Use the above example as a reference.
 
 ## Run smoke tests on a schedule
 
 ## Set up alerts on failure
 
-## Next steps
+## Conclusion
+
+```
+
+```
