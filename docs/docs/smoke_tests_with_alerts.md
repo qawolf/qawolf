@@ -334,10 +334,102 @@ One final note: **you should always replace sensitive input values like password
 
 ## Run smoke tests on a schedule
 
+Now that we have our smoke test running locally, let's run it in CI on a schedule. In this tutorial, we'll use [GitHub Actions](https://github.com/features/actions). GitHub Actions is free for open source repositories, and for private repositories the first 2,000 minutes (or more if you have a paid plan) are free.
+
+You can also use a different CI provider, as the setup will be very similar to this example.
+
+### Run tests in CI
+
+To get started, we need to create a config file for GitHub Actions. In your terminal run:
+
+```bash
+npx qawolf github
+```
+
+Note: the commands `npx qawolf azure`, `npx qawolf circleci`, and `npx qawolf gitlab` are also supported. Use these commands instead for [Azure DevOps](https://azure.microsoft.com/en-us/services/devops/), [CircleCI](https://circleci.com/), and [GitLab CI/CD](https://docs.gitlab.com/ee/ci/README.html) respectively.
+
+You'll notice that a file called `.github/workflows/qawolf.yml` was created in your project. In a nutshell, this file tells GitHub to run your tests whenever a commit is pushed. It also automatically handles uploading debugging artifacts like video recordings of tests and detailed logs.
+
+We will soon edit this file to also run our smoke tests on a schedule. See [GitHub Actions documentation](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/configuring-a-workflow) to learn more about configuring workflows.
+
+If you haven't already, [create a repository for your project on GitHub](https://help.github.com/en/github/getting-started-with-github/create-a-repo) or another provider. Then [push your code](https://help.github.com/en/github/using-git/pushing-commits-to-a-remote-repository) to your repository.
+
+[Your code base should now look like this.](https://github.com/qawolf/tutorials-smoke-tests/tree/f27babd546ee8599d1191aedd05473fc1d405967)
+
+If you go to your repository on GitHub, you should see that your test workflow is now running. This is because our generated workflow file runs our tests every time a commit is pushed. Click the "Actions" tab on the main page of your repository (next to the "Pull Requests" tab) to view all workflows.
+
+TODO: INSERT IMAGE
+
+After your workflow has passed, click on the workflow name ("qawolf" by default) to see more detail.
+
+TODO: INSERT IMAGE
+
+In the top right corner of the workflow page, you'll notice a button labeled "Artifacts". Click on this button to reveal a dropdown that allows you to download artifacts. Go ahead and download the artifacts!
+
+TODO: INSERT IMAGE
+
+The artifacts folder is structured like the following example. Of particular interest is the video (`qawolf/myFirstSmokeTest.test.js/video_1577653225931.mp4` in our example) and the logs (`qawolf/myFirstSmokeTest.test.js/1577653224576.log` in our example).
+
+```bash
+qawolf
+├── index.js
+│   └── [timestamp].log
+├── myFirstSmokeTest.test.js
+│   └── [timestamp].log
+│   └── video_[timestamp].mp4
+│   └── video_[timestamp].gif
+│   └── page_[index]_[timestamp].html
+```
+
+Watching the video and reading the logs are very helpful in debugging when something isn't working. Below is the video recording of our smoke test on [TodoMVC](http://todomvc.com/examples/react) as an example.
+
+TODO: INSERT VIDEO
+
+See [QA Wolf documentation](set_up_ci#️-debug) to learn more about debugging artifacts.
+
+### Run tests on schedule
+
+To run our tests on a schedule in addition to on push, we need to make one small change to our workflow file. Open the `.github/workflows/qawolf.yml` file in your project. Comment in the three lines that run tests on a schedule (lines 7-9 in the default generated file). The top of your file should now look like this, and [your code base should now look like this](https://github.com/qawolf/tutorials-smoke-tests/tree/35bb5087c1ab6a1c48cf0d337066cfe832669e5b):
+
+```yaml
+name: qawolf
+on:
+  push:
+    # test every branch
+    # edit below if you only want certain branches tested
+    branches: "*"
+  # !!! comment in the following 3 lines
+  schedule:
+    # test on schedule using cron syntax
+    - cron: "0 * * * *" # every hour
+  # ...
+```
+
+Note: the generated files for other CI providers also allow you to comment in code to run tests on a schedule. The process to update when to run tests is very similar to the examples that follow.
+
+You can control how often tests are run using [cron syntax](https://crontab.guru/). By default the value `"0 * * * *"` is specified by the `cron` key, which will run your tests every hour on the hour.
+
+If you want to run your tests more or less frequently, change the value specified by the `cron` key in your workflow file. For example, we'll update our workflow file to run tests once a day at midnight.
+
+```yaml
+name: qawolf
+on:
+  push:
+    # test every branch
+    # edit below if you only want certain branches tested
+    branches: "*"
+  # !!! comment in the following 3 lines
+  schedule:
+    # test on schedule using cron syntax
+    # change this
+    - cron: "0 * * * *" # every hour
+    # to this
+    - cron: "0 0 * * *" # once a day
+  # ...
+```
+
+[Your code base should now look like this.](https://github.com/qawolf/tutorials-smoke-tests/tree/4a6e345b950430beb8ed0ab82727774321248f30)
+
 ## Set up alerts on failure
 
 ## Conclusion
-
-```
-
-```
