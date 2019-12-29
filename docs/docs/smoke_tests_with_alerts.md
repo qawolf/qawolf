@@ -15,7 +15,7 @@ Smoke tests are tests that cover the most important functionality of an applicat
 
 The book [<i>Lessons Learned in Software Testing</i>](https://www.oreilly.com/library/view/lessons-learned-in/9780471081128/) summarizes it well: "smoke tests broadly cover product features in a limited time...if key features don't work or if key bugs haven't yet been fixed, your team won't waste further time installing or testing."
 
-## Get started
+## Set up project
 
 Let’s set up our project for our first smoke test! First, make sure that you have [Node.js installed](https://nodejs.org/en/download/). To get started, either create a new [Node.js](ttps://nodejs.org) project, or change directories into an existing one.
 
@@ -130,7 +130,7 @@ Each generated selector is an object. The object includes the following keys:
 
 - `index`: which step number the element corresponds to, starting at `0`
 - `page`: which page number the element is on (relevant when the workflow has mulitple pages or tabs)
-- `html`: the `node` that was interacted with, and its two direct `ancestors`
+- `html`: the node that was interacted with, and its two direct [ancestors](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement)
 
 Below is an example of a selector object:
 
@@ -150,7 +150,7 @@ Below is an example of a selector object:
 
 You don't need to worry too much about the selector object. The most important point is that it includes all the information it can about the target element and its two ancestors. The `qawolf` library can therefore find the target element based on multiple attributes. This helps make tests robust to changes in your application as well as dynamic attributes like CSS classes. If a close enough match for the target element is not found, the test will fail.
 
-You can optionally replace the default selector with a custom CSS or text selector (more on this in the [edit code section](smoke_tests_with_alerts#optional-edit-smoke-test-code)). See documentation on [how element selectors work](how_it_works#-element-selectors) and on [the `Selector` interface](api#interface-selector) to learn more.
+You can optionally replace the default selector with a custom CSS or text selector (more on this in the [edit code section](smoke_tests_with_alerts#use-custom-selectors)). See documentation on [how element selectors work](how_it_works#-element-selectors) and on [the `Selector` interface](api#interface-selector) to learn more.
 
 ### Automatic Waiting
 
@@ -164,7 +164,7 @@ At this point, feel free to create additional smoke tests before moving on.
 
 You can use the test code as is to verify that the workflow isn't broken. If a step of the workflow cannot be executed because no match is found for the target element, the test will fail.
 
-However, you can still edit the test code to suit your use case. This section provides examples for [adding an assertion](smoke_tests_with_alerts#add-an-assertion), [using a custom CSS or text selector](smoke_tests_with_alerts#use-custom-selector) to locate an element, or [changing an input value](smoke_tests_with_alerts#change-input-value). Each section is self-contained, so feel free to skip to the section(s) of interest.
+However, you can still edit the test code to suit your use case. This section provides examples for [adding an assertion](smoke_tests_with_alerts#add-an-assertion), [using a custom CSS or text selector](smoke_tests_with_alerts#use-custom-selectors) to locate an element, or [changing an input value](smoke_tests_with_alerts#change-input-value). Each section is self-contained, so feel free to skip to the section(s) of interest.
 
 ### Add an assertion
 
@@ -234,7 +234,61 @@ If you run the test again (`npx qawolf test myFirstSmokeTest`), you'll see that 
 
 See [QA Wolf API documentation](docs/api) for a full list of methods you can use to write assertions.
 
-### Use custom selector
+### Use custom selectors
+
+As [discussed earlier](smoke_tests_with_alerts#element-selectors), the default selector in the generated test code contains all attributes of an element and its two direct [ancestors](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement). When running a test, the `qawolf` library will wait for a close enough match to the default selector before moving on. If no suitable match is found before timing out, the test will fail.
+
+You may want to edit the test code to use selectors of your choosing rather than the default selector logic. This allows you to be explicit about which element to target in each step of your test.
+
+The two supported custom selectors are [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) and text selectors:
+
+- [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) use CSS rules, for example: `#my-id`, `.my-class`, `div.my-class`, `[data-qa="my-input"]`
+- Text selectors find the element that contains the given text
+
+In your test code, replace the default selector (for example, `selectors[0]`) with an object containing either the `css` or `text` key and the desired target value. For example:
+
+```js
+it('can click "Clear completed" button', async () => {
+  // change this
+  await browser.click(selectors[3]);
+  // to this (CSS selector)
+  await browser.click({ css: ".clear-completed" });
+  // or this (text selector)
+  await browser.click({ text: "Clear completed" });
+});
+```
+
+If you change the default selector to either of the above examples, your test will still pass.
+
+Whenever you target an element with a CSS or text selector, make sure that your selector is as specific as possible. If your selector matches multiple elements on the page, you could end up with the wrong element being acted upon in your test.
+
+A best practice in testing is to add [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes) like `data-qa` to target elements. This involves editing your front end code, but it allows you to be most explicit about which elements to target when running tests. For example:
+
+```html
+<!-- change this -->
+<button class="clear-completed">Clear completed</button>
+<!-- to this -->
+<button data-qa="clear-button" class="clear-completed">Clear completed</button>
+```
+
+If you have added a data attribute to an element in your test, you can update the test code to use a CSS selector targeting that data attribute and value.
+
+```js
+it('can click "Clear completed" button', async () => {
+  // change this
+  await browser.click(selectors[3]);
+  // to this
+  await browser.click({ css: "[data-qa='clear-button']" });
+});
+```
+
+You can also record your test while setting the [`QAW_DATA_ATTRIBUTE` environment variable](api#qaw_data_attribute). This will use your data attribute to find elements where applicable rather than the default selector logic. For example:
+
+```bash
+QAW_DATA_ATTRIBUTE=data-qa npx qawolf record www.myawesomesite.com myTest
+```
+
+See [QA Wolf documentation](api#qaw_data_attribute) to learn more about the `QAW_DATA_ATTRIBUTE` environment variable.
 
 ### Change input value
 
