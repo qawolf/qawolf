@@ -3,19 +3,31 @@ id: smoke_tests_with_alerts
 title: 🔥 Smoke Tests with Alerts
 ---
 
-You may have experienced this: someone pushed code to production and now a critical user workflow is broken. Despite your team’s best efforts, the bug slipped through. How could you have caught it before a user did? 😱
+This may sound familiar: someone pushed code to production and now a critical user workflow is broken. How could you have caught the bug before a user did? 😱
 
 In this tutorial, we’ll learn about smoke testing as a line of defense against bugs on production. We’ll set up smoke tests on a website, and build an alerting system that tells us when something isn’t working. Let’s get started!
 
+## Table of Contents
+
+- [Introduction: What are smoke tests?](smoke_tests_with_alerts#what-are-smoke-tests)
+- [1. Set up project](smoke_tests_with_alerts#1-set-up-project)
+- [2. Create a smoke test](smoke_tests_with_alerts#2-create-a-smoke-test)
+- [3. Run smoke test locally](smoke_tests_with_alerts#3-run-smoke-test-locally)
+- [4. Review smoke test code](smoke_tests_with_alerts#4-review-smoke-test-code)
+- [5. Optional: Edit smoke test code](smoke_tests_with_alerts#5-optional-edit-smoke-test-code)
+- [6. Run smoke tests on a schedule](smoke_tests_with_alerts#6-run-smoke-tests-on-a-schedule)
+- [7. Set up alerts on failure](smoke_tests_with_alerts#7-set-up-alerts-on-failure)
+- [Conclusion](smoke_tests_with_alerts#conclusion)
+
 ## What are smoke tests?
 
-Smoke tests are tests that cover the most important functionality of an application. For example, on Netflix the critical user workflows include signing in, searching for a show, and watching a show. The term “smoke test” originated in hardware repair, where a machine would fail the smoke test if it caught on fire when turned on. 🔥
+Smoke tests are tests that cover the most important functionality of an application. For example, on Netflix the critical user workflows include signing in and watching a show. The term “smoke test” originated in hardware repair, where a machine would fail the smoke test if it caught on fire when turned on. 🔥
 
 [According to Microsoft](<https://docs.microsoft.com/en-us/previous-versions/ms182613(v=vs.80)?redirectedfrom=MSDN>), “smoke testing is the most cost-effective method for identifying and fixing defects in software” after code reviews. This is because smoke tests are **not** intended to cover every permutation and edge case. Instead, smoke tests verify that the critical functionality isn't broken to the point where further testing would be unnecessary.
 
 The book [<i>Lessons Learned in Software Testing</i>](https://www.oreilly.com/library/view/lessons-learned-in/9780471081128/) summarizes it well: "smoke tests broadly cover product features in a limited time...if key features don't work or if key bugs haven't yet been fixed, your team won't waste further time installing or testing."
 
-## Set up project
+## 1. Set up project
 
 Let’s set up our project for our first smoke test! First, make sure that you have [Node.js installed](https://nodejs.org/en/download/). To get started, either create a new [Node.js](ttps://nodejs.org) project, or change directories into an existing one.
 
@@ -29,7 +41,7 @@ npm init -y
 
 You can follow along in this example GitHub repository. [Your code base should now look like this.](https://github.com/qawolf/tutorials-smoke-tests/tree/ee0d7d51265215ae9abe9a1579c7da99a414f78b)
 
-Now we need to install the `qawolf` [npm package](https://www.npmjs.com/package/qawolf). `qawolf` is an open source Node.js library that generates [Puppeteer](https://pptr.dev/) and [Jest](https://jestjs.io/) test code from your browser interactions. It also allows you to quickly [set up running your tests on a schedule in various CI providers](set_up_ci).
+Now we need to install the `qawolf` [npm package](https://www.npmjs.com/package/qawolf). `qawolf` is a free and open source Node.js library that generates [Puppeteer](https://pptr.dev/) and [Jest](https://jestjs.io/) test code from your browser interactions. It also allows you to quickly [set up running your tests on a schedule in various CI providers](set_up_ci).
 
 In the command line, run the following to install `qawolf` as a dev dependency in your project:
 
@@ -39,7 +51,7 @@ npm i -D qawolf
 
 [Your code base should now look like this.](https://github.com/qawolf/tutorials-smoke-tests/tree/8d08948a3080e1c2abcf0489a40a653b39d5e98e)
 
-## Create a smoke test
+## 2. Create a smoke test
 
 Now let's create our first smoke test. In this tutorial, we'll smoke test [TodoMVC](http://todomvc.com/examples/react), a simple todo application. Specifically, we'll create a todo item, complete it, and clear completed todos.
 
@@ -57,7 +69,7 @@ TODO: INSERT VIDEO
 
 [Your code base should now look like this.](https://github.com/qawolf/tutorials-smoke-tests/tree/caa0fccc1ee3472b2108fd03148cac6c6848134c) We'll dive deeper into the test code shortly, but first let's run our test locally.
 
-## Run smoke test locally
+## 3. Run smoke test locally
 
 Let's run our test to confirm it works locally. In the command line, run the following (replacing `myFirstSmokeTest` with your test name if applicable):
 
@@ -69,7 +81,7 @@ A Chromium browser will open and the test will run. See the video below for an e
 
 TODO: INSERT VIDEO
 
-## Review smoke test code
+## 4. Review smoke test code
 
 Here we'll review our test code and optionally edit it. You'll notice that a folder with the name `.qawolf` was created at the root level of your project. This folder holds two more folders: `.qawolf/tests` and `.qawolf/selectors`. Our test is in the `.qawolf/tests` folder with the name `myFirstSmokeTest.test.js` (or whatever else you named your test). The `.qawolf` directory structure is shown below.
 
@@ -160,7 +172,7 @@ Automatic waiting allows us to avoid writing custom wait logic or arbitrary slee
 
 At this point, feel free to create additional smoke tests before moving on.
 
-## Optional: Edit smoke test code
+## 5. Optional: Edit smoke test code
 
 You can use the test code as is to verify that the workflow isn't broken. If a step of the workflow cannot be executed because no match is found for the target element, the test will fail.
 
@@ -332,7 +344,7 @@ TODO_VALUE="create environment variable!" npx qawolf test myFirstSmokeTest
 
 One final note: **you should always replace sensitive input values like passwords with environment variables.** Use the above example as a reference.
 
-## Run smoke tests on a schedule
+## 6. Run smoke tests on a schedule
 
 Now that we have our smoke test running locally, let's run it in CI on a schedule. In this tutorial, we'll use [GitHub Actions](https://github.com/features/actions). GitHub Actions is free for open source repositories, and for private repositories the first 2,000 minutes (or more if you have a paid plan) are free.
 
@@ -462,7 +474,7 @@ jobs:
 
 Now our artifacts will only be uploaded when tests fail. See [GitHub Actions documentation](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idstepsif) to learn more.
 
-## Set up alerts on failure
+## 7. Set up alerts on failure
 
 We are now running smoke tests against an application on a schedule. These tests will verify that the critical functionality is working on an ongoing basis. To finish this tutorial, we will set up an alerting system so that we are notified when our smoke tests fail.
 
