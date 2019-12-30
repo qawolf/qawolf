@@ -71,19 +71,23 @@ Inside the Chromium browser, go through the workflow you want to test as a user 
 
 ## 3. Run smoke test locally
 
-Let's run our test to confirm it works locally. In the command line, run the following (replacing `myFirstSmokeTest` with your test name if applicable):
+Let's run our test to confirm it works locally. In the command line, run the following command. If applicable, replace `myFirstSmokeTest` with your test name.
 
 ```bash
 npx qawolf test myFirstSmokeTest
 ```
 
-A Chromium browser will open and the test will run. See the video below for an example.
+A Chromium browser will open and the test will run. See the GIF below for an example.
 
-TODO: INSERT VIDEO
+![](https://storage.googleapis.com/docs.qawolf.com/tutorials/run_test.gif)
+
+Once your test is running locally, move on to the next step.
 
 ## 4. Review smoke test code
 
-Here we'll review our test code and optionally edit it. You'll notice that a folder with the name `.qawolf` was created at the root level of your project. This folder holds two more folders: `.qawolf/tests` and `.qawolf/selectors`. Our test is in the `.qawolf/tests` folder with the name `myFirstSmokeTest.test.js` (or whatever else you named your test). The `.qawolf` directory structure is shown below.
+Next we'll review our test code and optionally edit it.
+
+You'll notice that a folder with the name `.qawolf` was created at the root level of your project. This folder holds two more folders: `.qawolf/tests` and `.qawolf/selectors`. Our test is in the `.qawolf/tests` folder with the name `myFirstSmokeTest.test.js` (or whatever else you named your test). The `.qawolf` directory structure is shown below.
 
 ```bash
 .qawolf # current directory
@@ -95,7 +99,7 @@ Here we'll review our test code and optionally edit it. You'll notice that a fol
 
 Let's look at the generated test code in `.qawolf/tests/myFirstSmokeTest.test.js`. The test code includes the `qawolf` library, which is built on top of [Puppeteer](https://pptr.dev/) to automate browser actions.
 
-In short, the following code will first open a Chromium browser with our desired URL. It then goes through each step in our workflow. In our case, we 1) type our todo item into the first element we interacted with, 2) hit Enter, 3) click to complete the todo, and 4) click the "Clear completed" button. Each of these steps corresponds to a [Jest test case](https://jestjs.io/docs/en/api#testname-fn-timeout). After the test is complete, the browser is closed.
+When we run our test, it will first open a Chromium browser with the specified URL. Each step of our workflow will then be executed. In our case, we 1) type our todo item into the input, 2) hit Enter, 3) click to complete the todo, and 4) click the "Clear completed" button. Each of these steps corresponds to a [Jest test case](https://jestjs.io/docs/en/api#testname-fn-timeout). After the test is complete, the browser will close.
 
 ```js
 const { launch } = require("qawolf");
@@ -132,19 +136,19 @@ A few other things about the test code are worth mentioning before we move on.
 
 ### Element Selectors
 
-First, the `click` and `type` methods on `browser` take an object of [type `Selector`](api#interface-selector). By default, these selectors are stored in the `.qawolf/selectors/myFirstSmokeTest.json` file. The test code then imports them:
+First, the `click` and `type` methods on `browser` take an object of [type `Selector`](api#interface-selector). These selectors are stored in the `.qawolf/selectors/myFirstSmokeTest.json` file. The test code then imports them:
 
 ```js
 const selectors = require("../selectors/myFirstSmokeTest");
 ```
 
-Each generated selector is an object. The object includes the following keys:
+Each selector is an object that includes the following keys:
 
-- `index`: which step number the element corresponds to, starting at `0`
-- `page`: which page number the element is on (relevant when the workflow has mulitple pages or tabs)
-- `html`: the node that was interacted with, and its two direct [ancestors](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement)
+- `index`: which step number the selector corresponds to, starting at `0`
+- `page`: which page number the element is on (relevant when the workflow uses mulitple pages or tabs)
+- `html`: the [node](https://developer.mozilla.org/en-US/docs/Web/API/Node) that was interacted with, and its two direct [ancestors](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement)
 
-Below is an example of a selector object:
+Below is an example of a selector:
 
 ```json
 {
@@ -160,7 +164,7 @@ Below is an example of a selector object:
 }
 ```
 
-You don't need to worry too much about the selector object. The most important point is that it includes all the information it can about the target element and its two ancestors. The `qawolf` library can therefore find the target element based on multiple attributes. This helps make tests robust to changes in your application as well as dynamic attributes like CSS classes. If a close enough match for the target element is not found, the test will fail.
+You don't need to worry too much about the selector. The most important point is that it includes all the information it can about the target element and its two ancestors. The `qawolf` library can therefore find the target element based on multiple attributes. This helps make tests robust to changes in your application as well as dynamic attributes like CSS classes. If a close enough match for the target element is not found, the test will fail.
 
 You can optionally replace the default selector with a custom CSS or text selector (more on this in the [edit code section](smoke_tests_with_alerts#use-custom-selectors)). See documentation on [how element selectors work](how_it_works#-element-selectors) and on [the `Selector` interface](api#interface-selector) to learn more.
 
@@ -174,7 +178,7 @@ At this point, feel free to create additional smoke tests before moving on.
 
 ## 5. Optional: Edit smoke test code
 
-You can use the test code as is to verify that the workflow isn't broken. If a step of the workflow cannot be executed because no match is found for the target element, the test will fail.
+You can use the test code as is to verify that your workflow isn't broken. If a step of your workflow cannot be completed because no match is found for the target element, the test will fail.
 
 However, you can still edit the test code to suit your use case. This section provides examples for [adding an assertion](smoke_tests_with_alerts#add-an-assertion), [using a custom CSS or text selector](smoke_tests_with_alerts#use-custom-selectors) to locate an element, or [changing an input value](smoke_tests_with_alerts#change-input-values). Each section is self-contained, so feel free to skip to the section(s) of interest.
 
@@ -184,7 +188,7 @@ Let's beef up our test by adding a few assertions. First, we'll add an assertion
 
 To do this, we'll use the [`browser.hasText` method](docs/api#browserhastexttext-options). This method automatically waits for the given text to appear on the page. It returns `true` if the text is found, and `false` if the text does not appear before timing out.
 
-In our test code, update the following step where we click to complete the todo. We'll call `browser.hasText("Clear completed")`, assign the result to a variable called `hasClearCompletedText`, and assert that `hasClearCompletedText` is `true`. See [Jest documentation](https://jestjs.io/docs/en/expect) to learn more about assertions.
+In our test code, let's update the following step where we click to complete the todo. We'll call `browser.hasText("Clear completed")`, assign the result to a variable called `hasClearCompletedText`, and assert that `hasClearCompletedText` is `true`. See [Jest documentation](https://jestjs.io/docs/en/expect) to learn more about assertions.
 
 ```js
 it("can click input", async () => {
@@ -233,7 +237,7 @@ it('can click "Clear completed" button', async () => {
   await waitUntil(async () => {
     // find the todos section on the page
     const todosSection = await page.$("section.main");
-    // return true once the secton is null, i.e. no longer exists
+    // return true once the secton is null (no longer exists)
     return todosSection === null;
   }, 15000); // wait 15 seconds before timing out
   // custom code ends
@@ -244,20 +248,20 @@ If you run the test again (`npx qawolf test myFirstSmokeTest`), you'll see that 
 
 [Your code base should now look like this.](https://github.com/qawolf/tutorials-smoke-tests/tree/3ee8e15bf4c10d87549e2a5b2d6549e8c598d95d)
 
-See [QA Wolf API documentation](docs/api) for a full list of methods you can use to write assertions.
+See [QA Wolf API documentation](api) for a full list of methods you can use to write assertions.
 
 ### Use custom selectors
 
 As [discussed earlier](smoke_tests_with_alerts#element-selectors), the default selector in the generated test code contains all attributes of an element and its two direct [ancestors](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement). When running a test, the `qawolf` library will wait for a close enough match to the default selector before moving on. If no suitable match is found before timing out, the test will fail.
 
-You may want to edit the test code to use selectors of your choosing rather than the default selector logic. This allows you to be explicit about which element to target in each step of your test.
+You may want to edit the test code to use selectors of your choosing rather than the default selectors. This allows you to be explicit about which element to target in each step of your test.
 
 The two supported custom selectors are [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) and text selectors:
 
 - [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) find the element matching the CSS selector, for example: `#my-id`, `.my-class`, `div.my-class`, `[data-qa="my-input"]`
 - Text selectors find the element that contains the given text
 
-In your test code, replace the default selector (for example, `selectors[0]`) with an object containing either the `css` or `text` key and the desired target value ([learn more about custom selectors here](api#interface-selector)). For example:
+In your test code, replace the default selector (for example, `selectors[0]`) with an object containing either the `css` or `text` key and the desired target value. For example:
 
 ```js
 it('can click "Clear completed" button', async () => {
@@ -269,6 +273,8 @@ it('can click "Clear completed" button', async () => {
   await browser.click({ text: "Clear completed" });
 });
 ```
+
+[Learn more about custom selectors here.](api#interface-selector)
 
 Try changing the default selector to either of the above examples. Then run your test again (`npx qawolf test myFirstSmokeTest`) and notice that it still passes.
 
@@ -304,7 +310,7 @@ See [QA Wolf documentation](api#qaw_data_attribute) to learn more about the `QAW
 
 ### Change input values
 
-You'll notice that the initial step for typing the todo captured the value we typed as the second argument to [`browser.type`](api#browsertypeselector-value-options). In our example, we typed "create smoke test!" as our todo item. The following code was then generated:
+You'll notice that the initial step for typing the todo captured the value we typed as the second argument to [`browser.type`](api#browsertypeselector-value-options). In our example, we typed `"create smoke test!"` as our todo item. The following code was then generated:
 
 ```js
 it('can type into "What needs to be done?" input', async () => {
@@ -312,7 +318,7 @@ it('can type into "What needs to be done?" input', async () => {
 });
 ```
 
-However, you may want to change this input value to something else. The simplest way to do this is to change that second argument to [`browser.type`](api#browsertypeselector-value-options) in the code:
+However, you may want to change this input value to something else. The simplest way to do this is to change that second argument to [`browser.type`](api#browsertypeselector-value-options) in the test code:
 
 ```js
 it('can type into "What needs to be done?" input', async () => {
@@ -323,9 +329,9 @@ it('can type into "What needs to be done?" input', async () => {
 });
 ```
 
-If you run the test again (`npx qawolf test myFirstSmokeTest`) you'll see that it now types "update smoke test!" in the first step.
+If you run the test again (`npx qawolf test myFirstSmokeTest`) you'll see that it now types `"update smoke test!"` in the first step.
 
-You can also pass an environment variable to [`browser.type`](api#browsertypeselector-value-options). To do this, update the code to use `process.env.YOUR_ENV_VARIABLE`:
+You can also pass an environment variable to [`browser.type`](api#browsertypeselector-value-options). To do this, update the test code to use `process.env.YOUR_ENV_VARIABLE`:
 
 ```js
 it('can type into "What needs to be done?" input', async () => {
