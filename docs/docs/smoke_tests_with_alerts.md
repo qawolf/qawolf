@@ -623,4 +623,12 @@ If you want to test that your alerting system works, change `if: failure()` to `
 
 If you've made it this far, congratulations! 🎉
 
-TODO: FINISH
+In this tutorial, we:
+
+1. Created a smoke test
+2. Ran our smoke tests on a schedule in GitHub Actions
+3. Set up Slack alerts to notify us when our smoke tests fail
+
+Now we have an additional line of defense against bugs in production! 🐛🚫
+
+Thank you for taking the time to read this tutorial. If you'd like to discuss further, or have ideas for future tutorials, please [e-mail me](mailto:laura@qawolf.com) or [chat on Gitter](https://gitter.im/qawolf/community) :)
