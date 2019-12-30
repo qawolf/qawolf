@@ -526,19 +526,19 @@ Now we have a URL that we can use to programmatically post messages to Slack whe
 curl -d '{"text":"Hello, World!"}' -X POST https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
-You should see a message post to the channel you specified when setting up your webhook!
+You should see a message post to the channel you specified when creating your webhook!
 
 ### Post to webhook on failure
 
-The final step is configuring our workflow to post a message to Slack when tests fail. Thankfully, we can accomplish this in just a few lines of code.
+The final step is configuring our workflow to post a message to Slack when the smoke tests fail. Thankfully, we can accomplish this in just a few lines of code.
 
-Let's revisit our `.github/workflows/qawolf.yml` file. After our step to Upload Artifacts, we will add another step to post a message to Slack only on failure.
+Let's revisit our `.github/workflows/qawolf.yml` file. After our step to `Upload Artifacts`, we will add another step to post a message to Slack when the smoke tests fail.
 
 The lines we will add look like the following. Make sure to replace the sample webhook URL with your actual webhook URL.
 
 ```yaml
 - name: Post Message to Slack
-  # if smoke tests fails trigger alert in Slack
+  # if smoke tests fail trigger alert in Slack
   if: failure()
   run: curl -d '{"text":"Smoke tests failed!"}' -X POST https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
   shell: bash
@@ -546,12 +546,20 @@ The lines we will add look like the following. Make sure to replace the sample w
 
 Let's dissect this code a bit:
 
-- `name`: the name of our step, in this case "Post Message to Slack" ([documentation](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idstepsname))
+- `name`: the name of our step, in this case `"Post Message to Slack"` ([documentation](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idstepsname))
 - `if`: defines the condition that must be met for the step to run, in our case test failure ([documentation](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idstepsif))
 - `run`: allows us to provide a command to run using the operating system's shell ([documentation](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idstepsrun))
 - `shell`: which shell to use to run the command, defaults to `bash` on non-Windows platforms ([documentation](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#using-a-specific-shell))
 
-We should add these lines after the `Upload Artifacts` step, as shown below. Again make sure to replace the sample webhook URL with your actual webhook URL.
+The command we run on failure makes a POST request to our Slack webhook URL, specifying which `text` to include in the message. In our example, we configure our message to be `"Smoke tests failed!"`, but you can use whatever message you like.
+
+```bash
+curl -d '{"text":"Smoke tests failed!"}' -X POST <Slack webhook URL>
+```
+
+[Learn more about the `curl` command here](https://curl.haxx.se/docs/manual.html), and [learn more about formatting your Slack messages here](https://api.slack.com/messaging/webhooks#advanced_message_formatting).
+
+We will add these new lines of code after the `Upload Artifacts` step, as shown below. Again make sure to replace the sample webhook URL with your actual webhook URL.
 
 ```yaml
 # ...
@@ -581,7 +589,7 @@ One final consideration: **you probably don't want your webhook URL to be visibl
 
 [Add a GitHub secret to your repository following these steps.](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets#creating-encrypted-secrets) In our example, we'll call our secret `SLACK_WEBHOOK_URL`. For the value of your secret, use your Slack webhook URL.
 
-TODO: INSERT IMAGE
+![Add GitHub secret](https://storage.googleapis.com/docs.qawolf.com/tutorials/github_secret.png)
 
 We now need to replace the Slack webhook URL with `${{ secrets.SLACK_WEBHOOK_URL }}` in our workflow file:
 
