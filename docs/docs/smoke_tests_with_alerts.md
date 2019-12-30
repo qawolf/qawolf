@@ -21,7 +21,7 @@ In this tutorial, we’ll learn about smoke testing as a line of defense against
 
 ## What are smoke tests?
 
-Smoke tests are tests that cover the most important functionality of an application. For example, on Netflix the critical user workflows include signing in and watching a show. The term “smoke test” originated in hardware repair, where a machine would fail the smoke test if it caught on fire when turned on. 🔥
+Smoke tests are tests that cover the most important functionality of an application. For example, on Netflix the critical user workflows include signing in and watching a movie. The term “smoke test” originated in hardware repair, where a machine would fail the smoke test if it caught on fire when turned on. 🔥
 
 [According to Microsoft](<https://docs.microsoft.com/en-us/previous-versions/ms182613(v=vs.80)?redirectedfrom=MSDN>), “smoke testing is the most cost-effective method for identifying and fixing defects in software” after code reviews. This is because smoke tests are **not** intended to cover every permutation and edge case. Instead, smoke tests verify that the critical functionality isn't broken to the point where further testing would be unnecessary.
 
@@ -41,7 +41,7 @@ npm init -y
 
 You can follow along in this example GitHub repository. [Your code base should now look like this.](https://github.com/qawolf/tutorials-smoke-tests/tree/ee0d7d51265215ae9abe9a1579c7da99a414f78b)
 
-Now we need to install the `qawolf` [npm package](https://www.npmjs.com/package/qawolf). `qawolf` is a free and open source Node.js library that generates [Puppeteer](https://pptr.dev/) and [Jest](https://jestjs.io/) test code from your browser interactions. It also allows you to quickly [set up running your tests on a schedule in various CI providers](set_up_ci).
+Next we need to install the `qawolf` [npm package](https://www.npmjs.com/package/qawolf). QA Wolf is a free and open source Node.js library that generates [Puppeteer](https://pptr.dev/) and [Jest](https://jestjs.io/) test code from your browser actions. It also allows you to quickly set up running your tests on a schedule in various CI providers.
 
 In the command line, run the following to install `qawolf` as a dev dependency in your project:
 
@@ -55,7 +55,7 @@ npm i -D qawolf
 
 Now let's create our first smoke test. In this tutorial, we'll smoke test [TodoMVC](http://todomvc.com/examples/react), a simple todo application. Specifically, we'll create a todo item, complete it, and clear completed todos.
 
-When we run the `npx qawolf record` command, a [Chromium](https://www.chromium.org/Home) browser will open and capture our actions such as clicks and typing into inputs. These actions will then be converted to [Puppeteer](https://pptr.dev/) and [Jest](https://jestjs.io/) test code (more on this in the [review code section](smoke_tests_with_alerts#review-smoke-test-code)).
+When we run the `npx qawolf record` command, a [Chromium](https://www.chromium.org/Home) browser will open and capture our actions such as clicks and typing into inputs. These actions will then be converted to [Puppeteer](https://pptr.dev/) and [Jest](https://jestjs.io/) test code (more on this in the [review code section](smoke_tests_with_alerts#4-review-smoke-test-code)).
 
 To record your test, run the following in the command line. You can optionally replace `http://todomvc.com/examples/react` with a different URL, and `myFirstSmokeTest` with a different name.
 
@@ -63,9 +63,9 @@ To record your test, run the following in the command line. You can optionally r
 npx qawolf record http://todomvc.com/examples/react myFirstSmokeTest
 ```
 
-Inside the Chromium browser, go through the workflow you want to test as a user would. In our example, we'll 1) create a todo item, 2) mark it as complete, and 3) clear completed todos. After you are done, return to the terminal and hit Enter to save your test. See the video below for an example.
+Inside the Chromium browser, go through the workflow you want to test as a user would. In our example, we'll 1) create a todo item, 2) mark it as complete, and 3) clear completed todos. After you are done, return to the terminal and hit Enter to save your test. See the GIF below for an example.
 
-TODO: INSERT VIDEO
+![](https://storage.googleapis.com/docs.qawolf.com/tutorials/create_test.gif)
 
 [Your code base should now look like this.](https://github.com/qawolf/tutorials-smoke-tests/tree/caa0fccc1ee3472b2108fd03148cac6c6848134c) We'll dive deeper into the test code shortly, but first let's run our test locally.
 
