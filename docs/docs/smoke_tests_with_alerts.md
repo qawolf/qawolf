@@ -65,7 +65,7 @@ npx qawolf record http://todomvc.com/examples/react myFirstSmokeTest
 
 Inside the Chromium browser, go through the workflow you want to test as a user would. In our example, we'll 1) create a todo item, 2) mark it as complete, and 3) clear completed todos. After you are done, return to the terminal and hit Enter to save your test. See the GIF below for an example.
 
-![](https://storage.googleapis.com/docs.qawolf.com/tutorials/create_test.gif)
+![Record a test](https://storage.googleapis.com/docs.qawolf.com/tutorials/create_test.gif)
 
 [Your code base should now look like this.](https://github.com/qawolf/tutorials-smoke-tests/tree/caa0fccc1ee3472b2108fd03148cac6c6848134c) We'll dive deeper into the test code shortly, but first let's run our test locally.
 
@@ -79,7 +79,7 @@ npx qawolf test myFirstSmokeTest
 
 A Chromium browser will open and the test will run. See the GIF below for an example.
 
-![](https://storage.googleapis.com/docs.qawolf.com/tutorials/run_test.gif)
+![Run a test locally](https://storage.googleapis.com/docs.qawolf.com/tutorials/run_test.gif)
 
 Once your test is running locally, move on to the next step.
 
@@ -352,13 +352,13 @@ One final note: **you should always replace sensitive input values like password
 
 ## 6. Run smoke tests on a schedule
 
-Now that we have our smoke test running locally, let's run it in CI on a schedule. In this tutorial, we'll use [GitHub Actions](https://github.com/features/actions). GitHub Actions is free for open source repositories, and for private repositories the first 2,000 minutes (or more if you have a paid plan) are free.
+Now that we have our smoke test running locally, let's run it in CI on a schedule. In this tutorial, we'll use [GitHub Actions](https://github.com/features/actions). GitHub Actions is free for open source repositories, and free for private repositories up to 2,000 minutes per month (or more if you have a paid plan).
 
 You can also use a different CI provider, as the setup will be very similar to this example.
 
 ### Run tests in CI
 
-To get started, we need to create a config file for GitHub Actions. In your terminal run:
+To get started, we need to create a workflow file for GitHub Actions. In your terminal run:
 
 ```bash
 npx qawolf github
@@ -366,7 +366,7 @@ npx qawolf github
 
 Note: the commands `npx qawolf azure`, `npx qawolf circleci`, and `npx qawolf gitlab` are also supported. Use these commands instead for [Azure DevOps](https://azure.microsoft.com/en-us/services/devops/), [CircleCI](https://circleci.com/), and [GitLab CI/CD](https://docs.gitlab.com/ee/ci/README.html) respectively.
 
-You'll notice that a file called `.github/workflows/qawolf.yml` was created in your project. In a nutshell, this file tells GitHub to run your tests whenever a commit is pushed. It also automatically handles uploading debugging artifacts like video recordings of tests and detailed logs.
+You'll notice that a file called `.github/workflows/qawolf.yml` was created in your project. In a nutshell, this file tells GitHub to run your tests whenever a commit is pushed. It also automatically uploads debugging artifacts like video recordings of tests and detailed logs.
 
 We will soon edit this file to also run our smoke tests on a schedule. See [GitHub Actions documentation](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/configuring-a-workflow) to learn more about configuring workflows.
 
@@ -374,19 +374,19 @@ If you haven't already, [create a repository for your project on GitHub](https:/
 
 [Your code base should now look like this.](https://github.com/qawolf/tutorials-smoke-tests/tree/f27babd546ee8599d1191aedd05473fc1d405967)
 
-If you go to your repository on GitHub, you should see that your test workflow is now running. This is because our generated workflow file runs our tests every time a commit is pushed. Click the "Actions" tab on the main page of your repository (next to the "Pull Requests" tab) to view all workflows.
+If you go to your repository on GitHub, you should see that your smoke test is now running. This is because our workflow file runs our tests every time a commit is pushed. Click the "Actions" tab on the main page of your repository (next to the "Pull Requests" tab) to view all workflows.
 
-TODO: INSERT IMAGE
+![GitHub Actions tab](https://storage.googleapis.com/docs.qawolf.com/tutorials/github_actions.png)
 
 After your workflow has passed, click on the workflow name ("qawolf" by default) to see more detail.
 
-TODO: INSERT IMAGE
+![Select qawolf workflow](https://storage.googleapis.com/docs.qawolf.com/tutorials/all_workflows.png)
 
 In the top right corner of the workflow page, you'll notice a button labeled "Artifacts". Click on this button to reveal a dropdown that allows you to download artifacts. Go ahead and download the artifacts!
 
-TODO: INSERT IMAGE
+![Download artifacts](https://storage.googleapis.com/docs.qawolf.com/tutorials/download_artifacts.png)
 
-The artifacts folder is structured like the following example. Of particular interest is the video (`qawolf/myFirstSmokeTest.test.js/video_1577653225931.mp4` in our example) and the logs (`qawolf/myFirstSmokeTest.test.js/1577653224576.log` in our example).
+The artifacts folder is structured like the following example. Of particular interest are the video (`qawolf/myFirstSmokeTest.test.js/video_1577653225931.mp4` in our example), GIF (`qawolf/myFirstSmokeTest.test.js/video_1577653225931.gif` in our example), and logs (`qawolf/myFirstSmokeTest.test.js/1577653224576.log` in our example).
 
 ```bash
 qawolf
@@ -399,9 +399,9 @@ qawolf
 │   └── page_[index]_[timestamp].html
 ```
 
-Watching the video and reading the logs are very helpful in debugging when something isn't working. Below is the video recording of our smoke test on [TodoMVC](http://todomvc.com/examples/react) as an example.
+Watching the video and reading the logs are very helpful in debugging when something isn't working. Below is the GIF artifact of running our smoke test on [TodoMVC](http://todomvc.com/examples/react) as an example.
 
-TODO: INSERT VIDEO
+![GIF artifact](https://storage.googleapis.com/docs.qawolf.com/tutorials/video_1577653225931.gif)
 
 See [QA Wolf documentation](set_up_ci#️-debug) to learn more about debugging artifacts.
 
@@ -423,11 +423,11 @@ on:
   # ...
 ```
 
-Note: the generated files for other CI providers also allow you to comment in code to run tests on a schedule. The process to update when to run tests is very similar to the examples that follow.
+Note: you can also run tests on a schedule with other CI providers. See [documentation on setting up CI](set_up_ci) to learn more.
 
 You can control how often tests are run using [cron syntax](https://crontab.guru/). By default the value `"0 * * * *"` is specified by the `cron` key, which will run your tests every hour on the hour.
 
-If you want to run your tests more or less frequently, change the value specified by the `cron` key in your workflow file. For example, we'll update our workflow file to run tests once a day at midnight.
+If you want to run your tests more or less frequently, change the value specified by the `cron` key in your workflow file. For example, we'll update our workflow file to run tests once a day at midnight UTC.
 
 ```yaml
 name: qawolf
@@ -454,7 +454,7 @@ Depending on how often you're running your tests and on your CI provider, you ma
 
 One way to mitigate this is to only upload artifacts when your tests fail, since you probably won't view them when tests pass.
 
-To upload artifacts only when your tests fail, you just need to change one word. In the `.github/workflows/qawolf.yml` file, change the line `if: always()` to `if: failure()`. For example:
+To upload artifacts only when your tests fail, you just need to change one line of code. In the `.github/workflows/qawolf.yml` file, change the line `if: always()` to `if: failure()`. For example:
 
 ```yaml
 # ...
