@@ -10,7 +10,8 @@
     "src"
   ],
   "scripts": {
-    "test:docker": "jest --testRegex=\"(/tests/docker/.*.test.ts)$\""
+    "install": "node ./lib/install.js",
+    "test:linux": "jest"
   },
   "repository": {
     "type": "git",

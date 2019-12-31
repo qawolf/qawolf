@@ -10,18 +10,18 @@ describe("launch", () => {
 
     const browser = await launch({ device: "iPhone 7", url: CONFIG.testUrl });
 
-    const screenCapture = browser.qawolf._screenCapture;
-    expect(screenCapture).toBeTruthy();
+    const capture = browser.qawolf._capture;
+    expect(capture).toBeTruthy();
 
     await sleep(500);
     await browser.close();
 
-    expect(await pathExists(screenCapture!.videoPath)).toBeTruthy();
-    expect(await pathExists(screenCapture!.gifPath)).toBeTruthy();
+    expect(await pathExists(capture!.videoPath)).toBeTruthy();
+    expect(await pathExists(capture!.gifPath)).toBeTruthy();
     await remove(CONFIG.videoPath);
 
     // 668 instead of 667 since it rounds up to even numbers
-    expect(screenCapture!.size).toMatchObject({
+    expect(capture!.size).toMatchObject({
       height: 668,
       width: 376
     });

@@ -1,6 +1,6 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { ScreenCapture } from "@qawolf/screen";
+import { Capture } from "@qawolf/screen";
 import { platform } from "os";
 import { basename } from "path";
 import {
@@ -88,7 +88,7 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
   const videoPath = options.videoPath || CONFIG.videoPath;
   if (videoPath) {
     // start capture after goto
-    qawolf._screenCapture = await ScreenCapture.start({
+    qawolf._capture = await Capture.start({
       offset: {
         x: CONFIG.chromeOffsetX,
         y: CONFIG.chromeOffsetY

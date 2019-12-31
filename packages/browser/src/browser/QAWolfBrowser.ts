@@ -1,6 +1,6 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { ScreenCapture } from "@qawolf/screen";
+import { Capture } from "@qawolf/screen";
 import {
   Callback,
   Event,
@@ -32,10 +32,10 @@ export class QAWolfBrowser {
   private _pages: Page[] = [];
   private _onClose: Callback[] = [];
 
+  // used internally by launch
+  public _capture: Capture | null = null;
   // used internally by findPage
   public _currentPageIndex: number = 0;
-  // used internally by launch
-  public _screenCapture: ScreenCapture | null = null;
 
   public constructor(options: ConstructorOptions) {
     const { ...clonedOptions } = options;
@@ -56,8 +56,8 @@ export class QAWolfBrowser {
   }
 
   public async close() {
-    if (this._screenCapture) {
-      await this._screenCapture.stop();
+    if (this._capture) {
+      await this._capture.stop();
     }
 
     if (CONFIG.debug) {

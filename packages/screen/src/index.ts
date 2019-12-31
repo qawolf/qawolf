@@ -1,1 +1,1 @@
-export * from "./ScreenCapture";
+export * from "./Capture";
