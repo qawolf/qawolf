@@ -1,4 +1,5 @@
 import { CONFIG } from "@qawolf/config";
+import { ensureDirSync } from "fs-extra";
 import { basename } from "path";
 import winston from "winston";
 
@@ -59,6 +60,8 @@ const createConsoleTransport = () =>
   });
 
 const createFileTransport = (path: string) => {
+  ensureDirSync(path);
+
   return new winston.transports.File({
     filename: `${path}/${Date.now()}.log`,
     format: winston.format.combine(winston.format.timestamp(), formatPrint),
