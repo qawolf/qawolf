@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# stop on failure
-set -e
-
-cd $QAWOLF_DIR
-QAW_HEADLESS=true npm run test
-qawolf-xvfb-run npm run test:docker

@@ -39,7 +39,7 @@ RUN cd ${QAWOLF_DIR} && npm run bootstrap
 
 # create bin scripts
 COPY bin /usr/bin
-RUN chmod +x /usr/bin/qawolf && chmod +x /usr/bin/qawolf-npm-test && chmod +x /usr/bin/qawolf-xvfb-run
+RUN chmod +x /usr/bin/qawolf
 
 # include packages globally
 ENV NODE_PATH=${QAWOLF_DIR}/packages \

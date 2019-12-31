@@ -1,4 +1,0 @@
-#!/bin/bash
-
-# XXX look into https://stackoverflow.com/a/30336424 and make sure it does not swallow test failures
-exec xvfb-run -a --server-args="-shmem -screen 0 ${QAW_DISPLAY_WIDTH}x${QAW_DISPLAY_HEIGHT}x24" "$@"

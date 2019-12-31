@@ -6,4 +6,4 @@ export DOCKER_HOST=$(ip route show | awk '/default/ {print $3}')
 # add it to hosts so external environment variables can reference it
 echo "$DOCKER_HOST docker-host" >> /etc/hosts
 
-qawolf-xvfb-run node ${QAWOLF_DIR}/packages/cli/lib/index.js "$@"
+node ${QAWOLF_DIR}/packages/cli/lib/index.js "$@"
