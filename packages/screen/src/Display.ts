@@ -1,3 +1,4 @@
+import { CaptureSize } from "./types";
 const Xvfb = require("xvfb");
 
 export class Display {
@@ -11,9 +12,11 @@ export class Display {
     return this._xvfb.display();
   }
 
-  public static start(): Promise<Display> {
+  public static start(size: CaptureSize): Promise<Display> {
     return new Promise((resolve, reject) => {
-      const xvfb = new Xvfb();
+      const xvfb = new Xvfb({
+        xvfb_args: ["-shmem", "-screen", "0", `${size.width}x${size.height}x24`]
+      });
 
       xvfb.start(function(err: any) {
         if (err) reject(err);

@@ -68,7 +68,7 @@ export class Capture {
       return null;
     }
 
-    const display = await Display.start();
+    const display = await Display.start(options.size);
     if (!display) {
       logger.error("Capture: need xvfb installed to start");
       return null;
