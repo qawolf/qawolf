@@ -3,9 +3,13 @@ id: smoke_tests_with_alerts
 title: 🔥 Smoke Tests with Alerts
 ---
 
-This may sound familiar: someone pushed code to production and now a critical user workflow is broken. How could you have caught the bug before a user did? 😱
+~~You~~ Someone shipped a bug to production that broke a critical workflow. Instead of doing [something fun] you have to cleanup the mess 😭.
 
-In this tutorial, we’ll learn about smoke testing as a line of defense against bugs on production. We’ll set up smoke tests on a website, and build an alerting system that tells us when something isn’t working. Let’s get started!
+![](https://media.giphy.com/media/143vPc6b08locw/giphy.gif)
+
+In this tutorial, we’ll learn about how smoke tests can prevent critical workflows from breaking. We'll set up smoke tests on a website and alerts for when something breaks.
+
+Let’s get started!
 
 ## Table of Contents
 
