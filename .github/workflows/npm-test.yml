@@ -17,7 +17,7 @@ jobs:
       QAW_LOG_PATH: ${{ github.workspace }}/artifacts
       QAW_NAVIGATION_TIMEOUT_MS: 20000
       QAW_SLEEP_MS: 0
-      QAW_TEST_URL: http://theinternet:5000/
+      QAW_TEST_URL: http://localhost:5000/
     steps:
       - uses: actions/checkout@v1
         with:
@@ -41,4 +41,7 @@ jobs:
     services:
       theinternet:
         image: gprestes/the-internet@sha256:f741ba048b7232ef90b0f7885de7f6ac42a52a17e73dd82afc484da140398796
+        ports:
+          - 5000:5000
+
     timeout-minutes: 20
