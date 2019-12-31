@@ -13,8 +13,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      QAW_DOM_PATH: ./artifacts
-      QAW_LOG_PATH: ./artifacts
+      QAW_DOM_PATH: ${{ github.workspace }}/artifacts
+      QAW_LOG_PATH: ${{ github.workspace }}/artifacts
       QAW_NAVIGATION_TIMEOUT_MS: 20000
       QAW_SLEEP_MS: 0
       QAW_TEST_URL: http://theinternet:5000/
@@ -31,13 +31,13 @@ jobs:
       - run: npm run test
       - run: npm run test:linux
         env:
-          QAW_VIDEO_PATH: ./artifacts
+          QAW_VIDEO_PATH: ${{ github.workspace }}/artifacts
       - name: Upload Artifacts
         if: always()
         uses: actions/upload-artifact@master
         with:
           name: qawolf
-          path: ./artifacts
+          path: ${{ github.workspace }}/artifacts
     services:
       theinternet:
         image: gprestes/the-internet@sha256:f741ba048b7232ef90b0f7885de7f6ac42a52a17e73dd82afc484da140398796
