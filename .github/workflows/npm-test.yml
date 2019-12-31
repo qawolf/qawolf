@@ -28,7 +28,7 @@ jobs:
         run: |
           npm install
           npm run bootstrap
-      - run: npm run test
+      - run: QAW_HEADLESS=true npm run test
       - run: npm run test:linux
         env:
           QAW_VIDEO_PATH: ${{ github.workspace }}/artifacts
