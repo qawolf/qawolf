@@ -13,6 +13,7 @@ Let’s get started!
 
 ## Table of Contents
 
+- [Prerequisites](smoke_tests_with_alerts#prerequisites)
 - [Introduction: What are smoke tests?](smoke_tests_with_alerts#what-are-smoke-tests)
 - [1. Set up project](smoke_tests_with_alerts#1-set-up-project)
 - [2. Create a smoke test](smoke_tests_with_alerts#2-create-a-smoke-test)
@@ -22,6 +23,14 @@ Let’s get started!
 - [6. Run smoke tests on a schedule](smoke_tests_with_alerts#6-run-smoke-tests-on-a-schedule)
 - [7. Set up alerts on failure](smoke_tests_with_alerts#7-set-up-alerts-on-failure)
 - [Conclusion](smoke_tests_with_alerts#conclusion)
+
+## Prerequisites
+
+This tutorial assumes the following:
+
+- You [understand the command line](https://www.freecodecamp.org/news/conquering-the-command-line-f85f5e46c07c/)
+- You have [Node.js installed](https://nodejs.org/en/download/) and [npm installed](https://www.npmjs.com/get-npm)
+- You [understand the basics of Git](https://guide.freecodecamp.org/git/) and have [Git installed](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 ## What are smoke tests?
 
@@ -33,7 +42,7 @@ The book [<i>Lessons Learned in Software Testing</i>](https://www.oreilly.com/li
 
 ## 1. Set up project
 
-Let’s set up our project for our first smoke test! First, make sure that you have [Node.js installed](https://nodejs.org/en/download/). To get started, either create a new [Node.js](ttps://nodejs.org) project, or change directories into an existing one.
+Let’s set up our project for our first smoke test! To get started, either create a new [Node.js](ttps://nodejs.org) project, or change directories into an existing one.
 
 To create a new project, run the following in the command line:
 
