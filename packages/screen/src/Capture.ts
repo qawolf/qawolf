@@ -18,6 +18,7 @@ export class Capture {
    * Catpure the x11 display with ffmpeg in a child process.
    */
   private _closed: boolean = false;
+  private _display: Display;
   private _ffmpeg: ChildProcessWithoutNullStreams;
   private _ffmpegPath: string;
   private _gifPath: string;
@@ -26,6 +27,7 @@ export class Capture {
 
   protected constructor(options: ConstructorOptions) {
     const startedAt = Date.now();
+    this._display = options.display;
     this._ffmpegPath = options.ffmpegPath;
     this._gifPath = `${options.savePath}/video_${startedAt}.gif`;
     this._videoPath = `${options.savePath}/video_${startedAt}.mp4`;
@@ -107,6 +109,8 @@ export class Capture {
           size: this._size,
           videoPath: this._videoPath
         });
+
+        await this._display.stop();
         resolve();
       });
 

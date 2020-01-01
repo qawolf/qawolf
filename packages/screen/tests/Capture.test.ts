@@ -8,7 +8,7 @@ it("captures a video and gif", async () => {
     savePath: `${CONFIG.videoPath}/Capture.test.ts`,
     size: { height: 1080, width: 1920 }
   });
-  await sleep(1000);
+  await sleep(3000);
   await capture!.stop();
   expect(await pathExists(capture!.videoPath)).toBeTruthy();
   expect(await pathExists(capture!.gifPath)).toBeTruthy();

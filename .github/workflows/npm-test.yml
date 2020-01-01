@@ -19,9 +19,6 @@ jobs:
       QAW_SLEEP_MS: 0
       QAW_TEST_URL: http://localhost:5000/
     steps:
-      - name: Setup system dependencies
-        run: sudo apt-get install xvfb
-
       - uses: actions/checkout@v1
         with:
           fetch-depth: 25
