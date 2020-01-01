@@ -68,4 +68,4 @@ After the installation is complete, run the following to make sure it was succes
 npx qawolf howl
 ```
 
-Congratulations - you're now ready to create browser tests and scripts with QA Wolf! 🎉
+Congratulations - you're now ready to [create browser tests](create_a_test) and scripts with QA Wolf! 🎉

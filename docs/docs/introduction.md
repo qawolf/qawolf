@@ -13,4 +13,5 @@ We want QA Wolf to work for you, so please [chat with us](https://gitter.im/qawo
 
 ## QA Wolf Fundamentals
 
-1. [🏃Get Started](get_started): Set up your development environment and install QA Wolf.
+1. [🏃Get started](get_started): Set up your development environment and install QA Wolf.
+2. [✅ Create a test](create_a_test): Create your first browser test with QA Wolf.
