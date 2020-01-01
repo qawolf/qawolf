@@ -3,12 +3,12 @@ module.exports = {
     {
       type: "category",
       label: "Introduction",
-      items: ["quick_start", "how_it_works", "faq"]
+      items: ["quick_start", "how_it_works", "faq", "contribute"]
     },
     {
       type: "category",
       label: "Guides",
-      items: ["set_up_ci", "edit_your_code", "contribute"]
+      items: ["set_up_ci", "edit_your_code"]
     },
     {
       type: "category",

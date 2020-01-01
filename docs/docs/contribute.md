@@ -3,7 +3,7 @@ id: contribute
 title: 🙋 Contribute
 ---
 
-QA Wolf is an [open source](https://github.com/qawolf/qawolf) project, and we welcome improvements from the community! Please see our [open issues](https://github.com/qawolf/qawolf/issues) and comment on any that you'd like to tackle.
+QA Wolf is an [open source](https://github.com/qawolf/qawolf) project, and we welcome improvements from the community!
 
 💡If you have an idea for a new feature or enhancement, please [chat with us](https://gitter.im/qawolf/community) or [open an issue](https://github.com/qawolf/qawolf/issues/new) with your proposal!
 

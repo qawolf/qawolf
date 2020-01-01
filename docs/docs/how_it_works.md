@@ -24,7 +24,7 @@ If you have any additional questions about how QA Wolf works, please [reach out 
 
 ### ⏱️ Automatic Waiting
 
-QA Wolf automatically waits for network requests to finish or time out, and elements and assertions to appear before proceeding to dramatically improve stability.
+QA Wolf uses automatic waiting to dramatically improve stability. Specifically, it automatically waits for network requests to finish or time out, and elements and assertions to appear before proceeding.
 
 QA Wolf waits to find a good match for the [target element](#-element-selectors) before proceeding. This removes the need for you to write custom waiting logic or sleep statements in your tests. If you include an assertion using [one of our helper methods](api#helpers), QA Wolf will also automatically wait to get the data you asked for before moving on.
 
@@ -32,7 +32,7 @@ One caveat is that elements may appear on the page before event handlers are att
 
 ### 🔍 Element Selectors
 
-Rather than rely on one specific attribute like an xpath to locate elements, QA Wolf serializes the entire element, its [parent](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement) and parent's parent, to make your tests robust to changes. You can also [specify a data attribute](api#qaw_data_attribute) like `data-qa` to use instead of the default selector logic, or [replace the generated selector](edit_your_code#custom-element-selectors) with a [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) or text selector.
+Rather than rely on one specific attribute like an xpath to locate elements, QA Wolf serializes the entire element, its [parent](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement), and parent's parent, to make your tests robust to changes. You can also [specify a data attribute](api#qaw_data_attribute) like `data-qa` to use instead of the default selector logic, or [replace the generated selector](edit_your_code#custom-element-selectors) with a [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) or text selector.
 
 The serialized elements are then stored in the selector (`.qawolf/selectors/name.json`). QA Wolf uses the [open source `html-parse-stringify` library](https://github.com/HenrikJoreteg/html-parse-stringify) to serialize each element.
 
