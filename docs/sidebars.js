@@ -13,7 +13,7 @@ module.exports = {
     {
       type: "category",
       label: "Tutorials",
-      items: ["smoke_tests_with_alerts"]
+      items: ["introduction", "get_started", "smoke_tests_with_alerts"]
     },
     "api",
     "cli"
