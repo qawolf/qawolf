@@ -1,6 +1,5 @@
-import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { Capture } from "@qawolf/screen";
+import { Capture, Display } from "@qawolf/screen";
 import {
   Callback,
   Event,
@@ -12,20 +11,30 @@ import {
 } from "@qawolf/types";
 import { sortBy } from "lodash";
 import { basename } from "path";
-import { devices, DirectNavigationOptions, ElementHandle } from "puppeteer";
+import {
+  Browser as PuppeteerBrowser,
+  devices,
+  DirectNavigationOptions,
+  ElementHandle
+} from "puppeteer";
 import { Browser } from "./Browser";
 import { createDomReplayer } from "../page/createDomReplayer";
+import { decorateBrowser } from "./decorateBrowser";
 import { findPage } from "../page/findPage";
 import { Page } from "../page/Page";
 
-type ConstructorOptions = {
-  browser: Browser;
+export interface ConstructorOptions {
+  debug?: boolean;
   device: devices.Device;
+  display?: Display;
   domPath?: string;
+  navigationTimeoutMs: number;
+  puppeteerBrowser: PuppeteerBrowser;
   recordEvents?: boolean;
-};
+}
 
 export class QAWolfBrowser {
+  private _browser: Browser;
   private _createdAt: number;
   private _options: ConstructorOptions;
   // stored in order of open
@@ -38,13 +47,15 @@ export class QAWolfBrowser {
   public _currentPageIndex: number = 0;
 
   public constructor(options: ConstructorOptions) {
+    logger.verbose(`QAWolfBrowser: create ${JSON.stringify(options)}`);
     const { ...clonedOptions } = options;
     this._options = clonedOptions;
     this._createdAt = Date.now();
+    this._browser = decorateBrowser(options.puppeteerBrowser, this);
   }
 
   public get browser(): Browser {
-    return this._options.browser;
+    return this._browser;
   }
 
   public async click(
@@ -60,7 +71,7 @@ export class QAWolfBrowser {
       await this._capture.stop();
     }
 
-    if (CONFIG.debug) {
+    if (this._options.debug) {
       logger.verbose("Browser: skipping close in debug mode");
       return;
     }
@@ -92,7 +103,7 @@ export class QAWolfBrowser {
   }
 
   public get domPath() {
-    const path = this._options.domPath || CONFIG.domPath;
+    const path = this._options.domPath;
     if (!path) return;
 
     // name the dom path based on the main script filename
@@ -135,7 +146,7 @@ export class QAWolfBrowser {
     const page = await findPage(this.browser, options);
 
     await page.goto(url, {
-      timeout: CONFIG.navigationTimeoutMs,
+      timeout: this._options.navigationTimeoutMs,
       ...options
     });
 
