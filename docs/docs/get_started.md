@@ -25,14 +25,14 @@ node -v
 npm -v
 ```
 
-## Install Git
+## Optional: Install Git
 
 [Git](https://git-scm.com/) is a version control system for tracking changes in source code during software development. While not explicitly necessary to run QA Wolf, Git simplifies the process of adding your browser tests or scripts to a shared code base. It is also required to run your tests in CI.
 
-Before making on, make sure you:
+The following resources will help you:
 
-- have a [basic understanding of Git](https://guide.freecodecamp.org/git)
-- have [installed Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+- [get a basic understanding of Git](https://guide.freecodecamp.org/git)
+- [install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 ## Optional: Understand JavaScript
 
