@@ -22,17 +22,29 @@ jobs:
       - uses: actions/checkout@v1
         with:
           fetch-depth: 25
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Setup node
         uses: actions/setup-node@v1
+
       - name: Install Dependencies
         run: |
           npm install
           npm run bootstrap
-      - run: QAW_HEADLESS=true npm run test
+      # - run: QAW_HEADLESS=true npm run test
+
       - run: sudo apt-get install xvfb
+
       - run: npm run test:linux
         env:
           QAW_VIDEO_PATH: ${{ github.workspace }}/artifacts
+
       - name: Upload Artifacts
         if: always()
         uses: actions/upload-artifact@master
