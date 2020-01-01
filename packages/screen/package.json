@@ -10,7 +10,7 @@
     "src"
   ],
   "scripts": {
-    "install": "node ./lib/install.js",
+    "install": "node ./src/install.js",
     "test:linux": "jest"
   },
   "repository": {
@@ -27,7 +27,6 @@
     "@qawolf/config": "^0.7.5",
     "@qawolf/logger": "^0.7.5",
     "@qawolf/web": "^0.7.11",
-    "ffmpeg-static": "^3.0.0",
     "fs-extra": "^8.1.0",
     "xvfb": "^0.3.0"
   },

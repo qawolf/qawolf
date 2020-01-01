@@ -2,12 +2,13 @@
   "name": "qawolf-root",
   "private": true,
   "scripts": {
-    "bootstrap": "npm i && lerna bootstrap --ignore-scripts && npm run install:puppeteer && npm run build",
+    "bootstrap": "npm i && npm run install:screen && lerna bootstrap --ignore-scripts && npm run install:puppeteer && npm run build",
     "build": "npm run build:packages && npm run bundle:web",
     "build:packages": "tsc --build packages/tsconfig.project.json",
     "bundle:web": "lerna run --scope @qawolf/web bundle",
     "cli": "ts-node packages/cli/src/index.ts",
     "install:puppeteer": "node ./packages/browser/node_modules/puppeteer/install.js",
+    "install:screen": "node ./packages/screen/src/install.js",
     "lint": "eslint packages --ext .ts --ignore-path .gitignore --cache",
     "pretest": "npm run lint",
     "test": "lerna run test --stream",
@@ -24,6 +25,7 @@
     "*.ts": "npm run lint"
   },
   "dependencies": {
+    "ffmpeg-static": "^3.0.0",
     "fs-extra": "^8.1.0",
     "lodash": "^4.17.15"
   },

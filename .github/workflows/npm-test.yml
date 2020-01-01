@@ -19,6 +19,9 @@ jobs:
       QAW_SLEEP_MS: 0
       QAW_TEST_URL: http://localhost:5000/
     steps:
+      - name: Setup system dependencies
+        run: sudo apt-get install xvfb
+
       - uses: actions/checkout@v1
         with:
           fetch-depth: 25
@@ -33,13 +36,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v1
 
-      - name: Install Dependencies
-        run: |
-          npm install
-          npm run bootstrap
-      # - run: QAW_HEADLESS=true npm run test
-
-      - run: sudo apt-get install xvfb
+      - run: npm run bootstrap
 
       - run: npm run test:linux
         env:

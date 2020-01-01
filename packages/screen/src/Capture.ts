@@ -19,12 +19,14 @@ export class Capture {
    */
   private _closed: boolean = false;
   private _ffmpeg: ChildProcessWithoutNullStreams;
+  private _ffmpegPath: string;
   private _gifPath: string;
   private _videoPath: string;
   private _size: CaptureSize;
 
   protected constructor(options: ConstructorOptions) {
     const startedAt = Date.now();
+    this._ffmpegPath = options.ffmpegPath;
     this._gifPath = `${options.savePath}/video_${startedAt}.gif`;
     this._videoPath = `${options.savePath}/video_${startedAt}.mp4`;
 
@@ -100,6 +102,7 @@ export class Capture {
       this._ffmpeg.on("close", async () => {
         logger.verbose("Capture: stopped");
         await createGif({
+          ffmpegPath: this._ffmpegPath,
           gifPath: this._gifPath,
           size: this._size,
           videoPath: this._videoPath

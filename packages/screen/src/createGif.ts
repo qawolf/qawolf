@@ -3,6 +3,7 @@ import { spawn } from "child_process";
 import { CaptureSize } from "./types";
 
 type CreateGifOptions = {
+  ffmpegPath: string;
   gifPath: string;
   size: CaptureSize;
   videoPath: string;
@@ -19,7 +20,7 @@ export const createGif = (options: CreateGifOptions) => {
     const ffmpeg = spawn("sh", [
       "-c",
       // https://askubuntu.com/a/837574/856776
-      `ffmpeg -i ${options.videoPath} -vf "fps=10,scale=${shrunkHeight}:-1:flags=lanczos,setpts=0.5*PTS" ${options.gifPath}`
+      `${options.ffmpegPath} -i ${options.videoPath} -vf "fps=10,scale=${shrunkHeight}:-1:flags=lanczos,setpts=0.5*PTS" ${options.gifPath}`
     ]);
 
     ffmpeg.on("close", () => {
