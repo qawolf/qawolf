@@ -4,7 +4,7 @@
 
 <h3 align="center">Create browser tests 10x faster</h3>
 
-<p align="center">QA Wolf is a free and open source library for creating <a href="https://github.com/puppeteer/puppeteer">Puppeteer</a> and <a href="https://jestjs.io">Jest</a> browser tests and running them in CI</p>
+<p align="center">QA Wolf is a free and open source library for creating <a href="https://github.com/puppeteer/puppeteer">Puppeteer</a>/<a href="https://jestjs.io">Jest</a> browser tests and running them in CI</p>
 
 <p align="center">
   <a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version" /></a>
@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-    <a href="https://docs.qawolf.com/docs/get_started">🚀 Quickstart</a> |
+    <a href="https://docs.qawolf.com/docs/quick_start">🚀 Quick Start</a> |
     <a href="https://docs.qawolf.com/docs/api">📖 API</a> |
     <a href="https://docs.qawolf.com/docs/faq">🧐 FAQ</a> |
     <a href="https://gitter.im/qawolf/community">👋 Chat</a> |
@@ -63,7 +63,7 @@ npm install --save-dev qawolf
 
 ## ✅ Create a browser test
 
-[Documentation](http://docs.qawolf.com/docs/get_started#-record-a-browser-test)
+[Documentation](http://docs.qawolf.com/docs/quick_start#-record-a-browser-test)
 
 Create a [Puppeteer](https://github.com/puppeteer/puppeteer) and [Jest](https://jestjs.io/) test:
 

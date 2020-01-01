@@ -3,7 +3,7 @@ id: set_up_ci
 title: ☁️ Set Up CI
 ---
 
-Run your [browser script 🤖](get_started#-record-a-browser-script) or [browser test ✅](get_started#-record-a-browser-test) in CI with one command.
+Run your [browser script 🤖](quick_start#-record-a-browser-script) or [browser test ✅](quick_start#-record-a-browser-test) in CI with one command.
 
 ![](https://storage.googleapis.com/docs.qawolf.com/home/github.gif)
 
@@ -157,7 +157,7 @@ To learn more about configuring workflows in GitHub Actions, see [GitHub's docum
 
 ### <a name="gitlab"></a> 🦊 GitLab
 
-Generate a workflow file for [GitLab CI/CD](https://docs.gitlab.com/ee/ci/README.html):
+Generate a configuration file for [GitLab CI/CD](https://docs.gitlab.com/ee/ci/README.html):
 
 ```bash
 npx qawolf gitlab
