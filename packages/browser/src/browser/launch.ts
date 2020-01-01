@@ -1,13 +1,33 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
+import { Display, Capture } from "@qawolf/screen";
+import { basename } from "path";
 import { LaunchOptions as PuppeteerLaunchOptions } from "puppeteer";
 import { Device } from "puppeteer/DeviceDescriptors";
 import { Browser } from "./Browser";
-import { startCapture } from "./capture";
 import { getDevice } from "./device";
 import { launchPuppeteer } from "./launchPuppeteer";
 import { managePages } from "./managePages";
 import { QAWolfBrowser } from "./QAWolfBrowser";
+
+const buildCaptureOptions = (device: Device) => {
+  const offset = {
+    x: CONFIG.chromeOffsetX,
+    y: CONFIG.chromeOffsetY
+  };
+
+  const captureSize = {
+    height: device.viewport.height,
+    width: device.viewport.width
+  };
+
+  const displaySize = {
+    height: captureSize.height + offset.y,
+    width: captureSize.width + offset.x
+  };
+
+  return { captureSize, displaySize, offset };
+};
 
 export type LaunchOptions = {
   debug?: boolean;
@@ -22,18 +42,25 @@ export type LaunchOptions = {
 export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
   logger.verbose(`launch: ${JSON.stringify(options)}`);
 
+  const device = getDevice(options.device);
+
+  const captureOptions = buildCaptureOptions(device);
+
+  let display = null;
   const videoPath = options.videoPath || CONFIG.videoPath;
 
-  //   // const puppeteerOptions = buildLaunchOptions(options, device);
-  //   // if there is a video path create a virtual display and ignore headless
-  //   const videoPath = options.videoPath || CONFIG.videoPath;
-  //   if (videoPath) {
-  //     // todo create display
-  //     // todo check if xvfb is changing parent env
-  //     // todo headless=false if success....
-  //   }
+  if (videoPath) {
+    try {
+      display = await Display.start(captureOptions.displaySize);
+      // check if xvfb is changing parent env
+      console.log("process.env.DISPLAY", process.env.DISPLAY);
+      process.env.DISPLAY = display.value;
+      console.log("after we set process.env.DISPLAY", process.env.DISPLAY);
 
-  const device = getDevice(options.device);
+      // ignore headless since we create the browser on a virtual display
+      options.headless = false;
+    } catch (e) {}
+  }
 
   const puppeteerBrowser = await launchPuppeteer(options, device);
 
@@ -52,7 +79,16 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
   await managePages(browser);
   if (options.url) await browser.goto(options.url);
 
-  if (videoPath) await startCapture(browser.qawolf, videoPath);
+  // start capture after goto
+  if (display && videoPath) {
+    // TODO basename(require.main!.filename) -> helper
+    qawolfBrowser._capture = await Capture.start({
+      display,
+      offset: captureOptions.offset,
+      savePath: `${videoPath}/${basename(require.main!.filename)}`,
+      size: captureOptions.captureSize
+    });
+  }
 
   return browser;
 };

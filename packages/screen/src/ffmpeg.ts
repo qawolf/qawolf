@@ -1,17 +1,21 @@
-import { CaptureOptions } from "./types";
+import { Display } from "./Display";
+import { CaptureOffset, CaptureSize } from "./types";
 
-interface FfmpegCaptureOptions extends CaptureOptions {
-  display: string;
+export interface CaptureOptions {
+  display: Display;
+  offset?: CaptureOffset;
+  savePath: string;
+  size: CaptureSize;
 }
 
-export const buildCaptureArgs = (options: FfmpegCaptureOptions) => {
+export const buildCaptureArgs = (options: CaptureOptions) => {
   const offset = options.offset || { x: 0, y: 0 };
 
   // ffmpeg requires dimensions to be divisible by 2
   const height = makeEven(options.size.height);
   const width = makeEven(options.size.width);
 
-  return [
+  const args = [
     // grab the X11 display
     "-f",
     "x11grab",
@@ -27,7 +31,7 @@ export const buildCaptureArgs = (options: FfmpegCaptureOptions) => {
     // input
     "-i",
     //:display+x,y offset
-    `${options.display}+${offset.x},${offset.y}`,
+    `${options.display.value}+${offset.x},${offset.y}`,
     // overwrite output
     "-y",
     // balance high quality and good compression https://superuser.com/a/582327/856890
@@ -44,6 +48,8 @@ export const buildCaptureArgs = (options: FfmpegCaptureOptions) => {
     "mp4",
     options.savePath
   ];
+
+  return args;
 };
 
 export const getPath = (): string | null => {

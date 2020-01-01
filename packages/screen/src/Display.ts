@@ -1,3 +1,4 @@
+import { logger } from "@qawolf/logger";
 import { CaptureSize } from "./types";
 const Xvfb = require("xvfb");
 
@@ -6,6 +7,7 @@ export class Display {
 
   protected constructor(xvfb: any) {
     this._xvfb = xvfb;
+    logger.debug(`Display: created ${this.value}`);
   }
 
   public get value() {
@@ -13,6 +15,8 @@ export class Display {
   }
 
   public static start(size: CaptureSize): Promise<Display> {
+    logger.verbose(`Display: start ${JSON.stringify(size)}`);
+
     return new Promise((resolve, reject) => {
       const xvfb = new Xvfb({
         xvfb_args: [
@@ -29,8 +33,12 @@ export class Display {
       });
 
       xvfb.start(function(err: any) {
-        if (err) reject(err);
-        else resolve(new Display(xvfb));
+        if (err) {
+          logger.error(`Display: could not start ${JSON.stringify(err)}`);
+          reject();
+        } else {
+          resolve(new Display(xvfb));
+        }
       });
     });
   }

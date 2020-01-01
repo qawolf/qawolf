@@ -16,12 +16,12 @@ describe("launch", () => {
     await sleep(500);
     await browser.close();
 
-    expect(await pathExists(capture!.videoPath)).toBeTruthy();
-    expect(await pathExists(capture!.gifPath)).toBeTruthy();
+    expect(await pathExists(capture!._videoPath)).toBeTruthy();
+    expect(await pathExists(capture!._gifPath)).toBeTruthy();
     await remove(CONFIG.videoPath);
 
     // 668 instead of 667 since it rounds up to even numbers
-    expect(capture!.size).toMatchObject({
+    expect(capture!._size).toMatchObject({
       height: 668,
       width: 376
     });

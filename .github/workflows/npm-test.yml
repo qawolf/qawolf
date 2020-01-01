@@ -15,6 +15,7 @@ jobs:
     env:
       QAW_DOM_PATH: ${{ github.workspace }}/artifacts
       QAW_LOG_PATH: ${{ github.workspace }}/artifacts
+      QAW_LOG_LEVEL: debug
       QAW_NAVIGATION_TIMEOUT_MS: 20000
       QAW_SLEEP_MS: 0
       QAW_TEST_URL: http://localhost:5000/

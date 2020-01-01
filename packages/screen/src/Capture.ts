@@ -2,47 +2,37 @@ import { logger } from "@qawolf/logger";
 import { sleep } from "@qawolf/web";
 import { spawn, ChildProcessWithoutNullStreams } from "child_process";
 import { ensureDir } from "fs-extra";
+import { omit } from "lodash";
 import { resolve } from "path";
 import { createGif } from "./createGif";
-import { Display } from "./Display";
-import { buildCaptureArgs, getPath } from "./ffmpeg";
-import { CaptureSize, CaptureOptions } from "./types";
-
-interface ConstructorOptions extends CaptureOptions {
-  display: Display;
-  ffmpegPath: string;
-}
+import { buildCaptureArgs, CaptureOptions, getPath } from "./ffmpeg";
+import { CaptureSize } from "./types";
 
 export class Capture {
   /**
    * Catpure the x11 display with ffmpeg in a child process.
    */
   private _closed: boolean = false;
-  private _display: Display;
+
   private _ffmpeg: ChildProcessWithoutNullStreams;
   private _ffmpegPath: string;
-  private _gifPath: string;
-  private _videoPath: string;
-  private _size: CaptureSize;
 
-  protected constructor(options: ConstructorOptions) {
+  // public for tests
+  public _gifPath: string;
+  public _videoPath: string;
+  public _size: CaptureSize;
+
+  protected constructor(options: CaptureOptions, ffmpegPath: string) {
+    this._ffmpegPath = ffmpegPath;
+    this._size = options.size;
+
     const startedAt = Date.now();
-    this._display = options.display;
-    this._ffmpegPath = options.ffmpegPath;
     this._gifPath = `${options.savePath}/video_${startedAt}.gif`;
     this._videoPath = `${options.savePath}/video_${startedAt}.mp4`;
 
-    this._size = options.size;
-
-    this._ffmpeg = spawn(
-      options.ffmpegPath,
-      buildCaptureArgs({
-        display: options.display.value,
-        offset: options.offset,
-        savePath: this._videoPath,
-        size: options.size
-      })
-    );
+    const args = buildCaptureArgs(options);
+    logger.debug(`Capture: spawn ${this._ffmpegPath} ${JSON.stringify(args)}`);
+    this._ffmpeg = spawn(this._ffmpegPath, args);
 
     this._ffmpeg.stdout.on("data", function(data) {
       logger.debug(`ffmpeg: ${data.toString()}`);
@@ -53,18 +43,6 @@ export class Capture {
     });
   }
 
-  public get gifPath() {
-    return this._gifPath;
-  }
-
-  public get size() {
-    return this._size;
-  }
-
-  public get videoPath() {
-    return this._videoPath;
-  }
-
   public static async start(options: CaptureOptions) {
     const ffmpegPath = getPath();
     if (!ffmpegPath) {
@@ -72,22 +50,14 @@ export class Capture {
       return null;
     }
 
-    const display = await Display.start(options.size);
-    if (!display) {
-      logger.error("Capture: need xvfb installed to start");
-      return null;
-    }
-
-    logger.verbose(`Capture: start ${JSON.stringify(options)}`);
+    logger.verbose(
+      `Capture: start ${JSON.stringify(omit(options, "display"))}`
+    );
 
     const path = resolve(options.savePath);
     await ensureDir(path);
 
-    const capture = new Capture({
-      ...options,
-      display,
-      ffmpegPath
-    });
+    const capture = new Capture(options, ffmpegPath);
     return capture;
   }
 
@@ -110,7 +80,6 @@ export class Capture {
           videoPath: this._videoPath
         });
 
-        await this._display.stop();
         resolve();
       });
 

@@ -36,6 +36,7 @@ export interface ConstructorOptions {
 export class QAWolfBrowser {
   private _browser: Browser;
   private _createdAt: number;
+  private _display?: Display;
   private _options: ConstructorOptions;
   // stored in order of open
   private _pages: Page[] = [];
@@ -52,6 +53,7 @@ export class QAWolfBrowser {
     this._options = clonedOptions;
     this._createdAt = Date.now();
     this._browser = decorateBrowser(options.puppeteerBrowser, this);
+    this._display = options.display;
   }
 
   public get browser(): Browser {
@@ -69,6 +71,10 @@ export class QAWolfBrowser {
   public async close() {
     if (this._capture) {
       await this._capture.stop();
+    }
+
+    if (this._display) {
+      await this._display.stop();
     }
 
     if (this._options.debug) {
