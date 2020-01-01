@@ -1,7 +1,6 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { ScreenCapture } from "@qawolf/screen";
-import { Size } from "@qawolf/types";
 import { platform } from "os";
 import { basename } from "path";
 import {
@@ -15,9 +14,9 @@ import { managePages } from "./managePages";
 import { QAWolfBrowser } from "./QAWolfBrowser";
 
 export type LaunchOptions = {
+  device?: string | Device;
   domPath?: string;
   recordEvents?: boolean;
-  size?: Size;
   url?: string;
   videoPath?: string;
 } & PuppeteerLaunchOptions;
@@ -55,7 +54,7 @@ const buildPuppeteerOptions = (
 export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
   logger.verbose(`launch: ${JSON.stringify(options)}`);
 
-  const device = getDevice(options.size);
+  const device = getDevice(options.device);
 
   const browser = (await launchPuppeteerBrowser(
     buildPuppeteerOptions(options, device)

@@ -27,11 +27,11 @@ describe("launch", () => {
 
   it("emulates device", async () => {
     const browser = await launch({
-      size: "mobile",
+      device: "iPhone 7",
       url: CONFIG.testUrl
     });
 
-    const expectedViewport = getDevice("mobile").viewport;
+    const expectedViewport = getDevice("iPhone 7").viewport;
     expect((await browser.page({ page: 0 })).viewport()).toEqual(
       expectedViewport
     );

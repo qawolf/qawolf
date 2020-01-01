@@ -19,13 +19,20 @@ This will record your test using `data-qa` as the [data attribute](api#qaw_data_
 
 See all commands and options.
 
-### npx qawolf record \[--script] <url\> [name]
+### npx qawolf record <url\> \[name]
 
+- `--device <device>` (optional): Emulate a [device](https://github.com/puppeteer/puppeteer/blob/5e63254e62fb9aedfd4503c632228c3334c70293/lib/DeviceDescriptors.js).
 - `--script` (optional): Record a node script instead of a [Jest](https://jestjs.io) test.
 - `url` (required): visit this URL to begin your test.
 - `name` (optional): Your file will be saved to `.qawolf/tests/name.test.js` or `.qawolf/scripts/name.js`. The name defaults to the URL hostname if not provided. `name` will be converted to camel case.
 
 Record a browser [test ✅](get_started#-record-a-browser-test) or [script 🤖](get_started#-record-a-browser-script).
+
+```bash
+npx qawolf record --device="iPhone 7" google.com
+
+npx qawolf record --script google.com
+```
 
 ### npx qawolf test \[name]
 

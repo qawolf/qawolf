@@ -57,6 +57,21 @@ describe("compareAttributes", () => {
       total: 1
     });
   });
+
+  it("ignores dynamic attributes", () => {
+    expect(
+      compareAttributes(
+        doc('<a data-reactid="123" innertext="hello">hello</a>').attrs,
+        doc('<a data-reactid="345" innertext="hello">hello</a>').attrs
+      )
+    ).toEqual({
+      attrs: {
+        innertext: true
+      },
+      matches: ["innertext"],
+      total: 1
+    });
+  });
 });
 
 describe("compareContent", () => {

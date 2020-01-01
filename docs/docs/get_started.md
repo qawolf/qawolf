@@ -17,7 +17,7 @@ npm install --save-dev qawolf
 ### ✅ Record a browser test
 
 ```bash
-qawolf record <url> [name]
+npx qawolf record <url> [name]
 ```
 
 This will open a Chromium browser where your actions will be recorded. If a name is not provided, the test name will default to the URL hostname.
@@ -51,7 +51,7 @@ If you provide an incorrect name, it will ask you to choose from a list of your 
 ### 🤖 Record a browser script
 
 ```bash
-qawolf record --script <url> [name]
+npx qawolf record --script <url> [name]
 ```
 
 This will open a Chromium browser where your actions will be recorded. If a name is not provided, the script name will default to the URL hostname.

@@ -2,19 +2,31 @@ import { devices } from "puppeteer";
 import { getDevice } from "../../src/browser/device";
 
 describe("getDevice", () => {
-  it('returns correct "desktop" size', () => {
-    const device = getDevice("desktop");
+  it('returns "desktop" size as default', () => {
+    const device = getDevice();
+    expect(device).toMatchObject(getDevice("desktop"));
+
     expect(device.viewport.width).toEqual(1366);
     expect(device.viewport.height).toEqual(768);
   });
 
-  it('returns an iPad for "tablet"', () => {
-    const device = getDevice("tablet");
-    expect(device).toEqual(devices["iPad"]);
+  it("returns a puppeteer.Device by key", () => {
+    expect(getDevice("iPhone 7")).toEqual(devices["iPhone 7"]);
   });
 
-  it('returns an iPhone for "mobile"', () => {
-    const device = getDevice("mobile");
-    expect(device).toEqual(devices["iPhone 7"]);
+  it("throws an error for an invalid device key", () => {
+    let message = false;
+    try {
+      getDevice("not a device");
+    } catch (e) {
+      message = e.message;
+    }
+    expect(message).toEqual(`puppeteer.devices["not a device"] was not found`);
+  });
+
+  it("returns a Device back if it is passed in", () => {
+    const device = devices["iPhone 7"];
+    const result = getDevice(devices["iPhone 7"]);
+    expect(result).toEqual(device);
   });
 });

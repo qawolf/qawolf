@@ -3,7 +3,7 @@ id: api
 title: API
 ---
 
-### [`qawolf@v0.7.9`](https://www.npmjs.com/package/qawolf/v/0.7.9)
+### [`qawolf@v0.7.11`](https://www.npmjs.com/package/qawolf/v/0.7.11)
 
 <a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version" /></a>
 <br/>
@@ -125,16 +125,28 @@ We default to 1s to:
 const { browser, waitFor } = require("qawolf");
 ```
 
-### qawolf.launch([options])
+### qawolf.launch(options)
 
 - `options` <[Object]>
+  - `device` <?[device] | ?[string]> Emulate this [device]. If you pass a string it will lookup a device with that key in `puppeteer.devices[options.device]`. Defaults to ["desktop"](https://github.com/qawolf/qawolf/blob/3256831cd93c172e81c9f7eb1fdeb347733d72ec/packages/browser/src/browser/device.ts#L9-L24).
   - `url` <[string]> The url to go to.
 - returns: <[Promise]<[Browser]>>
 
 Launch a [Browser](#class-browser):
 
 ```js
-const browser = await launch({ url: "https://nytimes.com" });
+const { devices } = require("puppeteer");
+const { launch } = require("qawolf");
+
+const browser = await launch({
+  device: "iPhone 7",
+  url: "https://nytimes.com"
+});
+
+const browser = await launch({
+  device: devices["iPhone 7"],
+  url: "https://nytimes.com"
+});
 ```
 
 ### qawolf.waitUntil(predicate, timeoutMs[, sleepMs])
@@ -415,6 +427,7 @@ await browser.type(selectors[1], "my@email.com");
 [boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean"
 [browser]: #class-browser "Browser"
 [cssselector]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors "CssSelector"
+[device]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#puppeteerdevices "device"
 [directnavigationoptions]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pagegotourl-options "DirectNavigationOptions"
 [elementhandle]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#class-elementhandle "ElementHandle"
 [findelementoptions]: #interface-findelementoptions "FindElementOptions"
