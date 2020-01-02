@@ -9,7 +9,7 @@ QA Wolf is an [open source](https://github.com/qawolf/qawolf) project, and we we
 
 👀 If you are looking for something to work on, please see our [open issues](https://github.com/qawolf/qawolf/issues) and comment on any that you'd like to tackle.
 
-## Improve the Docs
+## Improve the docs
 
 Improving our documentation is a great way to start contributing to QA Wolf. Our docs are also open source and are built with the awesome [Docusaurus](https://v2.docusaurus.io/) library.
 
@@ -36,7 +36,7 @@ Once you've made the changes you'd like, please make a pull request to the [`qaw
 
 If you have any questions please [chat with us on Gitter](https://gitter.im/qawolf/community)!
 
-## Development Environment
+## Development environment
 
 QAWolf is organized as a mono-repo of packages using [lerna](https://github.com/lerna/lerna).
 
