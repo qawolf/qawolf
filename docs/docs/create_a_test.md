@@ -7,15 +7,16 @@ In the [previous section](get_started), we set up our development environment an
 
 In this tutorial, we'll create a test for [TodoMVC](http://todomvc.com/examples/react), a simple todo application. Specifically, we'll create a todo item, complete it, and clear completed todos.
 
-## Record a test
+## Create a test
 
 First make sure that you are in your project directory and that you have [QA Wolf installed](get_started#install-qa-wolf):
 
 ```bash
 cd my-awesome-project
+npm install --save-dev qawolf
 ```
 
-When we run the `npx qawolf record` command, a [Chromium](https://www.chromium.org/Home) browser will open and capture our actions such as clicks and typing into inputs. These actions will then be converted to [Puppeteer](https://pptr.dev/) and [Jest](https://jestjs.io/) test code (more on this in the [review code tutorial](XXXLAURA)).
+When we run the `npx qawolf record` command, a [Chromium](https://www.chromium.org/Home) browser will open and capture our actions such as clicks and typing into inputs. These actions will then be converted to [Puppeteer](https://pptr.dev/) and [Jest](https://jestjs.io/) test code (more on this in the [review code tutorial](review_test_code)).
 
 To record your test, run the following in the command line. You can optionally replace `http://todomvc.com/examples/react` with a different URL, and `myFirstTest` with a different name. See the [CLI documentation](cli#npx-qawolf-record-url-name) for more detail.
 
@@ -27,4 +28,8 @@ Inside the Chromium browser, go through the workflow you want to test as a user 
 
 ![Record a test](https://storage.googleapis.com/docs.qawolf.com/tutorials/create_test.gif)
 
-We'll dive deeper into the test code shortly, but first let's run our test locally.
+## Next steps
+
+Congratulations - you've just created your first test with QA Wolf! 🎉
+
+We'll [dive deeper into the test code](review_test_code) shortly, but first let's [run our test locally](run_a_test_locally).

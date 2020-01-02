@@ -1,6 +1,6 @@
 ---
 id: get_started
-title: 🏃 Get Started
+title: 🧘 Get Started
 ---
 
 In this tutorial we make sure that you have the necessary understanding and environment setup before installing QA Wolf.
@@ -68,4 +68,8 @@ After the installation is complete, run the following to make sure it was succes
 npx qawolf howl
 ```
 
-Congratulations - you're now ready to [create browser tests](create_a_test) and scripts with QA Wolf! 🎉
+## Next steps
+
+Congratulations - you're ready to [create browser tests](create_a_test) and scripts with QA Wolf! 🎉
+
+Let's [go ahead and create our first test](create_a_test)!

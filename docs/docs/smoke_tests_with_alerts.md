@@ -179,7 +179,7 @@ Below is an example of a selector:
 
 You don't need to worry too much about the selector. The most important point is that it includes all the information it can about the target element and its two ancestors. The `qawolf` library can therefore find the target element based on multiple attributes. This helps make tests robust to changes in your application as well as dynamic attributes like CSS classes. If a close enough match for the target element is not found, the test will fail.
 
-You can optionally replace the default selector with a custom CSS or text selector (more on this in the [edit code section](smoke_tests_with_alerts#use-custom-selectors)). See documentation on [how element selectors work](how_it_works#-element-selectors) and on [the `Selector` interface](api#interface-selector) to learn more.
+You can optionally replace the default selector with a custom CSS or text selector (more on this in the [edit code section](smoke_tests_with_alerts#use-custom-selectors)). See documentation on [how element selectors work](review_test_code#element-selectors) and on [the `Selector` interface](api#interface-selector) to learn more.
 
 ### Automatic Waiting
 

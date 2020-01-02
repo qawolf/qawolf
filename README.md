@@ -26,7 +26,7 @@
 <ul>
 <li><b>Skip writing boilerplate.</b> Your browser actions are converted to Puppeteer and Jest code.
 </li>
-<li><b>Built for stability.</b> Avoid flaky tests with <a href="https://docs.qawolf.com/docs/how_it_works#%EF%B8%8F-automatic-waiting">automatic waiting</a> and <a href="https://docs.qawolf.com/docs/how_it_works#-element-selectors">smart element selectors</a>.
+<li><b>Built for stability.</b> Avoid flaky tests with <a href="https://docs.qawolf.com/docs/review_test_code#%EF%B8%8Fautomatic-waiting">automatic waiting</a> and <a href="https://docs.qawolf.com/docs/review_test_code#element-selectors">smart element selectors</a>.
 </li>
 <li><b>Test complex scenarios.</b> Test your application like a user. Use third party sites, multiple windows, and hot keys.
 </li>

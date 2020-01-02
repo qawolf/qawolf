@@ -3,7 +3,9 @@ id: set_up_ci
 title: ☁️ Set Up CI
 ---
 
-Run your [browser script 🤖](quick_start#-record-a-browser-script) or [browser test ✅](quick_start#-record-a-browser-test) in CI with one command.
+With QA Wolf, you can run your [browser test ✅](quick_start#-record-a-browser-test) or [browser script 🤖](quick_start#-record-a-browser-script) in CI with one command. [Debugging artifacts](set_up_ci#️-debug) like a video, GIF, and detailed logs are automatically created for each run in CI.
+
+This tutorial assumes that you have already [created a browser test](create_a_test) or script.
 
 ![](https://storage.googleapis.com/docs.qawolf.com/home/github.gif)
 

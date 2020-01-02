@@ -5,7 +5,7 @@ title: 🧐 FAQ
 
 ## Why did we build QA Wolf?
 
-We built QA Wolf to make our lives easier, and we hope you find it useful too. We have experienced the pain of setting up browser tests for consulting clients and previous employers. By generating [editable code](edit_your_code) from a recording, we significantly reduce the time needed to write or maintain tests. We constantly stress test QA Wolf against different sites to get closer to that goal. Please reach out on our [chat](https://gitter.im/qawolf/community) if you have any feedback or requests!
+We built QA Wolf to make our lives easier, and we hope you find it useful too. We have experienced the pain of setting up browser tests for consulting clients and previous employers. By generating [editable code](edit_test_code) from a recording, we significantly reduce the time needed to write or maintain tests. We constantly stress test QA Wolf against different sites to get closer to that goal. Please reach out on our [chat](https://gitter.im/qawolf/community) if you have any feedback or requests!
 
 ## Why not [some other recorder]?
 
@@ -33,6 +33,6 @@ By running our [@qawolf/web](https://github.com/qawolf/qawolf/tree/master/packag
 
 ## Can you support [some other framework]?
 
-You can already [edit your code](edit_your_code) to use any node package or framework.
+You can already [edit your code](edit_test_code) to use any node package or framework.
 
 In terms of generating the browser code for a framework other than [Puppeteer](https://pptr.dev/), or testing code for a framework other than [Jest](https://jestjs.io/), we would consider it to create a better experience for the community. If you have a framework you'd like us to support, please [chat](https://gitter.im/qawolf/community) or [email](mailto:jon@qawolf.com) us!

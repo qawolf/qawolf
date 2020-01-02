@@ -7,16 +7,16 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Guides",
-      items: ["set_up_ci", "edit_your_code"]
-    },
-    {
-      type: "category",
       label: "Tutorials",
       items: [
         "introduction",
         "get_started",
         "create_a_test",
+        "run_a_test_locally",
+        "review_test_code",
+        "edit_test_code",
+        "set_up_ci",
+        "use_typescript",
         "smoke_tests_with_alerts"
       ]
     },
