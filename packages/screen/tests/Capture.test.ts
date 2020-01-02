@@ -1,7 +1,7 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { sleep } from "@qawolf/web";
-import { exec } from "child_process";
+import { spawn } from "child_process";
 import { pathExists } from "fs-extra";
 import path from "path";
 import { Capture } from "../src/Capture";
@@ -13,29 +13,19 @@ it("captures a video and gif", async () => {
 
   const capture = await Capture.start({
     display,
-    drawMouse: true,
+    // drawMouse: true,
     savePath: `${CONFIG.videoPath}/Capture.test.ts`,
     size
   });
 
-  // change the background color to capture something
-  // const changeBackground = `xsetroot -display ${display.value} -solid "#43DFE1"`;
-  // logger.debug(`cmd ${changeBackground}`);
-  // exec(changeBackground, (err, stdout, stderr) => {
-  //   if (err) {
-  //     logger.debug(`couldn't execute the command: ${err.message}`);
-  //     return;
-  //   }
-
-  //   // the *entire* stdout and stderr (buffered)
-  //   logger.debug(`xsetroot stdout: ${stdout}`);
-  //   logger.debug(`xsetroot stderr: ${stderr}`);
-  // });
+  const imagePath = path.resolve(__dirname, "../fixtures/logo_small.png");
+  const feh = spawn("feh", [imagePath], { env: { DISPLAY: display.value } });
+  logger.debug(`spawn feh ${imagePath} ${display.value}`);
 
   await sleep(1000);
 
   await capture!.stop();
   await display.stop();
-  // expect(await pathExists(capture!._videoPath)).toBeTruthy();
-  // expect(await pathExists(capture!._gifPath)).toBeTruthy();
+
+  feh.kill();
 });

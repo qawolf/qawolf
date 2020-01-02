@@ -36,6 +36,8 @@ jobs:
 
       - run: npm run bootstrap
 
+      - run: sudo apt-get install -y feh
+
       - run: npm run test:linux
         env:
           QAW_VIDEO_PATH: ${{ github.workspace }}/artifacts
