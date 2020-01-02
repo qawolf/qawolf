@@ -3,6 +3,7 @@ import { CaptureOffset, CaptureSize } from "./types";
 
 export interface CaptureOptions {
   display: Display;
+  drawMouse?: boolean;
   offset?: CaptureOffset;
   savePath: string;
   size: CaptureSize;
@@ -11,23 +12,18 @@ export interface CaptureOptions {
 export const buildCaptureArgs = (options: CaptureOptions) => {
   const offset = options.offset || { x: 0, y: 0 };
 
-  // ffmpeg requires dimensions to be divisible by 2
-  const height = makeEven(options.size.height);
-  const width = makeEven(options.size.width);
-
   const args = [
     // grab the X11 display
     "-f",
     "x11grab",
-    // hide mouse
     "-draw_mouse",
-    "0",
+    options.drawMouse ? "1" : "0",
     // 20 fps
     "-framerate",
     "20",
     // record display size
     "-video_size",
-    `${width}x${height}`,
+    `${options.size.width}x${options.size.height}`,
     // input
     "-i",
     //:display+x,y offset
@@ -58,8 +54,4 @@ export const getPath = (): string | null => {
 
   const ffmpegPath = require("ffmpeg-static");
   return ffmpegPath;
-};
-
-const makeEven = (x: number) => {
-  return Math.ceil(x / 2) * 2;
 };

@@ -1,6 +1,6 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { Display, Capture } from "@qawolf/screen";
+import { Capture, Display } from "@qawolf/screen";
 import { basename } from "path";
 import { LaunchOptions as PuppeteerLaunchOptions } from "puppeteer";
 import { Device } from "puppeteer/DeviceDescriptors";
@@ -9,25 +9,6 @@ import { getDevice } from "./device";
 import { launchPuppeteer } from "./launchPuppeteer";
 import { managePages } from "./managePages";
 import { QAWolfBrowser } from "./QAWolfBrowser";
-
-const buildCaptureOptions = (device: Device) => {
-  const offset = {
-    x: CONFIG.chromeOffsetX,
-    y: CONFIG.chromeOffsetY
-  };
-
-  const captureSize = {
-    height: device.viewport.height,
-    width: device.viewport.width
-  };
-
-  const displaySize = {
-    height: captureSize.height + offset.y,
-    width: captureSize.width + offset.x
-  };
-
-  return { captureSize, displaySize, offset };
-};
 
 export type LaunchOptions = {
   debug?: boolean;
@@ -38,6 +19,26 @@ export type LaunchOptions = {
   url?: string;
   videoPath?: string;
 } & PuppeteerLaunchOptions;
+
+const buildCaptureOptions = (device: Device) => {
+  const offset = {
+    x: CONFIG.chromeOffsetX,
+    y: CONFIG.chromeOffsetY
+  };
+
+  // ffmpeg video size must be divisibble by 2
+  const captureSize = {
+    height: makeEven(device.viewport.height),
+    width: makeEven(device.viewport.width)
+  };
+
+  const displaySize = {
+    height: captureSize.height + offset.y,
+    width: captureSize.width + offset.x
+  };
+
+  return { captureSize, displaySize, offset };
+};
 
 export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
   logger.verbose(`launch: ${JSON.stringify(options)}`);
@@ -51,11 +52,9 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
 
   if (videoPath) {
     try {
+      console.log("before create display", process.env.DISPLAY);
       display = await Display.start(captureOptions.displaySize);
-      // check if xvfb is changing parent env
-      console.log("process.env.DISPLAY", process.env.DISPLAY);
-      process.env.DISPLAY = display.value;
-      console.log("after we set process.env.DISPLAY", process.env.DISPLAY);
+      console.log("after create display", process.env.DISPLAY);
 
       // ignore headless since we create the browser on a virtual display
       options.headless = false;
@@ -67,6 +66,7 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
   const qawolfBrowser = new QAWolfBrowser({
     debug: options.debug || CONFIG.debug,
     device,
+    display,
     domPath: options.domPath || CONFIG.domPath,
     navigationTimeoutMs:
       options.navigationTimeoutMs || CONFIG.navigationTimeoutMs,
@@ -91,4 +91,8 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
   }
 
   return browser;
+};
+
+const makeEven = (x: number) => {
+  return Math.ceil(x / 2) * 2;
 };

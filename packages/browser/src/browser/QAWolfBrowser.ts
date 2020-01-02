@@ -9,7 +9,7 @@ import {
   ScrollValue,
   TypeOptions
 } from "@qawolf/types";
-import { sortBy } from "lodash";
+import { omit, sortBy } from "lodash";
 import { basename } from "path";
 import {
   Browser as PuppeteerBrowser,
@@ -26,7 +26,7 @@ import { Page } from "../page/Page";
 export interface ConstructorOptions {
   debug?: boolean;
   device: devices.Device;
-  display?: Display;
+  display: Display | null;
   domPath?: string;
   navigationTimeoutMs: number;
   puppeteerBrowser: PuppeteerBrowser;
@@ -36,7 +36,7 @@ export interface ConstructorOptions {
 export class QAWolfBrowser {
   private _browser: Browser;
   private _createdAt: number;
-  private _display?: Display;
+  private _display: Display | null;
   private _options: ConstructorOptions;
   // stored in order of open
   private _pages: Page[] = [];
@@ -48,7 +48,11 @@ export class QAWolfBrowser {
   public _currentPageIndex: number = 0;
 
   public constructor(options: ConstructorOptions) {
-    logger.verbose(`QAWolfBrowser: create ${JSON.stringify(options)}`);
+    logger.verbose(
+      `QAWolfBrowser: create ${JSON.stringify(
+        omit(options, "display", "puppeteerBrowser")
+      )}`
+    );
     const { ...clonedOptions } = options;
     this._options = clonedOptions;
     this._createdAt = Date.now();

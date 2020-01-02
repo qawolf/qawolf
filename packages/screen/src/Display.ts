@@ -19,7 +19,7 @@ export class Display {
   }
 
   public static start(size: CaptureSize): Promise<Display> {
-    logger.verbose(`Display: start ${JSON.stringify(size)}`);
+    logger.debug(`Display: start ${JSON.stringify(size)}`);
 
     return new Promise((resolve, reject) => {
       const xvfb = new Xvfb({
@@ -48,6 +48,8 @@ export class Display {
   }
 
   public stop() {
+    logger.debug(`Display: stop ${this.screen}`);
+
     return new Promise((resolve, reject) => {
       this._xvfb.stop(function(err: any) {
         if (err) reject(err);

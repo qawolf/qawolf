@@ -10,7 +10,7 @@ import { CaptureSize } from "./types";
 
 export class Capture {
   /**
-   * Catpure the x11 display with ffmpeg in a child process.
+   * Capture the x11 display with ffmpeg in a child process.
    */
   private _closed: boolean = false;
 
