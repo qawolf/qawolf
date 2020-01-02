@@ -14,6 +14,7 @@ it("captures a video and gif", async () => {
   });
   await sleep(3000);
   await capture!.stop();
+  await display.stop();
   expect(await pathExists(capture!._videoPath)).toBeTruthy();
   expect(await pathExists(capture!._gifPath)).toBeTruthy();
 });
