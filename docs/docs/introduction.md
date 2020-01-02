@@ -11,13 +11,13 @@ This series of tutorials provides a detailed walkthrough of how to use QA Wolf. 
 
 We want QA Wolf to work for you, so please [chat with us](https://gitter.im/qawolf/community) or [e-mail us](mailto:jon@qawolf.com) if you have any questions or feedback!
 
-## QA Wolf Basics
+## QA Wolf basics
 
 1. [🧘 Get started](get_started): Set up your development environment and install QA Wolf.
 2. [✅ Create a test](create_a_test): Create your first browser test with QA Wolf.
 3. [🏃 Run a test locally](run_a_test_locally): Run your browser test locally to make sure it works.
 
-## Next Steps
+## Next steps
 
 These tutorials provide additional directions for you to explore after you've mastered the basics of QA Wolf. They are self-contained and can be read in any order.
 
