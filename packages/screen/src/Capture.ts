@@ -30,7 +30,7 @@ export class Capture {
     this._gifPath = `${options.savePath}/video_${startedAt}.gif`;
     this._videoPath = `${options.savePath}/video_${startedAt}.mp4`;
 
-    const args = buildCaptureArgs(options);
+    const args = buildCaptureArgs({ ...options, savePath: this._videoPath });
     logger.debug(`Capture: spawn ${this._ffmpegPath} ${JSON.stringify(args)}`);
     this._ffmpeg = spawn(this._ffmpegPath, args);
 

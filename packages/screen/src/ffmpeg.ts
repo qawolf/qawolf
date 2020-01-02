@@ -31,7 +31,7 @@ export const buildCaptureArgs = (options: CaptureOptions) => {
     // input
     "-i",
     //:display+x,y offset
-    `${options.display.value}+${offset.x},${offset.y}`,
+    `${options.display.screen}+${offset.x},${offset.y}`,
     // overwrite output
     "-y",
     // balance high quality and good compression https://superuser.com/a/582327/856890

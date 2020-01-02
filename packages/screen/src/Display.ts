@@ -7,7 +7,11 @@ export class Display {
 
   protected constructor(xvfb: any) {
     this._xvfb = xvfb;
-    logger.debug(`Display: created ${this.value}`);
+    logger.debug(`Display: created ${this.screen}`);
+  }
+
+  public get screen() {
+    return `${this.value}.0`;
   }
 
   public get value() {
