@@ -169,7 +169,7 @@ await waitUntil(async () => {
 
 - extends: [puppeteer.Browser]
 
-A [puppeteer.Browser] with actions and assertions to [find and automatically wait for elements](api#browserfindselector-options).
+A [puppeteer.Browser] with actions and assertions to [find](review_test_code#element-selectors) and [automatically wait for](review_test_code#automatic-waiting) elements.
 
 ### browser.click(selector[, options])
 

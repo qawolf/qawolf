@@ -35,7 +35,7 @@ Below we provide a brief overview of the generated test code with an example tes
 const { launch } = require("qawolf");
 const selectors = require("../selectors/myFirstTest");
 
-describe("myFirstSmokeTest", () => {
+describe("myFirstTest", () => {
   let browser;
 
   beforeAll(async () => {
