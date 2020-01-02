@@ -33,6 +33,6 @@ Congratulations - you've mastered the basics of creating and running browser tes
 
 There are a few places you can go from here:
 
-- [Dive deeper into understanding your test code](review_test_code)
-- [Edit your test code, such as by adding assertions or using custom selectors](edit_test_code)
+- [Learn about your test code](review_test_code)
+- [Edit your test code (add assertions, use custom selectors, and more!)](edit_test_code)
 - [Run your tests in CI](set_up_ci)

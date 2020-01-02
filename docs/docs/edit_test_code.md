@@ -5,11 +5,11 @@ title: ✏️ Edit Test Code
 
 In previous tutorials we [created our first browser test](create_a_test) and [ran it locally](run_a_test_locally) to make sure it works. Now let's learn how to edit our test code!
 
-This tutorial assumes a [basic understanding of JavaScript](get_started#optional-understand-javascript) and the [generated test code](review_test_code).
+This tutorial assumes a basic understanding of [your test code](review_test_code).
 
 ## Overview
 
-You can use generated test code as is to verify that your workflow isn't broken. If a step of your workflow cannot be completed because no match is found for the target element, the test will fail.
+Editing your test code is not necessary, and you can use generated code as is. If a step of your workflow cannot be completed because no match is found for the target element, the test will fail.
 
 However, you can still edit the test code to suit your use case. This section provides examples for [adding an assertion](edit_test_code#add-an-assertion), [using a custom CSS or text selector](edit_test_code#use-custom-selectors) to locate an element, or [changing an input value](edit_test_code#change-input-values). Each section is self-contained, so feel free to skip to the section(s) of interest.
 

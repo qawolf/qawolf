@@ -5,8 +5,6 @@ title: 📜 Review Test Code
 
 In previous tutorials we [created our first browser test](create_a_test) and [ran it locally](run_a_test_locally) to make sure it works. Now let's dive deeper into the code so we better understand how it works.
 
-This tutorial assumes a [basic understanding of JavaScript](get_started#optional-understand-javascript).
-
 ## Folder structure
 
 You'll notice that a folder with the name `.qawolf` was created at the root level of your project after you recorded your first test. This folder holds two more folders: `.qawolf/tests` and `.qawolf/selectors`.
@@ -147,13 +145,13 @@ The `.qawolf/selectors/myFirstTest.json` file is a [JSON](https://developer.mozi
 ]
 ```
 
-Each object implements the [`Selector` interface](api#interface-selector). This means that it includes the following keys:
+The generated [selector](api#interface-selector) includes the following keys:
 
 - `index`: which step number the selector corresponds to, starting at `0`
 - `page`: which page number the element is on (relevant when your test involves mulitple windows or tabs)
 - `html`: the [node](https://developer.mozilla.org/en-US/docs/Web/API/Node) that was interacted with, and its two direct [ancestors](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement)
 
-The test code then references one of these selectors by default:
+The test code references the generated [selector](api#interface-selector) in each step:
 
 ```js
 it('can type into "What needs to be done?" input', async () => {
@@ -165,9 +163,9 @@ The most important thing about the selector is that it includes all the informat
 
 You can optionally replace the default selector with a custom CSS or text selector (more on this in the [edit code tutorial](edit_test_code#use-custom-selectors)).
 
-The [next section](review_test_code#optional-deep-dive-on-element-selectors) is optional and goes into more detail on how element selectors work.
+The next section goes into detail on how the generated selector works.
 
-## Optional: Deep dive on element selectors
+## How the generated selector works
 
 Rather than rely on one specific attribute like an xpath to locate elements, QA Wolf serializes the entire element, its [parent](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement), and parent's parent, to make your tests robust to changes. You can also [specify a data attribute](api#qaw_data_attribute) like `data-qa` to use instead of the default selector logic, or [replace the generated selector](edit_test_code#use-custom-selectors) with a [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) or text selector.
 
@@ -222,6 +220,6 @@ Congratulations - you now understand your test code! 🎉
 
 There are a few places you can go from here:
 
-- [Edit your test code, such as by adding assertions or using custom selectors](edit_test_code)
+- [Edit your test code (add assertions, use custom selectors, and more!)](edit_test_code)
 - [Run your tests in CI](set_up_ci)
 - [Use TypeScript in your tests](use_typescript)
