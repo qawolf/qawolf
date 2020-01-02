@@ -16,8 +16,7 @@ module.exports = {
         "review_test_code",
         "edit_test_code",
         "set_up_ci",
-        "use_typescript",
-        "smoke_tests_with_alerts"
+        "use_typescript"
       ]
     },
     "api",
