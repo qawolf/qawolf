@@ -23,11 +23,11 @@ function Features() {
               qawolf node
             </a>{" "}
             library{" "}
-            <Link href={useBaseUrl("docs/how_it_works#️-automatic-waiting")}>
+            <Link href={useBaseUrl("docs/review_test_code#automatic-waiting")}>
               automatically waits
             </Link>{" "}
             for the next element or assertion.{" "}
-            <Link href={useBaseUrl("docs/how_it_works#-element-selectors")}>
+            <Link href={useBaseUrl("docs/review_test_code#element-selectors")}>
               Smart element selectors
             </Link>{" "}
             target elements using multiple attributes.

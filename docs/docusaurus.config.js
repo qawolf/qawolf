@@ -21,7 +21,7 @@ module.exports = {
         src: "img/logo.png"
       },
       links: [
-        { to: "docs/get_started", label: "Docs", position: "left" },
+        { to: "docs/quick_start", label: "Docs", position: "left" },
         {
           to: "docs/api",
           label: "API"

@@ -39,7 +39,7 @@ function GetStarted() {
           >
             Your test code is saved at
             <code>.qawolf/tests/yourTestName.test.js</code>.{" "}
-            <Link href={useBaseUrl("docs/edit_your_code")}>Edit your code</Link>{" "}
+            <Link href={useBaseUrl("docs/edit_test_code")}>Edit your code</Link>{" "}
             however you like!
           </p>
         </div>

@@ -3,7 +3,7 @@ id: cli
 title: CLI
 ---
 
-QA Wolf provides CLI commands to [record browser tests ✅](get_started#-record-a-browser-test), [record browser scripts 🤖](get_started#-record-a-browser-script), and [set up CI ☁️](#set_up_ci).
+QA Wolf provides CLI commands to [record browser tests ✅](quick_start#-record-a-browser-test), [record browser scripts 🤖](quick_start#-record-a-browser-script), and [set up CI ☁️](#set_up_ci).
 
 ## Commands
 
@@ -26,7 +26,7 @@ See all commands and options.
 - `url` (required): visit this URL to begin your test.
 - `name` (optional): Your file will be saved to `.qawolf/tests/name.test.js` or `.qawolf/scripts/name.js`. The name defaults to the URL hostname if not provided. `name` will be converted to camel case.
 
-Record a browser [test ✅](get_started#-record-a-browser-test) or [script 🤖](get_started#-record-a-browser-script).
+Record a browser [test ✅](quick_start#-record-a-browser-test) or [script 🤖](quick_start#-record-a-browser-script).
 
 ```bash
 npx qawolf record --device="iPhone 7" google.com

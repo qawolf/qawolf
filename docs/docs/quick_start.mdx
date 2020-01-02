@@ -1,0 +1,159 @@
+---
+id: quick_start
+title: 🏁 Quick Start
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+QA Wolf is an [open source](https://github.com/qawolf/qawolf) library for creating browser tests and scripts 10x faster. It converts your browser actions to stable [Puppeteer](https://github.com/puppeteer/puppeteer) and [Jest](https://jestjs.io/) code, including [automatic waiting](review_test_code#automatic-waiting) and [smart element selectors](review_test_code#element-selectors). It also sets up CI in one command to upload a video, GIF, and detailed logs for each test.
+
+Below is a quick start guide for developers. For a more detailed walkthrough of how to get started with QA Wolf, [see our tutorials](introduction).
+
+## 🖥️ Install QA Wolf
+
+Install QA Wolf as a dev dependency with [`npm`](https://www.npmjs.com):
+
+```bash
+cd /my/awesome/project
+npm install --save-dev qawolf
+```
+
+See the [Get Started](get_started#install-qa-wolf) tutorial for more detail.
+
+## ✅ Record a browser test
+
+```bash
+npx qawolf record <url> [name]
+```
+
+This will open a Chromium browser where your actions will be recorded. If a name is not provided, the test name will default to the URL hostname.
+
+When you are done, press enter in the CLI to save your test:
+
+```bash
+? Save [Y/n]
+```
+
+The test will be stored in a `.qawolf` folder.
+
+```bash
+.qawolf # current directory
+├── tests
+│   └── myTest.test.js
+├── selectors
+│   └── myTest.json
+```
+
+The `.qawolf/tests/myTest.test.js` file contains [Puppeteer](https://pptr.dev/) and [Jest](https://jestjs.io) code that you can [edit](edit_test_code). The `.qawolf/selectors/myTest.json` file contains the test [element selectors](review_test_code#element-selectors).
+
+See the [Create a Test](create_a_test) tutorial for more detail.
+
+Run your test:
+
+```bash
+qawolf test [name]
+```
+
+If you provide an incorrect name, you will be asked to choose from a list of your tests.
+
+See the [Run a Test Locally](run_a_test_locally) tutorial for more detail.
+
+## 🤖 Record a browser script
+
+```bash
+npx qawolf record --script <url> [name]
+```
+
+This will open a Chromium browser where your actions will be recorded. If a name is not provided, the script name will default to the URL hostname.
+
+When you are done, press enter in the CLI to save your script:
+
+```bash
+? Save [Y/n]
+```
+
+The script will be stored in a `.qawolf` folder.
+
+```bash
+.qawolf # current directory
+├── scripts
+│   └── myScript.js
+├── selectors
+│   └── myScript.json
+```
+
+The `.qawolf/scripts/myScript.js` file contains [Puppeteer](https://pptr.dev/) code that you can [edit](edit_test_code). The `.qawolf/selectors/myScript.json` file contains the script element selectors.
+
+Run your script:
+
+```bash
+node .qawolf/scripts/name.js
+```
+
+## ☁️ Run in CI
+
+<Tabs
+  defaultValue="github"
+  values={[
+    { label: 'Azure', value: 'azure', },
+    { label: 'CircleCI', value: 'circleci', },
+    { label: 'GitHub', value: 'github', },
+    { label: 'GitLab', value: 'gitlab', }
+  ]
+}>
+<TabItem value="azure">
+
+Generate a pipeline file for [Azure DevOps](https://azure.microsoft.com/en-us/services/devops):
+
+```bash
+npx qawolf azure
+```
+
+Edit this file to suit your use case.
+
+A video, GIF, and detailed logs will automatically be uploaded as [artifacts](https://docs.microsoft.com/en-us/azure/devops/pipelines/artifacts/build-artifacts?view=azure-devops&tabs=yaml) when `qawolf` runs in CI.
+
+</TabItem>
+<TabItem value="circleci">
+
+Generate a workflow file for [CircleCI](https://circleci.com):
+
+```bash
+npx qawolf circleci
+```
+
+Edit this file to suit your use case.
+
+A video, GIF, and detailed logs will automatically be uploaded as [artifacts](https://circleci.com/docs/2.0/artifacts) when `qawolf` runs in CI.
+
+</TabItem>
+<TabItem value="github">
+
+Generate a workflow file for [GitHub Actions](https://github.com/features/actions):
+
+```bash
+npx qawolf github
+```
+
+Edit this file to suit your use case.
+
+A video, GIF, and detailed logs will automatically be uploaded as [artifacts](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/persisting-workflow-data-using-artifacts) when `qawolf` runs in CI.
+
+</TabItem>
+<TabItem value="gitlab">
+
+Generate a configuration file for [GitLab CI/CD](https://docs.gitlab.com/ee/ci/README.html):
+
+```bash
+npx qawolf gitlab
+```
+
+Edit this file to suit your use case.
+
+A video, GIF, and detailed logs will automatically be uploaded as [artifacts](https://docs.gitlab.com/ee/user/project/pipelines/job_artifacts.html) when `qawolf` runs in CI.
+
+</TabItem>
+</Tabs>
+
+See the [Set Up CI](set_up_ci) tutorial for more detail.
