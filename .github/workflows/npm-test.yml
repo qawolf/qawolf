@@ -36,20 +36,20 @@ jobs:
 
       - run: npm run bootstrap
 
-      - run: npm run test:linux
-        env:
-          QAW_VIDEO_PATH: ${{ github.workspace }}/artifacts
+      # - run: npm run test:linux
+      #   env:
+      #     QAW_VIDEO_PATH: ${{ github.workspace }}/artifacts
 
-      - name: Upload Artifacts
-        if: always()
-        uses: actions/upload-artifact@master
-        with:
-          name: qawolf
-          path: ${{ github.workspace }}/artifacts
-    services:
-      theinternet:
-        image: gprestes/the-internet@sha256:f741ba048b7232ef90b0f7885de7f6ac42a52a17e73dd82afc484da140398796
-        ports:
-          - 5000:5000
+    #   - name: Upload Artifacts
+    #     if: always()
+    #     uses: actions/upload-artifact@master
+    #     with:
+    #       name: qawolf
+    #       path: ${{ github.workspace }}/artifacts
+    # services:
+    #   theinternet:
+    #     image: gprestes/the-internet@sha256:f741ba048b7232ef90b0f7885de7f6ac42a52a17e73dd82afc484da140398796
+    #     ports:
+    #       - 5000:5000
 
     timeout-minutes: 20
