@@ -3,7 +3,6 @@ import { CaptureOffset, CaptureSize } from "./types";
 
 export interface CaptureOptions {
   display: Display;
-  drawMouse?: boolean;
   offset?: CaptureOffset;
   savePath: string;
   size: CaptureSize;
@@ -16,8 +15,9 @@ export const buildCaptureArgs = (options: CaptureOptions) => {
     // grab the X11 display
     "-f",
     "x11grab",
+    // do not draw the mouse
     "-draw_mouse",
-    options.drawMouse ? "1" : "0",
+    "0",
     // 20 fps
     "-framerate",
     "20",

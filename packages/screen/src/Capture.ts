@@ -61,7 +61,7 @@ export class Capture {
     return capture;
   }
 
-  public async stop() {
+  public async stop(): Promise<void> {
     if (this._closed) {
       logger.error("Capture: already stopped");
       return;
