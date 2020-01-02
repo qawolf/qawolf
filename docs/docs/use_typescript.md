@@ -13,9 +13,9 @@ To change your code to Typescript:
 
 1. Rename the script or test file extension from `.js` to `.ts`.
 
-For example, if your test file is called `.qawolf/tests/myFirstTest.test.js`, reanme it to `.qawolf/tests/myFirstTest.test.ts`.
+For example, if your test file is called `.qawolf/tests/myFirstTest.test.js`, rename it to `.qawolf/tests/myFirstTest.test.ts`.
 
-2. Change the `require("qawolf")` to an [`import` statement](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import). This line should be the first one in your generated code.
+2. Change `require("qawolf")` to an [`import` statement](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import):
 
 ```js
 // change this
@@ -25,16 +25,16 @@ const { launch } = require("qawolf");
 import { launch } from "qawolf";
 ```
 
-3. If you have not already, for browser tests install types for [Node.js](https://www.npmjs.com/package/@types/node), [Puppeteer](https://www.npmjs.com/package/@types/puppeteer), and [Jest](https://www.npmjs.com/package/@types/jest):
+3. For browser tests, install types for [Node.js](https://www.npmjs.com/package/@types/node), [Puppeteer](https://www.npmjs.com/package/@types/puppeteer), and [Jest](https://www.npmjs.com/package/@types/jest):
 
 ```bash
 npm i -D @types/node @types/puppeteer @types/jest
 ```
 
-For browser scripts install types for [Node.js](https://www.npmjs.com/package/@types/node) and [Puppeteer](https://www.npmjs.com/package/@types/puppeteer):
+For browser scripts, install types for [Node.js](https://www.npmjs.com/package/@types/node) and [Puppeteer](https://www.npmjs.com/package/@types/puppeteer):
 
 ```bash
 npm i -D @types/node @types/puppeteer
 ```
 
-Now you have all advantages of using Typescript!
+Enjoy using Typescript!
