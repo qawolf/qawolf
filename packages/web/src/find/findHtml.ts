@@ -1,8 +1,8 @@
-import { DocSelector, FindElementOptions, Selector } from "@qawolf/types";
+import { DocSelector, FindElementOptions, HtmlSelector } from "@qawolf/types";
 import { DocMatch, matchDocSelector } from "./compare";
 import { findCss } from "./findCss";
 import { queryElements } from "./query";
-import { htmlSelectorToDocSelector, nodeToDocSelector } from "../serialize";
+import { deserializeDocSelector, nodeToDocSelector } from "../serialize";
 import { waitFor } from "../wait";
 import { getXpath } from "../xpath";
 
@@ -12,7 +12,7 @@ type ElementMatch = {
 };
 
 export const findHtml = async (
-  selector: Selector,
+  selector: HtmlSelector,
   options: FindElementOptions
 ) => {
   console.log("findHtml", selector, "options", options);
@@ -20,7 +20,7 @@ export const findHtml = async (
     throw new Error("findHtml: selector must include html property");
   }
 
-  const docSelector = htmlSelectorToDocSelector(selector.html);
+  const docSelector = deserializeDocSelector(selector.html);
 
   const nodeName = docSelector.node.name;
   if (nodeName === "body" || nodeName === "html") {
@@ -36,7 +36,7 @@ export const findHtml = async (
   const elementMatch = await waitFor(
     () => {
       const elements = queryElements(docSelector, {
-        action: selector.action,
+        action: options.action,
         dataAttribute: options.dataAttribute
       });
       const matches = matchElements(

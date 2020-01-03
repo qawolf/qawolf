@@ -1,9 +1,9 @@
-import { FindElementOptions, Selector } from "@qawolf/types";
+import { FindElementOptions, TextSelector } from "@qawolf/types";
 import { queryActionElements } from "./query";
 import { waitFor } from "../wait";
 
 export const findText = async (
-  selector: Selector,
+  selector: TextSelector,
   options: FindElementOptions
 ): Promise<Element | null> => {
   console.log("findText", selector, "options", options);
@@ -13,7 +13,7 @@ export const findText = async (
 
   return waitFor(
     () => {
-      const elements = queryActionElements(selector.action);
+      const elements = queryActionElements(options.action);
 
       let match = null;
 

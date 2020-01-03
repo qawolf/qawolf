@@ -1,11 +1,4 @@
-import {
-  Doc,
-  DocSelector,
-  DocSelectorSerialized,
-  HtmlSelector,
-  Step,
-  StepSerialized
-} from "@qawolf/types";
+import { Doc, DocSelector, DocSelectorSerialized } from "@qawolf/types";
 import {
   parse as parseHtml,
   stringify as stringifyDocArray
@@ -21,6 +14,10 @@ type SerializeNodeOptions = {
 export const deserializeDocSelector = (
   serialized: DocSelectorSerialized
 ): DocSelector => {
+  if (typeof serialized === "string") {
+    return { ancestors: [], node: htmlToDoc(serialized) };
+  }
+
   const node = htmlToDoc(serialized.node);
   const ancestors = serialized.ancestors.map((a: string) => htmlToDoc(a));
 
@@ -31,20 +28,6 @@ export const deserializeDocSelector = (
 };
 
 export const docToHtml = (doc: Doc) => stringifyDocArray([doc]);
-
-export const htmlSelectorToDocSelector = (
-  selector: HtmlSelector
-): DocSelector => {
-  if (typeof selector === "string") {
-    return { ancestors: [], node: htmlToDoc(selector) };
-  }
-
-  if (typeof selector.node === "string") {
-    return deserializeDocSelector(selector as DocSelectorSerialized);
-  }
-
-  return selector as DocSelector;
-};
 
 export const htmlToDoc = (html: string): Doc => {
   const result = parseHtml(html);
@@ -149,14 +132,5 @@ export const serializeDocSelector = (
   return {
     ancestors: selector.ancestors.map(ancestor => docToHtml(ancestor)),
     node: docToHtml(selector.node)
-  };
-};
-
-export const serializeStep = (step: Step): StepSerialized => {
-  // omit action, value, they are inlined in the test
-  const { action, html, value, ...s } = step;
-  return {
-    ...s,
-    html: serializeDocSelector(html)
   };
 };

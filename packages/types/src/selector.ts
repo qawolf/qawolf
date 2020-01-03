@@ -1,8 +1,5 @@
 import { Action } from "./common";
 
-// https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors
-export type CssSelector = string;
-
 export interface Doc {
   attrs?: any;
   children?: Doc[];
@@ -17,12 +14,16 @@ export interface DocSelector {
   node: Doc;
 }
 
-export interface DocSelectorSerialized {
-  ancestors: string[];
-  node: string;
-}
+export type DocSelectorSerialized =
+  | string
+  | {
+      ancestors: string[];
+      node: string;
+    };
 
 export interface FindElementOptions {
+  // filter eligible elements by action
+  action?: Action;
   dataAttribute?: string;
   // how long to sleep after finding the element
   sleepMs?: number;
@@ -37,13 +38,19 @@ export interface FindPageOptions {
   waitForRequests?: boolean;
 }
 
-export type HtmlSelector = string | DocSelector | DocSelectorSerialized;
-
-export interface Selector {
-  action?: Action;
-  css?: CssSelector;
-  html?: HtmlSelector;
-  text?: string;
+export interface CssSelector {
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors
+  css: string;
   page?: number;
-  value?: any;
 }
+
+export interface HtmlSelector {
+  html: DocSelectorSerialized;
+  page?: number;
+}
+export interface TextSelector {
+  text: string;
+  page?: number;
+}
+
+export type Selector = HtmlSelector | CssSelector | TextSelector;
