@@ -16,12 +16,12 @@ cd my-awesome-project
 npm install --save-dev qawolf
 ```
 
-When we run the `npx qawolf record` command, a [Chromium](https://www.chromium.org/Home) browser will open and capture our actions such as clicks and typing into inputs. These actions will then be converted to [Puppeteer](https://pptr.dev/) and [Jest](https://jestjs.io/) test code (more on this in the [review code tutorial](review_test_code)).
+When we run the `npx qawolf create` command, a [Chromium](https://www.chromium.org/Home) browser will open and capture our actions such as clicks and typing into inputs. These actions will then be converted to [Puppeteer](https://pptr.dev/) and [Jest](https://jestjs.io/) test code (more on this in the [review code tutorial](review_test_code)).
 
 To create your test, run the following in the command line. You can optionally replace `http://todomvc.com/examples/react` with a different URL, and `myFirstTest` with a different name. See the [CLI documentation](cli#npx-qawolf-record-url-name) for more detail.
 
 ```bash
-npx qawolf record http://todomvc.com/examples/react myFirstTest
+npx qawolf create http://todomvc.com/examples/react myFirstTest
 ```
 
 Inside the Chromium browser, go through the workflow you want to test as a user would. In our example, we'll 1) create a todo item, 2) mark it as complete, and 3) clear completed todos. After you are done, return to the terminal and hit Enter to save your test. See the GIF below for an example.

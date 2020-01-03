@@ -7,7 +7,7 @@ In the [previous section](create_a_test) we created our first browser test for [
 
 ## Run a test locally
 
-Let's run our test to confirm it works locally. In the command line, run the following command. If applicable, replace `myFirstTest` with your test name.
+Let's run our test to confirm it works locally. In the command line, run the following [command](cli#npx-qawolf-test-name). If applicable, replace `myFirstTest` with your test name.
 
 ```bash
 npx qawolf test myFirstTest
