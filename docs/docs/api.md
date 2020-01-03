@@ -62,11 +62,11 @@ env:
 
 - default: `null`
 
-When a recorded element selector has the `QAW_DATA_ATTRIBUTE`, it will only find an element with that same attribute value. If the recorded element does not have that attribute, it will use the default [selector logic](review_test_code#element-selectors).
+When an element selector has the `QAW_DATA_ATTRIBUTE`, it will only find an element with that same attribute value. If the element selector does not have that attribute, it will use the default [selector logic](review_test_code#element-selectors).
 
 **Example**
 
-Record a test with:
+Create a test with:
 
 ```bash
 QAW_DATA_ATTRIBUTE=data-qa npx qawolf record www.myawesomesite.com myTest

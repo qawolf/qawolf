@@ -5,7 +5,7 @@ title: 🧐 FAQ
 
 ## Why did we build QA Wolf?
 
-We built QA Wolf to make our lives easier, and we hope you find it useful too. We have experienced the pain of setting up browser tests for consulting clients and previous employers. By generating [editable code](edit_test_code) from a browser actions, we significantly reduce the time needed to write or maintain tests. We constantly stress test QA Wolf against different sites to get closer to that goal. Please reach out on our [chat](https://gitter.im/qawolf/community) if you have any feedback or requests!
+We built QA Wolf to make our lives easier, and we hope you find it useful too. We have experienced the pain of setting up browser tests for consulting clients and previous employers. By generating [editable code](edit_test_code) from browser actions, we significantly reduce the time needed to write or maintain tests. We constantly stress test QA Wolf against different sites to get closer to that goal. Please reach out on our [chat](https://gitter.im/qawolf/community) if you have any feedback or requests!
 
 ## Why not [some other recorder]?
 
