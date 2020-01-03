@@ -10,7 +10,7 @@ QA Wolf provides CLI commands to [create browser tests ✅](quick_start#-create-
 You can use [environment variables](api#environment-variables) when running the commands below. For example:
 
 ```bash
-QAW_DATA_ATTRIBUTE=data-qa npx qawolf record <url> [name]
+QAW_DATA_ATTRIBUTE=data-qa npx qawolf create <url> [name]
 ```
 
 This will create your test using `data-qa` as the [data attribute](api#qaw_data_attribute) to look for when finding elements.
@@ -19,7 +19,7 @@ This will create your test using `data-qa` as the [data attribute](api#qaw_data_
 
 See all commands and options.
 
-### npx qawolf record <url\> \[name]
+### npx qawolf create <url\> \[name]
 
 - `--device <device>` (optional): Emulate a [device](https://github.com/puppeteer/puppeteer/blob/5e63254e62fb9aedfd4503c632228c3334c70293/lib/DeviceDescriptors.js).
 - `--script` (optional): Create a node script instead of a [Jest](https://jestjs.io) test.
@@ -29,9 +29,9 @@ See all commands and options.
 Create a browser [test ✅](quick_start#-create-a-browser-test) or [script 🤖](quick_start#-create-a-browser-script).
 
 ```bash
-npx qawolf record --device="iPhone 7" google.com
+npx qawolf create --device="iPhone 7" google.com
 
-npx qawolf record --script google.com
+npx qawolf create --script google.com
 ```
 
 ### npx qawolf test \[name]

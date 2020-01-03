@@ -5,8 +5,8 @@ import program from "commander";
 import { yellow } from "kleur";
 import { camelCase } from "lodash";
 import { saveCiTemplate } from "./ci";
+import { create } from "./create";
 import { howl } from "./howl";
-import { record } from "./record";
 import { test } from "./test";
 import { parseUrl } from "./utils";
 const { version } = require("../package");
@@ -16,17 +16,17 @@ program.version(version);
 program.usage("<command> [options]");
 
 program
-  .command("record <url> [name]")
+  .command("create <url> [name]")
   .option("--debug", "save events and workflow json for debugging")
   .option("-d, --device <device>", "emulate using a puppeteer.device")
-  .option("-s, --script", "save a script instead of a test")
-  .description("record a workflow and create a test")
+  .option("-s, --script", "create a script instead of a test")
+  .description("create a test from browser actions")
   .action(async (urlArgument, optionalName, cmd) => {
     const url = parseUrl(urlArgument);
     logger.verbose(`record url "${url.href}"`);
 
     const name = camelCase(optionalName || url.hostname!.replace(/\..*/g, ""));
-    await record({
+    await create({
       debug: cmd.debug,
       device: cmd.device,
       name,

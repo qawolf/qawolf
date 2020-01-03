@@ -69,7 +69,7 @@ When an element selector has the `QAW_DATA_ATTRIBUTE`, it will only find an elem
 Create a test with:
 
 ```bash
-QAW_DATA_ATTRIBUTE=data-qa npx qawolf record www.myawesomesite.com myTest
+QAW_DATA_ATTRIBUTE=data-qa npx qawolf create www.myawesomesite.com myTest
 ```
 
 Click on this element to create `selectors[0]`:

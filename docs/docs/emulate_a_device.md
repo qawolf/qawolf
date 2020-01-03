@@ -9,12 +9,12 @@ In this tutorial, we'll learn how to emulate [devices](https://github.com/puppet
 
 ## Create a test that emulates a device
 
-When you use the [`npx qawolf record <url> [name]` command](cli#npx-qawolf-record-url-name), you can optionally specify a device with the `--device` flag. The `--device` flag is a [`String`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) that specifies one of [Puppeteer's supported devices](https://github.com/puppeteer/puppeteer/blob/master/lib/DeviceDescriptors.js). If you do so, QA Wolf will use [Puppeteer's device emulator](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerdevices) when recording your test.
+When you use the [`npx qawolf create <url> [name]` command](cli#npx-qawolf-record-url-name), you can optionally specify a device with the `--device` flag. The `--device` flag is a [`String`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) that specifies one of [Puppeteer's supported devices](https://github.com/puppeteer/puppeteer/blob/master/lib/DeviceDescriptors.js). If you do so, QA Wolf will use [Puppeteer's device emulator](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerdevices) when recording your test.
 
 For example, we can run the following command with the `--device` flag set to `"iPad Mini"`:
 
 ```bash
-npx qawolf record --device="iPad Mini" https://www.wikipedia.org searchTablet
+npx qawolf create --device="iPad Mini" https://www.wikipedia.org searchTablet
 ```
 
 When the [Chromium](https://www.chromium.org/Home) browser opens, it will be emulating an [iPad Mini](https://www.apple.com/ipad-mini/). The GIF below provides an example.

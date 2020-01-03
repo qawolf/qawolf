@@ -33,7 +33,7 @@ function GetStarted() {
             </a>{" "}
             code:
           </p>
-          <CodeBlock value="npx qawolf record <url> [name]" />
+          <CodeBlock value="npx qawolf create <url> [name]" />
           <p
             className={classnames(styles.stepDirection, styles.noBottomMargin)}
           >
@@ -50,9 +50,9 @@ function GetStarted() {
           <h3>3. Run your test</h3>
           <p className={styles.stepDirection}>
             Use the <Link href={useBaseUrl("docs/cli")}>CLI</Link> to run your
-            test locally:
+            tests locally:
           </p>
-          <CodeBlock value="npx qawolf test [name]" />
+          <CodeBlock value="npx qawolf test" />
         </div>
         <img src="https://storage.googleapis.com/docs.qawolf.com/home/run-test-small.gif" />
       </div>

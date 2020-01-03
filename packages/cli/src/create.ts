@@ -15,7 +15,7 @@ type RecordOptions = {
   url: Url;
 };
 
-export const record = async (options: RecordOptions): Promise<void> => {
+export const create = async (options: RecordOptions): Promise<void> => {
   const Listr = require("listr");
   const input = require("listr-input");
 
