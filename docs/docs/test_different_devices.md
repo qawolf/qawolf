@@ -5,7 +5,7 @@ title: 📱 Test Different Devices
 
 When you create a test with QA Wolf, by default it runs on a browser that is 1366 pixels wide and 768 pixels tall. These dimensions are the default because they are the [most common desktop screen resolution](https://gs.statcounter.com/screen-resolution-stats/desktop/worldwide).
 
-In this tutorial, we'll learn how to create new tests and edit existing tests to use different devices and screen widths. We assume you understand how to [create a test](create_a_test) and have a [basic understanding of the test code](review_test_code).
+In this tutorial, we'll learn how to emulate [devices](https://github.com/puppeteer/puppeteer/blob/v2.0.0/lib/DeviceDescriptors.js) and test responsive layouts. We assume you know how to [create a test](create_a_test) and have a [basic understanding of the test code](review_test_code).
 
 ## Create a test on a different device
 
@@ -83,31 +83,6 @@ describe("search", () => {
     browser = await launch({
       // custom code starts
       device: "iPhone 7",
-      // custom code ends
-      url: "https://www.wikipedia.org/"
-    });
-  });
-
-  // ...
-});
-```
-
-You can also import [`devices` from Puppeteer](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerdevices) and specify a device that way. Below we set the value of `device` when calling [`launch`](api#qawolflaunchoptions) to `devices["iPhone 7"]`.
-
-```js
-// custom code starts
-const { devices } = require("puppeteer");
-// custom code ends
-const { launch } = require("qawolf");
-const selectors = require("../selectors/search");
-
-describe("search", () => {
-  let browser;
-
-  beforeAll(async () => {
-    browser = await launch({
-      // custom code starts
-      device: devices["iPhone 7"],
       // custom code ends
       url: "https://www.wikipedia.org/"
     });

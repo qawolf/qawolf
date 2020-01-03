@@ -132,7 +132,7 @@ it('can click "Clear completed" button', async () => {
 });
 ```
 
-You can also record your test while setting the [`QAW_DATA_ATTRIBUTE` environment variable](api#qaw_data_attribute). This will use your data attribute to find elements where applicable rather than the default selector logic. For example:
+You can also create your test while setting the [`QAW_DATA_ATTRIBUTE` environment variable](api#qaw_data_attribute). This will use your data attribute to find elements where applicable rather than the default selector logic. For example:
 
 ```bash
 QAW_DATA_ATTRIBUTE=data-qa npx qawolf record www.myawesomesite.com myTest
@@ -142,7 +142,7 @@ See [our documentation](api#qaw_data_attribute) to learn more about the `QAW_DAT
 
 ## Change input values
 
-When recording `type` actions, whatever you originally typed will be captured in the test by default. This value will the be passed as the second argument to [`browser.type`](api#browsertypeselector-value-options). In our example, we typed `"create smoke test!"` as our todo item in the first step of our test. The following code was then generated:
+When capturing `type` actions, whatever you originally typed will be included in the test by default. This value will the be passed as the second argument to [`browser.type`](api#browsertypeselector-value-options). In our example, we typed `"create smoke test!"` as our todo item in the first step of our test. The following code was then generated:
 
 ```js
 it('can type into "What needs to be done?" input', async () => {

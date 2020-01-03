@@ -135,7 +135,6 @@ const { browser, waitFor } = require("qawolf");
 Launch a [Browser](#class-browser):
 
 ```js
-const { devices } = require("puppeteer");
 const { launch } = require("qawolf");
 
 const browser = await launch({
@@ -144,8 +143,22 @@ const browser = await launch({
 });
 
 const browser = await launch({
-  device: devices["iPhone 7"],
-  url: "https://nytimes.com"
+  // custom code starts
+  device: {
+    name: "My Custom Device",
+    userAgent:
+      "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1",
+    viewport: {
+      width: 375,
+      height: 667,
+      deviceScaleFactor: 2,
+      isMobile: true,
+      hasTouch: true,
+      isLandscape: false
+    }
+  },
+  // custom code ends
+  url: "https://www.wikipedia.org/"
 });
 ```
 
