@@ -1,7 +1,6 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { Capture, Display } from "@qawolf/screen";
-import { basename } from "path";
 import { LaunchOptions as PuppeteerLaunchOptions } from "puppeteer";
 import { Device } from "puppeteer/DeviceDescriptors";
 import { Browser } from "./Browser";
@@ -13,11 +12,9 @@ import { QAWolfBrowser } from "./QAWolfBrowser";
 export type LaunchOptions = {
   debug?: boolean;
   device?: string | Device;
-  domPath?: string;
   navigationTimeoutMs?: number;
   recordEvents?: boolean;
   url?: string;
-  videoPath?: string;
 } & PuppeteerLaunchOptions;
 
 const buildCaptureOptions = (device: Device) => {
@@ -47,17 +44,13 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
 
   const captureOptions = buildCaptureOptions(device);
 
+  // if on linux & CI: use a virtual display
   let display = null;
-  const videoPath = options.videoPath || CONFIG.videoPath;
-
-  if (videoPath) {
+  const isCI = true;
+  const isLinux = true;
+  if (isCI && isLinux && !options.headless) {
     try {
-      console.log("before create display", process.env.DISPLAY);
       display = await Display.start(captureOptions.displaySize);
-      console.log("after create display", process.env.DISPLAY);
-
-      // ignore headless since we create the browser on a virtual display
-      options.headless = false;
     } catch (e) {}
   }
 
@@ -67,9 +60,7 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
     debug: options.debug || CONFIG.debug,
     device,
     display,
-    domPath: options.domPath || CONFIG.domPath,
-    navigationTimeoutMs:
-      options.navigationTimeoutMs || CONFIG.navigationTimeoutMs,
+    navigationTimeoutMs: options.navigationTimeoutMs,
     puppeteerBrowser,
     recordEvents: options.recordEvents
   });
@@ -80,12 +71,12 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
   if (options.url) await browser.goto(options.url);
 
   // start capture after goto
+  const videoPath = CONFIG.artifactPath;
   if (display && videoPath) {
-    // TODO basename(require.main!.filename) -> helper
     qawolfBrowser._capture = await Capture.start({
       display,
       offset: captureOptions.offset,
-      savePath: `${videoPath}/${basename(require.main!.filename)}`,
+      savePath: videoPath,
       size: captureOptions.captureSize
     });
   }

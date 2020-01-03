@@ -13,10 +13,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      QAW_DOM_PATH: ${{ github.workspace }}/artifacts
-      QAW_LOG_PATH: ${{ github.workspace }}/artifacts
+      QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
       QAW_LOG_LEVEL: debug
-      QAW_NAVIGATION_TIMEOUT_MS: 20000
       QAW_SLEEP_MS: 0
       QAW_TEST_URL: http://localhost:5000/
     steps:
@@ -37,8 +35,6 @@ jobs:
       - run: npm run bootstrap
 
       - run: npm run test:linux
-        env:
-          QAW_VIDEO_PATH: ${{ github.workspace }}/artifacts
 
       - name: Upload Artifacts
         if: always()

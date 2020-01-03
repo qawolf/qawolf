@@ -1,3 +1,4 @@
+import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { Capture, Display } from "@qawolf/screen";
 import {
@@ -10,7 +11,6 @@ import {
   TypeOptions
 } from "@qawolf/types";
 import { omit, sortBy } from "lodash";
-import { basename } from "path";
 import {
   Browser as PuppeteerBrowser,
   devices,
@@ -27,8 +27,7 @@ export interface ConstructorOptions {
   debug?: boolean;
   device: devices.Device;
   display: Display | null;
-  domPath?: string;
-  navigationTimeoutMs: number;
+  navigationTimeoutMs?: number;
   puppeteerBrowser: PuppeteerBrowser;
   recordEvents?: boolean;
 }
@@ -88,13 +87,13 @@ export class QAWolfBrowser {
 
     logger.verbose("Browser: close");
 
-    const domPath = this.domPath;
-    if (domPath) {
+    const artifactPath = CONFIG.artifactPath;
+    if (artifactPath) {
       await Promise.all(
         this.pages.map((page, index) =>
           createDomReplayer(
             page,
-            `${domPath}/page_${index}__${this._createdAt}.html`
+            `${artifactPath}/page_${index}__${this._createdAt}.html`
           )
         )
       );
@@ -110,15 +109,6 @@ export class QAWolfBrowser {
 
   public get device() {
     return this._options.device;
-  }
-
-  public get domPath() {
-    const path = this._options.domPath;
-    if (!path) return;
-
-    // name the dom path based on the main script filename
-    // ex. /login.test.js/page_0.html
-    return `${path}/${basename(require.main!.filename)}`;
   }
 
   public get events() {

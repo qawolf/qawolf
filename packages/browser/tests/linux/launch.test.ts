@@ -22,7 +22,7 @@ describe("launch", () => {
       width: 376
     });
 
-    const domFiles = await readdir(browser.qawolf.domPath!);
-    expect(domFiles.filter(f => f.includes(".html"))).toHaveLength(1);
+    const domFiles = await readdir(CONFIG.artifactPath!);
+    expect(domFiles.filter((f: string) => f.includes(".html"))).toHaveLength(1);
   });
 });

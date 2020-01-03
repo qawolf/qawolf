@@ -20,9 +20,7 @@ jobs:
           args: "qawolf test"
         env:
           # output artifacts
-          QAW_DOM_PATH: /github/workspace/artifacts
-          QAW_LOG_PATH: /github/workspace/artifacts
-          QAW_VIDEO_PATH: /github/workspace/artifacts
+          QAW_ARTIFACT_PATH: /tmp/artifacts
         #   # configure tests with environment variables
         #   # https://docs.qawolf.com/docs/configuration
         #   QAW_SLEEP_MS: 0

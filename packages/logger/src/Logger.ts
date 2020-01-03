@@ -1,31 +1,18 @@
 import { CONFIG } from "@qawolf/config";
 import { ensureDirSync } from "fs-extra";
-import { basename } from "path";
 import winston from "winston";
 
 export class Logger {
   private _logger: winston.Logger;
-  private _path: string = "";
 
   constructor() {
-    // name the logger based on the main filename
-    this.setName(basename(require.main!.filename));
-  }
-
-  setName(name?: string | null) {
-    if (CONFIG.logPath) {
-      this._path = `${CONFIG.logPath}${name ? `/${name}` : ""}`;
-    }
-
     this._logger = winston.createLogger({
       transports: [
-        this._path ? createFileTransport(this._path) : createConsoleTransport()
+        CONFIG.artifactPath
+          ? createFileTransport(CONFIG.artifactPath)
+          : createConsoleTransport()
       ]
     });
-  }
-
-  get path() {
-    return this._path;
   }
 
   debug(message: string) {

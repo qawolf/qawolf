@@ -3,7 +3,7 @@ import { sleep } from "@qawolf/web";
 import { spawn, ChildProcessWithoutNullStreams } from "child_process";
 import { ensureDir } from "fs-extra";
 import { omit } from "lodash";
-import { resolve } from "path";
+import { join, resolve } from "path";
 import { createGif } from "./createGif";
 import { buildCaptureArgs, CaptureOptions, getPath } from "./ffmpeg";
 import { CaptureSize } from "./types";
@@ -27,8 +27,8 @@ export class Capture {
     this._size = options.size;
 
     const startedAt = Date.now();
-    this._gifPath = `${options.savePath}/video_${startedAt}.gif`;
-    this._videoPath = `${options.savePath}/video_${startedAt}.mp4`;
+    this._gifPath = join(options.savePath, `video_${startedAt}.gif`);
+    this._videoPath = join(options.savePath, `video_${startedAt}.mp4`);
 
     const args = buildCaptureArgs({ ...options, savePath: this._videoPath });
     logger.debug(`Capture: spawn ${this._ffmpegPath} ${JSON.stringify(args)}`);

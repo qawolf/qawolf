@@ -23,10 +23,6 @@ const buildLaunchOptions = (options: LaunchOptions, device: Device) => {
     launchOptions!.args!.push("--no-sandbox");
   }
 
-  if (CONFIG.chromeExecutablePath) {
-    launchOptions.executablePath = CONFIG.chromeExecutablePath;
-  }
-
   return launchOptions;
 };
 

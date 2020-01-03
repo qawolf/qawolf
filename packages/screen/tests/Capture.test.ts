@@ -10,14 +10,14 @@ it("captures a video and gif", async () => {
 
   const capture = await Capture.start({
     display,
-    savePath: `${CONFIG.videoPath}/Capture.test.ts`,
+    savePath: CONFIG.artifactPath!,
     size
   });
 
   expect(capture).toBeTruthy();
 
   // wait long enough to capture some frames
-  await sleep(5000);
+  await sleep(10000);
 
   await capture!.stop();
   await display.stop();

@@ -14,9 +14,7 @@ steps:
   - script: qawolf test
     env:
       # output artifacts
-      QAW_DOM_PATH: $(System.DefaultWorkingDirectory)/artifacts
-      QAW_LOG_PATH: $(System.DefaultWorkingDirectory)/artifacts
-      QAW_VIDEO_PATH: $(System.DefaultWorkingDirectory)/artifacts
+      QAW_ARTIFACT_PATH: $(System.DefaultWorkingDirectory)/artifacts
       # # configure tests with environment variables
       # # https://docs.qawolf.com/docs/configuration
       # QAW_SLEEP_MS: 0
