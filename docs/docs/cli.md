@@ -3,7 +3,7 @@ id: cli
 title: CLI
 ---
 
-QA Wolf provides CLI commands to [create browser tests ✅](quick_start#-create-a-browser-test), [create browser scripts 🤖](quick_start#-create-a-browser-script), and [set up CI ☁️](#set_up_ci).
+QA Wolf provides CLI commands to [create browser tests ✅](quick_start#-create-a-browser-test), [create browser scripts 🤖](quick_start#-create-a-browser-script), and [set up CI ☁️](set_up_ci).
 
 ## Commands
 
