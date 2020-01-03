@@ -19,7 +19,7 @@ program
   .command("create <url> [name]")
   .option("--debug", "save events and workflow json for debugging")
   .option("-d, --device <device>", "emulate using a puppeteer.device")
-  .option("-s, --script", "save a script instead of a test")
+  .option("-s, --script", "create a script instead of a test")
   .description("create a test from browser actions")
   .action(async (urlArgument, optionalName, cmd) => {
     const url = parseUrl(urlArgument);
