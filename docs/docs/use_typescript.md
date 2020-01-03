@@ -37,4 +37,4 @@ For browser scripts, install types for [Node.js](https://www.npmjs.com/package/@
 npm i -D @types/node @types/puppeteer
 ```
 
-Enjoy using Typescript!
+Enjoy using Typescript! 😌

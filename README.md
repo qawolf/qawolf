@@ -63,7 +63,7 @@ npm install --save-dev qawolf
 
 ## ✅ Create a browser test
 
-[Documentation](http://docs.qawolf.com/docs/quick_start#-record-a-browser-test)
+[Documentation](http://docs.qawolf.com/docs/quick_start#-create-a-browser-test)
 
 Create a [Puppeteer](https://github.com/puppeteer/puppeteer) and [Jest](https://jestjs.io/) test:
 

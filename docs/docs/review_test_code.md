@@ -7,7 +7,7 @@ In previous tutorials we [created our first browser test](create_a_test) and [ra
 
 ## Folder structure
 
-You'll notice that a folder with the name `.qawolf` was created at the root level of your project after you recorded your first test. This folder holds two more folders: `.qawolf/tests` and `.qawolf/selectors`.
+You'll notice that a folder with the name `.qawolf` was created at the root level of your project after you created your first test. This folder holds two more folders: `.qawolf/tests` and `.qawolf/selectors`.
 
 Our test is in the `.qawolf/tests` folder with the name `myFirstTest.test.js` (or whatever else you named your test). Information about which elements you interacted with are stored in the corresponding file named `myFirstTest.json` in the `.qawolf/selectors` folder (more on [selectors](review_test_code#element-selectors) shortly).
 
@@ -27,7 +27,7 @@ When you add additional tests, the test code will be added to the `.qawolf/tests
 
 Let's look at the generated test code in `.qawolf/tests/myFirstTest.test.js`. The test code includes the `qawolf` library, which is built on top of [Puppeteer](https://pptr.dev/) to automate browser actions. The tests are written in [Jest](https://jestjs.io), which is a JavaScript testing framework. You have full access to the [Puppeteer](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md) and [Jest](https://jestjs.io/docs/en/api) APIs in your test code.
 
-Below we provide a brief overview of the generated test code with an example test file for [TodoMVC](http://todomvc.com/examples/react). The contents of each test are contained in a [Jest describe block](https://jestjs.io/docs/en/api#describename-fn). The test name is set to what you specified when recording the test, or the URL hostname if you didn't specify a name.
+Below we provide a brief overview of the generated test code with an example test file for [TodoMVC](http://todomvc.com/examples/react). The contents of each test are contained in a [Jest describe block](https://jestjs.io/docs/en/api#describename-fn). The test name is set to what you specified when creating the test, or the URL hostname if you didn't specify a name.
 
 ```js
 const { launch } = require("qawolf");

@@ -3,7 +3,7 @@ id: cli
 title: CLI
 ---
 
-QA Wolf provides CLI commands to [record browser tests ✅](quick_start#-record-a-browser-test), [record browser scripts 🤖](quick_start#-record-a-browser-script), and [set up CI ☁️](#set_up_ci).
+QA Wolf provides CLI commands to [create browser tests ✅](quick_start#-create-a-browser-test), [create browser scripts 🤖](quick_start#-create-a-browser-script), and [set up CI ☁️](#set_up_ci).
 
 ## Commands
 
@@ -13,7 +13,7 @@ You can use [environment variables](api#environment-variables) when running the 
 QAW_DATA_ATTRIBUTE=data-qa npx qawolf record <url> [name]
 ```
 
-This will record your test using `data-qa` as the [data attribute](api#qaw_data_attribute) to look for when finding elements.
+This will create your test using `data-qa` as the [data attribute](api#qaw_data_attribute) to look for when finding elements.
 
 ### npx qawolf --help
 
@@ -22,11 +22,11 @@ See all commands and options.
 ### npx qawolf record <url\> \[name]
 
 - `--device <device>` (optional): Emulate a [device](https://github.com/puppeteer/puppeteer/blob/5e63254e62fb9aedfd4503c632228c3334c70293/lib/DeviceDescriptors.js).
-- `--script` (optional): Record a node script instead of a [Jest](https://jestjs.io) test.
+- `--script` (optional): Create a node script instead of a [Jest](https://jestjs.io) test.
 - `url` (required): visit this URL to begin your test.
 - `name` (optional): Your file will be saved to `.qawolf/tests/name.test.js` or `.qawolf/scripts/name.js`. The name defaults to the URL hostname if not provided. `name` will be converted to camel case.
 
-Record a browser [test ✅](quick_start#-record-a-browser-test) or [script 🤖](quick_start#-record-a-browser-script).
+Create a browser [test ✅](quick_start#-create-a-browser-test) or [script 🤖](quick_start#-create-a-browser-script).
 
 ```bash
 npx qawolf record --device="iPhone 7" google.com

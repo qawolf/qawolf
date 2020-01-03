@@ -22,6 +22,7 @@ We want QA Wolf to work for you, so please [chat with us](https://gitter.im/qawo
 These tutorials provide additional directions for you to explore after you've mastered the basics of QA Wolf. They are self-contained and can be read in any order.
 
 4. [📜 Review test code](review_test_code): Review and understand your browser test code.
-5. [✏️ Edit test code](edit_test_code): Edit your test code (add assertions, use custom selectors, and more!)
+5. [✏️ Edit test code](edit_test_code): Edit your test code - add assertions, use custom selectors, and more!
 6. [☁️ Set up CI](set_up_ci): Run your tests in CI, on push or on a schedule.
 7. [⌨️ Use TypeScript](use_typescript): Convert your tests to TypeScript.
+8. [📱 Emulate a device](emulate_a_device): Use the device emulator to test different viewports and user agents.
