@@ -1,5 +1,5 @@
 import { logger } from "@qawolf/logger";
-import { CaptureSize } from "./types";
+import { Size } from "./types";
 const Xvfb = require("xvfb");
 
 export class Display {
@@ -18,10 +18,10 @@ export class Display {
     return this._xvfb.display();
   }
 
-  public static start(size: CaptureSize): Promise<Display> {
+  public static async start(size: Size) {
     logger.debug(`Display: start ${JSON.stringify(size)}`);
 
-    return new Promise((resolve, reject) => {
+    return new Promise<Display | null>((resolve, reject) => {
       const xvfb = new Xvfb({
         xvfb_args: [
           "-shmem",
@@ -39,7 +39,7 @@ export class Display {
       xvfb.start(function(err: any) {
         if (err) {
           logger.error(`Display: could not start ${JSON.stringify(err)}`);
-          reject();
+          reject(null);
         } else {
           resolve(new Display(xvfb));
         }

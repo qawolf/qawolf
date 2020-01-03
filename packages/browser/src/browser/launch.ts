@@ -1,6 +1,6 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { Capture, Display } from "@qawolf/screen";
+import { VirtualCapture } from "@qawolf/screen";
 import { LaunchOptions as PuppeteerLaunchOptions } from "puppeteer";
 import { Device } from "puppeteer/DeviceDescriptors";
 import { Browser } from "./Browser";
@@ -17,24 +17,20 @@ export type LaunchOptions = {
   url?: string;
 } & PuppeteerLaunchOptions;
 
-const buildCaptureOptions = (device: Device) => {
-  const offset = {
-    x: CONFIG.chromeOffsetX,
-    y: CONFIG.chromeOffsetY
-  };
+const createCapture = (device: Device, headless: boolean = false) => {
+  if (headless || !CONFIG.artifactPath) return null;
 
-  // ffmpeg video size must be divisibble by 2
-  const captureSize = {
-    height: makeEven(device.viewport.height),
-    width: makeEven(device.viewport.width)
-  };
-
-  const displaySize = {
-    height: captureSize.height + offset.y,
-    width: captureSize.width + offset.x
-  };
-
-  return { captureSize, displaySize, offset };
+  return VirtualCapture.create({
+    offset: {
+      x: CONFIG.chromeOffsetX,
+      y: CONFIG.chromeOffsetY
+    },
+    savePath: CONFIG.artifactPath,
+    size: {
+      height: device.viewport.height,
+      width: device.viewport.width
+    }
+  });
 };
 
 export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
@@ -42,24 +38,18 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
 
   const device = getDevice(options.device);
 
-  const captureOptions = buildCaptureOptions(device);
+  const capture = await createCapture(device, options.headless);
 
-  // if on linux & CI: use a virtual display
-  let display = null;
-  const isCI = true;
-  const isLinux = true;
-  if (isCI && isLinux && !options.headless) {
-    try {
-      display = await Display.start(captureOptions.displaySize);
-    } catch (e) {}
-  }
-
-  const puppeteerBrowser = await launchPuppeteer(options, device);
+  const puppeteerBrowser = await launchPuppeteer({
+    ...options,
+    device,
+    display: capture ? capture.display : undefined
+  });
 
   const qawolfBrowser = new QAWolfBrowser({
+    capture,
     debug: options.debug || CONFIG.debug,
     device,
-    display,
     navigationTimeoutMs: options.navigationTimeoutMs,
     puppeteerBrowser,
     recordEvents: options.recordEvents
@@ -70,20 +60,7 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
   await managePages(browser);
   if (options.url) await browser.goto(options.url);
 
-  // start capture after goto
-  const videoPath = CONFIG.artifactPath;
-  if (display && videoPath) {
-    qawolfBrowser._capture = await Capture.start({
-      display,
-      offset: captureOptions.offset,
-      savePath: videoPath,
-      size: captureOptions.captureSize
-    });
-  }
+  if (capture) await capture.start();
 
   return browser;
-};
-
-const makeEven = (x: number) => {
-  return Math.ceil(x / 2) * 2;
 };

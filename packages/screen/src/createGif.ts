@@ -1,11 +1,11 @@
 import { logger } from "@qawolf/logger";
 import { spawn } from "child_process";
-import { CaptureSize } from "./types";
+import { getPath } from "./ffmpeg";
+import { Size } from "./types";
 
 type CreateGifOptions = {
-  ffmpegPath: string;
   gifPath: string;
-  size: CaptureSize;
+  size: Size;
   videoPath: string;
 };
 
@@ -15,12 +15,14 @@ export const createGif = (options: CreateGifOptions) => {
   );
 
   return new Promise(resolve => {
+    const ffmpegPath = getPath();
+
     const shrunkHeight = Math.min(options.size.height, 640);
 
     const ffmpeg = spawn("sh", [
       "-c",
       // https://askubuntu.com/a/837574/856776
-      `${options.ffmpegPath} -i ${options.videoPath} -vf "fps=10,scale=${shrunkHeight}:-1:flags=lanczos,setpts=0.5*PTS" ${options.gifPath}`
+      `${ffmpegPath} -i ${options.videoPath} -vf "fps=10,scale=${shrunkHeight}:-1:flags=lanczos,setpts=0.5*PTS" ${options.gifPath}`
     ]);
 
     ffmpeg.on("close", () => {

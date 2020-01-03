@@ -1,9 +1,9 @@
-export interface CaptureOffset {
+export interface Offset {
   x: number;
   y: number;
 }
 
-export interface CaptureSize {
+export interface Size {
   height: number;
   width: number;
 }

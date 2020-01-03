@@ -24,6 +24,7 @@
     "access": "public"
   },
   "dependencies": {
+    "@qawolf/ci-info": "^2.1.0",
     "@qawolf/config": "^0.7.5",
     "@qawolf/logger": "^0.7.5",
     "@qawolf/web": "^0.7.11",
@@ -31,6 +32,7 @@
     "xvfb": "^0.3.0"
   },
   "devDependencies": {
+    "@types/ci-info": "^2.0.0",
     "jest": "^24.9.0"
   }
 }

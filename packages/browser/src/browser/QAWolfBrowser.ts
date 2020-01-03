@@ -1,6 +1,6 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { Capture, Display } from "@qawolf/screen";
+import { VirtualCapture } from "@qawolf/screen";
 import {
   Callback,
   Event,
@@ -24,9 +24,9 @@ import { findPage } from "../page/findPage";
 import { Page } from "../page/Page";
 
 export interface ConstructorOptions {
+  capture: VirtualCapture | null;
   debug?: boolean;
   device: devices.Device;
-  display: Display | null;
   navigationTimeoutMs?: number;
   puppeteerBrowser: PuppeteerBrowser;
   recordEvents?: boolean;
@@ -34,15 +34,13 @@ export interface ConstructorOptions {
 
 export class QAWolfBrowser {
   private _browser: Browser;
+  private _capture: VirtualCapture | null = null;
   private _createdAt: number;
-  private _display: Display | null;
   private _options: ConstructorOptions;
   // stored in order of open
   private _pages: Page[] = [];
   private _onClose: Callback[] = [];
 
-  // used internally by launch
-  public _capture: Capture | null = null;
   // used internally by findPage
   public _currentPageIndex: number = 0;
 
@@ -56,7 +54,6 @@ export class QAWolfBrowser {
     this._options = clonedOptions;
     this._createdAt = Date.now();
     this._browser = decorateBrowser(options.puppeteerBrowser, this);
-    this._display = options.display;
   }
 
   public get browser(): Browser {
@@ -74,10 +71,6 @@ export class QAWolfBrowser {
   public async close() {
     if (this._capture) {
       await this._capture.stop();
-    }
-
-    if (this._display) {
-      await this._display.stop();
     }
 
     if (this._options.debug) {

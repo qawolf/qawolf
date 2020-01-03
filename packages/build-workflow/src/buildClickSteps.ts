@@ -1,6 +1,5 @@
 import { logger } from "@qawolf/logger";
 import { Event, Step } from "@qawolf/types";
-import { isTypeEvent } from "@qawolf/web";
 
 export const buildClickSteps = (events: Event[]): Step[] => {
   const steps: Step[] = [];

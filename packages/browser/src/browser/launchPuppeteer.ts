@@ -1,9 +1,19 @@
 import { CONFIG } from "@qawolf/config";
+import { Display } from "@qawolf/screen";
 import { platform } from "os";
 import { launch, LaunchOptions, Browser } from "puppeteer";
 import { Device } from "puppeteer/DeviceDescriptors";
 
-const buildLaunchOptions = (options: LaunchOptions, device: Device) => {
+interface LaunchPuppeteerOptions extends LaunchOptions {
+  device: Device;
+  display?: Display;
+}
+
+export const launchPuppeteer = (
+  options: LaunchPuppeteerOptions
+): Promise<Browser> => {
+  const device = options.device;
+
   const launchOptions: LaunchOptions = {
     args: [
       "--disable-dev-shm-usage",
@@ -23,12 +33,12 @@ const buildLaunchOptions = (options: LaunchOptions, device: Device) => {
     launchOptions!.args!.push("--no-sandbox");
   }
 
-  return launchOptions;
-};
+  if (options.display) {
+    launchOptions.env = {
+      ...process.env,
+      DISPLAY: options.display.screen
+    };
+  }
 
-export const launchPuppeteer = (
-  options: LaunchOptions,
-  device: Device
-): Promise<Browser> => {
-  return launch(buildLaunchOptions(options, device));
+  return launch(launchOptions);
 };
