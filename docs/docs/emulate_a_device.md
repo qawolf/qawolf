@@ -1,13 +1,13 @@
 ---
-id: test_different_devices
-title: 📱 Test Different Devices
+id: emulate_a_device
+title: 📱 Emulate a Device
 ---
 
 When you create a test with QA Wolf, by default it runs on a browser that is 1366 pixels wide and 768 pixels tall. These dimensions are the default because they are the [most common desktop screen resolution](https://gs.statcounter.com/screen-resolution-stats/desktop/worldwide).
 
 In this tutorial, we'll learn how to emulate [devices](https://github.com/puppeteer/puppeteer/blob/v2.0.0/lib/DeviceDescriptors.js) and test responsive layouts. We assume you know how to [create a test](create_a_test) and have a [basic understanding of the test code](review_test_code).
 
-## Create a test on a different device
+## Create a test that emulates a device
 
 When you use the [`npx qawolf record <url> [name]` command](cli#npx-qawolf-record-url-name), you can optionally specify a device with the `--device` flag. The `--device` flag is a [`String`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) that specifies one of [Puppeteer's supported devices](https://github.com/puppeteer/puppeteer/blob/master/lib/DeviceDescriptors.js). If you do so, QA Wolf will use [Puppeteer's device emulator](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerdevices) when recording your test.
 

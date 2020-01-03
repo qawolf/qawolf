@@ -23,7 +23,7 @@ function GetStarted() {
         <div className={styles.stepText}>
           <h3>2. Create your test</h3>
           <p className={styles.stepDirection}>
-            Use the browser and your actions will be converted into{" "}
+            Use the browser and your actions will be converted to{" "}
             <a href="https://pptr.dev/" target="_blank">
               Puppeteer
             </a>{" "}
@@ -31,7 +31,7 @@ function GetStarted() {
             <a href="https://jestjs.io" target="_blank">
               Jest
             </a>{" "}
-            code that actually works:
+            code:
           </p>
           <CodeBlock value="npx qawolf record <url> [name]" />
           <p

@@ -25,4 +25,4 @@ These tutorials provide additional directions for you to explore after you've ma
 5. [✏️ Edit test code](edit_test_code): Edit your test code - add assertions, use custom selectors, and more!
 6. [☁️ Set up CI](set_up_ci): Run your tests in CI, on push or on a schedule.
 7. [⌨️ Use TypeScript](use_typescript): Convert your tests to TypeScript.
-8. [📱 Test different devices](test_different_devices): Use the device emulator to test different viewports and user agents.
+8. [📱 Emulate a device](emulate_a_device): Use the device emulator to test different viewports and user agents.

@@ -5,7 +5,7 @@ title: 🧐 FAQ
 
 ## Why did we build QA Wolf?
 
-We built QA Wolf to make our lives easier, and we hope you find it useful too. We have experienced the pain of setting up browser tests for consulting clients and previous employers. By generating [editable code](edit_test_code) from a recording, we significantly reduce the time needed to write or maintain tests. We constantly stress test QA Wolf against different sites to get closer to that goal. Please reach out on our [chat](https://gitter.im/qawolf/community) if you have any feedback or requests!
+We built QA Wolf to make our lives easier, and we hope you find it useful too. We have experienced the pain of setting up browser tests for consulting clients and previous employers. By generating [editable code](edit_test_code) from a browser actions, we significantly reduce the time needed to write or maintain tests. We constantly stress test QA Wolf against different sites to get closer to that goal. Please reach out on our [chat](https://gitter.im/qawolf/community) if you have any feedback or requests!
 
 ## Why not [some other recorder]?
 
@@ -23,7 +23,7 @@ This is a tough call because Selenium has been around for so long, and has the m
 
 ## Why Puppeteer over Cypress?
 
-We think Cypress is really cool! However they [intentionally](https://docs.cypress.io/guides/references/trade-offs.html#Automation-restrictions) built it for sites you control, not third party sites. This limitation prevents scripting third party sites, a [major feature](quick_start#-record-a-browser-script) of QA Wolf.
+We think Cypress is really cool! However they [intentionally](https://docs.cypress.io/guides/references/trade-offs.html#Automation-restrictions) built it for sites you control, not third party sites. This limitation prevents scripting third party sites, a [major feature](quick_start#-create-a-browser-script) of QA Wolf.
 
 This combined with the [one window](https://docs.cypress.io/guides/references/trade-offs.html#Multiple-tabs) limitation, also prevents testing use cases we encounter in the wild (sign in with Twitter, CRM Integration, etc).
 

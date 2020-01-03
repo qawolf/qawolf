@@ -143,7 +143,6 @@ const browser = await launch({
 });
 
 const browser = await launch({
-  // custom code starts
   device: {
     name: "My Custom Device",
     userAgent:
@@ -157,7 +156,6 @@ const browser = await launch({
       isLandscape: false
     }
   },
-  // custom code ends
   url: "https://www.wikipedia.org/"
 });
 ```

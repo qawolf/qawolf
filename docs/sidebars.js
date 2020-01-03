@@ -17,7 +17,7 @@ module.exports = {
         "edit_test_code",
         "set_up_ci",
         "use_typescript",
-        "test_different_devices"
+        "emulate_a_device"
       ]
     },
     "api",
