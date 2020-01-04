@@ -1,5 +1,7 @@
 import { CONFIG } from "@qawolf/config";
-import { QAWolfWeb } from "@qawolf/web";
+import { QAWolfWeb, sleep } from "@qawolf/web";
+import { pathExists, readdir } from "fs-extra";
+import { platform } from "os";
 import { getDevice } from "../../src/browser/device";
 import { launch } from "../../src/browser/launch";
 
@@ -43,5 +45,25 @@ describe("launch", () => {
     );
 
     await browser.close();
+  });
+
+  it("records dom replayer and a video on linux CI", async () => {
+    const browser = await launch({ device: "iPhone 7", url: CONFIG.testUrl });
+
+    const capture = browser.qawolf._capture;
+    if (platform() !== "linux") {
+      expect(capture).toEqual(null);
+      await browser.close();
+      return;
+    }
+
+    expect(capture).toBeTruthy();
+    await sleep(500);
+    await browser.close();
+    expect(await pathExists(capture.videoPath)).toBeTruthy();
+    expect(await pathExists(capture.gifPath)).toBeTruthy();
+
+    const domFiles = await readdir(CONFIG.artifactPath!);
+    expect(domFiles.filter((f: string) => f.includes(".html"))).toHaveLength(1);
   });
 });

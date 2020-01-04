@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "install": "node ./src/install.js",
-    "test:linux": "jest"
+    "test": "jest"
   },
   "repository": {
     "type": "git",

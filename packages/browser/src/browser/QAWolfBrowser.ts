@@ -34,12 +34,14 @@ export interface ConstructorOptions {
 
 export class QAWolfBrowser {
   private _browser: Browser;
-  private _capture: VirtualCapture | null = null;
   private _createdAt: number;
   private _options: ConstructorOptions;
   // stored in order of open
   private _pages: Page[] = [];
   private _onClose: Callback[] = [];
+
+  // public for test
+  public _capture: VirtualCapture | null = null;
 
   // used internally by findPage
   public _currentPageIndex: number = 0;

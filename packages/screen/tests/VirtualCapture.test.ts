@@ -8,7 +8,7 @@ it("captures a video and gif on linux CI", async () => {
   const capture = await VirtualCapture.create({
     offset: { x: 0, y: 0 },
     savePath: CONFIG.artifactPath!,
-    size: { height: 250, width: 250 }
+    size: { height: 249, width: 249 }
   });
 
   if (platform() !== "linux") {
@@ -18,7 +18,11 @@ it("captures a video and gif on linux CI", async () => {
   }
 
   expect(VirtualCapture.isEnabled()).toEqual(true);
-  expect(capture).toBeTruthy();
+
+  if (!capture) throw new Error("VirtualCapture should be created on linux");
+
+  // ffmpeg requires even numbers, so expect the size to be rounded up
+  expect(capture.size).toEqual({ height: 250, width: 250 });
 
   // creates a display
   expect(capture.display).toBeTruthy();

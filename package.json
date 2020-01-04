@@ -12,7 +12,6 @@
     "lint": "eslint packages --ext .ts --ignore-path .gitignore --cache",
     "pretest": "npm run lint",
     "test": "lerna run test --stream",
-    "test:linux": "lerna run test:linux --stream",
     "test:services": "docker-compose up -d",
     "watch": "tsc --build --watch packages/tsconfig.project.json"
   },

@@ -11,7 +11,11 @@ on:
     branches: "*"
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        # TODO: macos-latest, windows-latest
+        os: [ubuntu-18.04]
     env:
       QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
       QAW_LOG_LEVEL: debug
@@ -34,7 +38,7 @@ jobs:
 
       - run: npm run bootstrap
 
-      - run: npm run test:linux
+      - run: cd packages/screen && npm test
 
       - name: Upload Artifacts
         if: always()

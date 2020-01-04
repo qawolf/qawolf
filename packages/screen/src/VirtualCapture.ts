@@ -61,6 +61,10 @@ export class VirtualCapture {
     return this._gifPath;
   }
 
+  get size() {
+    return this._options.size;
+  }
+
   get videoPath() {
     return this._videoPath;
   }

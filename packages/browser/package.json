@@ -11,8 +11,7 @@
     "static"
   ],
   "scripts": {
-    "test": "jest --testPathIgnorePatterns=/linux/",
-    "test:linux": "jest --testRegex=\"(/tests/linux/.*.test.ts)$\""
+    "test": "jest"
   },
   "repository": {
     "type": "git",
