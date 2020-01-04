@@ -59,7 +59,7 @@ describe("getClickableAncestor", () => {
 
 describe("getDataValue", () => {
   it("returns null if data attribute not specified in config", async () => {
-    const dataAttribute = await page.evaluate(() => {
+    const findAttribute = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
       username.setAttribute("data-qa", "user");
@@ -70,11 +70,11 @@ describe("getDataValue", () => {
       return result;
     });
 
-    expect(dataAttribute).toBeNull();
+    expect(findAttribute).toBeNull();
   });
 
   it("returns null if element does not have specified data attribute", async () => {
-    const dataAttribute = await page.evaluate(() => {
+    const findAttribute = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
       username.setAttribute("data-other", "user");
@@ -85,11 +85,11 @@ describe("getDataValue", () => {
       return result;
     });
 
-    expect(dataAttribute).toBeNull();
+    expect(findAttribute).toBeNull();
   });
 
   it("returns data attribute value correctly", async () => {
-    const dataAttribute = await page.evaluate(() => {
+    const findAttribute = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
       username.setAttribute("data-qa", "user");
@@ -100,7 +100,20 @@ describe("getDataValue", () => {
       return result;
     });
 
-    expect(dataAttribute).toBe("user");
+    expect(findAttribute).toBe("user");
+  });
+
+  it("returns id value correctly", async () => {
+    const findAttribute = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      const username = document.getElementById("username")!;
+
+      const result = qawolf.element.getFindValue(username, "id");
+
+      return result;
+    });
+
+    expect(findAttribute).toBe("username");
   });
 });
 

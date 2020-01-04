@@ -28,7 +28,7 @@ export const bundleJs = (
   recordEvents: boolean,
   pageIndex: number
 ) => {
-  const recordEventsJs = `window.qaw_recorder = window.qaw_recorder || new qawolf.Recorder("${CONFIG.dataAttribute}", ${pageIndex}, (event) => qaw_onEvent(event));`;
+  const recordEventsJs = `window.qaw_recorder = window.qaw_recorder || new qawolf.Recorder("${CONFIG.findAttribute}", ${pageIndex}, (event) => qaw_onEvent(event));`;
 
   let bundle = qawolfJs;
   if (recordDom) bundle += recordDomJs;

@@ -35,7 +35,7 @@ describe("findHtml", () => {
       page,
       { html: '<button data-qa="password"></button>' },
       {
-        dataAttribute: "data-qa",
+        findAttribute: "data-qa",
         timeoutMs: 0
       }
     );
@@ -53,7 +53,7 @@ describe("findHtml", () => {
         page,
         { html: '<input data-qa="password" name="password">' },
         {
-          dataAttribute: "data-qa",
+          findAttribute: "data-qa",
           timeoutMs: 0
         }
       );

@@ -2,7 +2,7 @@ import { getXpath } from "./xpath";
 
 export const getClickableAncestor = (
   element: HTMLElement,
-  dataAttribute: string
+  findAttribute: string
 ): HTMLElement => {
   /**
    * Crawl up until we reach the top "clickable" ancestor.
@@ -15,10 +15,10 @@ export const getClickableAncestor = (
 
   while (ancestor.parentElement) {
     // choose the data value element as the clickable ancestor
-    const dataValue = getDataValue(ancestor, dataAttribute);
-    if (dataValue) {
+    const findValue = getFindValue(ancestor, findAttribute);
+    if (findValue) {
       console.log(
-        `found clickable ancestor: ${dataAttribute}="${dataValue}"`,
+        `found clickable ancestor: ${findAttribute}="${findValue}"`,
         getXpath(ancestor)
       );
       return ancestor;
@@ -50,13 +50,13 @@ export const getClickableAncestor = (
   return ancestor;
 };
 
-export const getDataValue = (
+export const getFindValue = (
   element: HTMLElement,
-  dataAttribute: string | null
+  findAttribute: string | null
 ): string | null => {
-  if (!dataAttribute) return null;
+  if (!findAttribute) return null;
 
-  return element.getAttribute(dataAttribute) || null;
+  return element.getAttribute(findAttribute) || null;
 };
 
 export const isClickable = (
