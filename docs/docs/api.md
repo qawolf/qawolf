@@ -184,10 +184,10 @@ A [puppeteer.Browser] with actions and assertions to [find](review_test_code#ele
   - `css` <?[CssSelector]> find the first visible element with `document.querySelector(css)`.
   - `html` <?[string]> find the closest match to this html element.
   - `text` <?[string]> find an element with this text.
-  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
 - `options` <[FindElementOptions]> find the element with these options.
+  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
-  - `timeoutMs` <?[number]> maximum time to wait for an element. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
+  - `timeoutMs` <?[number]> maximum time to wait for an element and page. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
 - returns: <[Promise]<[ElementHandle]>> Resolves the element.
 
@@ -215,10 +215,10 @@ await browser.close();
   - `css` <?[CssSelector]> find the first visible element with `document.querySelector(css)`.
   - `html` <?[string]> find the closest match to this html element.
   - `text` <?[string]> find an element with this text.
-  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
 - `options` <[FindElementOptions]> find the element with these options.
+  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
-  - `timeoutMs` <?[number]> maximum time to wait for an element. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
+  - `timeoutMs` <?[number]> maximum time to wait for an element and page. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
 - returns: <[Promise]<[ElementHandle]>> Resolves the element.
 
@@ -234,11 +234,11 @@ const element = await browser.find(selectors[0]);
   - `css` <?[CssSelector]> find the first visible element with `document.querySelector(css)`.
   - `html` <?[string]> find the closest match to this html element.
   - `text` <?[string]> find an element with this text.
-  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
 - `property` <[string]> the name of the property.
 - `options` <[FindElementOptions]> find the element with these options.
+  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
-  - `timeoutMs` <?[number]> maximum time to wait for an element. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
+  - `timeoutMs` <?[number]> maximum time to wait for an element and page. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
 - returns: <[Promise]<[ElementHandle]>> Resolves the element.
 
@@ -301,13 +301,13 @@ const popup = await browser.page({ page: 1 });
   - `css` <?[CssSelector]> find the first visible element with `document.querySelector(css)`.
   - `html` <?[string]> find the closest match to this html element.
   - `text` <?[string]> find an element with this text.
-  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
 - `value` <[Object]>
   - `x` <[number]> scroll the horizontal axis of the element by this pixel value.
   - `y` <[number]> scroll the vertical axis of the element by this pixel value.
 - `options` <[FindElementOptions]> find the element with these options.
+  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
-  - `timeoutMs` <?[number]> maximum time to wait for an element. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
+  - `timeoutMs` <?[number]> maximum time to wait for an element and page. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
 - returns: <[Promise]<[ElementHandle]>> Resolves the element.
 
@@ -325,11 +325,11 @@ const element = await browser.scroll({ css: "body" }, { x: 0, y: 1000 });
   - `css` <?[CssSelector]> find the first visible element with `document.querySelector(css)`.
   - `html` <?[string]> find the closest match to this html element.
   - `text` <?[string]> find an element with this text.
-  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
 - `value` <[string]> the value to select. To clear the select pass `null`.
 - `options` <[FindElementOptions]> find the element with these options.
+  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
-  - `timeoutMs` <?[number]> maximum time to wait for an element. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
+  - `timeoutMs` <?[number]> maximum time to wait for an element and page. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
 - returns: <[Promise]<[ElementHandle]>> Resolves the element.
 
@@ -349,13 +349,12 @@ await browser.select(selectors[0], null);
   - `css` <?[CssSelector]> find the first visible element with `document.querySelector(css)`.
   - `html` <?[string]> find the closest match to this html element.
   - `text` <?[string]> find an element with this text.
-  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
 - `value` <[string]> type this value. To clear the element value pass `null`. You can also specify a sequence of keystrokes by prefixing the [key](https://github.com/puppeteer/puppeteer/blob/v2.0.0/lib/USKeyboardLayout.js) with the direction: ↓[keyboard.down], ↑[keyboard.up], or →[sendCharacter]. This is useful for testing hotkeys.
 - `options` <[FindElementOptions] & TypeOptions> find the element with these options.
   - `delayMs` <?[number]> time to wait between key presses in milliseconds. Defaults to 300ms for ↓[keyboard.down] and ↑[keyboard.up]. Defaults to 0ms for →[sendCharacter].
   - `skipClear` <?[boolean]> do not clear the element. Defaults to `false`.
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
-  - `timeoutMs` <?[number]> maximum time to wait for an element. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
+  - `timeoutMs` <?[number]> maximum time to wait for an element and page. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
 - returns: <[Promise]<[ElementHandle]>> Resolves the element.
 
@@ -378,12 +377,14 @@ await browser.type(
 ### interface: FindElementOptions
 
 - extends: <[Object]>
+  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
-  - `timeoutMs` <?[number]> maximum time to wait for an element. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
+  - `timeoutMs` <?[number]> maximum time to wait for an element and page. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
 
 ```js
 await browser.click(selectors[0], {
+  page: 1,
   sleepMs: 5000,
   waitForRequests: false
 });
@@ -409,14 +410,13 @@ await browser.goto("https://youtube.com", {
   - `css` <?[CssSelector]> find the first visible element with `document.querySelector(css)`.
   - `html` <?[string]> find the closest match to this html element.
   - `text` <?[string]> find an element with this text.
-  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
 
 ```js
 const selectors = [
   // find the element with id=open-login-window
   { css: "#open-login-window" },
   // find the element with text "email" on the second page that opened
-  { text: "email", page: 1 }
+  { text: "email" }
 ];
 
 await browser.click(selectors[0]);

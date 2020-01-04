@@ -9,13 +9,11 @@ export const stepToSelector = (step: Step): Selector => {
 
   if (findValue) {
     return {
-      css: `[${CONFIG.findAttribute}='${findValue}']`,
-      page: step.page
+      css: `[${CONFIG.findAttribute}='${findValue}']`
     };
   }
 
   return {
-    html: serializeDocSelector(step.html),
-    page: step.page
+    html: serializeDocSelector(step.html)
   };
 };

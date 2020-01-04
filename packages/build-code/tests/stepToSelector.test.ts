@@ -15,6 +15,7 @@ describe("stepToSelector", () => {
             id: "my-input",
             "data-qa": "test-input"
           },
+          children: [],
           name: "input",
           type: "tag",
           voidElement: false
@@ -44,6 +45,7 @@ describe("stepToSelector", () => {
             id: "my-input",
             "data-qa": "test-input"
           },
+          children: [],
           name: "input",
           type: "tag",
           voidElement: false

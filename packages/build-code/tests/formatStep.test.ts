@@ -10,6 +10,7 @@ describe("formatStep", () => {
           ancestors: [],
           node: {
             attrs: { innertext: "contact" },
+            children: [],
             name: "a",
             type: "tag"
           }
@@ -29,6 +30,7 @@ describe("formatStep", () => {
           ancestors: [],
           node: {
             attrs: { innertext: "someone's" },
+            children: [],
             name: "input",
             type: "tag"
           }
@@ -49,6 +51,7 @@ describe("formatStep", () => {
         html: {
           ancestors: [],
           node: {
+            children: [],
             name: "html",
             type: "tag"
           }
@@ -73,6 +76,7 @@ describe("formatStep", () => {
             attrs: {
               name: "select1"
             },
+            children: [],
             name: "select",
             type: "tag"
           }
@@ -94,6 +98,7 @@ describe("formatStep", () => {
         html: {
           ancestors: [],
           node: {
+            children: [],
             name: "input",
             type: "tag"
           }
@@ -118,6 +123,7 @@ describe("formatStep", () => {
               name: "username",
               placeholder: "Jane Doe"
             },
+            children: [],
             name: "input",
             type: "tag"
           }
@@ -141,6 +147,7 @@ describe("formatStep", () => {
               id: "input2",
               placeholder: "secret"
             },
+            children: [],
             name: "input",
             type: "tag"
           }

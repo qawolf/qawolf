@@ -30,7 +30,6 @@ export interface FindElementOptions extends FindPageOptions {
 
 export interface FindPageOptions {
   page?: number;
-  // how long to wait for the element
   timeoutMs?: number;
   waitForRequests?: boolean;
 }
@@ -38,16 +37,13 @@ export interface FindPageOptions {
 export interface CssSelector {
   // https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors
   css: string;
-  page?: number;
 }
 
 export interface HtmlSelector {
   html: DocSelectorSerialized;
-  page?: number;
 }
 export interface TextSelector {
   text: string;
-  page?: number;
 }
 
 export type Selector = HtmlSelector | CssSelector | TextSelector;
