@@ -21,18 +21,16 @@ export type DocSelectorSerialized =
       node: string;
     };
 
-export interface FindElementOptions {
+export interface FindElementOptions extends FindPageOptions {
   // filter eligible elements by action
   action?: Action;
   // how long to sleep after finding the element
   sleepMs?: number;
-  // how long to wait for the element
-  timeoutMs?: number;
-  waitForRequests?: boolean;
 }
 
 export interface FindPageOptions {
   page?: number;
+  // how long to wait for the element
   timeoutMs?: number;
   waitForRequests?: boolean;
 }

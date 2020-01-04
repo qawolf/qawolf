@@ -10,10 +10,10 @@ QA Wolf provides CLI commands to [create browser tests ✅](quick_start#-create-
 You can use [environment variables](api#environment-variables) when running the commands below. For example:
 
 ```bash
-QAW_DATA_ATTRIBUTE=data-qa npx qawolf create <url> [name]
+QAW_FIND_ATTRIBUTE=data-qa npx qawolf create www.myawesomesite.com
 ```
 
-This will create your test using `data-qa` as the [data attribute](api#qaw_data_attribute) to look for when finding elements.
+This will create your test using `data-qa` as the [attribute](api#qaw_find_attribute) to look for when finding elements.
 
 ### npx qawolf --help
 

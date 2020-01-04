@@ -13,8 +13,8 @@ The generated code imports the `qawolf` node package, which extends the [Puppete
 ##### Table of Contents
 
 - [Environment Variables](#environment-variables)
-  - [QAW_DATA_ATTRIBUTE](#qaw_data_attribute)
   - [QAW_DEBUG](#qaw_debug)
+  - [QAW_FIND_ATTRIBUTE](#qaw_find_attribute)
   - [QAW_TIMEOUT_MS](#qaw_timeout_ms)
   - [QAW_HEADLESS](#qaw_headless)
   - [QAW_SLEEP_MS](#qaw_sleep_ms)
@@ -58,43 +58,39 @@ env:
   QAW_SLEEP_MS: 0
 ```
 
-### QAW_DATA_ATTRIBUTE
+### QAW_DEBUG
+
+- default: `false`
+
+Prevent the browser from closing to help with debugging an error. Open the [Chrome DevTools Console](https://developers.google.com/web/tools/chrome-devtools/console) to see logs from QA Wolf. Run `qaw_find()` in the console to re-run the last find.
+
+### QAW_FIND_ATTRIBUTE
 
 - default: `null`
 
-When an element selector has the `QAW_DATA_ATTRIBUTE`, it will only find an element with that same attribute value. If the element selector does not have that attribute, it will use the default [selector logic](review_test_code#element-selectors).
+Specify `QAW_FIND_ATTRIBUTE` when creating a test to target elements with that [attribute](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors) in the generated code. Examples of attributes you may want to use include `data-qa` (or other [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes)), `id`, `aria-label`, and `title`.
+
+If the element you interact with does not have the specified attribute, it will use the default [selector logic](review_test_code#element-selectors).
 
 **Example**
 
 Create a test with:
 
 ```bash
-QAW_DATA_ATTRIBUTE=data-qa npx qawolf create www.myawesomesite.com myTest
+QAW_FIND_ATTRIBUTE=data-qa npx qawolf create www.myawesomesite.com myTest
 ```
 
-Click on this element to create `selectors[0]`:
+Click on this element:
 
 ```html
-<input data-qa="search" type="text" />
+<button data-qa="search">Search</button>
 ```
 
-Run the test:
-
-```bash
-QAW_DATA_ATTRIBUTE=data-qa npx qawolf test myTest
-```
-
-This will only find an element with `data-qa=search` to click on:
+The generated code will be:
 
 ```js
-await browser.click(selectors[0]);
+await browser.click({ css: "[data-qa='search']" });
 ```
-
-### QAW_DEBUG
-
-- default: `false`
-
-Prevent the browser from closing to help with debugging an error. Open the [Chrome DevTools Console](https://developers.google.com/web/tools/chrome-devtools/console) to see logs from QA Wolf. Run `qaw_find()` in the console to re-run the last find.
 
 ### QAW_TIMEOUT_MS
 
@@ -190,7 +186,6 @@ A [puppeteer.Browser] with actions and assertions to [find](review_test_code#ele
   - `text` <?[string]> find an element with this text.
   - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
 - `options` <[FindElementOptions]> find the element with these options.
-  - `dataAttribute` <?[string]> prioritize this data attribute. Defaults to [QAW_DATA_ATTRIBUTE](#qaw_data_attribute).
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
   - `timeoutMs` <?[number]> maximum time to wait for an element. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
@@ -222,7 +217,6 @@ await browser.close();
   - `text` <?[string]> find an element with this text.
   - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
 - `options` <[FindElementOptions]> find the element with these options.
-  - `dataAttribute` <?[string]> prioritize this data attribute. Defaults to [QAW_DATA_ATTRIBUTE](#qaw_data_attribute).
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
   - `timeoutMs` <?[number]> maximum time to wait for an element. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
@@ -243,7 +237,6 @@ const element = await browser.find(selectors[0]);
   - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
 - `property` <[string]> the name of the property.
 - `options` <[FindElementOptions]> find the element with these options.
-  - `dataAttribute` <?[string]> prioritize this data attribute. Defaults to [QAW_DATA_ATTRIBUTE](#qaw_data_attribute).
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
   - `timeoutMs` <?[number]> maximum time to wait for an element. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
@@ -313,7 +306,6 @@ const popup = await browser.page({ page: 1 });
   - `x` <[number]> scroll the horizontal axis of the element by this pixel value.
   - `y` <[number]> scroll the vertical axis of the element by this pixel value.
 - `options` <[FindElementOptions]> find the element with these options.
-  - `dataAttribute` <?[string]> prioritize this data attribute. Defaults to [QAW_DATA_ATTRIBUTE](#qaw_data_attribute).
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
   - `timeoutMs` <?[number]> maximum time to wait for an element. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
@@ -336,7 +328,6 @@ const element = await browser.scroll({ css: "body" }, { x: 0, y: 1000 });
   - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
 - `value` <[string]> the value to select. To clear the select pass `null`.
 - `options` <[FindElementOptions]> find the element with these options.
-  - `dataAttribute` <?[string]> prioritize this data attribute. Defaults to [QAW_DATA_ATTRIBUTE](#qaw_data_attribute).
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
   - `timeoutMs` <?[number]> maximum time to wait for an element. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
@@ -361,7 +352,6 @@ await browser.select(selectors[0], null);
   - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
 - `value` <[string]> type this value. To clear the element value pass `null`. You can also specify a sequence of keystrokes by prefixing the [key](https://github.com/puppeteer/puppeteer/blob/v2.0.0/lib/USKeyboardLayout.js) with the direction: ↓[keyboard.down], ↑[keyboard.up], or →[sendCharacter]. This is useful for testing hotkeys.
 - `options` <[FindElementOptions] & TypeOptions> find the element with these options.
-  - `dataAttribute` <?[string]> prioritize this data attribute. Defaults to [QAW_DATA_ATTRIBUTE](#qaw_data_attribute).
   - `delayMs` <?[number]> time to wait between key presses in milliseconds. Defaults to 300ms for ↓[keyboard.down] and ↑[keyboard.up]. Defaults to 0ms for →[sendCharacter].
   - `skipClear` <?[boolean]> do not clear the element. Defaults to `false`.
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
@@ -388,7 +378,6 @@ await browser.type(
 ### interface: FindElementOptions
 
 - extends: <[Object]>
-  - `dataAttribute` <?[string]> prioritize this data attribute. Defaults to [QAW_DATA_ATTRIBUTE](#qaw_data_attribute).
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
   - `timeoutMs` <?[number]> maximum time to wait for an element. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
