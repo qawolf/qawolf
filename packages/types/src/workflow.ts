@@ -1,19 +1,13 @@
 import { Action } from "./common";
 import { ScrollValue } from "./event";
-import { DocSelector, DocSelectorSerialized, Selector } from "./selector";
+import { DocSelector } from "./selector";
 
-export interface Step extends Selector {
+export interface Step {
   action: Action;
   html: DocSelector;
   index: number;
   page: number;
   value?: StepValue;
-}
-
-export interface StepSerialized extends Selector {
-  html: DocSelectorSerialized;
-  index: number;
-  page: number;
 }
 
 export type StepValue = string | ScrollValue | null | undefined;

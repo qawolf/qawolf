@@ -41,10 +41,10 @@ export class QAWolfPage {
     logger.verbose(`Page ${this._index}: click`);
 
     return retryExecutionError(async () => {
-      const element = await this.find(
-        { ...selector, action: "click" },
-        options
-      );
+      const element = await this.find(selector, {
+        ...options,
+        action: "click"
+      });
 
       await clickElement(element);
 
@@ -106,10 +106,10 @@ export class QAWolfPage {
     logger.verbose(`Page ${this._index}: scroll`);
 
     return retryExecutionError(async () => {
-      const element = await this.find(
-        { ...selector, action: "scroll" },
-        options
-      );
+      const element = await this.find(selector, {
+        ...options,
+        action: "scroll"
+      });
 
       await scrollElement(element, value, options);
 
@@ -125,10 +125,10 @@ export class QAWolfPage {
     logger.verbose(`Page ${this._index}: select`);
 
     return retryExecutionError(async () => {
-      const element = await this.find(
-        { ...selector, action: "select" },
-        options
-      );
+      const element = await this.find(selector, {
+        ...options,
+        action: "select"
+      });
 
       await selectElement(element, value, options);
 
@@ -144,10 +144,7 @@ export class QAWolfPage {
     logger.verbose(`Page ${this._index}: type`);
 
     return retryExecutionError(async () => {
-      const element = await this.find(
-        { ...selector, action: "type" },
-        { ...options }
-      );
+      const element = await this.find(selector, { ...options, action: "type" });
 
       await typeElement(this._page, element, value, options);
 

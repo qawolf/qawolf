@@ -10,12 +10,7 @@ import * as wait from "./wait";
 import * as xpath from "./xpath";
 
 // export the isomorphic (node & browser) module for node
-const {
-  htmlSelectorToDocSelector,
-  htmlToDoc,
-  serializeDocSelector,
-  serializeStep
-} = serialize;
+const { htmlToDoc, serializeDocSelector } = serialize;
 const { isKeyEvent, isPasteEvent, isTypeEvent } = event;
 const {
   compareAttributes,
@@ -30,7 +25,6 @@ export {
   compareContent,
   compareDoc,
   decodeHtml,
-  htmlSelectorToDocSelector,
   htmlToDoc,
   isKeyEvent,
   isNil,
@@ -38,7 +32,6 @@ export {
   isTypeEvent,
   matchDocSelector,
   serializeDocSelector,
-  serializeStep,
   sleep,
   waitFor,
   waitUntil

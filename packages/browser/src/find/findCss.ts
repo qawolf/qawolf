@@ -1,11 +1,11 @@
 import { logger } from "@qawolf/logger";
-import { FindElementOptions, Selector } from "@qawolf/types";
+import { CssSelector, FindElementOptions } from "@qawolf/types";
 import { QAWolfWeb } from "@qawolf/web";
 import { ElementHandle, Page, Serializable } from "puppeteer";
 
 export const findCss = async (
   page: Page,
-  selector: Selector,
+  selector: CssSelector,
   options: FindElementOptions
 ): Promise<ElementHandle<Element>> => {
   logger.verbose("findCss");
@@ -18,7 +18,7 @@ export const findCss = async (
       (window as any).qaw_find = findCmd;
       return findCmd();
     },
-    selector as Serializable,
+    selector as any,
     options as Serializable
   );
 

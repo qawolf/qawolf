@@ -69,8 +69,9 @@ describe("findHtml", () => {
     // queryActionElements for body and html
     let element = await findHtml(
       page,
-      { action: "type", html: "<body />" },
+      { html: "<body />" },
       {
+        action: "type",
         timeoutMs: 0
       }
     );
@@ -78,8 +79,9 @@ describe("findHtml", () => {
 
     element = await findHtml(
       page,
-      { action: "type", html: "<html />" },
+      { html: "<html />" },
       {
+        action: "type",
         timeoutMs: 0
       }
     );

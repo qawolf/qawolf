@@ -1,9 +1,8 @@
-import { buildCode } from "@qawolf/build-code";
+import { buildCode, stepToSelector } from "@qawolf/build-code";
 import { buildWorkflow } from "@qawolf/build-workflow";
 import { launch } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { serializeStep } from "@qawolf/web";
 import { outputFile, outputJson } from "fs-extra";
 import { Url } from "url";
 
@@ -80,7 +79,14 @@ export const create = async (options: RecordOptions): Promise<void> => {
           await saveJson("workflows", workflow);
         }
 
-        await saveJson("selectors", workflow.steps.map(s => serializeStep(s)));
+        await saveJson(
+          "selectors",
+          workflow.steps.map((step, index) => ({
+            // inline index so it is easy to correlate with the test
+            index,
+            ...stepToSelector(step)
+          }))
+        );
 
         logger.verbose(`save ${codePath}`);
         await outputFile(
