@@ -1,7 +1,10 @@
 import { CssSelector, ScrollValue, Step } from "@qawolf/types";
 import { stepToSelector } from "./stepToSelector";
 
-export const formatMethod = (step: Step, previousStep?: Step): string => {
+export const formatMethod = (
+  step: Step,
+  previousStep?: Step | null
+): string => {
   const selector = formatSelector(step);
   const options = formatOptions(step, previousStep);
 
@@ -27,7 +30,10 @@ export const formatMethod = (step: Step, previousStep?: Step): string => {
   throw new Error(`Invalid step action ${action}`);
 };
 
-export const formatOptions = (step: Step, previousStep?: Step): string => {
+export const formatOptions = (
+  step: Step,
+  previousStep?: Step | null
+): string => {
   if (!previousStep) return "";
   if (step.page === previousStep.page) return "";
 

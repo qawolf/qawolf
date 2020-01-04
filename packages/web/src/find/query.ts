@@ -1,46 +1,11 @@
-import { Action, DocSelector } from "@qawolf/types";
+import { Action } from "@qawolf/types";
 import { isVisible } from "../element";
 
-type QueryDataElementsOptions = {
-  dataAttribute?: string;
-  dataValue?: string;
-};
-
-type QueryElementsOptions = {
-  action?: Action;
-  dataAttribute?: string;
-};
-
-export const queryActionElements = (action?: Action): Element[] => {
+export const queryElements = (action?: Action): Element[] => {
   const selector =
     action === "type" ? "input,select,textarea,[contenteditable='true']" : "*";
 
   return queryVisibleElements(selector);
-};
-
-export const queryDataElements = ({
-  dataAttribute,
-  dataValue
-}: QueryDataElementsOptions): Element[] => {
-  return queryVisibleElements(`[${dataAttribute}='${dataValue}']`);
-};
-
-export const queryElements = (
-  selector: DocSelector,
-  { action, dataAttribute }: QueryElementsOptions
-) => {
-  if (dataAttribute) {
-    const dataValue = selector.node.attrs[dataAttribute];
-    if (dataValue) {
-      return queryDataElements({
-        dataAttribute,
-        dataValue
-      });
-    }
-  }
-
-  // default to click since it will query all elements
-  return queryActionElements(action);
 };
 
 export const queryVisibleElements = (selector: string): Element[] => {

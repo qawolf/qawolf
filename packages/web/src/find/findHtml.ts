@@ -35,15 +35,8 @@ export const findHtml = async (
 
   const elementMatch = await waitFor(
     () => {
-      const elements = queryElements(docSelector, {
-        action: options.action,
-        dataAttribute: options.dataAttribute
-      });
-      const matches = matchElements(
-        elements,
-        docSelector,
-        options.dataAttribute
-      );
+      const elements = queryElements(options.action);
+      const matches = matchElements(elements, docSelector);
 
       if (matches.length < 1) return;
       topElementMatch = matches[0];
@@ -94,15 +87,14 @@ export const findHtml = async (
 
 export const matchElements = (
   elements: Element[],
-  target: DocSelector,
-  dataAttribute?: string
+  target: DocSelector
 ): ElementMatch[] => {
   let matches: ElementMatch[] = [];
 
   elements.forEach(element => {
     try {
       const selector = nodeToDocSelector(element);
-      const match = matchDocSelector(target, selector, dataAttribute);
+      const match = matchDocSelector(target, selector);
       matches.push({ element, match });
     } catch (e) {
       // catch parsing errors on malformed elements

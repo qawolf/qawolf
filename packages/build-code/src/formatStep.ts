@@ -2,9 +2,9 @@ import { Step } from "@qawolf/types";
 import { formatIt } from "./formatIt";
 import { formatMethod } from "./formatMethod";
 
-export const formatStep = (step: Step) => {
+export const formatStep = (step: Step, previousStep?: Step | null) => {
   return {
     it: formatIt(step),
-    method: formatMethod(step.action, step.index, step.value)
+    method: formatMethod(step, previousStep)
   };
 };

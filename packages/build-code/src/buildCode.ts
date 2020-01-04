@@ -27,7 +27,11 @@ export const buildCode = (options: BuildCodeOptions) => {
   const code = template({
     launch: formatLaunch(workflow.url, workflow.device),
     name: camelCase(workflow.name),
-    steps: workflow.steps.map(step => formatStep(step)),
+    steps: workflow.steps.map((step, i) => {
+      const previousStep = i > 0 ? workflow.steps[i - 1] : null;
+
+      return formatStep(step, previousStep);
+    }),
     url: workflow.url
   });
 
