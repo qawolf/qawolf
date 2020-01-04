@@ -9,7 +9,7 @@ export const stepToSelector = (step: Step): Selector => {
 
   if (findValue) {
     return {
-      css: `[${CONFIG.findAttribute}="${findValue}"]`,
+      css: `[${CONFIG.findAttribute}='${findValue}']`,
       page: step.page
     };
   }

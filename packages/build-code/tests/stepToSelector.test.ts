@@ -27,7 +27,7 @@ describe("stepToSelector", () => {
     const selector = stepToSelector(step);
 
     expect(selector).toEqual({
-      css: '[id="my-input"]',
+      css: "[id='my-input']",
       page: 0
     });
   });
@@ -56,7 +56,7 @@ describe("stepToSelector", () => {
     const selector = stepToSelector(step);
 
     expect(selector).toEqual({
-      css: '[data-qa="test-input"]',
+      css: "[data-qa='test-input']",
       page: 0
     });
   });
