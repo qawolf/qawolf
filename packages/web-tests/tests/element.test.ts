@@ -57,50 +57,63 @@ describe("getClickableAncestor", () => {
   });
 });
 
-describe("getDataValue", () => {
+describe("getAttributeValue", () => {
   it("returns null if data attribute not specified in config", async () => {
-    const dataAttribute = await page.evaluate(() => {
+    const attribute = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
       username.setAttribute("data-qa", "user");
 
-      const result = qawolf.element.getDataValue(username, null);
+      const result = qawolf.element.getAttributeValue(username, null);
       username.removeAttribute("data-qa");
 
       return result;
     });
 
-    expect(dataAttribute).toBeNull();
+    expect(attribute).toBeNull();
   });
 
   it("returns null if element does not have specified data attribute", async () => {
-    const dataAttribute = await page.evaluate(() => {
+    const attribute = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
       username.setAttribute("data-other", "user");
 
-      const result = qawolf.element.getDataValue(username, "data-qa");
+      const result = qawolf.element.getAttributeValue(username, "data-qa");
       username.removeAttribute("data-other");
 
       return result;
     });
 
-    expect(dataAttribute).toBeNull();
+    expect(attribute).toBeNull();
   });
 
   it("returns data attribute value correctly", async () => {
-    const dataAttribute = await page.evaluate(() => {
+    const attribute = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
       username.setAttribute("data-qa", "user");
 
-      const result = qawolf.element.getDataValue(username, "data-qa");
+      const result = qawolf.element.getAttributeValue(username, "data-qa");
       username.removeAttribute("data-qa");
 
       return result;
     });
 
-    expect(dataAttribute).toBe("user");
+    expect(attribute).toBe("user");
+  });
+
+  it("returns id value correctly", async () => {
+    const attribute = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      const username = document.getElementById("username")!;
+
+      const result = qawolf.element.getAttributeValue(username, "id");
+
+      return result;
+    });
+
+    expect(attribute).toBe("username");
   });
 });
 

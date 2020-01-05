@@ -13,7 +13,7 @@ The generated code imports the `qawolf` node package, which extends the [Puppete
 ##### Table of Contents
 
 - [Environment Variables](#environment-variables)
-  - [QAW_DATA_ATTRIBUTE](#qaw_data_attribute)
+  - [QAW_ATTRIBUTE](#qaw_attribute)
   - [QAW_DEBUG](#qaw_debug)
   - [QAW_TIMEOUT_MS](#qaw_timeout_ms)
   - [QAW_HEADLESS](#qaw_headless)
@@ -58,36 +58,32 @@ env:
   QAW_SLEEP_MS: 0
 ```
 
-### QAW_DATA_ATTRIBUTE
+### QAW_ATTRIBUTE
 
 - default: `null`
 
-When an element selector has the `QAW_DATA_ATTRIBUTE`, it will only find an element with that same attribute value. If the element selector does not have that attribute, it will use the default [selector logic](review_test_code#element-selectors).
+Specify `QAW_ATTRIBUTE` when you create a test, and it will use that [attribute](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors) as a selector when it exists on an element. You may want to use `data-qa` (or other [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes)), `id`, `aria-label`, and `title`.
+
+If the element you interact with does not have the specified attribute, it will use the default [selector logic](review_test_code#element-selectors).
 
 **Example**
 
 Create a test with:
 
 ```bash
-QAW_DATA_ATTRIBUTE=data-qa npx qawolf create www.myawesomesite.com myTest
+QAW_ATTRIBUTE=data-qa npx qawolf create www.myawesomesite.com myTest
 ```
 
-Click on this element to create `selectors[0]`:
+Click on this element:
 
 ```html
-<input data-qa="search" type="text" />
+<button data-qa="search">Search</button>
 ```
 
-Run the test:
-
-```bash
-QAW_DATA_ATTRIBUTE=data-qa npx qawolf test myTest
-```
-
-This will only find an element with `data-qa=search` to click on:
+The generated code will be:
 
 ```js
-await browser.click(selectors[0]);
+await browser.click({ css: "[data-qa='search']" });
 ```
 
 ### QAW_DEBUG
@@ -188,11 +184,10 @@ A [puppeteer.Browser] with actions and assertions to [find](review_test_code#ele
   - `css` <?[CssSelector]> find the first visible element with `document.querySelector(css)`.
   - `html` <?[string]> find the closest match to this html element.
   - `text` <?[string]> find an element with this text.
-  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
 - `options` <[FindElementOptions]> find the element with these options.
-  - `dataAttribute` <?[string]> prioritize this data attribute. Defaults to [QAW_DATA_ATTRIBUTE](#qaw_data_attribute).
+  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
-  - `timeoutMs` <?[number]> maximum time to wait for an element. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
+  - `timeoutMs` <?[number]> maximum time to wait for an element and page. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
 - returns: <[Promise]<[ElementHandle]>> Resolves the element.
 
@@ -220,11 +215,10 @@ await browser.close();
   - `css` <?[CssSelector]> find the first visible element with `document.querySelector(css)`.
   - `html` <?[string]> find the closest match to this html element.
   - `text` <?[string]> find an element with this text.
-  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
 - `options` <[FindElementOptions]> find the element with these options.
-  - `dataAttribute` <?[string]> prioritize this data attribute. Defaults to [QAW_DATA_ATTRIBUTE](#qaw_data_attribute).
+  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
-  - `timeoutMs` <?[number]> maximum time to wait for an element. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
+  - `timeoutMs` <?[number]> maximum time to wait for an element and page. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
 - returns: <[Promise]<[ElementHandle]>> Resolves the element.
 
@@ -240,12 +234,11 @@ const element = await browser.find(selectors[0]);
   - `css` <?[CssSelector]> find the first visible element with `document.querySelector(css)`.
   - `html` <?[string]> find the closest match to this html element.
   - `text` <?[string]> find an element with this text.
-  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
 - `property` <[string]> the name of the property.
 - `options` <[FindElementOptions]> find the element with these options.
-  - `dataAttribute` <?[string]> prioritize this data attribute. Defaults to [QAW_DATA_ATTRIBUTE](#qaw_data_attribute).
+  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
-  - `timeoutMs` <?[number]> maximum time to wait for an element. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
+  - `timeoutMs` <?[number]> maximum time to wait for an element and page. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
 - returns: <[Promise]<[ElementHandle]>> Resolves the element.
 
@@ -308,14 +301,13 @@ const popup = await browser.page({ page: 1 });
   - `css` <?[CssSelector]> find the first visible element with `document.querySelector(css)`.
   - `html` <?[string]> find the closest match to this html element.
   - `text` <?[string]> find an element with this text.
-  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
 - `value` <[Object]>
   - `x` <[number]> scroll the horizontal axis of the element by this pixel value.
   - `y` <[number]> scroll the vertical axis of the element by this pixel value.
 - `options` <[FindElementOptions]> find the element with these options.
-  - `dataAttribute` <?[string]> prioritize this data attribute. Defaults to [QAW_DATA_ATTRIBUTE](#qaw_data_attribute).
+  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
-  - `timeoutMs` <?[number]> maximum time to wait for an element. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
+  - `timeoutMs` <?[number]> maximum time to wait for an element and page. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
 - returns: <[Promise]<[ElementHandle]>> Resolves the element.
 
@@ -333,12 +325,11 @@ const element = await browser.scroll({ css: "body" }, { x: 0, y: 1000 });
   - `css` <?[CssSelector]> find the first visible element with `document.querySelector(css)`.
   - `html` <?[string]> find the closest match to this html element.
   - `text` <?[string]> find an element with this text.
-  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
 - `value` <[string]> the value to select. To clear the select pass `null`.
 - `options` <[FindElementOptions]> find the element with these options.
-  - `dataAttribute` <?[string]> prioritize this data attribute. Defaults to [QAW_DATA_ATTRIBUTE](#qaw_data_attribute).
+  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
-  - `timeoutMs` <?[number]> maximum time to wait for an element. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
+  - `timeoutMs` <?[number]> maximum time to wait for an element and page. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
 - returns: <[Promise]<[ElementHandle]>> Resolves the element.
 
@@ -358,14 +349,13 @@ await browser.select(selectors[0], null);
   - `css` <?[CssSelector]> find the first visible element with `document.querySelector(css)`.
   - `html` <?[string]> find the closest match to this html element.
   - `text` <?[string]> find an element with this text.
-  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
 - `value` <[string]> type this value. To clear the element value pass `null`. You can also specify a sequence of keystrokes by prefixing the [key](https://github.com/puppeteer/puppeteer/blob/v2.0.0/lib/USKeyboardLayout.js) with the direction: ↓[keyboard.down], ↑[keyboard.up], or →[sendCharacter]. This is useful for testing hotkeys.
 - `options` <[FindElementOptions] & TypeOptions> find the element with these options.
-  - `dataAttribute` <?[string]> prioritize this data attribute. Defaults to [QAW_DATA_ATTRIBUTE](#qaw_data_attribute).
   - `delayMs` <?[number]> time to wait between key presses in milliseconds. Defaults to 300ms for ↓[keyboard.down] and ↑[keyboard.up]. Defaults to 0ms for →[sendCharacter].
+  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
   - `skipClear` <?[boolean]> do not clear the element. Defaults to `false`.
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
-  - `timeoutMs` <?[number]> maximum time to wait for an element. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
+  - `timeoutMs` <?[number]> maximum time to wait for an element and page. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
 - returns: <[Promise]<[ElementHandle]>> Resolves the element.
 
@@ -388,13 +378,15 @@ await browser.type(
 ### interface: FindElementOptions
 
 - extends: <[Object]>
-  - `dataAttribute` <?[string]> prioritize this data attribute. Defaults to [QAW_DATA_ATTRIBUTE](#qaw_data_attribute).
+  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
-  - `timeoutMs` <?[number]> maximum time to wait for an element. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
+  - `timeoutMs` <?[number]> maximum time to wait for an element and page. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
 
 ```js
 await browser.click(selectors[0], {
+  // click an element on the second page that opened
+  page: 1,
   sleepMs: 5000,
   waitForRequests: false
 });
@@ -420,14 +412,13 @@ await browser.goto("https://youtube.com", {
   - `css` <?[CssSelector]> find the first visible element with `document.querySelector(css)`.
   - `html` <?[string]> find the closest match to this html element.
   - `text` <?[string]> find an element with this text.
-  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
 
 ```js
 const selectors = [
   // find the element with id=open-login-window
   { css: "#open-login-window" },
-  // find the element with text "email" on the second page that opened
-  { text: "email", page: 1 }
+  // find the element with text "email"
+  { text: "email" }
 ];
 
 await browser.click(selectors[0]);

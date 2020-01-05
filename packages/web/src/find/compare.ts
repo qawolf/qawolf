@@ -119,19 +119,12 @@ export const compareDoc = (a: Doc, b: Doc | null): DocComparison => {
   return result;
 };
 
-export const matchDocSelector = (
-  a: DocSelector,
-  b: DocSelector,
-  dataAttribute?: string
-): DocMatch => {
+export const matchDocSelector = (a: DocSelector, b: DocSelector): DocMatch => {
   const ancestorsComparison: DocComparison[] = [];
 
   const nodeComparison = compareDoc(a.node, b.node);
   const strongKeys = nodeComparison.matches.filter(
-    m =>
-      strongMatchKeys.includes(m) ||
-      dataAttribute === m ||
-      m.includes("labels.")
+    m => strongMatchKeys.includes(m) || m.includes("labels.")
   );
 
   let matches = nodeComparison.matches.length;

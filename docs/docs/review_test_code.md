@@ -132,7 +132,6 @@ The `.qawolf/selectors/myFirstTest.json` file is a [JSON](https://developer.mozi
 [
   {
     "index": 0,
-    "page": 0,
     "html": {
       "ancestors": [
         "<header class=\"header\" data-reactid=\".0.0\"></header>",
@@ -148,7 +147,6 @@ The `.qawolf/selectors/myFirstTest.json` file is a [JSON](https://developer.mozi
 The generated [selector](api#interface-selector) includes the following keys:
 
 - `index`: which step number the selector corresponds to, starting at `0`
-- `page`: which page number the element is on (relevant when your test involves mulitple windows or tabs)
 - `html`: the [node](https://developer.mozilla.org/en-US/docs/Web/API/Node) that was interacted with, and its two direct [ancestors](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement)
 
 The test code references the generated [selector](api#interface-selector) in each step:
@@ -167,20 +165,38 @@ The next section goes into detail on how the generated selector works.
 
 ## How the generated selector works
 
-Rather than rely on one specific attribute like an xpath to locate elements, QA Wolf serializes the entire element, its [parent](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement), and parent's parent, to make your tests robust to changes. You can also [specify a data attribute](api#qaw_data_attribute) like `data-qa` to use instead of the default selector logic, or [replace the generated selector](edit_test_code#use-custom-selectors) with a [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) or text selector.
+Rather than rely on one specific attribute like an xpath to locate elements, QA Wolf serializes the entire element, its [parent](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement), and parent's parent, to make your tests robust to changes. You can also [specify an attribute](api#qaw_attribute) like `data-qa` to use instead of the default selector logic, or [replace the generated selector](edit_test_code#use-custom-selectors) with a [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) or text selector.
 
 The serialized elements are then stored in the selector (`.qawolf/selectors/myFirstTest.json`). QA Wolf uses the [open source `html-parse-stringify` library](https://github.com/HenrikJoreteg/html-parse-stringify) to serialize each element.
 
 When you run a test, QA Wolf goes through the following steps to locate each element ([source code](https://github.com/qawolf/qawolf/blob/master/packages/web/src/find/findHtml.ts)):
 
-1. A list of candidate elements is generated based on the type of action (like `click` or `type`) to take. For example, if the next action is a `type` action, only elements that can accept keyboard input like inputs are considered. If you [specified a data attribute](api#qaw_data_attribute) and the target element has that data attribute, only elements with a matching attribute (like `data-qa="my-input"`) are considered.
+1. A list of candidate elements is generated based on the type of action (like `click` or `type`) to take. For example, if the next action is a `type` action, only elements that can accept keyboard input like inputs are considered.
 2. Candidate elements are ranked by how closely they match the target element and its two direct ancestors. Certain attributes like text content, `id`, `title`, and `name` are considered indicative of a strong match. Elements that share these "strong match" attributes with the target are ranked highest. All candidates are then ordered by how closely their attributes match those of the target element.
 3. If there is a strong match with the target, the test acts on that element. Otherwise, if the similarity between the highest ranked candidate and the target is above a threshold, the test acts on the highest ranked candidate. If no good enough match is found, QA Wolf will keep trying to find a match. The threshold similarity is reduced slowly over time to 75%. In other words, QA Wolf first tries to find a perfect match, but over time it allows a larger amount of divergence between the candidate and target elements.
 4. If a matching element is not found within a [specified timeout](api#qaw_find_timeout_ms) (default 30 seconds), the test fails.
 
 If you [replace the generated selector](edit_test_code#use-custom-selectors) with a custom selector, QA Wolf will wait until it finds an element matching that selector. If no match is found before the [timeout](api#qaw_find_timeout_ms), the test fails.
 
-If you have [specified a data attribute](api#qaw_data_attribute) like `data-qa`, QA Wolf will only proceed when an element with the matching data value (for example, `data-qa="my-input"`) is found. You do not need to include the data attribute on every element in your workflow. If it is included, QA Wolf will only proceed if an element with that attribute is found. Otherwise, it will use the default selector logic.
+If you [specify an attribute](api#qaw_attribute) like `data-qa` when you create a test, the generated code will use that attribute as as a selector when possible. For example, create a test:
+
+```bash
+QAW_ATTRIBUTE=data-qa npx qawolf create www.myawesomesite.com myTest
+```
+
+Click on this element:
+
+```html
+<button data-qa="search">Search</button>
+```
+
+The generated code will be:
+
+```js
+await browser.click({ css: "[data-qa='search']" });
+```
+
+When the specified attribute is not present on the element, it will use the default selector logic.
 
 ## Automatic waiting
 
