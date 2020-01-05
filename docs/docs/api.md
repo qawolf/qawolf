@@ -15,9 +15,9 @@ The generated code imports the `qawolf` node package, which extends the [Puppete
 - [Environment Variables](#environment-variables)
   - [QAW_ATTRIBUTE](#qaw_attribute)
   - [QAW_DEBUG](#qaw_debug)
-  - [QAW_TIMEOUT_MS](#qaw_timeout_ms)
   - [QAW_HEADLESS](#qaw_headless)
   - [QAW_SLEEP_MS](#qaw_sleep_ms)
+  - [QAW_TIMEOUT_MS](#qaw_timeout_ms)
 - [class: QAWolf](#class-qawolf)
   - [qawolf.launch([options])](#qawolflaunchoptions)
   - [qawolf.waitUntil(predicate[, timeoutMs])](#qawolfwaituntilpredicate-timeoutms-sleepms)
@@ -92,12 +92,6 @@ await browser.click({ css: "[data-qa='search']" });
 
 Prevent the browser from closing to help with debugging an error. Open the [Chrome DevTools Console](https://developers.google.com/web/tools/chrome-devtools/console) to see logs from QA Wolf. Run `qaw_find()` in the console to re-run the last find.
 
-### QAW_TIMEOUT_MS
-
-- default: `30000`
-
-The default maximum time to wait for [FindElementOptions].
-
 ### QAW_HEADLESS
 
 - default: `false`
@@ -114,6 +108,12 @@ We default to 1s to:
 
 - make video replays easy to watch
 - wait for elements that appear before their event handlers are attached or data is loaded. You can write custom wait logic instead, see the [`waitUntil` helper](api#waituntil).
+
+### QAW_TIMEOUT_MS
+
+- default: `30000`
+
+The default maximum time to wait for [FindElementOptions].
 
 ## class: QAWolf
 
