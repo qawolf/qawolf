@@ -132,13 +132,13 @@ it('can click "Clear completed" button', async () => {
 });
 ```
 
-You can also create your test while setting the [`QAW_FIND_ATTRIBUTE` environment variable](api#qaw_find_attribute). This will use your specified attribute (like `data-qa` or `aria-label`) to find elements where applicable rather than the default selector logic. For example:
+You can also create your test with the [`QAW_ATTRIBUTE` environment variable](api#qaw_attribute) set. This will use that attribute (like `data-qa` or `aria-label`) as the selector whenever possible. For example:
 
 ```bash
-QAW_FIND_ATTRIBUTE=data-qa npx qawolf create www.myawesomesite.com myTest
+QAW_ATTRIBUTE=data-qa npx qawolf create www.myawesomesite.com myTest
 ```
 
-See [our documentation](api#qaw_find_attribute) to learn more about the `QAW_FIND_ATTRIBUTE` environment variable.
+See [our documentation](api#qaw_attribute) to learn more about the `QAW_ATTRIBUTE` environment variable.
 
 ## Change input values
 

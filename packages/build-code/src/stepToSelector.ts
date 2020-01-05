@@ -3,13 +3,13 @@ import { Selector, Step } from "@qawolf/types";
 import { serializeDocSelector } from "@qawolf/web";
 
 export const stepToSelector = (step: Step): Selector => {
-  const findValue = CONFIG.findAttribute
-    ? step.html.node.attrs[CONFIG.findAttribute]
+  const value = CONFIG.attribute
+    ? step.html.node.attrs[CONFIG.attribute]
     : null;
 
-  if (findValue) {
+  if (value) {
     return {
-      css: `[${CONFIG.findAttribute}='${findValue}']`
+      css: `[${CONFIG.attribute}='${value}']`
     };
   }
 

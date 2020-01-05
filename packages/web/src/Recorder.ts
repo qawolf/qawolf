@@ -5,17 +5,13 @@ import { nodeToDocSelector } from "./serialize";
 type EventCallback = types.Callback<types.Event>;
 
 export class Recorder {
-  private _findAttribute: string;
+  private _attribute: string;
   private _onDispose: types.Callback[] = [];
   private _pageIndex: number;
   private _sendEvent: EventCallback;
 
-  constructor(
-    findAttribute: string,
-    pageIndex: number,
-    sendEvent: EventCallback
-  ) {
-    this._findAttribute = findAttribute;
+  constructor(attribute: string, pageIndex: number, sendEvent: EventCallback) {
+    this._attribute = attribute;
     this._pageIndex = pageIndex;
     this._sendEvent = sendEvent;
 
@@ -71,7 +67,7 @@ export class Recorder {
       // XXX if anyone runs into issues with this behavior we can allow disabling it from a flag.
       const target = getClickableAncestor(
         event.target as HTMLElement,
-        this._findAttribute
+        this._attribute
       );
 
       return {

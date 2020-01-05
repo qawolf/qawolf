@@ -21,7 +21,7 @@ const step = {
 
 describe("formatMethod", () => {
   it("formats click step", () => {
-    CONFIG.findAttribute = "data-qa";
+    CONFIG.attribute = "data-qa";
 
     const formattedMethod = formatMethod(step);
 
@@ -31,7 +31,7 @@ describe("formatMethod", () => {
   });
 
   it("formats scroll step", () => {
-    CONFIG.findAttribute = "id";
+    CONFIG.attribute = "id";
 
     const formattedMethod = formatMethod({
       ...step,
@@ -48,7 +48,7 @@ describe("formatMethod", () => {
   });
 
   it("formats select step", () => {
-    CONFIG.findAttribute = null;
+    CONFIG.attribute = null;
 
     const formattedMethod = formatMethod({
       ...step,
@@ -60,7 +60,7 @@ describe("formatMethod", () => {
   });
 
   it("formats type step", () => {
-    CONFIG.findAttribute = null;
+    CONFIG.attribute = null;
 
     const formattedMethod = formatMethod(
       {
@@ -110,7 +110,7 @@ describe("formatOptions", () => {
 
 describe("formatSelector", () => {
   it("formats CssSelector", () => {
-    CONFIG.findAttribute = "id";
+    CONFIG.attribute = "id";
 
     const formattedSelector = formatSelector(step);
 
@@ -118,7 +118,7 @@ describe("formatSelector", () => {
   });
 
   it("formats HtmlSelector", () => {
-    CONFIG.findAttribute = null;
+    CONFIG.attribute = null;
 
     const formattedSelector = formatSelector({ ...step, index: 11 });
 

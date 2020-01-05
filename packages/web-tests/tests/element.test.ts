@@ -59,7 +59,7 @@ describe("getClickableAncestor", () => {
 
 describe("getAttributeValue", () => {
   it("returns null if data attribute not specified in config", async () => {
-    const findAttribute = await page.evaluate(() => {
+    const attribute = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
       username.setAttribute("data-qa", "user");
@@ -70,11 +70,11 @@ describe("getAttributeValue", () => {
       return result;
     });
 
-    expect(findAttribute).toBeNull();
+    expect(attribute).toBeNull();
   });
 
   it("returns null if element does not have specified data attribute", async () => {
-    const findAttribute = await page.evaluate(() => {
+    const attribute = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
       username.setAttribute("data-other", "user");
@@ -85,11 +85,11 @@ describe("getAttributeValue", () => {
       return result;
     });
 
-    expect(findAttribute).toBeNull();
+    expect(attribute).toBeNull();
   });
 
   it("returns data attribute value correctly", async () => {
-    const findAttribute = await page.evaluate(() => {
+    const attribute = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
       username.setAttribute("data-qa", "user");
@@ -100,11 +100,11 @@ describe("getAttributeValue", () => {
       return result;
     });
 
-    expect(findAttribute).toBe("user");
+    expect(attribute).toBe("user");
   });
 
   it("returns id value correctly", async () => {
-    const findAttribute = await page.evaluate(() => {
+    const attribute = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
 
@@ -113,7 +113,7 @@ describe("getAttributeValue", () => {
       return result;
     });
 
-    expect(findAttribute).toBe("username");
+    expect(attribute).toBe("username");
   });
 });
 

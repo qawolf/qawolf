@@ -14,7 +14,7 @@ The generated code imports the `qawolf` node package, which extends the [Puppete
 
 - [Environment Variables](#environment-variables)
   - [QAW_DEBUG](#qaw_debug)
-  - [QAW_FIND_ATTRIBUTE](#qaw_find_attribute)
+  - [QAW_ATTRIBUTE](#qaw_attribute)
   - [QAW_TIMEOUT_MS](#qaw_timeout_ms)
   - [QAW_HEADLESS](#qaw_headless)
   - [QAW_SLEEP_MS](#qaw_sleep_ms)
@@ -64,11 +64,11 @@ env:
 
 Prevent the browser from closing to help with debugging an error. Open the [Chrome DevTools Console](https://developers.google.com/web/tools/chrome-devtools/console) to see logs from QA Wolf. Run `qaw_find()` in the console to re-run the last find.
 
-### QAW_FIND_ATTRIBUTE
+### QAW_ATTRIBUTE
 
 - default: `null`
 
-Specify `QAW_FIND_ATTRIBUTE` when creating a test to target elements with that [attribute](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors) in the generated code. Examples of attributes you may want to use include `data-qa` (or other [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes)), `id`, `aria-label`, and `title`.
+Specify `QAW_ATTRIBUTE` when you create a test, and it will use that [attribute](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors) as a selector when it exists on an element. You may want to use `data-qa` (or other [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes)), `id`, `aria-label`, and `title`.
 
 If the element you interact with does not have the specified attribute, it will use the default [selector logic](review_test_code#element-selectors).
 
@@ -77,7 +77,7 @@ If the element you interact with does not have the specified attribute, it will 
 Create a test with:
 
 ```bash
-QAW_FIND_ATTRIBUTE=data-qa npx qawolf create www.myawesomesite.com myTest
+QAW_ATTRIBUTE=data-qa npx qawolf create www.myawesomesite.com myTest
 ```
 
 Click on this element:

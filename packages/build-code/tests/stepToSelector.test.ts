@@ -6,8 +6,8 @@ import { stepToSelector } from "../src/stepToSelector";
 const doc = htmlToDoc;
 
 describe("stepToSelector", () => {
-  it("returns CssSelector if findAttribute is id and findValue specified", () => {
-    CONFIG.findAttribute = "id";
+  it("returns CssSelector if attribute is id and findValue specified", () => {
+    CONFIG.attribute = "id";
 
     const step = {
       action: "click" as Action,
@@ -26,8 +26,8 @@ describe("stepToSelector", () => {
     });
   });
 
-  it("returns CssSelector if findAttribute is data-qa and findValue specified", () => {
-    CONFIG.findAttribute = "data-qa";
+  it("returns CssSelector if attribute is data-qa and findValue specified", () => {
+    CONFIG.attribute = "data-qa";
 
     const step = {
       action: "click" as Action,
@@ -46,8 +46,8 @@ describe("stepToSelector", () => {
     });
   });
 
-  it("returns HtmlSelector if findAttribute is not specified", () => {
-    CONFIG.findAttribute = null;
+  it("returns HtmlSelector if attribute is not specified", () => {
+    CONFIG.attribute = null;
 
     const step = {
       action: "click" as Action,
@@ -69,8 +69,8 @@ describe("stepToSelector", () => {
     });
   });
 
-  it("returns HtmlSelector if findAttribute not present", () => {
-    CONFIG.findAttribute = "aria-label";
+  it("returns HtmlSelector if attribute not present", () => {
+    CONFIG.attribute = "aria-label";
 
     const step = {
       action: "click" as Action,
