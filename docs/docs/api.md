@@ -13,8 +13,8 @@ The generated code imports the `qawolf` node package, which extends the [Puppete
 ##### Table of Contents
 
 - [Environment Variables](#environment-variables)
-  - [QAW_DEBUG](#qaw_debug)
   - [QAW_ATTRIBUTE](#qaw_attribute)
+  - [QAW_DEBUG](#qaw_debug)
   - [QAW_TIMEOUT_MS](#qaw_timeout_ms)
   - [QAW_HEADLESS](#qaw_headless)
   - [QAW_SLEEP_MS](#qaw_sleep_ms)
@@ -58,12 +58,6 @@ env:
   QAW_SLEEP_MS: 0
 ```
 
-### QAW_DEBUG
-
-- default: `false`
-
-Prevent the browser from closing to help with debugging an error. Open the [Chrome DevTools Console](https://developers.google.com/web/tools/chrome-devtools/console) to see logs from QA Wolf. Run `qaw_find()` in the console to re-run the last find.
-
 ### QAW_ATTRIBUTE
 
 - default: `null`
@@ -91,6 +85,12 @@ The generated code will be:
 ```js
 await browser.click({ css: "[data-qa='search']" });
 ```
+
+### QAW_DEBUG
+
+- default: `false`
+
+Prevent the browser from closing to help with debugging an error. Open the [Chrome DevTools Console](https://developers.google.com/web/tools/chrome-devtools/console) to see logs from QA Wolf. Run `qaw_find()` in the console to re-run the last find.
 
 ### QAW_TIMEOUT_MS
 
