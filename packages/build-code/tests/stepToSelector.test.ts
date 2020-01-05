@@ -1,6 +1,9 @@
 import { CONFIG } from "@qawolf/config";
 import { Action } from "@qawolf/types";
+import { htmlToDoc } from "@qawolf/web";
 import { stepToSelector } from "../src/stepToSelector";
+
+const doc = htmlToDoc;
 
 describe("stepToSelector", () => {
   it("returns CssSelector if findAttribute is id and findValue specified", () => {
@@ -10,16 +13,7 @@ describe("stepToSelector", () => {
       action: "click" as Action,
       html: {
         ancestors: [],
-        node: {
-          attrs: {
-            id: "my-input",
-            "data-qa": "test-input"
-          },
-          children: [],
-          name: "input",
-          type: "tag",
-          voidElement: false
-        }
+        node: doc("<input id='my-input' data-qa='test-input' />")
       },
       index: 0,
       page: 0
@@ -28,8 +22,7 @@ describe("stepToSelector", () => {
     const selector = stepToSelector(step);
 
     expect(selector).toEqual({
-      css: "[id='my-input']",
-      page: 0
+      css: "[id='my-input']"
     });
   });
 
@@ -40,16 +33,7 @@ describe("stepToSelector", () => {
       action: "click" as Action,
       html: {
         ancestors: [],
-        node: {
-          attrs: {
-            id: "my-input",
-            "data-qa": "test-input"
-          },
-          children: [],
-          name: "input",
-          type: "tag",
-          voidElement: false
-        }
+        node: doc("<input id='my-input' data-qa='test-input' />")
       },
       index: 0,
       page: 0
@@ -58,8 +42,7 @@ describe("stepToSelector", () => {
     const selector = stepToSelector(step);
 
     expect(selector).toEqual({
-      css: "[data-qa='test-input']",
-      page: 0
+      css: "[data-qa='test-input']"
     });
   });
 
@@ -70,16 +53,7 @@ describe("stepToSelector", () => {
       action: "click" as Action,
       html: {
         ancestors: [],
-        node: {
-          attrs: {
-            id: "my-input",
-            "data-qa": "test-input"
-          },
-          children: [],
-          name: "input",
-          type: "tag",
-          voidElement: false
-        }
+        node: doc("<input id='my-input' data-qa='test-input' />")
       },
       index: 0,
       page: 0
@@ -90,9 +64,8 @@ describe("stepToSelector", () => {
     expect(selector).toEqual({
       html: {
         ancestors: [],
-        node: '<input id="my-input" data-qa="test-input"></input>'
-      },
-      page: 0
+        node: '<input id="my-input" data-qa="test-input"/>'
+      }
     });
   });
 
@@ -103,16 +76,7 @@ describe("stepToSelector", () => {
       action: "click" as Action,
       html: {
         ancestors: [],
-        node: {
-          attrs: {
-            id: "my-input",
-            "data-qa": "test-input"
-          },
-          children: [],
-          name: "input",
-          type: "tag",
-          voidElement: false
-        }
+        node: doc("<input id='my-input' data-qa='test-input' />")
       },
       index: 0,
       page: 0
@@ -123,9 +87,8 @@ describe("stepToSelector", () => {
     expect(selector).toEqual({
       html: {
         ancestors: [],
-        node: '<input id="my-input" data-qa="test-input"></input>'
-      },
-      page: 0
+        node: '<input id="my-input" data-qa="test-input"/>'
+      }
     });
   });
 });

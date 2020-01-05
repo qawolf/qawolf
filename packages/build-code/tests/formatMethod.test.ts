@@ -1,25 +1,19 @@
 import { CONFIG } from "@qawolf/config";
 import { Action } from "@qawolf/types";
+import { htmlToDoc } from "@qawolf/web";
 import {
   formatMethod,
   formatOptions,
   formatSelector
 } from "../src/formatMethod";
 
+const doc = htmlToDoc;
+
 const step = {
   action: "click" as Action,
   html: {
     ancestors: [],
-    node: {
-      attrs: {
-        id: "my-input",
-        "data-qa": "test-input"
-      },
-      children: [],
-      name: "input",
-      type: "tag",
-      voidElement: false
-    }
+    node: doc("<input id='my-input' data-qa='test-input' />")
   },
   index: 0,
   page: 0

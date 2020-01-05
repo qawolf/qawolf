@@ -352,6 +352,7 @@ await browser.select(selectors[0], null);
 - `value` <[string]> type this value. To clear the element value pass `null`. You can also specify a sequence of keystrokes by prefixing the [key](https://github.com/puppeteer/puppeteer/blob/v2.0.0/lib/USKeyboardLayout.js) with the direction: ↓[keyboard.down], ↑[keyboard.up], or →[sendCharacter]. This is useful for testing hotkeys.
 - `options` <[FindElementOptions] & TypeOptions> find the element with these options.
   - `delayMs` <?[number]> time to wait between key presses in milliseconds. Defaults to 300ms for ↓[keyboard.down] and ↑[keyboard.up]. Defaults to 0ms for →[sendCharacter].
+  - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
   - `skipClear` <?[boolean]> do not clear the element. Defaults to `false`.
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
   - `timeoutMs` <?[number]> maximum time to wait for an element and page. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
@@ -384,6 +385,7 @@ await browser.type(
 
 ```js
 await browser.click(selectors[0], {
+  // click an element on the second page that opened
   page: 1,
   sleepMs: 5000,
   waitForRequests: false
@@ -415,7 +417,7 @@ await browser.goto("https://youtube.com", {
 const selectors = [
   // find the element with id=open-login-window
   { css: "#open-login-window" },
-  // find the element with text "email" on the second page that opened
+  // find the element with text "email"
   { text: "email" }
 ];
 

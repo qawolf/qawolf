@@ -178,7 +178,7 @@ When you run a test, QA Wolf goes through the following steps to locate each ele
 
 If you [replace the generated selector](edit_test_code#use-custom-selectors) with a custom selector, QA Wolf will wait until it finds an element matching that selector. If no match is found before the [timeout](api#qaw_find_timeout_ms), the test fails.
 
-If you [specify a target attribute](api#qaw_find_attribute) like `data-qa` when creating a test, the generated code will include that attribute whenever possible. For example, create a test:
+If you [specify an attribute](api#qaw_find_attribute) like `data-qa` when creating a test, the generated code will include that attribute whenever possible. For example, create a test:
 
 ```bash
 QAW_FIND_ATTRIBUTE=data-qa npx qawolf create www.myawesomesite.com myTest

@@ -1,5 +1,8 @@
 import { Step } from "@qawolf/types";
+import { htmlToDoc } from "@qawolf/web";
 import { formatStep } from "../src/formatStep";
+
+const doc = htmlToDoc;
 
 describe("formatStep", () => {
   describe("click", () => {
@@ -8,12 +11,7 @@ describe("formatStep", () => {
         action: "click",
         html: {
           ancestors: [],
-          node: {
-            attrs: { innertext: "contact" },
-            children: [],
-            name: "a",
-            type: "tag"
-          }
+          node: doc("<a innertext='contact'>contact</a>")
         },
         index: 0,
         page: 0
@@ -28,12 +26,7 @@ describe("formatStep", () => {
         action: "click",
         html: {
           ancestors: [],
-          node: {
-            attrs: { innertext: "someone's" },
-            children: [],
-            name: "input",
-            type: "tag"
-          }
+          node: doc(`<input innertext="someone's" />`)
         },
         index: 1,
         page: 0
@@ -50,11 +43,7 @@ describe("formatStep", () => {
         action: "scroll",
         html: {
           ancestors: [],
-          node: {
-            children: [],
-            name: "html",
-            type: "tag"
-          }
+          node: doc("<html />")
         },
         index: 0,
         page: 0,
@@ -72,14 +61,7 @@ describe("formatStep", () => {
         action: "select",
         html: {
           ancestors: [],
-          node: {
-            attrs: {
-              name: "select1"
-            },
-            children: [],
-            name: "select",
-            type: "tag"
-          }
+          node: doc("<select name='select1' />")
         },
         index: 0,
         page: 0,
@@ -97,11 +79,7 @@ describe("formatStep", () => {
         action: "type",
         html: {
           ancestors: [],
-          node: {
-            children: [],
-            name: "input",
-            type: "tag"
-          }
+          node: doc("<input />")
         },
         index: 0,
         page: 0,
@@ -117,16 +95,9 @@ describe("formatStep", () => {
         action: "type",
         html: {
           ancestors: [],
-          node: {
-            attrs: {
-              id: "input1",
-              name: "username",
-              placeholder: "Jane Doe"
-            },
-            children: [],
-            name: "input",
-            type: "tag"
-          }
+          node: doc(
+            `<input id='input1' name='username' placeholder='Jane Doe' />`
+          )
         },
         index: 0,
         page: 0,
@@ -142,15 +113,7 @@ describe("formatStep", () => {
         action: "type",
         html: {
           ancestors: [],
-          node: {
-            attrs: {
-              id: "input2",
-              placeholder: "secret"
-            },
-            children: [],
-            name: "input",
-            type: "tag"
-          }
+          node: doc(`<input id='input2' placeholder='secret' />`)
         },
         index: 10,
         page: 0,
