@@ -10,7 +10,7 @@ import {
   ScrollValue,
   TypeOptions
 } from "@qawolf/types";
-import { omit, sortBy } from "lodash";
+import { pick, sortBy } from "lodash";
 import {
   Browser as PuppeteerBrowser,
   devices,
@@ -49,11 +49,13 @@ export class QAWolfBrowser {
   public constructor(options: ConstructorOptions) {
     logger.verbose(
       `QAWolfBrowser: create ${JSON.stringify(
-        omit(options, "display", "puppeteerBrowser")
+        pick(options, "debug", "device", "navigationTimeoutMs", "recordEvents")
       )}`
     );
     const { ...clonedOptions } = options;
     this._options = clonedOptions;
+
+    this._capture = options.capture;
     this._createdAt = Date.now();
     this._browser = decorateBrowser(options.puppeteerBrowser, this);
   }

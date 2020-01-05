@@ -32,7 +32,6 @@
     "xvfb": "^0.3.0"
   },
   "devDependencies": {
-    "@types/ci-info": "^2.0.0",
     "jest": "^24.9.0"
   }
 }

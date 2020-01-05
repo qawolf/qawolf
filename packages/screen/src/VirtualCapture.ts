@@ -1,4 +1,5 @@
-import { isCI } from "ci-info";
+import "./CiInfoTypes";
+import { isCI } from "@qawolf/ci-info";
 import { platform } from "os";
 import { join } from "path";
 import { createGif } from "./createGif";

@@ -2,8 +2,8 @@ import { logger } from "@qawolf/logger";
 import { sleep } from "@qawolf/web";
 import { spawn, ChildProcessWithoutNullStreams } from "child_process";
 import { ensureDir } from "fs-extra";
-import { omit } from "lodash";
-import { resolve } from "path";
+import { pick } from "lodash";
+import { dirname } from "path";
 import { Display } from "./Display";
 import { getPath } from "./ffmpeg";
 import { Offset, Size } from "./types";
@@ -84,11 +84,12 @@ export class VideoCapture {
     }
 
     logger.verbose(
-      `VideoCapture: start ${JSON.stringify(omit(options, "display"))}`
+      `VideoCapture: start ${JSON.stringify(
+        pick(options, "offset", "savePath", "size")
+      )}`
     );
 
-    const path = resolve(options.savePath);
-    await ensureDir(path);
+    await ensureDir(dirname(options.savePath));
 
     const capture = new VideoCapture(options, ffmpegPath);
     return capture;

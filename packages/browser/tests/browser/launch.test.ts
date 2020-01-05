@@ -47,7 +47,14 @@ describe("launch", () => {
     await browser.close();
   });
 
-  it("records dom replayer and a video on linux CI", async () => {
+  it("records dom replay", async () => {
+    const domFiles = await readdir(CONFIG.artifactPath!);
+    expect(
+      domFiles.filter((f: string) => f.includes(".html")).length
+    ).toBeGreaterThan(0);
+  });
+
+  it("records a video on linux CI", async () => {
     const browser = await launch({ device: "iPhone 7", url: CONFIG.testUrl });
 
     const capture = browser.qawolf._capture;
@@ -57,13 +64,11 @@ describe("launch", () => {
       return;
     }
 
-    expect(capture).toBeTruthy();
+    if (!capture) throw new Error("VirtualCapture should be created on linux");
     await sleep(500);
     await browser.close();
+
     expect(await pathExists(capture.videoPath)).toBeTruthy();
     expect(await pathExists(capture.gifPath)).toBeTruthy();
-
-    const domFiles = await readdir(CONFIG.artifactPath!);
-    expect(domFiles.filter((f: string) => f.includes(".html"))).toHaveLength(1);
   });
 });
