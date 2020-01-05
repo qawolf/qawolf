@@ -209,8 +209,7 @@ describe("matchDocSelector", () => {
       expect(
         matchDocSelector(
           selector('<img data-qa="apple">'),
-          selector('<button data-qa="apple"></button>'),
-          "data-qa"
+          selector('<button data-qa="apple"></button>')
         ).strongKeys
       ).toEqual(["data-qa"]);
     });
