@@ -53,7 +53,7 @@ export class VideoCapture {
   /**
    * Capture the x11 display with ffmpeg in a child process.
    */
-  private _closed: boolean = false;
+  private _stopped: boolean = false;
 
   private _ffmpeg: ChildProcessWithoutNullStreams;
 
@@ -95,13 +95,17 @@ export class VideoCapture {
     return capture;
   }
 
+  public get stopped() {
+    return this._stopped;
+  }
+
   public async stop(): Promise<void> {
-    if (this._closed) {
+    if (this._stopped) {
       logger.error("VideoCapture: already stopped");
       return;
     }
 
-    this._closed = true;
+    this._stopped = true;
     logger.verbose("VideoCapture: stopping");
 
     return new Promise(async resolve => {

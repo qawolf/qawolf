@@ -54,19 +54,23 @@ export class VirtualCapture {
     return isCI && platform() === "linux";
   }
 
-  get display() {
+  public get display() {
     return this._options.display;
   }
 
-  get gifPath() {
+  public get gifPath() {
     return this._gifPath;
   }
 
-  get size() {
+  public get size() {
     return this._options.size;
   }
 
-  get videoPath() {
+  public get stopped() {
+    return this._videoCapture && this._videoCapture.stopped;
+  }
+
+  public get videoPath() {
     return this._videoPath;
   }
 

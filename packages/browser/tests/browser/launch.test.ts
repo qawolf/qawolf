@@ -1,7 +1,6 @@
 import { CONFIG } from "@qawolf/config";
-import { QAWolfWeb, sleep } from "@qawolf/web";
-import { pathExists, readdir } from "fs-extra";
-import { platform } from "os";
+import { QAWolfWeb } from "@qawolf/web";
+import { readdir } from "fs-extra";
 import { getDevice } from "../../src/browser/device";
 import { launch } from "../../src/browser/launch";
 
@@ -52,23 +51,5 @@ describe("launch", () => {
     expect(
       domFiles.filter((f: string) => f.includes(".html")).length
     ).toBeGreaterThan(0);
-  });
-
-  it("records a video on linux CI", async () => {
-    const browser = await launch({ device: "iPhone 7", url: CONFIG.testUrl });
-
-    const capture = browser.qawolf._capture;
-    if (platform() !== "linux") {
-      expect(capture).toEqual(null);
-      await browser.close();
-      return;
-    }
-
-    if (!capture) throw new Error("VirtualCapture should be created on linux");
-    await sleep(500);
-    await browser.close();
-
-    expect(await pathExists(capture.videoPath)).toBeTruthy();
-    expect(await pathExists(capture.gifPath)).toBeTruthy();
   });
 });
