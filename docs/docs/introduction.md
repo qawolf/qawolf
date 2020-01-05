@@ -24,6 +24,6 @@ These tutorials provide additional directions for you to explore after you've ma
 4. [📜 Review test code](review_test_code): Review and understand your browser test code.
 5. [✏️ Edit test code](edit_test_code): Edit your test code - add assertions, use custom selectors, and more!
 6. [☁️ Set up CI](set_up_ci): Run your tests in CI, on push or on a schedule.
-7. [🔍 Use a test attribute](use_a_test_attribute): Create your tests with a specified test attribute like `data-qa`.
+7. [🔍 Use a test attribute](use_a_test_attribute): Create your tests with a test attribute like `data-qa`.
 8. [📱 Emulate a device](emulate_a_device): Use the device emulator to test different viewports and user agents.
 9. [⌨️ Use TypeScript](use_typescript): Convert your tests to TypeScript.
