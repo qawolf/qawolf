@@ -57,14 +57,14 @@ describe("getClickableAncestor", () => {
   });
 });
 
-describe("getDataValue", () => {
+describe("getAttributeValue", () => {
   it("returns null if data attribute not specified in config", async () => {
     const findAttribute = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
       username.setAttribute("data-qa", "user");
 
-      const result = qawolf.element.getDataValue(username, null);
+      const result = qawolf.element.getAttributeValue(username, null);
       username.removeAttribute("data-qa");
 
       return result;
@@ -79,7 +79,7 @@ describe("getDataValue", () => {
       const username = document.getElementById("username")!;
       username.setAttribute("data-other", "user");
 
-      const result = qawolf.element.getDataValue(username, "data-qa");
+      const result = qawolf.element.getAttributeValue(username, "data-qa");
       username.removeAttribute("data-other");
 
       return result;
@@ -94,7 +94,7 @@ describe("getDataValue", () => {
       const username = document.getElementById("username")!;
       username.setAttribute("data-qa", "user");
 
-      const result = qawolf.element.getDataValue(username, "data-qa");
+      const result = qawolf.element.getAttributeValue(username, "data-qa");
       username.removeAttribute("data-qa");
 
       return result;
@@ -108,7 +108,7 @@ describe("getDataValue", () => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
 
-      const result = qawolf.element.getFindValue(username, "id");
+      const result = qawolf.element.getAttributeValue(username, "id");
 
       return result;
     });

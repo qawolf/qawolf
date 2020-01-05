@@ -15,7 +15,7 @@ export const getClickableAncestor = (
 
   while (ancestor.parentElement) {
     // choose the data value element as the clickable ancestor
-    const findValue = getFindValue(ancestor, findAttribute);
+    const findValue = getAttributeValue(ancestor, findAttribute);
     if (findValue) {
       console.log(
         `found clickable ancestor: ${findAttribute}="${findValue}"`,
@@ -50,7 +50,7 @@ export const getClickableAncestor = (
   return ancestor;
 };
 
-export const getFindValue = (
+export const getAttributeValue = (
   element: HTMLElement,
   findAttribute: string | null
 ): string | null => {
