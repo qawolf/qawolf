@@ -205,15 +205,6 @@ describe("matchDocSelector", () => {
       ).toEqual(["alt"]);
     });
 
-    it("matches data attribute", () => {
-      expect(
-        matchDocSelector(
-          selector('<img data-qa="apple">'),
-          selector('<button data-qa="apple"></button>')
-        ).strongKeys
-      ).toEqual(["data-qa"]);
-    });
-
     it("matches id", () => {
       expect(
         matchDocSelector(
