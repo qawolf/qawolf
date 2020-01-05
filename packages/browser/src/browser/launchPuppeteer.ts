@@ -3,16 +3,18 @@ import { Display } from "@qawolf/screen";
 import { platform } from "os";
 import { launch, LaunchOptions, Browser } from "puppeteer";
 import { Device } from "puppeteer/DeviceDescriptors";
+import { logger } from "@qawolf/logger";
+import { getDevice } from "./device";
 
 interface LaunchPuppeteerOptions extends LaunchOptions {
-  device: Device;
+  device?: Device;
   display?: Display;
 }
 
 export const launchPuppeteer = (
   options: LaunchPuppeteerOptions
 ): Promise<Browser> => {
-  const device = options.device;
+  const device = options.device || getDevice();
 
   const launchOptions: LaunchOptions = {
     args: [
@@ -40,5 +42,6 @@ export const launchPuppeteer = (
     };
   }
 
+  logger.verbose(`launch puppeteer: ${JSON.stringify(launchOptions)}`);
   return launch(launchOptions);
 };
