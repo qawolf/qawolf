@@ -5,7 +5,7 @@ title: ⌨️ Use TypeScript
 
 Like [TypeScript](https://www.typescriptlang.org/)? So do we! [`qawolf`](api) is built with Typescript and is distributed with types.
 
-In this tutorial we will change our code to TypeScript. We assume you have [created a test](create_a_test), and have a [basic understanding of the test code](review_test_code).
+In this tutorial, we will change our code to TypeScript. We assume you have [created a test](create_a_test), and have a [basic understanding of the test code](review_test_code).
 
 ## Use TypeScript
 
