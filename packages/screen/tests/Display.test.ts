@@ -1,3 +1,4 @@
+import { sleep } from "@qawolf/web";
 import { platform } from "os";
 import { Display } from "../src/Display";
 
@@ -8,5 +9,7 @@ it("creates a Display on linux", async () => {
   if (!display) throw new Error("Display should be created on linux");
 
   expect(display!.value).toContain(":");
+
+  await sleep(500);
   await display!.stop();
 });

@@ -52,8 +52,12 @@ export class Display {
 
     return new Promise((resolve, reject) => {
       this._xvfb.stop(function(err: any) {
-        if (err) reject(err);
-        resolve();
+        if (err) {
+          logger.error(`Display: could not stop ${JSON.stringify(err)}`);
+          reject(null);
+        } else {
+          resolve();
+        }
       });
     });
   }
