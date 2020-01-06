@@ -4,16 +4,17 @@ import { logger } from "@qawolf/logger";
 import program from "commander";
 import { yellow } from "kleur";
 import { camelCase } from "lodash";
+import updateNotifier from "update-notifier";
 import { saveCiTemplate } from "./ci";
 import { create } from "./create";
 import { howl } from "./howl";
 import { runJest } from "./runJest";
 import { parseUrl } from "./utils";
-const { version } = require("../package");
+const pkg = require("../package");
 
-program.version(version);
+updateNotifier({ pkg }).notify();
 
-program.usage("<command> [options]");
+program.usage("<command> [options]").version(pkg.version);
 
 program
   .command("create <url> [name]")
