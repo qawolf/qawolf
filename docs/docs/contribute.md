@@ -66,8 +66,6 @@ npm run watch
 
 [@qawolf/build-code](https://github.com/qawolf/qawolf/tree/master/packages/build-code) builds a test or script from a workflow.
 
-[@qawolf/screen](https://github.com/qawolf/qawolf/tree/master/packages/screen) creates the video and gif artifacts with ffmpeg.
+[@qawolf/screen](https://github.com/qawolf/qawolf/tree/master/packages/screen) creates a display with xvfb and the video and gif artifacts with ffmpeg.
 
 [@qawolf/cli](https://github.com/qawolf/qawolf/tree/master/packages/cli) ties everything together into commands.
-
-[qawolf/qawolf docker](https://github.com/qawolf/qawolf/blob/master/Dockerfile) sets up Puppeteer and ffmpeg as dependencies to run the code and collect artifacts (video, GIF, etc).
