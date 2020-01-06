@@ -9,9 +9,9 @@ import { create } from "./create";
 import { howl } from "./howl";
 import { test } from "./test";
 import { parseUrl } from "./utils";
-const { version } = require("../package");
+const pkg = require("../package");
 
-program.version(version);
+program.version(pkg.version);
 
 program.usage("<command> [options]");
 
