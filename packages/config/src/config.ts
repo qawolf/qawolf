@@ -31,7 +31,6 @@ export const CONFIG = {
   debug: parseBool(process.env.QAW_DEBUG),
   headless: parseBool(process.env.QAW_HEADLESS),
   logLevel: process.env.QAW_LOG_LEVEL,
-  serial: parseBool(process.env.QAW_SERIAL),
   // slow down each step by 1s to make it watchable
   // this also gives sites time to setup their handlers
   sleepMs: parseNumber(process.env.QAW_SLEEP_MS, 1000),
