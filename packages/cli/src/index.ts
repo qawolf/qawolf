@@ -4,12 +4,15 @@ import { logger } from "@qawolf/logger";
 import program from "commander";
 import { yellow } from "kleur";
 import { camelCase } from "lodash";
+import * as updateNotifier from 'update-notifier';
 import { saveCiTemplate } from "./ci";
 import { create } from "./create";
 import { howl } from "./howl";
 import { test } from "./test";
 import { parseUrl } from "./utils";
 const pkg = require("../package");
+
+updateNotifier({pkg}).notify();
 
 program
   .usage("<command> [options]")
