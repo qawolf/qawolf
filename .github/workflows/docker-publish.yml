@@ -1,0 +1,21 @@
+name: publish to docker hub
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - "*"
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 25
+      - name: build and publish to docker hub
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: qawolf/qawolf
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          tag_names: true
