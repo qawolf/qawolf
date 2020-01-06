@@ -18,8 +18,8 @@ import {
   ElementHandle
 } from "puppeteer";
 import { Browser } from "./Browser";
-import { createDomReplayer } from "../page/createDomReplayer";
 import { decorateBrowser } from "./decorateBrowser";
+import { createDomReplayer } from "../page/createDomReplayer";
 import { findPage } from "../page/findPage";
 import { Page } from "../page/Page";
 
