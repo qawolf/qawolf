@@ -45,7 +45,7 @@ export const create = async (options: RecordOptions): Promise<void> => {
 
   const tasks = new Listr([
     {
-      title: `Recording browser actions for "${codeFileName}"`,
+      title: `Capturing browser actions for "${codeFileName}"`,
       task: () =>
         input("Save [Y/n]", {
           done: (value: string) => {

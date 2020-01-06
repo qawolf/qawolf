@@ -38,7 +38,15 @@ npx qawolf create --script google.com
 
 - `name` (optional) If `name` is not provided, QA Wolf will run all of your tests. If `name` is provided, QA Wolf will run that specific test.
 
-Run a specific test or all tests with Jest. This is an alias for `npx jest` and all additional arguments will be passed through to [Jest](https://jestjs.io/docs/en/cli).
+Run a specific test or all tests with Jest. This calls `npx jest` and all arguments are passed through to the [Jest CLI](https://jestjs.io/docs/en/cli).
+
+```bash
+// use runInBand from the Jest CLI to run tests serially
+npx qawolf test --runInBand
+
+// run a specific test
+npx qawolf test myTest
+```
 
 ### npx qawolf azure
 
