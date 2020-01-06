@@ -1,9 +1,0 @@
-name: "qawolf local docker"
-description: "run the local Dockerfile"
-runs:
-  using: "docker"
-  image: "../../../Dockerfile"
-  env:
-    QAW_DOM_PATH: /github/workspace/artifacts
-    QAW_LOG_PATH: /github/workspace/artifacts
-    QAW_VIDEO_PATH: /github/workspace/artifacts

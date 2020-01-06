@@ -5,9 +5,7 @@ jobs:
       - image: qawolf/qawolf:v{{{version}}}
         environment:
           # output artifacts
-          QAW_DOM_PATH: /tmp/artifacts
-          QAW_LOG_PATH: /tmp/artifacts
-          QAW_VIDEO_PATH: /tmp/artifacts
+          QAW_ARTIFACT_PATH: /tmp/artifacts
           # # configure tests with environment variables
           # # https://docs.qawolf.com/docs/configuration
           # QAW_SLEEP_MS: 0

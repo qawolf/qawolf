@@ -4,7 +4,7 @@
 
 <h3 align="center">Create browser tests 10x faster</h3>
 
-<p align="center">QA Wolf is a free and open source library for creating <a href="https://github.com/puppeteer/puppeteer">Puppeteer</a>/<a href="https://jestjs.io">Jest</a> browser tests and running them in CI</p>
+<p align="center">QA Wolf is a free and open source library to create <a href="https://github.com/puppeteer/puppeteer">Puppeteer</a>/<a href="https://jestjs.io">Jest</a> browser tests and run them in CI</p>
 
 <p align="center">
   <a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version" /></a>
@@ -30,7 +30,7 @@
 </li>
 <li><b>Test complex scenarios.</b> Test your application like a user. Use third party sites, multiple windows, and hot keys.
 </li>
-<li><b>Easy CI setup.</b> Run your tests in CI with one command, on push or on a schedule.
+<li><b>Easy CI setup.</b> Run your tests in CI in parallel with one command, on push or on a schedule.
 </li>
 <li><b>Easy debugging.</b> Each test run in CI includes a video, GIF, interactive DOM recording, and detailed logs.
 </li>
@@ -85,7 +85,7 @@ npx qawolf test [name]
 
 [Documentation](https://docs.qawolf.com/docs/set_up_ci)
 
-Watch the [video, gif, and dom artifacts](https://docs.qawolf.com/docs/set_up_ci#%EF%B8%8F-debug) from your CI runs.
+Set up CI to run and record your tests in parallel. Watch the [video, gif, and dom artifacts](https://docs.qawolf.com/docs/set_up_ci#%EF%B8%8F-debug) from your CI runs.
 
 [<img align="center" height="20px" src="https://cdn.iconscout.com/icon/free/png-256/azure-190760.png" /> Azure](https://docs.qawolf.com/docs/set_up_ci#azure)
 
@@ -113,7 +113,7 @@ npx qawolf gitlab
 
 ![Set up CI](https://storage.googleapis.com/docs.qawolf.com/home/github.gif)
 
-Just [ping us](https://gitter.im/qawolf/community) if you want to run [QA Wolf Docker](https://hub.docker.com/r/qawolf/qawolf) somewhere else.
+[Ping us](https://gitter.im/qawolf/community) if you want to run QA Wolf somewhere else.
 
 <br/>
 

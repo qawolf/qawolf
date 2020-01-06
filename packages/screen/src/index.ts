@@ -1,1 +1,2 @@
-export * from "./ScreenCapture";
+export { Display } from "./Display";
+export { VirtualCapture } from "./VirtualCapture";

@@ -7,7 +7,7 @@ import { camelCase } from "lodash";
 import { saveCiTemplate } from "./ci";
 import { create } from "./create";
 import { howl } from "./howl";
-import { test } from "./test";
+import { runJest } from "./runJest";
 import { parseUrl } from "./utils";
 const { version } = require("../package");
 
@@ -36,11 +36,10 @@ program
   });
 
 program
-  .command("test [name]")
-  .description("run a test")
-  .action(async optionalName => {
-    await test(optionalName);
-  });
+  .command("test")
+  .description("run a test with Jest")
+  .allowUnknownOption(true)
+  .action(() => runJest(process.argv.slice(3)));
 
 program
   .command("azure")

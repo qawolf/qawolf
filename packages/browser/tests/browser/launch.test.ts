@@ -1,5 +1,6 @@
 import { CONFIG } from "@qawolf/config";
 import { QAWolfWeb } from "@qawolf/web";
+import { readdir } from "fs-extra";
 import { getDevice } from "../../src/browser/device";
 import { launch } from "../../src/browser/launch";
 
@@ -43,5 +44,12 @@ describe("launch", () => {
     );
 
     await browser.close();
+  });
+
+  it("records dom replay", async () => {
+    const domFiles = await readdir(CONFIG.artifactPath!);
+    expect(
+      domFiles.filter((f: string) => f.includes(".html")).length
+    ).toBeGreaterThan(0);
   });
 });

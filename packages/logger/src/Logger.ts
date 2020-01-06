@@ -1,30 +1,18 @@
 import { CONFIG } from "@qawolf/config";
-import { basename } from "path";
+import { ensureDirSync } from "fs-extra";
 import winston from "winston";
 
 export class Logger {
   private _logger: winston.Logger;
-  private _path: string = "";
 
   constructor() {
-    // name the logger based on the main filename
-    this.setName(basename(require.main!.filename));
-  }
-
-  setName(name?: string | null) {
-    if (CONFIG.logPath) {
-      this._path = `${CONFIG.logPath}${name ? `/${name}` : ""}`;
-    }
-
     this._logger = winston.createLogger({
       transports: [
-        this._path ? createFileTransport(this._path) : createConsoleTransport()
+        CONFIG.artifactPath
+          ? createFileTransport(CONFIG.artifactPath)
+          : createConsoleTransport()
       ]
     });
-  }
-
-  get path() {
-    return this._path;
   }
 
   debug(message: string) {
@@ -59,6 +47,8 @@ const createConsoleTransport = () =>
   });
 
 const createFileTransport = (path: string) => {
+  ensureDirSync(path);
+
   return new winston.transports.File({
     filename: `${path}/${Date.now()}.log`,
     format: winston.format.combine(winston.format.timestamp(), formatPrint),

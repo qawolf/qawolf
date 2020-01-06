@@ -1,6 +1,6 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { ScreenCapture } from "@qawolf/screen";
+import { VirtualCapture } from "@qawolf/screen";
 import {
   Callback,
   Event,
@@ -10,41 +10,58 @@ import {
   ScrollValue,
   TypeOptions
 } from "@qawolf/types";
-import { sortBy } from "lodash";
-import { basename } from "path";
-import { devices, DirectNavigationOptions, ElementHandle } from "puppeteer";
+import { pick, sortBy } from "lodash";
+import {
+  Browser as PuppeteerBrowser,
+  devices,
+  DirectNavigationOptions,
+  ElementHandle
+} from "puppeteer";
 import { Browser } from "./Browser";
+import { decorateBrowser } from "./decorateBrowser";
 import { createDomReplayer } from "../page/createDomReplayer";
 import { findPage } from "../page/findPage";
 import { Page } from "../page/Page";
 
-type ConstructorOptions = {
-  browser: Browser;
+export interface ConstructorOptions {
+  capture: VirtualCapture | null;
+  debug?: boolean;
   device: devices.Device;
-  domPath?: string;
+  navigationTimeoutMs?: number;
+  puppeteerBrowser: PuppeteerBrowser;
   recordEvents?: boolean;
-};
+}
 
 export class QAWolfBrowser {
+  private _browser: Browser;
   private _createdAt: number;
   private _options: ConstructorOptions;
   // stored in order of open
   private _pages: Page[] = [];
   private _onClose: Callback[] = [];
 
+  // public for test
+  public _capture: VirtualCapture | null = null;
+
   // used internally by findPage
   public _currentPageIndex: number = 0;
-  // used internally by launch
-  public _screenCapture: ScreenCapture | null = null;
 
   public constructor(options: ConstructorOptions) {
+    logger.verbose(
+      `QAWolfBrowser: create ${JSON.stringify(
+        pick(options, "debug", "device", "navigationTimeoutMs", "recordEvents")
+      )}`
+    );
     const { ...clonedOptions } = options;
     this._options = clonedOptions;
+
+    this._capture = options.capture;
     this._createdAt = Date.now();
+    this._browser = decorateBrowser(options.puppeteerBrowser, this);
   }
 
   public get browser(): Browser {
-    return this._options.browser;
+    return this._browser;
   }
 
   public async click(
@@ -56,24 +73,24 @@ export class QAWolfBrowser {
   }
 
   public async close() {
-    if (this._screenCapture) {
-      await this._screenCapture.stop();
+    if (this._capture) {
+      await this._capture.stop();
     }
 
-    if (CONFIG.debug) {
+    if (this._options.debug) {
       logger.verbose("Browser: skipping close in debug mode");
       return;
     }
 
     logger.verbose("Browser: close");
 
-    const domPath = this.domPath;
-    if (domPath) {
+    const artifactPath = CONFIG.artifactPath;
+    if (artifactPath) {
       await Promise.all(
         this.pages.map((page, index) =>
           createDomReplayer(
             page,
-            `${domPath}/page_${index}__${this._createdAt}.html`
+            `${artifactPath}/page_${index}__${this._createdAt}.html`
           )
         )
       );
@@ -89,15 +106,6 @@ export class QAWolfBrowser {
 
   public get device() {
     return this._options.device;
-  }
-
-  public get domPath() {
-    const path = this._options.domPath || CONFIG.domPath;
-    if (!path) return;
-
-    // name the dom path based on the main script filename
-    // ex. /login.test.js/page_0.html
-    return `${path}/${basename(require.main!.filename)}`;
   }
 
   public get events() {
@@ -135,7 +143,7 @@ export class QAWolfBrowser {
     const page = await findPage(this.browser, options);
 
     await page.goto(url, {
-      timeout: CONFIG.navigationTimeoutMs,
+      timeout: this._options.navigationTimeoutMs,
       ...options
     });
 

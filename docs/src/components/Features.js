@@ -39,7 +39,7 @@ function Features() {
             <Link href={useBaseUrl("docs/set_up_ci")}>
               Run your tests in CI
             </Link>{" "}
-            with one command, on push or on a schedule.{" "}
+            in parallel with one command, on push or on a schedule.{" "}
             <Link href={useBaseUrl("docs/set_up_ci#️-debug")}>
               Debug easily
             </Link>{" "}

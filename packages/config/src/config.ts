@@ -1,4 +1,5 @@
 import { config as configDotenv } from "dotenv";
+import path from "path";
 
 const dotEnvPath = process.env.QAW_DOTENV_PATH;
 configDotenv(dotEnvPath ? { path: dotEnvPath } : {});
@@ -15,26 +16,25 @@ const parseNumber = (value: string | undefined, defaultValue: number = 0) => {
   return parseFloat(value);
 };
 
+let artifactPath = process.env.QAW_ARTIFACT_PATH;
+if (artifactPath && require.main) {
+  // store artifacts under the name of the main module, if there is one
+  // ex. /artifacts/search.test.js
+  artifactPath = path.join(artifactPath, path.basename(require.main.filename));
+}
+
 export const CONFIG = {
+  artifactPath,
   attribute: process.env.QAW_ATTRIBUTE || null,
-  chromeExecutablePath: process.env.QAW_CHROME_EXECUTABLE_PATH,
   chromeOffsetX: parseNumber(process.env.QAW_CHROME_OFFSET_X, 0),
   chromeOffsetY: parseNumber(process.env.QAW_CHROME_OFFSET_Y, 125),
   debug: parseBool(process.env.QAW_DEBUG),
-  display: process.env.DISPLAY,
-  domPath: process.env.QAW_DOM_PATH,
   headless: parseBool(process.env.QAW_HEADLESS),
   logLevel: process.env.QAW_LOG_LEVEL,
-  logPath: process.env.QAW_LOG_PATH,
-  navigationTimeoutMs: parseNumber(
-    process.env.QAW_NAVIGATION_TIMEOUT_MS,
-    60000
-  ),
-  serial: parseBool(process.env.QAW_SERIAL),
   // slow down each step by 1s to make it watchable
   // this also gives sites time to setup their handlers
   sleepMs: parseNumber(process.env.QAW_SLEEP_MS, 1000),
+  // for internal use
   testUrl,
-  timeoutMs: parseNumber(process.env.QAW_TIMEOUT_MS, 30000),
-  videoPath: process.env.QAW_VIDEO_PATH
+  timeoutMs: parseNumber(process.env.QAW_TIMEOUT_MS, 30000)
 };

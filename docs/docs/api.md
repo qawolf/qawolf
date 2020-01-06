@@ -96,7 +96,7 @@ Prevent the browser from closing to help with debugging an error. Open the [Chro
 
 - default: `false`
 
-Run the browser in [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome).
+Run the browser in [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome). This will disable video recording in CI.
 
 ### QAW_SLEEP_MS
 

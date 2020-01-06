@@ -1,3 +1,4 @@
+import { CONFIG } from "@qawolf/config";
 import { Browser } from "./Browser";
 import { createPage } from "../page/createPage";
 
@@ -14,7 +15,7 @@ export const managePages = async (browser: Browser) => {
 
   const options = {
     device: qawolf.device,
-    recordDom: !!qawolf.domPath,
+    recordDom: !!CONFIG.artifactPath,
     recordEvents: qawolf.recordEvents
   };
 

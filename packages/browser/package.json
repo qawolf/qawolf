@@ -11,8 +11,7 @@
     "static"
   ],
   "scripts": {
-    "test": "jest --testPathIgnorePatterns=/docker/",
-    "test:docker": "jest --testRegex=\"(/tests/docker/.*.test.ts)$\""
+    "test": "jest"
   },
   "repository": {
     "type": "git",

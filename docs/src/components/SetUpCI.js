@@ -67,8 +67,8 @@ function SetUpCI() {
             Create a config file to{" "}
             <Link href={useBaseUrl("docs/set_up_ci")}>
               run your tests in CI
-            </Link>
-            :
+            </Link>{" "}
+            in parallel:
           </p>
           <CodeBlock value={`npx qawolf ${CI_PROVIDERS[tabIndex].command}`} />
           <p

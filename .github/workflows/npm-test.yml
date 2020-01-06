@@ -11,31 +11,42 @@ on:
     branches: "*"
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
+    env:
+      QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
+      QAW_LOG_LEVEL: debug
+      QAW_SLEEP_MS: 0
+      QAW_TEST_URL: http://localhost:5000/
     steps:
       - uses: actions/checkout@v1
         with:
           fetch-depth: 25
-      # build first to partition the action logs
-      - name: Build
-        uses: ./.github/actions/local-docker
+
+      - uses: actions/cache@v1
         with:
-          args: 'echo "Dockerfile built"'
-      - name: Test
-        uses: ./.github/actions/local-docker
-        with:
-          args: "qawolf-npm-test"
-        env:
-          QAW_NAVIGATION_TIMEOUT_MS: 20000
-          QAW_SLEEP_MS: 0
-          QAW_TEST_URL: http://theinternet:5000/
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Setup node
+        uses: actions/setup-node@v1
+
+      - run: npm run bootstrap
+
+      - run: npm test
+
       - name: Upload Artifacts
         if: always()
         uses: actions/upload-artifact@master
         with:
           name: qawolf
-          path: "./artifacts"
+          path: ${{ github.workspace }}/artifacts
+
     services:
       theinternet:
         image: gprestes/the-internet@sha256:f741ba048b7232ef90b0f7885de7f6ac42a52a17e73dd82afc484da140398796
+        ports:
+          - 5000:5000
+
     timeout-minutes: 20

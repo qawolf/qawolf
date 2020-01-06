@@ -36,9 +36,9 @@ npx qawolf create --script google.com
 
 ### npx qawolf test \[name]
 
-- `name` (optional) If `name` is not provided, QA Wolf will run all of your tests. If `name` is provided, QA Wolf will run that specific test. If you provide an invalid `name`, you will be prompted in the CLI to choose a test from a list of all tests.
+- `name` (optional) If `name` is not provided, QA Wolf will run all of your tests. If `name` is provided, QA Wolf will run that specific test.
 
-Run a specific test or all tests.
+Run a specific test or all tests with Jest. This is an alias for `npx jest` and all additional arguments will be passed through to [Jest](https://jestjs.io/docs/en/cli).
 
 ### npx qawolf azure
 

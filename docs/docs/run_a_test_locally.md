@@ -13,8 +13,6 @@ Let's run our test to confirm it works locally. In the command line, run the fol
 npx qawolf test myFirstTest
 ```
 
-If you provide an incorrect name, you will be asked to choose from a list of your tests.
-
 A Chromium browser will open and the test will run. See the GIF below for an example.
 
 ![Run a test locally](https://storage.googleapis.com/docs.qawolf.com/tutorials/run_test.gif)

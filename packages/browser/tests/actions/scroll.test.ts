@@ -17,11 +17,7 @@ describe("Browser.scroll", () => {
     const initialYPosition = await page.evaluate(() => window.pageYOffset);
     expect(initialYPosition).toBe(0);
 
-    await page.qawolf.scroll(
-      { css: "html" },
-      { x: 0, y: 2000 },
-      { timeoutMs: 2000 }
-    );
+    await page.qawolf.scroll({ css: "html" }, { x: 0, y: 2000 });
 
     const nextYPosition = await page.evaluate(() => window.pageYOffset);
     expect(nextYPosition).toBe(2000);

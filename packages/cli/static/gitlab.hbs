@@ -3,9 +3,7 @@ qawolf:
   script: qawolf test
   variables:
     # output artifacts
-    QAW_DOM_PATH: $CI_PROJECT_DIR/artifacts
-    QAW_LOG_PATH: $CI_PROJECT_DIR/artifacts
-    QAW_VIDEO_PATH: $CI_PROJECT_DIR/artifacts
+    QAW_ARTIFACT_PATH: /tmp/artifacts
     ## configure tests with environment variables
     ## https://docs.qawolf.com/docs/configuration
     # QAW_SLEEP_MS: 0

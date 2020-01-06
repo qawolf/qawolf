@@ -10,7 +10,8 @@
     "src"
   ],
   "scripts": {
-    "test:docker": "jest --testRegex=\"(/tests/docker/.*.test.ts)$\""
+    "install": "node ./src/install.js",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -23,10 +24,12 @@
     "access": "public"
   },
   "dependencies": {
+    "@qawolf/ci-info": "^2.1.0",
     "@qawolf/config": "^0.7.5",
     "@qawolf/logger": "^0.7.5",
     "@qawolf/web": "^0.7.11",
-    "fs-extra": "^8.1.0"
+    "fs-extra": "^8.1.0",
+    "xvfb": "^0.3.0"
   },
   "devDependencies": {
     "jest": "^24.9.0"
