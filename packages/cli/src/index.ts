@@ -4,7 +4,7 @@ import { logger } from "@qawolf/logger";
 import program from "commander";
 import { yellow } from "kleur";
 import { camelCase } from "lodash";
-import * as updateNotifier from "update-notifier";
+import updateNotifier from "update-notifier";
 import { saveCiTemplate } from "./ci";
 import { create } from "./create";
 import { howl } from "./howl";
