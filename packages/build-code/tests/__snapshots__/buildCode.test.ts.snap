@@ -6,12 +6,19 @@ const selectors = require(\\"../selectors/scrollLogin\\");
 
 const scrollLogin = async () => {
   const browser = await launch({ url: \\"localhost:5000\\" });
+  // scroll
   await browser.scroll(selectors[0], { x: 0, y: 378 });
+  // click \\"Form Authentication\\" link
   await browser.click(selectors[1]);
+  // type into \\"Username\\" input
   await browser.type(selectors[2], \\"tomsmith\\");
+  // Tab
   await browser.type(selectors[3], \\"↓Tab↑Tab\\");
+  // type into \\"Password\\" input
   await browser.type(selectors[4], \\"SuperSecretPassword!\\");
+  // Enter
   await browser.type(selectors[5], \\"↓Enter↑Enter\\");
+  // click \\"Logout\\" link
   await browser.click(selectors[6]);
   await browser.close();
 };
@@ -25,12 +32,19 @@ const selectors = require(\\"../selectors/scrollLogin\\");
 
 const scrollLogin = async () => {
   const browser = await launch({ device: \\"iPhone 7\\", url: \\"localhost:5000\\" });
+  // scroll
   await browser.scroll(selectors[0], { x: 0, y: 378 });
+  // click \\"Form Authentication\\" link
   await browser.click(selectors[1]);
+  // type into \\"Username\\" input
   await browser.type(selectors[2], \\"tomsmith\\");
+  // Tab
   await browser.type(selectors[3], \\"↓Tab↑Tab\\");
+  // type into \\"Password\\" input
   await browser.type(selectors[4], \\"SuperSecretPassword!\\");
+  // Enter
   await browser.type(selectors[5], \\"↓Enter↑Enter\\");
+  // click \\"Logout\\" link
   await browser.click(selectors[6]);
   await browser.close();
 };

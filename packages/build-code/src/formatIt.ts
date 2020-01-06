@@ -32,7 +32,7 @@ export const formatDescription = (step: Step): string => {
 
 export const formatIt = (step: Step): string => {
   if (step.action === "scroll") {
-    return `can scroll`;
+    return `scroll`;
   }
 
   const description = formatDescription(step);
@@ -43,28 +43,28 @@ export const formatIt = (step: Step): string => {
   const tagName = `${target.name === "a" ? " link" : ` ${target.name}` || ""}`;
 
   if (step.action === "click") {
-    return `can click${description}${tagName}`;
+    return `click${description}${tagName}`;
   }
 
   if (step.action === "select") {
-    return `can select${description}`;
+    return `select${description}`;
   }
 
   if (step.action === "type") {
     if (!step.value) {
-      return `can clear${description}${tagName}`;
+      return `clear${description}${tagName}`;
     }
 
     const value = step.value as string;
     if (value.indexOf("↓Enter") === 0) {
-      return `can Enter`;
+      return `Enter`;
     }
 
     if (value.indexOf("↓Tab") === 0) {
-      return `can Tab`;
+      return `Tab`;
     }
 
-    return `can type into${description}${tagName}`;
+    return `type into${description}${tagName}`;
   }
 
   throw new Error(`Invalid step action ${step.action}`);

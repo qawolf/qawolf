@@ -77,7 +77,7 @@ describe("formatIt", () => {
       page: 0
     };
 
-    expect(formatIt(step)).toBe("can click input");
+    expect(formatIt(step)).toBe("click input");
   });
 
   it("uses alt attribute if no other attributes specified", () => {
@@ -97,7 +97,7 @@ describe("formatIt", () => {
       page: 0
     };
 
-    expect(formatIt(step)).toBe('can click "spirit" img');
+    expect(formatIt(step)).toBe('click "spirit" img');
   });
 
   it("formats Enter", () => {
@@ -115,7 +115,7 @@ describe("formatIt", () => {
       value: "↓Enter"
     };
 
-    expect(formatIt(step)).toEqual("can Enter");
+    expect(formatIt(step)).toEqual("Enter");
   });
 
   it("formats Tab", () => {
@@ -133,6 +133,6 @@ describe("formatIt", () => {
       value: "↓Tab"
     };
 
-    expect(formatIt(step)).toEqual("can Tab");
+    expect(formatIt(step)).toEqual("Tab");
   });
 });
