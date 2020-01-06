@@ -11,7 +11,7 @@ describe('{{{name}}}', () => {
   afterAll(() => browser.close());
 
 {{#each steps}}
-  it('{{{it}}}', async () => {
+  it('can {{{it}}}', async () => {
     await {{{method}}};
   });
 {{#unless @last}}

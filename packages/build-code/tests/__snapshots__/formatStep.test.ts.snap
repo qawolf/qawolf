@@ -2,49 +2,49 @@
 
 exports[`formatStep click formats click on link step 1`] = `
 Object {
-  "it": "can click \\"contact\\" link",
+  "it": "click \\"contact\\" link",
   "method": "browser.click(selectors[0])",
 }
 `;
 
 exports[`formatStep click formats click on submit input step 1`] = `
 Object {
-  "it": "can click \\"someones\\" input",
+  "it": "click \\"someones\\" input",
   "method": "browser.click(selectors[1])",
 }
 `;
 
 exports[`formatStep scroll formats scroll action 1`] = `
 Object {
-  "it": "can scroll",
+  "it": "scroll",
   "method": "browser.scroll(selectors[0], { x: 0, y: 10 })",
 }
 `;
 
 exports[`formatStep select formats select action 1`] = `
 Object {
-  "it": "can select \\"select1\\"",
+  "it": "select \\"select1\\"",
   "method": "browser.select(selectors[0], \\"spirit\\")",
 }
 `;
 
 exports[`formatStep type formats clear an input 1`] = `
 Object {
-  "it": "can clear input",
+  "it": "clear input",
   "method": "browser.type(selectors[0], null)",
 }
 `;
 
 exports[`formatStep type formats type into password input 1`] = `
 Object {
-  "it": "can type into \\"secret\\" input",
+  "it": "type into \\"secret\\" input",
   "method": "browser.type(selectors[10], \\"supersecret\\")",
 }
 `;
 
 exports[`formatStep type formats type into text input 1`] = `
 Object {
-  "it": "can type into \\"username\\" input",
+  "it": "type into \\"username\\" input",
   "method": "browser.type(selectors[0], \\"spirit\\")",
 }
 `;
