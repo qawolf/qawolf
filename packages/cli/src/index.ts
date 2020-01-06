@@ -24,7 +24,7 @@ program
   .description("create a test from browser actions")
   .action(async (urlArgument, optionalName, cmd) => {
     const url = parseUrl(urlArgument);
-    logger.verbose(`record url "${url.href}"`);
+    logger.verbose(`create "${url.href}"`);
 
     const name = camelCase(optionalName || url.hostname!.replace(/\..*/g, ""));
     await create({
