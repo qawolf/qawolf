@@ -12,8 +12,8 @@ import { parseUrl } from "./utils";
 const pkg = require("../package");
 
 program
-  .version(pkg.version)
-  .usage("<command> [options]");
+  .usage("<command> [options]")
+  .version(pkg.version);
 
 program
   .command("create <url> [name]")
