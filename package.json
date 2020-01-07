@@ -22,7 +22,7 @@
     }
   },
   "lint-staged": {
-    "*.ts": "npm run lint"
+    "*.ts": "eslint"
   },
   "dependencies": {
     "ffmpeg-static": "^3.0.0",
