@@ -10,6 +10,7 @@
     "install:puppeteer": "node ./packages/browser/node_modules/puppeteer/install.js",
     "install:screen": "node ./packages/screen/src/install.js",
     "lint": "eslint packages --ext .ts --ignore-path .gitignore --cache",
+    "lint:fix": "eslint --fix packages --ext .ts --ignore-path .gitignore --cache",
     "pretest": "npm run lint",
     "test": "lerna run test --stream",
     "test:services": "docker-compose up -d",
