@@ -12,6 +12,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        node: ["10", "12"]
+    name: Node ${{ matrix.node }}
     env:
       QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
       QAW_LOG_LEVEL: debug
@@ -31,6 +35,8 @@ jobs:
 
       - name: Setup node
         uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
 
       - run: npm run bootstrap
 
