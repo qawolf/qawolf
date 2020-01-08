@@ -2,6 +2,9 @@ import path from "path";
 import { execSync } from "child_process";
 
 export const runJest = (args: string[] = []) => {
+  /**
+   * Returns exit code. 0 for success, 1 for failed.
+   */
   const setupFailFast = path.join(
     __dirname,
     __dirname.includes("src") ? "../lib" : "",
@@ -29,5 +32,8 @@ export const runJest = (args: string[] = []) => {
 
   try {
     execSync(command, { stdio: "inherit" });
-  } catch (e) {}
+    return 0;
+  } catch (e) {
+    return 1;
+  }
 };

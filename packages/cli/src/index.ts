@@ -40,7 +40,10 @@ program
   .command("test")
   .description("run a test with Jest")
   .allowUnknownOption(true)
-  .action(() => runJest(process.argv.slice(3)));
+  .action(() => {
+    const code = runJest(process.argv.slice(3));
+    process.exit(code);
+  });
 
 program
   .command("azure")

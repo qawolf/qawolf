@@ -68,7 +68,7 @@ export class QAWolfBrowser {
     selector: Selector,
     options: FindElementOptions = {}
   ): Promise<ElementHandle> {
-    const page = await this.page({ ...options, page: options.page || 0 });
+    const page = await this.page({ ...options, page: options.page });
     return page.qawolf.click(selector, options);
   }
 
@@ -122,7 +122,7 @@ export class QAWolfBrowser {
     selector: Selector,
     options: FindElementOptions = {}
   ): Promise<ElementHandle> {
-    const page = await this.page({ ...options, page: options.page || 0 });
+    const page = await this.page({ ...options, page: options.page });
     return page.qawolf.find(selector, options);
   }
 
@@ -131,7 +131,7 @@ export class QAWolfBrowser {
     property: string,
     options: FindElementOptions = {}
   ): Promise<ElementHandle> {
-    const page = await this.page({ ...options, page: options.page || 0 });
+    const page = await this.page({ ...options, page: options.page });
     return page.qawolf.findProperty(selector, property, options);
   }
 
@@ -175,7 +175,7 @@ export class QAWolfBrowser {
     value: ScrollValue,
     options: FindElementOptions = {}
   ): Promise<ElementHandle> {
-    const page = await this.page({ ...options, page: options.page || 0 });
+    const page = await this.page({ ...options, page: options.page });
     return page.qawolf.scroll(selector, value, options);
   }
 
@@ -184,7 +184,7 @@ export class QAWolfBrowser {
     value: string | null,
     options: FindElementOptions = {}
   ): Promise<ElementHandle> {
-    const page = await this.page({ ...options, page: options.page || 0 });
+    const page = await this.page({ ...options, page: options.page });
     return page.qawolf.select(selector, value, options);
   }
 
@@ -193,7 +193,7 @@ export class QAWolfBrowser {
     value: string | null,
     options: FindElementOptions & TypeOptions = {}
   ): Promise<ElementHandle> {
-    const page = await this.page({ ...options, page: options.page || 0 });
+    const page = await this.page({ ...options, page: options.page });
     return page.qawolf.type(selector, value, options);
   }
 
