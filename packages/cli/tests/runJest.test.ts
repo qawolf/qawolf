@@ -1,9 +1,11 @@
 import { runJest } from "../src/runJest";
 
 it("runs successful test", async () => {
-  runJest(["success"]);
+  const exitCode = runJest(["success"]);
+  expect(exitCode).toEqual(0);
 });
 
 it("ignores error for failed test", async () => {
-  runJest(["failure"]);
+  const exitCode = runJest(["failure"]);
+  expect(exitCode).toEqual(1);
 });
