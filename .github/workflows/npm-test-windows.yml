@@ -26,15 +26,14 @@ jobs:
         with:
           ruby-version: 2.6
 
-      - name: Run "the-internet" test app
+      - name: Run "the-internet" and tests
         run: |
           git clone https://github.com/qawolf/the-internet.git theinternet
           cd theinternet
           bundle install --quiet
           Start-Job -ScriptBlock {Set-Location $using:PWD; bundle exec rackup --host 0.0.0.0 --port 5000}
           npx wait-on --verbose http://localhost:5000
-
-      - run: npm test
+          npm test
         env:
           QAW_ARTIFACT_PATH: ${{ github.workspace }}\artifacts
           QAW_LOG_LEVEL: debug
