@@ -52,14 +52,14 @@
 
 ## 🖥️ Install QA Wolf
 
-QA Wolf is tested against the [maintenance LTS](https://github.com/nodejs/Release#release-schedule) versions of Node, right now v10 and v12.
-
 Install QA Wolf as a dev dependency with [`npm`](https://www.npmjs.com):
 
 ```bash
 cd /my/awesome/project
 npm install --save-dev qawolf
 ```
+
+QA Wolf is tested against the [maintenance LTS](https://github.com/nodejs/Release#release-schedule) versions of Node, v10 and v12.
 
 <br/>
 
