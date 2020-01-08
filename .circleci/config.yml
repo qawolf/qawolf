@@ -1,0 +1,18 @@
+version: 2.1
+
+orbs:
+  win: circleci/windows@2.2.0
+
+jobs:
+  build:
+    executor: win/default
+
+    steps:
+      # - checkout
+      - run: |
+          git clone https://github.com/qawolf/the-internet.git theinternet
+          cd theinternet
+          bundle install --quiet
+          Start-Job -ScriptBlock {Set-Location $using:PWD; bundle exec rackup --host 0.0.0.0 --port 5000}
+          Receive-Job 1
+          npx wait-on --timeout 30000 --verbose http://localhost:5000
