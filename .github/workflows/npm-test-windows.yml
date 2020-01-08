@@ -14,6 +14,11 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: Setup node 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12"
+
       - uses: eregon/use-ruby-action@master
         with:
           ruby-version: 2.6
@@ -23,14 +28,9 @@ jobs:
           git clone https://github.com/qawolf/the-internet.git theinternet
           cd theinternet
           bundle install --quiet
-          bundle exec rackup --host 0.0.0.0 -p 5000 &
+          Start-Job -ScriptBlock {Set-Location $using:PWD; bundle exec rackup --host 0.0.0.0 --port 5000}
+          npx wait-on --verbose http://localhost:5000
 
-      - name: Setup node 12
-        uses: actions/setup-node@v1
-        with:
-          node-version: "12"
-
-      - run: npx wait-on http://0.0.0.0:5000
       # - uses: actions/checkout@v2
       # - run: npm run bootstrap
       # - run: npm test
