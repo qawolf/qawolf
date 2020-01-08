@@ -1,0 +1,49 @@
+# WARNING: DO NOT ADD SECRETS TO THIS WORKFLOW!!!!
+# This workflow is trigged by pull_request and secrets could be exposed in a PR.
+# If someone modifies this in a fork it will only expose their secrets (unless we merge it).
+# https://github.community/t5/GitHub-Actions/GitHub-Action-workflow-is-executed-for-a-PR-from-a-forked-repo/td-p/29579
+name: npm test windows-latest
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches: "*"
+jobs:
+  test:
+    runs-on: windows-latest
+
+    steps:
+      - uses: eregon/use-ruby-action@master
+        with:
+          ruby-version: 2.6
+
+      - name: Run "the-internet" test app
+        run: |
+          git clone https://github.com/qawolf/the-internet.git theinternet
+          cd theinternet
+          bundle install --quiet
+          bundle exec rackup --host 0.0.0.0 -p 5000 &
+
+      - name: Setup node 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12"
+
+      - run: npx wait-on http://0.0.0.0:5000
+      # - uses: actions/checkout@v2
+      # - run: npm run bootstrap
+      # - run: npm test
+      #   env:
+      #     QAW_ARTIFACT_PATH: ${{ github.workspace }}\artifacts
+      #     QAW_LOG_LEVEL: debug
+      #     QAW_SLEEP_MS: 0
+      #     QAW_TEST_URL: http://localhost:5000/
+      # - name: Upload Artifacts
+      #   if: always()
+      #   uses: actions/upload-artifact@master
+      #   with:
+      #     name: qawolf
+      #     path: ${{ github.workspace }}\artifacts
+
+    timeout-minutes: 20
