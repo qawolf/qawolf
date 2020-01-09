@@ -18,13 +18,13 @@ jobs:
         with:
           node-version: "12"
 
-      # - uses: actions/checkout@v2
-      #   with:
-      #     path: project
+      - uses: actions/checkout@v2
+        with:
+          path: project
 
-      # - run: |
-      #     cd project
-      #     npm run bootstrap
+      - run: |
+          cd project
+          npm run bootstrap
 
       - uses: eregon/use-ruby-action@master
         with:
@@ -40,19 +40,22 @@ jobs:
         shell: bash
 
       - name: Run tests
-        run: npx wait-on --timeout 30000 --verbose http://localhost:5000
+        run: |
+          npx wait-on --timeout 30000 --verbose http://localhost:5000
+          cd project
+          npm run test
+        env:
+          QAW_ARTIFACT_PATH: ${{ github.workspace }}\artifacts
+          QAW_LOG_LEVEL: debug
+          QAW_SLEEP_MS: 0
+          QAW_TEST_URL: http://localhost:5000/
         shell: bash
 
-        # env:
-        #   QAW_ARTIFACT_PATH: ${{ github.workspace }}\artifacts
-        #   QAW_LOG_LEVEL: debug
-        #   QAW_SLEEP_MS: 0
-        #   QAW_TEST_URL: http://localhost:5000/
-      # - name: Upload Artifacts
-      #   if: always()
-      #   uses: actions/upload-artifact@master
-      #   with:
-      #     name: qawolf
-      #     path: ${{ github.workspace }}\artifacts
+      - name: Upload Artifacts
+        if: always()
+        uses: actions/upload-artifact@master
+        with:
+          name: qawolf
+          path: ${{ github.workspace }}\artifacts
 
     timeout-minutes: 20
