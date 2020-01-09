@@ -40,8 +40,18 @@ jobs:
 
       - name: Run tests
         run: |
-          cd project
-          npm run test
+          cd project/packages/browser
+          npx jest --detectOpenHandles
+          cd ../build-code
+          npx jest --detectOpenHandles
+          cd ../build-workflow
+          npx jest --detectOpenHandles
+          cd ../cli
+          npx jest --detectOpenHandles
+          cd ../screen
+          npx jest --detectOpenHandles
+          cd ../web-tests
+          npx jest --detectOpenHandles
         env:
           QAW_ARTIFACT_PATH: ${{ github.workspace }}\artifacts
           QAW_LOG_LEVEL: debug
