@@ -43,6 +43,9 @@ jobs:
         run: |
           npx wait-on --timeout 30000 --verbose http://localhost:5000
           cd project
+
+          ls packages/web-tests
+          ls packages/web-tests/tests
           npm run test
         env:
           QAW_ARTIFACT_PATH: ${{ github.workspace }}\artifacts
