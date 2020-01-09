@@ -7,8 +7,8 @@ on:
   push:
     branches:
       - master
-  # pull_request:
-  #   branches: "*"
+  pull_request:
+    branches: "*"
 jobs:
   test:
     runs-on: ubuntu-18.04
