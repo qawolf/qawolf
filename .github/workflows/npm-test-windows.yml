@@ -40,9 +40,7 @@ jobs:
 
       - name: Run tests
         run: |
-          cd project/packages/browser
-          npx jest --detectOpenHandles
-          cd ../build-code
+          cd project/packages/build-code
           npx jest --detectOpenHandles
           cd ../build-workflow
           npx jest --detectOpenHandles
