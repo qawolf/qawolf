@@ -36,16 +36,11 @@ jobs:
           cd theinternet
           C:\\rubyinstaller-2.6.5-1-x64\\bin\\bundle.cmd install --quiet
           C:\\rubyinstaller-2.6.5-1-x64\\bin\\bundle.cmd exec rackup --host 0.0.0.0 --port 5000 &
-          npx wait-on --timeout 30000 --verbose http://localhost:5000
         shell: bash
 
       - name: Run tests
         run: |
-          npx wait-on --timeout 30000 --verbose http://localhost:5000
           cd project
-
-          ls packages/web-tests
-          ls packages/web-tests/tests
           npm run test
         env:
           QAW_ARTIFACT_PATH: ${{ github.workspace }}\artifacts
