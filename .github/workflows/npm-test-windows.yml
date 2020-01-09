@@ -28,24 +28,20 @@ jobs:
 
       - uses: eregon/use-ruby-action@master
         with:
-          ruby-version: 2.6
-
-      - name: Set up "the-internet"
-        run: |
-          git clone https://github.com/qawolf/the-internet.git theinternet
-          cd theinternet
-          bundle install --quiet
+          ruby-version: "2.6.5"
 
       - name: Run "the-internet"
         run: |
-          Start-Job -ScriptBlock {Set-Location $using:PWD; bundle exec rackup --host 0.0.0.0 --port 5000}
+          git clone https://github.com/qawolf/the-internet.git theinternet
+          cd theinternet
+          C:\\rubyinstaller-2.6.5-1-x64\\bin\\bundle.cmd install --quiet
+          C:\\rubyinstaller-2.6.5-1-x64\\bin\\bundle.cmd exec rackup --host 0.0.0.0 --port 5000 &
           npx wait-on --timeout 30000 --verbose http://localhost:5000
-          Get-Job
+        shell: bash
 
       - name: Run tests
-        run: |
-          Get-Job
-          npx wait-on --timeout 30000 --verbose http://localhost:5000
+        run: npx wait-on --timeout 30000 --verbose http://localhost:5000
+        shell: bash
 
         # env:
         #   QAW_ARTIFACT_PATH: ${{ github.workspace }}\artifacts
