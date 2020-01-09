@@ -50,6 +50,8 @@ jobs:
           npx jest --detectOpenHandles
           cd ../web-tests
           npx jest --detectOpenHandles
+          cd ../browser
+          npx jest --detectOpenHandles
         env:
           QAW_ARTIFACT_PATH: ${{ github.workspace }}\artifacts
           QAW_LOG_LEVEL: debug
