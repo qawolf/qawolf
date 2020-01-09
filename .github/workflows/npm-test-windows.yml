@@ -22,7 +22,8 @@ jobs:
         with:
           path: project
 
-      - run: |
+      - name: Build QA Wolf
+        run: |
           cd project
           npm run bootstrap
 
@@ -40,18 +41,8 @@ jobs:
 
       - name: Run tests
         run: |
-          cd project/packages/build-code
-          npx jest
-          cd ../build-workflow
-          npx jest
-          cd ../cli
-          npx jest
-          cd ../screen
-          npx jest
-          cd ../web-tests
-          npx jest
-          cd ../browser
-          npx jest
+          cd project
+          npm test
         env:
           QAW_ARTIFACT_PATH: ${{ github.workspace }}\artifacts
           QAW_LOG_LEVEL: debug
