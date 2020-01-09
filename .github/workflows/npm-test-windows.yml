@@ -42,7 +42,7 @@ jobs:
       - name: Run tests
         run: |
           cd project
-          npm test
+          npm run test:windows
         env:
           QAW_ARTIFACT_PATH: ${{ github.workspace }}\artifacts
           QAW_LOG_LEVEL: debug
