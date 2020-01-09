@@ -5,23 +5,18 @@ export const runJest = (args: string[] = []) => {
   /**
    * Returns exit code. 0 for success, 1 for failed.
    */
-  const setupFailFast = path.join(
-    __dirname,
-    __dirname.includes("src") ? "../lib" : "",
-    "failFast.js"
+
+  // make it relative to the current working directory
+  // so the command is shorter when logged
+  const config = path.relative(
+    process.cwd(),
+    path.join(__dirname, "failFast.json")
   );
 
-  const config = JSON.stringify({
-    // assume .qawolf is relative to the current working directory
-    roots: ["<rootDir>/.qawolf"],
-    // run with fast fail since we do not want to continue e2e tests when one fails
-    // this will not be necessary after Jest Circus fixes --bail
-    setupFilesAfterEnv: [setupFailFast],
-    // override transform to prevent using external babel-jest
-    transform: {}
-  });
+  // use a config file instead of json because escaping
+  // the json for different shells is too difficult
+  let command = `npx jest --config=${config} --rootDir=.qawolf --testTimeout=60000`;
 
-  let command = `npx jest --testTimeout=60000 --config='${config}'`;
   // pass through other arguments to jest
   if (args.length) {
     command += ` ${args.join(" ")}`;
