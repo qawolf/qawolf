@@ -41,17 +41,17 @@ jobs:
       - name: Run tests
         run: |
           cd project/packages/build-code
-          npx jest --detectOpenHandles
+          npx jest
           cd ../build-workflow
-          npx jest --detectOpenHandles
+          npx jest
           cd ../cli
-          npx jest --detectOpenHandles
+          npx jest
           cd ../screen
-          npx jest --detectOpenHandles
+          npx jest
           cd ../web-tests
-          npx jest --detectOpenHandles
+          npx jest
           cd ../browser
-          npx jest --detectOpenHandles
+          npx jest
         env:
           QAW_ARTIFACT_PATH: ${{ github.workspace }}\artifacts
           QAW_LOG_LEVEL: debug
