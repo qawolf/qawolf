@@ -1,4 +1,5 @@
 import { CONFIG } from "@qawolf/config";
+import { logger } from "@qawolf/logger";
 import { Browser } from "./Browser";
 import { createPage } from "../page/createPage";
 
@@ -22,11 +23,15 @@ export const managePages = async (browser: Browser) => {
   qawolf.pages.push(await createPage({ ...options, page: pages[0], index: 0 }));
 
   browser.on("targetcreated", async target => {
-    const page = await target.page();
-    if (page) {
-      qawolf.pages.push(
-        await createPage({ ...options, page, index: pages.length })
-      );
+    try {
+      const page = await target.page();
+      if (page) {
+        qawolf.pages.push(
+          await createPage({ ...options, page, index: pages.length })
+        );
+      }
+    } catch (e) {
+      logger.error(`Could not setup page: ${e}`);
     }
   });
 
