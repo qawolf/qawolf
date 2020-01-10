@@ -2,7 +2,7 @@
 
 import { logger } from "@qawolf/logger";
 import program from "commander";
-import { yellow } from "kleur";
+import { red, yellow } from "kleur";
 import { camelCase } from "lodash";
 import updateNotifier from "update-notifier";
 import { saveCiTemplate } from "./ci";
@@ -18,11 +18,20 @@ program.usage("<command> [options]").version(pkg.version);
 
 program
   .command("create <url> [name]")
+  // XXX remove in v1.0.0
+  .alias("record")
   .option("--debug", "save events and workflow json for debugging")
   .option("-d, --device <device>", "emulate using a puppeteer.device")
   .option("-s, --script", "create a script instead of a test")
   .description("create a test from browser actions")
   .action(async (urlArgument, optionalName, cmd) => {
+    if (process.argv[2] === "record") {
+      console.log(
+        red(
+          `"qawolf record" will be removed in v1.0.0\nPlease use "qawolf create" instead`
+        )
+      );
+    }
     const url = parseUrl(urlArgument);
     logger.verbose(`create "${url.href}"`);
 
