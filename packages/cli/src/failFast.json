@@ -1,4 +1,0 @@
-{   
-    "setupFilesAfterEnv": ["../lib/failFast.js"],
-    "transform": {}
-}

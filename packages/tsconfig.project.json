@@ -17,6 +17,9 @@
       "path": "./config/tsconfig.package.json"
     },
     {
+      "path": "./jest-fail-fast/tsconfig.package.json"
+    },
+    {
       "path": "./logger/tsconfig.package.json"
     },
     {
