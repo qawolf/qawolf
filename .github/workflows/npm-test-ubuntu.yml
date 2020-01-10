@@ -1,7 +1,3 @@
-# WARNING: DO NOT ADD SECRETS TO THIS WORKFLOW!!!!
-# This workflow is trigged by pull_request and secrets could be exposed in a PR.
-# If someone modifies this in a fork it will only expose their secrets (unless we merge it).
-# https://github.community/t5/GitHub-Actions/GitHub-Action-workflow-is-executed-for-a-PR-from-a-forked-repo/td-p/29579
 name: npm test ubuntu
 on:
   push:
