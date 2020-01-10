@@ -1,25 +1,25 @@
 # configure the pipeline to run based on different triggers
 # see https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=schema#triggers
-resources:
-  containers:
-    - container: qawolf
-      image: qawolf/qawolf:v{{{version}}}
-
 pool:
-  vmImage: "ubuntu-16.04"
-
-container: qawolf
+  vmImage: "ubuntu-18.04"
 
 steps:
-  - script: qawolf test
+  - task: NodeTool@0
+    inputs:
+      versionSpec: "12.x"
+
+  - script: npm install
+
+  # - script: npm run start & npx wait-on http://localhost:3000
+
+  - script: npx qawolf test
     env:
-      # output artifacts
       QAW_ARTIFACT_PATH: $(System.DefaultWorkingDirectory)/artifacts
-      # # configure tests with environment variables
-      # # https://docs.qawolf.com/docs/configuration
+      # configure tests with environment variables
+      # https://docs.qawolf.com/docs/configuration
       # QAW_SLEEP_MS: 0
-      # # you can also use secret environment variables
-      # # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#secret-variables
+      # you can also use secret environment variables
+      # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#secret-variables
       # LOGIN_PASSWORD: $(SECRET_PASSWORD)
 
   - publish: $(System.DefaultWorkingDirectory)/artifacts
