@@ -10,7 +10,7 @@ import {
   ScrollValue,
   TypeOptions
 } from "@qawolf/types";
-import { pick, sortBy } from "lodash";
+import { isNil, pick, sortBy } from "lodash";
 import {
   Browser as PuppeteerBrowser,
   devices,
@@ -68,7 +68,10 @@ export class QAWolfBrowser {
     selector: Selector,
     options: FindElementOptions = {}
   ): Promise<ElementHandle> {
-    const page = await this.page({ ...options, page: options.page });
+    const page = await this.page({
+      ...options,
+      page: options.page || getSelectorPage(selector)
+    });
     return page.qawolf.click(selector, options);
   }
 
@@ -122,7 +125,10 @@ export class QAWolfBrowser {
     selector: Selector,
     options: FindElementOptions = {}
   ): Promise<ElementHandle> {
-    const page = await this.page({ ...options, page: options.page });
+    const page = await this.page({
+      ...options,
+      page: options.page || getSelectorPage(selector)
+    });
     return page.qawolf.find(selector, options);
   }
 
@@ -131,7 +137,10 @@ export class QAWolfBrowser {
     property: string,
     options: FindElementOptions = {}
   ): Promise<ElementHandle> {
-    const page = await this.page({ ...options, page: options.page });
+    const page = await this.page({
+      ...options,
+      page: options.page || getSelectorPage(selector)
+    });
     return page.qawolf.findProperty(selector, property, options);
   }
 
@@ -175,7 +184,10 @@ export class QAWolfBrowser {
     value: ScrollValue,
     options: FindElementOptions = {}
   ): Promise<ElementHandle> {
-    const page = await this.page({ ...options, page: options.page });
+    const page = await this.page({
+      ...options,
+      page: options.page || getSelectorPage(selector)
+    });
     return page.qawolf.scroll(selector, value, options);
   }
 
@@ -184,7 +196,10 @@ export class QAWolfBrowser {
     value: string | null,
     options: FindElementOptions = {}
   ): Promise<ElementHandle> {
-    const page = await this.page({ ...options, page: options.page });
+    const page = await this.page({
+      ...options,
+      page: options.page || getSelectorPage(selector)
+    });
     return page.qawolf.select(selector, value, options);
   }
 
@@ -193,7 +208,10 @@ export class QAWolfBrowser {
     value: string | null,
     options: FindElementOptions & TypeOptions = {}
   ): Promise<ElementHandle> {
-    const page = await this.page({ ...options, page: options.page });
+    const page = await this.page({
+      ...options,
+      page: options.page || getSelectorPage(selector)
+    });
     return page.qawolf.type(selector, value, options);
   }
 
@@ -203,3 +221,16 @@ export class QAWolfBrowser {
     });
   }
 }
+
+// XXX remove in v1.0.0
+const getSelectorPage = (selector: Selector) => {
+  const page = (selector as any).page;
+
+  if (!isNil(page)) {
+    console.error(
+      "selector.page is deprecated\nPlease pass page as an option. Ex. click(selector[0], { page: 0 })"
+    );
+  }
+
+  return page;
+};
