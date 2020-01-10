@@ -1,0 +1,5 @@
+{
+  "name": "@qawolf/jest-fail-fast",
+  "setupFilesAfterEnv": ["@qawolf/jest-fail-fast"],
+  "transform": {}
+}
