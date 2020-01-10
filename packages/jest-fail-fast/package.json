@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/jest-fail-fast",
   "description": "Fail fast preset for Jest, does not work with circus",
-  "version": "0.8.0-alpha.1",
+  "version": "0.8.0-alpha.2",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -22,6 +22,5 @@
   },
   "dependencies": {
     "@qawolf/jasmine-fail-fast": "^2.0.1"
-  },
-  "devDependencies": {}
+  }
 }
