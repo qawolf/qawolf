@@ -70,7 +70,7 @@ export class QAWolfBrowser {
   ): Promise<ElementHandle> {
     const page = await this.page({
       ...options,
-      page: options.page || getSelectorPage(selector)
+      page: getSelectorPage(selector) || options.page
     });
     return page.qawolf.click(selector, options);
   }
@@ -127,7 +127,7 @@ export class QAWolfBrowser {
   ): Promise<ElementHandle> {
     const page = await this.page({
       ...options,
-      page: options.page || getSelectorPage(selector)
+      page: getSelectorPage(selector) || options.page
     });
     return page.qawolf.find(selector, options);
   }
@@ -139,7 +139,7 @@ export class QAWolfBrowser {
   ): Promise<ElementHandle> {
     const page = await this.page({
       ...options,
-      page: options.page || getSelectorPage(selector)
+      page: getSelectorPage(selector) || options.page
     });
     return page.qawolf.findProperty(selector, property, options);
   }
@@ -186,7 +186,7 @@ export class QAWolfBrowser {
   ): Promise<ElementHandle> {
     const page = await this.page({
       ...options,
-      page: options.page || getSelectorPage(selector)
+      page: getSelectorPage(selector) || options.page
     });
     return page.qawolf.scroll(selector, value, options);
   }
@@ -198,7 +198,7 @@ export class QAWolfBrowser {
   ): Promise<ElementHandle> {
     const page = await this.page({
       ...options,
-      page: options.page || getSelectorPage(selector)
+      page: getSelectorPage(selector) || options.page
     });
     return page.qawolf.select(selector, value, options);
   }
@@ -210,7 +210,7 @@ export class QAWolfBrowser {
   ): Promise<ElementHandle> {
     const page = await this.page({
       ...options,
-      page: options.page || getSelectorPage(selector)
+      page: getSelectorPage(selector) || options.page
     });
     return page.qawolf.type(selector, value, options);
   }
