@@ -1,15 +1,27 @@
 qawolf:
   image: qawolf/qawolf:v{{{version}}}
-  script: qawolf test
+
+  cache:
+    paths:
+      - node_modules/
+
+  script:
+    - npm install
+    # # Start local server
+    # - npm run start & npx wait-on http://localhost:3000
+    - npx qawolf test
+
   variables:
-    # output artifacts
-    QAW_ARTIFACT_PATH: /tmp/artifacts
+    QAW_ARTIFACT_PATH: $CI_PROJECT_DIR/artifacts
     ## configure tests with environment variables
     ## https://docs.qawolf.com/docs/configuration
     # QAW_SLEEP_MS: 0
     ## you can also use GitLab protected environment variables
     ## https://docs.gitlab.com/ee/ci/variables/#protected-environment-variables
     # LOGIN_PASSWORD: $SECRET_PASSWORD
+  
   artifacts:
+    when: always
     paths:
       - $CI_PROJECT_DIR/artifacts
+    expire_in: 1 week

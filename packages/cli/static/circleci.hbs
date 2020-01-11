@@ -2,28 +2,39 @@ version: 2
 jobs:
   build:
     docker:
-      - image: qawolf/qawolf:v{{{version}}}
-        environment:
-          # output artifacts
-          QAW_ARTIFACT_PATH: /tmp/artifacts
-          # # configure tests with environment variables
-          # # https://docs.qawolf.com/docs/configuration
-          # QAW_SLEEP_MS: 0
-          # # you can also use secret environment variables
-          # # https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project
-          # LOGIN_PASSWORD: ${SECRET_PASSWORD}
-
-      # # use your container in the workflow
-      # - image: owner/image:tag
+      - image: circleci/node:12.14.0-browsers
     steps:
-      # checkout to include the .qawolf/ folder
       - checkout
 
+      - restore_cache:
+          key: dependency-cache-\{{ checksum "package-lock.json" }}
+
       - run:
-          command: qawolf test
+          command: npm install
+
+      - save_cache:
+          key: dependency-cache-\{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
+
+      - run:
+          command: |
+            # # Start local server
+            # npm run start & 
+            # npx wait-on http://localhost:3000
+            npx qawolf test
+          environment:
+            QAW_ARTIFACT_PATH: /tmp/artifacts
+            # # configure tests with environment variables
+            # # https://docs.qawolf.com/docs/configuration
+            # QAW_SLEEP_MS: 0
+            # # you can also use secret environment variables
+            # # https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project
+            # LOGIN_PASSWORD: ${SECRET_PASSWORD}
 
       - store_artifacts:
           path: /tmp/artifacts
+
 # # example for running on a schedule, edit to suit your use case
 # # documentation: https://circleci.com/docs/2.0/configuration-reference/#schedule
 # workflows:

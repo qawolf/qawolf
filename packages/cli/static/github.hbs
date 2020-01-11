@@ -9,33 +9,38 @@ on:
   #   - cron: "0 * * * *" # every hour
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
+
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v1
+
+      - uses: actions/cache@v1
         with:
-          fetch-depth: 50
-      - name: qawolf test
-        uses: docker://qawolf/qawolf:v{{{version}}}
-        with:
-          args: "qawolf test"
+          path: ~/.npm
+          key: $\{{ runner.os }}-node-$\{{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            $\{{ runner.os }}-node-
+
+      - run: npm install
+
+      # - name: Start local server
+      #   run: npm run start & npx wait-on http://localhost:3000
+
+      - run: npx qawolf test
         env:
-          # output artifacts
-          QAW_ARTIFACT_PATH: /tmp/artifacts
+          QAW_ARTIFACT_PATH: $\{{ github.workspace }}/artifacts
         #   # configure tests with environment variables
         #   # https://docs.qawolf.com/docs/configuration
         #   QAW_SLEEP_MS: 0
         #   # you can also use GitHub secrets for environment variables
         #   # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets
         #   LOGIN_PASSWORD: $\{{ secrets.PASSWORD }}
+
       - name: Upload Artifacts
-        # include test artifacts
-        # edit below to only include artifacts in certain scenarios
         if: always()
         uses: actions/upload-artifact@master
         with:
           name: qawolf
-          path: "./artifacts"
-    ## use your container in the workflow
-    # services:
-    #   my_service:
-    #     image: owner/image:tag
+          path: $\{{ github.workspace }}/artifacts
