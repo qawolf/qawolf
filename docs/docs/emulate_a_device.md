@@ -19,7 +19,7 @@ npx qawolf create --device="iPad Mini" https://www.wikipedia.org searchTablet
 
 When the [Chromium](https://www.chromium.org/Home) browser opens, it will be emulating an [iPad Mini](https://www.apple.com/ipad-mini/). The GIF below provides an example.
 
-![Create a test with device flag](https://storage.googleapis.com/docs.qawolf.com/tutorials/record_device.gif)
+![Create a test with device flag](https://storage.googleapis.com/docs.qawolf.com/tutorials/create-test-device-small.gif)
 
 If we look at the test code (in the file `.qawolf/tests/searchTablet.test.js` in our example), the beginning will look like this:
 
