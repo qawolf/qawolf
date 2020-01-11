@@ -3,7 +3,7 @@ id: api
 title: API
 ---
 
-### [`qawolf@v0.7.11`](https://www.npmjs.com/package/qawolf/v/0.7.11)
+### [`qawolf@v0.8.0`](https://www.npmjs.com/package/qawolf/v/0.8.0)
 
 <a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version" /></a>
 <br/>

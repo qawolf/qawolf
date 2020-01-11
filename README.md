@@ -70,7 +70,7 @@ QA Wolf is tested against the [maintenance LTS](https://github.com/nodejs/Releas
 Create a [Puppeteer](https://github.com/puppeteer/puppeteer) and [Jest](https://jestjs.io/) test:
 
 ```bash
-npx qawolf record <url> [name]
+npx qawolf create <url> [name]
 ```
 
 ![Create a test](https://storage.googleapis.com/docs.qawolf.com/home/create-test-small.gif)
