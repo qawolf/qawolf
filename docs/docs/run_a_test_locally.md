@@ -15,7 +15,7 @@ npx qawolf test myFirstTest
 
 A Chromium browser will open and the test will run. See the GIF below for an example.
 
-![Run a test locally](https://storage.googleapis.com/docs.qawolf.com/tutorials/run_test.gif)
+![Run a test locally](https://storage.googleapis.com/docs.qawolf.com/tutorials/run-my-first-test-small.gif)
 
 If you're having trouble running your test, please [chat with us](https://gitter.im/qawolf/community) or [open an issue on GitHub](https://github.com/qawolf/qawolf/issues/new).
 

@@ -66,7 +66,7 @@ After the test is complete, the browser will close.
 
 Below is a GIF of the example test running locally:
 
-![Run a test locally](https://storage.googleapis.com/docs.qawolf.com/tutorials/run_test.gif)
+![Run a test locally](https://storage.googleapis.com/docs.qawolf.com/tutorials/run-my-first-test-small.gif)
 
 Now let's dive a bit deeper into the test code.
 

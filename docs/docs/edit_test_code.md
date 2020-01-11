@@ -12,7 +12,7 @@ We will learn how to [add an assertion](edit_test_code#add-an-assertion), [use a
 
 This tutorial edits a sample test file for [TodoMVC](http://todomvc.com/examples/react). Below is a GIF of the example test running locally:
 
-![Run a test locally](https://storage.googleapis.com/docs.qawolf.com/tutorials/run_test.gif)
+![Run a test locally](https://storage.googleapis.com/docs.qawolf.com/tutorials/run-my-first-test-small.gif)
 
 ## Add an assertion
 

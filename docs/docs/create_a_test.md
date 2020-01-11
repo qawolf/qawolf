@@ -26,7 +26,7 @@ npx qawolf create http://todomvc.com/examples/react myFirstTest
 
 Inside the Chromium browser, go through the workflow you want to test as a user would. In our example, we'll 1) create a todo item, 2) mark it as complete, and 3) clear completed todos. After you are done, return to the terminal and hit Enter to save your test. See the GIF below for an example.
 
-![Create a test](https://storage.googleapis.com/docs.qawolf.com/tutorials/create_test.gif)
+![Create a test](https://storage.googleapis.com/docs.qawolf.com/tutorials/create-my-first-test-small.gif)
 
 ## Next steps
 
