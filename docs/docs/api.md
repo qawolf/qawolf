@@ -13,6 +13,7 @@ The generated code imports the `qawolf` node package, which extends the [Puppete
 ##### Table of Contents
 
 - [Environment Variables](#environment-variables)
+  - [QAW_ARTIFACT_PATH](#qaw_artifact_path)
   - [QAW_ATTRIBUTE](#qaw_attribute)
   - [QAW_DEBUG](#qaw_debug)
   - [QAW_HEADLESS](#qaw_headless)
@@ -56,6 +57,16 @@ Use [environment variables in CI](set_up_ci#environment-variables):
 ```yaml
 env:
   QAW_SLEEP_MS: 0
+```
+
+### QAW_ARTIFACT_PATH
+
+- default: `null`
+
+Specify `QAW_ARTIFACT_PATH` to save artifacts to that path. This includes logs and a dom recording with [rrweb](https://www.rrweb.io) per test. On linux with [xvfb](https://zoomadmin.com/HowToInstall/UbuntuPackage/xvfb) installed, a video and gif are saved too.
+
+```bash
+QAW_ARTIFACT_PATH=./artifacts npx qawolf test
 ```
 
 ### QAW_ATTRIBUTE
