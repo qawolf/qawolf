@@ -5,9 +5,9 @@ export const runJest = (args: string[] = []) => {
    * Returns exit code. 0 for success, 1 for failed.
    */
 
-  // use a config file instead of json because escaping
-  // the json for different shells is too difficult
-  let command = `npx jest --preset="@qawolf/jest-fail-fast" --rootDir=.qawolf --testTimeout=60000`;
+  // jest-fail-fast preset overrides the transform, and configures the jasmine-fail-fast plugin
+  // --config={} prevents using the local jest config
+  let command = `npx jest --preset="@qawolf/jest-fail-fast" --rootDir=.qawolf --testTimeout=60000 --config={}`;
 
   // pass through other arguments to jest
   if (args.length) {
