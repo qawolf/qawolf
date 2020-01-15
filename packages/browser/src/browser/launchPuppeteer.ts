@@ -1,5 +1,6 @@
 import { CONFIG } from "@qawolf/config";
 import { Display } from "@qawolf/screen";
+import { omit } from "lodash";
 import { platform } from "os";
 import { launch, LaunchOptions, Browser } from "puppeteer";
 import { Device } from "puppeteer/DeviceDescriptors";
@@ -26,7 +27,7 @@ export const launchPuppeteer = (
     ],
     defaultViewport: null,
     headless: CONFIG.headless,
-    ...options
+    ...omit(options, "display")
   };
 
   if (platform() === "linux") {
