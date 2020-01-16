@@ -165,9 +165,9 @@ The next section goes into detail on how the generated selector works.
 
 ## How the generated selector works
 
-Rather than rely on one specific attribute like an xpath to locate elements, QA Wolf serializes the entire element, its [parent](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement), and parent's parent, to make your tests robust to changes. You can also [specify an attribute](api#qaw_attribute) like `data-qa` to use instead of the default selector logic, or [replace the generated selector](edit_test_code#use-custom-selectors) with a [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) or text selector.
+When an element contains an attribute specified by [`QAW_ATTRIBUTE`](api#qaw_attribute) (`data-qa,data-test,data-testid` by default), a css selector for that attribute will be generated. See [🔍 Use a Test Attribute](use_a_test_attribute) for more details.
 
-The serialized elements are then stored in the selector (`.qawolf/selectors/myFirstTest.json`). QA Wolf uses the [open source `html-parse-stringify` library](https://github.com/HenrikJoreteg/html-parse-stringify) to serialize each element.
+Otherwise QA Wolf serializes the entire element, its [parent](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement), and parent's parent, to make your tests robust to changes instead of relying on a specific attribute like an xpath to locate elements. The serialized elements are then stored in the selector (`.qawolf/selectors/myFirstTest.json`). QA Wolf uses the [open source `html-parse-stringify` library](https://github.com/HenrikJoreteg/html-parse-stringify) to serialize each element.
 
 When you run a test, QA Wolf goes through the following steps to locate each element ([source code](https://github.com/qawolf/qawolf/blob/master/packages/web/src/find/findHtml.ts)):
 
@@ -177,28 +177,6 @@ When you run a test, QA Wolf goes through the following steps to locate each ele
 4. If a matching element is not found within a [specified timeout](api#qaw_find_timeout_ms) (default 30 seconds), the test fails.
 
 If you [replace the generated selector](edit_test_code#use-custom-selectors) with a custom selector, QA Wolf will wait until it finds an element matching that selector. If no match is found before the [timeout](api#qaw_find_timeout_ms), the test fails.
-
-If you [specify an attribute](api#qaw_attribute) like `my-data-attribute` when you create a test, the generated code will use that attribute as as a selector when possible. By default `QAW_ATTRIBUTE` is set to `data-qa,data-test,data-testid`.
-
-For example, create a test:
-
-```bash
-QAW_ATTRIBUTE=my-data-attribute npx qawolf create www.myawesomesite.com myTest
-```
-
-Click on this element:
-
-```html
-<button my-data-attribute="search">Search</button>
-```
-
-The generated code will be:
-
-```js
-await browser.click({ css: "[my-data-attribute='search']" });
-```
-
-When the specified attribute is not present on the element, it will use the default selector logic.
 
 ## Automatic waiting
 
