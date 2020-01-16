@@ -27,7 +27,7 @@ describe("stepToSelector", () => {
   });
 
   it("returns CssSelector if attribute is data-qa and findValue specified", () => {
-    CONFIG.attribute = "data-other,data-qa";
+    CONFIG.attribute = "data-other, data-qa";
 
     const step = {
       action: "click" as Action,
