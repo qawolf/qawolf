@@ -113,12 +113,12 @@ Run the browser in [headless mode](https://developers.google.com/web/updates/201
 
 - default: `1000`
 
-The default time to sleep after an element is found for [FindElementOptions]. To run your tests as fast as possible, set `QAW_SLEEP_MS=0`.
+The default time to sleep after an element is found for [FindElementOptions], and before closing the browser. To run your tests as fast as possible, set `QAW_SLEEP_MS=0`.
 
 We default to 1s to:
 
-- make video replays easy to watch
-- wait for elements that appear before their event handlers are attached or data is loaded. You can write custom wait logic instead, see the [`waitUntil` helper](api#waituntil).
+- make it easier to watch each step in the video
+- wait for elements that appear before their event handlers are attached or data is loaded. If your application has elements that appear before they can be acted upon, a best practice is to [write custom wait logic](api#waituntil) to improve test stability.
 
 ### QAW_TIMEOUT_MS
 
