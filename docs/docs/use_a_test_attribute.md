@@ -3,7 +3,7 @@ id: use_a_test_attribute
 title: 🔍 Use a Test Attribute
 ---
 
-A best practice in testing is to use test [attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes) like `data-qa` or `data-test` to target elements to make your tests robust to changes in your front end code.
+A best practice is to use test [attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes) like `data-qa` or `data-test` to target elements to make your tests robust to changes in your front end code.
 
 In this tutorial, we'll learn how to use a test attribute for the selector. We assume you understand the basics of [creating a test](create_a_test).
 
@@ -33,9 +33,9 @@ Now even as the text, [CSS classes](https://developer.mozilla.org/en-US/docs/Web
 
 Now that at least some of the elements in our test have a `data-qa` attribute, let's create a test that targets the `data-qa` attribute whenever possible.
 
-When creating our tests, QA Wolf looks for attributes from the [`QAW_ATTRIBUTE` environment variable](api#qaw_attribute) to create selectors. It defaults to `data-qa,data-test,data-testid`. What this means is that:
+When creating our tests, QA Wolf looks for attributes from the [`QAW_ATTRIBUTE` environment variable](api#qaw_attribute). The default value of `QAW_ATTRIBUTE` is `data-qa,data-test,data-testid`. What this means is that:
 
-- if the element you interact with has the `data-qa` attribute, the generated test code will target that attribute and value combination
+- if the element you interact with has a `data-qa`, `data-test`, or `data-testid` attribute, the generated test code will target that attribute and value combination
 - otherwise, the generated test code will use the [default selector logic](review_test_code#element-selectors)
 
 You can change the `QAW_ATTRIBUTE` to a different attribute like `aria-label` if you prefer.

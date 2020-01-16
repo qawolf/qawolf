@@ -165,7 +165,7 @@ The next section goes into detail on how the generated selector works.
 
 ## How the generated selector works
 
-When an element contains an attribute specified by [`QAW_ATTRIBUTE`](api#qaw_attribute) (`data-qa,data-test,data-testid` by default), a css selector for that attribute will be generated. See [🔍 Use a Test Attribute](use_a_test_attribute) for more details.
+When an element contains an attribute specified by [`QAW_ATTRIBUTE`](api#qaw_attribute) (`data-qa,data-test,data-testid` by default), a [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) for that attribute will be generated. See [🔍 Use a Test Attribute](use_a_test_attribute) for more details.
 
 Otherwise QA Wolf serializes the entire element, its [parent](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement), and parent's parent, to make your tests robust to changes instead of relying on a specific attribute like an xpath to locate elements. The serialized elements are then stored in the selector (`.qawolf/selectors/myFirstTest.json`). QA Wolf uses the [open source `html-parse-stringify` library](https://github.com/HenrikJoreteg/html-parse-stringify) to serialize each element.
 

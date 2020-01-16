@@ -75,7 +75,7 @@ QAW_ARTIFACT_PATH=./artifacts npx qawolf test
 
 Specify `QAW_ATTRIBUTE` when you create a test, and QA Wolf will use that [attribute](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors) as a selector when it exists on an element.
 
-You can specify multiple attributes separated by commas, ex. `QAW_ATTRIBUTE=aria-label,data-qa,id,title`.
+You can specify multiple attributes separated by commas, for example `QAW_ATTRIBUTE=aria-label,data-qa,id,title`.
 
 When the element you interact with does not have the specified attribute, it will use the default [selector logic](review_test_code#element-selectors).
 
