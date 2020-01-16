@@ -87,6 +87,13 @@ program
   .description("🐺")
   .action(howl);
 
+program
+  .command("jenkins")
+  .description("set up Jenkins")
+  .action(async () => {
+    await saveCiTemplate("jenkins");
+  });
+
 program.arguments("<command>").action(cmd => {
   console.log(yellow(`Invalid command "${cmd}"\n`));
   program.help();
