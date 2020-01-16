@@ -25,7 +25,7 @@ if (artifactPath && require.main) {
 
 export const CONFIG = {
   artifactPath,
-  attribute: process.env.QAW_ATTRIBUTE || null,
+  attribute: process.env.QAW_ATTRIBUTE || "data-qa,data-test,data-testid",
   chromeOffsetX: parseNumber(process.env.QAW_CHROME_OFFSET_X, 0),
   chromeOffsetY: parseNumber(process.env.QAW_CHROME_OFFSET_Y, 125),
   debug: parseBool(process.env.QAW_DEBUG),

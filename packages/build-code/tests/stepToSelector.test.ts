@@ -6,8 +6,8 @@ import { stepToSelector } from "../src/stepToSelector";
 const doc = htmlToDoc;
 
 describe("stepToSelector", () => {
-  it("returns CssSelector if attribute is id and findValue specified", () => {
-    CONFIG.attribute = "id";
+  it("returns CssSelector if a single attribute is specified (ignoring whitespace)", () => {
+    CONFIG.attribute = " id ";
 
     const step = {
       action: "click" as Action,
@@ -26,8 +26,8 @@ describe("stepToSelector", () => {
     });
   });
 
-  it("returns CssSelector if attribute is data-qa and findValue specified", () => {
-    CONFIG.attribute = "data-qa";
+  it("returns CssSelector if multiple attributes are specified", () => {
+    CONFIG.attribute = "data-other, data-qa";
 
     const step = {
       action: "click" as Action,
@@ -47,7 +47,7 @@ describe("stepToSelector", () => {
   });
 
   it("returns HtmlSelector if attribute is not specified", () => {
-    CONFIG.attribute = null;
+    CONFIG.attribute = "";
 
     const step = {
       action: "click" as Action,

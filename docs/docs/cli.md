@@ -10,10 +10,10 @@ QA Wolf provides CLI commands to [create browser tests ✅](quick_start#-create-
 You can use [environment variables](api#environment-variables) when running the commands below. For example:
 
 ```bash
-QAW_ATTRIBUTE=data-qa npx qawolf create www.myawesomesite.com
+QAW_ATTRIBUTE=my-attribute npx qawolf create www.myawesomesite.com
 ```
 
-This will use the `data-qa` [attribute](api#qaw_attribute) as a selector when possible.
+This will use the `my-attribute` [attribute](api#qaw_attribute) as a selector when possible.
 
 ### npx qawolf --help
 
