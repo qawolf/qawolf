@@ -3,11 +3,9 @@ id: use_a_test_attribute
 title: 🔍 Use a Test Attribute
 ---
 
-When you [creata a test](create_a_test), by default QA Wolf captures all attributes of the elements you interact with. These attributes are used together to create a ["smart" element selector](review_test_code#how-the-generated-selector-works). The default selector logic helps make your tests robust to dynamic attributes like CSS classes and changes in your application.
+A best practice in testing is to use test [attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes) like `data-qa` or `data-test` to target elements to make your tests robust to changes in your front end code.
 
-A best practice in testing is to use test [attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes) like `data-qa` or `data-test` to target elements. By having target selectors that are only used for testing, your tests will be even more robust to changes in your front end code.
-
-In this tutorial, we'll learn how to create and update tests to use a test attribute of your choice. We assume you understand the basics of [creating a test](create_a_test).
+In this tutorial, we'll learn how to use a test attribute for the selector. We assume you understand the basics of [creating a test](create_a_test).
 
 ## Add test attributes to your application
 
@@ -35,15 +33,15 @@ Now even as the text, [CSS classes](https://developer.mozilla.org/en-US/docs/Web
 
 Now that at least some of the elements in our test have a `data-qa` attribute, let's create a test that targets the `data-qa` attribute whenever possible.
 
-When creating our tests, we'll set the [`QAW_ATTRIBUTE` environment variable](api#qaw_attribute) to `data-qa`. What this means is that:
+When creating our tests, QA Wolf looks for attributes from the [`QAW_ATTRIBUTE` environment variable](api#qaw_attribute) to create selectors. It defaults to `data-qa,data-test,data-testid`. What this means is that:
 
 - if the element you interact with has the `data-qa` attribute, the generated test code will target that attribute and value combination
 - otherwise, the generated test code will use the [default selector logic](review_test_code#element-selectors)
 
-To create a test using the `data-qa` attribute whenever possible, run the following command. You can set `QAW_ATTRIBUTE` to a different attribute like `data-test` or `aria-label` if you prefer.
+You can change the `QAW_ATTRIBUTE` to a different attribute like `aria-label` if you prefer.
 
 ```bash
-QAW_ATTRIBUTE=data-qa npx qawolf create www.myawesomesite.com myAwesomeTest
+QAW_ATTRIBUTE=aria-label npx qawolf create www.myawesomesite.com myAwesomeTest
 ```
 
 In this tutorial, we test a modified version of [TodoMVC](http://todomvc.com/examples/react) where some of the elements have the `data-qa` attribute and some do not. The generated test code in `.qawolf/tests/myAwesomeTest.test.js` looks like this:

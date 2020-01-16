@@ -73,9 +73,9 @@ QAW_ARTIFACT_PATH=./artifacts npx qawolf test
 
 - default: `data-qa,data-test,data-testid`
 
-Specify `QAW_ATTRIBUTE` when you create a test, and it will use that [attribute](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors) as a selector when it exists on an element. You can specify multiple attributes separated by commas.
+Specify `QAW_ATTRIBUTE` when you create a test to use that [attribute](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors) as a selector when it exists on an element.
 
-You may want to use `data-qa` (or other [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes)), `aria-label`, `title`, `id`, or something else depending on your application.
+You can specify [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes) or other attributes like `aria-label`, `title`, `id`. You can specify multiple attributes separated by commas.
 
 If the element you interact with does not have the specified attribute, it will use the default [selector logic](review_test_code#element-selectors).
 
@@ -84,19 +84,19 @@ If the element you interact with does not have the specified attribute, it will 
 Create a test with:
 
 ```bash
-QAW_ATTRIBUTE=data-qa npx qawolf create www.myawesomesite.com myTest
+QAW_ATTRIBUTE=my-data-attribute npx qawolf create www.myawesomesite.com myTest
 ```
 
 Click on this element:
 
 ```html
-<button data-qa="search">Search</button>
+<button my-data-attribute="search">Search</button>
 ```
 
 The generated code will be:
 
 ```js
-await browser.click({ css: "[data-qa='search']" });
+await browser.click({ css: "[my-data-attribute='search']" });
 ```
 
 ### QAW_DEBUG

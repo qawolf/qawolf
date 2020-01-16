@@ -82,13 +82,14 @@ See [our API documentation](api) for a full list of methods you can use to write
 
 ## Use custom selectors
 
-As [discussed earlier](review_test_code#element-selectors), the default selector in the generated test code contains all attributes of an element and its two direct [ancestors](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement). When running a test, the `qawolf` library will wait for a close enough match to the default selector before moving on. If no suitable match is found before timing out, the test will fail.
+When an element contains an attribute specified by [`QAW_ATTRIBUTE`](api#qaw_attribute) (`data-qa,data-test,data-testid` by default), a css selector for that attribute will be generated. See [🔍 Use a Test Attribute](use_a_test_attribute) for more details.
 
-You may want to edit the test code to use selectors of your choosing rather than the default selectors. This allows you to be explicit about which element to target in each step of your test.
+Otherwise the selector in the generated test code contains all attributes of an element and its two direct [ancestors](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement). When running a test, the `qawolf` library will wait for a close enough match to the default selector before moving on. If no suitable match is found before timing out, the test will fail.
 
-The two supported custom selectors are [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) and text selectors:
+You may want to edit the test code to use a different type of selectors. The two supported custom selectors are [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) and text selectors:
 
-- [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) find the element matching the CSS selector, for example: `#my-id`, `.my-class`, `div.my-class`, `[data-qa="my-input"]`
+- [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) find the element matching the CSS selector, for example: `#my-id`, `.my-class`, `div.my-class`
+
 - Text selectors find the element that contains the given text
 
 In your test code, replace the default selector (for example, `selectors[0]`) with an object containing either the `css` or `text` key and the desired target value. For example:
@@ -109,36 +110,6 @@ See [documentation on the `Selector` interface](api#interface-selector) to learn
 Try changing the default selector to either of the above examples. Then run your test again (`npx qawolf test myFirstTest`) and notice that it still passes.
 
 Whenever you target an element with a CSS or text selector, make sure that your selector is as specific as possible. If your selector matches multiple elements on the page, you could end up with the wrong element being acted upon in your test.
-
-## Use data attributes
-
-A best practice in testing is to add [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes) like `data-qa` to target elements. This involves editing your front end code, but it allows you to be most explicit about which elements to target when running tests. For example:
-
-```html
-<!-- change this -->
-<button class="clear-completed">Clear completed</button>
-<!-- to this -->
-<button data-qa="clear-button" class="clear-completed">Clear completed</button>
-```
-
-If you have added a data attribute to an element in your test, you can update the test code to use a CSS selector targeting that data attribute and value.
-
-```js
-it('can click "Clear completed" button', async () => {
-  // change this
-  await browser.click(selectors[3]);
-  // to this
-  await browser.click({ css: "[data-qa='clear-button']" });
-});
-```
-
-You can also create your test with the [`QAW_ATTRIBUTE` environment variable](api#qaw_attribute) set. This will use that attribute (like `data-qa` or `aria-label`) as the selector whenever possible. For example:
-
-```bash
-QAW_ATTRIBUTE=data-qa npx qawolf create www.myawesomesite.com myTest
-```
-
-See [our documentation](api#qaw_attribute) to learn more about the `QAW_ATTRIBUTE` environment variable.
 
 ## Change input values
 
