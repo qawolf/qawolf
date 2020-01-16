@@ -10,6 +10,7 @@ import {
   ScrollValue,
   TypeOptions
 } from "@qawolf/types";
+import { sleep } from "@qawolf/web";
 import { isNil, pick, sortBy } from "lodash";
 import {
   Browser as PuppeteerBrowser,
@@ -76,6 +77,11 @@ export class QAWolfBrowser {
   }
 
   public async close() {
+    if (CONFIG.sleepMs) {
+      logger.verbose(`Browser: sleep before close`);
+      await sleep(CONFIG.sleepMs);
+    }
+
     if (this._capture) {
       await this._capture.stop();
     }
