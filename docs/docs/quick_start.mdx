@@ -99,7 +99,8 @@ node .qawolf/scripts/name.js
     { label: 'Azure', value: 'azure', },
     { label: 'CircleCI', value: 'circleci', },
     { label: 'GitHub', value: 'github', },
-    { label: 'GitLab', value: 'gitlab', }
+    { label: 'GitLab', value: 'gitlab', },
+    { label: 'Jenkins', value: 'jenkins', }
   ]
 }>
 <TabItem value="azure">
@@ -152,6 +153,19 @@ npx qawolf gitlab
 Edit this file to suit your use case.
 
 A video, GIF, and detailed logs will automatically be uploaded as [artifacts](https://docs.gitlab.com/ee/user/project/pipelines/job_artifacts.html) when `qawolf` runs in CI.
+
+</TabItem>
+<TabItem value="jenkins">
+
+Generate a Jenkinsfile for [Jenkins](https://jenkins.io/doc/book/pipeline/jenkinsfile):
+
+```bash
+npx qawolf jenkins
+```
+
+Edit this file to suit your use case.
+
+A video, GIF, and detailed logs will automatically be uploaded as [artifacts](https://jenkins.io/doc/pipeline/tour/tests-and-artifacts) when `qawolf` runs in CI.
 
 </TabItem>
 </Tabs>
