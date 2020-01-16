@@ -48,7 +48,7 @@ describe("formatMethod", () => {
   });
 
   it("formats select step", () => {
-    CONFIG.attribute = null;
+    CONFIG.attribute = "";
 
     const formattedMethod = formatMethod({
       ...step,
@@ -60,7 +60,7 @@ describe("formatMethod", () => {
   });
 
   it("formats type step", () => {
-    CONFIG.attribute = null;
+    CONFIG.attribute = "";
 
     const formattedMethod = formatMethod(
       {
@@ -118,7 +118,7 @@ describe("formatSelector", () => {
   });
 
   it("formats HtmlSelector", () => {
-    CONFIG.attribute = null;
+    CONFIG.attribute = "";
 
     const formattedSelector = formatSelector({ ...step, index: 11 });
 
