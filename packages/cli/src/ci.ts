@@ -4,13 +4,14 @@ import { prompt } from "inquirer";
 import path from "path";
 const { version } = require("../package");
 
-type CiProvider = "azure" | "circleci" | "github" | "gitlab";
+type CiProvider = "azure" | "circleci" | "github" | "gitlab" | "jenkins";
 
 const paths = {
   azure: "azure-pipelines.yml",
   circleci: ".circleci/config.yml",
   github: ".github/workflows/qawolf.yml",
-  gitlab: ".gitlab-ci.yml"
+  gitlab: ".gitlab-ci.yml",
+  jenkins: "Jenkinsfile"
 };
 
 export const saveCiTemplate = async (provider: CiProvider): Promise<void> => {

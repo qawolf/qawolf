@@ -1,0 +1,33 @@
+pipeline {
+    agent {
+        docker {
+            image 'circleci/node:12.14.0-browsers'
+        }
+    }
+    stages {
+        stage('Build') { 
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('Test') {
+            environment { 
+                QAW_ARTIFACT_PATH = './artifacts'
+                // configure tests with environment variables
+                // https://docs.qawolf.com/docs/configuration
+                // QAW_SLEEP_MS: 0
+            }
+            steps {
+                sh 'rm -rf ./artifacts' // delete old artifacts
+                // // Start local server
+                // sh 'npm run start & npx wait-on http://localhost:3000'
+                sh 'npx qawolf test'
+            }
+        }
+    }
+    post {
+        always {
+            archiveArtifacts(artifacts: 'artifacts/**/*.*', fingerprint: true) 
+        }
+    }
+}

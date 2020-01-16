@@ -113,6 +113,12 @@ npx qawolf github
 npx qawolf gitlab
 ```
 
+[🤵 Jenkins](https://docs.qawolf.com/docs/set_up_ci#jenkins)
+
+```bash
+npx qawolf jenkins
+```
+
 ![Set up CI](https://storage.googleapis.com/docs.qawolf.com/home/github.gif)
 
 [Ping us](https://gitter.im/qawolf/community) if you want to run QA Wolf somewhere else.

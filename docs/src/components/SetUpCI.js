@@ -32,6 +32,13 @@ const CI_PROVIDERS = [
     logo:
       "https://pragmaticintegrator.files.wordpress.com/2015/12/logo-gitlab.png",
     name: "GitLab"
+  },
+  {
+    command: "jenkins",
+    gif:
+      "https://storage.googleapis.com/docs.qawolf.com/home/jenkins-small.gif",
+    logo: "https://wiki.jenkins.io/download/attachments/2916393/logo.png",
+    name: "Jenkins"
   }
 ];
 

@@ -11,7 +11,7 @@ This tutorial assumes that you have already [created a browser test](create_a_te
 
 ## Commands
 
-We auto-generate [<img align="center" height="20px" src="https://cdn.iconscout.com/icon/free/png-256/azure-190760.png" /> Azure](#azure), [<img align="center" height="20px" src="https://cdn.iconscout.com/icon/free/png-256/circleci-283066.png" /> CircleCI](#circleci), [<img align="center" height="20px" src="https://camo.githubusercontent.com/7710b43d0476b6f6d4b4b2865e35c108f69991f3/68747470733a2f2f7777772e69636f6e66696e6465722e636f6d2f646174612f69636f6e732f6f637469636f6e732f313032342f6d61726b2d6769746875622d3235362e706e67" /> GitHub](#github), and [🦊 GitLab](#gitlab) workflow files. [Let us know](https://gitter.im/qawolf/community) if you would like another provider!
+We auto-generate [<img align="center" height="20px" src="https://cdn.iconscout.com/icon/free/png-256/azure-190760.png" /> Azure](#azure), [<img align="center" height="20px" src="https://cdn.iconscout.com/icon/free/png-256/circleci-283066.png" /> CircleCI](#circleci), [<img align="center" height="20px" src="https://camo.githubusercontent.com/7710b43d0476b6f6d4b4b2865e35c108f69991f3/68747470733a2f2f7777772e69636f6e66696e6465722e636f6d2f646174612f69636f6e732f6f637469636f6e732f313032342f6d61726b2d6769746875622d3235362e706e67" /> GitHub](#github), [🦊 GitLab](#gitlab), [🤵 Jenkins](#jenkins) workflow files. [Let us know](https://gitter.im/qawolf/community) if you would like another provider!
 
 ### <a name="azure"></a> <img align="center" height="20px" src="https://cdn.iconscout.com/icon/free/png-256/azure-190760.png" /> Azure
 
@@ -34,17 +34,13 @@ You can configure your tests with [environment variables](api#environment-variab
 Example:
 
 ```yaml
-# ...
 steps:
   - script: qawolf test
     env:
-      # ...
-      # set "QAW_URL" to override the url for all tests
-      QAW_URL: www.my_staging_url.com
-      # override recorded value for second step of "create_account" test
+      # override the default sleep time
+      QAW_SLEEP_MS: 0
       # set secret environment variables in Azure DevOps pipeline
       QAW_CREATE_ACCOUNT_1: $(SECRET_PASSWORD)
-# ...
 ```
 
 To learn more about configuring pipelines in Azure DevOps, see [Azure's documentation](https://docs.microsoft.com/en-us/azure/devops/pipelines/customize-pipeline).
@@ -64,7 +60,6 @@ This will generate a file called `config.yml` in the `.circleci` directory at th
 The workflow will run per commit. To run your tests on a [schedule](https://circleci.com/docs/2.0/workflows/#scheduling-a-workflow), comment in the following lines:
 
 ```yaml
-# ...
 # example for running on a schedule, edthem to suit your needs
 # documentation: https://circleci.com/docs/2.0/api-reference/#schedule
 workflows:
@@ -95,13 +90,10 @@ jobs:
     docker:
       - image: qawolf/qawolf:latest
         environment:
-          # ...
-          # set "QAW_URL" to override the url for all tests
-          QAW_URL: www.my_staging_url.com
-          # override recorded value for second step of "create_account" test
+          # override the default sleep time
+          QAW_SLEEP_MS: 0
           # set secret environment variables in CircleCI settings
           QAW_CREATE_ACCOUNT_1: ${SECRET_PASSWORD}
-# ...
 ```
 
 To learn more about configuring workflows in CircleCI, see [CircleCI's documentation](https://circleci.com/docs/2.0/api-reference).
@@ -124,7 +116,7 @@ The workflow will run per commit. To run your tests on a [schedule](https://help
 name: qawolf
 on:
   push:
-  # ...
+
   schedule:
     # test on schedule using cron syntax
     - cron: "0 * * * *" # every hour
@@ -147,10 +139,8 @@ jobs:
       - name: qawolf test
         uses: qawolf/qawolf@master
         env:
-          # ...
-          # set "QAW_URL" to override the url for all tests
-          QAW_URL: www.my_staging_url.com
-          # override recorded value for second step of "create_account" test
+          # override the default sleep time
+          QAW_SLEEP_MS: 0
           # set secret environment variables in GitHub repository settings
           QAW_CREATE_ACCOUNT_1: ${{ secrets.PASSWORD }}
 ```
@@ -182,16 +172,38 @@ qawolf:
   image: qawolf/qawolf:latest
   script: qawolf test
   variables:
-    # ...
-    # set "QAW_URL" to override the url for all tests
-    QAW_URL: www.my_staging_url.com
-    # override recorded value for second step of "create_account" test
+    # override the default sleep time
+    QAW_SLEEP_MS: 0
     # set protected environment variables in GitLab settings
     QAW_CREATE_ACCOUNT_1: $SECRET_PASSWORD
-# ...
 ```
 
 To learn more about configuring pipelines in GitLab, see [GitLab's documentation](https://docs.gitlab.com/ee/ci/yaml/).
+
+### <a name="jenkins"></a> 🤵 Jenkins
+
+Generate a Jenkinsfile for [Jenkins](https://jenkins.io/doc/book/pipeline/jenkinsfile):
+
+```bash
+npx qawolf jenkins
+```
+
+This will generate a file called `Jenkinsfile` at the root of your project. You can edit `Jenkinsfile` to suit your needs.
+
+#### Environment Variables
+
+You can configure your tests with [environment variables](api#environment-variables).
+
+Example:
+
+```
+environment {
+  // override the default sleep time
+  QAW_SLEEP_MS = 0
+}
+```
+
+To learn more about configuring pipelines in Jenkins, see [Jenkins's documentation](https://jenkins.io/doc/pipeline/tour/hello-world/).
 
 ## 🕵️ Debug
 

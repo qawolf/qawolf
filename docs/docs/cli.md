@@ -67,3 +67,7 @@ Generate a workflow file for [GitLab CI/CD](https://docs.gitlab.com/ee/ci/README
 ### npx qawolf howl
 
 🐺😉
+
+### npx qawolf jenkins
+
+Generate a Jenkinsfile for [Jenkins](https://jenkins.io/doc/book/pipeline/jenkinsfile). See [Set Up 🤵 Jenkins](set_up_ci#jenkins) for more details.
