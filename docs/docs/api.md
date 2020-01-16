@@ -117,8 +117,8 @@ The default time to sleep after an element is found for [FindElementOptions], an
 
 We default to 1s to:
 
-- more easily watch each step in the video
-- wait for elements that appear before their event handlers are attached or data is loaded. You can write custom wait logic instead, see the [`waitUntil` helper](api#waituntil).
+- make it easier to watch each step in the video
+- wait for elements that appear before their event handlers are attached or data is loaded. If your application has elements that appear before they can be acted upon, a best practice is to [write custom wait logic](api#waituntil) to improve test stability.
 
 ### QAW_TIMEOUT_MS
 
