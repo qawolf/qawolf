@@ -71,9 +71,11 @@ QAW_ARTIFACT_PATH=./artifacts npx qawolf test
 
 ### QAW_ATTRIBUTE
 
-- default: `null`
+- default: `data-qa,data-test,data-testid`
 
-Specify `QAW_ATTRIBUTE` when you create a test, and it will use that [attribute](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors) as a selector when it exists on an element. You may want to use `data-qa` (or other [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes)), `aria-label`, `title`, `id`, or something else depending on your application.
+Specify `QAW_ATTRIBUTE` when you create a test, and it will use that [attribute](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors) as a selector when it exists on an element. You can specify multiple attributes separated by commas.
+
+You may want to use `data-qa` (or other [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes)), `aria-label`, `title`, `id`, or something else depending on your application.
 
 If the element you interact with does not have the specified attribute, it will use the default [selector logic](review_test_code#element-selectors).
 
