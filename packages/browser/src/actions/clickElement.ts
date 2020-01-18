@@ -3,6 +3,6 @@ import { ElementHandle } from "puppeteer";
 
 export const clickElement = async (element: ElementHandle): Promise<void> => {
   logger.verbose("clickElement: received");
-  await element.click();
+  await element.evaluate(e => (e as HTMLElement).click());
   logger.verbose("clickElement: clicked");
 };
