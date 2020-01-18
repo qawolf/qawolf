@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/cli",
   "description": "qawolf cli for running tests",
-  "version": "0.8.1-alpha.0",
+  "version": "0.8.1-alpha.1",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -25,9 +25,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/browser": "^0.8.1-alpha.0",
+    "@qawolf/browser": "^0.8.1-alpha.1",
     "@qawolf/build-code": "^0.8.1-alpha.0",
-    "@qawolf/build-workflow": "^0.8.1-alpha.0",
+    "@qawolf/build-workflow": "^0.8.1-alpha.1",
     "@qawolf/config": "^0.8.1-alpha.0",
     "@qawolf/jest-fail-fast": "^0.8.0",
     "@qawolf/logger": "^0.8.1-alpha.0",
