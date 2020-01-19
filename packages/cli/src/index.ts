@@ -22,6 +22,7 @@ program
   .alias("record")
   .option("--debug", "save events and workflow json for debugging")
   .option("-d, --device <device>", "emulate using a puppeteer.device")
+  .option("-p, --path <path>", "path to save the file")
   .option("-s, --script", "create a script instead of a test")
   .description("create a test from browser actions")
   .action(async (urlArgument, optionalName, cmd) => {
@@ -40,6 +41,7 @@ program
       debug: cmd.debug,
       device: cmd.device,
       name,
+      path: cmd.path,
       test: !cmd.script,
       url
     });
