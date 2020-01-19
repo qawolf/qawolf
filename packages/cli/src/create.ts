@@ -10,6 +10,7 @@ type RecordOptions = {
   debug?: boolean;
   device?: string;
   name: string;
+  path?: string;
   test?: boolean;
   url: Url;
 };
@@ -27,7 +28,7 @@ export const create = async (options: RecordOptions): Promise<void> => {
     url: options.url.href
   });
 
-  const qawolfPath = `${process.cwd()}/.qawolf`;
+  const qawolfPath = options.path || `${process.cwd()}/.qawolf`;
 
   const saveJson = (type: string, data: any) => {
     const path = `${qawolfPath}/${type}/${name}.json`;

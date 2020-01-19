@@ -9,7 +9,7 @@ import { saveCiTemplate } from "./ci";
 import { create } from "./create";
 import { howl } from "./howl";
 import { runJest } from "./runJest";
-import { parseUrl } from "./utils";
+import { omitArgs, parseUrl } from "./utils";
 const pkg = require("../package");
 
 updateNotifier({ pkg }).notify();
@@ -22,6 +22,7 @@ program
   .alias("record")
   .option("--debug", "save events and workflow json for debugging")
   .option("-d, --device <device>", "emulate using a puppeteer.device")
+  .option("-p, --path <path>", "path to save the file")
   .option("-s, --script", "create a script instead of a test")
   .description("create a test from browser actions")
   .action(async (urlArgument, optionalName, cmd) => {
@@ -40,6 +41,7 @@ program
       debug: cmd.debug,
       device: cmd.device,
       name,
+      path: cmd.path,
       test: !cmd.script,
       url
     });
@@ -47,10 +49,15 @@ program
 
 program
   .command("test")
+  .option("-p, --path <path>", "path to test code")
   .description("run a test with Jest")
   .allowUnknownOption(true)
-  .action(() => {
-    const code = runJest(process.argv.slice(3));
+  .action(cmd => {
+    const args = omitArgs(process.argv.slice(3), ["-p", "--path"]);
+
+    const code = runJest(args, {
+      path: cmd.path
+    });
     process.exit(code);
   });
 

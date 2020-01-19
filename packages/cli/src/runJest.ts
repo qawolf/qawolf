@@ -1,13 +1,19 @@
 import { execSync } from "child_process";
 
-export const runJest = (args: string[] = []) => {
+type RunJestOptions = {
+  path?: string;
+};
+
+export const runJest = (args: string[] = [], options: RunJestOptions = {}) => {
   /**
    * Returns exit code. 0 for success, 1 for failed.
    */
 
+  const rootDir = options.path || ".qawolf";
+
   // jest-fail-fast preset overrides the transform, and configures the jasmine-fail-fast plugin
   // --config={} prevents using the local jest config
-  let command = `npx jest --preset="@qawolf/jest-fail-fast" --rootDir=.qawolf --testTimeout=60000 --config={}`;
+  let command = `npx jest --preset="@qawolf/jest-fail-fast" --rootDir=${rootDir} --testTimeout=60000 --config={}`;
 
   // pass through other arguments to jest
   if (args.length) {
