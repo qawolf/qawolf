@@ -22,7 +22,7 @@ See all commands and options.
 ### npx qawolf create <url\> \[name]
 
 - `--device <device>` (optional): Emulate a [device](https://github.com/puppeteer/puppeteer/blob/5e63254e62fb9aedfd4503c632228c3334c70293/lib/DeviceDescriptors.js).
-- `--path <path>` (optional): Specify the path to create the test. If path is not provided, path is `.qawolf`.
+- `--path <path>` (optional): Specify the path to create the test. Defaults to `.qawolf`.
 - `--script` (optional): Create a node script instead of a [Jest](https://jestjs.io) test.
 - `url` (required): visit this URL to begin your test.
 - `name` (optional): Your file will be saved to `.qawolf/tests/name.test.js` or `.qawolf/scripts/name.js`. The name defaults to the URL hostname if not provided. `name` will be converted to camel case.
@@ -35,19 +35,22 @@ npx qawolf create --device="iPhone 7" google.com
 npx qawolf create --script google.com
 ```
 
-### npx qawolf test \[name]
+### npx qawolf test \[...options]
 
-- `name` (optional) If `name` is not provided, QA Wolf will run all of your tests. If `name` is provided, QA Wolf will run that specific test.
-- `--path <path>` (optional): Specify the path of the test file. If path is not provided, path is `.qawolf`.
+- `--path <path>` (optional): Specify the [root directory](https://jestjs.io/docs/en/configuration#rootdir-string) that Jest should scan for tests. Defaults to `.qawolf`.
+- `...options` (optional) Options for the [Jest CLI](https://jestjs.io/docs/en/cli).
 
-Run a specific test or all tests with Jest. This calls `npx jest` and all arguments are passed through to the [Jest CLI](https://jestjs.io/docs/en/cli).
+Run tests with Jest.
 
 ```bash
+// run all tests
+npx qawolf test
+
+// run one test
+npx qawolf test myTest
+
 // use runInBand from the Jest CLI to run tests serially
 npx qawolf test --runInBand
-
-// run a specific test
-npx qawolf test myTest
 ```
 
 ### npx qawolf azure

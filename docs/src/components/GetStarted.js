@@ -50,7 +50,9 @@ function GetStarted() {
           <h3>3. Run your test</h3>
           <p className={styles.stepDirection}>
             Use the{" "}
-            <Link href={useBaseUrl("docs/cli#npx-qawolf-test-name")}>CLI</Link>{" "}
+            <Link href={useBaseUrl("docs/cli#npx-qawolf-test-options")}>
+              CLI
+            </Link>{" "}
             to run your tests locally:
           </p>
           <CodeBlock value="npx qawolf test" />
