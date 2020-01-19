@@ -18,6 +18,7 @@ import {
   DirectNavigationOptions,
   ElementHandle
 } from "puppeteer";
+import { ClickOptions } from "../actions/clickElement";
 import { Browser } from "./Browser";
 import { decorateBrowser } from "./decorateBrowser";
 import { createDomReplayer } from "../page/createDomReplayer";
@@ -67,7 +68,7 @@ export class QAWolfBrowser {
 
   public async click(
     selector: Selector,
-    options: FindElementOptions = {}
+    options: FindElementOptions & ClickOptions = {}
   ): Promise<ElementHandle> {
     const page = await this.page({
       ...options,

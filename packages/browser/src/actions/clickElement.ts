@@ -1,8 +1,21 @@
 import { logger } from "@qawolf/logger";
 import { ElementHandle } from "puppeteer";
 
-export const clickElement = async (element: ElementHandle): Promise<void> => {
-  logger.verbose("clickElement");
+export type ClickOptions = {
+  simulate?: boolean;
+};
 
-  await element.click();
+export const clickElement = async (
+  element: ElementHandle,
+  options: ClickOptions = {}
+): Promise<void> => {
+  logger.verbose(`clickElement: received ${JSON.stringify(options)}`);
+
+  if (options.simulate === false) {
+    await element.click();
+  } else {
+    await element.evaluate(e => (e as HTMLElement).click());
+  }
+
+  logger.verbose("clickElement: clicked");
 };

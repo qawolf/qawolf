@@ -9,7 +9,7 @@ describe("Recorder", () => {
       recordEvents: true,
       url: CONFIG.testUrl
     });
-    await browser.click({ html: "<a>broken images</a>" });
+    await browser.click({ html: "<a>broken images</a>" }, { simulate: false });
 
     // close the browser to ensure events are transmitted
     await sleep(1000);

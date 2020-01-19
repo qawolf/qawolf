@@ -10,6 +10,7 @@ import {
   DirectNavigationOptions,
   ElementHandle
 } from "puppeteer";
+import { ClickOptions } from "../actions/clickElement";
 import { Page } from "../page/Page";
 import { QAWolfBrowser } from "./QAWolfBrowser";
 
@@ -17,7 +18,7 @@ import { QAWolfBrowser } from "./QAWolfBrowser";
 export interface Browser extends PuppeteerBrowser {
   click(
     selector: Selector,
-    options?: FindElementOptions
+    options?: FindElementOptions & ClickOptions
   ): Promise<ElementHandle>;
 
   find: (

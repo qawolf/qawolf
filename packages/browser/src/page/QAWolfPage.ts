@@ -10,6 +10,7 @@ import { ElementHandle } from "puppeteer";
 import { eventWithTime } from "rrweb/typings/types";
 import {
   clickElement,
+  ClickOptions,
   scrollElement,
   selectElement,
   typeElement
@@ -36,7 +37,7 @@ export class QAWolfPage {
 
   public click(
     selector: Selector,
-    options: FindElementOptions = {}
+    options: FindElementOptions & ClickOptions = {}
   ): Promise<ElementHandle> {
     logger.verbose(`Page ${this._index}: click`);
 
@@ -46,7 +47,7 @@ export class QAWolfPage {
         action: "click"
       });
 
-      await clickElement(element);
+      await clickElement(element, options);
 
       return element;
     });
