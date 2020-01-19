@@ -22,6 +22,7 @@ See all commands and options.
 ### npx qawolf create <url\> \[name]
 
 - `--device <device>` (optional): Emulate a [device](https://github.com/puppeteer/puppeteer/blob/5e63254e62fb9aedfd4503c632228c3334c70293/lib/DeviceDescriptors.js).
+- `--path <path>` (optional): Specify the path to create the test. If path is not provided, path is `.qawolf`.
 - `--script` (optional): Create a node script instead of a [Jest](https://jestjs.io) test.
 - `url` (required): visit this URL to begin your test.
 - `name` (optional): Your file will be saved to `.qawolf/tests/name.test.js` or `.qawolf/scripts/name.js`. The name defaults to the URL hostname if not provided. `name` will be converted to camel case.
@@ -37,6 +38,7 @@ npx qawolf create --script google.com
 ### npx qawolf test \[name]
 
 - `name` (optional) If `name` is not provided, QA Wolf will run all of your tests. If `name` is provided, QA Wolf will run that specific test.
+- `--path <path>` (optional): Specify the path of the test file. If path is not provided, path is `.qawolf`.
 
 Run a specific test or all tests with Jest. This calls `npx jest` and all arguments are passed through to the [Jest CLI](https://jestjs.io/docs/en/cli).
 
