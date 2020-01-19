@@ -14,3 +14,9 @@ export const parseUrl = (urlString: string) => {
 
   return url;
 };
+
+export const getUnknownOptions = (args: string[], allowOptions: string[]) => {
+  return args.filter(
+    arg => !allowOptions.some(option => arg.startsWith(option))
+  );
+};

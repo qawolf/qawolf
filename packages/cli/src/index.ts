@@ -9,7 +9,7 @@ import { saveCiTemplate } from "./ci";
 import { create } from "./create";
 import { howl } from "./howl";
 import { runJest } from "./runJest";
-import { parseUrl } from "./utils";
+import { parseUrl, getUnknownOptions } from "./utils";
 const pkg = require("../package");
 
 updateNotifier({ pkg }).notify();
@@ -49,10 +49,16 @@ program
 
 program
   .command("test")
+  .option("-p, --path <path>", "path to test code")
   .description("run a test with Jest")
   .allowUnknownOption(true)
-  .action(() => {
-    const code = runJest(process.argv.slice(3));
+  .action(cmd => {
+    const options = ["-p", "--path"];
+    const unknownOption = getUnknownOptions(process.argv.slice(3), options);
+
+    const code = runJest(unknownOption, {
+      path: cmd.path
+    });
     process.exit(code);
   });
 
