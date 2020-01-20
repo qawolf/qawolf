@@ -1,5 +1,5 @@
 import { CONFIG } from "@qawolf/config";
-import { Display } from "@qawolf/screen";
+import { Xvfb } from "@qawolf/screen";
 import { omit } from "lodash";
 import { platform } from "os";
 import { launch, LaunchOptions, Browser } from "puppeteer";
@@ -9,7 +9,7 @@ import { getDevice } from "./device";
 
 interface LaunchPuppeteerOptions extends LaunchOptions {
   device?: Device;
-  display?: Display;
+  display?: string;
 }
 
 export const launchPuppeteer = (
@@ -27,7 +27,7 @@ export const launchPuppeteer = (
     ],
     defaultViewport: null,
     headless: CONFIG.headless,
-    ...omit(options, "display")
+    ...options
   };
 
   if (platform() === "linux") {
@@ -39,7 +39,7 @@ export const launchPuppeteer = (
   if (options.display) {
     launchOptions.env = {
       ...process.env,
-      DISPLAY: options.display.screen
+      DISPLAY: options.display
     };
   }
 

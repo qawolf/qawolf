@@ -43,7 +43,7 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
   const puppeteerBrowser = await launchPuppeteer({
     ...options,
     device,
-    display: capture ? capture.display : undefined
+    display: capture ? capture.xvfb.display : undefined
   });
 
   const qawolfBrowser = new QAWolfBrowser({

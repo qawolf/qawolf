@@ -4,15 +4,15 @@ import { spawn, ChildProcessWithoutNullStreams } from "child_process";
 import { ensureDir } from "fs-extra";
 import { pick } from "lodash";
 import { dirname } from "path";
-import { Display } from "./Display";
 import { getPath } from "./ffmpeg";
 import { Offset, Size } from "./types";
+import { Xvfb } from "./Xvfb";
 
 export interface VideoCaptureOptions {
-  display: Display;
   offset: Offset;
   savePath: string;
   size: Size;
+  xvfb: Xvfb;
 }
 
 const buildArgs = (options: VideoCaptureOptions) => [
@@ -31,7 +31,7 @@ const buildArgs = (options: VideoCaptureOptions) => [
   // input
   "-i",
   //:display+x,y offset
-  `${options.display.screen}+${options.offset.x},${options.offset.y}`,
+  `${options.xvfb.screen}+${options.offset.x},${options.offset.y}`,
   // overwrite output
   "-y",
   // balance high quality and good compression https://superuser.com/a/582327/856890

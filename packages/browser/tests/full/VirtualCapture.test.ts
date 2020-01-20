@@ -25,7 +25,7 @@ describe("launch and VirtualCapture", () => {
     expect(capture.size).toEqual({ height: 668, width: 376 });
 
     // creates a display
-    expect(capture.display).toBeTruthy();
+    expect(capture.xvfb).toBeTruthy();
 
     await sleep(500);
     await browser.close();
