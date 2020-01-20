@@ -33,10 +33,6 @@ jobs:
           C:\\rubyinstaller-2.6.5-1-x64\\bin\\bundle.cmd exec rackup --host 0.0.0.0 --port 5000 &
         shell: bash
 
-      # https://github.community/t5/GitHub-Actions/Windows-tests-worked-yesterday-broken-today/m-p/43839/highlight/true#M5530
-      - name: Override bash shell PATH
-        run: echo "::add-path::C:\Program Files\Git\bin"
-
       - name: Run tests
         run: |
           cd project
