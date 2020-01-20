@@ -2,7 +2,7 @@ name: npm test windows
 on:
   push:
     branches:
-      - "*"
+      - master
 jobs:
   test:
     runs-on: windows-2019
