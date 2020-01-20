@@ -12,6 +12,7 @@
     "pretest": "npm run lint",
     "test": "lerna run --stream test",
     "test:services": "docker-compose up -d",
+    "test:windows": "lerna run --stream test -- -- --forceExit",
     "watch": "tsc --build --watch packages/tsconfig.project.json"
   },
   "husky": {
