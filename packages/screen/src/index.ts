@@ -1,2 +1,2 @@
-export { Display } from "./Display";
 export { VirtualCapture } from "./VirtualCapture";
+export { Xvfb } from "./Xvfb";

@@ -3,9 +3,9 @@ import { isCI } from "@qawolf/ci-info";
 import { platform } from "os";
 import { join } from "path";
 import { createGif } from "./createGif";
-import { Display } from "./Display";
 import { Offset, Size } from "./types";
 import { VideoCapture, VideoCaptureOptions } from "./VideoCapture";
+import { Xvfb } from "./Xvfb";
 
 interface CreateOptions {
   offset: Offset;
@@ -39,23 +39,19 @@ export class VirtualCapture {
       width: videoSize.width + options.offset.x
     };
 
-    const display = await Display.start(displaySize);
-    if (!display) return null;
+    const xvfb = await Xvfb.start(displaySize);
+    if (!xvfb) return null;
 
     return new VirtualCapture({
-      display,
       offset: options.offset,
       savePath: options.savePath,
-      size: videoSize
+      size: videoSize,
+      xvfb
     });
   }
 
   static isEnabled(): boolean {
     return isCI && platform() === "linux";
-  }
-
-  public get display() {
-    return this._options.display;
   }
 
   public get gifPath() {
@@ -72,6 +68,10 @@ export class VirtualCapture {
 
   public get videoPath() {
     return this._videoPath;
+  }
+
+  public get xvfb() {
+    return this._options.xvfb;
   }
 
   public async start() {
@@ -96,6 +96,6 @@ export class VirtualCapture {
       });
     }
 
-    await this._options.display.stop();
+    await this._options.xvfb.stop();
   }
 }
