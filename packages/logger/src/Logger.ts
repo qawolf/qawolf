@@ -4,9 +4,12 @@ import winston from "winston";
 
 const LogLevels = ["debug", "error", "info", "verbose", "warn"];
 
+type LogCallback = (level: string, message: string) => void;
+
 export class Logger {
   private _logger: winston.Logger;
   private _name: string;
+  private _logCallbacks: LogCallback[] = [];
 
   constructor(name: string) {
     this._logger = winston.createLogger({ transports: [] });
@@ -28,34 +31,34 @@ export class Logger {
   }
 
   public debug(message: string) {
-    this.ensureTransport();
-    this._logger.debug(message);
+    this.log("debug", message);
   }
 
   public error(message: string) {
-    this.ensureTransport();
-    this._logger.error(message);
+    this.log("error", message);
+  }
+
+  public onLog(callback: LogCallback) {
+    this._logCallbacks.push(callback);
   }
 
   public info(message: string) {
-    this.ensureTransport();
-    this._logger.info(message);
+    this.log("info", message);
   }
 
   public log(level: string, message: string) {
     this.ensureTransport();
     const logLevel = LogLevels.includes(level) ? level : "info";
     this._logger.log(logLevel, message);
+    this._logCallbacks.forEach(cb => cb(level, message));
   }
 
   public verbose(message: string) {
-    this.ensureTransport();
-    this._logger.verbose(message);
+    this.log("verbose", message);
   }
 
   public warn(message: string) {
-    this.ensureTransport();
-    this._logger.warn(message);
+    this.log("warn", message);
   }
 }
 
