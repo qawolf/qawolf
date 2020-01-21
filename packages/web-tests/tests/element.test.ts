@@ -58,15 +58,11 @@ describe("getClickableAncestor", () => {
 });
 
 describe("getAttributeValue", () => {
-  it("returns null if data attribute not specified in config", async () => {
+  it("returns null if data attribute not specified", async () => {
     const attribute = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
-      username.setAttribute("data-qa", "user");
-
-      const result = qawolf.element.getAttributeValue(username, null);
-      username.removeAttribute("data-qa");
-
+      const result = qawolf.element.getAttributeValue(username, "");
       return result;
     });
 
@@ -88,32 +84,33 @@ describe("getAttributeValue", () => {
     expect(attribute).toBeNull();
   });
 
-  it("returns data attribute value correctly", async () => {
+  it("gets attribute when there are multiple specified", async () => {
     const attribute = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
       username.setAttribute("data-qa", "user");
 
-      const result = qawolf.element.getAttributeValue(username, "data-qa");
+      const result = qawolf.element.getAttributeValue(
+        username,
+        "data-id , data-qa "
+      );
       username.removeAttribute("data-qa");
 
       return result;
     });
 
-    expect(attribute).toBe("user");
+    expect(attribute).toEqual({ attribute: "data-qa", value: "user" });
   });
 
-  it("returns id value correctly", async () => {
+  it("gets attribute when there is one specified", async () => {
     const attribute = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const username = document.getElementById("username")!;
-
       const result = qawolf.element.getAttributeValue(username, "id");
-
       return result;
     });
 
-    expect(attribute).toBe("username");
+    expect(attribute).toEqual({ attribute: "id", value: "username" });
   });
 });
 

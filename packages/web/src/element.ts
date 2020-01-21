@@ -1,5 +1,10 @@
 import { getXpath } from "./xpath";
 
+interface AttributeValuePair {
+  attribute: string;
+  value: string;
+}
+
 export const getClickableAncestor = (
   element: HTMLElement,
   attribute: string
@@ -15,10 +20,11 @@ export const getClickableAncestor = (
 
   while (ancestor.parentElement) {
     // choose the data value element as the clickable ancestor
-    const findValue = getAttributeValue(ancestor, attribute);
-    if (findValue) {
+    const attributeValue = getAttributeValue(ancestor, attribute);
+
+    if (attributeValue) {
       console.log(
-        `found clickable ancestor: ${attribute}="${findValue}"`,
+        `found clickable ancestor: ${JSON.stringify(attributeValue)}"`,
         getXpath(ancestor)
       );
       return ancestor;
@@ -52,11 +58,17 @@ export const getClickableAncestor = (
 
 export const getAttributeValue = (
   element: HTMLElement,
-  attribute: string | null
-): string | null => {
+  attribute: string
+): AttributeValuePair | null => {
   if (!attribute) return null;
 
-  return element.getAttribute(attribute) || null;
+  const attributes = attribute.split(",").map(attr => attr.trim());
+  for (let attribute of attributes) {
+    const value = element.getAttribute(attribute);
+    if (value) return { attribute, value };
+  }
+
+  return null;
 };
 
 export const isClickable = (
