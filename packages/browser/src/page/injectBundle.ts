@@ -25,16 +25,17 @@ if (!window.qaw_rrweb) {
 }
 `;
 
+const recordEventsJs = (pageIndex: number) =>
+  `window.qaw_recorder = window.qaw_recorder || new qawolf.Recorder("${CONFIG.attribute}", ${pageIndex}, (event) => qaw_onEvent(event));`;
+
 export const bundleJs = (
   recordDom: boolean,
   recordEvents: boolean,
   pageIndex: number
 ) => {
-  const recordEventsJs = `window.qaw_recorder = window.qaw_recorder || new qawolf.Recorder("${CONFIG.attribute}", ${pageIndex}, (event) => qaw_onEvent(event));`;
-
   let bundle = qawolfJs;
   if (recordDom) bundle += recordDomJs;
-  if (recordEvents) bundle += recordEventsJs;
+  if (recordEvents) bundle += recordEventsJs(pageIndex);
   return bundle;
 };
 
@@ -51,6 +52,14 @@ export const captureEvents = async (page: Page) => {
   });
 };
 
+export const captureLogs = async (page: Page) => {
+  await page.exposeFunction(
+    "qaw_log",
+    // TODO change to browser logger.
+    (level: keyof Console, message: string) => console[level](message)
+  );
+};
+
 export const injectBundle = async (
   page: Page,
   recordDom: boolean,
@@ -58,13 +67,17 @@ export const injectBundle = async (
 ) => {
   const bundle = bundleJs(recordDom, recordEvents, page.qawolf.index);
 
+  const functionPromises = [captureLogs(page)];
+
   if (recordDom) {
-    await captureDomEvents(page);
+    functionPromises.push(captureDomEvents(page));
   }
 
   if (recordEvents) {
-    await captureEvents(page);
+    functionPromises.push(captureEvents(page));
   }
+
+  await Promise.all(functionPromises);
 
   await Promise.all([
     retryExecutionError(() => page.evaluate(bundle)),

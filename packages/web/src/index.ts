@@ -1,3 +1,4 @@
+import { captureLogs } from "./captureLogs";
 import * as element from "./element";
 import * as event from "./event";
 import * as find from "./find";
@@ -54,6 +55,7 @@ const webExports = {
 export type QAWolfWeb = typeof webExports;
 
 if (typeof window !== "undefined" && typeof window.document !== "undefined") {
+  captureLogs();
   console.log("qawolf: loaded");
   exports = webExports;
 }
