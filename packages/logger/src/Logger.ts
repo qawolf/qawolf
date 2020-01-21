@@ -2,33 +2,60 @@ import { CONFIG } from "@qawolf/config";
 import { ensureDirSync } from "fs-extra";
 import winston from "winston";
 
+const LogLevels = ["debug", "error", "info", "verbose", "warn"];
+
 export class Logger {
   private _logger: winston.Logger;
+  private _name: string;
 
-  constructor() {
-    this._logger = winston.createLogger({
-      transports: [
-        CONFIG.artifactPath
-          ? createFileTransport(CONFIG.artifactPath)
-          : createConsoleTransport()
-      ]
-    });
+  constructor(name: string) {
+    this._logger = winston.createLogger({ transports: [] });
+    this._name = name;
   }
 
-  debug(message: string) {
+  private ensureTransport() {
+    if (this._logger.transports.length) return;
+
+    const transport = CONFIG.artifactPath
+      ? createFileTransport(CONFIG.artifactPath, this._name)
+      : createConsoleTransport();
+
+    this._logger.add(transport);
+  }
+
+  public get numTransports() {
+    return this._logger.transports.length;
+  }
+
+  public debug(message: string) {
+    this.ensureTransport();
     this._logger.debug(message);
   }
 
-  error(message: string) {
+  public error(message: string) {
+    this.ensureTransport();
     this._logger.error(message);
   }
 
-  info(message: string) {
+  public info(message: string) {
+    this.ensureTransport();
     this._logger.info(message);
   }
 
-  verbose(message: string) {
+  public log(level: string, message: string) {
+    this.ensureTransport();
+    const logLevel = LogLevels.includes(level) ? level : "info";
+    this._logger.log(logLevel, message);
+  }
+
+  public verbose(message: string) {
+    this.ensureTransport();
     this._logger.verbose(message);
+  }
+
+  public warn(message: string) {
+    this.ensureTransport();
+    this._logger.warn(message);
   }
 }
 
@@ -46,11 +73,11 @@ const createConsoleTransport = () =>
     )
   });
 
-const createFileTransport = (path: string) => {
+const createFileTransport = (path: string, name: string) => {
   ensureDirSync(path);
 
   return new winston.transports.File({
-    filename: `${path}/${Date.now()}.log`,
+    filename: `${path}/${name}_${Date.now()}.log`,
     format: winston.format.combine(winston.format.timestamp(), formatPrint),
     level: CONFIG.logLevel || "verbose"
   });

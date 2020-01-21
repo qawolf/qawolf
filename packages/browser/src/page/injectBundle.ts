@@ -1,5 +1,5 @@
 import { CONFIG } from "@qawolf/config";
-import { logger } from "@qawolf/logger";
+import { browserLogger, logger, LogLevels } from "@qawolf/logger";
 import { Event } from "@qawolf/types";
 import { readFileSync } from "fs-extra";
 import { dirname, resolve } from "path";
@@ -53,11 +53,9 @@ export const captureEvents = async (page: Page) => {
 };
 
 export const captureLogs = async (page: Page) => {
-  await page.exposeFunction(
-    "qaw_log",
-    // TODO change to browser logger.
-    (level: keyof Console, message: string) => console[level](message)
-  );
+  await page.exposeFunction("qaw_log", (level: string, message: string) => {
+    browserLogger.log(level, message);
+  });
 };
 
 export const injectBundle = async (
