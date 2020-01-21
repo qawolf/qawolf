@@ -10,7 +10,9 @@ import { retryExecutionError } from "../retry";
 const qawolfJs = readFileSync(
   resolve(dirname(require.resolve("@qawolf/web")), "./qawolf.web.js"),
   "utf8"
-);
+)
+  // only inject once
+  .replace("var qawolf =", "window.qawolf = window.qawolf ||");
 
 const recordDomJs = `${readFileSync(
   resolve(dirname(require.resolve("rrweb")), "../dist/rrweb.min.js"),

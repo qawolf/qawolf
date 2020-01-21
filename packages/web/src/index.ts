@@ -54,5 +54,6 @@ const webExports = {
 export type QAWolfWeb = typeof webExports;
 
 if (typeof window !== "undefined" && typeof window.document !== "undefined") {
+  console.log("qawolf: loaded");
   exports = webExports;
 }

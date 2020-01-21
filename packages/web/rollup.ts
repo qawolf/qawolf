@@ -7,8 +7,7 @@ export default {
   output: {
     file: "./lib/qawolf.web.js",
     format: "iife",
-    name: "qawolf",
-    outro: "console.log('loaded qawolf');"
+    name: "qawolf"
   },
   onwarn: (warning, next) => {
     if (warning.code === "THIS_IS_UNDEFINED") return;
