@@ -56,6 +56,5 @@ export type QAWolfWeb = typeof webExports;
 
 if (typeof window !== "undefined" && typeof window.document !== "undefined") {
   captureLogs();
-  console.log("qawolf: loaded");
   exports = webExports;
 }

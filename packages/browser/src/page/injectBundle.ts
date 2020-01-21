@@ -1,5 +1,5 @@
 import { CONFIG } from "@qawolf/config";
-import { browserLogger, logger, LogLevels } from "@qawolf/logger";
+import { browserLogger, logger } from "@qawolf/logger";
 import { Event } from "@qawolf/types";
 import { readFileSync } from "fs-extra";
 import { dirname, resolve } from "path";
