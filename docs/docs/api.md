@@ -149,6 +149,8 @@ const { launch } = require("qawolf");
 
 const browser = await launch({
   device: "iPhone 7",
+  devtools: true,
+  navigationTimeoutMs: 120000,
   url: "https://nytimes.com"
 });
 
