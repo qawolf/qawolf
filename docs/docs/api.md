@@ -136,7 +136,7 @@ const { browser, waitFor } = require("qawolf");
 
 ### qawolf.launch(options)
 
-- `options` <[Object]>
+- `options` <[Object] & [puppeteer.launchoptions]>
   - `device` <?[device] | ?[string]> Emulate this [device]. If you pass a string it will lookup a device with that key in `puppeteer.devices[options.device]`. Defaults to ["desktop"](https://github.com/qawolf/qawolf/blob/3256831cd93c172e81c9f7eb1fdeb347733d72ec/packages/browser/src/browser/device.ts#L9-L24).
   - `url` <[string]> The url to go to.
 - returns: <[Promise]<[Browser]>>
@@ -457,6 +457,7 @@ await browser.type(selectors[1], "my@email.com");
 [page]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#class-page "Page"
 [promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise"
 [puppeteer.browser]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#class-browser "puppeteer.Browser"
+[puppeteer.launchoptions]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#puppeteerlaunchoptions "puppeteer.LaunchOptions"
 [selector]: #interface-selector "Selector"
 [sendcharacter]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#keyboardsendcharacterchar" "sendCharacter"
 [string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "String"
