@@ -24,7 +24,7 @@ export const captureLogs = (logLevel: string, callback: LogCallback) => {
 
       if (
         level === "debug" &&
-        message.startsWith("qawolf: ") &&
+        message.startsWith("qawolf:") &&
         logLevel.toLowerCase() !== "debug"
       ) {
         // only log qawolf debug logs when logLevel = "debug"

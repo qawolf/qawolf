@@ -44,8 +44,8 @@ export class Recorder {
       const event = handler(ev);
       if (!event) return;
 
-      console.log(
-        `Recorder: ${eventName} event`,
+      console.debug(
+        `qawolf: Recorder: ${eventName} event`,
         ev,
         ev.target,
         "recorded:",
@@ -141,7 +141,7 @@ export class Recorder {
         // to avoid recording system initiated scrolls (after selecting an item/etc).
         // This will not capture scrolls triggered by the keyboard (PgUp/PgDown/Space)
         // however we already record key events so that encompasses those.
-        console.log("ignore non-wheel scroll event", event);
+        console.debug("qawolf: ignore non-wheel scroll event", event);
         return;
       }
 

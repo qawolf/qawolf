@@ -32,7 +32,7 @@ export const docToHtml = (doc: Doc) => stringifyDocArray([doc]);
 export const htmlToDoc = (html: string): Doc => {
   const result = parseHtml(html);
   if (result.length !== 1) {
-    console.log("invalid html", html, result);
+    console.debug("qawolf: invalid html", html, result);
     throw new Error("htmlToDoc: only supports individual nodes");
   }
 

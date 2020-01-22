@@ -14,9 +14,9 @@ export const hasText = async (
     return null;
   };
 
-  console.log(`hasText: find "${text}" up to ${timeoutMs}ms`);
+  console.debug(`qawolf: hasText: find "${text}" up to ${timeoutMs}ms`);
   const result = await waitFor(hasTextFn, timeoutMs, 100);
-  console.log(`hasText: ${result ? "found" : "not found"}`);
+  console.debug(`qawolf: hasText: ${result ? "found" : "not found"}`);
 
   return result || false;
 };

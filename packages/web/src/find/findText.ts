@@ -6,7 +6,7 @@ export const findText = async (
   selector: TextSelector,
   options: FindElementOptions
 ): Promise<Element | null> => {
-  console.log("findText", selector, "options", options);
+  console.debug("qawolf: findText", selector, "options", options);
   if (!selector.text) {
     throw new Error("findText: selector must include text property");
   }
@@ -34,7 +34,7 @@ export const findText = async (
       }
 
       if (match) {
-        console.log("found text", match);
+        console.debug("qawolf: found text", match);
       }
 
       return match;

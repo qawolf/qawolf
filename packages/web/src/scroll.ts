@@ -12,7 +12,7 @@ export const scroll = async (
     y: element.scrollTop
   };
 
-  console.log("scroll to", value, element);
+  console.debug("qawolf: scroll to", value, element);
 
   const isScrolled = () =>
     element.scrollLeft === value.x && element.scrollTop === value.y;
@@ -23,11 +23,11 @@ export const scroll = async (
   } while (!isScrolled() && Date.now() - start < timeoutMs);
 
   if (isScrolled()) {
-    console.log("scroll succeeeded");
+    console.debug("qawolf: scroll succeeeded");
     return;
   }
 
-  console.log("scroll timeout exceeded", {
+  console.debug("qawolf: scroll timeout exceeded", {
     x: element.scrollLeft,
     y: element.scrollTop
   });

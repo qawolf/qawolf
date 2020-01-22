@@ -15,7 +15,7 @@ export const findHtml = async (
   selector: HtmlSelector,
   options: FindElementOptions
 ) => {
-  console.log("findHtml", selector, "options", options);
+  console.debug("qawolf: findHtml", selector, "options", options);
   if (!selector.html) {
     throw new Error("findHtml: selector must include html property");
   }
@@ -43,8 +43,8 @@ export const findHtml = async (
 
       const topMatch = topElementMatch.match;
       if (topMatch.strongKeys.length) {
-        console.log(
-          `matched: ${topMatch.strongKeys}`,
+        console.debug(
+          `qawolf: matched: ${topMatch.strongKeys}`,
           `${topMatch.percent}%`,
           getXpath(topElementMatch!.element),
           topMatch.comparison
@@ -53,8 +53,8 @@ export const findHtml = async (
       }
 
       if (topMatch.percent >= threshold) {
-        console.log(
-          `matched: ${topMatch.percent}% > ${threshold}% threshold`,
+        console.debug(
+          `qawolf: matched: ${topMatch.percent}% > ${threshold}% threshold`,
           getXpath(topElementMatch!.element),
           topMatch.comparison
         );
@@ -69,11 +69,11 @@ export const findHtml = async (
   );
 
   if (!elementMatch) {
-    console.log("no match :(");
+    console.debug("qawolf: no match :(");
 
     if (topElementMatch) {
-      console.log(
-        `closest match`,
+      console.debug(
+        `qawolf: closest match`,
         getXpath(topElementMatch!.element),
         topElementMatch!.match
       );
@@ -98,7 +98,7 @@ export const matchElements = (
       matches.push({ element, match });
     } catch (e) {
       // catch parsing errors on malformed elements
-      console.log("could not match element", element, e);
+      console.debug("qawolf: could not match element", element, e);
     }
   });
 
