@@ -28,7 +28,7 @@ export const selectElement = async (
   logger.verbose("selectElement: element.select");
 
   await elementHandle.evaluate(element => {
-    console.log("qawolf: 🔽 select from", element);
+    console.log("qawolf: select from", element);
   });
 
   await elementHandle.select(value || "");

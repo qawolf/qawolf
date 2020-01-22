@@ -34,6 +34,28 @@ const createCapture = (device: Device, headless: boolean = false) => {
   });
 };
 
+const logTestStarted = (browser: Browser) => {
+  /**
+   * Log test started in the browser so the timeline is inlined with the other browser logs.
+   */
+  const jasmine = (global as any).jasmine;
+  if (!jasmine) return;
+
+  const onTestStarted = jasmine.qaw_onSpecStarted;
+  if (!onTestStarted) return;
+
+  onTestStarted(async (name: string) => {
+    try {
+      const page = await browser.page();
+      await page.evaluate((testName: string) => {
+        console.log(`jest: ${testName}`);
+      }, name);
+    } catch (e) {
+      logger.debug(`could not log test started: ${e.toString()}`);
+    }
+  });
+};
+
 export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
   logger.verbose(`launch: ${JSON.stringify(options)}`);
 
@@ -61,6 +83,8 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
 
   await managePages(browser);
   if (options.url) await browser.goto(options.url);
+
+  logTestStarted(browser);
 
   if (capture) await capture.start();
 

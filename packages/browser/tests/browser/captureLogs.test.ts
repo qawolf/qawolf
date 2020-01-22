@@ -1,88 +1,103 @@
 import { CONFIG } from "@qawolf/config";
+// needed to test logging test start
+import "@qawolf/jest-fail-fast";
 import { browserLogger } from "@qawolf/logger";
-import { launch } from "../../src";
+import { sleep, waitFor } from "@qawolf/web";
+import { isEqual } from "lodash";
+import { Browser, launch, Page } from "../../src";
 
-it("captures browser logs", async () => {
-  const browser = await launch({ url: `${CONFIG.testUrl}login` });
-  const page = await browser.page();
+describe("capture logs", () => {
+  describe("logging", () => {
+    let lastMessage: any | false = false;
+    let browser: Browser;
+    let page: Page;
 
-  let lastMessage: any | false = false;
+    beforeAll(async () => {
+      browser = await launch({
+        logLevel: "debug",
+        url: `${CONFIG.testUrl}login`
+      });
 
-  browserLogger.onLog(
-    (level: string, message: string) => (lastMessage = { level, message })
-  );
+      browserLogger.onLog(
+        (level: string, message: string) => (lastMessage = { level, message })
+      );
 
-  await page.evaluate(() => {
-    console.info("should capture browser logs");
+      page = await browser.page();
+    });
+
+    afterAll(() => browser.close());
+
+    it("logs browser logs", async () => {
+      await page.evaluate(() => {
+        console.debug("qawolf: my log");
+      });
+
+      await waitFor(
+        () =>
+          isEqual(lastMessage, {
+            level: "debug",
+            message: "qawolf: my log"
+          }),
+        1000,
+        50
+      );
+    });
+
+    it("logs test start", async () => {
+      await waitFor(
+        () =>
+          isEqual(lastMessage, {
+            level: "log",
+            message: "jest: logs test start"
+          }),
+        1000,
+        50
+      );
+    });
+
+    it("formats elements by their xpath", async () => {
+      await page.evaluate(() => {
+        const button = document.getElementsByTagName("button")[0]!;
+        console.debug("click on", button);
+      });
+
+      await waitFor(
+        () =>
+          isEqual(lastMessage, {
+            level: "debug",
+            message: `click on //*[@id='login']/button`
+          }),
+        1000,
+        50
+      );
+    });
   });
 
-  expect(lastMessage).toEqual({
-    level: "info",
-    message: "should capture browser logs"
+  it("ignores qawolf debug logs when QAW_LOG_LEVEL != debug", async () => {
+    const browser = await launch({
+      logLevel: "verbose",
+      url: CONFIG.testUrl
+    });
+    const page = await browser.page();
+
+    let lastMessage: any | false = false;
+
+    browserLogger.onLog(
+      (level: string, message: string) => (lastMessage = { level, message })
+    );
+
+    await page.evaluate(() => {
+      console.debug("1");
+      console.debug("qawolf: 2");
+    });
+
+    await sleep(1000);
+
+    expect(lastMessage).toEqual({
+      level: "debug",
+      message: "1"
+    });
+
+    await browser.close();
   });
-
-  await page.evaluate(() => {
-    const button = document.getElementsByTagName("button")[0]!;
-    console.debug("click on", button);
-  });
-
-  // check it formats nodes by their xpath
-  expect(lastMessage).toEqual({
-    level: "debug",
-    message: `click on //*[@id='login']/button`
-  });
-
-  await browser.close();
-});
-
-it("logs qawolf debug logs when QAW_LOG_LEVEL is debug", async () => {
-  const browser = await launch({
-    logLevel: "debug",
-    url: CONFIG.testUrl
-  });
-  const page = await browser.page();
-
-  let lastMessage: any | false = false;
-
-  browserLogger.onLog(
-    (level: string, message: string) => (lastMessage = { level, message })
-  );
-
-  await page.evaluate(() => {
-    console.debug("some log");
-    console.debug("qawolf: some log");
-  });
-
-  expect(lastMessage).toEqual({
-    level: "debug",
-    message: `qawolf: some log`
-  });
-
-  await browser.close();
-});
-
-it("ignores qawolf debug logs when QAW_LOG_LEVEL is not debug", async () => {
-  const browser = await launch({
-    logLevel: "verbose",
-    url: `${CONFIG.testUrl}login`
-  });
-  const page = await browser.page();
-
-  let lastMessage: any | false = false;
-
-  browserLogger.onLog(
-    (level: string, message: string) => (lastMessage = { level, message })
-  );
-
-  await page.evaluate(() => {
-    console.debug("qawolf: some log");
-    console.debug("some log");
-  });
-
-  expect(lastMessage).toEqual({
-    level: "debug",
-    message: `some log`
-  });
-
-  await browser.close();
 });

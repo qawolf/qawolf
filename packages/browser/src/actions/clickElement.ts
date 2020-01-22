@@ -21,12 +21,12 @@ export const clickElement = async (
   // For example, we use simulate=false for the Recorder test since we need a trusted click event.
   if (options.simulate === false) {
     await elementHandle.evaluate(element =>
-      console.log("qawolf: 🖱️click", element)
+      console.log("qawolf: click", element)
     );
     await elementHandle.click();
   } else {
     await elementHandle.evaluate((element: HTMLElement) => {
-      console.log("qawolf: 🖱️click", element);
+      console.log("qawolf: click", element);
       element.click();
     });
   }

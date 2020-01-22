@@ -21,7 +21,7 @@ export const typeElement = async (
   logger.verbose("typeElement: focus");
 
   await elementHandle.evaluate(element => {
-    console.log("qawolf: ⌨️ type into", element);
+    console.log("qawolf: type into", element);
   });
 
   await elementHandle.focus();
