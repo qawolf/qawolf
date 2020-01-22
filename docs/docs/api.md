@@ -136,8 +136,9 @@ const { browser, waitFor } = require("qawolf");
 
 ### qawolf.launch(options)
 
-- `options` <[Object] & [puppeteer.launchoptions]>
+- `options` <[Object] & [puppeteer.LaunchOptions]>
   - `device` <?[device] | ?[string]> Emulate this [device]. If you pass a string it will lookup a device with that key in `puppeteer.devices[options.device]`. Defaults to ["desktop"](https://github.com/qawolf/qawolf/blob/3256831cd93c172e81c9f7eb1fdeb347733d72ec/packages/browser/src/browser/device.ts#L9-L24).
+  - `navigationTimeoutMs` <?[number]> Maximum navigation time in milliseconds, defaults to 30 seconds, pass 0 to disable timeout.
   - `url` <[string]> The url to go to.
 - returns: <[Promise]<[Browser]>>
 
