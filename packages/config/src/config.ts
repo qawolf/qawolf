@@ -30,7 +30,7 @@ export const CONFIG = {
   chromeOffsetY: parseNumber(process.env.QAW_CHROME_OFFSET_Y, 125),
   debug: parseBool(process.env.QAW_DEBUG),
   headless: parseBool(process.env.QAW_HEADLESS),
-  logLevel: process.env.QAW_LOG_LEVEL,
+  logLevel: process.env.QAW_LOG_LEVEL || "verbose",
   // slow down each step by 1s to make it watchable
   // this also gives sites time to setup their handlers
   sleepMs: parseNumber(process.env.QAW_SLEEP_MS, 1000),

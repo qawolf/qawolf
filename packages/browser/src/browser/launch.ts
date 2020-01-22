@@ -12,6 +12,7 @@ import { QAWolfBrowser } from "./QAWolfBrowser";
 export type LaunchOptions = {
   debug?: boolean;
   device?: string | Device;
+  logLevel?: string;
   navigationTimeoutMs?: number;
   recordEvents?: boolean;
   url?: string;
@@ -50,6 +51,7 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
     capture,
     debug: options.debug || CONFIG.debug,
     device,
+    logLevel: options.logLevel || CONFIG.logLevel,
     navigationTimeoutMs: options.navigationTimeoutMs,
     puppeteerBrowser,
     recordEvents: options.recordEvents

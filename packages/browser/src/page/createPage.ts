@@ -7,6 +7,7 @@ export type CreatePageOptions = {
   device: devices.Device;
   page: PuppeteerPage;
   index: number;
+  logLevel: string;
   recordDom?: boolean;
   recordEvents?: boolean;
 };
@@ -20,7 +21,12 @@ export const createPage = async (options: CreatePageOptions): Promise<Page> => {
 
   await Promise.all([
     puppeteerPage.emulate(device),
-    injectBundle(page, !!options.recordDom, !!options.recordEvents)
+    injectBundle({
+      logLevel: options.logLevel,
+      page,
+      recordDom: options.recordDom,
+      recordEvents: options.recordEvents
+    })
   ]);
 
   return page;

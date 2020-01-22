@@ -16,6 +16,7 @@ export const managePages = async (browser: Browser) => {
 
   const options = {
     device: qawolf.device,
+    logLevel: qawolf.logLevel,
     recordDom: !!CONFIG.artifactPath,
     recordEvents: qawolf.recordEvents
   };

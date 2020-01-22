@@ -40,6 +40,7 @@ export {
 
 // export the web module for the browser
 const webExports = {
+  captureLogs,
   element,
   event,
   find,
@@ -55,6 +56,5 @@ const webExports = {
 export type QAWolfWeb = typeof webExports;
 
 if (typeof window !== "undefined" && typeof window.document !== "undefined") {
-  captureLogs();
   exports = webExports;
 }
