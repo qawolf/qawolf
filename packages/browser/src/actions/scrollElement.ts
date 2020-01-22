@@ -15,6 +15,7 @@ export const scrollElement = async (
 
   await elementHandle.evaluate(
     (element, value, timeoutMs) => {
+      console.log("qawolf: ↕️ scroll", element);
       const qawolf: QAWolfWeb = (window as any).qawolf;
       return qawolf.scroll(element, value, timeoutMs);
     },
