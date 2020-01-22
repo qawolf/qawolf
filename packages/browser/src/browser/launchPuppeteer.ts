@@ -1,6 +1,4 @@
 import { CONFIG } from "@qawolf/config";
-import { Xvfb } from "@qawolf/screen";
-import { omit } from "lodash";
 import { platform } from "os";
 import { launch, LaunchOptions, Browser } from "puppeteer";
 import { Device } from "puppeteer/DeviceDescriptors";

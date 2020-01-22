@@ -1,5 +1,3 @@
-import "./CiInfoTypes";
-import { isCI } from "@qawolf/ci-info";
 import { platform } from "os";
 import { join } from "path";
 import { createGif } from "./createGif";
@@ -51,7 +49,7 @@ export class VirtualCapture {
   }
 
   static isEnabled(): boolean {
-    return isCI && platform() === "linux";
+    return platform() === "linux";
   }
 
   public get gifPath() {
