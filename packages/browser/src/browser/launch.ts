@@ -51,7 +51,7 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
     capture,
     debug: options.debug || CONFIG.debug,
     device,
-    logLevel: options.logLevel || CONFIG.logLevel,
+    logLevel: options.logLevel || CONFIG.logLevel || "error",
     navigationTimeoutMs: options.navigationTimeoutMs,
     puppeteerBrowser,
     recordEvents: options.recordEvents
