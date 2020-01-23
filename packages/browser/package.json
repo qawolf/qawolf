@@ -36,7 +36,6 @@
   },
   "devDependencies": {
     "@qawolf/jest-plugin": "0.8.1",
-    "@types/puppeteer": "^1.20.2",
-    "jest": "^24.9.0"
+    "@types/puppeteer": "^1.20.2"
   }
 }
