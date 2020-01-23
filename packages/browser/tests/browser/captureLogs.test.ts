@@ -1,6 +1,6 @@
 import { CONFIG } from "@qawolf/config";
 // needed to test logging test start
-import "@qawolf/jest-fail-fast";
+import "@qawolf/jest-plugin";
 import { browserLogger } from "@qawolf/logger";
 import { sleep, waitFor } from "@qawolf/web";
 import { isEqual } from "lodash";

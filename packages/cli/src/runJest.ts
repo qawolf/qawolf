@@ -11,9 +11,8 @@ export const runJest = (args: string[] = [], options: RunJestOptions = {}) => {
 
   const rootDir = options.path || ".qawolf";
 
-  // jest-fail-fast preset overrides the transform, and configures the jasmine-fail-fast plugin
   // --config={} prevents using the local jest config
-  let command = `npx jest --preset="@qawolf/jest-fail-fast" --rootDir=${rootDir} --testTimeout=60000 --config={}`;
+  let command = `npx jest --preset="@qawolf/jest-plugin" --rootDir=${rootDir} --testTimeout=60000 --config={}`;
 
   // pass through other arguments to jest
   if (args.length) {
