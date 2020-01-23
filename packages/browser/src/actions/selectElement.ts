@@ -23,7 +23,7 @@ export const selectElement = async (
       return qawolf.select
         .waitForOption(element, value, timeoutMs)
         .then(() => {
-          console.log("qawolf: select from", element);
+          console.log(`qawolf: select ${value} from`, element);
         })
         .catch(e => {
           console.log(`qawolf: could not find option ${value}`, element);
