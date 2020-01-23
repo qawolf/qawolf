@@ -16,6 +16,7 @@ export const findText = async (
       const elements = queryElements(options.action);
 
       let match = null;
+      let matchDescendants = 0;
 
       for (let i = 0; i < elements.length; i++) {
         const element = elements[i] as HTMLElement;
@@ -23,13 +24,21 @@ export const findText = async (
         // skip non-HTML elements
         if (!element.innerText) continue;
 
+        // skip elements without the text
+        if (!element.innerText.includes(selector.text!)) continue;
+
+        // skip elements with extra text
         if (
-          // check the innerText includes the selector.text
-          element.innerText.includes(selector.text!) &&
-          // check the match is better than the current match (has less extra text)
-          (!match || match.innerText.length > element.innerText.length)
-        ) {
+          match &&
+          element.innerText.trim().length > match.innerText.trim().length
+        )
+          continue;
+
+        // prefer deeper elements
+        const descendants = element.querySelectorAll("*").length;
+        if (!match || descendants <= matchDescendants) {
           match = element;
+          matchDescendants = descendants;
         }
       }
 

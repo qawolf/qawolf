@@ -15,7 +15,7 @@ const formatArgument = (argument: any) => {
 
 export const captureLogs = (logLevel: string, callback: LogCallback) => {
   LOG_LEVELS.forEach((level: keyof Console) => {
-    const browserLog = console[level];
+    const browserLog = console[level].bind(console);
 
     console[level] = (...args: any) => {
       const message: string = args

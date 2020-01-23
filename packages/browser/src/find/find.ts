@@ -1,40 +1,9 @@
 import { logger } from "@qawolf/logger";
-import {
-  CssSelector,
-  FindElementOptions,
-  HtmlSelector,
-  Selector,
-  TextSelector
-} from "@qawolf/types";
+import { FindElementOptions, Selector } from "@qawolf/types";
 import { sleep } from "@qawolf/web";
 import { ElementHandle, Page as PuppeteerPage } from "puppeteer";
-import { findCss } from "./findCss";
-import { findHtml } from "./findHtml";
-import { findText } from "./findText";
+import { findElement } from "./findElement";
 import { getFindElementOptions } from "./getFindElementOptions";
-import { retryExecutionError } from "../retry";
-
-export const findElement = (
-  page: PuppeteerPage,
-  selector: Selector,
-  options: FindElementOptions
-): Promise<ElementHandle> => {
-  return retryExecutionError(async () => {
-    if ((selector as CssSelector).css) {
-      return findCss(page, selector as CssSelector, options);
-    }
-
-    if ((selector as HtmlSelector).html) {
-      return findHtml(page, selector as HtmlSelector, options);
-    }
-
-    if ((selector as TextSelector).text) {
-      return findText(page, selector as TextSelector, options);
-    }
-
-    throw new Error(`Invalid selector ${selector}`);
-  });
-};
 
 export const find = async (
   page: PuppeteerPage,
