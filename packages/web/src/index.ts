@@ -2,6 +2,7 @@ import { captureLogs } from "./captureLogs";
 import * as element from "./element";
 import * as event from "./event";
 import * as find from "./find";
+import * as format from "./format";
 import * as lang from "./lang";
 import { Recorder } from "./Recorder";
 import * as select from "./select";
@@ -11,7 +12,7 @@ import * as wait from "./wait";
 import * as xpath from "./xpath";
 
 // export the isomorphic (node & browser) module for node
-const { htmlToDoc, serializeDocSelector } = serialize;
+const { describeDoc } = format;
 const { isKeyEvent, isPasteEvent, isTypeEvent } = event;
 const {
   compareAttributes,
@@ -20,11 +21,13 @@ const {
   matchDocSelector
 } = find;
 const { decodeHtml, isNil } = lang;
+const { htmlToDoc, serializeDocSelector } = serialize;
 const { sleep, waitFor, waitUntil } = wait;
 export {
   compareAttributes,
   compareContent,
   compareDoc,
+  describeDoc,
   decodeHtml,
   htmlToDoc,
   isKeyEvent,
@@ -44,6 +47,7 @@ const webExports = {
   element,
   event,
   find,
+  format,
   lang,
   Recorder,
   scroll,

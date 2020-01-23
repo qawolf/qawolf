@@ -15,7 +15,10 @@ export const find = async (
     `find: ${JSON.stringify(selector)} ${JSON.stringify(findOptions)}`
   );
 
-  let element = await findElement(page, selector, findOptions);
+  let element = await findElement(page, selector, {
+    ...findOptions,
+    log: true
+  });
 
   if (findOptions.sleepMs) {
     logger.verbose(`find: found element, sleeping ${findOptions.sleepMs}ms`);

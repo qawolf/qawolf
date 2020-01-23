@@ -1,6 +1,7 @@
 import { DocSelector, FindElementOptions, HtmlSelector } from "@qawolf/types";
 import { DocMatch, matchDocSelector } from "./compare";
 import { findCss } from "./findCss";
+import { describeDoc } from "../format";
 import { queryElements } from "./query";
 import { deserializeDocSelector, nodeToDocSelector } from "../serialize";
 import { waitFor } from "../wait";
@@ -15,9 +16,8 @@ export const findHtml = async (
   selector: HtmlSelector,
   options: FindElementOptions
 ) => {
-  console.debug("qawolf: findHtml", selector, "options", options);
   if (!selector.html) {
-    throw new Error("findHtml: selector must include html property");
+    throw new Error("selector must include html property");
   }
 
   const docSelector = deserializeDocSelector(selector.html);
@@ -27,6 +27,12 @@ export const findHtml = async (
     // use css selector for top level nodes
     return findCss({ css: nodeName }, options);
   }
+
+  console[options.log ? "log" : "debug"](
+    `qawolf: find html${describeDoc(docSelector)}`,
+    selector,
+    options
+  );
 
   let topElementMatch: ElementMatch | null = null;
 

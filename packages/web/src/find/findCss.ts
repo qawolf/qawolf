@@ -5,9 +5,13 @@ export const findCss = async (
   selector: CssSelector,
   options: FindElementOptions
 ): Promise<Element | null> => {
-  console.debug("qawolf: findCss", selector, "options", options);
+  console[options.log ? "log" : "debug"](
+    `qawolf: find css ${selector.css}`,
+    options
+  );
+
   if (!selector.css) {
-    throw new Error("findCss: selector must include css property");
+    throw new Error("selector must include css property");
   }
 
   return waitFor(
