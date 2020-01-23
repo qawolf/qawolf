@@ -14,12 +14,17 @@ jasmineEnv.addReporter(failFast.init());
 
 // use Jasmine specStarted reporter until we can use Jest Circus
 // https://github.com/qawolf/qawolf/issues/345
-j.qaw_callbacks = [];
+const onTestStartedCallbacks: Callback[] = [];
 
-j.qaw_onSpecStarted = (callback: Callback) => j.qaw_callbacks.push(callback);
+// extend jasmine with our helpers
+j.qawolf = {
+  onTestStarted(callback: Callback) {
+    onTestStartedCallbacks.push(callback);
+  }
+};
 
 jasmineEnv.addReporter({
   specStarted: (result: any) => {
-    j.qaw_callbacks.forEach((cb: Callback) => cb(result.description));
+    onTestStartedCallbacks.forEach((cb: Callback) => cb(result.description));
   }
 });

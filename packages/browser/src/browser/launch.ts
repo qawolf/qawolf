@@ -39,12 +39,9 @@ const logTestStarted = (browser: Browser) => {
    * Log test started in the browser so the timeline is inlined with the other browser logs.
    */
   const jasmine = (global as any).jasmine;
-  if (!jasmine) return;
+  if (!jasmine || !jasmine.qawolf) return;
 
-  const onTestStarted = jasmine.qaw_onSpecStarted;
-  if (!onTestStarted) return;
-
-  onTestStarted(async (name: string) => {
+  jasmine.qawolf.onTestStarted(async (name: string) => {
     try {
       const page = await browser.page();
       await page.evaluate((testName: string) => {
