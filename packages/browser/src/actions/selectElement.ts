@@ -19,17 +19,22 @@ export const selectElement = async (
   await elementHandle.evaluate(
     (element: HTMLSelectElement, value: string | null, timeoutMs: number) => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
-      return qawolf.select.waitForOption(element, value, timeoutMs);
+
+      return qawolf.select
+        .waitForOption(element, value, timeoutMs)
+        .then(() => {
+          console.log("qawolf: select from", element);
+        })
+        .catch(e => {
+          console.log(`qawolf: could not find option ${value}`, element);
+          throw e;
+        });
     },
     value,
     findOptions.timeoutMs || 0
   );
 
   logger.verbose("selectElement: element.select");
-
-  await elementHandle.evaluate(element => {
-    console.log("qawolf: select from", element);
-  });
 
   await elementHandle.select(value || "");
 };
