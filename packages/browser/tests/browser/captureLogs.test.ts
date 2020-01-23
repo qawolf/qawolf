@@ -18,9 +18,9 @@ describe("capture logs", () => {
         url: `${CONFIG.testUrl}login`
       });
 
-      browserLogger.onLog(
-        (level: string, message: string) => (lastMessage = { level, message })
-      );
+      browserLogger.onLog((level: string, message: string) => {
+        lastMessage = { level, message };
+      });
 
       page = await browser.page();
     });
@@ -29,14 +29,14 @@ describe("capture logs", () => {
 
     it("logs browser logs", async () => {
       await page.evaluate(() => {
-        console.debug("qawolf: my log");
+        console.debug("qawolf: my log", { hello: true });
       });
 
       await waitFor(
         () =>
           isEqual(lastMessage, {
             level: "debug",
-            message: "qawolf: my log"
+            message: 'qawolf: my log {"hello":true}'
           }),
         1000,
         50

@@ -5,12 +5,20 @@ type LogCallback = (level: string, message: string) => void;
 const LOG_LEVELS = ["debug", "error", "info", "log", "warn"];
 
 const formatArgument = (argument: any) => {
+  if (typeof argument === "string") {
+    return argument;
+  }
+
   if (argument.nodeName) {
     // log nodes as their xpath
     return getXpath(argument as Node);
   }
 
-  return argument.toString();
+  try {
+    return JSON.stringify(argument);
+  } catch (e) {
+    return argument.toString();
+  }
 };
 
 export const captureLogs = (logLevel: string, callback: LogCallback) => {
