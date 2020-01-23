@@ -14,17 +14,22 @@ const shouldClear = (strokes: Stroke[]) => {
 
 export const typeElement = async (
   page: PuppeteerPage,
-  element: ElementHandle,
+  elementHandle: ElementHandle,
   value: string | null,
   options: TypeOptions = {}
 ): Promise<void> => {
   logger.verbose("typeElement: focus");
-  await element.focus();
+
+  await elementHandle.evaluate(element => {
+    console.log("qawolf: type into", element);
+  });
+
+  await elementHandle.focus();
 
   const strokes = deserializeStrokes(value || "");
 
   if (!options.skipClear && shouldClear(strokes)) {
-    await clearElement(element);
+    await clearElement(elementHandle);
   }
 
   // logging the keyboard codes below will leak secrets

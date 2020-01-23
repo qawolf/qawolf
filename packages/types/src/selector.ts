@@ -24,6 +24,7 @@ export type DocSelectorSerialized =
 export interface FindElementOptions extends FindPageOptions {
   // filter eligible elements by action
   action?: Action;
+  log?: boolean;
   // how long to sleep after finding the element
   sleepMs?: number;
 }

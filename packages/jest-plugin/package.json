@@ -1,6 +1,6 @@
 {
-  "name": "@qawolf/jest-fail-fast",
-  "description": "Fail fast preset for Jest, does not work with circus",
+  "name": "@qawolf/jest-plugin",
+  "description": "Fail fast and create a hook for test start",
   "version": "0.8.1",
   "license": "BSD-3.0",
   "main": "./lib/index.js",

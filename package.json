@@ -15,34 +15,24 @@
     "test:windows": "lerna run --stream test -- -- --forceExit",
     "watch": "tsc --build --watch packages/tsconfig.project.json"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.ts": "npm run lint"
-  },
   "dependencies": {
     "fs-extra": "^8.1.0",
     "lodash": "^4.17.15"
   },
   "devDependencies": {
     "@types/fs-extra": "^8.0.1",
-    "@types/jest": "^24.0.18",
-    "@types/lodash": "^4.14.144",
-    "@types/node": "^12.11.1",
-    "@typescript-eslint/parser": "^2.3.3",
-    "eslint": "^6.5.1",
-    "eslint-config-prettier": "^6.4.0",
-    "eslint-plugin-prettier": "^3.1.1",
-    "husky": "^3.1.0",
-    "jest": "^24.9.0",
-    "lerna": "^3.18.1",
-    "lint-staged": "^9.5.0",
-    "prettier": "^1.18.2",
-    "ts-jest": "^24.1.0",
-    "ts-node": "^8.4.1",
-    "typescript": "^3.6.4"
+    "@types/jest": "^24.9.1",
+    "@types/lodash": "^4.14.149",
+    "@types/node": "^12.12.25",
+    "@typescript-eslint/parser": "^2.17.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "jest": "^25.1.0",
+    "lerna": "^3.20.2",
+    "prettier": "^1.19.1",
+    "ts-jest": "^25.0.0",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
   }
 }

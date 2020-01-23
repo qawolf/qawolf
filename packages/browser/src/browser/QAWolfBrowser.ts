@@ -29,6 +29,7 @@ export interface ConstructorOptions {
   capture: VirtualCapture | null;
   debug?: boolean;
   device: devices.Device;
+  logLevel: string;
   navigationTimeoutMs?: number;
   puppeteerBrowser: PuppeteerBrowser;
   recordEvents?: boolean;
@@ -126,6 +127,10 @@ export class QAWolfBrowser {
     );
 
     return sortBy(events, e => e.time);
+  }
+
+  public get logLevel() {
+    return this._options.logLevel;
   }
 
   public async find(

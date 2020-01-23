@@ -6,7 +6,7 @@ export type ClickOptions = {
 };
 
 export const clickElement = async (
-  element: ElementHandle,
+  elementHandle: ElementHandle,
   options: ClickOptions = {}
 ): Promise<void> => {
   logger.verbose(`clickElement: received ${JSON.stringify(options)}`);
@@ -20,9 +20,15 @@ export const clickElement = async (
   // However we expose ElementHandle.click behind an option, simulate=false, in case it is needed.
   // For example, we use simulate=false for the Recorder test since we need a trusted click event.
   if (options.simulate === false) {
-    await element.click();
+    await elementHandle.evaluate(element =>
+      console.log("qawolf: click", element)
+    );
+    await elementHandle.click();
   } else {
-    await element.evaluate(e => (e as HTMLElement).click());
+    await elementHandle.evaluate((element: HTMLElement) => {
+      console.log("qawolf: click", element);
+      element.click();
+    });
   }
 
   logger.verbose("clickElement: clicked");

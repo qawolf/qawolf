@@ -30,7 +30,6 @@
   "devDependencies": {
     "@qawolf/fixtures": "1.20.1",
     "@qawolf/types": "^0.8.0-alpha.0",
-    "@qawolf/web": "^0.8.0-alpha.1",
-    "jest": "^24.9.0"
+    "@qawolf/web": "^0.8.0-alpha.1"
   }
 }

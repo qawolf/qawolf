@@ -2,33 +2,63 @@ import { CONFIG } from "@qawolf/config";
 import { ensureDirSync } from "fs-extra";
 import winston from "winston";
 
+const LogLevels = ["debug", "error", "info", "verbose", "warn"];
+
+type LogCallback = (level: string, message: string) => void;
+
 export class Logger {
   private _logger: winston.Logger;
+  private _name: string;
+  private _logCallbacks: LogCallback[] = [];
 
-  constructor() {
-    this._logger = winston.createLogger({
-      transports: [
-        CONFIG.artifactPath
-          ? createFileTransport(CONFIG.artifactPath)
-          : createConsoleTransport()
-      ]
-    });
+  constructor(name: string) {
+    this._logger = winston.createLogger({ transports: [] });
+    this._name = name;
   }
 
-  debug(message: string) {
-    this._logger.debug(message);
+  private ensureTransport() {
+    if (this._logger.transports.length) return;
+
+    const transport = CONFIG.artifactPath
+      ? createFileTransport(CONFIG.artifactPath, this._name)
+      : createConsoleTransport();
+
+    this._logger.add(transport);
   }
 
-  error(message: string) {
-    this._logger.error(message);
+  public get numTransports() {
+    return this._logger.transports.length;
   }
 
-  info(message: string) {
-    this._logger.info(message);
+  public debug(message: string) {
+    this.log("debug", message);
   }
 
-  verbose(message: string) {
-    this._logger.verbose(message);
+  public error(message: string) {
+    this.log("error", message);
+  }
+
+  public onLog(callback: LogCallback) {
+    this._logCallbacks.push(callback);
+  }
+
+  public info(message: string) {
+    this.log("info", message);
+  }
+
+  public log(level: string, message: string) {
+    this.ensureTransport();
+    const logLevel = LogLevels.includes(level) ? level : "info";
+    this._logger.log(logLevel, message);
+    this._logCallbacks.forEach(cb => cb(level, message));
+  }
+
+  public verbose(message: string) {
+    this.log("verbose", message);
+  }
+
+  public warn(message: string) {
+    this.log("warn", message);
   }
 }
 
@@ -46,11 +76,11 @@ const createConsoleTransport = () =>
     )
   });
 
-const createFileTransport = (path: string) => {
+const createFileTransport = (path: string, name: string) => {
   ensureDirSync(path);
 
   return new winston.transports.File({
-    filename: `${path}/${Date.now()}.log`,
+    filename: `${path}/${name}_${Date.now()}.log`,
     format: winston.format.combine(winston.format.timestamp(), formatPrint),
     level: CONFIG.logLevel || "verbose"
   });

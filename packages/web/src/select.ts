@@ -26,7 +26,7 @@ export const waitForOption = async (
 ) => {
   if (!value) return;
 
-  console.log("wait for option", value, element);
+  console.debug("qawolf: wait for option", value, element);
 
   await waitUntil(() => {
     const options = element.options;
@@ -39,5 +39,5 @@ export const waitForOption = async (
     return false;
   }, timeoutMs);
 
-  console.log("found option", value, element);
+  console.debug("qawolf: found option", value, element);
 };
