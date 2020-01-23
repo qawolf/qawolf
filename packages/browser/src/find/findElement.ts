@@ -16,22 +16,40 @@ export const findElement = (
       (selector, options) => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
 
+        let elementPromise: Promise<Element | null>;
+
         if (selector.css) {
-          return qawolf.find.findCss(selector, options);
+          elementPromise = qawolf.find.findCss(selector, options);
         } else if (selector.html) {
-          return qawolf.find.findHtml(selector, options);
+          elementPromise = qawolf.find.findHtml(selector, options);
         } else if (selector.text) {
-          return qawolf.find.findText(selector, options);
+          elementPromise = qawolf.find.findText(selector, options);
         } else {
-          throw new Error(`Invalid selector ${selector}`);
+          elementPromise = Promise.reject(`Invalid selector ${selector}`);
         }
+
+        return elementPromise
+          .then(element => {
+            if (!element) {
+              console.log("qawolf: element was not found");
+            }
+
+            return element;
+          })
+          .catch(error => {
+            console.log("qawolf: element was not found", error);
+
+            return null;
+          });
       },
       selector as any,
       options as Serializable
     );
 
     const element = jsHandle.asElement();
-    if (!element) throw new Error("Element not found");
+    if (!element) {
+      throw new Error("Element not found");
+    }
 
     return element;
   });
