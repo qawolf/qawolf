@@ -16,6 +16,7 @@ The generated code imports the `qawolf` node package, which extends the [Puppete
   - [QAW_ARTIFACT_PATH](#qaw_artifact_path)
   - [QAW_ATTRIBUTE](#qaw_attribute)
   - [QAW_DEBUG](#qaw_debug)
+  - [QAW_DISABLE_VIDEO_ARTIFACT](#qaw_disable_video_artifact)
   - [QAW_HEADLESS](#qaw_headless)
   - [QAW_SLEEP_MS](#qaw_sleep_ms)
   - [QAW_TIMEOUT_MS](#qaw_timeout_ms)
@@ -104,6 +105,12 @@ await browser.click({ css: "[my-attribute='search']" });
 - default: `false`
 
 Prevent the browser from closing to help with debugging an error. Open the [Chrome DevTools Console](https://developers.google.com/web/tools/chrome-devtools/console) to see logs from QA Wolf. Run `qaw_find()` in the console to re-run the last find.
+
+### QAW_DISABLE_VIDEO_ARTIFACT
+
+- default: `false`
+
+Disable capturing a video / gif of the test. This is useful if you are a linux user and you want to interact with the browser locally and store other artifacts (logs, etc). If you are on linux and set QAW_ARTIFACT_PATH but do not disable the video artifact, it will put the browser on a virtual display to capture it so you will not be able to interact with it.
 
 ### QAW_HEADLESS
 

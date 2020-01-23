@@ -1,5 +1,4 @@
 import { CONFIG } from "@qawolf/config";
-import { VirtualCapture } from "@qawolf/screen";
 import { sleep } from "@qawolf/web";
 import { pathExists } from "fs-extra";
 import { platform } from "os";
@@ -12,12 +11,9 @@ describe("launch and VirtualCapture", () => {
     const capture = browser.qawolf._capture;
     if (platform() !== "linux") {
       expect(capture).toEqual(null);
-      expect(VirtualCapture.isEnabled()).toEqual(false);
       await browser.close();
       return;
     }
-
-    expect(VirtualCapture.isEnabled()).toEqual(true);
 
     if (!capture) throw new Error("VirtualCapture should be created on linux");
 
