@@ -18,7 +18,14 @@ export type LaunchOptions = {
 } & PuppeteerLaunchOptions;
 
 const createCapture = (device: Device, headless: boolean = false) => {
-  if (headless || !CONFIG.artifactPath) return null;
+  if (!CONFIG.artifactPath || CONFIG.disableVideoArtifact) return null;
+
+  if (headless) {
+    logger.info(
+      "video capture disabled: cannot capture when the browser is headless"
+    );
+    return null;
+  }
 
   return VirtualCapture.create({
     offset: {

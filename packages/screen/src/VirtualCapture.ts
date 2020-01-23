@@ -1,5 +1,5 @@
-import "./CiInfoTypes";
-import { isCI } from "@qawolf/ci-info";
+import { CONFIG } from "@qawolf/config";
+import { logger } from "@qawolf/logger";
 import { platform } from "os";
 import { join } from "path";
 import { createGif } from "./createGif";
@@ -26,7 +26,10 @@ export class VirtualCapture {
   }
 
   static async create(options: CreateOptions) {
-    if (!this.isEnabled()) return null;
+    if (platform() !== "linux") {
+      logger.info("video capture disabled: only linux is supported currently");
+      return null;
+    }
 
     // ffmpeg video size must be divisible by 2
     const videoSize = {
@@ -48,10 +51,6 @@ export class VirtualCapture {
       size: videoSize,
       xvfb
     });
-  }
-
-  static isEnabled(): boolean {
-    return isCI && platform() === "linux";
   }
 
   public get gifPath() {

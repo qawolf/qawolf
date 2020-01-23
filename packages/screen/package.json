@@ -23,7 +23,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/ci-info": "^2.1.0",
     "@qawolf/config": "^0.8.1",
     "@qawolf/ffmpeg-static": "3.1.4",
     "@qawolf/logger": "^0.8.1",
