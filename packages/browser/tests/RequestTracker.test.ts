@@ -1,4 +1,4 @@
-import { Page } from "playwright";
+import { Page } from "playwright-core";
 import { launchPlaywright } from "../src/browser/launchPlaywright";
 import { RequestTracker } from "../src/page/RequestTracker";
 

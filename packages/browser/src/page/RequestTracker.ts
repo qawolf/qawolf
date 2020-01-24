@@ -1,7 +1,7 @@
 import { logger } from "@qawolf/logger";
 import { Callback } from "@qawolf/types";
 import { remove } from "lodash";
-import { Page as PlaywrightPage, Request, PageEventObj } from "playwright";
+import { Page as PlaywrightPage, Request, PageEventObj } from "playwright-core";
 
 export class RequestTracker {
   private _onComplete: Callback[] = [];

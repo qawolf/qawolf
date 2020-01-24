@@ -1,6 +1,7 @@
 // public API
 export { Browser } from "./browser/Browser";
-export { launch, LaunchOptions } from "./browser/launch";
+export { launch } from "./browser/launch";
+export { LaunchOptions } from "./browser/launchPlaywright";
 export { Page } from "./page/Page";
 
 // internal API

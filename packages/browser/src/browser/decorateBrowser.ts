@@ -1,4 +1,4 @@
-import { Browser as PlaywrightBrowser } from "playwright";
+import { Browser as PlaywrightBrowser } from "playwright-core";
 import { Browser } from "./Browser";
 import { QAWolfBrowser } from "./QAWolfBrowser";
 

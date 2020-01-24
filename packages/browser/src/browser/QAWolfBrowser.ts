@@ -14,10 +14,10 @@ import { sleep } from "@qawolf/web";
 import { isNil, pick, sortBy } from "lodash";
 import {
   Browser as PlaywrightBrowser,
-  devices,
   DirectNavigationOptions,
   ElementHandle
-} from "playwright";
+} from "playwright-core";
+import { DeviceDescriptor } from "playwright-core/lib/types";
 import { ClickOptions } from "../actions/clickElement";
 import { Browser } from "./Browser";
 import { decorateBrowser } from "./decorateBrowser";
@@ -28,7 +28,7 @@ import { Page } from "../page/Page";
 export interface ConstructorOptions {
   capture: VirtualCapture | null;
   debug?: boolean;
-  device: devices.Device;
+  device: DeviceDescriptor;
   logLevel: string;
   navigationTimeoutMs?: number;
   playwrightBrowser: PlaywrightBrowser;

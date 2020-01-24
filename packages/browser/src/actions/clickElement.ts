@@ -1,5 +1,5 @@
 import { logger } from "@qawolf/logger";
-import { ElementHandle } from "playwright";
+import { ElementHandle } from "playwright-core";
 
 export type ClickOptions = {
   simulate?: boolean;

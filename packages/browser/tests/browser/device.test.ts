@@ -1,4 +1,4 @@
-import { devices } from "playwright";
+import { devices } from "playwright-core";
 import { getDevice } from "../../src/browser/device";
 
 describe("getDevice", () => {

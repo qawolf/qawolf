@@ -1,7 +1,7 @@
 import { logger } from "@qawolf/logger";
 import { FindElementOptions, Selector } from "@qawolf/types";
 import { sleep } from "@qawolf/web";
-import { ElementHandle, Page as PlaywrightPage } from "playwright";
+import { ElementHandle, Page as PlaywrightPage } from "playwright-core";
 import { findElement } from "./findElement";
 import { getFindElementOptions } from "./getFindElementOptions";
 

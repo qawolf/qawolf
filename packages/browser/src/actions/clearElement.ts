@@ -1,5 +1,5 @@
 import { logger } from "@qawolf/logger";
-import { ElementHandle } from "playwright";
+import { ElementHandle } from "playwright-core";
 
 export const clearElement = async (
   elementHandle: ElementHandle

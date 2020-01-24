@@ -1,6 +1,6 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import playwright, { Browser } from "playwright-core";
+import playwright, { Browser, BrowserContext } from "playwright-core";
 import { DeviceDescriptor } from "playwright-core/lib/types";
 import { getDevice } from "./device";
 
@@ -27,8 +27,10 @@ export type LaunchOptions =
   | (FirefoxLaunchOptions & QAWolfLaunchOptions)
   | (WebkitLaunchOptions & QAWolfLaunchOptions);
 
-export const launchPlaywright = (options: LaunchOptions): Promise<Browser> => {
-  const device = options.device || getDevice();
+export const launchPlaywright = async (
+  options: LaunchOptions
+): Promise<BrowserContext> => {
+  const device = getDevice(options.device);
 
   const launchOptions: LaunchOptions = {
     args: [
@@ -52,13 +54,20 @@ export const launchPlaywright = (options: LaunchOptions): Promise<Browser> => {
   // TODO check defaultViewport: null
   logger.verbose(`launch playwright: ${JSON.stringify(launchOptions)}`);
 
+  let browser: Browser;
+
   if (options.browser === "firefox") {
-    return playwright.firefox.launch(launchOptions);
+    browser = await playwright.firefox.launch(launchOptions);
+  } else if (options.browser === "webkit") {
+    browser = await playwright.webkit.launch(launchOptions);
+  } else {
+    browser = await playwright.chromium.launch(launchOptions);
   }
 
-  if (options.browser === "webkit") {
-    return playwright.webkit.launch(launchOptions);
-  }
+  const context = await browser.newContext({
+    userAgent: device.userAgent,
+    viewport: device.viewport
+  });
 
-  return playwright.chromium.launch(launchOptions);
+  return context;
 };

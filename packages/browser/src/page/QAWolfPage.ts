@@ -6,7 +6,7 @@ import {
   ScrollValue,
   TypeOptions
 } from "@qawolf/types";
-import { ElementHandle } from "playwright";
+import { ElementHandle } from "playwright-core";
 import { eventWithTime } from "rrweb/typings/types";
 import {
   clickElement,
