@@ -1,6 +1,6 @@
+import { launch } from "@qawolf/browser";
 import { buildCode, stepToSelector } from "@qawolf/build-code";
 import { buildWorkflow } from "@qawolf/build-workflow";
-import { launch } from "@qawolf/browser";
 import { logger } from "@qawolf/logger";
 import { outputFile, outputJson } from "fs-extra";
 import { Url } from "url";

@@ -1,11 +1,11 @@
 import { logger } from "@qawolf/logger";
 import { KeyEvent } from "@qawolf/types";
 import { uniq } from "lodash";
-import { keyDefinitions } from "playwright-core/lib/USKeyboardLayout";
+import { keyDefinitions } from "playwright-core/lib/usKeyboardLayout";
 import { Stroke } from "./Stroke";
 
 const USKeys = uniq(
-  Object.values(keyDefinitions).map(definition => definition.key)
+  Object.values(keyDefinitions).map((definition: any) => definition.key)
 );
 
 export const isKeyHeld = (
