@@ -7,7 +7,6 @@
     "build:packages": "tsc --build packages/tsconfig.project.json",
     "bundle:web": "lerna run --scope @qawolf/web bundle",
     "cli": "ts-node packages/cli/src/index.ts",
-    "install:puppeteer": "node ./packages/browser/node_modules/puppeteer/install.js",
     "lint": "eslint packages --ext .ts --ignore-path .gitignore --cache",
     "pretest": "npm run lint",
     "test": "lerna run --stream test",
