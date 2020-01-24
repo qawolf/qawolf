@@ -1,9 +1,9 @@
-import { Browser as PlaywrightBrowser } from "playwright-core";
+import { BrowserContext as PlaywrightBrowserContext } from "playwright-core";
 import { Browser } from "./Browser";
 import { QAWolfBrowser } from "./QAWolfBrowser";
 
 export const decorateBrowser = (
-  playwrightBrowser: PlaywrightBrowser,
+  playwrightBrowser: PlaywrightBrowserContext,
   qawolfBrowser: QAWolfBrowser
 ): Browser => {
   /**

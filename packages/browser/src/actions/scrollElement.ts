@@ -14,7 +14,7 @@ export const scrollElement = async (
   logger.verbose(`scrollElement: ${value} ${JSON.stringify(findOptions)}`);
 
   await elementHandle.evaluate(
-    (element, value, timeoutMs) => {
+    (element: Element, value: ScrollValue, timeoutMs: number) => {
       console.log("qawolf: scroll", element);
       const qawolf: QAWolfWeb = (window as any).qawolf;
       return qawolf.scroll(element, value, timeoutMs);

@@ -1,11 +1,7 @@
 import { logger } from "@qawolf/logger";
 import { FindElementOptions, Selector } from "@qawolf/types";
 import { QAWolfWeb } from "@qawolf/web";
-import {
-  ElementHandle,
-  Page as PlaywrightPage,
-  Serializable
-} from "playwright-core";
+import { ElementHandle, Page as PlaywrightPage } from "playwright-core";
 import { retryExecutionError } from "../retry";
 
 export const findElement = (
@@ -47,7 +43,7 @@ export const findElement = (
           });
       },
       selector as any,
-      options as Serializable
+      options
     );
 
     const element = jsHandle.asElement();

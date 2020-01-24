@@ -49,10 +49,11 @@ export const findPage = async (
 
   // when headless = false the tab needs to be activated
   // for the execution context to run
-  await page.bringToFront();
+  // TODO
+  // await page.bringToFront();
 
   if (options.waitForRequests) {
-    await page.qawolf.waitForRequests();
+    await page.waitForRequest(/.*/g);
   }
 
   qawolf._currentPageIndex = qawolf.pages.indexOf(page);

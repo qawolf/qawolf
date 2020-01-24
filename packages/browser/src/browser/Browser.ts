@@ -5,11 +5,9 @@ import {
   ScrollValue,
   TypeOptions
 } from "@qawolf/types";
-import {
-  BrowserContext,
-  DirectNavigationOptions,
-  ElementHandle
-} from "playwright-core";
+import { BrowserContext, ElementHandle } from "playwright-core";
+import { GotoOptions } from "playwright-core/lib/frames";
+
 import { ClickOptions } from "../actions/clickElement";
 import { Page } from "../page/Page";
 import { QAWolfBrowser } from "./QAWolfBrowser";
@@ -32,10 +30,7 @@ export interface Browser extends BrowserContext {
     options?: FindElementOptions
   ) => Promise<ElementHandle>;
 
-  goto(
-    url: string,
-    options?: FindPageOptions & DirectNavigationOptions
-  ): Promise<Page>;
+  goto(url: string, options?: FindPageOptions & GotoOptions): Promise<Page>;
 
   hasText(text: string, options?: FindPageOptions): Promise<boolean>;
 

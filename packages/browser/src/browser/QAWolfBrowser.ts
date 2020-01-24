@@ -13,10 +13,11 @@ import {
 import { sleep } from "@qawolf/web";
 import { isNil, pick, sortBy } from "lodash";
 import {
-  Browser as PlaywrightBrowser,
-  DirectNavigationOptions,
+  BrowserContext as PlaywrightBrowserContext,
   ElementHandle
 } from "playwright-core";
+// TODO
+import { GotoOptions } from "playwright-core/lib/frames";
 import { DeviceDescriptor } from "playwright-core/lib/types";
 import { ClickOptions } from "../actions/clickElement";
 import { Browser } from "./Browser";
@@ -31,7 +32,7 @@ export interface ConstructorOptions {
   device: DeviceDescriptor;
   logLevel: string;
   navigationTimeoutMs?: number;
-  playwrightBrowser: PlaywrightBrowser;
+  playwrightBrowser: PlaywrightBrowserContext;
   recordEvents?: boolean;
 }
 
@@ -107,8 +108,6 @@ export class QAWolfBrowser {
       );
     }
 
-    this.pages.forEach(page => page.qawolf.dispose());
-
     await this.browser._close();
     logger.verbose("Browser: closed");
 
@@ -158,7 +157,7 @@ export class QAWolfBrowser {
 
   public async goto(
     url: string,
-    options: FindPageOptions & DirectNavigationOptions = {}
+    options: FindPageOptions & GotoOptions = {}
   ): Promise<Page> {
     logger.verbose(`Browser: goto ${url}`);
     const page = await findPage(this.browser, options);

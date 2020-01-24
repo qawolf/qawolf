@@ -19,7 +19,6 @@ import { find } from "../find/find";
 import { findProperty } from "../find/findProperty";
 import { hasText } from "../find/hasText";
 import { Page } from "./Page";
-import { RequestTracker } from "./RequestTracker";
 import { retryExecutionError } from "../retry";
 
 export class QAWolfPage {
@@ -27,12 +26,10 @@ export class QAWolfPage {
   private _events: Event[] = [];
   private _index: number;
   private _page: Page;
-  private _requests: RequestTracker;
 
   public constructor(page: Page, index: number) {
     this._page = page;
     this._index = index;
-    this._requests = new RequestTracker(page);
   }
 
   public click(
@@ -51,10 +48,6 @@ export class QAWolfPage {
 
       return element;
     });
-  }
-
-  public dispose() {
-    this._requests.dispose();
   }
 
   public get domEvents() {
@@ -151,9 +144,5 @@ export class QAWolfPage {
 
       return element;
     });
-  }
-
-  public waitForRequests() {
-    return this._requests.waitUntilComplete();
   }
 }
