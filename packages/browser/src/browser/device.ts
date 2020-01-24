@@ -1,7 +1,9 @@
-import { devices } from "playwright";
-import { Device } from "playwright/DeviceDescriptors";
+import devices from "playwright-core/lib/deviceDescriptors";
+import { DeviceDescriptor } from "playwright-core/lib/types";
 
-export const getDevice = (device: string | Device = "desktop"): Device => {
+export const getDevice = (
+  device: string | DeviceDescriptor = "desktop"
+): DeviceDescriptor => {
   if (typeof device !== "string") {
     return device;
   }
@@ -16,9 +18,7 @@ export const getDevice = (device: string | Device = "desktop"): Device => {
         width: 1366,
         height: 768,
         deviceScaleFactor: 1,
-        isMobile: false,
-        hasTouch: false,
-        isLandscape: false
+        isMobile: false
       }
     };
   }

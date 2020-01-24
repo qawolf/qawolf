@@ -46,7 +46,7 @@ export const typeElement = async (
       await sleep(isNil(options.delayMs) ? 300 : 0);
     } else if (stroke.type === "→") {
       logger.debug(`keyboard.sendCharacter("${stroke.value}")`);
-      await page.keyboard.sendCharacter(stroke.value);
+      await page.keyboard.sendCharacters(stroke.value);
       await sleep(options.delayMs || 0);
     }
   }

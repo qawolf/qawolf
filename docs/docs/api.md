@@ -8,7 +8,7 @@ title: API
 <a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version" /></a>
 <br/>
 
-The generated code imports the `qawolf` node package, which extends the [Playwright API](https://github.com/GoogleChrome/playwright/blob/master/docs/api.md) with [automatic waiting](review_test_code#automatic-waiting) for elements and assertions, and [smart element selectors](review_test_code#element-selectors).
+The generated code imports the `qawolf` node package, which extends the [Playwright API](https://github.com/microsoft/playwright/blob/master/docs/api.md) with [automatic waiting](review_test_code#automatic-waiting) for elements and assertions, and [smart element selectors](review_test_code#element-selectors).
 
 ##### Table of Contents
 

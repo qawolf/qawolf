@@ -35,6 +35,7 @@
     "rrweb": "^0.7.25"
   },
   "devDependencies": {
-    "@qawolf/jest-plugin": "^0.8.2"
+    "@qawolf/jest-plugin": "^0.8.2",
+    "@types/debug": "^4.1.5"
   }
 }

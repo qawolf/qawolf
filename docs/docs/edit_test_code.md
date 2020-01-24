@@ -157,9 +157,9 @@ One final note: **you should always replace sensitive input values like password
 
 The generated test code gives you full access to the [Playwright API](https://github.com/microsoft/playwright/blob/master/docs/api.md).
 
-Many of the methods you may want to use are on Playwright's [`Page`](https://github.com/GoogleChrome/playwright/blob/master/docs/api.md#class-page) class. [`browser.page`](api#browserpageoptions) gives you access to the current page. You can then call these methods on the resulting `Page` instance.
+Many of the methods you may want to use are on Playwright's [`Page`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page) class. [`browser.page`](api#browserpageoptions) gives you access to the current page. You can then call these methods on the resulting `Page` instance.
 
-Below is an example of setting a cookie with Playwright's [`page.setCookie` method](https://github.com/GoogleChrome/playwright/blob/master/docs/api.md#pagesetcookiecookies) and then reloading the page with the [`page.reload` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#pagereloadoptions).
+Below is an example of setting a cookie with Playwright's [`page.setCookie` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#pagesetcookiecookies) and then reloading the page with the [`page.reload` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#pagereloadoptions).
 
 ```js
 describe("my_workflow", () => {
