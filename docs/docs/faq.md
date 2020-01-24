@@ -15,11 +15,11 @@ We are philosophically opposed to closed-source test recorders and proprietary t
 
 ## Why Playwright over Selenium?
 
-We found Playwright to be more stable than Selenium in practice and we're not [the](https://medium.com/coursera-engineering/improving-end-to-end-testing-at-coursera-using-playwright-and-jest-5f1bac9cd176) [only](https://news.ycombinator.com/item?id=20505711) [ones](https://news.ycombinator.com/item?id=20506053).
+We found Puppeteer (the source of Playwright) to be more stable than Selenium in practice and we're not [the](https://medium.com/coursera-engineering/improving-end-to-end-testing-at-coursera-using-puppeteer-and-jest-5f1bac9cd176) [only](https://news.ycombinator.com/item?id=20505711) [ones](https://news.ycombinator.com/item?id=20506053).
 
-Playwright offers additional functionality we take advantage of, like [evaluating a script on a new document](https://github.com/playwright/playwright/blob/v2.0.0/docs/api.md#pageevaluateonnewdocumentpagefunction-args) and [creating a callback to the server](https://github.com/playwright/playwright/blob/v2.0.0/docs/api.md#pageexposefunctionname-playwrightfunction). While these are possible to reimplement, we want to spend our time creating a better end-to-end experience.
+Playwright offers additional functionality we take advantage of, like [evaluating a script on a new document](https://github.com/microsoft/playwright/blob/master/docs/api.md#pageevaluateonnewdocumentpagefunction-args) and [creating a callback to the server](https://github.com/microsoft/playwright/blob/master/docs/api.md#pageexposefunctionname-playwrightfunction). While these are possible to reimplement, we want to spend our time creating a better end-to-end experience.
 
-This is a tough call because Selenium has been around for so long, and has the most cross-browser support. Ultimately we decided to prioritize stability over everything else, since that has been our major pain point with browser automation in the past.
+Since Playwright supports the modern browsers as well (Chrome/Webkit/Firefox), we decided to prioritize stability over supporting legacy browsers.
 
 ## Why Playwright over Cypress?
 

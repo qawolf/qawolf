@@ -4,7 +4,7 @@
 
 <h3 align="center">Create browser tests 10x faster</h3>
 
-<p align="center">QA Wolf is a free and open source library to create <a href="https://github.com/playwright/playwright">Playwright</a>/<a href="https://jestjs.io">Jest</a> browser tests and run them in CI</p>
+<p align="center">QA Wolf is a free and open source library to create <a href="https://github.com/microsoft/playwright">Playwright</a>/<a href="https://jestjs.io">Jest</a> browser tests and run them in CI</p>
 
 <p align="center">
   <a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version" /></a>
@@ -67,7 +67,7 @@ QA Wolf is tested against the [maintenance LTS](https://github.com/nodejs/Releas
 
 [Documentation](http://docs.qawolf.com/docs/quick_start#-create-a-browser-test)
 
-Create a [Playwright](https://github.com/playwright/playwright) and [Jest](https://jestjs.io/) test:
+Create a [Playwright](https://github.com/microsoft/playwright) and [Jest](https://jestjs.io/) test:
 
 ```bash
 npx qawolf create <url> [name]

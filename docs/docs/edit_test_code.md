@@ -36,13 +36,13 @@ it("can click input", async () => {
 
 If you run the test again (`npx qawolf test myFirstTest`), you'll see that it still passes.
 
-After we clear completed todos, we should no longer see any todos on the page. We'll add code that waits until the todos `<section>` no longer exists on the page to verify that it disappears. To do so, we'll use the [`waitUntil` helper method](api#qawolfwaituntilpredicate-timeoutms-sleepms), which takes a function and a timeout in milliseconds. It waits until the function returns `true`, throwing an error if the timeout is reached. We'll also use the [Playwright API](https://github.com/playwright/playwright/blob/master/docs/api.md).
+After we clear completed todos, we should no longer see any todos on the page. We'll add code that waits until the todos `<section>` no longer exists on the page to verify that it disappears. To do so, we'll use the [`waitUntil` helper method](api#qawolfwaituntilpredicate-timeoutms-sleepms), which takes a function and a timeout in milliseconds. It waits until the function returns `true`, throwing an error if the timeout is reached. We'll also use the [Playwright API](https://github.com/microsoft/playwright/blob/master/docs/api.md).
 
 Now let's update the test code. Here is a summary of what we'll do:
 
-1. Use the [`browser.page` method](api#browserpageoptions) to get the current [Playwright `page` instance](https://github.com/playwright/playwright/blob/v2.0.0/docs/api.md#class-page).
-2. Call [`waitUntil`](api#qawolfwaituntilpredicate-timeoutms-sleepms), passing it a function that calls [Playwright's `page.$` method](https://github.com/playwright/playwright/blob/master/docs/api.md#pageselector) to find the todos `<section>`. The `page.$` method runs [`document.querySelector`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector) with the given [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) and returns the matching [Playwright `ElementHandle`](https://github.com/playwright/playwright/blob/master/docs/api.md#class-elementhandle) or null if none found.
-3. Pass the [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) `section.main` to [Playwright's `page.$` method](https://github.com/playwright/playwright/blob/master/docs/api.md#pageselector). In [TodoMVC](http://todomvc.com/examples/react), `section.main` contains the todos and will disappear from the page once todos have been cleared.
+1. Use the [`browser.page` method](api#browserpageoptions) to get the current [Playwright `page` instance](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page).
+2. Call [`waitUntil`](api#qawolfwaituntilpredicate-timeoutms-sleepms), passing it a function that calls [Playwright's `page.$` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#pageselector) to find the todos `<section>`. The `page.$` method runs [`document.querySelector`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector) with the given [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) and returns the matching [Playwright `ElementHandle`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-elementhandle) or null if none found.
+3. Pass the [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) `section.main` to [Playwright's `page.$` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#pageselector). In [TodoMVC](http://todomvc.com/examples/react), `section.main` contains the todos and will disappear from the page once todos have been cleared.
 
 Once the todos `<section>` no longer exists because the todos have been cleared, we will end the test. If a bug on the application prevents the todos from being cleared, the test will fail.
 
@@ -155,11 +155,11 @@ One final note: **you should always replace sensitive input values like password
 
 ## Use Playwright
 
-The generated test code gives you full access to the [Playwright API](https://github.com/playwright/playwright/blob/master/docs/api.md).
+The generated test code gives you full access to the [Playwright API](https://github.com/microsoft/playwright/blob/master/docs/api.md).
 
 Many of the methods you may want to use are on Playwright's [`Page`](https://github.com/GoogleChrome/playwright/blob/master/docs/api.md#class-page) class. [`browser.page`](api#browserpageoptions) gives you access to the current page. You can then call these methods on the resulting `Page` instance.
 
-Below is an example of setting a cookie with Playwright's [`page.setCookie` method](https://github.com/GoogleChrome/playwright/blob/master/docs/api.md#pagesetcookiecookies) and then reloading the page with the [`page.reload` method](https://github.com/playwright/playwright/blob/master/docs/api.md#pagereloadoptions).
+Below is an example of setting a cookie with Playwright's [`page.setCookie` method](https://github.com/GoogleChrome/playwright/blob/master/docs/api.md#pagesetcookiecookies) and then reloading the page with the [`page.reload` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#pagereloadoptions).
 
 ```js
 describe("my_workflow", () => {
@@ -182,7 +182,7 @@ describe("my_workflow", () => {
 
 Here is another example, where we edit the [`beforeAll` block](https://jestjs.io/docs/en/api#beforeallfn-timeout) to [set a token](https://developer.mozilla.org/en-US/docs/Web/API/Storage/setItem) in local storage.
 
-Again, we call [`browser.page`](api#browserpageoptions) to get the current Playwright `Page` instance, and then use Playwright's [`page.evalute` method](https://github.com/playwright/playwright/blob/master/docs/api.md#pageevaluatepagefunction-args) to call `localStorage.setItem("token", "myTokenValue")`. Finally, we reload the page with the [`page.reload` method](https://github.com/playwright/playwright/blob/master/docs/api.md#pagereloadoptions).
+Again, we call [`browser.page`](api#browserpageoptions) to get the current Playwright `Page` instance, and then use Playwright's [`page.evalute` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#pageevaluatepagefunction-args) to call `localStorage.setItem("token", "myTokenValue")`. Finally, we reload the page with the [`page.reload` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#pagereloadoptions).
 
 ```js
 beforeAll(async () => {

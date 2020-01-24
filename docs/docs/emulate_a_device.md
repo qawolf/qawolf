@@ -5,11 +5,11 @@ title: 📱 Emulate a Device
 
 When you create a test with QA Wolf, by default it runs on a browser that is 1366 pixels wide and 768 pixels tall. These dimensions are the default because they are the [most common desktop screen resolution](https://gs.statcounter.com/screen-resolution-stats/desktop/worldwide).
 
-In this tutorial, we'll learn how to emulate [devices](https://github.com/playwright/playwright/blob/v2.0.0/lib/DeviceDescriptors.js) and test responsive layouts. We assume you know how to [create a test](create_a_test) and have a [basic understanding of the test code](review_test_code).
+In this tutorial, we'll learn how to emulate [devices](https://github.com/microsoft/playwright/blob/master/lib/DeviceDescriptors.js) and test responsive layouts. We assume you know how to [create a test](create_a_test) and have a [basic understanding of the test code](review_test_code).
 
 ## Create a test that emulates a device
 
-When you use the [`npx qawolf create <url> [name]` command](cli#npx-qawolf-create-url-name), you can optionally specify a device with the `--device` flag. The `--device` flag is a [`String`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) that specifies one of [Playwright's supported devices](https://github.com/playwright/playwright/blob/master/lib/DeviceDescriptors.js). If you do so, QA Wolf will use [Playwright's device emulator](https://github.com/playwright/playwright/blob/master/docs/api.md#playwrightdevices) when creating your test.
+When you use the [`npx qawolf create <url> [name]` command](cli#npx-qawolf-create-url-name), you can optionally specify a device with the `--device` flag. The `--device` flag is a [`String`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) that specifies one of [Playwright's supported devices](https://github.com/microsoft/playwright/blob/master/lib/DeviceDescriptors.js). If you do so, QA Wolf will use [Playwright's device emulator](https://github.com/microsoft/playwright/blob/master/docs/api.md#playwrightdevices) when creating your test.
 
 For example, we can run the following command with the `--device` flag set to `"iPad Mini"`:
 
@@ -70,7 +70,7 @@ describe("search", () => {
 
 We can pass the `device` key in addition to the `url` key when calling [`launch`](api#qawolflaunchoptions). The value of the `device` key can be either a [`String`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) or a device [`Object`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) (more on this shortly).
 
-In the example below we set `device` to `"iPhone 7"`, one of [Playwright's supported devices](https://github.com/playwright/playwright/blob/master/lib/DeviceDescriptors.js).
+In the example below we set `device` to `"iPhone 7"`, one of [Playwright's supported devices](https://github.com/microsoft/playwright/blob/master/lib/DeviceDescriptors.js).
 
 ```js
 const { launch } = require("qawolf");
@@ -94,7 +94,7 @@ describe("search", () => {
 
 You can also specify a custom device [`Object`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object). This allows you to target exact screen dimensions.
 
-See [Playwright source code](https://github.com/playwright/playwright/blob/master/lib/DeviceDescriptors.js) for example device specifications. You can also see [QA Wolf source code](https://github.com/qawolf/qawolf/blob/3256831cd93c172e81c9f7eb1fdeb347733d72ec/packages/browser/src/browser/device.ts#L9-L24) to see how it implements the default `"desktop"` device.
+See [Playwright source code](https://github.com/microsoft/playwright/blob/master/lib/DeviceDescriptors.js) for example device specifications. You can also see [QA Wolf source code](https://github.com/qawolf/qawolf/blob/3256831cd93c172e81c9f7eb1fdeb347733d72ec/packages/browser/src/browser/device.ts#L9-L24) to see how it implements the default `"desktop"` device.
 
 ```js
 describe("search", () => {

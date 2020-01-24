@@ -5,7 +5,7 @@ title: 🤝 Introduction
 
 Hi there, thanks for checking out QA Wolf! 🐺
 
-QA Wolf is an [open source](https://github.com/qawolf/qawolf) library for creating browser tests and scripts 10x faster. It converts your browser actions to stable [Playwright](https://github.com/playwright/playwright) and [Jest](https://jestjs.io/) code, including [automatic waiting](review_test_code#automatic-waiting) and [smart element selectors](review_test_code#element-selectors). It also sets up CI in one command to upload a video, GIF, and detailed logs for each test.
+QA Wolf is an [open source](https://github.com/qawolf/qawolf) library for creating browser tests and scripts 10x faster. It converts your browser actions to stable [Playwright](https://github.com/microsoft/playwright) and [Jest](https://jestjs.io/) code, including [automatic waiting](review_test_code#automatic-waiting) and [smart element selectors](review_test_code#element-selectors). It also sets up CI in one command to upload a video, GIF, and detailed logs for each test.
 
 This series of tutorials provides a detailed walkthrough of how to use QA Wolf. If you prefer to jump right in, see our [Quick Start](quick_start).
 

@@ -373,7 +373,7 @@ await browser.select(selectors[0], null);
   - `css` <?[CssSelector]> find the first visible element with `document.querySelector(css)`.
   - `html` <?[string]> find the closest match to this html element.
   - `text` <?[string]> find an element with this text.
-- `value` <[string]> type this value. To clear the element value pass `null`. You can also specify a sequence of keystrokes by prefixing the [key](https://github.com/playwright/playwright/blob/v2.0.0/lib/USKeyboardLayout.js) with the direction: ↓[keyboard.down], ↑[keyboard.up], or →[sendCharacter]. This is useful for testing hotkeys.
+- `value` <[string]> type this value. To clear the element value pass `null`. You can also specify a sequence of keystrokes by prefixing the [keyboard.key] with the direction: ↓[keyboard.down], ↑[keyboard.up], or →[sendCharacter]. This is useful for testing hotkeys.
 - `options` <[FindElementOptions] & TypeOptions> find the element with these options.
   - `delayMs` <?[number]> time to wait between key presses in milliseconds. Defaults to 300ms for ↓[keyboard.down] and ↑[keyboard.up]. Defaults to 0ms for →[sendCharacter].
   - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
@@ -453,21 +453,22 @@ await browser.type(selectors[1], "my@email.com");
 [boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean"
 [browser]: #class-browser "Browser"
 [cssselector]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors "CssSelector"
-[device]: https://github.com/playwright/playwright/blob/v2.0.0/docs/api.md#playwrightdevices "device"
-[directnavigationoptions]: https://github.com/playwright/playwright/blob/v2.0.0/docs/api.md#pagegotourl-options "DirectNavigationOptions"
-[elementhandle]: https://github.com/playwright/playwright/blob/v2.0.0/docs/api.md#class-elementhandle "ElementHandle"
+[device]: https://github.com/microsoft/playwright/blob/master/docs/api.md#playwrightdevices "device"
+[directnavigationoptions]: https://github.com/microsoft/playwright/blob/master/docs/api.md#pagegotourl-options "DirectNavigationOptions"
+[elementhandle]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-elementhandle "ElementHandle"
 [findelementoptions]: #interface-findelementoptions "FindElementOptions"
 [findpageoptions]: #interface-findpageoptions "FindPageOptions"
 [function]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function "Function"
 [htmlelement.click()]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click "HTMLElement.click"
-[keyboard.down]: https://github.com/playwright/playwright/blob/v2.0.0/docs/api.md#keyboarddownkey-options "keyboard.down"
-[keyboard.up]: https://github.com/playwright/playwright/blob/v2.0.0/docs/api.md#keyboardupkey "keyboard.up"
+[keyboard.key]: https://github.com/microsoft/playwright/blob/master/src/usKeyboardLayout.ts "keyboard.key"
+[keyboard.down]: https://github.com/microsoft/playwright/blob/master/docs/api.md#keyboarddownkey-options "keyboard.down"
+[keyboard.up]: https://github.com/microsoft/playwright/blob/master/docs/api.md#keyboardupkey "keyboard.up"
 [number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "number"
 [object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object"
-[page]: https://github.com/playwright/playwright/blob/v2.0.0/docs/api.md#class-page "Page"
+[page]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page "Page"
 [promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise"
-[playwright.browser]: https://github.com/playwright/playwright/blob/v2.0.0/docs/api.md#class-browser "playwright.Browser"
-[playwright.launchoptions]: https://github.com/playwright/playwright/blob/v2.0.0/docs/api.md#playwrightlaunchoptions "playwright.LaunchOptions"
+[playwright.browser]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browser "playwright.Browser"
+[playwright.launchoptions]: https://github.com/microsoft/playwright/blob/master/docs/api.md#playwrightlaunchoptions "playwright.LaunchOptions"
 [selector]: #interface-selector "Selector"
-[sendcharacter]: https://github.com/playwright/playwright/blob/v2.0.0/docs/api.md#keyboardsendcharacterchar" "sendCharacter"
+[sendcharacter]: https://github.com/microsoft/playwright/blob/master/docs/api.md#keyboardsendcharacterchar" "sendCharacter"
 [string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "String"
