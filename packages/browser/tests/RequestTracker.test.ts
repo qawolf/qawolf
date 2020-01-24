@@ -1,5 +1,5 @@
-import { Page } from "puppeteer";
-import { launchPuppeteer } from "../src/browser/launchPuppeteer";
+import { Page } from "playwright";
+import { launchPlaywright } from "../src/browser/launchPlaywright";
 import { RequestTracker } from "../src/page/RequestTracker";
 
 jest.useFakeTimers();
@@ -8,7 +8,7 @@ describe("waitUntilComplete", () => {
   let page: Page;
 
   beforeAll(async () => {
-    const browser = await launchPuppeteer({ headless: true });
+    const browser = await launchPlaywright({ headless: true });
     const pages = await browser.pages();
     page = pages[0];
   });

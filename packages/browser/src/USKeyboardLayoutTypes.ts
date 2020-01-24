@@ -1,4 +1,4 @@
-declare module "puppeteer/lib/USKeyboardLayout" {
+declare module "playwright/lib/USKeyboardLayout" {
   export interface KeyDefinition {
     code: string;
     key: string;

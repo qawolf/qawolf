@@ -31,11 +31,11 @@
     "@qawolf/web": "^0.8.2",
     "fs-extra": "^8.1.0",
     "lodash": "^4.17.15",
-    "puppeteer": "^2.0.0",
+    "playwright": "^2.0.0",
     "rrweb": "^0.7.25"
   },
   "devDependencies": {
     "@qawolf/jest-plugin": "^0.8.2",
-    "@types/puppeteer": "^1.20.2"
+    "@types/playwright": "^1.20.2"
   }
 }

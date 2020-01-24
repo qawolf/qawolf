@@ -6,7 +6,7 @@ import {
   ScrollValue,
   TypeOptions
 } from "@qawolf/types";
-import { ElementHandle } from "puppeteer";
+import { ElementHandle } from "playwright";
 import { eventWithTime } from "rrweb/typings/types";
 import {
   clickElement,

@@ -1,5 +1,5 @@
 import { QAWolfWeb } from "@qawolf/web";
-import { ElementHandle } from "puppeteer";
+import { ElementHandle } from "playwright";
 
 export const getXpath = async (element: ElementHandle<Element> | null) => {
   if (!element) return null;

@@ -1,7 +1,7 @@
 import { logger } from "@qawolf/logger";
 import { KeyEvent } from "@qawolf/types";
 import { uniq } from "lodash";
-import KeyDefinitions from "puppeteer/lib/USKeyboardLayout";
+import KeyDefinitions from "playwright/lib/USKeyboardLayout";
 import { Stroke } from "./Stroke";
 import "../USKeyboardLayoutTypes";
 

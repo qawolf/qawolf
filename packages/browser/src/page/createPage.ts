@@ -1,11 +1,11 @@
-import { devices, Page as PuppeteerPage } from "puppeteer";
+import { devices, Page as PlaywrightPage } from "playwright";
 import { injectBundle } from "./injectBundle";
 import { Page } from "./Page";
 import { QAWolfPage } from "./QAWolfPage";
 
 export type CreatePageOptions = {
   device: devices.Device;
-  page: PuppeteerPage;
+  page: PlaywrightPage;
   index: number;
   logLevel: string;
   recordDom?: boolean;
@@ -13,14 +13,14 @@ export type CreatePageOptions = {
 };
 
 export const createPage = async (options: CreatePageOptions): Promise<Page> => {
-  const { device, page: puppeteerPage } = options;
+  const { device, page: playwrightPage } = options;
 
-  const page = puppeteerPage as Page;
+  const page = playwrightPage as Page;
 
   page.qawolf = new QAWolfPage(page, options.index);
 
   await Promise.all([
-    puppeteerPage.emulate(device),
+    playwrightPage.emulate(device),
     injectBundle({
       logLevel: options.logLevel,
       page,

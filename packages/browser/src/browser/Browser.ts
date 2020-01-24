@@ -6,16 +6,16 @@ import {
   TypeOptions
 } from "@qawolf/types";
 import {
-  Browser as PuppeteerBrowser,
+  Browser as PlaywrightBrowser,
   DirectNavigationOptions,
   ElementHandle
-} from "puppeteer";
+} from "playwright";
 import { ClickOptions } from "../actions/clickElement";
 import { Page } from "../page/Page";
 import { QAWolfBrowser } from "./QAWolfBrowser";
 
-// PuppeteerBrowser decorated with our helpers
-export interface Browser extends PuppeteerBrowser {
+// PlaywrightBrowser decorated with our helpers
+export interface Browser extends PlaywrightBrowser {
   click(
     selector: Selector,
     options?: FindElementOptions & ClickOptions
@@ -62,6 +62,6 @@ export interface Browser extends PuppeteerBrowser {
   // reference to our QAWolfBrowser for internal use
   qawolf: QAWolfBrowser;
 
-  // reference to original PuppeteerBrowser.close method
+  // reference to original PlaywrightBrowser.close method
   _close(): Promise<void>;
 }

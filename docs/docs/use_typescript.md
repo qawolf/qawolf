@@ -25,16 +25,16 @@ const { launch } = require("qawolf");
 import { launch } from "qawolf";
 ```
 
-3. For browser tests, install types for [Node.js](https://www.npmjs.com/package/@types/node), [Puppeteer](https://www.npmjs.com/package/@types/puppeteer), and [Jest](https://www.npmjs.com/package/@types/jest):
+3. For browser tests, install types for [Node.js](https://www.npmjs.com/package/@types/node), [Playwright](https://www.npmjs.com/package/@types/playwright), and [Jest](https://www.npmjs.com/package/@types/jest):
 
 ```bash
-npm i -D @types/node @types/puppeteer @types/jest
+npm i -D @types/node @types/playwright @types/jest
 ```
 
-For browser scripts, install types for [Node.js](https://www.npmjs.com/package/@types/node) and [Puppeteer](https://www.npmjs.com/package/@types/puppeteer):
+For browser scripts, install types for [Node.js](https://www.npmjs.com/package/@types/node) and [Playwright](https://www.npmjs.com/package/@types/playwright):
 
 ```bash
-npm i -D @types/node @types/puppeteer
+npm i -D @types/node @types/playwright
 ```
 
 Enjoy using Typescript! 😌

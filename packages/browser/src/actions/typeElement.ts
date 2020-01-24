@@ -1,7 +1,7 @@
 import { logger } from "@qawolf/logger";
 import { TypeOptions } from "@qawolf/types";
 import { isNil, sleep } from "@qawolf/web";
-import { ElementHandle, Page as PuppeteerPage } from "puppeteer";
+import { ElementHandle, Page as PlaywrightPage } from "playwright";
 import { clearElement } from "./clearElement";
 import { deserializeStrokes, Stroke } from "../keyboard";
 
@@ -13,7 +13,7 @@ const shouldClear = (strokes: Stroke[]) => {
 };
 
 export const typeElement = async (
-  page: PuppeteerPage,
+  page: PlaywrightPage,
   elementHandle: ElementHandle,
   value: string | null,
   options: TypeOptions = {}

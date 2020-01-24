@@ -13,11 +13,11 @@ import {
 import { sleep } from "@qawolf/web";
 import { isNil, pick, sortBy } from "lodash";
 import {
-  Browser as PuppeteerBrowser,
+  Browser as PlaywrightBrowser,
   devices,
   DirectNavigationOptions,
   ElementHandle
-} from "puppeteer";
+} from "playwright";
 import { ClickOptions } from "../actions/clickElement";
 import { Browser } from "./Browser";
 import { decorateBrowser } from "./decorateBrowser";
@@ -31,7 +31,7 @@ export interface ConstructorOptions {
   device: devices.Device;
   logLevel: string;
   navigationTimeoutMs?: number;
-  puppeteerBrowser: PuppeteerBrowser;
+  playwrightBrowser: PlaywrightBrowser;
   recordEvents?: boolean;
 }
 
@@ -60,7 +60,7 @@ export class QAWolfBrowser {
 
     this._capture = options.capture;
     this._createdAt = Date.now();
-    this._browser = decorateBrowser(options.puppeteerBrowser, this);
+    this._browser = decorateBrowser(options.playwrightBrowser, this);
   }
 
   public get browser(): Browser {

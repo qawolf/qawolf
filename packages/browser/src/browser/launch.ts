@@ -1,11 +1,11 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { VirtualCapture } from "@qawolf/screen";
-import { LaunchOptions as PuppeteerLaunchOptions } from "puppeteer";
-import { Device } from "puppeteer/DeviceDescriptors";
+import { LaunchOptions as PlaywrightLaunchOptions } from "playwright";
+import { Device } from "playwright/DeviceDescriptors";
 import { Browser } from "./Browser";
 import { getDevice } from "./device";
-import { launchPuppeteer } from "./launchPuppeteer";
+import { launchPlaywright } from "./launchPlaywright";
 import { managePages } from "./managePages";
 import { QAWolfBrowser } from "./QAWolfBrowser";
 
@@ -16,7 +16,7 @@ export type LaunchOptions = {
   navigationTimeoutMs?: number;
   recordEvents?: boolean;
   url?: string;
-} & PuppeteerLaunchOptions;
+} & PlaywrightLaunchOptions;
 
 const createCapture = (device: Device, headless: boolean = false) => {
   if (!CONFIG.artifactPath || CONFIG.disableVideoArtifact) return null;
@@ -67,7 +67,7 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
 
   const capture = await createCapture(device, options.headless);
 
-  const puppeteerBrowser = await launchPuppeteer({
+  const playwrightBrowser = await launchPlaywright({
     ...options,
     device,
     display: capture ? capture.xvfb.display : undefined
@@ -79,7 +79,7 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
     device,
     logLevel: options.logLevel || CONFIG.logLevel || "error",
     navigationTimeoutMs: options.navigationTimeoutMs,
-    puppeteerBrowser,
+    playwrightBrowser,
     recordEvents: options.recordEvents
   });
 

@@ -1,5 +1,5 @@
-import { devices } from "puppeteer";
-import { Device } from "puppeteer/DeviceDescriptors";
+import { devices } from "playwright";
+import { Device } from "playwright/DeviceDescriptors";
 
 export const getDevice = (device: string | Device = "desktop"): Device => {
   if (typeof device !== "string") {
@@ -27,5 +27,5 @@ export const getDevice = (device: string | Device = "desktop"): Device => {
     return devices[device];
   }
 
-  throw new Error(`puppeteer.devices["${device}"] was not found`);
+  throw new Error(`playwright.devices["${device}"] was not found`);
 };

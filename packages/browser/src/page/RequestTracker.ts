@@ -1,20 +1,20 @@
 import { logger } from "@qawolf/logger";
 import { Callback } from "@qawolf/types";
 import { remove } from "lodash";
-import { Page as PuppeteerPage, Request, PageEventObj } from "puppeteer";
+import { Page as PlaywrightPage, Request, PageEventObj } from "playwright";
 
 export class RequestTracker {
   private _onComplete: Callback[] = [];
   private _onDispose: (() => void)[] = [];
 
-  private _page: PuppeteerPage;
+  private _page: PlaywrightPage;
 
   private _requests: Request[] = [];
 
   // how long until we ignore a request
   private _timeout: number;
 
-  constructor(page: PuppeteerPage, timeout: number = 5000) {
+  constructor(page: PlaywrightPage, timeout: number = 5000) {
     this._page = page;
     this._timeout = timeout;
 

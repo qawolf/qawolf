@@ -1,15 +1,15 @@
-import { Browser as PuppeteerBrowser } from "puppeteer";
+import { Browser as PlaywrightBrowser } from "playwright";
 import { Browser } from "./Browser";
 import { QAWolfBrowser } from "./QAWolfBrowser";
 
 export const decorateBrowser = (
-  puppeteerBrowser: PuppeteerBrowser,
+  playwrightBrowser: PlaywrightBrowser,
   qawolfBrowser: QAWolfBrowser
 ): Browser => {
   /**
    * Decorate Browser with our helpers.
    */
-  const browser = puppeteerBrowser as Browser;
+  const browser = playwrightBrowser as Browser;
 
   browser.click = qawolfBrowser.click.bind(qawolfBrowser);
 

@@ -56,7 +56,7 @@ describe("Recorder", () => {
 
     const page = await browser.page();
 
-    // from https://github.com/GoogleChrome/puppeteer/issues/4119#issue-417279184
+    // from https://github.com/GoogleChrome/playwright/issues/4119#issue-417279184
     await (page as any)._client.send("Input.dispatchMouseEvent", {
       type: "mouseWheel",
       deltaX: 0,

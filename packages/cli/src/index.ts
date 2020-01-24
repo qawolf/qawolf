@@ -21,7 +21,7 @@ program
   // XXX remove in v1.0.0
   .alias("record")
   .option("--debug", "save events and workflow json for debugging")
-  .option("-d, --device <device>", "emulate using a puppeteer.device")
+  .option("-d, --device <device>", "emulate using a playwright.device")
   .option("-p, --path <path>", "path to save the file")
   .option("-s, --script", "create a script instead of a test")
   .description("create a test from browser actions")

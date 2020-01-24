@@ -8,7 +8,7 @@ title: API
 <a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version" /></a>
 <br/>
 
-The generated code imports the `qawolf` node package, which extends the [Puppeteer API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md) with [automatic waiting](review_test_code#automatic-waiting) for elements and assertions, and [smart element selectors](review_test_code#element-selectors).
+The generated code imports the `qawolf` node package, which extends the [Playwright API](https://github.com/GoogleChrome/playwright/blob/master/docs/api.md) with [automatic waiting](review_test_code#automatic-waiting) for elements and assertions, and [smart element selectors](review_test_code#element-selectors).
 
 ##### Table of Contents
 
@@ -143,8 +143,8 @@ const { browser, waitFor } = require("qawolf");
 
 ### qawolf.launch(options)
 
-- `options` <[Object] & [puppeteer.LaunchOptions]>
-  - `device` <?[device] | ?[string]> Emulate this [device]. If you pass a string it will lookup a device with that key in `puppeteer.devices[options.device]`. Defaults to ["desktop"](https://github.com/qawolf/qawolf/blob/3256831cd93c172e81c9f7eb1fdeb347733d72ec/packages/browser/src/browser/device.ts#L9-L24).
+- `options` <[Object] & [playwright.LaunchOptions]>
+  - `device` <?[device] | ?[string]> Emulate this [device]. If you pass a string it will lookup a device with that key in `playwright.devices[options.device]`. Defaults to ["desktop"](https://github.com/qawolf/qawolf/blob/3256831cd93c172e81c9f7eb1fdeb347733d72ec/packages/browser/src/browser/device.ts#L9-L24).
   - `navigationTimeoutMs` <?[number]> Maximum navigation time in milliseconds, defaults to 30 seconds, pass 0 to disable timeout.
   - `url` <[string]> The url to go to.
 - returns: <[Promise]<[Browser]>>
@@ -197,9 +197,9 @@ await waitUntil(async () => {
 
 ## class: Browser
 
-- extends: [puppeteer.Browser]
+- extends: [playwright.Browser]
 
-A [puppeteer.Browser] with actions and assertions to [find](review_test_code#element-selectors) and [automatically wait for](review_test_code#automatic-waiting) elements.
+A [playwright.Browser] with actions and assertions to [find](review_test_code#element-selectors) and [automatically wait for](review_test_code#automatic-waiting) elements.
 
 ### browser.click(selector[, options])
 
@@ -373,7 +373,7 @@ await browser.select(selectors[0], null);
   - `css` <?[CssSelector]> find the first visible element with `document.querySelector(css)`.
   - `html` <?[string]> find the closest match to this html element.
   - `text` <?[string]> find an element with this text.
-- `value` <[string]> type this value. To clear the element value pass `null`. You can also specify a sequence of keystrokes by prefixing the [key](https://github.com/puppeteer/puppeteer/blob/v2.0.0/lib/USKeyboardLayout.js) with the direction: ↓[keyboard.down], ↑[keyboard.up], or →[sendCharacter]. This is useful for testing hotkeys.
+- `value` <[string]> type this value. To clear the element value pass `null`. You can also specify a sequence of keystrokes by prefixing the [key](https://github.com/playwright/playwright/blob/v2.0.0/lib/USKeyboardLayout.js) with the direction: ↓[keyboard.down], ↑[keyboard.up], or →[sendCharacter]. This is useful for testing hotkeys.
 - `options` <[FindElementOptions] & TypeOptions> find the element with these options.
   - `delayMs` <?[number]> time to wait between key presses in milliseconds. Defaults to 300ms for ↓[keyboard.down] and ↑[keyboard.up]. Defaults to 0ms for →[sendCharacter].
   - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
@@ -453,21 +453,21 @@ await browser.type(selectors[1], "my@email.com");
 [boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean"
 [browser]: #class-browser "Browser"
 [cssselector]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors "CssSelector"
-[device]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#puppeteerdevices "device"
-[directnavigationoptions]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pagegotourl-options "DirectNavigationOptions"
-[elementhandle]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#class-elementhandle "ElementHandle"
+[device]: https://github.com/playwright/playwright/blob/v2.0.0/docs/api.md#playwrightdevices "device"
+[directnavigationoptions]: https://github.com/playwright/playwright/blob/v2.0.0/docs/api.md#pagegotourl-options "DirectNavigationOptions"
+[elementhandle]: https://github.com/playwright/playwright/blob/v2.0.0/docs/api.md#class-elementhandle "ElementHandle"
 [findelementoptions]: #interface-findelementoptions "FindElementOptions"
 [findpageoptions]: #interface-findpageoptions "FindPageOptions"
 [function]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function "Function"
 [htmlelement.click()]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click "HTMLElement.click"
-[keyboard.down]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#keyboarddownkey-options "keyboard.down"
-[keyboard.up]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#keyboardupkey "keyboard.up"
+[keyboard.down]: https://github.com/playwright/playwright/blob/v2.0.0/docs/api.md#keyboarddownkey-options "keyboard.down"
+[keyboard.up]: https://github.com/playwright/playwright/blob/v2.0.0/docs/api.md#keyboardupkey "keyboard.up"
 [number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "number"
 [object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object"
-[page]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#class-page "Page"
+[page]: https://github.com/playwright/playwright/blob/v2.0.0/docs/api.md#class-page "Page"
 [promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise"
-[puppeteer.browser]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#class-browser "puppeteer.Browser"
-[puppeteer.launchoptions]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#puppeteerlaunchoptions "puppeteer.LaunchOptions"
+[playwright.browser]: https://github.com/playwright/playwright/blob/v2.0.0/docs/api.md#class-browser "playwright.Browser"
+[playwright.launchoptions]: https://github.com/playwright/playwright/blob/v2.0.0/docs/api.md#playwrightlaunchoptions "playwright.LaunchOptions"
 [selector]: #interface-selector "Selector"
-[sendcharacter]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#keyboardsendcharacterchar" "sendCharacter"
+[sendcharacter]: https://github.com/playwright/playwright/blob/v2.0.0/docs/api.md#keyboardsendcharacterchar" "sendCharacter"
 [string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "String"

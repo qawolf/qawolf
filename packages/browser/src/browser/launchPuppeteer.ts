@@ -1,17 +1,17 @@
 import { CONFIG } from "@qawolf/config";
 import { platform } from "os";
-import { launch, LaunchOptions, Browser } from "puppeteer";
-import { Device } from "puppeteer/DeviceDescriptors";
+import { launch, LaunchOptions, Browser } from "playwright";
+import { Device } from "playwright/DeviceDescriptors";
 import { logger } from "@qawolf/logger";
 import { getDevice } from "./device";
 
-interface LaunchPuppeteerOptions extends LaunchOptions {
+interface LaunchPlaywrightOptions extends LaunchOptions {
   device?: Device;
   display?: string;
 }
 
-export const launchPuppeteer = (
-  options: LaunchPuppeteerOptions
+export const launchPlaywright = (
+  options: LaunchPlaywrightOptions
 ): Promise<Browser> => {
   const device = options.device || getDevice();
 
@@ -41,6 +41,6 @@ export const launchPuppeteer = (
     };
   }
 
-  logger.verbose(`launch puppeteer: ${JSON.stringify(launchOptions)}`);
+  logger.verbose(`launch playwright: ${JSON.stringify(launchOptions)}`);
   return launch(launchOptions);
 };

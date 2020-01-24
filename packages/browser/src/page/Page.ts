@@ -1,7 +1,7 @@
-import { Page as PuppeteerPage } from "puppeteer";
+import { Page as PlaywrightPage } from "playwright";
 import { QAWolfPage } from "./QAWolfPage";
 
-// PuppeteerPage decorated with qawolf Page
-export interface Page extends PuppeteerPage {
+// PlaywrightPage decorated with qawolf Page
+export interface Page extends PlaywrightPage {
   qawolf: QAWolfPage;
 }

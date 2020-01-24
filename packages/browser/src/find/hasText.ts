@@ -1,6 +1,6 @@
 import { FindElementOptions } from "@qawolf/types";
 import { QAWolfWeb } from "@qawolf/web";
-import { Page } from "puppeteer";
+import { Page } from "playwright";
 import { getFindElementOptions } from "./getFindElementOptions";
 
 export const hasText = async (

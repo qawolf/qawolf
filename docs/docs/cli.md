@@ -21,7 +21,7 @@ See all commands and options.
 
 ### npx qawolf create <url\> \[name]
 
-- `--device <device>` (optional): Emulate a [device](https://github.com/puppeteer/puppeteer/blob/5e63254e62fb9aedfd4503c632228c3334c70293/lib/DeviceDescriptors.js).
+- `--device <device>` (optional): Emulate a [device](https://github.com/playwright/playwright/blob/5e63254e62fb9aedfd4503c632228c3334c70293/lib/DeviceDescriptors.js).
 - `--path <path>` (optional): Specify the path to create the test. Defaults to `.qawolf`.
 - `--script` (optional): Create a node script instead of a [Jest](https://jestjs.io) test.
 - `url` (required): visit this URL to begin your test.

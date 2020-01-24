@@ -25,7 +25,7 @@ When you add additional tests, the test code will be added to the `.qawolf/tests
 
 ## Overview of test code
 
-Let's look at the generated test code in `.qawolf/tests/myFirstTest.test.js`. The test code includes the `qawolf` library, which is built on top of [Puppeteer](https://pptr.dev/) to automate browser actions. The tests are written in [Jest](https://jestjs.io), which is a JavaScript testing framework. You have full access to the [Puppeteer](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md) and [Jest](https://jestjs.io/docs/en/api) APIs in your test code.
+Let's look at the generated test code in `.qawolf/tests/myFirstTest.test.js`. The test code includes the `qawolf` library, which is built on top of [Playwright](https://pptr.dev/) to automate browser actions. The tests are written in [Jest](https://jestjs.io), which is a JavaScript testing framework. You have full access to the [Playwright](https://github.com/playwright/playwright/blob/master/docs/api.md) and [Jest](https://jestjs.io/docs/en/api) APIs in your test code.
 
 Below we provide a brief overview of the generated test code with an example test file for [TodoMVC](http://todomvc.com/examples/react). The contents of each test are contained in a [Jest describe block](https://jestjs.io/docs/en/api#describename-fn). The test name is set to what you specified when creating the test, or the URL hostname if you didn't specify a name.
 
@@ -78,7 +78,7 @@ The first line of the generated test code imports a [method called `launch`](api
 const { launch } = require("qawolf");
 ```
 
-`launch` is an [async function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) that returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) that resolves to an instance of the [QA Wolf Browser class](api#class-browser). The QA Wolf browser class extends the [Puppeteer Browser class](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#class-browser).
+`launch` is an [async function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) that returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) that resolves to an instance of the [QA Wolf Browser class](api#class-browser). The QA Wolf browser class extends the [Playwright Browser class](https://github.com/playwright/playwright/blob/v2.0.0/docs/api.md#class-browser).
 
 The test code calls `launch` in a [Jest `beforeAll` block](https://jestjs.io/docs/en/api#beforeallfn-timeout). This means that a Chromium browser will be opened with the specified URL before the tests run.
 
