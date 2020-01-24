@@ -51,14 +51,18 @@ export const launchPlaywright = async (
     };
   }
 
-  // TODO check defaultViewport: null
+  if (!options.browser) {
+    // TODO remove cast, move BrowserType to types
+    launchOptions.browser = CONFIG.browser as BrowserType;
+  }
+
   logger.verbose(`launch playwright: ${JSON.stringify(launchOptions)}`);
 
   let browser: Browser;
 
-  if (options.browser === "firefox") {
+  if (launchOptions.browser === "firefox") {
     browser = await playwright.firefox.launch(launchOptions);
-  } else if (options.browser === "webkit") {
+  } else if (launchOptions.browser === "webkit") {
     browser = await playwright.webkit.launch(launchOptions);
   } else {
     browser = await playwright.chromium.launch(launchOptions);
@@ -68,6 +72,10 @@ export const launchPlaywright = async (
     userAgent: device.userAgent,
     viewport: device.viewport
   });
+
+  // TODO deal with closing....
+
+  await context.newPage();
 
   return context;
 };

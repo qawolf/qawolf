@@ -1,7 +1,6 @@
 import { buildCode, stepToSelector } from "@qawolf/build-code";
 import { buildWorkflow } from "@qawolf/build-workflow";
 import { launch } from "@qawolf/browser";
-import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { outputFile, outputJson } from "fs-extra";
 import { Url } from "url";
@@ -68,9 +67,11 @@ export const create = async (options: RecordOptions): Promise<void> => {
           await saveJson("events", browser.qawolf.events);
         }
 
+        const events = await browser.qawolf.events();
+
         const workflow = buildWorkflow({
           device: options.device,
-          events: browser.qawolf.events,
+          events,
           name: name,
           url: options.url.href!
         });
