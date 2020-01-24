@@ -1,4 +1,5 @@
-import devices from "playwright-core/lib/deviceDescriptors";
+// todo open issue
+const playwright = require("playwright-core");
 import { DeviceDescriptor } from "playwright-core/lib/types";
 
 export const getDevice = (
@@ -23,8 +24,8 @@ export const getDevice = (
     };
   }
 
-  if (devices[device]) {
-    return devices[device];
+  if (playwright.devices[device]) {
+    return playwright.devices[device];
   }
 
   throw new Error(`playwright.devices["${device}"] was not found`);

@@ -25,6 +25,7 @@ import { decorateBrowser } from "./decorateBrowser";
 import { createDomReplayer } from "../page/createDomReplayer";
 import { findPage } from "../page/findPage";
 import { Page } from "../page/Page";
+import { createPage } from "../page/createPage";
 
 export interface ConstructorOptions {
   capture: VirtualCapture | null;
@@ -40,8 +41,6 @@ export class QAWolfBrowser {
   private _browser: Browser;
   private _createdAt: number;
   private _options: ConstructorOptions;
-  // stored in order of open
-  private _pages: Page[] = [];
   private _onClose: Callback[] = [];
 
   // public for test
@@ -96,10 +95,12 @@ export class QAWolfBrowser {
 
     logger.verbose("Browser: close");
 
+    const pages = await this.pages();
+
     const artifactPath = CONFIG.artifactPath;
     if (artifactPath) {
       await Promise.all(
-        this.pages.map((page, index) =>
+        pages.map((page, index) =>
           createDomReplayer(
             page,
             `${artifactPath}/page_${index}__${this._createdAt}.html`
@@ -118,10 +119,12 @@ export class QAWolfBrowser {
     return this._options.device;
   }
 
-  public get events() {
+  public async events() {
     const events: Event[] = [];
 
-    this._pages.forEach(page =>
+    const pages = await this.pages();
+
+    pages.forEach(page =>
       page.qawolf.events.forEach(event => events.push(event))
     );
 
@@ -182,8 +185,25 @@ export class QAWolfBrowser {
     return findPage(this.browser, options);
   }
 
-  public get pages() {
-    return this._pages;
+  public async pages(): Promise<Page[]> {
+    const pages = await this._browser.pages();
+
+    await Promise.all(
+      pages.map(async (page: any) => {
+        if (!page.qawolf) {
+          page.qawolf = await createPage({
+            logLevel: this.logLevel,
+            page,
+            // TODO fix
+            index: 0,
+            recordDom: !!CONFIG.artifactPath,
+            recordEvents: this.recordEvents
+          });
+        }
+      })
+    );
+
+    return pages.map(page => (page as any).qawolf);
   }
 
   public get recordEvents() {

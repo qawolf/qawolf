@@ -5,7 +5,6 @@ import { DeviceDescriptor } from "playwright-core/lib/types";
 import { Browser } from "./Browser";
 import { getDevice } from "./device";
 import { launchPlaywright, LaunchOptions } from "./launchPlaywright";
-import { managePages } from "./managePages";
 import { QAWolfBrowser } from "./QAWolfBrowser";
 
 const createCapture = (device: DeviceDescriptor, headless: boolean = false) => {
@@ -75,7 +74,6 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
 
   const browser = qawolfBrowser.browser;
 
-  await managePages(browser);
   if (options.url) await browser.goto(options.url);
 
   logTestStarted(browser);
