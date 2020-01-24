@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/types",
   "description": "qawolf types",
-  "version": "0.8.0-alpha.0",
+  "version": "0.8.2",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
