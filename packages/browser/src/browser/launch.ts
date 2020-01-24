@@ -1,24 +1,14 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { VirtualCapture } from "@qawolf/screen";
-import { LaunchOptions as PlaywrightLaunchOptions } from "playwright";
-import { Device } from "playwright/DeviceDescriptors";
+import { DeviceDescriptor } from "playwright-core/lib/types";
 import { Browser } from "./Browser";
 import { getDevice } from "./device";
-import { launchPlaywright } from "./launchPlaywright";
+import { launchPlaywright, LaunchOptions } from "./launchPlaywright";
 import { managePages } from "./managePages";
 import { QAWolfBrowser } from "./QAWolfBrowser";
 
-export type LaunchOptions = {
-  debug?: boolean;
-  device?: string | Device;
-  logLevel?: string;
-  navigationTimeoutMs?: number;
-  recordEvents?: boolean;
-  url?: string;
-} & PlaywrightLaunchOptions;
-
-const createCapture = (device: Device, headless: boolean = false) => {
+const createCapture = (device: DeviceDescriptor, headless: boolean = false) => {
   if (!CONFIG.artifactPath || CONFIG.disableVideoArtifact) return null;
 
   if (headless) {
