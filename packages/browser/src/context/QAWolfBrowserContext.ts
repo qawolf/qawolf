@@ -2,7 +2,6 @@ import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { VirtualCapture } from "@qawolf/screen";
 import {
-  Callback,
   Event,
   FindElementOptions,
   FindPageOptions,
@@ -20,10 +19,10 @@ import {
 import { GotoOptions } from "playwright-core/lib/frames";
 import { DeviceDescriptor } from "playwright-core/lib/types";
 import { ClickOptions } from "../actions/clickElement";
-import { Browser } from "./Browser";
-import { decorateBrowser } from "./decorateBrowser";
-import { createDomReplayer } from "../page/createDomReplayer";
-import { decoratePage } from "../page/decoratePage";
+import { BrowserContext } from "./BrowserContext";
+import { decorateBrowserContext } from "./decorateBrowserContext";
+import { ensurePagesAreDecorated } from "./ensurePagesAreDecorated";
+import { createDomArtifacts } from "../page/createDomArtifacts";
 import { findPage } from "../page/findPage";
 import { Page } from "../page/Page";
 
@@ -37,11 +36,10 @@ export interface ConstructorOptions {
   recordEvents?: boolean;
 }
 
-export class QAWolfBrowser {
-  private _browser: Browser;
+export class QAWolfBrowserContext {
   private _createdAt: number;
+  private _decorated: BrowserContext;
   private _options: ConstructorOptions;
-  private _onClose: Callback[] = [];
 
   // public for test
   public _capture: VirtualCapture | null = null;
@@ -60,11 +58,23 @@ export class QAWolfBrowser {
 
     this._capture = options.capture;
     this._createdAt = Date.now();
-    this._browser = decorateBrowser(options.playwrightBrowser, this);
+    this._decorated = decorateBrowserContext(options.playwrightBrowser, this);
   }
 
-  public get browser(): Browser {
-    return this._browser;
+  public get decorated(): BrowserContext {
+    return this._decorated;
+  }
+
+  public get device() {
+    return this._options.device;
+  }
+
+  public get logLevel() {
+    return this._options.logLevel;
+  }
+
+  public get recordEvents() {
+    return this._options.recordEvents;
   }
 
   public async click(
@@ -80,7 +90,7 @@ export class QAWolfBrowser {
 
   public async close() {
     if (CONFIG.sleepMs) {
-      logger.verbose(`Browser: sleep before close`);
+      logger.verbose(`BrowserContext: sleep before close`);
       await sleep(CONFIG.sleepMs);
     }
 
@@ -89,34 +99,17 @@ export class QAWolfBrowser {
     }
 
     if (this._options.debug) {
-      logger.verbose("Browser: skipping close in debug mode");
+      logger.verbose("BrowserContext: skipping close in debug mode");
       return;
     }
 
-    logger.verbose("Browser: close");
+    logger.verbose("BrowserContext: close");
 
     const pages = await this.pages();
+    await createDomArtifacts(pages, this._createdAt);
 
-    const artifactPath = CONFIG.artifactPath;
-    if (artifactPath) {
-      await Promise.all(
-        pages.map((page, index) =>
-          createDomReplayer(
-            page,
-            `${artifactPath}/page_${index}__${this._createdAt}.html`
-          )
-        )
-      );
-    }
-
-    await this.browser._close();
-    logger.verbose("Browser: closed");
-
-    this._onClose.forEach(c => c());
-  }
-
-  public get device() {
-    return this._options.device;
+    await this._decorated._close();
+    logger.verbose("BrowserContext: closed");
   }
 
   public async events() {
@@ -129,10 +122,6 @@ export class QAWolfBrowser {
     );
 
     return sortBy(events, e => e.time);
-  }
-
-  public get logLevel() {
-    return this._options.logLevel;
   }
 
   public async find(
@@ -162,8 +151,8 @@ export class QAWolfBrowser {
     url: string,
     options: FindPageOptions & GotoOptions = {}
   ): Promise<Page> {
-    logger.verbose(`Browser: goto ${url}`);
-    const page = await findPage(this.browser, options);
+    logger.verbose(`BrowserContext: goto ${url}`);
+    const page = await findPage(this._decorated, options);
 
     await page.goto(url, {
       timeout: this._options.navigationTimeoutMs,
@@ -182,34 +171,11 @@ export class QAWolfBrowser {
   }
 
   public page(options: FindPageOptions = {}) {
-    return findPage(this.browser, options);
+    return findPage(this._decorated, options);
   }
 
-  public async pages(): Promise<Page[]> {
-    const pages = await this._browser.pages();
-
-    await Promise.all(
-      pages.map(async (playwrightPage: any) => {
-        if (!playwrightPage.qawolf) {
-          // TODO move this to the constructor of QAWolfPage for consistency with browser
-          await decoratePage({
-            logLevel: this.logLevel,
-            playwrightPage,
-            // TODO fix
-            // does not make sense for this to be static, should be dynamic based on current pages...
-            index: 0,
-            recordDom: !!CONFIG.artifactPath,
-            recordEvents: this.recordEvents
-          });
-        }
-      })
-    );
-
-    return pages as Page[];
-  }
-
-  public get recordEvents() {
-    return this._options.recordEvents;
+  public pages(): Promise<Page[]> {
+    return ensurePagesAreDecorated(this);
   }
 
   public async scroll(
@@ -247,12 +213,6 @@ export class QAWolfBrowser {
     });
 
     return page.qawolf.type(selector, value, options);
-  }
-
-  public waitForClose() {
-    return new Promise(resolve => {
-      this._onClose.push(resolve);
-    });
   }
 }
 

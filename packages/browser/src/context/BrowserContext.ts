@@ -5,15 +5,17 @@ import {
   ScrollValue,
   TypeOptions
 } from "@qawolf/types";
-import { BrowserContext, ElementHandle } from "playwright-core";
+import {
+  BrowserContext as PlaywrightBrowserContext,
+  ElementHandle
+} from "playwright-core";
 import { GotoOptions } from "playwright-core/lib/frames";
-
 import { ClickOptions } from "../actions/clickElement";
 import { Page } from "../page/Page";
-import { QAWolfBrowser } from "./QAWolfBrowser";
+import { QAWolfBrowserContext } from "./QAWolfBrowserContext";
 
 // playwright BrowserContext decorated with our helpers
-export interface Browser extends BrowserContext {
+export interface BrowserContext extends PlaywrightBrowserContext {
   click(
     selector: Selector,
     options?: FindElementOptions & ClickOptions
@@ -55,7 +57,7 @@ export interface Browser extends BrowserContext {
   ): Promise<ElementHandle>;
 
   // reference to our QAWolfBrowser for internal use
-  qawolf: QAWolfBrowser;
+  qawolf: QAWolfBrowserContext;
 
   // reference to original PlaywrightBrowser.close method
   _close(): Promise<void>;

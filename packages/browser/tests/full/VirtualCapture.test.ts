@@ -2,7 +2,7 @@ import { CONFIG } from "@qawolf/config";
 import { sleep } from "@qawolf/web";
 import { pathExists } from "fs-extra";
 import { platform } from "os";
-import { launch } from "../../src/browser/launch";
+import { launch } from "../../src/context/launch";
 
 describe("launch and VirtualCapture", () => {
   it("records a video on linux CI", async () => {

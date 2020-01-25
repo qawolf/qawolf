@@ -1,5 +1,5 @@
 import { CONFIG } from "@qawolf/config";
-import { launch } from "../../src/browser/launch";
+import { launch } from "../../src/context/launch";
 
 describe("Browser.page", () => {
   it("chooses the first open page if the current page is closed", async () => {

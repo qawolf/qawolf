@@ -1,5 +1,5 @@
 import { devices } from "playwright-core";
-import { getDevice } from "../../src/browser/device";
+import { getDevice } from "../../src/context/device";
 
 describe("getDevice", () => {
   it('returns "desktop" size as default', () => {

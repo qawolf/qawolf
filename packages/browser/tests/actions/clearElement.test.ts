@@ -1,15 +1,15 @@
 import { CONFIG } from "@qawolf/config";
 import { clearElement } from "../../src/actions";
-import { launch } from "../../src/browser/launch";
+import { launch } from "../../src/context/launch";
 
 describe("clearElement", () => {
   it("clears the input value", async () => {
-    const browser = await launch({
+    const context = await launch({
       url: `${CONFIG.testUrl}login`
     });
-    const page = await browser.page();
+    const page = await context.page();
 
-    const usernameElement = await browser.find({ css: "#username" });
+    const usernameElement = await context.find({ css: "#username" });
     await usernameElement.evaluate(
       (element: HTMLInputElement) => (element.value = "spirit")
     );
@@ -29,6 +29,6 @@ describe("clearElement", () => {
     );
     expect(username2).toBe("");
 
-    await browser.close();
+    await context.close();
   });
 });

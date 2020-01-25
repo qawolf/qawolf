@@ -1,17 +1,17 @@
 import { logger } from "@qawolf/logger";
 import { FindPageOptions } from "@qawolf/types";
 import { isNil, waitFor } from "@qawolf/web";
-import { Browser } from "../browser/Browser";
+import { BrowserContext } from "../context/BrowserContext";
 import { Page } from "./Page";
 
 const getIndex = async (
-  browser: Browser,
+  context: BrowserContext,
   pageIndex?: number
 ): Promise<number> => {
   let index = pageIndex;
 
   if (isNil(pageIndex)) {
-    const qawolf = browser.qawolf;
+    const qawolf = context.qawolf;
 
     // if no index is specified use the current page
     index = qawolf._currentPageIndex;
@@ -30,15 +30,15 @@ const getIndex = async (
 };
 
 export const findPage = async (
-  browser: Browser,
+  context: BrowserContext,
   options: FindPageOptions
 ): Promise<Page> => {
   /**
    * Wait for the page and activate it.
    */
-  const qawolf = browser.qawolf;
+  const qawolf = context.qawolf;
 
-  let index: number = await getIndex(browser, options.page);
+  let index: number = await getIndex(context, options.page);
 
   const page = await waitFor(
     async () => {

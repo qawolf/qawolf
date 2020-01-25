@@ -1,8 +1,8 @@
 import { CONFIG } from "@qawolf/config";
 import { QAWolfWeb } from "@qawolf/web";
 import { readdir } from "fs-extra";
-import { getDevice } from "../../src/browser/device";
-import { launch } from "../../src/browser/launch";
+import { getDevice } from "../../src/context/device";
+import { launch } from "../../src/context/launch";
 
 describe("launch", () => {
   it("injects qawolf", async () => {

@@ -2,10 +2,10 @@ import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { VirtualCapture } from "@qawolf/screen";
 import { DeviceDescriptor } from "playwright-core/lib/types";
-import { Browser } from "./Browser";
+import { BrowserContext } from "./BrowserContext";
 import { getDevice } from "./device";
 import { launchPlaywright, LaunchOptions } from "./launchPlaywright";
-import { QAWolfBrowser } from "./QAWolfBrowser";
+import { QAWolfBrowserContext } from "./QAWolfBrowserContext";
 
 const createCapture = (device: DeviceDescriptor, headless: boolean = false) => {
   if (!CONFIG.artifactPath || CONFIG.disableVideoArtifact) return null;
@@ -30,16 +30,16 @@ const createCapture = (device: DeviceDescriptor, headless: boolean = false) => {
   });
 };
 
-const logTestStarted = (browser: Browser) => {
+const logTestStarted = (context: BrowserContext) => {
   /**
-   * Log test started in the browser so the timeline is inlined with the other browser logs.
+   * Log test started in the context so the timeline is inlined with the other context logs.
    */
   const jasmine = (global as any).jasmine;
   if (!jasmine || !jasmine.qawolf) return;
 
   jasmine.qawolf.onTestStarted(async (name: string) => {
     try {
-      const page = await browser.page();
+      const page = await context.page();
       await page.evaluate((testName: string) => {
         console.log(`jest: ${testName}`);
       }, name);
@@ -49,7 +49,9 @@ const logTestStarted = (browser: Browser) => {
   });
 };
 
-export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
+export const launch = async (
+  options: LaunchOptions = {}
+): Promise<BrowserContext> => {
   logger.verbose(`launch: ${JSON.stringify(options)}`);
 
   const device = getDevice(options.device);
@@ -62,7 +64,7 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
     display: capture ? capture.xvfb.display : undefined
   });
 
-  const qawolfBrowser = new QAWolfBrowser({
+  const qawolfContext = new QAWolfBrowserContext({
     capture,
     debug: options.debug || CONFIG.debug,
     device,
@@ -72,13 +74,13 @@ export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
     recordEvents: options.recordEvents
   });
 
-  const browser = qawolfBrowser.browser;
+  const context = qawolfContext.decorated;
 
-  if (options.url) await browser.goto(options.url);
+  if (options.url) await context.goto(options.url);
 
-  logTestStarted(browser);
+  logTestStarted(context);
 
   if (capture) await capture.start();
 
-  return browser;
+  return context;
 };
