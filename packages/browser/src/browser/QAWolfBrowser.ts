@@ -23,9 +23,9 @@ import { ClickOptions } from "../actions/clickElement";
 import { Browser } from "./Browser";
 import { decorateBrowser } from "./decorateBrowser";
 import { createDomReplayer } from "../page/createDomReplayer";
+import { decoratePage } from "../page/decoratePage";
 import { findPage } from "../page/findPage";
 import { Page } from "../page/Page";
-import { createPage } from "../page/createPage";
 
 export interface ConstructorOptions {
   capture: VirtualCapture | null;
@@ -189,12 +189,14 @@ export class QAWolfBrowser {
     const pages = await this._browser.pages();
 
     await Promise.all(
-      pages.map(async (page: any) => {
-        if (!page.qawolf) {
-          page.qawolf = await createPage({
+      pages.map(async (playwrightPage: any) => {
+        if (!playwrightPage.qawolf) {
+          // TODO move this to the constructor of QAWolfPage for consistency with browser
+          await decoratePage({
             logLevel: this.logLevel,
-            page,
+            playwrightPage,
             // TODO fix
+            // does not make sense for this to be static, should be dynamic based on current pages...
             index: 0,
             recordDom: !!CONFIG.artifactPath,
             recordEvents: this.recordEvents
@@ -203,7 +205,7 @@ export class QAWolfBrowser {
       })
     );
 
-    return pages.map(page => (page as any).qawolf);
+    return pages as Page[];
   }
 
   public get recordEvents() {
@@ -243,6 +245,7 @@ export class QAWolfBrowser {
       ...options,
       page: getSelectorPage(selector) || options.page
     });
+
     return page.qawolf.type(selector, value, options);
   }
 

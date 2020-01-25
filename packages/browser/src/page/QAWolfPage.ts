@@ -135,11 +135,14 @@ export class QAWolfPage {
     value: string | null,
     options: FindElementOptions & TypeOptions = {}
   ): Promise<ElementHandle> {
+    console.log("WE MADE IT TO TYPE");
     logger.verbose(`Page ${this._index}: type`);
 
     return retryExecutionError(async () => {
+      logger.verbose("find element");
       const element = await this.find(selector, { ...options, action: "type" });
 
+      logger.verbose("type element");
       await typeElement(this._page, element, value, options);
 
       return element;

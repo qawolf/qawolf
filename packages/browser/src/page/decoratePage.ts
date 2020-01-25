@@ -1,20 +1,26 @@
+import { logger } from "@qawolf/logger";
+import { omit } from "lodash";
 import { Page as PlaywrightPage } from "playwright-core";
 import { injectBundle } from "./injectBundle";
 import { Page } from "./Page";
 import { QAWolfPage } from "./QAWolfPage";
 
-export type CreatePageOptions = {
-  page: PlaywrightPage;
+export type DecoratePageOptions = {
   index: number;
   logLevel: string;
+  playwrightPage: PlaywrightPage;
   recordDom?: boolean;
   recordEvents?: boolean;
 };
 
-export const createPage = async (options: CreatePageOptions): Promise<Page> => {
-  const { page: playwrightPage } = options;
+export const decoratePage = async (
+  options: DecoratePageOptions
+): Promise<Page> => {
+  logger.verbose(
+    `decoratePage: ${JSON.stringify(omit(options, "playwrightPage"))}`
+  );
 
-  const page = playwrightPage as Page;
+  const page = options.playwrightPage as Page;
 
   page.qawolf = new QAWolfPage(page, options.index);
 
