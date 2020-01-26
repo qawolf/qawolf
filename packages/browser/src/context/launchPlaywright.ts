@@ -27,9 +27,7 @@ export type LaunchOptions =
   | (FirefoxLaunchOptions & QAWolfLaunchOptions)
   | (WebkitLaunchOptions & QAWolfLaunchOptions);
 
-export const launchPlaywright = async (
-  options: LaunchOptions
-): Promise<BrowserContext> => {
+export const launchPlaywright = async (options: LaunchOptions) => {
   const device = getDevice(options.device);
 
   const launchOptions: LaunchOptions = {
@@ -73,9 +71,7 @@ export const launchPlaywright = async (
     viewport: device.viewport
   });
 
-  // TODO deal with closing....
-
   await context.newPage();
 
-  return context;
+  return { browser, context };
 };

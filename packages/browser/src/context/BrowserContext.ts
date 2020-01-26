@@ -6,6 +6,7 @@ import {
   TypeOptions
 } from "@qawolf/types";
 import {
+  Browser as PlaywrightBrowser,
   BrowserContext as PlaywrightBrowserContext,
   ElementHandle
 } from "playwright-core";
@@ -16,6 +17,8 @@ import { QAWolfBrowserContext } from "./QAWolfBrowserContext";
 
 // playwright BrowserContext decorated with our helpers
 export interface BrowserContext extends PlaywrightBrowserContext {
+  browser: PlaywrightBrowser;
+
   click(
     selector: Selector,
     options?: FindElementOptions & ClickOptions

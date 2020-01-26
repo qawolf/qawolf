@@ -17,6 +17,9 @@ export const decorateBrowserContext = (
   context._close = context.close;
   context.close = qawolfContext.close.bind(qawolfContext);
 
+  // keep a reference to the parent browser
+  context.browser = qawolfContext.browser;
+
   context.find = qawolfContext.find.bind(qawolfContext);
   context.findProperty = qawolfContext.findProperty.bind(qawolfContext);
   context.goto = qawolfContext.goto.bind(qawolfContext);

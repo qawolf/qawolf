@@ -58,7 +58,7 @@ export const launch = async (
 
   const capture = await createCapture(device, options.headless);
 
-  const playwrightBrowser = await launchPlaywright({
+  const playwright = await launchPlaywright({
     ...options,
     device,
     display: capture ? capture.xvfb.display : undefined
@@ -70,7 +70,8 @@ export const launch = async (
     device,
     logLevel: options.logLevel || CONFIG.logLevel || "error",
     navigationTimeoutMs: options.navigationTimeoutMs,
-    playwrightBrowser,
+    playwrightBrowser: playwright.browser,
+    playwrightBrowserContext: playwright.context,
     recordEvents: options.recordEvents
   });
 

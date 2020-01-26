@@ -12,6 +12,7 @@ import {
 import { sleep } from "@qawolf/web";
 import { isNil, pick, sortBy } from "lodash";
 import {
+  Browser as PlaywrightBrowser,
   BrowserContext as PlaywrightBrowserContext,
   ElementHandle
 } from "playwright-core";
@@ -32,7 +33,8 @@ export interface ConstructorOptions {
   device: DeviceDescriptor;
   logLevel: string;
   navigationTimeoutMs?: number;
-  playwrightBrowser: PlaywrightBrowserContext;
+  playwrightBrowser: PlaywrightBrowser;
+  playwrightBrowserContext: PlaywrightBrowserContext;
   recordEvents?: boolean;
 }
 
@@ -58,7 +60,14 @@ export class QAWolfBrowserContext {
 
     this._capture = options.capture;
     this._createdAt = Date.now();
-    this._decorated = decorateBrowserContext(options.playwrightBrowser, this);
+    this._decorated = decorateBrowserContext(
+      options.playwrightBrowserContext,
+      this
+    );
+  }
+
+  public get browser(): PlaywrightBrowser {
+    return this._options.playwrightBrowser;
   }
 
   public get decorated(): BrowserContext {
@@ -108,7 +117,8 @@ export class QAWolfBrowserContext {
     const pages = await this.pages();
     await createDomArtifacts(pages, this._createdAt);
 
-    await this._decorated._close();
+    await this._decorated.browser.close();
+
     logger.verbose("BrowserContext: closed");
   }
 
