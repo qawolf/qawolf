@@ -22,7 +22,7 @@ import { DeviceDescriptor } from "playwright-core/lib/types";
 import { ClickOptions } from "../actions/clickElement";
 import { BrowserContext } from "./BrowserContext";
 import { decorateBrowserContext } from "./decorateBrowserContext";
-import { decoratePages } from "./decoratePages";
+import { decoratePages, managePages } from "./decoratePages";
 import { createDomArtifacts } from "../page/createDomArtifacts";
 import { findPage } from "../page/findPage";
 import { Page } from "../page/Page";
@@ -41,6 +41,7 @@ export interface ConstructorOptions {
 export class QAWolfBrowserContext {
   private _createdAt: number;
   private _decorated: BrowserContext;
+  private _disposeManagePages: () => void;
   private _options: ConstructorOptions;
 
   // public for test
@@ -67,6 +68,8 @@ export class QAWolfBrowserContext {
       options.playwrightBrowserContext,
       this
     );
+
+    this._disposeManagePages = managePages(this);
   }
 
   public get browser(): PlaywrightBrowser {
@@ -116,6 +119,7 @@ export class QAWolfBrowserContext {
     }
 
     logger.verbose("BrowserContext: close");
+    this._disposeManagePages();
 
     const pages = await this.pages();
     await createDomArtifacts(pages, this._createdAt);

@@ -32,3 +32,14 @@ export const decoratePages = async (
 
   return pages.sort((a, b) => a.qawolf.index - b.qawolf.index);
 };
+
+export const managePages = (context: QAWolfBrowserContext) => {
+  decoratePages(context);
+
+  // constantly check for new pages to decorate
+  // workaround for https://github.com/microsoft/playwright/pull/645
+  const intervalId = setInterval(() => decoratePages(context), 500);
+
+  const dispose = () => clearInterval(intervalId);
+  return dispose;
+};

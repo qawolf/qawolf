@@ -127,4 +127,21 @@ describe("Recorder", () => {
 
     await context.close();
   });
+
+  it("records actions on another page", async () => {
+    const context = await launch({ recordEvents: true });
+
+    const page = await context.newPage();
+
+    // wait for page to be decorated
+    await sleep(500);
+
+    await page.goto(`${CONFIG.testUrl}login`);
+    await page.type("#password", "secret");
+
+    const events = await context.qawolf.events();
+    expect(events.length).toBeGreaterThan(0);
+
+    await context.close();
+  });
 });
