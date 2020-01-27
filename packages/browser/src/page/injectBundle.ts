@@ -78,22 +78,34 @@ export const captureLogs = async (page: Page) => {
 
 export const injectBundle = async (options: BundleOptions) => {
   const page = options.page;
-  const bundle = bundleJs(options);
 
-  const functionPromises = [captureLogs(page)];
+  try {
+    const bundle = bundleJs(options);
 
-  if (options.recordDom) {
-    functionPromises.push(captureDomEvents(page));
+    const functionPromises = [captureLogs(page)];
+
+    if (options.recordDom) {
+      functionPromises.push(captureDomEvents(page));
+    }
+
+    if (options.recordEvents) {
+      functionPromises.push(captureEvents(page));
+    }
+
+    await Promise.all(functionPromises);
+
+    await Promise.all([
+      retryExecutionError(() => page.evaluate(bundle)),
+      page.evaluateOnNewDocument(bundle)
+    ]);
+  } catch (e) {
+    logger.debug(`decoratePage: error injecting bundle ${e.message}`);
+
+    if (page.isClosed()) {
+      // ignore error if the page is closed
+      return;
+    }
+
+    throw e;
   }
-
-  if (options.recordEvents) {
-    functionPromises.push(captureEvents(page));
-  }
-
-  await Promise.all(functionPromises);
-
-  await Promise.all([
-    retryExecutionError(() => page.evaluate(bundle)),
-    page.evaluateOnNewDocument(bundle)
-  ]);
 };
