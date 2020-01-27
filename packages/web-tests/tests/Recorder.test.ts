@@ -49,6 +49,7 @@ describe("Recorder", () => {
 
   it("records scroll", async () => {
     const context = await launch({
+      browser: "chromium",
       recordEvents: true,
       url: `${CONFIG.testUrl}large`
     });
