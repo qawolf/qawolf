@@ -128,6 +128,9 @@ export class QAWolfBrowserContext {
   public async events() {
     const events: Event[] = [];
 
+    // cycle event loop to let events callback
+    await sleep(0);
+
     const pages = await this.pages();
 
     pages.forEach(page =>
