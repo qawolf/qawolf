@@ -104,25 +104,25 @@ await context.click({ css: "[my-attribute='search']" });
 
 - default: `false`
 
-Prevent the context from closing to help with debugging an error. Open the [Chrome DevTools Console](https://developers.google.com/web/tools/chrome-devtools/console) to see logs from QA Wolf. Run `qaw_find()` in the console to re-run the last find.
+Prevent the browser from closing to help with debugging an error. Open the [Chrome DevTools Console](https://developers.google.com/web/tools/chrome-devtools/console) to see logs from QA Wolf. Run `qaw_find()` in the console to re-run the last find.
 
 ### QAW_DISABLE_VIDEO_ARTIFACT
 
 - default: `false`
 
-Disable capturing a video / gif of the test. This is useful if you are a linux user and you want to interact with the context locally and store other artifacts (logs, etc). If you are on linux and set QAW_ARTIFACT_PATH but do not disable the video artifact, it will put the context on a virtual display to capture it so you will not be able to interact with it.
+Disable capturing a video / gif of the test. This is useful if you are a linux user and you want to interact with the browser locally and store other artifacts (logs, etc). If you are on linux and set QAW_ARTIFACT_PATH but do not disable the video artifact, it will put the browser on a virtual display to capture it so you will not be able to interact with it.
 
 ### QAW_HEADLESS
 
 - default: `false`
 
-Run the context in [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome). This will disable video recording in CI.
+Run the browser in [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome). This will disable video recording in CI.
 
 ### QAW_SLEEP_MS
 
 - default: `1000`
 
-The default time to sleep after an element is found for [FindElementOptions], and before closing the context. To run your tests as fast as possible, set `QAW_SLEEP_MS=0`.
+The default time to sleep after an element is found for [FindElementOptions], and before closing the browser. To run your tests as fast as possible, set `QAW_SLEEP_MS=0`.
 
 We default to 1s to:
 
@@ -144,7 +144,7 @@ const { waitFor } = require("qawolf");
 ### qawolf.launch(options)
 
 - `options` <[Object] & [playwright.LaunchOptions]>
-  - `device` <?[device] | ?[string]> Emulate this [device]. If you pass a string it will lookup a device with that key in `playwright.devices[options.device]`. Defaults to ["desktop"](https://github.com/qawolf/qawolf/blob/3256831cd93c172e81c9f7eb1fdeb347733d72ec/packages/context/src/context/device.ts#L9-L24).
+  - `device` <?[device] | ?[string]> Emulate this [device]. If you pass a string it will lookup a device with that key in `playwright.devices[options.device]`. Defaults to "desktop" (1366x768).
   - `navigationTimeoutMs` <?[number]> Maximum navigation time in milliseconds, defaults to 30 seconds, pass 0 to disable timeout.
   - `url` <[string]> The url to go to.
 - returns: <[Promise]<[BrowserContext]>>
