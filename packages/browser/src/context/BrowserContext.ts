@@ -59,7 +59,7 @@ export interface BrowserContext extends PlaywrightBrowserContext {
     options?: FindElementOptions & TypeOptions
   ): Promise<ElementHandle>;
 
-  // reference to our QAWolfBrowser for internal use
+  // reference for internal use
   qawolf: QAWolfBrowserContext;
 
   // reference to original PlaywrightBrowser.close method

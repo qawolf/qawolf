@@ -1,6 +1,6 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import playwright, { Browser, BrowserContext } from "playwright-core";
+import playwright, { Browser } from "playwright-core";
 import { DeviceDescriptor } from "playwright-core/lib/types";
 import { getDevice } from "./device";
 
@@ -22,6 +22,7 @@ export interface QAWolfLaunchOptions {
   url?: string;
 }
 
+// TODO change to new LaunchOptions
 export type LaunchOptions =
   | (ChromiumLaunchOptions & QAWolfLaunchOptions)
   | (FirefoxLaunchOptions & QAWolfLaunchOptions)
@@ -32,6 +33,7 @@ export const launchPlaywright = async (options: LaunchOptions) => {
 
   const launchOptions: LaunchOptions = {
     args: [
+      // TODO figure out default args
       "--disable-dev-shm-usage",
       "--no-default-browser-check",
       "--window-position=0,0",
