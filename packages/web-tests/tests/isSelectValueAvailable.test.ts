@@ -1,17 +1,17 @@
-import { Browser, launch, Page } from "@qawolf/browser";
+import { BrowserContext, launch, Page } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { QAWolfWeb } from "@qawolf/web";
 
 describe("isSelectValueAvailable", () => {
-  let browser: Browser;
+  let context: BrowserContext;
   let page: Page;
 
   beforeAll(async () => {
-    browser = await launch({ url: `${CONFIG.testUrl}dropdown` });
-    page = await browser.page();
+    context = await launch({ url: `${CONFIG.testUrl}dropdown` });
+    page = await context.page();
   });
 
-  afterAll(() => browser.close());
+  afterAll(() => context.close());
 
   it("returns true if value not specified", async () => {
     const isAvailable = await page.evaluate(() => {

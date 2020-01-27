@@ -1,25 +1,25 @@
 import { CONFIG } from "@qawolf/config";
-import { Browser, launch, Page } from "../../src";
+import { BrowserContext, launch, Page } from "../../src";
 
-let browser: Browser;
+let context: BrowserContext;
 let page: Page;
 
 beforeAll(async () => {
-  browser = await launch({ url: `${CONFIG.testUrl}dropdown` });
-  page = await browser.page();
+  context = await launch({ url: `${CONFIG.testUrl}dropdown` });
+  page = await context.page();
 });
 
-afterAll(() => browser.close());
+afterAll(() => context.close());
 
-describe("Browser.findProperty", () => {
+describe("BrowserContext.findProperty", () => {
   it("returns element attribute if it exists", async () => {
-    const id = await browser.findProperty({ css: "select" }, "id");
+    const id = await context.findProperty({ css: "select" }, "id");
     expect(id).toBe("dropdown");
 
-    const tagName = await browser.findProperty({ css: "#dropdown" }, "tagName");
+    const tagName = await context.findProperty({ css: "#dropdown" }, "tagName");
     expect(tagName).toBe("SELECT");
 
-    const value = await browser.findProperty({ css: "#dropdown" }, "value");
+    const value = await context.findProperty({ css: "#dropdown" }, "value");
     expect(value).toBe("");
   });
 });

@@ -4,16 +4,16 @@ import "@qawolf/jest-plugin";
 import { browserLogger } from "@qawolf/logger";
 import { sleep, waitFor } from "@qawolf/web";
 import { isEqual } from "lodash";
-import { Browser, launch, Page } from "../../src";
+import { BrowserContext, launch, Page } from "../../src";
 
 describe("capture logs", () => {
   describe("logging", () => {
+    let context: BrowserContext;
     let lastMessage: any | false = false;
-    let browser: Browser;
     let page: Page;
 
     beforeAll(async () => {
-      browser = await launch({
+      context = await launch({
         logLevel: "debug",
         url: `${CONFIG.testUrl}login`
       });
@@ -22,12 +22,12 @@ describe("capture logs", () => {
         lastMessage = { level, message };
       });
 
-      page = await browser.page();
+      page = await context.page();
     });
 
-    afterAll(() => browser.close());
+    afterAll(() => context.close());
 
-    it("logs browser logs", async () => {
+    it("logs context logs", async () => {
       await page.evaluate(() => {
         console.debug("qawolf: my log", { hello: true });
       });
@@ -74,11 +74,11 @@ describe("capture logs", () => {
   });
 
   it("ignores qawolf debug logs when QAW_LOG_LEVEL != debug", async () => {
-    const browser = await launch({
+    const context = await launch({
       logLevel: "verbose",
       url: CONFIG.testUrl
     });
-    const page = await browser.page();
+    const page = await context.page();
 
     let lastMessage: any | false = false;
 
@@ -98,6 +98,6 @@ describe("capture logs", () => {
       message: "1"
     });
 
-    await browser.close();
+    await context.close();
   });
 });

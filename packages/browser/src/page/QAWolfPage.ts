@@ -135,7 +135,6 @@ export class QAWolfPage {
     value: string | null,
     options: FindElementOptions & TypeOptions = {}
   ): Promise<ElementHandle> {
-    console.log("WE MADE IT TO TYPE");
     logger.verbose(`Page ${this._index}: type`);
 
     return retryExecutionError(async () => {

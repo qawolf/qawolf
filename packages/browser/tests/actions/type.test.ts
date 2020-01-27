@@ -1,22 +1,22 @@
 import { CONFIG } from "@qawolf/config";
-import { Browser, launch, Page } from "../../src";
+import { BrowserContext, launch, Page } from "../../src";
 
-let browser: Browser;
+let context: BrowserContext;
 let page: Page;
 
 beforeAll(async () => {
-  browser = await launch({
+  context = await launch({
     url: `${CONFIG.testUrl}login`
   });
 
-  page = await browser.page();
+  page = await context.page();
 });
 
-afterAll(() => browser.close());
+afterAll(() => context.close());
 
-describe("Browser.type", () => {
+describe("BrowserContext.type", () => {
   it("sets input value", async () => {
-    await browser.type({ css: "#username" }, "spirit");
+    await context.type({ css: "#username" }, "spirit");
 
     const username = await page.$eval(
       "#username",
@@ -38,7 +38,7 @@ describe("Page.type", () => {
   });
 
   it("does not clear input value when skipClear = true", async () => {
-    await browser.type({ css: "#username" }, "2", { skipClear: true });
+    await context.type({ css: "#username" }, "2", { skipClear: true });
 
     const username = await page.$eval(
       "#username",

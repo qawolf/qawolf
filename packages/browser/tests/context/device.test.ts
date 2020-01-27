@@ -1,4 +1,4 @@
-import { devices } from "playwright-core";
+const { devices } = require("playwright-core");
 import { getDevice } from "../../src/context/device";
 
 describe("getDevice", () => {
