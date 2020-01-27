@@ -11,8 +11,8 @@ describe("Recorder", () => {
     });
     await context.click({ html: "<a>broken images</a>" }, { simulate: false });
 
-    // give CI enough time for event to fire
-    await sleep(1000);
+    const page = await context.page();
+    await page.waitForNavigation();
 
     const events = await context.qawolf.events();
     expect(events.length).toEqual(1);
