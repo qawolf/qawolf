@@ -1,7 +1,7 @@
 import { CONFIG } from "@qawolf/config";
-import { decoratePage } from "../page/decoratePage";
 import { Page } from "../page/Page";
 import { QAWolfBrowserContext } from "./QAWolfBrowserContext";
+import { QAWolfPage } from "../page/QAWolfPage";
 
 export const decoratePages = async (
   context: QAWolfBrowserContext
@@ -13,12 +13,16 @@ export const decoratePages = async (
 
   const pages = await Promise.all(
     playwrightPages.map(async (playwrightPage: any) => {
-      if (playwrightPage.qawolf) return playwrightPage as Page;
+      if (playwrightPage.qawolf) {
+        const page = playwrightPage as Page;
+        await page.qawolf.ready();
+        return page;
+      }
 
       // the first time we encounter a new page index it
       const index = context._nextPageIndex++;
 
-      const page = await decoratePage({
+      const page = new QAWolfPage({
         index,
         logLevel: context.logLevel,
         playwrightPage,
@@ -26,7 +30,9 @@ export const decoratePages = async (
         recordEvents: context.recordEvents
       });
 
-      return page;
+      await page.ready();
+
+      return page.decorated;
     })
   );
 

@@ -6,7 +6,8 @@ import {
   ScrollValue,
   TypeOptions
 } from "@qawolf/types";
-import { ElementHandle } from "playwright-core";
+import { omit } from "lodash";
+import { ElementHandle, Page as PlaywrightPage } from "playwright-core";
 import { eventWithTime } from "rrweb/typings/types";
 import {
   clickElement,
@@ -18,18 +19,47 @@ import {
 import { find } from "../find/find";
 import { findProperty } from "../find/findProperty";
 import { hasText } from "../find/hasText";
+import { injectBundle } from "./injectBundle";
 import { Page } from "./Page";
 import { retryExecutionError } from "../retry";
+
+export type CreatePageOptions = {
+  index: number;
+  logLevel: string;
+  playwrightPage: PlaywrightPage;
+  recordDom?: boolean;
+  recordEvents?: boolean;
+};
 
 export class QAWolfPage {
   private _domEvents: eventWithTime[] = [];
   private _events: Event[] = [];
   private _index: number;
-  private _page: Page;
+  private _decorated: Page;
 
-  public constructor(page: Page, index: number) {
-    this._page = page;
-    this._index = index;
+  private _ready: boolean = false;
+  private _readyCallbacks: (() => void)[] = [];
+
+  public constructor(options: CreatePageOptions) {
+    logger.verbose(
+      `QAWolfPage: create ${JSON.stringify(omit(options, "playwrightPage"))}`
+    );
+
+    this._index = options.index;
+
+    // decorate the page
+    this._decorated = options.playwrightPage as Page;
+    this._decorated.qawolf = this;
+
+    injectBundle({
+      logLevel: options.logLevel,
+      page: this._decorated,
+      recordDom: options.recordDom,
+      recordEvents: options.recordEvents
+    }).then(() => {
+      this._ready = true;
+      this._readyCallbacks.forEach(cb => cb());
+    });
   }
 
   public click(
@@ -50,6 +80,10 @@ export class QAWolfPage {
     });
   }
 
+  public get decorated() {
+    return this._decorated;
+  }
+
   public get domEvents() {
     return this._domEvents;
   }
@@ -62,7 +96,7 @@ export class QAWolfPage {
     selector: Selector,
     options: FindElementOptions = {}
   ): Promise<ElementHandle> {
-    return find(this._page, selector, options);
+    return find(this._decorated, selector, options);
   }
 
   public findProperty(
@@ -73,7 +107,7 @@ export class QAWolfPage {
     logger.verbose(`Page ${this._index}: findProperty`);
 
     return retryExecutionError(async () => {
-      return findProperty(this._page, selector, property, options);
+      return findProperty(this._decorated, selector, property, options);
     });
   }
 
@@ -84,12 +118,18 @@ export class QAWolfPage {
     logger.verbose(`Page ${this._index}: hasText`);
 
     return retryExecutionError(async () => {
-      return hasText(this._page, text, options);
+      return hasText(this._decorated, text, options);
     });
   }
 
   public get index() {
     return this._index;
+  }
+
+  public ready() {
+    if (this._ready) return true;
+
+    return new Promise(resolve => this._readyCallbacks.push(resolve));
   }
 
   public scroll(
@@ -142,7 +182,7 @@ export class QAWolfPage {
       const element = await this.find(selector, { ...options, action: "type" });
 
       logger.verbose("type element");
-      await typeElement(this._page, element, value, options);
+      await typeElement(this._decorated, element, value, options);
 
       return element;
     });
