@@ -15,7 +15,7 @@ describe("Recorder", () => {
     await sleep(1000);
     await context.close();
 
-    const events = context.qawolf.events.filter(e => e.isTrusted);
+    const events = (await context.qawolf.events()).filter(e => e.isTrusted);
     expect(events.length).toEqual(1);
     expect(events[0].name).toEqual("click");
     expect(events[0].target.node.attrs.href).toEqual("/broken_images");

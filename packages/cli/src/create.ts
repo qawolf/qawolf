@@ -63,11 +63,11 @@ export const create = async (options: RecordOptions): Promise<void> => {
           return;
         }
 
-        if (options.debug) {
-          await saveJson("events", context.qawolf.events);
-        }
-
         const events = await context.qawolf.events();
+
+        if (options.debug) {
+          await saveJson("events", events);
+        }
 
         const workflow = buildWorkflow({
           device: options.device,

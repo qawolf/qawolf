@@ -40,8 +40,6 @@ describe("launch", () => {
     // check it emulates on a new page
     await context.newPage();
 
-    console.log("num pages", await context.decorated.pages());
-
     expect((await context.page({ page: 1 })).viewport()).toEqual(
       expectedViewport
     );
