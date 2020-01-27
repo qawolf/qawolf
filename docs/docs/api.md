@@ -23,17 +23,17 @@ The generated code imports the `qawolf` node package, which extends the [Playwri
 - [class: QAWolf](#class-qawolf)
   - [qawolf.launch([options])](#qawolflaunchoptions)
   - [qawolf.waitUntil(predicate[, timeoutMs])](#qawolfwaituntilpredicate-timeoutms-sleepms)
-- [class: Browser](#class-browser)
-  - [browser.click(selector[, options])](#browserclickselector-options)
-  - [browser.close()](#browserclose)
-  - [browser.find(selector[, options])](#browserfindselector-options)
-  - [browser.findProperty(selector, property[, options])](#browserfindpropertyselector-property-options)
-  - [browser.goto(url[, options])](#browsergotourl-options)
-  - [browser.hasText(text[, options])](#browserhastexttext-options)
-  - [browser.page([options])](#browserpageoptions)
-  - [browser.scroll(selector, value[, options])](#browserscrollselector-value-options)
-  - [browser.select(selector, value[, options])](#browserselectselector-value-options)
-  - [browser.type(selector, value[, options])](#browsertypeselector-value-options)
+- [class: Browser](#class-context)
+  - [context.click(selector[, options])](#contextclickselector-options)
+  - [context.close()](#contextclose)
+  - [context.find(selector[, options])](#contextfindselector-options)
+  - [context.findProperty(selector, property[, options])](#contextfindpropertyselector-property-options)
+  - [context.goto(url[, options])](#contextgotourl-options)
+  - [context.hasText(text[, options])](#contexthastexttext-options)
+  - [context.page([options])](#contextpageoptions)
+  - [context.scroll(selector, value[, options])](#contextscrollselector-value-options)
+  - [context.select(selector, value[, options])](#contextselectselector-value-options)
+  - [context.type(selector, value[, options])](#contexttypeselector-value-options)
 - [Interfaces](#interfaces)
   - [FindElementOptions](#interface-findelementoptions)
   - [FindPageOptions](#interface-findpageoptions)
@@ -97,32 +97,32 @@ Click on this element:
 The generated code will be:
 
 ```js
-await browser.click({ css: "[my-attribute='search']" });
+await context.click({ css: "[my-attribute='search']" });
 ```
 
 ### QAW_DEBUG
 
 - default: `false`
 
-Prevent the browser from closing to help with debugging an error. Open the [Chrome DevTools Console](https://developers.google.com/web/tools/chrome-devtools/console) to see logs from QA Wolf. Run `qaw_find()` in the console to re-run the last find.
+Prevent the context from closing to help with debugging an error. Open the [Chrome DevTools Console](https://developers.google.com/web/tools/chrome-devtools/console) to see logs from QA Wolf. Run `qaw_find()` in the console to re-run the last find.
 
 ### QAW_DISABLE_VIDEO_ARTIFACT
 
 - default: `false`
 
-Disable capturing a video / gif of the test. This is useful if you are a linux user and you want to interact with the browser locally and store other artifacts (logs, etc). If you are on linux and set QAW_ARTIFACT_PATH but do not disable the video artifact, it will put the browser on a virtual display to capture it so you will not be able to interact with it.
+Disable capturing a video / gif of the test. This is useful if you are a linux user and you want to interact with the context locally and store other artifacts (logs, etc). If you are on linux and set QAW_ARTIFACT_PATH but do not disable the video artifact, it will put the context on a virtual display to capture it so you will not be able to interact with it.
 
 ### QAW_HEADLESS
 
 - default: `false`
 
-Run the browser in [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome). This will disable video recording in CI.
+Run the context in [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome). This will disable video recording in CI.
 
 ### QAW_SLEEP_MS
 
 - default: `1000`
 
-The default time to sleep after an element is found for [FindElementOptions], and before closing the browser. To run your tests as fast as possible, set `QAW_SLEEP_MS=0`.
+The default time to sleep after an element is found for [FindElementOptions], and before closing the context. To run your tests as fast as possible, set `QAW_SLEEP_MS=0`.
 
 We default to 1s to:
 
@@ -138,30 +138,30 @@ The default maximum time to wait for [FindElementOptions].
 ## class: QAWolf
 
 ```js
-const { browser, waitFor } = require("qawolf");
+const { waitFor } = require("qawolf");
 ```
 
 ### qawolf.launch(options)
 
 - `options` <[Object] & [playwright.LaunchOptions]>
-  - `device` <?[device] | ?[string]> Emulate this [device]. If you pass a string it will lookup a device with that key in `playwright.devices[options.device]`. Defaults to ["desktop"](https://github.com/qawolf/qawolf/blob/3256831cd93c172e81c9f7eb1fdeb347733d72ec/packages/browser/src/browser/device.ts#L9-L24).
+  - `device` <?[device] | ?[string]> Emulate this [device]. If you pass a string it will lookup a device with that key in `playwright.devices[options.device]`. Defaults to ["desktop"](https://github.com/qawolf/qawolf/blob/3256831cd93c172e81c9f7eb1fdeb347733d72ec/packages/context/src/context/device.ts#L9-L24).
   - `navigationTimeoutMs` <?[number]> Maximum navigation time in milliseconds, defaults to 30 seconds, pass 0 to disable timeout.
   - `url` <[string]> The url to go to.
-- returns: <[Promise]<[Browser]>>
+- returns: <[Promise]<[BrowserContext]>>
 
-Launch a [Browser](#class-browser):
+Launch a [BrowserContext](#class-browsercontext):
 
 ```js
 const { launch } = require("qawolf");
 
-const browser = await launch({
+const context = await launch({
   device: "iPhone 7",
   devtools: true,
   navigationTimeoutMs: 120000,
   url: "https://nytimes.com"
 });
 
-const browser = await launch({
+const context = await launch({
   device: {
     name: "My Custom Device",
     userAgent:
@@ -195,13 +195,13 @@ await waitUntil(async () => {
 }, 15000);
 ```
 
-## class: Browser
+## class: BrowserContext
 
-- extends: [playwright.Browser]
+- extends: [playwright.BrowserContext]
 
-A [playwright.Browser] with actions and assertions to [find](review_test_code#element-selectors) and [automatically wait for](review_test_code#automatic-waiting) elements.
+A [playwright.BrowserContext] with actions and assertions to [find](review_test_code#element-selectors) and [automatically wait for](review_test_code#automatic-waiting) elements.
 
-### browser.click(selector[, options])
+### context.click(selector[, options])
 
 - `selector` <[Selector]> find an element that matches this selector. must specify `css`, `html`, or `text`.
   - `css` <?[CssSelector]> find the first visible element with `document.querySelector(css)`.
@@ -218,22 +218,22 @@ A [playwright.Browser] with actions and assertions to [find](review_test_code#el
 Find and click an element. It will throw an error if the element is not found.
 
 ```js
-const element = await browser.click(selectors[0]);
+const element = await context.click(selectors[0]);
 
-await browser.click({ css: "#my-id" });
+await context.click({ css: "#my-id" });
 
-await browser.click({ text: "Login" }, { sleepMs: 5000 });
+await context.click({ text: "Login" }, { sleepMs: 5000 });
 ```
 
-### browser.close()
+### context.close()
 
-Close the browser and stop recording.
+Close the context and stop recording.
 
 ```js
-await browser.close();
+await context.close();
 ```
 
-### browser.find(selector[, options])
+### context.find(selector[, options])
 
 - `selector` <[Selector]> find an element that matches this selector. must specify `css`, `html`, or `text`.
   - `css` <?[CssSelector]> find the first visible element with `document.querySelector(css)`.
@@ -249,10 +249,10 @@ await browser.close();
 Find an element. It will throw an error if the element is not found.
 
 ```js
-const element = await browser.find(selectors[0]);
+const element = await context.find(selectors[0]);
 ```
 
-### browser.findProperty(selector, property[, options])
+### context.findProperty(selector, property[, options])
 
 - `selector` <[Selector]> find an element that matches this selector. must specify `css`, `html`, or `text`.
   - `css` <?[CssSelector]> find the first visible element with `document.querySelector(css)`.
@@ -269,12 +269,12 @@ const element = await browser.find(selectors[0]);
 Find an element's property. It will throw an error if the element is not found.
 
 ```js
-const id = await browser.findProperty({ css: "select" }, "id");
+const id = await context.findProperty({ css: "select" }, "id");
 
-const value = await browser.findProperty({ css: "#input-id" }, "value");
+const value = await context.findProperty({ css: "#input-id" }, "value");
 ```
 
-### browser.goto(url[, options])
+### context.goto(url[, options])
 
 - `url` <?[string]> URL to navigate page to. The url should include scheme, e.g. `https://`.
 - `options` <[FindPageOptions] & [DirectNavigationOptions]> find the page with these options.
@@ -284,13 +284,13 @@ const value = await browser.findProperty({ css: "#input-id" }, "value");
 - returns: <[Promise]<[Page]>> Resolves the page.
 
 ```js
-const page = await browser.goto("https://youtube.com", {
+const page = await context.goto("https://youtube.com", {
   page: 1,
   waitForRequests: false
 });
 ```
 
-### browser.hasText(text[, options])
+### context.hasText(text[, options])
 
 - `text` <[string]> the text to find on the page.
 - `options` <[FindPageOptions]> find the page with these options.
@@ -300,10 +300,10 @@ const page = await browser.goto("https://youtube.com", {
 - returns: <[Promise]<[boolean]>>
 
 ```js
-const isLoggedIn = await browser.hasText("Secure Area");
+const isLoggedIn = await context.hasText("Secure Area");
 ```
 
-### browser.page([options])
+### context.page([options])
 
 - `options` <[FindPageOptions]> find the page with these options.
   - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
@@ -312,14 +312,14 @@ const isLoggedIn = await browser.hasText("Secure Area");
 - returns: <[Promise]<[Page]>> Resolves the page.
 
 ```js
-const current = await browser.page();
+const current = await context.page();
 
-const initial = await browser.page({ page: 0 });
+const initial = await context.page({ page: 0 });
 
-const popup = await browser.page({ page: 1 });
+const popup = await context.page({ page: 1 });
 ```
 
-### browser.scroll(selector, value[, options])
+### context.scroll(selector, value[, options])
 
 - `selector` <[Selector]> find an element that matches this selector. must specify `css`, `html`, or `text`.
   - `css` <?[CssSelector]> find the first visible element with `document.querySelector(css)`.
@@ -340,10 +340,10 @@ Find and scroll an element until `element.scrollLeft === value.x` and `element.s
 It will throw an error if the element is not found or if it cannot scroll the element **at all**. It will **not** throw an error if it can scroll some, but not the whole amount.
 
 ```js
-const element = await browser.scroll({ css: "body" }, { x: 0, y: 1000 });
+const element = await context.scroll({ css: "body" }, { x: 0, y: 1000 });
 ```
 
-### browser.select(selector, value[, options])
+### context.select(selector, value[, options])
 
 - `selector` <[Selector]> find an element that matches this selector. must specify `css`, `html`, or `text`.
   - `css` <?[CssSelector]> find the first visible element with `document.querySelector(css)`.
@@ -361,13 +361,13 @@ Select the `value` from an element. It will throw an error if the element or val
 
 ```js
 // select "Option 1"
-await browser.select(selectors[0], "Option 1");
+await context.select(selectors[0], "Option 1");
 
 // clear the select
-await browser.select(selectors[0], null);
+await context.select(selectors[0], null);
 ```
 
-### browser.type(selector, value[, options])
+### context.type(selector, value[, options])
 
 - `selector` <[Selector]> find an element that matches this selector. must specify `css`, `html`, or `text`.
   - `css` <?[CssSelector]> find the first visible element with `document.querySelector(css)`.
@@ -388,10 +388,10 @@ Find an element, focus it and type the value.
 It will clear the element before typing if `value` does not start with `Enter` or `Tab` keys and `skipClear` is not specified. It will throw an error if the element is not found.
 
 ```js
-await browser.type(selectors[0], "hello");
+await context.type(selectors[0], "hello");
 
 // type "嗨Sup!"
-await browser.type(
+await context.type(
   selectors[0],
   "→嗨↓Shift↓KeyS↑Shift↑KeyS↓KeyU↑KeyU↓KeyP↓Shift↑KeyP↓Digit1↑Digit1↑Shift"
 );
@@ -408,7 +408,7 @@ await browser.type(
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
 
 ```js
-await browser.click(selectors[0], {
+await context.click(selectors[0], {
   // click an element on the second page that opened
   page: 1,
   sleepMs: 5000,
@@ -424,7 +424,7 @@ await browser.click(selectors[0], {
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
 
 ```js
-await browser.goto("https://youtube.com", {
+await context.goto("https://youtube.com", {
   page: 1,
   waitForRequests: false
 });
@@ -445,13 +445,13 @@ const selectors = [
   { text: "email" }
 ];
 
-await browser.click(selectors[0]);
+await context.click(selectors[0]);
 
-await browser.type(selectors[1], "my@email.com");
+await context.type(selectors[1], "my@email.com");
 ```
 
 [boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean"
-[browser]: #class-browser "Browser"
+[browsercontext]: #class-browsercontext "BrowserContext"
 [cssselector]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors "CssSelector"
 [device]: https://github.com/microsoft/playwright/blob/master/docs/api.md#playwrightdevices "device"
 [directnavigationoptions]: https://github.com/microsoft/playwright/blob/master/docs/api.md#pagegotourl-options "DirectNavigationOptions"
@@ -467,7 +467,7 @@ await browser.type(selectors[1], "my@email.com");
 [object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object"
 [page]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page "Page"
 [promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise"
-[playwright.browser]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browser "playwright.Browser"
+[playwright.context]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-context "playwright.Browser"
 [playwright.launchoptions]: https://github.com/microsoft/playwright/blob/master/docs/api.md#playwrightlaunchoptions "playwright.LaunchOptions"
 [selector]: #interface-selector "Selector"
 [sendcharacter]: https://github.com/microsoft/playwright/blob/master/docs/api.md#keyboardsendcharacterchar" "sendCharacter"

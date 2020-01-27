@@ -43,14 +43,16 @@ export const findPage = async (
   const page = await waitFor(
     async () => {
       const pages = await qawolf.pages();
+
       if (index >= pages.length) return null;
+
       return pages[index];
     },
     isNil(options.timeoutMs) ? 5000 : options.timeoutMs!
   );
 
   if (!page) {
-    throw new Error(`findPage: ${index} not found`);
+    throw new Error(`findPage: page ${index} not found`);
   }
 
   // when headless = false the tab needs to be activated

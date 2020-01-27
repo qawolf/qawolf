@@ -6,12 +6,12 @@ import { launch } from "../../src/context/launch";
 
 describe("launch and VirtualCapture", () => {
   it("records a video on linux CI", async () => {
-    const browser = await launch({ device: "iPhone 7", url: CONFIG.testUrl });
+    const context = await launch({ device: "iPhone 7", url: CONFIG.testUrl });
 
-    const capture = browser.qawolf._capture;
+    const capture = context.qawolf._capture;
     if (platform() !== "linux") {
       expect(capture).toEqual(null);
-      await browser.close();
+      await context.close();
       return;
     }
 
@@ -24,7 +24,7 @@ describe("launch and VirtualCapture", () => {
     expect(capture.xvfb).toBeTruthy();
 
     await sleep(500);
-    await browser.close();
+    await context.close();
 
     expect(capture.stopped).toEqual(true);
 

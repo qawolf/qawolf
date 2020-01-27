@@ -11,22 +11,23 @@ export const ensurePagesAreDecorated = async (
    */
   const playwrightPages = await context.decorated.pages();
 
-  const promises = playwrightPages.map(async (playwrightPage: any) => {
-    if (playwrightPage.qawolf) return;
+  await Promise.all(
+    playwrightPages.map(async (playwrightPage: any) => {
+      if (playwrightPage.qawolf) return;
 
-    const page = await decoratePage({
-      index: context._pages.length,
-      logLevel: context.logLevel,
-      playwrightPage,
-      recordDom: !!CONFIG.artifactPath,
-      recordEvents: context.recordEvents
-    });
-    context._pages[page.qawolf.index] = page;
+      const index = context._pages.length;
 
-    return page;
-  });
+      const page = await decoratePage({
+        index,
+        logLevel: context.logLevel,
+        playwrightPage,
+        recordDom: !!CONFIG.artifactPath,
+        recordEvents: context.recordEvents
+      });
 
-  await Promise.all(promises);
+      context._pages[index] = page;
+    })
+  );
 
   return context._pages;
 };

@@ -5,29 +5,29 @@ import { isKeyEvent, sleep } from "@qawolf/web";
 
 describe("Recorder", () => {
   it("records click on a link", async () => {
-    const browser = await launch({
+    const context = await launch({
       recordEvents: true,
       url: CONFIG.testUrl
     });
-    await browser.click({ html: "<a>broken images</a>" }, { simulate: false });
+    await context.click({ html: "<a>broken images</a>" }, { simulate: false });
 
-    // close the browser to ensure events are transmitted
+    // close the context to ensure events are transmitted
     await sleep(1000);
-    await browser.close();
+    await context.close();
 
-    const events = browser.qawolf.events.filter(e => e.isTrusted);
+    const events = context.qawolf.events.filter(e => e.isTrusted);
     expect(events.length).toEqual(1);
     expect(events[0].name).toEqual("click");
     expect(events[0].target.node.attrs.href).toEqual("/broken_images");
   });
 
   it("records paste", async () => {
-    const browser = await launch({
+    const context = await launch({
       recordEvents: true,
       url: `${CONFIG.testUrl}login`
     });
 
-    const page = await browser.page();
+    const page = await context.page();
 
     // tried a lot of ways to test this
     // sending Meta+V did not work
@@ -39,9 +39,9 @@ describe("Recorder", () => {
       document.querySelector("#password")!.dispatchEvent(event);
     });
 
-    // close the browser to ensure events are transmitted
+    // close the context to ensure events are transmitted
     await sleep(1000);
-    await browser.close();
+    await context.close();
 
     const events = page.qawolf.events;
     expect(events[0].target.node.attrs.id).toEqual("password");
@@ -49,12 +49,12 @@ describe("Recorder", () => {
   });
 
   it("records scroll", async () => {
-    const browser = await launch({
+    const context = await launch({
       recordEvents: true,
       url: `${CONFIG.testUrl}large`
     });
 
-    const page = await browser.page();
+    const page = await context.page();
 
     // from https://github.com/puppeteer/puppeteer/issues/4119#issue-417279184
     await (page as any)._client.send("Input.dispatchMouseEvent", {
@@ -65,11 +65,11 @@ describe("Recorder", () => {
       y: 0
     });
 
-    // give enough time for scroll event to fire on CI browser
+    // give enough time for scroll event to fire on CI context
     await sleep(2000);
 
-    // close the browser to ensure events are transmitted
-    await browser.close();
+    // close the context to ensure events are transmitted
+    await context.close();
 
     const events = page.qawolf.events;
 
@@ -87,17 +87,17 @@ describe("Recorder", () => {
   });
 
   it("records select option", async () => {
-    const browser = await launch({
+    const context = await launch({
       recordEvents: true,
       url: `${CONFIG.testUrl}dropdown`
     });
-    await browser.select({ css: "#dropdown" }, "2");
+    await context.select({ css: "#dropdown" }, "2");
 
-    const page = await browser.page();
+    const page = await context.page();
 
-    // close the browser to ensure events are transmitted
+    // close the context to ensure events are transmitted
     await sleep(1000);
-    await browser.close();
+    await context.close();
 
     const events = page.qawolf.events;
 
@@ -111,19 +111,19 @@ describe("Recorder", () => {
   });
 
   it("records type", async () => {
-    const browser = await launch({
+    const context = await launch({
       recordEvents: true,
       url: `${CONFIG.testUrl}login`
     });
 
-    const page = await browser.page();
+    const page = await context.page();
 
-    await browser.type({ css: "#password" }, "secret");
-    await browser.type({ css: "#password" }, "↓Enter");
+    await context.type({ css: "#password" }, "secret");
+    await context.type({ css: "#password" }, "↓Enter");
 
-    // close the browser to ensure events are transmitted
+    // close the context to ensure events are transmitted
     await sleep(1000);
-    await browser.close();
+    await context.close();
 
     const events = page.qawolf.events.filter(e => e.isTrusted);
 

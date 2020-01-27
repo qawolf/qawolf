@@ -6,44 +6,47 @@ import { launch } from "../../src/context/launch";
 
 describe("launch", () => {
   it("injects qawolf", async () => {
-    const browser = await launch({ url: CONFIG.testUrl });
+    const context = await launch({ url: CONFIG.testUrl });
 
     const isLoaded = () => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       return !!qawolf;
     };
 
-    const pageZero = await browser.page({ page: 0 });
+    const pageZero = await context.page({ page: 0 });
     const zeroIsLoaded = await pageZero.evaluate(isLoaded);
     expect(zeroIsLoaded).toBeTruthy();
 
     // check it loads on a new page
-    await browser.newPage();
-    const pageOne = await browser.page({ page: 1 });
+    await context.newPage();
+    const pageOne = await context.page({ page: 1 });
     const oneIsLoaded = await pageOne.evaluate(isLoaded);
     expect(oneIsLoaded).toBeTruthy();
 
-    await browser.close();
+    await context.close();
   });
 
   it("emulates device", async () => {
-    const browser = await launch({
+    const context = await launch({
       device: "iPhone 7",
       url: CONFIG.testUrl
     });
 
     const expectedViewport = getDevice("iPhone 7").viewport;
-    expect((await browser.page({ page: 0 })).viewport()).toEqual(
+    expect((await context.page({ page: 0 })).viewport()).toEqual(
       expectedViewport
     );
 
     // check it emulates on a new page
-    await browser.newPage();
-    expect((await browser.page({ page: 1 })).viewport()).toEqual(
+    await context.newPage();
+
+    console.log("num pages", await context.decorated.pages());
+
+    expect((await context.page({ page: 1 })).viewport()).toEqual(
       expectedViewport
     );
 
-    await browser.close();
+    await context.close();
   });
 
   it("records dom replay", async () => {

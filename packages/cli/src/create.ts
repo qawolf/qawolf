@@ -20,7 +20,7 @@ export const create = async (options: RecordOptions): Promise<void> => {
 
   const { name } = options;
 
-  const browser = await launch({
+  const context = await launch({
     device: options.device,
     recordEvents: true,
     timeout: 0,
@@ -45,7 +45,7 @@ export const create = async (options: RecordOptions): Promise<void> => {
 
   const tasks = new Listr([
     {
-      title: `Capturing browser actions for "${codeFileName}"`,
+      title: `Capturing actions for "${codeFileName}"`,
       task: () =>
         input("Save [Y/n]", {
           done: (value: string) => {
@@ -56,7 +56,7 @@ export const create = async (options: RecordOptions): Promise<void> => {
     {
       title: `Saving "${codePath}"`,
       task: async (_: any, task: any) => {
-        await browser.close();
+        await context.close();
 
         if (skipSave) {
           task.skip();
@@ -64,10 +64,10 @@ export const create = async (options: RecordOptions): Promise<void> => {
         }
 
         if (options.debug) {
-          await saveJson("events", browser.qawolf.events);
+          await saveJson("events", context.qawolf.events);
         }
 
-        const events = await browser.qawolf.events();
+        const events = await context.qawolf.events();
 
         const workflow = buildWorkflow({
           device: options.device,
