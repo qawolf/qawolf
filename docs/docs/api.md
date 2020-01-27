@@ -23,7 +23,7 @@ The generated code imports the `qawolf` node package, which extends the [Playwri
 - [class: QAWolf](#class-qawolf)
   - [qawolf.launch([options])](#qawolflaunchoptions)
   - [qawolf.waitUntil(predicate[, timeoutMs])](#qawolfwaituntilpredicate-timeoutms-sleepms)
-- [class: Browser](#class-context)
+- [class: BrowserContext](#class-browsercontext)
   - [context.click(selector[, options])](#contextclickselector-options)
   - [context.close()](#contextclose)
   - [context.find(selector[, options])](#contextfindselector-options)
@@ -467,7 +467,7 @@ await context.type(selectors[1], "my@email.com");
 [object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object"
 [page]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page "Page"
 [promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise"
-[playwright.context]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-context "playwright.Browser"
+[playwright.browsercontext]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-context "playwright.BrowserContext"
 [playwright.launchoptions]: https://github.com/microsoft/playwright/blob/master/docs/api.md#playwrightlaunchoptions "playwright.LaunchOptions"
 [selector]: #interface-selector "Selector"
 [sendcharacter]: https://github.com/microsoft/playwright/blob/master/docs/api.md#keyboardsendcharacterchar" "sendCharacter"

@@ -18,17 +18,17 @@ This tutorial edits a sample test file for [TodoMVC](http://todomvc.com/examples
 
 Let's beef up our test by adding a few assertions. First, we'll add an assertion that the "Clear completed" text appears after we complete our todo.
 
-To do this, we'll use the [`browser.hasText` method](docs/api#browserhastexttext-options). This method automatically waits for the given text to appear on the page. It returns `true` if the text is found, and `false` if the text does not appear before timing out.
+To do this, we'll use the [`context.hasText` method](docs/api#browserhastexttext-options). This method automatically waits for the given text to appear on the page. It returns `true` if the text is found, and `false` if the text does not appear before timing out.
 
-In our test code, let's update the following step where we click to complete the todo. We'll call `browser.hasText("Clear completed")`, assign the result to a variable called `hasClearCompletedText`, and assert that `hasClearCompletedText` is `true`. See [Jest documentation](https://jestjs.io/docs/en/expect) to learn more about assertions.
+In our test code, let's update the following step where we click to complete the todo. We'll call `context.hasText("Clear completed")`, assign the result to a variable called `hasClearCompletedText`, and assert that `hasClearCompletedText` is `true`. See [Jest documentation](https://jestjs.io/docs/en/expect) to learn more about assertions.
 
 ```js
 it("can click input", async () => {
-  await browser.click(selectors[2]);
+  await context.click(selectors[2]);
 
   // custom code starts
   // verify that "Clear completed" text appears
-  const hasClearCompletedText = await browser.hasText("Clear completed");
+  const hasClearCompletedText = await context.hasText("Clear completed");
   expect(hasClearCompletedText).toBe(true);
   // custom code ends
 });
@@ -40,7 +40,7 @@ After we clear completed todos, we should no longer see any todos on the page. W
 
 Now let's update the test code. Here is a summary of what we'll do:
 
-1. Use the [`browser.page` method](api#browserpageoptions) to get the current [Playwright `page` instance](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page).
+1. Use the [`context.page` method](api#browserpageoptions) to get the current [Playwright `page` instance](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page).
 2. Call [`waitUntil`](api#qawolfwaituntilpredicate-timeoutms-sleepms), passing it a function that calls [Playwright's `page.$` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#pageselector) to find the todos `<section>`. The `page.$` method runs [`document.querySelector`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector) with the given [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) and returns the matching [Playwright `ElementHandle`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-elementhandle) or null if none found.
 3. Pass the [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) `section.main` to [Playwright's `page.$` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#pageselector). In [TodoMVC](http://todomvc.com/examples/react), `section.main` contains the todos and will disappear from the page once todos have been cleared.
 
@@ -59,11 +59,11 @@ Then update the final step of the test:
 
 ```js
 it('can click "Clear completed" button', async () => {
-  await browser.click(selectors[3]);
+  await context.click(selectors[3]);
 
   // custom code starts
   // get current Playwright page instance
-  const page = await browser.page();
+  const page = await context.page();
 
   // verify that todos disappear after clearing completed
   await waitUntil(async () => {
@@ -97,11 +97,11 @@ In your test code, replace the default selector (for example, `selectors[0]`) wi
 ```js
 it('can click "Clear completed" button', async () => {
   // change this
-  await browser.click(selectors[3]);
+  await context.click(selectors[3]);
   // to this (CSS selector)
-  await browser.click({ css: ".clear-completed" });
+  await context.click({ css: ".clear-completed" });
   // or this (text selector)
-  await browser.click({ text: "Clear completed" });
+  await context.click({ text: "Clear completed" });
 });
 ```
 
@@ -113,35 +113,35 @@ Whenever you target an element with a CSS or text selector, make sure that your 
 
 ## Change input values
 
-When capturing `type` actions, whatever you originally typed will be included in the test by default. This value will the be passed as the second argument to [`browser.type`](api#browsertypeselector-value-options). In our example, we typed `"create smoke test!"` as our todo item in the first step of our test. The following code was then generated:
+When capturing `type` actions, whatever you originally typed will be included in the test by default. This value will the be passed as the second argument to [`context.type`](api#browsertypeselector-value-options). In our example, we typed `"create smoke test!"` as our todo item in the first step of our test. The following code was then generated:
 
 ```js
 it('can type into "What needs to be done?" input', async () => {
-  await browser.type(selectors[0], "create smoke test!");
+  await context.type(selectors[0], "create smoke test!");
 });
 ```
 
-However, you may want to change this input value to something else. The simplest way to do this is to change that second argument to [`browser.type`](api#browsertypeselector-value-options) in the test code:
+However, you may want to change this input value to something else. The simplest way to do this is to change that second argument to [`context.type`](api#browsertypeselector-value-options) in the test code:
 
 ```js
 it('can type into "What needs to be done?" input', async () => {
   // change this
-  await browser.type(selectors[0], "create smoke test!");
+  await context.type(selectors[0], "create smoke test!");
   // to this
-  await browser.type(selectors[0], "update smoke test!");
+  await context.type(selectors[0], "update smoke test!");
 });
 ```
 
 If you run the test again (`npx qawolf test myFirstTest`) you'll see that it now types `"update smoke test!"` in the first step.
 
-You can also pass an environment variable to [`browser.type`](api#browsertypeselector-value-options). To do this, update the test code to use `process.env.YOUR_ENV_VARIABLE`:
+You can also pass an environment variable to [`context.type`](api#browsertypeselector-value-options). To do this, update the test code to use `process.env.YOUR_ENV_VARIABLE`:
 
 ```js
 it('can type into "What needs to be done?" input', async () => {
   // change this
-  await browser.type(selectors[0], "create smoke test!");
+  await context.type(selectors[0], "create smoke test!");
   // to this
-  await browser.type(selectors[0], process.env.TODO_VALUE);
+  await context.type(selectors[0], process.env.TODO_VALUE);
 });
 ```
 
@@ -157,7 +157,7 @@ One final note: **you should always replace sensitive input values like password
 
 The generated test code gives you full access to the [Playwright API](https://github.com/microsoft/playwright/blob/master/docs/api.md).
 
-Many of the methods you may want to use are on Playwright's [`Page`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page) class. [`browser.page`](api#browserpageoptions) gives you access to the current page. You can then call these methods on the resulting `Page` instance.
+Many of the methods you may want to use are on Playwright's [`Page`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page) class. [`context.page`](api#browserpageoptions) gives you access to the current page. You can then call these methods on the resulting `Page` instance.
 
 Below is an example of setting a cookie with Playwright's [`page.setCookie` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#pagesetcookiecookies) and then reloading the page with the [`page.reload` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#pagereloadoptions).
 
@@ -165,7 +165,7 @@ Below is an example of setting a cookie with Playwright's [`page.setCookie` meth
 describe("my_workflow", () => {
   it('can click "increment count" button', async () => {
     // custom code starts
-    const page = await browser.page();
+    const page = await context.page();
 
     await page.setCookie({
       name: "my-cookie-name",
@@ -182,14 +182,14 @@ describe("my_workflow", () => {
 
 Here is another example, where we edit the [`beforeAll` block](https://jestjs.io/docs/en/api#beforeallfn-timeout) to [set a token](https://developer.mozilla.org/en-US/docs/Web/API/Storage/setItem) in local storage.
 
-Again, we call [`browser.page`](api#browserpageoptions) to get the current Playwright `Page` instance, and then use Playwright's [`page.evalute` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#pageevaluatepagefunction-args) to call `localStorage.setItem("token", "myTokenValue")`. Finally, we reload the page with the [`page.reload` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#pagereloadoptions).
+Again, we call [`context.page`](api#browserpageoptions) to get the current Playwright `Page` instance, and then use Playwright's [`page.evalute` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#pageevaluatepagefunction-args) to call `localStorage.setItem("token", "myTokenValue")`. Finally, we reload the page with the [`page.reload` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#pagereloadoptions).
 
 ```js
 beforeAll(async () => {
-  browser = await launch({ url: "myawesomesite.com" });
+  context = await launch({ url: "myawesomesite.com" });
 
   // custom code starts
-  const page = await browser.page();
+  const page = await context.page();
 
   await page.evaluate(() => {
     localStorage.setItem("token", "myTokenValue");
@@ -210,7 +210,7 @@ Below is an example where we use Jest and QA Wolf's [`findProperty` helper](api#
 describe("my_workflow", () => {
   it('can click "increment count" button', async () => {
     // custom code starts
-    const count = await browser.findProperty(
+    const count = await context.findProperty(
       { css: "#my-counter-input" },
       "value"
     );

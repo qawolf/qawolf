@@ -28,10 +28,10 @@ const { launch } = require("qawolf");
 const selectors = require("../selectors/searchTablet");
 
 describe("searchTablet", () => {
-  let browser;
+  let context;
 
   beforeAll(async () => {
-    browser = await launch({
+    context = await launch({
       device: "iPad Mini",
       url: "https://www.wikipedia.org/"
     });
@@ -41,7 +41,7 @@ describe("searchTablet", () => {
 });
 ```
 
-You'll notice that the `device` key with the value `"iPad Mini"` was included in the options to the [`launch` method](api#qawolflaunchoptions). This means that when you run your test, the [`browser`](api#class-browser) will emulate the iPad Mini.
+You'll notice that the `device` key with the value `"iPad Mini"` was included in the options to the [`launch` method](api#qawolflaunchoptions). This means that when you run your test, the [`context`](api#class-browsercontext) will emulate the iPad Mini.
 
 If `device` is not specified when calling [`launch`](api#qawolflaunchoptions), it will default to [`"desktop"`](https://github.com/qawolf/qawolf/blob/3256831cd93c172e81c9f7eb1fdeb347733d72ec/packages/browser/src/browser/device.ts#L9-L24) (1366x768 pixels).
 
@@ -56,10 +56,10 @@ const { launch } = require("qawolf");
 const selectors = require("../selectors/search");
 
 describe("search", () => {
-  let browser;
+  let context;
 
   beforeAll(async () => {
-    browser = await launch({
+    context = await launch({
       url: "https://www.wikipedia.org/"
     });
   });
@@ -77,10 +77,10 @@ const { launch } = require("qawolf");
 const selectors = require("../selectors/search");
 
 describe("search", () => {
-  let browser;
+  let context;
 
   beforeAll(async () => {
-    browser = await launch({
+    context = await launch({
       // custom code starts
       device: "iPhone 7",
       // custom code ends
@@ -98,10 +98,10 @@ See [Playwright source code](https://github.com/microsoft/playwright/blob/master
 
 ```js
 describe("search", () => {
-  let browser;
+  let context;
 
   beforeAll(async () => {
-    browser = await launch({
+    context = await launch({
       // custom code starts
       device: {
         name: "My Custom Device",

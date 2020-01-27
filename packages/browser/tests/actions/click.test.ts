@@ -2,7 +2,7 @@ import { CONFIG } from "@qawolf/config";
 import { launch } from "../../src/context/launch";
 import { hasText } from "../../src/find/hasText";
 
-describe("Browser.click", () => {
+describe("BrowserContext.click", () => {
   it("clicks on icon in button", async () => {
     const context = await launch({ url: `${CONFIG.testUrl}login` });
     const page = await context.page();
