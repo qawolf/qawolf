@@ -33,16 +33,13 @@ describe("launch", () => {
     });
 
     const expectedViewport = getDevice("iPhone 7").viewport;
-    expect((await context.page({ page: 0 })).viewport()).toEqual(
-      expectedViewport
-    );
+    const pageZero = await context.page({ page: 0 });
+    expect(pageZero.viewport()).toEqual(expectedViewport);
 
     // check it emulates on a new page
     await context.newPage();
-
-    expect((await context.page({ page: 1 })).viewport()).toEqual(
-      expectedViewport
-    );
+    const pageOne = await context.page({ page: 1 });
+    expect(pageOne.viewport()).toEqual(expectedViewport);
 
     await context.close();
   });

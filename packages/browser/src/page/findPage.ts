@@ -1,48 +1,43 @@
 import { logger } from "@qawolf/logger";
 import { FindPageOptions } from "@qawolf/types";
 import { isNil, waitFor } from "@qawolf/web";
-import { BrowserContext } from "../context/BrowserContext";
+import { QAWolfBrowserContext } from "../context/QAWolfBrowserContext";
 import { Page } from "./Page";
 
 const getIndex = async (
-  context: BrowserContext,
+  context: QAWolfBrowserContext,
   pageIndex?: number
 ): Promise<number> => {
-  let index = pageIndex;
-
-  if (isNil(pageIndex)) {
-    const qawolf = context.qawolf;
-
-    // if no index is specified use the current page
-    index = qawolf._currentPageIndex;
-
-    const pages = await qawolf.pages();
-
-    // if the current page is closed, choose the first open page
-    if (pages[index].isClosed()) {
-      index = pages.findIndex(p => !p.isClosed());
-
-      if (index < 0) throw new Error("No open pages");
-    }
+  if (!isNil(pageIndex)) {
+    return pageIndex!;
   }
 
-  return index!;
+  const openPages = (await context.pages()).filter(page => !page.isClosed());
+
+  if (openPages.length < 1) {
+    throw new Error("No open pages");
+  }
+
+  // use the current page index if it is open
+  if (openPages.find(p => p.qawolf.index === context._currentPageIndex)) {
+    return context._currentPageIndex;
+  }
+
+  return 0;
 };
 
 export const findPage = async (
-  context: BrowserContext,
+  context: QAWolfBrowserContext,
   options: FindPageOptions
 ): Promise<Page> => {
   /**
    * Wait for the page and activate it.
    */
-  const qawolf = context.qawolf;
-
   let index: number = await getIndex(context, options.page);
 
   const page = await waitFor(
     async () => {
-      const pages = await qawolf.pages();
+      const pages = await context.pages();
 
       if (index >= pages.length) return null;
 
@@ -64,10 +59,10 @@ export const findPage = async (
     await page.waitForRequest(/.*/g);
   }
 
-  qawolf._currentPageIndex = index;
+  context._currentPageIndex = index;
 
   logger.verbose(
-    `findPage: activated ${qawolf._currentPageIndex} ${page.url()}`
+    `findPage: activated ${context._currentPageIndex} ${page.url()}`
   );
 
   return page;

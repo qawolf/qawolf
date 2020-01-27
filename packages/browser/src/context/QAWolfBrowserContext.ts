@@ -22,7 +22,7 @@ import { DeviceDescriptor } from "playwright-core/lib/types";
 import { ClickOptions } from "../actions/clickElement";
 import { BrowserContext } from "./BrowserContext";
 import { decorateBrowserContext } from "./decorateBrowserContext";
-import { ensurePagesAreDecorated, managePages } from "./managePages";
+import { decoratePages } from "./decoratePages";
 import { createDomArtifacts } from "../page/createDomArtifacts";
 import { findPage } from "../page/findPage";
 import { Page } from "../page/Page";
@@ -50,7 +50,7 @@ export class QAWolfBrowserContext {
   public _currentPageIndex: number = 0;
 
   // used internally by managePages
-  public _pages: Page[] = [];
+  public _nextPageIndex: number = 0;
 
   public constructor(options: ConstructorOptions) {
     logger.verbose(
@@ -67,8 +67,6 @@ export class QAWolfBrowserContext {
       options.playwrightBrowserContext,
       this
     );
-
-    managePages(this);
   }
 
   public get browser(): PlaywrightBrowser {
@@ -167,7 +165,7 @@ export class QAWolfBrowserContext {
     options: FindPageOptions & GotoOptions = {}
   ): Promise<Page> {
     logger.verbose(`BrowserContext: goto ${url}`);
-    const page = await findPage(this._decorated, options);
+    const page = await findPage(this, options);
 
     await page.goto(url, {
       timeout: this._options.navigationTimeoutMs,
@@ -186,11 +184,11 @@ export class QAWolfBrowserContext {
   }
 
   public page(options: FindPageOptions = {}) {
-    return findPage(this._decorated, options);
+    return findPage(this, options);
   }
 
   public pages(): Promise<Page[]> {
-    return ensurePagesAreDecorated(this);
+    return decoratePages(this);
   }
 
   public async scroll(

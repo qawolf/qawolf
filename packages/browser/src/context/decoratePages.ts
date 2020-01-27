@@ -3,7 +3,7 @@ import { decoratePage } from "../page/decoratePage";
 import { Page } from "../page/Page";
 import { QAWolfBrowserContext } from "./QAWolfBrowserContext";
 
-export const ensurePagesAreDecorated = async (
+export const decoratePages = async (
   context: QAWolfBrowserContext
 ): Promise<Page[]> => {
   /**
@@ -11,11 +11,12 @@ export const ensurePagesAreDecorated = async (
    */
   const playwrightPages = await context.decorated.pages();
 
-  await Promise.all(
+  const pages = await Promise.all(
     playwrightPages.map(async (playwrightPage: any) => {
-      if (playwrightPage.qawolf) return;
+      if (playwrightPage.qawolf) return playwrightPage as Page;
 
-      const index = context._pages.length;
+      // the first time we encounter a new page index it
+      const index = context._nextPageIndex++;
 
       const page = await decoratePage({
         index,
@@ -25,20 +26,9 @@ export const ensurePagesAreDecorated = async (
         recordEvents: context.recordEvents
       });
 
-      context._pages[index] = page;
+      return page;
     })
   );
 
-  return context._pages;
-};
-
-export const managePages = async (context: QAWolfBrowserContext) => {
-  // constantly check for new pages to decorate
-  // workaround for https://github.com/microsoft/playwright/pull/645
-  const intervalId = setInterval(async () => {
-    await ensurePagesAreDecorated(context);
-  }, 500);
-
-  const dispose = () => clearInterval(intervalId);
-  return dispose;
+  return pages.sort((a, b) => a.qawolf.index - b.qawolf.index);
 };
