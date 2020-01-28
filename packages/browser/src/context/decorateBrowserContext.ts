@@ -1,4 +1,4 @@
-import { BrowserContext as PlaywrightBrowserContext } from "playwright-core";
+import { BrowserContext as PlaywrightBrowserContext } from "playwright";
 import { BrowserContext } from "./BrowserContext";
 import { QAWolfBrowserContext } from "./QAWolfBrowserContext";
 

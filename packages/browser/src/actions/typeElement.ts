@@ -1,7 +1,7 @@
 import { logger } from "@qawolf/logger";
 import { TypeOptions } from "@qawolf/types";
 import { isNil, sleep } from "@qawolf/web";
-import { ElementHandle, Page as PlaywrightPage } from "playwright-core";
+import { ElementHandle, Page as PlaywrightPage } from "playwright";
 import { clearElement } from "./clearElement";
 import { deserializeStrokes, Stroke } from "../keyboard";
 

@@ -1,15 +1,10 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import playwright, { Browser } from "playwright-core";
+import { BrowserType } from "@qawolf/types";
+import playwright, { Browser } from "playwright";
+import { LaunchOptions as PlaywrightLaunchOptions } from "playwright-core/lib/server/browserType";
 import { DeviceDescriptor } from "playwright-core/lib/types";
 import { getDevice } from "./device";
-
-// TODO open issue about exporting these types
-import { LaunchOptions as ChromiumLaunchOptions } from "playwright-core/lib/server/crPlaywright";
-import { LaunchOptions as FirefoxLaunchOptions } from "playwright-core/lib/server/ffPlaywright";
-import { LaunchOptions as WebkitLaunchOptions } from "playwright-core/lib/server/wkPlaywright";
-
-type BrowserType = "chromium" | "firefox" | "webkit";
 
 export interface QAWolfLaunchOptions {
   browser?: BrowserType;
@@ -22,11 +17,7 @@ export interface QAWolfLaunchOptions {
   url?: string;
 }
 
-// TODO change to new LaunchOptions
-export type LaunchOptions =
-  | (ChromiumLaunchOptions & QAWolfLaunchOptions)
-  | (FirefoxLaunchOptions & QAWolfLaunchOptions)
-  | (WebkitLaunchOptions & QAWolfLaunchOptions);
+export type LaunchOptions = PlaywrightLaunchOptions & QAWolfLaunchOptions;
 
 export const launchPlaywright = async (options: LaunchOptions) => {
   const device = getDevice(options.device);
@@ -52,8 +43,7 @@ export const launchPlaywright = async (options: LaunchOptions) => {
   }
 
   if (!options.browser) {
-    // TODO remove cast, move BrowserType to types
-    launchOptions.browser = CONFIG.browser as BrowserType;
+    launchOptions.browser = CONFIG.browser;
   }
 
   logger.verbose(`launch playwright: ${JSON.stringify(launchOptions)}`);

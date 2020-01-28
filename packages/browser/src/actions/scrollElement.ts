@@ -1,7 +1,7 @@
 import { logger } from "@qawolf/logger";
 import { FindElementOptions, ScrollValue } from "@qawolf/types";
 import { QAWolfWeb } from "@qawolf/web";
-import { ElementHandle } from "playwright-core";
+import { ElementHandle } from "playwright";
 import { getFindElementOptions } from "../find/getFindElementOptions";
 
 export const scrollElement = async (

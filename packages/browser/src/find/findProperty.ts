@@ -1,5 +1,5 @@
 import { FindElementOptions, Selector } from "@qawolf/types";
-import { Page } from "playwright-core";
+import { Page } from "playwright";
 import { find } from "./find";
 
 export const findProperty = async (

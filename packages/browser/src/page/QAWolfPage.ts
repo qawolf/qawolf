@@ -7,7 +7,7 @@ import {
   TypeOptions
 } from "@qawolf/types";
 import { omit } from "lodash";
-import { ElementHandle, Page as PlaywrightPage } from "playwright-core";
+import { ElementHandle, Page as PlaywrightPage } from "playwright";
 import { eventWithTime } from "rrweb/typings/types";
 import {
   clickElement,

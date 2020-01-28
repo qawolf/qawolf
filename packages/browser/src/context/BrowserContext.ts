@@ -9,7 +9,7 @@ import {
   Browser as PlaywrightBrowser,
   BrowserContext as PlaywrightBrowserContext,
   ElementHandle
-} from "playwright-core";
+} from "playwright";
 import { GotoOptions } from "playwright-core/lib/frames";
 import { ClickOptions } from "../actions/clickElement";
 import { Page } from "../page/Page";

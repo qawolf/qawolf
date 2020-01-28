@@ -15,7 +15,7 @@ import {
   Browser as PlaywrightBrowser,
   BrowserContext as PlaywrightBrowserContext,
   ElementHandle
-} from "playwright-core";
+} from "playwright";
 // TODO
 import { GotoOptions } from "playwright-core/lib/frames";
 import { DeviceDescriptor } from "playwright-core/lib/types";

@@ -31,7 +31,7 @@
     "@qawolf/web": "^0.8.2",
     "fs-extra": "^8.1.0",
     "lodash": "^4.17.15",
-    "playwright": "0.9.21",
+    "playwright": "^0.9.23",
     "rrweb": "^0.7.25"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
-import { Page as PlaywrightPage } from "playwright-core";
+import { Page as PlaywrightPage } from "playwright";
 import { QAWolfPage } from "./QAWolfPage";
 
 // PlaywrightPage decorated with qawolf Page

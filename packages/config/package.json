@@ -24,6 +24,7 @@
     "fs-extra": "^8.1.0"
   },
   "devDependencies": {
+    "@qawolf/types": "^0.8.2",
     "@types/dotenv": "^6.1.1"
   }
 }
