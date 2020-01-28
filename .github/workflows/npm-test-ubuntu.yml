@@ -35,8 +35,8 @@ jobs:
       - name: Run tests on firefox
         run: QAW_BROWSER=firefox npm test
 
-      - name: Run tests on webkit
-        run: QAW_BROWSER=webkit npm test
+      # - name: Run tests on webkit
+      #   run: QAW_BROWSER=webkit npm test
 
       - name: Upload Artifacts
         if: always()
