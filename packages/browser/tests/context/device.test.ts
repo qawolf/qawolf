@@ -1,4 +1,5 @@
-const { devices } = require("playwright-core");
+// https://github.com/microsoft/playwright/pull/692
+import { DeviceDescriptors as devices } from "playwright-core/lib/deviceDescriptors";
 import { getDevice } from "../../src/context/device";
 
 describe("getDevice", () => {

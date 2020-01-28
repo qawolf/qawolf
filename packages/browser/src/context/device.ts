@@ -1,5 +1,4 @@
-// todo open issue
-const playwright = require("playwright-core");
+import { DeviceDescriptors as devices } from "playwright-core/lib/deviceDescriptors";
 import { DeviceDescriptor } from "playwright-core/lib/types";
 
 export const getDevice = (
@@ -24,8 +23,8 @@ export const getDevice = (
     };
   }
 
-  if (playwright.devices[device]) {
-    return playwright.devices[device];
+  if (devices[device]) {
+    return devices[device];
   }
 
   throw new Error(`playwright.devices["${device}"] was not found`);
