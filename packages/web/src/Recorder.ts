@@ -6,20 +6,24 @@ type EventCallback = types.Callback<types.Event>;
 
 export class Recorder {
   private _attribute: string;
+  private _id: number;
   private _onDispose: types.Callback[] = [];
   private _pageIndex: number;
   private _sendEvent: EventCallback;
 
   constructor(attribute: string, pageIndex: number, sendEvent: EventCallback) {
     this._attribute = attribute;
+    this._id = Date.now();
     this._pageIndex = pageIndex;
     this._sendEvent = sendEvent;
-
     this.recordEvents();
+
+    console.debug(`qawolf: Recorder ${this._id} created`);
   }
 
   public dispose() {
     this._onDispose.forEach(d => d());
+    console.debug(`qawolf: Recorder ${this._id} disposed`);
   }
 
   private listen<K extends keyof DocumentEventMap>(
@@ -45,7 +49,7 @@ export class Recorder {
       if (!event) return;
 
       console.debug(
-        `qawolf: Recorder: ${eventName} event`,
+        `qawolf: Recorder ${this._id}: ${eventName} event`,
         ev,
         ev.target,
         "recorded:",
