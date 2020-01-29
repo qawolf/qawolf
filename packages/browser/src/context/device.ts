@@ -1,4 +1,4 @@
-import { DeviceDescriptors as devices } from "playwright-core/lib/deviceDescriptors";
+import { devices } from "playwright";
 import { DeviceDescriptor } from "playwright-core/lib/types";
 
 export const getDevice = (

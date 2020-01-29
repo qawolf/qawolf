@@ -1,5 +1,5 @@
 // https://github.com/microsoft/playwright/pull/692
-import { DeviceDescriptors as devices } from "playwright-core/lib/deviceDescriptors";
+import { devices } from "playwright";
 import { getDevice } from "../../src/context/device";
 
 describe("getDevice", () => {
