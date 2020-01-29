@@ -37,17 +37,21 @@ npx qawolf create --script google.com
 
 ### npx qawolf test \[...options]
 
+- `--all-browsers` (optional): Run the tests on `chromium`, `firefox`, and `webkit`.
+- `--chromium` (optional): Run the tests on `chromium`. Defaults to this browser.
+- `--firefox` (optional): Run the tests on `firefox`.
 - `--path <path>` (optional): Specify the [root directory](https://jestjs.io/docs/en/configuration#rootdir-string) that Jest should scan for tests. Defaults to `.qawolf`.
+- `--webkit` (optional): Run the tests on `webkit`.
 - `...options` (optional) Options for the [Jest CLI](https://jestjs.io/docs/en/cli).
 
 Run tests with Jest.
 
 ```bash
-// run all tests
-npx qawolf test
+// run all tests on all browsers
+npx qawolf test --all-browsers
 
-// run one test
-npx qawolf test myTest
+// run one test on firefox
+npx qawolf test --firefox myTest
 
 // use runInBand from the Jest CLI to run tests serially
 npx qawolf test --runInBand

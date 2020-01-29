@@ -1,14 +1,21 @@
+import { BrowserType } from "@qawolf/types";
 import { execSync } from "child_process";
 
 type RunJestOptions = {
+  browsers?: BrowserType[];
   path?: string;
+};
+
+const runCommand = (command: string) => {
+  // log the command we run to make it clear this is an alias for npx jest
+  console.log(command + "\n");
+  execSync(command, { stdio: "inherit" });
 };
 
 export const runJest = (args: string[] = [], options: RunJestOptions = {}) => {
   /**
    * Returns exit code. 0 for success, 1 for failed.
    */
-
   const rootDir = options.path || ".qawolf";
 
   // --config={} prevents using the local jest config
@@ -19,11 +26,15 @@ export const runJest = (args: string[] = [], options: RunJestOptions = {}) => {
     command += ` ${args.join(" ")}`;
   }
 
-  // log the command we run to make it clear this is an alias for npx jest
-  console.log(command + "\n");
-
   try {
-    execSync(command, { stdio: "inherit" });
+    if (options.browsers) {
+      for (let browser of options.browsers) {
+        runCommand(`QAW_BROWSER=${browser} ${command}`);
+      }
+    } else {
+      runCommand(command);
+    }
+
     return 0;
   } catch (e) {
     return 1;

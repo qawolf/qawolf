@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { logger } from "@qawolf/logger";
+import { BrowserType } from "@qawolf/types";
 import program from "commander";
 import { red, yellow } from "kleur";
 import { camelCase } from "lodash";
@@ -50,12 +51,38 @@ program
 program
   .command("test")
   .option("-p, --path <path>", "path to test code")
+  .option("--all-browsers", "run tests on chromium, firefox, and webkit")
+  .option("--chromium", "run tests on chromium")
+  .option("--firefox", "run tests on firefox")
+  .option("--webkit", "run tests on webkit")
   .description("run a test with Jest")
   .allowUnknownOption(true)
   .action(cmd => {
-    const args = omitArgs(process.argv.slice(3), ["-p", "--path"]);
+    const args = omitArgs(process.argv.slice(3), [
+      "--all-browsers",
+      "--chromium",
+      "--firefox",
+      "-p",
+      "--path",
+      "--webkit"
+    ]);
 
+    let browsers: BrowserType[] = [];
+
+    if (cmd.allBrowsers || cmd.chromium) {
+      browsers.push("chromium");
+    }
+
+    if (cmd.allBrowsers || cmd.firefox) {
+      browsers.push("firefox");
+    }
+
+    if (cmd.allBrowsers || cmd.webkit) {
+      browsers.push("webkit");
+    }
+    ``;
     const code = runJest(args, {
+      browsers,
       path: cmd.path
     });
     process.exit(code);
