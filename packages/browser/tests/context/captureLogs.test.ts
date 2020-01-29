@@ -31,7 +31,6 @@ describe("capture logs", () => {
       await page.evaluate(() => {
         console.debug("qawolf: my log", { hello: true });
       });
-
       await waitFor(
         () =>
           isEqual(lastMessage, {
@@ -60,7 +59,6 @@ describe("capture logs", () => {
         const button = document.getElementsByTagName("button")[0]!;
         console.debug("click on", button);
       });
-
       await waitFor(
         () =>
           isEqual(lastMessage, {
@@ -79,25 +77,19 @@ describe("capture logs", () => {
       url: CONFIG.testUrl
     });
     const page = await context.page();
-
     let lastMessage: any | false = false;
-
     browserLogger.onLog(
       (level: string, message: string) => (lastMessage = { level, message })
     );
-
     await page.evaluate(() => {
       console.debug("1");
       console.debug("qawolf: 2");
     });
-
     await sleep(1000);
-
     expect(lastMessage).toEqual({
       level: "debug",
       message: "1"
     });
-
     await context.close();
   });
 });
