@@ -27,7 +27,7 @@ export const runJest = (args: string[] = [], options: RunJestOptions = {}) => {
   }
 
   try {
-    if (options.browsers) {
+    if (options.browsers && options.browsers.length) {
       for (let browser of options.browsers) {
         runCommand(`QAW_BROWSER=${browser} ${command}`);
       }

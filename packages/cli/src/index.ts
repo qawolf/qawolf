@@ -80,7 +80,7 @@ program
     if (cmd.allBrowsers || cmd.webkit) {
       browsers.push("webkit");
     }
-    ``;
+
     const code = runJest(args, {
       browsers,
       path: cmd.path
