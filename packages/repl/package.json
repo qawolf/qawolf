@@ -1,7 +1,7 @@
 {
-  "name": "qawolf",
-  "description": "Create browser tests 10x faster",
-  "version": "0.9.0-alpha.6",
+  "name": "@qawolf/repl",
+  "description": "qawolf repl",
+  "version": "0.8.2",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -18,14 +18,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "dependencies": {
-    "@qawolf/browser": "^0.9.0-alpha.6",
-    "@qawolf/cli": "^0.9.0-alpha.6",
-    "@qawolf/repl": "^0.8.2",
-    "@qawolf/web": "^0.9.0-alpha.6"
-  },
-  "bin": {
-    "qawolf": "./lib/index.js"
   }
 }

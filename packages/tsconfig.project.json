@@ -26,6 +26,9 @@
       "path": "./qawolf/tsconfig.package.json"
     },
     {
+      "path": "./repl/tsconfig.package.json"
+    },
+    {
       "path": "./screen/tsconfig.package.json"
     },
     {
