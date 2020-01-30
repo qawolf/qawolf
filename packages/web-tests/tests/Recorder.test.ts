@@ -5,9 +5,6 @@ import { isKeyEvent, sleep } from "@qawolf/web";
 
 describe("Recorder", () => {
   it("records click on a link", async () => {
-    // TODO waiting on https://github.com/microsoft/playwright/issues/749
-    if (CONFIG.browser === "webkit") return;
-
     const context = await launch({
       recordEvents: true,
       url: CONFIG.testUrl
@@ -115,9 +112,6 @@ describe("Recorder", () => {
   });
 
   it("records type", async () => {
-    // TODO waiting on https://github.com/microsoft/playwright/issues/749
-    if (CONFIG.browser === "webkit") return;
-
     const context = await launch({
       recordEvents: true,
       url: `${CONFIG.testUrl}login`
