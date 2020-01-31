@@ -2,7 +2,6 @@ import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { VirtualCapture } from "@qawolf/screen";
 import {
-  BrowserType,
   Event,
   FindElementOptions,
   FindPageOptions,
@@ -27,37 +26,32 @@ import { decoratePages, managePages } from "./decoratePages";
 import { createDomArtifacts } from "../page/createDomArtifacts";
 import { findPage } from "../page/findPage";
 import { Page } from "../page/Page";
+import { logTestStarted } from "./logTestStarted";
 
-export interface QAWolfContextOptions {
-  browser?: BrowserType;
+export interface CreateContextOptions {
+  capture?: VirtualCapture;
   debug?: boolean;
-  device?: string | DeviceDescriptor;
-  display?: string;
+  device: DeviceDescriptor;
   logLevel?: string;
   navigationTimeoutMs?: number;
   recordEvents?: boolean;
   url?: string;
 }
 
-export interface ConstructorOptions {
-  capture: VirtualCapture | null;
-  debug?: boolean;
-  device: DeviceDescriptor;
+export interface ConstructContextOptions extends CreateContextOptions {
   logLevel: string;
-  navigationTimeoutMs?: number;
   playwrightBrowser: PlaywrightBrowser;
-  playwrightBrowserContext: PlaywrightBrowserContext;
-  recordEvents?: boolean;
+  playwrightContext: PlaywrightBrowserContext;
 }
 
 export class QAWolfBrowserContext {
   private _createdAt: number;
   private _decorated: BrowserContext;
   private _disposeManagePages: () => void;
-  private _options: ConstructorOptions;
+  private _options: ConstructContextOptions;
 
   // public for test
-  public _capture: VirtualCapture | null = null;
+  public _capture?: VirtualCapture;
 
   // used internally by findPage
   public _currentPageIndex: number = 0;
@@ -65,7 +59,7 @@ export class QAWolfBrowserContext {
   // used internally by managePages
   public _nextPageIndex: number = 0;
 
-  public constructor(options: ConstructorOptions) {
+  protected constructor(options: ConstructContextOptions) {
     logger.verbose(
       `QAWolfBrowser: create ${JSON.stringify(
         pick(options, "debug", "device", "navigationTimeoutMs", "recordEvents")
@@ -76,12 +70,39 @@ export class QAWolfBrowserContext {
 
     this._capture = options.capture;
     this._createdAt = Date.now();
-    this._decorated = decorateBrowserContext(
-      options.playwrightBrowserContext,
-      this
-    );
+    this._decorated = decorateBrowserContext(options.playwrightContext, this);
 
     this._disposeManagePages = managePages(this);
+  }
+
+  public static async create(
+    playwrightBrowser: PlaywrightBrowser,
+    options: CreateContextOptions
+  ): Promise<BrowserContext> {
+    // create the context based on the device
+    const playwrightContext = await playwrightBrowser.newContext({
+      userAgent: options.device.userAgent,
+      viewport: options.device.viewport
+    });
+
+    // create the initial page
+    await playwrightContext.newPage();
+
+    const qawolfContext = new QAWolfBrowserContext({
+      ...options,
+      debug: options.debug || CONFIG.debug,
+      logLevel: options.logLevel || CONFIG.logLevel || "error",
+      playwrightBrowser,
+      playwrightContext
+    });
+
+    const context = qawolfContext.decorated;
+
+    logTestStarted(context);
+    if (options.url) await context.goto(options.url);
+    if (options.capture) await options.capture.start();
+
+    return context;
   }
 
   public get browser(): PlaywrightBrowser {

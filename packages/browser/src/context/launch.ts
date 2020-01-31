@@ -1,13 +1,47 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { VirtualCapture } from "@qawolf/screen";
+import { BrowserType, getBrowserType } from "@qawolf/types";
+import playwright from "playwright";
 import { DeviceDescriptor } from "playwright-core/lib/types";
-import { BrowserContext } from "./BrowserContext";
+import { LaunchOptions as PlaywrightLaunchOptions } from "playwright-core/lib/server/browserType";
 import { getDevice } from "./device";
-import { launchPlaywright, LaunchOptions } from "./launchPlaywright";
-import { QAWolfBrowserContext } from "./QAWolfBrowserContext";
+import {
+  CreateContextOptions,
+  QAWolfBrowserContext
+} from "./QAWolfBrowserContext";
 
-const createCapture = (device: DeviceDescriptor, headless: boolean = false) => {
+export type LaunchOptions = PlaywrightLaunchOptions &
+  Omit<CreateContextOptions, "device"> & {
+    browser?: BrowserType;
+    device?: DeviceDescriptor | string;
+  };
+
+export const buildLaunchOptions = (options: LaunchOptions) => {
+  const device = getDevice(options.device);
+
+  const launchOptions = {
+    args: [
+      // TODO figure out default args for playwright browsers
+      "--disable-dev-shm-usage",
+      "--no-default-browser-check",
+      "--window-position=0,0",
+      `--window-size=${device.viewport.width + CONFIG.chromeOffsetX},${device
+        .viewport.height + CONFIG.chromeOffsetY}`
+    ],
+    ...options,
+    browser: getBrowserType(options.browser || CONFIG.browser),
+    device,
+    headless: options.headless || CONFIG.headless
+  };
+
+  return launchOptions;
+};
+
+export const createCapture = (
+  device: DeviceDescriptor,
+  headless: boolean = false
+) => {
   if (!CONFIG.artifactPath || CONFIG.disableVideoArtifact) return null;
 
   if (headless) {
@@ -19,6 +53,7 @@ const createCapture = (device: DeviceDescriptor, headless: boolean = false) => {
 
   return VirtualCapture.create({
     offset: {
+      // TODO need to update for all new browsers
       x: CONFIG.chromeOffsetX,
       y: CONFIG.chromeOffsetY
     },
@@ -30,58 +65,26 @@ const createCapture = (device: DeviceDescriptor, headless: boolean = false) => {
   });
 };
 
-export const logTestStarted = (context: BrowserContext) => {
-  /**
-   * Log test started in the context so the timeline is inlined with the other context logs.
-   */
-  const jasmine = (global as any).jasmine;
-  if (!jasmine || !jasmine.qawolf) return;
-
-  jasmine.qawolf.onTestStarted(async (name: string) => {
-    try {
-      const page = await context.page();
-      await page.evaluate((testName: string) => {
-        console.log(`jest: ${testName}`);
-      }, name);
-    } catch (e) {
-      logger.debug(`could not log test started: ${e.toString()}`);
-    }
-  });
-};
-
-export const launch = async (
-  options: LaunchOptions = {}
-): Promise<BrowserContext> => {
+export const launch = async (options: LaunchOptions = {}) => {
   logger.verbose(`launch: ${JSON.stringify(options)}`);
 
-  const device = getDevice(options.device);
+  const launchOptions = buildLaunchOptions(options);
 
-  const capture = await createCapture(device, options.headless);
+  const capture = await createCapture(
+    launchOptions.device,
+    launchOptions.headless
+  );
 
-  const playwright = await launchPlaywright({
-    ...options,
-    device,
-    display: capture ? capture.xvfb.display : undefined
-  });
+  if (capture) {
+    launchOptions.env = {
+      ...launchOptions.env,
+      DISPLAY: capture.xvfb.display
+    };
+  }
 
-  const qawolfContext = new QAWolfBrowserContext({
-    capture,
-    debug: options.debug || CONFIG.debug,
-    device,
-    logLevel: options.logLevel || CONFIG.logLevel || "error",
-    navigationTimeoutMs: options.navigationTimeoutMs,
-    playwrightBrowser: playwright.browser,
-    playwrightBrowserContext: playwright.context,
-    recordEvents: options.recordEvents
-  });
+  const playwrightBrowser = await playwright[launchOptions.browser!].launch(
+    launchOptions
+  );
 
-  const context = qawolfContext.decorated;
-
-  if (options.url) await context.goto(options.url);
-
-  logTestStarted(context);
-
-  if (capture) await capture.start();
-
-  return context;
+  return QAWolfBrowserContext.create(playwrightBrowser, launchOptions);
 };

@@ -1,4 +1,4 @@
-import { BrowserType } from "@qawolf/types";
+import { getBrowserType } from "@qawolf/types";
 import { config as configDotenv } from "dotenv";
 import path from "path";
 
@@ -27,7 +27,7 @@ if (artifactPath && require.main) {
 export const CONFIG = {
   artifactPath,
   attribute: process.env.QAW_ATTRIBUTE || "data-qa,data-test,data-testid",
-  browser: (process.env.QAW_BROWSER || "chromium") as BrowserType,
+  browser: getBrowserType(process.env.QAW_BROWSER || "chromium"),
   disableVideoArtifact: parseBool(process.env.QAW_DISABLE_VIDEO_ARTIFACT),
   chromeOffsetX: parseNumber(process.env.QAW_CHROME_OFFSET_X, 0),
   chromeOffsetY: parseNumber(process.env.QAW_CHROME_OFFSET_Y, 125),

@@ -1,48 +1,28 @@
 import { CONFIG } from "@qawolf/config";
+import { BrowserType, getBrowserType } from "@qawolf/types";
 import playwright from "playwright";
 import { ConnectOptions as PlaywrightConnectOptions } from "playwright-core/lib/browser";
+import { DeviceDescriptor } from "playwright-core/lib/types";
 import { getDevice } from "./device";
-import { logTestStarted } from "./launch";
 import {
-  QAWolfBrowserContext,
-  QAWolfContextOptions
+  CreateContextOptions,
+  QAWolfBrowserContext
 } from "./QAWolfBrowserContext";
 
-export type ConnectOptions = PlaywrightConnectOptions & QAWolfContextOptions;
-
-// TODO refactor connect, launch and launchPlaywright to a Launcher...
+export type ConnectOptions = PlaywrightConnectOptions &
+  Omit<CreateContextOptions, "device"> & {
+    browser?: BrowserType;
+    device?: DeviceDescriptor | string;
+  };
 
 export const connect = async (options: ConnectOptions) => {
-  const playwrightBrowser = await playwright[
-    options.browser || CONFIG.browser
-  ].connect(options);
-
+  // TODO consider how to deal with capture on connected browser
+  const browserType = getBrowserType(options.browser || CONFIG.browser);
+  const playwrightBrowser = await playwright[browserType].connect(options);
   const device = getDevice(options.device);
 
-  const playwrightBrowserContext = await playwrightBrowser.newContext({
-    userAgent: device.userAgent,
-    viewport: device.viewport
+  return QAWolfBrowserContext.create(playwrightBrowser, {
+    ...options,
+    device
   });
-
-  await playwrightBrowserContext.newPage();
-
-  const qawolfContext = new QAWolfBrowserContext({
-    // TODO consider how to deal with capture on connected browser
-    capture: null,
-    debug: options.debug || CONFIG.debug,
-    device,
-    logLevel: options.logLevel || CONFIG.logLevel || "error",
-    navigationTimeoutMs: options.navigationTimeoutMs,
-    playwrightBrowser,
-    playwrightBrowserContext,
-    recordEvents: options.recordEvents
-  });
-
-  const context = qawolfContext.decorated;
-
-  if (options.url) await context.goto(options.url);
-
-  logTestStarted(context);
-
-  return context;
 };
