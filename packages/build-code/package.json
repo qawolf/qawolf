@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/build-code",
   "description": "qawolf: build code from workflow",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -24,7 +24,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/config": "^0.8.2",
+    "@qawolf/config": "^0.8.3",
     "@qawolf/web": "^0.8.2",
     "fs-extra": "^8.1.0",
     "handlebars": "^4.4.3"
