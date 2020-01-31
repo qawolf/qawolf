@@ -82,7 +82,7 @@ See [our API documentation](api) for a full list of methods you can use to write
 
 ## Use custom selectors
 
-When an element contains an attribute specified by [`QAW_ATTRIBUTE`](api#qaw_attribute) (`data-qa,data-test,data-testid` by default), a [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) for that attribute will be generated. See [🔍 Use a Test Attribute](use_a_test_attribute) for more details.
+When an element contains an attribute specified by [`QAW_ATTRIBUTE`](api#qaw_attribute), a [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) for that attribute will be generated. See [🔍 Use a Test Attribute](use_a_test_attribute) for more details.
 
 Otherwise the selector in the generated test code contains all attributes of an element and its two direct [ancestors](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement). When running a test, the `qawolf` library will wait for a close enough match to the default selector before moving on. If no suitable match is found before timing out, the test will fail.
 
