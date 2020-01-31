@@ -1,12 +1,19 @@
 import { CONFIG } from "@qawolf/config";
-import { launch } from "../../src/browser/launch";
+import { Browser, launch, Page } from "../../src";
 import { hasText } from "../../src/find/hasText";
+
+let browser: Browser;
+let page: Page;
+
+beforeAll(async () => {
+  browser = await launch({ url: `${CONFIG.testUrl}login` });
+  page = await browser.page();
+});
+
+afterAll(() => browser.close());
 
 describe("Browser.click", () => {
   it("clicks on icon in button", async () => {
-    const browser = await launch({ url: `${CONFIG.testUrl}login` });
-    const page = await browser.page();
-
     const hasInvalidUsernameText = await hasText(page, "username is invalid", {
       timeoutMs: 250
     });
@@ -17,21 +24,48 @@ describe("Browser.click", () => {
 
     const hasInvalidUsernameText2 = await hasText(page, "username is invalid");
     expect(hasInvalidUsernameText2).toBe(true);
-
-    await browser.close();
   });
 });
 
 describe("Page.click", () => {
   it("clicks on link", async () => {
-    const browser = await launch({ url: CONFIG.testUrl });
-    const page = await browser.page();
+    await page.goto(CONFIG.testUrl);
 
     await page.qawolf.click({ html: "<a>broken images</a>" });
     await page.waitForNavigation();
 
     expect(page.url()).toBe(`${CONFIG.testUrl}broken_images`);
+  });
 
-    await browser.close();
+  it("clicks on a custom element", async () => {
+    await page.goto(`${CONFIG.testUrl}broken_images`);
+
+    const clickPromise = page.evaluate(() => {
+      customElements.define(
+        "custom-element",
+        class extends HTMLElement {
+          constructor() {
+            super();
+
+            // create a custom element without a click method
+            // this was somehow encountered by a user in our gitter
+            // so we want to make sure it works
+            (this as any).click = undefined;
+          }
+        }
+      );
+
+      const customElement = document.createElement("custom-element");
+      customElement.innerText = "custom element";
+      document.body.appendChild(customElement);
+
+      return new Promise(resolve => (customElement.onclick = resolve));
+    });
+
+    await page.qawolf.click({
+      html: "<custom-element>custom element</custom-element>"
+    });
+
+    await clickPromise;
   });
 });
