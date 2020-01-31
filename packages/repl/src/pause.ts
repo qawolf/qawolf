@@ -2,23 +2,28 @@ import { start } from "repl";
 const { addAwaitOutsideToReplServer } = require("await-outside");
 
 export const pause = (context: any = {}) => {
-  console.log("start repl");
+  console.log("repl: open");
 
-  const repl = start({
+  let resolve: () => void;
+  const promise = new Promise(r => (resolve = r));
+
+  const replServer = start({
     terminal: true,
     useGlobal: true
   });
 
-  addAwaitOutsideToReplServer(repl);
+  addAwaitOutsideToReplServer(replServer);
 
   Object.keys(context).forEach(key => {
-    repl.context[key] = context[key];
+    replServer.context[key] = context[key];
   });
 
-  return new Promise(resolve => {
-    repl.context.resume = () => {
-      repl.close();
-      resolve();
-    };
+  replServer.on("exit", () => {
+    console.log("replServer: close");
+    resolve();
   });
+
+  replServer.context.resume = () => replServer.close();
+
+  return promise;
 };
