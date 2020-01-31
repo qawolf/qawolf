@@ -46,6 +46,7 @@ describe("launch", () => {
 
   it("records dom replay", async () => {
     const domFiles = await readdir(CONFIG.artifactPath!);
+
     expect(
       domFiles.filter((f: string) => f.includes(".html")).length
     ).toBeGreaterThan(0);

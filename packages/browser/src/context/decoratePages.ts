@@ -32,7 +32,9 @@ export const decoratePages = async (
 
       await page.ready();
 
-      return page.decorated;
+      const decorated = page.decorated;
+      context._pages.push(decorated);
+      return decorated;
     })
   );
 

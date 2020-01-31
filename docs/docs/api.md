@@ -21,6 +21,7 @@ The generated code imports the `qawolf` node package, which extends the [Playwri
   - [QAW_SLEEP_MS](#qaw_sleep_ms)
   - [QAW_TIMEOUT_MS](#qaw_timeout_ms)
 - [class: QAWolf](#class-qawolf)
+  - [qawolf.connect([options])](#qawolfconnectoptions)
   - [qawolf.launch([options])](#qawolflaunchoptions)
   - [qawolf.waitUntil(predicate[, timeoutMs])](#qawolfwaituntilpredicate-timeoutms-sleepms)
 - [class: BrowserContext](#class-browsercontext)
@@ -139,6 +140,27 @@ The default maximum time to wait for [FindElementOptions].
 
 ```js
 const { waitFor } = require("qawolf");
+```
+
+### qawolf.connect(options)
+
+- `options` <[Object] & [playwright.ConnectOptions]>
+  - `device` <?[device] | ?[string]> Emulate this [device]. If you pass a string it will lookup a device with that key in `playwright.devices[options.device]`. Defaults to "desktop" (1366x768).
+  - `navigationTimeoutMs` <?[number]> Maximum navigation time in milliseconds, defaults to 30 seconds, pass 0 to disable timeout.
+  - `url` <[string]> The url to go to.
+- returns: <[Promise]<[BrowserContext]>>
+
+Connect to a [playwright.Browser] and creates a [BrowserContext](#class-browsercontext):
+
+```js
+const playwright = require("playwright");
+const { connect } = require("qawolf");
+
+const browserApp = await playwright.chromium.launchBrowserApp({
+  webSocket: true
+});
+const connectOptions = browserApp.connectOptions();
+const context = await connect(connectOptions);
 ```
 
 ### qawolf.launch(options)
@@ -467,7 +489,8 @@ await context.type(selectors[1], "my@email.com");
 [object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object"
 [page]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page "Page"
 [promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise"
-[playwright.browsercontext]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-context "playwright.BrowserContext"
+[playwright.browser]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browser "playwright.Browser"
+[playwright.browsercontext]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext "playwright.BrowserContext"
 [playwright.launchoptions]: https://github.com/microsoft/playwright/blob/master/docs/api.md#playwrightlaunchoptions "playwright.LaunchOptions"
 [selector]: #interface-selector "Selector"
 [sendcharacter]: https://github.com/microsoft/playwright/blob/master/docs/api.md#keyboardsendcharacterchar" "sendCharacter"

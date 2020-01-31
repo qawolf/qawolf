@@ -56,6 +56,9 @@ export class QAWolfBrowserContext {
   // used internally by findPage
   public _currentPageIndex: number = 0;
 
+  // track these so we can access closed page events
+  public _pages: Page[] = [];
+
   // used internally by managePages
   public _nextPageIndex: number = 0;
 
@@ -154,8 +157,7 @@ export class QAWolfBrowserContext {
     logger.verbose("BrowserContext: close");
     this._disposeManagePages();
 
-    const pages = await this.pages();
-    await createDomArtifacts(pages, this._createdAt);
+    await createDomArtifacts(this._pages, this._createdAt);
 
     await this._decorated.browser.close();
 
@@ -168,9 +170,7 @@ export class QAWolfBrowserContext {
     // cycle event loop to let events callback
     await sleep(0);
 
-    const pages = await this.pages();
-
-    pages.forEach(page =>
+    this._pages.forEach(page =>
       page.qawolf.events.forEach(event => events.push(event))
     );
 

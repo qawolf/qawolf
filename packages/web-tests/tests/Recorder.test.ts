@@ -40,11 +40,12 @@ describe("Recorder", () => {
       document.querySelector("#password")!.dispatchEvent(event);
     });
 
+    // make sure we can access the events after the pages are closed
+    await context.close();
+
     const events = await context.qawolf.events();
     expect(events[0].target.node.attrs.id).toEqual("password");
     expect((events[0] as PasteEvent).value).toEqual("secret");
-
-    await context.close();
   });
 
   it("records scroll", async () => {
@@ -74,6 +75,8 @@ describe("Recorder", () => {
     // give time for scroll to record
     await sleep(1000);
 
+    await context.close();
+
     const events = await context.qawolf.events();
 
     const { isTrusted, name, target, value } = events[
@@ -87,8 +90,6 @@ describe("Recorder", () => {
     // the page doesn't scroll perfectly so we can't check the exact y
     expect(value.y).toBeGreaterThan(200);
     expect(isTrusted).toEqual(true);
-
-    await context.close();
   });
 
   it("records select option", async () => {
@@ -97,6 +98,8 @@ describe("Recorder", () => {
       url: `${CONFIG.testUrl}dropdown`
     });
     await context.select({ css: "#dropdown" }, "2");
+
+    await context.close();
 
     const events = await context.qawolf.events();
 
@@ -107,8 +110,6 @@ describe("Recorder", () => {
     expect(isTrusted).toEqual(false);
     expect(target.node.attrs.id).toEqual("dropdown");
     expect(value).toEqual("2");
-
-    await context.close();
   });
 
   it("records type", async () => {
@@ -120,6 +121,8 @@ describe("Recorder", () => {
     await context.type({ css: "#password" }, "secret");
     await context.type({ css: "#password" }, "↓Enter");
 
+    await context.close();
+
     const events = await context.qawolf.events();
 
     expect(events[0].target.node.attrs.id).toEqual("password");
@@ -127,8 +130,6 @@ describe("Recorder", () => {
     expect(
       (events.filter(e => isKeyEvent(e)) as KeyEvent[]).map(e => e.value)
     ).toEqual(["Enter"]);
-
-    await context.close();
   });
 
   it("records actions on another page", async () => {
@@ -142,9 +143,9 @@ describe("Recorder", () => {
     await page.goto(`${CONFIG.testUrl}login`);
     await page.type("#password", "secret");
 
+    await context.close();
+
     const events = await context.qawolf.events();
     expect(events.length).toBeGreaterThan(0);
-
-    await context.close();
   });
 });
