@@ -30,7 +30,7 @@ const createCapture = (device: DeviceDescriptor, headless: boolean = false) => {
   });
 };
 
-const logTestStarted = (context: BrowserContext) => {
+export const logTestStarted = (context: BrowserContext) => {
   /**
    * Log test started in the context so the timeline is inlined with the other context logs.
    */

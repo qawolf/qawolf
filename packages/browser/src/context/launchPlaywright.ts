@@ -1,23 +1,11 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { BrowserType } from "@qawolf/types";
 import playwright, { Browser } from "playwright";
 import { LaunchOptions as PlaywrightLaunchOptions } from "playwright-core/lib/server/browserType";
-import { DeviceDescriptor } from "playwright-core/lib/types";
+import { QAWolfContextOptions } from "./QAWolfBrowserContext";
 import { getDevice } from "./device";
 
-export interface QAWolfLaunchOptions {
-  browser?: BrowserType;
-  debug?: boolean;
-  device?: string | DeviceDescriptor;
-  display?: string;
-  logLevel?: string;
-  navigationTimeoutMs?: number;
-  recordEvents?: boolean;
-  url?: string;
-}
-
-export type LaunchOptions = PlaywrightLaunchOptions & QAWolfLaunchOptions;
+export type LaunchOptions = PlaywrightLaunchOptions & QAWolfContextOptions;
 
 export const launchPlaywright = async (options: LaunchOptions) => {
   const device = getDevice(options.device);

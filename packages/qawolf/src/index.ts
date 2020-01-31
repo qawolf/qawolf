@@ -6,5 +6,13 @@ if (isCLI) {
 }
 
 // export public API
-export { BrowserContext, launch, LaunchOptions, Page } from "@qawolf/browser";
+export {
+  BrowserContext,
+  connect,
+  ConnectOptions,
+  launch,
+  LaunchOptions,
+  Page
+} from "@qawolf/browser";
+
 export { sleep, waitFor, waitUntil } from "@qawolf/web";

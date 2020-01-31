@@ -2,6 +2,7 @@ import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { VirtualCapture } from "@qawolf/screen";
 import {
+  BrowserType,
   Event,
   FindElementOptions,
   FindPageOptions,
@@ -26,6 +27,17 @@ import { decoratePages, managePages } from "./decoratePages";
 import { createDomArtifacts } from "../page/createDomArtifacts";
 import { findPage } from "../page/findPage";
 import { Page } from "../page/Page";
+
+export interface QAWolfContextOptions {
+  browser?: BrowserType;
+  debug?: boolean;
+  device?: string | DeviceDescriptor;
+  display?: string;
+  logLevel?: string;
+  navigationTimeoutMs?: number;
+  recordEvents?: boolean;
+  url?: string;
+}
 
 export interface ConstructorOptions {
   capture: VirtualCapture | null;
