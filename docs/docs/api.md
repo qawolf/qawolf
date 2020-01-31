@@ -209,7 +209,7 @@ A [puppeteer.Browser] with actions and assertions to [find](review_test_code#ele
   - `text` <?[string]> find an element with this text.
 - `options` <[FindElementOptions] & ClickOptions> find the element with these options.
   - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
-  - `simulate` <?[boolean]> simulate the click with [HTMLElement.click()]. Defaults to `true`.
+  - `simulate` <?[boolean]> simulate the click by dispatching a [MouseEvent]. Defaults to `true`, set to `false` to use [Page.click].
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
   - `timeoutMs` <?[number]> maximum time to wait for an element and page. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
@@ -221,6 +221,8 @@ Find and click an element. It will throw an error if the element is not found.
 const element = await browser.click(selectors[0]);
 
 await browser.click({ css: "#my-id" });
+
+await browser.click({ css: "#my-id" }, { simulate: false });
 
 await browser.click({ text: "Login" }, { sleepMs: 5000 });
 ```
@@ -459,12 +461,13 @@ await browser.type(selectors[1], "my@email.com");
 [findelementoptions]: #interface-findelementoptions "FindElementOptions"
 [findpageoptions]: #interface-findpageoptions "FindPageOptions"
 [function]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function "Function"
-[htmlelement.click()]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click "HTMLElement.click"
 [keyboard.down]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#keyboarddownkey-options "keyboard.down"
 [keyboard.up]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#keyboardupkey "keyboard.up"
+[mouseevent]: https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent "MouseEvent"
 [number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "number"
 [object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object"
 [page]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#class-page "Page"
+[page.click]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pageclickselector-options "Page.click"
 [promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise"
 [puppeteer.browser]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#class-browser "puppeteer.Browser"
 [puppeteer.launchoptions]: https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#puppeteerlaunchoptions "puppeteer.LaunchOptions"
