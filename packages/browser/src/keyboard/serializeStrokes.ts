@@ -5,7 +5,7 @@ import { keyDefinitions } from "playwright-core/lib/usKeyboardLayout";
 import { Stroke } from "./Stroke";
 
 const USKeys = uniq(
-  Object.values(keyDefinitions).map((definition: any) => definition.key)
+  Object.values(keyDefinitions).map(definition => definition.key)
 );
 
 export const isKeyHeld = (
