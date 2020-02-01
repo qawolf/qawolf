@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/logger",
   "description": "qawolf logger (node only)",
-  "version": "0.8.3",
+  "version": "0.9.0-alpha.0",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -23,7 +23,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/config": "^0.8.3",
+    "@qawolf/config": "^0.9.0-alpha.0",
     "winston": "^3.2.1"
   }
 }

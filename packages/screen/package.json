@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/screen",
   "description": "qawolf screen capture",
-  "version": "0.8.3",
+  "version": "0.9.0-alpha.0",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -23,10 +23,10 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/config": "^0.8.3",
+    "@qawolf/config": "^0.9.0-alpha.0",
     "@qawolf/ffmpeg-static": "3.1.4",
-    "@qawolf/logger": "^0.8.3",
-    "@qawolf/web": "^0.8.2",
+    "@qawolf/logger": "^0.9.0-alpha.0",
+    "@qawolf/web": "^0.9.0-alpha.0",
     "fs-extra": "^8.1.0"
   }
 }
