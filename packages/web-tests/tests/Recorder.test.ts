@@ -73,7 +73,7 @@ describe("Recorder", () => {
     });
 
     // give time for scroll to record
-    await sleep(1000);
+    await sleep(2000);
 
     await context.close();
 
