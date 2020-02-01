@@ -11,7 +11,8 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x]
+        node-version: [12.x]
+        browser: ["chrome", "firefox", "webkit"]
 
     env:
       QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
@@ -34,14 +35,8 @@ jobs:
 
       - run: npm run bootstrap
 
-      - name: Run tests on chrome
-        run: npm test
-
-      - name: Run tests on firefox
-        run: QAW_BROWSER=firefox npm test
-
-      - name: Run tests on webkit
-        run: QAW_BROWSER=webkit npm test
+      - name: Run tests on ${{ matrix.browser }}
+        run: QAW_BROWSER=${{ matrix.browser }} npm test
 
       - name: Upload Artifacts
         if: always()
