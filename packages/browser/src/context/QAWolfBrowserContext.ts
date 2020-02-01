@@ -10,7 +10,7 @@ import {
   TypeOptions
 } from "@qawolf/types";
 import { sleep } from "@qawolf/web";
-import { pick, sortBy } from "lodash";
+import { omit, sortBy } from "lodash";
 import {
   Browser as PlaywrightBrowser,
   BrowserContext as PlaywrightBrowserContext,
@@ -63,11 +63,7 @@ export class QAWolfBrowserContext {
   public _nextPageIndex: number = 0;
 
   protected constructor(options: ConstructContextOptions) {
-    logger.verbose(
-      `QAWolfBrowser: create ${JSON.stringify(
-        pick(options, "debug", "device", "navigationTimeoutMs", "recordEvents")
-      )}`
-    );
+    logger.verbose("QAWolfBrowser: construct");
     const { ...clonedOptions } = options;
     this._options = clonedOptions;
 
@@ -82,6 +78,10 @@ export class QAWolfBrowserContext {
     playwrightBrowser: PlaywrightBrowser,
     options: CreateContextOptions
   ): Promise<BrowserContext> {
+    logger.verbose(
+      `QAWolfBrowser: create ${JSON.stringify(omit(options, "capture"))}`
+    );
+
     // create the context based on the device
     const playwrightContext = await playwrightBrowser.newContext({
       userAgent: options.device.userAgent,
@@ -101,8 +101,10 @@ export class QAWolfBrowserContext {
 
     const context = qawolfContext.decorated;
 
-    logTestStarted(context);
     if (options.url) await context.goto(options.url);
+
+    logTestStarted(context);
+
     if (options.capture) await options.capture.start();
 
     return context;

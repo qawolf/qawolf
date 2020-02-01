@@ -82,9 +82,15 @@ export const launch = async (options: LaunchOptions = {}) => {
     };
   }
 
-  const playwrightBrowser = await playwright[launchOptions.browser!].launch(
-    launchOptions
-  );
+  logger.verbose(`launch: browser ${JSON.stringify(launchOptions)}`);
+  try {
+    const playwrightBrowser = await playwright[launchOptions.browser!].launch(
+      launchOptions
+    );
 
-  return QAWolfBrowserContext.create(playwrightBrowser, launchOptions);
+    return QAWolfBrowserContext.create(playwrightBrowser, launchOptions);
+  } catch (e) {
+    logger.error(`launch: failed ${e.toString()}`);
+    throw e;
+  }
 };
