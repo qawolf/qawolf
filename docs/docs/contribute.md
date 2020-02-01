@@ -1,4 +1,4 @@
 ---
 id: contribute
-title: 🙋 Contribute
+title: Contribute
 ---

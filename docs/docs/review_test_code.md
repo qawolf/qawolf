@@ -1,4 +1,4 @@
 ---
 id: review_test_code
-title: 📜 Review Test Code
+title: Review Test Code
 ---

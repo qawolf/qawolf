@@ -1,4 +1,4 @@
 ---
 id: install
-title: 💻 Install
+title: Install
 ---

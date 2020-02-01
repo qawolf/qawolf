@@ -1,4 +1,4 @@
 ---
 id: run_tests_locally
-title: 🏃 Run Tests Locally
+title: Run Tests Locally
 ---

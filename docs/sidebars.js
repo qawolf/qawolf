@@ -2,7 +2,7 @@ module.exports = {
   docs: [
     {
       type: "category",
-      label: "🗺️ Overview",
+      label: "Overview",
       items: ["what_is_qa_wolf", "how_it_works"]
     },
     {
@@ -11,7 +11,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "🎨 Create Tests",
+      label: "Create Tests",
       items: [
         "your_first_test",
         "run_tests_locally",
@@ -29,13 +29,13 @@ module.exports = {
     }
   ],
   api: [
-    { type: "category", label: "🕹️ CLI", items: ["qaw_artifact_path"] },
+    { type: "category", label: "CLI", items: [] },
     {
       type: "category",
-      label: "🧩 Environment Variables",
+      label: "Environment Variables",
       items: ["qaw_artifact_path"]
     },
-    { type: "category", label: "🎬 Actions", items: ["qaw_artifact_path"] },
-    { type: "category", label: "🤝 Helpers", items: ["qaw_artifact_path"] }
+    { type: "category", label: "Actions", items: [] },
+    { type: "category", label: "Helpers", items: [] }
   ]
 };

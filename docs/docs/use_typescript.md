@@ -1,4 +1,4 @@
 ---
 id: use_typescript
-title: ⌨️ Use TypeScript
+title: Use TypeScript
 ---
