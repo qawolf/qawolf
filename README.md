@@ -4,7 +4,7 @@
 
 <h3 align="center">Create browser tests 10x faster</h3>
 
-<p align="center">QA Wolf is a free and open source library to create <a href="https://github.com/microsoft/playwright">Playwright</a>/<a href="https://jestjs.io">Jest</a> browser tests and run them in CI</p>
+<p align="center">QA Wolf is a free and open source library to create <a href="https://github.com/puppeteer/puppeteer">Puppeteer</a>/<a href="https://jestjs.io">Jest</a> browser tests and run them in CI</p>
 
 <p align="center">
   <a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version" /></a>
@@ -24,7 +24,7 @@
 <p>QA Wolf is an open source node library for creating browser tests 10x faster:</p>
 
 <ul>
-<li><b>Skip writing boilerplate.</b> Your browser actions are converted to Playwright and Jest code.
+<li><b>Skip writing boilerplate.</b> Your browser actions are converted to Puppeteer and Jest code.
 </li>
 <li><b>Built for stability.</b> Avoid flaky tests with <a href="https://docs.qawolf.com/docs/review_test_code#automatic-waiting">automatic waiting</a> and <a href="https://docs.qawolf.com/docs/review_test_code#element-selectors">smart element selectors</a>.
 </li>
@@ -67,7 +67,7 @@ QA Wolf is tested against the [maintenance LTS](https://github.com/nodejs/Releas
 
 [Documentation](http://docs.qawolf.com/docs/quick_start#-create-a-browser-test)
 
-Create a [Playwright](https://github.com/microsoft/playwright) and [Jest](https://jestjs.io/) test:
+Create a [Puppeteer](https://github.com/puppeteer/puppeteer) and [Jest](https://jestjs.io/) test:
 
 ```bash
 npx qawolf create <url> [name]
