@@ -22,15 +22,12 @@ export const buildLaunchOptions = (options: LaunchOptions) => {
 
   const device = getDevice(options.device);
 
-  // TODO figure out default args for playwright browsers
   let args: string[] = [];
   if (browser === "chromium") {
     args = [
       "--disable-dev-shm-usage",
       "--no-default-browser-check",
       "--window-position=0,0"
-      // `--window-size=${device.viewport.width + CONFIG.chromeOffsetX},${device
-      //   .viewport.height + CONFIG.chromeOffsetY}`
     ];
   }
 
@@ -59,17 +56,11 @@ export const createCapture = (
   }
 
   return VirtualCapture.create({
-    offset: {
-      x: 0,
-      y: 0
-      // // TODO need to update for all new browsers
-      // x: CONFIG.chromeOffsetX,
-      // y: CONFIG.chromeOffsetY
-    },
     savePath: CONFIG.artifactPath,
     size: {
-      height: device.viewport.height,
-      width: device.viewport.width
+      // add size for browser frame
+      height: device.viewport.height + 100,
+      width: device.viewport.width + 100
     }
   });
 };

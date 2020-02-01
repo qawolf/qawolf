@@ -8,7 +8,7 @@ import { VideoCapture, VideoCaptureOptions } from "./VideoCapture";
 import { Xvfb } from "./Xvfb";
 
 interface CreateOptions {
-  offset: Offset;
+  offset?: Offset;
   savePath: string;
   size: Size;
 }
@@ -31,6 +31,8 @@ export class VirtualCapture {
       return null;
     }
 
+    const offset = options.offset || { x: 0, y: 0 };
+
     // ffmpeg video size must be divisible by 2
     const videoSize = {
       height: makeEven(options.size.height),
@@ -38,15 +40,15 @@ export class VirtualCapture {
     };
 
     const displaySize = {
-      height: videoSize.height + options.offset.y,
-      width: videoSize.width + options.offset.x
+      height: videoSize.height + offset.y,
+      width: videoSize.width + offset.x
     };
 
     const xvfb = await Xvfb.start(displaySize);
     if (!xvfb) return null;
 
     return new VirtualCapture({
-      offset: options.offset,
+      offset,
       savePath: options.savePath,
       size: videoSize,
       xvfb

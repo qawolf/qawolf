@@ -29,8 +29,6 @@ export const CONFIG = {
   attribute: process.env.QAW_ATTRIBUTE || "data-qa,data-test,data-testid",
   browser: getBrowserType(process.env.QAW_BROWSER || "chromium"),
   disableVideoArtifact: parseBool(process.env.QAW_DISABLE_VIDEO_ARTIFACT),
-  chromeOffsetX: parseNumber(process.env.QAW_CHROME_OFFSET_X, 0),
-  chromeOffsetY: parseNumber(process.env.QAW_CHROME_OFFSET_Y, 125),
   debug: parseBool(process.env.QAW_DEBUG),
   headless: parseBool(process.env.QAW_HEADLESS),
   logLevel: process.env.QAW_LOG_LEVEL,

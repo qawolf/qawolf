@@ -1,4 +1,4 @@
-name: Test Webkit Linux
+name: Webkit Linux
 on:
   push:
     branches:

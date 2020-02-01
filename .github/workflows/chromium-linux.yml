@@ -1,4 +1,4 @@
-name: Test Chromium Linux
+name: Chromium Linux
 on:
   push:
     branches:

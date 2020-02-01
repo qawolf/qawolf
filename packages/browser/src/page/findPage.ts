@@ -50,9 +50,9 @@ export const findPage = async (
     throw new Error(`findPage: page ${index} not found`);
   }
 
+  // TODO waiting for https://github.com/microsoft/playwright/issues/657
   // when headless = false the tab needs to be activated
   // for the execution context to run
-  // TODO
   // await page.bringToFront();
 
   if (options.waitForRequests) {

@@ -1,4 +1,4 @@
-name: Test Firefox Linux
+name: Firefox Linux
 on:
   push:
     branches:

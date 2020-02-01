@@ -17,7 +17,6 @@ export type ConnectOptions = PlaywrightConnectOptions &
   };
 
 export const connect = async (options: ConnectOptions) => {
-  // TODO consider how to deal with capture on connected browser
   const browserType = getBrowserType(options.browser || CONFIG.browser);
 
   const createOptions = {

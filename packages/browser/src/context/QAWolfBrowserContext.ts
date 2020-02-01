@@ -16,7 +16,6 @@ import {
   BrowserContext as PlaywrightBrowserContext,
   ElementHandle
 } from "playwright";
-// TODO
 import { GotoOptions } from "playwright-core/lib/frames";
 import { DeviceDescriptor } from "playwright-core/lib/types";
 import { ClickOptions } from "../actions/clickElement";
