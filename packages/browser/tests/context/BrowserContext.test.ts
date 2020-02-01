@@ -11,6 +11,17 @@ describe("BrowserContext.close", () => {
 });
 
 describe("BrowserContext.page", () => {
+  it("waits for a page to open", async () => {
+    const context = await launch({ url: CONFIG.testUrl });
+
+    const pagePromise = context.page({ page: 1 });
+
+    const pageOne = await context.newPage();
+    expect(await pagePromise).toEqual(pageOne);
+
+    await context.close();
+  });
+
   it("chooses the first open page if the current page is closed", async () => {
     const context = await launch({ url: CONFIG.testUrl });
 

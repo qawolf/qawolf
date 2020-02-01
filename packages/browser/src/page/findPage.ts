@@ -34,20 +34,22 @@ export const findPage = async (
    * Wait for the page and activate it.
    */
   let index: number = await getIndex(context, options.page);
+  logger.debug(`findPage: options.page ${options.page} page ${index}`);
 
-  const page = await waitFor(
-    async () => {
-      const pages = await context.pages();
+  const timeoutMs = isNil(options.timeoutMs) ? 5000 : options.timeoutMs!;
 
-      if (index >= pages.length) return null;
+  const page = await waitFor(async () => {
+    const pages = await context.pages();
 
-      return pages[index];
-    },
-    isNil(options.timeoutMs) ? 5000 : options.timeoutMs!
-  );
+    if (index >= pages.length) {
+      return null;
+    }
+
+    return pages[index];
+  }, timeoutMs);
 
   if (!page) {
-    throw new Error(`findPage: page ${index} not found`);
+    throw new Error(`findPage: page ${index} not found after ${timeoutMs}ms`);
   }
 
   // TODO waiting for https://github.com/microsoft/playwright/issues/657
@@ -56,7 +58,7 @@ export const findPage = async (
   // await page.bringToFront();
 
   if (options.waitForRequests) {
-    await page.waitForRequest(/.*/g);
+    await page.waitForRequest(/.*/g, { timeout: timeoutMs });
   }
 
   context._currentPageIndex = index;

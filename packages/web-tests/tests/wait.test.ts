@@ -1,4 +1,16 @@
-import { waitUntil } from "@qawolf/web";
+import { waitFor, waitUntil } from "@qawolf/web";
+
+describe("waitFor", () => {
+  it("supports async functions", async () => {
+    const value = await waitFor(() => Promise.resolve(undefined), 0);
+    expect(value).toEqual(null);
+  });
+
+  it("supports regular functions", async () => {
+    const value = await waitFor(() => 5, 0);
+    expect(value).toEqual(5);
+  });
+});
 
 describe("waitUntil", () => {
   it("calls predicate and exits when true is returned", async () => {
