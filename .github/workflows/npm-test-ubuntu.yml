@@ -2,7 +2,7 @@ name: npm test ubuntu
 on:
   push:
     branches:
-      - master
+      - "*"
   pull_request:
     branches: "*"
 jobs:
