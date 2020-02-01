@@ -5,6 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+const path = require("path");
+
 module.exports = {
   title: "QA Wolf",
   tagline: "Create browser tests 10x faster",
@@ -14,6 +16,9 @@ module.exports = {
   organizationName: "qawolf", // Usually your GitHub org/user name.
   projectName: "qawolf", // Usually your repo name.
   themeConfig: {
+    gitter: {
+      room: "qawolf/community"
+    },
     navbar: {
       title: "QA Wolf",
       logo: {
@@ -66,5 +71,6 @@ module.exports = {
         }
       }
     ]
-  ]
+  ],
+  plugins: [path.resolve(__dirname, "./src/gitter-chat")]
 };
