@@ -18,19 +18,26 @@ export type LaunchOptions = PlaywrightLaunchOptions &
   };
 
 export const buildLaunchOptions = (options: LaunchOptions) => {
+  const browser = getBrowserType(options.browser || CONFIG.browser);
+
   const device = getDevice(options.device);
 
-  const launchOptions = {
-    args: [
-      // TODO figure out default args for playwright browsers
+  // TODO figure out default args for playwright browsers
+  let args: string[] = [];
+  if (browser === "chromium") {
+    args = [
       "--disable-dev-shm-usage",
       "--no-default-browser-check",
       "--window-position=0,0",
       `--window-size=${device.viewport.width + CONFIG.chromeOffsetX},${device
         .viewport.height + CONFIG.chromeOffsetY}`
-    ],
+    ];
+  }
+
+  const launchOptions = {
+    args,
     ...options,
-    browser: getBrowserType(options.browser || CONFIG.browser),
+    browser,
     device,
     headless: options.headless || CONFIG.headless
   };
