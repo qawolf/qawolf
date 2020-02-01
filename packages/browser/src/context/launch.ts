@@ -28,9 +28,9 @@ export const buildLaunchOptions = (options: LaunchOptions) => {
     args = [
       "--disable-dev-shm-usage",
       "--no-default-browser-check",
-      "--window-position=0,0",
-      `--window-size=${device.viewport.width + CONFIG.chromeOffsetX},${device
-        .viewport.height + CONFIG.chromeOffsetY}`
+      "--window-position=0,0"
+      // `--window-size=${device.viewport.width + CONFIG.chromeOffsetX},${device
+      //   .viewport.height + CONFIG.chromeOffsetY}`
     ];
   }
 
@@ -60,9 +60,11 @@ export const createCapture = (
 
   return VirtualCapture.create({
     offset: {
-      // TODO need to update for all new browsers
-      x: CONFIG.chromeOffsetX,
-      y: CONFIG.chromeOffsetY
+      x: 0,
+      y: 0
+      // // TODO need to update for all new browsers
+      // x: CONFIG.chromeOffsetX,
+      // y: CONFIG.chromeOffsetY
     },
     savePath: CONFIG.artifactPath,
     size: {
