@@ -35,7 +35,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@master
         with:
-          name: qawolf
+          name: firefox
           path: ${{ github.workspace }}/artifacts
 
     services:

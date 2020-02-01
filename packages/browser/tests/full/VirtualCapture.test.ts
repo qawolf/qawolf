@@ -17,10 +17,6 @@ describe("launch and VirtualCapture", () => {
 
     if (!capture) throw new Error("VirtualCapture should be created on linux");
 
-    // ffmpeg requires even numbers, so expect the size to be rounded up
-    // and expect an extra 100px for the browser frame
-    expect(capture.size).toEqual({ height: 668 + 100, width: 376 + 100 });
-
     // creates a display
     expect(capture.xvfb).toBeTruthy();
 

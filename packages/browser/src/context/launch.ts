@@ -1,6 +1,6 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
-import { VirtualCapture } from "@qawolf/screen";
+import { Size, VirtualCapture } from "@qawolf/screen";
 import { BrowserType, getBrowserType } from "@qawolf/types";
 import playwright from "playwright";
 import { DeviceDescriptor } from "playwright-core/lib/types";
@@ -22,6 +22,13 @@ export const buildLaunchOptions = (options: LaunchOptions) => {
 
   const device = getDevice(options.device);
 
+  const headless = options.headless || CONFIG.headless;
+
+  const windowSize = {
+    height: device.viewport.height,
+    width: device.viewport.width
+  };
+
   let args: string[] = [];
   if (browser === "chromium") {
     args = [
@@ -29,6 +36,28 @@ export const buildLaunchOptions = (options: LaunchOptions) => {
       "--no-default-browser-check",
       "--window-position=0,0"
     ];
+
+    // browser frame with "controlled by automated"
+    windowSize.height += 120;
+
+    if (!headless) {
+      args.push(`--window-size=${windowSize.width},${windowSize.height}`);
+    }
+  } else if (browser === "firefox") {
+    // browser frame
+    windowSize.height += 40;
+
+    if (!headless) {
+      args = [
+        "-width",
+        `${windowSize.width}`,
+        "-height",
+        `${windowSize.height}`
+      ];
+    }
+  } else if (browser === "webkit") {
+    // browser frame
+    windowSize.height += 40;
   }
 
   const launchOptions = {
@@ -36,16 +65,14 @@ export const buildLaunchOptions = (options: LaunchOptions) => {
     ...options,
     browser,
     device,
-    headless: options.headless || CONFIG.headless
+    headless,
+    windowSize
   };
 
   return launchOptions;
 };
 
-export const createCapture = (
-  device: DeviceDescriptor,
-  headless: boolean = false
-) => {
+export const createCapture = (headless: boolean = false, size: Size) => {
   if (!CONFIG.artifactPath || CONFIG.disableVideoArtifact) return null;
 
   if (headless) {
@@ -57,23 +84,16 @@ export const createCapture = (
 
   return VirtualCapture.create({
     savePath: CONFIG.artifactPath,
-    size: {
-      // add size for browser frame
-      height: device.viewport.height + 100,
-      width: device.viewport.width + 100
-    }
+    size
   });
 };
 
 export const launch = async (options: LaunchOptions = {}) => {
   logger.verbose(`launch: ${JSON.stringify(options)}`);
 
-  const launchOptions = buildLaunchOptions(options);
+  const { windowSize, ...launchOptions } = buildLaunchOptions(options);
 
-  const capture = await createCapture(
-    launchOptions.device,
-    launchOptions.headless
-  );
+  const capture = await createCapture(launchOptions.headless, windowSize);
 
   if (capture) {
     launchOptions.env = {
