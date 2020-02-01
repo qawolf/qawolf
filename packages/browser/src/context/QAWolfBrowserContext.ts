@@ -160,7 +160,15 @@ export class QAWolfBrowserContext {
 
     await createDomArtifacts(this._pages, this._createdAt);
 
-    await this._decorated.browser.close();
+    try {
+      await this._decorated.browser.close();
+    } catch (e) {
+      if ((e.message as string).includes("Browser has been closed")) {
+        return;
+      }
+
+      throw e;
+    }
 
     logger.verbose("BrowserContext: closed");
   }
