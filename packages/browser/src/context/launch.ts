@@ -78,7 +78,7 @@ export const launch = async (options: LaunchOptions = {}) => {
   if (capture) {
     launchOptions.env = {
       ...launchOptions.env,
-      DISPLAY: capture.xvfb.display
+      DISPLAY: capture.xvfb.screen
     };
   }
 
@@ -88,7 +88,10 @@ export const launch = async (options: LaunchOptions = {}) => {
       launchOptions
     );
 
-    return QAWolfBrowserContext.create(playwrightBrowser, launchOptions);
+    return QAWolfBrowserContext.create(playwrightBrowser, {
+      ...launchOptions,
+      capture: capture || undefined
+    });
   } catch (e) {
     logger.error(`launch: failed ${e.toString()}`);
     throw e;
