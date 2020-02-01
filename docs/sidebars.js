@@ -1,32 +1,29 @@
 module.exports = {
-  docs: [
-    {
-      type: "category",
-      label: "Overview",
-      items: ["what_is_qa_wolf", "how_it_works"]
-    },
+  get_started: [
+    { type: "doc", id: "what_is_qa_wolf" },
+    { type: "doc", id: "how_it_works" },
     {
       type: "doc",
       id: "install"
     },
     {
-      type: "category",
-      label: "Create Tests",
-      items: [
-        "your_first_test",
-        "run_tests_locally",
-        "review_test_code",
-        "edit_test_code",
-        "emulate_a_device",
-        "use_typescript"
-      ]
+      type: "doc",
+      id: "create_a_test"
     },
-    { type: "doc", id: "run_tests_in_ci" },
     {
-      type: "category",
-      label: "Examples",
-      items: ["handle_sign_in", "wait_for_modal"]
+      type: "doc",
+      id: "run_tests_locally"
     },
+    { type: "doc", id: "run_tests_in_ci" }
+  ],
+  guides: [
+    { type: "doc", id: "add_assertions" },
+    { type: "doc", id: "use_custom_selectors" },
+    { type: "doc", id: "change_input_values" },
+    { type: "doc", id: "emulate_a_device" },
+    { type: "doc", id: "use_typescript" },
+    { type: "doc", id: "handle_sign_in" },
+    { type: "doc", id: "wait_for_modal" },
     {
       type: "doc",
       id: "contribute"
