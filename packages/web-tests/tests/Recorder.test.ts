@@ -63,17 +63,20 @@ describe("Recorder", () => {
       .pageTarget(page)
       .createCDPSession();
 
-    // from https://github.com/puppeteer/puppeteer/issues/4119#issue-417279184
-    await client.send("Input.dispatchMouseEvent", {
-      type: "mouseWheel",
-      deltaX: 0,
-      deltaY: 500,
-      x: 0,
-      y: 0
-    });
+    // scroll a few times to make sure we capture it
+    for (let i = 0; i < 3; i++) {
+      // from https://github.com/puppeteer/puppeteer/issues/4119#issue-417279184
+      await client.send("Input.dispatchMouseEvent", {
+        type: "mouseWheel",
+        deltaX: 0,
+        deltaY: 500,
+        x: 0,
+        y: 0
+      });
 
-    // give time for scroll to record
-    await sleep(3000);
+      // give time for scroll
+      await sleep(1000);
+    }
 
     await context.close();
 
