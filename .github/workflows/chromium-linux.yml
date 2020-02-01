@@ -2,7 +2,7 @@ name: Chromium Linux
 on:
   push:
     branches:
-      - "*"
+      - master
   pull_request:
     branches: "*"
 jobs:
