@@ -2,26 +2,40 @@ module.exports = {
   docs: [
     {
       type: "category",
-      label: "Introduction",
-      items: ["quick_start", "how_it_works", "faq", "contribute"]
+      label: "🗺️ Overview",
+      items: ["what_is_qa_wolf", "how_it_works"]
+    },
+    {
+      type: "doc",
+      id: "install"
     },
     {
       type: "category",
-      label: "Tutorials",
+      label: "🎨 Create Tests",
       items: [
-        "introduction",
-        "get_started",
-        "create_a_test",
-        "run_a_test_locally",
+        "your_first_test",
+        "run_tests_locally",
         "review_test_code",
         "edit_test_code",
-        "set_up_ci",
-        "use_a_test_attribute",
+        "handle_sign_in",
         "emulate_a_device",
         "use_typescript"
       ]
     },
-    "api",
-    "cli"
+    { type: "doc", id: "run_tests_in_ci" },
+    {
+      type: "doc",
+      id: "contribute"
+    }
+  ],
+  api: [
+    { type: "category", label: "🕹️ CLI", items: ["qaw_artifact_path"] },
+    {
+      type: "category",
+      label: "🧩 Environment Variables",
+      items: ["qaw_artifact_path"]
+    },
+    { type: "category", label: "🎬 Actions", items: ["qaw_artifact_path"] },
+    { type: "category", label: "🤝 Helpers", items: ["qaw_artifact_path"] }
   ]
 };

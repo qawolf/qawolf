@@ -21,19 +21,8 @@ module.exports = {
         src: "img/logo.png"
       },
       links: [
-        { to: "docs/quick_start", label: "Docs", position: "left" },
-        {
-          to: "docs/api",
-          label: "API"
-        },
-        {
-          href: "https://gitter.im/qawolf/community",
-          label: "Chat"
-        },
-        {
-          href: "mailto:jon@qawolf.com",
-          label: "Email"
-        },
+        { to: "docs/what_is_qa_wolf", label: "Guides", position: "left" },
+        { to: "docs/qaw_artifact_path", label: "API", position: "left" },
         {
           href: "https://github.com/qawolf/qawolf",
           label: "GitHub",
@@ -53,7 +42,7 @@ module.exports = {
           items: [
             {
               to: "http://eepurl.com/gM47dD",
-              label: "Subscribe to Updates"
+              label: "Subscribe to Mailing List"
             }
           ]
         }

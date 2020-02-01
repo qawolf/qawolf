@@ -14,12 +14,12 @@
 /* You can override the default Infima variables here. */
 :root {
   --ifm-color-primary: #4494e7;
-  --ifm-color-primary-dark: #3d85d0;
-  --ifm-color-primary-darker: #3676b9;
-  --ifm-color-primary-darkest: #3068a2;
-  --ifm-color-primary-light: #579fe9;
-  --ifm-color-primary-lighter: #69a9ec;
-  --ifm-color-primary-lightest: #7cb4ee;
+  --ifm-color-primary-dark: #2a85e4;
+  --ifm-color-primary-darker: #1d7de1;
+  --ifm-color-primary-darkest: #1867b9;
+  --ifm-color-primary-light: #5ea3ea;
+  --ifm-color-primary-lighter: #6cabec;
+  --ifm-color-primary-lightest: #93c1f1;
 }
 
 .docusaurus-highlight-code-line {
