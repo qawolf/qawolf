@@ -1,0 +1,52 @@
+name: Test Webkit Linux
+on:
+  push:
+    branches:
+      - "*"
+  pull_request:
+    branches: "*"
+jobs:
+  test:
+    runs-on: ubuntu-18.04
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    env:
+      QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
+      QAW_LOG_LEVEL: debug
+      QAW_SLEEP_MS: 0
+      QAW_TEST_URL: http://localhost:5000/
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup node ${{ matrix.node }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install webkit dependencies
+        run: |
+          sudo apt update
+          sudo apt-get install libwoff1 libopus0 libwebp6 libwebpdemux2 libenchant1c2a libgudev-1.0-0 libsecret-1-0 libhyphen0 libgdk-pixbuf2.0-0 libegl1 libgles2 libevent-2.1-6 libnotify4 libxslt1.1
+
+      - run: npm run bootstrap
+
+      - run: QAW_BROWSER=webkit npm test
+
+      - name: Upload Artifacts
+        if: always()
+        uses: actions/upload-artifact@master
+        with:
+          name: qawolf
+          path: ${{ github.workspace }}/artifacts
+
+    services:
+      theinternet:
+        image: gprestes/the-internet@sha256:f741ba048b7232ef90b0f7885de7f6ac42a52a17e73dd82afc484da140398796
+        ports:
+          - 5000:5000
+
+    timeout-minutes: 20

@@ -1,4 +1,4 @@
-name: npm test ubuntu
+name: Test Chromium Linux
 on:
   push:
     branches:
@@ -12,7 +12,6 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x]
-        browser: ["chrome", "firefox", "webkit"]
 
     env:
       QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
@@ -21,18 +20,6 @@ jobs:
       QAW_TEST_URL: http://localhost:5000/
 
     steps:
-      - name: Install required packages for chrome
-        run: |
-          sudo apt update
-          sudo apt-get install libgbm1
-        if: matrix.browser == 'chrome'
-
-      - name: Install required packages for webkit
-        run: |
-          sudo apt update
-          sudo apt-get install libwoff1 libopus0 libwebp6 libwebpdemux2 libenchant1c2a libgudev-1.0-0 libsecret-1-0 libhyphen0 libgdk-pixbuf2.0-0 libegl1 libgles2 libevent-2.1-6 libnotify4 libxslt1.1
-        if: matrix.browser == 'webkit'
-
       - uses: actions/checkout@v2
 
       - name: Setup node ${{ matrix.node }}
@@ -40,10 +27,14 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
+      - name: Install chromium dependencies
+        run: |
+          sudo apt update
+          sudo apt-get install libgbm1
+
       - run: npm run bootstrap
 
-      - name: Run tests on ${{ matrix.browser }}
-        run: QAW_BROWSER=${{ matrix.browser }} npm test
+      - run: npm test
 
       - name: Upload Artifacts
         if: always()
