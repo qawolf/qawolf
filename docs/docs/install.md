@@ -3,7 +3,7 @@ id: install
 title: 💻 Install
 ---
 
-In this tutorial we discuss how to install QA Wolf, including the prerequisite understanding and environment setup.
+In this guide we explain how to set up your environment and install QA Wolf.
 
 ## TL;DR
 
