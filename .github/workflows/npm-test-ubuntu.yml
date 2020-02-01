@@ -11,7 +11,7 @@ jobs:
 
     strategy:
       matrix:
-        node: ["10", "12"]
+        node-version: [12.x]
 
     env:
       QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
@@ -20,6 +20,11 @@ jobs:
       QAW_TEST_URL: http://localhost:5000/
 
     steps:
+      - name: Install required packages
+        run: |
+          sudo apt-get update --fix-missing 
+          sudo apt-get install libgbm1
+
       - uses: actions/checkout@v2
 
       - name: Setup node ${{ matrix.node }}
