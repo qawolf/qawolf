@@ -17,18 +17,23 @@ module.exports = {
         "run_tests_locally",
         "review_test_code",
         "edit_test_code",
-        "handle_sign_in",
         "emulate_a_device",
         "use_typescript"
       ]
     },
     { type: "doc", id: "run_tests_in_ci" },
     {
+      type: "category",
+      label: "Examples",
+      items: ["handle_sign_in", "wait_for_modal"]
+    },
+    {
       type: "doc",
       id: "contribute"
     }
   ],
   api: [
+    { type: "doc", id: "api_table_of_contents" },
     { type: "category", label: "CLI", items: [] },
     {
       type: "category",

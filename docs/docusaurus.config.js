@@ -22,7 +22,7 @@ module.exports = {
       },
       links: [
         { to: "docs/what_is_qa_wolf", label: "Guides", position: "left" },
-        { to: "docs/qaw_artifact_path", label: "API", position: "left" },
+        { to: "docs/api_table_of_contents", label: "API", position: "left" },
         {
           href: "https://github.com/qawolf/qawolf",
           label: "GitHub",
