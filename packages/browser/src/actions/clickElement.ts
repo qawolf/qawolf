@@ -27,7 +27,8 @@ export const clickElement = async (
   } else {
     await elementHandle.evaluate((element: HTMLElement) => {
       console.log("qawolf: click", element);
-      element.click();
+      const clickEvent = new MouseEvent("click", { bubbles: true });
+      element.dispatchEvent(clickEvent);
     });
   }
 

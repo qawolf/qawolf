@@ -26,7 +26,8 @@ if (artifactPath && require.main) {
 
 export const CONFIG = {
   artifactPath,
-  attribute: process.env.QAW_ATTRIBUTE || "data-qa,data-test,data-testid",
+  attribute:
+    process.env.QAW_ATTRIBUTE || "data-cy,data-qa,data-test,data-testid",
   browser: getBrowserType(process.env.QAW_BROWSER || "chromium"),
   disableVideoArtifact: parseBool(process.env.QAW_DISABLE_VIDEO_ARTIFACT),
   debug: parseBool(process.env.QAW_DEBUG),

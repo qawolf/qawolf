@@ -33,9 +33,9 @@ Now even as the text, [CSS classes](https://developer.mozilla.org/en-US/docs/Web
 
 Now that at least some of the elements in our test have a `data-qa` attribute, let's create a test that targets the `data-qa` attribute whenever possible.
 
-When creating our tests, QA Wolf looks for attributes from the [`QAW_ATTRIBUTE` environment variable](api#qaw_attribute). The default value of `QAW_ATTRIBUTE` is `data-qa,data-test,data-testid`. What this means is that:
+When creating our tests, QA Wolf looks for attributes from the [`QAW_ATTRIBUTE` environment variable](api#qaw_attribute). The default value of `QAW_ATTRIBUTE` is `data-cy,data-qa,data-test,data-testid`. What this means is that:
 
-- if the element you interact with has a `data-qa`, `data-test`, or `data-testid` attribute, the generated test code will target that attribute and value combination
+- if the element you interact with has a `data-cy`, `data-qa`, `data-test`, or `data-testid` attribute, the generated test code will target that attribute and value combination
 - otherwise, the generated test code will use the [default selector logic](review_test_code#element-selectors)
 
 You can change the `QAW_ATTRIBUTE` to a different attribute like `aria-label` if you prefer.

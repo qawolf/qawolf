@@ -3,7 +3,7 @@ id: api
 title: API
 ---
 
-### [`qawolf@v0.8.2`](https://www.npmjs.com/package/qawolf/v/0.8.2)
+### [`qawolf@v0.8.3`](https://www.npmjs.com/package/qawolf/v/0.8.3)
 
 <a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version" /></a>
 <br/>
@@ -73,7 +73,7 @@ QAW_ARTIFACT_PATH=./artifacts npx qawolf test
 
 ### QAW_ATTRIBUTE
 
-- default: `data-qa,data-test,data-testid`
+- default: `data-cy,data-qa,data-test,data-testid`
 
 Specify `QAW_ATTRIBUTE` when you create a test, and QA Wolf will use that [attribute](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors) as a selector when it exists on an element.
 
@@ -231,7 +231,7 @@ A [playwright.BrowserContext] with actions and assertions to [find](review_test_
   - `text` <?[string]> find an element with this text.
 - `options` <[FindElementOptions] & ClickOptions> find the element with these options.
   - `page` <?[number]> the index of the page to use in order of creation, starting with 0. defaults to the last used page.
-  - `simulate` <?[boolean]> simulate the click with [HTMLElement.click()]. Defaults to `true`.
+  - `simulate` <?[boolean]> simulate the click by dispatching a [MouseEvent]. Defaults to `true`, set to `false` to use [Page.click].
   - `sleepMs` <?[number]> sleep after an element is found for this time in milliseconds. Defaults to [QAW_SLEEP_MS](#qaw_sleep_ms).
   - `timeoutMs` <?[number]> maximum time to wait for an element and page. Defaults to [QAW_TIMEOUT_MS](#qaw_timeout_ms).
   - `waitForRequests` <?[boolean]> wait until the page completes all network requests (limited to 10s per request). Defaults to `true`.
@@ -242,7 +242,7 @@ Find and click an element. It will throw an error if the element is not found.
 ```js
 const element = await context.click(selectors[0]);
 
-await context.click({ css: "#my-id" });
+await context.click({ css: "#my-id" }, { simulate: false });
 
 await context.click({ text: "Login" }, { sleepMs: 5000 });
 ```
@@ -485,9 +485,11 @@ await context.type(selectors[1], "my@email.com");
 [keyboard.key]: https://github.com/microsoft/playwright/blob/master/src/usKeyboardLayout.ts "keyboard.key"
 [keyboard.down]: https://github.com/microsoft/playwright/blob/master/docs/api.md#keyboarddownkey-options "keyboard.down"
 [keyboard.up]: https://github.com/microsoft/playwright/blob/master/docs/api.md#keyboardupkey "keyboard.up"
+[mouseevent]: https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent "MouseEvent"
 [number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "number"
 [object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object"
 [page]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page "Page"
+[page.click]: https://github.com/microsoft/playwright/blob/master/docs/api.md#pageclickselector-options "Page.click"
 [promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise"
 [playwright.browser]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browser "playwright.Browser"
 [playwright.browsercontext]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext "playwright.BrowserContext"
