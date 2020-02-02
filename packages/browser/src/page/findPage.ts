@@ -1,3 +1,4 @@
+import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { FindPageOptions } from "@qawolf/types";
 import { isNil, waitFor } from "@qawolf/web";
@@ -36,7 +37,9 @@ export const findPage = async (
   let index: number = await getIndex(context, options.page);
   logger.debug(`findPage: options.page ${options.page} page ${index}`);
 
-  const timeoutMs = isNil(options.timeoutMs) ? 10000 : options.timeoutMs!;
+  const timeoutMs = isNil(options.timeoutMs)
+    ? CONFIG.timeoutMs
+    : options.timeoutMs!;
 
   const page = await waitFor(async () => {
     const pages = await context.pages();

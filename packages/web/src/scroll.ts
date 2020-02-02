@@ -4,7 +4,7 @@ import { sleep } from "./wait";
 export const scroll = async (
   element: Element,
   value: ScrollValue,
-  timeoutMs: number = 10000
+  timeoutMs: number
 ) => {
   const start = Date.now();
   const startScroll = {
