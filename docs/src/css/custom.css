@@ -32,3 +32,18 @@
 .footer .footer__links {
   text-align: center;
 }
+
+/* Gitter  */
+
+a.gitter-open-chat-button {
+  background: #4494e7;
+  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 16px 32px;
+  transition: background 320ms;
+}
+
+a.gitter-open-chat-button:hover {
+  background: #3676b9;
+}
