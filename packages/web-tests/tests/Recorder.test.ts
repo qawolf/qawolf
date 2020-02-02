@@ -9,10 +9,13 @@ describe("Recorder", () => {
       recordEvents: true,
       url: CONFIG.testUrl
     });
-    await context.click({ html: "<a>broken images</a>" }, { simulate: false });
 
     const page = await context.page();
-    await page.waitForNavigation();
+
+    await Promise.all([
+      page.waitForNavigation(),
+      context.click({ html: "<a>broken images</a>" }, { simulate: false })
+    ]);
 
     const events = await context.qawolf.events();
     expect(events.length).toEqual(1);

@@ -66,10 +66,7 @@ export const findPage = async (
   }
 
   if (options.waitForRequests !== false) {
-    logger.verbose(`findPage: wait for requests for ${timeoutMs}`);
-    try {
-      await page.waitForRequest(/.*/g, { timeout: timeoutMs });
-    } catch (e) {}
+    await page.qawolf.waitForRequests();
   }
 
   context._currentPageIndex = index;

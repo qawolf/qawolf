@@ -19,8 +19,10 @@ describe("BrowserContext.click", () => {
     });
     expect(hasInvalidUsernameText).toBe(false);
 
-    await context.click({ html: "<i>Login</i>" });
-    await page.waitForNavigation();
+    await Promise.all([
+      page.waitForNavigation(),
+      context.click({ html: "<i>Login</i>" })
+    ]);
 
     const hasInvalidUsernameText2 = await hasText(page, "username is invalid");
     expect(hasInvalidUsernameText2).toBe(true);
@@ -31,8 +33,10 @@ describe("Page.click", () => {
   it("clicks on link", async () => {
     await page.goto(CONFIG.testUrl);
 
-    await page.qawolf.click({ html: "<a>broken images</a>" });
-    await page.waitForNavigation();
+    await Promise.all([
+      page.waitForNavigation(),
+      page.qawolf.click({ html: "<a>broken images</a>" })
+    ]);
 
     expect(page.url()).toBe(`${CONFIG.testUrl}broken_images`);
   });

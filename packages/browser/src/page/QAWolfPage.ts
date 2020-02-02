@@ -22,6 +22,7 @@ import { hasText } from "../find/hasText";
 import { injectBundle } from "./injectBundle";
 import { Page } from "./Page";
 import { retryExecutionError } from "../retry";
+import { RequestTracker } from "./RequestTracker";
 
 export type CreatePageOptions = {
   index: number;
@@ -32,10 +33,11 @@ export type CreatePageOptions = {
 };
 
 export class QAWolfPage {
+  private _decorated: Page;
   private _domEvents: eventWithTime[] = [];
   private _events: Event[] = [];
   private _index: number;
-  private _decorated: Page;
+  private _requests: RequestTracker;
 
   private _ready: boolean = false;
   private _readyCallbacks: (() => void)[] = [];
@@ -50,6 +52,8 @@ export class QAWolfPage {
     // decorate the page
     this._decorated = options.playwrightPage as Page;
     this._decorated.qawolf = this;
+
+    this._requests = new RequestTracker(this._decorated);
 
     injectBundle({
       logLevel: options.logLevel,
@@ -82,6 +86,10 @@ export class QAWolfPage {
 
   public get decorated() {
     return this._decorated;
+  }
+
+  public dispose() {
+    this._requests.dispose();
   }
 
   public get domEvents() {
@@ -186,5 +194,9 @@ export class QAWolfPage {
 
       return element;
     });
+  }
+
+  public waitForRequests() {
+    return this._requests.waitUntilComplete();
   }
 }

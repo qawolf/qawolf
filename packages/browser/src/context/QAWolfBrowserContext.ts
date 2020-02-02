@@ -168,6 +168,8 @@ export class QAWolfBrowserContext {
 
     await createDomArtifacts(this._pages, this._createdAt);
 
+    this._pages.forEach(page => page.qawolf.dispose());
+
     try {
       await this._decorated.browser.close();
     } catch (e) {
