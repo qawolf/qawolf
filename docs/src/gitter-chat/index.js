@@ -10,10 +10,6 @@ module.exports = function(context) {
   return {
     name: "gitter-chat",
 
-    getClientModules() {
-      return [];
-    },
-
     injectHtmlTags() {
       return {
         headTags: [

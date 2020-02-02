@@ -16,6 +16,9 @@ module.exports = {
   organizationName: "qawolf", // Usually your GitHub org/user name.
   projectName: "qawolf", // Usually your repo name.
   themeConfig: {
+    github: {
+      repo: "qawolf/qawolf"
+    },
     gitter: {
       room: "qawolf/community"
     },
@@ -28,12 +31,7 @@ module.exports = {
       links: [
         { to: "docs/what_is_qa_wolf", label: "Get Started", position: "left" },
         { to: "docs/add_assertions", label: "Guides", position: "left" },
-        { to: "docs/api_table_of_contents", label: "API", position: "left" },
-        {
-          href: "https://github.com/qawolf/qawolf",
-          label: "GitHub",
-          position: "right"
-        }
+        { to: "docs/api_table_of_contents", label: "API", position: "left" }
       ]
     },
     footer: {
@@ -72,5 +70,8 @@ module.exports = {
       }
     ]
   ],
-  plugins: [path.resolve(__dirname, "./src/gitter-chat")]
+  plugins: [
+    path.resolve(__dirname, "./src/gitter-chat"),
+    path.resolve(__dirname, "./src/github-stars")
+  ]
 };
