@@ -2,6 +2,7 @@ import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { Size, VirtualCapture } from "@qawolf/screen";
 import { BrowserType, getBrowserType } from "@qawolf/types";
+import { platform } from "os";
 import playwright from "playwright";
 import { DeviceDescriptor } from "playwright-core/lib/types";
 import { LaunchOptions as PlaywrightLaunchOptions } from "playwright-core/lib/server/browserType";
@@ -36,6 +37,10 @@ export const buildLaunchOptions = (options: LaunchOptions) => {
       "--no-default-browser-check",
       "--window-position=0,0"
     ];
+
+    if (platform() === "linux") {
+      args.push("--no-sandbox");
+    }
 
     // browser frame with "controlled by automated"
     windowSize.height += 120;
