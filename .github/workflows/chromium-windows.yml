@@ -1,4 +1,4 @@
-name: npm test windows
+name: Chromium Windows
 on:
   push:
     branches:
@@ -36,6 +36,7 @@ jobs:
         run: |
           cd project
           npm run test:windows
+          QAW_BROWSER=firefox npm run test:windows
         env:
           QAW_ARTIFACT_PATH: ${{ github.workspace }}\artifacts
           QAW_LOG_LEVEL: debug
