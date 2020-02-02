@@ -96,6 +96,13 @@ program
   });
 
 program
+  .command("bitbucket")
+  .description("set up an Bitbucket Pipeline")
+  .action(async () => {
+    await saveCiTemplate("bitbucket");
+  });
+
+program
   .command("circleci")
   .description("set up CircleCI")
   .action(async () => {
