@@ -46,4 +46,5 @@ a.gitter-open-chat-button {
 
 a.gitter-open-chat-button:hover {
   background: #3676b9;
+  text-decoration: none;
 }
