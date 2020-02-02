@@ -36,7 +36,7 @@ export const findPage = async (
   let index: number = await getIndex(context, options.page);
   logger.debug(`findPage: options.page ${options.page} page ${index}`);
 
-  const timeoutMs = isNil(options.timeoutMs) ? 5000 : options.timeoutMs!;
+  const timeoutMs = isNil(options.timeoutMs) ? 10000 : options.timeoutMs!;
 
   const page = await waitFor(async () => {
     const pages = await context.pages();
@@ -62,9 +62,11 @@ export const findPage = async (
     client.detach();
   }
 
-  if (options.waitForRequests) {
-    logger.verbose("findPage: wait for requests");
-    await page.waitForRequest(/.*/g, { timeout: timeoutMs });
+  if (options.waitForRequests !== false) {
+    logger.verbose(`findPage: wait for requests for ${timeoutMs}`);
+    try {
+      await page.waitForRequest(/.*/g, { timeout: timeoutMs });
+    } catch (e) {}
   }
 
   context._currentPageIndex = index;

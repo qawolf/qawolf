@@ -10,7 +10,7 @@ describe("launch and VirtualCapture", () => {
 
     const capture = context.qawolf._capture;
     if (platform() !== "linux") {
-      expect(capture).toEqual(null);
+      expect(capture).toEqual(undefined);
       await context.close();
       return;
     }
