@@ -2,7 +2,9 @@ name: Chromium and Firefox Windows
 on:
   push:
     branches:
-      - "*"
+      - master
+  pull_request:
+    branches: "*"
 jobs:
   test:
     runs-on: windows-2019
