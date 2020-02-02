@@ -1,17 +1,14 @@
 name: publish to docker hub
 on:
   push:
-    branches:
-      - master
     tags:
       - "*"
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-        with:
-          fetch-depth: 25
+      - uses: actions/checkout@v2
+
       - name: build and publish to docker hub
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
