@@ -41,12 +41,16 @@ jobs:
       - name: Run tests on chromium
         run: |
           cd project
-          QAW_BROWSER=chromium npm run test:windows
+          npm run test:windows
+        env:
+          QAW_BROWSER: chromium
 
       - name: Run tests on firefox
         run: |
           cd project
-          QAW_BROWSER=firefox npm run test:windows
+          npm run test:windows
+        env:
+          QAW_BROWSER: firefox
 
       - name: Upload Artifacts
         if: always()
