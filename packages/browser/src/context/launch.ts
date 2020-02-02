@@ -39,6 +39,8 @@ export const buildLaunchOptions = (options: LaunchOptions) => {
     ];
 
     if (platform() === "linux") {
+      // We use --no-sandbox because we cannot change the USER for certain CIs (like GitHub).
+      // "Ensure your Dockerfile does not set the USER instruction, otherwise you will not be able to access GITHUB_WORKSPACE"
       args.push("--no-sandbox");
     }
 
