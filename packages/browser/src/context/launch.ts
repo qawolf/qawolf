@@ -18,7 +18,7 @@ export type LaunchOptions = PlaywrightLaunchOptions &
   };
 
 export const buildLaunchOptions = (options: LaunchOptions) => {
-  const browser = getBrowserType(options.browser || CONFIG.browser);
+  const browserType = getBrowserType(options.browser || CONFIG.browser);
 
   const device = getDevice(options.device);
 
@@ -30,7 +30,7 @@ export const buildLaunchOptions = (options: LaunchOptions) => {
   };
 
   let args: string[] = [];
-  if (browser === "chromium") {
+  if (browserType === "chromium") {
     args = [
       "--disable-dev-shm-usage",
       "--no-default-browser-check",
@@ -43,7 +43,7 @@ export const buildLaunchOptions = (options: LaunchOptions) => {
     if (!headless) {
       args.push(`--window-size=${windowSize.width},${windowSize.height}`);
     }
-  } else if (browser === "firefox") {
+  } else if (browserType === "firefox") {
     // browser frame
     windowSize.height += 40;
 
@@ -55,7 +55,7 @@ export const buildLaunchOptions = (options: LaunchOptions) => {
         `${windowSize.height}`
       ];
     }
-  } else if (browser === "webkit") {
+  } else if (browserType === "webkit") {
     // browser frame
     windowSize.height += 40;
   }
@@ -63,7 +63,7 @@ export const buildLaunchOptions = (options: LaunchOptions) => {
   const launchOptions = {
     args,
     ...options,
-    browser,
+    browserType,
     device,
     headless,
     windowSize
@@ -91,7 +91,9 @@ export const createCapture = (headless: boolean = false, size: Size) => {
 export const launch = async (options: LaunchOptions = {}) => {
   logger.verbose(`launch: ${JSON.stringify(options)}`);
 
-  const { windowSize, ...launchOptions } = buildLaunchOptions(options);
+  const { browserType, windowSize, ...launchOptions } = buildLaunchOptions(
+    options
+  );
 
   const capture = await createCapture(launchOptions.headless, windowSize);
 
@@ -104,11 +106,11 @@ export const launch = async (options: LaunchOptions = {}) => {
 
   logger.verbose(`launch: browser ${JSON.stringify(launchOptions)}`);
   try {
-    const playwrightBrowser = await playwright[launchOptions.browser!].launch(
+    const playwrightBrowser = await playwright[browserType].launch(
       launchOptions
     );
 
-    return QAWolfBrowserContext.create(playwrightBrowser, {
+    return QAWolfBrowserContext.create(browserType, playwrightBrowser, {
       ...launchOptions,
       capture: capture || undefined
     });

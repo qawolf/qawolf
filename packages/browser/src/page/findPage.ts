@@ -52,12 +52,18 @@ export const findPage = async (
     throw new Error(`findPage: page ${index} not found after ${timeoutMs}ms`);
   }
 
-  // TODO waiting for https://github.com/microsoft/playwright/issues/657
-  // when headless = false the tab needs to be activated
-  // for the execution context to run
-  // await page.bringToFront();
+  // TODO waiting for https://github.com/microsoft/playwright/issues/657 for cross browser support
+  if (context.browserType === "chromium") {
+    logger.verbose("findPage: Page.bringToFront");
+    const client = await (context.browser as any)
+      .pageTarget(page)
+      .createCDPSession();
+    await client.send("Page.bringToFront");
+    client.detach();
+  }
 
   if (options.waitForRequests) {
+    logger.verbose("findPage: wait for requests");
     await page.waitForRequest(/.*/g, { timeout: timeoutMs });
   }
 

@@ -12,12 +12,12 @@ import {
 
 export type ConnectOptions = PlaywrightConnectOptions &
   Omit<CreateContextOptions, "device"> & {
-    browser?: BrowserType;
+    browserType?: BrowserType;
     device?: DeviceDescriptor | string;
   };
 
 export const connect = async (options: ConnectOptions) => {
-  const browserType = getBrowserType(options.browser || CONFIG.browser);
+  const browserType = getBrowserType(options.browserType || CONFIG.browser);
 
   const createOptions = {
     ...options,
@@ -28,7 +28,11 @@ export const connect = async (options: ConnectOptions) => {
 
   try {
     const playwrightBrowser = await playwright[browserType].connect(options);
-    return QAWolfBrowserContext.create(playwrightBrowser, createOptions);
+    return QAWolfBrowserContext.create(
+      browserType,
+      playwrightBrowser,
+      createOptions
+    );
   } catch (e) {
     logger.error(`connect: failed ${e.toString()}`);
     throw e;

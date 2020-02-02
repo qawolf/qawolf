@@ -2,6 +2,7 @@ import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { VirtualCapture } from "@qawolf/screen";
 import {
+  BrowserType,
   Event,
   FindElementOptions,
   FindPageOptions,
@@ -38,6 +39,7 @@ export interface CreateContextOptions {
 }
 
 export interface ConstructContextOptions extends CreateContextOptions {
+  browserType: BrowserType;
   logLevel: string;
   playwrightBrowser: PlaywrightBrowser;
   playwrightContext: PlaywrightBrowserContext;
@@ -74,6 +76,7 @@ export class QAWolfBrowserContext {
   }
 
   public static async create(
+    browserType: BrowserType,
     playwrightBrowser: PlaywrightBrowser,
     options: CreateContextOptions
   ): Promise<BrowserContext> {
@@ -92,6 +95,7 @@ export class QAWolfBrowserContext {
 
     const qawolfContext = new QAWolfBrowserContext({
       ...options,
+      browserType,
       debug: options.debug || CONFIG.debug,
       logLevel: options.logLevel || CONFIG.logLevel || "error",
       playwrightBrowser,
@@ -111,6 +115,10 @@ export class QAWolfBrowserContext {
 
   public get browser(): PlaywrightBrowser {
     return this._options.playwrightBrowser;
+  }
+
+  public get browserType(): BrowserType {
+    return this._options.browserType;
   }
 
   public get decorated(): BrowserContext {
