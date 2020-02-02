@@ -36,7 +36,7 @@
 /* Gitter  */
 
 a.gitter-open-chat-button {
-  background: #4494e7;
+  background: var(--ifm-color-primary);
   font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 18px;
   font-weight: 500;
@@ -45,6 +45,6 @@ a.gitter-open-chat-button {
 }
 
 a.gitter-open-chat-button:hover {
-  background: #1d7de1;
+  background: var(--ifm-color-primary-darker);
   text-decoration: none;
 }
