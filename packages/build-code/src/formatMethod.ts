@@ -11,20 +11,20 @@ export const formatMethod = (
   const { action, value } = step;
 
   if (action === "click") {
-    return `browser.click(${selector}${options})`;
+    return `context.click(${selector}${options})`;
   }
 
   if (action === "scroll") {
     const scrollValue = value as ScrollValue;
-    return `browser.scroll(${selector}, { x: ${scrollValue.x}, y: ${scrollValue.y} }${options})`;
+    return `context.scroll(${selector}, { x: ${scrollValue.x}, y: ${scrollValue.y} }${options})`;
   }
 
   if (action === "select") {
-    return `browser.select(${selector}, ${JSON.stringify(value)}${options})`;
+    return `context.select(${selector}, ${JSON.stringify(value)}${options})`;
   }
 
   if (action === "type") {
-    return `browser.type(${selector}, ${JSON.stringify(value)}${options})`;
+    return `context.type(${selector}, ${JSON.stringify(value)}${options})`;
   }
 
   throw new Error(`Invalid step action ${action}`);

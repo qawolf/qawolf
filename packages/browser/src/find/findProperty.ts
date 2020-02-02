@@ -1,5 +1,5 @@
 import { FindElementOptions, Selector } from "@qawolf/types";
-import { Page } from "puppeteer";
+import { Page } from "playwright";
 import { find } from "./find";
 
 export const findProperty = async (
@@ -11,7 +11,8 @@ export const findProperty = async (
   const element = await find(page, selector, options);
 
   const propertyHandle = await element.getProperty(property);
-  const propertyValue = await propertyHandle.jsonValue();
+  if (!propertyHandle) return undefined;
 
+  const propertyValue = await propertyHandle.jsonValue();
   return propertyValue;
 };

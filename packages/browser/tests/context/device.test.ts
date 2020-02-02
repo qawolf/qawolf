@@ -1,5 +1,6 @@
-import { devices } from "puppeteer";
-import { getDevice } from "../../src/browser/device";
+// https://github.com/microsoft/playwright/pull/692
+import { devices } from "playwright";
+import { getDevice } from "../../src/context/device";
 
 describe("getDevice", () => {
   it('returns "desktop" size as default', () => {
@@ -10,7 +11,7 @@ describe("getDevice", () => {
     expect(device.viewport.height).toEqual(768);
   });
 
-  it("returns a puppeteer.Device by key", () => {
+  it("returns a playwright.Device by key", () => {
     expect(getDevice("iPhone 7")).toEqual(devices["iPhone 7"]);
   });
 
@@ -21,7 +22,7 @@ describe("getDevice", () => {
     } catch (e) {
       message = e.message;
     }
-    expect(message).toEqual(`puppeteer.devices["not a device"] was not found`);
+    expect(message).toEqual(`playwright.devices["not a device"] was not found`);
   });
 
   it("returns a Device back if it is passed in", () => {

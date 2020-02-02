@@ -1,4 +1,4 @@
-name: npm test ubuntu
+name: Chromium Linux
 on:
   push:
     branches:
@@ -11,7 +11,7 @@ jobs:
 
     strategy:
       matrix:
-        node: ["10", "12"]
+        node-version: [12.x]
 
     env:
       QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
@@ -27,6 +27,11 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
+      - name: Install chromium dependencies
+        run: |
+          sudo apt update
+          sudo apt-get install libgbm1
+
       - run: npm run bootstrap
 
       - run: npm test
@@ -35,7 +40,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@master
         with:
-          name: qawolf
+          name: chromium
           path: ${{ github.workspace }}/artifacts
 
     services:

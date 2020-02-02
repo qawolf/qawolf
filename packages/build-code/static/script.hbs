@@ -2,14 +2,14 @@ const { launch } = require("qawolf");
 const selectors = require("../selectors/{{{name}}}");
 
 const {{{name}}} = async () => {
-  const browser = {{{launch}}}
+  const context = {{{launch}}}
 {{#each steps}}
   // {{{it}}}
   await {{{method}}};
 {{#unless @last}}
 {{/unless}}
 {{/each}}
-  await browser.close();
+  await context.close();
 };
 
 {{{name}}}();

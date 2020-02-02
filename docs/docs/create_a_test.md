@@ -16,7 +16,7 @@ cd my-awesome-project
 npm install --save-dev qawolf
 ```
 
-When we run the `npx qawolf create` command, a [Chromium](https://www.chromium.org/Home) browser will open and capture our actions such as clicks and typing into inputs. These actions will then be converted to [Puppeteer](https://pptr.dev/) and [Jest](https://jestjs.io/) test code (more on this in the [review code tutorial](review_test_code)).
+When we run the `npx qawolf create` command, a [Chromium](https://www.chromium.org/Home) browser will open and capture our actions such as clicks and typing into inputs. These actions will then be converted to [Playwright](https://pptr.dev/) and [Jest](https://jestjs.io/) test code (more on this in the [review code tutorial](review_test_code)).
 
 To create your test, run the following in the command line. You can optionally replace `http://todomvc.com/examples/react` with a different URL, and `myFirstTest` with a different name. See the [CLI documentation](cli#npx-qawolf-create-url-name) for more detail.
 

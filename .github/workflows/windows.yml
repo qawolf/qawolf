@@ -1,11 +1,17 @@
-name: npm test windows
+name: Chromium and Firefox Windows
 on:
   push:
     branches:
-      - master
+      - "*"
 jobs:
   test:
     runs-on: windows-2019
+
+    env:
+      QAW_ARTIFACT_PATH: ${{ github.workspace }}\artifacts
+      QAW_LOG_LEVEL: debug
+      QAW_SLEEP_MS: 0
+      QAW_TEST_URL: http://localhost:5000/
 
     steps:
       - uses: actions/setup-node@v1
@@ -32,15 +38,19 @@ jobs:
           bundle install --quiet
           start-process bundle -ArgumentList "exec rackup --host 0.0.0.0 --port 5000" -WindowStyle hidden
 
-      - name: Run tests
+      - name: Run tests on chromium
         run: |
           cd project
           npm run test:windows
         env:
-          QAW_ARTIFACT_PATH: ${{ github.workspace }}\artifacts
-          QAW_LOG_LEVEL: debug
-          QAW_SLEEP_MS: 0
-          QAW_TEST_URL: http://localhost:5000/
+          QAW_BROWSER: chromium
+
+      - name: Run tests on firefox
+        run: |
+          cd project
+          npm run test:windows
+        env:
+          QAW_BROWSER: firefox
 
       - name: Upload Artifacts
         if: always()

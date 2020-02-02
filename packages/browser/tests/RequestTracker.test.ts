@@ -1,19 +1,20 @@
-import { Page } from "puppeteer";
-import { launchPuppeteer } from "../src/browser/launchPuppeteer";
+import { CONFIG } from "@qawolf/config";
+import playwright, { Browser, Page } from "playwright";
 import { RequestTracker } from "../src/page/RequestTracker";
 
 jest.useFakeTimers();
 
 describe("waitUntilComplete", () => {
+  let browser: Browser;
   let page: Page;
 
   beforeAll(async () => {
-    const browser = await launchPuppeteer({ headless: true });
-    const pages = await browser.pages();
-    page = pages[0];
+    browser = await playwright[CONFIG.browser].launch();
+    const context = await browser.newContext();
+    page = await context.newPage();
   });
 
-  afterAll(() => page.browser().close());
+  afterAll(() => browser.close());
 
   it("resolves when there are no outstanding requests", () => {
     const counter = new RequestTracker(page);

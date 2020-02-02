@@ -6,16 +6,19 @@ import {
   TypeOptions
 } from "@qawolf/types";
 import {
-  Browser as PuppeteerBrowser,
-  DirectNavigationOptions,
+  Browser as PlaywrightBrowser,
+  BrowserContext as PlaywrightBrowserContext,
   ElementHandle
-} from "puppeteer";
+} from "playwright";
+import { GotoOptions } from "playwright-core/lib/frames";
 import { ClickOptions } from "../actions/clickElement";
 import { Page } from "../page/Page";
-import { QAWolfBrowser } from "./QAWolfBrowser";
+import { QAWolfBrowserContext } from "./QAWolfBrowserContext";
 
-// PuppeteerBrowser decorated with our helpers
-export interface Browser extends PuppeteerBrowser {
+// playwright BrowserContext decorated with our helpers
+export interface BrowserContext extends PlaywrightBrowserContext {
+  browser: PlaywrightBrowser;
+
   click(
     selector: Selector,
     options?: FindElementOptions & ClickOptions
@@ -32,10 +35,7 @@ export interface Browser extends PuppeteerBrowser {
     options?: FindElementOptions
   ) => Promise<ElementHandle>;
 
-  goto(
-    url: string,
-    options?: FindPageOptions & DirectNavigationOptions
-  ): Promise<Page>;
+  goto(url: string, options?: FindPageOptions & GotoOptions): Promise<Page>;
 
   hasText(text: string, options?: FindPageOptions): Promise<boolean>;
 
@@ -59,9 +59,9 @@ export interface Browser extends PuppeteerBrowser {
     options?: FindElementOptions & TypeOptions
   ): Promise<ElementHandle>;
 
-  // reference to our QAWolfBrowser for internal use
-  qawolf: QAWolfBrowser;
+  // reference for internal use
+  qawolf: QAWolfBrowserContext;
 
-  // reference to original PuppeteerBrowser.close method
+  // reference to original PlaywrightBrowser.close method
   _close(): Promise<void>;
 }

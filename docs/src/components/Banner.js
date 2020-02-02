@@ -15,7 +15,7 @@ function Banner() {
         <p className={classnames("hero__subtitle", styles.tagline)}>
           Open source library for creating{" "}
           <a href="https://pptr.dev/" target="_blank">
-            Puppeteer
+            Playwright
           </a>{" "}
           and{" "}
           <a href="https://jestjs.io" target="_blank">

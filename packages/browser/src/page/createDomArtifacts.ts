@@ -1,7 +1,8 @@
+import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { readFileSync, outputFile } from "fs-extra";
 import { compile } from "handlebars";
-import { resolve } from "path";
+import { join, resolve } from "path";
 import { Page } from "./Page";
 
 const replayerTemplate = compile(
@@ -10,7 +11,7 @@ const replayerTemplate = compile(
 
 export const createDomReplayer = async (page: Page, path: string) => {
   logger.debug(
-    `Page: create dom replayer for ${page.qawolf.domEvents.length} events: ${path}`
+    `createDomReplayer: save to ${path} for ${page.qawolf.domEvents.length} events`
   );
   if (!page.qawolf.domEvents.length) return;
 
@@ -30,4 +31,17 @@ export const createDomReplayer = async (page: Page, path: string) => {
   });
 
   await outputFile(path, replayer);
+};
+
+export const createDomArtifacts = async (pages: Page[], date: Number) => {
+  if (!CONFIG.artifactPath) return;
+
+  await Promise.all(
+    pages.map((page, index) =>
+      createDomReplayer(
+        page,
+        join(CONFIG.artifactPath!, `page_${index}__${date}.html`)
+      )
+    )
+  );
 };

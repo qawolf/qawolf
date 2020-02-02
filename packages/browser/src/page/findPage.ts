@@ -1,63 +1,78 @@
+import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { FindPageOptions } from "@qawolf/types";
 import { isNil, waitFor } from "@qawolf/web";
-import { Browser } from "../browser/Browser";
+import { QAWolfBrowserContext } from "../context/QAWolfBrowserContext";
 import { Page } from "./Page";
 
-const getIndex = (browser: Browser, pageIndex?: number): number => {
-  let index = pageIndex;
-
-  if (isNil(pageIndex)) {
-    const qawolf = browser.qawolf;
-
-    // if no index is specified use the current page
-    index = qawolf._currentPageIndex;
-
-    // if the current page is closed, choose the first open page
-    if (qawolf.pages[index].isClosed()) {
-      index = qawolf.pages.findIndex(p => !p.isClosed());
-
-      if (index < 0) throw new Error("No open pages");
-    }
+const getIndex = async (
+  context: QAWolfBrowserContext,
+  pageIndex?: number
+): Promise<number> => {
+  if (!isNil(pageIndex)) {
+    return pageIndex!;
   }
 
-  return index!;
+  const openPages = (await context.pages()).filter(page => !page.isClosed());
+
+  if (openPages.length < 1) {
+    throw new Error("No open pages");
+  }
+
+  // use the current page index if it is open
+  if (openPages.find(p => p.qawolf.index === context._currentPageIndex)) {
+    return context._currentPageIndex;
+  }
+
+  return 0;
 };
 
 export const findPage = async (
-  browser: Browser,
+  context: QAWolfBrowserContext,
   options: FindPageOptions
 ): Promise<Page> => {
   /**
    * Wait for the page and activate it.
    */
-  const qawolf = browser.qawolf;
+  let index: number = await getIndex(context, options.page);
+  logger.debug(`findPage: options.page ${options.page} page ${index}`);
 
-  let index: number = getIndex(browser, options.page);
+  const timeoutMs = isNil(options.timeoutMs)
+    ? CONFIG.timeoutMs
+    : options.timeoutMs!;
 
-  const page = await waitFor(
-    () => {
-      if (index >= qawolf.pages.length) return null;
-      return qawolf.pages[index];
-    },
-    isNil(options.timeoutMs) ? 5000 : options.timeoutMs!
-  );
+  const page = await waitFor(async () => {
+    const pages = await context.pages();
+
+    if (index >= pages.length) {
+      return null;
+    }
+
+    return pages[index];
+  }, timeoutMs);
 
   if (!page) {
-    throw new Error(`findPage: ${index} not found`);
+    throw new Error(`findPage: page ${index} not found after ${timeoutMs}ms`);
   }
 
-  // when headless = false the tab needs to be activated
-  // for the execution context to run
-  await page.bringToFront();
+  // TODO waiting for https://github.com/microsoft/playwright/issues/657 for cross browser support
+  if (context.browserType === "chromium") {
+    logger.verbose("findPage: Page.bringToFront");
+    const client = await (context.browser as any)
+      .pageTarget(page)
+      .createCDPSession();
+    await client.send("Page.bringToFront");
+    client.detach();
+  }
 
-  if (options.waitForRequests) {
+  if (options.waitForRequests !== false) {
     await page.qawolf.waitForRequests();
   }
 
-  qawolf._currentPageIndex = qawolf.pages.indexOf(page);
+  context._currentPageIndex = index;
+
   logger.verbose(
-    `findPage: activated ${qawolf._currentPageIndex} ${page.url()}`
+    `findPage: activated ${context._currentPageIndex} ${page.url()}`
   );
 
   return page;

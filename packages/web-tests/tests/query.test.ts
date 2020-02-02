@@ -1,16 +1,16 @@
-import { Browser, launch, Page } from "@qawolf/browser";
+import { BrowserContext, launch, Page } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { QAWolfWeb } from "@qawolf/web";
 
-let browser: Browser;
+let context: BrowserContext;
 let page: Page;
 
 beforeAll(async () => {
-  browser = await launch({ url: `${CONFIG.testUrl}login` });
-  page = await browser.page();
+  context = await launch({ url: `${CONFIG.testUrl}login` });
+  page = await context.page();
 });
 
-afterAll(() => browser.close());
+afterAll(() => context.close());
 
 describe("queryElements", () => {
   it("returns all elements for click action", async () => {
@@ -53,7 +53,7 @@ describe("queryElements", () => {
 
     expect(actionElementXpaths).toEqual(["//*[@id='password']"]);
 
-    await browser.goto(`${CONFIG.testUrl}login`); // reset styles
+    await context.goto(`${CONFIG.testUrl}login`); // reset styles
   });
 });
 
@@ -73,6 +73,6 @@ describe("queryVisibleElements", () => {
 
     expect(visibleElementXpaths).toEqual(["//*[@id='password']"]);
 
-    await browser.goto(`${CONFIG.testUrl}login`); // reset styles
+    await context.goto(`${CONFIG.testUrl}login`); // reset styles
   });
 });

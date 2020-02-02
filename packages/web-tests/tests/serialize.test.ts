@@ -1,16 +1,16 @@
-import { Browser, launch, Page } from "@qawolf/browser";
+import { BrowserContext, launch, Page } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
 import { QAWolfWeb } from "@qawolf/web";
 
-let browser: Browser;
+let context: BrowserContext;
 let page: Page;
 
 beforeAll(async () => {
-  browser = await launch({ url: `${CONFIG.testUrl}login` });
-  page = await browser.page();
+  context = await launch({ url: `${CONFIG.testUrl}login` });
+  page = await context.page();
 });
 
-afterAll(() => browser.close());
+afterAll(() => context.close());
 
 describe("nodeToDocSelector", () => {
   it("serializes html and body elements by their tag only", async () => {
@@ -54,7 +54,7 @@ describe("nodeToDocSelector", () => {
 
 describe("nodeToHtml", () => {
   it("serializes innerText as an attribute", async () => {
-    await browser.goto(`${CONFIG.testUrl}login`);
+    await context.goto(`${CONFIG.testUrl}login`);
 
     const html = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
@@ -69,7 +69,7 @@ describe("nodeToHtml", () => {
   });
 
   it("serializes image alt and src", async () => {
-    await browser.goto(`${CONFIG.testUrl}broken_images`);
+    await context.goto(`${CONFIG.testUrl}broken_images`);
 
     const html = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
@@ -87,7 +87,7 @@ describe("nodeToHtml", () => {
   });
 
   it("serializes labels", async () => {
-    await browser.goto(`${CONFIG.testUrl}login`);
+    await context.goto(`${CONFIG.testUrl}login`);
 
     const html = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;

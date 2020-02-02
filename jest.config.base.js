@@ -6,6 +6,6 @@ module.exports = {
   testRegex: "(/tests/.*.(test|spec)).(jsx?|tsx?)$",
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   collectCoverage: true,
-  testTimeout: 30000,
+  testTimeout: 60000,
   verbose: true
 };

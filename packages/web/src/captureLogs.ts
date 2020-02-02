@@ -40,7 +40,10 @@ export const captureLogs = (logLevel: string, callback: LogCallback) => {
       }
 
       browserLog(...args);
-      callback(level, message);
+
+      if (!message.includes("__playwright")) {
+        callback(level, message);
+      }
     };
   });
 };

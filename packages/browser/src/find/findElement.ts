@@ -1,11 +1,11 @@
 import { logger } from "@qawolf/logger";
 import { FindElementOptions, Selector } from "@qawolf/types";
 import { QAWolfWeb } from "@qawolf/web";
-import { ElementHandle, Page as PuppeteerPage, Serializable } from "puppeteer";
+import { ElementHandle, Page as PlaywrightPage } from "playwright";
 import { retryExecutionError } from "../retry";
 
 export const findElement = (
-  page: PuppeteerPage,
+  page: PlaywrightPage,
   selector: Selector,
   options: FindElementOptions
 ): Promise<ElementHandle> => {
@@ -43,7 +43,7 @@ export const findElement = (
           });
       },
       selector as any,
-      options as Serializable
+      options
     );
 
     const element = jsHandle.asElement();

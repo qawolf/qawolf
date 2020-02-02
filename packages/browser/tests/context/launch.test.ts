@@ -1,53 +1,52 @@
 import { CONFIG } from "@qawolf/config";
 import { QAWolfWeb } from "@qawolf/web";
 import { readdir } from "fs-extra";
-import { getDevice } from "../../src/browser/device";
-import { launch } from "../../src/browser/launch";
+import { getDevice } from "../../src/context/device";
+import { launch } from "../../src/context/launch";
 
 describe("launch", () => {
   it("injects qawolf", async () => {
-    const browser = await launch({ url: CONFIG.testUrl });
+    const context = await launch({ url: CONFIG.testUrl });
 
     const isLoaded = () => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       return !!qawolf;
     };
 
-    const pageZero = await browser.page({ page: 0 });
+    const pageZero = await context.page({ page: 0 });
     const zeroIsLoaded = await pageZero.evaluate(isLoaded);
     expect(zeroIsLoaded).toBeTruthy();
 
     // check it loads on a new page
-    await browser.newPage();
-    const pageOne = await browser.page({ page: 1 });
+    await context.newPage();
+    const pageOne = await context.page({ page: 1 });
     const oneIsLoaded = await pageOne.evaluate(isLoaded);
     expect(oneIsLoaded).toBeTruthy();
 
-    await browser.close();
+    await context.close();
   });
 
   it("emulates device", async () => {
-    const browser = await launch({
+    const context = await launch({
       device: "iPhone 7",
       url: CONFIG.testUrl
     });
 
     const expectedViewport = getDevice("iPhone 7").viewport;
-    expect((await browser.page({ page: 0 })).viewport()).toEqual(
-      expectedViewport
-    );
+    const pageZero = await context.page({ page: 0 });
+    expect(pageZero.viewport()).toEqual(expectedViewport);
 
     // check it emulates on a new page
-    await browser.newPage();
-    expect((await browser.page({ page: 1 })).viewport()).toEqual(
-      expectedViewport
-    );
+    await context.newPage();
+    const pageOne = await context.page({ page: 1 });
+    expect(pageOne.viewport()).toEqual(expectedViewport);
 
-    await browser.close();
+    await context.close();
   });
 
   it("records dom replay", async () => {
     const domFiles = await readdir(CONFIG.artifactPath!);
+
     expect(
       domFiles.filter((f: string) => f.includes(".html")).length
     ).toBeGreaterThan(0);

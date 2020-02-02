@@ -4,10 +4,17 @@ import { prompt } from "inquirer";
 import path from "path";
 const { version } = require("../package");
 
-type CiProvider = "azure" | "circleci" | "github" | "gitlab" | "jenkins";
+type CiProvider =
+  | "azure"
+  | "bitbucket"
+  | "circleci"
+  | "github"
+  | "gitlab"
+  | "jenkins";
 
 const paths = {
   azure: "azure-pipelines.yml",
+  bitbucket: "bitbucket-pipelines.yml",
   circleci: ".circleci/config.yml",
   github: ".github/workflows/qawolf.yml",
   gitlab: ".gitlab-ci.yml",

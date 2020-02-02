@@ -5,29 +5,33 @@ import { isKeyEvent, sleep } from "@qawolf/web";
 
 describe("Recorder", () => {
   it("records click on a link", async () => {
-    const browser = await launch({
+    const context = await launch({
       recordEvents: true,
       url: CONFIG.testUrl
     });
-    await browser.click({ html: "<a>broken images</a>" }, { simulate: false });
 
-    // close the browser to ensure events are transmitted
-    await sleep(1000);
-    await browser.close();
+    const page = await context.page();
 
-    const events = browser.qawolf.events.filter(e => e.isTrusted);
+    await Promise.all([
+      page.waitForNavigation(),
+      context.click({ html: "<a>broken images</a>" }, { simulate: false })
+    ]);
+
+    const events = await context.qawolf.events();
     expect(events.length).toEqual(1);
     expect(events[0].name).toEqual("click");
     expect(events[0].target.node.attrs.href).toEqual("/broken_images");
+
+    await context.close();
   });
 
   it("records paste", async () => {
-    const browser = await launch({
+    const context = await launch({
       recordEvents: true,
       url: `${CONFIG.testUrl}login`
     });
 
-    const page = await browser.page();
+    const page = await context.page();
 
     // tried a lot of ways to test this
     // sending Meta+V did not work
@@ -39,39 +43,47 @@ describe("Recorder", () => {
       document.querySelector("#password")!.dispatchEvent(event);
     });
 
-    // close the browser to ensure events are transmitted
-    await sleep(1000);
-    await browser.close();
+    // make sure we can access the events after the pages are closed
+    await context.close();
 
-    const events = page.qawolf.events;
+    const events = await context.qawolf.events();
     expect(events[0].target.node.attrs.id).toEqual("password");
     expect((events[0] as PasteEvent).value).toEqual("secret");
   });
 
   it("records scroll", async () => {
-    const browser = await launch({
+    // only test this on chrome for now
+    if (CONFIG.browser !== "chromium") return;
+
+    const context = await launch({
       recordEvents: true,
       url: `${CONFIG.testUrl}large`
     });
 
-    const page = await browser.page();
+    const page = await context.page();
 
-    // from https://github.com/GoogleChrome/puppeteer/issues/4119#issue-417279184
-    await (page as any)._client.send("Input.dispatchMouseEvent", {
-      type: "mouseWheel",
-      deltaX: 0,
-      deltaY: 500,
-      x: 0,
-      y: 0
-    });
+    const client = await (context.browser as any)
+      .pageTarget(page)
+      .createCDPSession();
 
-    // give enough time for scroll event to fire on CI browser
-    await sleep(2000);
+    // scroll a few times to make sure we capture it
+    for (let i = 0; i < 3; i++) {
+      // from https://github.com/puppeteer/puppeteer/issues/4119#issue-417279184
+      await client.send("Input.dispatchMouseEvent", {
+        type: "mouseWheel",
+        deltaX: 0,
+        deltaY: 500,
+        x: 0,
+        y: 0
+      });
 
-    // close the browser to ensure events are transmitted
-    await browser.close();
+      // give time for scroll
+      await sleep(1000);
+    }
 
-    const events = page.qawolf.events;
+    await context.close();
+
+    const events = await context.qawolf.events();
 
     const { isTrusted, name, target, value } = events[
       events.length - 1
@@ -87,19 +99,15 @@ describe("Recorder", () => {
   });
 
   it("records select option", async () => {
-    const browser = await launch({
+    const context = await launch({
       recordEvents: true,
       url: `${CONFIG.testUrl}dropdown`
     });
-    await browser.select({ css: "#dropdown" }, "2");
+    await context.select({ css: "#dropdown" }, "2");
 
-    const page = await browser.page();
+    await context.close();
 
-    // close the browser to ensure events are transmitted
-    await sleep(1000);
-    await browser.close();
-
-    const events = page.qawolf.events;
+    const events = await context.qawolf.events();
 
     const { isTrusted, target, value } = events[
       events.length - 1
@@ -111,26 +119,39 @@ describe("Recorder", () => {
   });
 
   it("records type", async () => {
-    const browser = await launch({
+    const context = await launch({
       recordEvents: true,
       url: `${CONFIG.testUrl}login`
     });
 
-    const page = await browser.page();
+    await context.type({ css: "#password" }, "secret");
+    await context.type({ css: "#password" }, "↓Enter");
 
-    await browser.type({ css: "#password" }, "secret");
-    await browser.type({ css: "#password" }, "↓Enter");
+    await context.close();
 
-    // close the browser to ensure events are transmitted
-    await sleep(1000);
-    await browser.close();
-
-    const events = page.qawolf.events.filter(e => e.isTrusted);
+    const events = await context.qawolf.events();
 
     expect(events[0].target.node.attrs.id).toEqual("password");
     // we will not receive any events for "secret" since it is all sendCharacter
     expect(
       (events.filter(e => isKeyEvent(e)) as KeyEvent[]).map(e => e.value)
     ).toEqual(["Enter"]);
+  });
+
+  it("records actions on another page", async () => {
+    const context = await launch({ recordEvents: true });
+
+    const page = await context.newPage();
+
+    // wait for page to be decorated
+    await sleep(500);
+
+    await page.goto(`${CONFIG.testUrl}login`);
+    await page.type("#password", "secret");
+
+    await context.close();
+
+    const events = await context.qawolf.events();
+    expect(events.length).toBeGreaterThan(0);
   });
 });

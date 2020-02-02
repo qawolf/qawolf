@@ -1,18 +1,18 @@
 import { CONFIG } from "@qawolf/config";
-import { Browser, launch } from "../../src";
+import { BrowserContext, launch } from "../../src";
 import { selectElement } from "../../src/actions";
 
-let browser: Browser;
+let context: BrowserContext;
 
 beforeAll(async () => {
-  browser = await launch();
+  context = await launch();
 });
 
-afterAll(() => browser.close());
+afterAll(() => context.close());
 
-describe("Browser.select", () => {
+describe("BrowserContext.select", () => {
   it("selects option", async () => {
-    const page = await browser.goto(`${CONFIG.testUrl}dropdown`);
+    const page = await context.goto(`${CONFIG.testUrl}dropdown`);
 
     const selectValue = await page.evaluate(() => {
       const select = document.getElementsByTagName("select")[0];
@@ -32,7 +32,7 @@ describe("Browser.select", () => {
 
 describe("Page.select", () => {
   it("clears option", async () => {
-    const page = await browser.page();
+    const page = await context.page();
 
     await page.qawolf.select({ css: "#dropdown" }, null);
 
@@ -46,7 +46,7 @@ describe("Page.select", () => {
 
 describe("selectElement", () => {
   it("throws error if option with value not available before timeout", async () => {
-    const element = await browser.find({ css: "#dropdown" });
+    const element = await context.find({ css: "#dropdown" });
 
     const testFn = async () =>
       await selectElement(element, "3", { timeoutMs: 2000 });
@@ -54,7 +54,7 @@ describe("selectElement", () => {
   });
 
   it("throws error if option with value available but disabled before timeout", async () => {
-    const element = await browser.find({ css: "#dropdown" });
+    const element = await context.find({ css: "#dropdown" });
 
     const testFn = async () =>
       await selectElement(element, "sup", { timeoutMs: 2000 });

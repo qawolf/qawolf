@@ -1,7 +1,9 @@
-import { devices } from "puppeteer";
-import { Device } from "puppeteer/DeviceDescriptors";
+import { devices } from "playwright";
+import { DeviceDescriptor } from "playwright-core/lib/types";
 
-export const getDevice = (device: string | Device = "desktop"): Device => {
+export const getDevice = (
+  device: string | DeviceDescriptor = "desktop"
+): DeviceDescriptor => {
   if (typeof device !== "string") {
     return device;
   }
@@ -16,9 +18,7 @@ export const getDevice = (device: string | Device = "desktop"): Device => {
         width: 1366,
         height: 768,
         deviceScaleFactor: 1,
-        isMobile: false,
-        hasTouch: false,
-        isLandscape: false
+        isMobile: false
       }
     };
   }
@@ -27,5 +27,5 @@ export const getDevice = (device: string | Device = "desktop"): Device => {
     return devices[device];
   }
 
-  throw new Error(`puppeteer.devices["${device}"] was not found`);
+  throw new Error(`playwright.devices["${device}"] was not found`);
 };

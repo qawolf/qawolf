@@ -1,26 +1,28 @@
 import { CONFIG } from "@qawolf/config";
-import { Browser, launch, Page } from "../../src";
+import { BrowserContext, launch, Page } from "../../src";
 import { hasText } from "../../src/find/hasText";
 
-let browser: Browser;
+let context: BrowserContext;
 let page: Page;
 
 beforeAll(async () => {
-  browser = await launch({ url: `${CONFIG.testUrl}login` });
-  page = await browser.page();
+  context = await launch({ url: `${CONFIG.testUrl}login` });
+  page = await context.page();
 });
 
-afterAll(() => browser.close());
+afterAll(() => context.close());
 
-describe("Browser.click", () => {
+describe("BrowserContext.click", () => {
   it("clicks on icon in button", async () => {
     const hasInvalidUsernameText = await hasText(page, "username is invalid", {
       timeoutMs: 250
     });
     expect(hasInvalidUsernameText).toBe(false);
 
-    await browser.click({ html: "<i>Login</i>" });
-    await page.waitForNavigation();
+    await Promise.all([
+      page.waitForNavigation(),
+      context.click({ html: "<i>Login</i>" })
+    ]);
 
     const hasInvalidUsernameText2 = await hasText(page, "username is invalid");
     expect(hasInvalidUsernameText2).toBe(true);
@@ -31,8 +33,10 @@ describe("Page.click", () => {
   it("clicks on link", async () => {
     await page.goto(CONFIG.testUrl);
 
-    await page.qawolf.click({ html: "<a>broken images</a>" });
-    await page.waitForNavigation();
+    await Promise.all([
+      page.waitForNavigation(),
+      page.qawolf.click({ html: "<a>broken images</a>" })
+    ]);
 
     expect(page.url()).toBe(`${CONFIG.testUrl}broken_images`);
   });

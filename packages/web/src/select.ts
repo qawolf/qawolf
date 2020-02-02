@@ -22,7 +22,7 @@ export const isSelectValueAvailable = (
 export const waitForOption = async (
   element: HTMLSelectElement,
   value: string | null,
-  timeoutMs: number = 10000
+  timeoutMs: number
 ) => {
   if (!value) return;
 

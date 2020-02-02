@@ -5,14 +5,14 @@ export const sleep = async (milliseconds: number): Promise<void> => {
 };
 
 export const waitFor = async <T>(
-  valueFunction: () => T | null,
+  valueFunction: () => T | Promise<T> | null,
   timeoutMs: number,
   sleepMs: number = 500
 ): Promise<T | null> => {
   const startTime = Date.now();
 
   do {
-    const value = valueFunction();
+    const value = await valueFunction();
     if (value) return value;
 
     await sleep(sleepMs);

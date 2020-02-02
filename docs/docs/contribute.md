@@ -60,7 +60,7 @@ npm run watch
 
 [@qawolf/web](https://github.com/qawolf/qawolf/tree/master/packages/web) is a JS library that runs inside the browser. It has helpers to auto-wait for elements and assertions, and a Recorder to collect user interaction events.
 
-[@qawolf/browser](https://github.com/qawolf/qawolf/tree/master/packages/browser) is a wrapper around Puppeteer that injects the `@qawolf/web` library and exposes helpers to use it. It switches to the page of a selector, waits for requests to finish, and manages keyboard interactions.
+[@qawolf/browser](https://github.com/qawolf/qawolf/tree/master/packages/browser) is a wrapper around Playwright that injects the `@qawolf/web` library and exposes helpers to use it. It switches to the page of a selector, waits for requests to finish, and manages keyboard interactions.
 
 [@qawolf/build-workflow](https://github.com/qawolf/qawolf/tree/master/packages/build-workflow) converts user interaction events into a workflow of steps to take.
 

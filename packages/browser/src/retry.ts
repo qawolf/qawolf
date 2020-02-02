@@ -1,4 +1,5 @@
 import { logger } from "@qawolf/logger";
+import { sleep } from "@qawolf/web";
 
 export const retryExecutionError = async (
   func: () => Promise<any>,
@@ -25,11 +26,12 @@ export const retryExecutionError = async (
             error.message
           }"`
         );
+        await sleep(1000);
         continue;
       }
 
       logger.error(
-        `retryExecutionError: will not retry unknown error: "${error.message}"`
+        `retryExecutionError: will not retry error: "${error.message}"`
       );
       throw error;
     }

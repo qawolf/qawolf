@@ -26,7 +26,7 @@ describe("formatMethod", () => {
     const formattedMethod = formatMethod(step);
 
     expect(formattedMethod).toBe(
-      "browser.click({ css: \"[data-qa='test-input']\" })"
+      "context.click({ css: \"[data-qa='test-input']\" })"
     );
   });
 
@@ -43,7 +43,7 @@ describe("formatMethod", () => {
     });
 
     expect(formattedMethod).toBe(
-      "browser.scroll({ css: \"[id='my-input']\" }, { x: 100, y: 200 })"
+      "context.scroll({ css: \"[id='my-input']\" }, { x: 100, y: 200 })"
     );
   });
 
@@ -56,7 +56,7 @@ describe("formatMethod", () => {
       value: "spirit"
     });
 
-    expect(formattedMethod).toBe('browser.select(selectors[0], "spirit")');
+    expect(formattedMethod).toBe('context.select(selectors[0], "spirit")');
   });
 
   it("formats type step", () => {
@@ -73,7 +73,7 @@ describe("formatMethod", () => {
     );
 
     expect(formattedMethod).toBe(
-      'browser.type(selectors[0], "spirit", { page: 1 })'
+      'context.type(selectors[0], "spirit", { page: 1 })'
     );
   });
 

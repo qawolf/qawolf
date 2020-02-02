@@ -2,13 +2,13 @@ const { launch } = require("qawolf");
 const selectors = require("../selectors/{{{name}}}");
 
 describe('{{{name}}}', () => {
-  let browser;
+  let context;
 
   beforeAll(async () => {
-    browser = {{{launch}}}
+    context = {{{launch}}}
   });
 
-  afterAll(() => browser.close());
+  afterAll(() => context.close());
 
 {{#each steps}}
   it('can {{{it}}}', async () => {

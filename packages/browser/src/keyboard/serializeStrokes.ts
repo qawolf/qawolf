@@ -1,12 +1,11 @@
 import { logger } from "@qawolf/logger";
 import { KeyEvent } from "@qawolf/types";
 import { uniq } from "lodash";
-import KeyDefinitions from "puppeteer/lib/USKeyboardLayout";
+import { keyDefinitions } from "playwright-core/lib/usKeyboardLayout";
 import { Stroke } from "./Stroke";
-import "../USKeyboardLayoutTypes";
 
 const USKeys = uniq(
-  Object.values(KeyDefinitions).map(definition => definition.key)
+  Object.values(keyDefinitions).map(definition => definition.key)
 );
 
 export const isKeyHeld = (
@@ -44,12 +43,12 @@ export const isUSKey = (key: string): boolean => {
 };
 
 export const keyToCode = (key: string): string => {
-  const definition = KeyDefinitions[key];
+  const definition = keyDefinitions[key];
 
   if (!definition) throw new Error(`No code found for ${key}`);
   if (definition.code === "NumpadEnter") return "Enter";
 
-  return definition.code;
+  return definition.code!;
 };
 
 export const serializeCharacterStrokes = (events: KeyEvent[]): string => {

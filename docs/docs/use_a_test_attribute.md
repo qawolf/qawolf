@@ -51,28 +51,28 @@ const { launch } = require("qawolf");
 const selectors = require("../selectors/myFirstTest");
 
 describe("myAwesomeTest", () => {
-  let browser;
+  let context;
 
   beforeAll(async () => {
-    browser = await launch({ url: "http://todomvc.com/examples/react" });
+    context = await launch({ url: "http://todomvc.com/examples/react" });
   });
 
-  afterAll(() => browser.close());
+  afterAll(() => context.close());
 
   it('can type into "What needs to be done?" input', async () => {
-    await browser.type({ css: "[data-qa='todo-input']" }, "create test!");
+    await context.type({ css: "[data-qa='todo-input']" }, "create test!");
   });
 
   it("can Enter", async () => {
-    await browser.type({ css: "[data-qa='todo-input']" }, "↓Enter↑Enter");
+    await context.type({ css: "[data-qa='todo-input']" }, "↓Enter↑Enter");
   });
 
   it("can click input", async () => {
-    await browser.click(selectors[2]);
+    await context.click(selectors[2]);
   });
 
   it('can click "Clear completed" button', async () => {
-    await browser.click({ css: "[data-qa='clear-completed']" });
+    await context.click({ css: "[data-qa='clear-completed']" });
   });
 });
 ```
@@ -92,7 +92,7 @@ The corresponding test code specifies the [CSS selector](api#interface-selector)
 
 ```js
 it('can type into "What needs to be done?" input', async () => {
-  await browser.type({ css: "[data-qa='todo-input']" }, "create test!");
+  await context.type({ css: "[data-qa='todo-input']" }, "create test!");
 });
 ```
 
@@ -106,7 +106,7 @@ The corresponding test code uses the [default selector logic](review_test_code#e
 
 ```js
 it("can click input", async () => {
-  await browser.click(selectors[2]);
+  await context.click(selectors[2]);
 });
 ```
 
@@ -122,7 +122,7 @@ Because `data-qa` is not present on that element, the generated test code uses t
 
 ```js
 it("can click input", async () => {
-  await browser.click(selectors[2]);
+  await context.click(selectors[2]);
 });
 ```
 
@@ -137,7 +137,7 @@ We can update our test code to now target the element with the `data-qa` attribu
 
 ```js
 it("can click input", async () => {
-  await browser.click({ css: "[data-qa='complete-todo']" });
+  await context.click({ css: "[data-qa='complete-todo']" });
 });
 ```
 

@@ -1,7 +1,6 @@
+import { launch } from "@qawolf/browser";
 import { buildCode, stepToSelector } from "@qawolf/build-code";
 import { buildWorkflow } from "@qawolf/build-workflow";
-import { launch } from "@qawolf/browser";
-import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { outputFile, outputJson } from "fs-extra";
 import { Url } from "url";
@@ -21,7 +20,7 @@ export const create = async (options: RecordOptions): Promise<void> => {
 
   const { name } = options;
 
-  const browser = await launch({
+  const context = await launch({
     device: options.device,
     recordEvents: true,
     timeout: 0,
@@ -46,7 +45,7 @@ export const create = async (options: RecordOptions): Promise<void> => {
 
   const tasks = new Listr([
     {
-      title: `Capturing browser actions for "${codeFileName}"`,
+      title: `Capturing actions for "${codeFileName}"`,
       task: () =>
         input("Save [Y/n]", {
           done: (value: string) => {
@@ -57,20 +56,22 @@ export const create = async (options: RecordOptions): Promise<void> => {
     {
       title: `Saving "${codePath}"`,
       task: async (_: any, task: any) => {
-        await browser.close();
+        await context.close();
 
         if (skipSave) {
           task.skip();
           return;
         }
 
+        const events = await context.qawolf.events();
+
         if (options.debug) {
-          await saveJson("events", browser.qawolf.events);
+          await saveJson("events", events);
         }
 
         const workflow = buildWorkflow({
           device: options.device,
-          events: browser.qawolf.events,
+          events,
           name: name,
           url: options.url.href!
         });

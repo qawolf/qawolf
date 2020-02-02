@@ -25,7 +25,7 @@ function GetStarted() {
           <p className={styles.stepDirection}>
             Create a{" "}
             <a href="https://pptr.dev/" target="_blank">
-              Puppeteer
+              Playwright
             </a>{" "}
             and{" "}
             <a href="https://jestjs.io" target="_blank">

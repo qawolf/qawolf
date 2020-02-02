@@ -21,7 +21,7 @@ See all commands and options.
 
 ### npx qawolf create <url\> \[name]
 
-- `--device <device>` (optional): Emulate a [device](https://github.com/puppeteer/puppeteer/blob/5e63254e62fb9aedfd4503c632228c3334c70293/lib/DeviceDescriptors.js).
+- `--device <device>` (optional): Emulate a [device](https://github.com/microsoft/playwright/blob/5e63254e62fb9aedfd4503c632228c3334c70293/lib/DeviceDescriptors.js).
 - `--path <path>` (optional): Specify the path to create the test. Defaults to `.qawolf`.
 - `--script` (optional): Create a node script instead of a [Jest](https://jestjs.io) test.
 - `url` (required): visit this URL to begin your test.
@@ -37,17 +37,21 @@ npx qawolf create --script google.com
 
 ### npx qawolf test \[...options]
 
+- `--all-browsers` (optional): Run the tests on `chromium`, `firefox`, and `webkit`.
+- `--chromium` (optional): Run the tests on `chromium`. Defaults to this browser.
+- `--firefox` (optional): Run the tests on `firefox`.
 - `--path <path>` (optional): Specify the [root directory](https://jestjs.io/docs/en/configuration#rootdir-string) that Jest should scan for tests. Defaults to `.qawolf`.
+- `--webkit` (optional): Run the tests on `webkit`.
 - `...options` (optional) Options for the [Jest CLI](https://jestjs.io/docs/en/cli).
 
 Run tests with Jest.
 
 ```bash
-// run all tests
-npx qawolf test
+// run all tests on all browsers
+npx qawolf test --all-browsers
 
-// run one test
-npx qawolf test myTest
+// run one test on firefox
+npx qawolf test --firefox myTest
 
 // use runInBand from the Jest CLI to run tests serially
 npx qawolf test --runInBand

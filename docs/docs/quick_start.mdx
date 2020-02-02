@@ -6,7 +6,7 @@ title: 🏁 Quick Start
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-QA Wolf is an [open source](https://github.com/qawolf/qawolf) library for creating browser tests and scripts 10x faster. It converts your browser actions to stable [Puppeteer](https://github.com/puppeteer/puppeteer) and [Jest](https://jestjs.io/) code, including [automatic waiting](review_test_code#automatic-waiting) and [smart element selectors](review_test_code#element-selectors). It also sets up CI in one command to upload a video, GIF, and detailed logs for each test.
+QA Wolf is an [open source](https://github.com/qawolf/qawolf) library for creating browser tests and scripts 10x faster. It converts your browser actions to stable [Playwright](https://github.com/microsoft/playwright) and [Jest](https://jestjs.io/) code, including [automatic waiting](review_test_code#automatic-waiting) and [smart element selectors](review_test_code#element-selectors). It also sets up CI in one command to upload a video, GIF, and detailed logs for each test.
 
 Below is a quick start guide for developers. For a more detailed walkthrough of how to get started with QA Wolf, [see our tutorials](introduction).
 
@@ -45,7 +45,7 @@ The test will be stored in a `.qawolf` folder.
 │   └── myTest.json
 ```
 
-The `.qawolf/tests/myTest.test.js` file contains [Puppeteer](https://pptr.dev/) and [Jest](https://jestjs.io) code that you can [edit](edit_test_code). The `.qawolf/selectors/myTest.json` file contains the test [element selectors](review_test_code#element-selectors).
+The `.qawolf/tests/myTest.test.js` file contains [Playwright](https://pptr.dev/) and [Jest](https://jestjs.io) code that you can [edit](edit_test_code). The `.qawolf/selectors/myTest.json` file contains the test [element selectors](review_test_code#element-selectors).
 
 See the [Create a Test](create_a_test) tutorial for more detail.
 
@@ -83,7 +83,7 @@ The script will be stored in a `.qawolf` folder.
 │   └── myScript.json
 ```
 
-The `.qawolf/scripts/myScript.js` file contains [Puppeteer](https://pptr.dev/) code that you can [edit](edit_test_code). The `.qawolf/selectors/myScript.json` file contains the script element selectors.
+The `.qawolf/scripts/myScript.js` file contains [Playwright](https://pptr.dev/) code that you can [edit](edit_test_code). The `.qawolf/selectors/myScript.json` file contains the script element selectors.
 
 Run your script:
 

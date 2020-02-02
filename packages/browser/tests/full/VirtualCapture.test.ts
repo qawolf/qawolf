@@ -2,29 +2,26 @@ import { CONFIG } from "@qawolf/config";
 import { sleep } from "@qawolf/web";
 import { pathExists } from "fs-extra";
 import { platform } from "os";
-import { launch } from "../../src/browser/launch";
+import { launch } from "../../src/context/launch";
 
 describe("launch and VirtualCapture", () => {
   it("records a video on linux CI", async () => {
-    const browser = await launch({ device: "iPhone 7", url: CONFIG.testUrl });
+    const context = await launch({ device: "iPhone 7", url: CONFIG.testUrl });
 
-    const capture = browser.qawolf._capture;
+    const capture = context.qawolf._capture;
     if (platform() !== "linux") {
-      expect(capture).toEqual(null);
-      await browser.close();
+      expect(capture).toEqual(undefined);
+      await context.close();
       return;
     }
 
     if (!capture) throw new Error("VirtualCapture should be created on linux");
 
-    // ffmpeg requires even numbers, so expect the size to be rounded up
-    expect(capture.size).toEqual({ height: 668, width: 376 });
-
     // creates a display
     expect(capture.xvfb).toBeTruthy();
 
     await sleep(500);
-    await browser.close();
+    await context.close();
 
     expect(capture.stopped).toEqual(true);
 

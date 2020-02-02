@@ -1,12 +1,12 @@
 import { logger } from "@qawolf/logger";
 import { FindElementOptions, Selector } from "@qawolf/types";
 import { sleep } from "@qawolf/web";
-import { ElementHandle, Page as PuppeteerPage } from "puppeteer";
+import { ElementHandle, Page as PlaywrightPage } from "playwright";
 import { findElement } from "./findElement";
 import { getFindElementOptions } from "./getFindElementOptions";
 
 export const find = async (
-  page: PuppeteerPage,
+  page: PlaywrightPage,
   selector: Selector,
   options: FindElementOptions = {}
 ): Promise<ElementHandle> => {

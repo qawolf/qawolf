@@ -1,27 +1,28 @@
 import { logger } from "@qawolf/logger";
-import { ElementHandle } from "puppeteer";
+import { ElementHandle } from "playwright";
 
 export const clearElement = async (
   elementHandle: ElementHandle
 ): Promise<void> => {
-  const currentValue = await elementHandle.evaluate((element: HTMLElement) => {
-    if (element.isContentEditable) return element.innerText;
-    return (element as HTMLInputElement).value;
+  // Select all so we replace the text
+  // From https://github.com/puppeteer/puppeteer/issues/1313#issuecomment-471732011
+  // https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/setSelectionRange
+  // We do this instead of setting the value directly since that does not mimic user behavior.
+  // Ex. Some sites might rely on an isTrusted change event which we cannot simulate.
+  const hasValue = await elementHandle.evaluate((element: HTMLInputElement) => {
+    const value = element.isContentEditable ? element.innerText : element.value;
+    if (value.length <= 0) return false;
+
+    element.focus();
+    element.setSelectionRange(0, value.length);
+    return true;
   });
 
-  if (!currentValue) {
+  if (!hasValue) {
     logger.verbose("clearElement: nothing to clear");
     return;
   }
 
   logger.verbose("clearElement: clear value");
-
-  // Select all so we replace the text
-  // from https://github.com/GoogleChrome/puppeteer/issues/1313#issuecomment-471732011
-  // We do this instead of setting the value directly since that does not mimic user behavior.
-  // Ex. Some sites might rely on an isTrusted change event which we cannot simulate.
-  await elementHandle.evaluate(() =>
-    document.execCommand("selectall", false, "")
-  );
-  await elementHandle.press("Backspace");
+  await elementHandle.press("Backspace", undefined);
 };

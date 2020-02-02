@@ -1,19 +1,19 @@
 import { CONFIG } from "@qawolf/config";
-import { Browser, launch, Page } from "../../src";
+import { BrowserContext, launch, Page } from "../../src";
 import { findElement } from "../../src/find/findElement";
 import { getXpath } from "./utils";
 
-let browser: Browser;
+let context: BrowserContext;
 let page: Page;
 
 beforeAll(async () => {
-  browser = await launch({
+  context = await launch({
     url: `${CONFIG.testUrl}checkboxes`
   });
-  page = await browser.page();
+  page = await context.page();
 });
 
-afterAll(() => browser.close());
+afterAll(() => context.close());
 
 describe("findCss", () => {
   it("finds an element with a css selector", async () => {

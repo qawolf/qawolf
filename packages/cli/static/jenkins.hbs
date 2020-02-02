@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'circleci/node:12.14.0-browsers'
+            image 'qawolf/qawolf:v{{{version}}}'
         }
     }
     stages {

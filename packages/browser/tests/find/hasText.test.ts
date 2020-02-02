@@ -1,19 +1,19 @@
 import { CONFIG } from "@qawolf/config";
-import { Browser, launch, Page } from "../../src";
+import { BrowserContext, launch, Page } from "../../src";
 
-let browser: Browser;
+let context: BrowserContext;
 let page: Page;
 
 beforeAll(async () => {
-  browser = await launch({ url: `${CONFIG.testUrl}login` });
-  page = await browser.page();
+  context = await launch({ url: `${CONFIG.testUrl}login` });
+  page = await context.page();
 });
 
-afterAll(() => browser.close());
+afterAll(() => context.close());
 
-describe("Browser.hasText", () => {
+describe("BrowserContext.hasText", () => {
   it("returns false if page does not have text", async () => {
-    const result = await browser.hasText("janedoe", { timeoutMs: 0 });
+    const result = await context.hasText("janedoe", { timeoutMs: 0 });
     expect(result).toBe(false);
   });
 });
