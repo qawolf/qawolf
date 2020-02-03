@@ -1,7 +1,6 @@
 module.exports = {
   get_started: [
     { type: "doc", id: "what_is_qa_wolf" },
-    { type: "doc", id: "how_it_works" },
     {
       type: "doc",
       id: "install"
@@ -25,8 +24,9 @@ module.exports = {
     { type: "doc", id: "handle_sign_in" },
     { type: "doc", id: "wait_for_modal" },
     {
-      type: "doc",
-      id: "contribute"
+      type: "category",
+      label: "Advanced",
+      items: ["how_it_works", "contribute"]
     }
   ],
   api: [
