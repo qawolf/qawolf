@@ -9,6 +9,8 @@ Welcome, thanks for checking out QA Wolf! 😊
 
 QA Wolf is an [open source](https://github.com/qawolf/qawolf) [Node.js library](https://www.npmjs.com/package/qawolf) for creating browser tests 10x faster. It is an opinionated, zero configuration browser testing library that "just works".
 
+For those that are familiar, we aspire to be the [`create-react-app`](https://github.com/facebook/create-react-app) of browser testing.
+
 ## How is it 10x faster?
 
 Setting up browser tests is very time consuming. Not only do you need to create the test code, but you also need to figure out how to run your tests in CI. QA Wolf helps you to do each of these things in a fraction of the time.
@@ -19,35 +21,33 @@ We believe you should be able to create test code without writing boilerplate or
 
 #### Set up CI Faster
 
-QA Wolf does the heavy lifting when it comes to setting up CI. With one command, a workflow file is created to run your tests in your CI provider. Tests will automatically run in parallel to the extent possible, and you can run them on push or on a schedule. Each test run includes a video recording and detailed logs to make debugging easy.
+QA Wolf does the heavy lifting to set up CI. With one command, a workflow file is created to run your tests in your CI provider. Tests will automatically run in parallel to the extent possible, and you can run them on push or on a schedule. Each test run includes a video recording and detailed logs to make debugging easy.
 
 By speeding up test creation and CI setup, QA Wolf enables you to build a browser testing pipeline in minutes. 🚀🧑‍🚀
 
 ## Isn't auto generated code flaky?
 
-A common concern, and part of the reason we built QA Wolf, is that auto generated code is unstable.
+A common concern, and part of the reason we built QA Wolf, is that auto generated code is unstable. QA Wolf improves stability in a few ways.
 
 #### Automatic Waiting
 
-QA Wolf improves stability in a few ways. First, it automatically waits for elements, outstanding network requests, and assertions before moving on.
+QA Wolf automatically waits for elements, outstanding network requests, and assertions before moving on. Automatic waiting allows you to avoid writing custom wait logic or arbitrary sleep statements.
 
 #### Test Selectors
 
-QA Wolf chooses element selectors wisely. Typically, auto generated code targets elements with very specific selectors like [XPaths](https://developer.mozilla.org/en-US/docs/Web/XPath). As your application changes, these brittle selectors can stop working.
+QA Wolf chooses element selectors wisely. Typically, auto generated code targets elements with very specific selectors like [XPaths](https://developer.mozilla.org/en-US/docs/Web/XPath). These brittle selectors can stop working as your application changes.
 
-A best practice in testing is target elements based on test [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes) like `data-qa`. This provides maximum stability even as your application changes. If possible, QA Wolf will target elements based on these test attributes. You can [choose which element attributes are used](TODOFIXLINK) in the generated code, including attributes like `id` or `aria-label`.
+A best practice in testing is target elements based on test [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes) like `data-qa`. This provides maximum stability even as your application changes. If possible, QA Wolf will target elements based on these test attributes. You can [choose which attributes are used](TODOFIXLINK) in the generated code, including attributes like `id` or `aria-label`.
 
 #### Smart Selectors
 
 If a target attribute is not available, QA Wolf will select elements using multiple attributes to improve stability. QA Wolf stores all the attributes of the target element and its two [ancestors](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement), and uses that to find a close enough match when running your tests.
 
-See ["How It Works" documentation](how_it_works) to learn more.
-
 ## What is Playwright?
 
 Microsoft's [Playwright](https://github.com/microsoft/playwright) is a Node.js library to automate the [Chromium](https://www.chromium.org/Home), [Firefox](https://www.mozilla.org/en-US/firefox/new), and [WebKit](https://webkit.org) browsers with a single API. QA Wolf is built on top of Playwright, and your generated test code has full access to the [Playwright API](https://github.com/microsoft/playwright/blob/master/docs/api.md).
 
-Playwright is maintained by the same team that originally built [Puppeteer](https://github.com/puppeteer/puppeteer) at Google. The additional benefits of Playwright over Puppeteer, are cross-browser testing support and more testing-friendly APIs.
+Playwright is maintained by the same team that originally built [Puppeteer](https://github.com/puppeteer/puppeteer) at Google. The additional benefits of Playwright over Puppeteer are cross-browser testing support and more testing-friendly APIs.
 
 ## Why Playwright over Selenium?
 
@@ -59,21 +59,21 @@ Since Playwright already supports the modern browsers of [Chromium](https://www.
 
 ## Why Playwright over Cypress?
 
-We think Cypress is really cool! However they [intentionally](https://docs.cypress.io/guides/references/trade-offs.html#Automation-restrictions) built it for sites you control, not third party sites. This limitation prevents scripting third party sites, a [major feature](TODOFIXLINK) of QA Wolf.
+We think Cypress is really cool! However, it was [intentionally](https://docs.cypress.io/guides/references/trade-offs.html#Automation-restrictions) built to only run on sites you control. This limitation prevents scripting third party sites, a [major feature](TODOFIXLINK) of QA Wolf.
 
-Cypress in built to run tests in the page. This prevents you from testing things that run outside the page: service workers, multiple pages, frames, popup windows, file choosers, iframes, security, permissions, etc.
-
-For example, the [one window](https://docs.cypress.io/guides/references/trade-offs.html#Multiple-tabs) limitation, prevents testing use cases we encounter in the wild like signing in with Twitter and integrating with a CRM.
+Cypress is also built to run tests in a single page. This prevents you from testing things that run outside the page like multiple pages, popup windows, and service workers. For example, the [one window](https://docs.cypress.io/guides/references/trade-offs.html#Multiple-tabs) limitation prevents testing scenarios we encounter in the wild like signing in with Twitter and integrating with a CRM.
 
 Why not stub out those situations? You still can - just edit the test code! However, stubbing requires a time and maintenance investment that we wanted to be able to opt out of. We leave it to you to stub or not stub as you like.
 
-Playwright supports these complex situations, and running the same tests across Firefox, WebKit, and Chrome flavored browsers.
+In addition to supporting these complex scenarios, Playwright also supports testing on Firefox and WebKit browsers.
 
 By running our [@qawolf/web](https://github.com/qawolf/qawolf/tree/master/packages/web) code in the browser we get the best of Cypress (fast in the browser) and [Playwright](https://pptr.dev/)/[DevTools](https://chromedevtools.github.io/devtools-protocol/) (rich APIs and well-supported DevTools protocol).
 
 ## Can you support [some other framework/use case]?
 
-You can already edit your code to use any node package or framework. If you have a use case you would like to support, please [chat](https://gitter.im/qawolf/community) or [email](mailto:jon@qawolf.com) us!
+You can already edit your code to use any node package or framework.
+
+If you have a particular use case you would like us to support, please [chat](https://gitter.im/qawolf/community) or [email](mailto:jon@qawolf.com) us!
 
 ## How do I get help?
 
