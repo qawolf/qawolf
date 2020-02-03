@@ -9,6 +9,9 @@
     "lib",
     "src"
   ],
+  "scripts": {
+    "postinstall": "node ./src/postInstallMessage.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/qawolf/qawolf.git"
@@ -23,7 +26,8 @@
     "@qawolf/browser": "^0.9.0-alpha.6",
     "@qawolf/cli": "^0.9.0-alpha.6",
     "@qawolf/repl": "^0.9.0-alpha.6",
-    "@qawolf/web": "^0.9.0-alpha.6"
+    "@qawolf/web": "^0.9.0-alpha.6",
+    "kleur": "^3.0.3"
   },
   "bin": {
     "qawolf": "./lib/index.js"

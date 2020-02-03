@@ -51,7 +51,7 @@ export class CreateCommand {
   protected async prompt() {
     const { choice } = await prompt<{ choice: string }>([
       {
-        choices: ["💾 Save and Exit", "🖥️ Open REPL", "🗑️ Discard and Exit"],
+        choices: ["💾  Save and Exit", "🖥️  Open REPL", "🗑️  Discard and Exit"],
         message: this.fileName,
         name: "choice",
         type: "list"
