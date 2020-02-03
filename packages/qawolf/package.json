@@ -22,7 +22,7 @@
   "dependencies": {
     "@qawolf/browser": "^0.9.0-alpha.6",
     "@qawolf/cli": "^0.9.0-alpha.6",
-    "@qawolf/repl": "^0.8.2",
+    "@qawolf/repl": "^0.9.0-alpha.6",
     "@qawolf/web": "^0.9.0-alpha.6"
   },
   "bin": {

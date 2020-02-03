@@ -15,6 +15,10 @@ export {
   Page
 } from "@qawolf/browser";
 
-export { pause } from "@qawolf/repl/lib/pause";
+export { repl } from "@qawolf/repl/lib/repl";
 
 export { sleep, waitFor, waitUntil } from "@qawolf/web";
+
+// make repl a global
+import { repl } from "@qawolf/repl/lib/repl";
+(global as any).repl = repl;

@@ -1,4 +1,4 @@
-import { AggregatedResult, AssertionResult } from "@jest/test-result";
+import { AggregatedResult } from "@jest/test-result";
 import { red, green } from "kleur";
 
 export class Reporter {
@@ -16,7 +16,7 @@ export class Reporter {
 
   onRunComplete(_: any, aggregatedResult: AggregatedResult) {
     // line break
-    console.log();
+    console.log("");
 
     aggregatedResult.testResults.forEach(testResult => {
       if (testResult.failureMessage) {

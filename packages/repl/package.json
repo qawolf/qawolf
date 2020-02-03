@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/repl",
   "description": "qawolf repl",
-  "version": "0.8.2",
+  "version": "0.9.0-alpha.6",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",

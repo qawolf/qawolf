@@ -4,6 +4,7 @@ import { execSync } from "child_process";
 type RunJestOptions = {
   browsers?: BrowserType[];
   path?: string;
+  repl?: boolean;
 };
 
 const runCommand = (command: string) => {
@@ -19,7 +20,17 @@ export const runJest = (args: string[] = [], options: RunJestOptions = {}) => {
   const rootDir = options.path || ".qawolf";
 
   // --config={} prevents using the local jest config
-  let command = `npx jest --preset="@qawolf/jest-plugin" --rootDir=${rootDir} --testTimeout=60000 --config={}`;
+  let command = `npx jest --config={} --preset="@qawolf/jest-plugin"`;
+
+  if (options.repl) {
+    command += ` --reporters="@qawolf/repl"`;
+  }
+
+  command += ` --rootDir=${rootDir}`;
+
+  if (args.findIndex(a => a.toLowerCase().includes("testtimeout")) < 0) {
+    command += "--testTimeout=60000";
+  }
 
   // pass through other arguments to jest
   if (args.length) {

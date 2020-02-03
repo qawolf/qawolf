@@ -3,11 +3,9 @@ import { bold } from "kleur";
 import { start } from "repl";
 const { addAwaitOutsideToReplServer } = require("await-outside");
 
-export const pause = (context: any = {}) => {
-  logger.debug("pause: start repl");
-  console.log(
-    bold().yellow("The test is paused. Type resume() below to continue.")
-  );
+export const repl = (context: any = {}) => {
+  logger.debug("repl: start");
+  console.log(bold().yellow("Type .exit or resume() to close the repl"));
 
   let resolve: () => void;
   const promise = new Promise(r => (resolve = r));
@@ -24,7 +22,7 @@ export const pause = (context: any = {}) => {
   });
 
   replServer.on("exit", () => {
-    logger.debug("pause: exit repl");
+    logger.debug("repl: exit");
     resolve();
   });
 

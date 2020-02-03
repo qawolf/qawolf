@@ -31,6 +31,7 @@
     "@qawolf/config": "^0.9.0-alpha.6",
     "@qawolf/jest-plugin": "^0.8.2",
     "@qawolf/logger": "^0.9.0-alpha.6",
+    "@qawolf/repl": "^0.9.0-alpha.6",
     "@qawolf/web": "^0.9.0-alpha.6",
     "commander": "^3.0.2",
     "fs-extra": "^8.1.0",
