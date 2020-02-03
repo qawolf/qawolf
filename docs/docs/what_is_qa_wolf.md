@@ -9,9 +9,7 @@ Welcome, thanks for checking out QA Wolf! 😊
 
 QA Wolf is an [open source](https://github.com/qawolf/qawolf) [Node.js library](https://www.npmjs.com/package/qawolf) for creating browser tests 10x faster.
 
-Our goal is to provide an out of the box, opinionated solution to create browser tests and run them in CI. In other words, we are building a zero configuration browser testing library that "just works."
-
-A big part of "just works" is allowing you to test your application like a real user. This includes supporting multiple windows, third party sites, and hot keys.
+Our goal is to provide an out of the box, opinionated solution to create browser tests and run them in CI. In other words, a zero configuration browser testing library that "just works."
 
 For those that are familiar, we aspire to be the [`create-react-app`](https://github.com/facebook/create-react-app) of browser testing.
 
@@ -39,17 +37,11 @@ If a target attribute is not available, QA Wolf will select elements using multi
 
 See ["How It Works" documentation](how_it_works) to learn more.
 
-## Why not [some other recorder]?
-
-We found the open source recorders brittle and limited in their functionality. They are brittle because they rely on specific attributes and do not automatically wait for elements and assertions. They are limited in their functionality because they do not configure CI, do not include debugging artifacts, or do not work for various scenarios like multiple tabs and keyboard shortcuts.
-
-We are philosophically opposed to closed source test recorders and proprietary test frameworks. We believe that if you put in the work to create your tests, you should own them, be able to edit them as you like, and be able to run them on your own infrastructure.
-
 ## What is Playwright?
 
 Microsoft's [Playwright](https://github.com/microsoft/playwright) is a Node.js library to automate the [Chromium](https://www.chromium.org/Home), [Firefox](https://www.mozilla.org/en-US/firefox/new), and [WebKit](https://webkit.org) browsers with a single API. QA Wolf is built on top of Playwright, and your generated test code has full access to the [Playwright API](https://github.com/microsoft/playwright/blob/master/docs/api.md).
 
-Playwright is the successor to [Puppeteer](https://github.com/puppeteer/puppeteer), and is maintained by the same team that originally built Puppeteer at Google. The main additional benefits of Playwright are the ability to test across browsers and more testing-friendly APIs.
+Playwright is maintained by the same team that originally built [Puppeteer](https://github.com/puppeteer/puppeteer) at Google. The additional benefits of Playwright over Puppeteer, are cross-browser testing support and more testing-friendly APIs.
 
 ## Why Playwright over Selenium?
 
@@ -63,19 +55,19 @@ Since Playwright already supports the modern browsers of [Chromium](https://www.
 
 We think Cypress is really cool! However they [intentionally](https://docs.cypress.io/guides/references/trade-offs.html#Automation-restrictions) built it for sites you control, not third party sites. This limitation prevents scripting third party sites, a [major feature](TODOFIXLINK) of QA Wolf.
 
-This, combined with the [one window](https://docs.cypress.io/guides/references/trade-offs.html#Multiple-tabs) limitation, prevents testing use cases we encounter in the wild like signing in with Twitter and integrating with a CRM.
+Cypress in built to run tests in the page. This prevents you from testing things that run outside the page: service workers, multiple pages, frames, popup windows, file choosers, iframes, security, permissions, etc.
+
+For example, the [one window](https://docs.cypress.io/guides/references/trade-offs.html#Multiple-tabs) limitation, prevents testing use cases we encounter in the wild like signing in with Twitter and integrating with a CRM.
 
 Why not stub out those situations? You still can - just edit the test code! However, stubbing requires a time and maintenance investment that we wanted to be able to opt out of. We leave it to you to stub or not stub as you like.
 
-Playwright also supports running tests on Firefox and WebKit in addition to Chrome flavored browsers.
+Playwright supports these complex situations, and running the same tests across Firefox, WebKit, and Chrome flavored browsers.
 
 By running our [@qawolf/web](https://github.com/qawolf/qawolf/tree/master/packages/web) code in the browser we get the best of Cypress (fast in the browser) and [Playwright](https://pptr.dev/)/[DevTools](https://chromedevtools.github.io/devtools-protocol/) (rich APIs and well-supported DevTools protocol).
 
-## Can you support [some other framework]?
+## Can you support [some other framework/use case]?
 
-You can already edit your code to use any node package or framework.
-
-In terms of generating browser code for a framework other than [Playwright](https://github.com/microsoft/playwright), or a testing framework other than [Jest](https://jestjs.io/), we would consider it to create a better experience for the community. If you have a framework you'd like us to support, please [chat](https://gitter.im/qawolf/community) or [email](mailto:jon@qawolf.com) us!
+You can already edit your code to use any node package or framework. If you have a use case you would like to support, please [chat](https://gitter.im/qawolf/community) or [email](mailto:jon@qawolf.com) us!
 
 ## How do I get help?
 
