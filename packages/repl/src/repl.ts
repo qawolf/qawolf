@@ -1,9 +1,12 @@
 import { logger } from "@qawolf/logger";
 import { bold } from "kleur";
-import { start } from "repl";
+import { start, REPLServer } from "repl";
 const { addAwaitOutsideToReplServer } = require("await-outside");
 
-export const repl = (context: any = {}) => {
+export const repl = (
+  context: any = {},
+  onReplCreated?: (replServer: REPLServer) => void
+) => {
   logger.debug("repl: start");
   console.log(bold().yellow("Type .exit or resume() to close the repl"));
 
@@ -26,7 +29,14 @@ export const repl = (context: any = {}) => {
     resolve();
   });
 
-  replServer.context.resume = () => replServer.close();
+  replServer.context.resume = () => {
+    replServer.close();
+    return promise;
+  };
+
+  if (onReplCreated) {
+    onReplCreated(replServer);
+  }
 
   return promise;
 };
