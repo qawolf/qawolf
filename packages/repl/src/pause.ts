@@ -1,8 +1,13 @@
+import { logger } from "@qawolf/logger";
+import { bold } from "kleur";
 import { start } from "repl";
 const { addAwaitOutsideToReplServer } = require("await-outside");
 
 export const pause = (context: any = {}) => {
-  console.log("repl: open");
+  logger.debug("pause: start repl");
+  console.log(
+    bold().yellow("The test is paused. Type resume() below to continue.")
+  );
 
   let resolve: () => void;
   const promise = new Promise(r => (resolve = r));
@@ -19,7 +24,7 @@ export const pause = (context: any = {}) => {
   });
 
   replServer.on("exit", () => {
-    console.log("replServer: close");
+    logger.debug("pause: exit repl");
     resolve();
   });
 

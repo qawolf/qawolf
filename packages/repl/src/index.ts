@@ -1,1 +1,3 @@
-export { pause } from "./pause";
+import { Reporter } from "./Reporter";
+
+module.exports = Reporter;

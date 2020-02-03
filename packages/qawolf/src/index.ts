@@ -15,6 +15,6 @@ export {
   Page
 } from "@qawolf/browser";
 
-export { pause } from "@qawolf/repl";
+export { pause } from "@qawolf/repl/lib/pause";
 
 export { sleep, waitFor, waitUntil } from "@qawolf/web";
