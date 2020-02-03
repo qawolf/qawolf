@@ -14,16 +14,6 @@ module.exports = function(context) {
       return {
         headTags: [
           {
-            tagName: "style",
-            innerHTML: `
-            .github-button { display: none }
-            .github-wrapper {
-              padding: var(--ifm-navbar-item-padding-vertical) var(--ifm-navbar-item-padding-horizontal);
-              line-height: 0;
-            }
-            `
-          },
-          {
             tagName: "script",
             innerHTML: `
             function htmlToElement(html) {

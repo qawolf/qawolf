@@ -35,6 +35,10 @@
 
 /* Gitter  */
 
+.gitter-chat-embed {
+  z-index: 1000;
+}
+
 a.gitter-open-chat-button {
   background: var(--ifm-color-primary);
   font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -47,4 +51,40 @@ a.gitter-open-chat-button {
 a.gitter-open-chat-button:hover {
   background: var(--ifm-color-primary-darker);
   text-decoration: none;
+}
+
+/* Move responsive sub nav above chat */
+.menu.menu--responsive .menu__button {
+  bottom: 4rem;
+}
+
+@media (max-width: 996px) {
+  /* Make the chat button smaller on mobile */
+  a.gitter-open-chat-button {
+    font-size: 16px;
+    padding: 12px 20px;
+  }
+}
+
+/* GitHub Stars */
+
+.github-button {
+  display: none;
+}
+
+.github-wrapper {
+  padding: var(--ifm-navbar-item-padding-vertical) 0
+    var(--ifm-navbar-item-padding-vertical)
+    var(--ifm-navbar-item-padding-horizontal);
+  line-height: 0;
+}
+
+@media (max-width: 996px) {
+  .github-wrapper {
+    padding: var(--ifm-navbar-item-padding-vertical) 0;
+  }
+
+  .navbar__search {
+    display: none;
+  }
 }

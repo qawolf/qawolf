@@ -14,10 +14,6 @@ module.exports = function(context) {
       return {
         headTags: [
           {
-            tagName: "style",
-            innerHTML: `.gitter-chat-embed { z-index: 1000 }`
-          },
-          {
             tagName: "script",
             innerHTML: `
             ((window.gitter = {}).chat = {}).options = {
