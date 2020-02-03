@@ -16,19 +16,15 @@ describe("repl", () => {
   });
 
   test("opens a repl", () => {
-    expect(mockStdout.mock.calls.map(a => a[0])).toMatchInlineSnapshot(`
-      Array [
-        "[999D[K",
-        "  [2mconsole.log[22m [2msrc/repl.ts:467[22m
-          [1m[33mType .exit to close the repl and continue running your code[22m[39m
+    expect(
+      mockStdout.mock.calls
+        .map(a => a[0])
+        .find((m: string) => m.includes("Type .exit to close the repl"))
+    ).toBeTruthy();
 
-      ",
-        "[1G",
-        "[0J",
-        "> ",
-        "[3G",
-      ]
-    `);
+    expect(
+      mockStdout.mock.calls.map(a => a[0]).find((m: string) => m.includes("> "))
+    ).toBeTruthy();
   });
 
   test("resolves after resume() is called", async () => {
