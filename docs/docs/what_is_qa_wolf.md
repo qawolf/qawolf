@@ -37,6 +37,8 @@ A best practice in testing is target elements based on test [data attributes](ht
 
 If the target attribute is not available, QA Wolf will select elements using multiple attributes to improve stability. QA Wolf stores all the attributes of the target element and its two [ancestors](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement), and uses that to find a close enough match when running your tests.
 
+See ["How It Works" documentation](how_it_works) to learn more.
+
 ## Why not [some other recorder]?
 
 We found the open source recorders brittle and limited in their functionality. They are brittle because they rely on specific attributes and do not automatically wait for elements and assertions. They are limited in their functionality because they do not configure CI, do not include debugging artifacts, or do not work for various scenarios (for example, multiple tabs and keyboard shortcuts).
