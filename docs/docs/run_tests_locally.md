@@ -82,7 +82,7 @@ WebKit:
 npx qawolf test --webkit
 ```
 
-You can also run your tests on all browsers with the `--all-browsers` [flag](TODOFIXLINK). This will run each test three times - once on Chromium, once on Firefox, and once on WebKit.
+You can also run your tests on all browsers with the `--all-browsers` [flag](TODOFIXLINK). This will run each test three times: once on Chromium, once on Firefox, and once on WebKit.
 
 ```bash
 npx qawolf test --all-browsers
@@ -102,6 +102,7 @@ There are a few places you can go from here:
 
 - [Run your tests in CI](run_tests_in_ci)
 - Learn how to edit your test code:
+  - [Use the REPL](use_the_repl)
   - [Add assertions](add_assertions)
   - [Use custom selectors](use_custom_selectors)
   - [Change input values](change_input_values)

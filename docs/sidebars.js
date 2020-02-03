@@ -16,6 +16,7 @@ module.exports = {
     { type: "doc", id: "run_tests_in_ci" }
   ],
   guides: [
+    { type: "doc", id: "use_the_repl" },
     { type: "doc", id: "add_assertions" },
     { type: "doc", id: "use_custom_selectors" },
     { type: "doc", id: "change_input_values" },

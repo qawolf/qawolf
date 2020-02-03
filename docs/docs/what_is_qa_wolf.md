@@ -11,7 +11,7 @@ QA Wolf is an [open source](https://github.com/qawolf/qawolf) [Node.js library](
 
 For those that are familiar, we aspire to be the [`create-react-app`](https://github.com/facebook/create-react-app) of browser testing.
 
-Curious yet? Check out [our install guide](install)!
+Curious yet? [Get started here!](install)
 
 ## How is it 10x faster?
 
