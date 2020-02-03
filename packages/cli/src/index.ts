@@ -59,7 +59,7 @@ program
   .option("--webkit", "run tests on webkit")
   .description("run a test with Jest")
   .allowUnknownOption(true)
-  .action(cmd => {
+  .action((cmd, options) => {
     const args = omitArgs(process.argv.slice(3), [
       "--all-browsers",
       "--chromium",
@@ -86,8 +86,8 @@ program
 
     const code = runJest(args, {
       browsers,
-      path: cmd.path,
-      repl: !!cmd.repl
+      path: options.path,
+      repl: !!options.repl
     });
     process.exit(code);
   });

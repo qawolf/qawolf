@@ -2,11 +2,11 @@ import { BrowserContext, launch } from "@qawolf/browser";
 import { buildCode, stepToSelector } from "@qawolf/build-code";
 import { buildWorkflow } from "@qawolf/build-workflow";
 import { logger } from "@qawolf/logger";
+import { repl } from "@qawolf/repl";
 import { outputFile, outputJson } from "fs-extra";
 import { green } from "kleur";
 import { Url } from "url";
 import { prompt } from "inquirer";
-import { repl } from "@qawolf/repl/lib/repl";
 
 type CreateOptions = {
   debug?: boolean;
