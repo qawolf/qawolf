@@ -7,19 +7,19 @@ title: 🐺 What Is QA Wolf?
 
 Welcome, thanks for checking out QA Wolf! 😊
 
-QA Wolf is an [open source](https://github.com/qawolf/qawolf) [Node.js library](https://www.npmjs.com/package/qawolf) for creating browser tests 10x faster.
-
-Our goal is to provide an out of the box, opinionated solution to create browser tests and run them in CI. In other words, a zero configuration browser testing library that "just works."
-
-For those that are familiar, we aspire to be the [`create-react-app`](https://github.com/facebook/create-react-app) of browser testing.
+QA Wolf is an [open source](https://github.com/qawolf/qawolf) [Node.js library](https://www.npmjs.com/package/qawolf) for creating browser tests 10x faster. It is an opinionated, zero configuration browser testing library that "just works".
 
 ## How is it 10x faster?
 
-In our experience as developers, setting up browser tests is very time consuming. Not only do you need to create the test code, but you also need to figure out how to run your tests in CI. QA Wolf helps you to do each of these things in a fraction of the time.
+Setting up browser tests is very time consuming. Not only do you need to create the test code, but you also need to figure out how to run your tests in CI. QA Wolf helps you to do each of these things in a fraction of the time.
+
+#### Create Tests Faster
 
 We believe you should be able to create test code without writing boilerplate or having to learn a new framework. As you use your application, your actions are converted to [Playwright](#what-is-playwright) and [Jest](https://jestjs.io/) test code. You can use the generated code as is, or edit it as you go along. The [interactive REPL](TODOFIXLINK) allows you try out assertions and custom code.
 
-QA Wolf also does the heavy lifting when it comes to setting up CI. With one command, a workflow file is created to run your tests in your CI provider. Tests will automatically run in parallel to the extent possible, and you can run them on push or on a schedule. Each test run also includes a video recording and detailed logs to make debugging easy.
+#### Set up CI Faster
+
+QA Wolf does the heavy lifting when it comes to setting up CI. With one command, a workflow file is created to run your tests in your CI provider. Tests will automatically run in parallel to the extent possible, and you can run them on push or on a schedule. Each test run includes a video recording and detailed logs to make debugging easy.
 
 By speeding up test creation and CI setup, QA Wolf enables you to build a browser testing pipeline in minutes. 🚀🧑‍🚀
 
@@ -27,11 +27,17 @@ By speeding up test creation and CI setup, QA Wolf enables you to build a browse
 
 A common concern, and part of the reason we built QA Wolf, is that auto generated code is unstable.
 
+#### Automatic Waiting
+
 QA Wolf improves stability in a few ways. First, it automatically waits for elements, outstanding network requests, and assertions before moving on.
 
-QA Wolf also chooses element selectors wisely. Typically, auto generated code targets elements with very specific selectors like [XPaths](https://developer.mozilla.org/en-US/docs/Web/XPath). As your application changes, these brittle selectors can stop working.
+#### Test Selectors
+
+QA Wolf chooses element selectors wisely. Typically, auto generated code targets elements with very specific selectors like [XPaths](https://developer.mozilla.org/en-US/docs/Web/XPath). As your application changes, these brittle selectors can stop working.
 
 A best practice in testing is target elements based on test [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes) like `data-qa`. This provides maximum stability even as your application changes. If possible, QA Wolf will target elements based on these test attributes. You can [choose which element attributes are used](TODOFIXLINK) in the generated code, including attributes like `id` or `aria-label`.
+
+#### Smart Selectors
 
 If a target attribute is not available, QA Wolf will select elements using multiple attributes to improve stability. QA Wolf stores all the attributes of the target element and its two [ancestors](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement), and uses that to find a close enough match when running your tests.
 
