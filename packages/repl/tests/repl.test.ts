@@ -16,15 +16,13 @@ describe("repl", () => {
   });
 
   test("opens a repl", () => {
-    expect(
-      mockStdout.mock.calls
-        .map(a => a[0])
-        .find((m: string) => m.includes("Type .exit to close the repl"))
-    ).toBeTruthy();
+    const messages: string[] = mockStdout.mock.calls.map(args => args[0]);
 
     expect(
-      mockStdout.mock.calls.map(a => a[0]).find((m: string) => m.includes("> "))
+      messages.find((m: string) => m.includes("Type .exit to close the repl"))
     ).toBeTruthy();
+
+    expect(messages).toContain("> ");
   });
 
   test("resolves after resume() is called", async () => {
