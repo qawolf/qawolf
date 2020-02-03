@@ -9,7 +9,7 @@ Welcome, thanks for checking out QA Wolf! 😊
 
 QA Wolf is an [open source](https://github.com/qawolf/qawolf) [Node.js library](https://www.npmjs.com/package/qawolf) for creating browser tests 10x faster.
 
-Our goal is to provide an out of the box, opinionated solution to create browser tests and run them in CI. In other words, we are building the zero configuration browser testing library that "just works."
+Our goal is to provide an out of the box, opinionated solution to create browser tests and run them in CI. In other words, we are building a zero configuration browser testing library that "just works."
 
 A big part of "just works" is allowing you to test your application like a real user. This includes supporting multiple windows, third party sites, and hot keys.
 
@@ -35,13 +35,13 @@ QA Wolf also chooses element selectors wisely. Typically, auto generated code ta
 
 A best practice in testing is target elements based on test [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes) like `data-qa`. This provides maximum stability even as your application changes. If possible, QA Wolf will target elements based on these test attributes. You can [choose which element attributes are used](TODOFIXLINK) in the generated code, including attributes like `id` or `aria-label`.
 
-If the target attribute is not available, QA Wolf will select elements using multiple attributes to improve stability. QA Wolf stores all the attributes of the target element and its two [ancestors](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement), and uses that to find a close enough match when running your tests.
+If a target attribute is not available, QA Wolf will select elements using multiple attributes to improve stability. QA Wolf stores all the attributes of the target element and its two [ancestors](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement), and uses that to find a close enough match when running your tests.
 
 See ["How It Works" documentation](how_it_works) to learn more.
 
 ## Why not [some other recorder]?
 
-We found the open source recorders brittle and limited in their functionality. They are brittle because they rely on specific attributes and do not automatically wait for elements and assertions. They are limited in their functionality because they do not configure CI, do not include debugging artifacts, or do not work for various scenarios (for example, multiple tabs and keyboard shortcuts).
+We found the open source recorders brittle and limited in their functionality. They are brittle because they rely on specific attributes and do not automatically wait for elements and assertions. They are limited in their functionality because they do not configure CI, do not include debugging artifacts, or do not work for various scenarios like multiple tabs and keyboard shortcuts.
 
 We are philosophically opposed to closed source test recorders and proprietary test frameworks. We believe that if you put in the work to create your tests, you should own them, be able to edit them as you like, and be able to run them on your own infrastructure.
 
@@ -55,7 +55,7 @@ Playwright is the successor to [Puppeteer](https://github.com/puppeteer/puppetee
 
 We found [Playwright](https://github.com/microsoft/playwright) (and its precursor [Puppeteer](https://github.com/puppeteer/puppeteer)) to be more stable than Selenium in practice and we're not [the](https://medium.com/coursera-engineering/improving-end-to-end-testing-at-coursera-using-puppeteer-and-jest-5f1bac9cd176) [only](https://news.ycombinator.com/item?id=20505711) [ones](https://news.ycombinator.com/item?id=20506053).
 
-Playwright offers additional functionality we take advantage of, like [evaluating a script on a new document](https://github.com/microsoft/playwright/blob/master/docs/api.md#pageevaluateonnewdocumentpagefunction-args) and [creating a callback to the server](https://github.com/microsoft/playwright/blob/master/docs/api.md#pageexposefunctionname-playwrightfunction). While these are possible to reimplement, we want to spend our time creating a better end-to-end experience.
+Playwright offers additional functionality we take advantage of, like [evaluating a script on a new document](https://github.com/microsoft/playwright/blob/master/docs/api.md#pageevaluateonnewdocumentpagefunction-args) and [creating a callback to the server](https://github.com/microsoft/playwright/blob/master/docs/api.md#pageexposefunctionname-playwrightfunction). While these are possible to reimplement in Selenium, we want to spend our time creating a better end-to-end experience.
 
 Since Playwright already supports the modern browsers of [Chromium](https://www.chromium.org/Home), [Firefox](https://www.mozilla.org/en-US/firefox/new), and [WebKit](https://webkit.org), we decided to prioritize stability over supporting legacy browsers like [Internet Explorer](https://support.microsoft.com/en-us/help/17621/internet-explorer-downloads).
 
