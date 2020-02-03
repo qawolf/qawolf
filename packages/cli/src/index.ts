@@ -54,6 +54,7 @@ program
   .option("--all-browsers", "run tests on chromium, firefox, and webkit")
   .option("--chromium", "run tests on chromium")
   .option("--firefox", "run tests on firefox")
+  .option("--repl", "open a REPL when repl() is called")
   .option("--webkit", "run tests on webkit")
   .description("run a test with Jest")
   .allowUnknownOption(true)
@@ -64,6 +65,7 @@ program
       "--firefox",
       "-p",
       "--path",
+      "--repl",
       "--webkit"
     ]);
 
@@ -83,7 +85,8 @@ program
 
     const code = runJest(args, {
       browsers,
-      path: cmd.path
+      path: cmd.path,
+      repl: !!cmd.repl
     });
     process.exit(code);
   });
