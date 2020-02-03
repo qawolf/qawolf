@@ -7,7 +7,7 @@ import { red, yellow } from "kleur";
 import { camelCase } from "lodash";
 import updateNotifier from "update-notifier";
 import { saveCiTemplate } from "./ci";
-import { create } from "./create";
+import { CreateCommand } from "./CreateCommand";
 import { howl } from "./howl";
 import { runJest } from "./runJest";
 import { omitArgs, parseUrl } from "./utils";
@@ -38,7 +38,8 @@ program
     logger.verbose(`create "${url.href}"`);
 
     const name = camelCase(optionalName || url.hostname!.replace(/\..*/g, ""));
-    await create({
+
+    await CreateCommand.create({
       debug: cmd.debug,
       device: cmd.device,
       name,
