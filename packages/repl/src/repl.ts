@@ -1,14 +1,17 @@
 import { logger } from "@qawolf/logger";
 import { bold } from "kleur";
 import { start, REPLServer } from "repl";
-const { addAwaitOutsideToReplServer } = require("await-outside");
+import "./await-outside";
+import { addAwaitOutsideToReplServer } from "await-outside";
 
 export const repl = (
   context: any = {},
   onReplCreated?: (replServer: REPLServer) => void
 ) => {
   logger.debug("repl: start");
-  console.log(bold().yellow("Type .exit or resume() to close the repl"));
+  console.log(
+    bold().yellow("Type .exit to close the repl and continue running your code")
+  );
 
   let resolve: () => void;
   const promise = new Promise(r => (resolve = r));
@@ -28,11 +31,6 @@ export const repl = (
     logger.debug("repl: exit");
     resolve();
   });
-
-  replServer.context.resume = () => {
-    replServer.close();
-    return promise;
-  };
 
   if (onReplCreated) {
     onReplCreated(replServer);
