@@ -13,7 +13,8 @@ module.exports = {
       type: "doc",
       id: "run_tests_locally"
     },
-    { type: "doc", id: "run_tests_in_ci" }
+    { type: "doc", id: "run_tests_in_ci" },
+    { type: "doc", id: "edit_a_test" }
   ],
   guides: [
     { type: "doc", id: "use_the_repl" },
