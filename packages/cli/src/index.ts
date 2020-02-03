@@ -7,7 +7,7 @@ import { red, yellow } from "kleur";
 import { camelCase } from "lodash";
 import updateNotifier from "update-notifier";
 import { saveCiTemplate } from "./ci";
-import { create } from "./create";
+import { CreateCommand } from "./CreateCommand";
 import { howl } from "./howl";
 import { runJest } from "./runJest";
 import { omitArgs, parseUrl } from "./utils";
@@ -38,7 +38,8 @@ program
     logger.verbose(`create "${url.href}"`);
 
     const name = camelCase(optionalName || url.hostname!.replace(/\..*/g, ""));
-    await create({
+
+    await CreateCommand.create({
       debug: cmd.debug,
       device: cmd.device,
       name,
@@ -58,7 +59,7 @@ program
   .option("--webkit", "run tests on webkit")
   .description("run a test with Jest")
   .allowUnknownOption(true)
-  .action(cmd => {
+  .action((cmd, options) => {
     const args = omitArgs(process.argv.slice(3), [
       "--all-browsers",
       "--chromium",
@@ -85,8 +86,8 @@ program
 
     const code = runJest(args, {
       browsers,
-      path: cmd.path,
-      repl: !!cmd.repl
+      path: options.path,
+      repl: !!options.repl
     });
     process.exit(code);
   });

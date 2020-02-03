@@ -27,8 +27,14 @@ export const runJest = (args: string[] = [], options: RunJestOptions = {}) => {
   const rootDir = options.path || ".qawolf";
   command += ` --rootDir=${rootDir}`;
 
-  if (args.findIndex(a => a.toLowerCase().includes("testtimeout")) < 0) {
-    command += " --testTimeout=60000";
+  const hasTimeout =
+    args.findIndex(a => a.toLowerCase().includes("testtimeout")) > -1;
+
+  if (!hasTimeout) {
+    // timeout after 1 hour for repl
+    // timeout after 1 minute otherwise
+    const timeout = options.repl ? "3600000" : "60000";
+    command += ` --testTimeout=${timeout}`;
   }
 
   // pass through other arguments to jest

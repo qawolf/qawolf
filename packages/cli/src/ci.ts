@@ -1,4 +1,4 @@
-import { copy, outputFile, pathExists, readFileSync } from "fs-extra";
+import { outputFile, pathExists, readFileSync } from "fs-extra";
 import { compile } from "handlebars";
 import { prompt } from "inquirer";
 import path from "path";
