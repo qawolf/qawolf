@@ -4,9 +4,9 @@ import { buildWorkflow } from "@qawolf/build-workflow";
 import { logger } from "@qawolf/logger";
 import { repl } from "@qawolf/repl";
 import { outputFile, outputJson } from "fs-extra";
+import { prompt } from "inquirer";
 import { green } from "kleur";
 import { Url } from "url";
-import { prompt } from "inquirer";
 
 type CreateOptions = {
   debug?: boolean;
