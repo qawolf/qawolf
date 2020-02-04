@@ -7,7 +7,7 @@ import { red, yellow } from "kleur";
 import { camelCase } from "lodash";
 import updateNotifier from "update-notifier";
 import { saveCiTemplate } from "./ci";
-import { CreateCommand } from "./CreateCommand";
+import { CreateCodeCLI } from "./CreateCodeCLI";
 import { howl } from "./howl";
 import { runJest } from "./runJest";
 import { omitArgs, parseUrl } from "./utils";
@@ -39,12 +39,12 @@ program
 
     const name = camelCase(optionalName || url.hostname!.replace(/\..*/g, ""));
 
-    await CreateCommand.create({
+    await CreateCodeCLI.start({
       debug: cmd.debug,
       device: cmd.device,
       name,
+      isTest: !cmd.script,
       path: cmd.path,
-      test: !cmd.script,
       url
     });
   });

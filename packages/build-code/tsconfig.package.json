@@ -7,6 +7,9 @@
   },
   "references": [
     {
+      "path": "../build-workflow/tsconfig.package.json"
+    },
+    {
       "path": "../config/tsconfig.package.json"
     },
     {

@@ -4,8 +4,8 @@ import { camelCase } from "lodash";
 import { resolve } from "path";
 import { formatLaunch } from "./formatLaunch";
 
-type BuildCodeOptions = {
-  createSymbol: string;
+export type InitialCodeOptions = {
+  createCodeSymbol: string;
   device?: string;
   isTest?: boolean;
   name: string;
@@ -20,11 +20,11 @@ const testTemplate = compile(
   readFileSync(resolve(__dirname, "../static/test.hbs"), "utf8")
 );
 
-export const buildInitialCode = (options: BuildCodeOptions) => {
+export const buildInitialCode = (options: InitialCodeOptions) => {
   const template = options.isTest ? testTemplate : scriptTemplate;
 
   const code = template({
-    createSymbol: options.createSymbol,
+    createCodeSymbol: options.createCodeSymbol,
     launch: formatLaunch(options.url, options.device),
     name: camelCase(options.name),
     url: options.url
