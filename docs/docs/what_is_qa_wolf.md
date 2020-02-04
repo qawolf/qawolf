@@ -61,11 +61,13 @@ Since Playwright already supports the modern browsers of [Chromium](https://www.
 
 ## Why Playwright over Cypress?
 
-We think Cypress is really cool! However, it was [intentionally](https://docs.cypress.io/guides/references/trade-offs.html#Automation-restrictions) built to only run on sites you control. This limitation prevents scripting third party sites, a [major feature](TODOFIXLINK) of QA Wolf.
+We think Cypress is really cool! However, it was [intentionally](https://docs.cypress.io/guides/references/trade-offs.html#Automation-restrictions) built to only run on sites you control. It was also built to run tests in a single page.
 
-Cypress is also built to run tests in a single page. This prevents you from testing things that run outside the page like multiple pages, popup windows, and service workers. For example, the [one window](https://docs.cypress.io/guides/references/trade-offs.html#Multiple-tabs) limitation prevents testing scenarios we encounter in the wild like signing in with Twitter and integrating with a CRM.
+These limitations prevent you from testing things like multiple pages, popup windows, and third party sites. For example, testing scenarios like signing in with Twitter and integrating with a CRM is not possible with Cypress.
 
-Why not stub out those situations? You still can - just edit the test code! However, stubbing requires a time and maintenance investment that we wanted to be able to opt out of. We leave it to you to stub or not stub as you like.
+Why not stub out those situations? You still can - just edit the test code!
+
+However, stubbing requires a time and maintenance investment that we wanted to be able to opt out of. If your goal is to test your application like a real user, stubbing also moves you away from a true end-to-end test. We leave it to you to stub or not stub as you like.
 
 In addition to supporting these complex scenarios, Playwright also supports testing on Firefox and WebKit browsers.
 
