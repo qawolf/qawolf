@@ -25,9 +25,9 @@ npx qawolf circleci
 </TabItem>
 <TabItem value="github">
 
-To run your tests on a schedule, open the `.github/workflows/qawolf.yml` file at the root of your project.
+To configure when your tests run, open the `.github/workflows/qawolf.yml` file at the root of your project.
 
-Near the top of the file (lines 7-9), you'll see some code commented out that runs your tests on a schedule:
+Near the top of the file (lines 7-9), you'll see some commented out code to run your tests on a schedule:
 
 ```yaml
 name: qawolf
@@ -72,7 +72,7 @@ on:
 # ...
 ```
 
-If you do not want your tests to run when a commit is pushed, you can also remove or comment out the `push:` code block (lines 3-6):
+If you do not want your tests to run when a commit is pushed, you can also remove or comment out the `push` code block (lines 3-6):
 
 ```yaml
 name: qawolf

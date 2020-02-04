@@ -58,7 +58,7 @@ function CiTabs({ children }) {
   });
 
   return (
-    <Tabs block defaultValue="azure" values={values}>
+    <Tabs block defaultValue="github" values={values}>
       {children}
     </Tabs>
   );

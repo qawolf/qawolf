@@ -6,6 +6,7 @@ title: ☁️ Run Tests in CI
 import CiArtifacts from "./components/CiArtifacts.mdx";
 import CiCommandTabs from "./components/CiCodeBlock.mdx";
 import CiCreateWorkflow from "./components/CiCreateWorkflow.mdx";
+import CiEnvironmentVariables from "./components/CiEnvironmentVariables.mdx";
 import CiRunOnSchedule from "./components/CiRunOnSchedule.mdx";
 
 QA Wolf allows you to run your browser tests in CI with one command. Each test run includes [debug artifacts](#debug) like a video recording and detailed logs.
@@ -37,9 +38,9 @@ To create a workflow file for your CI provider, run the following command in you
 
 <CiCreateWorkflow />
 
-By default, your tests will whenever someone pushes a commit to any branch.
+By default, your tests will run whenever someone pushes a commit to any branch.
 
-The rest of this documentation covers common use cases of running your tests in CI:
+The rest of this guide covers common use cases of running your tests in CI:
 
 - [Debugging](#debug)
 - [Running tests on a schedule](#run-tests-on-a-schedule)
@@ -49,20 +50,22 @@ The rest of this documentation covers common use cases of running your tests in 
 
 By default, every test run includes debugging artifacts like a video recording and detailed logs. These help you better understand your tests and debug failures.
 
-Your debugging artifacts are uploaded in a folder called `artifacts`, which has the following structure. Each test has its own folder for its artifacts, with the folder named after the test like `myTestName.test.js`.
+Your debugging artifacts are uploaded in a folder called `qawolf`, which has the following structure. Artifacts for each test are stored in separate folders, with the folder named after the test like `myTestName.test.js`. Within each test folder there is a separate folder for each browser that you ran your tests on: [Chromium](https://www.chromium.org/Home), [Firefox](https://www.mozilla.org/en-US/firefox/new), and [WebKit](https://webkit.org). In the example below, the tests were only run on Chromium.
 
 ```bash
-artifacts
+qawolf
 ├── myFirstTest.test.js
-│   └── video_{timestamp}.mp4
-│   └── video_{timestamp}.gif
-│   └── browser_{timestamp}.log
-│   └── qawolf_{timestamp}.log
+│   └── Chromium
+│       └── video_{timestamp}.mp4
+│       └── video_{timestamp}.gif
+│       └── browser_{timestamp}.log
+│       └── qawolf_{timestamp}.log
 ├── mySecondTest.test.js
-│   └── video_{timestamp}.mp4
-│   └── video_{timestamp}.gif
-│   └── browser_{timestamp}.log
-│   └── qawolf_{timestamp}.log
+│   └── Chromium
+│       └── video_{timestamp}.mp4
+│       └── video_{timestamp}.gif
+│       └── browser_{timestamp}.log
+│       └── qawolf_{timestamp}.log
 # etc
 ```
 
@@ -72,7 +75,7 @@ The two log files are called `browser_{timestamp}.log` and `qawolf_{timestamp}.l
 
 The `browser_{timestamp}.log` file contains all logs from the browser. This includes logs from QA Wolf as it uses your applicaton and looks for each element. It also includes console logs, warnings, and errors from your application. This is generally the log file you should look at when debugging as it contains logs relevant to your application.
 
-The `qawolf_{timestamp}.log` file contains detailed logs from the QA Wolf Node.js server. You probably won't need to look at it (unless you are submitting it to us for help deubgging an issue 😊).
+The `qawolf_{timestamp}.log` file contains detailed logs from the QA Wolf Node.js server. You probably won't need to look at it (unless you are submitting it to us for help debugging an issue 😊).
 
 To view your debug artifacts, follow the instructions below for your CI provider.
 
@@ -82,8 +85,18 @@ To view your debug artifacts, follow the instructions below for your CI provider
 
 By default, the [generated workflow file](#create-workflow-file) is configured to run tests whenever someone pushes a commit to any branch. You can edit this file to run tests on a schedule instead of or in addition to every commit.
 
+To run your tests on a schedule, follow the instructions below for your CI provider.
+
 <CiRunOnSchedule />
 
 ## Use environment variables
+
+You may want to configure your tests by setting [environment variables](TODOFIXLINK).
+
+Depending on whether the environment variable contains sensitive information, you can pass it directly in your workflow file or set it in your CI provider.
+
+To use environment variables, follow the instructions below for your CI provider.
+
+<CiEnvironmentVariables />
 
 ## Start your application before testing
