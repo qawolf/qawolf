@@ -10,12 +10,5 @@ describe('{{{name}}}', () => {
 
   afterAll(() => context.close());
 
-{{#each steps}}
-  it('can {{{it}}}', async () => {
-    await {{{method}}};
-  });
-{{#unless @last}}
-
-{{/unless}}
-{{/each}}
+  {{{createSymbol}}}
 });

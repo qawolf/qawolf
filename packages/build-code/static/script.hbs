@@ -3,12 +3,7 @@ const selectors = require("../selectors/{{{name}}}");
 
 const {{{name}}} = async () => {
   const context = {{{launch}}}
-{{#each steps}}
-  // {{{it}}}
-  await {{{method}}};
-{{#unless @last}}
-{{/unless}}
-{{/each}}
+  {{{createSymbol}}}
   await context.close();
 };
 
