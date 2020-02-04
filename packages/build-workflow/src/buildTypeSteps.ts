@@ -6,16 +6,29 @@ import { removePasteKeyEvents } from "./removePasteKeyEvents";
 
 const SEPARATE_KEYS = ["Enter", "Tab"];
 
-const buildTypeStep = (
-  firstEvent: ElementEvent,
-  allEvents: ElementEvent[],
-  value: string
-): Step => {
+type BuildTypeStepOptions = {
+  allEvents: ElementEvent[];
+  firstEvent: ElementEvent;
+  isFinal: boolean;
+  value: string;
+};
+
+type StepOption = {
+  isFinal: boolean;
+};
+
+const buildTypeStep = ({
+  allEvents,
+  firstEvent,
+  isFinal,
+  value
+}: BuildTypeStepOptions): Step => {
   return {
     action: "type",
     html: firstEvent.target,
     // include event index so we can sort in buildSteps
     index: allEvents.indexOf(firstEvent),
+    isFinal,
     page: firstEvent.page,
     value
   };
@@ -38,11 +51,16 @@ export class TypeStepFactory {
 
     logger.debug("TypeStepFactory: buildPasteStep");
 
-    const step = buildTypeStep(event, this.events, value);
+    const step = buildTypeStep({
+      allEvents: this.events,
+      firstEvent: event,
+      isFinal: true,
+      value
+    });
     this.steps.push(step);
   }
 
-  buildPendingStep() {
+  buildPendingStep({ isFinal }: StepOption) {
     /**
      * Build a type step for pending events.
      */
@@ -52,11 +70,12 @@ export class TypeStepFactory {
       `TypeStepFactory: buildPendingStep ${this.pendingEvents.length}`
     );
 
-    const step = buildTypeStep(
-      this.pendingEvents[0],
-      this.events,
-      serializeKeyEvents(this.pendingEvents)
-    );
+    const step = buildTypeStep({
+      allEvents: this.events,
+      firstEvent: this.pendingEvents[0],
+      isFinal,
+      value: serializeKeyEvents(this.pendingEvents)
+    });
     this.steps.push(step);
     this.pendingEvents = [];
   }
@@ -68,10 +87,10 @@ export class TypeStepFactory {
 
     logger.debug("TypeStepFactory: buildSeparateStep");
 
-    this.buildPendingStep();
+    this.buildPendingStep({ isFinal: true });
     this.pendingEvents.push(event);
     this.pendingEvents.push({ ...event, name: "keyup" });
-    this.buildPendingStep();
+    this.buildPendingStep({ isFinal: true });
   }
 
   buildSteps() {
@@ -86,7 +105,7 @@ export class TypeStepFactory {
       ) {
         // build the step when the page changes
         logger.debug("TypeStepFactory: buildPendingStep for page change");
-        this.buildPendingStep();
+        this.buildPendingStep({ isFinal: true });
       }
 
       if (isPasteEvent(event)) {
@@ -99,13 +118,13 @@ export class TypeStepFactory {
         );
 
         // build the step when typing is interrupted
-        this.buildPendingStep();
+        this.buildPendingStep({ isFinal: true });
       }
     });
 
     logger.debug(`TypeStepFactory: buildPendingStep at end`);
     // build steps at the end
-    this.buildPendingStep();
+    this.buildPendingStep({ isFinal: false });
 
     return this.steps;
   }

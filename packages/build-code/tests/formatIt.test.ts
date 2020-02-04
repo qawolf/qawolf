@@ -13,6 +13,7 @@ describe("formatIt", () => {
         }
       },
       index: 0,
+      isFinal: true,
       page: 0
     };
 
@@ -33,6 +34,7 @@ describe("formatIt", () => {
         }
       },
       index: 0,
+      isFinal: true,
       page: 0
     };
 
@@ -50,6 +52,7 @@ describe("formatIt", () => {
         }
       },
       index: 0,
+      isFinal: true,
       page: 0,
       value: "↓Enter"
     };
@@ -68,6 +71,7 @@ describe("formatIt", () => {
         }
       },
       index: 0,
+      isFinal: true,
       page: 0,
       value: "↓Tab"
     };

@@ -14,6 +14,7 @@ describe("formatStep", () => {
           node: doc("<a innertext='contact'>contact</a>")
         },
         index: 0,
+        isFinal: true,
         page: 0
       };
 
@@ -29,6 +30,7 @@ describe("formatStep", () => {
           node: doc(`<input innertext="someone's" />`)
         },
         index: 1,
+        isFinal: true,
         page: 0
       };
 
@@ -46,6 +48,7 @@ describe("formatStep", () => {
           node: doc("<html />")
         },
         index: 0,
+        isFinal: true,
         page: 0,
         value: { x: 0, y: 10 }
       };
@@ -64,6 +67,7 @@ describe("formatStep", () => {
           node: doc("<select name='select1' />")
         },
         index: 0,
+        isFinal: true,
         page: 0,
         value: "spirit"
       };
@@ -82,6 +86,7 @@ describe("formatStep", () => {
           node: doc("<input />")
         },
         index: 0,
+        isFinal: true,
         page: 0,
         value: null
       };
@@ -100,6 +105,7 @@ describe("formatStep", () => {
           )
         },
         index: 0,
+        isFinal: true,
         page: 0,
         value: "spirit"
       };
@@ -116,6 +122,7 @@ describe("formatStep", () => {
           node: doc(`<input id='input2' placeholder='secret' />`)
         },
         index: 10,
+        isFinal: true,
         page: 0,
         value: "supersecret"
       };

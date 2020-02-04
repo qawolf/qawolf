@@ -87,6 +87,7 @@ Array [
       },
     },
     "index": 1,
+    "isFinal": true,
     "page": 0,
     "value": "2",
   },

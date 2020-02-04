@@ -15,6 +15,7 @@ Array [
       },
     },
     "index": 0,
+    "isFinal": true,
     "page": 0,
     "value": Object {
       "x": 0,
@@ -57,6 +58,7 @@ Array [
       },
     },
     "index": 1,
+    "isFinal": true,
     "page": 0,
   },
   Object {
@@ -96,6 +98,7 @@ Array [
       },
     },
     "index": 2,
+    "isFinal": true,
     "page": 0,
   },
   Object {
@@ -135,6 +138,7 @@ Array [
       },
     },
     "index": 3,
+    "isFinal": true,
     "page": 0,
     "value": "tomsmith",
   },
@@ -175,6 +179,7 @@ Array [
       },
     },
     "index": 4,
+    "isFinal": true,
     "page": 0,
     "value": "↓Tab↑Tab",
   },
@@ -215,6 +220,7 @@ Array [
       },
     },
     "index": 5,
+    "isFinal": true,
     "page": 0,
     "value": "SuperSecretPassword!",
   },
@@ -255,6 +261,7 @@ Array [
       },
     },
     "index": 6,
+    "isFinal": true,
     "page": 0,
     "value": "↓Enter↑Enter",
   },
@@ -310,6 +317,7 @@ Array [
       },
     },
     "index": 7,
+    "isFinal": true,
     "page": 0,
   },
 ]

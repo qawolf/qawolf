@@ -15,6 +15,7 @@ Array [
       },
     },
     "index": 25,
+    "isFinal": true,
     "page": 0,
     "value": Object {
       "x": 0,

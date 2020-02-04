@@ -39,6 +39,7 @@ Array [
       },
     },
     "index": 0,
+    "isFinal": true,
     "page": 0,
   },
 ]
@@ -82,6 +83,7 @@ Array [
       },
     },
     "index": 26,
+    "isFinal": true,
     "page": 0,
   },
   Object {
@@ -121,6 +123,7 @@ Array [
       },
     },
     "index": 27,
+    "isFinal": true,
     "page": 0,
   },
   Object {
@@ -175,6 +178,7 @@ Array [
       },
     },
     "index": 54,
+    "isFinal": true,
     "page": 0,
   },
 ]

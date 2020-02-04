@@ -21,6 +21,8 @@ export const buildScrollSteps = (events: ElementEvent[]): Step[] => {
       html: event.target,
       // include event index so we can sort in buildSteps
       index: i,
+      // it is final if there is a next, non-scroll event
+      isFinal: !!nextEvent,
       page: event.page,
       value: event.value
     });

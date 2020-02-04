@@ -16,6 +16,7 @@ const step = {
     node: doc("<input id='my-input' data-qa='test-input' />")
   },
   index: 0,
+  isFinal: true,
   page: 0
 };
 

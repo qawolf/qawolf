@@ -6,6 +6,8 @@ export interface Step {
   action: Action;
   html: DocSelector;
   index: number;
+  // whether or not it may change based on future events
+  isFinal: boolean;
   page: number;
   value?: StepValue;
 }

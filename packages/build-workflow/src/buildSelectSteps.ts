@@ -17,6 +17,7 @@ export const buildSelectSteps = (events: ElementEvent[]): Step[] => {
       html: event.target,
       // include event index so we can sort in buildSteps
       index: i,
+      isFinal: true,
       page: event.page,
       value: event.value
     });
