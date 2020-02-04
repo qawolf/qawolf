@@ -1,28 +1,28 @@
 import { Step } from "@qawolf/types";
 import { formatIt } from "../src/formatIt";
 
+let baseStep: Step = {
+  action: "click",
+  html: {
+    ancestors: [],
+    node: {
+      name: "input",
+      type: "tag"
+    }
+  },
+  index: 0,
+  isFinal: true,
+  page: 0
+};
+
 describe("formatIt", () => {
   it("excludes target name if it does not exist", () => {
-    const step: Step = {
-      action: "click",
-      html: {
-        ancestors: [],
-        node: {
-          name: "input",
-          type: "tag"
-        }
-      },
-      index: 0,
-      isFinal: true,
-      page: 0
-    };
-
-    expect(formatIt(step)).toBe("click input");
+    expect(formatIt(baseStep)).toBe("click input");
   });
 
   it("uses alt attribute if no other attributes specified", () => {
     const step: Step = {
-      action: "click",
+      ...baseStep,
       html: {
         ancestors: [],
         node: {
@@ -32,10 +32,7 @@ describe("formatIt", () => {
           name: "img",
           type: "tag"
         }
-      },
-      index: 0,
-      isFinal: true,
-      page: 0
+      }
     };
 
     expect(formatIt(step)).toBe('click "spirit" img');
@@ -43,17 +40,8 @@ describe("formatIt", () => {
 
   it("formats Enter", () => {
     const step: Step = {
+      ...baseStep,
       action: "type",
-      html: {
-        ancestors: [],
-        node: {
-          name: "input",
-          type: "tag"
-        }
-      },
-      index: 0,
-      isFinal: true,
-      page: 0,
       value: "↓Enter"
     };
 
@@ -62,17 +50,8 @@ describe("formatIt", () => {
 
   it("formats Tab", () => {
     const step: Step = {
+      ...baseStep,
       action: "type",
-      html: {
-        ancestors: [],
-        node: {
-          name: "input",
-          type: "tag"
-        }
-      },
-      index: 0,
-      isFinal: true,
-      page: 0,
       value: "↓Tab"
     };
 

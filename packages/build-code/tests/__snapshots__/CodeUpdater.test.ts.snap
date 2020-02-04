@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CodeUpdater.prepareSteps appends new steps 1`] = `
+Array [
+  Object {
+    "event": Object {
+      "name": "click",
+    },
+    "step": "click",
+  },
+  Object {
+    "event": Object {
+      "name": "click",
+    },
+    "step": "click",
+  },
+  Object {
+    "event": Object {
+      "name": "keydown",
+      "value": "Tab",
+    },
+    "step": "type",
+  },
+  Object {
+    "event": Object {
+      "name": "paste",
+      "value": "SuperSecretPassword!",
+    },
+    "step": "type",
+  },
+  Object {
+    "event": Object {
+      "name": "keydown",
+      "value": "Enter",
+    },
+    "step": "type",
+  },
+  Object {
+    "event": Object {
+      "name": "click",
+    },
+    "step": "click",
+  },
+]
+`;

@@ -35,10 +35,10 @@ export class CodeWriter {
   }
 
   protected async updateCode() {
-    if (!this._updater.hasUpdates) return;
+    if (!this._updater.numPendingSteps) return;
 
     const code = await readFile(this._options.codePath, "utf8");
-    const updatedCode = this._updater.update(code);
+    const updatedCode = this._updater.createSteps(code);
     if (!updatedCode) return;
 
     await outputFile(this._options.codePath, updatedCode, "utf8");
@@ -49,13 +49,14 @@ export class CodeWriter {
   }
 
   public prepare(event: ElementEvent) {
-    this._updater.prepare(event);
+    this._updater.prepareSteps([event]);
   }
 
   // TODO run this on a loop
 
   public async save() {
-    // TODO remove final line
+    // TODO replace symbol w/ newline
+
     // TODO...
     // if (this.options.debug) {
     //   await this.saveJson("events", events);

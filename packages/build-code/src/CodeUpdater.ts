@@ -1,5 +1,6 @@
 import { buildWorkflow } from "@qawolf/build-workflow";
-import { ElementEvent } from "@qawolf/types";
+import { ElementEvent, Step } from "@qawolf/types";
+import { sortBy } from "lodash";
 
 export const CREATE_CODE_SYMBOL = "// 🐺 CREATE CODE HERE";
 
@@ -16,26 +17,43 @@ export class CodeUpdater {
   private _events: ElementEvent[] = [];
   private _options: ConstructorOptions;
 
+  private _commitedStepIndex: number = 0;
+  public _steps: Step[] = [];
+
   constructor(options: ConstructorOptions) {
     this._options = options;
   }
 
-  public get hasUpdates() {
-    return true;
-  }
-
-  public prepare(event: ElementEvent) {
-    this._events.push(event);
-
+  private _buildWorkflow() {
     const workflow = buildWorkflow({
       device: this._options.device,
-      events: this._events,
+      events: sortBy(this._events, e => e.time),
       name: this._options.name,
       url: this._options.url
     });
+    return workflow;
   }
 
-  public update(code: string): string | null {
+  public get numPendingSteps() {
+    return this._steps.length - this._commitedStepIndex;
+  }
+
+  public prepareSteps(events: ElementEvent[]) {
+    this._events.push(...events);
+
+    const workflow = this._buildWorkflow();
+    const steps = workflow.steps.filter(step => step.isFinal);
+
+    const newSteps = steps.slice(this._steps.length);
+    newSteps.forEach(step => {
+      this._steps.push(step);
+
+      // TODO push selectors here too...
+    });
+  }
+
+  public createSteps(code: string): string | null {
+    // log error if create symbol is not found (debounced)
     return null;
   }
 }
