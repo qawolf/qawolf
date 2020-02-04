@@ -1,0 +1,103 @@
+import TabItem from "@theme/TabItem";
+import CiTabs from "./CiTabs";
+
+<CiTabs>
+<TabItem value="azure">
+
+```bash
+npx qawolf azure
+```
+
+</TabItem>
+<TabItem value="bitbucket">
+
+```bash
+npx qawolf bitbucket
+```
+
+</TabItem>
+<TabItem value="circleci">
+
+```bash
+npx qawolf circleci
+```
+
+</TabItem>
+<TabItem value="github">
+
+To run your tests on a schedule, open the `.github/workflows/qawolf.yml` file at the root of your project.
+
+Near the top of the file (lines 7-9), you'll see some code commented out that runs your tests on a schedule:
+
+```yaml
+name: qawolf
+on:
+  push:
+    # test every branch
+    # edit below if you only want certain branches tested
+    branches: "*"
+  # schedule:
+  #   # test on schedule using cron syntax
+  #   - cron: "0 * * * *" # every hour
+# ...
+```
+
+Comment in this code to run your tests on a schedule. How often your tests run is specified using [cron syntax](https://crontab.guru/). By default, your tests will run every hour on the hour:
+
+```yaml
+name: qawolf
+on:
+  push:
+    # test every branch
+    # edit below if you only want certain branches tested
+    branches: "*"
+  schedule:
+    # test on schedule using cron syntax
+    - cron: "0 * * * *" # every hour
+# ...
+```
+
+You can change the value passed to the `cron` key to run your tests on a different schedule:
+
+```yaml
+name: qawolf
+on:
+  push:
+    # test every branch
+    # edit below if you only want certain branches tested
+    branches: "*"
+  schedule:
+    # test on schedule using cron syntax
+    - cron: "0 0 * * *" # every day at midnight
+# ...
+```
+
+If you do not want your tests to run when a commit is pushed, you can also remove or comment out the `push:` code block (lines 3-6):
+
+```yaml
+name: qawolf
+on:
+  schedule:
+    # test on schedule using cron syntax
+    - cron: "0 * * * *" # every hour
+# ...
+```
+
+See [GitHub Actions documentation](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#onschedule) to learn more about running tests on a schedule.
+
+</TabItem>
+<TabItem value="gitlab">
+
+```bash
+npx qawolf gitlab
+```
+
+</TabItem>
+<TabItem value="jenkins">
+
+```bash
+npx qawolf jenkins
+```
+
+</TabItem>
+</CiTabs>

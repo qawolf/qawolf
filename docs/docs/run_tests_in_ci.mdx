@@ -3,10 +3,87 @@ id: run_tests_in_ci
 title: ☁️ Run Tests in CI
 ---
 
+import CiArtifacts from "./components/CiArtifacts.mdx";
 import CiCommandTabs from "./components/CiCodeBlock.mdx";
+import CiCreateWorkflow from "./components/CiCreateWorkflow.mdx";
+import CiRunOnSchedule from "./components/CiRunOnSchedule.mdx";
+
+QA Wolf allows you to run your browser tests in CI with one command. Each test run includes [debug artifacts](#debug) like a video recording and detailed logs.
+
+This guide assumes you have already [created a browser test](create_a_test).
 
 ## TL;DR
 
-- Create a workflow file to run your tests in your CI provider:
+- [Create a workflow file](#create-workflow-file) to run your tests in your CI provider:
 
 <CiCommandTabs />
+
+TODOUPDATE
+
+## Create workflow file
+
+QA Wolf currently creates workflow files for the following CI providers:
+
+- [Azure DevOps](https://azure.microsoft.com/en-us/services/devops)
+- [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines)
+- [CircleCI](https://circleci.com)
+- [GitHub Actions](https://github.com/features/actions)
+- [GitLab CI/CD](https://docs.gitlab.com/ee/ci/README.html)
+- [Jenkins](Jenkins)
+
+If you would like us to support another provider, please [open an issue on GitHub](https://github.com/qawolf/qawolf/issues).
+
+To create a workflow file for your CI provider, run the following command in your project directory. Use the tabs below to choose your CI provider.
+
+<CiCreateWorkflow />
+
+By default, your tests will whenever someone pushes a commit to any branch.
+
+The rest of this documentation covers common use cases of running your tests in CI:
+
+- [Debugging](#debug)
+- [Running tests on a schedule](#run-tests-on-a-schedule)
+- [Using environment variables](#use-environment-variables)
+
+## Debug
+
+By default, every test run includes debugging artifacts like a video recording and detailed logs. These help you better understand your tests and debug failures.
+
+Your debugging artifacts are uploaded in a folder called `artifacts`, which has the following structure. Each test has its own folder for its artifacts, with the folder named after the test like `myTestName.test.js`.
+
+```bash
+artifacts
+├── myFirstTest.test.js
+│   └── video_{timestamp}.mp4
+│   └── video_{timestamp}.gif
+│   └── browser_{timestamp}.log
+│   └── qawolf_{timestamp}.log
+├── mySecondTest.test.js
+│   └── video_{timestamp}.mp4
+│   └── video_{timestamp}.gif
+│   └── browser_{timestamp}.log
+│   └── qawolf_{timestamp}.log
+# etc
+```
+
+The file called `video_{timestamp}.mp4` (where `{timestamp}` is replaced with a real timestamp, for example `video_1580757606885.mp4`) is a video recording of your test. This allows you to watch your test run in the browser. The corresponding `.gif` file `video_{timestamp}.gif` is a [GIF](https://en.wikipedia.org/wiki/GIF) version of the same video.
+
+The two log files are called `browser_{timestamp}.log` and `qawolf_{timestamp}.log`.
+
+The `browser_{timestamp}.log` file contains all logs from the browser. This includes logs from QA Wolf as it uses your applicaton and looks for each element. It also includes console logs, warnings, and errors from your application. This is generally the log file you should look at when debugging as it contains logs relevant to your application.
+
+The `qawolf_{timestamp}.log` file contains detailed logs from the QA Wolf Node.js server. You probably won't need to look at it (unless you are submitting it to us for help deubgging an issue 😊).
+
+To view your debug artifacts, follow the instructions below for your CI provider.
+
+<CiArtifacts />
+
+## Run tests on a schedule
+
+By default, the [generated workflow file](#create-workflow-file) is configured to run tests whenever someone pushes a commit to any branch. You can edit this file to run tests on a schedule instead of or in addition to every commit.
+
+<CiRunOnSchedule />
+
+## Use environment variables
+
+## Start your application before testing
