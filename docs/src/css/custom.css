@@ -88,3 +88,10 @@ a.gitter-open-chat-button:hover {
     display: none;
   }
 }
+
+/* Infima */
+
+.tab-item:first-child {
+  /* For some reason first tab missing margin, this fixes it  */
+  margin-top: 4px;
+}
