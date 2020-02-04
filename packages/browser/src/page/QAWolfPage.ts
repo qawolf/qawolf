@@ -1,11 +1,12 @@
 import { logger } from "@qawolf/logger";
 import {
-  Event,
+  ElementEvent,
   FindElementOptions,
   Selector,
   ScrollValue,
   TypeOptions
 } from "@qawolf/types";
+import { EventEmitter } from "events";
 import { omit } from "lodash";
 import { ElementHandle, Page as PlaywrightPage } from "playwright";
 import { eventWithTime } from "rrweb/typings/types";
@@ -28,11 +29,11 @@ export type CreatePageOptions = {
   index: number;
   logLevel: string;
   playwrightPage: PlaywrightPage;
-  recordDom?: boolean;
-  recordEvents?: boolean;
+  shouldRecordDom?: boolean;
+  shouldRecordEvents?: boolean;
 };
 
-export class QAWolfPage {
+export class QAWolfPage extends EventEmitter {
   private _decorated: Page;
   private _domEvents: eventWithTime[] = [];
   private _events: Event[] = [];
@@ -43,6 +44,8 @@ export class QAWolfPage {
   private _readyCallbacks: (() => void)[] = [];
 
   public constructor(options: CreatePageOptions) {
+    super();
+
     logger.verbose(
       `QAWolfPage: create ${JSON.stringify(omit(options, "playwrightPage"))}`
     );
@@ -58,12 +61,17 @@ export class QAWolfPage {
     injectBundle({
       logLevel: options.logLevel,
       page: this._decorated,
-      recordDom: options.recordDom,
-      recordEvents: options.recordEvents
+      shouldRecordDom: options.shouldRecordDom,
+      shouldRecordEvents: options.shouldRecordEvents
     }).then(() => {
       this._ready = true;
       this._readyCallbacks.forEach(cb => cb());
     });
+  }
+
+  public _onRecordEvent(event: ElementEvent) {
+    logger.debug(`Page: received "recorded_event" ${event.time}`);
+    this.emit("recorded_event", event);
   }
 
   public click(
@@ -89,6 +97,7 @@ export class QAWolfPage {
   }
 
   public dispose() {
+    this.removeAllListeners();
     this._requests.dispose();
   }
 

@@ -2,7 +2,7 @@ import * as types from "@qawolf/types";
 import { getClickableAncestor } from "./element";
 import { nodeToDocSelector } from "./serialize";
 
-type EventCallback = types.Callback<types.Event>;
+type EventCallback = types.Callback<types.ElementEvent>;
 
 export class Recorder {
   private _attribute: string;
@@ -42,7 +42,7 @@ export class Recorder {
 
   private recordEvent<K extends keyof DocumentEventMap>(
     eventName: K,
-    handler: (ev: DocumentEventMap[K]) => types.Event | undefined
+    handler: (ev: DocumentEventMap[K]) => types.ElementEvent | undefined
   ) {
     this.listen(eventName, (ev: DocumentEventMap[K]) => {
       const event = handler(ev);

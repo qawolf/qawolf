@@ -1,6 +1,6 @@
 import { CONFIG } from "@qawolf/config";
 import { browserLogger, logger } from "@qawolf/logger";
-import { Event } from "@qawolf/types";
+import { ElementEvent } from "@qawolf/types";
 import { readFileSync } from "fs-extra";
 import { dirname, resolve } from "path";
 import { eventWithTime } from "rrweb/typings/types";
@@ -10,8 +10,8 @@ import { retryExecutionError } from "../retry";
 interface BundleOptions {
   logLevel: string;
   page: Page;
-  recordDom?: boolean;
-  recordEvents?: boolean;
+  shouldRecordDom?: boolean;
+  shouldRecordEvents?: boolean;
 }
 
 const QAWOLF_JS = readFileSync(
@@ -41,16 +41,16 @@ const buildCaptureLogsJs = (logLevel: string) => {
 };
 
 const buildRecordEventsJs = (pageIndex: number) =>
-  `window.qaw_recorder = window.qaw_recorder || new qawolf.Recorder("${CONFIG.attribute}", ${pageIndex}, (event) => qaw_onEvent(event));`;
+  `window.qaw_recorder = window.qaw_recorder || new qawolf.Recorder("${CONFIG.attribute}", ${pageIndex}, (event) => qaw_onRecordEvent(event));`;
 
 export const bundleJs = (options: BundleOptions) => {
   let bundle = QAWOLF_JS;
 
   bundle += buildCaptureLogsJs(options.logLevel);
 
-  if (options.recordDom) bundle += RECORD_DOM_JS;
+  if (options.shouldRecordDom) bundle += RECORD_DOM_JS;
 
-  if (options.recordEvents) {
+  if (options.shouldRecordEvents) {
     bundle += buildRecordEventsJs(options.page.qawolf.index);
   }
 
@@ -64,10 +64,9 @@ export const captureDomEvents = async (page: Page) => {
 };
 
 export const captureEvents = async (page: Page) => {
-  await page.exposeFunction("qaw_onEvent", (event: Event) => {
-    logger.debug(`Page: received event ${JSON.stringify(event)}`);
-    page.qawolf.events.push(event);
-  });
+  await page.exposeFunction("qaw_onRecordEvent", (event: ElementEvent) =>
+    page.qawolf._onRecordEvent(event)
+  );
 };
 
 export const captureLogs = async (page: Page) => {
@@ -84,11 +83,11 @@ export const injectBundle = async (options: BundleOptions) => {
 
     const functionPromises = [captureLogs(page)];
 
-    if (options.recordDom) {
+    if (options.shouldRecordDom) {
       functionPromises.push(captureDomEvents(page));
     }
 
-    if (options.recordEvents) {
+    if (options.shouldRecordEvents) {
       functionPromises.push(captureEvents(page));
     }
 

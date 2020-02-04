@@ -3,7 +3,7 @@ import { logger } from "@qawolf/logger";
 import { VirtualCapture } from "@qawolf/screen";
 import {
   BrowserType,
-  Event,
+  ElementEvent,
   FindElementOptions,
   FindPageOptions,
   Selector,
@@ -27,6 +27,7 @@ import { createDomArtifacts } from "../page/createDomArtifacts";
 import { findPage } from "../page/findPage";
 import { Page } from "../page/Page";
 import { logTestStarted } from "./logTestStarted";
+import { EventEmitter } from "events";
 
 export interface CreateContextOptions {
   capture?: VirtualCapture;
@@ -34,7 +35,7 @@ export interface CreateContextOptions {
   device: DeviceDescriptor;
   logLevel?: string;
   navigationTimeoutMs?: number;
-  recordEvents?: boolean;
+  shouldRecordEvents?: boolean;
   url?: string;
 }
 
@@ -45,11 +46,12 @@ export interface ConstructContextOptions extends CreateContextOptions {
   playwrightContext: PlaywrightBrowserContext;
 }
 
-export class QAWolfBrowserContext {
+export class QAWolfBrowserContext extends EventEmitter {
   private _createdAt: number;
   private _decorated: BrowserContext;
   private _disposeManagePages: () => void;
   private _options: ConstructContextOptions;
+  private _recordedEvents: ElementEvent[] = [];
 
   // public for test
   public _capture?: VirtualCapture;
@@ -57,13 +59,14 @@ export class QAWolfBrowserContext {
   // used internally by findPage
   public _currentPageIndex: number = 0;
 
-  // track these so we can access closed page events
-  public _pages: Page[] = [];
+  private _pages: Page[] = [];
 
   // used internally by managePages
   public _nextPageIndex: number = 0;
 
   protected constructor(options: ConstructContextOptions) {
+    super();
+
     logger.verbose("QAWolfBrowser: construct");
     const { ...clonedOptions } = options;
     this._options = clonedOptions;
@@ -133,8 +136,28 @@ export class QAWolfBrowserContext {
     return this._options.logLevel;
   }
 
-  public get recordEvents() {
-    return this._options.recordEvents;
+  public get shouldRecordEvents() {
+    return this._options.shouldRecordEvents;
+  }
+
+  public async recordedEvents() {
+    // cycle event loop to let events callback
+    await sleep(0);
+    return sortBy(this._recordedEvents, e => e.time);
+  }
+
+  public _registerPage(page: Page) {
+    logger.debug(`QAWolfBrowserContext: register page ${page.qawolf.index}`);
+
+    this._pages.push(page);
+
+    page.qawolf.on("recorded_event", event => {
+      logger.debug(
+        `QAWolfBrowserContext: received "recorded_event" ${event.time}`
+      );
+      this._recordedEvents.push(event);
+      this.emit("recorded_event", event);
+    });
   }
 
   public async click(
@@ -165,6 +188,7 @@ export class QAWolfBrowserContext {
 
     logger.verbose("BrowserContext: close");
     this._disposeManagePages();
+    this.removeAllListeners();
 
     await createDomArtifacts(this._pages, this._createdAt);
 
@@ -181,19 +205,6 @@ export class QAWolfBrowserContext {
     }
 
     logger.verbose("BrowserContext: closed");
-  }
-
-  public async events() {
-    const events: Event[] = [];
-
-    // cycle event loop to let events callback
-    await sleep(0);
-
-    this._pages.forEach(page =>
-      page.qawolf.events.forEach(event => events.push(event))
-    );
-
-    return sortBy(events, e => e.time);
   }
 
   public async find(

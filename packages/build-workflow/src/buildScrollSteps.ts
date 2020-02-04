@@ -1,6 +1,6 @@
-import { Event, ScrollEvent, Step } from "@qawolf/types";
+import { ElementEvent, ScrollEvent, Step } from "@qawolf/types";
 
-export const buildScrollSteps = (events: Event[]): Step[] => {
+export const buildScrollSteps = (events: ElementEvent[]): Step[] => {
   const steps: Step[] = [];
 
   for (let i = 0; i < events.length; i++) {

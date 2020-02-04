@@ -1,14 +1,14 @@
 import { serializeKeyEvents } from "@qawolf/browser";
 import { logger } from "@qawolf/logger";
-import { Event, Step, KeyEvent, PasteEvent } from "@qawolf/types";
+import { ElementEvent, Step, KeyEvent, PasteEvent } from "@qawolf/types";
 import { isKeyEvent, isPasteEvent } from "@qawolf/web";
 import { removePasteKeyEvents } from "./removePasteKeyEvents";
 
 const SEPARATE_KEYS = ["Enter", "Tab"];
 
 const buildTypeStep = (
-  firstEvent: Event,
-  allEvents: Event[],
+  firstEvent: ElementEvent,
+  allEvents: ElementEvent[],
   value: string
 ): Step => {
   return {
@@ -22,13 +22,13 @@ const buildTypeStep = (
 };
 
 export class TypeStepFactory {
-  private events: Event[];
+  private events: ElementEvent[];
 
   private steps: Step[] = [];
 
   private pendingEvents: KeyEvent[] = [];
 
-  constructor(events: Event[]) {
+  constructor(events: ElementEvent[]) {
     this.events = events;
   }
 
@@ -120,7 +120,7 @@ export class TypeStepFactory {
   }
 }
 
-export const buildTypeSteps = (events: Event[]) => {
+export const buildTypeSteps = (events: ElementEvent[]) => {
   const factory = new TypeStepFactory(events);
   return factory.buildSteps();
 };

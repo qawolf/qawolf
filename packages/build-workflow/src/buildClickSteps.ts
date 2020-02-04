@@ -1,7 +1,7 @@
 import { logger } from "@qawolf/logger";
-import { Event, Step } from "@qawolf/types";
+import { ElementEvent, Step } from "@qawolf/types";
 
-export const buildClickSteps = (events: Event[]): Step[] => {
+export const buildClickSteps = (events: ElementEvent[]): Step[] => {
   const steps: Step[] = [];
 
   for (let i = 0; i < events.length; i++) {

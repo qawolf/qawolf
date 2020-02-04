@@ -39,7 +39,7 @@ export class CreateCommand {
   static async create(options: CreateOptions) {
     const context = await launch({
       device: options.device,
-      recordEvents: true,
+      shouldRecordEvents: true,
       timeout: 0,
       url: options.url.href
     });
@@ -74,7 +74,7 @@ export class CreateCommand {
   }
 
   protected async save() {
-    const events = await this.context.qawolf.events();
+    const events = await this.context.qawolf.recordedEvents();
 
     if (this.options.debug) {
       await this.saveJson("events", events);

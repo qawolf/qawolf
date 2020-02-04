@@ -1,9 +1,9 @@
-import { Event, Workflow } from "@qawolf/types";
+import { ElementEvent, Workflow } from "@qawolf/types";
 import { buildSteps } from "./buildSteps";
 
 type Options = {
   device?: string;
-  events: Event[];
+  events: ElementEvent[];
   name: string;
   url: string;
 };
