@@ -1,8 +1,10 @@
 import { ElementEvent } from "@qawolf/types";
-import { pathExists, readFile, outputFile } from "fs-extra";
+import { pathExists, readFile, outputFile, outputJson } from "fs-extra";
 import { green } from "kleur";
 import { buildInitialCode, InitialCodeOptions } from "./buildInitialCode";
 import { CREATE_CODE_SYMBOL, CodeUpdater } from "./CodeUpdater";
+import { join, dirname } from "path";
+import { stepToSelector } from "./stepToSelector";
 
 export type CodeWriterOptions = Omit<InitialCodeOptions, "createCodeSymbol"> & {
   codePath: string;
@@ -64,7 +66,21 @@ export class CodeWriter {
     const updatedCode = this._updater.updateCode(code);
     await outputFile(this._options.codePath, updatedCode, "utf8");
 
-    // TODO log updated steps
+    // TODO cleanup
+    const selectorsPath = join(
+      dirname(this._options.codePath),
+      "../selectors",
+      `${this._options.name}.json`
+    );
+    await outputJson(
+      selectorsPath,
+      this._updater._steps.map((step, index) => ({
+        // inline index so it is easy to correlate with the test
+        index,
+        ...stepToSelector(step)
+      })),
+      { spaces: " " }
+    );
 
     this._updating = false;
   }
@@ -95,14 +111,6 @@ export class CodeWriter {
     //   url: this.options.url.href!
     // });
     // TODO....
-    // await this.saveJson(
-    //   "selectors",
-    //   workflow.steps.map((step, index) => ({
-    //     // inline index so it is easy to correlate with the test
-    //     index,
-    //     ...stepToSelector(step)
-    //   }))
-    // );
 
     console.log(green("saved:"), `${this._options.codePath}`);
   }
