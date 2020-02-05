@@ -9,15 +9,15 @@ beforeAll(async () => {
   events = await loadEvents("scroll_login");
 });
 
-describe("CodeUpdater.canUpdate", () => {
+describe("CodeUpdater.hasCreateSymbol", () => {
   it("returns true when the create symbol is found", () => {
-    expect(CodeUpdater.canUpdate(`someCode();\n${CREATE_CODE_SYMBOL}`)).toBe(
-      true
-    );
+    expect(
+      CodeUpdater.hasCreateSymbol(`someCode();\n${CREATE_CODE_SYMBOL}`)
+    ).toBe(true);
   });
 
   it("returns false when the create symbol is missing", () => {
-    expect(CodeUpdater.canUpdate("")).toBe(false);
+    expect(CodeUpdater.hasCreateSymbol("")).toBe(false);
   });
 });
 
@@ -57,21 +57,18 @@ describe("CodeUpdater.updateCode", () => {
         url: "localhost"
       });
 
-      const codeToUpdate = `myOtherCode();\n${CREATE_CODE_SYMBOL}`;
-
-      let updatedCode = codeUpdater.updateCode(codeToUpdate);
-      // no events have happened so it should be false
-      expect(updatedCode).toEqual(false);
       expect(codeUpdater.numPendingSteps).toEqual(0);
-
-      // now it should have new code
       codeUpdater.prepareSteps(events);
       expect(codeUpdater.numPendingSteps).toEqual(8);
-      updatedCode = codeUpdater.updateCode(codeToUpdate);
-      expect(codeUpdater.numPendingSteps).toEqual(0);
+
+      const codeToUpdate = `myOtherCode();\n${CREATE_CODE_SYMBOL}`;
+      const updatedCode = codeUpdater.updateCode(codeToUpdate);
+
       expect(updatedCode).toMatchSnapshot(
         isTest ? "createTestSteps" : "createScriptSteps"
       );
+
+      expect(codeUpdater.numPendingSteps).toEqual(0);
     }
   });
 });

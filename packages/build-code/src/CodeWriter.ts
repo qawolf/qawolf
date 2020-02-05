@@ -38,9 +38,12 @@ export class CodeWriter {
     if (!this._updater.numPendingSteps) return;
 
     const code = await readFile(this._options.codePath, "utf8");
-    const updatedCode = this._updater.updateCode(code);
-    if (!updatedCode) return;
+    if (!CodeUpdater.hasCreateSymbol(code)) {
+      // TODO log error debounced
+      return;
+    }
 
+    const updatedCode = this._updater.updateCode(code);
     await outputFile(this._options.codePath, updatedCode, "utf8");
   }
 
@@ -53,12 +56,8 @@ export class CodeWriter {
   }
 
   // TODO run this on a loop
-
   public async save() {
-    // TODO log error if create symbol is not found (debounced)
-    // code.replace()
-
-    // TODO replace symbol w/ newline
+    // TODO prepare w/ final options
 
     // TODO...
     // if (this.options.debug) {

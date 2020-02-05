@@ -23,7 +23,7 @@ export class CodeUpdater {
     this._options = options;
   }
 
-  public static canUpdate(code: string) {
+  public static hasCreateSymbol(code: string) {
     return code.includes(CREATE_CODE_SYMBOL);
   }
 
@@ -50,16 +50,19 @@ export class CodeUpdater {
     const newSteps = steps.slice(this._steps.length);
     newSteps.forEach(step => {
       this._steps.push(step);
-
-      // TODO push selectors here too...
     });
   }
 
-  public updateCode(code: string): string | false {
-    if (!CodeUpdater.canUpdate(code)) return false;
+  public updateCode(code: string): string {
+    if (!CodeUpdater.hasCreateSymbol(code)) {
+      throw new Error("Cannot update code without create symbol");
+    }
+
+    if (this.numPendingSteps < 1) {
+      throw new Error("No code to update");
+    }
 
     const startIndex = this._pendingStepIndex;
-    if (startIndex === this._steps.length) return false;
 
     // move the pending step forward
     this._pendingStepIndex = this._steps.length;
