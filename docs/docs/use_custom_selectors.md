@@ -7,7 +7,7 @@ In this guide, we explain how QA Wolf generates element selectors and how you ca
 
 ## TL;DR
 
-- By default, [element selectors in generated code](#selectors-overview) use attributes specified by [`QAW_ATTRIBUTE`](TODOFIXLINK) if possible, and multiple attributes otherwise
+- [Element selectors in generated code](#selectors-overview) use attributes specified by [`QAW_ATTRIBUTE`](TODOFIXLINK) if possible, and multiple attributes otherwise
 - You can [edit the generated selectors](#edit-generated-selectors) to target elements based on [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) or text content
 - To use test attributes like `data-qa`, [update your application code](#add-test-attributes-to-application-code) if needed
 
