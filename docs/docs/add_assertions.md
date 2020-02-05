@@ -17,7 +17,7 @@ In this guide, we'll add assertions to a test on [TodoMVC](http://todomvc.com/ex
 
 TODOADDVIDEO
 
-As a reminder, you can add assertions as you create your test since the [test code is generated](TODOFIXLINK) as you use your application. You may find the [interactive REPL](use_the_repl) helpful in trying out code.
+You can add assertions as you create your test since the [test code is generated](TODOFIXLINK) as you use your application. The [interactive REPL](use_the_repl) can be helpful in trying out code.
 
 The first assertion we will add is to check that the "Clear completed" text appears after we complete our todo.
 
