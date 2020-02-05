@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`buildCode builds script steps 1`] = `
+exports[`buildStepsCode builds script steps 1`] = `
 "// scroll
 await browser.scroll(selectors[0], { x: 0, y: 378 });
 // click \\"Form Authentication\\" link
@@ -18,7 +18,7 @@ await browser.click(selectors[6]);
 "
 `;
 
-exports[`buildCode builds script steps 2`] = `
+exports[`buildStepsCode builds script steps 2`] = `
 "// Tab
 await browser.type(selectors[3], \\"↓Tab↑Tab\\");
 // type into \\"Password\\" input
@@ -30,7 +30,7 @@ await browser.click(selectors[6]);
 "
 `;
 
-exports[`buildCode builds test steps 1`] = `
+exports[`buildStepsCode builds test steps 1`] = `
 "it('can scroll', async () => {
   await browser.scroll(selectors[0], { x: 0, y: 378 });
 });
@@ -62,7 +62,7 @@ it('can click \\"Logout\\" link', async () => {
 "
 `;
 
-exports[`buildCode builds test steps 2`] = `
+exports[`buildStepsCode builds test steps 2`] = `
 "it('can Tab', async () => {
   await browser.type(selectors[3], \\"↓Tab↑Tab\\");
 });

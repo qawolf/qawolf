@@ -2,7 +2,7 @@ import { loadWorkflow } from "@qawolf/fixtures";
 import { Step } from "@qawolf/types";
 import { buildStepsCode } from "../src/buildStepsCode";
 
-describe("buildCode", () => {
+describe("buildStepsCode", () => {
   let steps: Step[];
 
   beforeAll(async () => {

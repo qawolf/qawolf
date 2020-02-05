@@ -100,6 +100,7 @@ export class CodeWriter {
 
   public async discard() {
     this.dispose();
+
     // TODO restore to original, or delete if there was no original
   }
 
@@ -114,23 +115,15 @@ export class CodeWriter {
     this._updater.prepareSteps(events);
   }
 
-  // TODO run this on a loop
   public async save() {
     this.dispose();
-
     // TODO prepare w/ final options
+
     // TODO...
     // if (this.options.debug) {
     //   await this.saveJson("events", events);
     //   await this.saveJson("workflows", workflow);
     // }
-    // const workflow = buildWorkflow({
-    //   device: this.options.device,
-    //   events,
-    //   name: this.options.name,
-    //   url: this.options.url.href!
-    // });
-    // TODO....
 
     console.log(green("saved:"), `${this._options.codePath}`);
   }

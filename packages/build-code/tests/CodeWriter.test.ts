@@ -16,28 +16,40 @@ const options: CodeWriterOptions = {
 };
 
 describe("CodeWriter._createInitialCode", () => {
-  it("writes initial code when none exists", async () => {
-    mockedPathExists.mockResolvedValue(false);
+  describe("no existing code", () => {
+    it("writes initial code", async () => {
+      mockedPathExists.mockResolvedValue(false);
 
-    const writer = await CodeWriter.start(options);
-    expect(mockedOutputFile.mock.calls[0]).toEqual([
-      options.codePath,
-      buildInitialCode({
-        ...options,
-        createCodeSymbol: CREATE_CODE_SYMBOL
-      }),
-      "utf8"
-    ]);
-    writer.dispose();
+      const writer = await CodeWriter.start(options);
+      expect(mockedOutputFile.mock.calls[0]).toEqual([
+        options.codePath,
+        buildInitialCode({
+          ...options,
+          createCodeSymbol: CREATE_CODE_SYMBOL
+        }),
+        "utf8"
+      ]);
+      writer.dispose();
+    });
   });
 
-  it("does not write initial code when it exists", async () => {
-    mockedPathExists.mockResolvedValue(true);
-    mockedOutputFile.mockClear();
+  describe("existing code", () => {
+    it("does not write initial code", async () => {
+      mockedPathExists.mockResolvedValue(true);
+      mockedOutputFile.mockClear();
 
-    const writer = await CodeWriter.start(options);
-    expect(mockedOutputFile.mock.calls.length).toEqual(0);
-    writer.dispose();
+      const writer = await CodeWriter.start(options);
+      expect(mockedOutputFile.mock.calls.length).toEqual(0);
+      writer.dispose();
+    });
+
+    it("inserts the create symbol for scripts", () => {
+      // TODO
+    });
+
+    it("inserts the create symbol for tests", () => {
+      // TODO
+    });
   });
 });
 
@@ -61,5 +73,35 @@ describe("CodeWriter._loadUpdatableCode", () => {
     ]);
 
     consoleSpy.mockRestore();
+  });
+});
+
+describe("CodeWriter._updateCode", () => {
+  it("updates code", () => {
+    // TODO
+  });
+
+  it("updates selectors", () => {
+    // TODO
+  });
+});
+
+describe("CodeWriter.discard", () => {
+  it("restores the existing code", () => {
+    // TODO
+  });
+
+  it("deletes the file if there was not existing code", () => {
+    // TODO
+  });
+});
+
+describe("CodeWriter.save", () => {
+  it("includes non-final steps", () => {
+    // TODO
+  });
+
+  it("removes the CREATE_CODE_SYMBOL", () => {
+    // TODO
   });
 });
