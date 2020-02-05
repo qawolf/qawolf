@@ -13,6 +13,9 @@
       "path": "../config/tsconfig.package.json"
     },
     {
+      "path": "../logger/tsconfig.package.json"
+    },
+    {
       "path": "../types/tsconfig.package.json"
     },
     {
