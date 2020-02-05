@@ -5,20 +5,20 @@ import { stepToSelector } from "../src/stepToSelector";
 
 const doc = htmlToDoc;
 
+const step = {
+  action: "click" as Action,
+  html: {
+    ancestors: [],
+    node: doc("<input id='my-input' data-qa='test-input' />")
+  },
+  index: 0,
+  isFinal: true,
+  page: 0
+};
+
 describe("stepToSelector", () => {
   it("returns CssSelector if a single attribute is specified (ignoring whitespace)", () => {
     CONFIG.attribute = " id ";
-
-    const step = {
-      action: "click" as Action,
-      html: {
-        ancestors: [],
-        node: doc("<input id='my-input' data-qa='test-input' />")
-      },
-      index: 0,
-      isFinal: true,
-      page: 0
-    };
 
     const selector = stepToSelector(step);
 
@@ -29,20 +29,7 @@ describe("stepToSelector", () => {
 
   it("returns CssSelector if multiple attributes are specified", () => {
     CONFIG.attribute = "data-other, data-qa";
-
-    const step = {
-      action: "click" as Action,
-      html: {
-        ancestors: [],
-        node: doc("<input id='my-input' data-qa='test-input' />")
-      },
-      index: 0,
-      isFinal: true,
-      page: 0
-    };
-
     const selector = stepToSelector(step);
-
     expect(selector).toEqual({
       css: "[data-qa='test-input']"
     });
@@ -51,19 +38,7 @@ describe("stepToSelector", () => {
   it("returns HtmlSelector if attribute is not specified", () => {
     CONFIG.attribute = "";
 
-    const step = {
-      action: "click" as Action,
-      html: {
-        ancestors: [],
-        node: doc("<input id='my-input' data-qa='test-input' />")
-      },
-      index: 0,
-      isFinal: true,
-      page: 0
-    };
-
     const selector = stepToSelector(step);
-
     expect(selector).toEqual({
       html: {
         ancestors: [],
@@ -75,19 +50,7 @@ describe("stepToSelector", () => {
   it("returns HtmlSelector if attribute not present", () => {
     CONFIG.attribute = "aria-label";
 
-    const step = {
-      action: "click" as Action,
-      html: {
-        ancestors: [],
-        node: doc("<input id='my-input' data-qa='test-input' />")
-      },
-      index: 0,
-      isFinal: true,
-      page: 0
-    };
-
     const selector = stepToSelector(step);
-
     expect(selector).toEqual({
       html: {
         ancestors: [],

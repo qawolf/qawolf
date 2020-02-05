@@ -4,34 +4,32 @@ import { formatStep } from "../src/formatStep";
 
 const doc = htmlToDoc;
 
+let baseStep: Step = {
+  action: "click",
+  html: {
+    ancestors: [],
+    node: doc("<a innertext='contact'>contact</a>")
+  },
+  index: 0,
+  isFinal: true,
+  page: 0
+};
+
 describe("formatStep", () => {
   describe("click", () => {
     it("formats click on link step", () => {
-      const step: Step = {
-        action: "click",
-        html: {
-          ancestors: [],
-          node: doc("<a innertext='contact'>contact</a>")
-        },
-        index: 0,
-        isFinal: true,
-        page: 0
-      };
-
-      const formattedStep = formatStep(step);
+      const formattedStep = formatStep(baseStep);
       expect(formattedStep).toMatchSnapshot();
     });
 
     it("formats click on submit input step", () => {
       const step: Step = {
-        action: "click",
+        ...baseStep,
         html: {
           ancestors: [],
           node: doc(`<input innertext="someone's" />`)
         },
-        index: 1,
-        isFinal: true,
-        page: 0
+        index: 1
       };
 
       const formattedStep = formatStep(step);
@@ -42,14 +40,12 @@ describe("formatStep", () => {
   describe("scroll", () => {
     it("formats scroll action", () => {
       const step: Step = {
+        ...baseStep,
         action: "scroll",
         html: {
           ancestors: [],
           node: doc("<html />")
         },
-        index: 0,
-        isFinal: true,
-        page: 0,
         value: { x: 0, y: 10 }
       };
 
@@ -61,14 +57,12 @@ describe("formatStep", () => {
   describe("select", () => {
     it("formats select action", () => {
       const step: Step = {
+        ...baseStep,
         action: "select",
         html: {
           ancestors: [],
           node: doc("<select name='select1' />")
         },
-        index: 0,
-        isFinal: true,
-        page: 0,
         value: "spirit"
       };
 
@@ -80,14 +74,12 @@ describe("formatStep", () => {
   describe("type", () => {
     it("formats clear an input", () => {
       const step: Step = {
+        ...baseStep,
         action: "type",
         html: {
           ancestors: [],
           node: doc("<input />")
         },
-        index: 0,
-        isFinal: true,
-        page: 0,
         value: null
       };
 
@@ -97,6 +89,7 @@ describe("formatStep", () => {
 
     it("formats type into text input", () => {
       const step: Step = {
+        ...baseStep,
         action: "type",
         html: {
           ancestors: [],
@@ -104,9 +97,6 @@ describe("formatStep", () => {
             `<input id='input1' name='username' placeholder='Jane Doe' />`
           )
         },
-        index: 0,
-        isFinal: true,
-        page: 0,
         value: "spirit"
       };
 
@@ -116,14 +106,13 @@ describe("formatStep", () => {
 
     it("formats type into password input", () => {
       const step: Step = {
+        ...baseStep,
         action: "type",
         html: {
           ancestors: [],
           node: doc(`<input id='input2' placeholder='secret' />`)
         },
         index: 10,
-        isFinal: true,
-        page: 0,
         value: "supersecret"
       };
 
