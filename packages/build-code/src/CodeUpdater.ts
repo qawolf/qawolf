@@ -55,9 +55,14 @@ export class CodeUpdater {
     });
   }
 
-  public updateCode(code: string): string | null {
+  public updateCode(code: string): string | false {
+    if (!CodeUpdater.canUpdate(code)) return false;
+
     const startIndex = this._pendingStepIndex;
-    if (startIndex === this._steps.length) return code;
+    if (startIndex === this._steps.length) return false;
+
+    // move the pending step forward
+    this._pendingStepIndex = this._steps.length;
 
     const codeToInsert =
       buildStepsCode({
@@ -66,6 +71,8 @@ export class CodeUpdater {
         isTest: this._options.isTest
       }) + `${CREATE_CODE_SYMBOL}`;
 
-    return code.replace(CREATE_CODE_SYMBOL, codeToInsert);
+    const updatedCode = code.replace(CREATE_CODE_SYMBOL, codeToInsert);
+
+    return updatedCode;
   }
 }

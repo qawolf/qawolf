@@ -60,12 +60,15 @@ describe("CodeUpdater.updateCode", () => {
       const codeToUpdate = `myOtherCode();\n${CREATE_CODE_SYMBOL}`;
 
       let updatedCode = codeUpdater.updateCode(codeToUpdate);
-      // no events have happened so it should be the same code
-      expect(updatedCode).toEqual(updatedCode);
+      // no events have happened so it should be false
+      expect(updatedCode).toEqual(false);
+      expect(codeUpdater.numPendingSteps).toEqual(0);
 
       // now it should have new code
       codeUpdater.prepareSteps(events);
+      expect(codeUpdater.numPendingSteps).toEqual(8);
       updatedCode = codeUpdater.updateCode(codeToUpdate);
+      expect(codeUpdater.numPendingSteps).toEqual(0);
       expect(updatedCode).toMatchSnapshot(
         isTest ? "createTestSteps" : "createScriptSteps"
       );
