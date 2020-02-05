@@ -43,3 +43,61 @@ Array [
   },
 ]
 `;
+
+exports[`CodeUpdater.updateCode replaces the create symbol with new steps: createScriptSteps 1`] = `
+"myOtherCode();
+// scroll
+await browser.scroll(selectors[0], { x: 0, y: 378 });
+// click \\"Form Authentication\\" link
+await browser.click(selectors[1]);
+// click \\"Username\\" input
+await browser.click(selectors[2]);
+// type into \\"Username\\" input
+await browser.type(selectors[3], \\"tomsmith\\");
+// Tab
+await browser.type(selectors[4], \\"↓Tab↑Tab\\");
+// type into \\"Password\\" input
+await browser.type(selectors[5], \\"SuperSecretPassword!\\");
+// Enter
+await browser.type(selectors[6], \\"↓Enter↑Enter\\");
+// click \\"Logout\\" link
+await browser.click(selectors[7]);
+// 🐺 CREATE CODE HERE"
+`;
+
+exports[`CodeUpdater.updateCode replaces the create symbol with new steps: createTestSteps 1`] = `
+"myOtherCode();
+it('can scroll', async () => {
+  await browser.scroll(selectors[0], { x: 0, y: 378 });
+});
+
+it('can click \\"Form Authentication\\" link', async () => {
+  await browser.click(selectors[1]);
+});
+
+it('can click \\"Username\\" input', async () => {
+  await browser.click(selectors[2]);
+});
+
+it('can type into \\"Username\\" input', async () => {
+  await browser.type(selectors[3], \\"tomsmith\\");
+});
+
+it('can Tab', async () => {
+  await browser.type(selectors[4], \\"↓Tab↑Tab\\");
+});
+
+it('can type into \\"Password\\" input', async () => {
+  await browser.type(selectors[5], \\"SuperSecretPassword!\\");
+});
+
+it('can Enter', async () => {
+  await browser.type(selectors[6], \\"↓Enter↑Enter\\");
+});
+
+it('can click \\"Logout\\" link', async () => {
+  await browser.click(selectors[7]);
+});
+
+// 🐺 CREATE CODE HERE"
+`;

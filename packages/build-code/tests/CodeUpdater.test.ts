@@ -9,6 +9,18 @@ beforeAll(async () => {
   events = await loadEvents("scroll_login");
 });
 
+describe("CodeUpdater.canUpdate", () => {
+  it("returns true when the create symbol is found", () => {
+    expect(CodeUpdater.canUpdate(`someCode();\n${CREATE_CODE_SYMBOL}`)).toBe(
+      true
+    );
+  });
+
+  it("returns false when the create symbol is missing", () => {
+    expect(CodeUpdater.canUpdate("")).toBe(false);
+  });
+});
+
 describe("CodeUpdater.prepareSteps", () => {
   it("appends new steps", () => {
     const codeUpdater = new CodeUpdater({ name: "myTest", url: "localhost" });
@@ -36,25 +48,27 @@ describe("CodeUpdater.prepareSteps", () => {
   });
 });
 
-describe("CodeUpdater.createSteps", () => {
-  it.skip("logs an error when the create symbol is missing", () => {});
+describe("CodeUpdater.updateCode", () => {
+  it("replaces the create symbol with new steps", () => {
+    for (let isTest of [true, false]) {
+      const codeUpdater = new CodeUpdater({
+        isTest,
+        name: "myTest",
+        url: "localhost"
+      });
 
-  it.skip("replaces the create symbol with new steps", () => {
-    const codeUpdater = new CodeUpdater({ name: "myTest", url: "localhost" });
+      const codeToUpdate = `myOtherCode();\n${CREATE_CODE_SYMBOL}`;
 
-    const codeToUpdate = `
-    myOtherCode();
-    
-    ${CREATE_CODE_SYMBOL}
-    `;
+      let updatedCode = codeUpdater.updateCode(codeToUpdate);
+      // no events have happened so it should be the same code
+      expect(updatedCode).toEqual(updatedCode);
 
-    let updatedCode = codeUpdater.createSteps(codeToUpdate);
-    // no events have happened so it should be the same code
-    expect(updatedCode).toEqual(updatedCode);
-
-    // now it should have new code
-    codeUpdater.prepareSteps(events);
-    updatedCode = codeUpdater.createSteps(codeToUpdate);
-    expect(updatedCode).toMatchInlineSnapshot();
+      // now it should have new code
+      codeUpdater.prepareSteps(events);
+      updatedCode = codeUpdater.updateCode(codeToUpdate);
+      expect(updatedCode).toMatchSnapshot(
+        isTest ? "createTestSteps" : "createScriptSteps"
+      );
+    }
   });
 });

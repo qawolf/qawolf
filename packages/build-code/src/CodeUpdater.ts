@@ -12,17 +12,19 @@ type ConstructorOptions = {
   url: string;
 };
 
-// TODO we need to update selectors too?
-
 export class CodeUpdater {
   private _events: ElementEvent[] = [];
   private _options: ConstructorOptions;
 
-  private _commitedStepIndex: number = 0;
+  private _pendingStepIndex: number = 0;
   public _steps: Step[] = [];
 
   constructor(options: ConstructorOptions) {
     this._options = options;
+  }
+
+  public static canUpdate(code: string) {
+    return code.includes(CREATE_CODE_SYMBOL);
   }
 
   private _buildWorkflow() {
@@ -36,7 +38,7 @@ export class CodeUpdater {
   }
 
   public get numPendingSteps() {
-    return this._steps.length - this._commitedStepIndex;
+    return this._steps.length - this._pendingStepIndex;
   }
 
   public prepareSteps(events: ElementEvent[]) {
@@ -53,14 +55,17 @@ export class CodeUpdater {
     });
   }
 
-  public createSteps(code: string): string | null {
-    const newSteps = this._steps.slice(this._steps.length);
-    if (newSteps.length < 1) return code;
+  public updateCode(code: string): string | null {
+    const startIndex = this._pendingStepIndex;
+    if (startIndex === this._steps.length) return code;
 
-    // TODO log error if create symbol is not found (debounced)
-    // code.replace()
+    const codeToInsert =
+      buildStepsCode({
+        startIndex,
+        steps: this._steps,
+        isTest: this._options.isTest
+      }) + `${CREATE_CODE_SYMBOL}`;
 
-    const codeToInsert = buildStepsCode(newSteps);
     return code.replace(CREATE_CODE_SYMBOL, codeToInsert);
   }
 }
