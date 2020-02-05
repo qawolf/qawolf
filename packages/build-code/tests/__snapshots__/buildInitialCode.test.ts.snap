@@ -5,9 +5,9 @@ exports[`buildInitialCode builds a script for a workflow 1`] = `
 const selectors = require(\\"../selectors/login\\");
 
 const login = async () => {
-  const context = await launch({ url: \\"http://localhost\\" });
+  const browser = await launch({ url: \\"http://localhost\\" });
   // 🐺 CREATE CODE HERE
-  await context.close();
+  await browser.close();
 };
 
 login();"
@@ -18,9 +18,9 @@ exports[`buildInitialCode builds a script for a workflow 2`] = `
 const selectors = require(\\"../selectors/login\\");
 
 const login = async () => {
-  const context = await launch({ device: \\"iPhone 7\\", url: \\"http://localhost\\" });
+  const browser = await launch({ device: \\"iPhone 7\\", url: \\"http://localhost\\" });
   // 🐺 CREATE CODE HERE
-  await context.close();
+  await browser.close();
 };
 
 login();"
@@ -31,13 +31,13 @@ exports[`buildInitialCode builds a test for a workflow 1`] = `
 const selectors = require(\\"../selectors/login\\");
 
 describe('login', () => {
-  let context;
+  let browser;
 
   beforeAll(async () => {
-    context = await launch({ url: \\"http://localhost\\" });
+    browser = await launch({ url: \\"http://localhost\\" });
   });
 
-  afterAll(() => context.close());
+  afterAll(() => browser.close());
 
   // 🐺 CREATE CODE HERE
 });"
@@ -48,13 +48,13 @@ exports[`buildInitialCode builds a test for a workflow 2`] = `
 const selectors = require(\\"../selectors/login\\");
 
 describe('login', () => {
-  let context;
+  let browser;
 
   beforeAll(async () => {
-    context = await launch({ device: \\"iPhone 7\\", url: \\"http://localhost\\" });
+    browser = await launch({ device: \\"iPhone 7\\", url: \\"http://localhost\\" });
   });
 
-  afterAll(() => context.close());
+  afterAll(() => browser.close());
 
   // 🐺 CREATE CODE HERE
 });"

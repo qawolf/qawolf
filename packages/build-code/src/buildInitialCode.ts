@@ -1,7 +1,4 @@
-import { readFileSync } from "fs-extra";
-import { compile } from "handlebars";
 import { camelCase } from "lodash";
-import { resolve } from "path";
 import { formatLaunch } from "./formatLaunch";
 
 export type InitialCodeOptions = {
@@ -12,23 +9,64 @@ export type InitialCodeOptions = {
   url: string;
 };
 
-const scriptTemplate = compile(
-  readFileSync(resolve(__dirname, "../static/script.hbs"), "utf8")
-);
+type TemplateOptions = {
+  createCodeSymbol: string;
+  name: string;
+  launch: string;
+};
 
-const testTemplate = compile(
-  readFileSync(resolve(__dirname, "../static/test.hbs"), "utf8")
-);
+const buildInitialScript = ({
+  name,
+  launch,
+  createCodeSymbol
+}: TemplateOptions) => {
+  const code = `const { launch } = require("qawolf");
+const selectors = require("../selectors/${name}");
 
-export const buildInitialCode = (options: InitialCodeOptions) => {
-  const template = options.isTest ? testTemplate : scriptTemplate;
+const ${name} = async () => {
+  const browser = ${launch}
+  ${createCodeSymbol}
+  await browser.close();
+};
 
-  const code = template({
-    createCodeSymbol: options.createCodeSymbol,
-    launch: formatLaunch(options.url, options.device),
-    name: camelCase(options.name),
-    url: options.url
-  });
+${name}();`;
 
   return code;
+};
+
+const buildInitialTest = ({
+  name,
+  launch,
+  createCodeSymbol
+}: TemplateOptions) => {
+  const code = `const { launch } = require("qawolf");
+const selectors = require("../selectors/${name}");
+
+describe('${name}', () => {
+  let browser;
+
+  beforeAll(async () => {
+    browser = ${launch}
+  });
+
+  afterAll(() => browser.close());
+
+  ${createCodeSymbol}
+});`;
+
+  return code;
+};
+
+export const buildInitialCode = (options: InitialCodeOptions) => {
+  const templateOptions = {
+    createCodeSymbol: options.createCodeSymbol,
+    launch: formatLaunch(options.url, options.device),
+    name: camelCase(options.name)
+  };
+
+  if (options.isTest) {
+    return buildInitialTest(templateOptions);
+  }
+
+  return buildInitialScript(templateOptions);
 };
