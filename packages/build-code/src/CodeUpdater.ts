@@ -1,6 +1,7 @@
 import { buildWorkflow } from "@qawolf/build-workflow";
 import { ElementEvent, Step } from "@qawolf/types";
 import { sortBy } from "lodash";
+import { buildStepsCode } from "./buildStepsCode";
 
 export const CREATE_CODE_SYMBOL = "// 🐺 CREATE CODE HERE";
 
@@ -53,7 +54,13 @@ export class CodeUpdater {
   }
 
   public createSteps(code: string): string | null {
-    // log error if create symbol is not found (debounced)
-    return null;
+    const newSteps = this._steps.slice(this._steps.length);
+    if (newSteps.length < 1) return code;
+
+    // TODO log error if create symbol is not found (debounced)
+    // code.replace()
+
+    const codeToInsert = buildStepsCode(newSteps);
+    return code.replace(CREATE_CODE_SYMBOL, codeToInsert);
   }
 }

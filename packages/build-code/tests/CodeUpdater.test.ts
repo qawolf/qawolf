@@ -1,6 +1,6 @@
 import { loadEvents } from "@qawolf/fixtures";
 import { ElementEvent } from "@qawolf/types";
-import { CodeUpdater } from "../src/CodeUpdater";
+import { CodeUpdater, CREATE_CODE_SYMBOL } from "../src/CodeUpdater";
 import { last, pick } from "lodash";
 
 let events: ElementEvent[];
@@ -37,11 +37,24 @@ describe("CodeUpdater.prepareSteps", () => {
 });
 
 describe("CodeUpdater.createSteps", () => {
-  it("logs an error when the create symbol is missing", () => {
-    // TODO
-  });
+  it.skip("logs an error when the create symbol is missing", () => {});
 
-  it("replaces the create symbol with new steps", () => {
-    // TODO
+  it.skip("replaces the create symbol with new steps", () => {
+    const codeUpdater = new CodeUpdater({ name: "myTest", url: "localhost" });
+
+    const codeToUpdate = `
+    myOtherCode();
+    
+    ${CREATE_CODE_SYMBOL}
+    `;
+
+    let updatedCode = codeUpdater.createSteps(codeToUpdate);
+    // no events have happened so it should be the same code
+    expect(updatedCode).toEqual(updatedCode);
+
+    // now it should have new code
+    codeUpdater.prepareSteps(events);
+    updatedCode = codeUpdater.createSteps(codeToUpdate);
+    expect(updatedCode).toMatchInlineSnapshot();
   });
 });

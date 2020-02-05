@@ -3,48 +3,48 @@
 exports[`formatStep click formats click on link step 1`] = `
 Object {
   "it": "click \\"contact\\" link",
-  "method": "context.click(selectors[0])",
+  "method": "await browser.click(selectors[0]);",
 }
 `;
 
 exports[`formatStep click formats click on submit input step 1`] = `
 Object {
   "it": "click \\"someones\\" input",
-  "method": "context.click(selectors[1])",
+  "method": "await browser.click(selectors[1]);",
 }
 `;
 
 exports[`formatStep scroll formats scroll action 1`] = `
 Object {
   "it": "scroll",
-  "method": "context.scroll(selectors[0], { x: 0, y: 10 })",
+  "method": "await browser.scroll(selectors[0], { x: 0, y: 10 });",
 }
 `;
 
 exports[`formatStep select formats select action 1`] = `
 Object {
   "it": "select \\"select1\\"",
-  "method": "context.select(selectors[0], \\"spirit\\")",
+  "method": "await browser.select(selectors[0], \\"spirit\\");",
 }
 `;
 
 exports[`formatStep type formats clear an input 1`] = `
 Object {
   "it": "clear input",
-  "method": "context.type(selectors[0], null)",
+  "method": "await browser.type(selectors[0], null);",
 }
 `;
 
 exports[`formatStep type formats type into password input 1`] = `
 Object {
   "it": "type into \\"secret\\" input",
-  "method": "context.type(selectors[10], \\"supersecret\\")",
+  "method": "await browser.type(selectors[10], \\"supersecret\\");",
 }
 `;
 
 exports[`formatStep type formats type into text input 1`] = `
 Object {
   "it": "type into \\"username\\" input",
-  "method": "context.type(selectors[0], \\"spirit\\")",
+  "method": "await browser.type(selectors[0], \\"spirit\\");",
 }
 `;
