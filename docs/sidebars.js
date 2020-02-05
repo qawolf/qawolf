@@ -24,7 +24,7 @@ module.exports = {
     { type: "doc", id: "emulate_a_device" },
     { type: "doc", id: "use_typescript" },
     { type: "doc", id: "handle_sign_in" },
-    { type: "doc", id: "wait_for_modal" },
+    { type: "doc", id: "create_a_script" },
     {
       type: "category",
       label: "Advanced",
