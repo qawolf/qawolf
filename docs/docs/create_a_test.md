@@ -33,6 +33,7 @@ TODOCLEANUP
 - Run command
 - Open code editor
 - Mention REPL and link to doc
+- Mention test attribute
 - Save
 
 To create your test, run the following in the command line. You can optionally replace `http://todomvc.com/examples/react` with a different URL, and `myFirstTest` with a different name. See the [CLI documentation](cli#npx-qawolf-create-url-name) for more detail.
