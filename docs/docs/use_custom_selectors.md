@@ -39,7 +39,7 @@ You can [set the value of `QAW_ATTRIBUTE`](TODOFIXLINK) to choose what attribute
 
 ### Default selector logic
 
-If you click on an element that does not have an attribute specified by `QAW_ATTRIBUTE`, QA Wolf will fall back to its default selector logic. The default logic stores all attributes of an element, as well as the attributes of its two direct [ancestors](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement).
+If you click on an element that does not have an attribute specified by [`QAW_ATTRIBUTE`](TODOFIXLINK), QA Wolf will fall back to its default selector logic. The default logic stores all attributes of an element, as well as the attributes of its two direct [ancestors](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement). It then tries to find a close enough match to the target element when running your tests.
 
 For example, let's say you click on an element with the following [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML):
 
@@ -73,17 +73,17 @@ The `selectors[0]` argument passed to `browser.click` references a [`Selector`](
 ]
 ```
 
-In the code above, you see that the element you clicked on is stored under the `"node"` key, and that all its attributes are saved. The two direct ancestors are also stored under the `"ancestors"` key of the `Selector` object.
+In the code above, you'll notice that the element you clicked on is stored under the `"node"` key, and that all of its attributes are saved. The two direct ancestors are also stored under the `"ancestors"` key of the `Selector` object.
 
-When you run your test, QA Wolf will look for a close enough match to the original element you clicked on. By considering all element attributes, the test will be more robust to situations like dynamic CSS classes and changes to your front end code.
+When you run your test, QA Wolf will look for a close enough match to the original element you clicked on. It will consider all of the target element attributes, as well as those of its two ancestors. By not relying on a single brittle selector, your tests will be more robust to scenarios like dynamic CSS classes and changes to your front end code.
 
 To learn more about how QA Wolf finds a close enough match to the target element, see [how it works documentation](TODOUPDATELINK).
 
 ## Edit generated selectors
 
-You may want to edit the element selectors in your test code. You can edit these selectors as you create your test since the [test code is generated](TODOFIXLINK) as you use your application. The [interactive REPL](use_the_repl) can be helpful in trying out selectors.
+You can edit element selectors as you create your test, since the [test code is generated](TODOFIXLINK) as you use your application. The [interactive REPL](use_the_repl) can be helpful in trying out selectors.
 
-If you find yourself using the same attribute frequently to target elements, such as the `data-qa` test attribute, try [setting `QAW_ATTRIBUTE`](TODOFIXLINK). This will configure QA Wolf to generate code targeting elements based on that attribute whenever possible.
+If you find yourself using the same attribute frequently to target elements, such as the `data-qa` attribute, try [setting `QAW_ATTRIBUTE`](TODOFIXLINK). This will configure QA Wolf to generate code targeting elements based on that attribute whenever possible.
 
 QA Wolf supports two types of custom selectors: [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) and text selectors.
 
@@ -91,7 +91,7 @@ QA Wolf supports two types of custom selectors: [CSS selectors](https://develope
 
 - Text selectors find the element that contains the given text
 
-In your test code, replace the default selector (for example, `selectors[0]`) with an object containing either the `css` or `text` key and the desired target value. For example:
+In your test code, replace the default selector (like `selectors[0]`) with an object containing either the `css` or `text` key and the desired target value. For example:
 
 ```js
 it('can click "Submit" button', async () => {
@@ -138,5 +138,5 @@ There are a few places you might want to go from here:
 
 - [Add assertions](add_assertions) to your tests
 - [Change input values](change_input_values) in your tests
-- Learn more about the [default element selectors](TODOFIXLINK)
+- Learn more about the [default selector logic](TODOFIXLINK)
 - Learn more about the [interactive REPL](use_the_repl)
