@@ -1,0 +1,33 @@
+import TabItem from "@theme/TabItem";
+import BrowserTabs from "./BrowserTabs";
+
+<BrowserTabs>
+<TabItem value="chromium">
+
+```bash
+npx qawolf test
+```
+
+</TabItem>
+<TabItem value="firefox">
+
+```bash
+npx qawolf test --firefox
+```
+
+</TabItem>
+<TabItem value="webkit">
+
+```bash
+npx qawolf test --webkit
+```
+
+</TabItem>
+<TabItem value="all">
+
+```bash
+npx qawolf test --all-browsers
+```
+
+</TabItem>
+</BrowserTabs>
