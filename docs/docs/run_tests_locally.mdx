@@ -4,17 +4,16 @@ title: 🏃 Run Tests Locally
 ---
 
 import BrowserCodeBlock from "./components/BrowserCodeBlock.mdx";
-import BrowserSpecificCodeBlock from "./components/BrowserSpecificCodeBlock.mdx";
+import BrowserCombinedCodeBlock from "./components/BrowserCombinedCodeBlock.mdx";
+import BrowserSingleCodeBlock from "./components/BrowserSingleCodeBlock.mdx";
 
 In the [previous guide](create_a_test) we created our first browser test for [TodoMVC](http://todomvc.com/examples/react). We will now run our test locally to verify that it works.
 
 ## TL;DR
 
-- [Run a specific test](#run-a-test-locally) on Chromium browser:
+- [Run a specific test](#run-a-test-locally) on [specified browser(s)](#testing-across-browsers):
 
-```bash
-npx qawolf test myTestName
-```
+<BrowserSingleCodeBlock />
 
 - [Run all tests](#run-all-tests-locally) on [specified browser(s)](#testing-across-browsers):
 
@@ -56,21 +55,11 @@ QA Wolf is built on top of Microsoft's [Playwright library](https://github.com/m
 
 Chromium is an open source browser that forms the basis for the [Chrome browser](https://www.google.com/chrome). Similarly, Webkit is the browser engine used in the [Safari browser](https://www.apple.com/safari). In the majority of cases, you can consider running tests on Chromium as functionally equivalent to running them on Chrome. This is also true for WebKit and Safari. TODOJON
 
-To run your tests on a specific browser, use the `--chromium`, `--firefox`, or `--webkit` [flags](TODOFIXLINK). If no flag is provided, QA Wolf will default to running your tests on Chromium.
+To run your tests on a specific browser, use the `--chromium`, `--firefox`, or `--webkit` [flags](TODOFIXLINK). To run your tests on all browsers, use the [`--all-browsers` flag](TODOFIXLINK). If you run your tests across browsers, each test will run three times: once on Chromium, once on Firefox, and once on WebKit.
 
-<BrowserSpecificCodeBlock />
+If no flag is provided, QA Wolf will default to running your tests on Chromium.
 
-You can also run your tests on all browsers with the `--all-browsers` [flag](TODOFIXLINK). This will run each test three times: once on Chromium, once on Firefox, and once on WebKit.
-
-```bash
-npx qawolf test --all-browsers
-```
-
-The browser flags work the same way if you want to run a specific test:
-
-```bash
-npx qawolf test myTestName --all-browsers
-```
+<BrowserCombinedCodeBlock />
 
 ## Next steps
 

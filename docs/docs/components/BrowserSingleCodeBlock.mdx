@@ -1,26 +1,33 @@
 import TabItem from "@theme/TabItem";
 import BrowserTabs from "./BrowserTabs";
 
-<BrowserTabs skipAll>
+<BrowserTabs>
 <TabItem value="chromium">
 
 ```bash
-# equivalent to npx qawolf test
-npx qawolf test --chromium
+# equivalent to npx qawolf test --chromium
+npx qawolf test myTestName
 ```
 
 </TabItem>
 <TabItem value="firefox">
 
 ```bash
-npx qawolf test --firefox
+npx qawolf test myTestName --firefox
 ```
 
 </TabItem>
 <TabItem value="webkit">
 
 ```bash
-npx qawolf test --webkit
+npx qawolf test myTestName --webkit
+```
+
+</TabItem>
+<TabItem value="all">
+
+```bash
+npx qawolf test myTestName --all-browsers
 ```
 
 </TabItem>
