@@ -45,17 +45,17 @@ See our [API documentation](TODOFIXLINK) for a full list of QA Wolf helpers.
 
 In addition to QA Wolf helpers, you also have full access to the [Playwright API](https://github.com/microsoft/playwright/blob/master/docs/api.md) and [Jest API](https://jestjs.io/docs/en/expect) in your test code.
 
-Next we'll add an assertion that our test todo is no longer visible after we clear completed todos. In terms of the [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model), this means that the todos `<section>` with the [class](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes#attr-class) of `main` should no longer exist on the page.
+Next we'll add an assertion that our todo is no longer visible after we clear completed todos. In terms of the [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model), this means that the todos `<section>` with the [class](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes#attr-class) of `main` should no longer exist on the page.
 
 The Playwright API provides a method called [`page.$`](https://github.com/microsoft/playwright/blob/master/docs/api.md#pageselector) that runs [`document.querySelector`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector) within a [`Page` instance](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page). We'll call this method, passing it the [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) `section.main`. If the TodoMVC application is working correctly, there should be no `<section>` element with the class of `main` after todos are cleared.
 
 We'll also use the QA Wolf [helper method `waitUntil`](TODOFIXLINK), which takes a function and a timeout in milliseconds. It waits until the function returns `true`, throwing an error if the timeout is reached.
 
-Putting it all together, after our test clicks the "Clear completed" button to clear completed todos, we will verify that the todos disappear from the page. We will do this by:
+Putting it all together, after our test clicks the "Clear completed" button to clear completed todos, we will verify that the todos disappear from the page. We do this by:
 
 1. Calling [`browser.page`](TODOFIXLINK) to get the current Playwright page instance
 2. Calling [`waitUntil`](TODOFIXLINK) to wait for the `section.main` element to disappear
-3. Passing a function that calls [`page.$`](https://github.com/microsoft/playwright/blob/master/docs/api.md#pageselector) with the CSS selector `section.main` and returns `true` when it is `null` (todos container is no longer on the page)
+3. Passing `waitUntil` a function that calls [`page.$`](https://github.com/microsoft/playwright/blob/master/docs/api.md#pageselector) with the CSS selector `section.main` and returns `true` when it is `null` (todos container is no longer on the page)
 
 First, we update the first line of our test file to also import `waitUntil` from `qawolf`:
 
@@ -66,7 +66,7 @@ const { launch } = require("qawolf");
 const { launch, waitUntil } = require("qawolf");
 ```
 
-Then we'll update the final step of our test:
+Then we update the final step of our test:
 
 ```js
 it('can click "Clear completed" button', async () => {
@@ -93,7 +93,7 @@ TODODOESITWORK
 
 ## Next steps
 
-Congratulations - you've know understand how to write assertions in your tests! 🎉
+Congratulations - you've learned how to write assertions in your tests! 🎉
 
 There are a few places you might want to go from here:
 
