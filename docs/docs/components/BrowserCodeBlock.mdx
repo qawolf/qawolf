@@ -1,10 +1,10 @@
 import TabItem from "@theme/TabItem";
 import BrowserTabs from "./BrowserTabs";
 
-- [Run a specific test](#run-a-test-locally) on [specified browser(s)](#testing-across-browsers):
-
 <BrowserTabs>
 <TabItem value="chromium">
+
+- [Run a specific test](#run-a-test-locally) on Chromium:
 
 ```bash
 # equivalent to npx qawolf test myTestName --chromium
@@ -20,6 +20,8 @@ npx qawolf test
 </TabItem>
 <TabItem value="firefox">
 
+- [Run a specific test](#run-a-test-locally) on Firefox:
+
 ```bash
 npx qawolf test myTestName --firefox
 ```
@@ -33,6 +35,8 @@ npx qawolf test --firefox
 </TabItem>
 <TabItem value="webkit">
 
+- [Run a specific test](#run-a-test-locally) on WebKit:
+
 ```bash
 npx qawolf test myTestName --webkit
 ```
@@ -45,6 +49,8 @@ npx qawolf test --webkit
 
 </TabItem>
 <TabItem value="all">
+
+- [Run a specific test](#run-a-test-locally) on Chromium, Firefox, and WebKit:
 
 ```bash
 npx qawolf test myTestName --all-browsers
