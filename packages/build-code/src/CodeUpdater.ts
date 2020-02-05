@@ -1,7 +1,9 @@
 import { buildWorkflow } from "@qawolf/build-workflow";
+import { logger } from "@qawolf/logger";
 import { ElementEvent, Step } from "@qawolf/types";
 import { sortBy } from "lodash";
 import { buildStepsCode } from "./buildStepsCode";
+import { getIndentation, indent } from "./indent";
 
 export const CREATE_CODE_SYMBOL = "// 🐺 CREATE CODE HERE";
 
@@ -49,6 +51,7 @@ export class CodeUpdater {
 
     const newSteps = steps.slice(this._steps.length);
     newSteps.forEach(step => {
+      logger.debug(`CodeUpdater: new step ${step.action}`);
       this._steps.push(step);
     });
   }
@@ -74,7 +77,12 @@ export class CodeUpdater {
         isTest: this._options.isTest
       }) + `${CREATE_CODE_SYMBOL}`;
 
-    const updatedCode = code.replace(CREATE_CODE_SYMBOL, codeToInsert);
+    const numSpaces = getIndentation(code, CREATE_CODE_SYMBOL);
+
+    const updatedCode = code.replace(
+      CREATE_CODE_SYMBOL,
+      indent(codeToInsert, numSpaces, 1)
+    );
 
     return updatedCode;
   }

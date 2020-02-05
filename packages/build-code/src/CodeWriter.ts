@@ -10,7 +10,9 @@ export type CodeWriterOptions = Omit<InitialCodeOptions, "createCodeSymbol"> & {
 
 export class CodeWriter {
   private _options: CodeWriterOptions;
+  private _pollingIntervalId?: NodeJS.Timeout;
   private _updater: CodeUpdater;
+  private _updating: boolean = false;
 
   protected constructor(options: CodeWriterOptions) {
     this._options = options;
@@ -20,6 +22,7 @@ export class CodeWriter {
   public static async start(options: CodeWriterOptions) {
     const writer = new CodeWriter(options);
     await writer.createInitialCode();
+    writer.startPolling();
     return writer;
   }
 
@@ -34,20 +37,40 @@ export class CodeWriter {
     await outputFile(this._options.codePath, initialCode, "utf8");
   }
 
+  protected dispose() {
+    if (!this._pollingIntervalId) return;
+
+    clearInterval(this._pollingIntervalId);
+    this._pollingIntervalId = undefined;
+  }
+
+  protected startPolling() {
+    this._pollingIntervalId = setInterval(async () => {
+      await this.updateCode();
+    }, 100);
+  }
+
   protected async updateCode() {
-    if (!this._updater.numPendingSteps) return;
+    if (this._updating || !this._updater.numPendingSteps) return;
 
     const code = await readFile(this._options.codePath, "utf8");
     if (!CodeUpdater.hasCreateSymbol(code)) {
+      console.log("no create symbol :(");
       // TODO log error debounced
       return;
     }
 
+    this._updating = true;
     const updatedCode = this._updater.updateCode(code);
     await outputFile(this._options.codePath, updatedCode, "utf8");
+
+    // TODO log updated steps
+
+    this._updating = false;
   }
 
   public async discard() {
+    this.dispose();
     // TODO restore to original, or delete if there was no original
   }
 
@@ -57,8 +80,9 @@ export class CodeWriter {
 
   // TODO run this on a loop
   public async save() {
-    // TODO prepare w/ final options
+    this.dispose();
 
+    // TODO prepare w/ final options
     // TODO...
     // if (this.options.debug) {
     //   await this.saveJson("events", events);

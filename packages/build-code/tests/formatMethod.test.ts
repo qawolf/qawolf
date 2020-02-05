@@ -9,7 +9,7 @@ import {
 
 const doc = htmlToDoc;
 
-const step = {
+const baseStep = {
   action: "click" as Action,
   html: {
     ancestors: [],
@@ -24,7 +24,7 @@ describe("formatMethod", () => {
   it("formats click step", () => {
     CONFIG.attribute = "data-qa";
 
-    const formattedMethod = formatMethod(step);
+    const formattedMethod = formatMethod(baseStep);
 
     expect(formattedMethod).toBe(
       "await browser.click({ css: \"[data-qa='test-input']\" });"
@@ -35,7 +35,7 @@ describe("formatMethod", () => {
     CONFIG.attribute = "id";
 
     const formattedMethod = formatMethod({
-      ...step,
+      ...baseStep,
       action: "scroll" as Action,
       value: {
         x: 100,
@@ -52,7 +52,7 @@ describe("formatMethod", () => {
     CONFIG.attribute = "";
 
     const formattedMethod = formatMethod({
-      ...step,
+      ...baseStep,
       action: "select" as Action,
       value: "spirit"
     });
@@ -67,12 +67,12 @@ describe("formatMethod", () => {
 
     const formattedMethod = formatMethod(
       {
-        ...step,
+        ...baseStep,
         action: "type" as Action,
         page: 1,
         value: "spirit"
       },
-      step
+      baseStep
     );
 
     expect(formattedMethod).toBe(
@@ -80,29 +80,39 @@ describe("formatMethod", () => {
     );
   });
 
+  it("formats clear an input", () => {
+    expect(
+      formatMethod({
+        ...baseStep,
+        action: "type",
+        value: null
+      })
+    ).toEqual("await browser.type(selectors[0], null);");
+  });
+
   it("throws error if invalid step action", () => {
     expect(() => {
-      formatMethod({ ...step, action: "drag" as Action });
+      formatMethod({ ...baseStep, action: "drag" as Action });
     }).toThrowError();
   });
 });
 
 describe("formatOptions", () => {
   it("returns empty string if no previous step", () => {
-    const formattedOptions = formatOptions(step);
+    const formattedOptions = formatOptions(baseStep);
 
     expect(formattedOptions).toBe("");
   });
 
   it("returns empty string if step and previous step on same page", () => {
-    const formattedOptions = formatOptions(step, { ...step, index: 1 });
+    const formattedOptions = formatOptions(baseStep, { ...baseStep, index: 1 });
 
     expect(formattedOptions).toBe("");
   });
 
   it("returns options if step and previous step on different pages", () => {
-    const formattedOptions = formatOptions(step, {
-      ...step,
+    const formattedOptions = formatOptions(baseStep, {
+      ...baseStep,
       index: 1,
       page: 1
     });
@@ -115,7 +125,7 @@ describe("formatSelector", () => {
   it("formats CssSelector", () => {
     CONFIG.attribute = "id";
 
-    const formattedSelector = formatSelector(step);
+    const formattedSelector = formatSelector(baseStep);
 
     expect(formattedSelector).toBe("{ css: \"[id='my-input']\" }");
   });
@@ -123,7 +133,7 @@ describe("formatSelector", () => {
   it("formats HtmlSelector", () => {
     CONFIG.attribute = "";
 
-    const formattedSelector = formatSelector({ ...step, index: 11 });
+    const formattedSelector = formatSelector({ ...baseStep, index: 11 });
 
     expect(formattedSelector).toBe("selectors[11]");
   });

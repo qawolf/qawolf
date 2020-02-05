@@ -1,5 +1,6 @@
 import { Step } from "@qawolf/types";
-import { formatStep } from "./formatStep";
+import { formatIt } from "./formatIt";
+import { formatMethod } from "./formatMethod";
 
 type BuildStepsOptions = {
   isTest?: boolean;
@@ -31,7 +32,10 @@ export const buildStepsCode = ({
 
   for (let i = startIndex; i < steps.length; i++) {
     const previousStep = i > 0 ? steps[i - 1] : null;
-    const { it, method } = formatStep(steps[i], previousStep);
+    const step = steps[i];
+
+    const it = formatIt(step);
+    const method = formatMethod(step, previousStep);
 
     stepsCode += isTest
       ? buildTestStep(it, method)

@@ -38,6 +38,44 @@ describe("formatIt", () => {
     expect(formatIt(step)).toBe('click "spirit" img');
   });
 
+  it("formats clear input", () => {
+    const step: Step = {
+      ...baseStep,
+      action: "type",
+      value: null
+    };
+
+    expect(formatIt(step)).toEqual("clear input");
+  });
+
+  it("formats clear input", () => {
+    const step: Step = {
+      ...baseStep,
+      action: "type",
+      value: "something"
+    };
+
+    expect(formatIt(step)).toEqual("type into input");
+  });
+
+  it("formats scroll action", () => {
+    const step: Step = {
+      ...baseStep,
+      action: "scroll"
+    };
+
+    expect(formatIt(step)).toBe("scroll");
+  });
+
+  it("formats select action", () => {
+    const step: Step = {
+      ...baseStep,
+      action: "select"
+    };
+
+    expect(formatIt(step)).toBe("select");
+  });
+
   it("formats Enter", () => {
     const step: Step = {
       ...baseStep,
