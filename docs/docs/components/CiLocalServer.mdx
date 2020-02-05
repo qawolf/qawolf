@@ -1,0 +1,63 @@
+import TabItem from "@theme/TabItem";
+import CiTabs from "./CiTabs";
+
+<CiTabs>
+<TabItem value="azure">
+
+```bash
+npx qawolf azure
+```
+
+</TabItem>
+<TabItem value="bitbucket">
+
+```bash
+npx qawolf bitbucket
+```
+
+</TabItem>
+<TabItem value="circleci">
+
+```bash
+npx qawolf circleci
+```
+
+</TabItem>
+<TabItem value="github">
+
+To run your tests against your local server, open the `.github/workflows/qawolf.yml` file at the root of your project.
+
+You'll notice a commented out step of the workflow called `Start local server` (lines 36-37 of the default generated file):
+
+```yaml
+# - name: Start local server
+#   run: npm run start & npx wait-on http://localhost:3000
+```
+
+Comment in this code, and edit it as you like. The example first runs the script `npm run start`, and then waits for the URL `localhost:3000` to be available:
+
+```yaml
+- name: Start local server
+  run: npm run start & npx wait-on http://localhost:3000
+```
+
+You may want to replace `npm run start` with a different command, or `localhost:3000` with a different URL.
+
+See [GitHub Actions documentation](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idstepsrun) to learn more about running commands.
+
+</TabItem>
+<TabItem value="gitlab">
+
+```bash
+npx qawolf gitlab
+```
+
+</TabItem>
+<TabItem value="jenkins">
+
+```bash
+npx qawolf jenkins
+```
+
+</TabItem>
+</CiTabs>
