@@ -57,6 +57,8 @@ export class CreateCodeCLI {
       codeWriter.prepare([event]);
     });
 
+    codeWriter.startUpdatePolling();
+
     const command = new CreateCodeCLI({ codePath, codeWriter, context });
     await command.prompt();
   }

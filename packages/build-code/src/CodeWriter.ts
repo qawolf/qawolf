@@ -14,7 +14,8 @@ export type CodeWriterOptions = Omit<InitialCodeOptions, "createCodeSymbol"> & {
 export class CodeWriter {
   private _options: CodeWriterOptions;
   private _pollingIntervalId?: NodeJS.Timeout;
-  private _updater: CodeUpdater;
+  // public for tests
+  public _updater: CodeUpdater;
   private _updating: boolean = false;
 
   protected constructor(options: CodeWriterOptions) {
@@ -25,7 +26,6 @@ export class CodeWriter {
   public static async start(options: CodeWriterOptions) {
     const writer = new CodeWriter(options);
     await writer._createInitialCode();
-    writer._startPolling();
     return writer;
   }
 
@@ -43,6 +43,7 @@ export class CodeWriter {
   // public for testing
   public async _loadUpdatableCode() {
     const code = await readFile(this._options.codePath, "utf8");
+
     if (!CodeUpdater.hasCreateSymbol(code)) {
       this._logMissingCreateSymbol();
       return;
@@ -62,15 +63,9 @@ export class CodeWriter {
     { leading: true }
   );
 
-  protected _startPolling() {
-    this._pollingIntervalId = setInterval(async () => {
-      await this._updateCode();
-    }, 100);
-  }
-
   // public for testing
   public async _updateCode() {
-    if (this._updating || !this._updater.numPendingSteps) return;
+    if (this._updating || this._updater.getNumPendingSteps() < 1) return;
 
     const code = await this._loadUpdatableCode();
     if (!code) return;
@@ -78,6 +73,7 @@ export class CodeWriter {
     this._updating = true;
     const updatedCode = this._updater.updateCode(code);
     await outputFile(this._options.codePath, updatedCode, "utf8");
+    this._updating = false;
 
     // // TODO cleanup
     // const selectorsPath = join(
@@ -94,21 +90,12 @@ export class CodeWriter {
     //   })),
     //   { spaces: " " }
     // );
-
-    this._updating = false;
   }
 
   public async discard() {
-    this.dispose();
+    this.stopUpdatePolling();
 
     // TODO restore to original, or delete if there was no original
-  }
-
-  public dispose() {
-    if (!this._pollingIntervalId) return;
-
-    clearInterval(this._pollingIntervalId);
-    this._pollingIntervalId = undefined;
   }
 
   public prepare(events: ElementEvent[]) {
@@ -116,7 +103,7 @@ export class CodeWriter {
   }
 
   public async save() {
-    this.dispose();
+    this.stopUpdatePolling();
     // TODO prepare w/ final options
 
     // TODO...
@@ -126,5 +113,18 @@ export class CodeWriter {
     // }
 
     console.log(green("saved:"), `${this._options.codePath}`);
+  }
+
+  public startUpdatePolling() {
+    this._pollingIntervalId = setInterval(async () => {
+      await this._updateCode();
+    }, 100);
+  }
+
+  public stopUpdatePolling() {
+    if (!this._pollingIntervalId) return;
+
+    clearInterval(this._pollingIntervalId);
+    this._pollingIntervalId = undefined;
   }
 }

@@ -1,11 +1,14 @@
 import { CodeWriter, CodeWriterOptions } from "../src/CodeWriter";
 import { outputFile, pathExists, readFile } from "fs-extra";
 import { buildInitialCode } from "../src/buildInitialCode";
-import { CREATE_CODE_SYMBOL } from "../src/CodeUpdater";
+import { CREATE_CODE_SYMBOL, CodeUpdater } from "../src/CodeUpdater";
 
 jest.mock("fs-extra");
 
+jest.mock("../src/CodeUpdater");
+
 const mockedPathExists = pathExists as jest.Mock<Promise<boolean>>;
+const mockedReadFile = readFile as jest.Mock<Promise<string | number | Buffer>>;
 const mockedOutputFile = outputFile as jest.Mock<Promise<void>>;
 
 const options: CodeWriterOptions = {
@@ -18,6 +21,7 @@ const options: CodeWriterOptions = {
 describe("CodeWriter._createInitialCode", () => {
   describe("no existing code", () => {
     it("writes initial code", async () => {
+      mockedOutputFile.mockClear();
       mockedPathExists.mockResolvedValue(false);
 
       const writer = await CodeWriter.start(options);
@@ -29,18 +33,16 @@ describe("CodeWriter._createInitialCode", () => {
         }),
         "utf8"
       ]);
-      writer.dispose();
     });
   });
 
   describe("existing code", () => {
     it("does not write initial code", async () => {
-      mockedPathExists.mockResolvedValue(true);
       mockedOutputFile.mockClear();
+      mockedPathExists.mockResolvedValue(true);
 
       const writer = await CodeWriter.start(options);
       expect(mockedOutputFile.mock.calls.length).toEqual(0);
-      writer.dispose();
     });
 
     it("inserts the create symbol for scripts", () => {
@@ -55,17 +57,12 @@ describe("CodeWriter._createInitialCode", () => {
 
 describe("CodeWriter._loadUpdatableCode", () => {
   it("logs when the create symbol is not found", async () => {
-    const mockedReadFile = readFile as jest.Mock<
-      Promise<string | number | Buffer>
-    >;
     mockedReadFile.mockResolvedValue("no code");
 
     const writer = await CodeWriter.start(options);
 
     const consoleSpy = jest.spyOn(global.console, "log").mockImplementation();
     await writer._loadUpdatableCode();
-
-    writer.dispose();
 
     expect(consoleSpy.mock.calls[0]).toEqual([
       "[1m[31mCannot update code without this line:[22m[39m",
@@ -77,8 +74,32 @@ describe("CodeWriter._loadUpdatableCode", () => {
 });
 
 describe("CodeWriter._updateCode", () => {
-  it("updates code", () => {
-    // TODO
+  it("writes updates code", async () => {
+    const writer = await CodeWriter.start(options);
+
+    // make it updatable
+    // - there is code
+    mockedReadFile.mockResolvedValue(CREATE_CODE_SYMBOL);
+    // - the code has an update symbol
+    (CodeUpdater.hasCreateSymbol as jest.Mock).mockReturnValue(true);
+    // - there are pending steps
+    (writer._updater.getNumPendingSteps as jest.Mock<number>).mockReturnValue(
+      1
+    );
+
+    // mock what the updated code should be
+    let expected = "SOME UPDATED CODE";
+    (writer._updater.updateCode as jest.Mock).mockReturnValue(expected);
+    mockedOutputFile.mockClear();
+
+    // run the update
+    await writer._updateCode();
+
+    expect(mockedOutputFile.mock.calls[0]).toEqual([
+      options.codePath,
+      expected,
+      "utf8"
+    ]);
   });
 
   it("updates selectors", () => {

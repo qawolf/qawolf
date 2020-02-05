@@ -39,7 +39,7 @@ export class CodeUpdater {
     return workflow;
   }
 
-  public get numPendingSteps() {
+  public getNumPendingSteps() {
     return this._steps.length - this._pendingStepIndex;
   }
 
@@ -61,7 +61,7 @@ export class CodeUpdater {
       throw new Error("Cannot update code without create symbol");
     }
 
-    if (this.numPendingSteps < 1) {
+    if (this.getNumPendingSteps() < 1) {
       throw new Error("No code to update");
     }
 
