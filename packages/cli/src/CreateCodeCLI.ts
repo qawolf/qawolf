@@ -54,7 +54,7 @@ export class CreateCodeCLI {
     });
 
     context.qawolf.on("recorded_event", event => {
-      codeWriter.prepare(event);
+      codeWriter.prepare([event]);
     });
 
     const command = new CreateCodeCLI({ codePath, codeWriter, context });

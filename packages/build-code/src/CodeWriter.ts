@@ -1,9 +1,10 @@
 import { ElementEvent } from "@qawolf/types";
 import { pathExists, readFile, outputFile, outputJson } from "fs-extra";
-import { green } from "kleur";
+import { bold, green } from "kleur";
+import { debounce } from "lodash";
+import { join, dirname } from "path";
 import { buildInitialCode, InitialCodeOptions } from "./buildInitialCode";
 import { CREATE_CODE_SYMBOL, CodeUpdater } from "./CodeUpdater";
-import { join, dirname } from "path";
 import { stepToSelector } from "./stepToSelector";
 
 export type CodeWriterOptions = Omit<InitialCodeOptions, "createCodeSymbol"> & {
@@ -23,12 +24,12 @@ export class CodeWriter {
 
   public static async start(options: CodeWriterOptions) {
     const writer = new CodeWriter(options);
-    await writer.createInitialCode();
-    writer.startPolling();
+    await writer._createInitialCode();
+    writer._startPolling();
     return writer;
   }
 
-  protected async createInitialCode() {
+  protected async _createInitialCode() {
     const codeExists = await pathExists(this._options.codePath);
     if (codeExists) return;
 
@@ -39,48 +40,60 @@ export class CodeWriter {
     await outputFile(this._options.codePath, initialCode, "utf8");
   }
 
-  protected dispose() {
-    if (!this._pollingIntervalId) return;
+  // public for testing
+  public async _loadUpdatableCode() {
+    const code = await readFile(this._options.codePath, "utf8");
+    if (!CodeUpdater.hasCreateSymbol(code)) {
+      this._logMissingCreateSymbol();
+      return;
+    }
 
-    clearInterval(this._pollingIntervalId);
-    this._pollingIntervalId = undefined;
+    return code;
   }
 
-  protected startPolling() {
+  protected _logMissingCreateSymbol = debounce(
+    () => {
+      console.log(
+        bold().red("Cannot update code without this line:"),
+        CREATE_CODE_SYMBOL
+      );
+    },
+    10000,
+    { leading: true }
+  );
+
+  protected _startPolling() {
     this._pollingIntervalId = setInterval(async () => {
-      await this.updateCode();
+      await this._updateCode();
     }, 100);
   }
 
-  protected async updateCode() {
+  // public for testing
+  public async _updateCode() {
     if (this._updating || !this._updater.numPendingSteps) return;
 
-    const code = await readFile(this._options.codePath, "utf8");
-    if (!CodeUpdater.hasCreateSymbol(code)) {
-      console.log("no create symbol :(");
-      // TODO log error debounced
-      return;
-    }
+    const code = await this._loadUpdatableCode();
+    if (!code) return;
 
     this._updating = true;
     const updatedCode = this._updater.updateCode(code);
     await outputFile(this._options.codePath, updatedCode, "utf8");
 
-    // TODO cleanup
-    const selectorsPath = join(
-      dirname(this._options.codePath),
-      "../selectors",
-      `${this._options.name}.json`
-    );
-    await outputJson(
-      selectorsPath,
-      this._updater._steps.map((step, index) => ({
-        // inline index so it is easy to correlate with the test
-        index,
-        ...stepToSelector(step)
-      })),
-      { spaces: " " }
-    );
+    // // TODO cleanup
+    // const selectorsPath = join(
+    //   dirname(this._options.codePath),
+    //   "../selectors",
+    //   `${this._options.name}.json`
+    // );
+    // await outputJson(
+    //   selectorsPath,
+    //   this._updater._steps.map((step, index) => ({
+    //     // inline index so it is easy to correlate with the test
+    //     index,
+    //     ...stepToSelector(step)
+    //   })),
+    //   { spaces: " " }
+    // );
 
     this._updating = false;
   }
@@ -90,8 +103,15 @@ export class CodeWriter {
     // TODO restore to original, or delete if there was no original
   }
 
-  public prepare(event: ElementEvent) {
-    this._updater.prepareSteps([event]);
+  public dispose() {
+    if (!this._pollingIntervalId) return;
+
+    clearInterval(this._pollingIntervalId);
+    this._pollingIntervalId = undefined;
+  }
+
+  public prepare(events: ElementEvent[]) {
+    this._updater.prepareSteps(events);
   }
 
   // TODO run this on a loop
