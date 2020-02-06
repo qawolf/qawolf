@@ -1,6 +1,6 @@
 import { ElementEvent } from "@qawolf/types";
-import { pathExists, readFile, outputFile, outputJson } from "fs-extra";
-import { bold, green } from "kleur";
+import { pathExists, readFile, outputFile, outputJson, remove } from "fs-extra";
+import { bold, green, red } from "kleur";
 import { debounce } from "lodash";
 import { join, dirname } from "path";
 import { buildInitialCode, InitialCodeOptions } from "./buildInitialCode";
@@ -13,6 +13,7 @@ export type CodeWriterOptions = Omit<InitialCodeOptions, "createCodeSymbol"> & {
 
 export class CodeWriter {
   private _options: CodeWriterOptions;
+  private _originalCode?: string;
   private _pollingIntervalId?: NodeJS.Timeout;
   private _selectorsPath: string;
   // public for tests
@@ -40,7 +41,10 @@ export class CodeWriter {
 
   protected async _createInitialCode() {
     const codeExists = await pathExists(this._options.codePath);
-    if (codeExists) return;
+    if (codeExists) {
+      this._originalCode = await readFile(this._options.codePath, "utf8");
+      return;
+    }
 
     const initialCode = buildInitialCode({
       ...this._options,
@@ -104,7 +108,13 @@ export class CodeWriter {
   public async discard() {
     this.stopUpdatePolling();
 
-    // TODO restore to original, or delete if there was no original
+    if (this._originalCode) {
+      console.log(red("reverted:"), `${this._options.codePath}`);
+      await outputFile(this._options.codePath, this._originalCode, "utf8");
+    } else {
+      console.log(red("removed:"), `${this._options.codePath}`);
+      await remove(this._options.codePath);
+    }
   }
 
   public prepare(events: ElementEvent[]) {

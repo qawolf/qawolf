@@ -57,9 +57,9 @@ describe("CodeUpdater.updateCode", () => {
         url: "localhost"
       });
 
-      expect(codeUpdater.numPendingSteps).toEqual(0);
+      expect(codeUpdater.getNumPendingSteps()).toEqual(0);
       codeUpdater.prepareSteps(events);
-      expect(codeUpdater.numPendingSteps).toEqual(8);
+      expect(codeUpdater.getNumPendingSteps()).toEqual(8);
 
       const codeToUpdate = `myOtherCode();\n${CREATE_CODE_SYMBOL}`;
       const updatedCode = codeUpdater.updateCode(codeToUpdate);
@@ -68,7 +68,7 @@ describe("CodeUpdater.updateCode", () => {
         isTest ? "createTestSteps" : "createScriptSteps"
       );
 
-      expect(codeUpdater.numPendingSteps).toEqual(0);
+      expect(codeUpdater.getNumPendingSteps()).toEqual(0);
     }
   });
 });
