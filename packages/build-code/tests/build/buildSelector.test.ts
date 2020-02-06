@@ -1,7 +1,7 @@
 import { CONFIG } from "@qawolf/config";
 import { Action } from "@qawolf/types";
 import { htmlToDoc } from "@qawolf/web";
-import { stepToSelector } from "../src/stepToSelector";
+import { stepToSelector, buildSelector } from "../../src/build";
 
 const doc = htmlToDoc;
 
@@ -57,5 +57,23 @@ describe("stepToSelector", () => {
         node: '<input id="my-input" data-qa="test-input"/>'
       }
     });
+  });
+});
+
+describe("buildSelector", () => {
+  it("builds CssSelector", () => {
+    CONFIG.attribute = "id";
+
+    const builtSelector = buildSelector(step);
+
+    expect(builtSelector).toBe("{ css: \"[id='my-input']\" }");
+  });
+
+  it("builds HtmlSelector", () => {
+    CONFIG.attribute = "";
+
+    const builtSelector = buildSelector({ ...step, index: 11 });
+
+    expect(builtSelector).toBe("selectors[11]");
   });
 });

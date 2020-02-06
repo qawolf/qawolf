@@ -1,4 +1,4 @@
-export const formatLaunch = (url: string, device?: string): string => {
+export const buildLaunch = (url: string, device?: string): string => {
   if (device) {
     return `await launch({ device: "${device}", url: "${url}" });`;
   }

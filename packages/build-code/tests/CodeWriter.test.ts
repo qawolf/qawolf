@@ -9,7 +9,7 @@ import {
   readJson,
   remove
 } from "fs-extra";
-import { buildInitialCode } from "../src/buildInitialCode";
+import { buildInitialCode } from "../src/build";
 import { CREATE_CODE_SYMBOL, CodeUpdater } from "../src/CodeUpdater";
 
 jest.mock("fs-extra");

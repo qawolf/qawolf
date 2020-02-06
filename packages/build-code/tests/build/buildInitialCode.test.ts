@@ -1,5 +1,5 @@
-import { buildInitialCode } from "../src/buildInitialCode";
-import { CREATE_CODE_SYMBOL } from "../src/CodeUpdater";
+import { buildInitialCode } from "../../src/build";
+import { CREATE_CODE_SYMBOL } from "../../src/CodeUpdater";
 
 const launchOptions = {
   createCodeSymbol: CREATE_CODE_SYMBOL,

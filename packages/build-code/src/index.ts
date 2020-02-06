@@ -1,2 +1,2 @@
+export { stepToSelector } from "./build";
 export { CodeWriter } from "./CodeWriter";
-export { stepToSelector } from "./stepToSelector";

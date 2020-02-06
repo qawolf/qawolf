@@ -1,5 +1,5 @@
 import { camelCase } from "lodash";
-import { formatLaunch } from "./formatLaunch";
+import { buildLaunch } from "./buildLaunch";
 
 export type InitialCodeOptions = {
   createCodeSymbol: string;
@@ -59,7 +59,7 @@ describe('${name}', () => {
 export const buildInitialCode = (options: InitialCodeOptions) => {
   const templateOptions = {
     createCodeSymbol: options.createCodeSymbol,
-    launch: formatLaunch(options.url, options.device),
+    launch: buildLaunch(options.url, options.device),
     name: camelCase(options.name)
   };
 

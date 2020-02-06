@@ -1,12 +1,9 @@
-import { CssSelector, ScrollValue, Step } from "@qawolf/types";
-import { stepToSelector } from "./stepToSelector";
+import { ScrollValue, Step } from "@qawolf/types";
+import { buildSelector } from "./buildSelector";
 
-export const formatMethod = (
-  step: Step,
-  previousStep?: Step | null
-): string => {
-  const selector = formatSelector(step);
-  const options = formatOptions(step, previousStep);
+export const buildMethod = (step: Step, previousStep?: Step | null): string => {
+  const selector = buildSelector(step);
+  const options = buildMethodOptions(step, previousStep);
 
   const { action, value } = step;
 
@@ -34,7 +31,7 @@ export const formatMethod = (
   throw new Error(`Invalid step action ${action}`);
 };
 
-export const formatOptions = (
+export const buildMethodOptions = (
   step: Step,
   previousStep?: Step | null
 ): string => {
@@ -42,16 +39,4 @@ export const formatOptions = (
   if (step.page === previousStep.page) return "";
 
   return `, { page: ${step.page} }`;
-};
-
-export const formatSelector = (step: Step): string => {
-  const selector = stepToSelector(step);
-
-  const cssValue = (selector as CssSelector).css;
-
-  if (cssValue) {
-    return `{ css: "${cssValue}" }`;
-  }
-
-  return `selectors[${step.index}]`;
 };

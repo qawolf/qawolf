@@ -1,5 +1,5 @@
 import { Step } from "@qawolf/types";
-import { formatIt } from "../src/formatIt";
+import { buildIt } from "../../src/build";
 
 let baseStep: Step = {
   action: "click",
@@ -15,9 +15,9 @@ let baseStep: Step = {
   page: 0
 };
 
-describe("formatIt", () => {
+describe("buildIt", () => {
   it("excludes target name if it does not exist", () => {
-    expect(formatIt(baseStep)).toBe("click input");
+    expect(buildIt(baseStep)).toBe("click input");
   });
 
   it("uses alt attribute if no other attributes specified", () => {
@@ -35,7 +35,7 @@ describe("formatIt", () => {
       }
     };
 
-    expect(formatIt(step)).toBe('click "spirit" img');
+    expect(buildIt(step)).toBe('click "spirit" img');
   });
 
   it("formats clear input", () => {
@@ -45,7 +45,7 @@ describe("formatIt", () => {
       value: null
     };
 
-    expect(formatIt(step)).toEqual("clear input");
+    expect(buildIt(step)).toEqual("clear input");
   });
 
   it("formats clear input", () => {
@@ -55,7 +55,7 @@ describe("formatIt", () => {
       value: "something"
     };
 
-    expect(formatIt(step)).toEqual("type into input");
+    expect(buildIt(step)).toEqual("type into input");
   });
 
   it("formats scroll action", () => {
@@ -64,7 +64,7 @@ describe("formatIt", () => {
       action: "scroll"
     };
 
-    expect(formatIt(step)).toBe("scroll");
+    expect(buildIt(step)).toBe("scroll");
   });
 
   it("formats select action", () => {
@@ -73,7 +73,7 @@ describe("formatIt", () => {
       action: "select"
     };
 
-    expect(formatIt(step)).toBe("select");
+    expect(buildIt(step)).toBe("select");
   });
 
   it("formats Enter", () => {
@@ -83,7 +83,7 @@ describe("formatIt", () => {
       value: "↓Enter"
     };
 
-    expect(formatIt(step)).toEqual("Enter");
+    expect(buildIt(step)).toEqual("Enter");
   });
 
   it("formats Tab", () => {
@@ -93,6 +93,6 @@ describe("formatIt", () => {
       value: "↓Tab"
     };
 
-    expect(formatIt(step)).toEqual("Tab");
+    expect(buildIt(step)).toEqual("Tab");
   });
 });

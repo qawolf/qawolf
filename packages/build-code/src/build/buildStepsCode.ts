@@ -1,6 +1,6 @@
 import { Step } from "@qawolf/types";
-import { formatIt } from "./formatIt";
-import { formatMethod } from "./formatMethod";
+import { buildIt } from "./buildIt";
+import { buildMethod } from "./buildMethod";
 
 type BuildStepsOptions = {
   isTest?: boolean;
@@ -34,8 +34,8 @@ export const buildStepsCode = ({
     const previousStep = i > 0 ? steps[i - 1] : null;
     const step = steps[i];
 
-    const it = formatIt(step);
-    const method = formatMethod(step, previousStep);
+    const it = buildIt(step);
+    const method = buildMethod(step, previousStep);
 
     stepsCode += isTest
       ? buildTestStep(it, method)

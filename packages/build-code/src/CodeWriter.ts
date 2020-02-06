@@ -10,9 +10,8 @@ import {
 import { bold, yellow } from "kleur";
 import { throttle } from "lodash";
 import { dirname, join, relative } from "path";
-import { buildInitialCode, InitialCodeOptions } from "./buildInitialCode";
+import { buildInitialCode, InitialCodeOptions, stepToSelector } from "./build";
 import { CREATE_CODE_SYMBOL, CodeUpdater } from "./CodeUpdater";
-import { stepToSelector } from "./stepToSelector";
 
 export type CodeWriterOptions = Omit<InitialCodeOptions, "createCodeSymbol"> & {
   codePath: string;

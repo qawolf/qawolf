@@ -2,7 +2,7 @@ import { buildWorkflow } from "@qawolf/build-workflow";
 import { logger } from "@qawolf/logger";
 import { ElementEvent, Step, Workflow } from "@qawolf/types";
 import { sortBy } from "lodash";
-import { buildStepsCode } from "./buildStepsCode";
+import { buildStepsCode } from "./build/buildStepsCode";
 import { getIndentation, indent, removeLinesIncluding } from "./format";
 
 export const CREATE_CODE_SYMBOL = "// 🐺 CREATE CODE HERE";
