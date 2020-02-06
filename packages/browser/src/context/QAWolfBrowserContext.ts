@@ -11,6 +11,7 @@ import {
   TypeOptions
 } from "@qawolf/types";
 import { sleep } from "@qawolf/web";
+import { EventEmitter } from "events";
 import { omit, sortBy } from "lodash";
 import {
   Browser as PlaywrightBrowser,
@@ -27,7 +28,6 @@ import { createDomArtifacts } from "../page/createDomArtifacts";
 import { findPage } from "../page/findPage";
 import { Page } from "../page/Page";
 import { logTestStarted } from "./logTestStarted";
-import { EventEmitter } from "events";
 
 export interface CreateContextOptions {
   capture?: VirtualCapture;

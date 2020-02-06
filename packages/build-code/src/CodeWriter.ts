@@ -13,8 +13,9 @@ export type CodeWriterOptions = Omit<InitialCodeOptions, "createCodeSymbol"> & {
 
 export class CodeWriter {
   private _options: CodeWriterOptions;
-  private _originalCode?: string;
   private _pollingIntervalId?: NodeJS.Timeout;
+  // public for tests
+  public _preexistingCode?: string;
   private _selectorsPath: string;
   // public for tests
   public _updater: CodeUpdater;
@@ -42,7 +43,7 @@ export class CodeWriter {
   protected async _createInitialCode() {
     const codeExists = await pathExists(this._options.codePath);
     if (codeExists) {
-      this._originalCode = await readFile(this._options.codePath, "utf8");
+      this._preexistingCode = await readFile(this._options.codePath, "utf8");
       return;
     }
 
@@ -53,7 +54,7 @@ export class CodeWriter {
     await outputFile(this._options.codePath, initialCode, "utf8");
   }
 
-  // public for testing
+  // public for tests
   public async _loadUpdatableCode() {
     const code = await readFile(this._options.codePath, "utf8");
 
@@ -76,7 +77,7 @@ export class CodeWriter {
     { leading: true }
   );
 
-  // public for testing
+  // public for tests
   public async _updateCode() {
     if (this._updating || this._updater.getNumPendingSteps() < 1) return;
 
@@ -94,7 +95,7 @@ export class CodeWriter {
     this._updating = false;
   }
 
-  // public for testing
+  // public for tests
   public async _updateSelectors() {
     const selectors = this._updater._steps.map((step, index) => ({
       // inline index so it is easy to correlate with the test
@@ -108,9 +109,9 @@ export class CodeWriter {
   public async discard() {
     this.stopUpdatePolling();
 
-    if (this._originalCode) {
+    if (this._preexistingCode) {
       console.log(red("reverted:"), `${this._options.codePath}`);
-      await outputFile(this._options.codePath, this._originalCode, "utf8");
+      await outputFile(this._options.codePath, this._preexistingCode, "utf8");
     } else {
       console.log(red("removed:"), `${this._options.codePath}`);
       await remove(this._options.codePath);

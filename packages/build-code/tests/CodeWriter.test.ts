@@ -1,7 +1,7 @@
 import { Step } from "@qawolf/types";
 import { htmlToDoc } from "@qawolf/web";
 import { CodeWriter, CodeWriterOptions } from "../src/CodeWriter";
-import { outputFile, outputJSON, pathExists, readFile } from "fs-extra";
+import { outputFile, outputJSON, pathExists, readFile, remove } from "fs-extra";
 import { buildInitialCode } from "../src/buildInitialCode";
 import { CREATE_CODE_SYMBOL, CodeUpdater } from "../src/CodeUpdater";
 
@@ -11,6 +11,7 @@ jest.mock("../src/CodeUpdater");
 
 const mockedPathExists = pathExists as jest.Mock<Promise<boolean>>;
 const mockedReadFile = readFile as jest.Mock<Promise<string | number | Buffer>>;
+const mockedRemove = remove as jest.Mock<Promise<void>>;
 const mockedOutputFile = outputFile as jest.Mock<Promise<void>>;
 const mockedOutputJSON = outputJSON as jest.Mock<Promise<void>>;
 
@@ -22,12 +23,12 @@ const options: CodeWriterOptions = {
 };
 
 describe("CodeWriter._createInitialCode", () => {
-  describe("no existing code", () => {
+  describe("no preexisting code", () => {
     it("writes initial code", async () => {
       mockedOutputFile.mockClear();
       mockedPathExists.mockResolvedValue(false);
 
-      const writer = await CodeWriter.start(options);
+      await CodeWriter.start(options);
       expect(mockedOutputFile.mock.calls[0]).toEqual([
         options.codePath,
         buildInitialCode({
@@ -124,12 +125,35 @@ describe("CodeWriter._updateCode", () => {
 });
 
 describe("CodeWriter.discard", () => {
-  it("restores the existing code", () => {
-    // TODO
+  it("restores preexisting code", async () => {
+    let preexistingCode = "preexistingCode()";
+
+    mockedOutputFile.mockReset();
+    mockedPathExists.mockResolvedValue(true);
+    mockedReadFile.mockResolvedValue(preexistingCode);
+
+    const writer = await CodeWriter.start(options);
+    expect(writer._preexistingCode).toEqual(preexistingCode);
+
+    await writer.discard();
+
+    expect(mockedOutputFile.mock.calls[0]).toEqual([
+      options.codePath,
+      preexistingCode,
+      "utf8"
+    ]);
+    expect(mockedRemove.mock.calls.length).toEqual(0);
   });
 
-  it("deletes the file if there was not existing code", () => {
-    // TODO
+  it("deletes the file if there was not preexisting code", async () => {
+    mockedPathExists.mockResolvedValue(false);
+
+    const writer = await CodeWriter.start(options);
+    expect(writer._preexistingCode).toEqual(undefined);
+
+    await writer.discard();
+
+    expect(mockedRemove.mock.calls[0]).toEqual([options.codePath]);
   });
 });
 
