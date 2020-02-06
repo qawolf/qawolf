@@ -13,13 +13,24 @@ const mockedPathExists = pathExists as jest.Mock<Promise<boolean>>;
 const mockedReadFile = readFile as jest.Mock<Promise<string | number | Buffer>>;
 const mockedRemove = remove as jest.Mock<Promise<void>>;
 const mockedOutputFile = outputFile as jest.Mock<Promise<void>>;
-const mockedOutputJSON = outputJSON as jest.Mock<Promise<void>>;
+const mockedOutputJson = outputJSON as jest.Mock<Promise<void>>;
 
 const options: CodeWriterOptions = {
   codePath: "/path/to/mytest.test.js",
   isTest: true,
   name: "mytest",
   url: "http://localhost:3000"
+};
+
+const step: Step = {
+  action: "click",
+  html: {
+    ancestors: [],
+    node: htmlToDoc("<input />")
+  },
+  index: 0,
+  isFinal: true,
+  page: 0
 };
 
 describe("CodeWriter._createInitialCode", () => {
@@ -95,21 +106,10 @@ describe("CodeWriter._updateCode", () => {
     let expected = "SOME UPDATED CODE";
     (writer._updater.updateCode as jest.Mock).mockReturnValue(expected);
 
-    writer._updater._steps = [
-      {
-        action: "click",
-        html: {
-          ancestors: [],
-          node: htmlToDoc("<input />")
-        },
-        index: 0,
-        isFinal: true,
-        page: 0
-      } as Step
-    ];
+    writer._updater._steps = [step];
 
     mockedOutputFile.mockClear();
-    mockedOutputJSON.mockClear();
+    mockedOutputJson.mockClear();
 
     // run the update
     await writer._updateCode();
@@ -120,7 +120,7 @@ describe("CodeWriter._updateCode", () => {
       "utf8"
     ]);
 
-    expect(mockedOutputJSON.mock.calls[0]).toMatchSnapshot();
+    expect(mockedOutputJson.mock.calls[0]).toMatchSnapshot();
   });
 });
 
@@ -151,14 +151,14 @@ describe("CodeWriter.discard", () => {
     const writer = await CodeWriter.start(options);
     expect(writer._preexistingCode).toEqual(undefined);
 
+    mockedRemove.mockReset();
     await writer.discard();
-
     expect(mockedRemove.mock.calls[0]).toEqual([options.codePath]);
   });
 });
 
 describe("CodeWriter.save", () => {
-  it("includes non-final steps", () => {
+  it("includes non-final steps", async () => {
     // TODO
   });
 

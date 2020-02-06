@@ -1,4 +1,4 @@
-import { ElementEvent } from "@qawolf/types";
+import { ElementEvent, Workflow } from "@qawolf/types";
 import { pathExists, readFile, outputFile, outputJson, remove } from "fs-extra";
 import { bold, green, red } from "kleur";
 import { debounce } from "lodash";
@@ -9,6 +9,7 @@ import { stepToSelector } from "./stepToSelector";
 
 export type CodeWriterOptions = Omit<InitialCodeOptions, "createCodeSymbol"> & {
   codePath: string;
+  debug?: boolean;
 };
 
 export class CodeWriter {
@@ -77,6 +78,17 @@ export class CodeWriter {
     { leading: true }
   );
 
+  protected async _saveDebugFiles(workflow: Workflow) {
+    const rootPath = dirname(this._options.codePath);
+    await outputJson(join(rootPath, "../events"), this._updater.getEvents(), {
+      spaces: " "
+    });
+
+    await outputJson(join(rootPath, "../workflows"), workflow, {
+      spaces: " "
+    });
+  }
+
   // public for tests
   public async _updateCode() {
     if (this._updating || this._updater.getNumPendingSteps() < 1) return;
@@ -118,19 +130,19 @@ export class CodeWriter {
     }
   }
 
-  public prepare(events: ElementEvent[]) {
-    this._updater.prepareSteps(events);
+  public prepare(newEvents: ElementEvent[]) {
+    this._updater.prepareSteps({ newEvents, onlyFinalSteps: true });
   }
 
   public async save() {
     this.stopUpdatePolling();
-    // TODO prepare w/ final options
 
-    // TODO...
-    // if (this.options.debug) {
-    //   await this.saveJson("events", events);
-    //   await this.saveJson("workflows", workflow);
-    // }
+    // since we are done recording, include not-finalized steps
+    const workflow = this._updater.prepareSteps({ onlyFinalSteps: false });
+
+    if (this._options.debug) {
+      await this._saveDebugFiles(workflow);
+    }
 
     console.log(green("saved:"), `${this._options.codePath}`);
   }

@@ -30,7 +30,7 @@ describe("CodeUpdater.prepareSteps", () => {
     let stepEvents: any[] = [];
 
     events.forEach(event => {
-      codeUpdater.prepareSteps([event]);
+      codeUpdater.prepareSteps({ newEvents: [event], onlyFinalSteps: true });
 
       // track each event that causes a step to be created
       if (codeUpdater._steps.length !== numSteps) {
@@ -58,7 +58,7 @@ describe("CodeUpdater.updateCode", () => {
       });
 
       expect(codeUpdater.getNumPendingSteps()).toEqual(0);
-      codeUpdater.prepareSteps(events);
+      codeUpdater.prepareSteps({ newEvents: events, onlyFinalSteps: true });
       expect(codeUpdater.getNumPendingSteps()).toEqual(8);
 
       const codeToUpdate = `myOtherCode();\n${CREATE_CODE_SYMBOL}`;

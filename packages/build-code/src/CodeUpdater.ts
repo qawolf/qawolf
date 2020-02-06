@@ -1,6 +1,6 @@
 import { buildWorkflow } from "@qawolf/build-workflow";
 import { logger } from "@qawolf/logger";
-import { ElementEvent, Step } from "@qawolf/types";
+import { ElementEvent, Step, Workflow } from "@qawolf/types";
 import { sortBy } from "lodash";
 import { buildStepsCode } from "./buildStepsCode";
 import { getIndentation, indent } from "./indent";
@@ -12,6 +12,11 @@ type ConstructorOptions = {
   isTest?: boolean;
   name: string;
   url: string;
+};
+
+type PrepareStepsOptions = {
+  newEvents?: ElementEvent[];
+  onlyFinalSteps?: boolean;
 };
 
 export class CodeUpdater {
@@ -29,31 +34,40 @@ export class CodeUpdater {
     return code.includes(CREATE_CODE_SYMBOL);
   }
 
-  private _buildWorkflow() {
+  private _buildWorkflow(onlyFinalSteps?: boolean) {
     const workflow = buildWorkflow({
       device: this._options.device,
       events: sortBy(this._events, e => e.time),
+      onlyFinalSteps,
       name: this._options.name,
       url: this._options.url
     });
+
     return workflow;
+  }
+
+  public getEvents() {
+    return this._events;
   }
 
   public getNumPendingSteps() {
     return this._steps.length - this._pendingStepIndex;
   }
 
-  public prepareSteps(events: ElementEvent[]) {
-    this._events.push(...events);
+  public prepareSteps(options: PrepareStepsOptions): Workflow {
+    if (options.newEvents) {
+      this._events.push(...options.newEvents);
+    }
 
-    const workflow = this._buildWorkflow();
-    const steps = workflow.steps.filter(step => step.isFinal);
+    const workflow = this._buildWorkflow(options.onlyFinalSteps);
 
-    const newSteps = steps.slice(this._steps.length);
+    const newSteps = workflow.steps.slice(this._steps.length);
     newSteps.forEach(step => {
       logger.debug(`CodeUpdater: new step ${step.action}`);
       this._steps.push(step);
     });
+
+    return workflow;
   }
 
   public updateCode(code: string): string {
