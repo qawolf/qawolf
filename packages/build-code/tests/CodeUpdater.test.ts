@@ -49,6 +49,8 @@ describe("CodeUpdater.prepareSteps", () => {
 });
 
 describe("CodeUpdater.updateCode", () => {
+  // TODO test multiple updates w/ snapshot
+
   it("replaces the create symbol with new steps", () => {
     for (let isTest of [true, false]) {
       const codeUpdater = new CodeUpdater({
@@ -70,5 +72,9 @@ describe("CodeUpdater.updateCode", () => {
 
       expect(codeUpdater.getNumPendingSteps()).toEqual(0);
     }
+  });
+
+  it("removes the create symbol line on finalize", () => {
+    // TODO..
   });
 });

@@ -80,6 +80,7 @@ describe("CodeWriter._loadUpdatableCode", () => {
     await writer._loadUpdatableCode();
 
     expect(consoleSpy.mock.calls[0]).toEqual([
+      "\n",
       "[1m[31mCannot update code without this line:[22m[39m",
       CREATE_CODE_SYMBOL
     ]);
@@ -125,7 +126,7 @@ describe("CodeWriter._updateCode", () => {
 });
 
 describe("CodeWriter.discard", () => {
-  it("restores preexisting code", async () => {
+  it("restores preexisting code and selectors", async () => {
     let preexistingCode = "preexistingCode()";
 
     mockedOutputFile.mockReset();
@@ -133,6 +134,9 @@ describe("CodeWriter.discard", () => {
     mockedReadFile.mockResolvedValue(preexistingCode);
 
     const writer = await CodeWriter.start(options);
+
+    // TODO test selectors ar reverted
+
     expect(writer._preexistingCode).toEqual(preexistingCode);
 
     await writer.discard();
@@ -145,7 +149,7 @@ describe("CodeWriter.discard", () => {
     expect(mockedRemove.mock.calls.length).toEqual(0);
   });
 
-  it("deletes the file if there was not preexisting code", async () => {
+  it("deletes new code and selectors", async () => {
     mockedPathExists.mockResolvedValue(false);
 
     const writer = await CodeWriter.start(options);
@@ -154,6 +158,8 @@ describe("CodeWriter.discard", () => {
     mockedRemove.mockReset();
     await writer.discard();
     expect(mockedRemove.mock.calls[0]).toEqual([options.codePath]);
+
+    // TODO test selectors are deleted
   });
 });
 

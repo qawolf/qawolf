@@ -3,7 +3,7 @@ import { logger } from "@qawolf/logger";
 import { ElementEvent, Step, Workflow } from "@qawolf/types";
 import { sortBy } from "lodash";
 import { buildStepsCode } from "./buildStepsCode";
-import { getIndentation, indent } from "./indent";
+import { getIndentation, indent, removeLineIncludes } from "./indent";
 
 export const CREATE_CODE_SYMBOL = "// 🐺 CREATE CODE HERE";
 
@@ -70,12 +70,12 @@ export class CodeUpdater {
     return workflow;
   }
 
-  public updateCode(code: string): string {
+  public updateCode(code: string, finalize: boolean = false): string {
     if (!CodeUpdater.hasCreateSymbol(code)) {
       throw new Error("Cannot update code without create symbol");
     }
 
-    if (this.getNumPendingSteps() < 1) {
+    if (!finalize && this.getNumPendingSteps() < 1) {
       throw new Error("No code to update");
     }
 
@@ -84,19 +84,23 @@ export class CodeUpdater {
     // move the pending step forward
     this._pendingStepIndex = this._steps.length;
 
-    const codeToInsert =
+    let codeToInsert =
       buildStepsCode({
         startIndex,
         steps: this._steps,
         isTest: this._options.isTest
-      }) + `${CREATE_CODE_SYMBOL}`;
+      }) + CREATE_CODE_SYMBOL;
 
     const numSpaces = getIndentation(code, CREATE_CODE_SYMBOL);
 
-    const updatedCode = code.replace(
+    let updatedCode = code.replace(
       CREATE_CODE_SYMBOL,
       indent(codeToInsert, numSpaces, 1)
     );
+
+    if (finalize) {
+      updatedCode = removeLineIncludes(code, CREATE_CODE_SYMBOL);
+    }
 
     return updatedCode;
   }

@@ -67,6 +67,7 @@ await browser.click(selectors[7]);
 
 exports[`CodeUpdater.updateCode replaces the create symbol with new steps: createTestSteps 1`] = `
 "myOtherCode();
+
 it('can scroll', async () => {
   await browser.scroll(selectors[0], { x: 0, y: 378 });
 });
@@ -98,6 +99,5 @@ it('can Enter', async () => {
 it('can click \\"Logout\\" link', async () => {
   await browser.click(selectors[7]);
 });
-
 // 🐺 CREATE CODE HERE"
 `;

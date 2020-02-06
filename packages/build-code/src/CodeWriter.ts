@@ -1,7 +1,7 @@
 import { ElementEvent, Workflow } from "@qawolf/types";
 import { pathExists, readFile, outputFile, outputJson, remove } from "fs-extra";
 import { bold, green, red } from "kleur";
-import { debounce } from "lodash";
+import { throttle } from "lodash";
 import { join, dirname } from "path";
 import { buildInitialCode, InitialCodeOptions } from "./buildInitialCode";
 import { CREATE_CODE_SYMBOL, CodeUpdater } from "./CodeUpdater";
@@ -67,9 +67,10 @@ export class CodeWriter {
     return code;
   }
 
-  protected _logMissingCreateSymbol = debounce(
+  protected _logMissingCreateSymbol = throttle(
     () => {
       console.log(
+        "\n",
         bold().red("Cannot update code without this line:"),
         CREATE_CODE_SYMBOL
       );
@@ -90,15 +91,19 @@ export class CodeWriter {
   }
 
   // public for tests
-  public async _updateCode() {
-    if (this._updating || this._updater.getNumPendingSteps() < 1) return;
+  public async _updateCode(finalize: boolean = false) {
+    if (this._updating) return;
+
+    // only load the code when it makes sense to
+    if (!finalize && this._updater.getNumPendingSteps() < 1) return;
 
     const code = await this._loadUpdatableCode();
     if (!code) return;
 
     this._updating = true;
 
-    const updatedCode = this._updater.updateCode(code);
+    const updatedCode = this._updater.updateCode(code, finalize);
+
     await Promise.all([
       outputFile(this._options.codePath, updatedCode, "utf8"),
       this._updateSelectors()
@@ -139,6 +144,8 @@ export class CodeWriter {
 
     // since we are done recording, include not-finalized steps
     const workflow = this._updater.prepareSteps({ onlyFinalSteps: false });
+
+    await this._updateCode(true);
 
     if (this._options.debug) {
       await this._saveDebugFiles(workflow);

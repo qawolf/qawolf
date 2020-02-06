@@ -9,9 +9,9 @@ type BuildStepsOptions = {
 };
 
 export const buildTestStep = (it: string, method: string) => {
-  const testCode = `it('can ${it}', async () => {
+  const testCode = `\nit('can ${it}', async () => {
   ${method}
-});\n\n`;
+});\n`;
 
   return testCode;
 };

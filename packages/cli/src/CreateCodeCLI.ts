@@ -32,7 +32,7 @@ export class CreateCodeCLI {
   }
 
   static async start(options: CreateOptions) {
-    const context = await launch({
+    const contextPromise = launch({
       device: options.device,
       shouldRecordEvents: true,
       timeout: 0,
@@ -52,6 +52,8 @@ export class CreateCodeCLI {
       name: options.name,
       url: options.url.href!
     });
+
+    const context = await contextPromise;
 
     context.qawolf.on("recorded_event", event => {
       codeWriter.prepare([event]);

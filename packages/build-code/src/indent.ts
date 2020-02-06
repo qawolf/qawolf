@@ -1,20 +1,27 @@
-import { last, repeat } from "lodash";
+import { repeat } from "lodash";
+
+export const getLineIncludes = (
+  stringValue: string,
+  searchValue: string
+): string | undefined => {
+  return stringValue.split("\n").find(line => line.includes(searchValue));
+};
 
 export const getIndentation = (stringValue: string, searchValue: string) => {
-  const searchIndex = stringValue.indexOf(searchValue);
-  if (searchIndex < 0) return 0;
-
-  const codeBeforeInclusive = stringValue.substr(
-    0,
-    searchIndex + searchValue.length
-  );
-
-  const lines = codeBeforeInclusive.match(/[^\r\n]+/g);
-
-  const codeLine = last(lines);
+  const codeLine = getLineIncludes(stringValue, searchValue);
   if (!codeLine) return 0;
 
   return Math.max(codeLine.indexOf(searchValue), 0);
+};
+
+export const removeLineIncludes = (
+  stringValue: string,
+  searchValue: string
+) => {
+  return stringValue
+    .split("\n")
+    .filter(line => !line.includes(searchValue))
+    .join("\n");
 };
 
 export const indent = (

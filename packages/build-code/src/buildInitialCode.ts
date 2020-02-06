@@ -50,7 +50,6 @@ describe('${name}', () => {
   });
 
   afterAll(() => browser.close());
-
   ${createCodeSymbol}
 });`;
 
