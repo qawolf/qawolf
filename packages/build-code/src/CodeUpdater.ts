@@ -3,7 +3,7 @@ import { logger } from "@qawolf/logger";
 import { ElementEvent, Step, Workflow } from "@qawolf/types";
 import { sortBy } from "lodash";
 import { buildStepsCode } from "./buildStepsCode";
-import { getIndentation, indent, removeLineIncludes } from "./indent";
+import { getIndentation, indent, removeLinesIncluding } from "./format";
 
 export const CREATE_CODE_SYMBOL = "// 🐺 CREATE CODE HERE";
 
@@ -99,7 +99,7 @@ export class CodeUpdater {
     );
 
     if (finalize) {
-      updatedCode = removeLineIncludes(code, CREATE_CODE_SYMBOL);
+      updatedCode = removeLinesIncluding(code, CREATE_CODE_SYMBOL);
     }
 
     return updatedCode;

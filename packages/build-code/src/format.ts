@@ -14,16 +14,6 @@ export const getIndentation = (stringValue: string, searchValue: string) => {
   return Math.max(codeLine.indexOf(searchValue), 0);
 };
 
-export const removeLineIncludes = (
-  stringValue: string,
-  searchValue: string
-) => {
-  return stringValue
-    .split("\n")
-    .filter(line => !line.includes(searchValue))
-    .join("\n");
-};
-
 export const indent = (
   code: string,
   numSpaces: number,
@@ -38,5 +28,15 @@ export const indent = (
 
       return line;
     })
+    .join("\n");
+};
+
+export const removeLinesIncluding = (
+  stringValue: string,
+  searchValue: string
+) => {
+  return stringValue
+    .split("\n")
+    .filter(line => !line.includes(searchValue))
     .join("\n");
 };
