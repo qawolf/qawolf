@@ -11,6 +11,7 @@ type ConstructorOptions = {
   device?: string;
   isTest?: boolean;
   name: string;
+  stepStartIndex?: number;
   url: string;
 };
 
@@ -40,6 +41,7 @@ export class CodeUpdater {
       events: this.getEvents(),
       onlyFinalSteps,
       name: this._options.name,
+      stepStartIndex: this._options.stepStartIndex,
       url: this._options.url
     });
 

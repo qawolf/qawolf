@@ -6,6 +6,7 @@ type Options = {
   events: ElementEvent[];
   onlyFinalSteps?: boolean;
   name: string;
+  stepStartIndex?: number;
   url: string;
 };
 
@@ -15,6 +16,12 @@ export const buildWorkflow = (options: Options): Workflow => {
   if (options.onlyFinalSteps) {
     steps = steps.filter(step => step.isFinal);
   }
+
+  // reindex
+  steps = steps.map((step, index) => ({
+    ...step,
+    index: index + (options.stepStartIndex || 0)
+  }));
 
   const workflow = {
     device: options.device,

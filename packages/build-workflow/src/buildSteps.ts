@@ -17,7 +17,11 @@ export const buildSteps = (events: ElementEvent[]): Step[] => {
     unorderedSteps,
     // ordered by the event index
     step => step.index
-  ).map<Step>((step, index) => ({ ...step, index }));
+  ).map<Step>((step, index) => ({
+    ...step,
+    // re-index
+    index: index
+  }));
 
   return steps;
 };
