@@ -1,7 +1,7 @@
 import { loadEvents } from "@qawolf/fixtures";
 import { ElementEvent } from "@qawolf/types";
 import { CodeUpdater, CREATE_CODE_SYMBOL } from "../src/CodeUpdater";
-import { last, pick } from "lodash";
+import { chunk, last, pick } from "lodash";
 
 let events: ElementEvent[];
 
@@ -49,9 +49,10 @@ describe("CodeUpdater.prepareSteps", () => {
 });
 
 describe("CodeUpdater.updateCode", () => {
-  // TODO test multiple updates w/ snapshot
-
   it("replaces the create symbol with new steps", () => {
+    // test multiple updates
+    const chunkedEvents = chunk(events, events.length / 2);
+
     for (let isTest of [true, false]) {
       const codeUpdater = new CodeUpdater({
         isTest,
@@ -60,17 +61,23 @@ describe("CodeUpdater.updateCode", () => {
       });
 
       expect(codeUpdater.getNumPendingSteps()).toEqual(0);
-      codeUpdater.prepareSteps({ newEvents: events, onlyFinalSteps: true });
-      expect(codeUpdater.getNumPendingSteps()).toEqual(8);
 
-      const codeToUpdate = `myOtherCode();\n${CREATE_CODE_SYMBOL}`;
-      const updatedCode = codeUpdater.updateCode(codeToUpdate);
+      // test it matches indentation
+      let codeToUpdate = `  myOtherCode();\n  ${CREATE_CODE_SYMBOL}`;
 
-      expect(updatedCode).toMatchSnapshot(
-        isTest ? "createTestSteps" : "createScriptSteps"
-      );
+      for (let i = 0; i < chunkedEvents.length; i++) {
+        codeUpdater.prepareSteps({
+          newEvents: chunkedEvents[i],
+          onlyFinalSteps: true
+        });
+        expect(codeUpdater.getNumPendingSteps()).toBeGreaterThan(0);
 
-      expect(codeUpdater.getNumPendingSteps()).toEqual(0);
+        codeToUpdate = codeUpdater.updateCode(codeToUpdate);
+        expect(codeToUpdate).toMatchSnapshot(
+          isTest ? `createTestSteps_${i}` : `createScriptSteps_${i}`
+        );
+        expect(codeUpdater.getNumPendingSteps()).toEqual(0);
+      }
     }
   });
 
