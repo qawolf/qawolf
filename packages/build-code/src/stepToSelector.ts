@@ -5,12 +5,12 @@ import { serializeDocSelector } from "@qawolf/web";
 export const stepToSelector = (step: Step): Selector => {
   const attributes = CONFIG.attribute.split(",").map(attr => attr.trim());
 
-  const attributeWithValue = attributes.find(
-    attr => !!step.html.node.attrs[attr]
-  );
+  const attrs = step.html.node.attrs || {};
+
+  const attributeWithValue = attributes.find(attr => !!attrs[attr]);
 
   if (attributeWithValue) {
-    const value = step.html.node.attrs[attributeWithValue];
+    const value = attrs[attributeWithValue];
 
     return {
       css: `[${attributeWithValue}='${value}']`

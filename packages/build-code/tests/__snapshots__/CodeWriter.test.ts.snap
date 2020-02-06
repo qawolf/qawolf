@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CodeWriter._updateCode updates code and selectors 1`] = `
+Array [
+  "/path/selectors/mytest.json",
+  Array [
+    Object {
+      "html": Object {
+        "ancestors": Array [],
+        "node": "<input/>",
+      },
+      "index": 0,
+    },
+  ],
+  Object {
+    "spaces": " ",
+  },
+]
+`;

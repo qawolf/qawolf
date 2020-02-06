@@ -1,5 +1,7 @@
+import { Step } from "@qawolf/types";
+import { htmlToDoc } from "@qawolf/web";
 import { CodeWriter, CodeWriterOptions } from "../src/CodeWriter";
-import { outputFile, pathExists, readFile } from "fs-extra";
+import { outputFile, outputJSON, pathExists, readFile } from "fs-extra";
 import { buildInitialCode } from "../src/buildInitialCode";
 import { CREATE_CODE_SYMBOL, CodeUpdater } from "../src/CodeUpdater";
 
@@ -10,6 +12,7 @@ jest.mock("../src/CodeUpdater");
 const mockedPathExists = pathExists as jest.Mock<Promise<boolean>>;
 const mockedReadFile = readFile as jest.Mock<Promise<string | number | Buffer>>;
 const mockedOutputFile = outputFile as jest.Mock<Promise<void>>;
+const mockedOutputJSON = outputJSON as jest.Mock<Promise<void>>;
 
 const options: CodeWriterOptions = {
   codePath: "/path/to/mytest.test.js",
@@ -74,7 +77,7 @@ describe("CodeWriter._loadUpdatableCode", () => {
 });
 
 describe("CodeWriter._updateCode", () => {
-  it("writes updates code", async () => {
+  it("updates code and selectors", async () => {
     const writer = await CodeWriter.start(options);
 
     // make it updatable
@@ -90,7 +93,22 @@ describe("CodeWriter._updateCode", () => {
     // mock what the updated code should be
     let expected = "SOME UPDATED CODE";
     (writer._updater.updateCode as jest.Mock).mockReturnValue(expected);
+
+    writer._updater._steps = [
+      {
+        action: "click",
+        html: {
+          ancestors: [],
+          node: htmlToDoc("<input />")
+        },
+        index: 0,
+        isFinal: true,
+        page: 0
+      } as Step
+    ];
+
     mockedOutputFile.mockClear();
+    mockedOutputJSON.mockClear();
 
     // run the update
     await writer._updateCode();
@@ -100,10 +118,8 @@ describe("CodeWriter._updateCode", () => {
       expected,
       "utf8"
     ]);
-  });
 
-  it("updates selectors", () => {
-    // TODO
+    expect(mockedOutputJSON.mock.calls[0]).toMatchSnapshot();
   });
 });
 

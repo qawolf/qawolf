@@ -14,12 +14,21 @@ export type CodeWriterOptions = Omit<InitialCodeOptions, "createCodeSymbol"> & {
 export class CodeWriter {
   private _options: CodeWriterOptions;
   private _pollingIntervalId?: NodeJS.Timeout;
+  private _selectorsPath: string;
   // public for tests
   public _updater: CodeUpdater;
   private _updating: boolean = false;
 
   protected constructor(options: CodeWriterOptions) {
     this._options = options;
+
+    // XXX support updating selectors that are moved
+    this._selectorsPath = join(
+      dirname(this._options.codePath),
+      "../selectors",
+      `${this._options.name}.json`
+    );
+
     this._updater = new CodeUpdater(options);
   }
 
@@ -71,25 +80,25 @@ export class CodeWriter {
     if (!code) return;
 
     this._updating = true;
-    const updatedCode = this._updater.updateCode(code);
-    await outputFile(this._options.codePath, updatedCode, "utf8");
-    this._updating = false;
 
-    // // TODO cleanup
-    // const selectorsPath = join(
-    //   dirname(this._options.codePath),
-    //   "../selectors",
-    //   `${this._options.name}.json`
-    // );
-    // await outputJson(
-    //   selectorsPath,
-    //   this._updater._steps.map((step, index) => ({
-    //     // inline index so it is easy to correlate with the test
-    //     index,
-    //     ...stepToSelector(step)
-    //   })),
-    //   { spaces: " " }
-    // );
+    const updatedCode = this._updater.updateCode(code);
+    await Promise.all([
+      outputFile(this._options.codePath, updatedCode, "utf8"),
+      this._updateSelectors()
+    ]);
+
+    this._updating = false;
+  }
+
+  // public for testing
+  public async _updateSelectors() {
+    const selectors = this._updater._steps.map((step, index) => ({
+      // inline index so it is easy to correlate with the test
+      index,
+      ...stepToSelector(step)
+    }));
+
+    await outputJson(this._selectorsPath, selectors, { spaces: " " });
   }
 
   public async discard() {
