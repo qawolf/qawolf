@@ -44,7 +44,7 @@ Array [
 ]
 `;
 
-exports[`CodeUpdater.updateCode replaces the create symbol with new steps: createScriptSteps_0 1`] = `
+exports[`CodeUpdater.updateCode replaces the create symbol with new steps: updateCode()_script0 1`] = `
 "  myOtherCode();
   // scroll
   await browser.scroll(selectors[0], { x: 0, y: 378 });
@@ -53,7 +53,7 @@ exports[`CodeUpdater.updateCode replaces the create symbol with new steps: creat
   // 🐺 CREATE CODE HERE"
 `;
 
-exports[`CodeUpdater.updateCode replaces the create symbol with new steps: createScriptSteps_1 1`] = `
+exports[`CodeUpdater.updateCode replaces the create symbol with new steps: updateCode()_script1 1`] = `
 "  myOtherCode();
   // scroll
   await browser.scroll(selectors[0], { x: 0, y: 378 });
@@ -72,7 +72,7 @@ exports[`CodeUpdater.updateCode replaces the create symbol with new steps: creat
   // 🐺 CREATE CODE HERE"
 `;
 
-exports[`CodeUpdater.updateCode replaces the create symbol with new steps: createScriptSteps_2 1`] = `
+exports[`CodeUpdater.updateCode replaces the create symbol with new steps: updateCode()_script2 1`] = `
 "  myOtherCode();
   // scroll
   await browser.scroll(selectors[0], { x: 0, y: 378 });
@@ -89,11 +89,10 @@ exports[`CodeUpdater.updateCode replaces the create symbol with new steps: creat
   // Enter
   await browser.type(selectors[6], \\"↓Enter↑Enter\\");
   // click \\"Logout\\" link
-  await browser.click(selectors[7]);
-  // 🐺 CREATE CODE HERE"
+  await browser.click(selectors[7]);"
 `;
 
-exports[`CodeUpdater.updateCode replaces the create symbol with new steps: createTestSteps_0 1`] = `
+exports[`CodeUpdater.updateCode replaces the create symbol with new steps: updateCode()_test0 1`] = `
 "  myOtherCode();
   
   it('can scroll', async () => {
@@ -106,7 +105,7 @@ exports[`CodeUpdater.updateCode replaces the create symbol with new steps: creat
   // 🐺 CREATE CODE HERE"
 `;
 
-exports[`CodeUpdater.updateCode replaces the create symbol with new steps: createTestSteps_1 1`] = `
+exports[`CodeUpdater.updateCode replaces the create symbol with new steps: updateCode()_test1 1`] = `
 "  myOtherCode();
   
   it('can scroll', async () => {
@@ -139,7 +138,7 @@ exports[`CodeUpdater.updateCode replaces the create symbol with new steps: creat
   // 🐺 CREATE CODE HERE"
 `;
 
-exports[`CodeUpdater.updateCode replaces the create symbol with new steps: createTestSteps_2 1`] = `
+exports[`CodeUpdater.updateCode replaces the create symbol with new steps: updateCode()_test2 1`] = `
 "  myOtherCode();
   
   it('can scroll', async () => {
@@ -172,6 +171,5 @@ exports[`CodeUpdater.updateCode replaces the create symbol with new steps: creat
   
   it('can click \\"Logout\\" link', async () => {
     await browser.click(selectors[7]);
-  });
-  // 🐺 CREATE CODE HERE"
+  });"
 `;

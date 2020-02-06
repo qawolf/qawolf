@@ -37,7 +37,7 @@ export class CodeUpdater {
   private _buildWorkflow(onlyFinalSteps?: boolean) {
     const workflow = buildWorkflow({
       device: this._options.device,
-      events: sortBy(this._events, e => e.time),
+      events: this.getEvents(),
       onlyFinalSteps,
       name: this._options.name,
       url: this._options.url
@@ -47,7 +47,7 @@ export class CodeUpdater {
   }
 
   public getEvents() {
-    return this._events;
+    return sortBy(this._events, e => e.time);
   }
 
   public getNumPendingSteps() {
@@ -62,6 +62,7 @@ export class CodeUpdater {
     const workflow = this._buildWorkflow(options.onlyFinalSteps);
 
     const newSteps = workflow.steps.slice(this._steps.length);
+
     newSteps.forEach(step => {
       logger.debug(`CodeUpdater: new step ${step.action}`);
       this._steps.push(step);
@@ -70,12 +71,12 @@ export class CodeUpdater {
     return workflow;
   }
 
-  public updateCode(code: string, finalize: boolean = false): string {
+  public updateCode(code: string, isLastUpdate: boolean = false): string {
     if (!CodeUpdater.hasCreateSymbol(code)) {
       throw new Error("Cannot update code without create symbol");
     }
 
-    if (!finalize && this.getNumPendingSteps() < 1) {
+    if (!isLastUpdate && this.getNumPendingSteps() < 1) {
       throw new Error("No code to update");
     }
 
@@ -98,8 +99,8 @@ export class CodeUpdater {
       indent(codeToInsert, numSpaces, 1)
     );
 
-    if (finalize) {
-      updatedCode = removeLinesIncluding(code, CREATE_CODE_SYMBOL);
+    if (isLastUpdate) {
+      updatedCode = removeLinesIncluding(updatedCode, CREATE_CODE_SYMBOL);
     }
 
     return updatedCode;

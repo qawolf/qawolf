@@ -53,7 +53,7 @@ describe("CodeUpdater.updateCode", () => {
     // test multiple updates
     const chunkedEvents = chunk(events, events.length / 2);
 
-    for (let isTest of [true, false]) {
+    for (let isTest of [false, true]) {
       const codeUpdater = new CodeUpdater({
         isTest,
         name: "myTest",
@@ -66,22 +66,20 @@ describe("CodeUpdater.updateCode", () => {
       let codeToUpdate = `  myOtherCode();\n  ${CREATE_CODE_SYMBOL}`;
 
       for (let i = 0; i < chunkedEvents.length; i++) {
+        const isLastUpdate = i === chunkedEvents.length - 1;
+
         codeUpdater.prepareSteps({
           newEvents: chunkedEvents[i],
-          onlyFinalSteps: true
+          onlyFinalSteps: !isLastUpdate
         });
         expect(codeUpdater.getNumPendingSteps()).toBeGreaterThan(0);
 
-        codeToUpdate = codeUpdater.updateCode(codeToUpdate);
+        codeToUpdate = codeUpdater.updateCode(codeToUpdate, isLastUpdate);
         expect(codeToUpdate).toMatchSnapshot(
-          isTest ? `createTestSteps_${i}` : `createScriptSteps_${i}`
+          isTest ? `updateCode()_test${i}` : `updateCode()_script${i}`
         );
         expect(codeUpdater.getNumPendingSteps()).toEqual(0);
       }
     }
-  });
-
-  it("removes the create symbol line on finalize", () => {
-    // TODO..
   });
 });
