@@ -52,18 +52,7 @@ export class CodeCreator {
     return new CodeCreator({ codeFile, isTest: options.isTest, selectorFile });
   }
 
-  private _logSaveSuccess() {
-    const command = this._isTest
-      ? `npx qawolf test ${this._codeFile.name()}`
-      : `node ${this._codeFile.relativePath()}`;
-
-    console.log(
-      bold().blue(`✨  Created your ${this._isTest ? "test" : "script"}`)
-    );
-    console.log(bold().blue("🐺  Run it with:"), command);
-  }
-
-  private _warnNoHandle = throttle(
+  private _logNoHandle = throttle(
     () => {
       console.warn(
         "\n",
@@ -75,13 +64,26 @@ export class CodeCreator {
     { leading: true }
   );
 
-  public async discard() {}
+  private _logSaveSuccess() {
+    const command = this._isTest
+      ? `npx qawolf test ${this._codeFile.name()}`
+      : `node ${this._codeFile.relativePath()}`;
 
-  private async patchFiles({ removeHandle }: { removeHandle?: boolean } = {}) {
+    console.log(
+      bold().blue(`✨  Created your ${this._isTest ? "test" : "script"}`)
+    );
+    console.log(bold().blue("🐺  Run it with:"), command);
+  }
+
+  private async _patchFiles(removeHandle: boolean = false) {
     await Promise.all([
       this._codeFile.patch({ removeHandle, steps: this._stepBuilder.steps() }),
       this._selectorFile.patch()
     ]);
+  }
+
+  public async discard() {
+    await Promise.all([this._codeFile.discard()]);
   }
 
   public pushEvent(event: ElementEvent) {
@@ -90,17 +92,17 @@ export class CodeCreator {
 
   public async save() {
     this._stepBuilder.finalize();
-    await this.patchFiles({ removeHandle: true });
+    await this._patchFiles(true);
     this._logSaveSuccess();
   }
 
   public startPolling() {
     this._pollingIntervalId = setInterval(async () => {
       try {
-        await this.patchFiles();
+        await this._patchFiles();
       } catch (e) {
         if (e.message.includes("Cannot patch without handle")) {
-          this._warnNoHandle();
+          this._logNoHandle();
         } else {
           throw e;
         }
