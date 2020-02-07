@@ -17,16 +17,18 @@ export class PatchBuilder {
   private _events: ElementEvent[] = [];
   private _finalized: boolean = false;
   private _steps: Step[] = [];
+
+  // used for code with existing steps
   private _stepStartIndex: number;
 
   public constructor(options: ConstructorOptions = {}) {
     this._stepStartIndex = options.stepStartIndex || 0;
   }
 
-  private _buildSteps({ onlyFixedSteps }: { onlyFixedSteps: boolean }) {
+  private _buildSteps({ canChange }: { canChange: boolean }) {
     const steps = buildSteps({
+      canChange,
       events: this.getEvents(),
-      onlyFixedSteps,
       stepStartIndex: this._stepStartIndex
     });
 
@@ -37,27 +39,32 @@ export class PatchBuilder {
     this._steps.push(...newSteps);
   }
 
-  public buildPatch(isTest?: boolean) {
+  private stepsToPatch() {
     const newSteps = this._steps.slice(this._numIncludedSteps);
-    if (newSteps.length < 1) {
+    return newSteps;
+  }
+
+  public buildPatch(isTest?: boolean) {
+    const stepsToPatch = this.stepsToPatch();
+    if (stepsToPatch.length < 1) {
       return null;
     }
 
     let code = buildStepsCode({
-      steps: newSteps,
+      steps: stepsToPatch,
       isTest
     });
 
     // include the patch symbol so we can replace it later
     code += PATCH_HANDLE;
 
-    const selectors = newSteps.map(step => ({
+    const selectors = stepsToPatch.map(step => ({
       ...stepToSelector(step),
       // inline index so it is easy to correlate with the test
       index: step.index
     }));
 
-    return { code, selectors, steps: newSteps };
+    return { code, selectors, steps: stepsToPatch };
   }
 
   public getEvents() {
@@ -68,7 +75,7 @@ export class PatchBuilder {
     if (this._finalized) return;
 
     this._events.push(event);
-    this._buildSteps({ onlyFixedSteps: true });
+    this._buildSteps({ canChange: false });
   }
 
   public setIncludedSteps(numIncludedSteps: number) {
@@ -82,6 +89,10 @@ export class PatchBuilder {
   public finalize() {
     this._finalized = true;
 
-    this._buildSteps({ onlyFixedSteps: false });
+    this._buildSteps({
+      // there are no new events coming in
+      // so we know the steps that canChange will not
+      canChange: true
+    });
   }
 }
