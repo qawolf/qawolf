@@ -1,200 +1,202 @@
-import { Step } from "@qawolf/types";
-import { htmlToDoc } from "@qawolf/web";
-import { CodeWriter, CodeWriterOptions } from "../src/CodeWriter";
-import {
-  outputFile,
-  outputJson,
-  pathExists,
-  readFile,
-  readJson,
-  remove
-} from "fs-extra";
-import { buildInitialCode } from "../src/build";
-import { CREATE_CODE_SYMBOL, CodeUpdater } from "../src/CodeUpdater";
+test("TODO: this test will be removed after the refactor", () => {});
 
-jest.mock("fs-extra");
+// import { Step } from "@qawolf/types";
+// import { htmlToDoc } from "@qawolf/web";
+// import { CodeWriter, CodeWriterOptions } from "../src/CodeWriter";
+// import {
+//   outputFile,
+//   outputJson,
+//   pathExists,
+//   readFile,
+//   readJson,
+//   remove
+// } from "fs-extra";
+// import { buildInitialCode } from "../src/build";
+// import { CREATE_CODE_SYMBOL, CodeUpdater } from "../src/CodeUpdater";
 
-jest.mock("../src/CodeUpdater");
+// jest.mock("fs-extra");
 
-const mockedPathExists = pathExists as jest.Mock;
-const mockedReadFile = readFile as jest.Mock;
-const mockedReadJson = readJson as jest.Mock;
-const mockedRemove = remove as jest.Mock;
-const mockedOutputFile = outputFile as jest.Mock;
-const mockedOutputJson = outputJson as jest.Mock;
+// jest.mock("../src/CodeUpdater");
 
-const options: CodeWriterOptions = {
-  codePath: "/path/tests/mytest.test.js",
-  isTest: true,
-  name: "mytest",
-  url: "http://localhost:3000"
-};
+// const mockedPathExists = pathExists as jest.Mock;
+// const mockedReadFile = readFile as jest.Mock;
+// const mockedReadJson = readJson as jest.Mock;
+// const mockedRemove = remove as jest.Mock;
+// const mockedOutputFile = outputFile as jest.Mock;
+// const mockedOutputJson = outputJson as jest.Mock;
 
-const step: Step = {
-  action: "click",
-  html: {
-    ancestors: [],
-    node: htmlToDoc("<input />")
-  },
-  index: 0,
-  isFinal: true,
-  page: 0
-};
+// const options: CodeWriterOptions = {
+//   codePath: "/path/tests/mytest.test.js",
+//   isTest: true,
+//   name: "mytest",
+//   url: "http://localhost:3000"
+// };
 
-describe("CodeWriter._createInitialCode", () => {
-  describe("no preexisting code", () => {
-    it("writes initial code", async () => {
-      mockedOutputFile.mockClear();
-      mockedPathExists.mockResolvedValueOnce(false);
+// const step: Step = {
+//   action: "click",
+//   html: {
+//     ancestors: [],
+//     node: htmlToDoc("<input />")
+//   },
+//   index: 0,
+//   isFinal: true,
+//   page: 0
+// };
 
-      await CodeWriter.start(options);
-      expect(mockedOutputFile.mock.calls[0]).toEqual([
-        options.codePath,
-        buildInitialCode({
-          ...options,
-          createCodeSymbol: CREATE_CODE_SYMBOL
-        }),
-        "utf8"
-      ]);
-    });
-  });
+// describe("CodeWriter._createInitialCode", () => {
+//   describe("no preexisting code", () => {
+//     it("writes initial code", async () => {
+//       mockedOutputFile.mockClear();
+//       mockedPathExists.mockResolvedValueOnce(false);
 
-  describe("existing code and selectors", () => {
-    it("does not write initial code", async () => {
-      mockedOutputFile.mockClear();
-      mockedPathExists.mockResolvedValue(true);
+//       await CodeWriter.start(options);
+//       expect(mockedOutputFile.mock.calls[0]).toEqual([
+//         options.codePath,
+//         buildInitialCode({
+//           ...options,
+//           createCodeSymbol: CREATE_CODE_SYMBOL
+//         }),
+//         "utf8"
+//       ]);
+//     });
+//   });
 
-      await CodeWriter.start(options);
+//   describe("existing code and selectors", () => {
+//     it("does not write initial code", async () => {
+//       mockedOutputFile.mockClear();
+//       mockedPathExists.mockResolvedValue(true);
 
-      expect(mockedOutputFile.mock.calls.length).toEqual(0);
-    });
+//       await CodeWriter.start(options);
 
-    it("inserts the create symbol for scripts", () => {
-      // TODO
-    });
+//       expect(mockedOutputFile.mock.calls.length).toEqual(0);
+//     });
 
-    it("inserts the create symbol for tests", () => {
-      // TODO
-    });
-  });
-});
+//     it("inserts the create symbol for scripts", () => {
+//       // TODO
+//     });
 
-describe("CodeWriter._loadUpdatableCode", () => {
-  it("logs when the create symbol is not found", async () => {
-    mockedReadFile.mockResolvedValueOnce("no code");
+//     it("inserts the create symbol for tests", () => {
+//       // TODO
+//     });
+//   });
+// });
 
-    const writer = await CodeWriter.start(options);
+// describe("CodeWriter._loadUpdatableCode", () => {
+//   it("logs when the create symbol is not found", async () => {
+//     mockedReadFile.mockResolvedValueOnce("no code");
 
-    const consoleSpy = jest.spyOn(global.console, "log").mockImplementation();
-    await writer._loadUpdatableCode();
+//     const writer = await CodeWriter.start(options);
 
-    expect(consoleSpy.mock.calls[0]).toEqual([
-      "\n",
-      "[1m[31mCannot update code without this line:[22m[39m",
-      CREATE_CODE_SYMBOL
-    ]);
+//     const consoleSpy = jest.spyOn(global.console, "log").mockImplementation();
+//     await writer._loadUpdatableCode();
 
-    consoleSpy.mockRestore();
-  });
-});
+//     expect(consoleSpy.mock.calls[0]).toEqual([
+//       "\n",
+//       "[1m[31mCannot update code without this line:[22m[39m",
+//       CREATE_CODE_SYMBOL
+//     ]);
 
-describe("CodeWriter._updateCode", () => {
-  it("includes existing selecrors", () => {
-    // TODO
-  });
+//     consoleSpy.mockRestore();
+//   });
+// });
 
-  it("updates code and selectors", async () => {
-    const writer = await CodeWriter.start(options);
+// describe("CodeWriter._updateCode", () => {
+//   it("includes existing selecrors", () => {
+//     // TODO
+//   });
 
-    // make it updatable
-    // - there is code
-    mockedReadFile.mockResolvedValueOnce(CREATE_CODE_SYMBOL);
-    // - the code has an update symbol
-    (CodeUpdater.hasCreateSymbol as jest.Mock).mockReturnValue(true);
-    // - there are pending steps
-    (writer._updater.getNumPendingSteps as jest.Mock<number>).mockReturnValue(
-      1
-    );
+//   it("updates code and selectors", async () => {
+//     const writer = await CodeWriter.start(options);
 
-    // mock what the updated code should be
-    let expected = "SOME UPDATED CODE";
-    (writer._updater.updateCode as jest.Mock).mockReturnValue(expected);
+//     // make it updatable
+//     // - there is code
+//     mockedReadFile.mockResolvedValueOnce(CREATE_CODE_SYMBOL);
+//     // - the code has an update symbol
+//     (CodeUpdater.hasCreateSymbol as jest.Mock).mockReturnValue(true);
+//     // - there are pending steps
+//     (writer._updater.getNumPendingSteps as jest.Mock<number>).mockReturnValue(
+//       1
+//     );
 
-    writer._updater._steps = [step];
+//     // mock what the updated code should be
+//     let expected = "SOME UPDATED CODE";
+//     (writer._updater.updateCode as jest.Mock).mockReturnValue(expected);
 
-    mockedOutputFile.mockClear();
-    mockedOutputJson.mockClear();
+//     writer._updater._steps = [step];
 
-    // run the update
-    await writer._updateCode();
+//     mockedOutputFile.mockClear();
+//     mockedOutputJson.mockClear();
 
-    expect(mockedOutputFile.mock.calls[0]).toEqual([
-      options.codePath,
-      expected,
-      "utf8"
-    ]);
+//     // run the update
+//     await writer._updateCode();
 
-    expect(mockedOutputJson.mock.calls[0]).toMatchSnapshot();
-  });
-});
+//     expect(mockedOutputFile.mock.calls[0]).toEqual([
+//       options.codePath,
+//       expected,
+//       "utf8"
+//     ]);
 
-describe("CodeWriter.discard", () => {
-  it("restores preexisting code and selectors", async () => {
-    let preexistingCode = "preexistingCode()";
-    let prexistingSelectors = [{}];
+//     expect(mockedOutputJson.mock.calls[0]).toMatchSnapshot();
+//   });
+// });
 
-    mockedOutputFile.mockReset();
-    mockedOutputJson.mockReset();
+// describe("CodeWriter.discard", () => {
+//   it("restores preexisting code and selectors", async () => {
+//     let preexistingCode = "preexistingCode()";
+//     let prexistingSelectors = [{}];
 
-    mockedPathExists.mockResolvedValue(true);
+//     mockedOutputFile.mockReset();
+//     mockedOutputJson.mockReset();
 
-    mockedReadFile.mockResolvedValueOnce(preexistingCode);
-    mockedReadJson.mockResolvedValueOnce(prexistingSelectors);
+//     mockedPathExists.mockResolvedValue(true);
 
-    const writer = await CodeWriter.start(options);
+//     mockedReadFile.mockResolvedValueOnce(preexistingCode);
+//     mockedReadJson.mockResolvedValueOnce(prexistingSelectors);
 
-    expect(writer._preexistingCode).toEqual(preexistingCode);
-    expect(writer._preexistingSelectors).toEqual(prexistingSelectors);
+//     const writer = await CodeWriter.start(options);
 
-    await writer.discard();
+//     expect(writer._preexistingCode).toEqual(preexistingCode);
+//     expect(writer._preexistingSelectors).toEqual(prexistingSelectors);
 
-    expect(mockedRemove.mock.calls.length).toEqual(0);
+//     await writer.discard();
 
-    expect(mockedOutputFile.mock.calls[0]).toEqual([
-      options.codePath,
-      preexistingCode,
-      "utf8"
-    ]);
+//     expect(mockedRemove.mock.calls.length).toEqual(0);
 
-    expect(mockedOutputJson.mock.calls[0]).toEqual([
-      "/path/selectors/mytest.json",
-      prexistingSelectors,
-      { spaces: " " }
-    ]);
-  });
+//     expect(mockedOutputFile.mock.calls[0]).toEqual([
+//       options.codePath,
+//       preexistingCode,
+//       "utf8"
+//     ]);
 
-  it("deletes new code and selectors", async () => {
-    mockedPathExists.mockResolvedValue(false);
+//     expect(mockedOutputJson.mock.calls[0]).toEqual([
+//       "/path/selectors/mytest.json",
+//       prexistingSelectors,
+//       { spaces: " " }
+//     ]);
+//   });
 
-    const writer = await CodeWriter.start(options);
-    expect(writer._preexistingCode).toEqual(undefined);
-    expect(writer._preexistingSelectors).toEqual(undefined);
+//   it("deletes new code and selectors", async () => {
+//     mockedPathExists.mockResolvedValue(false);
 
-    mockedRemove.mockReset();
-    await writer.discard();
+//     const writer = await CodeWriter.start(options);
+//     expect(writer._preexistingCode).toEqual(undefined);
+//     expect(writer._preexistingSelectors).toEqual(undefined);
 
-    expect(mockedRemove.mock.calls.length).toEqual(2);
-    expect(mockedRemove.mock.calls[0]).toEqual([options.codePath]);
-    expect(mockedRemove.mock.calls[1]).toEqual(["/path/selectors/mytest.json"]);
-  });
-});
+//     mockedRemove.mockReset();
+//     await writer.discard();
 
-describe("CodeWriter.save", () => {
-  it("saves the final code", async () => {
-    // TODO
-  });
+//     expect(mockedRemove.mock.calls.length).toEqual(2);
+//     expect(mockedRemove.mock.calls[0]).toEqual([options.codePath]);
+//     expect(mockedRemove.mock.calls[1]).toEqual(["/path/selectors/mytest.json"]);
+//   });
+// });
 
-  it("logs how to run code", () => {
-    // TODO
-  });
-});
+// describe("CodeWriter.save", () => {
+//   it("saves the final code", async () => {
+//     // TODO
+//   });
+
+//   it("logs how to run code", () => {
+//     // TODO
+//   });
+// });

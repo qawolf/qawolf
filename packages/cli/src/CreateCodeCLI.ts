@@ -1,5 +1,5 @@
 import { BrowserContext, launch } from "@qawolf/browser";
-import { CodeWriter } from "@qawolf/build-code";
+import { CodeSyncer } from "@qawolf/build-code";
 import { repl } from "@qawolf/repl";
 import { prompt } from "inquirer";
 import { basename } from "path";
@@ -17,17 +17,17 @@ type CreateOptions = {
 type ConstructOptions = {
   context: BrowserContext;
   codePath: string;
-  codeWriter: CodeWriter;
+  codeSyncer: CodeSyncer;
 };
 
 export class CreateCodeCLI {
   private _codePath: string;
-  private _codeWriter: CodeWriter;
+  private _codeSyncer: CodeSyncer;
   private _context: BrowserContext;
 
   protected constructor(options: ConstructOptions) {
     this._codePath = options.codePath;
-    this._codeWriter = options.codeWriter;
+    this._codeSyncer = options.codeSyncer;
     this._context = options.context;
   }
 
@@ -45,7 +45,7 @@ export class CreateCodeCLI {
       ? `${rootPath}/tests/${options.name}.test.js`
       : `${rootPath}/scripts/${options.name}.js`;
 
-    const codeWriter = await CodeWriter.start({
+    const codeSyncer = await CodeSyncer.start({
       codePath,
       device: options.device,
       isTest: options.isTest,
@@ -56,12 +56,12 @@ export class CreateCodeCLI {
     const context = await contextPromise;
 
     context.qawolf.on("recorded_event", event => {
-      codeWriter.prepare([event]);
+      codeSyncer.notifyEvent(event);
     });
 
-    codeWriter.startUpdatePolling();
+    codeSyncer.startPolling();
 
-    const command = new CreateCodeCLI({ codePath, codeWriter, context });
+    const command = new CreateCodeCLI({ codePath, codeSyncer, context });
     await command.prompt();
   }
 
@@ -84,9 +84,9 @@ export class CreateCodeCLI {
     await this._context.close();
 
     if (choice.includes("Save")) {
-      await this._codeWriter.save();
+      await this._codeSyncer.save();
     } else {
-      await this._codeWriter.discard();
+      await this._codeSyncer.discard();
     }
 
     process.exit(0);

@@ -2,10 +2,10 @@ import { Step } from "@qawolf/types";
 import { buildIt } from "./buildIt";
 import { buildMethod } from "./buildMethod";
 
-type BuildStepsOptions = {
+export type BuildStepsOptions = {
   isTest?: boolean;
-  steps: Step[];
   startIndex: number;
+  steps: Step[];
 };
 
 export const buildTestStep = (it: string, method: string) => {

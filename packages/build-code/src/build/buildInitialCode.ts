@@ -1,8 +1,8 @@
 import { camelCase } from "lodash";
 import { buildLaunch } from "./buildLaunch";
+import { PATCH_SYMBOL } from "../code";
 
 export type InitialCodeOptions = {
-  createCodeSymbol: string;
   device?: string;
   isTest?: boolean;
   name: string;
@@ -10,22 +10,17 @@ export type InitialCodeOptions = {
 };
 
 type TemplateOptions = {
-  createCodeSymbol: string;
   name: string;
   launch: string;
 };
 
-const buildInitialScript = ({
-  name,
-  launch,
-  createCodeSymbol
-}: TemplateOptions) => {
+const buildInitialScript = ({ name, launch }: TemplateOptions) => {
   const code = `const { launch } = require("qawolf");
 const selectors = require("../selectors/${name}");
 
 const ${name} = async () => {
   const browser = ${launch}
-  ${createCodeSymbol}
+  ${PATCH_SYMBOL}
   await browser.close();
 };
 
@@ -34,11 +29,7 @@ ${name}();`;
   return code;
 };
 
-const buildInitialTest = ({
-  name,
-  launch,
-  createCodeSymbol
-}: TemplateOptions) => {
+const buildInitialTest = ({ name, launch }: TemplateOptions) => {
   const code = `const { launch } = require("qawolf");
 const selectors = require("../selectors/${name}");
 
@@ -50,7 +41,7 @@ describe('${name}', () => {
   });
 
   afterAll(() => browser.close());
-  ${createCodeSymbol}
+  ${PATCH_SYMBOL}
 });`;
 
   return code;
@@ -58,7 +49,6 @@ describe('${name}', () => {
 
 export const buildInitialCode = (options: InitialCodeOptions) => {
   const templateOptions = {
-    createCodeSymbol: options.createCodeSymbol,
     launch: buildLaunch(options.url, options.device),
     name: camelCase(options.name)
   };

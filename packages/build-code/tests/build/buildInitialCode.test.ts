@@ -1,8 +1,6 @@
 import { buildInitialCode } from "../../src/build";
-import { CREATE_CODE_SYMBOL } from "../../src/CodeUpdater";
 
 const launchOptions = {
-  createCodeSymbol: CREATE_CODE_SYMBOL,
   name: "login",
   url: "http://localhost"
 };
