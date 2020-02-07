@@ -1,0 +1,66 @@
+---
+id: find
+sidebar_label: find
+title: browser.find
+---
+
+import ArgumentFindElementOptions from "../components/ArgumentFindElementOptions";
+import ArgumentSelector from "../components/ArgumentSelector";
+import ReturnElementHandle from "../components/ReturnElementHandle";
+import Syntax from "../components/Syntax";
+
+<Syntax code="browser.find(selector, [options={}])" />
+
+Find an element. If the element is not found before timeout, an error is thrown.
+
+### Arguments
+
+<ArgumentSelector />
+<ArgumentFindElementOptions />
+
+### Returns
+
+<ReturnElementHandle />
+
+## Examples
+
+### CSS Selectors
+
+Find the element with the id `"my-id"`:
+
+```js
+const element = await browser.find({ css: "#my-id" });
+```
+
+Find the element with the `data-qa` attribute equal to `"submit"`:
+
+```js
+const element = await browser.find({ css: "[data-qa='submit']" });
+```
+
+### HTML Selectors
+
+Find an element using the [default selector logic](../../use_custom_selectors#default-selector-logic):
+
+```js
+const element = await browser.find(selectors[0]);
+```
+
+### Text Selectors
+
+Find the element containing the text `"Submit"`:
+
+```js
+const element = await browser.find({ text: "Submit" });
+```
+
+### Options
+
+Find the element containing the text `"Sign In"` on the page with index `1`, timing out in 5000 milliseconds if not found:
+
+```js
+const element = await browser.find(
+  { text: "Sign In" },
+  { page: 1, timeoutMs: 5000 }
+);
+```

@@ -1,0 +1,44 @@
+---
+id: goto
+sidebar_label: goto
+title: browser.goto
+---
+
+import Argument from "../components/Argument";
+import ArgumentFindPageOptions from "../components/ArgumentFindPageOptions";
+import ReturnPage from "../components/ReturnPage";
+import Syntax from "../components/Syntax";
+
+<Syntax code="browser.goto(url, [options={}])" />
+
+Navigate the page to the specified URL. The URL should include the scheme, for example `https://`.
+
+### Arguments
+
+<Argument
+  description="The URL to navigate the page to."
+  name="url"
+  type="string"
+/>
+<ArgumentFindPageOptions />
+
+### Returns
+
+<ReturnPage />
+
+### Examples
+
+Navigate the last used page to `https://google.com`:
+
+```js
+const page = await browser.goto("https://google.com");
+```
+
+Navigate the page with index `1` to `https://youtube.com`, waiting up to 10 seconds for the page to open:
+
+```js
+const page = await browser.goto("https://youtube.com", {
+  page: 1,
+  timeoutMs: 10000
+});
+```

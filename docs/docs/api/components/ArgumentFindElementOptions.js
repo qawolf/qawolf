@@ -3,7 +3,7 @@ import useBaseUrl from "@docusaurus/useBaseUrl";
 import React from "react";
 import Argument from "./Argument";
 
-function ArgumentFindElementOptions() {
+function ArgumentFindElementOptions({ simulate }) {
   return (
     <React.Fragment>
       <Argument
@@ -15,8 +15,9 @@ function ArgumentFindElementOptions() {
       <Argument
         description={
           <React.Fragment>
-            The index of the page that contains the element, starting at 0 and
-            ordered by creation. <b>Default:</b> last used page index.
+            The index of the page that contains the element, starting at{" "}
+            <code>0</code> and ordered by creation. <b>Default:</b> last used
+            page index.
           </React.Fragment>
         }
         indent
@@ -24,10 +25,31 @@ function ArgumentFindElementOptions() {
         optional
         type="number"
       />
+      {!!simulate && (
+        <Argument
+          description={
+            <React.Fragment>
+              Simulate the click by dispatching a{" "}
+              <a href="https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent">
+                MouseEvent
+              </a>
+              . If set to <code>false</code>,{" "}
+              <a href="https://github.com/microsoft/playwright/blob/master/docs/api.md#pageclickselector-options">
+                Playwright's Page.click
+              </a>{" "}
+              is called instead. <b>Default:</b> <code>true</code>.
+            </React.Fragment>
+          }
+          indent
+          name="simulate"
+          optional
+          type="boolean"
+        />
+      )}
       <Argument
         description={
           <React.Fragment>
-            Sleep after finding an element for this amount of time in
+            Sleep after finding the element for this amount of time in
             milliseconds. <b>Default:</b>{" "}
             <Link
               to={useBaseUrl("docs/api/environment_variables#qaw_sleep_ms")}
@@ -45,8 +67,8 @@ function ArgumentFindElementOptions() {
       <Argument
         description={
           <React.Fragment>
-            Maximum amount of time in milliseconds to wait for an element before
-            timing out. <b>Default:</b>{" "}
+            Maximum amount of time in milliseconds to wait for the element
+            before timing out. <b>Default:</b>{" "}
             <Link
               to={useBaseUrl("docs/api/environment_variables#qaw_timeout_ms")}
             >

@@ -32,7 +32,7 @@ module.exports = {
     }
   ],
   api: [
-    { type: "doc", id: "api" },
+    { type: "doc", id: "api/table_of_contents" },
     { type: "doc", id: "api/cli" },
     {
       type: "doc",
@@ -41,7 +41,13 @@ module.exports = {
     {
       type: "category",
       label: "class: Browser",
-      items: ["api/actions/browser_click"]
+      items: [
+        "api/browser/click",
+        "api/browser/close",
+        "api/browser/find",
+        "api/browser/find_property",
+        "api/browser/goto"
+      ]
     }
   ]
 };

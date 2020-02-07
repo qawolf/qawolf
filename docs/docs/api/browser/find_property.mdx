@@ -1,0 +1,75 @@
+---
+id: find_property
+sidebar_label: findProperty
+title: browser.findProperty
+---
+
+import Argument from "../components/Argument";
+import ArgumentFindElementOptions from "../components/ArgumentFindElementOptions";
+import ArgumentSelector from "../components/ArgumentSelector";
+import ReturnElementHandle from "../components/ReturnElementHandle";
+import Syntax from "../components/Syntax";
+
+<Syntax code="browser.findProperty(selector, property, [options={}])" />
+
+Find the specified [property](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes) of an element. If the element is not found before timeout, an error is thrown.
+
+### Arguments
+
+<ArgumentSelector />
+<Argument description="The property of the element to return." name="property" type="string" />
+<ArgumentFindElementOptions />
+
+### Returns
+
+<Argument
+  description="Resolves to the value of the specfied property of the element."
+  name=""
+  type="Promise<string | null | undefined>"
+/>
+
+## Examples
+
+### CSS Selectors
+
+Get the `title` of the element the with the id `"my-id"`:
+
+```js
+const title = await browser.findProperty({ css: "#my-id" }, "title");
+```
+
+Get the CSS class of the element with the `data-qa` attribute equal to `"submit"`:
+
+```js
+const className = await browser.findProperty(
+  { css: "[data-qa='submit']" },
+  "className"
+);
+```
+
+### HTML Selectors
+
+Get the `id` of an element using the [default selector logic](../../use_custom_selectors#default-selector-logic):
+
+```js
+const id = await browser.findProperty(selectors[0], "id");
+```
+
+### Text Selectors
+
+Get the `label` of the element containing the text `"Submit"`:
+
+```js
+const label = await browser.findProperty({ text: "Submit" }, "label");
+```
+
+### Options
+
+Get the `href` of the element containing the text `"Sign In"`. Find the element on the page with index `1`, timing out in 5000 milliseconds if not found:
+
+```js
+const href = await browser.find({ text: "Sign In" }, "href", {
+  page: 1,
+  timeoutMs: 5000
+});
+```

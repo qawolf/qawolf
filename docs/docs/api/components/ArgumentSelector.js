@@ -9,7 +9,7 @@ function ArgumentSelector() {
       <Argument
         description={
           <React.Fragment>
-            Find an element that matches this selector.{" "}
+            Find the element that matches this selector.{" "}
             <b>
               Must specify <code>css</code>,<code>html</code>, or{" "}
               <code>text</code>
