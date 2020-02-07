@@ -32,14 +32,16 @@ module.exports = {
     }
   ],
   api: [
-    { type: "doc", id: "api_table_of_contents" },
-    { type: "category", label: "CLI", items: [] },
+    { type: "doc", id: "api" },
+    { type: "doc", id: "api/cli" },
+    {
+      type: "doc",
+      id: "api/environment_variables"
+    },
     {
       type: "category",
-      label: "Environment Variables",
-      items: ["qaw_artifact_path"]
-    },
-    { type: "category", label: "Actions", items: [] },
-    { type: "category", label: "Helpers", items: [] }
+      label: "class: Browser",
+      items: ["api/actions/browser_click"]
+    }
   ]
 };

@@ -7,8 +7,30 @@ In this guide, we explain how QA Wolf generates element selectors and how you ca
 
 ## TL;DR
 
-- [Element selectors in generated code](#selectors-overview) use attributes specified by [`QAW_ATTRIBUTE`](TODOFIXLINK) if possible, and multiple attributes otherwise
-- You can [edit the generated selectors](#edit-generated-selectors) to target elements based on [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) or text content
+- [Element selectors in generated code](#selectors-overview) use attributes specified by [`QAW_ATTRIBUTE`](TODOFIXLINK) if possible, and multiple attributes otherwise:
+
+```js
+it('can click "Submit" button', async () => {
+  // if 1) data-qa exists on element and 2) QAW_ATTRIBUTE includes data-qa
+  await browser.click({ css: "[data-qa='submit']" });
+  // otherwise selector object captures all attributes of element
+  await browser.click(selectors[0]);
+});
+```
+
+- You can [edit the generated selectors](#edit-generated-selectors) to target elements based on [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) or text content:
+
+```js
+it('can click "Submit" button', async () => {
+  // change this
+  await browser.click(selectors[0]);
+  // to this (CSS selector)
+  await browser.click({ css: "#submit" });
+  // or this (text selector)
+  await browser.click({ text: "Submit" });
+});
+```
+
 - To use test attributes like `data-qa`, [update your application code](#add-test-attributes-to-application-code) if needed
 
 ## Selectors overview
@@ -88,7 +110,6 @@ If you find yourself using the same attribute frequently to target elements, suc
 QA Wolf supports two types of custom selectors: [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) and text selectors.
 
 - CSS selectors find the element matching the CSS selector, for example: `#my-id`, `.my-class`, `div.my-class`
-
 - Text selectors find the element that contains the given text
 
 In your test code, replace the default selector (like `selectors[0]`) with an object containing either the `css` or `text` key and the desired target value. For example:
@@ -96,11 +117,11 @@ In your test code, replace the default selector (like `selectors[0]`) with an ob
 ```js
 it('can click "Submit" button', async () => {
   // change this
-  await context.click(selectors[0]);
+  await browser.click(selectors[0]);
   // to this (CSS selector)
-  await context.click({ css: "#submit" });
+  await browser.click({ css: "#submit" });
   // or this (text selector)
-  await context.click({ text: "Submit" });
+  await browser.click({ text: "Submit" });
 });
 ```
 

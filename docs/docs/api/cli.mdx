@@ -1,0 +1,51 @@
+---
+id: cli
+title: CLI
+---
+
+import Argument from "./components/Argument";
+
+This guide lists the QA Wolf commands you can run in the [CLI](../install#understand-the-command-line).
+
+## Use environment variables
+
+You can use [environment variables](environment_variables) when running CLI commands.
+
+For example, run the following to create a test with [`QAW_ATTRIBUTE`](environment_variables#qaw_attribute) set to `my-attribute`:
+
+```bash
+QAW_ATTRIBUTE=my-attribute npx qawolf create www.myawesomesite.com
+```
+
+## npx qawolf --help
+
+See all commands and options.
+
+## npx qawolf create url [name]
+
+#### Arguments
+
+<Argument
+  description={
+    <React.Fragment>
+      Emulate a device. <b>Default:</b> "desktop".
+    </React.Fragment>
+  }
+  name="--device name"
+  optional
+  type="string"
+/>
+
+#### Examples
+
+Create a browser test on `www.google.com`, emulating an iPhone 7:
+
+```bash
+npx qawolf create --device="iPhone 7" www.google.com
+```
+
+Create a browser script on `www.google.com`:
+
+```bash
+npx qawolf create --script google.com
+```

@@ -7,8 +7,41 @@ In this guide we show you how to add assertions to your tests. We assume that yo
 
 ## TL;DR
 
-- [Use QA Wolf helpers](#use-qa-wolf-helpers) to create assertions
-- [Use the Playwright API](#use-the-playwright-api) to create assertions
+- [Use QA Wolf helpers](#use-qa-wolf-helpers) to create assertions:
+
+```js
+it("can click input", async () => {
+  await browser.click(selectors[2]);
+
+  // custom code starts
+  // verify that "Clear completed" text appears
+  const hasClearCompletedText = await browser.hasText("Clear completed");
+  expect(hasClearCompletedText).toBe(true);
+  // custom code ends
+});
+```
+
+- [Use the Playwright API](#use-the-playwright-api) to create assertions:
+
+```js
+it('can click "Clear completed" button', async () => {
+  await browser.click(selectors[3]);
+
+  // custom code starts
+  // get current Playwright page instance
+  const page = await browser.page();
+
+  // verify that todos disappear after clearing completed
+  await waitUntil(async () => {
+    // find the todos section on the page
+    const todosSection = await page.$("section.main");
+    // return true once the secton is null (no longer exists)
+    return todosSection === null;
+  }, 15000); // wait 15 seconds before timing out
+  // custom code ends
+});
+```
+
 - The [interactive REPL](use_the_repl) lets you try out assertions while creating tests
 
 ## Use QA Wolf helpers
