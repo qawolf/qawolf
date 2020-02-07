@@ -39,7 +39,7 @@ test("TODO: this test will be removed after the refactor", () => {});
 //     node: htmlToDoc("<input />")
 //   },
 //   index: 0,
-//   isFinal: true,
+//   canChange: false,
 //   page: 0
 // };
 

@@ -56,7 +56,7 @@ export class CreateCodeCLI {
     const context = await contextPromise;
 
     context.qawolf.on("recorded_event", event => {
-      codeSyncer.notifyEvent(event);
+      codeSyncer.pushEvent(event);
     });
 
     codeSyncer.startPolling();

@@ -5,7 +5,16 @@ import { buildScrollSteps } from "./buildScrollSteps";
 import { buildSelectSteps } from "./buildSelectSteps";
 import { buildTypeSteps } from "./buildTypeSteps";
 
-export const buildSteps = (events: ElementEvent[]): Step[] => {
+export type BuildStepsOptions = {
+  events: ElementEvent[];
+  onlyFixedSteps?: boolean;
+  stepStartIndex?: number;
+};
+
+export const buildSteps = ({
+  events,
+  ...options
+}: BuildStepsOptions): Step[] => {
   const unorderedSteps = concat(
     buildClickSteps(events),
     buildScrollSteps(events),
@@ -13,14 +22,21 @@ export const buildSteps = (events: ElementEvent[]): Step[] => {
     buildTypeSteps(events)
   );
 
-  const steps = sortBy(
+  let steps = sortBy(
     unorderedSteps,
     // ordered by the event index
     step => step.index
-  ).map<Step>((step, index) => ({
+  );
+
+  if (options.onlyFixedSteps) {
+    steps = steps.filter(step => !step.canChange);
+  }
+
+  // reindex
+  const startIndex = options.stepStartIndex || 0;
+  steps = steps.map((step, index) => ({
     ...step,
-    // re-index
-    index: index
+    index: index + startIndex
   }));
 
   return steps;

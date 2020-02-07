@@ -3,6 +3,7 @@ import { buildIt } from "../../src/build";
 
 let baseStep: Step = {
   action: "click",
+  canChange: false,
   html: {
     ancestors: [],
     node: {
@@ -11,7 +12,6 @@ let baseStep: Step = {
     }
   },
   index: 0,
-  isFinal: true,
   page: 0
 };
 

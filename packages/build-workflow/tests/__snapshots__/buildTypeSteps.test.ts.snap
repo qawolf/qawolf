@@ -4,6 +4,7 @@ exports[`buildTypeSteps builds expected steps for hotkeys 1`] = `
 Array [
   Object {
     "action": "type",
+    "canChange": true,
     "html": Object {
       "ancestors": Array [],
       "node": Object {
@@ -15,7 +16,6 @@ Array [
       },
     },
     "index": 0,
-    "isFinal": false,
     "page": 0,
     "value": "↓KeyG↓KeyI↑KeyI↑KeyG",
   },
@@ -26,6 +26,7 @@ exports[`buildTypeSteps builds expected steps for login 1`] = `
 Array [
   Object {
     "action": "type",
+    "canChange": false,
     "html": Object {
       "ancestors": Array [
         Object {
@@ -61,12 +62,12 @@ Array [
       },
     },
     "index": 28,
-    "isFinal": true,
     "page": 0,
     "value": "tomsmith",
   },
   Object {
     "action": "type",
+    "canChange": false,
     "html": Object {
       "ancestors": Array [
         Object {
@@ -102,12 +103,12 @@ Array [
       },
     },
     "index": 44,
-    "isFinal": true,
     "page": 0,
     "value": "↓Tab↑Tab",
   },
   Object {
     "action": "type",
+    "canChange": false,
     "html": Object {
       "ancestors": Array [
         Object {
@@ -143,12 +144,12 @@ Array [
       },
     },
     "index": 48,
-    "isFinal": true,
     "page": 0,
     "value": "SuperSecretPassword!",
   },
   Object {
     "action": "type",
+    "canChange": false,
     "html": Object {
       "ancestors": Array [
         Object {
@@ -184,7 +185,6 @@ Array [
       },
     },
     "index": 51,
-    "isFinal": true,
     "page": 0,
     "value": "↓Enter↑Enter",
   },

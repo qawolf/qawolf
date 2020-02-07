@@ -4,10 +4,10 @@ import { DocSelector } from "./selector";
 
 export interface Step {
   action: Action;
+  // whether or not it may change based on future events
+  canChange: boolean;
   html: DocSelector;
   index: number;
-  // whether or not it may change based on future events
-  isFinal: boolean;
   page: number;
   value?: StepValue;
 }

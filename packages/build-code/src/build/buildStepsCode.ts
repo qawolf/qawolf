@@ -4,7 +4,6 @@ import { buildMethod } from "./buildMethod";
 
 export type BuildStepsOptions = {
   isTest?: boolean;
-  startIndex: number;
   steps: Step[];
 };
 
@@ -23,14 +22,10 @@ ${method}\n`;
   return code;
 };
 
-export const buildStepsCode = ({
-  startIndex,
-  steps,
-  isTest
-}: BuildStepsOptions) => {
+export const buildStepsCode = ({ steps, isTest }: BuildStepsOptions) => {
   let stepsCode = "";
 
-  for (let i = startIndex; i < steps.length; i++) {
+  for (let i = 0; i < steps.length; i++) {
     const previousStep = i > 0 ? steps[i - 1] : null;
     const step = steps[i];
 

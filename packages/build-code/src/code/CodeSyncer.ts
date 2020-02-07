@@ -1,10 +1,19 @@
 import { ElementEvent } from "@qawolf/types";
+import { PatchBuilder } from "./PatchBuilder";
 // import { bold } from "kleur";
 // import { throttle } from "lodash";
 // import { canPatch, PATCH_SYMBOL } from "./patchCode";
 
 export class CodeSyncer {
+  private _patchBuilder: PatchBuilder;
   private _pollingIntervalId?: NodeJS.Timeout;
+
+  protected constructor() {
+    this._patchBuilder = new PatchBuilder({
+      // TODO
+      stepStartIndex: 0
+    });
+  }
 
   public static async start(_: any) {
     return new CodeSyncer();
@@ -12,14 +21,26 @@ export class CodeSyncer {
 
   public async discard() {}
 
-  public notifyEvent(event: ElementEvent) {}
+  private async patchFiles() {
+    const patch = this._patchBuilder.buildPatch();
+    if (!patch) return;
 
-  public async save() {}
+    // this._codeFile.patch(patch.code);
+    // this._selectorFile.patch(patch.selectors);
+  }
+
+  public pushEvent(event: ElementEvent) {
+    this._patchBuilder.pushEvent(event);
+  }
+
+  public async save() {
+    this._patchBuilder.finalize();
+    await this.patchFiles();
+  }
 
   public startPolling() {
     this._pollingIntervalId = setInterval(async () => {
-      // TODO
-      // await this._updateCode();
+      await this.patchFiles();
     }, 100);
   }
 

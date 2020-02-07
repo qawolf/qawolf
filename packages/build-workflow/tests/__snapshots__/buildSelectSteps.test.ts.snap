@@ -4,6 +4,7 @@ exports[`buildSelectSteps builds expected steps 1`] = `
 Array [
   Object {
     "action": "select",
+    "canChange": false,
     "html": Object {
       "ancestors": Array [
         Object {
@@ -87,7 +88,6 @@ Array [
       },
     },
     "index": 1,
-    "isFinal": true,
     "page": 0,
     "value": "2",
   },

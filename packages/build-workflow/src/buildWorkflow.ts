@@ -1,27 +1,14 @@
-import { ElementEvent, Workflow } from "@qawolf/types";
-import { buildSteps } from "./buildSteps";
+import { Workflow } from "@qawolf/types";
+import { buildSteps, BuildStepsOptions } from "./buildSteps";
 
-type Options = {
+export type BuildWorkflowOptions = BuildStepsOptions & {
   device?: string;
-  events: ElementEvent[];
-  onlyFinalSteps?: boolean;
   name: string;
-  stepStartIndex?: number;
   url: string;
 };
 
-export const buildWorkflow = (options: Options): Workflow => {
-  let steps = buildSteps(options.events);
-
-  if (options.onlyFinalSteps) {
-    steps = steps.filter(step => step.isFinal);
-  }
-
-  // reindex
-  steps = steps.map((step, index) => ({
-    ...step,
-    index: index + (options.stepStartIndex || 0)
-  }));
+export const buildWorkflow = (options: BuildWorkflowOptions): Workflow => {
+  let steps = buildSteps(options);
 
   const workflow = {
     device: options.device,

@@ -11,18 +11,12 @@ describe("buildStepsCode", () => {
   });
 
   it("builds test steps", async () => {
-    let code = buildStepsCode({ isTest: true, startIndex: 0, steps });
-    expect(code).toMatchSnapshot();
-
-    code = buildStepsCode({ isTest: true, startIndex: 3, steps });
+    const code = buildStepsCode({ isTest: true, steps });
     expect(code).toMatchSnapshot();
   });
 
   it("builds script steps", async () => {
-    let code = buildStepsCode({ startIndex: 0, steps });
-    expect(code).toMatchSnapshot();
-
-    code = buildStepsCode({ startIndex: 3, steps });
+    const code = buildStepsCode({ steps });
     expect(code).toMatchSnapshot();
   });
 });

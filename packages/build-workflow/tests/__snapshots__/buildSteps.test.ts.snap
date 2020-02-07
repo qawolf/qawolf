@@ -4,6 +4,7 @@ exports[`buildSteps builds expected steps 1`] = `
 Array [
   Object {
     "action": "scroll",
+    "canChange": false,
     "html": Object {
       "ancestors": Array [],
       "node": Object {
@@ -15,7 +16,6 @@ Array [
       },
     },
     "index": 0,
-    "isFinal": true,
     "page": 0,
     "value": Object {
       "x": 0,
@@ -24,6 +24,7 @@ Array [
   },
   Object {
     "action": "click",
+    "canChange": false,
     "html": Object {
       "ancestors": Array [
         Object {
@@ -58,11 +59,11 @@ Array [
       },
     },
     "index": 1,
-    "isFinal": true,
     "page": 0,
   },
   Object {
     "action": "click",
+    "canChange": false,
     "html": Object {
       "ancestors": Array [
         Object {
@@ -98,11 +99,11 @@ Array [
       },
     },
     "index": 2,
-    "isFinal": true,
     "page": 0,
   },
   Object {
     "action": "type",
+    "canChange": false,
     "html": Object {
       "ancestors": Array [
         Object {
@@ -138,12 +139,12 @@ Array [
       },
     },
     "index": 3,
-    "isFinal": true,
     "page": 0,
     "value": "tomsmith",
   },
   Object {
     "action": "type",
+    "canChange": false,
     "html": Object {
       "ancestors": Array [
         Object {
@@ -179,12 +180,12 @@ Array [
       },
     },
     "index": 4,
-    "isFinal": true,
     "page": 0,
     "value": "↓Tab↑Tab",
   },
   Object {
     "action": "type",
+    "canChange": false,
     "html": Object {
       "ancestors": Array [
         Object {
@@ -220,12 +221,12 @@ Array [
       },
     },
     "index": 5,
-    "isFinal": true,
     "page": 0,
     "value": "SuperSecretPassword!",
   },
   Object {
     "action": "type",
+    "canChange": false,
     "html": Object {
       "ancestors": Array [
         Object {
@@ -261,12 +262,12 @@ Array [
       },
     },
     "index": 6,
-    "isFinal": true,
     "page": 0,
     "value": "↓Enter↑Enter",
   },
   Object {
     "action": "click",
+    "canChange": false,
     "html": Object {
       "ancestors": Array [
         Object {
@@ -317,7 +318,6 @@ Array [
       },
     },
     "index": 7,
-    "isFinal": true,
     "page": 0,
   },
 ]
