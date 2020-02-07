@@ -3,7 +3,7 @@ import useBaseUrl from "@docusaurus/useBaseUrl";
 import React from "react";
 import Argument from "./Argument";
 
-function ArgumentFindElementOptions({ simulate }) {
+function ArgumentFindElementOptions({ delayMs, simulate, skipClear }) {
   return (
     <React.Fragment>
       <Argument
@@ -12,6 +12,32 @@ function ArgumentFindElementOptions({ simulate }) {
         optional
         type="Object"
       />
+      {!!delayMs && (
+        <Argument
+          description={
+            <React.Fragment>
+              Time in milliseconds to wait between key presses. <b>Default:</b>{" "}
+              <code>300</code> for <code>↓</code>
+              <a href="https://github.com/microsoft/playwright/blob/master/docs/api.md#keyboarddownkey-options">
+                keyboard.down
+              </a>{" "}
+              and <code>↑</code>
+              <a href="https://github.com/microsoft/playwright/blob/master/docs/api.md#keyboardupkey">
+                keyboard.up
+              </a>
+              , <code>0</code> for <code>→</code>
+              <a href="https://github.com/microsoft/playwright/blob/master/docs/api.md#keyboardsendcharacterstext">
+                keyboard.sendCharacters
+              </a>
+              .
+            </React.Fragment>
+          }
+          indent
+          name="delayMs"
+          optional
+          type="number"
+        />
+      )}
       <Argument
         description={
           <React.Fragment>
@@ -25,6 +51,20 @@ function ArgumentFindElementOptions({ simulate }) {
         optional
         type="number"
       />
+      {!!skipClear && (
+        <Argument
+          description={
+            <React.Fragment>
+              Do not clear the element before typing. <b>Default:</b>{" "}
+              <code>false</code>.
+            </React.Fragment>
+          }
+          indent
+          name="skipClear"
+          optional
+          type="boolean"
+        />
+      )}
       {!!simulate && (
         <Argument
           description={

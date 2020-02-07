@@ -50,7 +50,8 @@ module.exports = {
         "api/browser/has_text",
         "api/browser/page",
         "api/browser/scroll",
-        "api/browser/select"
+        "api/browser/select",
+        "api/browser/type"
       ]
     }
   ]

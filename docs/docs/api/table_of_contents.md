@@ -31,4 +31,8 @@ title: API Table of Contents
 
 [scroll](browser/scroll)
 
+[select](browser/select)
+
+[type](browser/type)
+
 TODOADDSLEEP
