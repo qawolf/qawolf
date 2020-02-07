@@ -2,7 +2,7 @@ import { ElementEvent } from "@qawolf/types";
 import { PatchBuilder } from "./PatchBuilder";
 // import { bold } from "kleur";
 // import { throttle } from "lodash";
-// import { canPatch, PATCH_SYMBOL } from "./patchCode";
+// import { canPatch, PATCH_HANDLE } from "./patchCode";
 
 export class CodeSyncer {
   private _patchBuilder: PatchBuilder;
@@ -58,7 +58,7 @@ export class CodeSyncer {
 //       console.log(
 //         "\n",
 //         bold().red("Cannot update code without this line:"),
-//         PATCH_SYMBOL
+//         PATCH_HANDLE
 //       );
 //     },
 //     10000,

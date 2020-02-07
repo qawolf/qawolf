@@ -1,6 +1,6 @@
 import { camelCase } from "lodash";
 import { buildLaunch } from "./buildLaunch";
-import { PATCH_SYMBOL } from "../code";
+import { PATCH_HANDLE } from "../code";
 
 export type InitialCodeOptions = {
   device?: string;
@@ -20,7 +20,7 @@ const selectors = require("../selectors/${name}");
 
 const ${name} = async () => {
   const browser = ${launch}
-  ${PATCH_SYMBOL}
+  ${PATCH_HANDLE}
   await browser.close();
 };
 
@@ -41,7 +41,7 @@ describe('${name}', () => {
   });
 
   afterAll(() => browser.close());
-  ${PATCH_SYMBOL}
+  ${PATCH_HANDLE}
 });`;
 
   return code;

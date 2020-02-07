@@ -4,7 +4,7 @@
 //   let patch = buildStepsCode(options);
 
 //   // include the symbol to replace later
-//   patch += PATCH_SYMBOL;
+//   patch += PATCH_HANDLE;
 
 //   return patch;
 // };

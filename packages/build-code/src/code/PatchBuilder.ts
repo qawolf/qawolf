@@ -3,7 +3,7 @@ import { logger } from "@qawolf/logger";
 import { ElementEvent, Step } from "@qawolf/types";
 import { sortBy } from "lodash";
 import { buildStepsCode, stepToSelector } from "../build";
-import { PATCH_SYMBOL } from "./patchCode";
+import { PATCH_HANDLE } from "./patchCode";
 
 type ConstructorOptions = {
   stepStartIndex?: number;
@@ -49,7 +49,7 @@ export class PatchBuilder {
     });
 
     // include the patch symbol so we can replace it later
-    code += PATCH_SYMBOL;
+    code += PATCH_HANDLE;
 
     const selectors = newSteps.map(step => ({
       ...stepToSelector(step),

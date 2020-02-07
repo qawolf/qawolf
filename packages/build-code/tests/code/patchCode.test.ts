@@ -1,13 +1,13 @@
 import {
   canPatch,
   patchCode,
-  PATCH_SYMBOL,
-  removePatchSymbol
+  PATCH_HANDLE,
+  removePatchHandle
 } from "../../src/code";
 
 describe("canPatch", () => {
   it("returns true when the create symbol is found", () => {
-    expect(canPatch(`someCode();\n${PATCH_SYMBOL}`)).toBe(true);
+    expect(canPatch(`someCode();\n${PATCH_HANDLE}`)).toBe(true);
   });
 
   it("returns false when the create symbol is missing", () => {
@@ -18,17 +18,17 @@ describe("canPatch", () => {
 describe("patchCode", () => {
   it("matches indentation", () => {
     const patched = patchCode({
-      code: `  myMethod();\n  ${PATCH_SYMBOL}`,
+      code: `  myMethod();\n  ${PATCH_HANDLE}`,
       patch: "myPatch();"
     });
     expect(patched).toEqual("  myMethod();\n  myPatch();");
   });
 });
 
-describe("removePatchSymbol", () => {
+describe("removePatchHandle", () => {
   it("removes the line with the patch symbol", () => {
-    const patched = removePatchSymbol(
-      `myMethod();\n${PATCH_SYMBOL}\nmySecondMethod();`
+    const patched = removePatchHandle(
+      `myMethod();\n${PATCH_HANDLE}\nmySecondMethod();`
     );
     expect(patched).toEqual("myMethod();\nmySecondMethod();");
   });
