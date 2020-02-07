@@ -3,7 +3,7 @@ import {
   patchCode,
   PATCH_HANDLE,
   removePatchHandle
-} from "../../src/code";
+} from "../../src/sync";
 
 describe("canPatch", () => {
   it("returns true when the create symbol is found", () => {

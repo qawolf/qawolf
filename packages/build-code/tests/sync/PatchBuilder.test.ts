@@ -1,5 +1,5 @@
 import { ElementEvent } from "@qawolf/types";
-import { PatchBuilder } from "../../src/code";
+import { PatchBuilder } from "../../src/sync";
 import { loadEvents } from "@qawolf/fixtures";
 import { chunk } from "lodash";
 

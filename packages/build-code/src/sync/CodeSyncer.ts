@@ -14,7 +14,11 @@ type ConstructorOptions = {
 
 type StartOptions = {
   codePath: string;
+  device?: string;
+  isTest?: boolean;
+  name: string;
   selectorPath: string;
+  url: string;
 };
 
 export class CodeSyncer {
@@ -30,7 +34,7 @@ export class CodeSyncer {
     selectorFile
   }: ConstructorOptions) {
     this._codeFile = codeFile;
-    this._isTest = isTest;
+    this._isTest = !!isTest;
     this._selectorFile = selectorFile;
 
     this._patchBuilder = new PatchBuilder({
@@ -41,7 +45,7 @@ export class CodeSyncer {
   public static async start(options: StartOptions) {
     const codeFile = await CodeFile.loadOrCreate(options.codePath);
     const selectorFile = await SelectorFile.loadOrCreate(options.selectorPath);
-    return new CodeSyncer({ codeFile, selectorFile });
+    return new CodeSyncer({ codeFile, isTest: options.isTest, selectorFile });
   }
 
   private _logSaveSuccess() {

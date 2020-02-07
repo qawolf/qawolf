@@ -2,7 +2,7 @@ import { BrowserContext, launch } from "@qawolf/browser";
 import { CodeSyncer } from "@qawolf/build-code";
 import { repl } from "@qawolf/repl";
 import { prompt } from "inquirer";
-import { basename } from "path";
+import { basename, join } from "path";
 import { Url } from "url";
 
 type CreateOptions = {
@@ -42,14 +42,17 @@ export class CreateCodeCLI {
     const rootPath = options.path || `${process.cwd()}/.qawolf`;
 
     const codePath = options.isTest
-      ? `${rootPath}/tests/${options.name}.test.js`
-      : `${rootPath}/scripts/${options.name}.js`;
+      ? join(rootPath, "tests", `${options.name}.test.js`)
+      : join(rootPath, "scripts", `${options.name}.js`);
+
+    const selectorPath = join(rootPath, "selectors", `${options.name}.json`);
 
     const codeSyncer = await CodeSyncer.start({
       codePath,
       device: options.device,
       isTest: options.isTest,
       name: options.name,
+      selectorPath,
       url: options.url.href!
     });
 

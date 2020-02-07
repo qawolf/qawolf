@@ -1,2 +1,2 @@
 export { stepToSelector } from "./build";
-export { CodeSyncer } from "./code";
+export { CodeSyncer } from "./sync";

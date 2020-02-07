@@ -1,6 +1,6 @@
 import { camelCase } from "lodash";
 import { buildLaunch } from "./buildLaunch";
-import { PATCH_HANDLE } from "../code";
+import { PATCH_HANDLE } from "../sync";
 
 export type InitialCodeOptions = {
   device?: string;
