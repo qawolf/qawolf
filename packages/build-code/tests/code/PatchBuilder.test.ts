@@ -19,8 +19,6 @@ describe("PatchBuilder.buildPatch", () => {
     for (let isTest of [false, true]) {
       const builder = new PatchBuilder();
 
-      let numIncludedSteps = 0;
-
       // split the events in two chunks
       const chunkedEvents = chunk(events, (events.length + 1) / 2);
       for (let i = 0; i < chunkedEvents.length; i++) {
@@ -35,11 +33,7 @@ describe("PatchBuilder.buildPatch", () => {
         );
 
         expect(selectors.length).toEqual(steps.length);
-
-        numIncludedSteps += selectors.length;
-
-        // push forward included steps
-        builder.setIncludedSteps(numIncludedSteps);
+        builder.commitSteps(steps.length);
       }
     }
   });

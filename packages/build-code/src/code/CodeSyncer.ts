@@ -1,32 +1,79 @@
 import { ElementEvent } from "@qawolf/types";
+import { bold } from "kleur";
+import { throttle } from "lodash";
+import { CodeFile } from "./CodeFile";
 import { PatchBuilder } from "./PatchBuilder";
-// import { bold } from "kleur";
-// import { throttle } from "lodash";
-// import { canPatch, PATCH_HANDLE } from "./patchCode";
+import { PATCH_HANDLE } from "./patchCode";
+import { SelectorFile } from "./SelectorFile";
+
+type ConstructorOptions = {
+  codeFile: CodeFile;
+  isTest?: boolean;
+  selectorFile: SelectorFile;
+};
+
+type StartOptions = {
+  codePath: string;
+  selectorPath: string;
+};
 
 export class CodeSyncer {
+  private _codeFile: CodeFile;
+  private _isTest: boolean;
   private _patchBuilder: PatchBuilder;
   private _pollingIntervalId?: NodeJS.Timeout;
+  private _selectorFile: SelectorFile;
 
-  protected constructor() {
+  protected constructor({
+    codeFile,
+    isTest,
+    selectorFile
+  }: ConstructorOptions) {
+    this._codeFile = codeFile;
+    this._isTest = isTest;
+    this._selectorFile = selectorFile;
+
     this._patchBuilder = new PatchBuilder({
-      // TODO
-      stepStartIndex: 0
+      stepStartIndex: this._selectorFile.selectors().length
     });
   }
 
-  public static async start(_: any) {
-    return new CodeSyncer();
+  public static async start(options: StartOptions) {
+    const codeFile = await CodeFile.loadOrCreate(options.codePath);
+    const selectorFile = await SelectorFile.loadOrCreate(options.selectorPath);
+    return new CodeSyncer({ codeFile, selectorFile });
   }
+
+  private _logSaveSuccess() {
+    const command = this._isTest
+      ? `npx qawolf test ${this._codeFile.name()}`
+      : `node ${this._codeFile.relativePath()}`;
+
+    console.log(
+      bold().blue(`✨  Created your ${this._isTest ? "test" : "script"}`)
+    );
+    console.log(bold().blue("🐺  Run it with:"), command);
+  }
+
+  private _warnCannotUpdate = throttle(
+    () => {
+      console.warn(
+        "\n",
+        bold().red("Cannot update code without this line:"),
+        PATCH_HANDLE
+      );
+    },
+    10000,
+    { leading: true }
+  );
 
   public async discard() {}
 
-  private async patchFiles() {
-    const patch = this._patchBuilder.buildPatch();
-    if (!patch) return;
-
-    // this._codeFile.patch(patch.code);
-    // this._selectorFile.patch(patch.selectors);
+  private async patchFiles({ removeHandle }: { removeHandle?: boolean } = {}) {
+    await Promise.all([
+      this._codeFile.patch({ removeHandle }),
+      this._selectorFile.patch()
+    ]);
   }
 
   public pushEvent(event: ElementEvent) {
@@ -35,12 +82,22 @@ export class CodeSyncer {
 
   public async save() {
     this._patchBuilder.finalize();
-    await this.patchFiles();
+    await this.patchFiles({ removeHandle: true });
+    this._logSaveSuccess();
   }
 
   public startPolling() {
     this._pollingIntervalId = setInterval(async () => {
-      await this.patchFiles();
+      try {
+        await this.patchFiles();
+      } catch (e) {
+        // TODO
+        if (e === "") {
+          this._warnCannotUpdate();
+        } else {
+          throw e;
+        }
+      }
     }, 100);
   }
 
@@ -51,67 +108,3 @@ export class CodeSyncer {
     this._pollingIntervalId = undefined;
   }
 }
-
-//   // TODO figure out when to
-//   public warnCannotUpdate = throttle(
-//     () => {
-//       console.log(
-//         "\n",
-//         bold().red("Cannot update code without this line:"),
-//         PATCH_HANDLE
-//       );
-//     },
-//     10000,
-//     { leading: true }
-//   );
-
-//   private _logSaveSuccess() {
-//     const relativeCodePath = relative(process.cwd(), this._options.codePath);
-//     const codeType = this._options.isTest ? "test" : "script";
-//     const command = this._options.isTest
-//       ? `npx qawolf test ${this._options.name}`
-//       : `node ${relativeCodePath}`;
-
-//     console.log(bold().blue(`✨  Created your ${codeType}`));
-//     console.log(bold().blue("🐺  Run it with:"), command);
-//   }
-
-//   public async patchCode() {
-//     const code = await this._codeFile.load();
-//     if (!canPatch(code)) {
-//       this.warnCannotUpdate();
-//       return false;
-//     }
-
-//     const patchedCode = patchCode();
-//     await this._codeFile.update(patchedCode);
-
-//     // TODO selectors...
-//   }
-
-//   public async save() {
-//     // TODO throw error if this is called and cannot patch?
-//     // Do not allow selecting save, until it is saveable?
-//     await this.patchCode({ interimSteps: true, removeSymbol: true });
-
-//     // TODO selectors
-
-//     this._logSaveSuccess();
-//   }
-
-//   public async update() {
-//     // only load the code when it makes sense to
-//     if (!this._tracker.getPendingSteps() < 1) return;
-
-//     await this.patchCode();
-//   }
-
-// }
-
-// // stepStartIndex: this._preexistingSelectors
-// //     ? this._preexistingSelectors.length
-// //     : 0
-
-// //     if (this._options.debug) {
-// //       await this._saveDebugFiles(workflow);
-// //     }

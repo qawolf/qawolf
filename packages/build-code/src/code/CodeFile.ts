@@ -1,21 +1,26 @@
 // import { buildStepsCode, BuildStepsOptions } from "../build";
+// import { canPatch, PATCH_HANDLE } from "./patchCode";
+// import { relative } from "path";
 
-// export const buildPatch = (options: BuildStepsOptions) => {
-//   let patch = buildStepsCode(options);
+export class CodeFile {
+  public static async loadOrCreate(path: string) {
+    return new CodeFile();
+  }
 
-//   // include the symbol to replace later
-//   patch += PATCH_HANDLE;
+  async patch({ removeHandle }: { removeHandle?: boolean } = {}) {
+    // TODO this should be responsible for getting current patch from builder
+    // and locking/etc
+    // const patch = this._patchBuilder.buildPatch(this._isTest);
+    // if (!patch) return;
+  }
 
-//   return patch;
-// };
+  public relativePath() {
+    // return relative(process.cwd(), this._path)
+    return "";
+  }
 
-// // virtualizable/mockable
-// export class CodeFile {
-//   // load or create initial
-//   // ----
-//   // save
-//   // ----
-//   // revert
+  public name() {}
+}
 
 //   async init() {
 //     // const codeExists = await pathExists(this._options.codePath);

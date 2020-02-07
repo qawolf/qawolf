@@ -13,7 +13,7 @@ export class PatchBuilder {
   /**
    * Build a patch for non-included steps.
    */
-  private _numIncludedSteps: number = 0;
+  private _numCommittedSteps: number = 0;
   private _events: ElementEvent[] = [];
   private _finalized: boolean = false;
   private _steps: Step[] = [];
@@ -40,7 +40,7 @@ export class PatchBuilder {
   }
 
   private stepsToPatch() {
-    const newSteps = this._steps.slice(this._numIncludedSteps);
+    const newSteps = this._steps.slice(this._numCommittedSteps);
     return newSteps;
   }
 
@@ -78,12 +78,8 @@ export class PatchBuilder {
     this._buildSteps({ canChange: false });
   }
 
-  public setIncludedSteps(numIncludedSteps: number) {
-    if (numIncludedSteps < this._numIncludedSteps) {
-      throw new Error("Can only increase numIncludedSteps");
-    }
-
-    this._numIncludedSteps = numIncludedSteps;
+  public commitSteps(numSteps: number) {
+    this._numCommittedSteps += numSteps;
   }
 
   public finalize() {
