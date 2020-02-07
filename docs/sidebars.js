@@ -48,7 +48,9 @@ module.exports = {
         "api/browser/find_property",
         "api/browser/goto",
         "api/browser/has_text",
-        "api/browser/page"
+        "api/browser/page",
+        "api/browser/scroll",
+        "api/browser/select"
       ]
     }
   ]

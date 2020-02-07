@@ -29,4 +29,6 @@ title: API Table of Contents
 
 [page](browser/page)
 
+[scroll](browser/scroll)
+
 TODOADDSLEEP

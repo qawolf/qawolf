@@ -1,0 +1,88 @@
+---
+id: scroll
+sidebar_label: scroll
+title: browser.scroll
+---
+
+import Argument from "../components/Argument";
+import ArgumentFindElementOptions from "../components/ArgumentFindElementOptions";
+import ArgumentSelector from "../components/ArgumentSelector";
+import ReturnElementHandle from "../components/ReturnElementHandle";
+import Syntax from "../components/Syntax";
+
+<Syntax code="browser.scroll(selector, value, [options={}])" />
+
+Find and scroll an element until `element.scrollLeft` is equal to `value.x` and `element.scrollTop` is equal to `value.y`.
+
+If the element is not found before timeout or the element cannot scroll **at all**, an error is thrown. If the element can scroll some, an error is not thrown.
+
+### Arguments
+
+<ArgumentSelector />
+<Argument description="Specifies the horizontal and vertical positions to scroll the element to." name="value" type="Object" />
+<Argument description="Scroll the horizontal axis of the element to this pixel value." indent name="x" type="number" />
+<Argument description="Scroll the vertical axis of the element to this pixel value." indent name="y" type="number" />
+<ArgumentFindElementOptions />
+
+### Returns
+
+<ReturnElementHandle />
+
+## Examples
+
+### CSS Selectors
+
+Scroll the vertical axis of the element with the id `"my-container"` to 100 pixels down:
+
+```js
+await browser.scroll({ css: "#my-container" }, { x: 0, y: 100 });
+```
+
+Scroll the horizontal axis of the element with the `data-qa` attribute equal to `"infinite-scroll"` to 200 pixels across:
+
+```js
+await browser.scroll(
+  { css: "[data-qa='infinite-scroll']" },
+  { x: 200, y: 100 }
+);
+```
+
+### HTML Selectors
+
+Scroll an element using the [default selector logic](../../use_custom_selectors#default-selector-logic) to 100 pixels down and 200 pixels across:
+
+```js
+await browser.scroll(selectors[0], { x: 200, y: 100 });
+```
+
+### Text Selectors
+
+Scroll the vertical axis of the element containing the text `"My Posts"` to 100 pixels down:
+
+```js
+await browser.scroll({ text: "My Posts" }, { x: 0, y: 100 });
+```
+
+### Options
+
+Scroll the element containing the text `"My Posts"`, waiting 5 seconds after it is found before scrolling:
+
+```js
+await browser.scroll({ text: "My Posts" }, { x: 0, y: 100 }, { sleepMs: 5000 });
+```
+
+Scroll the element with the CSS class `"my-container"`, timing out if the element is not found within 5 seconds:
+
+```js
+await browser.scroll(
+  { css: ".my-container" },
+  { x: 0, y: 100 },
+  { timeoutMs: 5000 }
+);
+```
+
+Return the [Playwright `ElementHandle`](https://github.com/microsoft/playwright/blob/v0.10.0/docs/api.md#class-elementhandle) instance after scrolling:
+
+```js
+const element = await browser.scroll(selectors[0], { x: 0, y: 100 });
+```
