@@ -1,4 +1,4 @@
-import { getIndentation, indent, removeLinesIncluding } from "../format";
+import { getIndentation, indent, removeLinesIncluding } from "./format";
 
 type PatchOptions = {
   code: string;

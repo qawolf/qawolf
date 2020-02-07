@@ -11,6 +11,12 @@ export class SelectorFile {
   }
 
   public async patch() {
+    //   const stepsToPatch = this._steps.slice(startIndex);
+    //   const selectors = stepsToPatch.map(step => ({
+    //     ...stepToSelector(step),
+    //     // inline index so it is easy to correlate with the test
+    //     index: step.index
+    //   }));
     // TODO this should be responsible for getting current patch from builder
     // and locking/etc
     // const patch = this._patchBuilder.buildPatch(this._isTest);

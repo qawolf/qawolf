@@ -8,7 +8,7 @@ import { buildTypeSteps } from "./buildTypeSteps";
 export type BuildStepsOptions = {
   canChange?: boolean;
   events: ElementEvent[];
-  stepStartIndex?: number;
+  startIndex?: number;
 };
 
 export const buildSteps = ({
@@ -33,7 +33,7 @@ export const buildSteps = ({
   }
 
   // reindex
-  const startIndex = options.stepStartIndex || 0;
+  const startIndex = options.startIndex || 0;
   steps = steps.map((step, index) => ({
     ...step,
     index: index + startIndex
