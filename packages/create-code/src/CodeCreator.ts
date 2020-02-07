@@ -43,7 +43,11 @@ export class CodeCreator {
   }
 
   public static async start(options: StartOptions) {
-    const codeFile = await CodeFile.loadOrCreate(options.codePath);
+    const codeFile = await CodeFile.loadOrCreate({
+      ...options,
+      path: options.codePath
+    });
+
     const selectorFile = await SelectorFile.loadOrCreate(options.selectorPath);
     return new CodeCreator({ codeFile, isTest: options.isTest, selectorFile });
   }
@@ -59,7 +63,7 @@ export class CodeCreator {
     console.log(bold().blue("🐺  Run it with:"), command);
   }
 
-  private _warnCannotUpdate = throttle(
+  private _warnNoHandle = throttle(
     () => {
       console.warn(
         "\n",
@@ -95,9 +99,8 @@ export class CodeCreator {
       try {
         await this.patchFiles();
       } catch (e) {
-        // TODO
-        if (e === "") {
-          this._warnCannotUpdate();
+        if (e.message.includes("Cannot patch without handle")) {
+          this._warnNoHandle();
         } else {
           throw e;
         }

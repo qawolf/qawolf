@@ -1,92 +1,132 @@
-import { buildStepsCode, BuildStepsOptions } from "@qawolf/build-code";
+import {
+  buildStepsCode,
+  BuildStepsOptions,
+  buildInitialCode,
+  InitialCodeOptions
+} from "@qawolf/build-code";
 import { Step } from "@qawolf/types";
-import { PATCH_HANDLE } from "./patchCode";
-// import { buildStepsCode, BuildStepsOptions } from "../build";
-// import { canPatch, PATCH_HANDLE } from "./patchCode";
-// import { relative } from "path";
+import { pathExists, readFile, outputFile, remove } from "fs-extra";
+import { relative } from "path";
+import { PATCH_HANDLE, patchCode } from "./patchCode";
+import { removeLinesIncluding } from "./format";
+
+type ConstructorOptions = Omit<InitialCodeOptions, "patchHandle"> & {
+  path: string;
+};
 
 type PatchOptions = {
   removeHandle?: boolean;
   steps: Step[];
 };
 
-// TODO this is the ode syncer?
-
 export class CodeFile {
-  private _codeFile: CodeFile;
   private _commitedStepIndex: number = 0;
+  protected _existingCode: string | undefined;
   private _isTest: boolean;
   private _lock: boolean;
+  private _path: string;
 
-  public static async loadOrCreate(path: string) {
-    return new CodeFile();
+  protected constructor({ isTest, path }: ConstructorOptions) {
+    this._isTest = !!isTest;
+    this._path = path;
   }
 
-  public relativePath() {
-    // return relative(process.cwd(), this._path)
-    return "";
+  public static async loadOrCreate(options: ConstructorOptions) {
+    const codeFile = new CodeFile(options);
+
+    codeFile._existingCode = await loadFileIfExists(options.path);
+
+    if (!codeFile._existingCode) {
+      await createInitialCode(options);
+    }
+
+    return codeFile;
+  }
+
+  protected async _revert() {
+    await outputFile(this._path, this._existingCode, "utf8");
+  }
+
+  protected async _remove() {
+    await remove(this._path);
+  }
+
+  public async discard() {
+    if (this._existingCode) {
+      await this._revert();
+    } else {
+      await this._remove();
+    }
   }
 
   public name() {}
 
   async patch(options: PatchOptions) {
-    if (this._lock) return;
-
-    // choose new (non-committed) steps
-    const steps = options.steps.slice(this._commitedStepIndex);
-    if (!steps.length) return;
-
-    let patch = buildStepsCodePatch({
-      isTest: this._isTest,
-      steps
-    });
-
-    // TODO load code....
-
-    if (options.removeHandle) {
-      // TODO
+    if (this._lock) {
+      // do not conflict with a patch in progress
+      return;
     }
 
-    this._commitedStepIndex += steps.length;
+    // patch non-committed (new) steps
+    const stepsToPatch = options.steps.slice(this._commitedStepIndex);
+    if (!stepsToPatch.length) {
+      // no new steps to patch
+      return;
+    }
+
+    const code = await loadFileIfExists(this._path);
+    if (!code) {
+      throw new Error("No code to patch");
+    }
+
+    this._lock = true;
+
+    let patch = buildPatch({
+      isTest: this._isTest,
+      steps: stepsToPatch
+    });
+
+    let patchedCode = patchCode({ code, patch });
+
+    if (options.removeHandle) {
+      patchedCode = removeLinesIncluding(patchedCode, PATCH_HANDLE);
+    }
+
+    await outputFile(this._path, patchedCode, "utf8");
+
+    this._commitedStepIndex += stepsToPatch.length;
     this._lock = false;
   }
 
-  //   async init() {
-  //     // const codeExists = await pathExists(this._options.codePath);
-  //     // if (codeExists) {
-  //     //   this.load()
-  //     // }
-  //   }
-
-  //   async load() {
-  //     // TODO....
-  //     // const code = await readFile(this._options.codePath, "utf8");
-  //   }
-
-  //   async createInitialCode() {
-  //     // const initialCode = buildInitialCode({
-  //     //   ...this._options,
-  //     //   createCodeSymbol: CREATE_CODE_SYMBOL
-  //     // });
-  //     // await outputFile(this._options.path, initialCode, "utf8");
-  //   }
-
-  //   discard() {
-  //     // if (this._preexistingCode) {
-  //     //   console.log(yellow("reverted:"), this._options.codePath);
-  //     //   await outputFile(this._options.codePath, this._preexistingCode, "utf8");
-  //     // } else {
-  //     //   await remove(this._options.codePath);
-  //     // }
-  //   }
-  // }
+  public relativePath() {
+    return relative(process.cwd(), this._path);
+  }
 }
 
-export const buildStepsCodePatch = (options: BuildStepsOptions) => {
+export const buildPatch = (options: BuildStepsOptions) => {
   let patch = buildStepsCode(options);
 
   // include the patch symbol so we can replace it later
   patch += PATCH_HANDLE;
 
   return patch;
+};
+
+export const createInitialCode = async (options: ConstructorOptions) => {
+  const initialCode = buildInitialCode({
+    ...options,
+    patchHandle: PATCH_HANDLE
+  });
+
+  await outputFile(options.path, initialCode, "utf8");
+};
+
+export const loadFileIfExists = async (
+  path: string
+): Promise<string | undefined> => {
+  const codeExists = await pathExists(path);
+  if (!codeExists) return undefined;
+
+  const file = await readFile(path, "utf8");
+  return file;
 };

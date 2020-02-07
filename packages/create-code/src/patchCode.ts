@@ -22,7 +22,7 @@ export const indentPatch = (code: string, patch: string) => {
 
 export const patchCode = ({ code, patch }: PatchOptions) => {
   if (!canPatch(code)) {
-    throw new Error("Code missing patch symbol");
+    throw new Error("Cannot patch without handle");
   }
 
   const patchedCode = code.replace(PATCH_HANDLE, indentPatch(code, patch));
