@@ -24,3 +24,9 @@ title: API Table of Contents
 [findProperty](browser/find_property)
 
 [goto](browser/goto)
+
+[hasText](browser/has_text)
+
+[page](browser/page)
+
+TODOADDSLEEP

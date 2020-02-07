@@ -46,7 +46,9 @@ module.exports = {
         "api/browser/close",
         "api/browser/find",
         "api/browser/find_property",
-        "api/browser/goto"
+        "api/browser/goto",
+        "api/browser/has_text",
+        "api/browser/page"
       ]
     }
   ]

@@ -67,8 +67,8 @@ function ArgumentFindElementOptions({ simulate }) {
       <Argument
         description={
           <React.Fragment>
-            Maximum amount of time in milliseconds to wait for the element
-            before timing out. <b>Default:</b>{" "}
+            Maximum amount of time in milliseconds to wait for the element.{" "}
+            <b>Default:</b>{" "}
             <Link
               to={useBaseUrl("docs/api/environment_variables#qaw_timeout_ms")}
             >

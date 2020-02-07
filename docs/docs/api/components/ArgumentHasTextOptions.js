@@ -1,3 +1,5 @@
+import Link from "@docusaurus/Link";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import React from "react";
 import Argument from "./Argument";
 
@@ -5,15 +7,7 @@ function ArgumentFindPageOptions() {
   return (
     <React.Fragment>
       <Argument
-        description={
-          <React.Fragment>
-            Options to use when finding the{" "}
-            <a href="https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page">
-              Playwright <code>Page</code>
-            </a>{" "}
-            instance.
-          </React.Fragment>
-        }
+        description="Options to use when determining if the page has text."
         name="options"
         optional
         type="Object"
@@ -33,26 +27,20 @@ function ArgumentFindPageOptions() {
       <Argument
         description={
           <React.Fragment>
-            Maximum amount of time in milliseconds to wait for the page to open.{" "}
-            <b>Default:</b> <code>5000</code>.
+            Maximum amount of time in milliseconds to wait for the text to
+            appear. <b>Default:</b>{" "}
+            <Link
+              to={useBaseUrl("docs/api/environment_variables#qaw_timeout_ms")}
+            >
+              <code>QAW_TIMEOUT_MS</code>
+            </Link>
+            .
           </React.Fragment>
         }
         indent
         name="timeoutMs"
         optional
         type="number"
-      />
-      <Argument
-        description={
-          <React.Fragment>
-            Wait until the page completes all network requests (up to 10 seconds
-            per request). <b>Default:</b> <code>true</code>.
-          </React.Fragment>
-        }
-        indent
-        name="waitForRequests"
-        optional
-        type="boolean"
       />
     </React.Fragment>
   );

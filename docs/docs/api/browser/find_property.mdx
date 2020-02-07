@@ -65,7 +65,7 @@ const label = await browser.findProperty({ text: "Submit" }, "label");
 
 ### Options
 
-Get the `href` of the element containing the text `"Sign In"`. Find the element on the page with index `1`, timing out in 5000 milliseconds if not found:
+Get the `href` of the element containing the text `"Sign In"`. Find the element on the page with index `1`, timing out in 5 seconds if not found:
 
 ```js
 const href = await browser.find({ text: "Sign In" }, "href", {
