@@ -1,26 +1,27 @@
 import { camelCase } from "lodash";
 import { buildLaunch } from "./buildLaunch";
-import { PATCH_HANDLE } from "../sync";
 
 export type InitialCodeOptions = {
   device?: string;
   isTest?: boolean;
   name: string;
+  patchHandle: string;
   url: string;
 };
 
 type TemplateOptions = {
-  name: string;
   launch: string;
+  name: string;
+  patchHandle: string;
 };
 
-const buildInitialScript = ({ name, launch }: TemplateOptions) => {
+const buildInitialScript = ({ name, launch, patchHandle }: TemplateOptions) => {
   const code = `const { launch } = require("qawolf");
 const selectors = require("../selectors/${name}");
 
 const ${name} = async () => {
   const browser = ${launch}
-  ${PATCH_HANDLE}
+  ${patchHandle}
   await browser.close();
 };
 
@@ -29,7 +30,7 @@ ${name}();`;
   return code;
 };
 
-const buildInitialTest = ({ name, launch }: TemplateOptions) => {
+const buildInitialTest = ({ name, launch, patchHandle }: TemplateOptions) => {
   const code = `const { launch } = require("qawolf");
 const selectors = require("../selectors/${name}");
 
@@ -41,7 +42,7 @@ describe('${name}', () => {
   });
 
   afterAll(() => browser.close());
-  ${PATCH_HANDLE}
+  ${patchHandle}
 });`;
 
   return code;
@@ -50,7 +51,8 @@ describe('${name}', () => {
 export const buildInitialCode = (options: InitialCodeOptions) => {
   const templateOptions = {
     launch: buildLaunch(options.url, options.device),
-    name: camelCase(options.name)
+    name: camelCase(options.name),
+    patchHandle: options.patchHandle
   };
 
   if (options.isTest) {

@@ -6,7 +6,7 @@ const selectors = require(\\"../selectors/login\\");
 
 const login = async () => {
   const browser = await launch({ url: \\"http://localhost\\" });
-  // 🐺 CREATE CODE HERE
+  MY_PATCH_HANDLE
   await browser.close();
 };
 
@@ -19,7 +19,7 @@ const selectors = require(\\"../selectors/login\\");
 
 const login = async () => {
   const browser = await launch({ device: \\"iPhone 7\\", url: \\"http://localhost\\" });
-  // 🐺 CREATE CODE HERE
+  MY_PATCH_HANDLE
   await browser.close();
 };
 
@@ -38,7 +38,7 @@ describe('login', () => {
   });
 
   afterAll(() => browser.close());
-  // 🐺 CREATE CODE HERE
+  MY_PATCH_HANDLE
 });"
 `;
 
@@ -54,6 +54,6 @@ describe('login', () => {
   });
 
   afterAll(() => browser.close());
-  // 🐺 CREATE CODE HERE
+  MY_PATCH_HANDLE
 });"
 `;

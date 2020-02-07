@@ -1,9 +1,9 @@
+import { StepBuilder } from "@qawolf/build-code";
 import { ElementEvent } from "@qawolf/types";
 import { bold } from "kleur";
 import { throttle } from "lodash";
-import { StepBuilder } from "../build";
-import { PATCH_HANDLE } from "../patchCode";
 import { CodeFile } from "./CodeFile";
+import { PATCH_HANDLE } from "./patchCode";
 import { SelectorFile } from "./SelectorFile";
 
 type ConstructorOptions = {
@@ -21,7 +21,7 @@ type StartOptions = {
   url: string;
 };
 
-export class CodeSyncer {
+export class CodeCreator {
   private _codeFile: CodeFile;
   private _isTest: boolean;
   private _pollingIntervalId?: NodeJS.Timeout;
@@ -45,7 +45,7 @@ export class CodeSyncer {
   public static async start(options: StartOptions) {
     const codeFile = await CodeFile.loadOrCreate(options.codePath);
     const selectorFile = await SelectorFile.loadOrCreate(options.selectorPath);
-    return new CodeSyncer({ codeFile, isTest: options.isTest, selectorFile });
+    return new CodeCreator({ codeFile, isTest: options.isTest, selectorFile });
   }
 
   private _logSaveSuccess() {
@@ -75,7 +75,7 @@ export class CodeSyncer {
 
   private async patchFiles({ removeHandle }: { removeHandle?: boolean } = {}) {
     await Promise.all([
-      this._codeFile.patch({ removeHandle }),
+      this._codeFile.patch({ removeHandle, steps: this._stepBuilder.steps() }),
       this._selectorFile.patch()
     ]);
   }

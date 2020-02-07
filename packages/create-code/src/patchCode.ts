@@ -26,7 +26,6 @@ export const patchCode = ({ code, patch }: PatchOptions) => {
   }
 
   const patchedCode = code.replace(PATCH_HANDLE, indentPatch(code, patch));
-
   return patchedCode;
 };
 

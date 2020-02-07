@@ -1,7 +1,7 @@
 import { CONFIG } from "@qawolf/config";
 import { Action } from "@qawolf/types";
 import { htmlToDoc } from "@qawolf/web";
-import { stepToSelector, buildSelector } from "../../src/build";
+import { stepToSelector, buildSelector } from "../src/buildSelector";
 
 const doc = htmlToDoc;
 

@@ -1,7 +1,7 @@
 import { CONFIG } from "@qawolf/config";
 import { Action } from "@qawolf/types";
 import { htmlToDoc } from "@qawolf/web";
-import { buildMethod, buildMethodOptions } from "../../src/build";
+import { buildMethod, buildMethodOptions } from "../src/buildMethod";
 
 const doc = htmlToDoc;
 

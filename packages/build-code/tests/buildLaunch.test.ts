@@ -1,4 +1,4 @@
-import { buildLaunch } from "../../src/build";
+import { buildLaunch } from "../src/buildLaunch";
 
 describe("buildLaunch", () => {
   it("includes device if present", () => {

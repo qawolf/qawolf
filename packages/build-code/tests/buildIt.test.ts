@@ -1,5 +1,5 @@
 import { Step } from "@qawolf/types";
-import { buildIt } from "../../src/build";
+import { buildIt } from "../src/buildIt";
 
 let baseStep: Step = {
   action: "click",

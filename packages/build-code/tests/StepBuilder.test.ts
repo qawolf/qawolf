@@ -1,6 +1,6 @@
 import { loadEvents } from "@qawolf/fixtures";
 import { ElementEvent } from "@qawolf/types";
-import { StepBuilder } from "../../src/build";
+import { StepBuilder } from "../src/StepBuilder";
 
 describe("StepBuilder", () => {
   let events: ElementEvent[];

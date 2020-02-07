@@ -1,6 +1,6 @@
 import { loadWorkflow } from "@qawolf/fixtures";
 import { Step } from "@qawolf/types";
-import { buildStepsCode } from "../../src/build/buildStepsCode";
+import { buildStepsCode } from "../src/buildStepsCode";
 
 describe("buildStepsCode", () => {
   let steps: Step[];
