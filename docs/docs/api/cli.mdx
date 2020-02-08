@@ -3,7 +3,8 @@ id: cli
 title: CLI
 ---
 
-import Argument from "./components/Argument";
+import ArgumentCreate from "./components/ArgumentCreate";
+import ArgumentTest from "./components/ArgumentTest";
 
 This guide lists the QA Wolf commands you can run in the [CLI](../install#understand-the-command-line).
 
@@ -21,22 +22,17 @@ QAW_ATTRIBUTE=my-attribute npx qawolf create www.myawesomesite.com
 
 See all commands and options.
 
+TODOADDBROWSERFLAGS
+
+TODOADDFLAGSTOEND
+
 ## npx qawolf create url [name]
 
-TODOFINISH
+Create a browser [test](../create_a_test) or [script](../create_a_script) on a [Chromium](https://www.chromium.org/Home) browser.
 
 #### Arguments
 
-<Argument
-  description={
-    <React.Fragment>
-      Emulate a device. <b>Default:</b> "desktop".
-    </React.Fragment>
-  }
-  name="--device name"
-  optional
-  type="string"
-/>
+<ArgumentCreate />
 
 #### Examples
 
@@ -46,8 +42,88 @@ Create a browser test on `www.google.com`, emulating an iPhone 7:
 npx qawolf create --device="iPhone 7" www.google.com
 ```
 
+Create a browser test on `www.google.com`, saving it at `.qawolf/tests/myTestName.test.js`:
+
+```bash
+npx qawolf create www.google.com myTestName
+```
+
+Create a browser test on `www.google.com`, saving it at `.myTests/tests/myTestName.test.js`:
+
+```bash
+npx qawolf create --path=./myTests www.google.com myTestName
+```
+
 Create a browser script on `www.google.com`:
 
 ```bash
 npx qawolf create --script google.com
 ```
+
+## npx qawolf test [name][...options]
+
+Run your test(s) with [Jest](https://jestjs.io/) on a [Chromium](https://www.chromium.org/Home) browser.
+
+#### Arguments
+
+<ArgumentTest />
+
+#### Examples
+
+Run all tests:
+
+```bash
+npx qawolf test
+```
+
+Run the test saved at `.qawolf/tests/myTestName.test.js`:
+
+```bash
+npx qawolf test myTestName
+```
+
+Run the test saved at `.qawolf/tests/myTestName.test.js` on [Chromium](https://www.chromium.org/Home), [Firefox](https://www.mozilla.org/en-US/firefox/new), and [WebKit](https://webkit.org):
+
+```bash
+npx qawolf test myTestName --all-browsers
+```
+
+Run the test saved at `.myTests/tests/myTestName.test.js`:
+
+```bash
+npx qawolf test --path=.myTests myTestName
+```
+
+Use the [`--runInBand` Jest CLI option](https://jestjs.io/docs/en/cli#--runinband) to run tests serially:
+
+```bash
+npx qawolf test --runInBand
+```
+
+## npx qawolf azure
+
+Create a pipeline file for [Azure DevOps](https://azure.microsoft.com/en-us/services/devops). See [set up CI documentation](../run_tests_in_ci#create-workflow-file) for more details.
+
+## npx qawolf bitbucket
+
+Create a pipeline file for [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines). See [set up CI documentation](../run_tests_in_ci#create-workflow-file) for more details.
+
+## npx qawolf circleci
+
+Create a workflow file for [CircleCI](https://circleci.com). See [set up CI documentation](../run_tests_in_ci#create-workflow-file) for more details.
+
+## npx qawolf github
+
+Create a workflow file for [GitHub Actions](https://github.com/features/actions). See [set up CI documentation](../run_tests_in_ci#create-workflow-file) for more details.
+
+## npx qawolf gitlab
+
+Create a workflow file for [GitLab CI/CD](https://docs.gitlab.com/ee/ci/README.html). See [set up CI documentation](../run_tests_in_ci#create-workflow-file) for more details.
+
+## npx qawolf howl
+
+🐺😉
+
+## npx qawolf jenkins
+
+Create a workflow file for [Jenkins](TODOFIXLINK). See [set up CI documentation](../run_tests_in_ci#create-workflow-file) for more details.

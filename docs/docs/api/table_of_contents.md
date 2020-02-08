@@ -11,6 +11,22 @@ Below we list the API provided by QA Wolf. As a reminder, you also have full acc
 
 [npx qawolf create url [name]](cli#npx-qawolf-create-url-name)
 
+[npx qawolf test [name]](cli#npx-qawolf-test-name)
+
+[npx qawolf azure](cli#npx-qawolf-azure)
+
+[npx qawolf bitbucket](cli#npx-qawolf-bitbucket)
+
+[npx qawolf circleci](cli#npx-qawolf-circleci)
+
+[npx qawolf github](cli#npx-qawolf-github)
+
+[npx qawolf gitlab](cli#npx-qawolf-gitlab)
+
+[npx qawolf howl](cli#npx-qawolf-howl)
+
+[npx qawolf jenkins](cli#npx-qawolf-jenkins)
+
 ## Environment Variables
 
 [QAW_ARTIFACT_PATH](environment_variables#qaw_artifact_path)
