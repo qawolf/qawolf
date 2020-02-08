@@ -62,7 +62,9 @@ export class CodeFile {
 
     let patch = buildPatch({
       isTest: this._isTest,
-      steps: stepsToPatch
+      // we need to pass all steps so the page options are built properly
+      startIndex: this._commitedStepIndex,
+      steps: options.steps
     });
 
     let codeWithPatch = patchCode({ code, patch });

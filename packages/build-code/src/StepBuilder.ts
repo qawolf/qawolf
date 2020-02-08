@@ -29,7 +29,7 @@ export class StepBuilder {
     includeCanChangeSteps: boolean;
   }) {
     const steps = buildSteps({
-      events: this.getEvents(),
+      events: this.events(),
       includeCanChangeSteps,
       startIndex: this._startIndex
     });
@@ -51,7 +51,7 @@ export class StepBuilder {
     });
   }
 
-  public getEvents() {
+  public events() {
     return sortBy(this._events, e => e.time);
   }
 

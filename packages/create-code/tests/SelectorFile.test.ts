@@ -2,7 +2,7 @@ import { outputJson, pathExists, readJson, remove } from "fs-extra";
 import { SelectorFile } from "../src/SelectorFile";
 
 // require manually since fs is mocked
-const scrollLogin = require("@qawolf/fixtures/workflows/scroll_login.json");
+const scrollLogin = require("@qawolf/test/workflows/scroll_login.json");
 
 jest.mock("fs-extra");
 

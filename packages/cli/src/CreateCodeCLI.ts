@@ -21,6 +21,7 @@ type ConstructOptions = {
   context: BrowserContext;
   codePath: string;
   codeCreator: CodeCreator;
+  debug: boolean;
   isTest: boolean;
 };
 
@@ -28,12 +29,14 @@ export class CreateCodeCLI {
   private _codePath: string;
   private _codeCreator: CodeCreator;
   private _context: BrowserContext;
+  private _debug: boolean;
   private _isTest: boolean;
 
   protected constructor(options: ConstructOptions) {
     this._codePath = options.codePath;
     this._codeCreator = options.codeCreator;
     this._context = options.context;
+    this._debug = options.debug;
     this._isTest = options.isTest;
   }
 
@@ -80,9 +83,10 @@ export class CreateCodeCLI {
         codePath,
         codeCreator,
         context,
+        debug: !!options.debug,
         isTest: !!options.isTest
       });
-      await command.prompt();
+      await command._prompt();
     } catch (e) {
       if (e.message === "Cannot find selector file to update") {
         logNoSelectors();
@@ -94,10 +98,14 @@ export class CreateCodeCLI {
     }
   }
 
-  protected async prompt() {
+  protected async _prompt() {
     const { choice } = await prompt<{ choice: string }>([
       {
-        choices: ["💾  Save and Exit", "🖥️  Open REPL", "🗑️  Discard and Exit"],
+        choices: [
+          "💾  Save and exit",
+          "🖥️  Open REPL to run code",
+          "🗑️  Discard and exit"
+        ],
         message: `Edit your ${this._isTest ? "test" : "script"} at: ${relative(
           process.cwd(),
           this._codePath
@@ -109,14 +117,14 @@ export class CreateCodeCLI {
 
     if (choice.includes("REPL")) {
       await repl();
-      await this.prompt();
+      await this._prompt();
       return;
     }
 
     await this._context.close();
 
     if (choice.includes("Save")) {
-      await this._codeCreator.save();
+      await this._codeCreator.save({ debug: this._debug });
     } else {
       await this._codeCreator.discard();
     }

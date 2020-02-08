@@ -1,4 +1,4 @@
-import { loadEvents } from "@qawolf/fixtures";
+import { loadEvents } from "@qawolf/test";
 import { ElementEvent, KeyEvent } from "@qawolf/types";
 import {
   findPasteKeyEvents,
