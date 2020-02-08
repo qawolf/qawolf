@@ -23,10 +23,14 @@ export class StepBuilder {
     this._startIndex = startIndex || 0;
   }
 
-  private _buildSteps({ canChange }: { canChange: boolean }) {
+  private _buildSteps({
+    includeCanChangeSteps
+  }: {
+    includeCanChangeSteps: boolean;
+  }) {
     const steps = buildSteps({
-      canChange,
       events: this.getEvents(),
+      includeCanChangeSteps,
       startIndex: this._startIndex
     });
 
@@ -41,9 +45,9 @@ export class StepBuilder {
     this._finalized = true;
 
     this._buildSteps({
-      // there are no new events coming in
-      // so we know the steps that canChange will not
-      canChange: true
+      // Include steps even if they can change.
+      // We know they will not change, since there are no events coming in.
+      includeCanChangeSteps: true
     });
   }
 
@@ -55,7 +59,7 @@ export class StepBuilder {
     if (this._finalized) return;
 
     this._events.push(event);
-    this._buildSteps({ canChange: false });
+    this._buildSteps({ includeCanChangeSteps: false });
   }
 
   public steps() {

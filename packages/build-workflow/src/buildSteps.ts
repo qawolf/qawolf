@@ -6,8 +6,8 @@ import { buildSelectSteps } from "./buildSelectSteps";
 import { buildTypeSteps } from "./buildTypeSteps";
 
 export type BuildStepsOptions = {
-  canChange?: boolean;
   events: ElementEvent[];
+  includeCanChangeSteps?: boolean;
   startIndex?: number;
 };
 
@@ -28,7 +28,7 @@ export const buildSteps = ({
     step => step.index
   );
 
-  if (!options.canChange) {
+  if (!options.includeCanChangeSteps) {
     steps = steps.filter(step => !step.canChange);
   }
 
