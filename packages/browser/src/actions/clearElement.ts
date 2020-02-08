@@ -11,7 +11,7 @@ export const clearElement = async (
   // Ex. Some sites might rely on an isTrusted change event which we cannot simulate.
   const hasValue = await elementHandle.evaluate((element: HTMLInputElement) => {
     const value = element.isContentEditable ? element.innerText : element.value;
-    if (value.length <= 0) return false;
+    if (!value || value.length <= 0) return false;
 
     element.focus();
     element.setSelectionRange(0, value.length);
