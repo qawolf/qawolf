@@ -2,7 +2,7 @@ import { BrowserContext, launch } from "@qawolf/browser";
 import { CodeCreator } from "@qawolf/create-code";
 import { repl } from "@qawolf/repl";
 import { prompt } from "inquirer";
-import { basename, join } from "path";
+import { join, relative } from "path";
 import { Url } from "url";
 
 type CreateOptions = {
@@ -18,17 +18,20 @@ type ConstructOptions = {
   context: BrowserContext;
   codePath: string;
   codeCreator: CodeCreator;
+  isTest: boolean;
 };
 
 export class CreateCodeCLI {
   private _codePath: string;
   private _codeCreator: CodeCreator;
   private _context: BrowserContext;
+  private _isTest: boolean;
 
   protected constructor(options: ConstructOptions) {
     this._codePath = options.codePath;
     this._codeCreator = options.codeCreator;
     this._context = options.context;
+    this._isTest = options.isTest;
   }
 
   static async start(options: CreateOptions) {
@@ -64,7 +67,12 @@ export class CreateCodeCLI {
 
     codeCreator.startPolling();
 
-    const command = new CreateCodeCLI({ codePath, codeCreator, context });
+    const command = new CreateCodeCLI({
+      codePath,
+      codeCreator,
+      context,
+      isTest: !!options.isTest
+    });
     await command.prompt();
   }
 
@@ -72,7 +80,10 @@ export class CreateCodeCLI {
     const { choice } = await prompt<{ choice: string }>([
       {
         choices: ["💾  Save and Exit", "🖥️  Open REPL", "🗑️  Discard and Exit"],
-        message: basename(this._codePath),
+        message: `Edit your ${this._isTest ? "test" : "script"} at: ${relative(
+          process.cwd(),
+          this._codePath
+        )}`,
         name: "choice",
         type: "list"
       }
