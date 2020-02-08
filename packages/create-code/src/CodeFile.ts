@@ -85,6 +85,10 @@ export class CodeFile {
     return !!this._preexisting;
   }
 
+  public isTest() {
+    return this._isTest;
+  }
+
   public name() {
     return this._name;
   }

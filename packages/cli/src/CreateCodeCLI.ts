@@ -2,15 +2,18 @@ import { BrowserContext, launch } from "@qawolf/browser";
 import { CodeCreator } from "@qawolf/create-code";
 import { repl } from "@qawolf/repl";
 import { prompt } from "inquirer";
+import { bold } from "kleur";
 import { join, relative } from "path";
 import { Url } from "url";
 
 type CreateOptions = {
+  codePath?: string;
   debug?: boolean;
   device?: string;
   isTest?: boolean;
   name: string;
   path?: string;
+  selectorPath?: string;
   url: Url;
 };
 
@@ -35,45 +38,60 @@ export class CreateCodeCLI {
   }
 
   static async start(options: CreateOptions) {
-    const contextPromise = launch({
-      device: options.device,
-      shouldRecordEvents: true,
-      timeout: 0,
-      url: options.url.href
-    });
+    try {
+      const contextPromise = launch({
+        device: options.device,
+        shouldRecordEvents: true,
+        timeout: 0,
+        url: options.url.href
+      });
 
-    const rootPath = options.path || `${process.cwd()}/.qawolf`;
+      const rootPath = options.path || `${process.cwd()}/.qawolf`;
 
-    const codePath = options.isTest
-      ? join(rootPath, "tests", `${options.name}.test.js`)
-      : join(rootPath, "scripts", `${options.name}.js`);
+      let codePath = options.codePath;
+      if (!codePath) {
+        codePath = options.isTest
+          ? join(rootPath, "tests", `${options.name}.test.js`)
+          : join(rootPath, "scripts", `${options.name}.js`);
+      }
 
-    const selectorPath = join(rootPath, "selectors", `${options.name}.json`);
+      const selectorPath =
+        options.selectorPath ||
+        join(rootPath, "selectors", `${options.name}.json`);
 
-    const codeCreator = await CodeCreator.start({
-      codePath,
-      device: options.device,
-      isTest: options.isTest,
-      name: options.name,
-      selectorPath,
-      url: options.url.href!
-    });
+      const codeCreator = await CodeCreator.start({
+        codePath,
+        device: options.device,
+        isTest: options.isTest,
+        name: options.name,
+        selectorPath,
+        url: options.url.href!
+      });
 
-    const context = await contextPromise;
+      const context = await contextPromise;
 
-    context.qawolf.on("recorded_event", event => {
-      codeCreator.pushEvent(event);
-    });
+      context.qawolf.on("recorded_event", event => {
+        codeCreator.pushEvent(event);
+      });
 
-    codeCreator.startPolling();
+      codeCreator.startPolling();
 
-    const command = new CreateCodeCLI({
-      codePath,
-      codeCreator,
-      context,
-      isTest: !!options.isTest
-    });
-    await command.prompt();
+      const command = new CreateCodeCLI({
+        codePath,
+        codeCreator,
+        context,
+        isTest: !!options.isTest
+      });
+      await command.prompt();
+    } catch (e) {
+      if (e.message === "Cannot find selector file to update") {
+        logNoSelectors();
+      } else {
+        throw e;
+      }
+
+      process.exit(1);
+    }
   }
 
   protected async prompt() {
@@ -106,3 +124,11 @@ export class CreateCodeCLI {
     process.exit(0);
   }
 }
+
+const logNoSelectors = () => {
+  console.log(bold().red("Cannot find selectors to update"));
+  console.log(
+    bold().blue("Specify them with:"),
+    "npx qawolf create --selectors /path/to/selectors.json"
+  );
+};

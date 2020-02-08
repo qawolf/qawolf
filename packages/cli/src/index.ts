@@ -21,10 +21,12 @@ program
   .command("create <url> [name]")
   // XXX remove in v1.0.0
   .alias("record")
+  .option("--codePath <codePath>", "path to save the code file")
   .option("--debug", "save events and workflow json for debugging")
   .option("-d, --device <device>", "emulate using a playwright.device")
-  .option("-p, --path <path>", "path to save the file")
+  .option("-p, --path <path>", "path to save the files")
   .option("-s, --script", "create a script instead of a test")
+  .option("--selectorPath <selectorPath>", "path to save the selector file")
   .description("create a test from browser actions")
   .action(async (urlArgument, optionalName, cmd) => {
     if (process.argv[2] === "record") {
@@ -40,11 +42,13 @@ program
     const name = camelCase(optionalName || url.hostname!.replace(/\..*/g, ""));
 
     await CreateCodeCLI.start({
+      codePath: cmd.codePath,
       debug: cmd.debug,
       device: cmd.device,
       name,
       isTest: !cmd.script,
       path: cmd.path,
+      selectorPath: cmd.selectorPath,
       url
     });
   });

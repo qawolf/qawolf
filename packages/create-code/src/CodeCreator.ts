@@ -8,7 +8,6 @@ import { SelectorFile } from "./SelectorFile";
 
 type ConstructorOptions = {
   codeFile: CodeFile;
-  isTest?: boolean;
   selectorFile: SelectorFile;
 };
 
@@ -23,18 +22,12 @@ type StartOptions = {
 
 export class CodeCreator {
   private _codeFile: CodeFile;
-  private _isTest: boolean;
   private _pollingIntervalId?: NodeJS.Timeout;
   private _selectorFile: SelectorFile;
   private _stepBuilder: StepBuilder;
 
-  protected constructor({
-    codeFile,
-    isTest,
-    selectorFile
-  }: ConstructorOptions) {
+  protected constructor({ codeFile, selectorFile }: ConstructorOptions) {
     this._codeFile = codeFile;
-    this._isTest = !!isTest;
     this._selectorFile = selectorFile;
 
     this._stepBuilder = new StepBuilder({
@@ -53,36 +46,11 @@ export class CodeCreator {
     });
 
     if (codeFile.hasPreexisting() && !selectorFile.hasPreexisting()) {
-      // TODO allow a flag to be passed as a workaround
-      // log how to when we encounter this error in CreateCLI
-      throw new Error("Could not find selectors for preexisting code");
+      await selectorFile.discard();
+      throw new Error("Cannot find selector file to update");
     }
 
-    return new CodeCreator({ codeFile, isTest: options.isTest, selectorFile });
-  }
-
-  private _logNoHandle = throttle(
-    () => {
-      console.warn(
-        "\n",
-        bold().red("Cannot update code without this line:"),
-        PATCH_HANDLE
-      );
-    },
-    10000,
-    { leading: true }
-  );
-
-  private _logSaveSuccess() {
-    const command = this._isTest
-      ? `npx qawolf test ${this._codeFile.name()}`
-      : `node ${this._codeFile.relativePath()}`;
-
-    console.log(
-      bold().blue(`✨  Saved your ${this._isTest ? "test" : "script"} at:`),
-      this._codeFile.relativePath()
-    );
-    console.log(bold().blue("🐺  Run it with:"), command);
+    return new CodeCreator({ codeFile, selectorFile });
   }
 
   private async _patchFiles(removeHandle: boolean = false) {
@@ -104,7 +72,7 @@ export class CodeCreator {
   public async save() {
     this._stepBuilder.finalize();
     await this._patchFiles(true);
-    this._logSaveSuccess();
+    logSaveSuccess(this._codeFile);
   }
 
   public startPolling() {
@@ -113,7 +81,7 @@ export class CodeCreator {
         await this._patchFiles();
       } catch (e) {
         if (e.message.includes("Cannot patch without handle")) {
-          this._logNoHandle();
+          logNoHandle();
         } else {
           throw e;
         }
@@ -128,3 +96,27 @@ export class CodeCreator {
     this._pollingIntervalId = undefined;
   }
 }
+
+const logNoHandle = throttle(
+  () => {
+    console.log("\n");
+    console.warn(
+      bold().red("Cannot update code without this line:"),
+      PATCH_HANDLE
+    );
+  },
+  10000,
+  { leading: true }
+);
+
+const logSaveSuccess = (codeFile: CodeFile) => {
+  const command = codeFile.isTest()
+    ? `npx qawolf test ${codeFile.name()}`
+    : `node ${codeFile.relativePath()}`;
+
+  console.log(
+    bold().blue(`✨  Saved your ${codeFile.isTest() ? "test" : "script"} at:`),
+    codeFile.relativePath()
+  );
+  console.log(bold().blue("🐺  Run it with:"), command);
+};
