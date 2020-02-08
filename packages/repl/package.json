@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/repl",
   "description": "qawolf repl",
-  "version": "0.9.0-beta.1",
+  "version": "0.9.0-beta.2",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -23,7 +23,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/logger": "0.9.0-beta.1",
+    "@qawolf/logger": "0.9.0-beta.2",
     "await-outside": "^3.0.0"
   },
   "devDependencies": {
