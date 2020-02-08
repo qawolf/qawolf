@@ -20,7 +20,7 @@ const options: CodeFileOptions = {
 
 describe("CodeFile", () => {
   describe("preexisting code", () => {
-    let codeFile: CodeFile;
+    let file: CodeFile;
     let preexisting = "preexistingCode()";
 
     beforeAll(async () => {
@@ -28,15 +28,19 @@ describe("CodeFile", () => {
       mockedReadFile.mockResolvedValueOnce(preexisting);
       mockedRemove.mockReset();
       mockedOutputFile.mockReset();
-      codeFile = await CodeFile.loadOrCreate(options);
+      file = await CodeFile.loadOrCreate(options);
     });
 
     it("loadOrCreate: loads preexisting code", () => {
-      expect(codeFile._preexisting).toEqual(preexisting);
+      expect(file._preexisting).toEqual(preexisting);
+    });
+
+    it("hasPreexisting: returns true", () => {
+      expect(file.hasPreexisting()).toEqual(true);
     });
 
     it("discard: reverts to preexisting code", async () => {
-      await codeFile.discard();
+      await file.discard();
       expect(mockedRemove.mock.calls.length).toEqual(0);
       expect(mockedOutputFile.mock.calls.length).toEqual(1);
       expect(mockedOutputFile.mock.calls[0]).toEqual([
@@ -48,22 +52,26 @@ describe("CodeFile", () => {
   });
 
   describe("no preexisting code", () => {
-    let codeFile: CodeFile;
+    let file: CodeFile;
 
     beforeAll(async () => {
       mockedOutputFile.mockReset();
-      codeFile = await CodeFile.loadOrCreate(options);
+      file = await CodeFile.loadOrCreate(options);
     });
 
-    it("loadOrCreate: creates code", () => {
+    it("loadOrCreate: creates initial code", () => {
       expect(mockedOutputFile.mock.calls.length).toEqual(1);
       expect(mockedOutputFile.mock.calls[0]).toMatchSnapshot();
     });
 
-    it("discard: deletes the new code", async () => {
+    it("hasPreexisting: returns false", () => {
+      expect(file.hasPreexisting()).toEqual(false);
+    });
+
+    it("discard: deletes the code file", async () => {
       mockedRemove.mockReset();
       mockedOutputFile.mockReset();
-      await codeFile.discard();
+      await file.discard();
       expect(mockedRemove.mock.calls.length).toEqual(1);
       expect(mockedOutputFile.mock.calls.length).toEqual(0);
     });
@@ -73,14 +81,14 @@ describe("CodeFile", () => {
     it("saves a patch for non-committed steps", async () => {
       mockedOutputFile.mockReset();
 
-      const codeFile = await CodeFile.loadOrCreate(options);
+      const file = await CodeFile.loadOrCreate(options);
 
       mockedPathExists.mockResolvedValue(true);
 
       const initialFile = mockedOutputFile.mock.calls[0][1];
       mockedReadFile.mockResolvedValueOnce(initialFile);
 
-      await codeFile.patch({
+      await file.patch({
         steps: scrollLogin.steps.slice(0, 2)
       });
 
@@ -88,7 +96,7 @@ describe("CodeFile", () => {
       expect(fileRevisionOne).toMatchSnapshot();
       mockedReadFile.mockResolvedValueOnce(fileRevisionOne);
 
-      await codeFile.patch({
+      await file.patch({
         removeHandle: true,
         steps: scrollLogin.steps
       });

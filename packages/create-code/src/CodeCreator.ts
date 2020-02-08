@@ -52,6 +52,12 @@ export class CodeCreator {
       path: options.selectorPath
     });
 
+    if (codeFile.hasPreexisting() && !selectorFile.hasPreexisting()) {
+      // TODO allow a flag to be passed as a workaround
+      // log how to when we encounter this error in CreateCLI
+      throw new Error("Could not find selectors for preexisting code");
+    }
+
     return new CodeCreator({ codeFile, isTest: options.isTest, selectorFile });
   }
 

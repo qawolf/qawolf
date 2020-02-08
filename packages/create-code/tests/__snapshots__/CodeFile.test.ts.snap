@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CodeFile no preexisting code loadOrCreate: creates code 1`] = `
+exports[`CodeFile no preexisting code loadOrCreate: creates initial code 1`] = `
 Array [
   "/path/tests/mytest.test.js",
   "const { launch } = require(\\"qawolf\\");

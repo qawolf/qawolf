@@ -1,7 +1,7 @@
 import { stepToSelector } from "@qawolf/build-code";
 import { Selector, Step } from "@qawolf/types";
-import { concat } from "lodash";
 import { pathExists, readJson, outputJson, remove } from "fs-extra";
+import { concat } from "lodash";
 
 type ConstructorOptions = {
   path: string;
@@ -14,7 +14,8 @@ type PatchOptions = {
 export class SelectorFile {
   private _path: string;
 
-  private _preexistingSelectors: Selector[];
+  // public for tests
+  public _preexistingSelectors: Selector[];
   private _newSelectors: Selector[] = [];
 
   private _lock: boolean;
@@ -29,19 +30,27 @@ export class SelectorFile {
 
   public static async loadOrCreate(options: ConstructorOptions) {
     const file = new SelectorFile(options);
-    file._preexistingSelectors = (await loadSelectors(options.path)) || [];
-    await file._write();
+    file._preexistingSelectors = await loadSelectors(options.path);
+
+    if (!file._preexistingSelectors) {
+      await file._write();
+    }
+
     return file;
   }
 
   public async discard() {
-    if (this._preexistingSelectors.length) {
+    if (this._preexistingSelectors) {
       await outputJson(this._path, this._preexistingSelectors, {
         spaces: " "
       });
     } else {
       await remove(this._path);
     }
+  }
+
+  public hasPreexisting() {
+    return !!this._preexistingSelectors;
   }
 
   public async patch(options: PatchOptions) {
@@ -51,10 +60,12 @@ export class SelectorFile {
 
     this._lock = true;
 
+    // we do not support editing of the selectors file
+    // so we can replace the new selectors
     this._newSelectors = options.steps.map(step => ({
       ...stepToSelector(step),
       // inline index so it is easy to correlate with the test
-      index: step.index + this._preexistingSelectors.length
+      index: step.index + (this._preexistingSelectors || []).length
     }));
 
     await this._write();
@@ -63,13 +74,13 @@ export class SelectorFile {
   }
 
   public selectors(): Selector[] {
-    return concat(this._preexistingSelectors, this._newSelectors);
+    return concat(this._preexistingSelectors || [], this._newSelectors);
   }
 }
 
-export const loadSelectors = async (path: string): Promise<Selector[]> => {
+export const loadSelectors = async (path: string) => {
   const codeExists = await pathExists(path);
-  if (!codeExists) return [];
+  if (!codeExists) return;
 
   const file = await readJson(path);
   return file;

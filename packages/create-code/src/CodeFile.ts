@@ -81,6 +81,10 @@ export class CodeFile {
     }
   }
 
+  public hasPreexisting() {
+    return !!this._preexisting;
+  }
+
   public name() {
     return this._name;
   }
