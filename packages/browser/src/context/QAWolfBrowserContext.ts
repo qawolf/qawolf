@@ -1,5 +1,6 @@
 import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
+import { replRegistry } from "@qawolf/repl";
 import { VirtualCapture } from "@qawolf/screen";
 import {
   BrowserType,
@@ -112,6 +113,8 @@ export class QAWolfBrowserContext extends EventEmitter {
     logTestStarted(context);
 
     if (options.capture) await options.capture.start();
+
+    replRegistry.setContextKey("browser", context);
 
     return context;
   }
