@@ -70,11 +70,11 @@ describe('mytest', () => {
   });
   
   it('can click \\"Tutorial\\" link', async () => {
-    await browser.click(selectors[3]);
+    await browser.click(selectors[3], { page: 1 });
   });
   
   it('can click \\"Blog\\" link', async () => {
-    await browser.click(selectors[4]);
+    await browser.click(selectors[4], { page: 1 });
   });
   
   it('can click \\"Docs\\" link', async () => {
@@ -82,11 +82,11 @@ describe('mytest', () => {
   });
   
   it('can click \\"Tutorial\\" link', async () => {
-    await browser.click(selectors[6]);
+    await browser.click(selectors[6], { page: 2 });
   });
   
   it('can click \\"Blog\\" link', async () => {
-    await browser.click(selectors[7]);
+    await browser.click(selectors[7], { page: 2 });
   });
 });"
 `;

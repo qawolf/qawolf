@@ -35,8 +35,14 @@ export const buildMethodOptions = (
   step: Step,
   previousStep?: Step | null
 ): string => {
-  if (!previousStep) return "";
-  if (step.page === previousStep.page) return "";
+  const pageChanged = previousStep && step.page !== previousStep.page;
 
-  return `, { page: ${step.page} }`;
+  // we need to specify the page if the step has a different page
+  // we don't need to, but we specify the page if it is not 0
+  // for clarity and in case they delete steps
+  if (pageChanged || step.page !== 0) {
+    return `, { page: ${step.page} }`;
+  }
+
+  return "";
 };
