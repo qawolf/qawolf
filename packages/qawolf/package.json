@@ -31,7 +31,11 @@
     "handlebars": "^4.7.3",
     "kleur": "^3.0.3",
     "lodash": "^4.17.15",
-    "playwright": "0.10.0"
+    "playwright": "0.10.0",
+    "update-notifier": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/update-notifier": "^2.5.0"
   },
   "bin": {
     "qawolf": "./lib/index.js"

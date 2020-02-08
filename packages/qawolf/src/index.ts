@@ -1,7 +1,12 @@
 #!/usr/bin/env node
+import updateNotifier from "update-notifier";
+
+const pkg = require("../package.json");
 
 const isCLI = !module.parent;
 if (isCLI) {
+  updateNotifier({ pkg }).notify();
+
   require("@qawolf/cli");
 }
 

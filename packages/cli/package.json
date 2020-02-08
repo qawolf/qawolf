@@ -31,17 +31,22 @@
     "@qawolf/logger": "^0.9.0-beta.0",
     "@qawolf/repl": "^0.9.0-beta.0",
     "commander": "^3.0.2",
-    "fs-extra": "^8.1.0",
     "inquirer": "^7.0.0",
-    "jest": "^25.1.0",
-    "lodash": "^4.17.15",
-    "update-notifier": "^4.0.0"
+    "jest": "^25.1.0"
   },
   "devDependencies": {
     "@qawolf/types": "^0.9.0-beta.0",
     "@types/inquirer": "^6.5.0",
-    "@types/update-notifier": "^2.5.0",
-    "kleur": "^3.0.3"
+    "fs-extra": "^8.1.0",
+    "handlebars": "^4.x",
+    "kleur": "^3.x",
+    "lodash": "^4.17.15"
+  },
+  "peerDependencies": {
+    "fs-extra": "^8.1.0",
+    "kleur": "^3.x",
+    "handlebars": "^4.x",
+    "lodash": "^4.17.15"
   },
   "bin": {
     "qawolf": "lib/index.js"
