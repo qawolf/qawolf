@@ -40,13 +40,13 @@
     "fs-extra": "^8.1.0",
     "handlebars": "^4.x",
     "kleur": "^3.x",
-    "lodash": "^4.17.15"
+    "lodash": "^4.x"
   },
   "peerDependencies": {
     "fs-extra": "^8.1.0",
     "kleur": "^3.x",
     "handlebars": "^4.x",
-    "lodash": "^4.17.15"
+    "lodash": "^4.x"
   },
   "bin": {
     "qawolf": "lib/index.js"
