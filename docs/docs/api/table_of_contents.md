@@ -31,6 +31,18 @@ Below we list the API provided by QA Wolf. As a reminder, you also have full acc
 
 [QAW_ARTIFACT_PATH](environment_variables#qaw_artifact_path)
 
+[QAW_ATTRIBUTE](environment_variables#qaw_attribute)
+
+[QAW_DEBUG](environment_variables#qaw_debug)
+
+[QAW_DISABLE_VIDEO_ARTIFACT](environment_variables#qaw_disable_video_artifact)
+
+[QAW_HEADLESS](environment_variables#qaw_headless)
+
+[QAW_SLEEP_MS](environment_variables#qaw_sleep_ms)
+
+[QAW_TIMEOUT_MS](environment_variables#qaw_timeout_ms)
+
 ## class: QAWolf
 
 [connect](qawolf/conncect)
