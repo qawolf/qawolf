@@ -22,10 +22,6 @@ QAW_ATTRIBUTE=my-attribute npx qawolf create www.myawesomesite.com
 
 See all commands and options.
 
-TODOADDBROWSERFLAGS
-
-TODOADDFLAGSTOEND
-
 ## npx qawolf create url [name]
 
 Create a browser [test](../create_a_test) or [script](../create_a_script) on a [Chromium](https://www.chromium.org/Home) browser.
@@ -85,7 +81,7 @@ npx qawolf test myTestName
 Run the test saved at `.qawolf/tests/myTestName.test.js` on [Chromium](https://www.chromium.org/Home), [Firefox](https://www.mozilla.org/en-US/firefox/new), and [WebKit](https://webkit.org):
 
 ```bash
-npx qawolf test myTestName --all-browsers
+npx qawolf test --all-browsers myTestName
 ```
 
 Run the test saved at `.myTests/tests/myTestName.test.js`:
