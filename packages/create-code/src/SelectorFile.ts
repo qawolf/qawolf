@@ -23,9 +23,14 @@ export class SelectorFile {
     this._path = options.path;
   }
 
+  protected async _write() {
+    await outputJson(this._path, this.selectors(), { spaces: " " });
+  }
+
   public static async loadOrCreate(options: ConstructorOptions) {
     const file = new SelectorFile(options);
     file._preexistingSelectors = (await loadSelectors(options.path)) || [];
+    await file._write();
     return file;
   }
 
@@ -52,7 +57,7 @@ export class SelectorFile {
       index: step.index + this._preexistingSelectors.length
     }));
 
-    await outputJson(this._path, this.selectors(), { spaces: " " });
+    await this._write();
 
     this._lock = false;
   }
