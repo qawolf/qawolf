@@ -45,6 +45,32 @@ export class CodeFile {
     return file;
   }
 
+  private async _preparePatch(options: PatchOptions) {
+    // patch non-committed (new) steps
+    const stepsToPatch = options.steps.slice(this._commitedStepIndex);
+    if (!stepsToPatch.length && !options.removeHandle) {
+      // nothing to patch
+      return;
+    }
+
+    const code = await loadFileIfExists(this._path);
+    if (!code) {
+      throw new Error("No code to patch");
+    }
+
+    let patch = buildPatch({
+      isTest: this._isTest,
+      steps: stepsToPatch
+    });
+
+    let codeWithPatch = patchCode({ code, patch });
+    if (options.removeHandle) {
+      codeWithPatch = removeLinesIncluding(codeWithPatch, PATCH_HANDLE);
+    }
+
+    return { code: codeWithPatch, steps: stepsToPatch };
+  }
+
   public async discard() {
     if (this._preexisting) {
       await outputFile(this._path, this._preexisting, "utf8");
@@ -63,34 +89,15 @@ export class CodeFile {
       return;
     }
 
-    // patch non-committed (new) steps
-    const stepsToPatch = options.steps.slice(this._commitedStepIndex);
-    if (!stepsToPatch.length) {
-      // no new steps to patch
-      return;
-    }
-
-    const code = await loadFileIfExists(this._path);
-    if (!code) {
-      throw new Error("No code to patch");
-    }
-
     this._lock = true;
 
-    let patch = buildPatch({
-      isTest: this._isTest,
-      steps: stepsToPatch
-    });
+    const patch = await this._preparePatch(options);
+    if (!patch) return;
 
-    let patchedCode = patchCode({ code, patch });
+    await outputFile(this._path, patch.code, "utf8");
 
-    if (options.removeHandle) {
-      patchedCode = removeLinesIncluding(patchedCode, PATCH_HANDLE);
-    }
+    this._commitedStepIndex += patch.steps.length;
 
-    await outputFile(this._path, patchedCode, "utf8");
-
-    this._commitedStepIndex += stepsToPatch.length;
     this._lock = false;
   }
 
