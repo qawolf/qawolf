@@ -122,7 +122,6 @@ function ArgumentFindElementOptions({ delayMs, simulate, skipClear }) {
         optional
         type="number"
       />
-
       <Argument
         description={
           <React.Fragment>

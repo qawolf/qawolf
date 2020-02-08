@@ -3,6 +3,8 @@ id: table_of_contents
 title: API Table of Contents
 ---
 
+Below we list the API provided by QA Wolf. As a reminder, you also have full access to the [Playwright API](https://github.com/microsoft/playwright/blob/master/docs/api.md) and the [Jest API](https://jestjs.io/docs/en/expect) in your test code.
+
 ## CLI
 
 [npx qawolf --help](cli#npx-qawolf---help)
@@ -13,7 +15,15 @@ title: API Table of Contents
 
 [QAW_ARTIFACT_PATH](environment_variables#qaw_artifact_path)
 
+## class: QAWolf
+
+[connect](qawolf/conncect)
+
+[launch](qawolf/launch)
+
 ## class: Browser
+
+[browser](browser/browser)
 
 [click](browser/click)
 
@@ -34,5 +44,3 @@ title: API Table of Contents
 [select](browser/select)
 
 [type](browser/type)
-
-TODOADDSLEEP

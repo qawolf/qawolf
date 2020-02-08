@@ -40,8 +40,14 @@ module.exports = {
     },
     {
       type: "category",
-      label: "class: Browser",
+      label: "class: QAWolf",
+      items: ["api/qawolf/connect", "api/qawolf/launch"]
+    },
+    {
+      type: "category",
+      label: "class: BrowserContext",
       items: [
+        "api/browser/browser",
         "api/browser/click",
         "api/browser/close",
         "api/browser/find",
