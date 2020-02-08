@@ -72,7 +72,8 @@ export class CodeCreator {
       : `node ${this._codeFile.relativePath()}`;
 
     console.log(
-      bold().blue(`✨  Created your ${this._isTest ? "test" : "script"}`)
+      bold().blue(`✨  Saved your ${this._isTest ? "test" : "script"} at:`),
+      this._codeFile.relativePath()
     );
     console.log(bold().blue("🐺  Run it with:"), command);
   }

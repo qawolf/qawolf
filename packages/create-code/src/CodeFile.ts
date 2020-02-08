@@ -89,15 +89,12 @@ export class CodeFile {
       return;
     }
 
-    this._lock = true;
-
     const patch = await this._preparePatch(options);
     if (!patch) return;
 
+    this._lock = true;
     await outputFile(this._path, patch.code, "utf8");
-
     this._commitedStepIndex += patch.steps.length;
-
     this._lock = false;
   }
 
