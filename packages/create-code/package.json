@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/create-code",
   "description": "qawolf: create code",
-  "version": "0.9.0-beta.0",
+  "version": "0.9.0-beta.1",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -23,12 +23,12 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/build-code": "^0.9.0-beta.0",
-    "@qawolf/logger": "^0.9.0-beta.0"
+    "@qawolf/build-code": "0.9.0-beta.1",
+    "@qawolf/logger": "0.9.0-beta.1"
   },
   "devDependencies": {
     "@qawolf/fixtures": "1.19.0",
-    "@qawolf/types": "^0.9.0-beta.0",
+    "@qawolf/types": "0.9.0-beta.1",
     "fs-extra": "^8.x",
     "kleur": "^3.x",
     "lodash": "^4.x"
