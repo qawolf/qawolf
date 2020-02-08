@@ -24,11 +24,18 @@
   },
   "dependencies": {
     "@qawolf/build-code": "^0.9.0-beta.0",
-    "@qawolf/logger": "^0.9.0-beta.0",
-    "fs-extra": "^8.1.0"
+    "@qawolf/logger": "^0.9.0-beta.0"
   },
   "devDependencies": {
     "@qawolf/fixtures": "1.19.0",
-    "@qawolf/types": "^0.9.0-beta.0"
+    "@qawolf/types": "^0.9.0-beta.0",
+    "fs-extra": "^8.x",
+    "kleur": "^3.x",
+    "lodash": "^4.x"
+  },
+  "peerDependencies": {
+    "fs-extra": "^8.x",
+    "kleur": "^3.x",
+    "lodash": "^4.x"
   }
 }

@@ -1,4 +1,3 @@
-import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { platform } from "os";
 import { join } from "path";

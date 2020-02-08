@@ -5,15 +5,12 @@ import { BrowserType } from "@qawolf/types";
 import program from "commander";
 import { red, yellow } from "kleur";
 import { camelCase } from "lodash";
-import updateNotifier from "update-notifier";
 import { saveCiTemplate } from "./ci";
 import { CreateCodeCLI } from "./CreateCodeCLI";
 import { howl } from "./howl";
 import { runJest } from "./runJest";
 import { omitArgs, parseUrl } from "./utils";
 const pkg = require("../package");
-
-updateNotifier({ pkg }).notify();
 
 program.usage("<command> [options]").version(pkg.version);
 
