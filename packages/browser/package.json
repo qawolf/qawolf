@@ -30,13 +30,20 @@
     "@qawolf/screen": "^0.9.0-beta.0",
     "@qawolf/types": "^0.9.0-beta.0",
     "@qawolf/web": "^0.9.0-beta.0",
-    "fs-extra": "^8.1.0",
-    "lodash": "^4.17.15",
-    "playwright": "0.10.0",
     "rrweb": "^0.7.25"
   },
   "devDependencies": {
     "@qawolf/jest-plugin": "^0.8.2",
-    "@types/debug": "^4.1.5"
+    "@types/debug": "^4.1.5",
+    "fs-extra": "^8.x",
+    "handlebars": "^4.x",
+    "lodash": "^4.x",
+    "playwright": "0.10.0"
+  },
+  "peerDependencies": {
+    "fs-extra": "^8.x",
+    "handlebars": "^4.x",
+    "lodash": "^4.x",
+    "playwright": "0.10.0"
   }
 }

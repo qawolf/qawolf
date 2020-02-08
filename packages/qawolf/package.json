@@ -27,7 +27,11 @@
     "@qawolf/cli": "^0.9.0-beta.0",
     "@qawolf/repl": "^0.9.0-beta.0",
     "@qawolf/web": "^0.9.0-beta.0",
-    "kleur": "^3.0.3"
+    "fs-extra": "^8.1.0",
+    "handlebars": "^4.7.3",
+    "kleur": "^3.0.3",
+    "lodash": "^4.17.15",
+    "playwright": "0.10.0"
   },
   "bin": {
     "qawolf": "./lib/index.js"
