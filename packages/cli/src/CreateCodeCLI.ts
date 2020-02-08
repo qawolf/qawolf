@@ -101,7 +101,11 @@ export class CreateCodeCLI {
   protected async _prompt() {
     const { choice } = await prompt<{ choice: string }>([
       {
-        choices: ["💾  Save and Exit", "🖥️  Open REPL", "🗑️  Discard and Exit"],
+        choices: [
+          "💾  Save and exit",
+          "🖥️  Open REPL to run code",
+          "🗑️  Discard and exit"
+        ],
         message: `Edit your ${this._isTest ? "test" : "script"} at: ${relative(
           process.cwd(),
           this._codePath
