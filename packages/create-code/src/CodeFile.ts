@@ -7,10 +7,10 @@ import {
 import { Step } from "@qawolf/types";
 import { outputFile, pathExists, readFile, remove } from "fs-extra";
 import { relative } from "path";
-import { PATCH_HANDLE, patchCode } from "./patchCode";
+import { patchCode, PATCH_HANDLE } from "./patchCode";
 import { removeLinesIncluding } from "./format";
 
-type ConstructorOptions = Omit<InitialCodeOptions, "patchHandle"> & {
+export type CodeFileOptions = Omit<InitialCodeOptions, "patchHandle"> & {
   path: string;
 };
 
@@ -25,15 +25,17 @@ export class CodeFile {
   private _lock: boolean;
   private _name: string;
   private _path: string;
-  protected _preexisting: string | undefined;
 
-  protected constructor({ isTest, name, path }: ConstructorOptions) {
+  // public for tests
+  public _preexisting: string | undefined;
+
+  protected constructor({ isTest, name, path }: CodeFileOptions) {
     this._isTest = !!isTest;
     this._name = name;
     this._path = path;
   }
 
-  public static async loadOrCreate(options: ConstructorOptions) {
+  public static async loadOrCreate(options: CodeFileOptions) {
     const file = new CodeFile(options);
 
     file._preexisting = await loadFileIfExists(options.path);
@@ -112,7 +114,7 @@ export const buildPatch = (options: BuildStepsOptions) => {
   return patch;
 };
 
-export const createInitialCode = async (options: ConstructorOptions) => {
+export const createInitialCode = async (options: CodeFileOptions) => {
   const initialCode = buildInitialCode({
     ...options,
     patchHandle: PATCH_HANDLE

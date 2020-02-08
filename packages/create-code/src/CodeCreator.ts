@@ -51,6 +51,7 @@ export class CodeCreator {
     const selectorFile = await SelectorFile.loadOrCreate({
       path: options.selectorPath
     });
+
     return new CodeCreator({ codeFile, isTest: options.isTest, selectorFile });
   }
 

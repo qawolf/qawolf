@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CodeFile no preexisting code loadOrCreate: creates code 1`] = `
+Array [
+  "/path/tests/mytest.test.js",
+  "const { launch } = require(\\"qawolf\\");
+const selectors = require(\\"../selectors/mytest\\");
+
+describe('mytest', () => {
+  let browser;
+
+  beforeAll(async () => {
+    browser = await launch({ url: \\"http://localhost:3000\\" });
+  });
+
+  afterAll(() => browser.close());
+  // 🐺 CREATE CODE HERE
+});",
+  "utf8",
+]
+`;
+
+exports[`CodeFile patch saves a patch for non-committed steps 1`] = `
+"const { launch } = require(\\"qawolf\\");
+const selectors = require(\\"../selectors/mytest\\");
+
+describe('mytest', () => {
+  let browser;
+
+  beforeAll(async () => {
+    browser = await launch({ url: \\"http://localhost:3000\\" });
+  });
+
+  afterAll(() => browser.close());
+  
+  it('can scroll', async () => {
+    await browser.scroll(selectors[0], { x: 0, y: 378 });
+  });
+  
+  it('can click \\"Form Authentication\\" link', async () => {
+    await browser.click(selectors[1]);
+  });
+  // 🐺 CREATE CODE HERE
+});"
+`;
+
+exports[`CodeFile patch saves a patch for non-committed steps 2`] = `
+"const { launch } = require(\\"qawolf\\");
+const selectors = require(\\"../selectors/mytest\\");
+
+describe('mytest', () => {
+  let browser;
+
+  beforeAll(async () => {
+    browser = await launch({ url: \\"http://localhost:3000\\" });
+  });
+
+  afterAll(() => browser.close());
+  
+  it('can scroll', async () => {
+    await browser.scroll(selectors[0], { x: 0, y: 378 });
+  });
+  
+  it('can click \\"Form Authentication\\" link', async () => {
+    await browser.click(selectors[1]);
+  });
+  
+  it('can type into \\"Username\\" input', async () => {
+    await browser.type(selectors[2], \\"tomsmith\\");
+  });
+  
+  it('can Tab', async () => {
+    await browser.type(selectors[3], \\"↓Tab↑Tab\\");
+  });
+  
+  it('can type into \\"Password\\" input', async () => {
+    await browser.type(selectors[4], \\"SuperSecretPassword!\\");
+  });
+  
+  it('can Enter', async () => {
+    await browser.type(selectors[5], \\"↓Enter↑Enter\\");
+  });
+  
+  it('can click \\"Logout\\" link', async () => {
+    await browser.click(selectors[6]);
+  });
+});"
+`;
