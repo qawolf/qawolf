@@ -81,7 +81,7 @@ The action methods like [`click`](api#browserclickselector-options) and [`type`]
 
 The [`context`](api#class-browsercontext) also automatically waits for network requests to finish or time out. If you [include an assertion](edit_test_code#add-an-assertion) based on one of the [`context` class helper methods](api#class-browsercontext), QA Wolf will automatically wait to get the data you asked for before moving on.
 
-One caveat is that elements may appear on the page before event handlers are attached. By default we [sleep for 1 second](api#qaw_sleep_ms) after an element is found to mitigate this issue. However, you can [edit your test code](edit_test_code) to include custom wait logic instead for these scenarios. [The `waitUntil` helper](api#qawolfwaituntilpredicate-timeoutms-sleepms) will likely be useful here.
+One caveat is that elements may appear on the page before event handlers are attached. By default we [sleep for 1 second](api#qaw_sleep_ms) after an element is found to mitigate this issue. However, you can [edit your test code](edit_test_code) to include custom wait logic instead for these scenarios. [The `waitUntil` helper](TODOUPDATE) will likely be useful here.
 
 ## Keyboard events
 
