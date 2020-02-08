@@ -99,6 +99,8 @@ In the code above, you'll notice that the element you clicked on is stored under
 
 When you run your test, QA Wolf will look for a close enough match to the original element you clicked on. It will consider all of the target element attributes, as well as those of its two ancestors. By not relying on a single brittle selector, your tests will be more robust to scenarios like dynamic CSS classes and changes to your front end code.
 
+Because the selectors file contains the information QA Wolf needs to find each element, you should avoid editing it.
+
 To learn more about how QA Wolf finds a close enough match to the target element, see [how it works documentation](TODOUPDATELINK).
 
 ## Edit generated selectors

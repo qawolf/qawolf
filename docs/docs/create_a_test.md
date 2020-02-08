@@ -7,13 +7,14 @@ The [previous guide](install) showed you how to set up your environment and inst
 
 ## TL;DR
 
-- [Create a test](#create-a-test) by running the following in your project directory:
+- [Create a test](#introduction) by running the following in your project directory:
 
 ```bash
 npx qawolf create https://myawesomesite.com myTestName
 ```
 
-TODOCLEANUP
+- [Review and edit test code](#review-test-code) as you go along by opening your test file (`.qawolf/tests/myTestName.test.js`)
+- [Save your test](#save-a-test) by choosing `Save and Exit` in the command line
 
 ## Create a test
 
@@ -24,32 +25,101 @@ cd /my/awesome/project
 npm install --save-dev qawolf
 ```
 
-When you run the `npx qawolf create` command, a [Chromium](https://www.chromium.org/Home) browser will open and capture your actions such as clicking and typing into inputs. These actions will be converted to [Playwright](https://pptr.dev/) and [Jest](https://jestjs.io/) test code and written to your test file.
+Soon you'll run the command to create a test. After you run this command, a [Chromium](https://www.chromium.org/Home) browser will open and capture your actions such as clicking and typing into inputs. These actions will be converted to [Playwright](https://github.com/microsoft/playwright) and [Jest](https://jestjs.io/) test code.
 
-In this guide, we create a test for [TodoMVC](http://todomvc.com/examples/react), a simple todo application. Specifically, we create a todo item, complete it, and clear completed todos. You can follow along using your own application if you prefer.
+In this guide, we create a test for [TodoMVC](http://todomvc.com/examples/react), a simple todo application. You can follow along using your own application if you prefer.
 
-TODOCLEANUP
-
-- Run command
-- Open code editor
-- Mention REPL and link to doc
-- Mention test attribute
-- Save
-
-To create your test, run the following in the command line. You can optionally replace `http://todomvc.com/examples/react` with a different URL, and `myFirstTest` with a different name. See the [CLI documentation](cli#npx-qawolf-create-url-name) for more detail.
+To create your test, run the following in the command line. You can optionally replace `http://todomvc.com/examples/react` with a different [URL](https://developer.mozilla.org/en-US/docs/Web/API/URL), and `myFirstTest` with a different test name. See our [CLI documentation](api/cli#npx-qawolf-create-url-name) for more detail.
 
 ```bash
 npx qawolf create http://todomvc.com/examples/react myFirstTest
 ```
 
-Inside the Chromium browser, go through the workflow you want to test as a user would. In our example, we'll 1) create a todo item, 2) mark it as complete, and 3) clear completed todos. After you are done, return to the terminal and hit Enter to save your test. See the GIF below for an example.
+A Chromium browser will open and navigate to the specified URL. Now go through the steps you want to test. In our example, we 1) create a todo item, 2) complete it, and 3) clear completed todos. See the video below for an example:
 
-![Create a test](https://storage.googleapis.com/docs.qawolf.com/tutorials/create-my-first-test-small.gif)
+TODOADDVIDEO
+
+We could return to the command line and choose the `Save and Exit` option, but first let's take a look at our test code.
 
 ## Review test code
+
+If you open your project in your code editor, you'll notice that a folder called `.qawolf` was created. This folder stores your QA Wolf tests and has the following structure:
+
+```bash
+.qawolf # project directory
+├── tests
+│   └── myFirstTest.test.js
+├── selectors
+│   └── myFirstTest.json
+```
+
+Let's open the `.qawolf/tests/myFirstTest.test.js` file, which contains your test code. We'll explain the `.qawolf/selectors/myFirstTest.json` file a bit later.
+
+Our test code first requires the `qawolf` library, which is built on top of [Microsoft's Playwright](https://github.com/microsoft/playwright) library. The test itself is contained in a [Jest describe block](https://jestjs.io/docs/en/api#describename-fn) with the name you specified (`"myFirstTest"` in our example).
+
+This code first opens a browser and navigates to the specified URL. Each action you took in the browser is captured in a [Jest test](https://jestjs.io/docs/en/api#testname-fn-timeout). After the test finishes running, the browser will close.
+
+TODOUPDATE
+
+```js
+const { launch } = require("qawolf");
+const selectors = require("../selectors/myFirstTest");
+
+describe("myFirstTest", () => {
+  let browser;
+
+  beforeAll(async () => {
+    browser = await launch({ url: "http://todomvc.com/examples/react" });
+  });
+
+  afterAll(() => browser.close());
+
+  it('can type into "What needs to be done?" input', async () => {
+    await browser.type(selectors[0], "create smoke test!");
+  });
+
+  it("can Enter", async () => {
+    await browser.type(selectors[1], "↓Enter↑Enter");
+  });
+
+  it("can click input", async () => {
+    await browser.click(selectors[2]);
+  });
+
+  it('can click "Clear completed" button', async () => {
+    await browser.click(selectors[3]);
+  });
+
+  // TEST CODE HERE
+});
+```
+
+The line `// TEST CODE HERE` (TODOUPDATE) is a placeholder for where new test code will be added if you continue to use the browser. This allows you to optionally edit your test code as you go along.
+
+The video below shows how your test code is updated as you use your application:
+
+TODOADDVIDEO
+
+Let's now briefly touch upon the `.qawolf/selectors/myFirstTest.json` file. In general, you should avoid editing this file. For a more detailed explanation, see our guide on the [QA Wolf selector logic](use_custom_selectors#default-selector-logic).
+
+The `.qawolf/selectors/myFirstTest.json` file contains information about each element that you interacted with (like clicked or typed into). By default, QA Wolf stores all the [attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes) of each element and of its two direct ancestors. By using all the information it can to find an element, QA Wolf helps make your test code robust to changes in your application.
+
+You can also [specify an attribute](use_custom_selectors#target-attributes) like `data-qa` for QA Wolf to use in your test code whenever possible.
+
+## Save a test
+
+Now let's return to the command line. You'll notice a few options here:
+
+TODOUPDATE
+
+- `Save and Exit`: saves your test code and closes the browser
+- `Use the REPL`: opens the [QA Wolf interactive REPL](use_the_repl) so you can try out code
+- `Discard and Exit`: closes the browser without saving your test code
+
+Choose `Save and Exit` to save your test.
 
 ## Next steps
 
 Congratulations - you've just created your first test with QA Wolf! 🎉
 
-We'll [dive deeper into the test code](review_test_code) shortly, but first let's [run our test locally](run_a_test_locally).
+Now let's [run our test locally](run_tests_locally).

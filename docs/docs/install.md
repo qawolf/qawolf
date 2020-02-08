@@ -72,10 +72,6 @@ Once you're in your project directory, run the following to install `qawolf` as 
 npm install --save-dev qawolf
 ```
 
-See the video below for an example:
-
-TODOADDVIDEO
-
 After the installation is complete, run the following to make sure QA Wolf was installed successfully:
 
 ```bash
