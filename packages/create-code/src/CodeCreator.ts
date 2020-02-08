@@ -62,6 +62,16 @@ export class CodeCreator {
     return new CodeCreator({ ...options, codeFile, selectorFile });
   }
 
+  private async _saveDebug() {
+    await writeJson(
+      join(dirname(this._options.codePath), `${this._options.name}_debug.json`),
+      {
+        events: this._stepBuilder.events(),
+        steps: this._stepBuilder.steps()
+      }
+    );
+  }
+
   private async _patchFiles(removeHandle: boolean = false) {
     const steps = this._stepBuilder.steps();
     await Promise.all([
@@ -84,17 +94,7 @@ export class CodeCreator {
     logSaveSuccess(this._codeFile);
 
     if (debug) {
-      await writeJson(
-        join(
-          dirname(this._options.codePath),
-          "debug",
-          `${this._options.name}_debug.json`
-        ),
-        {
-          events: this._stepBuilder.events(),
-          steps: this._stepBuilder.steps()
-        }
-      );
+      await this._saveDebug();
     }
   }
 

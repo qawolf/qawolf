@@ -1,51 +1,85 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`buildStepsCode builds script steps 1`] = `
-"// scroll
-await browser.scroll(selectors[0], { x: 0, y: 378 });
-// click \\"Form Authentication\\" link
+"// click \\"Learn React\\" link
+await browser.click(selectors[0]);
+// click \\"Learn React\\" link
 await browser.click(selectors[1]);
-// type into \\"Username\\" input
-await browser.type(selectors[2], \\"tomsmith\\");
-// Tab
-await browser.type(selectors[3], \\"↓Tab↑Tab\\");
-// type into \\"Password\\" input
-await browser.type(selectors[4], \\"SuperSecretPassword!\\");
-// Enter
-await browser.type(selectors[5], \\"↓Enter↑Enter\\");
-// click \\"Logout\\" link
+// click \\"Docs\\" link
+await browser.click(selectors[2], { page: 1 });
+// click \\"Tutorial\\" link
+await browser.click(selectors[3]);
+// click \\"Blog\\" link
+await browser.click(selectors[4]);
+// click \\"Docs\\" link
+await browser.click(selectors[5], { page: 2 });
+// click \\"Tutorial\\" link
 await browser.click(selectors[6]);
+// click \\"Blog\\" link
+await browser.click(selectors[7]);
 "
 `;
 
 exports[`buildStepsCode builds test steps 1`] = `
 "
-it('can scroll', async () => {
-  await browser.scroll(selectors[0], { x: 0, y: 378 });
+it('can click \\"Learn React\\" link', async () => {
+  await browser.click(selectors[0]);
 });
 
-it('can click \\"Form Authentication\\" link', async () => {
+it('can click \\"Learn React\\" link', async () => {
   await browser.click(selectors[1]);
 });
 
-it('can type into \\"Username\\" input', async () => {
-  await browser.type(selectors[2], \\"tomsmith\\");
+it('can click \\"Docs\\" link', async () => {
+  await browser.click(selectors[2], { page: 1 });
 });
 
-it('can Tab', async () => {
-  await browser.type(selectors[3], \\"↓Tab↑Tab\\");
+it('can click \\"Tutorial\\" link', async () => {
+  await browser.click(selectors[3]);
 });
 
-it('can type into \\"Password\\" input', async () => {
-  await browser.type(selectors[4], \\"SuperSecretPassword!\\");
+it('can click \\"Blog\\" link', async () => {
+  await browser.click(selectors[4]);
 });
 
-it('can Enter', async () => {
-  await browser.type(selectors[5], \\"↓Enter↑Enter\\");
+it('can click \\"Docs\\" link', async () => {
+  await browser.click(selectors[5], { page: 2 });
 });
 
-it('can click \\"Logout\\" link', async () => {
+it('can click \\"Tutorial\\" link', async () => {
   await browser.click(selectors[6]);
+});
+
+it('can click \\"Blog\\" link', async () => {
+  await browser.click(selectors[7]);
+});
+"
+`;
+
+exports[`buildStepsCode works for multiple pages 1`] = `
+"
+it('can click \\"Docs\\" link', async () => {
+  await browser.click(selectors[2], { page: 1 });
+});
+
+it('can click \\"Tutorial\\" link', async () => {
+  await browser.click(selectors[3]);
+});
+
+it('can click \\"Blog\\" link', async () => {
+  await browser.click(selectors[4]);
+});
+
+it('can click \\"Docs\\" link', async () => {
+  await browser.click(selectors[5], { page: 2 });
+});
+
+it('can click \\"Tutorial\\" link', async () => {
+  await browser.click(selectors[6]);
+});
+
+it('can click \\"Blog\\" link', async () => {
+  await browser.click(selectors[7]);
 });
 "
 `;
