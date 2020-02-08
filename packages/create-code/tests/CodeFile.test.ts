@@ -2,7 +2,7 @@ import { outputFile, pathExists, readFile, remove } from "fs-extra";
 import { CodeFile, CodeFileOptions } from "../src/CodeFile";
 
 // require manually since fs is mocked
-const scrollLogin = require("@qawolf/fixtures/workflows/scroll_login.json");
+const scrollLogin = require("@qawolf/test/workflows/scroll_login.json");
 
 jest.mock("fs-extra");
 

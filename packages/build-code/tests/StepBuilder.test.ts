@@ -1,4 +1,4 @@
-import { loadEvents } from "@qawolf/fixtures";
+import { loadEvents } from "@qawolf/test";
 import { ElementEvent } from "@qawolf/types";
 import { StepBuilder } from "../src/StepBuilder";
 

@@ -1,13 +1,15 @@
 {
-  "name": "@qawolf/build-workflow",
-  "description": "build qawolf workflow from events",
+  "name": "@qawolf/test",
+  "description": "qawolf test utils",
   "version": "0.9.0-beta.1",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "files": [
     "lib",
-    "src"
+    "src",
+    "events",
+    "workflows"
   ],
   "scripts": {
     "test": "jest"
@@ -22,17 +24,13 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "@qawolf/browser": "0.9.0-beta.1",
-    "@qawolf/logger": "0.9.0-beta.1",
-    "@qawolf/web": "0.9.0-beta.1"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@qawolf/test": "0.9.0-beta.1",
-    "@qawolf/types": "0.9.0-beta.1",
+    "fs-extra": "^8.x",
     "lodash": "^4.x"
   },
   "peerDependencies": {
+    "fs-extra": "^8.x",
     "lodash": "^4.x"
   }
 }

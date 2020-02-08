@@ -1,15 +1,12 @@
 import { StepBuilder } from "@qawolf/build-code";
 import { ElementEvent } from "@qawolf/types";
 import { bold } from "kleur";
+import { writeJson } from "fs-extra";
 import { throttle } from "lodash";
+import { dirname, join } from "path";
 import { CodeFile } from "./CodeFile";
 import { PATCH_HANDLE } from "./patchCode";
 import { SelectorFile } from "./SelectorFile";
-
-type ConstructorOptions = {
-  codeFile: CodeFile;
-  selectorFile: SelectorFile;
-};
 
 type StartOptions = {
   codePath: string;
@@ -20,13 +17,25 @@ type StartOptions = {
   url: string;
 };
 
+type ConstructorOptions = StartOptions & {
+  codeFile: CodeFile;
+  selectorFile: SelectorFile;
+};
+
 export class CodeCreator {
   private _codeFile: CodeFile;
   private _pollingIntervalId?: NodeJS.Timeout;
   private _selectorFile: SelectorFile;
   private _stepBuilder: StepBuilder;
+  private _options: StartOptions;
 
-  protected constructor({ codeFile, selectorFile }: ConstructorOptions) {
+  protected constructor({
+    codeFile,
+    selectorFile,
+    ...options
+  }: ConstructorOptions) {
+    this._options = options;
+
     this._codeFile = codeFile;
     this._selectorFile = selectorFile;
 
@@ -50,7 +59,7 @@ export class CodeCreator {
       throw new Error("Cannot find selector file to update");
     }
 
-    return new CodeCreator({ codeFile, selectorFile });
+    return new CodeCreator({ ...options, codeFile, selectorFile });
   }
 
   private async _patchFiles(removeHandle: boolean = false) {
@@ -69,10 +78,24 @@ export class CodeCreator {
     this._stepBuilder.pushEvent(event);
   }
 
-  public async save() {
+  public async save({ debug }: { debug?: boolean } = {}) {
     this._stepBuilder.finalize();
     await this._patchFiles(true);
     logSaveSuccess(this._codeFile);
+
+    if (debug) {
+      await writeJson(
+        join(
+          dirname(this._options.codePath),
+          "debug",
+          `${this._options.name}_debug.json`
+        ),
+        {
+          events: this._stepBuilder.events(),
+          steps: this._stepBuilder.steps()
+        }
+      );
+    }
   }
 
   public startPolling() {

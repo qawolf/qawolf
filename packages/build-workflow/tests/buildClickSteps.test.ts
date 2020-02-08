@@ -1,4 +1,4 @@
-import { loadEvents } from "@qawolf/fixtures";
+import { loadEvents } from "@qawolf/test";
 import { buildClickSteps } from "../";
 
 describe("buildClickSteps", () => {

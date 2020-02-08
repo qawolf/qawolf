@@ -30,7 +30,7 @@
     "@qawolf/web": "0.9.0-beta.1"
   },
   "devDependencies": {
-    "@qawolf/fixtures": "1.19.0",
+    "@qawolf/test": "0.9.0-beta.1",
     "@qawolf/types": "^0.9.0-beta.0",
     "lodash": "^4.x"
   },

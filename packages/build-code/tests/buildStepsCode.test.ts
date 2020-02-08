@@ -1,4 +1,4 @@
-import { loadWorkflow } from "@qawolf/fixtures";
+import { loadWorkflow } from "@qawolf/test";
 import { Step } from "@qawolf/types";
 import { buildStepsCode } from "../src/buildStepsCode";
 
