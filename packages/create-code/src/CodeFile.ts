@@ -5,7 +5,7 @@ import {
   InitialCodeOptions
 } from "@qawolf/build-code";
 import { Step } from "@qawolf/types";
-import { pathExists, readFile, outputFile, remove } from "fs-extra";
+import { outputFile, pathExists, readFile, remove } from "fs-extra";
 import { relative } from "path";
 import { PATCH_HANDLE, patchCode } from "./patchCode";
 import { removeLinesIncluding } from "./format";
@@ -21,45 +21,41 @@ type PatchOptions = {
 
 export class CodeFile {
   private _commitedStepIndex: number = 0;
-  protected _existingCode: string | undefined;
   private _isTest: boolean;
   private _lock: boolean;
+  private _name: string;
   private _path: string;
+  protected _preexisting: string | undefined;
 
-  protected constructor({ isTest, path }: ConstructorOptions) {
+  protected constructor({ isTest, name, path }: ConstructorOptions) {
     this._isTest = !!isTest;
+    this._name = name;
     this._path = path;
   }
 
   public static async loadOrCreate(options: ConstructorOptions) {
-    const codeFile = new CodeFile(options);
+    const file = new CodeFile(options);
 
-    codeFile._existingCode = await loadFileIfExists(options.path);
+    file._preexisting = await loadFileIfExists(options.path);
 
-    if (!codeFile._existingCode) {
+    if (!file._preexisting) {
       await createInitialCode(options);
     }
 
-    return codeFile;
-  }
-
-  protected async _revert() {
-    await outputFile(this._path, this._existingCode, "utf8");
-  }
-
-  protected async _remove() {
-    await remove(this._path);
+    return file;
   }
 
   public async discard() {
-    if (this._existingCode) {
-      await this._revert();
+    if (this._preexisting) {
+      await outputFile(this._path, this._preexisting, "utf8");
     } else {
-      await this._remove();
+      await remove(this._path);
     }
   }
 
-  public name() {}
+  public name() {
+    return this._name;
+  }
 
   async patch(options: PatchOptions) {
     if (this._lock) {

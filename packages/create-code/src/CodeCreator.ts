@@ -48,7 +48,9 @@ export class CodeCreator {
       path: options.codePath
     });
 
-    const selectorFile = await SelectorFile.loadOrCreate(options.selectorPath);
+    const selectorFile = await SelectorFile.loadOrCreate({
+      path: options.selectorPath
+    });
     return new CodeCreator({ codeFile, isTest: options.isTest, selectorFile });
   }
 
@@ -76,14 +78,15 @@ export class CodeCreator {
   }
 
   private async _patchFiles(removeHandle: boolean = false) {
+    const steps = this._stepBuilder.steps();
     await Promise.all([
-      this._codeFile.patch({ removeHandle, steps: this._stepBuilder.steps() }),
-      this._selectorFile.patch()
+      this._codeFile.patch({ removeHandle, steps }),
+      this._selectorFile.patch({ steps })
     ]);
   }
 
   public async discard() {
-    await Promise.all([this._codeFile.discard()]);
+    await Promise.all([this._codeFile.discard(), this._selectorFile.discard()]);
   }
 
   public pushEvent(event: ElementEvent) {
