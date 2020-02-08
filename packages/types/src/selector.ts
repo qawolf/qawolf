@@ -30,6 +30,7 @@ export interface FindElementOptions extends FindPageOptions {
 }
 
 export interface FindPageOptions {
+  bringToFront?: boolean;
   page?: number;
   timeoutMs?: number;
   waitForRequests?: boolean;

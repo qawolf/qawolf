@@ -238,7 +238,7 @@ export class QAWolfBrowserContext extends EventEmitter {
     options: FindPageOptions & GotoOptions = {}
   ): Promise<Page> {
     logger.verbose(`BrowserContext: goto ${url}`);
-    const page = await findPage(this, options);
+    const page = await this.page(options);
 
     await page.goto(url, {
       timeout: this._options.navigationTimeoutMs,
@@ -257,7 +257,10 @@ export class QAWolfBrowserContext extends EventEmitter {
   }
 
   public page(options: FindPageOptions = {}) {
-    return findPage(this, options);
+    return findPage(this, {
+      bringToFront: true,
+      ...options
+    });
   }
 
   public pages(): Promise<Page[]> {

@@ -56,8 +56,8 @@ export const findPage = async (
   }
 
   // TODO waiting for https://github.com/microsoft/playwright/issues/657 for cross browser support
-  if (context.browserType === "chromium") {
-    logger.verbose("findPage: Page.bringToFront");
+  if (context.browserType === "chromium" && options.bringToFront) {
+    logger.verbose(`findPage: Page.bringToFront ${index}`);
     const client = await (context.browser as any)
       .pageTarget(page)
       .createCDPSession();

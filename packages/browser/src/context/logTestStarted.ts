@@ -10,7 +10,7 @@ export const logTestStarted = (context: BrowserContext) => {
 
   jasmine.qawolf.onTestStarted(async (name: string) => {
     try {
-      const page = await context.page();
+      const page = await context.page({ bringToFront: false });
       await page.evaluate((testName: string) => {
         console.log(`jest: ${testName}`);
       }, name);
