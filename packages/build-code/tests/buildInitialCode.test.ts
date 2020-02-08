@@ -2,8 +2,8 @@ import { buildInitialCode } from "../src/buildInitialCode";
 
 const launchOptions = {
   name: "login",
-  url: "http://localhost",
-  patchHandle: "MY_PATCH_HANDLE"
+  patchHandle: "MY_PATCH_HANDLE",
+  url: "http://localhost"
 };
 
 describe("buildInitialCode", () => {
