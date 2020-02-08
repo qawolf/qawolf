@@ -1,8 +1,8 @@
 import { logger } from "@qawolf/logger";
-import { bold } from "kleur";
-import { start, REPLServer } from "repl";
 import "./await-outside";
 import { addAwaitOutsideToReplServer } from "await-outside";
+import { bold } from "kleur";
+import { start, REPLServer } from "repl";
 import { replRegistry } from "./replRegistry";
 
 export const repl = (
