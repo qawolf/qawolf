@@ -7,7 +7,7 @@ import { red, yellow } from "kleur";
 import { camelCase } from "lodash";
 import updateNotifier from "update-notifier";
 import { saveCiTemplate } from "./ci";
-import { CreateCommand } from "./CreateCommand";
+import { CreateCodeCLI } from "./CreateCodeCLI";
 import { howl } from "./howl";
 import { runJest } from "./runJest";
 import { omitArgs, parseUrl } from "./utils";
@@ -21,10 +21,12 @@ program
   .command("create <url> [name]")
   // XXX remove in v1.0.0
   .alias("record")
+  .option("--codePath <codePath>", "path to save the code file")
   .option("--debug", "save events and workflow json for debugging")
   .option("-d, --device <device>", "emulate using a playwright.device")
-  .option("-p, --path <path>", "path to save the file")
+  .option("-p, --path <path>", "path to save the files")
   .option("-s, --script", "create a script instead of a test")
+  .option("--selectorPath <selectorPath>", "path to save the selector file")
   .description("create a test from browser actions")
   .action(async (urlArgument, optionalName, cmd) => {
     if (process.argv[2] === "record") {
@@ -39,12 +41,14 @@ program
 
     const name = camelCase(optionalName || url.hostname!.replace(/\..*/g, ""));
 
-    await CreateCommand.create({
+    await CreateCodeCLI.start({
+      codePath: cmd.codePath,
       debug: cmd.debug,
       device: cmd.device,
       name,
+      isTest: !cmd.script,
       path: cmd.path,
-      test: !cmd.script,
+      selectorPath: cmd.selectorPath,
       url
     });
   });
@@ -59,7 +63,7 @@ program
   .option("--webkit", "run tests on webkit")
   .description("run a test with Jest")
   .allowUnknownOption(true)
-  .action((cmd, options) => {
+  .action((_, options) => {
     const args = omitArgs(process.argv.slice(3), [
       "--all-browsers",
       "--chromium",
@@ -72,15 +76,15 @@ program
 
     let browsers: BrowserType[] = [];
 
-    if (cmd.allBrowsers || cmd.chromium) {
+    if (options.allBrowsers || options.chromium) {
       browsers.push("chromium");
     }
 
-    if (cmd.allBrowsers || cmd.firefox) {
+    if (options.allBrowsers || options.firefox) {
       browsers.push("firefox");
     }
 
-    if (cmd.allBrowsers || cmd.webkit) {
+    if (options.allBrowsers || options.webkit) {
       browsers.push("webkit");
     }
 

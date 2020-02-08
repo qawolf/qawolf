@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`buildStepsCode builds script steps 1`] = `
+"// scroll
+await browser.scroll(selectors[0], { x: 0, y: 378 });
+// click \\"Form Authentication\\" link
+await browser.click(selectors[1]);
+// type into \\"Username\\" input
+await browser.type(selectors[2], \\"tomsmith\\");
+// Tab
+await browser.type(selectors[3], \\"↓Tab↑Tab\\");
+// type into \\"Password\\" input
+await browser.type(selectors[4], \\"SuperSecretPassword!\\");
+// Enter
+await browser.type(selectors[5], \\"↓Enter↑Enter\\");
+// click \\"Logout\\" link
+await browser.click(selectors[6]);
+"
+`;
+
+exports[`buildStepsCode builds test steps 1`] = `
+"
+it('can scroll', async () => {
+  await browser.scroll(selectors[0], { x: 0, y: 378 });
+});
+
+it('can click \\"Form Authentication\\" link', async () => {
+  await browser.click(selectors[1]);
+});
+
+it('can type into \\"Username\\" input', async () => {
+  await browser.type(selectors[2], \\"tomsmith\\");
+});
+
+it('can Tab', async () => {
+  await browser.type(selectors[3], \\"↓Tab↑Tab\\");
+});
+
+it('can type into \\"Password\\" input', async () => {
+  await browser.type(selectors[4], \\"SuperSecretPassword!\\");
+});
+
+it('can Enter', async () => {
+  await browser.type(selectors[5], \\"↓Enter↑Enter\\");
+});
+
+it('can click \\"Logout\\" link', async () => {
+  await browser.click(selectors[6]);
+});
+"
+`;

@@ -6,7 +6,7 @@ import { isKeyEvent, sleep } from "@qawolf/web";
 describe("Recorder", () => {
   it("records click on a link", async () => {
     const context = await launch({
-      recordEvents: true,
+      shouldRecordEvents: true,
       url: CONFIG.testUrl
     });
 
@@ -17,17 +17,17 @@ describe("Recorder", () => {
       context.click({ html: "<a>broken images</a>" }, { simulate: false })
     ]);
 
-    const events = await context.qawolf.events();
+    await context.close();
+
+    const events = await context.qawolf.recordedEvents();
     expect(events.length).toEqual(1);
     expect(events[0].name).toEqual("click");
     expect(events[0].target.node.attrs.href).toEqual("/broken_images");
-
-    await context.close();
   });
 
   it("records paste", async () => {
     const context = await launch({
-      recordEvents: true,
+      shouldRecordEvents: true,
       url: `${CONFIG.testUrl}login`
     });
 
@@ -46,7 +46,7 @@ describe("Recorder", () => {
     // make sure we can access the events after the pages are closed
     await context.close();
 
-    const events = await context.qawolf.events();
+    const events = await context.qawolf.recordedEvents();
     expect(events[0].target.node.attrs.id).toEqual("password");
     expect((events[0] as PasteEvent).value).toEqual("secret");
   });
@@ -56,7 +56,7 @@ describe("Recorder", () => {
     if (CONFIG.browser !== "chromium") return;
 
     const context = await launch({
-      recordEvents: true,
+      shouldRecordEvents: true,
       url: `${CONFIG.testUrl}large`
     });
 
@@ -83,7 +83,7 @@ describe("Recorder", () => {
 
     await context.close();
 
-    const events = await context.qawolf.events();
+    const events = await context.qawolf.recordedEvents();
 
     const { isTrusted, name, target, value } = events[
       events.length - 1
@@ -100,14 +100,14 @@ describe("Recorder", () => {
 
   it("records select option", async () => {
     const context = await launch({
-      recordEvents: true,
+      shouldRecordEvents: true,
       url: `${CONFIG.testUrl}dropdown`
     });
     await context.select({ css: "#dropdown" }, "2");
 
     await context.close();
 
-    const events = await context.qawolf.events();
+    const events = await context.qawolf.recordedEvents();
 
     const { isTrusted, target, value } = events[
       events.length - 1
@@ -120,7 +120,7 @@ describe("Recorder", () => {
 
   it("records type", async () => {
     const context = await launch({
-      recordEvents: true,
+      shouldRecordEvents: true,
       url: `${CONFIG.testUrl}login`
     });
 
@@ -129,7 +129,7 @@ describe("Recorder", () => {
 
     await context.close();
 
-    const events = await context.qawolf.events();
+    const events = await context.qawolf.recordedEvents();
 
     expect(events[0].target.node.attrs.id).toEqual("password");
     // we will not receive any events for "secret" since it is all sendCharacter
@@ -139,7 +139,7 @@ describe("Recorder", () => {
   });
 
   it("records actions on another page", async () => {
-    const context = await launch({ recordEvents: true });
+    const context = await launch({ shouldRecordEvents: true });
 
     const page = await context.newPage();
 
@@ -151,7 +151,7 @@ describe("Recorder", () => {
 
     await context.close();
 
-    const events = await context.qawolf.events();
+    const events = await context.qawolf.recordedEvents();
     expect(events.length).toBeGreaterThan(0);
   });
 });

@@ -1,11 +1,14 @@
-import { Event, KeyEvent } from "@qawolf/types";
+import { ElementEvent, KeyEvent } from "@qawolf/types";
 import { find, findLast, remove } from "lodash";
 
 const isControlEvent = (event: KeyEvent) => {
   return event.value.startsWith("Meta") || event.value.startsWith("Control");
 };
 
-export const findPasteKeyEvents = (events: Event[], pasteIndex: number) => {
+export const findPasteKeyEvents = (
+  events: ElementEvent[],
+  pasteIndex: number
+) => {
   const downCmd = findLast(
     events,
     (event, eventIndex) =>
@@ -45,7 +48,7 @@ export const findPasteKeyEvents = (events: Event[], pasteIndex: number) => {
   return [downCmd, downV, upV, upCmd].filter(e => e);
 };
 
-export const removePasteKeyEvents = (events: Event[]) => {
+export const removePasteKeyEvents = (events: ElementEvent[]) => {
   const filteredEvents = events.slice(0);
 
   // find the matching paste key events per paste and remove them

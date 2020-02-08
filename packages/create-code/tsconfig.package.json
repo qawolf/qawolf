@@ -1,0 +1,21 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./lib",
+    "rootDir": "./src",
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "../build-code/tsconfig.package.json"
+    },
+    {
+      "path": "../logger/tsconfig.package.json"
+    },
+    {
+      "path": "../types/tsconfig.package.json"
+    }
+  ],
+  "include": ["src"],
+  "exclude": ["tests", "lib"]
+}

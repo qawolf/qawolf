@@ -1,15 +1,14 @@
-import { Event, Workflow } from "@qawolf/types";
-import { buildSteps } from "./buildSteps";
+import { Workflow } from "@qawolf/types";
+import { buildSteps, BuildStepsOptions } from "./buildSteps";
 
-type Options = {
+export type BuildWorkflowOptions = BuildStepsOptions & {
   device?: string;
-  events: Event[];
   name: string;
   url: string;
 };
 
-export const buildWorkflow = (options: Options): Workflow => {
-  const steps = buildSteps(options.events);
+export const buildWorkflow = (options: BuildWorkflowOptions): Workflow => {
+  let steps = buildSteps(options);
 
   const workflow = {
     device: options.device,

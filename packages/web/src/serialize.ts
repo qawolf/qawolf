@@ -43,6 +43,7 @@ const getAncestorsHtml = (node: Node, numAncestors: number): string[] => {
   const ancestorsHtml: string[] = [];
 
   let ancestor = node.parentNode;
+
   for (let i = 0; ancestor && i < numAncestors; i++) {
     let ancestorWithoutSiblings = ancestor.cloneNode(false);
     const ancestorHtml = nodeToHtml(ancestorWithoutSiblings);
@@ -129,8 +130,10 @@ export const nodeToHtml = (
 export const serializeDocSelector = (
   selector: DocSelector
 ): DocSelectorSerialized => {
+  const ancestors = selector.ancestors || [];
+
   return {
-    ancestors: selector.ancestors.map(ancestor => docToHtml(ancestor)),
+    ancestors: ancestors.map(ancestor => docToHtml(ancestor)),
     node: docToHtml(selector.node)
   };
 };

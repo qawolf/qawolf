@@ -1,6 +1,6 @@
-import { Event, ScrollEvent, Step } from "@qawolf/types";
+import { ElementEvent, ScrollEvent, Step } from "@qawolf/types";
 
-export const buildScrollSteps = (events: Event[]): Step[] => {
+export const buildScrollSteps = (events: ElementEvent[]): Step[] => {
   const steps: Step[] = [];
 
   for (let i = 0; i < events.length; i++) {
@@ -18,6 +18,9 @@ export const buildScrollSteps = (events: Event[]): Step[] => {
 
     steps.push({
       action: "scroll",
+      // it can change if nextEvent is TBD
+      // since it could be another scroll event
+      canChange: !nextEvent,
       html: event.target,
       // include event index so we can sort in buildSteps
       index: i,

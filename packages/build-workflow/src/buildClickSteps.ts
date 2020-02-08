@@ -1,7 +1,7 @@
 import { logger } from "@qawolf/logger";
-import { Event, Step } from "@qawolf/types";
+import { ElementEvent, Step } from "@qawolf/types";
 
-export const buildClickSteps = (events: Event[]): Step[] => {
+export const buildClickSteps = (events: ElementEvent[]): Step[] => {
   const steps: Step[] = [];
 
   for (let i = 0; i < events.length; i++) {
@@ -29,6 +29,7 @@ export const buildClickSteps = (events: Event[]): Step[] => {
 
     steps.push({
       action: "click",
+      canChange: false,
       html: event.target,
       // include event index so we can sort in buildSteps
       index: i,

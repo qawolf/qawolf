@@ -1,11 +1,11 @@
 import { loadEvents } from "@qawolf/fixtures";
-import { Event, KeyEvent } from "@qawolf/types";
+import { ElementEvent, KeyEvent } from "@qawolf/types";
 import {
   findPasteKeyEvents,
   removePasteKeyEvents
 } from "../src/removePasteKeyEvents";
 
-let events: Event[];
+let events: ElementEvent[];
 
 beforeAll(async () => {
   events = await loadEvents("scroll_login");

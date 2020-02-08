@@ -1,14 +1,14 @@
 import { DocSelector } from "./selector";
 
-export interface Event {
+export interface ElementEvent {
   isTrusted: boolean;
-  name: EventName;
+  name: ElementEventName;
   page: number;
   target: DocSelector;
   time: number;
 }
 
-export type EventName =
+export type ElementEventName =
   | "click"
   | "input"
   | "keydown"
@@ -16,23 +16,23 @@ export type EventName =
   | "paste"
   | "scroll";
 
-export interface InputEvent extends Event {
+export interface InputEvent extends ElementEvent {
   name: "input";
   value: string | null;
 }
 
-export interface KeyEvent extends Event {
+export interface KeyEvent extends ElementEvent {
   name: "keydown" | "keyup";
   // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
   value: string;
 }
 
-export interface PasteEvent extends Event {
+export interface PasteEvent extends ElementEvent {
   name: "paste";
   value: string;
 }
 
-export interface ScrollEvent extends Event {
+export interface ScrollEvent extends ElementEvent {
   name: "scroll";
   value: ScrollValue;
 }

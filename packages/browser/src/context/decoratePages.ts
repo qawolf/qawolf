@@ -26,14 +26,14 @@ export const decoratePages = async (
         index,
         logLevel: context.logLevel,
         playwrightPage,
-        recordDom: !!CONFIG.artifactPath,
-        recordEvents: context.recordEvents
+        shouldRecordDom: !!CONFIG.artifactPath,
+        shouldRecordEvents: context.shouldRecordEvents
       });
 
       await page.ready();
 
       const decorated = page.decorated;
-      context._pages.push(decorated);
+      context._registerPage(decorated);
       return decorated;
     })
   );

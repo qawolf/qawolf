@@ -5,18 +5,18 @@ import { repl } from "../src/repl";
 describe("repl", () => {
   let replServer: REPLServer;
   let resolved = false;
-  let mockStdout: jest.SpyInstance = mockProcessStdout();
+  let mockedStdout: jest.SpyInstance = mockProcessStdout();
 
   beforeAll(() => {
     repl({}, s => (replServer = s)).then(() => (resolved = true));
   });
 
   afterAll(() => {
-    mockStdout.mockRestore();
+    mockedStdout.mockRestore();
   });
 
   test("opens a repl", () => {
-    const messages: string[] = mockStdout.mock.calls.map(args => args[0]);
+    const messages: string[] = mockedStdout.mock.calls.map(args => args[0]);
 
     expect(
       messages.find((m: string) => m.includes("Type .exit to close the repl"))

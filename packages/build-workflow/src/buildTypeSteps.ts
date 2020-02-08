@@ -1,18 +1,31 @@
 import { serializeKeyEvents } from "@qawolf/browser";
 import { logger } from "@qawolf/logger";
-import { Event, Step, KeyEvent, PasteEvent } from "@qawolf/types";
+import { ElementEvent, Step, KeyEvent, PasteEvent } from "@qawolf/types";
 import { isKeyEvent, isPasteEvent } from "@qawolf/web";
 import { removePasteKeyEvents } from "./removePasteKeyEvents";
 
 const SEPARATE_KEYS = ["Enter", "Tab"];
 
-const buildTypeStep = (
-  firstEvent: Event,
-  allEvents: Event[],
-  value: string
-): Step => {
+type BuildTypeStepOptions = {
+  allEvents: ElementEvent[];
+  canChange: boolean;
+  firstEvent: ElementEvent;
+  value: string;
+};
+
+type StepOption = {
+  canChange: boolean;
+};
+
+const buildTypeStep = ({
+  allEvents,
+  firstEvent,
+  canChange,
+  value
+}: BuildTypeStepOptions): Step => {
   return {
     action: "type",
+    canChange,
     html: firstEvent.target,
     // include event index so we can sort in buildSteps
     index: allEvents.indexOf(firstEvent),
@@ -22,13 +35,13 @@ const buildTypeStep = (
 };
 
 export class TypeStepFactory {
-  private events: Event[];
+  private events: ElementEvent[];
 
   private steps: Step[] = [];
 
   private pendingEvents: KeyEvent[] = [];
 
-  constructor(events: Event[]) {
+  constructor(events: ElementEvent[]) {
     this.events = events;
   }
 
@@ -38,11 +51,16 @@ export class TypeStepFactory {
 
     logger.debug("TypeStepFactory: buildPasteStep");
 
-    const step = buildTypeStep(event, this.events, value);
+    const step = buildTypeStep({
+      allEvents: this.events,
+      canChange: false,
+      firstEvent: event,
+      value
+    });
     this.steps.push(step);
   }
 
-  buildPendingStep() {
+  buildPendingStep({ canChange }: StepOption) {
     /**
      * Build a type step for pending events.
      */
@@ -52,11 +70,12 @@ export class TypeStepFactory {
       `TypeStepFactory: buildPendingStep ${this.pendingEvents.length}`
     );
 
-    const step = buildTypeStep(
-      this.pendingEvents[0],
-      this.events,
-      serializeKeyEvents(this.pendingEvents)
-    );
+    const step = buildTypeStep({
+      allEvents: this.events,
+      canChange,
+      firstEvent: this.pendingEvents[0],
+      value: serializeKeyEvents(this.pendingEvents)
+    });
     this.steps.push(step);
     this.pendingEvents = [];
   }
@@ -68,10 +87,10 @@ export class TypeStepFactory {
 
     logger.debug("TypeStepFactory: buildSeparateStep");
 
-    this.buildPendingStep();
+    this.buildPendingStep({ canChange: false });
     this.pendingEvents.push(event);
     this.pendingEvents.push({ ...event, name: "keyup" });
-    this.buildPendingStep();
+    this.buildPendingStep({ canChange: false });
   }
 
   buildSteps() {
@@ -86,7 +105,7 @@ export class TypeStepFactory {
       ) {
         // build the step when the page changes
         logger.debug("TypeStepFactory: buildPendingStep for page change");
-        this.buildPendingStep();
+        this.buildPendingStep({ canChange: false });
       }
 
       if (isPasteEvent(event)) {
@@ -99,13 +118,13 @@ export class TypeStepFactory {
         );
 
         // build the step when typing is interrupted
-        this.buildPendingStep();
+        this.buildPendingStep({ canChange: false });
       }
     });
 
     logger.debug(`TypeStepFactory: buildPendingStep at end`);
     // build steps at the end
-    this.buildPendingStep();
+    this.buildPendingStep({ canChange: true });
 
     return this.steps;
   }
@@ -120,7 +139,7 @@ export class TypeStepFactory {
   }
 }
 
-export const buildTypeSteps = (events: Event[]) => {
+export const buildTypeSteps = (events: ElementEvent[]) => {
   const factory = new TypeStepFactory(events);
   return factory.buildSteps();
 };

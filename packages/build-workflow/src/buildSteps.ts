@@ -1,11 +1,20 @@
-import { Event, Step } from "@qawolf/types";
+import { ElementEvent, Step } from "@qawolf/types";
 import { concat, sortBy } from "lodash";
 import { buildClickSteps } from "./buildClickSteps";
 import { buildScrollSteps } from "./buildScrollSteps";
 import { buildSelectSteps } from "./buildSelectSteps";
 import { buildTypeSteps } from "./buildTypeSteps";
 
-export const buildSteps = (events: Event[]): Step[] => {
+export type BuildStepsOptions = {
+  events: ElementEvent[];
+  includeCanChangeSteps?: boolean;
+  startIndex?: number;
+};
+
+export const buildSteps = ({
+  events,
+  ...options
+}: BuildStepsOptions): Step[] => {
   const unorderedSteps = concat(
     buildClickSteps(events),
     buildScrollSteps(events),
@@ -13,11 +22,22 @@ export const buildSteps = (events: Event[]): Step[] => {
     buildTypeSteps(events)
   );
 
-  const steps = sortBy(
+  let steps = sortBy(
     unorderedSteps,
     // ordered by the event index
     step => step.index
-  ).map<Step>((step, index) => ({ ...step, index }));
+  );
+
+  if (!options.includeCanChangeSteps) {
+    steps = steps.filter(step => !step.canChange);
+  }
+
+  // reindex
+  const startIndex = options.startIndex || 0;
+  steps = steps.map((step, index) => ({
+    ...step,
+    index: index + startIndex
+  }));
 
   return steps;
 };

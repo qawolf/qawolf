@@ -1,0 +1,34 @@
+{
+  "name": "@qawolf/create-code",
+  "description": "qawolf: create code",
+  "version": "0.9.0-alpha.6",
+  "license": "BSD-3.0",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qawolf/qawolf.git"
+  },
+  "bugs": {
+    "url": "https://github.com/qawolf/qawolf/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@qawolf/build-code": "^0.9.0-alpha.6",
+    "@qawolf/logger": "^0.9.0-alpha.6",
+    "fs-extra": "^8.1.0"
+  },
+  "devDependencies": {
+    "@qawolf/fixtures": "1.19.0",
+    "@qawolf/types": "^0.9.0-alpha.6"
+  }
+}

@@ -3,6 +3,7 @@ import { bold } from "kleur";
 import { start, REPLServer } from "repl";
 import "./await-outside";
 import { addAwaitOutsideToReplServer } from "await-outside";
+import { replRegistry } from "./replRegistry";
 
 export const repl = (
   context: any = {},
@@ -22,6 +23,12 @@ export const repl = (
   });
 
   addAwaitOutsideToReplServer(replServer);
+
+  const registryContext = replRegistry.getContext();
+
+  Object.keys(registryContext).forEach(key => {
+    replServer.context[key] = registryContext[key];
+  });
 
   Object.keys(context).forEach(key => {
     replServer.context[key] = context[key];

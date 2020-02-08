@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SelectorFile no preexisting selectors loadOrCreate: creates selectors 1`] = `
+Array [
+  "/path/to/selectors.json",
+  Array [],
+  Object {
+    "spaces": " ",
+  },
+]
+`;
+
+exports[`SelectorFile patch saves the preexisting and new selectors 1`] = `
+Array [
+  Object {
+    "html": Object {
+      "ancestors": Array [],
+      "node": "<html/>",
+    },
+    "index": 0,
+  },
+  Object {
+    "html": Object {
+      "ancestors": Array [
+        "<li></li>",
+        "<ul></ul>",
+      ],
+      "node": "<a href=\\"/login\\" innertext=\\"Form Authentication\\">Form Authentication</a>",
+    },
+    "index": 1,
+  },
+]
+`;
+
+exports[`SelectorFile patch saves the preexisting and new selectors 2`] = `
+Array [
+  Object {
+    "html": Object {
+      "ancestors": Array [],
+      "node": "<html/>",
+    },
+    "index": 0,
+  },
+  Object {
+    "html": Object {
+      "ancestors": Array [
+        "<li></li>",
+        "<ul></ul>",
+      ],
+      "node": "<a href=\\"/login\\" innertext=\\"Form Authentication\\">Form Authentication</a>",
+    },
+    "index": 1,
+  },
+  Object {
+    "html": Object {
+      "ancestors": Array [
+        "<div class=\\"large-6 small-12 columns\\"></div>",
+        "<div class=\\"row\\"></div>",
+      ],
+      "node": "<input type=\\"text\\" name=\\"username\\" id=\\"username\\" labels=\\"Username\\"/>",
+    },
+    "index": 2,
+  },
+  Object {
+    "html": Object {
+      "ancestors": Array [
+        "<div class=\\"large-6 small-12 columns\\"></div>",
+        "<div class=\\"row\\"></div>",
+      ],
+      "node": "<input type=\\"text\\" name=\\"username\\" id=\\"username\\" labels=\\"Username\\"/>",
+    },
+    "index": 3,
+  },
+  Object {
+    "html": Object {
+      "ancestors": Array [
+        "<div class=\\"large-6 small-12 columns\\"></div>",
+        "<div class=\\"row\\"></div>",
+      ],
+      "node": "<input type=\\"password\\" name=\\"password\\" id=\\"password\\" labels=\\"Password\\"/>",
+    },
+    "index": 4,
+  },
+  Object {
+    "html": Object {
+      "ancestors": Array [
+        "<div class=\\"large-6 small-12 columns\\"></div>",
+        "<div class=\\"row\\"></div>",
+      ],
+      "node": "<input type=\\"password\\" name=\\"password\\" id=\\"password\\" labels=\\"Password\\"/>",
+    },
+    "index": 5,
+  },
+  Object {
+    "html": Object {
+      "ancestors": Array [
+        "<div class=\\"example\\"></div>",
+        "<div id=\\"content\\" class=\\"large-12 columns\\"></div>",
+      ],
+      "node": "<a class=\\"button secondary radius\\" href=\\"/logout\\" innertext=\\"Logout\\"><i class=\\"icon-2x icon-signout\\"> Logout</i></a>",
+    },
+    "index": 6,
+  },
+]
+`;

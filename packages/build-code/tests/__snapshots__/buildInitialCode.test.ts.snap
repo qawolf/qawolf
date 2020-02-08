@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`buildInitialCode builds a script for a workflow 1`] = `
+"const { launch } = require(\\"qawolf\\");
+const selectors = require(\\"../selectors/login\\");
+
+const login = async () => {
+  const browser = await launch({ url: \\"http://localhost\\" });
+  MY_PATCH_HANDLE
+  await browser.close();
+};
+
+login();"
+`;
+
+exports[`buildInitialCode builds a script for a workflow 2`] = `
+"const { launch } = require(\\"qawolf\\");
+const selectors = require(\\"../selectors/login\\");
+
+const login = async () => {
+  const browser = await launch({ device: \\"iPhone 7\\", url: \\"http://localhost\\" });
+  MY_PATCH_HANDLE
+  await browser.close();
+};
+
+login();"
+`;
+
+exports[`buildInitialCode builds a test for a workflow 1`] = `
+"const { launch } = require(\\"qawolf\\");
+const selectors = require(\\"../selectors/login\\");
+
+describe('login', () => {
+  let browser;
+
+  beforeAll(async () => {
+    browser = await launch({ url: \\"http://localhost\\" });
+  });
+
+  afterAll(() => browser.close());
+  MY_PATCH_HANDLE
+});"
+`;
+
+exports[`buildInitialCode builds a test for a workflow 2`] = `
+"const { launch } = require(\\"qawolf\\");
+const selectors = require(\\"../selectors/login\\");
+
+describe('login', () => {
+  let browser;
+
+  beforeAll(async () => {
+    browser = await launch({ device: \\"iPhone 7\\", url: \\"http://localhost\\" });
+  });
+
+  afterAll(() => browser.close());
+  MY_PATCH_HANDLE
+});"
+`;
