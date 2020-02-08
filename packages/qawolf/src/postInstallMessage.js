@@ -6,6 +6,6 @@ setTimeout(() => {
 
   console.log(
     bold().blue("✨  Create your first test by running:"),
-    "npx qawolf create <url> [name]\n"
+    "npx qawolf create url [name]\n"
   );
 }, 0);
