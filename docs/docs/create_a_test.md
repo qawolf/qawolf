@@ -110,13 +110,11 @@ You can also [specify an attribute](use_custom_selectors#target-attributes) like
 
 Now let's return to the command line. You'll notice a few options here:
 
-TODOUPDATE
+- `💾 Save and Exit`: saves your test code and closes the browser
+- `🖥️ Open REPL to run code`: opens the [QA Wolf interactive REPL](use_the_repl) so you can try out code
+- `🗑️ Discard and Exit`: closes the browser without saving your test code
 
-- `Save and Exit`: saves your test code and closes the browser
-- `Use the REPL`: opens the [QA Wolf interactive REPL](use_the_repl) so you can try out code
-- `Discard and Exit`: closes the browser without saving your test code
-
-Choose `Save and Exit` to save your test.
+Use the up and down arrow keys to choose between options. The default is `💾 Save and Exit`. Choose this option to save your test.
 
 ## Next steps
 
