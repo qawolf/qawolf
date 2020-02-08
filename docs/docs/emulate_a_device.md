@@ -34,7 +34,7 @@ describe("search", () => {
 
 ## Create a test that emulates a device
 
-When you [create a test](create_a_test) ([`npx qawolf create <url> [name]`](TODOFIXLINK)), you can optionally specify a device with the [`--device` flag](TODOFIXLINK). The `--device` flag is a [`string`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) that specifies one of [Playwright's supported devices](https://github.com/Microsoft/playwright/blob/master/src/deviceDescriptors.ts). If you do so, QA Wolf will use [Playwright's device emulator](https://github.com/microsoft/playwright/blob/master/docs/api.md#playwrightdevices) when creating your test.
+When you [create a test](create_a_test) ([`npx qawolf create <url> [name]`](api/cli#npx-qawolf-create-url-name)), you can optionally specify a device with the `--device` flag. The `--device` flag is a [`string`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) that specifies one of [Playwright's supported devices](https://github.com/Microsoft/playwright/blob/master/src/deviceDescriptors.ts). If you do so, QA Wolf will use [Playwright's device emulator](https://github.com/microsoft/playwright/blob/master/docs/api.md#playwrightdevices) when creating your test.
 
 For example, you can run the following command with the `--device` flag set to `"iPad Mini"`:
 
@@ -66,13 +66,13 @@ describe("searchTablet", () => {
 });
 ```
 
-You'll notice that `device` was set to `"iPad Mini"` in the options passed to the [`launch` method](TODOFIXLINK). This means that when you run your test, the [`browser`](TODOFIXLINK) will emulate the iPad Mini.
+You'll notice that `device` was set to `"iPad Mini"` in the options passed to the [`launch` method](api/qawolf/launch). This means that when you run your test, the `browser` will emulate the iPad Mini.
 
-If `device` is not specified when calling [`launch`](TODOFIXLINK), it will default to [`"desktop"`](https://github.com/qawolf/qawolf/blob/3256831cd93c172e81c9f7eb1fdeb347733d72ec/packages/browser/src/browser/device.ts#L9-L24) (1366x768 pixels).
+If `device` is not specified when calling [`launch`](api/qawolf/launch), it will default to [`"desktop"`](https://github.com/qawolf/qawolf/blob/3256831cd93c172e81c9f7eb1fdeb347733d72ec/packages/browser/src/browser/device.ts#L9-L24) (1366x768 pixels).
 
 ## Update an existing test
 
-You can also edit an existing test to use a different device, including custom devices. To do this, update the options passed to the [`launch` method](TODOFIXLINK) in the [Jest `beforeAll` block](https://jestjs.io/docs/en/api#beforeallfn-timeout).
+You can also edit an existing test to use a different device, including custom devices. To do this, update the options passed to the [`launch` method](api/qawolf/launch) in the [Jest `beforeAll` block](https://jestjs.io/docs/en/api#beforeallfn-timeout).
 
 For example, let's say we have a test that looks like this:
 
@@ -93,7 +93,7 @@ describe("search", () => {
 });
 ```
 
-We can pass the `device` key in addition to the `url` key when calling [`launch`](TODOFIXLINK). The value of the `device` key can be either a [`string`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) or a custom device [`Object`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) (more on this shortly).
+We can pass the `device` key in addition to the `url` key when calling [`launch`](api/qawolf/launch). The value of the `device` key can be either a [`string`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) or a custom device [`Object`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) (more on this shortly).
 
 In the example below we set `device` to `"iPhone 7"`, one of [Playwright's supported devices](https://github.com/Microsoft/playwright/blob/master/src/deviceDescriptors.ts):
 

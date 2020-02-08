@@ -7,7 +7,7 @@ In this guide, we explain how QA Wolf generates element selectors and how you ca
 
 ## TL;DR
 
-- [Element selectors in generated code](#selectors-overview) use attributes specified by [`QAW_ATTRIBUTE`](TODOFIXLINK) if possible, and multiple attributes otherwise:
+- [Element selectors in generated code](#selectors-overview) use attributes specified by [`QAW_ATTRIBUTE`](api/environment_variables#qaw_attribute) if possible, and multiple attributes otherwise:
 
 ```js
 it('can click "Submit" button', async () => {
@@ -39,7 +39,7 @@ When you create a test with QA Wolf, each action you take (like clicking and typ
 
 ### Target attributes
 
-During test creation, when you click on an element QA Wolf first checks to see if it has any [attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started) specified by the [`QAW_ATTRIBUTE` environment variable](TODOFIXLINK). The default value of `QAW_ATTRIBUTE` is `data-cy,data-qa,data-test,data-testid`. This means that if an element has the `data-cy`, `data-qa`, `data-test`, or `data-testid` attribute, the generated code will target the element based on that attribute.
+During test creation, when you click on an element QA Wolf first checks to see if it has any [attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started) specified by the [`QAW_ATTRIBUTE` environment variable](api/environment_variables#qaw_attribute). The default value of `QAW_ATTRIBUTE` is `data-cy,data-qa,data-test,data-testid`. This means that if an element has the `data-cy`, `data-qa`, `data-test`, or `data-testid` attribute, the generated code will target the element based on that attribute.
 
 For example, if you click on an element with the following [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML):
 
@@ -57,11 +57,11 @@ it('can click "Submit" button', async () => {
 
 When you run your test, QA Wolf will look for an element where the `data-qa` attribute is set to `submit`. If it cannot find an element where `data-qa` equals `submit` before timing out, the test fails.
 
-You can [set the value of `QAW_ATTRIBUTE`](TODOFIXLINK) to choose what attributes QA Wolf uses when generating test code. You can specify any number of test attributes like `data-qa`, and other attributes like `id` and `aria-label`.
+You can [set the value of `QAW_ATTRIBUTE`](api/environment_variables#qaw_attribute) to choose what attributes QA Wolf uses when generating test code. You can specify any number of test attributes like `data-qa`, and other attributes like `id` and `aria-label`.
 
 ### Default selector logic
 
-If you click on an element that does not have an attribute specified by [`QAW_ATTRIBUTE`](TODOFIXLINK), QA Wolf will fall back to its default selector logic. The default logic stores all attributes of an element, as well as the attributes of its two direct [ancestors](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement). It then tries to find a close enough match to the target element when running your tests.
+If you click on an element that does not have an attribute specified by [`QAW_ATTRIBUTE`](api/environment_variables#qaw_attribute), QA Wolf will fall back to its default selector logic. The default logic stores all attributes of an element, as well as the attributes of its two direct [ancestors](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement). It then tries to find a close enough match to the target element when running your tests.
 
 For example, let's say you click on an element with the following [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML):
 
@@ -77,7 +77,7 @@ it('can click "Submit" button', async () => {
 });
 ```
 
-The `selectors[0]` argument passed to `browser.click` references a [`Selector`](TODOFIXLINK) in the corrseponding selectors file for your test. This file is saved at `.qawolf/selectors/myTestName.json` and looks something like this:
+The `selectors[0]` argument passed to `browser.click` references a selector in the corrseponding selectors file for your test. This file is saved at `.qawolf/selectors/myTestName.json` and looks something like this:
 
 ```json
 // myTestName.json
@@ -101,13 +101,13 @@ When you run your test, QA Wolf will look for a close enough match to the origin
 
 Because the selectors file contains the information QA Wolf needs to find each element, you should avoid editing it.
 
-To learn more about how QA Wolf finds a close enough match to the target element, see [how it works documentation](TODOUPDATELINK).
+To learn more about how QA Wolf finds a close enough match to the target element, see [how it works documentation](how_it_works#element-selectors).
 
 ## Edit generated selectors
 
-You can edit element selectors as you create your test, since the [test code is generated](TODOFIXLINK) as you use your application. The [interactive REPL](use_the_repl) can be helpful in trying out selectors.
+You can edit element selectors as you create your test, since the [test code is generated](create_a_test#review-test-code) as you use your application. The [interactive REPL](use_the_repl) can be helpful in trying out selectors.
 
-If you find yourself using the same attribute frequently to target elements, such as the `data-qa` attribute, try [setting `QAW_ATTRIBUTE`](TODOFIXLINK). This will configure QA Wolf to generate code targeting elements based on that attribute whenever possible.
+If you find yourself using the same attribute frequently to target elements, such as the `data-qa` attribute, try [setting `QAW_ATTRIBUTE`](api/environment_variables#qaw_attribute). This will configure QA Wolf to generate code targeting elements based on that attribute whenever possible.
 
 QA Wolf supports two types of custom selectors: [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) and text selectors.
 
@@ -127,7 +127,7 @@ it('can click "Submit" button', async () => {
 });
 ```
 
-See [documentation on the `Selector` interface](TODOFIXLINK) to learn more.
+See [documentation on the `browser.click` method](api/browser/click) for more examples.
 
 Whenever you target an element with a CSS or text selector, make sure that your selector is as specific as possible. If your selector matches multiple elements on the page, you could end up with the wrong element being acted upon in your test.
 
@@ -161,5 +161,5 @@ There are a few places you might want to go from here:
 
 - [Add assertions](add_assertions) to your tests
 - [Change input values](change_input_values) in your tests
-- Learn more about the [default selector logic](TODOFIXLINK)
+- Learn more about the [default selector logic](use_custom_selectors#default-selector-logic)
 - Learn more about the [interactive REPL](use_the_repl)

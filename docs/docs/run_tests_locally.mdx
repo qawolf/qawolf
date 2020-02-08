@@ -14,7 +14,7 @@ In the [previous guide](create_a_test) we created our first browser test for [To
 
 ## Run a test locally
 
-Let's run our test to confirm it works locally. In the command line, run the following [command](TODOFIXLINK). If applicable, replace `myFirstTest` with your test name.
+Let's run our test to confirm it works locally. In the command line, run the following [command](api/cli#npx-qawolf-test-name). If applicable, replace `myFirstTest` with your test name.
 
 ```bash
 npx qawolf test myFirstTest
@@ -48,7 +48,7 @@ QA Wolf is built on top of Microsoft's [Playwright library](https://github.com/m
 
 Chromium is an open source browser that forms the basis for the [Chrome browser](https://www.google.com/chrome). Similarly, Webkit is the browser engine used in the [Safari browser](https://www.apple.com/safari). In the majority of cases, you can consider running tests on Chromium as functionally equivalent to running them on Chrome. This is also true for WebKit and Safari. TODOJON
 
-To run your tests on a specific browser, use the `--chromium`, `--firefox`, or `--webkit` [flags](TODOFIXLINK). To run your tests on all browsers, use the [`--all-browsers` flag](TODOFIXLINK). If you run your tests across browsers, each test will run three times: once on Chromium, once on Firefox, and once on WebKit.
+To run your tests on a specific browser, use the `--chromium`, `--firefox`, or `--webkit` [flags](api/cli#npx-qawolf-test-name). To run your tests on all browsers, use the `--all-browsers` flag. If you run your tests across browsers, each test will run three times: once on Chromium, once on Firefox, and once on WebKit.
 
 If no flag is provided, QA Wolf will default to running your tests on Chromium.
 

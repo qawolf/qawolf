@@ -42,7 +42,7 @@ You'll notice a section for environment variables after `- run: npx qawolf test`
 # ...
 ```
 
-If your environment variable is not sensitive, you can set its value directly. To do this, just add another line under the `env` key. In the example below, we set [`QAW_SLEEP_MS`](TODOFIXLINK) to `0` so that our tests run as fast as possible:
+If your environment variable is not sensitive, you can set its value directly. To do this, just add another line under the `env` key. In the example below, we set [`QAW_SLEEP_MS`](api/environment_variables#qaw_sleep_ms) to `0` so that our tests run as fast as possible:
 
 ```yaml
 # ...
@@ -87,7 +87,7 @@ In the example below, we set `LOGIN_PASSWORD` to `${{ secrets.PASSWORD }}`:
 # ...
 ```
 
-In our test file, we use `process.env.LOGIN_PASSWORD` rather than hard coding the password value. See [our guide on changing input values](TODOFIXLINK) to learn more about removing sensitive input values from tests.
+In our test file, we use `process.env.LOGIN_PASSWORD` rather than hard coding the password value. See [our guide on changing input values](change_input_values#use-environment-variables) to learn more about removing sensitive input values from tests.
 
 </TabItem>
 <TabItem value="gitlab">

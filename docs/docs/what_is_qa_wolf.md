@@ -19,7 +19,7 @@ Setting up browser tests is very time consuming. Not only do you need to create 
 
 #### Create Tests Faster
 
-We believe you should be able to create test code without writing boilerplate or having to learn a new framework. As you use your application, your actions are converted to [Playwright](#what-is-playwright) and [Jest](https://jestjs.io/) test code. You can use the generated code as is, or edit it as you go along. The [interactive REPL](TODOFIXLINK) allows you try out assertions and custom code.
+We believe you should be able to create test code without writing boilerplate or having to learn a new framework. As you use your application, your actions are converted to [Playwright](#what-is-playwright) and [Jest](https://jestjs.io/) test code. You can use the generated code as is, or edit it as you go along. The [interactive REPL](use_the_repl) allows you try out assertions and custom code.
 
 #### Set up CI Faster
 
@@ -39,7 +39,7 @@ QA Wolf automatically waits for elements, outstanding network requests, and asse
 
 QA Wolf chooses element selectors wisely. Typically, auto generated code targets elements with very specific selectors like [XPaths](https://developer.mozilla.org/en-US/docs/Web/XPath). These brittle selectors can stop working as your application changes.
 
-A best practice in testing is target elements based on test [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes) like `data-qa`. This provides maximum stability even as your application changes. If possible, QA Wolf will target elements based on these test attributes. You can [choose which attributes are used](TODOFIXLINK) in the generated code, including attributes like `id` or `aria-label`.
+A best practice in testing is target elements based on test [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes) like `data-qa`. This provides maximum stability even as your application changes. If possible, QA Wolf will target elements based on these test attributes. You can [choose which attributes are used](api/environment_variables#qaw_attribute) in the generated code, including attributes like `id` or `aria-label`.
 
 #### Smart Selectors
 
@@ -69,7 +69,7 @@ Why not stub out those situations? You still can - just edit the test code!
 
 However, stubbing requires a time and maintenance investment that we wanted to be able to opt out of. If your goal is to test your application like a real user, stubbing also moves you away from a true end-to-end test. We leave it to you to stub or not stub as you like.
 
-In addition to supporting these complex scenarios, Playwright also supports testing on Firefox and WebKit browsers.
+In addition to supporting these complex scenarios, Playwright also supports testing on WebKit browsers.
 
 By running our [@qawolf/web](https://github.com/qawolf/qawolf/tree/master/packages/web) code in the browser we get the best of Cypress (fast in the browser) and [Playwright](https://pptr.dev/)/[DevTools](https://chromedevtools.github.io/devtools-protocol/) (rich APIs and well-supported DevTools protocol).
 

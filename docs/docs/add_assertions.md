@@ -52,11 +52,11 @@ In this guide, we'll add assertions to a test on [TodoMVC](http://todomvc.com/ex
 
 TODOADDVIDEO
 
-You can add assertions as you create your test, since the [test code is generated](TODOFIXLINK) as you use your application. The [interactive REPL](use_the_repl) can be helpful in trying out code.
+You can add assertions as you create your test, since the [test code is generated](create_a_test#review-test-code) as you use your application. The [interactive REPL](use_the_repl) can be helpful in trying out code.
 
 The first assertion we will add is to check that the "Clear completed" text appears after we complete our todo.
 
-We'll use QA Wolf's [`browser.hasText` method](TODOFIXLINK) to verify that the text appears. This method automatically waits for the given text to appear on the page. It returns `true` if the text is found, and `false` if the text does not appear before timing out.
+We'll use QA Wolf's [`browser.hasText` method](api/browser/has_text) to verify that the text appears. This method automatically waits for the given text to appear on the page. It returns `true` if the text is found, and `false` if the text does not appear before timing out.
 
 In our test code, let's update the following step where we click to complete the todo. We'll call `browser.hasText("Clear completed")`, assign the result to a variable called `hasClearCompletedText`, and assert that `hasClearCompletedText` is `true`. See [Jest documentation](https://jestjs.io/docs/en/expect) to learn more about assertions.
 
@@ -74,7 +74,7 @@ it("can click input", async () => {
 
 If you run the test again (`npx qawolf test myTestName`), you'll see that it still passes.
 
-See our [API documentation](TODOFIXLINK) for a full list of QA Wolf helpers.
+See our [API documentation](api/table_of_contents) for a full list of QA Wolf helpers.
 
 ## Use the Playwright API
 
@@ -88,7 +88,7 @@ We'll also use the QA Wolf [helper method `waitUntil`](TODOFIXLINK), which takes
 
 Putting it all together, after our test clicks the "Clear completed" button to clear completed todos, we will verify that the todos disappear from the page. We do this by:
 
-1. Calling [`browser.page`](TODOFIXLINK) to get the current Playwright page instance
+1. Calling [`browser.page`](api/browser/page) to get the current Playwright page instance
 2. Calling [`waitUntil`](TODOFIXLINK) to wait for the `section.main` element to disappear
 3. Passing `waitUntil` a function that calls [`page.$`](https://github.com/microsoft/playwright/blob/master/docs/api.md#pageselector) with the CSS selector `section.main` and returns `true` when it is `null` (todos container is no longer on the page)
 
