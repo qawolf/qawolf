@@ -1,5 +1,4 @@
 module.exports = function() {
-  console.log("ENV", process.env.HOTJAR_ID);
   return {
     name: "hotjar",
 
