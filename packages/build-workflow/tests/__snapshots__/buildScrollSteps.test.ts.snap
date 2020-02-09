@@ -4,7 +4,6 @@ exports[`buildScrollSteps builds expected steps 1`] = `
 Array [
   Object {
     "action": "scroll",
-    "canChange": false,
     "html": Object {
       "ancestors": Array [],
       "node": Object {

@@ -8,24 +8,17 @@ const SEPARATE_KEYS = ["Enter", "Tab"];
 
 type BuildTypeStepOptions = {
   allEvents: ElementEvent[];
-  canChange: boolean;
   firstEvent: ElementEvent;
   value: string;
-};
-
-type StepOption = {
-  canChange: boolean;
 };
 
 const buildTypeStep = ({
   allEvents,
   firstEvent,
-  canChange,
   value
 }: BuildTypeStepOptions): Step => {
   return {
     action: "type",
-    canChange,
     html: firstEvent.target,
     // include event index so we can sort in buildSteps
     index: allEvents.indexOf(firstEvent),
@@ -53,26 +46,24 @@ export class TypeStepFactory {
 
     const step = buildTypeStep({
       allEvents: this.events,
-      canChange: false,
       firstEvent: event,
       value
     });
     this.steps.push(step);
   }
 
-  buildPendingStep({ canChange }: StepOption) {
+  buildPendingStep(reason: string) {
     /**
      * Build a type step for pending events.
      */
     if (!this.pendingEvents.length) return;
 
     logger.debug(
-      `TypeStepFactory: buildPendingStep ${this.pendingEvents.length}`
+      `TypeStepFactory: buildPendingStep ${this.pendingEvents.length} for ${reason}`
     );
 
     const step = buildTypeStep({
       allEvents: this.events,
-      canChange,
       firstEvent: this.pendingEvents[0],
       value: serializeKeyEvents(this.pendingEvents)
     });
@@ -87,10 +78,10 @@ export class TypeStepFactory {
 
     logger.debug("TypeStepFactory: buildSeparateStep");
 
-    this.buildPendingStep({ canChange: false });
+    this.buildPendingStep("separate step");
     this.pendingEvents.push(event);
     this.pendingEvents.push({ ...event, name: "keyup" });
-    this.buildPendingStep({ canChange: false });
+    this.buildPendingStep("separate step");
   }
 
   buildSteps() {
@@ -104,8 +95,7 @@ export class TypeStepFactory {
         event.page !== this.pendingEvents[0].page
       ) {
         // build the step when the page changes
-        logger.debug("TypeStepFactory: buildPendingStep for page change");
-        this.buildPendingStep({ canChange: false });
+        this.buildPendingStep("page change");
       }
 
       if (isPasteEvent(event)) {
@@ -113,18 +103,13 @@ export class TypeStepFactory {
       } else if (isKeyEvent(event)) {
         this.handleKeyEvent(event as KeyEvent);
       } else {
-        logger.debug(
-          `TypeStepFactory: buildPendingStep for event change ${event.name}`
-        );
-
         // build the step when typing is interrupted
-        this.buildPendingStep({ canChange: false });
+        this.buildPendingStep("event change");
       }
     });
 
-    logger.debug(`TypeStepFactory: buildPendingStep at end`);
     // build steps at the end
-    this.buildPendingStep({ canChange: true });
+    this.buildPendingStep("last event");
 
     return this.steps;
   }

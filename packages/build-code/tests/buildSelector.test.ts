@@ -7,7 +7,6 @@ const doc = htmlToDoc;
 
 const step = {
   action: "click" as Action,
-  canChange: false,
   html: {
     ancestors: [],
     node: doc("<input id='my-input' data-qa='test-input' />")

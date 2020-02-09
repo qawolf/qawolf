@@ -78,8 +78,8 @@ describe("CodeFile", () => {
     });
   });
 
-  describe("patch", () => {
-    it("saves patches for non-committed steps", async () => {
+  describe("update", () => {
+    it("saves code with new steps", async () => {
       // use the three pages events to test multiple page tests works properly
       const steps = buildSteps({ events: threePagesEvents });
       mockedOutputFile.mockReset();
@@ -91,7 +91,7 @@ describe("CodeFile", () => {
       const initialFile = mockedOutputFile.mock.calls[0][1];
       mockedReadFile.mockResolvedValueOnce(initialFile);
 
-      await file.patch({
+      await file.update({
         // emulate only the first two steps being ready
         steps: steps.slice(0, 2)
       });
@@ -100,7 +100,7 @@ describe("CodeFile", () => {
       expect(fileRevisionOne).toMatchSnapshot();
       mockedReadFile.mockResolvedValueOnce(fileRevisionOne);
 
-      await file.patch({
+      await file.update({
         removeHandle: true,
         steps: steps
       });

@@ -7,7 +7,6 @@ import { buildTypeSteps } from "./buildTypeSteps";
 
 export type BuildStepsOptions = {
   events: ElementEvent[];
-  includeCanChangeSteps?: boolean;
   startIndex?: number;
 };
 
@@ -27,10 +26,6 @@ export const buildSteps = ({
     // ordered by the event index
     step => step.index
   );
-
-  if (!options.includeCanChangeSteps) {
-    steps = steps.filter(step => !step.canChange);
-  }
 
   // reindex
   const startIndex = options.startIndex || 0;

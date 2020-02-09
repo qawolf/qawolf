@@ -3,7 +3,6 @@ import { buildDescription } from "../src/buildDescription";
 
 let baseStep: Step = {
   action: "click",
-  canChange: false,
   html: {
     ancestors: [],
     node: {

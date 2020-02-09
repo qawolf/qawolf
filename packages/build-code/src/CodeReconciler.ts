@@ -1,16 +1,13 @@
-type Expression = {};
+import { VirtualCode } from "./VirtualCode";
 
-export class VirtualCode {
-  private _expressions: Expression[] = [];
-
-  public expressions() {
-    return this._expressions;
-  }
-}
+type ReconcileOptions = {
+  actualCode: string;
+  virtualCode: VirtualCode;
+};
 
 export class CodeReconciler {
   // the virtual code representation of the actual code
-  private _virtualCode: VirtualCode = new VirtualCode();
+  private _virtualCode: VirtualCode;
 
   public hasUpdates(virtualCode: VirtualCode) {
     // const stepsToPatch = options.steps.slice(this._commitedStepIndex);
@@ -21,7 +18,7 @@ export class CodeReconciler {
     return false;
   }
 
-  public reconcile(actualCode: string, virtualCode: VirtualCode): string {
+  public reconcile({ actualCode, virtualCode }: ReconcileOptions): string {
     /**
      * Reconcile the actual code with the new virtual code.
      */

@@ -1,14 +1,20 @@
-import { buildInitialCode, InitialCodeOptions } from "@qawolf/build-code";
+import {
+  buildInitialCode,
+  buildVirtualCode,
+  CodeReconciler,
+  InitialCodeOptions
+} from "@qawolf/build-code";
 import { Step } from "@qawolf/types";
 import { outputFile, pathExists, readFile, remove } from "fs-extra";
 import { relative } from "path";
+import { removeLinesIncluding } from "./format";
 import { PATCH_HANDLE } from "./patchCode";
 
 export type CodeFileOptions = Omit<InitialCodeOptions, "patchHandle"> & {
   path: string;
 };
 
-type PatchOptions = {
+type UpdateOptions = {
   removeHandle?: boolean;
   steps: Step[];
 };
@@ -18,14 +24,15 @@ export class CodeFile {
   private _lock: boolean;
   private _name: string;
   private _path: string;
-
   // public for tests
   public _preexisting: string | undefined;
+  private _reconciler: CodeReconciler;
 
   protected constructor({ isTest, name, path }: CodeFileOptions) {
     this._isTest = !!isTest;
     this._name = name;
     this._path = path;
+    this._reconciler = new CodeReconciler();
   }
 
   public static async loadOrCreate(options: CodeFileOptions) {
@@ -64,12 +71,12 @@ export class CodeFile {
     return relative(process.cwd(), this._path);
   }
 
-  public async update(options: PatchOptions) {
+  public async update(options: UpdateOptions) {
     // do not conflict with an update in progress
     if (this._lock) return;
 
-    const virtualCode = buildVirtualCode();
-    if (!this._reconciler.hasUpdates(virtualCode)) {
+    const virtualCode = buildVirtualCode(options.steps, this._isTest);
+    if (!options.removeHandle && !this._reconciler.hasUpdates(virtualCode)) {
       return;
     }
 
@@ -80,11 +87,15 @@ export class CodeFile {
 
     this._lock = true;
 
-    const reconciledCode = this._reconciler.reconcile({
+    let reconciledCode = this._reconciler.reconcile({
       actualCode,
-      removeHandle,
       virtualCode
     });
+
+    if (options.removeHandle) {
+      reconciledCode = removeLinesIncluding(reconciledCode, PATCH_HANDLE);
+    }
+
     await outputFile(this._path, reconciledCode, "utf8");
 
     this._reconciler.update(virtualCode);
