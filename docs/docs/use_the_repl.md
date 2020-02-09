@@ -5,8 +5,6 @@ title: 🔁 Use the REPL
 
 As you create a test, you may want to try out code to include in your test file. The interactive [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop) lets you run [Node.js](https://nodejs.org/en) code and gives you access to the [QA Wolf API](api/table_of_contents).
 
-TODOUPDATE
-
 ## TL;DR
 
 - [Open the REPL](#open-the-repl) by selecting `🖥️ Open REPL to run code` when creating a test
@@ -27,11 +25,11 @@ Use the up and down arrow keys to choose between options. To open the REPL, choo
 
 You will now be able to run [Node.js](https://nodejs.org/en) in the command line, as well as access the [QA Wolf API](api/table_of_contents).
 
-As a simple test, type `1 + 1` in the REPL and hit `Enter`. The result `2` will print below the command. In short, any code you could run in the [Node.js](https://nodejs.org/en) REPL can also be run here.
+As a simple test, type `1 + 1` in the REPL and press `Enter`. The result `2` will print below the command. In short, any code you could run in the [Node.js](https://nodejs.org/en) REPL can also be run here.
 
 You can also use the [QA Wolf API](api/table_of_contents) in the REPL. For example, let's say we have just started to create a test on [TodoMVC](http://todomvc.com/examples/react). We can create a todo item through the REPL.
 
-First, let's type in the `input` with the class `"new-todo"` and then hit `Enter` to save our todo. To do this, we will call the [`browser.type` method](api/browser/type). In the REPL, type:
+First, let's type in the `input` with the class `"new-todo"` and then press `Enter` to save our todo. To do this, we will call the [`browser.type` method](api/browser/type). In the REPL, type:
 
 ```js
 await browser.type({ css: "input.new-todo" }, "Hello from the REPL!");
