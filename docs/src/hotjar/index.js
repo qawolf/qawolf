@@ -1,4 +1,6 @@
 module.exports = function() {
+  if (!process.env.HOTJAR_ID) return;
+
   return {
     name: "hotjar",
 
