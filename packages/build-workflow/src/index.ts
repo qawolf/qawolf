@@ -3,3 +3,4 @@ export * from "./buildScrollSteps";
 export * from "./buildSelectSteps";
 export * from "./buildSteps";
 export * from "./buildTypeSteps";
+export * from "./StepBuilder";

@@ -1,4 +1,4 @@
-import { StepBuilder } from "@qawolf/build-code";
+import { StepBuilder } from "@qawolf/build-workflow";
 import { ElementEvent } from "@qawolf/types";
 import { bold } from "kleur";
 import { writeJson } from "fs-extra";

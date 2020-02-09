@@ -1,7 +1,7 @@
-import { buildSteps } from "@qawolf/build-workflow";
 import { logger } from "@qawolf/logger";
 import { ElementEvent, Step } from "@qawolf/types";
 import { sortBy } from "lodash";
+import { buildSteps } from "./buildSteps";
 
 type ConstructorOptions = {
   isTest?: boolean;

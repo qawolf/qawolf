@@ -1,5 +1,5 @@
 import { Step } from "@qawolf/types";
-import { buildIt } from "./buildIt";
+import { buildDescription } from "./buildDescription";
 import { buildMethod } from "./buildMethod";
 
 export type BuildStepsOptions = {
@@ -34,7 +34,7 @@ export const buildStepsCode = ({
     const previousStep = i > 0 ? steps[i - 1] : null;
     const step = steps[i];
 
-    const it = buildIt(step);
+    const it = buildDescription(step);
     const method = buildMethod(step, previousStep);
 
     stepsCode += isTest

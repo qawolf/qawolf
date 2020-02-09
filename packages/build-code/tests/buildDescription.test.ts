@@ -1,5 +1,5 @@
 import { Step } from "@qawolf/types";
-import { buildIt } from "../src/buildIt";
+import { buildDescription } from "../src/buildDescription";
 
 let baseStep: Step = {
   action: "click",
@@ -15,9 +15,9 @@ let baseStep: Step = {
   page: 0
 };
 
-describe("buildIt", () => {
+describe("buildDescription", () => {
   it("excludes target name if it does not exist", () => {
-    expect(buildIt(baseStep)).toBe("click input");
+    expect(buildDescription(baseStep)).toBe("click input");
   });
 
   it("uses alt attribute if no other attributes specified", () => {
@@ -35,7 +35,7 @@ describe("buildIt", () => {
       }
     };
 
-    expect(buildIt(step)).toBe('click "spirit" img');
+    expect(buildDescription(step)).toBe('click "spirit" img');
   });
 
   it("formats clear input", () => {
@@ -45,7 +45,7 @@ describe("buildIt", () => {
       value: null
     };
 
-    expect(buildIt(step)).toEqual("clear input");
+    expect(buildDescription(step)).toEqual("clear input");
   });
 
   it("formats clear input", () => {
@@ -55,7 +55,7 @@ describe("buildIt", () => {
       value: "something"
     };
 
-    expect(buildIt(step)).toEqual("type into input");
+    expect(buildDescription(step)).toEqual("type into input");
   });
 
   it("formats scroll action", () => {
@@ -64,7 +64,7 @@ describe("buildIt", () => {
       action: "scroll"
     };
 
-    expect(buildIt(step)).toBe("scroll");
+    expect(buildDescription(step)).toBe("scroll");
   });
 
   it("formats select action", () => {
@@ -73,7 +73,7 @@ describe("buildIt", () => {
       action: "select"
     };
 
-    expect(buildIt(step)).toBe("select");
+    expect(buildDescription(step)).toBe("select");
   });
 
   it("formats Enter", () => {
@@ -83,7 +83,7 @@ describe("buildIt", () => {
       value: "↓Enter"
     };
 
-    expect(buildIt(step)).toEqual("Enter");
+    expect(buildDescription(step)).toEqual("Enter");
   });
 
   it("formats Tab", () => {
@@ -93,6 +93,6 @@ describe("buildIt", () => {
       value: "↓Tab"
     };
 
-    expect(buildIt(step)).toEqual("Tab");
+    expect(buildDescription(step)).toEqual("Tab");
   });
 });
