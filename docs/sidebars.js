@@ -13,8 +13,7 @@ module.exports = {
       type: "doc",
       id: "run_tests_locally"
     },
-    { type: "doc", id: "run_tests_in_ci" },
-    { type: "doc", id: "edit_a_test" }
+    { type: "doc", id: "run_tests_in_ci" }
   ],
   guides: [
     { type: "doc", id: "use_the_repl" },
@@ -23,7 +22,6 @@ module.exports = {
     { type: "doc", id: "change_input_values" },
     { type: "doc", id: "emulate_a_device" },
     { type: "doc", id: "use_typescript" },
-    { type: "doc", id: "handle_sign_in" },
     { type: "doc", id: "create_a_script" },
     {
       type: "category",
