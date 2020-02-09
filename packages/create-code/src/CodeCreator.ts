@@ -2,7 +2,7 @@ import { buildSteps } from "@qawolf/build-workflow";
 import { ElementEvent } from "@qawolf/types";
 import { bold } from "kleur";
 import { writeJson } from "fs-extra";
-import { throttle, sortBy } from "lodash";
+import { sortBy, throttle } from "lodash";
 import { dirname, join } from "path";
 import { CodeFile } from "./CodeFile";
 import { PATCH_HANDLE } from "./patchCode";

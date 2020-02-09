@@ -1,12 +1,12 @@
 import {
   buildInitialCode,
   buildVirtualCode,
-  CodeReconciler,
   InitialCodeOptions
 } from "@qawolf/build-code";
 import { Step } from "@qawolf/types";
 import { outputFile, pathExists, readFile, remove } from "fs-extra";
 import { relative } from "path";
+import { CodeReconciler } from "./CodeReconciler";
 import { removeLinesIncluding } from "./format";
 import { PATCH_HANDLE } from "./patchCode";
 
@@ -76,6 +76,7 @@ export class CodeFile {
     if (this._lock) return;
 
     const virtualCode = buildVirtualCode(options.steps, this._isTest);
+
     if (!options.removeHandle && !this._reconciler.hasUpdates(virtualCode)) {
       return;
     }
