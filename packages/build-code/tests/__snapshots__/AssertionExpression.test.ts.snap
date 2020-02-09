@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AssertionExpression.code() builds assertion code 1`] = `
+"
+it('can click \\"my-input\\" input', async () => {
+  await browser.click({ css: \\"[data-qa='test-input']\\" });
+});
+"
+`;

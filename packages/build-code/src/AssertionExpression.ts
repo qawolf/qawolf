@@ -1,32 +1,27 @@
-import { ActionExpression } from "./ActionExpression";
+import { buildDescription } from "./buildDescription";
+import { Expression } from "./Expression";
+import { StepExpression } from "./StepExpression";
 
-type ConstructorOptions = {
-  action: ActionExpression;
-  description: string;
-};
+export class AssertionExpression implements Expression {
+  private _stepExpression: StepExpression;
 
-export class AssertionExpression {
-  private _action: ActionExpression;
-  private _description: string;
-
-  constructor({ action, description }: ConstructorOptions) {
-    this._action = action;
-    this._description = description;
+  constructor(stepExpression: StepExpression) {
+    this._stepExpression = stepExpression;
   }
 
   private _formatIt() {
-    const description = this._description;
+    const step = this._stepExpression.step();
+    const description = buildDescription(step);
     if (!description.includes(`"`)) return `"can ${description}"`;
     if (!description.includes("'")) return `'can ${description}'`;
     return JSON.stringify("can " + description);
   }
 
   code() {
-    const code = `\nit(${this._formatIt()}, async () => {\n  ${this._action.code()}\n  });\n`;
-    return code;
+    return `\nit(${this._formatIt()}, async () => {\n  ${this._stepExpression.code()}\n});\n`;
   }
 
   updatableCode() {
-    return this._action.updatableCode();
+    return this._stepExpression.updatableCode();
   }
 }

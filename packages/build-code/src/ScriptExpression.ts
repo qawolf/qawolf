@@ -1,24 +1,20 @@
-import { ActionExpression } from "./ActionExpression";
+import { buildDescription } from "./buildDescription";
+import { Expression } from "./Expression";
+import { StepExpression } from "./StepExpression";
 
-type ConstructorOptions = {
-  action: ActionExpression;
-  description: string;
-};
+export class ScriptExpression implements Expression {
+  private _stepExpression: StepExpression;
 
-export class ScriptExpression {
-  private _action: ActionExpression;
-  private _description: string;
-
-  constructor({ action, description }: ConstructorOptions) {
-    this._action = action;
-    this._description = description;
+  constructor(stepExpression: StepExpression) {
+    this._stepExpression = stepExpression;
   }
 
   code() {
-    return `// ${this._description}\n${this._action.code()}\n`;
+    const description = buildDescription(this._stepExpression.step());
+    return `// ${description}\n${this._stepExpression.code()}\n`;
   }
 
   updatableCode() {
-    return this._action.updatableCode();
+    return this._stepExpression.updatableCode();
   }
 }

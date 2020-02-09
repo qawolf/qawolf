@@ -72,11 +72,11 @@ export class CodeCreator {
     );
   }
 
-  private async _patchFiles(removeHandle: boolean = false) {
+  private async _updateFiles(removeHandle: boolean = false) {
     const steps = this._stepBuilder.steps();
     await Promise.all([
-      this._codeFile.patch({ removeHandle, steps }),
-      this._selectorFile.patch({ steps })
+      this._codeFile.update({ removeHandle, steps }),
+      this._selectorFile.update({ steps })
     ]);
   }
 
@@ -90,7 +90,7 @@ export class CodeCreator {
 
   public async save({ debug }: { debug?: boolean } = {}) {
     this._stepBuilder.finalize();
-    await this._patchFiles(true);
+    await this._updateFiles(true);
     logSaveSuccess(this._codeFile);
 
     if (debug) {
@@ -101,9 +101,9 @@ export class CodeCreator {
   public startPolling() {
     this._pollingIntervalId = setInterval(async () => {
       try {
-        await this._patchFiles();
+        await this._updateFiles();
       } catch (e) {
-        if (e.message.includes("Cannot patch without handle")) {
+        if (e.message.includes("Cannot update without handle")) {
           logNoHandle();
         } else {
           throw e;

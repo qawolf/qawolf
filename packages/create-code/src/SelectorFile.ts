@@ -53,7 +53,7 @@ export class SelectorFile {
     return !!this._preexistingSelectors;
   }
 
-  public async patch(options: PatchOptions) {
+  public async update(options: PatchOptions) {
     if (this._lock || options.steps.length <= this._newSelectors.length) {
       return;
     }
