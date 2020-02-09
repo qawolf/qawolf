@@ -1,4 +1,0 @@
----
-id: actions
-title: 🖱️ Actions
----

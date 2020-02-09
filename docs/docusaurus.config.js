@@ -47,6 +47,10 @@ module.exports = {
             {
               to: "http://eepurl.com/gM47dD",
               label: "Subscribe to Mailing List"
+            },
+            {
+              to: "docs/privacy_policy",
+              label: "Privacy Policy"
             }
           ]
         }
