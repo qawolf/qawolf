@@ -25,11 +25,11 @@ We believe you should be able to create test code without writing boilerplate or
 
 QA Wolf does the heavy lifting to set up CI. With one command, a workflow file is created to run your tests in your CI provider. Tests will automatically run in parallel to the extent possible, and you can run them on push or on a schedule. Each test run includes a video recording and detailed logs to make debugging easy.
 
-By speeding up test creation and CI setup, QA Wolf enables you to build a browser testing pipeline in minutes. 🚀🧑‍🚀
+By speeding up test creation and CI setup, QA Wolf enables you to build a browser testing pipeline in minutes. 🧑‍🚀🚀
 
 ## Isn't auto generated code flaky?
 
-A common concern, and part of the reason we built QA Wolf, is that auto generated code is unstable. QA Wolf improves stability in a few ways.
+A common concern, and part of the reason we built QA Wolf, is that auto generated code is unstable. QA Wolf improves stability in a few ways (in addition to allowing you to edit the code as you create your tests).
 
 #### Automatic Waiting
 
