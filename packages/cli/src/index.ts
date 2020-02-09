@@ -60,7 +60,7 @@ program
   .option("--webkit", "run tests on webkit")
   .description("run a test with Jest")
   .allowUnknownOption(true)
-  .action((_, options = {}) => {
+  .action((cmd = {}) => {
     const args = omitArgs(process.argv.slice(3), [
       "--all-browsers",
       "--chromium",
@@ -73,22 +73,22 @@ program
 
     let browsers: BrowserType[] = [];
 
-    if (options.allBrowsers || options.chromium) {
+    if (cmd.allBrowsers || cmd.chromium) {
       browsers.push("chromium");
     }
 
-    if (options.allBrowsers || options.firefox) {
+    if (cmd.allBrowsers || cmd.firefox) {
       browsers.push("firefox");
     }
 
-    if (options.allBrowsers || options.webkit) {
+    if (cmd.allBrowsers || cmd.webkit) {
       browsers.push("webkit");
     }
 
     const code = runJest(args, {
       browsers,
-      path: options.path,
-      repl: !!options.repl
+      path: cmd.path,
+      repl: !!cmd.repl
     });
     process.exit(code);
   });
