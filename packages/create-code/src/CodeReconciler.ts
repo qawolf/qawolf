@@ -10,29 +10,8 @@ export class CodeReconciler {
   // the virtual representation of the current code
   private _virtualCode: VirtualCode = new VirtualCode([]);
 
-  private _compareLastExpression(virtualCode: VirtualCode) {
-    const expressions = this._virtualCode.expressions();
-    const lastIndex = expressions.length - 1;
-    if (lastIndex < 0) return null;
-
-    const expressionToUpdate = expressions[lastIndex];
-    const updatedExpression = virtualCode.expressions()[lastIndex];
-
-    const original = expressionToUpdate.updatableCode();
-    const updated = updatedExpression.updatableCode();
-    if (original === updated) return null;
-
-    return { original, updated };
-  }
-
-  private _newExpressions(virtualCode: VirtualCode) {
-    const existing = this._virtualCode.expressions();
-    const newExpressions = virtualCode.expressions().slice(existing.length);
-    return newExpressions;
-  }
-
   private _insertNewExpressions({ actualCode, virtualCode }: ReconcileOptions) {
-    const newExpressions = this._newExpressions(virtualCode);
+    const newExpressions = this._virtualCode.newExpressions(virtualCode);
     if (newExpressions.length < 1) return actualCode;
 
     const patch =
@@ -44,13 +23,13 @@ export class CodeReconciler {
 
   private _updateLastExpression({ actualCode, virtualCode }: ReconcileOptions) {
     /**
-     * Replace the last expression if changed.
+     * Update the last expression if it changed.
      */
-    const comparison = this._compareLastExpression(virtualCode);
-    if (!comparison) return actualCode;
+    const codeToUpdate = this._virtualCode.codeToUpdate(virtualCode);
+    if (!codeToUpdate) return actualCode;
 
     // find the last occurrence of the original expression
-    const indexToReplace = actualCode.lastIndexOf(comparison.original);
+    const indexToReplace = actualCode.lastIndexOf(codeToUpdate.original);
 
     // we cannot find the original expression so return the unmodified code
     if (indexToReplace < 0) return actualCode;
@@ -59,15 +38,15 @@ export class CodeReconciler {
       actualCode.slice(0, indexToReplace) +
       actualCode
         .slice(indexToReplace)
-        .replace(comparison.original, comparison.updated);
+        .replace(codeToUpdate.original, codeToUpdate.updated);
 
     return updatedCode;
   }
 
   public hasChanges(virtualCode: VirtualCode) {
     return (
-      this._compareLastExpression(virtualCode) ||
-      this._newExpressions(virtualCode).length > 0
+      this._virtualCode.codeToUpdate(virtualCode) ||
+      this._virtualCode.newExpressions(virtualCode).length > 0
     );
   }
 
