@@ -29,7 +29,6 @@ export const buildClickSteps = (events: ElementEvent[]): Step[] => {
 
     steps.push({
       action: "click",
-      canChange: false,
       html: event.target,
       // include event index so we can sort in buildSteps
       index: i,

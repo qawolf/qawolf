@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CodeReconciler.reconcile inserts new expressions 1`] = `
+"
+it(\\"can scroll\\", async () => {
+  await browser.scroll(selectors[0], { x: 0, y: 378 });
+});
+// 🐺 CREATE CODE HERE"
+`;
+
+exports[`CodeReconciler.reconcile updates the last expression 1`] = `
+"
+it(\\"can scroll\\", async () => {
+  await browser.click(selectors[1]);
+});
+"
+`;

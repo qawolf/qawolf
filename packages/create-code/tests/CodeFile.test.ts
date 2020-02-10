@@ -1,9 +1,9 @@
+import { buildSteps } from "@qawolf/build-workflow";
 import { outputFile, pathExists, readFile, remove } from "fs-extra";
 import { CodeFile, CodeFileOptions } from "../src/CodeFile";
-import { buildSteps } from "../../build-workflow/lib";
 
 // require manually since fs is mocked
-const threePagesEvents = require("@qawolf/test/events/threePages.json");
+const events = require("@qawolf/test/events/scroll_login.json");
 
 jest.mock("fs-extra");
 
@@ -78,10 +78,10 @@ describe("CodeFile", () => {
     });
   });
 
-  describe("patch", () => {
-    it("saves patches for non-committed steps", async () => {
+  describe("update", () => {
+    it("saves code with new steps", async () => {
       // use the three pages events to test multiple page tests works properly
-      const steps = buildSteps({ events: threePagesEvents });
+      const steps = buildSteps({ events });
       mockedOutputFile.mockReset();
 
       const file = await CodeFile.loadOrCreate(options);
@@ -91,7 +91,7 @@ describe("CodeFile", () => {
       const initialFile = mockedOutputFile.mock.calls[0][1];
       mockedReadFile.mockResolvedValueOnce(initialFile);
 
-      await file.patch({
+      await file.update({
         // emulate only the first two steps being ready
         steps: steps.slice(0, 2)
       });
@@ -100,7 +100,7 @@ describe("CodeFile", () => {
       expect(fileRevisionOne).toMatchSnapshot();
       mockedReadFile.mockResolvedValueOnce(fileRevisionOne);
 
-      await file.patch({
+      await file.update({
         removeHandle: true,
         steps: steps
       });

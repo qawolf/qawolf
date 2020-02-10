@@ -1,7 +1,7 @@
 import { Step } from "@qawolf/types";
 import { describeDoc } from "@qawolf/web";
 
-export const buildIt = (step: Step): string => {
+export const buildDescription = (step: Step): string => {
   if (step.action === "scroll") {
     return `scroll`;
   }

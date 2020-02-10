@@ -4,7 +4,6 @@ exports[`buildSteps builds expected steps 1`] = `
 Array [
   Object {
     "action": "scroll",
-    "canChange": false,
     "html": Object {
       "ancestors": Array [],
       "node": Object {
@@ -24,7 +23,6 @@ Array [
   },
   Object {
     "action": "click",
-    "canChange": false,
     "html": Object {
       "ancestors": Array [
         Object {
@@ -63,7 +61,6 @@ Array [
   },
   Object {
     "action": "click",
-    "canChange": false,
     "html": Object {
       "ancestors": Array [
         Object {
@@ -103,7 +100,6 @@ Array [
   },
   Object {
     "action": "type",
-    "canChange": false,
     "html": Object {
       "ancestors": Array [
         Object {
@@ -144,7 +140,6 @@ Array [
   },
   Object {
     "action": "type",
-    "canChange": false,
     "html": Object {
       "ancestors": Array [
         Object {
@@ -185,7 +180,6 @@ Array [
   },
   Object {
     "action": "type",
-    "canChange": false,
     "html": Object {
       "ancestors": Array [
         Object {
@@ -226,7 +220,6 @@ Array [
   },
   Object {
     "action": "type",
-    "canChange": false,
     "html": Object {
       "ancestors": Array [
         Object {
@@ -267,7 +260,6 @@ Array [
   },
   Object {
     "action": "click",
-    "canChange": false,
     "html": Object {
       "ancestors": Array [
         Object {

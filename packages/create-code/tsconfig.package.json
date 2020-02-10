@@ -10,7 +10,13 @@
       "path": "../build-code/tsconfig.package.json"
     },
     {
+      "path": "../build-workflow/tsconfig.package.json"
+    },
+    {
       "path": "../logger/tsconfig.package.json"
+    },
+    {
+      "path": "../repl/tsconfig.package.json"
     },
     {
       "path": "../test/tsconfig.package.json"

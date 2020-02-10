@@ -4,7 +4,6 @@ exports[`buildClickSteps builds a click step on an input if it is not followed b
 Array [
   Object {
     "action": "click",
-    "canChange": false,
     "html": Object {
       "ancestors": Array [
         Object {
@@ -49,7 +48,6 @@ exports[`buildClickSteps builds expected steps 1`] = `
 Array [
   Object {
     "action": "click",
-    "canChange": false,
     "html": Object {
       "ancestors": Array [
         Object {
@@ -88,7 +86,6 @@ Array [
   },
   Object {
     "action": "click",
-    "canChange": false,
     "html": Object {
       "ancestors": Array [
         Object {
@@ -128,7 +125,6 @@ Array [
   },
   Object {
     "action": "click",
-    "canChange": false,
     "html": Object {
       "ancestors": Array [
         Object {

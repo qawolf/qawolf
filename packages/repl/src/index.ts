@@ -1,16 +1,14 @@
 import { Reporter } from "./Reporter";
 
-// export this way for types to be happy
-export { repl } from "./repl";
-export { replRegistry } from "./replRegistry";
+// export for types to be happy
+export { repl, ReplWithContext } from "./ReplWithContext";
+export { registry } from "./Registry";
 
-import { repl } from "./repl";
-import { replRegistry } from "./replRegistry";
+import { repl } from "./ReplWithContext";
+import { registry } from "./Registry";
 
-// we need to use module.exports for Jest to be happy
+// export with module.exports for Jest to be happy
 const mainExport = Reporter as any;
-
 mainExport.repl = repl;
-mainExport.replRegistry = replRegistry;
-
+mainExport.registry = registry;
 module.exports = mainExport;

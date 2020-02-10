@@ -1,38 +1,38 @@
 import {
-  buildStepsCode,
-  BuildStepsOptions,
   buildInitialCode,
+  buildVirtualCode,
   InitialCodeOptions
 } from "@qawolf/build-code";
 import { Step } from "@qawolf/types";
 import { outputFile, pathExists, readFile, remove } from "fs-extra";
 import { relative } from "path";
-import { patchCode, PATCH_HANDLE } from "./patchCode";
+import { CodeReconciler } from "./CodeReconciler";
 import { removeLinesIncluding } from "./format";
+import { PATCH_HANDLE } from "./patchCode";
 
 export type CodeFileOptions = Omit<InitialCodeOptions, "patchHandle"> & {
   path: string;
 };
 
-type PatchOptions = {
+type UpdateOptions = {
   removeHandle?: boolean;
   steps: Step[];
 };
 
 export class CodeFile {
-  private _commitedStepIndex: number = 0;
   private _isTest: boolean;
   private _lock: boolean;
   private _name: string;
   private _path: string;
-
   // public for tests
-  public _preexisting: string | undefined;
+  public _preexisting: string | void;
+  private _reconciler: CodeReconciler;
 
   protected constructor({ isTest, name, path }: CodeFileOptions) {
     this._isTest = !!isTest;
     this._name = name;
     this._path = path;
+    this._reconciler = new CodeReconciler();
   }
 
   public static async loadOrCreate(options: CodeFileOptions) {
@@ -45,34 +45,6 @@ export class CodeFile {
     }
 
     return file;
-  }
-
-  private async _preparePatch(options: PatchOptions) {
-    // patch non-committed (new) steps
-    const stepsToPatch = options.steps.slice(this._commitedStepIndex);
-    if (!stepsToPatch.length && !options.removeHandle) {
-      // nothing to patch
-      return;
-    }
-
-    const code = await loadFileIfExists(this._path);
-    if (!code) {
-      throw new Error("No code to patch");
-    }
-
-    let patch = buildPatch({
-      isTest: this._isTest,
-      // we need to pass all steps so the page options are built properly
-      startIndex: this._commitedStepIndex,
-      steps: options.steps
-    });
-
-    let codeWithPatch = patchCode({ code, patch });
-    if (options.removeHandle) {
-      codeWithPatch = removeLinesIncluding(codeWithPatch, PATCH_HANDLE);
-    }
-
-    return { code: codeWithPatch, steps: stepsToPatch };
   }
 
   public async discard() {
@@ -95,34 +67,43 @@ export class CodeFile {
     return this._name;
   }
 
-  async patch(options: PatchOptions) {
-    if (this._lock) {
-      // do not conflict with a patch in progress
-      return;
-    }
-
-    const patch = await this._preparePatch(options);
-    if (!patch) return;
-
-    this._lock = true;
-    await outputFile(this._path, patch.code, "utf8");
-    this._commitedStepIndex += patch.steps.length;
-    this._lock = false;
-  }
-
   public relativePath() {
     return relative(process.cwd(), this._path);
   }
+
+  public async update(options: UpdateOptions) {
+    // do not conflict with an update in progress
+    if (this._lock) return;
+
+    const virtualCode = buildVirtualCode(options.steps, this._isTest);
+
+    if (!options.removeHandle && !this._reconciler.hasChanges(virtualCode)) {
+      return;
+    }
+
+    const actualCode = await loadFileIfExists(this._path);
+    if (!actualCode) {
+      throw new Error(`Could not find code to update at ${this._path}`);
+    }
+
+    this._lock = true;
+
+    let reconciledCode = this._reconciler.reconcile({
+      actualCode,
+      virtualCode
+    });
+
+    if (options.removeHandle) {
+      reconciledCode = removeLinesIncluding(reconciledCode, PATCH_HANDLE);
+    }
+
+    await outputFile(this._path, reconciledCode, "utf8");
+
+    this._reconciler.update(virtualCode);
+
+    this._lock = false;
+  }
 }
-
-export const buildPatch = (options: BuildStepsOptions) => {
-  let patch = buildStepsCode(options);
-
-  // include the patch symbol so we can replace it later
-  patch += PATCH_HANDLE;
-
-  return patch;
-};
 
 export const createInitialCode = async (options: CodeFileOptions) => {
   const initialCode = buildInitialCode({
@@ -135,7 +116,7 @@ export const createInitialCode = async (options: CodeFileOptions) => {
 
 export const loadFileIfExists = async (
   path: string
-): Promise<string | undefined> => {
+): Promise<string | void> => {
   const codeExists = await pathExists(path);
   if (!codeExists) return undefined;
 

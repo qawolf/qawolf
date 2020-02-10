@@ -1,4 +1,5 @@
 import { stepToSelector } from "@qawolf/build-code";
+import { registry as replRegistry } from "@qawolf/repl";
 import { Selector, Step } from "@qawolf/types";
 import { pathExists, readJson, outputJson, remove } from "fs-extra";
 import { concat } from "lodash";
@@ -24,10 +25,6 @@ export class SelectorFile {
     this._path = options.path;
   }
 
-  protected async _write() {
-    await outputJson(this._path, this.selectors(), { spaces: " " });
-  }
-
   public static async loadOrCreate(options: ConstructorOptions) {
     const file = new SelectorFile(options);
     file._preexistingSelectors = await loadSelectors(options.path);
@@ -37,6 +34,14 @@ export class SelectorFile {
     }
 
     return file;
+  }
+
+  protected async _write() {
+    await outputJson(this._path, this.selectors(), { spaces: " " });
+  }
+
+  private _setReplContext() {
+    replRegistry.setContextKey("selectors", this.selectors());
   }
 
   public async discard() {
@@ -53,7 +58,11 @@ export class SelectorFile {
     return !!this._preexistingSelectors;
   }
 
-  public async patch(options: PatchOptions) {
+  public selectors(): Selector[] {
+    return concat(this._preexistingSelectors || [], this._newSelectors);
+  }
+
+  public async update(options: PatchOptions) {
     if (this._lock || options.steps.length <= this._newSelectors.length) {
       return;
     }
@@ -68,13 +77,11 @@ export class SelectorFile {
       index: step.index + (this._preexistingSelectors || []).length
     }));
 
+    this._setReplContext();
+
     await this._write();
 
     this._lock = false;
-  }
-
-  public selectors(): Selector[] {
-    return concat(this._preexistingSelectors || [], this._newSelectors);
   }
 }
 
