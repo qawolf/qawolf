@@ -127,7 +127,7 @@ it('can click "Submit" button', async () => {
 });
 ```
 
-See [documentation on the `browser.click` method](api/browser/click#examples) for more examples.
+See [documentation on the `browser.click` method](api/browser_context/click#examples) for more examples.
 
 Whenever you target an element with a CSS or text selector, make sure that your selector is as specific as possible. If your selector matches multiple elements on the page, you could end up with the wrong element being acted upon in your test.
 

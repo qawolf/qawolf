@@ -29,7 +29,7 @@ Type `1 + 1` in the REPL and press `Enter`. The result `2` will print below the 
 
 You can also use the [QA Wolf API](api/table_of_contents) in the REPL. For example, let's say we have just started to create a test on [TodoMVC](http://todomvc.com/examples/react). We can create a todo item through the REPL.
 
-First, let's type in the `input` with the class `"new-todo"` and then press `Enter` to save our todo. To do this, we will call the [`browser.type` method](api/browser/type). In the REPL, type:
+First, let's type in the `input` with the class `"new-todo"` and then press `Enter` to save our todo. To do this, we will call the [`browser.type` method](api/browser_context/type). In the REPL, type:
 
 ```js
 await browser.type({ css: "input.new-todo" }, "Hello from the REPL!");
@@ -38,7 +38,7 @@ await browser.type({ css: "input.new-todo" }, "↓Enter↑Enter");
 
 You will see a todo item called `"Hello from the REPL!"` created in the browser.
 
-We can then click to complete our todo item, using the [`browser.click` method](api/browser/click). In TodoMVC, you complete a todo by clicking on the `input` with the class `"toggle"`:
+We can then click to complete our todo item, using the [`browser.click` method](api/browser_context/click). In TodoMVC, you complete a todo by clicking on the `input` with the class `"toggle"`:
 
 ```js
 await browser.click({ css: "input.toggle" });
@@ -46,7 +46,7 @@ await browser.click({ css: "input.toggle" });
 
 You should see the todo item be marked as complete in the browser.
 
-Now let's try out an assertion using the [`browser.hasText` method](api/browser/has_text). We'll verify that the text `"Clear completed"` now appears since we have completed a todo:
+Now let's try out an assertion using the [`browser.hasText` method](api/browser_context/has_text). We'll verify that the text `"Clear completed"` now appears since we have completed a todo:
 
 ```js
 await browser.hasText("Clear completed");
@@ -56,7 +56,7 @@ The result of this command should be `true`, as the text `"Clear completed"` is 
 
 QA Wolf is built on top of [Microsoft's Playwright](https://github.com/microsoft/playwright), which has a [rich API](https://github.com/microsoft/playwright/blob/master/docs/api.md) that you can use. The methods on the [`Page` class](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page) can be particularly helpful.
 
-Let's get the current Playwright `Page` instance using the [`browser.page` method](api/browser/page):
+Let's get the current Playwright `Page` instance using the [`browser.page` method](api/browser_context/page):
 
 ```js
 const page = await browser.page();

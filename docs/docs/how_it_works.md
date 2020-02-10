@@ -9,15 +9,15 @@ This guide goes into more detail on how QA Wolf works. Specifically, it covers [
 
 QA Wolf is built to avoid [flaky tests](https://whatis.techtarget.com/definition/flaky-test), so automatic waiting comes out of the box. Automatic waiting allows us to avoid writing custom wait logic or arbitrary sleep statements.
 
-The action methods like [`click`](api/browser/click) and [`type`](api/browser/type) on the `browser` automatically wait for the target element to appear before moving on. In [TodoMVC](http://todomvc.com/examples/react), after we click to complete our todo it takes a bit of time for the "Clear completed" button to appear on the page. In this case, the `qawolf` library will keep looking for the "Clear completed" button until it appears, at which point it will be clicked.
+The action methods like [`click`](api/browser_context/click) and [`type`](api/browser_context/type) on the `browser` automatically wait for the target element to appear before moving on. In [TodoMVC](http://todomvc.com/examples/react), after we click to complete our todo it takes a bit of time for the "Clear completed" button to appear on the page. In this case, the `qawolf` library will keep looking for the "Clear completed" button until it appears, at which point it will be clicked.
 
-The `browser` also automatically waits for network requests to finish or time out. If you [include an assertion](add_assertions) using one of the `browser` helper methods like [`hasText`](api/browser/has_text), QA Wolf will automatically wait to get the data you asked for before moving on.
+The `browser` also automatically waits for network requests to finish or time out. If you [include an assertion](add_assertions) using one of the `browser` helper methods like [`hasText`](api/browser_context/has_text), QA Wolf will automatically wait to get the data you asked for before moving on.
 
 One caveat is that elements may appear on the page before event handlers are attached. By default we [sleep for 1 second](api/environment_variables#qaw_sleep_ms) after an element is found to mitigate this issue. However, you can edit your test code to include custom wait logic instead for these scenarios. [Playwright's `page.waitFor` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#pagewaitforselectororfunctionortimeout-options-args) will likely be useful here.
 
 ## Element selectors
 
-You'll notice in your test code above that the [`click`](api/browser/click) and [`type`](api/browser/type) methods on `browser` take an argument that looks like `selectors[0]`:
+You'll notice in your test code above that the [`click`](api/browser_context/click) and [`type`](api/browser_context/type) methods on `browser` take an argument that looks like `selectors[0]`:
 
 ```js
 it('can type into "What needs to be done?" input', async () => {

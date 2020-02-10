@@ -38,24 +38,24 @@ module.exports = {
     },
     {
       type: "category",
-      label: "class: QAWolf",
-      items: ["api/qawolf/connect", "api/qawolf/launch"]
+      label: "module: qawolf",
+      items: ["api/qawolf/launch"]
     },
     {
       type: "category",
       label: "class: BrowserContext",
       items: [
-        "api/browser/browser",
-        "api/browser/click",
-        "api/browser/close",
-        "api/browser/find",
-        "api/browser/find_property",
-        "api/browser/goto",
-        "api/browser/has_text",
-        "api/browser/page",
-        "api/browser/scroll",
-        "api/browser/select",
-        "api/browser/type"
+        "api/browser_context/class_browser_context",
+        "api/browser_context/click",
+        "api/browser_context/close",
+        "api/browser_context/find",
+        "api/browser_context/find_property",
+        "api/browser_context/goto",
+        "api/browser_context/has_text",
+        "api/browser_context/page",
+        "api/browser_context/scroll",
+        "api/browser_context/select",
+        "api/browser_context/type"
       ]
     }
   ]

@@ -64,7 +64,7 @@ await browser.click({ css: "[my-attribute='search']" });
 
 Prevent the browser from closing to help with debugging.
 
-Open the [Chrome DevTools console](https://developers.google.com/web/tools/chrome-devtools/console) to see logs from QA Wolf. Run `qawolf.find()` in the console to re-run the last call to [`find`](browser/find).
+Open the [Chrome DevTools console](https://developers.google.com/web/tools/chrome-devtools/console) to see logs from QA Wolf. Run `qawolf.find()` in the console to re-run the last call to [`find`](browser_context/find).
 
 ## QAW_DISABLE_VIDEO_ARTIFACT
 

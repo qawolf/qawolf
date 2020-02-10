@@ -34,7 +34,7 @@ When you create a test, QA Wolf converts your `type` actions to test code. This 
 
 To capture the values you type, QA Wolf listens for `keydown` and `keyup` events so it can perfectly match the original keystrokes. This allows us to support special keys like `Tab`, `Enter`, and hotkeys.
 
-These keystrokes are then included in your test code as the second argument to [`browser.type`](api/browser/type). This argument is the value that will be typed when your test is run. If no special characters are found, the keystrokes are simplified to a plain [`string`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) for human readability. Otherwise, they are included in the test code as is.
+These keystrokes are then included in your test code as the second argument to [`browser.type`](api/browser_context/type). This argument is the value that will be typed when your test is run. If no special characters are found, the keystrokes are simplified to a plain [`string`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) for human readability. Otherwise, they are included in the test code as is.
 
 Below we show sample generated code after typing into an input:
 
@@ -67,7 +67,7 @@ it('can type into "What needs to be done?" input', async () => {
 });
 ```
 
-However, you may want to change this input value to something else. The simplest way to do this is to change the second argument to [`browser.type`](api/browser/type) from the value you originally typed to your desired value:
+However, you may want to change this input value to something else. The simplest way to do this is to change the second argument to [`browser.type`](api/browser_context/type) from the value you originally typed to your desired value:
 
 ```js
 it('can type into "What needs to be done?" input', async () => {
@@ -95,7 +95,7 @@ it('can type into "What needs to be done?" input', async () => {
 
 ## Use environment variables
 
-Rather than pass an input value directly to [`browser.type`](api/browser/type), you can use an environment variable. Update the test code to use `process.env.YOUR_ENV_VARIABLE` (`TODO_VALUE` in the example below):
+Rather than pass an input value directly to [`browser.type`](api/browser_context/type), you can use an environment variable. Update the test code to use `process.env.YOUR_ENV_VARIABLE` (`TODO_VALUE` in the example below):
 
 ```js
 it('can type into "What needs to be done?" input', async () => {

@@ -43,32 +43,30 @@ Below we list the API provided by QA Wolf. As a reminder, you also have full acc
 
 [QAW_TIMEOUT_MS](environment_variables#qaw_timeout_ms)
 
-## class: QAWolf
-
-[connect](qawolf/conncect)
+## module: qawolf
 
 [launch](qawolf/launch)
 
-## class: Browser
+## class: BrowserContext
 
-[browser](browser/browser)
+[class: BrowserContext](browser_context/class_browser_context)
 
-[click](browser/click)
+[click](browser_context/click)
 
-[close](browser/close)
+[close](browser_context/close)
 
-[find](browser/find)
+[find](browser_context/find)
 
-[findProperty](browser/find_property)
+[findProperty](browser_context/find_property)
 
-[goto](browser/goto)
+[goto](browser_context/goto)
 
-[hasText](browser/has_text)
+[hasText](browser_context/has_text)
 
-[page](browser/page)
+[page](browser_context/page)
 
-[scroll](browser/scroll)
+[scroll](browser_context/scroll)
 
-[select](browser/select)
+[select](browser_context/select)
 
-[type](browser/type)
+[type](browser_context/type)

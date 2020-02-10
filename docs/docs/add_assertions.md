@@ -48,7 +48,7 @@ You can add assertions as you create your test, since the [test code is generate
 
 The first assertion we will add is to check that the text `"Clear completed"` appears after we complete our todo.
 
-We'll use QA Wolf's [`browser.hasText` method](api/browser/has_text) to verify that the text appears. This method automatically waits for the given text to appear on the page. It returns `true` if the text is found, and `false` if the text does not appear before timing out.
+We'll use QA Wolf's [`browser.hasText` method](api/browser_context/has_text) to verify that the text appears. This method automatically waits for the given text to appear on the page. It returns `true` if the text is found, and `false` if the text does not appear before timing out.
 
 In our test code, let's update the following step where we click to complete the todo. We'll call `browser.hasText("Clear completed")`, assign the result to a variable called `hasClearCompletedText`, and assert that `hasClearCompletedText` is `true`. See [Jest documentation](https://jestjs.io/docs/en/expect) to learn more about assertions.
 
@@ -78,7 +78,7 @@ The Playwright API provides a [method called `page.waitFor`](https://github.com/
 
 Putting it all together, after our test clicks the "Clear completed" button to clear completed todos, we will verify that the todos disappear from the page. We'll do this by:
 
-1. Calling [`browser.page`](api/browser/page) to get the current Playwright `Page` instance
+1. Calling [`browser.page`](api/browser_context/page) to get the current Playwright `Page` instance
 2. Calling [`page.waitFor`](https://github.com/microsoft/playwright/blob/master/docs/api.md#pagewaitforselectororfunctionortimeout-options-args), passing it a function that checks to see that there are no elements that match the [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) `.todo-list li`.
 
 The last step of our test code now looks like this:

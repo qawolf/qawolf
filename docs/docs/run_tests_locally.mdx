@@ -51,8 +51,6 @@ npx qawolf test --runInBand
 
 QA Wolf is built on top of Microsoft's [Playwright library](https://github.com/microsoft/playwright), which automates the [Chromium](https://www.chromium.org/Home), [Firefox](https://www.mozilla.org/en-US/firefox/new), and [WebKit](https://webkit.org) browsers with a single API. You can therefore run your tests on any of the supported browsers without having to change your code.
 
-Chromium is an open source browser that forms the basis for the [Chrome browser](https://www.google.com/chrome). Similarly, Webkit is the browser engine used in the [Safari browser](https://www.apple.com/safari). In the majority of cases, you can consider running tests on Chromium as functionally equivalent to running them on Chrome. This is also true for WebKit and Safari. TODOJON
-
 To run your tests on a specific browser, use the `--chromium`, `--firefox`, or `--webkit` [flags](api/cli#npx-qawolf-test-name). To run your tests on all browsers, use the `--all-browsers` flag. If you run your tests across browsers, each test will run three times: once on Chromium, once on Firefox, and once on WebKit.
 
 If no flag is provided, QA Wolf will default to running your tests on Chromium.
