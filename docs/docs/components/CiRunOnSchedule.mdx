@@ -4,28 +4,81 @@ import CiTabs from "./CiTabs";
 <CiTabs>
 <TabItem value="azure">
 
-```bash
-npx qawolf azure
-```
+See [Azure documentation](https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=schema#triggers) on triggers.
 
 </TabItem>
 <TabItem value="bitbucket">
 
-```bash
-npx qawolf bitbucket
-```
+See [Bitbucket documentation](https://confluence.atlassian.com/bitbucket/scheduled-pipelines-933078702.html) on scheduled pipelines.
 
 </TabItem>
 <TabItem value="circleci">
 
-```bash
-npx qawolf circleci
+To configure when your tests run, open the `./.circleci/config.yml` file.
+
+Near the bottom of the file (line 40), you'll see some commented out code to run your tests on a schedule:
+
+```yaml
+# ...
+# workflows:
+#   version: 2
+#   on_schedule:
+#     jobs:
+#       - build
+#     triggers:
+#       - schedule:
+#           # test on schedule using cron syntax
+#           cron: "0 * * * *" # every hour
+#           filters:
+#             branches:
+#               only:
+#                 - master
 ```
+
+Comment in this code to run your tests on a schedule. How often your tests run is specified using [cron syntax](https://crontab.guru/). By default, your tests will run every hour on the hour:
+
+```yaml
+# ...
+workflows:
+  version: 2
+   on_schedule:
+     jobs:
+       - build
+     triggers:
+       - schedule:
+           # test on schedule using cron syntax
+           cron: "0 * * * *" # every hour
+           filters:
+             branches:
+               only:
+                 - master
+```
+
+You can change the value passed to the `cron` key to run your tests on a different schedule:
+
+```yaml
+# ...
+workflows:
+  version: 2
+   on_schedule:
+     jobs:
+       - build
+     triggers:
+       - schedule:
+           # test on schedule using cron syntax
+           cron: "0 0 * * *" # every day at midnight
+           filters:
+             branches:
+               only:
+                 - master
+```
+
+See [CircleCI documentation](https://circleci.com/docs/2.0/workflows/#scheduling-a-workflow) to learn more about running tests on a schedule.
 
 </TabItem>
 <TabItem value="github">
 
-To configure when your tests run, open the `.github/workflows/qawolf.yml` file at the root of your project.
+To configure when your tests run, open the `.github/workflows/qawolf.yml` file.
 
 Near the top of the file (lines 7-9), you'll see some commented out code to run your tests on a schedule:
 
@@ -88,16 +141,12 @@ See [GitHub Actions documentation](https://help.github.com/en/actions/automating
 </TabItem>
 <TabItem value="gitlab">
 
-```bash
-npx qawolf gitlab
-```
+See [GitLab documentation](https://docs.gitlab.com/ee/user/project/pipelines/schedules.html) on pipeline schedules.
 
 </TabItem>
 <TabItem value="jenkins">
 
-```bash
-npx qawolf jenkins
-```
+See [Jenkins documentation](https://jenkins.io/doc/book/pipeline/syntax/#triggers) on triggers.
 
 </TabItem>
 </CiTabs>

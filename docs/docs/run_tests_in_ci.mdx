@@ -4,13 +4,13 @@ title: ☁️ Run Tests in CI
 ---
 
 import CiArtifacts from "./components/CiArtifacts.mdx";
-import CiCommandTabs from "./components/CiCodeBlock.mdx";
+import CiCodeBlock from "./components/CiCodeBlock.mdx";
 import CiCreateWorkflow from "./components/CiCreateWorkflow.mdx";
 import CiEnvironmentVariables from "./components/CiEnvironmentVariables.mdx";
 import CiLocalServer from "./components/CiLocalServer.mdx";
 import CiRunOnSchedule from "./components/CiRunOnSchedule.mdx";
 
-QA Wolf allows you to run your browser tests in CI with one command. Each test run includes [debug artifacts](#debug) like a video recording and detailed logs.
+QA Wolf set up your CI with one command. Each test run includes [debug artifacts](#debug) like a video recording and detailed logs.
 
 This guide assumes you have already [created a browser test](create_a_test).
 
@@ -18,36 +18,25 @@ This guide assumes you have already [created a browser test](create_a_test).
 
 - [Create a workflow file](#create-workflow-file) to run your tests in your CI provider:
 
-<CiCommandTabs />
+<CiCodeBlock />
 
 - Each test run includes [debug artifacts](#debug) like a video recording and detailed logs
 - You can also [run tests on a schedule](#run-tests-on-a-schedule), [use environment variables](#use-environment-variables), and [run your tests against your local server](#run-tests-against-your-local-server) in CI
 
 ## Create workflow file
 
-QA Wolf currently creates workflow files for the following CI providers:
-
-- [Azure DevOps](https://azure.microsoft.com/en-us/services/devops)
-- [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines)
-- [CircleCI](https://circleci.com)
-- [GitHub Actions](https://github.com/features/actions)
-- [GitLab CI/CD](https://docs.gitlab.com/ee/ci/README.html)
-- [Jenkins](https://jenkins.io)
-
-If you would like us to support another provider, please [open an issue on GitHub](https://github.com/qawolf/qawolf/issues).
-
-To create a workflow file for your CI provider, run the following command in your project directory. Use the tabs below to choose your CI provider.
+To create a workflow file for your CI provider, run the following command in your project directory:
 
 <CiCreateWorkflow />
 
-By default, your tests will run whenever someone pushes a commit to any branch.
+Now your tests will run whenever someone pushes a commit to any branch.
 
 The rest of this guide covers common use cases of running your tests in CI:
 
 - [Debugging](#debug)
-- [Running tests on a schedule](#run-tests-on-a-schedule)
-- [Using environment variables](#use-environment-variables)
 - [Running your tests against your local server](#run-tests-against-your-local-server)
+- [Using environment variables](#use-environment-variables)
+- [Running tests on a schedule](#run-tests-on-a-schedule)
 
 ## Debug
 
@@ -84,13 +73,15 @@ To view your debug artifacts, follow the instructions below for your CI provider
 
 <CiArtifacts />
 
-## Run tests on a schedule
+## Run tests against your local server
 
-By default, the [generated workflow file](#create-workflow-file) is configured to run tests whenever someone pushes a commit to any branch. You can edit this file to run tests on a schedule instead of or in addition to every commit.
+You may want to run your tests against your local server, which would allow you to test on a URL like `localhost:3000`.
 
-To run your tests on a schedule, follow the instructions below for your CI provider.
+In this guide, we assume you have a script that you can run to start your local server. For example, a common script to start a Node.js server is `npm run start`.
 
-<CiRunOnSchedule />
+To run your tests against your local server, follow the instructions below for your CI provider.
+
+<CiLocalServer />
 
 ## Use environment variables
 
@@ -102,15 +93,17 @@ To use environment variables, follow the instructions below for your CI provider
 
 <CiEnvironmentVariables />
 
-## Run tests against your local server
+## Run tests on a schedule
 
-You may want to run your tests against your local server, which would allow you to test on a URL like `localhost:3000`.
+By default, the [generated workflow file](#create-workflow-file) is configured to run tests whenever someone pushes a commit to any branch. You can edit this file to run tests on a schedule instead of or in addition to every commit.
 
-In this guide, we assume you have a script that you can run to start your local server. For example, a common script to start a Node.js server is `npm run start`.
+To run your tests on a schedule, follow the instructions below for your CI provider.
 
-To run your tests against your local server, follow the instructions below for your CI provider.
+<CiRunOnSchedule />
 
-<CiLocalServer />
+## Do something else
+
+If there's something else you'd like to do, please [chat with us](https://gitter.im/qawolf/community).
 
 ## Next steps
 
@@ -118,6 +111,5 @@ Congratulations - your tests are now running in CI! 🎉
 
 If you're interested in some of the more advanced features of QA Wolf, check out:
 
-- [Edit an existing test](edit_a_test)
 - [Use the interactive REPL](use_the_repl)
-- [QA Wolf API documentation](api)
+- [QA Wolf API documentation](api/table_of_contents)
