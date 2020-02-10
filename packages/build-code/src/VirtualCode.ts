@@ -7,6 +7,10 @@ export class VirtualCode {
     this._expressions = expressions;
   }
 
+  public code() {
+    return this._expressions.map(expression => expression.code()).join("");
+  }
+
   public codeToUpdate(compareTo: VirtualCode) {
     /**
      * Check if the last expression's updatable code changed
