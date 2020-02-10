@@ -3,7 +3,7 @@ import { CodeFile, CodeFileOptions } from "../src/CodeFile";
 import { buildSteps } from "../../build-workflow/lib";
 
 // require manually since fs is mocked
-const threePagesEvents = require("@qawolf/test/events/threePages.json");
+const threePagesEvents = require("@qawolf/test/events/scroll_login.json");
 
 jest.mock("fs-extra");
 

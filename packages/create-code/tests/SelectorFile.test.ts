@@ -71,20 +71,20 @@ describe("SelectorFile", () => {
     });
   });
 
-  describe("patch", () => {
+  describe("update", () => {
     it("saves the preexisting and new selectors", async () => {
       mockedOutputJson.mockReset();
 
       const file = await SelectorFile.loadOrCreate(options);
 
-      await file.patch({
+      await file.update({
         steps: scrollLogin.steps.slice(0, 2)
       });
 
       const fileRevisionOne = mockedOutputJson.mock.calls[1][1];
       expect(fileRevisionOne).toMatchSnapshot();
 
-      await file.patch({
+      await file.update({
         steps: scrollLogin.steps
       });
 

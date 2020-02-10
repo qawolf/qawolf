@@ -10,7 +10,7 @@ Array [
 ]
 `;
 
-exports[`SelectorFile patch saves the preexisting and new selectors 1`] = `
+exports[`SelectorFile update saves the preexisting and new selectors 1`] = `
 Array [
   Object {
     "html": Object {
@@ -32,7 +32,7 @@ Array [
 ]
 `;
 
-exports[`SelectorFile patch saves the preexisting and new selectors 2`] = `
+exports[`SelectorFile update saves the preexisting and new selectors 2`] = `
 Array [
   Object {
     "html": Object {

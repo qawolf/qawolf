@@ -20,7 +20,7 @@ describe('mytest', () => {
 ]
 `;
 
-exports[`CodeFile patch saves patches for non-committed steps 1`] = `
+exports[`CodeFile update saves code with new steps 1`] = `
 "const { launch } = require(\\"qawolf\\");
 const selectors = require(\\"../selectors/mytest\\");
 
@@ -33,18 +33,18 @@ describe('mytest', () => {
 
   afterAll(() => browser.close());
   
-  it('can click \\"Learn React\\" link', async () => {
-    await browser.click(selectors[0]);
+  it(\\"can scroll\\", async () => {
+    await browser.scroll(selectors[0], { x: 0, y: 378 });
   });
   
-  it('can click \\"Learn React\\" link', async () => {
+  it('can click \\"Form Authentication\\" link', async () => {
     await browser.click(selectors[1]);
   });
   // 🐺 CREATE CODE HERE
 });"
 `;
 
-exports[`CodeFile patch saves patches for non-committed steps 2`] = `
+exports[`CodeFile update saves code with new steps 2`] = `
 "const { launch } = require(\\"qawolf\\");
 const selectors = require(\\"../selectors/mytest\\");
 
@@ -57,36 +57,36 @@ describe('mytest', () => {
 
   afterAll(() => browser.close());
   
-  it('can click \\"Learn React\\" link', async () => {
-    await browser.click(selectors[0]);
+  it(\\"can scroll\\", async () => {
+    await browser.scroll(selectors[0], { x: 0, y: 378 });
   });
   
-  it('can click \\"Learn React\\" link', async () => {
+  it('can click \\"Form Authentication\\" link', async () => {
     await browser.click(selectors[1]);
   });
   
-  it('can click \\"Docs\\" link', async () => {
-    await browser.click(selectors[2], { page: 1 });
+  it('can click \\"Username\\" input', async () => {
+    await browser.click(selectors[2]);
   });
   
-  it('can click \\"Tutorial\\" link', async () => {
-    await browser.click(selectors[3], { page: 1 });
+  it('can type into \\"Username\\" input', async () => {
+    await browser.type(selectors[3], \\"tomsmith\\");
   });
   
-  it('can click \\"Blog\\" link', async () => {
-    await browser.click(selectors[4], { page: 1 });
+  it(\\"can Tab\\", async () => {
+    await browser.type(selectors[4], \\"↓Tab↑Tab\\");
   });
   
-  it('can click \\"Docs\\" link', async () => {
-    await browser.click(selectors[5], { page: 2 });
+  it('can type into \\"Password\\" input', async () => {
+    await browser.type(selectors[5], \\"SuperSecretPassword!\\");
   });
   
-  it('can click \\"Tutorial\\" link', async () => {
-    await browser.click(selectors[6], { page: 2 });
+  it(\\"can Enter\\", async () => {
+    await browser.type(selectors[6], \\"↓Enter↑Enter\\");
   });
   
-  it('can click \\"Blog\\" link', async () => {
-    await browser.click(selectors[7], { page: 2 });
+  it('can click \\"Logout\\" link', async () => {
+    await browser.click(selectors[7]);
   });
 });"
 `;
