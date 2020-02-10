@@ -37,11 +37,29 @@ As you use the browser, your script code will be saved at `.qawolf/scripts/myScr
 
 Below is an example script file:
 
-TODOADDCODE
+```js
+const { launch } = require("qawolf");
+const selectors = require("../selectors/myScriptName");
+
+const myScriptName = async () => {
+  const browser = await launch({ url: "http://todomvc.com/examples/react" });
+  // type into "What needs to be done?" input
+  await browser.type(selectors[0], "create script!");
+  // Enter
+  await browser.type(selectors[1], "↓Enter↑Enter");
+  // click input
+  await browser.click(selectors[2]);
+  // click "Clear completed" button
+  await browser.click(selectors[3]);
+  await browser.close();
+};
+
+myScriptName();
+```
 
 ## Save a script
 
-When you are done creating your script, return to the command line and choose the `Save and Exit` option.
+When you are done creating your script, return to the command line and choose the `💾 Save and Exit` option.
 
 ## Run a script
 

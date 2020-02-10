@@ -15,8 +15,6 @@ To change your code to TypeScript, use the following three steps.
 
 For example, if your test file is called `.qawolf/tests/myTestName.test.js`, rename it to `.qawolf/tests/myTestName.test.ts`.
 
-TODOUPDATE
-
 2. Change `require("qawolf")` to an [`import` statement](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import):
 
 ```js
