@@ -40,9 +40,7 @@ it('can click "Clear completed" button', async () => {
 
 ## Use QA Wolf helpers
 
-In this guide, we'll add assertions to a test on [TodoMVC](http://todomvc.com/examples/react). The video below shows this test running:
-
-TODOADDVIDEO
+In this guide, we'll add assertions to a test on [TodoMVC](http://todomvc.com/examples/react).
 
 You can add assertions as you create your test, since the [test code is generated](create_a_test#review-test-code) as you use your application. The [interactive REPL](use_the_repl) can be helpful in trying out code.
 
