@@ -108,7 +108,7 @@ export class QAWolfBrowserContext extends EventEmitter {
 
     const context = qawolfContext.decorated;
 
-    if (options.url) await context.goto(options.url);
+    if (options.url) await qawolfContext.goto(options.url);
 
     logTestStarted(context);
 
@@ -240,10 +240,14 @@ export class QAWolfBrowserContext extends EventEmitter {
     logger.verbose(`BrowserContext: goto ${url}`);
     const page = await this.page(options);
 
-    await page.goto(url, {
-      timeout: this._options.navigationTimeoutMs,
-      ...options
-    });
+    try {
+      await page.goto(url, {
+        timeout: this._options.navigationTimeoutMs,
+        ...options
+      });
+    } catch (e) {
+      if (!e.message.includes("was canceled by another one")) throw e;
+    }
 
     return page;
   }

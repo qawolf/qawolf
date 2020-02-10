@@ -45,8 +45,7 @@ export class CreateCodeCLI {
       const contextPromise = launch({
         device: options.device,
         shouldRecordEvents: true,
-        timeout: 0,
-        url: options.url.href
+        timeout: 0
       });
 
       const rootPath = options.path || `${process.cwd()}/.qawolf`;
@@ -72,6 +71,8 @@ export class CreateCodeCLI {
       });
 
       const context = await contextPromise;
+
+      context.qawolf.goto(options.url.href!);
 
       context.qawolf.on("recorded_event", event => {
         codeCreator.pushEvent(event);
