@@ -70,10 +70,6 @@ await page.$$eval(".todo-list li", todos => todos.length);
 
 The result of this command should be `1`, as we currently have one todo item on the page.
 
-The video below shows us using the REPL to try out the code examples in this section:
-
-TODOADDVIDEO
-
 In summary, the REPL allows us to try out code that we may want to incorporate into our tests. You can open your test file at `.qawolf/tests/myTestName.test.js` any time and edit it as you go along.
 
 ## Close the REPL

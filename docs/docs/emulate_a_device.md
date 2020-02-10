@@ -42,9 +42,7 @@ For example, you can run the following command with the `--device` flag set to `
 npx qawolf create --device="iPad Mini" https://www.wikipedia.org searchTablet
 ```
 
-When the [Chromium](https://www.chromium.org/Home) browser opens, it will be emulating an [iPad Mini](https://www.apple.com/ipad-mini/). Watch the video below for an illustration:
-
-TODOADDVIDEO
+When the [Chromium](https://www.chromium.org/Home) browser opens, it will be emulating an [iPad Mini](https://www.apple.com/ipad-mini/).
 
 If we look at the test code (`.qawolf/tests/searchTablet.test.js` in our example), the beginning will look like this:
 

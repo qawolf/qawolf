@@ -39,7 +39,7 @@ A Chromium browser will open and navigate to the specified URL. Now go through t
 
 <video controls title="create your first test" width="100%">
   <source
-    src="https://storage.googleapis.com/docs.qawolf.com/guides/create_test.mov"
+    src="https://storage.googleapis.com/docs.qawolf.com/guides/create_test.mp4"
     type="video/mp4"
   />
 </video>
@@ -101,7 +101,12 @@ The line `// 🐺 CREATE CODE HERE` at the end of your test is a placeholder for
 
 The video below shows how your test code is updated as you use your application:
 
-TODOADDVIDEO
+<video controls title="test code generation" width="100%">
+  <source
+    src="https://storage.googleapis.com/docs.qawolf.com/guides/create.mp4"
+    type="video/mp4"
+  />
+</video>
 
 Let's now briefly touch upon the `.qawolf/selectors/myFirstTest.json` file. In general, you should avoid editing this file. For a more detailed explanation, see our guide on the [QA Wolf selector logic](use_custom_selectors#default-selector-logic).
 
