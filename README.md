@@ -4,7 +4,7 @@
 
 <h3 align="center">Create browser tests 10x faster</h3>
 
-<p align="center">QA Wolf is a free and open source library to create <a href="https://github.com/puppeteer/puppeteer">Puppeteer</a>/<a href="https://jestjs.io">Jest</a> browser tests and run them in CI</p>
+<p align="center">QA Wolf is a free and open source library to create <a href="https://github.com/microsoft/playwright">Playwright</a>/<a href="https://jestjs.io">Jest</a> browser tests and run them in CI</p>
 
 <p align="center">
   <a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version" /></a>
@@ -12,8 +12,8 @@
 </p>
 
 <p align="center">
-    <a href="https://docs.qawolf.com/docs/quick_start">🚀 Quick Start</a> |
-    <a href="https://docs.qawolf.com/docs/api">📖 API</a> |
+    <a href="https://docs.qawolf.com/docs/install">🚀 Get Started</a> |
+    <a href="https://docs.qawolf.com/docs/api/table_of_contents">📖 API</a> |
     <a href="https://docs.qawolf.com/docs/faq">🧐 FAQ</a> |
     <a href="https://gitter.im/qawolf/community">👋 Chat</a> |
     <a href="https://github.com/qawolf/qawolf/projects/4">🗺️ Roadmap</a>
@@ -24,15 +24,17 @@
 <p>QA Wolf is an open source node library for creating browser tests 10x faster:</p>
 
 <ul>
-<li><b>Skip writing boilerplate.</b> Your browser actions are converted to Puppeteer and Jest code.
+<li><b>Skip writing boilerplate.</b> Your browser actions are converted to Playwright and Jest code.
 </li>
-<li><b>Built for stability.</b> Avoid flaky tests with <a href="https://docs.qawolf.com/docs/review_test_code#automatic-waiting">automatic waiting</a> and <a href="https://docs.qawolf.com/docs/review_test_code#element-selectors">smart element selectors</a>.
+<li><b>Built for stability.</b> Avoid flaky tests with automatic waiting and <a href="https://docs.qawolf.com/docs/use_custom_selectors#default-selector-logic">smart element selectors</a>.
 </li>
 <li><b>Test complex scenarios.</b> Test your application like a user. Use third party sites, multiple windows, and hot keys.
 </li>
+<li><b>Test across browsers.</b> Test your application on <a href="https://www.chromium.org/Home">Chromium</a>, <a href="https://www.mozilla.org/en-US/firefox/new">Firefox</a>, and <a href="https://webkit.org">WebKit</a>.
+</li>
 <li><b>Easy CI setup.</b> Run your tests in CI in parallel with one command, on push or on a schedule.
 </li>
-<li><b>Easy debugging.</b> Each test run in CI includes a video, GIF, interactive DOM recording, and detailed logs.
+<li><b>Easy debugging.</b> Each test run in CI includes a video, GIF, and detailed logs.
 </li>
 </ul>
 <p>We're working to build a world where browser testing is effortless. We hope you'll join us!</p>
@@ -65,15 +67,15 @@ QA Wolf is tested against the [maintenance LTS](https://github.com/nodejs/Releas
 
 ## ✅ Create a browser test
 
-[Documentation](http://docs.qawolf.com/docs/quick_start#-create-a-browser-test)
+[Documentation](http://docs.qawolf.com/docs/create_a_test)
 
-Create a [Puppeteer](https://github.com/puppeteer/puppeteer) and [Jest](https://jestjs.io/) test:
+Create a [Playwright](https://github.com/microsoft/playwright) and [Jest](https://jestjs.io/) test:
 
 ```bash
-npx qawolf create <url> [name]
+npx qawolf create url [name]
 ```
 
-![Create a test](https://storage.googleapis.com/docs.qawolf.com/home/create-test-small.gif)
+Edit your test code as it is created by opening `.qawolf/tests/myTestName.test.js`.
 
 Run your test:
 
@@ -85,43 +87,47 @@ npx qawolf test [name]
 
 ## ☁️ Set up CI
 
-[Documentation](https://docs.qawolf.com/docs/set_up_ci)
+[Documentation](https://docs.qawolf.com/docs/run_tests_in_ci)
 
-Set up CI to run and record your tests in parallel. Watch the [video, gif, and dom artifacts](https://docs.qawolf.com/docs/set_up_ci#%EF%B8%8F-debug) from your CI runs.
+Set up CI to run and record your tests in parallel. Use the [video recording and detailed logs](https://docs.qawolf.com/docs/run_tests_in_ci#debug) to debug failures.
 
-[<img align="center" height="20px" src="https://cdn.iconscout.com/icon/free/png-256/azure-190760.png" /> Azure](https://docs.qawolf.com/docs/set_up_ci#azure)
+[<img align="center" height="20px" src="https://cdn.iconscout.com/icon/free/png-256/azure-190760.png" /> Azure](https://azure.microsoft.com/en-us/services/devops)
 
 ```bash
 npx qawolf azure
 ```
 
-[<img align="center" height="20px" src="https://cdn.iconscout.com/icon/free/png-256/circleci-283066.png" /> CircleCI](https://docs.qawolf.com/docs/set_up_ci#circleci)
+[<img align="center" height="20px" src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Bitbucket-blue-logomark-only.svg" /> Bitbucket](https://bitbucket.org/product/features/pipelines)
+
+```bash
+npx qawolf bitbucket
+```
+
+[<img align="center" height="20px" src="https://cdn.iconscout.com/icon/free/png-256/circleci-283066.png" /> CircleCI](https://circleci.com/)
 
 ```bash
 npx qawolf circleci
 ```
 
-[<img align="center" height="20px" src="https://camo.githubusercontent.com/7710b43d0476b6f6d4b4b2865e35c108f69991f3/68747470733a2f2f7777772e69636f6e66696e6465722e636f6d2f646174612f69636f6e732f6f637469636f6e732f313032342f6d61726b2d6769746875622d3235362e706e67" /> GitHub](https://docs.qawolf.com/docs/set_up_ci#github)
+[<img align="center" height="20px" src="https://camo.githubusercontent.com/7710b43d0476b6f6d4b4b2865e35c108f69991f3/68747470733a2f2f7777772e69636f6e66696e6465722e636f6d2f646174612f69636f6e732f6f637469636f6e732f313032342f6d61726b2d6769746875622d3235362e706e67" /> GitHub](https://github.com/features/actions)
 
 ```bash
 npx qawolf github
 ```
 
-[🦊 GitLab](https://docs.qawolf.com/docs/set_up_ci#gitlab)
+[🦊 GitLab](https://docs.gitlab.com/ee/ci)
 
 ```bash
 npx qawolf gitlab
 ```
 
-[🤵 Jenkins](https://docs.qawolf.com/docs/set_up_ci#jenkins)
+[🤵 Jenkins](https://jenkins.io)
 
 ```bash
 npx qawolf jenkins
 ```
 
-![Set up CI](https://storage.googleapis.com/docs.qawolf.com/home/github.gif)
-
-[Ping us](https://gitter.im/qawolf/community) if you want to run QA Wolf somewhere else.
+[Chat with us](https://gitter.im/qawolf/community) if you want to run QA Wolf somewhere else.
 
 <br/>
 
