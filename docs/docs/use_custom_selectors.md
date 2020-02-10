@@ -97,7 +97,7 @@ The `selectors[0]` argument passed to `browser.click` references a selector in t
 
 In the code above, you'll notice that the element you clicked on is stored under the `"node"` key, and that all of its attributes are saved. The two direct ancestors are also stored under the `"ancestors"` key of the `Selector` object.
 
-When you run your test, QA Wolf will look for a close enough match to the original element you clicked on. It will consider all of the target element attributes, as well as those of its two ancestors. By not relying on a single brittle selector, your tests will be more robust to scenarios like dynamic CSS classes and changes to your front end code.
+When you run your test, QA Wolf will look for a close enough match to the original element you clicked on. It will consider all of the target element attributes, as well as those of its two ancestors. By not relying on a single brittle selector, your tests will be more robust to situations like dynamic CSS classes and changes to your front end code.
 
 Because the selectors file contains the information QA Wolf needs to find each element, you should avoid editing it.
 
@@ -107,7 +107,7 @@ To learn more about how QA Wolf finds a close enough match to the target element
 
 You can edit element selectors as you create your test, since the [test code is generated](create_a_test#review-test-code) as you use your application. The [interactive REPL](use_the_repl) can be helpful in trying out selectors.
 
-If you find yourself using the same attribute frequently to target elements, such as the `data-qa` attribute, try [setting `QAW_ATTRIBUTE`](api/environment_variables#qaw_attribute). This will configure QA Wolf to generate code targeting elements based on that attribute whenever possible.
+If you find yourself using the same attribute frequently to target elements, such as the `data-qa` attribute, try [setting `QAW_ATTRIBUTE`](api/environment_variables#qaw_attribute). This will configure QA Wolf to target elements using that attribute whenever possible.
 
 QA Wolf supports two types of custom selectors: [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) and text selectors.
 
@@ -127,7 +127,7 @@ it('can click "Submit" button', async () => {
 });
 ```
 
-See [documentation on the `browser.click` method](api/browser/click) for more examples.
+See [documentation on the `browser.click` method](api/browser/click#examples) for more examples.
 
 Whenever you target an element with a CSS or text selector, make sure that your selector is as specific as possible. If your selector matches multiple elements on the page, you could end up with the wrong element being acted upon in your test.
 
@@ -137,7 +137,7 @@ A best practice in testing is to use [test attributes](https://developer.mozilla
 
 You can update your front end code to include these test attributes. Don't worry - you don't need to do this all at once. If a test attribute is not included for a test step, QA Wolf will fall back to the [default selector logic](#default-selector-logic).
 
-In this guide we'll use the `data-qa` attribute as our test attribute, but you can use whatever attribute you like (examples: `data-test`, `aria-label`). `data-*` attributes allow you to store extra information on your element, and in our case we'll use `data-qa` to label elements that are used in our tests.
+In this guide we'll use the `data-qa` attribute as our test attribute, but you can use whatever attribute you like. `data-*` attributes allow you to store extra information on your element, and in our case we'll use `data-qa` to label elements that are used in our tests.
 
 Let's say we have a submit button in our application with the following [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML):
 
@@ -145,13 +145,13 @@ Let's say we have a submit button in our application with the following [HTML](h
 <button>Submit</button>
 ```
 
-To explicity label our element for use in testing, we'll add the `data-qa` attribute with a value of `"submit"`:
+To explicity label our element for use in testing, we'll add a `data-qa` attribute with the value of `"submit"`:
 
 ```html
 <button data-qa="submit">Submit</button>
 ```
 
-Now even as the text, [CSS classes](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes#attr-class), and other attributes of our submit button change, the `data-qa` attribute will always label it as the `submit` element to use in tests.
+Now even as the text, [CSS classes](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes#attr-class), and other attributes of our submit button change, the `data-qa` attribute will always label it as the `"submit"` element to use in tests.
 
 ## Next steps
 
@@ -161,5 +161,5 @@ There are a few places you might want to go from here:
 
 - [Add assertions](add_assertions) to your tests
 - [Change input values](change_input_values) in your tests
-- Learn more about the [default selector logic](use_custom_selectors#default-selector-logic)
+- Learn more about the [default selector logic](how_it_works#element-selectors)
 - Learn more about the [interactive REPL](use_the_repl)

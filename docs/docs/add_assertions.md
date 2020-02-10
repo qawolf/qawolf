@@ -46,7 +46,7 @@ TODOADDVIDEO
 
 You can add assertions as you create your test, since the [test code is generated](create_a_test#review-test-code) as you use your application. The [interactive REPL](use_the_repl) can be helpful in trying out code.
 
-The first assertion we will add is to check that the "Clear completed" text appears after we complete our todo.
+The first assertion we will add is to check that the text `"Clear completed"` appears after we complete our todo.
 
 We'll use QA Wolf's [`browser.hasText` method](api/browser/has_text) to verify that the text appears. This method automatically waits for the given text to appear on the page. It returns `true` if the text is found, and `false` if the text does not appear before timing out.
 
@@ -72,11 +72,11 @@ See our [API documentation](api/table_of_contents) for a full list of QA Wolf he
 
 In addition to QA Wolf helpers, you also have full access to the [Playwright API](https://github.com/microsoft/playwright/blob/master/docs/api.md) and the [Jest API](https://jestjs.io/docs/en/expect) in your test code.
 
-Next we'll add an assertion that our todo is no longer visible after we clear completed todos. In terms of the [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model), this means that there should be no todo `li` elements under the todo list with the [class](https://developer.mozilla.org/en-US/docs/Web/CSS/Class_selectors) `"todo-list"`.
+Next we'll add an assertion that our todo is no longer visible after we clear completed todos. In terms of the [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model), this means that there should be no todo `li` elements under the todo `ul` with the [class](https://developer.mozilla.org/en-US/docs/Web/CSS/Class_selectors) `"todo-list"`.
 
 The Playwright API provides a [method called `page.waitFor`](https://github.com/microsoft/playwright/blob/master/docs/api.md#pagewaitforselectororfunctionortimeout-options-args) that takes a predicate function and waits until the function returns `true`. We'll call this method, passing it a function to check that there are no todo items left on the page.
 
-Putting it all together, after our test clicks the "Clear completed" button to clear completed todos, we will verify that the todos disappear from the page. We do this by:
+Putting it all together, after our test clicks the "Clear completed" button to clear completed todos, we will verify that the todos disappear from the page. We'll do this by:
 
 1. Calling [`browser.page`](api/browser/page) to get the current Playwright `Page` instance
 2. Calling [`page.waitFor`](https://github.com/microsoft/playwright/blob/master/docs/api.md#pagewaitforselectororfunctionortimeout-options-args), passing it a function that checks to see that there are no elements that match the [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) `.todo-list li`.

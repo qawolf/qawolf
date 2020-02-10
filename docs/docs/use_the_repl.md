@@ -7,7 +7,7 @@ As you create a test, you may want to try out code to include in your test file.
 
 ## TL;DR
 
-- [Open the REPL](#open-the-repl) by selecting `🖥️ Open REPL to run code` when creating a test
+- [Open the REPL](#open-the-repl) by selecting `🖥️ Open REPL to run code` while creating a test
 - You can [run Node.js code in the REPL](#run-code-in-the-repl)
 - [Close the REPL](#close-the-repl) by typing `.exit`
 
@@ -25,7 +25,7 @@ Use the up and down arrow keys to choose between options. To open the REPL, choo
 
 You will now be able to run [Node.js](https://nodejs.org/en) in the command line, as well as access the [QA Wolf API](api/table_of_contents).
 
-As a simple test, type `1 + 1` in the REPL and press `Enter`. The result `2` will print below the command. In short, any code you could run in the [Node.js](https://nodejs.org/en) REPL can also be run here.
+Type `1 + 1` in the REPL and press `Enter`. The result `2` will print below the command. In short, any code you could run in the [Node.js](https://nodejs.org/en) REPL can also be run here.
 
 You can also use the [QA Wolf API](api/table_of_contents) in the REPL. For example, let's say we have just started to create a test on [TodoMVC](http://todomvc.com/examples/react). We can create a todo item through the REPL.
 
@@ -74,7 +74,7 @@ The video below shows us using the REPL to try out the code examples in this sec
 
 TODOADDVIDEO
 
-In summary, the REPL allows us to try out code that we may want to incorporate into our tests. As a reminder, you can open your test file at `.qawolf/tests/myTestName.test.js` any time and edit it as you go along.
+In summary, the REPL allows us to try out code that we may want to incorporate into our tests. You can open your test file at `.qawolf/tests/myTestName.test.js` any time and edit it as you go along.
 
 ## Close the REPL
 

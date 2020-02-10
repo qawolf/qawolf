@@ -5,7 +5,7 @@ title: 📮 Change Input Values
 
 ## TL;DR
 
-- [QA Wolf captures values that you type](#keyboard-events-overview) when you create tests
+- [QA Wolf captures type actions](#keyboard-events-overview) when you create tests
 - You can [change input values](#change-input-values) in your test code:
 
 ```js
@@ -67,7 +67,7 @@ it('can type into "What needs to be done?" input', async () => {
 });
 ```
 
-However, you may want to change this input value to something else. The simplest way to do this is to change the second argument to [`browser.type`](api/browser/type) in the test code from the value you originally typed to your desired value:
+However, you may want to change this input value to something else. The simplest way to do this is to change the second argument to [`browser.type`](api/browser/type) from the value you originally typed to your desired value:
 
 ```js
 it('can type into "What needs to be done?" input', async () => {
@@ -106,7 +106,7 @@ it('can type into "What needs to be done?" input', async () => {
 });
 ```
 
-You can then run your test again, passing the appropriate environment variable. It will now type the value of your environment variable in the first step.
+You can then run your test again, passing the appropriate environment variable. It will now type the value of your environment variable in the first step:
 
 ```bash
 TODO_VALUE="create environment variable!" npx qawolf test myTestName
