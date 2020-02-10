@@ -17,7 +17,7 @@ export class StepExpression implements Expression {
     }
   }
 
-  private _buildOptions(): string | undefined {
+  private _buildOptions(): string | void {
     const page = this._step.page;
 
     // 1) we need to specify the page if the step has a different page
@@ -28,7 +28,7 @@ export class StepExpression implements Expression {
     }
   }
 
-  private _buildValue(): string | undefined {
+  private _buildValue(): string | void {
     const { action, value } = this._step;
     if (action === "scroll") {
       const scrollValue = value as ScrollValue;

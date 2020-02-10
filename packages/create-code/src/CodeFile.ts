@@ -25,7 +25,7 @@ export class CodeFile {
   private _name: string;
   private _path: string;
   // public for tests
-  public _preexisting: string | undefined;
+  public _preexisting: string | void;
   private _reconciler: CodeReconciler;
 
   protected constructor({ isTest, name, path }: CodeFileOptions) {
@@ -116,7 +116,7 @@ export const createInitialCode = async (options: CodeFileOptions) => {
 
 export const loadFileIfExists = async (
   path: string
-): Promise<string | undefined> => {
+): Promise<string | void> => {
   const codeExists = await pathExists(path);
   if (!codeExists) return undefined;
 
