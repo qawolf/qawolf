@@ -1,4 +1,5 @@
 import { stepToSelector } from "@qawolf/build-code";
+import { registry as replRegistry } from "@qawolf/repl";
 import { Selector, Step } from "@qawolf/types";
 import { pathExists, readJson, outputJson, remove } from "fs-extra";
 import { concat } from "lodash";
@@ -39,6 +40,10 @@ export class SelectorFile {
     await outputJson(this._path, this.selectors(), { spaces: " " });
   }
 
+  private _setReplContext() {
+    replRegistry.setContextKey("selectors", this.selectors());
+  }
+
   public async discard() {
     if (this._preexistingSelectors) {
       await outputJson(this._path, this._preexistingSelectors, {
@@ -71,6 +76,8 @@ export class SelectorFile {
       // inline index so it is easy to correlate with the test
       index: step.index + (this._preexistingSelectors || []).length
     }));
+
+    this._setReplContext();
 
     await this._write();
 

@@ -1,14 +1,13 @@
 import { mockProcessStdout } from "jest-mock-process";
-import { REPLServer } from "repl";
-import { repl } from "../src/repl";
+import { repl as createRepl, ReplWithContext } from "../src/ReplWithContext";
 
 describe("repl", () => {
-  let replServer: REPLServer;
+  let repl: ReplWithContext;
   let resolved = false;
   let mockedStdout: jest.SpyInstance = mockProcessStdout();
 
   beforeAll(() => {
-    repl({}, s => (replServer = s)).then(() => (resolved = true));
+    createRepl({}, created => (repl = created)).then(() => (resolved = true));
   });
 
   afterAll(() => {
@@ -27,7 +26,7 @@ describe("repl", () => {
 
   test("resolves after resume() is called", async () => {
     expect(resolved).toEqual(false);
-    replServer.close();
+    repl.close();
     await new Promise(r => setTimeout(r, 0));
     expect(resolved).toEqual(true);
   });
