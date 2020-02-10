@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/repl",
   "description": "qawolf repl",
-  "version": "0.9.0-beta.3",
+  "version": "0.9.0-beta.4",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -23,12 +23,12 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/logger": "0.9.0-beta.3",
+    "@qawolf/logger": "0.9.0-beta.4",
     "await-outside": "^3.0.0"
   },
   "devDependencies": {
     "@jest/test-result": "^25.1.0",
-    "@qawolf/types": "0.9.0-beta.3",
+    "@qawolf/types": "0.9.0-beta.4",
     "jest-mock-process": "^1.3.2",
     "kleur": "^3.x"
   },
