@@ -14,7 +14,6 @@
 <p align="center">
     <a href="https://docs.qawolf.com/docs/install">🚀 Get Started</a> |
     <a href="https://docs.qawolf.com/docs/api/table_of_contents">📖 API</a> |
-    <a href="https://docs.qawolf.com/docs/faq">🧐 FAQ</a> |
     <a href="https://gitter.im/qawolf/community">👋 Chat</a> |
     <a href="https://github.com/qawolf/qawolf/projects/4">🗺️ Roadmap</a>
 </p>
@@ -53,6 +52,8 @@
 <br/>
 
 ## 🖥️ Install QA Wolf
+
+[Documentation](http://docs.qawolf.com/docs/install)
 
 Install QA Wolf as a dev dependency with [`npm`](https://www.npmjs.com):
 
