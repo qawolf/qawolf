@@ -1,0 +1,59 @@
+import TabItem from "@theme/TabItem";
+import CiTabs from "./CiTabs";
+
+<CiTabs>
+<TabItem value="azure">
+
+```bash
+npx qawolf azure
+```
+
+The workflow file will be created at `./azure-pipelines.yml`.
+
+</TabItem>
+<TabItem value="bitbucket">
+
+```bash
+npx qawolf bitbucket
+```
+
+The workflow file will be created at `./bitbucket-pipelines.yml`.
+
+</TabItem>
+<TabItem value="circleci">
+
+```bash
+npx qawolf circleci
+```
+
+The workflow file will be created at `./.circleci/config.yml`.
+
+</TabItem>
+<TabItem value="github">
+
+```bash
+npx qawolf github
+```
+
+The workflow file will be created at `./.github/workflows/qawolf.yml`.
+
+</TabItem>
+<TabItem value="gitlab">
+
+```bash
+npx qawolf gitlab
+```
+
+The workflow file will be created at `./.gitlab-ci.yml`.
+
+</TabItem>
+<TabItem value="jenkins">
+
+```bash
+npx qawolf jenkins
+```
+
+The workflow file will be created at `./Jenkinsfile`.
+
+</TabItem>
+</CiTabs>

@@ -1,0 +1,35 @@
+---
+id: launch
+sidebar_label: launch
+title: qawolf.launch
+---
+
+import ArgumentLaunch from "../components/ArgumentLaunch";
+import ReturnBrowserContext from "../components/ReturnBrowserContext";
+import Syntax from "../components/Syntax";
+
+<Syntax code="launch(options)" />
+
+Launch a [QA Wolf `BrowserContext`](../browser_context/class_browser_context), which extends the [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/v0.10.0/docs/api.md#class-browsercontext).
+
+### Arguments
+
+<ArgumentLaunch />
+
+### Returns
+
+<ReturnBrowserContext />
+
+### Examples
+
+Launch a browser in a test:
+
+```js
+let browser;
+
+beforeAll(async () => {
+  browser = await launch({
+    url: "www.myawesomesite.com"
+  });
+});
+```

@@ -1,0 +1,80 @@
+---
+id: select
+sidebar_label: select
+title: browser.select
+---
+
+import ArgumentFindElementOptions from "../components/ArgumentFindElementOptions";
+import ArgumentSelector from "../components/ArgumentSelector";
+import ArgumentSelectValue from "../components/ArgumentSelectValue";
+import ReturnElementHandle from "../components/ReturnElementHandle";
+import Syntax from "../components/Syntax";
+
+<Syntax code="browser.select(selector, value, [options={}])" />
+
+Choose the specified value in a [HTML `select` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select). If the element is not found before timeout, an error is thrown.
+
+### Arguments
+
+<ArgumentSelector />
+<ArgumentSelectValue />
+<ArgumentFindElementOptions />
+
+### Returns
+
+<ReturnElementHandle />
+
+## Examples
+
+### CSS Selectors
+
+Select the value `"Option 1"` in the element with the id `"my-select"`:
+
+```js
+await browser.select({ css: "#my-select" }, "Option 1");
+```
+
+Clear the value of the element with the `data-qa` attribute equal to `"country"`:
+
+```js
+await browser.select({ css: "[data-qa='country']" }, null);
+```
+
+### HTML Selectors
+
+Select the value `"New York"` in the element found using the [default selector logic](../../use_custom_selectors#default-selector-logic):
+
+```js
+await browser.select(selectors[0], "New York");
+```
+
+### Text Selectors
+
+Select the value `"mint chocolate chip"` the element containing the text `"Favorite ice cream flavor"`:
+
+```js
+await browser.select(
+  { text: "Favorite ice cream flavor" },
+  "mint chocolate chip"
+);
+```
+
+### Options
+
+Select the value `"Option 1"` in the element with the id `"my-select"`, waiting 5 seconds after it is found before selecting:
+
+```js
+await browser.select({ css: "#my-select" }, "Option 1", { sleepMs: 5000 });
+```
+
+Select the value `"cat"` in the element with the CSS class `"best-pet"`. Time out if the element is not found within 5 seconds:
+
+```js
+await browser.select({ css: ".best-pet" }, "cat", { timeoutMs: 5000 });
+```
+
+Return the [Playwright `ElementHandle`](https://github.com/microsoft/playwright/blob/v0.10.0/docs/api.md#class-elementhandle) instance after selecting:
+
+```js
+const element = await browser.select(selectors[0], "dog");
+```

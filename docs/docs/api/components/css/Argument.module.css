@@ -1,0 +1,25 @@
+.argument {
+  margin: 0;
+  /* need to override infima */
+  margin-bottom: 8px !important;
+}
+
+.indent {
+  margin-left: 32px;
+}
+
+.name,
+.type {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.name {
+  color: #4494e8;
+  font-family: Consolas, Courier New, monospace;
+  font-weight: 600;
+}
+
+.type {
+  color: #8da9b3;
+}

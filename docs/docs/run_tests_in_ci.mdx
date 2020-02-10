@@ -1,0 +1,115 @@
+---
+id: run_tests_in_ci
+title: ☁️ Run Tests in CI
+---
+
+import CiArtifacts from "./components/CiArtifacts.mdx";
+import CiCodeBlock from "./components/CiCodeBlock.mdx";
+import CiCreateWorkflow from "./components/CiCreateWorkflow.mdx";
+import CiEnvironmentVariables from "./components/CiEnvironmentVariables.mdx";
+import CiLocalServer from "./components/CiLocalServer.mdx";
+import CiRunOnSchedule from "./components/CiRunOnSchedule.mdx";
+
+QA Wolf set up your CI with one command. Each test run includes [debug artifacts](#debug) like a video recording and detailed logs.
+
+This guide assumes you have already [created a browser test](create_a_test).
+
+## TL;DR
+
+- [Create a workflow file](#create-workflow-file) to run your tests in your CI provider:
+
+<CiCodeBlock />
+
+- Each test run includes [debug artifacts](#debug) like a video recording and detailed logs
+- You can also [run your tests against your local server](#run-tests-against-your-local-server), [use environment variables](#use-environment-variables), and [run tests on a schedule](#run-tests-on-a-schedule) in CI
+
+## Create workflow file
+
+To create a workflow file for your CI provider, run the following command in your project directory:
+
+<CiCreateWorkflow />
+
+Now your tests will run whenever someone pushes a commit to any branch.
+
+The rest of this guide covers common use cases of running your tests in CI:
+
+- [Debugging](#debug)
+- [Running your tests against your local server](#run-tests-against-your-local-server)
+- [Using environment variables](#use-environment-variables)
+- [Running tests on a schedule](#run-tests-on-a-schedule)
+
+## Debug
+
+By default, every test run includes debugging artifacts like a video recording and detailed logs. These help you better understand your tests and debug failures.
+
+Your debugging artifacts are uploaded in a folder called `qawolf`, which has the following structure. Artifacts for each test are stored in separate folders, with the folder named after the test like `myTestName.test.js`. Within each test folder there is a separate folder for each browser that you ran your tests on: [Chromium](https://www.chromium.org/Home), [Firefox](https://www.mozilla.org/en-US/firefox/new), and [WebKit](https://webkit.org). In the example below, the tests were only run on Chromium.
+
+```bash
+qawolf
+├── myFirstTest.test.js
+│   └── Chromium
+│       └── video_{timestamp}.mp4
+│       └── video_{timestamp}.gif
+│       └── browser_{timestamp}.log
+│       └── qawolf_{timestamp}.log
+├── mySecondTest.test.js
+│   └── Chromium
+│       └── video_{timestamp}.mp4
+│       └── video_{timestamp}.gif
+│       └── browser_{timestamp}.log
+│       └── qawolf_{timestamp}.log
+# etc
+```
+
+The file called `video_{timestamp}.mp4` (where `{timestamp}` is replaced with a real timestamp, for example `video_1580757606885.mp4`) is a video recording of your test. This allows you to watch your test run in the browser. The corresponding `.gif` file `video_{timestamp}.gif` is a [GIF](https://en.wikipedia.org/wiki/GIF) version of the same video.
+
+The two log files are called `browser_{timestamp}.log` and `qawolf_{timestamp}.log`.
+
+The `browser_{timestamp}.log` file contains all logs from the browser. This includes logs from QA Wolf as it uses your applicaton and looks for each element. It also includes console logs, warnings, and errors from your application. This is generally the log file you should look at when debugging as it contains logs relevant to your application.
+
+The `qawolf_{timestamp}.log` file contains detailed logs from the QA Wolf Node.js server. You probably won't need to look at it (unless you are submitting it to us for help debugging an issue 😊).
+
+To view your debug artifacts, follow the instructions below for your CI provider.
+
+<CiArtifacts />
+
+## Run tests against your local server
+
+You may want to run your tests against your local server, which would allow you to test on a URL like `localhost:3000`.
+
+In this guide, we assume you have a script that you can run to start your local server. For example, a common script to start a Node.js server is `npm run start`.
+
+To run your tests against your local server, follow the instructions below for your CI provider.
+
+<CiLocalServer />
+
+## Use environment variables
+
+You may want to configure your tests by setting [environment variables](api/environment_variables).
+
+Depending on whether the environment variable contains sensitive information, you can pass it directly in your workflow file or set it in your CI provider.
+
+To use environment variables, follow the instructions below for your CI provider.
+
+<CiEnvironmentVariables />
+
+## Run tests on a schedule
+
+By default, the [generated workflow file](#create-workflow-file) is configured to run tests whenever someone pushes a commit to any branch. You can edit this file to run tests on a schedule instead of or in addition to every commit.
+
+To run your tests on a schedule, follow the instructions below for your CI provider.
+
+<CiRunOnSchedule />
+
+## Do something else
+
+If there's something else you'd like to do, please [chat with us](https://gitter.im/qawolf/community).
+
+## Next steps
+
+Congratulations - your tests are now running in CI! 🎉
+
+If you're interested in some of the more advanced features of QA Wolf, check out:
+
+- [Use the interactive REPL](use_the_repl)
+- [QA Wolf API documentation](api/table_of_contents)

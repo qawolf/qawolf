@@ -1,0 +1,61 @@
+import TabItem from "@theme/TabItem";
+import BrowserTabs from "./BrowserTabs";
+
+<BrowserTabs>
+<TabItem value="chromium">
+
+```bash
+npx qawolf test
+```
+
+The browser flags work the same way if you want to run a specific test:
+
+```bash
+npx qawolf test myTestName
+```
+
+Note: Chromium is the open source browser that [Chrome](https://www.google.com/chrome) is built on top of.
+
+</TabItem>
+<TabItem value="firefox">
+
+```bash
+npx qawolf test --firefox
+```
+
+The browser flags work the same way if you want to run a specific test:
+
+```bash
+npx qawolf test --firefox myTestName
+```
+
+</TabItem>
+<TabItem value="webkit">
+
+```bash
+npx qawolf test --webkit
+```
+
+The browser flags work the same way if you want to run a specific test:
+
+```bash
+npx qawolf test --webkit myTestName
+```
+
+Note: Webkit is the browser engine used in the [Safari browser](https://www.apple.com/safari).
+
+</TabItem>
+<TabItem value="all">
+
+```bash
+npx qawolf test --all-browsers
+```
+
+The browser flags work the same way if you want to run a specific test:
+
+```bash
+npx qawolf test --all-browsers myTestName
+```
+
+</TabItem>
+</BrowserTabs>

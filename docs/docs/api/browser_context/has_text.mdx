@@ -1,0 +1,47 @@
+---
+id: has_text
+sidebar_label: hasText
+title: browser.hasText
+---
+
+import Argument from "../components/Argument";
+import ArgumentHasTextOptions from "../components/ArgumentHasTextOptions";
+import Syntax from "../components/Syntax";
+
+<Syntax code="browser.hasText(text, [options={}])" />
+
+Determine whether the specified text appears on the page. Returns `true` as soon as the text is found, and `false` if the text is not found before timeout.
+
+### Arguments
+
+<Argument
+  description="The text to look for on the page."
+  name="text"
+  type="string"
+/>
+<ArgumentHasTextOptions skipWaitForRequests />
+
+### Returns
+
+<Argument
+  description="Resolves to a boolean indicating if the page has text."
+  name=""
+  type="Promise<boolean>"
+/>
+
+### Examples
+
+Determine if the text `"Secure Area"` appears on the page:
+
+```js
+const hasSignInText = await browser.hasText("Secure Area");
+```
+
+Determine if the text `"Success!"` appears on the page with index `1`, waiting up to 5 seconds for the text to appear:
+
+```js
+const hasSuccessText = await browser.hasText("Success!", {
+  page: 1,
+  timeoutMs: 5000
+});
+```

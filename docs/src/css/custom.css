@@ -13,13 +13,13 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #4494e7;
-  --ifm-color-primary-dark: #3d85d0;
-  --ifm-color-primary-darker: #3676b9;
-  --ifm-color-primary-darkest: #3068a2;
-  --ifm-color-primary-light: #579fe9;
-  --ifm-color-primary-lighter: #69a9ec;
-  --ifm-color-primary-lightest: #7cb4ee;
+  --ifm-color-primary: #4494e8;
+  --ifm-color-primary-dark: #2985e5;
+  --ifm-color-primary-darker: #1c7de3;
+  --ifm-color-primary-darkest: #1767bb;
+  --ifm-color-primary-light: #5fa3eb;
+  --ifm-color-primary-lighter: #6cabed;
+  --ifm-color-primary-lightest: #94c2f2;
 }
 
 .docusaurus-highlight-code-line {
@@ -31,4 +31,67 @@
 
 .footer .footer__links {
   text-align: center;
+}
+
+/* Gitter  */
+
+.gitter-chat-embed {
+  z-index: 1000;
+}
+
+a.gitter-open-chat-button {
+  background: var(--ifm-color-primary);
+  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 16px 32px;
+  transition: background 320ms;
+}
+
+a.gitter-open-chat-button:hover {
+  background: var(--ifm-color-primary-darker);
+  text-decoration: none;
+}
+
+/* Move responsive sub nav above chat */
+.menu.menu--responsive .menu__button {
+  bottom: 4rem;
+}
+
+@media (max-width: 996px) {
+  /* Make the chat button smaller on mobile */
+  a.gitter-open-chat-button {
+    font-size: 16px;
+    padding: 12px 20px;
+  }
+}
+
+/* GitHub Stars */
+
+.github-button {
+  display: none;
+}
+
+.github-wrapper {
+  padding: var(--ifm-navbar-item-padding-vertical) 0
+    var(--ifm-navbar-item-padding-vertical)
+    var(--ifm-navbar-item-padding-horizontal);
+  line-height: 0;
+}
+
+@media (max-width: 996px) {
+  .github-wrapper {
+    padding: var(--ifm-navbar-item-padding-vertical) 0;
+  }
+
+  .navbar__search {
+    display: none;
+  }
+}
+
+/* Infima */
+
+.tab-item:first-child {
+  /* For some reason first tab missing margin, this fixes it  */
+  margin-top: 4px;
 }

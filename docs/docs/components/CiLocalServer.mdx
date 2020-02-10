@@ -1,0 +1,145 @@
+import TabItem from "@theme/TabItem";
+import CiTabs from "./CiTabs";
+
+<CiTabs>
+<TabItem value="azure">
+
+To run your tests against your local server, open the `./azure-pipelines.yml` file.
+
+You'll notice a commented out step of the workflow called `Start local server` (lines 21-22 of the default generated file):
+
+```yaml
+# # Start local server
+# - script: npm run start & npx wait-on http://localhost:3000
+```
+
+Comment in this code, and edit it as you like. The example first runs the script `npm run start`, and then waits for the URL `localhost:3000` to be available:
+
+```yaml
+# Start local server
+- script: npm run start & npx wait-on http://localhost:3000
+```
+
+You may want to replace `npm run start` with a different command, or `localhost:3000` with a different URL.
+
+See [Azure documentation](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/command-line?view=azure-devops&tabs=yaml) to learn more about running commands.
+
+</TabItem>
+<TabItem value="bitbucket">
+
+To run your tests against your local server, open the `./bitbucket-pipelines.yml` file.
+
+You'll notice a commented out step of the workflow called `Start local server` (lines 10-11 of the default generated file):
+
+```yaml
+## Start local server
+# - npm run start & npx wait-on http://localhost:3000
+```
+
+Comment in this code, and edit it as you like. The example first runs the script `npm run start`, and then waits for the URL `localhost:3000` to be available:
+
+```yaml
+# Start local server
+- script: npm run start & npx wait-on http://localhost:3000
+```
+
+You may want to replace `npm run start` with a different command, or `localhost:3000` with a different URL.
+
+See [Bitbucket documentation](https://confluence.atlassian.com/bitbucket/configure-bitbucket-pipelines-yml-792298910.html) to learn more about running commands.
+
+</TabItem>
+<TabItem value="circleci">
+
+To run your tests against your local server, open the `./.circleci/config.yml` file.
+
+You'll notice a commented out step of the workflow called `Start local server` (lines 22-24 of the default generated file):
+
+```yaml
+# # Start local server
+# npm run start &
+# npx wait-on http://localhost:3000
+```
+
+Comment in this code, and edit it as you like. The example first runs the script `npm run start`, and then waits for the URL `localhost:3000` to be available:
+
+```yaml
+# Start local server
+npm run start &
+npx wait-on http://localhost:3000
+```
+
+You may want to replace `npm run start` with a different command, or `localhost:3000` with a different URL.
+
+See [CircleCI documentation](https://circleci.com/docs/2.0/configuration-reference/#steps) to learn more about running commands.
+
+</TabItem>
+<TabItem value="github">
+
+To run your tests against your local server, open the `./.github/workflows/qawolf.yml` file.
+
+You'll notice a commented out step of the workflow called `Start local server` (lines 36-37 of the default generated file):
+
+```yaml
+# - name: Start local server
+#   run: npm run start & npx wait-on http://localhost:3000
+```
+
+Comment in this code, and edit it as you like. The example first runs the script `npm run start`, and then waits for the URL `localhost:3000` to be available:
+
+```yaml
+- name: Start local server
+  run: npm run start & npx wait-on http://localhost:3000
+```
+
+You may want to replace `npm run start` with a different command, or `localhost:3000` with a different URL.
+
+See [GitHub Actions documentation](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idstepsrun) to learn more about running commands.
+
+</TabItem>
+<TabItem value="gitlab">
+
+To run your tests against your local server, open the `./.gitlab-ci.yml` file.
+
+You'll notice a commented out step of the workflow called `Start local server` (lines 10-11 of the default generated file):
+
+```yaml
+# # Start local server
+# - npm run start & npx wait-on http://localhost:3000
+```
+
+Comment in this code, and edit it as you like. The example first runs the script `npm run start`, and then waits for the URL `localhost:3000` to be available:
+
+```yaml
+# Start local server
+- npm run start & npx wait-on http://localhost:3000
+```
+
+You may want to replace `npm run start` with a different command, or `localhost:3000` with a different URL.
+
+See [GitLab documentation](https://docs.gitlab.com/ee/ci/yaml/#script) to learn more about running commands.
+
+</TabItem>
+<TabItem value="jenkins">
+
+To run your tests against your local server, open the `./Jenkinsfile` file.
+
+You'll notice a commented out step of the workflow called `Start local server` (lines 22-23 of the default generated file):
+
+```yaml
+// // Start local server
+// sh 'npm run start & npx wait-on http://localhost:3000'
+```
+
+Comment in this code, and edit it as you like. The example first runs the script `npm run start`, and then waits for the URL `localhost:3000` to be available:
+
+```yaml
+// Start local server
+sh 'npm run start & npx wait-on http://localhost:3000'
+```
+
+You may want to replace `npm run start` with a different command, or `localhost:3000` with a different URL.
+
+See [Jenkins documentation](https://jenkins.io/doc/pipeline/tour/running-multiple-steps/) to learn more about running commands.
+
+</TabItem>
+</CiTabs>

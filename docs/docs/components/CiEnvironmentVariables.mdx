@@ -1,0 +1,241 @@
+import TabItem from "@theme/TabItem";
+import CiTabs from "./CiTabs";
+
+<CiTabs>
+<TabItem value="azure">
+
+To set environment variables, open the `./azure-pipelines.yml` file.
+
+You'll notice a section for environment variables (line 25 in the generated default file):
+
+```yaml
+# ...
+env:
+  QAW_ARTIFACT_PATH: $(System.DefaultWorkingDirectory)/artifacts
+  # configure tests with environment variables
+  # QAW_SLEEP_MS: 0
+  # you can also use secret environment variables
+  # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#secret-variables
+  # LOGIN_PASSWORD: $(SECRET_PASSWORD)
+# ...
+```
+
+If your environment variable is not sensitive, you can set its value directly. To do this, just add another line under the `env` key. In the example below, we set [`QAW_SLEEP_MS`](api/environment_variables#qaw_sleep_ms) to `0` so that our tests run as fast as possible:
+
+```yaml
+# ...
+env:
+  QAW_ARTIFACT_PATH: $(System.DefaultWorkingDirectory)/artifacts
+  # configure tests with environment variables
+  QAW_SLEEP_MS: 0
+  # you can also use secret environment variables
+  # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#secret-variables
+  # LOGIN_PASSWORD: $(SECRET_PASSWORD)
+# ...
+```
+
+Now let's include an environment variable for a sensitive input value, like a password. Rather than pass its value directly, you should use a secret variable. First you need to add set the secret in Azure Devops. See [Azure documentation](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#secret-variables) for instructions.
+
+You can now use your secret in your workflow file by setting your environment variable to `$(MY_SECRET)`.
+
+In the example below, we set `LOGIN_PASSWORD` to `$(SECRET_PASSWORD)`:
+
+```yaml
+# ...
+env:
+  QAW_ARTIFACT_PATH: $(System.DefaultWorkingDirectory)/artifacts
+  # configure tests with environment variables
+  QAW_SLEEP_MS: 0
+  # you can also use secret environment variables
+  # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#secret-variables
+  LOGIN_PASSWORD: $(SECRET_PASSWORD)
+# ...
+```
+
+In our test file, we use `process.env.LOGIN_PASSWORD` rather than hard coding the password value. See [our guide on changing input values](change_input_values#use-environment-variables) to learn more about removing sensitive input values from tests.
+
+</TabItem>
+<TabItem value="bitbucket">
+
+See [Bitbucket documentation](https://confluence.atlassian.com/bitbucket/variables-in-pipelines-794502608.html) on environment variables.
+
+</TabItem>
+<TabItem value="circleci">
+
+To set environment variables, open the `./.circleci/config.yml` file.
+
+You'll notice a section for environment variables (line 26 in the generated default file):
+
+```yaml
+# ...
+environment:
+  QAW_ARTIFACT_PATH: /tmp/artifacts
+  # # configure tests with environment variables
+  # QAW_SLEEP_MS: 0
+  # # you can also use secret environment variables
+  # # https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project
+  # LOGIN_PASSWORD: ${SECRET_PASSWORD}
+# ...
+```
+
+If your environment variable is not sensitive, you can set its value directly. To do this, just add another line under the `env` key. In the example below, we set [`QAW_SLEEP_MS`](api/environment_variables#qaw_sleep_ms) to `0` so that our tests run as fast as possible:
+
+```yaml
+# ...
+environment:
+  QAW_ARTIFACT_PATH: /tmp/artifacts
+  # # configure tests with environment variables
+  QAW_SLEEP_MS: 0
+  # # you can also use secret environment variables
+  # # https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project
+  # LOGIN_PASSWORD: ${SECRET_PASSWORD}
+# ...
+```
+
+Now let's include an environment variable for a sensitive input value, like a password. Rather than pass its value directly, you should use a secret variable. First you need to add set the secret in CircleCI. See [CircleCI documentation](https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project) for instructions.
+
+You can now use your secret in your workflow file by setting your environment variable to `${MY_SECRET}`.
+
+In the example below, we set `LOGIN_PASSWORD` to `${SECRET_PASSWORD}`:
+
+```yaml
+# ...
+environment:
+  QAW_ARTIFACT_PATH: /tmp/artifacts
+  # # configure tests with environment variables
+  QAW_SLEEP_MS: 0
+  # # you can also use secret environment variables
+  # # https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project
+  LOGIN_PASSWORD: ${SECRET_PASSWORD}
+# ...
+```
+
+In our test file, we use `process.env.LOGIN_PASSWORD` rather than hard coding the password value. See [our guide on changing input values](change_input_values#use-environment-variables) to learn more about removing sensitive input values from tests.
+
+</TabItem>
+<TabItem value="github">
+
+To set environment variables, open the `./.github/workflows/qawolf.yml` file.
+
+You'll notice a section for environment variables after `- run: npx qawolf test` (line 39 in the generated default file):
+
+```yaml
+# ...
+- run: npx qawolf test
+  env:
+    QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
+  #   # configure tests with environment variables
+  #   QAW_SLEEP_MS: 0
+  #   # you can also use GitHub secrets for environment variables
+  #   # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets
+  #   LOGIN_PASSWORD: ${{ secrets.PASSWORD }}
+# ...
+```
+
+If your environment variable is not sensitive, you can set its value directly. To do this, just add another line under the `env` key. In the example below, we set [`QAW_SLEEP_MS`](api/environment_variables#qaw_sleep_ms) to `0` so that our tests run as fast as possible:
+
+```yaml
+# ...
+- run: npx qawolf test
+  env:
+    QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
+    #   # configure tests with environment variables
+    QAW_SLEEP_MS: 0
+  #   # you can also use GitHub secrets for environment variables
+  #   # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets
+  #   LOGIN_PASSWORD: ${{ secrets.PASSWORD }}
+# ...
+```
+
+Now let's include an environment variable for a sensitive input value, like a password. Rather than pass its value directly, which would involve checking it into GitHub, you should use a [GitHub secret](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets).
+
+First you need to add the secret to your GitHub respository, which is done in the repository settings. The video below shows how to add a secret to your repository:
+
+<video controls title="add secret to GitHub repository" width="100%">
+  <source
+    src="https://storage.googleapis.com/docs.qawolf.com/guides/github_secret.mp4"
+    type="video/mp4"
+  />
+</video>
+
+See [GitHub Actions documentation](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets#creating-encrypted-secrets) for more detail on creating secrets.
+
+You can now use your secret in your `.github/workflows/qawolf.yml` file by setting your environment variable to `${{ secrets.MY_SECRET }}`.
+
+In the example below, we set `LOGIN_PASSWORD` to `${{ secrets.PASSWORD }}`:
+
+```yaml
+# ...
+- run: npx qawolf test
+  env:
+    QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
+    #   # configure tests with environment variables
+    QAW_SLEEP_MS: 0
+    #   # you can also use GitHub secrets for environment variables
+    #   # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets
+    LOGIN_PASSWORD: ${{ secrets.PASSWORD }}
+# ...
+```
+
+In our test file, we use `process.env.LOGIN_PASSWORD` rather than hard coding the password value. See [our guide on changing input values](change_input_values#use-environment-variables) to learn more about removing sensitive input values from tests.
+
+</TabItem>
+<TabItem value="gitlab">
+
+To set environment variables, open the `./.gitlab-ci.yml` file.
+
+You'll notice a section for environment variables (line 14 in the generated default file):
+
+```yaml
+# ...
+variables:
+  QAW_ARTIFACT_PATH: $CI_PROJECT_DIR/artifacts
+  ## configure tests with environment variables
+  # QAW_SLEEP_MS: 0
+  ## you can also use GitLab protected environment variables
+  ## https://docs.gitlab.com/ee/ci/variables/#protected-environment-variables
+  # LOGIN_PASSWORD: $SECRET_PASSWORD
+# ...
+```
+
+If your environment variable is not sensitive, you can set its value directly. To do this, just add another line under the `environment` key. In the example below, we set [`QAW_SLEEP_MS`](api/environment_variables#qaw_sleep_ms) to `0` so that our tests run as fast as possible:
+
+```yaml
+# ...
+environment:
+  QAW_ARTIFACT_PATH: /tmp/artifacts
+  # # configure tests with environment variables
+  QAW_SLEEP_MS: 0
+  # # you can also use secret environment variables
+  # # https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project
+  # LOGIN_PASSWORD: ${SECRET_PASSWORD}
+# ...
+```
+
+Now let's include an environment variable for a sensitive input value, like a password. Rather than pass its value directly, you should use a secret variable. First you need to add set the secret in GitLab. See [GitLab documentation](https://docs.gitlab.com/ee/ci/variables/#protected-environment-variables) for instructions.
+
+You can now use your secret in your workflow file by setting your environment variable to `$MY_SECRET`.
+
+In the example below, we set `LOGIN_PASSWORD` to `$SECRET_PASSWORD`:
+
+```yaml
+# ...
+variables:
+  QAW_ARTIFACT_PATH: $CI_PROJECT_DIR/artifacts
+  ## configure tests with environment variables
+  QAW_SLEEP_MS: 0
+  ## you can also use GitLab protected environment variables
+  ## https://docs.gitlab.com/ee/ci/variables/#protected-environment-variables
+  LOGIN_PASSWORD: $SECRET_PASSWORD
+# ...
+```
+
+In our test file, we use `process.env.LOGIN_PASSWORD` rather than hard coding the password value. See [our guide on changing input values](change_input_values#use-environment-variables) to learn more about removing sensitive input values from tests.
+
+</TabItem>
+<TabItem value="jenkins">
+
+See [Jenkins documentation](https://jenkins.io/doc/pipeline/tour/environment) on environment variables.
+
+</TabItem>
+</CiTabs>

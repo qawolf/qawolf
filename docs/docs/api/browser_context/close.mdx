@@ -1,0 +1,24 @@
+---
+id: close
+sidebar_label: close
+title: browser.close
+---
+
+import ReturnVoid from "../components/ReturnVoid";
+import Syntax from "../components/Syntax";
+
+<Syntax code="browser.close()" />
+
+Close the browser. If [`QAW_ARTIFACT_PATH`](../environment_variables#qaw_artifact_path) is specified, save [debug artifacts](../../run_tests_in_ci#debug).
+
+### Returns
+
+<ReturnVoid />
+
+### Examples
+
+Close the browser and save [debug artifacts](../../run_tests_in_ci#debug):
+
+```js
+await browser.close();
+```

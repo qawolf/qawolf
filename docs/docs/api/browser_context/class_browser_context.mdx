@@ -1,0 +1,30 @@
+---
+id: class_browser_context
+sidebar_label: "class: BrowserContext"
+title: "class: BrowserContext"
+---
+
+The QA Wolf `BrowserContext` class extends [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/v0.10.0/docs/api.md#class-browsercontext) class.
+
+### Examples
+
+See [API table of contents](../table_of_contents#class-browsercontext) for a list of methods that QA Wolf provides on the `BrowserContext` class.
+
+Any method that can be called on a Playwright `BrowserContext` instance can also be called on a QA Wolf `BrowserContext` instance. For example, use Playwright's [`browserContext.setCookies` method](https://github.com/microsoft/playwright/blob/v0.10.0/docs/api.md#browsercontextsetcookiescookies) to set cookies:
+
+```js
+let browser;
+
+beforeAll(async () => {
+  browser = await launch({
+    url: "www.myawesomesite.com"
+  });
+
+  await browser.setCookies([{
+    name: "my-cookie",
+    value: "my-cookie",
+    expires: 4102444800000, // 2100-01-01
+    url: "www.myawesomesite.com"
+  ]});
+});
+```

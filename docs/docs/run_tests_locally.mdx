@@ -1,0 +1,71 @@
+---
+id: run_tests_locally
+title: 🏃 Run Tests Locally
+---
+
+import BrowserCodeBlock from "./components/BrowserCodeBlock.mdx";
+import BrowserCombinedCodeBlock from "./components/BrowserCombinedCodeBlock.mdx";
+
+In the [previous guide](create_a_test) we created our first browser test for [TodoMVC](http://todomvc.com/examples/react). We will now run our test locally to verify that it works.
+
+## TL;DR
+
+<BrowserCodeBlock />
+
+## Run a test locally
+
+Let's run our test locally to confirm it works. In the command line, run the following [command](api/cli#npx-qawolf-test-name). If applicable, replace `myFirstTest` with your test name:
+
+```bash
+npx qawolf test myFirstTest
+```
+
+A Chromium browser will open and the test will run using the [Jest](https://jestjs.io) test runner. See the video below for an example:
+
+<video controls title="run a test locally" width="100%">
+  <source
+    src="https://storage.googleapis.com/docs.qawolf.com/guides/run_test_locally.mp4"
+    type="video/mp4"
+  />
+</video>
+
+If you're having trouble running your test, please [chat with us](https://gitter.im/qawolf/community) or [open an issue on GitHub](https://github.com/qawolf/qawolf/issues/new)!
+
+## Run all tests locally
+
+To run all of your tests locally, run:
+
+```bash
+npx qawolf test
+```
+
+After running this command, your tests will run in parallel to the extent possible. Each test will run on a separate Chromium browser.
+
+If you prefer to run your tests sequentially, you can use the [`--runInBand` Jest flag](https://jestjs.io/docs/en/cli#--runinband):
+
+```bash
+npx qawolf test --runInBand
+```
+
+## Test across browsers
+
+QA Wolf is built on top of Microsoft's [Playwright library](https://github.com/microsoft/playwright), which automates the [Chromium](https://www.chromium.org/Home), [Firefox](https://www.mozilla.org/en-US/firefox/new), and [WebKit](https://webkit.org) browsers with a single API. You can therefore run your tests on any of the supported browsers without having to change your code.
+
+To run your tests on a specific browser, use the `--chromium`, `--firefox`, or `--webkit` [flags](api/cli#npx-qawolf-test-name). To run your tests on all browsers, use the `--all-browsers` flag. If you run your tests across browsers, each test will run three times: once on Chromium, once on Firefox, and once on WebKit.
+
+If no flag is provided, QA Wolf will default to running your tests on Chromium.
+
+<BrowserCombinedCodeBlock />
+
+## Next steps
+
+Congratulations - you've mastered the basics of creating and running browser tests! 🎉
+
+There are a few places you can go from here:
+
+- [Run your tests in CI](run_tests_in_ci)
+- Learn how to edit your test code:
+  - [Use the REPL](use_the_repl)
+  - [Add assertions](add_assertions)
+  - [Use custom selectors](use_custom_selectors)
+  - [Change input values](change_input_values)

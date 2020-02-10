@@ -1,0 +1,17 @@
+.code {
+  background: #e7f0f4;
+  color: #114b5f;
+  font-family: Consolas, Source Code Pro, Courier New;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  margin-bottom: 24px;
+  padding: 24px;
+  word-wrap: normal;
+}
+
+@media screen and (max-width: 800px) {
+  .code {
+    font-size: 14px;
+  }
+}

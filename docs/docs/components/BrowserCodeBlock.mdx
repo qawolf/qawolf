@@ -1,0 +1,65 @@
+import TabItem from "@theme/TabItem";
+import BrowserTabs from "./BrowserTabs";
+
+<BrowserTabs>
+<TabItem value="chromium">
+
+- [Run a specific test](#run-a-test-locally) on Chromium:
+
+```bash
+npx qawolf test myTestName
+```
+
+- [Run all tests](#run-all-tests-locally) on Chromium:
+
+```bash
+npx qawolf test
+```
+
+</TabItem>
+<TabItem value="firefox">
+
+- [Run a specific test](#run-a-test-locally) on Firefox:
+
+```bash
+npx qawolf test --firefox myTestName
+```
+
+- [Run all tests](#run-all-tests-locally) on Firefox:
+
+```bash
+npx qawolf test --firefox
+```
+
+</TabItem>
+<TabItem value="webkit">
+
+- [Run a specific test](#run-a-test-locally) on WebKit:
+
+```bash
+npx qawolf test --webkit myTestName
+```
+
+- [Run all tests](#run-all-tests-locally) on WebKit:
+
+```bash
+npx qawolf test --webkit
+```
+
+</TabItem>
+<TabItem value="all">
+
+- [Run a specific test](#run-a-test-locally) on Chromium, Firefox, and WebKit:
+
+```bash
+npx qawolf test --all-browsers myTestName
+```
+
+- [Run all tests](#run-all-tests-locally) on Chromium, Firefox, and WebKit:
+
+```bash
+npx qawolf test --all-browsers
+```
+
+</TabItem>
+</BrowserTabs>

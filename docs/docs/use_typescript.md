@@ -3,17 +3,17 @@ id: use_typescript
 title: ⌨️ Use TypeScript
 ---
 
-Like [TypeScript](https://www.typescriptlang.org/)? So do we! [`qawolf`](api) is built with Typescript and is distributed with types.
+Like [TypeScript](https://www.typescriptlang.org/)? So do we! QA Wolf is built with TypeScript and distributed with types.
 
-In this tutorial, we will change our code to TypeScript. We assume you have [created a test](create_a_test), and have a [basic understanding of the test code](review_test_code).
+In this guide, we show you how to change your code to TypeScript. We assume you have [created a test](create_a_test) or [script](create_a_script).
 
 ## Use TypeScript
 
-To change your code to Typescript:
+To change your code to TypeScript, use the following three steps.
 
-1. Rename the script or test file extension from `.js` to `.ts`.
+1. Rename the test or script file extension from `.js` to `.ts`.
 
-For example, if your test file is called `.qawolf/tests/myFirstTest.test.js`, rename it to `.qawolf/tests/myFirstTest.test.ts`.
+For example, if your test file is called `.qawolf/tests/myTestName.test.js`, rename it to `.qawolf/tests/myTestName.test.ts`.
 
 2. Change `require("qawolf")` to an [`import` statement](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import):
 
@@ -25,16 +25,18 @@ const { launch } = require("qawolf");
 import { launch } from "qawolf";
 ```
 
-3. For browser tests, install types for [Node.js](https://www.npmjs.com/package/@types/node), [Playwright](https://www.npmjs.com/package/@types/playwright), and [Jest](https://www.npmjs.com/package/@types/jest):
+3. Install types if you haven't already.
+
+For browser tests, install types for [Node.js](https://www.npmjs.com/package/@types/node), [Playwright](https://www.npmjs.com/package/@types/playwright), and [Jest](https://www.npmjs.com/package/@types/jest):
 
 ```bash
-npm i -D @types/node @types/playwright @types/jest
+npm install --save-dev @types/node @types/playwright @types/jest
 ```
 
 For browser scripts, install types for [Node.js](https://www.npmjs.com/package/@types/node) and [Playwright](https://www.npmjs.com/package/@types/playwright):
 
 ```bash
-npm i -D @types/node @types/playwright
+npm install --save-dev @types/node @types/playwright
 ```
 
-Enjoy using Typescript! 😌
+Enjoy using TypeScript! 😌

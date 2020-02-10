@@ -1,0 +1,44 @@
+---
+id: page
+sidebar_label: page
+title: browser.page
+---
+
+import ArgumentFindPageOptions from "../components/ArgumentFindPageOptions";
+import ReturnPage from "../components/ReturnPage";
+import Syntax from "../components/Syntax";
+
+<Syntax code="browser.page([options={}])" />
+
+Get the specified [Playwright `Page`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page) instance. If the page is not found before timeout, an error is thrown.
+
+### Arguments
+
+<ArgumentFindPageOptions />
+
+### Returns
+
+<ReturnPage />
+
+### Examples
+
+Get the current page:
+
+```js
+const currentPage = await browser.page();
+```
+
+Get the page with index `1`:
+
+```js
+const popupWindow = await browser.page({ page: 1 });
+```
+
+Get the current page. Wait up to 10 seconds for the page to open, and don't wait for the page to complete network requests:
+
+```js
+const currentPage = await browser.page({
+  timeoutMs: 10000,
+  waitForRequests: false
+});
+```

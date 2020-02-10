@@ -1,0 +1,78 @@
+---
+id: click
+sidebar_label: click
+title: browser.click
+---
+
+import ArgumentFindElementOptions from "../components/ArgumentFindElementOptions";
+import ArgumentSelector from "../components/ArgumentSelector";
+import ReturnElementHandle from "../components/ReturnElementHandle";
+import Syntax from "../components/Syntax";
+
+<Syntax code="browser.click(selector, [options={}])" />
+
+Find and click on an element. If the element is not found before timeout, an error is thrown.
+
+### Arguments
+
+<ArgumentSelector />
+<ArgumentFindElementOptions simulate />
+
+### Returns
+
+<ReturnElementHandle />
+
+## Examples
+
+### CSS Selectors
+
+Click on the element with the id `"my-id"`:
+
+```js
+await browser.click({ css: "#my-id" });
+```
+
+Click on the element with the `data-qa` attribute equal to `"submit"`:
+
+```js
+await browser.click({ css: "[data-qa='submit']" });
+```
+
+### HTML Selectors
+
+Click on an element using the [default selector logic](../../use_custom_selectors#default-selector-logic):
+
+```js
+await browser.click(selectors[0]);
+```
+
+### Text Selectors
+
+Click on the element containing the text `"Submit"`:
+
+```js
+await browser.click({ text: "Submit" });
+```
+
+### Options
+
+Click on the element containing the text `"Sign In"`, waiting 5 seconds after it is found before clicking:
+
+```js
+await browser.click({ text: "Sign In" }, { sleepMs: 5000 });
+```
+
+Click on the element with the CSS class `"my-class"`, using [Playwright's `Page.click` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#pageclickselector-options) and without waiting for the page to complete network requests:
+
+```js
+await browser.click(
+  { css: ".my-class" },
+  { simulate: false, waitForRequests: false }
+);
+```
+
+Return the [Playwright `ElementHandle`](https://github.com/microsoft/playwright/blob/v0.10.0/docs/api.md#class-elementhandle) instance after clicking:
+
+```js
+const element = await browser.click(selectors[0]);
+```

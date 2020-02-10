@@ -13,7 +13,7 @@ QA Wolf is an [open source](https://github.com/qawolf/qawolf) project, and we we
 
 Improving our documentation is a great way to start contributing to QA Wolf. Our docs are also open source and are built with the awesome [Docusaurus](https://v2.docusaurus.io/) library.
 
-To get started, first fork the [`qawolf` repository](https://github.com/qawolf/qawolf). See [GitHub documentation](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) to learn more about forking a repository.
+To get started, first fork the [`qawolf` repository](https://github.com/qawolf/qawolf). See [GitHub documentation](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) to learn how to fork a repository.
 
 Change directories into the `docs` folder:
 
@@ -32,7 +32,9 @@ You will be able to view the docs at `localhost:3000` (or a different port if `3
 
 Each page in the docs lives in a named Markdown file in the `qawolf/docs/docs` folder. For example, the file with the Markdown for this page is `qawolf/docs/docs/contribute.md`.
 
-Once you've made the changes you'd like, please make a pull request to the [`qawolf` repository](https://github.com/qawolf/qawolf). See [GitHub documentation](https://help.github.com/en/desktop/contributing-to-projects/creating-a-pull-request) to learn more about creating a pull request.
+If you update the Markdown file and save it, your changes will be visible on `localhost:3000`.
+
+Once you've made your changes, make a pull request to the [`qawolf` repository](https://github.com/qawolf/qawolf). See [GitHub documentation](https://help.github.com/en/desktop/contributing-to-projects/creating-a-pull-request) to learn more about creating a pull request.
 
 If you have any questions please [chat with us on Gitter](https://gitter.im/qawolf/community)!
 

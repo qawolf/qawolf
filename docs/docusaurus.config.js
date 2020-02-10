@@ -5,6 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+const path = require("path");
+
 module.exports = {
   title: "QA Wolf",
   tagline: "Create browser tests 10x faster",
@@ -14,6 +16,12 @@ module.exports = {
   organizationName: "qawolf", // Usually your GitHub org/user name.
   projectName: "qawolf", // Usually your repo name.
   themeConfig: {
+    github: {
+      repo: "qawolf/qawolf"
+    },
+    gitter: {
+      room: "qawolf/community"
+    },
     navbar: {
       title: "QA Wolf",
       logo: {
@@ -21,24 +29,9 @@ module.exports = {
         src: "img/logo.png"
       },
       links: [
-        { to: "docs/quick_start", label: "Docs", position: "left" },
-        {
-          to: "docs/api",
-          label: "API"
-        },
-        {
-          href: "https://gitter.im/qawolf/community",
-          label: "Chat"
-        },
-        {
-          href: "mailto:jon@qawolf.com",
-          label: "Email"
-        },
-        {
-          href: "https://github.com/qawolf/qawolf",
-          label: "GitHub",
-          position: "right"
-        }
+        { to: "docs/what_is_qa_wolf", label: "Get Started", position: "left" },
+        { to: "docs/use_the_repl", label: "Guides", position: "left" },
+        { to: "docs/api/table_of_contents", label: "API", position: "left" }
       ]
     },
     footer: {
@@ -53,7 +46,11 @@ module.exports = {
           items: [
             {
               to: "http://eepurl.com/gM47dD",
-              label: "Subscribe to Updates"
+              label: "Subscribe to Mailing List"
+            },
+            {
+              to: "docs/privacy_policy",
+              label: "Privacy Policy"
             }
           ]
         }
@@ -76,5 +73,10 @@ module.exports = {
         }
       }
     ]
+  ],
+  plugins: [
+    path.resolve(__dirname, "./src/gitter-chat"),
+    path.resolve(__dirname, "./src/github-stars"),
+    path.resolve(__dirname, "./src/hotjar")
   ]
 };
