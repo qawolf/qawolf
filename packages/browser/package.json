@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/browser",
   "description": "qawolf browser manager",
-  "version": "0.9.0-beta.5",
+  "version": "0.9.0-beta.6",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -24,16 +24,16 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/config": "0.9.0-beta.5",
-    "@qawolf/logger": "0.9.0-beta.5",
-    "@qawolf/repl": "0.9.0-beta.5",
-    "@qawolf/screen": "0.9.0-beta.5",
-    "@qawolf/types": "0.9.0-beta.5",
-    "@qawolf/web": "0.9.0-beta.5",
+    "@qawolf/config": "0.9.0-beta.6",
+    "@qawolf/logger": "0.9.0-beta.6",
+    "@qawolf/repl": "0.9.0-beta.6",
+    "@qawolf/screen": "0.9.0-beta.6",
+    "@qawolf/types": "0.9.0-beta.6",
+    "@qawolf/web": "0.9.0-beta.6",
     "rrweb": "^0.7.25"
   },
   "devDependencies": {
-    "@qawolf/jest-plugin": "0.9.0-beta.5",
+    "@qawolf/jest-plugin": "0.9.0-beta.6",
     "@types/debug": "^4.1.5",
     "fs-extra": "^8.x",
     "handlebars": "^4.x",
