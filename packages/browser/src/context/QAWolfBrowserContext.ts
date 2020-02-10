@@ -74,8 +74,8 @@ export class QAWolfBrowserContext extends EventEmitter {
 
     this._capture = options.capture;
     this._createdAt = Date.now();
-    this._decorated = decorateBrowserContext(options.playwrightContext, this);
 
+    this._decorated = decorateBrowserContext(options.playwrightContext, this);
     this._disposeManagePages = managePages(this);
   }
 
@@ -106,9 +106,9 @@ export class QAWolfBrowserContext extends EventEmitter {
       playwrightContext
     });
 
-    const context = qawolfContext.decorated;
+    const context = qawolfContext.decorated();
 
-    if (options.url) await context.goto(options.url);
+    if (options.url) await qawolfContext.goto(options.url);
 
     logTestStarted(context);
 
@@ -119,27 +119,27 @@ export class QAWolfBrowserContext extends EventEmitter {
     return context;
   }
 
-  public get browser(): PlaywrightBrowser {
+  public browser(): PlaywrightBrowser {
     return this._options.playwrightBrowser;
   }
 
-  public get browserType(): BrowserType {
+  public browserType(): BrowserType {
     return this._options.browserType;
   }
 
-  public get decorated(): BrowserContext {
+  public decorated(): BrowserContext {
     return this._decorated;
   }
 
-  public get device() {
+  public device() {
     return this._options.device;
   }
 
-  public get logLevel() {
+  public logLevel() {
     return this._options.logLevel;
   }
 
-  public get shouldRecordEvents() {
+  public shouldRecordEvents() {
     return this._options.shouldRecordEvents;
   }
 
@@ -150,11 +150,13 @@ export class QAWolfBrowserContext extends EventEmitter {
   }
 
   public _registerPage(page: Page) {
-    logger.debug(`QAWolfBrowserContext: register page ${page.qawolf.index}`);
+    logger.debug(
+      `QAWolfBrowserContext: register page ${page.qawolf().index()}`
+    );
 
     this._pages.push(page);
 
-    page.qawolf.on("recorded_event", event => {
+    page.qawolf().on("recorded_event", event => {
       logger.debug(
         `QAWolfBrowserContext: received "recorded_event" ${event.time}`
       );
@@ -171,7 +173,7 @@ export class QAWolfBrowserContext extends EventEmitter {
       ...options,
       page: options.page
     });
-    return page.qawolf.click(selector, options);
+    return page.qawolf().click(selector, options);
   }
 
   public async close() {
@@ -195,10 +197,13 @@ export class QAWolfBrowserContext extends EventEmitter {
 
     await createDomArtifacts(this._pages, this._createdAt);
 
-    this._pages.forEach(page => page.qawolf.dispose());
+    this._pages.forEach(page => page.qawolf().dispose());
 
     try {
-      await this._decorated.browser.close();
+      // close the original browser, which will close the context
+      await this.decorated()
+        .browser()
+        .close();
     } catch (e) {
       if ((e.message as string).includes("Browser has been closed")) {
         return;
@@ -218,7 +223,7 @@ export class QAWolfBrowserContext extends EventEmitter {
       ...options,
       page: options.page
     });
-    return page.qawolf.find(selector, options);
+    return page.qawolf().find(selector, options);
   }
 
   public async findProperty(
@@ -230,7 +235,7 @@ export class QAWolfBrowserContext extends EventEmitter {
       ...options,
       page: options.page
     });
-    return page.qawolf.findProperty(selector, property, options);
+    return page.qawolf().findProperty(selector, property, options);
   }
 
   public async goto(
@@ -240,10 +245,14 @@ export class QAWolfBrowserContext extends EventEmitter {
     logger.verbose(`BrowserContext: goto ${url}`);
     const page = await this.page(options);
 
-    await page.goto(url, {
-      timeout: this._options.navigationTimeoutMs,
-      ...options
-    });
+    try {
+      await page.goto(url, {
+        timeout: this._options.navigationTimeoutMs,
+        ...options
+      });
+    } catch (e) {
+      if (!e.message.includes("was canceled by another one")) throw e;
+    }
 
     return page;
   }
@@ -253,7 +262,7 @@ export class QAWolfBrowserContext extends EventEmitter {
     options: FindPageOptions = {}
   ): Promise<boolean> {
     const page = await this.page(options);
-    return page.qawolf.hasText(text, options);
+    return page.qawolf().hasText(text, options);
   }
 
   public page(options: FindPageOptions = {}) {
@@ -276,7 +285,7 @@ export class QAWolfBrowserContext extends EventEmitter {
       ...options,
       page: options.page
     });
-    return page.qawolf.scroll(selector, value, options);
+    return page.qawolf().scroll(selector, value, options);
   }
 
   public async select(
@@ -288,7 +297,7 @@ export class QAWolfBrowserContext extends EventEmitter {
       ...options,
       page: options.page
     });
-    return page.qawolf.select(selector, value, options);
+    return page.qawolf().select(selector, value, options);
   }
 
   public async type(
@@ -301,6 +310,6 @@ export class QAWolfBrowserContext extends EventEmitter {
       page: options.page
     });
 
-    return page.qawolf.type(selector, value, options);
+    return page.qawolf().type(selector, value, options);
   }
 }

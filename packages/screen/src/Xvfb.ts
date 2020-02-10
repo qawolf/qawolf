@@ -20,7 +20,7 @@ export class Xvfb {
     this._process = options.process;
     this._timeoutMs = options.timeoutMs || 30000;
 
-    logger.debug(`Xvfb: created ${this.display}`);
+    logger.debug(`Xvfb: created ${this.display()}`);
   }
 
   public static async startWithArgs(
@@ -61,12 +61,12 @@ export class Xvfb {
     ]);
   }
 
-  public get display() {
+  public display() {
     return `:${this._display}`;
   }
 
-  public get screen() {
-    return `${this.display}.0`;
+  public screen() {
+    return `${this.display()}.0`;
   }
 
   public async stop() {

@@ -28,7 +28,7 @@ describe("BrowserContext.type", () => {
 
 describe("Page.type", () => {
   it("does not clear input value for Tab (or Enter)", async () => {
-    await page.qawolf.type({ css: "#username" }, "↓Tab↑Tab");
+    await page.qawolf().type({ css: "#username" }, "↓Tab↑Tab");
 
     const username = await page.$eval(
       "#username",
@@ -49,7 +49,7 @@ describe("Page.type", () => {
   });
 
   it("clears input value for null", async () => {
-    await page.qawolf.type({ css: "#username" }, null);
+    await page.qawolf().type({ css: "#username" }, null);
 
     const username = await page.$eval(
       "#username",

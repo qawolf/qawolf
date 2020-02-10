@@ -31,7 +31,7 @@ const buildArgs = (options: VideoCaptureOptions) => [
   // input
   "-i",
   //:display+x,y offset
-  `${options.xvfb.screen}+${options.offset.x},${options.offset.y}`,
+  `${options.xvfb.screen()}+${options.offset.x},${options.offset.y}`,
   // overwrite output
   "-y",
   // balance high quality and good compression https://superuser.com/a/582327/856890
@@ -53,12 +53,12 @@ export class VideoCapture {
   /**
    * Capture the x11 display with ffmpeg in a child process.
    */
-  private _stopped: boolean = false;
-
   private _ffmpeg: ChildProcessWithoutNullStreams;
 
   // public for tests
   public _size: Size;
+
+  private _stopped: boolean = false;
 
   protected constructor(options: VideoCaptureOptions, ffmpegPath: string) {
     this._size = options.size;
@@ -95,7 +95,7 @@ export class VideoCapture {
     return capture;
   }
 
-  public get stopped() {
+  public stopped() {
     return this._stopped;
   }
 
@@ -117,9 +117,11 @@ export class VideoCapture {
       // give ffmpeg time to process last frames
       await sleep(500);
 
-      // stop and finish Capture
-      // from https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/662#issuecomment-278375650
-      this._ffmpeg.stdin.write("q");
+      try {
+        // stop and finish Capture
+        // from https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/662#issuecomment-278375650
+        this._ffmpeg.stdin.write("q");
+      } catch (e) {}
     });
   }
 }

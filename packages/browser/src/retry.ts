@@ -19,7 +19,8 @@ export const retryExecutionError = async (
         error.message ===
           "Protocol error (Runtime.callFunctionOn): Inspected target navigated or closed" ||
         error.message === "Node is detached from document" ||
-        error.message === "Node is either not visible or not an HTMLElement"
+        error.message === "Node is either not visible or not an HTMLElement" ||
+        error.message.includes("was canceled by another one")
       ) {
         logger.verbose(
           `retryExecutionError: retrying ${i + 1}/${times} error: "${

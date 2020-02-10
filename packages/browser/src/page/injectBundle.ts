@@ -51,7 +51,7 @@ export const bundleJs = (options: BundleOptions) => {
   if (options.shouldRecordDom) bundle += RECORD_DOM_JS;
 
   if (options.shouldRecordEvents) {
-    bundle += buildRecordEventsJs(options.page.qawolf.index);
+    bundle += buildRecordEventsJs(options.page.qawolf().index());
   }
 
   return bundle;
@@ -59,13 +59,16 @@ export const bundleJs = (options: BundleOptions) => {
 
 export const captureDomEvents = async (page: Page) => {
   await page.exposeFunction("qaw_onDomEvent", (event: eventWithTime) => {
-    page.qawolf.domEvents.push(event);
+    page
+      .qawolf()
+      .domEvents()
+      .push(event);
   });
 };
 
 export const captureEvents = async (page: Page) => {
   await page.exposeFunction("qaw_onRecordEvent", (event: ElementEvent) =>
-    page.qawolf._onRecordEvent(event)
+    page.qawolf()._onRecordEvent(event)
   );
 };
 

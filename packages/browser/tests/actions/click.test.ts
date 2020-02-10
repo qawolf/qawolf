@@ -35,7 +35,7 @@ describe("Page.click", () => {
 
     await Promise.all([
       page.waitForNavigation(),
-      page.qawolf.click({ html: "<a>broken images</a>" })
+      page.qawolf().click({ html: "<a>broken images</a>" })
     ]);
 
     expect(page.url()).toBe(`${CONFIG.testUrl}broken_images`);
@@ -66,7 +66,7 @@ describe("Page.click", () => {
       return new Promise(resolve => (customElement.onclick = resolve));
     });
 
-    await page.qawolf.click({
+    await page.qawolf().click({
       html: "<custom-element>custom element</custom-element>"
     });
 
