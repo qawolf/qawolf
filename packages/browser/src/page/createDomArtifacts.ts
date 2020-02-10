@@ -11,9 +11,11 @@ const replayerTemplate = compile(
 
 export const createDomReplayer = async (page: Page, path: string) => {
   logger.debug(
-    `createDomReplayer: save to ${path} for ${page.qawolf.domEvents.length} events`
+    `createDomReplayer: save to ${path} for ${
+      page.qawolf().domEvents().length
+    } events`
   );
-  if (!page.qawolf.domEvents.length) return;
+  if (!page.qawolf().domEvents().length) return;
 
   // cycle event loop to ensure we get all events
   try {
@@ -23,7 +25,7 @@ export const createDomReplayer = async (page: Page, path: string) => {
   }
 
   const replayer = replayerTemplate({
-    eventsJson: JSON.stringify(page.qawolf.domEvents).replace(
+    eventsJson: JSON.stringify(page.qawolf().domEvents()).replace(
       /<\/script>/g,
       "<\\/script>"
     ),

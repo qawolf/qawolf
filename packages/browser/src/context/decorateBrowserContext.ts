@@ -11,14 +11,13 @@ export const decorateBrowserContext = (
    */
   const context = playwrightContext as BrowserContext;
 
+  context.browser = qawolfContext.browser.bind(qawolfContext);
+
   context.click = qawolfContext.click.bind(qawolfContext);
 
-  // set original _close method before we clobber it
+  // keep a reference to the original _close
   context._close = context.close;
   context.close = qawolfContext.close.bind(qawolfContext);
-
-  // keep a reference to the parent browser
-  context.browser = qawolfContext.browser;
 
   context.find = qawolfContext.find.bind(qawolfContext);
   context.findProperty = qawolfContext.findProperty.bind(qawolfContext);
@@ -28,7 +27,9 @@ export const decorateBrowserContext = (
   context.scroll = qawolfContext.scroll.bind(qawolfContext);
   context.select = qawolfContext.select.bind(qawolfContext);
   context.type = qawolfContext.type.bind(qawolfContext);
-  context.qawolf = qawolfContext;
+
+  // reference our QAWolfBrowserContext for internal use
+  context.qawolf = () => qawolfContext;
 
   return context;
 };

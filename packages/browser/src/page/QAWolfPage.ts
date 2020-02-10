@@ -54,7 +54,7 @@ export class QAWolfPage extends EventEmitter {
 
     // decorate the page
     this._decorated = options.playwrightPage as Page;
-    this._decorated.qawolf = this;
+    this._decorated.qawolf = () => this;
 
     this._requests = new RequestTracker(this._decorated);
 
@@ -92,7 +92,7 @@ export class QAWolfPage extends EventEmitter {
     });
   }
 
-  public get decorated() {
+  public decorated() {
     return this._decorated;
   }
 
@@ -101,11 +101,11 @@ export class QAWolfPage extends EventEmitter {
     this._requests.dispose();
   }
 
-  public get domEvents() {
+  public domEvents() {
     return this._domEvents;
   }
 
-  public get events() {
+  public events() {
     return this._events;
   }
 
@@ -139,7 +139,7 @@ export class QAWolfPage extends EventEmitter {
     });
   }
 
-  public get index() {
+  public index() {
     return this._index;
   }
 

@@ -72,9 +72,9 @@ export class CreateCodeCLI {
 
       const context = await contextPromise;
 
-      context.qawolf.goto(options.url.href!);
+      context.qawolf().goto(options.url.href!);
 
-      context.qawolf.on("recorded_event", event => {
+      context.qawolf().on("recorded_event", event => {
         codeCreator.pushEvent(event);
       });
 

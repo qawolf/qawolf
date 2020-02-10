@@ -107,7 +107,7 @@ export const launch = async (options: LaunchOptions = {}) => {
   if (capture) {
     launchOptions.env = {
       ...launchOptions.env,
-      DISPLAY: capture.xvfb.screen
+      DISPLAY: capture.xvfb().screen()
     };
   }
 

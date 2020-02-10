@@ -20,7 +20,7 @@ describe("BrowserContext.select", () => {
     });
     expect(selectValue).toBeFalsy();
 
-    await page.qawolf.select({ css: "#dropdown" }, "2");
+    await page.qawolf().select({ css: "#dropdown" }, "2");
 
     const selectValue2 = await page.evaluate(() => {
       const select = document.getElementsByTagName("select")[0];
@@ -34,7 +34,7 @@ describe("Page.select", () => {
   it("clears option", async () => {
     const page = await context.page();
 
-    await page.qawolf.select({ css: "#dropdown" }, null);
+    await page.qawolf().select({ css: "#dropdown" }, null);
 
     const selectValue2 = await page.evaluate(() => {
       const select = document.getElementsByTagName("select")[0];

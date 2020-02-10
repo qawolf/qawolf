@@ -17,7 +17,7 @@ import { QAWolfBrowserContext } from "./QAWolfBrowserContext";
 
 // playwright BrowserContext decorated with our helpers
 export interface BrowserContext extends PlaywrightBrowserContext {
-  browser: PlaywrightBrowser;
+  browser(): PlaywrightBrowser;
 
   click(
     selector: Selector,
@@ -53,14 +53,14 @@ export interface BrowserContext extends PlaywrightBrowserContext {
     options?: FindElementOptions
   ): Promise<ElementHandle>;
 
+  // reference for internal use
+  qawolf(): QAWolfBrowserContext;
+
   type(
     selector: Selector,
     value: string | null,
     options?: FindElementOptions & TypeOptions
   ): Promise<ElementHandle>;
-
-  // reference for internal use
-  qawolf: QAWolfBrowserContext;
 
   // reference to original PlaywrightBrowser.close method
   _close(): Promise<void>;

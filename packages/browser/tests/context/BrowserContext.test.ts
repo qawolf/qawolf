@@ -4,9 +4,9 @@ import { launch } from "../../src/context/launch";
 describe("BrowserContext.close", () => {
   it("closes the parent Browser", async () => {
     const context = await launch({ url: CONFIG.testUrl });
-    expect(context.browser.isConnected()).toEqual(true);
+    expect(context.browser().isConnected()).toEqual(true);
     await context.close();
-    expect(context.browser.isConnected()).toEqual(false);
+    expect(context.browser().isConnected()).toEqual(false);
   });
 });
 

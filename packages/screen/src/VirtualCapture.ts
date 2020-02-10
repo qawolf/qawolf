@@ -54,23 +54,23 @@ export class VirtualCapture {
     });
   }
 
-  public get gifPath() {
+  public gifPath() {
     return this._gifPath;
   }
 
-  public get size() {
+  public size() {
     return this._options.size;
   }
 
-  public get stopped() {
-    return this._videoCapture && this._videoCapture.stopped;
+  public stopped() {
+    return this._videoCapture && this._videoCapture.stopped();
   }
 
-  public get videoPath() {
+  public videoPath() {
     return this._videoPath;
   }
 
-  public get xvfb() {
+  public xvfb() {
     return this._options.xvfb;
   }
 

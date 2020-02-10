@@ -17,7 +17,7 @@ describe("BrowserContext.scroll", () => {
     const initialYPosition = await page.evaluate(() => window.pageYOffset);
     expect(initialYPosition).toBe(0);
 
-    await page.qawolf.scroll({ css: "html" }, { x: 0, y: 2000 });
+    await page.qawolf().scroll({ css: "html" }, { x: 0, y: 2000 });
 
     const nextYPosition = await page.evaluate(() => window.pageYOffset);
     expect(nextYPosition).toBe(2000);
@@ -31,12 +31,12 @@ describe("Page.scroll", () => {
     const initialYPosition = await page.evaluate(() => window.pageYOffset);
     expect(initialYPosition).toBe(0);
 
-    await page.qawolf.scroll({ html: "<html></html>" }, { x: 0, y: 1000 });
+    await page.qawolf().scroll({ html: "<html></html>" }, { x: 0, y: 1000 });
 
     const nextYPosition = await page.evaluate(() => window.pageYOffset);
     expect(nextYPosition).toBe(1000);
 
-    await page.qawolf.scroll({ css: "html" }, { x: 0, y: 0 });
+    await page.qawolf().scroll({ css: "html" }, { x: 0, y: 0 });
 
     const finalYPosition = await page.evaluate(() => window.pageYOffset);
     expect(finalYPosition).toBe(0);

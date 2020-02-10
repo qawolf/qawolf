@@ -26,7 +26,7 @@ export class Logger {
     this._logger.add(transport);
   }
 
-  public get numTransports() {
+  public numTransports() {
     return this._logger.transports.length;
   }
 

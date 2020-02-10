@@ -9,13 +9,13 @@ export const decoratePages = async (
   /**
    * Ensure each Playwright page is decorated with a QAWolfPage.
    */
-  const playwrightPages = await context.decorated.pages();
+  const playwrightPages = await context.decorated().pages();
 
   const pages = await Promise.all(
     playwrightPages.map(async (playwrightPage: any) => {
       if (playwrightPage.qawolf) {
         const page = playwrightPage as Page;
-        await page.qawolf.ready();
+        await page.qawolf().ready();
         return page;
       }
 
@@ -24,21 +24,21 @@ export const decoratePages = async (
 
       const page = new QAWolfPage({
         index,
-        logLevel: context.logLevel,
+        logLevel: context.logLevel(),
         playwrightPage,
         shouldRecordDom: !!CONFIG.artifactPath,
-        shouldRecordEvents: context.shouldRecordEvents
+        shouldRecordEvents: context.shouldRecordEvents()
       });
 
       await page.ready();
 
-      const decorated = page.decorated;
+      const decorated = page.decorated();
       context._registerPage(decorated);
       return decorated;
     })
   );
 
-  return pages.sort((a, b) => a.qawolf.index - b.qawolf.index);
+  return pages.sort((a, b) => a.qawolf().index() - b.qawolf().index());
 };
 
 export const managePages = (context: QAWolfBrowserContext) => {

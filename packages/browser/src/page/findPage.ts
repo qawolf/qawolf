@@ -2,6 +2,7 @@ import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { FindPageOptions } from "@qawolf/types";
 import { isNil, waitFor } from "@qawolf/web";
+import { CRBrowser } from "playwright-core/lib/chromium/crBrowser";
 import { QAWolfBrowserContext } from "../context/QAWolfBrowserContext";
 import { Page } from "./Page";
 
@@ -20,7 +21,7 @@ const getIndex = async (
   }
 
   // use the current page index if it is open
-  if (openPages.find(p => p.qawolf.index === context._currentPageIndex)) {
+  if (openPages.find(p => p.qawolf().index() === context._currentPageIndex)) {
     return context._currentPageIndex;
   }
 
@@ -56,9 +57,9 @@ export const findPage = async (
   }
 
   // TODO waiting for https://github.com/microsoft/playwright/issues/657 for cross browser support
-  if (context.browserType === "chromium" && options.bringToFront) {
+  if (context.browserType() === "chromium" && options.bringToFront) {
     logger.verbose(`findPage: Page.bringToFront ${index}`);
-    const client = await (context.browser as any)
+    const client = await (context.browser() as CRBrowser)
       .pageTarget(page)
       .createCDPSession();
     await client.send("Page.bringToFront");
@@ -66,7 +67,7 @@ export const findPage = async (
   }
 
   if (options.waitForRequests !== false) {
-    await page.qawolf.waitForRequests();
+    await page.qawolf().waitForRequests();
   }
 
   context._currentPageIndex = index;

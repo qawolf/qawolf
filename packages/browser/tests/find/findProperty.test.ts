@@ -26,10 +26,9 @@ describe("BrowserContext.findProperty", () => {
 
 describe("Page.findProperty", () => {
   it("returns undefined if element does not have property", async () => {
-    const placeholder = await page.qawolf.findProperty(
-      { css: "#dropdown" },
-      "placeholder"
-    );
+    const placeholder = await page
+      .qawolf()
+      .findProperty({ css: "#dropdown" }, "placeholder");
     expect(placeholder).toBeUndefined();
   });
 
@@ -37,7 +36,7 @@ describe("Page.findProperty", () => {
     let message = false;
 
     try {
-      await page.qawolf.findProperty({ css: "#wrongId" }, "tagName", {
+      await page.qawolf().findProperty({ css: "#wrongId" }, "tagName", {
         timeoutMs: 0
       });
     } catch (e) {
@@ -48,7 +47,7 @@ describe("Page.findProperty", () => {
   });
 
   it("returns the first element's property if multiple match selector", async () => {
-    const id = await page.qawolf.findProperty({ css: "option" }, "selected");
+    const id = await page.qawolf().findProperty({ css: "option" }, "selected");
     expect(id).toEqual(true);
   });
 });
