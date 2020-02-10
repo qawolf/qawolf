@@ -1,5 +1,4 @@
 import { VirtualCode } from "@qawolf/build-code";
-import { last } from "lodash";
 import { patchCode, PATCH_HANDLE } from "./patchCode";
 
 type ReconcileOptions = {
@@ -8,58 +7,32 @@ type ReconcileOptions = {
 };
 
 export class CodeReconciler {
-  // the virtual code for the current code
+  // the virtual representation of the current code
   private _virtualCode: VirtualCode = new VirtualCode([]);
 
-  public hasUpdates(virtualCode: VirtualCode) {
-    // TODO...
-    return true;
-
-    // const stepsToPatch = options.steps.slice(this._commitedStepIndex);
-    // TODO....
-    // if (!stepsToPatch.length && !options.removeHandle) {
-    //   return;
-    // }
-  }
-
-  private _replaceLastExpression({
-    actualCode,
-    virtualCode
-  }: ReconcileOptions) {
-    /**
-     * Replace the last expression if it updated.
-     */
+  private _compareLastExpression(virtualCode: VirtualCode) {
     const expressions = this._virtualCode.expressions();
     const lastIndex = expressions.length - 1;
-    if (lastIndex < 0) return actualCode;
+    if (lastIndex < 0) return null;
 
     const expressionToUpdate = expressions[lastIndex];
     const updatedExpression = virtualCode.expressions()[lastIndex];
 
-    const codeToReplace = expressionToUpdate.updatableCode();
-    const replaceValue = updatedExpression.updatableCode();
+    const original = expressionToUpdate.updatableCode();
+    const updated = updatedExpression.updatableCode();
+    if (original === updated) return null;
 
-    if (codeToReplace === replaceValue) return actualCode;
-
-    // replace the last occurrence
-    const indexToReplace = actualCode.lastIndexOf(codeToReplace);
-
-    // if we cannot find it return original code
-    if (indexToReplace < 0) return actualCode;
-
-    const updatedCode =
-      actualCode.slice(0, indexToReplace) +
-      actualCode.slice(indexToReplace).replace(codeToReplace, replaceValue);
-
-    return updatedCode;
+    return { original, updated };
   }
 
-  private _patchNewExpressions({ actualCode, virtualCode }: ReconcileOptions) {
-    const existingExpressions = this._virtualCode.expressions();
+  private _newExpressions(virtualCode: VirtualCode) {
+    const existing = this._virtualCode.expressions();
+    const newExpressions = virtualCode.expressions().slice(existing.length);
+    return newExpressions;
+  }
 
-    const newExpressions = virtualCode
-      .expressions()
-      .slice(existingExpressions.length);
+  private _insertNewExpressions({ actualCode, virtualCode }: ReconcileOptions) {
+    const newExpressions = this._newExpressions(virtualCode);
     if (newExpressions.length < 1) return actualCode;
 
     const patch =
@@ -69,11 +42,39 @@ export class CodeReconciler {
     return patchCode({ code: actualCode, patch });
   }
 
-  public reconcile({ actualCode, virtualCode }: ReconcileOptions): string {
-    // replace the last expression if it updated
-    let updatedCode = this._replaceLastExpression({ actualCode, virtualCode });
+  private _updateLastExpression({ actualCode, virtualCode }: ReconcileOptions) {
+    /**
+     * Replace the last expression if changed.
+     */
+    const comparison = this._compareLastExpression(virtualCode);
+    if (!comparison) return actualCode;
 
-    updatedCode = this._patchNewExpressions({
+    // find the last occurrence of the original expression
+    const indexToReplace = actualCode.lastIndexOf(comparison.original);
+
+    // we cannot find the original expression so return the unmodified code
+    if (indexToReplace < 0) return actualCode;
+
+    const updatedCode =
+      actualCode.slice(0, indexToReplace) +
+      actualCode
+        .slice(indexToReplace)
+        .replace(comparison.original, comparison.updated);
+
+    return updatedCode;
+  }
+
+  public hasChanges(virtualCode: VirtualCode) {
+    return (
+      this._compareLastExpression(virtualCode) ||
+      this._newExpressions(virtualCode).length > 0
+    );
+  }
+
+  public reconcile({ actualCode, virtualCode }: ReconcileOptions): string {
+    let updatedCode = this._updateLastExpression({ actualCode, virtualCode });
+
+    updatedCode = this._insertNewExpressions({
       actualCode: updatedCode,
       virtualCode
     });

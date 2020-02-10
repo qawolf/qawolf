@@ -77,7 +77,7 @@ export class CodeFile {
 
     const virtualCode = buildVirtualCode(options.steps, this._isTest);
 
-    if (!options.removeHandle && !this._reconciler.hasUpdates(virtualCode)) {
+    if (!options.removeHandle && !this._reconciler.hasChanges(virtualCode)) {
       return;
     }
 
