@@ -13,6 +13,8 @@ For those that are familiar, we aspire to be the [`create-react-app`](https://gi
 
 Curious yet? [Get started here!](install)
 
+![](https://storage.googleapis.com/docs.qawolf.com/website/create.gif)
+
 ## How is it 10x faster?
 
 Setting up browser tests is very time consuming. Not only do you need to create the test code, but you also need to figure out how to run your tests in CI. QA Wolf helps you to do each of these things in a fraction of the time.
