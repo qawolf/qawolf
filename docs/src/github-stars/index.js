@@ -24,6 +24,9 @@ module.exports = function(context) {
             }
 
             var starsIntervalId = setInterval(() => {
+              const stars = document.querySelector(".github-wrapper");
+              if (stars) return;
+
               const navBar = document.querySelector(".navbar__items.navbar__items--right");
               if (!navBar) return;
 
@@ -33,8 +36,6 @@ module.exports = function(context) {
               var starsScript = document.createElement('script');
               starsScript.src = "https://buttons.github.io/buttons.js";
               document.head.append(starsScript);
-
-              clearInterval(starsIntervalId);
             }, 100);`
           }
         ]
