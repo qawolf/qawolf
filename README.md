@@ -18,9 +18,9 @@
     <a href="https://github.com/qawolf/qawolf/projects/4">🗺️ Roadmap</a>
 </p>
 
-<br/>
+<img src="https://storage.googleapis.com/docs.qawolf.com/website/create.gif">
 
-<p>QA Wolf is an open source node library for creating browser tests 10x faster:</p>
+<br/>
 
 <ul>
 <li><b>Skip writing boilerplate.</b> Your browser actions are converted to Playwright and Jest code.
@@ -37,8 +37,6 @@
 </li>
 </ul>
 <p>We're working to build a world where browser testing is effortless. We hope you'll join us!</p>
-
-<br/>
 
 ## Table of Contents
 

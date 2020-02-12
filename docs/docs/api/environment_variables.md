@@ -20,7 +20,7 @@ env:
 
 **Default:** `null`
 
-Specify the path where [debug artifacts](run_tests_in_ci#debug) should be saved. Debug artifacts include logs from the browser and the QA Wolf server. On Linux with [xvfb](https://zoomadmin.com/HowToInstall/UbuntuPackage/xvfb) installed, a video recording and corresponding GIF are also saved.
+Specify the path where [debug artifacts](../run_tests_in_ci#debug) should be saved. Debug artifacts include logs from the browser and the QA Wolf server. On Linux with [xvfb](https://zoomadmin.com/HowToInstall/UbuntuPackage/xvfb) installed, a video recording and corresponding GIF are also saved.
 
 #### Examples
 
