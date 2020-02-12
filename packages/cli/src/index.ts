@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+export { CreateCodeCLI } from "./CreateCodeCLI";
+
 import { logger } from "@qawolf/logger";
 import { BrowserType } from "@qawolf/types";
 import program from "commander";

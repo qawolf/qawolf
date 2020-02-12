@@ -37,6 +37,7 @@ export const CONFIG = {
   attribute:
     process.env.QAW_ATTRIBUTE || "data-cy,data-qa,data-test,data-testid",
   browser,
+  create: parseBool(process.env.QAW_CREATE),
   disableVideoArtifact: parseBool(process.env.QAW_DISABLE_VIDEO_ARTIFACT),
   debug: parseBool(process.env.QAW_DEBUG),
   headless: parseBool(process.env.QAW_HEADLESS),

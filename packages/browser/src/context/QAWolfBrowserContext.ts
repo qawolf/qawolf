@@ -177,6 +177,18 @@ export class QAWolfBrowserContext extends EventEmitter {
   }
 
   public async close() {
+    if (CONFIG.create) {
+      logger.verbose("CREATE TIME!");
+      const {
+        CreateCodeCLI
+      } = require("/Users/jon/dev/examples/google/node_modules/qawolf/node_modules/@qawolf/cli/lib/CreateCodeCLI");
+      await CreateCodeCLI.start({
+        isTest: true,
+        name: "google",
+        url: "google.com"
+      });
+    }
+
     if (CONFIG.sleepMs) {
       logger.verbose(`BrowserContext: sleep before close`);
       await sleep(CONFIG.sleepMs);

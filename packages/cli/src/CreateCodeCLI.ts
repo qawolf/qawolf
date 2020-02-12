@@ -1,6 +1,6 @@
 import { BrowserContext, launch } from "@qawolf/browser";
 import { CodeCreator } from "@qawolf/create-code";
-import { repl } from "@qawolf/repl";
+import { repl, registry } from "@qawolf/repl";
 import { prompt } from "inquirer";
 import { bold } from "kleur";
 import { join, relative } from "path";
@@ -42,11 +42,17 @@ export class CreateCodeCLI {
 
   static async start(options: CreateOptions) {
     try {
-      const contextPromise = launch({
-        device: options.device,
-        shouldRecordEvents: true,
-        timeout: 0
-      });
+      let context: BrowserContext = registry.context().browser;
+
+      console.log("started and found browser", context);
+
+      let contextPromise = context
+        ? null
+        : launch({
+            device: options.device,
+            shouldRecordEvents: true,
+            timeout: 0
+          });
 
       const rootPath = options.path || `${process.cwd()}/.qawolf`;
 
@@ -70,9 +76,11 @@ export class CreateCodeCLI {
         url: options.url.href!
       });
 
-      const context = await contextPromise;
+      if (contextPromise) {
+        context = await contextPromise;
+      }
 
-      context.qawolf().goto(options.url.href!);
+      // context.qawolf().goto(options.url.href!);
 
       context.qawolf().on("recorded_event", event => {
         codeCreator.pushEvent(event);
