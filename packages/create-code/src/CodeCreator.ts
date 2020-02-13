@@ -53,6 +53,7 @@ export class CodeCreator {
 
     if (codeFile.hasPreexisting() && !selectorFile.hasPreexisting()) {
       await selectorFile.discard();
+      logNoSelectors();
       throw new Error("Cannot find selector file to update");
     }
 
@@ -75,6 +76,10 @@ export class CodeCreator {
       this._codeFile.update({ removeHandle, steps }),
       this._selectorFile.update({ steps })
     ]);
+  }
+
+  public codeRelativePath() {
+    return this._codeFile.relativePath();
   }
 
   public async discard() {
@@ -138,6 +143,14 @@ const logNoHandle = throttle(
   10000,
   { leading: true }
 );
+
+const logNoSelectors = () => {
+  console.log(bold().red("Cannot find selectors to update"));
+  console.log(
+    bold().blue("Specify them with:"),
+    "npx qawolf create --selectors /path/to/selectors.json"
+  );
+};
 
 const logSaveSuccess = (codeFile: CodeFile) => {
   const command = codeFile.isTest()
