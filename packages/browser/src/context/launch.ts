@@ -117,10 +117,21 @@ export const launch = async (options: LaunchOptions = {}) => {
       launchOptions
     );
 
-    return QAWolfBrowserContext.create(browserType, playwrightBrowser, {
-      ...launchOptions,
-      capture: capture || undefined
-    });
+    const context = await QAWolfBrowserContext.create(
+      browserType,
+      playwrightBrowser,
+      {
+        ...launchOptions,
+        capture: capture || undefined
+      }
+    );
+
+    // bring the first page to front (if possible)
+    // we do this in case it is a short test with only one action
+    // to make sure the browser shows up in the video
+    await context.page();
+
+    return context;
   } catch (e) {
     logger.error(`launch: failed ${e.toString()}`);
     throw e;
