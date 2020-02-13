@@ -177,14 +177,6 @@ export class QAWolfBrowserContext extends EventEmitter {
   }
 
   public async close() {
-    if (CONFIG.create) {
-      await CreateCodeCLI.start({
-        isTest: true,
-        name: "google",
-        url: "google.com"
-      });
-    }
-
     if (CONFIG.sleepMs) {
       logger.verbose(`BrowserContext: sleep before close`);
       await sleep(CONFIG.sleepMs);
