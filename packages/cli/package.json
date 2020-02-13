@@ -25,22 +25,17 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/browser": "0.9.0",
-    "@qawolf/create-code": "0.9.0",
-    "@qawolf/jest-plugin": "0.9.0",
-    "@qawolf/logger": "0.9.0",
-    "@qawolf/repl": "0.9.0",
+    "@qawolf/browser": "file:../browser",
+    "@qawolf/create-code": "file:../create-code",
+    "@qawolf/jest-plugin": "file:../jest-plugin",
+    "@qawolf/logger": "file:../logger",
+    "@qawolf/repl": "file:../repl",
     "commander": "^4.1.1",
     "inquirer": "^7.0.0",
     "jest": "^25.1.0"
   },
   "devDependencies": {
-    "@qawolf/types": "0.9.0",
-    "@types/inquirer": "^6.5.0",
-    "fs-extra": "^8.1.0",
-    "handlebars": "^4.x",
-    "kleur": "^3.x",
-    "lodash": "^4.x"
+    "@qawolf/types": "file:../types"
   },
   "peerDependencies": {
     "fs-extra": "^8.1.0",

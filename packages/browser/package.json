@@ -24,21 +24,16 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/config": "0.9.0",
-    "@qawolf/logger": "0.9.0",
-    "@qawolf/repl": "0.9.0",
-    "@qawolf/screen": "0.9.0",
-    "@qawolf/types": "0.9.0",
-    "@qawolf/web": "0.9.0",
+    "@qawolf/config": "file:../config",
+    "@qawolf/logger": "file:../logger",
+    "@qawolf/repl": "file:../repl",
+    "@qawolf/screen": "file:../screen",
+    "@qawolf/types": "file:../types",
+    "@qawolf/web": "file:../web",
     "rrweb": "^0.7.25"
   },
   "devDependencies": {
-    "@qawolf/jest-plugin": "0.9.0",
-    "@types/debug": "^4.1.5",
-    "fs-extra": "^8.x",
-    "handlebars": "^4.x",
-    "lodash": "^4.x",
-    "playwright": "0.10.0"
+    "@qawolf/jest-plugin": "file:../jest-plugin"
   },
   "peerDependencies": {
     "fs-extra": "^8.x",

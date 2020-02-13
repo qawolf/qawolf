@@ -23,13 +23,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/logger": "0.9.0",
-    "@qawolf/web": "0.9.0",
+    "@qawolf/logger": "file:../logger",
+    "@qawolf/web": "file:../web",
     "ffmpeg-static": "4.0.0"
-  },
-  "devDependencies": {
-    "fs-extra": "^8.x",
-    "lodash": "^4.x"
   },
   "peerDependencies": {
     "fs-extra": "^8.x",

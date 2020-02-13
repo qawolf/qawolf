@@ -17,9 +17,6 @@
     "access": "public"
   },
   "devDependencies": {
-    "@qawolf/browser": "0.9.0",
-    "@qawolf/config": "0.9.0",
-    "@qawolf/types": "0.9.0",
-    "@qawolf/web": "0.9.0"
+    "@qawolf/web": "file:../web"
   }
 }

@@ -24,10 +24,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "devDependencies": {
-    "fs-extra": "^8.x",
-    "lodash": "^4.x"
-  },
   "peerDependencies": {
     "fs-extra": "^8.x",
     "lodash": "^4.x"
