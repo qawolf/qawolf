@@ -14,6 +14,7 @@
     "test": "lerna run --stream test",
     "test:services": "docker-compose up -d",
     "test:windows": "lerna run --stream test -- -- --forceExit",
+    "version": "lerna clean --yes && lerna exec \"npm install --ignore-scripts --package-lock-only --no-audit\" && git add packages/*/package-lock.json",
     "watch": "tsc --build --watch packages/tsconfig.project.json"
   },
   "dependencies": {
