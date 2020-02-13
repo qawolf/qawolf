@@ -6,7 +6,7 @@
     "build": "npm run build:packages && npm run bundle:web",
     "build:packages": "tsc --build packages/tsconfig.project.json",
     "bundle:web": "lerna run --scope @qawolf/web bundle",
-    "changelog": "npx auto-changelog",
+    "changelog": "npx auto-changelog --commit-limit 0 --template keepachangelog",
     "clean": "lerna clean --yes && lerna exec -- rm -rf tsconfig.package.tsbuildinfo && lerna exec -- rm -rf ./lib",
     "cli": "ts-node packages/cli/src/index.ts",
     "lint": "eslint packages --ext .ts --ignore-path .gitignore --cache",
