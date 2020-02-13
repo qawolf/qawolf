@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@qawolf/browser": "file:../browser",
-    "@qawolf/cli": "file:../cli",
+    "@qawolf/cli": "0.9.0",
     "@qawolf/repl": "file:../repl",
     "@qawolf/web": "file:../web",
     "fs-extra": "^8.1.0",

@@ -25,5 +25,11 @@
   },
   "dependencies": {
     "@jperl/html-parse-stringify": "1.0.4"
+  },
+  "devDependencies": {
+    "rollup": "^1.23.1",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-typescript": "^1.0.1"
   }
 }

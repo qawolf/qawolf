@@ -21,7 +21,6 @@
     "@qawolf/browser": "file:packages/browser",
     "@qawolf/build-code": "file:packages/build-code",
     "@qawolf/build-workflow": "file:packages/build-workflow",
-    "@qawolf/cli": "file:packages/cli",
     "@qawolf/config": "file:packages/config",
     "@qawolf/create-code": "file:packages/create-code",
     "@qawolf/jest-plugin": "file:packages/jest-plugin",
@@ -31,17 +30,10 @@
     "@qawolf/test": "file:packages/test",
     "@qawolf/types": "file:packages/types",
     "@qawolf/web": "file:packages/web",
-    "@qawolf/web-tests": "file:packages/web-tests",
-    "qawolf": "file:packages/qawolf"
+    "@qawolf/web-tests": "file:packages/web-tests"
   },
   "devDependencies": {
     "@jest/test-result": "^25.1.0",
-    "@qawolf/browser": "file:../browser",
-    "@qawolf/config": "file:../config",
-    "@qawolf/jest-plugin": "0.9.0",
-    "@qawolf/test": "0.9.0",
-    "@qawolf/types": "file:../types",
-    "@qawolf/web": "0.9.0",
     "@types/debug": "^4.1.5",
     "@types/dotenv": "^6.1.1",
     "@types/fs-extra": "^8.0.1",
@@ -63,10 +55,6 @@
     "lodash": "^4.x",
     "playwright": "0.10.0",
     "prettier": "^1.19.1",
-    "rollup": "^1.23.1",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-typescript": "^1.0.1",
     "ts-jest": "^25.0.0",
     "ts-node": "^8.6.2",
     "typescript": "^3.7.5"
