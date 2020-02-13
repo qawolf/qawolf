@@ -9,20 +9,31 @@ export const clearElement = async (
   // https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/setSelectionRange
   // We do this instead of setting the value directly since that does not mimic user behavior.
   // Ex. Some sites might rely on an isTrusted change event which we cannot simulate.
-  const hasValue = await elementHandle.evaluate((element: HTMLInputElement) => {
-    const value = element.isContentEditable ? element.innerText : element.value;
-    if (!value || value.length <= 0) return false;
+  const shouldBackspace = await elementHandle.evaluate(
+    (element: HTMLInputElement) => {
+      const value = element.isContentEditable
+        ? element.innerText
+        : element.value;
 
-    element.focus();
-    element.setSelectionRange(0, value.length);
-    return true;
-  });
+      if (!value || value.length <= 0) return false;
 
-  if (!hasValue) {
-    logger.verbose("clearElement: nothing to clear");
-    return;
-  }
+      if (!element.setSelectionRange) {
+        if (element.isContentEditable) {
+          console.log("qawolf: clear content editable", element);
+          element.innerHTML = "";
+        }
 
-  logger.verbose("clearElement: clear value");
+        return false;
+      }
+
+      element.focus();
+      element.setSelectionRange(0, value.length);
+      return true;
+    }
+  );
+
+  if (!shouldBackspace) return;
+
+  logger.verbose("clearElement: backspace");
   await elementHandle.press("Backspace", undefined);
 };

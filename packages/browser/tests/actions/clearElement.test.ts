@@ -1,4 +1,5 @@
 import { CONFIG } from "@qawolf/config";
+import { repl } from "@qawolf/repl";
 import { clearElement } from "../../src/actions";
 import { launch } from "../../src/context/launch";
 
@@ -28,6 +29,31 @@ describe("clearElement", () => {
       (i: HTMLInputElement) => i.value
     );
     expect(username2).toBe("");
+
+    await context.close();
+  });
+
+  it.only("clears a content editable", async () => {
+    const context = await launch({
+      url: `${CONFIG.testUrl}login`
+    });
+    const page = await context.page();
+
+    await page.evaluate(() => {
+      const element = document.createElement("div");
+      element.id = "mycontenteditable";
+      element.setAttribute("contenteditable", "true");
+      element.innerHTML = "some content";
+      document.body.appendChild(element);
+    });
+
+    const element = await context.find({ css: "#mycontenteditable" });
+    await clearElement(element);
+
+    const innerHTML = await element.evaluate(
+      (element: HTMLElement) => element.innerHTML
+    );
+    expect(innerHTML).toBe("");
 
     await context.close();
   });
