@@ -1,5 +1,4 @@
 import { CONFIG } from "@qawolf/config";
-import { repl } from "@qawolf/repl";
 import { clearElement } from "../../src/actions";
 import { launch } from "../../src/context/launch";
 
@@ -33,7 +32,7 @@ describe("clearElement", () => {
     await context.close();
   });
 
-  it.only("clears a content editable", async () => {
+  it("clears a content editable", async () => {
     const context = await launch({
       url: `${CONFIG.testUrl}login`
     });
@@ -53,7 +52,7 @@ describe("clearElement", () => {
     const innerHTML = await element.evaluate(
       (element: HTMLElement) => element.innerHTML
     );
-    expect(innerHTML).toBe("");
+    expect(["", "<br>"]).toContain(innerHTML);
 
     await context.close();
   });
