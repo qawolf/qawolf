@@ -3,7 +3,7 @@ id: table_of_contents
 title: API Table of Contents
 ---
 
-### [`qawolf@v0.9.1`](https://www.npmjs.com/package/qawolf/v/0.9.1)
+### [`qawolf@v0.9.2`](https://www.npmjs.com/package/qawolf/v/0.9.2)
 
 <a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version" /></a>
 <br/>
