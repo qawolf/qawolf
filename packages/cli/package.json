@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/cli",
   "description": "qawolf cli for running tests",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -25,17 +25,17 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/browser": "0.9.0",
-    "@qawolf/create-code": "0.9.0",
-    "@qawolf/jest-plugin": "0.9.0",
-    "@qawolf/logger": "0.9.0",
-    "@qawolf/repl": "0.9.0",
+    "@qawolf/browser": "0.9.1",
+    "@qawolf/create-code": "0.9.1",
+    "@qawolf/jest-plugin": "0.9.1",
+    "@qawolf/logger": "0.9.1",
+    "@qawolf/repl": "0.9.1",
     "commander": "^4.1.1",
     "inquirer": "^7.0.0",
     "jest": "^25.1.0"
   },
   "devDependencies": {
-    "@qawolf/types": "0.9.0",
+    "@qawolf/types": "0.9.1",
     "@types/inquirer": "^6.5.0",
     "fs-extra": "^8.1.0",
     "handlebars": "^4.x",
