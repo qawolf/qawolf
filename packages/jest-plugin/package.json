@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/jest-plugin",
   "description": "Fail fast and create a hook for test start",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",

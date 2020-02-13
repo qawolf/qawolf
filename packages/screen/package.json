@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/screen",
   "description": "qawolf screen capture",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -23,8 +23,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/logger": "0.9.1",
-    "@qawolf/web": "0.9.1",
+    "@qawolf/logger": "0.9.2",
+    "@qawolf/web": "0.9.2",
     "ffmpeg-static": "4.0.0"
   },
   "devDependencies": {
