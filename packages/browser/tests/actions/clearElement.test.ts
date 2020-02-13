@@ -52,6 +52,8 @@ describe("clearElement", () => {
     const innerHTML = await element.evaluate(
       (element: HTMLElement) => element.innerHTML
     );
+
+    // firefox and webkit create a <br> when you press backspace for some reason
     expect(["", "<br>"]).toContain(innerHTML);
 
     await context.close();
