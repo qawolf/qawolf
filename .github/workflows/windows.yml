@@ -54,6 +54,13 @@ jobs:
         env:
           QAW_BROWSER: firefox
 
+      - name: Run tests on webkit
+        run: |
+          cd project
+          npm run test:windows
+        env:
+          QAW_BROWSER: webkit
+
       - name: Upload Artifacts
         if: always()
         uses: actions/upload-artifact@master
