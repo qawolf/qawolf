@@ -5,13 +5,10 @@ import { connect } from "../../src/context/connect";
 
 describe("connect", () => {
   it("injects qawolf", async () => {
-    const browserApp = await playwright[CONFIG.browser].launchBrowserApp({
-      webSocket: true
-    });
+    const browserServer = await playwright[CONFIG.browser].launchServer();
+    const wsEndpoint = browserServer.wsEndpoint()!;
 
-    const connectOptions = browserApp.connectOptions();
-
-    const context = await connect(connectOptions);
+    const context = await connect({ wsEndpoint });
 
     const isLoaded = () => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
@@ -29,5 +26,7 @@ describe("connect", () => {
     expect(oneIsLoaded).toBeTruthy();
 
     await context.close();
+
+    await browserServer.close();
   });
 });

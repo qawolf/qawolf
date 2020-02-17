@@ -57,6 +57,8 @@ export class QAWolfBrowserContext extends EventEmitter {
   // public for test
   public _capture?: VirtualCapture;
 
+  private _closed: boolean = false;
+
   // used internally by findPage
   public _currentPageIndex: number = 0;
 
@@ -177,6 +179,11 @@ export class QAWolfBrowserContext extends EventEmitter {
   }
 
   public async close() {
+    if (this._closed) return;
+
+    // prevent recursion since browser.close calls context.close
+    this._closed = true;
+
     if (CONFIG.sleepMs) {
       logger.verbose(`BrowserContext: sleep before close`);
       await sleep(CONFIG.sleepMs);

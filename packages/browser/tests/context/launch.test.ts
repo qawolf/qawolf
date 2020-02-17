@@ -1,6 +1,7 @@
 import { CONFIG } from "@qawolf/config";
 import { QAWolfWeb } from "@qawolf/web";
 import { readdir } from "fs-extra";
+import { pick } from "lodash";
 import { getDevice } from "../../src/context/device";
 import { launch } from "../../src/context/launch";
 
@@ -32,14 +33,18 @@ describe("launch", () => {
       url: CONFIG.testUrl
     });
 
-    const expectedViewport = getDevice("iPhone 7").viewport;
+    const expectedSize = pick(
+      getDevice("iPhone 7").viewport,
+      "width",
+      "height"
+    );
     const pageZero = await context.page({ page: 0 });
-    expect(pageZero.viewport()).toEqual(expectedViewport);
+    expect(pageZero.viewportSize()).toEqual(expectedSize);
 
     // check it emulates on a new page
     await context.newPage();
     const pageOne = await context.page({ page: 1 });
-    expect(pageOne.viewport()).toEqual(expectedViewport);
+    expect(pageOne.viewportSize()).toEqual(expectedSize);
 
     await context.close();
   });

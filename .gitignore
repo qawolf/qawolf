@@ -13,3 +13,4 @@ packages/**/logs
 
 # used in tests
 !packages/cli/.qawolf
+!packages/e2e-tests/.qawolf
