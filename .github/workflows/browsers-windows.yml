@@ -48,8 +48,9 @@ jobs:
 
       - name: Test e2e
         run: |
-          cd project
-          npm run test:e2e -- -- --forceExit
+          cd project/packages/e2e-tests
+          # Windows throws invalid js for linked binaries unless we call node directly
+          node ./node_modules/qawolf test --all-browsers
 
       - name: Test chromium
         run: |

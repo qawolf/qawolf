@@ -52,7 +52,7 @@ export const runJest = (args: string[] = [], options: RunJestOptions = {}) => {
   try {
     if (options.browsers && options.browsers.length) {
       for (let browser of options.browsers) {
-        console.log(`Test: ${browser}\n`);
+        console.log(`Test: ${browser}`);
         runCommand(command, { QAW_BROWSER: browser });
       }
     } else {
