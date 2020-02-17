@@ -7,7 +7,7 @@ type RunJestOptions = {
   repl?: boolean;
 };
 
-const runCommand = (command: string, env: any = {}) => {
+const runCommand = (command: string, env: NodeJS.ProcessEnv = {}) => {
   // log the command we run to make it clear this is an alias for npx jest
   console.log(command + "\n");
   execSync(command, {
