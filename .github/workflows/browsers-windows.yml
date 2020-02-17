@@ -1,4 +1,4 @@
-name: Chromium Windows
+name: Browsers Windows
 on:
   push:
     branches:
@@ -40,12 +40,22 @@ jobs:
           bundle install --quiet
           start-process bundle -ArgumentList "exec rackup --host 0.0.0.0 --port 5000" -WindowStyle hidden
 
-      - name: Run tests on chromium
+      - name: Start sandbox
+        run: |
+          cd project/sandbox 
+          npm i
+          start-process npm -ArgumentList "start" -WindowStyle hidden
+
+      - name: Test e2e
+        run: |
+          cd project/packages/e2e-tests
+          # Windows throws invalid js for linked binaries unless we call node directly
+          node ./node_modules/qawolf test --all-browsers
+
+      - name: Test chromium
         run: |
           cd project
           npm run test:browser -- -- --forceExit
-        env:
-          QAW_BROWSER: chromium
 
       - name: Upload Artifacts
         if: always()

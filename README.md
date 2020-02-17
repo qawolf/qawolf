@@ -8,9 +8,9 @@
 
 <p align="center">
   <a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version" /></a>
-  <img src="https://github.com/qawolf/qawolf/workflows/Linux/badge.svg" />
-  <img src="https://github.com/qawolf/qawolf/workflows/Chromium%20Linux/badge.svg" />
-  <img src="https://github.com/qawolf/qawolf/workflows/Chromium%20Windows/badge.svg" />
+  <img src="https://github.com/qawolf/qawolf/workflows/Unit%20Tests/badge.svg" />
+  <img src="https://github.com/qawolf/qawolf/workflows/Browsers%20Linux/badge.svg" />
+  <img src="https://github.com/qawolf/qawolf/workflows/Browsers%20Windows/badge.svg" />
 </p>
 
 <p align="center">

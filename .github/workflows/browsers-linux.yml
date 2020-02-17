@@ -1,4 +1,4 @@
-name: Chromium Linux
+name: Browsers Linux
 on:
   push:
     branches:
@@ -12,6 +12,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x]
+        browser: [chromium, webkit, firefox, all]
 
     env:
       QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
@@ -27,20 +28,33 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - name: Install chromium dependencies
+      - name: Install browser dependencies
         run: |
           sudo apt update
+          # chromium
           sudo apt-get install libgbm1
+          # webkit
+          sudo apt-get install libwoff1 libopus0 libwebp6 libwebpdemux2 libenchant1c2a libgudev-1.0-0 libsecret-1-0 libhyphen0 libgdk-pixbuf2.0-0 libegl1 libgles2 libevent-2.1-6 libnotify4 libxslt1.1
 
       - run: npm run bootstrap
 
-      - run: npm run test:browser
+      - name: Start sandbox
+        run: |
+          cd sandbox
+          npm i
+          npm start &
+
+      - run: QAW_BROWSER=${{ matrix.browser }} npm run test:browser
+        if: matrix.browser != 'all'
+
+      - run: npm run test:e2e
+        if: matrix.browser == 'all'
 
       - name: Upload Artifacts
         if: always()
         uses: actions/upload-artifact@master
         with:
-          name: chromium
+          name: artifacts
           path: ${{ github.workspace }}/artifacts
 
     services:
