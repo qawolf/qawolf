@@ -1,11 +1,11 @@
 {
   "private": true,
-  "name": "@qawolf/web-tests",
-  "description": "@qawolf/web tests",
+  "name": "@qawolf/e2e-tests",
+  "description": "qawolf e2e tests",
   "version": "0.9.2",
   "license": "BSD-3.0",
   "scripts": {
-    "test:browser": "jest"
+    "test:e2e": "npx qawolf test --all-browsers"
   },
   "repository": {
     "type": "git",
@@ -14,13 +14,8 @@
   "bugs": {
     "url": "https://github.com/qawolf/qawolf/issues"
   },
-  "publishConfig": {
-    "access": "public"
-  },
   "devDependencies": {
-    "@qawolf/browser": "0.9.2",
-    "@qawolf/config": "0.9.2",
-    "@qawolf/types": "0.9.2",
-    "@qawolf/web": "0.9.2"
+    "qawolf": "0.9.2",
+    "@qawolf/jest-plugin": "0.9.2"
   }
 }

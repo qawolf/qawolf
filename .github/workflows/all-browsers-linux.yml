@@ -1,4 +1,4 @@
-name: Chromium Linux
+name: All Browsers Linux
 on:
   push:
     branches:
@@ -27,20 +27,33 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
+      - name: Install browser dependencies
+        run: |
+          sudo apt update
+          # chromium
+          sudo apt-get install libgbm1
+          # webkit
+          sudo apt-get install libwoff1 libopus0 libwebp6 libwebpdemux2 libenchant1c2a libgudev-1.0-0 libsecret-1-0 libhyphen0 libgdk-pixbuf2.0-0 libegl1 libgles2 libevent-2.1-6 libnotify4 libxslt1.1
+
+      - run: npm run bootstrap
+
       - name: Start sandbox
         run: |
           cd sandbox
           npm i
           npm start &
 
-      - name: Install chromium dependencies
-        run: |
-          sudo apt update
-          sudo apt-get install libgbm1
+      - name: Test e2e
+        run: npm run test:e2e
 
-      - run: npm run bootstrap
+      - name: Test chromium
+        run: npm run test:browser
 
-      - run: npm run test:browser
+      - name: Test firefox
+        run: QAW_BROWSER=firefox npm run test:browser
+
+      - name: Test webkit
+        run: QAW_BROWSER=webkit npm run test:browser
 
       - name: Upload Artifacts
         if: always()

@@ -14,6 +14,7 @@
     "publish:next": "lerna publish --dist-tag next --exact --force-publish",
     "test": "lerna run --stream test",
     "test:browser": "lerna run --stream test:browser",
+    "test:e2e": "lerna run --stream test:e2e",
     "watch": "tsc --build --watch packages/tsconfig.project.json"
   },
   "dependencies": {

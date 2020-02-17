@@ -40,12 +40,21 @@ jobs:
           bundle install --quiet
           start-process bundle -ArgumentList "exec rackup --host 0.0.0.0 --port 5000" -WindowStyle hidden
 
+      - name: Start sandbox
+        run: |
+          cd project/sandbox 
+          npm i
+          start-process npm -ArgumentList "start" -WindowStyle hidden
+
+      - name: Run e2e tests
+        run: |
+          cd project
+          npm run test:e2e -- -- --forceExit
+
       - name: Run tests on chromium
         run: |
           cd project
           npm run test:browser -- -- --forceExit
-        env:
-          QAW_BROWSER: chromium
 
       - name: Upload Artifacts
         if: always()
