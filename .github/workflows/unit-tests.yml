@@ -1,4 +1,4 @@
-name: Linux
+name: Unit Tests
 on:
   push:
     branches:
@@ -33,7 +33,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@master
         with:
-          name: firefox
+          name: artifacts
           path: ${{ github.workspace }}/artifacts
 
     timeout-minutes: 20

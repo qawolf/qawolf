@@ -1,4 +1,4 @@
-name: Chromium Windows
+name: Browsers Windows
 on:
   push:
     branches:
@@ -46,12 +46,12 @@ jobs:
           npm i
           start-process npm -ArgumentList "start" -WindowStyle hidden
 
-      - name: Run e2e tests
+      - name: Test e2e
         run: |
           cd project
           npm run test:e2e -- -- --forceExit
 
-      - name: Run tests on chromium
+      - name: Test chromium
         run: |
           cd project
           npm run test:browser -- -- --forceExit

@@ -1,4 +1,4 @@
-name: All Browsers Linux
+name: Browsers Linux
 on:
   push:
     branches:
@@ -12,6 +12,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x]
+        browser: [chromium, webkit, firefox, all]
 
     env:
       QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
@@ -43,17 +44,13 @@ jobs:
           npm i
           npm start &
 
+      - name: Test ${{ matrix.browser }}
+        run: QAW_BROWSER=${{ matrix.browser }} npm run test:browser
+        if: matrix.browser != 'all'
+
       - name: Test e2e
         run: npm run test:e2e
-
-      - name: Test chromium
-        run: npm run test:browser
-
-      - name: Test firefox
-        run: QAW_BROWSER=firefox npm run test:browser
-
-      - name: Test webkit
-        run: QAW_BROWSER=webkit npm run test:browser
+        if: matrix.browser == 'all'
 
       - name: Upload Artifacts
         if: always()
