@@ -52,7 +52,6 @@ function MaterialUiSelects() {
         </InputLabel>
         <NativeSelect
           data-qa="material-select-native"
-          native
           value={color}
           onChange={e => updateColor(e.target.value)}
           inputProps={{
@@ -67,7 +66,7 @@ function MaterialUiSelects() {
       </FormControl>
       <br />
       <br />
-      <FormControl style={{ minWidth: "240px" }}>
+      <FormControl style={{ minWidth: "140px" }}>
         <InputLabel id="label-multiple">Friends?</InputLabel>
         <Select
           data-qa="material-select-multiple"
