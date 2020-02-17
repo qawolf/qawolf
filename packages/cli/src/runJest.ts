@@ -7,10 +7,16 @@ type RunJestOptions = {
   repl?: boolean;
 };
 
-const runCommand = (command: string) => {
+const runCommand = (command: string, env: NodeJS.ProcessEnv = {}) => {
   // log the command we run to make it clear this is an alias for npx jest
   console.log(command + "\n");
-  execSync(command, { stdio: "inherit" });
+  execSync(command, {
+    stdio: "inherit",
+    env: {
+      ...process.env,
+      ...env
+    }
+  });
 };
 
 export const runJest = (args: string[] = [], options: RunJestOptions = {}) => {
@@ -45,7 +51,7 @@ export const runJest = (args: string[] = [], options: RunJestOptions = {}) => {
   try {
     if (options.browsers && options.browsers.length) {
       for (let browser of options.browsers) {
-        runCommand(`QAW_BROWSER=${browser} ${command}`);
+        runCommand(command, { QAW_BROWSER: browser });
       }
     } else {
       runCommand(command);

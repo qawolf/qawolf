@@ -1,4 +1,4 @@
-name: Chromium and Firefox Windows
+name: Chromium Windows
 on:
   push:
     branches:
@@ -43,16 +43,9 @@ jobs:
       - name: Run tests on chromium
         run: |
           cd project
-          npm run test:windows
+          npm run test:browser -- -- --forceExit
         env:
           QAW_BROWSER: chromium
-
-      - name: Run tests on firefox
-        run: |
-          cd project
-          npm run test:windows
-        env:
-          QAW_BROWSER: firefox
 
       - name: Upload Artifacts
         if: always()

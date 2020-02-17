@@ -11,7 +11,7 @@
     "static"
   ],
   "scripts": {
-    "test": "jest"
+    "test:browser": "jest"
   },
   "repository": {
     "type": "git",
@@ -38,12 +38,12 @@
     "fs-extra": "^8.x",
     "handlebars": "^4.x",
     "lodash": "^4.x",
-    "playwright": "0.10.0"
+    "playwright": "0.11.1"
   },
   "peerDependencies": {
     "fs-extra": "^8.x",
     "handlebars": "^4.x",
     "lodash": "^4.x",
-    "playwright": "0.10.0"
+    "playwright": "0.11.1"
   }
 }
