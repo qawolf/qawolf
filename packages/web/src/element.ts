@@ -24,17 +24,12 @@ export const getClickableAncestor = (
 
     if (attributeValue) {
       console.debug(
-        `qawolf: found ancestor with ${attributeValue.attribute} attribute: ${attributeValue.value}"`,
+        `qawolf: found clickable ancestor: ${JSON.stringify(attributeValue)}"`,
         getXpath(ancestor)
       );
       return ancestor;
     }
 
-    ancestor = ancestor.parentElement;
-  }
-
-  ancestor = element;
-  while (ancestor.parentElement) {
     // choose the common clickable element type as the clickable ancestor
     if (["a", "button", "input"].includes(ancestor.tagName.toLowerCase())) {
       console.debug(
