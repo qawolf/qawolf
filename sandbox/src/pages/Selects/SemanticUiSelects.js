@@ -36,7 +36,7 @@ function SemanticUiSelects() {
         </a>
       </h3>
       <Dropdown
-        placeholder="Select Country"
+        placeholder="Country?"
         fluid
         search
         selection
