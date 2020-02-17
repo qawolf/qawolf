@@ -27,6 +27,12 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
+      - name: Start sandbox
+        run: |
+          cd sandbox
+          npm i
+          npm start &
+
       - name: Install chromium dependencies
         run: |
           sudo apt update
