@@ -15,8 +15,8 @@ const names = [
 ];
 
 function MaterialUiSelects() {
-  const [pet, updatePet] = useState("");
-  const [color, updateColor] = useState("");
+  const [pet, setPet] = useState("");
+  const [color, setColor] = useState("");
   const [personName, setPersonName] = React.useState([]);
 
   const handleChange = event => {
@@ -36,7 +36,7 @@ function MaterialUiSelects() {
           data-qa="material-select"
           id="material-select"
           labelId="label"
-          onChange={e => updatePet(e.target.value)}
+          onChange={e => setPet(e.target.value)}
           value={pet}
         >
           <MenuItem value="cat">Cat</MenuItem>
@@ -53,7 +53,7 @@ function MaterialUiSelects() {
         <NativeSelect
           data-qa="material-select-native"
           value={color}
-          onChange={e => updateColor(e.target.value)}
+          onChange={e => setColor(e.target.value)}
           inputProps={{
             id: "material-select-native"
           }}

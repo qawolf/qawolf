@@ -1,19 +1,27 @@
 import React from "react";
+import ReactQuill from "react-quill";
 
-function Quill() {
-  return (
-    <div className="container">
-      <h3>
-        <a href="https://github.com/quilljs/quill">Quill</a>
-      </h3>
-      <div id="editor">
-        <p>Hello World!</p>
-        <p>
-          Some initial <strong>bold</strong> text
-        </p>
+class Quill extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { text: "" }; // You can also pass a Quill Delta here
+  }
+
+  handleChange = value => {
+    this.setState({ text: value });
+  };
+
+  render() {
+    return (
+      <div className="container">
+        <h3>
+          <a href="https://github.com/zenoamaro/react-quill#quick-start">
+            Quill
+          </a>
+        </h3>
+        <ReactQuill value={this.state.text} onChange={this.handleChange} />
       </div>
-    </div>
-  );
+    );
+  }
 }
-
 export default Quill;

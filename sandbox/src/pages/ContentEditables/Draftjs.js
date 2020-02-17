@@ -13,10 +13,6 @@ function Draftjs() {
     editor.current.focus();
   }
 
-  React.useEffect(() => {
-    focusEditor();
-  }, []);
-
   return (
     <div className="container">
       <h3>
