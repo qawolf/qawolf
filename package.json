@@ -13,8 +13,7 @@
     "pretest": "npm run lint",
     "publish:next": "lerna publish --dist-tag next --exact --force-publish",
     "test": "lerna run --stream test",
-    "test:services": "docker-compose up -d",
-    "test:windows": "lerna run --stream test -- -- --forceExit",
+    "test:browser": "lerna run --stream test:browser",
     "watch": "tsc --build --watch packages/tsconfig.project.json"
   },
   "dependencies": {

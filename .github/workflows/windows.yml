@@ -43,21 +43,21 @@ jobs:
       - name: Run tests on chromium
         run: |
           cd project
-          npm run test:windows
+          npm run test:browser -- -- --forceExit
         env:
           QAW_BROWSER: chromium
 
       - name: Run tests on firefox
         run: |
           cd project
-          npm run test:windows
+          npm run test:browser -- -- --forceExit
         env:
           QAW_BROWSER: firefox
 
       - name: Run tests on webkit
         run: |
           cd project
-          npm run test:windows
+          npm run test:browser -- -- --forceExit
         env:
           QAW_BROWSER: webkit
 

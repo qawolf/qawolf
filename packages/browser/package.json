@@ -11,7 +11,7 @@
     "static"
   ],
   "scripts": {
-    "test": "jest"
+    "test:browser": "jest"
   },
   "repository": {
     "type": "git",

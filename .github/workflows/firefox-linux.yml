@@ -29,7 +29,7 @@ jobs:
 
       - run: npm run bootstrap
 
-      - run: QAW_BROWSER=firefox npm test
+      - run: QAW_BROWSER=firefox npm run test:browser
 
       - name: Upload Artifacts
         if: always()
