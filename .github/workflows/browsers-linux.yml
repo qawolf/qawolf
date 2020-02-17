@@ -54,7 +54,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@master
         with:
-          name: chromium
+          name: artifacts
           path: ${{ github.workspace }}/artifacts
 
     services:
