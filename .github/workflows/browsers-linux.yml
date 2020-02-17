@@ -44,12 +44,10 @@ jobs:
           npm i
           npm start &
 
-      - name: Test ${{ matrix.browser }}
-        run: QAW_BROWSER=${{ matrix.browser }} npm run test:browser
+      - run: QAW_BROWSER=${{ matrix.browser }} npm run test:browser
         if: matrix.browser != 'all'
 
-      - name: Test e2e
-        run: npm run test:e2e
+      - run: npm run test:e2e
         if: matrix.browser == 'all'
 
       - name: Upload Artifacts
