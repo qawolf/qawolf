@@ -19,10 +19,20 @@ export const typeElement = async (
 
   await elementHandle.focus();
 
-  const strokes = deserializeStrokes(value || "↓Backspace↑Backspace");
-
   if (options.replace) {
     await selectElementContent(elementHandle);
+  }
+
+  // default value to backspace to clear if null or "" is passed
+  const text = value || "↓Backspace↑Backspace";
+
+  const strokes = deserializeStrokes(text);
+
+  if (!strokes) {
+    // type seems to work better than sendCharacters so use it when possible
+    // https://github.com/microsoft/playwright/issues/1057
+    await elementHandle.type(text);
+    return;
   }
 
   // logging the keyboard codes below will leak secrets

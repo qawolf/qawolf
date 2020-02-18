@@ -91,28 +91,27 @@ describe("Page.type", () => {
     );
   });
 
-  // TODO waiting on https://github.com/microsoft/playwright/issues/1057
-  it.skip("replaces a input[type=date] value", async () => {
+  it("replaces a input[type=date] value", async () => {
     await context.goto(`${CONFIG.sandboxUrl}date-pickers`);
 
-    const element = await page.qawolf().type(
-      { css: '[data-qa="material-date-picker-native"] input' },
-      // "↓Digit0↑Digit0↓Digit9↑Digit9↓Digit0↑Digit0↓Digit9↑Digit9↓Digit2↑Digit2↓Digit0↑Digit0↓Digit2↑Digit2↓Digit0↑Digit0"
-      "09092020"
-    );
+    const element = await page
+      .qawolf()
+      .type(
+        { css: '[data-qa="material-date-picker-native"] input' },
+        "09092020"
+      );
 
     expect(await element.evaluate((e: HTMLInputElement) => e.value)).toBe(
       "2020-09-09"
     );
   });
 
-  // TODO waiting on https://github.com/microsoft/playwright/issues/1057
-  it.skip("replaces a input[type=time] value", async () => {
+  it("replaces a input[type=time] value", async () => {
     await context.goto(`${CONFIG.sandboxUrl}time-pickers`);
 
     const element = await page
       .qawolf()
-      .type({ css: '[data-qa="html-time-picker"]' }, "0230PM");
+      .type({ css: '[data-qa="material-time-picker-native"] input' }, "0230PM");
 
     expect(await element.evaluate((e: HTMLInputElement) => e.value)).toBe(
       "14:30"
