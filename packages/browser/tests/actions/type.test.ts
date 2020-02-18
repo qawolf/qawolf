@@ -65,6 +65,18 @@ describe("Page.type", () => {
     expect(await element.evaluate((e: HTMLInputElement) => e.value)).toBe("");
   });
 
+  it("sets a input[type=number] value", async () => {
+    await context.goto(`${CONFIG.sandboxUrl}text-inputs`);
+
+    const element = await page
+      .qawolf()
+      .type({ css: '[data-qa="html-number-input"]' }, "999");
+
+    expect(await element.evaluate((e: HTMLInputElement) => e.value)).toBe(
+      "999"
+    );
+  });
+
   it("replaces a content editables text", async () => {
     await context.goto(`${CONFIG.sandboxUrl}content-editables`);
 
@@ -91,6 +103,19 @@ describe("Page.type", () => {
 
     expect(await element.evaluate((e: HTMLInputElement) => e.value)).toBe(
       "2020-09-09"
+    );
+  });
+
+  // TODO waiting on https://github.com/microsoft/playwright/issues/1057
+  it.skip("replaces a input[type=time] value", async () => {
+    await context.goto(`${CONFIG.sandboxUrl}time-pickers`);
+
+    const element = await page
+      .qawolf()
+      .type({ css: '[data-qa="html-time-picker"]' }, "0230PM");
+
+    expect(await element.evaluate((e: HTMLInputElement) => e.value)).toBe(
+      "14:30"
     );
   });
 });
