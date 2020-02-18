@@ -1,35 +1,15 @@
 import { getXpath } from "./xpath";
 
-interface AttributeValuePair {
-  attribute: string;
-  value: string;
-}
-
-export const getClickableAncestor = (
-  element: HTMLElement,
-  attribute: string
-): HTMLElement => {
+export const getClickableAncestor = (element: HTMLElement): HTMLElement => {
   /**
    * Crawl up until we reach the top "clickable" ancestor.
-   * If a target is the descendant of a clickable element with the attribute choose it.
-   * If the target is the descendant of "a"/"button"/"input" choose it.
+   * If the target is the descendant of "a"/"button"/"input" or a clickable element choose it.
    * Otherwise choose the original element as the target.
    */
   let ancestor = element;
   console.debug("qawolf: get clickable ancestor for", getXpath(element));
 
   while (ancestor.parentElement) {
-    // choose the data value element as the clickable ancestor
-    const attributeValue = getAttributeValue(ancestor, attribute);
-
-    if (attributeValue) {
-      console.debug(
-        `qawolf: found clickable ancestor: ${JSON.stringify(attributeValue)}"`,
-        getXpath(ancestor)
-      );
-      return ancestor;
-    }
-
     // choose the common clickable element type as the clickable ancestor
     if (["a", "button", "input"].includes(ancestor.tagName.toLowerCase())) {
       console.debug(
@@ -57,21 +37,6 @@ export const getClickableAncestor = (
   }
 
   return ancestor;
-};
-
-export const getAttributeValue = (
-  element: HTMLElement,
-  attribute: string
-): AttributeValuePair | null => {
-  if (!attribute) return null;
-
-  const attributes = attribute.split(",").map(attr => attr.trim());
-  for (let attribute of attributes) {
-    const value = element.getAttribute(attribute);
-    if (value) return { attribute, value };
-  }
-
-  return null;
 };
 
 export const isClickable = (

@@ -6,6 +6,7 @@ import {
   Route,
   Switch
 } from "react-router-dom";
+import Buttons from "./pages/Buttons";
 import ContentEditables from "./pages/ContentEditables";
 import DatePickers from "./pages/DatePickers";
 import Selects from "./pages/Selects";
@@ -17,6 +18,9 @@ import "./App.css";
 function Navigation() {
   return (
     <ul>
+      <li>
+        <Link to="/buttons">Buttons</Link>
+      </li>
       <li>
         <Link to="/content-editables">Content editables</Link>
       </li>
@@ -41,6 +45,7 @@ function App() {
     <Router>
       <Switch>
         <Route component={Navigation} exact path="/" />
+        <Route component={Buttons} path="/buttons" />
         <Route component={ContentEditables} path="/content-editables" />
         <Route component={DatePickers} path="/date-pickers" />
         <Route component={Selects} path="/selects" />

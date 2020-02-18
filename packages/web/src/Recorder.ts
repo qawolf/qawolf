@@ -61,18 +61,12 @@ export class Recorder {
 
   private recordEvents() {
     this.recordEvent("click", event => {
-      // getClickableAncestor chooses the ancestor if it has a data-attribute
-      // which is very likely the target we want to click on.
-      // If there is not a data-attribute on any of the clickable ancestors
-      // it will take the top most clickable ancestor.
+      // getClickableAncestor chooses the top most clickable ancestor.
       // The ancestor is likely a better target than the descendant.
       // Ex. when you click on the i (button > i) or rect (a > svg > rect)
       // chances are the ancestor (button, a) is a better target to find.
       // XXX if anyone runs into issues with this behavior we can allow disabling it from a flag.
-      const target = getClickableAncestor(
-        event.target as HTMLElement,
-        this._attribute
-      );
+      const target = getClickableAncestor(event.target as HTMLElement);
 
       return {
         isTrusted: event.isTrusted,

@@ -1,3 +1,4 @@
+import { buildCssSelector } from "./buildCssSelector";
 import { captureLogs } from "./captureLogs";
 import * as element from "./element";
 import * as event from "./event";
@@ -43,6 +44,7 @@ export {
 
 // export the web module for the browser
 const webExports = {
+  buildCssSelector,
   captureLogs,
   element,
   event,
