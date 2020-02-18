@@ -20,9 +20,10 @@ function Draftjs() {
       </h3>
       <div onClick={focusEditor}>
         <Editor
-          ref={editor}
+          data-qa="draftjs"
           editorState={editorState}
           onChange={setEditorState}
+          ref={editor}
         />
       </div>
     </div>

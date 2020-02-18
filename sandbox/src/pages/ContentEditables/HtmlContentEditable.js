@@ -8,6 +8,7 @@ function HtmlContentEditable() {
       <h3>Native HTML</h3>
       <div
         contentEditable="true"
+        data-qa="content-editable"
         onChange={e => setValue(e.target.value)}
         suppressContentEditableWarning
       >
