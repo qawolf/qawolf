@@ -10,6 +10,7 @@ import ContentEditables from "./pages/ContentEditables";
 import DatePickers from "./pages/DatePickers";
 import Selects from "./pages/Selects";
 import TextInputs from "./pages/TextInputs";
+import TimePickers from "./pages/TimePickers";
 // CSS
 import "./App.css";
 
@@ -28,6 +29,9 @@ function Navigation() {
       <li>
         <Link to="/text-inputs">Text inputs</Link>
       </li>
+      <li>
+        <Link to="/time-pickers">Time pickers</Link>
+      </li>
     </ul>
   );
 }
@@ -41,6 +45,7 @@ function App() {
         <Route component={DatePickers} path="/date-pickers" />
         <Route component={Selects} path="/selects" />
         <Route component={TextInputs} path="/text-inputs" />
+        <Route component={TimePickers} path="/time-pickers" />
         <Redirect to="/" />
       </Switch>
     </Router>
