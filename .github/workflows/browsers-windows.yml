@@ -45,6 +45,7 @@ jobs:
           cd project/sandbox 
           npm i
           start-process npm -ArgumentList "start" -WindowStyle hidden
+          npx wait-on http://localhost:5000
 
       - name: Test e2e
         run: |
