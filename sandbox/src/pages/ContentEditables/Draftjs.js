@@ -1,5 +1,5 @@
 import React from "react";
-import { Editor, EditorState, RichUtils } from "draft-js";
+import { Editor, EditorState } from "draft-js";
 import "draft-js/dist/Draft.css";
 
 function Draftjs() {
@@ -20,9 +20,10 @@ function Draftjs() {
       </h3>
       <div onClick={focusEditor}>
         <Editor
-          ref={editor}
+          data-qa="draftjs"
           editorState={editorState}
           onChange={setEditorState}
+          ref={editor}
         />
       </div>
     </div>

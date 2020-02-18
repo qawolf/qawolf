@@ -1,6 +1,14 @@
 import { logger } from "@qawolf/logger";
 import { sleep } from "@qawolf/web";
 
+const MESSAGES_TO_RETRY = [
+  "Execution context was destroyed",
+  "Inspected target navigated or closed",
+  "Node is detached from document",
+  "Node is either not visible or not an HTMLElement",
+  "was canceled by another one"
+];
+
 export const retryExecutionError = async (
   func: () => Promise<any>,
   times: number = 3
@@ -10,18 +18,11 @@ export const retryExecutionError = async (
       const result = await func();
       return result;
     } catch (error) {
-      if (
-        (i < times - 1 &&
-          error.message ===
-            "Execution context was destroyed, most likely because of a navigation.") ||
-        error.message ===
-          "Protocol error (Runtime.callFunctionOn): Execution context was destroyed." ||
-        error.message ===
-          "Protocol error (Runtime.callFunctionOn): Inspected target navigated or closed" ||
-        error.message === "Node is detached from document" ||
-        error.message === "Node is either not visible or not an HTMLElement" ||
-        error.message.includes("was canceled by another one")
-      ) {
+      const shouldRetry = !!MESSAGES_TO_RETRY.find(messageToRetry =>
+        error.message.includes(messageToRetry)
+      );
+
+      if (i < times - 1 && shouldRetry) {
         logger.verbose(
           `retryExecutionError: retrying ${i + 1}/${times} error: "${
             error.message

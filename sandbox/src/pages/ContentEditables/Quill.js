@@ -19,7 +19,11 @@ class Quill extends React.Component {
             Quill
           </a>
         </h3>
-        <ReactQuill value={this.state.text} onChange={this.handleChange} />
+        <ReactQuill
+          data-qa="quill"
+          onChange={this.handleChange}
+          value={this.state.text}
+        />
       </div>
     );
   }

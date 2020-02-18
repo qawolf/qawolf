@@ -13,6 +13,7 @@ jobs:
       matrix:
         node-version: [12.x]
         browser: [chromium, webkit, firefox, all]
+      fail-fast: false
 
     env:
       QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
