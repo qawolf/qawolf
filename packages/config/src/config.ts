@@ -5,6 +5,8 @@ import path from "path";
 const dotEnvPath = process.env.QAW_DOTENV_PATH;
 configDotenv(dotEnvPath ? { path: dotEnvPath } : {});
 
+const sandboxUrl = process.env.QAW_SANDBOX_URL || "http://localhost:3000/";
+
 const testUrl = process.env.QAW_TEST_URL || "http://localhost:5000/";
 
 const parseBool = (value: string | undefined) => {
@@ -41,6 +43,8 @@ export const CONFIG = {
   debug: parseBool(process.env.QAW_DEBUG),
   headless: parseBool(process.env.QAW_HEADLESS),
   logLevel: process.env.QAW_LOG_LEVEL,
+  // for internal use
+  sandboxUrl,
   // slow down each step by 1s to make it watchable
   // this also gives sites time to setup their handlers
   sleepMs: parseNumber(process.env.QAW_SLEEP_MS, 1000),

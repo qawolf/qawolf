@@ -5,56 +5,92 @@ let context: BrowserContext;
 let page: Page;
 
 beforeAll(async () => {
-  context = await launch({
-    url: `${CONFIG.testUrl}login`
-  });
-
+  context = await launch();
   page = await context.page();
 });
 
 afterAll(() => context.close());
 
 describe("BrowserContext.type", () => {
-  it("sets input value", async () => {
-    await context.type({ css: "#username" }, "spirit");
+  it("sets text in input[type=text]", async () => {
+    await context.goto(`${CONFIG.sandboxUrl}text-inputs`);
 
-    const username = await page.$eval(
-      "#username",
-      (input: HTMLInputElement) => input.value
+    const element = await context.type(
+      { css: '[data-qa="html-text-input"]' },
+      "spirit"
     );
-    expect(username).toBe("spirit");
+
+    expect(await element.evaluate((e: HTMLInputElement) => e.value)).toBe(
+      "spirit"
+    );
   });
 });
 
 describe("Page.type", () => {
-  it("does not clear input value for Tab (or Enter)", async () => {
-    await page.qawolf().type({ css: "#username" }, "↓Tab↑Tab");
+  it("appends text to input[type=text]", async () => {
+    await context.goto(`${CONFIG.sandboxUrl}text-inputs`);
 
-    const username = await page.$eval(
-      "#username",
-      (input: HTMLInputElement) => input.value
+    const element = await page
+      .qawolf()
+      .type({ css: '[data-qa="html-text-input-filled"]' }, " more");
+
+    expect(await element.evaluate((e: HTMLInputElement) => e.value)).toBe(
+      "initial text more"
     );
-    expect(username).toEqual("spirit");
   });
 
-  it("does not clear input value when skipClear = true", async () => {
-    await context.type({ css: "#username" }, "2", { skipClear: true });
+  it("replaces text in input[type=text]", async () => {
+    await context.goto(`${CONFIG.sandboxUrl}text-inputs`);
 
-    const username = await page.$eval(
-      "#username",
-      (input: HTMLInputElement) => input.value
+    const element = await page
+      .qawolf()
+      .type({ css: '[data-qa="html-text-input-filled"]' }, "spirit", {
+        replace: true
+      });
+
+    expect(await element.evaluate((e: HTMLInputElement) => e.value)).toBe(
+      "spirit"
     );
-
-    expect(username).toEqual("spirit2");
   });
 
-  it("clears input value for null", async () => {
-    await page.qawolf().type({ css: "#username" }, null);
+  it("clears input[type=text] for null", async () => {
+    await context.goto(`${CONFIG.sandboxUrl}text-inputs`);
 
-    const username = await page.$eval(
-      "#username",
-      (input: HTMLInputElement) => input.value
+    const element = await page
+      .qawolf()
+      .type({ css: '[data-qa="html-text-input-filled"]' }, null, {
+        replace: true
+      });
+
+    expect(await element.evaluate((e: HTMLInputElement) => e.value)).toBe("");
+  });
+
+  it("replaces a content editables text", async () => {
+    await context.goto(`${CONFIG.sandboxUrl}content-editables`);
+
+    const element = await page
+      .qawolf()
+      .type({ css: '[data-qa="content-editable"]' }, "spirit", {
+        replace: true
+      });
+
+    expect(await element.evaluate((e: HTMLElement) => e.innerHTML)).toBe(
+      "spirit"
     );
-    expect(username).toBeFalsy();
+  });
+
+  // TODO waiting on https://github.com/microsoft/playwright/issues/1057
+  it.skip("replaces a input[type=date] value", async () => {
+    await context.goto(`${CONFIG.sandboxUrl}date-pickers`);
+
+    const element = await page.qawolf().type(
+      { css: '[data-qa="material-date-picker-native"] input' },
+      // "↓Digit0↑Digit0↓Digit9↑Digit9↓Digit0↑Digit0↓Digit9↑Digit9↓Digit2↑Digit2↓Digit0↑Digit0↓Digit2↑Digit2↓Digit0↑Digit0"
+      "09092020"
+    );
+
+    expect(await element.evaluate((e: HTMLInputElement) => e.value)).toBe(
+      "2020-09-09"
+    );
   });
 });

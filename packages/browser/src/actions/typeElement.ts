@@ -2,15 +2,8 @@ import { logger } from "@qawolf/logger";
 import { TypeOptions } from "@qawolf/types";
 import { isNil, sleep } from "@qawolf/web";
 import { ElementHandle, Page as PlaywrightPage } from "playwright";
-import { clearElement } from "./clearElement";
-import { deserializeStrokes, Stroke } from "../keyboard";
-
-const shouldClear = (strokes: Stroke[]) => {
-  if (!strokes.length) return true;
-
-  const value = strokes[0].value;
-  return value !== "Enter" && value !== "Tab";
-};
+import { selectElementContent } from "./selectElementContent";
+import { deserializeStrokes } from "../keyboard";
 
 export const typeElement = async (
   page: PlaywrightPage,
@@ -26,10 +19,10 @@ export const typeElement = async (
 
   await elementHandle.focus();
 
-  const strokes = deserializeStrokes(value || "");
+  const strokes = deserializeStrokes(value || "↓Backspace↑Backspace");
 
-  if (!options.skipClear && shouldClear(strokes)) {
-    await clearElement(elementHandle);
+  if (options.replace) {
+    await selectElementContent(elementHandle);
   }
 
   // logging the keyboard codes below will leak secrets
