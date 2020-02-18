@@ -36,11 +36,12 @@ function SemanticUiSelects() {
         </a>
       </h3>
       <Dropdown
-        placeholder="Country?"
+        data-qa="semantic-select"
         fluid
+        options={countryOptions}
+        placeholder="Country?"
         search
         selection
-        options={countryOptions}
       />
     </div>
   );
