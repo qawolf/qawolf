@@ -19,14 +19,21 @@ export class VirtualCode {
     if (lastIndex < 0) return null;
 
     const expressionToUpdate = this._expressions[lastIndex];
-    const updatedExpression = compareTo.expressions()[lastIndex];
 
+    const compareToExpressions = compareTo.expressions();
+
+    if (lastIndex >= compareToExpressions.length) {
+      // if the last expression no longer exists
+      // we will update it when a new expression arrives
+      return;
+    }
+
+    const updatedExpression = compareToExpressions[lastIndex];
     const original = expressionToUpdate.updatableCode();
     const updated = updatedExpression.updatableCode();
     if (original === updated) return null;
 
-    const codeToUpdate = { original, updated };
-    return codeToUpdate;
+    return { original, updated };
   }
 
   public newExpressions(compareTo: VirtualCode) {
