@@ -14,7 +14,7 @@ afterAll(() => context.close());
 describe("buildCssSelector", () => {
   describe("click", () => {
     beforeAll(async () => {
-      await context.goto(`${CONFIG.sandboxUrl}/buttons`);
+      await context.goto(`localhost:3000/buttons`);
       page = await context.page();
     });
 
@@ -82,11 +82,83 @@ describe("buildCssSelector", () => {
   });
 
   describe("click: radio", () => {
-    it("returns undefined if no attribute present", () => {});
+    beforeAll(async () => {
+      await context.goto(`localhost:3000/radio-inputs`);
+      page = await context.page();
+    });
 
-    it("returns selector if attribute present", () => {});
+    it("returns undefined if no attribute present", async () => {
+      const selector = await page.evaluate(() => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const element = document.getElementById("another")!;
 
-    it("returns selector if attribute present on ancestor", () => {});
+        return qawolf.buildCssSelector({
+          element,
+          attribute: "data-qa",
+          action: "click"
+        });
+      });
+
+      expect(selector).toBeUndefined();
+    });
+
+    it("returns selector if attribute present", async () => {
+      const selector = await page.evaluate(() => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const element = document.getElementById("single")!;
+
+        return qawolf.buildCssSelector({
+          element,
+          attribute: "data-qa",
+          action: "click"
+        });
+      });
+
+      expect(selector).toBe("[data-qa='html-radio']");
+
+      const selector2 = await page.evaluate(() => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const element = document.getElementsByClassName(
+          "MuiFormControlLabel-label"
+        )[0] as HTMLElement;
+
+        return qawolf.buildCssSelector({
+          element,
+          attribute: "data-qa",
+          action: "click"
+        });
+      });
+
+      expect(selector2).toBe("[data-qa='material-radio']");
+    });
+
+    it("returns selector if attribute present on ancestor", async () => {
+      const selector = await page.evaluate(() => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const element = document.getElementById("dog")!;
+
+        return qawolf.buildCssSelector({
+          element,
+          attribute: "data-qa",
+          action: "click"
+        });
+      });
+
+      expect(selector).toBe("[data-qa='html-radio-group'] [value='dog']");
+
+      const selector2 = await page.evaluate(() => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const element = document.getElementById("blue")!;
+
+        return qawolf.buildCssSelector({
+          element,
+          attribute: "data-qa",
+          action: "click"
+        });
+      });
+
+      expect(selector2).toBe("[data-qa='material-radio-group'] [value='blue']");
+    });
   });
 
   describe("click: checkbox", () => {

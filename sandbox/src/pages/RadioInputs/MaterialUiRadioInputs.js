@@ -39,7 +39,11 @@ function MaterialUiRadioInputs() {
           onChange={e => setColor(e.target.value)}
           value={color}
         >
-          <FormControlLabel control={<Radio />} label="Blue" value="blue" />
+          <FormControlLabel
+            control={<Radio id="blue" />}
+            label="Blue"
+            value="blue"
+          />
           <FormControlLabel control={<Radio />} label="Green" value="green" />
           <FormControlLabel control={<Radio />} label="Red" value="red" />
         </RadioGroup>
