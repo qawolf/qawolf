@@ -7,8 +7,8 @@ import {
 import TextField from "@material-ui/core/TextField";
 
 function MaterialUiDatePickers() {
-  const [birthday, setBirthday] = useState(new Date("2014-08-18"));
-  const [favorite, setFavorite] = useState(new Date("2001-01-1"));
+  const [birthday, setBirthday] = useState(new Date("2001-01-1"));
+  const [favorite, setFavorite] = useState(new Date("2002-01-1"));
 
   return (
     <div className="container">
@@ -17,7 +17,7 @@ function MaterialUiDatePickers() {
       </h3>
       <TextField
         data-qa="material-date-picker-native"
-        defaultValue="1990-06-27"
+        defaultValue="2000-01-01"
         label="Birthday"
         type="date"
       />

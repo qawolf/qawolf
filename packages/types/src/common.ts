@@ -6,7 +6,7 @@ export type Callback<S = void, T = void> = (data?: S) => T;
 
 export type TypeOptions = {
   delayMs?: number;
-  skipClear?: boolean;
+  replace?: boolean;
 };
 
 export const getBrowserType = (browserType: string): BrowserType => {

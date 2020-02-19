@@ -2,15 +2,8 @@ import { logger } from "@qawolf/logger";
 import { TypeOptions } from "@qawolf/types";
 import { isNil, sleep } from "@qawolf/web";
 import { ElementHandle, Page as PlaywrightPage } from "playwright";
-import { clearElement } from "./clearElement";
-import { deserializeStrokes, Stroke } from "../keyboard";
-
-const shouldClear = (strokes: Stroke[]) => {
-  if (!strokes.length) return true;
-
-  const value = strokes[0].value;
-  return value !== "Enter" && value !== "Tab";
-};
+import { selectElementContent } from "./selectElementContent";
+import { deserializeStrokes } from "../keyboard";
 
 export const typeElement = async (
   page: PlaywrightPage,
@@ -26,10 +19,22 @@ export const typeElement = async (
 
   await elementHandle.focus();
 
-  const strokes = deserializeStrokes(value || "");
+  let text = value || "";
 
-  if (!options.skipClear && shouldClear(strokes)) {
-    await clearElement(elementHandle);
+  if (options.replace) {
+    await selectElementContent(elementHandle);
+
+    // default empty value to backspace when options.replace = true
+    if (!value) text = "↓Backspace↑Backspace";
+  }
+
+  const strokes = deserializeStrokes(text);
+
+  if (!strokes) {
+    // type seems to work better than sendCharacters so use it when possible
+    // https://github.com/microsoft/playwright/issues/1057
+    await elementHandle.type(text);
+    return;
   }
 
   // logging the keyboard codes below will leak secrets
