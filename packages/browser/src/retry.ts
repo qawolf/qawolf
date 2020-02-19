@@ -2,6 +2,8 @@ import { logger } from "@qawolf/logger";
 import { sleep } from "@qawolf/web";
 
 const MESSAGES_TO_RETRY = [
+  // https://github.com/microsoft/playwright/issues/1065
+  "Cannot find object with id",
   "Execution context was destroyed",
   "Inspected target navigated or closed",
   "Node is detached from document",

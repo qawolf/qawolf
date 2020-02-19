@@ -15,3 +15,11 @@ it(\\"can scroll\\", async () => {
 });
 "
 `;
+
+exports[`CodeReconciler.reconcile updates the last expression after a step was removed (ex: paste) 1`] = `
+"
+it(\\"can scroll\\", async () => {
+  await browser.click(selectors[1]);
+});
+"
+`;

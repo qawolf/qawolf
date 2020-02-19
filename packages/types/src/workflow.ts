@@ -7,6 +7,7 @@ export interface Step {
   html: DocSelector;
   index: number;
   page: number;
+  replace?: boolean;
   value?: StepValue;
 }
 

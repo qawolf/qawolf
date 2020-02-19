@@ -8,6 +8,12 @@ describe("buildTypeSteps", () => {
     expect(steps).toMatchSnapshot();
   });
 
+  it("builds expected steps for selectall", async () => {
+    const events = await loadEvents("selectall");
+    const steps = buildTypeSteps(events);
+    expect(steps).toMatchSnapshot();
+  });
+
   it("builds expected steps for hotkeys", async () => {
     const events = await loadEvents("githubIssuesShortcut");
     const steps = buildTypeSteps(events);

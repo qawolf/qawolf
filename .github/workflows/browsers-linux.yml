@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x]
-        browser: [chromium, webkit, firefox, all]
+        browser: [chromium, webkit, firefox, e2e]
       fail-fast: false
 
     env:
@@ -46,10 +46,10 @@ jobs:
           npm start &
 
       - run: QAW_BROWSER=${{ matrix.browser }} npm run test:browser
-        if: matrix.browser != 'all'
+        if: matrix.browser != 'e2e'
 
       - run: npm run test:e2e
-        if: matrix.browser == 'all'
+        if: matrix.browser == 'e2e'
 
       - name: Upload Artifacts
         if: always()

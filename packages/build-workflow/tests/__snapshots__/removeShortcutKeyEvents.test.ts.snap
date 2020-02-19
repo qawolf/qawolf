@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`removePasteKeyEvents removes CMD+V key events 1`] = `
+exports[`removeShortcutKeyEvents removes CMD+V key events 1`] = `
 Array [
   "↓t",
   "↑t",
