@@ -12,7 +12,7 @@ import { removeShortcutKeyEvents } from "./removeShortcutKeyEvents";
 
 const SEPARATE_KEYS = ["Enter", "Tab"];
 
-type BuildTypeStepOptions = {
+type BuildStepOptions = {
   firstEvent: ElementEvent;
   value: string;
 };
@@ -32,7 +32,7 @@ export class TypeStepFactory {
     if (value.length <= 0) return;
 
     logger.debug("TypeStepFactory: buildPasteStep");
-    this.buildTypeStep({ firstEvent: event, value });
+    this.buildStep({ firstEvent: event, value });
   }
 
   buildPendingStep(reason: string) {
@@ -47,7 +47,7 @@ export class TypeStepFactory {
 
     const firstEvent = this._pendingEvents[0];
 
-    this.buildTypeStep({
+    this.buildStep({
       firstEvent,
       value: serializeKeyEvents(this._pendingEvents)
     });
@@ -65,6 +65,34 @@ export class TypeStepFactory {
     this._pendingEvents.push(event);
     this._pendingEvents.push({ ...event, name: "keyup" });
     this.buildPendingStep("separate step");
+  }
+
+  buildStep({ firstEvent, value }: BuildStepOptions): Step {
+    const index = this._events.indexOf(firstEvent);
+
+    const step: Step = {
+      action: "type",
+      html: firstEvent.target,
+      // include event index so we can sort in buildSteps
+      index,
+      page: firstEvent.page,
+      value
+    };
+
+    // replace when the select all target
+    // matches this type step
+    if (
+      this._selectAllTarget &&
+      JSON.stringify(firstEvent.target) ===
+        JSON.stringify(this._selectAllTarget)
+    ) {
+      step.replace = true;
+      this._selectAllTarget = null;
+    }
+
+    this._steps.push(step);
+
+    return step;
   }
 
   buildSteps() {
@@ -100,34 +128,6 @@ export class TypeStepFactory {
     this.buildPendingStep("last event");
 
     return this._steps;
-  }
-
-  buildTypeStep({ firstEvent, value }: BuildTypeStepOptions): Step {
-    const index = this._events.indexOf(firstEvent);
-
-    const step: Step = {
-      action: "type",
-      html: firstEvent.target,
-      // include event index so we can sort in buildSteps
-      index,
-      page: firstEvent.page,
-      value
-    };
-
-    // set replace to true when the select all target
-    // matches the pending type step
-    if (
-      this._selectAllTarget &&
-      JSON.stringify(firstEvent.target) ===
-        JSON.stringify(this._selectAllTarget)
-    ) {
-      step.replace = true;
-      this._selectAllTarget = null;
-    }
-
-    this._steps.push(step);
-
-    return step;
   }
 
   handleKeyEvent(event: KeyEvent) {
