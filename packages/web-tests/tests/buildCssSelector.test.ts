@@ -243,22 +243,168 @@ describe("buildCssSelector", () => {
     });
   });
 
-  describe("type", () => {
-    it("returns undefined if no attribute present", () => {});
+  describe("type: input", () => {
+    beforeAll(async () => {
+      await context.goto(`localhost:3000/text-inputs`);
+      page = await context.page();
+    });
 
-    it("returns selector if attribute present", () => {});
+    it("returns selector if attribute present", async () => {
+      const selector = await page.evaluate(() => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const element = document.querySelector(
+          '[type="password"]'
+        ) as HTMLElement;
 
-    it("returns selector and target if attribute present on ancestor", () => {});
+        return qawolf.buildCssSelector({
+          element,
+          attribute: "data-qa",
+          action: "type"
+        });
+      });
 
-    it("return selector and target attribute for content editable", () => {});
+      expect(selector).toBe("[data-qa='html-password-input']");
+
+      const selector2 = await page.evaluate(() => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const element = document.querySelector("textarea") as HTMLElement;
+
+        return qawolf.buildCssSelector({
+          element,
+          attribute: "data-qa",
+          action: "type"
+        });
+      });
+
+      expect(selector2).toBe("[data-qa='html-textarea']");
+    });
+
+    it("returns selector and target if attribute present on ancestor", async () => {
+      const selector = await page.evaluate(() => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const element = document.querySelector(
+          '[data-qa="material-text-input"] input'
+        ) as HTMLElement;
+
+        return qawolf.buildCssSelector({
+          element,
+          attribute: "data-qa",
+          action: "type"
+        });
+      });
+
+      expect(selector).toBe("[data-qa='material-text-input'] input");
+
+      const selector2 = await page.evaluate(() => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const element = document.querySelector(
+          "[data-qa='material-textarea'] textarea"
+        ) as HTMLElement;
+
+        return qawolf.buildCssSelector({
+          element,
+          attribute: "data-qa",
+          action: "type"
+        });
+      });
+
+      expect(selector2).toBe("[data-qa='material-textarea'] textarea");
+    });
+  });
+
+  describe("type: content editable", () => {
+    beforeAll(async () => {
+      await context.goto(`localhost:3000/content-editables`);
+      page = await context.page();
+    });
+
+    it("return selector and target attribute", async () => {
+      const selector = await page.evaluate(() => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const element = document.querySelector(
+          "[data-qa='content-editable']"
+        ) as HTMLElement;
+
+        return qawolf.buildCssSelector({
+          element,
+          attribute: "data-qa",
+          action: "type"
+        });
+      });
+
+      expect(selector).toBe("[data-qa='content-editable']");
+
+      const selector2 = await page.evaluate(() => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const element = document.querySelector(
+          "[data-qa='draftjs'] [contenteditable='true']"
+        ) as HTMLElement;
+
+        return qawolf.buildCssSelector({
+          element,
+          attribute: "data-qa",
+          action: "type"
+        });
+      });
+
+      expect(selector2).toBe("[data-qa='draftjs'] [contenteditable='true']");
+
+      const selector3 = await page.evaluate(() => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const element = document.querySelector(
+          "[data-qa='quill'] [contenteditable='true']"
+        ) as HTMLElement;
+
+        return qawolf.buildCssSelector({
+          element,
+          attribute: "data-qa",
+          action: "type"
+        });
+      });
+
+      expect(selector3).toBe("[data-qa='quill'] [contenteditable='true']");
+    });
   });
 
   describe("select", () => {
-    it("returns undefined if no attribute present", () => {});
+    beforeAll(async () => {
+      await context.goto(`localhost:3000/selects`);
+      page = await context.page();
+    });
 
-    it("returns selector if attribute present", () => {});
+    it("returns selector if attribute present", async () => {
+      const selector = await page.evaluate(() => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const element = document.querySelector(
+          "[data-qa='html-select']"
+        ) as HTMLElement;
 
-    it("returns selector and target if attribute present on ancestor", () => {});
+        return qawolf.buildCssSelector({
+          element,
+          attribute: "data-qa",
+          action: "select"
+        });
+      });
+
+      expect(selector).toBe("[data-qa='html-select']");
+    });
+
+    it("returns selector and target if attribute present on ancestor", async () => {
+      const selector = await page.evaluate(() => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const element = document.querySelector(
+          "[data-qa='material-select-native'] select"
+        ) as HTMLElement;
+
+        return qawolf.buildCssSelector({
+          element,
+          attribute: "data-qa",
+          action: "select"
+        });
+      });
+
+      expect(selector).toBe("[data-qa='material-select-native'] select");
+    });
   });
 });
 

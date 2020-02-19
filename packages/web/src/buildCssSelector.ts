@@ -90,7 +90,9 @@ export const getSelectorTarget = (
   if (["checkbox", "radio"].includes(inputElement.type) && inputElement.value) {
     return ` [value='${inputElement.value}']`;
   } else if (action !== "click") {
-    return ` ${element.tagName.toLowerCase()}`;
+    return element.contentEditable === "true"
+      ? " [contenteditable='true']"
+      : ` ${element.tagName.toLowerCase()}`;
   }
 
   return "";
