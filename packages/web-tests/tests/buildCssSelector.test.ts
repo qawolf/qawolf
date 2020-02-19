@@ -12,7 +12,7 @@ beforeAll(async () => {
 afterAll(() => context.close());
 
 describe("buildCssSelector", () => {
-  describe("click", () => {
+  describe("click: button", () => {
     beforeAll(async () => {
       await context.goto(`localhost:3000/buttons`);
       page = await context.page();
@@ -162,19 +162,85 @@ describe("buildCssSelector", () => {
   });
 
   describe("click: checkbox", () => {
-    it("returns undefined if no attribute present", () => {});
+    beforeAll(async () => {
+      await context.goto(`localhost:3000/checkbox-inputs`);
+      page = await context.page();
+    });
 
-    it("returns selector if attribute present", () => {});
+    it("returns undefined if no attribute present", async () => {
+      const selector = await page.evaluate(() => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const element = document.getElementById("another")!;
 
-    it("returns selector if attribute present on ancestor", () => {});
-  });
+        return qawolf.buildCssSelector({
+          element,
+          attribute: "data-qa",
+          action: "click"
+        });
+      });
 
-  describe("scroll", () => {
-    it("returns undefined if no attribute present", () => {});
+      expect(selector).toBeUndefined();
+    });
 
-    it("returns selector if attribute present", () => {});
+    it("returns selector if attribute present", async () => {
+      const selector = await page.evaluate(() => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const element = document.getElementById("single")!;
 
-    it("returns selector if attribute present on ancestor", () => {});
+        return qawolf.buildCssSelector({
+          element,
+          attribute: "data-qa",
+          action: "click"
+        });
+      });
+
+      expect(selector).toBe("[data-qa='html-checkbox']");
+
+      const selector2 = await page.evaluate(() => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const element = document.getElementsByClassName(
+          "MuiFormControlLabel-label"
+        )[0] as HTMLElement;
+
+        return qawolf.buildCssSelector({
+          element,
+          attribute: "data-qa",
+          action: "click"
+        });
+      });
+
+      expect(selector2).toBe("[data-qa='material-checkbox']");
+    });
+
+    it("returns selector if attribute present on ancestor", async () => {
+      const selector = await page.evaluate(() => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const element = document.getElementById("dog")!;
+
+        return qawolf.buildCssSelector({
+          element,
+          attribute: "data-qa",
+          action: "click"
+        });
+      });
+
+      expect(selector).toBe("[data-qa='html-checkbox-group'] [value='dog']");
+
+      const selector2 = await page.evaluate(() => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const element = document.getElementById("blue")!;
+
+        return qawolf.buildCssSelector({
+          element,
+          attribute: "data-qa",
+          action: "click"
+        });
+      });
+
+      expect(selector2).toBe(
+        "[data-qa='material-checkbox-group'] [value='blue']"
+      );
+    });
   });
 
   describe("type", () => {
