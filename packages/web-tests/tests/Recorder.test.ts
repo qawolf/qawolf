@@ -119,7 +119,6 @@ describe("Recorder", () => {
 
   it("records input event for select", async () => {
     const context = await launch({
-      devtools: true,
       shouldRecordEvents: true,
       url: `${CONFIG.sandboxUrl}selects`
     });
