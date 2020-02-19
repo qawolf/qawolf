@@ -20,12 +20,32 @@ export class StepExpression implements Expression {
   private _buildOptions(): string | void {
     const page = this._step.page;
 
+    let options: any = {};
+
     // 1) we need to specify the page if the step has a different page
     // 2) we don't need to, but we specify the page if it is not 0
     //    for clarity and in case they delete steps
     if (this._didPageChange() || page !== 0) {
-      return `{ page: ${page} }`;
+      options.page = page;
     }
+
+    if (this._step.replace) {
+      options.replace = true;
+    }
+
+    if (Object.keys(options).length <= 0) return;
+
+    let serialized = `{ `;
+
+    Object.keys(options).forEach((key, index) => {
+      if (index > 0) serialized += ", ";
+
+      serialized += `${key}: ${options[key]}`;
+    });
+
+    serialized += " }";
+
+    return serialized;
   }
 
   private _buildValue(): string | void {

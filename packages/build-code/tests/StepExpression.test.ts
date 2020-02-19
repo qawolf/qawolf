@@ -1,5 +1,5 @@
 import { CONFIG } from "@qawolf/config";
-import { Action } from "@qawolf/types";
+import { Action, Step } from "@qawolf/types";
 import { StepExpression } from "../src/StepExpression";
 import { baseStep } from "./fixtures";
 
@@ -63,6 +63,28 @@ describe("StepExpression", () => {
 
       expect(expression.code()).toBe(
         'await browser.type(selectors[0], "spirit");'
+      );
+    });
+
+    test("type step replacing a value", () => {
+      const replaceStep: Step = {
+        ...baseStep,
+        action: "type",
+        replace: true,
+        value: "hello"
+      };
+
+      expect(new StepExpression(replaceStep).code()).toEqual(
+        'await browser.type(selectors[0], "hello", { replace: true });'
+      );
+
+      expect(
+        new StepExpression({
+          ...replaceStep,
+          page: 1
+        }).code()
+      ).toEqual(
+        'await browser.type(selectors[0], "hello", { page: 1, replace: true });'
       );
     });
 
