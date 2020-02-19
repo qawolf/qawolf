@@ -139,6 +139,10 @@ describe("Recorder", () => {
   });
 
   it("records selectall for text input", async () => {
+    // XXX use keyboard shortcuts if/when https://github.com/microsoft/playwright/issues/1067 is resolved
+    // selectElementContent does not trigger "select" on webkit
+    if (CONFIG.browser === "webkit") return;
+
     const context = await launch({
       shouldRecordEvents: true,
       url: `${CONFIG.sandboxUrl}text-inputs`
