@@ -12,33 +12,58 @@ export interface BuildCssSelectorOptions {
   element: HTMLElement;
 }
 
+interface ElementAttributeValuePair {
+  attributeValue: AttributeValuePair;
+  element: HTMLElement;
+}
+
 export const buildCssSelector = ({
   action,
   attribute,
   element
 }: BuildCssSelectorOptions): string | undefined => {
-  console.debug("qawolf: get attribute value for", getXpath(element));
+  // get the closest element to the target with attribute
+  const elementWithSelector = findAttribute(element, attribute);
+  if (!elementWithSelector) {
+    console.debug(`No CSS selector found for for`, getXpath(element));
+    return undefined;
+  }
+
+  const { attributeValue } = elementWithSelector;
+  const cssSelector = `[${attributeValue.attribute}='${attributeValue.value}']`;
+
+  // if target same as element with the attribute, return the CSS selector as is
+  if (elementWithSelector.element === element) {
+    console.debug(`Found CSS selector ${cssSelector} for`, getXpath(element));
+    return cssSelector;
+  }
+
+  // element with selector is an ancestor
+  const targetSelector = getSelectorTarget(element as HTMLInputElement, action);
+  const finalSelector = `${cssSelector}${targetSelector}`;
+
+  console.debug(`Found CSS selector ${finalSelector} for`, getXpath(element));
+
+  return finalSelector;
+};
+
+export const findAttribute = (
+  element: HTMLElement,
+  attribute: string
+): ElementAttributeValuePair | null => {
   let ancestor = element;
 
   while (ancestor) {
     const attributeValue = getAttributeValue(ancestor, attribute);
 
     if (attributeValue) {
-      const { attribute, value } = attributeValue;
-      console.debug(
-        `qawolf: found ${attribute} attribute: ${value} for`,
-        getXpath(element)
-      );
-
-      return `[${attribute}='${value}']`;
+      return { attributeValue, element: ancestor };
     }
 
     ancestor = ancestor.parentElement;
   }
 
-  console.debug("qawolf: no attribute value found for", getXpath(element));
-
-  return undefined;
+  return null;
 };
 
 export const getAttributeValue = (
@@ -54,4 +79,19 @@ export const getAttributeValue = (
   }
 
   return null;
+};
+
+export const getSelectorTarget = (
+  element: HTMLInputElement,
+  action: Action
+): string => {
+  // unless we are clicking, we need to build descendant selector for the target
+  const inputElement = element as HTMLInputElement;
+  if (["checkbox", "radio"].includes(inputElement.type) && inputElement.value) {
+    return ` [value='${inputElement.value}']`;
+  } else if (action !== "click") {
+    return ` ${element.tagName.toLowerCase()}`;
+  }
+
+  return "";
 };

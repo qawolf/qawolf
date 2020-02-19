@@ -63,8 +63,6 @@ describe("buildCssSelector", () => {
 
       expect(selector).toBe("[data-qa='html-button-with-children']");
 
-      // document.getElementsByClassName("MuiButton-label")[0]
-
       const selector2 = await page.evaluate(() => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
         const element = document.getElementsByClassName(
@@ -80,7 +78,9 @@ describe("buildCssSelector", () => {
 
       expect(selector2).toBe("[data-qa='material-button']");
     });
+  });
 
+  describe("click: inputs", () => {
     it("returns correct selector for radio buttons", () => {});
 
     it("returns correct selector for checkboxes", () => {});
