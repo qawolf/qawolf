@@ -21,12 +21,12 @@ describe("buildCssSelector", () => {
     it("returns undefined if no attribute present", async () => {
       const selector = await page.evaluate(() => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.getElementById("#html-button")!;
+        const target = document.getElementById("#html-button")!;
 
         return qawolf.buildCssSelector({
-          element,
+          target,
           attribute: "data-qa",
-          action: "click"
+          isClick: true
         });
       });
 
@@ -36,14 +36,14 @@ describe("buildCssSelector", () => {
     it("returns selector if attribute present", async () => {
       const selector = await page.evaluate(() => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.querySelector(
+        const target = document.querySelector(
           "[data-qa='html-button']"
         ) as HTMLElement;
 
         return qawolf.buildCssSelector({
-          element,
+          target,
           attribute: "data-qa",
-          action: "click"
+          isClick: true
         });
       });
 
@@ -53,12 +53,12 @@ describe("buildCssSelector", () => {
     it("returns selector if attribute present on ancestor", async () => {
       const selector = await page.evaluate(() => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.getElementById("html-button-child")!;
+        const target = document.getElementById("html-button-child")!;
 
         return qawolf.buildCssSelector({
-          element,
+          target,
           attribute: "data-qa",
-          action: "click"
+          isClick: true
         });
       });
 
@@ -66,14 +66,14 @@ describe("buildCssSelector", () => {
 
       const selector2 = await page.evaluate(() => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.getElementsByClassName(
+        const target = document.getElementsByClassName(
           "MuiButton-label"
         )[0] as HTMLElement;
 
         return qawolf.buildCssSelector({
-          element,
+          target,
           attribute: "data-qa",
-          action: "click"
+          isClick: true
         });
       });
 
@@ -90,12 +90,12 @@ describe("buildCssSelector", () => {
     it("returns undefined if no attribute present", async () => {
       const selector = await page.evaluate(() => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.getElementById("another")!;
+        const target = document.getElementById("another")!;
 
         return qawolf.buildCssSelector({
-          element,
+          target,
           attribute: "data-qa",
-          action: "click"
+          isClick: true
         });
       });
 
@@ -105,12 +105,12 @@ describe("buildCssSelector", () => {
     it("returns selector if attribute present", async () => {
       const selector = await page.evaluate(() => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.getElementById("single")!;
+        const target = document.getElementById("single")!;
 
         return qawolf.buildCssSelector({
-          element,
+          target,
           attribute: "data-qa",
-          action: "click"
+          isClick: true
         });
       });
 
@@ -118,14 +118,14 @@ describe("buildCssSelector", () => {
 
       const selector2 = await page.evaluate(() => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.getElementsByClassName(
+        const target = document.getElementsByClassName(
           "MuiFormControlLabel-label"
         )[0] as HTMLElement;
 
         return qawolf.buildCssSelector({
-          element,
+          target,
           attribute: "data-qa",
-          action: "click"
+          isClick: true
         });
       });
 
@@ -135,12 +135,12 @@ describe("buildCssSelector", () => {
     it("returns selector if attribute present on ancestor", async () => {
       const selector = await page.evaluate(() => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.getElementById("dog")!;
+        const target = document.getElementById("dog")!;
 
         return qawolf.buildCssSelector({
-          element,
+          target,
           attribute: "data-qa",
-          action: "click"
+          isClick: true
         });
       });
 
@@ -148,12 +148,12 @@ describe("buildCssSelector", () => {
 
       const selector2 = await page.evaluate(() => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.getElementById("blue")!;
+        const target = document.getElementById("blue")!;
 
         return qawolf.buildCssSelector({
-          element,
+          target,
           attribute: "data-qa",
-          action: "click"
+          isClick: true
         });
       });
 
@@ -170,12 +170,12 @@ describe("buildCssSelector", () => {
     it("returns undefined if no attribute present", async () => {
       const selector = await page.evaluate(() => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.getElementById("another")!;
+        const target = document.getElementById("another")!;
 
         return qawolf.buildCssSelector({
-          element,
+          target,
           attribute: "data-qa",
-          action: "click"
+          isClick: true
         });
       });
 
@@ -185,12 +185,12 @@ describe("buildCssSelector", () => {
     it("returns selector if attribute present", async () => {
       const selector = await page.evaluate(() => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.getElementById("single")!;
+        const target = document.getElementById("single")!;
 
         return qawolf.buildCssSelector({
-          element,
+          target,
           attribute: "data-qa",
-          action: "click"
+          isClick: true
         });
       });
 
@@ -198,14 +198,14 @@ describe("buildCssSelector", () => {
 
       const selector2 = await page.evaluate(() => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.getElementsByClassName(
+        const target = document.getElementsByClassName(
           "MuiFormControlLabel-label"
         )[0] as HTMLElement;
 
         return qawolf.buildCssSelector({
-          element,
+          target,
           attribute: "data-qa",
-          action: "click"
+          isClick: true
         });
       });
 
@@ -215,12 +215,12 @@ describe("buildCssSelector", () => {
     it("returns selector if attribute present on ancestor", async () => {
       const selector = await page.evaluate(() => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.getElementById("dog")!;
+        const target = document.getElementById("dog")!;
 
         return qawolf.buildCssSelector({
-          element,
+          target,
           attribute: "data-qa",
-          action: "click"
+          isClick: true
         });
       });
 
@@ -228,12 +228,12 @@ describe("buildCssSelector", () => {
 
       const selector2 = await page.evaluate(() => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.getElementById("blue")!;
+        const target = document.getElementById("blue")!;
 
         return qawolf.buildCssSelector({
-          element,
+          target,
           attribute: "data-qa",
-          action: "click"
+          isClick: true
         });
       });
 
@@ -252,14 +252,13 @@ describe("buildCssSelector", () => {
     it("returns selector if attribute present", async () => {
       const selector = await page.evaluate(() => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.querySelector(
+        const target = document.querySelector(
           '[type="password"]'
         ) as HTMLElement;
 
         return qawolf.buildCssSelector({
-          element,
-          attribute: "data-qa",
-          action: "type"
+          target,
+          attribute: "data-qa"
         });
       });
 
@@ -267,12 +266,11 @@ describe("buildCssSelector", () => {
 
       const selector2 = await page.evaluate(() => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.querySelector("textarea") as HTMLElement;
+        const target = document.querySelector("textarea") as HTMLElement;
 
         return qawolf.buildCssSelector({
-          element,
-          attribute: "data-qa",
-          action: "type"
+          target,
+          attribute: "data-qa"
         });
       });
 
@@ -282,14 +280,13 @@ describe("buildCssSelector", () => {
     it("returns selector and target if attribute present on ancestor", async () => {
       const selector = await page.evaluate(() => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.querySelector(
+        const target = document.querySelector(
           '[data-qa="material-text-input"] input'
         ) as HTMLElement;
 
         return qawolf.buildCssSelector({
-          element,
-          attribute: "data-qa",
-          action: "type"
+          target,
+          attribute: "data-qa"
         });
       });
 
@@ -297,14 +294,13 @@ describe("buildCssSelector", () => {
 
       const selector2 = await page.evaluate(() => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.querySelector(
+        const target = document.querySelector(
           "[data-qa='material-textarea'] textarea"
         ) as HTMLElement;
 
         return qawolf.buildCssSelector({
-          element,
-          attribute: "data-qa",
-          action: "type"
+          target,
+          attribute: "data-qa"
         });
       });
 
@@ -321,14 +317,13 @@ describe("buildCssSelector", () => {
     it("return selector and target attribute", async () => {
       const selector = await page.evaluate(() => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.querySelector(
+        const target = document.querySelector(
           "[data-qa='content-editable']"
         ) as HTMLElement;
 
         return qawolf.buildCssSelector({
-          element,
-          attribute: "data-qa",
-          action: "type"
+          target,
+          attribute: "data-qa"
         });
       });
 
@@ -336,14 +331,13 @@ describe("buildCssSelector", () => {
 
       const selector2 = await page.evaluate(() => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.querySelector(
+        const target = document.querySelector(
           "[data-qa='draftjs'] [contenteditable='true']"
         ) as HTMLElement;
 
         return qawolf.buildCssSelector({
-          element,
-          attribute: "data-qa",
-          action: "type"
+          target,
+          attribute: "data-qa"
         });
       });
 
@@ -351,14 +345,13 @@ describe("buildCssSelector", () => {
 
       const selector3 = await page.evaluate(() => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.querySelector(
+        const target = document.querySelector(
           "[data-qa='quill'] [contenteditable='true']"
         ) as HTMLElement;
 
         return qawolf.buildCssSelector({
-          element,
-          attribute: "data-qa",
-          action: "type"
+          target,
+          attribute: "data-qa"
         });
       });
 
@@ -375,14 +368,13 @@ describe("buildCssSelector", () => {
     it("returns selector if attribute present", async () => {
       const selector = await page.evaluate(() => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.querySelector(
+        const target = document.querySelector(
           "[data-qa='html-select']"
         ) as HTMLElement;
 
         return qawolf.buildCssSelector({
-          element,
-          attribute: "data-qa",
-          action: "select"
+          target,
+          attribute: "data-qa"
         });
       });
 
@@ -392,14 +384,13 @@ describe("buildCssSelector", () => {
     it("returns selector and target if attribute present on ancestor", async () => {
       const selector = await page.evaluate(() => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.querySelector(
+        const target = document.querySelector(
           "[data-qa='material-select-native'] select"
         ) as HTMLElement;
 
         return qawolf.buildCssSelector({
-          element,
-          attribute: "data-qa",
-          action: "select"
+          target,
+          attribute: "data-qa"
         });
       });
 

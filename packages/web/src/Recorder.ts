@@ -1,4 +1,5 @@
 import * as types from "@qawolf/types";
+import { buildCssSelector } from "./buildCssSelector";
 import { getClickableAncestor } from "./element";
 import { nodeToDocSelector } from "./serialize";
 
@@ -69,6 +70,11 @@ export class Recorder {
       const target = getClickableAncestor(event.target as HTMLElement);
 
       return {
+        cssSelector: buildCssSelector({
+          attribute: this._attribute,
+          isClick: true,
+          target
+        }),
         isTrusted: event.isTrusted,
         name: "click",
         page: this._pageIndex,
@@ -78,22 +84,30 @@ export class Recorder {
     });
 
     this.recordEvent("input", event => {
-      const element = event.target as HTMLInputElement;
+      const target = event.target as HTMLInputElement;
 
       // ignore input events not on selects
-      if (element.tagName.toLowerCase() !== "select") return;
+      if (target.tagName.toLowerCase() !== "select") return;
 
       return {
+        cssSelector: buildCssSelector({
+          attribute: this._attribute,
+          target
+        }),
         isTrusted: event.isTrusted,
         name: "input",
         page: this._pageIndex,
-        target: nodeToDocSelector(element),
+        target: nodeToDocSelector(target),
         time: Date.now(),
-        value: element.value
+        value: target.value
       };
     });
 
     this.recordEvent("keydown", event => ({
+      cssSelector: buildCssSelector({
+        attribute: this._attribute,
+        target: event.target as HTMLElement
+      }),
       isTrusted: event.isTrusted,
       name: "keydown",
       page: this._pageIndex,
@@ -103,6 +117,10 @@ export class Recorder {
     }));
 
     this.recordEvent("keyup", event => ({
+      cssSelector: buildCssSelector({
+        attribute: this._attribute,
+        target: event.target as HTMLElement
+      }),
       isTrusted: event.isTrusted,
       name: "keyup",
       page: this._pageIndex,
@@ -115,6 +133,10 @@ export class Recorder {
       if (!event.clipboardData) return;
 
       return {
+        cssSelector: buildCssSelector({
+          attribute: this._attribute,
+          target: event.target as HTMLElement
+        }),
         isTrusted: event.isTrusted,
         name: "paste",
         page: this._pageIndex,
@@ -150,6 +172,10 @@ export class Recorder {
       }
 
       return {
+        cssSelector: buildCssSelector({
+          attribute: this._attribute,
+          target: event.target as HTMLElement
+        }),
         isTrusted: event.isTrusted,
         name: "scroll",
         page: this._pageIndex,

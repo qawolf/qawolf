@@ -1,4 +1,3 @@
-import { Action } from "@qawolf/types";
 import { getXpath } from "./xpath";
 
 interface AttributeValuePair {
@@ -7,9 +6,9 @@ interface AttributeValuePair {
 }
 
 export interface BuildCssSelectorOptions {
-  action: Action;
   attribute: string;
-  element: HTMLElement;
+  isClick?: boolean;
+  target: HTMLElement;
 }
 
 interface ElementAttributeValuePair {
@@ -18,14 +17,14 @@ interface ElementAttributeValuePair {
 }
 
 export const buildCssSelector = ({
-  action,
   attribute,
-  element
+  isClick,
+  target
 }: BuildCssSelectorOptions): string | undefined => {
   // get the closest element to the target with attribute
-  const elementWithSelector = findAttribute(element, attribute);
+  const elementWithSelector = findAttribute(target, attribute);
   if (!elementWithSelector) {
-    console.debug(`No CSS selector found for for`, getXpath(element));
+    console.debug(`No CSS selector found for for`, getXpath(target));
     return undefined;
   }
 
@@ -33,16 +32,16 @@ export const buildCssSelector = ({
   const cssSelector = `[${attributeValue.attribute}='${attributeValue.value}']`;
 
   // if target same as element with the attribute, return the CSS selector as is
-  if (elementWithSelector.element === element) {
-    console.debug(`Found CSS selector ${cssSelector} for`, getXpath(element));
+  if (elementWithSelector.element === target) {
+    console.debug(`Found CSS selector ${cssSelector} for`, getXpath(target));
     return cssSelector;
   }
 
-  // element with selector is an ancestor
-  const targetSelector = getSelectorTarget(element as HTMLInputElement, action);
+  // target with selector is an ancestor
+  const targetSelector = getSelectorTarget(target as HTMLInputElement, isClick);
   const finalSelector = `${cssSelector}${targetSelector}`;
 
-  console.debug(`Found CSS selector ${finalSelector} for`, getXpath(element));
+  console.debug(`Found CSS selector ${finalSelector} for`, getXpath(target));
 
   return finalSelector;
 };
@@ -83,13 +82,13 @@ export const getAttributeValue = (
 
 export const getSelectorTarget = (
   element: HTMLInputElement,
-  action: Action
+  isClick?: boolean
 ): string => {
   // unless we are clicking, we need to build descendant selector for the target
   const inputElement = element as HTMLInputElement;
   if (["checkbox", "radio"].includes(inputElement.type) && inputElement.value) {
     return ` [value='${inputElement.value}']`;
-  } else if (action !== "click") {
+  } else if (!isClick) {
     return element.contentEditable === "true"
       ? " [contenteditable='true']"
       : ` ${element.tagName.toLowerCase()}`;
