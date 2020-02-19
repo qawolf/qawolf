@@ -1,16 +1,10 @@
 import { Stroke, StrokeType } from "./Stroke";
 
-export const deserializeCharacterStrokes = (value: string): Stroke[] => {
-  const strokes = value.split("").map<Stroke>((character, i) => ({
-    index: i,
-    type: "→",
-    value: character
-  }));
+export const deserializeStrokes = (serialized: string): Stroke[] | null => {
+  if (!["→", "↓", "↑"].some(prefix => serialized.startsWith(prefix))) {
+    return null;
+  }
 
-  return strokes;
-};
-
-export const deserializeKeyStrokes = (serialized: string): Stroke[] => {
   const strokes: Stroke[] = [];
 
   // split by prefix with positive lookahead https://stackoverflow.com/a/12001989
@@ -25,12 +19,4 @@ export const deserializeKeyStrokes = (serialized: string): Stroke[] => {
   }
 
   return strokes;
-};
-
-export const deserializeStrokes = (value: string): Stroke[] => {
-  if (["→", "↓", "↑"].some(prefix => value.startsWith(prefix))) {
-    return deserializeKeyStrokes(value);
-  }
-
-  return deserializeCharacterStrokes(value);
 };
