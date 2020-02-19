@@ -19,6 +19,7 @@ const buildTypeStep = ({
 }: BuildTypeStepOptions): Step => {
   return {
     action: "type",
+    cssSelector: firstEvent.cssSelector,
     html: firstEvent.target,
     // include event index so we can sort in buildSteps
     index: allEvents.indexOf(firstEvent),

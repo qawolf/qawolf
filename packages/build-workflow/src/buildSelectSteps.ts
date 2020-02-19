@@ -14,6 +14,7 @@ export const buildSelectSteps = (events: ElementEvent[]): Step[] => {
 
     steps.push({
       action: "select",
+      cssSelector: event.cssSelector,
       html: event.target,
       // include event index so we can sort in buildSteps
       index: i,
