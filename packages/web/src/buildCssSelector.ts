@@ -1,6 +1,6 @@
 import { getXpath } from "./xpath";
 
-interface AttributeValuePair {
+export interface AttributeValuePair {
   attribute: string;
   value: string;
 }

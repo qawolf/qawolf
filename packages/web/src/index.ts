@@ -1,4 +1,4 @@
-import { buildCssSelector } from "./buildCssSelector";
+import { buildCssSelector, getAttributeValue } from "./buildCssSelector";
 import { captureLogs } from "./captureLogs";
 import * as element from "./element";
 import * as event from "./event";
@@ -50,6 +50,7 @@ const webExports = {
   event,
   find,
   format,
+  getAttributeValue,
   lang,
   Recorder,
   scroll,

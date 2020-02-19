@@ -399,59 +399,71 @@ describe("buildCssSelector", () => {
   });
 });
 
-// describe("getAttributeValue", () => {
-//   it("returns null if data attribute not specified", async () => {
-//     const attribute = await page.evaluate(() => {
-//       const qawolf: QAWolfWeb = (window as any).qawolf;
-//       const username = document.getElementById("username")!;
-//       const result = qawolf.element.getAttributeValue(username, "");
-//       return result;
-//     });
+describe("getAttributeValue", () => {
+  beforeAll(async () => {
+    await context.goto(`${CONFIG.sandboxUrl}buttons`);
+    page = await context.page();
+  });
 
-//     expect(attribute).toBeNull();
-//   });
+  it("returns null if attribute not specified", async () => {
+    const attribute = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      const button = document.getElementById("html-button")!;
+      return qawolf.getAttributeValue(button, "");
+    });
 
-//   it("returns null if element does not have specified data attribute", async () => {
-//     const attribute = await page.evaluate(() => {
-//       const qawolf: QAWolfWeb = (window as any).qawolf;
-//       const username = document.getElementById("username")!;
-//       username.setAttribute("data-other", "user");
+    expect(attribute).toBeNull();
+  });
 
-//       const result = qawolf.element.getAttributeValue(username, "data-qa");
-//       username.removeAttribute("data-other");
+  it("eturns null if element does not have specified attribute", async () => {
+    const attribute = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      const button = document.getElementById("html-button")!;
+      return qawolf.getAttributeValue(button, "data-qa");
+    });
 
-//       return result;
-//     });
+    expect(attribute).toBeNull();
+  });
 
-//     expect(attribute).toBeNull();
-//   });
+  it("gets attribute when there is one specified", async () => {
+    const attribute = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      const button = document.querySelector(
+        "[data-qa='html-button']"
+      ) as HTMLElement;
+      return qawolf.getAttributeValue(button, "data-qa");
+    });
 
-//   it("gets attribute when there are multiple specified", async () => {
-//     const attribute = await page.evaluate(() => {
-//       const qawolf: QAWolfWeb = (window as any).qawolf;
-//       const username = document.getElementById("username")!;
-//       username.setAttribute("data-qa", "user");
+    expect(attribute).toEqual({ attribute: "data-qa", value: "html-button" });
+  });
 
-//       const result = qawolf.element.getAttributeValue(
-//         username,
-//         "data-id , data-qa "
-//       );
-//       username.removeAttribute("data-qa");
+  it("gets attribute when there are multiple specified", async () => {
+    const attribute = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      const button = document.querySelector(
+        "[data-qa='html-button']"
+      ) as HTMLElement;
+      return qawolf.getAttributeValue(button, "data-qa,data-test");
+    });
 
-//       return result;
-//     });
+    expect(attribute).toEqual({ attribute: "data-qa", value: "html-button" });
+  });
 
-//     expect(attribute).toEqual({ attribute: "data-qa", value: "user" });
-//   });
+  it("ignores whitespace in the attribute", async () => {
+    const attribute = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      const button = document.getElementById("html-button")!;
+      return qawolf.getAttributeValue(button, " id ");
+    });
 
-//   it("gets attribute when there is one specified", async () => {
-//     const attribute = await page.evaluate(() => {
-//       const qawolf: QAWolfWeb = (window as any).qawolf;
-//       const username = document.getElementById("username")!;
-//       const result = qawolf.element.getAttributeValue(username, "id");
-//       return result;
-//     });
+    expect(attribute).toEqual({ attribute: "id", value: "html-button" });
 
-//     expect(attribute).toEqual({ attribute: "id", value: "username" });
-//   });
-// });
+    const attribute2 = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      const button = document.getElementById("html-button")!;
+      return qawolf.getAttributeValue(button, "data-qa, id ");
+    });
+
+    expect(attribute2).toEqual({ attribute: "id", value: "html-button" });
+  });
+});

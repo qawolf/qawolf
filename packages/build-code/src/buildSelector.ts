@@ -1,4 +1,3 @@
-import { CONFIG } from "@qawolf/config";
 import { CssSelector, Selector, Step } from "@qawolf/types";
 import { serializeDocSelector } from "@qawolf/web";
 
