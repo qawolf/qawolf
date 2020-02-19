@@ -14,7 +14,7 @@ afterAll(() => context.close());
 describe("buildCssSelector", () => {
   describe("click: button", () => {
     beforeAll(async () => {
-      await context.goto(`localhost:3000/buttons`);
+      await context.goto(`${CONFIG.sandboxUrl}buttons`);
       page = await context.page();
     });
 
@@ -83,7 +83,7 @@ describe("buildCssSelector", () => {
 
   describe("click: radio", () => {
     beforeAll(async () => {
-      await context.goto(`localhost:3000/radio-inputs`);
+      await context.goto(`${CONFIG.sandboxUrl}radio-inputs`);
       page = await context.page();
     });
 
@@ -163,7 +163,7 @@ describe("buildCssSelector", () => {
 
   describe("click: checkbox", () => {
     beforeAll(async () => {
-      await context.goto(`localhost:3000/checkbox-inputs`);
+      await context.goto(`${CONFIG.sandboxUrl}checkbox-inputs`);
       page = await context.page();
     });
 
@@ -245,7 +245,7 @@ describe("buildCssSelector", () => {
 
   describe("type: input", () => {
     beforeAll(async () => {
-      await context.goto(`localhost:3000/text-inputs`);
+      await context.goto(`${CONFIG.sandboxUrl}text-inputs`);
       page = await context.page();
     });
 
@@ -310,7 +310,7 @@ describe("buildCssSelector", () => {
 
   describe("type: content editable", () => {
     beforeAll(async () => {
-      await context.goto(`localhost:3000/content-editables`);
+      await context.goto(`${CONFIG.sandboxUrl}content-editables`);
       page = await context.page();
     });
 
@@ -361,7 +361,7 @@ describe("buildCssSelector", () => {
 
   describe("select", () => {
     beforeAll(async () => {
-      await context.goto(`localhost:3000/selects`);
+      await context.goto(`${CONFIG.sandboxUrl}selects`);
       page = await context.page();
     });
 
