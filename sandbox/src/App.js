@@ -9,6 +9,7 @@ import {
 import Buttons from "./pages/Buttons";
 import ContentEditables from "./pages/ContentEditables";
 import DatePickers from "./pages/DatePickers";
+import RadioInputs from "./pages/RadioInputs";
 import Selects from "./pages/Selects";
 import TextInputs from "./pages/TextInputs";
 import TimePickers from "./pages/TimePickers";
@@ -26,6 +27,9 @@ function Navigation() {
       </li>
       <li>
         <Link to="/date-pickers">Date pickers</Link>
+      </li>
+      <li>
+        <Link to="/radio-inputs">Radio inputs</Link>
       </li>
       <li>
         <Link to="/selects">Selects</Link>
@@ -48,6 +52,7 @@ function App() {
         <Route component={Buttons} path="/buttons" />
         <Route component={ContentEditables} path="/content-editables" />
         <Route component={DatePickers} path="/date-pickers" />
+        <Route component={RadioInputs} path="/radio-inputs" />
         <Route component={Selects} path="/selects" />
         <Route component={TextInputs} path="/text-inputs" />
         <Route component={TimePickers} path="/time-pickers" />

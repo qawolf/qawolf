@@ -1,4 +1,5 @@
 import { BrowserContext, launch, Page } from "@qawolf/browser";
+import { CONFIG } from "@qawolf/config";
 import { QAWolfWeb } from "@qawolf/web";
 
 let context: BrowserContext;
@@ -13,7 +14,7 @@ afterAll(() => context.close());
 describe("buildCssSelector", () => {
   describe("click", () => {
     beforeAll(async () => {
-      await context.goto(`http://localhost:3000/buttons`);
+      await context.goto(`${CONFIG.sandboxUrl}/buttons`);
       page = await context.page();
     });
 
@@ -80,14 +81,20 @@ describe("buildCssSelector", () => {
     });
   });
 
-  describe("click: inputs", () => {
-    it("returns correct selector for radio buttons", () => {});
+  describe("click: radio", () => {
+    it("returns undefined if no attribute present", () => {});
 
-    it("returns correct selector for checkboxes", () => {});
+    it("returns selector if attribute present", () => {});
 
-    it("returns correct selector for toggles", () => {});
+    it("returns selector if attribute present on ancestor", () => {});
+  });
 
-    it("returns correct selector for range inputs", () => {});
+  describe("click: checkbox", () => {
+    it("returns undefined if no attribute present", () => {});
+
+    it("returns selector if attribute present", () => {});
+
+    it("returns selector if attribute present on ancestor", () => {});
   });
 
   describe("scroll", () => {

@@ -51,7 +51,7 @@ export const findAttribute = (
   element: HTMLElement,
   attribute: string
 ): ElementAttributeValuePair | null => {
-  let ancestor = element;
+  let ancestor: HTMLElement | null = element;
 
   while (ancestor) {
     const attributeValue = getAttributeValue(ancestor, attribute);
