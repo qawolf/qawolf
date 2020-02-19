@@ -130,6 +130,27 @@ export class Recorder {
       };
     });
 
+    this.recordEvent("select", event => {
+      // TODO content editable
+      const target = event.target as HTMLInputElement;
+      if (
+        target.selectionStart !== 0 ||
+        target.selectionEnd !== target.value.length
+      ) {
+        // we only record selectall for now
+        return;
+      }
+
+      return {
+        isTrusted: event.isTrusted,
+        name: "selectall",
+        page: this._pageIndex,
+        target: nodeToDocSelector(event.target as HTMLElement),
+        time: Date.now(),
+        value: event
+      };
+    });
+
     this.recordScrollEvent();
   }
 
