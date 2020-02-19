@@ -1,3 +1,4 @@
+import { logger } from "@qawolf/logger";
 import { ElementEvent, KeyEvent } from "@qawolf/types";
 import { find, findLast, remove } from "lodash";
 
@@ -43,7 +44,8 @@ export const findShortcutKeyEvents = (
   );
 
   if (!downCmd || !downCharacter) {
-    throw new Error("Could not find matching shortcut");
+    logger.verbose(`Could not find matching shortcut ${key}`);
+    return [];
   }
 
   return [downCmd, downCharacter, upCharacter, upCmd].filter(e => e);
