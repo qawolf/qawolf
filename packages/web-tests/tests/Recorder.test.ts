@@ -158,10 +158,6 @@ describe("Recorder", () => {
     expect(target.node.attrs["data-qa"]).toEqual("html-text-input-filled");
   });
 
-  it.todo("records selectall for content editables", async () => {
-    // TODO
-  });
-
   it("records type", async () => {
     const context = await launch({
       shouldRecordEvents: true,

@@ -130,14 +130,15 @@ export class Recorder {
       };
     });
 
+    // XXX select only supports input/textarea
+    // We can combine selectstart/mouseup to support content editables
     this.recordEvent("select", event => {
-      // TODO content editable
       const target = event.target as HTMLInputElement;
       if (
         target.selectionStart !== 0 ||
         target.selectionEnd !== target.value.length
       ) {
-        // we only record selectall for now
+        // Only record select all, not other selection events
         return;
       }
 
