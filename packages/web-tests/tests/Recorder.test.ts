@@ -132,10 +132,23 @@ describe("Recorder", () => {
     const events = await context.qawolf().recordedEvents();
 
     expect(events[0].target.node.attrs.id).toEqual("password");
-    // we will not receive any events for "secret" since it is all sendCharacter
     expect(
       (events.filter(e => isKeyEvent(e)) as KeyEvent[]).map(e => e.value)
-    ).toEqual(["Enter"]);
+    ).toEqual([
+      "s",
+      "s",
+      "e",
+      "e",
+      "c",
+      "c",
+      "r",
+      "r",
+      "e",
+      "e",
+      "t",
+      "t",
+      "Enter"
+    ]);
   });
 
   it("records actions on another page", async () => {
