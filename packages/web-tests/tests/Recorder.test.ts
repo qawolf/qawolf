@@ -1,6 +1,12 @@
 import { launch, selectElementContent } from "@qawolf/browser";
 import { CONFIG } from "@qawolf/config";
-import { InputEvent, KeyEvent, PasteEvent, ScrollEvent } from "@qawolf/types";
+import {
+  ElementEvent,
+  InputEvent,
+  KeyEvent,
+  PasteEvent,
+  ScrollEvent
+} from "@qawolf/types";
 import { isKeyEvent, sleep } from "@qawolf/web";
 
 describe("Recorder", () => {
@@ -152,10 +158,15 @@ describe("Recorder", () => {
       css: '[data-qa="html-text-input-filled"]'
     });
     await selectElementContent(element);
+    // give time for event
+    await sleep(1000);
+
     await context.close();
 
     const events = await context.qawolf().recordedEvents();
-    const { isTrusted, name, target } = events[events.length - 1] as InputEvent;
+    const { isTrusted, name, target } = events[
+      events.length - 1
+    ] as ElementEvent;
     expect(name).toEqual("selectall");
     expect(isTrusted).toEqual(true);
     expect(target.node.attrs["data-qa"]).toEqual("html-text-input-filled");
