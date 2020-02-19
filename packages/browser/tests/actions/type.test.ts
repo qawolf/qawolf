@@ -98,11 +98,14 @@ describe("Page.type", () => {
       .qawolf()
       .type(
         { css: '[data-qa="material-date-picker-native"] input' },
-        "09092020"
+        "09092020",
+        { replace: true }
       );
 
+    const expected = CONFIG.browser === "webkit" ? "09092020" : "2020-09-09";
+
     expect(await element.evaluate((e: HTMLInputElement) => e.value)).toBe(
-      "2020-09-09"
+      expected
     );
   });
 
@@ -111,10 +114,15 @@ describe("Page.type", () => {
 
     const element = await page
       .qawolf()
-      .type({ css: '[data-qa="material-time-picker-native"] input' }, "0230PM");
+      .type(
+        { css: '[data-qa="material-time-picker-native"] input' },
+        "0230PM",
+        { replace: true }
+      );
 
+    const expected = CONFIG.browser === "webkit" ? "0230PM" : "14:30";
     expect(await element.evaluate((e: HTMLInputElement) => e.value)).toBe(
-      "14:30"
+      expected
     );
   });
 });
