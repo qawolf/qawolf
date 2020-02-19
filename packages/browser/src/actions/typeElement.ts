@@ -19,12 +19,14 @@ export const typeElement = async (
 
   await elementHandle.focus();
 
+  let text = value || "";
+
   if (options.replace) {
     await selectElementContent(elementHandle);
-  }
 
-  // default value to backspace to clear if null or "" is passed
-  const text = value || "↓Backspace↑Backspace";
+    // default empty value to backspace when options.replace = true
+    if (!value) text = "↓Backspace↑Backspace";
+  }
 
   const strokes = deserializeStrokes(text);
 
