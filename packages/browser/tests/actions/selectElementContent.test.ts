@@ -1,7 +1,6 @@
 import { CONFIG } from "@qawolf/config";
 import { selectElementContent } from "../../src/actions";
-import { launch } from "../../src/context/launch";
-import { BrowserContext, Page } from "../../src";
+import { BrowserContext, launch, Page } from "../../src";
 
 describe("selectElementContent", () => {
   let context: BrowserContext;
@@ -17,37 +16,47 @@ describe("selectElementContent", () => {
   it("selects content editable content", async () => {
     await context.goto(`${CONFIG.sandboxUrl}content-editables`);
 
-    expect(
-      await page.evaluate(() => document.getSelection()!.anchorNode)
-    ).toEqual(null);
+    const getSelectionAttribute = () =>
+      page.evaluate(() => {
+        const selection = document.getSelection();
+        if (!selection || !selection.anchorNode) return null;
+
+        const node = selection.anchorNode as Element;
+
+        // for webkit
+        const element = node.getAttribute
+          ? (node as Element)
+          : node.parentElement!;
+
+        return element.getAttribute("data-qa");
+      });
+
+    expect(await getSelectionAttribute()).toBeNull();
 
     const element = await context.find({ css: '[data-qa="content-editable"]' });
     await selectElementContent(element);
 
-    expect(
-      await page.evaluate(() =>
-        (document.getSelection()!.anchorNode as Element).getAttribute("data-qa")
-      )
-    ).toEqual("content-editable");
+    expect(await getSelectionAttribute()).toEqual("content-editable");
   });
 
   it("selects text input content", async () => {
     await context.goto(`${CONFIG.sandboxUrl}text-inputs`);
 
-    expect(
-      await page.evaluate(() => document.getSelection()!.anchorNode)
-    ).toEqual(null);
-
     const element = await context.find({
       css: '[data-qa="html-text-input-filled"]'
     });
+
+    const getSelection = () =>
+      element.evaluate((e: HTMLInputElement) => ({
+        start: e.selectionStart,
+        end: e.selectionEnd
+      }));
+
+    expect(await getSelection()).toEqual({ start: 12, end: 12 });
+
     await selectElementContent(element);
 
-    expect(
-      await element.evaluate(
-        (e: HTMLInputElement) => e.selectionEnd === e.value.length
-      )
-    ).toBeTruthy();
+    expect(await getSelection()).toEqual({ start: 0, end: 12 });
   });
 
   it("focuses date inputs", async () => {
