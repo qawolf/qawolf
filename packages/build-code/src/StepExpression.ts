@@ -4,6 +4,11 @@ import { Expression } from "./Expression";
 
 const SUPPORTED_ACTIONS = ["click", "scroll", "select", "type"];
 
+type ExpressionOptions = {
+  page?: number;
+  replace?: boolean;
+};
+
 export class StepExpression implements Expression {
   private _previous?: StepExpression;
   private _step: Step;
@@ -20,12 +25,33 @@ export class StepExpression implements Expression {
   private _buildOptions(): string | void {
     const page = this._step.page;
 
+    let options: ExpressionOptions = {};
+
     // 1) we need to specify the page if the step has a different page
     // 2) we don't need to, but we specify the page if it is not 0
     //    for clarity and in case they delete steps
     if (this._didPageChange() || page !== 0) {
-      return `{ page: ${page} }`;
+      options.page = page;
     }
+
+    if (this._step.replace) {
+      options.replace = true;
+    }
+
+    const optionKeys = Object.keys(options) as (keyof ExpressionOptions)[];
+    if (optionKeys.length <= 0) return;
+
+    let serialized = `{ `;
+
+    optionKeys.forEach((key, index) => {
+      if (index > 0) serialized += ", ";
+
+      serialized += `${key}: ${options[key]}`;
+    });
+
+    serialized += " }";
+
+    return serialized;
   }
 
   private _buildValue(): string | void {

@@ -15,7 +15,8 @@ export type ElementEventName =
   | "keydown"
   | "keyup"
   | "paste"
-  | "scroll";
+  | "scroll"
+  | "selectall";
 
 export interface InputEvent extends ElementEvent {
   name: "input";

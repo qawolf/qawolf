@@ -1,42 +1,30 @@
 import { serializeKeyEvents } from "@qawolf/browser";
 import { logger } from "@qawolf/logger";
-import { ElementEvent, Step, KeyEvent, PasteEvent } from "@qawolf/types";
-import { isKeyEvent, isPasteEvent } from "@qawolf/web";
-import { removePasteKeyEvents } from "./removePasteKeyEvents";
+import {
+  DocSelector,
+  ElementEvent,
+  KeyEvent,
+  PasteEvent,
+  Step
+} from "@qawolf/types";
+import { isKeyEvent, isPasteEvent, isSelectAllEvent } from "@qawolf/web";
+import { removeShortcutKeyEvents } from "./removeShortcutKeyEvents";
 
 const SEPARATE_KEYS = ["Enter", "Tab"];
 
-type BuildTypeStepOptions = {
-  allEvents: ElementEvent[];
+type BuildStepOptions = {
   firstEvent: ElementEvent;
   value: string;
 };
 
-const buildTypeStep = ({
-  allEvents,
-  firstEvent,
-  value
-}: BuildTypeStepOptions): Step => {
-  return {
-    action: "type",
-    cssSelector: firstEvent.cssSelector,
-    html: firstEvent.target,
-    // include event index so we can sort in buildSteps
-    index: allEvents.indexOf(firstEvent),
-    page: firstEvent.page,
-    value
-  };
-};
-
 export class TypeStepFactory {
-  private events: ElementEvent[];
-
-  private steps: Step[] = [];
-
-  private pendingEvents: KeyEvent[] = [];
+  private _events: ElementEvent[];
+  private _pendingEvents: KeyEvent[] = [];
+  private _selectAllTarget: DocSelector | null = null;
+  private _steps: Step[] = [];
 
   constructor(events: ElementEvent[]) {
-    this.events = events;
+    this._events = events;
   }
 
   buildPasteStep(event: PasteEvent) {
@@ -44,32 +32,26 @@ export class TypeStepFactory {
     if (value.length <= 0) return;
 
     logger.debug("TypeStepFactory: buildPasteStep");
-
-    const step = buildTypeStep({
-      allEvents: this.events,
-      firstEvent: event,
-      value
-    });
-    this.steps.push(step);
+    this.buildStep({ firstEvent: event, value });
   }
 
   buildPendingStep(reason: string) {
     /**
      * Build a type step for pending events.
      */
-    if (!this.pendingEvents.length) return;
+    if (!this._pendingEvents.length) return;
 
     logger.debug(
-      `TypeStepFactory: buildPendingStep ${this.pendingEvents.length} for ${reason}`
+      `TypeStepFactory: buildPendingStep ${this._pendingEvents.length} for ${reason}`
     );
 
-    const step = buildTypeStep({
-      allEvents: this.events,
-      firstEvent: this.pendingEvents[0],
-      value: serializeKeyEvents(this.pendingEvents)
+    const firstEvent = this._pendingEvents[0];
+
+    this.buildStep({
+      firstEvent,
+      value: serializeKeyEvents(this._pendingEvents)
     });
-    this.steps.push(step);
-    this.pendingEvents = [];
+    this._pendingEvents = [];
   }
 
   buildSeparateStep(event: KeyEvent) {
@@ -80,26 +62,60 @@ export class TypeStepFactory {
     logger.debug("TypeStepFactory: buildSeparateStep");
 
     this.buildPendingStep("separate step");
-    this.pendingEvents.push(event);
-    this.pendingEvents.push({ ...event, name: "keyup" });
+    this._pendingEvents.push(event);
+    this._pendingEvents.push({ ...event, name: "keyup" });
     this.buildPendingStep("separate step");
   }
 
+  buildStep({ firstEvent, value }: BuildStepOptions): Step {
+    const index = this._events.indexOf(firstEvent);
+
+    const step: Step = {
+      action: "type",
+      cssSelector: firstEvent.cssSelector,
+      html: firstEvent.target,
+      // include event index so we can sort in buildSteps
+      index,
+      page: firstEvent.page,
+      value
+    };
+
+    // replace when the select all target
+    // matches this type step
+    if (
+      this._selectAllTarget &&
+      JSON.stringify(firstEvent.target) ===
+        JSON.stringify(this._selectAllTarget)
+    ) {
+      step.replace = true;
+      this._selectAllTarget = null;
+    }
+
+    this._steps.push(step);
+
+    return step;
+  }
+
   buildSteps() {
-    const filteredEvents = removePasteKeyEvents(this.events);
+    const filteredEvents = removeShortcutKeyEvents(
+      "selectall",
+      removeShortcutKeyEvents("paste", this._events)
+    );
 
     filteredEvents.forEach(event => {
       if (!event.isTrusted) return;
 
       if (
-        this.pendingEvents.length &&
-        event.page !== this.pendingEvents[0].page
+        this._pendingEvents.length &&
+        event.page !== this._pendingEvents[0].page
       ) {
         // build the step when the page changes
         this.buildPendingStep("page change");
       }
 
-      if (isPasteEvent(event)) {
+      if (isSelectAllEvent(event)) {
+        this._selectAllTarget = event.target;
+      } else if (isPasteEvent(event)) {
         this.buildPasteStep(event as PasteEvent);
       } else if (isKeyEvent(event)) {
         this.handleKeyEvent(event as KeyEvent);
@@ -112,7 +128,7 @@ export class TypeStepFactory {
     // build steps at the end
     this.buildPendingStep("last event");
 
-    return this.steps;
+    return this._steps;
   }
 
   handleKeyEvent(event: KeyEvent) {
@@ -121,7 +137,7 @@ export class TypeStepFactory {
       return;
     }
 
-    this.pendingEvents.push(event);
+    this._pendingEvents.push(event);
   }
 }
 

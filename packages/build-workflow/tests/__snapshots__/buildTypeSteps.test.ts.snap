@@ -185,3 +185,89 @@ Array [
   },
 ]
 `;
+
+exports[`buildTypeSteps builds expected steps for selectall 1`] = `
+Array [
+  Object {
+    "action": "type",
+    "html": Object {
+      "ancestors": Array [
+        Object {
+          "attrs": Object {
+            "class": "container",
+          },
+          "children": Array [],
+          "name": "div",
+          "type": "tag",
+          "voidElement": false,
+        },
+        Object {
+          "attrs": Object {
+            "style": "display: flex; flex-wrap: wrap;",
+          },
+          "children": Array [],
+          "name": "div",
+          "type": "tag",
+          "voidElement": false,
+        },
+      ],
+      "node": Object {
+        "attrs": Object {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text",
+        },
+        "children": Array [],
+        "name": "input",
+        "type": "tag",
+        "voidElement": true,
+      },
+    },
+    "index": 5,
+    "page": 0,
+    "replace": true,
+    "value": "hello",
+  },
+  Object {
+    "action": "type",
+    "html": Object {
+      "ancestors": Array [
+        Object {
+          "attrs": Object {
+            "class": "container",
+          },
+          "children": Array [],
+          "name": "div",
+          "type": "tag",
+          "voidElement": false,
+        },
+        Object {
+          "attrs": Object {
+            "style": "display: flex; flex-wrap: wrap;",
+          },
+          "children": Array [],
+          "name": "div",
+          "type": "tag",
+          "voidElement": false,
+        },
+      ],
+      "node": Object {
+        "attrs": Object {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text",
+        },
+        "children": Array [],
+        "name": "input",
+        "type": "tag",
+        "voidElement": true,
+      },
+    },
+    "index": 15,
+    "page": 0,
+    "value": "↓Tab↑Tab",
+  },
+]
+`;

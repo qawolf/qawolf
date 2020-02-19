@@ -14,7 +14,7 @@ import * as xpath from "./xpath";
 
 // export the isomorphic (node & browser) module for node
 const { describeDoc } = format;
-const { isKeyEvent, isPasteEvent, isTypeEvent } = event;
+const { isKeyEvent, isPasteEvent, isSelectAllEvent, isTypeEvent } = event;
 const {
   compareAttributes,
   compareContent,
@@ -34,6 +34,7 @@ export {
   isKeyEvent,
   isNil,
   isPasteEvent,
+  isSelectAllEvent,
   isTypeEvent,
   matchDocSelector,
   serializeDocSelector,

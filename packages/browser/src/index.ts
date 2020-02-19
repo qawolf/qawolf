@@ -5,4 +5,5 @@ export { launch, LaunchOptions } from "./context/launch";
 export { Page } from "./page/Page";
 
 // internal API
+export * from "./actions";
 export * from "./keyboard";

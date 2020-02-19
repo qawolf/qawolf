@@ -62,6 +62,13 @@ export class CodeReconciler {
   }
 
   public update(virtualCode: VirtualCode) {
+    if (this._virtualCode.expressions.length > virtualCode.expressions.length) {
+      // Prevent updating our virtual code with one that has less expressions.
+      // This could happen if a step is removed (ex. paste will remove the type).
+      // This allows us to update the last expression when a new step arrives to replace the missing one.
+      return;
+    }
+
     this._virtualCode = virtualCode;
   }
 }
