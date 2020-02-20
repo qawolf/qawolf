@@ -102,9 +102,10 @@ export const getAttributeValue = (
   element: HTMLElement,
   attribute: string
 ): AttributeValuePair | null => {
-  if (!attribute) return null;
+  if (!attribute || !element.getAttribute) return null;
 
   const attributes = attribute.split(",").map(attr => attr.trim());
+
   for (let attribute of attributes) {
     const value = element.getAttribute(attribute);
     if (value) return { attribute, value };
