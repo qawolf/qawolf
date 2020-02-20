@@ -9,9 +9,8 @@ describe("VirtualCode", () => {
 
     const virtualCodeTwo = buildVirtualCode([{ ...baseStep, page: 1 }]);
     expect(virtualCode.codeToUpdate(virtualCodeTwo)).toEqual({
-      original: "await browser.click({ css: \"[data-qa='test-input']\" });",
-      updated:
-        "await browser.click({ css: \"[data-qa='test-input']\" }, { page: 1 });"
+      original: "await browser.click(selectors[0]);",
+      updated: "await browser.click(selectors[0], { page: 1 });"
     });
   });
 

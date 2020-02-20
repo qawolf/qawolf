@@ -2,6 +2,6 @@
 
 exports[`ScriptExpression.code() builds assertion code 1`] = `
 "// click \\"my-input\\" input
-await browser.click({ css: \\"[data-qa='test-input']\\" });
+await browser.click(selectors[0]);
 "
 `;

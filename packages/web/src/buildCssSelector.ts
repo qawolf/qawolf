@@ -34,7 +34,6 @@ export const buildCssSelector = ({
   const { attributeValue } = elementWithSelector;
   const attributeSelector = `[${attributeValue.attribute}='${attributeValue.value}']`;
 
-  // if target same as element with the attribute, return the CSS selector as is
   if (elementWithSelector.element === target) {
     console.debug(
       `qawolf: css selector built for target ${attributeSelector}`,
@@ -43,7 +42,6 @@ export const buildCssSelector = ({
     return attributeSelector;
   }
 
-  // target with selector is an ancestor
   const descendantSelector = buildDescendantSelector(
     target as HTMLInputElement,
     isClick

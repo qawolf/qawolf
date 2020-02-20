@@ -15,7 +15,7 @@ const step = {
 };
 
 describe("stepToSelector", () => {
-  it("returns CSS selector if specified", () => {
+  it("returns CssSelector if specified", () => {
     const selector = stepToSelector({
       ...step,
       cssSelector: "[data-qa='submit']"
@@ -24,7 +24,7 @@ describe("stepToSelector", () => {
     expect(selector).toEqual({ css: "[data-qa='submit']" });
   });
 
-  it("returns HtmlSelector if CSS selector not present", () => {
+  it("returns HtmlSelector if CssSelector not present", () => {
     const selector = stepToSelector(step);
     expect(selector).toEqual({
       html: {
