@@ -32,27 +32,53 @@ export const buildCssSelector = ({
   }
 
   const { attributeValue } = elementWithSelector;
-  const cssSelector = `[${attributeValue.attribute}='${attributeValue.value}']`;
+  const attributeSelector = `[${attributeValue.attribute}='${attributeValue.value}']`;
 
   // if target same as element with the attribute, return the CSS selector as is
   if (elementWithSelector.element === target) {
     console.debug(
-      `qawolf: css selector built for target ${cssSelector}`,
+      `qawolf: css selector built for target ${attributeSelector}`,
       getXpath(target)
     );
-    return cssSelector;
+    return attributeSelector;
   }
 
   // target with selector is an ancestor
-  const targetSelector = getSelectorTarget(target as HTMLInputElement, isClick);
-  const finalSelector = `${cssSelector}${targetSelector}`;
+  const descendantSelector = buildDescendantSelector(
+    target as HTMLInputElement,
+    isClick
+  );
+  const targetSelector = `${attributeSelector}${descendantSelector}`;
 
   console.debug(
-    `qawolf: css selector built for ancestor ${finalSelector}`,
+    `qawolf: css selector built for ancestor ${targetSelector}`,
     getXpath(target)
   );
 
-  return finalSelector;
+  return targetSelector;
+};
+
+export const buildDescendantSelector = (
+  element: HTMLInputElement,
+  isClick?: boolean
+): string => {
+  const inputElement = element as HTMLInputElement;
+  if (["checkbox", "radio"].includes(inputElement.type) && inputElement.value) {
+    // Target the value for these input types
+    return ` [value='${inputElement.value}']`;
+  }
+
+  if (isClick) {
+    // Otherwise a click on the ancestor should be
+    // equivalent to a click on the descendant
+    return "";
+  }
+
+  if (element.contentEditable === "true") {
+    return " [contenteditable='true']";
+  }
+
+  return ` ${element.tagName.toLowerCase()}`;
 };
 
 export const findAttribute = (
@@ -87,21 +113,4 @@ export const getAttributeValue = (
   }
 
   return null;
-};
-
-export const getSelectorTarget = (
-  element: HTMLInputElement,
-  isClick?: boolean
-): string => {
-  // unless we are clicking, we need to build descendant selector for the target
-  const inputElement = element as HTMLInputElement;
-  if (["checkbox", "radio"].includes(inputElement.type) && inputElement.value) {
-    return ` [value='${inputElement.value}']`;
-  } else if (!isClick) {
-    return element.contentEditable === "true"
-      ? " [contenteditable='true']"
-      : ` ${element.tagName.toLowerCase()}`;
-  }
-
-  return "";
 };

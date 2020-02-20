@@ -59,17 +59,17 @@ describe("buildCssSelector", () => {
       page = await context.page();
     });
 
-    it("returns undefined if no attribute present", async () => {
+    it("returns undefined if there is no attribute", async () => {
       const selector = await buildCssSelector("#html-button", true);
       expect(selector).toBeUndefined();
     });
 
-    it("returns selector if attribute present", async () => {
+    it("returns selector for target", async () => {
       const selector = await buildCssSelector("[data-qa='html-button']", true);
       expect(selector).toBe("[data-qa='html-button']");
     });
 
-    it("returns selector if attribute present on ancestor", async () => {
+    it("returns selector for ancestor", async () => {
       const selector = await buildCssSelector("#html-button-child", true);
       expect(selector).toBe("[data-qa='html-button-with-children']");
 
@@ -84,12 +84,12 @@ describe("buildCssSelector", () => {
       page = await context.page();
     });
 
-    it("returns undefined if no attribute present", async () => {
+    it("returns undefined if there is no attribute", async () => {
       const selector = await buildCssSelector("#another", true);
       expect(selector).toBeUndefined();
     });
 
-    it("returns selector if attribute present", async () => {
+    it("returns selector for target", async () => {
       const selector = await buildCssSelector("#single", true);
       expect(selector).toBe("[data-qa='html-radio']");
 
@@ -100,7 +100,7 @@ describe("buildCssSelector", () => {
       expect(selector2).toBe("[data-qa='material-radio']");
     });
 
-    it("returns selector if attribute present on ancestor", async () => {
+    it("returns selector for ancestor targeting input value", async () => {
       const selector = await buildCssSelector("#dog", true);
       expect(selector).toBe("[data-qa='html-radio-group'] [value='dog']");
 
@@ -115,12 +115,12 @@ describe("buildCssSelector", () => {
       page = await context.page();
     });
 
-    it("returns undefined if no attribute present", async () => {
+    it("returns undefined if there is no attribute", async () => {
       const selector = await buildCssSelector("#another", true);
       expect(selector).toBeUndefined();
     });
 
-    it("returns selector if attribute present", async () => {
+    it("returns selector for target", async () => {
       const selector = await buildCssSelector("#single", true);
       expect(selector).toBe("[data-qa='html-checkbox']");
 
@@ -131,7 +131,7 @@ describe("buildCssSelector", () => {
       expect(selector2).toBe("[data-qa='material-checkbox']");
     });
 
-    it("returns selector if attribute present on ancestor", async () => {
+    it("returns selector for ancestor targeting input value", async () => {
       const selector = await buildCssSelector("#dog", true);
       expect(selector).toBe("[data-qa='html-checkbox-group'] [value='dog']");
 
@@ -148,7 +148,7 @@ describe("buildCssSelector", () => {
       page = await context.page();
     });
 
-    it("returns selector if attribute present", async () => {
+    it("returns selector for target", async () => {
       const selector = await buildCssSelector('[type="password"]');
       expect(selector).toBe("[data-qa='html-password-input']");
 
@@ -156,7 +156,7 @@ describe("buildCssSelector", () => {
       expect(selector2).toBe("[data-qa='html-textarea']");
     });
 
-    it("returns selector and target if attribute present on ancestor", async () => {
+    it("returns selector for ancestor targeting input", async () => {
       const selector = await buildCssSelector(
         '[data-qa="material-text-input"] input'
       );
@@ -175,7 +175,7 @@ describe("buildCssSelector", () => {
       page = await context.page();
     });
 
-    it("return selector and target attribute", async () => {
+    it("returns selector for ancestor targeting content editable", async () => {
       const selector = await buildCssSelector("[data-qa='content-editable']");
       expect(selector).toBe("[data-qa='content-editable']");
 
@@ -197,12 +197,12 @@ describe("buildCssSelector", () => {
       page = await context.page();
     });
 
-    it("returns selector if attribute present", async () => {
+    it("returns selector for target", async () => {
       const selector = await buildCssSelector("[data-qa='html-select']");
       expect(selector).toBe("[data-qa='html-select']");
     });
 
-    it("returns selector and target if attribute present on ancestor", async () => {
+    it("returns selector for ancestor targeting select", async () => {
       const selector = await buildCssSelector(
         "[data-qa='material-select-native'] select"
       );
@@ -227,7 +227,7 @@ describe("getAttributeValue", () => {
     expect(attribute).toBeNull();
   });
 
-  it("gets attribute when there is one specified", async () => {
+  it("returns attribute when there is one specified", async () => {
     const attribute = await getAttributeValue(
       "[data-qa='html-button']",
       "data-qa"
@@ -235,7 +235,7 @@ describe("getAttributeValue", () => {
     expect(attribute).toEqual({ attribute: "data-qa", value: "html-button" });
   });
 
-  it("gets attribute when there are multiple specified", async () => {
+  it("returns attribute when there are multiple specified", async () => {
     const attribute = await getAttributeValue(
       "[data-qa='html-button']",
       "data-qa,data-test"
