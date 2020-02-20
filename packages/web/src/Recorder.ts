@@ -1,4 +1,5 @@
 import * as types from "@qawolf/types";
+import { buildCssSelector } from "./buildCssSelector";
 import { getClickableAncestor } from "./element";
 import { nodeToDocSelector } from "./serialize";
 
@@ -61,20 +62,19 @@ export class Recorder {
 
   private recordEvents() {
     this.recordEvent("click", event => {
-      // getClickableAncestor chooses the ancestor if it has a data-attribute
-      // which is very likely the target we want to click on.
-      // If there is not a data-attribute on any of the clickable ancestors
-      // it will take the top most clickable ancestor.
+      // getClickableAncestor chooses the top most clickable ancestor.
       // The ancestor is likely a better target than the descendant.
       // Ex. when you click on the i (button > i) or rect (a > svg > rect)
       // chances are the ancestor (button, a) is a better target to find.
       // XXX if anyone runs into issues with this behavior we can allow disabling it from a flag.
-      const target = getClickableAncestor(
-        event.target as HTMLElement,
-        this._attribute
-      );
+      const target = getClickableAncestor(event.target as HTMLElement);
 
       return {
+        cssSelector: buildCssSelector({
+          attribute: this._attribute,
+          isClick: true,
+          target
+        }),
         isTrusted: event.isTrusted,
         name: "click",
         page: this._pageIndex,
@@ -84,22 +84,30 @@ export class Recorder {
     });
 
     this.recordEvent("input", event => {
-      const element = event.target as HTMLInputElement;
+      const target = event.target as HTMLInputElement;
 
       // ignore input events not on selects
-      if (element.tagName.toLowerCase() !== "select") return;
+      if (target.tagName.toLowerCase() !== "select") return;
 
       return {
+        cssSelector: buildCssSelector({
+          attribute: this._attribute,
+          target
+        }),
         isTrusted: event.isTrusted,
         name: "input",
         page: this._pageIndex,
-        target: nodeToDocSelector(element),
+        target: nodeToDocSelector(target),
         time: Date.now(),
-        value: element.value
+        value: target.value
       };
     });
 
     this.recordEvent("keydown", event => ({
+      cssSelector: buildCssSelector({
+        attribute: this._attribute,
+        target: event.target as HTMLElement
+      }),
       isTrusted: event.isTrusted,
       name: "keydown",
       page: this._pageIndex,
@@ -109,6 +117,10 @@ export class Recorder {
     }));
 
     this.recordEvent("keyup", event => ({
+      cssSelector: buildCssSelector({
+        attribute: this._attribute,
+        target: event.target as HTMLElement
+      }),
       isTrusted: event.isTrusted,
       name: "keyup",
       page: this._pageIndex,
@@ -121,6 +133,10 @@ export class Recorder {
       if (!event.clipboardData) return;
 
       return {
+        cssSelector: buildCssSelector({
+          attribute: this._attribute,
+          target: event.target as HTMLElement
+        }),
         isTrusted: event.isTrusted,
         name: "paste",
         page: this._pageIndex,
@@ -143,6 +159,10 @@ export class Recorder {
       }
 
       return {
+        cssSelector: buildCssSelector({
+          attribute: this._attribute,
+          target: event.target as HTMLElement
+        }),
         isTrusted: event.isTrusted,
         name: "selectall",
         page: this._pageIndex,
@@ -178,6 +198,10 @@ export class Recorder {
       }
 
       return {
+        cssSelector: buildCssSelector({
+          attribute: this._attribute,
+          target: event.target as HTMLElement
+        }),
         isTrusted: event.isTrusted,
         name: "scroll",
         page: this._pageIndex,

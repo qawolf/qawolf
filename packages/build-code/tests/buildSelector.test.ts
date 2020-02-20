@@ -1,4 +1,3 @@
-import { CONFIG } from "@qawolf/config";
 import { Action } from "@qawolf/types";
 import { htmlToDoc } from "@qawolf/web";
 import { stepToSelector, buildSelector } from "../src/buildSelector";
@@ -16,39 +15,16 @@ const step = {
 };
 
 describe("stepToSelector", () => {
-  it("returns CssSelector if a single attribute is specified (ignoring whitespace)", () => {
-    CONFIG.attribute = " id ";
-
-    const selector = stepToSelector(step);
-
-    expect(selector).toEqual({
-      css: "[id='my-input']"
+  it("returns CssSelector if specified", () => {
+    const selector = stepToSelector({
+      ...step,
+      cssSelector: "[data-qa='submit']"
     });
+
+    expect(selector).toEqual({ css: "[data-qa='submit']" });
   });
 
-  it("returns CssSelector if multiple attributes are specified", () => {
-    CONFIG.attribute = "data-other, data-qa";
-    const selector = stepToSelector(step);
-    expect(selector).toEqual({
-      css: "[data-qa='test-input']"
-    });
-  });
-
-  it("returns HtmlSelector if attribute is not specified", () => {
-    CONFIG.attribute = "";
-
-    const selector = stepToSelector(step);
-    expect(selector).toEqual({
-      html: {
-        ancestors: [],
-        node: '<input id="my-input" data-qa="test-input"/>'
-      }
-    });
-  });
-
-  it("returns HtmlSelector if attribute not present", () => {
-    CONFIG.attribute = "aria-label";
-
+  it("returns HtmlSelector if CssSelector not present", () => {
     const selector = stepToSelector(step);
     expect(selector).toEqual({
       html: {
@@ -61,16 +37,15 @@ describe("stepToSelector", () => {
 
 describe("buildSelector", () => {
   it("builds CssSelector", () => {
-    CONFIG.attribute = "id";
-
-    const builtSelector = buildSelector(step);
+    const builtSelector = buildSelector({
+      ...step,
+      cssSelector: "[id='my-input']"
+    });
 
     expect(builtSelector).toBe("{ css: \"[id='my-input']\" }");
   });
 
   it("builds HtmlSelector", () => {
-    CONFIG.attribute = "";
-
     const builtSelector = buildSelector({ ...step, index: 11 });
 
     expect(builtSelector).toBe("selectors[11]");

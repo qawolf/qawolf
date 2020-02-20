@@ -3,7 +3,7 @@
 exports[`AssertionExpression.code() builds assertion code 1`] = `
 "
 it('can click \\"my-input\\" input', async () => {
-  await browser.click({ css: \\"[data-qa='test-input']\\" });
+  await browser.click(selectors[0]);
 });
 "
 `;

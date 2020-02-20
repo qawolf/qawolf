@@ -18,6 +18,7 @@ export const buildScrollSteps = (events: ElementEvent[]): Step[] => {
 
     steps.push({
       action: "scroll",
+      cssSelector: event.cssSelector,
       html: event.target,
       // include event index so we can sort in buildSteps
       index: i,

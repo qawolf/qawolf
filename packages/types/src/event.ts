@@ -1,6 +1,7 @@
 import { DocSelector } from "./selector";
 
 export interface ElementEvent {
+  cssSelector?: string;
   isTrusted: boolean;
   name: ElementEventName;
   page: number;

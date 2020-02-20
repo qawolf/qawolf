@@ -4,6 +4,7 @@ import { DocSelector } from "./selector";
 
 export interface Step {
   action: Action;
+  cssSelector?: string;
   html: DocSelector;
   index: number;
   page: number;

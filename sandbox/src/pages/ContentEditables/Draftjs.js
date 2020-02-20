@@ -18,9 +18,8 @@ function Draftjs() {
       <h3>
         <a href="https://github.com/facebook/draft-js">Draft.js</a>
       </h3>
-      <div onClick={focusEditor}>
+      <div data-qa="draftjs" onClick={focusEditor}>
         <Editor
-          data-qa="draftjs"
           editorState={editorState}
           onChange={setEditorState}
           ref={editor}

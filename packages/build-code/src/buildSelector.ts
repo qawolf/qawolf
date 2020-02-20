@@ -1,4 +1,3 @@
-import { CONFIG } from "@qawolf/config";
 import { CssSelector, Selector, Step } from "@qawolf/types";
 import { serializeDocSelector } from "@qawolf/web";
 
@@ -15,18 +14,8 @@ export const buildSelector = (step: Step): string => {
 };
 
 export const stepToSelector = (step: Step): Selector => {
-  const attributes = CONFIG.attribute.split(",").map(attr => attr.trim());
-
-  const attrs = step.html.node.attrs || {};
-
-  const attributeWithValue = attributes.find(attr => !!attrs[attr]);
-
-  if (attributeWithValue) {
-    const value = attrs[attributeWithValue];
-
-    return {
-      css: `[${attributeWithValue}='${value}']`
-    };
+  if (step.cssSelector) {
+    return { css: step.cssSelector };
   }
 
   return {

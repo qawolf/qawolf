@@ -1,4 +1,3 @@
-import { CONFIG } from "@qawolf/config";
 import { Action, Step } from "@qawolf/types";
 import { StepExpression } from "../src/StepExpression";
 import { baseStep } from "./fixtures";
@@ -12,9 +11,10 @@ describe("StepExpression", () => {
 
   describe("code()", () => {
     test("click step", () => {
-      CONFIG.attribute = "data-qa";
-
-      const expression = new StepExpression(baseStep);
+      const expression = new StepExpression({
+        ...baseStep,
+        cssSelector: "[data-qa='test-input']"
+      });
 
       expect(expression.code()).toBe(
         "await browser.click({ css: \"[data-qa='test-input']\" });"
@@ -22,11 +22,10 @@ describe("StepExpression", () => {
     });
 
     test("scroll step", () => {
-      CONFIG.attribute = "id";
-
       const expression = new StepExpression({
         ...baseStep,
         action: "scroll" as Action,
+        cssSelector: "[id='my-input']",
         value: {
           x: 100,
           y: 200
@@ -39,8 +38,6 @@ describe("StepExpression", () => {
     });
 
     test("select step", () => {
-      CONFIG.attribute = "";
-
       const expression = new StepExpression({
         ...baseStep,
         action: "select" as Action,
@@ -53,8 +50,6 @@ describe("StepExpression", () => {
     });
 
     test("type step with a value", () => {
-      CONFIG.attribute = "";
-
       const expression = new StepExpression({
         ...baseStep,
         action: "type" as Action,

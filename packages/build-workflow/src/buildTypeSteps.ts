@@ -72,6 +72,7 @@ export class TypeStepFactory {
 
     const step: Step = {
       action: "type",
+      cssSelector: firstEvent.cssSelector,
       html: firstEvent.target,
       // include event index so we can sort in buildSteps
       index,
