@@ -35,9 +35,7 @@ const getAttributeValue = async (
   const result = await page.evaluate(
     (selector, attribute) => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
-      const button = document.querySelector(
-        "[data-qa='html-button']"
-      ) as HTMLElement;
+      const button = document.querySelector(selector) as HTMLElement;
 
       return qawolf.getAttributeValue(button, attribute);
     },
