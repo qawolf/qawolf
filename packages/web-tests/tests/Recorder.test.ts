@@ -37,7 +37,7 @@ describe("Recorder", () => {
 
     await Promise.all([
       page.waitForNavigation(),
-      context.click({ html: "<a>Content editables</a>" }, { simulate: false })
+      context.click({ html: "<a>Content editables</a>" })
     ]);
 
     await context.close();

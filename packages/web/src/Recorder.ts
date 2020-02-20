@@ -61,7 +61,9 @@ export class Recorder {
   }
 
   private recordEvents() {
-    this.recordEvent("click", event => {
+    // Record mousedown instead of click since it happens first.
+    // This is useful for situations where components change the click target (Material UI non-native Select).
+    this.recordEvent("mousedown", event => {
       // getClickableAncestor chooses the top most clickable ancestor.
       // The ancestor is likely a better target than the descendant.
       // Ex. when you click on the i (button > i) or rect (a > svg > rect)
