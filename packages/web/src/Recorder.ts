@@ -159,6 +159,10 @@ export class Recorder {
       }
 
       return {
+        cssSelector: buildCssSelector({
+          attribute: this._attribute,
+          target: event.target as HTMLElement
+        }),
         isTrusted: event.isTrusted,
         name: "selectall",
         page: this._pageIndex,

@@ -21,10 +21,13 @@ export const buildCssSelector = ({
   isClick,
   target
 }: BuildCssSelectorOptions): string | undefined => {
-  // get the closest element to the target with attribute
+  // find the closest element to the target with attribute
   const elementWithSelector = findAttribute(target, attribute);
   if (!elementWithSelector) {
-    console.debug(`No CSS selector found for for`, getXpath(target));
+    console.debug(
+      `qawolf: no css selector built. attribute not found on target or ancestors ${attribute}`,
+      getXpath(target)
+    );
     return undefined;
   }
 
@@ -33,7 +36,10 @@ export const buildCssSelector = ({
 
   // if target same as element with the attribute, return the CSS selector as is
   if (elementWithSelector.element === target) {
-    console.debug(`Found CSS selector ${cssSelector} for`, getXpath(target));
+    console.debug(
+      `qawolf: css selector built for target ${cssSelector}`,
+      getXpath(target)
+    );
     return cssSelector;
   }
 
@@ -41,7 +47,10 @@ export const buildCssSelector = ({
   const targetSelector = getSelectorTarget(target as HTMLInputElement, isClick);
   const finalSelector = `${cssSelector}${targetSelector}`;
 
-  console.debug(`Found CSS selector ${finalSelector} for`, getXpath(target));
+  console.debug(
+    `qawolf: css selector built for ancestor ${finalSelector}`,
+    getXpath(target)
+  );
 
   return finalSelector;
 };
