@@ -12,6 +12,34 @@ beforeAll(async () => {
 afterAll(() => context.close());
 
 describe("content editable", () => {
+  it("appends text", async () => {
+    await context.goto(`${CONFIG.sandboxUrl}content-editables`);
+
+    const element = await page
+      .qawolf()
+      .type({ css: '[data-qa="content-editable"]' }, " Ok!");
+
+    let expected = "Edit me! Ok!";
+    if (CONFIG.browser === "firefox") expected += "<br>";
+
+    expect(await element.evaluate((e: HTMLElement) => e.innerHTML)).toBe(
+      expected
+    );
+  });
+
+  it("clears text", async () => {
+    await context.goto(`${CONFIG.sandboxUrl}content-editables`);
+
+    const element = await page
+      .qawolf()
+      .type({ css: '[data-qa="content-editable"]' }, "", { replace: true });
+
+    const expected = CONFIG.browser === "chromium" ? "" : "<br>";
+    expect(await element.evaluate((e: HTMLElement) => e.innerHTML)).toBe(
+      expected
+    );
+  });
+
   it("replaces text", async () => {
     await context.goto(`${CONFIG.sandboxUrl}content-editables`);
 
