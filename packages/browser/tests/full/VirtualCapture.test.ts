@@ -6,7 +6,10 @@ import { launch } from "../../src/context/launch";
 
 describe("launch and VirtualCapture", () => {
   it("records a video on linux CI", async () => {
-    const context = await launch({ device: "iPhone 7", url: CONFIG.testUrl });
+    const context = await launch({
+      device: "iPhone 7",
+      url: CONFIG.sandboxUrl
+    });
 
     const capture = context.qawolf()._capture;
     if (platform() !== "linux") {
