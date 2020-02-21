@@ -1,8 +1,9 @@
 import { CONFIG } from "@qawolf/config";
-import { BrowserContext, launch } from "../../src";
+import { BrowserContext, launch, Page } from "../../src";
 import { scrollElement } from "../../src/actions";
 
 let context: BrowserContext;
+let page: Page;
 
 beforeAll(async () => {
   context = await launch();
@@ -12,7 +13,7 @@ afterAll(() => context.close());
 
 describe("BrowserContext.scroll", () => {
   it("scrolls in infinite scroll", async () => {
-    const page = await context.goto(`${CONFIG.testUrl}infinite_scroll`);
+    page = await context.goto(`${CONFIG.sandboxUrl}infinite-scroll`);
 
     const initialYPosition = await page.evaluate(() => window.pageYOffset);
     expect(initialYPosition).toBe(0);
@@ -26,7 +27,7 @@ describe("BrowserContext.scroll", () => {
 
 describe("Page.scroll", () => {
   it("scrolls to a given position", async () => {
-    const page = await context.goto(`${CONFIG.testUrl}large`);
+    page = await context.goto(`${CONFIG.sandboxUrl}large`);
 
     const initialYPosition = await page.evaluate(() => window.pageYOffset);
     expect(initialYPosition).toBe(0);
@@ -45,7 +46,7 @@ describe("Page.scroll", () => {
 
 describe("scrollElement", () => {
   it("throws error if timeout and not able to scroll", async () => {
-    const page = await context.goto(`${CONFIG.testUrl}infinite_scroll`);
+    const page = await context.goto(`${CONFIG.sandboxUrl}infinite-scroll`);
 
     const initialYPosition = await page.evaluate(() => window.pageYOffset);
     expect(initialYPosition).toBe(0);
