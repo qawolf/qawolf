@@ -78,7 +78,7 @@ export class Recorder {
           target
         }),
         isTrusted: event.isTrusted,
-        name: "click",
+        name: "mousedown",
         page: this._pageIndex,
         target: nodeToDocSelector(target),
         time: Date.now()
