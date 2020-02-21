@@ -4,26 +4,38 @@ exports[`buildInitialCode builds a script for a workflow 1`] = `
 "const { launch } = require(\\"qawolf\\");
 const selectors = require(\\"../selectors/login\\");
 
-const login = async () => {
-  const browser = await launch({ url: \\"http://localhost\\" });
+const login = async browser => {
   MY_PATCH_HANDLE
-  await browser.close();
 };
 
-login();"
+exports.login = login;
+
+if (require.main === module) {
+  (async () => {
+    const browser = await launch({ url: \\"http://localhost\\" });
+    await login(browser);
+    await browser.close();
+  })();
+}"
 `;
 
 exports[`buildInitialCode builds a script for a workflow 2`] = `
 "const { launch } = require(\\"qawolf\\");
 const selectors = require(\\"../selectors/login\\");
 
-const login = async () => {
-  const browser = await launch({ device: \\"iPhone 7\\", url: \\"http://localhost\\" });
+const login = async browser => {
   MY_PATCH_HANDLE
-  await browser.close();
 };
 
-login();"
+exports.login = login;
+
+if (require.main === module) {
+  (async () => {
+    const browser = await launch({ device: \\"iPhone 7\\", url: \\"http://localhost\\" });
+    await login(browser);
+    await browser.close();
+  })();
+}"
 `;
 
 exports[`buildInitialCode builds a test for a workflow 1`] = `
