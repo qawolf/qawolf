@@ -3,6 +3,7 @@ import { execSync } from "child_process";
 
 type RunJestOptions = {
   browsers?: BrowserType[];
+  config?: string;
   path?: string;
   repl?: boolean;
 };
@@ -24,8 +25,15 @@ export const runJest = (args: string[] = [], options: RunJestOptions = {}) => {
   /**
    * Returns exit code. 0 for success, 1 for failed.
    */
-  // --config={} prevents using the local jest config
-  let command = `npx jest --config={} --preset="@qawolf/jest-plugin"`;
+  let command = `npx jest`;
+
+  if (!args.some(arg => arg.startsWith("--config"))) {
+    // prevent using the local jest config
+    // unless config is passed
+    command += " --config={}";
+  }
+
+  command += ' --preset="@qawolf/jest-plugin"';
 
   if (options.repl) {
     command += ` --reporters="@qawolf/repl"`;
