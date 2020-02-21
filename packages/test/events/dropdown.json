@@ -1,179 +1,179 @@
 [
- {
-  "isTrusted": true,
-  "name": "click",
-  "page": 0,
-  "target": {
-   "node": {
-    "type": "tag",
-    "name": "select",
-    "voidElement": false,
-    "attrs": {
-     "id": "dropdown",
-     "innertext": "Please select an option Option 1 Option 2"
+  {
+    "isTrusted": true,
+    "name": "mousedown",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "select",
+        "voidElement": false,
+        "attrs": {
+          "id": "dropdown",
+          "innertext": "Please select an option Option 1 Option 2"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "      "
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": {
+              "value": "",
+              "disabled": "disabled",
+              "selected": "selected"
+            },
+            "children": [
+              {
+                "type": "text",
+                "content": "Please select an option"
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": {
+              "value": "1"
+            },
+            "children": [
+              {
+                "type": "text",
+                "content": "Option 1"
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": {
+              "value": "2"
+            },
+            "children": [
+              {
+                "type": "text",
+                "content": "Option 2"
+              }
+            ]
+          }
+        ]
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": {
+            "class": "example"
+          },
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": {
+            "id": "content",
+            "class": "large-12 columns"
+          },
+          "children": []
+        }
+      ]
     },
-    "children": [
-     {
-      "type": "text",
-      "content": "      "
-     },
-     {
-      "type": "tag",
-      "name": "option",
-      "voidElement": false,
-      "attrs": {
-       "value": "",
-       "disabled": "disabled",
-       "selected": "selected"
-      },
-      "children": [
-       {
-        "type": "text",
-        "content": "Please select an option"
-       }
-      ]
-     },
-     {
-      "type": "tag",
-      "name": "option",
-      "voidElement": false,
-      "attrs": {
-       "value": "1"
-      },
-      "children": [
-       {
-        "type": "text",
-        "content": "Option 1"
-       }
-      ]
-     },
-     {
-      "type": "tag",
-      "name": "option",
-      "voidElement": false,
-      "attrs": {
-       "value": "2"
-      },
-      "children": [
-       {
-        "type": "text",
-        "content": "Option 2"
-       }
-      ]
-     }
-    ]
-   },
-   "ancestors": [
-    {
-     "type": "tag",
-     "name": "div",
-     "voidElement": false,
-     "attrs": {
-      "class": "example"
-     },
-     "children": []
-    },
-    {
-     "type": "tag",
-     "name": "div",
-     "voidElement": false,
-     "attrs": {
-      "id": "content",
-      "class": "large-12 columns"
-     },
-     "children": []
-    }
-   ]
+    "time": 1575827987391
   },
-  "time": 1575827987391
- },
- {
-  "isTrusted": true,
-  "name": "input",
-  "page": 0,
-  "target": {
-   "node": {
-    "type": "tag",
-    "name": "select",
-    "voidElement": false,
-    "attrs": {
-     "id": "dropdown",
-     "innertext": "Please select an option Option 1 Option 2"
+  {
+    "isTrusted": true,
+    "name": "input",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "select",
+        "voidElement": false,
+        "attrs": {
+          "id": "dropdown",
+          "innertext": "Please select an option Option 1 Option 2"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "      "
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": {
+              "value": "",
+              "disabled": "disabled",
+              "selected": "selected"
+            },
+            "children": [
+              {
+                "type": "text",
+                "content": "Please select an option"
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": {
+              "value": "1"
+            },
+            "children": [
+              {
+                "type": "text",
+                "content": "Option 1"
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": {
+              "value": "2"
+            },
+            "children": [
+              {
+                "type": "text",
+                "content": "Option 2"
+              }
+            ]
+          }
+        ]
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": {
+            "class": "example"
+          },
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": {
+            "id": "content",
+            "class": "large-12 columns"
+          },
+          "children": []
+        }
+      ]
     },
-    "children": [
-     {
-      "type": "text",
-      "content": "      "
-     },
-     {
-      "type": "tag",
-      "name": "option",
-      "voidElement": false,
-      "attrs": {
-       "value": "",
-       "disabled": "disabled",
-       "selected": "selected"
-      },
-      "children": [
-       {
-        "type": "text",
-        "content": "Please select an option"
-       }
-      ]
-     },
-     {
-      "type": "tag",
-      "name": "option",
-      "voidElement": false,
-      "attrs": {
-       "value": "1"
-      },
-      "children": [
-       {
-        "type": "text",
-        "content": "Option 1"
-       }
-      ]
-     },
-     {
-      "type": "tag",
-      "name": "option",
-      "voidElement": false,
-      "attrs": {
-       "value": "2"
-      },
-      "children": [
-       {
-        "type": "text",
-        "content": "Option 2"
-       }
-      ]
-     }
-    ]
-   },
-   "ancestors": [
-    {
-     "type": "tag",
-     "name": "div",
-     "voidElement": false,
-     "attrs": {
-      "class": "example"
-     },
-     "children": []
-    },
-    {
-     "type": "tag",
-     "name": "div",
-     "voidElement": false,
-     "attrs": {
-      "id": "content",
-      "class": "large-12 columns"
-     },
-     "children": []
-    }
-   ]
-  },
-  "time": 1575827988391,
-  "value": "2"
- }
+    "time": 1575827988391,
+    "value": "2"
+  }
 ]

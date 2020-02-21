@@ -37,14 +37,14 @@ describe("Recorder", () => {
 
     await Promise.all([
       page.waitForNavigation(),
-      context.click({ html: "<a>Content editables</a>" }, { simulate: false })
+      context.click({ html: "<a>Content editables</a>" })
     ]);
 
     await context.close();
 
     const events = await context.qawolf().recordedEvents();
     expect(events.length).toEqual(1);
-    expect(events[0].name).toEqual("click");
+    expect(events[0].name).toEqual("mousedown");
     expect(events[0].target.node.attrs.href).toEqual("/content-editables");
   });
 

@@ -1,7 +1,7 @@
 [
   {
     "isTrusted": true,
-    "name": "click",
+    "name": "mousedown",
     "page": 0,
     "target": {
       "node": {

@@ -1,7 +1,7 @@
 [
   {
     "isTrusted": true,
-    "name": "click",
+    "name": "mousedown",
     "page": 0,
     "target": {
       "node": {
@@ -38,7 +38,7 @@
   },
   {
     "isTrusted": true,
-    "name": "click",
+    "name": "mousedown",
     "page": 0,
     "target": {
       "node": {
@@ -75,7 +75,7 @@
   },
   {
     "isTrusted": true,
-    "name": "click",
+    "name": "mousedown",
     "page": 1,
     "target": {
       "node": {
@@ -110,7 +110,7 @@
   },
   {
     "isTrusted": true,
-    "name": "click",
+    "name": "mousedown",
     "page": 1,
     "target": {
       "node": {
@@ -145,7 +145,7 @@
   },
   {
     "isTrusted": true,
-    "name": "click",
+    "name": "mousedown",
     "page": 1,
     "target": {
       "node": {
@@ -180,7 +180,7 @@
   },
   {
     "isTrusted": true,
-    "name": "click",
+    "name": "mousedown",
     "page": 2,
     "target": {
       "node": {
@@ -215,7 +215,7 @@
   },
   {
     "isTrusted": true,
-    "name": "click",
+    "name": "mousedown",
     "page": 2,
     "target": {
       "node": {
@@ -250,7 +250,7 @@
   },
   {
     "isTrusted": true,
-    "name": "click",
+    "name": "mousedown",
     "page": 2,
     "target": {
       "node": {
