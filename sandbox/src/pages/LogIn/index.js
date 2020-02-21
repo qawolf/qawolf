@@ -38,7 +38,7 @@ function LogIn() {
         To log in, use <i>tomsmith</i> as the username, and{" "}
         <i>SuperSecretPassword!</i> as the password.
       </p>
-      <label for="username">Username</label>
+      <label htmlFor="username">Username</label>
       <br />
       <input
         autoComplete="off"
@@ -48,7 +48,7 @@ function LogIn() {
         value={username}
       />
       <br />
-      <label for="password">Password</label>
+      <label htmlFor="password">Password</label>
       <br />
       <input
         autoComplete="off"
