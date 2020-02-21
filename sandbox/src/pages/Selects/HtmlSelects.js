@@ -11,6 +11,9 @@ function HtmlSelects() {
         <option value="cat">Cat</option>
         <option value="dog">Dog</option>
         <option value="hedgehog">Hedgehog</option>
+        <option disabled value="snake">
+          Snake
+        </option>
       </select>
     </div>
   );

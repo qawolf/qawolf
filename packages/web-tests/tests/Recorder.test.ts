@@ -82,7 +82,7 @@ describe("Recorder", () => {
 
     const context = await launch({
       shouldRecordEvents: true,
-      url: `${CONFIG.testUrl}large`
+      url: `${CONFIG.sandboxUrl}large`
     });
 
     const page = await context.page();

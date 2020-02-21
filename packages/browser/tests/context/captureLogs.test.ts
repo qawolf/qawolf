@@ -15,7 +15,7 @@ describe("capture logs", () => {
     beforeAll(async () => {
       context = await launch({
         logLevel: "debug",
-        url: `${CONFIG.testUrl}login`
+        url: `${CONFIG.sandboxUrl}login`
       });
 
       browserLogger.onLog((level: string, message: string) => {
@@ -74,7 +74,7 @@ describe("capture logs", () => {
   it("ignores qawolf debug logs when QAW_LOG_LEVEL != debug", async () => {
     const context = await launch({
       logLevel: "verbose",
-      url: CONFIG.testUrl
+      url: CONFIG.sandboxUrl
     });
     const page = await context.page();
     let lastMessage: any | false = false;

@@ -7,8 +7,6 @@ configDotenv(dotEnvPath ? { path: dotEnvPath } : {});
 
 const sandboxUrl = process.env.QAW_SANDBOX_URL || "http://localhost:3000/";
 
-const testUrl = process.env.QAW_TEST_URL || "http://localhost:5000/";
-
 const parseBool = (value: string | undefined) => {
   return !!value && value !== "false";
 };
@@ -48,7 +46,5 @@ export const CONFIG = {
   // slow down each step by 1s to make it watchable
   // this also gives sites time to setup their handlers
   sleepMs: parseNumber(process.env.QAW_SLEEP_MS, 1000),
-  // for internal use
-  testUrl,
   timeoutMs: parseNumber(process.env.QAW_TIMEOUT_MS, 30000)
 };

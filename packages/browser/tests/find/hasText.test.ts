@@ -5,7 +5,7 @@ let context: BrowserContext;
 let page: Page;
 
 beforeAll(async () => {
-  context = await launch({ url: `${CONFIG.testUrl}login` });
+  context = await launch({ url: `${CONFIG.sandboxUrl}login` });
   page = await context.page();
 });
 

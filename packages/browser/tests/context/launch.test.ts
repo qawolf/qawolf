@@ -7,7 +7,7 @@ import { launch } from "../../src/context/launch";
 
 describe("launch", () => {
   it("injects qawolf", async () => {
-    const context = await launch({ url: CONFIG.testUrl });
+    const context = await launch({ url: CONFIG.sandboxUrl });
 
     const isLoaded = () => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
@@ -30,7 +30,7 @@ describe("launch", () => {
   it("emulates device", async () => {
     const context = await launch({
       device: "iPhone 7",
-      url: CONFIG.testUrl
+      url: CONFIG.sandboxUrl
     });
 
     const expectedSize = pick(

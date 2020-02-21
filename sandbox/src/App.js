@@ -10,6 +10,10 @@ import Buttons from "./pages/Buttons";
 import CheckboxInputs from "./pages/CheckboxInputs";
 import ContentEditables from "./pages/ContentEditables";
 import DatePickers from "./pages/DatePickers";
+import Images from "./pages/Images";
+import InfiniteScroll from "./pages/InfiniteScroll";
+import Large from "./pages/Large";
+import LogIn from "./pages/LogIn";
 import RadioInputs from "./pages/RadioInputs";
 import Selects from "./pages/Selects";
 import TextInputs from "./pages/TextInputs";
@@ -31,6 +35,18 @@ function Navigation() {
       </li>
       <li>
         <Link to="/date-pickers">Date pickers</Link>
+      </li>
+      <li>
+        <Link to="/images">Images</Link>
+      </li>
+      <li>
+        <Link to="/infinite-scroll">Infinite scroll</Link>
+      </li>
+      <li>
+        <Link to="/large">Large</Link>
+      </li>
+      <li>
+        <Link to="/login">Log in</Link>
       </li>
       <li>
         <Link to="/radio-inputs">Radio inputs</Link>
@@ -57,6 +73,10 @@ function App() {
         <Route component={CheckboxInputs} path="/checkbox-inputs" />
         <Route component={ContentEditables} path="/content-editables" />
         <Route component={DatePickers} path="/date-pickers" />
+        <Route component={Images} path="/images" />
+        <Route component={InfiniteScroll} path="/infinite-scroll" />
+        <Route component={Large} path="/large" />
+        <Route component={LogIn} path="/login" />
         <Route component={RadioInputs} path="/radio-inputs" />
         <Route component={Selects} path="/selects" />
         <Route component={TextInputs} path="/text-inputs" />

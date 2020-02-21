@@ -6,7 +6,7 @@ let context: BrowserContext;
 let page: Page;
 
 beforeAll(async () => {
-  context = await launch({ url: `${CONFIG.testUrl}login` });
+  context = await launch({ url: `${CONFIG.sandboxUrl}login` });
   page = await context.page();
 });
 
@@ -16,12 +16,12 @@ describe("getClickableAncestor", () => {
   it("chooses the top most clickable ancestor", async () => {
     const xpath = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
-      const submitIcon = document.getElementsByTagName("i")[0]!;
-      const ancestor = qawolf.element.getClickableAncestor(submitIcon);
+      const logInText = document.getElementsByTagName("p")[1]!;
+      const ancestor = qawolf.element.getClickableAncestor(logInText);
       return qawolf.xpath.getXpath(ancestor);
     });
 
-    expect(xpath).toEqual("//*[@id='login']/button");
+    expect(xpath).toEqual("//*[@id='root']/button");
   });
 
   it("chooses the original element when there is no clickable ancestor", async () => {
@@ -32,7 +32,7 @@ describe("getClickableAncestor", () => {
       return qawolf.xpath.getXpath(ancestor);
     });
 
-    expect(xpath).toEqual("//*[@id='login']/button");
+    expect(xpath).toEqual("//*[@id='root']/button");
   });
 });
 
@@ -61,7 +61,7 @@ describe("isVisible", () => {
 
     expect(isElementVisible).toBe(false);
 
-    await context.goto(`${CONFIG.testUrl}login`); // reset styles
+    await context.goto(`${CONFIG.sandboxUrl}login`); // reset styles
   });
 });
 
