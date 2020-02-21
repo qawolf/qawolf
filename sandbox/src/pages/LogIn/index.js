@@ -34,6 +34,10 @@ function LogIn() {
   return (
     <React.Fragment>
       {error && <div style={{ color: "red" }}>{error}</div>}
+      <p>
+        To log in, use <i>tomsmith</i> as the username, and{" "}
+        <i>SuperSecretPassword!</i> as the password.
+      </p>
       <label for="username">Username</label>
       <br />
       <input
