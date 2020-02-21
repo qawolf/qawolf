@@ -21,7 +21,7 @@ describe("queryElements", () => {
       return actionElements.length;
     });
 
-    expect(actionElementCount).toBe(12);
+    expect(actionElementCount).toBeGreaterThanOrEqual(12);
   });
 
   it("returns only input elements for input action", async () => {
