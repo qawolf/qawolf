@@ -19,7 +19,6 @@ jobs:
       QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
       QAW_LOG_LEVEL: debug
       QAW_SLEEP_MS: 0
-      QAW_TEST_URL: http://localhost:5000/
 
     steps:
       - uses: actions/checkout@v2
@@ -57,11 +56,5 @@ jobs:
         with:
           name: artifacts
           path: ${{ github.workspace }}/artifacts
-
-    services:
-      theinternet:
-        image: gprestes/the-internet@sha256:f741ba048b7232ef90b0f7885de7f6ac42a52a17e73dd82afc484da140398796
-        ports:
-          - 5000:5000
 
     timeout-minutes: 20
