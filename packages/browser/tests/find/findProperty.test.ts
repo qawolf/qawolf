@@ -5,7 +5,7 @@ let context: BrowserContext;
 let page: Page;
 
 beforeAll(async () => {
-  context = await launch({ url: `${CONFIG.testUrl}dropdown` });
+  context = await launch({ url: `${CONFIG.sandboxUrl}checkbox-inputs` });
   page = await context.page();
 });
 
@@ -13,23 +13,27 @@ afterAll(() => context.close());
 
 describe("BrowserContext.findProperty", () => {
   it("returns element attribute if it exists", async () => {
-    const id = await context.findProperty({ css: "select" }, "id");
-    expect(id).toBe("dropdown");
+    const id = await context.findProperty({ css: "#single" }, "id", {
+      timeoutMs: 2000
+    });
+    expect(id).toBe("single");
 
-    const tagName = await context.findProperty({ css: "#dropdown" }, "tagName");
-    expect(tagName).toBe("SELECT");
+    const tagName = await context.findProperty({ css: "#single" }, "tagName", {
+      timeoutMs: 2000
+    });
+    expect(tagName).toBe("INPUT");
 
-    const value = await context.findProperty({ css: "#dropdown" }, "value");
-    expect(value).toBe("");
+    const value = await context.findProperty({ css: "#single" }, "checked", {
+      timeoutMs: 2000
+    });
+    expect(value).toBe(false);
   });
 });
 
 describe("Page.findProperty", () => {
   it("returns undefined if element does not have property", async () => {
-    const placeholder = await page
-      .qawolf()
-      .findProperty({ css: "#dropdown" }, "placeholder");
-    expect(placeholder).toBeUndefined();
+    const href = await page.qawolf().findProperty({ css: "#single" }, "href");
+    expect(href).toBeUndefined();
   });
 
   it("throws an error if no elements match selector", async () => {
@@ -47,7 +51,7 @@ describe("Page.findProperty", () => {
   });
 
   it("returns the first element's property if multiple match selector", async () => {
-    const id = await page.qawolf().findProperty({ css: "option" }, "selected");
-    expect(id).toEqual(true);
+    const id = await page.qawolf().findProperty({ css: "input" }, "id");
+    expect(id).toBe("single");
   });
 });
