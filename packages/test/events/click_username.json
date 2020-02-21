@@ -1,42 +1,42 @@
 [
- {
-  "isTrusted": true,
-  "name": "click",
-  "page": 0,
-  "target": {
-   "node": {
-    "type": "tag",
-    "name": "input",
-    "voidElement": true,
-    "attrs": {
-     "type": "text",
-     "name": "username",
-     "id": "username",
-     "labels": "Username"
+  {
+    "isTrusted": true,
+    "name": "mousedown",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "type": "text",
+          "name": "username",
+          "id": "username",
+          "labels": "Username"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": {
+            "class": "large-6 small-12 columns"
+          },
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": {
+            "class": "row"
+          },
+          "children": []
+        }
+      ]
     },
-    "children": []
-   },
-   "ancestors": [
-    {
-     "type": "tag",
-     "name": "div",
-     "voidElement": false,
-     "attrs": {
-      "class": "large-6 small-12 columns"
-     },
-     "children": []
-    },
-    {
-     "type": "tag",
-     "name": "div",
-     "voidElement": false,
-     "attrs": {
-      "class": "row"
-     },
-     "children": []
-    }
-   ]
-  },
-  "time": 1575827963971
- }
+    "time": 1575827963971
+  }
 ]
