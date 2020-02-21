@@ -64,7 +64,7 @@ describe("nodeToHtml", () => {
     });
 
     expect(html).toEqual(
-      '<button type="submit" innertext="Log in" style="cursor: pointer;"><p>Log in</p></button>'
+      '<button type="submit" style="cursor: pointer;" innertext="Log in"><p>Log in</p></button>'
     );
   });
 
