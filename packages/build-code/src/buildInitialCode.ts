@@ -19,13 +19,19 @@ const buildInitialScript = ({ name, launch, patchHandle }: TemplateOptions) => {
   const code = `const { launch } = require("qawolf");
 const selectors = require("../selectors/${name}");
 
-const ${name} = async () => {
-  const browser = ${launch}
+const ${name} = async browser => {
   ${patchHandle}
-  await browser.close();
 };
 
-${name}();`;
+exports.${name} = ${name};
+
+if (require.main === module) {
+  (async () => {
+    const browser = ${launch}
+    await ${name}(browser);
+    await browser.close();
+  })();
+}`;
 
   return code;
 };
