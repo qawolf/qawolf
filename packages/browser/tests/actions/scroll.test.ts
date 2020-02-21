@@ -1,9 +1,8 @@
 import { CONFIG } from "@qawolf/config";
-import { BrowserContext, launch, Page } from "../../src";
+import { BrowserContext, launch } from "../../src";
 import { scrollElement } from "../../src/actions";
 
 let context: BrowserContext;
-let page: Page;
 
 beforeAll(async () => {
   context = await launch();
@@ -13,7 +12,7 @@ afterAll(() => context.close());
 
 describe("BrowserContext.scroll", () => {
   it("scrolls in infinite scroll", async () => {
-    page = await context.goto(`${CONFIG.sandboxUrl}infinite-scroll`);
+    const page = await context.goto(`${CONFIG.sandboxUrl}infinite-scroll`);
 
     const initialYPosition = await page.evaluate(() => window.pageYOffset);
     expect(initialYPosition).toBe(0);
@@ -27,7 +26,7 @@ describe("BrowserContext.scroll", () => {
 
 describe("Page.scroll", () => {
   it("scrolls to a given position", async () => {
-    page = await context.goto(`${CONFIG.sandboxUrl}large`);
+    const page = await context.goto(`${CONFIG.sandboxUrl}large`);
 
     const initialYPosition = await page.evaluate(() => window.pageYOffset);
     expect(initialYPosition).toBe(0);
