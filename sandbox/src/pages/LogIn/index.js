@@ -58,7 +58,7 @@ function LogIn() {
         value={password}
       />
       <br />
-      <button onClick={handleClick} type="submit">
+      <button onClick={handleClick} style={{ cursor: "pointer" }} type="submit">
         <p>Log in</p>
       </button>
     </React.Fragment>
