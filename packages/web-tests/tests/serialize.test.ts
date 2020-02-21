@@ -63,9 +63,10 @@ describe("nodeToHtml", () => {
       });
     });
 
-    expect(html).toEqual(
+    expect([
+      '<button style="cursor: pointer;" type="submit" innertext="Log in"><p>Log in</p></button>',
       '<button type="submit" style="cursor: pointer;" innertext="Log in"><p>Log in</p></button>'
-    );
+    ]).toContain(html);
   });
 
   it("serializes image alt and src", async () => {
