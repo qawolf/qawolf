@@ -6,23 +6,20 @@ let context: BrowserContext;
 let page: Page;
 
 beforeAll(async () => {
-  context = await launch({ url: `${CONFIG.testUrl}login` });
+  context = await launch({ url: `${CONFIG.sandboxUrl}login` });
   page = await context.page();
 });
 
 afterAll(() => context.close());
 
 describe("BrowserContext.click", () => {
-  it("clicks on icon in button", async () => {
+  it("clicks on paragraph in button", async () => {
     const hasInvalidUsernameText = await hasText(page, "username is invalid", {
       timeoutMs: 250
     });
     expect(hasInvalidUsernameText).toBe(false);
 
-    await Promise.all([
-      page.waitForNavigation(),
-      context.click({ html: "<i>Login</i>" })
-    ]);
+    await context.click({ html: "<p>Log in</p>" });
 
     const hasInvalidUsernameText2 = await hasText(page, "username is invalid");
     expect(hasInvalidUsernameText2).toBe(true);
@@ -31,19 +28,17 @@ describe("BrowserContext.click", () => {
 
 describe("Page.click", () => {
   it("clicks on link", async () => {
-    await page.goto(CONFIG.testUrl);
+    await page.goto(CONFIG.sandboxUrl);
 
     await Promise.all([
       page.waitForNavigation(),
-      page.qawolf().click({ html: "<a>broken images</a>" })
+      page.qawolf().click({ html: "<a>Buttons</a>" })
     ]);
 
-    expect(page.url()).toBe(`${CONFIG.testUrl}broken_images`);
+    expect(page.url()).toBe(`${CONFIG.sandboxUrl}buttons`);
   });
 
   it("clicks on a custom element", async () => {
-    await page.goto(`${CONFIG.testUrl}broken_images`);
-
     const clickPromise = page.evaluate(() => {
       customElements.define(
         "custom-element",
