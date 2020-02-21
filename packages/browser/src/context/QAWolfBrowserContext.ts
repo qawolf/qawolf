@@ -114,9 +114,11 @@ export class QAWolfBrowserContext extends EventEmitter {
 
     logTestStarted(context);
 
-    if (options.capture) await options.capture.start();
-
     registry.setContextKey("browser", context);
+
+    // activate first page then start capture
+    await context.page();
+    if (options.capture) await options.capture.start();
 
     return context;
   }
