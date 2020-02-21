@@ -8,7 +8,7 @@ let page: Page;
 
 beforeAll(async () => {
   context = await launch({
-    url: `${CONFIG.testUrl}checkboxes`
+    url: `${CONFIG.sandboxUrl}checkbox-inputs`
   });
   page = await context.page();
 });
@@ -19,27 +19,27 @@ describe("findCss", () => {
   it("finds an element with a css selector", async () => {
     const element = await findElement(
       page,
-      { css: "#checkboxes" },
+      { css: "#another" },
       {
         timeoutMs: 0
       }
     );
 
-    expect(await getXpath(element)).toEqual("//*[@id='checkboxes']");
+    expect(await getXpath(element)).toEqual("//*[@id='another']");
   });
 });
 
 describe("findHtml", () => {
-  it("finds an element by a strong key (alt)", async () => {
+  it("finds an element by a strong key (id)", async () => {
     const element = await findElement(
       page,
-      { html: '<img alt="Fork me on GitHub" >' },
+      { html: '<input id="another" >' },
       {
         timeoutMs: 0
       }
     );
 
-    expect(await getXpath(element)).toEqual("/html/body/div[2]/a/img");
+    expect(await getXpath(element)).toEqual("//*[@id='another']");
   });
 
   it("finds html and body elements", async () => {
@@ -71,29 +71,28 @@ describe("findText", () => {
   it("finds the element with the least extra text", async () => {
     let element = await findElement(
       page,
-      { text: "Checkbox" },
+      { text: "Native HTML" },
       { timeoutMs: 0 }
     );
-    expect(await getXpath(element)).toEqual("//*[@id='content']/div/h3");
-
-    element = await findElement(page, { text: "checkbox 1" }, { timeoutMs: 0 });
-    expect(await getXpath(element)).toEqual("//*[@id='checkboxes']");
+    expect(await getXpath(element)).toEqual("//*[@id='root']/div/div[1]/h3");
   });
 
   it("finds the deepest element", async () => {
     let element = await findElement(
       page,
-      { text: "checkbox 1" },
+      { text: "Single checkbox" },
       { timeoutMs: 0 }
     );
-    expect(await getXpath(element)).toEqual("//*[@id='checkboxes']");
+    expect(await getXpath(element)).toEqual(
+      "//*[@id='root']/div/div[1]/label[1]"
+    );
   });
 
   it("skips elements with incorrect case", async () => {
     let message = false;
 
     try {
-      await findElement(page, { text: "checkboxes" }, { timeoutMs: 0 });
+      await findElement(page, { text: "native HTML" }, { timeoutMs: 0 });
     } catch (e) {
       message = e.message;
     }
