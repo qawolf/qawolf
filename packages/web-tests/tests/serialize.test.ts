@@ -6,7 +6,7 @@ let context: BrowserContext;
 let page: Page;
 
 beforeAll(async () => {
-  context = await launch({ url: `${CONFIG.testUrl}login` });
+  context = await launch({ url: `${CONFIG.sandboxUrl}login` });
   page = await context.page();
 });
 
@@ -54,7 +54,7 @@ describe("nodeToDocSelector", () => {
 
 describe("nodeToHtml", () => {
   it("serializes innerText as an attribute", async () => {
-    await context.goto(`${CONFIG.testUrl}login`);
+    await context.goto(`${CONFIG.sandboxUrl}login`);
 
     const html = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
@@ -64,30 +64,26 @@ describe("nodeToHtml", () => {
     });
 
     expect(html).toEqual(
-      '<button class="radius" type="submit" innertext="Login"><i class="fa fa-2x fa-sign-in"> Login</i></button>'
+      '<button type="submit" innertext="Log in" style="cursor: pointer;"><p>Log in</p></button>'
     );
   });
 
   it("serializes image alt and src", async () => {
-    await context.goto(`${CONFIG.testUrl}broken_images`);
+    await context.goto(`${CONFIG.sandboxUrl}images`);
 
     const html = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
 
       const image = document.querySelector("img")!;
-      image.alt = "Alt text";
-      image.src = "/myurl";
 
       return qawolf.serialize.nodeToHtml(image);
     });
 
-    expect(html).toEqual(
-      '<img style="position: absolute; top: 0; right: 0; border: 0;" src="/myurl" alt="Alt text" />'
-    );
+    expect(html).toEqual('<img alt="spirit" src="logo192.png" />');
   });
 
   it("serializes labels", async () => {
-    await context.goto(`${CONFIG.testUrl}login`);
+    await context.goto(`${CONFIG.sandboxUrl}login`);
 
     const html = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
@@ -99,7 +95,7 @@ describe("nodeToHtml", () => {
     });
 
     expect(html).toEqual(
-      '<input type="text" name="username" id="username" labels="Username" />'
+      '<input autocomplete="off" id="username" type="text" value="" labels="Username" />'
     );
   });
 });
