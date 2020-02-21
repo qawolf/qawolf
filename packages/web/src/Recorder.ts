@@ -64,6 +64,10 @@ export class Recorder {
     // Record mousedown instead of click since it happens first.
     // This is useful for situations where components change the click target (Material UI non-native Select).
     this.recordEvent("mousedown", event => {
+      // only the main button (not right clicks/etc)
+      // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
+      if (event.button !== 0) return;
+
       // getClickableAncestor chooses the top most clickable ancestor.
       // The ancestor is likely a better target than the descendant.
       // Ex. when you click on the i (button > i) or rect (a > svg > rect)
