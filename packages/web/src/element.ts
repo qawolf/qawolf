@@ -10,8 +10,8 @@ export const getClickableAncestor = (element: HTMLElement): HTMLElement => {
   console.debug("qawolf: get clickable ancestor for", getXpath(element));
 
   while (ancestor.parentElement) {
-    // choose the common clickable element type as the clickable ancestor
     if (["a", "button", "input"].includes(ancestor.tagName.toLowerCase())) {
+      // stop crawling when the ancestor is a good clickable tag
       console.debug(
         `qawolf: found clickable ancestor: ${ancestor.tagName}`,
         getXpath(ancestor)
@@ -19,22 +19,22 @@ export const getClickableAncestor = (element: HTMLElement): HTMLElement => {
       return ancestor;
     }
 
-    // stop crawling at the first non-clickable element
     if (
       !isClickable(
         ancestor.parentElement,
         window.getComputedStyle(ancestor.parentElement)
       )
     ) {
-      console.debug(
-        "qawolf: no clickable ancestor, use target",
-        getXpath(element)
-      );
-      return element;
+      // stop crawling at the first non-clickable element
+      console.debug("qawolf: found clickable ancestor", getXpath(ancestor));
+      return ancestor;
     }
 
     ancestor = ancestor.parentElement;
   }
+
+  // stop crawling at the root
+  console.debug("qawolf: found clickable ancestor", getXpath(ancestor));
 
   return ancestor;
 };
