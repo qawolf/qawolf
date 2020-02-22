@@ -48,28 +48,30 @@ const getAttributeValue = async (
 
 beforeAll(async () => {
   context = await launch();
+  page = await context.page();
 });
 
 afterAll(() => context.close());
 
 describe("buildCssSelector", () => {
+  it("returns undefined if there is no attribute", async () => {
+    await context.goto(`${CONFIG.sandboxUrl}buttons`);
+
+    const selector = await buildCssSelector("#html-button", true);
+    expect(selector).toBeUndefined();
+  });
+
   describe("click: button", () => {
     beforeAll(async () => {
       await context.goto(`${CONFIG.sandboxUrl}buttons`);
-      page = await context.page();
     });
 
-    it("returns undefined if there is no attribute", async () => {
-      const selector = await buildCssSelector("#html-button", true);
-      expect(selector).toBeUndefined();
-    });
-
-    it("returns selector for target", async () => {
+    it("selects the target", async () => {
       const selector = await buildCssSelector("[data-qa='html-button']", true);
       expect(selector).toBe("[data-qa='html-button']");
     });
 
-    it("returns selector for ancestor", async () => {
+    it("selects the ancestor", async () => {
       const selector = await buildCssSelector("#html-button-child", true);
       expect(selector).toBe("[data-qa='html-button-with-children']");
 
@@ -78,18 +80,24 @@ describe("buildCssSelector", () => {
     });
   });
 
+  describe("click: date picker button", () => {
+    it("selects the ancestor and clickable descendant", async () => {
+      await context.goto(`${CONFIG.sandboxUrl}date-pickers`);
+
+      const selector = await buildCssSelector(
+        '[data-qa="material-date-picker"] path',
+        true
+      );
+      expect(selector).toBe("[data-qa='material-date-picker'] button");
+    });
+  });
+
   describe("click: radio", () => {
     beforeAll(async () => {
       await context.goto(`${CONFIG.sandboxUrl}radio-inputs`);
-      page = await context.page();
     });
 
-    it("returns undefined if there is no attribute", async () => {
-      const selector = await buildCssSelector("#another", true);
-      expect(selector).toBeUndefined();
-    });
-
-    it("returns selector for target", async () => {
+    it("selects the target radio button/label", async () => {
       const selector = await buildCssSelector("#single", true);
       expect(selector).toBe("[data-qa='html-radio']");
 
@@ -100,7 +108,7 @@ describe("buildCssSelector", () => {
       expect(selector2).toBe("[data-qa='material-radio']");
     });
 
-    it("returns selector for ancestor targeting input value", async () => {
+    it("selects the ancestor group and descendant value", async () => {
       const selector = await buildCssSelector("#dog", true);
       expect(selector).toBe("[data-qa='html-radio-group'] [value='dog']");
 
@@ -112,15 +120,9 @@ describe("buildCssSelector", () => {
   describe("click: checkbox", () => {
     beforeAll(async () => {
       await context.goto(`${CONFIG.sandboxUrl}checkbox-inputs`);
-      page = await context.page();
     });
 
-    it("returns undefined if there is no attribute", async () => {
-      const selector = await buildCssSelector("#another", true);
-      expect(selector).toBeUndefined();
-    });
-
-    it("returns selector for target", async () => {
+    it("selects the target checkbox/label", async () => {
       const selector = await buildCssSelector("#single", true);
       expect(selector).toBe("[data-qa='html-checkbox']");
 
@@ -131,7 +133,7 @@ describe("buildCssSelector", () => {
       expect(selector2).toBe("[data-qa='material-checkbox']");
     });
 
-    it("returns selector for ancestor targeting input value", async () => {
+    it("selects the ancestor group and descendant value", async () => {
       const selector = await buildCssSelector("#dog", true);
       expect(selector).toBe("[data-qa='html-checkbox-group'] [value='dog']");
 
@@ -145,10 +147,9 @@ describe("buildCssSelector", () => {
   describe("type: input", () => {
     beforeAll(async () => {
       await context.goto(`${CONFIG.sandboxUrl}text-inputs`);
-      page = await context.page();
     });
 
-    it("returns selector for target", async () => {
+    it("select the target input/textarea", async () => {
       const selector = await buildCssSelector('[type="password"]');
       expect(selector).toBe("[data-qa='html-password-input']");
 
@@ -156,7 +157,7 @@ describe("buildCssSelector", () => {
       expect(selector2).toBe("[data-qa='html-textarea']");
     });
 
-    it("returns selector for ancestor targeting input", async () => {
+    it("selects the ancestor and descendant input/textarea", async () => {
       const selector = await buildCssSelector(
         '[data-qa="material-text-input"] input'
       );
@@ -172,10 +173,9 @@ describe("buildCssSelector", () => {
   describe("type: content editable", () => {
     beforeAll(async () => {
       await context.goto(`${CONFIG.sandboxUrl}content-editables`);
-      page = await context.page();
     });
 
-    it("returns selector for ancestor targeting content editable", async () => {
+    it("selects the ancestor and descendant content editable", async () => {
       const selector = await buildCssSelector("[data-qa='content-editable']");
       expect(selector).toBe("[data-qa='content-editable']");
 
@@ -194,15 +194,14 @@ describe("buildCssSelector", () => {
   describe("select", () => {
     beforeAll(async () => {
       await context.goto(`${CONFIG.sandboxUrl}selects`);
-      page = await context.page();
     });
 
-    it("returns selector for target", async () => {
+    it("selects the target select", async () => {
       const selector = await buildCssSelector("[data-qa='html-select']");
       expect(selector).toBe("[data-qa='html-select']");
     });
 
-    it("returns selector for ancestor targeting select", async () => {
+    it("selects the target and descendant select", async () => {
       const selector = await buildCssSelector(
         "[data-qa='material-select-native'] select"
       );
@@ -214,7 +213,6 @@ describe("buildCssSelector", () => {
 describe("getAttributeValue", () => {
   beforeAll(async () => {
     await context.goto(`${CONFIG.sandboxUrl}buttons`);
-    page = await context.page();
   });
 
   it("returns null if attribute not specified", async () => {

@@ -1,3 +1,4 @@
+import { getClickableAncestor } from "./element";
 import { getXpath } from "./xpath";
 
 export interface AttributeValuePair {
@@ -67,8 +68,13 @@ export const buildDescendantSelector = (
   }
 
   if (isClick) {
-    // Otherwise a click on the ancestor should be
-    // equivalent to a click on the descendant
+    // Target the descendant tag if it is a common clickable element
+    const tagName = getClickableAncestor(element).tagName.toLowerCase();
+    if (["a", "button", "input"].includes(tagName)) {
+      return ` ${tagName}`;
+    }
+
+    // Hope the click on the parent with the attribute is ok
     return "";
   }
 
