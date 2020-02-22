@@ -8,7 +8,7 @@ export const buildClickSteps = (events: ElementEvent[]): Step[] => {
     const event = events[i];
 
     // ignore other actions
-    if (event.name !== "click") continue;
+    if (event.name !== "mousedown") continue;
 
     // ignore system initiated clicks
     if (!event.isTrusted) continue;

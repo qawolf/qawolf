@@ -14,6 +14,7 @@ export type ElementEventName =
   | "input"
   | "keydown"
   | "keyup"
+  | "mousedown"
   | "paste"
   | "scroll"
   | "selectall";
