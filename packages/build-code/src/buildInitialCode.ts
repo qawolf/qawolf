@@ -1,4 +1,3 @@
-import { camelCase } from "lodash";
 import { buildLaunch } from "./buildLaunch";
 
 export type InitialCodeOptions = {
@@ -57,7 +56,7 @@ describe('${name}', () => {
 export const buildInitialCode = (options: InitialCodeOptions) => {
   const templateOptions = {
     launch: buildLaunch(options.url, options.device),
-    name: camelCase(options.name),
+    name: options.name,
     patchHandle: options.patchHandle
   };
 
