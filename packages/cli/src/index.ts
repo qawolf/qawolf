@@ -16,8 +16,6 @@ program.usage("<command> [options]").version(pkg.version);
 
 program
   .command("create <url> [name]")
-  // XXX remove in v1.0.0
-  .alias("record")
   .option("--code-path <codePath>", "path to save the code file")
   .option("--debug", "save events and workflow json for debugging")
   .option("-d, --device <device>", "emulate using a playwright.device")
@@ -26,13 +24,6 @@ program
   .option("--selector-path <selectorPath>", "path to save the selector file")
   .description("create a test from browser actions")
   .action(async (urlArgument, optionalName, cmd) => {
-    if (process.argv[2] === "record") {
-      console.log(
-        red(
-          `"qawolf record" will be removed in v1.0.0\nPlease use "qawolf create" instead`
-        )
-      );
-    }
     const url = parseUrl(urlArgument);
     logger.verbose(`create "${url.href}"`);
 
