@@ -47,7 +47,7 @@ For example, if you click on an element with the following [HTML](https://develo
 <button data-qa="submit">Submit</button>
 ```
 
-The generated test code will target an element with the [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) `[data-qa='submit']`:
+The generated test code will target the element with the [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) `[data-qa='submit']`:
 
 ```js
 it('can click "Submit" button', async () => {
@@ -55,9 +55,39 @@ it('can click "Submit" button', async () => {
 });
 ```
 
-When you run your test, QA Wolf will look for an element where the `data-qa` attribute is set to `submit`. If it cannot find an element where `data-qa` equals `submit` before timing out, the test fails.
+When you run your test, QA Wolf will look for an element where the `data-qa` attribute is set to `"submit"`. If it cannot find an element where `data-qa` equals `"submit"` before timing out, the test fails.
 
 You can [set the value of `QAW_ATTRIBUTE`](api/environment_variables#qaw_attribute) to choose what attributes QA Wolf uses when generating test code. You can specify any number of test attributes like `data-qa`, and other attributes like `id` and `aria-label`.
+
+QA Wolf does its best to generate the correct CSS selector, even if the specified attribute is on an ancestor of the target element. For example, some component libraries like [Material UI](https://material-ui.com) place data attributes on a wrapper `div` around inputs. Your front end code might look like this:
+
+```js
+import React from "react";
+import TextField from "@material-ui/core/TextField";
+
+function MyTextInput() {
+  return <TextField data-qa="username" label="Username" />;
+}
+```
+
+The corresponding HTML will be:
+
+```html
+<div data-qa="username">
+  <label>Username</label>
+  <div>
+    <input type="text" value="" />
+  </div>
+</div>
+```
+
+In this case, the correct CSS selector is `[data-qa='username'] input` rather than just `[data-qa='username']`. If we do not include `input` in the generated CSS selector, the test will try unsuccessfully to type into a `div`.
+
+QA Wolf does its best to target the correct element in scenarios like these. In our example, the generated test code will be:
+
+```js
+await browser.type({ css: "[data-qa='username'] input" }, "target the input");
+```
 
 ### Default selector logic
 
