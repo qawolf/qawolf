@@ -10,6 +10,7 @@ As you create a test, you may want to try out code to include in your test file.
 - [Open the REPL](#open-the-repl) by selecting `🖥️ Open REPL to run code` while creating a test
 - You can [run Node.js code in the REPL](#run-code-in-the-repl)
 - [Close the REPL](#close-the-repl) by typing `.exit`
+- You can also [use the REPL when running a test](#use-repl-when-running-a-test)
 
 ## Open the REPL
 
@@ -75,6 +76,43 @@ In summary, the REPL allows us to try out code that we may want to incorporate i
 ## Close the REPL
 
 When you are done using the REPL, type `.exit` in the command line. This will close the REPL and show the original options again (`💾 Save and Exit`, `🖥️ Open REPL to run code`, and `🗑️ Discard and Exit`).
+
+## Use REPL when running a test
+
+You can also open the REPL when running a test. The [`repl` method](api/qawolf/repl) allows you to use the REPL to debug existing tests.
+
+First, update your code to call the `repl` method where you want the test to pause and open a REPL. Import `repl` from `qawolf` at the beginning of your test:
+
+```js
+// change this
+const { launch } = require("qawolf");
+// to this
+const { launch, repl } = require("qawolf");
+```
+
+Then call `repl` any number of times in your test code. Pass whatever values you want to be able to access in the REPL. The `browser` is passed by default, so you do not need to include it:
+
+```js
+it("can click button", async () => {
+  await repl({ selectors }); // already includes browser
+
+  await browser.click(selectors[2]);
+});
+```
+
+Run your test with the [`--repl` flag](api/cli#npx-qawolf-test-name). When the test encounters a `repl` call, it will pause and the REPL will open. You can then run various commands in the REPL. For example, you may want to try out a new selector:
+
+```bash
+await browser.find({ css: "#new-id" });
+```
+
+The REPL will have access to whatever context you gave it. For example, you can access `selectors` if you included `selectors` when calling `repl`:
+
+```bash
+await browser.find(selectors[11])
+```
+
+After you are done using the REPL, type `.exit` to continue running your test. Your test will proceed until it encounters another `repl` call or finishes running.
 
 ## Next steps
 
