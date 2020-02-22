@@ -1,3 +1,4 @@
+import { getClickableAncestor } from "./element";
 import { getXpath } from "./xpath";
 
 export interface AttributeValuePair {
@@ -67,9 +68,11 @@ export const buildDescendantSelector = (
   }
 
   if (isClick) {
-    // Otherwise a click on the ancestor should be
-    // equivalent to a click on the descendant
-    return "";
+    const ancestorTagName = getClickableAncestor(element).tagName.toLowerCase();
+
+    return ["a", "button", "input"].includes(ancestorTagName)
+      ? ` ${ancestorTagName}`
+      : "";
   }
 
   if (element.contentEditable === "true") {

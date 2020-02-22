@@ -5,9 +5,22 @@ import { nodeToDocSelector } from "./serialize";
 
 type EventCallback = types.Callback<types.ElementEvent>;
 
+const debounce = (fn: () => void, delay: number) => {
+  let inDebounce: NodeJS.Timeout;
+
+  return function() {
+    const context = this;
+    const args = arguments;
+    clearTimeout(inDebounce);
+
+    inDebounce = setTimeout(() => fn.apply(context, args), delay);
+  };
+};
+
 export class Recorder {
   private _attribute: string;
   private _id: number;
+  private _mouseEvents: MouseEvent[] = [];
   private _onDispose: types.Callback[] = [];
   private _pageIndex: number;
   private _sendEvent: EventCallback;
@@ -43,7 +56,7 @@ export class Recorder {
 
   private recordEvent<K extends keyof DocumentEventMap>(
     eventName: K,
-    handler: (ev: DocumentEventMap[K]) => types.ElementEvent | undefined
+    handler: (ev: DocumentEventMap[K]) => types.ElementEvent | void
   ) {
     this.listen(eventName, (ev: DocumentEventMap[K]) => {
       const event = handler(ev);
@@ -60,34 +73,76 @@ export class Recorder {
     });
   }
 
-  private recordEvents() {
-    // Record mousedown instead of click since it happens first.
-    // This is useful for situations where components change the click target (Material UI non-native Select).
-    this.recordEvent("mousedown", event => {
-      // only the main button (not right clicks/etc)
-      // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
-      if (event.button !== 0) return;
+  private storeMouseEvent(event: MouseEvent) {
+    // only the main button (not right clicks, etc.)
+    // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
+    if (event.button === 0) {
+      this._mouseEvents.push(event);
+    }
+  }
 
-      // getClickableAncestor chooses the top most clickable ancestor.
-      // The ancestor is likely a better target than the descendant.
-      // Ex. when you click on the i (button > i) or rect (a > svg > rect)
-      // chances are the ancestor (button, a) is a better target to find.
-      // XXX if anyone runs into issues with this behavior we can allow disabling it from a flag.
-      const target = getClickableAncestor(event.target as HTMLElement);
+  private rankMouseEvents() {
+    this._mouseEvents.sort((a, b) => a.timeStamp - b.timeStamp);
+    const lastEvent = this._mouseEvents[this._mouseEvents.length - 1];
 
-      return {
-        cssSelector: buildCssSelector({
-          attribute: this._attribute,
-          isClick: true,
-          target
-        }),
-        isTrusted: event.isTrusted,
-        name: "mousedown",
-        page: this._pageIndex,
-        target: nodeToDocSelector(target),
-        time: Date.now()
-      };
+    if (
+      ((lastEvent.target as HTMLElement).tagName || "").toLowerCase() ===
+      "input"
+    ) {
+      return lastEvent;
+    }
+
+    return this._mouseEvents[0];
+  }
+
+  private sendMouseEvent = debounce(() => {
+    if (!this._mouseEvents.length) return;
+    const ev = this.rankMouseEvents();
+    // getClickableAncestor chooses the top most clickable ancestor.
+    // The ancestor is likely a better target than the descendant.
+    // Ex. when you click on the i (button > i) or rect (a > svg > rect)
+    // chances are the ancestor (button, a) is a better target to find.
+    const target = getClickableAncestor(ev.target as HTMLElement);
+
+    const event = {
+      cssSelector: buildCssSelector({
+        attribute: this._attribute,
+        isClick: true,
+        target
+      }),
+      isTrusted: ev.isTrusted,
+      name: "click" as "click",
+      page: this._pageIndex,
+      target: nodeToDocSelector(target),
+      time: Date.now()
+    };
+
+    console.debug(
+      `qawolf: Recorder ${this._id}: click event`,
+      ev,
+      ev.target,
+      "recorded:",
+      event
+    );
+
+    this._sendEvent(event);
+    this._mouseEvents = [];
+  }, 200);
+
+  private recordClickEvents() {
+    document.addEventListener("mousedown", event => {
+      this.storeMouseEvent(event);
+      this.sendMouseEvent();
     });
+
+    document.addEventListener("click", event => {
+      this.storeMouseEvent(event);
+      this.sendMouseEvent();
+    });
+  }
+
+  private recordEvents() {
+    this.recordClickEvents();
 
     this.recordEvent("input", event => {
       const target = event.target as HTMLInputElement;
