@@ -3,8 +3,7 @@
 import { logger } from "@qawolf/logger";
 import { BrowserType } from "@qawolf/types";
 import program from "commander";
-import { red, yellow } from "kleur";
-import { camelCase } from "lodash";
+import { yellow } from "kleur";
 import { saveCiTemplate } from "./ci";
 import { CreateCodeCLI } from "./CreateCodeCLI";
 import { howl } from "./howl";
@@ -27,7 +26,7 @@ program
     const url = parseUrl(urlArgument);
     logger.verbose(`create "${url.href}"`);
 
-    const name = camelCase(optionalName || url.hostname!.replace(/\..*/g, ""));
+    const name = optionalName || url.hostname!.replace(/\..*/g, "");
 
     await CreateCodeCLI.start({
       codePath: cmd.codePath,
