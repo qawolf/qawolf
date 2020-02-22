@@ -1,4 +1,6 @@
 import React from "react";
+import Link from "@docusaurus/Link";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import Argument from "./Argument";
 import ArgumentAllBrowsers from "./ArgumentAllBrowsers";
 import ArgumentFirefox from "./ArgumentFirefox";
@@ -19,6 +21,20 @@ function ArgumentTest() {
         name="--path path"
         optional
         type="string"
+      />
+      <Argument
+        description={
+          <React.Fragment>
+            Pause and open the REPL when{" "}
+            <Link to={useBaseUrl("docs/api/qawolf/repl")}>
+              <code>repl</code> is called
+            </Link>{" "}
+            in test code.
+          </React.Fragment>
+        }
+        name="--repl"
+        optional
+        type="boolean"
       />
       <ArgumentWebKit />
       <Argument
