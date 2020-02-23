@@ -21,7 +21,7 @@ describe("getClickableAncestor", () => {
       return qawolf.xpath.getXpath(ancestor);
     });
 
-    expect(xpath).toEqual("//*[@id='root']/button");
+    expect(xpath).toEqual("//*[@id='root']/form/button");
   });
 
   it("chooses the original element when there is no clickable ancestor", async () => {
@@ -32,7 +32,7 @@ describe("getClickableAncestor", () => {
       return qawolf.xpath.getXpath(ancestor);
     });
 
-    expect(xpath).toEqual("//*[@id='root']/button");
+    expect(xpath).toEqual("//*[@id='root']/form/button");
   });
 });
 
