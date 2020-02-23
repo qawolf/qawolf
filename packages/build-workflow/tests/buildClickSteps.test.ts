@@ -1,4 +1,5 @@
 import { loadEvents } from "@qawolf/test";
+import { pick } from "lodash";
 import { buildClickSteps } from "../";
 
 describe("buildClickSteps", () => {
@@ -16,7 +17,10 @@ describe("buildClickSteps", () => {
 
   it("builds one click per group of mousedown/click events", () => {
     const steps = buildClickSteps(clickButtons);
-    expect(steps.map(step => step.cssSelector)).toMatchSnapshot();
+    expect(
+      // snapshot to test it includes the original event index
+      steps.map(step => pick(step, "cssSelector", "index"))
+    ).toMatchSnapshot();
   });
 
   it("skips click triggered by Enter", () => {
