@@ -1,4 +1,3 @@
-import { getClickableAncestor } from "./element";
 import { getXpath } from "./xpath";
 
 export interface AttributeValuePair {
@@ -45,6 +44,7 @@ export const buildCssSelector = ({
 
   const descendantSelector = buildDescendantSelector(
     target as HTMLInputElement,
+    elementWithSelector.element,
     isClick
   );
   const targetSelector = `${attributeSelector}${descendantSelector}`;
@@ -58,31 +58,25 @@ export const buildCssSelector = ({
 };
 
 export const buildDescendantSelector = (
-  element: HTMLInputElement,
+  descendant: HTMLInputElement,
+  ancestor: HTMLElement,
   isClick?: boolean
 ): string => {
-  const inputElement = element as HTMLInputElement;
+  const inputElement = descendant as HTMLInputElement;
   if (["checkbox", "radio"].includes(inputElement.type) && inputElement.value) {
     // Target the value for these input types
     return ` [value='${inputElement.value}']`;
   }
 
   if (isClick) {
-    // Target the descendant tag if it is a common clickable element
-    const tagName = getClickableAncestor(element).tagName.toLowerCase();
-    if (["a", "button", "input"].includes(tagName)) {
-      return ` ${tagName}`;
-    }
-
-    // Hope the click on the parent with the attribute is ok
-    return "";
+    return findClickableDescendantTag(descendant, ancestor);
   }
 
-  if (element.contentEditable === "true") {
+  if (descendant.contentEditable === "true") {
     return " [contenteditable='true']";
   }
 
-  return ` ${element.tagName.toLowerCase()}`;
+  return ` ${descendant.tagName.toLowerCase()}`;
 };
 
 export const findAttribute = (
@@ -102,6 +96,29 @@ export const findAttribute = (
   }
 
   return null;
+};
+
+export const findClickableDescendantTag = (
+  descendant: HTMLElement,
+  ancestor: HTMLElement
+): string => {
+  /**
+   * Target common clickable descendant tags.
+   * Ex. the DatePicker's date button
+   */
+  let parent = descendant;
+
+  // stop when we hit the ancestor
+  while (parent !== ancestor) {
+    const tagName = parent.tagName.toLowerCase();
+    if (["a", "button", "input"].includes(tagName)) {
+      return ` ${tagName}`;
+    }
+
+    parent = parent.parentElement!;
+  }
+
+  return "";
 };
 
 export const getAttributeValue = (
