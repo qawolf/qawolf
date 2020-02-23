@@ -67,6 +67,7 @@ RUN apt-get update &&\
   libgles2 \
   libevent-2.1-6 \
   libnotify4 \
+  libvpx5 \
   libxslt1.1 && \
   # free up space
   apt-get clean
