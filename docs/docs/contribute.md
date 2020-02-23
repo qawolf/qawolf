@@ -42,7 +42,7 @@ If you have any questions please [chat with us on Gitter](https://gitter.im/qawo
 
 QAWolf is organized as a mono-repo of packages using [lerna](https://github.com/lerna/lerna).
 
-Run bootstrap to install, build and link the dependencies. You should re-run this everytime you change a package's dependencies.
+Run bootstrap to install, build, and link the dependencies. You should re-run this everytime you change a package's dependencies.
 
 ```sh
 npm run bootstrap

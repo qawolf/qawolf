@@ -53,6 +53,8 @@ In addition to the APIs below, you have full access to the [Playwright API](http
 
 [launch](qawolf/launch)
 
+[repl](qawolf/repl)
+
 ## class: BrowserContext
 
 [class: BrowserContext](browser_context/class_browser_context)

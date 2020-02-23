@@ -3,7 +3,7 @@ import useBaseUrl from "@docusaurus/useBaseUrl";
 import React from "react";
 import Argument from "./Argument";
 
-function ArgumentFindElementOptions({ delayMs, simulate, skipClear }) {
+function ArgumentFindElementOptions({ delayMs, replace, simulate }) {
   return (
     <React.Fragment>
       <Argument
@@ -51,16 +51,16 @@ function ArgumentFindElementOptions({ delayMs, simulate, skipClear }) {
         optional
         type="number"
       />
-      {!!skipClear && (
+      {!!replace && (
         <Argument
           description={
             <React.Fragment>
-              Do not clear the element before typing. <b>Default:</b>{" "}
+              Clear the value of the input before typing. <b>Default:</b>{" "}
               <code>false</code>.
             </React.Fragment>
           }
           indent
-          name="skipClear"
+          name="replace"
           optional
           type="boolean"
         />
@@ -77,7 +77,7 @@ function ArgumentFindElementOptions({ delayMs, simulate, skipClear }) {
               <a href="https://github.com/microsoft/playwright/blob/master/docs/api.md#pageclickselector-options">
                 Playwright's Page.click
               </a>{" "}
-              is called instead. <b>Default:</b> <code>true</code>.
+              is called. <b>Default:</b> <code>false</code>.
             </React.Fragment>
           }
           indent

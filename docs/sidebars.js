@@ -39,7 +39,7 @@ module.exports = {
     {
       type: "category",
       label: "module: qawolf",
-      items: ["api/qawolf/launch"]
+      items: ["api/qawolf/launch", "api/qawolf/repl"]
     },
     {
       type: "category",

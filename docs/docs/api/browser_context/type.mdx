@@ -14,13 +14,13 @@ import Syntax from "../components/Syntax";
 
 Find and type the specified value into an element. If the element is not found before timeout, an error is thrown.
 
-The element will be cleared before typing if value does not start with `Enter` or `Tab` keys and `options.skipClear` is `false`.
+The element will be cleared before typing if `options.replace` is `true`.
 
 ### Arguments
 
 <ArgumentSelector />
 <ArgumentTypeValue />
-<ArgumentFindElementOptions delayMs skipClear />
+<ArgumentFindElementOptions delayMs replace />
 
 ### Returns
 
@@ -69,11 +69,11 @@ Type `"hello!"` in the element with the id `"my-input"`, waiting 5 seconds after
 await browser.type({ css: "#my-input" }, "hello!", { sleepMs: 5000 });
 ```
 
-Type `"cat"` in the element with the CSS class `"best-pet"`. Don't clear the element before typing and time out if the element is not found within 5 seconds:
+Type `"cat"` in the element with the CSS class `"best-pet"`. Clear the element before typing and time out if the element is not found within 5 seconds:
 
 ```js
 await browser.type({ css: ".best-pet" }, "cat", {
-  skipClear: true,
+  replace: true,
   timeoutMs: 5000
 });
 ```
