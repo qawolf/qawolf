@@ -43,11 +43,12 @@ export class Recorder {
 
   private sendEvent<K extends keyof DocumentEventMap>(
     eventName: types.ElementEventName,
-    event: DocumentEventMap[K]
+    event: DocumentEventMap[K],
+    value?: string | types.ScrollValue | null
   ) {
     const target = event.target as HTMLElement;
 
-    const elementEvent: types.ElementEvent = {
+    const elementEvent = {
       cssSelector: buildCssSelector({
         attribute: this._attribute,
         isClick: eventName === "click" || eventName === "mousedown",
@@ -57,29 +58,9 @@ export class Recorder {
       name: eventName,
       page: this._pageIndex,
       target: nodeToDocSelector(target),
-      time: Date.now()
+      time: Date.now(),
+      value
     };
-
-    if (eventName === "keydown" || eventName === "keyup") {
-      (elementEvent as types.KeyEvent).value = (event as KeyboardEvent).key;
-    }
-    if (eventName === "paste") {
-      (elementEvent as types.PasteEvent).value = (event as ClipboardEvent).clipboardData.getData(
-        "text"
-      );
-    }
-    if (eventName === "scroll") {
-      let element = event.target as HTMLElement;
-      if (event.target === document || event.target === document.body) {
-        element = (document.scrollingElement ||
-          document.documentElement) as HTMLElement;
-      }
-
-      (elementEvent as types.ScrollEvent).value = {
-        x: element.scrollLeft,
-        y: element.scrollTop
-      };
-    }
 
     console.debug(
       `qawolf: Recorder ${this._id}: ${eventName} event`,
@@ -121,17 +102,19 @@ export class Recorder {
     });
 
     this.listen("keydown", event => {
-      this.sendEvent("keydown", event);
+      this.sendEvent("keydown", event, event.key);
     });
 
     this.listen("keyup", event => {
-      this.sendEvent("keyup", event);
+      this.sendEvent("keyup", event, event.key);
     });
 
     this.listen("paste", event => {
       if (!event.clipboardData) return;
 
-      this.sendEvent("paste", event);
+      const value = event.clipboardData.getData("text");
+
+      this.sendEvent("paste", event, value);
     });
 
     // XXX select only supports input/textarea
@@ -168,7 +151,18 @@ export class Recorder {
         return;
       }
 
-      this.sendEvent("scroll", event);
+      let element = event.target as HTMLElement;
+      if (event.target === document || event.target === document.body) {
+        element = (document.scrollingElement ||
+          document.documentElement) as HTMLElement;
+      }
+
+      const value = {
+        x: element.scrollLeft,
+        y: element.scrollTop
+      };
+
+      this.sendEvent("scroll", event, value);
     });
   }
 }
