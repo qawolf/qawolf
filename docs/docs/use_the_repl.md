@@ -90,7 +90,7 @@ const { launch } = require("qawolf");
 const { launch, repl } = require("qawolf");
 ```
 
-Then call `repl` any number of times in your test code. Pass whatever values you want to be able to access in the REPL. The `browser` is passed by default, so you do not need to include it:
+Then call `repl` any number of times in your test code. Pass whatever values you want access to in the REPL. The `browser` is passed by default, so you do not need to include it:
 
 ```js
 it("can click button", async () => {
