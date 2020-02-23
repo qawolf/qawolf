@@ -114,6 +114,8 @@ await browser.find(selectors[11])
 
 After you are done using the REPL, type `.exit` to continue running your test. Your test will proceed until it encounters another `repl` call or finishes running.
 
+Make sure to remove `repl` calls from your test code after you finish debugging!
+
 ## Next steps
 
 Congratulations - you've learned how to use the QA Wolf REPL! 🎉
