@@ -35,7 +35,8 @@ if (artifactPath) {
 export const CONFIG = {
   artifactPath,
   attribute:
-    process.env.QAW_ATTRIBUTE || "data-cy,data-qa,data-test,data-testid",
+    process.env.QAW_ATTRIBUTE ||
+    "data-cy,data-e2e,data-qa,data-test,data-testid",
   browser,
   disableVideoArtifact: parseBool(process.env.QAW_DISABLE_VIDEO_ARTIFACT),
   debug: parseBool(process.env.QAW_DEBUG),
