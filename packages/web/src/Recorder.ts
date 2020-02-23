@@ -151,18 +151,18 @@ export class Recorder {
         return;
       }
 
-      let element = event.target as HTMLElement;
+      let target = event.target as HTMLElement;
       if (event.target === document || event.target === document.body) {
-        element = (document.scrollingElement ||
+        target = (document.scrollingElement ||
           document.documentElement) as HTMLElement;
       }
 
       const value = {
-        x: element.scrollLeft,
-        y: element.scrollTop
+        x: target.scrollLeft,
+        y: target.scrollTop
       };
 
-      this.sendEvent("scroll", event, value);
+      this.sendEvent("scroll", { ...event, target }, value);
     });
   }
 }
