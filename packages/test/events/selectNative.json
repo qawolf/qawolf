@@ -1,0 +1,219 @@
+[
+  {
+    "cssSelector": "[data-qa='html-select']",
+    "isTrusted": true,
+    "name": "mousedown",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "select",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-select",
+          "innertext": "Best pet? Cat Dog Hedgehog Snake"
+        },
+        "children": [
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "disabled": "", "value": "", "selected": "" },
+            "children": [{ "type": "text", "content": "Best pet?" }]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "value": "cat" },
+            "children": [{ "type": "text", "content": "Cat" }]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "value": "dog" },
+            "children": [{ "type": "text", "content": "Dog" }]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "value": "hedgehog" },
+            "children": [{ "type": "text", "content": "Hedgehog" }]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "disabled": "", "value": "snake" },
+            "children": [{ "type": "text", "content": "Snake" }]
+          }
+        ]
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "class": "container" },
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "style": "display: flex; flex-wrap: wrap;" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497903724,
+    "index": 0
+  },
+  {
+    "cssSelector": "[data-qa='html-select']",
+    "isTrusted": true,
+    "name": "click",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "select",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-select",
+          "innertext": "Best pet? Cat Dog Hedgehog Snake"
+        },
+        "children": [
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "disabled": "", "value": "", "selected": "" },
+            "children": [{ "type": "text", "content": "Best pet?" }]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "value": "cat" },
+            "children": [{ "type": "text", "content": "Cat" }]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "value": "dog" },
+            "children": [{ "type": "text", "content": "Dog" }]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "value": "hedgehog" },
+            "children": [{ "type": "text", "content": "Hedgehog" }]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "disabled": "", "value": "snake" },
+            "children": [{ "type": "text", "content": "Snake" }]
+          }
+        ]
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "class": "container" },
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "style": "display: flex; flex-wrap: wrap;" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497903727,
+    "index": 1
+  },
+  {
+    "cssSelector": "[data-qa='html-select']",
+    "isTrusted": true,
+    "name": "input",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "select",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-select",
+          "innertext": "Best pet? Cat Dog Hedgehog Snake"
+        },
+        "children": [
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "disabled": "", "value": "", "selected": "" },
+            "children": [{ "type": "text", "content": "Best pet?" }]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "value": "cat" },
+            "children": [{ "type": "text", "content": "Cat" }]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "value": "dog" },
+            "children": [{ "type": "text", "content": "Dog" }]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "value": "hedgehog" },
+            "children": [{ "type": "text", "content": "Hedgehog" }]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "disabled": "", "value": "snake" },
+            "children": [{ "type": "text", "content": "Snake" }]
+          }
+        ]
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "class": "container" },
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "style": "display: flex; flex-wrap: wrap;" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497904936,
+    "value": "dog",
+    "index": 2
+  }
+]

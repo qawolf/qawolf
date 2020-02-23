@@ -19,9 +19,8 @@ const filterClickEvents = (events: ElementEvent[]): ElementEvent[] => {
       ["keydown", "keyup"].includes(previousEvent.name) &&
       event.time - previousEvent.time < 50
     ) {
-      // skip system-initiated clicks -- those shortly after the previous event
-      // - "Enter" triggers a click on a submit input
-      // - click on a label triggers click on a checkbox
+      // skip system-initiated clicks triggered by a key press
+      // ex. "Enter" triggers a click on a submit input
       logger.verbose(`skip click shortly after previous event ${event.time}`);
       return false;
     }
