@@ -98,7 +98,7 @@ export class Recorder {
       // other input events are captured in click and type listeners
       if (target.tagName.toLowerCase() !== "select") return;
 
-      this.sendEvent("input", event);
+      this.sendEvent("input", event, target.value);
     });
 
     this.listen("keydown", event => {
