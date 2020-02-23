@@ -1,30 +1,85 @@
 import { logger } from "@qawolf/logger";
 import { ElementEvent, Step } from "@qawolf/types";
+import { first, filter, last } from "lodash";
 
-export const buildClickSteps = (events: ElementEvent[]): Step[] => {
-  const steps: Step[] = [];
-
-  for (let i = 0; i < events.length; i++) {
-    const event = events[i];
-
-    // ignore other actions
-    if (event.name !== "mousedown") continue;
+const filterClickEvents = (events: ElementEvent[]): ElementEvent[] => {
+  return filter(events, (event, i) => {
+    // track original event index
+    (event as any).index = i;
 
     // ignore system initiated clicks
-    if (!event.isTrusted) continue;
+    if (!event.isTrusted) return false;
 
-    const target = event.target.node;
-
-    // ignore clicks on selects
-    if (target.name!.toLowerCase() === "select") continue;
+    // ignore other actions
+    if (!["click", "mousedown"].includes(event.name)) return false;
 
     const previousEvent = events[i - 1];
-    if (previousEvent && event.time - previousEvent.time < 50) {
-      // skip system-initiated clicks -- those shortly after the previous event
-      // - "Enter" triggers a click on a submit input
-      // - click on a label triggers click on a checkbox
+    if (
+      previousEvent &&
+      ["keydown", "keyup"].includes(previousEvent.name) &&
+      event.time - previousEvent.time < 50
+    ) {
+      // skip system-initiated clicks triggered by a key press
+      // ex. "Enter" triggers a click on a submit input
       logger.verbose(`skip click shortly after previous event ${event.time}`);
-      continue;
+      return false;
+    }
+
+    // ignore clicks on selects
+    return event.target.node.name!.toLowerCase() !== "select";
+  });
+};
+
+const groupClickEvents = (
+  events: ElementEvent[],
+  timeWindow: number = 200
+): ElementEvent[][] => {
+  const groupedEvents = [];
+  let group: ElementEvent[] = [];
+
+  events.forEach(event => {
+    if (!group.length) {
+      // first group
+      group.push(event);
+      return;
+    }
+
+    const lastEvent = last(group) as ElementEvent;
+    if (event.time - lastEvent.time < timeWindow) {
+      // event is within time window
+      group.push(event);
+      return;
+    }
+
+    // start a new group
+    groupedEvents.push(group);
+    group = [event];
+  });
+
+  if (group.length) {
+    // append last group
+    groupedEvents.push(group);
+  }
+
+  return groupedEvents;
+};
+
+export const buildClickSteps = (events: ElementEvent[]): Step[] => {
+  const clickEvents = filterClickEvents(events);
+  const groupedClickEvents = groupClickEvents(clickEvents);
+  const steps: Step[] = [];
+
+  groupedClickEvents.forEach((events, i) => {
+    let event = first(events) as ElementEvent;
+
+    const inputEvent = events.find(event => {
+      const name = event.target.node.name || "";
+      return name.toLowerCase() === "input";
+    });
+    if (inputEvent) {
+      // if an event in the group is on an  input, assume the click propagated
+      // to an element like a checkbox or radio, which is most accurate target
+      event = inputEvent;
     }
 
     steps.push({
@@ -32,10 +87,10 @@ export const buildClickSteps = (events: ElementEvent[]): Step[] => {
       cssSelector: event.cssSelector,
       html: event.target,
       // include event index so we can sort in buildSteps
-      index: i,
+      index: (event as any).index,
       page: event.page
     });
-  }
+  });
 
   return steps;
 };

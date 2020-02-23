@@ -38,29 +38,40 @@ function LogIn() {
         To log in, use <i>tomsmith</i> as the username, and{" "}
         <i>SuperSecretPassword!</i> as the password.
       </p>
-      <label htmlFor="username">Username</label>
-      <br />
-      <input
-        autoComplete="off"
-        id="username"
-        onChange={e => setUsername(e.target.value)}
-        type="text"
-        value={username}
-      />
-      <br />
-      <label htmlFor="password">Password</label>
-      <br />
-      <input
-        autoComplete="off"
-        id="password"
-        onChange={e => setPassword(e.target.value)}
-        type="password"
-        value={password}
-      />
-      <br />
-      <button onClick={handleClick} style={{ cursor: "pointer" }} type="submit">
-        <p>Log in</p>
-      </button>
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          handleClick();
+        }}
+      >
+        <label htmlFor="username">Username</label>
+        <br />
+        <input
+          autoComplete="off"
+          id="username"
+          onChange={e => setUsername(e.target.value)}
+          type="text"
+          value={username}
+        />
+        <br />
+        <label htmlFor="password">Password</label>
+        <br />
+        <input
+          autoComplete="off"
+          id="password"
+          onChange={e => setPassword(e.target.value)}
+          type="password"
+          value={password}
+        />
+        <br />
+        <button
+          onClick={handleClick}
+          style={{ cursor: "pointer" }}
+          type="submit"
+        >
+          <p>Log in</p>
+        </button>
+      </form>
     </React.Fragment>
   );
 }

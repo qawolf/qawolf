@@ -1,0 +1,327 @@
+[
+  {
+    "isTrusted": true,
+    "name": "mousedown",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "button",
+        "voidElement": false,
+        "attrs": { "id": "html-button", "innertext": "Sign in" },
+        "children": [{ "type": "text", "content": "Sign in" }]
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "class": "container" },
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "style": "display: flex; flex-wrap: wrap;" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497627421,
+    "index": 0
+  },
+  {
+    "isTrusted": true,
+    "name": "click",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "button",
+        "voidElement": false,
+        "attrs": { "id": "html-button", "innertext": "Sign in" },
+        "children": [{ "type": "text", "content": "Sign in" }]
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "class": "container" },
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "style": "display: flex; flex-wrap: wrap;" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497627503,
+    "index": 1
+  },
+  {
+    "cssSelector": "[data-qa='html-button']",
+    "isTrusted": true,
+    "name": "mousedown",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "button",
+        "voidElement": false,
+        "attrs": { "data-qa": "html-button", "innertext": "Submit" },
+        "children": [{ "type": "text", "content": "Submit" }]
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "class": "container" },
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "style": "display: flex; flex-wrap: wrap;" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497628087,
+    "index": 2
+  },
+  {
+    "cssSelector": "[data-qa='html-button']",
+    "isTrusted": true,
+    "name": "click",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "button",
+        "voidElement": false,
+        "attrs": { "data-qa": "html-button", "innertext": "Submit" },
+        "children": [{ "type": "text", "content": "Submit" }]
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "class": "container" },
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "style": "display: flex; flex-wrap: wrap;" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497628189,
+    "index": 3
+  },
+  {
+    "cssSelector": "[data-qa='html-button-with-children']",
+    "isTrusted": true,
+    "name": "mousedown",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "p",
+        "voidElement": false,
+        "attrs": { "id": "html-button-child", "innertext": "Click me!" },
+        "children": [{ "type": "text", "content": "Click me!" }]
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "button",
+          "voidElement": false,
+          "attrs": { "data-qa": "html-button-with-children" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497628841,
+    "index": 4
+  },
+  {
+    "cssSelector": "[data-qa='html-button-with-children']",
+    "isTrusted": true,
+    "name": "click",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "p",
+        "voidElement": false,
+        "attrs": { "id": "html-button-child", "innertext": "Click me!" },
+        "children": [{ "type": "text", "content": "Click me!" }]
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "button",
+          "voidElement": false,
+          "attrs": { "data-qa": "html-button-with-children" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497628920,
+    "index": 5
+  },
+  {
+    "cssSelector": "[data-qa='material-button']",
+    "isTrusted": true,
+    "name": "mousedown",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "button",
+        "voidElement": false,
+        "attrs": {
+          "class": "MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary",
+          "tabindex": "0",
+          "type": "button",
+          "data-qa": "material-button",
+          "innertext": "PRIMARY"
+        },
+        "children": [
+          {
+            "type": "tag",
+            "name": "span",
+            "voidElement": false,
+            "attrs": { "class": "MuiButton-label" },
+            "children": [{ "type": "text", "content": "Primary" }]
+          },
+          {
+            "type": "tag",
+            "name": "span",
+            "voidElement": false,
+            "attrs": { "class": "MuiTouchRipple-root" },
+            "children": []
+          }
+        ]
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "class": "container" },
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "style": "display: flex; flex-wrap: wrap;" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497629689,
+    "index": 6
+  },
+  {
+    "cssSelector": "[data-qa='material-button']",
+    "isTrusted": true,
+    "name": "click",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "button",
+        "voidElement": false,
+        "attrs": {
+          "class": "MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary",
+          "tabindex": "0",
+          "type": "button",
+          "data-qa": "material-button",
+          "innertext": "PRIMARY"
+        },
+        "children": [
+          {
+            "type": "tag",
+            "name": "span",
+            "voidElement": false,
+            "attrs": { "class": "MuiButton-label" },
+            "children": [{ "type": "text", "content": "Primary" }]
+          },
+          {
+            "type": "tag",
+            "name": "span",
+            "voidElement": false,
+            "attrs": { "class": "MuiTouchRipple-root" },
+            "children": [
+              {
+                "type": "tag",
+                "name": "span",
+                "voidElement": false,
+                "attrs": {
+                  "class": "MuiTouchRipple-ripple MuiTouchRipple-rippleVisible",
+                  "style": "width: 110.725px; height: 110.725px; top: -37.3624px; left: -4.36244px;"
+                },
+                "children": [
+                  {
+                    "type": "tag",
+                    "name": "span",
+                    "voidElement": false,
+                    "attrs": {
+                      "class": "MuiTouchRipple-child MuiTouchRipple-childLeaving"
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "class": "container" },
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "style": "display: flex; flex-wrap: wrap;" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497629779,
+    "index": 7
+  }
+]

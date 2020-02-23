@@ -87,10 +87,12 @@ export class Recorder {
       this.sendEvent("mousedown", { ...event, target });
     });
 
-    // this.listen("click", event => {
-    //   const target = getClickableAncestor(event.target as HTMLElement);
-    //   this.sendEvent("click", { ...event, target });
-    // });
+    this.listen("click", event => {
+      if (event.button !== 0) return;
+
+      const target = getClickableAncestor(event.target as HTMLElement);
+      this.sendEvent("click", { ...event, target });
+    });
 
     this.listen("input", event => {
       const target = event.target as HTMLInputElement;

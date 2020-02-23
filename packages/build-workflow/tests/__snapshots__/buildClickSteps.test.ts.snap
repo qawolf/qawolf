@@ -1,185 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`buildClickSteps builds a click step on an input if it is not followed by a type event 1`] = `
+exports[`buildClickSteps builds one click per group of mousedown/click events 1`] = `
 Array [
   Object {
-    "action": "click",
     "cssSelector": undefined,
-    "html": Object {
-      "ancestors": Array [
-        Object {
-          "attrs": Object {
-            "class": "large-6 small-12 columns",
-          },
-          "children": Array [],
-          "name": "div",
-          "type": "tag",
-          "voidElement": false,
-        },
-        Object {
-          "attrs": Object {
-            "class": "row",
-          },
-          "children": Array [],
-          "name": "div",
-          "type": "tag",
-          "voidElement": false,
-        },
-      ],
-      "node": Object {
-        "attrs": Object {
-          "id": "username",
-          "labels": "Username",
-          "name": "username",
-          "type": "text",
-        },
-        "children": Array [],
-        "name": "input",
-        "type": "tag",
-        "voidElement": true,
-      },
-    },
     "index": 0,
-    "page": 0,
+  },
+  Object {
+    "cssSelector": "[data-qa='html-button']",
+    "index": 2,
+  },
+  Object {
+    "cssSelector": "[data-qa='html-button-with-children']",
+    "index": 4,
+  },
+  Object {
+    "cssSelector": "[data-qa='material-button']",
+    "index": 6,
   },
 ]
 `;
 
-exports[`buildClickSteps builds expected steps 1`] = `
+exports[`buildClickSteps prefers clicks on inputs 1`] = `
 Array [
-  Object {
-    "action": "click",
-    "cssSelector": undefined,
-    "html": Object {
-      "ancestors": Array [
-        Object {
-          "attrs": Object {},
-          "children": Array [],
-          "name": "li",
-          "type": "tag",
-          "voidElement": false,
-        },
-        Object {
-          "attrs": Object {},
-          "children": Array [],
-          "name": "ul",
-          "type": "tag",
-          "voidElement": false,
-        },
-      ],
-      "node": Object {
-        "attrs": Object {
-          "href": "/login",
-          "innertext": "Form Authentication",
-        },
-        "children": Array [
-          Object {
-            "content": "Form Authentication",
-            "type": "text",
-          },
-        ],
-        "name": "a",
-        "type": "tag",
-        "voidElement": false,
-      },
-    },
-    "index": 26,
-    "page": 0,
-  },
-  Object {
-    "action": "click",
-    "cssSelector": undefined,
-    "html": Object {
-      "ancestors": Array [
-        Object {
-          "attrs": Object {
-            "class": "large-6 small-12 columns",
-          },
-          "children": Array [],
-          "name": "div",
-          "type": "tag",
-          "voidElement": false,
-        },
-        Object {
-          "attrs": Object {
-            "class": "row",
-          },
-          "children": Array [],
-          "name": "div",
-          "type": "tag",
-          "voidElement": false,
-        },
-      ],
-      "node": Object {
-        "attrs": Object {
-          "id": "username",
-          "labels": "Username",
-          "name": "username",
-          "type": "text",
-        },
-        "children": Array [],
-        "name": "input",
-        "type": "tag",
-        "voidElement": true,
-      },
-    },
-    "index": 27,
-    "page": 0,
-  },
-  Object {
-    "action": "click",
-    "cssSelector": undefined,
-    "html": Object {
-      "ancestors": Array [
-        Object {
-          "attrs": Object {
-            "class": "example",
-          },
-          "children": Array [],
-          "name": "div",
-          "type": "tag",
-          "voidElement": false,
-        },
-        Object {
-          "attrs": Object {
-            "class": "large-12 columns",
-            "id": "content",
-          },
-          "children": Array [],
-          "name": "div",
-          "type": "tag",
-          "voidElement": false,
-        },
-      ],
-      "node": Object {
-        "attrs": Object {
-          "class": "button secondary radius",
-          "href": "/logout",
-          "innertext": "Logout",
-        },
-        "children": Array [
-          Object {
-            "attrs": Object {
-              "class": "icon-2x icon-signout",
-            },
-            "children": Array [
-              Object {
-                "content": " Logout",
-                "type": "text",
-              },
-            ],
-            "name": "i",
-            "type": "tag",
-            "voidElement": false,
-          },
-        ],
-        "name": "a",
-        "type": "tag",
-        "voidElement": false,
-      },
-    },
-    "index": 54,
-    "page": 0,
-  },
+  "[data-qa='html-radio-group'] [value='hedgehog']",
 ]
 `;

@@ -1,0 +1,1140 @@
+[
+  {
+    "isTrusted": true,
+    "name": "mousedown",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "username",
+          "type": "text",
+          "value": "",
+          "labels": "Username"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497703056,
+    "index": 0
+  },
+  {
+    "isTrusted": true,
+    "name": "click",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "username",
+          "type": "text",
+          "value": "",
+          "labels": "Username"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497703117,
+    "index": 1
+  },
+  {
+    "isTrusted": true,
+    "name": "keydown",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "username",
+          "type": "text",
+          "value": "",
+          "labels": "Username"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497703578,
+    "value": "t",
+    "index": 2
+  },
+  {
+    "isTrusted": true,
+    "name": "keyup",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "username",
+          "type": "text",
+          "value": "t",
+          "labels": "Username"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497703646,
+    "value": "t",
+    "index": 3
+  },
+  {
+    "isTrusted": true,
+    "name": "keydown",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "username",
+          "type": "text",
+          "value": "t",
+          "labels": "Username"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497703703,
+    "value": "o",
+    "index": 4
+  },
+  {
+    "isTrusted": true,
+    "name": "keyup",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "username",
+          "type": "text",
+          "value": "to",
+          "labels": "Username"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497703788,
+    "value": "o",
+    "index": 5
+  },
+  {
+    "isTrusted": true,
+    "name": "keydown",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "username",
+          "type": "text",
+          "value": "to",
+          "labels": "Username"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497703837,
+    "value": "m",
+    "index": 6
+  },
+  {
+    "isTrusted": true,
+    "name": "keyup",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "username",
+          "type": "text",
+          "value": "tom",
+          "labels": "Username"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497703933,
+    "value": "m",
+    "index": 7
+  },
+  {
+    "isTrusted": true,
+    "name": "keydown",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "username",
+          "type": "text",
+          "value": "tom",
+          "labels": "Username"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497704010,
+    "value": "s",
+    "index": 8
+  },
+  {
+    "isTrusted": true,
+    "name": "keyup",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "username",
+          "type": "text",
+          "value": "toms",
+          "labels": "Username"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497704081,
+    "value": "s",
+    "index": 9
+  },
+  {
+    "isTrusted": true,
+    "name": "keydown",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "username",
+          "type": "text",
+          "value": "toms",
+          "labels": "Username"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497704102,
+    "value": "m",
+    "index": 10
+  },
+  {
+    "isTrusted": true,
+    "name": "keydown",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "username",
+          "type": "text",
+          "value": "tomsm",
+          "labels": "Username"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497704194,
+    "value": "i",
+    "index": 11
+  },
+  {
+    "isTrusted": true,
+    "name": "keyup",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "username",
+          "type": "text",
+          "value": "tomsmi",
+          "labels": "Username"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497704209,
+    "value": "m",
+    "index": 12
+  },
+  {
+    "isTrusted": true,
+    "name": "keyup",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "username",
+          "type": "text",
+          "value": "tomsmi",
+          "labels": "Username"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497704290,
+    "value": "i",
+    "index": 13
+  },
+  {
+    "isTrusted": true,
+    "name": "keydown",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "username",
+          "type": "text",
+          "value": "tomsmi",
+          "labels": "Username"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497704304,
+    "value": "t",
+    "index": 14
+  },
+  {
+    "isTrusted": true,
+    "name": "keyup",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "username",
+          "type": "text",
+          "value": "tomsmit",
+          "labels": "Username"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497704381,
+    "value": "t",
+    "index": 15
+  },
+  {
+    "isTrusted": true,
+    "name": "keydown",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "username",
+          "type": "text",
+          "value": "tomsmit",
+          "labels": "Username"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497704428,
+    "value": "h",
+    "index": 16
+  },
+  {
+    "isTrusted": true,
+    "name": "keyup",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "username",
+          "type": "text",
+          "value": "tomsmith",
+          "labels": "Username"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497704492,
+    "value": "h",
+    "index": 17
+  },
+  {
+    "isTrusted": true,
+    "name": "keydown",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "username",
+          "type": "text",
+          "value": "tomsmith",
+          "labels": "Username"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497704659,
+    "value": "Tab",
+    "index": 18
+  },
+  {
+    "isTrusted": true,
+    "name": "keyup",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "password",
+          "type": "password",
+          "value": "",
+          "labels": "Password"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497704739,
+    "value": "Tab",
+    "index": 19
+  },
+  {
+    "isTrusted": true,
+    "name": "keydown",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "password",
+          "type": "password",
+          "value": "",
+          "labels": "Password"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497705639,
+    "value": "Meta",
+    "index": 20
+  },
+  {
+    "isTrusted": true,
+    "name": "keydown",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "password",
+          "type": "password",
+          "value": "",
+          "labels": "Password"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497705730,
+    "value": "v",
+    "index": 21
+  },
+  {
+    "isTrusted": true,
+    "name": "paste",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "password",
+          "type": "password",
+          "value": "",
+          "labels": "Password"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497705876,
+    "value": "SuperSecretPassword!",
+    "index": 22
+  },
+  {
+    "isTrusted": true,
+    "name": "keyup",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "password",
+          "type": "password",
+          "value": "SuperSecretPassword!",
+          "labels": "Password"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497705880,
+    "value": "Meta",
+    "index": 23
+  },
+  {
+    "isTrusted": true,
+    "name": "keyup",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "password",
+          "type": "password",
+          "value": "SuperSecretPassword!",
+          "labels": "Password"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497705880,
+    "value": "v",
+    "index": 24
+  },
+  {
+    "isTrusted": true,
+    "name": "keydown",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "password",
+          "type": "password",
+          "value": "SuperSecretPassword!",
+          "labels": "Password"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497706489,
+    "value": "Enter",
+    "index": 25
+  },
+  {
+    "isTrusted": true,
+    "name": "click",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "button",
+        "voidElement": false,
+        "attrs": {
+          "type": "submit",
+          "style": "cursor: pointer;",
+          "innertext": "Log in"
+        },
+        "children": [
+          {
+            "type": "tag",
+            "name": "p",
+            "voidElement": false,
+            "attrs": {},
+            "children": [{ "type": "text", "content": "Log in" }]
+          }
+        ]
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "form",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497706491,
+    "index": 26
+  },
+  {
+    "isTrusted": true,
+    "name": "keyup",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "body",
+        "voidElement": true,
+        "attrs": {},
+        "children": []
+      },
+      "ancestors": []
+    },
+    "time": 1582497706550,
+    "value": "Enter",
+    "index": 27
+  },
+  {
+    "isTrusted": true,
+    "name": "mousedown",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "p",
+        "voidElement": false,
+        "attrs": { "innertext": "Log out" },
+        "children": [{ "type": "text", "content": "Log out" }]
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "button",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497710562,
+    "index": 28
+  },
+  {
+    "isTrusted": true,
+    "name": "click",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "p",
+        "voidElement": false,
+        "attrs": { "innertext": "Log out" },
+        "children": [{ "type": "text", "content": "Log out" }]
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "button",
+          "voidElement": false,
+          "attrs": {},
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "id": "root" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582497710631,
+    "index": 29
+  }
+]

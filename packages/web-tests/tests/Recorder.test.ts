@@ -43,9 +43,12 @@ describe("Recorder", () => {
     await context.close();
 
     const events = await context.qawolf().recordedEvents();
-    expect(events.length).toEqual(1);
+    expect(events.length).toEqual(2);
     expect(events[0].name).toEqual("mousedown");
     expect(events[0].target.node.attrs.href).toEqual("/content-editables");
+
+    expect(events[1].name).toEqual("click");
+    expect(events[1].target.node.attrs.href).toEqual("/content-editables");
   });
 
   it("records paste", async () => {
