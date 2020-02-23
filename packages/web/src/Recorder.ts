@@ -41,29 +41,39 @@ export class Recorder {
     );
   }
 
-  private recordEvent<K extends keyof DocumentEventMap>(
-    eventName: K,
-    handler: (ev: DocumentEventMap[K]) => types.ElementEvent | undefined
+  private sendEvent<K extends keyof DocumentEventMap>(
+    eventName: types.ElementEventName,
+    event: DocumentEventMap[K],
+    value?: string | types.ScrollValue | null
   ) {
-    this.listen(eventName, (ev: DocumentEventMap[K]) => {
-      const event = handler(ev);
-      if (!event) return;
+    const target = event.target as HTMLElement;
 
-      console.debug(
-        `qawolf: Recorder ${this._id}: ${eventName} event`,
-        ev,
-        ev.target,
-        "recorded:",
-        event
-      );
-      this._sendEvent(event);
-    });
+    const elementEvent = {
+      cssSelector: buildCssSelector({
+        attribute: this._attribute,
+        isClick: eventName === "click" || eventName === "mousedown",
+        target
+      }),
+      isTrusted: event.isTrusted,
+      name: eventName,
+      page: this._pageIndex,
+      target: nodeToDocSelector(target),
+      time: Date.now(),
+      value
+    };
+
+    console.debug(
+      `qawolf: Recorder ${this._id}: ${eventName} event`,
+      event,
+      event.target,
+      "recorded:",
+      elementEvent
+    );
+    this._sendEvent(elementEvent);
   }
 
   private recordEvents() {
-    // Record mousedown instead of click since it happens first.
-    // This is useful for situations where components change the click target (Material UI non-native Select).
-    this.recordEvent("mousedown", event => {
+    this.listen("mousedown", event => {
       // only the main button (not right clicks/etc)
       // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
       if (event.button !== 0) return;
@@ -74,87 +84,42 @@ export class Recorder {
       // chances are the ancestor (button, a) is a better target to find.
       // XXX if anyone runs into issues with this behavior we can allow disabling it from a flag.
       const target = getClickableAncestor(event.target as HTMLElement);
-
-      return {
-        cssSelector: buildCssSelector({
-          attribute: this._attribute,
-          isClick: true,
-          target
-        }),
-        isTrusted: event.isTrusted,
-        name: "mousedown",
-        page: this._pageIndex,
-        target: nodeToDocSelector(target),
-        time: Date.now()
-      };
+      this.sendEvent("mousedown", { ...event, target });
     });
 
-    this.recordEvent("input", event => {
-      const target = event.target as HTMLInputElement;
+    // this.listen("click", event => {
+    //   const target = getClickableAncestor(event.target as HTMLElement);
+    //   this.sendEvent("click", { ...event, target });
+    // });
 
+    this.listen("input", event => {
+      const target = event.target as HTMLInputElement;
       // ignore input events not on selects
+      // other input events are captured in click and type listeners
       if (target.tagName.toLowerCase() !== "select") return;
 
-      return {
-        cssSelector: buildCssSelector({
-          attribute: this._attribute,
-          target
-        }),
-        isTrusted: event.isTrusted,
-        name: "input",
-        page: this._pageIndex,
-        target: nodeToDocSelector(target),
-        time: Date.now(),
-        value: target.value
-      };
+      this.sendEvent("input", event, target.value);
     });
 
-    this.recordEvent("keydown", event => ({
-      cssSelector: buildCssSelector({
-        attribute: this._attribute,
-        target: event.target as HTMLElement
-      }),
-      isTrusted: event.isTrusted,
-      name: "keydown",
-      page: this._pageIndex,
-      target: nodeToDocSelector(event.target as HTMLElement),
-      time: Date.now(),
-      value: event.key
-    }));
+    this.listen("keydown", event => {
+      this.sendEvent("keydown", event, event.key);
+    });
 
-    this.recordEvent("keyup", event => ({
-      cssSelector: buildCssSelector({
-        attribute: this._attribute,
-        target: event.target as HTMLElement
-      }),
-      isTrusted: event.isTrusted,
-      name: "keyup",
-      page: this._pageIndex,
-      target: nodeToDocSelector(event.target as HTMLElement),
-      time: Date.now(),
-      value: event.key
-    }));
+    this.listen("keyup", event => {
+      this.sendEvent("keyup", event, event.key);
+    });
 
-    this.recordEvent("paste", event => {
+    this.listen("paste", event => {
       if (!event.clipboardData) return;
 
-      return {
-        cssSelector: buildCssSelector({
-          attribute: this._attribute,
-          target: event.target as HTMLElement
-        }),
-        isTrusted: event.isTrusted,
-        name: "paste",
-        page: this._pageIndex,
-        target: nodeToDocSelector(event.target as HTMLElement),
-        time: Date.now(),
-        value: event.clipboardData.getData("text")
-      };
+      const value = event.clipboardData.getData("text");
+
+      this.sendEvent("paste", event, value);
     });
 
     // XXX select only supports input/textarea
     // We can combine selectstart/mouseup to support content editables
-    this.recordEvent("select", event => {
+    this.listen("select", event => {
       const target = event.target as HTMLInputElement;
       if (
         target.selectionStart !== 0 ||
@@ -164,18 +129,7 @@ export class Recorder {
         return;
       }
 
-      return {
-        cssSelector: buildCssSelector({
-          attribute: this._attribute,
-          target: event.target as HTMLElement
-        }),
-        isTrusted: event.isTrusted,
-        name: "selectall",
-        page: this._pageIndex,
-        target: nodeToDocSelector(event.target as HTMLElement),
-        time: Date.now(),
-        value: event
-      };
+      this.sendEvent("selectall", event);
     });
 
     this.recordScrollEvent();
@@ -187,7 +141,7 @@ export class Recorder {
 
     // We record the scroll event and not the wheel event
     // because it fires after the element.scrollLeft & element.scrollTop are updated
-    this.recordEvent("scroll", event => {
+    this.listen("scroll", event => {
       if (!lastWheelEvent || event.timeStamp - lastWheelEvent.timeStamp > 100) {
         // We record mouse wheel initiated scrolls only
         // to avoid recording system initiated scrolls (after selecting an item/etc).
@@ -197,27 +151,18 @@ export class Recorder {
         return;
       }
 
-      let element = event.target as HTMLElement;
+      let target = event.target as HTMLElement;
       if (event.target === document || event.target === document.body) {
-        element = (document.scrollingElement ||
+        target = (document.scrollingElement ||
           document.documentElement) as HTMLElement;
       }
 
-      return {
-        cssSelector: buildCssSelector({
-          attribute: this._attribute,
-          target: event.target as HTMLElement
-        }),
-        isTrusted: event.isTrusted,
-        name: "scroll",
-        page: this._pageIndex,
-        target: nodeToDocSelector(element),
-        time: Date.now(),
-        value: {
-          x: element.scrollLeft,
-          y: element.scrollTop
-        }
+      const value = {
+        x: target.scrollLeft,
+        y: target.scrollTop
       };
+
+      this.sendEvent("scroll", { ...event, target }, value);
     });
   }
 }
