@@ -4,6 +4,9 @@ import { first, filter, last } from "lodash";
 
 const filterClickEvents = (events: ElementEvent[]): ElementEvent[] => {
   return filter(events, (event, i) => {
+    // track original event index
+    (event as any).index = i;
+
     // ignore system initiated clicks
     if (!event.isTrusted) return false;
 
@@ -77,7 +80,7 @@ export const buildClickSteps = (events: ElementEvent[]): Step[] => {
       cssSelector: event.cssSelector,
       html: event.target,
       // include event index so we can sort in buildSteps
-      index: i,
+      index: (event as any).index,
       page: event.page
     });
   });
