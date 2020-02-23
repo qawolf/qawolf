@@ -3,11 +3,13 @@ import { buildClickSteps } from "../";
 
 describe("buildClickSteps", () => {
   let clickButtons: any[];
+  let clickRadioLabelEvents: any[];
   let loginEvents: any[];
   let selectEvents: any[];
 
   beforeAll(async () => {
     clickButtons = await loadEvents("clickButtons");
+    clickRadioLabelEvents = await loadEvents("clickRadioLabel");
     loginEvents = await loadEvents("login");
     selectEvents = await loadEvents("selectNative");
   });
@@ -34,7 +36,8 @@ describe("buildClickSteps", () => {
     expect(steps.length).toBe(0);
   });
 
-  // it("prefers clicks on inputs", () => {
-  //   const steps = buildClickSteps();
-  // });
+  it("prefers clicks on inputs", () => {
+    const steps = buildClickSteps(clickRadioLabelEvents);
+    expect(steps.map(step => step.cssSelector)).toMatchSnapshot();
+  });
 });

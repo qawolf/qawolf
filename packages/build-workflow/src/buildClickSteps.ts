@@ -71,11 +71,15 @@ export const buildClickSteps = (events: ElementEvent[]): Step[] => {
 
   groupedClickEvents.forEach((events, i) => {
     let event = first(events) as ElementEvent;
-    const lastEvent = last(events) as ElementEvent;
-    // if last event in group is on input, assume the click propagated
-    // to an element like a checkbox or radio, which is most accurate target
-    if (lastEvent.target.node.name!.toLowerCase() === "input") {
-      event = last(events) as ElementEvent;
+
+    const inputEvent = events.find(event => {
+      const name = event.target.node.name || "";
+      return name.toLowerCase() === "input";
+    });
+    if (inputEvent) {
+      // if an event in the group is on an  input, assume the click propagated
+      // to an element like a checkbox or radio, which is most accurate target
+      event = inputEvent;
     }
 
     steps.push({

@@ -8,3 +8,9 @@ Array [
   "[data-qa='material-button']",
 ]
 `;
+
+exports[`buildClickSteps prefers clicks on inputs 1`] = `
+Array [
+  "[data-qa='html-radio-group'] [value='hedgehog']",
+]
+`;

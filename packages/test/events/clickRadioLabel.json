@@ -1,0 +1,107 @@
+[
+  {
+    "cssSelector": "[data-qa='html-radio-group']",
+    "isTrusted": true,
+    "name": "mousedown",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "label",
+        "voidElement": false,
+        "attrs": { "for": "hedgehog", "innertext": "Hedgehog" },
+        "children": [{ "type": "text", "content": " Hedgehog" }]
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "fieldset",
+          "voidElement": false,
+          "attrs": { "data-qa": "html-radio-group" },
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "class": "container" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582498779651,
+    "index": 0
+  },
+  {
+    "cssSelector": "[data-qa='html-radio-group']",
+    "isTrusted": true,
+    "name": "click",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "label",
+        "voidElement": false,
+        "attrs": { "for": "hedgehog", "innertext": "Hedgehog" },
+        "children": [{ "type": "text", "content": " Hedgehog" }]
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "fieldset",
+          "voidElement": false,
+          "attrs": { "data-qa": "html-radio-group" },
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "class": "container" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582498779725,
+    "index": 1
+  },
+  {
+    "cssSelector": "[data-qa='html-radio-group'] [value='hedgehog']",
+    "isTrusted": true,
+    "name": "click",
+    "page": 0,
+    "target": {
+      "node": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "type": "radio",
+          "id": "hedgehog",
+          "name": "pet",
+          "value": "hedgehog",
+          "labels": " Hedgehog"
+        },
+        "children": []
+      },
+      "ancestors": [
+        {
+          "type": "tag",
+          "name": "fieldset",
+          "voidElement": false,
+          "attrs": { "data-qa": "html-radio-group" },
+          "children": []
+        },
+        {
+          "type": "tag",
+          "name": "div",
+          "voidElement": false,
+          "attrs": { "class": "container" },
+          "children": []
+        }
+      ]
+    },
+    "time": 1582498779726,
+    "index": 2
+  }
+]
