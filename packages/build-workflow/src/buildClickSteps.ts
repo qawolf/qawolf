@@ -14,7 +14,11 @@ const filterClickEvents = (events: ElementEvent[]): ElementEvent[] => {
     if (!["click", "mousedown"].includes(event.name)) return false;
 
     const previousEvent = events[i - 1];
-    if (previousEvent && event.time - previousEvent.time < 50) {
+    if (
+      previousEvent &&
+      ["keydown", "keyup"].includes(previousEvent.name) &&
+      event.time - previousEvent.time < 50
+    ) {
       // skip system-initiated clicks -- those shortly after the previous event
       // - "Enter" triggers a click on a submit input
       // - click on a label triggers click on a checkbox
@@ -29,7 +33,7 @@ const filterClickEvents = (events: ElementEvent[]): ElementEvent[] => {
 
 const groupClickEvents = (
   events: ElementEvent[],
-  timeWindow: number = 100
+  timeWindow: number = 200
 ): ElementEvent[][] => {
   const groupedEvents = [];
   let group: ElementEvent[] = [];
