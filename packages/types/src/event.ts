@@ -10,6 +10,7 @@ export interface ElementEvent {
 }
 
 export type ElementEventName =
+  | "click"
   | "input"
   | "mousedown"
   | "keydown"
