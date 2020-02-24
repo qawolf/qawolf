@@ -83,9 +83,10 @@ describe("input[type=number] ", () => {
       .qawolf()
       .type({ css: '[data-qa="html-number-input"]' }, "999");
 
-    expect(await element.evaluate((e: HTMLInputElement) => e.value)).toBe(
-      "999"
+    const value = await element.evaluate(
+      (input: HTMLInputElement) => input.value
     );
+    expect(value).toBe("999");
   });
 });
 
@@ -98,9 +99,15 @@ describe("input[type=text]", () => {
       { css: '[data-qa="html-text-input"]' },
       "spirit"
     );
-    expect(await element.evaluate((e: HTMLInputElement) => e.value)).toBe(
-      "spirit"
-    );
+
+    // select the middle to make sure we move the caret to the end
+    await page.evaluate(() => {
+      const element = document.querySelector(
+        '[data-qa="html-text-input-filled"]'
+      ) as HTMLInputElement;
+      element.focus();
+      element.setSelectionRange(3, 10);
+    });
 
     element = await page
       .qawolf()

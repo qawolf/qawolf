@@ -27,17 +27,26 @@ export const typeElement = async (
     // default empty value to backspace when options.replace = true
     if (!value) text = "↓Backspace↑Backspace";
   } else {
-    // place caret at end of content editable
-    // https://stackoverflow.com/a/4238971/230462
     await elementHandle.evaluate((element: HTMLElement) => {
+      element.focus();
+
+      if ((element as HTMLInputElement).setSelectionRange) {
+        try {
+          // more caret to end of inputs / text areas
+          const len = (element as HTMLInputElement).value.length;
+          (element as HTMLInputElement).setSelectionRange(len, len);
+        } catch (e) {}
+        return;
+      }
+
+      // place caret at end of content editable
+      // https://stackoverflow.com/a/4238971/230462
       if (
         !element.isContentEditable ||
         !window.getSelection ||
         !document.createRange
       )
         return;
-
-      element.focus();
 
       const selection = window.getSelection();
       if (!selection) return;

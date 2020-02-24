@@ -35,7 +35,7 @@ export const retryExecutionError = async (
       }
 
       logger.error(
-        `retryExecutionError: will not retry error: "${error.message}"`
+        `retryExecutionError: will not retry error >${times}x: "${error.message}"`
       );
       throw error;
     }
