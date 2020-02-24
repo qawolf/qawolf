@@ -41,6 +41,7 @@ describe("buildDescription", () => {
     const step: Step = {
       ...baseStep,
       action: "type",
+      replace: true,
       value: null
     };
 

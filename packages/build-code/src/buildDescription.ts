@@ -1,5 +1,6 @@
 import { Step } from "@qawolf/types";
 import { describeDoc } from "@qawolf/web";
+import { isNil } from "lodash";
 
 export const buildDescription = (step: Step): string => {
   if (step.action === "scroll") {
@@ -22,16 +23,16 @@ export const buildDescription = (step: Step): string => {
   }
 
   if (step.action === "type") {
-    if (!step.value) {
+    if (step.replace && (step.value === "" || isNil(step.value))) {
       return `clear${description}${tagName}`;
     }
 
     const value = step.value as string;
-    if (value.indexOf("↓Enter") === 0) {
+    if (value && value.indexOf("↓Enter") === 0) {
       return `Enter`;
     }
 
-    if (value.indexOf("↓Tab") === 0) {
+    if (value && value.indexOf("↓Tab") === 0) {
       return `Tab`;
     }
 
