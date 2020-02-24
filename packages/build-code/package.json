@@ -1,7 +1,7 @@
 {
   "name": "@qawolf/build-code",
   "description": "qawolf: build code from workflow",
-  "version": "0.9.3-alpha.0",
+  "version": "0.9.3",
   "license": "BSD-3.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -23,14 +23,14 @@
     "access": "public"
   },
   "dependencies": {
-    "@qawolf/build-workflow": "0.9.3-alpha.0",
-    "@qawolf/config": "0.9.3-alpha.0",
-    "@qawolf/logger": "0.9.3-alpha.0",
-    "@qawolf/types": "0.9.3-alpha.0",
-    "@qawolf/web": "0.9.3-alpha.0"
+    "@qawolf/build-workflow": "0.9.3",
+    "@qawolf/config": "0.9.3",
+    "@qawolf/logger": "0.9.3",
+    "@qawolf/types": "0.9.3",
+    "@qawolf/web": "0.9.3"
   },
   "devDependencies": {
-    "@qawolf/test": "0.9.3-alpha.0",
+    "@qawolf/test": "0.9.3",
     "@qawolf/types": "^0.9.0-beta.0",
     "lodash": "^4.x"
   },
