@@ -28,6 +28,8 @@ export const typeElement = async (
     if (!value) text = "↓Backspace↑Backspace";
   } else {
     await elementHandle.evaluate((element: HTMLElement) => {
+      // blur will fix the placement for date inputs
+      element.blur();
       element.focus();
 
       if ((element as HTMLInputElement).setSelectionRange) {

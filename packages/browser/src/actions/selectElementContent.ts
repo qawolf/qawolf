@@ -18,7 +18,8 @@ export const selectElementContent = async (
         element.setSelectionRange(0, element.value.length);
       } catch (e) {
         // setSelectionRange throws an error for inputs: number/date/time/etc
-        // we can just focus them and the content will be selected
+        // we can just blur/focus them and the content will be selected
+        element.blur();
         element.focus();
       }
     } else if (window.getSelection && document.createRange) {
