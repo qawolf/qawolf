@@ -3,14 +3,12 @@ import { browserLogger, logger } from "@qawolf/logger";
 import { ElementEvent } from "@qawolf/types";
 import { readFileSync } from "fs-extra";
 import { dirname, resolve } from "path";
-import { eventWithTime } from "rrweb/typings/types";
 import { Page } from "./Page";
 import { retryExecutionError } from "../retry";
 
 interface BundleOptions {
   logLevel: string;
   page: Page;
-  shouldRecordDom?: boolean;
   shouldRecordEvents?: boolean;
 }
 
@@ -20,17 +18,6 @@ const QAWOLF_JS = readFileSync(
 )
   // only inject once
   .replace("var qawolf =", "window.qawolf = window.qawolf ||");
-
-const RECORD_DOM_JS = `${readFileSync(
-  resolve(dirname(require.resolve("rrweb")), "../dist/rrweb.min.js"),
-  "utf8"
-)}
-  
-  if (!window.qaw_rrweb) {
-    window.qaw_rrweb = true;
-    rrweb.record({ emit: event => qaw_onDomEvent(event) });
-  }
-  `;
 
 const buildCaptureLogsJs = (logLevel: string) => {
   return `
@@ -48,22 +35,11 @@ export const bundleJs = (options: BundleOptions) => {
 
   bundle += buildCaptureLogsJs(options.logLevel);
 
-  if (options.shouldRecordDom) bundle += RECORD_DOM_JS;
-
   if (options.shouldRecordEvents) {
     bundle += buildRecordEventsJs(options.page.qawolf().index());
   }
 
   return bundle;
-};
-
-export const captureDomEvents = async (page: Page) => {
-  await page.exposeFunction("qaw_onDomEvent", (event: eventWithTime) => {
-    page
-      .qawolf()
-      .domEvents()
-      .push(event);
-  });
 };
 
 export const captureEvents = async (page: Page) => {
@@ -86,10 +62,6 @@ export const injectBundle = async (options: BundleOptions) => {
 
     const functionPromises = [captureLogs(page)];
 
-    if (options.shouldRecordDom) {
-      functionPromises.push(captureDomEvents(page));
-    }
-
     if (options.shouldRecordEvents) {
       functionPromises.push(captureEvents(page));
     }
@@ -101,7 +73,7 @@ export const injectBundle = async (options: BundleOptions) => {
       page.evaluateOnNewDocument(bundle)
     ]);
   } catch (e) {
-    logger.debug(`decoratePage: error injecting bundle ${e.message}`);
+    logger.debug(`injectBundle: error ${e.message}`);
 
     if (page.isClosed()) {
       // ignore error if the page is closed

@@ -1,5 +1,5 @@
 import { logger } from "@qawolf/logger";
-import { BrowserContext } from "./BrowserContext";
+// import { BrowserContext } from "./BrowserContext";
 
 export const logTestStarted = (context: BrowserContext) => {
   /**
@@ -10,6 +10,7 @@ export const logTestStarted = (context: BrowserContext) => {
 
   jasmine.qawolf.onTestStarted(async (name: string) => {
     try {
+      // TODO find the current page?
       const page = await context.page({ bringToFront: false });
       await page.evaluate((testName: string) => {
         console.log(`jest: ${testName}`);

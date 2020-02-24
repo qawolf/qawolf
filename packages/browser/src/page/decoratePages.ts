@@ -1,15 +1,16 @@
-import { CONFIG } from "@qawolf/config";
-import { Page } from "../page/Page";
-import { QAWolfBrowserContext } from "./QAWolfBrowserContext";
-import { QAWolfPage } from "../page/QAWolfPage";
+import { BrowserContext } from "playwright-core";
+import { Page } from "./Page";
+import { QAWolfPage } from "./QAWolfPage";
+
+let nextPageIndex = 0;
 
 export const decoratePages = async (
-  context: QAWolfBrowserContext
+  context: BrowserContext
 ): Promise<Page[]> => {
   /**
    * Ensure each Playwright page is decorated with a QAWolfPage.
    */
-  const playwrightPages = await context.decorated().pages();
+  const playwrightPages = await context.pages();
 
   const pages = await Promise.all(
     playwrightPages.map(async (playwrightPage: any) => {
@@ -20,13 +21,12 @@ export const decoratePages = async (
       }
 
       // the first time we encounter a new page index it
-      const index = context._nextPageIndex++;
+      const index = nextPageIndex++;
 
       const page = new QAWolfPage({
         index,
         logLevel: context.logLevel(),
         playwrightPage,
-        shouldRecordDom: !!CONFIG.artifactPath,
         shouldRecordEvents: context.shouldRecordEvents()
       });
 
@@ -34,6 +34,7 @@ export const decoratePages = async (
 
       const decorated = page.decorated();
       context._registerPage(decorated);
+
       return decorated;
     })
   );
@@ -41,7 +42,7 @@ export const decoratePages = async (
   return pages.sort((a, b) => a.qawolf().index() - b.qawolf().index());
 };
 
-export const managePages = (context: QAWolfBrowserContext) => {
+export const managePages = (context: BrowserContext) => {
   decoratePages(context);
 
   // constantly check for new pages to decorate
