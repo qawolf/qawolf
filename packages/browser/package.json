@@ -29,20 +29,17 @@
     "@qawolf/repl": "0.9.3",
     "@qawolf/screen": "0.9.3",
     "@qawolf/types": "0.9.3",
-    "@qawolf/web": "0.9.3",
-    "rrweb": "^0.7.25"
+    "@qawolf/web": "0.9.3"
   },
   "devDependencies": {
     "@qawolf/jest-plugin": "0.9.3",
     "@types/debug": "^4.1.5",
     "fs-extra": "^8.x",
-    "handlebars": "^4.x",
     "lodash": "^4.x",
     "playwright": "0.11.1"
   },
   "peerDependencies": {
     "fs-extra": "^8.x",
-    "handlebars": "^4.x",
     "lodash": "^4.x",
     "playwright": "0.11.1"
   }

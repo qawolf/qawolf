@@ -25,7 +25,6 @@ import { ClickOptions } from "../actions/clickElement";
 import { BrowserContext } from "./BrowserContext";
 import { decorateBrowserContext } from "./decorateBrowserContext";
 import { decoratePages, managePages } from "./decoratePages";
-import { createDomArtifacts } from "../page/createDomArtifacts";
 import { findPage } from "../page/findPage";
 import { Page } from "../page/Page";
 import { logTestStarted } from "./logTestStarted";
@@ -203,8 +202,6 @@ export class QAWolfBrowserContext extends EventEmitter {
     logger.verbose("BrowserContext: close");
     this._disposeManagePages();
     this.removeAllListeners();
-
-    await createDomArtifacts(this._pages, this._createdAt);
 
     this._pages.forEach(page => page.qawolf().dispose());
 
