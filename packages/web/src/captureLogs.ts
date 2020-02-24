@@ -9,7 +9,7 @@ const formatArgument = (argument: any) => {
     return argument;
   }
 
-  if (argument.nodeName) {
+  if (argument && argument.nodeName) {
     // log nodes as their xpath
     return getXpath(argument as Node);
   }
@@ -17,7 +17,11 @@ const formatArgument = (argument: any) => {
   try {
     return JSON.stringify(argument);
   } catch (e) {
-    return argument.toString();
+    if (argument && argument.toString) {
+      return argument.toString();
+    }
+
+    return "";
   }
 };
 
