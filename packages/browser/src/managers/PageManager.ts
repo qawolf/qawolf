@@ -3,12 +3,18 @@ import { ElementEvent } from "@qawolf/types";
 import { EventEmitter } from "events";
 import { omit } from "lodash";
 import { Page as PlaywrightPage } from "playwright";
-import { injectBundle } from "./injectBundle";
+import {
+  buildCaptureLogsScript,
+  buildRecordEventsScript,
+  QAWOLF_WEB_SCRIPT
+} from "./buildScript";
+import { includeScript } from "./includeScript";
+import { logTestStarted } from "./logTestStarted";
 import { RequestTracker } from "./RequestTracker";
 
 export type CreatePageOptions = {
   index: number;
-  logLevel: string;
+  logLevel?: string;
   page: PlaywrightPage;
 };
 
@@ -21,8 +27,11 @@ export class PageManager extends EventEmitter {
   /**
    * Inject the qawolf bundle and emit recorder events.
    */
+  // public for tests
+  public _disposed: boolean = false;
   private _index: number;
   private _page: Page;
+  private _recordingEvents: boolean = false;
   private _requests: RequestTracker;
 
   protected constructor(options: CreatePageOptions) {
@@ -39,6 +48,10 @@ export class PageManager extends EventEmitter {
     this._page.qawolf = () => this;
 
     this._requests = new RequestTracker(this._page);
+
+    this._page.on("close", () => this._dispose());
+
+    logTestStarted(this._page);
   }
 
   public static async create(options: CreatePageOptions) {
@@ -46,12 +59,18 @@ export class PageManager extends EventEmitter {
 
     await manager._exposeFunctions();
 
-    await injectBundle({
-      logLevel: options.logLevel,
-      page: options.page
-    });
+    await includeScript(
+      options.page,
+      QAWOLF_WEB_SCRIPT + buildCaptureLogsScript(options.logLevel || "error")
+    );
 
     return manager;
+  }
+
+  private _dispose() {
+    this._disposed = true;
+    this.removeAllListeners();
+    this._requests.dispose();
   }
 
   protected async _exposeFunctions() {
@@ -71,11 +90,6 @@ export class PageManager extends EventEmitter {
     await Promise.all([logFnPromise, recordEventFnPromise]);
   }
 
-  public dispose() {
-    this.removeAllListeners();
-    this._requests.dispose();
-  }
-
   public index() {
     return this._index;
   }
@@ -84,10 +98,10 @@ export class PageManager extends EventEmitter {
     return this._page;
   }
 
-  public recordEvents() {
-    // TODO inject on demand if not already done
-    // const buildRecordEventsJs = (pageIndex: number) =>
-    //   `window.qaw_recorder = window.qaw_recorder || new qawolf.Recorder("${CONFIG.attribute}", ${pageIndex}, (event) => qaw_onRecordEvent(event));`;
+  public async recordEvents() {
+    if (this._recordingEvents) return;
+    this._recordingEvents = true;
+    await includeScript(this._page, buildRecordEventsScript(this._index));
   }
 
   public waitForRequests() {

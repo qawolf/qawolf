@@ -2,15 +2,22 @@ import { CONFIG } from "@qawolf/config";
 import { logger } from "@qawolf/logger";
 import { BrowserType, getBrowserType } from "@qawolf/types";
 import { platform } from "os";
-import playwright from "playwright-core";
+import playwright, { Browser, BrowserContext } from "playwright-core";
 import { LaunchOptions as PlaywrightLaunchOptions } from "playwright-core/lib/server/browserType";
 
 export type LaunchOptions = PlaywrightLaunchOptions & {
   browser?: BrowserType;
 };
 
+export type LaunchResult = {
+  browser: Browser;
+  context: BrowserContext;
+};
+
 // TODO refactor for jest-playwright
-export const launch = async (options: LaunchOptions = {}) => {
+export const launch = async (
+  options: LaunchOptions = {}
+): Promise<LaunchResult> => {
   logger.verbose(`launch: ${JSON.stringify(options)}`);
 
   const browserType = getBrowserType(options.browser || CONFIG.browser);
@@ -37,5 +44,6 @@ export const launch = async (options: LaunchOptions = {}) => {
   });
 
   const context = await browser.newContext();
+
   return { browser, context };
 };
