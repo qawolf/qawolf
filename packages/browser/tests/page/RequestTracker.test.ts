@@ -1,6 +1,6 @@
 import { CONFIG } from "@qawolf/config";
 import playwright, { Browser, Page } from "playwright";
-import { RequestTracker } from "../src/page/RequestTracker";
+import { RequestTracker } from "../../src/page/RequestTracker";
 
 jest.useFakeTimers();
 

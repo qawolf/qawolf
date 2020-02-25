@@ -1,5 +1,4 @@
-import { launch } from "../../src/launch";
-import { ContextManager } from "../../src";
+import { ContextManager, launch } from "../src";
 
 describe("ContextManager", () => {
   it("disposes when the context is closed", async () => {

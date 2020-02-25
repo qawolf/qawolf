@@ -9,7 +9,7 @@ import {
   BrowserContext as PlaywrightContext,
   Page as PlaywrightPage
 } from "playwright-core";
-import { Page, PageManager } from "./PageManager";
+import { Page, PageManager } from "./page/PageManager";
 
 // Playwright Context decorated with ContextManager
 export interface BrowserContext extends PlaywrightContext {

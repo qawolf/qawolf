@@ -1,10 +1,9 @@
-import { BrowserContext, launch } from "@qawolf/browser";
+import { BrowserContext, ContextManager, launch } from "@qawolf/browser";
 import { CodeCreator } from "@qawolf/create-code";
 import { repl } from "@qawolf/repl";
 import { prompt } from "inquirer";
 import { bold } from "kleur";
 import { join, relative } from "path";
-import { ContextManager } from "@qawolf/browser/src/managers/ContextManager";
 
 type CreateOptions = {
   codePath?: string;

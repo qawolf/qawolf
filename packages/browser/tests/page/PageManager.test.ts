@@ -1,8 +1,7 @@
 import { CONFIG } from "@qawolf/config";
 import { ElementEvent } from "@qawolf/types";
 import { QAWolfWeb } from "@qawolf/web";
-import { launch, LaunchResult } from "../../src/launch";
-import { PageManager } from "../../src/managers/PageManager";
+import { launch, LaunchResult, PageManager } from "../../src";
 
 describe("PageManager", () => {
   let launched: LaunchResult;
