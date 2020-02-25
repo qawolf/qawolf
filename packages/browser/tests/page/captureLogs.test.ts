@@ -1,5 +1,3 @@
-// needed to test logging test start
-import "@qawolf/jest-plugin";
 import { browserLogger } from "@qawolf/logger";
 import { waitFor, sleep } from "@qawolf/web";
 import { isEqual } from "lodash";
@@ -38,18 +36,6 @@ describe("PageManager capture logs", () => {
           isEqual(lastMessage, {
             level: "debug",
             message: `click on //*[@id='login']/button`
-          }),
-        1000,
-        50
-      );
-    });
-
-    it("logs test start", async () => {
-      await waitFor(
-        () =>
-          isEqual(lastMessage, {
-            level: "log",
-            message: "jest: logs test start"
           }),
         1000,
         50

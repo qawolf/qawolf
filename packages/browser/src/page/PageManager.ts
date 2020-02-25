@@ -9,7 +9,6 @@ import {
   QAWOLF_WEB_SCRIPT
 } from "./buildScript";
 import { includeScript } from "./includeScript";
-import { logTestStarted } from "./logTestStarted";
 import { RequestTracker } from "./RequestTracker";
 
 export type CreatePageOptions = {
@@ -50,8 +49,6 @@ export class PageManager extends EventEmitter {
     this._requests = new RequestTracker(this._page);
 
     this._page.on("close", () => this._dispose());
-
-    logTestStarted(this._page);
   }
 
   public static async create(options: CreatePageOptions) {
