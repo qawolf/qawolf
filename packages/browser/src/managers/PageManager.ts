@@ -71,16 +71,6 @@ export class PageManager extends EventEmitter {
     await Promise.all([logFnPromise, recordEventFnPromise]);
   }
 
-  public async bringToFront() {
-    // TODO waiting for https://github.com/microsoft/playwright/issues/657 for cross browser support
-    // logger.verbose(`Page: bringToFront ${this.index()}`);
-    // const client = await (this.browser() as CRBrowser)
-    //   .pageTarget(page)
-    //   .createCDPSession();
-    // await client.send("Page.bringToFront");
-    // client.detach();
-  }
-
   public dispose() {
     this.removeAllListeners();
     this._requests.dispose();

@@ -4,6 +4,7 @@ import { repl } from "@qawolf/repl";
 import { prompt } from "inquirer";
 import { bold } from "kleur";
 import { join, relative } from "path";
+import { ContextManager } from "@qawolf/browser/src/managers/ContextManager";
 
 type CreateOptions = {
   codePath?: string;
@@ -71,16 +72,16 @@ export class CreateCodeCLI {
 
       const { context } = await launchPromise;
 
-      context.qawolf().on("recorded_event", event => {
-        codeCreator.pushEvent(event);
-      });
+      const manager = new ContextManager(context);
+
+      manager.on("recorded_event", event => codeCreator.pushEvent(event));
 
       codeCreator.startPolling();
 
       const command = new CreateCodeCLI({
         codePath,
         codeCreator,
-        context,
+        context: manager.context(),
         debug: !!options.debug,
         isTest: !!options.isTest
       });

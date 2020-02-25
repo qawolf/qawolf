@@ -12,7 +12,7 @@
 //   jasmine.qawolf.onTestStarted(async (name: string) => {
 //     try {
 //       // TODO find the current page?
-//       const page = await context.page({ bringToFront: false });
+//       const page = await context.page();
 //       await page.evaluate((testName: string) => {
 //         console.log(`jest: ${testName}`);
 //       }, name);

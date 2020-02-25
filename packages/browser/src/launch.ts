@@ -4,7 +4,6 @@ import { BrowserType, getBrowserType } from "@qawolf/types";
 import { platform } from "os";
 import playwright from "playwright-core";
 import { LaunchOptions as PlaywrightLaunchOptions } from "playwright-core/lib/server/browserType";
-import { register } from "./managers/ContextManager";
 
 export type LaunchOptions = PlaywrightLaunchOptions & {
   browser?: BrowserType;
@@ -37,13 +36,6 @@ export const launch = async (options: LaunchOptions = {}) => {
     ...options
   });
 
-  const context = register(browser._defaultContext);
-
-  // bring the first page to front (if possible)
-  // we do this in case it is a short test with only one action
-  // to make sure the browser shows up in the video
-  const page = await context.qawolf().findPage({ page: 0 });
-  await page.qawolf().bringToFront();
-
+  const context = await browser.newContext();
   return { browser, context };
 };

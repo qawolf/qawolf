@@ -21,6 +21,8 @@ export class ContextManager extends EventEmitter {
    * Poll for pages and create their PageManagers.
    */
   private _context: BrowserContext;
+  // public for tests
+  public _disposed: boolean = false;
   private _nextIndex: number = 0;
   private _pageManagers: PageManager[] = [];
   private _pollPagesInterval: NodeJS.Timeout;
@@ -40,6 +42,7 @@ export class ContextManager extends EventEmitter {
   }
 
   private _dispose() {
+    this._disposed = true;
     this.removeAllListeners();
     clearInterval(this._pollPagesInterval);
   }
@@ -61,6 +64,10 @@ export class ContextManager extends EventEmitter {
     });
   }
 
+  public context() {
+    return this._context;
+  }
+
   public async findPage(options: FindPageOptions): Promise<Page> {
     logger.debug(`ContextManager.findPage: ${JSON.stringify(options)}`);
 
@@ -71,18 +78,15 @@ export class ContextManager extends EventEmitter {
       : options.timeoutMs!;
 
     const manager = await waitFor(
-      () => this._pageManagers.find(manager => index === manager.index()),
-      timeoutMs
+      () => this._pageManagers.find(manager => manager.index() === index),
+      timeoutMs,
+      100
     );
 
     if (!manager) {
       throw new Error(
         `ContextManager.findPage: not found after ${timeoutMs}ms (index ${index})`
       );
-    }
-
-    if (options.bringToFront !== false) {
-      await manager.bringToFront();
     }
 
     if (options.waitForRequests !== false) {
