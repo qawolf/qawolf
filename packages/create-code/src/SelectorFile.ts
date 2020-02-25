@@ -1,5 +1,5 @@
 import { stepToSelector } from "@qawolf/build-code";
-import { registry as replRegistry } from "@qawolf/repl";
+import { CONTEXT as REPL_CONTEXT } from "@qawolf/repl";
 import { Selector, Step } from "@qawolf/types";
 import { pathExists, readJson, outputJson, remove } from "fs-extra";
 import { concat } from "lodash";
@@ -41,7 +41,7 @@ export class SelectorFile {
   }
 
   private _setReplContext() {
-    replRegistry.setContextKey("selectors", this.selectors());
+    REPL_CONTEXT.setContextKey("selectors", this.selectors());
   }
 
   public async discard() {

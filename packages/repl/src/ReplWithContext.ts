@@ -4,7 +4,7 @@ import "./await-outside";
 import { addAwaitOutsideToReplServer } from "await-outside";
 import { bold } from "kleur";
 import { start, REPLServer } from "repl";
-import { registry } from "./Registry";
+import { CONTEXT } from "./Context";
 
 export class ReplWithContext {
   private _server: REPLServer;
@@ -24,10 +24,10 @@ export class ReplWithContext {
 
     addAwaitOutsideToReplServer(this._server);
 
-    this.includeContext(registry.context());
+    this.includeContext(CONTEXT.context());
 
-    registry.onChange(() => {
-      this.includeContext(registry.context());
+    CONTEXT.onChange(() => {
+      this.includeContext(CONTEXT.context());
     });
   }
 

@@ -1,6 +1,6 @@
 import { Callback } from "@qawolf/types";
 
-class Registry {
+class Context {
   private _context: any = {};
 
   private _changeListeners: Callback[] = [];
@@ -19,4 +19,4 @@ class Registry {
   }
 }
 
-export const registry = new Registry();
+export const CONTEXT = new Context();
