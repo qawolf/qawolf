@@ -103,4 +103,6 @@ export const register = (context: PlaywrightContext) => {
 
   // XXX move repl helper to jest-playwright
   REPL_CONTEXT.setContextKey("browser", context);
+
+  return context as BrowserContext;
 };

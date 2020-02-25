@@ -4,17 +4,14 @@ import { repl } from "@qawolf/repl";
 import { prompt } from "inquirer";
 import { bold } from "kleur";
 import { join, relative } from "path";
-import { Url } from "url";
 
 type CreateOptions = {
   codePath?: string;
   debug?: boolean;
-  device?: string;
   isTest?: boolean;
   name: string;
   path?: string;
   selectorPath?: string;
-  url: Url;
 };
 
 type ConstructOptions = {
@@ -42,9 +39,9 @@ export class CreateCodeCLI {
 
   static async start(options: CreateOptions) {
     try {
-      const contextPromise = launch({
-        device: options.device,
-        shouldRecordEvents: true,
+      const launchPromise = launch({
+        // TODO
+        // device: options.device,
         timeout: 0
       });
 
@@ -63,16 +60,16 @@ export class CreateCodeCLI {
 
       const codeCreator = await CodeCreator.start({
         codePath,
-        device: options.device,
+        // TODO
+        // device: options.device,
         isTest: options.isTest,
         name: options.name,
         selectorPath,
-        url: options.url.href!
+        // TODO
+        url: "google.com"
       });
 
-      const context = await contextPromise;
-
-      context.qawolf().goto(options.url.href!);
+      const { context } = await launchPromise;
 
       context.qawolf().on("recorded_event", event => {
         codeCreator.pushEvent(event);

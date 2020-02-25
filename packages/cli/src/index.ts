@@ -31,12 +31,14 @@ program
     await CreateCodeCLI.start({
       codePath: cmd.codePath,
       debug: cmd.debug,
-      device: cmd.device,
+      // TODO
+      // device: cmd.device,
       name,
       isTest: !cmd.script,
       path: cmd.path,
-      selectorPath: cmd.selectorPath,
-      url
+      selectorPath: cmd.selectorPath
+      // TODO
+      // url
     });
   });
 

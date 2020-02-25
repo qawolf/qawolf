@@ -11,14 +11,7 @@ if (isCLI) {
 }
 
 // export public API
-export {
-  BrowserContext,
-  connect,
-  ConnectOptions,
-  launch,
-  LaunchOptions,
-  Page
-} from "@qawolf/browser";
+export { BrowserContext, launch, Page } from "@qawolf/browser";
 
 export { repl } from "@qawolf/repl";
 
