@@ -68,7 +68,7 @@ export class ContextManager extends EventEmitter {
     return this._context;
   }
 
-  public async findPage(options: FindPageOptions): Promise<Page> {
+  public async findPage(options: FindPageOptions = {}): Promise<Page> {
     logger.debug(`ContextManager.findPage: ${JSON.stringify(options)}`);
 
     const index = options.page || 0;
