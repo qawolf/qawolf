@@ -6,7 +6,6 @@ import * as find from "./find";
 import * as format from "./format";
 import * as lang from "./lang";
 import { Recorder } from "./Recorder";
-import * as select from "./select";
 import * as serialize from "./serialize";
 import { scroll } from "./scroll";
 import * as wait from "./wait";
@@ -55,7 +54,6 @@ const webExports = {
   lang,
   Recorder,
   scroll,
-  select,
   serialize,
   wait,
   xpath

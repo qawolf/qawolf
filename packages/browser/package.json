@@ -27,7 +27,6 @@
     "@qawolf/config": "0.9.3",
     "@qawolf/logger": "0.9.3",
     "@qawolf/repl": "0.9.3",
-    "@qawolf/screen": "0.9.3",
     "@qawolf/types": "0.9.3",
     "@qawolf/web": "0.9.3"
   },

@@ -32,9 +32,6 @@
       "path": "./repl/tsconfig.package.json"
     },
     {
-      "path": "./screen/tsconfig.package.json"
-    },
-    {
       "path": "./test/tsconfig.package.json"
     },
     {

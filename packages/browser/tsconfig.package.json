@@ -16,9 +16,6 @@
       "path": "../repl/tsconfig.package.json"
     },
     {
-      "path": "../screen/tsconfig.package.json"
-    },
-    {
       "path": "../types/tsconfig.package.json"
     },
     {

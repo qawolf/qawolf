@@ -1,5 +1,5 @@
 import { browserLogger } from "@qawolf/logger";
-import { waitFor, sleep } from "@qawolf/web";
+import { sleep, waitFor } from "@qawolf/web";
 import { isEqual } from "lodash";
 import { launch, LaunchResult, PageManager } from "../../src";
 
