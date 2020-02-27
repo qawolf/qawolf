@@ -8,7 +8,7 @@ export const queryElements = (action?: Action): Element[] => {
   return queryVisibleElements(selector);
 };
 
-export const queryVisibleElements = (selector: string): Element[] => {
+export const queryVisibleElements = (selector: string, root?:): Element[] => {
   const elements = document.querySelectorAll(selector);
 
   const visibleElements: Element[] = [];

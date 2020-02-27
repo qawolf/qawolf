@@ -7,7 +7,9 @@ export const QAWOLF_WEB_SCRIPT = readFileSync(
   "utf8"
 )
   // only inject once
-  .replace("var qawolf =", "window.qawolf = window.qawolf ||");
+  .replace("var qawolf =", "window.qawolf = window.qawolf ||")
+  // remove last semicolon for playwright sources
+  .slice(0, -2);
 
 export const buildCaptureLogsScript = (logLevel: string) => {
   return `

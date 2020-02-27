@@ -19,7 +19,6 @@ describe("HtmlSelectorEngine", () => {
 
   it("finds element", async () => {
     const page = await manager.findPage();
-    await sleep(1000);
     await page.$("html=body");
 
     // const manager = new ContextManager(context);
