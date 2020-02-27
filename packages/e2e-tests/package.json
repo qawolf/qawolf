@@ -15,7 +15,6 @@
     "url": "https://github.com/qawolf/qawolf/issues"
   },
   "devDependencies": {
-    "@qawolf/jest-plugin": "0.9.3",
     "jest": "^25.1.0",
     "qawolf": "0.9.3"
   }

@@ -33,8 +33,6 @@ export const runJest = (args: string[] = [], options: RunJestOptions = {}) => {
     command += " --config={}";
   }
 
-  command += ' --preset="@qawolf/jest-plugin"';
-
   if (options.repl) {
     command += ` --reporters="@qawolf/repl"`;
   }

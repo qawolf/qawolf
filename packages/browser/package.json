@@ -31,7 +31,6 @@
     "@qawolf/web": "0.9.3"
   },
   "devDependencies": {
-    "@qawolf/jest-plugin": "0.9.3",
     "@types/debug": "^4.1.5",
     "fs-extra": "^8.x",
     "lodash": "^4.x",

@@ -27,7 +27,6 @@
   "dependencies": {
     "@qawolf/browser": "0.9.3",
     "@qawolf/create-code": "0.9.3",
-    "@qawolf/jest-plugin": "0.9.3",
     "@qawolf/logger": "0.9.3",
     "@qawolf/repl": "0.9.3",
     "commander": "^4.1.1",
