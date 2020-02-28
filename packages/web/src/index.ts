@@ -2,7 +2,6 @@ import { buildCssSelector, getAttributeValue } from "./buildCssSelector";
 import { captureLogs } from "./captureLogs";
 import * as element from "./element";
 import * as event from "./event";
-import * as find from "./find";
 import * as format from "./format";
 import * as lang from "./lang";
 import { Recorder } from "./Recorder";
@@ -14,19 +13,11 @@ import * as xpath from "./xpath";
 // export the isomorphic (node & browser) module for node
 const { describeDoc } = format;
 const { isKeyEvent, isPasteEvent, isSelectAllEvent, isTypeEvent } = event;
-const {
-  compareAttributes,
-  compareContent,
-  compareDoc,
-  matchDocSelector
-} = find;
+
 const { decodeHtml, isNil } = lang;
 const { htmlToDoc, serializeDocSelector } = serialize;
 const { sleep, waitFor, waitUntil } = wait;
 export {
-  compareAttributes,
-  compareContent,
-  compareDoc,
   describeDoc,
   decodeHtml,
   htmlToDoc,
@@ -35,7 +26,6 @@ export {
   isPasteEvent,
   isSelectAllEvent,
   isTypeEvent,
-  matchDocSelector,
   serializeDocSelector,
   sleep,
   waitFor,
@@ -48,7 +38,6 @@ const webExports = {
   captureLogs,
   element,
   event,
-  find,
   format,
   getAttributeValue,
   lang,
