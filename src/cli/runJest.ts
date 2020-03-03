@@ -1,8 +1,8 @@
-import { BrowserType } from "@qawolf/types";
-import { execSync } from "child_process";
+import { BrowserName } from '../types';
+import { execSync } from 'child_process';
 
 type RunJestOptions = {
-  browsers?: BrowserType[];
+  browsers?: BrowserName[];
   config?: string;
   path?: string;
   repl?: boolean;
@@ -10,14 +10,14 @@ type RunJestOptions = {
 
 const runCommand = (command: string, env: NodeJS.ProcessEnv = {}) => {
   // log the command we run to make it clear this is an alias for npx jest
-  console.log(command + "\n");
+  console.log(command + '\n');
 
   execSync(command, {
-    stdio: "inherit",
+    stdio: 'inherit',
     env: {
       ...process.env,
-      ...env
-    }
+      ...env,
+    },
   });
 };
 
@@ -27,32 +27,32 @@ export const runJest = (args: string[] = [], options: RunJestOptions = {}) => {
    */
   let command = `npx jest`;
 
-  if (!args.some(arg => arg.startsWith("--config"))) {
+  if (!args.some(arg => arg.startsWith('--config'))) {
     // prevent using the local jest config
     // unless config is passed
-    command += " --config={}";
+    command += ' --config={}';
   }
 
   if (options.repl) {
-    command += ` --reporters="@qawolf/repl"`;
+    command += ` --reporters="@qawolf/jest-reporter"`;
   }
 
-  const rootDir = options.path || ".qawolf";
+  const rootDir = options.path || '.qawolf';
   command += ` --rootDir=${rootDir}`;
 
   const hasTimeout =
-    args.findIndex(a => a.toLowerCase().includes("testtimeout")) > -1;
+    args.findIndex(a => a.toLowerCase().includes('testtimeout')) > -1;
 
   if (!hasTimeout) {
     // timeout after 1 hour for repl
     // timeout after 1 minute otherwise
-    const timeout = options.repl ? "3600000" : "60000";
+    const timeout = options.repl ? '3600000' : '60000';
     command += ` --testTimeout=${timeout}`;
   }
 
   // pass through other arguments to jest
   if (args.length) {
-    command += ` ${args.join(" ")}`;
+    command += ` ${args.join(' ')}`;
   }
 
   try {

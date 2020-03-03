@@ -1,22 +1,23 @@
 #!/usr/bin/env node
-import updateNotifier from "update-notifier";
+import updateNotifier from 'update-notifier';
 
-const pkg = require("../package.json");
+const pkg = require('../package.json');
 
 const isCLI = !module.parent;
 if (isCLI) {
   updateNotifier({ pkg }).notify();
 
-  require("@qawolf/cli");
+  require('./cli/cli');
 }
 
+// TODO
 // export public API
-export { BrowserContext, launch, Page } from "@qawolf/browser";
+// export { BrowserContext, launch, Page } from '@qawolf/browser';
 
-export { repl } from "@qawolf/repl";
+// export { repl } from '@qawolf/repl';
 
-export { sleep, waitFor, waitUntil } from "@qawolf/web";
+// export { sleep, waitFor, waitUntil } from '@qawolf/web';
 
-// make repl a global
-import { repl } from "@qawolf/repl";
-(global as any).repl = repl;
+// // make repl a global
+// import { repl } from '@qawolf/repl';
+// (global as any).repl = repl;

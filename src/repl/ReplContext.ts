@@ -1,6 +1,6 @@
-import { Callback } from "@qawolf/types";
+import { Callback } from '../types';
 
-class Context {
+class ReplContext {
   private _context: any = {};
 
   private _changeListeners: Callback[] = [];
@@ -19,4 +19,4 @@ class Context {
   }
 }
 
-export const CONTEXT = new Context();
+export const CONTEXT = new ReplContext();

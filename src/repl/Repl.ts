@@ -1,25 +1,28 @@
-import { logger } from "@qawolf/logger";
-import { Callback } from "@qawolf/types";
-import "./await-outside";
-import { addAwaitOutsideToReplServer } from "await-outside";
-import { bold } from "kleur";
-import { start, REPLServer } from "repl";
-import { CONTEXT } from "./Context";
+import './await-outside';
+import { addAwaitOutsideToReplServer } from 'await-outside';
+import Debug from 'debug';
+import { bold } from 'kleur';
+import { start, REPLServer } from 'repl';
+import { CONTEXT } from './ReplContext';
+import { Callback } from '../types';
 
-export class ReplWithContext {
+const debug = Debug('qawolf:repl');
+
+export class Repl {
   private _server: REPLServer;
 
   constructor() {
-    logger.debug("Repl: construct");
+    debug('construct');
+
     console.log(
       bold().yellow(
-        "Type .exit to close the repl and continue running your code"
-      )
+        'Type .exit to close the repl and continue running your code',
+      ),
     );
 
     this._server = start({
       terminal: true,
-      useGlobal: true
+      useGlobal: true,
     });
 
     addAwaitOutsideToReplServer(this._server);
@@ -46,15 +49,12 @@ export class ReplWithContext {
   }
 }
 
-export const repl = (
-  context?: any,
-  onCreated?: (repl: ReplWithContext) => void
-) => {
+export const repl = (context?: any, onCreated?: (repl: Repl) => void) => {
   let resolve: () => void;
 
   const promise = new Promise(r => (resolve = r));
 
-  const repl = new ReplWithContext();
+  const repl = new Repl();
 
   if (context) {
     repl.includeContext(context);
@@ -64,8 +64,8 @@ export const repl = (
     onCreated(repl);
   }
 
-  repl.on("exit", () => {
-    logger.debug("repl: exit");
+  repl.on('exit', () => {
+    debug('exit');
     resolve();
   });
 
