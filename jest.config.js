@@ -1,8 +1,8 @@
-// following https://github.com/facebook/jest/issues/3112#issuecomment-398581705
-const base = require("./jest.config.base.js");
-
 module.exports = {
-  ...base,
-  projects: ["<rootDir>/packages/*/jest.config.js"],
-  coverageDirectory: "<rootDir>/coverage/"
+  testEnvironment: 'node',
+  transform: {
+    '^.+\\.tsx?$': 'ts-jest',
+  },
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  testRegex: '(/tests/.*.(test|spec)).(jsx?|tsx?)$',
 };

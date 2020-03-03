@@ -68,6 +68,4 @@ npm run watch
 
 [@qawolf/build-code](https://github.com/qawolf/qawolf/tree/master/packages/build-code) builds a test or script from a workflow.
 
-[@qawolf/screen](https://github.com/qawolf/qawolf/tree/master/packages/screen) creates a display with xvfb and the video and gif artifacts with ffmpeg.
-
 [@qawolf/cli](https://github.com/qawolf/qawolf/tree/master/packages/cli) ties everything together into commands.
