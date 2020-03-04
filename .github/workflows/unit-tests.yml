@@ -1,39 +1,29 @@
 name: Unit Tests
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches: "*"
+
+on: [push]
+
 jobs:
-  test:
-    runs-on: ubuntu-18.04
+  build:
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
         node-version: [12.x]
 
-    env:
-      QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
-      QAW_LOG_LEVEL: debug
-
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup node ${{ matrix.node }}
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node }}
+          node-version: ${{ matrix.node-version }}
 
-      - run: npm run bootstrap
+      - run: npm install
 
-      - run: npm run test
+      - run: npm run lint
 
-      - name: Upload Artifacts
-        if: always()
-        uses: actions/upload-artifact@master
-        with:
-          name: artifacts
-          path: ${{ github.workspace }}/artifacts
+      - run: npm run build
 
-    timeout-minutes: 20
+      - run: npm test
+        env:
+          CI: true

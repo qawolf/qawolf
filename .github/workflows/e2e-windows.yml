@@ -1,0 +1,50 @@
+# TODO
+# name: e2e windows
+# on:
+#   push:
+#     branches:
+#       - master
+#   pull_request:
+#     branches: "*"
+# jobs:
+#   test:
+#     runs-on: windows-2019
+
+#     env:
+#       QAW_ARTIFACT_PATH: ${{ github.workspace }}\artifacts
+#       QAW_LOG_LEVEL: debug
+#       QAW_SLEEP_MS: 0
+#       QAW_TEST_URL: http://localhost:5000/
+
+#     steps:
+#       - uses: actions/setup-node@v1
+#         with:
+#           node-version: "12"
+
+#       - uses: actions/checkout@v2
+#         with:
+#           path: project
+
+#       - name: Build QA Wolf
+#         run: |
+#           cd project
+#           npm run bootstrap
+
+#       - uses: eregon/use-ruby-action@master
+#         with:
+#           ruby-version: "2.6.5"
+
+#       - name: Test e2e
+#         run: |
+#           cd project/packages/e2e-tests
+#           # Windows throws invalid js for linked binaries unless we call node directly
+#           node ./node_modules/qawolf test --all-browsers
+
+#       - name: Upload Artifacts
+#         if: always()
+#         uses: actions/upload-artifact@master
+#         with:
+#           name: qawolf
+#           path: ${{ github.workspace }}\artifacts
+
+#     timeout-minutes: 20
