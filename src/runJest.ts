@@ -1,4 +1,4 @@
-import { BrowserName } from '../types';
+import { BrowserName } from './types';
 import { execSync } from 'child_process';
 
 type RunJestOptions = {

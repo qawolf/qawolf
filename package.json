@@ -33,6 +33,7 @@
     "@qawolf/jest-reporter": "^0.1.0",
     "await-outside": "^3.0.0",
     "commander": "^4.1.1",
+    "create-playwright": "^0.1.0",
     "debug": "*",
     "dotenv": "^8.2.0",
     "inquirer": "^7.0.5",

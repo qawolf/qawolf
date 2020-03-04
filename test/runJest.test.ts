@@ -1,7 +1,7 @@
 import { join } from 'path';
-import { runJest } from '../../src/cli/runJest';
+import { runJest } from '../src/runJest';
 
-const rootDir = join(__dirname, '../../e2e');
+const rootDir = join(__dirname, '../e2e');
 
 it('runs successful test', async () => {
   const exitCode = runJest(['success'], { path: rootDir });

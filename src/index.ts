@@ -13,12 +13,7 @@ if (isCLI) {
 
 // TODO
 // export public API
-// export { BrowserContext, launch, Page } from '@qawolf/browser';
-
-// export { repl } from '@qawolf/repl';
-
-// export { sleep, waitFor, waitUntil } from '@qawolf/web';
-
-// // make repl a global
-// import { repl } from '@qawolf/repl';
+// import { create } from './create';
+// export { create, repl };
+// make repl a global
 // (global as any).repl = repl;

@@ -24,21 +24,7 @@ program.usage('<command> [options]').version(pkg.version);
 //   .description('create a test from browser actions')
 //   .action(async (urlArgument, optionalName, cmd) => {
 //     const url = parseUrl(urlArgument);
-
 //     const name = optionalName || url.hostname!.replace(/\..*/g, '');
-
-//     await CreateCodeCLI.start({
-//       codePath: cmd.codePath,
-//       debug: cmd.debug,
-//       // TODO
-//       // device: cmd.device,
-//       name,
-//       isTest: !cmd.script,
-//       path: cmd.path,
-//       selectorPath: cmd.selectorPath,
-//       // TODO
-//       // url
-//     });
 //   });
 
 // program
