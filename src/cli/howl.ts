@@ -12,6 +12,6 @@ const wolf = String.raw`
 <__________\______)\__)
 `;
 
-export const howl = () => {
+export const howl = (): void => {
   console.log(wolf);
 };

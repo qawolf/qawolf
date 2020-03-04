@@ -34,25 +34,28 @@ export class Repl {
     });
   }
 
-  includeContext(context: any) {
+  includeContext(context: any): void {
     Object.keys(context).forEach(key => {
       this._server.context[key] = context[key];
     });
   }
 
-  close() {
+  close(): void {
     this._server.close();
   }
 
-  on(event: string, callback: Callback) {
+  on(event: string, callback: Callback): void {
     this._server.on(event, callback);
   }
 }
 
-export const repl = (context?: any, onCreated?: (repl: Repl) => void) => {
+export const repl = (
+  context?: any,
+  onCreated?: (repl: Repl) => void,
+): Promise<void> => {
   let resolve: () => void;
 
-  const promise = new Promise(r => (resolve = r));
+  const promise = new Promise<void>(r => (resolve = r));
 
   const repl = new Repl();
 

@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 // import { BrowserType } from '@qawolf/types';
 import program from 'commander';
 import { yellow } from 'kleur';
@@ -8,6 +6,8 @@ import { yellow } from 'kleur';
 import { howl } from './howl';
 // import { runJest } from './runJest';
 // import { omitArgs } from './utils';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const pkg = require('../package');
 
 program.usage('<command> [options]').version(pkg.version);

@@ -5,15 +5,15 @@ class ReplContext {
 
   private _changeListeners: Callback[] = [];
 
-  context() {
+  context(): any {
     return this._context;
   }
 
-  onChange(listener: Callback) {
+  onChange(listener: Callback): void {
     this._changeListeners.push(listener);
   }
 
-  setContextKey(key: string, value: any) {
+  setContextKey(key: string, value: any): void {
     this._context[key] = value;
     this._changeListeners.forEach(listener => listener(this._context));
   }

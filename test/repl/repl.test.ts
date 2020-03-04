@@ -1,7 +1,7 @@
 import { mockProcessStdout } from 'jest-mock-process';
 import { repl as createRepl, Repl } from '../../src/repl/Repl';
 
-let mockedStdout: jest.SpyInstance = mockProcessStdout();
+const mockedStdout: jest.SpyInstance = mockProcessStdout();
 
 describe('repl', () => {
   let repl: Repl;
