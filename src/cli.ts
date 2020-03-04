@@ -2,7 +2,7 @@
 import program from 'commander';
 import { yellow } from 'kleur';
 // TODO add cli commands to commander from playwright-ci
-// import {} from 'playwright-ci';
+import { addCiCommands } from 'playwright-ci';
 import { howl } from './howl';
 // import { runJest } from './runJest';
 // import { omitArgs } from './utils';
@@ -11,6 +11,8 @@ import { howl } from './howl';
 const pkg = require('../package');
 
 program.usage('<command> [options]').version(pkg.version);
+
+addCiCommands({ program, qawolf: true });
 
 // TODO
 // program

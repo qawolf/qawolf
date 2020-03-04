@@ -38,7 +38,7 @@
     "debug": "*",
     "dotenv": "^8.2.0",
     "inquirer": "^7.0.5",
-    "playwright-ci": "^0.3.0",
+    "playwright-ci": "^0.4.0",
     "update-notifier": "^4.1.0"
   },
   "devDependencies": {
