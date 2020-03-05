@@ -21,7 +21,7 @@ describe('buildTemplate', () => {
   });
 
   it('throws an error if device does not exist', () => {
-    const testFn = () =>
+    const testFn = (): string =>
       buildTestTemplate({
         device: 'unknown',
         name: 'myTest',

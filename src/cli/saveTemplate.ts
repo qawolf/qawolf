@@ -1,7 +1,6 @@
 import { ensureFile, pathExists, writeFile } from 'fs-extra';
 import { prompt } from 'inquirer';
 import { join } from 'path';
-import { UrlWithStringQuery } from 'url';
 import {
   buildScriptTemplate,
   buildTestTemplate,
@@ -12,7 +11,7 @@ interface SaveTemplateOptions {
   name: string;
   rootDir?: string;
   script?: boolean;
-  url: UrlWithStringQuery;
+  url: string;
 }
 
 const buildTemplate = ({
@@ -56,15 +55,10 @@ export const shouldSaveTemplate = async (path: string): Promise<boolean> => {
 export const saveTemplate = async (
   options: SaveTemplateOptions,
 ): Promise<void> => {
-  try {
-    const { path, template } = buildTemplate(options);
+  const { path, template } = buildTemplate(options);
 
-    if (!(await shouldSaveTemplate(path))) return;
+  if (!(await shouldSaveTemplate(path))) return;
 
-    await ensureFile(path);
-    return writeFile(path, template);
-  } catch (e) {
-    const templateType = options.script ? 'script' : 'test';
-    console.log(`Error creating ${templateType}: ${e.message}`);
-  }
+  await ensureFile(path);
+  return writeFile(path, template);
 };

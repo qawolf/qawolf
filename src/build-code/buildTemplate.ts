@@ -1,10 +1,9 @@
 import { devices } from 'playwright';
-import { UrlWithStringQuery } from 'url';
 
 interface BuildTemplateOptions {
   device?: string;
   name: string;
-  url: UrlWithStringQuery;
+  url: string;
 }
 
 const REQUIRE_QAWOLF = 'const qawolf = require("qawolf");';

@@ -25,9 +25,9 @@ program
   .description('create a test from browser actions')
   .action(async (urlArgument, optionalName, { device, script }) => {
     const url = parseUrl(urlArgument);
-    const name = optionalName || url.hostname!.replace(/\..*/g, '');
+    const name = optionalName || (url.hostname || '').replace(/\..*/g, '');
 
-    await saveTemplate({ device, name, url, script });
+    await saveTemplate({ device, name, url: urlArgument, script });
   });
 
 program

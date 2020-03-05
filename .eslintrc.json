@@ -23,8 +23,8 @@
     "**/*.d.ts",
     "**/*.js",
     "docs/",
-    "sandbox/",
-    "node_modules/"
+    "node_modules/",
+    "sandbox/"
   ],
   "rules": {
     "@typescript-eslint/no-explicit-any": "off"
