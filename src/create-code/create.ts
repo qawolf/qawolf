@@ -5,7 +5,7 @@ import { BrowserContext } from 'playwright-core';
 import { repl } from 'playwright-utils';
 import { buildSteps } from '../build-workflow/buildSteps';
 import { CodeFileUpdater } from './CodeFileUpdater';
-import { ContextEventCollector } from '../ContextEventCollector';
+import { ContextEventCollector } from './ContextEventCollector';
 import { SelectorFileUpdater } from './SelectorFileUpdater';
 import { ElementEvent } from '../types';
 

@@ -1,7 +1,7 @@
 import { Browser, Page } from 'playwright-core';
 import { launch } from 'playwright-utils';
-import { WEB_SCRIPT } from '../../src/addWebScript';
 import { CreatePlaywrightWeb } from '../../src/web';
+import { WEB_SCRIPT } from '../../src/web/addScript';
 import { AttributeValuePair } from '../../src/web/buildCssSelector';
 import { TEST_URL } from '../utils';
 

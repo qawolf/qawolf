@@ -4,16 +4,16 @@ import {
   ChromiumBrowserContext,
 } from 'playwright-core';
 import { getLaunchOptions, launch } from 'playwright-utils';
-import { ContextEventCollector } from '../src/ContextEventCollector';
-import { isKeyEvent } from '../src/event';
+import { ContextEventCollector } from '../../src/create-code/ContextEventCollector';
+import { isKeyEvent } from '../../src/build-workflow/event';
 import {
   ElementEvent,
   InputEvent,
   KeyEvent,
   PasteEvent,
   ScrollEvent,
-} from '../src/types';
-import { sleep, selectElementContent, TEST_URL } from './utils';
+} from '../../src/types';
+import { sleep, selectElementContent, TEST_URL } from '../utils';
 
 describe('ContextEventCollector', () => {
   let browser: Browser;

@@ -4,7 +4,7 @@ import { BrowserContext } from 'playwright-core';
 import { forEachPage, initEvaluateScript } from 'playwright-utils';
 
 export const WEB_SCRIPT = readFileSync(
-  join(__dirname.replace('/src', '/build'), 'createplaywright.web.js'),
+  join(__dirname.replace('/src', '/build'), '../createplaywright.web.js'),
   'utf8',
 ).replace(
   'var createplaywright =',

@@ -2,10 +2,10 @@ import Debug from 'debug';
 import { EventEmitter } from 'events';
 import { BrowserContext } from 'playwright-core';
 import { forEachPage, indexPages, initEvaluateScript } from 'playwright-utils';
-import { addWebScript } from './addWebScript';
-import { ElementEvent } from './types';
-import { CreatePlaywrightWeb } from './web';
 import { IndexedPage } from 'playwright-utils/build/indexPages';
+import { ElementEvent } from '../types';
+import { CreatePlaywrightWeb } from '../web';
+import { addWebScript } from '../web/addScript';
 
 const debug = Debug('create-playwright:ContextEventCollector');
 

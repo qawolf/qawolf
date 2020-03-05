@@ -1,5 +1,5 @@
 import Debug from 'debug';
-import { isKeyEvent, isPasteEvent, isSelectAllEvent } from '../event';
+import { isKeyEvent, isPasteEvent, isSelectAllEvent } from './event';
 import { removeShortcutKeyEvents } from './removeShortcutKeyEvents';
 import { serializeKeyEvents } from './serializeKeyEvents';
 import { Doc, ElementEvent, KeyEvent, PasteEvent, Step } from '../types';

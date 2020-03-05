@@ -17,7 +17,7 @@ describe('Expression', () => {
       });
 
       expect(expression.code()).toBe(
-        'await page.click("[data-qa=\'test-input\']");',
+        'await page.click("[data-qa=\'test-input\']");\n',
       );
     });
 
@@ -33,7 +33,7 @@ describe('Expression', () => {
       });
 
       expect(expression.code()).toBe(
-        'await page.scroll("[id=\'my-input\']", { x: 100, y: 200 });',
+        'await page.scroll("[id=\'my-input\']", { x: 100, y: 200 });\n',
       );
     });
 
@@ -45,7 +45,7 @@ describe('Expression', () => {
       });
 
       expect(expression.code()).toBe(
-        'await page.select(selectors[0], "spirit");',
+        'await page.select(selectors[0], "spirit");\n',
       );
     });
 
@@ -57,7 +57,7 @@ describe('Expression', () => {
       });
 
       expect(expression.code()).toBe(
-        'await page.type(selectors[0], "spirit");',
+        'await page.type(selectors[0], "spirit");\n',
       );
     });
 
@@ -70,7 +70,7 @@ describe('Expression', () => {
       };
 
       expect(new Expression(replaceStep).code()).toEqual(
-        'await page.type(selectors[0], "hello", { replace: true });',
+        'await page.type(selectors[0], "hello", { replace: true });\n',
       );
 
       expect(
@@ -79,7 +79,7 @@ describe('Expression', () => {
           page: 1,
         }).code(),
       ).toEqual(
-        'await page.type(selectors[0], "hello", { page: 1, replace: true });',
+        'await page.type(selectors[0], "hello", { page: 1, replace: true });\n',
       );
     });
 
@@ -90,7 +90,7 @@ describe('Expression', () => {
           action: 'type',
           value: null,
         }).code(),
-      ).toEqual('await page.type(selectors[0], null);');
+      ).toEqual('await page.type(selectors[0], null);\n');
     });
 
     test('consecutive steps on the same page', () => {
@@ -99,21 +99,21 @@ describe('Expression', () => {
           ...baseStep,
           index: 1,
         }).code(),
-      ).toEqual('await page.click(selectors[1]);');
+      ).toEqual('await page.click(selectors[1]);\n');
     });
 
-    test.todo('consecutive steps on different pages', () => {
-      // TODO page logic will change
-      expect(
-        new Expression(
-          {
-            ...baseStep,
-            index: 1,
-            page: 1,
-          },
-          new Expression(baseStep),
-        ).code(),
-      ).toEqual('await page.click(selectors[1], { page: 1 });');
-    });
+    //   // TODO page logic will change
+    // test.todo('consecutive steps on different pages', () => {
+    //   expect(
+    //     new Expression(
+    //       {
+    //         ...baseStep,
+    //         index: 1,
+    //         page: 1,
+    //       },
+    //       new Expression(baseStep),
+    //     ).code(),
+    //   ).toEqual('await page.click(selectors[1], { page: 1 });\n');
+    // });
   });
 });
