@@ -6,7 +6,6 @@ exports[`buildTemplate builds script template 1`] = `
 const myScript = async context => {
   let page = await context.newPage();
   await page.goto(\\"www.qawolf.com\\");
-
   await qawolf.create();
 };
 
@@ -31,14 +30,13 @@ exports[`buildTemplate builds test template 1`] = `
   beforeAll(async () => {
     browser = await qawolf.launch();
     const context = await browser.newContext();
+    page = await context.newPage();
   });
 
   afterAll(() => browser.close());
 
   test('myTest', async () => {
-    page = await context.newPage();
     await page.goto(\\"www.qawolf.com\\");
-
     await qawolf.create();
   });"
 `;
@@ -53,7 +51,6 @@ exports[`buildTemplate includes device if specified 1`] = `
 const myScript = async context => {
   let page = await context.newPage();
   await page.goto(\\"www.qawolf.com\\");
-
   await qawolf.create();
 };
 
@@ -88,14 +85,13 @@ exports[`buildTemplate includes device if specified 2`] = `
       userAgent: device.userAgent,
       viewport: device.viewport
     });
+    page = await context.newPage();
   });
 
   afterAll(() => browser.close());
 
   test('myTest', async () => {
-    page = await context.newPage();
     await page.goto(\\"www.qawolf.com\\");
-
     await qawolf.create();
   });"
 `;

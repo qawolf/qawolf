@@ -32,7 +32,10 @@ program
 
 program
   .command('test')
-  .option('-r, --rootDir <rootDir>', 'directory where script will be saved')
+  .option(
+    '-r, --rootDir <rootDir>',
+    'root directory of test code, defaults to workingDirectory/.qawolf',
+  )
   .option('--all-browsers', 'run tests on chromium, firefox, and webkit')
   .option('--chromium', 'run tests on chromium')
   .option('--firefox', 'run tests on firefox')
@@ -45,13 +48,13 @@ program
       '--all-browsers',
       '--chromium',
       '--firefox',
-      '-p',
-      '--path',
+      '-r',
       '--repl',
+      '--rootDir',
       '--webkit',
     ]);
 
-    let browsers: BrowserName[] = [];
+    const browsers: BrowserName[] = [];
 
     if (cmd.allBrowsers || cmd.chromium) {
       browsers.push('chromium');
@@ -67,7 +70,7 @@ program
 
     const code = runJest(args, {
       browsers,
-      path: cmd.path,
+      path: cmd.rootDir,
       repl: !!cmd.repl,
     });
     process.exit(code);
