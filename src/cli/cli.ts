@@ -2,8 +2,8 @@ import program from 'commander';
 import { yellow } from 'kleur';
 import { addCiCommands } from 'playwright-ci';
 import { howl } from './howl';
-import { saveTemplate } from './saveTemplate';
 import { runJest } from './runJest';
+import { saveTemplate } from './saveTemplate';
 import { BrowserName } from '../types';
 import { omitArgs, parseUrl } from './utils';
 
