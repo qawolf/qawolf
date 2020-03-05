@@ -25,8 +25,49 @@ export const getAttributeValue = (
   const attributes = attribute.split(',').map(attr => attr.trim());
 
   for (const attribute of attributes) {
-    const value = element.getAttribute(attribute);
-    if (value) return { attribute, value };
+    const isRegex = attribute[0] === '/';
+
+    if (isRegex) {
+      const attributeValuePair = getRegexAttributeValue(element, attribute);
+      if (attributeValuePair) return attributeValuePair;
+    } else {
+      const value = element.getAttribute(attribute);
+      if (value) return { attribute, value };
+    }
+  }
+
+  return null;
+};
+
+const buildRegexFromString = (regexString: string): RegExp => {
+  let endIndex = regexString.length - 1;
+  while (regexString[endIndex] !== '/') {
+    endIndex--;
+  }
+  // no flags were included in regex
+  if (endIndex === regexString.length - 1) {
+    return new RegExp(regexString.substring(1, endIndex));
+  }
+
+  return new RegExp(
+    regexString.substring(1, endIndex),
+    regexString.substring(endIndex + 1), // include flag in regex
+  );
+};
+
+const getRegexAttributeValue = (
+  element: HTMLElement,
+  regexString: string,
+): AttributeValuePair | null => {
+  const regex = buildRegexFromString(regexString);
+  const attributes = element.attributes;
+
+  for (let i = 0; i < attributes.length; i++) {
+    const { name, value } = attributes[i];
+
+    if (name.match(regex)) {
+      return { attribute: name, value };
+    }
   }
 
   return null;
