@@ -4,7 +4,7 @@ import { CreatePlaywrightWeb } from '../../src/web';
 import { WEB_SCRIPT } from '../../src/web/addScript';
 import {
   AttributeValuePair,
-  buildRegexFromString,
+  deserializeRegex,
 } from '../../src/web/buildCssSelector';
 import { TEST_URL } from '../utils';
 
@@ -58,7 +58,10 @@ beforeAll(async () => {
   await page.addInitScript(WEB_SCRIPT);
 });
 
-afterAll(() => browser.close());
+afterAll(async () => {
+  await browser.close();
+  jest.restoreAllMocks();
+});
 
 describe('buildCssSelector', () => {
   it('returns undefined if there is no attribute', async () => {
@@ -266,16 +269,30 @@ describe('buildCssSelector', () => {
       const selector2 = await buildCssSelector('#button', true, '/qa-.*/');
       expect(selector2).toBeUndefined();
     });
+
+    it('ignores invalid regex', async () => {
+      const selector = await buildCssSelector('#button', true, '/[/,/data-.*/');
+      expect(selector).toBe("[data-test='click'] [data-qa='button']");
+    });
   });
 });
 
-describe('buildRegexFromString', () => {
+describe('deserializeRegex', () => {
   it('returns regex as is if no flag', () => {
-    expect(buildRegexFromString('/qa-.*/')).toEqual(new RegExp('qa-.*'));
+    expect(deserializeRegex('/qa-.*/')).toEqual(new RegExp('qa-.*'));
   });
 
   it('includes flags if passed', () => {
-    expect(buildRegexFromString('/qa-.*/i')).toEqual(new RegExp('qa-.*', 'i'));
+    expect(deserializeRegex('/qa-.*/i')).toEqual(new RegExp('qa-.*', 'i'));
+  });
+
+  it('warns user if invalid regex passed', () => {
+    jest.spyOn(console, 'error').mockReturnValue(null);
+
+    expect(deserializeRegex('/[/')).toBeNull();
+    expect(console.error).toBeCalledWith(
+      'qawolf: invalid regex attribute /[/, skipping this attribute',
+    );
   });
 });
 

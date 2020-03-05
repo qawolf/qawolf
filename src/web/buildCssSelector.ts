@@ -16,27 +16,26 @@ interface ElementAttributeValuePair {
   element: HTMLElement;
 }
 
-export const buildRegexFromString = (regexString: string): RegExp => {
-  let endIndex = regexString.length - 1;
-  while (regexString[endIndex] !== '/') {
-    endIndex--;
+// adapted from https://stackoverflow.com/a/33416684/230462
+export const deserializeRegex = (regexString: string): RegExp | null => {
+  try {
+    const parts = regexString.match(/\/(.*)\/(.*)?/) as RegExpMatchArray;
+    return new RegExp(parts[1], parts[2] || '');
+  } catch (e) {
+    console.error(
+      `qawolf: invalid regex attribute ${regexString}, skipping this attribute`,
+    );
+    return null;
   }
-  // no flags were included in regex
-  if (endIndex === regexString.length - 1) {
-    return new RegExp(regexString.substring(1, endIndex));
-  }
-
-  return new RegExp(
-    regexString.substring(1, endIndex),
-    regexString.substring(endIndex + 1), // include flag in regex
-  );
 };
 
 const getRegexAttributeValue = (
   element: HTMLElement,
   regexString: string,
 ): AttributeValuePair | null => {
-  const regex = buildRegexFromString(regexString);
+  const regex = deserializeRegex(regexString);
+  if (!regex) return null;
+
   const attributes = element.attributes;
 
   for (let i = 0; i < attributes.length; i++) {
