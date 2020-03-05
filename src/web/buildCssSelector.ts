@@ -32,23 +32,24 @@ export const getAttributeValue = (
   return null;
 };
 
-export const findAttribute = (
+export const findAttributes = (
   element: HTMLElement,
   attribute: string,
-): ElementAttributeValuePair | null => {
+): ElementAttributeValuePair[] | null => {
   let ancestor: HTMLElement | null = element;
+  const elementAttributes: ElementAttributeValuePair[] = [];
 
   while (ancestor) {
     const attributeValue = getAttributeValue(ancestor, attribute);
 
     if (attributeValue) {
-      return { attributeValue, element: ancestor };
+      elementAttributes.push({ attributeValue, element: ancestor });
     }
 
     ancestor = ancestor.parentElement;
   }
 
-  return null;
+  return elementAttributes.length ? elementAttributes : null;
 };
 
 export const findClickableDescendantTag = (
@@ -59,7 +60,7 @@ export const findClickableDescendantTag = (
    * Target common clickable descendant tags.
    * Ex. the DatePicker's date button
    */
-  let parent = descendant;
+  let parent: HTMLElement | null = descendant;
 
   // stop when we hit the ancestor
   while (parent && parent !== ancestor) {
@@ -72,6 +73,25 @@ export const findClickableDescendantTag = (
   }
 
   return '';
+};
+
+export const buildAttributeSelector = (
+  elementAttributes: ElementAttributeValuePair[],
+): string => {
+  const selectors: string[] = [];
+
+  for (let i = 0; i < elementAttributes.length; i++) {
+    const { attributeValue } = elementAttributes[i];
+    selectors.unshift(
+      `[${attributeValue.attribute}='${attributeValue.value}']`,
+    );
+    // if current selector unique on page, return it
+    if (document.querySelectorAll(selectors.join(' ')).length === 1) {
+      break;
+    }
+  }
+
+  return selectors.join(' ');
 };
 
 export const buildDescendantSelector = (
@@ -102,8 +122,8 @@ export const buildCssSelector = ({
   target,
 }: BuildCssSelectorOptions): string | undefined => {
   // find the closest element to the target with attribute
-  const elementWithSelector = findAttribute(target, attribute);
-  if (!elementWithSelector) {
+  const elementsWithSelector = findAttributes(target, attribute);
+  if (!elementsWithSelector) {
     console.debug(
       `qawolf: no css selector built. attribute not found on target or ancestors ${attribute}`,
       getXpath(target),
@@ -111,8 +131,9 @@ export const buildCssSelector = ({
     return undefined;
   }
 
-  const { attributeValue } = elementWithSelector;
-  const attributeSelector = `[${attributeValue.attribute}='${attributeValue.value}']`;
+  const attributeSelector = buildAttributeSelector(elementsWithSelector);
+  // lowest element with data attribute in DOM tree
+  const elementWithSelector = elementsWithSelector[0];
 
   if (elementWithSelector.element === target) {
     console.debug(
