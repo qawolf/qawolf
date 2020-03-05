@@ -1,7 +1,9 @@
 import { existsSync } from 'fs';
+import { ensureFile } from 'fs-extra';
+import * as inquirer from 'inquirer';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { saveTemplate } from '../../src/cli/saveTemplate';
+import { saveTemplate, shouldSaveTemplate } from '../../src/cli/saveTemplate';
 
 // https://gist.github.com/6174/6062387
 const randomString = (): string =>
@@ -10,32 +12,67 @@ const randomString = (): string =>
     .substring(2, 15);
 
 describe('saveTemplate', () => {
-  it('saves script template', async () => {
-    const rootDir = join(tmpdir(), randomString());
-    await saveTemplate({ name: 'myScript', rootDir, script: true });
+  afterAll(jest.restoreAllMocks);
 
-    const fileExists = existsSync(join(rootDir, 'scripts', 'myScript.js'));
-    expect(fileExists).toBe(true);
+  describe('saveTemplate', () => {
+    it('saves script template', async () => {
+      const rootDir = join(tmpdir(), randomString());
+      await saveTemplate({ name: 'myScript', rootDir, script: true });
+
+      const fileExists = existsSync(join(rootDir, 'scripts', 'myScript.js'));
+      expect(fileExists).toBe(true);
+    });
+
+    it('saves test template', async () => {
+      const rootDir = join(tmpdir(), randomString());
+      await saveTemplate({ name: 'myTest', rootDir });
+
+      const fileExists = existsSync(join(rootDir, 'tests', 'myTest.test.js'));
+      expect(fileExists).toBe(true);
+    });
+
+    it('saves at default location if rootDir not specified', async () => {
+      const rootDir = join(tmpdir(), randomString());
+      jest.spyOn(process, 'cwd').mockReturnValue(rootDir);
+      await saveTemplate({ name: 'myTest' });
+
+      const fileExists = existsSync(
+        join(rootDir, '.qawolf', 'tests', 'myTest.test.js'),
+      );
+      expect(fileExists).toBe(true);
+    });
   });
 
-  it('saves test template', async () => {
-    const rootDir = join(tmpdir(), randomString());
-    await saveTemplate({ name: 'myTest', rootDir });
+  describe('shouldSaveTemplate', () => {
+    it('returns true if path does not exist', async () => {
+      const path = join(tmpdir(), randomString(), 'myTest.test.js');
 
-    const fileExists = existsSync(join(rootDir, 'tests', 'myTest.test.js'));
-    expect(fileExists).toBe(true);
-  });
+      const shouldSave = await shouldSaveTemplate(path);
+      expect(shouldSave).toBe(true);
+    });
 
-  it('saves at default location if rootDir not specified', async () => {
-    const rootDir = join(tmpdir(), randomString());
-    jest.spyOn(process, 'cwd').mockReturnValue(rootDir);
-    await saveTemplate({ name: 'myTest' });
+    it('returns true if path exists but can overwrite', async () => {
+      jest
+        .spyOn(inquirer, 'prompt')
+        .mockReturnValue({ overwrite: true } as any);
 
-    const fileExists = existsSync(
-      join(rootDir, '.qawolf', 'tests', 'myTest.test.js'),
-    );
-    expect(fileExists).toBe(true);
+      const path = join(tmpdir(), randomString(), 'myTest.test.js');
+      await ensureFile(path);
 
-    jest.restoreAllMocks();
+      const shouldSave = await shouldSaveTemplate(path);
+      expect(shouldSave).toBe(true);
+    });
+
+    it('returns false if path exists and cannot overwrite', async () => {
+      jest
+        .spyOn(inquirer, 'prompt')
+        .mockReturnValue({ overwrite: false } as any);
+
+      const path = join(tmpdir(), randomString(), 'myTest.test.js');
+      await ensureFile(path);
+
+      const shouldSave = await shouldSaveTemplate(path);
+      expect(shouldSave).toBe(false);
+    });
   });
 });
