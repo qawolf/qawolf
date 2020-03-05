@@ -19,7 +19,13 @@
     "prettier",
     "prettier/@typescript-eslint"
   ],
-  "ignorePatterns": ["*.d.ts", "docs/*", "sandbox/*"],
+  "ignorePatterns": [
+    "**/*.d.ts",
+    "**/*.js",
+    "docs/",
+    "node_modules/",
+    "sandbox/"
+  ],
   "rules": {
     "@typescript-eslint/no-explicit-any": "off"
   }
