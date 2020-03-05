@@ -9,6 +9,20 @@ import { ContextEventCollector } from './ContextEventCollector';
 import { SelectorFileUpdater } from './SelectorFileUpdater';
 import { ElementEvent } from '../types';
 
+type CreateCliOptions = {
+  codePath: string;
+  context: BrowserContext;
+  selectorPath: string;
+};
+
+type ConstructorOptions = {
+  codeUpdater: CodeFileUpdater;
+  collector: ContextEventCollector;
+  selectorUpdater: SelectorFileUpdater;
+};
+
+const debug = Debug('qawolf:CreateManager');
+
 export const promptSaveRepl = async (codePath: string): Promise<boolean> => {
   const { choice } = await prompt<{ choice: string }>([
     {
@@ -32,20 +46,6 @@ export const promptSaveRepl = async (codePath: string): Promise<boolean> => {
     return true;
   }
   return false;
-};
-
-const debug = Debug('create-playwright:create');
-
-type CreateCliOptions = {
-  codePath: string;
-  context: BrowserContext;
-  selectorPath: string;
-};
-
-type ConstructorOptions = {
-  codeUpdater: CodeFileUpdater;
-  collector: ContextEventCollector;
-  selectorUpdater: SelectorFileUpdater;
 };
 
 export class CreateManager {

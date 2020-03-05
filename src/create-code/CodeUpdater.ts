@@ -5,7 +5,7 @@ import { getLineIncludes, removeLinesIncluding } from './format';
 import { PATCH_HANDLE } from './patchCode';
 import { Step } from '../types';
 
-const debug = Debug('create-playwright:CodeUpdater');
+const debug = Debug('qawolf:CodeUpdater');
 
 export type CodeFileOptions = {
   path: string;

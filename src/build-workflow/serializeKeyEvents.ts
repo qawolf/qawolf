@@ -4,7 +4,7 @@ import { keyDefinitions } from 'playwright-core/lib/usKeyboardLayout';
 import { Stroke } from './Stroke';
 import { KeyEvent } from '../types';
 
-const debug = Debug('create-playwright:serializeKeyEvents');
+const debug = Debug('qawolf:serializeKeyEvents');
 
 const USKeys = uniq(
   Object.values(keyDefinitions).map(definition => definition.key),

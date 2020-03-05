@@ -1,7 +1,7 @@
 import Debug from 'debug';
 import { ElementEvent, Step } from '../types';
 
-const debug = Debug('create-playwright:buildClickSteps');
+const debug = Debug('qawolf:buildClickSteps');
 
 const filterClickEvents = (events: ElementEvent[]): ElementEvent[] => {
   return events.filter((event, i) => {

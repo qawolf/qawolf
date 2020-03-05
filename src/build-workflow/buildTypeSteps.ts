@@ -4,7 +4,7 @@ import { removeShortcutKeyEvents } from './removeShortcutKeyEvents';
 import { serializeKeyEvents } from './serializeKeyEvents';
 import { Doc, ElementEvent, KeyEvent, PasteEvent, Step } from '../types';
 
-const debug = Debug('create-playwright:buildTypeSteps');
+const debug = Debug('qawolf:buildTypeSteps');
 
 const SEPARATE_KEYS = ['Enter', 'Tab'];
 
