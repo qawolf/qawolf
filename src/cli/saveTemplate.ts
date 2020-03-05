@@ -1,6 +1,9 @@
 import { ensureFile, writeFile } from 'fs-extra';
 import { join } from 'path';
-import { buildScriptTemplate, buildTestTemplate } from './buildTemplate';
+import {
+  buildScriptTemplate,
+  buildTestTemplate,
+} from '../build-code/buildTemplate';
 
 interface SaveTemplateOptions {
   device?: string;

@@ -1,7 +1,7 @@
 import { existsSync } from 'fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { saveTemplate } from '../src/saveTemplate';
+import { saveTemplate } from '../../src/cli/saveTemplate';
 
 // https://gist.github.com/6174/6062387
 const randomString = (): string =>

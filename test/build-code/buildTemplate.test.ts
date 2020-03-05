@@ -1,4 +1,7 @@
-import { buildScriptTemplate, buildTestTemplate } from '../src/buildTemplate';
+import {
+  buildScriptTemplate,
+  buildTestTemplate,
+} from '../../src/build-code/buildTemplate';
 
 describe('buildTemplate', () => {
   it('builds script template', () => {
