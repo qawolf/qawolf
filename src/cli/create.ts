@@ -19,7 +19,7 @@ const getSelectorPath = (codePath: string): string => {
   return join('../selectors', codePath);
 };
 
-export const create = () => {
+export const create = (): void => {
   // must not be async for the last callsite to be the caller file
   const callerFileNames = callsites().map(c => c.getFileName());
   const codePath = last(callerFileNames);
