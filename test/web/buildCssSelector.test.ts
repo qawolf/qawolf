@@ -11,20 +11,22 @@ let page: Page;
 const buildCssSelector = async (
   selector: string,
   isClick = false,
+  attribute = 'data-qa',
 ): Promise<string | undefined> => {
   const result = await page.evaluate(
-    (selector, isClick) => {
+    (selector, isClick, attribute) => {
       const web: CreatePlaywrightWeb = (window as any).createplaywright;
       const target = document.querySelector(selector) as HTMLElement;
 
       return web.buildCssSelector({
         target,
-        attribute: 'data-qa',
+        attribute,
         isClick,
       });
     },
     selector,
     isClick,
+    attribute,
   );
 
   return result;
@@ -208,6 +210,39 @@ describe('buildCssSelector', () => {
         "[data-qa='material-select-native'] select",
       );
       expect(selector).toBe("[data-qa='material-select-native'] select");
+    });
+  });
+
+  describe('nested data attributes', () => {
+    beforeAll(async () => {
+      await page.goto(`${TEST_URL}nested-data-attributes`);
+    });
+
+    it('includes multiple ancestors in selector if target attribute not unique', async () => {
+      const selector = await buildCssSelector(
+        '#button',
+        true,
+        'data-qa,data-test',
+      );
+      expect(selector).toBe("[data-test='click'] [data-qa='button']");
+    });
+
+    it('includes only target attribute if unique', async () => {
+      const selector = await buildCssSelector(
+        '#unique',
+        true,
+        'data-qa,data-test',
+      );
+      expect(selector).toBe("[data-qa='unique']");
+    });
+
+    it('does not keep crawling if descendant selector unique', async () => {
+      const selector = await buildCssSelector(
+        '#dog-0',
+        true,
+        'data-qa,data-test',
+      );
+      expect(selector).toBe("[data-qa='radio-group'] [value='dog-0']");
     });
   });
 });

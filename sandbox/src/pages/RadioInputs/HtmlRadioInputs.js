@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 function HtmlRadioInputs() {
   return (
@@ -7,7 +7,7 @@ function HtmlRadioInputs() {
       <input data-qa="html-radio" id="single" type="radio" />
       <label htmlFor="single"> Single radio button</label>
       <br />
-      <input id="" type="radio" />
+      <input type="radio" />
       <label htmlFor="another"> Another radio button</label>
       <h4>Best pet?</h4>
       <fieldset data-qa="html-radio-group">

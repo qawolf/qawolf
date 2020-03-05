@@ -1,6 +1,6 @@
 {
   "name": "@qawolf/sandbox",
-  "version": "0.1.0",
+  "version": "0.1.6",
   "files": [
     "bin",
     "build"
@@ -28,8 +28,7 @@
     "start": "PORT=5000 react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
-    "release": "np --no-cleanup",
-    "version": "npm run build"
+    "release": "npm run build && npm publish"
   },
   "publishConfig": {
     "access": "public"

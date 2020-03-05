@@ -52,10 +52,10 @@ describe('ContextEventCollector', () => {
     ]);
 
     expect(events.map(e => e.htmlSelector)).toEqual([
-      '<ul qaw_innertext="Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Radio inputs Selects Text inputs Time pickers"><li qaw_innertext="Buttons"><a href="/buttons" qaw_innertext="Buttons"></a></li></ul>',
-      '<ul qaw_innertext="Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Radio inputs Selects Text inputs Time pickers"><li qaw_innertext="Buttons"><a href="/buttons" qaw_innertext="Buttons"></a></li></ul>',
-      '<ul qaw_innertext="Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Radio inputs Selects Text inputs Time pickers"><li qaw_innertext="Buttons"><a href="/buttons" qaw_innertext="Buttons"></a></li></ul>',
-      '<ul qaw_innertext="Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Radio inputs Selects Text inputs Time pickers"><li qaw_innertext="Buttons"><a href="/buttons" qaw_innertext="Buttons"></a></li></ul>',
+      '<ul qaw_innertext="Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Nested data attributes Radio inputs Selects Text inputs Time pickers"><li qaw_innertext="Buttons"><a href="/buttons" qaw_innertext="Buttons"></a></li></ul>',
+      '<ul qaw_innertext="Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Nested data attributes Radio inputs Selects Text inputs Time pickers"><li qaw_innertext="Buttons"><a href="/buttons" qaw_innertext="Buttons"></a></li></ul>',
+      '<ul qaw_innertext="Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Nested data attributes Radio inputs Selects Text inputs Time pickers"><li qaw_innertext="Buttons"><a href="/buttons" qaw_innertext="Buttons"></a></li></ul>',
+      '<ul qaw_innertext="Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Nested data attributes Radio inputs Selects Text inputs Time pickers"><li qaw_innertext="Buttons"><a href="/buttons" qaw_innertext="Buttons"></a></li></ul>',
     ]);
   });
 
