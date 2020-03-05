@@ -16,10 +16,8 @@ const buildRequires = (device?: string): string => {
   }
 
   const requires = `const { devices } = require("playwright");
-  ${REQUIRE_QAWOLF}
-  
-  const device = devices["${device}"];
-  `;
+${REQUIRE_QAWOLF}
+const device = devices["${device}"];`;
 
   return requires;
 };
@@ -69,21 +67,21 @@ export const buildTestTemplate = ({
 }: BuildTemplateOptions): string => {
   const code = `${buildRequires(device)}
 
-  let browser;
-  let page;
+let browser;
+let page;
 
-  beforeAll(async () => {
-    browser = await qawolf.launch();
-    ${buildNewContext(device)}
-    page = await context.newPage();
-  });
+beforeAll(async () => {
+  browser = await qawolf.launch();
+  ${buildNewContext(device)}
+  page = await context.newPage();
+});
 
-  afterAll(() => browser.close());
+afterAll(() => browser.close());
 
-  test('${name}', async () => {
-    await page.goto("${url}");
-    await qawolf.create();
-  });`;
+test('${name}', async () => {
+  await page.goto("${url}");
+  await qawolf.create();
+});`;
 
   return code;
 };

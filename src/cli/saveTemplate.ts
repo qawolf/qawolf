@@ -51,7 +51,6 @@ export const shouldSaveTemplate = async (path: string): Promise<boolean> => {
   return overwrite;
 };
 
-// when running it pass the paths via environment variable
 export const saveTemplate = async (
   options: SaveTemplateOptions,
 ): Promise<void> => {

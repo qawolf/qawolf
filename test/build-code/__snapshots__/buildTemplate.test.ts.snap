@@ -24,29 +24,27 @@ if (require.main === module) {
 exports[`buildTemplate builds test template 1`] = `
 "const qawolf = require(\\"qawolf\\");
 
-  let browser;
-  let page;
+let browser;
+let page;
 
-  beforeAll(async () => {
-    browser = await qawolf.launch();
-    const context = await browser.newContext();
-    page = await context.newPage();
-  });
+beforeAll(async () => {
+  browser = await qawolf.launch();
+  const context = await browser.newContext();
+  page = await context.newPage();
+});
 
-  afterAll(() => browser.close());
+afterAll(() => browser.close());
 
-  test('myTest', async () => {
-    await page.goto(\\"www.qawolf.com\\");
-    await qawolf.create();
-  });"
+test('myTest', async () => {
+  await page.goto(\\"www.qawolf.com\\");
+  await qawolf.create();
+});"
 `;
 
 exports[`buildTemplate includes device if specified 1`] = `
 "const { devices } = require(\\"playwright\\");
-  const qawolf = require(\\"qawolf\\");
-  
-  const device = devices[\\"iPhone 11\\"];
-  
+const qawolf = require(\\"qawolf\\");
+const device = devices[\\"iPhone 11\\"];
 
 const myScript = async context => {
   let page = await context.newPage();
@@ -71,27 +69,25 @@ if (require.main === module) {
 
 exports[`buildTemplate includes device if specified 2`] = `
 "const { devices } = require(\\"playwright\\");
-  const qawolf = require(\\"qawolf\\");
-  
-  const device = devices[\\"iPad Mini\\"];
-  
+const qawolf = require(\\"qawolf\\");
+const device = devices[\\"iPad Mini\\"];
 
-  let browser;
-  let page;
+let browser;
+let page;
 
-  beforeAll(async () => {
-    browser = await qawolf.launch();
-    const context = await browser.newContext({
+beforeAll(async () => {
+  browser = await qawolf.launch();
+  const context = await browser.newContext({
       userAgent: device.userAgent,
       viewport: device.viewport
     });
-    page = await context.newPage();
-  });
+  page = await context.newPage();
+});
 
-  afterAll(() => browser.close());
+afterAll(() => browser.close());
 
-  test('myTest', async () => {
-    await page.goto(\\"www.qawolf.com\\");
-    await qawolf.create();
-  });"
+test('myTest', async () => {
+  await page.goto(\\"www.qawolf.com\\");
+  await qawolf.create();
+});"
 `;
