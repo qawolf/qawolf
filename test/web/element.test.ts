@@ -89,7 +89,7 @@ describe('isClickable', () => {
   it('returns false if element is not clickable', async () => {
     const isClickable = await page.evaluate(() => {
       const web: CreatePlaywrightWeb = (window as any).createplaywright;
-      const element = document.getElementById('username')!;
+      const element = document.getElementById('username');
       if (!element) throw new Error('element not found');
 
       return web.isClickable(element, window.getComputedStyle(element));

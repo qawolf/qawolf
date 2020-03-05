@@ -1,4 +1,3 @@
-// import { stepToSelector } from '@qawolf/build-code';
 // import { CONTEXT as REPL_CONTEXT } from '@qawolf/repl';
 // import { Selector, Step } from '@qawolf/types';
 import { outputJson, remove, pathExists, readJson } from 'fs-extra';

@@ -1,6 +1,8 @@
 import Debug from 'debug';
 import { buildVirtualCode } from '../build-code/buildVirtualCode';
 import { CodeReconciler } from './CodeReconciler';
+import { getLineIncludes, removeLinesIncluding } from './format';
+import { PATCH_HANDLE } from './patchCode';
 import { Step } from '../types';
 
 const debug = Debug('create-playwright:CodeUpdater');
@@ -13,6 +15,8 @@ type UpdateOptions = {
   steps: Step[];
 };
 
+const CREATE_HANDLE = `await qawolf.create`;
+
 export abstract class CodeUpdater {
   private _locked = false;
   private _reconciler: CodeReconciler;
@@ -21,16 +25,31 @@ export abstract class CodeUpdater {
     this._reconciler = new CodeReconciler();
   }
 
-  protected locked(): boolean {
-    return false;
-  }
-
   protected abstract async loadCode(): Promise<string>;
   protected abstract async updateCode(code: string): Promise<void>;
 
+  public async prepare(): Promise<void> {
+    this._locked = true;
+    const code = await this.loadCode();
+
+    const createLine = getLineIncludes(code, CREATE_HANDLE);
+    if (!createLine) {
+      throw new Error(`Could not find "${CREATE_HANDLE}"`);
+    }
+
+    // trim to match indentation
+    const updatedCode = code.replace(createLine.trim(), PATCH_HANDLE);
+
+    await this.updateCode(updatedCode);
+
+    this._locked = false;
+  }
+
   public async finalize(): Promise<void> {
-    // TODO remove patch handle
-    // lock updates
+    this._locked = true;
+    let code = await this.loadCode();
+    code = removeLinesIncluding(code, PATCH_HANDLE);
+    await this.updateCode(code);
   }
 
   public async update(options: UpdateOptions): Promise<void> {

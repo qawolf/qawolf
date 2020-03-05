@@ -14,7 +14,7 @@ export const getIndentation = (
   const codeLine = getLineIncludes(stringValue, searchValue);
   if (!codeLine) return 0;
 
-  return Math.max(codeLine.indexOf(searchValue), 0);
+  return codeLine.indexOf(searchValue);
 };
 
 export const indent = (
