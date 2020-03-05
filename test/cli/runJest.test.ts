@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { runJest } from '../src/runJest';
+import { runJest } from '../../src/cli/runJest';
 
 const rootDir = join(__dirname, '../e2e');
 
