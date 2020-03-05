@@ -78,6 +78,7 @@ export const findClickableDescendantTag = (
 export const buildAttributeSelector = (
   elementAttributes: ElementAttributeValuePair[],
 ): string => {
+  // include as many ancestors in selector as needed to ensure final selector is unique
   const selectors: string[] = [];
 
   for (let i = 0; i < elementAttributes.length; i++) {
@@ -85,7 +86,6 @@ export const buildAttributeSelector = (
     selectors.unshift(
       `[${attributeValue.attribute}='${attributeValue.value}']`,
     );
-    // if current selector unique on page, return it
     if (document.querySelectorAll(selectors.join(' ')).length === 1) {
       break;
     }
