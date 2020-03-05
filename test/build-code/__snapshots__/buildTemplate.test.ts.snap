@@ -26,7 +26,7 @@ exports[`buildTemplate builds test template 1`] = `
 "const qawolf = require(\\"qawolf\\");
 
   let browser;
-  let context;
+  let page;
 
   beforeAll(async () => {
     browser = await qawolf.launch();
@@ -36,7 +36,7 @@ exports[`buildTemplate builds test template 1`] = `
   afterAll(() => browser.close());
 
   test('myTest', async () => {
-    let page = await context.newPage();
+    page = await context.newPage();
     await page.goto(\\"www.qawolf.com\\");
 
     await qawolf.create();
@@ -80,7 +80,7 @@ exports[`buildTemplate includes device if specified 2`] = `
   
 
   let browser;
-  let context;
+  let page;
 
   beforeAll(async () => {
     browser = await qawolf.launch();
@@ -93,7 +93,7 @@ exports[`buildTemplate includes device if specified 2`] = `
   afterAll(() => browser.close());
 
   test('myTest', async () => {
-    let page = await context.newPage();
+    page = await context.newPage();
     await page.goto(\\"www.qawolf.com\\");
 
     await qawolf.create();

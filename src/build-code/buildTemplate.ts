@@ -71,7 +71,7 @@ export const buildTestTemplate = ({
   const code = `${buildRequires(device)}
 
   let browser;
-  let context;
+  let page;
 
   beforeAll(async () => {
     browser = await qawolf.launch();
@@ -81,7 +81,7 @@ export const buildTestTemplate = ({
   afterAll(() => browser.close());
 
   test('${name}', async () => {
-    let page = await context.newPage();
+    page = await context.newPage();
     await page.goto("${url}");
 
     await qawolf.create();
