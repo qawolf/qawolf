@@ -33,6 +33,8 @@ jobs:
 
       - run: npm run build
 
+      - run: npx @qawolf/sandbox &
+
       - run: QAW_BROWSER=${{ matrix.browser }} npm test
         env:
           CI: true
