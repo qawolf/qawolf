@@ -1,6 +1,7 @@
 import program from 'commander';
 import { yellow } from 'kleur';
 import { addCiCommands } from 'playwright-ci';
+import updateNotifier from 'update-notifier';
 import { howl } from './howl';
 import { runJest } from './runJest';
 import { saveTemplate } from './saveTemplate';
@@ -8,7 +9,9 @@ import { BrowserName } from '../types';
 import { omitArgs, parseUrl } from './utils';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const pkg = require('../package');
+const pkg = require('../../package');
+
+updateNotifier({ pkg }).notify();
 
 program.usage('<command> [options]').version(pkg.version);
 

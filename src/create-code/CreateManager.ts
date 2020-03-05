@@ -36,16 +36,16 @@ export const promptSaveRepl = async (codePath: string): Promise<boolean> => {
       type: 'list',
     },
   ]);
+
   if (choice.includes('REPL')) {
     await repl();
 
     // prompt again
     return promptSaveRepl(codePath);
   }
-  if (choice.includes('Save')) {
-    return true;
-  }
-  return false;
+
+  const shouldSave = choice.includes('Save');
+  return shouldSave;
 };
 
 export class CreateManager {
@@ -55,6 +55,7 @@ export class CreateManager {
     );
 
     const codeUpdater = new CodeFileUpdater(options.codePath);
+    await codeUpdater.prepare();
 
     const selectorUpdater = await SelectorFileUpdater.create(
       options.selectorPath,
@@ -65,7 +66,8 @@ export class CreateManager {
     });
 
     const cli = new CreateManager({ codeUpdater, collector, selectorUpdater });
-    return cli.finalize();
+
+    await cli.finalize();
   }
 
   private _codeUpdater: CodeFileUpdater;

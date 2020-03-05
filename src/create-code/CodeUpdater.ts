@@ -15,10 +15,10 @@ type UpdateOptions = {
   steps: Step[];
 };
 
-const CREATE_HANDLE = `await qawolf.create`;
+export const CREATE_HANDLE = `await qawolf.create`;
 
 export abstract class CodeUpdater {
-  private _locked = false;
+  protected _locked = false;
   private _reconciler: CodeReconciler;
 
   protected constructor() {

@@ -1,41 +1,58 @@
-import { CreateManager } from './CreateManager';
+import callsites from 'callsites';
+import { pathExists, readFile } from 'fs-extra';
+import { findLast } from 'lodash';
+import { basename, dirname, join } from 'path';
 import { BrowserContext } from 'playwright';
+import { CREATE_HANDLE } from './CodeUpdater';
+import { CreateManager } from './CreateManager';
+import { getLineIncludes } from './format';
 
 type CreateOptions = {
   codePath?: string;
-  context?: BrowserContext;
+  context: BrowserContext;
   selectorPath?: string;
 };
 
-const getPaths = (codePath: string): string => {
-  // const rootPath = options.path || `${process.cwd()}/.qawolf`;
-  // let codePath = options.codePath;
-  // if (!codePath) {
-  //   codePath = options.isTest
-  //     ? join(rootPath, 'tests', `${options.name}.test.js`)
-  //     : join(rootPath, 'scripts', `${options.name}.js`);
-  //   }
-  //   const selectorPath =
-  //     options.selectorPath || join(rootPath, 'selectors', `${options.name}.json`);
-  //   return { codePath, selectorPath };
-  // };
-  // return join('../selectors', codePath);
+export const getCodePath = async (): Promise<string> => {
+  const callerFileNames = callsites().map(c => c.getFileName());
+
+  const codes = await Promise.all(
+    callerFileNames.map(async filename => {
+      let code = '';
+      if (await pathExists(filename)) {
+        code = await readFile(filename, 'utf8');
+      }
+      return { code, filename };
+    }),
+  );
+
+  const item = findLast(
+    codes,
+    ({ code }) => !!getLineIncludes(code, CREATE_HANDLE),
+  );
+
+  if (!item) {
+    throw new Error(`Could not find ${CREATE_HANDLE} in caller`);
+  }
+
+  return item.filename;
 };
 
-export const create = async (options: CreateOptions = {}): Promise<void> => {
-  // TODO find the last caller file that has qawolf.create
-  // if not.. throw an error!!!
-  // TODO set repl context...
-  // must not be async for the last callsite to be the caller file
-  // const callerFileNames = callsites().map(c => c.getFileName());
-  // const callerPath = last(callerFileNames);
+export const getSelectorPath = (codePath: string) => {
+  const codeName = basename(codePath)
+    .split('.')
+    .slice(0, -1);
 
-  // const selectorPath = getSelectorPath(codePath);
-  // debug(`create code at ${codePath} selectors at ${selectorPath}`);
+  return join(dirname(codePath), '../selectors', `${codeName}.json`);
+};
 
-  return CreateManager.run({
+export const create = async (options: CreateOptions): Promise<void> => {
+  const codePath = options.codePath || (await getCodePath());
+  const selectorPath = options.selectorPath || getSelectorPath(codePath);
+  await CreateManager.run({
     codePath,
-    context,
+    // TODO make optional by checking repl for context
+    context: options.context,
     selectorPath,
   });
 };

@@ -32,6 +32,8 @@ export class CodeFileUpdater extends CodeUpdater {
   }
 
   public async discard(): Promise<void> {
+    this._locked = true;
+
     if (this._initialCode) {
       await this._updateCode(this._initialCode);
     } else {
