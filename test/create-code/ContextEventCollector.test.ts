@@ -107,7 +107,7 @@ describe('ContextEventCollector', () => {
       });
 
       // give time for scroll
-      await sleep(2000);
+      await sleep(1000);
     }
 
     const { isTrusted, name, target, value } = events[
