@@ -1,13 +1,15 @@
-export const buildScriptTemplate = (name: string): string => {
-  const code = `const qawolf = require("qawolf");
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-const ${name} = async context => {
+exports[`buildTemplate builds script template 1`] = `
+"const qawolf = require(\\"qawolf\\");
+
+const myScript = async context => {
   let page = await context.newPage();
-  await page.goto("URL");
+  await page.goto(\\"URL\\");
   await qawolf.create();
 };
 
-exports.${name} = ${name};
+exports.myScript = myScript;
 
 if (require.main === module) {
   (async () => {
@@ -15,16 +17,14 @@ if (require.main === module) {
     const context = await browser.newContext();
     await qawolf.register(context);
 
-    await ${name}(context);
+    await myScript(context);
     await browser.close();
   })();
-}`;
+}"
+`;
 
-  return code;
-};
-
-export const buildTestTemplate = (name: string): string => {
-  const code = `const qawolf = require("qawolf");
+exports[`buildTemplate builds test template 1`] = `
+"const qawolf = require(\\"qawolf\\");
 
   let browser;
   let context;
@@ -37,10 +37,8 @@ export const buildTestTemplate = (name: string): string => {
 
   afterAll(() => browser.close());
 
-  test('${name}', async () => {
+  test('myTest', async () => {
     let page = await context.newPage();
     await qawolf.create();
-  });`;
-
-  return code;
-};
+  });"
+`;

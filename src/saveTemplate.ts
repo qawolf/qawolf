@@ -1,15 +1,15 @@
-import { ensureFile } from 'fs-extra';
+import { ensureFile, writeFile } from 'fs-extra';
 import { join } from 'path';
-import { buildTestTemplate } from './buildTemplate';
+import { buildScriptTemplate, buildTestTemplate } from './buildTemplate';
 
 interface SaveTemplateOptions {
+  device?: string;
   name: string;
   rootDir?: string;
-  script: boolean;
+  script?: boolean;
 }
 
 // when running it pass the paths via environment variable
-// TODO which template to use when saving test
 export const saveTemplate = async ({
   name,
   rootDir,
@@ -17,11 +17,17 @@ export const saveTemplate = async ({
 }: SaveTemplateOptions): Promise<void> => {
   const folder = rootDir || join(process.cwd(), '.qawolf');
 
+  let path: string;
+  let template: string;
+
   if (script) {
-    return;
+    path = join(folder, 'scripts', `${name}.js`);
+    template = buildScriptTemplate(name);
+  } else {
+    path = join(folder, 'tests', `${name}.test.js`);
+    template = buildTestTemplate(name);
   }
 
-  const testFile = join(folder, 'tests', `${name}.test.js`);
-  await ensureFile(testFile);
-  const testCode = buildTestTemplate(name);
+  await ensureFile(path);
+  return writeFile(path, template);
 };
