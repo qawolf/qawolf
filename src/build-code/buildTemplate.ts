@@ -1,9 +1,51 @@
-export const buildScriptTemplate = (name: string): string => {
-  const code = `const qawolf = require("qawolf");
+import { devices } from 'playwright';
+
+interface BuildTemplateOptions {
+  device?: string;
+  name: string;
+  url: string;
+}
+
+const QAWOLF_REQURE = 'const qawolf = require("qawolf");';
+
+const buildRequires = (device?: string): string => {
+  if (!device) return QAWOLF_REQURE;
+
+  if (!devices[device]) {
+    throw new Error(`Device ${device} not available in Playwright`);
+  }
+
+  const requires = `const { devices } = require("playwright");
+  ${QAWOLF_REQURE}
+  
+  const device = devices["${device}"];
+  `;
+
+  return requires;
+};
+
+const buildNewContext = (device?: string): string => {
+  if (!device) return 'const context = await browser.newContext();';
+
+  const context = `const context = await browser.newContext({
+      userAgent: device.userAgent,
+      viewport: device.viewport
+    });`;
+
+  return context;
+};
+
+export const buildScriptTemplate = ({
+  device,
+  name,
+  url,
+}: BuildTemplateOptions): string => {
+  const code = `${buildRequires(device)}
 
 const ${name} = async context => {
   let page = await context.newPage();
-  await page.goto("URL");
+  await page.goto("${url}");
+
   await qawolf.create();
 };
 
@@ -12,9 +54,7 @@ exports.${name} = ${name};
 if (require.main === module) {
   (async () => {
     const browser = await qawolf.launch();
-    const context = await browser.newContext();
-    await qawolf.register(context);
-
+    ${buildNewContext(device)}
     await ${name}(context);
     await browser.close();
   })();
@@ -23,22 +63,27 @@ if (require.main === module) {
   return code;
 };
 
-export const buildTestTemplate = (name: string): string => {
-  const code = `const qawolf = require("qawolf");
+export const buildTestTemplate = ({
+  device,
+  name,
+  url,
+}: BuildTemplateOptions): string => {
+  const code = `${buildRequires(device)}
 
   let browser;
   let context;
 
   beforeAll(async () => {
     browser = await qawolf.launch();
-    context = await browser.newContext();
-    await qawolf.register(context);
+    ${buildNewContext(device)}
   });
 
   afterAll(() => browser.close());
 
   test('${name}', async () => {
     let page = await context.newPage();
+    await page.goto("${url}");
+
     await qawolf.create();
   });`;
 

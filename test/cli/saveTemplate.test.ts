@@ -17,7 +17,12 @@ describe('saveTemplate', () => {
   describe('saveTemplate', () => {
     it('saves script template', async () => {
       const rootDir = join(tmpdir(), randomString());
-      await saveTemplate({ name: 'myScript', rootDir, script: true });
+      await saveTemplate({
+        name: 'myScript',
+        rootDir,
+        script: true,
+        url: 'www.qawolf.com',
+      });
 
       const fileExists = existsSync(join(rootDir, 'scripts', 'myScript.js'));
       expect(fileExists).toBe(true);
@@ -25,7 +30,7 @@ describe('saveTemplate', () => {
 
     it('saves test template', async () => {
       const rootDir = join(tmpdir(), randomString());
-      await saveTemplate({ name: 'myTest', rootDir });
+      await saveTemplate({ name: 'myTest', rootDir, url: 'www.qawolf.com' });
 
       const fileExists = existsSync(join(rootDir, 'tests', 'myTest.test.js'));
       expect(fileExists).toBe(true);
@@ -34,7 +39,7 @@ describe('saveTemplate', () => {
     it('saves at default location if rootDir not specified', async () => {
       const rootDir = join(tmpdir(), randomString());
       jest.spyOn(process, 'cwd').mockReturnValue(rootDir);
-      await saveTemplate({ name: 'myTest' });
+      await saveTemplate({ name: 'myTest', url: 'www.qawolf.com' });
 
       const fileExists = existsSync(
         join(rootDir, '.qawolf', 'tests', 'myTest.test.js'),

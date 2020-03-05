@@ -5,7 +5,8 @@ exports[`buildTemplate builds script template 1`] = `
 
 const myScript = async context => {
   let page = await context.newPage();
-  await page.goto(\\"URL\\");
+  await page.goto(\\"www.qawolf.com\\");
+
   await qawolf.create();
 };
 
@@ -15,8 +16,6 @@ if (require.main === module) {
   (async () => {
     const browser = await qawolf.launch();
     const context = await browser.newContext();
-    await qawolf.register(context);
-
     await myScript(context);
     await browser.close();
   })();
@@ -31,14 +30,72 @@ exports[`buildTemplate builds test template 1`] = `
 
   beforeAll(async () => {
     browser = await qawolf.launch();
-    context = await browser.newContext();
-    await qawolf.register(context);
+    const context = await browser.newContext();
   });
 
   afterAll(() => browser.close());
 
   test('myTest', async () => {
     let page = await context.newPage();
+    await page.goto(\\"www.qawolf.com\\");
+
+    await qawolf.create();
+  });"
+`;
+
+exports[`buildTemplate includes device if specified 1`] = `
+"const { devices } = require(\\"playwright\\");
+  const qawolf = require(\\"qawolf\\");
+  
+  const device = devices[\\"iPhone 11\\"];
+  
+
+const myScript = async context => {
+  let page = await context.newPage();
+  await page.goto(\\"www.qawolf.com\\");
+
+  await qawolf.create();
+};
+
+exports.myScript = myScript;
+
+if (require.main === module) {
+  (async () => {
+    const browser = await qawolf.launch();
+    const context = await browser.newContext({
+      userAgent: device.userAgent,
+      viewport: device.viewport
+    });
+    await myScript(context);
+    await browser.close();
+  })();
+}"
+`;
+
+exports[`buildTemplate includes device if specified 2`] = `
+"const { devices } = require(\\"playwright\\");
+  const qawolf = require(\\"qawolf\\");
+  
+  const device = devices[\\"iPad Mini\\"];
+  
+
+  let browser;
+  let context;
+
+  beforeAll(async () => {
+    browser = await qawolf.launch();
+    const context = await browser.newContext({
+      userAgent: device.userAgent,
+      viewport: device.viewport
+    });
+  });
+
+  afterAll(() => browser.close());
+
+  test('myTest', async () => {
+    let page = await context.newPage();
+    await page.goto(\\"www.qawolf.com\\");
+
     await qawolf.create();
   });"
 `;
