@@ -1,25 +1,26 @@
-import React from "react";
+import React from 'react';
 import {
   BrowserRouter as Router,
   Link,
   Redirect,
   Route,
-  Switch
-} from "react-router-dom";
-import Buttons from "./pages/Buttons";
-import CheckboxInputs from "./pages/CheckboxInputs";
-import ContentEditables from "./pages/ContentEditables";
-import DatePickers from "./pages/DatePickers";
-import Images from "./pages/Images";
-import InfiniteScroll from "./pages/InfiniteScroll";
-import Large from "./pages/Large";
-import LogIn from "./pages/LogIn";
-import RadioInputs from "./pages/RadioInputs";
-import Selects from "./pages/Selects";
-import TextInputs from "./pages/TextInputs";
-import TimePickers from "./pages/TimePickers";
+  Switch,
+} from 'react-router-dom';
+import Buttons from './pages/Buttons';
+import CheckboxInputs from './pages/CheckboxInputs';
+import ContentEditables from './pages/ContentEditables';
+import DatePickers from './pages/DatePickers';
+import Images from './pages/Images';
+import InfiniteScroll from './pages/InfiniteScroll';
+import Large from './pages/Large';
+import LogIn from './pages/LogIn';
+import NestedDataAttributes from './pages/NestedDataAttributes';
+import RadioInputs from './pages/RadioInputs';
+import Selects from './pages/Selects';
+import TextInputs from './pages/TextInputs';
+import TimePickers from './pages/TimePickers';
 // CSS
-import "./App.css";
+import './App.css';
 
 function Navigation() {
   return (
@@ -47,6 +48,9 @@ function Navigation() {
       </li>
       <li>
         <Link to="/login">Log in</Link>
+      </li>
+      <li>
+        <Link to="/nested-data-attributes">Nested data attributes</Link>
       </li>
       <li>
         <Link to="/radio-inputs">Radio inputs</Link>
@@ -77,6 +81,10 @@ function App() {
         <Route component={InfiniteScroll} path="/infinite-scroll" />
         <Route component={Large} path="/large" />
         <Route component={LogIn} path="/login" />
+        <Route
+          component={NestedDataAttributes}
+          path="/nested-data-attributes"
+        />
         <Route component={RadioInputs} path="/radio-inputs" />
         <Route component={Selects} path="/selects" />
         <Route component={TextInputs} path="/text-inputs" />

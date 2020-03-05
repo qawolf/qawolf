@@ -77,6 +77,7 @@ export const findClickableDescendantTag = (
 
 export const buildAttributeSelector = (
   elementAttributes: ElementAttributeValuePair[],
+  descendantSelector = '',
 ): string => {
   // include as many ancestors in selector as needed to ensure final selector is unique
   const selectors: string[] = [];
@@ -86,7 +87,10 @@ export const buildAttributeSelector = (
     selectors.unshift(
       `[${attributeValue.attribute}='${attributeValue.value}']`,
     );
-    if (document.querySelectorAll(selectors.join(' ')).length === 1) {
+    if (
+      document.querySelectorAll(`${selectors.join(' ')}${descendantSelector}`)
+        .length === 1
+    ) {
       break;
     }
   }
@@ -131,22 +135,26 @@ export const buildCssSelector = ({
     return undefined;
   }
 
-  const attributeSelector = buildAttributeSelector(elementsWithSelector);
   // lowest element with data attribute in DOM tree
   const elementWithSelector = elementsWithSelector[0];
 
   if (elementWithSelector.element === target) {
+    const selector = buildAttributeSelector(elementsWithSelector);
     console.debug(
-      `qawolf: css selector built for target ${attributeSelector}`,
+      `qawolf: css selector built for target ${selector}`,
       getXpath(target),
     );
-    return attributeSelector;
+    return selector;
   }
 
   const descendantSelector = buildDescendantSelector(
     target as HTMLInputElement,
     elementWithSelector.element,
     isClick,
+  );
+  const attributeSelector = buildAttributeSelector(
+    elementsWithSelector,
+    descendantSelector,
   );
   const targetSelector = `${attributeSelector}${descendantSelector}`;
 
