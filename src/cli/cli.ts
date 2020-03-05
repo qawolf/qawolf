@@ -17,12 +17,9 @@ addCiCommands({ program, qawolf: true });
 // TODO
 // program
 //   .command('create <url> [name]')
-//   .option('--code-path <codePath>', 'path to save the code file')
-//   .option('--debug', 'save events and workflow json for debugging')
-//   .option('-d, --device <device>', 'emulate using a playwright.device')
-//   .option('-p, --path <path>', 'path to save the files')
-//   .option('-s, --script', 'create a script instead of a test')
-//   .option('--selector-path <selectorPath>', 'path to save the selector file')
+// .option("-d, --device <device>", "emulate using a playwright.device")
+// .option("-r, --rootDir <path>", "path to save the files")
+// .option("-s, --script", "create a script instead of a test")
 //   .description('create a test from browser actions')
 //   .action(async (urlArgument, optionalName, cmd) => {
 //     const url = parseUrl(urlArgument);
@@ -31,7 +28,7 @@ addCiCommands({ program, qawolf: true });
 
 // program
 //   .command('test')
-//   .option('-p, --path <path>', 'path to test code')
+//   .option('-f, --rootDir <path>', 'path to test code')
 //   .option('--all-browsers', 'run tests on chromium, firefox, and webkit')
 //   .option('--chromium', 'run tests on chromium')
 //   .option('--firefox', 'run tests on firefox')
