@@ -38,6 +38,14 @@ export class SelectorFileUpdater {
     this._path = options.path;
   }
 
+  public async discard(): Promise<void> {
+    if (this._initialSelectors.length) {
+      await outputJson(this._path, this._initialSelectors, { spaces: ' ' });
+    } else {
+      await remove(this._path);
+    }
+  }
+
   public async finalize(): Promise<void> {
     // remove the selectors file if all are inlined css selectors
     if (

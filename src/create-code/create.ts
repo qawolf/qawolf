@@ -1,83 +1,41 @@
-import Debug from 'debug';
-import { prompt } from 'inquirer';
-import { relative } from 'path';
-import { BrowserContext } from 'playwright-core';
-import { repl } from 'playwright-utils';
-import { buildSteps } from '../build-workflow/buildSteps';
-import { CodeFileUpdater } from './CodeFileUpdater';
-import { ContextEventCollector } from './ContextEventCollector';
-import { SelectorFileUpdater } from './SelectorFileUpdater';
-import { ElementEvent } from '../types';
+import { CreateManager } from './CreateManager';
+import { BrowserContext } from 'playwright';
 
-const debug = Debug('create-playwright:create');
-
-export type Options = {
-  codePath: string;
-  context: BrowserContext;
-  selectorPath: string;
+type CreateOptions = {
+  codePath?: string;
+  context?: BrowserContext;
+  selectorPath?: string;
 };
 
-const savePrompt = async (codePath: string): Promise<boolean> => {
-  const { choice } = await prompt<{ choice: string }>([
-    {
-      choices: [
-        '💾  Save and exit',
-        '🖥️  Open REPL to run code',
-        '🗑️  Discard and exit',
-      ],
-      message: `Edit your code at: ${relative(process.cwd(), codePath)}`,
-      name: 'choice',
-      type: 'list',
-    },
-  ]);
-
-  if (choice.includes('REPL')) {
-    await repl();
-    // prompt again
-    return savePrompt(codePath);
-  }
-
-  if (choice.includes('Save')) {
-    return true;
-  }
-
-  return false;
+const getPaths = (codePath: string): string => {
+  // const rootPath = options.path || `${process.cwd()}/.qawolf`;
+  // let codePath = options.codePath;
+  // if (!codePath) {
+  //   codePath = options.isTest
+  //     ? join(rootPath, 'tests', `${options.name}.test.js`)
+  //     : join(rootPath, 'scripts', `${options.name}.js`);
+  //   }
+  //   const selectorPath =
+  //     options.selectorPath || join(rootPath, 'selectors', `${options.name}.json`);
+  //   return { codePath, selectorPath };
+  // };
+  // return join('../selectors', codePath);
 };
 
-export const create = async (options: Options): Promise<void> => {
+export const create = async (options: CreateOptions = {}): Promise<void> => {
+  // TODO find the last caller file that has qawolf.create
+  // if not.. throw an error!!!
   // TODO set repl context...
-  debug(
-    `create code at ${options.codePath} selectors at ${options.selectorPath}`,
-  );
+  // must not be async for the last callsite to be the caller file
+  // const callerFileNames = callsites().map(c => c.getFileName());
+  // const callerPath = last(callerFileNames);
 
-  const codeUpdater = new CodeFileUpdater(options.codePath);
-  const selectorUpdater = await SelectorFileUpdater.create(
-    options.selectorPath,
-  );
+  // const selectorPath = getSelectorPath(codePath);
+  // debug(`create code at ${codePath} selectors at ${selectorPath}`);
 
-  const collector = await ContextEventCollector.create({
-    context: options.context,
+  return CreateManager.run({
+    codePath,
+    context,
+    selectorPath,
   });
-
-  // push step index behind existing selectors
-  const stepStartIndex = selectorUpdater.selectors().length;
-
-  const events: ElementEvent[] = [];
-
-  collector.on('elementevent', async event => {
-    events.push(event);
-
-    const steps = buildSteps({ events, startIndex: stepStartIndex });
-    await Promise.all([
-      codeUpdater.update({ steps }),
-      selectorUpdater.update({ steps }),
-    ]);
-  });
-
-  const save = await savePrompt(options.codePath);
-  if (save) {
-    // TODO finalize
-  } else {
-    // TODO discard
-  }
 };

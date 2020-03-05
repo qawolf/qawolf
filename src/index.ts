@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { repl } from 'playwright-utils';
 import updateNotifier from 'update-notifier';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -11,9 +12,9 @@ if (isCLI) {
   require('./cli/cli');
 }
 
-// TODO
 // export public API
-// import { create } from './create';
-// export { create, repl };
+import { create } from './create-code/create';
+export { create, repl };
+
 // make repl a global
-// (global as any).repl = repl;
+(global as any).repl = repl;

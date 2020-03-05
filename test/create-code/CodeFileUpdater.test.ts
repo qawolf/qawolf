@@ -20,6 +20,16 @@ describe('CodeFileUpdater', () => {
     mockedOutputFile.mockReset();
   });
 
+  describe('discard', () => {
+    it('reverts to initial code', () => {
+      // TODO
+    });
+
+    it('removes code if there was not pre-existing code', () => {
+      // TODO
+    });
+  });
+
   describe('finalize', () => {
     it('removes the patch handle', async () => {
       mockedReadFile.mockResolvedValue(

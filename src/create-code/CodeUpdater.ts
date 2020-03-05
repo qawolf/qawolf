@@ -25,12 +25,12 @@ export abstract class CodeUpdater {
     this._reconciler = new CodeReconciler();
   }
 
-  protected abstract async loadCode(): Promise<string>;
-  protected abstract async updateCode(code: string): Promise<void>;
+  protected abstract async _loadCode(): Promise<string>;
+  protected abstract async _updateCode(code: string): Promise<void>;
 
   public async prepare(): Promise<void> {
     this._locked = true;
-    const code = await this.loadCode();
+    const code = await this._loadCode();
 
     const createLine = getLineIncludes(code, CREATE_HANDLE);
     if (!createLine) {
@@ -40,16 +40,16 @@ export abstract class CodeUpdater {
     // trim to match indentation
     const updatedCode = code.replace(createLine.trim(), PATCH_HANDLE);
 
-    await this.updateCode(updatedCode);
+    await this._updateCode(updatedCode);
 
     this._locked = false;
   }
 
   public async finalize(): Promise<void> {
     this._locked = true;
-    let code = await this.loadCode();
+    let code = await this._loadCode();
     code = removeLinesIncluding(code, PATCH_HANDLE);
-    await this.updateCode(code);
+    await this._updateCode(code);
   }
 
   public async update(options: UpdateOptions): Promise<void> {
@@ -69,13 +69,13 @@ export abstract class CodeUpdater {
     this._locked = true;
 
     // update the actual code
-    const actualCode = await this.loadCode();
+    const actualCode = await this._loadCode();
 
     const updatedCode = this._reconciler.reconcile({
       actualCode,
       virtualCode: updatedVirtualCode,
     });
-    await this.updateCode(updatedCode);
+    await this._updateCode(updatedCode);
 
     // store the updated virtual code
     this._reconciler.update(updatedVirtualCode);
