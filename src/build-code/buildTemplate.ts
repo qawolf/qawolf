@@ -6,17 +6,17 @@ interface BuildTemplateOptions {
   url: string;
 }
 
-const QAWOLF_REQURE = 'const qawolf = require("qawolf");';
+const REQUIRE_QAWOLF = 'const qawolf = require("qawolf");';
 
 const buildRequires = (device?: string): string => {
-  if (!device) return QAWOLF_REQURE;
+  if (!device) return REQUIRE_QAWOLF;
 
   if (!devices[device]) {
     throw new Error(`Device ${device} not available in Playwright`);
   }
 
   const requires = `const { devices } = require("playwright");
-  ${QAWOLF_REQURE}
+  ${REQUIRE_QAWOLF}
   
   const device = devices["${device}"];
   `;
