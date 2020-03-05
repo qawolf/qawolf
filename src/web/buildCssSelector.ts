@@ -87,10 +87,9 @@ export const buildAttributeSelector = (
     selectors.unshift(
       `[${attributeValue.attribute}='${attributeValue.value}']`,
     );
-    if (
-      document.querySelectorAll(`${selectors.join(' ')}${descendantSelector}`)
-        .length === 1
-    ) {
+
+    const candidateSelector = `${selectors.join(' ')}${descendantSelector}`;
+    if (document.querySelectorAll(candidateSelector).length === 1) {
       break;
     }
   }
