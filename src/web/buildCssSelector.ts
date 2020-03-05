@@ -16,29 +16,6 @@ interface ElementAttributeValuePair {
   element: HTMLElement;
 }
 
-export const getAttributeValue = (
-  element: HTMLElement,
-  attribute: string,
-): AttributeValuePair | null => {
-  if (!attribute || !element.getAttribute) return null;
-
-  const attributes = attribute.split(',').map(attr => attr.trim());
-
-  for (const attribute of attributes) {
-    const isRegex = attribute[0] === '/';
-
-    if (isRegex) {
-      const attributeValuePair = getRegexAttributeValue(element, attribute);
-      if (attributeValuePair) return attributeValuePair;
-    } else {
-      const value = element.getAttribute(attribute);
-      if (value) return { attribute, value };
-    }
-  }
-
-  return null;
-};
-
 export const buildRegexFromString = (regexString: string): RegExp => {
   let endIndex = regexString.length - 1;
   while (regexString[endIndex] !== '/') {
@@ -67,6 +44,29 @@ const getRegexAttributeValue = (
 
     if (name.match(regex)) {
       return { attribute: name, value };
+    }
+  }
+
+  return null;
+};
+
+export const getAttributeValue = (
+  element: HTMLElement,
+  attribute: string,
+): AttributeValuePair | null => {
+  if (!attribute || !element.getAttribute) return null;
+
+  const attributes = attribute.split(',').map(attr => attr.trim());
+
+  for (const attribute of attributes) {
+    const isRegex = attribute[0] === '/';
+
+    if (isRegex) {
+      const attributeValuePair = getRegexAttributeValue(element, attribute);
+      if (attributeValuePair) return attributeValuePair;
+    } else {
+      const value = element.getAttribute(attribute);
+      if (value) return { attribute, value };
     }
   }
 
