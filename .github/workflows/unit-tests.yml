@@ -49,3 +49,5 @@ jobs:
         if: matrix.test != 'lint'
         env:
           CI: true
+
+    timeout-minutes: 20
