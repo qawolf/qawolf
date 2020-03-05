@@ -1,0 +1,137 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`buildTypeSteps builds expected steps for login 1`] = `
+Array [
+  Object {
+    "action": "type",
+    "cssSelector": undefined,
+    "htmlSelector": "<div id=\\"root\\" qaw_innertext=\\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\\"><form qaw_innertext=\\"Username Password Log in\\"><input autocomplete=\\"off\\" id=\\"username\\" type=\\"text\\" value=\\"\\" qaw_labels=\\"Username\\" /></form></div>",
+    "index": 4,
+    "page": 0,
+    "target": Object {
+      "attrs": Object {
+        "autocomplete": "off",
+        "id": "username",
+        "qaw_labels": "Username",
+        "type": "text",
+        "value": "",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "value": "tomsmith",
+  },
+  Object {
+    "action": "type",
+    "cssSelector": undefined,
+    "htmlSelector": "<div id=\\"root\\" qaw_innertext=\\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\\"><form qaw_innertext=\\"Username Password Log in\\"><input autocomplete=\\"off\\" id=\\"username\\" type=\\"text\\" value=\\"tomsmith\\" qaw_labels=\\"Username\\" /></form></div>",
+    "index": 20,
+    "page": 0,
+    "target": Object {
+      "attrs": Object {
+        "autocomplete": "off",
+        "id": "username",
+        "qaw_labels": "Username",
+        "type": "text",
+        "value": "tomsmith",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "value": "↓Tab↑Tab",
+  },
+  Object {
+    "action": "type",
+    "cssSelector": undefined,
+    "htmlSelector": "<div id=\\"root\\" qaw_innertext=\\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\\"><form qaw_innertext=\\"Username Password Log in\\"><input autocomplete=\\"off\\" id=\\"password\\" type=\\"password\\" value=\\"\\" qaw_labels=\\"Password\\" /></form></div>",
+    "index": 24,
+    "page": 0,
+    "target": Object {
+      "attrs": Object {
+        "autocomplete": "off",
+        "id": "password",
+        "qaw_labels": "Password",
+        "type": "password",
+        "value": "",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "value": "SuperSecretPassword!",
+  },
+  Object {
+    "action": "type",
+    "cssSelector": undefined,
+    "htmlSelector": "<div id=\\"root\\" qaw_innertext=\\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\\"><form qaw_innertext=\\"Username Password Log in\\"><input autocomplete=\\"off\\" id=\\"password\\" type=\\"password\\" value=\\"SuperSecretPassword!\\" qaw_labels=\\"Password\\" /></form></div>",
+    "index": 27,
+    "page": 0,
+    "target": Object {
+      "attrs": Object {
+        "autocomplete": "off",
+        "id": "password",
+        "qaw_labels": "Password",
+        "type": "password",
+        "value": "SuperSecretPassword!",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "value": "↓Enter↑Enter",
+  },
+]
+`;
+
+exports[`buildTypeSteps builds expected steps for selectall 1`] = `
+Array [
+  Object {
+    "action": "type",
+    "cssSelector": "[data-qa='html-text-input-filled']",
+    "htmlSelector": "<div style=\\"display: flex; flex-wrap: wrap;\\" qaw_innertext=\\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\\"><div class=\\"container\\" qaw_innertext=\\"Native HTML\\"><input data-qa=\\"html-text-input-filled\\" placeholder=\\"Filled text input\\" type=\\"text\\" value=\\"initial text\\" /></div></div>",
+    "index": 6,
+    "page": 0,
+    "replace": true,
+    "target": Object {
+      "attrs": Object {
+        "data-qa": "html-text-input-filled",
+        "placeholder": "Filled text input",
+        "type": "text",
+        "value": "initial text",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "value": "hotkeys",
+  },
+  Object {
+    "action": "type",
+    "cssSelector": "[data-qa='html-text-input-filled']",
+    "htmlSelector": "<div style=\\"display: flex; flex-wrap: wrap;\\" qaw_innertext=\\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\\"><div class=\\"container\\" qaw_innertext=\\"Native HTML\\"><input data-qa=\\"html-text-input-filled\\" placeholder=\\"Filled text input\\" type=\\"text\\" value=\\"initial text\\" /></div></div>",
+    "index": 25,
+    "page": 0,
+    "replace": true,
+    "target": Object {
+      "attrs": Object {
+        "data-qa": "html-text-input-filled",
+        "placeholder": "Filled text input",
+        "type": "text",
+        "value": "initial text",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "value": "clickselectall",
+  },
+]
+`;

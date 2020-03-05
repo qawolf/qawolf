@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`buildClickSteps builds one click per group of mousedown/click events 1`] = `
+Array [
+  Object {
+    "htmlSelector": "<ul qaw_innertext=\\"Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Radio inputs Selects Text inputs Time pickers\\"><li qaw_innertext=\\"Log in\\"><a href=\\"/login\\" qaw_innertext=\\"Log in\\"></a></li></ul>",
+    "index": 0,
+  },
+  Object {
+    "htmlSelector": "<div id=\\"root\\" qaw_innertext=\\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\\"><form qaw_innertext=\\"Username Password Log in\\"><input autocomplete=\\"off\\" id=\\"username\\" type=\\"text\\" value=\\"\\" qaw_labels=\\"Username\\" /></form></div>",
+    "index": 2,
+  },
+  Object {
+    "htmlSelector": "<div id=\\"root\\" qaw_innertext=\\"Secure Area Log out\\"><button qaw_innertext=\\"Log out\\"><p qaw_innertext=\\"Log out\\"></p></button></div>",
+    "index": 30,
+  },
+]
+`;
+
+exports[`buildClickSteps prefers clicks on inputs 1`] = `
+Array [
+  "[data-qa='html-radio']",
+  "[data-qa='html-radio-group'] [value='dog']",
+  "[data-qa='material-radio'] [value='yes']",
+  "[data-qa='material-radio-group'] [value='green']",
+]
+`;
