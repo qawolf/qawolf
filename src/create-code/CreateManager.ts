@@ -87,7 +87,7 @@ export class CreateManager {
     this._collector.on('elementevent', event => this.update(event));
   }
 
-  protected async update(event: ElementEvent) {
+  protected async update(event: ElementEvent): Promise<void> {
     this._events.push(event);
 
     const steps = buildSteps({
@@ -101,7 +101,7 @@ export class CreateManager {
     ]);
   }
 
-  protected async finalize() {
+  protected async finalize(): Promise<void> {
     const shouldSave = await promptSaveRepl(this._codeUpdater.path());
     if (shouldSave) {
       await this._codeUpdater.finalize();

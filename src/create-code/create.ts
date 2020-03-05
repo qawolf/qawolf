@@ -1,4 +1,5 @@
 import callsites from 'callsites';
+import Debug from 'debug';
 import { pathExists, readFile } from 'fs-extra';
 import { findLast } from 'lodash';
 import { basename, dirname, join } from 'path';
@@ -13,15 +14,20 @@ type CreateOptions = {
   selectorPath?: string;
 };
 
+const debug = Debug('qawolf:create');
+
 export const getCodePath = async (): Promise<string> => {
   const callerFileNames = callsites().map(c => c.getFileName());
+  debug(`search caller files for ${CREATE_HANDLE} %j`, callerFileNames);
 
   const codes = await Promise.all(
     callerFileNames.map(async filename => {
       let code = '';
+
       if (await pathExists(filename)) {
         code = await readFile(filename, 'utf8');
       }
+
       return { code, filename };
     }),
   );
@@ -38,7 +44,7 @@ export const getCodePath = async (): Promise<string> => {
   return item.filename;
 };
 
-export const getSelectorPath = (codePath: string) => {
+export const getSelectorPath = (codePath: string): string => {
   const codeName = basename(codePath)
     .split('.')
     .slice(0, -1);
