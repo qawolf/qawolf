@@ -1,6 +1,7 @@
 import { ensureFile, pathExists, writeFile } from 'fs-extra';
 import { prompt } from 'inquirer';
 import { join } from 'path';
+import { UrlWithStringQuery } from 'url';
 import {
   buildScriptTemplate,
   buildTestTemplate,
@@ -11,7 +12,7 @@ interface SaveTemplateOptions {
   name: string;
   rootDir?: string;
   script?: boolean;
-  url: string;
+  url: UrlWithStringQuery;
 }
 
 const buildTemplate = ({

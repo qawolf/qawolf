@@ -1,5 +1,4 @@
-import { existsSync } from 'fs';
-import { ensureFile } from 'fs-extra';
+import { ensureFile, pathExists } from 'fs-extra';
 import * as inquirer from 'inquirer';
 import { tmpdir } from 'os';
 import { join } from 'path';
@@ -24,7 +23,9 @@ describe('saveTemplate', () => {
         url: 'www.qawolf.com',
       });
 
-      const fileExists = existsSync(join(rootDir, 'scripts', 'myScript.js'));
+      const fileExists = await pathExists(
+        join(rootDir, 'scripts', 'myScript.js'),
+      );
       expect(fileExists).toBe(true);
     });
 
@@ -32,7 +33,9 @@ describe('saveTemplate', () => {
       const rootDir = join(tmpdir(), randomString());
       await saveTemplate({ name: 'myTest', rootDir, url: 'www.qawolf.com' });
 
-      const fileExists = existsSync(join(rootDir, 'tests', 'myTest.test.js'));
+      const fileExists = await pathExists(
+        join(rootDir, 'tests', 'myTest.test.js'),
+      );
       expect(fileExists).toBe(true);
     });
 
@@ -41,7 +44,7 @@ describe('saveTemplate', () => {
       jest.spyOn(process, 'cwd').mockReturnValue(rootDir);
       await saveTemplate({ name: 'myTest', url: 'www.qawolf.com' });
 
-      const fileExists = existsSync(
+      const fileExists = await pathExists(
         join(rootDir, '.qawolf', 'tests', 'myTest.test.js'),
       );
       expect(fileExists).toBe(true);

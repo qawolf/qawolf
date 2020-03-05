@@ -1,9 +1,10 @@
 import { devices } from 'playwright';
+import { UrlWithStringQuery } from 'url';
 
 interface BuildTemplateOptions {
   device?: string;
   name: string;
-  url: string;
+  url: UrlWithStringQuery;
 }
 
 const REQUIRE_QAWOLF = 'const qawolf = require("qawolf");';
@@ -45,7 +46,6 @@ export const buildScriptTemplate = ({
 const ${name} = async context => {
   let page = await context.newPage();
   await page.goto("${url}");
-
   await qawolf.create();
 };
 
@@ -76,14 +76,13 @@ export const buildTestTemplate = ({
   beforeAll(async () => {
     browser = await qawolf.launch();
     ${buildNewContext(device)}
+    page = await context.newPage();
   });
 
   afterAll(() => browser.close());
 
   test('${name}', async () => {
-    page = await context.newPage();
     await page.goto("${url}");
-
     await qawolf.create();
   });`;
 
