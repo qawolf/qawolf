@@ -2,7 +2,10 @@ import { Browser, Page } from 'playwright-core';
 import { launch } from 'playwright-utils';
 import { CreatePlaywrightWeb } from '../../src/web';
 import { WEB_SCRIPT } from '../../src/web/addScript';
-import { AttributeValuePair } from '../../src/web/buildCssSelector';
+import {
+  AttributeValuePair,
+  buildRegexFromString,
+} from '../../src/web/buildCssSelector';
 import { TEST_URL } from '../utils';
 
 let browser: Browser;
@@ -244,6 +247,16 @@ describe('buildCssSelector', () => {
       );
       expect(selector).toBe("[data-qa='radio-group'] [value='dog-0']");
     });
+  });
+});
+
+describe('buildRegexFromString', () => {
+  it('returns regex as is if no flag', () => {
+    expect(buildRegexFromString('/qa-.*/')).toEqual(new RegExp('qa-.*'));
+  });
+
+  it('includes flags if passed', () => {
+    expect(buildRegexFromString('/qa-.*/i')).toEqual(new RegExp('qa-.*', 'i'));
   });
 });
 

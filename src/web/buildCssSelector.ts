@@ -39,7 +39,7 @@ export const getAttributeValue = (
   return null;
 };
 
-const buildRegexFromString = (regexString: string): RegExp => {
+export const buildRegexFromString = (regexString: string): RegExp => {
   let endIndex = regexString.length - 1;
   while (regexString[endIndex] !== '/') {
     endIndex--;
