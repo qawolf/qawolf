@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`removeShortcutKeyEvents removes CMD+V key events 1`] = `
+Array [
+  "↓t",
+  "↑t",
+  "↓o",
+  "↑o",
+  "↓m",
+  "↑m",
+  "↓s",
+  "↑s",
+  "↓m",
+  "↑m",
+  "↓i",
+  "↑i",
+  "↓t",
+  "↑t",
+  "↓h",
+  "↑h",
+  "↓Tab",
+  "↑Tab",
+  "↓Enter",
+  "↑Enter",
+]
+`;
