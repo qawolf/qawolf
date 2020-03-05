@@ -248,6 +248,25 @@ describe('buildCssSelector', () => {
       expect(selector).toBe("[data-qa='radio-group'] [value='dog-0']");
     });
   });
+
+  describe('regex attributes', () => {
+    beforeAll(async () => {
+      await page.goto(`${TEST_URL}nested-data-attributes`);
+    });
+
+    it('builds selector based of an attribute regex', async () => {
+      const selector = await buildCssSelector('#button', true, '/data-.*/');
+      expect(selector).toBe("[data-test='click'] [data-qa='button']");
+    });
+
+    it('ignores attributes that do not match regex', async () => {
+      const selector = await buildCssSelector('#button', true, '/qa-.*/,id');
+      expect(selector).toBe("[id='button']");
+
+      const selector2 = await buildCssSelector('#button', true, '/qa-.*/');
+      expect(selector2).toBeUndefined();
+    });
+  });
 });
 
 describe('buildRegexFromString', () => {
