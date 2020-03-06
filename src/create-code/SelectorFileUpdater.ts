@@ -1,8 +1,6 @@
-// import { stepToSelector } from '@qawolf/build-code';
-// import { CONTEXT as REPL_CONTEXT } from '@qawolf/repl';
-// import { Selector, Step } from '@qawolf/types';
 import { outputJson, remove, pathExists, readJson } from 'fs-extra';
 import { concat } from 'lodash';
+import { ReplContext } from 'playwright-utils';
 import { Step } from '../types';
 
 type ConstructorOptions = {
@@ -39,12 +37,10 @@ export class SelectorFileUpdater {
     this._path = options.path;
   }
 
-  public async finalize(): Promise<void> {
-    // remove the selectors file if all are inlined css selectors
-    if (
-      !this._initialSelectors.length &&
-      this._steps.every(step => step.cssSelector)
-    ) {
+  public async discard(): Promise<void> {
+    if (this._initialSelectors.length) {
+      await outputJson(this._path, this._initialSelectors, { spaces: ' ' });
+    } else {
       await remove(this._path);
     }
   }
@@ -52,9 +48,12 @@ export class SelectorFileUpdater {
   public selectors(): string[] {
     // we do not support editing of the selectors file
     // just replace the new selectors
-    const newSelectors = this._steps.map(
-      step => step.cssSelector || step.htmlSelector,
-    );
+    const newSelectors = this._steps.map(({ cssSelector, htmlSelector }) => {
+      if (cssSelector) return cssSelector;
+
+      return `html=${htmlSelector}`;
+    });
+
     return concat(this._initialSelectors, newSelectors);
   }
 
@@ -64,7 +63,9 @@ export class SelectorFileUpdater {
     if (this._lock) return;
     this._lock = true;
 
-    await outputJson(this._path, this.selectors(), { spaces: ' ' });
+    const updatedSelectors = this.selectors();
+    ReplContext.set('selectors', updatedSelectors);
+    await outputJson(this._path, updatedSelectors, { spaces: ' ' });
 
     this._lock = false;
   }

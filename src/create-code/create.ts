@@ -1,83 +1,82 @@
+import callsites from 'callsites';
 import Debug from 'debug';
-import { prompt } from 'inquirer';
-import { relative } from 'path';
-import { BrowserContext } from 'playwright-core';
-import { repl } from 'playwright-utils';
-import { buildSteps } from '../build-workflow/buildSteps';
-import { CodeFileUpdater } from './CodeFileUpdater';
-import { ContextEventCollector } from './ContextEventCollector';
-import { SelectorFileUpdater } from './SelectorFileUpdater';
-import { ElementEvent } from '../types';
+import { pathExists, readFile } from 'fs-extra';
+import { findLast } from 'lodash';
+import { basename, dirname, join } from 'path';
+import { BrowserContext } from 'playwright';
+import { ReplContext } from 'playwright-utils';
+import { CREATE_HANDLE } from './CodeUpdater';
+import { CreateManager } from './CreateManager';
+import { getLineIncludes } from './format';
 
-const debug = Debug('create-playwright:create');
-
-export type Options = {
-  codePath: string;
-  context: BrowserContext;
-  selectorPath: string;
+type CreateOptions = {
+  codePath?: string;
+  context?: BrowserContext;
+  // used for testing
+  onReady?: () => void;
+  selectorPath?: string;
 };
 
-const savePrompt = async (codePath: string): Promise<boolean> => {
-  const { choice } = await prompt<{ choice: string }>([
-    {
-      choices: [
-        '💾  Save and exit',
-        '🖥️  Open REPL to run code',
-        '🗑️  Discard and exit',
-      ],
-      message: `Edit your code at: ${relative(process.cwd(), codePath)}`,
-      name: 'choice',
-      type: 'list',
-    },
-  ]);
+const debug = Debug('qawolf:create');
 
-  if (choice.includes('REPL')) {
-    await repl();
-    // prompt again
-    return savePrompt(codePath);
+export const getCodePath = async (
+  callerFileNames: string[],
+): Promise<string> => {
+  debug(`search caller files for ${CREATE_HANDLE} %j`, callerFileNames);
+
+  const codes = await Promise.all(
+    callerFileNames.map(async filename => {
+      let code = '';
+
+      if (await pathExists(filename)) {
+        code = await readFile(filename, 'utf8');
+      }
+
+      return { code, filename };
+    }),
+  );
+
+  const item = findLast(
+    codes,
+    ({ code }) => !!getLineIncludes(code, CREATE_HANDLE),
+  );
+
+  if (!item) {
+    throw new Error(`Could not find ${CREATE_HANDLE} in caller`);
   }
 
-  if (choice.includes('Save')) {
-    return true;
-  }
-
-  return false;
+  return item.filename;
 };
 
-export const create = async (options: Options): Promise<void> => {
-  // TODO set repl context...
-  debug(
-    `create code at ${options.codePath} selectors at ${options.selectorPath}`,
-  );
+export const getSelectorPath = (codePath: string): string => {
+  const codeName = basename(codePath).split('.')[0];
+  return join(dirname(codePath), '../selectors', `${codeName}.json`);
+};
 
-  const codeUpdater = new CodeFileUpdater(options.codePath);
-  const selectorUpdater = await SelectorFileUpdater.create(
-    options.selectorPath,
-  );
-
-  const collector = await ContextEventCollector.create({
-    context: options.context,
-  });
-
-  // push step index behind existing selectors
-  const stepStartIndex = selectorUpdater.selectors().length;
-
-  const events: ElementEvent[] = [];
-
-  collector.on('elementevent', async event => {
-    events.push(event);
-
-    const steps = buildSteps({ events, startIndex: stepStartIndex });
-    await Promise.all([
-      codeUpdater.update({ steps }),
-      selectorUpdater.update({ steps }),
-    ]);
-  });
-
-  const save = await savePrompt(options.codePath);
-  if (save) {
-    // TODO finalize
-  } else {
-    // TODO discard
+export const create = async (options: CreateOptions = {}): Promise<void> => {
+  const context: BrowserContext =
+    options.context || (ReplContext.data() as any).context;
+  if (!context) {
+    throw new Error(
+      'No context found. Call qawolf.register(context) before qawolf.create() or qawolf.create({ context })',
+    );
   }
+
+  let codePath = options.codePath;
+  if (!codePath) {
+    const callerFileNames = callsites().map(c => c.getFileName());
+    codePath = await getCodePath(callerFileNames);
+  }
+
+  const selectorPath = options.selectorPath || getSelectorPath(codePath);
+
+  const manager = await CreateManager.create({
+    codePath,
+    context,
+    selectorPath,
+  });
+
+  if (options.onReady) options.onReady();
+
+  await manager.finalize();
 };

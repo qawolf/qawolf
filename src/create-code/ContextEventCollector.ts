@@ -7,7 +7,7 @@ import { ElementEvent } from '../types';
 import { CreatePlaywrightWeb } from '../web';
 import { addWebScript } from '../web/addScript';
 
-const debug = Debug('create-playwright:ContextEventCollector');
+const debug = Debug('qawolf:ContextEventCollector');
 
 type ConstructorOptions = {
   attribute?: string;

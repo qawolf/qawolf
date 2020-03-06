@@ -2,7 +2,7 @@ import Debug from 'debug';
 import { find, findLast, remove } from 'lodash';
 import { ElementEvent, KeyEvent } from '../types';
 
-const debug = Debug('create-playwright:removeShortcutKeyEvents');
+const debug = Debug('qawolf:removeShortcutKeyEvents');
 
 const isControlEvent = (event: KeyEvent): boolean => {
   return event.value.startsWith('Meta') || event.value.startsWith('Control');

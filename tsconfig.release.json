@@ -3,7 +3,8 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "build",
-    "removeComments": true
+    "removeComments": true,
+    "esModuleInterop": true
   },
   "include": ["src/**/*"]
 }
