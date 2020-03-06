@@ -43,7 +43,7 @@ describe('create', () => {
     await page.type("[data-qa='html-text-input']", 'hello');
 
     // give time for events to callback
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
     // check the code updated as expected
     expect(await loadCode()).toMatchSnapshot('3-updated');
