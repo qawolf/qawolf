@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { launch, repl } from 'playwright-utils';
+import { create } from './create-code/create';
 
 const isCLI = !module.parent;
 if (isCLI) {
@@ -7,9 +8,6 @@ if (isCLI) {
 }
 
 // export public API
-import { create } from './create-code/create';
-
-// TODO launch
 export { create, launch, repl };
 
 // make repl a global
