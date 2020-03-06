@@ -45,4 +45,20 @@ describe('buildTemplate', () => {
     });
     expect(template2).toMatchSnapshot();
   });
+
+  it('sets state if statePath specified', () => {
+    const template = buildScriptTemplate({
+      name: 'myScript',
+      statePath: 'admin.json',
+      url: 'www.qawolf.com',
+    });
+    expect(template).toMatchSnapshot();
+
+    const template2 = buildTestTemplate({
+      name: 'myTest',
+      statePath: 'admin.json',
+      url: 'www.qawolf.com',
+    });
+    expect(template2).toMatchSnapshot();
+  });
 });

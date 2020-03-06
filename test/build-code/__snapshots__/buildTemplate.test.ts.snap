@@ -95,3 +95,48 @@ test('myTest', async () => {
   await qawolf.create();
 });"
 `;
+
+exports[`buildTemplate sets state if statePath specified 1`] = `
+"const qawolf = require(\\"qawolf\\");
+
+const myScript = async context => {
+  let page = await context.newPage();
+  await page.goto(\\"www.qawolf.com\\");
+  await qawolf.setState(page, \\"admin.json\\");
+  await qawolf.create();
+};
+
+exports.myScript = myScript;
+
+if (require.main === module) {
+  (async () => {
+    const browser = await qawolf.launch();
+    const context = await browser.newContext();
+    await qawolf.register(context);
+    await myScript(context);
+    await browser.close();
+  })();
+}"
+`;
+
+exports[`buildTemplate sets state if statePath specified 2`] = `
+"const qawolf = require(\\"qawolf\\");
+
+let browser;
+let page;
+
+beforeAll(async () => {
+  browser = await qawolf.launch();
+  const context = await browser.newContext();
+  await qawolf.register(context);
+  page = await context.newPage();
+});
+
+afterAll(() => browser.close());
+
+test('myTest', async () => {
+  await page.goto(\\"www.qawolf.com\\");
+  await qawolf.setState(page, \\"admin.json\\");
+  await qawolf.create();
+});"
+`;
