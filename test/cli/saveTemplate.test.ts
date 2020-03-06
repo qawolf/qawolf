@@ -10,6 +10,8 @@ const randomString = (): string =>
     .toString(36)
     .substring(2, 15);
 
+jest.mock('inquirer');
+
 describe('saveTemplate', () => {
   afterAll(jest.restoreAllMocks);
 
