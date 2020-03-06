@@ -34,11 +34,11 @@
   },
   "license": "BSD-3.0",
   "dependencies": {
+    "@jperl/html-parse-stringify": "^1.0.4",
     "@qawolf/jest-reporter": "^0.1.0",
     "await-outside": "^3.0.0",
     "callsites": "^3.1.0",
     "commander": "^4.1.1",
-    "create-playwright": "^0.1.0",
     "debug": "*",
     "dotenv": "^8.2.0",
     "inquirer": "^7.0.5",
