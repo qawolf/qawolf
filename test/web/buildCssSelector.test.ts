@@ -2,7 +2,10 @@ import { Browser, Page } from 'playwright-core';
 import { launch } from 'playwright-utils';
 import { CreatePlaywrightWeb } from '../../src/web';
 import { WEB_SCRIPT } from '../../src/web/addScript';
-import { AttributeValuePair } from '../../src/web/buildCssSelector';
+import {
+  AttributeValuePair,
+  deserializeRegex,
+} from '../../src/web/buildCssSelector';
 import { TEST_URL } from '../utils';
 
 let browser: Browser;
@@ -55,7 +58,10 @@ beforeAll(async () => {
   await page.addInitScript(WEB_SCRIPT);
 });
 
-afterAll(() => browser.close());
+afterAll(async () => {
+  await browser.close();
+  jest.restoreAllMocks();
+});
 
 describe('buildCssSelector', () => {
   it('returns undefined if there is no attribute', async () => {
@@ -244,6 +250,49 @@ describe('buildCssSelector', () => {
       );
       expect(selector).toBe("[data-qa='radio-group'] [value='dog-0']");
     });
+  });
+
+  describe('regex attributes', () => {
+    beforeAll(async () => {
+      await page.goto(`${TEST_URL}nested-data-attributes`);
+    });
+
+    it('builds selector based of an attribute regex', async () => {
+      const selector = await buildCssSelector('#button', true, '/data-.*/');
+      expect(selector).toBe("[data-test='click'] [data-qa='button']");
+    });
+
+    it('ignores attributes that do not match regex', async () => {
+      const selector = await buildCssSelector('#button', true, '/qa-.*/,id');
+      expect(selector).toBe("[id='button']");
+
+      const selector2 = await buildCssSelector('#button', true, '/qa-.*/');
+      expect(selector2).toBeUndefined();
+    });
+
+    it('ignores invalid regex', async () => {
+      const selector = await buildCssSelector('#button', true, '/[/,/data-.*/');
+      expect(selector).toBe("[data-test='click'] [data-qa='button']");
+    });
+  });
+});
+
+describe('deserializeRegex', () => {
+  it('returns regex as is if no flag', () => {
+    expect(deserializeRegex('/qa-.*/')).toEqual(new RegExp('qa-.*'));
+  });
+
+  it('includes flags if passed', () => {
+    expect(deserializeRegex('/qa-.*/i')).toEqual(new RegExp('qa-.*', 'i'));
+  });
+
+  it('warns user if invalid regex passed', () => {
+    jest.spyOn(console, 'error').mockReturnValue(null);
+
+    expect(deserializeRegex('/[/')).toBeNull();
+    expect(console.error).toBeCalledWith(
+      'qawolf: invalid regex attribute /[/, skipping this attribute',
+    );
   });
 });
 

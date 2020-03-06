@@ -16,6 +16,39 @@ interface ElementAttributeValuePair {
   element: HTMLElement;
 }
 
+// adapted from https://stackoverflow.com/a/33416684/230462
+export const deserializeRegex = (regexString: string): RegExp | null => {
+  try {
+    const parts = regexString.match(/\/(.*)\/(.*)?/) as RegExpMatchArray;
+    return new RegExp(parts[1], parts[2] || '');
+  } catch (e) {
+    console.error(
+      `qawolf: invalid regex attribute ${regexString}, skipping this attribute`,
+    );
+    return null;
+  }
+};
+
+const getRegexAttributeValue = (
+  element: HTMLElement,
+  regexString: string,
+): AttributeValuePair | null => {
+  const regex = deserializeRegex(regexString);
+  if (!regex) return null;
+
+  const attributes = element.attributes;
+
+  for (let i = 0; i < attributes.length; i++) {
+    const { name, value } = attributes[i];
+
+    if (name.match(regex)) {
+      return { attribute: name, value };
+    }
+  }
+
+  return null;
+};
+
 export const getAttributeValue = (
   element: HTMLElement,
   attribute: string,
@@ -25,8 +58,15 @@ export const getAttributeValue = (
   const attributes = attribute.split(',').map(attr => attr.trim());
 
   for (const attribute of attributes) {
-    const value = element.getAttribute(attribute);
-    if (value) return { attribute, value };
+    const isRegex = attribute[0] === '/';
+
+    if (isRegex) {
+      const attributeValuePair = getRegexAttributeValue(element, attribute);
+      if (attributeValuePair) return attributeValuePair;
+    } else {
+      const value = element.getAttribute(attribute);
+      if (value) return { attribute, value };
+    }
   }
 
   return null;
