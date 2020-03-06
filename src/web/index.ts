@@ -10,7 +10,7 @@ import { PageEventCollector } from './PageEventCollector';
 import { nodeToDoc, nodeToHtml, nodeToHtmlSelector } from './serialize';
 import { getXpath } from './xpath';
 
-const CreatePlaywrightWeb = {
+const QAWolfWeb = {
   buildCssSelector,
   getAttributeValue,
   getClickableAncestor,
@@ -22,4 +22,4 @@ const CreatePlaywrightWeb = {
   nodeToHtmlSelector,
   PageEventCollector,
 };
-export type CreatePlaywrightWeb = typeof CreatePlaywrightWeb;
+export type QAWolfWeb = typeof QAWolfWeb;

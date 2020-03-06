@@ -1,6 +1,6 @@
 import { Browser, Page } from 'playwright-core';
 import { launch } from 'playwright-utils';
-import { CreatePlaywrightWeb } from '../../src/web';
+import { QAWolfWeb } from '../../src/web';
 import { WEB_SCRIPT } from '../../src/web/addScript';
 import {
   AttributeValuePair,
@@ -18,7 +18,7 @@ const buildCssSelector = async (
 ): Promise<string | undefined> => {
   const result = await page.evaluate(
     (selector, isClick, attribute) => {
-      const web: CreatePlaywrightWeb = (window as any).createplaywright;
+      const web: QAWolfWeb = (window as any).qawolf;
       const target = document.querySelector(selector) as HTMLElement;
 
       return web.buildCssSelector({
@@ -41,7 +41,7 @@ const getAttributeValue = async (
 ): Promise<AttributeValuePair | null> => {
   const result = await page.evaluate(
     (selector, attribute) => {
-      const web: CreatePlaywrightWeb = (window as any).createplaywright;
+      const web: QAWolfWeb = (window as any).qawolf;
       const button = document.querySelector(selector) as HTMLElement;
       return web.getAttributeValue(button, attribute);
     },

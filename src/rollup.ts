@@ -7,9 +7,9 @@ import typescript from 'rollup-plugin-typescript';
 export default {
   input: './src/web/index.ts',
   output: {
-    file: './build/createplaywright.web.js',
+    file: './build/qawolf.web.js',
     format: 'iife',
-    name: 'createplaywright',
+    name: 'qawolf',
     strict: false,
   },
   onwarn: (warning, next) => {
