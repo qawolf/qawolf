@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`create works end-to-end: 1-initial 1`] = `
+"import callsites from 'callsites';
+import * as qawolf from '../../../src';
+
+export const createSelf = async (onReady: () => void): Promise<void> => {
+  // 🐺 I code, therefore I am
+  await qawolf.create({ onReady });
+};
+
+export const getCallSites = (): string[] =>
+  callsites().map(c => c.getFileName());
+"
+`;
+
+exports[`create works end-to-end: 2-prepared 1`] = `
+"import callsites from 'callsites';
+import * as qawolf from '../../../src';
+
+export const createSelf = async (onReady: () => void): Promise<void> => {
+  // 🐺 I code, therefore I am
+  // 🐺 CREATE CODE HERE
+};
+
+export const getCallSites = (): string[] =>
+  callsites().map(c => c.getFileName());
+"
+`;
+
+exports[`create works end-to-end: 3-updated 1`] = `
+"import callsites from 'callsites';
+import * as qawolf from '../../../src';
+
+export const createSelf = async (onReady: () => void): Promise<void> => {
+  // 🐺 I code, therefore I am
+  await page.type(\\"[data-qa='html-text-input']\\", \\"hello\\");
+  // 🐺 CREATE CODE HERE
+};
+
+export const getCallSites = (): string[] =>
+  callsites().map(c => c.getFileName());
+"
+`;
+
+exports[`create works end-to-end: 4-reverted 1`] = `
+"import callsites from 'callsites';
+import * as qawolf from '../../../src';
+
+export const createSelf = async (onReady: () => void): Promise<void> => {
+  // 🐺 I code, therefore I am
+  await qawolf.create({ onReady });
+};
+
+export const getCallSites = (): string[] =>
+  callsites().map(c => c.getFileName());
+"
+`;

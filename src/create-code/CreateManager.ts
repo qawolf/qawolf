@@ -49,7 +49,9 @@ export const promptSaveRepl = async (codePath: string): Promise<boolean> => {
 };
 
 export class CreateManager {
-  public static async run(options: CreateCliOptions): Promise<void> {
+  public static async create(
+    options: CreateCliOptions,
+  ): Promise<CreateManager> {
     debug(
       `create code at ${options.codePath} selectors at ${options.selectorPath}`,
     );
@@ -64,9 +66,13 @@ export class CreateManager {
       context: options.context,
     });
 
-    const cli = new CreateManager({ codeUpdater, collector, selectorUpdater });
+    const manager = new CreateManager({
+      codeUpdater,
+      collector,
+      selectorUpdater,
+    });
 
-    await cli.finalize();
+    return manager;
   }
 
   private _codeUpdater: CodeFileUpdater;
@@ -100,11 +106,10 @@ export class CreateManager {
     ]);
   }
 
-  protected async finalize(): Promise<void> {
+  public async finalize(): Promise<void> {
     const shouldSave = await promptSaveRepl(this._codeUpdater.path());
     if (shouldSave) {
       await this._codeUpdater.finalize();
-      await this._selectorUpdater.finalize();
     } else {
       await this._codeUpdater.discard();
       await this._selectorUpdater.discard();
