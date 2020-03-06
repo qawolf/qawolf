@@ -3,7 +3,7 @@ import { yellow } from 'kleur';
 import { addCiCommands } from 'playwright-ci';
 import updateNotifier from 'update-notifier';
 import { howl } from './howl';
-import { runJest } from './runJest';
+import { runCommand, runJest } from './run';
 import { saveTemplate } from './saveTemplate';
 import { BrowserName } from '../types';
 import { omitArgs, parseUrl } from './utils';
@@ -30,17 +30,51 @@ program
     'path where state data (cookies, localStorage, sessionStorage) is saved',
   )
   .description('create a test from browser actions')
-  .action(async (urlArgument, optionalName, { device, script, statePath }) => {
+
+  .action(async (urlArgument, optionalName, cmd) => {
     const url = parseUrl(urlArgument);
     const name = optionalName || (url.hostname || '').replace(/\..*/g, '');
 
-    await saveTemplate({ device, name, script, statePath, url: urlArgument });
+    const codePath = await saveTemplate({
+      device: cmd.device,
+      name,
+      script: cmd.script,
+      statePath: cmd.statePath,
+      url: url.href,
+    });
+    if (!codePath) {
+      // the user decided to not overwrite
+      return;
+    }
+
+    const env: NodeJS.ProcessEnv = {
+      QAW_BROWSER: 'chromium',
+      // let qawolf.create know to remove the file on discard
+      QAW_DISCARD: '1',
+      QAW_HEADLESS: 'false',
+    };
+
+    try {
+      if (cmd.script) {
+        runCommand(`node ${codePath}`, env);
+      } else {
+        runJest([codePath], {
+          env,
+          rootDir: cmd.rootDir,
+          repl: true,
+        });
+      }
+
+      process.exit(0);
+    } catch (e) {
+      process.exit(1);
+    }
   });
 
 program
   .command('test')
   .option(
-    '-r, --rootDir <rootDir>',
+    '--rootDir <rootDir>',
     'root directory of test code, defaults to workingDirectory/.qawolf',
   )
   .option('--all-browsers', 'run tests on chromium, firefox, and webkit')
@@ -55,9 +89,7 @@ program
       '--all-browsers',
       '--chromium',
       '--firefox',
-      '-r',
       '--repl',
-      '--rootDir',
       '--webkit',
     ]);
 
@@ -75,12 +107,17 @@ program
       browsers.push('webkit');
     }
 
-    const code = runJest(args, {
-      browsers,
-      path: cmd.rootDir,
-      repl: !!cmd.repl,
-    });
-    process.exit(code);
+    try {
+      runJest(args, {
+        browsers,
+        repl: !!cmd.repl,
+        rootDir: cmd.rootDir,
+      });
+
+      process.exit(0);
+    } catch (e) {
+      process.exit(1);
+    }
   });
 
 program

@@ -9,15 +9,18 @@ interface BuildTemplateOptions {
 
 const REQUIRE_QAWOLF = 'const qawolf = require("qawolf");';
 
-const buildRequires = (device?: string): string => {
-  if (!device) return REQUIRE_QAWOLF;
+const buildRequires = (name: string, device?: string): string => {
+  const requireSelector = `const selectors = require("../selectors/${name}.json");`;
+  const requireDefaults = `${REQUIRE_QAWOLF}\n${requireSelector}`;
+
+  if (!device) return requireDefaults;
 
   if (!devices[device]) {
     throw new Error(`Device ${device} not available in Playwright`);
   }
 
   const requires = `const { devices } = require("playwright");
-${REQUIRE_QAWOLF}
+${requireDefaults}
 const device = devices["${device}"];`;
 
   return requires;
@@ -46,7 +49,7 @@ export const buildScriptTemplate = ({
   statePath,
   url,
 }: BuildTemplateOptions): string => {
-  const code = `${buildRequires(device)}
+  const code = `${buildRequires(name, device)}
 
 const ${name} = async context => {
   let page = await context.newPage();
@@ -75,7 +78,7 @@ export const buildTestTemplate = ({
   statePath,
   url,
 }: BuildTemplateOptions): string => {
-  const code = `${buildRequires(device)}
+  const code = `${buildRequires(name, device)}
 
 let browser;
 let page;
