@@ -25,12 +25,16 @@ program
     'directory where test or script will be saved',
   )
   .option('-s, --script', 'create a script instead of a test')
+  .option(
+    '--statePath <statePath>',
+    'path where state data (cookies, localStorage, sessionStorage) is saved',
+  )
   .description('create a test from browser actions')
-  .action(async (urlArgument, optionalName, { device, script }) => {
+  .action(async (urlArgument, optionalName, { device, script, statePath }) => {
     const url = parseUrl(urlArgument);
     const name = optionalName || (url.hostname || '').replace(/\..*/g, '');
 
-    await saveTemplate({ device, name, url: urlArgument, script });
+    await saveTemplate({ device, name, script, statePath, url: urlArgument });
   });
 
 program

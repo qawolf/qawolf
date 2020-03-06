@@ -3,6 +3,7 @@ import { devices } from 'playwright';
 interface BuildTemplateOptions {
   device?: string;
   name: string;
+  statePath?: string;
   url: string;
 }
 
@@ -33,16 +34,23 @@ const buildNewContext = (device?: string): string => {
   return context;
 };
 
+const buildSetState = (statePath?: string): string => {
+  if (!statePath) return '';
+
+  return `\n  await qawolf.setState(page, "${statePath}");`;
+};
+
 export const buildScriptTemplate = ({
   device,
   name,
+  statePath,
   url,
 }: BuildTemplateOptions): string => {
   const code = `${buildRequires(device)}
 
 const ${name} = async context => {
   let page = await context.newPage();
-  await page.goto("${url}");
+  await page.goto("${url}");${buildSetState(statePath)}
   await qawolf.create();
 };
 
@@ -64,6 +72,7 @@ if (require.main === module) {
 export const buildTestTemplate = ({
   device,
   name,
+  statePath,
   url,
 }: BuildTemplateOptions): string => {
   const code = `${buildRequires(device)}
@@ -81,7 +90,7 @@ beforeAll(async () => {
 afterAll(() => browser.close());
 
 test('${name}', async () => {
-  await page.goto("${url}");
+  await page.goto("${url}");${buildSetState(statePath)}
   await qawolf.create();
 });`;
 
