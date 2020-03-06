@@ -25,7 +25,10 @@ export const runCommand = (
   });
 };
 
-export const runJest = (args: string[] = [], options: RunJestOptions = {}) => {
+export const runJest = (
+  args: string[] = [],
+  options: RunJestOptions = {},
+): void => {
   /**
    * Returns exit code. 0 for success, 1 for failed.
    */
