@@ -1,6 +1,6 @@
 import { Browser, Page } from 'playwright-core';
 import { launch } from 'playwright-utils';
-import { CreatePlaywrightWeb } from '../../src/web';
+import { QAWolfWeb } from '../../src/web';
 import { WEB_SCRIPT } from '../../src/web/addScript';
 import { TEST_URL } from '../utils';
 
@@ -19,7 +19,7 @@ afterAll(() => browser.close());
 describe('getClickableAncestor', () => {
   it('chooses the top most clickable ancestor', async () => {
     const xpath = await page.evaluate(() => {
-      const web: CreatePlaywrightWeb = (window as any).createplaywright;
+      const web: QAWolfWeb = (window as any).qawolf;
       const element = document.getElementsByTagName('p')[1];
       if (!element) throw new Error('element not found');
 
@@ -32,7 +32,7 @@ describe('getClickableAncestor', () => {
 
   it('chooses the original element when there is no clickable ancestor', async () => {
     const xpath = await page.evaluate(() => {
-      const web: CreatePlaywrightWeb = (window as any).createplaywright;
+      const web: QAWolfWeb = (window as any).qawolf;
       const element = document.getElementsByTagName('button')[0];
       if (!element) throw new Error('element not found');
 
@@ -47,7 +47,7 @@ describe('getClickableAncestor', () => {
 describe('isVisible', () => {
   it('returns true if element is visible', async () => {
     const isElementVisible = await page.evaluate(() => {
-      const web: CreatePlaywrightWeb = (window as any).createplaywright;
+      const web: QAWolfWeb = (window as any).qawolf;
       const element = document.getElementById('username');
       if (!element) throw new Error('element not found');
 
@@ -59,7 +59,7 @@ describe('isVisible', () => {
 
   it('returns false if element has no width', async () => {
     const isElementVisible = await page.evaluate(() => {
-      const web: CreatePlaywrightWeb = (window as any).createplaywright;
+      const web: QAWolfWeb = (window as any).qawolf;
       const element = document.getElementById('username');
       if (!element) throw new Error('element not found');
 
@@ -77,7 +77,7 @@ describe('isVisible', () => {
 describe('isClickable', () => {
   it('returns true if element is clickable', async () => {
     const isClickable = await page.evaluate(() => {
-      const web: CreatePlaywrightWeb = (window as any).createplaywright;
+      const web: QAWolfWeb = (window as any).qawolf;
 
       const loginButton = document.getElementsByTagName('button')[0];
       return web.isClickable(loginButton, window.getComputedStyle(loginButton));
@@ -88,7 +88,7 @@ describe('isClickable', () => {
 
   it('returns false if element is not clickable', async () => {
     const isClickable = await page.evaluate(() => {
-      const web: CreatePlaywrightWeb = (window as any).createplaywright;
+      const web: QAWolfWeb = (window as any).qawolf;
       const element = document.getElementById('username');
       if (!element) throw new Error('element not found');
 

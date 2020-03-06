@@ -4,7 +4,7 @@ import { BrowserContext } from 'playwright-core';
 import { forEachPage, indexPages, initEvaluateScript } from 'playwright-utils';
 import { IndexedPage } from 'playwright-utils/build/indexPages';
 import { ElementEvent } from '../types';
-import { CreatePlaywrightWeb } from '../web';
+import { QAWolfWeb } from '../web';
 import { addWebScript } from '../web/addScript';
 
 const debug = Debug('qawolf:ContextEventCollector');
@@ -50,7 +50,7 @@ export class ContextEventCollector extends EventEmitter {
     await initEvaluateScript(
       page,
       (attribute: string, pageIndex: number) => {
-        const web: CreatePlaywrightWeb = (window as any).createplaywright;
+        const web: QAWolfWeb = (window as any).qawolf;
 
         new web.PageEventCollector({
           attribute,

@@ -1,6 +1,6 @@
 import { Browser, Page } from 'playwright-core';
 import { launch } from 'playwright-utils';
-import { CreatePlaywrightWeb } from '../../src/web';
+import { QAWolfWeb } from '../../src/web';
 import { WEB_SCRIPT } from '../../src/web/addScript';
 import { TEST_URL } from '../utils';
 
@@ -19,7 +19,7 @@ afterAll(() => browser.close());
 describe('nodeToDoc', () => {
   it('serializes html and body elements by their tag only', async () => {
     let doc = await page.evaluate(() => {
-      const web: CreatePlaywrightWeb = (window as any).createplaywright;
+      const web: QAWolfWeb = (window as any).qawolf;
       const element = document.querySelector('html');
       if (!element) throw new Error('element not found');
       return web.nodeToDoc(element);
@@ -34,7 +34,7 @@ describe('nodeToDoc', () => {
     });
 
     doc = await page.evaluate(() => {
-      const web: CreatePlaywrightWeb = (window as any).createplaywright;
+      const web: QAWolfWeb = (window as any).qawolf;
       const element = document.querySelector('body');
       if (!element) throw new Error('element not found');
       return web.nodeToDoc(element);
@@ -55,7 +55,7 @@ describe('nodeToHtml', () => {
     await page.goto(`${TEST_URL}images`);
 
     const html = await page.evaluate(() => {
-      const web: CreatePlaywrightWeb = (window as any).createplaywright;
+      const web: QAWolfWeb = (window as any).qawolf;
       const element = document.querySelector('img');
       if (!element) throw new Error('element not found');
 
@@ -69,7 +69,7 @@ describe('nodeToHtml', () => {
     await page.goto(`${TEST_URL}login`);
 
     const html = await page.evaluate(() => {
-      const web: CreatePlaywrightWeb = (window as any).createplaywright;
+      const web: QAWolfWeb = (window as any).qawolf;
 
       const element = document.querySelector('input');
       if (!element) throw new Error('element not found');
@@ -88,7 +88,7 @@ describe('nodeToHtmlSelector', () => {
     await page.goto(`${TEST_URL}login`);
 
     const html = await page.evaluate(() => {
-      const web: CreatePlaywrightWeb = (window as any).createplaywright;
+      const web: QAWolfWeb = (window as any).qawolf;
       const element = document.querySelector('input');
       if (!element) throw new Error('element not found');
 
