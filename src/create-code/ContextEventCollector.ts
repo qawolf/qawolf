@@ -3,6 +3,7 @@ import { EventEmitter } from 'events';
 import { BrowserContext } from 'playwright-core';
 import { forEachPage, indexPages, initEvaluateScript } from 'playwright-utils';
 import { IndexedPage } from 'playwright-utils/build/indexPages';
+import { CONFIG } from '../config';
 import { ElementEvent } from '../types';
 import { QAWolfWeb } from '../web';
 import { addWebScript } from '../web/addScript';
@@ -28,8 +29,7 @@ export class ContextEventCollector extends EventEmitter {
   protected constructor(options: ConstructorOptions) {
     super();
 
-    this._attribute =
-      options.attribute || 'data-cy,data-e2e,data-qa,data-test,data-testid';
+    this._attribute = options.attribute || CONFIG.attribute;
 
     forEachPage(options.context, page =>
       this._collectPageEvents(page as IndexedPage),
