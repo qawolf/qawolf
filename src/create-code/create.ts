@@ -7,10 +7,11 @@ import { BrowserContext } from 'playwright';
 import { CREATE_HANDLE } from './CodeUpdater';
 import { CreateManager } from './CreateManager';
 import { getLineIncludes } from './format';
+import { ReplContext } from 'playwright-utils';
 
 type CreateOptions = {
   codePath?: string;
-  context: BrowserContext;
+  context?: BrowserContext;
   selectorPath?: string;
 };
 
@@ -49,13 +50,20 @@ export const getSelectorPath = (codePath: string): string => {
   return join(dirname(codePath), '../selectors', `${codeName}.json`);
 };
 
-export const create = async (options: CreateOptions): Promise<void> => {
+export const create = async (options: CreateOptions = {}): Promise<void> => {
+  const context: BrowserContext =
+    options.context || (ReplContext.data() as any).context;
+  if (!context) {
+    throw new Error(
+      'No context found. Call qawolf.register(context) before qawolf.create() or provide a context qawolf.create({ context })',
+    );
+  }
+
   const codePath = options.codePath || (await getCodePath());
   const selectorPath = options.selectorPath || getSelectorPath(codePath);
   await CreateManager.run({
     codePath,
-    // TODO make optional by checking repl for context
-    context: options.context,
+    context,
     selectorPath,
   });
 };

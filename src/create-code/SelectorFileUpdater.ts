@@ -59,9 +59,12 @@ export class SelectorFileUpdater {
   public selectors(): string[] {
     // we do not support editing of the selectors file
     // just replace the new selectors
-    const newSelectors = this._steps.map(
-      step => step.cssSelector || step.htmlSelector,
-    );
+    const newSelectors = this._steps.map(({ cssSelector, htmlSelector }) => {
+      if (cssSelector) return cssSelector;
+
+      return `html=${htmlSelector}`;
+    });
+
     return concat(this._initialSelectors, newSelectors);
   }
 
