@@ -1,5 +1,0 @@
-{
-  "name": "@qawolf/jest-plugin",
-  "setupFilesAfterEnv": ["@qawolf/jest-plugin"],
-  "transform": {}
-}

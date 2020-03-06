@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`ScriptExpression.code() builds assertion code 1`] = `
-"// click \\"my-input\\" input
-await browser.click(selectors[0]);
-"
-`;

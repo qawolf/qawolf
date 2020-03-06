@@ -1,0 +1,153 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`buildSteps builds expected steps 1`] = `
+Array [
+  Object {
+    "action": "click",
+    "cssSelector": undefined,
+    "htmlSelector": "<ul qaw_innertext=\\"Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Radio inputs Selects Text inputs Time pickers\\"><li qaw_innertext=\\"Log in\\"><a href=\\"/login\\" qaw_innertext=\\"Log in\\"></a></li></ul>",
+    "index": 0,
+    "page": 0,
+    "target": Object {
+      "attrs": Object {
+        "href": "/login",
+        "qaw_innertext": "Log in",
+      },
+      "children": Array [
+        Object {
+          "content": "Log in",
+          "type": "text",
+        },
+      ],
+      "name": "a",
+      "type": "tag",
+      "voidElement": false,
+    },
+  },
+  Object {
+    "action": "click",
+    "cssSelector": undefined,
+    "htmlSelector": "<div id=\\"root\\" qaw_innertext=\\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\\"><form qaw_innertext=\\"Username Password Log in\\"><input autocomplete=\\"off\\" id=\\"username\\" type=\\"text\\" value=\\"\\" qaw_labels=\\"Username\\" /></form></div>",
+    "index": 1,
+    "page": 0,
+    "target": Object {
+      "attrs": Object {
+        "autocomplete": "off",
+        "id": "username",
+        "qaw_labels": "Username",
+        "type": "text",
+        "value": "",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+  },
+  Object {
+    "action": "type",
+    "cssSelector": undefined,
+    "htmlSelector": "<div id=\\"root\\" qaw_innertext=\\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\\"><form qaw_innertext=\\"Username Password Log in\\"><input autocomplete=\\"off\\" id=\\"username\\" type=\\"text\\" value=\\"\\" qaw_labels=\\"Username\\" /></form></div>",
+    "index": 2,
+    "page": 0,
+    "target": Object {
+      "attrs": Object {
+        "autocomplete": "off",
+        "id": "username",
+        "qaw_labels": "Username",
+        "type": "text",
+        "value": "",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "value": "tomsmith",
+  },
+  Object {
+    "action": "type",
+    "cssSelector": undefined,
+    "htmlSelector": "<div id=\\"root\\" qaw_innertext=\\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\\"><form qaw_innertext=\\"Username Password Log in\\"><input autocomplete=\\"off\\" id=\\"username\\" type=\\"text\\" value=\\"tomsmith\\" qaw_labels=\\"Username\\" /></form></div>",
+    "index": 3,
+    "page": 0,
+    "target": Object {
+      "attrs": Object {
+        "autocomplete": "off",
+        "id": "username",
+        "qaw_labels": "Username",
+        "type": "text",
+        "value": "tomsmith",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "value": "↓Tab↑Tab",
+  },
+  Object {
+    "action": "type",
+    "cssSelector": undefined,
+    "htmlSelector": "<div id=\\"root\\" qaw_innertext=\\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\\"><form qaw_innertext=\\"Username Password Log in\\"><input autocomplete=\\"off\\" id=\\"password\\" type=\\"password\\" value=\\"\\" qaw_labels=\\"Password\\" /></form></div>",
+    "index": 4,
+    "page": 0,
+    "target": Object {
+      "attrs": Object {
+        "autocomplete": "off",
+        "id": "password",
+        "qaw_labels": "Password",
+        "type": "password",
+        "value": "",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "value": "SuperSecretPassword!",
+  },
+  Object {
+    "action": "type",
+    "cssSelector": undefined,
+    "htmlSelector": "<div id=\\"root\\" qaw_innertext=\\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\\"><form qaw_innertext=\\"Username Password Log in\\"><input autocomplete=\\"off\\" id=\\"password\\" type=\\"password\\" value=\\"SuperSecretPassword!\\" qaw_labels=\\"Password\\" /></form></div>",
+    "index": 5,
+    "page": 0,
+    "target": Object {
+      "attrs": Object {
+        "autocomplete": "off",
+        "id": "password",
+        "qaw_labels": "Password",
+        "type": "password",
+        "value": "SuperSecretPassword!",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "value": "↓Enter↑Enter",
+  },
+  Object {
+    "action": "click",
+    "cssSelector": undefined,
+    "htmlSelector": "<div id=\\"root\\" qaw_innertext=\\"Secure Area Log out\\"><button qaw_innertext=\\"Log out\\"><p qaw_innertext=\\"Log out\\"></p></button></div>",
+    "index": 6,
+    "page": 0,
+    "target": Object {
+      "attrs": Object {
+        "qaw_innertext": "Log out",
+      },
+      "children": Array [
+        Object {
+          "content": "Log out",
+          "type": "text",
+        },
+      ],
+      "name": "p",
+      "type": "tag",
+      "voidElement": false,
+    },
+  },
+]
+`;

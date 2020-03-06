@@ -1,16 +1,29 @@
-.vscode
-**/*.DS_Store
-**/*.log
-**/*.tsbuildinfo
-**/*.eslintcache
-**/.qawolf
-**/*.tgz
-**/coverage
-**/lib
-**/node_modules
-**/tmp
-packages/**/logs
+# Logs
+logs
+*.log
+npm-debug.log*
 
-# used in tests
-!packages/cli/.qawolf
-!packages/e2e-tests/.qawolf
+# Dependencies
+node_modules/
+
+# Coverage
+coverage
+
+# Transpiled files
+build/
+
+# VS Code
+.vscode
+!.vscode/tasks.js
+
+# JetBrains IDEs
+.idea/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Misc
+.DS_Store

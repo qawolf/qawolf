@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`buildSelectSteps builds expected steps 1`] = `
+Array [
+  Object {
+    "action": "select",
+    "cssSelector": "[data-qa='html-select']",
+    "htmlSelector": "<div style=\\"display: flex; flex-wrap: wrap;\\" qaw_innertext=\\"Native HTML Best pet? Cat Dog Hedgehog Snake Material UI Best pet? ​ Favorite color? Blue Red Green Friends? ​ Semantic UI Country?\\"><div class=\\"container\\" qaw_innertext=\\"Native HTML Best pet? Cat Dog Hedgehog Snake\\"><select data-qa=\\"html-select\\" qaw_innertext=\\"Best pet? Cat Dog Hedgehog Snake\\"></select></div></div>",
+    "index": 2,
+    "page": 0,
+    "target": Object {
+      "attrs": Object {
+        "data-qa": "html-select",
+        "qaw_innertext": "Best pet? Cat Dog Hedgehog Snake",
+      },
+      "children": Array [
+        Object {
+          "attrs": Object {
+            "disabled": "",
+            "selected": "",
+            "value": "",
+          },
+          "children": Array [
+            Object {
+              "content": "Best pet?",
+              "type": "text",
+            },
+          ],
+          "name": "option",
+          "type": "tag",
+          "voidElement": false,
+        },
+        Object {
+          "attrs": Object {
+            "value": "cat",
+          },
+          "children": Array [
+            Object {
+              "content": "Cat",
+              "type": "text",
+            },
+          ],
+          "name": "option",
+          "type": "tag",
+          "voidElement": false,
+        },
+        Object {
+          "attrs": Object {
+            "value": "dog",
+          },
+          "children": Array [
+            Object {
+              "content": "Dog",
+              "type": "text",
+            },
+          ],
+          "name": "option",
+          "type": "tag",
+          "voidElement": false,
+        },
+        Object {
+          "attrs": Object {
+            "value": "hedgehog",
+          },
+          "children": Array [
+            Object {
+              "content": "Hedgehog",
+              "type": "text",
+            },
+          ],
+          "name": "option",
+          "type": "tag",
+          "voidElement": false,
+        },
+        Object {
+          "attrs": Object {
+            "disabled": "",
+            "value": "snake",
+          },
+          "children": Array [
+            Object {
+              "content": "Snake",
+              "type": "text",
+            },
+          ],
+          "name": "option",
+          "type": "tag",
+          "voidElement": false,
+        },
+      ],
+      "name": "select",
+      "type": "tag",
+      "voidElement": false,
+    },
+    "value": "dog",
+  },
+]
+`;
