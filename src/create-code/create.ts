@@ -45,10 +45,7 @@ export const getCodePath = async (): Promise<string> => {
 };
 
 export const getSelectorPath = (codePath: string): string => {
-  const codeName = basename(codePath)
-    .split('.')
-    .slice(0, -1);
-
+  const codeName = basename(codePath).split('.')[0];
   return join(dirname(codePath), '../selectors', `${codeName}.json`);
 };
 

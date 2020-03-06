@@ -1,5 +1,8 @@
-import { CodeUpdater } from './CodeUpdater';
+import Debug from 'debug';
 import { pathExists, readFile, remove, outputFile } from 'fs-extra';
+import { CodeUpdater } from './CodeUpdater';
+
+const debug = Debug('qawolf:CodeFileUpdater');
 
 const loadCodeFile = async (path: string): Promise<string> => {
   const codeExists = await pathExists(path);
@@ -12,13 +15,15 @@ export class CodeFileUpdater extends CodeUpdater {
   protected _initialCode: string;
 
   public static async create(path: string): Promise<CodeFileUpdater> {
+    debug(`load code from ${path}`);
+    const initialCode = await loadCodeFile(path);
     const updater = new CodeFileUpdater(path);
-    // TODO some sort of env variable to know if this is a new file and not to set this...
-    updater._initialCode = await loadCodeFile(path);
+    await updater._prepare();
+    updater._initialCode = initialCode;
     return updater;
   }
 
-  public constructor(path: string) {
+  protected constructor(path: string) {
     super();
     this._path = path;
   }
@@ -34,10 +39,12 @@ export class CodeFileUpdater extends CodeUpdater {
   public async discard(): Promise<void> {
     this._locked = true;
 
-    if (this._initialCode) {
-      await this._updateCode(this._initialCode);
-    } else {
+    if (process.env.QAW_DISCARD === '1') {
+      debug('discard code');
       await remove(this._path);
+    } else {
+      debug('revert to initial code');
+      await this._updateCode(this._initialCode);
     }
   }
 

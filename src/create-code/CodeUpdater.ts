@@ -28,7 +28,7 @@ export abstract class CodeUpdater {
   protected abstract async _loadCode(): Promise<string>;
   protected abstract async _updateCode(code: string): Promise<void>;
 
-  public async prepare(): Promise<void> {
+  protected async _prepare(): Promise<void> {
     this._locked = true;
     const code = await this._loadCode();
 

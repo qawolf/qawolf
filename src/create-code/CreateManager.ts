@@ -54,8 +54,7 @@ export class CreateManager {
       `create code at ${options.codePath} selectors at ${options.selectorPath}`,
     );
 
-    const codeUpdater = new CodeFileUpdater(options.codePath);
-    await codeUpdater.prepare();
+    const codeUpdater = await CodeFileUpdater.create(options.codePath);
 
     const selectorUpdater = await SelectorFileUpdater.create(
       options.selectorPath,
