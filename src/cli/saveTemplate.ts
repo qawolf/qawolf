@@ -1,10 +1,11 @@
-import { ensureFile, pathExists, writeFile } from 'fs-extra';
+import { ensureFile, pathExists, writeFile, writeJson } from 'fs-extra';
 import { prompt } from 'inquirer';
 import { join } from 'path';
 import {
   buildScriptTemplate,
   buildTestTemplate,
 } from '../build-code/buildTemplate';
+import { getSelectorPath } from '../create-code/create';
 
 interface SaveTemplateOptions {
   device?: string;
@@ -55,11 +56,17 @@ export const shouldSaveTemplate = async (path: string): Promise<boolean> => {
 
 export const saveTemplate = async (
   options: SaveTemplateOptions,
-): Promise<void> => {
+): Promise<string | null> => {
   const { path, template } = buildTemplate(options);
-
-  if (!(await shouldSaveTemplate(path))) return;
+  if (!(await shouldSaveTemplate(path))) return null;
 
   await ensureFile(path);
-  return writeFile(path, template);
+  await writeFile(path, template);
+
+  // create a selector file so it can be imported
+  const selectorPath = getSelectorPath(path);
+  await ensureFile(selectorPath);
+  await writeJson(selectorPath, []);
+
+  return path;
 };

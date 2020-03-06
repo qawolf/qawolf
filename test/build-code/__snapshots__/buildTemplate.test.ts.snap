@@ -2,6 +2,7 @@
 
 exports[`buildTemplate builds script template 1`] = `
 "const qawolf = require(\\"qawolf\\");
+const selectors = require(\\"../selectors/myScript.json\\");
 
 const myScript = async context => {
   let page = await context.newPage();
@@ -24,6 +25,7 @@ if (require.main === module) {
 
 exports[`buildTemplate builds test template 1`] = `
 "const qawolf = require(\\"qawolf\\");
+const selectors = require(\\"../selectors/myTest.json\\");
 
 let browser;
 let page;
@@ -46,6 +48,7 @@ test('myTest', async () => {
 exports[`buildTemplate includes device if specified 1`] = `
 "const { devices } = require(\\"playwright\\");
 const qawolf = require(\\"qawolf\\");
+const selectors = require(\\"../selectors/myScript.json\\");
 const device = devices[\\"iPhone 11\\"];
 
 const myScript = async context => {
@@ -73,6 +76,7 @@ if (require.main === module) {
 exports[`buildTemplate includes device if specified 2`] = `
 "const { devices } = require(\\"playwright\\");
 const qawolf = require(\\"qawolf\\");
+const selectors = require(\\"../selectors/myTest.json\\");
 const device = devices[\\"iPad Mini\\"];
 
 let browser;
@@ -98,6 +102,7 @@ test('myTest', async () => {
 
 exports[`buildTemplate sets state if statePath specified 1`] = `
 "const qawolf = require(\\"qawolf\\");
+const selectors = require(\\"../selectors/myScript.json\\");
 
 const myScript = async context => {
   let page = await context.newPage();
@@ -121,6 +126,7 @@ if (require.main === module) {
 
 exports[`buildTemplate sets state if statePath specified 2`] = `
 "const qawolf = require(\\"qawolf\\");
+const selectors = require(\\"../selectors/myTest.json\\");
 
 let browser;
 let page;

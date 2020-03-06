@@ -29,6 +29,11 @@ describe('saveTemplate', () => {
         join(rootDir, 'scripts', 'myScript.js'),
       );
       expect(fileExists).toBe(true);
+
+      const selectorsExists = await pathExists(
+        join(rootDir, 'selectors', 'myScript.json'),
+      );
+      expect(selectorsExists).toBe(true);
     });
 
     it('saves test template', async () => {
@@ -39,6 +44,11 @@ describe('saveTemplate', () => {
         join(rootDir, 'tests', 'myTest.test.js'),
       );
       expect(fileExists).toBe(true);
+
+      const selectorsExists = await pathExists(
+        join(rootDir, 'selectors', 'myTest.json'),
+      );
+      expect(selectorsExists).toBe(true);
     });
 
     it('saves at default location if rootDir not specified', async () => {

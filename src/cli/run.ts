@@ -4,11 +4,15 @@ import { execSync } from 'child_process';
 type RunJestOptions = {
   browsers?: BrowserName[];
   config?: string;
-  path?: string;
+  env?: NodeJS.ProcessEnv;
   repl?: boolean;
+  rootDir?: string;
 };
 
-const runCommand = (command: string, env: NodeJS.ProcessEnv = {}): void => {
+export const runCommand = (
+  command: string,
+  env: NodeJS.ProcessEnv = {},
+): void => {
   // log the command we run to make it clear this is an alias for npx jest
   console.log(command + '\n');
 
@@ -24,7 +28,7 @@ const runCommand = (command: string, env: NodeJS.ProcessEnv = {}): void => {
 export const runJest = (
   args: string[] = [],
   options: RunJestOptions = {},
-): number => {
+): void => {
   /**
    * Returns exit code. 0 for success, 1 for failed.
    */
@@ -40,7 +44,7 @@ export const runJest = (
     command += ` --reporters="@qawolf/jest-reporter"`;
   }
 
-  const rootDir = options.path || '.qawolf';
+  const rootDir = options.rootDir || '.qawolf';
   command += ` --rootDir=${rootDir}`;
 
   const hasTimeout =
@@ -58,18 +62,14 @@ export const runJest = (
     command += ` ${args.join(' ')}`;
   }
 
-  try {
-    if (options.browsers && options.browsers.length) {
-      for (const browser of options.browsers) {
-        console.log(`Test: ${browser}`);
-        runCommand(command, { QAW_BROWSER: browser });
-      }
-    } else {
-      runCommand(command);
-    }
+  const env = options.env || {};
 
-    return 0;
-  } catch (e) {
-    return 1;
+  if (options.browsers && options.browsers.length) {
+    for (const browser of options.browsers) {
+      console.log(`Test: ${browser}`);
+      runCommand(command, { ...env, QAW_BROWSER: browser });
+    }
+  } else {
+    runCommand(command, env);
   }
 };
