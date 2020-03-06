@@ -52,6 +52,7 @@ if (require.main === module) {
   (async () => {
     const browser = await qawolf.launch();
     ${buildNewContext(device)}
+    await qawolf.register(context);
     await ${name}(context);
     await browser.close();
   })();
@@ -73,6 +74,7 @@ let page;
 beforeAll(async () => {
   browser = await qawolf.launch();
   ${buildNewContext(device)}
+  await qawolf.register(context);
   page = await context.newPage();
 });
 
