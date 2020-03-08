@@ -21,6 +21,30 @@ describe('Expression', () => {
       );
     });
 
+    test('fill step', () => {
+      const fillStep: Step = {
+        ...baseStep,
+        action: 'fill',
+        value: 'hello',
+      };
+
+      expect(new Expression(fillStep).code()).toEqual(
+        'await page.fill(selectors[0], "hello");\n',
+      );
+    });
+
+    test('press step', () => {
+      const pressStep: Step = {
+        ...baseStep,
+        action: 'press',
+        value: 'Enter',
+      };
+
+      expect(new Expression(pressStep).code()).toEqual(
+        'await page.press(selectors[0], "Enter");\n',
+      );
+    });
+
     test('scroll step', () => {
       const expression = new Expression({
         ...baseStep,
@@ -49,60 +73,31 @@ describe('Expression', () => {
       );
     });
 
-    test('type step with a value', () => {
-      const expression = new Expression({
-        ...baseStep,
-        action: 'type' as Action,
-        value: 'spirit',
+    describe('type step', () => {
+      test('with a value', () => {
+        const expression = new Expression({
+          ...baseStep,
+          action: 'type' as Action,
+          value: 'spirit',
+        });
+
+        expect(expression.code()).toBe(
+          'await page.type(selectors[0], "spirit");\n',
+        );
       });
 
-      expect(expression.code()).toBe(
-        'await page.type(selectors[0], "spirit");\n',
-      );
+      test('without a value', () => {
+        expect(
+          new Expression({
+            ...baseStep,
+            action: 'type',
+            value: null,
+          }).code(),
+        ).toEqual('await page.type(selectors[0], null);\n');
+      });
     });
 
-    test('type step replacing a value', () => {
-      const replaceStep: Step = {
-        ...baseStep,
-        action: 'type',
-        replace: true,
-        value: 'hello',
-      };
-
-      expect(new Expression(replaceStep).code()).toEqual(
-        'await page.type(selectors[0], "hello", { replace: true });\n',
-      );
-
-      expect(
-        new Expression({
-          ...replaceStep,
-          page: 1,
-        }).code(),
-      ).toEqual(
-        'await page.type(selectors[0], "hello", { page: 1, replace: true });\n',
-      );
-    });
-
-    test('type step without a value', () => {
-      expect(
-        new Expression({
-          ...baseStep,
-          action: 'type',
-          value: null,
-        }).code(),
-      ).toEqual('await page.type(selectors[0], null);\n');
-    });
-
-    test('consecutive steps on the same page', () => {
-      expect(
-        new Expression({
-          ...baseStep,
-          index: 1,
-        }).code(),
-      ).toEqual('await page.click(selectors[1]);\n');
-    });
-
-    //   // TODO page logic will change
+    // TODO page logic will change
     // test.todo('consecutive steps on different pages', () => {
     //   expect(
     //     new Expression(

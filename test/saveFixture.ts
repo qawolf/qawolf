@@ -1,5 +1,5 @@
-import { chromium } from 'playwright-core';
-import { ContextEventCollector } from '../src/ContextEventCollector';
+import { launch } from 'playwright-utils';
+import { ContextEventCollector } from '../src/create-code/ContextEventCollector';
 import { ElementEvent } from '../src/types';
 import { ensureDir, writeJson } from 'fs-extra';
 import { prompt } from 'inquirer';
@@ -14,7 +14,7 @@ import { dirname, join } from 'path';
   );
   console.log('Save fixtures to', savePath);
 
-  const browser = await chromium.launch({ headless: false });
+  const browser = await launch({ headless: false });
   const context = await browser.newContext();
   const collector = await ContextEventCollector.create({ context });
   const page = await context.newPage();

@@ -56,18 +56,14 @@ export const buildDescription = (step: Step): string => {
     return `select${description}`;
   }
 
-  if (step.action === 'type') {
-    if (step.replace && (step.value === '' || isNil(step.value))) {
+  if (step.action === 'press') {
+    // self explanatory, no description necessary
+    return '';
+  }
+
+  if (step.action === 'fill' || step.action === 'type') {
+    if (step.value === '' || isNil(step.value)) {
       return `clear${description}${tagName}`;
-    }
-
-    const value = step.value as string;
-    if (value && value.indexOf('↓Enter') === 0) {
-      return `Enter`;
-    }
-
-    if (value && value.indexOf('↓Tab') === 0) {
-      return `Tab`;
     }
 
     return `type into${description}${tagName}`;

@@ -1,0 +1,882 @@
+{
+  "events": [
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704458809
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704458851
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704460027,
+      "value": "Shift"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704460692,
+      "value": "!"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704460763,
+      "value": "!"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704461182,
+      "value": "Shift"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704461397,
+      "value": "Shift"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704461906,
+      "value": "@"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704461993,
+      "value": "@"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704462074,
+      "value": "Shift"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704464205,
+      "value": "Shift"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704464917,
+      "value": "#"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704464988,
+      "value": "#"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704466232,
+      "value": "$"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704466304,
+      "value": "$"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704466944,
+      "value": "%"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704466996,
+      "value": "%"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704468052,
+      "value": "^"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704468144,
+      "value": "^"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704468177,
+      "value": "Shift"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704471119,
+      "value": "ArrowLeft"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704471214,
+      "value": "ArrowLeft"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704471567,
+      "value": "ArrowLeft"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704471684,
+      "value": "ArrowLeft"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704471994,
+      "value": "ArrowLeft"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704472097,
+      "value": "ArrowLeft"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704472330,
+      "value": "ArrowLeft"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704472437,
+      "value": "ArrowLeft"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704472697,
+      "value": "ArrowLeft"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704472808,
+      "value": "ArrowLeft"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704473147,
+      "value": "ArrowLeft"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704473221,
+      "value": "ArrowLeft"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704478282,
+      "value": "Shift"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704478537,
+      "value": "~"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704478616,
+      "value": "~"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704478653,
+      "value": "Shift"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704500190,
+      "value": "Alt"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704501140,
+      "value": "™"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704501215,
+      "value": "™"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704502180,
+      "value": "£"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704502267,
+      "value": "£"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704502696,
+      "value": "¢"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704502780,
+      "value": "¢"
+    },
+    {
+      "cssSelector": "[data-qa='html-text-input']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input\" placeholder=\"Text input\" type=\"text\" /></div></div>",
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1583704502920,
+      "value": "Alt"
+    }
+  ]
+}
