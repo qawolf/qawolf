@@ -1,4 +1,4 @@
-export type Action = 'click' | 'type' | 'scroll' | 'select';
+export type Action = 'click' | 'fill' | 'press' | 'scroll' | 'select' | 'type';
 
 export type BrowserName = 'chromium' | 'firefox' | 'webkit';
 
@@ -65,7 +65,6 @@ export interface Step {
   htmlSelector: string;
   index: number;
   page: number;
-  replace?: boolean;
   target: Doc;
   value?: StepValue;
 }

@@ -13,9 +13,9 @@ exports[`CodeFileUpdater update saves code with new steps 2`] = `
   await page.click(selectors[0]);
   await page.click(selectors[1]);
   await page.type(selectors[2], \\"tomsmith\\");
-  await page.type(selectors[3], \\"↓Tab↑Tab\\");
+  await page.press(selectors[3], \\"Tab\\");
   await page.type(selectors[4], \\"SuperSecretPassword!\\");
-  await page.type(selectors[5], \\"↓Enter↑Enter\\");
+  await page.press(selectors[5], \\"Enter\\");
   await page.click(selectors[6]);
   // 🐺 CREATE CODE HERE
   otherCode();"

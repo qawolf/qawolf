@@ -46,8 +46,7 @@ describe('buildDescription', () => {
   it('formats clear input', () => {
     const step: Step = {
       ...baseStep,
-      action: 'type',
-      replace: true,
+      action: 'fill',
       value: null,
     };
 
@@ -82,24 +81,14 @@ describe('buildDescription', () => {
     expect(buildDescription(step)).toBe('select');
   });
 
-  it('formats Enter', () => {
+  it('skips formatting press', () => {
     const step: Step = {
       ...baseStep,
-      action: 'type',
-      value: '↓Enter',
+      action: 'press',
+      value: 'Enter',
     };
 
-    expect(buildDescription(step)).toEqual('Enter');
-  });
-
-  it('formats Tab', () => {
-    const step: Step = {
-      ...baseStep,
-      action: 'type',
-      value: '↓Tab',
-    };
-
-    expect(buildDescription(step)).toEqual('Tab');
+    expect(buildDescription(step)).toEqual('');
   });
 });
 
