@@ -3,8 +3,8 @@ id: cli
 title: CLI
 ---
 
-import ArgumentCreate from "./components/ArgumentCreate";
-import ArgumentTest from "./components/ArgumentTest";
+import ArgumentCreate from './components/ArgumentCreate';
+import ArgumentTest from './components/ArgumentTest';
 
 This guide lists the QA Wolf commands you can run in the [CLI](../install#understand-the-command-line).
 
@@ -47,7 +47,13 @@ npx qawolf create www.google.com myTestName
 Create a browser test on `www.google.com`, saving it at `.myTests/tests/myTestName.test.js`:
 
 ```bash
-npx qawolf create --path=./myTests www.google.com myTestName
+npx qawolf create --rootDir=./myTests www.google.com myTestName
+```
+
+Create a brower test on `www.google.com`, loading state data from `.qawolf/state/admin.json`:
+
+```bash
+npx qawolf create --statePath=./.qawolf/state/admin.json www.google.com
 ```
 
 Create a browser script on `www.google.com`:
@@ -58,7 +64,7 @@ npx qawolf create --script google.com
 
 ## npx qawolf test [name][...options]
 
-Run your test(s) with [Jest](https://jestjs.io/) on a [Chromium](https://www.chromium.org/Home) browser.
+Run your test(s) with [Jest](https://jestjs.io/). Tests run on a [Chromium](https://www.chromium.org/Home) browser by default.
 
 #### Arguments
 
@@ -84,10 +90,10 @@ Run the test saved at `.qawolf/tests/myTestName.test.js` on [Chromium](https://w
 npx qawolf test --all-browsers myTestName
 ```
 
-Run the test saved at `.myTests/tests/myTestName.test.js`:
+Run the test saved at `myTests/tests/myTestName.test.js`:
 
 ```bash
-npx qawolf test --path=.myTests myTestName
+npx qawolf test --rootDir=./myTests myTestName
 ```
 
 Use the [`--runInBand` Jest CLI option](https://jestjs.io/docs/en/cli#--runinband) to run tests serially:

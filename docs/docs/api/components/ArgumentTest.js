@@ -1,10 +1,10 @@
-import React from "react";
-import Link from "@docusaurus/Link";
-import useBaseUrl from "@docusaurus/useBaseUrl";
-import Argument from "./Argument";
-import ArgumentAllBrowsers from "./ArgumentAllBrowsers";
-import ArgumentFirefox from "./ArgumentFirefox";
-import ArgumentWebKit from "./ArgumentWebKit";
+import React from 'react';
+import Link from '@docusaurus/Link';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import Argument from './Argument';
+import ArgumentAllBrowsers from './ArgumentAllBrowsers';
+import ArgumentFirefox from './ArgumentFirefox';
+import ArgumentWebKit from './ArgumentWebKit';
 
 function ArgumentTest() {
   return (
@@ -14,21 +14,10 @@ function ArgumentTest() {
       <Argument
         description={
           <React.Fragment>
-            The path where your tests are saved. <b>Default:</b>{" "}
-            <code>.qawolf</code>.
-          </React.Fragment>
-        }
-        name="--path path"
-        optional
-        type="string"
-      />
-      <Argument
-        description={
-          <React.Fragment>
-            Pause and open the REPL when{" "}
-            <Link to={useBaseUrl("docs/api/qawolf/repl")}>
+            Pause and open the REPL when{' '}
+            <Link to={useBaseUrl('docs/api/qawolf/repl')}>
               <code>repl</code> is called
-            </Link>{" "}
+            </Link>{' '}
             in test code.
           </React.Fragment>
         }
@@ -36,13 +25,24 @@ function ArgumentTest() {
         optional
         type="boolean"
       />
+      <Argument
+        description={
+          <React.Fragment>
+            The directory where your tests are saved. <b>Default:</b>{' '}
+            <code>.qawolf</code>.
+          </React.Fragment>
+        }
+        name="--rootDir directory"
+        optional
+        type="string"
+      />
       <ArgumentWebKit />
       <Argument
         description={
           <React.Fragment>
-            The name of the test file to run. For example, passing{" "}
-            <code>myTestName</code> will run the{" "}
-            <code>{"{path}/tests/myTestName.test.js"}</code> file.{" "}
+            The name of the test file to run. For example, passing{' '}
+            <code>myTestName</code> will run the{' '}
+            <code>{'${rootDir}/tests/myTestName.test.js'}</code> file.{' '}
             <b>Default:</b> run all tests.
           </React.Fragment>
         }

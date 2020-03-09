@@ -3,13 +3,13 @@ id: table_of_contents
 title: API Table of Contents
 ---
 
-### [`qawolf@v0.9.3`](https://www.npmjs.com/package/qawolf/v/0.9.3)
+### [`qawolf@v0.12.0`](https://www.npmjs.com/package/qawolf/v/0.9.3)
 
 <a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version" /></a>
 <br/>
 <br/>
 
-In addition to the APIs below, you have full access to the [Playwright API](https://github.com/microsoft/playwright/blob/master/docs/api.md) and the [Jest API](https://jestjs.io/docs/en/expect).
+In addition to the APIs below, you have full access to the [Playwright API](https://github.com/microsoft/playwright/blob/master/docs/api.md) and the [Jest API](https://jestjs.io/docs/en/expect). The QA Wolf API is minimal by design, since we want to leverage the power of Playwright/Jest as much as possible.
 
 ## CLI
 
