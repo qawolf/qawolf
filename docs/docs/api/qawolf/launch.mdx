@@ -38,13 +38,13 @@ const qawolf = require('qawolf');
 const firefoxBrowser = await qawolf.launch({ browserName: 'firefox' });
 ```
 
-Launch a [Firefox](https://www.mozilla.org/en-US/firefox/new) browser, setting the [`slowMo` option](https://github.com/microsoft/playwright/blob/master/docs/api.md#browsertypelaunchoptions) to 500 milliseconds:
+Launch a [Firefox](https://www.mozilla.org/en-US/firefox/new) browser, setting the [`slowMo` option](https://github.com/microsoft/playwright/blob/master/docs/api.md#browsertypelaunchoptions) to 50 milliseconds:
 
 ```js
 const qawolf = require('qawolf');
 // ...
 const firefoxBrowser = await qawolf.launch({
   browserName: 'firefox',
-  slowMo: 500,
+  slowMo: 50,
 });
 ```
