@@ -46,6 +46,7 @@ module.exports = {
         'api/qawolf/repl',
         'api/qawolf/save_state',
         'api/qawolf/scroll',
+        'api/qawolf/set_state',
       ],
     },
     {

@@ -1,7 +1,7 @@
 import React from 'react';
 import Argument from '../Argument';
 
-function ArgumentSaveState() {
+function ArgumentSaveState({ isSaved }) {
   return (
     <React.Fragment>
       <Argument
@@ -20,7 +20,7 @@ function ArgumentSaveState() {
       <Argument
         description={
           <React.Fragment>
-            The path where the state will be saved as{' '}
+            The path where the state {isSaved ? 'is' : 'will be'} saved as{' '}
             <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON">
               JSON
             </a>

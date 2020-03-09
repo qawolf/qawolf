@@ -57,6 +57,8 @@ In addition to the APIs below, you have full access to the [Playwright API](http
 
 [scroll](qawolf/scroll)
 
+[setState](qawolf/set_state)
+
 ## class: BrowserContext
 
 [class: BrowserContext](browser_context/class_browser_context)
