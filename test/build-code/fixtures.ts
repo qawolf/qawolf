@@ -1,4 +1,3 @@
-import { Expression } from '../../src/build-code/Expression';
 import { htmlToDoc } from '../../src/web/serialize';
 import { Step } from '../../src/types';
 
@@ -13,5 +12,3 @@ export const baseStep: Step = {
   page: 0,
   target: doc(html),
 };
-
-export const expression = new Expression(baseStep);

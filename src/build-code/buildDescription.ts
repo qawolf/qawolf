@@ -37,8 +37,9 @@ export const describeDoc = (target: Doc): string => {
 };
 
 export const buildDescription = (step: Step): string => {
-  if (step.action === 'scroll') {
-    return `scroll`;
+  if (step.action === 'press' || step.action === 'scroll') {
+    // self explanatory, no description necessary
+    return '';
   }
 
   const description = describeDoc(step.target);
@@ -54,11 +55,6 @@ export const buildDescription = (step: Step): string => {
 
   if (step.action === 'select') {
     return `select${description}`;
-  }
-
-  if (step.action === 'press') {
-    // self explanatory, no description necessary
-    return '';
   }
 
   if (step.action === 'fill' || step.action === 'type') {

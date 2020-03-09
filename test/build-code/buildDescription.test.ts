@@ -69,7 +69,7 @@ describe('buildDescription', () => {
       action: 'scroll',
     };
 
-    expect(buildDescription(step)).toBe('scroll');
+    expect(buildDescription(step)).toBe('');
   });
 
   it('formats select action', () => {

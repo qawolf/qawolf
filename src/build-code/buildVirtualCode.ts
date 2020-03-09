@@ -1,15 +1,15 @@
+import { buildStepLines } from './buildStepLines';
 import { Step } from '../types';
-import { Expression } from './Expression';
 import { VirtualCode } from './VirtualCode';
 
 export const buildVirtualCode = (steps: Step[]): VirtualCode => {
-  let previous: Expression;
+  let previous: Step = null;
+  const lines: string[] = [];
 
-  const expressions = steps.map(step => {
-    const expression = new Expression(step, previous);
-    previous = expression;
-    return expression;
+  steps.forEach(step => {
+    lines.push(...buildStepLines(step, previous));
+    previous = step;
   });
 
-  return new VirtualCode(expressions);
+  return new VirtualCode(lines);
 };

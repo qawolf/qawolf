@@ -1,55 +1,64 @@
-import { Expression } from './Expression';
+import Debug from 'debug';
 
-type CodeToUpdate = {
+const debug = Debug('qawolf:VirtualCode');
+
+type LinePatch = {
   original: string;
   updated: string;
 };
 
 export class VirtualCode {
-  private _expressions: Expression[] = [];
+  private _lines: string[] = [];
 
-  constructor(expressions: Expression[]) {
-    this._expressions = expressions;
+  constructor(lines: string[]) {
+    this._lines = lines;
   }
 
-  public code(): string {
-    return this._expressions.map(expression => expression.code()).join('');
-  }
-
-  public codeToUpdate(compareTo: VirtualCode): CodeToUpdate | null {
+  public buildPatch(compareTo: VirtualCode): LinePatch | null {
     /**
-     * Check if the last expression's updatable code changed
+     * Check if the last line changed.
      */
-    const lastIndex = this._expressions.length - 1;
-    if (lastIndex < 0) return null;
-
-    const expressionToUpdate = this._expressions[lastIndex];
-
-    const compareToExpressions = compareTo.expressions();
-
-    if (lastIndex >= compareToExpressions.length) {
-      // if the last expression no longer exists
-      // we will update it when a new expression arrives
+    const lastIndex = this._lines.length - 1;
+    if (lastIndex < 0) {
+      debug('no lines to update');
       return null;
     }
 
-    const updatedExpression = compareToExpressions[lastIndex];
-    const original = expressionToUpdate.code();
-    const updated = updatedExpression.code();
-    if (original === updated) return null;
+    const lastLine = this._lines[lastIndex];
 
-    return { original, updated };
+    const compareToLines = compareTo.lines();
+    if (lastIndex >= compareToLines.length) {
+      // if the last line no longer exists
+      // we will update it when a new line arrives
+      debug('last line no longer exists, wait to update');
+      return null;
+    }
+
+    const compareToLastLine = compareToLines[lastIndex];
+    if (lastLine === compareToLastLine) {
+      debug(
+        'last line did not change: "%j" === "%j"',
+        lastLine,
+        compareToLastLine,
+      );
+      return null;
+    }
+
+    debug('last line changed from "%j" to "%j"', lastLine, compareToLastLine);
+    return { original: lastLine, updated: compareToLastLine };
   }
 
-  public newExpressions(compareTo: VirtualCode): Expression[] {
-    const newExpressions = compareTo
-      .expressions()
-      .slice(this._expressions.length);
-
-    return newExpressions;
+  // for tests
+  public code(): string {
+    return this._lines.map(line => `${line}\n`).join('');
   }
 
-  public expressions(): Expression[] {
-    return this._expressions;
+  public lines(): string[] {
+    return this._lines;
+  }
+
+  public newLines(compareTo: VirtualCode): string[] {
+    const newLines = compareTo.lines().slice(this._lines.length);
+    return newLines;
   }
 }
