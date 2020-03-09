@@ -5,23 +5,23 @@ import { baseStep } from './fixtures';
 const virtualCode = buildVirtualCode([baseStep]);
 
 describe('VirtualCode', () => {
-  // TODO
-  // test.todo('codeToUpdate returns the last expression when it changed', () => {
-  //   expect(virtualCode.codeToUpdate(virtualCode)).toBeNull();
+  test('buildPatch returns the last expression when it changed', () => {
+    expect(virtualCode.buildPatch(virtualCode)).toBeNull();
 
-  //   const virtualCodeTwo = buildVirtualCode([{ ...baseStep, page: 1 }]);
+    const virtualCodeTwo = buildVirtualCode([
+      { ...baseStep, action: 'type', value: 'world' },
+    ]);
 
-  //   // TODO page logic is off
-  //   expect(virtualCode.codeToUpdate(virtualCodeTwo)).toEqual({
-  //     original: 'await page.click(selectors[0]));',
-  //     updated: 'await page.click(selectors[0]), { page: 1 });',
-  //   });
-  // });
+    expect(virtualCode.buildPatch(virtualCodeTwo)).toEqual({
+      original: 'await page.click(selectors[0]);',
+      updated: `await page.type(selectors[0], "world");`,
+    });
+  });
 
   test('newExpressions returns the new expressions', () => {
-    expect(virtualCode.newExpressions(virtualCode)).toHaveLength(0);
+    expect(virtualCode.newLines(virtualCode)).toHaveLength(0);
 
-    const newExpressions = new VirtualCode([]).newExpressions(virtualCode);
-    expect(newExpressions).toEqual(virtualCode.expressions());
+    const newExpressions = new VirtualCode([]).newLines(virtualCode);
+    expect(newExpressions).toEqual(virtualCode.lines());
   });
 });

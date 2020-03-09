@@ -1,5 +1,8 @@
+import Debug from 'debug';
 import { VirtualCode } from '../build-code/VirtualCode';
 import { patchCode, PATCH_HANDLE } from './patchCode';
+
+const debug = Debug('qawolf:CodeReconciler');
 
 type ReconcileOptions = {
   actualCode: string;
@@ -10,60 +13,73 @@ export class CodeReconciler {
   // the virtual representation of the current code
   private _virtualCode: VirtualCode = new VirtualCode([]);
 
-  private _insertNewExpressions({
+  private _insertNewLines({
     actualCode,
     virtualCode,
   }: ReconcileOptions): string {
-    const newExpressions = this._virtualCode.newExpressions(virtualCode);
-    if (newExpressions.length < 1) return actualCode;
+    const newLines = this._virtualCode.newLines(virtualCode);
+    if (newLines.length < 1) return actualCode;
 
-    const patch =
-      newExpressions.map(expression => expression.code()).join('') +
-      PATCH_HANDLE;
+    const patch = newLines.map(line => `${line}\n`).join('') + PATCH_HANDLE;
+    debug(`insert new lines: ${patch}`);
 
     return patchCode({ code: actualCode, patch });
   }
 
-  private _updateLastExpression({
+  private _updateLastLine({
     actualCode,
     virtualCode,
   }: ReconcileOptions): string {
     /**
      * Update the last expression if it changed.
      */
-    const codeToUpdate = this._virtualCode.codeToUpdate(virtualCode);
-    if (!codeToUpdate) return actualCode;
+    const linePatch = this._virtualCode.buildPatch(virtualCode);
+    if (!linePatch) return actualCode;
 
     // find the last occurrence of the original expression
-    const indexToReplace = actualCode.lastIndexOf(codeToUpdate.original);
+    const indexToReplace = actualCode.lastIndexOf(linePatch.original);
 
     // we cannot find the original expression so return the unmodified code
-    if (indexToReplace < 0) return actualCode;
+    if (indexToReplace < 0) {
+      debug(
+        'skip last line update: cannot find original code to update "%j"',
+        linePatch.original,
+      );
+      return actualCode;
+    }
+
+    debug('update last line');
 
     const updatedCode =
       actualCode.slice(0, indexToReplace) +
       actualCode
         .slice(indexToReplace)
-        .replace(codeToUpdate.original, codeToUpdate.updated);
+        .replace(linePatch.original, linePatch.updated);
 
     return updatedCode;
   }
 
   public hasChanges(virtualCode: VirtualCode): boolean {
-    const hasCodeToUpdate = !!this._virtualCode.codeToUpdate(virtualCode);
-    if (hasCodeToUpdate) return true;
+    const hasPatch = !!this._virtualCode.buildPatch(virtualCode);
+    if (hasPatch) {
+      debug('has patch for last line');
+      return true;
+    }
 
-    const hasNewExpressions =
-      this._virtualCode.newExpressions(virtualCode).length > 0;
-    if (hasNewExpressions) return true;
+    const hasNewLines = this._virtualCode.newLines(virtualCode).length > 0;
+    if (hasNewLines) {
+      debug('has new lines');
+      return true;
+    }
 
+    debug('no changes');
     return false;
   }
 
   public reconcile({ actualCode, virtualCode }: ReconcileOptions): string {
-    let updatedCode = this._updateLastExpression({ actualCode, virtualCode });
+    let updatedCode = this._updateLastLine({ actualCode, virtualCode });
 
-    updatedCode = this._insertNewExpressions({
+    updatedCode = this._insertNewLines({
       actualCode: updatedCode,
       virtualCode,
     });
@@ -72,10 +88,11 @@ export class CodeReconciler {
   }
 
   public update(virtualCode: VirtualCode): void {
-    if (this._virtualCode.expressions.length > virtualCode.expressions.length) {
+    if (this._virtualCode.lines().length > virtualCode.lines().length) {
       // Prevent updating our virtual code with one that has less expressions.
       // This could happen if a step is removed (ex. paste will remove the type).
       // This allows us to update the last expression when a new step arrives to replace the missing one.
+      debug('skip virtual code update with less expressions');
       return;
     }
 

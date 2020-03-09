@@ -46,7 +46,7 @@
     "playwright": "0.11.1-next.1583631839291",
     "playwright-ci": "^0.4.0",
     "playwright-html-selector": "^0.3.0",
-    "playwright-utils": "^0.7.0",
+    "playwright-utils": "^0.8.0",
     "update-notifier": "^4.1.0"
   },
   "devDependencies": {

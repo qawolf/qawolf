@@ -1,5 +1,12 @@
 #!/usr/bin/env node
-import { launch, repl, saveState, scroll, setState } from 'playwright-utils';
+import {
+  launch,
+  repl,
+  saveState,
+  scroll,
+  setState,
+  waitForPage,
+} from 'playwright-utils';
 import { create } from './create-code/create';
 import { register } from './register';
 
@@ -9,7 +16,16 @@ if (isCLI) {
 }
 
 // export public API
-export { create, launch, register, repl, saveState, scroll, setState };
+export {
+  create,
+  launch,
+  register,
+  repl,
+  saveState,
+  scroll,
+  setState,
+  waitForPage,
+};
 
 // make repl a global
 (global as any).repl = repl;

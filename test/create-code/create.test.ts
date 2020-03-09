@@ -1,11 +1,11 @@
 import { readFile } from 'fs-extra';
 import { prompt } from 'inquirer';
 import { join, relative } from 'path';
-import { launch } from 'playwright-utils';
+import { launch, waitFor } from 'playwright-utils';
 import { getSelectorPath, getCodePath } from '../../src/create-code/create';
 import { createSelf, getCallSites } from '../e2e/scripts/createSelf';
 import { register } from '../../src/register';
-import { TEST_URL, waitUntil } from '../utils';
+import { TEST_URL } from '../utils';
 
 jest.mock('inquirer');
 
@@ -43,7 +43,7 @@ describe('create', () => {
     await page.type("[data-qa='html-text-input']", 'hello');
 
     // check the code updated as expected
-    await waitUntil(async () => (await loadCode()).includes('hello'));
+    await waitFor(async () => (await loadCode()).includes('hello'));
     expect(await loadCode()).toMatchSnapshot('3-updated');
 
     // discard the changes
