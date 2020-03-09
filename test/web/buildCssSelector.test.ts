@@ -279,6 +279,35 @@ describe('buildCssSelector', () => {
       expect(selector).toBe("[data-test='click'] [data-qa='button']");
     });
   });
+
+  describe('html and body elements', () => {
+    beforeAll(async () => {
+      await page.goto(`${TEST_URL}buttons`);
+    });
+
+    it('builds selector for html', async () => {
+      const selector = await buildCssSelector('html', true, '');
+      expect(selector).toBe('html');
+    });
+
+    it('builds selector for body', async () => {
+      const selector = await buildCssSelector('body', true, '');
+      expect(selector).toBe('body');
+    });
+
+    it('returns attribute selector over tag selector', async () => {
+      await page.evaluate(() => {
+        document.querySelector('html').setAttribute('data-qa', 'main');
+        document.querySelector('body').setAttribute('data-qa', 'container');
+      });
+
+      const selector = await buildCssSelector('html', true, 'data-qa');
+      expect(selector).toBe("[data-qa='main']");
+
+      const selector2 = await buildCssSelector('body', true, 'data-qa');
+      expect(selector2).toBe("[data-qa='container']");
+    });
+  });
 });
 
 describe('deserializeRegex', () => {
