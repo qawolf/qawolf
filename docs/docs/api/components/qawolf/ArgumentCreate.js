@@ -36,7 +36,7 @@ function ArgumentCreate() {
               <code>register(context)</code>
             </Link>{' '}
             before calling <code>create</code> or pass this option.{' '}
-            <b>Default:</b> existing <code>BrowserContext</code> instance.
+            <b>Default:</b> registered <code>BrowserContext</code> instance.
           </React.Fragment>
         }
         indent
