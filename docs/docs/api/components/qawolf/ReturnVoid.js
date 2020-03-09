@@ -1,5 +1,5 @@
-import React from "react";
-import Argument from "./Argument";
+import React from 'react';
+import Argument from '../Argument';
 
 function ReturnVoid() {
   return (

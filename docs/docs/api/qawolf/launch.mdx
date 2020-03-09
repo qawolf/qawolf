@@ -25,17 +25,26 @@ Launch a [Playwright `Browser`](https://github.com/microsoft/playwright/blob/mas
 Launch a [Chromium](https://www.chromium.org/Home) browser with the [default options](https://github.com/microsoft/playwright/blob/master/docs/api.md#browsertypelaunchoptions):
 
 ```js
-const browser = await launch();
+const qawolf = require('qawolf');
+// ...
+const browser = await qawolf.launch();
 ```
 
 Launch a [Firefox](https://www.mozilla.org/en-US/firefox/new) browser with the [default options](https://github.com/microsoft/playwright/blob/master/docs/api.md#browsertypelaunchoptions):
 
 ```js
-const firefoxBrowser = await launch({ browserName: 'firefox' });
+const qawolf = require('qawolf');
+// ...
+const firefoxBrowser = await qawolf.launch({ browserName: 'firefox' });
 ```
 
-Launch a [Firefox](https://www.mozilla.org/en-US/firefox/new) browser, setting the [`slowMo` option](https://github.com/microsoft/playwright/blob/master/docs/api.md#browsertypelaunchoptions) to `500` milliseconds:
+Launch a [Firefox](https://www.mozilla.org/en-US/firefox/new) browser, setting the [`slowMo` option](https://github.com/microsoft/playwright/blob/master/docs/api.md#browsertypelaunchoptions) to 500 milliseconds:
 
 ```js
-const firefoxBrowser = await launch({ browserName: 'firefox', slowMo: 500 });
+const qawolf = require('qawolf');
+// ...
+const firefoxBrowser = await qawolf.launch({
+  browserName: 'firefox',
+  slowMo: 500,
+});
 ```

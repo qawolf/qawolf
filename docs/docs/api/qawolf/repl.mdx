@@ -4,9 +4,9 @@ sidebar_label: repl
 title: qawolf.repl
 ---
 
-import ArgumentRepl from "../components/ArgumentRepl";
-import ReturnVoid from "../components/ReturnVoid";
-import Syntax from "../components/Syntax";
+import ArgumentRepl from '../components/ArgumentRepl';
+import ReturnVoid from '../components/qawolf/ReturnVoid';
+import Syntax from '../components/Syntax';
 
 <Syntax code="repl([context={}])" />
 
@@ -31,14 +31,14 @@ npx qawolf test --repl myTestName
 Import `repl` from `qawolf` in your test code:
 
 ```js
-const { launch, repl } = require("qawolf");
-const selectors = require("../selectors/myTestName");
+const { launch, repl } = require('qawolf');
+const selectors = require('../selectors/myTestName');
 ```
 
 Call `repl` in your test code, passing whatever values you want to access in the REPL. Note that `browser` is included by default, so you do not need to include it again:
 
 ```js
-it("can click button", async () => {
+it('can click button', async () => {
   await repl({ selectors }); // already includes browser
 
   await browser.click(selectors[2]);
