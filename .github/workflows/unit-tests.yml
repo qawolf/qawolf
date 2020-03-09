@@ -7,6 +7,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
         node-version: [12.x]
         test: [lint, chromium, firefox, webkit]
@@ -42,7 +43,7 @@ jobs:
 
       - run: npm run build
 
-      - run: npx @qawolf/sandbox &
+      - run: npm run test:server &
         if: matrix.test != 'lint'
 
       - run: QAW_BROWSER=${{ matrix.test }} npm test
