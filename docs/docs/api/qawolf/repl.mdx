@@ -4,19 +4,13 @@ sidebar_label: repl
 title: qawolf.repl
 ---
 
-import ArgumentRepl from '../components/ArgumentRepl';
+import ArgumentRepl from '../components/qawolf/ArgumentRepl';
 import ReturnVoid from '../components/qawolf/ReturnVoid';
 import Syntax from '../components/Syntax';
 
 <Syntax code="repl([context={}])" />
 
-Pause a running test and open the [interactive REPL](../../use_the_repl).
-
-Use the [`--repl` flag](../cli#npx-qawolf-test-name) when running tests that call `repl`:
-
-```bash
-npx qawolf test --repl myTestName
-```
+Pause a running test or script and open the [interactive REPL](../../use_the_repl).
 
 ### Arguments
 
@@ -28,27 +22,22 @@ npx qawolf test --repl myTestName
 
 ### Examples
 
-Import `repl` from `qawolf` in your test code:
+Call `repl` in your test code, passing whatever values you want to access in the REPL. The [Playwright `Browser`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browser) instance (`browser`) is included by default, so you do not need to include it again:
 
 ```js
-const { launch, repl } = require('qawolf');
-const selectors = require('../selectors/myTestName');
-```
+const qawolf = require('qawolf');
+const selectors = require('../selectors/myTestName.json');
+// ...
 
-Call `repl` in your test code, passing whatever values you want to access in the REPL. Note that `browser` is included by default, so you do not need to include it again:
-
-```js
-it('can click button', async () => {
-  await repl({ selectors }); // already includes browser
-
-  await browser.click(selectors[2]);
+test('myTestName', async () => {
+  await qawolf.repl({ selectors }); // already includes browser
 });
 ```
 
-Run your test with the `--repl` flag:
+Run your test:
 
 ```bash
-npx qawolf test --repl myTestName
+npx qawolf test myTestName
 ```
 
 Your test will run until `repl` is called, at which point the test will pause and the [interactive REPL](../../use_the_repl) will open. After you exit the REPL by calling `.exit`, the test will continue. You can call `repl` any number of times in your test.
