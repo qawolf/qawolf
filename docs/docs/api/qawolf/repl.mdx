@@ -5,7 +5,7 @@ title: qawolf.repl
 ---
 
 import ArgumentRepl from '../components/qawolf/ArgumentRepl';
-import ReturnVoid from '../components/qawolf/ReturnVoid';
+import Argument from '../components/Argument';
 import Syntax from '../components/Syntax';
 
 <Syntax code="repl([context={}])" />
@@ -18,7 +18,11 @@ Pause a running test or script and open the [interactive REPL](../../use_the_rep
 
 ### Returns
 
-<ReturnVoid />
+<Argument
+  description="Resolves when REPL is closed."
+  name=""
+  type="Promise<void>"
+/>
 
 ### Examples
 
