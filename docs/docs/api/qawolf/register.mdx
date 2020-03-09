@@ -10,7 +10,10 @@ import Syntax from '../components/Syntax';
 
 <Syntax code="register(context)" />
 
-Allow QA Wolf to access the specified [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext) instance. This enables the [default selector logic](../../use_custom_selectors#default-selector-logic) to work. It also automatically creates [debug artifacts](../../run_tests_in_ci#debug) for your tests and scripts.
+
+- Register the [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext) so [waitForPage](TODO) works. 
+- Register the [html selector](https://github.com/qawolf/playwright-html-selector) so the [default selectors](../../use_custom_selectors#default-selector-logic) work. 
+- Create [debug artifacts](../../run_tests_in_ci#debug) when [QAW_ARTIFACT_PATH](../environment_variables#qaw_artifact_path) is specified.
 
 ### Arguments
 
