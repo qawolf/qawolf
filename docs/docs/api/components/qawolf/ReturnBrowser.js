@@ -6,7 +6,7 @@ function ReturnBrowser() {
     <Argument
       description={
         <React.Fragment>
-          Resolves to a{' '}
+          Resolves a{' '}
           <a href="https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browser">
             Playwright <code>Browser</code>
           </a>{' '}
