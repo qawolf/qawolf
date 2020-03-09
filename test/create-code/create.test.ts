@@ -5,7 +5,7 @@ import { launch } from 'playwright-utils';
 import { getSelectorPath, getCodePath } from '../../src/create-code/create';
 import { createSelf, getCallSites } from '../e2e/scripts/createSelf';
 import { register } from '../../src/register';
-import { TEST_URL } from '../utils';
+import { TEST_URL, waitUntil } from '../utils';
 
 jest.mock('inquirer');
 
@@ -42,10 +42,8 @@ describe('create', () => {
     // perform an action
     await page.type("[data-qa='html-text-input']", 'hello');
 
-    // give time for events to callback
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
     // check the code updated as expected
+    await waitUntil(async () => (await loadCode()).includes('hello'));
     expect(await loadCode()).toMatchSnapshot('3-updated');
 
     // discard the changes

@@ -1,3 +1,4 @@
+import { once } from 'lodash';
 import { ElementHandle } from 'playwright-core';
 
 export const TEST_URL = process.env.TEST_URL || 'http://localhost:5000/';
@@ -35,5 +36,28 @@ export const selectElementContent = async (
         selection.addRange(range);
       }
     }
+  });
+};
+
+export const waitUntil = (
+  conditionFn: () => Promise<boolean> | boolean,
+  timeoutMs = 5000,
+): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    // eslint-disable-next-line prefer-const
+    let intervalId: NodeJS.Timeout, timeoutId: NodeJS.Timeout;
+
+    const done = once((success: boolean) => {
+      clearInterval(intervalId);
+      clearTimeout(timeoutId);
+      if (success) resolve();
+      else reject('waitUntil timed out');
+    });
+
+    intervalId = setInterval(async () => {
+      if (await conditionFn()) done(true);
+    }, 500);
+
+    timeoutId = setTimeout(() => done(false), timeoutMs);
   });
 };
