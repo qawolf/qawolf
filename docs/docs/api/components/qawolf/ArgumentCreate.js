@@ -7,7 +7,7 @@ function ArgumentCreate() {
   return (
     <React.Fragment>
       <Argument
-        description={<React.Fragment>Create options.</React.Fragment>}
+        description="Create options."
         name="options"
         optional
         type="Object"

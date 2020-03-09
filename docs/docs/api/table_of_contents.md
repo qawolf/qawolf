@@ -58,3 +58,5 @@ In addition to the APIs below, you have full access to the [Playwright API](http
 [scroll](qawolf/scroll)
 
 [setState](qawolf/set_state)
+
+[waitForPage](qawolf/wait_for_page)

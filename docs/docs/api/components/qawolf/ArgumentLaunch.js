@@ -1,3 +1,5 @@
+import Link from '@docusaurus/Link';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import React from 'react';
 import Argument from '../Argument';
 
@@ -22,9 +24,9 @@ function ArgumentLaunch() {
         description={
           <React.Fragment>
             Launch this type of browser. <b>Default:</b>{' '}
-            <a href="../../api/environment_variables#qaw_browser">
+            <Link to={useBaseUrl('docs/api/environment_variables#qaw_browser')}>
               <code>QAW_BROWSER</code>
-            </a>
+            </Link>
             .
           </React.Fragment>
         }

@@ -47,6 +47,7 @@ module.exports = {
         'api/qawolf/save_state',
         'api/qawolf/scroll',
         'api/qawolf/set_state',
+        'api/qawolf/wait_for_page',
       ],
     },
   ],

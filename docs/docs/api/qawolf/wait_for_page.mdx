@@ -1,0 +1,49 @@
+---
+id: wait_for_page
+sidebar_label: waitForPage
+title: qawolf.waitForPage
+---
+
+import ArgumentWaitForPage from '../components/qawolf/ArgumentWaitForPage';
+import ReturnPage from '../components/qawolf/ReturnPage';
+import Syntax from '../components/Syntax';
+
+<Syntax code="waitForPage(context, index[, options])" />
+
+Wait for [Playwright `Page`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page) instance with specified index to load.
+
+### Arguments
+
+<ArgumentWaitForPage />
+
+### Returns
+
+<ReturnPage />
+
+### Examples
+
+Wait for the page with index `1`:
+
+```js
+const qawolf = require('qawolf');
+// ...
+const page = await qawolf.waitForPage(context, 1);
+```
+
+Wait for the page with index `0`, timing out in 10 seconds if the page does not load:
+
+```js
+const qawolf = require('qawolf');
+// ...
+const page = await qawolf.waitForPage(context, 0, { timeout: 10000 });
+```
+
+Wait for the page with index `0`, considering navigation to be complete after the `DOMContentLoaded` event fires:
+
+```js
+const qawolf = require('qawolf');
+// ...
+const page = await qawolf.waitForPage(context, 0, {
+  waitUntil: 'domcontentloaded',
+});
+```

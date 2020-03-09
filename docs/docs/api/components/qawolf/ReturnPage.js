@@ -1,22 +1,22 @@
 import React from 'react';
 import Argument from '../Argument';
 
-function ReturnBrowser() {
+function ReturnPage() {
   return (
     <Argument
       description={
         <React.Fragment>
           Resolves with a{' '}
-          <a href="https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browser">
-            Playwright <code>Browser</code>
+          <a href="https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page">
+            Playwright <code>Page</code>
           </a>{' '}
           instance.
         </React.Fragment>
       }
       name=""
-      type="Promise<Browser>"
+      type="Promise<Page>"
     />
   );
 }
 
-export default ReturnBrowser;
+export default ReturnPage;
