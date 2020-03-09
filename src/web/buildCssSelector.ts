@@ -166,6 +166,12 @@ export const buildCssSelector = ({
 }: BuildCssSelectorOptions): string | undefined => {
   // find the closest element to the target with attribute
   const elementsWithSelector = findAttributes(target, attribute);
+
+  const tagName = target.tagName.toLowerCase();
+  if (!elementsWithSelector && ['html', 'body'].includes(tagName)) {
+    console.debug(`qawolf: built css selector ${tagName}`, getXpath(target));
+    return tagName;
+  }
   if (!elementsWithSelector) {
     console.debug(
       `qawolf: no css selector built. attribute not found on target or ancestors ${attribute}`,

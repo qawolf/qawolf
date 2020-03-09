@@ -16,40 +16,6 @@ beforeAll(async () => {
 
 afterAll(() => browser.close());
 
-describe('nodeToDoc', () => {
-  it('serializes html and body elements by their tag only', async () => {
-    let doc = await page.evaluate(() => {
-      const web: QAWolfWeb = (window as any).qawolf;
-      const element = document.querySelector('html');
-      if (!element) throw new Error('element not found');
-      return web.nodeToDoc(element);
-    });
-
-    expect(doc).toEqual({
-      attrs: {},
-      children: [],
-      name: 'html',
-      type: 'tag',
-      voidElement: true,
-    });
-
-    doc = await page.evaluate(() => {
-      const web: QAWolfWeb = (window as any).qawolf;
-      const element = document.querySelector('body');
-      if (!element) throw new Error('element not found');
-      return web.nodeToDoc(element);
-    });
-
-    expect(doc).toEqual({
-      attrs: {},
-      children: [],
-      name: 'body',
-      type: 'tag',
-      voidElement: true,
-    });
-  });
-});
-
 describe('nodeToHtml', () => {
   it('serializes image alt and src', async () => {
     await page.goto(`${TEST_URL}images`);

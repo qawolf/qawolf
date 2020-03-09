@@ -44,12 +44,6 @@ export const htmlToDoc = (html: string): Doc => {
 };
 
 export const nodeToHtml = (node: Node): string => {
-  const element = node as HTMLElement;
-
-  // serialize top level nodes by their tag only
-  if (element.tagName === 'HTML') return '<html />';
-  if (element.tagName === 'BODY') return '<body />';
-
   const serializer = new XMLSerializer();
 
   // serialize labels as html attribute

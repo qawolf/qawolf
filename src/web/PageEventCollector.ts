@@ -54,7 +54,7 @@ export class PageEventCollector {
     const elementEvent = {
       cssSelector: buildCssSelector({
         attribute: this._attribute,
-        isClick: eventName === 'click' || eventName === 'mousedown',
+        isClick: ['click', 'mousedown'].includes(eventName),
         target,
       }),
       htmlSelector: nodeToHtmlSelector(target, 2),
