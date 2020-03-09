@@ -62,9 +62,15 @@ export class Expression {
     const value = this._buildValue();
     if (value.length) args.push(value);
 
+    let methodOpen = `page.${action}(`;
+    if (action === 'scroll') {
+      methodOpen = `qawolf.scroll(page, `;
+    }
+
+    const expression = `await ${methodOpen}${args.join(', ')});`;
+
     // TODO description
-    const method = `await page.${action}(${args.join(', ')});`;
-    return `${method}\n`;
+    return `${expression}\n`;
   }
 
   public step(): Step {

@@ -57,7 +57,7 @@ describe('Expression', () => {
       });
 
       expect(expression.code()).toBe(
-        'await page.scroll("[id=\'my-input\']", { x: 100, y: 200 });\n',
+        'await qawolf.scroll(page, "[id=\'my-input\']", { x: 100, y: 200 });\n',
       );
     });
 

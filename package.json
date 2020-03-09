@@ -23,6 +23,7 @@
     "postinstall": "node ./src/postInstallMessage.js",
     "release": "np --no-cleanup",
     "test": "jest",
+    "test:server": "npx @qawolf/sandbox",
     "version": "npm run clean && npm run build"
   },
   "repository": {
@@ -44,8 +45,8 @@
     "inquirer": "^7.0.5",
     "playwright": "next",
     "playwright-ci": "^0.4.0",
-    "playwright-html-selector": "^0.2.0",
-    "playwright-utils": "^0.6.1",
+    "playwright-html-selector": "^0.3.0",
+    "playwright-utils": "^0.7.0",
     "update-notifier": "^4.1.0"
   },
   "devDependencies": {
