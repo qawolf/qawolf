@@ -1,8 +1,12 @@
 import Debug from 'debug';
 import { EventEmitter } from 'events';
 import { BrowserContext } from 'playwright-core';
-import { forEachPage, indexPages, initEvaluateScript } from 'playwright-utils';
-import { IndexedPage } from 'playwright-utils/build/indexPages';
+import {
+  forEachPage,
+  IndexedPage,
+  indexPages,
+  initEvaluateScript,
+} from 'playwright-utils';
 import { CONFIG } from '../config';
 import { ElementEvent } from '../types';
 import { QAWolfWeb } from '../web';
