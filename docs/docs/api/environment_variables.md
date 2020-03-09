@@ -36,7 +36,7 @@ QAW_ARTIFACT_PATH=./artifacts npx qawolf test
 
 ## QAW_ATTRIBUTE
 
-**Default:** `'data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/'`
+**Default:** `data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/`
 
 Specify `QAW_ATTRIBUTE` when you create a test, and QA Wolf will use that [attribute](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors) as a selector when it exists on an element. You can specify an attribute directly, or use a [regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions). For example, the expression `/^qa-.*/` will match any attributes that start with `qa-` like `qa-submit`.
 
