@@ -26,7 +26,7 @@ Video is only supported on Chromium. We are waiting for Playwright to add suppor
 
 If [FFmpeg](https://www.ffmpeg.org) is not installed, videos will not be included. Install [`ffmpeg-static`](https://www.npmjs.com/package/ffmpeg-static) as a dependency or set the `FFMPEG_PATH` environment variable.
 
-Note that your code must call [`qawolf.register`](TODOFIXLINK) for artifacts to be saved.
+Note that your code must call [`qawolf.register`](qawolf/register) for artifacts to be saved.
 
 #### Examples
 

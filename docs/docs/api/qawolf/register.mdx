@@ -1,0 +1,31 @@
+---
+id: register
+sidebar_label: register
+title: qawolf.register
+---
+
+import ArgumentRegister from '../components/qawolf/ArgumentRegister';
+import ReturnVoid from '../components/qawolf/ReturnVoid';
+import Syntax from '../components/Syntax';
+
+<Syntax code="register(context)" />
+
+Allow QA Wolf to access the specified [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext) instance. This enables the [default selector logic](../../use_custom_selectors#default-selector-logic) to work. It also automatically creates [debug artifacts](../../run_tests_in_ci#debug) for your tests and scripts.
+
+### Arguments
+
+<ArgumentRegister />
+
+### Returns
+
+<ReturnVoid />
+
+### Examples
+
+Give QA Wolf access to the [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext) instance that your test or script is running against.
+
+```js
+const qawolf = require('qawolf');
+// ...
+qawolf.register(context);
+```
