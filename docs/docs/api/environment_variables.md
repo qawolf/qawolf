@@ -22,7 +22,7 @@ env:
 
 Save a video and console logs for each page in your test or script. Videos are saved at `${QAW_ARTIFACT_PATH}/video_${pageIndex}.mp4`, and console logs are saved at `${QAW_ARTIFACT_PATH}/logs_${pageIndex}.txt`. `pageIndex` corresponds to the index of the page starting at `0`.
 
-Video is only supported on Chromium. We are waiting for Playwright to add support for the Screencast API in Firefox and WebKit.
+Video is only supported on Chromium. We are [waiting for Playwright](https://github.com/microsoft/playwright/issues/1158) to add support for the Screencast API in Firefox and WebKit.
 
 If [FFmpeg](https://www.ffmpeg.org) is not installed, videos will not be included. Install [`ffmpeg-static`](https://www.npmjs.com/package/ffmpeg-static) as a dependency or set the `FFMPEG_PATH` environment variable.
 
