@@ -29,7 +29,7 @@ Soon you'll run the command to create a test. When you run this command, a [Chro
 
 In this guide, we create a test for [TodoMVC](http://todomvc.com/examples/react), a simple todo application. You can follow along using your own application if you prefer.
 
-To create your test, run the following in the command line. You can optionally replace `http://todomvc.com/examples/react` with a different [URL](https://developer.mozilla.org/en-US/docs/Web/API/URL), and `myFirstTest` with a different test name. See our [CLI documentation](api/cli#npx-qawolf-create-url-name) for more detail.
+To create your test, run the following in the command line. You can optionally replace `http://todomvc.com/examples/react` with a different [URL](https://developer.mozilla.org/en-US/docs/Web/API/URL), and `myFirstTest` with a different test name. See our [CLI documentation](api/cli#npx-qawolf-create-url-name) for more details.
 
 ```bash
 npx qawolf create http://todomvc.com/examples/react myFirstTest
@@ -65,27 +65,27 @@ Our code first requires the `qawolf` library, which is built on top of [Microsof
 The test code opens a browser and navigates to the specified URL. Each action you took in the browser is captured in a [Jest test](https://jestjs.io/docs/en/api#testname-fn-timeout). After the test finishes running, the browser is closed. Below we show our test code:
 
 ```js
-const { launch } = require("qawolf");
-const selectors = require("../selectors/myFirstTest");
+const { launch } = require('qawolf');
+const selectors = require('../selectors/myFirstTest');
 
-describe("myFirstTest", () => {
+describe('myFirstTest', () => {
   let browser;
 
   beforeAll(async () => {
-    browser = await launch({ url: "http://todomvc.com/examples/react" });
+    browser = await launch({ url: 'http://todomvc.com/examples/react' });
   });
 
   afterAll(() => browser.close());
 
   it('can type into "What needs to be done?" input', async () => {
-    await browser.type(selectors[0], "create test!");
+    await browser.type(selectors[0], 'create test!');
   });
 
-  it("can Enter", async () => {
-    await browser.type(selectors[1], "↓Enter↑Enter");
+  it('can Enter', async () => {
+    await browser.type(selectors[1], '↓Enter↑Enter');
   });
 
-  it("can click input", async () => {
+  it('can click input', async () => {
     await browser.click(selectors[2]);
   });
 
