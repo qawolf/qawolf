@@ -1,3 +1,4 @@
+import { camelCase } from 'lodash';
 import { devices } from 'playwright';
 
 interface BuildTemplateOptions {
@@ -8,6 +9,21 @@ interface BuildTemplateOptions {
 }
 
 const REQUIRE_QAWOLF = 'const qawolf = require("qawolf");';
+const INVALID_NAME_ERROR = 'Missing initializer in const declaration';
+
+export const buildValidVariableName = (name: string): string => {
+  try {
+    // try creating variable with specified name
+    eval(`const ${name} = 0`);
+    return name;
+  } catch (error) {
+    if (error.message === INVALID_NAME_ERROR) {
+      return camelCase(name);
+    }
+    // other errors are for names that will never be valid like return or 1var
+    throw new Error(`invalid script name: ${name}`);
+  }
+};
 
 const buildRequires = (name: string, device?: string): string => {
   const requireSelector = `const selectors = require("../selectors/${name}.json");`;
@@ -49,22 +65,23 @@ export const buildScriptTemplate = ({
   statePath,
   url,
 }: BuildTemplateOptions): string => {
+  const validName = buildValidVariableName(name);
   const code = `${buildRequires(name, device)}
 
-const ${name} = async context => {
+const ${validName} = async context => {
   let page = await context.newPage();
   await page.goto("${url}");${buildSetState(statePath)}
   await qawolf.create();
 };
 
-exports.${name} = ${name};
+exports.${validName} = ${validName};
 
 if (require.main === module) {
   (async () => {
     const browser = await qawolf.launch();
     ${buildNewContext(device)}
     await qawolf.register(context);
-    await ${name}(context);
+    await ${validName}(context);
     await browser.close();
   })();
 }`;
