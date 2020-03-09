@@ -51,8 +51,9 @@ export class Expression {
   }
 
   public code(): string {
+    let setPage = '';
     if (this._didPageChange()) {
-      // TODO handle page change
+      setPage = `page = await qawolf.waitForPage(context, ${this._step.page});\n`;
     }
 
     const { action } = this._step;
@@ -70,7 +71,7 @@ export class Expression {
     const expression = `await ${methodOpen}${args.join(', ')});`;
 
     // TODO description
-    return `${expression}\n`;
+    return `${setPage}${expression}\n`;
   }
 
   public step(): Step {
