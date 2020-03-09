@@ -21,7 +21,10 @@ function ArgumentLaunch() {
       <Argument
         description={
           <React.Fragment>
-            Launch this type of browser. <b>Default:</b> <code>"chromium"</code>
+            Launch this type of browser. <b>Default:</b>{' '}
+            <a href="../../api/environment_variables#qaw_browser">
+              <code>QAW_BROWSER</code>
+            </a>
             .
           </React.Fragment>
         }
