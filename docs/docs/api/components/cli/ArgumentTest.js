@@ -1,10 +1,10 @@
 import React from 'react';
 import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import Argument from './Argument';
-import ArgumentAllBrowsers from './ArgumentAllBrowsers';
-import ArgumentFirefox from './ArgumentFirefox';
-import ArgumentWebKit from './ArgumentWebKit';
+import Argument from '../Argument';
+import ArgumentAllBrowsers from '../ArgumentAllBrowsers';
+import ArgumentFirefox from '../ArgumentFirefox';
+import ArgumentWebKit from '../ArgumentWebKit';
 
 function ArgumentTest() {
   return (

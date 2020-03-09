@@ -45,6 +45,8 @@ In addition to the APIs below, you have full access to the [Playwright API](http
 
 ## module: qawolf
 
+[create](qawolf/create)
+
 [launch](qawolf/launch)
 
 [repl](qawolf/repl)

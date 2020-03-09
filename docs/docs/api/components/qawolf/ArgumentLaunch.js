@@ -1,5 +1,5 @@
 import React from 'react';
-import Argument from './Argument';
+import Argument from '../Argument';
 
 function ArgumentLaunch() {
   return (
