@@ -1,6 +1,7 @@
 import {
   buildScriptTemplate,
   buildTestTemplate,
+  buildValidVariableName,
 } from '../../src/build-code/buildTemplate';
 
 describe('buildTemplate', () => {
@@ -60,5 +61,41 @@ describe('buildTemplate', () => {
       url: 'www.qawolf.com',
     });
     expect(template2).toMatchSnapshot();
+  });
+
+  it('corrects invalid script names if posssible', () => {
+    const template = buildScriptTemplate({
+      name: 'my-script',
+      url: 'www.qawolf.com',
+    });
+    expect(template).toMatchSnapshot();
+  });
+
+  it('throws errors for script names that will never be valid', () => {
+    expect(() =>
+      buildScriptTemplate({
+        name: 'break',
+        url: 'www.qawolf.com',
+      }),
+    ).toThrowError();
+  });
+});
+
+describe('buildValidVariableName', () => {
+  it('returns valid variable names as is', () => {
+    expect(buildValidVariableName('myScript')).toBe('myScript');
+    expect(buildValidVariableName('my_script')).toBe('my_script');
+    expect(buildValidVariableName('myScript1')).toBe('myScript1');
+    expect(buildValidVariableName('$myScript')).toBe('$myScript');
+  });
+
+  it('returns corrected invalid variable names', () => {
+    expect(buildValidVariableName('my-script')).toBe('myScript');
+    expect(buildValidVariableName('my script')).toBe('myScript');
+  });
+
+  it('throws error if variable name cannot be corrected', () => {
+    expect(() => buildValidVariableName('return')).toThrowError('return');
+    expect(() => buildValidVariableName('1myScript')).toThrowError('1myScript');
   });
 });
