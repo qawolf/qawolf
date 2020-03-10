@@ -30,7 +30,7 @@ program
     '--statePath <statePath>',
     'path where state data (cookies, localStorage, sessionStorage) is saved',
   )
-  .option('--url [url]', 'url', '')
+  .option('--url [url]', 'url', 'http://example.org')
   .description('create a test from browser actions')
 
   .action(async (urlArgument, nameArgument, cmd) => {
