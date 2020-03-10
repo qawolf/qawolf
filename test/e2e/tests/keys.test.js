@@ -1,5 +1,6 @@
 const qawolf = require('qawolf');
 const selectors = require('../selectors/keys.json');
+const { TEST_URL } = require('./utils');
 
 let browser;
 let page;
@@ -14,14 +15,14 @@ beforeAll(async () => {
 afterAll(() => browser.close());
 
 test('fill', async () => {
-  await page.goto('http://localhost:5000/text-inputs');
+  await page.goto(`${TEST_URL}text-inputs`);
   await page.click("[data-qa='html-text-input-filled']");
   await page.click('html');
   await page.fill("[data-qa='html-text-input-filled']", 'replaced');
   await page.click("[data-qa='material-text-input-filled'] input");
   await page.click(selectors['4_div']);
   await page.fill("[data-qa='material-text-input-filled'] input", 'replaced');
-  await page.goto('http://localhost:5000/date-pickers');
+  await page.goto(`${TEST_URL}date-pickers`);
   await page.click("[data-qa='html-date-picker']");
   await page.type("[data-qa='html-date-picker']", '01012020');
   await page.press("[data-qa='html-date-picker']", 'Tab');
