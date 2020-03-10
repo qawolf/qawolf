@@ -75,12 +75,18 @@ const qawolf = require('qawolf');
 const selectors = require('../selectors/myTestName.json');
 // ...
 
-test('signIn', async () => {
+test('myTestName', async () => {
   await qawolf.repl({ selectors }); // already includes context and qawolf
 });
 ```
 
-Run your test with the [`qawolf test` command](api/cli#npx-qawolf-test-name). When the test encounters a `repl` call, it will pause and the REPL will open. The REPL will have access to whatever context you gave it. For example, you can access `selectors` if you included `selectors` when calling `repl`.
+Run your test with the [`--repl` flag](api/cli#npx-qawolf-test-name):
+
+```bash
+npx qawolf test --repl myTestName
+```
+
+When the test encounters a `repl` call, it will pause and the REPL will open. The REPL will have access to whatever context you gave it. For example, you can access `selectors` if you included `selectors` when calling `repl`.
 
 After you are done using the REPL, type `.exit` to continue running your test. Your test will proceed until it encounters another `repl` call or finishes running.
 

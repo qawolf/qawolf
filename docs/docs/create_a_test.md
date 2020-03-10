@@ -35,7 +35,13 @@ To create your test, run the following in the command line. You can optionally r
 npx qawolf create http://todomvc.com/examples/react myFirstTest
 ```
 
-A Chromium browser will open and navigate to the specified URL. Now go through the steps you want to test. In our example, we 1) create a todo item, 2) complete it, and 3) clear completed todos. See the video below for an example:
+A Chromium browser will open and navigate to the specified URL. After the page has loaded and QA Wolf can access it, you will see the following in the command line:
+
+```bash
+🐺 QA Wolf is ready to create code!
+```
+
+Now go through the steps you want to test. In our example, we 1) create a todo item, 2) complete it, and 3) clear completed todos. See the video below for an example:
 
 TODOUPDATEVIDEO
 
@@ -83,14 +89,16 @@ beforeAll(async () => {
 });
 ```
 
-The test itself is contained in a [Jest `test` block](https://jestjs.io/docs/en/api#testname-fn-timeout) with the name you specified (`"myFirstTest"` in our example). The test first navigates to the specified URL. Then it repeats the actions that you took:
-
-TODOUPDATE
+The test itself is contained in a [Jest `test` block](https://jestjs.io/docs/en/api#testname-fn-timeout) with the name you specified (`"myFirstTest"` in our example). The test first navigates to the specified URL. Then it repeats the actions that you took. In our case, it clicks the todo input, types `create test!`, presses Enter, clicks to complete the todo, and clicks the clear completed todos button:
 
 ```js
 test('myFirstTest', async () => {
   await page.goto('http://todomvc.com/examples/react');
-  await page.click(selectors[0]);
+  await page.click(selectors['0_what_needs_to_b_input']);
+  await page.type(selectors['1_what_needs_to_b_input'], 'create test!');
+  await page.press(selectors['2_what_needs_to_b_input'], 'Enter');
+  await page.click(selectors['3_input']);
+  await page.click(selectors['4_button']);
 });
 ```
 
@@ -102,37 +110,29 @@ afterAll(() => browser.close());
 
 Putting it all together, below we show the full test code:
 
-TODOUPDATE
-
 ```js
-const { launch } = require('qawolf');
-const selectors = require('../selectors/myFirstTest');
+const qawolf = require('qawolf');
+const selectors = require('../selectors/myFirstTest.json');
 
-describe('myFirstTest', () => {
-  let browser;
+let browser;
+let page;
 
-  beforeAll(async () => {
-    browser = await launch({ url: 'http://todomvc.com/examples/react' });
-  });
+beforeAll(async () => {
+  browser = await qawolf.launch();
+  const context = await browser.newContext();
+  await qawolf.register(context);
+  page = await context.newPage();
+});
 
-  afterAll(() => browser.close());
+afterAll(() => browser.close());
 
-  it('can type into "What needs to be done?" input', async () => {
-    await browser.type(selectors[0], 'create test!');
-  });
-
-  it('can Enter', async () => {
-    await browser.type(selectors[1], '↓Enter↑Enter');
-  });
-
-  it('can click input', async () => {
-    await browser.click(selectors[2]);
-  });
-
-  it('can click "Clear completed" button', async () => {
-    await browser.click(selectors[3]);
-  });
-
+test('myFirstTest', async () => {
+  await page.goto('http://todomvc.com/examples/react');
+  await page.click(selectors['0_what_needs_to_b_input']);
+  await page.type(selectors['1_what_needs_to_b_input'], 'create test!');
+  await page.press(selectors['2_what_needs_to_b_input'], 'Enter');
+  await page.click(selectors['3_input']);
+  await page.click(selectors['4_button']);
   // 🐺 CREATE CODE HERE
 });
 ```
