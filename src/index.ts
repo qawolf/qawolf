@@ -2,6 +2,7 @@
 import {
   launch,
   repl,
+  ReplContext,
   saveState,
   scroll,
   setState,
@@ -26,6 +27,17 @@ export {
   setState,
   waitForPage,
 };
+
+// set qawolf on repl context
+ReplContext.set('qawolf', {
+  launch,
+  register,
+  repl,
+  saveState,
+  scroll,
+  setState,
+  waitForPage,
+});
 
 // make repl a global
 (global as any).repl = repl;
