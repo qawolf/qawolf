@@ -32,7 +32,6 @@ program
   )
   .option('--url [url]', 'url', '')
   .description('create a test from browser actions')
-
   .action(async (urlArgument, nameArgument, cmd) => {
     const url = parseUrl(cmd.url || urlArgument || 'http://example.org');
     const name =
@@ -41,6 +40,7 @@ program
     const codePath = await saveTemplate({
       device: cmd.device,
       name,
+      rootDir: cmd.rootDir,
       script: cmd.script,
       statePath: cmd.statePath,
       url: url.href,
@@ -95,6 +95,8 @@ program
       '--firefox',
       '--headless',
       '--repl',
+      // we append this manually in runJest
+      '--rootDir',
       '--webkit',
     ]);
 
