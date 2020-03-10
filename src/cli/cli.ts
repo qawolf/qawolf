@@ -30,11 +30,11 @@ program
     '--statePath <statePath>',
     'path where state data (cookies, localStorage, sessionStorage) is saved',
   )
-  .option('--url [url]', 'url', 'http://example.org')
+  .option('--url [url]', 'url', '')
   .description('create a test from browser actions')
 
   .action(async (urlArgument, nameArgument, cmd) => {
-    const url = parseUrl(cmd.url || urlArgument);
+    const url = parseUrl(cmd.url || urlArgument || 'http://example.org');
     const name =
       cmd.name || nameArgument || (url.hostname || '').replace(/\..*/g, '');
 
