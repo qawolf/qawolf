@@ -5,6 +5,7 @@ type RunJestOptions = {
   browsers?: BrowserName[];
   config?: string;
   env?: NodeJS.ProcessEnv;
+  headless?: boolean;
   repl?: boolean;
   rootDir?: string;
 };
@@ -32,7 +33,13 @@ export const runJest = (
   /**
    * Returns exit code. 0 for success, 1 for failed.
    */
-  let command = `npx jest`;
+  let command = '';
+
+  if (!options.headless) {
+    command += 'QAW_HEADLESS=false ';
+  }
+
+  command += `npx jest`;
 
   if (!args.some(arg => arg.startsWith('--config'))) {
     // prevent using the local jest config
