@@ -8,10 +8,10 @@ function ArgumentRepl() {
         description={
           <React.Fragment>
             Pass variables you want to access in the REPL. Includes the{' '}
-            <a href="https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browser">
-              Playwright <code>Browser</code>
+            <a href="https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext">
+              Playwright <code>BrowserContext</code>
             </a>{' '}
-            instance by default.
+            instance and <code>qawolf</code> module by default.
           </React.Fragment>
         }
         name="context"
