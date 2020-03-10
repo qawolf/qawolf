@@ -13,8 +13,8 @@ describe('VirtualCode', () => {
     ]);
 
     expect(virtualCode.buildPatch(virtualCodeTwo)).toEqual({
-      original: 'await page.click(selectors[0]);',
-      updated: `await page.type(selectors[0], "world");`,
+      original: 'await page.click(selectors["0_my_input_input"]);',
+      updated: 'await page.type(selectors["0_my_input_input"], "world");',
     });
   });
 

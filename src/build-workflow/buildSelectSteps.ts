@@ -14,12 +14,8 @@ export const buildSelectSteps = (events: ElementEvent[]): Step[] => {
 
     steps.push({
       action: 'select',
-      cssSelector: event.cssSelector,
-      htmlSelector: event.htmlSelector,
-      // include event index so we can sort in buildSteps
-      index: i,
-      page: event.page,
-      target: event.target,
+      event,
+      index: steps.length,
       value: event.value,
     });
   }

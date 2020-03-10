@@ -7,8 +7,11 @@ describe('buildStepLines', () => {
     const lines = buildStepLines(
       {
         ...baseStep,
+        event: {
+          ...baseStep.event,
+          page: 1,
+        },
         index: 1,
-        page: 1,
       },
       baseStep,
     );
@@ -16,7 +19,7 @@ describe('buildStepLines', () => {
     expect(lines).toMatchInlineSnapshot(`
       Array [
         "page = await qawolf.waitForPage(page.context(), 1);",
-        "await page.click(selectors[1]);",
+        "await page.click(selectors[\\"1_my_input_input\\"]);",
       ]
     `);
   });
@@ -24,7 +27,10 @@ describe('buildStepLines', () => {
   test('click step', () => {
     const lines = buildStepLines({
       ...baseStep,
-      cssSelector: "[data-qa='test-input']",
+      event: {
+        ...baseStep.event,
+        cssSelector: "[data-qa='test-input']",
+      },
     });
 
     expect(lines).toMatchInlineSnapshot(`
@@ -43,7 +49,7 @@ describe('buildStepLines', () => {
 
     expect(lines).toMatchInlineSnapshot(`
       Array [
-        "await page.fill(selectors[0], \\"hello\\");",
+        "await page.fill(selectors[\\"0_my_input_input\\"], \\"hello\\");",
       ]
     `);
   });
@@ -57,7 +63,7 @@ describe('buildStepLines', () => {
 
     expect(lines).toMatchInlineSnapshot(`
       Array [
-        "await page.press(selectors[0], \\"Enter\\");",
+        "await page.press(selectors[\\"0_my_input_input\\"], \\"Enter\\");",
       ]
     `);
   });
@@ -66,7 +72,10 @@ describe('buildStepLines', () => {
     const lines = buildStepLines({
       ...baseStep,
       action: 'scroll' as Action,
-      cssSelector: "[id='my-input']",
+      event: {
+        ...baseStep.event,
+        cssSelector: "[id='my-input']",
+      },
       value: {
         x: 100,
         y: 200,
@@ -89,7 +98,7 @@ describe('buildStepLines', () => {
 
     expect(lines).toMatchInlineSnapshot(`
       Array [
-        "await page.select(selectors[0], \\"spirit\\");",
+        "await page.select(selectors[\\"0_my_input_input\\"], \\"spirit\\");",
       ]
     `);
   });
@@ -104,7 +113,7 @@ describe('buildStepLines', () => {
 
       expect(lines).toMatchInlineSnapshot(`
 Array [
-  "await page.type(selectors[0], \\"spirit\\");",
+  "await page.type(selectors[\\"0_my_input_input\\"], \\"spirit\\");",
 ]
 `);
     });
@@ -118,7 +127,7 @@ Array [
 
       expect(lines).toMatchInlineSnapshot(`
 Array [
-  "await page.type(selectors[0], null);",
+  "await page.type(selectors[\\"0_my_input_input\\"], null);",
 ]
 `);
     });

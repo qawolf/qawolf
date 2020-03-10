@@ -87,7 +87,9 @@ export class CreateManager {
     this._selectorUpdater = options.selectorUpdater;
 
     // push step index behind existing selectors
-    this._stepStartIndex = this._selectorUpdater.selectors().length;
+    this._stepStartIndex = Object.keys(
+      this._selectorUpdater.selectors(),
+    ).length;
 
     this._collector.on('elementevent', event => this.update(event));
   }
@@ -95,10 +97,7 @@ export class CreateManager {
   protected async update(event: ElementEvent): Promise<void> {
     this._events.push(event);
 
-    const steps = buildSteps({
-      events: this._events,
-      startIndex: this._stepStartIndex,
-    });
+    const steps = buildSteps(this._events, this._stepStartIndex);
 
     await Promise.all([
       this._codeUpdater.update({ steps }),

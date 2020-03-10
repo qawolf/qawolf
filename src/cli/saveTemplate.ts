@@ -66,7 +66,7 @@ export const saveTemplate = async (
   // create a selector file so it can be imported
   const selectorPath = getSelectorPath(path);
   await ensureFile(selectorPath);
-  await writeJson(selectorPath, []);
+  await writeJson(selectorPath, {});
 
   return path;
 };

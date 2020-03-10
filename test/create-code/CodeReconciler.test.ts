@@ -10,7 +10,7 @@ describe('CodeReconciler.reconcile', () => {
 
   beforeAll(async () => {
     const events = (await loadFixtures('login')).events;
-    steps = buildSteps({ events });
+    steps = buildSteps(events);
   });
 
   it('inserts new expressions', () => {

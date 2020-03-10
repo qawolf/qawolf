@@ -87,12 +87,8 @@ export const buildClickSteps = (events: ElementEvent[]): Step[] => {
 
     steps.push({
       action: 'click',
-      cssSelector: event.cssSelector,
-      htmlSelector: event.htmlSelector,
-      // include event index so we can sort in buildSteps
-      index: (event as any).index,
-      page: event.page,
-      target: event.target,
+      index: steps.length,
+      event: event,
     });
   });
 
