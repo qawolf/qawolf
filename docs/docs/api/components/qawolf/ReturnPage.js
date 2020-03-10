@@ -6,7 +6,7 @@ function ReturnPage() {
     <Argument
       description={
         <React.Fragment>
-          Resolves with a{' '}
+          Resolves to a{' '}
           <a href="https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page">
             Playwright <code>Page</code>
           </a>{' '}

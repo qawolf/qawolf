@@ -11,7 +11,7 @@ function ArgumentWaitForPage() {
             <a href="https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext">
               Playwright <code>BrowserContext</code>
             </a>{' '}
-            instance where the page will load.
+            instance to load the page from.
           </React.Fragment>
         }
         name="context"
@@ -20,7 +20,7 @@ function ArgumentWaitForPage() {
       <Argument
         description={
           <React.Fragment>
-            The index of the page, starting from <code>0</code>.
+            The index of the page, starting at <code>0</code>.
           </React.Fragment>
         }
         name="index"
