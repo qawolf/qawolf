@@ -80,6 +80,7 @@ program
   .option('--all-browsers', 'run tests on chromium, firefox, and webkit')
   .option('--chromium', 'run tests on chromium')
   .option('--firefox', 'run tests on firefox')
+  .option('--headless', 'run tests headless')
   .option('--repl', 'open a REPL when repl() is called')
   .option('--webkit', 'run tests on webkit')
   .description('run a test with Jest')
@@ -89,6 +90,7 @@ program
       '--all-browsers',
       '--chromium',
       '--firefox',
+      '--headless',
       '--repl',
       '--webkit',
     ]);
@@ -110,6 +112,7 @@ program
     try {
       runJest(args, {
         browsers,
+        headless: !!cmd.headless,
         repl: !!cmd.repl,
         rootDir: cmd.rootDir,
       });
