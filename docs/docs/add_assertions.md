@@ -10,9 +10,7 @@ In this guide we show you how to add assertions to your tests. We assume that yo
 - [Use the Playwright API](#use-the-playwright-api) to create assertions:
 
 ```js
-await page.waitFor(() => {
-  return document.body.innerText.includes('Clear completed');
-});
+await page.waitFor(() => document.body.innerText.includes('Clear completed'));
 
 await page.waitFor(() => !document.querySelector('.todo-list li'));
 ```
@@ -38,9 +36,7 @@ test('myFirstTest', async () => {
   await page.press(selectors['2_what_needs_to_b_input'], 'Enter');
   await page.click(selectors['3_input']);
   // custom code starts
-  await page.waitFor(() => {
-    return document.body.innerText.includes('Clear completed');
-  });
+  await page.waitFor(() => document.body.innerText.includes('Clear completed'));
   // custom code ends
   await page.click(selectors['4_button']);
 });
@@ -63,9 +59,7 @@ test('myFirstTest', async () => {
   await page.press(selectors['2_what_needs_to_b_input'], 'Enter');
   await page.click(selectors['3_input']);
   // custom code starts
-  await page.waitFor(() => {
-    return document.body.innerText.includes('Clear completed');
-  });
+  await page.waitFor(() => document.body.innerText.includes('Clear completed'));
   // custom code ends
   await page.click(selectors['4_button']);
   // custom code starts
