@@ -1,51 +1,49 @@
-import React from "react";
-import Tabs from "@theme/Tabs";
+import React from 'react';
+import Tabs from '@theme/Tabs';
 
 const imageStyle = {
-  height: "20px",
-  marginRight: "8px"
+  height: '20px',
+  marginRight: '8px',
 };
 const tabStyle = {
-  alignItems: "center",
-  display: "flex",
-  justifyContent: "center"
+  alignItems: 'center',
+  display: 'flex',
+  justifyContent: 'center',
 };
 
 const BROWSERS = [
   {
-    label: "Chromium",
-    src: "https://storage.googleapis.com/docs.qawolf.com/logos/chrome.png",
-    value: "chromium"
+    label: 'Chromium',
+    src: 'https://storage.googleapis.com/docs.qawolf.com/logos/chrome.png',
+    value: 'chromium',
   },
   {
-    label: "Firefox",
-    src: "https://storage.googleapis.com/docs.qawolf.com/logos/firefox.png",
-    value: "firefox"
+    label: 'Firefox',
+    src: 'https://storage.googleapis.com/docs.qawolf.com/logos/firefox.png',
+    value: 'firefox',
   },
   {
-    label: "WebKit",
-    src: "https://storage.googleapis.com/docs.qawolf.com/logos/safari.png",
-    value: "webkit"
+    label: 'WebKit',
+    src: 'https://storage.googleapis.com/docs.qawolf.com/logos/safari.png',
+    value: 'webkit',
   },
   {
-    label: "All browsers",
-    src: "https://storage.googleapis.com/docs.qawolf.com/logos/select_all.png",
-    value: "all"
-  }
+    label: 'All browsers',
+    src: 'https://storage.googleapis.com/docs.qawolf.com/logos/select_all.png',
+    value: 'all',
+  },
 ];
 
-function BrowserTabs({ children, skipAll }) {
-  const browsers = skipAll ? BROWSERS.slice(0, 3) : BROWSERS;
-
-  const values = browsers.map(browser => {
+function BrowserTabs({ children }) {
+  const values = BROWSERS.map(browser => {
     return {
       label: (
         <div style={tabStyle}>
-          <img src={browser.src} style={imageStyle} />
+          <img alt={browser.label} src={browser.src} style={imageStyle} />
           {browser.label}
         </div>
       ),
-      value: browser.value
+      value: browser.value,
     };
   });
 
