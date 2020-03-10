@@ -37,6 +37,8 @@ npx qawolf create http://todomvc.com/examples/react myFirstTest
 
 A Chromium browser will open and navigate to the specified URL. Now go through the steps you want to test. In our example, we 1) create a todo item, 2) complete it, and 3) clear completed todos. See the video below for an example:
 
+TODOUPDATEVIDEO
+
 <video controls title="create your first test" width="100%">
   <source
     src="https://storage.googleapis.com/docs.qawolf.com/guides/create_test.mp4"
@@ -60,9 +62,47 @@ If you open your project in your code editor, you'll notice that a folder called
 
 Let's open the `.qawolf/tests/myFirstTest.test.js` file, which contains your test code. We'll explain the `.qawolf/selectors/myFirstTest.json` file a bit later.
 
-Our code first requires the `qawolf` library, which is built on top of [Microsoft's Playwright](https://github.com/microsoft/playwright) library. The test itself is contained in a [Jest describe block](https://jestjs.io/docs/en/api#describename-fn) with the name you specified (`"myFirstTest"` in our example).
+Our code first requires the `qawolf` library, which is built on top of [Microsoft's Playwright](https://github.com/microsoft/playwright) library. It also requires the selectors file, which we'll get to later:
 
-The test code opens a browser and navigates to the specified URL. Each action you took in the browser is captured in a [Jest test](https://jestjs.io/docs/en/api#testname-fn-timeout). After the test finishes running, the browser is closed. Below we show our test code:
+```js
+const qawolf = require('qawolf');
+const selectors = require('../selectors/myFirstTest.json');
+```
+
+To start your test, a few things happen in the [Jest `beforeAll` block](https://jestjs.io/docs/en/api#beforeallfn-timeout). The test launches a [browser](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browser) and creates a new [context](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext), which is an "incognito" browser session. This context is passed to the [`qawolf.register` method](api/qawolf/register) so QA Wolf can access it. Finally, a new [page](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page) is created:
+
+```js
+let browser;
+let page;
+
+beforeAll(async () => {
+  browser = await qawolf.launch();
+  const context = await browser.newContext();
+  await qawolf.register(context);
+  page = await context.newPage();
+});
+```
+
+The test itself is contained in a [Jest `test` block](https://jestjs.io/docs/en/api#testname-fn-timeout) with the name you specified (`"myFirstTest"` in our example). The test first navigates to the specified URL. Then it repeats the actions that you took:
+
+TODOUPDATE
+
+```js
+test('myFirstTest', async () => {
+  await page.goto('http://todomvc.com/examples/react');
+  await page.click(selectors[0]);
+});
+```
+
+After the test finishes running, the browser is closed in the [Jest `afterAll` block](https://jestjs.io/docs/en/api#afterallfn-timeout):
+
+```js
+afterAll(() => browser.close());
+```
+
+Putting it all together, below we show the full test code:
+
+TODOUPDATE
 
 ```js
 const { launch } = require('qawolf');
@@ -101,6 +141,8 @@ The line `// 🐺 CREATE CODE HERE` at the end of your test is a placeholder for
 
 The video below shows how your test code is updated as you use your application:
 
+TODOUPDATEVIDEO
+
 <video controls title="test code generation" width="100%">
   <source
     src="https://storage.googleapis.com/docs.qawolf.com/guides/create.mp4"
@@ -122,7 +164,7 @@ Now let's return to the command line. You'll notice a few options here:
 - `🖥️ Open REPL to run code`: opens the [QA Wolf interactive REPL](use_the_repl) so you can try out code
 - `🗑️ Discard and Exit`: closes the browser without saving your test code
 
-Use the up and down arrow keys to choose between options. The default is `💾 Save and Exit`. Choose this option and press `Enter` to save your test.
+Use the up and down arrow keys to choose between options. The default is `💾 Save and Exit`. Highlight this option and press `Enter` to save your test.
 
 ## Next steps
 
