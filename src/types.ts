@@ -59,13 +59,15 @@ export type ScrollValue = {
   y: number;
 };
 
+export interface Selectors {
+  [key: string]: string;
+}
+
 export interface Step {
   action: Action;
-  cssSelector?: string;
-  htmlSelector: string;
+  event: ElementEvent;
+  // needed to build selector key
   index: number;
-  page: number;
-  target: Doc;
   value?: StepValue;
 }
 

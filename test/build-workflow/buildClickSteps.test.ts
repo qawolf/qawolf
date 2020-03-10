@@ -1,4 +1,3 @@
-import { pick } from 'lodash';
 import { loadFixtures } from '../loadFixtures';
 import { buildClickSteps } from '../../src/build-workflow';
 import { ElementEvent } from '../../src/types';
@@ -17,8 +16,7 @@ describe('buildClickSteps', () => {
   it('builds one click per group of mousedown/click events', () => {
     const steps = buildClickSteps(loginEvents);
     expect(
-      // snapshot to test it includes the original event index
-      steps.map(step => pick(step, 'htmlSelector', 'index')),
+      steps.map(step => loginEvents.indexOf(step.event)),
     ).toMatchSnapshot();
   });
 
@@ -28,13 +26,13 @@ describe('buildClickSteps', () => {
     expect(steps.length).toEqual(3);
 
     // click on login link
-    expect(steps[0].target.attrs.href).toEqual('/login');
+    expect(steps[0].event.target.attrs.href).toEqual('/login');
 
     // click on initial input
-    expect(steps[1].target.attrs.id).toEqual('username');
+    expect(steps[1].event.target.attrs.id).toEqual('username');
 
     // click logout
-    expect(steps[2].target.attrs.qaw_innertext).toEqual('Log out');
+    expect(steps[2].event.target.attrs.qaw_innertext).toEqual('Log out');
   });
 
   it('skips click on select', () => {
@@ -44,6 +42,6 @@ describe('buildClickSteps', () => {
 
   it('prefers clicks on inputs', () => {
     const steps = buildClickSteps(radioEvents);
-    expect(steps.map(step => step.cssSelector)).toMatchSnapshot();
+    expect(steps.map(step => step.event.cssSelector)).toMatchSnapshot();
   });
 });

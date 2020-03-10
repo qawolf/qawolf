@@ -5,7 +5,7 @@ import { SelectorFileUpdater } from '../../src/create-code/SelectorFileUpdater';
 // require manually since fs is mocked
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { events } = require('../fixtures/login.json');
-const steps = buildSteps({ events });
+const steps = buildSteps(events);
 
 jest.mock('fs-extra');
 

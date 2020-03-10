@@ -10,7 +10,7 @@ describe('buildSteps', () => {
   });
 
   it('builds expected steps', () => {
-    const steps = buildSteps({ events });
+    const steps = buildSteps(events);
     expect(steps).toMatchSnapshot();
   });
 });

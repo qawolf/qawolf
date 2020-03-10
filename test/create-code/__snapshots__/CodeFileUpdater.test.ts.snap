@@ -2,21 +2,21 @@
 
 exports[`CodeFileUpdater update saves code with new steps 1`] = `
 "  someCode();
-  await page.click(selectors[0]);
-  await page.click(selectors[1]);
+  await page.click(selectors[\\"0_a\\"]);
+  await page.click(selectors[\\"1_username_input\\"]);
   // 🐺 CREATE CODE HERE
   otherCode();"
 `;
 
 exports[`CodeFileUpdater update saves code with new steps 2`] = `
 "  someCode();
-  await page.click(selectors[0]);
-  await page.click(selectors[1]);
-  await page.type(selectors[2], \\"tomsmith\\");
-  await page.press(selectors[3], \\"Tab\\");
-  await page.type(selectors[4], \\"SuperSecretPassword!\\");
-  await page.press(selectors[5], \\"Enter\\");
-  await page.click(selectors[6]);
+  await page.click(selectors[\\"0_a\\"]);
+  await page.click(selectors[\\"1_username_input\\"]);
+  await page.type(selectors[\\"2_username_input\\"], \\"tomsmith\\");
+  await page.press(selectors[\\"3_username_input\\"], \\"Tab\\");
+  await page.type(selectors[\\"4_password_input\\"], \\"SuperSecretPassword!\\");
+  await page.press(selectors[\\"5_password_input\\"], \\"Enter\\");
+  await page.click(selectors[\\"6_p\\"]);
   // 🐺 CREATE CODE HERE
   otherCode();"
 `;

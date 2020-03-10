@@ -1,8 +1,8 @@
 import { snakeCase } from 'lodash';
 import { decodeHtml } from '../web/lang';
-import { Doc } from '../types';
+import { Doc, Selectors, Step } from '../types';
 
-export const buildDescription = (target: Doc): string => {
+export const buildSelectorKey = (index: number, target: Doc): string => {
   const attrs = target.attrs || {};
 
   // ex. "departure date"
@@ -31,5 +31,26 @@ export const buildDescription = (target: Doc): string => {
 
   description += ` ${target.name}`;
 
-  return snakeCase(description);
+  return snakeCase(`${index} ${description}`);
+};
+
+export const buildSelector = (step: Step): string => {
+  const { cssSelector } = step.event;
+  // inline the css selector
+  if (cssSelector) return `"${cssSelector}"`;
+
+  // lookup html selector by index
+  return `selectors["${buildSelectorKey(step.index, step.event.target)}"]`;
+};
+
+export const buildSelectors = (steps: Step[]): Selectors => {
+  const selectors: Selectors = {};
+
+  steps.forEach(step => {
+    const key = buildSelectorKey(step.index, step.event.target);
+    selectors[key] =
+      step.event.cssSelector || `html=${step.event.htmlSelector}`;
+  });
+
+  return selectors;
 };

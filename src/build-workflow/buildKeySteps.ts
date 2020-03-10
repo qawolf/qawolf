@@ -49,12 +49,8 @@ export class KeyStepFactory {
 
     const step: Step = {
       action,
-      cssSelector: event.cssSelector,
-      htmlSelector: event.htmlSelector,
-      // include event index so we can sort in buildSteps
-      index: this._events.indexOf(event),
-      page: event.page,
-      target: event.target,
+      event,
+      index: this._steps.length,
       value: options.value,
     };
 

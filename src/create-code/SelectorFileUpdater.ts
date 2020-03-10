@@ -1,10 +1,10 @@
 import { outputJson, remove, pathExists, readJson } from 'fs-extra';
-import { concat } from 'lodash';
 import { ReplContext } from 'playwright-utils';
-import { Step } from '../types';
+import { buildSelectors } from '../build-code/buildSelectors';
+import { Selectors, Step } from '../types';
 
 type ConstructorOptions = {
-  initialSelectors: string[];
+  initialSelectors: Selectors;
   path: string;
 };
 
@@ -12,9 +12,9 @@ type UpdateOptions = {
   steps: Step[];
 };
 
-const loadSelectors = async (path: string): Promise<string[]> => {
+const loadSelectors = async (path: string): Promise<Selectors> => {
   const codeExists = await pathExists(path);
-  if (!codeExists) return [];
+  if (!codeExists) return {};
 
   const selectors = await readJson(path);
   return selectors;
@@ -26,7 +26,7 @@ export class SelectorFileUpdater {
     return new SelectorFileUpdater({ path, initialSelectors });
   }
 
-  private _initialSelectors: string[] = [];
+  private _initialSelectors: Selectors;
   private _steps: Step[] = [];
   private _path: string;
 
@@ -45,16 +45,13 @@ export class SelectorFileUpdater {
     }
   }
 
-  public selectors(): string[] {
-    // we do not support editing of the selectors file
-    // just replace the new selectors
-    const newSelectors = this._steps.map(({ cssSelector, htmlSelector }) => {
-      if (cssSelector) return cssSelector;
-
-      return `html=${htmlSelector}`;
-    });
-
-    return concat(this._initialSelectors, newSelectors);
+  public selectors(): Selectors {
+    return {
+      ...this._initialSelectors,
+      // merge the new selectors with the initial selectors
+      // they should not conflict, since we start the new steps at later indices
+      ...buildSelectors(this._steps),
+    };
   }
 
   public async update(options: UpdateOptions): Promise<void> {
