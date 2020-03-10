@@ -11,8 +11,8 @@ jobs:
       matrix:
         node-version: [12.x]
 
-    env:
-      QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
+    # env:
+    #   QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
 
     steps:
       - uses: actions/checkout@v2
@@ -48,11 +48,11 @@ jobs:
         env:
           CI: true
 
-      - name: Upload Artifacts
-        if: always()
-        uses: actions/upload-artifact@master
-        with:
-          name: artifacts
-          path: ${{ github.workspace }}/artifacts
+      # - name: Upload Artifacts
+      #   if: always()
+      #   uses: actions/upload-artifact@master
+      #   with:
+      #     name: artifacts
+      #     path: ${{ github.workspace }}/artifacts
 
     timeout-minutes: 20
