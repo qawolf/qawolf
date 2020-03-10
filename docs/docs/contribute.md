@@ -38,34 +38,12 @@ Once you've made your changes, make a pull request to the [`qawolf` repository](
 
 If you have any questions please [chat with us on Gitter](https://gitter.im/qawolf/community)!
 
-## Development environment
-
-QAWolf is organized as a mono-repo of packages using [lerna](https://github.com/lerna/lerna).
-
-Run bootstrap to install, build, and link the dependencies. You should re-run this everytime you change a package's dependencies.
-
-```sh
-npm run bootstrap
-```
-
-Run the the watchers to keep the `/lib` folders up to date.
-
-```sh
-cd ./qawolf
-npm run watch
-
-cd ./qawolf/packages/web
-npm run watch
-```
-
 ## What are all of these packages?!
 
-[@qawolf/web](https://github.com/qawolf/qawolf/tree/master/packages/web) is a JS library that runs inside the browser. It has helpers to auto-wait for elements and assertions, and a Recorder to collect user interaction events.
+We maintain several packages under the [`qawolf` organzation](https://github.com/qawolf). Feel free to contribute to any of them!
 
-[@qawolf/browser](https://github.com/qawolf/qawolf/tree/master/packages/browser) is a wrapper around Playwright that injects the `@qawolf/web` library and exposes helpers to use it. It switches to the page of a selector, waits for requests to finish, and manages keyboard interactions.
-
-[@qawolf/build-workflow](https://github.com/qawolf/qawolf/tree/master/packages/build-workflow) converts user interaction events into a workflow of steps to take.
-
-[@qawolf/build-code](https://github.com/qawolf/qawolf/tree/master/packages/build-code) builds a test or script from a workflow.
-
-[@qawolf/cli](https://github.com/qawolf/qawolf/tree/master/packages/cli) ties everything together into commands.
+- [qawolf](https://github.com/qawolf/qawolf) is a Node.js library for creating Playwright/Jest tests and scripts
+- [playwright-ci](https://github.com/qawolf/playwright-ci) provides a CLI to set up tests in CI
+- [playwright-html-selector](https://github.com/qawolf/playwright-html-selector) is a custom selector engine for Playwright that finds elements by their HTML
+- [playwright-utils](https://github.com/qawolf/playwright-utils) contains utility functions to help with Playwright (for example, save debug artifacts and scroll)
+- [playwright-video](https://github.com/qawolf/playwright-video) saves a video of a Playwright page
