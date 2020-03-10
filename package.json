@@ -9,7 +9,7 @@
     "src"
   ],
   "engines": {
-    "node": ">= 12.13"
+    "node": ">=10.15.0"
   },
   "scripts": {
     "clean": "rimraf build tmp",
