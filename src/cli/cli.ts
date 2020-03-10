@@ -18,8 +18,9 @@ program.usage('<command> [options]').version(pkg.version);
 addCiCommands({ program, qawolf: true });
 
 program
-  .command('create <url> [name]')
+  .command('create [url] [name]')
   .option('-d, --device <device>', 'emulate using a playwright.device')
+  .option('--name [name]', 'name', '')
   .option(
     '-r, --rootDir <rootDir>',
     'directory where test or script will be saved',
@@ -29,11 +30,13 @@ program
     '--statePath <statePath>',
     'path where state data (cookies, localStorage, sessionStorage) is saved',
   )
+  .option('--url [url]', 'url', '')
   .description('create a test from browser actions')
 
-  .action(async (urlArgument, optionalName, cmd) => {
-    const url = parseUrl(urlArgument);
-    const name = optionalName || (url.hostname || '').replace(/\..*/g, '');
+  .action(async (urlArgument, nameArgument, cmd) => {
+    const url = parseUrl(cmd.url || urlArgument);
+    const name =
+      cmd.name || nameArgument || (url.hostname || '').replace(/\..*/g, '');
 
     const codePath = await saveTemplate({
       device: cmd.device,
