@@ -43,6 +43,7 @@
     "debug": "*",
     "dotenv": "^8.2.0",
     "inquirer": "^7.0.5",
+    "kleur": "^3.0.3",
     "playwright": "0.11.1-next.1583631839291",
     "playwright-ci": "^0.4.0",
     "playwright-html-selector": "^0.3.0",

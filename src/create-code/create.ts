@@ -1,6 +1,7 @@
 import callsites from 'callsites';
 import Debug from 'debug';
 import { pathExists, readFile } from 'fs-extra';
+import { bold } from 'kleur';
 import { findLast } from 'lodash';
 import { basename, dirname, join } from 'path';
 import { BrowserContext } from 'playwright';
@@ -76,6 +77,7 @@ export const create = async (options: CreateOptions = {}): Promise<void> => {
     selectorPath,
   });
 
+  console.log(bold().blue('🐺  QA Wolf is ready to create code!'));
   if (options.onReady) options.onReady();
 
   await manager.finalize();
