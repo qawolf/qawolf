@@ -177,5 +177,4 @@ There are a few places you might want to go from here:
 
 - [Add assertions](add_assertions) to your tests
 - [Change input values](change_input_values) in your tests
-- Learn more about the [default selector logic](how_it_works#element-selectors)
 - Learn more about the [interactive REPL](use_the_repl)

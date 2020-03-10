@@ -23,11 +23,7 @@ module.exports = {
     { type: 'doc', id: 'emulate_a_device' },
     { type: 'doc', id: 'use_typescript' },
     { type: 'doc', id: 'create_a_script' },
-    {
-      type: 'category',
-      label: 'Advanced',
-      items: ['how_it_works', 'contribute'],
-    },
+    { type: 'doc', id: 'contribute' },
   ],
   api: [
     { type: 'doc', id: 'api/table_of_contents' },
