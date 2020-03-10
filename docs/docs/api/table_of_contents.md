@@ -3,13 +3,13 @@ id: table_of_contents
 title: API Table of Contents
 ---
 
-### [`qawolf@v0.9.3`](https://www.npmjs.com/package/qawolf/v/0.9.3)
+### [`qawolf@v0.12.0`](https://www.npmjs.com/package/qawolf/v/0.12.0)
 
 <a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version" /></a>
 <br/>
 <br/>
 
-In addition to the APIs below, you have full access to the [Playwright API](https://github.com/microsoft/playwright/blob/master/docs/api.md) and the [Jest API](https://jestjs.io/docs/en/expect).
+In addition to the APIs below, you have full access to the [Playwright API](https://github.com/microsoft/playwright/blob/master/docs/api.md) and the [Jest API](https://jestjs.io/docs/en/expect). The QA Wolf API is minimal by design, since we want to leverage the power of Playwright/Jest as much as possible.
 
 ## CLI
 
@@ -39,42 +39,24 @@ In addition to the APIs below, you have full access to the [Playwright API](http
 
 [QAW_ATTRIBUTE](environment_variables#qaw_attribute)
 
-[QAW_DEBUG](environment_variables#qaw_debug)
-
-[QAW_DISABLE_VIDEO_ARTIFACT](environment_variables#qaw_disable_video_artifact)
+[QAW_BROWSER](environment_variables#qaw_browser)
 
 [QAW_HEADLESS](environment_variables#qaw_headless)
 
-[QAW_SLEEP_MS](environment_variables#qaw_sleep_ms)
-
-[QAW_TIMEOUT_MS](environment_variables#qaw_timeout_ms)
-
 ## module: qawolf
+
+[create](qawolf/create)
 
 [launch](qawolf/launch)
 
+[register](qawolf/register)
+
 [repl](qawolf/repl)
 
-## class: BrowserContext
+[saveState](qawolf/save_state)
 
-[class: BrowserContext](browser_context/class_browser_context)
+[scroll](qawolf/scroll)
 
-[click](browser_context/click)
+[setState](qawolf/set_state)
 
-[close](browser_context/close)
-
-[find](browser_context/find)
-
-[findProperty](browser_context/find_property)
-
-[goto](browser_context/goto)
-
-[hasText](browser_context/has_text)
-
-[page](browser_context/page)
-
-[scroll](browser_context/scroll)
-
-[select](browser_context/select)
-
-[type](browser_context/type)
+[waitForPage](qawolf/wait_for_page)

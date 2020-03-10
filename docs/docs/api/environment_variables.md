@@ -6,21 +6,27 @@ title: Environment Variables
 Environment variables can be used when running [CLI commands](cli):
 
 ```bash
-QAW_SLEEP_MS=0 npx qawolf test myTest
+QAW_ATTRIBUTE=my-attribute npx qawolf create www.myawesomesite.com
 ```
 
 You can also [pass environment variables](../run_tests_in_ci#use-environment-variables) when running tests in CI:
 
 ```yaml
 env:
-  QAW_SLEEP_MS: 0
+  QAW_BROWSER: firefox
 ```
 
 ## QAW_ARTIFACT_PATH
 
 **Default:** `null`
 
-Specify the path where [debug artifacts](../run_tests_in_ci#debug) should be saved. Debug artifacts include logs from the browser and the QA Wolf server. On Linux with [xvfb](https://zoomadmin.com/HowToInstall/UbuntuPackage/xvfb) installed, a video recording and corresponding GIF are also saved.
+Save a video and console logs for each page in your test or script. Videos are saved at `${QAW_ARTIFACT_PATH}/video_${pageIndex}.mp4`, and console logs are saved at `${QAW_ARTIFACT_PATH}/logs_${pageIndex}.txt`. `pageIndex` corresponds to the index of the page starting at `0`.
+
+Video is only supported on Chromium. We are [waiting for Playwright](https://github.com/microsoft/playwright/issues/1158) to add support for the Screencast API in Firefox and WebKit.
+
+If [FFmpeg](https://www.ffmpeg.org) is not installed, videos will not be included. Install [`ffmpeg-static`](https://www.npmjs.com/package/ffmpeg-static) as a dependency or set the `FFMPEG_PATH` environment variable.
+
+Note that your code must call [`qawolf.register`](qawolf/register) for artifacts to be saved.
 
 #### Examples
 
@@ -30,9 +36,9 @@ QAW_ARTIFACT_PATH=./artifacts npx qawolf test
 
 ## QAW_ATTRIBUTE
 
-**Default:** `data-cy,data-e2e,data-qa,data-test,data-testid`
+**Default:** `data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/`
 
-Specify `QAW_ATTRIBUTE` when you create a test, and QA Wolf will use that [attribute](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors) as a selector when it exists on an element.
+Specify `QAW_ATTRIBUTE` when you create a test, and QA Wolf will use that [attribute](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors) as a selector when it exists on an element. You can specify an attribute directly, or use a [regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions). For example, the expression `/^qa-.*/` will match any attributes that start with `qa-` like `qa-submit`.
 
 You can specify multiple attributes separated by commas, for example: `QAW_ATTRIBUTE=aria-label,data-qa,id,title`.
 
@@ -58,52 +64,16 @@ The generated code will be:
 await browser.click({ css: "[my-attribute='search']" });
 ```
 
-## QAW_DEBUG
+## QAW_BROWSER
 
-**Default:** `false`
+**Default:** `chromium`
 
-Prevent the browser from closing to help with debugging.
+Which browser to run your tests or scripts on. Allowed values are `chromium`, `firefox`, and `webkit`. Setting `QAW_BROWSER` is equivalent to using a browser flag with the [`test` CLI command](cli#npx-qawolf-test-name).
 
-Open the [Chrome DevTools console](https://developers.google.com/web/tools/chrome-devtools/console) to see logs from QA Wolf. Run `qawolf.find()` in the console to re-run the last call to [`find`](browser_context/find).
-
-## QAW_DISABLE_VIDEO_ARTIFACT
-
-**Default:** `false`
-
-Disable capturing a video/GIF of the test.
-
-If you are a Linux user, you should use this to to interact with the browser locally while still storing other [debug artifacts](../run_tests_in_ci#debug). The default behavior on Linux if [`QAW_ARTIFACT_PATH`](#qaw_artifact_path) is set is to run and record the browser on a virtual display.
-
-#### Examples
-
-For Linux users, to store other debug artifacts while running the test locally:
-
-```bash
-QAW_DISABLE_VIDEO_ARTIFACT=true QAW_ARTIFACT_PATH=./artifacts npx qawolf test myTestName
-
-```
+To run on all browsers (Chromium, Firefox, and WebKit), use the `--all-browsers` flag with the [`test` CLI command](cli#npx-qawolf-test-name).
 
 ## QAW_HEADLESS
 
-**Default:** `false`
+**Default:** `true`
 
-Run the browser in [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome). This will disable video recording in CI.
-
-## QAW_SLEEP_MS
-
-**Default:** `1000`
-
-The time in milliseconds to sleep after an element is found before interacting with it. QA Wolf also waits for this amount of time before closing the browser.
-
-To run your tests as fast as possible, use `QAW_SLEEP_MS=0`.
-
-We use a default value of 1 second to:
-
-- Make it easier to watch each step in the recorded video.
-- Wait for elements that appear before their event handlers are attached or data is loaded. If your application has elements that appear before they can be interacted with, a best practice is to write custom wait logic to improve test stability.
-
-## QAW_TIMEOUT_MS
-
-**Default:** `30000`
-
-The maximum time in milliseconds to wait for elements to appear before timing out.
+Run the browser in [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome).

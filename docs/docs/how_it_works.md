@@ -21,14 +21,14 @@ You'll notice in your test code above that the [`click`](api/browser_context/cli
 
 ```js
 it('can type into "What needs to be done?" input', async () => {
-  await browser.type(selectors[0], "create test!");
+  await browser.type(selectors[0], 'create test!');
 });
 ```
 
 The `selectors` are imported from the `.qawolf/selectors/myTestName.json` file:
 
 ```js
-const selectors = require("../selectors/myTestName");
+const selectors = require('../selectors/myTestName.json');
 ```
 
 The `.qawolf/selectors/myTestName.json` file is a [JSON](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON) file containing an [array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object). The file looks something like this:
@@ -58,7 +58,7 @@ The test code references the generated selector in each step:
 
 ```js
 it('can type into "What needs to be done?" input', async () => {
-  await browser.type(selectors[0], "create test!");
+  await browser.type(selectors[0], 'create test!');
 });
 ```
 

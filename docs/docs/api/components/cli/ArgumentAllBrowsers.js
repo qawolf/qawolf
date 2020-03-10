@@ -1,5 +1,5 @@
-import React from "react";
-import Argument from "./Argument";
+import React from 'react';
+import Argument from '../Argument';
 
 function ArgumentAllBrowsers() {
   return (
@@ -7,9 +7,9 @@ function ArgumentAllBrowsers() {
       <Argument
         description={
           <React.Fragment>
-            Run your test(s) on{" "}
-            <a href="https://www.chromium.org/Home">Chromium</a>,{" "}
-            <a href="https://www.mozilla.org/en-US/firefox/new">Firefox</a>, and{" "}
+            Run your test(s) on{' '}
+            <a href="https://www.chromium.org/Home">Chromium</a>,{' '}
+            <a href="https://www.mozilla.org/en-US/firefox/new">Firefox</a>, and{' '}
             <a href="https://webkit.org">WebKit</a>.
           </React.Fragment>
         }

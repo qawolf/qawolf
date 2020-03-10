@@ -4,13 +4,13 @@ sidebar_label: launch
 title: qawolf.launch
 ---
 
-import ArgumentLaunch from "../components/ArgumentLaunch";
-import ReturnBrowserContext from "../components/ReturnBrowserContext";
-import Syntax from "../components/Syntax";
+import ArgumentLaunch from '../components/qawolf/ArgumentLaunch';
+import ReturnBrowser from '../components/qawolf/ReturnBrowser';
+import Syntax from '../components/Syntax';
 
-<Syntax code="launch(options)" />
+<Syntax code="launch([options])" />
 
-Launch a [QA Wolf `BrowserContext`](../browser_context/class_browser_context), which extends the [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/v0.10.0/docs/api.md#class-browsercontext).
+Launch a [Playwright `Browser`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browser) instance.
 
 ### Arguments
 
@@ -18,18 +18,33 @@ Launch a [QA Wolf `BrowserContext`](../browser_context/class_browser_context), w
 
 ### Returns
 
-<ReturnBrowserContext />
+<ReturnBrowser />
 
 ### Examples
 
-Launch a browser in a test:
+Launch a [Chromium](https://www.chromium.org/Home) browser with the [default options](https://github.com/microsoft/playwright/blob/master/docs/api.md#browsertypelaunchoptions):
 
 ```js
-let browser;
+const qawolf = require('qawolf');
+// ...
+const browser = await qawolf.launch();
+```
 
-beforeAll(async () => {
-  browser = await launch({
-    url: "www.myawesomesite.com"
-  });
+Launch a [Firefox](https://www.mozilla.org/en-US/firefox/new) browser with the [default options](https://github.com/microsoft/playwright/blob/master/docs/api.md#browsertypelaunchoptions):
+
+```js
+const qawolf = require('qawolf');
+// ...
+const firefoxBrowser = await qawolf.launch({ browserName: 'firefox' });
+```
+
+Launch a [Firefox](https://www.mozilla.org/en-US/firefox/new) browser, setting the [`slowMo` option](https://github.com/microsoft/playwright/blob/master/docs/api.md#browsertypelaunchoptions) to 50 milliseconds:
+
+```js
+const qawolf = require('qawolf');
+// ...
+const firefoxBrowser = await qawolf.launch({
+  browserName: 'firefox',
+  slowMo: 50,
 });
 ```

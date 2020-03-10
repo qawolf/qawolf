@@ -1,15 +1,15 @@
-import React from "react";
-import Argument from "./Argument";
+import React from 'react';
+import Argument from '../Argument';
 
 function ReturnPage() {
   return (
     <Argument
       description={
         <React.Fragment>
-          Resolves to the corresponding{" "}
+          Resolves to a{' '}
           <a href="https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page">
             Playwright <code>Page</code>
-          </a>{" "}
+          </a>{' '}
           instance.
         </React.Fragment>
       }
