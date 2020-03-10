@@ -16,6 +16,7 @@ afterAll(() => browser.close());
 
 test('fill', async () => {
   await page.goto(`${TEST_URL}text-inputs`);
+  await page.evaluate(() => console.log('start keys test'));
   await page.click("[data-qa='html-text-input-filled']");
   await page.click('html');
   await page.fill("[data-qa='html-text-input-filled']", 'replaced');

@@ -16,6 +16,7 @@ afterAll(() => browser.close());
 
 test('selects', async () => {
   await page.goto(`${TEST_URL}selects`);
+  await page.evaluate(() => console.log('start select test'));
   await page.select("[data-qa='html-select']", 'cat');
   await page.click("[data-qa='material-select']");
   await page.click(selectors['2_li']);
