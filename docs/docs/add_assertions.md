@@ -13,6 +13,8 @@ In this guide we show you how to add assertions to your tests. We assume that yo
 await page.waitFor(() => {
   return document.body.innerText.includes('Clear completed');
 });
+
+await page.waitFor(() => !document.querySelector('.todo-list li'));
 ```
 
 - The [interactive REPL](use_the_repl) lets you try out assertions while creating tests
