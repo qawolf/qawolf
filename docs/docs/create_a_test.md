@@ -43,11 +43,9 @@ A Chromium browser will open and navigate to the specified URL. After the page h
 
 Now go through the steps you want to test. In our example, we 1) create a todo item, 2) complete it, and 3) clear completed todos. See the video below for an example:
 
-TODOUPDATEVIDEO
-
 <video controls title="create your first test" width="100%">
   <source
-    src="https://storage.googleapis.com/docs.qawolf.com/guides/create_test.mp4"
+    src="https://storage.googleapis.com/docs.qawolf.com/guides/create_a_test.mp4"
     type="video/mp4"
   />
 </video>
