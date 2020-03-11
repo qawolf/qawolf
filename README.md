@@ -4,7 +4,7 @@
 
 <h3 align="center">Create browser tests 10x faster</h3>
 
-<p align="center">QA Wolf is a free and open source library to create <a href="https://github.com/microsoft/playwright">Playwright</a>/<a href="https://jestjs.io">Jest</a> browser tests and run them in CI</p>
+<p align="center">Free and open source library to create <a href="https://github.com/microsoft/playwright">Playwright</a>/<a href="https://jestjs.io">Jest</a> browser tests and run them in CI</p>
 
 <p align="center">
 <a align="center" href="https://twitter.com/intent/tweet?text=%F0%9F%90%BA+QA+Wolf%3A+Create+browser+tests+10x+faster&url=https%3A%2F%2Fgithub.com%2Fqawolf%2Fqawolf"><img src="https://img.shields.io/twitter/url/https/github.com/tterb/hyde.svg?style=social" alt="tweet" /></a>
@@ -28,27 +28,43 @@
 <ul>
 <li><b>Skip writing boilerplate.</b> Your browser actions are converted to Playwright and Jest code.
 </li>
-<li><b>Built for stability.</b> Avoid flaky tests with automatic waiting and <a href="https://docs.qawolf.com/docs/use_custom_selectors#default-selector-logic">smart element selectors</a>.
+<li><b>Built for stability.</b> Avoid flaky tests with automatic waiting and <a href="https://docs.qawolf.com/docs/use_custom_selectors#selectors-overview">smart element selectors</a>.
 </li>
-<li><b>Test complex scenarios.</b> Test your application like a user. Use third party sites, multiple windows, and hot keys.
+<li><b>Test complex scenarios.</b> Test your application like a user. Use third party sites and multiple windows.
 </li>
 <li><b>Test across browsers.</b> Test your application on <a href="https://www.chromium.org/Home">Chromium</a>, <a href="https://www.mozilla.org/en-US/firefox/new">Firefox</a>, and <a href="https://webkit.org">WebKit</a>.
 </li>
+<li><b>Handle sign in.</b> Easily <a href="https://docs.qawolf.com/docs/handle_sign_in">save user state</a> (cookies, `localStorage`, `sessionStorage`) and use it to create tests.
 <li><b>Easy CI setup.</b> Run your tests in CI in parallel with one command, on push or on a schedule.
 </li>
-<li><b>Easy debugging.</b> Each test run in CI includes a video, GIF, and detailed logs.
+<li><b>Easy debugging.</b> Test runs in CI include a video and detailed logs.
 </li>
 </ul>
 <p>We're working to build a world where browser testing is effortless. We hope you'll join us!</p>
 
 ## Table of Contents
 
+- [💪 Supported use cases](#-supported-use-cases)
 - [🖥️ Install QA Wolf](#%EF%B8%8F-install-qa-wolf)
 - [✅ Create a browser test](#-create-a-browser-test)
 - [☁️ Set up CI](#%EF%B8%8F-set-up-ci)
 - [🙋 Get Help](#-get-help)
 - [📝 License](#-license)
-- [🙏 Acknowledgments](#-acknowledgements)
+
+<br/>
+
+## 💪 Supported use cases
+
+We currently support the following use cases. If there's something you don't see yet, please [open an issue](https://github.com/qawolf/qawolf/issues/new)!
+
+| Browser Actions     | Selectors                                                                                  | Debug                                                                 | Coming Soon                                                                       |
+| ------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Click               | Multiple pages                                                                             | Browser logs                                                          | [Video (Firefox and WebKit)](https://github.com/microsoft/playwright/issues/1158) |
+| Type                | Multiple tabs                                                                              | Video (Chromium)                                                      | [iframes](https://github.com/qawolf/qawolf/issues/279)                            |
+| Scroll              | [Test attributes](https://docs.qawolf.com/docs/use_custom_selectors#target-attributes)     | [Pause test and open REPL](https://docs.qawolf.com/docs/use_the_repl) | [Drag and drop](https://github.com/qawolf/qawolf/issues/315)                      |
+| Select              | Test attributes on ancestor                                                                |                                                                       | [File upload](https://github.com/qawolf/qawolf/issues/331)                        |
+| Paste Text          | [HTML selectors](https://docs.qawolf.com/docs/use_custom_selectors#default-selector-logic) |                                                                       | [Back button](https://github.com/qawolf/qawolf/issues/438)                        |
+| Replace Text (fill) |
 
 <br/>
 
@@ -149,7 +165,3 @@ We want QA Wolf to work for you, so please reach out to get help!
 QA Wolf is licensed under [BSD-3-Clause](https://github.com/qawolf/qawolf/blob/master/LICENSE.md).
 
 <br/>
-
-## 🙏 Acknowledgements
-
-The DOM Recording artifact is using [@Yuyz0112](https://github.com/Yuyz0112)'s awesome [rrweb](https://github.com/rrweb-io/rrweb) library!
