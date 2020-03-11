@@ -36,7 +36,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@master
         with:
-          name: qawolf
+          name: artifacts
           path: ${{ github.workspace }}\artifacts
 
     timeout-minutes: 20
