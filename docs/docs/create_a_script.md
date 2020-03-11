@@ -61,6 +61,7 @@ if (require.main === module) {
     const context = await browser.newContext();
     await qawolf.register(context);
     await myScriptName(context);
+    await qawolf.stopVideos();
     await browser.close();
   })();
 }

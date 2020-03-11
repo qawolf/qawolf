@@ -45,7 +45,10 @@ beforeAll(async () => {
   page = await context.newPage();
 });
 
-afterAll(() => browser.close());
+afterAll(async () => {
+  await qawolf.stopVideos();
+  await browser.close();
+});
 
 test('myFirstTest', async () => {
   await page.goto('http://todomvc.com/examples/react');
