@@ -55,7 +55,7 @@
 
 ## 💪 Automatically Create Code
 
-QA Wolf automatically creates [Playwright](https://github.com/microsoft/playwright)/[Jest](https://jestjs.io/) code for the following scenarios. You can also edit your test code as it is created to do something else.
+QA Wolf automatically creates [Playwright](https://github.com/microsoft/playwright)/[Jest](https://jestjs.io/) code for the following scenarios. You can edit your code as it is created to do anything else.
 
 | Scenario                                                     | Status | Example                                              |
 | ------------------------------------------------------------ | :----: | ---------------------------------------------------- |
