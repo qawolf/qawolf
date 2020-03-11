@@ -68,7 +68,7 @@ QA Wolf automatically creates [Playwright](https://github.com/microsoft/playwrig
 | Test attributes                                              |   ✅   | `page.click("[data-qa='submit']")`                   |
 | Ancestor test attributes                                     |   ✅   | `page.click("[data-qa='radio'] [value='cat']")`      |
 | Multiple pages/tabs                                          |   ✅   | `qawolf.waitForPage(page.context(), 1)`              |
-| [iframes](https://github.com/qawolf/qawolf/issues/279)       |   🗺️   | Coming soon                                          |
+| [Iframes](https://github.com/qawolf/qawolf/issues/279)       |   🗺️   | Coming soon                                          |
 | [Drag and drop](https://github.com/qawolf/qawolf/issues/315) |   🗺️   | Coming soon                                          |
 | [File upload](https://github.com/qawolf/qawolf/issues/331)   |   🗺️   | Coming soon                                          |
 | [Back button](https://github.com/qawolf/qawolf/issues/438)   |   🗺️   | Coming soon                                          |
