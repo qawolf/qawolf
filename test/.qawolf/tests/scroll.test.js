@@ -11,7 +11,10 @@ beforeAll(async () => {
   page = await context.newPage();
 });
 
-afterAll(() => browser.close());
+afterAll(async () => {
+  await qawolf.stopVideos();
+  await browser.close();
+});
 
 test('selects', async () => {
   await page.goto(`${TEST_URL}infinite-scroll`);

@@ -3,13 +3,14 @@ import {
   launch,
   repl,
   ReplContext,
+  register,
   saveState,
   scroll,
   setState,
+  stopVideos,
   waitForPage,
 } from 'playwright-utils';
 import { create } from './create-code/create';
-import { register } from './register';
 
 const isCLI = !module.parent;
 if (isCLI) {
@@ -25,6 +26,7 @@ export {
   saveState,
   scroll,
   setState,
+  stopVideos,
   waitForPage,
 };
 
@@ -34,6 +36,7 @@ ReplContext.set('qawolf', {
   register,
   repl,
   saveState,
+  stopVideos,
   scroll,
   setState,
   waitForPage,

@@ -1,10 +1,9 @@
 import { readFile } from 'fs-extra';
 import { prompt } from 'inquirer';
 import { join, relative } from 'path';
-import { launch, waitFor } from 'playwright-utils';
+import { launch, register, waitFor } from 'playwright-utils';
 import { getSelectorPath, getCodePath } from '../../src/create-code/create';
 import { createSelf, getCallSites } from '../e2e/scripts/createSelf';
-import { register } from '../../src/register';
 import { TEST_URL } from '../utils';
 
 jest.mock('inquirer');
