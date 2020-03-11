@@ -259,4 +259,4 @@ Congratulations - you've learned how to automate sign in! 🎉
 There are a few places you might want to go from here:
 
 - Learn more about the [interactive REPL](use_the_repl)
-- Learn how to [edit an existing test](TODOFIXLINK)
+- Learn how to [add steps to an existing test](add_steps_to_existing_tests)

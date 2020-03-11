@@ -98,6 +98,6 @@ Congratulations - you've learned how to use the QA Wolf REPL! 🎉
 
 There are a few places you might want to go from here:
 
-- [Learn more about adding assertions](add_assertions) to your tests
-- [Use custom element selectors](use_custom_selectors) in your tests
-- [Change input values](change_input_values) in your tests
+- Learn how to [add steps to an existing test](add_steps_to_existing_tests)
+- Learn how to [handle sign in programmatically](handle_sign_in)
+- Learn how to [add assertions to your tests](add_assertions)
