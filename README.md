@@ -37,34 +37,32 @@
 <li><b>Handle sign in.</b> <a href="https://docs.qawolf.com/docs/handle_sign_in">Save user state</a> (cookies, <code>localStorage</code>, <code>sessionStorage</code>) and use it to create tests.
 <li><b>Easy CI setup.</b> Run your tests in CI in parallel with one command, on push or on a schedule.
 </li>
-<li><b>Easy debugging.</b> Test runs in CI include a video and detailed logs.
+<li><b>Easy debugging.</b> Test runs in CI include a video and detailed logs. <a href="https://docs.qawolf.com/docs/use_the_repl">Use the REPL</a> to debug tests locally.
 </li>
 </ul>
 <p>We're working to build a world where browser testing is effortless. We hope you'll join us!</p>
 
 ## Table of Contents
 
-- [💪 Supported use cases](#-supported-use-cases)
+- [💪 Automatically Create Code](#-supported-use-cases)
 - [🖥️ Install QA Wolf](#%EF%B8%8F-install-qa-wolf)
-- [✅ Create a browser test](#-create-a-browser-test)
+- [🎨 Create a browser test](#-create-a-browser-test)
 - [☁️ Set up CI](#%EF%B8%8F-set-up-ci)
 - [🙋 Get help](#-get-help)
 - [📝 License](#-license)
 
 <br/>
 
-## 💪 Supported use cases
+## 💪 Automatically Create Code
 
-We currently support the following use cases. If there's something you don't see yet, please [open an issue](https://github.com/qawolf/qawolf/issues/new)!
+QA Wolf automatically creates code for the following scenarios. You can also edit your test code as it is created to do something else.
 
-| Browser Actions     | Selectors                                                                                  | Debug                                                                 | Coming Soon                                                                       |
-| ------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| Click               | Multiple pages                                                                             | Browser logs                                                          | [Video (Firefox and WebKit)](https://github.com/microsoft/playwright/issues/1158) |
-| Type                | Multiple tabs                                                                              | Video (Chromium)                                                      | [iframes](https://github.com/qawolf/qawolf/issues/279)                            |
-| Scroll              | [Test attributes](https://docs.qawolf.com/docs/use_custom_selectors#target-attributes)     | [Pause test and open REPL](https://docs.qawolf.com/docs/use_the_repl) | [Drag and drop](https://github.com/qawolf/qawolf/issues/315)                      |
-| Select              | Test attributes on ancestor                                                                |                                                                       | [File upload](https://github.com/qawolf/qawolf/issues/331)                        |
-| Paste Text          | [HTML selectors](https://docs.qawolf.com/docs/use_custom_selectors#default-selector-logic) |                                                                       | [Back button](https://github.com/qawolf/qawolf/issues/438)                        |
-| Replace Text (fill) |
+| Scenario | Status | Example                                          |
+| -------- | :----: | ------------------------------------------------ |
+| Click    |   ✅   | `page.click(selectors['0_submit'])`              |
+| Type     |   ✅   | `page.type(selectors['0_username'], "username")` |
+
+If there's something you don't see yet, please [open an issue](https://github.com/qawolf/qawolf/issues/new)!
 
 <br/>
 
@@ -83,7 +81,7 @@ QA Wolf is tested against the [maintenance LTS](https://github.com/nodejs/Releas
 
 <br/>
 
-## ✅ Create a browser test
+## 🎨 Create a browser test
 
 [Documentation](http://docs.qawolf.com/docs/create_a_test)
 
