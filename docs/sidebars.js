@@ -17,6 +17,7 @@ module.exports = {
   ],
   guides: [
     { type: 'doc', id: 'use_the_repl' },
+    { type: 'doc', id: 'handle_sign_in' },
     { type: 'doc', id: 'add_assertions' },
     { type: 'doc', id: 'use_custom_selectors' },
     { type: 'doc', id: 'change_input_values' },
