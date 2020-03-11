@@ -6,8 +6,8 @@ jobs:
   test:
     runs-on: windows-2019
 
-    # env:
-    #   QAW_ARTIFACT_PATH: ${{ github.workspace }}\artifacts
+    env:
+      QAW_ARTIFACT_PATH: ${{ github.workspace }}\artifacts
 
     steps:
       - uses: actions/setup-node@v1
@@ -32,11 +32,11 @@ jobs:
           # Windows throws invalid js for linked binaries unless we call node directly
           node ./node_modules/qawolf test --all-browsers --headless --rootDir=./test/.qawolf
 
-      # - name: Upload Artifacts
-      #   if: always()
-      #   uses: actions/upload-artifact@master
-      #   with:
-      #     name: qawolf
-      #     path: ${{ github.workspace }}\artifacts
+      - name: Upload Artifacts
+        if: always()
+        uses: actions/upload-artifact@master
+        with:
+          name: qawolf
+          path: ${{ github.workspace }}\artifacts
 
     timeout-minutes: 20
