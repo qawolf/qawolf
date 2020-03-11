@@ -34,7 +34,7 @@
 </li>
 <li><b>Test across browsers.</b> Test your application on <a href="https://www.chromium.org/Home">Chromium</a>, <a href="https://www.mozilla.org/en-US/firefox/new">Firefox</a>, and <a href="https://webkit.org">WebKit</a>.
 </li>
-<li><b>Handle sign in.</b> Easily <a href="https://docs.qawolf.com/docs/handle_sign_in">save user state</a> (cookies, `localStorage`, `sessionStorage`) and use it to create tests.
+<li><b>Handle sign in.</b> <a href="https://docs.qawolf.com/docs/handle_sign_in">Save user state</a> (cookies, <code>localStorage</code>, <code>sessionStorage</code>) and use it to create tests.
 <li><b>Easy CI setup.</b> Run your tests in CI in parallel with one command, on push or on a schedule.
 </li>
 <li><b>Easy debugging.</b> Test runs in CI include a video and detailed logs.
