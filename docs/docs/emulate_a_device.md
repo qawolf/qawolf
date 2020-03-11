@@ -77,7 +77,7 @@ beforeAll(async () => {
 
 You'll notice that `userAgent` and `viewport` were set to the values specified in `devices["iPad Mini"]`. These values are used in the [`browser.newContext` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#browsernewcontextoptions) so your test will emulate the iPad Mini.
 
-If `device` is not specified when calling [`browser.newContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#browsernewcontextoptions), it will default to Playwright's default device.
+If `device` is not specified when calling [`browser.newContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#browsernewcontextoptions), it will use Playwright's default device.
 
 ## Update an existing test
 
