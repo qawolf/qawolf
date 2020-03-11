@@ -45,6 +45,7 @@ module.exports = {
         'api/qawolf/save_state',
         'api/qawolf/scroll',
         'api/qawolf/set_state',
+        'api/qawolf/stop_videos',
         'api/qawolf/wait_for_page',
       ],
     },
