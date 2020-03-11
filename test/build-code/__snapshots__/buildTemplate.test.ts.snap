@@ -18,6 +18,7 @@ if (require.main === module) {
     const context = await browser.newContext();
     await qawolf.register(context);
     await myScript(context);
+    await qawolf.stopVideos();
     await browser.close();
   })();
 }"
@@ -37,7 +38,10 @@ beforeAll(async () => {
   page = await context.newPage();
 });
 
-afterAll(() => browser.close());
+afterAll(async () => {
+  await qawolf.stopVideos();
+  await browser.close();
+});
 
 test('myTest', async () => {
   await page.goto(\\"www.qawolf.com\\");
@@ -63,6 +67,7 @@ if (require.main === module) {
     const context = await browser.newContext();
     await qawolf.register(context);
     await myScript(context);
+    await qawolf.stopVideos();
     await browser.close();
   })();
 }"
@@ -91,6 +96,7 @@ if (require.main === module) {
     });
     await qawolf.register(context);
     await myScript(context);
+    await qawolf.stopVideos();
     await browser.close();
   })();
 }"
@@ -115,7 +121,10 @@ beforeAll(async () => {
   page = await context.newPage();
 });
 
-afterAll(() => browser.close());
+afterAll(async () => {
+  await qawolf.stopVideos();
+  await browser.close();
+});
 
 test('myTest', async () => {
   await page.goto(\\"www.qawolf.com\\");
@@ -142,6 +151,7 @@ if (require.main === module) {
     const context = await browser.newContext();
     await qawolf.register(context);
     await myScript(context);
+    await qawolf.stopVideos();
     await browser.close();
   })();
 }"
@@ -161,7 +171,10 @@ beforeAll(async () => {
   page = await context.newPage();
 });
 
-afterAll(() => browser.close());
+afterAll(async () => {
+  await qawolf.stopVideos();
+  await browser.close();
+});
 
 test('myTest', async () => {
   await page.goto(\\"www.qawolf.com\\");

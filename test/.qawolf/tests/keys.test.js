@@ -12,7 +12,10 @@ beforeAll(async () => {
   page = await context.newPage();
 });
 
-afterAll(() => browser.close());
+afterAll(async () => {
+  await qawolf.stopVideos();
+  await browser.close();
+});
 
 test('fill', async () => {
   await page.goto(`${TEST_URL}text-inputs`);
@@ -24,11 +27,11 @@ test('fill', async () => {
   await page.click(selectors['4_div']);
   await page.fill("[data-qa='material-text-input-filled'] input", 'replaced');
   await page.goto(`${TEST_URL}date-pickers`);
+  // https://github.com/microsoft/playwright/issues/1331
   await page.click("[data-qa='html-date-picker']");
   await page.type("[data-qa='html-date-picker']", '01012020');
   await page.press("[data-qa='html-date-picker']", 'Tab');
   await page.press(selectors['9_a'], 'Tab');
-  // TODO report issue to playwright
   await page.type("[data-qa='material-date-picker-native'] input", '02022020');
   await page.press("[data-qa='material-date-picker-native'] input", 'Tab');
   await page.fill("[data-qa='material-date-picker'] input", '02032020');

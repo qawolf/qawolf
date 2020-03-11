@@ -82,6 +82,7 @@ if (require.main === module) {
     ${buildNewContext(device)}
     await qawolf.register(context);
     await ${validName}(context);
+    await qawolf.stopVideos();
     await browser.close();
   })();
 }`;
@@ -107,7 +108,10 @@ beforeAll(async () => {
   page = await context.newPage();
 });
 
-afterAll(() => browser.close());
+afterAll(async () => {
+  await qawolf.stopVideos();
+  await browser.close();
+});
 
 test('${name}', async () => {
   await page.goto("${url}");${buildSetState(statePath)}
