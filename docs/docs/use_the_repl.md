@@ -3,7 +3,7 @@ id: use_the_repl
 title: 🔁 Use the REPL
 ---
 
-As you create a test, you may want to try out code to include in your test file. The interactive [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop) lets you run [Node.js](https://nodejs.org/en) code and gives you access to the [QA Wolf API](api/table_of_contents).
+As you create a test, you may want to try out code to include in your test file. The interactive [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop) lets you run [Node.js](https://nodejs.org/en) code. It also gives you access to the [QA Wolf API](api/table_of_contents) and [Playwright API](https://github.com/microsoft/playwright/blob/master/docs/api.md).
 
 ## TL;DR
 
@@ -24,49 +24,36 @@ Use the up and down arrow keys to choose between options. To open the REPL, choo
 
 ## Run code in the REPL
 
-You will now be able to run [Node.js](https://nodejs.org/en) in the command line, as well as access the [QA Wolf API](api/table_of_contents).
+You will now be able to run [Node.js](https://nodejs.org/en) in the command line, as well as access the [QA Wolf API](api/table_of_contents) and [Playwright API](https://github.com/microsoft/playwright/blob/master/docs/api.md).
 
 Type `1 + 1` in the REPL and press `Enter`. The result `2` will print below the command. In short, any code you could run in the [Node.js](https://nodejs.org/en) REPL can also be run here.
 
-You can also use the [QA Wolf API](api/table_of_contents) in the REPL. For example, let's say we have just started to create a test on [TodoMVC](http://todomvc.com/examples/react). We can create a todo item through the REPL.
-
-First, let's type in the `input` with the class `"new-todo"` and then press `Enter` to save our todo. To do this, we will call the [`browser.type` method](api/browser_context/type). In the REPL, type:
+You can also use the [QA Wolf API](api/table_of_contents) in the REPL. By default, the REPL provides access to the [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext) instance (`context`) and `qawolf`. For example, let's get the [Playwright `Page`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page) instance with index `0` using the [`qawolf.waitForPage` method](api/qawolf/wait_for_page):
 
 ```js
-await browser.type({ css: "input.new-todo" }, "Hello from the REPL!");
-await browser.type({ css: "input.new-todo" }, "↓Enter↑Enter");
+let page = await qawolf.waitForPage(context, 0);
 ```
 
-You will see a todo item called `"Hello from the REPL!"` created in the browser.
+Now let's say we have just started to create a test on [TodoMVC](http://todomvc.com/examples/react). We can create a todo item from the REPL.
 
-We can then click to complete our todo item, using the [`browser.click` method](api/browser_context/click). In TodoMVC, you complete a todo by clicking on the `input` with the class `"toggle"`:
+We can type in the `input` with the class `"new-todo"` using [Playwright's `page.type` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#pagetypeselector-text-options). In the REPL, type:
 
 ```js
-await browser.click({ css: "input.toggle" });
+await page.type('input.new-todo', 'Hello from the REPL!');
 ```
 
-You should see the todo item be marked as complete in the browser.
-
-Now let's try out an assertion using the [`browser.hasText` method](api/browser_context/has_text). We'll verify that the text `"Clear completed"` now appears since we have completed a todo:
+We can save our todo item with [Playwright's `page.press`](https://github.com/microsoft/playwright/blob/master/docs/api.md#pagepressselector-key-options) method. In the REPL, type the following to press `Enter`:
 
 ```js
-await browser.hasText("Clear completed");
+await page.press('input.new-todo', 'Enter');
 ```
 
-The result of this command should be `true`, as the text `"Clear completed"` is on the page.
+You should see a todo item called `"Hello from the REPL!"` created in the browser.
 
-QA Wolf is built on top of [Microsoft's Playwright](https://github.com/microsoft/playwright), which has a [rich API](https://github.com/microsoft/playwright/blob/master/docs/api.md) that you can use. The methods on the [`Page` class](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page) can be particularly helpful.
-
-Let's get the current Playwright `Page` instance using the [`browser.page` method](api/browser_context/page):
+Now let's get the current count of todo items on the page using Playwright's [`page.$$eval` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#pageevalselector-pagefunction-args). The todo items are stored as `li` elements under the `ul` with the class `"todo-items"`:
 
 ```js
-const page = await browser.page();
-```
-
-We can now call Playwright's [`page.$$eval` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#pageevalselector-pagefunction-args) to get the current count of todo items. These items are stored as `li` elements under the `ul` with the class `"todo-items"`:
-
-```js
-await page.$$eval(".todo-list li", todos => todos.length);
+await page.$$eval('.todo-list li', todos => todos.length);
 ```
 
 The result of this command should be `1`, as we currently have one todo item on the page.
@@ -81,36 +68,25 @@ When you are done using the REPL, type `.exit` in the command line. This will cl
 
 You can also open the REPL when running a test. The [`repl` method](api/qawolf/repl) allows you to use the REPL to debug existing tests.
 
-First, update your code to call the `repl` method where you want the test to pause and open a REPL. Import `repl` from `qawolf` at the beginning of your test:
+Call `qawolf.repl` any number of times in your test code, passing whatever values you want to be able to access. The `context` and `qawolf` are passed by default, so you do not need to include them again:
 
 ```js
-// change this
-const { launch } = require("qawolf");
-// to this
-const { launch, repl } = require("qawolf");
-```
+const qawolf = require('qawolf');
+const selectors = require('../selectors/myTestName.json');
+// ...
 
-Then call `repl` any number of times in your test code. Pass whatever values you want access to in the REPL. The `browser` is passed by default, so you do not need to include it:
-
-```js
-it("can click button", async () => {
-  await repl({ selectors }); // already includes browser
-
-  await browser.click(selectors[2]);
+test('myTestName', async () => {
+  await qawolf.repl({ selectors }); // already includes context and qawolf
 });
 ```
 
-Run your test with the [`--repl` flag](api/cli#npx-qawolf-test-name). When the test encounters a `repl` call, it will pause and the REPL will open. You can then run various commands in the REPL. For example, you may want to try out a new selector:
+Run your test with the [`--repl` flag](api/cli#npx-qawolf-test-name):
 
 ```bash
-await browser.find({ css: "#new-id" });
+npx qawolf test --repl myTestName
 ```
 
-The REPL will have access to whatever context you gave it. For example, you can access `selectors` if you included `selectors` when calling `repl`:
-
-```bash
-await browser.find(selectors[11])
-```
+When the test encounters a `repl` call, it will pause and the REPL will open. The REPL will have access to whatever context you gave it. For example, you can access `selectors` if you included `selectors` when calling `repl`.
 
 After you are done using the REPL, type `.exit` to continue running your test. Your test will proceed until it encounters another `repl` call or finishes running.
 
@@ -122,6 +98,6 @@ Congratulations - you've learned how to use the QA Wolf REPL! 🎉
 
 There are a few places you might want to go from here:
 
-- [Learn more about adding assertions](add_assertions) to your tests
-- [Use custom element selectors](use_custom_selectors) in your tests
-- [Change input values](change_input_values) in your tests
+- Learn how to [add steps to an existing test](add_steps_to_existing_tests)
+- Learn how to [handle sign in programmatically](handle_sign_in)
+- Learn how to [add assertions to your tests](add_assertions)

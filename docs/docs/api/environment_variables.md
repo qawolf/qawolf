@@ -61,7 +61,7 @@ Click on this element:
 The generated code will be:
 
 ```js
-await browser.click({ css: "[my-attribute='search']" });
+await page.click("[my-attribute='search']");
 ```
 
 ## QAW_BROWSER

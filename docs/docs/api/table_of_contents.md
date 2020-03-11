@@ -59,4 +59,6 @@ In addition to the APIs below, you have full access to the [Playwright API](http
 
 [setState](qawolf/set_state)
 
+[stopVideos](qawolf/stop_videos)
+
 [waitForPage](qawolf/wait_for_page)

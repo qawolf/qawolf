@@ -7,6 +7,7 @@
 <p align="center">QA Wolf is a free and open source library to create <a href="https://github.com/microsoft/playwright">Playwright</a>/<a href="https://jestjs.io">Jest</a> browser tests and run them in CI</p>
 
 <p align="center">
+<a align="center" href="https://twitter.com/intent/tweet?text=%F0%9F%90%BA+QA+Wolf%3A+Create+browser+tests+10x+faster&url=https%3A%2F%2Fgithub.com%2Fqawolf%2Fqawolf"><img src="https://img.shields.io/twitter/url/https/github.com/tterb/hyde.svg?style=social" alt="tweet" /></a>
   <a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version" /></a>
   <img src="https://github.com/qawolf/qawolf/workflows/Unit%20Tests/badge.svg" />
   <img src="https://github.com/qawolf/qawolf/workflows/Browsers%20Linux/badge.svg" />

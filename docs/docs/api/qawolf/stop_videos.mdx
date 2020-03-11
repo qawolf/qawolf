@@ -1,0 +1,34 @@
+---
+id: stop_videos
+sidebar_label: stopVideos
+title: qawolf.stopVideos
+---
+
+import Argument from '../components/Argument';
+import Syntax from '../components/Syntax';
+
+<Syntax code="stopVideos()" />
+
+Stop recording videos and wait until all video [artifacts](../../run_tests_in_ci#debug) have saved.
+
+### Arguments
+
+No arguments.
+
+### Returns
+
+<Argument
+  description="Resolves when video recording is stopped and video artifacts are saved."
+  name=""
+  type="Promise<void>"
+/>
+
+### Examples
+
+Stop recording videos and wait until all video artifacts are saved:
+
+```js
+const qawolf = require('qawolf');
+// ...
+await qawolf.stopVideos();
+```

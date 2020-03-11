@@ -19,10 +19,9 @@ For example, if your test file is called `.qawolf/tests/myTestName.test.js`, ren
 
 ```js
 // change this
-const { launch } = require("qawolf");
-
+const qawolf = require('qawolf');
 // to this
-import { launch } from "qawolf";
+import * as qawolf from 'qawolf';
 ```
 
 3. Install types if you haven't already.

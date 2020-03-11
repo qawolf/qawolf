@@ -17,17 +17,15 @@ module.exports = {
   ],
   guides: [
     { type: 'doc', id: 'use_the_repl' },
+    { type: 'doc', id: 'add_steps_to_existing_tests' },
+    { type: 'doc', id: 'handle_sign_in' },
     { type: 'doc', id: 'add_assertions' },
     { type: 'doc', id: 'use_custom_selectors' },
     { type: 'doc', id: 'change_input_values' },
     { type: 'doc', id: 'emulate_a_device' },
     { type: 'doc', id: 'use_typescript' },
     { type: 'doc', id: 'create_a_script' },
-    {
-      type: 'category',
-      label: 'Advanced',
-      items: ['how_it_works', 'contribute'],
-    },
+    { type: 'doc', id: 'contribute' },
   ],
   api: [
     { type: 'doc', id: 'api/table_of_contents' },
@@ -47,6 +45,7 @@ module.exports = {
         'api/qawolf/save_state',
         'api/qawolf/scroll',
         'api/qawolf/set_state',
+        'api/qawolf/stop_videos',
         'api/qawolf/wait_for_page',
       ],
     },
