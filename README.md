@@ -48,7 +48,7 @@
 - [🖥️ Install QA Wolf](#%EF%B8%8F-install-qa-wolf)
 - [✅ Create a browser test](#-create-a-browser-test)
 - [☁️ Set up CI](#%EF%B8%8F-set-up-ci)
-- [🙋 Get Help](#-get-help)
+- [🙋 Get help](#-get-help)
 - [📝 License](#-license)
 
 <br/>
@@ -149,7 +149,7 @@ npx qawolf jenkins
 
 <br/>
 
-## 🙋 Get Help
+## 🙋 Get help
 
 <p align="left">
     <a href="https://gitter.im/qawolf/community">👋 Chat</a> |
