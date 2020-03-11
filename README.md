@@ -61,7 +61,7 @@ QA Wolf automatically creates [Playwright](https://github.com/microsoft/playwrig
 | ------------------------------------------------------------ | :----: | ----------------------------------------------------- |
 | Click                                                        |   ✅   | `page.click(selectors['0_submit'])`                   |
 | Type                                                         |   ✅   | `page.type(selectors['0_username'], 'username')`      |
-| Scroll                                                       |   ✅   | `qawolf.scroll(page, 'html', { x: 0, y: 200 })        |
+| Scroll                                                       |   ✅   | `qawolf.scroll(page, 'html', { x: 0, y: 200 })`       |
 | Select                                                       |   ✅   | `page.select(selectors['0_ice_cream', 'chocolate' ])` |
 | Fill                                                         |   ✅   | `page.fill(selectors['0_username'], 'username')`      |
 | Paste                                                        |   ✅   | `page.type(selectors['0_username'], 'username')`      |
