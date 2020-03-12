@@ -43,11 +43,9 @@ A Chromium browser will open and navigate to the specified URL. After the page h
 
 Now go through the steps you want to test. In our example, we 1) create a todo item, 2) complete it, and 3) clear completed todos. See the video below for an example:
 
-TODOUPDATEVIDEO
-
 <video controls title="create your first test" width="100%">
   <source
-    src="https://storage.googleapis.com/docs.qawolf.com/guides/create_test.mp4"
+    src="https://storage.googleapis.com/docs.qawolf.com/guides/create_a_test.mp4"
     type="video/mp4"
   />
 </video>
@@ -102,10 +100,13 @@ test('myFirstTest', async () => {
 });
 ```
 
-After the test finishes running, the browser is closed in the [Jest `afterAll` block](https://jestjs.io/docs/en/api#afterallfn-timeout):
+After the test finishes running, the browser is closed in the [Jest `afterAll` block](https://jestjs.io/docs/en/api#afterallfn-timeout). If a video of your test is being recorded, the recording stops and the video is saved.
 
 ```js
-afterAll(() => browser.close());
+afterAll(async () => {
+  await qawolf.stopVideos();
+  await browser.close();
+});
 ```
 
 Putting it all together, below we show the full test code:
@@ -124,7 +125,10 @@ beforeAll(async () => {
   page = await context.newPage();
 });
 
-afterAll(() => browser.close());
+afterAll(async () => {
+  await qawolf.stopVideos();
+  await browser.close();
+});
 
 test('myFirstTest', async () => {
   await page.goto('http://todomvc.com/examples/react');
@@ -140,8 +144,6 @@ test('myFirstTest', async () => {
 The line `// 🐺 CREATE CODE HERE` at the end of your test is a placeholder for where new test code will be added if you continue to use the browser. This allows you to optionally edit your test code as you go along. When you finish creating a test, this line is removed.
 
 The video below shows how your test code is updated as you use your application:
-
-TODOUPDATEVIDEO
 
 <video controls title="test code generation" width="100%">
   <source

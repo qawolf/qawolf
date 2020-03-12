@@ -3,9 +3,7 @@ id: emulate_a_device
 title: 📱 Emulate a Device
 ---
 
-TODOUPDATE
-
-When you create a test with QA Wolf, by default it runs on a browser that is 1366 pixels wide and 768 pixels tall. These dimensions are the default because they are the [most common desktop screen resolution](https://gs.statcounter.com/screen-resolution-stats/desktop/worldwide).
+When you create a test with QA Wolf, by default it runs on a browser that is about 1280 pixels wide and 720 pixels tall. These dimensions are close to the [most common desktop screen resolution](https://gs.statcounter.com/screen-resolution-stats/desktop/worldwide).
 
 In this guide, we explain how to emulate [devices](https://github.com/Microsoft/playwright/blob/master/src/deviceDescriptors.ts) and test responsive layouts. We assume you know how to [create a test](create_a_test).
 
@@ -79,9 +77,7 @@ beforeAll(async () => {
 
 You'll notice that `userAgent` and `viewport` were set to the values specified in `devices["iPad Mini"]`. These values are used in the [`browser.newContext` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#browsernewcontextoptions) so your test will emulate the iPad Mini.
 
-TODOUPDATE
-
-If `device` is not specified when calling [`browser.newContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#browsernewcontextoptions), it will default to [`"desktop"`](https://github.com/qawolf/qawolf/blob/3256831cd93c172e81c9f7eb1fdeb347733d72ec/packages/browser/src/browser/device.ts#L9-L24) (1366x768 pixels).
+If `device` is not specified when calling [`browser.newContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#browsernewcontextoptions), it will use Playwright's default device.
 
 ## Update an existing test
 

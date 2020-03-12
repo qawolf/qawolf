@@ -13,7 +13,6 @@ For those that are familiar, we aspire to be the [`create-react-app`](https://gi
 
 Curious yet? [Get started here!](install)
 
-TODOUPDATEGIF
 ![](https://storage.googleapis.com/docs.qawolf.com/website/create.gif)
 
 ## How is it 10x faster?

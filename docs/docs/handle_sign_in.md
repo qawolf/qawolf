@@ -138,7 +138,10 @@ beforeAll(async () => {
   page = await context.newPage();
 });
 
-afterAll(() => browser.close());
+afterAll(async () => {
+  await qawolf.stopVideos();
+  await browser.close();
+});
 
 test('mySignInTest', async () => {
   await page.goto('https://www.myawesomesite.com/');

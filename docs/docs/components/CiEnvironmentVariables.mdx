@@ -11,26 +11,19 @@ You'll notice a section for environment variables (line 25 in the generated defa
 ```yaml
 # ...
 env:
-  QAW_ARTIFACT_PATH: $(System.DefaultWorkingDirectory)/artifacts
   # configure tests with environment variables
-  # QAW_SLEEP_MS: 0
-  # you can also use secret environment variables
-  # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#secret-variables
-  # LOGIN_PASSWORD: $(SECRET_PASSWORD)
+  QAW_ARTIFACT_PATH: $(System.DefaultWorkingDirectory)/artifacts
 # ...
 ```
 
-If your environment variable is not sensitive, you can set its value directly. To do this, just add another line under the `env` key. In the example below, we set [`QAW_SLEEP_MS`](api/environment_variables#qaw_sleep_ms) to `0` so that our tests run as fast as possible:
+If your environment variable is not sensitive, you can set its value directly. To do this, just add another line under the `env` key. In the example below, we set `LOGIN_USERNAME` to `spirit`:
 
 ```yaml
 # ...
 env:
-  QAW_ARTIFACT_PATH: $(System.DefaultWorkingDirectory)/artifacts
   # configure tests with environment variables
-  QAW_SLEEP_MS: 0
-  # you can also use secret environment variables
-  # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#secret-variables
-  # LOGIN_PASSWORD: $(SECRET_PASSWORD)
+  QAW_ARTIFACT_PATH: $(System.DefaultWorkingDirectory)/artifacts
+  LOGIN_USERNAME: spirit
 # ...
 ```
 
@@ -43,11 +36,9 @@ In the example below, we set `LOGIN_PASSWORD` to `$(SECRET_PASSWORD)`:
 ```yaml
 # ...
 env:
-  QAW_ARTIFACT_PATH: $(System.DefaultWorkingDirectory)/artifacts
   # configure tests with environment variables
-  QAW_SLEEP_MS: 0
-  # you can also use secret environment variables
-  # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#secret-variables
+  QAW_ARTIFACT_PATH: $(System.DefaultWorkingDirectory)/artifacts
+  LOGIN_USERNAME: spirit
   LOGIN_PASSWORD: $(SECRET_PASSWORD)
 # ...
 ```
@@ -69,26 +60,19 @@ You'll notice a section for environment variables (line 26 in the generated defa
 ```yaml
 # ...
 environment:
+  # configure tests with environment variables
   QAW_ARTIFACT_PATH: /tmp/artifacts
-  # # configure tests with environment variables
-  # QAW_SLEEP_MS: 0
-  # # you can also use secret environment variables
-  # # https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project
-  # LOGIN_PASSWORD: ${SECRET_PASSWORD}
 # ...
 ```
 
-If your environment variable is not sensitive, you can set its value directly. To do this, just add another line under the `env` key. In the example below, we set [`QAW_SLEEP_MS`](api/environment_variables#qaw_sleep_ms) to `0` so that our tests run as fast as possible:
+If your environment variable is not sensitive, you can set its value directly. To do this, just add another line under the `env` key. In the example below, we set `LOGIN_USERNAME` to `spirit`:
 
 ```yaml
 # ...
 environment:
+  # configure tests with environment variables
   QAW_ARTIFACT_PATH: /tmp/artifacts
-  # # configure tests with environment variables
-  QAW_SLEEP_MS: 0
-  # # you can also use secret environment variables
-  # # https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project
-  # LOGIN_PASSWORD: ${SECRET_PASSWORD}
+  LOGIN_USERNAME: spirit
 # ...
 ```
 
@@ -101,11 +85,9 @@ In the example below, we set `LOGIN_PASSWORD` to `${SECRET_PASSWORD}`:
 ```yaml
 # ...
 environment:
+  # configure tests with environment variables
   QAW_ARTIFACT_PATH: /tmp/artifacts
-  # # configure tests with environment variables
-  QAW_SLEEP_MS: 0
-  # # you can also use secret environment variables
-  # # https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project
+  LOGIN_USERNAME: spirit
   LOGIN_PASSWORD: ${SECRET_PASSWORD}
 # ...
 ```
@@ -117,33 +99,24 @@ In our test file, we use `process.env.LOGIN_PASSWORD` rather than hard coding th
 
 To set environment variables, open the `./.github/workflows/qawolf.yml` file.
 
-You'll notice a section for environment variables after `- run: npx qawolf test` (line 39 in the generated default file):
+You'll notice a section for environment variables after `- run: npx qawolf test` (line 40 in the generated default file):
 
 ```yaml
 # ...
-- run: npx qawolf test
-  env:
-    QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
-  #   # configure tests with environment variables
-  #   QAW_SLEEP_MS: 0
-  #   # you can also use GitHub secrets for environment variables
-  #   # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets
-  #   LOGIN_PASSWORD: ${{ secrets.PASSWORD }}
+env:
+  # configure tests with environment variables
+  QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
 # ...
 ```
 
-If your environment variable is not sensitive, you can set its value directly. To do this, just add another line under the `env` key. In the example below, we set [`QAW_SLEEP_MS`](api/environment_variables#qaw_sleep_ms) to `0` so that our tests run as fast as possible:
+If your environment variable is not sensitive, you can set its value directly. To do this, just add another line under the `env` key. In the example below, we set `LOGIN_USERNAME` to `spirit`:
 
 ```yaml
 # ...
-- run: npx qawolf test
-  env:
-    QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
-    #   # configure tests with environment variables
-    QAW_SLEEP_MS: 0
-  #   # you can also use GitHub secrets for environment variables
-  #   # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets
-  #   LOGIN_PASSWORD: ${{ secrets.PASSWORD }}
+env:
+  # configure tests with environment variables
+  QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
+  LOGIN_USERNAME: spirit
 # ...
 ```
 
@@ -166,14 +139,11 @@ In the example below, we set `LOGIN_PASSWORD` to `${{ secrets.PASSWORD }}`:
 
 ```yaml
 # ...
-- run: npx qawolf test
-  env:
-    QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
-    #   # configure tests with environment variables
-    QAW_SLEEP_MS: 0
-    #   # you can also use GitHub secrets for environment variables
-    #   # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets
-    LOGIN_PASSWORD: ${{ secrets.PASSWORD }}
+env:
+  # configure tests with environment variables
+  QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
+  LOGIN_USERNAME: spirit
+  LOGIN_PASSWORD: ${{ secrets.PASSWORD }}
 # ...
 ```
 
@@ -189,26 +159,19 @@ You'll notice a section for environment variables (line 14 in the generated defa
 ```yaml
 # ...
 variables:
+  # configure tests with environment variables
   QAW_ARTIFACT_PATH: $CI_PROJECT_DIR/artifacts
-  ## configure tests with environment variables
-  # QAW_SLEEP_MS: 0
-  ## you can also use GitLab protected environment variables
-  ## https://docs.gitlab.com/ee/ci/variables/#protected-environment-variables
-  # LOGIN_PASSWORD: $SECRET_PASSWORD
 # ...
 ```
 
-If your environment variable is not sensitive, you can set its value directly. To do this, just add another line under the `environment` key. In the example below, we set [`QAW_SLEEP_MS`](api/environment_variables#qaw_sleep_ms) to `0` so that our tests run as fast as possible:
+If your environment variable is not sensitive, you can set its value directly. To do this, just add another line under the `environment` key. In the example below, we set `LOGIN_USERNAME` to `spirit`:
 
 ```yaml
 # ...
-environment:
-  QAW_ARTIFACT_PATH: /tmp/artifacts
-  # # configure tests with environment variables
-  QAW_SLEEP_MS: 0
-  # # you can also use secret environment variables
-  # # https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project
-  # LOGIN_PASSWORD: ${SECRET_PASSWORD}
+variables:
+  # configure tests with environment variables
+  QAW_ARTIFACT_PATH: $CI_PROJECT_DIR/artifacts
+  LOGIN_USERNAME: spirit
 # ...
 ```
 
@@ -221,11 +184,8 @@ In the example below, we set `LOGIN_PASSWORD` to `$SECRET_PASSWORD`:
 ```yaml
 # ...
 variables:
+  # configure tests with environment variables
   QAW_ARTIFACT_PATH: $CI_PROJECT_DIR/artifacts
-  ## configure tests with environment variables
-  QAW_SLEEP_MS: 0
-  ## you can also use GitLab protected environment variables
-  ## https://docs.gitlab.com/ee/ci/variables/#protected-environment-variables
   LOGIN_PASSWORD: $SECRET_PASSWORD
 # ...
 ```
