@@ -145,8 +145,6 @@ The line `// 🐺 CREATE CODE HERE` at the end of your test is a placeholder for
 
 The video below shows how your test code is updated as you use your application:
 
-TODOUPDATEVIDEO
-
 <video controls title="test code generation" width="100%">
   <source
     src="https://storage.googleapis.com/docs.qawolf.com/guides/create.mp4"
