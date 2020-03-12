@@ -1,0 +1,33 @@
+---
+id: set_state
+sidebar_label: setState
+title: qawolf.setState
+---
+
+import ArgumentSaveState from '../components/qawolf/ArgumentSaveState';
+import ReturnVoid from '../components/qawolf/ReturnVoid';
+import Syntax from '../components/Syntax';
+
+<Syntax code="setState(page, savePath)" />
+
+Set the state of a page (cookies, [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage), [`sessionStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)) to the values saved as [JSON](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON) in the specified file.
+
+See the [handle sign in guide](../../handle_sign_in) to learn more about using `setState`.
+
+### Arguments
+
+<ArgumentSaveState isSaved />
+
+### Returns
+
+<ReturnVoid />
+
+### Examples
+
+Set the state of a page to the values saved in the `admin.json` file:
+
+```js
+const qawolf = require('qawolf');
+// ...
+await qawolf.setState(page, './.qawolf/state/admin.json');
+```

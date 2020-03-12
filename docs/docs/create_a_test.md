@@ -29,17 +29,23 @@ Soon you'll run the command to create a test. When you run this command, a [Chro
 
 In this guide, we create a test for [TodoMVC](http://todomvc.com/examples/react), a simple todo application. You can follow along using your own application if you prefer.
 
-To create your test, run the following in the command line. You can optionally replace `http://todomvc.com/examples/react` with a different [URL](https://developer.mozilla.org/en-US/docs/Web/API/URL), and `myFirstTest` with a different test name. See our [CLI documentation](api/cli#npx-qawolf-create-url-name) for more detail.
+To create your test, run the following in the command line. You can optionally replace `http://todomvc.com/examples/react` with a different [URL](https://developer.mozilla.org/en-US/docs/Web/API/URL), and `myFirstTest` with a different test name. See our [CLI documentation](api/cli#npx-qawolf-create-url-name) for more details.
 
 ```bash
 npx qawolf create http://todomvc.com/examples/react myFirstTest
 ```
 
-A Chromium browser will open and navigate to the specified URL. Now go through the steps you want to test. In our example, we 1) create a todo item, 2) complete it, and 3) clear completed todos. See the video below for an example:
+A Chromium browser will open and navigate to the specified URL. After the page has loaded and QA Wolf can access it, you will see the following in the command line:
+
+```bash
+🐺 QA Wolf is ready to create code!
+```
+
+Now go through the steps you want to test. In our example, we 1) create a todo item, 2) complete it, and 3) clear completed todos. See the video below for an example:
 
 <video controls title="create your first test" width="100%">
   <source
-    src="https://storage.googleapis.com/docs.qawolf.com/guides/create_test.mp4"
+    src="https://storage.googleapis.com/docs.qawolf.com/guides/create_a_test.mp4"
     type="video/mp4"
   />
 </video>
@@ -60,39 +66,77 @@ If you open your project in your code editor, you'll notice that a folder called
 
 Let's open the `.qawolf/tests/myFirstTest.test.js` file, which contains your test code. We'll explain the `.qawolf/selectors/myFirstTest.json` file a bit later.
 
-Our code first requires the `qawolf` library, which is built on top of [Microsoft's Playwright](https://github.com/microsoft/playwright) library. The test itself is contained in a [Jest describe block](https://jestjs.io/docs/en/api#describename-fn) with the name you specified (`"myFirstTest"` in our example).
-
-The test code opens a browser and navigates to the specified URL. Each action you took in the browser is captured in a [Jest test](https://jestjs.io/docs/en/api#testname-fn-timeout). After the test finishes running, the browser is closed. Below we show our test code:
+Our code first requires the `qawolf` library, which is built on top of [Microsoft's Playwright](https://github.com/microsoft/playwright) library. It also requires the selectors file, which we'll get to later:
 
 ```js
-const { launch } = require("qawolf");
-const selectors = require("../selectors/myFirstTest");
+const qawolf = require('qawolf');
+const selectors = require('../selectors/myFirstTest.json');
+```
 
-describe("myFirstTest", () => {
-  let browser;
+To start your test, a few things happen in the [Jest `beforeAll` block](https://jestjs.io/docs/en/api#beforeallfn-timeout). The test launches a [browser](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browser) and creates a new [context](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext), which is an "incognito" browser session. This context is passed to the [`qawolf.register` method](api/qawolf/register) so QA Wolf can access it. Finally, a new [page](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page) is created:
 
-  beforeAll(async () => {
-    browser = await launch({ url: "http://todomvc.com/examples/react" });
-  });
+```js
+let browser;
+let page;
 
-  afterAll(() => browser.close());
+beforeAll(async () => {
+  browser = await qawolf.launch();
+  const context = await browser.newContext();
+  await qawolf.register(context);
+  page = await context.newPage();
+});
+```
 
-  it('can type into "What needs to be done?" input', async () => {
-    await browser.type(selectors[0], "create test!");
-  });
+The test itself is contained in a [Jest `test` block](https://jestjs.io/docs/en/api#testname-fn-timeout) with the name you specified (`"myFirstTest"` in our example). The test first navigates to the specified URL. Then it repeats the actions that you took. In our case, it clicks the todo input, types `create test!`, presses Enter, clicks to complete the todo, and clicks the clear completed todos button:
 
-  it("can Enter", async () => {
-    await browser.type(selectors[1], "↓Enter↑Enter");
-  });
+```js
+test('myFirstTest', async () => {
+  await page.goto('http://todomvc.com/examples/react');
+  await page.click(selectors['0_what_needs_to_b_input']);
+  await page.type(selectors['1_what_needs_to_b_input'], 'create test!');
+  await page.press(selectors['2_what_needs_to_b_input'], 'Enter');
+  await page.click(selectors['3_input']);
+  await page.click(selectors['4_button']);
+});
+```
 
-  it("can click input", async () => {
-    await browser.click(selectors[2]);
-  });
+After the test finishes running, the browser is closed in the [Jest `afterAll` block](https://jestjs.io/docs/en/api#afterallfn-timeout). If a video of your test is being recorded, the recording stops and the video is saved.
 
-  it('can click "Clear completed" button', async () => {
-    await browser.click(selectors[3]);
-  });
+```js
+afterAll(async () => {
+  await qawolf.stopVideos();
+  await browser.close();
+});
+```
 
+Putting it all together, below we show the full test code:
+
+```js
+const qawolf = require('qawolf');
+const selectors = require('../selectors/myFirstTest.json');
+
+let browser;
+let page;
+
+beforeAll(async () => {
+  browser = await qawolf.launch();
+  const context = await browser.newContext();
+  await qawolf.register(context);
+  page = await context.newPage();
+});
+
+afterAll(async () => {
+  await qawolf.stopVideos();
+  await browser.close();
+});
+
+test('myFirstTest', async () => {
+  await page.goto('http://todomvc.com/examples/react');
+  await page.click(selectors['0_what_needs_to_b_input']);
+  await page.type(selectors['1_what_needs_to_b_input'], 'create test!');
+  await page.press(selectors['2_what_needs_to_b_input'], 'Enter');
+  await page.click(selectors['3_input']);
+  await page.click(selectors['4_button']);
   // 🐺 CREATE CODE HERE
 });
 ```
@@ -122,7 +166,7 @@ Now let's return to the command line. You'll notice a few options here:
 - `🖥️ Open REPL to run code`: opens the [QA Wolf interactive REPL](use_the_repl) so you can try out code
 - `🗑️ Discard and Exit`: closes the browser without saving your test code
 
-Use the up and down arrow keys to choose between options. The default is `💾 Save and Exit`. Choose this option and press `Enter` to save your test.
+Use the up and down arrow keys to choose between options. The default is `💾 Save and Exit`. Highlight this option and press `Enter` to save your test.
 
 ## Next steps
 

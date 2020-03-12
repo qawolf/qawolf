@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`buildScrollSteps builds expected steps 1`] = `
+Array [
+  Object {
+    "action": "scroll",
+    "event": Object {
+      "htmlSelector": "<html lang=\\"en\\" qaw_innertext=\\"Item 1 Item 2 Item 3 Item 4 Item 5 Item 6 Item 7 Item 8 Item 9 Item 10 Item 11 Item 12 Item 13 Item 14 Item 15 Item 16 Item 17 Item 18 Item 19 Item 20 Item 21 Item 22 Item 23 Item 24 Item 25 Item 26 Item 27 Item 28 Item 29 Item 30 Item 31 Item 32 Item 33 Item 34 Item 35 Item 36 Item 37 Item 38 Item 39 Item 40 Loading...\\"></html>",
+      "isTrusted": true,
+      "name": "scroll",
+      "page": 0,
+      "target": Object {
+        "attrs": Object {},
+        "children": Array [],
+        "name": "html",
+        "type": "tag",
+        "voidElement": true,
+      },
+      "time": 1583107250144,
+      "value": Object {
+        "x": 0,
+        "y": 125,
+      },
+    },
+    "index": 0,
+    "value": Object {
+      "x": 0,
+      "y": 125,
+    },
+  },
+]
+`;

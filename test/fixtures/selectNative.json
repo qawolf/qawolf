@@ -1,0 +1,167 @@
+{
+  "events": [
+    {
+      "cssSelector": "[data-qa='html-select']",
+      "htmlSelector": "<div qaw_innertext=\"Native HTML Best pet? Cat Dog Hedgehog Snake Material UI Best pet? ​ Favorite color? Blue Red Green Friends? ​ Semantic UI Country?\" style=\"display: flex; flex-wrap: wrap;\"><div class=\"container\" qaw_innertext=\"Native HTML Best pet? Cat Dog Hedgehog Snake\"><select data-qa=\"html-select\" qaw_innertext=\"Best pet? Cat Dog Hedgehog Snake\"></select></div></div>",
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "select",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-select",
+          "qaw_innertext": "Best pet? Cat Dog Hedgehog Snake"
+        },
+        "children": [
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "disabled": "", "value": "", "selected": "" },
+            "children": [{ "type": "text", "content": "Best pet?" }]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "value": "cat" },
+            "children": [{ "type": "text", "content": "Cat" }]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "value": "dog" },
+            "children": [{ "type": "text", "content": "Dog" }]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "value": "hedgehog" },
+            "children": [{ "type": "text", "content": "Hedgehog" }]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "disabled": "", "value": "snake" },
+            "children": [{ "type": "text", "content": "Snake" }]
+          }
+        ]
+      },
+      "time": 1583106402251
+    },
+    {
+      "cssSelector": "[data-qa='html-select']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Best pet? Cat Dog Hedgehog Snake Material UI Best pet? ​ Favorite color? Blue Red Green Friends? ​ Semantic UI Country?\"><div class=\"container\" qaw_innertext=\"Native HTML Best pet? Cat Dog Hedgehog Snake\"><select data-qa=\"html-select\" qaw_innertext=\"Best pet? Cat Dog Hedgehog Snake\"></select></div></div>",
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "select",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-select",
+          "qaw_innertext": "Best pet? Cat Dog Hedgehog Snake"
+        },
+        "children": [
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "disabled": "", "value": "", "selected": "" },
+            "children": [{ "type": "text", "content": "Best pet?" }]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "value": "cat" },
+            "children": [{ "type": "text", "content": "Cat" }]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "value": "dog" },
+            "children": [{ "type": "text", "content": "Dog" }]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "value": "hedgehog" },
+            "children": [{ "type": "text", "content": "Hedgehog" }]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "disabled": "", "value": "snake" },
+            "children": [{ "type": "text", "content": "Snake" }]
+          }
+        ]
+      },
+      "time": 1583106402256
+    },
+    {
+      "cssSelector": "[data-qa='html-select']",
+      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Best pet? Cat Dog Hedgehog Snake Material UI Best pet? ​ Favorite color? Blue Red Green Friends? ​ Semantic UI Country?\"><div class=\"container\" qaw_innertext=\"Native HTML Best pet? Cat Dog Hedgehog Snake\"><select data-qa=\"html-select\" qaw_innertext=\"Best pet? Cat Dog Hedgehog Snake\"></select></div></div>",
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "target": {
+        "type": "tag",
+        "name": "select",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-select",
+          "qaw_innertext": "Best pet? Cat Dog Hedgehog Snake"
+        },
+        "children": [
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "disabled": "", "value": "", "selected": "" },
+            "children": [{ "type": "text", "content": "Best pet?" }]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "value": "cat" },
+            "children": [{ "type": "text", "content": "Cat" }]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "value": "dog" },
+            "children": [{ "type": "text", "content": "Dog" }]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "value": "hedgehog" },
+            "children": [{ "type": "text", "content": "Hedgehog" }]
+          },
+          {
+            "type": "tag",
+            "name": "option",
+            "voidElement": false,
+            "attrs": { "disabled": "", "value": "snake" },
+            "children": [{ "type": "text", "content": "Snake" }]
+          }
+        ]
+      },
+      "time": 1583106403289,
+      "value": "dog"
+    }
+  ]
+}

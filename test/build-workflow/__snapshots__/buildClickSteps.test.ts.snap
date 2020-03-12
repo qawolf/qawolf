@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`buildClickSteps builds one click per group of mousedown/click events 1`] = `
+Array [
+  0,
+  2,
+  30,
+]
+`;
+
+exports[`buildClickSteps prefers clicks on inputs 1`] = `
+Array [
+  "[data-qa='html-radio']",
+  "[data-qa='html-radio-group'] [value='dog']",
+  "[data-qa='material-radio'] [value='yes']",
+  "[data-qa='material-radio-group'] [value='green']",
+]
+`;

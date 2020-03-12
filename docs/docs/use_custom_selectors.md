@@ -10,24 +10,24 @@ In this guide, we explain how QA Wolf generates element selectors and how you ca
 - [Element selectors in generated code](#selectors-overview) use attributes specified by [`QAW_ATTRIBUTE`](api/environment_variables#qaw_attribute) if possible, and multiple attributes otherwise:
 
 ```js
-it('can click "Submit" button', async () => {
-  // if 1) data-qa exists on element and 2) QAW_ATTRIBUTE includes data-qa
-  await browser.click({ css: "[data-qa='submit']" });
-  // otherwise selector object captures all attributes of element
-  await browser.click(selectors[0]);
+test('myTestName', async () => {
+  // CSS selector for test attribute if available
+  await page.click('[data-qa="submit"]');
+  // fallback
+  await page.click(selectors['0_what_needs_to_b_input']);
 });
 ```
 
-- You can [edit the generated selectors](#edit-generated-selectors) to target elements based on [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) or text content:
+- You can [edit the generated selectors](#edit-generated-selectors) to target elements based on [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) or text selectors:
 
 ```js
-it('can click "Submit" button', async () => {
+test('myTestName', async () => {
   // change this
-  await browser.click(selectors[0]);
+  await page.click(selectors['0_what_needs_to_b_input']);
   // to this (CSS selector)
-  await browser.click({ css: "#submit" });
+  await page.click('#submit');
   // or this (text selector)
-  await browser.click({ text: "Submit" });
+  await page.click('text="Submit"');
 });
 ```
 
@@ -39,7 +39,7 @@ When you create a test with QA Wolf, each action you take (like clicking and typ
 
 ### Target attributes
 
-During test creation, when you click on an element QA Wolf first checks to see if it has any [attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started) specified by the [`QAW_ATTRIBUTE` environment variable](api/environment_variables#qaw_attribute). The default value of `QAW_ATTRIBUTE` is `data-cy,data-e2e,data-qa,data-test,data-testid`. This means that if an element has the `data-cy`, `data-e2e`, `data-qa`, `data-test`, or `data-testid` attribute, the generated code will target the element based on that attribute.
+During test creation, when you click on an element QA Wolf first checks to see if it has any [attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started) specified by the [`QAW_ATTRIBUTE` environment variable](api/environment_variables#qaw_attribute). The default value of `QAW_ATTRIBUTE` is `data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/`. This means that if an element has the `data-cy`, `data-e2e`, `data-qa`, `data-test`, or `data-testid` attribute, the generated code will target the element based on that attribute. It will also target attributes that match the [regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) `/^qa-.*/`.
 
 For example, if you click on an element with the following [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML):
 
@@ -50,20 +50,18 @@ For example, if you click on an element with the following [HTML](https://develo
 The generated test code will target the element with the [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) `[data-qa='submit']`:
 
 ```js
-it('can click "Submit" button', async () => {
-  await browser.click({ css: "[data-qa='submit']" });
-});
+await page.click('[data-qa="submit"]');
 ```
 
-When you run your test, QA Wolf will look for an element where the `data-qa` attribute is set to `"submit"`. If it cannot find an element where `data-qa` equals `"submit"` before timing out, the test fails.
+When you run your test, [Playwright](https://github.com/microsoft/playwright) will look for an element where the `data-qa` attribute is set to `"submit"`. If it cannot find an element where `data-qa` equals `"submit"` before timing out, the test fails.
 
-You can [set the value of `QAW_ATTRIBUTE`](api/environment_variables#qaw_attribute) to choose what attributes QA Wolf uses when generating test code. You can specify any number of test attributes like `data-qa`, and other attributes like `id` and `aria-label`.
+You can [set the value of `QAW_ATTRIBUTE`](api/environment_variables#qaw_attribute) to choose what attributes QA Wolf uses when generating test code. You can specify any number of test attributes like `data-qa`, [regular expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) like `/^qa-.*/`, and other attributes like `id` and `aria-label`.
 
 QA Wolf does its best to generate the correct CSS selector, even if the specified attribute is on an ancestor of the target element. For example, some component libraries like [Material UI](https://material-ui.com) place data attributes on a wrapper `div` around inputs. Your front end code might look like this:
 
 ```js
-import React from "react";
-import TextField from "@material-ui/core/TextField";
+import React from 'react';
+import TextField from '@material-ui/core/TextField';
 
 function MyTextInput() {
   return <TextField data-qa="username" label="Username" />;
@@ -86,7 +84,7 @@ In this case, the correct CSS selector is `[data-qa='username'] input` rather th
 QA Wolf does its best to target the correct element in scenarios like these. In our example, the generated test code will be:
 
 ```js
-await browser.type({ css: "[data-qa='username'] input" }, "target the input");
+await page.type('[data-qa="username"] input', 'target the input!');
 ```
 
 ### Default selector logic
@@ -102,36 +100,26 @@ For example, let's say you click on an element with the following [HTML](https:/
 The generated test code will look like:
 
 ```js
-it('can click "Submit" button', async () => {
-  await browser.click(selectors[0]);
-});
+await page.click(selectors['0_submit']);
 ```
 
-The `selectors[0]` argument passed to `browser.click` references a selector in the corrseponding selectors file for your test. This file is saved at `.qawolf/selectors/myTestName.json` and looks something like this:
+The `selectors['0_submit']` argument passed to `page.click` references a selector in the corrseponding selectors file for your test. This file is saved at `.qawolf/selectors/myTestName.json` and looks something like this:
 
 ```json
 // myTestName.json
-[
-  {
-    "index": 0,
-    "html": {
-      "ancestors": [
-        "<footer class=\"footer\"></footer>",
-        "<div class=\"container\"></div>"
-      ],
-      "node": "<button class=\"large\" id=\"submit\" innertext=\"Submit\">Submit</button>"
-    }
-  }
-]
+{
+  "0_submit": "html=<footer class=\"footer\"><div class=\"container\"><button class=\"large\" id=\"submit\" innertext=\"Submit\">Submit</button></div></footer>"
+  // ...
+}
 ```
 
-In the code above, you'll notice that the element you clicked on is stored under the `"node"` key, and that all of its attributes are saved. The two direct ancestors are also stored under the `"ancestors"` key of the `Selector` object.
+In the code above, you'll notice that the element you clicked on is stored under the `"0_submit"` key, and that all of its attributes are saved. The two direct ancestors are also stored.
 
-When you run your test, QA Wolf will look for a close enough match to the original element you clicked on. It will consider all of the target element attributes, as well as those of its two ancestors. By not relying on a single brittle selector, your tests will be more robust to situations like dynamic CSS classes and changes to your front end code.
+When you run your test, Playwright will look for a close enough match to the original element you clicked on. It will consider all of the target element attributes, as well as those of its two ancestors. By not relying on a single brittle selector, your tests will be more robust to situations like dynamic CSS classes and changes to your front end code.
 
-Because the selectors file contains the information QA Wolf needs to find each element, you should avoid editing it.
+Because the selectors file contains the information Playwright needs to find each element, you should avoid editing it.
 
-To learn more about how QA Wolf finds a close enough match to the target element, see [how it works documentation](how_it_works#element-selectors).
+These HTML selectors work with Playwright because we created a custom selector engine called `playwright-html-selector`. To learn more, see the [`playwright-html-selector` source code](https://github.com/qawolf/playwright-html-selector).
 
 ## Edit generated selectors
 
@@ -139,25 +127,23 @@ You can edit element selectors as you create your test, since the [test code is 
 
 If you find yourself using the same attribute frequently to target elements, such as the `data-qa` attribute, try [setting `QAW_ATTRIBUTE`](api/environment_variables#qaw_attribute). This will configure QA Wolf to target elements using that attribute whenever possible.
 
-QA Wolf supports two types of custom selectors: [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) and text selectors.
+Playwright supports a few types of selectors. We discuss [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) and text selectors in this guide.
 
 - CSS selectors find the element matching the CSS selector, for example: `#my-id`, `.my-class`, `div.my-class`
 - Text selectors find the element that contains the given text
 
-In your test code, replace the default selector (like `selectors[0]`) with an object containing either the `css` or `text` key and the desired target value. For example:
+In your test code, replace the default selector (like `selectors['0_submit']`) with a string containing your selector. Prefix text selectors with `text=`. For example:
 
 ```js
-it('can click "Submit" button', async () => {
-  // change this
-  await browser.click(selectors[0]);
-  // to this (CSS selector)
-  await browser.click({ css: "#submit" });
-  // or this (text selector)
-  await browser.click({ text: "Submit" });
-});
+// change this
+await page.click(selectors['0_submit']);
+// to this (CSS selector)
+await page.click('#submit');
+// or this (text selector)
+await page.click('text="Submit"');
 ```
 
-See [documentation on the `browser.click` method](api/browser_context/click#examples) for more examples.
+See [Playwright documentation on selectors](https://github.com/microsoft/playwright/blob/master/docs/api.md#working-with-selectors) to learn more.
 
 Whenever you target an element with a CSS or text selector, make sure that your selector is as specific as possible. If your selector matches multiple elements on the page, you could end up with the wrong element being acted upon in your test.
 
@@ -191,5 +177,4 @@ There are a few places you might want to go from here:
 
 - [Add assertions](add_assertions) to your tests
 - [Change input values](change_input_values) in your tests
-- Learn more about the [default selector logic](how_it_works#element-selectors)
 - Learn more about the [interactive REPL](use_the_repl)

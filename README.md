@@ -4,13 +4,14 @@
 
 <h3 align="center">Create browser tests 10x faster</h3>
 
-<p align="center">QA Wolf is a free and open source library to create <a href="https://github.com/microsoft/playwright">Playwright</a>/<a href="https://jestjs.io">Jest</a> browser tests and run them in CI</p>
+<p align="center">Free and open source library to create <a href="https://github.com/microsoft/playwright">Playwright</a>/<a href="https://jestjs.io">Jest</a> browser tests and run them in CI</p>
 
 <p align="center">
+<a align="center" href="https://twitter.com/intent/tweet?text=%F0%9F%90%BA+QA+Wolf%3A+Create+browser+tests+10x+faster&url=https%3A%2F%2Fgithub.com%2Fqawolf%2Fqawolf"><img src="https://img.shields.io/twitter/url/https/github.com/tterb/hyde.svg?style=social" alt="tweet" /></a>
   <a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version" /></a>
   <img src="https://github.com/qawolf/qawolf/workflows/Unit%20Tests/badge.svg" />
-  <img src="https://github.com/qawolf/qawolf/workflows/Browsers%20Linux/badge.svg" />
-  <img src="https://github.com/qawolf/qawolf/workflows/Browsers%20Windows/badge.svg" />
+  <img src="https://github.com/qawolf/qawolf/workflows/E2E%20Tests%20Linux/badge.svg" />
+  <img src="https://github.com/qawolf/qawolf/workflows/E2E%20Tests%20Windows/badge.svg" />
 </p>
 
 <p align="center">
@@ -27,27 +28,52 @@
 <ul>
 <li><b>Skip writing boilerplate.</b> Your browser actions are converted to Playwright and Jest code.
 </li>
-<li><b>Built for stability.</b> Avoid flaky tests with automatic waiting and <a href="https://docs.qawolf.com/docs/use_custom_selectors#default-selector-logic">smart element selectors</a>.
+<li><b>Built for stability.</b> Avoid flaky tests with automatic waiting and <a href="https://docs.qawolf.com/docs/use_custom_selectors#selectors-overview">smart element selectors</a>.
 </li>
-<li><b>Test complex scenarios.</b> Test your application like a user. Use third party sites, multiple windows, and hot keys.
+<li><b>Test complex scenarios.</b> Test your application like a user. Use third party sites and multiple windows.
 </li>
 <li><b>Test across browsers.</b> Test your application on <a href="https://www.chromium.org/Home">Chromium</a>, <a href="https://www.mozilla.org/en-US/firefox/new">Firefox</a>, and <a href="https://webkit.org">WebKit</a>.
 </li>
+<li><b>Handle sign in.</b> <a href="https://docs.qawolf.com/docs/handle_sign_in">Save user state</a> (cookies, <code>localStorage</code>, <code>sessionStorage</code>) and use it to create tests.
 <li><b>Easy CI setup.</b> Run your tests in CI in parallel with one command, on push or on a schedule.
 </li>
-<li><b>Easy debugging.</b> Each test run in CI includes a video, GIF, and detailed logs.
+<li><b>Easy debugging.</b> Test runs in CI include a video and detailed logs. <a href="https://docs.qawolf.com/docs/use_the_repl">Use the REPL</a> to debug tests locally.
 </li>
 </ul>
 <p>We're working to build a world where browser testing is effortless. We hope you'll join us!</p>
 
 ## Table of Contents
 
+- [💪 Automatically Create Code](#-supported-use-cases)
 - [🖥️ Install QA Wolf](#%EF%B8%8F-install-qa-wolf)
-- [✅ Create a browser test](#-create-a-browser-test)
+- [🎨 Create a browser test](#-create-a-browser-test)
 - [☁️ Set up CI](#%EF%B8%8F-set-up-ci)
-- [🙋 Get Help](#-get-help)
+- [🙋 Get help](#-get-help)
 - [📝 License](#-license)
-- [🙏 Acknowledgments](#-acknowledgements)
+
+<br/>
+
+## 💪 Automatically Create Code
+
+QA Wolf automatically creates [Playwright](https://github.com/microsoft/playwright)/[Jest](https://jestjs.io/) code for the following scenarios. You can edit your code as it is created to do anything else.
+
+| Scenario                                                     | Status | Example                                              |
+| ------------------------------------------------------------ | :----: | ---------------------------------------------------- |
+| Click                                                        |   ✅   | `page.click(selectors['0_submit'])`                  |
+| Type                                                         |   ✅   | `page.type(selectors['0_username'], 'username')`     |
+| Scroll                                                       |   ✅   | `qawolf.scroll(page, 'html', { x: 0, y: 200 })`      |
+| Select                                                       |   ✅   | `page.select(selectors['0_ice_cream'], 'chocolate')` |
+| Replace text (fill)                                          |   ✅   | `page.fill(selectors['0_username'], 'username')`     |
+| Paste                                                        |   ✅   | `page.type(selectors['password'], 'pasted')`         |
+| Test attributes                                              |   ✅   | `page.click("[data-qa='submit']")`                   |
+| Ancestor test attributes                                     |   ✅   | `page.click("[data-qa='radio'] [value='cat']")`      |
+| Multiple pages/tabs                                          |   ✅   | `qawolf.waitForPage(page.context(), 1)`              |
+| [Iframes](https://github.com/qawolf/qawolf/issues/279)       |   🗺️   | Coming soon                                          |
+| [Drag and drop](https://github.com/qawolf/qawolf/issues/315) |   🗺️   | Coming soon                                          |
+| [File upload](https://github.com/qawolf/qawolf/issues/331)   |   🗺️   | Coming soon                                          |
+| [Back button](https://github.com/qawolf/qawolf/issues/438)   |   🗺️   | Coming soon                                          |
+
+If there's something you don't see yet, please [open an issue](https://github.com/qawolf/qawolf/issues/new)!
 
 <br/>
 
@@ -66,7 +92,7 @@ QA Wolf is tested against the [maintenance LTS](https://github.com/nodejs/Releas
 
 <br/>
 
-## ✅ Create a browser test
+## 🎨 Create a browser test
 
 [Documentation](http://docs.qawolf.com/docs/create_a_test)
 
@@ -132,7 +158,7 @@ npx qawolf jenkins
 
 <br/>
 
-## 🙋 Get Help
+## 🙋 Get help
 
 <p align="left">
     <a href="https://gitter.im/qawolf/community">👋 Chat</a> |
@@ -148,7 +174,3 @@ We want QA Wolf to work for you, so please reach out to get help!
 QA Wolf is licensed under [BSD-3-Clause](https://github.com/qawolf/qawolf/blob/master/LICENSE.md).
 
 <br/>
-
-## 🙏 Acknowledgements
-
-The DOM Recording artifact is using [@Yuyz0112](https://github.com/Yuyz0112)'s awesome [rrweb](https://github.com/rrweb-io/rrweb) library!

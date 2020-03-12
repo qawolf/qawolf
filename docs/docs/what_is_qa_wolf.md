@@ -35,7 +35,7 @@ A common concern, and part of the reason we built QA Wolf, is that auto generate
 
 #### Automatic Waiting
 
-QA Wolf automatically waits for elements, outstanding network requests, and assertions before moving on. Automatic waiting allows you to avoid writing custom wait logic or arbitrary sleep statements.
+QA Wolf generates [Playwright](#what-is-playwright) code, which automatically waits for elements and for the page to load. Automatic waiting allows you to avoid writing custom wait logic or arbitrary sleep statements.
 
 #### Test Selectors
 
@@ -49,7 +49,7 @@ If a target attribute is not available, QA Wolf will select elements using multi
 
 ## What is Playwright?
 
-Microsoft's [Playwright](https://github.com/microsoft/playwright) is a Node.js library to automate the [Chromium](https://www.chromium.org/Home), [Firefox](https://www.mozilla.org/en-US/firefox/new), and [WebKit](https://webkit.org) browsers with a single API. QA Wolf is built on top of Playwright, and your generated test code has full access to the [Playwright API](https://github.com/microsoft/playwright/blob/master/docs/api.md).
+Microsoft's [Playwright](https://github.com/microsoft/playwright) is a Node.js library to automate the [Chromium](https://www.chromium.org/Home), [Firefox](https://www.mozilla.org/en-US/firefox/new), and [WebKit](https://webkit.org) browsers with a single API. QA Wolf generates Playwright code, giving you full access to the [Playwright API](https://github.com/microsoft/playwright/blob/master/docs/api.md).
 
 Playwright is maintained by the same team that originally built [Puppeteer](https://github.com/puppeteer/puppeteer) at Google. The additional benefits of Playwright over Puppeteer are cross-browser testing support and more testing-friendly APIs.
 
@@ -65,19 +65,17 @@ Since Playwright already supports the modern browsers of [Chromium](https://www.
 
 We think Cypress is really cool! However, it was [intentionally](https://docs.cypress.io/guides/references/trade-offs.html#Automation-restrictions) built to only run on sites you control. It was also built to run tests in a single page.
 
-These limitations prevent you from testing things like multiple pages, popup windows, and third party sites. For example, testing scenarios like signing in with Twitter and integrating with a CRM is not possible with Cypress.
+These limitations prevent you from testing things like multiple pages, popup windows, and third party sites. For example, Cypress does not directly support testing scenarios like signing in with Twitter and integrating with a CRM.
 
-Why not stub out those situations? You still can - just edit the test code!
+Why not stub out those scenarios? You still can - just edit the test code!
 
 However, stubbing requires a time and maintenance investment that we wanted to be able to opt out of. If your goal is to test your application like a real user, stubbing also moves you away from a true end-to-end test. We leave it to you to stub or not stub as you like.
 
 In addition to supporting these complex scenarios, Playwright also supports testing on WebKit browsers.
 
-By running our [@qawolf/web](https://github.com/qawolf/qawolf/tree/master/packages/web) code in the browser we get the best of Cypress (fast in the browser) and [Playwright](https://pptr.dev/)/[DevTools](https://chromedevtools.github.io/devtools-protocol/) (rich APIs and well-supported DevTools protocol).
-
 ## Can you support [some other framework/use case]?
 
-You can already edit your code to use any node package or framework.
+You can already edit your code to use any Node.js package or framework.
 
 If you have a particular use case you would like us to support, please [chat](https://gitter.im/qawolf/community) or [email](mailto:jon@qawolf.com) us!
 

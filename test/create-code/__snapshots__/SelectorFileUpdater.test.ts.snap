@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SelectorFileUpdater update appends new selectors 1`] = `
+Object {
+  "0": "css=selector0",
+  "0_a": "html=<ul qaw_innertext=\\"Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Radio inputs Selects Text inputs Time pickers\\"><li qaw_innertext=\\"Log in\\"><a href=\\"/login\\" qaw_innertext=\\"Log in\\"></a></li></ul>",
+}
+`;
+
+exports[`SelectorFileUpdater update appends new selectors 2`] = `
+Object {
+  "0": "css=selector0",
+  "0_a": "html=<ul qaw_innertext=\\"Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Radio inputs Selects Text inputs Time pickers\\"><li qaw_innertext=\\"Log in\\"><a href=\\"/login\\" qaw_innertext=\\"Log in\\"></a></li></ul>",
+  "1_username_input": "html=<div id=\\"root\\" qaw_innertext=\\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\\"><form qaw_innertext=\\"Username Password Log in\\"><input autocomplete=\\"off\\" id=\\"username\\" type=\\"text\\" value=\\"\\" qaw_labels=\\"Username\\" /></form></div>",
+}
+`;
