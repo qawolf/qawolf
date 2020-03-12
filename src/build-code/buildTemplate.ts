@@ -56,7 +56,7 @@ const buildNewContext = (device?: string): string => {
 const buildSetState = (statePath?: string): string => {
   if (!statePath) return '';
 
-  return `await qawolf.setState(page, "${statePath}");`;
+  return `await qawolf.setState(page, "${statePath}");\n  `;
 };
 
 export const buildScriptTemplate = ({
@@ -70,8 +70,7 @@ export const buildScriptTemplate = ({
 
 const ${validName} = async context => {
   let page = await context.newPage();
-  ${buildSetState(statePath)}
-  await page.goto("${url}");
+  ${buildSetState(statePath)}await page.goto("${url}");
   await qawolf.create();
 };
 
@@ -115,8 +114,7 @@ afterAll(async () => {
 });
 
 test('${name}', async () => {
-  ${buildSetState(statePath)}
-  await page.goto("${url}");
+  ${buildSetState(statePath)}await page.goto("${url}");
   await qawolf.create();
 });`;
 

@@ -138,8 +138,8 @@ const selectors = require(\\"../selectors/myScript.json\\");
 
 const myScript = async context => {
   let page = await context.newPage();
-  await page.goto(\\"www.qawolf.com\\");
   await qawolf.setState(page, \\"admin.json\\");
+  await page.goto(\\"www.qawolf.com\\");
   await qawolf.create();
 };
 
@@ -177,8 +177,8 @@ afterAll(async () => {
 });
 
 test('myTest', async () => {
-  await page.goto(\\"www.qawolf.com\\");
   await qawolf.setState(page, \\"admin.json\\");
+  await page.goto(\\"www.qawolf.com\\");
   await qawolf.create();
 });"
 `;
