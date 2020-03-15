@@ -12,6 +12,7 @@
     "node": ">=10.15.0"
   },
   "scripts": {
+    "changelog": "npx auto-changelog --commit-limit 0 --template keepachangelog",
     "clean": "rimraf build tmp",
     "build": "npm run clean && concurrently \"npm run build:tsc\" \"npm run build:web\"",
     "build:tsc": "tsc -p tsconfig.release.json",
