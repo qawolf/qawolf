@@ -35,10 +35,6 @@ export const runJest = (
    */
   let command = '';
 
-  if (!options.headless) {
-    command += 'QAW_HEADLESS=false ';
-  }
-
   command += `npx jest`;
 
   if (!args.some(arg => arg.startsWith('--config'))) {
@@ -69,7 +65,11 @@ export const runJest = (
     command += ` ${args.join(' ')}`;
   }
 
-  const env = options.env || {};
+  const env: NodeJS.ProcessEnv = options.env || {};
+
+  if (!options.headless) {
+    env.QAW_HEADLESS = 'false';
+  }
 
   if (options.browsers && options.browsers.length) {
     for (const browser of options.browsers) {
