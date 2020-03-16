@@ -1,5 +1,5 @@
 import { buildArguments, runJest } from '../../src/cli/runJest';
-import { join } from 'path';
+import { join, resolve } from 'path';
 
 const rootDir = join(__dirname, '../.qawolf');
 
@@ -64,9 +64,19 @@ describe('buildArguments', () => {
 });
 
 describe('runJest', () => {
-  it('runs successful test', () => {
+  it('runs successful test for a relative path', () => {
     expect(() =>
       runJest({ args: ['scroll'], browsers: ['chromium'], rootDir }),
+    ).not.toThrow();
+  });
+
+  it('runs successful test for a test path', () => {
+    expect(() =>
+      runJest({
+        browsers: ['chromium'],
+        rootDir,
+        testPath: resolve(join(rootDir, 'tests/scroll.test.js')),
+      }),
     ).not.toThrow();
   });
 
