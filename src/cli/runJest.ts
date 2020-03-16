@@ -9,6 +9,7 @@ type TestOptions = {
   headless?: boolean;
   repl?: boolean;
   rootDir?: string;
+  testPath?: string;
 };
 
 export const buildArguments = (
@@ -22,9 +23,9 @@ export const buildArguments = (
     arg.toLowerCase().includes('config'),
   );
   if (!hasConfigArg) {
-    // prevent using the local jest config
-    // unless config is passed
-    builtArgs.push('--config={}');
+    // clear Jest config unless one is provided
+    // must be wrapped in quotes for powershell
+    builtArgs.push('--config="{}"');
   }
 
   if (options.repl) {
@@ -32,7 +33,8 @@ export const buildArguments = (
     builtArgs.push('--reporters="@qawolf/jest-reporter"');
   }
 
-  builtArgs.push(`--rootDir=${options.rootDir || '.qawolf'}`);
+  const rootDir = options.rootDir || '.qawolf';
+  builtArgs.push(`--rootDir=${rootDir}`);
 
   const hasTimeoutArg = !!providedArgs.find(arg =>
     arg.toLowerCase().includes('testtimeout'),
@@ -41,6 +43,12 @@ export const buildArguments = (
     // for repl: timeout after 1 hour
     // otherwise: timeout after 60 seconds (playwright default wait timeout is 30 seconds)
     builtArgs.push(`--testTimeout=${options.repl ? '3600000' : '60000'}`);
+  }
+
+  if (options.testPath) {
+    // must be forward slashes to work in powershell
+    const testPath = options.testPath.replace(/\\/g, '/');
+    builtArgs.push(`"${testPath}"`);
   }
 
   if (providedArgs.length) {

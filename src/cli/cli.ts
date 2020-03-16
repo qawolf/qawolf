@@ -67,11 +67,11 @@ program
         });
       } else {
         runJest({
-          args: [codePath],
           browsers: ['chromium'],
           env,
           rootDir: cmd.rootDir,
           repl: true,
+          testPath: codePath,
         });
       }
 

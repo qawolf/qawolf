@@ -15,12 +15,13 @@ describe('buildArguments', () => {
   describe('config', () => {
     it('clears config when one is not provided', () => {
       const args = buildArguments({});
-      expect(args).toContain('--config={}');
+      expect(args).toContain('--config="{}"');
     });
 
     it('uses provided config', () => {
-      const args = buildArguments({ args: ['--config=something'] });
-      expect(args).not.toContain('--config={}');
+      const args = ['--config=something'];
+      const builtArgs = buildArguments({ args });
+      expect(builtArgs.filter(arg => arg.includes('--config'))).toEqual(args);
     });
   });
 
@@ -31,7 +32,7 @@ describe('buildArguments', () => {
     });
   });
 
-  describe('timeout', () => {
+  describe('testTimeout', () => {
     it('not set when one is provided', () => {
       const args = buildArguments({ args: ['--testTimeout=1000'] });
       const timeoutArgs = args.filter(a => a.toLowerCase().includes('timeout'));
@@ -46,6 +47,18 @@ describe('buildArguments', () => {
     it('set to 1 hour for repl', () => {
       const args = buildArguments({ repl: true });
       expect(args).toContain('--testTimeout=3600000');
+    });
+  });
+
+  describe('test path', () => {
+    it('replaces forward slashes for powershell to work', () => {
+      const args = buildArguments({
+        testPath:
+          'C:\\Users\\jon\\Desktop\\qawolf\\.qawolf\\tests\\test.test.js',
+      });
+      expect(args).toContain(
+        '"C:/Users/jon/Desktop/qawolf/.qawolf/tests/test.test.js"',
+      );
     });
   });
 });
