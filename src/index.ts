@@ -31,9 +31,8 @@ const qawolf = {
   waitForPage,
 };
 
-// TODO after next playwright-utils release
 // support: import qawolf from "qawolf"
-// export default qawolf;
+export default qawolf;
 
 // support: const qawolf = require("qawolf");
 export {

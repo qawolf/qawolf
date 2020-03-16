@@ -19,13 +19,10 @@ export const buildArguments = (
 
   const providedArgs = options.args || [];
 
-  const hasConfigArg = !!providedArgs.find(arg =>
-    arg.toLowerCase().includes('config'),
-  );
-  if (!hasConfigArg) {
+  if (options.config) {
     // clear Jest config unless one is provided
     // must be wrapped in quotes for powershell
-    builtArgs.push('--config="{}"');
+    builtArgs.push(`--config="${options.config}"`);
   }
 
   if (options.repl) {

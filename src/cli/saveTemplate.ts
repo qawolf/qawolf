@@ -17,8 +17,17 @@ interface SaveTemplateOptions {
   url: string;
 }
 
-const buildPath = ({ name, rootDir, script }: SaveTemplateOptions) =>
-  join(rootDir, script ? `${name}.js` : `${name}.test.js`);
+const buildPath = ({
+  isTypeScript,
+  name,
+  rootDir,
+  script,
+}: SaveTemplateOptions) => {
+  let filename = name;
+  if (!script) filename += '.test';
+  filename += isTypeScript ? '.ts' : '.js';
+  return join(rootDir, filename);
+};
 
 export const shouldSaveTemplate = async (path: string): Promise<boolean> => {
   const exists = await pathExists(path);

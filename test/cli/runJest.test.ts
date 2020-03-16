@@ -13,15 +13,13 @@ describe('buildArguments', () => {
   });
 
   describe('config', () => {
-    it('clears config when one is not provided', () => {
-      const args = buildArguments({});
-      expect(args).toContain('--config="{}"');
+    it('uses config when specified', () => {
+      expect(buildArguments({ config: '{}' })).toContain('--config="{}"');
     });
 
-    it('uses provided config', () => {
-      const args = ['--config=something'];
-      const builtArgs = buildArguments({ args });
-      expect(builtArgs.filter(arg => arg.includes('--config'))).toEqual(args);
+    it('does not use config if not specified', () => {
+      const builtArgs = buildArguments({});
+      expect(builtArgs.filter(arg => arg.includes('--config'))).toEqual([]);
     });
   });
 

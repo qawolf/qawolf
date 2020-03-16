@@ -67,6 +67,7 @@ program
       } else {
         runJest({
           browsers: ['chromium'],
+          config: config.config,
           env,
           rootDir: config.rootDir,
           repl: true,
@@ -127,6 +128,7 @@ program
       runJest({
         args: jestArgs,
         browsers,
+        config: config.config,
         env: {
           QAW_HEADLESS: cmd.headless ? 'true' : 'false',
         },
