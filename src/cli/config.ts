@@ -3,6 +3,7 @@ import { join } from 'path';
 import { cwd } from 'process';
 
 type Config = {
+  isTypeScript: boolean;
   rootDir: string;
 };
 
@@ -23,6 +24,7 @@ export const loadConfig = (path?: string): Config => {
   }
 
   const config: Config = {
+    isTypeScript: userConfig.isTypeScript || false,
     rootDir: userConfig.rootDir || '.qawolf',
   };
 

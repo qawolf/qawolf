@@ -42,6 +42,7 @@ program
     const codePath = await saveTemplate({
       device: cmd.device,
       name,
+      isTypeScript: config.isTypeScript,
       rootDir: config.rootDir,
       script: cmd.script,
       statePath: cmd.statePath,

@@ -9,6 +9,7 @@ import { getSelectorPath } from '../create-code/create';
 
 interface SaveTemplateOptions {
   device?: string;
+  isTypeScript?: boolean;
   name: string;
   rootDir: string;
   script?: boolean;

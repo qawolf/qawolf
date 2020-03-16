@@ -3,13 +3,17 @@ import { devices } from 'playwright';
 
 interface BuildTemplateOptions {
   device?: string;
+  isTypeScript?: boolean;
   name: string;
   statePath?: string;
   url: string;
 }
 
-const REQUIRE_QAWOLF = 'const qawolf = require("qawolf");';
-const INVALID_NAME_ERROR = 'Missing initializer in const declaration';
+interface BuildImportsOptions {
+  device?: string;
+  isTypeScript?: boolean;
+  name: string;
+}
 
 export const buildValidVariableName = (name: string): string => {
   try {
@@ -17,7 +21,7 @@ export const buildValidVariableName = (name: string): string => {
     eval(`const ${name} = 0`);
     return name;
   } catch (error) {
-    if (error.message === INVALID_NAME_ERROR) {
+    if (error.message === 'Missing initializer in const declaration') {
       return camelCase(name);
     }
     // other errors are for names that will never be valid like return or 1var
@@ -25,24 +29,41 @@ export const buildValidVariableName = (name: string): string => {
   }
 };
 
-const buildRequires = (name: string, device?: string): string => {
-  const requireSelector = `const selectors = require("./selectors/${name}.json");`;
-  const requireDefaults = `${REQUIRE_QAWOLF}\n${requireSelector}`;
-
-  if (!device) return requireDefaults;
-
-  if (!devices[device]) {
+export const buildImports = ({
+  device,
+  name,
+  isTypeScript,
+}: BuildImportsOptions): string => {
+  if (device && !devices[device]) {
     throw new Error(`Device ${device} not available in Playwright`);
   }
 
-  const requires = `const { devices } = require("playwright");
-${requireDefaults}
-const device = devices["${device}"];`;
+  let imports = '';
 
-  return requires;
+  if (device) {
+    if (isTypeScript) {
+      imports += 'import { devices } from "playwright";\n';
+    } else {
+      imports += 'const { devices } = require("playwright");\n';
+    }
+  }
+
+  if (isTypeScript) {
+    imports += 'import qawolf from "qawolf";\n';
+  } else {
+    imports += 'const qawolf = require("qawolf");\n';
+  }
+
+  imports += `const selectors = require("./selectors/${name}.json");`;
+
+  if (device) {
+    imports += `\nconst device = devices["${device}"];`;
+  }
+
+  return imports;
 };
 
-const buildNewContext = (device?: string): string => {
+export const buildNewContext = (device?: string): string => {
   if (!device) return 'const context = await browser.newContext();';
 
   const context = `const context = await browser.newContext({
@@ -62,11 +83,12 @@ const buildSetState = (statePath?: string): string => {
 export const buildScriptTemplate = ({
   device,
   name,
+  isTypeScript,
   statePath,
   url,
 }: BuildTemplateOptions): string => {
   const validName = buildValidVariableName(name);
-  const code = `${buildRequires(name, device)}
+  const code = `${buildImports({ name, device, isTypeScript })}
 
 const ${validName} = async context => {
   let page = await context.newPage();
@@ -93,10 +115,11 @@ if (require.main === module) {
 export const buildTestTemplate = ({
   device,
   name,
+  isTypeScript,
   statePath,
   url,
 }: BuildTemplateOptions): string => {
-  const code = `${buildRequires(name, device)}
+  const code = `${buildImports({ name, device, isTypeScript })}
 
 let browser;
 let page;
