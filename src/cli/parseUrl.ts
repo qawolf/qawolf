@@ -1,9 +1,5 @@
 import { parse, UrlWithStringQuery } from 'url';
 
-export const omitArgs = (args: string[], argsToOmit: string[]): string[] => {
-  return args.filter(arg => !argsToOmit.some(skip => arg.startsWith(skip)));
-};
-
 export const parseUrl = (urlString: string): UrlWithStringQuery => {
   let url = parse(urlString);
 
