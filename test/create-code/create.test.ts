@@ -1,6 +1,6 @@
 import { readFile } from 'fs-extra';
 import { prompt } from 'inquirer';
-import { join, relative } from 'path';
+import { join, relative, resolve } from 'path';
 import { launch, register, waitFor } from 'playwright-utils';
 import { getSelectorPath, getCodePath } from '../../src/create-code/create';
 import { createSelf, getCallSites } from '../.qawolf/scripts/createSelf';
@@ -61,7 +61,10 @@ describe('getCodePath', () => {
   it('finds the caller file with create handle', async () => {
     const codePath = await getCodePath(getCallSites());
     const relativePath = relative(__filename, codePath);
-    expect(relativePath).toEqual('../../.qawolf/scripts/createSelf.ts');
+
+    expect(resolve(relativePath)).toEqual(
+      resolve('../../.qawolf/scripts/createSelf.ts'),
+    );
   });
 });
 
@@ -69,6 +72,8 @@ describe('getSelectorPath', () => {
   it('returns a sibling path for the code file', () => {
     const selectorPath = getSelectorPath(__filename);
     const relativePath = relative(__filename, selectorPath);
-    expect(relativePath).toEqual('../../selectors/create.json');
+    expect(resolve(relativePath)).toEqual(
+      resolve('../../selectors/create.json'),
+    );
   });
 });
