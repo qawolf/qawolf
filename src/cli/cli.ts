@@ -2,7 +2,7 @@ import program from 'commander';
 import { yellow } from 'kleur';
 import { addCiCommands } from 'playwright-ci';
 import updateNotifier from 'update-notifier';
-import { loadConfig } from './config';
+import { loadConfig } from '../config';
 import { howl } from './howl';
 import { omitArgs } from './omitArgs';
 import { parseUrl } from './parseUrl';
