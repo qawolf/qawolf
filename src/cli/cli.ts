@@ -3,10 +3,12 @@ import { yellow } from 'kleur';
 import { addCiCommands } from 'playwright-ci';
 import updateNotifier from 'update-notifier';
 import { howl } from './howl';
-import { runCommand, runJest } from './run';
+import { omitArgs } from './omitArgs';
+import { parseUrl } from './parseUrl';
+import { runCommand } from './runCommand';
+import { runJest } from './runJest';
 import { saveTemplate } from './saveTemplate';
 import { BrowserName } from '../types';
-import { omitArgs, parseUrl } from './utils';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pkg = require('../../package');
@@ -15,12 +17,14 @@ updateNotifier({ pkg }).notify();
 
 program.usage('<command> [options]').version(pkg.version);
 
+// XXX simplify
 addCiCommands({ program, qawolf: true });
 
 program
   .command('create [url] [name]')
   .option('-d, --device <device>', 'emulate using a playwright.device')
   .option('--name [name]', 'name', '')
+  // XXX move to config
   .option(
     '-r, --rootDir <rootDir>',
     'directory where test or script will be saved',
@@ -51,20 +55,23 @@ program
     }
 
     const env: NodeJS.ProcessEnv = {
-      QAW_BROWSER: 'chromium',
-      // let qawolf.create know to remove the file on discard
       QAW_DISCARD: '1',
       QAW_HEADLESS: 'false',
     };
 
     try {
       if (cmd.script) {
-        runCommand(`node ${codePath}`, env);
+        runCommand(`node ${codePath}`, {
+          ...env,
+          QAW_BROWSER: 'chromium',
+        });
       } else {
-        runJest([codePath], {
+        runJest({
+          browsers: ['chromium'],
           env,
           rootDir: cmd.rootDir,
           repl: true,
+          testPath: codePath,
         });
       }
 
@@ -76,30 +83,20 @@ program
 
 program
   .command('test')
-  .option(
-    '--rootDir <rootDir>',
-    'root directory of test code, defaults to workingDirectory/.qawolf',
-  )
   .option('--all-browsers', 'run tests on chromium, firefox, and webkit')
   .option('--chromium', 'run tests on chromium')
   .option('--firefox', 'run tests on firefox')
   .option('--headless', 'run tests headless')
   .option('--repl', 'open a REPL when repl() is called')
+  // XXX move to config
+  .option(
+    '--rootDir <rootDir>',
+    'root directory of test code, defaults to workingDirectory/.qawolf',
+  )
   .option('--webkit', 'run tests on webkit')
   .description('run a test with Jest')
   .allowUnknownOption(true)
   .action((cmd = {}) => {
-    const args = omitArgs(process.argv.slice(3), [
-      '--all-browsers',
-      '--chromium',
-      '--firefox',
-      '--headless',
-      '--repl',
-      // we append this manually in runJest
-      '--rootDir',
-      '--webkit',
-    ]);
-
     const browsers: BrowserName[] = [];
 
     if (cmd.allBrowsers || cmd.chromium) {
@@ -114,10 +111,28 @@ program
       browsers.push('webkit');
     }
 
+    if (!browsers.length) {
+      browsers.push('chromium');
+    }
+
     try {
-      runJest(args, {
+      // omit qawolf arguments
+      const jestArgs = omitArgs(process.argv.slice(3), [
+        '--all-browsers',
+        '--chromium',
+        '--firefox',
+        '--headless',
+        '--repl',
+        '--rootDir',
+        '--webkit',
+      ]);
+
+      runJest({
+        args: jestArgs,
         browsers,
-        headless: !!cmd.headless,
+        env: {
+          QAW_HEADLESS: cmd.headless ? 'true' : 'false',
+        },
         repl: !!cmd.repl,
         rootDir: cmd.rootDir,
       });
