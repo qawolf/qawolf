@@ -3,7 +3,7 @@ import { prompt } from 'inquirer';
 import { join, relative } from 'path';
 import { launch, register, waitFor } from 'playwright-utils';
 import { getSelectorPath, getCodePath } from '../../src/create-code/create';
-import { createSelf, getCallSites } from '../e2e/scripts/createSelf';
+import { createSelf, getCallSites } from '../.qawolf/scripts/createSelf';
 import { TEST_URL } from '../utils';
 
 jest.mock('inquirer');
@@ -15,7 +15,7 @@ describe('create', () => {
       new Promise<{ choice: string }>(resolve => (fulfillPrompt = resolve)),
     );
 
-    const filePath = join(__dirname, '../e2e/scripts/createSelf.ts');
+    const filePath = join(__dirname, '../.qawolf/scripts/createSelf.ts');
     const loadCode = (): Promise<string> => readFile(filePath, 'utf8');
 
     const initial = await loadCode();
@@ -61,7 +61,7 @@ describe('getCodePath', () => {
   it('finds the caller file with create handle', async () => {
     const codePath = await getCodePath(getCallSites());
     const relativePath = relative(__filename, codePath);
-    expect(relativePath).toEqual('../../e2e/scripts/createSelf.ts');
+    expect(relativePath).toEqual('../../.qawolf/scripts/createSelf.ts');
   });
 });
 
