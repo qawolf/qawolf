@@ -46,6 +46,9 @@ jobs:
       - run: npm run test:server &
         if: matrix.test != 'lint'
 
+      - run: npm link && npm link qawolf
+        if: matrix.test != 'lint'
+
       - run: QAW_BROWSER=${{ matrix.test }} npm test
         if: matrix.test != 'lint'
         env:

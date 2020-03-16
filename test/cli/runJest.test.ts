@@ -66,7 +66,7 @@ describe('buildArguments', () => {
 describe('runJest', () => {
   it('runs successful test', () => {
     expect(() =>
-      runJest({ args: ['selects'], browsers: ['chromium'], rootDir }),
+      runJest({ args: ['scroll'], browsers: ['chromium'], rootDir }),
     ).not.toThrow();
   });
 

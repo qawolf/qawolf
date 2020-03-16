@@ -10,8 +10,10 @@ export const runCommand = (
   execSync(command, {
     stdio: 'inherit',
     env: {
-      ...process.env,
       ...env,
+      // override env with process.env
+      // ex. for unit tests we want QAW_BROWSER to override cli one
+      ...process.env,
     },
   });
 };
