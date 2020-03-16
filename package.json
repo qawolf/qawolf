@@ -42,7 +42,6 @@
     "callsites": "^3.1.0",
     "commander": "^4.1.1",
     "debug": "*",
-    "dotenv": "^8.2.0",
     "inquirer": "^7.1.0",
     "jest": "~25.1.0",
     "kleur": "^3.0.3",
