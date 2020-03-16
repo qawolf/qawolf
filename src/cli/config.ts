@@ -23,7 +23,7 @@ export const loadConfig = (path?: string): Config => {
   }
 
   const config: Config = {
-    rootDir: userConfig.rootDir || '.qawolf/tests',
+    rootDir: userConfig.rootDir || '.qawolf',
   };
 
   return config;

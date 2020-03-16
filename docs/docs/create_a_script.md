@@ -16,7 +16,7 @@ npx qawolf create --script www.google.com myScriptName
 - [Run a script](#run-a-script) using [Node.js](https://nodejs.dev/run-nodejs-scripts-from-the-command-line):
 
 ```bash
-node ./qawolf/scripts/myScriptName.js
+node ./qawolf/myScriptName.js
 ```
 
 ## Create a script
@@ -33,7 +33,7 @@ A [Chromium](https://www.chromium.org/Home) browser will open to translate your 
 
 ## Review script code
 
-As you use the browser, your script code will be saved at `.qawolf/scripts/myScriptName.js`. You can open this file and edit it as you go along.
+As you use the browser, your script code will be saved at `.qawolf/myScriptName.js`. You can open this file and edit it as you go along.
 
 A function with the specified name (`myScriptName` in our example) will be created for you. This function takes a [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext) instance and completes the steps in your workflow.
 
@@ -41,7 +41,7 @@ Below is an example script file:
 
 ```js
 const qawolf = require('qawolf');
-const selectors = require('../selectors/myScriptName.json');
+const selectors = require('./selectors/myScriptName.json');
 
 const myScriptName = async context => {
   let page = await context.newPage();
@@ -76,5 +76,5 @@ When you are done creating your script, return to the command line and choose th
 You can run your script [from the command line using Node.js](https://nodejs.dev/run-nodejs-scripts-from-the-command-line). For example:
 
 ```bash
-node ./qawolf/scripts/myScriptName.js
+node ./qawolf/myScriptName.js
 ```

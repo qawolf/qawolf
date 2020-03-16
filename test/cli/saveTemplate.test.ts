@@ -25,9 +25,7 @@ describe('saveTemplate', () => {
         url: 'www.qawolf.com',
       });
 
-      const fileExists = await pathExists(
-        join(rootDir, 'scripts', 'myScript.js'),
-      );
+      const fileExists = await pathExists(join(rootDir, 'myScript.js'));
       expect(fileExists).toBe(true);
 
       const selectorsExists = await pathExists(
@@ -40,26 +38,13 @@ describe('saveTemplate', () => {
       const rootDir = join(tmpdir(), randomString());
       await saveTemplate({ name: 'myTest', rootDir, url: 'www.qawolf.com' });
 
-      const fileExists = await pathExists(
-        join(rootDir, 'tests', 'myTest.test.js'),
-      );
+      const fileExists = await pathExists(join(rootDir, 'myTest.test.js'));
       expect(fileExists).toBe(true);
 
       const selectorsExists = await pathExists(
         join(rootDir, 'selectors', 'myTest.json'),
       );
       expect(selectorsExists).toBe(true);
-    });
-
-    it('saves at default location if rootDir not specified', async () => {
-      const rootDir = join(tmpdir(), randomString());
-      jest.spyOn(process, 'cwd').mockReturnValue(rootDir);
-      await saveTemplate({ name: 'myTest', url: 'www.qawolf.com' });
-
-      const fileExists = await pathExists(
-        join(rootDir, '.qawolf', 'tests', 'myTest.test.js'),
-      );
-      expect(fileExists).toBe(true);
     });
   });
 

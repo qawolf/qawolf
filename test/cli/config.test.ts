@@ -9,6 +9,6 @@ describe('loadConfig', () => {
 
   it('defaults values when there is no config', () => {
     const config = loadConfig('notapath');
-    expect(config.rootDir).toEqual('.qawolf/tests');
+    expect(config.rootDir).toEqual('.qawolf');
   });
 });

@@ -101,7 +101,7 @@ Create a [Playwright](https://github.com/microsoft/playwright) and [Jest](https:
 npx qawolf create url [name]
 ```
 
-Edit your test code as it is created by opening `.qawolf/tests/myTestName.test.js`.
+Edit your test code as it is created by opening `.qawolf/myTestName.test.js`.
 
 Run your test:
 

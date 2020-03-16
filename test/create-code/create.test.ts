@@ -1,9 +1,9 @@
 import { readFile } from 'fs-extra';
 import { prompt } from 'inquirer';
-import { join, relative, resolve } from 'path';
+import { join } from 'path';
 import { launch, register, waitFor } from 'playwright-utils';
 import { getSelectorPath, getCodePath } from '../../src/create-code/create';
-import { createSelf, getCallSites } from '../.qawolf/scripts/createSelf';
+import { createSelf, getCallSites } from '../.qawolf/createSelf';
 import { TEST_URL } from '../utils';
 
 jest.mock('inquirer');
@@ -15,7 +15,7 @@ describe('create', () => {
       new Promise<{ choice: string }>(resolve => (fulfillPrompt = resolve)),
     );
 
-    const filePath = join(__dirname, '../.qawolf/scripts/createSelf.ts');
+    const filePath = join(__dirname, '../.qawolf/createSelf.ts');
     const loadCode = (): Promise<string> => readFile(filePath, 'utf8');
 
     const initial = await loadCode();
@@ -60,20 +60,13 @@ describe('create', () => {
 describe('getCodePath', () => {
   it('finds the caller file with create handle', async () => {
     const codePath = await getCodePath(getCallSites());
-    const relativePath = relative(__filename, codePath);
-
-    expect(resolve(relativePath)).toEqual(
-      resolve('../../.qawolf/scripts/createSelf.ts'),
-    );
+    expect(codePath).toEqual(join(__dirname, '../.qawolf/createSelf.ts'));
   });
 });
 
 describe('getSelectorPath', () => {
-  it('returns a sibling path for the code file', () => {
+  it('returns a subfolder inside the code directory', () => {
     const selectorPath = getSelectorPath(__filename);
-    const relativePath = relative(__filename, selectorPath);
-    expect(resolve(relativePath)).toEqual(
-      resolve('../../selectors/create.json'),
-    );
+    expect(selectorPath).toEqual(join(__dirname, './selectors/create.json'));
   });
 });

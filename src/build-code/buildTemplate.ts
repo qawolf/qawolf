@@ -26,7 +26,7 @@ export const buildValidVariableName = (name: string): string => {
 };
 
 const buildRequires = (name: string, device?: string): string => {
-  const requireSelector = `const selectors = require("../selectors/${name}.json");`;
+  const requireSelector = `const selectors = require("./selectors/${name}.json");`;
   const requireDefaults = `${REQUIRE_QAWOLF}\n${requireSelector}`;
 
   if (!device) return requireDefaults;

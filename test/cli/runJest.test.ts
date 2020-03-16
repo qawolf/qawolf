@@ -53,11 +53,10 @@ describe('buildArguments', () => {
   describe('test path', () => {
     it('replaces forward slashes for powershell to work', () => {
       const args = buildArguments({
-        testPath:
-          'C:\\Users\\jon\\Desktop\\qawolf\\.qawolf\\tests\\test.test.js',
+        testPath: 'C:\\Users\\jon\\Desktop\\qawolf\\.qawolf\\test.test.js',
       });
       expect(args).toContain(
-        '"C:/Users/jon/Desktop/qawolf/.qawolf/tests/test.test.js"',
+        '"C:/Users/jon/Desktop/qawolf/.qawolf/test.test.js"',
       );
     });
   });
@@ -75,7 +74,7 @@ describe('runJest', () => {
       runJest({
         browsers: ['chromium'],
         rootDir,
-        testPath: resolve(join(rootDir, 'tests/scroll.test.js')),
+        testPath: resolve(join(rootDir, 'scroll.test.js')),
       }),
     ).not.toThrow();
   });

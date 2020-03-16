@@ -1,5 +1,5 @@
 const qawolf = require('qawolf');
-const selectors = require('../selectors/selects.json');
+const selectors = require('./selectors/selects.json');
 const { TEST_URL } = require('./utils');
 
 let browser;

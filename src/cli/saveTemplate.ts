@@ -10,34 +10,14 @@ import { getSelectorPath } from '../create-code/create';
 interface SaveTemplateOptions {
   device?: string;
   name: string;
-  rootDir?: string;
+  rootDir: string;
   script?: boolean;
   statePath?: string;
   url: string;
 }
 
-const buildTemplate = ({
-  device,
-  name,
-  rootDir,
-  script,
-  statePath,
-  url,
-}: SaveTemplateOptions): { path: string; template: string } => {
-  const folder = rootDir || join(process.cwd(), '.qawolf');
-
-  if (script) {
-    const path = join(folder, 'scripts', `${name}.js`);
-    const template = buildScriptTemplate({ device, name, statePath, url });
-
-    return { path, template };
-  }
-
-  const path = join(folder, 'tests', `${name}.test.js`);
-  const template = buildTestTemplate({ device, name, statePath, url });
-
-  return { path, template };
-};
+const buildPath = ({ name, rootDir, script }: SaveTemplateOptions) =>
+  join(rootDir, script ? `${name}.js` : `${name}.test.js`);
 
 export const shouldSaveTemplate = async (path: string): Promise<boolean> => {
   const exists = await pathExists(path);
@@ -57,8 +37,12 @@ export const shouldSaveTemplate = async (path: string): Promise<boolean> => {
 export const saveTemplate = async (
   options: SaveTemplateOptions,
 ): Promise<string | null> => {
-  const { path, template } = buildTemplate(options);
+  const path = buildPath(options);
   if (!(await shouldSaveTemplate(path))) return null;
+
+  const template = options.script
+    ? buildScriptTemplate(options)
+    : buildTestTemplate(options);
 
   await ensureFile(path);
   await writeFile(path, template);

@@ -95,7 +95,7 @@ npx qawolf create --statePath=./.qawolf/state/user.json www.twitter.com mySignIn
 
 A browser will open and the [cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies), [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage), and [`sessionStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) from your state file will be applied. You can then create your test as a signed in user.
 
-If you open your test file (`.qawolf/tests/mySignInTest.test.js` in our example), you will see that it calls the [`qawolf.setState` method](api/qawolf/set_state) in the [Jest `test` block](https://jestjs.io/docs/en/api#testname-fn-timeout). This method loads the state data from the specified file and applies it to the page:
+If you open your test file (`.qawolf/mySignInTest.test.js` in our example), you will see that it calls the [`qawolf.setState` method](api/qawolf/set_state) in the [Jest `test` block](https://jestjs.io/docs/en/api#testname-fn-timeout). This method loads the state data from the specified file and applies it to the page:
 
 ```js
 // ...
@@ -122,11 +122,11 @@ npx qawolf create www.myawesomesite.com mySignInTest
 
 After the page loads, choose the `💾 Save and Exit` option in the CLI to save your "template" test and selector files.
 
-Your test file (`.qawolf/tests/mySignInTest.test.js` in our example) should look like the following:
+Your test file (`.qawolf/mySignInTest.test.js` in our example) should look like the following:
 
 ```js
 const qawolf = require('qawolf');
-const selectors = require('../selectors/mySignInTest.json');
+const selectors = require('./selectors/mySignInTest.json');
 
 let browser;
 let page;

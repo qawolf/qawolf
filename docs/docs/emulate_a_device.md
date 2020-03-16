@@ -20,7 +20,7 @@ npx qawolf create --device="iPad Mini" https://www.wikipedia.org searchTablet
 ```js
 const { devices } = require('playwright');
 const qawolf = require('qawolf');
-const selectors = require('../selectors/searchTablet.json');
+const selectors = require('./selectors/searchTablet.json');
 const device = devices['iPhone 7'];
 
 let browser;
@@ -51,12 +51,12 @@ npx qawolf create --device="iPad Mini" https://www.wikipedia.org searchTablet
 
 When the [Chromium](https://www.chromium.org/Home) browser opens, it will be emulating an [iPad Mini](https://www.apple.com/ipad-mini/).
 
-The beginning of our test code (`.qawolf/tests/searchTablet.test.js` in our example) looks like this:
+The beginning of our test code (`.qawolf/searchTablet.test.js` in our example) looks like this:
 
 ```js
 const { devices } = require('playwright');
 const qawolf = require('qawolf');
-const selectors = require('../selectors/searchTablet.json');
+const selectors = require('./selectors/searchTablet.json');
 const device = devices['iPad Mini'];
 
 let browser;
@@ -87,7 +87,7 @@ For example, let's say we have a test that looks like this:
 
 ```js
 const qawolf = require('qawolf');
-const selectors = require('../selectors/searchTablet.json');
+const selectors = require('./selectors/searchTablet.json');
 
 let browser;
 let page;
@@ -110,7 +110,7 @@ In the example below we set `userAgent` to `devices["iPhone 7"].userAgent` and `
 ```js
 const { devices } = require('playwright');
 const qawolf = require('qawolf');
-const selectors = require('../selectors/searchTablet.json');
+const selectors = require('./selectors/searchTablet.json');
 const device = devices['iPhone 7'];
 
 let browser;
@@ -133,7 +133,7 @@ You can also specify a custom values for `userAgent` and `viewport`. This allows
 
 ```js
 const qawolf = require('qawolf');
-const selectors = require('../selectors/searchTablet.json');
+const selectors = require('./selectors/searchTablet.json');
 
 let browser;
 let page;

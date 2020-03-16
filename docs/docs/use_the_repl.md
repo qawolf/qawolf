@@ -58,7 +58,7 @@ await page.$$eval('.todo-list li', todos => todos.length);
 
 The result of this command should be `1`, as we currently have one todo item on the page.
 
-In summary, the REPL allows us to try out code that we may want to incorporate into our tests. You can open your test file at `.qawolf/tests/myTestName.test.js` any time and edit it as you go along.
+In summary, the REPL allows us to try out code that we may want to incorporate into our tests. You can open your test file at `.qawolf/myTestName.test.js` any time and edit it as you go along.
 
 ## Close the REPL
 
@@ -72,7 +72,7 @@ Call `qawolf.repl` any number of times in your test code, passing whatever value
 
 ```js
 const qawolf = require('qawolf');
-const selectors = require('../selectors/myTestName.json');
+const selectors = require('./selectors/myTestName.json');
 // ...
 
 test('myTestName', async () => {
