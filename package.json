@@ -58,7 +58,7 @@
     "@types/inquirer": "^6.5.0",
     "@types/jest": "^25.1.4",
     "@types/lodash": "^4.14.149",
-    "@types/node": "~12.12.27",
+    "@types/node": "^12.12.30",
     "@types/update-notifier": "^2.5.0",
     "@typescript-eslint/eslint-plugin": "~2.19.2",
     "@typescript-eslint/parser": "~2.19.2",

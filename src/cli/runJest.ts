@@ -58,7 +58,7 @@ export const buildArguments = (
   return builtArgs;
 };
 
-export const runJest = (options: TestOptions) => {
+export const runJest = (options: TestOptions): void => {
   const command = `npx jest ${buildArguments(options).join(' ')}`;
 
   for (const browser of options.browsers) {
