@@ -10,6 +10,7 @@ type Config = {
   // argument passed to --config
   config?: string;
   rootDir: string;
+  testTimeout: number;
   useTypeScript: boolean;
 };
 
@@ -34,9 +35,11 @@ export const loadConfig = (path?: string): Config => {
     // use defaults
     return {
       attribute: process.env.QAW_ATTRIBUTE || DEFAULT_ATTRIBUTE,
+      // reset jest config
       config: '{}',
-      useTypeScript: false,
       rootDir: '.qawolf',
+      testTimeout: 60000,
+      useTypeScript: false,
     };
   }
 
@@ -46,9 +49,11 @@ export const loadConfig = (path?: string): Config => {
       process.env.QAW_ATTRIBUTE || userConfig.attribute || DEFAULT_ATTRIBUTE,
     createScriptTemplate: userConfig.createScriptTemplate,
     createTestTemplate: userConfig.createTestTemplate,
+    // do not override config when this is found in user config
     config: userConfig.config,
-    useTypeScript: userConfig.useTypeScript || false,
     rootDir: userConfig.rootDir || '.qawolf',
+    testTimeout: userConfig.testTimeout || 60000,
+    useTypeScript: userConfig.useTypeScript || false,
   };
 
   return config;

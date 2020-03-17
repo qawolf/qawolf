@@ -75,6 +75,7 @@ program
           rootDir: config.rootDir,
           repl: true,
           testPath: codePath,
+          testTimeout: config.testTimeout,
         });
       }
 
@@ -137,6 +138,7 @@ program
         },
         repl: !!cmd.repl,
         rootDir: config.rootDir,
+        testTimeout: config.testTimeout,
       });
 
       process.exit(0);

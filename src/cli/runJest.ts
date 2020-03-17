@@ -10,6 +10,7 @@ type TestOptions = {
   repl?: boolean;
   rootDir?: string;
   testPath?: string;
+  testTimeout?: number;
 };
 
 export const buildArguments = (
@@ -38,8 +39,8 @@ export const buildArguments = (
   );
   if (!hasTimeoutArg) {
     // for repl: timeout after 1 hour
-    // otherwise: timeout after 60 seconds (playwright default wait timeout is 30 seconds)
-    builtArgs.push(`--testTimeout=${options.repl ? '3600000' : '60000'}`);
+    const timeout = options.repl ? 3600000 : options.testTimeout || 60000;
+    builtArgs.push(`--testTimeout=${timeout}`);
   }
 
   if (options.testPath) {

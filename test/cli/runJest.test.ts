@@ -37,14 +37,16 @@ describe('buildArguments', () => {
       expect(timeoutArgs).toEqual(['--testTimeout=1000']);
     });
 
+    it('use provided testTimeout', () => {
+      expect(buildArguments({ testTimeout: 10 })).toContain('--testTimeout=10');
+    });
+
     it('set to 60s by default', () => {
-      const args = buildArguments({});
-      expect(args).toContain('--testTimeout=60000');
+      expect(buildArguments({})).toContain('--testTimeout=60000');
     });
 
     it('set to 1 hour for repl', () => {
-      const args = buildArguments({ repl: true });
-      expect(args).toContain('--testTimeout=3600000');
+      expect(buildArguments({ repl: true })).toContain('--testTimeout=3600000');
     });
   });
 

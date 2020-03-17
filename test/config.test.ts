@@ -16,6 +16,8 @@ describe('loadConfig', () => {
     ).toMatch('test,hello,google.com');
 
     expect(config.rootDir).toEqual('mytests');
+
+    expect(config.testTimeout).toEqual(120000);
   });
 
   it('defaults values when there is no config', () => {
@@ -25,5 +27,6 @@ describe('loadConfig', () => {
     expect(config.createScriptTemplate).toBeUndefined();
     expect(config.createTestTemplate).toBeUndefined();
     expect(config.rootDir).toEqual('.qawolf');
+    expect(config.testTimeout).toEqual(60000);
   });
 });
