@@ -7,7 +7,11 @@ import { randomString } from '../utils';
 describe('buildPath', () => {
   it('builds script paths', () => {
     expect(
-      buildPath({ name: 'myScript', rootDir: '/scripts', script: true }),
+      buildPath({
+        name: 'myScript',
+        rootDir: '/scripts',
+        script: true,
+      }).replace(/\\/g, '/'), // windows
     ).toEqual('/scripts/myScript.js');
 
     expect(
@@ -16,21 +20,21 @@ describe('buildPath', () => {
         rootDir: '/scripts',
         script: true,
         useTypeScript: true,
-      }),
+      }).replace(/\\/g, '/'),
     ).toEqual('/scripts/myScript.ts');
   });
 
   it('builds test paths', () => {
-    expect(buildPath({ name: 'myScript', rootDir: '/tests' })).toEqual(
-      '/tests/myScript.test.js',
-    );
+    expect(
+      buildPath({ name: 'myScript', rootDir: '/tests' }).replace(/\\/g, '/'),
+    ).toEqual('/tests/myScript.test.js');
 
     expect(
       buildPath({
         name: 'myScript',
         rootDir: '/tests',
         useTypeScript: true,
-      }),
+      }).replace(/\\/g, '/'),
     ).toEqual('/tests/myScript.test.ts');
   });
 });
