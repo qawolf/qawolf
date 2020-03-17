@@ -4,18 +4,16 @@ import { join } from 'path';
 import {
   buildScriptTemplate,
   buildTestTemplate,
+  BuildTemplateOptions,
+  TemplateFunction,
 } from '../build-code/buildTemplate';
 import { getSelectorPath } from '../create-code/create';
 
-interface SaveTemplateOptions {
-  device?: string;
-  isTypeScript?: boolean;
-  name: string;
+type SaveTemplateOptions = BuildTemplateOptions & {
   rootDir: string;
   script?: boolean;
-  statePath?: string;
-  url: string;
-}
+  templateFn?: TemplateFunction;
+};
 
 const buildPath = ({
   isTypeScript,
@@ -50,12 +48,13 @@ export const saveTemplate = async (
   const path = buildPath(options);
   if (!(await shouldSaveTemplate(path))) return null;
 
-  const template = options.script
-    ? buildScriptTemplate(options)
-    : buildTestTemplate(options);
+  let templateFn = options.templateFn;
+  if (!templateFn) {
+    templateFn = options.script ? buildScriptTemplate : buildTestTemplate;
+  }
 
   await ensureFile(path);
-  await writeFile(path, template);
+  await writeFile(path, templateFn(options));
 
   // create a selector file so it can be imported
   const selectorPath = getSelectorPath(path);

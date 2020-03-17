@@ -1,9 +1,12 @@
 import Debug from 'debug';
 import { join } from 'path';
 import { cwd } from 'process';
+import { TemplateFunction } from './build-code/buildTemplate';
 
 type Config = {
   attribute: string;
+  createScriptTemplate?: TemplateFunction;
+  createTestTemplate?: TemplateFunction;
   // argument passed to --config
   config?: string;
   isTypeScript: boolean;
@@ -41,6 +44,8 @@ export const loadConfig = (path?: string): Config => {
     // prefer environment variable over config
     attribute:
       process.env.QAW_ATTRIBUTE || userConfig.attribute || DEFAULT_ATTRIBUTE,
+    createScriptTemplate: userConfig.createScriptTemplate,
+    createTestTemplate: userConfig.createTestTemplate,
     config: userConfig.config,
     isTypeScript: userConfig.isTypeScript || false,
     rootDir: userConfig.rootDir || '.qawolf',

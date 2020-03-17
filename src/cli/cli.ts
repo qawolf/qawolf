@@ -46,6 +46,9 @@ program
       rootDir: config.rootDir,
       script: cmd.script,
       statePath: cmd.statePath,
+      templateFn: cmd.script
+        ? config.createScriptTemplate
+        : config.createTestTemplate,
       url: url.href,
     });
     if (!codePath) {
@@ -60,7 +63,7 @@ program
 
     try {
       if (cmd.script) {
-        runCommand(`node ${codePath}`, {
+        runCommand(`${config.isTypeScript ? 'ts-node' : 'node'} ${codePath}`, {
           ...env,
           QAW_BROWSER: 'chromium',
         });

@@ -1,13 +1,15 @@
 import { camelCase } from 'lodash';
 import { devices } from 'playwright';
 
-interface BuildTemplateOptions {
+export interface BuildTemplateOptions {
   device?: string;
   isTypeScript?: boolean;
   name: string;
   statePath?: string;
   url: string;
 }
+
+export type TemplateFunction = (options: BuildTemplateOptions) => string;
 
 interface BuildImportsOptions {
   device?: string;
@@ -80,7 +82,7 @@ const buildSetState = (statePath?: string): string => {
   return `\n  await qawolf.setState(page, "${statePath}");`;
 };
 
-export const buildScriptTemplate = ({
+export const buildScriptTemplate: TemplateFunction = ({
   device,
   name,
   isTypeScript,
@@ -112,7 +114,7 @@ if (require.main === module) {
   return code;
 };
 
-export const buildTestTemplate = ({
+export const buildTestTemplate: TemplateFunction = ({
   device,
   name,
   isTypeScript,
