@@ -34,14 +34,14 @@ describe('CodeFileUpdater', () => {
       expect(mockedRemove.mock.calls.length).toEqual(0);
     });
 
-    it('removes code if QAW_DISCARD is set to true', async () => {
-      process.env.QAW_DISCARD = '1';
+    it('removes code if QAW_CREATE is set to true', async () => {
+      process.env.QAW_CREATE = 'true';
       const initialCode = `initialCode()\n${CREATE_HANDLE}`;
       mockedReadFile.mockResolvedValue(initialCode);
       const updater = await CodeFileUpdater.create('removepath');
       await updater.discard();
       expect(mockedRemove.mock.calls[0][0]).toEqual('removepath');
-      process.env.QAW_DISCARD = undefined;
+      process.env.QAW_CREATE = undefined;
     });
   });
 

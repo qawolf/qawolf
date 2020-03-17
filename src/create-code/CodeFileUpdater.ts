@@ -39,7 +39,7 @@ export class CodeFileUpdater extends CodeUpdater {
   public async discard(): Promise<void> {
     this._locked = true;
 
-    if (process.env.QAW_DISCARD === '1') {
+    if (process.env.QAW_CREATE === 'true') {
       debug('discard code');
       await remove(this._path);
     } else {

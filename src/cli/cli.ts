@@ -42,7 +42,6 @@ program
     const codePath = await saveTemplate({
       device: cmd.device,
       name,
-      useTypeScript: config.useTypeScript,
       rootDir: config.rootDir,
       script: cmd.script,
       statePath: cmd.statePath,
@@ -50,6 +49,7 @@ program
         ? config.createScriptTemplate
         : config.createTestTemplate,
       url: url.href,
+      useTypeScript: config.useTypeScript,
     });
     if (!codePath) {
       // the user decided to not overwrite
@@ -57,7 +57,7 @@ program
     }
 
     const env: NodeJS.ProcessEnv = {
-      QAW_DISCARD: '1',
+      QAW_CREATE: 'true',
       QAW_HEADLESS: 'false',
     };
 
