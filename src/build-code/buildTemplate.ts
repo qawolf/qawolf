@@ -3,18 +3,18 @@ import { devices } from 'playwright';
 
 export interface BuildTemplateOptions {
   device?: string;
-  isTypeScript?: boolean;
   name: string;
   statePath?: string;
   url: string;
+  useTypeScript?: boolean;
 }
 
 export type TemplateFunction = (options: BuildTemplateOptions) => string;
 
 interface BuildImportsOptions {
   device?: string;
-  isTypeScript?: boolean;
   name: string;
+  useTypeScript?: boolean;
 }
 
 export const buildValidVariableName = (name: string): string => {
@@ -34,7 +34,7 @@ export const buildValidVariableName = (name: string): string => {
 export const buildImports = ({
   device,
   name,
-  isTypeScript,
+  useTypeScript,
 }: BuildImportsOptions): string => {
   if (device && !devices[device]) {
     throw new Error(`Device ${device} not available in Playwright`);
@@ -43,14 +43,14 @@ export const buildImports = ({
   let imports = '';
 
   if (device) {
-    if (isTypeScript) {
+    if (useTypeScript) {
       imports += 'import { devices } from "playwright";\n';
     } else {
       imports += 'const { devices } = require("playwright");\n';
     }
   }
 
-  if (isTypeScript) {
+  if (useTypeScript) {
     imports += 'import qawolf from "qawolf";\n';
   } else {
     imports += 'const qawolf = require("qawolf");\n';
@@ -85,12 +85,12 @@ const buildSetState = (statePath?: string): string => {
 export const buildScriptTemplate: TemplateFunction = ({
   device,
   name,
-  isTypeScript,
   statePath,
   url,
+  useTypeScript,
 }: BuildTemplateOptions): string => {
   const validName = buildValidVariableName(name);
-  const code = `${buildImports({ name, device, isTypeScript })}
+  const code = `${buildImports({ name, device, useTypeScript })}
 
 const ${validName} = async context => {
   let page = await context.newPage();
@@ -117,11 +117,11 @@ if (require.main === module) {
 export const buildTestTemplate: TemplateFunction = ({
   device,
   name,
-  isTypeScript,
   statePath,
   url,
+  useTypeScript,
 }: BuildTemplateOptions): string => {
-  const code = `${buildImports({ name, device, isTypeScript })}
+  const code = `${buildImports({ name, device, useTypeScript })}
 
 let browser;
 let page;

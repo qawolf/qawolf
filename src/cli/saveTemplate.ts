@@ -15,15 +15,22 @@ type SaveTemplateOptions = BuildTemplateOptions & {
   templateFn?: TemplateFunction;
 };
 
-const buildPath = ({
-  isTypeScript,
+type BuildPathOptions = {
+  name: string;
+  rootDir: string;
+  script?: boolean;
+  useTypeScript?: boolean;
+};
+
+export const buildPath = ({
   name,
   rootDir,
   script,
-}: SaveTemplateOptions) => {
+  useTypeScript,
+}: BuildPathOptions) => {
   let filename = name;
   if (!script) filename += '.test';
-  filename += isTypeScript ? '.ts' : '.js';
+  filename += useTypeScript ? '.ts' : '.js';
   return join(rootDir, filename);
 };
 

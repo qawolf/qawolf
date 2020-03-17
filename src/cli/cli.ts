@@ -42,7 +42,7 @@ program
     const codePath = await saveTemplate({
       device: cmd.device,
       name,
-      isTypeScript: config.isTypeScript,
+      useTypeScript: config.useTypeScript,
       rootDir: config.rootDir,
       script: cmd.script,
       statePath: cmd.statePath,
@@ -63,7 +63,7 @@ program
 
     try {
       if (cmd.script) {
-        runCommand(`${config.isTypeScript ? 'ts-node' : 'node'} ${codePath}`, {
+        runCommand(`${config.useTypeScript ? 'ts-node' : 'node'} ${codePath}`, {
           ...env,
           QAW_BROWSER: 'chromium',
         });

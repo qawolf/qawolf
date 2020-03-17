@@ -1,12 +1,39 @@
 import { pathExists } from 'fs-extra';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { saveTemplate } from '../../src/cli/saveTemplate';
+import { buildPath, saveTemplate } from '../../src/cli/saveTemplate';
 import { randomString } from '../utils';
 
-jest.mock('inquirer');
+describe('buildPath', () => {
+  it('builds script paths', () => {
+    expect(
+      buildPath({ name: 'myScript', rootDir: '/scripts', script: true }),
+    ).toEqual('/scripts/myScript.js');
 
-afterAll(jest.restoreAllMocks);
+    expect(
+      buildPath({
+        name: 'myScript',
+        rootDir: '/scripts',
+        script: true,
+        useTypeScript: true,
+      }),
+    ).toEqual('/scripts/myScript.ts');
+  });
+
+  it('builds test paths', () => {
+    expect(buildPath({ name: 'myScript', rootDir: '/tests' })).toEqual(
+      '/tests/myScript.test.js',
+    );
+
+    expect(
+      buildPath({
+        name: 'myScript',
+        rootDir: '/tests',
+        useTypeScript: true,
+      }),
+    ).toEqual('/tests/myScript.test.ts');
+  });
+});
 
 describe('saveTemplate', () => {
   it('saves script template', async () => {

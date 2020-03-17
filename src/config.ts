@@ -9,8 +9,8 @@ type Config = {
   createTestTemplate?: TemplateFunction;
   // argument passed to --config
   config?: string;
-  isTypeScript: boolean;
   rootDir: string;
+  useTypeScript: boolean;
 };
 
 const debug = Debug('qawolf:config');
@@ -35,7 +35,7 @@ export const loadConfig = (path?: string): Config => {
     return {
       attribute: process.env.QAW_ATTRIBUTE || DEFAULT_ATTRIBUTE,
       config: '{}',
-      isTypeScript: false,
+      useTypeScript: false,
       rootDir: '.qawolf',
     };
   }
@@ -47,7 +47,7 @@ export const loadConfig = (path?: string): Config => {
     createScriptTemplate: userConfig.createScriptTemplate,
     createTestTemplate: userConfig.createTestTemplate,
     config: userConfig.config,
-    isTypeScript: userConfig.isTypeScript || false,
+    useTypeScript: userConfig.useTypeScript || false,
     rootDir: userConfig.rootDir || '.qawolf',
   };
 

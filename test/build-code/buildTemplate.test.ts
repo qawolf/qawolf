@@ -18,16 +18,16 @@ describe('buildImports', () => {
   it('imports when typescript', () => {
     expect(
       buildImports({
-        isTypeScript: true,
         name: 'myScript',
+        useTypeScript: true,
       }),
     ).toMatchSnapshot();
 
     expect(
       buildImports({
         device: 'iPhone 11',
-        isTypeScript: true,
         name: 'myScript',
+        useTypeScript: true,
       }),
     ).toMatchSnapshot();
   });
