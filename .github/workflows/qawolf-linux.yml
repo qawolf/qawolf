@@ -1,4 +1,4 @@
-name: Linux Tests
+name: QA Wolf Linux Tests
 
 on: [push]
 
