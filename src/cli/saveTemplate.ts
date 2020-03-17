@@ -1,5 +1,4 @@
-import { ensureFile, pathExists, writeFile, writeJson } from 'fs-extra';
-import { prompt } from 'inquirer';
+import { ensureFile, writeFile, writeJson } from 'fs-extra';
 import { join } from 'path';
 import {
   buildScriptTemplate,
@@ -8,6 +7,7 @@ import {
   TemplateFunction,
 } from '../build-code/buildTemplate';
 import { getSelectorPath } from '../create-code/create';
+import { promptOverwrite } from './promptOverwrite';
 
 type SaveTemplateOptions = BuildTemplateOptions & {
   rootDir: string;
@@ -27,26 +27,11 @@ const buildPath = ({
   return join(rootDir, filename);
 };
 
-export const shouldSaveTemplate = async (path: string): Promise<boolean> => {
-  const exists = await pathExists(path);
-  if (!exists) return true;
-
-  const { overwrite } = await prompt<{ overwrite: boolean }>([
-    {
-      message: `"${path}" already exists, overwrite it?`,
-      name: 'overwrite',
-      type: 'confirm',
-    },
-  ]);
-
-  return overwrite;
-};
-
 export const saveTemplate = async (
   options: SaveTemplateOptions,
 ): Promise<string | null> => {
   const path = buildPath(options);
-  if (!(await shouldSaveTemplate(path))) return null;
+  if (!(await promptOverwrite(path))) return null;
 
   let templateFn = options.templateFn;
   if (!templateFn) {
