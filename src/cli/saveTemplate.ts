@@ -9,17 +9,17 @@ import {
 import { getSelectorPath } from '../create-code/create';
 import { promptOverwrite } from './promptOverwrite';
 
-type SaveTemplateOptions = BuildTemplateOptions & {
-  rootDir: string;
-  script?: boolean;
-  templateFn?: TemplateFunction;
-};
-
 type BuildPathOptions = {
   name: string;
   rootDir: string;
   script?: boolean;
   useTypeScript?: boolean;
+};
+
+type SaveTemplateOptions = BuildTemplateOptions & {
+  rootDir: string;
+  script?: boolean;
+  templateFn?: TemplateFunction;
 };
 
 export const buildPath = ({
