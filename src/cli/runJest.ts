@@ -39,6 +39,7 @@ export const buildArguments = (
   );
   if (!hasTimeoutArg) {
     // for repl: timeout after 1 hour
+    // if not provided: timeout after 60 seconds (playwright default wait timeout is 30 seconds)
     const timeout = options.repl ? 3600000 : options.testTimeout || 60000;
     builtArgs.push(`--testTimeout=${timeout}`);
   }
