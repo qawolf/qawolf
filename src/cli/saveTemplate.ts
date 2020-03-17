@@ -27,7 +27,7 @@ export const buildPath = ({
   rootDir,
   script,
   useTypeScript,
-}: BuildPathOptions) => {
+}: BuildPathOptions): string => {
   let filename = name;
   if (!script) filename += '.test';
   filename += useTypeScript ? '.ts' : '.js';

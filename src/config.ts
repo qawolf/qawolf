@@ -19,7 +19,7 @@ const debug = Debug('qawolf:config');
 export const DEFAULT_ATTRIBUTE =
   'data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/';
 
-export const getConfigPath = () => join(cwd(), 'qawolf.config.js');
+export const getConfigPath = (): string => join(cwd(), 'qawolf.config.js');
 
 export const loadConfig = (path?: string): Config => {
   let userConfig: any;

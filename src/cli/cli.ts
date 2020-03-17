@@ -72,8 +72,8 @@ program
           browsers: ['chromium'],
           config: config.config,
           env,
-          rootDir: config.rootDir,
           repl: true,
+          rootDir: config.rootDir,
           testPath: codePath,
           testTimeout: config.testTimeout,
         });
