@@ -1,5 +1,5 @@
 import callsites from 'callsites';
-import * as qawolf from '../../src';
+import qawolf from '../../src';
 
 export const createSelf = async (onReady: () => void): Promise<void> => {
   // 🐺 I code, therefore I am
