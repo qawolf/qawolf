@@ -51,7 +51,7 @@ export const getCodePath = async (
 
 export const getSelectorPath = (codePath: string): string => {
   const codeName = basename(codePath).split('.')[0];
-  return join(dirname(codePath), '../selectors', `${codeName}.json`);
+  return join(dirname(codePath), './selectors', `${codeName}.json`);
 };
 
 export const create = async (options: CreateOptions = {}): Promise<void> => {

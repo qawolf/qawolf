@@ -38,13 +38,14 @@ Create a browser test on `www.google.com`, emulating an iPhone 7:
 npx qawolf create --device="iPhone 7" www.google.com
 ```
 
-Create a browser test on `www.google.com`, saving it at `.qawolf/tests/myTestName.test.js`:
+Create a browser test on `www.google.com`, saving it at `.qawolf/myTestName.test.js`:
 
 ```bash
 npx qawolf create www.google.com myTestName
 ```
 
-Create a browser test on `www.google.com`, saving it at `.myTests/tests/myTestName.test.js`:
+TODO FIX
+Create a browser test on `www.google.com`, saving it at `.myTests/myTestName.test.js`:
 
 ```bash
 npx qawolf create --rootDir=./myTests www.google.com myTestName
@@ -78,13 +79,13 @@ Run all tests:
 npx qawolf test
 ```
 
-Run the test saved at `.qawolf/tests/myTestName.test.js`:
+Run the test saved at `.qawolf/myTestName.test.js`:
 
 ```bash
 npx qawolf test myTestName
 ```
 
-Run the test saved at `.qawolf/tests/myTestName.test.js` on [Chromium](https://www.chromium.org/Home), [Firefox](https://www.mozilla.org/en-US/firefox/new), and [WebKit](https://webkit.org):
+Run the test saved at `.qawolf/myTestName.test.js` on [Chromium](https://www.chromium.org/Home), [Firefox](https://www.mozilla.org/en-US/firefox/new), and [WebKit](https://webkit.org):
 
 ```bash
 npx qawolf test --all-browsers myTestName

@@ -38,7 +38,7 @@ jobs:
       - name: Test e2e
         run: |
           # Windows throws invalid js for linked binaries unless we call node directly
-          node ./node_modules/qawolf test --all-browsers --headless --rootDir=./test/.qawolf
+          node ./node_modules/qawolf test --all-browsers --headless
         if: matrix.test == 'e2e'
 
       - name: Upload Artifacts

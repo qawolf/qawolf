@@ -7,7 +7,7 @@ import {
   indexPages,
   initEvaluateScript,
 } from 'playwright-utils';
-import { CONFIG } from '../config';
+import { loadConfig } from '../config';
 import { ElementEvent } from '../types';
 import { QAWolfWeb } from '../web';
 import { addWebScript } from '../web/addScript';
@@ -25,7 +25,10 @@ export class ContextEventCollector extends EventEmitter {
   ): Promise<ContextEventCollector> {
     await addWebScript(options.context);
     await indexPages(options.context);
-    return new ContextEventCollector(options);
+    return new ContextEventCollector({
+      attribute: loadConfig().attribute,
+      ...options,
+    });
   }
 
   private _attribute: string;
@@ -33,7 +36,7 @@ export class ContextEventCollector extends EventEmitter {
   protected constructor(options: ConstructorOptions) {
     super();
 
-    this._attribute = options.attribute || CONFIG.attribute;
+    this._attribute = options.attribute;
 
     forEachPage(options.context, page =>
       this._collectPageEvents(page as IndexedPage),

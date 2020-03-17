@@ -13,15 +13,13 @@ describe('buildArguments', () => {
   });
 
   describe('config', () => {
-    it('clears config when one is not provided', () => {
-      const args = buildArguments({});
-      expect(args).toContain('--config="{}"');
+    it('uses config when specified', () => {
+      expect(buildArguments({ config: '{}' })).toContain('--config="{}"');
     });
 
-    it('uses provided config', () => {
-      const args = ['--config=something'];
-      const builtArgs = buildArguments({ args });
-      expect(builtArgs.filter(arg => arg.includes('--config'))).toEqual(args);
+    it('does not use config if not specified', () => {
+      const builtArgs = buildArguments({});
+      expect(builtArgs.filter(arg => arg.includes('--config'))).toEqual([]);
     });
   });
 
@@ -39,25 +37,26 @@ describe('buildArguments', () => {
       expect(timeoutArgs).toEqual(['--testTimeout=1000']);
     });
 
+    it('use provided testTimeout', () => {
+      expect(buildArguments({ testTimeout: 10 })).toContain('--testTimeout=10');
+    });
+
     it('set to 60s by default', () => {
-      const args = buildArguments({});
-      expect(args).toContain('--testTimeout=60000');
+      expect(buildArguments({})).toContain('--testTimeout=60000');
     });
 
     it('set to 1 hour for repl', () => {
-      const args = buildArguments({ repl: true });
-      expect(args).toContain('--testTimeout=3600000');
+      expect(buildArguments({ repl: true })).toContain('--testTimeout=3600000');
     });
   });
 
   describe('test path', () => {
     it('replaces forward slashes for powershell to work', () => {
       const args = buildArguments({
-        testPath:
-          'C:\\Users\\jon\\Desktop\\qawolf\\.qawolf\\tests\\test.test.js',
+        testPath: 'C:\\Users\\jon\\Desktop\\qawolf\\.qawolf\\test.test.js',
       });
       expect(args).toContain(
-        '"C:/Users/jon/Desktop/qawolf/.qawolf/tests/test.test.js"',
+        '"C:/Users/jon/Desktop/qawolf/.qawolf/test.test.js"',
       );
     });
   });
@@ -75,7 +74,7 @@ describe('runJest', () => {
       runJest({
         browsers: ['chromium'],
         rootDir,
-        testPath: resolve(join(rootDir, 'tests/scroll.test.js')),
+        testPath: resolve(join(rootDir, 'scroll.test.js')),
       }),
     ).not.toThrow();
   });

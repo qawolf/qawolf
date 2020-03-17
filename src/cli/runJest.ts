@@ -10,6 +10,7 @@ type TestOptions = {
   repl?: boolean;
   rootDir?: string;
   testPath?: string;
+  testTimeout?: number;
 };
 
 export const buildArguments = (
@@ -19,13 +20,10 @@ export const buildArguments = (
 
   const providedArgs = options.args || [];
 
-  const hasConfigArg = !!providedArgs.find(arg =>
-    arg.toLowerCase().includes('config'),
-  );
-  if (!hasConfigArg) {
+  if (options.config) {
     // clear Jest config unless one is provided
     // must be wrapped in quotes for powershell
-    builtArgs.push('--config="{}"');
+    builtArgs.push(`--config="${options.config}"`);
   }
 
   if (options.repl) {
@@ -41,8 +39,9 @@ export const buildArguments = (
   );
   if (!hasTimeoutArg) {
     // for repl: timeout after 1 hour
-    // otherwise: timeout after 60 seconds (playwright default wait timeout is 30 seconds)
-    builtArgs.push(`--testTimeout=${options.repl ? '3600000' : '60000'}`);
+    // if not provided: timeout after 60 seconds (playwright default wait timeout is 30 seconds)
+    const timeout = options.repl ? 3600000 : options.testTimeout || 60000;
+    builtArgs.push(`--testTimeout=${timeout}`);
   }
 
   if (options.testPath) {

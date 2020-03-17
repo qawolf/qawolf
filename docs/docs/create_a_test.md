@@ -13,7 +13,7 @@ The [previous guide](install) showed you how to set up your environment and inst
 npx qawolf create https://myawesomesite.com myTestName
 ```
 
-- [Review and edit test code](#review-test-code) as you go along by opening your test file (`.qawolf/tests/myTestName.test.js`)
+- [Review and edit test code](#review-test-code) as you go along by opening your test file (`.qawolf/myTestName.test.js`)
 - [Save your test](#save-a-test) by choosing `💾 Save and Exit` in the command line
 
 ## Create a test
@@ -64,13 +64,13 @@ If you open your project in your code editor, you'll notice that a folder called
 │   └── myFirstTest.json
 ```
 
-Let's open the `.qawolf/tests/myFirstTest.test.js` file, which contains your test code. We'll explain the `.qawolf/selectors/myFirstTest.json` file a bit later.
+Let's open the `.qawolf/myFirstTest.test.js` file, which contains your test code. We'll explain the `.qawolf/selectors/myFirstTest.json` file a bit later.
 
 Our code first requires the `qawolf` library, which is built on top of [Microsoft's Playwright](https://github.com/microsoft/playwright) library. It also requires the selectors file, which we'll get to later:
 
 ```js
 const qawolf = require('qawolf');
-const selectors = require('../selectors/myFirstTest.json');
+const selectors = require('./selectors/myFirstTest.json');
 ```
 
 To start your test, a few things happen in the [Jest `beforeAll` block](https://jestjs.io/docs/en/api#beforeallfn-timeout). The test launches a [browser](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browser) and creates a new [context](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext), which is an "incognito" browser session. This context is passed to the [`qawolf.register` method](api/qawolf/register) so QA Wolf can access it. Finally, a new [page](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page) is created:
@@ -113,7 +113,7 @@ Putting it all together, below we show the full test code:
 
 ```js
 const qawolf = require('qawolf');
-const selectors = require('../selectors/myFirstTest.json');
+const selectors = require('./selectors/myFirstTest.json');
 
 let browser;
 let page;

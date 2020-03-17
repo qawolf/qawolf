@@ -54,7 +54,7 @@ jobs:
         env:
           CI: true
 
-      - run: npx qawolf test --all-browsers --headless --rootDir=./test/.qawolf
+      - run: npx qawolf test --all-browsers --headless
         if: matrix.test == 'e2e'
         env:
           QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
