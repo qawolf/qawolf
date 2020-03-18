@@ -4,7 +4,7 @@ import { logError, logUseTypeScript, promptRootDir } from './cli';
 import { detectTypeScript, writeConfig } from './config';
 import { addDevDependencies, readPackageJson, npmInstall } from './packageJson';
 
-(async () => {
+(async (): Promise<void> => {
   try {
     // run this first to ensure package.json
     await readPackageJson();

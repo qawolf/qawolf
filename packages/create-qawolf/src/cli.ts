@@ -15,9 +15,9 @@ export const logError = (error: Error): void => {
   }
 };
 
-export const logNpmInstall = () => console.log(cyan('npm install'));
+export const logNpmInstall = (): void => console.log(cyan('npm install'));
 
-export const logUseTypeScript = (useTypeScript: boolean) => {
+export const logUseTypeScript = (useTypeScript: boolean): void => {
   console.log(
     cyan(
       `TypeScript ${useTypeScript ? '✔️' : '✖️'} tsconfig.json ${

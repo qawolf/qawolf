@@ -28,7 +28,9 @@ describe('addDevDependencies', () => {
     });
 
     const writeFileSpy = jest.spyOn(fs, 'writeFile');
-    writeFileSpy.mockImplementationOnce(async () => {});
+
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    writeFileSpy.mockImplementation(async () => {});
 
     await packageJson.addDevDependencies(true);
 

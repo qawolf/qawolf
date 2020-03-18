@@ -3,6 +3,8 @@ import Debug from 'debug';
 import { promises as fs } from 'fs';
 import { join } from 'path';
 import { logAddDevDependency, logNpmInstall } from './cli';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { devDependencies: selfDevDependencies } = require('../package.json');
 
 type Packages = { [name: string]: string };
@@ -81,7 +83,7 @@ export const addDevDependencies = async (
   );
 };
 
-export const npmInstall = () => {
+export const npmInstall = (): void => {
   logNpmInstall();
   execSync('npm install', { stdio: 'inherit' });
 };

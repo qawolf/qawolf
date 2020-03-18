@@ -18,7 +18,7 @@ export const detectTypeScript = async (): Promise<boolean> => {
 export const writeConfig = async ({
   rootDir,
   useTypeScript,
-}: ConfigOptions) => {
+}: ConfigOptions): Promise<void> => {
   // TODO test the preset escaping works on windows :/
   const config = `module.exports = {
   config: '${useTypeScript ? '{ \\"preset\\": \\"ts-jest\\" }' : '{}'}',

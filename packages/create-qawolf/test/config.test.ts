@@ -7,7 +7,9 @@ test('detectTypeScript detects TypeScript', async () => {
 
 test('writeConfig writes a config', async () => {
   const writeFileSpy = jest.spyOn(fs, 'writeFile');
-  writeFileSpy.mockImplementationOnce(async () => {});
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  writeFileSpy.mockImplementation(async () => {});
 
   await writeConfig({ rootDir: 'tests/acceptance', useTypeScript: true });
   expect(writeFileSpy.mock.calls[0][1]).toMatchInlineSnapshot(`
