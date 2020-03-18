@@ -3,7 +3,7 @@ import { cyan, bold } from 'kleur';
 import { getPackageJsonPath } from './packageJson';
 
 export const logAddDevDependency = (name: string, version: string): void => {
-  console.log(cyan(`Added ${name}@${version} as a devDependency`));
+  console.log(cyan(`npm i -D ${name}@${version}`));
 };
 
 export const logError = (error: Error): void => {
@@ -15,8 +15,16 @@ export const logError = (error: Error): void => {
   }
 };
 
-export const logUseTypeScript = () => {
-  console.log(cyan('useTypeScript: true. Found tsconfig.json'));
+export const logNpmInstall = () => console.log(cyan('npm install'));
+
+export const logUseTypeScript = (useTypeScript: boolean) => {
+  console.log(
+    cyan(
+      `TypeScript ${useTypeScript ? '✔️' : '✖️'} tsconfig.json ${
+        useTypeScript ? 'found' : 'not found'
+      }`,
+    ),
+  );
 };
 
 export const promptRootDir = (): Promise<string> =>

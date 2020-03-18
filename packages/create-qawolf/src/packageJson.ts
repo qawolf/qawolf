@@ -1,7 +1,8 @@
+import { execSync } from 'child_process';
 import Debug from 'debug';
 import { promises as fs } from 'fs';
 import { join } from 'path';
-import { logAddDevDependency } from './cli';
+import { logAddDevDependency, logNpmInstall } from './cli';
 const { devDependencies: selfDevDependencies } = require('../package.json');
 
 type Packages = { [name: string]: string };
@@ -78,4 +79,9 @@ export const addDevDependencies = async (
     JSON.stringify(packageJson, null, 2) + '\n',
     'utf8',
   );
+};
+
+export const npmInstall = () => {
+  logNpmInstall();
+  execSync('npm install', { stdio: 'inherit' });
 };
