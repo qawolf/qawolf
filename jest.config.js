@@ -1,7 +1,7 @@
 module.exports = {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   testEnvironment: 'node',
-  testPathIgnorePatterns: ['./test/e2e'],
+  testPathIgnorePatterns: ['./packages', './test/e2e'],
   testRegex: '(/test/.*.(test|spec)).(jsx?|tsx?)$',
   testTimeout: 60000,
   transform: {
