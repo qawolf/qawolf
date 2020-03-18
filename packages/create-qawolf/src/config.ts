@@ -8,3 +8,5 @@ export const detectTypeScript = async (): Promise<boolean> => {
     });
   });
 };
+
+export const writeConfig = async () => {};
