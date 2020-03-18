@@ -26,6 +26,7 @@
     "playwright": "next"
   },
   "dependencies": {
+    "@inquirer/input": "0.0.9-alpha.0",
     "debug": "*",
     "glob": "^7.1.6",
     "kleur": "^3.0.3",

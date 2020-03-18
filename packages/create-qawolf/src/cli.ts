@@ -1,3 +1,4 @@
+import input from '@inquirer/input';
 import { cyan, bold } from 'kleur';
 import { getPackageJsonPath } from './packageJson';
 
@@ -11,8 +12,11 @@ export const logError = (error: Error): void => {
 };
 
 export const logUseTypeScript = () => {
-  console.log(cyan('Use TypeScript since we found a tsconfig.json'));
+  console.log(cyan('useTypeScript: true. Found tsconfig.json'));
 };
 
-// TODO
-export const promptRootDir = async () => {};
+export const promptRootDir = (): Promise<string> =>
+  input({
+    message: 'rootDir: Where to create tests and scripts?',
+    default: '.qawolf',
+  });
