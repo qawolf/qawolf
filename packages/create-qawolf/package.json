@@ -27,6 +27,8 @@
   },
   "dependencies": {
     "debug": "*",
+    "glob": "^7.1.6",
+    "kleur": "^3.0.3",
     "tslib": "^1.11.1"
   },
   "devDependencies": {
@@ -47,6 +49,6 @@
     "typescript": "~3.8.2"
   },
   "bin": {
-    "create-qawolf": "./index.js"
+    "create-qawolf": "./build/index.js"
   }
 }
