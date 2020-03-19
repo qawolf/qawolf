@@ -20,10 +20,10 @@ afterAll(async () => {
 test('selects', async () => {
   await page.goto(`${TEST_URL}selects`);
   await page.evaluate(() => console.log('start select test'));
-  await page.select("[data-qa='html-select']", 'cat');
+  await page.selectOption("[data-qa='html-select']", 'cat');
   await page.click("[data-qa='material-select']");
   await page.click(selectors['2_li']);
-  await page.select("[data-qa='material-select-native'] select", 'red');
+  await page.selectOption("[data-qa='material-select-native'] select", 'red');
   await page.click("[data-qa='material-select-multiple']");
   await page.click(selectors['5_li']);
   await page.click(selectors['6_li']);

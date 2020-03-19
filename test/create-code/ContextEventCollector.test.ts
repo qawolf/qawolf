@@ -130,7 +130,7 @@ describe('ContextEventCollector', () => {
     const page = await context.newPage();
     await page.goto(`${TEST_URL}selects`);
 
-    await page.select('[data-qa="html-select"]', 'hedgehog');
+    await page.selectOption('[data-qa="html-select"]', 'hedgehog');
     await page.close();
 
     const { name, isTrusted, target, value } = events[

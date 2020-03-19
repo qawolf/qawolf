@@ -1,6 +1,6 @@
 import { ElementEvent, InputEvent, Step } from '../types';
 
-export const buildSelectSteps = (events: ElementEvent[]): Step[] => {
+export const buildSelectOptionSteps = (events: ElementEvent[]): Step[] => {
   const steps: Step[] = [];
 
   for (let i = 0; i < events.length; i++) {
@@ -13,7 +13,7 @@ export const buildSelectSteps = (events: ElementEvent[]): Step[] => {
     if (event.target.name !== 'select') continue;
 
     steps.push({
-      action: 'select',
+      action: 'selectOption',
       event,
       index: steps.length,
       value: event.value,

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`buildSelectSteps builds expected steps 1`] = `
+exports[`buildSelectOptionSteps builds expected steps 1`] = `
 Array [
   Object {
     "action": "select",

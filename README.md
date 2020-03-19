@@ -56,21 +56,21 @@
 
 QA Wolf automatically creates [Playwright](https://github.com/microsoft/playwright)/[Jest](https://jestjs.io/) code for the following scenarios. You can edit your code as it is created to do anything else.
 
-| Scenario                                                     | Status | Example                                              |
-| ------------------------------------------------------------ | :----: | ---------------------------------------------------- |
-| Click                                                        |   ✅   | `page.click(selectors['0_submit'])`                  |
-| Type                                                         |   ✅   | `page.type(selectors['0_username'], 'username')`     |
-| Scroll                                                       |   ✅   | `qawolf.scroll(page, 'html', { x: 0, y: 200 })`      |
-| Select                                                       |   ✅   | `page.select(selectors['0_ice_cream'], 'chocolate')` |
-| Replace text (fill)                                          |   ✅   | `page.fill(selectors['0_username'], 'username')`     |
-| Paste                                                        |   ✅   | `page.type(selectors['password'], 'pasted')`         |
-| Test attributes                                              |   ✅   | `page.click("[data-qa='submit']")`                   |
-| Ancestor test attributes                                     |   ✅   | `page.click("[data-qa='radio'] [value='cat']")`      |
-| Multiple pages/tabs                                          |   ✅   | `qawolf.waitForPage(page.context(), 1)`              |
-| [Iframes](https://github.com/qawolf/qawolf/issues/279)       |   🗺️   | Coming soon                                          |
-| [Drag and drop](https://github.com/qawolf/qawolf/issues/315) |   🗺️   | Coming soon                                          |
-| [File upload](https://github.com/qawolf/qawolf/issues/331)   |   🗺️   | Coming soon                                          |
-| [Back button](https://github.com/qawolf/qawolf/issues/438)   |   🗺️   | Coming soon                                          |
+| Scenario                                                     | Status | Example                                                    |
+| ------------------------------------------------------------ | :----: | ---------------------------------------------------------- |
+| Click                                                        |   ✅   | `page.click(selectors['0_submit'])`                        |
+| Type                                                         |   ✅   | `page.type(selectors['0_username'], 'username')`           |
+| Scroll                                                       |   ✅   | `qawolf.scroll(page, 'html', { x: 0, y: 200 })`            |
+| Select                                                       |   ✅   | `page.selectOption(selectors['0_ice_cream'], 'chocolate')` |
+| Replace text (fill)                                          |   ✅   | `page.fill(selectors['0_username'], 'username')`           |
+| Paste                                                        |   ✅   | `page.type(selectors['password'], 'pasted')`               |
+| Test attributes                                              |   ✅   | `page.click("[data-qa='submit']")`                         |
+| Ancestor test attributes                                     |   ✅   | `page.click("[data-qa='radio'] [value='cat']")`            |
+| Multiple pages/tabs                                          |   ✅   | `qawolf.waitForPage(page.context(), 1)`                    |
+| [Iframes](https://github.com/qawolf/qawolf/issues/279)       |   🗺️   | Coming soon                                                |
+| [Drag and drop](https://github.com/qawolf/qawolf/issues/315) |   🗺️   | Coming soon                                                |
+| [File upload](https://github.com/qawolf/qawolf/issues/331)   |   🗺️   | Coming soon                                                |
+| [Back button](https://github.com/qawolf/qawolf/issues/438)   |   🗺️   | Coming soon                                                |
 
 If there's something you don't see yet, please [open an issue](https://github.com/qawolf/qawolf/issues/new)!
 

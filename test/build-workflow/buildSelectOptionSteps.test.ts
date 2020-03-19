@@ -1,8 +1,8 @@
 import { loadFixtures } from '../loadFixtures';
-import { buildSelectSteps } from '../../src/build-workflow';
+import { buildSelectOptionSteps } from '../../src/build-workflow';
 import { ElementEvent } from '../../src/types';
 
-describe('buildSelectSteps', () => {
+describe('buildSelectOptionSteps', () => {
   let events: ElementEvent[];
 
   beforeAll(async () => {
@@ -10,7 +10,7 @@ describe('buildSelectSteps', () => {
   });
 
   it('builds expected steps', async () => {
-    const steps = buildSelectSteps(events);
+    const steps = buildSelectOptionSteps(events);
     expect(steps).toMatchSnapshot();
   });
 });
