@@ -1,5 +1,6 @@
 import { ensureFile, writeFile, writeJson } from 'fs-extra';
 import { join } from 'path';
+import { promptOverwrite } from 'playwright-ci';
 import {
   buildScriptTemplate,
   buildTestTemplate,
@@ -7,7 +8,6 @@ import {
   TemplateFunction,
 } from '../build-code/buildTemplate';
 import { getSelectorPath } from '../create-code/create';
-import { promptOverwrite } from './promptOverwrite';
 
 type BuildPathOptions = {
   name: string;
