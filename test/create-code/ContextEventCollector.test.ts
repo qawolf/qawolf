@@ -91,7 +91,7 @@ describe('ContextEventCollector', () => {
     const page = await context.newPage();
     await page.goto(`${TEST_URL}large`);
 
-    const session = await (context as ChromiumBrowserContext).createSession(
+    const session = await (context as ChromiumBrowserContext).newCDPSession(
       page,
     );
 

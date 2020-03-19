@@ -3,7 +3,7 @@
 exports[`buildSelectOptionSteps builds expected steps 1`] = `
 Array [
   Object {
-    "action": "select",
+    "action": "selectOption",
     "event": Object {
       "cssSelector": "[data-qa='html-select']",
       "htmlSelector": "<div style=\\"display: flex; flex-wrap: wrap;\\" qaw_innertext=\\"Native HTML Best pet? Cat Dog Hedgehog Snake Material UI Best pet? ​ Favorite color? Blue Red Green Friends? ​ Semantic UI Country?\\"><div class=\\"container\\" qaw_innertext=\\"Native HTML Best pet? Cat Dog Hedgehog Snake\\"><select data-qa=\\"html-select\\" qaw_innertext=\\"Best pet? Cat Dog Hedgehog Snake\\"></select></div></div>",
