@@ -1,6 +1,6 @@
 import program from 'commander';
 import { yellow } from 'kleur';
-import { addCiCommands } from 'playwright-ci';
+import { install as installCi } from 'playwright-ci';
 import updateNotifier from 'update-notifier';
 import { loadConfig } from '../config';
 import { howl } from './howl';
@@ -18,8 +18,10 @@ updateNotifier({ pkg }).notify();
 
 program.usage('<command> [options]').version(pkg.version);
 
-// XXX simplify
-addCiCommands({ program, qawolf: true });
+program
+  .command('ci')
+  .description('set up CI')
+  .action(async () => await installCi());
 
 program
   .command('create [url] [name]')
