@@ -20,7 +20,7 @@ program.usage('<command> [options]').version(pkg.version);
 
 program
   .command('ci')
-  .description('set up CI')
+  .description('☁️ set up CI')
   .action(async () => await installCi());
 
 program
@@ -33,7 +33,7 @@ program
     'path where state data (cookies, localStorage, sessionStorage) is saved',
   )
   .option('--url [url]', 'url', '')
-  .description('create a test from browser actions')
+  .description('✨ create a test from browser actions')
   .action(async (urlArgument, nameArgument, cmd) => {
     const url = parseUrl(cmd.url || urlArgument || 'http://example.org');
     const name =
@@ -95,7 +95,7 @@ program
   .option('--headless', 'run tests headless')
   .option('--repl', 'open a REPL when repl() is called')
   .option('--webkit', 'run tests on webkit')
-  .description('run a test with Jest')
+  .description('✅ run browser tests with Jest')
   .allowUnknownOption(true)
   .action(async (cmd = {}) => {
     const config = await loadConfig();
