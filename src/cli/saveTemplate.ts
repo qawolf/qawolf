@@ -10,26 +10,25 @@ import {
 import { getSelectorPath } from '../create-code/create';
 
 type BuildPathOptions = {
+  isScript?: boolean;
   name: string;
   rootDir: string;
-  script?: boolean;
   useTypeScript?: boolean;
 };
 
 type SaveTemplateOptions = BuildTemplateOptions & {
   rootDir: string;
-  script?: boolean;
   templateFn?: TemplateFunction;
 };
 
 export const buildPath = ({
   name,
   rootDir,
-  script,
+  isScript,
   useTypeScript,
 }: BuildPathOptions): string => {
   let filename = name;
-  if (!script) filename += '.test';
+  if (!isScript) filename += '.test';
   filename += useTypeScript ? '.ts' : '.js';
   return join(rootDir, filename);
 };
@@ -42,7 +41,7 @@ export const saveTemplate = async (
 
   let templateFn = options.templateFn;
   if (!templateFn) {
-    templateFn = options.script ? buildScriptTemplate : buildTestTemplate;
+    templateFn = options.isScript ? buildScriptTemplate : buildTestTemplate;
   }
 
   await ensureFile(path);

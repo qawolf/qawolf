@@ -3,6 +3,7 @@ import { devices } from 'playwright';
 
 export interface BuildTemplateOptions {
   device?: string;
+  isScript?: boolean;
   name: string;
   statePath?: string;
   url: string;
@@ -141,4 +142,10 @@ test('${name}', async () => {
 });`;
 
   return code;
+};
+
+export const buildTemplate = (options: BuildTemplateOptions): string => {
+  if (options.isScript) return buildScriptTemplate(options);
+
+  return buildTestTemplate(options);
 };

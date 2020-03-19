@@ -3,12 +3,11 @@ import { yellow } from 'kleur';
 import { install as installCi } from 'playwright-ci';
 import updateNotifier from 'update-notifier';
 import { loadConfig } from '../config';
+import { createCommand } from './createCommand';
 import { howl } from './howl';
 import { omitArgs } from './omitArgs';
 import { parseUrl } from './parseUrl';
-import { runCommand } from './runCommand';
 import { runJest } from './runJest';
-import { saveTemplate } from './saveTemplate';
 import { BrowserName } from '../types';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -24,62 +23,33 @@ program
   .action(async () => await installCi());
 
 program
-  .command('create [url] [name]')
+  .command('create [url] [filename]')
   .option('-d, --device <device>', 'emulate using a playwright.device')
-  .option('--name [name]', 'name', '')
+  .option('--filename <filename>', 'filename')
   .option('-s, --script', 'create a script instead of a test')
   .option(
     '--statePath <statePath>',
     'path where state data (cookies, localStorage, sessionStorage) is saved',
   )
-  .option('--url [url]', 'url', '')
+  .option('--url <url>', 'url')
   .description('✨ create a test from browser actions')
-  .action(async (urlArgument, nameArgument, cmd) => {
-    const url = parseUrl(cmd.url || urlArgument || 'http://example.org');
-    const name =
-      cmd.name || nameArgument || (url.hostname || '').replace(/\..*/g, '');
+  .action(async (urlArgument, filenameArgument, cmd) => {
+    const urlString = cmd.url || urlArgument || 'http://example.org';
+    const url = parseUrl(urlString);
 
-    const config = await loadConfig();
-
-    const codePath = await saveTemplate({
-      device: cmd.device,
-      name,
-      rootDir: config.rootDir,
-      script: cmd.script,
-      statePath: cmd.statePath,
-      templateFn: cmd.script
-        ? config.createScriptTemplate
-        : config.createTestTemplate,
-      url: url.href,
-      useTypeScript: config.useTypeScript,
-    });
-    if (!codePath) {
-      // the user decided to not overwrite
-      return;
+    let filename = cmd.filename || filenameArgument;
+    if (!filename) {
+      filename = (url.hostname || '').replace(/\..*/g, '');
     }
 
-    const env: NodeJS.ProcessEnv = {
-      QAW_CREATE: 'true',
-      QAW_HEADLESS: 'false',
-    };
-
     try {
-      if (cmd.script) {
-        runCommand(`${config.useTypeScript ? 'ts-node' : 'node'} ${codePath}`, {
-          ...env,
-          QAW_BROWSER: 'chromium',
-        });
-      } else {
-        runJest({
-          browsers: ['chromium'],
-          config: config.config,
-          env,
-          repl: true,
-          rootDir: config.rootDir,
-          testPath: codePath,
-          testTimeout: config.testTimeout,
-        });
-      }
+      await createCommand({
+        device: cmd.device,
+        filename,
+        isScript: cmd.script,
+        statePath: cmd.statePath,
+        url: url.href,
+      });
 
       process.exit(0);
     } catch (e) {
@@ -98,25 +68,11 @@ program
   .description('✅ run browser tests with Jest')
   .allowUnknownOption(true)
   .action(async (cmd = {}) => {
-    const config = await loadConfig();
-
     const browsers: BrowserName[] = [];
-
-    if (cmd.allBrowsers || cmd.chromium) {
-      browsers.push('chromium');
-    }
-
-    if (cmd.allBrowsers || cmd.firefox) {
-      browsers.push('firefox');
-    }
-
-    if (cmd.allBrowsers || cmd.webkit) {
-      browsers.push('webkit');
-    }
-
-    if (!browsers.length) {
-      browsers.push('chromium');
-    }
+    if (cmd.allBrowsers || cmd.chromium) browsers.push('chromium');
+    if (cmd.allBrowsers || cmd.firefox) browsers.push('firefox');
+    if (cmd.allBrowsers || cmd.webkit) browsers.push('webkit');
+    if (!browsers.length) browsers.push('chromium');
 
     try {
       // omit qawolf arguments
@@ -130,6 +86,8 @@ program
         '--rootDir',
         '--webkit',
       ]);
+
+      const config = loadConfig();
 
       runJest({
         args: jestArgs,

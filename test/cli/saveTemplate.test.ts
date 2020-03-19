@@ -8,17 +8,17 @@ describe('buildPath', () => {
   it('builds script paths', () => {
     expect(
       buildPath({
+        isScript: true,
         name: 'myScript',
         rootDir: '/scripts',
-        script: true,
       }).replace(/\\/g, '/'), // windows
     ).toEqual('/scripts/myScript.js');
 
     expect(
       buildPath({
+        isScript: true,
         name: 'myScript',
         rootDir: '/scripts',
-        script: true,
         useTypeScript: true,
       }).replace(/\\/g, '/'),
     ).toEqual('/scripts/myScript.ts');
@@ -43,9 +43,9 @@ describe('saveTemplate', () => {
   it('saves script template', async () => {
     const rootDir = join(tmpdir(), randomString());
     await saveTemplate({
+      isScript: true,
       name: 'myScript',
       rootDir,
-      script: true,
       url: 'www.qawolf.com',
     });
 

@@ -1,7 +1,6 @@
 import {
   buildImports,
-  buildScriptTemplate,
-  buildTestTemplate,
+  buildTemplate,
   buildValidVariableName,
 } from '../../src/build-code/buildTemplate';
 
@@ -47,67 +46,48 @@ describe('buildImports', () => {
 });
 
 describe('buildTemplate', () => {
+  const options = {
+    name: 'myName',
+    url: 'www.qawolf.com',
+  };
+
   it('builds script template', () => {
-    let template = buildScriptTemplate({
-      name: 'myScript',
-      url: 'www.qawolf.com',
+    let template = buildTemplate({
+      ...options,
+      isScript: true,
     });
     expect(template).toMatchSnapshot();
 
-    template = buildScriptTemplate({
+    template = buildTemplate({
+      ...options,
       device: 'iPhone 11',
-      name: 'myScript',
-      url: 'www.qawolf.com',
+      isScript: true,
+    });
+    expect(template).toMatchSnapshot();
+
+    template = buildTemplate({
+      ...options,
+      isScript: true,
+      statePath: 'admin.json',
     });
     expect(template).toMatchSnapshot();
   });
 
   it('builds test template', () => {
-    let template = buildTestTemplate({
-      name: 'myTest',
-      url: 'www.qawolf.com',
-    });
+    let template = buildTemplate(options);
     expect(template).toMatchSnapshot();
 
-    template = buildTestTemplate({
+    template = buildTemplate({
+      ...options,
       device: 'iPhone 11',
-      name: 'myTest',
-      url: 'www.qawolf.com',
     });
     expect(template).toMatchSnapshot();
-  });
 
-  it('sets state if statePath specified', () => {
-    const template = buildScriptTemplate({
-      name: 'myScript',
+    template = buildTemplate({
+      ...options,
       statePath: 'admin.json',
-      url: 'www.qawolf.com',
     });
     expect(template).toMatchSnapshot();
-
-    const template2 = buildTestTemplate({
-      name: 'myTest',
-      statePath: 'admin.json',
-      url: 'www.qawolf.com',
-    });
-    expect(template2).toMatchSnapshot();
-  });
-
-  it('corrects invalid script names if posssible', () => {
-    const template = buildScriptTemplate({
-      name: 'my-script',
-      url: 'www.qawolf.com',
-    });
-    expect(template).toMatchSnapshot();
-  });
-
-  it('throws errors for script names that will never be valid', () => {
-    expect(() =>
-      buildScriptTemplate({
-        name: 'break',
-        url: 'www.qawolf.com',
-      }),
-    ).toThrowError();
   });
 });
 

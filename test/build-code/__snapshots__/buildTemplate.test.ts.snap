@@ -26,22 +26,22 @@ const selectors = require(\\"./selectors/myScript.json\\");"
 
 exports[`buildTemplate builds script template 1`] = `
 "const qawolf = require(\\"qawolf\\");
-const selectors = require(\\"./selectors/myScript.json\\");
+const selectors = require(\\"./selectors/myName.json\\");
 
-const myScript = async context => {
+const myName = async context => {
   let page = await context.newPage();
   await page.goto(\\"www.qawolf.com\\");
   await qawolf.create();
 };
 
-exports.myScript = myScript;
+exports.myName = myName;
 
 if (require.main === module) {
   (async () => {
     const browser = await qawolf.launch();
     const context = await browser.newContext();
     await qawolf.register(context);
-    await myScript(context);
+    await myName(context);
     await qawolf.stopVideos();
     await browser.close();
   })();
@@ -51,23 +51,48 @@ if (require.main === module) {
 exports[`buildTemplate builds script template 2`] = `
 "const { devices } = require(\\"playwright\\");
 const qawolf = require(\\"qawolf\\");
-const selectors = require(\\"./selectors/myScript.json\\");
+const selectors = require(\\"./selectors/myName.json\\");
 const device = devices[\\"iPhone 11\\"];
 
-const myScript = async context => {
+const myName = async context => {
   let page = await context.newPage();
   await page.goto(\\"www.qawolf.com\\");
   await qawolf.create();
 };
 
-exports.myScript = myScript;
+exports.myName = myName;
 
 if (require.main === module) {
   (async () => {
     const browser = await qawolf.launch();
     const context = await browser.newContext({ ...device });
     await qawolf.register(context);
-    await myScript(context);
+    await myName(context);
+    await qawolf.stopVideos();
+    await browser.close();
+  })();
+}"
+`;
+
+exports[`buildTemplate builds script template 3`] = `
+"const qawolf = require(\\"qawolf\\");
+const selectors = require(\\"./selectors/myName.json\\");
+
+const myName = async context => {
+  let page = await context.newPage();
+  await page.goto(\\"www.qawolf.com\\");
+  await qawolf.setState(page, \\"admin.json\\");
+  await qawolf.create();
+};
+
+exports.myName = myName;
+
+if (require.main === module) {
+  (async () => {
+    const browser = await qawolf.launch();
+    const context = await browser.newContext();
+    await qawolf.register(context);
+    await myName(context);
     await qawolf.stopVideos();
     await browser.close();
   })();
@@ -76,7 +101,7 @@ if (require.main === module) {
 
 exports[`buildTemplate builds test template 1`] = `
 "const qawolf = require(\\"qawolf\\");
-const selectors = require(\\"./selectors/myTest.json\\");
+const selectors = require(\\"./selectors/myName.json\\");
 
 let browser;
 let page;
@@ -93,7 +118,7 @@ afterAll(async () => {
   await browser.close();
 });
 
-test('myTest', async () => {
+test('myName', async () => {
   await page.goto(\\"www.qawolf.com\\");
   await qawolf.create();
 });"
@@ -102,7 +127,7 @@ test('myTest', async () => {
 exports[`buildTemplate builds test template 2`] = `
 "const { devices } = require(\\"playwright\\");
 const qawolf = require(\\"qawolf\\");
-const selectors = require(\\"./selectors/myTest.json\\");
+const selectors = require(\\"./selectors/myName.json\\");
 const device = devices[\\"iPhone 11\\"];
 
 let browser;
@@ -120,64 +145,15 @@ afterAll(async () => {
   await browser.close();
 });
 
-test('myTest', async () => {
+test('myName', async () => {
   await page.goto(\\"www.qawolf.com\\");
   await qawolf.create();
 });"
 `;
 
-exports[`buildTemplate corrects invalid script names if posssible 1`] = `
+exports[`buildTemplate builds test template 3`] = `
 "const qawolf = require(\\"qawolf\\");
-const selectors = require(\\"./selectors/my-script.json\\");
-
-const myScript = async context => {
-  let page = await context.newPage();
-  await page.goto(\\"www.qawolf.com\\");
-  await qawolf.create();
-};
-
-exports.myScript = myScript;
-
-if (require.main === module) {
-  (async () => {
-    const browser = await qawolf.launch();
-    const context = await browser.newContext();
-    await qawolf.register(context);
-    await myScript(context);
-    await qawolf.stopVideos();
-    await browser.close();
-  })();
-}"
-`;
-
-exports[`buildTemplate sets state if statePath specified 1`] = `
-"const qawolf = require(\\"qawolf\\");
-const selectors = require(\\"./selectors/myScript.json\\");
-
-const myScript = async context => {
-  let page = await context.newPage();
-  await page.goto(\\"www.qawolf.com\\");
-  await qawolf.setState(page, \\"admin.json\\");
-  await qawolf.create();
-};
-
-exports.myScript = myScript;
-
-if (require.main === module) {
-  (async () => {
-    const browser = await qawolf.launch();
-    const context = await browser.newContext();
-    await qawolf.register(context);
-    await myScript(context);
-    await qawolf.stopVideos();
-    await browser.close();
-  })();
-}"
-`;
-
-exports[`buildTemplate sets state if statePath specified 2`] = `
-"const qawolf = require(\\"qawolf\\");
-const selectors = require(\\"./selectors/myTest.json\\");
+const selectors = require(\\"./selectors/myName.json\\");
 
 let browser;
 let page;
@@ -194,7 +170,7 @@ afterAll(async () => {
   await browser.close();
 });
 
-test('myTest', async () => {
+test('myName', async () => {
   await page.goto(\\"www.qawolf.com\\");
   await qawolf.setState(page, \\"admin.json\\");
   await qawolf.create();

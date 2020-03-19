@@ -3,10 +3,9 @@ import { join } from 'path';
 import { cwd } from 'process';
 import { TemplateFunction } from './build-code/buildTemplate';
 
-type Config = {
+export type Config = {
   attribute: string;
-  createScriptTemplate?: TemplateFunction;
-  createTestTemplate?: TemplateFunction;
+  createTemplate?: TemplateFunction;
   // argument passed to --config
   config?: string;
   rootDir: string;
@@ -47,8 +46,7 @@ export const loadConfig = (path?: string): Config => {
     // prefer environment variable over config
     attribute:
       process.env.QAW_ATTRIBUTE || userConfig.attribute || DEFAULT_ATTRIBUTE,
-    createScriptTemplate: userConfig.createScriptTemplate,
-    createTestTemplate: userConfig.createTestTemplate,
+    createTemplate: userConfig.createTemplate,
     // do not override config when this is found in user config
     config: userConfig.config,
     rootDir: userConfig.rootDir || '.qawolf',

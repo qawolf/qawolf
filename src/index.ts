@@ -31,6 +31,13 @@ const qawolf = {
   waitForPage,
 };
 
+// types for config
+export {
+  BuildTemplateOptions,
+  TemplateFunction,
+} from './build-code/buildTemplate';
+export { Config } from './config';
+
 // support: import qawolf from "qawolf"
 export default qawolf;
 
