@@ -1,7 +1,7 @@
 {
   "author": "QA Wolf",
   "name": "create-qawolf",
-  "license": "BSD-3.0",
+  "license": "BSD-3-Clause",
   "version": "0.0.3",
   "description": "🛠️ Install qawolf in your application",
   "main": "./build/index.js",
