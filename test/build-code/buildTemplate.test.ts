@@ -48,7 +48,14 @@ describe('buildImports', () => {
 
 describe('buildTemplate', () => {
   it('builds script template', () => {
-    const template = buildScriptTemplate({
+    let template = buildScriptTemplate({
+      name: 'myScript',
+      url: 'www.qawolf.com',
+    });
+    expect(template).toMatchSnapshot();
+
+    template = buildScriptTemplate({
+      device: 'iPhone 11',
       name: 'myScript',
       url: 'www.qawolf.com',
     });
@@ -56,7 +63,14 @@ describe('buildTemplate', () => {
   });
 
   it('builds test template', () => {
-    const template = buildTestTemplate({
+    let template = buildTestTemplate({
+      name: 'myTest',
+      url: 'www.qawolf.com',
+    });
+    expect(template).toMatchSnapshot();
+
+    template = buildTestTemplate({
+      device: 'iPhone 11',
       name: 'myTest',
       url: 'www.qawolf.com',
     });

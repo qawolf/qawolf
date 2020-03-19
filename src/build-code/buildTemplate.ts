@@ -68,10 +68,7 @@ export const buildImports = ({
 export const buildNewContext = (device?: string): string => {
   if (!device) return 'const context = await browser.newContext();';
 
-  const context = `const context = await browser.newContext({
-      userAgent: device.userAgent,
-      viewport: device.viewport
-    });`;
+  const context = `const context = await browser.newContext({ ...device });`;
 
   return context;
 };

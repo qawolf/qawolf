@@ -48,6 +48,32 @@ if (require.main === module) {
 }"
 `;
 
+exports[`buildTemplate builds script template 2`] = `
+"const { devices } = require(\\"playwright\\");
+const qawolf = require(\\"qawolf\\");
+const selectors = require(\\"./selectors/myScript.json\\");
+const device = devices[\\"iPhone 11\\"];
+
+const myScript = async context => {
+  let page = await context.newPage();
+  await page.goto(\\"www.qawolf.com\\");
+  await qawolf.create();
+};
+
+exports.myScript = myScript;
+
+if (require.main === module) {
+  (async () => {
+    const browser = await qawolf.launch();
+    const context = await browser.newContext({ ...device });
+    await qawolf.register(context);
+    await myScript(context);
+    await qawolf.stopVideos();
+    await browser.close();
+  })();
+}"
+`;
+
 exports[`buildTemplate builds test template 1`] = `
 "const qawolf = require(\\"qawolf\\");
 const selectors = require(\\"./selectors/myTest.json\\");
@@ -58,6 +84,33 @@ let page;
 beforeAll(async () => {
   browser = await qawolf.launch();
   const context = await browser.newContext();
+  await qawolf.register(context);
+  page = await context.newPage();
+});
+
+afterAll(async () => {
+  await qawolf.stopVideos();
+  await browser.close();
+});
+
+test('myTest', async () => {
+  await page.goto(\\"www.qawolf.com\\");
+  await qawolf.create();
+});"
+`;
+
+exports[`buildTemplate builds test template 2`] = `
+"const { devices } = require(\\"playwright\\");
+const qawolf = require(\\"qawolf\\");
+const selectors = require(\\"./selectors/myTest.json\\");
+const device = devices[\\"iPhone 11\\"];
+
+let browser;
+let page;
+
+beforeAll(async () => {
+  browser = await qawolf.launch();
+  const context = await browser.newContext({ ...device });
   await qawolf.register(context);
   page = await context.newPage();
 });
