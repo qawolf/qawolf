@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 import { install as installCi } from 'playwright-ci';
-import { logError, logUseTypeScript, promptRootDir } from './cli';
+import {
+  logError,
+  logNpmInstall,
+  logUseTypeScript,
+  promptRootDir,
+} from './cli';
 import { detectTypeScript, writeConfig } from './config';
 import { addDevDependencies, readPackageJson, npmInstall } from './packageJson';
 
@@ -16,9 +21,10 @@ import { addDevDependencies, readPackageJson, npmInstall } from './packageJson';
 
     await installCi(true);
 
-    await addDevDependencies(useTypeScript);
     await writeConfig({ rootDir, useTypeScript });
 
+    const packages = await addDevDependencies(useTypeScript);
+    logNpmInstall(packages);
     npmInstall();
   } catch (error) {
     logError(error);

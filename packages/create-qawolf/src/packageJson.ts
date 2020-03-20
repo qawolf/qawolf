@@ -2,28 +2,20 @@ import { execSync } from 'child_process';
 import Debug from 'debug';
 import { promises as fs } from 'fs';
 import { join } from 'path';
-import { logAddDevDependency, logNpmInstall } from './cli';
+import { Packages, PackageJson } from './types';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { devDependencies: selfDevDependencies } = require('../package.json');
 
-type Packages = { [name: string]: string };
-
-type PackageJson = {
-  name: string;
-  dependencies?: Packages;
-  devDependencies?: Packages;
-};
-
 const debug = Debug('create-qawolf:packageJson');
 
-const defaultPackages = {
+const defaultPackages: Packages = {
   jest: selfDevDependencies['jest'],
   playwright: '0.11.1-next.1583909126688',
   qawolf: '0.12.3',
 };
 
-const typeScriptPackages = {
+const typeScriptPackages: Packages = {
   ...defaultPackages,
   '@types/debug': selfDevDependencies['@types/debug'],
   '@types/jest': selfDevDependencies['@types/jest'],
@@ -48,7 +40,7 @@ export const readPackageJson = async (): Promise<PackageJson> => {
 
 export const addDevDependencies = async (
   useTypeScript: boolean,
-): Promise<void> => {
+): Promise<Packages> => {
   const packageJson = await readPackageJson();
 
   const devDependencies = packageJson.devDependencies || {};
@@ -57,7 +49,6 @@ export const addDevDependencies = async (
 
   Object.keys(packages).forEach(name => {
     const version = packages[name];
-    logAddDevDependency(name, version);
     devDependencies[name] = version;
   });
 
@@ -81,9 +72,10 @@ export const addDevDependencies = async (
     JSON.stringify(packageJson, null, 2) + '\n',
     'utf8',
   );
+
+  return packages;
 };
 
 export const npmInstall = (): void => {
-  logNpmInstall();
   execSync('npm install', { stdio: 'inherit' });
 };
