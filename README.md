@@ -96,7 +96,7 @@ As your test is created:
 
 <br/>
 
-## ✅ Run your tests:
+## ✅ Run your tests
 
 [Documentation](https://docs.qawolf.com/docs/run_tests_locally)
 
