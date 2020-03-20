@@ -3,6 +3,9 @@ id: install
 title: 💻 Install
 ---
 
+import TabItem from "@theme/TabItem";
+import PackageManagerTabs from './components/PackageManagerTabs';
+
 In this guide we explain how to set up your environment and get started with QA Wolf.
 
 ## TL;DR
@@ -33,6 +36,18 @@ To confirm that you have Node.js and `npm` installed, run the following commands
 ```bash
 node -v
 npm -v
+```
+
+## Optional: Use Yarn
+
+You can also install QA Wolf with [Yarn](https://yarnpkg.com) instead of `npm`. If you are just getting started, we recommend using [`npm`](#install-nodejs-and-npm).
+
+Follow [these instructions](https://yarnpkg.com/getting-started/install) to install Yarn.
+
+To confirm that Yarn was installed, run the following command in the CLI:
+
+```bash
+yarn --version
 ```
 
 ## Optional: Install Git
@@ -66,9 +81,23 @@ npm init -y
 
 Once you're in your project directory, run the following to set up QA Wolf. This command will create a `qawolf.config.js` file at the root of your project, as well as install the necessary [dependencies](https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file).
 
+<PackageManagerTabs>	
+<TabItem value='npm'>
+
+
 ```bash
 npm init qawolf
 ```
+
+</TabItem>
+<TabItem value='yarn'>
+
+```bash
+yarn create qawolf
+```
+
+</TabItem>
+</PackageManagerTabs>
 
 You will be prompted to specify two things:
 
@@ -81,9 +110,24 @@ See the guide on [configuring QA Wolf](configure_qa_wolf) to learn more.
 
 After the dependencies have finished installing, run the following to make sure QA Wolf was installed successfully:
 
+<PackageManagerTabs>	
+<TabItem value='npm'>
+
+
 ```bash
 npx qawolf howl
 ```
+
+</TabItem>
+<TabItem value='yarn'>
+
+```bash
+yarn qawolf howl
+```
+
+</TabItem>
+</PackageManagerTabs>
+
 
 If you're having issues, please [chat with us on Gitter](https://gitter.im/qawolf/community) so we can help troubleshoot.
 
