@@ -2,7 +2,7 @@
   "author": "QA Wolf",
   "name": "create-qawolf",
   "license": "BSD-3-Clause",
-  "version": "0.12.3-3",
+  "version": "0.12.3-4",
   "description": "🛠️ Install qawolf in your application",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
@@ -52,7 +52,7 @@
   },
   "createDevDependencies": {
     "playwright": "0.11.1-next.1583909126688",
-    "qawolf": "0.12.3-3"
+    "qawolf": "0.12.3-4"
   },
   "bin": {
     "create-qawolf": "./build/index.js"
