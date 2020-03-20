@@ -114,7 +114,7 @@ On Webkit:
 npx qawolf test --webkit [name]
 ```
 
-On all arowsers:
+On all browsers:
 
 ```bash
 npx qawolf test --all-browsers [name]
