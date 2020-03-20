@@ -1,0 +1,103 @@
+---
+id: configure_qa_wolf
+title: 🛠️ Configure QA Wolf
+---
+
+import Argument from './api/components/Argument';
+
+QA Wolf provides several options for you to configure your experience.
+
+## TL;DR
+
+- If you haven't already, run the following to create a `qawolf.config.js` file in your project:
+
+```bash
+npm init qawolf
+```
+
+- Update the `qawolf.config.js` file accordingly
+
+## The `qawolf.config.js` file
+
+Your configuration for QA Wolf lives in the `qawolf.config.js` file at the root of your project. This file is created for you when you run the following:
+
+```bash
+npm init qawolf
+```
+
+Here is a full `qawolf.config.js` file. Note that only some of these settings are specified in the default generated file.
+
+```js
+module.exports = {
+  // set QAW_ATTRIBUTE
+  attribute: 'data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/',
+  // jest --config='{}'
+  config: '{}',
+  // replace the default create templates with your own
+  createTemplate: ({ isScript, name, url }) => 'my test here',
+  // where tests are created
+  rootDir: '.qawolf',
+  // jest --testTimeout=60000
+  testTimeout: 60000,
+  // generate .ts files, use ts-node for scripts
+  useTypescript: false,
+};
+```
+
+Below we go through the values that can be configured. Each of them is optional.
+
+### attribute
+
+The `attribute` key in `qawolf.config.json` sets the [`QAW_ATTRIBUTE` environment variable](api/environment_variables#qaw_attribute). This allows you to choose which attributes to use as element selectors in the generated code.
+
+**Default:** `'data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/'`
+
+See the guide on [using custom selectors](use_custom_selectors#target-attributes) to learn more.
+
+### config
+
+Specifies which config is passed to [Jest](https://jestjs.io) when running your tests:
+
+```bash
+jest --config='{}'
+```
+
+By default QA Wolf uses `{}` to avoid conflicting with an existing Jest configuration. If not specified, nothing will be passed to Jest.
+
+**Default:** `'{}'`
+
+See [Jest documentation](https://jestjs.io/docs/en/cli#--configpath) to learn more.
+
+### createTemplate
+
+The `createTemplate` key in `qawolf.config.json` allows you to use a custom template when creating a test or script. It is a [function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function) that takes three arguments in an options `Object` and returns the template as a `string`.
+
+<Argument
+  description="Options passed to function."
+  name="options"
+  type="Object"
+/>
+<Argument
+  indent
+  description="Whether a script or test is being created."
+  name="isScript"
+  type="boolean"
+/>
+<Argument
+  indent
+  description="Name of the test or script being craeted."
+  name="name"
+  type="string"
+/>
+<Argument
+  indent
+  description="URL of the test or script being created."
+  name="url"
+  type="string"
+/>
+
+### rootDir
+
+The diretory where tests and scripts will be created.
+
+**Default:** `'.qawolf'`
