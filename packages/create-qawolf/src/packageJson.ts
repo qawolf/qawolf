@@ -12,7 +12,7 @@ const debug = Debug('create-qawolf:packageJson');
 const defaultPackages: Packages = {
   jest: selfDevDependencies['jest'],
   playwright: '0.11.1-next.1583909126688',
-  qawolf: '0.12.3-0',
+  qawolf: '0.12.3-1',
 };
 
 const typeScriptPackages: Packages = {
