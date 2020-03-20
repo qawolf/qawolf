@@ -24,6 +24,8 @@
 
 <br/>
 
+Run `npm init qawolf` to add browser tests to your project. You will be prompted to choose your CI provider so your tests can run in CI.
+
 <ul>
 <li><b>Skip writing boilerplate.</b> Your browser actions are converted to Playwright and Jest code.
 </li>
@@ -34,7 +36,7 @@
 <li><b>Test across browsers.</b> Test your application on <a href="https://www.chromium.org/Home">Chromium</a>, <a href="https://www.mozilla.org/en-US/firefox/new">Firefox</a>, and <a href="https://webkit.org">WebKit</a>.
 </li>
 <li><b>Handle sign in.</b> <a href="https://docs.qawolf.com/docs/handle_sign_in">Save user state</a> (cookies, <code>localStorage</code>, <code>sessionStorage</code>) and use it to create tests.
-<li><b>Easy CI setup.</b> Run your tests in CI in parallel with one command, on push or on a schedule.
+<li><b>Automatic CI setup.</b> Run your tests in CI in parallel, on push or on a schedule.
 </li>
 <li><b>Easy debugging.</b> Test runs in CI include a video and detailed logs. <a href="https://docs.qawolf.com/docs/use_the_repl">Use the REPL</a> to debug tests locally.
 </li>
@@ -80,11 +82,11 @@ If there's something you don't see yet, please [open an issue](https://github.co
 
 [Documentation](http://docs.qawolf.com/docs/install)
 
-Install QA Wolf as a dev dependency with [`npm`](https://www.npmjs.com):
+Add QA Wolf to your project with one command. You will be prompted to choose your CI provider from a list.
 
 ```bash
 cd /my/awesome/project
-npm install --save-dev qawolf
+npm init qawolf
 ```
 
 QA Wolf is tested against the [maintenance LTS](https://github.com/nodejs/Release#release-schedule) versions of Node, v10 and v12.
@@ -115,45 +117,29 @@ npx qawolf test [name]
 
 [Documentation](https://docs.qawolf.com/docs/run_tests_in_ci)
 
-Set up CI to run and record your tests in parallel. Use the [video recording and detailed logs](https://docs.qawolf.com/docs/run_tests_in_ci#debug) to debug failures.
+QA Wolf sets up CI to run and record your tests in parallel. Use the [video recording and detailed logs](https://docs.qawolf.com/docs/run_tests_in_ci#debug) to debug failures.
 
-[<img align="center" height="20px" src="https://cdn.iconscout.com/icon/free/png-256/azure-190760.png" /> Azure](https://azure.microsoft.com/en-us/services/devops)
-
-```bash
-npx qawolf azure
-```
-
-[<img align="center" height="20px" src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Bitbucket-blue-logomark-only.svg" /> Bitbucket](https://bitbucket.org/product/features/pipelines)
+When you run `npm qawolf init`, you will be prompted to choose your CI provider.
 
 ```bash
-npx qawolf bitbucket
+? Choose CI Provider (Use arrow keys)
+  Azure DevOps
+  Bitbucket Pipelines
+  CircleCI
+❯ GitHub Actions
+  GitLab CI/CD
+  Jenkins
+  Skip CI setup
 ```
 
-[<img align="center" height="20px" src="https://cdn.iconscout.com/icon/free/png-256/circleci-283066.png" /> CircleCI](https://circleci.com/)
+Supported CI providers:
 
-```bash
-npx qawolf circleci
-```
-
-[<img align="center" height="20px" src="https://camo.githubusercontent.com/7710b43d0476b6f6d4b4b2865e35c108f69991f3/68747470733a2f2f7777772e69636f6e66696e6465722e636f6d2f646174612f69636f6e732f6f637469636f6e732f313032342f6d61726b2d6769746875622d3235362e706e67" /> GitHub](https://github.com/features/actions)
-
-```bash
-npx qawolf github
-```
-
-[🦊 GitLab](https://docs.gitlab.com/ee/ci)
-
-```bash
-npx qawolf gitlab
-```
-
-[🤵 Jenkins](https://jenkins.io)
-
-```bash
-npx qawolf jenkins
-```
-
-[Chat with us](https://gitter.im/qawolf/community) if you want to run QA Wolf somewhere else.
+- [<img align="center" height="20px" src="https://cdn.iconscout.com/icon/free/png-256/azure-190760.png" /> Azure Devops](https://azure.microsoft.com/en-us/services/devops)
+- [<img align="center" height="20px" src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Bitbucket-blue-logomark-only.svg" /> Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines)
+- [<img align="center" height="20px" src="https://cdn.iconscout.com/icon/free/png-256/circleci-283066.png" /> CircleCI](https://circleci.com/)
+- [<img align="center" height="20px" src="https://camo.githubusercontent.com/7710b43d0476b6f6d4b4b2865e35c108f69991f3/68747470733a2f2f7777772e69636f6e66696e6465722e636f6d2f646174612f69636f6e732f6f637469636f6e732f313032342f6d61726b2d6769746875622d3235362e706e67" /> GitHub Actions](https://github.com/features/actions)
+- [🦊 GitLab CI/CD](https://docs.gitlab.com/ee/ci)
+- [🤵 Jenkins](https://jenkins.io)
 
 <br/>
 
