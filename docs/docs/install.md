@@ -3,19 +3,16 @@ id: install
 title: 💻 Install
 ---
 
-import TabItem from "@theme/TabItem";
-import PackageManagerTabs from './components/PackageManagerTabs'
-
-In this guide we explain how to set up your environment and install QA Wolf.
+In this guide we explain how to set up your environment and get started with QA Wolf.
 
 ## TL;DR
 
 - Make sure you have a [basic understanding of the command line](#understand-the-command-line)
 - [Install Node.js and `npm`](#install-nodejs-and-npm) (or [Yarn](#optional-use-yarn)) if you haven't already
-- Install QA Wolf as a dev dependency of your project:
+- Set up QA Wolf in your project:
 
 ```bash
-npm install --save-dev qawolf
+npm init qawolf
 ```
 
 ## Understand the command line
@@ -36,18 +33,6 @@ To confirm that you have Node.js and `npm` installed, run the following commands
 ```bash
 node -v
 npm -v
-```
-
-## Optional: Use Yarn
-
-You can also install QA Wolf with [Yarn](https://yarnpkg.com) instead of `npm`. If you are just getting started, we recommend using [Node.js and `npm`](#install-nodejs-and-npm).
-
-Follow [these instructions](https://yarnpkg.com/getting-started/install) to install Yarn.
-
-To confirm that Yarn was installed, run the following command in the CLI:
-
-```bash
-yarn --version
 ```
 
 ## Optional: Install Git
@@ -71,12 +56,7 @@ If you'd like to learn the basics of JavaScript, check out [Codecademy's free Ja
 
 Now that your setup is complete, let's get started with QA Wolf!
 
-QA Wolf is installed as a [dev dependency](https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file) in your project. Dev dependencies are packages that are only needed for local development and testing.
-
-To install QA Wolf, either create a new project or change directories into an existing one. To create a new project, run the following in the command line (optionally changing the project name):
-
-<PackageManagerTabs>
-<TabItem value='npm'>
+First choose the project where QA Wolf will be added. You can create a new project or change directories into an existing one. To create a new project, run the following in the command line (optionally changing the project name):
 
 ```bash
 mkdir my-awesome-project
@@ -84,32 +64,20 @@ cd my-awesome-project
 npm init -y
 ```
 
-Once you're in your project directory, run the following to install `qawolf` as a dev dependency:
+Once you're in your project directory, run the following to set up QA Wolf. This command will create a `qawolf.config.js` file at the root of your project, as well as install the necessary [dependencies](https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file).
 
 ```bash
-npm install --save-dev qawolf
+npm init qawolf
 ```
 
-</TabItem>
-<TabItem value='yarn'>
+You will be prompted to specify two things:
 
-```bash
-mkdir my-awesome-project
-cd my-awesome-project
-yarn init
-```
+1.  `rootDir`, the directory where tests will be created. **Default:** `.qawolf`
+2.  Your CI provider, so a workflow file can optionally be created to run your tests in CI. **Default:** [GitHub Actions](https://github.com/features/actions)
 
-Once you're in your project directory, run the following to install `qawolf` as a dev dependency:
+QA Wolf will also detect if you are using [TypeScript](https://www.typescriptlang.org), and update its configuration to create tests in TypeScript instead of JavaScript if applicable.
 
-```bash
-yarn add --dev qawolf
-```
-
-</TabItem>
-</PackageManagerTabs>
-
-
-After the installation is complete, run the following to make sure QA Wolf was installed successfully:
+After the dependencies have been installed, run the following to make sure QA Wolf was installed successfully:
 
 ```bash
 npx qawolf howl
