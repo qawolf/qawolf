@@ -1,6 +1,5 @@
 import program from 'commander';
 import { yellow } from 'kleur';
-import { install as installCi } from 'playwright-ci';
 import updateNotifier from 'update-notifier';
 import { buildCreateCommand } from './createCommand';
 import { howl } from './howl';
@@ -11,11 +10,6 @@ const pkg = require('../../package');
 updateNotifier({ pkg }).notify();
 
 program.usage('<command> [options]').version(pkg.version);
-
-program
-  .command('ci')
-  .description('☁️ set up CI')
-  .action(async () => await installCi());
 
 program.addCommand(buildCreateCommand());
 
