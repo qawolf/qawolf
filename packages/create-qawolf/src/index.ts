@@ -11,6 +11,9 @@ import { addDevDependencies, readPackageJson, npmInstall } from './packageJson';
 
 (async (): Promise<void> => {
   try {
+    // create a new line for yarn create
+    console.log();
+
     // run this first to ensure package.json
     await readPackageJson();
 
