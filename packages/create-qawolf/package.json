@@ -21,9 +21,6 @@
     "test": "jest",
     "version": "npm run clean && npm run build"
   },
-  "peerDependencies": {
-    "playwright": "next"
-  },
   "dependencies": {
     "@inquirer/input": "0.0.9-alpha.0",
     "debug": "*",
