@@ -38,7 +38,7 @@ npm init qawolf
 
 This will install `qawolf`, `jest` and `playwright` as dev dependencies.
 
-You will also be given the option set up your tests in CI.
+You can choose to run your tests in CI:
 
 ```
 ? Choose CI Provider (Use arrow keys)
@@ -51,7 +51,7 @@ You will also be given the option set up your tests in CI.
   Skip CI setup
 ```
 
-The generated CI workflow file is configured to:
+A workflow file will be created for your CI provider to:
 
 - 🐎 Run tests in parallel
 - 📹 Record a video of each test
