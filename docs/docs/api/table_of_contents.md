@@ -3,7 +3,7 @@ id: table_of_contents
 title: API Table of Contents
 ---
 
-### [`qawolf@v0.12.0`](https://www.npmjs.com/package/qawolf/v/0.12.0)
+### [`qawolf@v0.12.3`](https://www.npmjs.com/package/qawolf/v/0.12.0)
 
 <a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version" /></a>
 <br/>
@@ -19,19 +19,7 @@ In addition to the APIs below, you have full access to the [Playwright API](http
 
 [npx qawolf test [name]](cli#npx-qawolf-test-name)
 
-[npx qawolf azure](cli#npx-qawolf-azure)
-
-[npx qawolf bitbucket](cli#npx-qawolf-bitbucket)
-
-[npx qawolf circleci](cli#npx-qawolf-circleci)
-
-[npx qawolf github](cli#npx-qawolf-github)
-
-[npx qawolf gitlab](cli#npx-qawolf-gitlab)
-
 [npx qawolf howl](cli#npx-qawolf-howl)
-
-[npx qawolf jenkins](cli#npx-qawolf-jenkins)
 
 ## Environment Variables
 

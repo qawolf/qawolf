@@ -4,19 +4,33 @@ title: 💻 Install
 ---
 
 import TabItem from "@theme/TabItem";
-import PackageManagerTabs from './components/PackageManagerTabs'
+import PackageManagerTabs from './components/PackageManagerTabs';
 
-In this guide we explain how to set up your environment and install QA Wolf.
+In this guide we explain how to set up your environment and get started with QA Wolf.
 
 ## TL;DR
 
 - Make sure you have a [basic understanding of the command line](#understand-the-command-line)
 - [Install Node.js and `npm`](#install-nodejs-and-npm) (or [Yarn](#optional-use-yarn)) if you haven't already
-- Install QA Wolf as a dev dependency of your project:
+- [Add QA Wolf](#install-qa-wolf) to your project:
+
+<PackageManagerTabs>	
+<TabItem value='npm'>
+
 
 ```bash
-npm install --save-dev qawolf
+npm init qawolf
 ```
+
+</TabItem>
+<TabItem value='yarn'>
+
+```bash
+yarn create qawolf
+```
+
+</TabItem>
+</PackageManagerTabs>
 
 ## Understand the command line
 
@@ -40,7 +54,7 @@ npm -v
 
 ## Optional: Use Yarn
 
-You can also install QA Wolf with [Yarn](https://yarnpkg.com) instead of `npm`. If you are just getting started, we recommend using [Node.js and `npm`](#install-nodejs-and-npm).
+You can also install QA Wolf with [Yarn](https://yarnpkg.com) instead of `npm`. If you are just getting started, we recommend using [`npm`](#install-nodejs-and-npm).
 
 Follow [these instructions](https://yarnpkg.com/getting-started/install) to install Yarn.
 
@@ -69,14 +83,9 @@ If you'd like to learn the basics of JavaScript, check out [Codecademy's free Ja
 
 ## Install QA Wolf
 
-Now that your setup is complete, let's get started with QA Wolf!
+Now that your setup is complete, let's add QA Wolf to your project!
 
-QA Wolf is installed as a [dev dependency](https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file) in your project. Dev dependencies are packages that are only needed for local development and testing.
-
-To install QA Wolf, either create a new project or change directories into an existing one. To create a new project, run the following in the command line (optionally changing the project name):
-
-<PackageManagerTabs>
-<TabItem value='npm'>
+First choose the project where QA Wolf will be added. You can create a new project or change directories into an existing one. To create a new project, run the following in the command line (optionally changing the project name):
 
 ```bash
 mkdir my-awesome-project
@@ -84,36 +93,55 @@ cd my-awesome-project
 npm init -y
 ```
 
-Once you're in your project directory, run the following to install `qawolf` as a dev dependency:
+Once you're in your project directory, run the following to set up QA Wolf. This command will create a `qawolf.config.js` file at the root of your project, as well as install the necessary [dependencies](https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file).
+
+<PackageManagerTabs>	
+<TabItem value='npm'>
+
 
 ```bash
-npm install --save-dev qawolf
+npm init qawolf
 ```
 
 </TabItem>
 <TabItem value='yarn'>
 
 ```bash
-mkdir my-awesome-project
-cd my-awesome-project
-yarn init
-```
-
-Once you're in your project directory, run the following to install `qawolf` as a dev dependency:
-
-```bash
-yarn add --dev qawolf
+yarn create qawolf
 ```
 
 </TabItem>
 </PackageManagerTabs>
 
+You will be asked to specify:
 
-After the installation is complete, run the following to make sure QA Wolf was installed successfully:
+1.  The directory where tests will be created (`rootDir`). **Default:** `.qawolf`
+2.  Your CI provider, so a [workflow file](run_tests_in_ci#create-workflow-file) can optionally be created to run your tests in CI. **Default:** [GitHub Actions](https://github.com/features/actions)
+
+QA Wolf will also detect if you are using [TypeScript](https://www.typescriptlang.org), and update its configuration to create tests in TypeScript instead of JavaScript if applicable.
+
+See the guide on [configuring QA Wolf](configure_qa_wolf) to learn more.
+
+After the dependencies have finished installing, run the following to make sure QA Wolf was installed successfully:
+
+<PackageManagerTabs>	
+<TabItem value='npm'>
+
 
 ```bash
 npx qawolf howl
 ```
+
+</TabItem>
+<TabItem value='yarn'>
+
+```bash
+yarn qawolf howl
+```
+
+</TabItem>
+</PackageManagerTabs>
+
 
 If you're having issues, please [chat with us on Gitter](https://gitter.im/qawolf/community) so we can help troubleshoot.
 

@@ -25,7 +25,7 @@ We believe you should be able to create test code without writing boilerplate or
 
 #### Set up CI Faster
 
-QA Wolf does the heavy lifting to set up CI. With one command, a workflow file is created to run your tests in your CI provider. Tests will automatically run in parallel to the extent possible, and you can run them on push or on a schedule. Each test run includes a video recording and detailed logs to make debugging easy.
+QA Wolf does the heavy lifting to set up CI. When you set up QA Wolf, you can choose your CI provider and a workflow file to run your tests will be created. Tests will automatically run in parallel to the extent possible, and you can run them on push or on a schedule. Each test run includes a video recording and detailed logs to make debugging easy.
 
 By speeding up test creation and CI setup, QA Wolf enables you to build a browser testing pipeline in minutes. 🧑‍🚀🚀
 

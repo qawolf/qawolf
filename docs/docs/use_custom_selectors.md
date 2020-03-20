@@ -39,7 +39,7 @@ When you create a test with QA Wolf, each action you take (like clicking and typ
 
 ### Target attributes
 
-During test creation, when you click on an element QA Wolf first checks to see if it has any [attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started) specified by the [`QAW_ATTRIBUTE` environment variable](api/environment_variables#qaw_attribute). The default value of `QAW_ATTRIBUTE` is `data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/`. This means that if an element has the `data-cy`, `data-e2e`, `data-qa`, `data-test`, or `data-testid` attribute, the generated code will target the element based on that attribute. It will also target attributes that match the [regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) `/^qa-.*/`.
+During test creation, when you click on an element QA Wolf first checks to see if it has any [attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started) specified by the [`QAW_ATTRIBUTE` environment variable](api/environment_variables#qaw_attribute) or [`attribute` key in `qawolf.config.js`](configure_qa_wolf#attribute). The default value of `QAW_ATTRIBUTE` is `data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/`. This means that if an element has the `data-cy`, `data-e2e`, `data-qa`, `data-test`, or `data-testid` attribute, the generated code will target the element based on that attribute. It will also target attributes that match the [regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) `/^qa-.*/`.
 
 For example, if you click on an element with the following [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML):
 

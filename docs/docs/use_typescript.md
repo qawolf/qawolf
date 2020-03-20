@@ -5,37 +5,30 @@ title: ⌨️ Use TypeScript
 
 Like [TypeScript](https://www.typescriptlang.org/)? So do we! QA Wolf is built with TypeScript and distributed with types.
 
-In this guide, we show you how to change your code to TypeScript. We assume you have [created a test](create_a_test) or [script](create_a_script).
+In this guide, we show you how to configure QA Wolf to create TypeScript code.
 
 ## Use TypeScript
 
-To change your code to TypeScript, use the following three steps.
+If you haven't already, run the following command in your project:
 
-1. Rename the test or script file extension from `.js` to `.ts`.
+```bash
+npm init qawolf
+```
 
-For example, if your test file is called `.qawolf/myTestName.test.js`, rename it to `.qawolf/myTestName.test.ts`.
+If your project is already using TypeScript (has a `tsconfig.json` file), QA Wolf will automatically create TypeScript code when you call the [`npx qawolf create` command](api/cli#npx-qawolf-create-url-name).
 
-2. Change `require("qawolf")` to an [`import` statement](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import):
+Otherwise, you can edit the generated `qawolf.config.js` file, setting `useTypeScript` to `true`:
 
 ```js
-// change this
-const qawolf = require('qawolf');
-// to this
-import * as qawolf from 'qawolf';
+module.exports = {
+  config: '{}',
+  rootDir: '.qawolf',
+  testTimeout: 60000,
+  // set useTypeScript to true
+  useTypeScript: true,
+};
 ```
 
-3. Install types if you haven't already.
-
-For browser tests, install types for [Node.js](https://www.npmjs.com/package/@types/node), [Playwright](https://www.npmjs.com/package/@types/playwright), and [Jest](https://www.npmjs.com/package/@types/jest):
-
-```bash
-npm install --save-dev @types/node @types/playwright @types/jest
-```
-
-For browser scripts, install types for [Node.js](https://www.npmjs.com/package/@types/node) and [Playwright](https://www.npmjs.com/package/@types/playwright):
-
-```bash
-npm install --save-dev @types/node @types/playwright
-```
+See the guide on [configuring QA Wolf](configure_qa_wolf) to learn more.
 
 Enjoy using TypeScript! 😌

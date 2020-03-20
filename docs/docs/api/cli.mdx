@@ -44,13 +44,6 @@ Create a browser test on `www.google.com`, saving it at `.qawolf/myTestName.test
 npx qawolf create www.google.com myTestName
 ```
 
-TODO FIX
-Create a browser test on `www.google.com`, saving it at `.myTests/myTestName.test.js`:
-
-```bash
-npx qawolf create --rootDir=./myTests www.google.com myTestName
-```
-
 Create a brower test on `www.google.com`, loading state data from `.qawolf/state/admin.json`:
 
 ```bash
@@ -91,42 +84,12 @@ Run the test saved at `.qawolf/myTestName.test.js` on [Chromium](https://www.chr
 npx qawolf test --all-browsers myTestName
 ```
 
-Run the test saved at `myTests/tests/myTestName.test.js`:
-
-```bash
-npx qawolf test --rootDir=./myTests myTestName
-```
-
 Use the [`--runInBand` Jest CLI option](https://jestjs.io/docs/en/cli#--runinband) to run tests serially:
 
 ```bash
 npx qawolf test --runInBand
 ```
 
-## npx qawolf azure
-
-Create a pipeline file for [Azure DevOps](https://azure.microsoft.com/en-us/services/devops). See [set up CI documentation](../run_tests_in_ci#create-workflow-file) for more details.
-
-## npx qawolf bitbucket
-
-Create a pipeline file for [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines). See [set up CI documentation](../run_tests_in_ci#create-workflow-file) for more details.
-
-## npx qawolf circleci
-
-Create a workflow file for [CircleCI](https://circleci.com). See [set up CI documentation](../run_tests_in_ci#create-workflow-file) for more details.
-
-## npx qawolf github
-
-Create a workflow file for [GitHub Actions](https://github.com/features/actions). See [set up CI documentation](../run_tests_in_ci#create-workflow-file) for more details.
-
-## npx qawolf gitlab
-
-Create a workflow file for [GitLab CI/CD](https://docs.gitlab.com/ee/ci/README.html). See [set up CI documentation](../run_tests_in_ci#create-workflow-file) for more details.
-
 ## npx qawolf howl
 
 🐺😉
-
-## npx qawolf jenkins
-
-Create a workflow file for [Jenkins](https://jenkins.io). See [set up CI documentation](../run_tests_in_ci#create-workflow-file) for more details.
