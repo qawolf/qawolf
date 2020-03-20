@@ -37,10 +37,13 @@ export const runCreate = async (options: CreateOptions): Promise<void> => {
   };
 
   if (options.isScript) {
-    runCommand(`${config.useTypeScript ? 'ts-node' : 'node'} ${codePath}`, {
-      ...env,
-      QAW_BROWSER: 'chromium',
-    });
+    runCommand(
+      `${config.useTypeScript ? 'ts-node -D 6133' : 'node'} ${codePath}`,
+      {
+        ...env,
+        QAW_BROWSER: 'chromium',
+      },
+    );
     return;
   }
 

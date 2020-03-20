@@ -14,8 +14,8 @@ test('writeConfig writes a config', async () => {
   await writeConfig({ rootDir: 'tests/acceptance', useTypeScript: true });
   expect(writeFileSpy.mock.calls[0][1]).toMatchInlineSnapshot(`
     "module.exports = {
-      config: '{ \\\\\\"preset\\\\\\": \\\\\\"ts-jest\\\\\\" }',
-      rootDir: 'tests/acceptance',
+      config: \\"node_modules/qawolf/ts-jest.config.json\\",
+      rootDir: \\"tests/acceptance\\",
       testTimeout: 60000,
       useTypeScript: true
     }
