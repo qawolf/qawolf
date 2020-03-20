@@ -51,7 +51,7 @@ You can choose to run your tests in CI:
   Skip CI setup
 ```
 
-A workflow file will be created for your CI provider to:
+A [workflow file](https://docs.qawolf.com/docs/run_tests_in_ci) will be created for your CI provider to:
 
 - 🐎 Run tests in parallel
 - 📹 Record a video of each test
@@ -59,7 +59,7 @@ A workflow file will be created for your CI provider to:
 
 ## 🎨 Create a test
 
-[Documentation](http://docs.qawolf.com/docs/create_a_test)
+[Documentation](https://docs.qawolf.com/docs/create_a_test)
 
 ```bash
 npx qawolf create url [name]
@@ -94,7 +94,7 @@ As your test is created:
 
 ## ✅ Run your tests:
 
-[Documentation](http://docs.qawolf.com/docs/run_tests_locally)
+[Documentation](https://docs.qawolf.com/docs/run_tests_locally)
 
 On Chromium:
 
