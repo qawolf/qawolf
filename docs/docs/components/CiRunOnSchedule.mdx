@@ -80,7 +80,7 @@ See [CircleCI documentation](https://circleci.com/docs/2.0/workflows/#scheduling
 
 To configure when your tests run, open the `./.github/workflows/qawolf.yml` file.
 
-Near the top of the file (lines 7-9), you'll see some commented out code to run your tests on a schedule:
+Near the top of the file, you'll see some commented out code to run your tests on a schedule:
 
 ```yaml
 name: qawolf
@@ -125,7 +125,7 @@ on:
 # ...
 ```
 
-If you do not want your tests to run when a commit is pushed, you can also remove or comment out the `push` code block (lines 3-6):
+If you do not want your tests to run when a commit is pushed, you can also remove or comment out the `push` code block:
 
 ```yaml
 name: qawolf

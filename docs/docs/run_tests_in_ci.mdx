@@ -4,7 +4,6 @@ title: ☁️ Run Tests in CI
 ---
 
 import CiArtifacts from './components/CiArtifacts.mdx';
-import CiCodeBlock from './components/CiCodeBlock.mdx';
 import CiCreateWorkflow from './components/CiCreateWorkflow.mdx';
 import CiEnvironmentVariables from './components/CiEnvironmentVariables.mdx';
 import CiLocalServer from './components/CiLocalServer.mdx';
@@ -16,9 +15,11 @@ This guide assumes you have already [created a browser test](create_a_test).
 
 ## TL;DR
 
-- [Create a workflow file](#create-workflow-file) to run your tests in your CI provider:
+- [Create a workflow file](#create-workflow-file) to run your tests in your CI provider if you haven't already:
 
-<CiCodeBlock />
+```bash
+npm init qawolf
+```
 
 - Each test run includes [debug artifacts](#debug) like a video recording and logs
 - You can also [run your tests against your local server](#run-tests-against-your-local-server), [use environment variables](#use-environment-variables), and [run tests on a schedule](#run-tests-on-a-schedule) in CI
@@ -26,6 +27,12 @@ This guide assumes you have already [created a browser test](create_a_test).
 ## Create workflow file
 
 To create a workflow file for your CI provider, run the following command in your project directory:
+
+```bash
+npm init qawolf
+```
+
+You will be prompted to choose your CI provider from a list.
 
 <CiCreateWorkflow />
 
