@@ -26,7 +26,7 @@
 
 ## 🖥️ Install
 
-[Documentation](http://docs.qawolf.com/docs/install)
+[Documentation](https://docs.qawolf.com/docs/install)
 
 Set up browser tests in your project with one command:
 
