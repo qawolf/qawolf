@@ -91,7 +91,7 @@ npx qawolf create url [name]
 
 As your test is created:
 
-- ✏️ Edit test code as you like
+- ✏️ Edit the code as you like
 - 🖥️ <a href="https://docs.qawolf.com/docs/use_the_repl">Use the REPL</a> to try out commands
 
 <br/>
@@ -132,7 +132,7 @@ npx qawolf test --all-browsers [name]
 
 We want QA Wolf to work for you, so please reach out to get help!
 
-If you have a feature request or feedback, please [open an issue](https://github.com/qawolf/qawolf/issues/new) or [chat with us](https://gitter.im/qawolf/community)!
+If you have a feature request or feedback, please [open an issue](https://github.com/qawolf/qawolf/issues/new) or [chat with us](https://gitter.im/qawolf/community).
 
 <br/>
 
