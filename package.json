@@ -1,13 +1,14 @@
 {
   "name": "qawolf",
-  "version": "0.12.3-1",
+  "version": "0.12.3-2",
   "description": "Create browser tests 10x faster",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
   "files": [
     "build",
     "src",
-    "static"
+    "static",
+    "ts-jest.config.json"
   ],
   "engines": {
     "node": ">=10.15.0"

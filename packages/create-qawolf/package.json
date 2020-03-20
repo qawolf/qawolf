@@ -8,8 +8,7 @@
   "types": "./build/index.d.ts",
   "files": [
     "build",
-    "src",
-    "ts-jest.config.json"
+    "src"
   ],
   "engines": {
     "node": ">=10.15.0"
