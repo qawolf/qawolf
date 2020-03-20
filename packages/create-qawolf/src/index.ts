@@ -9,8 +9,8 @@ import {
 import { detectTypeScript, detectYarn, writeConfig } from './config';
 import {
   addDevDependencies,
-  readPackageJson,
   installDependencies,
+  readPackageJson,
 } from './packageJson';
 
 (async (): Promise<void> => {
