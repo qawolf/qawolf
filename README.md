@@ -124,14 +124,9 @@ npx qawolf test --all-browsers [name]
 
 ## 🙋 Get help
 
-If you have a feature request or feedback, please [open an issue](https://github.com/qawolf/qawolf/issues/new) or chat with us!
-
-<p align="left">
-    <a href="https://gitter.im/qawolf/community">👋 Chat</a> |
-    <a href="mailto:jon@qawolf.com">📬 E-mail</a>
-</p>
-
 We want QA Wolf to work for you, so please reach out to get help!
+
+If you have a feature request or feedback, please [open an issue](https://github.com/qawolf/qawolf/issues/new) or [chat with us](https://gitter.im/qawolf/community)!
 
 <br/>
 
