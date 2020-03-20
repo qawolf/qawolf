@@ -10,7 +10,7 @@ import {
 import { loadConfig } from '../config';
 import { ElementEvent } from '../types';
 import { QAWolfWeb } from '../web';
-import { addWebScript } from '../web/addScript';
+import { addScript } from '../web/addScript';
 
 const debug = Debug('qawolf:ContextEventCollector');
 
@@ -23,7 +23,7 @@ export class ContextEventCollector extends EventEmitter {
   public static async create(
     options: ConstructorOptions,
   ): Promise<ContextEventCollector> {
-    await addWebScript(options.context);
+    await addScript(options.context);
     await indexPages(options.context);
     return new ContextEventCollector({
       attribute: loadConfig().attribute,
