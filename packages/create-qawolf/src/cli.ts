@@ -4,6 +4,9 @@ import { getPackageJsonPath } from './packageJson';
 import { Packages } from './types';
 
 export const logError = (error: Error): void => {
+  // create a new line for yarn create
+  console.log();
+
   if (error.message === 'cannot read package.json') {
     console.log(bold().yellow(`Cannot read ${getPackageJsonPath()}`));
     console.log(bold().yellow(`Create a package.json with "npm init"`));
