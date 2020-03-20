@@ -1,5 +1,7 @@
 import { promises as fs } from 'fs';
 import glob from 'glob';
+import { resolve } from 'path';
+import { promptOverwrite } from 'playwright-ci';
 
 type ConfigOptions = {
   rootDir: string;
@@ -19,14 +21,21 @@ export const writeConfig = async ({
   rootDir,
   useTypeScript,
 }: ConfigOptions): Promise<void> => {
-  // TODO test the preset escaping works on windows :/
-  const config = `module.exports = {
-  config: '${useTypeScript ? '{ \\"preset\\": \\"ts-jest\\" }' : '{}'}',
-  rootDir: '${rootDir}',
+  const jestConfig = useTypeScript
+    ? // we reference a file instead of inlining because
+      // each shell uses different escapes characters
+      'node_modules/qawolf/ts-jest.config.json'
+    : '{}';
+
+  const configFile = `module.exports = {
+  config: "${jestConfig}",
+  rootDir: "${rootDir}",
   testTimeout: 60000,
   useTypeScript: ${useTypeScript}
-}`;
+}\n`;
 
-  // TODO prompt overwrite? playwright-ci
-  await fs.writeFile('qawolf.config.js', config + '\n', 'utf8');
+  const configPath = resolve('qawolf.config.js');
+  if (!(await promptOverwrite(configPath))) return;
+
+  await fs.writeFile(configPath, configFile, 'utf8');
 };

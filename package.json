@@ -6,7 +6,8 @@
   "types": "./build/index.d.ts",
   "files": [
     "build",
-    "src"
+    "src",
+    "static"
   ],
   "engines": {
     "node": ">=10.15.0"

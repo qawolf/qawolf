@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// import { install as installCi } from 'playwright-ci';
+import { install as installCi } from 'playwright-ci';
 import { logError, logUseTypeScript, promptRootDir } from './cli';
 import { detectTypeScript, writeConfig } from './config';
 import { addDevDependencies, readPackageJson, npmInstall } from './packageJson';
@@ -14,7 +14,7 @@ import { addDevDependencies, readPackageJson, npmInstall } from './packageJson';
     const useTypeScript = await detectTypeScript();
     logUseTypeScript(useTypeScript);
 
-    // await installCi();
+    await installCi(true);
 
     await addDevDependencies(useTypeScript);
     await writeConfig({ rootDir, useTypeScript });
