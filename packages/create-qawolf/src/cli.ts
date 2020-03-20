@@ -1,5 +1,5 @@
 import input from '@inquirer/input';
-import { cyan, bold } from 'kleur';
+import { bold, cyan } from 'kleur';
 import { getPackageJsonPath } from './packageJson';
 import { Packages } from './types';
 
@@ -15,12 +15,19 @@ export const logError = (error: Error): void => {
   }
 };
 
-export const logNpmInstall = (packages: Packages): void => {
+export const logInstallDependencies = (
+  packages: Packages,
+  isYarn = false,
+): void => {
   console.log(cyan(`Installing dependencies`));
 
   Object.keys(packages).forEach(name => {
     const version = packages[name];
-    console.log(cyan(`npm install --save-dev ${name}@${version}`));
+    console.log(
+      cyan(
+        `${isYarn ? 'yarn add' : 'npm install --save-dev'} ${name}@${version}`,
+      ),
+    );
   });
 };
 
@@ -34,8 +41,12 @@ export const logUseTypeScript = (useTypeScript: boolean): void => {
   );
 };
 
-export const promptRootDir = (): Promise<string> =>
-  input({
+export const promptRootDir = (): Promise<string> => {
+  // create a line break before our CLI prompt
+  console.log();
+
+  return input({
     message: 'rootDir: Directory to create tests in',
     default: '.qawolf',
   });
+};
