@@ -28,8 +28,6 @@
 
 [Documentation](https://docs.qawolf.com/docs/install)
 
-Set up browser tests in your project with one command:
-
 ```bash
 cd /my/awesome/project
 npm init qawolf
