@@ -38,7 +38,10 @@ npm init qawolf
 
 This will install `qawolf`, `jest` and `playwright` as dev dependencies.
 
-You will be prompted to choose your CI provider:
+You will be asked to:
+
+1. Specify a directory where tests will be created
+2. Choose your CI provider:
 
 ```
 ? Choose CI Provider (Use arrow keys)
