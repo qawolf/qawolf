@@ -20,18 +20,28 @@ describe('readPackageJson', () => {
 });
 
 describe('addDevDependencies', () => {
-  it('adds devDependencies alphabetically', async () => {
-    const readPackageJsonSpy = jest.spyOn(packageJson, 'readPackageJson');
+  let readPackageJsonSpy: jest.SpyInstance;
+  let writeFileSpy: jest.SpyInstance;
+
+  beforeAll(() => {
+    readPackageJsonSpy = jest.spyOn(packageJson, 'readPackageJson');
     readPackageJsonSpy.mockResolvedValue({
       name: 'mypackage',
       devDependencies: { a: '*', z: '*' },
     });
 
-    const writeFileSpy = jest.spyOn(fs, 'writeFile');
+    writeFileSpy = jest.spyOn(fs, 'writeFile');
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     writeFileSpy.mockImplementation(async () => {});
+  });
 
+  afterAll(() => {
+    readPackageJsonSpy.mockRestore();
+    writeFileSpy.mockRestore();
+  });
+
+  it('adds devDependencies alphabetically', async () => {
     await packageJson.addDevDependencies(true);
 
     expect(writeFileSpy.mock.calls[0][1]).toMatchInlineSnapshot(`
@@ -52,8 +62,15 @@ describe('addDevDependencies', () => {
 }
 "
 `);
+  });
 
-    readPackageJsonSpy.mockRestore();
-    writeFileSpy.mockRestore();
+  it('does not add jest to create-react-app', async () => {
+    readPackageJsonSpy.mockResolvedValue({
+      name: 'my-create-react-app',
+      dependencies: { 'react-scripts': '*' },
+    });
+
+    const packages = await packageJson.addDevDependencies(true);
+    expect(packages['jest']).toBeUndefined();
   });
 });

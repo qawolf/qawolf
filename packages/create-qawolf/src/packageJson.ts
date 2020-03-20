@@ -43,9 +43,19 @@ export const addDevDependencies = async (
 ): Promise<Packages> => {
   const packageJson = await readPackageJson();
 
-  const devDependencies = packageJson.devDependencies || {};
+  const dependencies = packageJson.dependencies || {};
 
-  const packages = useTypeScript ? typeScriptPackages : defaultPackages;
+  const packages = {
+    ...(useTypeScript ? typeScriptPackages : defaultPackages),
+  };
+
+  const isCreateReactApp = dependencies['react-scripts'];
+  if (isCreateReactApp) {
+    // create-react-app will throw an error if you install another jest
+    delete packages['jest'];
+  }
+
+  const devDependencies = packageJson.devDependencies || {};
 
   Object.keys(packages).forEach(name => {
     const version = packages[name];
