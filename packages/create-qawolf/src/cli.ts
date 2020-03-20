@@ -15,12 +15,19 @@ export const logError = (error: Error): void => {
   }
 };
 
-export const logNpmInstall = (packages: Packages): void => {
+export const logInstallDependencies = (
+  packages: Packages,
+  useYarn = false,
+): void => {
   console.log(cyan(`Installing dependencies`));
 
   Object.keys(packages).forEach(name => {
     const version = packages[name];
-    console.log(cyan(`npm install --save-dev ${name}@${version}`));
+    console.log(
+      cyan(
+        `${useYarn ? 'yarn add' : 'npm install --save-dev'} ${name}@${version}`,
+      ),
+    );
   });
 };
 

@@ -76,6 +76,6 @@ export const addDevDependencies = async (
   return packages;
 };
 
-export const npmInstall = (): void => {
-  execSync('npm install', { stdio: 'inherit' });
+export const installDependencies = (useYarn = false): void => {
+  execSync(useYarn ? 'yarn' : 'npm install', { stdio: 'inherit' });
 };

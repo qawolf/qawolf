@@ -2,15 +2,21 @@
 import { install as installCi } from 'playwright-ci';
 import {
   logError,
-  logNpmInstall,
+  logInstallDependencies,
   logUseTypeScript,
   promptRootDir,
 } from './cli';
 import { detectTypeScript, writeConfig } from './config';
-import { addDevDependencies, readPackageJson, npmInstall } from './packageJson';
+import {
+  addDevDependencies,
+  readPackageJson,
+  installDependencies,
+} from './packageJson';
 
 (async (): Promise<void> => {
   try {
+    const useYarn = process.argv[process.argv.length - 1] === '--yarn';
+
     // create a new line for yarn create
     console.log();
 
@@ -27,8 +33,10 @@ import { addDevDependencies, readPackageJson, npmInstall } from './packageJson';
     await writeConfig({ rootDir, useTypeScript });
 
     const packages = await addDevDependencies(useTypeScript);
-    logNpmInstall(packages);
-    npmInstall();
+
+    logInstallDependencies(packages, useYarn);
+
+    installDependencies(useYarn);
   } catch (error) {
     logError(error);
     process.exit(1);
