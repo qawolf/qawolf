@@ -26,16 +26,19 @@
 
 ## 🖥️ Install
 
-Set up your project for browser tests with one command:
+[Documentation](http://docs.qawolf.com/docs/install)
+
+Run one command to set up browser tests in your project:
 
 ```bash
 cd /my/awesome/project
 npm init qawolf
+# or yarn create qawolf
 ```
 
 This will install `qawolf`, `jest` and `playwright` as dev dependencies.
 
-Optional: You will be prompted to set up your CI
+You will also be given the option set up your tests in CI.
 
 ```
 ? Choose CI Provider (Use arrow keys)
@@ -48,13 +51,11 @@ Optional: You will be prompted to set up your CI
   Skip CI setup
 ```
 
-Your CI is now configured to:
+The generated CI workflow file is configured to:
 
-- 💨Run tests in parallel
-- 📹Record a video per test
-- 📄Capture browser logs
-
-This should make debugging a breeze.
+- 🐎 Run tests in parallel
+- 📹 Record a video of each test
+- 📄 Capture browser logs
 
 ## 🎨 Create a test
 
@@ -84,14 +85,16 @@ npx qawolf create url [name]
 
 As your test is created:
 
-- ✏️ Edit it to handle any scenario
+- ✏️ Edit test code as you like
 - 🖥️ <a href="https://docs.qawolf.com/docs/use_the_repl">Use the REPL</a> to try out commands
 
 <br/>
 
 <br/>
 
-## ✅ Run your test:
+## ✅ Run your tests:
+
+[Documentation](http://docs.qawolf.com/docs/run_tests_locally)
 
 On Chromium:
 
@@ -111,7 +114,7 @@ On Webkit:
 npx qawolf test --webkit [name]
 ```
 
-On All Browsers:
+On all arowsers:
 
 ```bash
 npx qawolf test --all-browsers [name]
@@ -135,5 +138,3 @@ We want QA Wolf to work for you, so please reach out to get help!
 ## 📝 License
 
 QA Wolf is licensed under [BSD-3-Clause](https://github.com/qawolf/qawolf/blob/master/LICENSE.md).
-
-<br/>
