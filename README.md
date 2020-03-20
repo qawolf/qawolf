@@ -36,14 +36,11 @@ npm init qawolf
 # or yarn create qawolf
 ```
 
-This will install `qawolf`, `jest` and `playwright` as dev dependencies.
-
-You will be asked to:
-
-1. Specify a directory where tests will be created
-2. Choose your CI provider:
+Configure your test directory and CI provider:
 
 ```
+? rootDir: Directory to create tests in (.qawolf)
+
 ? Choose CI Provider (Use arrow keys)
   Azure DevOps
   Bitbucket Pipelines
@@ -54,7 +51,7 @@ You will be asked to:
   Skip CI setup
 ```
 
-A [workflow file](https://docs.qawolf.com/docs/run_tests_in_ci) will be created for your CI provider to:
+This will install `qawolf`, `jest` and `playwright` as dev dependencies and create a [CI workflow file](https://docs.qawolf.com/docs/run_tests_in_ci) to:
 
 - 🐎 Run tests in parallel
 - 📹 Record a video of each test
