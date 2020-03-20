@@ -6,7 +6,7 @@ import {
   logUseTypeScript,
   promptRootDir,
 } from './cli';
-import { detectTypeScript, writeConfig } from './config';
+import { detectTypeScript, detectYarn, writeConfig } from './config';
 import {
   addDevDependencies,
   readPackageJson,
@@ -15,11 +15,6 @@ import {
 
 (async (): Promise<void> => {
   try {
-    const useYarn = process.argv[process.argv.length - 1] === '--yarn';
-
-    // create a new line for yarn create
-    console.log();
-
     // run this first to ensure package.json
     await readPackageJson();
 
@@ -34,9 +29,9 @@ import {
 
     const packages = await addDevDependencies(useTypeScript);
 
-    logInstallDependencies(packages, useYarn);
-
-    installDependencies(useYarn);
+    const isYarn = detectYarn();
+    logInstallDependencies(packages, isYarn);
+    installDependencies(isYarn);
   } catch (error) {
     logError(error);
     process.exit(1);

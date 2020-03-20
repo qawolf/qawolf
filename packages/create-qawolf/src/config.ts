@@ -17,6 +17,9 @@ export const detectTypeScript = async (): Promise<boolean> => {
   });
 };
 
+export const detectYarn = (): boolean =>
+  (process.env.npm_execpath || '').includes('yarn');
+
 export const writeConfig = async ({
   rootDir,
   useTypeScript,
