@@ -24,104 +24,20 @@
 
 <br/>
 
-Run `npm init qawolf` to add browser tests to your project. You will be prompted to choose your CI provider so your tests can run in CI.
+## 🖥️ Install
 
-<ul>
-<li><b>Skip writing boilerplate.</b> Your browser actions are converted to Playwright and Jest code.
-</li>
-<li><b>Built for stability.</b> Avoid flaky tests with automatic waiting and <a href="https://docs.qawolf.com/docs/use_custom_selectors#selectors-overview">smart element selectors</a>.
-</li>
-<li><b>Test complex scenarios.</b> Test your application like a user. Use third party sites and multiple windows.
-</li>
-<li><b>Test across browsers.</b> Test your application on <a href="https://www.chromium.org/Home">Chromium</a>, <a href="https://www.mozilla.org/en-US/firefox/new">Firefox</a>, and <a href="https://webkit.org">WebKit</a>.
-</li>
-<li><b>Handle sign in.</b> <a href="https://docs.qawolf.com/docs/handle_sign_in">Save user state</a> (cookies, <code>localStorage</code>, <code>sessionStorage</code>) and use it to create tests.
-<li><b>Automatic CI setup.</b> Run your tests in CI in parallel, on push or on a schedule.
-</li>
-<li><b>Easy debugging.</b> Test runs in CI include a video and detailed logs. <a href="https://docs.qawolf.com/docs/use_the_repl">Use the REPL</a> to debug tests locally.
-</li>
-</ul>
-<p>We're working to build a world where browser testing is effortless. We hope you'll join us!</p>
-
-## Table of Contents
-
-- [💪 Automatically Create Code](#-supported-use-cases)
-- [🖥️ Install QA Wolf](#%EF%B8%8F-install-qa-wolf)
-- [🎨 Create a browser test](#-create-a-browser-test)
-- [☁️ Set up CI](#%EF%B8%8F-set-up-ci)
-- [🙋 Get help](#-get-help)
-- [📝 License](#-license)
-
-<br/>
-
-## 💪 Automatically Create Code
-
-QA Wolf automatically creates [Playwright](https://github.com/microsoft/playwright)/[Jest](https://jestjs.io/) code for the following scenarios. You can edit your code as it is created to do anything else.
-
-| Scenario                                                     | Status | Example                                                    |
-| ------------------------------------------------------------ | :----: | ---------------------------------------------------------- |
-| Click                                                        |   ✅   | `page.click(selectors['0_submit'])`                        |
-| Type                                                         |   ✅   | `page.type(selectors['0_username'], 'username')`           |
-| Scroll                                                       |   ✅   | `qawolf.scroll(page, 'html', { x: 0, y: 200 })`            |
-| Select                                                       |   ✅   | `page.selectOption(selectors['0_ice_cream'], 'chocolate')` |
-| Replace text (fill)                                          |   ✅   | `page.fill(selectors['0_username'], 'username')`           |
-| Paste                                                        |   ✅   | `page.type(selectors['password'], 'pasted')`               |
-| Test attributes                                              |   ✅   | `page.click("[data-qa='submit']")`                         |
-| Ancestor test attributes                                     |   ✅   | `page.click("[data-qa='radio'] [value='cat']")`            |
-| Multiple pages/tabs                                          |   ✅   | `qawolf.waitForPage(page.context(), 1)`                    |
-| [Iframes](https://github.com/qawolf/qawolf/issues/279)       |   🗺️   | Coming soon                                                |
-| [Drag and drop](https://github.com/qawolf/qawolf/issues/315) |   🗺️   | Coming soon                                                |
-| [File upload](https://github.com/qawolf/qawolf/issues/331)   |   🗺️   | Coming soon                                                |
-| [Back button](https://github.com/qawolf/qawolf/issues/438)   |   🗺️   | Coming soon                                                |
-
-If there's something you don't see yet, please [open an issue](https://github.com/qawolf/qawolf/issues/new)!
-
-<br/>
-
-## 🖥️ Install QA Wolf
-
-[Documentation](http://docs.qawolf.com/docs/install)
-
-Add QA Wolf to your project with one command. You will be prompted to choose your CI provider from a list.
+Set up your project for browser tests with one command:
 
 ```bash
 cd /my/awesome/project
 npm init qawolf
 ```
 
-QA Wolf is tested against the [maintenance LTS](https://github.com/nodejs/Release#release-schedule) versions of Node, v10 and v12.
+This will install `qawolf`, `jest` and `playwright` as dev dependencies.
 
-<br/>
+Optional: You will be prompted to set up your CI
 
-## 🎨 Create a browser test
-
-[Documentation](http://docs.qawolf.com/docs/create_a_test)
-
-Create a [Playwright](https://github.com/microsoft/playwright) and [Jest](https://jestjs.io/) test:
-
-```bash
-npx qawolf create url [name]
 ```
-
-Edit your test code as it is created by opening `.qawolf/myTestName.test.js`.
-
-Run your test:
-
-```bash
-npx qawolf test [name]
-```
-
-<br/>
-
-## ☁️ Set up CI
-
-[Documentation](https://docs.qawolf.com/docs/run_tests_in_ci)
-
-QA Wolf sets up CI to run and record your tests in parallel. Use the [video recording and detailed logs](https://docs.qawolf.com/docs/run_tests_in_ci#debug) to debug failures.
-
-When you run `npm qawolf init`, you will be prompted to choose your CI provider.
-
-```bash
 ? Choose CI Provider (Use arrow keys)
   Azure DevOps
   Bitbucket Pipelines
@@ -132,18 +48,80 @@ When you run `npm qawolf init`, you will be prompted to choose your CI provider.
   Skip CI setup
 ```
 
-Supported CI providers:
+Your CI is now configured to:
 
-- [<img align="center" height="20px" src="https://cdn.iconscout.com/icon/free/png-256/azure-190760.png" /> Azure Devops](https://azure.microsoft.com/en-us/services/devops)
-- [<img align="center" height="20px" src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Bitbucket-blue-logomark-only.svg" /> Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines)
-- [<img align="center" height="20px" src="https://cdn.iconscout.com/icon/free/png-256/circleci-283066.png" /> CircleCI](https://circleci.com/)
-- [<img align="center" height="20px" src="https://camo.githubusercontent.com/7710b43d0476b6f6d4b4b2865e35c108f69991f3/68747470733a2f2f7777772e69636f6e66696e6465722e636f6d2f646174612f69636f6e732f6f637469636f6e732f313032342f6d61726b2d6769746875622d3235362e706e67" /> GitHub Actions](https://github.com/features/actions)
-- [🦊 GitLab CI/CD](https://docs.gitlab.com/ee/ci)
-- [🤵 Jenkins](https://jenkins.io)
+- 💨Run tests in parallel
+- 📹Record a video per test
+- 📄Capture browser logs
+
+This should make debugging a breeze.
+
+## 🎨 Create a test
+
+[Documentation](http://docs.qawolf.com/docs/create_a_test)
+
+```bash
+npx qawolf create url [name]
+```
+
+💪 Convert your actions into [Playwright](https://github.com/microsoft/playwright) code:
+
+| Action                                                       | Status | Example                                                    |
+| ------------------------------------------------------------ | :----: | ---------------------------------------------------------- |
+| Click                                                        |   ✅   | `page.click(selectors['0_submit'])`                        |
+| Type                                                         |   ✅   | `page.type(selectors['0_username'], 'username')`           |
+| Scroll                                                       |   ✅   | `qawolf.scroll(page, 'html', { x: 0, y: 200 })`            |
+| Select                                                       |   ✅   | `page.selectOption(selectors['0_ice_cream'], 'chocolate')` |
+| Replace text                                                 |   ✅   | `page.fill(selectors['0_username'], 'username')`           |
+| Paste                                                        |   ✅   | `page.type(selectors['password'], 'pasted')`               |
+| Use a test attribute                                         |   ✅   | `page.click("[data-qa='submit']")`                         |
+| Use a test attribute on an ancestor                          |   ✅   | `page.click("[data-qa='radio'] [value='cat']")`            |
+| Use multiple pages/tabs                                      |   ✅   | `qawolf.waitForPage(page.context(), 1)`                    |
+| [Iframes](https://github.com/qawolf/qawolf/issues/279)       |   🗺️   | Coming soon                                                |
+| [Drag and drop](https://github.com/qawolf/qawolf/issues/315) |   🗺️   | Coming soon                                                |
+| [File upload](https://github.com/qawolf/qawolf/issues/331)   |   🗺️   | Coming soon                                                |
+| [Back button](https://github.com/qawolf/qawolf/issues/438)   |   🗺️   | Coming soon                                                |
+
+As your test is created:
+
+- ✏️ Edit it to handle any scenario
+- 🖥️ <a href="https://docs.qawolf.com/docs/use_the_repl">Use the REPL</a> to try out commands
+
+<br/>
+
+<br/>
+
+## ✅ Run your test:
+
+On Chromium:
+
+```bash
+npx qawolf test [name]
+```
+
+On Firefox:
+
+```bash
+npx qawolf test --firefox [name]
+```
+
+On Webkit:
+
+```bash
+npx qawolf test --webkit [name]
+```
+
+On All Browsers:
+
+```bash
+npx qawolf test --all-browsers [name]
+```
 
 <br/>
 
 ## 🙋 Get help
+
+If you have a feature request or feedback, please [open an issue](https://github.com/qawolf/qawolf/issues/new) or chat with us!
 
 <p align="left">
     <a href="https://gitter.im/qawolf/community">👋 Chat</a> |
