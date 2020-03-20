@@ -28,6 +28,8 @@
 
 [Documentation](https://docs.qawolf.com/docs/install)
 
+Set up your project for browser tests:
+
 ```bash
 cd /my/awesome/project
 npm init qawolf
@@ -36,7 +38,7 @@ npm init qawolf
 
 This will install `qawolf`, `jest` and `playwright` as dev dependencies.
 
-You can choose to run your tests in CI:
+You will be prompted to choose your CI provider:
 
 ```
 ? Choose CI Provider (Use arrow keys)
