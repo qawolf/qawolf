@@ -92,13 +92,13 @@ describe('buildStepLines', () => {
   test('select step', () => {
     const lines = buildStepLines({
       ...baseStep,
-      action: 'select' as Action,
+      action: 'selectOption' as Action,
       value: 'spirit',
     });
 
     expect(lines).toMatchInlineSnapshot(`
       Array [
-        "await page.select(selectors[\\"0_my_input_input\\"], \\"spirit\\");",
+        "await page.selectOption(selectors[\\"0_my_input_input\\"], \\"spirit\\");",
       ]
     `);
   });

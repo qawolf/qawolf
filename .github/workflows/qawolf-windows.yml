@@ -1,4 +1,4 @@
-name: Windows Tests
+name: QA Wolf Windows Tests
 
 on: [push]
 

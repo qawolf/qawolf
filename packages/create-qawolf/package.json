@@ -1,0 +1,57 @@
+{
+  "author": "QA Wolf",
+  "name": "create-qawolf",
+  "license": "BSD-3-Clause",
+  "version": "0.0.3",
+  "description": "🛠️ Install qawolf in your application",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "files": [
+    "build",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10.15.0"
+  },
+  "scripts": {
+    "clean": "rimraf coverage build tmp",
+    "build": "tsc -p tsconfig.release.json",
+    "watch": "tsc -w -p tsconfig.release.json",
+    "lint": "eslint . --ext .ts,.tsx --config .eslintrc.json",
+    "release": "np --no-cleanup",
+    "test": "jest",
+    "version": "npm run clean && npm run build"
+  },
+  "peerDependencies": {
+    "playwright": "next"
+  },
+  "dependencies": {
+    "@inquirer/input": "0.0.9-alpha.0",
+    "debug": "*",
+    "glob": "^7.1.6",
+    "kleur": "^3.0.3",
+    "playwright-ci": "^0.7.0",
+    "tslib": "^1.11.1"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.5",
+    "@types/jest": "^25.1.3",
+    "@types/node": "^12.12.28",
+    "@typescript-eslint/eslint-plugin": "~2.19.2",
+    "@typescript-eslint/parser": "~2.19.2",
+    "eslint": "~6.8.0",
+    "eslint-config-prettier": "~6.10.0",
+    "eslint-plugin-jest": "~23.7.0",
+    "jest": "~25.1.0",
+    "np": "^6.2.0",
+    "prettier": "~1.19.1",
+    "rimraf": "~3.0.2",
+    "ts-jest": "^25.2.1",
+    "ts-node": "^8.6.2",
+    "tsutils": "~3.17.0",
+    "typescript": "~3.8.2"
+  },
+  "bin": {
+    "create-qawolf": "./build/index.js"
+  }
+}

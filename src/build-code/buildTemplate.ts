@@ -3,6 +3,7 @@ import { devices } from 'playwright';
 
 export interface BuildTemplateOptions {
   device?: string;
+  isScript?: boolean;
   name: string;
   statePath?: string;
   url: string;
@@ -68,10 +69,7 @@ export const buildImports = ({
 export const buildNewContext = (device?: string): string => {
   if (!device) return 'const context = await browser.newContext();';
 
-  const context = `const context = await browser.newContext({
-      userAgent: device.userAgent,
-      viewport: device.viewport
-    });`;
+  const context = `const context = await browser.newContext({ ...device });`;
 
   return context;
 };
@@ -144,4 +142,10 @@ test('${name}', async () => {
 });`;
 
   return code;
+};
+
+export const buildTemplate = (options: BuildTemplateOptions): string => {
+  if (options.isScript) return buildScriptTemplate(options);
+
+  return buildTestTemplate(options);
 };

@@ -1,4 +1,10 @@
-export type Action = 'click' | 'fill' | 'press' | 'scroll' | 'select' | 'type';
+export type Action =
+  | 'click'
+  | 'fill'
+  | 'press'
+  | 'scroll'
+  | 'selectOption'
+  | 'type';
 
 export type BrowserName = 'chromium' | 'firefox' | 'webkit';
 
