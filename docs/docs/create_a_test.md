@@ -58,8 +58,7 @@ If you open your project in your code editor, you'll notice that a folder called
 
 ```bash
 .qawolf # project directory
-├── tests
-│   └── myFirstTest.test.js
+├── myFirstTest.test.js
 ├── selectors
 │   └── myFirstTest.json
 ```
