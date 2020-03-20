@@ -3,8 +3,6 @@ id: configure_qa_wolf
 title: 🛠️ Configure QA Wolf
 ---
 
-import Argument from './api/components/Argument';
-
 QA Wolf provides several options for you to configure your experience.
 
 ## TL;DR
@@ -33,8 +31,6 @@ module.exports = {
   attribute: 'data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/',
   // jest --config='{}'
   config: '{}',
-  // replace the default create templates with your own
-  createTemplate: ({ isScript, name, url }) => 'my test here',
   // where tests are created
   rootDir: '.qawolf',
   // jest --testTimeout=60000
@@ -67,34 +63,6 @@ By default QA Wolf uses `{}` to avoid conflicting with an existing Jest configur
 **Default:** `'{}'`
 
 See [Jest documentation](https://jestjs.io/docs/en/cli#--configpath) to learn more.
-
-### createTemplate
-
-The `createTemplate` key in `qawolf.config.json` allows you to use a custom template when creating a test or script. It is a [function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function) that takes three arguments in an options `Object` and returns the template as a `string`.
-
-<Argument
-  description="Options passed to function."
-  name="options"
-  type="Object"
-/>
-<Argument
-  indent
-  description="Whether a script or test is being created."
-  name="isScript"
-  type="boolean"
-/>
-<Argument
-  indent
-  description="Name of the test or script being craeted."
-  name="name"
-  type="string"
-/>
-<Argument
-  indent
-  description="URL of the test or script being created."
-  name="url"
-  type="string"
-/>
 
 ### rootDir
 
