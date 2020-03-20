@@ -28,7 +28,7 @@
 
 [Documentation](http://docs.qawolf.com/docs/install)
 
-Run one command to set up browser tests in your project:
+Set up browser tests in your project with one command:
 
 ```bash
 cd /my/awesome/project
