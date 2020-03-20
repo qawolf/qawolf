@@ -28,6 +28,8 @@
 
 [Documentation](https://docs.qawolf.com/docs/install)
 
+<br />
+
 Set up your project for browser tests:
 
 ```bash
@@ -63,6 +65,8 @@ This will install `qawolf`, `jest` and `playwright` as dev dependencies and crea
 
 [Documentation](https://docs.qawolf.com/docs/create_a_test)
 
+<br />
+
 ```bash
 npx qawolf create url [name]
 ```
@@ -95,6 +99,8 @@ As your test is created:
 ## ✅ Run your tests:
 
 [Documentation](https://docs.qawolf.com/docs/run_tests_locally)
+
+<br />
 
 On Chromium:
 
