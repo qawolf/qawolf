@@ -5,23 +5,23 @@ import { join } from 'path';
 import { Packages, PackageJson } from './types';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { devDependencies: selfDevDependencies } = require('../package.json');
+const selfPkg = require('../package.json');
 
 const debug = Debug('create-qawolf:packageJson');
 
 const defaultPackages: Packages = {
-  jest: selfDevDependencies['jest'],
-  playwright: '0.11.1-next.1583909126688',
-  qawolf: '0.12.3-1',
+  jest: selfPkg.devDependencies['jest'],
+  playwright: selfPkg.createDevDependencies['playwright'],
+  qawolf: selfPkg.createDevDependencies['qawolf'],
 };
 
 const typeScriptPackages: Packages = {
   ...defaultPackages,
-  '@types/debug': selfDevDependencies['@types/debug'],
-  '@types/jest': selfDevDependencies['@types/jest'],
-  '@types/node': selfDevDependencies['@types/node'],
-  'ts-jest': selfDevDependencies['ts-jest'],
-  'ts-node': selfDevDependencies['ts-node'],
+  '@types/debug': selfPkg.devDependencies['@types/debug'],
+  '@types/jest': selfPkg.devDependencies['@types/jest'],
+  '@types/node': selfPkg.devDependencies['@types/node'],
+  'ts-jest': selfPkg.devDependencies['ts-jest'],
+  'ts-node': selfPkg.devDependencies['ts-node'],
 };
 
 export const getPackageJsonPath = (): string =>
