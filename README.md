@@ -57,6 +57,8 @@ This will install `qawolf`, `jest` and `playwright` as dev dependencies and crea
 - 📹 Record a video of each test
 - 📄 Capture browser logs
 
+<br/>
+
 ## 🎨 Create a test
 
 [Documentation](https://docs.qawolf.com/docs/create_a_test)
@@ -87,8 +89,6 @@ As your test is created:
 
 - ✏️ Edit test code as you like
 - 🖥️ <a href="https://docs.qawolf.com/docs/use_the_repl">Use the REPL</a> to try out commands
-
-<br/>
 
 <br/>
 
