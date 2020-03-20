@@ -16,6 +16,7 @@ module.exports = {
     { type: 'doc', id: 'run_tests_in_ci' },
   ],
   guides: [
+    { type: 'doc', id: 'configure_qa_wolf' },
     { type: 'doc', id: 'use_the_repl' },
     { type: 'doc', id: 'add_steps_to_existing_tests' },
     { type: 'doc', id: 'handle_sign_in' },

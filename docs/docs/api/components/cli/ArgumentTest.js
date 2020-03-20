@@ -25,17 +25,6 @@ function ArgumentTest() {
         optional
         type="boolean"
       />
-      <Argument
-        description={
-          <React.Fragment>
-            The directory where your tests are saved. <b>Default:</b>{' '}
-            <code>.qawolf</code>.
-          </React.Fragment>
-        }
-        name="--rootDir directory"
-        optional
-        type="string"
-      />
       <ArgumentWebKit />
       <Argument
         description={

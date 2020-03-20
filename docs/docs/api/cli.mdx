@@ -44,13 +44,6 @@ Create a browser test on `www.google.com`, saving it at `.qawolf/myTestName.test
 npx qawolf create www.google.com myTestName
 ```
 
-TODO FIX
-Create a browser test on `www.google.com`, saving it at `.myTests/myTestName.test.js`:
-
-```bash
-npx qawolf create --rootDir=./myTests www.google.com myTestName
-```
-
 Create a brower test on `www.google.com`, loading state data from `.qawolf/state/admin.json`:
 
 ```bash
@@ -89,12 +82,6 @@ Run the test saved at `.qawolf/myTestName.test.js` on [Chromium](https://www.chr
 
 ```bash
 npx qawolf test --all-browsers myTestName
-```
-
-Run the test saved at `myTests/tests/myTestName.test.js`:
-
-```bash
-npx qawolf test --rootDir=./myTests myTestName
 ```
 
 Use the [`--runInBand` Jest CLI option](https://jestjs.io/docs/en/cli#--runinband) to run tests serially:

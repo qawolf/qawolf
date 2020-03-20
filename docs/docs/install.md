@@ -77,7 +77,9 @@ You will be prompted to specify two things:
 
 QA Wolf will also detect if you are using [TypeScript](https://www.typescriptlang.org), and update its configuration to create tests in TypeScript instead of JavaScript if applicable.
 
-After the dependencies have been installed, run the following to make sure QA Wolf was installed successfully:
+See the guide on [configuring QA Wolf](configure_qa_wolf) to learn more.
+
+After the dependencies have finished installing, run the following to make sure QA Wolf was installed successfully:
 
 ```bash
 npx qawolf howl

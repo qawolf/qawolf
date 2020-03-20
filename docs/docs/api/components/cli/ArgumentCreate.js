@@ -21,17 +21,6 @@ function ArgumentCreate() {
       <Argument
         description={
           <React.Fragment>
-            The directory where the test or script will be saved.{' '}
-            <b>Default:</b> <code>.qawolf</code>.
-          </React.Fragment>
-        }
-        name="--rootDir directory"
-        optional
-        type="string"
-      />
-      <Argument
-        description={
-          <React.Fragment>
             Create a browser script instead of a{' '}
             <a href="https://jestjs.io/">Jest</a> test. <b>Default:</b>{' '}
             <code>false</code>.
