@@ -48,7 +48,7 @@
     "typescript": "~3.8.2"
   },
   "createDevDependencies": {
-    "playwright": "0.11.1-next.1583909126688",
+    "playwright": "0.11.1-next.1584577781703",
     "qawolf": "0.12.3"
   },
   "bin": {
