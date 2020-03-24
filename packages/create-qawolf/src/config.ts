@@ -1,4 +1,4 @@
-import { promises as fs } from 'fs';
+import { writeFile } from 'fs-extra';
 import glob from 'glob';
 import { resolve } from 'path';
 import { promptOverwrite } from 'playwright-ci';
@@ -40,5 +40,5 @@ export const writeConfig = async ({
   const configPath = resolve('qawolf.config.js');
   if (!(await promptOverwrite(configPath))) return;
 
-  await fs.writeFile(configPath, configFile, 'utf8');
+  await writeFile(configPath, configFile, 'utf8');
 };
