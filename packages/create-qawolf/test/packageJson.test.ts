@@ -1,5 +1,10 @@
+import fs from 'fs-extra';
 import * as packageJson from '../src/packageJson';
-import { promises as fs } from 'fs';
+
+const writeFileSpy = jest
+  .spyOn(fs, 'writeFile')
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  .mockImplementation(async () => {});
 
 describe('readPackageJson', () => {
   const { readPackageJson } = packageJson;
@@ -21,7 +26,6 @@ describe('readPackageJson', () => {
 
 describe('addDevDependencies', () => {
   let readPackageJsonSpy: jest.SpyInstance;
-  let writeFileSpy: jest.SpyInstance;
 
   beforeAll(() => {
     readPackageJsonSpy = jest.spyOn(packageJson, 'readPackageJson');
@@ -29,21 +33,14 @@ describe('addDevDependencies', () => {
       name: 'mypackage',
       devDependencies: { a: '*', z: '*' },
     });
-
-    writeFileSpy = jest.spyOn(fs, 'writeFile');
-
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    writeFileSpy.mockImplementation(async () => {});
   });
 
   afterAll(() => {
     readPackageJsonSpy.mockRestore();
-    writeFileSpy.mockRestore();
   });
 
   it('adds devDependencies alphabetically', async () => {
     await packageJson.addDevDependencies(true);
-
     expect(writeFileSpy.mock.calls[0][1]).toMatchInlineSnapshot(`
 "{
   \\"name\\": \\"mypackage\\",

@@ -1,6 +1,6 @@
 import { execSync } from 'child_process';
 import Debug from 'debug';
-import { promises as fs } from 'fs';
+import { readFile, writeFile } from 'fs-extra';
 import { join } from 'path';
 import { Packages, PackageJson } from './types';
 
@@ -30,7 +30,7 @@ export const getPackageJsonPath = (): string =>
 export const readPackageJson = async (): Promise<PackageJson> => {
   try {
     const path = getPackageJsonPath();
-    const packageJson = await fs.readFile(path, 'utf8');
+    const packageJson = await readFile(path, 'utf8');
     return JSON.parse(packageJson) as PackageJson;
   } catch (error) {
     debug('cannot read package.json %s', error.message);
@@ -76,7 +76,7 @@ export const addDevDependencies = async (
   const path = getPackageJsonPath();
   debug('write updated package.json to %s', path);
 
-  await fs.writeFile(
+  await writeFile(
     path,
     // https://github.com/npm/init-package-json/blob/2b5d21ea3e3434f8e0d6050cd2733d5062b830c6/init-package-json.js#L106
     JSON.stringify(packageJson, null, 2) + '\n',

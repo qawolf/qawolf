@@ -1,11 +1,11 @@
-import input from '@inquirer/input';
+import { prompt } from 'inquirer';
 import { bold, cyan } from 'kleur';
 import { getPackageJsonPath } from './packageJson';
 import { Packages } from './types';
 
 export const logError = (error: Error): void => {
   // create a new line for yarn create
-  console.log();
+  console.log('');
 
   if (error.message === 'cannot read package.json') {
     console.log(bold().yellow(`Cannot read ${getPackageJsonPath()}`));
@@ -41,12 +41,16 @@ export const logUseTypeScript = (useTypeScript: boolean): void => {
   );
 };
 
-export const promptRootDir = (): Promise<string> => {
+export const promptRootDir = async (): Promise<string> => {
   // create a line break before our CLI prompt
-  console.log();
+  console.log('');
 
-  return input({
-    message: 'rootDir: Directory to create tests in',
+  const { rootDir } = await prompt<{ rootDir: string }>({
     default: '.qawolf',
+    message: 'rootDir: Directory to create tests in',
+    name: 'rootDir',
+    type: 'input',
   });
+
+  return rootDir;
 };
