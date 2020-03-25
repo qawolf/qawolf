@@ -25,7 +25,7 @@ describe('ContextEventCollector', () => {
     context = await browser.newContext();
 
     const collector = await ContextEventCollector.create({ context });
-    collector.on('elementevent', event => events.push(event));
+    collector.on('elementevent', (event) => events.push(event));
   });
 
   beforeEach(() => (events = []));
@@ -36,22 +36,19 @@ describe('ContextEventCollector', () => {
     for (let i = 0; i < 2; i++) {
       const page = await context.newPage();
       await page.goto(TEST_URL);
-      await Promise.all([
-        page.waitForNavigation({ waitUntil: 'networkidle0' }),
-        page.click('a'),
-      ]);
+      await page.click('a');
       await page.close();
     }
 
-    expect(events.map(e => e.page)).toEqual([0, 0, 1, 1]);
-    expect(events.map(e => e.name)).toEqual([
+    expect(events.map((e) => e.page)).toEqual([0, 0, 1, 1]);
+    expect(events.map((e) => e.name)).toEqual([
       'mousedown',
       'click',
       'mousedown',
       'click',
     ]);
 
-    expect(events.map(e => e.htmlSelector)).toEqual([
+    expect(events.map((e) => e.htmlSelector)).toEqual([
       '<ul qaw_innertext="Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Nested data attributes Radio inputs Selects Text inputs Time pickers"><li qaw_innertext="Buttons"><a href="/buttons" qaw_innertext="Buttons"></a></li></ul>',
       '<ul qaw_innertext="Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Nested data attributes Radio inputs Selects Text inputs Time pickers"><li qaw_innertext="Buttons"><a href="/buttons" qaw_innertext="Buttons"></a></li></ul>',
       '<ul qaw_innertext="Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Nested data attributes Radio inputs Selects Text inputs Time pickers"><li qaw_innertext="Buttons"><a href="/buttons" qaw_innertext="Buttons"></a></li></ul>',
@@ -179,7 +176,7 @@ describe('ContextEventCollector', () => {
 
     expect(events[0].target.attrs['data-qa']).toEqual('html-text-input');
     expect(
-      (events.filter(e => isKeyEvent(e)) as KeyEvent[]).map(e => e.value),
+      (events.filter((e) => isKeyEvent(e)) as KeyEvent[]).map((e) => e.value),
     ).toEqual(['s', 's', 'u', 'u', 'p', 'p', 'Tab', 'Tab', 'y', 'y', 'o', 'o']);
   });
 });

@@ -38,7 +38,7 @@ export class ContextEventCollector extends EventEmitter {
 
     this._attribute = options.attribute;
 
-    forEachPage(options.context, page =>
+    forEachPage(options.context, (page) =>
       this._collectPageEvents(page as IndexedPage),
     );
   }
@@ -56,7 +56,7 @@ export class ContextEventCollector extends EventEmitter {
 
     await initEvaluateScript(
       page,
-      (attribute: string, pageIndex: number) => {
+      ({ attribute, pageIndex }) => {
         const web: QAWolfWeb = (window as any).qawolf;
 
         new web.PageEventCollector({
@@ -65,8 +65,10 @@ export class ContextEventCollector extends EventEmitter {
           sendEvent: (window as any).cp_collectEvent,
         });
       },
-      this._attribute,
-      index,
+      {
+        attribute: this._attribute,
+        pageIndex: index,
+      },
     );
   }
 }

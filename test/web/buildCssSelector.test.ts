@@ -17,7 +17,7 @@ const buildCssSelector = async (
   attribute = 'data-qa',
 ): Promise<string | undefined> => {
   const result = await page.evaluate(
-    (selector, isClick, attribute) => {
+    ({ attribute, isClick, selector }) => {
       const web: QAWolfWeb = (window as any).qawolf;
       const target = document.querySelector(selector) as HTMLElement;
 
@@ -27,9 +27,11 @@ const buildCssSelector = async (
         isClick,
       });
     },
-    selector,
-    isClick,
-    attribute,
+    {
+      attribute,
+      isClick,
+      selector,
+    },
   );
 
   return result;
@@ -40,13 +42,15 @@ const getAttributeValue = async (
   attribute: string,
 ): Promise<AttributeValuePair | null> => {
   const result = await page.evaluate(
-    (selector, attribute) => {
+    ({ attribute, selector }) => {
       const web: QAWolfWeb = (window as any).qawolf;
       const button = document.querySelector(selector) as HTMLElement;
       return web.getAttributeValue(button, attribute);
     },
-    selector,
-    attribute,
+    {
+      attribute,
+      selector,
+    },
   );
 
   return result;
