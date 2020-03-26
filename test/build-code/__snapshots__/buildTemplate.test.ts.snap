@@ -7,8 +7,7 @@ const selectors = require(\\"./selectors/myScript.json\\");"
 `;
 
 exports[`buildImports imports when typescript 2`] = `
-"import { devices } from \\"playwright\\";
-import { Browser, Page } from \\"playwright\\";
+"import { Browser, Page, devices } from \\"playwright\\";
 import qawolf from \\"qawolf\\";
 const selectors = require(\\"./selectors/myScript.json\\");
 const device = devices[\\"iPhone 11\\"];"
@@ -175,6 +174,59 @@ afterAll(async () => {
 test('myName', async () => {
   await page.goto(\\"www.qawolf.com\\");
   await qawolf.setState(page, \\"admin.json\\");
+  await qawolf.create();
+});"
+`;
+
+exports[`buildTemplate builds test template 4`] = `
+"import { Browser, Page } from \\"playwright\\";
+import qawolf from \\"qawolf\\";
+const selectors = require(\\"./selectors/myName.json\\");
+
+let browser: Browser;
+let page: Page;
+
+beforeAll(async () => {
+  browser = await qawolf.launch();
+  const context = await browser.newContext();
+  await qawolf.register(context);
+  page = await context.newPage();
+});
+
+afterAll(async () => {
+  await qawolf.stopVideos();
+  await browser.close();
+});
+
+test('myName', async () => {
+  await page.goto(\\"www.qawolf.com\\");
+  await qawolf.create();
+});"
+`;
+
+exports[`buildTemplate builds test template 5`] = `
+"import { Browser, Page, devices } from \\"playwright\\";
+import qawolf from \\"qawolf\\";
+const selectors = require(\\"./selectors/myName.json\\");
+const device = devices[\\"iPhone 7\\"];
+
+let browser: Browser;
+let page: Page;
+
+beforeAll(async () => {
+  browser = await qawolf.launch();
+  const context = await browser.newContext({ ...device });
+  await qawolf.register(context);
+  page = await context.newPage();
+});
+
+afterAll(async () => {
+  await qawolf.stopVideos();
+  await browser.close();
+});
+
+test('myName', async () => {
+  await page.goto(\\"www.qawolf.com\\");
   await qawolf.create();
 });"
 `;

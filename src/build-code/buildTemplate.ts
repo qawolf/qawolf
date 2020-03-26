@@ -45,15 +45,17 @@ export const buildImports = ({
 
   if (device) {
     if (useTypeScript) {
-      imports += 'import { devices } from "playwright";\n';
+      imports += 'import { Browser, Page, devices } from "playwright";\n';
     } else {
       imports += 'const { devices } = require("playwright");\n';
     }
   }
 
-  if (useTypeScript) {
+  if (useTypeScript && !device) {
     imports +=
       'import { Browser, Page } from "playwright";\nimport qawolf from "qawolf";\n';
+  } else if (useTypeScript) {
+    imports += 'import qawolf from "qawolf";\n';
   } else {
     imports += 'const qawolf = require("qawolf");\n';
   }
