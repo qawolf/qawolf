@@ -52,7 +52,8 @@ export const buildImports = ({
   }
 
   if (useTypeScript) {
-    imports += 'import qawolf from "qawolf";\n';
+    imports +=
+      'import { Browser, Page } from "playwright";\nimport qawolf from "qawolf";\n';
   } else {
     imports += 'const qawolf = require("qawolf");\n';
   }
@@ -121,8 +122,8 @@ export const buildTestTemplate: TemplateFunction = ({
 }: BuildTemplateOptions): string => {
   const code = `${buildImports({ name, device, useTypeScript })}
 
-let browser;
-let page;
+let browser${useTypeScript ? ': Browser' : ''};
+let page${useTypeScript ? ': Page' : ''};
 
 beforeAll(async () => {
   browser = await qawolf.launch();

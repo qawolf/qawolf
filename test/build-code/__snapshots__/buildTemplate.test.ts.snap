@@ -1,12 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`buildImports imports when typescript 1`] = `
-"import qawolf from \\"qawolf\\";
+"import { Browser, Page } from \\"playwright\\";
+import qawolf from \\"qawolf\\";
 const selectors = require(\\"./selectors/myScript.json\\");"
 `;
 
 exports[`buildImports imports when typescript 2`] = `
 "import { devices } from \\"playwright\\";
+import { Browser, Page } from \\"playwright\\";
 import qawolf from \\"qawolf\\";
 const selectors = require(\\"./selectors/myScript.json\\");
 const device = devices[\\"iPhone 11\\"];"
