@@ -1,16 +1,16 @@
 import Debug from 'debug';
 import { EventEmitter } from 'events';
-import { BrowserContext } from 'playwright-core';
+import { BrowserContext } from 'playwright';
+import { loadConfig } from '../config';
+import { ElementEvent } from '../types';
 import {
   forEachPage,
   IndexedPage,
   indexPages,
   initEvaluateScript,
-} from 'playwright-utils';
-import { loadConfig } from '../config';
-import { ElementEvent } from '../types';
+} from '../utils';
 import { QAWolfWeb } from '../web';
-import { addScript } from '../web/addScript';
+import { addScriptToContext } from '../web/addScript';
 
 const debug = Debug('qawolf:ContextEventCollector');
 
@@ -23,7 +23,7 @@ export class ContextEventCollector extends EventEmitter {
   public static async create(
     options: ConstructorOptions,
   ): Promise<ContextEventCollector> {
-    await addScript(options.context);
+    await addScriptToContext(options.context);
     await indexPages(options.context);
     return new ContextEventCollector({
       attribute: loadConfig().attribute,

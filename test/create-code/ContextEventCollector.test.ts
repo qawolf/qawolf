@@ -1,9 +1,4 @@
-import {
-  Browser,
-  BrowserContext,
-  ChromiumBrowserContext,
-} from 'playwright-core';
-import { getLaunchOptions, launch } from 'playwright-utils';
+import { Browser, BrowserContext, ChromiumBrowserContext } from 'playwright';
 import { ContextEventCollector } from '../../src/create-code/ContextEventCollector';
 import { isKeyEvent } from '../../src/build-workflow/event';
 import {
@@ -13,6 +8,7 @@ import {
   PasteEvent,
   ScrollEvent,
 } from '../../src/types';
+import { getLaunchOptions, launch } from '../../src/utils';
 import { sleep, selectElementContent, TEST_URL } from '../utils';
 
 describe('ContextEventCollector', () => {

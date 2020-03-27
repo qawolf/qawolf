@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { create } from './create-code/create';
+
 import {
   launch,
   repl,
@@ -9,9 +11,7 @@ import {
   setState,
   stopVideos,
   waitForPage,
-} from 'playwright-utils';
-
-import { create } from './create-code/create';
+} from './utils';
 
 if (!module.parent) {
   // run the cli when this is the root module

@@ -1,13 +1,13 @@
 import Debug from 'debug';
 import { prompt } from 'inquirer';
 import { relative } from 'path';
-import { BrowserContext } from 'playwright-core';
-import { repl } from 'playwright-utils';
+import { BrowserContext } from 'playwright';
 import { buildSteps } from '../build-workflow/buildSteps';
 import { CodeFileUpdater } from './CodeFileUpdater';
 import { ContextEventCollector } from './ContextEventCollector';
 import { SelectorFileUpdater } from './SelectorFileUpdater';
 import { ElementEvent } from '../types';
+import { repl } from '../utils';
 
 type CreateCliOptions = {
   codePath: string;
@@ -91,7 +91,7 @@ export class CreateManager {
       this._selectorUpdater.selectors(),
     ).length;
 
-    this._collector.on('elementevent', event => this.update(event));
+    this._collector.on('elementevent', (event) => this.update(event));
   }
 
   protected async update(event: ElementEvent): Promise<void> {
