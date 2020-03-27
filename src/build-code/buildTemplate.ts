@@ -14,6 +14,7 @@ export type TemplateFunction = (options: BuildTemplateOptions) => string;
 
 interface BuildImportsOptions {
   device?: string;
+  isScript?: boolean;
   name: string;
   useTypeScript?: boolean;
 }
@@ -34,6 +35,7 @@ export const buildValidVariableName = (name: string): string => {
 
 export const buildImports = ({
   device,
+  isScript,
   name,
   useTypeScript,
 }: BuildImportsOptions): string => {
@@ -44,11 +46,17 @@ export const buildImports = ({
   let imports = '';
 
   if (device) {
-    if (useTypeScript) {
+    if (useTypeScript && isScript) {
       imports += 'import { devices } from "playwright";\n';
+    } else if (useTypeScript) {
+      imports += 'import { Browser, Page, devices } from "playwright";\n';
     } else {
       imports += 'const { devices } = require("playwright");\n';
     }
+  }
+
+  if (useTypeScript && !device && !isScript) {
+    imports += 'import { Browser, Page } from "playwright";\n';
   }
 
   if (useTypeScript) {
@@ -88,7 +96,7 @@ export const buildScriptTemplate: TemplateFunction = ({
   useTypeScript,
 }: BuildTemplateOptions): string => {
   const validName = buildValidVariableName(name);
-  const code = `${buildImports({ name, device, useTypeScript })}
+  const code = `${buildImports({ device, isScript: true, name, useTypeScript })}
 
 const ${validName} = async context => {
   let page = await context.newPage();
@@ -119,10 +127,10 @@ export const buildTestTemplate: TemplateFunction = ({
   url,
   useTypeScript,
 }: BuildTemplateOptions): string => {
-  const code = `${buildImports({ name, device, useTypeScript })}
+  const code = `${buildImports({ device, name, useTypeScript })}
 
-let browser;
-let page;
+let browser${useTypeScript ? ': Browser' : ''};
+let page${useTypeScript ? ': Page' : ''};
 
 beforeAll(async () => {
   browser = await qawolf.launch();
