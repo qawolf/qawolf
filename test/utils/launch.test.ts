@@ -1,5 +1,5 @@
 import { platform } from 'os';
-import { getLaunchOptions } from '../src';
+import { getLaunchOptions } from '../../src/utils';
 
 describe('getLaunchOptions', () => {
   it('chooses a browser based on the name', () => {

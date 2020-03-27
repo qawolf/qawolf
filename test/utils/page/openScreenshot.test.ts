@@ -1,7 +1,7 @@
 import { pathExists } from 'fs-extra';
 import { Browser, Page } from 'playwright';
 import tempy from 'tempy';
-import { launch, openScreenshot } from '../../src';
+import { launch, openScreenshot } from '../../../src/utils';
 
 describe('openScreenshot', () => {
   let browser: Browser;

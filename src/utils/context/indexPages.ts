@@ -1,7 +1,7 @@
 import Debug from 'debug';
 import { BrowserContext, Page } from 'playwright';
 
-const debug = Debug('playwright-utils:indexPages');
+const debug = Debug('qawolf:indexPages');
 
 type IndexedBrowserContext = BrowserContext & {
   _putilsIndexed: boolean;

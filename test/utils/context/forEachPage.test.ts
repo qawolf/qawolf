@@ -1,5 +1,5 @@
 import { Page } from 'playwright';
-import { forEachPage, launch, waitForPage } from '../../src';
+import { forEachPage, launch, waitForPage } from '../../../src/utils';
 
 it('runs for existing and new pages', async () => {
   const browser = await launch();
@@ -19,7 +19,7 @@ it('runs for existing and new pages', async () => {
   await pageOneReady;
 
   const result = await Promise.all(
-    [existingPage, newPage].map(page =>
+    [existingPage, newPage].map((page) =>
       page.evaluate(() => (window as any).index),
     ),
   );

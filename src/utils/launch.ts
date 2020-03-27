@@ -4,7 +4,7 @@ import { platform } from 'os';
 import * as playwright from 'playwright';
 import { isNullOrUndefined } from 'util';
 
-const debug = Debug('playwright-utils:launch');
+const debug = Debug('qawolf:launch');
 
 type BrowserName = 'chromium' | 'firefox' | 'webkit';
 

@@ -57,7 +57,7 @@ export const addDevDependencies = async (
 
   const devDependencies = packageJson.devDependencies || {};
 
-  Object.keys(packages).forEach(name => {
+  Object.keys(packages).forEach((name) => {
     const version = packages[name];
     devDependencies[name] = version;
   });
@@ -69,7 +69,7 @@ export const addDevDependencies = async (
       if (k1 > k2) return +1;
       return 0;
     })
-    .forEach(key => (sortedDevDependencies[key] = devDependencies[key]));
+    .forEach((key) => (sortedDevDependencies[key] = devDependencies[key]));
 
   packageJson.devDependencies = sortedDevDependencies;
 

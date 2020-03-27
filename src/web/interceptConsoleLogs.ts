@@ -1,4 +1,4 @@
-import { getXpath } from './utils';
+import { getXpath } from './xpath';
 
 export type LogCallback = (level: string, message: string) => void;
 

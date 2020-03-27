@@ -45,5 +45,4 @@ We maintain several packages under the [`qawolf` organzation](https://github.com
 - [qawolf](https://github.com/qawolf/qawolf) is a Node.js library for creating Playwright/Jest tests and scripts
 - [playwright-ci](https://github.com/qawolf/playwright-ci) provides a CLI to set up tests in CI
 - [playwright-html-selector](https://github.com/qawolf/playwright-html-selector) is a custom selector engine for Playwright that finds elements by their HTML
-- [playwright-utils](https://github.com/qawolf/playwright-utils) contains utility functions to help with Playwright (for example, save debug artifacts and scroll)
 - [playwright-video](https://github.com/qawolf/playwright-video) saves a video of a Playwright page

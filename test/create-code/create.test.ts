@@ -1,8 +1,8 @@
 import { readFile } from 'fs-extra';
 import { prompt } from 'inquirer';
 import { join } from 'path';
-import { launch, register, waitFor } from 'playwright-utils';
 import { getSelectorPath, getCodePath } from '../../src/create-code/create';
+import { launch, register, waitFor } from '../../src/utils';
 import { createSelf, getCallSites } from '../.qawolf/createSelf';
 import { TEST_URL } from '../utils';
 
@@ -12,7 +12,7 @@ describe('create', () => {
   it('works end-to-end', async () => {
     let fulfillPrompt: ({ choice: string }) => void;
     ((prompt as unknown) as jest.Mock).mockResolvedValue(
-      new Promise<{ choice: string }>(resolve => (fulfillPrompt = resolve)),
+      new Promise<{ choice: string }>((resolve) => (fulfillPrompt = resolve)),
     );
 
     const filePath = join(__dirname, '../.qawolf/createSelf.ts');
@@ -31,7 +31,7 @@ describe('create', () => {
 
     // wait until the creation is ready
     let createdPromise: Promise<void>;
-    await new Promise(onReady => {
+    await new Promise((onReady) => {
       createdPromise = createSelf(onReady);
     });
 

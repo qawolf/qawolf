@@ -1,9 +1,9 @@
 import { ChildProcess } from 'child_process';
 import { Browser, BrowserContext } from 'playwright';
 import { start } from 'repl';
-import { IndexedPage, launch } from '../../src';
-import * as openScreenshot from '../../src/page/openScreenshot';
-import { addScreenshotCommand } from '../../src/repl/addScreenshotCommand';
+import { IndexedPage, launch } from '../../../src/utils';
+import * as openScreenshot from '../../../src/utils/page/openScreenshot';
+import { addScreenshotCommand } from '../../../src/utils/repl/addScreenshotCommand';
 
 describe('addScreenshotCommand', () => {
   let browser: Browser;
@@ -23,7 +23,7 @@ describe('addScreenshotCommand', () => {
 
       const openScreenshotSpy = jest
         .spyOn(openScreenshot, 'openScreenshot')
-        .mockImplementation(async arg => {
+        .mockImplementation(async (arg) => {
           pageArgument = arg as IndexedPage;
           return {} as ChildProcess;
         });
@@ -35,7 +35,7 @@ describe('addScreenshotCommand', () => {
       process.stdin.push('.screenshot 0');
       process.stdin.push('\n');
       // let repl process stdin
-      await new Promise(resolve => setTimeout(resolve, 0));
+      await new Promise((resolve) => setTimeout(resolve, 0));
 
       expect(pageArgument.createdIndex).toEqual(0);
       replServer.close();

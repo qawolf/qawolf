@@ -1,4 +1,4 @@
-import { waitFor } from '../src';
+import { waitFor } from '../../src/utils';
 
 describe('waitFor', () => {
   it('supports async functions', async () => {

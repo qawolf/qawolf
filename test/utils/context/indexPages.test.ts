@@ -1,5 +1,10 @@
 import { Browser, BrowserContext } from 'playwright';
-import { indexPages, IndexedPage, launch, waitForPage } from '../../src';
+import {
+  indexPages,
+  IndexedPage,
+  launch,
+  waitForPage,
+} from '../../../src/utils';
 
 describe('indexPages', () => {
   let browser: Browser;
@@ -34,7 +39,7 @@ describe('indexPages', () => {
     expect.assertions(1);
     await context.newPage();
     await context.newPage();
-    return indexPages(context).catch(e => {
+    return indexPages(context).catch((e) => {
       expect(e.message).toEqual(
         'Cannot index pages when more than 1 exist (2)',
       );

@@ -5,7 +5,7 @@ import { dirname } from 'path';
 import { Page } from 'playwright';
 import { interceptConsoleLogs } from './interceptConsoleLogs';
 
-const debug = Debug('playwright-utils:saveConsoleLogs');
+const debug = Debug('qawolf:saveConsoleLogs');
 
 export const saveConsoleLogs = async (
   page: Page,

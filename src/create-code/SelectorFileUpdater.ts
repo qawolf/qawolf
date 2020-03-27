@@ -1,7 +1,7 @@
 import { outputJson, remove, pathExists, readJson } from 'fs-extra';
-import { ReplContext } from 'playwright-utils';
 import { buildSelectors } from '../build-code/buildSelectors';
 import { Selectors, Step } from '../types';
+import { ReplContext } from '../utils';
 
 type ConstructorOptions = {
   initialSelectors: Selectors;

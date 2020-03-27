@@ -6,7 +6,7 @@ import { start, REPLServer } from 'repl';
 import { ReplContext } from './ReplContext';
 import { addScreenshotCommand } from './addScreenshotCommand';
 
-const debug = Debug('playwright-utils:repl');
+const debug = Debug('qawolf:repl');
 
 export type Callback<S = void, T = void> = (data?: S) => T;
 
@@ -18,7 +18,7 @@ export const repl = (
    * Create a REPL and resolve when it is closed.
    */
   if (context) {
-    Object.keys(context).forEach(key => ReplContext.set(key, context[key]));
+    Object.keys(context).forEach((key) => ReplContext.set(key, context[key]));
   }
 
   console.log(
@@ -38,7 +38,7 @@ export const repl = (
 
   const setContext = (): void => {
     const data = ReplContext.data();
-    Object.keys(data).forEach(key => (replServer.context[key] = data[key]));
+    Object.keys(data).forEach((key) => (replServer.context[key] = data[key]));
   };
   setContext();
   ReplContext.instance().on('change', setContext);
@@ -47,7 +47,7 @@ export const repl = (
     callback(replServer);
   }
 
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     replServer.on('exit', () => {
       debug('exit');
       resolve();

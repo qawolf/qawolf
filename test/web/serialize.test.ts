@@ -1,5 +1,5 @@
-import { Browser, Page } from 'playwright-core';
-import { launch } from 'playwright-utils';
+import { Browser, Page } from 'playwright';
+import { launch } from '../../src/utils';
 import { QAWolfWeb } from '../../src/web';
 import { webScript } from '../../src/web/addScript';
 import { TEST_URL } from '../utils';

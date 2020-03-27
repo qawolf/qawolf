@@ -1,8 +1,8 @@
 import { Page } from 'playwright';
 import { initEvaluateScript } from './initEvaluateScript';
-import { PlaywrightUtilsWeb } from '../web';
-import { addScript } from '../web/addScript';
-import { LogCallback } from '../web/interceptConsoleLogs';
+import { QAWolfWeb } from '../../web';
+import { LogCallback } from '../../web/interceptConsoleLogs';
+import { addScriptToPage } from '../../web/addScript';
 
 let logCallbackId = 0;
 
@@ -10,7 +10,7 @@ export const interceptConsoleLogs = async (
   page: Page,
   callback: LogCallback,
 ): Promise<void> => {
-  await addScript(page);
+  await addScriptToPage(page);
 
   const callbackName = `interceptLogs${logCallbackId++}`;
   await page.exposeFunction(callbackName, callback);
@@ -18,7 +18,7 @@ export const interceptConsoleLogs = async (
   await initEvaluateScript(
     page,
     (callbackName: string) => {
-      const web: PlaywrightUtilsWeb = (window as any).playwrightutils;
+      const web: QAWolfWeb = (window as any).qawolf;
       web.interceptConsoleLogs(callbackName);
     },
     callbackName,

@@ -1,6 +1,6 @@
 import { mockProcessStdout } from 'jest-mock-process';
 import { REPLServer } from 'repl';
-import { repl as createRepl } from '../../src';
+import { repl as createRepl } from '../../../src/utils';
 
 const mockedStdout: jest.SpyInstance = mockProcessStdout();
 
@@ -9,7 +9,7 @@ describe('repl()', () => {
   let resolved = false;
 
   beforeAll(async () => {
-    createRepl({}, instance => (replServer = instance)).then(
+    createRepl({}, (instance) => (replServer = instance)).then(
       () => (resolved = true),
     );
   });
@@ -19,14 +19,14 @@ describe('repl()', () => {
   });
 
   it('opens a repl', () => {
-    const messages: string[] = mockedStdout.mock.calls.map(args => args[0]);
+    const messages: string[] = mockedStdout.mock.calls.map((args) => args[0]);
     expect(messages).toContain('> ');
   });
 
   it('resolves after the repl is closed', async () => {
     expect(resolved).toEqual(false);
     replServer.close();
-    await new Promise(r => setTimeout(r, 0));
+    await new Promise((r) => setTimeout(r, 0));
     expect(resolved).toEqual(true);
   });
 });

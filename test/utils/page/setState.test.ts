@@ -1,7 +1,7 @@
 import { tmpdir } from 'os';
 import { join } from 'path';
 import { Browser } from 'playwright';
-import { launch, saveState, setState } from '../../src';
+import { launch, saveState, setState } from '../../../src/utils';
 import { randomString, TEST_URL } from '../utils';
 
 const COOKIE = {

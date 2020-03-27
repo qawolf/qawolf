@@ -5,7 +5,7 @@ import { getFfmpegPath, saveVideo, PageVideoCapture } from 'playwright-video';
 import { forEachPage } from './forEachPage';
 import { saveConsoleLogs } from '../page/saveConsoleLogs';
 
-const debug = Debug('playwright-utils:saveArtifacts');
+const debug = Debug('qawolf:saveArtifacts');
 
 const capturesToStop: PageVideoCapture[] = [];
 
@@ -17,7 +17,7 @@ export const saveArtifacts = (
   const includeVideo = !!getFfmpegPath();
   let pageCount = 0;
 
-  return forEachPage(context, async page => {
+  return forEachPage(context, async (page) => {
     const timestamp = Date.now();
     const pageIndex = pageCount++;
     debug(`save artifacts for page ${pageIndex} at ${timestamp}`);
@@ -45,5 +45,5 @@ export const saveArtifacts = (
 };
 
 export const stopVideos = async (): Promise<void> => {
-  await Promise.all(capturesToStop.map(capture => capture.stop()));
+  await Promise.all(capturesToStop.map((capture) => capture.stop()));
 };

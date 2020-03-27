@@ -9,14 +9,14 @@ import {
   saveArtifacts,
   stopVideos,
   waitFor,
-} from '../../src';
+} from '../../../src/utils';
 import { randomString, TEST_URL } from '../utils';
 
 const waitForPath = (dir: string, search: string): Promise<string | null> =>
   waitFor(
     async () => {
       const files = await readdir(dir);
-      const file = files.find(f => f.includes(search));
+      const file = files.find((f) => f.includes(search));
       if (file) return join(dir, file);
       return null;
     },
@@ -98,7 +98,7 @@ describe('saveArtifacts', () => {
     expect(lines2).toEqual(['info: world', '']);
 
     expect(
-      (await readdir(saveDir)).find(f => f.includes('video_0')),
+      (await readdir(saveDir)).find((f) => f.includes('video_0')),
     ).toBeFalsy();
 
     await context.close();

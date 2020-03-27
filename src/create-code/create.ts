@@ -5,10 +5,10 @@ import { bold } from 'kleur';
 import { findLast } from 'lodash';
 import { basename, dirname, join } from 'path';
 import { BrowserContext } from 'playwright';
-import { ReplContext } from 'playwright-utils';
 import { CREATE_HANDLE } from './CodeUpdater';
 import { CreateManager } from './CreateManager';
 import { getLineIncludes } from './format';
+import { ReplContext } from '../utils';
 
 type CreateOptions = {
   codePath?: string;
@@ -26,7 +26,7 @@ export const getCodePath = async (
   debug(`search caller files for ${CREATE_HANDLE} %j`, callerFileNames);
 
   const codes = await Promise.all(
-    callerFileNames.map(async filename => {
+    callerFileNames.map(async (filename) => {
       let code = '';
 
       if (await pathExists(filename)) {
@@ -65,7 +65,7 @@ export const create = async (options: CreateOptions = {}): Promise<void> => {
 
   let codePath = options.codePath;
   if (!codePath) {
-    const callerFileNames = callsites().map(c => c.getFileName());
+    const callerFileNames = callsites().map((c) => c.getFileName());
     codePath = await getCodePath(callerFileNames);
   }
 

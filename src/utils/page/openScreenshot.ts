@@ -4,7 +4,7 @@ import open from 'open';
 import { Page } from 'playwright';
 import { file } from 'tempy';
 
-const debug = Debug('playwright-utils:openScreenshot');
+const debug = Debug('qawolf:openScreenshot');
 
 export const openScreenshot = async (page: Page): Promise<ChildProcess> => {
   const path = file({ extension: 'png' });

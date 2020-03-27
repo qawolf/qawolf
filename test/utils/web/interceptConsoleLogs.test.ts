@@ -1,14 +1,14 @@
 import { Browser, Page } from 'playwright';
-import { launch } from '../../src/launch';
-import { PlaywrightUtilsWeb } from '../../src/web';
-import { addScript } from '../../src/web/addScript';
+import { launch } from '../../../src/utils';
+import { QAWolfWeb } from '../../../src/web';
+import { addScriptToPage } from '../../../src/web/addScript';
 
 let page: Page;
 
 const formatArgument = (arg: any, isSelector = false): Promise<any> => {
   return page.evaluate(
     ({ arg, isSelector }) => {
-      const web: PlaywrightUtilsWeb = (window as any).playwrightutils;
+      const web: QAWolfWeb = (window as any).qawolf;
 
       if (isSelector) {
         return web.formatArgument(document.querySelector(arg));
@@ -25,7 +25,7 @@ describe('interceptConsoleLogs', () => {
   beforeAll(async () => {
     browser = await launch();
     page = await browser.newPage();
-    await addScript(page);
+    await addScriptToPage(page);
   });
 
   afterAll(() => browser.close());
