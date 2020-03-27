@@ -1,4 +1,5 @@
 import { spawn } from 'child_process';
+import chokidar from 'chokidar';
 import { buildArguments } from './runJest';
 import { createServer, AddressInfo } from 'net';
 import { loadConfig } from '../config';
@@ -14,12 +15,7 @@ const server = createServer((socket) => {
   console.error(err);
 });
 
-(async () => {
-  await new Promise((resolve) => server.listen(0, () => resolve()));
-
-  const address = server.address() as AddressInfo;
-  console.log('address', address, 'port', address.port);
-
+const startTest = (address: any) => {
   const config = loadConfig();
 
   const args = buildArguments({
@@ -31,16 +27,25 @@ const server = createServer((socket) => {
     testTimeout: config.testTimeout,
   });
 
-  const child = spawn('npx', ['qawolf', 'test', ...args, 'edit'], {
-    env: {
-      EDIT_PORT: `${address.port}`,
-      //   // ...env,
-      //   // override env with process.env
-      //   // ex. for unit tests we want QAW_BROWSER to override cli one
-      ...process.env,
+  const child = spawn(
+    'npx',
+    [
+      'qawolf',
+      'test',
+      ...args,
+      '/Users/jon/dev/qawolf/test/.qawolf/edit.test.js',
+    ],
+    {
+      env: {
+        EDIT_PORT: `${address.port}`,
+        //   // ...env,
+        //   // override env with process.env
+        //   // ex. for unit tests we want QAW_BROWSER to override cli one
+        ...process.env,
+      },
+      stdio: 'inherit',
     },
-    stdio: 'inherit',
-  });
+  );
 
   child.on('error', function (error) {
     console.log('child process error with', error);
@@ -50,5 +55,27 @@ const server = createServer((socket) => {
     console.log(
       'child process exited with ' + `code ${code} and signal ${signal}`,
     );
+  });
+
+  return child;
+};
+
+(async () => {
+  await new Promise((resolve) => server.listen(0, () => resolve()));
+
+  const address = server.address() as AddressInfo;
+  console.log('address', address, 'port', address.port);
+
+  const watcher = chokidar.watch(__filename, {
+    atomic: 0,
+    persistent: true,
+  });
+
+  watcher.on('change', () => {
+    console.log('START TEST', Date.now());
+
+    startTest(address);
+
+    // resolve();
   });
 })();

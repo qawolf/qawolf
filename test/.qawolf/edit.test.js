@@ -1,9 +1,9 @@
+console.log('test running', Date.now());
+
 const qawolf = require('qawolf');
-const { TEST_URL } = require('./utils');
+// const { TEST_URL } = require('./utils');
 
 const net = require('net');
-
-console.log(process.env.EDIT_PORT);
 
 const client = net.createConnection(
   { port: Number(process.env.EDIT_PORT) },
@@ -38,5 +38,5 @@ afterAll(async () => {
 });
 
 test('edit', async () => {
-  await new Promise(() => {});
+  console.log('ran test');
 });
