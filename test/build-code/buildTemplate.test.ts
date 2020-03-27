@@ -71,6 +71,21 @@ describe('buildTemplate', () => {
       statePath: 'admin.json',
     });
     expect(template).toMatchSnapshot();
+
+    template = buildTemplate({
+      ...options,
+      isScript: true,
+      useTypeScript: true,
+    });
+    expect(template).toMatchSnapshot();
+
+    template = buildTemplate({
+      ...options,
+      device: 'iPhone 7',
+      isScript: true,
+      useTypeScript: true,
+    });
+    expect(template).toMatchSnapshot();
   });
 
   it('builds test template', () => {
