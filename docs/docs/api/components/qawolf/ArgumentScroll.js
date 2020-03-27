@@ -47,18 +47,6 @@ function ArgumentScroll() {
         optional
         type="number"
       />
-      <Argument
-        description={
-          <React.Fragment>
-            When to consider navigation over before trying to scroll.{' '}
-            <b>Default:</b> <code>"load"</code>.
-          </React.Fragment>
-        }
-        indent
-        name="waitUntil"
-        optional
-        type='"commit" | "load" | "domcontentloaded" | "networkidle0" | "networkidle2"'
-      />
     </React.Fragment>
   );
 }

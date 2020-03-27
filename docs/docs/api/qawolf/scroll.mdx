@@ -40,14 +40,13 @@ const qawolf = require('qawolf');
 qawolf.scroll(page, '#container', { x: 100, y: 0, timeoutMs: 10000 });
 ```
 
-Scroll the element with the specified default selector vertically by 200 pixels. Consider navigation to be complete after the `DOMContentLoaded` event fires:
+Scroll the element with the specified default selector vertically by 200 pixels:
 
 ```js
 const qawolf = require('qawolf');
 // ...
 qawolf.scroll(page, selectors['2_container_div'], {
   x: 0,
-  y: 200,
-  waitUntil: 'domcontentloaded',
+  y: 200
 });
 ```
