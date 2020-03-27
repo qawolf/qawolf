@@ -47,7 +47,7 @@
     "await-outside": "^3.0.0",
     "callsites": "^3.1.0",
     "commander": "^5.0.0",
-    "debug": "^4.1.1",
+    "debug": "*",
     "inquirer": "^7.1.0",
     "kleur": "^3.0.3",
     "open": "^7.0.3",
