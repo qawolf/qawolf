@@ -3,7 +3,7 @@ import { tmpdir } from 'os';
 import { join } from 'path';
 import { Browser, Page } from 'playwright';
 import { launch, saveConsoleLogs } from '../../../src/utils';
-import { randomString } from '../utils';
+import { randomString } from '../../utils';
 
 describe('saveConsoleLogs', () => {
   let browser: Browser;

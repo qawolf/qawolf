@@ -1,7 +1,7 @@
 import { Browser, Page } from 'playwright';
-import { launch } from '../../../src/utils';
-import { QAWolfWeb } from '../../../src/web';
-import { addScriptToPage } from '../../../src/web/addScript';
+import { launch } from '../../src/utils';
+import { QAWolfWeb } from '../../src/web';
+import { addScriptToPage } from '../../src/web/addScript';
 
 let page: Page;
 

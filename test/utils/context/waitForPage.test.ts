@@ -1,6 +1,6 @@
 import { Browser, BrowserContext } from 'playwright';
 import { launch, waitForPage, IndexedPage } from '../../../src/utils';
-import { TEST_URL } from '../utils';
+import { TEST_URL } from '../../utils';
 
 describe('waitForPage', () => {
   let browser: Browser;

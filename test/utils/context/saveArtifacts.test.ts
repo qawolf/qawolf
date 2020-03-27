@@ -10,7 +10,7 @@ import {
   stopVideos,
   waitFor,
 } from '../../../src/utils';
-import { randomString, TEST_URL } from '../utils';
+import { randomString, TEST_URL } from '../../utils';
 
 const waitForPath = (dir: string, search: string): Promise<string | null> =>
   waitFor(
