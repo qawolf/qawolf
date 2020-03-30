@@ -5,7 +5,6 @@ import {
   buildScriptTemplate,
   buildTestTemplate,
   BuildTemplateOptions,
-  TemplateFunction,
 } from '../build-code/buildTemplate';
 import { getSelectorPath } from '../create-code/create';
 
@@ -18,7 +17,6 @@ type BuildPathOptions = {
 
 type SaveTemplateOptions = BuildTemplateOptions & {
   rootDir: string;
-  templateFn?: TemplateFunction;
 };
 
 export const buildPath = ({
@@ -39,10 +37,7 @@ export const saveTemplate = async (
   const path = buildPath(options);
   if (!(await promptOverwrite(path))) return null;
 
-  let templateFn = options.templateFn;
-  if (!templateFn) {
-    templateFn = options.isScript ? buildScriptTemplate : buildTestTemplate;
-  }
+  const templateFn = options.isScript ? buildScriptTemplate : buildTestTemplate;
 
   await ensureFile(path);
   await writeFile(path, templateFn(options));

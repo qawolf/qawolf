@@ -19,7 +19,6 @@ export const runCreate = async (options: CreateOptions): Promise<void> => {
     name: options.name,
     rootDir: config.rootDir,
     statePath: options.statePath,
-    templateFn: config.createTemplate,
     url: options.url,
     useTypeScript: config.useTypeScript,
   });
