@@ -48,13 +48,13 @@ describe('CodeFileUpdater', () => {
   describe('create', () => {
     it('replaces qawolf.create call with the patch handle', async () => {
       mockedReadFile.mockResolvedValue(
-        `  someCode();\n  await qawolf.create();\n  otherCode();`,
+        `  someCode();\n  await qawolf.create({ otherParams });\n  otherCode();`,
       );
       await CodeFileUpdater.create('somepath');
 
       const updatedFile = mockedOutputFile.mock.calls[0][1];
       expect(updatedFile).toBe(
-        `  someCode();\n  // 🐺 CREATE CODE HERE\n  otherCode();`,
+        `  someCode();\n  await qawolf.create();\n  otherCode();`,
       );
     });
 

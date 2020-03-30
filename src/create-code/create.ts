@@ -11,11 +11,8 @@ import { getLineIncludes } from './format';
 import { ReplContext } from '../utils';
 
 type CreateOptions = {
-  codePath?: string;
-  context?: BrowserContext;
   // used for testing
   onReady?: () => void;
-  selectorPath?: string;
 };
 
 const debug = Debug('qawolf:create');
@@ -55,21 +52,18 @@ export const getSelectorPath = (codePath: string): string => {
 };
 
 export const create = async (options: CreateOptions = {}): Promise<void> => {
-  const context: BrowserContext =
-    options.context || (ReplContext.data() as any).context;
+  const context: BrowserContext = (ReplContext.data() as any).context;
   if (!context) {
     throw new Error(
-      'No context found. Call qawolf.register(context) before qawolf.create() or qawolf.create({ context })',
+      'No context found. Call qawolf.register(context) before qawolf.create()',
     );
   }
 
-  let codePath = options.codePath;
-  if (!codePath) {
-    const callerFileNames = callsites().map((c) => c.getFileName());
-    codePath = await getCreatePath(callerFileNames);
-  }
+  const callerFileNames = callsites().map((c) => c.getFileName());
 
-  const selectorPath = options.selectorPath || getSelectorPath(codePath);
+  const codePath = await getCreatePath(callerFileNames);
+
+  const selectorPath = getSelectorPath(codePath);
 
   const manager = await CreateManager.create({
     codePath,

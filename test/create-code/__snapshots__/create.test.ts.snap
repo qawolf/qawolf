@@ -20,7 +20,7 @@ import qawolf from '../../src';
 
 export const createSelf = async (onReady: () => void): Promise<void> => {
   // 🐺 I code, therefore I am
-  // 🐺 CREATE CODE HERE
+  await qawolf.create();
 };
 
 export const getCallSites = (): string[] =>
@@ -35,7 +35,7 @@ import qawolf from '../../src';
 export const createSelf = async (onReady: () => void): Promise<void> => {
   // 🐺 I code, therefore I am
   await page.type(\\"[data-qa='html-text-input']\\", \\"hello\\");
-  // 🐺 CREATE CODE HERE
+  await qawolf.create();
 };
 
 export const getCallSites = (): string[] =>
