@@ -1,7 +1,7 @@
 import { pathExists } from 'fs-extra';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { buildPath, saveTemplate } from '../../src/run/saveTemplate';
+import { buildPath, saveTemplate } from '../../src/cli/saveTemplate';
 import { randomString } from '../utils';
 
 describe('buildPath', () => {

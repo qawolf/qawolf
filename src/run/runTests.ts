@@ -1,5 +1,5 @@
-import { runCommand } from './runCommand';
 import { BrowserName } from '../types';
+import { execSync } from 'child_process';
 
 type TestOptions = {
   args?: string[];
@@ -13,7 +13,7 @@ type TestOptions = {
   testTimeout?: number;
 };
 
-export const buildArguments = (
+export const buildJestArguments = (
   options: Omit<TestOptions, 'browsers'>,
 ): string[] => {
   const builtArgs: string[] = [];
@@ -57,15 +57,23 @@ export const buildArguments = (
   return builtArgs;
 };
 
-export const runJest = (options: TestOptions): void => {
-  const command = `npx jest ${buildArguments(options).join(' ')}`;
+export const runTests = (options: TestOptions): void => {
+  const command = `npx jest ${buildJestArguments(options).join(' ')}`;
 
   for (const browser of options.browsers) {
     console.log(`Test: ${browser}`);
+    // log the command to show the user how to run it directly
+    console.log(`${command}\n`);
 
-    runCommand(command, {
-      QAW_BROWSER: browser,
-      ...(options.env || {}),
+    execSync(command, {
+      stdio: 'inherit',
+      env: {
+        QAW_BROWSER: browser,
+        ...options.env,
+        // override env with process.env
+        // ex. for unit tests we want QAW_BROWSER to override cli one
+        ...process.env,
+      },
     });
   }
 };

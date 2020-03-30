@@ -1,6 +1,43 @@
 import program, { Command } from 'commander';
+import { loadConfig } from '../config';
 import { parseUrl } from './parseUrl';
-import { runCreate } from '../run/runCreate';
+import { EditRunner } from '../run/EditRunner';
+import { saveTemplate } from './saveTemplate';
+
+export type CreateOptions = {
+  device?: string;
+  isScript?: boolean;
+  name: string;
+  statePath?: string;
+  url: string;
+};
+
+export const runCreate = async (options: CreateOptions): Promise<void> => {
+  const config = loadConfig();
+
+  const codePath = await saveTemplate({
+    device: options.device,
+    isScript: options.isScript,
+    name: options.name,
+    rootDir: config.rootDir,
+    statePath: options.statePath,
+    url: options.url,
+    useTypeScript: config.useTypeScript,
+  });
+  if (!codePath) {
+    // the user decided to not overwrite
+    return;
+  }
+
+  await EditRunner.start({
+    codePath,
+    config,
+    env: {
+      QAW_CREATE: 'true',
+    },
+    isScript: options.isScript,
+  });
+};
 
 export const buildCreateCommand = (): program.Command => {
   const command = new Command('create')

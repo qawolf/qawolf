@@ -1,7 +1,7 @@
 import program, { Command } from 'commander';
 import { loadConfig } from '../config';
 import { omitArgs } from './omitArgs';
-import { runJest } from '../run/runJest';
+import { runTests } from '../run/runTests';
 import { BrowserName } from '../types';
 
 export const buildTestCommand = (): program.Command => {
@@ -23,22 +23,22 @@ export const buildTestCommand = (): program.Command => {
       if (opts.allBrowsers || opts.webkit) browsers.push('webkit');
       if (!browsers.length) browsers.push('chromium');
 
+      // omit qawolf arguments
+      const jestArgs = omitArgs(process.argv.slice(3), [
+        '--all-browsers',
+        '--chromium',
+        '--firefox',
+        '--headless',
+        '--repl',
+        // should be passed through config
+        '--rootDir',
+        '--webkit',
+      ]);
+
+      const config = loadConfig();
+
       try {
-        // omit qawolf arguments
-        const jestArgs = omitArgs(process.argv.slice(3), [
-          '--all-browsers',
-          '--chromium',
-          '--firefox',
-          '--headless',
-          '--repl',
-          // should be passed through config
-          '--rootDir',
-          '--webkit',
-        ]);
-
-        const config = loadConfig();
-
-        runJest({
+        runTests({
           args: jestArgs,
           browsers,
           config: config.config,
@@ -48,8 +48,6 @@ export const buildTestCommand = (): program.Command => {
           rootDir: config.rootDir,
           testTimeout: config.testTimeout,
         });
-
-        process.exit(0);
       } catch (e) {
         process.exit(1);
       }
