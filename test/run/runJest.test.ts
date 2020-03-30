@@ -1,4 +1,4 @@
-import { buildArguments, runJest } from '../../src/cli/runJest';
+import { buildArguments, runJest } from '../../src/run/runJest';
 import { join, resolve } from 'path';
 
 const rootDir = join(__dirname, '../.qawolf');
@@ -19,7 +19,7 @@ describe('buildArguments', () => {
 
     it('does not use config if not specified', () => {
       const builtArgs = buildArguments({});
-      expect(builtArgs.filter(arg => arg.includes('--config'))).toEqual([]);
+      expect(builtArgs.filter((arg) => arg.includes('--config'))).toEqual([]);
     });
   });
 
@@ -33,7 +33,9 @@ describe('buildArguments', () => {
   describe('testTimeout', () => {
     it('not set when one is provided', () => {
       const args = buildArguments({ args: ['--testTimeout=1000'] });
-      const timeoutArgs = args.filter(a => a.toLowerCase().includes('timeout'));
+      const timeoutArgs = args.filter((a) =>
+        a.toLowerCase().includes('timeout'),
+      );
       expect(timeoutArgs).toEqual(['--testTimeout=1000']);
     });
 

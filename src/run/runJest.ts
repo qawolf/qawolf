@@ -34,7 +34,7 @@ export const buildArguments = (
   const rootDir = options.rootDir || '.qawolf';
   builtArgs.push(`--rootDir=${rootDir}`);
 
-  const hasTimeoutArg = !!providedArgs.find(arg =>
+  const hasTimeoutArg = !!providedArgs.find((arg) =>
     arg.toLowerCase().includes('testtimeout'),
   );
   if (!hasTimeoutArg) {
@@ -62,6 +62,7 @@ export const runJest = (options: TestOptions): void => {
 
   for (const browser of options.browsers) {
     console.log(`Test: ${browser}`);
+
     runCommand(command, {
       QAW_BROWSER: browser,
       ...(options.env || {}),

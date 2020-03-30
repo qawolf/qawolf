@@ -1,7 +1,7 @@
 import program, { Command } from 'commander';
 import { loadConfig } from '../config';
 import { omitArgs } from './omitArgs';
-import { runJest } from './runJest';
+import { runJest } from '../run/runJest';
 import { BrowserName } from '../types';
 
 export const buildTestCommand = (): program.Command => {

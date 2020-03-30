@@ -1,11 +1,12 @@
-import * as createCommand from '../../src/cli/createCommand';
+import { buildCreateCommand } from '../../src/cli/createCommand';
+import * as runCreate from '../../src/run/runCreate';
 
 describe('cli argument parsing', () => {
-  let createOptions: createCommand.CreateOptions;
+  let createOptions: runCreate.CreateOptions;
 
-  const runCreateSpy = jest.spyOn(createCommand, 'runCreate');
+  const runCreateSpy = jest.spyOn(runCreate, 'runCreate');
 
-  runCreateSpy.mockImplementation(async options => {
+  runCreateSpy.mockImplementation(async (options) => {
     createOptions = options;
   });
 
@@ -18,7 +19,7 @@ describe('cli argument parsing', () => {
   };
 
   const parse = (args: string[]): void => {
-    const command = createCommand.buildCreateCommand();
+    const command = buildCreateCommand();
     command.parse(['index.js', 'create', ...args]);
   };
 
