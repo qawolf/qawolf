@@ -20,7 +20,7 @@ type CreateOptions = {
 
 const debug = Debug('qawolf:create');
 
-export const getCodePath = async (
+export const getCreatePath = async (
   callerFileNames: string[],
 ): Promise<string> => {
   debug(`search caller files for ${CREATE_HANDLE} %j`, callerFileNames);
@@ -66,7 +66,7 @@ export const create = async (options: CreateOptions = {}): Promise<void> => {
   let codePath = options.codePath;
   if (!codePath) {
     const callerFileNames = callsites().map((c) => c.getFileName());
-    codePath = await getCodePath(callerFileNames);
+    codePath = await getCreatePath(callerFileNames);
   }
 
   const selectorPath = options.selectorPath || getSelectorPath(codePath);

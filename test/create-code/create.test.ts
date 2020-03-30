@@ -1,7 +1,7 @@
 import { readFile } from 'fs-extra';
 import { prompt } from 'inquirer';
 import { join } from 'path';
-import { getSelectorPath, getCodePath } from '../../src/create-code/create';
+import { getSelectorPath, getCreatePath } from '../../src/create-code/create';
 import { launch, register, waitFor } from '../../src/utils';
 import { createSelf, getCallSites } from '../.qawolf/createSelf';
 import { TEST_URL } from '../utils';
@@ -57,9 +57,9 @@ describe('create', () => {
   });
 });
 
-describe('getCodePath', () => {
+describe('getCreatePath', () => {
   it('finds the caller file with create handle', async () => {
-    const codePath = await getCodePath(getCallSites());
+    const codePath = await getCreatePath(getCallSites());
     expect(codePath).toEqual(join(__dirname, '../.qawolf/createSelf.ts'));
   });
 });

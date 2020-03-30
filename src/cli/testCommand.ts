@@ -12,7 +12,7 @@ export const buildTestCommand = (): program.Command => {
     .option('--firefox', 'run tests on firefox')
     .option('--headless', 'run tests headless')
     .option('--webkit', 'run tests on webkit')
-    .description('✅ run browser tests with Jest')
+    .description('✅ run tests')
     .allowUnknownOption(true)
     .action(async () => {
       const opts = command.opts();
