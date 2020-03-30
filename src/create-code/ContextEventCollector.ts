@@ -1,6 +1,6 @@
 import Debug from 'debug';
 import { EventEmitter } from 'events';
-import { BrowserContext } from 'playwright';
+import { BrowserContext, ChromiumBrowserContext } from 'playwright';
 import { loadConfig } from '../config';
 import { ElementEvent } from '../types';
 import {
@@ -9,6 +9,7 @@ import {
   indexPages,
   initEvaluateScript,
 } from '../utils';
+import { NavigationListener } from './NavigationListener'
 import { QAWolfWeb } from '../web';
 import { addScriptToContext } from '../web/addScript';
 
@@ -39,11 +40,11 @@ export class ContextEventCollector extends EventEmitter {
     this._attribute = options.attribute;
 
     forEachPage(options.context, (page) =>
-      this._collectPageEvents(page as IndexedPage),
+      this._collectPageEvents(options.context, page as IndexedPage),
     );
   }
 
-  private async _collectPageEvents(page: IndexedPage): Promise<void> {
+  private async _collectPageEvents(context: BrowserContext, page: IndexedPage): Promise<void> {
     if (page.isClosed()) return;
 
     const index = page.createdIndex;
@@ -53,6 +54,12 @@ export class ContextEventCollector extends EventEmitter {
       debug(`emit %j`, event);
       this.emit('elementevent', event);
     });
+
+    const navigationListener = new NavigationListener({
+      context: context as ChromiumBrowserContext,
+      page,
+    });
+    await navigationListener.init()
 
     await initEvaluateScript(
       page,
