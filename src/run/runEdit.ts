@@ -12,6 +12,7 @@ type EditOptions = {
 export const runEdit = ({ config, ...options }: EditOptions): void => {
   const env: NodeJS.ProcessEnv = {
     ...options.env,
+    QAW_EDIT: 'true',
     QAW_HEADLESS: 'false',
   };
 

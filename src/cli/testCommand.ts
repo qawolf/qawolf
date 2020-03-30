@@ -11,7 +11,6 @@ export const buildTestCommand = (): program.Command => {
     .option('--chromium', 'run tests on chromium')
     .option('--firefox', 'run tests on firefox')
     .option('--headless', 'run tests headless')
-    .option('--repl', 'open a REPL when repl() is called')
     .option('--webkit', 'run tests on webkit')
     .description('✅ run browser tests with Jest')
     .allowUnknownOption(true)
@@ -46,7 +45,6 @@ export const buildTestCommand = (): program.Command => {
           env: {
             QAW_HEADLESS: opts.headless ? 'true' : 'false',
           },
-          repl: !!opts.repl,
           rootDir: config.rootDir,
           testTimeout: config.testTimeout,
         });

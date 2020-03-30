@@ -1,3 +1,5 @@
+import program, { Command } from 'commander';
+
 const wolf = String.raw`
                      .
                     / V\
@@ -12,6 +14,10 @@ const wolf = String.raw`
 <__________\______)\__)
 `;
 
-export const howl = (): void => {
-  console.log(wolf);
+export const buildHowlCommand = (): program.Command => {
+  const command = new Command('howl')
+    .description('🐺')
+    .action(() => console.log(wolf));
+
+  return command;
 };
