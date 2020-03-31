@@ -1,13 +1,13 @@
 import { EventEmitter } from 'events';
 
-export class ReplContext extends EventEmitter {
-  private static _instance = new ReplContext();
+export class Registry extends EventEmitter {
+  private static _instance = new Registry();
 
   public static data(): any {
     return this.instance()._data;
   }
 
-  public static instance(): ReplContext {
+  public static instance(): Registry {
     return this._instance;
   }
 

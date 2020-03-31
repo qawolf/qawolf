@@ -3,7 +3,7 @@ import { register as registerHtmlSelector } from 'playwright-html-selector';
 import { basename, join } from 'path';
 import { indexPages } from './context/indexPages';
 import { saveArtifacts } from './context/saveArtifacts';
-import { ReplContext } from './repl/ReplContext';
+import { Registry } from './Registry';
 
 let htmlSelectorRegistered = false;
 
@@ -27,7 +27,7 @@ export const getArtifactPath = (): string | null => {
 };
 
 export const register = async (context: BrowserContext): Promise<void> => {
-  ReplContext.set('context', context);
+  Registry.set('context', context);
 
   const promises: Promise<any>[] = [];
 

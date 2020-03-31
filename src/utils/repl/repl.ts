@@ -3,7 +3,7 @@ import { addAwaitOutsideToReplServer } from 'await-outside';
 import Debug from 'debug';
 import { bold } from 'kleur';
 import { start, REPLServer } from 'repl';
-import { ReplContext } from './ReplContext';
+import { Registry } from '../Registry';
 import { addScreenshotCommand } from './addScreenshotCommand';
 
 const debug = Debug('qawolf:repl');
@@ -18,7 +18,7 @@ export const repl = (
    * Create a REPL and resolve when it is closed.
    */
   if (context) {
-    Object.keys(context).forEach((key) => ReplContext.set(key, context[key]));
+    Object.keys(context).forEach((key) => Registry.set(key, context[key]));
   }
 
   console.log(
@@ -37,11 +37,11 @@ export const repl = (
   addScreenshotCommand(replServer);
 
   const setContext = (): void => {
-    const data = ReplContext.data();
+    const data = Registry.data();
     Object.keys(data).forEach((key) => (replServer.context[key] = data[key]));
   };
   setContext();
-  ReplContext.instance().on('change', setContext);
+  Registry.instance().on('change', setContext);
 
   if (callback) {
     callback(replServer);

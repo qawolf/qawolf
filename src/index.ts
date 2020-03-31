@@ -4,8 +4,8 @@ import { create } from './create-code/create';
 import {
   launch,
   repl,
-  ReplContext,
   register,
+  Registry,
   saveState,
   scroll,
   setState,
@@ -57,7 +57,7 @@ export {
 };
 
 // set qawolf on repl context
-ReplContext.set('qawolf', qawolf);
+Registry.set('qawolf', qawolf);
 
 // make repl a global
 (global as any).repl = repl;

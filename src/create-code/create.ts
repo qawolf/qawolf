@@ -8,7 +8,7 @@ import { BrowserContext } from 'playwright';
 import { CREATE_HANDLE } from './CodeUpdater';
 import { CreateManager } from './CreateManager';
 import { getLineIncludes } from './format';
-import { ReplContext } from '../utils';
+import { Registry } from '../utils';
 
 type CreateOptions = {
   // used for testing
@@ -52,7 +52,7 @@ export const getSelectorPath = (codePath: string): string => {
 };
 
 export const create = async (options: CreateOptions = {}): Promise<void> => {
-  const context: BrowserContext = (ReplContext.data() as any).context;
+  const context: BrowserContext = (Registry.data() as any).context;
   if (!context) {
     throw new Error(
       'No context found. Call qawolf.register(context) before qawolf.create()',

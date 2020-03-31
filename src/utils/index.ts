@@ -14,7 +14,7 @@ export { setState } from './page/setState';
 // global utils
 export { getLaunchOptions, launch } from './launch';
 export { repl } from './repl/repl';
-export { ReplContext } from './repl/ReplContext';
+export { Registry } from './Registry';
 
 // internal use (for now)
 export { register } from './register';

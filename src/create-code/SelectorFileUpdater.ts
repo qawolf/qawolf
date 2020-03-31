@@ -1,7 +1,7 @@
 import { outputJson, remove, pathExists, readJson } from 'fs-extra';
 import { buildSelectors } from '../build-code/buildSelectors';
 import { Selectors, Step } from '../types';
-import { ReplContext } from '../utils';
+import { Registry } from '../utils';
 
 type ConstructorOptions = {
   initialSelectors: Selectors;
@@ -61,7 +61,7 @@ export class SelectorFileUpdater {
     this._lock = true;
 
     const updatedSelectors = this.selectors();
-    ReplContext.set('selectors', updatedSelectors);
+    Registry.set('selectors', updatedSelectors);
     await outputJson(this._path, updatedSelectors, { spaces: ' ' });
 
     this._lock = false;
