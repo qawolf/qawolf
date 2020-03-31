@@ -19,11 +19,7 @@ export const buildEditCommand = (): program.Command => {
         useTypeScript: config.useTypeScript,
       });
 
-      await EditRunner.start({
-        codePath,
-        config,
-        isScript: !codePath.includes('test'),
-      });
+      await EditRunner.start({ codePath, config });
     });
 
   return command;

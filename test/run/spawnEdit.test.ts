@@ -14,7 +14,6 @@ describe('buildEditArguments', () => {
       buildEditArguments({
         codePath: 'myscript.js',
         config,
-        isScript: true,
       }),
     ).toEqual(['node', 'myscript.js']);
   });
@@ -27,24 +26,31 @@ describe('buildEditArguments', () => {
           ...config,
           useTypeScript: true,
         },
-        isScript: true,
       }),
     ).toEqual(['ts-node', '-D=6133', 'myscript.ts']);
   });
 
   test('test', () => {
-    expect(
-      buildEditArguments({
-        codePath: 'my.test.js',
-        config,
-      }),
-    ).toEqual([
+    const expected = [
       'npx',
       'jest',
       '--reporters="@qawolf/jest-reporter"',
       '--rootDir=rootdir',
       '--testTimeout=3600000',
-      'my.test.js',
-    ]);
+    ];
+
+    expect(
+      buildEditArguments({
+        codePath: 'my.spec.js',
+        config,
+      }),
+    ).toEqual([...expected, 'my.spec.js']);
+
+    expect(
+      buildEditArguments({
+        codePath: 'my.test.js',
+        config,
+      }),
+    ).toEqual([...expected, 'my.test.js']);
   });
 });

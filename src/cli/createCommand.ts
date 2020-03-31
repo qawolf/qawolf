@@ -35,7 +35,6 @@ export const runCreate = async (options: CreateOptions): Promise<void> => {
     env: {
       QAW_CREATE: 'true',
     },
-    isScript: options.isScript,
   });
 };
 

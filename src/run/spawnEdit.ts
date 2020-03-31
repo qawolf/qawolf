@@ -6,25 +6,15 @@ export type EditOptions = {
   codePath: string;
   config: Config;
   env?: NodeJS.ProcessEnv;
-  isScript?: boolean;
 };
 
 export const buildEditArguments = ({
   codePath,
   config,
-  isScript,
 }: EditOptions): string[] => {
   const args: string[] = [];
 
-  if (isScript) {
-    if (config.useTypeScript) {
-      args.push(...['ts-node', '-D=6133']);
-    } else {
-      args.push('node');
-    }
-
-    args.push(codePath);
-  } else {
+  if (codePath.includes('spec') || codePath.includes('test')) {
     args.push(...['npx', 'jest']);
 
     args.push(
@@ -38,6 +28,14 @@ export const buildEditArguments = ({
 
     // manually include code as the last argument
     // if we provided it to buildJestArguments({ testPath }) it would be escaped with quotes
+    args.push(codePath);
+  } else {
+    if (config.useTypeScript) {
+      args.push(...['ts-node', '-D=6133']);
+    } else {
+      args.push('node');
+    }
+
     args.push(codePath);
   }
 
