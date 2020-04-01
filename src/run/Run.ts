@@ -62,6 +62,8 @@ export class Run extends EventEmitter {
       if (message.name === 'codeupdate') {
         debug('received: codeupdate %o');
         this.emit('codeupdate', message.code);
+      } else if (message.name === 'closed') {
+        this.emit('closed');
       }
     });
   }

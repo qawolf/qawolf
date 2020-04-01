@@ -1,15 +1,21 @@
-import Debug from 'debug';
 import { FSWatcher, watch } from 'chokidar';
+import Debug from 'debug';
 import { EventEmitter } from 'events';
 import { readFile } from 'fs-extra';
 import { AddressInfo, createServer, Server } from 'net';
 import { RunOptions } from './buildRunArguments';
 import { Run } from './Run';
 
-const debug = Debug('qawolf:RunServer');
-
 type RunServerOptions = RunOptions & {
   watch?: boolean;
+};
+
+const debug = Debug('qawolf:RunServer');
+
+const KEYS = {
+  CONTROL_C: '\u0003',
+  CONTROL_D: '\u0004',
+  ENTER: '\r',
 };
 
 export class RunServer extends EventEmitter {
@@ -39,6 +45,8 @@ export class RunServer extends EventEmitter {
     this._server = createServer((socket) => {
       this._run.setConnection(socket);
     });
+
+    this._closeOnKeys();
   }
 
   _listen() {
@@ -70,6 +78,41 @@ export class RunServer extends EventEmitter {
     return this._server.address() as AddressInfo;
   }
 
+  _closeOnKeys() {
+    const { stdin } = process;
+
+    const onKeyPress = (key: string) => {
+      if (
+        key === KEYS.CONTROL_C ||
+        key === KEYS.CONTROL_D
+        // TODO enter should only be considered if prompt not open....
+        // || key === KEYS.ENTER
+      ) {
+        console.log('close');
+
+        stdin.removeListener('data', onKeyPress);
+
+        if (stdin.isTTY) {
+          stdin.setRawMode(false);
+        }
+        stdin.pause();
+
+        if (this._run) this._run.close();
+
+        this.close();
+      }
+    };
+
+    if (stdin.isTTY) {
+      stdin.setRawMode(true);
+    }
+
+    stdin.resume();
+    stdin.setEncoding('utf8');
+
+    stdin.on('data', onKeyPress);
+  }
+
   createRun() {
     debug('create run');
     if (this._run) this._run.kill();
@@ -85,9 +128,17 @@ export class RunServer extends EventEmitter {
     this._run.start();
 
     this._run.on('codeupdate', (code) => (this._code = code));
+
+    this._run.on('closed', () => this.close());
   }
 
   close() {
+    if (process.stdin.isTTY) {
+      process.stdin.setRawMode(false);
+    }
+    process.stdin.pause();
+
+    debug('close');
     if (this._watcher) this._watcher.close();
 
     this._server.close();
