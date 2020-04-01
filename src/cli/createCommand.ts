@@ -1,7 +1,7 @@
 import program, { Command } from 'commander';
 import { loadConfig } from '../config';
 import { parseUrl } from './parseUrl';
-import { EditRunner } from '../run/EditRunner';
+import { RunServer } from '../run/RunServer';
 import { saveTemplate } from './saveTemplate';
 
 export type CreateOptions = {
@@ -29,12 +29,14 @@ export const runCreate = async (options: CreateOptions): Promise<void> => {
     return;
   }
 
-  await EditRunner.start({
+  await RunServer.start({
     codePath,
     config,
     env: {
       QAW_CREATE: 'true',
+      QAW_HEADLESS: 'false',
     },
+    watch: true,
   });
 };
 

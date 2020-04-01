@@ -1,7 +1,7 @@
 import program, { Command } from 'commander';
 import { loadConfig } from '../config';
 import { getCodePath } from './getCodePath';
-import { EditRunner } from '../run/EditRunner';
+import { RunServer } from '../run/RunServer';
 
 export const buildEditCommand = (): program.Command => {
   const command = new Command('edit')
@@ -19,7 +19,14 @@ export const buildEditCommand = (): program.Command => {
         useTypeScript: config.useTypeScript,
       });
 
-      await EditRunner.start({ codePath, config });
+      await RunServer.start({
+        codePath,
+        config,
+        env: {
+          QAW_HEADLESS: 'false',
+        },
+        watch: true,
+      });
     });
 
   return command;

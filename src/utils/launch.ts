@@ -3,6 +3,7 @@ import { platform } from 'os';
 // need to launch from playwright not playwright-core since the browsers are different
 import * as playwright from 'playwright';
 import { isNullOrUndefined } from 'util';
+import { Registry } from './Registry';
 
 const debug = Debug('qawolf:launch');
 
@@ -62,5 +63,8 @@ export const launch = async (
   const browser = await playwright[launchOptions.browserName].launch(
     launchOptions,
   );
+
+  Registry.set('browser', browser);
+
   return browser;
 };

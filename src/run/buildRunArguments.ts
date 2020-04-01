@@ -1,20 +1,21 @@
-import { ChildProcess, spawn } from 'child_process';
+import { basename } from 'path';
 import { buildJestArguments } from './buildJestArguments';
 import { Config } from '../config';
 
-export type EditOptions = {
+export type RunOptions = {
   codePath: string;
   config: Config;
   env?: NodeJS.ProcessEnv;
 };
 
-export const buildEditArguments = ({
+export const buildRunArguments = ({
   codePath,
   config,
-}: EditOptions): string[] => {
+}: RunOptions): string[] => {
   const args: string[] = [];
 
-  if (codePath.includes('spec') || codePath.includes('test')) {
+  const name = basename(codePath);
+  if (name.includes('spec') || name.includes('test')) {
     args.push(...['npx', 'jest']);
 
     args.push(
@@ -40,26 +41,4 @@ export const buildEditArguments = ({
   }
 
   return args;
-};
-
-export const spawnEdit = (options: EditOptions): ChildProcess => {
-  const env: NodeJS.ProcessEnv = {
-    ...options.env,
-    QAW_EDIT: 'true',
-    QAW_HEADLESS: 'false',
-  };
-
-  const args = buildEditArguments(options);
-
-  const child = spawn(args[0], args.slice(1), {
-    env: {
-      ...env,
-      // override env with process.env
-      // ex. for unit tests we want QAW_BROWSER to override cli one
-      ...process.env,
-    },
-    stdio: 'inherit',
-  });
-
-  return child;
 };

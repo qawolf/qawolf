@@ -5,6 +5,7 @@ import { BrowserContext } from 'playwright';
 import { buildSteps } from '../build-workflow/buildSteps';
 import { CodeFileUpdater } from './CodeFileUpdater';
 import { ContextEventCollector } from './ContextEventCollector';
+import { runClient } from '../run/RunClient';
 import { SelectorFileUpdater } from './SelectorFileUpdater';
 import { ElementEvent } from '../types';
 import { repl } from '../utils';
@@ -57,6 +58,12 @@ export class CreateManager {
     );
 
     const codeUpdater = await CodeFileUpdater.create(options.codePath);
+
+    if (runClient) {
+      codeUpdater.on('codeupdate', (code: string) =>
+        runClient.sendCodeUpdate(code),
+      );
+    }
 
     const selectorUpdater = await SelectorFileUpdater.create(
       options.selectorPath,

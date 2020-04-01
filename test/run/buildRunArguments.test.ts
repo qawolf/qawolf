@@ -1,5 +1,5 @@
-import { buildEditArguments } from '../../src/run/spawnEdit';
 import { Config } from '../../build/config';
+import { buildRunArguments } from '../../src/run/buildRunArguments';
 
 const config: Config = {
   attribute: '',
@@ -8,19 +8,20 @@ const config: Config = {
   useTypeScript: false,
 };
 
-describe('buildEditArguments', () => {
+describe('buildRunArguments builds correct arguments for', () => {
   test('node script', () => {
     expect(
-      buildEditArguments({
-        codePath: 'myscript.js',
+      buildRunArguments({
+        // make sure it detects a script in a test folder
+        codePath: 'test/myscript.js',
         config,
       }),
-    ).toEqual(['node', 'myscript.js']);
+    ).toEqual(['node', 'test/myscript.js']);
   });
 
   test('typescript script', () => {
     expect(
-      buildEditArguments({
+      buildRunArguments({
         codePath: 'myscript.ts',
         config: {
           ...config,
@@ -40,14 +41,14 @@ describe('buildEditArguments', () => {
     ];
 
     expect(
-      buildEditArguments({
+      buildRunArguments({
         codePath: 'my.spec.js',
         config,
       }),
     ).toEqual([...expected, 'my.spec.js']);
 
     expect(
-      buildEditArguments({
+      buildRunArguments({
         codePath: 'my.test.js',
         config,
       }),
