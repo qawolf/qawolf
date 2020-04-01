@@ -6,8 +6,9 @@ const debug = Debug('qawolf:RunClient');
 type CloseCallback = () => void | Promise<void>;
 
 export class RunClient {
-  private _onClose: CloseCallback[] = [];
   private _connection: Socket;
+  private _closed: boolean;
+  private _onClose: CloseCallback[] = [];
 
   constructor(port: number) {
     this._connection = createConnection({ port });
@@ -20,10 +21,25 @@ export class RunClient {
     });
   }
 
+  public async dispose() {
+    if (this._closed || this._connection.destroyed) return;
+
+    this._closed = true;
+    this._connection.end();
+  }
+
   public async _close() {
+    if (this._closed) return;
+    debug('close');
+
+    this._closed = true;
+
     await Promise.all(this._onClose.map((fn) => fn()));
+    if (this._connection.destroyed) return;
+
     debug('send closed');
     this._connection.write(JSON.stringify({ name: 'closed' }));
+    this._connection.end();
   }
 
   public onClose(callback: CloseCallback) {

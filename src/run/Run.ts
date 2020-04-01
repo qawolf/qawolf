@@ -23,6 +23,8 @@ export class Run extends EventEmitter {
 
     debug('close');
 
+    if (this._socket.destroyed) return;
+
     const closedPromise = new Promise((resolve) => {
       this._socket.on('data', (data) => {
         const message = JSON.parse(data.toString());

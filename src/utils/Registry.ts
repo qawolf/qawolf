@@ -18,7 +18,22 @@ export class Registry extends EventEmitter {
     instance.emit('change', instance._data);
 
     if (key === 'browser') {
-      if (runClient) runClient.onClose(() => value.close());
+      if (runClient) {
+        let closed = false;
+
+        const originalClose = value.close.bind(value);
+
+        value.close = () => {
+          if (closed) return;
+
+          closed = true;
+          runClient.dispose();
+
+          return originalClose();
+        };
+
+        runClient.onClose(() => value.close());
+      }
     }
   }
 
