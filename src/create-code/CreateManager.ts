@@ -1,5 +1,5 @@
 import Debug from 'debug';
-import { prompt } from 'inquirer';
+import inquirer from 'inquirer';
 import { relative } from 'path';
 import { BrowserContext } from 'playwright';
 import { buildSteps } from '../build-workflow/buildSteps';
@@ -25,7 +25,7 @@ type ConstructorOptions = {
 const debug = Debug('qawolf:CreateManager');
 
 export const promptSaveRepl = async (codePath: string): Promise<boolean> => {
-  const { choice } = await prompt<{ choice: string }>([
+  const prompt = inquirer.prompt<{ choice: string }>([
     {
       choices: [
         '💾  Save and exit',
@@ -38,6 +38,18 @@ export const promptSaveRepl = async (codePath: string): Promise<boolean> => {
     },
   ]);
 
+  let received = false;
+
+  if (runClient) {
+    runClient.onClose(() => {
+      if (received) return;
+
+      (prompt.ui as any).close();
+    });
+  }
+
+  const { choice } = await prompt;
+  received = true;
   if (choice.includes('REPL')) {
     await repl();
 
