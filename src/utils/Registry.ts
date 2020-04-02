@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import { runClient } from '../run/RunClient';
+import { Run } from '../run/Run';
 
 export class Registry extends EventEmitter {
   private static _instance = new Registry();
@@ -18,22 +18,21 @@ export class Registry extends EventEmitter {
     instance.emit('change', instance._data);
 
     if (key === 'browser') {
-      if (runClient) {
-        let closed = false;
+      // TODO move all of this...
+      let closed = false;
 
-        const originalClose = value.close.bind(value);
+      const originalClose = value.close.bind(value);
 
-        value.close = () => {
-          if (closed) return;
+      value.close = () => {
+        if (closed) return;
 
-          closed = true;
-          runClient.dispose();
+        closed = true;
+        Run.disconnect();
 
-          return originalClose();
-        };
+        return originalClose();
+      };
 
-        runClient.onClose(() => value.close());
-      }
+      Run.onStop(() => value.close());
     }
   }
 

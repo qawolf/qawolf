@@ -9,7 +9,6 @@ import { CREATE_HANDLE } from './CodeUpdater';
 import { CreateManager } from './CreateManager';
 import { getLineIncludes } from './format';
 import { Registry } from '../utils';
-import { runClient } from '../run/RunClient';
 
 type CreateOptions = {
   // used for testing
@@ -76,8 +75,4 @@ export const create = async (options: CreateOptions = {}): Promise<void> => {
   if (options.onReady) options.onReady();
 
   await manager.finalize();
-
-  if (runClient) runClient._close();
-
-  // TODO notify run server to end...
 };

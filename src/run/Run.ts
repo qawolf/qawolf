@@ -1,90 +1,55 @@
-import { ChildProcess, spawn } from 'child_process';
-import Debug from 'debug';
-import { EventEmitter } from 'events';
-import { Socket } from 'net';
-import { buildRunArguments, RunOptions } from './buildRunArguments';
+import { RunClient } from './RunClient';
 
-const debug = Debug('qawolf:Run');
+type StopCallback = () => void | Promise<void>;
 
-export class Run extends EventEmitter {
-  _closed: boolean;
-  _options: RunOptions;
-  _process: ChildProcess;
-  _socket: Socket;
+export class Run {
+  private static _client: RunClient;
+  private static _onStop: StopCallback[] = [];
+  private static _stopped: boolean;
 
-  constructor(options: RunOptions) {
-    super();
-    this._options = options;
+  public static _connect() {
+    const port = process.env.QAW_RUN_SERVER_PORT;
+    if (this._client || !port) return;
+
+    this._client = new RunClient(Number(port));
+    this._client.once('stop', () => this._handleStop());
   }
 
-  public async close(): Promise<void> {
-    if (this._closed || !this._socket) return;
-    this._closed = true;
+  private static async _handleStop() {
+    if (this._stopped) return;
 
-    debug('close');
+    this._stopped = true;
 
-    if (this._socket.destroyed) return;
+    const callbacks = this._onStop;
+    await Promise.all(callbacks.map((fn) => fn()));
 
-    const closedPromise = new Promise((resolve) => {
-      this._socket.on('data', (data) => {
-        const message = JSON.parse(data.toString());
-        if (message.name === 'closed') {
-          debug('received: closed');
-          resolve();
-        }
-      });
-    });
-
-    this._socket.write(JSON.stringify({ name: 'close' }));
-    await closedPromise;
+    this._client.sendStopped();
+    this._client.disconnect();
   }
 
-  public async kill() {
-    debug('kill');
+  public static disconnect() {
+    // do not try to disconnect in the middle of a stop
+    if (this._stopped || !this._client) return;
 
-    await this.close();
-
-    if (this._process) {
-      debug('kill process');
-      this._process.kill();
-    }
+    this._client.disconnect();
+    this._client = null;
   }
 
-  public setConnection(socket: Socket): void {
-    if (this._socket) throw new Error('Connection already set');
+  public static codeUpdate(code: string) {
+    if (!this._client) return;
 
-    debug('set connection');
-
-    this._socket = socket;
-
-    this._socket.on('data', (data) => {
-      const message = JSON.parse(data.toString());
-      if (message.name === 'codeupdate') {
-        debug('received: codeupdate %o');
-        this.emit('codeupdate', message.code);
-      } else if (message.name === 'closed') {
-        this.emit('closed');
-      }
-    });
+    this._client.sendCodeUpdate(code);
   }
 
-  public start(): void {
-    if (this._process) throw new Error('Run already started');
+  public static onStop(callback: StopCallback) {
+    this._onStop.push(callback);
+  }
 
-    const args = buildRunArguments(this._options);
+  public static stopRunner() {
+    if (!this._client) return;
 
-    const env = {
-      ...this._options.env,
-      // override env with process.env
-      // ex. for unit tests we want QAW_BROWSER to override cli one
-      ...process.env,
-    };
-
-    debug('start %o', args);
-
-    this._process = spawn(args[0], args.slice(1), {
-      env,
-      stdio: 'inherit',
-    });
+    this._client.sendStopRunner();
   }
 }
+
+Run._connect();

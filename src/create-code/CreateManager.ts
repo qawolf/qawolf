@@ -5,7 +5,7 @@ import { BrowserContext } from 'playwright';
 import { buildSteps } from '../build-workflow/buildSteps';
 import { CodeFileUpdater } from './CodeFileUpdater';
 import { ContextEventCollector } from './ContextEventCollector';
-import { runClient } from '../run/RunClient';
+import { Run } from '../run/Run';
 import { SelectorFileUpdater } from './SelectorFileUpdater';
 import { ElementEvent } from '../types';
 import { repl } from '../utils';
@@ -40,13 +40,11 @@ export const promptSaveRepl = async (codePath: string): Promise<boolean> => {
 
   let received = false;
 
-  if (runClient) {
-    runClient.onClose(() => {
-      if (received) return;
+  Run.onStop(() => {
+    if (received) return;
 
-      (prompt.ui as any).close();
-    });
-  }
+    (prompt.ui as any).close();
+  });
 
   const { choice } = await prompt;
   received = true;
@@ -71,11 +69,9 @@ export class CreateManager {
 
     const codeUpdater = await CodeFileUpdater.create(options.codePath);
 
-    if (runClient) {
-      codeUpdater.on('codeupdate', (code: string) =>
-        runClient.sendCodeUpdate(code),
-      );
-    }
+    codeUpdater.on('codeupdate', (code: string) => {
+      Run.codeUpdate(code);
+    });
 
     const selectorUpdater = await SelectorFileUpdater.create(
       options.selectorPath,
@@ -126,11 +122,14 @@ export class CreateManager {
 
   public async finalize(): Promise<void> {
     const shouldSave = await promptSaveRepl(this._codeUpdater.path());
+
     if (shouldSave) {
       await this._codeUpdater.finalize();
     } else {
       await this._codeUpdater.discard();
       await this._selectorUpdater.discard();
     }
+
+    Run.stopRunner();
   }
 }
