@@ -17,10 +17,30 @@ export class RunProcess extends EventEmitter {
     this._options = options;
   }
 
+  public async _stop(): Promise<void> {
+    if (this._stopped || !this._socket) return;
+    this._stopped = true;
+
+    debug('stop');
+
+    const hasStopped = new Promise((resolve) => {
+      this._socket.on('data', (data) => {
+        const message = JSON.parse(data.toString());
+        if (message.name === 'stopped') {
+          debug('received: stopped');
+          resolve();
+        }
+      });
+    });
+
+    this._socket.write(JSON.stringify({ name: 'stop' }));
+    await hasStopped;
+  }
+
   public async kill() {
     debug('kill');
 
-    await this.stop();
+    await this._stop();
 
     if (this._process) {
       debug('kill process');
@@ -72,25 +92,5 @@ export class RunProcess extends EventEmitter {
       env,
       stdio: 'inherit',
     });
-  }
-
-  public async stop(): Promise<void> {
-    if (this._stopped || !this._socket) return;
-    this._stopped = true;
-
-    debug('stop');
-
-    const hasStopped = new Promise((resolve) => {
-      this._socket.on('data', (data) => {
-        const message = JSON.parse(data.toString());
-        if (message.name === 'stopped') {
-          debug('received: stopped');
-          resolve();
-        }
-      });
-    });
-
-    this._socket.write(JSON.stringify({ name: 'stop' }));
-    await hasStopped;
   }
 }

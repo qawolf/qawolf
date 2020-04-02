@@ -86,7 +86,7 @@ export class RunServer extends EventEmitter {
     });
 
     this._run.on('stoprunner', () => {
-      this._run.stop();
+      this._run.kill();
       this.close();
     });
 
