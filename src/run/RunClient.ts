@@ -30,8 +30,10 @@ export class RunClient extends EventEmitter {
     this._connection.write(JSON.stringify(value));
   }
 
-  public disconnect() {
+  public close() {
     if (!this._connection) return;
+
+    debug('close');
 
     this._connection.end();
     this._connection = null;

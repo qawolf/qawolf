@@ -89,6 +89,10 @@ export class RunServer extends EventEmitter {
       this._run.stop();
       this.close();
     });
+
+    if (!this._options.watch) {
+      this._run.on('close', () => this.close());
+    }
   }
 
   close() {

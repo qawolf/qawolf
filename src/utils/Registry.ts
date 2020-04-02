@@ -27,7 +27,9 @@ export class Registry extends EventEmitter {
         if (closed) return;
 
         closed = true;
-        Run.disconnect();
+
+        // remove open handles
+        Run.close();
 
         return originalClose();
       };

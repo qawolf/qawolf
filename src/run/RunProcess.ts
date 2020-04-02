@@ -47,7 +47,11 @@ export class RunProcess extends EventEmitter {
       }
     });
 
-    this._socket.on('close', () => (this._socket = null));
+    this._socket.on('close', () => {
+      debug('received: close');
+      this.emit('close');
+      this._socket = null;
+    });
   }
 
   public start(): void {

@@ -7,14 +7,6 @@ export class Run {
   private static _onStop: StopCallback[] = [];
   private static _stopped: boolean;
 
-  public static _connect() {
-    const port = process.env.QAW_RUN_SERVER_PORT;
-    if (this._client || !port) return;
-
-    this._client = new RunClient(Number(port));
-    this._client.once('stop', () => this._handleStop());
-  }
-
   private static async _handleStop() {
     if (this._stopped) return;
 
@@ -24,14 +16,22 @@ export class Run {
     await Promise.all(callbacks.map((fn) => fn()));
 
     this._client.sendStopped();
-    this._client.disconnect();
+    this._client.close();
   }
 
-  public static disconnect() {
-    // do not try to disconnect in the middle of a stop
+  public static _connect() {
+    const port = process.env.QAW_RUN_SERVER_PORT;
+    if (this._client || !port) return;
+
+    this._client = new RunClient(Number(port));
+    this._client.once('stop', () => this._handleStop());
+  }
+
+  public static close() {
+    // do not try to close in the middle of a stop
     if (this._stopped || !this._client) return;
 
-    this._client.disconnect();
+    this._client.close();
     this._client = null;
   }
 
