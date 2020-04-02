@@ -5,6 +5,7 @@ import { readFile } from 'fs-extra';
 import { AddressInfo, createServer, Server } from 'net';
 import { RunOptions } from './buildRunArguments';
 import { RunProcess } from './RunProcess';
+import { ShortcutListener } from './ShortcutListener';
 
 type RunServerOptions = RunOptions & {
   watch?: boolean;
@@ -39,6 +40,14 @@ export class RunServer extends EventEmitter {
     this._server = createServer((socket) => {
       this._run.setConnection(socket);
     });
+
+    const listener = new ShortcutListener();
+
+    listener.on('exit', () => {
+      debug('exit from key shortcut');
+      listener.close();
+      this.close();
+    });
   }
 
   _listen() {
@@ -48,6 +57,8 @@ export class RunServer extends EventEmitter {
   }
 
   async _watch() {
+    debug('watch');
+
     this._code = await readFile(this._options.codePath, 'utf8');
 
     this._watcher = watch(this._options.codePath, {
@@ -59,7 +70,7 @@ export class RunServer extends EventEmitter {
       const newCode = await readFile(this._options.codePath, 'utf8');
       if (newCode === this._code) return;
 
-      debug('code changed, rerun');
+      debug('code changed');
       this._code = newCode;
       this.startRun();
     });
@@ -97,6 +108,8 @@ export class RunServer extends EventEmitter {
 
   close() {
     debug('close');
+    if (this._run) this._run.kill();
+
     if (this._watcher) this._watcher.close();
 
     this._server.close();

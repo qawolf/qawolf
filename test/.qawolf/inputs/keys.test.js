@@ -14,7 +14,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await qawolf.stopVideos();
-  await browser.close();
+  // await browser.close();
 });
 
 test('fill', async () => {
