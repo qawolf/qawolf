@@ -31,8 +31,10 @@ export class RunClient extends EventEmitter {
   private _send(value: any) {
     if (!this._socket) return;
 
-    debug('send %s', value.name);
-    this._socket.write(JSON.stringify(value) + '\n');
+    try {
+      debug('send %s', value.name);
+      this._socket.write(JSON.stringify(value) + '\n');
+    } catch (e) {}
   }
 
   public close() {

@@ -99,19 +99,19 @@ export class RunServer extends EventEmitter {
     });
 
     run.on('stoprunner', () => {
-      debug('run closed');
       run.kill();
-      this._run.kill();
       this.close();
     });
 
-    run.on('close', () => {
-      debug('run closed');
-      // close when the current run closes
-      // ex. in create mode after Enter is selected
-      // ex. in edit, non-watch mode when the current run ends
-      if (this._run === run) this.close();
-    });
+    // TODO what about for create?
+
+    if (!this._options.watch) {
+      // when the run finishes, close
+      run.on('close', () => {
+        debug('run closed');
+        this.close();
+      });
+    }
   }
 
   close() {
@@ -124,5 +124,7 @@ export class RunServer extends EventEmitter {
     this._server.close();
 
     this._listener.close();
+
+    process.exit();
   }
 }
