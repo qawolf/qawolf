@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import { Browser } from 'playwright';
 import { Run } from '../run/Run';
 
 export class Registry extends EventEmitter {
@@ -12,30 +13,16 @@ export class Registry extends EventEmitter {
     return this._instance;
   }
 
+  public static setBrowser(browser: Browser) {
+    this.set('browser', browser);
+    browser.on('disconnected', () => Run.close());
+    Run.onStop(() => browser.close());
+  }
+
   public static set(key: string, value: any): void {
     const instance = this.instance();
     instance._data[key] = value;
     instance.emit('change', instance._data);
-
-    if (key === 'browser') {
-      // TODO move all of this...
-      let closed = false;
-
-      const originalClose = value.close.bind(value);
-
-      value.close = () => {
-        if (closed) return;
-
-        closed = true;
-
-        // remove open handles
-        Run.close();
-
-        return originalClose();
-      };
-
-      Run.onStop(() => value.close());
-    }
   }
 
   protected _data: {} = {};

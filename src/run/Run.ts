@@ -17,6 +17,7 @@ export class Run {
 
     this._client.sendStopped();
     this._client.close();
+    this._client = null;
   }
 
   public static _connect() {
