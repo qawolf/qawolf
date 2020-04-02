@@ -15,8 +15,20 @@ export class Registry extends EventEmitter {
 
   public static setBrowser(browser: Browser) {
     this.set('browser', browser);
+
     browser.on('disconnected', () => Run.close());
-    Run.onStop(() => browser.close());
+
+    Run.onStop(async () => {
+      try {
+        await browser.close();
+      } catch (e) {}
+
+      if (browser.isConnected()) {
+        await new Promise((resolve) => {
+          browser.on('disconnected', resolve);
+        });
+      }
+    });
   }
 
   public static set(key: string, value: any): void {

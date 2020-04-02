@@ -15,6 +15,7 @@ const debug = Debug('qawolf:RunServer');
 
 export class RunServer extends EventEmitter {
   private _code: string;
+  private _listener: ShortcutListener;
   private _options: RunServerOptions;
   private _run: RunProcess;
   private _watcher: FSWatcher;
@@ -41,11 +42,10 @@ export class RunServer extends EventEmitter {
       this._run.setConnection(socket);
     });
 
-    const listener = new ShortcutListener();
+    this._listener = new ShortcutListener();
 
-    listener.on('exit', () => {
+    this._listener.on('exit', () => {
       debug('exit from key shortcut');
-      listener.close();
       this.close();
     });
   }
@@ -82,7 +82,7 @@ export class RunServer extends EventEmitter {
 
     const port = (this._server.address() as AddressInfo).port;
 
-    this._run = new RunProcess({
+    const run = new RunProcess({
       ...this._options,
       env: {
         ...this._options.env,
@@ -90,28 +90,39 @@ export class RunServer extends EventEmitter {
       },
     });
 
-    this._run.start();
+    this._run = run;
 
-    this._run.on('codeupdate', (code) => {
+    run.start();
+
+    run.on('codeupdate', (code) => {
       this._code = code;
     });
 
-    this._run.on('stoprunner', () => {
+    run.on('stoprunner', () => {
+      debug('run closed');
+      run.kill();
       this._run.kill();
       this.close();
     });
 
-    if (!this._options.watch) {
-      this._run.on('close', () => this.close());
-    }
+    run.on('close', () => {
+      debug('run closed');
+      // close when the current run closes
+      // ex. in create mode after Enter is selected
+      // ex. in edit, non-watch mode when the current run ends
+      if (this._run === run) this.close();
+    });
   }
 
   close() {
     debug('close');
+
     if (this._run) this._run.kill();
 
     if (this._watcher) this._watcher.close();
 
     this._server.close();
+
+    this._listener.close();
   }
 }

@@ -1,42 +1,47 @@
 import Debug from 'debug';
 import { EventEmitter } from 'events';
 import { createConnection, Socket } from 'net';
+import split from 'split';
 
 const debug = Debug('qawolf:RunClient');
 
 export class RunClient extends EventEmitter {
-  private _connection: Socket;
+  private _socket: Socket;
 
   constructor(port: number) {
     super();
     debug('connect to port %o', port);
-    this._connection = createConnection({ port });
+    this._socket = createConnection({ port });
+    this._socket.setEncoding('utf8');
+
     this._listen();
   }
 
   private _listen() {
-    this._connection.on('data', (data) => {
-      const message = JSON.parse(data.toString());
-      debug('received %o', message);
+    this._socket.pipe(split()).on('data', (data: string) => {
+      debug('received %o', data);
 
-      if (message.name === 'stop') this.emit('stop');
+      try {
+        const message = JSON.parse(data);
+        if (message.name === 'stop') this.emit('stop');
+      } catch (e) {}
     });
   }
 
   private _send(value: any) {
-    if (!this._connection) return;
+    if (!this._socket) return;
 
     debug('send %s', value.name);
-    this._connection.write(JSON.stringify(value));
+    this._socket.write(JSON.stringify(value) + '\n');
   }
 
   public close() {
-    if (!this._connection) return;
+    if (!this._socket) return;
 
     debug('close');
 
-    this._connection.end();
-    this._connection = null;
+    this._socket.end();
+    this._socket = null;
     this.removeAllListeners();
   }
 

@@ -21,7 +21,7 @@ export class ShortcutListener extends EventEmitter {
 
     if (stdin.isTTY) stdin.setRawMode(true);
 
-    stdin.resume();
+    // stdin.resume();
     stdin.setEncoding('utf8');
 
     stdin.on('data', this._onKeyPress);

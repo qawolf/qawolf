@@ -2,6 +2,7 @@ import { ChildProcess, spawn } from 'child_process';
 import Debug from 'debug';
 import { EventEmitter } from 'events';
 import { Socket } from 'net';
+import split from 'split';
 import { buildRunArguments, RunOptions } from './buildRunArguments';
 
 const debug = Debug('qawolf:RunProcess');
@@ -24,20 +25,19 @@ export class RunProcess extends EventEmitter {
     debug('stop');
 
     const hasStopped = new Promise((resolve) => {
-      this._socket.on('data', (data) => {
-        const message = JSON.parse(data.toString());
-        if (message.name === 'stopped') {
-          debug('received: stopped');
-          resolve();
-        }
-      });
+      this.once('stopped', () => resolve());
     });
 
-    this._socket.write(JSON.stringify({ name: 'stop' }));
+    try {
+      this._socket.write(JSON.stringify({ name: 'stop' }) + '\n');
+    } catch (e) {}
+
     await hasStopped;
   }
 
   public async kill() {
+    if (this._stopped) return;
+
     debug('kill');
 
     await this._stop();
@@ -54,17 +54,22 @@ export class RunProcess extends EventEmitter {
     debug('set connection');
     this._socket = socket;
 
-    this._socket.on('data', (data) => {
-      const message = JSON.parse(data.toString());
-      debug('received: %s', message.name);
+    socket.setEncoding('utf8');
 
-      if (message.name === 'codeupdate') {
-        this.emit('codeupdate', message.code);
-      } else if (message.name === 'stopped') {
-        this.emit('stopped');
-      } else if (message.name === 'stoprunner') {
-        this.emit('stoprunner');
-      }
+    this._socket.pipe(split()).on('data', (data: string) => {
+      debug('received: %s', data);
+
+      try {
+        const message = JSON.parse(data);
+
+        if (message.name === 'codeupdate') {
+          this.emit('codeupdate', message.code);
+        } else if (message.name === 'stopped') {
+          this.emit('stopped');
+        } else if (message.name === 'stoprunner') {
+          this.emit('stoprunner');
+        }
+      } catch (e) {}
     });
 
     this._socket.on('close', () => {
