@@ -25,7 +25,7 @@ export const buildEditCommand = (): program.Command => {
         env: {
           QAW_HEADLESS: 'false',
         },
-        // watch: true,
+        watch: true,
       });
     });
 

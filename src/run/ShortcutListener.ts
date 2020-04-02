@@ -21,7 +21,6 @@ export class ShortcutListener extends EventEmitter {
 
     if (stdin.isTTY) stdin.setRawMode(true);
 
-    // stdin.resume();
     stdin.setEncoding('utf8');
 
     stdin.on('data', this._onKeyPress);
@@ -42,10 +41,6 @@ export class ShortcutListener extends EventEmitter {
 
     const { stdin } = process;
     stdin.removeListener('data', this._onKeyPress);
-
-    if (stdin.isTTY) stdin.setRawMode(false);
-
-    stdin.pause();
 
     this.removeAllListeners();
   }
