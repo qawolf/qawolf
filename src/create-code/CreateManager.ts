@@ -40,23 +40,33 @@ export const promptSaveRepl = async (codePath: string): Promise<boolean> => {
 
   let received = false;
 
+  let resolve: (save: boolean) => void;
+
+  const promise = new Promise<boolean>((r) => {
+    resolve = r;
+  });
+
   Run.onStop(() => {
     if (received) return;
 
     (prompt.ui as any).close();
+
+    resolve(null);
   });
 
-  const { choice } = await prompt;
-  received = true;
-  if (choice.includes('REPL')) {
-    await repl();
+  prompt.then(async ({ choice }) => {
+    received = true;
+    if (choice.includes('REPL')) {
+      await repl();
 
-    // prompt again
-    return promptSaveRepl(codePath);
-  }
+      promptSaveRepl(codePath).then(resolve);
+    }
 
-  const shouldSave = choice.includes('Save');
-  return shouldSave;
+    const shouldSave = choice.includes('Save');
+    return resolve(shouldSave);
+  });
+
+  return promise;
 };
 
 export class CreateManager {
@@ -122,9 +132,9 @@ export class CreateManager {
 
   public async finalize(): Promise<void> {
     const shouldSave = await promptSaveRepl(this._codeUpdater.path());
-    if (shouldSave) {
+    if (shouldSave === true) {
       await this._codeUpdater.finalize();
-    } else {
+    } else if (shouldSave === false) {
       await this._codeUpdater.discard();
       await this._selectorUpdater.discard();
     }
