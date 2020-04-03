@@ -18,7 +18,7 @@ export class RunProcess extends EventEmitter {
     this._options = options;
   }
 
-  public async _stop(): Promise<void> {
+  async _stop(): Promise<void> {
     if (this._stopped || !this._socket) return;
     this._stopped = true;
 
@@ -69,13 +69,15 @@ export class RunProcess extends EventEmitter {
         } else if (message.name === 'stoprunner') {
           this.emit('stoprunner');
         }
-      } catch (e) {}
+      } catch (e) {
+        // the last message will not be JSON
+      }
     });
 
     this._socket.on('close', () => {
       debug('received: close');
-      this.emit('close');
       this._socket = null;
+      this.emit('close');
     });
   }
 

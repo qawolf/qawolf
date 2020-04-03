@@ -18,6 +18,10 @@ export class RunClient extends EventEmitter {
   }
 
   private _listen() {
+    this._socket.on('close', () => {
+      this._socket = null;
+    });
+
     this._socket.pipe(split()).on('data', (data: string) => {
       debug('received %o', data);
 
@@ -31,10 +35,8 @@ export class RunClient extends EventEmitter {
   private _send(value: any) {
     if (!this._socket) return;
 
-    try {
-      debug('send %s', value.name);
-      this._socket.write(JSON.stringify(value) + '\n');
-    } catch (e) {}
+    debug('send %s', value.name);
+    this._socket.write(JSON.stringify(value) + '\n');
   }
 
   public close() {
@@ -51,11 +53,11 @@ export class RunClient extends EventEmitter {
     this._send({ name: 'codeupdate', code });
   }
 
-  public sendStopRunner() {
-    this._send({ name: 'stoprunner' });
-  }
-
   public sendStopped() {
     this._send({ name: 'stopped' });
+  }
+
+  public sendStopRunner() {
+    this._send({ name: 'stoprunner' });
   }
 }
