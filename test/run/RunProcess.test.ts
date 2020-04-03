@@ -73,6 +73,7 @@ describe('Run', () => {
   });
 
   describe('setConnection', () => {
+    // eslint-disable-next-line jest/no-test-callback
     it('emits close when the socket closes', (done) => {
       const run = new RunProcess({
         config,
@@ -89,6 +90,7 @@ describe('Run', () => {
       serverSocket.end();
     });
 
+    // eslint-disable-next-line jest/no-test-callback
     it('emits received events', (done) => {
       const run = new RunProcess({
         config,

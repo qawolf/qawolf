@@ -1,1 +1,3 @@
-(function noop() {})();
+(function noop(): boolean {
+  return true;
+})();

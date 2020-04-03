@@ -10,6 +10,7 @@ export class RunClient extends EventEmitter {
 
   constructor(port: number) {
     super();
+
     debug('connect to port %o', port);
     this._socket = createConnection({ port });
     this._socket.setEncoding('utf8');
@@ -17,7 +18,7 @@ export class RunClient extends EventEmitter {
     this._listen();
   }
 
-  private _listen() {
+  private _listen(): void {
     this._socket.on('close', () => {
       this._socket = null;
     });
@@ -28,18 +29,20 @@ export class RunClient extends EventEmitter {
       try {
         const message = JSON.parse(data);
         if (message.name === 'stop') this.emit('stop');
-      } catch (e) {}
+      } catch (e) {
+        // ignore non JSON messages (last empty message)
+      }
     });
   }
 
-  private _send(value: any) {
+  private _send(value: any): void {
     if (!this._socket) return;
 
     debug('send %s', value.name);
     this._socket.write(JSON.stringify(value) + '\n');
   }
 
-  public close() {
+  public close(): void {
     if (!this._socket) return;
 
     debug('close');
@@ -49,15 +52,15 @@ export class RunClient extends EventEmitter {
     this.removeAllListeners();
   }
 
-  public sendCodeUpdate(code: string) {
+  public sendCodeUpdate(code: string): void {
     this._send({ name: 'codeupdate', code });
   }
 
-  public sendStopped() {
+  public sendStopped(): void {
     this._send({ name: 'stopped' });
   }
 
-  public sendStopRunner() {
+  public sendStopRunner(): void {
     this._send({ name: 'stoprunner' });
   }
 }

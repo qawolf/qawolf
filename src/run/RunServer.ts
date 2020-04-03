@@ -15,12 +15,12 @@ const debug = Debug('qawolf:RunServer');
 
 export class RunServer extends EventEmitter {
   private _code: string;
-  private _listener: ShortcutListener;
+  private _shorcut: ShortcutListener;
   private _options: RunServerOptions;
   private _run: RunProcess;
   private _watcher: FSWatcher;
 
-  public static async start(options: RunServerOptions) {
+  public static async start(options: RunServerOptions): Promise<RunServer> {
     const server = new RunServer(options);
     await server._listen();
 
@@ -42,21 +42,21 @@ export class RunServer extends EventEmitter {
       this._run.setConnection(socket);
     });
 
-    this._listener = new ShortcutListener();
+    this._shorcut = new ShortcutListener();
 
-    this._listener.on('exit', () => {
+    this._shorcut.on('exit', () => {
       debug('exit from key shortcut');
       this.close();
     });
   }
 
-  _listen() {
+  private _listen(): Promise<void> {
     return new Promise((resolve) => {
       this._server.listen(0, () => resolve());
     });
   }
 
-  async _watch() {
+  private async _watch(): Promise<void> {
     debug('watch');
 
     this._code = await readFile(this._options.codePath, 'utf8');
@@ -76,7 +76,7 @@ export class RunServer extends EventEmitter {
     });
   }
 
-  startRun() {
+  private async startRun(): Promise<void> {
     debug('start run');
     if (this._run) this._run.kill();
 
@@ -103,8 +103,6 @@ export class RunServer extends EventEmitter {
       this.close();
     });
 
-    // TODO what about for create?
-
     if (!this._options.watch) {
       // when the run finishes, close
       run.on('close', () => {
@@ -114,7 +112,7 @@ export class RunServer extends EventEmitter {
     }
   }
 
-  close() {
+  private async close(): Promise<void> {
     debug('close');
 
     if (this._run) this._run.kill();
@@ -123,7 +121,7 @@ export class RunServer extends EventEmitter {
 
     this._server.close();
 
-    this._listener.close();
+    this._shorcut.close();
 
     process.exit();
   }

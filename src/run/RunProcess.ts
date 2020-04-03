@@ -28,14 +28,12 @@ export class RunProcess extends EventEmitter {
       this.once('stopped', () => resolve());
     });
 
-    try {
-      this._socket.write(JSON.stringify({ name: 'stop' }) + '\n');
-    } catch (e) {}
+    this._socket.write(JSON.stringify({ name: 'stop' }) + '\n');
 
     await hasStopped;
   }
 
-  public async kill() {
+  public async kill(): Promise<void> {
     if (this._stopped) return;
 
     debug('kill');
@@ -70,7 +68,7 @@ export class RunProcess extends EventEmitter {
           this.emit('stoprunner');
         }
       } catch (e) {
-        // the last message will not be JSON
+        // ignore non JSON messages (last empty message)
       }
     });
 

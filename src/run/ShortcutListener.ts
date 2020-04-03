@@ -16,7 +16,7 @@ export class ShortcutListener extends EventEmitter {
     this._listen();
   }
 
-  private _listen() {
+  private _listen(): void {
     const { stdin } = process;
 
     if (stdin.isTTY) stdin.setRawMode(true);
@@ -26,14 +26,14 @@ export class ShortcutListener extends EventEmitter {
     stdin.on('data', this._onKeyPress);
   }
 
-  private _onKeyPress = (key: string) => {
+  private _onKeyPress = (key: string): void => {
     if (key === KEYS.CONTROL_C || key === KEYS.CONTROL_D) {
       debug('emit: exit %o', key);
       this.emit('exit');
     }
   };
 
-  public close() {
+  public close(): void {
     if (this._closed) return;
     debug('close');
 
