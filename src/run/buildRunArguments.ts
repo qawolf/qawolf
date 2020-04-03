@@ -27,9 +27,8 @@ export const buildRunArguments = ({
       }),
     );
 
-    // manually include code as the last argument
-    // if we provided it to buildJestArguments({ testPath }) it would be escaped with quotes
-    args.push(codePath);
+    // must be forward slashes to work in windows
+    args.push(codePath.replace(/\\/g, '/'));
   } else {
     if (config.useTypeScript) {
       // 6133: allow unused (selectors is not used until first command)

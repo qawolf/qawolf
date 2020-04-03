@@ -95,6 +95,8 @@ export class RunProcess extends EventEmitter {
 
     this._process = spawn(args[0], args.slice(1), {
       env,
+      // windows
+      shell: true,
       stdio: 'inherit',
     });
   }

@@ -42,16 +42,16 @@ describe('buildRunArguments builds correct arguments for', () => {
 
     expect(
       buildRunArguments({
-        codePath: 'my.spec.js',
+        codePath: 'rootdir/my.spec.js',
         config,
       }),
-    ).toEqual([...expected, 'my.spec.js']);
+    ).toEqual([...expected, 'rootdir/my.spec.js']);
 
-    expect(
-      buildRunArguments({
-        codePath: 'my.test.js',
-        config,
-      }),
-    ).toEqual([...expected, 'my.test.js']);
+    const args = buildRunArguments({
+      codePath: 'rootdir/subfolder/my.test.js',
+      config,
+    });
+
+    expect(args).toEqual([...expected, 'rootdir/subfolder/my.test.js']);
   });
 });

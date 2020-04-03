@@ -14,11 +14,11 @@ const config: Config = {
 
 describe('Run', () => {
   let mitm: MitmType;
-  let serverSocket: Socket;
+  let socket: Socket;
 
   beforeAll(() => {
     mitm = Mitm();
-    mitm.on('connection', (socket: Socket) => (serverSocket = socket));
+    mitm.on('connection', (connection: Socket) => (socket = connection));
   });
 
   afterAll(() => mitm.disable());
@@ -37,7 +37,7 @@ describe('Run', () => {
       const closed = run._stop().then(spy);
       expect(spy).not.toBeCalled();
 
-      serverSocket.write(JSON.stringify({ name: 'stopped' }) + '\n');
+      socket.write(JSON.stringify({ name: 'stopped' }) + '\n');
 
       await closed;
       expect(spy).toBeCalled();
@@ -48,7 +48,7 @@ describe('Run', () => {
     it('runs a script', async () => {
       const run = new RunProcess({
         config,
-        codePath: join(config.rootDir, 'empty.script.ts'),
+        codePath: join(config.rootDir, 'fixtures/empty.script.ts'),
       });
       run.start();
 
@@ -61,7 +61,8 @@ describe('Run', () => {
     it('runs a test', async () => {
       const run = new RunProcess({
         config,
-        codePath: join(config.rootDir, 'empty.test.ts'),
+        // in a subdirectory from rootDir to test that works (esp on windows)
+        codePath: join(config.rootDir, 'fixtures/empty.test.ts'),
       });
       run.start();
 
@@ -87,7 +88,7 @@ describe('Run', () => {
 
       run.setConnection(connect(22, 'example.org'));
 
-      serverSocket.end();
+      socket.end();
     });
 
     // eslint-disable-next-line jest/no-test-callback
@@ -105,11 +106,15 @@ describe('Run', () => {
       run.on('stopped', () => events.push('stopped'));
       run.on('stoprunner', () => events.push('stoprunner'));
 
-      serverSocket.write(
-        JSON.stringify({ name: 'codeupdate', code: 'mycode' }) + '\n',
+      socket.write(
+        [
+          { name: 'codeupdate', code: 'mycode' },
+          { name: 'stopped' },
+          { name: 'stoprunner' },
+        ]
+          .map((data) => JSON.stringify(data))
+          .join('\n') + '\n',
       );
-      serverSocket.write(JSON.stringify({ name: 'stopped' }) + '\n');
-      serverSocket.write(JSON.stringify({ name: 'stoprunner' }) + '\n');
 
       setTimeout(() => {
         expect(events).toEqual([
