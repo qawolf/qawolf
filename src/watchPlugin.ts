@@ -49,13 +49,15 @@ class WatchPlugin {
 
   apply(jestHooks) {
     jestHooks.shouldRunTestSuite(async (suite) => {
+      debug('should run...');
+
       this._watch(suite.testPath);
 
       await this._ready;
       const port = (this._server.address() as AddressInfo).port;
       process.env.QAW_RUN_SERVER_PORT = `${port}`;
 
-      if (this._socket) {
+      if (this._socket && !this._socket.destroyed) {
         try {
           this._socket.write(JSON.stringify({ name: 'stop' }) + '\n');
         } catch (e) {}
@@ -88,7 +90,7 @@ class WatchPlugin {
       debug('code changed');
       this._code = newCode;
 
-      if (this._socket) {
+      if (this._socket && !this._socket.destroyed) {
         try {
           this._socket.write(JSON.stringify({ name: 'stop' }) + '\n');
         } catch (e) {}

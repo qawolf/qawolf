@@ -49,7 +49,8 @@ export const promptSaveRepl = async (codePath: string): Promise<boolean> => {
   Run.onStop(() => {
     if (received) return;
 
-    (prompt.ui as any).close();
+    // breaks windows
+    // (prompt.ui as any).close();
 
     resolve(null);
   });
