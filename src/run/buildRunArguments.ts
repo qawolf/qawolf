@@ -32,7 +32,8 @@ export const buildRunArguments = ({
     args.push(codePath);
   } else {
     if (config.useTypeScript) {
-      args.push(...['ts-node', '-D=6133']);
+      // 6133: allow unused (selectors is not used until first command)
+      args.push(...['ts-node', '-D', '6133']);
     } else {
       args.push('node');
     }

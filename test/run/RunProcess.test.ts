@@ -9,7 +9,7 @@ const config: Config = {
   attribute: '',
   rootDir: __dirname,
   testTimeout: 60000,
-  useTypeScript: false,
+  useTypeScript: true,
 };
 
 describe('Run', () => {
@@ -48,7 +48,7 @@ describe('Run', () => {
     it('runs a script', async () => {
       const run = new RunProcess({
         config,
-        codePath: join(config.rootDir, 'empty.ts'),
+        codePath: join(config.rootDir, 'empty.script.ts'),
       });
       run.start();
 

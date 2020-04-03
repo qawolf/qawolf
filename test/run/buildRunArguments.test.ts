@@ -28,7 +28,7 @@ describe('buildRunArguments builds correct arguments for', () => {
           useTypeScript: true,
         },
       }),
-    ).toEqual(['ts-node', '-D=6133', 'myscript.ts']);
+    ).toEqual(['ts-node', '-D', '6133', 'myscript.ts']);
   });
 
   test('test', () => {
