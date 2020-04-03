@@ -4,5 +4,6 @@
     "ts-jest": {
       "diagnostics": false
     }
-  }
+  },
+  "watchPlugins": ["/Users/jon/dev/qawolf/build/watchPlugin.js"]
 }

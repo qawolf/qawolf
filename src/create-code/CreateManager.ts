@@ -122,14 +122,12 @@ export class CreateManager {
 
   public async finalize(): Promise<void> {
     const shouldSave = await promptSaveRepl(this._codeUpdater.path());
-
     if (shouldSave) {
       await this._codeUpdater.finalize();
     } else {
       await this._codeUpdater.discard();
       await this._selectorUpdater.discard();
     }
-
-    Run.stopRunner();
+    // Run.stopRunner();
   }
 }
