@@ -89,6 +89,13 @@ describe('CodeFileUpdater', () => {
       );
 
       const updater = await CodeFileUpdater.create('somepath');
+
+      const codeUpdateEvents = [];
+
+      updater.on('codeupdate', (code) => {
+        codeUpdateEvents.push(code);
+      });
+
       const preparedCode = mockedOutputFile.mock.calls[0][1];
       mockedReadFile.mockResolvedValue(preparedCode);
 
@@ -97,10 +104,12 @@ describe('CodeFileUpdater', () => {
 
       const codeUpdateOne = mockedOutputFile.mock.calls[1][1];
       expect(codeUpdateOne).toMatchSnapshot();
+      expect(codeUpdateEvents[0]).toMatch(codeUpdateOne);
       mockedReadFile.mockResolvedValueOnce(codeUpdateOne);
 
       await updater.update({ steps });
       const codeUpdateTwo = mockedOutputFile.mock.calls[2][1];
+      expect(codeUpdateEvents[1]).toMatch(codeUpdateTwo);
       expect(codeUpdateTwo).toMatchSnapshot();
     });
   });
