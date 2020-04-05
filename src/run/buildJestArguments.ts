@@ -5,6 +5,7 @@ export type JestOptions = {
   rootDir?: string;
   testPath?: string;
   testTimeout?: number;
+  watch?: boolean;
 };
 
 export const buildJestArguments = (options: JestOptions): string[] => {
@@ -40,6 +41,10 @@ export const buildJestArguments = (options: JestOptions): string[] => {
     // must be forward slashes to work in powershell
     const testPath = options.testPath.replace(/\\/g, '/');
     builtArgs.push(`"${testPath}"`);
+  }
+
+  if (options.watch) {
+    builtArgs.push('--watch');
   }
 
   if (providedArgs.length) {

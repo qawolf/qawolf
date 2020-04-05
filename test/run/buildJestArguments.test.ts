@@ -63,4 +63,13 @@ describe('buildJestArguments', () => {
       );
     });
   });
+
+  describe('watch', () => {
+    it('includes --watch when true', () => {
+      const args = buildJestArguments({
+        watch: true,
+      });
+      expect(args).toContain('--watch');
+    });
+  });
 });

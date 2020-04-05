@@ -1,6 +1,7 @@
 import program, { Command } from 'commander';
 import { loadConfig } from '../config';
-import { getCodePath } from './getCodePath';
+import { findTestPath } from '../run/findTestPath';
+import { runTests } from '../run/runTests';
 
 export const buildEditCommand = (): program.Command => {
   const command = new Command('edit')
@@ -12,13 +13,22 @@ export const buildEditCommand = (): program.Command => {
 
       const config = loadConfig();
 
-      const codePath = await getCodePath({
+      const testPath = await findTestPath({
         rootDir: config.rootDir,
         name,
         useTypeScript: config.useTypeScript,
       });
 
-      console.log('TODO setup run', codePath);
+      runTests({
+        browsers: ['chromium'],
+        config: config.config,
+        headless: false,
+        repl: true,
+        rootDir: config.rootDir,
+        testPath,
+        // TODO config
+        watch: true,
+      });
     });
 
   return command;

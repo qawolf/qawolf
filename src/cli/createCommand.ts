@@ -3,6 +3,7 @@ import { loadConfig } from '../config';
 import { parseUrl } from './parseUrl';
 // import { RunServer } from '../run/RunServer';
 import { saveTemplate } from './saveTemplate';
+import { runTests } from '../run/runTests';
 
 export type CreateOptions = {
   device?: string;
@@ -14,7 +15,7 @@ export type CreateOptions = {
 export const runCreate = async (options: CreateOptions): Promise<void> => {
   const config = loadConfig();
 
-  const codePath = await saveTemplate({
+  const testPath = await saveTemplate({
     device: options.device,
     name: options.name,
     rootDir: config.rootDir,
@@ -23,20 +24,24 @@ export const runCreate = async (options: CreateOptions): Promise<void> => {
     url: options.url,
     useTypeScript: config.useTypeScript,
   });
-  if (!codePath) {
+  if (!testPath) {
     // the user decided to not overwrite
     return;
   }
 
-  // await RunServer.start({
-  //   codePath,
-  //   config,
-  //   env: {
-  //     QAW_CREATE: 'true',
-  //     QAW_HEADLESS: 'false',
-  //   },
-  //   watch: true,
-  // });
+  runTests({
+    browsers: ['chromium'],
+    config: config.config,
+    env: {
+      QAW_CREATE: 'true',
+    },
+    headless: false,
+    repl: true,
+    rootDir: config.rootDir,
+    testPath,
+    // TODO config
+    watch: true,
+  });
 };
 
 export const buildCreateCommand = (): program.Command => {

@@ -20,7 +20,7 @@ export class WatchServer extends EventEmitter {
     this._ready = new Promise((resolve) => this._server.listen(0, resolve));
   }
 
-  private _setSocket(socket: Socket) {
+  private _setSocket(socket: Socket): void {
     this._socket = socket;
 
     this._socket.pipe(split()).on('data', (data: string) => {
@@ -46,14 +46,14 @@ export class WatchServer extends EventEmitter {
     this._server.close();
   }
 
-  public async setEnv() {
+  public async setEnv(): Promise<void> {
     await this._ready;
     const address = this._server.address() as AddressInfo;
     debug('setEnv QAW_WATCH_SERVER_PORT %s', address.port);
     process.env.QAW_WATCH_SERVER_PORT = `${address.port}`;
   }
 
-  public async stopTest() {
+  public async stopTest(): Promise<void> {
     if (!this._socket || this._socket.destroyed) return;
     debug('stoptest');
 

@@ -1,16 +1,16 @@
 import { join, relative } from 'path';
-import { getCodePath } from '../../src/cli/getCodePath';
+import { findTestPath } from '../../src/run/findTestPath';
 
 const rootDir = join(__dirname, '../.qawolf');
 
-describe('getCodePath', () => {
+describe('findTestPath', () => {
   it('finds path in rootDir', async () => {
-    const path = await getCodePath({ name: 'scroll.test', rootDir });
+    const path = await findTestPath({ name: 'scroll.test', rootDir });
     expect(relative(rootDir, path)).toEqual('scroll.test.js');
   });
 
   it('finds path in a subfolder', async () => {
-    const path = await getCodePath({ name: 'keys', rootDir });
+    const path = await findTestPath({ name: 'keys', rootDir });
 
     expect(relative(rootDir, path).replace(/\\/g, '/')).toEqual(
       'inputs/keys.test.js',
@@ -20,7 +20,7 @@ describe('getCodePath', () => {
   it('finds an absolute path', async () => {
     const absolutePath = join(rootDir, 'scroll.test.js');
 
-    const path = await getCodePath({
+    const path = await findTestPath({
       name: absolutePath,
       rootDir,
     });
@@ -29,7 +29,7 @@ describe('getCodePath', () => {
 
   it('throws an error if not a file', async () => {
     await expect(
-      getCodePath({
+      findTestPath({
         name: rootDir,
         rootDir,
       }),
@@ -38,7 +38,7 @@ describe('getCodePath', () => {
 
   it('throws an error if multiple matching files', async () => {
     await expect(
-      getCodePath({
+      findTestPath({
         name: 'test',
         rootDir,
       }),
@@ -47,7 +47,7 @@ describe('getCodePath', () => {
 
   it('throws an error if no matching files', async () => {
     await expect(
-      getCodePath({
+      findTestPath({
         name: 'mytest',
         rootDir,
       }),

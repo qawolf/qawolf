@@ -21,7 +21,7 @@ export class WatchPlugin {
     this._server.on('stopwatch', () => this.stop());
   }
 
-  private async _setupTest(testPath: string) {
+  private async _setupTest(testPath: string): Promise<void> {
     debug('setup test %s', testPath);
 
     this._server.stopTest();
@@ -54,14 +54,14 @@ export class WatchPlugin {
     });
   }
 
-  public apply(hooks: JestHookSubscriber) {
+  public apply(hooks: JestHookSubscriber): void {
     hooks.shouldRunTestSuite(async (suite) => {
       await this._setupTest(suite.testPath);
       return true;
     });
   }
 
-  private async stop() {
+  private async stop(): Promise<void> {
     this._watcher.close();
 
     await this._server.stopTest();

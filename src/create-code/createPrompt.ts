@@ -28,9 +28,9 @@ export const shouldSavePrompt = async (codePath: string): Promise<boolean> => {
 };
 
 export const createPrompt = (codePath: string): Promise<boolean | null> => {
-  return new Promise(async (r) => {
-    const resolve = once(r);
-    shouldSavePrompt(codePath).then(resolve);
-    WatchHooks.onStop(() => resolve(null));
+  return new Promise((resolve) => {
+    const done = once(resolve);
+    shouldSavePrompt(codePath).then(done);
+    WatchHooks.onStop(() => done(null));
   });
 };

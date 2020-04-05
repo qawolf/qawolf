@@ -13,7 +13,7 @@ const isFile = async (path: string): Promise<boolean> => {
   return stat.isFile();
 };
 
-export const getCodePath = async ({
+export const findTestPath = async ({
   name,
   rootDir,
   useTypeScript,
@@ -43,11 +43,11 @@ export const getCodePath = async ({
     throw new Error(`Multiple files match "${name}"`);
   }
 
-  const file = files[0];
+  const testPath = files[0];
 
-  if (!(await isFile(file))) {
-    throw new Error(`No files match "${name}"`);
+  if (!(await isFile(testPath))) {
+    throw new Error(`No tests match "${name}"`);
   }
 
-  return file;
+  return testPath;
 };
