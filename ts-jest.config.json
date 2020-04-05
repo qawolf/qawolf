@@ -5,5 +5,5 @@
       "diagnostics": false
     }
   },
-  "watchPlugins": ["/Users/jon/dev/qawolf/build/watchPlugin.js"]
+  "watchPlugins": ["qawolf/watch"]
 }

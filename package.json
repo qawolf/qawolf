@@ -6,9 +6,9 @@
   "types": "./build/index.d.ts",
   "files": [
     "build",
-    "src/postInstallMessage.js",
-    "static",
-    "ts-jest.config.json"
+    "postInstallMessage.js",
+    "ts-jest.config.json",
+    "watch.js"
   ],
   "engines": {
     "node": ">=10.15.0"
@@ -23,7 +23,7 @@
     "watch:web": "rollup --watch --config src/rollup.ts",
     "watch": "npm run clean && concurrently --kill-others \"npm run watch:tsc\" \"npm run watch:web\"",
     "lint": "eslint . --ext .ts,.tsx --config .eslintrc.json --no-eslintrc",
-    "postinstall": "node ./src/postInstallMessage.js",
+    "postinstall": "node ./postInstallMessage.js",
     "release": "np --no-cleanup",
     "test": "jest",
     "test:server": "npx @qawolf/sandbox",
