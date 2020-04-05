@@ -7,6 +7,10 @@ describe('loadConfig', () => {
     expect(config.attribute).toEqual('id,data-testid');
     expect(config.config).toBeUndefined();
 
+    expect(config.createTemplate({ name: 'hello', url: 'google.com' })).toMatch(
+      'test,hello,google.com',
+    );
+
     expect(config.rootDir).toEqual('mytests');
 
     expect(config.testTimeout).toEqual(120000);
@@ -16,6 +20,7 @@ describe('loadConfig', () => {
     const config = loadConfig('notapath');
     expect(config.attribute).toEqual(DEFAULT_ATTRIBUTE);
     expect(config.config).toEqual('{}');
+    expect(config.createTemplate).toBeUndefined();
     expect(config.rootDir).toEqual('.qawolf');
     expect(config.testTimeout).toEqual(60000);
   });

@@ -6,7 +6,6 @@ import { saveTemplate } from './saveTemplate';
 
 export type CreateOptions = {
   device?: string;
-  isScript?: boolean;
   name: string;
   statePath?: string;
   url: string;
@@ -17,10 +16,10 @@ export const runCreate = async (options: CreateOptions): Promise<void> => {
 
   const codePath = await saveTemplate({
     device: options.device,
-    isScript: options.isScript,
     name: options.name,
     rootDir: config.rootDir,
     statePath: options.statePath,
+    templateFn: config.createTemplate,
     url: options.url,
     useTypeScript: config.useTypeScript,
   });
@@ -46,7 +45,6 @@ export const buildCreateCommand = (): program.Command => {
     .arguments('[url] [name]')
     .option('-d, --device <device>', 'emulate using a playwright.device')
     .option('--name <name>', 'name')
-    .option('-s, --script', 'create a script instead of a test')
     .option(
       '--statePath <statePath>',
       'path where state data (cookies, localStorage, sessionStorage) is saved',
@@ -68,7 +66,6 @@ export const buildCreateCommand = (): program.Command => {
       await runCreate({
         device: opts.device,
         name,
-        isScript: opts.script,
         statePath: opts.statePath,
         url: url.href,
       });

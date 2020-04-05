@@ -2,14 +2,13 @@ import { ensureFile, writeFile, writeJson } from 'fs-extra';
 import { join } from 'path';
 import { promptOverwrite } from 'playwright-ci';
 import {
-  buildScriptTemplate,
-  buildTestTemplate,
   BuildTemplateOptions,
+  buildTemplate,
+  TemplateFunction,
 } from '../build-code/buildTemplate';
 import { getSelectorPath } from '../create-code/create';
 
 type BuildPathOptions = {
-  isScript?: boolean;
   name: string;
   rootDir: string;
   useTypeScript?: boolean;
@@ -17,17 +16,16 @@ type BuildPathOptions = {
 
 type SaveTemplateOptions = BuildTemplateOptions & {
   rootDir: string;
+  templateFn?: TemplateFunction;
 };
 
 export const buildPath = ({
   name,
   rootDir,
-  isScript,
   useTypeScript,
 }: BuildPathOptions): string => {
-  let filename = name;
-  if (!isScript) filename += '.test';
-  filename += useTypeScript ? '.ts' : '.js';
+  const extension = useTypeScript ? 'ts' : 'js';
+  const filename = `${name}.test.${extension}`;
   return join(rootDir, filename);
 };
 
@@ -37,7 +35,7 @@ export const saveTemplate = async (
   const path = buildPath(options);
   if (!(await promptOverwrite(path))) return null;
 
-  const templateFn = options.isScript ? buildScriptTemplate : buildTestTemplate;
+  const templateFn = options.templateFn || buildTemplate;
 
   await ensureFile(path);
   await writeFile(path, templateFn(options));

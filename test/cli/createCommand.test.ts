@@ -11,7 +11,6 @@ describe('cli argument parsing', () => {
 
   const defaultOpts = {
     device: undefined,
-    isScript: undefined,
     name: 'example',
     statePath: undefined,
     url: 'http://example.org/',
@@ -63,14 +62,6 @@ describe('cli argument parsing', () => {
         name: 'myhost',
         url: 'https://myhost.com/',
       });
-    });
-  });
-
-  test('script option', () => {
-    parse(['--script']);
-    expect(createOptions).toEqual({
-      ...defaultOpts,
-      isScript: true,
     });
   });
 
