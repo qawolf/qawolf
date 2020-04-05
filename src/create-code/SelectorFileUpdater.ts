@@ -1,7 +1,10 @@
+import Debug from 'debug';
 import { outputJson, remove, pathExists, readJson } from 'fs-extra';
 import { buildSelectors } from '../build-code/buildSelectors';
 import { Selectors, Step } from '../types';
 import { Registry } from '../utils';
+
+const debug = Debug('qawolf:SelectorFileUpdater');
 
 type ConstructorOptions = {
   initialSelectors: Selectors;
@@ -38,10 +41,12 @@ export class SelectorFileUpdater {
   }
 
   public async discard(): Promise<void> {
-    if (this._initialSelectors.length) {
-      await outputJson(this._path, this._initialSelectors, { spaces: ' ' });
-    } else {
+    if (process.env.QAW_CREATE === 'true') {
+      debug('discard selectors');
       await remove(this._path);
+    } else {
+      debug('revert selectors');
+      await outputJson(this._path, this._initialSelectors, { spaces: ' ' });
     }
   }
 
