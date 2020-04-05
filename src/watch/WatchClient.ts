@@ -3,9 +3,9 @@ import { EventEmitter } from 'events';
 import { createConnection, Socket } from 'net';
 import split from 'split';
 
-const debug = Debug('qawolf:RunClient');
+const debug = Debug('qawolf:WatchClient');
 
-export class RunClient extends EventEmitter {
+export class WatchClient extends EventEmitter {
   private _socket: Socket;
 
   constructor(port: number) {
@@ -46,7 +46,6 @@ export class RunClient extends EventEmitter {
     if (!this._socket) return;
 
     debug('close');
-
     this._socket.end();
     this._socket = null;
     this.removeAllListeners();
@@ -54,13 +53,5 @@ export class RunClient extends EventEmitter {
 
   public sendCodeUpdate(code: string): void {
     this._send({ name: 'codeupdate', code });
-  }
-
-  public sendStopped(): void {
-    this._send({ name: 'stopped' });
-  }
-
-  public sendStopRunner(): void {
-    this._send({ name: 'stoprunner' });
   }
 }

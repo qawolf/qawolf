@@ -5,10 +5,10 @@ import { BrowserContext } from 'playwright';
 import { buildSteps } from '../build-workflow/buildSteps';
 import { CodeFileUpdater } from './CodeFileUpdater';
 import { ContextEventCollector } from './ContextEventCollector';
-import { Run } from '../run/Run';
 import { SelectorFileUpdater } from './SelectorFileUpdater';
 import { ElementEvent } from '../types';
 import { repl } from '../utils';
+import { WatchHooks } from '../watch/WatchHooks';
 
 type CreateCliOptions = {
   codePath: string;
@@ -46,11 +46,8 @@ export const promptSaveRepl = async (codePath: string): Promise<boolean> => {
     resolve = r;
   });
 
-  Run.onStop(() => {
+  WatchHooks.onStop(() => {
     if (received) return;
-
-    // breaks windows
-    // (prompt.ui as any).close();
 
     resolve(null);
   });
@@ -81,7 +78,7 @@ export class CreateManager {
     const codeUpdater = await CodeFileUpdater.create(options.codePath);
 
     codeUpdater.on('codeupdate', (code: string) => {
-      Run.codeUpdate(code);
+      WatchHooks.codeUpdate(code);
     });
 
     const selectorUpdater = await SelectorFileUpdater.create(
@@ -139,6 +136,7 @@ export class CreateManager {
       await this._codeUpdater.discard();
       await this._selectorUpdater.discard();
     }
-    // Run.stopRunner();
+
+    // TODO process.exit()?
   }
 }

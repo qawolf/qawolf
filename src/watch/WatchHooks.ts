@@ -1,9 +1,9 @@
-import { RunClient } from './RunClient';
+import { WatchClient } from './WatchClient';
 
 type StopCallback = () => void | Promise<void>;
 
-export class Run {
-  private static _client: RunClient;
+export class WatchHooks {
+  private static _client: WatchClient;
   private static _onStop: StopCallback[] = [];
   private static _stopped: boolean;
 
@@ -15,21 +15,20 @@ export class Run {
     const callbacks = this._onStop;
     await Promise.all(callbacks.map((fn) => fn()));
 
-    this._client.sendStopped();
     this._client.close();
     this._client = null;
   }
 
   public static _connect(): void {
-    const port = process.env.QAW_RUN_SERVER_PORT;
+    const port = process.env.QAW_WATCH_SERVER_PORT;
     if (this._client || !port) return;
 
-    this._client = new RunClient(Number(port));
+    this._client = new WatchClient(Number(port));
     this._client.once('stop', () => this._handleStop());
   }
 
   public static close(): void {
-    // do not try to close in the middle of a stop
+    // do not close the client in the middle of a stop
     if (this._stopped || !this._client) return;
 
     this._client.close();
@@ -45,12 +44,6 @@ export class Run {
   public static onStop(callback: StopCallback): void {
     this._onStop.push(callback);
   }
-
-  public static stopRunner(): void {
-    if (!this._client) return;
-
-    this._client.sendStopRunner();
-  }
 }
 
-Run._connect();
+WatchHooks._connect();

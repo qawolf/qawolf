@@ -1,3 +1,3 @@
-const WatchPlugin = require('./build/watch/plugin');
+const { WatchPlugin } = require('./build/watch/WatchPlugin');
 
 module.exports = WatchPlugin;
