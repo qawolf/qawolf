@@ -28,7 +28,7 @@ export class WatchClient extends EventEmitter {
 
       try {
         const message = JSON.parse(data);
-        if (message.name === 'stop') this.emit('stop');
+        if (message.name === 'stoptest') this.emit('stoptest');
       } catch (e) {
         // ignore non JSON messages (last empty message)
       }
@@ -53,5 +53,13 @@ export class WatchClient extends EventEmitter {
 
   public sendCodeUpdate(code: string): void {
     this._send({ name: 'codeupdate', code });
+  }
+
+  public sendStopWatch(): void {
+    this._send({ name: 'stopwatch' });
+  }
+
+  public sendTestStopped(): void {
+    this._send({ name: 'teststopped' });
   }
 }

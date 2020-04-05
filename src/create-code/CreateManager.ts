@@ -137,6 +137,6 @@ export class CreateManager {
       await this._selectorUpdater.discard();
     }
 
-    // TODO process.exit()?
+    WatchHooks.stopWatch();
   }
 }

@@ -30,6 +30,10 @@ export class WatchServer extends EventEmitter {
         const message = JSON.parse(data);
         if (message.name === 'codeupdate') {
           this.emit('codeupdate', message.code);
+        } else if (message.name === 'stopwatch') {
+          this.emit('stopwatch');
+        } else if (message.name === 'teststopped') {
+          this.emit('teststopped');
         }
       } catch (e) {
         // ignore non JSON messages (last empty message)
@@ -42,20 +46,27 @@ export class WatchServer extends EventEmitter {
     this._server.close();
   }
 
-  public sendStop() {
-    if (!this._socket || this._socket.destroyed) return;
-
-    try {
-      this._socket.write(JSON.stringify({ name: 'stop' }) + '\n');
-    } catch (e) {
-      debug('error sending stop %o', e);
-    }
-  }
-
   public async setEnv() {
     await this._ready;
     const address = this._server.address() as AddressInfo;
     debug('setEnv QAW_WATCH_SERVER_PORT %s', address.port);
     process.env.QAW_WATCH_SERVER_PORT = `${address.port}`;
+  }
+
+  public async stopTest() {
+    if (!this._socket || this._socket.destroyed) return;
+    debug('stoptest');
+
+    try {
+      const hasStopped = new Promise((resolve) => {
+        this.once('teststopped', () => resolve());
+      });
+
+      this._socket.write(JSON.stringify({ name: 'stoptest' }) + '\n');
+
+      await hasStopped;
+    } catch (e) {
+      debug('error sending stoptest %o', e);
+    }
   }
 }

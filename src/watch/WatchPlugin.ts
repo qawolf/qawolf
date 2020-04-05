@@ -17,13 +17,14 @@ export class WatchPlugin {
     this._server.on('codeupdate', (code) => {
       this._code = code;
     });
+
+    this._server.on('stopwatch', () => this.stop());
   }
 
   private async _setupTest(testPath: string) {
     debug('setup test %s', testPath);
 
-    // Stop the previous test.
-    this._server.sendStop();
+    this._server.stopTest();
 
     // Set the environment so the WatchClient can connect.
     await this._server.setEnv();
@@ -49,7 +50,7 @@ export class WatchPlugin {
 
       debug('code changed');
       this._code = newCode;
-      this._server.sendStop();
+      this._server.stopTest();
     });
   }
 
@@ -58,5 +59,13 @@ export class WatchPlugin {
       await this._setupTest(suite.testPath);
       return true;
     });
+  }
+
+  private async stop() {
+    this._watcher.close();
+
+    await this._server.stopTest();
+
+    process.exit();
   }
 }
