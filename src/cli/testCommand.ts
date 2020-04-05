@@ -29,9 +29,7 @@ export const buildTestCommand = (): program.Command => {
         '--chromium',
         '--firefox',
         '--headless',
-        '--repl',
-        // should be passed through config
-        '--rootDir',
+        '--rootDir', // should be passed through config
         '--webkit',
       ]);
 
@@ -41,12 +39,8 @@ export const buildTestCommand = (): program.Command => {
         runTests({
           args: jestArgs,
           browsers,
-          config: config.config,
-          env: {
-            QAW_HEADLESS: opts.headless ? 'true' : 'false',
-          },
-          rootDir: config.rootDir,
-          testTimeout: config.testTimeout,
+          config: config,
+          headless: opts.headless,
         });
       } catch (e) {
         process.exit(1);

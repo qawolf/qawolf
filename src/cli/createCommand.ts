@@ -1,9 +1,9 @@
 import program, { Command } from 'commander';
 import { loadConfig } from '../config';
 import { parseUrl } from './parseUrl';
-// import { RunServer } from '../run/RunServer';
-import { saveTemplate } from './saveTemplate';
+import { buildEditOptions } from '../run/buildEditOptions';
 import { runTests } from '../run/runTests';
+import { saveTemplate } from './saveTemplate';
 
 export type CreateOptions = {
   device?: string;
@@ -29,19 +29,16 @@ export const runCreate = async (options: CreateOptions): Promise<void> => {
     return;
   }
 
-  runTests({
-    browsers: ['chromium'],
-    config: config.config,
-    env: {
-      QAW_CREATE: 'true',
-    },
-    headless: false,
-    repl: true,
-    rootDir: config.rootDir,
-    testPath,
-    // TODO config
-    watch: true,
-  });
+  runTests(
+    buildEditOptions({
+      config,
+      env: {
+        // discard should delete the test and selectors
+        QAW_CREATE: 'true',
+      },
+      testPath,
+    }),
+  );
 };
 
 export const buildCreateCommand = (): program.Command => {

@@ -2,6 +2,7 @@ import program, { Command } from 'commander';
 import { loadConfig } from '../config';
 import { findTestPath } from '../run/findTestPath';
 import { runTests } from '../run/runTests';
+import { buildEditOptions } from '../run/buildEditOptions';
 
 export const buildEditCommand = (): program.Command => {
   const command = new Command('edit')
@@ -19,16 +20,12 @@ export const buildEditCommand = (): program.Command => {
         useTypeScript: config.useTypeScript,
       });
 
-      runTests({
-        browsers: ['chromium'],
-        config: config.config,
-        headless: false,
-        repl: true,
-        rootDir: config.rootDir,
-        testPath,
-        // TODO config
-        watch: true,
-      });
+      runTests(
+        buildEditOptions({
+          config,
+          testPath,
+        }),
+      );
     });
 
   return command;

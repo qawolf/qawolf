@@ -2,7 +2,7 @@ import { execSync } from 'child_process';
 import { buildJestArguments, JestOptions } from './buildJestArguments';
 import { BrowserName } from '../types';
 
-type TestOptions = JestOptions & {
+export type TestOptions = JestOptions & {
   browsers: BrowserName[];
   env?: NodeJS.ProcessEnv;
   headless?: boolean;
@@ -20,6 +20,7 @@ export const runTests = (options: TestOptions): void => {
       stdio: 'inherit',
       env: {
         QAW_BROWSER: browser,
+        QAW_HEADLESS: options.headless === false ? 'false' : 'true',
         ...options.env,
         // override env with process.env
         // ex. for unit tests we want QAW_BROWSER to override cli one

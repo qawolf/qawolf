@@ -1,54 +1,41 @@
+import { Config } from '../config';
+
 export type JestOptions = {
   args?: string[];
-  config?: string;
-  repl?: boolean;
-  rootDir?: string;
+  config: Config;
   testPath?: string;
-  testTimeout?: number;
-  watch?: boolean;
 };
 
-export const buildJestArguments = (options: JestOptions): string[] => {
+export const buildJestArguments = ({
+  config,
+  ...options
+}: JestOptions): string[] => {
   const builtArgs: string[] = [];
 
   const providedArgs = options.args || [];
 
-  if (options.config) {
-    // clear Jest config unless one is provided
-    // must be wrapped in quotes for powershell
-    builtArgs.push(`--config="${options.config}"`);
+  if (config.config) {
+    // for powershell: must be wrapped in quotes
+    builtArgs.push(`--config="${config.config}"`);
   }
 
-  if (options.repl) {
-    // need to use our basic reporter that does not interfere with the repl
-    builtArgs.push('--reporters="@qawolf/jest-reporter"');
-  }
-
-  const rootDir = options.rootDir || '.qawolf';
-  builtArgs.push(`--rootDir=${rootDir}`);
+  builtArgs.push(`--rootDir=${config.rootDir}`);
 
   const hasTimeoutArg = !!providedArgs.find((arg) =>
     arg.toLowerCase().includes('testtimeout'),
   );
   if (!hasTimeoutArg) {
-    // for repl: timeout after 1 hour
-    // if not provided: timeout after 60 seconds (playwright default wait timeout is 30 seconds)
-    const timeout = options.repl ? 3600000 : options.testTimeout || 60000;
-    builtArgs.push(`--testTimeout=${timeout}`);
-  }
-
-  if (options.testPath) {
-    // must be forward slashes to work in powershell
-    const testPath = options.testPath.replace(/\\/g, '/');
-    builtArgs.push(`"${testPath}"`);
-  }
-
-  if (options.watch) {
-    builtArgs.push('--watch');
+    builtArgs.push(`--testTimeout=${config.testTimeout}`);
   }
 
   if (providedArgs.length) {
     builtArgs.push(...providedArgs);
+  }
+
+  if (options.testPath) {
+    // for powershell: must be forward slashes and wrapped in quotes
+    const testPath = options.testPath.replace(/\\/g, '/');
+    builtArgs.push(`"${testPath}"`);
   }
 
   return builtArgs;
