@@ -1,13 +1,11 @@
 import Debug from 'debug';
-import inquirer from 'inquirer';
-import { relative } from 'path';
 import { BrowserContext } from 'playwright';
 import { buildSteps } from '../build-workflow/buildSteps';
 import { CodeFileUpdater } from './CodeFileUpdater';
 import { ContextEventCollector } from './ContextEventCollector';
+import { createPrompt } from './createPrompt';
 import { SelectorFileUpdater } from './SelectorFileUpdater';
 import { ElementEvent } from '../types';
-import { repl } from '../utils';
 import { WatchHooks } from '../watch/WatchHooks';
 
 type CreateCliOptions = {
@@ -23,49 +21,6 @@ type ConstructorOptions = {
 };
 
 const debug = Debug('qawolf:CreateManager');
-
-export const promptSaveRepl = async (codePath: string): Promise<boolean> => {
-  const prompt = inquirer.prompt<{ choice: string }>([
-    {
-      choices: [
-        '💾  Save and exit',
-        '🖥️  Open REPL to run code',
-        '🗑️  Discard and exit',
-      ],
-      message: `Edit your code at: ${relative(process.cwd(), codePath)}`,
-      name: 'choice',
-      type: 'list',
-    },
-  ]);
-
-  let received = false;
-
-  let resolve: (save: boolean) => void;
-
-  const promise = new Promise<boolean>((r) => {
-    resolve = r;
-  });
-
-  WatchHooks.onStop(() => {
-    if (received) return;
-
-    resolve(null);
-  });
-
-  prompt.then(async ({ choice }) => {
-    received = true;
-    if (choice.includes('REPL')) {
-      await repl();
-
-      promptSaveRepl(codePath).then(resolve);
-    }
-
-    const shouldSave = choice.includes('Save');
-    return resolve(shouldSave);
-  });
-
-  return promise;
-};
 
 export class CreateManager {
   public static async create(
@@ -129,14 +84,20 @@ export class CreateManager {
   }
 
   public async finalize(): Promise<void> {
-    const shouldSave = await promptSaveRepl(this._codeUpdater.path());
-    if (shouldSave === true) {
+    const shouldSave = await createPrompt(this._codeUpdater.path());
+    if (shouldSave === null) {
+      // the prompt was cancelled since the test was re-run in a watch
+      return;
+    }
+
+    if (shouldSave) {
       await this._codeUpdater.finalize();
-    } else if (shouldSave === false) {
+    } else {
       await this._codeUpdater.discard();
       await this._selectorUpdater.discard();
     }
 
+    // stop the watch sicne a prompt selection is made
     WatchHooks.stopWatch();
   }
 }
