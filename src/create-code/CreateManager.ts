@@ -97,7 +97,7 @@ export class CreateManager {
       await this._selectorUpdater.discard();
     }
 
-    // stop the watch sicne a prompt selection is made
+    // stop the watch since a prompt selection is made
     WatchHooks.stopWatch();
   }
 }

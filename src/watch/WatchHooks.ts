@@ -6,11 +6,11 @@ type StopCallback = () => void | Promise<void>;
 const debug = Debug('qawolf:WatchHooks');
 
 export class WatchHooks {
-  private static _client: WatchClient;
-  private static _onStop: StopCallback[] = [];
-  private static _stopped: boolean;
+  static _client: WatchClient;
+  static _onStop: StopCallback[] = [];
+  static _stopped: boolean;
 
-  private static async _handleStopTest(): Promise<void> {
+  static async _handleStopTest(): Promise<void> {
     if (this._stopped) return;
 
     debug('stop test');
