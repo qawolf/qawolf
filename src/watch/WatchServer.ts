@@ -7,7 +7,8 @@ const debug = Debug('qawolf:WatchServer');
 
 export class WatchServer extends EventEmitter {
   private _ready: Promise<void>;
-  private _server: Server;
+  // public for tests
+  public _server: Server;
   private _socket: Socket;
 
   constructor() {
@@ -21,6 +22,7 @@ export class WatchServer extends EventEmitter {
   }
 
   private _setSocket(socket: Socket): void {
+    debug('set socket %o', socket.address());
     this._socket = socket;
 
     this._socket.pipe(split()).on('data', (data: string) => {
@@ -41,21 +43,26 @@ export class WatchServer extends EventEmitter {
     });
   }
 
-  public async close(): Promise<void> {
+  public close(): void {
     debug('close');
     this._server.close();
   }
 
-  public async setEnv(): Promise<void> {
+  public async port(): Promise<number> {
     await this._ready;
     const address = this._server.address() as AddressInfo;
-    debug('setEnv QAW_WATCH_SERVER_PORT %s', address.port);
-    process.env.QAW_WATCH_SERVER_PORT = `${address.port}`;
+    return address.port;
+  }
+
+  public async setEnv(env: NodeJS.ProcessEnv): Promise<void> {
+    const port = await this.port();
+    debug('setEnv QAW_WATCH_SERVER_PORT %s', port);
+    env.QAW_WATCH_SERVER_PORT = `${port}`;
   }
 
   public async stopTest(): Promise<void> {
     if (!this._socket || this._socket.destroyed) return;
-    debug('stoptest');
+    debug('stop test');
 
     try {
       const hasStopped = new Promise((resolve) => {

@@ -27,7 +27,7 @@ export class WatchPlugin {
     this._server.stopTest();
 
     // Set the environment so the WatchClient can connect.
-    await this._server.setEnv();
+    await this._server.setEnv(process.env);
 
     // Jest watch will not re-run a test in progress.
     // To workaround this, we manually watch the test.
