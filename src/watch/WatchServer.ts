@@ -6,10 +6,9 @@ import split from 'split';
 const debug = Debug('qawolf:WatchServer');
 
 export class WatchServer extends EventEmitter {
-  private _ready: Promise<void>;
-  // public for tests
-  public _server: Server;
-  private _socket: Socket;
+  _ready: Promise<void>;
+  _server: Server;
+  _socket: Socket;
 
   constructor() {
     super();
@@ -21,7 +20,7 @@ export class WatchServer extends EventEmitter {
     this._ready = new Promise((resolve) => this._server.listen(0, resolve));
   }
 
-  private _setSocket(socket: Socket): void {
+  _setSocket(socket: Socket): void {
     debug('set socket %o', socket.address());
     this._socket = socket;
 

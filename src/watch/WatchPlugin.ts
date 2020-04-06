@@ -7,9 +7,10 @@ import { WatchServer } from './WatchServer';
 const debug = Debug('qawolf:WatchPlugin');
 
 export class WatchPlugin {
-  private _code: string;
-  private _server: WatchServer;
-  private _watcher: FSWatcher;
+  _code: string;
+  _server: WatchServer;
+  _watcher: FSWatcher;
+  _watchPath: string;
 
   constructor() {
     this._server = new WatchServer();
@@ -18,12 +19,22 @@ export class WatchPlugin {
       this._code = code;
     });
 
-    this._server.on('stopwatch', () => this.stop());
+    this._server.on('stopwatch', () => this._stop());
   }
 
-  private async _setupTest(testPath: string): Promise<void> {
-    debug('setup test %s', testPath);
+  async _onTestChange(testPath: string): Promise<void> {
+    const newCode = await readFile(testPath, 'utf8');
+    if (newCode === this._code) return;
 
+    debug('test changed');
+    this._code = newCode;
+    this._server.stopTest();
+  }
+
+  async _prepareTest(testPath: string): Promise<void> {
+    debug('prepare test %s', testPath);
+
+    // Stop the previous test
     this._server.stopTest();
 
     // Set the environment so the WatchClient can connect.
@@ -35,37 +46,32 @@ export class WatchPlugin {
     await this._watch(testPath);
   }
 
-  private async _watch(testPath: string): Promise<void> {
-    if (this._watcher) return;
-
-    debug('watch %s', testPath);
-
-    this._code = await readFile(testPath, 'utf8');
-
-    this._watcher = watch(testPath, { atomic: 0 });
-
-    this._watcher.on('change', async () => {
-      const newCode = await readFile(testPath, 'utf8');
-      if (newCode === this._code) return;
-
-      debug('code changed');
-      this._code = newCode;
-      this._server.stopTest();
-    });
-  }
-
-  public apply(hooks: JestHookSubscriber): void {
-    hooks.shouldRunTestSuite(async (suite) => {
-      await this._setupTest(suite.testPath);
-      return true;
-    });
-  }
-
-  private async stop(): Promise<void> {
+  async _stop(): Promise<void> {
     this._watcher.close();
 
     await this._server.stopTest();
 
     process.exit();
+  }
+
+  async _watch(testPath: string): Promise<void> {
+    if (this._watchPath === testPath) return;
+    if (this._watcher) this._watcher.close();
+
+    debug('watch %s', testPath);
+    this._watchPath = testPath;
+
+    this._watcher = watch(testPath, { atomic: 0 });
+
+    this._code = await readFile(testPath, 'utf8');
+
+    this._watcher.on('change', () => this._onTestChange(testPath));
+  }
+
+  public apply(hooks: JestHookSubscriber): void {
+    hooks.shouldRunTestSuite(async (suite) => {
+      await this._prepareTest(suite.testPath);
+      return true;
+    });
   }
 }

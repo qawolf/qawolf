@@ -5,7 +5,7 @@ import { WatchServer } from '../../src/watch/WatchServer';
 describe('WatchServer', () => {
   let server: WatchServer;
 
-  const connect = async () => {
+  const connect = async (): Promise<Socket> => {
     let client: Socket;
 
     const port = await server.port();
