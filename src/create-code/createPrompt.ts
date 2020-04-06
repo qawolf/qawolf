@@ -1,8 +1,12 @@
 import inquirer from 'inquirer';
-import { once } from 'lodash';
 import { relative } from 'path';
 import { repl } from '../utils';
 import { WatchHooks } from '../watch/WatchHooks';
+
+export const KEYS = {
+  down: '\u001b[B',
+  enter: '\n',
+};
 
 export const shouldSavePrompt = async (codePath: string): Promise<boolean> => {
   const { choice } = await inquirer.prompt<{ choice: string }>([
@@ -29,8 +33,24 @@ export const shouldSavePrompt = async (codePath: string): Promise<boolean> => {
 
 export const createPrompt = (codePath: string): Promise<boolean | null> => {
   return new Promise((resolve) => {
-    const done = once(resolve);
+    let resolved: boolean = false;
+
+    const done = (shouldSave: boolean) => {
+      if (resolved) return;
+      resolved = true;
+      resolve(shouldSave);
+    };
+
     shouldSavePrompt(codePath).then(done);
-    WatchHooks.onStop(() => done(null));
+
+    WatchHooks.onStop(() => {
+      // prevent the enter from resolving a value
+      resolved = true;
+
+      // press enter before resolving to make sure the prompt closes
+      process.stdin.push(KEYS.enter);
+
+      resolve(null);
+    });
   });
 };
