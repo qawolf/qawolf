@@ -48,7 +48,7 @@ describe('WatchServer', () => {
     it('emits received events', (done) => {
       const events = [];
 
-      server.on('codeupdate', (code) => events.push(['codeupdated', code]));
+      server.on('codeupdate', (code) => events.push(['codeupdate', code]));
       server.on('stopwatch', () => events.push('stopwatch'));
       server.on('teststopped', () => events.push('teststopped'));
 
@@ -66,7 +66,7 @@ describe('WatchServer', () => {
 
       setTimeout(() => {
         expect(events).toEqual([
-          ['codeupdated', 'mycode'],
+          ['codeupdate', 'mycode'],
           'stopwatch',
           'teststopped',
         ]);
