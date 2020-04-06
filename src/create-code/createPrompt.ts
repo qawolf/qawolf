@@ -50,6 +50,9 @@ export const createPrompt = (codePath: string): Promise<boolean | null> => {
       // press enter before resolving to make sure the prompt closes
       process.stdin.push(KEYS.enter);
 
+      // needed on windows to resume input
+      process.stdin.pause();
+
       resolve(null);
     });
   });

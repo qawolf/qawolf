@@ -62,6 +62,7 @@ export class WatchServer extends EventEmitter {
 
   public async stopTest(): Promise<void> {
     if (!this._socket || this._socket.destroyed) return;
+
     debug('stop test');
 
     try {
