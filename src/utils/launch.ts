@@ -64,7 +64,7 @@ export const launch = async (
     launchOptions,
   );
 
-  Registry.setBrowser(browser);
+  Registry.instance().setBrowser(browser);
 
   return browser;
 };

@@ -27,7 +27,7 @@ export const getArtifactPath = (): string | null => {
 };
 
 export const register = async (context: BrowserContext): Promise<void> => {
-  Registry.set('context', context);
+  Registry.instance().setContext(context);
 
   const promises: Promise<any>[] = [];
 

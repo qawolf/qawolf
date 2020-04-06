@@ -3,8 +3,9 @@ import { addAwaitOutsideToReplServer } from 'await-outside';
 import Debug from 'debug';
 import { bold } from 'kleur';
 import { start, REPLServer } from 'repl';
-import { Registry } from '../Registry';
 import { addScreenshotCommand } from './addScreenshotCommand';
+import { setReplContext } from './setReplContext';
+import { WatchHooks } from '../../watch/WatchHooks';
 
 const debug = Debug('qawolf:repl');
 
@@ -17,10 +18,6 @@ export const repl = (
   /**
    * Create a REPL and resolve when it is closed.
    */
-  if (context) {
-    Object.keys(context).forEach((key) => Registry.set(key, context[key]));
-  }
-
   console.log(
     bold().yellow(
       'Type .exit to close the repl and continue running your code',
@@ -36,16 +33,11 @@ export const repl = (
 
   addScreenshotCommand(replServer);
 
-  const setContext = (): void => {
-    const data = Registry.data();
-    Object.keys(data).forEach((key) => (replServer.context[key] = data[key]));
-  };
-  setContext();
-  Registry.instance().on('change', setContext);
+  setReplContext(replServer.context, context);
 
-  if (callback) {
-    callback(replServer);
-  }
+  WatchHooks.onStop(() => replServer.close());
+
+  if (callback) callback(replServer);
 
   return new Promise((resolve) => {
     replServer.on('exit', () => {

@@ -1,11 +1,14 @@
 import { AddressInfo, connect, Socket } from 'net';
+import { waitFor } from '../../src/utils';
 import { WatchServer } from '../../src/watch/WatchServer';
 
 describe('WatchServer', () => {
-  const server = new WatchServer();
   let client: Socket;
+  let server: WatchServer;
 
   beforeAll(async () => {
+    server = new WatchServer();
+
     const port = await server.port();
 
     await new Promise((resolve) => {
@@ -44,35 +47,29 @@ describe('WatchServer', () => {
   });
 
   describe('events', () => {
-    // eslint-disable-next-line jest/no-test-callback
-    it('emits received events', (done) => {
+    it('emits received events', async () => {
       const events = [];
 
       server.on('codeupdate', (code) => events.push(['codeupdate', code]));
       server.on('stopwatch', () => events.push('stopwatch'));
       server.on('teststopped', () => events.push('teststopped'));
 
-      // write everything in one message
-      // so it is processed in the next tick
       client.write(
-        [
-          { name: 'codeupdate', code: 'mycode' },
-          { name: 'stopwatch' },
-          { name: 'teststopped' },
-        ]
-          .map((data) => JSON.stringify(data))
-          .join('\n') + '\n',
+        JSON.stringify({ name: 'codeupdate', code: 'mycode' }) + '\n',
       );
+      client.write(JSON.stringify({ name: 'stopwatch' }) + '\n');
+      client.write(JSON.stringify({ name: 'teststopped' }) + '\n');
 
-      setTimeout(() => {
-        expect(events).toEqual([
-          ['codeupdate', 'mycode'],
-          'stopwatch',
-          'teststopped',
-        ]);
+      // force flush
+      client.write('\n');
 
-        done();
-      }, 0);
+      await waitFor(() => events.length === 3);
+
+      expect(events).toEqual([
+        ['codeupdate', 'mycode'],
+        'stopwatch',
+        'teststopped',
+      ]);
     });
   });
 });

@@ -4,7 +4,6 @@ import { pathExists, readFile } from 'fs-extra';
 import { bold } from 'kleur';
 import { findLast } from 'lodash';
 import { basename, dirname, join } from 'path';
-import { BrowserContext } from 'playwright';
 import { CREATE_HANDLE } from './CodeUpdater';
 import { CreateManager } from './CreateManager';
 import { getLineIncludes } from './format';
@@ -52,7 +51,7 @@ export const getSelectorPath = (codePath: string): string => {
 };
 
 export const create = async (options: CreateOptions = {}): Promise<void> => {
-  const context: BrowserContext = (Registry.data() as any).context;
+  const context = Registry.instance().data().context;
   if (!context) {
     throw new Error(
       'No context found. Call qawolf.register(context) before qawolf.create()',

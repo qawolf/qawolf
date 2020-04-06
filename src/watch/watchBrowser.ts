@@ -1,19 +1,19 @@
 import { Browser } from 'playwright';
 import { WatchHooks } from './WatchHooks';
 
-const closeOnce = (browser: Browser) => {
-  let closed: boolean = false;
+const closeOnce = (browser: Browser): void => {
+  let closed = false;
 
   const originalClose = browser.close.bind(browser);
 
-  (browser as any).close = () => {
-    if (closed) return;
+  (browser as any).close = (): Promise<void> => {
+    if (closed) return Promise.resolve();
     closed = true;
     return originalClose();
   };
 };
 
-export const watchBrowser = (browser: Browser) => {
+export const watchBrowser = (browser: Browser): void => {
   if (!WatchHooks.enabled() || (browser as any)._qawWatch) return;
   (browser as any)._qawWatch = true;
 

@@ -66,7 +66,7 @@ export class SelectorFileUpdater {
     this._lock = true;
 
     const updatedSelectors = this.selectors();
-    Registry.set('selectors', updatedSelectors);
+    Registry.instance().setSelectors(updatedSelectors);
     await outputJson(this._path, updatedSelectors, { spaces: ' ' });
 
     this._lock = false;

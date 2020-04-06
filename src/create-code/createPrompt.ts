@@ -33,9 +33,9 @@ export const shouldSavePrompt = async (codePath: string): Promise<boolean> => {
 
 export const createPrompt = (codePath: string): Promise<boolean | null> => {
   return new Promise((resolve) => {
-    let resolved: boolean = false;
+    let resolved = false;
 
-    const done = (shouldSave: boolean) => {
+    const done = (shouldSave: boolean): void => {
       if (resolved) return;
       resolved = true;
       resolve(shouldSave);

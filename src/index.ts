@@ -1,17 +1,17 @@
 #!/usr/bin/env node
-import { create } from './create-code/create';
 
-import {
-  launch,
-  repl,
-  register,
-  Registry,
-  saveState,
-  scroll,
-  setState,
-  stopVideos,
-  waitForPage,
-} from './utils';
+import * as qawolf from './qawolf';
+import { Registry } from './utils';
+
+// support: const qawolf = require("qawolf");
+// support: import { ... } from "qawolf";
+export * from './qawolf';
+
+// support: import qawolf from "qawolf"
+export default qawolf;
+
+// must do this here to prevent circular dependency
+Registry.instance().setQawolf(qawolf);
 
 if (!module.parent) {
   // run the cli when this is the root module
@@ -19,45 +19,3 @@ if (!module.parent) {
   const { runCli } = require('./cli/cli');
   runCli();
 }
-
-// export public API
-const qawolf = {
-  create,
-  launch,
-  register,
-  repl,
-  saveState,
-  stopVideos,
-  scroll,
-  setState,
-  waitForPage,
-};
-
-// types for config
-export {
-  BuildTemplateOptions,
-  TemplateFunction,
-} from './build-code/buildTemplate';
-export { Config } from './config';
-
-// support: import qawolf from "qawolf"
-export default qawolf;
-
-// support: const qawolf = require("qawolf");
-export {
-  create,
-  launch,
-  register,
-  repl,
-  saveState,
-  scroll,
-  setState,
-  stopVideos,
-  waitForPage,
-};
-
-// set qawolf on repl context
-Registry.set('qawolf', qawolf);
-
-// make repl a global
-(global as any).repl = repl;
