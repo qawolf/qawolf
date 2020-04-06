@@ -47,6 +47,10 @@ export class WatchHooks {
     this._client.sendCodeUpdate(code);
   }
 
+  public static enabled(): boolean {
+    return !!this._client;
+  }
+
   public static onStop(callback: StopCallback): void {
     this._onStop.push(callback);
   }

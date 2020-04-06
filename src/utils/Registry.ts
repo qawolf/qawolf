@@ -1,9 +1,6 @@
-import Debug from 'debug';
 import { EventEmitter } from 'events';
 import { Browser } from 'playwright';
-import { WatchHooks } from '../watch/WatchHooks';
-
-const debug = Debug('qawolf:Registry');
+import { watchBrowser } from '../watch/watchBrowser';
 
 export class Registry extends EventEmitter {
   private static _instance = new Registry();
@@ -17,28 +14,8 @@ export class Registry extends EventEmitter {
   }
 
   public static setBrowser(browser: Browser): void {
+    watchBrowser(browser);
     this.set('browser', browser);
-
-    browser.on('disconnected', () => WatchHooks.close());
-
-    // TODO stub browser.close to only close once
-    WatchHooks.onStop(async () => {
-      debug('close browser on stop');
-
-      try {
-        await browser.close();
-      } catch (e) {
-        // the browser might already be closed
-      }
-
-      if (browser.isConnected()) {
-        await new Promise((resolve) => {
-          browser.on('disconnected', resolve);
-        });
-      }
-
-      debug('browser closed');
-    });
   }
 
   public static set(key: string, value: any): void {
