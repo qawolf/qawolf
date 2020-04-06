@@ -14,7 +14,7 @@ const closeOnce = (browser: Browser): void => {
 };
 
 export const watchBrowser = (browser: Browser): void => {
-  if (!WatchHooks.enabled() || (browser as any)._qawWatch) return;
+  if ((browser as any)._qawWatch) return;
   (browser as any)._qawWatch = true;
 
   // We close the browser when the test is stopped.

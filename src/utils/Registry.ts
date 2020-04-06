@@ -1,8 +1,9 @@
 import { EventEmitter } from 'events';
 import { Browser, BrowserContext } from 'playwright';
 import { watchBrowser } from '../watch/watchBrowser';
-import { Selectors } from '../types';
+import { WatchHooks } from '../watch/WatchHooks';
 import * as qawolf from '../qawolf';
+import { Selectors } from '../types';
 
 type RegistryData = {
   browser?: Browser;
@@ -25,7 +26,10 @@ export class Registry extends EventEmitter {
   }
 
   public setBrowser(browser: Browser): void {
-    watchBrowser(browser);
+    if (WatchHooks.enabled()) {
+      watchBrowser(browser);
+    }
+
     this._data.browser = browser;
     this.emit('change');
   }
