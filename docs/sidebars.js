@@ -24,7 +24,6 @@ module.exports = {
     { type: 'doc', id: 'change_input_values' },
     { type: 'doc', id: 'emulate_a_device' },
     { type: 'doc', id: 'use_typescript' },
-    { type: 'doc', id: 'create_a_script' },
     { type: 'doc', id: 'configure_qa_wolf' },
     { type: 'doc', id: 'contribute' },
   ],

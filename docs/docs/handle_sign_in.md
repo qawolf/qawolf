@@ -34,7 +34,7 @@ The most straightforward way to handle sign in is to save user state ([cookies](
 
 ### Save user state
 
-QA Wolf provides the [`saveState` helper](api/qawolf/save_state) to make saving user state easy. In this example, we'll call it in the [interactive REPL](use_the_repl), but you can also call it in a test or script file.
+QA Wolf provides the [`saveState` helper](api/qawolf/save_state) to make saving user state easy. In this example, we'll call it in the [interactive REPL](use_the_repl), but you can also call it in a test file.
 
 Let's create a test for using Twitter as a signed in user. We'll start by creating a test with the [`npx qawolf create` command](api/cli#npx-qawolf-create-url-name). We will then sign in to Twitter through their [UI](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface), and use the REPL to save our state data.
 

@@ -35,7 +35,7 @@ module.exports = {
   rootDir: '.qawolf',
   // jest --testTimeout=60000
   testTimeout: 60000,
-  // generate .ts files, use ts-node for scripts
+  // generate .ts files
   useTypeScript: false,
 };
 ```
@@ -66,7 +66,7 @@ See [Jest documentation](https://jestjs.io/docs/en/cli#--configpath) to learn mo
 
 ### rootDir
 
-The diretory where tests and scripts will be created. For example, a test with the name `myTestName` will be saved in a file called `${rootDir}/myTestName.test.js`.
+The diretory where tests will be created. For example, a test with the name `myTestName` will be saved in a file called `${rootDir}/myTestName.test.js`.
 
 **Default:** `'.qawolf'`
 
@@ -84,6 +84,6 @@ See [Jest documentation](https://jestjs.io/docs/en/cli#--testtimeoutnumber) to l
 
 ### useTypeScript
 
-Whether or not to use [TypeScript](https://www.typescriptlang.org). If set to `true`, tests and scripts will be created in TypeScript and saved with the `.ts` file extension. Scripts will be run using `ts-node`.
+Whether or not to use [TypeScript](https://www.typescriptlang.org). If set to `true`, tests will be created in TypeScript and saved with the `.ts` file extension.
 
 **Default:** `false`

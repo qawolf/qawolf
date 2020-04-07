@@ -21,21 +21,9 @@ function ArgumentCreate() {
       <Argument
         description={
           <React.Fragment>
-            Create a browser script instead of a{' '}
-            <a href="https://jestjs.io/">Jest</a> test. <b>Default:</b>{' '}
-            <code>false</code>.
-          </React.Fragment>
-        }
-        name="--script"
-        optional
-        type="boolean"
-      />
-      <Argument
-        description={
-          <React.Fragment>
             File where state data (cookies, <code>localStorage</code>,{' '}
             <code>sessionStorage</code>) is saved. If provided, the state will
-            be set before you create your test or script. <b>Default:</b>{' '}
+            be set before you create your test. <b>Default:</b>{' '}
             <code>null</code>.
           </React.Fragment>
         }
@@ -51,7 +39,7 @@ function ArgumentCreate() {
       <Argument
         description={
           <React.Fragment>
-            The name of your test or script file. The file will be saved at{' '}
+            The name of your test file. The file will be saved at{' '}
             <code>{'${rootDir}/${name}.test.js'}</code> or{' '}
             <code>{'${rootDir}/${name}.js'}</code>. <b>Default:</b> the hostname
             of the provided URL.

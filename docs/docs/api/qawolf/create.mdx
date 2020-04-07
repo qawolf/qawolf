@@ -23,7 +23,7 @@ No arguments.
 
 ### Examples
 
-Create new code in an existing file, after calling [`qawolf.register(context)`](register) to register a [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext) instance:
+Create new code in an existing file. You must call [`qawolf.register(context)`](register) first so that QA Wolf has access to the [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext) instance.
 
 ```js
 const qawolf = require('qawolf');
@@ -32,20 +32,4 @@ const qawolf = require('qawolf');
 qawolf.register(context);
 
 await qawolf.create();
-```
-
-Create new code in an existing file, passing a [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext) instance directly:
-
-```js
-const qawolf = require('qawolf');
-// ...
-await qawolf.create({ context });
-```
-
-Create new code in an existing file, passing a [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext) instance directly. Use a different selector path than the default:
-
-```js
-const qawolf = require('qawolf');
-// ...
-await qawolf.create({ context, selectorPath: 'my/path/selectors.json' });
 ```

@@ -24,7 +24,7 @@ See all commands and options.
 
 ## npx qawolf create url [name]
 
-Create a browser [test](../create_a_test) or [script](../create_a_script) on a [Chromium](https://www.chromium.org/Home) browser.
+Create a browser [test](../create_a_test) on a [Chromium](https://www.chromium.org/Home) browser.
 
 #### Arguments
 
@@ -48,12 +48,6 @@ Create a brower test on `www.google.com`, loading state data from `.qawolf/state
 
 ```bash
 npx qawolf create --statePath=./.qawolf/state/admin.json www.google.com
-```
-
-Create a browser script on `www.google.com`:
-
-```bash
-npx qawolf create --script google.com
 ```
 
 ## npx qawolf test [name][...options]
