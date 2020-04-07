@@ -5,7 +5,6 @@ import path from 'path';
 type Options = {
   name: string;
   rootDir: string;
-  useTypeScript?: boolean;
 };
 
 const isFile = async (path: string): Promise<boolean> => {
@@ -16,13 +15,12 @@ const isFile = async (path: string): Promise<boolean> => {
 export const findTestPath = async ({
   name,
   rootDir,
-  useTypeScript,
 }: Options): Promise<string> => {
   if (path.isAbsolute(name) && (await isFile(name))) return name;
 
   let ext = '';
   // include the expected extension in the glob
-  if (!path.extname(name)) ext = useTypeScript ? 'ts' : 'js';
+  if (!path.extname(name)) ext = '{ts,js}';
 
   const files = await new Promise<string[]>((resolve, reject) => {
     glob(

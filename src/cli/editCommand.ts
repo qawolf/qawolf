@@ -14,11 +14,7 @@ export const buildEditCommand = (): program.Command => {
 
       const config = loadConfig();
 
-      const testPath = await findTestPath({
-        rootDir: config.rootDir,
-        name,
-        useTypeScript: config.useTypeScript,
-      });
+      const testPath = await findTestPath({ rootDir: config.rootDir, name });
 
       runTests(
         buildEditOptions({

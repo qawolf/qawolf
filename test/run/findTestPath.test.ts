@@ -1,30 +1,31 @@
 import { join, relative } from 'path';
 import { findTestPath } from '../../src/run/findTestPath';
 
-const rootDir = join(__dirname, '../.qawolf');
+const rootDir = __dirname;
 
 describe('findTestPath', () => {
   it('finds path in rootDir', async () => {
-    const path = await findTestPath({ name: 'scroll.test', rootDir });
-    expect(relative(rootDir, path)).toEqual('scroll.test.js');
+    const path = await findTestPath({ name: 'findTestPath', rootDir });
+    expect(relative(rootDir, path)).toEqual('findTestPath.test.ts');
   });
 
   it('finds path in a subfolder', async () => {
-    const path = await findTestPath({ name: 'keys', rootDir });
-
-    expect(relative(rootDir, path).replace(/\\/g, '/')).toEqual(
-      'inputs/keys.test.js',
+    const parentDir = join(__dirname, '../');
+    const path = await findTestPath({
+      name: 'findTestPath',
+      rootDir: parentDir,
+    });
+    expect(relative(parentDir, path).replace(/\\/g, '/')).toEqual(
+      'run/findTestPath.test.ts',
     );
   });
 
   it('finds an absolute path', async () => {
-    const absolutePath = join(rootDir, 'scroll.test.js');
-
     const path = await findTestPath({
-      name: absolutePath,
+      name: __filename,
       rootDir,
     });
-    expect(path).toEqual(absolutePath);
+    expect(path).toEqual(__filename);
   });
 
   it('throws an error if not a file', async () => {
