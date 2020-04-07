@@ -16,8 +16,8 @@ module.exports = {
     { type: 'doc', id: 'run_tests_in_ci' },
   ],
   guides: [
+    { type: 'doc', id: 'edit_a_test' },
     { type: 'doc', id: 'use_the_repl' },
-    { type: 'doc', id: 'add_steps_to_existing_tests' },
     { type: 'doc', id: 'handle_sign_in' },
     { type: 'doc', id: 'add_assertions' },
     { type: 'doc', id: 'use_custom_selectors' },

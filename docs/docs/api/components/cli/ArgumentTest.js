@@ -11,20 +11,6 @@ function ArgumentTest() {
     <React.Fragment>
       <ArgumentAllBrowsers />
       <ArgumentFirefox />
-      <Argument
-        description={
-          <React.Fragment>
-            Pause and open the REPL when{' '}
-            <Link to={useBaseUrl('docs/api/qawolf/repl')}>
-              <code>repl</code> is called
-            </Link>{' '}
-            in test code.
-          </React.Fragment>
-        }
-        name="--repl"
-        optional
-        type="boolean"
-      />
       <ArgumentWebKit />
       <Argument
         description={

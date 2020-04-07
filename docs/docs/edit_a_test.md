@@ -1,6 +1,6 @@
 ---
-id: add_steps_to_existing_tests
-title: 📝 Add Steps to Existing Tests
+id: edit_a_test
+title: 📝 Edit a Test
 ---
 
 As your application changes, you may want to update the steps in an existing test. Rather than create a new test from scratch, you can use QA Wolf to add steps to your existing code.
