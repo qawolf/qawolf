@@ -33,8 +33,6 @@ export class SelectorFileUpdater {
   private _steps: Step[] = [];
   private _path: string;
 
-  private _lock: boolean;
-
   protected constructor(options: ConstructorOptions) {
     this._initialSelectors = options.initialSelectors;
     this._path = options.path;
@@ -60,15 +58,12 @@ export class SelectorFileUpdater {
   }
 
   public async update(options: UpdateOptions): Promise<void> {
+    debug('update selectors');
     this._steps = options.steps;
-
-    if (this._lock) return;
-    this._lock = true;
 
     const updatedSelectors = this.selectors();
     Registry.instance().setSelectors(updatedSelectors);
-    await outputJson(this._path, updatedSelectors, { spaces: ' ' });
 
-    this._lock = false;
+    await outputJson(this._path, updatedSelectors, { spaces: ' ' });
   }
 }
