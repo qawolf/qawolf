@@ -1,28 +1,37 @@
-import Mitm, { MitmType } from 'mitm';
-import { Socket } from 'net';
+import { createServer, Server, Socket, AddressInfo } from 'net';
 import split from 'split';
-import '../mitm';
 import '../../src/watch/split';
 import { WatchClient } from '../../src/watch/WatchClient';
 import { waitFor } from '../../src/utils';
 
 describe('WatchClient', () => {
   const messages: string[] = [];
-  let mitm: MitmType;
+  let server: Server;
   let socket: Socket;
   let watchClient: WatchClient;
 
-  beforeAll(() => {
-    mitm = Mitm();
-    mitm.on('connection', (connection: Socket) => {
-      socket = connection;
-      socket.pipe(split()).on('data', (data: string) => messages.push(data));
-      return connection;
+  beforeAll(async () => {
+    const connected = new Promise((resolve) => {
+      server = createServer((connection) => {
+        socket = connection;
+        socket.pipe(split()).on('data', (data: string) => messages.push(data));
+        resolve();
+      });
     });
-    watchClient = new WatchClient(22);
+
+    await new Promise((resolve) => {
+      server.listen({ port: 0 }, resolve);
+    });
+
+    watchClient = new WatchClient((server.address() as AddressInfo).port);
+
+    await connected;
   });
 
-  afterAll(() => mitm.disable());
+  afterAll(() => {
+    watchClient.close();
+    server.close();
+  });
 
   it('emits stoptest', async () => {
     const promise = new Promise((resolve) =>
@@ -38,7 +47,8 @@ describe('WatchClient', () => {
     watchClient.sendTestStopped();
 
     await waitFor(() => messages.length >= 3);
-    expect(messages).toEqual([
+
+    expect(messages.slice(0, 3)).toEqual([
       '{"name":"codeupdate","code":"some code"}',
       '{"name":"stopwatch"}',
       '{"name":"teststopped"}',

@@ -1,6 +1,6 @@
 import Debug from 'debug';
 import { EventEmitter } from 'events';
-import { createConnection, Socket } from 'net';
+import { connect, Socket } from 'net';
 import split from 'split';
 
 const debug = Debug('qawolf:WatchClient');
@@ -12,7 +12,7 @@ export class WatchClient extends EventEmitter {
     super();
 
     debug('connect to port %o', port);
-    this._socket = createConnection({ port });
+    this._socket = connect({ port });
     this._socket.setEncoding('utf8');
 
     this._listen();
