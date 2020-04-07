@@ -36,8 +36,7 @@ export const loadConfig = (path?: string): Config => {
     // use defaults
     return {
       attribute: process.env.QAW_ATTRIBUTE || DEFAULT_ATTRIBUTE,
-      // reset jest config
-      config: '{}',
+      config: 'node_modules/qawolf/js-jest.config.json',
       rootDir: '.qawolf',
       testTimeout: 60000,
       useTypeScript: false,

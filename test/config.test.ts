@@ -17,7 +17,7 @@ describe('loadConfig', () => {
   it('defaults values when there is no config', () => {
     const config = loadConfig('notapath');
     expect(config.attribute).toEqual(DEFAULT_ATTRIBUTE);
-    expect(config.config).toEqual('{}');
+    expect(config.config).toEqual('node_modules/qawolf/js-jest.config.json');
     expect(config.createTemplate).toBeUndefined();
     expect(config.rootDir).toEqual('.qawolf');
     expect(config.testTimeout).toEqual(60000);
