@@ -36,9 +36,10 @@ export const saveTemplate = async (
   if (!(await promptOverwrite(path))) return null;
 
   const templateFn = options.templateFn || buildTemplate;
+  const code = await templateFn(options);
 
   await ensureFile(path);
-  await writeFile(path, templateFn(options));
+  await writeFile(path, code);
 
   // create a selector file so it can be imported
   const selectorPath = getSelectorPath(path);

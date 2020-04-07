@@ -9,7 +9,9 @@ export interface BuildTemplateOptions {
   useTypeScript?: boolean;
 }
 
-export type TemplateFunction = (options: BuildTemplateOptions) => string;
+export type TemplateFunction = (
+  options: BuildTemplateOptions,
+) => string | Promise<string>;
 
 interface BuildImportsOptions {
   device?: string;

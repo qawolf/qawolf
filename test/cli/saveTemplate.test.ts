@@ -1,8 +1,11 @@
-import { pathExists } from 'fs-extra';
-import { tmpdir } from 'os';
-import { join } from 'path';
+import { writeFile, writeJson } from 'fs-extra';
 import { buildPath, saveTemplate } from '../../src/cli/saveTemplate';
-import { randomString } from '../utils';
+import { buildTemplate } from '../../src/build-code/buildTemplate';
+
+jest.mock('fs-extra');
+
+const mockedWriteFile = writeFile as jest.Mock;
+const mockedWriteJson = writeJson as jest.Mock;
 
 describe('buildPath', () => {
   it('builds test paths', () => {
@@ -21,16 +24,26 @@ describe('buildPath', () => {
 });
 
 describe('saveTemplate', () => {
-  it('saves test template', async () => {
-    const rootDir = join(tmpdir(), randomString());
-    await saveTemplate({ name: 'myTest', rootDir, url: 'www.qawolf.com' });
+  const rootDir = __dirname;
+  const options = { name: 'myTest', rootDir, url: 'www.qawolf.com' };
 
-    const fileExists = await pathExists(join(rootDir, 'myTest.test.js'));
-    expect(fileExists).toBe(true);
+  beforeEach(() => mockedWriteFile.mockClear());
 
-    const selectorsExists = await pathExists(
-      join(rootDir, 'selectors', 'myTest.json'),
-    );
-    expect(selectorsExists).toBe(true);
+  it('saves empty selector file', async () => {
+    await saveTemplate(options);
+    expect(mockedWriteJson.mock.calls[0][1]).toEqual({});
+  });
+
+  it('saves provided templateFn', async () => {
+    await saveTemplate({
+      ...options,
+      templateFn: async () => 'custom template',
+    });
+    expect(mockedWriteFile.mock.calls[0][1]).toEqual('custom template');
+  });
+
+  it('saves test template by default', async () => {
+    await saveTemplate(options);
+    expect(mockedWriteFile.mock.calls[0][1]).toEqual(buildTemplate(options));
   });
 });
