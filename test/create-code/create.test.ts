@@ -13,9 +13,9 @@ describe('create', () => {
   describe('end-to-end', () => {
     let browser: Browser;
     let createdPromise: Promise<void>;
+    let fulfillPrompt: ({ choice: string }) => void;
     let initialCode: string;
     let page: Page;
-    let fulfillPrompt: ({ choice: string }) => void;
 
     const loadCode = (): Promise<string> => {
       const filePath = join(__dirname, '../.qawolf/createSelf.ts');

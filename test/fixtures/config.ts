@@ -6,4 +6,5 @@ export const config: Config = {
   rootDir: '.qawolf',
   testTimeout: 60000,
   useTypeScript: false,
+  watch: true,
 };

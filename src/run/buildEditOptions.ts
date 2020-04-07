@@ -19,8 +19,9 @@ export const buildEditOptions = (options: EditOptions): TestOptions => {
   // timeout after an hour
   args.push('--testTimeout=3600000');
 
-  // TODO make this configurable
-  args.push('--watch');
+  if (options.config.watch) {
+    args.push('--watch');
+  }
 
   if (options.args) {
     args = [...args, ...options.args];

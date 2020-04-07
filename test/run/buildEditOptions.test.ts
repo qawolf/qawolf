@@ -22,9 +22,18 @@ describe('buildEditOptions', () => {
       expect(options.args).toContain('--detectOpenHandles');
     });
 
-    // TODO make configurable
-    it('sets watch=true', () => {
+    it('includes --watch if specified in the config', () => {
       expect(options.args).toContain('--watch');
+
+      expect(
+        buildEditOptions({
+          config: {
+            ...config,
+            watch: false,
+          },
+          testPath: '',
+        }).args,
+      ).not.toContain('--watch');
     });
 
     it('times out after an hour', () => {
