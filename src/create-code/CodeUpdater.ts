@@ -16,8 +16,6 @@ type UpdateOptions = {
   steps: Step[];
 };
 
-export const CREATE_HANDLE = `await qawolf.create`;
-
 export abstract class CodeUpdater extends EventEmitter {
   protected _locked = false;
   private _reconciler: CodeReconciler;
@@ -37,20 +35,12 @@ export abstract class CodeUpdater extends EventEmitter {
   }
 
   protected async _prepare(): Promise<void> {
-    this._locked = true;
     const code = await this._loadCode();
 
-    const createLine = getLineIncludes(code, CREATE_HANDLE);
-    if (!createLine) {
-      throw new Error(`Could not find "${CREATE_HANDLE}"`);
+    const patchLine = getLineIncludes(code, PATCH_HANDLE);
+    if (!patchLine) {
+      throw new Error(`Could not find "${PATCH_HANDLE}"`);
     }
-
-    // trim to match indentation
-    const updatedCode = code.replace(createLine.trim(), PATCH_HANDLE);
-
-    await this._update(updatedCode);
-
-    this._locked = false;
   }
 
   public async finalize(): Promise<void> {

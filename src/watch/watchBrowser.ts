@@ -2,14 +2,14 @@ import { Browser } from 'playwright';
 import { WatchHooks } from './WatchHooks';
 
 const closeOnce = (browser: Browser): void => {
-  let closed = false;
+  let closedPromise: Promise<void>;
 
-  const originalClose = browser.close.bind(browser);
+  const closeFn = browser.close.bind(browser);
 
   (browser as any).close = (): Promise<void> => {
-    if (closed) return Promise.resolve();
-    closed = true;
-    return originalClose();
+    if (closedPromise) return closedPromise;
+    closedPromise = closeFn();
+    return closedPromise;
   };
 };
 
@@ -25,11 +25,5 @@ export const watchBrowser = (browser: Browser): void => {
   // After the browser is disconnected, close the watch hooks.
   browser.on('disconnected', () => WatchHooks.close());
 
-  WatchHooks.onStop(async () => {
-    try {
-      await browser.close();
-    } catch (e) {
-      // the browser might already be closed
-    }
-  });
+  WatchHooks.onStop(() => browser.close());
 };

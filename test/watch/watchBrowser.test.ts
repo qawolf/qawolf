@@ -28,12 +28,23 @@ describe('watchBrowser', () => {
   it('stubs browser.close to only run once', async () => {
     const browser = await launch();
 
-    const spy = jest.spyOn(browser, 'close');
+    const originalCloseSpy = jest.spyOn(browser, 'close');
     watchBrowser(browser);
 
-    await browser.close();
-    await browser.close();
+    const onClosed = jest.fn();
 
-    expect(spy).toBeCalledTimes(1);
+    const closedPromise = browser.close().then(onClosed);
+    browser.close().then(onClosed);
+
+    // original close should only be called once
+    expect(originalCloseSpy).toBeCalledTimes(1);
+
+    // the calls to close should not be resolved yet
+    expect(onClosed).toBeCalledTimes(0);
+
+    await closedPromise;
+
+    // both calls to close should be resolved
+    expect(onClosed).toBeCalledTimes(2);
   });
 });
