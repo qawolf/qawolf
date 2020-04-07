@@ -1,9 +1,9 @@
 import { EventEmitter } from 'events';
 import { Browser, BrowserContext } from 'playwright';
-import { watchBrowser } from '../watch/watchBrowser';
-import { WatchHooks } from '../watch/WatchHooks';
 import * as qawolf from '../qawolf';
 import { Selectors } from '../types';
+import { watchBrowser } from '../watch/watchBrowser';
+import { WatchHooks } from '../watch/WatchHooks';
 
 type RegistryData = {
   browser?: Browser;

@@ -12,8 +12,8 @@ export { create } from './create-code/create';
 
 export {
   launch,
-  repl,
   register,
+  repl,
   saveState,
   scroll,
   setState,
