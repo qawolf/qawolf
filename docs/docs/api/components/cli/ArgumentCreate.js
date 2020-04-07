@@ -11,7 +11,7 @@ function ArgumentCreate() {
             <a href="https://github.com/Microsoft/playwright/blob/master/src/deviceDescriptors.ts">
               supported device
             </a>
-            . <b>Default:</b> <code>"desktop"</code>.
+            . <b>Default:</b> No device emulation.
           </React.Fragment>
         }
         name="--device name"

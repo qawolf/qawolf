@@ -3,8 +3,6 @@ id: emulate_a_device
 title: 📱 Emulate a Device
 ---
 
-When you create a test with QA Wolf, by default it runs on a browser that is about 1280 pixels wide and 720 pixels tall. These dimensions are close to the [most common desktop screen resolution](https://gs.statcounter.com/screen-resolution-stats/desktop/worldwide).
-
 In this guide, we explain how to emulate [devices](https://github.com/Microsoft/playwright/blob/master/src/deviceDescriptors.ts) and test responsive layouts. We assume you know how to [create a test](create_a_test).
 
 ## TL;DR

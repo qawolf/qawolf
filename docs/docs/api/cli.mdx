@@ -3,6 +3,7 @@ id: cli
 title: CLI
 ---
 
+import Argument from './components/Argument';
 import ArgumentCreate from './components/cli/ArgumentCreate';
 import ArgumentTest from './components/cli/ArgumentTest';
 
@@ -22,9 +23,9 @@ QAW_ATTRIBUTE=my-attribute npx qawolf create www.myawesomesite.com
 
 See all commands and options.
 
-## npx qawolf create url [name]
+## npx qawolf create url [name][...options]
 
-Create a browser [test](../create_a_test) on a [Chromium](https://www.chromium.org/Home) browser.
+[Create a browser test](../create_a_test) on a [Chromium](https://www.chromium.org/Home) browser. Will run in watch mode if [configured to do so](../configure_qa_wolf#watch).
 
 #### Arguments
 
@@ -48,6 +49,46 @@ Create a brower test on `www.google.com`, loading state data from `.qawolf/state
 
 ```bash
 npx qawolf create --statePath=./.qawolf/state/admin.json www.google.com
+```
+
+## npx qawolf edit name
+
+[Edit an existing test](../edit_a_test). Will run in watch mode if [configured to do so](../configure_qa_wolf#watch).
+
+#### Arguments
+
+<Argument
+  description="A string that matches exactly one test file name."
+  name="name"
+  type="string"
+/>
+
+#### Examples
+
+Edit the test saved at `.qawolf/myTestName.test.js`:
+
+```bash
+npx qawolf edit myTestName
+```
+
+Edit the test saved at `.qawolf/myReallySuperLongTestName.test.js` (assuming there are no other tests with names that match `TestName`):
+
+```bash
+npx qawolf edit TestName
+```
+
+When using edit mode, you can add steps to an existing test by calling the [`qawolf.create` method](qawolf/create) in your test code. The test will pause when `qawolf.create` is called, allowing you to use the browser to generate additional code.
+
+```js
+// ...
+
+test('myTestName', async () => {
+  await page.goto('http://todomvc.com/examples/react');
+  // previous test steps
+  // ...
+  // call qawolf.create to add steps
+  await qawolf.create();
+});
 ```
 
 ## npx qawolf test [name][...options]
