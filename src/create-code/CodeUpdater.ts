@@ -31,6 +31,7 @@ export abstract class CodeUpdater extends EventEmitter {
   protected abstract async _updateCode(code: string): Promise<void>;
 
   private async _update(code: string): Promise<void> {
+    debug('update code');
     this.emit('codeupdate', code);
     await this._updateCode(code);
   }
