@@ -34,6 +34,8 @@ QA Wolf is a Node.js library for creating browser tests. Run one command (`npx q
 - **Run tests in CI:** A workflow file for your CI provider is automatically created for you.
 - **Debug with ease:** Each test run includes a video and browser logs.
 
+<br/>
+
 ## 🖥️ Install
 
 [Documentation](https://docs.qawolf.com/docs/install)
