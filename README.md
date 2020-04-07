@@ -24,6 +24,16 @@
 
 <br/>
 
+## 🐺 What is QA Wolf?
+
+QA Wolf is a Node.js library for adding browser tests to your project. Run one command (`npx qawolf init`) to configure your project and optionally set up CI.
+
+- **Skip writing boilerplate:** Your browser actions are converted to [Playwright](https://github.com/microsoft/playwright)/[Jest](https://jestjs.io) code.
+- **Create stable tests:** Your tests automatically wait for elements. Element selectors use test attributes when possible, and multiple attributes otherwise.
+- **Edit your tests:** Edit your code as it is created, or add steps to existing tests. Watch mode quickly re-runs your code as you make changes.
+- **Run tests in CI:** A workflow file for your CI provider is automatically created for you.
+- **Debug with ease:** Each test run includes a video and detailed logs.
+
 ## 🖥️ Install
 
 [Documentation](https://docs.qawolf.com/docs/install)
@@ -91,7 +101,7 @@ npx qawolf create url [name]
 
 As your test is created:
 
-- ✏️ Edit the code as you like
+- ✏️ Edit the code as you like (with or without watch mode)
 - 🖥️ <a href="https://docs.qawolf.com/docs/use_the_repl">Use the REPL</a> to try out commands
 
 <br/>
