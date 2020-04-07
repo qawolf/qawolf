@@ -20,6 +20,5 @@
     "esModuleInterop": true,
     "declaration": true
   },
-  "exclude": ["src/postInstallMessage.js"],
   "include": ["src/**/*", "tests/**/*"]
 }
