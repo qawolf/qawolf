@@ -10,17 +10,20 @@ jobs:
       fail-fast: false
       matrix:
         node-version: [12.x]
-        test: [e2e, lint, chromium, firefox, webkit]
+        test: [lint, chromium, firefox, webkit]
+
+    env:
+      QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
 
     steps:
       - uses: actions/checkout@v2
 
       - name: Install chromium dependencies
-        if: matrix.test == 'chromium' || matrix.test == 'e2e'
+        if: matrix.test == 'chromium'
         run: sudo apt-get install libgbm1
 
       - name: Install webkit dependencies
-        if: matrix.test == 'webkit' || matrix.test == 'e2e'
+        if: matrix.test == 'webkit'
         run: |
           sudo apt-get install libwoff1 libopus0 libwebp6 libwebpdemux2 libenchant1c2a libgudev-1.0-0 libsecret-1-0 libhyphen0 libgdk-pixbuf2.0-0 libegl1 libgles2 libevent-2.1-6 libnotify4 libvpx5 libxslt1.1
 
@@ -50,18 +53,12 @@ jobs:
         if: matrix.test != 'lint'
 
       - run: QAW_BROWSER=${{ matrix.test }} npm test
-        if: matrix.test != 'lint' && matrix.test != 'e2e'
+        if: matrix.test != 'lint'
         env:
-          CI: true
-
-      - run: npx qawolf test --all-browsers --headless
-        if: matrix.test == 'e2e'
-        env:
-          QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
           CI: true
 
       - name: Upload Artifacts
-        if: matrix.test == 'e2e'
+        if: matrix.test != 'lint'
         uses: actions/upload-artifact@master
         with:
           name: artifacts

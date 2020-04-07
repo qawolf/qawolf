@@ -1,13 +1,12 @@
 import program, { Command } from 'commander';
 import { loadConfig } from '../config';
 import { parseUrl } from './parseUrl';
-import { runCommand } from './runCommand';
-import { runJest } from './runJest';
+import { buildEditOptions } from '../run/buildEditOptions';
+import { runTests } from '../run/runTests';
 import { saveTemplate } from './saveTemplate';
 
 export type CreateOptions = {
   device?: string;
-  isScript?: boolean;
   name: string;
   statePath?: string;
   url: string;
@@ -16,9 +15,8 @@ export type CreateOptions = {
 export const runCreate = async (options: CreateOptions): Promise<void> => {
   const config = loadConfig();
 
-  const codePath = await saveTemplate({
+  const testPath = await saveTemplate({
     device: options.device,
-    isScript: options.isScript,
     name: options.name,
     rootDir: config.rootDir,
     statePath: options.statePath,
@@ -26,36 +24,21 @@ export const runCreate = async (options: CreateOptions): Promise<void> => {
     url: options.url,
     useTypeScript: config.useTypeScript,
   });
-  if (!codePath) {
+  if (!testPath) {
     // the user decided to not overwrite
     return;
   }
 
-  const env: NodeJS.ProcessEnv = {
-    QAW_CREATE: 'true',
-    QAW_HEADLESS: 'false',
-  };
-
-  if (options.isScript) {
-    runCommand(
-      `${config.useTypeScript ? 'ts-node -D 6133' : 'node'} ${codePath}`,
-      {
-        ...env,
-        QAW_BROWSER: 'chromium',
+  runTests(
+    buildEditOptions({
+      config,
+      env: {
+        // discard should delete the test and selectors
+        QAW_CREATE: 'true',
       },
-    );
-    return;
-  }
-
-  runJest({
-    browsers: ['chromium'],
-    config: config.config,
-    env,
-    repl: true,
-    rootDir: config.rootDir,
-    testPath: codePath,
-    testTimeout: config.testTimeout,
-  });
+      testPath,
+    }),
+  );
 };
 
 export const buildCreateCommand = (): program.Command => {
@@ -64,7 +47,6 @@ export const buildCreateCommand = (): program.Command => {
     .arguments('[url] [name]')
     .option('-d, --device <device>', 'emulate using a playwright.device')
     .option('--name <name>', 'name')
-    .option('-s, --script', 'create a script instead of a test')
     .option(
       '--statePath <statePath>',
       'path where state data (cookies, localStorage, sessionStorage) is saved',
@@ -86,7 +68,6 @@ export const buildCreateCommand = (): program.Command => {
       await runCreate({
         device: opts.device,
         name,
-        isScript: opts.script,
         statePath: opts.statePath,
         url: url.href,
       });

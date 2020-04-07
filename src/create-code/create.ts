@@ -4,23 +4,19 @@ import { pathExists, readFile } from 'fs-extra';
 import { bold } from 'kleur';
 import { findLast } from 'lodash';
 import { basename, dirname, join } from 'path';
-import { BrowserContext } from 'playwright';
 import { CREATE_HANDLE } from './CodeUpdater';
 import { CreateManager } from './CreateManager';
 import { getLineIncludes } from './format';
-import { ReplContext } from '../utils';
+import { Registry } from '../utils';
 
 type CreateOptions = {
-  codePath?: string;
-  context?: BrowserContext;
   // used for testing
   onReady?: () => void;
-  selectorPath?: string;
 };
 
 const debug = Debug('qawolf:create');
 
-export const getCodePath = async (
+export const getCreatePath = async (
   callerFileNames: string[],
 ): Promise<string> => {
   debug(`search caller files for ${CREATE_HANDLE} %j`, callerFileNames);
@@ -55,21 +51,18 @@ export const getSelectorPath = (codePath: string): string => {
 };
 
 export const create = async (options: CreateOptions = {}): Promise<void> => {
-  const context: BrowserContext =
-    options.context || (ReplContext.data() as any).context;
+  const context = Registry.instance().data().context;
   if (!context) {
     throw new Error(
-      'No context found. Call qawolf.register(context) before qawolf.create() or qawolf.create({ context })',
+      'No context found. Call qawolf.register(context) before qawolf.create()',
     );
   }
 
-  let codePath = options.codePath;
-  if (!codePath) {
-    const callerFileNames = callsites().map((c) => c.getFileName());
-    codePath = await getCodePath(callerFileNames);
-  }
+  const callerFileNames = callsites().map((c) => c.getFileName());
 
-  const selectorPath = options.selectorPath || getSelectorPath(codePath);
+  const codePath = await getCreatePath(callerFileNames);
+
+  const selectorPath = getSelectorPath(codePath);
 
   const manager = await CreateManager.create({
     codePath,

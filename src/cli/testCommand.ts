@@ -1,7 +1,7 @@
 import program, { Command } from 'commander';
 import { loadConfig } from '../config';
 import { omitArgs } from './omitArgs';
-import { runJest } from './runJest';
+import { runTests } from '../run/runTests';
 import { BrowserName } from '../types';
 
 export const buildTestCommand = (): program.Command => {
@@ -11,9 +11,8 @@ export const buildTestCommand = (): program.Command => {
     .option('--chromium', 'run tests on chromium')
     .option('--firefox', 'run tests on firefox')
     .option('--headless', 'run tests headless')
-    .option('--repl', 'open a REPL when repl() is called')
     .option('--webkit', 'run tests on webkit')
-    .description('✅ run browser tests with Jest')
+    .description('✅ run tests')
     .allowUnknownOption(true)
     .action(async () => {
       const opts = command.opts();
@@ -24,34 +23,25 @@ export const buildTestCommand = (): program.Command => {
       if (opts.allBrowsers || opts.webkit) browsers.push('webkit');
       if (!browsers.length) browsers.push('chromium');
 
+      // omit qawolf arguments
+      const jestArgs = omitArgs(process.argv.slice(3), [
+        '--all-browsers',
+        '--chromium',
+        '--firefox',
+        '--headless',
+        '--rootDir', // should be passed through config
+        '--webkit',
+      ]);
+
+      const config = loadConfig();
+
       try {
-        // omit qawolf arguments
-        const jestArgs = omitArgs(process.argv.slice(3), [
-          '--all-browsers',
-          '--chromium',
-          '--firefox',
-          '--headless',
-          '--repl',
-          // should be passed through config
-          '--rootDir',
-          '--webkit',
-        ]);
-
-        const config = loadConfig();
-
-        runJest({
+        runTests({
           args: jestArgs,
           browsers,
-          config: config.config,
-          env: {
-            QAW_HEADLESS: opts.headless ? 'true' : 'false',
-          },
-          repl: !!opts.repl,
-          rootDir: config.rootDir,
-          testTimeout: config.testTimeout,
+          config: config,
+          headless: opts.headless,
         });
-
-        process.exit(0);
       } catch (e) {
         process.exit(1);
       }

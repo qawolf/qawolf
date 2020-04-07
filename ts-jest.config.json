@@ -4,5 +4,6 @@
     "ts-jest": {
       "diagnostics": false
     }
-  }
+  },
+  "watchPlugins": ["qawolf/watch"]
 }

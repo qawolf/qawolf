@@ -51,43 +51,6 @@ describe('buildTemplate', () => {
     url: 'www.qawolf.com',
   };
 
-  it('builds script template', () => {
-    let template = buildTemplate({
-      ...options,
-      isScript: true,
-    });
-    expect(template).toMatchSnapshot();
-
-    template = buildTemplate({
-      ...options,
-      device: 'iPhone 11',
-      isScript: true,
-    });
-    expect(template).toMatchSnapshot();
-
-    template = buildTemplate({
-      ...options,
-      isScript: true,
-      statePath: 'admin.json',
-    });
-    expect(template).toMatchSnapshot();
-
-    template = buildTemplate({
-      ...options,
-      isScript: true,
-      useTypeScript: true,
-    });
-    expect(template).toMatchSnapshot();
-
-    template = buildTemplate({
-      ...options,
-      device: 'iPhone 7',
-      isScript: true,
-      useTypeScript: true,
-    });
-    expect(template).toMatchSnapshot();
-  });
-
   it('builds test template', () => {
     let template = buildTemplate(options);
     expect(template).toMatchSnapshot();
@@ -112,8 +75,8 @@ describe('buildTemplate', () => {
 
     template = buildTemplate({
       ...options,
-      useTypeScript: true,
       device: 'iPhone 7',
+      useTypeScript: true,
     });
     expect(template).toMatchSnapshot();
   });

@@ -1,4 +1,5 @@
 import Debug from 'debug';
+import { EventEmitter } from 'events';
 import { buildVirtualCode } from '../build-code/buildVirtualCode';
 import { CodeReconciler } from './CodeReconciler';
 import { getLineIncludes, removeLinesIncluding } from './format';
@@ -17,16 +18,22 @@ type UpdateOptions = {
 
 export const CREATE_HANDLE = `await qawolf.create`;
 
-export abstract class CodeUpdater {
+export abstract class CodeUpdater extends EventEmitter {
   protected _locked = false;
   private _reconciler: CodeReconciler;
 
   protected constructor() {
+    super();
     this._reconciler = new CodeReconciler();
   }
 
   protected abstract async _loadCode(): Promise<string>;
   protected abstract async _updateCode(code: string): Promise<void>;
+
+  private async _update(code: string): Promise<void> {
+    this.emit('codeupdate', code);
+    await this._updateCode(code);
+  }
 
   protected async _prepare(): Promise<void> {
     this._locked = true;
@@ -40,7 +47,7 @@ export abstract class CodeUpdater {
     // trim to match indentation
     const updatedCode = code.replace(createLine.trim(), PATCH_HANDLE);
 
-    await this._updateCode(updatedCode);
+    await this._update(updatedCode);
 
     this._locked = false;
   }
@@ -49,7 +56,7 @@ export abstract class CodeUpdater {
     this._locked = true;
     let code = await this._loadCode();
     code = removeLinesIncluding(code, PATCH_HANDLE);
-    await this._updateCode(code);
+    await this._update(code);
   }
 
   public async update(options: UpdateOptions): Promise<void> {
@@ -75,7 +82,7 @@ export abstract class CodeUpdater {
       actualCode,
       virtualCode: updatedVirtualCode,
     });
-    await this._updateCode(updatedCode);
+    await this._update(updatedCode);
 
     // store the updated virtual code
     this._reconciler.update(updatedVirtualCode);

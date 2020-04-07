@@ -7,4 +7,4 @@ export const createSelf = async (onReady: () => void): Promise<void> => {
 };
 
 export const getCallSites = (): string[] =>
-  callsites().map(c => c.getFileName());
+  callsites().map((c) => c.getFileName());

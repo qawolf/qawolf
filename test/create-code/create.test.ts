@@ -1,7 +1,8 @@
 import { readFile } from 'fs-extra';
 import { prompt } from 'inquirer';
 import { join } from 'path';
-import { getSelectorPath, getCodePath } from '../../src/create-code/create';
+import { Browser, Page } from 'playwright';
+import { getSelectorPath, getCreatePath } from '../../src/create-code/create';
 import { launch, register, waitFor } from '../../src/utils';
 import { createSelf, getCallSites } from '../.qawolf/createSelf';
 import { TEST_URL } from '../utils';
@@ -9,57 +10,72 @@ import { TEST_URL } from '../utils';
 jest.mock('inquirer');
 
 describe('create', () => {
-  it('works end-to-end', async () => {
-    let fulfillPrompt: ({ choice: string }) => void;
-    ((prompt as unknown) as jest.Mock).mockResolvedValue(
-      new Promise<{ choice: string }>((resolve) => (fulfillPrompt = resolve)),
-    );
-
-    const filePath = join(__dirname, '../.qawolf/createSelf.ts');
-    const loadCode = (): Promise<string> => readFile(filePath, 'utf8');
-
-    const initial = await loadCode();
-    // check the initial code has not changed
-    expect(initial).toMatchSnapshot('1-initial');
-
-    // set up context
-    const browser = await launch();
-    const context = await browser.newContext();
-    await register(context);
-    const page = await context.newPage();
-    await page.goto(`${TEST_URL}text-inputs`);
-
-    // wait until the creation is ready
+  describe('end-to-end', () => {
+    let browser: Browser;
     let createdPromise: Promise<void>;
-    await new Promise((onReady) => {
-      createdPromise = createSelf(onReady);
+    let fulfillPrompt: ({ choice: string }) => void;
+    let initialCode: string;
+    let page: Page;
+
+    const loadCode = (): Promise<string> => {
+      const filePath = join(__dirname, '../.qawolf/createSelf.ts');
+      return readFile(filePath, 'utf8');
+    };
+
+    beforeAll(async () => {
+      ((prompt as unknown) as jest.Mock).mockResolvedValue(
+        new Promise<{ choice: string }>((resolve) => (fulfillPrompt = resolve)),
+      );
+
+      browser = await launch();
+      const context = await browser.newContext();
+      await register(context);
+      page = await context.newPage();
+      await page.goto(`${TEST_URL}text-inputs`);
     });
 
-    // check the patch handle replaces the create handle
-    expect(await loadCode()).toMatchSnapshot('2-prepared');
+    afterAll(() => browser.close());
 
-    // perform an action
-    await page.type("[data-qa='html-text-input']", 'hello');
+    it('has the correct initial code', async () => {
+      initialCode = await loadCode();
+      // check the initial code has not changed
+      expect(initialCode).toMatchSnapshot('1-initial');
+    });
 
-    // check the code updated as expected
-    await waitFor(async () => (await loadCode()).includes('hello'));
-    expect(await loadCode()).toMatchSnapshot('3-updated');
+    it('replaces create handle with the patch handle', async () => {
+      // wait until the creation is ready
+      await new Promise((onReady) => {
+        createdPromise = createSelf(onReady);
+      });
 
-    // discard the changes
-    fulfillPrompt({ choice: 'Discard' });
-    await createdPromise;
+      // check the patch handle replaces the create handle
+      expect(await loadCode()).toMatchSnapshot('2-prepared');
+    });
 
-    const reverted = await loadCode();
-    expect(reverted).toEqual(initial);
-    expect(reverted).toMatchSnapshot('4-reverted');
+    it('inserts new code', async () => {
+      await page.type("[data-qa='html-text-input']", 'hello');
 
-    await browser.close();
+      // check the code updated as expected
+      await waitFor(async () => (await loadCode()).includes('hello'));
+
+      expect(await loadCode()).toMatchSnapshot('3-updated');
+    });
+
+    it('reverts the changes', async () => {
+      // discard the changes
+      fulfillPrompt({ choice: 'Discard' });
+      await createdPromise;
+
+      const reverted = await loadCode();
+      expect(reverted).toEqual(initialCode);
+      expect(reverted).toMatchSnapshot('4-reverted');
+    });
   });
 });
 
-describe('getCodePath', () => {
+describe('getCreatePath', () => {
   it('finds the caller file with create handle', async () => {
-    const codePath = await getCodePath(getCallSites());
+    const codePath = await getCreatePath(getCallSites());
     expect(codePath).toEqual(join(__dirname, '../.qawolf/createSelf.ts'));
   });
 });

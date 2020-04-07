@@ -3,7 +3,6 @@ import { devices } from 'playwright';
 
 export interface BuildTemplateOptions {
   device?: string;
-  isScript?: boolean;
   name: string;
   statePath?: string;
   url: string;
@@ -14,7 +13,6 @@ export type TemplateFunction = (options: BuildTemplateOptions) => string;
 
 interface BuildImportsOptions {
   device?: string;
-  isScript?: boolean;
   name: string;
   useTypeScript?: boolean;
 }
@@ -35,7 +33,6 @@ export const buildValidVariableName = (name: string): string => {
 
 export const buildImports = ({
   device,
-  isScript,
   name,
   useTypeScript,
 }: BuildImportsOptions): string => {
@@ -46,16 +43,14 @@ export const buildImports = ({
   let imports = '';
 
   if (device) {
-    if (useTypeScript && isScript) {
-      imports += 'import { devices } from "playwright";\n';
-    } else if (useTypeScript) {
+    if (useTypeScript) {
       imports += 'import { Browser, Page, devices } from "playwright";\n';
     } else {
       imports += 'const { devices } = require("playwright");\n';
     }
   }
 
-  if (useTypeScript && !device && !isScript) {
+  if (useTypeScript && !device) {
     imports += 'import { Browser, Page } from "playwright";\n';
   }
 
@@ -88,39 +83,7 @@ const buildSetState = (statePath?: string): string => {
   return `\n  await qawolf.setState(page, "${statePath}");`;
 };
 
-export const buildScriptTemplate: TemplateFunction = ({
-  device,
-  name,
-  statePath,
-  url,
-  useTypeScript,
-}: BuildTemplateOptions): string => {
-  const validName = buildValidVariableName(name);
-  const code = `${buildImports({ device, isScript: true, name, useTypeScript })}
-
-const ${validName} = async context => {
-  let page = await context.newPage();
-  await page.goto("${url}");${buildSetState(statePath)}
-  await qawolf.create();
-};
-
-exports.${validName} = ${validName};
-
-if (require.main === module) {
-  (async () => {
-    const browser = await qawolf.launch();
-    ${buildNewContext(device)}
-    await qawolf.register(context);
-    await ${validName}(context);
-    await qawolf.stopVideos();
-    await browser.close();
-  })();
-}`;
-
-  return code;
-};
-
-export const buildTestTemplate: TemplateFunction = ({
+export const buildTemplate: TemplateFunction = ({
   device,
   name,
   statePath,
@@ -150,10 +113,4 @@ test('${name}', async () => {
 });`;
 
   return code;
-};
-
-export const buildTemplate = (options: BuildTemplateOptions): string => {
-  if (options.isScript) return buildScriptTemplate(options);
-
-  return buildTestTemplate(options);
 };

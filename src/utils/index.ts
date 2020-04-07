@@ -1,6 +1,8 @@
 // context utils
 export { forEachPage } from './context/forEachPage';
+export { indexPages, IndexedPage } from './context/indexPages';
 export { saveArtifacts, stopVideos } from './context/saveArtifacts';
+export { waitForPage, WaitForPageOptions } from './context/waitForPage';
 
 // page utils
 export { initEvaluateScript } from './page/initEvaluateScript';
@@ -14,10 +16,6 @@ export { setState } from './page/setState';
 // global utils
 export { getLaunchOptions, launch } from './launch';
 export { repl } from './repl/repl';
-export { ReplContext } from './repl/ReplContext';
-
-// internal use (for now)
+export { Registry } from './Registry';
 export { register } from './register';
 export { waitFor } from './waitFor';
-export { indexPages, IndexedPage } from './context/indexPages';
-export { waitForPage, WaitForPageOptions } from './context/waitForPage';

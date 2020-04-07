@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        test: [unit, e2e]
+        test: [unit]
 
     env:
       QAW_ARTIFACT_PATH: ${{ github.workspace }}\artifacts
@@ -35,14 +35,7 @@ jobs:
       - run: npm test
         if: matrix.test == 'unit'
 
-      - name: Test e2e
-        run: |
-          # Windows throws invalid js for linked binaries unless we call node directly
-          node ./node_modules/qawolf test --all-browsers --headless
-        if: matrix.test == 'e2e'
-
       - name: Upload Artifacts
-        if: matrix.test == 'e2e'
         uses: actions/upload-artifact@master
         with:
           name: artifacts

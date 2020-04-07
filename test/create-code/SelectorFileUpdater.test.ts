@@ -32,12 +32,14 @@ describe('SelectorFileUpdater', () => {
       expect(mockedRemove.mock.calls.length).toEqual(0);
     });
 
-    it('removes file if there were no initial selectors', async () => {
+    it('removes selectors if QAW_CREATE is set to true', async () => {
+      process.env.QAW_CREATE = 'true';
       const initial = [];
       mockedReadJson.mockResolvedValue(initial);
       const updater = await SelectorFileUpdater.create('removepath');
       await updater.discard();
       expect(mockedRemove.mock.calls[0][0]).toEqual('removepath');
+      process.env.QAW_CREATE = undefined;
     });
   });
 

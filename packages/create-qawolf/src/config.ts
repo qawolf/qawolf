@@ -9,7 +9,7 @@ type ConfigOptions = {
 };
 
 export const detectTypeScript = async (): Promise<boolean> => {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     glob('tsconfig*.json', (error, files) => {
       if (error) resolve(false);
       else resolve(files.length > 0);
@@ -28,13 +28,14 @@ export const writeConfig = async ({
     ? // we reference a file instead of inlining because
       // each shell uses different escapes characters
       'node_modules/qawolf/ts-jest.config.json'
-    : '{}';
+    : 'node_modules/qawolf/js-jest.config.json';
 
   const configFile = `module.exports = {
   config: "${jestConfig}",
   rootDir: "${rootDir}",
   testTimeout: 60000,
-  useTypeScript: ${useTypeScript}
+  useTypeScript: ${useTypeScript},
+  watch: true
 }\n`;
 
   const configPath = resolve('qawolf.config.js');

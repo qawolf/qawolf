@@ -16,7 +16,8 @@ test('writeConfig writes a config', async () => {
       config: \\"node_modules/qawolf/ts-jest.config.json\\",
       rootDir: \\"tests/acceptance\\",
       testTimeout: 60000,
-      useTypeScript: true
+      useTypeScript: true,
+      watch: true
     }
     "
   `);
