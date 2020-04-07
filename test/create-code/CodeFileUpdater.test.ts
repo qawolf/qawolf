@@ -1,7 +1,7 @@
 import { outputFile, pathExists, readFile, remove } from 'fs-extra';
 import { buildSteps } from '../../src/build-workflow/buildSteps';
 import { CodeFileUpdater } from '../../src/create-code/CodeFileUpdater';
-import { CREATE_HANDLE } from '../../src/create-code/CodeUpdater';
+import { PATCH_HANDLE } from '../../src/create-code/patchCode';
 
 // require manually since fs is mocked
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -23,12 +23,12 @@ describe('CodeFileUpdater', () => {
 
   describe('discard', () => {
     it('reverts to initial code', async () => {
-      const initialCode = `initialCode()\n${CREATE_HANDLE}`;
+      const initialCode = `initialCode()\n${PATCH_HANDLE}`;
       mockedReadFile.mockResolvedValue(initialCode);
       const updater = await CodeFileUpdater.create('revertpath');
       await updater.discard();
 
-      const reverted = mockedOutputFile.mock.calls[1];
+      const reverted = mockedOutputFile.mock.calls[0];
       expect(reverted[0]).toEqual('revertpath');
       expect(reverted[1]).toEqual(initialCode);
       expect(mockedRemove.mock.calls.length).toEqual(0);
@@ -36,7 +36,7 @@ describe('CodeFileUpdater', () => {
 
     it('removes code if QAW_CREATE is set to true', async () => {
       process.env.QAW_CREATE = 'true';
-      const initialCode = `initialCode()\n${CREATE_HANDLE}`;
+      const initialCode = `initialCode()\n${PATCH_HANDLE}`;
       mockedReadFile.mockResolvedValue(initialCode);
       const updater = await CodeFileUpdater.create('removepath');
       await updater.discard();
@@ -46,18 +46,6 @@ describe('CodeFileUpdater', () => {
   });
 
   describe('create', () => {
-    it('replaces qawolf.create call with the patch handle', async () => {
-      mockedReadFile.mockResolvedValue(
-        `  someCode();\n  await qawolf.create({ otherParams });\n  otherCode();`,
-      );
-      await CodeFileUpdater.create('somepath');
-
-      const updatedFile = mockedOutputFile.mock.calls[0][1];
-      expect(updatedFile).toBe(
-        `  someCode();\n  await qawolf.create();\n  otherCode();`,
-      );
-    });
-
     it('throws an error if qawolf.create is not found', async () => {
       mockedReadFile.mockResolvedValue('no create');
       // eslint-disable-next-line jest/valid-expect
@@ -68,13 +56,10 @@ describe('CodeFileUpdater', () => {
   describe('finalize', () => {
     it('removes the patch handle', async () => {
       mockedReadFile.mockResolvedValue(
-        `someCode();\n${CREATE_HANDLE}\notherCode();`,
+        `someCode();\n${PATCH_HANDLE}\notherCode();`,
       );
-      const updater = await CodeFileUpdater.create('somepath');
-      const preparedCode = mockedOutputFile.mock.calls[0][1];
-      mockedReadFile.mockResolvedValue(preparedCode);
 
-      mockedOutputFile.mockReset();
+      const updater = await CodeFileUpdater.create('somepath');
       await updater.finalize();
 
       const updatedFile = mockedOutputFile.mock.calls[0][1];
@@ -85,7 +70,7 @@ describe('CodeFileUpdater', () => {
   describe('update', () => {
     it('saves code with new steps', async () => {
       mockedReadFile.mockResolvedValue(
-        `  someCode();\n  ${CREATE_HANDLE}\n  otherCode();`,
+        `  someCode();\n  ${PATCH_HANDLE}\n  otherCode();`,
       );
 
       const updater = await CodeFileUpdater.create('somepath');
@@ -96,19 +81,16 @@ describe('CodeFileUpdater', () => {
         codeUpdateEvents.push(code);
       });
 
-      const preparedCode = mockedOutputFile.mock.calls[0][1];
-      mockedReadFile.mockResolvedValue(preparedCode);
-
       // emulate only the first two steps being ready
       await updater.update({ steps: steps.slice(0, 2) });
 
-      const codeUpdateOne = mockedOutputFile.mock.calls[1][1];
+      const codeUpdateOne = mockedOutputFile.mock.calls[0][1];
       expect(codeUpdateOne).toMatchSnapshot();
       expect(codeUpdateEvents[0]).toMatch(codeUpdateOne);
       mockedReadFile.mockResolvedValueOnce(codeUpdateOne);
 
       await updater.update({ steps });
-      const codeUpdateTwo = mockedOutputFile.mock.calls[2][1];
+      const codeUpdateTwo = mockedOutputFile.mock.calls[1][1];
       expect(codeUpdateEvents[1]).toMatch(codeUpdateTwo);
       expect(codeUpdateTwo).toMatchSnapshot();
     });
