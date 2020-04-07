@@ -42,23 +42,22 @@ describe('addDevDependencies', () => {
   it('adds devDependencies alphabetically', async () => {
     await packageJson.addDevDependencies(true);
     expect(writeFileSpy.mock.calls[0][1]).toMatchInlineSnapshot(`
-"{
-  \\"name\\": \\"mypackage\\",
-  \\"devDependencies\\": {
-    \\"@types/debug\\": \\"^4.1.5\\",
-    \\"@types/jest\\": \\"^25.1.4\\",
-    \\"@types/node\\": \\"^12.12.31\\",
-    \\"a\\": \\"*\\",
-    \\"jest\\": \\"~25.1.0\\",
-    \\"playwright\\": \\"~0.12.1\\",
-    \\"qawolf\\": \\"~0.12.4\\",
-    \\"ts-jest\\": \\"^25.2.1\\",
-    \\"ts-node\\": \\"^8.8.1\\",
-    \\"z\\": \\"*\\"
-  }
-}
-"
-`);
+      "{
+        \\"name\\": \\"mypackage\\",
+        \\"devDependencies\\": {
+          \\"@types/debug\\": \\"^4.1.5\\",
+          \\"@types/jest\\": \\"^25.2.1\\",
+          \\"@types/node\\": \\"^13.11.0\\",
+          \\"a\\": \\"*\\",
+          \\"jest\\": \\"~25.2.7\\",
+          \\"playwright\\": \\"~0.12.1\\",
+          \\"qawolf\\": \\"~0.12.5\\",
+          \\"ts-jest\\": \\"^25.3.1\\",
+          \\"z\\": \\"*\\"
+        }
+      }
+      "
+    `);
   });
 
   it('does not add jest to create-react-app', async () => {

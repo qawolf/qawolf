@@ -21,7 +21,6 @@ const typeScriptPackages: Packages = {
   '@types/jest': selfPkg.devDependencies['@types/jest'],
   '@types/node': selfPkg.devDependencies['@types/node'],
   'ts-jest': selfPkg.devDependencies['ts-jest'],
-  'ts-node': selfPkg.devDependencies['ts-node'],
 };
 
 export const getPackageJsonPath = (): string =>
