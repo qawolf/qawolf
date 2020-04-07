@@ -133,11 +133,11 @@ test('myFirstTest', async () => {
   await page.press(selectors['2_what_needs_to_b_input'], 'Enter');
   await page.click(selectors['3_input']);
   await page.click(selectors['4_button']);
-  // 🐺 CREATE CODE HERE
+  await qawolf.create();
 });
 ```
 
-The line `// 🐺 CREATE CODE HERE` at the end of your test is a placeholder for where new test code will be added if you continue to use the browser. This allows you to optionally edit your test code as you go along. When you finish creating a test, this line is removed.
+The line `await qawolf.create();` at the end of your test is a placeholder for where new test code will be added if you continue to use the browser. This allows you to optionally edit your test code as you go along. When you finish creating a test, this line is removed.
 
 The video below shows how your test code is updated as you use your application:
 

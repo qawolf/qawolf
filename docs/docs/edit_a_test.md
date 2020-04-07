@@ -86,7 +86,7 @@ Now let's run our test with the [`npx qawolf test` command](api/cli#npx-qawolf-t
 npx qawolf test --repl myFirstTest
 ```
 
-The first few steps of our test will now run. For TodoMVC, this means that the first todo item will be created. The test will then pause where `qawolf.create` is called. You'll notice that `qawolf.create` is replaced with `// 🐺 CREATE CODE HERE` in your code:
+The first few steps of our test will now run. For TodoMVC, this means that the first todo item will be created. The test will then pause where `qawolf.create` is called.
 
 ```js
 // ...
@@ -95,13 +95,13 @@ test('myFirstTest', async () => {
   await page.click(selectors['0_what_needs_to_b_input']);
   await page.type(selectors['1_what_needs_to_b_input'], 'create test!');
   await page.press(selectors['2_what_needs_to_b_input'], 'Enter');
-  // 🐺 CREATE CODE HERE
+  await qawolf.create(); // test will pause here
   await page.click(selectors['3_input']);
   await page.click(selectors['4_button']);
 });
 ```
 
-Any actions you take in the browser will be converted to code and inserted where `// 🐺 CREATE CODE HERE` is. To add a second todo item, let's 1) click on the todo input to focus it, 2) type `update test!`, and 3) press `Enter` to save the todo. Our test code now looks like this:
+Any actions you take in the browser will be converted to code and inserted where `await qawolf.create();` is. To add a second todo item, let's 1) click on the todo input to focus it, 2) type `update test!`, and 3) press `Enter` to save the todo. Our test code now looks like this:
 
 ```js
 // ...
@@ -113,13 +113,13 @@ test('myFirstTest', async () => {
   await page.click(selectors['5_what_needs_to_b_input']);
   await page.type(selectors['6_what_needs_to_b_input'], 'update test!');
   await page.press(selectors['7_what_needs_to_b_input'], 'Enter');
-  // 🐺 CREATE CODE HERE
+  await qawolf.create(); // this line will be removed on save
   await page.click(selectors['3_input']);
   await page.click(selectors['4_button']);
 });
 ```
 
-Now that we've added our second todo item, let's save our test. In the command line, choose `💾 Save and exit` to finish running your test. Your test will run any additional steps (in our example, complete the first todo and clear completed todos). The line `// 🐺 CREATE CODE HERE` will also be removed from your test code.
+Now that we've added our second todo item, let's save our test. In the command line, choose `💾 Save and exit` to finish running your test. Your test will run any additional steps (in our example, complete the first todo and clear completed todos). The line `await qawolf.create();` will also be removed from your test code.
 
 To run your updated test, use the following command:
 
