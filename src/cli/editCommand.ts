@@ -1,8 +1,8 @@
 import program, { Command } from 'commander';
 import { loadConfig } from '../config';
+import { buildEditOptions } from '../run/buildEditOptions';
 import { findTestPath } from '../run/findTestPath';
 import { runTests } from '../run/runTests';
-import { buildEditOptions } from '../run/buildEditOptions';
 
 export const buildEditCommand = (): program.Command => {
   const command = new Command('edit')
