@@ -1,5 +1,3 @@
-import Link from '@docusaurus/Link';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import React from 'react';
 import Argument from '../Argument';
 import ArgumentAllBrowsers from './ArgumentAllBrowsers';

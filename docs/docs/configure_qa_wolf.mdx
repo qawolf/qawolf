@@ -1,0 +1,159 @@
+---
+id: configure_qa_wolf
+title: 🛠️ Configure QA Wolf
+---
+
+import Argument from './api/components/Argument';
+import ArgumentTemplateFn from './components/ArgumentTemplateFn';
+
+QA Wolf provides several options for you to configure your experience.
+
+## TL;DR
+
+- If you haven't already, run the following to create a `qawolf.config.js` file in your project:
+
+```bash
+npm init qawolf
+```
+
+- Update the `qawolf.config.js` file accordingly
+
+## The `qawolf.config.js` file
+
+Your configuration for QA Wolf lives in the `qawolf.config.js` file at the root of your project. This file is created for you when you run the following command:
+
+```bash
+npm init qawolf
+```
+
+Here is a full `qawolf.config.js` file. Note that only some of these settings are specified in the default generated file.
+
+```js
+module.exports = {
+  // set QAW_ATTRIBUTE
+  attribute: 'data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/',
+  // set jest config
+  config: '{ "watchPlugins": ["qawolf/watch"] }',
+  // where tests are created
+  rootDir: '.qawolf',
+  // function to generate custom test template
+  templateFn: ({ name, url }) => {
+    // returns test template as a string
+  },
+  // default timeout of a test in milliseconds
+  testTimeout: 60000,
+  // generate .ts files
+  useTypeScript: false,
+  // create and edit tests in watch mode
+  watch: true,
+};
+```
+
+Below we go through the values that can be configured. Each of them is optional.
+
+### attribute
+
+The `attribute` key in `qawolf.config.json` sets the [`QAW_ATTRIBUTE` environment variable](api/environment_variables#qaw_attribute). This allows you to choose which attributes to use as element selectors in the generated code.
+
+**Default:** `'data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/'`
+
+See the guide on [using custom selectors](use_custom_selectors#target-attributes) to learn more.
+
+### config
+
+Specifies which config is passed to [Jest](https://jestjs.io) when running your tests:
+
+```bash
+jest --config='{ "watchPlugins": ["qawolf/watch"] }'
+```
+
+By default, QA Wolf uses `'{ "watchPlugins": ["qawolf/watch"] }'` to avoid conflicting with an existing Jest configuration. The default configuration allows QA Wolf to run in watch mode.
+
+If the config is set to `null`, nothing will be passed to Jest.
+
+**Default:** `'{ "watchPlugins": ["qawolf/watch"] }'`
+
+See [Jest documentation](https://jestjs.io/docs/en/cli#--configpath) to learn more.
+
+### rootDir
+
+The diretory where tests will be created. For example, a test with the name `myTestName` will be saved in a file called `${rootDir}/myTestName.test.js`.
+
+**Default:** `'.qawolf'`
+
+### templateFn
+
+A function that takes the options passed to the [`npx qawolf create` command](api/cli#npx-qawolf-create-url-name) and returns the test template as a string. The function can be synchronous or asynchronous.
+
+**Default:** Specified in [QA Wolf source code](https://github.com/qawolf/qawolf/blob/master/src/build-code/buildTemplate.ts#L88).
+
+#### Arguments
+
+<ArgumentTemplateFn />
+
+#### Returns
+
+<Argument
+  description="The template to write to the test file."
+  name=""
+  type="string | Promise<string>"
+/>
+
+#### Examples
+
+The function below creates a test template based on the name and URL passed to `npx qawolf create`. Make sure to include the [`qawolf.create` function](api/qawolf/create) where you want new code to be inserted.
+
+```js
+const templateFn = (options) => {
+  const { name, url } = options;
+
+  const code = `const qawolf = require("qawolf");
+const selectors = require("./selectors/${name}.json");
+
+let browser;
+let page;
+
+beforeAll(async () => {
+  browser = await qawolf.launch();
+  const context = await browser.newContext();
+  await qawolf.register(context);
+  page = await context.newPage();
+});
+
+afterAll(async () => {
+  await qawolf.stopVideos();
+  await browser.close();
+});
+
+test('${name}', async () => {
+  await page.goto("${url}");
+  await qawolf.create();
+});`;
+
+  return code;
+};
+```
+
+### testTimeout
+
+Default timeout of a test in milliseconds. This value is passed to Jest when running your tests:
+
+```bash
+jest --testTimeout=60000
+```
+
+**Default:** `60000`
+
+See [Jest documentation](https://jestjs.io/docs/en/cli#--testtimeoutnumber) to learn more.
+
+### useTypeScript
+
+Whether to use [TypeScript](https://www.typescriptlang.org). If set to `true`, tests will be created in TypeScript and saved with the `.ts` file extension.
+
+**Default:** `false`
+
+### watch
+
+Whether to use watch mode when creating and editing tests. If set to `true`, tests will re-run every time the file is saved.
+
+**Default:** `true`
