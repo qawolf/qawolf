@@ -20,5 +20,5 @@ afterAll(async () => {
 test('scroll', async () => {
   await page.goto(`${TEST_URL}infinite-scroll`);
   await page.evaluate(() => console.log('start scroll test'));
-  await qawolf.scroll(page, 'html', { x: 0, y: 2205 });
+  await qawolf.scroll(page, 'html', { x: 0, y: 500 });
 });
