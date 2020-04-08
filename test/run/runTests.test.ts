@@ -6,6 +6,7 @@ import { getLaunchOptions } from '../../src/utils/launch';
 const options = {
   browsers: [getLaunchOptions().browserName],
   config: loadConfig(join(__dirname, '../../qawolf.config.js')),
+  headless: true,
 };
 
 describe('runTests', () => {

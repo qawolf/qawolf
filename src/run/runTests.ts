@@ -20,7 +20,7 @@ export const runTests = (options: TestOptions): void => {
       stdio: 'inherit',
       env: {
         QAW_BROWSER: browser,
-        QAW_HEADLESS: options.headless === false ? 'false' : 'true',
+        QAW_HEADLESS: options.headless ? 'true' : 'false',
         ...options.env,
         // override env with process.env
         // ex. for unit tests we want QAW_BROWSER to override cli one

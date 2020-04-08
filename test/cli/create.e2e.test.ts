@@ -6,6 +6,7 @@ import { launchServer } from '../browser';
 import { CDPSession } from './CDPSession';
 import { KEYS } from '../../src/create-code/createPrompt';
 import { waitFor } from '../../src/utils';
+import { sleep } from '../utils';
 
 const testPath = join(__dirname, '../.qawolf/example.test.ts');
 const selectorsPath = join(testPath, '../selectors/example.json');
@@ -53,8 +54,10 @@ describe('npx qawolf create', () => {
   });
 
   it('converts actions to code', async () => {
-    const targetId = stdout.match(/(?<=targetId=").*?(?=")/)[0];
+    // give a little time for event collector to connect
+    await sleep(2000);
 
+    const targetId = stdout.match(/(?<=targetId=").*?(?=")/)[0];
     const session = await CDPSession.connect(server.wsEndpoint(), targetId);
 
     await session.send({
@@ -62,7 +65,7 @@ describe('npx qawolf create', () => {
       params: {
         type: 'mouseWheel',
         deltaX: 0,
-        deltaY: 500,
+        deltaY: 2000,
         x: 0,
         y: 0,
       },

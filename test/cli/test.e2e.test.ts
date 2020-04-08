@@ -11,6 +11,7 @@ const exec = (command: string): Promise<ExecResult> => {
     ...process.env,
     CI: 'true',
     FORCE_COLOR: '0',
+    QAW_HEADLESS: 'true',
   };
 
   return new Promise((resolve) =>
