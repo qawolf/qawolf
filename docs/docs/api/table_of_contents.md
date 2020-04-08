@@ -17,6 +17,8 @@ In addition to the APIs below, you have full access to the [Playwright API](http
 
 [npx qawolf create url [name]](cli#npx-qawolf-create-url-name)
 
+[npx qawolf edit name](cli#npx-qawolf-edit-name)
+
 [npx qawolf test [name]](cli#npx-qawolf-test-name)
 
 [npx qawolf howl](cli#npx-qawolf-howl)
@@ -28,8 +30,6 @@ In addition to the APIs below, you have full access to the [Playwright API](http
 [QAW_ATTRIBUTE](environment_variables#qaw_attribute)
 
 [QAW_BROWSER](environment_variables#qaw_browser)
-
-[QAW_HEADLESS](environment_variables#qaw_headless)
 
 ## module: qawolf
 

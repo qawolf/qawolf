@@ -10,7 +10,7 @@ As you create a test, you may want to try out code to include in your test file.
 - [Open the REPL](#open-the-repl) by selecting `🖥️ Open REPL to run code` while creating a test
 - You can [run Node.js code in the REPL](#run-code-in-the-repl)
 - [Close the REPL](#close-the-repl) by typing `.exit`
-- You can also [use the REPL when running a test](#use-repl-when-running-a-test)
+- You can also [use the REPL when editing a test](#use-repl-when-editing-a-test)
 
 ## Open the REPL
 
@@ -28,11 +28,7 @@ You will now be able to run [Node.js](https://nodejs.org/en) in the command line
 
 Type `1 + 1` in the REPL and press `Enter`. The result `2` will print below the command. In short, any code you could run in the [Node.js](https://nodejs.org/en) REPL can also be run here.
 
-You can also use the [QA Wolf API](api/table_of_contents) in the REPL. By default, the REPL provides access to the [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext) instance (`context`) and `qawolf`. For example, let's get the [Playwright `Page`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page) instance with index `0` using the [`qawolf.waitForPage` method](api/qawolf/wait_for_page):
-
-```js
-let page = await qawolf.waitForPage(context, 0);
-```
+You can also use the [QA Wolf API](api/table_of_contents) in the REPL. By default, the REPL provides access to the [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext) instance (`context`), [Playwright `Page`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page) instance (`page`), and `qawolf`.
 
 Now let's say we have just started to create a test on [TodoMVC](http://todomvc.com/examples/react). We can create a todo item from the REPL.
 
@@ -53,7 +49,7 @@ You should see a todo item called `"Hello from the REPL!"` created in the browse
 Now let's get the current count of todo items on the page using Playwright's [`page.$$eval` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#pageevalselector-pagefunction-args). The todo items are stored as `li` elements under the `ul` with the class `"todo-items"`:
 
 ```js
-await page.$$eval('.todo-list li', todos => todos.length);
+await page.$$eval('.todo-list li', (todos) => todos.length);
 ```
 
 The result of this command should be `1`, as we currently have one todo item on the page.
@@ -64,9 +60,9 @@ In summary, the REPL allows us to try out code that we may want to incorporate i
 
 When you are done using the REPL, type `.exit` in the command line. This will close the REPL and show the original options again (`💾 Save and Exit`, `🖥️ Open REPL to run code`, and `🗑️ Discard and Exit`).
 
-## Use REPL when running a test
+## Use REPL when editing a test
 
-You can also open the REPL when running a test. The [`repl` method](api/qawolf/repl) allows you to use the REPL to debug existing tests.
+You can also open the REPL when editing a test. The [`repl` method](api/qawolf/repl) allows you to use the REPL to debug existing tests.
 
 Call `qawolf.repl` any number of times in your test code, passing whatever values you want to be able to access. The `context` and `qawolf` are passed by default, so you do not need to include them again:
 
@@ -80,10 +76,10 @@ test('myTestName', async () => {
 });
 ```
 
-Run your test with the [`--repl` flag](api/cli#npx-qawolf-test-name):
+Run your test in [edit mode](edit_a_test):
 
 ```bash
-npx qawolf test --repl myTestName
+npx qawolf edit myTestName
 ```
 
 When the test encounters a `repl` call, it will pause and the REPL will open. The REPL will have access to whatever context you gave it. For example, you can access `selectors` if you included `selectors` when calling `repl`.
@@ -98,6 +94,6 @@ Congratulations - you've learned how to use the QA Wolf REPL! 🎉
 
 There are a few places you might want to go from here:
 
-- Learn how to [add steps to an existing test](add_steps_to_existing_tests)
+- Learn how to [edit an existing test](edit_a_test)
 - Learn how to [handle sign in programmatically](handle_sign_in)
 - Learn how to [add assertions to your tests](add_assertions)

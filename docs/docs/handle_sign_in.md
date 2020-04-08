@@ -34,7 +34,7 @@ The most straightforward way to handle sign in is to save user state ([cookies](
 
 ### Save user state
 
-QA Wolf provides the [`saveState` helper](api/qawolf/save_state) to make saving user state easy. In this example, we'll call it in the [interactive REPL](use_the_repl), but you can also call it in a test or script file.
+QA Wolf provides the [`saveState` helper](api/qawolf/save_state) to make saving user state easy. In this example, we'll call it in the [interactive REPL](use_the_repl), but you can also call it in a test file.
 
 Let's create a test for using Twitter as a signed in user. We'll start by creating a test with the [`npx qawolf create` command](api/cli#npx-qawolf-create-url-name). We will then sign in to Twitter through their [UI](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface), and use the REPL to save our state data.
 
@@ -46,13 +46,7 @@ npx qawolf create www.twitter.com mySignInTest
 
 A browser will open the specified URL (`www.twitter.com` in our example). Sign in to the application as a user would. For Twitter, this means entering your e-mail and password before clicking the "Log in" button.
 
-After you have signed in, open the REPL from the command line by choosing `🖥️ Open REPL to run code`. Inside the REPL, get the current page with the [`qawolf.waitForPage` method](api/qawolf/wait_for_page). We pass this method the [`context`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext), which is available inside the REPL, as well as the current page index starting from `0`. Since there is only one page in our case, our page index is `0`.
-
-```js
-const page = await qawolf.waitForPage(context, 0);
-```
-
-Next call the [`qawolf.saveState` method](api/qawolf/save_state), passing it the page and the path where you would like your state data to be saved:
+After you have signed in, open the REPL from the command line by choosing `🖥️ Open REPL to run code`. Inside the REPL, call the [`qawolf.saveState` method](api/qawolf/save_state), passing it the page and the path where you would like your state data to be saved:
 
 ```js
 await qawolf.saveState(page, './.qawolf/state/user.json');
@@ -158,8 +152,7 @@ We'll first add a line to our file that tells QA Wolf where to insert new code. 
 // ...
 test('mySignInTest', async () => {
   await page.goto('https://www.myawesomesite.com/');
-  // add this line
-  await qawolf.create();
+  await qawolf.create(); // add this line
 });
 ```
 
@@ -247,13 +240,13 @@ See [Playwright documentation](https://github.com/microsoft/playwright/blob/mast
 
 ### Finish your test
 
-Now you can run your test with the [`npx qawolf test` command](api/cli#npx-qawolf-test-name). Make sure to use the `--repl` flag so you have access to the REPL:
+Now you can edit your test with the [`npx qawolf edit` command](api/cli#npx-qawolf-edit-name). See the guide on [editing tests](edit_a_test) to learn more.
 
 ```bash
-npx qawolf test --repl mySignInTest
+npx qawolf edit mySignInTest
 ```
 
-The code before `qawolf.create` will run first, signing you in. You can then create your test as a signed in user!
+The code before `qawolf.create` will run first, signing you in. You can then add additional steps to your test as a signed in user!
 
 ## Next steps
 
@@ -262,4 +255,4 @@ Congratulations - you've learned how to automate sign in! 🎉
 There are a few places you might want to go from here:
 
 - Learn more about the [interactive REPL](use_the_repl)
-- Learn how to [add steps to an existing test](add_steps_to_existing_tests)
+- Learn how to [edit an existing test](edit_a_test)

@@ -4,19 +4,18 @@ sidebar_label: create
 title: qawolf.create
 ---
 
-import ArgumentCreate from '../components/qawolf/ArgumentCreate';
 import ReturnVoid from '../components/qawolf/ReturnVoid';
 import Syntax from '../components/Syntax';
 
-<Syntax code="create([options])" />
+<Syntax code="create()" />
 
-Convert your browser actions to code. Call `create` in a test or script file to insert new code where it was called.
+Convert your browser actions to code. Call `create` in a test file to insert new code where it was called.
 
-See the [guide on adding steps to existing tests](../../add_steps_to_existing_tests) to learn more about using `create`.
+See the [guide on editing tests](../../edit_a_test) to learn more about using `create`.
 
 ### Arguments
 
-<ArgumentCreate />
+No arguments.
 
 ### Returns
 
@@ -24,7 +23,7 @@ See the [guide on adding steps to existing tests](../../add_steps_to_existing_te
 
 ### Examples
 
-Create new code in an existing file, after calling [`qawolf.register(context)`](register) to register a [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext) instance:
+Create new code in an existing file. You must call [`qawolf.register(context)`](register) first so that QA Wolf has access to the [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext) instance.
 
 ```js
 const qawolf = require('qawolf');
@@ -33,20 +32,4 @@ const qawolf = require('qawolf');
 qawolf.register(context);
 
 await qawolf.create();
-```
-
-Create new code in an existing file, passing a [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext) instance directly:
-
-```js
-const qawolf = require('qawolf');
-// ...
-await qawolf.create({ context });
-```
-
-Create new code in an existing file, passing a [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext) instance directly. Use a different selector path than the default:
-
-```js
-const qawolf = require('qawolf');
-// ...
-await qawolf.create({ context, selectorPath: 'my/path/selectors.json' });
 ```

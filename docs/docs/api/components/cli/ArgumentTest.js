@@ -1,5 +1,3 @@
-import Link from '@docusaurus/Link';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import React from 'react';
 import Argument from '../Argument';
 import ArgumentAllBrowsers from './ArgumentAllBrowsers';
@@ -14,14 +12,14 @@ function ArgumentTest() {
       <Argument
         description={
           <React.Fragment>
-            Pause and open the REPL when{' '}
-            <Link to={useBaseUrl('docs/api/qawolf/repl')}>
-              <code>repl</code> is called
-            </Link>{' '}
-            in test code.
+            Run your test(s) in{' '}
+            <a href="https://developers.google.com/web/updates/2017/04/headless-chrome">
+              headless mode
+            </a>
+            .
           </React.Fragment>
         }
-        name="--repl"
+        name="--headless"
         optional
         type="boolean"
       />

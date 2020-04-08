@@ -24,7 +24,7 @@ First make sure that you are in your project directory and that you have [instal
 
 ```bash
 cd /my/awesome/project
-npm install --save-dev qawolf
+npm init qawolf # or yarn create qawolf
 ```
 
 Soon you'll run the command to create a test. When you run this command, a [Chromium](https://www.chromium.org/Home) browser will open and capture your actions such as clicking and typing into inputs. These actions will be converted to [Playwright](https://github.com/microsoft/playwright) and [Jest](https://jestjs.io/) test code.
@@ -133,11 +133,11 @@ test('myFirstTest', async () => {
   await page.press(selectors['2_what_needs_to_b_input'], 'Enter');
   await page.click(selectors['3_input']);
   await page.click(selectors['4_button']);
-  // 🐺 CREATE CODE HERE
+  await qawolf.create();
 });
 ```
 
-The line `// 🐺 CREATE CODE HERE` at the end of your test is a placeholder for where new test code will be added if you continue to use the browser. This allows you to optionally edit your test code as you go along. When you finish creating a test, this line is removed.
+The line `await qawolf.create();` at the end of your test is a placeholder for where new test code will be added if you continue to use the browser. This allows you to optionally edit your test code as you go along. When you finish creating a test, this line is removed.
 
 The video below shows how your test code is updated as you use your application:
 

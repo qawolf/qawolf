@@ -15,6 +15,7 @@ await page.waitFor(() => document.body.innerText.includes('Clear completed'));
 await page.waitFor(() => !document.querySelector('.todo-list li'));
 ```
 
+- Use [watch mode](edit_a_test#watch-mode) to automatically re-run your tests on save
 - The [interactive REPL](use_the_repl) lets you try out assertions while creating tests
 
 ## Use the Playwright API
@@ -42,7 +43,7 @@ test('myFirstTest', async () => {
 });
 ```
 
-If you run the test again (`npx qawolf test myTestName`), you'll see that it still passes.
+If you use [edit mode](edit_a_test) (`npx qawolf edit`) to [watch for changes](edit_a_test#watch-mode), your test will re-run automatically when you save it. Otherwise, run your test again (`npx qawolf test myTestName`) to see that it still passes.
 
 Next we'll add an assertion that our todo is no longer visible after we clear completed todos. In terms of the [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model), this means that there should be no todo `li` elements under the todo `ul` with the [class](https://developer.mozilla.org/en-US/docs/Web/CSS/Class_selectors) `"todo-list"`.
 
@@ -68,7 +69,7 @@ test('myFirstTest', async () => {
 });
 ```
 
-If you run the test again (`npx qawolf test myTestName`), you'll see that it still passes. If the todo item did not disappear from the page, an error would be thrown by `page.waitFor` and our test would fail.
+If you run the test again, you'll see that it still passes. If the todo item did not disappear from the page, an error would be thrown by `page.waitFor` and our test would fail.
 
 ## Next steps
 
