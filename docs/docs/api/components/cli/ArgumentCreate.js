@@ -40,9 +40,8 @@ function ArgumentCreate() {
         description={
           <React.Fragment>
             The name of your test file. The file will be saved at{' '}
-            <code>{'${rootDir}/${name}.test.js'}</code> or{' '}
-            <code>{'${rootDir}/${name}.js'}</code>. <b>Default:</b> the hostname
-            of the provided URL.
+            <code>{'${rootDir}/${name}.test.js'}</code>. <b>Default:</b> the
+            hostname of the provided URL.
           </React.Fragment>
         }
         name="name"
