@@ -152,7 +152,7 @@ module.exports = {
 };
 ```
 
-To run your test in watch mode, use the [`npx qawolf edit` command](api/cli#npx-qawolf-edit-name). Pass it a string that matches exactly one test file name:
+To run your test in watch mode, use the [`npx qawolf edit` command](api/cli#npx-qawolf-edit-name). Pass it a string that matches exactly one test file name. For example, `myFirstTest` will match `.qawolf/myFirstTest.test.js`:
 
 ```bash
 npx qawolf edit myFirstTest
