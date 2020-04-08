@@ -9,6 +9,20 @@ function ArgumentTest() {
     <React.Fragment>
       <ArgumentAllBrowsers />
       <ArgumentFirefox />
+      <Argument
+        description={
+          <React.Fragment>
+            Run your test(s) in{' '}
+            <a href="https://developers.google.com/web/updates/2017/04/headless-chrome">
+              headless mode
+            </a>
+            .
+          </React.Fragment>
+        }
+        name="--headless"
+        optional
+        type="boolean"
+      />
       <ArgumentWebKit />
       <Argument
         description={
