@@ -28,11 +28,7 @@ You will now be able to run [Node.js](https://nodejs.org/en) in the command line
 
 Type `1 + 1` in the REPL and press `Enter`. The result `2` will print below the command. In short, any code you could run in the [Node.js](https://nodejs.org/en) REPL can also be run here.
 
-You can also use the [QA Wolf API](api/table_of_contents) in the REPL. By default, the REPL provides access to the [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext) instance (`context`) and `qawolf`. For example, let's get the [Playwright `Page`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page) instance with index `0` using the [`qawolf.waitForPage` method](api/qawolf/wait_for_page):
-
-```js
-let page = await qawolf.waitForPage(context, 0);
-```
+You can also use the [QA Wolf API](api/table_of_contents) in the REPL. By default, the REPL provides access to the [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext) instance (`context`), [Playwright `Page`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page) instance (`page`), and `qawolf`.
 
 Now let's say we have just started to create a test on [TodoMVC](http://todomvc.com/examples/react). We can create a todo item from the REPL.
 

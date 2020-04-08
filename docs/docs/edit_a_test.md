@@ -25,13 +25,13 @@ test('myTestName', async () => {
 npx qawolf edit myTestName
 ```
 
-- [Enable watch mode](#watch-mode) to automatically re-run your tests on save:
+- [Use watch mode](#watch-mode) to automatically re-run your tests on save:
 
 ```js
 // qawolf.config.js
 module.exports = {
   // ...
-  watch: true,
+  watch: true, // enabled by default
 };
 ```
 

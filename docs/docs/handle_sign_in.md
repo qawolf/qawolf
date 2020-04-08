@@ -46,13 +46,7 @@ npx qawolf create www.twitter.com mySignInTest
 
 A browser will open the specified URL (`www.twitter.com` in our example). Sign in to the application as a user would. For Twitter, this means entering your e-mail and password before clicking the "Log in" button.
 
-After you have signed in, open the REPL from the command line by choosing `🖥️ Open REPL to run code`. Inside the REPL, get the current page with the [`qawolf.waitForPage` method](api/qawolf/wait_for_page). We pass this method the [`context`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext), which is available inside the REPL, as well as the current page index starting from `0`. Since there is only one page in our case, our page index is `0`.
-
-```js
-const page = await qawolf.waitForPage(context, 0);
-```
-
-Next call the [`qawolf.saveState` method](api/qawolf/save_state), passing it the page and the path where you would like your state data to be saved:
+After you have signed in, open the REPL from the command line by choosing `🖥️ Open REPL to run code`. Inside the REPL, call the [`qawolf.saveState` method](api/qawolf/save_state), passing it the page and the path where you would like your state data to be saved:
 
 ```js
 await qawolf.saveState(page, './.qawolf/state/user.json');
