@@ -15,7 +15,7 @@ await page.waitFor(() => document.body.innerText.includes('Clear completed'));
 await page.waitFor(() => !document.querySelector('.todo-list li'));
 ```
 
-- Enable [watch mode](edit_a_test#watch-mode) to automatically re-run your tests on save
+- Use [watch mode](edit_a_test#watch-mode) to automatically re-run your tests on save
 - The [interactive REPL](use_the_repl) lets you try out assertions while creating tests
 
 ## Use the Playwright API
