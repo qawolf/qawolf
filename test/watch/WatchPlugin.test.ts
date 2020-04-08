@@ -1,25 +1,28 @@
 import chokidar from 'chokidar';
-import { readFile } from 'fs-extra';
+import { readFile, writeFile } from 'fs-extra';
 import { WatchPlugin } from '../../src/watch/WatchPlugin';
 
 jest.mock('../../src/watch/WatchServer');
 
 jest.mock('chokidar', () => ({
   watch: jest.fn(() => ({
+    close: jest.fn(),
     on: jest.fn(),
   })),
 }));
 
 jest.mock('fs-extra');
 
+const mockedReadFile = readFile as jest.Mock;
+
 describe('WatchPlugin', () => {
-  describe('prepare test', () => {
+  describe('_beforeTest', () => {
     let plugin: WatchPlugin;
 
     beforeAll(() => {
       plugin = new WatchPlugin();
       plugin._watch = jest.fn();
-      plugin._prepareTest('test.js');
+      plugin._beforeTest('test.js');
     });
 
     it('stops the previous test', () => {
@@ -36,35 +39,72 @@ describe('WatchPlugin', () => {
     });
   });
 
-  it('stops when stopwatch is emitted', () => {
-    const plugin = new WatchPlugin();
+  describe('_onWatchChange', () => {
+    it('stops and re-runs the test', async () => {
+      mockedReadFile.mockResolvedValue('initial');
 
-    const stop = jest.fn();
-    plugin._stop = stop;
+      const plugin = new WatchPlugin();
+      plugin._code = 'initial';
 
-    plugin._server.emit('codeupdate', () => {
-      expect(stop).toBeCalledTimes(1);
+      const triggerTest = jest.spyOn(plugin, '_triggerTest');
+
+      // should ignore the first call since no code has changed
+      await plugin._onWatchChange('test.js');
+      expect(plugin._server.stopTest).toHaveBeenCalledTimes(0);
+      expect(triggerTest).toHaveBeenCalledTimes(0);
+
+      mockedReadFile.mockResolvedValue('changed');
+      await plugin._onWatchChange('test.js');
+
+      expect(plugin._server.stopTest).toHaveBeenCalledTimes(1);
+      expect(triggerTest).toHaveBeenCalledTimes(1);
     });
   });
 
-  describe('watch', () => {
+  describe('_stop', () => {
+    it('stops the test, the watcher, and calls process.exit', async () => {
+      const exit = jest.spyOn(process, 'exit').mockImplementation();
+
+      const plugin = new WatchPlugin();
+      plugin._watch('something.js');
+
+      expect(plugin._server.stopTest).toHaveBeenCalledTimes(0);
+      expect(plugin._watcher.close).toHaveBeenCalledTimes(0);
+
+      await plugin._stop();
+
+      expect(plugin._server.stopTest).toHaveBeenCalledTimes(1);
+      expect(plugin._watcher.close).toHaveBeenCalledTimes(1);
+      expect(exit).toBeCalledTimes(1);
+
+      exit.mockRestore();
+    });
+  });
+
+  describe('_triggerTest', () => {
+    it('rewrites the existing code to trigger a re-run', async () => {
+      const mockedWriteFile = writeFile as jest.Mock;
+      mockedReadFile.mockResolvedValue('initial');
+      mockedReadFile.mockClear();
+
+      const plugin = new WatchPlugin();
+      await plugin._triggerTest('test.js');
+
+      expect(mockedReadFile).toHaveBeenCalledWith('test.js', 'utf8');
+      expect(mockedWriteFile).toHaveBeenCalledWith(
+        'test.js',
+        'initial',
+        'utf8',
+      );
+    });
+  });
+
+  describe('_watch', () => {
     let plugin: WatchPlugin;
 
-    const mockedReadFile = readFile as jest.Mock;
-
     beforeEach(() => {
-      mockedReadFile.mockResolvedValue('initial');
       plugin = new WatchPlugin();
       plugin._watch('test.js');
-    });
-
-    it('stops the test when it changes', async () => {
-      await plugin._onTestChange('test.js');
-      expect(plugin._server.stopTest).toHaveBeenCalledTimes(0);
-
-      mockedReadFile.mockResolvedValue('changed');
-      await plugin._onTestChange('test.js');
-      expect(plugin._server.stopTest).toHaveBeenCalledTimes(1);
     });
 
     it('watches the test for changes', () => {
