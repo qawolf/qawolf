@@ -20,7 +20,7 @@ const exec = (command: string): Promise<ExecResult> => {
   );
 };
 
-describe('test', () => {
+describe('npx qawolf test', () => {
   it('runs a test', async () => {
     const result = await exec('npx qawolf test');
     expect(result.error).toBeNull();
