@@ -158,8 +158,7 @@ We'll first add a line to our file that tells QA Wolf where to insert new code. 
 // ...
 test('mySignInTest', async () => {
   await page.goto('https://www.myawesomesite.com/');
-  // add this line
-  await qawolf.create();
+  await qawolf.create(); // add this line
 });
 ```
 
@@ -247,13 +246,13 @@ See [Playwright documentation](https://github.com/microsoft/playwright/blob/mast
 
 ### Finish your test
 
-Now you can run your test with the [`npx qawolf test` command](api/cli#npx-qawolf-test-name). Make sure to use the `--repl` flag so you have access to the REPL:
+Now you can edit your test with the [`npx qawolf edit` command](api/cli#npx-qawolf-edit-name). See the guide on [editing tests](edit_a_test) to learn more.
 
 ```bash
-npx qawolf test --repl mySignInTest
+npx qawolf edit mySignInTest
 ```
 
-The code before `qawolf.create` will run first, signing you in. You can then create your test as a signed in user!
+The code before `qawolf.create` will run first, signing you in. You can then add additional steps to your test as a signed in user!
 
 ## Next steps
 
