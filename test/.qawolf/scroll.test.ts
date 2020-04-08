@@ -1,8 +1,9 @@
-const qawolf = require('qawolf');
-const { TEST_URL } = require('./utils');
+import { Browser, Page } from 'playwright';
+import qawolf from 'qawolf';
+import { TEST_URL } from '../utils';
 
-let browser;
-let page;
+let browser: Browser;
+let page: Page;
 
 beforeAll(async () => {
   browser = await qawolf.launch({ slowMo: 20 });

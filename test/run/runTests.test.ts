@@ -1,26 +1,19 @@
 import { join, resolve } from 'path';
-import { config as configFixture } from '../fixtures/config';
+import { loadConfig } from '../../src/config';
 import { runTests } from '../../src/run/runTests';
 import { getLaunchOptions } from '../../src/utils/launch';
 
 const options = {
   browsers: [getLaunchOptions().browserName],
-  config: {
-    ...configFixture,
-    rootDir: join(__dirname, '../.qawolf'),
-  },
+  config: loadConfig(join(__dirname, '../../qawolf.config.js')),
 };
 
 describe('runTests', () => {
-  it('runs successful test for a relative path', () => {
-    expect(() => runTests({ args: ['scroll'], ...options })).not.toThrow();
-  });
-
   it('runs successful test for a test path', () => {
     expect(() =>
       runTests({
         ...options,
-        testPath: resolve(join(options.config.rootDir, 'scroll.test.js')),
+        testPath: resolve(join(options.config.rootDir, 'scroll.test.ts')),
       }),
     ).not.toThrow();
   });

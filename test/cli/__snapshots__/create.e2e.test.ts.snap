@@ -1,5 +1,7 @@
-const createTemplate = ({ name }) => {
-  return `import { Browser, Page } from 'playwright';
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`npx qawolf create creates the code file with the custom template 1`] = `
+"import { Browser, Page } from 'playwright';
 import qawolf from 'qawolf';
 import { connect } from '../browser';
 import { TEST_URL } from '../utils';
@@ -13,7 +15,7 @@ beforeAll(async () => {
   await qawolf.register(context);
   page = await context.newPage();
   const targetId = (page as any)._delegate._targetId;
-  console.log(\`targetId="\${targetId}"\`);
+  console.log(\`targetId=\\"\${targetId}\\"\`);
 });
 
 afterAll(async () => {
@@ -21,15 +23,8 @@ afterAll(async () => {
   await browser.close();
 });
 
-test('${name}', async () => {
+test('example', async () => {
   await page.goto(\`\${TEST_URL}infinite-scroll\`);
   await qawolf.create();
-});`;
-};
-
-module.exports = {
-  config: 'node_modules/qawolf/ts-jest.config.json',
-  createTemplate,
-  rootDir: 'test/.qawolf',
-  useTypeScript: true,
-};
+});"
+`;

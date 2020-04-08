@@ -20,5 +20,5 @@
     "esModuleInterop": true,
     "declaration": true
   },
-  "include": ["src/**/*", "tests/**/*"]
+  "include": ["src/**/*"]
 }

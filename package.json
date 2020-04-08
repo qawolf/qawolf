@@ -71,6 +71,7 @@
     "@types/lodash": "^4.14.149",
     "@types/node": "^13.11.0",
     "@types/update-notifier": "^4.1.0",
+    "@types/ws": "^7.2.3",
     "@typescript-eslint/eslint-plugin": "~2.26.0",
     "@typescript-eslint/parser": "~2.26.0",
     "concurrently": "^5.1.0",
@@ -89,7 +90,8 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-typescript": "^1.0.1",
     "ts-jest": "~25.3.0",
-    "typescript": "~3.8.3"
+    "typescript": "~3.8.3",
+    "ws": "^7.2.3"
   },
   "bin": {
     "qawolf": "./build/index.js"
