@@ -71,9 +71,3 @@ await page.click("[my-attribute='search']");
 Which browser to run your tests on. Allowed values are `chromium`, `firefox`, and `webkit`. Setting `QAW_BROWSER` is equivalent to using a browser flag with the [`test` CLI command](cli#npx-qawolf-test-name).
 
 To run on all browsers (Chromium, Firefox, and WebKit), use the `--all-browsers` flag with the [`test` CLI command](cli#npx-qawolf-test-name).
-
-## QAW_HEADLESS
-
-**Default:** `true`
-
-Run the browser in [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome).

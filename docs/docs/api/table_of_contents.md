@@ -31,8 +31,6 @@ In addition to the APIs below, you have full access to the [Playwright API](http
 
 [QAW_BROWSER](environment_variables#qaw_browser)
 
-[QAW_HEADLESS](environment_variables#qaw_headless)
-
 ## module: qawolf
 
 [create](qawolf/create)
