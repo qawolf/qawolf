@@ -66,7 +66,7 @@ When you are done using the REPL, type `.exit` in the command line. This will cl
 
 ## Use REPL when editing a test
 
-You can also open the REPL when running a test. The [`repl` method](api/qawolf/repl) allows you to use the REPL to debug existing tests.
+You can also open the REPL when editing a test. The [`repl` method](api/qawolf/repl) allows you to use the REPL to debug existing tests.
 
 Call `qawolf.repl` any number of times in your test code, passing whatever values you want to be able to access. The `context` and `qawolf` are passed by default, so you do not need to include them again:
 
