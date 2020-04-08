@@ -1,8 +1,9 @@
-const qawolf = require('qawolf');
-const { TEST_URL } = require('./utils');
+import { Browser, Page } from 'playwright';
+import qawolf from 'qawolf';
+import { TEST_URL } from '../utils';
 
-let browser;
-let page;
+let browser: Browser;
+let page: Page;
 
 beforeAll(async () => {
   browser = await qawolf.launch({ slowMo: 20 });
@@ -19,5 +20,5 @@ afterAll(async () => {
 test('scroll', async () => {
   await page.goto(`${TEST_URL}infinite-scroll`);
   await page.evaluate(() => console.log('start scroll test'));
-  await qawolf.scroll(page, 'html', { x: 0, y: 2205 });
+  await qawolf.scroll(page, 'html', { x: 0, y: 500 });
 });

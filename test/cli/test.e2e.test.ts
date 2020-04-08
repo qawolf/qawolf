@@ -20,11 +20,11 @@ const exec = (command: string): Promise<ExecResult> => {
   );
 };
 
-describe('test', () => {
+describe('npx qawolf test', () => {
   it('runs a test', async () => {
     const result = await exec('npx qawolf test');
     expect(result.error).toBeNull();
     expect(result.stderr).toContain('Test: chromium\nnpx jest');
-    expect(result.stdout).toContain('PASS test/.qawolf/scroll.test.js');
+    expect(result.stdout).toContain('PASS test/.qawolf/scroll.test.ts');
   });
 });
