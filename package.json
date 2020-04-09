@@ -1,6 +1,6 @@
 {
   "name": "qawolf",
-  "version": "0.12.5-0",
+  "version": "0.13.0",
   "description": "Create browser tests 10x faster",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
