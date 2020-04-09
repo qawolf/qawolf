@@ -23,7 +23,9 @@ const exec = (command: string): Promise<ExecResult> => {
 
 describe('npx qawolf test', () => {
   it('runs a test', async () => {
-    const result = await exec('npx qawolf test');
+    // run a specific test to prevent it executing
+    // the example test generated in create.e2e.test
+    const result = await exec('npx qawolf test scroll');
     expect(result.error).toBeNull();
     expect(result.stderr).toContain('Test: chromium\nnpx jest');
     expect(result.stdout).toContain('PASS test/.qawolf/scroll.test.ts');
