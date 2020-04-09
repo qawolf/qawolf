@@ -1,5 +1,21 @@
 import { ensureFile, writeJSON } from 'fs-extra';
-import { BrowserContextCookies, Page } from 'playwright';
+import { Page } from 'playwright';
+
+// need to manually specify
+// https://github.com/microsoft/playwright/issues/1732
+type BrowserContextCookies = {
+  name: string;
+  value: string;
+  domain: string;
+  path: string;
+  /**
+   * Unix time in seconds.
+   */
+  expires: number;
+  httpOnly: boolean;
+  secure: boolean;
+  sameSite: 'Strict' | 'Lax' | 'None';
+};
 
 export interface State {
   cookies: BrowserContextCookies[];
