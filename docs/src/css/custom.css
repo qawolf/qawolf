@@ -20,6 +20,7 @@
   --ifm-color-primary-light: #5fa3eb;
   --ifm-color-primary-lighter: #6cabed;
   --ifm-color-primary-lightest: #94c2f2;
+  --ifm-code-font-size: 95%;
 }
 
 .docusaurus-highlight-code-line {
@@ -41,7 +42,7 @@
 
 a.gitter-open-chat-button {
   background: var(--ifm-color-primary);
-  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 18px;
   font-weight: 500;
   padding: 16px 32px;
