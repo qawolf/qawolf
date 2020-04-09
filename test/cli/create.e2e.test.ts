@@ -1,5 +1,5 @@
 import { spawn, ChildProcess } from 'child_process';
-import { readFile, pathExists } from 'fs-extra';
+import { readFile, readJson, pathExists } from 'fs-extra';
 import { join } from 'path';
 import { BrowserServer } from 'playwright';
 import { launchServer } from '../browser';
@@ -44,7 +44,8 @@ describe('npx qawolf create', () => {
   });
 
   it('creates the selectors file', async () => {
-    expect(await readFile(selectorsPath, 'utf8')).toEqual('{}\n');
+    await waitFor(() => pathExists(selectorsPath));
+    expect(await readJson(selectorsPath)).toEqual({});
   });
 
   it('opens the cli prompt', async () => {
@@ -92,6 +93,8 @@ describe('npx qawolf create', () => {
     });
 
     it('deletes the files', async () => {
+      await waitFor(async () => !(await pathExists(testPath)));
+      await waitFor(async () => !(await pathExists(selectorsPath)));
       expect(await pathExists(testPath)).toEqual(false);
       expect(await pathExists(selectorsPath)).toEqual(false);
     });
