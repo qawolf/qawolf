@@ -3,7 +3,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import React from 'react';
 import Argument from '../api/components/Argument';
 
-function ArgumentTemplateFn() {
+function ArgumentCreateTemplate() {
   return (
     <React.Fragment>
       <Argument
@@ -48,4 +48,4 @@ function ArgumentTemplateFn() {
   );
 }
 
-export default ArgumentTemplateFn;
+export default ArgumentCreateTemplate;

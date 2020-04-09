@@ -4,7 +4,7 @@ title: 🛠️ Configure QA Wolf
 ---
 
 import Argument from './api/components/Argument';
-import ArgumentTemplateFn from './components/ArgumentTemplateFn';
+import ArgumentCreateTemplate from './components/ArgumentCreateTemplate';
 
 QA Wolf provides several options for you to configure your experience.
 
@@ -34,12 +34,12 @@ module.exports = {
   attribute: 'data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/',
   // set jest config
   config: '{ "watchPlugins": ["qawolf/watch"] }',
+  createTemplate: ({ name, url }) => {
+    // returns test template as a string
+  },
   // where tests are created
   rootDir: '.qawolf',
   // function to generate custom test template
-  templateFn: ({ name, url }) => {
-    // returns test template as a string
-  },
   // default timeout of a test in milliseconds
   testTimeout: 60000,
   // generate .ts files
@@ -75,13 +75,8 @@ If the config is set to `null` or `undefined`, nothing will be passed to Jest.
 
 See [Jest documentation](https://jestjs.io/docs/en/cli#--configpath) to learn more.
 
-### rootDir
 
-The diretory where tests will be created. For example, a test with the name `myTestName` will be saved in a file called `${rootDir}/myTestName.test.js`.
-
-**Default:** `'.qawolf'`
-
-### templateFn
+### createTemplate
 
 A function that takes the options passed to the [`npx qawolf create` command](api/cli#npx-qawolf-create-url-name) and returns the test template as a string. The function can be synchronous or asynchronous.
 
@@ -89,7 +84,7 @@ A function that takes the options passed to the [`npx qawolf create` command](ap
 
 #### Arguments
 
-<ArgumentTemplateFn />
+<ArgumentCreateTemplate />
 
 #### Returns
 
@@ -104,7 +99,7 @@ A function that takes the options passed to the [`npx qawolf create` command](ap
 The function below creates a test template based on the name and URL passed to `npx qawolf create`. Make sure to include the [`qawolf.create` method](api/qawolf/create) where you want new code to be inserted.
 
 ```js
-const templateFn = (options) => {
+const createTemplate = (options) => {
   const { name, url } = options;
 
   const code = `const qawolf = require("qawolf");
@@ -133,6 +128,12 @@ test('${name}', async () => {
   return code;
 };
 ```
+
+### rootDir
+
+The diretory where tests will be created. For example, a test with the name `myTestName` will be saved in a file called `${rootDir}/myTestName.test.js`.
+
+**Default:** `'.qawolf'`
 
 ### testTimeout
 
