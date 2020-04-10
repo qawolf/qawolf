@@ -33,6 +33,8 @@ test('myTestName', async () => {
 
 :::
 
+<br/>
+
 In this guide, we explain how QA Wolf generates element selectors and how you can edit these selectors. We assume you know how to [create a test](create_a_test).
 
 ## Selectors overview
