@@ -1,5 +1,5 @@
 import { buildCssSelector } from './buildCssSelector';
-import { getClickableAncestor } from './element';
+import { getClickableAncestor, isVisible } from './element';
 import { nodeToDoc, nodeToHtmlSelector } from './serialize';
 import * as types from '../types';
 
@@ -26,7 +26,7 @@ export class PageEventCollector {
   }
 
   public dispose(): void {
-    this._onDispose.forEach(d => d());
+    this._onDispose.forEach((d) => d());
     console.debug('PageEventCollector: disposed');
   }
 
@@ -50,6 +50,7 @@ export class PageEventCollector {
     value?: string | types.ScrollValue | null,
   ): void {
     const target = event.target as HTMLElement;
+    const isTargetVisible = isVisible(target, window.getComputedStyle(target));
 
     const elementEvent = {
       cssSelector: buildCssSelector({
@@ -58,7 +59,7 @@ export class PageEventCollector {
         target,
       }),
       htmlSelector: nodeToHtmlSelector(target, 2),
-      isTrusted: event.isTrusted,
+      isTrusted: event.isTrusted && isTargetVisible,
       name: eventName,
       page: this._pageIndex,
       target: nodeToDoc(target),
@@ -77,7 +78,7 @@ export class PageEventCollector {
   }
 
   private collectEvents(): void {
-    this.listen('mousedown', event => {
+    this.listen('mousedown', (event) => {
       // only the main button (not right clicks/etc)
       // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
       if (event.button !== 0) return;
@@ -91,14 +92,14 @@ export class PageEventCollector {
       this.sendEvent('mousedown', { ...event, target });
     });
 
-    this.listen('click', event => {
+    this.listen('click', (event) => {
       if (event.button !== 0) return;
 
       const target = getClickableAncestor(event.target as HTMLElement);
       this.sendEvent('click', { ...event, target });
     });
 
-    this.listen('input', event => {
+    this.listen('input', (event) => {
       const target = event.target as HTMLInputElement;
       // ignore input events not on selects
       // other input events are captured in click and type listeners
@@ -107,15 +108,15 @@ export class PageEventCollector {
       this.sendEvent('input', event, target.value);
     });
 
-    this.listen('keydown', event => {
+    this.listen('keydown', (event) => {
       this.sendEvent('keydown', event, event.key);
     });
 
-    this.listen('keyup', event => {
+    this.listen('keyup', (event) => {
       this.sendEvent('keyup', event, event.key);
     });
 
-    this.listen('paste', event => {
+    this.listen('paste', (event) => {
       if (!event.clipboardData) return;
 
       const value = event.clipboardData.getData('text');
@@ -125,7 +126,7 @@ export class PageEventCollector {
 
     // XXX select only supports input/textarea
     // We can combine selectstart/mouseup to support content editables
-    this.listen('select', event => {
+    this.listen('select', (event) => {
       const target = event.target as HTMLInputElement;
       if (
         target.selectionStart !== 0 ||
@@ -143,11 +144,11 @@ export class PageEventCollector {
 
   private collectScrollEvent(): void {
     let lastWheelEvent: WheelEvent | null = null;
-    this.listen('wheel', ev => (lastWheelEvent = ev));
+    this.listen('wheel', (ev) => (lastWheelEvent = ev));
 
     // We record the scroll event and not the wheel event
     // because it fires after the element.scrollLeft & element.scrollTop are updated
-    this.listen('scroll', event => {
+    this.listen('scroll', (event) => {
       if (!lastWheelEvent || event.timeStamp - lastWheelEvent.timeStamp > 100) {
         // We record mouse wheel initiated scrolls only
         // to avoid recording system initiated scrolls (after selecting an item/etc).

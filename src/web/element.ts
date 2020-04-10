@@ -13,6 +13,10 @@ export const isVisible = (
     return false;
   }
 
+  if (computedStyle && computedStyle.display === 'none') {
+    return false;
+  }
+
   return true;
 };
 

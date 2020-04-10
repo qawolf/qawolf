@@ -55,7 +55,7 @@ export const getAttributeValue = (
 ): AttributeValuePair | null => {
   if (!attribute || !element.getAttribute) return null;
 
-  const attributes = attribute.split(',').map(attr => attr.trim());
+  const attributes = attribute.split(',').map((attr) => attr.trim());
 
   for (const attribute of attributes) {
     const isRegex = attribute[0] === '/';
