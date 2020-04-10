@@ -10,8 +10,6 @@ const filterClickEvents = (events: ElementEvent[]): ElementEvent[] => {
 
     // ignore system initiated clicks
     if (!event.isTrusted) return false;
-    // ignore clicks on hidden elements
-    if (!event.isVisible) return false;
 
     // ignore other actions
     if (!['click', 'mousedown'].includes(event.name)) return false;

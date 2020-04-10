@@ -50,6 +50,7 @@ export class PageEventCollector {
     value?: string | types.ScrollValue | null,
   ): void {
     const target = event.target as HTMLElement;
+    const isTargetVisible = isVisible(target, window.getComputedStyle(target));
 
     const elementEvent = {
       cssSelector: buildCssSelector({
@@ -58,8 +59,7 @@ export class PageEventCollector {
         target,
       }),
       htmlSelector: nodeToHtmlSelector(target, 2),
-      isTrusted: event.isTrusted,
-      isVisible: isVisible(target, window.getComputedStyle(target)),
+      isTrusted: event.isTrusted && isTargetVisible,
       name: eventName,
       page: this._pageIndex,
       target: nodeToDoc(target),
