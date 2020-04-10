@@ -35,7 +35,7 @@ export const loadConfig = (path?: string): Config => {
 
     // use defaults
     return {
-      attribute: process.env.QAW_ATTRIBUTE || DEFAULT_ATTRIBUTE,
+      attribute: DEFAULT_ATTRIBUTE,
       config: 'node_modules/qawolf/js-jest.config.json',
       rootDir: '.qawolf',
       testTimeout: 60000,
@@ -45,9 +45,7 @@ export const loadConfig = (path?: string): Config => {
   }
 
   const config: Config = {
-    // prefer environment variable over config
-    attribute:
-      process.env.QAW_ATTRIBUTE || userConfig.attribute || DEFAULT_ATTRIBUTE,
+    attribute: userConfig.attribute || DEFAULT_ATTRIBUTE,
     createTemplate: userConfig.createTemplate,
     // do not override config when this is found in user config
     config: userConfig.config,

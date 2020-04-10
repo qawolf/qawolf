@@ -13,10 +13,10 @@ This guide lists the QA Wolf commands you can run in the [CLI](../install#unders
 
 You can use [environment variables](environment_variables) when running CLI commands.
 
-For example, run the following to create a test with [`QAW_ATTRIBUTE`](environment_variables#qaw_attribute) set to `my-attribute`:
+For example, run the following to save artifacts of your test with [`QAW_ARTIFACT_PATH`](environment_variables#qaw_artifact_path):
 
 ```bash
-QAW_ATTRIBUTE=my-attribute npx qawolf create www.myawesomesite.com
+QAW_ARTIFACT_PATH=/tmp/artifacts npx qawolf create www.myawesomesite.com
 ```
 
 ## npx qawolf --help

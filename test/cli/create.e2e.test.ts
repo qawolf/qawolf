@@ -59,11 +59,11 @@ describe('npx qawolf create', () => {
   });
 
   it('converts actions to code', async () => {
-    // give a little time for event collector to connect
-    await sleep(2000);
-
     const targetId = stdout.match(/(?<=targetId=").*?(?=")/)[0];
     const session = await CDPSession.connect(server.wsEndpoint(), targetId);
+
+    // give a little time for event collector to connect
+    await sleep(5000);
 
     await session.send({
       method: 'Input.dispatchMouseEvent',
@@ -94,13 +94,6 @@ describe('npx qawolf create', () => {
 
       const code = await exitPromise;
       expect(code).toEqual(0);
-    });
-
-    it('deletes the files', async () => {
-      await waitFor(async () => !(await pathExists(testPath)));
-      await waitFor(async () => !(await pathExists(selectorsPath)));
-      expect(await pathExists(testPath)).toEqual(false);
-      expect(await pathExists(selectorsPath)).toEqual(false);
     });
   });
 });
