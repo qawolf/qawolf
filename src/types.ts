@@ -23,6 +23,7 @@ export interface ElementEvent {
   cssSelector?: string;
   htmlSelector: string;
   isTrusted: boolean;
+  isVisible: boolean;
   name: ElementEventName;
   page: number;
   target: Doc;

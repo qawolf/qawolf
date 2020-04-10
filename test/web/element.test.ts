@@ -72,6 +72,20 @@ describe('isVisible', () => {
 
     expect(isElementVisible).toBe(false);
   });
+
+  it('returns false if element is display:none', async () => {
+    const isElementVisible = await page.evaluate(() => {
+      const web: QAWolfWeb = (window as any).qawolf;
+      const element = document.getElementById('password');
+      if (!element) throw new Error('element not found');
+
+      element.style.display = 'none';
+
+      return web.isVisible(element);
+    });
+
+    expect(isElementVisible).toBe(false);
+  });
 });
 
 describe('isClickable', () => {

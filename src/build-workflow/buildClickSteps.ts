@@ -10,6 +10,8 @@ const filterClickEvents = (events: ElementEvent[]): ElementEvent[] => {
 
     // ignore system initiated clicks
     if (!event.isTrusted) return false;
+    // ignore clicks on hidden elements
+    if (!event.isVisible) return false;
 
     // ignore other actions
     if (!['click', 'mousedown'].includes(event.name)) return false;
@@ -40,7 +42,7 @@ const groupClickEvents = (
   const groupedEvents = [];
   let group: ElementEvent[] = [];
 
-  events.forEach(event => {
+  events.forEach((event) => {
     if (!group.length) {
       // first group
       group.push(event);
@@ -72,10 +74,10 @@ export const buildClickSteps = (events: ElementEvent[]): Step[] => {
   const groupedClickEvents = groupClickEvents(clickEvents);
   const steps: Step[] = [];
 
-  groupedClickEvents.forEach(events => {
+  groupedClickEvents.forEach((events) => {
     let event = events[0] as ElementEvent;
 
-    const inputEvent = events.find(event => {
+    const inputEvent = events.find((event) => {
       const name = event.target.name || '';
       return name.toLowerCase() === 'input';
     });
