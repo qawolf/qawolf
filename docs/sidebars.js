@@ -17,14 +17,15 @@ module.exports = {
   ],
   guides: [
     { type: 'doc', id: 'edit_a_test' },
+    // TODO merge into edit
     { type: 'doc', id: 'use_the_repl' },
     { type: 'doc', id: 'handle_sign_in' },
+    // TODO move into create
     { type: 'doc', id: 'add_assertions' },
     { type: 'doc', id: 'use_custom_selectors' },
+    // TODO move into create or edit?
     { type: 'doc', id: 'change_input_values' },
     { type: 'doc', id: 'emulate_a_device' },
-    { type: 'doc', id: 'use_typescript' },
-    { type: 'doc', id: 'configure_qa_wolf' },
     { type: 'doc', id: 'contribute' },
   ],
   api: [
@@ -49,5 +50,6 @@ module.exports = {
         'api/qawolf/wait_for_page',
       ],
     },
+    { type: 'doc', id: 'api/config' },
   ],
 };

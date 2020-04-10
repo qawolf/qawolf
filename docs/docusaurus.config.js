@@ -30,7 +30,7 @@ module.exports = {
       },
       links: [
         { to: 'docs/what_is_qa_wolf', label: 'Get Started', position: 'left' },
-        { to: 'docs/use_the_repl', label: 'Guides', position: 'left' },
+        { to: 'docs/edit_a_test', label: 'Guides', position: 'left' },
         { to: 'docs/api/table_of_contents', label: 'API', position: 'left' },
       ],
     },

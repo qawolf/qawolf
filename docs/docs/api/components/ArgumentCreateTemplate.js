@@ -1,7 +1,7 @@
 import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import React from 'react';
-import Argument from '../api/components/Argument';
+import Argument from './Argument';
 
 function ArgumentCreateTemplate() {
   return (
