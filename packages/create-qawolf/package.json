@@ -49,7 +49,7 @@
   },
   "createDevDependencies": {
     "playwright": "^0.13.0",
-    "qawolf": "^0.13.0"
+    "qawolf": "^0.13.1"
   },
   "bin": {
     "create-qawolf": "./build/index.js"
