@@ -3,6 +3,14 @@ id: what_is_qa_wolf
 title: 🐺 What Is QA Wolf?
 ---
 
+:::tip TL;DR
+
+- Use QA Wolf to create browser tests 10x faster
+- Selectors auto-wait and are optimized for stability
+- QA Wolf uses Playwright instead of Selenium or Cypress
+
+:::
+
 Welcome, thanks for checking out QA Wolf! 😊
 
 QA Wolf is an [open source](https://github.com/qawolf/qawolf) [Node.js library](https://www.npmjs.com/package/qawolf) for creating browser tests 10x faster. It is an opinionated, zero configuration browser testing library that "just works".

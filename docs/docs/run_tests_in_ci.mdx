@@ -9,11 +9,7 @@ import CiEnvironmentVariables from './components/CiEnvironmentVariables.mdx';
 import CiLocalServer from './components/CiLocalServer.mdx';
 import CiRunOnSchedule from './components/CiRunOnSchedule.mdx';
 
-QA Wolf sets up your CI with one command. Each test run includes [debug artifacts](#debug) like a video recording and logs.
-
-This guide assumes you have already [created a browser test](create_a_test).
-
-## TL;DR
+:::tip TL;DR
 
 - [Create a workflow file](#create-workflow-file) to run your tests in your CI provider if you haven't already:
 
@@ -23,6 +19,12 @@ npm init qawolf
 
 - Each test run includes [debug artifacts](#debug) like a video recording and logs
 - You can also [run your tests against your local server](#run-tests-against-your-local-server), [use environment variables](#use-environment-variables), and [run tests on a schedule](#run-tests-on-a-schedule) in CI
+
+:::
+
+<br />
+
+Now that we [created a browser test](create_a_test) and [ran it locally](run_tests_locally), let's run our tests in CI.
 
 ## Create workflow file
 
