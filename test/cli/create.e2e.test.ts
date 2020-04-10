@@ -84,7 +84,10 @@ describe('npx qawolf create', () => {
       },
     });
 
-    await waitFor(async () => (await loadCode()).includes('qawolf.scroll'));
+    await waitFor(async () => {
+      const code = await loadCode();
+      return code && code.includes('qawolf.scroll');
+    });
 
     const code = await loadCode();
     expect(code).toContain('qawolf.scroll');
