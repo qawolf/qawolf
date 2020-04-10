@@ -3,7 +3,13 @@ id: what_is_qa_wolf
 title: 🐺 What Is QA Wolf?
 ---
 
-## Overview
+:::tip TL;DR
+
+- Use QA Wolf to create browser tests 10x faster
+- Selectors auto-wait and are optimized for stability
+- QA Wolf uses Playwright instead of Selenium or Cypress
+
+:::
 
 Welcome, thanks for checking out QA Wolf! 😊
 

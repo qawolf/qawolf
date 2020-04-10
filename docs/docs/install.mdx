@@ -7,12 +7,10 @@ import TabItem from "@theme/TabItem";
 import PackageManagerTabs from './components/PackageManagerTabs';
 import YouTubeVideo from './components/YouTubeVideo';
 
-In this guide we explain how to set up your environment and get started with QA Wolf.
-
-## TL;DR
+:::tip TL;DR
 
 - Make sure you have a [basic understanding of the command line](#understand-the-command-line)
-- [Install Node.js and `npm`](#install-nodejs-and-npm) (or [Yarn](#optional-use-yarn)) if you haven't already
+- [Install Node.js and npm](#install-nodejs-and-npm) (or [Yarn](#optional-use-yarn)) if you haven't already
 - [Add QA Wolf](#install-qa-wolf) to your project:
 
 <PackageManagerTabs>	
@@ -33,6 +31,15 @@ yarn create qawolf
 </TabItem>
 </PackageManagerTabs>
 
+- [Use qawolf.config.js](api/config) to configure QA Wolf
+
+:::
+
+<br/>
+
+In this guide we explain how to set up your environment and get started with QA Wolf.
+
+<br/>
 
 <YouTubeVideo src="https://www.youtube.com/embed/e8tfR1Ey9DI" />
 
@@ -124,7 +131,7 @@ You will be asked to specify:
 
 QA Wolf will also detect if you are using [TypeScript](https://www.typescriptlang.org), and update its configuration to create tests in TypeScript instead of JavaScript if applicable.
 
-See the guide on [configuring QA Wolf](configure_qa_wolf) to learn more.
+See the guide on [configuring QA Wolf](config) to learn more.
 
 After the dependencies have finished installing, run the following to make sure QA Wolf was installed successfully:
 
@@ -133,6 +140,10 @@ npx qawolf howl
 ```
 
 If you're having issues, please [chat with us on Gitter](https://gitter.im/qawolf/community) so we can help troubleshoot.
+
+## Optional: Configure QA Wolf
+
+See [qawolf.config.js](api/config) to learn how to use TypeScript, change the test directory, replace the default template and more!
 
 ## Next steps
 

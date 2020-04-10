@@ -142,7 +142,7 @@ You'll notice that two todo items are created in our updated test.
 
 QA Wolf allows you to create and edit tests in watch mode. Watch mode will re-run your test when you save the file.
 
-By default, watch mode is enabled. You can turn watch mode on or off by [updating your `qawolf.config.js` file](configure_qa_wolf):
+By default, watch mode is enabled. You can turn watch mode on or off by [updating your `qawolf.config.js` file](api/config):
 
 ```js
 // qawolf.config.js

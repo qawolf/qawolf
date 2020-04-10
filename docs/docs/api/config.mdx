@@ -1,14 +1,12 @@
 ---
-id: configure_qa_wolf
-title: 🛠️ Configure QA Wolf
+id: config
+title: qawolf.config.js
 ---
 
-import Argument from './api/components/Argument';
+import Argument from './components/Argument';
 import ArgumentCreateTemplate from './components/ArgumentCreateTemplate';
 
-QA Wolf provides several options for you to configure your experience.
-
-## TL;DR
+:::tip TL;DR
 
 - If you haven't already, run the following to create a `qawolf.config.js` file in your project:
 
@@ -16,7 +14,11 @@ QA Wolf provides several options for you to configure your experience.
 npm init qawolf
 ```
 
-- Update the `qawolf.config.js` file accordingly
+:::
+
+<br/>
+
+QA Wolf provides several options for you to configure your experience.
 
 ## The `qawolf.config.js` file
 
@@ -33,7 +35,7 @@ module.exports = {
   // set QAW_ATTRIBUTE
   attribute: 'data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/',
   // set jest config
-  config: '{ "watchPlugins": ["qawolf/watch"] }',
+  config: 'node_modules/qawolf/js-jest.config.json',
   createTemplate: ({ name, url }) => {
     // returns test template as a string
   },
@@ -64,14 +66,12 @@ See the guide on [using custom selectors](use_custom_selectors#target-attributes
 Specifies which config is passed to [Jest](https://jestjs.io) when running your tests:
 
 ```bash
-jest --config='{ "watchPlugins": ["qawolf/watch"] }'
+jest --config='node_modules/qawolf/js-jest.config.json'
 ```
 
-By default, QA Wolf uses `'{ "watchPlugins": ["qawolf/watch"] }'` to avoid conflicting with an existing Jest configuration. The default configuration allows QA Wolf to run in watch mode.
+If the config is set to `null` or `undefined`, nothing will be passed to Jest. We recommend using the default for [watch](#watch) mode to work.
 
-If the config is set to `null` or `undefined`, nothing will be passed to Jest.
-
-**Default:** `'{ "watchPlugins": ["qawolf/watch"] }'`
+**Default:** [`'node_modules/qawolf/js-jest.config.json'`](https://github.com/qawolf/qawolf/blob/master/js-jest.config.json). If TypeScript is detected: [`'node_modules/qawolf/ts-jest.config.json'`](https://github.com/qawolf/qawolf/blob/master/ts-jest.config.json).
 
 See [Jest documentation](https://jestjs.io/docs/en/cli#--configpath) to learn more.
 
@@ -151,10 +151,26 @@ See [Jest documentation](https://jestjs.io/docs/en/cli#--testtimeoutnumber) to l
 
 Whether to use [TypeScript](https://www.typescriptlang.org). If set to `true`, tests will be created in TypeScript and saved with the `.ts` file extension.
 
+When you run `npm init qawolf` or `yarn create qawolf` it looks for a `tsconfig.json` to detect TypeScript.
+
+If it finds one, it will will install these additional dependencies: `npm i -D @types/debug @types/jest @types/node ts-jest` and set these properties in `qawolf.config.js`:
+
+```js
+module.exports = {
+  config: 'node_modules/qawolf/ts-jest.config.json',
+  // ...
+  useTypeScript: true,
+};
+```
+
+You can also do these steps manually if you prefer.
+
 **Default:** `false`
 
 ### watch
 
 Whether to use watch mode when creating and editing tests. If set to `true`, tests will re-run every time the file is saved.
+
+This requires your Jest [`config`](#config) to use the default or specify `"watchPlugins": ["qawolf/watch"]`.
 
 **Default:** `true`
