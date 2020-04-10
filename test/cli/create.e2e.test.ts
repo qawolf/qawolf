@@ -8,6 +8,9 @@ import { KEYS } from '../../src/create-code/createPrompt';
 import { waitFor } from '../../src/utils';
 import { sleep } from '../utils';
 
+// help us debug flakes
+process.env.DEBUG = 'qawolf*';
+
 const testPath = join(__dirname, '../.qawolf/example.test.ts');
 const selectorsPath = join(testPath, '../selectors/example.json');
 
@@ -31,9 +34,14 @@ describe('npx qawolf create', () => {
       env: { ...process.env },
     });
 
-    child.stdout.setEncoding('utf8');
+    child.stderr.setEncoding('utf8');
+    child.stderr.on('data', (chunk: string) => {
+      console.log('stderr:', chunk);
+    });
 
+    child.stdout.setEncoding('utf8');
     child.stdout.on('data', (chunk: string) => {
+      console.log('stdout:', chunk);
       stdout += chunk;
     });
   });
