@@ -11,7 +11,12 @@ import { sleep } from '../utils';
 const testPath = join(__dirname, '../.qawolf/example.test.ts');
 const selectorsPath = join(testPath, '../selectors/example.json');
 
-const loadCode = (): Promise<string> => readFile(testPath, 'utf8');
+const loadCode = async (): Promise<string> => {
+  if (!(await pathExists(testPath))) return null;
+  const code = await readFile(testPath, 'utf8');
+  if (!code.length) return null;
+  return code;
+};
 
 describe('npx qawolf create', () => {
   let child: ChildProcess;
@@ -38,8 +43,7 @@ describe('npx qawolf create', () => {
   });
 
   it('creates the code file with the custom template', async () => {
-    await waitFor(() => pathExists(testPath));
-    const code = await loadCode();
+    const code = await waitFor(loadCode);
     expect(code).toMatchSnapshot();
   });
 
