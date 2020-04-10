@@ -3,8 +3,6 @@ id: what_is_qa_wolf
 title: 🐺 What Is QA Wolf?
 ---
 
-## Overview
-
 Welcome, thanks for checking out QA Wolf! 😊
 
 QA Wolf is an [open source](https://github.com/qawolf/qawolf) [Node.js library](https://www.npmjs.com/package/qawolf) for creating browser tests 10x faster. It is an opinionated, zero configuration browser testing library that "just works".
