@@ -6,7 +6,7 @@ title: Environment Variables
 Environment variables can be used when running [CLI commands](cli):
 
 ```bash
-QAW_ATTRIBUTE=my-attribute npx qawolf create www.myawesomesite.com
+QAW_ARTIFACT_PATH=/tmp/artifacts npx qawolf create www.myawesomesite.com
 ```
 
 You can also [pass environment variables](../run_tests_in_ci#use-environment-variables) when running tests in CI:
@@ -31,37 +31,7 @@ Note that your code must call [`qawolf.register`](qawolf/register) for artifacts
 #### Examples
 
 ```bash
-QAW_ARTIFACT_PATH=./artifacts npx qawolf test
-```
-
-## QAW_ATTRIBUTE
-
-**Default:** `data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/`
-
-Specify `QAW_ATTRIBUTE` when you create a test, and QA Wolf will use that [attribute](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors) as a selector when it exists on an element. You can [update the `attribute` key in `config.qawolf.js`](config#attribute) instead of setting `QAW_ATTRIBUTE`.
-
-You can specify an attribute directly, or use a [regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions). For example, the expression `/^qa-.*/` will match any attributes that start with `qa-` like `qa-submit`. You can also specify multiple attributes separated by commas, for example: `QAW_ATTRIBUTE=aria-label,data-qa,id,title`.
-
-When the element you interact with does not have the specified attribute, the generated code will use the [default selector logic](../use_custom_selectors#default-selector-logic).
-
-#### Examples
-
-Create a test with:
-
-```bash
-QAW_ATTRIBUTE=my-attribute npx qawolf create www.myawesomesite.com myTest
-```
-
-Click on this element:
-
-```html
-<button my-attribute="search">Search</button>
-```
-
-The generated code will be:
-
-```js
-await page.click("[my-attribute='search']");
+QAW_ARTIFACT_PATH=/tmp/artifacts npx qawolf test
 ```
 
 ## QAW_BROWSER

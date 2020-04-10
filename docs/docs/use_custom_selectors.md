@@ -3,11 +3,9 @@ id: use_custom_selectors
 title: 🔍 Use Custom Selectors
 ---
 
-In this guide, we explain how QA Wolf generates element selectors and how you can edit these selectors. We assume you know how to [create a test](create_a_test).
+:::tip TL;DR
 
-## TL;DR
-
-- [Element selectors in generated code](#selectors-overview) use attributes specified by [`QAW_ATTRIBUTE`](api/environment_variables#qaw_attribute) if possible, and multiple attributes otherwise:
+- [Element selectors](#selectors-overview) use attributes specified by the [`attribute` key in `qawolf.config.js`](api/config#attribute) if possible, and multiple attributes otherwise:
 
 ```js
 test('myTestName', async () => {
@@ -33,13 +31,17 @@ test('myTestName', async () => {
 
 - To use test attributes like `data-qa`, [update your application code](#add-test-attributes-to-application-code) if needed
 
+:::
+
+In this guide, we explain how QA Wolf generates element selectors and how you can edit these selectors. We assume you know how to [create a test](create_a_test).
+
 ## Selectors overview
 
 When you create a test with QA Wolf, each action you take (like clicking and typing) is converted to test code. The generated test code captures the [element](https://developer.mozilla.org/en-US/docs/Glossary/Element) you interacted with so that it can target that element when running your test. But how exactly does this work?
 
 ### Target attributes
 
-During test creation, when you click on an element QA Wolf first checks to see if it has any [attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started) specified by the [`QAW_ATTRIBUTE` environment variable](api/environment_variables#qaw_attribute) or [`attribute` key in `qawolf.config.js`](api/config#attribute). The default value of `QAW_ATTRIBUTE` is `data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/`. This means that if an element has the `data-cy`, `data-e2e`, `data-qa`, `data-test`, or `data-testid` attribute, the generated code will target the element based on that attribute. It will also target attributes that match the [regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) `/^qa-.*/`.
+During test creation, when you click on an element QA Wolf first checks to see if it has any [attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started) specified by the [`attribute` key in `qawolf.config.js`](api/config#attribute). By default if an element has the `data-cy`, `data-e2e`, `data-qa`, `data-test`, or `data-testid` attribute, the generated code will inline a [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) for that attribute.
 
 For example, if you click on an element with the following [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML):
 
@@ -55,7 +57,7 @@ await page.click('[data-qa="submit"]');
 
 When you run your test, [Playwright](https://github.com/microsoft/playwright) will look for an element where the `data-qa` attribute is set to `"submit"`. If it cannot find an element where `data-qa` equals `"submit"` before timing out, the test fails.
 
-You can [set the value of `QAW_ATTRIBUTE`](api/environment_variables#qaw_attribute) to choose what attributes QA Wolf uses when generating test code. You can specify any number of test attributes like `data-qa`, [regular expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) like `/^qa-.*/`, and other attributes like `id` and `aria-label`.
+You can [set the `attribute` key in `qawolf.config.js`](api/config#attribute) to choose what attributes QA Wolf uses when generating test code. You can specify any number of test attributes like `data-qa`, [regular expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) like `/^qa-.*/`, and other attributes like `id` and `aria-label`.
 
 QA Wolf does its best to generate the correct CSS selector, even if the specified attribute is on an ancestor of the target element. For example, some component libraries like [Material UI](https://material-ui.com) place data attributes on a wrapper `div` around inputs. Your front end code might look like this:
 
@@ -89,7 +91,7 @@ await page.type('[data-qa="username"] input', 'target the input!');
 
 ### Default selector logic
 
-If you click on an element that does not have an attribute specified by [`QAW_ATTRIBUTE`](api/environment_variables#qaw_attribute), QA Wolf will fall back to its default selector logic. The default logic stores all attributes of an element, as well as the attributes of its two direct [ancestors](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement). It then tries to find a close enough match to the target element when running your tests.
+If you click on an element that does not have an attribute specified by the [`attribute` key in `qawolf.config.js`](api/config#attribute), QA Wolf will fall back to its default selector logic. The default logic stores all attributes of an element, as well as the attributes of its two direct [ancestors](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement). It then tries to find a close enough match to the target element when running your tests.
 
 For example, let's say you click on an element with the following [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML):
 
@@ -124,8 +126,6 @@ These HTML selectors work with Playwright because we created a custom selector e
 ## Edit generated selectors
 
 You can edit element selectors as you create your test, since the [test code is generated](create_a_test#review-test-code) as you use your application. The [interactive REPL](use_the_repl) can be helpful in trying out selectors.
-
-If you find yourself using the same attribute frequently to target elements, such as the `data-qa` attribute, try [setting `QAW_ATTRIBUTE`](api/environment_variables#qaw_attribute). This will configure QA Wolf to target elements using that attribute whenever possible.
 
 Playwright supports a few types of selectors. We discuss [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) and text selectors in this guide.
 

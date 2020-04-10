@@ -47,7 +47,7 @@ QA Wolf generates [Playwright](#what-is-playwright) code, which automatically wa
 
 QA Wolf chooses element selectors wisely. Typically, auto generated code targets elements with very specific selectors like [XPaths](https://developer.mozilla.org/en-US/docs/Web/XPath). These brittle selectors can stop working as your application changes.
 
-A best practice in testing is target elements based on test [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes) like `data-qa`. This provides maximum stability even as your application changes. If possible, QA Wolf will target elements based on these test attributes. You can [choose which attributes are used](api/environment_variables#qaw_attribute) in the generated code, including attributes like `id` or `aria-label`.
+A best practice in testing is target elements based on test [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes) like `data-qa`. This provides maximum stability even as your application changes. If possible, QA Wolf will target elements based on these test attributes. You can [choose which attributes are used](api/config#attribute) in the generated code, including attributes like `id` or `aria-label`.
 
 #### Smart Selectors
 

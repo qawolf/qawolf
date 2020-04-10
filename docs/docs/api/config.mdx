@@ -32,7 +32,7 @@ Here is a full `qawolf.config.js` file. Note that only some of these settings ar
 
 ```js
 module.exports = {
-  // set QAW_ATTRIBUTE
+  // attributes to use as inline selectors
   attribute: 'data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/',
   // set jest config
   config: 'node_modules/qawolf/js-jest.config.json',
@@ -55,7 +55,7 @@ Below we go through the values that can be configured. Each of them is optional.
 
 ### attribute
 
-The `attribute` key in `qawolf.config.json` sets the [`QAW_ATTRIBUTE` environment variable](api/environment_variables#qaw_attribute). This allows you to choose which attributes to use as element selectors in the generated code.
+The `attribute` key in `qawolf.config.json` allows you to choose which attributes to use as inline selectors in the generated code.
 
 **Default:** `'data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/'`
 

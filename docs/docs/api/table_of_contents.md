@@ -27,8 +27,6 @@ In addition to the APIs below, you have full access to the [Playwright API](http
 
 [QAW_ARTIFACT_PATH](environment_variables#qaw_artifact_path)
 
-[QAW_ATTRIBUTE](environment_variables#qaw_attribute)
-
 [QAW_BROWSER](environment_variables#qaw_browser)
 
 ## module: qawolf
