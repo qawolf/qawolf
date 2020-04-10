@@ -2,8 +2,6 @@ import { Context } from 'vm';
 import { Registry } from '../Registry';
 
 const setPage = (context: Context): void => {
-  if (context.page) return;
-
   const { context: browserContext } = Registry.instance().data();
   if (!browserContext) return;
 
