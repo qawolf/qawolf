@@ -1,5 +1,39 @@
 import { platform } from 'os';
+import playwright from 'playwright';
 import { getLaunchOptions } from '../../src/utils';
+import { getBrowserType } from '../../src/utils/launch';
+
+describe('getBrowserType', () => {
+  afterEach(() => jest.resetModules());
+
+  it('returns browser type from playwright if possible', () => {
+    const browserType = getBrowserType('webkit');
+    expect(browserType).toEqual(playwright.webkit);
+  });
+
+  it('returns browser type from flavored package', () => {
+    jest.mock('playwright', () => {
+      throw new Error("Cannot find module 'playwright'");
+    });
+
+    const browserType = getBrowserType('webkit');
+    expect(typeof browserType.launch).toEqual('function');
+  });
+
+  it('throws an error if cannot import browser type', () => {
+    jest.mock('playwright', () => {
+      throw new Error("Cannot find module 'playwright'");
+    });
+
+    jest.mock('playwright-webkit', () => {
+      throw new Error("Cannot find module 'playwright-webkit'");
+    });
+
+    expect(() => getBrowserType('webkit')).toThrowError(
+      'qawolf requires playwright to be installed',
+    );
+  });
+});
 
 describe('getLaunchOptions', () => {
   it('chooses a browser based on the name', () => {

@@ -1,4 +1,4 @@
-import { ElementHandle, Page } from 'playwright';
+import { ElementHandle, Page } from 'playwright-core';
 
 export interface ScrollValue {
   x: number;

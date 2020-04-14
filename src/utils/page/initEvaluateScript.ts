@@ -1,4 +1,4 @@
-import { Page } from 'playwright';
+import { Page } from 'playwright-core';
 
 const NAVIGATION_ERRORS = [
   'Execution context was destroyed',
@@ -20,7 +20,7 @@ export const initEvaluateScript = async (
   } catch (error) {
     // ignore errors caused by navigation
     // since addInitScript will call the script again
-    const shouldIgnore = !!NAVIGATION_ERRORS.find(message =>
+    const shouldIgnore = !!NAVIGATION_ERRORS.find((message) =>
       error.message.includes(message),
     );
     if (shouldIgnore) return;

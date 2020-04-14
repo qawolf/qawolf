@@ -1,4 +1,4 @@
-import { Browser, Page } from 'playwright';
+import { Browser, Page } from 'playwright-core';
 import { launch } from '../../src/utils';
 import { QAWolfWeb } from '../../src/web';
 import { webScript } from '../../src/web/addScript';

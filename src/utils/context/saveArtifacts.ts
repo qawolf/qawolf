@@ -1,6 +1,6 @@
 import Debug from 'debug';
 import { join } from 'path';
-import { BrowserContext } from 'playwright';
+import { BrowserContext } from 'playwright-core';
 import { getFfmpegPath, saveVideo, PageVideoCapture } from 'playwright-video';
 import { forEachPage } from './forEachPage';
 import { saveConsoleLogs } from '../page/saveConsoleLogs';

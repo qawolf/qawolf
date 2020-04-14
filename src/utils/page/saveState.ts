@@ -1,5 +1,5 @@
 import { ensureFile, writeJSON } from 'fs-extra';
-import { Page } from 'playwright';
+import { Page } from 'playwright-core';
 
 // need to manually specify
 // https://github.com/microsoft/playwright/issues/1732

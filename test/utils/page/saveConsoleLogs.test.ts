@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { Browser, Page } from 'playwright';
+import { Browser, Page } from 'playwright-core';
 import { launch, saveConsoleLogs } from '../../../src/utils';
 import { randomString } from '../../utils';
 

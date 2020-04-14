@@ -1,8 +1,6 @@
 import Debug from 'debug';
 import { platform } from 'os';
-// need to launch from playwright not playwright-core since the browsers are different
-import playwright from 'playwright';
-
+import playwrightCore, { Browser, BrowserType } from 'playwright-core';
 import { isNullOrUndefined } from 'util';
 import { Registry } from './Registry';
 
@@ -45,6 +43,29 @@ export const parseBrowserName = (name?: string): BrowserName => {
   return 'chromium';
 };
 
+export const getBrowserType = (
+  browserName: BrowserName,
+): BrowserType<Browser> => {
+  // We must use the browser type from the installed `playwright` or `playwright-browser` package,
+  // and not `playwright-core` since they store different browser binaries.
+  // See https://github.com/microsoft/playwright/issues/1191 for more details.
+  let playwright: typeof playwrightCore;
+
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    playwright = require('playwright');
+  } catch (error) {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      playwright = require(`playwright-${browserName}`);
+    } catch (error) {
+      throw new Error('qawolf requires playwright to be installed');
+    }
+  }
+
+  return playwright[browserName];
+};
+
 export const getLaunchOptions = (
   options: LaunchOptions = {},
 ): LaunchOptions & { browserName: BrowserName } => {
@@ -75,13 +96,11 @@ export const getLaunchOptions = (
   };
 };
 
-export const launch = async (
-  options: LaunchOptions = {},
-): Promise<playwright.Browser> => {
+export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
   const launchOptions = getLaunchOptions(options);
   debug('launch %j', launchOptions);
 
-  const browser = await playwright[launchOptions.browserName].launch(
+  const browser = await getBrowserType(launchOptions.browserName).launch(
     launchOptions,
   );
 
