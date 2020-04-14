@@ -1,20 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`buildImports imports when typescript 1`] = `
-"import { Browser, Page } from \\"playwright\\";
+"import { Browser, Page } from \\"playwright-core\\";
 import qawolf from \\"qawolf\\";
 const selectors = require(\\"./selectors/myScript.json\\");"
 `;
 
 exports[`buildImports imports when typescript 2`] = `
-"import { Browser, Page, devices } from \\"playwright\\";
+"import { Browser, Page, devices } from \\"playwright-core\\";
 import qawolf from \\"qawolf\\";
 const selectors = require(\\"./selectors/myScript.json\\");
 const device = devices[\\"iPhone 11\\"];"
 `;
 
 exports[`buildImports includes device when specified 1`] = `
-"const { devices } = require(\\"playwright\\");
+"const { devices } = require(\\"playwright-core\\");
 const qawolf = require(\\"qawolf\\");
 const selectors = require(\\"./selectors/myScript.json\\");
 const device = devices[\\"iPhone 11\\"];"
@@ -51,7 +51,7 @@ test('myName', async () => {
 `;
 
 exports[`buildTemplate builds test template 2`] = `
-"const { devices } = require(\\"playwright\\");
+"const { devices } = require(\\"playwright-core\\");
 const qawolf = require(\\"qawolf\\");
 const selectors = require(\\"./selectors/myName.json\\");
 const device = devices[\\"iPhone 11\\"];
@@ -104,7 +104,7 @@ test('myName', async () => {
 `;
 
 exports[`buildTemplate builds test template 4`] = `
-"import { Browser, Page } from \\"playwright\\";
+"import { Browser, Page } from \\"playwright-core\\";
 import qawolf from \\"qawolf\\";
 const selectors = require(\\"./selectors/myName.json\\");
 
@@ -130,7 +130,7 @@ test('myName', async () => {
 `;
 
 exports[`buildTemplate builds test template 5`] = `
-"import { Browser, Page, devices } from \\"playwright\\";
+"import { Browser, Page, devices } from \\"playwright-core\\";
 import qawolf from \\"qawolf\\";
 const selectors = require(\\"./selectors/myName.json\\");
 const device = devices[\\"iPhone 7\\"];

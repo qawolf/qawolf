@@ -1,7 +1,7 @@
 import { readdir, readFileSync } from 'fs-extra';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { Browser, Page } from 'playwright';
+import { Browser, Page } from 'playwright-core';
 import * as playwrightVideo from 'playwright-video';
 import {
   launch,

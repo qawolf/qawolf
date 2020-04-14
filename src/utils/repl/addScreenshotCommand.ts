@@ -1,12 +1,12 @@
 import { REPLServer } from 'repl';
-import { BrowserContext } from 'playwright';
+import { BrowserContext } from 'playwright-core';
 import { waitForPage } from '../context/waitForPage';
 import { openScreenshot } from '../page/openScreenshot';
 
 export const addScreenshotCommand = (replServer: REPLServer): void => {
   replServer.defineCommand('screenshot', {
     help: 'Take a screenshot and open it',
-    action: async pageVariable => {
+    action: async (pageVariable) => {
       let pageIndex = Number(pageVariable);
       if (isNaN(pageIndex)) pageIndex = 0;
 

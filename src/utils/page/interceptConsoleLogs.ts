@@ -1,4 +1,4 @@
-import { Page } from 'playwright';
+import { Page } from 'playwright-core';
 import { initEvaluateScript } from './initEvaluateScript';
 import { QAWolfWeb } from '../../web';
 import { LogCallback } from '../../web/interceptConsoleLogs';

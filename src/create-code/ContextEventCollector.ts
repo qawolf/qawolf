@@ -1,6 +1,6 @@
 import Debug from 'debug';
 import { EventEmitter } from 'events';
-import { BrowserContext } from 'playwright';
+import { BrowserContext } from 'playwright-core';
 import { loadConfig } from '../config';
 import { ElementEvent } from '../types';
 import {

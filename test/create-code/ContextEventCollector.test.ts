@@ -1,4 +1,8 @@
-import { Browser, BrowserContext, ChromiumBrowserContext } from 'playwright';
+import {
+  Browser,
+  BrowserContext,
+  ChromiumBrowserContext,
+} from 'playwright-core';
 import { ContextEventCollector } from '../../src/create-code/ContextEventCollector';
 import { isKeyEvent } from '../../src/build-workflow/event';
 import {

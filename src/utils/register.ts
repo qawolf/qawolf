@@ -1,4 +1,4 @@
-import { BrowserContext } from 'playwright';
+import { BrowserContext } from 'playwright-core';
 import { register as registerHtmlSelector } from 'playwright-html-selector';
 import { basename, join } from 'path';
 import { indexPages } from './context/indexPages';

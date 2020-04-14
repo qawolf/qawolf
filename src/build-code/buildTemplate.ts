@@ -1,5 +1,5 @@
 import { camelCase } from 'lodash';
-import { devices } from 'playwright';
+import { devices } from 'playwright-core';
 
 export interface BuildTemplateOptions {
   device?: string;
@@ -46,14 +46,14 @@ export const buildImports = ({
 
   if (device) {
     if (useTypeScript) {
-      imports += 'import { Browser, Page, devices } from "playwright";\n';
+      imports += 'import { Browser, Page, devices } from "playwright-core";\n';
     } else {
-      imports += 'const { devices } = require("playwright");\n';
+      imports += 'const { devices } = require("playwright-core");\n';
     }
   }
 
   if (useTypeScript && !device) {
-    imports += 'import { Browser, Page } from "playwright";\n';
+    imports += 'import { Browser, Page } from "playwright-core";\n';
   }
 
   if (useTypeScript) {

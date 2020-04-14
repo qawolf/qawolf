@@ -1,5 +1,5 @@
 import Debug from 'debug';
-import { BrowserContext, Page } from 'playwright';
+import { BrowserContext, Page } from 'playwright-core';
 
 const debug = Debug('qawolf:indexPages');
 

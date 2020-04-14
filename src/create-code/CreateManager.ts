@@ -1,5 +1,5 @@
 import Debug from 'debug';
-import { BrowserContext } from 'playwright';
+import { BrowserContext } from 'playwright-core';
 import { buildSteps } from '../build-workflow/buildSteps';
 import { CodeFileUpdater } from './CodeFileUpdater';
 import { ContextEventCollector } from './ContextEventCollector';
