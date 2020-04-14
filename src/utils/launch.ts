@@ -1,8 +1,6 @@
 import Debug from 'debug';
 import { platform } from 'os';
-// need to launch from playwright not playwright-core since the browsers are different
-import playwright from 'playwright';
-
+import playwrightCore, { Browser, BrowserType } from 'playwright-core';
 import { isNullOrUndefined } from 'util';
 import { Registry } from './Registry';
 
@@ -45,6 +43,18 @@ export const parseBrowserName = (name?: string): BrowserName => {
   return 'chromium';
 };
 
+export const getBrowser = (browserName: BrowserName): BrowserType<Browser> => {
+  let playwright: typeof playwrightCore;
+
+  try {
+    playwright = require('playwright');
+  } catch (error) {
+    playwright = require(`playwright-${browserName}`);
+  }
+
+  return playwright[browserName];
+};
+
 export const getLaunchOptions = (
   options: LaunchOptions = {},
 ): LaunchOptions & { browserName: BrowserName } => {
@@ -75,13 +85,11 @@ export const getLaunchOptions = (
   };
 };
 
-export const launch = async (
-  options: LaunchOptions = {},
-): Promise<playwright.Browser> => {
+export const launch = async (options: LaunchOptions = {}): Promise<Browser> => {
   const launchOptions = getLaunchOptions(options);
   debug('launch %j', launchOptions);
 
-  const browser = await playwright[launchOptions.browserName].launch(
+  const browser = await getBrowser(launchOptions.browserName).launch(
     launchOptions,
   );
 
