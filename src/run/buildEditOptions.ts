@@ -20,7 +20,7 @@ export const buildEditOptions = (options: EditOptions): TestOptions => {
   args.push('--testTimeout=3600000');
 
   if (options.config.watch) {
-    args.push('--watch');
+    args.push('--watchAll');
   }
 
   if (options.args) {

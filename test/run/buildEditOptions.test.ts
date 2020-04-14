@@ -22,8 +22,8 @@ describe('buildEditOptions', () => {
       expect(options.args).toContain('--detectOpenHandles');
     });
 
-    it('includes --watch if specified in the config', () => {
-      expect(options.args).toContain('--watch');
+    it('includes --watchAll if specified in the config', () => {
+      expect(options.args).toContain('--watchAll');
 
       expect(
         buildEditOptions({
@@ -33,7 +33,7 @@ describe('buildEditOptions', () => {
           },
           testPath: '',
         }).args,
-      ).not.toContain('--watch');
+      ).not.toContain('--watchAll');
     });
 
     it('times out after an hour', () => {
