@@ -46,14 +46,14 @@ export const buildImports = ({
 
   if (device) {
     if (useTypeScript) {
-      imports += 'import { Browser, Page, devices } from "playwright-core";\n';
+      imports += 'import { Browser, Page, devices } from "playwright";\n';
     } else {
-      imports += 'const { devices } = require("playwright-core");\n';
+      imports += 'const { devices } = require("playwright");\n';
     }
   }
 
   if (useTypeScript && !device) {
-    imports += 'import { Browser, Page } from "playwright-core";\n';
+    imports += 'import { Browser, Page } from "playwright";\n';
   }
 
   if (useTypeScript) {
