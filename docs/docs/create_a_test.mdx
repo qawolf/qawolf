@@ -12,7 +12,6 @@ import YouTubeVideo from './components/YouTubeVideo';
 ```bash
 npx qawolf create http://todomvc.com/examples/react myTest
 ```
-
 - [Edit as you go](#edit-as-you-go) in your code editor (`.qawolf/myTest.test.js`)
 - [Save your test](#save-a-test) by choosing `💾 Save and Exit` in the command line
 
@@ -59,9 +58,9 @@ See the video below for an example:
 
 <YouTubeVideo src="https://www.youtube.com/embed/KP4tpilrOOE" />
 
-## Edit as you go
+## Review the code
 
-If you open your project in your code editor, you'll notice that a folder called `.qawolf` was created. This folder stores your QA Wolf tests and has the following structure:
+You'll notice that a folder called `.qawolf` was created in your project. This folder stores your QA Wolf tests and has the following structure:
 
 ```bash
 .qawolf # project directory
@@ -72,12 +71,16 @@ If you open your project in your code editor, you'll notice that a folder called
 
 Let's open the `.qawolf/myTest.test.js` file, which contains your test code. We'll explain the `.qawolf/selectors/myTest.json` file a bit later.
 
-Our code first requires the `qawolf` library, which is built on top of [Microsoft's Playwright](https://github.com/microsoft/playwright) library. It also requires the selectors file, which we'll get to later:
+### Imports
+
+The test requires the `qawolf` library, which is built on top of [Microsoft's Playwright](https://github.com/microsoft/playwright) library. It also requires the selectors file, which we'll get to later:
 
 ```js
 const qawolf = require('qawolf');
 const selectors = require('./selectors/myTest.json');
 ```
+
+### beforeAll
 
 To start your test, a few things happen in the [Jest `beforeAll` block](https://jestjs.io/docs/en/api#beforeallfn-timeout). The test launches a [browser](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browser) and creates a new [context](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext), which is an "incognito" browser session. This context is passed to the [`qawolf.register` method](api/qawolf/register) so QA Wolf can access it. Finally, a new [page](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page) is created:
 
@@ -93,49 +96,11 @@ beforeAll(async () => {
 });
 ```
 
+### test
+
 The test itself is contained in a [Jest `test` block](https://jestjs.io/docs/en/api#testname-fn-timeout) with the name you specified (`"myTest"` in our example). The test first navigates to the specified URL. Then it repeats the actions that you took. In our case, it clicks the todo input, types `create test!`, presses Enter, clicks to complete the todo, and clicks the clear completed todos button:
 
 ```js
-test('myTest', async () => {
-  await page.goto('http://todomvc.com/examples/react');
-  await page.click(selectors['0_what_needs_to_b_input']);
-  await page.type(selectors['1_what_needs_to_b_input'], 'create test!');
-  await page.press(selectors['2_what_needs_to_b_input'], 'Enter');
-  await page.click(selectors['3_input']);
-  await page.click(selectors['4_button']);
-});
-```
-
-After the test finishes running, the browser is closed in the [Jest `afterAll` block](https://jestjs.io/docs/en/api#afterallfn-timeout). If a video of your test is being recorded, the recording stops and the video is saved.
-
-```js
-afterAll(async () => {
-  await qawolf.stopVideos();
-  await browser.close();
-});
-```
-
-Putting it all together, below we show the full test code:
-
-```js
-const qawolf = require('qawolf');
-const selectors = require('./selectors/myTest.json');
-
-let browser;
-let page;
-
-beforeAll(async () => {
-  browser = await qawolf.launch();
-  const context = await browser.newContext();
-  await qawolf.register(context);
-  page = await context.newPage();
-});
-
-afterAll(async () => {
-  await qawolf.stopVideos();
-  await browser.close();
-});
-
 test('myTest', async () => {
   await page.goto('http://todomvc.com/examples/react');
   await page.click(selectors['0_what_needs_to_b_input']);
@@ -149,15 +114,54 @@ test('myTest', async () => {
 
 The line `await qawolf.create();` at the end of your test is a placeholder for where new test code will be added if you continue to use the browser. This allows you to optionally edit your test code as you go along. When you finish creating a test, this line is removed.
 
-The video below shows how your test code is updated as you use your application:
+### afterAll
 
-<YouTubeVideo src="https://www.youtube.com/embed/03jVjoWp6CA" />
+After the test finishes running, the browser is closed in the [Jest `afterAll` block](https://jestjs.io/docs/en/api#afterallfn-timeout). If a video of your test is being recorded, the recording stops and the video is saved.
+
+```js
+afterAll(async () => {
+  await qawolf.stopVideos();
+  await browser.close();
+});
+```
+
+### Selectors file
 
 Let's now briefly touch upon the `.qawolf/selectors/myTest.json` file. In general, you should avoid editing this file. For a more detailed explanation, see our guide on the [QA Wolf selector logic](use_custom_selectors#default-selector-logic).
 
 The `.qawolf/selectors/myTest.json` file contains information about each element that you interacted with (such as clicked or typed into). By default, QA Wolf stores all the [attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes) of each element and its two direct ancestors. By using all the information it can to find an element, QA Wolf helps make your test code robust to changes in your application.
 
-You can also [specify an attribute](use_custom_selectors#target-attributes) like `data-qa` for QA Wolf to use in your test code whenever possible.
+You can also [specify an attribute](use_custom_selectors#target-attributes) like `data-qa` and QA Wolf will inline a CSS Selector in your test code whenever possible. 
+
+## Edit as you go
+
+The test code is created in real-time, so you can edit the test as you go. 
+
+Let's change this line:
+
+```
+await page.type(selectors['1_what_needs_to_b_input'], 'create test!');
+```
+
+to this:
+
+```
+await page.type(selectors['1_what_needs_to_b_input'], 'create my first test!');
+```
+
+When we press save, QA Wolf will automatically re-run the test:
+
+**Video Here**
+
+QA Wolf will continue converting your actions to code when the test gets to `await qawolf.create();`.
+
+:::tip
+
+- You can comment out/in `await qawolf.create();` to turn code creation off/on.
+- You can move `await qawolf.create();` anywhere in your test.
+- You can disable watch mode in [qawolf.config.js](api/config#watch) and the test will not re-run when you save.
+
+:::
 
 ## Save a test
 
