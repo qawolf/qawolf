@@ -1,3 +1,4 @@
 {
+  "setupFilesAfterEnv": ["expect-playwright"],
   "watchPlugins": ["qawolf/watch"]
 }
