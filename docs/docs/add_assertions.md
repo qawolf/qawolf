@@ -62,7 +62,7 @@ test('myFirstTest', async () => {
   await page.press(selectors['2_what_needs_to_b_input'], 'Enter');
   await page.click(selectors['3_input']);
   // custom code starts
-  await page.waitFor(() => document.body.innerText.includes('Clear completed'));
+  await expect(page).toHaveText('Clear completed');
   // custom code ends
   await page.click(selectors['4_button']);
   // custom code starts
