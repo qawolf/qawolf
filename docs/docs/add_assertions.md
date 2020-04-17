@@ -20,7 +20,7 @@ await expect(page).not.toHaveSelector('.todo-list li');
 
 In this guide, we'll add assertions to our test on [TodoMVC](http://todomvc.com/examples/react).
 
-We recommend adding assertions with the [expect-playwright library](https://github.com/playwright-community/expect-playwright), which makes it easy to write assertions with Playwright and Jest. QA Wolf includes this library by default, so you do not need to install anything to use it.
+We recommend adding assertions with the [expect-playwright library](https://github.com/playwright-community/expect-playwright), which automatically waits for assertions. QA Wolf includes this library by default, so you do not need to install anything to use it.
 
 ### Assert that text appears
 
