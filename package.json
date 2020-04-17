@@ -50,6 +50,7 @@
     "chokidar": "^3.3.1",
     "commander": "^5.0.0",
     "debug": "*",
+    "expect-playwright": "^0.2.2",
     "glob": "^7.1.6",
     "inquirer": "^7.1.0",
     "kleur": "^3.0.3",
