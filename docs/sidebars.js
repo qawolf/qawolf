@@ -20,8 +20,6 @@ module.exports = {
     // TODO merge into edit
     { type: 'doc', id: 'use_the_repl' },
     { type: 'doc', id: 'handle_sign_in' },
-    // TODO move into create
-    { type: 'doc', id: 'add_assertions' },
     { type: 'doc', id: 'use_custom_selectors' },
     // TODO move into create or edit?
     { type: 'doc', id: 'change_input_values' },

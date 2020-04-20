@@ -96,4 +96,3 @@ There are a few places you might want to go from here:
 
 - Learn how to [edit an existing test](edit_a_test)
 - Learn how to [handle sign in programmatically](handle_sign_in)
-- Learn how to [add assertions to your tests](add_assertions)

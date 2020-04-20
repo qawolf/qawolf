@@ -7,39 +7,46 @@ import YouTubeVideo from './components/YouTubeVideo';
 
 :::tip TL;DR
 
-- [Create a test](#create-a-test) by running the following in your project directory:
+- [Create a test](#create-a-test) by running this command in your project directory:
 
 ```bash
-npx qawolf create https://myawesomesite.com myTestName
+npx qawolf create http://todomvc.com/examples/react myTest
 ```
 
-- [Review and edit test code](#review-test-code) as you go along by opening your test file (`.qawolf/myTestName.test.js`)
+- [Edit as you go](#edit-as-you-go) in your code editor (`.qawolf/myTest.test.js`) and QA Wolf will re-run your test when you save
+
+- [Add assertions](#optional-add-assertions) with the [expect-playwright](https://github.com/playwright-community/expect-playwright) library (included with QA Wolf):
+
+```js
+await expect(page).toHaveText('Clear completed');
+await expect(page).not.toHaveSelector('.todo-list li');
+```
+
 - [Save your test](#save-a-test) by choosing `💾 Save and Exit` in the command line
 
 :::
 
 <br/>
 
-The [previous guide](install) showed you how to set up your environment and install QA Wolf. Now let's create your first browser test!
+
+The [previous guide](install) showed you how to set up your environment and install QA Wolf. In this guide, we create a test with assertions for [TodoMVC](http://todomvc.com/examples/react), a simple todo application.
+
+Now let's create your first browser test!
+
 
 ## Create a test
 
-First make sure that you are in your project directory and that you have [installed QA Wolf](install):
+To create your test, run this command:
 
 ```bash
-cd /my/awesome/project
-npm init qawolf # or yarn create qawolf
+npx qawolf create http://todomvc.com/examples/react myTest
 ```
 
-Soon you'll run the command to create a test. When you run this command, a [Chromium](https://www.chromium.org/Home) browser will open and capture your actions such as clicking and typing into inputs. These actions will be converted to [Playwright](https://github.com/microsoft/playwright) and [Jest](https://jestjs.io/) test code.
+:::tip
 
-In this guide, we create a test for [TodoMVC](http://todomvc.com/examples/react), a simple todo application. You can follow along using your own application if you prefer.
+You can replace `http://todomvc.com/examples/react` with a different URL and `myTest` with a different test name. See the [CLI documentation](api/cli#npx-qawolf-create-url-name) for more details.
 
-To create your test, run the following in the command line. You can optionally replace `http://todomvc.com/examples/react` with a different [URL](https://developer.mozilla.org/en-US/docs/Web/API/URL), and `myFirstTest` with a different test name. See our [CLI documentation](api/cli#npx-qawolf-create-url-name) for more details.
-
-```bash
-npx qawolf create http://todomvc.com/examples/react myFirstTest
-```
+:::
 
 A Chromium browser will open and navigate to the specified URL. After the page has loaded and QA Wolf can access it, you will see the following in the command line:
 
@@ -47,31 +54,35 @@ A Chromium browser will open and navigate to the specified URL. After the page h
 🐺 QA Wolf is ready to create code!
 ```
 
-Now go through the steps you want to test. In our example, we 1) create a todo item, 2) complete it, and 3) clear completed todos. See the video below for an example:
+Now go through the steps you want to test. In our example, we 1) create a todo item, 2) complete it, and 3) clear completed todos. These actions will be converted to [Playwright](https://github.com/microsoft/playwright) and [Jest](https://jestjs.io/) test code. 
+
+See the video below for an example:
 
 <YouTubeVideo src="https://www.youtube.com/embed/KP4tpilrOOE" />
 
-We could return to the command line and choose the `💾 Save and Exit` option to save our test. However, let's first take a look at our test code.
+## Review the code
 
-## Review test code
-
-If you open your project in your code editor, you'll notice that a folder called `.qawolf` was created. This folder stores your QA Wolf tests and has the following structure:
+You'll notice that a folder called `.qawolf` was created in your project. This folder stores your QA Wolf tests and has the following structure:
 
 ```bash
 .qawolf # project directory
-├── myFirstTest.test.js
+├── myTest.test.js
 ├── selectors
-│   └── myFirstTest.json
+│   └── myTest.json
 ```
 
-Let's open the `.qawolf/myFirstTest.test.js` file, which contains your test code. We'll explain the `.qawolf/selectors/myFirstTest.json` file a bit later.
+Let's open the `.qawolf/myTest.test.js` file, which contains your test code. We'll explain the `.qawolf/selectors/myTest.json` file a bit later.
 
-Our code first requires the `qawolf` library, which is built on top of [Microsoft's Playwright](https://github.com/microsoft/playwright) library. It also requires the selectors file, which we'll get to later:
+### Imports
+
+The test requires the `qawolf` library, which is built on top of [Microsoft's Playwright](https://github.com/microsoft/playwright) library. It also requires the selectors file, which we'll get to later:
 
 ```js
 const qawolf = require('qawolf');
-const selectors = require('./selectors/myFirstTest.json');
+const selectors = require('./selectors/myTest.json');
 ```
+
+### beforeAll
 
 To start your test, a few things happen in the [Jest `beforeAll` block](https://jestjs.io/docs/en/api#beforeallfn-timeout). The test launches a [browser](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browser) and creates a new [context](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext), which is an "incognito" browser session. This context is passed to the [`qawolf.register` method](api/qawolf/register) so QA Wolf can access it. Finally, a new [page](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page) is created:
 
@@ -87,50 +98,12 @@ beforeAll(async () => {
 });
 ```
 
-The test itself is contained in a [Jest `test` block](https://jestjs.io/docs/en/api#testname-fn-timeout) with the name you specified (`"myFirstTest"` in our example). The test first navigates to the specified URL. Then it repeats the actions that you took. In our case, it clicks the todo input, types `create test!`, presses Enter, clicks to complete the todo, and clicks the clear completed todos button:
+### test
+
+The test itself is contained in a [Jest `test` block](https://jestjs.io/docs/en/api#testname-fn-timeout) with the name you specified (`"myTest"` in our example). The test first navigates to the specified URL. Then it repeats the actions that you took. In our case, it clicks the todo input, types `create test!`, presses Enter, clicks to complete the todo, and clicks the clear completed todos button:
 
 ```js
-test('myFirstTest', async () => {
-  await page.goto('http://todomvc.com/examples/react');
-  await page.click(selectors['0_what_needs_to_b_input']);
-  await page.type(selectors['1_what_needs_to_b_input'], 'create test!');
-  await page.press(selectors['2_what_needs_to_b_input'], 'Enter');
-  await page.click(selectors['3_input']);
-  await page.click(selectors['4_button']);
-});
-```
-
-After the test finishes running, the browser is closed in the [Jest `afterAll` block](https://jestjs.io/docs/en/api#afterallfn-timeout). If a video of your test is being recorded, the recording stops and the video is saved.
-
-```js
-afterAll(async () => {
-  await qawolf.stopVideos();
-  await browser.close();
-});
-```
-
-Putting it all together, below we show the full test code:
-
-```js
-const qawolf = require('qawolf');
-const selectors = require('./selectors/myFirstTest.json');
-
-let browser;
-let page;
-
-beforeAll(async () => {
-  browser = await qawolf.launch();
-  const context = await browser.newContext();
-  await qawolf.register(context);
-  page = await context.newPage();
-});
-
-afterAll(async () => {
-  await qawolf.stopVideos();
-  await browser.close();
-});
-
-test('myFirstTest', async () => {
+test('myTest', async () => {
   await page.goto('http://todomvc.com/examples/react');
   await page.click(selectors['0_what_needs_to_b_input']);
   await page.type(selectors['1_what_needs_to_b_input'], 'create test!');
@@ -143,15 +116,97 @@ test('myFirstTest', async () => {
 
 The line `await qawolf.create();` at the end of your test is a placeholder for where new test code will be added if you continue to use the browser. This allows you to optionally edit your test code as you go along. When you finish creating a test, this line is removed.
 
-The video below shows how your test code is updated as you use your application:
+### afterAll
 
-<YouTubeVideo src="https://www.youtube.com/embed/03jVjoWp6CA" />
+After the test finishes running, the browser is closed in the [Jest `afterAll` block](https://jestjs.io/docs/en/api#afterallfn-timeout). If a video of your test is being recorded, the recording stops and the video is saved.
 
-Let's now briefly touch upon the `.qawolf/selectors/myFirstTest.json` file. In general, you should avoid editing this file. For a more detailed explanation, see our guide on the [QA Wolf selector logic](use_custom_selectors#default-selector-logic).
+```js
+afterAll(async () => {
+  await qawolf.stopVideos();
+  await browser.close();
+});
+```
 
-The `.qawolf/selectors/myFirstTest.json` file contains information about each element that you interacted with (such as clicked or typed into). By default, QA Wolf stores all the [attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes) of each element and its two direct ancestors. By using all the information it can to find an element, QA Wolf helps make your test code robust to changes in your application.
+### Selectors file
 
-You can also [specify an attribute](use_custom_selectors#target-attributes) like `data-qa` for QA Wolf to use in your test code whenever possible.
+QA Wolf will inline a CSS Selector whenever it finds a [test attribute](use_custom_selectors#target-attributes) like `data-qa`. Otherwise it falls back to creating a default selector, stored in `.qawolf/selectors/myTest.json`. 
+
+The `.qawolf/selectors/myTest.json` file contains information about each element that you interacted with (such as clicked or typed into). By default, QA Wolf stores all the [attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes) of each element and its two direct ancestors. By using all the information it can to find an element, QA Wolf helps make your test code robust to changes in your application.
+
+:::caution 
+
+Avoid editing the selectors file. Learn about using custom selectors [in this guide](use_custom_selectors#add-test-attributes-to-application-code).
+
+:::
+
+## Edit as you go
+
+The test code is created in real-time, so you can edit the test as you create it. When you save the test file, QA Wolf will re-run the test.
+
+:::tip
+
+- You can disable watch mode in [qawolf.config.js](api/config#watch) and the test will not re-run on save
+- You can comment out/in `await qawolf.create();` to turn code creation off/on
+- You can move `await qawolf.create();` anywhere in your test
+
+:::
+
+## Optional: Add assertions
+
+Let's add assertions to our test.
+
+We recommend adding assertions with the [expect-playwright library](https://github.com/playwright-community/expect-playwright), which automatically waits for assertions. QA Wolf includes this library by default, so you do not need to install anything to use it.
+
+### Assert that text appears
+
+The first assertion we will add is to check that the text `"Clear completed"` appears after we complete our todo. Specifically, we will call expect-playwright's [`toHaveText` method](https://github.com/playwright-community/expect-playwright#tohavetext) to verify that the text appears on the page.
+
+In our test code, let's add a line to assert that the text `"Clear completed"` appears on the page:
+
+```js
+// ...
+
+test('myTest', async () => {
+  await page.goto('http://todomvc.com/examples/react');
+  await page.click(selectors['0_what_needs_to_b_input']);
+  await page.type(selectors['1_what_needs_to_b_input'], 'create test!');
+  await page.press(selectors['2_what_needs_to_b_input'], 'Enter');
+  await page.click(selectors['3_input']);
+  // custom code starts
+  await expect(page).toHaveText('Clear completed');
+  // custom code ends
+  await page.click(selectors['4_button']);
+});
+```
+
+### Assert that an element appears
+
+Next we'll add an assertion that our todo is no longer visible after we clear completed todos. In terms of the [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model), this means that there should be no todo `li` elements under the todo `ul` with the [class](https://developer.mozilla.org/en-US/docs/Web/CSS/Class_selectors) `"todo-list"`.
+
+We'll use the [`toHaveSelector` method](https://github.com/playwright-community/expect-playwright#toHaveSelector) to assert that the CSS selector `".todo-list li"` does not appear on the page after we clear completed todos.
+
+Our test now looks like this:
+
+```js
+// ...
+
+test('myFirstTest', async () => {
+  await page.goto('http://todomvc.com/examples/react');
+  await page.click(selectors['0_what_needs_to_b_input']);
+  await page.type(selectors['1_what_needs_to_b_input'], 'create test!');
+  await page.press(selectors['2_what_needs_to_b_input'], 'Enter');
+  await page.click(selectors['3_input']);
+  // custom code starts
+  await expect(page).toHaveText('Clear completed');
+  // custom code ends
+  await page.click(selectors['4_button']);
+  // custom code starts
+  await expect(page).not.toHaveSelector('.todo-list li');
+  // custom code ends
+});
+```
+
+If the todo item did not disappear from the page, our test would fail.
 
 ## Save a test
 
