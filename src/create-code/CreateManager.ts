@@ -40,9 +40,7 @@ export class CreateManager {
       options.selectorPath,
     );
 
-    const collector = await ContextEventCollector.create({
-      context: options.context,
-    });
+    const collector = await ContextEventCollector.create(options.context);
 
     const manager = new CreateManager({
       codeUpdater,

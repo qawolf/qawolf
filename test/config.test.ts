@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { DEFAULT_ATTRIBUTE, loadConfig } from '../src/config';
+import { loadConfig } from '../src/config';
 
 describe('loadConfig', () => {
   it('loads js config', () => {
@@ -16,7 +16,7 @@ describe('loadConfig', () => {
 
   it('defaults values when there is no config', () => {
     const config = loadConfig('notapath');
-    expect(config.attribute).toEqual(DEFAULT_ATTRIBUTE);
+    expect(config.attribute).toBeUndefined();
     expect(config.config).toEqual('node_modules/qawolf/js-jest.config.json');
     expect(config.createTemplate).toBeUndefined();
     expect(config.rootDir).toEqual('.qawolf');
