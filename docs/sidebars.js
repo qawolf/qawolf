@@ -14,6 +14,7 @@ module.exports = {
       id: 'run_tests_locally',
     },
     { type: 'doc', id: 'run_tests_in_ci' },
+    { type: 'doc', id: 'config' },
   ],
   guides: [
     { type: 'doc', id: 'edit_a_test' },
@@ -48,6 +49,5 @@ module.exports = {
         'api/qawolf/wait_for_page',
       ],
     },
-    { type: 'doc', id: 'api/config' },
   ],
 };
