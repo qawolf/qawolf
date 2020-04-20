@@ -14,31 +14,23 @@ import { addScriptToContext } from '../web/addScript';
 
 const debug = Debug('qawolf:ContextEventCollector');
 
-type ConstructorOptions = {
-  attribute?: string;
-  context: BrowserContext;
-};
-
 export class ContextEventCollector extends EventEmitter {
   public static async create(
-    options: ConstructorOptions,
+    context: BrowserContext,
   ): Promise<ContextEventCollector> {
-    await addScriptToContext(options.context);
-    await indexPages(options.context);
-    return new ContextEventCollector({
-      attribute: loadConfig().attribute,
-      ...options,
-    });
+    await addScriptToContext(context);
+    await indexPages(context);
+    return new ContextEventCollector(context);
   }
 
   private _attribute: string;
 
-  protected constructor(options: ConstructorOptions) {
+  protected constructor(context: BrowserContext) {
     super();
 
-    this._attribute = options.attribute;
+    this._attribute = loadConfig().attribute;
 
-    forEachPage(options.context, (page) =>
+    forEachPage(context, (page) =>
       this._collectPageEvents(page as IndexedPage),
     );
   }

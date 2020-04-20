@@ -3,10 +3,13 @@ import { getClickableAncestor, isVisible } from './element';
 import { nodeToDoc, nodeToHtmlSelector } from './serialize';
 import * as types from '../types';
 
+const DEFAULT_ATTRIBUTE =
+  'data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/';
+
 type EventCallback = types.Callback<types.ElementEvent>;
 
 type ConstructorOptions = {
-  attribute: string;
+  attribute?: string;
   pageIndex: number;
   sendEvent: EventCallback;
 };
@@ -18,7 +21,7 @@ export class PageEventCollector {
   private _sendEvent: EventCallback;
 
   constructor(options: ConstructorOptions) {
-    this._attribute = options.attribute;
+    this._attribute = options.attribute || DEFAULT_ATTRIBUTE;
     this._pageIndex = options.pageIndex;
     this._sendEvent = options.sendEvent;
     this.collectEvents();

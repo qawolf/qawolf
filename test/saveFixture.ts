@@ -16,7 +16,7 @@ import { launch } from '../src/utils';
 
   const browser = await launch({ headless: false });
   const context = await browser.newContext();
-  const collector = await ContextEventCollector.create({ context });
+  const collector = await ContextEventCollector.create(context);
   const page = await context.newPage();
 
   const events: ElementEvent[] = [];

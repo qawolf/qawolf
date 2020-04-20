@@ -24,7 +24,7 @@ describe('ContextEventCollector', () => {
     browser = await launch();
     context = await browser.newContext();
 
-    const collector = await ContextEventCollector.create({ context });
+    const collector = await ContextEventCollector.create(context);
     collector.on('elementevent', (event) => events.push(event));
   });
 
