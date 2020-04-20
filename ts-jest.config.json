@@ -5,6 +5,6 @@
       "diagnostics": false
     }
   },
-  "setupFilesAfterEnv": ["expect-playwright"],
+  "setupFilesAfterEnv": ["qawolf/expect-playwright"],
   "watchPlugins": ["qawolf/watch"]
 }
