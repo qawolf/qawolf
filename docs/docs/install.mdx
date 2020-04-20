@@ -3,8 +3,7 @@ id: install
 title: 💻 Install
 ---
 
-import TabItem from "@theme/TabItem";
-import PackageManagerTabs from './components/PackageManagerTabs';
+import Initialize from './components/Initialize.mdx';
 import YouTubeVideo from './components/YouTubeVideo';
 
 :::tip TL;DR
@@ -13,33 +12,17 @@ import YouTubeVideo from './components/YouTubeVideo';
 - [Install Node.js and npm](#install-nodejs-and-npm) (or [Yarn](#optional-use-yarn)) if you haven't already
 - [Add QA Wolf](#install-qa-wolf) to your project:
 
-<PackageManagerTabs>	
-<TabItem value='npm'>
+<Initialize />
 
-
-```bash
-npm init qawolf
-```
-
-</TabItem>
-<TabItem value='yarn'>
-
-```bash
-yarn create qawolf
-```
-
-</TabItem>
-</PackageManagerTabs>
-
-- [Use qawolf.config.js](api/config) to configure QA Wolf
+- [Use qawolf.config.js](config) to configure QA Wolf
 
 :::
 
-<br/>
+<br />
 
 In this guide we explain how to set up your environment and get started with QA Wolf.
 
-<br/>
+<br />
 
 <YouTubeVideo src="https://www.youtube.com/embed/e8tfR1Ey9DI" />
 
@@ -106,23 +89,7 @@ npm init -y
 
 Once you're in your project directory, run the following to set up QA Wolf. This command will create a `qawolf.config.js` file at the root of your project, as well as install the necessary [dependencies](https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file).
 
-<PackageManagerTabs>	
-<TabItem value='npm'>
-
-
-```bash
-npm init qawolf
-```
-
-</TabItem>
-<TabItem value='yarn'>
-
-```bash
-yarn create qawolf
-```
-
-</TabItem>
-</PackageManagerTabs>
+<Initialize />
 
 You will be asked to specify:
 
@@ -143,7 +110,7 @@ If you're having issues, please [chat with us on Gitter](https://gitter.im/qawol
 
 ## Optional: Configure QA Wolf
 
-See [qawolf.config.js](api/config) to learn how to use TypeScript, change the test directory, replace the default template and more!
+See [this guide](config) to learn how to use TypeScript, change the test directory, and more!
 
 ## Next steps
 

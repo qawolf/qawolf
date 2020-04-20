@@ -26,13 +26,11 @@ await expect(page).not.toHaveSelector('.todo-list li');
 
 :::
 
-<br/>
-
+<br />
 
 The [previous guide](install) showed you how to set up your environment and install QA Wolf. In this guide, we create a test with assertions for [TodoMVC](http://todomvc.com/examples/react), a simple todo application.
 
 Now let's create your first browser test!
-
 
 ## Create a test
 
@@ -54,7 +52,7 @@ A Chromium browser will open and navigate to the specified URL. After the page h
 🐺 QA Wolf is ready to create code!
 ```
 
-Now go through the steps you want to test. In our example, we 1) create a todo item, 2) complete it, and 3) clear completed todos. These actions will be converted to [Playwright](https://github.com/microsoft/playwright) and [Jest](https://jestjs.io/) test code. 
+Now go through the steps you want to test. In our example, we 1) create a todo item, 2) complete it, and 3) clear completed todos. These actions will be converted to [Playwright](https://github.com/microsoft/playwright) and [Jest](https://jestjs.io/) test code.
 
 See the video below for an example:
 
@@ -129,11 +127,11 @@ afterAll(async () => {
 
 ### Selectors file
 
-QA Wolf will inline a CSS Selector whenever it finds a [test attribute](use_custom_selectors#target-attributes) like `data-qa`. Otherwise it falls back to creating a default selector, stored in `.qawolf/selectors/myTest.json`. 
+QA Wolf will inline a CSS Selector whenever it finds a [test attribute](use_custom_selectors#target-attributes) like `data-qa`. Otherwise it falls back to creating a default selector, stored in `.qawolf/selectors/myTest.json`.
 
 The `.qawolf/selectors/myTest.json` file contains information about each element that you interacted with (such as clicked or typed into). By default, QA Wolf stores all the [attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes) of each element and its two direct ancestors. By using all the information it can to find an element, QA Wolf helps make your test code robust to changes in your application.
 
-:::caution 
+:::caution
 
 Avoid editing the selectors file. Learn about using custom selectors [in this guide](use_custom_selectors#add-test-attributes-to-application-code).
 
@@ -145,7 +143,7 @@ The test code is created in real-time, so you can edit the test as you create it
 
 :::tip
 
-- You can disable watch mode in [qawolf.config.js](api/config#watch) and the test will not re-run on save
+- You can disable watch mode in [qawolf.config.js](config#watch) and the test will not re-run on save
 - You can comment out/in `await qawolf.create();` to turn code creation off/on
 - You can move `await qawolf.create();` anywhere in your test
 

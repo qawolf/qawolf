@@ -5,7 +5,7 @@ title: 🔍 Use Custom Selectors
 
 :::tip TL;DR
 
-- [Element selectors](#selectors-overview) use attributes specified by the [`attribute` key in `qawolf.config.js`](api/config#attribute) if possible, and multiple attributes otherwise:
+- [Element selectors](#selectors-overview) use attributes specified by the [`attribute` key in `qawolf.config.js`](config#attribute) if possible, and multiple attributes otherwise:
 
 ```js
 test('myTestName', async () => {
@@ -43,7 +43,7 @@ When you create a test with QA Wolf, each action you take (like clicking and typ
 
 ### Target attributes
 
-During test creation, when you click on an element QA Wolf first checks to see if it has any [attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started) specified by the [`attribute` key in `qawolf.config.js`](api/config#attribute). By default if an element has the `data-cy`, `data-e2e`, `data-qa`, `data-test`, or `data-testid` attribute, the generated code will inline a [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) for that attribute.
+During test creation, when you click on an element QA Wolf first checks to see if it has any [attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started) specified by the [`attribute` key in `qawolf.config.js`](config#attribute). By default if an element has the `data-cy`, `data-e2e`, `data-qa`, `data-test`, or `data-testid` attribute, the generated code will inline a [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) for that attribute.
 
 For example, if you click on an element with the following [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML):
 
@@ -59,7 +59,7 @@ await page.click('[data-qa="submit"]');
 
 When you run your test, [Playwright](https://github.com/microsoft/playwright) will look for an element where the `data-qa` attribute is set to `"submit"`. If it cannot find an element where `data-qa` equals `"submit"` before timing out, the test fails.
 
-You can [set the `attribute` key in `qawolf.config.js`](api/config#attribute) to choose what attributes QA Wolf uses when generating test code. You can specify any number of test attributes like `data-qa`, [regular expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) like `/^qa-.*/`, and other attributes like `id` and `aria-label`.
+You can [set the `attribute` key in `qawolf.config.js`](config#attribute) to choose what attributes QA Wolf uses when generating test code. You can specify any number of test attributes like `data-qa`, [regular expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) like `/^qa-.*/`, and other attributes like `id` and `aria-label`.
 
 QA Wolf does its best to generate the correct CSS selector, even if the specified attribute is on an ancestor of the target element. For example, some component libraries like [Material UI](https://material-ui.com) place data attributes on a wrapper `div` around inputs. Your front end code might look like this:
 
@@ -93,7 +93,7 @@ await page.type('[data-qa="username"] input', 'target the input!');
 
 ### Default selector logic
 
-If you click on an element that does not have an attribute specified by the [`attribute` key in `qawolf.config.js`](api/config#attribute), QA Wolf will fall back to its default selector logic. The default logic stores all attributes of an element, as well as the attributes of its two direct [ancestors](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement). It then tries to find a close enough match to the target element when running your tests.
+If you click on an element that does not have an attribute specified by the [`attribute` key in `qawolf.config.js`](config#attribute), QA Wolf will fall back to its default selector logic. The default logic stores all attributes of an element, as well as the attributes of its two direct [ancestors](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement). It then tries to find a close enough match to the target element when running your tests.
 
 For example, let's say you click on an element with the following [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML):
 
