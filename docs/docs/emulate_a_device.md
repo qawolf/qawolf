@@ -12,6 +12,11 @@ In this guide, we explain how to emulate [devices](https://github.com/Microsoft/
 ```bash
 npx qawolf create --device="iPad Mini" https://www.wikipedia.org searchTablet
 ```
+- or if you use PowerShell
+
+```bash
+npx qawolf create --device='""iPad Mini""' wikipedia.org searchTablet
+```
 
 - [Update an existing test](#update-an-existing-test) to emulate a device:
 
