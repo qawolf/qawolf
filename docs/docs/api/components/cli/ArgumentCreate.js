@@ -1,3 +1,5 @@
+import Link from '@docusaurus/Link';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import React from 'react';
 import Argument from '../Argument';
 
@@ -11,7 +13,9 @@ function ArgumentCreate() {
             <a href="https://github.com/Microsoft/playwright/blob/master/src/deviceDescriptors.ts">
               supported device
             </a>
-            . <b>Default:</b> No device emulation.
+            . See{' '}
+            <Link to={useBaseUrl('docs/emulate_a_device')}>this guide</Link> to
+            learn more. <b>Default:</b> No device emulation.
           </React.Fragment>
         }
         name="--device name"
@@ -21,10 +25,11 @@ function ArgumentCreate() {
       <Argument
         description={
           <React.Fragment>
-            File where state data (cookies, <code>localStorage</code>,{' '}
-            <code>sessionStorage</code>) is saved. If provided, the state will
-            be set before you create your test. <b>Default:</b>{' '}
-            <code>null</code>.
+            File where{' '}
+            <Link to={useBaseUrl('docs/handle_sign_in')}>state data</Link>{' '}
+            (cookies, <code>localStorage</code>, <code>sessionStorage</code>) is
+            saved. If provided, the state will be set before you create your
+            test. <b>Default:</b> <code>null</code>.
           </React.Fragment>
         }
         name="--statePath file"
