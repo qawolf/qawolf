@@ -163,6 +163,5 @@ Now you can test your application across devices! 🎉
 
 There are a few places you might want to go from here:
 
-- [Add assertions](add_assertions) to your tests
 - [Use custom element selectors](use_custom_selectors) in your tests
 - [Change input values](change_input_values) in your tests

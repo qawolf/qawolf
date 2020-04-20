@@ -177,6 +177,5 @@ Congratulations - you've learned about targeting elements in your test code! ğŸ
 
 There are a few places you might want to go from here:
 
-- [Add assertions](add_assertions) to your tests
 - [Change input values](change_input_values) in your tests
 - Learn more about the [interactive REPL](use_the_repl)
