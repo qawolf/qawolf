@@ -15,7 +15,7 @@ npx qawolf create http://todomvc.com/examples/react myTest
 
 - [Edit as you go](#edit-as-you-go) in your code editor (`.qawolf/myTest.test.js`) and QA Wolf will re-run your test when you save
 
-- [Add assertions](#create-assertions) with the [expect-playwright](https://github.com/playwright-community/expect-playwright) library (included with QA Wolf):
+- [Add assertions](#optional-add-assertions) with the [expect-playwright](https://github.com/playwright-community/expect-playwright) library (included with QA Wolf):
 
 ```js
 await expect(page).toHaveText('Clear completed');
@@ -129,13 +129,13 @@ afterAll(async () => {
 
 ### Selectors file
 
-QA Wolf will inline a CSS Selector whenever it finds a [test attribute](use_custom_selectors#target-attributes) like `data-qa`.Otherwise it falls back to creating a default selector, stored in `.qawolf/selectors/myTest.json`. 
+QA Wolf will inline a CSS Selector whenever it finds a [test attribute](use_custom_selectors#target-attributes) like `data-qa`. Otherwise it falls back to creating a default selector, stored in `.qawolf/selectors/myTest.json`. 
 
 The `.qawolf/selectors/myTest.json` file contains information about each element that you interacted with (such as clicked or typed into). By default, QA Wolf stores all the [attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes) of each element and its two direct ancestors. By using all the information it can to find an element, QA Wolf helps make your test code robust to changes in your application.
 
 :::caution 
 
-Instead of editing the selectors file, you should add test attributes to your elements when possible. See the [custom selectors guide](use_custom_selectors#add-test-attributes-to-application-code) for more details.
+Avoid editing the selectors file. Learn about using custom selectors [in this guide](use_custom_selectors#add-test-attributes-to-application-code).
 
 :::
 
@@ -145,13 +145,13 @@ The test code is created in real-time, so you can edit the test as you create it
 
 :::tip
 
-- You can disable watch mode in [qawolf.config.js](api/config#watch) and the test will not re-run on save.
-- You can comment out/in `await qawolf.create();` to turn code creation off/on.
-- You can move `await qawolf.create();` anywhere in your test.
+- You can disable watch mode in [qawolf.config.js](api/config#watch) and the test will not re-run on save
+- You can comment out/in `await qawolf.create();` to turn code creation off/on
+- You can move `await qawolf.create();` anywhere in your test
 
 :::
 
-## Add assertions
+## Optional: Add assertions
 
 Let's add assertions to our test.
 
