@@ -148,9 +148,9 @@ See [Jest documentation](https://jestjs.io/docs/en/cli#--testtimeoutnumber) to l
 
 Whether to use [TypeScript](https://www.typescriptlang.org). If set to `true`, tests will be created in TypeScript and saved with the `.ts` file extension.
 
-When you run `npm init qawolf` or `yarn create qawolf` it looks for a `tsconfig.json` to detect TypeScript.
+When you run `npm init qawolf` or `yarn create qawolf`, QA Wolf looks for a `tsconfig.json` to detect TypeScript.
 
-If it finds one, it will install these additional dependencies: `npm i -D @types/debug @types/jest @types/node ts-jest` and set these properties in `qawolf.config.js`:
+If a `tsconfig.json` file is found, these additional dependencies will be installed: `npm i -D @types/debug @types/jest @types/node ts-jest`. The `qawolf.config.js` file will also be updated with the following properties:
 
 ```js
 module.exports = {
@@ -160,7 +160,7 @@ module.exports = {
 };
 ```
 
-You can also do these steps manually if you prefer.
+If you prefer, you can set up TypeScript manually by setting the above properties in `qawolf.config.js` and installing the necessary dependencies (`npm i -D @types/debug @types/jest @types/node ts-jest`).
 
 **Default:** `false`
 
