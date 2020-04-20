@@ -47,8 +47,6 @@ For example, you can run the following command where the `--device` flag is set 
 npx qawolf create --device="iPad Mini" https://www.wikipedia.org searchTablet
 ```
 
-When the [Chromium](https://www.chromium.org/Home) browser opens, it will be emulating an [iPad Mini](https://www.apple.com/ipad-mini/).
-
 :::caution
 
 If you are using [Windows PowerShell](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/powershell), wrap the name of the device in additional quotes as shown below:
@@ -58,6 +56,8 @@ npx qawolf create --device='""iPad Mini""' https://www.wikipedia.org searchTable
 ```
 
 :::
+
+When the [Chromium](https://www.chromium.org/Home) browser opens, it will be emulating an [iPad Mini](https://www.apple.com/ipad-mini/).
 
 The beginning of our test code (`.qawolf/searchTablet.test.js` in our example) looks like this:
 
