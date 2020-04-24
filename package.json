@@ -46,6 +46,7 @@
   "dependencies": {
     "@jperl/html-parse-stringify": "^1.0.4",
     "@qawolf/jest-reporter": "^0.1.0",
+    "an-array-of-english-words": "^2.0.0",
     "await-outside": "^3.0.0",
     "callsites": "^3.1.0",
     "chokidar": "^3.3.1",
