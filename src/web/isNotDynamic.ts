@@ -4,6 +4,7 @@ const allowedWords = englishWords.push(
   ...[
     'btn',
     'nav',
+    'div',
     'login',
     'logout',
     'signin',
@@ -18,6 +19,7 @@ const allowedWords = englishWords.push(
     'lg',
     'svg',
     'fa',
+    'img',
   ],
 );
 
@@ -25,14 +27,11 @@ const SCORE_THRESHOLD = 0.5;
 
 export const getWords = (className: string): string[] => {
   const classWords = [];
+  // split by space characters and camel case
+  className.split(/[ \-_]+|(?=[A-Z])/).forEach((word) => {
+    if (!word) return; // ignore empty string
 
-  className.split(/[ \-_]+/).forEach((word) => {
-    if (!word) return;
-
-    word.split(/(?=[A-Z])/).forEach((nestedWord) => {
-      if (!nestedWord) return;
-      classWords.push(nestedWord.toLowerCase());
-    });
+    classWords.push(word.toLowerCase());
   });
 
   return classWords;
@@ -45,15 +44,12 @@ export const isNotDynamic = (
   if (!className) return false;
 
   const classWords = getWords(className);
-  let wordCount = 0;
 
-  classWords.forEach((word) => {
-    if (allowedWords.includes(word)) {
-      wordCount++;
-    }
+  const includedWords = classWords.filter((word) => {
+    return allowedWords.includes(word);
   });
 
-  const score = wordCount / classWords.length;
+  const score = includedWords.length / classWords.length;
 
   return score > threshold;
 };
