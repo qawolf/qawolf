@@ -196,17 +196,18 @@ export const buildSelectorForCues = (cues: Cue[]): Selector[] => {
 
   levels.forEach((level) => {
     const cuesForLevel = cues.filter((cue) => cue.level === level);
-    cuesForLevel.sort((a, b) => {
-      if (a.type === 'tag') return -1;
-      if (b.type === 'tag') return 1;
-      return 0;
-    });
 
     const textCues = cuesForLevel.filter((cue) => cue.type === 'text');
     if (textCues.length) {
       selector.push({ name: 'text', body: textCues[0].value });
       return;
     }
+
+    cuesForLevel.sort((a, b) => {
+      if (a.type === 'tag') return -1;
+      if (b.type === 'tag') return 1;
+      return 0;
+    });
 
     const bodyValues = cuesForLevel.map((cue) => cue.value);
 
