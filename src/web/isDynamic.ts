@@ -37,11 +37,11 @@ export const getWords = (className: string): string[] => {
   return classWords;
 };
 
-export const isNotDynamic = (
+export const isDynamic = (
   className: string,
   threshold = SCORE_THRESHOLD,
 ): boolean => {
-  if (!className) return false;
+  if (!className) return true;
 
   const classWords = getWords(className);
 
@@ -51,5 +51,5 @@ export const isNotDynamic = (
 
   const score = includedWords.length / classWords.length;
 
-  return score > threshold;
+  return score < threshold;
 };
