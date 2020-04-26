@@ -29,7 +29,7 @@ test('${name}', async () => {
 
 module.exports = {
   config: 'node_modules/qawolf/ts-jest.config.json',
-  createTemplate,
+  // createTemplate,
   rootDir: 'test/.qawolf',
   useTypeScript: true,
 };

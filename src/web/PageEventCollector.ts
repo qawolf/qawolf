@@ -1,4 +1,4 @@
-import { buildCssSelector } from './buildCssSelector';
+import { buildSelector } from './buildSelector';
 import { getClickableAncestor, isVisible } from './element';
 import { nodeToDoc, nodeToHtmlSelector } from './serialize';
 import * as types from '../types';
@@ -15,13 +15,13 @@ type ConstructorOptions = {
 };
 
 export class PageEventCollector {
-  private _attribute: string;
+  private _attributes: string[];
   private _onDispose: types.Callback[] = [];
   private _pageIndex: number;
   private _sendEvent: EventCallback;
 
   constructor(options: ConstructorOptions) {
-    this._attribute = options.attribute || DEFAULT_ATTRIBUTE;
+    this._attributes = (options.attribute || DEFAULT_ATTRIBUTE).split(',');
     this._pageIndex = options.pageIndex;
     this._sendEvent = options.sendEvent;
     this.collectEvents();
@@ -56,9 +56,11 @@ export class PageEventCollector {
     const isTargetVisible = isVisible(target, window.getComputedStyle(target));
 
     const elementEvent = {
-      cssSelector: buildCssSelector({
-        attribute: this._attribute,
-        isClick: ['click', 'mousedown'].includes(eventName),
+      // TODO remove cssSelector, htmlSelector. replace with selector
+      cssSelector: buildSelector({
+        attributes: this._attributes,
+        // TODO
+        // isClick: ['click', 'mousedown'].includes(eventName),
         target,
       }),
       htmlSelector: nodeToHtmlSelector(target, 2),

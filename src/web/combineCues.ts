@@ -1,6 +1,4 @@
-import { Cue } from './cues';
-
-const rankedTypes = ['attribute', 'tag', 'id', 'class'];
+import { Cue, CueTypeRank } from './cues';
 
 export class CuePermutations {
   _cues: Cue[];
@@ -15,7 +13,7 @@ export class CuePermutations {
 
     // sort by rank
     this._targetCues.sort(
-      (a, b) => rankedTypes.indexOf(a.type) - rankedTypes.indexOf(b.type),
+      (a, b) => CueTypeRank.indexOf(a.type) - CueTypeRank.indexOf(b.type),
     );
   }
 
@@ -38,13 +36,13 @@ export class CuePermutations {
 
   *iterate() {
     // try attribute cues first
-    for (let cueGroup of this._iterateType(rankedTypes[0])) yield cueGroup;
+    for (let cueGroup of this._iterateType(CueTypeRank[0])) yield cueGroup;
 
     // try each target cue on its own
     for (let targetCue of this._targetCues) yield [targetCue];
 
     // try each type of cue in order of rank
-    for (let type of rankedTypes.slice(1)) {
+    for (let type of CueTypeRank.slice(1)) {
       for (let cueGroup of this._iterateType(type)) yield cueGroup;
     }
   }

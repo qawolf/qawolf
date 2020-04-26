@@ -3,24 +3,33 @@ import { isDynamic } from './isDynamic';
 
 const evaluator = eval(`new (${selectorEvaluatorSource.source})([])`);
 
-const ATTRIBUTES = [
+const CSS_ATTRIBUTES = [
   'aria-label',
-  'alt',
   'contenteditable',
-  'for',
-  'href',
-  'name',
-  'placeholder',
-  'src',
   'title',
+  'name',
+  'for',
+  'placeholder',
   'value',
+  'alt',
+  'href',
+  'src',
 ] as const;
 
 // TODO: incorporate logic from buildCssSelector
 // for example: targeting checkbox/radio based on value,
 // content
 
-type CueType = typeof ATTRIBUTES[number] | 'attribute' | 'class' | 'id' | 'tag';
+export const CueTypeRank = [
+  'attribute',
+  'id',
+  ...CSS_ATTRIBUTES,
+  // TODO class above placeholder
+  'class',
+  'tag',
+] as const;
+
+type CueType = typeof CueTypeRank[number];
 
 export type Cue = {
   level: number; // 0 is target, 1 is parent, etc.
@@ -37,7 +46,7 @@ type BuildAttributeCues = BuildCuesForElement & {
   useAttributeName?: boolean;
 };
 
-type BuildCues = {
+export type BuildCues = {
   attributes: string[];
   target: HTMLElement;
 };
@@ -98,7 +107,7 @@ const buildCuesForElement = ({
   cues.push(...buildAttributeCues({ attributes, element, level }));
   cues.push(
     ...buildAttributeCues({
-      attributes: [...ATTRIBUTES],
+      attributes: [...CSS_ATTRIBUTES],
       element,
       level,
       useAttributeName: true,
