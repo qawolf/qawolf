@@ -8,10 +8,3 @@ export const cleanText = (text = ''): string => {
 
   return cleaned;
 };
-
-export const decodeHtml = (text = ''): string => {
-  return text
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>');
-};

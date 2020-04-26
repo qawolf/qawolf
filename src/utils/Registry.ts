@@ -1,7 +1,6 @@
 import { EventEmitter } from 'events';
 import { Browser, BrowserContext } from 'playwright-core';
 import * as qawolf from '../qawolf';
-import { Selectors } from '../types';
 import { watchBrowser } from '../watch/watchBrowser';
 import { WatchHooks } from '../watch/WatchHooks';
 
@@ -9,7 +8,6 @@ type RegistryData = {
   browser?: Browser;
   context?: BrowserContext;
   qawolf?: typeof qawolf;
-  selectors?: Selectors;
 };
 
 export class Registry extends EventEmitter {
@@ -36,11 +34,6 @@ export class Registry extends EventEmitter {
 
   public setContext(context: BrowserContext): void {
     this._data.context = context;
-    this.emit('change');
-  }
-
-  public setSelectors(selectors: Selectors): void {
-    this._data.selectors = selectors;
     this.emit('change');
   }
 

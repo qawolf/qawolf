@@ -4,20 +4,17 @@ import { buildSteps } from '../build-workflow/buildSteps';
 import { CodeFileUpdater } from './CodeFileUpdater';
 import { ContextEventCollector } from './ContextEventCollector';
 import { createPrompt } from './createPrompt';
-import { SelectorFileUpdater } from './SelectorFileUpdater';
-import { ElementEvent } from '../types';
 import { WatchHooks } from '../watch/WatchHooks';
+import { ElementEvent } from '../types';
 
 type CreateCliOptions = {
   codePath: string;
   context: BrowserContext;
-  selectorPath: string;
 };
 
 type ConstructorOptions = {
   codeUpdater: CodeFileUpdater;
   collector: ContextEventCollector;
-  selectorUpdater: SelectorFileUpdater;
 };
 
 const debug = Debug('qawolf:CreateManager');
@@ -26,9 +23,7 @@ export class CreateManager {
   public static async create(
     options: CreateCliOptions,
   ): Promise<CreateManager> {
-    debug(
-      `create code at ${options.codePath} selectors at ${options.selectorPath}`,
-    );
+    debug(`create code at ${options.codePath}`);
 
     const codeUpdater = await CodeFileUpdater.create(options.codePath);
 
@@ -36,16 +31,11 @@ export class CreateManager {
       WatchHooks.codeUpdate(code);
     });
 
-    const selectorUpdater = await SelectorFileUpdater.create(
-      options.selectorPath,
-    );
-
     const collector = await ContextEventCollector.create(options.context);
 
     const manager = new CreateManager({
       codeUpdater,
       collector,
-      selectorUpdater,
     });
 
     return manager;
@@ -54,18 +44,10 @@ export class CreateManager {
   private _codeUpdater: CodeFileUpdater;
   private _collector: ContextEventCollector;
   private _events: ElementEvent[] = [];
-  private _selectorUpdater: SelectorFileUpdater;
-  private _stepStartIndex: number;
 
   protected constructor(options: ConstructorOptions) {
     this._codeUpdater = options.codeUpdater;
     this._collector = options.collector;
-    this._selectorUpdater = options.selectorUpdater;
-
-    // push step index behind existing selectors
-    this._stepStartIndex = Object.keys(
-      this._selectorUpdater.selectors(),
-    ).length;
 
     this._collector.on('elementevent', (event) => this.update(event));
   }
@@ -73,12 +55,8 @@ export class CreateManager {
   protected async update(event: ElementEvent): Promise<void> {
     this._events.push(event);
 
-    const steps = buildSteps(this._events, this._stepStartIndex);
-
-    await Promise.all([
-      this._codeUpdater.update({ steps }),
-      this._selectorUpdater.update({ steps }),
-    ]);
+    const steps = buildSteps(this._events);
+    await this._codeUpdater.update({ steps });
   }
 
   public async finalize(): Promise<void> {
@@ -92,7 +70,6 @@ export class CreateManager {
       await this._codeUpdater.finalize();
     } else {
       await this._codeUpdater.discard();
-      await this._selectorUpdater.discard();
     }
 
     // stop the watch since a prompt selection is made

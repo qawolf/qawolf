@@ -15,7 +15,6 @@ export type TemplateFunction = (
 
 interface BuildImportsOptions {
   device?: string;
-  name: string;
   useTypeScript?: boolean;
 }
 
@@ -35,7 +34,6 @@ export const buildValidVariableName = (name: string): string => {
 
 export const buildImports = ({
   device,
-  name,
   useTypeScript,
 }: BuildImportsOptions): string => {
   if (device && !devices[device]) {
@@ -61,8 +59,6 @@ export const buildImports = ({
   } else {
     imports += 'const qawolf = require("qawolf");\n';
   }
-
-  imports += `const selectors = require("./selectors/${name}.json");`;
 
   if (device) {
     imports += `\nconst device = devices["${device}"];`;
@@ -92,7 +88,7 @@ export const buildTemplate: TemplateFunction = ({
   url,
   useTypeScript,
 }: BuildTemplateOptions): string => {
-  const code = `${buildImports({ device, name, useTypeScript })}
+  const code = `${buildImports({ device, useTypeScript })}
 
 let browser${useTypeScript ? ': Browser' : ''};
 let page${useTypeScript ? ': Page' : ''};

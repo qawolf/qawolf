@@ -1,4 +1,4 @@
-import { ensureFile, writeFile, writeJson } from 'fs-extra';
+import { ensureFile, writeFile } from 'fs-extra';
 import { join } from 'path';
 import { promptOverwrite } from 'playwright-ci';
 import {
@@ -6,7 +6,6 @@ import {
   buildTemplate,
   TemplateFunction,
 } from '../build-code/buildTemplate';
-import { getSelectorPath } from '../create-code/create';
 
 type BuildPathOptions = {
   name: string;
@@ -40,11 +39,6 @@ export const saveTemplate = async (
 
   await ensureFile(path);
   await writeFile(path, code);
-
-  // create a selector file so it can be imported
-  const selectorPath = getSelectorPath(path);
-  await ensureFile(selectorPath);
-  await writeJson(selectorPath, {});
 
   return path;
 };

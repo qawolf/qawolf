@@ -65,10 +65,6 @@ export type ScrollValue = {
   y: number;
 };
 
-export interface Selectors {
-  [key: string]: string;
-}
-
 export interface Step {
   action: Action;
   event: ElementEvent;
