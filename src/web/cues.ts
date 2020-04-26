@@ -3,19 +3,37 @@ import { isDynamic } from './isDynamic';
 
 const evaluator = eval(`new (${selectorEvaluatorSource.source})([])`);
 
+const ATTRIBUTES = [
+  'aria-label',
+  'alt',
+  'for',
+  'href',
+  'name',
+  'placeholder',
+  'src',
+  'title',
+  'value',
+];
+
 // TODO: incorporate logic from buildCssSelector
 // for example: targeting checkbox/radio based on value,
-// content editables
+// content
+
+type CueType = 'aria-label' | 'attribute' | 'class' | 'id' | 'tag';
 
 export type Cue = {
   level: number; // 0 is target, 1 is parent, etc.
-  type: 'attribute' | 'class' | 'id' | 'tag';
+  type: CueType;
   value: string;
 };
 
 type Selector = {
   name: 'css' | 'text';
   body: string;
+};
+
+type BuildAttributeCues = BuildCuesForElement & {
+  useAttributeName?: boolean;
 };
 
 type BuildCues = {
@@ -49,6 +67,26 @@ export const buildCues = ({ attributes, target }: BuildCues): Cue[] => {
   return cues;
 };
 
+const buildAttributeCues = ({
+  attributes,
+  element,
+  level,
+  useAttributeName,
+}: BuildAttributeCues): Cue[] => {
+  const cues: Cue[] = [];
+  // TODO: handle regex attributes
+  attributes.forEach((attribute) => {
+    const value = element.getAttribute(attribute);
+    if (!value) return;
+
+    const type = (useAttributeName ? attribute : 'attribute') as CueType;
+
+    cues.push({ level, type, value: `[${attribute}="${value}"]` });
+  });
+
+  return cues;
+};
+
 const buildCuesForElement = ({
   attributes,
   element,
@@ -56,15 +94,15 @@ const buildCuesForElement = ({
 }: BuildCuesForElement): Cue[] => {
   const cues: Cue[] = [];
 
-  // TODO: handle regex attributes
-  attributes.forEach((attribute) => {
-    const value = element.getAttribute(attribute);
-    if (!value) return;
-
-    cues.push({ level, type: 'attribute', value: `[${attribute}="${value}"]` });
-  });
-
-  // TODO: add additional attributes like aria-label
+  cues.push(...buildAttributeCues({ attributes, element, level }));
+  cues.push(
+    ...buildAttributeCues({
+      attributes: ATTRIBUTES,
+      element,
+      level,
+      useAttributeName: true,
+    }),
+  );
 
   element.classList.forEach((c) => {
     // if (isDynamic(c)) return;

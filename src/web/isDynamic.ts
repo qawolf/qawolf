@@ -10,6 +10,7 @@ const allowedWords = [
   'img',
   'inputtext',
   'lg',
+  'li',
   'login',
   'logout',
   'nav',
@@ -20,6 +21,7 @@ const allowedWords = [
   'svg',
   'textinput',
   'todo',
+  'ul',
 ];
 
 const SCORE_THRESHOLD = 0.5;
