@@ -3,17 +3,18 @@ import { isDynamic } from './isDynamic';
 
 const evaluator = eval(`new (${selectorEvaluatorSource.source})([])`);
 
+// make sure to update CueTypeRank if editing this
 const CSS_ATTRIBUTES = [
+  'alt',
   'aria-label',
   'contenteditable',
-  'title',
-  'name',
   'for',
-  'placeholder',
-  'value',
-  'alt',
   'href',
+  'name',
+  'placeholder',
   'src',
+  'title',
+  'value',
 ] as const;
 
 // TODO: incorporate logic from buildCssSelector
@@ -23,8 +24,17 @@ const CSS_ATTRIBUTES = [
 export const CueTypeRank = [
   'attribute',
   'id',
-  ...CSS_ATTRIBUTES,
+  'aria-label',
+  'title',
+  'name',
+  'for',
   'text',
+  'contenteditable',
+  'value',
+  'placeholder',
+  'alt',
+  'src',
+  'href',
   'class',
   'tag',
 ] as const;
