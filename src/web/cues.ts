@@ -6,6 +6,7 @@ const evaluator = eval(`new (${selectorEvaluatorSource.source})([])`);
 const ATTRIBUTES = [
   'aria-label',
   'alt',
+  'contenteditable',
   'for',
   'href',
   'name',
