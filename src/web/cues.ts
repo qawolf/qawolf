@@ -1,4 +1,8 @@
+import * as selectorEvaluatorSource from 'playwright-core/lib/generated/selectorEvaluatorSource';
 import { isDynamic } from './isDynamic';
+
+export const selectorSource = `new (${selectorEvaluatorSource.source})([])`;
+const evaluator = eval((window as any).qawolf.selectorSource);
 
 // TODO: incorporate logic from buildCssSelector
 // for example: targeting checkbox/radio based on value,
@@ -24,6 +28,11 @@ type BuildCuesForElement = {
   attributes: string[];
   element: HTMLElement;
   level: number;
+};
+
+type IsMatch = {
+  selector: Selector[];
+  target: HTMLElement;
 };
 
 export const buildCues = ({ attributes, target }: BuildCues): Cue[] => {
@@ -114,6 +123,17 @@ export const buildSelectorForCues = (cues: Cue[]): Selector[] => {
   });
 
   return selector;
+};
+
+export const isMatch = ({ selector, target }: IsMatch): boolean => {
+  const result = evaluator.querySelectorAll(selector, document.body);
+  if (result.length !== 1) return false;
+
+  if (result[0] !== target) {
+    throw new Error(`Selector ${selector} does not match target ${target}`);
+  }
+
+  return true;
 };
 
 export const toSelectorString = (selector: Selector[]): string => {
