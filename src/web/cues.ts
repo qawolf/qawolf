@@ -113,8 +113,7 @@ const buildAttributeCues = ({
 };
 
 const buildTextCues = ({ element, isClick, level }: BuildTextCues): Cue[] => {
-  const cues: Cue[] = [];
-  if (!isClick) return cues;
+  if (!isClick) return [];
 
   let text = element.textContent;
   if (
@@ -123,7 +122,7 @@ const buildTextCues = ({ element, isClick, level }: BuildTextCues): Cue[] => {
   )
     text = element.value;
 
-  if (text.match(/[\n\r\t]+/)) return cues;
+  if (text.match(/[\n\r\t]+/)) return [];
 
   const value = text.match(/^\s*[a-zA-Z0-9]+\s*$/)
     ? text.trim()
