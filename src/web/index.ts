@@ -5,9 +5,6 @@ export { PageEventCollector } from './PageEventCollector';
 export { nodeToDoc, nodeToHtml, nodeToHtmlSelector } from './serialize';
 export { getXpath } from './xpath';
 
-import * as selectorEvaluatorSource from 'playwright-core/lib/generated/selectorEvaluatorSource';
-export const selectorSource = `new (${selectorEvaluatorSource.source})([])`;
-
 import { buildCssSelector, getAttributeValue } from './buildCssSelector';
 import { getClickableAncestor, isClickable, isVisible } from './element';
 import { formatArgument, interceptConsoleLogs } from './interceptConsoleLogs';
