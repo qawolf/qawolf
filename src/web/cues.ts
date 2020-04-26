@@ -13,13 +13,13 @@ const ATTRIBUTES = [
   'src',
   'title',
   'value',
-];
+] as const;
 
 // TODO: incorporate logic from buildCssSelector
 // for example: targeting checkbox/radio based on value,
 // content
 
-type CueType = 'aria-label' | 'attribute' | 'class' | 'id' | 'tag';
+type CueType = typeof ATTRIBUTES[number] | 'attribute' | 'class' | 'id' | 'tag';
 
 export type Cue = {
   level: number; // 0 is target, 1 is parent, etc.
@@ -97,7 +97,7 @@ const buildCuesForElement = ({
   cues.push(...buildAttributeCues({ attributes, element, level }));
   cues.push(
     ...buildAttributeCues({
-      attributes: ATTRIBUTES,
+      attributes: [...ATTRIBUTES],
       element,
       level,
       useAttributeName: true,
