@@ -13,6 +13,7 @@ export default {
     strict: false,
   },
   onwarn: (warning, next) => {
+    if (warning.code === 'EVAL') return;
     if (warning.code === 'THIS_IS_UNDEFINED') return;
     next(warning);
   },

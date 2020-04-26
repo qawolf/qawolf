@@ -1,14 +1,13 @@
 import * as selectorEvaluatorSource from 'playwright-core/lib/generated/selectorEvaluatorSource';
 import { isDynamic } from './isDynamic';
 
-export const selectorSource = `new (${selectorEvaluatorSource.source})([])`;
-const evaluator = eval((window as any).qawolf.selectorSource);
+const evaluator = eval(`new (${selectorEvaluatorSource.source})([])`);
 
 // TODO: incorporate logic from buildCssSelector
 // for example: targeting checkbox/radio based on value,
 // content editables
 
-type Cue = {
+export type Cue = {
   level: number; // 0 is target, 1 is parent, etc.
   type: 'attribute' | 'class' | 'id' | 'tag';
   value: string;
@@ -68,7 +67,8 @@ const buildCuesForElement = ({
   // TODO: add additional attributes like aria-label
 
   element.classList.forEach((c) => {
-    if (isDynamic(c)) return;
+    // if (isDynamic(c)) return;
+
     cues.push({ level, type: 'class', value: `.${c}` });
   });
 

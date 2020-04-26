@@ -1,7 +1,7 @@
-const englishWords = require('an-array-of-english-words');
+// import englishWords from 'an-array-of-english-words';
 
 const allowedWords = [
-  ...englishWords,
+  // ...englishWords,
   'btn',
   'col',
   'div',
