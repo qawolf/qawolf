@@ -24,7 +24,7 @@ export const CueTypeRank = [
   'attribute',
   'id',
   ...CSS_ATTRIBUTES,
-  // TODO class above placeholder
+  'text',
   'class',
   'tag',
 ] as const;
@@ -42,18 +42,29 @@ type Selector = {
   body: string;
 };
 
-type BuildAttributeCues = BuildCuesForElement & {
+type BuildAttributeCues = {
+  attributes: string[];
+  element: HTMLElement;
+  level: number;
   useAttributeName?: boolean;
 };
 
 export type BuildCues = {
   attributes: string[];
+  isClick: boolean;
   target: HTMLElement;
 };
 
 type BuildCuesForElement = {
   attributes: string[];
   element: HTMLElement;
+  isClick: boolean;
+  level: number;
+};
+
+type BuildTextCues = {
+  element: HTMLElement;
+  isClick: boolean;
   level: number;
 };
 
@@ -62,13 +73,17 @@ type IsMatch = {
   target: HTMLElement;
 };
 
-export const buildCues = ({ attributes, target }: BuildCues): Cue[] => {
+export const buildCues = ({
+  attributes,
+  isClick,
+  target,
+}: BuildCues): Cue[] => {
   const cues: Cue[] = [];
   let element: HTMLElement = target;
   let level = 0;
 
   while (element) {
-    cues.push(...buildCuesForElement({ attributes, element, level }));
+    cues.push(...buildCuesForElement({ attributes, element, isClick, level }));
 
     element = element.parentElement;
     level += 1;
@@ -97,9 +112,30 @@ const buildAttributeCues = ({
   return cues;
 };
 
+const buildTextCues = ({ element, isClick, level }: BuildTextCues): Cue[] => {
+  const cues: Cue[] = [];
+  if (!isClick) return cues;
+
+  let text = element.textContent;
+  if (
+    element instanceof HTMLInputElement &&
+    (element.type === 'submit' || element.type === 'button')
+  )
+    text = element.value;
+
+  if (text.match(/[\n\r\t]+/)) return cues;
+
+  const value = text.match(/^\s*[a-zA-Z0-9]+\s*$/)
+    ? text.trim()
+    : JSON.stringify(text);
+
+  return [{ level, type: 'text', value }];
+};
+
 const buildCuesForElement = ({
   attributes,
   element,
+  isClick,
   level,
 }: BuildCuesForElement): Cue[] => {
   const cues: Cue[] = [];
@@ -113,6 +149,7 @@ const buildCuesForElement = ({
       useAttributeName: true,
     }),
   );
+  cues.push(...buildTextCues({ element, isClick, level }));
 
   element.classList.forEach((c) => {
     // if (isDynamic(c)) return;
@@ -164,6 +201,12 @@ export const buildSelectorForCues = (cues: Cue[]): Selector[] => {
       if (b.type === 'tag') return 1;
       return 0;
     });
+
+    const textCues = cuesForLevel.filter((cue) => cue.type === 'text');
+    if (textCues.length) {
+      selector.push({ name: 'text', body: textCues[0].value });
+      return;
+    }
 
     const bodyValues = cuesForLevel.map((cue) => cue.value);
 
