@@ -115,3 +115,21 @@ export const buildSelectorForCues = (cues: Cue[]): Selector[] => {
 
   return selector;
 };
+
+export const toSelectorString = (selector: Selector[]): string => {
+  const selectorNames = selector.map((s) => s.name);
+  // pure CSS selector
+  if (!selectorNames.includes('text')) {
+    return selector.map((s) => s.body).join(' ');
+  }
+
+  // mixed selector
+  return selector
+    .map((s) => {
+      if (s.name === 'css') {
+        return `css=${s.body}`;
+      }
+      return `text="${s.body}"`;
+    })
+    .join(' >> ');
+};
