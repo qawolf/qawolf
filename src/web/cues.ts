@@ -125,20 +125,17 @@ const buildAttributeCues = ({
 const buildTextCues = ({ element, isClick, level }: BuildTextCues): Cue[] => {
   if (!isClick) return [];
 
-  let text = element.textContent;
+  let text = element.textContent.trim();
+
   if (
     element instanceof HTMLInputElement &&
     (element.type === 'submit' || element.type === 'button')
   )
     text = element.value;
 
-  if (text.match(/[\n\r\t]+/)) return [];
+  if (text.length > 200 || text.match(/[\n\r\t]+/)) return [];
 
-  const value = text.match(/^\s*[a-zA-Z0-9]+\s*$/)
-    ? text.trim()
-    : JSON.stringify(text);
-
-  return [{ level, type: 'text', value }];
+  return [{ level, type: 'text', value: text }];
 };
 
 const buildCuesForElement = ({
@@ -230,8 +227,9 @@ export const isMatch = ({ selector, target }: IsMatch): boolean => {
   const result = evaluator.querySelectorAll(selector, document.body);
   if (result.length !== 1) return false;
 
-  if (result[0] !== target) {
-    throw new Error(`Selector ${selector} does not match target ${target}`);
+  if (result[0] !== target && !target.contains(result[0])) {
+    console.error('Selector matches another element', selector, target);
+    return false;
   }
 
   return true;
