@@ -52,6 +52,8 @@ const buildCuesForElement = ({
     cues.push({ level, type: 'attribute', value: `[${attribute}="${value}"]` });
   });
 
+  // TODO: add additional attributes like id and aria-label
+
   element.classList.forEach((c) => {
     if (isDynamic(c)) return;
     cues.push({ level, type: 'class', value: `.${c}` });
@@ -92,6 +94,12 @@ export const buildSelectorForCues = (cues: Cue[]): Selector[] => {
 
   levels.forEach((level) => {
     const cuesForLevel = cues.filter((cue) => cue.level === level);
+    cuesForLevel.sort((a, b) => {
+      if (a.type === 'tag') return -1;
+      if (b.type === 'tag') return 1;
+      return 0;
+    });
+
     const bodyValues = cuesForLevel.map((cue) => cue.value);
 
     selector.push({ name: 'css', body: bodyValues.join('') });

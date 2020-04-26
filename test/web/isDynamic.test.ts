@@ -1,4 +1,17 @@
+import { isDynamic } from '../../src/web/isDynamic';
+
 const trueExamples = [
+  '__BVID__71',
+  'StyledBox-sc-13pk1d4-0',
+  'gLFyf',
+  'gb_C',
+  'TSPr2b',
+  'intercom-123v9c3',
+  'u_0_b',
+  'ggWlfB2BMlWvNeAo2F0uqw',
+];
+
+const falseExamples = [
   'toggle',
   'destroy',
   'btn',
@@ -7,34 +20,21 @@ const trueExamples = [
   'b-content__page-input',
   'glide__bullet',
   'app',
-  'tryapp',
-  'bglogo',
   'nav-link',
   'login-button',
-  'signup-button',
-  'fixed-top-padding',
-  'dropdown',
   'col-sm-12',
   'footer',
   'intercom-container-body',
   'new-todo',
-  'edit',
-  'input',
   'inputtext',
-  'input',
-  'logout',
-  'signout',
-  'pass',
   'email',
   'learn-bar',
   'searchInput',
-  'pure-button',
   'js-lang-list-button',
   'central-textlogo__image',
   'footer-sidebar-icon',
   'svg',
   'icon',
-  'svg-Wikipedia__wordmark',
   'fa-search',
   'slider',
   'btn-playr-primary',
@@ -43,23 +43,20 @@ const trueExamples = [
   'tnt__zipInput',
   'MyAccount__label',
   'nav-sprite',
-  'nav-cart-icon',
-  'nav-input',
-  'twotabsearchtextbox',
-  'desktop-btf-grid-7',
   'desktop-grid-3',
   'nytslm-li-link',
 ];
 
-const falseExamples = [
-  '__BVID__71',
-  'StyledBox-sc-13pk1d4-0',
-  'gLFyf',
-  'gsfi',
-  'gb_C',
-  'gb_kd',
-  'TSPr2b',
-  'intercom-123v9c3',
-  'u_0_b',
-  'ggWlfB2BMlWvNeAo2F0uqw',
-];
+describe('isDynamic', () => {
+  it('returns true for dynamic values', () => {
+    trueExamples.forEach((example) => {
+      expect(isDynamic(example)).toBe(true);
+    });
+  });
+
+  it('returns false for non-dynamic values', () => {
+    falseExamples.forEach((example) => {
+      expect(isDynamic(example)).toBe(false);
+    });
+  });
+});

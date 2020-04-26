@@ -1,27 +1,26 @@
 const englishWords = require('an-array-of-english-words');
 
-const allowedWords = englishWords.push(
-  ...[
-    'btn',
-    'nav',
-    'div',
-    'login',
-    'logout',
-    'signin',
-    'signout',
-    'signup',
-    'dropdown',
-    'col',
-    'todo',
-    'inputtext',
-    'textinput',
-    'sm',
-    'lg',
-    'svg',
-    'fa',
-    'img',
-  ],
-);
+const allowedWords = [
+  ...englishWords,
+  'btn',
+  'nav',
+  'div',
+  'login',
+  'logout',
+  'signin',
+  'signout',
+  'signup',
+  'dropdown',
+  'col',
+  'todo',
+  'inputtext',
+  'textinput',
+  'sm',
+  'lg',
+  'svg',
+  'fa',
+  'img',
+];
 
 const SCORE_THRESHOLD = 0.5;
 
@@ -51,5 +50,5 @@ export const isDynamic = (
 
   const score = includedWords.length / classWords.length;
 
-  return score < threshold;
+  return score <= threshold;
 };
