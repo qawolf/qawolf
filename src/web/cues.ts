@@ -6,7 +6,7 @@ import { isDynamic } from './isDynamic';
 
 type Cue = {
   level: number; // 0 is target, 1 is parent, etc.
-  type: 'attribute' | 'class' | 'tag';
+  type: 'attribute' | 'class' | 'id' | 'tag';
   value: string;
 };
 
@@ -56,12 +56,16 @@ const buildCuesForElement = ({
     cues.push({ level, type: 'attribute', value: `[${attribute}="${value}"]` });
   });
 
-  // TODO: add additional attributes like id and aria-label
+  // TODO: add additional attributes like aria-label
 
   element.classList.forEach((c) => {
     if (isDynamic(c)) return;
     cues.push({ level, type: 'class', value: `.${c}` });
   });
+
+  if (element.id && !isDynamic(element.id)) {
+    cues.push({ level, type: 'id', value: `#${element.id}` });
+  }
 
   cues.push({ level, type: 'tag', value: buildCueValueForTag(element) });
 

@@ -11,13 +11,14 @@ describe('buildSelectorForCues', () => {
         value: '[data-qa="search"]',
       },
       { level: 0, type: 'tag' as 'tag', value: 'input' },
+      { level: 0, type: 'id' as 'id', value: '#search' },
     ];
 
     const selector = buildSelectorForCues(cues);
 
     expect(selector).toEqual([
       { name: 'css', body: '[data-qa="search"]' },
-      { name: 'css', body: 'input.search-input' },
+      { name: 'css', body: 'input.search-input#search' },
     ]);
   });
 });
