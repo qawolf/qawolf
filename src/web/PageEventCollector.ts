@@ -59,8 +59,7 @@ export class PageEventCollector {
       // TODO remove cssSelector, htmlSelector. replace with selector
       cssSelector: buildSelector({
         attributes: this._attributes,
-        // TODO
-        // isClick: ['click', 'mousedown'].includes(eventName),
+        isClick: ['click', 'mousedown'].includes(eventName),
         target,
       }),
       htmlSelector: nodeToHtmlSelector(target, 2),

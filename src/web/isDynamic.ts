@@ -1,7 +1,7 @@
-// import englishWords from 'an-array-of-english-words';
+import englishWords from 'an-array-of-english-words/index.json';
 
-const allowedWords = [
-  // ...englishWords,
+const allowedWords = new Set([
+  ...englishWords,
   'btn',
   'col',
   'div',
@@ -22,7 +22,7 @@ const allowedWords = [
   'textinput',
   'todo',
   'ul',
-];
+]);
 
 const SCORE_THRESHOLD = 0.5;
 
@@ -46,9 +46,7 @@ export const isDynamic = (
 
   const classWords = getWords(className);
 
-  const includedWords = classWords.filter((word) => {
-    return allowedWords.includes(word);
-  });
+  const includedWords = classWords.filter((word) => allowedWords.has(word));
 
   const score = includedWords.length / classWords.length;
 

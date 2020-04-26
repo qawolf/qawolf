@@ -66,6 +66,7 @@
   },
   "devDependencies": {
     "@qawolf/sandbox": "^0.1.6",
+    "@rollup/plugin-json": "^4.0.3",
     "@types/debug": "^4.1.5",
     "@types/fs-extra": "^8.1.0",
     "@types/glob": "^7.1.1",

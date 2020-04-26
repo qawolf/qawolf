@@ -161,7 +161,7 @@ const buildCuesForElement = ({
   cues.push(...buildTextCues({ element, isClick, level }));
 
   element.classList.forEach((c) => {
-    // if (isDynamic(c)) return;
+    if (isDynamic(c)) return;
 
     cues.push({ level, type: 'class', value: `.${c}` });
   });
