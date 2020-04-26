@@ -1,5 +1,9 @@
 import { isDynamic } from './isDynamic';
 
+// TODO: incorporate logic from buildCssSelector
+// for example: targeting checkbox/radio based on value,
+// content editables
+
 type Cue = {
   level: number; // 0 is target, 1 is parent, etc.
   type: 'attribute' | 'class' | 'tag';
