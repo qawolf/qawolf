@@ -225,7 +225,6 @@ export const buildSelectorForCues = (cues: Cue[]): Selector[] => {
 
 export const isMatch = ({ selector, target }: IsMatch): boolean => {
   const result = evaluator.querySelectorAll(selector, document.body);
-  if (result.length !== 1) return false;
 
   if (result[0] !== target && !target.contains(result[0])) {
     console.error('Selector matches another element', selector, target);
