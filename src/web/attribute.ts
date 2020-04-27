@@ -1,4 +1,4 @@
-type AttributeValuePair = {
+export type AttributeValuePair = {
   name: string;
   value: string;
 };
@@ -26,26 +26,6 @@ export const deserializeRegex = (regexString: string): RegExp | null => {
   }
 };
 
-const getRegexAttribute = ({
-  element,
-  regexString,
-}: GetRegexAttribute): AttributeValuePair | null => {
-  const regex = deserializeRegex(regexString);
-  if (!regex) return null;
-
-  const attributes = element.attributes;
-
-  for (let i = 0; i < attributes.length; i++) {
-    const { name, value } = attributes[i];
-
-    if (name.match(regex)) {
-      return { name, value };
-    }
-  }
-
-  return null;
-};
-
 export const getAttribute = ({
   attribute,
   element,
@@ -63,4 +43,24 @@ export const getAttribute = ({
   if (!value) return null;
 
   return { name: attribute, value };
+};
+
+export const getRegexAttribute = ({
+  element,
+  regexString,
+}: GetRegexAttribute): AttributeValuePair | null => {
+  const regex = deserializeRegex(regexString);
+  if (!regex) return null;
+
+  const attributes = element.attributes;
+
+  for (let i = 0; i < attributes.length; i++) {
+    const { name, value } = attributes[i];
+
+    if (name.match(regex)) {
+      return { name, value };
+    }
+  }
+
+  return null;
 };

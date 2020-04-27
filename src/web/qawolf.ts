@@ -1,3 +1,4 @@
+export { getAttribute, getRegexAttribute } from './attribute';
 export { buildCssSelector, getAttributeValue } from './buildCssSelector';
 export { buildSelector } from './buildSelector';
 export { buildCues } from './cues';

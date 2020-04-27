@@ -133,7 +133,7 @@ const buildTextCues = ({ element, isClick, level }: BuildTextCues): Cue[] => {
 
   if (text.length > 200 || text.match(/[\n\r\t]+/)) return [];
 
-  return [{ level, type: 'text', value: text }];
+  return [{ level, type: 'text', value: JSON.stringify(text) }];
 };
 
 const buildCuesForElement = ({
@@ -241,11 +241,8 @@ export const toSelectorString = (selector: Selector[]): string => {
 
   // mixed selector
   return selector
-    .map((s) => {
-      if (s.name === 'css') {
-        return `css=${s.body}`;
-      }
-      return `text="${s.body}"`;
+    .map(({ body, name }) => {
+      return `${name}=${body}`;
     })
     .join(' >> ');
 };
