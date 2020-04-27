@@ -31,7 +31,7 @@ function HtmlCheckboxInputs() {
       </label>
       <h4>Best pet?</h4>
       <fieldset data-qa="html-checkbox-group">
-        <input type="checkbox" id="cat" name="pet" value="cat" />
+        <input type="checkbox" id="cat" name="pet" qa-input="cat" value="cat" />
         <label htmlFor="cat"> Cat</label>
         <br />
         <input type="checkbox" id="dog" name="pet" value="dog" />

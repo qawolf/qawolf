@@ -80,25 +80,6 @@ type IsMatch = {
   target: HTMLElement;
 };
 
-export const buildCues = ({
-  attributes,
-  isClick,
-  target,
-}: BuildCues): Cue[] => {
-  const cues: Cue[] = [];
-  let element: HTMLElement = target;
-  let level = 0;
-
-  while (element) {
-    cues.push(...buildCuesForElement({ attributes, element, isClick, level }));
-
-    element = element.parentElement;
-    level += 1;
-  }
-
-  return cues;
-};
-
 export const buildAttributeCues = ({
   attributes,
   element,
@@ -116,6 +97,25 @@ export const buildAttributeCues = ({
 
     cues.push({ level, type, value: `[${name}="${value}"]` });
   });
+
+  return cues;
+};
+
+export const buildCues = ({
+  attributes,
+  isClick,
+  target,
+}: BuildCues): Cue[] => {
+  const cues: Cue[] = [];
+  let element: HTMLElement = target;
+  let level = 0;
+
+  while (element) {
+    cues.push(...buildCuesForElement({ attributes, element, isClick, level }));
+
+    element = element.parentElement;
+    level += 1;
+  }
 
   return cues;
 };
