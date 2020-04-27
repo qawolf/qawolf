@@ -1,4 +1,5 @@
 import * as selectorEvaluatorSource from 'playwright-core/lib/generated/selectorEvaluatorSource';
+import { getAttribute } from './attribute';
 import { isDynamic } from './isDynamic';
 
 const evaluator = eval(`new (${selectorEvaluatorSource.source})([])`);
@@ -16,10 +17,6 @@ const CSS_ATTRIBUTES = [
   'title',
   'value',
 ] as const;
-
-// TODO: incorporate logic from buildCssSelector
-// for example: targeting checkbox/radio based on value,
-// content
 
 export const CueTypeRank = [
   'attribute',
@@ -102,21 +99,22 @@ export const buildCues = ({
   return cues;
 };
 
-const buildAttributeCues = ({
+export const buildAttributeCues = ({
   attributes,
   element,
   level,
   useAttributeName,
 }: BuildAttributeCues): Cue[] => {
   const cues: Cue[] = [];
-  // TODO: handle regex attributes
+
   attributes.forEach((attribute) => {
-    const value = element.getAttribute(attribute);
-    if (!value) return;
+    const attributeValuePair = getAttribute({ attribute, element });
+    if (!attributeValuePair) return;
 
-    const type = (useAttributeName ? attribute : 'attribute') as CueType;
+    const { name, value } = attributeValuePair;
+    const type = (useAttributeName ? name : 'attribute') as CueType;
 
-    cues.push({ level, type, value: `[${attribute}="${value}"]` });
+    cues.push({ level, type, value: `[${name}="${value}"]` });
   });
 
   return cues;
