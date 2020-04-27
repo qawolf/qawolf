@@ -32,11 +32,6 @@ export type Cue = {
   value: string;
 };
 
-export type Selector = {
-  name: 'css' | 'text';
-  body: string;
-};
-
 type BuildAttributeCues = {
   attributes: string[];
   element: HTMLElement;
@@ -61,6 +56,11 @@ type BuildTextCues = {
   element: HTMLElement;
   isClick: boolean;
   level: number;
+};
+
+export type Selector = {
+  name: 'css' | 'text';
+  body: string;
 };
 
 export const buildAttributeCues = ({
@@ -188,10 +188,14 @@ export const buildSelectorForCues = (cues: Cue[]): Selector[] => {
   return selector;
 };
 
-const buildTextCues = ({ element, isClick, level }: BuildTextCues): Cue[] => {
+export const buildTextCues = ({
+  element,
+  isClick,
+  level,
+}: BuildTextCues): Cue[] => {
   if (!isClick) return [];
 
-  let text = element.textContent.trim();
+  let text = element.innerText.trim();
 
   if (
     element instanceof HTMLInputElement &&

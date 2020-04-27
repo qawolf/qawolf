@@ -70,13 +70,76 @@ describe('browser tests', () => {
       expect(cues).toEqual([]);
     });
   });
+
+  describe('buildTextCues', () => {
+    afterAll(() => page.goto(`${TEST_URL}checkbox-inputs`));
+
+    const buildTextCues = async (
+      selector: string,
+      level: number,
+      isClick: boolean,
+    ): Promise<Cue[]> => {
+      return page.evaluate(
+        ({ isClick, level, selector }) => {
+          const qawolf: QAWolfWeb = (window as any).qawolf;
+          const element = document.querySelector(selector) as HTMLElement;
+
+          return qawolf.buildTextCues({
+            element,
+            isClick,
+            level,
+          });
+        },
+        { isClick, level, selector },
+      );
+    };
+
+    it('returns empty array if not a click', async () => {
+      const cues = await buildTextCues('#single', 1, false);
+      expect(cues).toEqual([]);
+    });
+
+    it('returns empty array if excessive text', async () => {
+      const cues = await buildTextCues('.container', 1, true);
+      expect(cues).toEqual([]);
+    });
+
+    it('handles quotes in text', async () => {
+      await page.goto(`${TEST_URL}buttons`);
+
+      const cues = await buildTextCues('#quote-button', 1, true);
+
+      expect(cues).toEqual([
+        {
+          level: 1,
+          type: 'text',
+          value: '"Button \\"with\\" extra \'quotes\'"',
+        },
+      ]);
+    });
+
+    it('trims extra whitespace', async () => {
+      const cues = await buildTextCues('#whitespace-button', 1, true);
+
+      expect(cues).toEqual([
+        { level: 1, type: 'text', value: '"I have extra whitespace"' },
+      ]);
+    });
+
+    it('uses value as text if applicable', async () => {
+      const cues = await buildTextCues('#submit-input', 1, true);
+
+      expect(cues).toEqual([
+        { level: 1, type: 'text', value: '"Submit Input"' },
+      ]);
+    });
+  });
 });
 
 describe('buildSelectorForCues', () => {
   it('builds selector from cues', () => {
     const cues = [
       { level: 0, type: 'class' as 'class', value: '.search-input' },
-
       {
         level: 1,
         type: 'attribute' as 'attribute',
@@ -91,6 +154,24 @@ describe('buildSelectorForCues', () => {
     expect(selector).toEqual([
       { name: 'css', body: '[data-qa="search"]' },
       { name: 'css', body: 'input.search-input#search' },
+    ]);
+  });
+
+  it('includes text selector if applicable', () => {
+    const cues = [
+      { level: 1, type: 'id' as 'id', value: '#container' },
+      {
+        level: 0,
+        type: 'text' as 'text',
+        value: '"Submit"',
+      },
+    ];
+
+    const selector = buildSelectorForCues(cues);
+
+    expect(selector).toEqual([
+      { name: 'css', body: '#container' },
+      { name: 'text', body: '"Submit"' },
     ]);
   });
 });
