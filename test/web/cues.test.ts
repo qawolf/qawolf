@@ -94,20 +94,3 @@ describe('buildSelectorForCues', () => {
     ]);
   });
 });
-
-// describe('isMatch', () => {
-//   it('returns false if multiple matches', async () => {
-//     const browser = await launch();
-//     const page = await browser.newPage();
-//     await page.addInitScript(webScript);
-//     await page.goto('https://google.com');
-
-//     const isMatch = await page.evaluate(() => {
-//       // fix this test
-//       return false;
-//     });
-//     expect(isMatch).toBe(false);
-
-//     await browser.close();
-//   });
-// });

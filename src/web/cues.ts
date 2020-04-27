@@ -103,22 +103,6 @@ export const buildCues = ({
   return cues;
 };
 
-const buildTextCues = ({ element, isClick, level }: BuildTextCues): Cue[] => {
-  if (!isClick) return [];
-
-  let text = element.textContent.trim();
-
-  if (
-    element instanceof HTMLInputElement &&
-    (element.type === 'submit' || element.type === 'button')
-  )
-    text = element.value;
-
-  if (text.length > 200 || text.match(/[\n\r\t]+/)) return [];
-
-  return [{ level, type: 'text', value: JSON.stringify(text) }];
-};
-
 const buildCuesForElement = ({
   attributes,
   element,
@@ -202,4 +186,20 @@ export const buildSelectorForCues = (cues: Cue[]): Selector[] => {
   });
 
   return selector;
+};
+
+const buildTextCues = ({ element, isClick, level }: BuildTextCues): Cue[] => {
+  if (!isClick) return [];
+
+  let text = element.textContent.trim();
+
+  if (
+    element instanceof HTMLInputElement &&
+    (element.type === 'submit' || element.type === 'button')
+  )
+    text = element.value;
+
+  if (text.length > 200 || text.match(/[\n\r\t]+/)) return [];
+
+  return [{ level, type: 'text', value: JSON.stringify(text) }];
 };
