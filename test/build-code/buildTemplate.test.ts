@@ -6,41 +6,23 @@ import {
 
 describe('buildImports', () => {
   it('includes device when specified', () => {
-    expect(
-      buildImports({
-        device: 'iPhone 11',
-        name: 'myScript',
-      }),
-    ).toMatchSnapshot();
+    expect(buildImports({ device: 'iPhone 11' })).toMatchSnapshot();
   });
 
   it('imports when typescript', () => {
-    expect(
-      buildImports({
-        name: 'myScript',
-        useTypeScript: true,
-      }),
-    ).toMatchSnapshot();
+    expect(buildImports({ useTypeScript: true })).toMatchSnapshot();
 
     expect(
-      buildImports({
-        device: 'iPhone 11',
-        name: 'myScript',
-        useTypeScript: true,
-      }),
+      buildImports({ device: 'iPhone 11', useTypeScript: true }),
     ).toMatchSnapshot();
   });
 
   it('requires when not typescript', () => {
-    expect(buildImports({ name: 'myScript' })).toMatchSnapshot();
+    expect(buildImports({})).toMatchSnapshot();
   });
 
   it('throws an error if device does not exist', () => {
-    const testFn = (): string =>
-      buildImports({
-        device: 'unknown',
-        name: 'myTest',
-      });
+    const testFn = (): string => buildImports({ device: 'unknown' });
     expect(testFn).toThrowError('Device unknown not available in Playwright');
   });
 });

@@ -78,7 +78,7 @@ describe('ContextEventCollector', () => {
     expect((events[0] as PasteEvent).value).toEqual('secret');
 
     // make sure it collects the css selector
-    expect(events[0].selector).toEqual("[data-qa='html-text-input']");
+    expect(events[0].selector).toEqual('[data-qa="html-text-input"]');
   });
 
   it('records scroll event', async () => {
