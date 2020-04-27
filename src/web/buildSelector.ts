@@ -9,6 +9,10 @@ import {
 import { getXpath } from './xpath';
 
 export const buildSelector = (options: BuildCues): string => {
+  if (['body', 'html'].includes(options.target.tagName.toLowerCase())) {
+    return `${options.target.tagName.toLowerCase()}`;
+  }
+
   const cues = buildCues(options);
 
   for (const cueGroup of combineCues(cues)) {
