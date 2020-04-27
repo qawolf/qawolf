@@ -16,7 +16,7 @@ describe('buildClickSteps', () => {
   it('builds one click per group of mousedown/click events', () => {
     const steps = buildClickSteps(loginEvents);
     expect(
-      steps.map(step => loginEvents.indexOf(step.event)),
+      steps.map((step) => loginEvents.indexOf(step.event)),
     ).toMatchSnapshot();
   });
 
@@ -42,6 +42,6 @@ describe('buildClickSteps', () => {
 
   it('prefers clicks on inputs', () => {
     const steps = buildClickSteps(radioEvents);
-    expect(steps.map(step => step.event.cssSelector)).toMatchSnapshot();
+    expect(steps.map((step) => step.event.selector)).toMatchSnapshot();
   });
 });

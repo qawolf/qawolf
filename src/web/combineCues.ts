@@ -1,4 +1,22 @@
-import { Cue, CueTypeRank } from './cues';
+import { Cue } from './cues';
+
+const CueTypeRank = [
+  'attribute',
+  'id',
+  'aria-label',
+  'title',
+  'name',
+  'for',
+  'text',
+  'contenteditable',
+  'value',
+  'placeholder',
+  'alt',
+  'src',
+  'href',
+  'class',
+  'tag',
+];
 
 export class CuePermutations {
   _cues: Cue[];

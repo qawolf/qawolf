@@ -1,4 +1,3 @@
-import { evaluator } from 'playwright-evaluator';
 import { getAttribute } from './attribute';
 import { isDynamic } from './isDynamic';
 
@@ -16,25 +15,16 @@ const CSS_ATTRIBUTES = [
   'value',
 ] as const;
 
-export const CueTypeRank = [
+const CueTypes = [
+  ...CSS_ATTRIBUTES,
   'attribute',
-  'id',
-  'aria-label',
-  'title',
-  'name',
-  'for',
-  'text',
-  'contenteditable',
-  'value',
-  'placeholder',
-  'alt',
-  'src',
-  'href',
   'class',
+  'id',
   'tag',
+  'text',
 ] as const;
 
-type CueType = typeof CueTypeRank[number];
+type CueType = typeof CueTypes[number];
 
 export type Cue = {
   level: number; // 0 is target, 1 is parent, etc.
@@ -42,7 +32,7 @@ export type Cue = {
   value: string;
 };
 
-type Selector = {
+export type Selector = {
   name: 'css' | 'text';
   body: string;
 };
@@ -71,11 +61,6 @@ type BuildTextCues = {
   element: HTMLElement;
   isClick: boolean;
   level: number;
-};
-
-type IsMatch = {
-  selector: Selector[];
-  target: HTMLElement;
 };
 
 export const buildAttributeCues = ({
@@ -217,30 +202,4 @@ export const buildSelectorForCues = (cues: Cue[]): Selector[] => {
   });
 
   return selector;
-};
-
-export const isMatch = ({ selector, target }: IsMatch): boolean => {
-  const result = evaluator.querySelectorAll(selector, document.body);
-
-  if (result[0] !== target && !target.contains(result[0])) {
-    console.error('Selector matches another element', selector, target);
-    return false;
-  }
-
-  return true;
-};
-
-export const toSelectorString = (selector: Selector[]): string => {
-  const selectorNames = selector.map((s) => s.name);
-  // pure CSS selector
-  if (!selectorNames.includes('text')) {
-    return selector.map((s) => s.body).join(' ');
-  }
-
-  // mixed selector
-  return selector
-    .map(({ body, name }) => {
-      return `${name}=${body}`;
-    })
-    .join(' >> ');
 };

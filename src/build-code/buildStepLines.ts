@@ -12,12 +12,12 @@ export const buildPageLine = (step: Step): string => {
 };
 
 export const buildSelector = (step: Step): string => {
-  const { cssSelector } = step.event;
+  const { selector } = step.event;
 
-  if (!cssSelector.includes(`"`)) return `"${cssSelector}"`;
-  if (!cssSelector.includes(`'`)) return `'${cssSelector}'`;
+  if (!selector.includes(`"`)) return `"${selector}"`;
+  if (!selector.includes(`'`)) return `'${selector}'`;
 
-  return '`' + cssSelector + '`';
+  return '`' + selector + '`';
 };
 
 export const buildValue = ({ action, value }: Step): string => {

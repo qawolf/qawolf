@@ -1,6 +1,6 @@
-import { buildSelector } from './buildSelector';
+import { buildSelector } from './selector';
 import { getClickableAncestor, isVisible } from './element';
-import { nodeToDoc, nodeToHtmlSelector } from './serialize';
+import { nodeToDoc } from './serialize';
 import * as types from '../types';
 
 const DEFAULT_ATTRIBUTE =
@@ -56,16 +56,14 @@ export class PageEventCollector {
     const isTargetVisible = isVisible(target, window.getComputedStyle(target));
 
     const elementEvent = {
-      // TODO remove cssSelector, htmlSelector. replace with selector
-      cssSelector: buildSelector({
+      isTrusted: event.isTrusted && isTargetVisible,
+      name: eventName,
+      page: this._pageIndex,
+      selector: buildSelector({
         attributes: this._attributes,
         isClick: ['click', 'mousedown'].includes(eventName),
         target,
       }),
-      htmlSelector: nodeToHtmlSelector(target, 2),
-      isTrusted: event.isTrusted && isTargetVisible,
-      name: eventName,
-      page: this._pageIndex,
       target: nodeToDoc(target),
       time: Date.now(),
       value,

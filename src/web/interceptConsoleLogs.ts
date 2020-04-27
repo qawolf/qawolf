@@ -1,4 +1,4 @@
-import { getXpath } from './xpath';
+import { getXpath } from './serialize';
 
 export type LogCallback = (level: string, message: string) => void;
 

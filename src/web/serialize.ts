@@ -1,87 +1,61 @@
 import { parse as parseHtml } from '@jperl/html-parse-stringify';
-import { cleanText } from './lang';
-import { Callback, Doc } from '../types';
+import { Doc } from '../types';
 
-export const inlineInnerTextLabels = (node: Node): Callback<void> => {
-  const element = node as HTMLInputElement;
+const buildXpath = (node: Node | null): string => {
+  // only build xpaths for elements
+  if (!node || node.nodeType !== 1) return '';
 
-  if (element.innerText) {
-    // clean the text to prevent weird serialization of line breaks
-    element.setAttribute('qaw_innertext', cleanText(element.innerText));
+  const element = node as Element;
+  if (element.id) {
+    // xpath has no way to escape quotes so use the opposite
+    // https://stackoverflow.com/a/14822893
+    const quote = element.id.includes(`'`) ? `"` : `'`;
+    return `//*[@id=${quote}${element.id}${quote}]`;
   }
 
-  if (element.labels) {
-    // set the labels as an attribute so they are serialized
-    const labels: string[] = [];
+  const children = element.parentNode ? element.parentNode.children : [];
+  const sames = [].filter.call(children, (x: Element) => {
+    return x.tagName === element.tagName;
+  });
 
-    element.labels.forEach(label => {
-      if (label.innerText.length) labels.push(cleanText(label.innerText));
-    });
+  const result =
+    buildXpath(element.parentNode) +
+    '/' +
+    element.tagName.toLowerCase() +
+    (sames.length > 1
+      ? '[' + ([].indexOf.call(sames, element as never) + 1) + ']'
+      : '');
 
-    if (labels.length) {
-      element.setAttribute('qaw_labels', labels.join(' '));
-    }
-  }
-
-  // cleanNodeFn
-  return (): void => {
-    if (!element.removeAttribute) return;
-
-    element.removeAttribute('qaw_innertext');
-    element.removeAttribute('qaw_labels');
-  };
+  return result;
 };
 
-export const htmlToDoc = (html: string): Doc => {
-  const result = parseHtml(html);
+export const getXpath = (node: Node): string => {
+  const result = buildXpath(node);
 
-  if (result.length !== 1) {
-    console.debug('qawolf: invalid html', html, result);
-    throw new Error('htmlToDoc: only supports individual nodes');
-  }
-
-  return result[0];
+  return result
+    .replace('svg', "*[name()='svg']")
+    .replace('path', "*[name()='path']");
 };
 
 export const nodeToHtml = (node: Node): string => {
   const serializer = new XMLSerializer();
-
-  // serialize labels as html attribute
-  const cleanNodeFn = inlineInnerTextLabels(node);
 
   const serialized = serializer
     .serializeToString(node)
     .replace(/ xmlns="(.*?)"/g, '') // remove namespace
     .replace(/(\r\n|\n|\r)/gm, ''); // remove newlines
 
-  cleanNodeFn();
-
   return serialized;
 };
 
-export const nodeToDoc = (node: Node): Doc => htmlToDoc(nodeToHtml(node));
+export const nodeToDoc = (node: Node): Doc => {
+  const html = nodeToHtml(node);
 
-const cloneNodeShallow = (node: Node): Node => {
-  // inline labels if possible
-  const cleanNodeFn = inlineInnerTextLabels(node);
-  const shallowNode = node.cloneNode(false);
-  cleanNodeFn();
-  return shallowNode;
-};
-
-export const nodeToHtmlSelector = (
-  node: Node,
-  numAncestors: number,
-): string => {
-  let shallowNode = cloneNodeShallow(node);
-  let parent = node.parentNode;
-
-  for (let i = 0; parent && i < numAncestors; i++) {
-    const shallowParent = cloneNodeShallow(parent);
-    shallowParent.appendChild(shallowNode);
-    shallowNode = shallowParent;
-    parent = parent.parentNode;
+  const result = parseHtml(html);
+  if (result.length !== 1) {
+    console.debug('qawolf: invalid html', html, result);
+    throw new Error('htmlToDoc: only supports individual nodes');
   }
 
-  return nodeToHtml(shallowNode);
+  return result[0];
 };
