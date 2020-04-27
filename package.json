@@ -29,6 +29,7 @@
     "release": "np --no-cleanup",
     "test": "jest",
     "test:server": "npx @qawolf/sandbox",
+    "ts-node": "ts-node",
     "version": "npm run clean && npm run build"
   },
   "repository": {

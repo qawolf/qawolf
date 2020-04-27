@@ -1,16 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CodeReconciler.reconcile inserts new expressions 1`] = `
-"await page.click(selectors[\\"0_a\\"]);
+"await page.click('text=\\"Log in\\"');
 await qawolf.create();"
 `;
 
 exports[`CodeReconciler.reconcile updates the last expression 1`] = `
-"await page.click(selectors[\\"1_username_input\\"]);
+"await page.click(\\"#username\\");
 "
 `;
 
 exports[`CodeReconciler.reconcile updates the last expression after a step was removed (ex: paste) 1`] = `
-"await page.click(selectors[\\"1_username_input\\"]);
+"await page.click(\\"#username\\");
 "
 `;
