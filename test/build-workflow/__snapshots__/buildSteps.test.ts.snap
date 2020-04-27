@@ -5,15 +5,14 @@ Array [
   Object {
     "action": "click",
     "event": Object {
-      "htmlSelector": "<ul qaw_innertext=\\"Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Radio inputs Selects Text inputs Time pickers\\"><li qaw_innertext=\\"Log in\\"><a href=\\"/login\\" qaw_innertext=\\"Log in\\"></a></li></ul>",
       "index": 0,
       "isTrusted": true,
       "name": "mousedown",
       "page": 0,
+      "selector": "text=\\"Log in\\"",
       "target": Object {
         "attrs": Object {
           "href": "/login",
-          "qaw_innertext": "Log in",
         },
         "children": Array [
           Object {
@@ -25,23 +24,22 @@ Array [
         "type": "tag",
         "voidElement": false,
       },
-      "time": 1583106434723,
+      "time": 1588025517066,
     },
     "index": 0,
   },
   Object {
     "action": "click",
     "event": Object {
-      "htmlSelector": "<div id=\\"root\\" qaw_innertext=\\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\\"><form qaw_innertext=\\"Username Password Log in\\"><input autocomplete=\\"off\\" id=\\"username\\" type=\\"text\\" value=\\"\\" qaw_labels=\\"Username\\" /></form></div>",
       "index": 2,
       "isTrusted": true,
       "name": "mousedown",
       "page": 0,
+      "selector": "#username",
       "target": Object {
         "attrs": Object {
           "autocomplete": "off",
           "id": "username",
-          "qaw_labels": "Username",
           "type": "text",
           "value": "",
         },
@@ -50,23 +48,22 @@ Array [
         "type": "tag",
         "voidElement": true,
       },
-      "time": 1583106435717,
+      "time": 1588025518191,
     },
     "index": 1,
   },
   Object {
     "action": "type",
     "event": Object {
-      "htmlSelector": "<div id=\\"root\\" qaw_innertext=\\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\\"><form qaw_innertext=\\"Username Password Log in\\"><input autocomplete=\\"off\\" id=\\"username\\" type=\\"text\\" value=\\"\\" qaw_labels=\\"Username\\" /></form></div>",
       "index": 4,
       "isTrusted": true,
       "name": "keydown",
       "page": 0,
+      "selector": "#username",
       "target": Object {
         "attrs": Object {
           "autocomplete": "off",
           "id": "username",
-          "qaw_labels": "Username",
           "type": "text",
           "value": "",
         },
@@ -75,7 +72,7 @@ Array [
         "type": "tag",
         "voidElement": true,
       },
-      "time": 1583106436649,
+      "time": 1588025518976,
       "value": "t",
     },
     "index": 2,
@@ -84,16 +81,15 @@ Array [
   Object {
     "action": "press",
     "event": Object {
-      "htmlSelector": "<div id=\\"root\\" qaw_innertext=\\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\\"><form qaw_innertext=\\"Username Password Log in\\"><input autocomplete=\\"off\\" id=\\"username\\" type=\\"text\\" value=\\"tomsmith\\" qaw_labels=\\"Username\\" /></form></div>",
       "index": 20,
       "isTrusted": true,
       "name": "keydown",
       "page": 0,
+      "selector": "#username",
       "target": Object {
         "attrs": Object {
           "autocomplete": "off",
           "id": "username",
-          "qaw_labels": "Username",
           "type": "text",
           "value": "tomsmith",
         },
@@ -102,7 +98,7 @@ Array [
         "type": "tag",
         "voidElement": true,
       },
-      "time": 1583106437954,
+      "time": 1588025520059,
       "value": "Tab",
     },
     "index": 3,
@@ -111,16 +107,15 @@ Array [
   Object {
     "action": "type",
     "event": Object {
-      "htmlSelector": "<div id=\\"root\\" qaw_innertext=\\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\\"><form qaw_innertext=\\"Username Password Log in\\"><input autocomplete=\\"off\\" id=\\"password\\" type=\\"password\\" value=\\"\\" qaw_labels=\\"Password\\" /></form></div>",
       "index": 24,
       "isTrusted": true,
       "name": "paste",
       "page": 0,
+      "selector": "#password",
       "target": Object {
         "attrs": Object {
           "autocomplete": "off",
           "id": "password",
-          "qaw_labels": "Password",
           "type": "password",
           "value": "",
         },
@@ -129,7 +124,7 @@ Array [
         "type": "tag",
         "voidElement": true,
       },
-      "time": 1583106438791,
+      "time": 1588025520971,
       "value": "SuperSecretPassword!",
     },
     "index": 4,
@@ -138,16 +133,15 @@ Array [
   Object {
     "action": "press",
     "event": Object {
-      "htmlSelector": "<div id=\\"root\\" qaw_innertext=\\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\\"><form qaw_innertext=\\"Username Password Log in\\"><input autocomplete=\\"off\\" id=\\"password\\" type=\\"password\\" value=\\"SuperSecretPassword!\\" qaw_labels=\\"Password\\" /></form></div>",
-      "index": 27,
+      "index": 26,
       "isTrusted": true,
       "name": "keydown",
       "page": 0,
+      "selector": "#password",
       "target": Object {
         "attrs": Object {
           "autocomplete": "off",
           "id": "password",
-          "qaw_labels": "Password",
           "type": "password",
           "value": "SuperSecretPassword!",
         },
@@ -156,7 +150,7 @@ Array [
         "type": "tag",
         "voidElement": true,
       },
-      "time": 1583106439265,
+      "time": 1588025521606,
       "value": "Enter",
     },
     "index": 5,
@@ -165,15 +159,13 @@ Array [
   Object {
     "action": "click",
     "event": Object {
-      "htmlSelector": "<div id=\\"root\\" qaw_innertext=\\"Secure Area Log out\\"><button qaw_innertext=\\"Log out\\"><p qaw_innertext=\\"Log out\\"></p></button></div>",
-      "index": 30,
+      "index": 29,
       "isTrusted": true,
       "name": "mousedown",
       "page": 0,
+      "selector": "text=\\"Log out\\"",
       "target": Object {
-        "attrs": Object {
-          "qaw_innertext": "Log out",
-        },
+        "attrs": Object {},
         "children": Array [
           Object {
             "content": "Log out",
@@ -184,7 +176,7 @@ Array [
         "type": "tag",
         "voidElement": false,
       },
-      "time": 1583106440268,
+      "time": 1588025523112,
     },
     "index": 6,
   },

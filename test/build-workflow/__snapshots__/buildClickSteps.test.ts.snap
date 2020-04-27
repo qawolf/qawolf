@@ -4,7 +4,7 @@ exports[`buildClickSteps builds one click per group of mousedown/click events 1`
 Array [
   0,
   2,
-  30,
+  29,
 ]
 `;
 

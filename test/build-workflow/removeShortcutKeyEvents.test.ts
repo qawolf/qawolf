@@ -13,13 +13,12 @@ beforeAll(async () => {
 
 describe('findShortcutKeyEvents', () => {
   it('finds matching paste events', () => {
-    const pasteIndex = events.findIndex(e => e.name === 'paste');
+    const pasteIndex = events.findIndex((e) => e.name === 'paste');
     const pasteEvents = findShortcutKeyEvents('v', events, pasteIndex);
-    expect(pasteEvents.map(e => e.time)).toEqual([
-      1583106438550,
-      1583106438645,
-      1583106438795,
-      1583106438794,
+    expect(pasteEvents.map((e) => e.time)).toEqual([
+      1588025520432,
+      1588025520825,
+      1588025520978,
     ]);
   });
 });
@@ -29,9 +28,9 @@ describe('removeShortcutKeyEvents', () => {
     const replacedEvents = removeShortcutKeyEvents('paste', events);
     expect(
       replacedEvents
-        .filter(e => e.name === 'keydown' || e.name === 'keyup')
+        .filter((e) => e.name === 'keydown' || e.name === 'keyup')
         .map(
-          e => `${e.name === 'keydown' ? '↓' : '↑'}${(e as KeyEvent).value}`,
+          (e) => `${e.name === 'keydown' ? '↓' : '↑'}${(e as KeyEvent).value}`,
         ),
     ).toMatchSnapshot();
   });

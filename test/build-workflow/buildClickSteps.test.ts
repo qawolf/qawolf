@@ -32,7 +32,7 @@ describe('buildClickSteps', () => {
     expect(steps[1].event.target.attrs.id).toEqual('username');
 
     // click logout
-    expect(steps[2].event.target.attrs.qaw_innertext).toEqual('Log out');
+    expect(steps[2].event.selector).toEqual('text="Log out"');
   });
 
   it('skips click on select', () => {
