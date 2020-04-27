@@ -2,32 +2,25 @@
 
 exports[`buildImports imports when typescript 1`] = `
 "import { Browser, Page } from \\"playwright\\";
-import qawolf from \\"qawolf\\";
-const selectors = require(\\"./selectors/myScript.json\\");"
+import qawolf from \\"qawolf\\";"
 `;
 
 exports[`buildImports imports when typescript 2`] = `
 "import { Browser, Page, devices } from \\"playwright\\";
 import qawolf from \\"qawolf\\";
-const selectors = require(\\"./selectors/myScript.json\\");
 const device = devices[\\"iPhone 11\\"];"
 `;
 
 exports[`buildImports includes device when specified 1`] = `
 "const { devices } = require(\\"playwright\\");
 const qawolf = require(\\"qawolf\\");
-const selectors = require(\\"./selectors/myScript.json\\");
 const device = devices[\\"iPhone 11\\"];"
 `;
 
-exports[`buildImports requires when not typescript 1`] = `
-"const qawolf = require(\\"qawolf\\");
-const selectors = require(\\"./selectors/myScript.json\\");"
-`;
+exports[`buildImports requires when not typescript 1`] = `"const qawolf = require(\\"qawolf\\");"`;
 
 exports[`buildTemplate builds test template 1`] = `
 "const qawolf = require(\\"qawolf\\");
-const selectors = require(\\"./selectors/myName.json\\");
 
 let browser;
 let page;
@@ -53,7 +46,6 @@ test('myName', async () => {
 exports[`buildTemplate builds test template 2`] = `
 "const { devices } = require(\\"playwright\\");
 const qawolf = require(\\"qawolf\\");
-const selectors = require(\\"./selectors/myName.json\\");
 const device = devices[\\"iPhone 11\\"];
 
 let browser;
@@ -79,7 +71,6 @@ test('myName', async () => {
 
 exports[`buildTemplate builds test template 3`] = `
 "const qawolf = require(\\"qawolf\\");
-const selectors = require(\\"./selectors/myName.json\\");
 
 let browser;
 let page;
@@ -106,7 +97,6 @@ test('myName', async () => {
 exports[`buildTemplate builds test template 4`] = `
 "import { Browser, Page } from \\"playwright\\";
 import qawolf from \\"qawolf\\";
-const selectors = require(\\"./selectors/myName.json\\");
 
 let browser: Browser;
 let page: Page;
@@ -132,7 +122,6 @@ test('myName', async () => {
 exports[`buildTemplate builds test template 5`] = `
 "import { Browser, Page, devices } from \\"playwright\\";
 import qawolf from \\"qawolf\\";
-const selectors = require(\\"./selectors/myName.json\\");
 const device = devices[\\"iPhone 7\\"];
 
 let browser: Browser;

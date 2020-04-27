@@ -42,22 +42,21 @@ export const buildImports = ({
 
   let imports = '';
 
-  if (device) {
-    if (useTypeScript) {
-      imports += 'import { Browser, Page, devices } from "playwright";\n';
-    } else {
-      imports += 'const { devices } = require("playwright");\n';
-    }
-  }
-
-  if (useTypeScript && !device) {
-    imports += 'import { Browser, Page } from "playwright";\n';
-  }
-
   if (useTypeScript) {
-    imports += 'import qawolf from "qawolf";\n';
+    if (device) {
+      imports = 'import { Browser, Page, devices } from "playwright";';
+    } else {
+      imports = 'import { Browser, Page } from "playwright";';
+    }
+
+    imports += '\nimport qawolf from "qawolf";';
   } else {
-    imports += 'const qawolf = require("qawolf");\n';
+    // not typescript
+    if (device) {
+      imports = 'const { devices } = require("playwright");\n';
+    }
+
+    imports += 'const qawolf = require("qawolf");';
   }
 
   if (device) {
