@@ -1,8 +1,6 @@
-import * as selectorEvaluatorSource from 'playwright-core/lib/generated/selectorEvaluatorSource';
+import { evaluator } from 'playwright-evaluator';
 import { getAttribute } from './attribute';
 import { isDynamic } from './isDynamic';
-
-const evaluator = eval(`new (${selectorEvaluatorSource.source})([])`);
 
 // make sure to update CueTypeRank if editing this
 const CSS_ATTRIBUTES = [
