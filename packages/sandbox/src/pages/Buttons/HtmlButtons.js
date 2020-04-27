@@ -20,7 +20,7 @@ function HtmlButtons() {
       <button id="quote-button">Button "with" extra 'quotes'</button>
       <br />
       <br />
-      <button id="whitespace-button">{' I have extra whitespace  '}</button>
+      <button id="whitespace-button">{'     I have extra whitespace  '}</button>
       <br />
       <br />
       <input id="submit-input" type="submit" value="Submit Input" />
