@@ -44,7 +44,7 @@ describe('nodeToHtml', () => {
     });
 
     expect(html).toEqual(
-      '<input autocomplete="off" id="username" type="text" value="" qaw_labels="Username" />',
+      '<input autocomplete="off" id="username" type="text" value="" />',
     );
   });
 });

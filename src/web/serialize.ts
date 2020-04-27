@@ -37,6 +37,17 @@ export const getXpath = (node: Node): string => {
     .replace('path', "*[name()='path']");
 };
 
+export const htmlToDoc = (html: string): Doc => {
+  const result = parseHtml(html);
+
+  if (result.length !== 1) {
+    console.debug('qawolf: invalid html', html, result);
+    throw new Error('htmlToDoc: only supports individual nodes');
+  }
+
+  return result[0];
+};
+
 export const nodeToHtml = (node: Node): string => {
   const serializer = new XMLSerializer();
 
@@ -50,12 +61,5 @@ export const nodeToHtml = (node: Node): string => {
 
 export const nodeToDoc = (node: Node): Doc => {
   const html = nodeToHtml(node);
-
-  const result = parseHtml(html);
-  if (result.length !== 1) {
-    console.debug('qawolf: invalid html', html, result);
-    throw new Error('htmlToDoc: only supports individual nodes');
-  }
-
-  return result[0];
+  return htmlToDoc(html);
 };

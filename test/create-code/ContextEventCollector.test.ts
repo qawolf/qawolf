@@ -48,12 +48,11 @@ describe('ContextEventCollector', () => {
       'click',
     ]);
 
-    // TODO update...
     expect(events.map((e) => e.selector)).toEqual([
-      '<ul qaw_innertext="Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Nested data attributes Radio inputs Selects Text inputs Time pickers"><li qaw_innertext="Buttons"><a href="/buttons" qaw_innertext="Buttons"></a></li></ul>',
-      '<ul qaw_innertext="Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Nested data attributes Radio inputs Selects Text inputs Time pickers"><li qaw_innertext="Buttons"><a href="/buttons" qaw_innertext="Buttons"></a></li></ul>',
-      '<ul qaw_innertext="Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Nested data attributes Radio inputs Selects Text inputs Time pickers"><li qaw_innertext="Buttons"><a href="/buttons" qaw_innertext="Buttons"></a></li></ul>',
-      '<ul qaw_innertext="Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Nested data attributes Radio inputs Selects Text inputs Time pickers"><li qaw_innertext="Buttons"><a href="/buttons" qaw_innertext="Buttons"></a></li></ul>',
+      'text="Buttons"',
+      'text="Buttons"',
+      'text="Buttons"',
+      'text="Buttons"',
     ]);
   });
 

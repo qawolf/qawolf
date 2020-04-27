@@ -23,7 +23,7 @@ export interface ElementEvent {
   isTrusted: boolean;
   name: ElementEventName;
   page: number;
-  selector?: string;
+  selector: string;
   target: Doc;
   time: number;
 }
