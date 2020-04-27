@@ -144,6 +144,10 @@ const buildCuesForElement = ({
   isClick,
   level,
 }: BuildCuesForElement): Cue[] => {
+  if (['body', 'html'].includes(element.tagName.toLowerCase())) {
+    return [{ level, type: 'tag', value: element.tagName.toLowerCase() }];
+  }
+
   const cues: Cue[] = [];
 
   cues.push(...buildAttributeCues({ attributes, element, level }));
