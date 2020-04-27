@@ -8,6 +8,7 @@ type RegistryData = {
   browser?: Browser;
   context?: BrowserContext;
   qawolf?: typeof qawolf;
+  [key: string]: any;
 };
 
 export class Registry extends EventEmitter {
@@ -23,22 +24,24 @@ export class Registry extends EventEmitter {
     return this._data;
   }
 
+  public setValue(key: string, value: any): void {
+    this._data[key] = value;
+    this.emit('change');
+  }
+
   public setBrowser(browser: Browser): void {
     if (WatchHooks.enabled()) {
       watchBrowser(browser);
     }
 
-    this._data.browser = browser;
-    this.emit('change');
+    this.setValue('browser', browser);
   }
 
   public setContext(context: BrowserContext): void {
-    this._data.context = context;
-    this.emit('change');
+    this.setValue('context', context);
   }
 
   public setQawolf(value: typeof qawolf): void {
-    this._data.qawolf = value;
-    this.emit('change');
+    this.setValue('qawolf', value);
   }
 }

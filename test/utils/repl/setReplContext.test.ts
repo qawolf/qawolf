@@ -5,18 +5,17 @@ import { launch } from '../../../src/utils';
 
 describe('setReplContext', () => {
   it('prefers provided values over registry values', () => {
-    Registry.instance().setSelectors({ my: 'selectors' });
+    Registry.instance().setValue('value', 0);
     const context: Context = {};
-    setReplContext(context, { selectors: {} });
-    expect(context.selectors).toEqual({});
+    setReplContext(context, { value: 1 });
+    expect(context.value).toEqual(1);
   });
 
   it('sets the registry values', () => {
-    const selectors = { input: '#id' };
-    Registry.instance().setSelectors(selectors);
+    Registry.instance().setValue('value', 0);
     const context: Context = {};
     setReplContext(context);
-    expect(context.selectors).toEqual(selectors);
+    expect(context.value).toEqual(0);
   });
 
   it('sets the page when there is one', async () => {
@@ -39,11 +38,11 @@ describe('setReplContext', () => {
   it('updates the registry values', () => {
     const context: Context = {};
 
-    Registry.instance().setSelectors(undefined);
+    Registry.instance().setValue('value', 0);
     setReplContext(context);
-    expect(context.selectors).toBeUndefined();
+    expect(context.value).toBe(0);
 
-    Registry.instance().setSelectors({});
-    expect(context.selectors).toEqual({});
+    Registry.instance().setValue('value', 1);
+    expect(context.value).toEqual(1);
   });
 });
