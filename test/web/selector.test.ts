@@ -18,7 +18,6 @@ describe('browser tests', () => {
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
     browser.close();
   });
 
@@ -61,12 +60,21 @@ describe('browser tests', () => {
     });
 
     it('return false if selector does not match element', async () => {
-      jest.spyOn(console, 'error').mockReturnValue(null);
-
       const result = await isMatch([{ body: '#cat', name: 'css' }], '#single');
       expect(result).toBe(false);
+    });
 
-      expect(console.error).toBeCalled();
+    it('handles strange quotes in text selector', async () => {
+      await page.goto(`${TEST_URL}buttons`);
+
+      const result = await isMatch(
+        [{ body: '"Button \\"with\\" extra \'quotes\'"', name: 'text' }],
+        '#quote-button',
+      );
+
+      expect(result).toBe(true);
+
+      await page.goto(`${TEST_URL}checkbox-inputs`);
     });
   });
 });
