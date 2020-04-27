@@ -7,7 +7,13 @@ import virtual from '@rollup/plugin-virtual';
 // having issues with @rollup/plugin-typescript
 // consider moving to webpack instead of changing
 import typescript from 'rollup-plugin-typescript';
+
 import * as selectorEvaluatorSource from 'playwright-core/lib/generated/selectorEvaluatorSource';
+
+const playwrightEvaluator = `
+const evaluator = new (${selectorEvaluatorSource.source})([]);
+export const querySelectorAll = (...args) => evaluator.querySelectorAll(...args);
+`;
 
 export default {
   input: './src/web/index.ts',
@@ -25,7 +31,7 @@ export default {
   },
   plugins: [
     virtual({
-      'playwright-evaluator': `export const evaluator = new (${selectorEvaluatorSource.source})([]);`,
+      './playwrightEvaluator': playwrightEvaluator,
     }),
     commonjs(),
     nodeResolve({ browser: true }),

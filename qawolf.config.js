@@ -29,7 +29,8 @@ test('${name}', async () => {
 
 module.exports = {
   config: 'node_modules/qawolf/ts-jest.config.json',
-  createTemplate,
+  createTemplate:
+    process.env.QAW_CREATE_E2E_TEST === '1' ? createTemplate : undefined,
   rootDir: 'test/.qawolf',
   useTypeScript: true,
 };

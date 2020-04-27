@@ -31,7 +31,7 @@ describe('npx qawolf create', () => {
     server = await launchServer();
 
     child = spawn('node', ['node_modules/qawolf/build/index.js', 'create'], {
-      env: { ...process.env },
+      env: { ...process.env, QAW_CREATE_E2E_TEST: '1' },
     });
 
     child.stderr.setEncoding('utf8');
