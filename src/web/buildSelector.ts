@@ -26,5 +26,5 @@ export const buildSelector = (options: BuildCues): string => {
     }
   }
 
-  return getXpath(options.target);
+  return `xpath=${getXpath(options.target)}`;
 };
