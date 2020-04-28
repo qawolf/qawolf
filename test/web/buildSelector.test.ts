@@ -67,6 +67,13 @@ describe('buildSelector', () => {
   });
 
   describe('sandbox', () => {
+    it('returns html or body selector for target if applicable', async () => {
+      await page.goto(`${TEST_URL}buttons`);
+
+      await expectSelector('html');
+      await expectSelector('body');
+    });
+
     describe('buttons', () => {
       beforeAll(() => page.goto(`${TEST_URL}buttons`));
 
@@ -92,10 +99,6 @@ describe('buildSelector', () => {
         ],
       ])('builds expected selector %o', (selector) => expectSelector(selector));
     });
-
-    //   it('returns html or body selector for target', async () => {
-    //     throw new Error('buildSelector tests not implemented');
-    //   });
 
     //   describe('click: radio', () => {
     //     beforeAll(async () => {
