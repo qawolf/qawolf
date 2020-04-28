@@ -9,7 +9,7 @@ const buildDir = join(__dirname, '../build');
 const server = createServer((request, response) =>
   handler(request, response, {
     public: buildDir,
-    rewrites: [{ source: '^(?!.*fixtures.*).*$', destination: '/index.html' }],
+    rewrites: [{ source: '!fixtures/**', destination: '/index.html' }],
   }),
 );
 
