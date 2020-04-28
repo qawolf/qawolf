@@ -27,7 +27,7 @@ const CueTypes = [
   'text',
 ] as const;
 
-type CueType = typeof CueTypes[number];
+export type CueType = typeof CueTypes[number];
 
 export type Cue = {
   level: number; // 0 is target, 1 is parent, etc.

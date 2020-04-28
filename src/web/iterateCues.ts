@@ -1,6 +1,6 @@
-import { Cue } from './cues';
+import { Cue, CueType } from './cues';
 
-const CueTypesRanked = [
+const CueTypesRanked: CueType[] = [
   'attribute',
   'id',
   'aria-label',
@@ -18,52 +18,43 @@ const CueTypesRanked = [
   'tag',
 ];
 
-// TODO fix split between href and other cue types
+function* iterateGroups(targetCues: Cue[], ancestorCue?: Cue) {
+  if (ancestorCue) {
+    yield* targetCues.map((targetCue) => [ancestorCue, targetCue]);
+  } else {
+    yield* targetCues.map((cue) => [cue]);
+  }
+}
+
+function* iterateType(targetCues: Cue[], ancestorCues: Cue[], type: CueType) {
+  // try attribute cues first
+  yield* iterateGroups(targetCues.filter((cue) => cue.type === type));
+
+  for (const ancestorCue of ancestorCues.filter((cue) => cue.type === type)) {
+    yield* iterateGroups(targetCues, ancestorCue);
+  }
+}
 
 export function* iterateCues(cues: Cue[]): Generator<Cue[], void, undefined> {
-  // ordered by closeness to target
+  // order by closeness to target
   const ancestorCues = cues
     .filter((cue) => cue.level !== 0)
     .sort((a, b) => a.level - b.level);
 
-  // ordered by rank
+  // order by rank
   const targetCues = cues
     .filter((cue) => cue.level === 0)
     .sort(
       (a, b) => CueTypesRanked.indexOf(a.type) - CueTypesRanked.indexOf(b.type),
     );
 
-  // try target attribute cues first
-  yield* targetCues
-    .filter((cue) => cue.type === 'attribute')
-    .map((cue) => [cue]);
+  yield* iterateType(targetCues, ancestorCues, 'attribute');
 
-  // try ancestor attribute cues
-  for (const ancestorCue of ancestorCues.filter(
-    (cue) => cue.type === 'attribute',
-  )) {
-    for (const targetCue of targetCues) yield [ancestorCue, targetCue];
-  }
-
-  // try targer cues alone
-  yield* targetCues
-    // skip attribute since we already tried it
-    // skip href since we do not want to use that alone
-    .filter((cue) => cue.type !== 'attribute' && cue.type !== 'href')
-    .map((cue) => [cue]);
+  // try target cues alone
+  yield* iterateGroups(targetCues.filter((cue) => cue.type !== 'attribute'));
 
   // try remaining ancestor cues
   for (const type of CueTypesRanked.slice(1)) {
-    // when we get to href, try the target cues alone since we skipped them earlier
-    if (type === 'href') {
-      yield* targetCues
-        .filter((cue) => cue.type === 'href')
-        .map((cue) => [cue]);
-    }
-
-    // try ancestor attribute cues
-    for (const ancestorCue of ancestorCues.filter((cue) => cue.type === type)) {
-      for (const targetCue of targetCues) yield [ancestorCue, targetCue];
-    }
+    yield* iterateType(targetCues, ancestorCues, type);
   }
 }
