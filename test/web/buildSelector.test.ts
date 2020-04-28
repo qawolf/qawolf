@@ -69,6 +69,10 @@ describe('buildSelector', () => {
   describe('sandbox', () => {
     it('returns html or body selector for target if applicable', async () => {
       await page.goto(`${TEST_URL}buttons`);
+      await page.evaluate(() => {
+        document.querySelector('html').setAttribute('data-qa', 'main');
+        document.querySelector('body').setAttribute('data-qa', 'container');
+      });
 
       await expectSelector('html');
       await expectSelector('body');
@@ -189,38 +193,17 @@ describe('buildSelector', () => {
       ])('builds expected selector %o', (selector) => expectSelector(selector));
     });
 
-    //   describe('nested data attributes', () => {
-    //     beforeAll(async () => {
-    //       await page.goto(`${TEST_URL}nested-data-attributes`);
-    //     });
+    describe('nested data attributes', () => {
+      beforeAll(() => page.goto(`${TEST_URL}nested-data-attributes`));
 
-    //     it('includes multiple ancestors in selector if target attribute not unique', async () => {
-    //       const selector = await buildCssSelector(
-    //         '#button',
-    //         true,
-    //         'data-qa,data-test',
-    //       );
-    //       expect(selector).toBe("[data-test='click'] [data-qa='button']");
-    //     });
-
-    //     it('includes only target attribute if unique', async () => {
-    //       const selector = await buildCssSelector(
-    //         '#unique',
-    //         true,
-    //         'data-qa,data-test',
-    //       );
-    //       expect(selector).toBe("[data-qa='unique']");
-    //     });
-
-    //     it('does not keep crawling if descendant selector unique', async () => {
-    //       const selector = await buildCssSelector(
-    //         '#dog-0',
-    //         true,
-    //         'data-qa,data-test',
-    //       );
-    //       expect(selector).toBe("[data-qa='radio-group'] [value='dog-0']");
-    //     });
-    //   });
+      it.each([
+        // multiple ancestors
+        [['#button', '[data-test="click"] [data-qa="button"]']],
+        // unique selectors
+        [['#unique', '[data-qa="unique"]']],
+        [['#dog-0', '[data-qa="radio-group"] [value="dog-0"]']],
+      ])('builds expected selector %o', (selector) => expectSelector(selector));
+    });
 
     //   describe('regex attributes', () => {
     //     beforeAll(async () => {
@@ -249,35 +232,5 @@ describe('buildSelector', () => {
     //       expect(selector).toBe("[data-test='click'] [data-qa='button']");
     //     });
     //   });
-
-    //   describe('html and body elements', () => {
-    //     beforeAll(async () => {
-    //       await page.goto(`${TEST_URL}buttons`);
-    //     });
-
-    //     it('builds selector for html', async () => {
-    //       const selector = await buildCssSelector('html', true, '');
-    //       expect(selector).toBe('html');
-    //     });
-
-    //     it('builds selector for body', async () => {
-    //       const selector = await buildCssSelector('body', true, '');
-    //       expect(selector).toBe('body');
-    //     });
-
-    //     it('returns attribute selector over tag selector', async () => {
-    //       await page.evaluate(() => {
-    //         document.querySelector('html').setAttribute('data-qa', 'main');
-    //         document.querySelector('body').setAttribute('data-qa', 'container');
-    //       });
-
-    //       const selector = await buildCssSelector('html', true, 'data-qa');
-    //       expect(selector).toBe("[data-qa='main']");
-
-    //       const selector2 = await buildCssSelector('body', true, 'data-qa');
-    //       expect(selector2).toBe("[data-qa='container']");
-    //     });
-    //   });
-    // });
   });
 });
