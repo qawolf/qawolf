@@ -67,15 +67,18 @@ describe('buildSelector', () => {
   });
 
   describe('sandbox', () => {
-    it('returns html or body selector for target if applicable', async () => {
-      await page.goto(`${TEST_URL}buttons`);
-      await page.evaluate(() => {
-        document.querySelector('html').setAttribute('data-qa', 'main');
-        document.querySelector('body').setAttribute('data-qa', 'container');
-      });
+    describe('html and body', () => {
+      beforeAll(async () => {
+        await page.goto(`${TEST_URL}buttons`);
+        await page.evaluate(() => {
+          document.querySelector('html').setAttribute('data-qa', 'main');
+          document.querySelector('body').setAttribute('data-qa', 'container');
+        });
 
-      await expectSelector('html');
-      await expectSelector('body');
+        it.each(['html', 'body'])('builds expected selector %o', (selector) =>
+          expectSelector(selector),
+        );
+      });
     });
 
     describe('buttons', () => {
