@@ -9,18 +9,18 @@ title: 📮 Change Input Values
 
 ```js
 // change this
-await page.type(selectors['1_what_needs_to_b_input'], 'create test!');
+await page.type('.new-todo', 'create test!');
 // to this
-await page.type(selectors['1_what_needs_to_b_input'], ':)');
+await page.type('.new-todo', ':)');
 ```
 
 - **Always replace sensitive values like passwords [with environment variables](#use-environment-variables)**:
 
 ```js
 // change this
-await page.type(selectors['1_what_needs_to_b_input'], 'secret value');
+await page.type('.new-todo', 'secret value');
 // to this
-await page.type(selectors['1_what_needs_to_b_input'], process.env.TODO_VALUE);
+await page.type('.new-todo', process.env.TODO_VALUE);
 ```
 
 ## Change input values
@@ -30,16 +30,16 @@ When QA Wolf captures your `type` actions, whatever you originally typed is incl
 In an example test on [TodoMVC](http://todomvc.com/examples/react), we typed `"create test!"` as our todo item in the first step of our test. The following code was then generated:
 
 ```js
-await page.type(selectors['1_what_needs_to_b_input'], 'create test!');
+await page.type('.new-todo', 'create test!');
 ```
 
 However, you may want to change this input value to something else. The simplest way to do this is to change the second argument to [`page.type`](https://github.com/microsoft/playwright/blob/master/docs/api.md#pagetypeselector-text-options) from the value you originally typed to your desired value:
 
 ```js
 // change this
-await page.type(selectors['1_what_needs_to_b_input'], 'create test!');
+await page.type('.new-todo', 'create test!');
 // to this
-await page.type(selectors['1_what_needs_to_b_input'], ':)');
+await page.type('.new-todo', ':)');
 ```
 
 Note that you can edit your code [as your test is created](create_a_test#review-test-code), or after you've completed it.
@@ -50,9 +50,9 @@ You can also configure your tests to input dynamic values with [JavaScript](http
 
 ```js
 // change this
-await page.type(selectors['1_what_needs_to_b_input'], 'create test!');
+await page.type('.new-todo', 'create test!');
 // to this
-await page.type(selectors['1_what_needs_to_b_input'], new Date().toString());
+await page.type('.new-todo', new Date().toString());
 ```
 
 ## Use environment variables
@@ -61,9 +61,9 @@ Rather than pass an input value directly to [`page.type`](https://github.com/mic
 
 ```js
 // change this
-await page.type(selectors['1_what_needs_to_b_input'], 'secret value');
+await page.type('.new-todo', 'secret value');
 // to this
-await page.type(selectors['1_what_needs_to_b_input'], process.env.TODO_VALUE);
+await page.type('.new-todo', process.env.TODO_VALUE);
 ```
 
 You can then run your test again, passing the appropriate environment variable. It will now type the value of your environment variable in the first step:
