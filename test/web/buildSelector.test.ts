@@ -25,20 +25,22 @@ describe('buildSelector', () => {
     const targetSelector = (isArray ? options[0] : options) as string;
     const expectedSelector = (isArray ? options[1] : options) as string;
     const isClick = typeof options[2] === 'boolean' ? options[2] : true;
+    const attribute = typeof options[3] === 'string' ? options[3] : undefined;
 
     const element = await page.$(targetSelector);
 
     const builtSelector = await page.evaluate(
-      ({ element, isClick }) => {
+      ({ attribute, element, isClick }) => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
         const target = qawolf.getClickableAncestor(element as HTMLElement);
 
         return qawolf.buildSelector({
+          attribute,
           isClick,
           target,
         });
       },
-      { element, isClick },
+      { attribute, element, isClick },
     );
 
     expect(builtSelector).toEqual(expectedSelector);
@@ -86,7 +88,7 @@ describe('buildSelector', () => {
 
       it.each([
         // selects the target
-        ['[data-qa="html-button"]'],
+        [['[data-qa="html-button"]', '[data-qa="html-button"]']],
         // selects the ancestor
         [['#html-button-child', '[data-qa="html-button-with-children"]']],
         [['.MuiButton-label', '[data-qa="material-button"]']],
@@ -167,11 +169,15 @@ describe('buildSelector', () => {
             '[data-qa="content-editable"]',
             false,
           ],
+        ],
+        [
           [
             '[data-qa="draftjs"] [contenteditable="true"]',
             '[data-qa="draftjs"] [contenteditable="true"]',
             false,
           ],
+        ],
+        [
           [
             '[data-qa="quill"] [contenteditable="true"]',
             '[data-qa="quill"] [contenteditable="true"]',
@@ -208,32 +214,30 @@ describe('buildSelector', () => {
       ])('builds expected selector %o', (selector) => expectSelector(selector));
     });
 
-    //   describe('regex attributes', () => {
-    //     beforeAll(async () => {
-    //       await page.goto(`${TEST_URL}nested-data-attributes`);
-    //     });
+    describe('regex attributes', () => {
+      beforeAll(() => page.goto(`${TEST_URL}nested-data-attributes`));
 
-    //     it('builds selector based of an attribute regex', async () => {
-    //       const selector = await buildCssSelector('#button', true, '/^data-.*/');
-    //       expect(selector).toBe("[data-test='click'] [data-qa='button']");
-    //     });
-
-    //     it('ignores attributes that do not match regex', async () => {
-    //       const selector = await buildCssSelector('#button', true, '/^qa-.*/,id');
-    //       expect(selector).toBe("[id='button']");
-
-    //       const selector2 = await buildCssSelector('#button', true, '/^qa-.*/');
-    //       expect(selector2).toBeUndefined();
-    //     });
-
-    //     it('ignores invalid regex', async () => {
-    //       const selector = await buildCssSelector(
-    //         '#button',
-    //         true,
-    //         '/[/,/^data-.*/',
-    //       );
-    //       expect(selector).toBe("[data-test='click'] [data-qa='button']");
-    //     });
-    //   });
+      it.each([
+        [
+          [
+            '#button',
+            '[data-test="click"] [data-qa="button"]',
+            true,
+            '/^data-.*/',
+          ],
+        ],
+        // ignore non-matching attributes
+        [['#button', '#button', true, '/^qa-.*/']],
+        // ignore invalid regex
+        [
+          [
+            '#button',
+            '[data-test="click"] [data-qa="button"]',
+            true,
+            '/[/,/^data-.*/',
+          ],
+        ],
+      ])('builds expected selector %o', (selector) => expectSelector(selector));
+    });
   });
 });
