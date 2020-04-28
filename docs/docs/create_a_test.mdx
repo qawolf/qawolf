@@ -56,28 +56,20 @@ Now go through the steps you want to test. In our example, we 1) create a todo i
 
 See the video below for an example:
 
+TODO: UPDATE VIDEO
+
 <YouTubeVideo src="https://www.youtube.com/embed/KP4tpilrOOE" />
 
 ## Review the code
 
-You'll notice that a folder called `.qawolf` was created in your project. This folder stores your QA Wolf tests and has the following structure:
-
-```bash
-.qawolf # project directory
-├── myTest.test.js
-├── selectors
-│   └── myTest.json
-```
-
-Let's open the `.qawolf/myTest.test.js` file, which contains your test code. We'll explain the `.qawolf/selectors/myTest.json` file a bit later.
+You'll notice that a folder called `.qawolf` was created in your project. This folder stores your QA Wolf tests, and should contain your test file `myTest.test.js`. Let's open the `.qawolf/myTest.test.js` file and review the test code.
 
 ### Imports
 
-The test requires the `qawolf` library, which is built on top of [Microsoft's Playwright](https://github.com/microsoft/playwright) library. It also requires the selectors file, which we'll get to later:
+The test first requires the `qawolf` library, which is built on top of [Microsoft's Playwright](https://github.com/microsoft/playwright) library:
 
 ```js
 const qawolf = require('qawolf');
-const selectors = require('./selectors/myTest.json');
 ```
 
 ### beforeAll
@@ -96,9 +88,22 @@ beforeAll(async () => {
 });
 ```
 
+### afterAll
+
+After the test finishes running, the browser is closed in the [Jest `afterAll` block](https://jestjs.io/docs/en/api#afterallfn-timeout). If a video of your test is being recorded, the recording stops and the video is saved.
+
+```js
+afterAll(async () => {
+  await qawolf.stopVideos();
+  await browser.close();
+});
+```
+
 ### test
 
 The test itself is contained in a [Jest `test` block](https://jestjs.io/docs/en/api#testname-fn-timeout) with the name you specified (`"myTest"` in our example). The test first navigates to the specified URL. Then it repeats the actions that you took. In our case, it clicks the todo input, types `create test!`, presses Enter, clicks to complete the todo, and clicks the clear completed todos button:
+
+TODO: UPDATE CODE
 
 ```js
 test('myTest', async () => {
@@ -114,29 +119,6 @@ test('myTest', async () => {
 
 The line `await qawolf.create();` at the end of your test is a placeholder for where new test code will be added if you continue to use the browser. This allows you to optionally edit your test code as you go along. When you finish creating a test, this line is removed.
 
-### afterAll
-
-After the test finishes running, the browser is closed in the [Jest `afterAll` block](https://jestjs.io/docs/en/api#afterallfn-timeout). If a video of your test is being recorded, the recording stops and the video is saved.
-
-```js
-afterAll(async () => {
-  await qawolf.stopVideos();
-  await browser.close();
-});
-```
-
-### Selectors file
-
-QA Wolf will inline a CSS Selector whenever it finds a [test attribute](use_custom_selectors#target-attributes) like `data-qa`. Otherwise it falls back to creating a default selector, stored in `.qawolf/selectors/myTest.json`.
-
-The `.qawolf/selectors/myTest.json` file contains information about each element that you interacted with (such as clicked or typed into). By default, QA Wolf stores all the [attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes) of each element and its two direct ancestors. By using all the information it can to find an element, QA Wolf helps make your test code robust to changes in your application.
-
-:::caution
-
-Avoid editing the selectors file. Learn about using custom selectors [in this guide](use_custom_selectors#add-test-attributes-to-application-code).
-
-:::
-
 ## Edit as you go
 
 The test code is created in real-time, so you can edit the test as you create it. When you save the test file, QA Wolf will re-run the test.
@@ -144,7 +126,7 @@ The test code is created in real-time, so you can edit the test as you create it
 :::tip
 
 - You can disable watch mode in [qawolf.config.js](config#watch) and the test will not re-run on save
-- You can comment out/in `await qawolf.create();` to turn code creation off/on
+- You can comment in/out `await qawolf.create();` to turn code creation on/off
 - You can move `await qawolf.create();` anywhere in your test
 
 :::
@@ -160,6 +142,8 @@ We recommend adding assertions with the [expect-playwright library](https://gith
 The first assertion we will add is to check that the text `"Clear completed"` appears after we complete our todo. Specifically, we will call expect-playwright's [`toHaveText` method](https://github.com/playwright-community/expect-playwright#tohavetext) to verify that the text appears on the page.
 
 In our test code, let's add a line to assert that the text `"Clear completed"` appears on the page:
+
+TODO: UPDATE CODE
 
 ```js
 // ...
@@ -214,7 +198,7 @@ Now let's return to the command line. You'll notice a few options here:
 - `🖥️ Open REPL to run code`: opens the [QA Wolf interactive REPL](use_the_repl) so you can try out code
 - `🗑️ Discard and Exit`: closes the browser without saving your test code
 
-Use the up and down arrow keys to choose between options. The default is `💾 Save and Exit`. Highlight this option and press `Enter` to save your test.
+Use the up and down arrow keys to choose between options. The default is `💾 Save and Exit`. Make sure this option is highlighted and press `Enter` to save your test.
 
 ## Next steps
 
