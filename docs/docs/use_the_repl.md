@@ -20,7 +20,7 @@ When you run the [`npx qawolf create` command](api/cli#npx-qawolf-create-url-nam
 - `🖥️ Open REPL to run code`: opens the QA Wolf interactive REPL so you can try out code
 - `🗑️ Discard and Exit`: closes the browser without saving your test code
 
-Use the up and down arrow keys to choose between options. To open the REPL, choose `🖥️ Open REPL to run code`.
+Use the up and down arrow keys to choose between options. To open the REPL, highlight `🖥️ Open REPL to run code` and press `Enter`.
 
 ## Run code in the REPL
 
@@ -64,15 +64,14 @@ When you are done using the REPL, type `.exit` in the command line. This will cl
 
 You can also open the REPL when editing a test. The [`repl` method](api/qawolf/repl) allows you to use the REPL to debug existing tests.
 
-Call `qawolf.repl` any number of times in your test code, passing whatever values you want to be able to access. The `context` and `qawolf` are passed by default, so you do not need to include them again:
+Call `qawolf.repl` any number of times in your test code, passing whatever values you want to be able to access. The `context`, `page`, and `qawolf` are included by default, so you do not need to pass them to `qawolf.repl`:
 
 ```js
 const qawolf = require('qawolf');
-const selectors = require('./selectors/myTestName.json');
 // ...
 
 test('myTestName', async () => {
-  await qawolf.repl({ selectors }); // already includes context and qawolf
+  await qawolf.repl();
 });
 ```
 
@@ -82,7 +81,7 @@ Run your test in [edit mode](edit_a_test):
 npx qawolf edit myTestName
 ```
 
-When the test encounters a `repl` call, it will pause and the REPL will open. The REPL will have access to whatever context you gave it. For example, you can access `selectors` if you included `selectors` when calling `repl`.
+When the test encounters a `repl` call, it will pause and the REPL will open.
 
 After you are done using the REPL, type `.exit` to continue running your test. Your test will proceed until it encounters another `repl` call or finishes running.
 
