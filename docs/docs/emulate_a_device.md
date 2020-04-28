@@ -18,7 +18,6 @@ npx qawolf create --device="iPad Mini" https://www.wikipedia.org searchTablet
 ```js
 const { devices } = require('playwright');
 const qawolf = require('qawolf');
-const selectors = require('./selectors/searchTablet.json');
 const device = devices['iPhone 7'];
 
 let browser;
@@ -64,7 +63,6 @@ The beginning of our test code (`.qawolf/searchTablet.test.js` in our example) l
 ```js
 const { devices } = require('playwright');
 const qawolf = require('qawolf');
-const selectors = require('./selectors/searchTablet.json');
 const device = devices['iPad Mini'];
 
 let browser;
@@ -95,7 +93,6 @@ For example, let's say we have a test that looks like this:
 
 ```js
 const qawolf = require('qawolf');
-const selectors = require('./selectors/searchTablet.json');
 
 let browser;
 let page;
@@ -118,7 +115,6 @@ In the example below we set `userAgent` to `devices["iPhone 7"].userAgent` and `
 ```js
 const { devices } = require('playwright');
 const qawolf = require('qawolf');
-const selectors = require('./selectors/searchTablet.json');
 const device = devices['iPhone 7'];
 
 let browser;
@@ -141,7 +137,6 @@ You can also specify a custom values for `userAgent` and `viewport`. This allows
 
 ```js
 const qawolf = require('qawolf');
-const selectors = require('./selectors/searchTablet.json');
 
 let browser;
 let page;
