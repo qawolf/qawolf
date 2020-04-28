@@ -112,32 +112,18 @@ describe('buildSelector', () => {
       ])('builds expected selector %o', (selector) => expectSelector(selector));
     });
 
-    //   describe('click: checkbox', () => {
-    //     beforeAll(async () => {
-    //       await page.goto(`${TEST_URL}checkbox-inputs`);
-    //     });
+    describe('click: checkbox', () => {
+      beforeAll(() => page.goto(`${TEST_URL}checkbox-inputs`));
 
-    //     it('selects the target checkbox/label', async () => {
-    //       const selector = await buildCssSelector('#single', true);
-    //       expect(selector).toBe("[data-qa='html-checkbox']");
-
-    //       const selector2 = await buildCssSelector(
-    //         '.MuiFormControlLabel-label',
-    //         true,
-    //       );
-    //       expect(selector2).toBe("[data-qa='material-checkbox']");
-    //     });
-
-    //     it('selects the ancestor group and descendant value', async () => {
-    //       const selector = await buildCssSelector('#dog', true);
-    //       expect(selector).toBe("[data-qa='html-checkbox-group'] [value='dog']");
-
-    //       const selector2 = await buildCssSelector('#blue', true);
-    //       expect(selector2).toBe(
-    //         "[data-qa='material-checkbox-group'] [value='blue']",
-    //       );
-    //     });
-    //   });
+      it.each([
+        // target checkbox/label
+        [['#single', '[data-qa="html-checkbox"]']],
+        [['.MuiFormControlLabel-label', '[data-qa="material-checkbox"]']],
+        // ancestor group and descendant
+        [['#dog', '[data-qa="html-checkbox-group"] #dog']],
+        [['#blue', '[data-qa="material-checkbox-group"] #blue']],
+      ])('builds expected selector %o', (selector) => expectSelector(selector));
+    });
 
     //   describe('type: input', () => {
     //     beforeAll(async () => {
