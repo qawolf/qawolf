@@ -6,11 +6,11 @@ await qawolf.create();"
 `;
 
 exports[`CodeReconciler.reconcile updates the last expression 1`] = `
-"await page.click(\\"#username\\");
+"await page.click('#username');
 "
 `;
 
 exports[`CodeReconciler.reconcile updates the last expression after a step was removed (ex: paste) 1`] = `
-"await page.click(\\"#username\\");
+"await page.click('#username');
 "
 `;
