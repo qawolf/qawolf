@@ -13,6 +13,7 @@ const allowedWords = new Set([
   'li',
   'login',
   'logout',
+  'mui',
   'nav',
   'signin',
   'signout',

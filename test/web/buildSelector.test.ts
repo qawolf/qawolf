@@ -125,31 +125,30 @@ describe('buildSelector', () => {
       ])('builds expected selector %o', (selector) => expectSelector(selector));
     });
 
-    //   describe('type: input', () => {
-    //     beforeAll(async () => {
-    //       await page.goto(`${TEST_URL}text-inputs`);
-    //     });
+    describe('type: input', () => {
+      beforeAll(() => page.goto(`${TEST_URL}text-inputs`));
 
-    //     it('select the target input/textarea', async () => {
-    //       const selector = await buildCssSelector('[type="password"]');
-    //       expect(selector).toBe("[data-qa='html-password-input']");
-
-    //       const selector2 = await buildCssSelector('textarea');
-    //       expect(selector2).toBe("[data-qa='html-textarea']");
-    //     });
-
-    //     it('selects the ancestor and descendant input/textarea', async () => {
-    //       const selector = await buildCssSelector(
-    //         '[data-qa="material-text-input"] input',
-    //       );
-    //       expect(selector).toBe("[data-qa='material-text-input'] input");
-
-    //       const selector2 = await buildCssSelector(
-    //         "[data-qa='material-textarea'] textarea",
-    //       );
-    //       expect(selector2).toBe("[data-qa='material-textarea'] textarea");
-    //     });
-    //   });
+      it.each([
+        // target input/textarea
+        [['[type="password"]', '[data-qa="html-password-input"]', false]],
+        [['textarea', '[data-qa="html-textarea"]', false]],
+        // ancestor and descendant
+        [
+          [
+            '[data-qa="material-text-input"] input',
+            '[data-qa="material-text-input"] .MuiInputBase-input',
+            false,
+          ],
+        ],
+        [
+          [
+            '[data-qa="material-textarea"] textarea',
+            '[data-qa="material-textarea"] .MuiInputBase-input',
+            false,
+          ],
+        ],
+      ])('builds expected selector %o', (selector) => expectSelector(selector));
+    });
 
     //   describe('type: content editable', () => {
     //     beforeAll(async () => {
