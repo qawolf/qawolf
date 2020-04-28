@@ -50,7 +50,7 @@ describe('buildSelector', () => {
     it.each([
       '#nav-hamburger-menu',
       '[name="field-keywords"]',
-      'text="Cart"',
+      'text="Start here."',
     ])('builds expected selector %o', (selector) => expectSelector(selector));
   });
 
