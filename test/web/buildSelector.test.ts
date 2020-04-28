@@ -150,26 +150,29 @@ describe('buildSelector', () => {
       ])('builds expected selector %o', (selector) => expectSelector(selector));
     });
 
-    //   describe('type: content editable', () => {
-    //     beforeAll(async () => {
-    //       await page.goto(`${TEST_URL}content-editables`);
-    //     });
+    describe('type: content editable', () => {
+      beforeAll(() => page.goto(`${TEST_URL}content-editables`));
 
-    //     it('selects the ancestor and descendant content editable', async () => {
-    //       const selector = await buildCssSelector("[data-qa='content-editable']");
-    //       expect(selector).toBe("[data-qa='content-editable']");
-
-    //       const selector2 = await buildCssSelector(
-    //         "[data-qa='draftjs'] [contenteditable='true']",
-    //       );
-    //       expect(selector2).toBe("[data-qa='draftjs'] [contenteditable='true']");
-
-    //       const selector3 = await buildCssSelector(
-    //         "[data-qa='quill'] [contenteditable='true']",
-    //       );
-    //       expect(selector3).toBe("[data-qa='quill'] [contenteditable='true']");
-    //     });
-    //   });
+      it.each([
+        [
+          [
+            '[data-qa="content-editable"]',
+            '[data-qa="content-editable"]',
+            false,
+          ],
+          [
+            '[data-qa="draftjs"] [contenteditable="true"]',
+            '[data-qa="draftjs"] [contenteditable="true"]',
+            false,
+          ],
+          [
+            '[data-qa="quill"] [contenteditable="true"]',
+            '[data-qa="quill"] [contenteditable="true"]',
+            false,
+          ],
+        ],
+      ])('builds expected selector %o', (selector) => expectSelector(selector));
+    });
 
     //   describe('select', () => {
     //     beforeAll(async () => {
