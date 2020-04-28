@@ -103,10 +103,10 @@ You can edit element selectors as you create your test, since the [test code is 
 
 Playwright supports a few types of selectors. We discuss [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) and text selectors in this guide.
 
-- CSS selectors find the element matching the CSS selector, for example: `#my-id`, `.my-class`, `div.my-class`
-- Text selectors find the element that contains the given text
+- CSS selectors find the element matching the [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors), for example: `#my-id`, `.my-class`, `[aria-label="home"]`
+- Text selectors find the element that contains the given text, for example: `text="Click me!"`
 
-In your test code, replace the default selector (like `selectors['0_submit']`) with a string containing your selector. Prefix text selectors with `text=`. For example:
+In your test code, replace the default selector with your desired CSS or text selector. Prefix text selectors with `text=`. For example:
 
 ```js
 // change this

@@ -45,7 +45,6 @@ TODO: UPDATE CODE
 
 ```js
 const qawolf = require('qawolf');
-const selectors = require('./selectors/myFirstTest.json');
 
 let browser;
 let page;

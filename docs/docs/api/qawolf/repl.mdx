@@ -26,15 +26,14 @@ Pause a running test and open the [interactive REPL](../../use_the_repl).
 
 ### Examples
 
-Call `repl` in your test code, passing whatever values you want to access in the REPL. The [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext) instance (`context`) and `qawolf` are included by default, so you do not need to include them again:
+Call `repl` in your test code, passing whatever values you want to access in the REPL. The [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext) instance (`context`), [Playwright `Page`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page) instance (`page`), and `qawolf` are included by default, so you do not need to include them again:
 
 ```js
 const qawolf = require('qawolf');
-const selectors = require('./selectors/myTestName.json');
 // ...
 
 test('myTestName', async () => {
-  await qawolf.repl({ selectors }); // already includes qawolf and context
+  await qawolf.repl(); // already includes context, page, and qawolf
 });
 ```
 
