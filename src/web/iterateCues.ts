@@ -39,7 +39,7 @@ export function* iterateCues(cues: Cue[]): Generator<Cue[], void, undefined> {
     .map((cue) => [cue]);
 
   // try ancestor attribute cues
-  for (let ancestorCue of ancestorCues.filter(
+  for (const ancestorCue of ancestorCues.filter(
     (cue) => cue.type === 'attribute',
   )) {
     for (const targetCue of targetCues) yield [ancestorCue, targetCue];
@@ -53,7 +53,7 @@ export function* iterateCues(cues: Cue[]): Generator<Cue[], void, undefined> {
     .map((cue) => [cue]);
 
   // try remaining ancestor cues
-  for (let type of CueTypesRanked.slice(1)) {
+  for (const type of CueTypesRanked.slice(1)) {
     // when we get to href, try the target cues alone since we skipped them earlier
     if (type === 'href') {
       yield* targetCues
@@ -62,7 +62,7 @@ export function* iterateCues(cues: Cue[]): Generator<Cue[], void, undefined> {
     }
 
     // try ancestor attribute cues
-    for (let ancestorCue of ancestorCues.filter((cue) => cue.type === type)) {
+    for (const ancestorCue of ancestorCues.filter((cue) => cue.type === type)) {
       for (const targetCue of targetCues) yield [ancestorCue, targetCue];
     }
   }
