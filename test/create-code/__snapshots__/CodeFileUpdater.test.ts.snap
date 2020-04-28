@@ -3,7 +3,7 @@
 exports[`CodeFileUpdater update saves code with new steps 1`] = `
 "  someCode();
   await page.click('text=\\"Log in\\"');
-  await page.click(\\"#username\\");
+  await page.click('#username');
   await qawolf.create();
   otherCode();"
 `;
@@ -11,11 +11,11 @@ exports[`CodeFileUpdater update saves code with new steps 1`] = `
 exports[`CodeFileUpdater update saves code with new steps 2`] = `
 "  someCode();
   await page.click('text=\\"Log in\\"');
-  await page.click(\\"#username\\");
-  await page.type(\\"#username\\", \\"tomsmith\\");
-  await page.press(\\"#username\\", \\"Tab\\");
-  await page.type(\\"#password\\", \\"SuperSecretPassword!\\");
-  await page.press(\\"#password\\", \\"Enter\\");
+  await page.click('#username');
+  await page.type('#username', \\"tomsmith\\");
+  await page.press('#username', \\"Tab\\");
+  await page.type('#password', \\"SuperSecretPassword!\\");
+  await page.press('#password', \\"Enter\\");
   await page.click('text=\\"Log out\\"');
   await qawolf.create();
   otherCode();"
