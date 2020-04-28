@@ -79,17 +79,19 @@ describe('buildSelector', () => {
       ])('builds expected selector %o', (selector) => expectSelector(selector));
     });
 
-    // describe('date pickers', () => {
-    //   beforeAll(() => page.goto(`${TEST_URL}date-pickers`));
+    describe('date pickers', () => {
+      beforeAll(() => page.goto(`${TEST_URL}date-pickers`));
 
-    //   it.each([
-    //     // selects the ancestor and clickable descendant
-    //     [
-    //       '[data-qa="material-date-picker"] path',
-    //       "[data-qa='material-date-picker'] button",
-    //     ],
-    //   ])('builds expected selector %o', (selector) => expectSelector(selector));
-    // });
+      it.each([
+        // selects the ancestor and clickable descendant
+        [
+          [
+            '[data-qa="material-date-picker"] path',
+            '[data-qa="material-date-picker"] [aria-label="change date"]',
+          ],
+        ],
+      ])('builds expected selector %o', (selector) => expectSelector(selector));
+    });
 
     //   it('returns html or body selector for target', async () => {
     //     throw new Error('buildSelector tests not implemented');
