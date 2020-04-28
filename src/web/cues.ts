@@ -110,18 +110,16 @@ const buildCuesForElement = ({
   isClick,
   level,
 }: BuildCuesForElement): Cue[] => {
-  const cues: Cue[] = [];
-
-  cues.push(...buildAttributeCues({ attributes, element, level }));
-  cues.push(
+  const cues: Cue[] = [
+    ...buildAttributeCues({ attributes, element, level }),
     ...buildAttributeCues({
       attributes: [...CSS_ATTRIBUTES],
       element,
       level,
       useAttributeName: true,
     }),
-  );
-  cues.push(...buildTextCues({ element, isClick, level }));
+    ...buildTextCues({ element, isClick, level }),
+  ];
 
   element.classList.forEach((c) => {
     if (isDynamic(c)) return;
