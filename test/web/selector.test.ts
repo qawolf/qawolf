@@ -11,7 +11,7 @@ describe('browser tests', () => {
   let page: Page;
 
   beforeAll(async () => {
-    browser = await launch({ headless: false, devtools: true });
+    browser = await launch();
     page = await browser.newPage();
     await page.addInitScript(webScript);
     await page.goto(`${TEST_URL}checkbox-inputs`);

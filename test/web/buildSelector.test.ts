@@ -43,7 +43,7 @@ describe('buildSelector', () => {
   };
 
   describe('amazon', () => {
-    beforeAll(() => page.goto(`${TEST_URL}/fixtures/amazon.html`));
+    beforeAll(() => page.goto(`${TEST_URL}fixtures/amazon.html`));
 
     it.each([
       '#nav-hamburger-menu',
@@ -53,7 +53,7 @@ describe('buildSelector', () => {
   });
 
   describe('todomvc', () => {
-    beforeAll(() => page.goto(`${TEST_URL}/fixtures/todomvc.html`));
+    beforeAll(() => page.goto(`${TEST_URL}fixtures/todomvc.html`));
 
     it.each([
       '[placeholder="What needs to be done?"]',
