@@ -71,39 +71,51 @@ describe('browser tests', () => {
     });
   });
 
+  describe('buildCues', () => {
+    const buildCues = async (selector: string): Promise<Cue[]> => {
+      return page.evaluate((selector) => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const target = document.querySelector(selector) as HTMLElement;
+
+        return qawolf.buildCues({ isClick: true, target });
+      }, selector);
+    };
+
+    it('builds cues for a target', async () => {
+      const cues = await buildCues('#single');
+      expect(cues).toMatchSnapshot();
+    });
+  });
+
   describe('buildCuesForElement', () => {
-    const buildCuesForElement = async (
-      selector: string,
-      attributes: string[],
-    ): Promise<Cue[]> => {
+    const buildCuesForElement = async (selector: string): Promise<Cue[]> => {
       return page.evaluate(
-        ({ attributes, selector }) => {
+        ({ selector }) => {
           const qawolf: QAWolfWeb = (window as any).qawolf;
           const element = document.querySelector(selector) as HTMLElement;
 
           return qawolf.buildCuesForElement({
-            attributes,
+            attributes: ['data-qa'],
             element,
             isClick: true,
             level: 1,
           });
         },
         {
-          attributes,
           selector,
         },
       );
     };
 
     it('builds cues for an element', async () => {
-      const cues = await buildCuesForElement('#single', ['data-qa']);
+      const cues = await buildCuesForElement('#single');
       expect(cues).toEqual([
         { level: 1, type: 'attribute', value: '[data-qa="html-checkbox"]' },
         { level: 1, type: 'id', value: '#single' },
         { level: 1, type: 'tag', value: 'input' },
       ]);
 
-      const cues2 = await buildCuesForElement('[for="single"]', ['data-qa']);
+      const cues2 = await buildCuesForElement('[for="single"]');
       expect(cues2).toEqual([
         { level: 1, type: 'for', value: '[for="single"]' },
         { level: 1, type: 'text', value: '"Single checkbox"' },
