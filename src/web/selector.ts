@@ -8,27 +8,6 @@ type IsMatch = {
   target: HTMLElement;
 };
 
-export const buildSelector = (options: BuildCues): string => {
-  if (['body', 'html'].includes(options.target.tagName.toLowerCase())) {
-    return `${options.target.tagName.toLowerCase()}`;
-  }
-
-  const cues = buildCues(options);
-
-  for (const cueGroup of combineCues(cues)) {
-    console.log('trying', cueGroup);
-    const selector = buildSelectorForCues(cueGroup);
-
-    if (isMatch({ selector, target: options.target })) {
-      const selectorString = toSelectorString(selector);
-      console.log('match', selectorString);
-      return selectorString;
-    }
-  }
-
-  return `xpath=${getXpath(options.target)}`;
-};
-
 export const isMatch = ({ selector, target }: IsMatch): boolean => {
   const result = querySelectorAll(selector, document.body);
 
@@ -53,4 +32,25 @@ export const toSelectorString = (selector: Selector[]): string => {
       return `${name}=${body}`;
     })
     .join(' >> ');
+};
+
+export const buildSelector = (options: BuildCues): string => {
+  if (['body', 'html'].includes(options.target.tagName.toLowerCase())) {
+    return `${options.target.tagName.toLowerCase()}`;
+  }
+
+  const cues = buildCues(options);
+
+  for (const cueGroup of combineCues(cues)) {
+    console.log('trying', cueGroup);
+    const selector = buildSelectorForCues(cueGroup);
+
+    if (isMatch({ selector, target: options.target })) {
+      const selectorString = toSelectorString(selector);
+      console.log('match', selectorString);
+      return selectorString;
+    }
+  }
+
+  return `xpath=${getXpath(options.target)}`;
 };

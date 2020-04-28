@@ -87,21 +87,46 @@ export const buildAttributeCues = ({
   return cues;
 };
 
-export const buildCues = ({ attribute, isClick, target }: BuildCues): Cue[] => {
-  const attributes = (attribute || DEFAULT_ATTRIBUTE).split(',');
+export const buildCueValueForTag = (element: HTMLElement): string => {
+  const tagName = element.tagName.toLowerCase();
+  if (!element.parentElement) return tagName;
 
-  const cues: Cue[] = [];
-  let element: HTMLElement = target;
-  let level = 0;
+  const siblings = element.parentElement.children;
+  const sameTagSiblings: HTMLElement[] = [];
 
-  while (element) {
-    cues.push(...buildCuesForElement({ attributes, element, isClick, level }));
-
-    element = element.parentElement;
-    level += 1;
+  for (const sibling of siblings) {
+    if (sibling.tagName.toLowerCase() === tagName) {
+      sameTagSiblings.push(sibling as HTMLElement);
+    }
   }
 
-  return cues;
+  if (sameTagSiblings.length < 2) {
+    return tagName;
+  }
+
+  const nthIndex = sameTagSiblings.indexOf(element) + 1;
+
+  return `${tagName}:nth-of-type(${nthIndex})`;
+};
+
+export const buildTextCues = ({
+  element,
+  isClick,
+  level,
+}: BuildTextCues): Cue[] => {
+  if (!isClick) return [];
+
+  let text = element.innerText.trim();
+
+  if (
+    element instanceof HTMLInputElement &&
+    (element.type === 'submit' || element.type === 'button')
+  )
+    text = element.value;
+
+  if (text.length > 200 || text.match(/[\n\r\t]+/)) return [];
+
+  return [{ level, type: 'text', value: JSON.stringify(text) }];
 };
 
 const buildCuesForElement = ({
@@ -136,26 +161,21 @@ const buildCuesForElement = ({
   return cues;
 };
 
-export const buildCueValueForTag = (element: HTMLElement): string => {
-  const tagName = element.tagName.toLowerCase();
-  if (!element.parentElement) return tagName;
+export const buildCues = ({ attribute, isClick, target }: BuildCues): Cue[] => {
+  const attributes = (attribute || DEFAULT_ATTRIBUTE).split(',');
 
-  const siblings = element.parentElement.children;
-  const sameTagSiblings: HTMLElement[] = [];
+  const cues: Cue[] = [];
+  let element: HTMLElement = target;
+  let level = 0;
 
-  for (let sibling of siblings) {
-    if (sibling.tagName.toLowerCase() === tagName) {
-      sameTagSiblings.push(sibling as HTMLElement);
-    }
+  while (element) {
+    cues.push(...buildCuesForElement({ attributes, element, isClick, level }));
+
+    element = element.parentElement;
+    level += 1;
   }
 
-  if (sameTagSiblings.length < 2) {
-    return tagName;
-  }
-
-  const nthIndex = sameTagSiblings.indexOf(element) + 1;
-
-  return `${tagName}:nth-of-type(${nthIndex})`;
+  return cues;
 };
 
 export const buildSelectorForCues = (cues: Cue[]): Selector[] => {
@@ -185,24 +205,4 @@ export const buildSelectorForCues = (cues: Cue[]): Selector[] => {
   });
 
   return selector;
-};
-
-export const buildTextCues = ({
-  element,
-  isClick,
-  level,
-}: BuildTextCues): Cue[] => {
-  if (!isClick) return [];
-
-  let text = element.innerText.trim();
-
-  if (
-    element instanceof HTMLInputElement &&
-    (element.type === 'submit' || element.type === 'button')
-  )
-    text = element.value;
-
-  if (text.length > 200 || text.match(/[\n\r\t]+/)) return [];
-
-  return [{ level, type: 'text', value: JSON.stringify(text) }];
 };

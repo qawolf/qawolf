@@ -26,25 +26,6 @@ export const deserializeRegex = (regexString: string): RegExp | null => {
   }
 };
 
-export const getAttribute = ({
-  attribute,
-  element,
-}: GetAttribueValue): AttributeValuePair | null => {
-  const isRegex = attribute[0] === '/';
-
-  if (isRegex) {
-    return getRegexAttribute({
-      element,
-      regexString: attribute,
-    });
-  }
-
-  const value = element.getAttribute(attribute);
-  if (!value) return null;
-
-  return { name: attribute, value };
-};
-
 export const getRegexAttribute = ({
   element,
   regexString,
@@ -63,4 +44,23 @@ export const getRegexAttribute = ({
   }
 
   return null;
+};
+
+export const getAttribute = ({
+  attribute,
+  element,
+}: GetAttribueValue): AttributeValuePair | null => {
+  const isRegex = attribute[0] === '/';
+
+  if (isRegex) {
+    return getRegexAttribute({
+      element,
+      regexString: attribute,
+    });
+  }
+
+  const value = element.getAttribute(attribute);
+  if (!value) return null;
+
+  return { name: attribute, value };
 };

@@ -35,10 +35,10 @@ export class CuePermutations {
     );
   }
 
-  *_iterateType(type: string) {
+  *_iterateType(type: string): Generator<Cue[]> {
     const cuesForType = this._cues.filter((cue) => cue.type === type);
 
-    for (let cue of cuesForType) {
+    for (const cue of cuesForType) {
       // try the target cue alone
       if (cue.level === 0) yield [cue];
 
@@ -52,21 +52,21 @@ export class CuePermutations {
     }
   }
 
-  *iterate() {
+  *iterate(): Generator<Cue[]> {
     // try attribute cues first
-    for (let cueGroup of this._iterateType(CueTypeRank[0])) yield cueGroup;
+    for (const cueGroup of this._iterateType(CueTypeRank[0])) yield cueGroup;
 
     // try each target cue on its own
-    for (let targetCue of this._targetCues) yield [targetCue];
+    for (const targetCue of this._targetCues) yield [targetCue];
 
     // try each type of cue in order of rank
-    for (let type of CueTypeRank.slice(1)) {
-      for (let cueGroup of this._iterateType(type)) yield cueGroup;
+    for (const type of CueTypeRank.slice(1)) {
+      for (const cueGroup of this._iterateType(type)) yield cueGroup;
     }
   }
 }
 
-export const combineCues = (cues: Cue[]) => {
+export const combineCues = (cues: Cue[]): Generator<Cue[]> => {
   const permutations = new CuePermutations(cues);
   return permutations.iterate();
 };
