@@ -100,30 +100,17 @@ describe('buildSelector', () => {
       ])('builds expected selector %o', (selector) => expectSelector(selector));
     });
 
-    //   describe('click: radio', () => {
-    //     beforeAll(async () => {
-    //       await page.goto(`${TEST_URL}radio-inputs`);
-    //     });
+    describe('click: radio', () => {
+      beforeAll(() => page.goto(`${TEST_URL}radio-inputs`));
 
-    //     it('selects the target radio button/label', async () => {
-    //       const selector = await buildCssSelector('#single', true);
-    //       expect(selector).toBe("[data-qa='html-radio']");
-
-    //       const selector2 = await buildCssSelector(
-    //         '.MuiFormControlLabel-label',
-    //         true,
-    //       );
-    //       expect(selector2).toBe("[data-qa='material-radio']");
-    //     });
-
-    //     it('selects the ancestor group and descendant value', async () => {
-    //       const selector = await buildCssSelector('#dog', true);
-    //       expect(selector).toBe("[data-qa='html-radio-group'] [value='dog']");
-
-    //       const selector2 = await buildCssSelector('#blue', true);
-    //       expect(selector2).toBe("[data-qa='material-radio-group'] [value='blue']");
-    //     });
-    //   });
+      it.each([
+        [['#single', '[data-qa="html-radio"]']],
+        [['.MuiFormControlLabel-label', '[data-qa="material-radio"]']],
+        // ancestor group and descendant
+        [['#dog', '[data-qa="html-radio-group"] #dog']],
+        [['#blue', '[data-qa="material-radio-group"] #blue']],
+      ])('builds expected selector %o', (selector) => expectSelector(selector));
+    });
 
     //   describe('click: checkbox', () => {
     //     beforeAll(async () => {
