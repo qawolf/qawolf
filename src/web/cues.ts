@@ -136,7 +136,7 @@ const buildCuesForElement = ({
   return cues;
 };
 
-const buildCueValueForTag = (element: HTMLElement): string => {
+export const buildCueValueForTag = (element: HTMLElement): string => {
   const tagName = element.tagName.toLowerCase();
   if (!element.parentElement) return tagName;
 

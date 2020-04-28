@@ -26,6 +26,7 @@ export const isClickable = (
 ): boolean => {
   // assume it is clickable if the cursor is a pointer
   const clickable = computedStyle.cursor === 'pointer';
+
   return clickable && isVisible(element, computedStyle);
 };
 

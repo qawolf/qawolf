@@ -31,9 +31,11 @@ describe('buildSelector', () => {
     const builtSelector = await page.evaluate(
       ({ element, isClick }) => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
+        const target = qawolf.getClickableAncestor(element as HTMLElement);
+
         return qawolf.buildSelector({
           isClick,
-          target: element as HTMLElement,
+          target,
         });
       },
       { element, isClick },
@@ -64,30 +66,30 @@ describe('buildSelector', () => {
     ])('builds expected selector %s', (selector) => expectSelector(selector));
   });
 
-  describe.skip('sandbox', () => {
+  describe('sandbox', () => {
     describe('buttons', () => {
       beforeAll(() => page.goto(`${TEST_URL}buttons`));
 
       it.each([
         // selects the target
-        '[data-qa="html-button"]',
+        ['[data-qa="html-button"]'],
         // selects the ancestor
-        ['#html-button-child', '[data-qa="html-button-with-children"]'],
-        ['.MuiButton-label', '[data-qa="material-button"]'],
+        [['#html-button-child', '[data-qa="html-button-with-children"]']],
+        [['.MuiButton-label', '[data-qa="material-button"]']],
       ])('builds expected selector %o', (selector) => expectSelector(selector));
     });
 
-    describe('date pickers', () => {
-      beforeAll(() => page.goto(`${TEST_URL}date-pickers`));
+    // describe('date pickers', () => {
+    //   beforeAll(() => page.goto(`${TEST_URL}date-pickers`));
 
-      it.each([
-        // selects the ancestor and clickable descendant
-        [
-          '[data-qa="material-date-picker"] path',
-          "[data-qa='material-date-picker'] button",
-        ],
-      ])('builds expected selector %o', (selector) => expectSelector(selector));
-    });
+    //   it.each([
+    //     // selects the ancestor and clickable descendant
+    //     [
+    //       '[data-qa="material-date-picker"] path',
+    //       "[data-qa='material-date-picker'] button",
+    //     ],
+    //   ])('builds expected selector %o', (selector) => expectSelector(selector));
+    // });
 
     //   it('returns html or body selector for target', async () => {
     //     throw new Error('buildSelector tests not implemented');
