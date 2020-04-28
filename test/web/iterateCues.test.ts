@@ -10,7 +10,7 @@ describe('iterate cues', () => {
     const iterated = Array.from(iterateCues(cues));
     expect(
       iterated.map((cues) => cues.map((c) => `${c.level}${c.type}`)),
-    ).toMatchInlineSnapshot([
+    ).toEqual([
       ['0attribute'],
       ['1attribute', '0attribute'],
       ['1attribute', '0id'],
