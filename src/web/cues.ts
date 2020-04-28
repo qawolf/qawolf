@@ -1,6 +1,9 @@
 import { getAttribute } from './attribute';
 import { isDynamic } from './isDynamic';
 
+const DEFAULT_ATTRIBUTE =
+  'data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/';
+
 // make sure to update CueTypeRank if editing this
 const CSS_ATTRIBUTES = [
   'alt',
@@ -40,7 +43,7 @@ type BuildAttributeCues = {
 };
 
 export type BuildCues = {
-  attributes: string[];
+  attribute?: string;
   isClick: boolean;
   target: HTMLElement;
 };
@@ -84,11 +87,9 @@ export const buildAttributeCues = ({
   return cues;
 };
 
-export const buildCues = ({
-  attributes,
-  isClick,
-  target,
-}: BuildCues): Cue[] => {
+export const buildCues = ({ attribute, isClick, target }: BuildCues): Cue[] => {
+  const attributes = (attribute || DEFAULT_ATTRIBUTE).split(',');
+
   const cues: Cue[] = [];
   let element: HTMLElement = target;
   let level = 0;

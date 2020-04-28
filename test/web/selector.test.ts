@@ -21,14 +21,6 @@ describe('browser tests', () => {
     browser.close();
   });
 
-  describe('buildSelector', () => {
-    it('returns html or body selector for target', async () => {
-      throw new Error('buildSelector tests not implemented');
-    });
-
-    // TODO: add more tests
-  });
-
   describe('isMatch', () => {
     const isMatch = async (
       selector: Selector[],
