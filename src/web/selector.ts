@@ -1,4 +1,4 @@
-import { combineCues } from './combineCues';
+import { iterateCues } from './iterateCues';
 import { buildCues, buildSelectorForCues, BuildCues, Selector } from './cues';
 import { querySelectorAll } from './playwrightEvaluator';
 import { getXpath } from './serialize';
@@ -41,7 +41,7 @@ export const buildSelector = (options: BuildCues): string => {
 
   const cues = buildCues(options);
 
-  for (const cueGroup of combineCues(cues)) {
+  for (const cueGroup of iterateCues(cues)) {
     console.log('trying', cueGroup);
     const selector = buildSelectorForCues(cueGroup);
 
