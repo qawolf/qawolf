@@ -174,23 +174,20 @@ describe('buildSelector', () => {
       ])('builds expected selector %o', (selector) => expectSelector(selector));
     });
 
-    //   describe('select', () => {
-    //     beforeAll(async () => {
-    //       await page.goto(`${TEST_URL}selects`);
-    //     });
+    describe('select', () => {
+      beforeAll(() => page.goto(`${TEST_URL}selects`));
 
-    //     it('selects the target select', async () => {
-    //       const selector = await buildCssSelector("[data-qa='html-select']");
-    //       expect(selector).toBe("[data-qa='html-select']");
-    //     });
-
-    //     it('selects the target and descendant select', async () => {
-    //       const selector = await buildCssSelector(
-    //         "[data-qa='material-select-native'] select",
-    //       );
-    //       expect(selector).toBe("[data-qa='material-select-native'] select");
-    //     });
-    //   });
+      it.each([
+        [['[data-qa="html-select"]', '[data-qa="html-select"]']],
+        // target and descendant
+        [
+          [
+            '[data-qa="material-select-native"] select',
+            '[data-qa="material-select-native"] #material-select-native',
+          ],
+        ],
+      ])('builds expected selector %o', (selector) => expectSelector(selector));
+    });
 
     //   describe('nested data attributes', () => {
     //     beforeAll(async () => {
