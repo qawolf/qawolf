@@ -41,6 +41,8 @@ Let's say we want to update our test on [TodoMVC](http://todomvc.com/examples/re
 
 For reference, our test code is saved at `.qawolf/myFirstTest.test.js` and looks like this:
 
+TODO: UPDATE CODE
+
 ```js
 const qawolf = require('qawolf');
 const selectors = require('./selectors/myFirstTest.json');
@@ -74,6 +76,8 @@ Let's update our test to create a second todo item after the first. To do this, 
 
 In your test code, call `qawolf.create` in your [Jest `test` block](https://jestjs.io/docs/en/api#testname-fn-timeout). Our test code now looks like this:
 
+TODO: UPDATE CODE
+
 ```js
 // ...
 test('myFirstTest', async () => {
@@ -97,6 +101,8 @@ npx qawolf edit myFirstTest
 
 The first few steps of our test will now run. For TodoMVC, this means that the first todo item will be created. The test will then pause where `qawolf.create` is called.
 
+TODO: UPDATE CODE
+
 ```js
 // ...
 test('myFirstTest', async () => {
@@ -111,6 +117,8 @@ test('myFirstTest', async () => {
 ```
 
 Any actions you take in the browser will be converted to code and inserted where `await qawolf.create();` is. To add a second todo item, let's 1) click on the todo input to focus it, 2) type `update test!`, and 3) press `Enter` to save the todo. Our test code now looks like this:
+
+TODO: UPDATE CODE
 
 ```js
 // ...
@@ -152,10 +160,10 @@ module.exports = {
 };
 ```
 
-To run your test in watch mode, use the [`npx qawolf edit` command](api/cli#npx-qawolf-edit-name). Pass it a string that matches exactly one test file name. For example, `myFirstTest` will match `.qawolf/myFirstTest.test.js`:
+To run your test in watch mode, use the [`npx qawolf edit` command](api/cli#npx-qawolf-edit-name). Pass it a string that matches exactly one test file name. For example, `myTest` will match `.qawolf/myTest.test.js`:
 
 ```bash
-npx qawolf edit myFirstTest
+npx qawolf edit myTest
 ```
 
 Now your test will re-run automatically whenever you edit your test file and save it. To exit edit mode, type `Control` + `C` in the command line.
