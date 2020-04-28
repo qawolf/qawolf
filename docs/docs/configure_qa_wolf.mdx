@@ -30,7 +30,7 @@ specified in the default generated file.
 
 ```js
 module.exports = {
-  // attributes to use as inline selectors
+  // element attributes to use in selectors whenever possible
   attribute: 'data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/',
   // set jest config
   config: 'node_modules/qawolf/js-jest.config.json',
@@ -53,7 +53,7 @@ Below we go through the values that can be configured. Each of them is optional.
 
 ### attribute
 
-The `attribute` key in `qawolf.config.json` allows you to choose which attributes to use as inline selectors in the generated code.
+The `attribute` key in `qawolf.config.json` allows you to choose which attributes to prefer in the generated test code. QA Wolf will generate [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) targeting these attributes whenever possible.
 
 **Default:** `'data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/'`
 
