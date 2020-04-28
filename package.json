@@ -24,7 +24,7 @@
     "watch:tsc": "tsc -w -p tsconfig.release.json",
     "watch:web": "rollup --watch --config src/rollup.ts",
     "watch": "npm run clean && concurrently --kill-others \"npm run watch:tsc\" \"npm run watch:web\"",
-    "lint": "eslint . --ext .ts,.tsx --config .eslintrc.json --no-eslintrc",
+    "lint": "eslint --ext .ts,.tsx --config .eslintrc.json --no-eslintrc src",
     "postinstall": "node ./postInstallMessage.js",
     "release": "np --no-cleanup",
     "test": "jest",
@@ -66,7 +66,7 @@
     "update-notifier": "^4.1.0"
   },
   "devDependencies": {
-    "@qawolf/sandbox": "0.1.8",
+    "@qawolf/sandbox": "0.1.9",
     "@rollup/plugin-commonjs": "^11.1.0",
     "@rollup/plugin-json": "^4.0.3",
     "@rollup/plugin-node-resolve": "^7.1.3",
