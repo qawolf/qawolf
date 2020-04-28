@@ -48,14 +48,20 @@ describe('WatchPlugin', () => {
 
       const triggerTest = jest.spyOn(plugin, '_triggerTest');
 
-      // should ignore the first call since no code has changed
+      // should ignore the call since no code has changed
       await plugin._onWatchChange('test.js');
       expect(plugin._server.stopTest).toHaveBeenCalledTimes(0);
       expect(triggerTest).toHaveBeenCalledTimes(0);
 
+      // should ignore the call since 100ms has not passed from the code change
       mockedReadFile.mockResolvedValue('changed');
       await plugin._onWatchChange('test.js');
+      expect(plugin._server.stopTest).toHaveBeenCalledTimes(0);
+      expect(triggerTest).toHaveBeenCalledTimes(0);
 
+      // should re-run the test since 100ms passed from the code change
+      plugin._lastCodeUpdate -= 100;
+      await plugin._onWatchChange('test.js');
       expect(plugin._server.stopTest).toHaveBeenCalledTimes(1);
       expect(triggerTest).toHaveBeenCalledTimes(1);
     });
