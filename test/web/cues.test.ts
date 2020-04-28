@@ -71,6 +71,37 @@ describe('browser tests', () => {
     });
   });
 
+  describe('buildCueValueForTag', () => {
+    const buildCueValueForTag = async (selector: string): Promise<string> => {
+      return page.evaluate((selector) => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const element = document.querySelector(selector) as HTMLElement;
+
+        return qawolf.buildCueValueForTag(element);
+      }, selector);
+    };
+
+    it('returns tag name if no parent element', async () => {
+      const value = await buildCueValueForTag('html');
+      expect(value).toBe('html');
+    });
+
+    it('returns tag name if element has no siblings', async () => {
+      const value = await buildCueValueForTag('.container h3');
+      expect(value).toBe('h3');
+    });
+
+    it('returns tag name if element is first child', async () => {
+      const value = await buildCueValueForTag('[for="single"]');
+      expect(value).toBe('label');
+    });
+
+    it('returns nth-of-type tag if element is a lower sibling', async () => {
+      const value = await buildCueValueForTag('[for="another"]');
+      expect(value).toBe('label:nth-of-type(2)');
+    });
+  });
+
   describe('buildTextCues', () => {
     afterAll(() => page.goto(`${TEST_URL}checkbox-inputs`));
 

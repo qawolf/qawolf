@@ -105,6 +105,7 @@ export const buildCueValueForTag = (element: HTMLElement): string => {
   }
 
   const nthIndex = sameTagSiblings.indexOf(element) + 1;
+  if (nthIndex === 1) return tagName;
 
   return `${tagName}:nth-of-type(${nthIndex})`;
 };

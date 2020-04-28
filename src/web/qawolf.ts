@@ -1,5 +1,10 @@
 export { getAttribute, getRegexAttribute } from './attribute';
-export { buildAttributeCues, buildCues, buildTextCues } from './cues';
+export {
+  buildAttributeCues,
+  buildCues,
+  buildCueValueForTag,
+  buildTextCues,
+} from './cues';
 export { getClickableAncestor, isClickable, isVisible } from './element';
 export { formatArgument, interceptConsoleLogs } from './interceptConsoleLogs';
 export { PageEventCollector } from './PageEventCollector';
