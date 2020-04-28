@@ -2,6 +2,7 @@ export { getAttribute, getRegexAttribute } from './attribute';
 export {
   buildAttributeCues,
   buildCues,
+  buildCuesForElement,
   buildCueValueForTag,
   buildTextCues,
 } from './cues';

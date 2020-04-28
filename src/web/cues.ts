@@ -125,12 +125,12 @@ export const buildTextCues = ({
   )
     text = element.value;
 
-  if (text.length > 200 || text.match(/[\n\r\t]+/)) return [];
+  if (!text || text.length > 200 || text.match(/[\n\r\t]+/)) return [];
 
   return [{ level, type: 'text', value: JSON.stringify(text) }];
 };
 
-const buildCuesForElement = ({
+export const buildCuesForElement = ({
   attributes,
   element,
   isClick,
