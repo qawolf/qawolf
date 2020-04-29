@@ -117,13 +117,18 @@ export const buildTextCues = ({
 
   if (
     element instanceof HTMLInputElement &&
-    (element.type === 'submit' || element.type === 'button')
-  )
+    ['button', 'submit'].includes(element.type)
+  ) {
     text = element.value;
+  }
 
   if (!text || text.length > 200 || text.match(/[\n\r\t]+/)) return [];
 
-  return [{ level, type: 'text', value: JSON.stringify(text) }];
+  text = JSON.stringify(text);
+  // need to strip quotes so Playwright's JSON.parse works
+  const value = text.slice(1, text.length - 1);
+
+  return [{ level, type: 'text', value }];
 };
 
 export const buildCuesForElement = ({

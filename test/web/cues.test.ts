@@ -118,7 +118,7 @@ describe('browser tests', () => {
       const cues2 = await buildCuesForElement('[for="single"]');
       expect(cues2).toEqual([
         { level: 1, type: 'for', value: '[for="single"]' },
-        { level: 1, type: 'text', value: '"Single checkbox"' },
+        { level: 1, type: 'text', value: 'Single checkbox' },
         { level: 1, type: 'tag', value: 'label' },
       ]);
     });
@@ -193,16 +193,22 @@ describe('browser tests', () => {
       expect(cues).toEqual([]);
     });
 
-    it('handles quotes in text', async () => {
+    it('returns text cue if applicable', async () => {
       await page.goto(`${TEST_URL}buttons`);
 
+      const cues = await buildTextCues('#submit-input', 1, true);
+
+      expect(cues).toEqual([{ level: 1, type: 'text', value: 'Submit Input' }]);
+    });
+
+    it('handles quotes in text', async () => {
       const cues = await buildTextCues('#quote-button', 1, true);
 
       expect(cues).toEqual([
         {
           level: 1,
           type: 'text',
-          value: '"Button \\"with\\" extra \'quotes\'"',
+          value: 'Button \\"with\\" extra \'quotes\'',
         },
       ]);
     });
@@ -211,15 +217,7 @@ describe('browser tests', () => {
       const cues = await buildTextCues('#whitespace-button', 1, true);
 
       expect(cues).toEqual([
-        { level: 1, type: 'text', value: '"I have extra whitespace"' },
-      ]);
-    });
-
-    it('uses value as text if applicable', async () => {
-      const cues = await buildTextCues('#submit-input', 1, true);
-
-      expect(cues).toEqual([
-        { level: 1, type: 'text', value: '"Submit Input"' },
+        { level: 1, type: 'text', value: 'I have extra whitespace' },
       ]);
     });
   });
