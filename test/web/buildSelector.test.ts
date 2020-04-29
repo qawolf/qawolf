@@ -199,6 +199,7 @@ describe('buildSelector', () => {
             '[data-qa="material-select-native"] select',
             '[data-qa="material-select-native"] #material-select-native',
           ],
+          // check the invisible text is not targeted
           [
             '[data-qa="material-select"] #material-select',
             '[data-qa="material-select"] #material-select',
