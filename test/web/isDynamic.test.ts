@@ -3,6 +3,7 @@ import { isDynamic } from '../../src/web/isDynamic';
 describe('isDynamic', () => {
   it.each([
     '__BVID__71',
+    'contestSearchInput-839',
     'StyledBox-sc-13pk1d4-0',
     'gLFyf',
     'gb_C',
@@ -10,7 +11,7 @@ describe('isDynamic', () => {
     'intercom-123v9c3',
     'u_0_b',
     'ggWlfB2BMlWvNeAo2F0uqw',
-  ])('returns true for dynamic value %s', (example) => {
+  ])('is dynamic: %s', (example) => {
     expect(isDynamic(example)).toBe(true);
   });
 
@@ -48,7 +49,7 @@ describe('isDynamic', () => {
     'nav-sprite',
     'desktop-grid-3',
     'nytslm-li-link',
-  ])('returns false for non-dynamic value %s', (example) => {
+  ])('is not dynamic: %s', (example) => {
     expect(isDynamic(example)).toBe(false);
   });
 });

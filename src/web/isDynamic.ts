@@ -1,12 +1,11 @@
 import englishWords from 'an-array-of-english-words/index.json';
 
+const layoutWords = ['col', 'fa', 'grid'];
+
 const allowedWords = new Set([
-  ...englishWords,
   'btn',
-  'col',
   'div',
   'dropdown',
-  'fa',
   'html',
   'img',
   'inputtext',
@@ -24,14 +23,16 @@ const allowedWords = new Set([
   'textinput',
   'todo',
   'ul',
+  ...layoutWords,
+  ...englishWords,
 ]);
 
 const SCORE_THRESHOLD = 0.5;
 
-export const getWords = (className: string): string[] => {
+export const getWords = (value: string): string[] => {
   const classWords = [];
   // split by space characters and camel case
-  className.split(/[ \-_]+|(?=[A-Z])/).forEach((word) => {
+  value.split(/[ \-_]+|(?=[A-Z])/).forEach((word) => {
     if (!word) return; // ignore empty string
 
     classWords.push(word.toLowerCase());
@@ -41,12 +42,18 @@ export const getWords = (className: string): string[] => {
 };
 
 export const isDynamic = (
-  className: string,
+  value: string,
   threshold = SCORE_THRESHOLD,
 ): boolean => {
-  if (!className) return true;
+  if (!value) return true;
 
-  const classWords = getWords(className);
+  const classWords = getWords(value);
+
+  // dynamic if there is more than 1 digit and it does not include a layout word
+  const digits = (value.match(/\d+/g) || []).join('').length;
+  if (digits > 1 && !layoutWords.find((word) => classWords.includes(word))) {
+    return true;
+  }
 
   const includedWords = classWords.filter((word) => allowedWords.has(word));
 
