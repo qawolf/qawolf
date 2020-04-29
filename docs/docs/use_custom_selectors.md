@@ -21,7 +21,7 @@ test('myTestName', async () => {
   // CSS selector
   await page.click('#submit');
   // text selector
-  await page.click('text="Submit"');
+  await page.click('text=Submit');
 });
 ```
 
@@ -101,10 +101,10 @@ As a last resort, QA Wolf will target an element by its [XPath](https://develope
 
 You can edit element selectors as you create your test, since the [test code is generated](create_a_test#review-test-code) as you use your application. The [interactive REPL](use_the_repl) can be helpful in trying out selectors.
 
-Playwright supports a few types of selectors. We discuss [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) and text selectors in this guide.
+[Playwright supports](https://github.com/microsoft/playwright/blob/master/docs/selectors.md) a few types of selectors. We discuss [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) and text selectors in this guide.
 
 - CSS selectors find the element matching the [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors), for example: `#my-id`, `.my-class`, `[aria-label="home"]`
-- Text selectors find the element that contains the given text, for example: `text="Click me!"`
+- Text selectors find the element that contains the given text, for example: `text=Click me!`
 
 In your test code, replace the default selector with your desired CSS or text selector. Prefix text selectors with `text=`. For example:
 
@@ -114,7 +114,7 @@ await page.click('.some-other-selector');
 // to this (CSS selector)
 await page.click('#submit');
 // or this (text selector)
-await page.click('text="Submit"');
+await page.click('text=Submit');
 ```
 
 See [Playwright documentation on selectors](https://github.com/microsoft/playwright/blob/master/docs/api.md#working-with-selectors) to learn more.
