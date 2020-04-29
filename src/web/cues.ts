@@ -1,5 +1,6 @@
 import { getAttribute } from './attribute';
 import { isDynamic } from './isDynamic';
+import { SelectorPart } from './playwrightEvaluator';
 
 const DEFAULT_ATTRIBUTE =
   'data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/';
@@ -59,11 +60,6 @@ type BuildTextCues = {
   element: HTMLElement;
   isClick: boolean;
   level: number;
-};
-
-export type Selector = {
-  name: 'css' | 'text';
-  body: string;
 };
 
 export const buildAttributeCues = ({
@@ -179,18 +175,18 @@ export const buildCues = ({ attribute, isClick, target }: BuildCues): Cue[] => {
   return cues;
 };
 
-export const buildSelectorForCues = (cues: Cue[]): Selector[] => {
+export const buildSelectorParts = (cues: Cue[]): SelectorPart[] => {
   const levels = [...new Set(cues.map((cue) => cue.level))];
   levels.sort().reverse();
 
-  const selector: Selector[] = [];
+  const parts: SelectorPart[] = [];
 
   levels.forEach((level) => {
     const cuesForLevel = cues.filter((cue) => cue.level === level);
 
     const textCues = cuesForLevel.filter((cue) => cue.type === 'text');
     if (textCues.length) {
-      selector.push({ name: 'text', body: textCues[0].value });
+      parts.push({ name: 'text', body: textCues[0].value });
       return;
     }
 
@@ -202,8 +198,8 @@ export const buildSelectorForCues = (cues: Cue[]): Selector[] => {
 
     const bodyValues = cuesForLevel.map((cue) => cue.value);
 
-    selector.push({ name: 'css', body: bodyValues.join('') });
+    parts.push({ name: 'css', body: bodyValues.join('') });
   });
 
-  return selector;
+  return parts;
 };

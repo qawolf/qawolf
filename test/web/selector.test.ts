@@ -2,8 +2,8 @@ import { Browser, Page } from 'playwright';
 import { launch } from '../../src/utils';
 import { QAWolfWeb } from '../../src/web';
 import { webScript } from '../../src/web/addScript';
-import { Selector } from '../../src/web/cues';
-import { toSelectorString } from '../../src/web/selector';
+import { SelectorPart } from '../../src/web/playwrightEvaluator';
+import { toSelector } from '../../src/web/selector';
 import { TEST_URL } from '../utils';
 
 describe('browser tests', () => {
@@ -17,23 +17,21 @@ describe('browser tests', () => {
     await page.goto(`${TEST_URL}checkbox-inputs`);
   });
 
-  afterAll(() => {
-    browser.close();
-  });
+  afterAll(() => browser.close());
 
   describe('isMatch', () => {
     const isMatch = async (
-      selector: Selector[],
+      selectorParts: SelectorPart[],
       targetSelector: string,
     ): Promise<boolean> => {
       return page.evaluate(
-        ({ selector, targetSelector }) => {
+        ({ selectorParts, targetSelector }) => {
           const qawolf: QAWolfWeb = (window as any).qawolf;
           const target = document.querySelector(targetSelector) as HTMLElement;
 
-          return qawolf.isMatch({ selector, target });
+          return qawolf.isMatch({ selectorParts, target });
         },
-        { selector, targetSelector },
+        { selectorParts, targetSelector },
       );
     };
 
@@ -71,9 +69,9 @@ describe('browser tests', () => {
   });
 });
 
-describe('toSelectorString', () => {
+describe('toSelector', () => {
   it('returns a pure CSS selector if possible', () => {
-    const selectorString = toSelectorString([
+    const selectorString = toSelector([
       { name: 'css', body: '[data-qa="search"]' },
       { name: 'css', body: 'input.search-input' },
     ]);
@@ -82,15 +80,13 @@ describe('toSelectorString', () => {
   });
 
   it('returns a single text selector', () => {
-    const selectorString = toSelectorString([
-      { name: 'text', body: '"Click Me!"' },
-    ]);
+    const selectorString = toSelector([{ name: 'text', body: '"Click Me!"' }]);
 
     expect(selectorString).toBe('text="Click Me!"');
   });
 
   it('returns a mixed selector', () => {
-    const selectorString = toSelectorString([
+    const selectorString = toSelector([
       { name: 'css', body: '.container' },
       { name: 'text', body: '"Submit"' },
     ]);

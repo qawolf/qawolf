@@ -1,54 +1,50 @@
 import { iterateCues } from './iterateCues';
-import { buildCues, buildSelectorForCues, BuildCues, Selector } from './cues';
-import { querySelectorAll } from './playwrightEvaluator';
+import { buildCues, buildSelectorParts, BuildCues } from './cues';
+import { querySelectorAll, SelectorPart } from './playwrightEvaluator';
 import { getXpath } from './serialize';
 
 type IsMatch = {
-  selector: Selector[];
+  selectorParts: SelectorPart[];
   target: HTMLElement;
 };
 
-export const isMatch = ({ selector, target }: IsMatch): boolean => {
-  const result = querySelectorAll(selector, document.body);
+export const isMatch = ({ selectorParts, target }: IsMatch): boolean => {
+  const result = querySelectorAll(selectorParts, document.body);
 
   if (result[0] !== target && !target.contains(result[0])) {
-    console.error('Selector matches another element', selector, target);
+    console.error('Selector matches another element', selectorParts, target);
     return false;
   }
 
   return true;
 };
 
-export const toSelectorString = (selector: Selector[]): string => {
-  const selectorNames = selector.map((s) => s.name);
-  // pure CSS selector
-  if (!selectorNames.includes('text')) {
-    return selector.map((s) => s.body).join(' ');
+export const toSelector = (selectorParts: SelectorPart[]): string => {
+  const names = selectorParts.map((s) => s.name);
+
+  // CSS selector
+  if (!names.includes('text')) {
+    return selectorParts.map((s) => s.body).join(' ');
   }
 
   // mixed selector
-  return selector
-    .map(({ body, name }) => {
-      return `${name}=${body}`;
-    })
-    .join(' >> ');
+  return selectorParts.map(({ body, name }) => `${name}=${body}`).join(' >> ');
 };
 
 export const buildSelector = (options: BuildCues): string => {
-  if (['body', 'html'].includes(options.target.tagName.toLowerCase())) {
-    return `${options.target.tagName.toLowerCase()}`;
+  const tagName = options.target.tagName.toLowerCase();
+  if (['body', 'html'].includes(tagName)) {
+    return tagName;
   }
 
   const cues = buildCues(options);
 
   for (const cueGroup of iterateCues(cues)) {
-    console.log('trying', cueGroup);
-    const selector = buildSelectorForCues(cueGroup);
+    const selectorParts = buildSelectorParts(cueGroup);
 
-    if (isMatch({ selector, target: options.target })) {
-      const selectorString = toSelectorString(selector);
-      console.log('match', selectorString);
-      return selectorString;
+    if (isMatch({ selectorParts, target: options.target })) {
+      const selector = toSelector(selectorParts);
+      return selector;
     }
   }
 
