@@ -7,6 +7,7 @@ const allowedWords = new Set([
   'div',
   'dropdown',
   'fa',
+  'html',
   'img',
   'inputtext',
   'lg',
