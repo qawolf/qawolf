@@ -227,7 +227,7 @@ describe('buildSelector', () => {
           ],
         ],
         // ignore non-matching attributes
-        [['#button', '#button', true, '/^qa-.*/']],
+        [['#button', 'text="Click me!"', true, '/^qa-.*/']],
         // ignore invalid regex
         [
           [
