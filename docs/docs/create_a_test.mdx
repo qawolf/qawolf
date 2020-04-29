@@ -19,7 +19,7 @@ npx qawolf create http://todomvc.com/examples/react myTest
 
 ```js
 await expect(page).toHaveText('Clear completed');
-await expect(page).not.toHaveSelector('.todo-list li');
+await expect(page).toHaveSelector('.clear-completed');
 ```
 
 - [Save your test](#save-a-test) by choosing `💾 Save and Exit` in the command line
