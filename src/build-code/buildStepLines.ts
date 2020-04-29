@@ -17,7 +17,7 @@ export const buildSelector = (step: Step): string => {
   if (!selector.includes(`"`)) return `"${selector}"`;
   if (!selector.includes(`'`)) return `'${selector}'`;
 
-  return '`' + selector + '`';
+  return '`' + selector.replace(/`/g, '\\`') + '`';
 };
 
 export const buildValue = ({ action, value }: Step): string => {

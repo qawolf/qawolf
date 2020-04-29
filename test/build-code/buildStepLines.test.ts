@@ -1,6 +1,40 @@
-import { buildStepLines } from '../../src/build-code/buildStepLines';
+import {
+  buildSelector,
+  buildStepLines,
+} from '../../src/build-code/buildStepLines';
 import { Action } from '../../src/types';
 import { baseStep } from './fixtures';
+
+describe('buildSelector', () => {
+  const expectEqual = (selector: string, expected: string) => {
+    const built = buildSelector({
+      ...baseStep,
+      event: {
+        ...baseStep.event,
+        selector,
+      },
+    });
+    expect(built).toEqual(expected);
+  };
+
+  it('uses double quotes by default', () => {
+    expectEqual('a', `"a"`);
+  });
+
+  it('uses single quotes when there are double quotes in the selector', () => {
+    expectEqual('"a"', `'"a"'`);
+  });
+
+  it('uses backtick when there are double and single quotes', () => {
+    expectEqual(`text="a" and 'b'`, '`text="a" and \'b\'`');
+
+    // escapes backtick
+    expectEqual(
+      'text="a" and \'b\' and `c`',
+      '`text="a" and \'b\' and \\`c\\``',
+    );
+  });
+});
 
 describe('buildStepLines', () => {
   test('consecutive steps on different pages', () => {
