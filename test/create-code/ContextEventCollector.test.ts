@@ -49,10 +49,10 @@ describe('ContextEventCollector', () => {
     ]);
 
     expect(events.map((e) => e.selector)).toEqual([
-      'text="Buttons"',
-      'text="Buttons"',
-      'text="Buttons"',
-      'text="Buttons"',
+      'text=Buttons',
+      'text=Buttons',
+      'text=Buttons',
+      'text=Buttons',
     ]);
   });
 
