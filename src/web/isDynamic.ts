@@ -56,8 +56,8 @@ export const isDynamic = (
   }
 
   const includedWords = classWords.filter((word) => allowedWords.has(word));
+  // dynamic if more than two non-included words
+  if (classWords.length - includedWords.length >= 2) return true;
 
-  const score = includedWords.length / classWords.length;
-
-  return score <= threshold;
+  return includedWords.length / classWords.length <= threshold;
 };

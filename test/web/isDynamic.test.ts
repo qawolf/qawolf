@@ -11,6 +11,7 @@ describe('isDynamic', () => {
     'intercom-123v9c3',
     'u_0_b',
     'ggWlfB2BMlWvNeAo2F0uqw',
+    '.item_iv2wgb-o_O-hover_yhuzbt',
   ])('is dynamic: %s', (example) => {
     expect(isDynamic(example)).toBe(true);
   });
