@@ -122,6 +122,11 @@ export const buildTextCues = ({
     text = element.value;
   }
 
+  // remove invisible characters which look like an empty string but have a length
+  // https://www.w3resource.com/javascript-exercises/javascript-string-exercise-32.php
+  // https://stackoverflow.com/a/21797208/230462
+  text = text.replace(/[^\x20-\x7E]/g, '');
+
   if (!text || text.length > 200 || text.match(/[\n\r\t]+/)) return [];
 
   return [{ level, type: 'text', value: text }];
