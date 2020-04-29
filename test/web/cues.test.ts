@@ -202,7 +202,7 @@ describe('browser tests', () => {
     });
 
     it('handles quotes in text', async () => {
-      const cues = await buildTextCues('#quote-button', 1, true);
+      const cues = await buildTextCues('.quote-button', 1, true);
 
       expect(cues).toEqual([
         {

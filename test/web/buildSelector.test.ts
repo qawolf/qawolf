@@ -52,7 +52,7 @@ describe('buildSelector', () => {
     it.each([
       '#nav-hamburger-menu',
       '[name="field-keywords"]',
-      'text="Start here."',
+      'text=Start here.',
     ])('builds expected selector %o', (selector) => expectSelector(selector));
   });
 
@@ -63,8 +63,8 @@ describe('buildSelector', () => {
       '[placeholder="What needs to be done?"]',
       '.toggle', // first one is the match
       'li:nth-of-type(2) .toggle',
-      'text="Active"',
-      'text="Completed"',
+      'text=Active',
+      'text=Completed',
     ])('builds expected selector %s', (selector) => expectSelector(selector));
   });
 
@@ -92,6 +92,7 @@ describe('buildSelector', () => {
         // selects the ancestor
         [['#html-button-child', '[data-qa="html-button-with-children"]']],
         [['.MuiButton-label', '[data-qa="material-button"]']],
+        [['.quote-button', `text=Button "with" extra 'quotes'`]],
       ])('builds expected selector %o', (selector) => expectSelector(selector));
     });
 
@@ -227,7 +228,7 @@ describe('buildSelector', () => {
           ],
         ],
         // ignore non-matching attributes
-        [['#button', 'text="Click me!"', true, '/^qa-.*/']],
+        [['#button', 'text=Click me!', true, '/^qa-.*/']],
         // ignore invalid regex
         [
           [

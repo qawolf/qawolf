@@ -59,7 +59,7 @@ describe('browser tests', () => {
 
       const result = await isMatch(
         [{ body: '"Button \\"with\\" extra \'quotes\'"', name: 'text' }],
-        '#quote-button',
+        '.quote-button',
       );
 
       expect(result).toBe(true);
