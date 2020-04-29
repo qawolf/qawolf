@@ -113,8 +113,6 @@ test('myTest', async () => {
 
 Any actions you take in the browser will be converted to code and inserted where `await qawolf.create();` is. To add a second todo item, let's 1) click on the todo input to focus it, 2) type `update test!`, and 3) press `Enter` to save the todo. Our test code now looks like this:
 
-TODO: UPDATE CODE
-
 ```js
 // ...
 
