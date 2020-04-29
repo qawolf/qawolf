@@ -208,7 +208,7 @@ describe('browser tests', () => {
         {
           level: 1,
           type: 'text',
-          value: 'Button \\"with\\" extra \'quotes\'',
+          value: 'Button "with" extra \'quotes\'',
         },
       ]);
     });
