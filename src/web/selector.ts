@@ -11,8 +11,10 @@ type IsMatch = {
 export const isMatch = ({ selectorParts, target }: IsMatch): boolean => {
   const result = querySelectorAll(selectorParts, document.body);
 
+  // console.debug('Try selector', selectorParts[0], selectorParts[1], target);
+
   if (result[0] !== target && !target.contains(result[0])) {
-    console.error('Selector matches another element', selectorParts, target);
+    // console.error('Selector matches another element');
     return false;
   }
 

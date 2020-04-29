@@ -2,12 +2,12 @@ import { Cue, CueType } from './cues';
 
 export const CueTypesRanked: CueType[] = [
   'attribute',
+  'text',
   'id',
   'aria-label',
   'title',
   'name',
   'for',
-  'text',
   'contenteditable',
   'value',
   'placeholder',
