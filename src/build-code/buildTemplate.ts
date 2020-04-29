@@ -104,7 +104,7 @@ afterAll(async () => {
   await browser.close();
 });
 
-test('${name}', async () => {
+test("${name}", async () => {
   await page.goto("${url}");${buildSetState(statePath)}
   await qawolf.create();
 });`;

@@ -37,7 +37,7 @@ afterAll(async () => {
   await browser.close();
 });
 
-test('myName', async () => {
+test(\\"myName\\", async () => {
   await page.goto(\\"www.qawolf.com\\");
   await qawolf.create();
 });"
@@ -63,7 +63,7 @@ afterAll(async () => {
   await browser.close();
 });
 
-test('myName', async () => {
+test(\\"myName\\", async () => {
   await page.goto(\\"www.qawolf.com\\");
   await qawolf.create();
 });"
@@ -87,7 +87,7 @@ afterAll(async () => {
   await browser.close();
 });
 
-test('myName', async () => {
+test(\\"myName\\", async () => {
   await page.goto(\\"www.qawolf.com\\");
   await qawolf.setState(page, \\"admin.json\\");
   await qawolf.create();
@@ -113,7 +113,7 @@ afterAll(async () => {
   await browser.close();
 });
 
-test('myName', async () => {
+test(\\"myName\\", async () => {
   await page.goto(\\"www.qawolf.com\\");
   await qawolf.create();
 });"
@@ -139,7 +139,7 @@ afterAll(async () => {
   await browser.close();
 });
 
-test('myName', async () => {
+test(\\"myName\\", async () => {
   await page.goto(\\"www.qawolf.com\\");
   await qawolf.create();
 });"

@@ -11,6 +11,15 @@ export const buildPageLine = (step: Step): string => {
   return `page = await qawolf.waitForPage(page.context(), ${step.event.page});`;
 };
 
+export const buildSelector = (step: Step): string => {
+  const { selector } = step.event;
+
+  if (!selector.includes(`"`)) return `"${selector}"`;
+  if (!selector.includes(`'`)) return `'${selector}'`;
+
+  return '`' + selector + '`';
+};
+
 export const buildValue = ({ action, value }: Step): string => {
   if (action === 'scroll') {
     const scrollValue = value as ScrollValue;
@@ -25,7 +34,7 @@ export const buildValue = ({ action, value }: Step): string => {
 export const buildExpressionLine = (step: Step): string => {
   const { action } = step;
 
-  const args: string[] = [`'${step.event.selector}'`];
+  const args: string[] = [buildSelector(step)];
 
   const value = buildValue(step);
   if (value) args.push(value);

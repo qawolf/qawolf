@@ -21,7 +21,7 @@ afterAll(async () => {
   await browser.close();
 });
 
-test('${name}', async () => {
+test("${name}", async () => {
   await page.goto(\`\${TEST_URL}infinite-scroll\`);
   await qawolf.create();
 });`;
