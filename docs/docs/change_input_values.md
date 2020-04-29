@@ -69,7 +69,7 @@ await page.type('.new-todo', process.env.TODO_VALUE);
 You can then run your test again, passing the appropriate environment variable. It will now type the value of your environment variable in the first step:
 
 ```bash
-TODO_VALUE="hello env variable!" npx qawolf test myTestName
+TODO_VALUE="hello env variable!" npx qawolf test myTest
 ```
 
 **You should always replace sensitive values like passwords with environment variables.** Use the above example as a reference for updating the test code and running it locally. When running tests in CI, be sure to [update your configuration to include the environment variable](run_tests_in_ci#use-environment-variables).

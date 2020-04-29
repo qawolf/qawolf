@@ -8,7 +8,7 @@ title: 🔍 Use Custom Selectors
 - [Element selectors](#selectors-overview) use attributes specified by the [`attribute` key in `qawolf.config.js`](configure_qa_wolf#attribute) if possible:
 
 ```js
-test('myTestName', async () => {
+test('myTest', async () => {
   // CSS selector for test attribute if available
   await page.click('[data-qa="submit"]');
 });
@@ -17,7 +17,7 @@ test('myTestName', async () => {
 - Otherwise, QA Wolf uses the best available [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) or text selector. [Edit the generated selectors](#edit-generated-selectors) as you like:
 
 ```js
-test('myTestName', async () => {
+test('myTest', async () => {
   // CSS selector
   await page.click('#submit');
   // text selector

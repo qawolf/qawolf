@@ -32,7 +32,7 @@ Call `repl` in your test code, passing whatever values you want to access in the
 const qawolf = require('qawolf');
 // ...
 
-test('myTestName', async () => {
+test('myTest', async () => {
   await qawolf.repl(); // already includes context, page, and qawolf
 });
 ```
@@ -49,7 +49,7 @@ Type `.screenshot [page]` to open a screenshot.
 Run your test in [edit mode](../../edit_a_test):
 
 ```bash
-npx qawolf edit myTestName
+npx qawolf edit myTest
 ```
 
 Your test will run until `repl` is called, at which point the test will pause and the [interactive REPL](../../use_the_repl) will open. After you exit the REPL by calling `.exit`, the test will continue. You can call `repl` any number of times in your test.
