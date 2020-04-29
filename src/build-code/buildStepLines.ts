@@ -1,6 +1,5 @@
 import { ScrollValue, Step } from '../types';
 import { isUndefined } from 'util';
-import { buildSelector } from './buildSelectors';
 
 export const didPageChange = (step: Step, previous?: Step): boolean => {
   if (!previous) return false;
@@ -10,6 +9,15 @@ export const didPageChange = (step: Step, previous?: Step): boolean => {
 
 export const buildPageLine = (step: Step): string => {
   return `page = await qawolf.waitForPage(page.context(), ${step.event.page});`;
+};
+
+export const buildSelector = (step: Step): string => {
+  const { selector } = step.event;
+
+  if (!selector.includes(`"`)) return `"${selector}"`;
+  if (!selector.includes(`'`)) return `'${selector}'`;
+
+  return '`' + selector.replace(/`/g, '\\`') + '`';
 };
 
 export const buildValue = ({ action, value }: Step): string => {

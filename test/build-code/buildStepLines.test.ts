@@ -1,6 +1,40 @@
-import { buildStepLines } from '../../src/build-code/buildStepLines';
+import {
+  buildSelector,
+  buildStepLines,
+} from '../../src/build-code/buildStepLines';
 import { Action } from '../../src/types';
 import { baseStep } from './fixtures';
+
+describe('buildSelector', () => {
+  const expectEqual = (selector: string, expected: string) => {
+    const built = buildSelector({
+      ...baseStep,
+      event: {
+        ...baseStep.event,
+        selector,
+      },
+    });
+    expect(built).toEqual(expected);
+  };
+
+  it('uses double quotes by default', () => {
+    expectEqual('a', `"a"`);
+  });
+
+  it('uses single quotes when there are double quotes in the selector', () => {
+    expectEqual('"a"', `'"a"'`);
+  });
+
+  it('uses backtick when there are double and single quotes', () => {
+    expectEqual(`text="a" and 'b'`, '`text="a" and \'b\'`');
+
+    // escapes backtick
+    expectEqual(
+      'text="a" and \'b\' and `c`',
+      '`text="a" and \'b\' and \\`c\\``',
+    );
+  });
+});
 
 describe('buildStepLines', () => {
   test('consecutive steps on different pages', () => {
@@ -19,23 +53,17 @@ describe('buildStepLines', () => {
     expect(lines).toMatchInlineSnapshot(`
       Array [
         "page = await qawolf.waitForPage(page.context(), 1);",
-        "await page.click(selectors[\\"1_my_input_input\\"]);",
+        "await page.click('[data-qa=\\"test-input\\"]');",
       ]
     `);
   });
 
   test('click step', () => {
-    const lines = buildStepLines({
-      ...baseStep,
-      event: {
-        ...baseStep.event,
-        cssSelector: "[data-qa='test-input']",
-      },
-    });
+    const lines = buildStepLines(baseStep);
 
     expect(lines).toMatchInlineSnapshot(`
       Array [
-        "await page.click(\\"[data-qa='test-input']\\");",
+        "await page.click('[data-qa=\\"test-input\\"]');",
       ]
     `);
   });
@@ -49,7 +77,7 @@ describe('buildStepLines', () => {
 
     expect(lines).toMatchInlineSnapshot(`
       Array [
-        "await page.fill(selectors[\\"0_my_input_input\\"], \\"hello\\");",
+        "await page.fill('[data-qa=\\"test-input\\"]', \\"hello\\");",
       ]
     `);
   });
@@ -63,7 +91,7 @@ describe('buildStepLines', () => {
 
     expect(lines).toMatchInlineSnapshot(`
       Array [
-        "await page.press(selectors[\\"0_my_input_input\\"], \\"Enter\\");",
+        "await page.press('[data-qa=\\"test-input\\"]', \\"Enter\\");",
       ]
     `);
   });
@@ -72,10 +100,6 @@ describe('buildStepLines', () => {
     const lines = buildStepLines({
       ...baseStep,
       action: 'scroll' as Action,
-      event: {
-        ...baseStep.event,
-        cssSelector: "[id='my-input']",
-      },
       value: {
         x: 100,
         y: 200,
@@ -84,7 +108,7 @@ describe('buildStepLines', () => {
 
     expect(lines).toMatchInlineSnapshot(`
       Array [
-        "await qawolf.scroll(page, \\"[id='my-input']\\", { x: 100, y: 200 });",
+        "await qawolf.scroll(page, '[data-qa=\\"test-input\\"]', { x: 100, y: 200 });",
       ]
     `);
   });
@@ -98,7 +122,7 @@ describe('buildStepLines', () => {
 
     expect(lines).toMatchInlineSnapshot(`
       Array [
-        "await page.selectOption(selectors[\\"0_my_input_input\\"], \\"spirit\\");",
+        "await page.selectOption('[data-qa=\\"test-input\\"]', \\"spirit\\");",
       ]
     `);
   });
@@ -112,10 +136,10 @@ describe('buildStepLines', () => {
       });
 
       expect(lines).toMatchInlineSnapshot(`
-Array [
-  "await page.type(selectors[\\"0_my_input_input\\"], \\"spirit\\");",
-]
-`);
+        Array [
+          "await page.type('[data-qa=\\"test-input\\"]', \\"spirit\\");",
+        ]
+      `);
     });
 
     test('without a value', () => {
@@ -126,10 +150,10 @@ Array [
       });
 
       expect(lines).toMatchInlineSnapshot(`
-Array [
-  "await page.type(selectors[\\"0_my_input_input\\"], null);",
-]
-`);
+        Array [
+          "await page.type('[data-qa=\\"test-input\\"]', null);",
+        ]
+      `);
     });
   });
 });

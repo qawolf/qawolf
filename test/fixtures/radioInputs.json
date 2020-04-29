@@ -1,1 +1,170 @@
-{"events":[{"cssSelector":"[data-qa='html-radio']","htmlSelector":"<div qaw_innertext=\"Native HTML Single radio button Another radio button Best pet? Cat Dog Hedgehog Material UI Check yes Yes Favorite color? Blue Green Red\" style=\"display: flex; flex-wrap: wrap;\"><div class=\"container\" qaw_innertext=\"Native HTML Single radio button Another radio button Best pet? Cat Dog Hedgehog\"><input data-qa=\"html-radio\" id=\"single\" type=\"radio\" qaw_labels=\"Single radio button\" /></div></div>","isTrusted":true,"name":"mousedown","page":0,"target":{"type":"tag","name":"input","voidElement":true,"attrs":{"data-qa":"html-radio","id":"single","type":"radio","qaw_labels":"Single radio button"},"children":[]},"time":1583106596674},{"cssSelector":"[data-qa='html-radio']","htmlSelector":"<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Single radio button Another radio button Best pet? Cat Dog Hedgehog Material UI Check yes Yes Favorite color? Blue Green Red\"><div class=\"container\" qaw_innertext=\"Native HTML Single radio button Another radio button Best pet? Cat Dog Hedgehog\"><input data-qa=\"html-radio\" id=\"single\" type=\"radio\" qaw_labels=\"Single radio button\" /></div></div>","isTrusted":true,"name":"click","page":0,"target":{"type":"tag","name":"input","voidElement":true,"attrs":{"data-qa":"html-radio","id":"single","type":"radio","qaw_labels":"Single radio button"},"children":[]},"time":1583106596744},{"cssSelector":"[data-qa='html-radio-group']","htmlSelector":"<div class=\"container\" qaw_innertext=\"Native HTML Single radio button Another radio button Best pet? Cat Dog Hedgehog\"><fieldset data-qa=\"html-radio-group\" qaw_innertext=\"Cat Dog Hedgehog\"><label for=\"dog\" qaw_innertext=\"Dog\"></label></fieldset></div>","isTrusted":true,"name":"mousedown","page":0,"target":{"type":"tag","name":"label","voidElement":false,"attrs":{"for":"dog","qaw_innertext":"Dog"},"children":[{"type":"text","content":" Dog"}]},"time":1583106598718},{"cssSelector":"[data-qa='html-radio-group']","htmlSelector":"<div class=\"container\" qaw_innertext=\"Native HTML Single radio button Another radio button Best pet? Cat Dog Hedgehog\"><fieldset data-qa=\"html-radio-group\" qaw_innertext=\"Cat Dog Hedgehog\"><label for=\"dog\" qaw_innertext=\"Dog\"></label></fieldset></div>","isTrusted":true,"name":"click","page":0,"target":{"type":"tag","name":"label","voidElement":false,"attrs":{"for":"dog","qaw_innertext":"Dog"},"children":[{"type":"text","content":" Dog"}]},"time":1583106598794},{"cssSelector":"[data-qa='html-radio-group'] [value='dog']","htmlSelector":"<div class=\"container\" qaw_innertext=\"Native HTML Single radio button Another radio button Best pet? Cat Dog Hedgehog\"><fieldset data-qa=\"html-radio-group\" qaw_innertext=\"Cat Dog Hedgehog\"><input type=\"radio\" id=\"dog\" name=\"pet\" value=\"dog\" qaw_labels=\"Dog\" /></fieldset></div>","isTrusted":true,"name":"click","page":0,"target":{"type":"tag","name":"input","voidElement":true,"attrs":{"type":"radio","id":"dog","name":"pet","value":"dog","qaw_labels":"Dog"},"children":[]},"time":1583106598796},{"cssSelector":"[data-qa='material-radio'] [value='yes']","htmlSelector":"<span class=\"MuiButtonBase-root MuiIconButton-root jss26 MuiRadio-root MuiRadio-colorSecondary MuiIconButton-colorSecondary\" aria-disabled=\"false\"><span class=\"MuiIconButton-label\"><input class=\"jss29\" name=\"yes\" type=\"radio\" value=\"yes\" qaw_labels=\"Yes\" /></span></span>","isTrusted":true,"name":"mousedown","page":0,"target":{"type":"tag","name":"input","voidElement":true,"attrs":{"class":"jss29","name":"yes","type":"radio","value":"yes","qaw_labels":"Yes"},"children":[]},"time":1583106600133},{"cssSelector":"[data-qa='material-radio'] [value='yes']","htmlSelector":"<span class=\"MuiButtonBase-root MuiIconButton-root jss26 MuiRadio-root MuiRadio-colorSecondary MuiIconButton-colorSecondary\" aria-disabled=\"false\"><span class=\"MuiIconButton-label\"><input class=\"jss29\" name=\"yes\" type=\"radio\" value=\"yes\" qaw_labels=\"Yes\" /></span></span>","isTrusted":true,"name":"click","page":0,"target":{"type":"tag","name":"input","voidElement":true,"attrs":{"class":"jss29","name":"yes","type":"radio","value":"yes","qaw_labels":"Yes"},"children":[]},"time":1583106600219},{"cssSelector":"[data-qa='material-radio-group'] [value='green']","htmlSelector":"<span class=\"MuiButtonBase-root MuiIconButton-root jss26 MuiRadio-root MuiRadio-colorSecondary MuiIconButton-colorSecondary\" aria-disabled=\"false\"><span class=\"MuiIconButton-label\"><input class=\"jss29\" name=\"color\" type=\"radio\" value=\"green\" qaw_labels=\"Green\" /></span></span>","isTrusted":true,"name":"mousedown","page":0,"target":{"type":"tag","name":"input","voidElement":true,"attrs":{"class":"jss29","name":"color","type":"radio","value":"green","qaw_labels":"Green"},"children":[]},"time":1583106604322},{"cssSelector":"[data-qa='material-radio-group'] [value='green']","htmlSelector":"<span class=\"MuiButtonBase-root MuiIconButton-root jss26 MuiRadio-root MuiRadio-colorSecondary MuiIconButton-colorSecondary\" aria-disabled=\"false\"><span class=\"MuiIconButton-label\"><input class=\"jss29\" name=\"color\" type=\"radio\" value=\"green\" qaw_labels=\"Green\" /></span></span>","isTrusted":true,"name":"click","page":0,"target":{"type":"tag","name":"input","voidElement":true,"attrs":{"class":"jss29","name":"color","type":"radio","value":"green","qaw_labels":"Green"},"children":[]},"time":1583106604400}]}
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa='html-radio']",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-radio",
+          "id": "single",
+          "type": "radio",
+          "qaw_labels": "Single radio button"
+        },
+        "children": []
+      },
+      "time": 1583106596674
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa='html-radio']",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-radio",
+          "id": "single",
+          "type": "radio",
+          "qaw_labels": "Single radio button"
+        },
+        "children": []
+      },
+      "time": 1583106596744
+    },
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa='html-radio-group']",
+      "target": {
+        "type": "tag",
+        "name": "label",
+        "voidElement": false,
+        "attrs": { "for": "dog", "qaw_innertext": "Dog" },
+        "children": [{ "type": "text", "content": " Dog" }]
+      },
+      "time": 1583106598718
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa='html-radio-group']",
+      "target": {
+        "type": "tag",
+        "name": "label",
+        "voidElement": false,
+        "attrs": { "for": "dog", "qaw_innertext": "Dog" },
+        "children": [{ "type": "text", "content": " Dog" }]
+      },
+      "time": 1583106598794
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa='html-radio-group'] [value='dog']",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "type": "radio",
+          "id": "dog",
+          "name": "pet",
+          "value": "dog",
+          "qaw_labels": "Dog"
+        },
+        "children": []
+      },
+      "time": 1583106598796
+    },
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa='material-radio'] [value='yes']",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "class": "jss29",
+          "name": "yes",
+          "type": "radio",
+          "value": "yes",
+          "qaw_labels": "Yes"
+        },
+        "children": []
+      },
+      "time": 1583106600133
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa='material-radio'] [value='yes']",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "class": "jss29",
+          "name": "yes",
+          "type": "radio",
+          "value": "yes",
+          "qaw_labels": "Yes"
+        },
+        "children": []
+      },
+      "time": 1583106600219
+    },
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa='material-radio-group'] [value='green']",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "class": "jss29",
+          "name": "color",
+          "type": "radio",
+          "value": "green",
+          "qaw_labels": "Green"
+        },
+        "children": []
+      },
+      "time": 1583106604322
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa='material-radio-group'] [value='green']",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "class": "jss29",
+          "name": "color",
+          "type": "radio",
+          "value": "green",
+          "qaw_labels": "Green"
+        },
+        "children": []
+      },
+      "time": 1583106604400
+    }
+  ]
+}

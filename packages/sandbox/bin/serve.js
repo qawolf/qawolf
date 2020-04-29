@@ -1,11 +1,18 @@
 #!/usr/bin/env node
 
-const { execSync } = require("child_process");
-const { join } = require("path");
+const { createServer } = require('http');
+const handler = require('serve-handler');
+const { join } = require('path');
 
-const buildDir = join(__dirname, "../build");
+const buildDir = join(__dirname, '../build');
 
-const command = `serve -s ${buildDir}`;
-console.log(command);
+const server = createServer((request, response) =>
+  handler(request, response, {
+    public: buildDir,
+    rewrites: [{ source: '!fixtures/**', destination: '/index.html' }],
+  }),
+);
 
-execSync(command, { stdio: "inherit" });
+server.listen(5000, () => {
+  console.log(`serve ${buildDir}`);
+});

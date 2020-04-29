@@ -25,7 +25,7 @@ See all commands and options.
 
 ## npx qawolf create url [name][...options]
 
-[Create a browser test](../create_a_test) on a [Chromium](https://www.chromium.org/Home) browser. Will run in watch mode if [configured to do so](../config#watch).
+[Create a browser test](../create_a_test) on a [Chromium](https://www.chromium.org/Home) browser. Will run in watch mode if [configured to do so](../configure_qa_wolf#watch).
 
 #### Arguments
 
@@ -39,10 +39,10 @@ Create a browser test on `www.google.com`, emulating an iPhone 7:
 npx qawolf create --device="iPhone 7" www.google.com
 ```
 
-Create a browser test on `www.google.com`, saving it at `.qawolf/myTestName.test.js`:
+Create a browser test on `www.google.com`, saving it at `.qawolf/myTest.test.js`:
 
 ```bash
-npx qawolf create www.google.com myTestName
+npx qawolf create www.google.com myTest
 ```
 
 Create a brower test on `www.google.com`, loading state data from `.qawolf/state/admin.json`:
@@ -53,7 +53,7 @@ npx qawolf create --statePath=./.qawolf/state/admin.json www.google.com
 
 ## npx qawolf edit name
 
-[Edit an existing test](../edit_a_test). Will run in watch mode if [configured to do so](../config#watch).
+[Edit an existing test](../edit_a_test). Will run in watch mode if [configured to do so](../configure_qa_wolf#watch).
 
 #### Arguments
 
@@ -65,10 +65,10 @@ npx qawolf create --statePath=./.qawolf/state/admin.json www.google.com
 
 #### Examples
 
-Edit the test saved at `.qawolf/myTestName.test.js`:
+Edit the test saved at `.qawolf/myTest.test.js`:
 
 ```bash
-npx qawolf edit myTestName
+npx qawolf edit myTest
 ```
 
 Edit the test saved at `.qawolf/myReallySuperLongTestName.test.js` (assuming there are no other tests with names that match `TestName`):
@@ -82,7 +82,7 @@ When using edit mode, you can add steps to an existing test by calling the [`qaw
 ```js
 // ...
 
-test('myTestName', async () => {
+test('myTest', async () => {
   await page.goto('http://todomvc.com/examples/react');
   // previous test steps
   // ...
@@ -107,16 +107,16 @@ Run all tests:
 npx qawolf test
 ```
 
-Run the test saved at `.qawolf/myTestName.test.js`:
+Run the test saved at `.qawolf/myTest.test.js`:
 
 ```bash
-npx qawolf test myTestName
+npx qawolf test myTest
 ```
 
-Run the test saved at `.qawolf/myTestName.test.js` on [Chromium](https://www.chromium.org/Home), [Firefox](https://www.mozilla.org/en-US/firefox/new), and [WebKit](https://webkit.org):
+Run the test saved at `.qawolf/myTest.test.js` on [Chromium](https://www.chromium.org/Home), [Firefox](https://www.mozilla.org/en-US/firefox/new), and [WebKit](https://webkit.org):
 
 ```bash
-npx qawolf test --all-browsers myTestName
+npx qawolf test --all-browsers myTest
 ```
 
 Run all tests in [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome):

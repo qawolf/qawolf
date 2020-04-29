@@ -1,11 +1,10 @@
-import { writeFile, writeJson } from 'fs-extra';
+import { writeFile } from 'fs-extra';
 import { buildPath, saveTemplate } from '../../src/cli/saveTemplate';
 import { buildTemplate } from '../../src/build-code/buildTemplate';
 
 jest.mock('fs-extra');
 
 const mockedWriteFile = writeFile as jest.Mock;
-const mockedWriteJson = writeJson as jest.Mock;
 
 describe('buildPath', () => {
   it('builds test paths', () => {
@@ -28,11 +27,6 @@ describe('saveTemplate', () => {
   const options = { name: 'myTest', rootDir, url: 'www.qawolf.com' };
 
   beforeEach(() => mockedWriteFile.mockClear());
-
-  it('saves empty selector file', async () => {
-    await saveTemplate(options);
-    expect(mockedWriteJson.mock.calls[0][1]).toEqual({});
-  });
 
   it('saves provided templateFn', async () => {
     await saveTemplate({

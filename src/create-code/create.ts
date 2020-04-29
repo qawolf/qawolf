@@ -3,7 +3,6 @@ import Debug from 'debug';
 import { pathExists, readFile } from 'fs-extra';
 import { bold } from 'kleur';
 import { findLast } from 'lodash';
-import { basename, dirname, join } from 'path';
 import { CreateManager } from './CreateManager';
 import { getLineIncludes } from './format';
 import { PATCH_HANDLE } from './patchCode';
@@ -40,11 +39,6 @@ export const getCreatePath = async (
   return item.filename;
 };
 
-export const getSelectorPath = (codePath: string): string => {
-  const codeName = basename(codePath).split('.')[0];
-  return join(dirname(codePath), './selectors', `${codeName}.json`);
-};
-
 export const create = async (): Promise<void> => {
   const context = Registry.instance().data().context;
   if (!context) {
@@ -57,12 +51,9 @@ export const create = async (): Promise<void> => {
 
   const codePath = await getCreatePath(callerFileNames);
 
-  const selectorPath = getSelectorPath(codePath);
-
   const manager = await CreateManager.create({
     codePath,
     context,
-    selectorPath,
   });
 
   console.log(bold().blue('🐺  QA Wolf is ready to create code!'));

@@ -48,11 +48,11 @@ describe('ContextEventCollector', () => {
       'click',
     ]);
 
-    expect(events.map((e) => e.htmlSelector)).toEqual([
-      '<ul qaw_innertext="Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Nested data attributes Radio inputs Selects Text inputs Time pickers"><li qaw_innertext="Buttons"><a href="/buttons" qaw_innertext="Buttons"></a></li></ul>',
-      '<ul qaw_innertext="Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Nested data attributes Radio inputs Selects Text inputs Time pickers"><li qaw_innertext="Buttons"><a href="/buttons" qaw_innertext="Buttons"></a></li></ul>',
-      '<ul qaw_innertext="Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Nested data attributes Radio inputs Selects Text inputs Time pickers"><li qaw_innertext="Buttons"><a href="/buttons" qaw_innertext="Buttons"></a></li></ul>',
-      '<ul qaw_innertext="Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Nested data attributes Radio inputs Selects Text inputs Time pickers"><li qaw_innertext="Buttons"><a href="/buttons" qaw_innertext="Buttons"></a></li></ul>',
+    expect(events.map((e) => e.selector)).toEqual([
+      'text=Buttons',
+      'text=Buttons',
+      'text=Buttons',
+      'text=Buttons',
     ]);
   });
 
@@ -78,7 +78,7 @@ describe('ContextEventCollector', () => {
     expect((events[0] as PasteEvent).value).toEqual('secret');
 
     // make sure it collects the css selector
-    expect(events[0].cssSelector).toEqual("[data-qa='html-text-input']");
+    expect(events[0].selector).toEqual('[data-qa="html-text-input"]');
   });
 
   it('records scroll event', async () => {

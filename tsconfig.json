@@ -18,7 +18,8 @@
     "noImplicitThis": false,
     "strictNullChecks": false,
     "esModuleInterop": true,
-    "declaration": true
+    "declaration": true,
+    "resolveJsonModule": true
   },
   "include": ["src/**/*"]
 }

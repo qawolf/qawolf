@@ -1,5 +1,5 @@
 import { spawn, ChildProcess } from 'child_process';
-import { readFile, readJson, pathExists } from 'fs-extra';
+import { readFile, pathExists } from 'fs-extra';
 import { join } from 'path';
 import { BrowserServer } from 'playwright-core';
 import { launchServer } from '../browser';
@@ -12,7 +12,6 @@ import { sleep } from '../utils';
 process.env.DEBUG = 'qawolf*';
 
 const testPath = join(__dirname, '../.qawolf/example.test.ts');
-const selectorsPath = join(testPath, '../selectors/example.json');
 
 const loadCode = async (): Promise<string> => {
   if (!(await pathExists(testPath))) return null;
@@ -31,7 +30,7 @@ describe('npx qawolf create', () => {
     server = await launchServer();
 
     child = spawn('node', ['node_modules/qawolf/build/index.js', 'create'], {
-      env: { ...process.env },
+      env: { ...process.env, QAW_CREATE_E2E_TEST: '1' },
     });
 
     child.stderr.setEncoding('utf8');
@@ -53,11 +52,6 @@ describe('npx qawolf create', () => {
   it('creates the code file with the custom template', async () => {
     const code = await waitFor(loadCode);
     expect(code).toMatchSnapshot();
-  });
-
-  it('creates the selectors file', async () => {
-    await waitFor(() => pathExists(selectorsPath));
-    expect(await readJson(selectorsPath)).toEqual({});
   });
 
   it('opens the cli prompt', async () => {

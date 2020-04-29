@@ -14,7 +14,7 @@ module.exports = {
       id: 'run_tests_locally',
     },
     { type: 'doc', id: 'run_tests_in_ci' },
-    { type: 'doc', id: 'config' },
+    { type: 'doc', id: 'configure_qa_wolf' },
   ],
   guides: [
     { type: 'doc', id: 'edit_a_test' },

@@ -120,7 +120,6 @@ Your test file (`.qawolf/mySignInTest.test.js` in our example) should look like 
 
 ```js
 const qawolf = require('qawolf');
-const selectors = require('./selectors/mySignInTest.json');
 
 let browser;
 let page;

@@ -15,7 +15,6 @@ export type TemplateFunction = (
 
 interface BuildImportsOptions {
   device?: string;
-  name: string;
   useTypeScript?: boolean;
 }
 
@@ -35,7 +34,6 @@ export const buildValidVariableName = (name: string): string => {
 
 export const buildImports = ({
   device,
-  name,
   useTypeScript,
 }: BuildImportsOptions): string => {
   if (device && !devices[device]) {
@@ -44,25 +42,22 @@ export const buildImports = ({
 
   let imports = '';
 
-  if (device) {
-    if (useTypeScript) {
-      imports += 'import { Browser, Page, devices } from "playwright";\n';
-    } else {
-      imports += 'const { devices } = require("playwright");\n';
-    }
-  }
-
-  if (useTypeScript && !device) {
-    imports += 'import { Browser, Page } from "playwright";\n';
-  }
-
   if (useTypeScript) {
-    imports += 'import qawolf from "qawolf";\n';
-  } else {
-    imports += 'const qawolf = require("qawolf");\n';
-  }
+    if (device) {
+      imports = 'import { Browser, Page, devices } from "playwright";';
+    } else {
+      imports = 'import { Browser, Page } from "playwright";';
+    }
 
-  imports += `const selectors = require("./selectors/${name}.json");`;
+    imports += '\nimport qawolf from "qawolf";';
+  } else {
+    // not typescript
+    if (device) {
+      imports = 'const { devices } = require("playwright");\n';
+    }
+
+    imports += 'const qawolf = require("qawolf");';
+  }
 
   if (device) {
     imports += `\nconst device = devices["${device}"];`;
@@ -92,7 +87,7 @@ export const buildTemplate: TemplateFunction = ({
   url,
   useTypeScript,
 }: BuildTemplateOptions): string => {
-  const code = `${buildImports({ device, name, useTypeScript })}
+  const code = `${buildImports({ device, useTypeScript })}
 
 let browser${useTypeScript ? ': Browser' : ''};
 let page${useTypeScript ? ': Page' : ''};
@@ -109,7 +104,7 @@ afterAll(async () => {
   await browser.close();
 });
 
-test('${name}', async () => {
+test("${name}", async () => {
   await page.goto("${url}");${buildSetState(statePath)}
   await qawolf.create();
 });`;

@@ -8,6 +8,7 @@ const debug = Debug('qawolf:WatchPlugin');
 
 export class WatchPlugin {
   _code: string;
+  _lastCodeUpdate: number = Date.now();
   _server: WatchServer;
   _watcher: FSWatcher;
   _watchPath: string;
@@ -16,6 +17,7 @@ export class WatchPlugin {
     this._server = new WatchServer();
 
     this._server.on('codeupdate', (code) => {
+      this._lastCodeUpdate = Date.now();
       this._code = code;
     });
 
@@ -39,7 +41,7 @@ export class WatchPlugin {
 
   async _onWatchChange(testPath: string): Promise<void> {
     const newCode = await readFile(testPath, 'utf8');
-    if (newCode === this._code) {
+    if (newCode === this._code || Date.now() - this._lastCodeUpdate < 100) {
       debug('watch change: code did not change');
       return;
     }

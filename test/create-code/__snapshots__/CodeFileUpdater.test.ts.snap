@@ -2,21 +2,21 @@
 
 exports[`CodeFileUpdater update saves code with new steps 1`] = `
 "  someCode();
-  await page.click(selectors[\\"0_a\\"]);
-  await page.click(selectors[\\"1_username_input\\"]);
+  await page.click('text=\\"Log in\\"');
+  await page.click(\\"#username\\");
   await qawolf.create();
   otherCode();"
 `;
 
 exports[`CodeFileUpdater update saves code with new steps 2`] = `
 "  someCode();
-  await page.click(selectors[\\"0_a\\"]);
-  await page.click(selectors[\\"1_username_input\\"]);
-  await page.type(selectors[\\"2_username_input\\"], \\"tomsmith\\");
-  await page.press(selectors[\\"3_username_input\\"], \\"Tab\\");
-  await page.type(selectors[\\"4_password_input\\"], \\"SuperSecretPassword!\\");
-  await page.press(selectors[\\"5_password_input\\"], \\"Enter\\");
-  await page.click(selectors[\\"6_p\\"]);
+  await page.click('text=\\"Log in\\"');
+  await page.click(\\"#username\\");
+  await page.type(\\"#username\\", \\"tomsmith\\");
+  await page.press(\\"#username\\", \\"Tab\\");
+  await page.type(\\"#password\\", \\"SuperSecretPassword!\\");
+  await page.press(\\"#password\\", \\"Enter\\");
+  await page.click('text=\\"Log out\\"');
   await qawolf.create();
   otherCode();"
 `;

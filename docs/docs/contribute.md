@@ -44,5 +44,6 @@ We maintain several packages under the [`qawolf` organzation](https://github.com
 
 - [qawolf](https://github.com/qawolf/qawolf) is a Node.js library for creating Playwright/Jest tests
 - [playwright-ci](https://github.com/qawolf/playwright-ci) provides a CLI to set up tests in CI
-- [playwright-html-selector](https://github.com/qawolf/playwright-html-selector) is a custom selector engine for Playwright that finds elements by their HTML
 - [playwright-video](https://github.com/qawolf/playwright-video) saves a video of a Playwright page
+
+We also maintain the [playwright-html-selector](https://github.com/qawolf/playwright-html-selector) package, which allows Playwright to find elements based on their HTML. This was used in older versions of QA Wolf.

@@ -26,15 +26,14 @@ Pause a running test and open the [interactive REPL](../../use_the_repl).
 
 ### Examples
 
-Call `repl` in your test code, passing whatever values you want to access in the REPL. The [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext) instance (`context`) and `qawolf` are included by default, so you do not need to include them again:
+Call `repl` in your test code, passing whatever values you want to access in the REPL. The [Playwright `BrowserContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext) instance (`context`), [Playwright `Page`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page) instance (`page`), and `qawolf` are included by default, so you do not need to include them again:
 
 ```js
 const qawolf = require('qawolf');
-const selectors = require('./selectors/myTestName.json');
 // ...
 
-test('myTestName', async () => {
-  await qawolf.repl({ selectors }); // already includes qawolf and context
+test('myTest', async () => {
+  await qawolf.repl(); // already includes context, page, and qawolf
 });
 ```
 
@@ -50,7 +49,7 @@ Type `.screenshot [page]` to open a screenshot.
 Run your test in [edit mode](../../edit_a_test):
 
 ```bash
-npx qawolf edit myTestName
+npx qawolf edit myTest
 ```
 
 Your test will run until `repl` is called, at which point the test will pause and the [interactive REPL](../../use_the_repl) will open. After you exit the REPL by calling `.exit`, the test will continue. You can call `repl` any number of times in your test.

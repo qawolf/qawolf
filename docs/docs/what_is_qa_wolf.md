@@ -6,8 +6,8 @@ title: 🐺 What Is QA Wolf?
 :::tip TL;DR
 
 - Use QA Wolf to create browser tests 10x faster
-- Selectors auto-wait and are optimized for stability
-- QA Wolf uses Playwright instead of Selenium or Cypress
+- QA Wolf converts your browser actions to Playwright/Jest test code
+- A workflow file to run your tests in CI is created for you
 
 :::
 
@@ -47,11 +47,9 @@ QA Wolf generates [Playwright](#what-is-playwright) code, which automatically wa
 
 QA Wolf chooses element selectors wisely. Typically, auto generated code targets elements with very specific selectors like [XPaths](https://developer.mozilla.org/en-US/docs/Web/XPath). These brittle selectors can stop working as your application changes.
 
-A best practice in testing is target elements based on test [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes) like `data-qa`. This provides maximum stability even as your application changes. If possible, QA Wolf will target elements based on these test attributes. You can [choose which attributes are used](config#attribute) in the generated code, including attributes like `id` or `aria-label`.
+A best practice in testing is target elements based on test [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes) like `data-qa`. This provides maximum stability even as your application changes. If possible, QA Wolf will target elements based on these test attributes. You can [choose which attributes take priority](configure_qa_wolf#attribute) in the generated code, including attributes like `id` or `aria-label`.
 
-#### Smart Selectors
-
-If a target attribute is not available, QA Wolf will select elements using multiple attributes to improve stability. QA Wolf stores all the attributes of the target element and its two [ancestors](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement), and uses that to find a close enough match when running your tests.
+If no specified attribute like `data-qa` is available, QA Wolf chooses the best [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) or text selector for the target element. It takes into account factors like whether the selector is unique on the page and whether an `id` or `class` is dynamic.
 
 ## What is Playwright?
 

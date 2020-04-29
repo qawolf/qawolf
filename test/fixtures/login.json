@@ -1,38 +1,38 @@
 {
   "events": [
     {
-      "htmlSelector": "<ul qaw_innertext=\"Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Radio inputs Selects Text inputs Time pickers\"><li qaw_innertext=\"Log in\"><a href=\"/login\" qaw_innertext=\"Log in\"></a></li></ul>",
       "isTrusted": true,
       "name": "mousedown",
       "page": 0,
+      "selector": "text=\"Log in\"",
       "target": {
         "type": "tag",
         "name": "a",
         "voidElement": false,
-        "attrs": { "href": "/login", "qaw_innertext": "Log in" },
+        "attrs": { "href": "/login" },
         "children": [{ "type": "text", "content": "Log in" }]
       },
-      "time": 1583106434723
+      "time": 1588025517066
     },
     {
-      "htmlSelector": "<ul qaw_innertext=\"Buttons Checkbox inputs Content editables Date pickers Images Infinite scroll Large Log in Radio inputs Selects Text inputs Time pickers\"><li qaw_innertext=\"Log in\"><a href=\"/login\" qaw_innertext=\"Log in\"></a></li></ul>",
       "isTrusted": true,
       "name": "click",
       "page": 0,
+      "selector": "text=\"Log in\"",
       "target": {
         "type": "tag",
         "name": "a",
         "voidElement": false,
-        "attrs": { "href": "/login", "qaw_innertext": "Log in" },
+        "attrs": { "href": "/login" },
         "children": [{ "type": "text", "content": "Log in" }]
       },
-      "time": 1583106434790
+      "time": 1588025517129
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"username\" type=\"text\" value=\"\" qaw_labels=\"Username\" /></form></div>",
       "isTrusted": true,
       "name": "mousedown",
       "page": 0,
+      "selector": "#username",
       "target": {
         "type": "tag",
         "name": "input",
@@ -41,18 +41,17 @@
           "autocomplete": "off",
           "id": "username",
           "type": "text",
-          "value": "",
-          "qaw_labels": "Username"
+          "value": ""
         },
         "children": []
       },
-      "time": 1583106435717
+      "time": 1588025518191
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"username\" type=\"text\" value=\"\" qaw_labels=\"Username\" /></form></div>",
       "isTrusted": true,
       "name": "click",
       "page": 0,
+      "selector": "#username",
       "target": {
         "type": "tag",
         "name": "input",
@@ -61,18 +60,17 @@
           "autocomplete": "off",
           "id": "username",
           "type": "text",
-          "value": "",
-          "qaw_labels": "Username"
+          "value": ""
         },
         "children": []
       },
-      "time": 1583106435792
+      "time": 1588025518254
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"username\" type=\"text\" value=\"\" qaw_labels=\"Username\" /></form></div>",
       "isTrusted": true,
       "name": "keydown",
       "page": 0,
+      "selector": "#username",
       "target": {
         "type": "tag",
         "name": "input",
@@ -81,19 +79,18 @@
           "autocomplete": "off",
           "id": "username",
           "type": "text",
-          "value": "",
-          "qaw_labels": "Username"
+          "value": ""
         },
         "children": []
       },
-      "time": 1583106436649,
+      "time": 1588025518976,
       "value": "t"
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"username\" type=\"text\" value=\"t\" qaw_labels=\"Username\" /></form></div>",
       "isTrusted": true,
       "name": "keyup",
       "page": 0,
+      "selector": "#username",
       "target": {
         "type": "tag",
         "name": "input",
@@ -102,19 +99,18 @@
           "autocomplete": "off",
           "id": "username",
           "type": "text",
-          "value": "t",
-          "qaw_labels": "Username"
+          "value": "t"
         },
         "children": []
       },
-      "time": 1583106436720,
+      "time": 1588025519031,
       "value": "t"
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"username\" type=\"text\" value=\"t\" qaw_labels=\"Username\" /></form></div>",
       "isTrusted": true,
       "name": "keydown",
       "page": 0,
+      "selector": "#username",
       "target": {
         "type": "tag",
         "name": "input",
@@ -123,19 +119,18 @@
           "autocomplete": "off",
           "id": "username",
           "type": "text",
-          "value": "t",
-          "qaw_labels": "Username"
+          "value": "t"
         },
         "children": []
       },
-      "time": 1583106436784,
+      "time": 1588025519093,
       "value": "o"
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"username\" type=\"text\" value=\"to\" qaw_labels=\"Username\" /></form></div>",
       "isTrusted": true,
       "name": "keyup",
       "page": 0,
+      "selector": "#username",
       "target": {
         "type": "tag",
         "name": "input",
@@ -144,19 +139,18 @@
           "autocomplete": "off",
           "id": "username",
           "type": "text",
-          "value": "to",
-          "qaw_labels": "Username"
+          "value": "to"
         },
         "children": []
       },
-      "time": 1583106436863,
+      "time": 1588025519168,
       "value": "o"
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"username\" type=\"text\" value=\"to\" qaw_labels=\"Username\" /></form></div>",
       "isTrusted": true,
       "name": "keydown",
       "page": 0,
+      "selector": "#username",
       "target": {
         "type": "tag",
         "name": "input",
@@ -165,19 +159,18 @@
           "autocomplete": "off",
           "id": "username",
           "type": "text",
-          "value": "to",
-          "qaw_labels": "Username"
+          "value": "to"
         },
         "children": []
       },
-      "time": 1583106436924,
+      "time": 1588025519196,
       "value": "m"
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"username\" type=\"text\" value=\"tom\" qaw_labels=\"Username\" /></form></div>",
       "isTrusted": true,
       "name": "keyup",
       "page": 0,
+      "selector": "#username",
       "target": {
         "type": "tag",
         "name": "input",
@@ -186,19 +179,18 @@
           "autocomplete": "off",
           "id": "username",
           "type": "text",
-          "value": "tom",
-          "qaw_labels": "Username"
+          "value": "tom"
         },
         "children": []
       },
-      "time": 1583106437013,
+      "time": 1588025519280,
       "value": "m"
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"username\" type=\"text\" value=\"tom\" qaw_labels=\"Username\" /></form></div>",
       "isTrusted": true,
       "name": "keydown",
       "page": 0,
+      "selector": "#username",
       "target": {
         "type": "tag",
         "name": "input",
@@ -207,19 +199,18 @@
           "autocomplete": "off",
           "id": "username",
           "type": "text",
-          "value": "tom",
-          "qaw_labels": "Username"
+          "value": "tom"
         },
         "children": []
       },
-      "time": 1583106437049,
+      "time": 1588025519287,
       "value": "s"
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"username\" type=\"text\" value=\"toms\" qaw_labels=\"Username\" /></form></div>",
       "isTrusted": true,
       "name": "keyup",
       "page": 0,
+      "selector": "#username",
       "target": {
         "type": "tag",
         "name": "input",
@@ -228,19 +219,18 @@
           "autocomplete": "off",
           "id": "username",
           "type": "text",
-          "value": "toms",
-          "qaw_labels": "Username"
+          "value": "toms"
         },
         "children": []
       },
-      "time": 1583106437125,
+      "time": 1588025519356,
       "value": "s"
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"username\" type=\"text\" value=\"toms\" qaw_labels=\"Username\" /></form></div>",
       "isTrusted": true,
       "name": "keydown",
       "page": 0,
+      "selector": "#username",
       "target": {
         "type": "tag",
         "name": "input",
@@ -249,19 +239,18 @@
           "autocomplete": "off",
           "id": "username",
           "type": "text",
-          "value": "toms",
-          "qaw_labels": "Username"
+          "value": "toms"
         },
         "children": []
       },
-      "time": 1583106437158,
+      "time": 1588025519377,
       "value": "m"
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"username\" type=\"text\" value=\"tomsm\" qaw_labels=\"Username\" /></form></div>",
       "isTrusted": true,
-      "name": "keyup",
+      "name": "keydown",
       "page": 0,
+      "selector": "#username",
       "target": {
         "type": "tag",
         "name": "input",
@@ -270,19 +259,38 @@
           "autocomplete": "off",
           "id": "username",
           "type": "text",
-          "value": "tomsm",
-          "qaw_labels": "Username"
+          "value": "tomsm"
         },
         "children": []
       },
-      "time": 1583106437267,
+      "time": 1588025519497,
+      "value": "i"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "#username",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "username",
+          "type": "text",
+          "value": "tomsmi"
+        },
+        "children": []
+      },
+      "time": 1588025519512,
       "value": "m"
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"username\" type=\"text\" value=\"tomsm\" qaw_labels=\"Username\" /></form></div>",
       "isTrusted": true,
-      "name": "keydown",
+      "name": "keyup",
       "page": 0,
+      "selector": "#username",
       "target": {
         "type": "tag",
         "name": "input",
@@ -291,40 +299,18 @@
           "autocomplete": "off",
           "id": "username",
           "type": "text",
-          "value": "tomsm",
-          "qaw_labels": "Username"
+          "value": "tomsmi"
         },
         "children": []
       },
-      "time": 1583106437288,
+      "time": 1588025519584,
       "value": "i"
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"username\" type=\"text\" value=\"tomsmi\" qaw_labels=\"Username\" /></form></div>",
-      "isTrusted": true,
-      "name": "keyup",
-      "page": 0,
-      "target": {
-        "type": "tag",
-        "name": "input",
-        "voidElement": true,
-        "attrs": {
-          "autocomplete": "off",
-          "id": "username",
-          "type": "text",
-          "value": "tomsmi",
-          "qaw_labels": "Username"
-        },
-        "children": []
-      },
-      "time": 1583106437356,
-      "value": "i"
-    },
-    {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"username\" type=\"text\" value=\"tomsmi\" qaw_labels=\"Username\" /></form></div>",
       "isTrusted": true,
       "name": "keydown",
       "page": 0,
+      "selector": "#username",
       "target": {
         "type": "tag",
         "name": "input",
@@ -333,19 +319,18 @@
           "autocomplete": "off",
           "id": "username",
           "type": "text",
-          "value": "tomsmi",
-          "qaw_labels": "Username"
+          "value": "tomsmi"
         },
         "children": []
       },
-      "time": 1583106437386,
+      "time": 1588025519607,
       "value": "t"
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"username\" type=\"text\" value=\"tomsmit\" qaw_labels=\"Username\" /></form></div>",
       "isTrusted": true,
       "name": "keyup",
       "page": 0,
+      "selector": "#username",
       "target": {
         "type": "tag",
         "name": "input",
@@ -354,19 +339,18 @@
           "autocomplete": "off",
           "id": "username",
           "type": "text",
-          "value": "tomsmit",
-          "qaw_labels": "Username"
+          "value": "tomsmit"
         },
         "children": []
       },
-      "time": 1583106437454,
+      "time": 1588025519687,
       "value": "t"
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"username\" type=\"text\" value=\"tomsmit\" qaw_labels=\"Username\" /></form></div>",
       "isTrusted": true,
       "name": "keydown",
       "page": 0,
+      "selector": "#username",
       "target": {
         "type": "tag",
         "name": "input",
@@ -375,19 +359,18 @@
           "autocomplete": "off",
           "id": "username",
           "type": "text",
-          "value": "tomsmit",
-          "qaw_labels": "Username"
+          "value": "tomsmit"
         },
         "children": []
       },
-      "time": 1583106437503,
+      "time": 1588025519732,
       "value": "h"
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"username\" type=\"text\" value=\"tomsmith\" qaw_labels=\"Username\" /></form></div>",
       "isTrusted": true,
       "name": "keyup",
       "page": 0,
+      "selector": "#username",
       "target": {
         "type": "tag",
         "name": "input",
@@ -396,19 +379,18 @@
           "autocomplete": "off",
           "id": "username",
           "type": "text",
-          "value": "tomsmith",
-          "qaw_labels": "Username"
+          "value": "tomsmith"
         },
         "children": []
       },
-      "time": 1583106437560,
+      "time": 1588025519808,
       "value": "h"
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"username\" type=\"text\" value=\"tomsmith\" qaw_labels=\"Username\" /></form></div>",
       "isTrusted": true,
       "name": "keydown",
       "page": 0,
+      "selector": "#username",
       "target": {
         "type": "tag",
         "name": "input",
@@ -417,19 +399,18 @@
           "autocomplete": "off",
           "id": "username",
           "type": "text",
-          "value": "tomsmith",
-          "qaw_labels": "Username"
+          "value": "tomsmith"
         },
         "children": []
       },
-      "time": 1583106437954,
+      "time": 1588025520059,
       "value": "Tab"
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"password\" type=\"password\" value=\"\" qaw_labels=\"Password\" /></form></div>",
       "isTrusted": true,
       "name": "keyup",
       "page": 0,
+      "selector": "#password",
       "target": {
         "type": "tag",
         "name": "input",
@@ -438,19 +419,18 @@
           "autocomplete": "off",
           "id": "password",
           "type": "password",
-          "value": "",
-          "qaw_labels": "Password"
+          "value": ""
         },
         "children": []
       },
-      "time": 1583106438037,
+      "time": 1588025520142,
       "value": "Tab"
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"password\" type=\"password\" value=\"\" qaw_labels=\"Password\" /></form></div>",
       "isTrusted": true,
       "name": "keydown",
       "page": 0,
+      "selector": "#password",
       "target": {
         "type": "tag",
         "name": "input",
@@ -459,19 +439,18 @@
           "autocomplete": "off",
           "id": "password",
           "type": "password",
-          "value": "",
-          "qaw_labels": "Password"
+          "value": ""
         },
         "children": []
       },
-      "time": 1583106438550,
+      "time": 1588025520432,
       "value": "Meta"
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"password\" type=\"password\" value=\"\" qaw_labels=\"Password\" /></form></div>",
       "isTrusted": true,
       "name": "keydown",
       "page": 0,
+      "selector": "#password",
       "target": {
         "type": "tag",
         "name": "input",
@@ -480,19 +459,18 @@
           "autocomplete": "off",
           "id": "password",
           "type": "password",
-          "value": "",
-          "qaw_labels": "Password"
+          "value": ""
         },
         "children": []
       },
-      "time": 1583106438645,
+      "time": 1588025520825,
       "value": "v"
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"password\" type=\"password\" value=\"\" qaw_labels=\"Password\" /></form></div>",
       "isTrusted": true,
       "name": "paste",
       "page": 0,
+      "selector": "#password",
       "target": {
         "type": "tag",
         "name": "input",
@@ -501,19 +479,18 @@
           "autocomplete": "off",
           "id": "password",
           "type": "password",
-          "value": "",
-          "qaw_labels": "Password"
+          "value": ""
         },
         "children": []
       },
-      "time": 1583106438791,
+      "time": 1588025520971,
       "value": "SuperSecretPassword!"
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"password\" type=\"password\" value=\"SuperSecretPassword!\" qaw_labels=\"Password\" /></form></div>",
       "isTrusted": true,
       "name": "keyup",
       "page": 0,
+      "selector": "#password",
       "target": {
         "type": "tag",
         "name": "input",
@@ -522,40 +499,18 @@
           "autocomplete": "off",
           "id": "password",
           "type": "password",
-          "value": "SuperSecretPassword!",
-          "qaw_labels": "Password"
+          "value": "SuperSecretPassword!"
         },
         "children": []
       },
-      "time": 1583106438794,
+      "time": 1588025520978,
       "value": "Meta"
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"password\" type=\"password\" value=\"SuperSecretPassword!\" qaw_labels=\"Password\" /></form></div>",
-      "isTrusted": true,
-      "name": "keyup",
-      "page": 0,
-      "target": {
-        "type": "tag",
-        "name": "input",
-        "voidElement": true,
-        "attrs": {
-          "autocomplete": "off",
-          "id": "password",
-          "type": "password",
-          "value": "SuperSecretPassword!",
-          "qaw_labels": "Password"
-        },
-        "children": []
-      },
-      "time": 1583106438795,
-      "value": "v"
-    },
-    {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><input autocomplete=\"off\" id=\"password\" type=\"password\" value=\"SuperSecretPassword!\" qaw_labels=\"Password\" /></form></div>",
       "isTrusted": true,
       "name": "keydown",
       "page": 0,
+      "selector": "#password",
       "target": {
         "type": "tag",
         "name": "input",
@@ -564,28 +519,23 @@
           "autocomplete": "off",
           "id": "password",
           "type": "password",
-          "value": "SuperSecretPassword!",
-          "qaw_labels": "Password"
+          "value": "SuperSecretPassword!"
         },
         "children": []
       },
-      "time": 1583106439265,
+      "time": 1588025521606,
       "value": "Enter"
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"To log in, use tomsmith as the username, and SuperSecretPassword! as the password. Username Password Log in\"><form qaw_innertext=\"Username Password Log in\"><button type=\"submit\" qaw_innertext=\"Log in\" style=\"cursor: pointer;\"></button></form></div>",
       "isTrusted": true,
       "name": "click",
       "page": 0,
+      "selector": "text=\"Log in\"",
       "target": {
         "type": "tag",
         "name": "button",
         "voidElement": false,
-        "attrs": {
-          "type": "submit",
-          "style": "cursor: pointer;",
-          "qaw_innertext": "Log in"
-        },
+        "attrs": { "type": "submit", "style": "cursor: pointer;" },
         "children": [
           {
             "type": "tag",
@@ -596,50 +546,94 @@
           }
         ]
       },
-      "time": 1583106439267
+      "time": 1588025521608
     },
     {
-      "htmlSelector": "<html lang=\"en\" qaw_innertext=\"Secure Area Log out\"><body qaw_innertext=\"Secure Area Log out\"></body></html>",
       "isTrusted": true,
       "name": "keyup",
       "page": 0,
+      "selector": "body",
       "target": {
         "type": "tag",
         "name": "body",
-        "voidElement": true,
+        "voidElement": false,
         "attrs": {},
-        "children": []
+        "children": [
+          { "type": "text", "content": "    " },
+          {
+            "type": "tag",
+            "name": "noscript",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "You need to enable JavaScript to run this app."
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": { "id": "root" },
+            "children": [
+              {
+                "type": "tag",
+                "name": "h1",
+                "voidElement": false,
+                "attrs": {},
+                "children": [{ "type": "text", "content": "Secure Area" }]
+              },
+              {
+                "type": "tag",
+                "name": "button",
+                "voidElement": false,
+                "attrs": {},
+                "children": [
+                  {
+                    "type": "tag",
+                    "name": "p",
+                    "voidElement": false,
+                    "attrs": {},
+                    "children": [{ "type": "text", "content": "Log out" }]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
-      "time": 1583106439317,
+      "time": 1588025521665,
       "value": "Enter"
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"Secure Area Log out\"><button qaw_innertext=\"Log out\"><p qaw_innertext=\"Log out\"></p></button></div>",
       "isTrusted": true,
       "name": "mousedown",
       "page": 0,
+      "selector": "text=\"Log out\"",
       "target": {
         "type": "tag",
         "name": "p",
         "voidElement": false,
-        "attrs": { "qaw_innertext": "Log out" },
+        "attrs": {},
         "children": [{ "type": "text", "content": "Log out" }]
       },
-      "time": 1583106440268
+      "time": 1588025523112
     },
     {
-      "htmlSelector": "<div id=\"root\" qaw_innertext=\"Secure Area Log out\"><button qaw_innertext=\"Log out\"><p qaw_innertext=\"Log out\"></p></button></div>",
       "isTrusted": true,
       "name": "click",
       "page": 0,
+      "selector": "text=\"Log out\"",
       "target": {
         "type": "tag",
         "name": "p",
         "voidElement": false,
-        "attrs": { "qaw_innertext": "Log out" },
+        "attrs": {},
         "children": [{ "type": "text", "content": "Log out" }]
       },
-      "time": 1583106440344
+      "time": 1588025523175
     }
   ]
 }

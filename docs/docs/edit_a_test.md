@@ -11,7 +11,7 @@ As your application changes, you may want to update the steps in an existing tes
 
 ```js
 // ...
-test('myTestName', async () => {
+test('myTest', async () => {
   await page.goto('www.myawesomesite.com');
   // ...
   await qawolf.create();
@@ -22,7 +22,7 @@ test('myTestName', async () => {
 - [Run your test in edit mode](#use-edit-mode), and use the browser to add new steps where `qawolf.create` is called:
 
 ```bash
-npx qawolf edit myTestName
+npx qawolf edit myTest
 ```
 
 - [Use watch mode](#watch-mode) to automatically re-run your tests on save:
@@ -39,11 +39,10 @@ module.exports = {
 
 Let's say we want to update our test on [TodoMVC](http://todomvc.com/examples/react) from the [create a test](create_a_test) guide. Our current test only creates one todo item, but now we want to test creating a second todo item.
 
-For reference, our test code is saved at `.qawolf/myFirstTest.test.js` and looks like this:
+For reference, our test code is saved at `.qawolf/myTest.test.js` and looks like this:
 
 ```js
 const qawolf = require('qawolf');
-const selectors = require('./selectors/myFirstTest.json');
 
 let browser;
 let page;
@@ -60,13 +59,13 @@ afterAll(async () => {
   await browser.close();
 });
 
-test('myFirstTest', async () => {
+test('myTest', async () => {
   await page.goto('http://todomvc.com/examples/react');
-  await page.click(selectors['0_what_needs_to_b_input']);
-  await page.type(selectors['1_what_needs_to_b_input'], 'create test!');
-  await page.press(selectors['2_what_needs_to_b_input'], 'Enter');
-  await page.click(selectors['3_input']);
-  await page.click(selectors['4_button']);
+  await page.click('[placeholder="What needs to be done?"]');
+  await page.type('[placeholder="What needs to be done?"]', 'create test!');
+  await page.press('[placeholder="What needs to be done?"]', 'Enter');
+  await page.click('.toggle');
+  await page.click('text=Clear completed');
 });
 ```
 
@@ -76,37 +75,39 @@ In your test code, call `qawolf.create` in your [Jest `test` block](https://jest
 
 ```js
 // ...
-test('myFirstTest', async () => {
+
+test('myTest', async () => {
   await page.goto('http://todomvc.com/examples/react');
-  await page.click(selectors['0_what_needs_to_b_input']);
-  await page.type(selectors['1_what_needs_to_b_input'], 'create test!');
-  await page.press(selectors['2_what_needs_to_b_input'], 'Enter');
+  await page.click('[placeholder="What needs to be done?"]');
+  await page.type('[placeholder="What needs to be done?"]', 'create test!');
+  await page.press('[placeholder="What needs to be done?"]', 'Enter');
   await qawolf.create(); // add this line
-  await page.click(selectors['3_input']);
-  await page.click(selectors['4_button']);
+  await page.click('.toggle');
+  await page.click('text=Clear completed');
 });
 ```
 
 ## Use edit mode
 
-Now let's run our test in edit mode, which allows us to add steps to an existing test. Run the [`npx qawolf edit` command](api/cli#npx-qawolf-edit-name), and specify the name of your test file (`myFirstTest` in our example):
+Now let's run our test in edit mode, which allows us to add steps to an existing test. Run the [`npx qawolf edit` command](api/cli#npx-qawolf-edit-name), and specify the name of your test file (`myTest` in our example):
 
 ```bash
-npx qawolf edit myFirstTest
+npx qawolf edit myTest
 ```
 
 The first few steps of our test will now run. For TodoMVC, this means that the first todo item will be created. The test will then pause where `qawolf.create` is called.
 
 ```js
 // ...
-test('myFirstTest', async () => {
+
+test('myTest', async () => {
   await page.goto('http://todomvc.com/examples/react');
-  await page.click(selectors['0_what_needs_to_b_input']);
-  await page.type(selectors['1_what_needs_to_b_input'], 'create test!');
-  await page.press(selectors['2_what_needs_to_b_input'], 'Enter');
+  await page.click('[placeholder="What needs to be done?"]');
+  await page.type('[placeholder="What needs to be done?"]', 'create test!');
+  await page.press('[placeholder="What needs to be done?"]', 'Enter');
   await qawolf.create(); // test will pause here
-  await page.click(selectors['3_input']);
-  await page.click(selectors['4_button']);
+  await page.click('.toggle');
+  await page.click('text=Clear completed');
 });
 ```
 
@@ -114,17 +115,18 @@ Any actions you take in the browser will be converted to code and inserted where
 
 ```js
 // ...
-test('myFirstTest', async () => {
+
+test('myTest', async () => {
   await page.goto('http://todomvc.com/examples/react');
-  await page.click(selectors['0_what_needs_to_b_input']);
-  await page.type(selectors['1_what_needs_to_b_input'], 'create test!');
-  await page.press(selectors['2_what_needs_to_b_input'], 'Enter');
-  await page.click(selectors['5_what_needs_to_b_input']);
-  await page.type(selectors['6_what_needs_to_b_input'], 'update test!');
-  await page.press(selectors['7_what_needs_to_b_input'], 'Enter');
+  await page.click('[placeholder="What needs to be done?"]');
+  await page.type('[placeholder="What needs to be done?"]', 'create test!');
+  await page.press('[placeholder="What needs to be done?"]', 'Enter');
+  await page.click('[placeholder="What needs to be done?"]');
+  await page.type('[placeholder="What needs to be done?"]', 'update test!');
+  await page.press('[placeholder="What needs to be done?"]', 'Enter');
   await qawolf.create(); // this line will be removed on save
-  await page.click(selectors['3_input']);
-  await page.click(selectors['4_button']);
+  await page.click('.toggle');
+  await page.click('text=Clear completed');
 });
 ```
 
@@ -133,7 +135,7 @@ Now that we've added our second todo item, let's save our test. In the command l
 To run your updated test, use the following command:
 
 ```bash
-npx qawolf test myFirstTest
+npx qawolf test myTest
 ```
 
 You'll notice that two todo items are created in our updated test.
@@ -142,7 +144,7 @@ You'll notice that two todo items are created in our updated test.
 
 QA Wolf allows you to create and edit tests in watch mode. Watch mode will re-run your test when you save the file.
 
-By default, watch mode is enabled. You can turn watch mode on or off by [updating your `qawolf.config.js` file](config):
+By default, watch mode is enabled. You can turn watch mode on or off by [updating your `qawolf.config.js` file](configure_qa_wolf):
 
 ```js
 // qawolf.config.js
@@ -152,10 +154,10 @@ module.exports = {
 };
 ```
 
-To run your test in watch mode, use the [`npx qawolf edit` command](api/cli#npx-qawolf-edit-name). Pass it a string that matches exactly one test file name. For example, `myFirstTest` will match `.qawolf/myFirstTest.test.js`:
+To run your test in watch mode, use the [`npx qawolf edit` command](api/cli#npx-qawolf-edit-name). Pass it a string that matches exactly one test file name. For example, `myTest` will match `.qawolf/myTest.test.js`:
 
 ```bash
-npx qawolf edit myFirstTest
+npx qawolf edit myTest
 ```
 
 Now your test will re-run automatically whenever you edit your test file and save it. To exit edit mode, type `Control` + `C` in the command line.
