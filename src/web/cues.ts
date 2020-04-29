@@ -124,11 +124,7 @@ export const buildTextCues = ({
 
   if (!text || text.length > 200 || text.match(/[\n\r\t]+/)) return [];
 
-  text = JSON.stringify(text);
-  // need to strip quotes so Playwright's JSON.parse works
-  const value = text.slice(1, text.length - 1);
-
-  return [{ level, type: 'text', value }];
+  return [{ level, type: 'text', value: text }];
 };
 
 export const buildCuesForElement = ({
