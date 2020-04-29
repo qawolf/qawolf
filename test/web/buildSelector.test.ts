@@ -199,6 +199,10 @@ describe('buildSelector', () => {
             '[data-qa="material-select-native"] select',
             '[data-qa="material-select-native"] #material-select-native',
           ],
+          [
+            '[data-qa="material-select"] #material-select',
+            '[data-qa="material-select"] #material-select',
+          ],
         ],
       ])('builds expected selector %o', (selector) => expectSelector(selector));
     });
