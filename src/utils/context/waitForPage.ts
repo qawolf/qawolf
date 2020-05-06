@@ -5,7 +5,7 @@ import { waitFor } from '../waitFor';
 
 export interface WaitForPageOptions {
   timeout?: number;
-  waitUntil?: 'load' | 'domcontentloaded' | 'networkidle0' | 'networkidle2';
+  waitUntil?: 'load' | 'domcontentloaded' | 'networkidle';
 }
 
 export const waitForPage = async (

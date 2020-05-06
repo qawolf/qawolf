@@ -54,7 +54,7 @@ function ArgumentWaitForPage() {
         indent
         name="waitUntil"
         optional
-        type='"commit" | "load" | "domcontentloaded" | "networkidle0" | "networkidle2"'
+        type='"load" | "domcontentloaded" | "networkidle"'
       />
     </React.Fragment>
   );

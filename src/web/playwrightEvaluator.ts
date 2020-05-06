@@ -3,12 +3,17 @@ export type SelectorPart = {
   body: string;
 };
 
+export type ParsedSelector = {
+  capture?: boolean;
+  parts: SelectorPart[];
+};
+
 export const querySelectorAll = (
-  selectorParts: SelectorPart[],
+  selector: ParsedSelector,
   root: HTMLElement,
 ): HTMLElement[] => {
   throw new Error(
     'This should never be called. It should replaced by the virtual module' +
-      { selectorParts, root },
+      { selector, root },
   );
 };

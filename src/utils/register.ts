@@ -1,11 +1,8 @@
 import { BrowserContext } from 'playwright-core';
-import { register as registerHtmlSelector } from 'playwright-html-selector';
 import { basename, join } from 'path';
 import { indexPages } from './context/indexPages';
 import { saveArtifacts } from './context/saveArtifacts';
 import { Registry } from './Registry';
-
-let htmlSelectorRegistered = false;
 
 export const getArtifactPath = (): string | null => {
   let artifactPath = process.env.QAW_ARTIFACT_PATH;
@@ -32,11 +29,6 @@ export const register = async (context: BrowserContext): Promise<void> => {
   const promises: Promise<any>[] = [];
 
   promises.push(indexPages(context));
-
-  if (!htmlSelectorRegistered) {
-    htmlSelectorRegistered = true;
-    promises.push(registerHtmlSelector());
-  }
 
   const artifactPath = getArtifactPath();
   if (artifactPath) {
