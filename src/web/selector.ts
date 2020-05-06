@@ -9,7 +9,7 @@ type IsMatch = {
 };
 
 export const isMatch = ({ selectorParts, target }: IsMatch): boolean => {
-  const result = querySelectorAll(selectorParts, document.body);
+  const result = querySelectorAll({ parts: selectorParts }, document.body);
 
   // console.debug('Try selector', selectorParts[0], selectorParts[1], target);
 
