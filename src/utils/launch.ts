@@ -1,6 +1,10 @@
 import Debug from 'debug';
 import { platform } from 'os';
-import playwrightCore, { Browser, BrowserType } from 'playwright-core';
+import playwrightCore, {
+  Browser,
+  BrowserType,
+  LaunchOptions as PlaywrightLaunchOptions,
+} from 'playwright-core';
 import { isNullOrUndefined } from 'util';
 import { Registry } from './Registry';
 
@@ -8,27 +12,7 @@ const debug = Debug('qawolf:launch');
 
 type BrowserName = 'chromium' | 'firefox' | 'webkit';
 
-// need to manually specify
-// https://github.com/microsoft/playwright/issues/1732
-interface BrowserTypeLaunchOptions {
-  headless?: boolean;
-  executablePath?: string;
-  args?: Array<string>;
-  ignoreDefaultArgs?: boolean | Array<string>;
-  handleSIGINT?: boolean;
-  handleSIGTERM?: boolean;
-  handleSIGHUP?: boolean;
-  timeout?: number;
-  dumpio?: boolean;
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  env?: Object;
-  devtools?: boolean;
-  slowMo?: number;
-}
-
-// We use any since there are no launch option types
-// https://github.com/microsoft/playwright/issues/1732
-export type LaunchOptions = BrowserTypeLaunchOptions & {
+export type LaunchOptions = PlaywrightLaunchOptions & {
   browserName?: BrowserName;
 };
 
