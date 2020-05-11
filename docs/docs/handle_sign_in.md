@@ -159,9 +159,9 @@ Now let's update our test to sign in programmatically. This code will run first,
 
 ### Set cookies
 
-If your application involves setting cookies for authentication, use the [Playwright `context.setCookies`](https://github.com/microsoft/playwright/blob/master/docs/api.md#browsercontextsetcookiescookies) method.
+If your application involves setting cookies for authentication, use the [Playwright `context.addCookies`](https://github.com/microsoft/playwright/blob/master/docs/api.md#browsercontextaddcookiescookies) method.
 
-At the end of the `beforeAll` block, call `context.setCookies` and pass it an array of cookie objects. Below is an example `beforeAll` block that does this:
+At the end of the `beforeAll` block, call `context.addCookies` and pass it an array of cookie objects. Below is an example `beforeAll` block that does this:
 
 ```js
 beforeAll(async () => {
@@ -171,7 +171,7 @@ beforeAll(async () => {
   page = await context.newPage();
 
   // sign in code starts
-  await browser.setCookies([
+  await context.addCookies([
     {
       name: 'my_cookie',
       value: 'my_cookie_value',
