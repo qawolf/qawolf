@@ -2,7 +2,7 @@
   "author": "QA Wolf",
   "name": "create-qawolf",
   "license": "BSD-3-Clause",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "🛠️ Install qawolf in your application",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
@@ -28,28 +28,28 @@
     "inquirer": "^7.1.0",
     "kleur": "^3.0.3",
     "playwright-ci": "^1.0.0",
-    "tslib": "^1.11.2"
+    "tslib": "^2.0.0"
   },
   "devDependencies": {
     "@types/debug": "^4.1.5",
-    "@types/jest": "^25.2.1",
-    "@types/node": "^13.13.5",
-    "@typescript-eslint/eslint-plugin": "^2.31.0",
-    "@typescript-eslint/parser": "^2.31.0",
-    "eslint": "^6.8.0",
+    "@types/jest": "^25.2.2",
+    "@types/node": "^14.0.1",
+    "@typescript-eslint/eslint-plugin": "^2.33.0",
+    "@typescript-eslint/parser": "^2.33.0",
+    "eslint": "^7.0.0",
     "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-jest": "^23.9.0",
+    "eslint-plugin-jest": "^23.11.0",
     "jest": "^26.0.1",
     "np": "^6.2.3",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
-    "ts-jest": "^25.5.0",
+    "ts-jest": "^25.5.1",
     "tsutils": "^3.17.1",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.2"
   },
   "createDevDependencies": {
-    "playwright": "^1.0.0",
-    "qawolf": "^1.0.0"
+    "playwright": "^1.0.1",
+    "qawolf": "^1.0.1"
   },
   "bin": {
     "create-qawolf": "./build/index.js"
