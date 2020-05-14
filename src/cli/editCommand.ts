@@ -6,11 +6,16 @@ import { runTests } from '../run/runTests';
 
 export const buildEditCommand = (): program.Command => {
   const command = new Command('edit')
-    .arguments('[name]')
     .storeOptionsAsProperties(false)
+    .arguments('[name]')
+    .option('--watch', 'watch mode')
     .description('📝 edit a test')
     .action(async () => {
+      const opts = command.opts();
       const [name] = command.args;
+
+      let args: string[];
+      if (opts.watch) args = ['--watchAll'];
 
       const config = loadConfig();
 
@@ -18,6 +23,7 @@ export const buildEditCommand = (): program.Command => {
 
       runTests(
         buildEditOptions({
+          args,
           config,
           testPath,
         }),

@@ -4,9 +4,8 @@ import { join } from 'path';
 import { BrowserServer } from 'playwright-core';
 import { launchServer } from '../browser';
 import { CDPSession } from './CDPSession';
-import { KEYS } from '../../src/create-code/createPrompt';
 import { waitFor } from '../../src/utils';
-import { sleep } from '../utils';
+import { KEYS, sleep } from '../utils';
 
 // help us debug flakes
 process.env.DEBUG = 'qawolf*';

@@ -1,5 +1,5 @@
-import { createPrompt, KEYS } from '../../src/create-code/createPrompt';
-import { WatchHooks } from '../../src/watch/WatchHooks';
+import { createPrompt } from '../../src/create-code/createPrompt';
+import { KEYS } from '../utils';
 
 describe('createPrompt', () => {
   it('discard resolve false', async () => {
@@ -14,23 +14,5 @@ describe('createPrompt', () => {
     const promise = createPrompt('');
     process.stdin.push(KEYS.enter);
     await expect(promise).resolves.toEqual(true);
-  });
-
-  it('test stopped resolves null', async () => {
-    const onStopSpy = jest
-      .spyOn(WatchHooks, 'onStop')
-      // call onStop immediately
-      .mockImplementation((callback) => callback());
-
-    const stdinSpy = jest.spyOn(process.stdin, 'push');
-
-    await expect(createPrompt('')).resolves.toEqual(null);
-
-    // it closes the prompt
-    expect(stdinSpy.mock.calls).toHaveLength(1);
-    expect(stdinSpy.mock.calls[0][0]).toEqual(KEYS.enter);
-
-    onStopSpy.mockRestore();
-    stdinSpy.mockRestore();
   });
 });

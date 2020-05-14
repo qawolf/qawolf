@@ -103,7 +103,7 @@ npx qawolf create url [name]
 
 As your test is created:
 
-- ✏️ Edit the code as you like (with or without watch mode)
+- ✏️ Edit the code as you like
 - 🖥️ <a href="https://docs.qawolf.com/docs/use_the_repl">Use the REPL</a> to try out commands
 
 <br/>

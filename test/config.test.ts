@@ -11,7 +11,6 @@ describe('loadConfig', () => {
     );
     expect(config.rootDir).toEqual('mytests');
     expect(config.testTimeout).toEqual(120000);
-    expect(config.watch).toEqual(false);
   });
 
   it('defaults values when there is no config', () => {
@@ -21,6 +20,5 @@ describe('loadConfig', () => {
     expect(config.createTemplate).toBeUndefined();
     expect(config.rootDir).toEqual('.qawolf');
     expect(config.testTimeout).toEqual(60000);
-    expect(config.watch).toEqual(true);
   });
 });
