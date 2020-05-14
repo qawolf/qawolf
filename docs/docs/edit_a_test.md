@@ -25,6 +25,8 @@ test('myTest', async () => {
 npx qawolf edit myTest
 ```
 
+- [Use watch mode](#watch-mode) to automatically re-run your tests on save: `npx qawolf edit --watch`
+
 ## Call `qawolf.create`
 
 Let's say we want to update our test on [TodoMVC](http://todomvc.com/examples/react) from the [create a test](create_a_test) guide. Our current test only creates one todo item, but now we want to test creating a second todo item.
@@ -129,6 +131,18 @@ npx qawolf test myTest
 ```
 
 You'll notice that two todo items are created in our updated test.
+
+## Watch mode
+
+QA Wolf allows you to create and edit tests in watch mode. Watch mode will re-run your test when you save the file.
+
+To run your test in watch mode, use the [`npx qawolf edit --watch` command](api/cli#npx-qawolf-edit-name). Pass it a string that matches exactly one test file name. For example, `myTest` will match `.qawolf/myTest.test.js`:
+
+```bash
+npx qawolf edit --watch myTest
+```
+
+Now your test will re-run automatically whenever you edit your test file and save it. To exit edit mode, type `Control` + `C` in the command line.
 
 ## Next steps
 
