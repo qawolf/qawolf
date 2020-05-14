@@ -3,22 +3,19 @@ import { loadConfig } from '../config';
 import { buildEditOptions } from '../run/buildEditOptions';
 import { findTestPath } from '../run/findTestPath';
 import { runTests } from '../run/runTests';
-import { omitArgs } from './omitArgs';
 
 export const buildEditCommand = (): program.Command => {
   const command = new Command('edit')
-    .arguments('[name]')
     .storeOptionsAsProperties(false)
+    .arguments('[name]')
+    .option('--watch', 'watch mode')
     .description('📝 edit a test')
-    .allowUnknownOption(true)
     .action(async () => {
+      const opts = command.opts();
       const [name] = command.args;
 
-      // omit qawolf arguments
-      const jestArgs = omitArgs(process.argv.slice(3), [
-        '--headless',
-        '--rootDir', // should be passed through config
-      ]);
+      let args: string[];
+      if (opts.watch) args = ['--watchAll'];
 
       const config = loadConfig();
 
@@ -26,7 +23,7 @@ export const buildEditCommand = (): program.Command => {
 
       runTests(
         buildEditOptions({
-          args: jestArgs,
+          args,
           config,
           testPath,
         }),
