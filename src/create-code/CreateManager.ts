@@ -4,7 +4,6 @@ import { buildSteps } from '../build-workflow/buildSteps';
 import { CodeFileUpdater } from './CodeFileUpdater';
 import { ContextEventCollector } from './ContextEventCollector';
 import { createPrompt } from './createPrompt';
-import { WatchHooks } from '../watch/WatchHooks';
 import { ElementEvent } from '../types';
 
 type CreateCliOptions = {
@@ -26,10 +25,6 @@ export class CreateManager {
     debug(`create code at ${options.codePath}`);
 
     const codeUpdater = await CodeFileUpdater.create(options.codePath);
-
-    codeUpdater.on('codeupdate', (code: string) => {
-      WatchHooks.codeUpdate(code);
-    });
 
     const collector = await ContextEventCollector.create(options.context);
 
@@ -61,18 +56,11 @@ export class CreateManager {
 
   public async finalize(): Promise<void> {
     const shouldSave = await createPrompt(this._codeUpdater.path());
-    if (shouldSave === null) {
-      // the prompt was cancelled since the test was re-run in a watch
-      return;
-    }
 
     if (shouldSave) {
       await this._codeUpdater.finalize();
     } else {
       await this._codeUpdater.discard();
     }
-
-    // stop the watch since a prompt selection is made
-    WatchHooks.stopWatch();
   }
 }

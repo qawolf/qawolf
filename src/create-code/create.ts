@@ -40,7 +40,8 @@ export const getCreatePath = async (
 };
 
 export const create = async (): Promise<void> => {
-  const context = Registry.instance().data().context;
+  const registryData = Registry.instance().data();
+  const context = registryData.context;
   if (!context) {
     throw new Error(
       'No context found. Call qawolf.register(context) before qawolf.create()',
@@ -59,4 +60,10 @@ export const create = async (): Promise<void> => {
   console.log(bold().blue('🐺  QA Wolf is ready to create code!'));
 
   await manager.finalize();
+
+  if (registryData.browser) {
+    await registryData.browser.close();
+  }
+
+  process.exit(0);
 };

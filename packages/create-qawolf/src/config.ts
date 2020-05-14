@@ -34,8 +34,7 @@ export const writeConfig = async ({
   config: "${jestConfig}",
   rootDir: "${rootDir}",
   testTimeout: 60000,
-  useTypeScript: ${useTypeScript},
-  watch: true
+  useTypeScript: ${useTypeScript}
 }\n`;
 
   const configPath = resolve('qawolf.config.js');

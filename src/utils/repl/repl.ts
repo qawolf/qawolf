@@ -5,7 +5,6 @@ import { bold } from 'kleur';
 import { start, REPLServer } from 'repl';
 import { addScreenshotCommand } from './addScreenshotCommand';
 import { setReplContext } from './setReplContext';
-import { WatchHooks } from '../../watch/WatchHooks';
 
 const debug = Debug('qawolf:repl');
 
@@ -34,8 +33,6 @@ export const repl = (
   addScreenshotCommand(replServer);
 
   setReplContext(replServer.context, context);
-
-  WatchHooks.onStop(() => replServer.close());
 
   if (callback) callback(replServer);
 

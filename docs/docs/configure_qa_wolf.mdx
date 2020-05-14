@@ -43,9 +43,7 @@ module.exports = {
   // default timeout of a test in milliseconds
   testTimeout: 60000,
   // generate .ts files
-  useTypeScript: false,
-  // create and edit tests in watch mode
-  watch: true,
+  useTypeScript: false
 };
 ```
 
@@ -67,7 +65,7 @@ Specifies which config is passed to [Jest](https://jestjs.io) when running your 
 jest --config='node_modules/qawolf/js-jest.config.json'
 ```
 
-If the config is set to `null` or `undefined`, nothing will be passed to Jest. We recommend using the default for [watch](#watch) mode to work.
+If the config is set to `null` or `undefined`, nothing will be passed to Jest.
 
 **Default:** [`'node_modules/qawolf/js-jest.config.json'`](https://github.com/qawolf/qawolf/blob/master/js-jest.config.json). If TypeScript is detected: [`'node_modules/qawolf/ts-jest.config.json'`](https://github.com/qawolf/qawolf/blob/master/ts-jest.config.json).
 
@@ -162,11 +160,3 @@ module.exports = {
 If you prefer, you can set up TypeScript manually by setting the above properties in `qawolf.config.js` and installing the necessary dependencies (`npm i -D @types/debug @types/jest @types/node ts-jest`).
 
 **Default:** `false`
-
-### watch
-
-Whether to use watch mode when creating and editing tests. If set to `true`, tests will re-run every time the file is saved.
-
-This requires your Jest [`config`](#config) to use the default or specify `"watchPlugins": ["qawolf/watch"]`.
-
-**Default:** `true`

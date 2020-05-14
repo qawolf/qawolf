@@ -3,5 +3,4 @@ module.exports = {
   createTemplate: ({ name, url }) => `test,${name},${url}`,
   rootDir: 'mytests',
   testTimeout: 120000,
-  watch: false,
 };

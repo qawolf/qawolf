@@ -9,8 +9,7 @@
     "expect-playwright.js",
     "js-jest.config.json",
     "postInstallMessage.js",
-    "ts-jest.config.json",
-    "watch.js"
+    "ts-jest.config.json"
   ],
   "engines": {
     "node": ">=10.15.0"

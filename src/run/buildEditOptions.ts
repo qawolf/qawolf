@@ -19,10 +19,6 @@ export const buildEditOptions = (options: EditOptions): TestOptions => {
   // timeout after an hour
   args.push('--testTimeout=3600000');
 
-  if (options.config.watch) {
-    args.push('--watchAll');
-  }
-
   if (options.args) {
     args = [...args, ...options.args];
   }
@@ -33,7 +29,7 @@ export const buildEditOptions = (options: EditOptions): TestOptions => {
     browsers: ['chromium'],
     env: {
       ...options.env,
-      // prevent the watch prompt, interferes with create prompt
+      // simplify the UI
       CI: 'true',
     },
     headless: false,
