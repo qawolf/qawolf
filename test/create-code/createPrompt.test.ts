@@ -1,4 +1,5 @@
-import { createPrompt, KEYS } from '../../src/create-code/createPrompt';
+import { createPrompt } from '../../src/create-code/createPrompt';
+import { KEYS } from '../utils';
 
 describe('createPrompt', () => {
   it('discard resolve false', async () => {

@@ -13,8 +13,6 @@ import YouTubeVideo from './components/YouTubeVideo';
 npx qawolf create http://todomvc.com/examples/react myTest
 ```
 
-- [Edit as you go](#edit-as-you-go) in your code editor (`.qawolf/myTest.test.js`) and QA Wolf will re-run your test when you save
-
 - [Add assertions](#optional-add-assertions) with the [expect-playwright](https://github.com/playwright-community/expect-playwright) library (included with QA Wolf):
 
 ```js
@@ -116,11 +114,10 @@ The line `await qawolf.create();` at the end of your test is a placeholder for w
 
 ## Edit as you go
 
-The test code is created in real-time, so you can edit the test as you create it. When you save the test file, QA Wolf will re-run the test.
+The test code is created in real-time, so you can edit the test as you create it.
 
 :::tip
 
-- You can comment in/out `await qawolf.create();` to turn code creation on/off
 - You can move `await qawolf.create();` anywhere in your test
 
 :::
