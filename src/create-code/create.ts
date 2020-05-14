@@ -65,5 +65,6 @@ export const create = async (): Promise<void> => {
     await registryData.browser.close();
   }
 
-  process.exit(0);
+  // if the process does not exit on its own, force it to exit
+  setTimeout(() => process.exit(), 500);
 };
