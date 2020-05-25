@@ -81,7 +81,7 @@
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "concurrently": "^5.2.0",
-    "eslint": "^7.0.0",
+    "eslint": "^7.1.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-jest": "^23.11.0",
     "ffmpeg-static": "^4.2.1",
