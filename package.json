@@ -92,7 +92,7 @@
     "playwright-webkit": "^1.0.2",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
-    "rollup": "^2.10.0",
+    "rollup": "^2.10.9",
     "rollup-plugin-typescript": "^1.0.1",
     "ts-jest": "^25.5.1",
     "typescript": "^3.9.3"
