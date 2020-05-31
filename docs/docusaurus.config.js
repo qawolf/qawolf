@@ -78,6 +78,5 @@ module.exports = {
   plugins: [
     path.resolve(__dirname, './src/gitter-chat'),
     path.resolve(__dirname, './src/github-stars'),
-    path.resolve(__dirname, './src/hotjar'),
   ],
 };

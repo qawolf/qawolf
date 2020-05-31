@@ -1,8 +1,7 @@
 {
   "build": {
     "env": {
-      "ALGOLIA_API_KEY": "@algolia_api_key",
-      "HOTJAR_ID": "@hotjar_id"
+      "ALGOLIA_API_KEY": "@algolia_api_key"
     }
   }
 }
