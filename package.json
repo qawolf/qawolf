@@ -85,7 +85,7 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-jest": "^23.13.2",
     "ffmpeg-static": "^4.2.1",
-    "fs-extra": "^9.0.0",
+    "fs-extra": "^9.0.1",
     "jest": "^25.4.0",
     "jest-mock-process": "^1.4.0",
     "playwright": "^1.0.1",
