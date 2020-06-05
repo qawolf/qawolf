@@ -95,7 +95,7 @@
     "rollup": "^2.10.0",
     "rollup-plugin-typescript": "^1.0.1",
     "ts-jest": "^25.5.1",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.5"
   },
   "bin": {
     "qawolf": "./build/index.js"
