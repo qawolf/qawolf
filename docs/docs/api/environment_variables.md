@@ -24,7 +24,7 @@ Save a video and console logs for each page in your test. Videos are saved at `$
 
 Video is only supported on Chromium. We are [waiting for Playwright](https://github.com/microsoft/playwright/issues/1158) to add support for the Screencast API in Firefox and WebKit.
 
-If [FFmpeg](https://www.ffmpeg.org) is not installed, videos will not be included. Install [`ffmpeg-static`](https://www.npmjs.com/package/ffmpeg-static) as a dependency or set the `FFMPEG_PATH` environment variable.
+If [FFmpeg](https://www.ffmpeg.org) is not installed, videos will not be included. Install [`@ffmpeg-installer/ffmpeg`](https://www.npmjs.com/package/@ffmpeg-installer/ffmpeg) as a dependency or set the `FFMPEG_PATH` environment variable.
 
 Note that your code must call [`qawolf.register`](qawolf/register) for artifacts to be saved.
 
