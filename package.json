@@ -41,7 +41,7 @@
   "license": "BSD-3-Clause",
   "peerDependencies": {
     "jest": "^26.0.1",
-    "playwright": "^1.0.1"
+    "playwright": "^1.1.1"
   },
   "dependencies": {
     "@jperl/html-parse-stringify": "^1.0.4",
@@ -88,7 +88,7 @@
     "fs-extra": "^9.0.0",
     "jest": "^25.4.0",
     "jest-mock-process": "^1.4.0",
-    "playwright": "^1.0.1",
+    "playwright": "^1.1.1",
     "playwright-webkit": "^1.0.2",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
