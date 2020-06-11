@@ -19,9 +19,9 @@
     "clean": "rimraf build tmp",
     "build": "npm run clean && concurrently \"npm run build:tsc\" \"npm run build:web\"",
     "build:tsc": "tsc -p tsconfig.release.json",
-    "build:web": "rollup --config src/rollup.ts",
+    "build:web": "npx webpack --config src/web/webpack.config.js",
     "watch:tsc": "tsc -w -p tsconfig.release.json",
-    "watch:web": "rollup --watch --config src/rollup.ts",
+    "watch:web": "npx webpack --config src/web/webpack.config.js --watch",
     "watch": "npm run clean && concurrently --kill-others \"npm run watch:tsc\" \"npm run watch:web\"",
     "lint": "eslint --ext .ts,.tsx --config .eslintrc.json --no-eslintrc src",
     "postinstall": "node ./postInstallMessage.js",
@@ -41,7 +41,7 @@
   "license": "BSD-3-Clause",
   "peerDependencies": {
     "jest": "^26.0.1",
-    "playwright": "^1.1.0"
+    "playwright": "^1.1.1"
   },
   "dependencies": {
     "@jperl/html-parse-stringify": "^1.0.4",
@@ -66,10 +66,6 @@
   "devDependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.0.20",
     "@qawolf/sandbox": "0.1.12",
-    "@rollup/plugin-commonjs": "^13.0.0",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^8.0.1",
-    "@rollup/plugin-virtual": "^2.0.2",
     "@types/debug": "^4.1.5",
     "@types/fs-extra": "^9.0.1",
     "@types/glob": "^7.1.2",
@@ -88,14 +84,17 @@
     "fs-extra": "^9.0.1",
     "jest": "^25.4.0",
     "jest-mock-process": "^1.4.0",
-    "playwright": "^1.1.0",
-    "playwright-webkit": "^1.1.0",
+    "playwright": "^1.1.1",
+    "playwright-core": "^1.1.1",
+    "playwright-webkit": "^1.1.1",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
-    "rollup": "^2.15.0",
-    "rollup-plugin-typescript": "^1.0.1",
     "ts-jest": "^26.1.0",
-    "typescript": "^3.9.5"
+    "ts-loader": "^7.0.5",
+    "typescript": "^3.9.5",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-virtual-modules": "^0.2.2"
   },
   "bin": {
     "qawolf": "./build/index.js"

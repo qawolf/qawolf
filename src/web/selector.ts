@@ -1,7 +1,10 @@
-import { iterateCues } from './iterateCues';
 import { buildCues, buildSelectorParts, BuildCues } from './cues';
-import { querySelectorAll, SelectorPart } from './playwrightEvaluator';
+import { iterateCues } from './iterateCues';
 import { getXpath } from './serialize';
+import { SelectorPart, QuerySelectorAllFn } from './types';
+
+const evaluator = require('playwright-evaluator');
+const querySelectorAll: QuerySelectorAllFn = evaluator.querySelectorAll;
 
 type IsMatch = {
   selectorParts: SelectorPart[];
