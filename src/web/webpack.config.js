@@ -1,6 +1,6 @@
 const VirtualModulesPlugin = require('webpack-virtual-modules');
 const path = require('path');
-const selectorEvaluatorSource = require('playwright-core/lib/generated/injectedScriptSource');
+const selectorEvaluatorSource = require('playwright-core/lib/generated/selectorEvaluatorSource');
 
 const virtualModules = new VirtualModulesPlugin({
   'node_modules/playwright-evaluator.js': `
