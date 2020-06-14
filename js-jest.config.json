@@ -1,3 +1,4 @@
 {
-  "setupFilesAfterEnv": ["qawolf/expect-playwright"]
+  "setupFilesAfterEnv": ["qawolf/expect-playwright"],
+  "transform": {}
 }
