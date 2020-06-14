@@ -11,7 +11,7 @@ const debug = Debug('qawolf:repl');
 export type Callback<S = void, T = void> = (data?: S) => T;
 
 export const repl = (
-  context?: {},
+  context?: Record<string, unknown>,
   callback?: Callback<REPLServer>,
 ): Promise<void> => {
   /**

@@ -3,6 +3,7 @@ import { iterateCues } from './iterateCues';
 import { getXpath } from './serialize';
 import { SelectorPart, QuerySelectorAllFn } from './types';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const evaluator = require('playwright-evaluator');
 const querySelectorAll: QuerySelectorAllFn = evaluator.querySelectorAll;
 

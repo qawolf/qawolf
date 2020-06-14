@@ -5,14 +5,14 @@ import { launch } from '../../../src/utils';
 
 describe('setReplContext', () => {
   it('prefers provided values over registry values', () => {
-    Registry.instance().setValue('value', 0);
+    Registry.instance()._setValue('value', 0);
     const context: Context = {};
     setReplContext(context, { value: 1 });
     expect(context.value).toEqual(1);
   });
 
   it('sets the registry values', () => {
-    Registry.instance().setValue('value', 0);
+    Registry.instance()._setValue('value', 0);
     const context: Context = {};
     setReplContext(context);
     expect(context.value).toEqual(0);
@@ -38,11 +38,11 @@ describe('setReplContext', () => {
   it('updates the registry values', () => {
     const context: Context = {};
 
-    Registry.instance().setValue('value', 0);
+    Registry.instance()._setValue('value', 0);
     setReplContext(context);
     expect(context.value).toBe(0);
 
-    Registry.instance().setValue('value', 1);
+    Registry.instance()._setValue('value', 1);
     expect(context.value).toEqual(1);
   });
 });

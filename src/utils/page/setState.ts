@@ -3,7 +3,7 @@ import { Page } from 'playwright-core';
 import { State } from './saveState';
 
 interface SetStorageOptions {
-  items: object;
+  items: { [name: string]: any };
   page: Page;
   storageType: 'localStorage' | 'sessionStorage';
 }
