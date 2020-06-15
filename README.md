@@ -55,14 +55,7 @@ Configure your test directory and CI provider:
 ```
 ? rootDir: Directory to create tests in (.qawolf)
 
-? Choose CI Provider (Use arrow keys)
-  Azure DevOps
-  Bitbucket Pipelines
-  CircleCI
-❯ GitHub Actions
-  GitLab CI/CD
-  Jenkins
-  Skip CI setup
+? Set up CI with GitHub Actions? (y/N)
 ```
 
 This will install `qawolf`, `jest` and `playwright` as dev dependencies and create a [CI workflow file](https://docs.qawolf.com/docs/run_tests_in_ci) to:
