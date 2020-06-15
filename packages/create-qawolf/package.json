@@ -19,6 +19,7 @@
     "build": "tsc -p tsconfig.release.json",
     "watch": "tsc -w -p tsconfig.release.json",
     "lint": "eslint . --ext .ts,.tsx --config .eslintrc.json",
+    "release": "np --no-cleanup",
     "test": "jest",
     "version": "npm run clean && npm run build"
   },
