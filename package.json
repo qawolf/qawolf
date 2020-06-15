@@ -86,7 +86,7 @@
     "jest": "^25.4.0",
     "jest-mock-process": "^1.4.0",
     "playwright": "1.0.1",
-    "playwright-webkit": "1.0.1",
+    "playwright-webkit": "1.1.1",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.1.0",
