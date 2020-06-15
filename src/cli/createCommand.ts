@@ -49,7 +49,6 @@ export const buildCreateCommand = (): program.Command => {
     .arguments('[url] [name]')
     .option('-d, --device <device>', 'emulate using a playwright.device')
     .option('--name <name>', 'name')
-    .option('--watch', 'watch mode')
     .option(
       '--statePath <statePath>',
       'path where state data (cookies, localStorage, sessionStorage) is saved',
@@ -68,11 +67,7 @@ export const buildCreateCommand = (): program.Command => {
         name = (url.hostname || '').replace(/\..*/g, '');
       }
 
-      let args: string[];
-      if (opts.watch) args = ['--watchAll'];
-
       await runCreate({
-        args,
         device: opts.device,
         name,
         statePath: opts.statePath,

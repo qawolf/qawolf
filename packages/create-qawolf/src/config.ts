@@ -1,7 +1,7 @@
 import { writeFile } from 'fs-extra';
 import glob from 'glob';
 import { resolve } from 'path';
-import { promptOverwrite } from 'playwright-ci';
+import { promptOverwrite } from './cli';
 
 type ConfigOptions = {
   rootDir: string;

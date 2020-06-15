@@ -46,13 +46,13 @@ describe('addDevDependencies', () => {
         \\"name\\": \\"mypackage\\",
         \\"devDependencies\\": {
           \\"@types/debug\\": \\"^4.1.5\\",
-          \\"@types/jest\\": \\"^25.2.3\\",
-          \\"@types/node\\": \\"^14.0.5\\",
+          \\"@types/jest\\": \\"^26.0.0\\",
+          \\"@types/node\\": \\"^14.0.13\\",
           \\"a\\": \\"*\\",
           \\"jest\\": \\"^26.0.1\\",
-          \\"playwright\\": \\"^1.0.1\\",
-          \\"qawolf\\": \\"^1.0.1\\",
-          \\"ts-jest\\": \\"^26.0.0\\",
+          \\"playwright\\": \\"1.0.1\\",
+          \\"qawolf\\": \\"1.0.1\\",
+          \\"ts-jest\\": \\"^26.1.0\\",
           \\"z\\": \\"*\\"
         }
       }

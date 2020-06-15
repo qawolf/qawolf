@@ -5,17 +5,19 @@ const NAVIGATION_ERRORS = [
   'Inspected target navigated or closed',
 ];
 
-export const initEvaluateScript = async (
+type PageFunction<R> = string | ((arg: any) => R | Promise<R>);
+
+export const initEvaluateScript = async <R, Arg>(
   page: Page,
-  script: string | Function,
-  ...args: any[]
+  script: string | PageFunction<R>,
+  arg?: Arg,
 ): Promise<any> => {
   if (page.isClosed()) return;
 
-  await page.addInitScript(script, ...args);
+  await page.addInitScript(script, arg);
 
   try {
-    const result = await page.evaluate(script as any, ...args);
+    const result = await page.evaluate(script, arg);
     return result;
   } catch (error) {
     // ignore errors caused by navigation

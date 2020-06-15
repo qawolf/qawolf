@@ -2,7 +2,7 @@ import { readdir, readFileSync } from 'fs-extra';
 import { tmpdir } from 'os';
 import { join } from 'path';
 import { Browser, Page } from 'playwright-core';
-import * as playwrightVideo from 'playwright-video';
+import * as playwrightVideoUtils from 'playwright-video/build/utils';
 import {
   launch,
   getLaunchOptions,
@@ -76,7 +76,7 @@ describe('saveArtifacts', () => {
   });
 
   it('only saves console logs if ffmpeg not installed', async () => {
-    jest.spyOn(playwrightVideo, 'getFfmpegPath').mockReturnValue(null);
+    jest.spyOn(playwrightVideoUtils, 'getFfmpegPath').mockReturnValue(null);
 
     const saveDir = join(tmpdir(), randomString());
 

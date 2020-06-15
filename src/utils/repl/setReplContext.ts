@@ -9,13 +9,19 @@ const setPage = (context: Context): void => {
   if (pages.length > 0) context.page = pages[0];
 };
 
-const setValues = (object: {}, source: {}): void => {
+const setValues = (
+  object: Record<string, unknown>,
+  source: Record<string, unknown>,
+): void => {
   Object.keys(source).forEach((key) => {
     object[key] = source[key];
   });
 };
 
-const setContext = (context: Context, provided?: {}): void => {
+const setContext = (
+  context: Context,
+  provided?: Record<string, unknown>,
+): void => {
   setValues(context, Registry.instance().data());
 
   // override with the provided values
@@ -24,7 +30,10 @@ const setContext = (context: Context, provided?: {}): void => {
   setPage(context);
 };
 
-export const setReplContext = (context: Context, provided?: {}): void => {
+export const setReplContext = (
+  context: Context,
+  provided?: Record<string, unknown>,
+): void => {
   Registry.instance().on('change', () => setContext(context, provided));
 
   setContext(context, provided);

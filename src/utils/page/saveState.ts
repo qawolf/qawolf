@@ -1,26 +1,10 @@
 import { ensureFile, writeJSON } from 'fs-extra';
-import { Page } from 'playwright-core';
-
-// need to manually specify
-// https://github.com/microsoft/playwright/issues/1732
-type BrowserContextCookies = {
-  name: string;
-  value: string;
-  domain: string;
-  path: string;
-  /**
-   * Unix time in seconds.
-   */
-  expires: number;
-  httpOnly: boolean;
-  secure: boolean;
-  sameSite: 'Strict' | 'Lax' | 'None';
-};
+import { Cookie, Page } from 'playwright-core';
 
 export interface State {
-  cookies: BrowserContextCookies[];
-  localStorage: object;
-  sessionStorage: object;
+  cookies: Cookie[];
+  localStorage: { [name: string]: any };
+  sessionStorage: { [name: string]: any };
 }
 
 const getState = async (page: Page): Promise<State> => {

@@ -8,7 +8,8 @@
   "types": "./build/index.d.ts",
   "files": [
     "build",
-    "src"
+    "src",
+    "static"
   ],
   "engines": {
     "node": ">=10.15.0"
@@ -23,33 +24,32 @@
   },
   "dependencies": {
     "debug": "*",
-    "fs-extra": "^9.0.0",
+    "fs-extra": "^9.0.1",
     "glob": "^7.1.6",
     "inquirer": "^7.1.0",
     "kleur": "^3.0.3",
-    "playwright-ci": "^1.0.0",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
     "@types/debug": "^4.1.5",
-    "@types/jest": "^25.2.3",
-    "@types/node": "^14.0.5",
-    "@typescript-eslint/eslint-plugin": "^2.33.0",
-    "@typescript-eslint/parser": "^2.33.0",
-    "eslint": "^7.1.0",
+    "@types/jest": "^26.0.0",
+    "@types/node": "^14.0.13",
+    "@typescript-eslint/eslint-plugin": "^3.2.0",
+    "@typescript-eslint/parser": "^3.2.0",
+    "eslint": "^7.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-jest": "^23.13.2",
     "jest": "^26.0.1",
-    "np": "^6.2.3",
+    "np": "^6.2.4",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
-    "ts-jest": "^26.0.0",
+    "ts-jest": "^26.1.0",
     "tsutils": "^3.17.1",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.5"
   },
   "createDevDependencies": {
-    "playwright": "^1.0.1",
-    "qawolf": "^1.0.1"
+    "playwright": "1.0.1",
+    "qawolf": "1.0.1"
   },
   "bin": {
     "create-qawolf": "./build/index.js"

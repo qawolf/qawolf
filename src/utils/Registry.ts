@@ -22,20 +22,21 @@ export class Registry extends EventEmitter {
     return this._data;
   }
 
-  public setValue(key: string, value: any): void {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  _setValue(key: string, value: any): void {
     this._data[key] = value;
     this.emit('change');
   }
 
   public setBrowser(browser: Browser): void {
-    this.setValue('browser', browser);
+    this._setValue('browser', browser);
   }
 
   public setContext(context: BrowserContext): void {
-    this.setValue('context', context);
+    this._setValue('context', context);
   }
 
   public setQawolf(value: typeof qawolf): void {
-    this.setValue('qawolf', value);
+    this._setValue('qawolf', value);
   }
 }

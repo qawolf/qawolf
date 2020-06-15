@@ -134,7 +134,7 @@ You'll notice that two todo items are created in our updated test.
 
 ## Watch mode
 
-QA Wolf allows you to create and edit tests in watch mode. Watch mode will re-run your test when you save the file.
+QA Wolf allows you to edit tests in watch mode. Watch mode will re-run your test when you save the file.
 
 To run your test in watch mode, use the [`npx qawolf edit --watch` command](api/cli#npx-qawolf-edit-name). Pass it a string that matches exactly one test file name. For example, `myTest` will match `.qawolf/myTest.test.js`:
 

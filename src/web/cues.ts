@@ -1,6 +1,6 @@
 import { getAttribute } from './attribute';
 import { isDynamic } from './isDynamic';
-import { SelectorPart } from './playwrightEvaluator';
+import { SelectorPart } from './types';
 
 const DEFAULT_ATTRIBUTE =
   'data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/';
