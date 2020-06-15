@@ -43,5 +43,4 @@ If you have any questions please [chat with us on Gitter](https://gitter.im/qawo
 We maintain several packages under the [`qawolf` organzation](https://github.com/qawolf). Feel free to contribute to any of them!
 
 - [qawolf](https://github.com/qawolf/qawolf) is a Node.js library for creating Playwright/Jest tests
-- [playwright-ci](https://github.com/qawolf/playwright-ci) provides a CLI to set up tests in CI
 - [playwright-video](https://github.com/qawolf/playwright-video) saves a video of a Playwright page
