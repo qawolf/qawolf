@@ -1,6 +1,6 @@
+import { promptOverwrite } from 'create-qawolf';
 import { ensureFile, writeFile } from 'fs-extra';
 import { join } from 'path';
-import { promptOverwrite } from 'playwright-ci';
 import {
   BuildTemplateOptions,
   buildTemplate,
