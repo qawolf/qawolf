@@ -87,7 +87,7 @@ Now let's run our test in edit mode, which allows us to add steps to an existing
 npx qawolf edit myTest
 ```
 
-The first few steps of our test will now run. For TodoMVC, this means that the first todo item will be created. The test will then pause where `qawolf.create` is called.
+The first few steps of our test will now run. For TodoMVC, this means that the first todo item will be created. The test will then pause where `qawolf.create` is called and replace it with a comment: `// 🐺 create code here`.
 
 ```js
 // ...
@@ -97,13 +97,13 @@ test('myTest', async () => {
   await page.click('[placeholder="What needs to be done?"]');
   await page.type('[placeholder="What needs to be done?"]', 'create test!');
   await page.press('[placeholder="What needs to be done?"]', 'Enter');
-  await qawolf.create(); // test will pause here
+  // 🐺 create code here
   await page.click('.toggle');
   await page.click('text=Clear completed');
 });
 ```
 
-Any actions you take in the browser will be converted to code and inserted where `await qawolf.create();` is. To add a second todo item, let's 1) click on the todo input to focus it, 2) type `update test!`, and 3) press `Enter` to save the todo. Our test code now looks like this:
+Any actions you take in the browser will be converted to code and inserted where `// 🐺 create code here` is. To add a second todo item, let's 1) click on the todo input to focus it, 2) type `update test!`, and 3) press `Enter` to save the todo. Our test code now looks like this:
 
 ```js
 // ...
@@ -116,13 +116,13 @@ test('myTest', async () => {
   await page.click('[placeholder="What needs to be done?"]');
   await page.type('[placeholder="What needs to be done?"]', 'update test!');
   await page.press('[placeholder="What needs to be done?"]', 'Enter');
-  await qawolf.create(); // this line will be removed on save
+  // 🐺 create code here
   await page.click('.toggle');
   await page.click('text=Clear completed');
 });
 ```
 
-Now that we've added our second todo item, let's save our test. In the command line, choose `💾 Save and exit` to save your updated test. The line `await qawolf.create();` will be removed when your test is saved.
+Now that we've added our second todo item, let's save our test. In the command line, choose `💾 Save and exit` to save your updated test. The line `// 🐺 create code here` will be removed when your test is saved.
 
 To run your updated test, use the following command:
 

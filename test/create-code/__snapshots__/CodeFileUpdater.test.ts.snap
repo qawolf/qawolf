@@ -4,7 +4,7 @@ exports[`CodeFileUpdater update saves code with new steps 1`] = `
 "  someCode();
   await page.click('text=\\"Log in\\"');
   await page.click(\\"#username\\");
-  await qawolf.create();
+  // 🐺 create code here
   otherCode();"
 `;
 
@@ -17,6 +17,6 @@ exports[`CodeFileUpdater update saves code with new steps 2`] = `
   await page.type(\\"#password\\", \\"SuperSecretPassword!\\");
   await page.press(\\"#password\\", \\"Enter\\");
   await page.click('text=\\"Log out\\"');
-  await qawolf.create();
+  // 🐺 create code here
   otherCode();"
 `;

@@ -37,10 +37,11 @@ export abstract class CodeUpdater extends EventEmitter {
   protected async _prepare(): Promise<void> {
     const code = await this._loadCode();
 
-    const patchLine = getLineIncludes(code, PATCH_HANDLE);
-    if (!patchLine) {
-      throw new Error(`Could not find "${PATCH_HANDLE}"`);
-    }
+    const createLine = getLineIncludes(code, `qawolf.create()`);
+    if (!createLine) return;
+
+    const updatedCode = code.replace(createLine.trim(), PATCH_HANDLE);
+    await this._update(updatedCode);
   }
 
   public async finalize(): Promise<void> {

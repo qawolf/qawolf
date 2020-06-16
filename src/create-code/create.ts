@@ -5,7 +5,7 @@ import { bold } from 'kleur';
 import { findLast } from 'lodash';
 import { CreateManager } from './CreateManager';
 import { getLineIncludes } from './format';
-import { PATCH_HANDLE } from './patchCode';
+import { CREATE_HANDLE } from './patchCode';
 import { Registry } from '../utils';
 
 const debug = Debug('qawolf:create');
@@ -13,7 +13,7 @@ const debug = Debug('qawolf:create');
 export const getCreatePath = async (
   callerFileNames: string[],
 ): Promise<string> => {
-  debug(`search caller files for ${PATCH_HANDLE} %j`, callerFileNames);
+  debug(`search caller files for ${CREATE_HANDLE} %j`, callerFileNames);
 
   const codes = await Promise.all(
     callerFileNames.map(async (filename) => {
@@ -29,11 +29,11 @@ export const getCreatePath = async (
 
   const item = findLast(
     codes,
-    ({ code }) => !!getLineIncludes(code, PATCH_HANDLE),
+    ({ code }) => !!getLineIncludes(code, CREATE_HANDLE),
   );
 
   if (!item) {
-    throw new Error(`Could not find ${PATCH_HANDLE} in caller`);
+    throw new Error(`Could not find ${CREATE_HANDLE} in caller`);
   }
 
   return item.filename;
