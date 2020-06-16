@@ -1,4 +1,4 @@
-import { Browser } from 'playwright-core';
+import { Browser } from 'playwright';
 import { initEvaluateScript, launch } from '../../../src/utils';
 
 let browser: Browser;

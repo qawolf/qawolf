@@ -1,5 +1,5 @@
 import { ChildProcess } from 'child_process';
-import { Browser, BrowserContext } from 'playwright-core';
+import { Browser, BrowserContext } from 'playwright';
 import { start } from 'repl';
 import { IndexedPage, launch } from '../../../src/utils';
 import * as openScreenshot from '../../../src/utils/page/openScreenshot';

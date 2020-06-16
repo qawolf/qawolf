@@ -1,4 +1,4 @@
-import { Page } from 'playwright-core';
+import { Page } from 'playwright';
 
 const NAVIGATION_ERRORS = [
   'Execution context was destroyed',

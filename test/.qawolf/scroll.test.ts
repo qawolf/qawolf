@@ -1,4 +1,4 @@
-import { Browser, Page } from 'playwright-core';
+import { Browser, Page } from 'playwright';
 import qawolf from 'qawolf';
 import { TEST_URL } from '../utils';
 

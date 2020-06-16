@@ -1,4 +1,4 @@
-import { BrowserContext, Page } from 'playwright-core';
+import { BrowserContext, Page } from 'playwright';
 
 export const forEachPage = async (
   context: BrowserContext,

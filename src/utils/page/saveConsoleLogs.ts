@@ -2,7 +2,7 @@ import Debug from 'debug';
 import { appendFileSync } from 'fs';
 import { ensureDir } from 'fs-extra';
 import { dirname } from 'path';
-import { Page } from 'playwright-core';
+import { Page } from 'playwright';
 import { interceptConsoleLogs } from './interceptConsoleLogs';
 
 const debug = Debug('qawolf:saveConsoleLogs');

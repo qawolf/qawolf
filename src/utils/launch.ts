@@ -4,7 +4,7 @@ import playwrightCore, {
   Browser,
   BrowserType,
   LaunchOptions as PlaywrightLaunchOptions,
-} from 'playwright-core';
+} from 'playwright';
 import { isNullOrUndefined } from 'util';
 import { Registry } from './Registry';
 
@@ -31,7 +31,7 @@ export const getBrowserType = (
   browserName: BrowserName,
 ): BrowserType<Browser> => {
   // We must use the browser type from the installed `playwright` or `playwright-browser` package,
-  // and not `playwright-core` since they store different browser binaries.
+  // and not `playwright` since they store different browser binaries.
   // See https://github.com/microsoft/playwright/issues/1191 for more details.
   let playwright: typeof playwrightCore;
 

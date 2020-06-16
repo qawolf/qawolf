@@ -1,4 +1,4 @@
-import { BrowserContext } from 'playwright-core';
+import { BrowserContext } from 'playwright';
 import { basename, join } from 'path';
 import { indexPages } from './context/indexPages';
 import { saveArtifacts } from './context/saveArtifacts';

@@ -1,6 +1,6 @@
 import Debug from 'debug';
 import { chromium } from 'playwright';
-import { BrowserServer, ChromiumBrowser } from 'playwright-core';
+import { BrowserServer, ChromiumBrowser } from 'playwright';
 import { Registry } from '../src/utils/Registry';
 
 const debug = Debug('qawolf/test:browser');

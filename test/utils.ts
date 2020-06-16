@@ -1,4 +1,4 @@
-import { ElementHandle } from 'playwright-core';
+import { ElementHandle } from 'playwright';
 
 export const TEST_URL = process.env.TEST_URL || 'http://localhost:5000/';
 

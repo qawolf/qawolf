@@ -1,4 +1,4 @@
-import { BrowserContext } from 'playwright-core';
+import { BrowserContext } from 'playwright';
 import { isNull } from 'util';
 import { indexPages, IndexedPage } from './indexPages';
 import { waitFor } from '../waitFor';

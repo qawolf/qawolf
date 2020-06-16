@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { BrowserContext, Page } from 'playwright-core';
+import { BrowserContext, Page } from 'playwright';
 import { forEachPage, initEvaluateScript } from '../utils';
 
 const scriptPath = require.resolve('../../build/qawolf.web.js');
