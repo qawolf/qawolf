@@ -2,7 +2,7 @@
 
 exports[`CodeReconciler.reconcile inserts new expressions 1`] = `
 "await page.click('text=\\"Log in\\"');
-await qawolf.create();"
+// 🐺 create code here"
 `;
 
 exports[`CodeReconciler.reconcile updates the last expression 1`] = `

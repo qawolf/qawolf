@@ -5,7 +5,9 @@ type PatchOptions = {
   patch: string;
 };
 
-export const PATCH_HANDLE = 'await qawolf.create();';
+export const CREATE_HANDLE = 'qawolf.create()';
+
+export const PATCH_HANDLE = '// 🐺 create code here';
 
 export const canPatch = (code: string): boolean => {
   return code.includes(PATCH_HANDLE);

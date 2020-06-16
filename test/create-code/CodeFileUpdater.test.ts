@@ -1,7 +1,7 @@
 import { outputFile, pathExists, readFile, remove } from 'fs-extra';
 import { buildSteps } from '../../src/build-workflow/buildSteps';
 import { CodeFileUpdater } from '../../src/create-code/CodeFileUpdater';
-import { PATCH_HANDLE } from '../../src/create-code/patchCode';
+import { CREATE_HANDLE, PATCH_HANDLE } from '../../src/create-code/patchCode';
 
 // require manually since fs is mocked
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -23,12 +23,12 @@ describe('CodeFileUpdater', () => {
 
   describe('discard', () => {
     it('reverts to initial code', async () => {
-      const initialCode = `initialCode()\n${PATCH_HANDLE}`;
+      const initialCode = `initialCode()\n${CREATE_HANDLE}`;
       mockedReadFile.mockResolvedValue(initialCode);
       const updater = await CodeFileUpdater.create('revertpath');
       await updater.discard();
 
-      const reverted = mockedOutputFile.mock.calls[0];
+      const reverted = mockedOutputFile.mock.calls[1];
       expect(reverted[0]).toEqual('revertpath');
       expect(reverted[1]).toEqual(initialCode);
       expect(mockedRemove.mock.calls.length).toEqual(0);
@@ -36,7 +36,7 @@ describe('CodeFileUpdater', () => {
 
     it('removes code if QAW_CREATE is set to true', async () => {
       process.env.QAW_CREATE = 'true';
-      const initialCode = `initialCode()\n${PATCH_HANDLE}`;
+      const initialCode = `initialCode()\n${CREATE_HANDLE}`;
       mockedReadFile.mockResolvedValue(initialCode);
       const updater = await CodeFileUpdater.create('removepath');
       await updater.discard();
@@ -46,6 +46,18 @@ describe('CodeFileUpdater', () => {
   });
 
   describe('create', () => {
+    it('replaces qawolf.create call with the patch handle', async () => {
+      mockedReadFile.mockResolvedValue(
+        `  someCode();\n  await qawolf.create();\n  otherCode();`,
+      );
+      await CodeFileUpdater.create('somepath');
+
+      const updatedFile = mockedOutputFile.mock.calls[0][1];
+      expect(updatedFile).toBe(
+        `  someCode();\n  ${PATCH_HANDLE}\n  otherCode();`,
+      );
+    });
+
     it('throws an error if qawolf.create is not found', async () => {
       mockedReadFile.mockResolvedValue('no create');
       // eslint-disable-next-line jest/valid-expect
