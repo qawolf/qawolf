@@ -56,7 +56,7 @@
     "expect-playwright": "^0.2.4",
     "glob": "^7.1.6",
     "inquirer": "^7.2.0",
-    "kleur": "^3.0.3",
+    "kleur": "^4.0.0",
     "open": "^7.0.4",
     "playwright-core": "1.0.1",
     "playwright-video": "^2.2.0",
