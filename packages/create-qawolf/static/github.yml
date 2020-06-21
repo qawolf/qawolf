@@ -21,9 +21,9 @@ jobs:
       - uses: actions/cache@v1
         with:
           path: ~/.npm
-          key: $\{{ runner.os }}-node-$\{{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            $\{{ runner.os }}-node-
+            ${{ runner.os }}-node-
 
       - run: npm install
 
@@ -34,14 +34,14 @@ jobs:
         env:
           # configure tests with environment variables
           FFMPEG_PATH: /usr/bin/ffmpeg # for recording video
-          QAW_ARTIFACT_PATH: $\{{ github.workspace }}/artifacts
+          QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
           # you can also use GitHub secrets for environment variables
           # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets
-          # LOGIN_PASSWORD: $\{{ secrets.PASSWORD }}
+          # LOGIN_PASSWORD: ${{ secrets.PASSWORD }}
       
       - name: Upload Artifacts
         if: always()
         uses: actions/upload-artifact@master
         with:
           name: qawolf
-          path: $\{{ github.workspace }}/artifacts
+          path: ${{ github.workspace }}/artifacts
