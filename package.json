@@ -89,7 +89,7 @@
     "playwright-webkit": "1.0.1",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
-    "ts-jest": "^26.1.0",
+    "ts-jest": "^26.1.1",
     "ts-loader": "^7.0.5",
     "typescript": "^3.9.5",
     "webpack": "^4.43.0",
