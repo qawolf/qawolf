@@ -40,7 +40,7 @@
     "eslint": "^7.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-jest": "^23.13.2",
-    "jest": "^26.0.1",
+    "jest": "^26.1.0",
     "np": "^6.2.4",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
