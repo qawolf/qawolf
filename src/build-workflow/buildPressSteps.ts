@@ -5,7 +5,7 @@ import {
   KeyEvent,
   Step,
 } from '../types';
-import { isInputTarget } from './target';
+import { isInputTarget, isTextareaTarget } from './target';
 
 const debug = Debug('qawolf:buildPressSteps');
 
@@ -53,7 +53,7 @@ const KEYS_TO_TRACK_FOR_NON_INPUT = new Set([
  */
 const shouldTrackKeyPress = (key: string, target: Doc): boolean => {
   if (KEYS_TO_TRACK_ALWAYS.has(key)) return true;
-  if (!isInputTarget(target) && KEYS_TO_TRACK_FOR_NON_INPUT.has(key)) return true;
+  if (!isInputTarget(target) && !isTextareaTarget(target) && KEYS_TO_TRACK_FOR_NON_INPUT.has(key)) return true;
   return false;
 }
 
