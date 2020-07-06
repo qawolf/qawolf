@@ -18,9 +18,19 @@ const debug = Debug('qawolf:buildPressSteps');
  * navigation purposes on any website.
  */
 const KEYS_TO_TRACK_ALWAYS = new Set([
-  'Enter',
   'Escape',
   'Tab'
+]);
+
+/**
+ * A subset of the full list:
+ * https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
+ *
+ * These are key presses that we want to include when playing back as long as they
+ * aren't being pressed as part of editing in a textarea.
+ */
+const KEYS_TO_TRACK_FOR_NON_TEXTAREA = new Set([
+  'Enter'
 ]);
 
 /**
@@ -53,6 +63,7 @@ const KEYS_TO_TRACK_FOR_NON_INPUT = new Set([
  */
 const shouldTrackKeyPress = (key: string, target: Doc): boolean => {
   if (KEYS_TO_TRACK_ALWAYS.has(key)) return true;
+  if (!isTextareaTarget(target) && KEYS_TO_TRACK_FOR_NON_TEXTAREA.has(key)) return true;
   if (!isInputTarget(target) && !isTextareaTarget(target) && KEYS_TO_TRACK_FOR_NON_INPUT.has(key)) return true;
   return false;
 }
