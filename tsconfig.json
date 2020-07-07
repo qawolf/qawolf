@@ -7,8 +7,7 @@
     "sourceMap": true,
     "rootDir": "./src",
     "outDir": "./build",
-    "esModuleInterop": true,
-    "resolveJsonModule": true
+    "esModuleInterop": true
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
