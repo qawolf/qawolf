@@ -1,4 +1,5 @@
 import { getAttribute } from './attribute';
+import { canTargetValue } from './element';
 import { isDynamic } from './isDynamic';
 import { SelectorPart } from './types';
 
@@ -142,10 +143,16 @@ export const buildCuesForElement = ({
   isClick,
   level,
 }: BuildCuesForElement): Cue[] => {
+  let cssAttributes = [...CSS_ATTRIBUTES];
+
+  if (!canTargetValue(element)) {
+    cssAttributes = cssAttributes.filter((attribute) => attribute !== 'value');
+  }
+
   const cues: Cue[] = [
     ...buildAttributeCues({ attributes, element, level }),
     ...buildAttributeCues({
-      attributes: [...CSS_ATTRIBUTES],
+      attributes: cssAttributes,
       element,
       level,
       useAttributeName: true,

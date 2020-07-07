@@ -1,5 +1,16 @@
 import { getXpath } from './serialize';
 
+export const canTargetValue = (element: HTMLElement): boolean => {
+  // do not target value of inputs where the value will change
+  const tagName = element.tagName.toLowerCase();
+
+  if (tagName === 'input') {
+    return ['checkbox', 'radio'].includes((element as HTMLInputElement).type);
+  }
+
+  return tagName !== 'textarea';
+};
+
 export const isVisible = (
   element: Element,
   computedStyle?: CSSStyleDeclaration,
