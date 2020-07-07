@@ -1,5 +1,5 @@
 import { Browser, Page } from 'playwright-core';
-import { getLaunchOptions, launch, scroll } from '../../../src/utils';
+import { launch, scroll } from '../../../src/utils';
 import { getScrollValue } from '../../../src/utils/page/scroll';
 import { TEST_URL } from '../../utils';
 
@@ -45,22 +45,6 @@ describe('scroll', () => {
 
     expect(result.x).toBe(0);
     expect(result.y).toBeLessThan(1600);
-  });
-
-  it('does not throw an error on navigation', async () => {
-    const promise = page.goto(`${TEST_URL}large`);
-
-    if (getLaunchOptions().browserName === 'webkit') {
-      // give webkit cycle to send goto
-      await new Promise((resolve) => setTimeout(resolve, 500));
-    }
-
-    await scroll(page, 'html', { x: 0, y: 200 });
-
-    const elementHandle = await page.waitForSelector('html');
-    expect(await getScrollValue(page, elementHandle)).toEqual({ x: 0, y: 200 });
-
-    await promise;
   });
 
   it('throws error if cannot scroll element at all', async () => {
