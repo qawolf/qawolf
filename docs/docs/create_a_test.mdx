@@ -15,13 +15,6 @@ npx qawolf create http://todomvc.com/examples/react myTest
 
 - [Edit as you go](#edit-as-you-go) in your code editor (`.qawolf/myTest.test.js`)
 
-- [Add assertions](#optional-add-assertions) with the [expect-playwright](https://github.com/playwright-community/expect-playwright) library (included with QA Wolf):
-
-```js
-await expect(page).toHaveText('Clear completed');
-await expect(page).toHaveSelector('.clear-completed');
-```
-
 - [Save your test](#save-a-test) by choosing `💾 Save and Exit` in the command line
 
 :::
@@ -124,61 +117,7 @@ The test code is created in real-time, so you can edit the test as you create it
 
 :::
 
-## Optional: Add assertions
-
-Let's add assertions to our test.
-
-We recommend adding assertions with the [expect-playwright library](https://github.com/playwright-community/expect-playwright), which automatically waits for assertions. QA Wolf includes this library by default, so you do not need to install anything to use it.
-
-### Assert that text appears
-
-The first assertion we will add is to check that the text `"Clear completed"` appears after we complete our todo. Specifically, we will call expect-playwright's [`toHaveText` method](https://github.com/playwright-community/expect-playwright#tohavetext) to verify that the text appears on the page.
-
-In our test code, let's add a line to assert that the text `"Clear completed"` appears on the page:
-
-```js
-// ...
-
-test('myTest', async () => {
-  await page.goto('http://todomvc.com/examples/react');
-  await page.click('[placeholder="What needs to be done?"]');
-  await page.type('[placeholder="What needs to be done?"]', 'create test!');
-  await page.press('[placeholder="What needs to be done?"]', 'Enter');
-  await page.click('.toggle');
-  // custom code starts
-  await expect(page).toHaveText('Clear completed');
-  // custom code ends
-  await page.click('text=Clear completed');
-});
-```
-
-### Assert that an element appears
-
-Rather than asserting that the text `"Clear completed"` appears on the page, we could instead assert that the `"Clear completed"` button appears on the page.
-
-In terms of the [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model), this means that there should be an element with the class `"clear-completed"`. The corresponding [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) for an element with the class `"clear-completed"` is `.clear-completed`.
-
-We'll use the [`toHaveSelector` method](https://github.com/playwright-community/expect-playwright#toHaveSelector) to assert that the CSS selector `.clear-completed` appears on the page after we complete our todo.
-
-Our test now looks like this:
-
-```js
-// ...
-
-test('myTest', async () => {
-  await page.goto('http://todomvc.com/examples/react');
-  await page.click('[placeholder="What needs to be done?"]');
-  await page.type('[placeholder="What needs to be done?"]', 'create test!');
-  await page.press('[placeholder="What needs to be done?"]', 'Enter');
-  await page.click('.toggle');
-  // custom code starts
-  await expect(page).toHaveSelector('.clear-completed');
-  // custom code ends
-  await page.click('text=Clear completed');
-});
-```
-
-If the `"Clear completed"` button does not appear on the page, our test will fail.
+You can edit this file with assertions. To learn about assertions, see Playwright's [documentation](https://playwright.dev/#version=v1.2.0&path=docs%2Fassertions.md&q=custom-assertions).
 
 ## Save a test
 
