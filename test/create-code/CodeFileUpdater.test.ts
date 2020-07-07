@@ -57,12 +57,6 @@ describe('CodeFileUpdater', () => {
         `  someCode();\n  ${PATCH_HANDLE}\n  otherCode();`,
       );
     });
-
-    it('throws an error if qawolf.create is not found', async () => {
-      mockedReadFile.mockResolvedValue('no create');
-      // eslint-disable-next-line jest/valid-expect
-      expect(CodeFileUpdater.create('somepath')).rejects.toThrowError();
-    });
   });
 
   describe('finalize', () => {
