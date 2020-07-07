@@ -1,4 +1,5 @@
-import englishWords from 'an-array-of-english-words/index.json';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const englishWords = require('an-array-of-english-words/index.json');
 
 const layoutWords = ['col', 'fa', 'grid'];
 
