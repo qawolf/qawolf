@@ -6,7 +6,6 @@
   "types": "./build/index.d.ts",
   "files": [
     "build",
-    "expect-playwright.js",
     "js-jest.config.json",
     "postInstallMessage.js",
     "ts-jest.config.json"
@@ -53,7 +52,6 @@
     "commander": "^5.1.0",
     "create-qawolf": "^1.0.2",
     "debug": "*",
-    "expect-playwright": "^0.2.4",
     "glob": "^7.1.6",
     "inquirer": "^7.2.0",
     "kleur": "^3.0.3",

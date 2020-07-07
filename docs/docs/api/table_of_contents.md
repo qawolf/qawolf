@@ -9,7 +9,7 @@ title: API Table of Contents
 <br/>
 <br/>
 
-In addition to the APIs below, you have full access to the [Playwright API](https://github.com/microsoft/playwright/blob/master/docs/api.md), the [Jest API](https://jestjs.io/docs/en/expect), and [expect-playwright API](https://github.com/playwright-community/expect-playwright#api-documentation).
+In addition to the APIs below, you have full access to the [Playwright API](https://github.com/microsoft/playwright/blob/master/docs/api.md) and the [Jest API](https://jestjs.io/docs/en/expect).
 
 The QA Wolf API is minimal by design, since we want to leverage the power of Playwright/Jest as much as possible.
 
