@@ -5,7 +5,7 @@ import { ContextEventCollector } from '../src/create-code/ContextEventCollector'
 import { ElementEvent } from '../src/types';
 import { launch } from '../src/utils';
 
-// QAW_NAME=login QAW_URL=http://localhost:5000 npm run ts-node ./tests/saveFixture
+// QAW_NAME=login QAW_URL=http://localhost:5000 npm run ts-node ./test/saveFixture
 (async (): Promise<void> => {
   const savePath = join(
     __dirname,
