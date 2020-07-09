@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CodeReconciler.reconcile inserts new expressions 1`] = `
-"await page.click('text=\\"Log in\\"');
+"await page.click(\\"p\\");
 // 🐺 create code here"
 `;
 

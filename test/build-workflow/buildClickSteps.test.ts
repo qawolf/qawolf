@@ -23,16 +23,14 @@ describe('buildClickSteps', () => {
   it('skips click triggered by Enter', () => {
     const steps = buildClickSteps(loginEvents);
 
+    // check there is not a click on the password
     expect(steps.length).toEqual(3);
 
-    // click on login link
-    expect(steps[0].event.target.attrs.href).toEqual('/login');
-
     // click on initial input
-    expect(steps[1].event.target.attrs.id).toEqual('username');
+    expect(steps[1].event.selector).toEqual('#username');
 
     // click logout
-    expect(steps[2].event.selector).toEqual('text="Log out"');
+    expect(steps[2].event.selector).toEqual('text=Log out');
   });
 
   it('skips click on select', () => {
