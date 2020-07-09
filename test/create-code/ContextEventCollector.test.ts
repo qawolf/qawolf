@@ -131,7 +131,7 @@ describe('ContextEventCollector', () => {
     await page.close();
 
     const { name, isTrusted, target, value } = events[
-      events.length - 1
+      events.length - 2
     ] as InputEvent;
 
     expect(isTrusted).toEqual(false);

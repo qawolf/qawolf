@@ -2,7 +2,7 @@
 
 exports[`CodeFileUpdater update saves code with new steps 1`] = `
 "  someCode();
-  await page.click('text=\\"Log in\\"');
+  await page.click(\\"p\\");
   await page.click(\\"#username\\");
   // 🐺 create code here
   otherCode();"
@@ -10,13 +10,14 @@ exports[`CodeFileUpdater update saves code with new steps 1`] = `
 
 exports[`CodeFileUpdater update saves code with new steps 2`] = `
 "  someCode();
-  await page.click('text=\\"Log in\\"');
+  await page.click(\\"p\\");
   await page.click(\\"#username\\");
-  await page.type(\\"#username\\", \\"tomsmith\\");
+  await page.fill(\\"#username\\", \\"tomsmith\\");
   await page.press(\\"#username\\", \\"Tab\\");
-  await page.type(\\"#password\\", \\"SuperSecretPassword!\\");
-  await page.press(\\"#password\\", \\"Enter\\");
-  await page.click('text=\\"Log out\\"');
+  await page.fill(\\"#password\\", \\"SuperSecretPassword!\\");
+  await page.press(\\"#password\\", \\"Tab\\");
+  await page.press(\\"button\\", \\"Enter\\");
+  await page.click(\\"text=Log out\\");
   // 🐺 create code here
   otherCode();"
 `;
