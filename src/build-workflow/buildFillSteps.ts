@@ -5,14 +5,14 @@ import {
   Step,
 } from '../types';
 import { isChangeEvent, isInputEvent } from './event';
-import { isInputTarget, isTextareaTarget } from './target';
+import { isContentEditableTarget, isInputTarget, isTextareaTarget } from './target';
 
 const debug = Debug('qawolf:buildFillSteps');
 
 const shouldFill = (event: ElementEvent): boolean => {
   const { target } = event;
-  return isChangeEvent(event) &&
-    (isInputTarget(target) || isTextareaTarget(target)) &&
+  return (isInputEvent(event) || isChangeEvent(event)) &&
+    (isInputTarget(target) || isTextareaTarget(target) || isContentEditableTarget(target)) &&
     // Some inputs emit "change" with a value but really can't or shouldn't be
     // "filled in" with that value. Checkbox and radio should work without filling
     // because there will be click events. File isn't supported.

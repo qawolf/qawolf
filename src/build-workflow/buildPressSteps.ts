@@ -5,38 +5,34 @@ import {
   KeyEvent,
   Step,
 } from '../types';
-import { isInputTarget, isTextareaTarget } from './target';
+import { isContentEditableTarget, isInputTarget, isTextareaTarget } from './target';
 
 const debug = Debug('qawolf:buildPressSteps');
 
 /**
- * A subset of the full list:
+ * The full list:
  * https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
- *
- * These are key presses that we always want to include when playing back. There are many
- * more potential keys but a lot of them are unlikely to be used for any shortcut or
- * navigation purposes on any website.
  */
-const KEYS_TO_TRACK_ALWAYS = new Set([
+
+const KEYS_TO_TRACK_FOR_CONTENTEDITABLE = new Set([
+  // Enter types a line break, shouldn't be a press.
+  // Tab types a tab character, shouldn't be a press.
+  'Escape'
+]);
+
+const KEYS_TO_TRACK_FOR_INPUT = new Set([
+  'Enter',
+  'Escape',
+  'Tab'
+]);
+
+const KEYS_TO_TRACK_FOR_TEXTAREA = new Set([
+  // Enter types a line break, shouldn't be a press.
   'Escape',
   'Tab'
 ]);
 
 /**
- * A subset of the full list:
- * https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
- *
- * These are key presses that we want to include when playing back as long as they
- * aren't being pressed as part of editing in a textarea.
- */
-const KEYS_TO_TRACK_FOR_NON_TEXTAREA = new Set([
-  'Enter'
-]);
-
-/**
- * A subset of the full list:
- * https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
- *
  * These are key presses that we want to include when playing back as long as they
  * aren't being pressed as part of editing some input text.
  */
@@ -48,9 +44,12 @@ const KEYS_TO_TRACK_FOR_NON_INPUT = new Set([
   'Backspace',
   'Delete',
   'End',
+  'Enter',
+  'Escape',
   'Home',
   'PageDown',
-  'PageUp'
+  'PageUp',
+  'Tab'
 ]);
 
 /**
@@ -62,10 +61,10 @@ const KEYS_TO_TRACK_FOR_NON_INPUT = new Set([
  * @return {Boolean} True if we should include this key as part of the playback script.
  */
 const shouldTrackKeyPress = (key: string, target: Doc): boolean => {
-  if (KEYS_TO_TRACK_ALWAYS.has(key)) return true;
-  if (!isTextareaTarget(target) && KEYS_TO_TRACK_FOR_NON_TEXTAREA.has(key)) return true;
-  if (!isInputTarget(target) && !isTextareaTarget(target) && KEYS_TO_TRACK_FOR_NON_INPUT.has(key)) return true;
-  return false;
+  if (isInputTarget(target)) return KEYS_TO_TRACK_FOR_INPUT.has(key);
+  if (isTextareaTarget(target)) return KEYS_TO_TRACK_FOR_TEXTAREA.has(key);
+  if (isContentEditableTarget(target)) return KEYS_TO_TRACK_FOR_CONTENTEDITABLE.has(key);
+  return KEYS_TO_TRACK_FOR_NON_INPUT.has(key);
 }
 
 /**
