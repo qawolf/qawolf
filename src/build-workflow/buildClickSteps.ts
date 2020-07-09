@@ -18,7 +18,7 @@ const filterClickEvents = (events: ElementEvent[]): ElementEvent[] => {
     const previousEvent = events[i - 1];
     if (
       previousEvent &&
-      ['keydown', 'keyup'].includes(previousEvent.name) &&
+      ['change', 'keydown', 'keyup'].includes(previousEvent.name) &&
       event.time - previousEvent.time < 50
     ) {
       // skip system-initiated clicks triggered by a key press

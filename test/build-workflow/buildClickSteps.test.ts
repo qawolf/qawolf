@@ -15,6 +15,7 @@ describe('buildClickSteps', () => {
 
   it('builds one click per group of mousedown/click events', () => {
     const steps = buildClickSteps(loginEvents);
+
     expect(
       steps.map((step) => loginEvents.indexOf(step.event)),
     ).toMatchSnapshot();
@@ -23,8 +24,8 @@ describe('buildClickSteps', () => {
   it('skips click triggered by Enter', () => {
     const steps = buildClickSteps(loginEvents);
 
-    // check there is not a click on the password
-    expect(steps.length).toEqual(3);
+    // click on login link
+    expect(steps[0].event.target.attrs.href).toEqual('/login');
 
     // click on initial input
     expect(steps[1].event.selector).toEqual('#username');

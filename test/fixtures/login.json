@@ -4,65 +4,29 @@
       "isTrusted": true,
       "name": "mousedown",
       "page": 0,
-      "selector": "p",
+      "selector": "text=Log in",
       "target": {
         "type": "tag",
-        "name": "p",
+        "name": "a",
         "voidElement": false,
-        "attrs": {},
-        "children": [
-          { "type": "text", "content": "To log in, use " },
-          {
-            "type": "tag",
-            "name": "i",
-            "voidElement": false,
-            "attrs": {},
-            "children": [{ "type": "text", "content": "tomsmith" }]
-          },
-          { "type": "text", "content": " as the username, and " },
-          {
-            "type": "tag",
-            "name": "i",
-            "voidElement": false,
-            "attrs": {},
-            "children": [{ "type": "text", "content": "SuperSecretPassword!" }]
-          },
-          { "type": "text", "content": " as the password." }
-        ]
+        "attrs": { "href": "/login" },
+        "children": [{ "type": "text", "content": "Log in" }]
       },
-      "time": 1594315658170
+      "time": 1594320817272
     },
     {
       "isTrusted": true,
       "name": "click",
       "page": 0,
-      "selector": "p",
+      "selector": "text=Log in",
       "target": {
         "type": "tag",
-        "name": "p",
+        "name": "a",
         "voidElement": false,
-        "attrs": {},
-        "children": [
-          { "type": "text", "content": "To log in, use " },
-          {
-            "type": "tag",
-            "name": "i",
-            "voidElement": false,
-            "attrs": {},
-            "children": [{ "type": "text", "content": "tomsmith" }]
-          },
-          { "type": "text", "content": " as the username, and " },
-          {
-            "type": "tag",
-            "name": "i",
-            "voidElement": false,
-            "attrs": {},
-            "children": [{ "type": "text", "content": "SuperSecretPassword!" }]
-          },
-          { "type": "text", "content": " as the password." }
-        ]
+        "attrs": { "href": "/login" },
+        "children": [{ "type": "text", "content": "Log in" }]
       },
-      "time": 1594315658181
+      "time": 1594320817350
     },
     {
       "isTrusted": true,
@@ -81,7 +45,7 @@
         },
         "children": []
       },
-      "time": 1594315658987
+      "time": 1594320835058
     },
     {
       "isTrusted": true,
@@ -100,7 +64,7 @@
         },
         "children": []
       },
-      "time": 1594315659077
+      "time": 1594320835118
     },
     {
       "isTrusted": true,
@@ -119,7 +83,7 @@
         },
         "children": []
       },
-      "time": 1594315659963,
+      "time": 1594320835578,
       "value": "t"
     },
     {
@@ -139,7 +103,27 @@
         },
         "children": []
       },
-      "time": 1594315659973,
+      "time": 1594320835580,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "#username",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "username",
+          "type": "text",
+          "value": "t"
+        },
+        "children": []
+      },
+      "time": 1594320835652,
       "value": "t"
     },
     {
@@ -159,7 +143,7 @@
         },
         "children": []
       },
-      "time": 1594315660026,
+      "time": 1594320835696,
       "value": "o"
     },
     {
@@ -179,7 +163,7 @@
         },
         "children": []
       },
-      "time": 1594315660027,
+      "time": 1594320835698,
       "value": "to"
     },
     {
@@ -199,8 +183,8 @@
         },
         "children": []
       },
-      "time": 1594315660047,
-      "value": "t"
+      "time": 1594320835777,
+      "value": "o"
     },
     {
       "isTrusted": true,
@@ -219,7 +203,7 @@
         },
         "children": []
       },
-      "time": 1594315660069,
+      "time": 1594320835807,
       "value": "m"
     },
     {
@@ -239,7 +223,7 @@
         },
         "children": []
       },
-      "time": 1594315660071,
+      "time": 1594320835809,
       "value": "tom"
     },
     {
@@ -259,27 +243,7 @@
         },
         "children": []
       },
-      "time": 1594315660159,
-      "value": "o"
-    },
-    {
-      "isTrusted": true,
-      "name": "keyup",
-      "page": 0,
-      "selector": "#username",
-      "target": {
-        "type": "tag",
-        "name": "input",
-        "voidElement": true,
-        "attrs": {
-          "autocomplete": "off",
-          "id": "username",
-          "type": "text",
-          "value": "tom"
-        },
-        "children": []
-      },
-      "time": 1594315660182,
+      "time": 1594320835913,
       "value": "m"
     },
     {
@@ -299,7 +263,7 @@
         },
         "children": []
       },
-      "time": 1594315660857,
+      "time": 1594320835957,
       "value": "s"
     },
     {
@@ -319,8 +283,28 @@
         },
         "children": []
       },
-      "time": 1594315660860,
+      "time": 1594320835959,
       "value": "toms"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "#username",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "username",
+          "type": "text",
+          "value": "toms"
+        },
+        "children": []
+      },
+      "time": 1594320836044,
+      "value": "s"
     },
     {
       "isTrusted": true,
@@ -339,7 +323,7 @@
         },
         "children": []
       },
-      "time": 1594315660947,
+      "time": 1594320836056,
       "value": "m"
     },
     {
@@ -359,7 +343,7 @@
         },
         "children": []
       },
-      "time": 1594315660949,
+      "time": 1594320836058,
       "value": "tomsm"
     },
     {
@@ -379,8 +363,8 @@
         },
         "children": []
       },
-      "time": 1594315660971,
-      "value": "s"
+      "time": 1594320836152,
+      "value": "m"
     },
     {
       "isTrusted": true,
@@ -399,7 +383,7 @@
         },
         "children": []
       },
-      "time": 1594315661037,
+      "time": 1594320836179,
       "value": "i"
     },
     {
@@ -419,48 +403,8 @@
         },
         "children": []
       },
-      "time": 1594315661038,
+      "time": 1594320836181,
       "value": "tomsmi"
-    },
-    {
-      "isTrusted": true,
-      "name": "keyup",
-      "page": 0,
-      "selector": "#username",
-      "target": {
-        "type": "tag",
-        "name": "input",
-        "voidElement": true,
-        "attrs": {
-          "autocomplete": "off",
-          "id": "username",
-          "type": "text",
-          "value": "tomsmi"
-        },
-        "children": []
-      },
-      "time": 1594315661081,
-      "value": "m"
-    },
-    {
-      "isTrusted": true,
-      "name": "keyup",
-      "page": 0,
-      "selector": "#username",
-      "target": {
-        "type": "tag",
-        "name": "input",
-        "voidElement": true,
-        "attrs": {
-          "autocomplete": "off",
-          "id": "username",
-          "type": "text",
-          "value": "tomsmi"
-        },
-        "children": []
-      },
-      "time": 1594315661149,
-      "value": "i"
     },
     {
       "isTrusted": true,
@@ -479,7 +423,7 @@
         },
         "children": []
       },
-      "time": 1594315661150,
+      "time": 1594320836263,
       "value": "t"
     },
     {
@@ -499,8 +443,48 @@
         },
         "children": []
       },
-      "time": 1594315661152,
+      "time": 1594320836265,
       "value": "tomsmit"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "#username",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "username",
+          "type": "text",
+          "value": "tomsmit"
+        },
+        "children": []
+      },
+      "time": 1594320836267,
+      "value": "i"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "#username",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "autocomplete": "off",
+          "id": "username",
+          "type": "text",
+          "value": "tomsmit"
+        },
+        "children": []
+      },
+      "time": 1594320836348,
+      "value": "t"
     },
     {
       "isTrusted": true,
@@ -519,7 +503,7 @@
         },
         "children": []
       },
-      "time": 1594315661239,
+      "time": 1594320836392,
       "value": "h"
     },
     {
@@ -539,7 +523,7 @@
         },
         "children": []
       },
-      "time": 1594315661241,
+      "time": 1594320836394,
       "value": "tomsmith"
     },
     {
@@ -559,27 +543,7 @@
         },
         "children": []
       },
-      "time": 1594315661244,
-      "value": "t"
-    },
-    {
-      "isTrusted": true,
-      "name": "keyup",
-      "page": 0,
-      "selector": "#username",
-      "target": {
-        "type": "tag",
-        "name": "input",
-        "voidElement": true,
-        "attrs": {
-          "autocomplete": "off",
-          "id": "username",
-          "type": "text",
-          "value": "tomsmith"
-        },
-        "children": []
-      },
-      "time": 1594315661351,
+      "time": 1594320836464,
       "value": "h"
     },
     {
@@ -599,7 +563,7 @@
         },
         "children": []
       },
-      "time": 1594315661554,
+      "time": 1594320836752,
       "value": "Tab"
     },
     {
@@ -619,7 +583,7 @@
         },
         "children": []
       },
-      "time": 1594315661556,
+      "time": 1594320836753,
       "value": "tomsmith"
     },
     {
@@ -639,7 +603,7 @@
         },
         "children": []
       },
-      "time": 1594315661643,
+      "time": 1594320836831,
       "value": "Tab"
     },
     {
@@ -659,7 +623,7 @@
         },
         "children": []
       },
-      "time": 1594315661982,
+      "time": 1594320837185,
       "value": "Meta"
     },
     {
@@ -679,7 +643,7 @@
         },
         "children": []
       },
-      "time": 1594315662048,
+      "time": 1594320837413,
       "value": "v"
     },
     {
@@ -699,7 +663,7 @@
         },
         "children": []
       },
-      "time": 1594315662061,
+      "time": 1594320837428,
       "value": "SuperSecretPassword!"
     },
     {
@@ -719,7 +683,7 @@
         },
         "children": []
       },
-      "time": 1594315662066,
+      "time": 1594320837432,
       "value": "SuperSecretPassword!"
     },
     {
@@ -739,7 +703,7 @@
         },
         "children": []
       },
-      "time": 1594315662116,
+      "time": 1594320837475,
       "value": "Meta"
     },
     {
@@ -759,7 +723,7 @@
         },
         "children": []
       },
-      "time": 1594315662138,
+      "time": 1594320837488,
       "value": "v"
     },
     {
@@ -779,8 +743,8 @@
         },
         "children": []
       },
-      "time": 1594315663331,
-      "value": "Tab"
+      "time": 1594320838011,
+      "value": "Enter"
     },
     {
       "isTrusted": true,
@@ -799,54 +763,8 @@
         },
         "children": []
       },
-      "time": 1594315663332,
+      "time": 1594320838012,
       "value": "SuperSecretPassword!"
-    },
-    {
-      "isTrusted": true,
-      "name": "keyup",
-      "page": 0,
-      "selector": "button",
-      "target": {
-        "type": "tag",
-        "name": "button",
-        "voidElement": false,
-        "attrs": { "type": "submit", "style": "cursor: pointer;" },
-        "children": [
-          {
-            "type": "tag",
-            "name": "p",
-            "voidElement": false,
-            "attrs": {},
-            "children": [{ "type": "text", "content": "Log in" }]
-          }
-        ]
-      },
-      "time": 1594315663423,
-      "value": "Tab"
-    },
-    {
-      "isTrusted": true,
-      "name": "keydown",
-      "page": 0,
-      "selector": "button",
-      "target": {
-        "type": "tag",
-        "name": "button",
-        "voidElement": false,
-        "attrs": { "type": "submit", "style": "cursor: pointer;" },
-        "children": [
-          {
-            "type": "tag",
-            "name": "p",
-            "voidElement": false,
-            "attrs": {},
-            "children": [{ "type": "text", "content": "Log in" }]
-          }
-        ]
-      },
-      "time": 1594315663737,
-      "value": "Enter"
     },
     {
       "isTrusted": true,
@@ -868,7 +786,7 @@
           }
         ]
       },
-      "time": 1594315663739
+      "time": 1594320838014
     },
     {
       "isTrusted": true,
@@ -881,7 +799,6 @@
         "voidElement": false,
         "attrs": {},
         "children": [
-          { "type": "text", "content": "    " },
           {
             "type": "tag",
             "name": "noscript",
@@ -926,85 +843,33 @@
           },
           {
             "type": "tag",
-            "name": "!--",
+            "name": "script",
             "voidElement": false,
-            "attrs": {
-              "This": "",
-              "HTML": "",
-              "file": "",
-              "is": "",
-              "a": "",
-              "template.": "",
-              "If": "",
-              "you": "",
-              "open": "",
-              "it": "",
-              "directly": "",
-              "in": "",
-              "the": "",
-              "browser,": "",
-              "will": "",
-              "see": "",
-              "an": "",
-              "empty": "",
-              "page.": "",
-              "You": "",
-              "can": "",
-              "add": "",
-              "webfonts,": "",
-              "meta": "",
-              "tags,": "",
-              "or": "",
-              "analytics": "",
-              "to": "",
-              "this": "",
-              "file.": "",
-              "The": "",
-              "build": "",
-              "step": "",
-              "place": "",
-              "bundled": "",
-              "scripts": "",
-              "into": ""
-            },
+            "attrs": {},
             "children": [
               {
                 "type": "text",
-                "content": " tag.      To begin the development, run `npm start` or `yarn start`.      To create a production bundle, use `npm run build` or `yarn build`.    -->  "
-              },
-              {
-                "type": "tag",
-                "name": "script",
-                "voidElement": false,
-                "attrs": { "src": "/static/js/bundle.js" },
-                "children": []
-              },
-              {
-                "type": "tag",
-                "name": "script",
-                "voidElement": false,
-                "attrs": { "src": "/static/js/1.chunk.js" },
-                "children": []
-              },
-              {
-                "type": "tag",
-                "name": "script",
-                "voidElement": false,
-                "attrs": { "src": "/static/js/main.chunk.js" },
-                "children": []
-              },
-              {
-                "type": "tag",
-                "name": "script",
-                "voidElement": false,
-                "attrs": { "src": "/main.45b517d682200d870ece.hot-update.js" },
-                "children": []
+                "content": "!function(e){function r(r){for(var n,l,a=r[0],f=r[1],i=r[2],c=0,s=[];c&lt;a.length;c++)l=a[c],Object.prototype.hasOwnProperty.call(o,l)&amp;&amp;o[l]&amp;&amp;s.push(o[l][0]),o[l]=0;for(n in f)Object.prototype.hasOwnProperty.call(f,n)&amp;&amp;(e[n]=f[n]);for(p&amp;&amp;p(r);s.length;)s.shift()();return u.push.apply(u,i||[]),t()}function t(){for(var e,r=0;r&lt;u.length;r++){for(var t=u[r],n=!0,a=1;a&lt;t.length;a++){var f=t[a];0!==o[f]&amp;&amp;(n=!1)}n&amp;&amp;(u.splice(r--,1),e=l(l.s=t[0]))}return e}var n={},o={1:0},u=[];function l(r){if(n[r])return n[r].exports;var t=n[r]={i:r,l:!1,exports:{}};return e[r].call(t.exports,t,t.exports,l),t.l=!0,t.exports}l.m=e,l.c=n,l.d=function(e,r,t){l.o(e,r)||Object.defineProperty(e,r,{enumerable:!0,get:t})},l.r=function(e){\"undefined\"!=typeof Symbol&amp;&amp;Symbol.toStringTag&amp;&amp;Object.defineProperty(e,Symbol.toStringTag,{value:\"Module\"}),Object.defineProperty(e,\"__esModule\",{value:!0})},l.t=function(e,r){if(1&amp;r&amp;&amp;(e=l(e)),8&amp;r)return e;if(4&amp;r&amp;&amp;\"object\"==typeof e&amp;&amp;e&amp;&amp;e.__esModule)return e;var t=Object.create(null);if(l.r(t),Object.defineProperty(t,\"default\",{enumerable:!0,value:e}),2&amp;r&amp;&amp;\"string\"!=typeof e)for(var n in e)l.d(t,n,function(r){return e[r]}.bind(null,n));return t},l.n=function(e){var r=e&amp;&amp;e.__esModule?function(){return e.default}:function(){return e};return l.d(r,\"a\",r),r},l.o=function(e,r){return Object.prototype.hasOwnProperty.call(e,r)},l.p=\"/\";var a=this[\"webpackJsonp@qawolf/sandbox\"]=this[\"webpackJsonp@qawolf/sandbox\"]||[],f=a.push.bind(a);a.push=r,a=a.slice();for(var i=0;i&lt;a.length;i++)r(a[i]);var p=f;t()}([])"
               }
             ]
+          },
+          {
+            "type": "tag",
+            "name": "script",
+            "voidElement": false,
+            "attrs": { "src": "/static/js/2.c4f4c338.chunk.js" },
+            "children": []
+          },
+          {
+            "type": "tag",
+            "name": "script",
+            "voidElement": false,
+            "attrs": { "src": "/static/js/main.ea3aedb7.chunk.js" },
+            "children": []
           }
         ]
       },
-      "time": 1594315663829,
+      "time": 1594320838079,
       "value": "Enter"
     },
     {
@@ -1027,7 +892,7 @@
           }
         ]
       },
-      "time": 1594315665876
+      "time": 1594320839676
     },
     {
       "isTrusted": true,
@@ -1049,7 +914,7 @@
           }
         ]
       },
-      "time": 1594315665973
+      "time": 1594320839746
     }
   ]
 }
