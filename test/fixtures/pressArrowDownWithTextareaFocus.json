@@ -1,0 +1,74 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594495068236
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594495068297
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594495069131,
+      "value": "ArrowDown"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594495069199,
+      "value": "ArrowDown"
+    }
+  ]
+}

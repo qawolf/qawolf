@@ -17,6 +17,7 @@ import LogIn from './pages/LogIn';
 import NestedDataAttributes from './pages/NestedDataAttributes';
 import RadioInputs from './pages/RadioInputs';
 import Selects from './pages/Selects';
+import SpecialInputs from './pages/SpecialInputs';
 import TextInputs from './pages/TextInputs';
 import TimePickers from './pages/TimePickers';
 // CSS
@@ -59,6 +60,9 @@ function Navigation() {
         <Link to="/selects">Selects</Link>
       </li>
       <li>
+        <Link to="/special-inputs">Special inputs</Link>
+      </li>
+      <li>
         <Link to="/text-inputs">Text inputs</Link>
       </li>
       <li>
@@ -87,6 +91,7 @@ function App() {
         />
         <Route component={RadioInputs} path="/radio-inputs" />
         <Route component={Selects} path="/selects" />
+        <Route component={SpecialInputs} path="/special-inputs" />
         <Route component={TextInputs} path="/text-inputs" />
         <Route component={TimePickers} path="/time-pickers" />
         <Redirect to="/" />

@@ -1,0 +1,542 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312491225
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312491266
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312501399,
+      "value": "9"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312501460,
+      "value": "9"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312505511,
+      "value": "2"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312505513,
+      "value": "0002-W09"
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312505539,
+      "value": "0002-W09"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312505601,
+      "value": "2"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312507131,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312507132,
+      "value": ""
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312507134,
+      "value": ""
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312507211,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312508053,
+      "value": "1"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312508056,
+      "value": "0001-W09"
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312508057,
+      "value": "0001-W09"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312508168,
+      "value": "9"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312508170,
+      "value": "0019-W09"
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312508171,
+      "value": "0019-W09"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312508173,
+      "value": "1"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312508257,
+      "value": "9"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312508329,
+      "value": "9"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312508331,
+      "value": "0199-W09"
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312508332,
+      "value": "0199-W09"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312508413,
+      "value": "9"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312510326,
+      "value": "7"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312510328,
+      "value": "1997-W09"
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312510330,
+      "value": "1997-W09"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312510416,
+      "value": "7"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-week-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-week-picker",
+          "type": "week"
+        },
+        "children": []
+      },
+      "time": 1594312511227,
+      "value": "Tab"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-month-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-month-picker",
+          "type": "month"
+        },
+        "children": []
+      },
+      "time": 1594312511294,
+      "value": "Tab"
+    }
+  ]
+}

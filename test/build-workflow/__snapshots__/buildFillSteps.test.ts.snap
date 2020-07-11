@@ -1,0 +1,639 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`buildFillSteps clicking and editing existing text in a contenteditable creates a single fill step 1`] = `
+Object {
+  "action": "fill",
+  "event": Object {
+    "isTrusted": true,
+    "name": "input",
+    "page": 0,
+    "selector": "[data-qa=\\"content-editable\\"]",
+    "target": Object {
+      "attrs": Object {
+        "contenteditable": "true",
+        "data-qa": "content-editable",
+      },
+      "children": Array [
+        Object {
+          "content": "modified text",
+          "type": "text",
+        },
+        Object {
+          "attrs": Object {},
+          "children": Array [
+            Object {
+              "attrs": Object {},
+              "children": Array [],
+              "name": "br",
+              "type": "tag",
+              "voidElement": true,
+            },
+          ],
+          "name": "div",
+          "type": "tag",
+          "voidElement": false,
+        },
+        Object {
+          "attrs": Object {},
+          "children": Array [
+            Object {
+              "content": "multiple lines",
+              "type": "text",
+            },
+          ],
+          "name": "div",
+          "type": "tag",
+          "voidElement": false,
+        },
+      ],
+      "name": "div",
+      "type": "tag",
+      "voidElement": false,
+    },
+    "time": 1594313076075,
+    "value": "modified text
+
+
+multiple lines",
+  },
+  "index": 0,
+  "value": "modified text
+
+
+multiple lines",
+}
+`;
+
+exports[`buildFillSteps clicking and editing existing text in a text input creates a single fill step 1`] = `
+Object {
+  "action": "fill",
+  "event": Object {
+    "isTrusted": true,
+    "name": "input",
+    "page": 0,
+    "selector": "[data-qa=\\"html-text-input-filled\\"]",
+    "target": Object {
+      "attrs": Object {
+        "data-qa": "html-text-input-filled",
+        "placeholder": "Filled text input",
+        "type": "text",
+        "value": "initial text",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "time": 1594311846976,
+    "value": "changed text",
+  },
+  "index": 0,
+  "value": "changed text",
+}
+`;
+
+exports[`buildFillSteps clicking and typing in a browser date input creates a single fill step 1`] = `
+Object {
+  "action": "fill",
+  "event": Object {
+    "isTrusted": true,
+    "name": "input",
+    "page": 0,
+    "selector": "[data-qa=\\"html-date-picker\\"]",
+    "target": Object {
+      "attrs": Object {
+        "data-qa": "html-date-picker",
+        "type": "date",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "time": 1594312367406,
+    "value": "1999-04-10",
+  },
+  "index": 0,
+  "value": "1999-04-10",
+}
+`;
+
+exports[`buildFillSteps clicking and typing in a browser datetime-local input creates a single fill step 1`] = `
+Object {
+  "action": "fill",
+  "event": Object {
+    "isTrusted": true,
+    "name": "input",
+    "page": 0,
+    "selector": "[data-qa=\\"html-datetime-local-picker\\"]",
+    "target": Object {
+      "attrs": Object {
+        "data-qa": "html-datetime-local-picker",
+        "type": "datetime-local",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "time": 1594312714472,
+    "value": "2005-02-20T01:50",
+  },
+  "index": 0,
+  "value": "2005-02-20T01:50",
+}
+`;
+
+exports[`buildFillSteps clicking and typing in a browser email input creates a single fill step 1`] = `
+Object {
+  "action": "fill",
+  "event": Object {
+    "isTrusted": true,
+    "name": "input",
+    "page": 0,
+    "selector": "[data-qa=\\"html-email-input\\"]",
+    "target": Object {
+      "attrs": Object {
+        "data-qa": "html-email-input",
+        "placeholder": "Email input",
+        "type": "email",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "time": 1594312113762,
+    "value": "me@example.net",
+  },
+  "index": 0,
+  "value": "me@example.net",
+}
+`;
+
+exports[`buildFillSteps clicking and typing in a browser month input creates a single fill step 1`] = `
+Object {
+  "action": "fill",
+  "event": Object {
+    "isTrusted": true,
+    "name": "input",
+    "page": 0,
+    "selector": "[data-qa=\\"html-month-picker\\"]",
+    "target": Object {
+      "attrs": Object {
+        "data-qa": "html-month-picker",
+        "type": "month",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "time": 1594312547159,
+    "value": "2020-06",
+  },
+  "index": 0,
+  "value": "2020-06",
+}
+`;
+
+exports[`buildFillSteps clicking and typing in a browser number input creates a single fill step 1`] = `
+Object {
+  "action": "fill",
+  "event": Object {
+    "isTrusted": true,
+    "name": "input",
+    "page": 0,
+    "selector": "[data-qa=\\"html-number-input\\"]",
+    "target": Object {
+      "attrs": Object {
+        "data-qa": "html-number-input",
+        "placeholder": "Number input",
+        "type": "number",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "time": 1594311943233,
+    "value": "123",
+  },
+  "index": 0,
+  "value": "123",
+}
+`;
+
+exports[`buildFillSteps clicking and typing in a browser password input creates a single fill step 1`] = `
+Object {
+  "action": "fill",
+  "event": Object {
+    "isTrusted": true,
+    "name": "input",
+    "page": 0,
+    "selector": "[data-qa=\\"html-password-input\\"]",
+    "target": Object {
+      "attrs": Object {
+        "data-qa": "html-password-input",
+        "placeholder": "Password input",
+        "type": "password",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "time": 1594311900120,
+    "value": "password",
+  },
+  "index": 0,
+  "value": "password",
+}
+`;
+
+exports[`buildFillSteps clicking and typing in a browser phone number input creates a single fill step 1`] = `
+Object {
+  "action": "fill",
+  "event": Object {
+    "isTrusted": true,
+    "name": "input",
+    "page": 0,
+    "selector": "[data-qa=\\"html-tel-input\\"]",
+    "target": Object {
+      "attrs": Object {
+        "data-qa": "html-tel-input",
+        "placeholder": "Telephone input",
+        "type": "tel",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "time": 1594312150820,
+    "value": "5551264585",
+  },
+  "index": 0,
+  "value": "5551264585",
+}
+`;
+
+exports[`buildFillSteps clicking and typing in a browser time input creates a single fill step 1`] = `
+Object {
+  "action": "fill",
+  "event": Object {
+    "isTrusted": true,
+    "name": "input",
+    "page": 0,
+    "selector": "[data-qa=\\"html-time-picker\\"]",
+    "target": Object {
+      "attrs": Object {
+        "data-qa": "html-time-picker",
+        "type": "time",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "time": 1594312672013,
+    "value": "16:19",
+  },
+  "index": 0,
+  "value": "16:19",
+}
+`;
+
+exports[`buildFillSteps clicking and typing in a browser url input creates a single fill step 1`] = `
+Object {
+  "action": "fill",
+  "event": Object {
+    "isTrusted": true,
+    "name": "input",
+    "page": 0,
+    "selector": "[data-qa=\\"html-url-input\\"]",
+    "target": Object {
+      "attrs": Object {
+        "data-qa": "html-url-input",
+        "placeholder": "URL input",
+        "type": "url",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "time": 1594312203806,
+    "value": "https://qawolf.com",
+  },
+  "index": 0,
+  "value": "https://qawolf.com",
+}
+`;
+
+exports[`buildFillSteps clicking and typing in a browser week input creates a single fill step 1`] = `
+Object {
+  "action": "fill",
+  "event": Object {
+    "isTrusted": true,
+    "name": "input",
+    "page": 0,
+    "selector": "[data-qa=\\"html-week-picker\\"]",
+    "target": Object {
+      "attrs": Object {
+        "data-qa": "html-week-picker",
+        "type": "week",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "time": 1594312510328,
+    "value": "1997-W09",
+  },
+  "index": 0,
+  "value": "1997-W09",
+}
+`;
+
+exports[`buildFillSteps clicking and typing in a contenteditable creates a single fill step 1`] = `
+Object {
+  "action": "fill",
+  "event": Object {
+    "isTrusted": true,
+    "name": "input",
+    "page": 0,
+    "selector": "[data-qa=\\"draftjs\\"] [contenteditable=\\"true\\"]",
+    "target": Object {
+      "attrs": Object {
+        "aria-describedby": "placeholder-da09n",
+        "class": "notranslate public-DraftEditor-content",
+        "contenteditable": "true",
+        "role": "textbox",
+        "spellcheck": "false",
+        "style": "outline: none; user-select: text; white-space: pre-wrap; overflow-wrap: break-word;",
+      },
+      "children": Array [
+        Object {
+          "attrs": Object {
+            "data-contents": "true",
+          },
+          "children": Array [
+            Object {
+              "attrs": Object {
+                "class": "",
+                "data-block": "true",
+                "data-editor": "da09n",
+                "data-offset-key": "aj4j3-0-0",
+              },
+              "children": Array [
+                Object {
+                  "attrs": Object {
+                    "class": "public-DraftStyleDefault-block public-DraftStyleDefault-ltr",
+                    "data-offset-key": "aj4j3-0-0",
+                  },
+                  "children": Array [
+                    Object {
+                      "attrs": Object {
+                        "data-offset-key": "aj4j3-0-0",
+                      },
+                      "children": Array [
+                        Object {
+                          "attrs": Object {
+                            "data-text": "true",
+                          },
+                          "children": Array [
+                            Object {
+                              "content": "QAWolf is good",
+                              "type": "text",
+                            },
+                          ],
+                          "name": "span",
+                          "type": "tag",
+                          "voidElement": false,
+                        },
+                      ],
+                      "name": "span",
+                      "type": "tag",
+                      "voidElement": false,
+                    },
+                  ],
+                  "name": "div",
+                  "type": "tag",
+                  "voidElement": false,
+                },
+              ],
+              "name": "div",
+              "type": "tag",
+              "voidElement": false,
+            },
+            Object {
+              "attrs": Object {
+                "class": "",
+                "data-block": "true",
+                "data-editor": "da09n",
+                "data-offset-key": "dnr0o-0-0",
+              },
+              "children": Array [
+                Object {
+                  "attrs": Object {
+                    "class": "public-DraftStyleDefault-block public-DraftStyleDefault-ltr",
+                    "data-offset-key": "dnr0o-0-0",
+                  },
+                  "children": Array [
+                    Object {
+                      "attrs": Object {
+                        "data-offset-key": "dnr0o-0-0",
+                      },
+                      "children": Array [
+                        Object {
+                          "attrs": Object {
+                            "data-text": "true",
+                          },
+                          "children": Array [
+                            Object {
+                              "content": "Not bad",
+                              "type": "text",
+                            },
+                          ],
+                          "name": "span",
+                          "type": "tag",
+                          "voidElement": false,
+                        },
+                      ],
+                      "name": "span",
+                      "type": "tag",
+                      "voidElement": false,
+                    },
+                  ],
+                  "name": "div",
+                  "type": "tag",
+                  "voidElement": false,
+                },
+              ],
+              "name": "div",
+              "type": "tag",
+              "voidElement": false,
+            },
+          ],
+          "name": "div",
+          "type": "tag",
+          "voidElement": false,
+        },
+      ],
+      "name": "div",
+      "type": "tag",
+      "voidElement": false,
+    },
+    "time": 1594313142633,
+    "value": "QAWolf is good
+Not bad",
+  },
+  "index": 0,
+  "value": "QAWolf is good
+Not bad",
+}
+`;
+
+exports[`buildFillSteps clicking and typing in a search input creates a single fill step 1`] = `
+Object {
+  "action": "fill",
+  "event": Object {
+    "isTrusted": true,
+    "name": "input",
+    "page": 0,
+    "selector": "[data-qa=\\"html-search-input\\"]",
+    "target": Object {
+      "attrs": Object {
+        "data-qa": "html-search-input",
+        "placeholder": "Search input",
+        "type": "search",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "time": 1594311791266,
+    "value": "search text",
+  },
+  "index": 0,
+  "value": "search text",
+}
+`;
+
+exports[`buildFillSteps clicking and typing in a text input creates a single fill step 1`] = `
+Object {
+  "action": "fill",
+  "event": Object {
+    "isTrusted": true,
+    "name": "input",
+    "page": 0,
+    "selector": "[data-qa=\\"html-text-input\\"]",
+    "target": Object {
+      "attrs": Object {
+        "data-qa": "html-text-input",
+        "placeholder": "Text input",
+        "type": "text",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "time": 1594311579128,
+    "value": "Lazy dog",
+  },
+  "index": 0,
+  "value": "Lazy dog",
+}
+`;
+
+exports[`buildFillSteps clicking and typing in a textarea creates a single fill step 1`] = `
+Object {
+  "action": "fill",
+  "event": Object {
+    "isTrusted": true,
+    "name": "input",
+    "page": 0,
+    "selector": "[data-qa=\\"html-textarea\\"]",
+    "target": Object {
+      "attrs": Object {
+        "data-qa": "html-textarea",
+        "placeholder": "Textarea",
+      },
+      "children": Array [],
+      "name": "textarea",
+      "type": "tag",
+      "voidElement": false,
+    },
+    "time": 1594312006659,
+    "value": "Multi
+
+Line
+
+text!",
+  },
+  "index": 0,
+  "value": "Multi
+
+Line
+
+text!",
+}
+`;
+
+exports[`buildFillSteps picking a color from a browser color input creates a single fill step 1`] = `
+Object {
+  "action": "fill",
+  "event": Object {
+    "isTrusted": true,
+    "name": "input",
+    "page": 0,
+    "selector": "[data-qa=\\"html-color-picker\\"]",
+    "target": Object {
+      "attrs": Object {
+        "data-qa": "html-color-picker",
+        "type": "color",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "time": 1594313468216,
+    "value": "#ec1313",
+  },
+  "index": 0,
+  "value": "#ec1313",
+}
+`;
+
+exports[`buildFillSteps picking a number on a browser range input creates a single fill step 1`] = `
+Object {
+  "action": "fill",
+  "event": Object {
+    "isTrusted": true,
+    "name": "input",
+    "page": 0,
+    "selector": "[data-qa=\\"html-range-picker\\"]",
+    "target": Object {
+      "attrs": Object {
+        "data-qa": "html-range-picker",
+        "max": "10",
+        "min": "0",
+        "type": "range",
+      },
+      "children": Array [],
+      "name": "input",
+      "type": "tag",
+      "voidElement": true,
+    },
+    "time": 1594313495655,
+    "value": "4",
+  },
+  "index": 0,
+  "value": "4",
+}
+`;

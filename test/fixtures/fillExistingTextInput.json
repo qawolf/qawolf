@@ -1,0 +1,1661 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311835790
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311835845
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311838760,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311838789,
+      "value": "initial tex"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311838850,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311838944,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311838947,
+      "value": "initial te"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311839007,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311839098,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311839100,
+      "value": "initial t"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311839187,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311839257,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311839259,
+      "value": "initial "
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311839368,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311839414,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311839419,
+      "value": "initial"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311839503,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311839575,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311839577,
+      "value": "initia"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311839660,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311839752,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311839754,
+      "value": "initi"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311839818,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311839910,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311839912,
+      "value": "init"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311839997,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311840069,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311840071,
+      "value": "ini"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311840155,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311840225,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311840228,
+      "value": "in"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311840312,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311840404,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311840406,
+      "value": "i"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311840472,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311840543,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311840548,
+      "value": ""
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311840651,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311844543,
+      "value": "c"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311844547,
+      "value": "c"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311844657,
+      "value": "h"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311844659,
+      "value": "ch"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311844661,
+      "value": "c"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311844724,
+      "value": "h"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311844835,
+      "value": "n"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311844837,
+      "value": "chn"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311844902,
+      "value": "n"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311845646,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311845648,
+      "value": "ch"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311845716,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311845827,
+      "value": "a"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311845829,
+      "value": "cha"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311845895,
+      "value": "n"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311845897,
+      "value": "chan"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311845939,
+      "value": "a"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311845983,
+      "value": "n"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311846051,
+      "value": "g"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311846053,
+      "value": "chang"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311846142,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311846145,
+      "value": "change"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311846164,
+      "value": "g"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311846231,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311846299,
+      "value": "d"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311846301,
+      "value": "changed"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311846389,
+      "value": "d"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311846524,
+      "value": " "
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311846526,
+      "value": "changed "
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311846613,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311846615,
+      "value": "changed t"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311846680,
+      "value": " "
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311846704,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311846706,
+      "value": "changed te"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311846748,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311846794,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311846928,
+      "value": "x"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311846930,
+      "value": "changed tex"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311846973,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311846976,
+      "value": "changed text"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311847042,
+      "value": "x"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311847085,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311847358,
+      "value": "Tab"
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input-filled\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input-filled",
+          "placeholder": "Filled text input",
+          "type": "text",
+          "value": "initial text"
+        },
+        "children": []
+      },
+      "time": 1594311847359,
+      "value": "changed text"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311847469,
+      "value": "Tab"
+    }
+  ]
+}

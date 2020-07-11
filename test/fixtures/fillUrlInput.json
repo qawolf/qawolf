@@ -1,0 +1,1389 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312188763
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312188807
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312190150,
+      "value": "h"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312190163,
+      "value": "h"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312190214,
+      "value": "h"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312191565,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312191571,
+      "value": "ht"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312191657,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312191770,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312191773,
+      "value": "htt"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312191879,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312194379,
+      "value": "p"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312194381,
+      "value": "http"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312194491,
+      "value": "p"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312195165,
+      "value": "s"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312195167,
+      "value": "https"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312195288,
+      "value": "s"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312196155,
+      "value": "Shift"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312196762,
+      "value": ":"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312196765,
+      "value": "https:"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312196875,
+      "value": ":"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312196965,
+      "value": ":"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312196967,
+      "value": "https::"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312197078,
+      "value": ":"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312197180,
+      "value": "Shift"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312197912,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312197915,
+      "value": "https:"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312198000,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312198450,
+      "value": "/"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312198453,
+      "value": "https:/"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312198517,
+      "value": "/"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312198610,
+      "value": "/"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312198612,
+      "value": "https://"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312198675,
+      "value": "/"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312200252,
+      "value": "g"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312200255,
+      "value": "https://g"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312200317,
+      "value": "g"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312200678,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312200680,
+      "value": "https://"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312200744,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312200767,
+      "value": "q"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312200769,
+      "value": "https://q"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312200856,
+      "value": "q"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312200949,
+      "value": "a"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312200951,
+      "value": "https://qa"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312201015,
+      "value": "a"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312201376,
+      "value": "w"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312201378,
+      "value": "https://qaw"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312201464,
+      "value": "o"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312201466,
+      "value": "https://qawo"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312201486,
+      "value": "w"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312201577,
+      "value": "o"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312201630,
+      "value": "l"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312201632,
+      "value": "https://qawol"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312201735,
+      "value": "f"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312201738,
+      "value": "https://qawolf"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312201740,
+      "value": "l"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312201825,
+      "value": "f"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312201870,
+      "value": "."
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312201874,
+      "value": "https://qawolf."
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312201959,
+      "value": "."
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312203692,
+      "value": "c"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312203694,
+      "value": "https://qawolf.c"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312203738,
+      "value": "o"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312203740,
+      "value": "https://qawolf.co"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312203783,
+      "value": "c"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312203804,
+      "value": "m"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312203806,
+      "value": "https://qawolf.com"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312203873,
+      "value": "o"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312203874,
+      "value": "m"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312206257,
+      "value": "Tab"
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312206259,
+      "value": "https://qawolf.com"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312206348,
+      "value": "Tab"
+    }
+  ]
+}

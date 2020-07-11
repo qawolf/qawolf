@@ -91,6 +91,11 @@ export class PageEventCollector {
       this.sendEvent('mousedown', { ...event, target });
     });
 
+    this.listen('change', (event) => {
+      const target = event.target as HTMLInputElement;
+      this.sendEvent('change', event, target.value);
+    });
+
     this.listen('click', (event) => {
       if (event.button !== 0) return;
 
@@ -100,11 +105,7 @@ export class PageEventCollector {
 
     this.listen('input', (event) => {
       const target = event.target as HTMLInputElement;
-      // ignore input events not on selects
-      // other input events are captured in click and type listeners
-      if (target.tagName.toLowerCase() !== 'select') return;
-
-      this.sendEvent('input', event, target.value);
+      this.sendEvent('input', event, target.isContentEditable ? target.innerText : target.value);
     });
 
     this.listen('keydown', (event) => {

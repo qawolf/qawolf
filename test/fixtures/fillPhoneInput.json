@@ -1,0 +1,667 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312145948
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312145983
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312147656,
+      "value": "5"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312147661,
+      "value": "5"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312147712,
+      "value": "5"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312147783,
+      "value": "5"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312147785,
+      "value": "55"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312147869,
+      "value": "5"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312147917,
+      "value": "5"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312147919,
+      "value": "555"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312148026,
+      "value": "5"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312149085,
+      "value": "1"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312149087,
+      "value": "5551"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312149196,
+      "value": "1"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312149287,
+      "value": "2"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312149289,
+      "value": "55512"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312149421,
+      "value": "2"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312149514,
+      "value": "6"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312149517,
+      "value": "555126"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312149623,
+      "value": "6"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312150254,
+      "value": "4"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312150256,
+      "value": "5551264"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312150346,
+      "value": "4"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312150413,
+      "value": "5"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312150416,
+      "value": "55512645"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312150523,
+      "value": "5"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312150591,
+      "value": "8"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312150593,
+      "value": "555126458"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312150704,
+      "value": "8"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312150818,
+      "value": "5"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312150820,
+      "value": "5551264585"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312150951,
+      "value": "5"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312151289,
+      "value": "Tab"
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-tel-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-tel-input",
+          "placeholder": "Telephone input",
+          "type": "tel"
+        },
+        "children": []
+      },
+      "time": 1594312151290,
+      "value": "5551264585"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-password-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-password-input",
+          "placeholder": "Password input",
+          "type": "password"
+        },
+        "children": []
+      },
+      "time": 1594312151401,
+      "value": "Tab"
+    }
+  ]
+}

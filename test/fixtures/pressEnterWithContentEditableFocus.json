@@ -1,0 +1,147 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Edit me!"
+          }
+        ]
+      },
+      "time": 1594496291387
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Edit me!"
+          }
+        ]
+      },
+      "time": 1594496291443
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Edit me!"
+          }
+        ]
+      },
+      "time": 1594496292178,
+      "value": "Enter"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Edit me!"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594496292181,
+      "value": "Edit me!\n\n"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Edit me!"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594496292267,
+      "value": "Enter"
+    }
+  ]
+}

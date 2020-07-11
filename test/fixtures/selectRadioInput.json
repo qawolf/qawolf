@@ -1,0 +1,82 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa=\"html-radio-group\"] #hedgehog",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "type": "radio",
+          "id": "hedgehog",
+          "name": "pet",
+          "value": "hedgehog"
+        },
+        "children": []
+      },
+      "time": 1594312892164
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa=\"html-radio-group\"] #hedgehog",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "type": "radio",
+          "id": "hedgehog",
+          "name": "pet",
+          "value": "hedgehog"
+        },
+        "children": []
+      },
+      "time": 1594312892215
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-radio-group\"] #hedgehog",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "type": "radio",
+          "id": "hedgehog",
+          "name": "pet",
+          "value": "hedgehog"
+        },
+        "children": []
+      },
+      "time": 1594312892220,
+      "value": "hedgehog"
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-radio-group\"] #hedgehog",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "type": "radio",
+          "id": "hedgehog",
+          "name": "pet",
+          "value": "hedgehog"
+        },
+        "children": []
+      },
+      "time": 1594312892222,
+      "value": "hedgehog"
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa=\"html-checkbox\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-checkbox",
+          "id": "single",
+          "type": "checkbox"
+        },
+        "children": []
+      },
+      "time": 1594312857571
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa=\"html-checkbox\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-checkbox",
+          "id": "single",
+          "type": "checkbox"
+        },
+        "children": []
+      },
+      "time": 1594312857614
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-checkbox\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-checkbox",
+          "id": "single",
+          "type": "checkbox"
+        },
+        "children": []
+      },
+      "time": 1594312857617,
+      "value": "on"
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-checkbox\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-checkbox",
+          "id": "single",
+          "type": "checkbox"
+        },
+        "children": []
+      },
+      "time": 1594312857618,
+      "value": "on"
+    }
+  ]
+}

@@ -1,0 +1,510 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312354211
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312354261
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312358208,
+      "value": "0"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312358269,
+      "value": "0"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312358315,
+      "value": "4"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312358382,
+      "value": "4"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312362320,
+      "value": "1"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312362409,
+      "value": "0"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312362431,
+      "value": "1"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312362498,
+      "value": "0"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312366956,
+      "value": "1"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312366958,
+      "value": "0001-04-10"
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312366985,
+      "value": "0001-04-10"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312367066,
+      "value": "1"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312367090,
+      "value": "9"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312367092,
+      "value": "0019-04-10"
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312367093,
+      "value": "0019-04-10"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312367183,
+      "value": "9"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312367250,
+      "value": "9"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312367252,
+      "value": "0199-04-10"
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312367253,
+      "value": "0199-04-10"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312367336,
+      "value": "9"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312367404,
+      "value": "9"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312367406,
+      "value": "1999-04-10"
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312367407,
+      "value": "1999-04-10"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312367495,
+      "value": "9"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-date-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-date-picker",
+          "type": "date"
+        },
+        "children": []
+      },
+      "time": 1594312368597,
+      "value": "Tab"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[href=\"https://github.com/mui-org/material-ui\"]",
+      "target": {
+        "type": "tag",
+        "name": "a",
+        "voidElement": false,
+        "attrs": {
+          "href": "https://github.com/mui-org/material-ui"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Material UI"
+          }
+        ]
+      },
+      "time": 1594312368687,
+      "value": "Tab"
+    }
+  ]
+}

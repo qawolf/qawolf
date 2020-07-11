@@ -1,0 +1,78 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1594494853666
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1594494853712
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1594494854571,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1594494854637,
+      "value": "Backspace"
+    }
+  ]
+}

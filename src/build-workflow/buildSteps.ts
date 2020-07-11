@@ -1,6 +1,7 @@
 import { concat, sortBy } from 'lodash';
 import { buildClickSteps } from './buildClickSteps';
-import { buildKeySteps } from './buildKeySteps';
+import { buildFillSteps } from './buildFillSteps';
+import { buildPressSteps } from './buildPressSteps';
 import { buildScrollSteps } from './buildScrollSteps';
 import { buildSelectOptionSteps } from './buildSelectOptionSteps';
 import { ElementEvent, Step } from '../types';
@@ -8,7 +9,8 @@ import { ElementEvent, Step } from '../types';
 export const buildSteps = (events: ElementEvent[]): Step[] => {
   const unorderedSteps = concat(
     buildClickSteps(events),
-    buildKeySteps(events),
+    buildFillSteps(events),
+    buildPressSteps(events),
     buildScrollSteps(events),
     buildSelectOptionSteps(events),
   );

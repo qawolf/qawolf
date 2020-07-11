@@ -1,0 +1,1176 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594311989456
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594311989522
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594311999580,
+      "value": "Shift"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594311999998,
+      "value": "M"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312000001,
+      "value": "M"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312000087,
+      "value": "M"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312000133,
+      "value": "Shift"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312000382,
+      "value": "u"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312000384,
+      "value": "Mu"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312000470,
+      "value": "l"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312000472,
+      "value": "Mul"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312000561,
+      "value": "u"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312000606,
+      "value": "l"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312000629,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312000631,
+      "value": "Mult"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312000717,
+      "value": "i"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312000720,
+      "value": "Multi"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312000742,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312000852,
+      "value": "i"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312001123,
+      "value": "Enter"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312001126,
+      "value": "Multi\n"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312001236,
+      "value": "Enter"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312001442,
+      "value": "Enter"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312001447,
+      "value": "Multi\n\n"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312001550,
+      "value": "Enter"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312001776,
+      "value": "Shift"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312002001,
+      "value": "L"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312002005,
+      "value": "Multi\n\nL"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312002114,
+      "value": "Shift"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312002134,
+      "value": "l"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312002225,
+      "value": "i"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312002227,
+      "value": "Multi\n\nLi"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312002340,
+      "value": "n"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312002341,
+      "value": "Multi\n\nLin"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312002406,
+      "value": "i"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312002496,
+      "value": "n"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312002608,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312002610,
+      "value": "Multi\n\nLine"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312002698,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312002834,
+      "value": "Enter"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312002835,
+      "value": "Multi\n\nLine\n"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312002922,
+      "value": "Enter"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312003017,
+      "value": "Enter"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312003019,
+      "value": "Multi\n\nLine\n\n"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312003125,
+      "value": "Enter"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312003239,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312003240,
+      "value": "Multi\n\nLine\n\nt"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312003329,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312003330,
+      "value": "Multi\n\nLine\n\nte"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312003396,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312003463,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312003598,
+      "value": "x"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312003600,
+      "value": "Multi\n\nLine\n\ntex"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312003691,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312003693,
+      "value": "Multi\n\nLine\n\ntext"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312003755,
+      "value": "x"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312003799,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312006479,
+      "value": "Shift"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312006657,
+      "value": "!"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312006659,
+      "value": "Multi\n\nLine\n\ntext!"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312006771,
+      "value": "!"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312006816,
+      "value": "Shift"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312008391,
+      "value": "Tab"
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594312008393,
+      "value": "Multi\n\nLine\n\ntext!"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[href=\"https://github.com/mui-org/material-ui\"]",
+      "target": {
+        "type": "tag",
+        "name": "a",
+        "voidElement": false,
+        "attrs": {
+          "href": "https://github.com/mui-org/material-ui"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Material UI"
+          }
+        ]
+      },
+      "time": 1594312008481,
+      "value": "Tab"
+    }
+  ]
+}

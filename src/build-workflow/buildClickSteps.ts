@@ -1,5 +1,6 @@
 import Debug from 'debug';
 import { ElementEvent, Step } from '../types';
+import { isInputTarget } from './target';
 
 const debug = Debug('qawolf:buildClickSteps');
 
@@ -17,7 +18,7 @@ const filterClickEvents = (events: ElementEvent[]): ElementEvent[] => {
     const previousEvent = events[i - 1];
     if (
       previousEvent &&
-      ['keydown', 'keyup'].includes(previousEvent.name) &&
+      ['change', 'keydown', 'keyup'].includes(previousEvent.name) &&
       event.time - previousEvent.time < 50
     ) {
       // skip system-initiated clicks triggered by a key press
@@ -75,10 +76,7 @@ export const buildClickSteps = (events: ElementEvent[]): Step[] => {
   groupedClickEvents.forEach((events) => {
     let event = events[0] as ElementEvent;
 
-    const inputEvent = events.find((event) => {
-      const name = event.target.name || '';
-      return name.toLowerCase() === 'input';
-    });
+    const inputEvent = events.find((event) => isInputTarget(event.target));
     if (inputEvent) {
       // if an event in the group is on an  input, assume the click propagated
       // to an element like a checkbox or radio, which is most accurate target

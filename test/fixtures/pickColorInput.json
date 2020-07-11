@@ -1,0 +1,464 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa=\"html-color-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-color-picker",
+          "type": "color"
+        },
+        "children": []
+      },
+      "time": 1594313466200
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa=\"html-color-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-color-picker",
+          "type": "color"
+        },
+        "children": []
+      },
+      "time": 1594313466212
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-color-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-color-picker",
+          "type": "color"
+        },
+        "children": []
+      },
+      "time": 1594313468216,
+      "value": "#ec1313"
+    },
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "body",
+      "target": {
+        "type": "tag",
+        "name": "body",
+        "voidElement": false,
+        "attrs": {},
+        "children": [
+          {
+            "type": "text",
+            "content": "    "
+          },
+          {
+            "type": "tag",
+            "name": "noscript",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "You need to enable JavaScript to run this app."
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {
+              "id": "root"
+            },
+            "children": [
+              {
+                "type": "tag",
+                "name": "div",
+                "voidElement": false,
+                "attrs": {
+                  "class": "container"
+                },
+                "children": [
+                  {
+                    "type": "tag",
+                    "name": "h3",
+                    "voidElement": false,
+                    "attrs": {},
+                    "children": [
+                      {
+                        "type": "text",
+                        "content": "Native HTML"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "tag",
+                    "name": "h4",
+                    "voidElement": false,
+                    "attrs": {},
+                    "children": [
+                      {
+                        "type": "text",
+                        "content": "Color"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "tag",
+                    "name": "input",
+                    "voidElement": true,
+                    "attrs": {
+                      "data-qa": "html-color-picker",
+                      "type": "color"
+                    },
+                    "children": []
+                  },
+                  {
+                    "type": "tag",
+                    "name": "h4",
+                    "voidElement": false,
+                    "attrs": {},
+                    "children": [
+                      {
+                        "type": "text",
+                        "content": "Range"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "tag",
+                    "name": "input",
+                    "voidElement": true,
+                    "attrs": {
+                      "data-qa": "html-range-picker",
+                      "type": "range",
+                      "min": "0",
+                      "max": "10"
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "!--",
+            "voidElement": false,
+            "attrs": {
+              "This": "",
+              "HTML": "",
+              "file": "",
+              "is": "",
+              "a": "",
+              "template.": "",
+              "If": "",
+              "you": "",
+              "open": "",
+              "it": "",
+              "directly": "",
+              "in": "",
+              "the": "",
+              "browser,": "",
+              "will": "",
+              "see": "",
+              "an": "",
+              "empty": "",
+              "page.": "",
+              "You": "",
+              "can": "",
+              "add": "",
+              "webfonts,": "",
+              "meta": "",
+              "tags,": "",
+              "or": "",
+              "analytics": "",
+              "to": "",
+              "this": "",
+              "file.": "",
+              "The": "",
+              "build": "",
+              "step": "",
+              "place": "",
+              "bundled": "",
+              "scripts": "",
+              "into": ""
+            },
+            "children": [
+              {
+                "type": "text",
+                "content": " tag.      To begin the development, run `npm start` or `yarn start`.      To create a production bundle, use `npm run build` or `yarn build`.    -->  "
+              },
+              {
+                "type": "tag",
+                "name": "script",
+                "voidElement": false,
+                "attrs": {
+                  "src": "/static/js/bundle.js"
+                },
+                "children": []
+              },
+              {
+                "type": "tag",
+                "name": "script",
+                "voidElement": false,
+                "attrs": {
+                  "src": "/static/js/1.chunk.js"
+                },
+                "children": []
+              },
+              {
+                "type": "tag",
+                "name": "script",
+                "voidElement": false,
+                "attrs": {
+                  "src": "/static/js/main.chunk.js"
+                },
+                "children": []
+              },
+              {
+                "type": "tag",
+                "name": "script",
+                "voidElement": false,
+                "attrs": {
+                  "src": "/main.45b517d682200d870ece.hot-update.js"
+                },
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313469059
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-color-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-color-picker",
+          "type": "color"
+        },
+        "children": []
+      },
+      "time": 1594313469066,
+      "value": "#ec1313"
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "body",
+      "target": {
+        "type": "tag",
+        "name": "body",
+        "voidElement": false,
+        "attrs": {},
+        "children": [
+          {
+            "type": "text",
+            "content": "    "
+          },
+          {
+            "type": "tag",
+            "name": "noscript",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "You need to enable JavaScript to run this app."
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {
+              "id": "root"
+            },
+            "children": [
+              {
+                "type": "tag",
+                "name": "div",
+                "voidElement": false,
+                "attrs": {
+                  "class": "container"
+                },
+                "children": [
+                  {
+                    "type": "tag",
+                    "name": "h3",
+                    "voidElement": false,
+                    "attrs": {},
+                    "children": [
+                      {
+                        "type": "text",
+                        "content": "Native HTML"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "tag",
+                    "name": "h4",
+                    "voidElement": false,
+                    "attrs": {},
+                    "children": [
+                      {
+                        "type": "text",
+                        "content": "Color"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "tag",
+                    "name": "input",
+                    "voidElement": true,
+                    "attrs": {
+                      "data-qa": "html-color-picker",
+                      "type": "color"
+                    },
+                    "children": []
+                  },
+                  {
+                    "type": "tag",
+                    "name": "h4",
+                    "voidElement": false,
+                    "attrs": {},
+                    "children": [
+                      {
+                        "type": "text",
+                        "content": "Range"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "tag",
+                    "name": "input",
+                    "voidElement": true,
+                    "attrs": {
+                      "data-qa": "html-range-picker",
+                      "type": "range",
+                      "min": "0",
+                      "max": "10"
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "!--",
+            "voidElement": false,
+            "attrs": {
+              "This": "",
+              "HTML": "",
+              "file": "",
+              "is": "",
+              "a": "",
+              "template.": "",
+              "If": "",
+              "you": "",
+              "open": "",
+              "it": "",
+              "directly": "",
+              "in": "",
+              "the": "",
+              "browser,": "",
+              "will": "",
+              "see": "",
+              "an": "",
+              "empty": "",
+              "page.": "",
+              "You": "",
+              "can": "",
+              "add": "",
+              "webfonts,": "",
+              "meta": "",
+              "tags,": "",
+              "or": "",
+              "analytics": "",
+              "to": "",
+              "this": "",
+              "file.": "",
+              "The": "",
+              "build": "",
+              "step": "",
+              "place": "",
+              "bundled": "",
+              "scripts": "",
+              "into": ""
+            },
+            "children": [
+              {
+                "type": "text",
+                "content": " tag.      To begin the development, run `npm start` or `yarn start`.      To create a production bundle, use `npm run build` or `yarn build`.    -->  "
+              },
+              {
+                "type": "tag",
+                "name": "script",
+                "voidElement": false,
+                "attrs": {
+                  "src": "/static/js/bundle.js"
+                },
+                "children": []
+              },
+              {
+                "type": "tag",
+                "name": "script",
+                "voidElement": false,
+                "attrs": {
+                  "src": "/static/js/1.chunk.js"
+                },
+                "children": []
+              },
+              {
+                "type": "tag",
+                "name": "script",
+                "voidElement": false,
+                "attrs": {
+                  "src": "/static/js/main.chunk.js"
+                },
+                "children": []
+              },
+              {
+                "type": "tag",
+                "name": "script",
+                "voidElement": false,
+                "attrs": {
+                  "src": "/main.45b517d682200d870ece.hot-update.js"
+                },
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313469127
+    }
+  ]
+}

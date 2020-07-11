@@ -1,0 +1,724 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311777372
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311777454
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311789517,
+      "value": "s"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311789551,
+      "value": "s"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311789599,
+      "value": "s"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311789689,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311789693,
+      "value": "se"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311789801,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311790206,
+      "value": "a"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311790208,
+      "value": "sea"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311790296,
+      "value": "r"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311790299,
+      "value": "sear"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311790363,
+      "value": "a"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311790386,
+      "value": "r"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311790521,
+      "value": "c"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311790523,
+      "value": "searc"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311790634,
+      "value": "c"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311790635,
+      "value": "h"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311790637,
+      "value": "search"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311790724,
+      "value": "h"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311790725,
+      "value": " "
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311790727,
+      "value": "search "
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311790859,
+      "value": " "
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311790881,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311790883,
+      "value": "search t"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311790948,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311790950,
+      "value": "search te"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311790993,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311791084,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311791195,
+      "value": "x"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311791198,
+      "value": "search tex"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311791264,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311791266,
+      "value": "search text"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311791354,
+      "value": "x"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311791375,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311794054,
+      "value": "Tab"
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-search-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-search-input",
+          "placeholder": "Search input",
+          "type": "search"
+        },
+        "children": []
+      },
+      "time": 1594311794056,
+      "value": "search text"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-password-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-password-input",
+          "placeholder": "Password input",
+          "type": "password"
+        },
+        "children": []
+      },
+      "time": 1594311794120,
+      "value": "Tab"
+    }
+  ]
+}

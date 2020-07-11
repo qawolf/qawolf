@@ -15,6 +15,18 @@ function HtmlTextInputs() {
       />
       <br />
       <br />
+      <input data-qa="html-search-input" placeholder="Search input" type="search" />
+      <br />
+      <br />
+      <input data-qa="html-email-input" placeholder="Email input" type="email" />
+      <br />
+      <br />
+      <input data-qa="html-url-input" placeholder="URL input" type="url" />
+      <br />
+      <br />
+      <input data-qa="html-tel-input" placeholder="Telephone input" type="tel" />
+      <br />
+      <br />
       <input
         data-qa="html-password-input"
         placeholder="Password input"

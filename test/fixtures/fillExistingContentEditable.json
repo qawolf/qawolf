@@ -1,0 +1,3509 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Edit me!"
+          }
+        ]
+      },
+      "time": 1594313062629
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Edit me!"
+          }
+        ]
+      },
+      "time": 1594313062681
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Edit me!"
+          }
+        ]
+      },
+      "time": 1594313064441,
+      "value": "Meta"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Edit me!"
+          }
+        ]
+      },
+      "time": 1594313064573,
+      "value": "a"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Edit me!"
+          }
+        ]
+      },
+      "time": 1594313064665,
+      "value": "Meta"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Edit me!"
+          }
+        ]
+      },
+      "time": 1594313064666,
+      "value": "a"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Edit me!"
+          }
+        ]
+      },
+      "time": 1594313066014,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": []
+      },
+      "time": 1594313066020,
+      "value": ""
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": []
+      },
+      "time": 1594313066103,
+      "value": "Backspace"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": []
+      },
+      "time": 1594313067500,
+      "value": "m"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "m"
+          }
+        ]
+      },
+      "time": 1594313067534,
+      "value": "m"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "m"
+          }
+        ]
+      },
+      "time": 1594313067633,
+      "value": "m"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "m"
+          }
+        ]
+      },
+      "time": 1594313067677,
+      "value": "o"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "mo"
+          }
+        ]
+      },
+      "time": 1594313067679,
+      "value": "mo"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "mo"
+          }
+        ]
+      },
+      "time": 1594313067812,
+      "value": "o"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "mo"
+          }
+        ]
+      },
+      "time": 1594313068173,
+      "value": "d"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "mod"
+          }
+        ]
+      },
+      "time": 1594313068175,
+      "value": "mod"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "mod"
+          }
+        ]
+      },
+      "time": 1594313068241,
+      "value": "i"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modi"
+          }
+        ]
+      },
+      "time": 1594313068243,
+      "value": "modi"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modi"
+          }
+        ]
+      },
+      "time": 1594313068285,
+      "value": "d"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modi"
+          }
+        ]
+      },
+      "time": 1594313068375,
+      "value": "i"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modi"
+          }
+        ]
+      },
+      "time": 1594313068511,
+      "value": "f"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modif"
+          }
+        ]
+      },
+      "time": 1594313068513,
+      "value": "modif"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modif"
+          }
+        ]
+      },
+      "time": 1594313068624,
+      "value": "f"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modif"
+          }
+        ]
+      },
+      "time": 1594313068670,
+      "value": "i"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modifi"
+          }
+        ]
+      },
+      "time": 1594313068672,
+      "value": "modifi"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modifi"
+          }
+        ]
+      },
+      "time": 1594313068781,
+      "value": "i"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modifi"
+          }
+        ]
+      },
+      "time": 1594313068827,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modifie"
+          }
+        ]
+      },
+      "time": 1594313068829,
+      "value": "modifie"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modifie"
+          }
+        ]
+      },
+      "time": 1594313068938,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modifie"
+          }
+        ]
+      },
+      "time": 1594313068984,
+      "value": "d"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified"
+          }
+        ]
+      },
+      "time": 1594313068986,
+      "value": "modified"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified"
+          }
+        ]
+      },
+      "time": 1594313069095,
+      "value": "d"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified"
+          }
+        ]
+      },
+      "time": 1594313072382,
+      "value": " "
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified "
+          }
+        ]
+      },
+      "time": 1594313072385,
+      "value": "modified "
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified "
+          }
+        ]
+      },
+      "time": 1594313072494,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified t"
+          }
+        ]
+      },
+      "time": 1594313072496,
+      "value": "modified t"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified t"
+          }
+        ]
+      },
+      "time": 1594313072515,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified te"
+          }
+        ]
+      },
+      "time": 1594313072517,
+      "value": "modified te"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified te"
+          }
+        ]
+      },
+      "time": 1594313072518,
+      "value": " "
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified te"
+          }
+        ]
+      },
+      "time": 1594313072630,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified te"
+          }
+        ]
+      },
+      "time": 1594313072631,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified te"
+          }
+        ]
+      },
+      "time": 1594313073078,
+      "value": "x"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified tex"
+          }
+        ]
+      },
+      "time": 1594313073080,
+      "value": "modified tex"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified tex"
+          }
+        ]
+      },
+      "time": 1594313073170,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          }
+        ]
+      },
+      "time": 1594313073172,
+      "value": "modified text"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          }
+        ]
+      },
+      "time": 1594313073237,
+      "value": "x"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          }
+        ]
+      },
+      "time": 1594313073259,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          }
+        ]
+      },
+      "time": 1594313073529,
+      "value": "Enter"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313073531,
+      "value": "modified text\n\n"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313073619,
+      "value": "Enter"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313073824,
+      "value": "Enter"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313073828,
+      "value": "modified text\n\n\n\n"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313073910,
+      "value": "Enter"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313074092,
+      "value": "m"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "m"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313074094,
+      "value": "modified text\n\n\nm"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "m"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313074226,
+      "value": "m"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "m"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313074316,
+      "value": "u"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "mu"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313074318,
+      "value": "modified text\n\n\nmu"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "mu"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313074407,
+      "value": "l"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "mul"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313074409,
+      "value": "modified text\n\n\nmul"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "mul"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313074474,
+      "value": "u"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "mul"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313074519,
+      "value": "l"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "mul"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313074546,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "mult"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313074548,
+      "value": "modified text\n\n\nmult"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "mult"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313074631,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "mult"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313074676,
+      "value": "i"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multi"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313074678,
+      "value": "modified text\n\n\nmulti"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multi"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313074743,
+      "value": "p"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multip"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313074745,
+      "value": "modified text\n\n\nmultip"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multip"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313074810,
+      "value": "i"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multip"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313074855,
+      "value": "p"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multip"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313075329,
+      "value": "l"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multipl"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313075331,
+      "value": "modified text\n\n\nmultipl"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multipl"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313075442,
+      "value": "l"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multipl"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313075443,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multiple"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313075445,
+      "value": "modified text\n\n\nmultiple"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multiple"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313075554,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multiple"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313075622,
+      "value": " "
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multiple "
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313075624,
+      "value": "modified text\n\n\nmultiple "
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multiple "
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313075711,
+      "value": "l"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multiple l"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313075713,
+      "value": "modified text\n\n\nmultiple l"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multiple l"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313075734,
+      "value": " "
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multiple l"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313075757,
+      "value": "i"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multiple li"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313075759,
+      "value": "modified text\n\n\nmultiple li"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multiple li"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313075845,
+      "value": "l"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multiple li"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313075847,
+      "value": "i"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multiple li"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313075892,
+      "value": "n"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multiple lin"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313075894,
+      "value": "modified text\n\n\nmultiple lin"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multiple lin"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313076005,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multiple line"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313076007,
+      "value": "modified text\n\n\nmultiple line"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multiple line"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313076025,
+      "value": "n"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multiple line"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313076073,
+      "value": "s"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multiple lines"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313076075,
+      "value": "modified text\n\n\nmultiple lines"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multiple lines"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313076139,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multiple lines"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313076208,
+      "value": "s"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "modified text"
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "tag",
+                "name": "br",
+                "voidElement": true,
+                "attrs": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "multiple lines"
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594313077467,
+      "value": "Tab"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[href=\"https://github.com/facebook/draft-js\"]",
+      "target": {
+        "type": "tag",
+        "name": "a",
+        "voidElement": false,
+        "attrs": {
+          "href": "https://github.com/facebook/draft-js"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Draft.js"
+          }
+        ]
+      },
+      "time": 1594313077578,
+      "value": "Tab"
+    }
+  ]
+}

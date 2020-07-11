@@ -1,0 +1,254 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa=\"html-time-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-time-picker",
+          "type": "time"
+        },
+        "children": []
+      },
+      "time": 1594312667948
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa=\"html-time-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-time-picker",
+          "type": "time"
+        },
+        "children": []
+      },
+      "time": 1594312668006
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-time-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-time-picker",
+          "type": "time"
+        },
+        "children": []
+      },
+      "time": 1594312669922,
+      "value": "4"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-time-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-time-picker",
+          "type": "time"
+        },
+        "children": []
+      },
+      "time": 1594312669966,
+      "value": "4"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-time-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-time-picker",
+          "type": "time"
+        },
+        "children": []
+      },
+      "time": 1594312670932,
+      "value": "1"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-time-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-time-picker",
+          "type": "time"
+        },
+        "children": []
+      },
+      "time": 1594312671021,
+      "value": "1"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-time-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-time-picker",
+          "type": "time"
+        },
+        "children": []
+      },
+      "time": 1594312671022,
+      "value": "9"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-time-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-time-picker",
+          "type": "time"
+        },
+        "children": []
+      },
+      "time": 1594312671135,
+      "value": "9"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-time-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-time-picker",
+          "type": "time"
+        },
+        "children": []
+      },
+      "time": 1594312672011,
+      "value": "p"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-time-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-time-picker",
+          "type": "time"
+        },
+        "children": []
+      },
+      "time": 1594312672013,
+      "value": "16:19"
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-time-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-time-picker",
+          "type": "time"
+        },
+        "children": []
+      },
+      "time": 1594312672015,
+      "value": "16:19"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-time-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-time-picker",
+          "type": "time"
+        },
+        "children": []
+      },
+      "time": 1594312672102,
+      "value": "p"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-time-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-time-picker",
+          "type": "time"
+        },
+        "children": []
+      },
+      "time": 1594312673206,
+      "value": "Tab"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312673271,
+      "value": "Tab"
+    }
+  ]
+}

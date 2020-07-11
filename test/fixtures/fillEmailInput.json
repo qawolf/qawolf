@@ -1,0 +1,933 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312107524
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312107580
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312110979,
+      "value": "m"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312110997,
+      "value": "m"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312111060,
+      "value": "m"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312111081,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312111083,
+      "value": "me"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312111193,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312111238,
+      "value": "Shift"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312111373,
+      "value": "@"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312111375,
+      "value": "me@"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312111463,
+      "value": "@"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312111509,
+      "value": "Shift"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312111868,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312111872,
+      "value": "me@e"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312111958,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312112048,
+      "value": "x"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312112050,
+      "value": "me@ex"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312112160,
+      "value": "x"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312112228,
+      "value": "a"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312112230,
+      "value": "me@exa"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312112318,
+      "value": "m"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312112320,
+      "value": "me@exam"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312112341,
+      "value": "a"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312112386,
+      "value": "p"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312112388,
+      "value": "me@examp"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312112453,
+      "value": "l"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312112455,
+      "value": "me@exampl"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312112478,
+      "value": "m"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312112589,
+      "value": "p"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312112656,
+      "value": "l"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312112679,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312112680,
+      "value": "me@example"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312112791,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312113227,
+      "value": "."
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312113230,
+      "value": "me@example."
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312113334,
+      "value": "."
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312113558,
+      "value": "n"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312113560,
+      "value": "me@example.n"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312113660,
+      "value": "n"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312113671,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312113673,
+      "value": "me@example.ne"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312113759,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312113762,
+      "value": "me@example.net"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312113780,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312113826,
+      "value": "t"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312114029,
+      "value": "Tab"
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-email-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-email-input",
+          "placeholder": "Email input",
+          "type": "email"
+        },
+        "children": []
+      },
+      "time": 1594312114030,
+      "value": "me@example.net"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-url-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-url-input",
+          "placeholder": "URL input",
+          "type": "url"
+        },
+        "children": []
+      },
+      "time": 1594312114142,
+      "value": "Tab"
+    }
+  ]
+}

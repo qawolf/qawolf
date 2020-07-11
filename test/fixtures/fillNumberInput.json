@@ -1,0 +1,267 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa=\"html-number-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-number-input",
+          "placeholder": "Number input",
+          "type": "number"
+        },
+        "children": []
+      },
+      "time": 1594311941259
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa=\"html-number-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-number-input",
+          "placeholder": "Number input",
+          "type": "number"
+        },
+        "children": []
+      },
+      "time": 1594311941316
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-number-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-number-input",
+          "placeholder": "Number input",
+          "type": "number"
+        },
+        "children": []
+      },
+      "time": 1594311943003,
+      "value": "1"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-number-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-number-input",
+          "placeholder": "Number input",
+          "type": "number"
+        },
+        "children": []
+      },
+      "time": 1594311943009,
+      "value": "1"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-number-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-number-input",
+          "placeholder": "Number input",
+          "type": "number"
+        },
+        "children": []
+      },
+      "time": 1594311943142,
+      "value": "2"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-number-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-number-input",
+          "placeholder": "Number input",
+          "type": "number"
+        },
+        "children": []
+      },
+      "time": 1594311943144,
+      "value": "12"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-number-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-number-input",
+          "placeholder": "Number input",
+          "type": "number"
+        },
+        "children": []
+      },
+      "time": 1594311943209,
+      "value": "1"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-number-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-number-input",
+          "placeholder": "Number input",
+          "type": "number"
+        },
+        "children": []
+      },
+      "time": 1594311943230,
+      "value": "3"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-number-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-number-input",
+          "placeholder": "Number input",
+          "type": "number"
+        },
+        "children": []
+      },
+      "time": 1594311943233,
+      "value": "123"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-number-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-number-input",
+          "placeholder": "Number input",
+          "type": "number"
+        },
+        "children": []
+      },
+      "time": 1594311943297,
+      "value": "2"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-number-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-number-input",
+          "placeholder": "Number input",
+          "type": "number"
+        },
+        "children": []
+      },
+      "time": 1594311943343,
+      "value": "3"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-number-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-number-input",
+          "placeholder": "Number input",
+          "type": "number"
+        },
+        "children": []
+      },
+      "time": 1594311943724,
+      "value": "Tab"
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-number-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-number-input",
+          "placeholder": "Number input",
+          "type": "number"
+        },
+        "children": []
+      },
+      "time": 1594311943726,
+      "value": "123"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594311943814,
+      "value": "Tab"
+    }
+  ]
+}

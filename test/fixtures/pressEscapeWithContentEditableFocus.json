@@ -1,0 +1,94 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Edit me!"
+          }
+        ]
+      },
+      "time": 1594496316545
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Edit me!"
+          }
+        ]
+      },
+      "time": 1594496316582
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Edit me!"
+          }
+        ]
+      },
+      "time": 1594496317492,
+      "value": "Escape"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Edit me!"
+          }
+        ]
+      },
+      "time": 1594496317557,
+      "value": "Escape"
+    }
+  ]
+}

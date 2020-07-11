@@ -1,0 +1,618 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312697158
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312697221
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312702146,
+      "value": "0"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312702220,
+      "value": "2"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312702228,
+      "value": "0"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312702296,
+      "value": "2"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312703336,
+      "value": "2"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312703424,
+      "value": "0"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312703427,
+      "value": "2"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312703513,
+      "value": "0"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312706057,
+      "value": "2"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312706145,
+      "value": "2"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312706168,
+      "value": "0"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312706235,
+      "value": "0"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312706305,
+      "value": "0"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312706370,
+      "value": "0"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312706776,
+      "value": "5"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312706864,
+      "value": "5"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312707880,
+      "value": "ArrowRight"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312707990,
+      "value": "ArrowRight"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312709429,
+      "value": "1"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312709543,
+      "value": "1"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312710061,
+      "value": "ArrowRight"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312710195,
+      "value": "ArrowRight"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312713032,
+      "value": "5"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312713098,
+      "value": "0"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312713120,
+      "value": "5"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312713188,
+      "value": "0"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312714470,
+      "value": "a"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312714472,
+      "value": "2005-02-20T01:50"
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312714497,
+      "value": "2005-02-20T01:50"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312714560,
+      "value": "a"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-datetime-local-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-datetime-local-picker",
+          "type": "datetime-local"
+        },
+        "children": []
+      },
+      "time": 1594312715324,
+      "value": "Tab"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[href=\"https://github.com/mui-org/material-ui\"]",
+      "target": {
+        "type": "tag",
+        "name": "a",
+        "voidElement": false,
+        "attrs": {
+          "href": "https://github.com/mui-org/material-ui"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Material UI"
+          }
+        ]
+      },
+      "time": 1594312715415,
+      "value": "Tab"
+    }
+  ]
+}

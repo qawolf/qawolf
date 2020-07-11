@@ -1,0 +1,438 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa=\"html-month-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-month-picker",
+          "type": "month"
+        },
+        "children": []
+      },
+      "time": 1594312541523
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa=\"html-month-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-month-picker",
+          "type": "month"
+        },
+        "children": []
+      },
+      "time": 1594312541542
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-month-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-month-picker",
+          "type": "month"
+        },
+        "children": []
+      },
+      "time": 1594312542527,
+      "value": "j"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-month-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-month-picker",
+          "type": "month"
+        },
+        "children": []
+      },
+      "time": 1594312542590,
+      "value": "j"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-month-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-month-picker",
+          "type": "month"
+        },
+        "children": []
+      },
+      "time": 1594312544371,
+      "value": "Tab"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-month-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-month-picker",
+          "type": "month"
+        },
+        "children": []
+      },
+      "time": 1594312544457,
+      "value": "Tab"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-month-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-month-picker",
+          "type": "month"
+        },
+        "children": []
+      },
+      "time": 1594312546147,
+      "value": "2"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-month-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-month-picker",
+          "type": "month"
+        },
+        "children": []
+      },
+      "time": 1594312546151,
+      "value": "0002-06"
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-month-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-month-picker",
+          "type": "month"
+        },
+        "children": []
+      },
+      "time": 1594312546152,
+      "value": "0002-06"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-month-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-month-picker",
+          "type": "month"
+        },
+        "children": []
+      },
+      "time": 1594312546258,
+      "value": "2"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-month-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-month-picker",
+          "type": "month"
+        },
+        "children": []
+      },
+      "time": 1594312546820,
+      "value": "0"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-month-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-month-picker",
+          "type": "month"
+        },
+        "children": []
+      },
+      "time": 1594312546822,
+      "value": "0020-06"
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-month-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-month-picker",
+          "type": "month"
+        },
+        "children": []
+      },
+      "time": 1594312546823,
+      "value": "0020-06"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-month-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-month-picker",
+          "type": "month"
+        },
+        "children": []
+      },
+      "time": 1594312546954,
+      "value": "0"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-month-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-month-picker",
+          "type": "month"
+        },
+        "children": []
+      },
+      "time": 1594312547100,
+      "value": "2"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-month-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-month-picker",
+          "type": "month"
+        },
+        "children": []
+      },
+      "time": 1594312547103,
+      "value": "0202-06"
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-month-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-month-picker",
+          "type": "month"
+        },
+        "children": []
+      },
+      "time": 1594312547105,
+      "value": "0202-06"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-month-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-month-picker",
+          "type": "month"
+        },
+        "children": []
+      },
+      "time": 1594312547157,
+      "value": "0"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-month-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-month-picker",
+          "type": "month"
+        },
+        "children": []
+      },
+      "time": 1594312547159,
+      "value": "2020-06"
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[data-qa=\"html-month-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-month-picker",
+          "type": "month"
+        },
+        "children": []
+      },
+      "time": 1594312547160,
+      "value": "2020-06"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-month-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-month-picker",
+          "type": "month"
+        },
+        "children": []
+      },
+      "time": 1594312547190,
+      "value": "2"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-month-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-month-picker",
+          "type": "month"
+        },
+        "children": []
+      },
+      "time": 1594312547226,
+      "value": "0"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-month-picker\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-month-picker",
+          "type": "month"
+        },
+        "children": []
+      },
+      "time": 1594312547611,
+      "value": "Tab"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[href=\"https://github.com/mui-org/material-ui\"]",
+      "target": {
+        "type": "tag",
+        "name": "a",
+        "voidElement": false,
+        "attrs": {
+          "href": "https://github.com/mui-org/material-ui"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Material UI"
+          }
+        ]
+      },
+      "time": 1594312547698,
+      "value": "Tab"
+    }
+  ]
+}
