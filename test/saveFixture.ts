@@ -36,7 +36,7 @@ import { launch } from '../src/utils';
 
   if (choice === 'Save') {
     await ensureDir(dirname(savePath));
-    await writeJson(savePath, { events });
+    await writeJson(savePath, { events }, { spaces: 2 });
   }
 
   await browser.close();
