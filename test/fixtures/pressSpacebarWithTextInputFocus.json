@@ -1,0 +1,97 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1594494983805
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1594494983854
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1594494984538,
+      "value": " "
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1594494984541,
+      "value": " "
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"html-text-input\"]",
+      "target": {
+        "type": "tag",
+        "name": "input",
+        "voidElement": true,
+        "attrs": {
+          "data-qa": "html-text-input",
+          "placeholder": "Text input",
+          "type": "text"
+        },
+        "children": []
+      },
+      "time": 1594494984575,
+      "value": " "
+    }
+  ]
+}

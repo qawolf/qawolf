@@ -1,0 +1,94 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Edit me!"
+          }
+        ]
+      },
+      "time": 1594496215347
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Edit me!"
+          }
+        ]
+      },
+      "time": 1594496215403
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Edit me!"
+          }
+        ]
+      },
+      "time": 1594496216201,
+      "value": "ArrowUp"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[data-qa=\"content-editable\"]",
+      "target": {
+        "type": "tag",
+        "name": "div",
+        "voidElement": false,
+        "attrs": {
+          "contenteditable": "true",
+          "data-qa": "content-editable"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Edit me!"
+          }
+        ]
+      },
+      "time": 1594496216307,
+      "value": "ArrowUp"
+    }
+  ]
+}

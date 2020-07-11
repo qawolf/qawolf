@@ -1,0 +1,78 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594495441921
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594495441969
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[data-qa=\"html-textarea\"]",
+      "target": {
+        "type": "tag",
+        "name": "textarea",
+        "voidElement": false,
+        "attrs": {
+          "data-qa": "html-textarea",
+          "placeholder": "Textarea"
+        },
+        "children": []
+      },
+      "time": 1594495442749,
+      "value": "Tab"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[href=\"https://github.com/mui-org/material-ui\"]",
+      "target": {
+        "type": "tag",
+        "name": "a",
+        "voidElement": false,
+        "attrs": {
+          "href": "https://github.com/mui-org/material-ui"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Material UI"
+          }
+        ]
+      },
+      "time": 1594495442815,
+      "value": "Tab"
+    }
+  ]
+}

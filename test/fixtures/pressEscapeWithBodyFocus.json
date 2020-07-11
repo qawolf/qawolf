@@ -1,0 +1,2850 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "body",
+      "target": {
+        "type": "tag",
+        "name": "body",
+        "voidElement": false,
+        "attrs": {},
+        "children": [
+          {
+            "type": "text",
+            "content": "    "
+          },
+          {
+            "type": "tag",
+            "name": "noscript",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "You need to enable JavaScript to run this app."
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {
+              "id": "root"
+            },
+            "children": [
+              {
+                "type": "tag",
+                "name": "div",
+                "voidElement": false,
+                "attrs": {
+                  "style": "display: flex; flex-wrap: wrap;"
+                },
+                "children": [
+                  {
+                    "type": "tag",
+                    "name": "div",
+                    "voidElement": false,
+                    "attrs": {
+                      "class": "container"
+                    },
+                    "children": [
+                      {
+                        "type": "tag",
+                        "name": "h3",
+                        "voidElement": false,
+                        "attrs": {},
+                        "children": [
+                          {
+                            "type": "text",
+                            "content": "Native HTML"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-text-input",
+                          "placeholder": "Text input",
+                          "type": "text"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-text-input-filled",
+                          "placeholder": "Filled text input",
+                          "type": "text",
+                          "value": "initial text"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-search-input",
+                          "placeholder": "Search input",
+                          "type": "search"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-email-input",
+                          "placeholder": "Email input",
+                          "type": "email"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-url-input",
+                          "placeholder": "URL input",
+                          "type": "url"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-tel-input",
+                          "placeholder": "Telephone input",
+                          "type": "tel"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-password-input",
+                          "placeholder": "Password input",
+                          "type": "password"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-number-input",
+                          "placeholder": "Number input",
+                          "type": "number"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "textarea",
+                        "voidElement": false,
+                        "attrs": {
+                          "data-qa": "html-textarea",
+                          "placeholder": "Textarea"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "tag",
+                    "name": "div",
+                    "voidElement": false,
+                    "attrs": {
+                      "class": "container"
+                    },
+                    "children": [
+                      {
+                        "type": "tag",
+                        "name": "h3",
+                        "voidElement": false,
+                        "attrs": {},
+                        "children": [
+                          {
+                            "type": "tag",
+                            "name": "a",
+                            "voidElement": false,
+                            "attrs": {
+                              "href": "https://github.com/mui-org/material-ui"
+                            },
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Material UI"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tag",
+                        "name": "div",
+                        "voidElement": false,
+                        "attrs": {
+                          "class": "MuiFormControl-root MuiTextField-root",
+                          "data-qa": "material-text-input"
+                        },
+                        "children": [
+                          {
+                            "type": "tag",
+                            "name": "label",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated",
+                              "data-shrink": "false"
+                            },
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Text input"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tag",
+                            "name": "div",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+                            },
+                            "children": [
+                              {
+                                "type": "tag",
+                                "name": "input",
+                                "voidElement": true,
+                                "attrs": {
+                                  "aria-invalid": "false",
+                                  "type": "text",
+                                  "class": "MuiInputBase-input MuiInput-input",
+                                  "value": ""
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "div",
+                        "voidElement": false,
+                        "attrs": {
+                          "class": "MuiFormControl-root MuiTextField-root",
+                          "data-qa": "material-text-input-filled"
+                        },
+                        "children": [
+                          {
+                            "type": "tag",
+                            "name": "label",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled",
+                              "data-shrink": "true"
+                            },
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Filled text input"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tag",
+                            "name": "div",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+                            },
+                            "children": [
+                              {
+                                "type": "tag",
+                                "name": "input",
+                                "voidElement": true,
+                                "attrs": {
+                                  "aria-invalid": "false",
+                                  "type": "text",
+                                  "class": "MuiInputBase-input MuiInput-input",
+                                  "value": "initial value"
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "div",
+                        "voidElement": false,
+                        "attrs": {
+                          "class": "MuiFormControl-root MuiTextField-root",
+                          "data-qa": "material-password-input"
+                        },
+                        "children": [
+                          {
+                            "type": "tag",
+                            "name": "label",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated",
+                              "data-shrink": "false"
+                            },
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Password input"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tag",
+                            "name": "div",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+                            },
+                            "children": [
+                              {
+                                "type": "tag",
+                                "name": "input",
+                                "voidElement": true,
+                                "attrs": {
+                                  "aria-invalid": "false",
+                                  "type": "password",
+                                  "class": "MuiInputBase-input MuiInput-input",
+                                  "value": ""
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "div",
+                        "voidElement": false,
+                        "attrs": {
+                          "class": "MuiFormControl-root MuiTextField-root",
+                          "data-qa": "material-number-input"
+                        },
+                        "children": [
+                          {
+                            "type": "tag",
+                            "name": "label",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated",
+                              "data-shrink": "false"
+                            },
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Number input"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tag",
+                            "name": "div",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+                            },
+                            "children": [
+                              {
+                                "type": "tag",
+                                "name": "input",
+                                "voidElement": true,
+                                "attrs": {
+                                  "aria-invalid": "false",
+                                  "type": "number",
+                                  "class": "MuiInputBase-input MuiInput-input",
+                                  "value": ""
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "div",
+                        "voidElement": false,
+                        "attrs": {
+                          "class": "MuiFormControl-root MuiTextField-root",
+                          "data-qa": "material-textarea"
+                        },
+                        "children": [
+                          {
+                            "type": "tag",
+                            "name": "label",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated",
+                              "data-shrink": "false"
+                            },
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Textarea"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tag",
+                            "name": "div",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl MuiInputBase-multiline MuiInput-multiline"
+                            },
+                            "children": [
+                              {
+                                "type": "tag",
+                                "name": "textarea",
+                                "voidElement": false,
+                                "attrs": {
+                                  "rows": "1",
+                                  "aria-invalid": "false",
+                                  "class": "MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline MuiInput-inputMultiline",
+                                  "style": "height: 16px; overflow: hidden;"
+                                },
+                                "children": []
+                              },
+                              {
+                                "type": "tag",
+                                "name": "textarea",
+                                "voidElement": false,
+                                "attrs": {
+                                  "aria-hidden": "true",
+                                  "class": "MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline MuiInput-inputMultiline",
+                                  "readonly": "",
+                                  "tabindex": "-1",
+                                  "style": "visibility: hidden; position: absolute; overflow: hidden; height: 0px; top: 0px; left: 0px; transform: translateZ(0px); width: 155px;"
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "!--",
+            "voidElement": false,
+            "attrs": {
+              "This": "",
+              "HTML": "",
+              "file": "",
+              "is": "",
+              "a": "",
+              "template.": "",
+              "If": "",
+              "you": "",
+              "open": "",
+              "it": "",
+              "directly": "",
+              "in": "",
+              "the": "",
+              "browser,": "",
+              "will": "",
+              "see": "",
+              "an": "",
+              "empty": "",
+              "page.": "",
+              "You": "",
+              "can": "",
+              "add": "",
+              "webfonts,": "",
+              "meta": "",
+              "tags,": "",
+              "or": "",
+              "analytics": "",
+              "to": "",
+              "this": "",
+              "file.": "",
+              "The": "",
+              "build": "",
+              "step": "",
+              "place": "",
+              "bundled": "",
+              "scripts": "",
+              "into": ""
+            },
+            "children": [
+              {
+                "type": "text",
+                "content": " tag.      To begin the development, run `npm start` or `yarn start`.      To create a production bundle, use `npm run build` or `yarn build`.    -->  "
+              },
+              {
+                "type": "tag",
+                "name": "script",
+                "voidElement": false,
+                "attrs": {
+                  "src": "/static/js/bundle.js"
+                },
+                "children": []
+              },
+              {
+                "type": "tag",
+                "name": "script",
+                "voidElement": false,
+                "attrs": {
+                  "src": "/static/js/1.chunk.js"
+                },
+                "children": []
+              },
+              {
+                "type": "tag",
+                "name": "script",
+                "voidElement": false,
+                "attrs": {
+                  "src": "/static/js/main.chunk.js"
+                },
+                "children": []
+              },
+              {
+                "type": "tag",
+                "name": "script",
+                "voidElement": false,
+                "attrs": {
+                  "src": "/main.45b517d682200d870ece.hot-update.js"
+                },
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594494206046
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "body",
+      "target": {
+        "type": "tag",
+        "name": "body",
+        "voidElement": false,
+        "attrs": {},
+        "children": [
+          {
+            "type": "text",
+            "content": "    "
+          },
+          {
+            "type": "tag",
+            "name": "noscript",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "You need to enable JavaScript to run this app."
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {
+              "id": "root"
+            },
+            "children": [
+              {
+                "type": "tag",
+                "name": "div",
+                "voidElement": false,
+                "attrs": {
+                  "style": "display: flex; flex-wrap: wrap;"
+                },
+                "children": [
+                  {
+                    "type": "tag",
+                    "name": "div",
+                    "voidElement": false,
+                    "attrs": {
+                      "class": "container"
+                    },
+                    "children": [
+                      {
+                        "type": "tag",
+                        "name": "h3",
+                        "voidElement": false,
+                        "attrs": {},
+                        "children": [
+                          {
+                            "type": "text",
+                            "content": "Native HTML"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-text-input",
+                          "placeholder": "Text input",
+                          "type": "text"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-text-input-filled",
+                          "placeholder": "Filled text input",
+                          "type": "text",
+                          "value": "initial text"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-search-input",
+                          "placeholder": "Search input",
+                          "type": "search"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-email-input",
+                          "placeholder": "Email input",
+                          "type": "email"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-url-input",
+                          "placeholder": "URL input",
+                          "type": "url"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-tel-input",
+                          "placeholder": "Telephone input",
+                          "type": "tel"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-password-input",
+                          "placeholder": "Password input",
+                          "type": "password"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-number-input",
+                          "placeholder": "Number input",
+                          "type": "number"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "textarea",
+                        "voidElement": false,
+                        "attrs": {
+                          "data-qa": "html-textarea",
+                          "placeholder": "Textarea"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "tag",
+                    "name": "div",
+                    "voidElement": false,
+                    "attrs": {
+                      "class": "container"
+                    },
+                    "children": [
+                      {
+                        "type": "tag",
+                        "name": "h3",
+                        "voidElement": false,
+                        "attrs": {},
+                        "children": [
+                          {
+                            "type": "tag",
+                            "name": "a",
+                            "voidElement": false,
+                            "attrs": {
+                              "href": "https://github.com/mui-org/material-ui"
+                            },
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Material UI"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tag",
+                        "name": "div",
+                        "voidElement": false,
+                        "attrs": {
+                          "class": "MuiFormControl-root MuiTextField-root",
+                          "data-qa": "material-text-input"
+                        },
+                        "children": [
+                          {
+                            "type": "tag",
+                            "name": "label",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated",
+                              "data-shrink": "false"
+                            },
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Text input"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tag",
+                            "name": "div",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+                            },
+                            "children": [
+                              {
+                                "type": "tag",
+                                "name": "input",
+                                "voidElement": true,
+                                "attrs": {
+                                  "aria-invalid": "false",
+                                  "type": "text",
+                                  "class": "MuiInputBase-input MuiInput-input",
+                                  "value": ""
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "div",
+                        "voidElement": false,
+                        "attrs": {
+                          "class": "MuiFormControl-root MuiTextField-root",
+                          "data-qa": "material-text-input-filled"
+                        },
+                        "children": [
+                          {
+                            "type": "tag",
+                            "name": "label",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled",
+                              "data-shrink": "true"
+                            },
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Filled text input"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tag",
+                            "name": "div",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+                            },
+                            "children": [
+                              {
+                                "type": "tag",
+                                "name": "input",
+                                "voidElement": true,
+                                "attrs": {
+                                  "aria-invalid": "false",
+                                  "type": "text",
+                                  "class": "MuiInputBase-input MuiInput-input",
+                                  "value": "initial value"
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "div",
+                        "voidElement": false,
+                        "attrs": {
+                          "class": "MuiFormControl-root MuiTextField-root",
+                          "data-qa": "material-password-input"
+                        },
+                        "children": [
+                          {
+                            "type": "tag",
+                            "name": "label",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated",
+                              "data-shrink": "false"
+                            },
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Password input"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tag",
+                            "name": "div",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+                            },
+                            "children": [
+                              {
+                                "type": "tag",
+                                "name": "input",
+                                "voidElement": true,
+                                "attrs": {
+                                  "aria-invalid": "false",
+                                  "type": "password",
+                                  "class": "MuiInputBase-input MuiInput-input",
+                                  "value": ""
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "div",
+                        "voidElement": false,
+                        "attrs": {
+                          "class": "MuiFormControl-root MuiTextField-root",
+                          "data-qa": "material-number-input"
+                        },
+                        "children": [
+                          {
+                            "type": "tag",
+                            "name": "label",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated",
+                              "data-shrink": "false"
+                            },
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Number input"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tag",
+                            "name": "div",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+                            },
+                            "children": [
+                              {
+                                "type": "tag",
+                                "name": "input",
+                                "voidElement": true,
+                                "attrs": {
+                                  "aria-invalid": "false",
+                                  "type": "number",
+                                  "class": "MuiInputBase-input MuiInput-input",
+                                  "value": ""
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "div",
+                        "voidElement": false,
+                        "attrs": {
+                          "class": "MuiFormControl-root MuiTextField-root",
+                          "data-qa": "material-textarea"
+                        },
+                        "children": [
+                          {
+                            "type": "tag",
+                            "name": "label",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated",
+                              "data-shrink": "false"
+                            },
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Textarea"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tag",
+                            "name": "div",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl MuiInputBase-multiline MuiInput-multiline"
+                            },
+                            "children": [
+                              {
+                                "type": "tag",
+                                "name": "textarea",
+                                "voidElement": false,
+                                "attrs": {
+                                  "rows": "1",
+                                  "aria-invalid": "false",
+                                  "class": "MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline MuiInput-inputMultiline",
+                                  "style": "height: 16px; overflow: hidden;"
+                                },
+                                "children": []
+                              },
+                              {
+                                "type": "tag",
+                                "name": "textarea",
+                                "voidElement": false,
+                                "attrs": {
+                                  "aria-hidden": "true",
+                                  "class": "MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline MuiInput-inputMultiline",
+                                  "readonly": "",
+                                  "tabindex": "-1",
+                                  "style": "visibility: hidden; position: absolute; overflow: hidden; height: 0px; top: 0px; left: 0px; transform: translateZ(0px); width: 155px;"
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "!--",
+            "voidElement": false,
+            "attrs": {
+              "This": "",
+              "HTML": "",
+              "file": "",
+              "is": "",
+              "a": "",
+              "template.": "",
+              "If": "",
+              "you": "",
+              "open": "",
+              "it": "",
+              "directly": "",
+              "in": "",
+              "the": "",
+              "browser,": "",
+              "will": "",
+              "see": "",
+              "an": "",
+              "empty": "",
+              "page.": "",
+              "You": "",
+              "can": "",
+              "add": "",
+              "webfonts,": "",
+              "meta": "",
+              "tags,": "",
+              "or": "",
+              "analytics": "",
+              "to": "",
+              "this": "",
+              "file.": "",
+              "The": "",
+              "build": "",
+              "step": "",
+              "place": "",
+              "bundled": "",
+              "scripts": "",
+              "into": ""
+            },
+            "children": [
+              {
+                "type": "text",
+                "content": " tag.      To begin the development, run `npm start` or `yarn start`.      To create a production bundle, use `npm run build` or `yarn build`.    -->  "
+              },
+              {
+                "type": "tag",
+                "name": "script",
+                "voidElement": false,
+                "attrs": {
+                  "src": "/static/js/bundle.js"
+                },
+                "children": []
+              },
+              {
+                "type": "tag",
+                "name": "script",
+                "voidElement": false,
+                "attrs": {
+                  "src": "/static/js/1.chunk.js"
+                },
+                "children": []
+              },
+              {
+                "type": "tag",
+                "name": "script",
+                "voidElement": false,
+                "attrs": {
+                  "src": "/static/js/main.chunk.js"
+                },
+                "children": []
+              },
+              {
+                "type": "tag",
+                "name": "script",
+                "voidElement": false,
+                "attrs": {
+                  "src": "/main.45b517d682200d870ece.hot-update.js"
+                },
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594494206109
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "body",
+      "target": {
+        "type": "tag",
+        "name": "body",
+        "voidElement": false,
+        "attrs": {},
+        "children": [
+          {
+            "type": "text",
+            "content": "    "
+          },
+          {
+            "type": "tag",
+            "name": "noscript",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "You need to enable JavaScript to run this app."
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {
+              "id": "root"
+            },
+            "children": [
+              {
+                "type": "tag",
+                "name": "div",
+                "voidElement": false,
+                "attrs": {
+                  "style": "display: flex; flex-wrap: wrap;"
+                },
+                "children": [
+                  {
+                    "type": "tag",
+                    "name": "div",
+                    "voidElement": false,
+                    "attrs": {
+                      "class": "container"
+                    },
+                    "children": [
+                      {
+                        "type": "tag",
+                        "name": "h3",
+                        "voidElement": false,
+                        "attrs": {},
+                        "children": [
+                          {
+                            "type": "text",
+                            "content": "Native HTML"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-text-input",
+                          "placeholder": "Text input",
+                          "type": "text"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-text-input-filled",
+                          "placeholder": "Filled text input",
+                          "type": "text",
+                          "value": "initial text"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-search-input",
+                          "placeholder": "Search input",
+                          "type": "search"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-email-input",
+                          "placeholder": "Email input",
+                          "type": "email"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-url-input",
+                          "placeholder": "URL input",
+                          "type": "url"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-tel-input",
+                          "placeholder": "Telephone input",
+                          "type": "tel"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-password-input",
+                          "placeholder": "Password input",
+                          "type": "password"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-number-input",
+                          "placeholder": "Number input",
+                          "type": "number"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "textarea",
+                        "voidElement": false,
+                        "attrs": {
+                          "data-qa": "html-textarea",
+                          "placeholder": "Textarea"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "tag",
+                    "name": "div",
+                    "voidElement": false,
+                    "attrs": {
+                      "class": "container"
+                    },
+                    "children": [
+                      {
+                        "type": "tag",
+                        "name": "h3",
+                        "voidElement": false,
+                        "attrs": {},
+                        "children": [
+                          {
+                            "type": "tag",
+                            "name": "a",
+                            "voidElement": false,
+                            "attrs": {
+                              "href": "https://github.com/mui-org/material-ui"
+                            },
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Material UI"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tag",
+                        "name": "div",
+                        "voidElement": false,
+                        "attrs": {
+                          "class": "MuiFormControl-root MuiTextField-root",
+                          "data-qa": "material-text-input"
+                        },
+                        "children": [
+                          {
+                            "type": "tag",
+                            "name": "label",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated",
+                              "data-shrink": "false"
+                            },
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Text input"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tag",
+                            "name": "div",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+                            },
+                            "children": [
+                              {
+                                "type": "tag",
+                                "name": "input",
+                                "voidElement": true,
+                                "attrs": {
+                                  "aria-invalid": "false",
+                                  "type": "text",
+                                  "class": "MuiInputBase-input MuiInput-input",
+                                  "value": ""
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "div",
+                        "voidElement": false,
+                        "attrs": {
+                          "class": "MuiFormControl-root MuiTextField-root",
+                          "data-qa": "material-text-input-filled"
+                        },
+                        "children": [
+                          {
+                            "type": "tag",
+                            "name": "label",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled",
+                              "data-shrink": "true"
+                            },
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Filled text input"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tag",
+                            "name": "div",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+                            },
+                            "children": [
+                              {
+                                "type": "tag",
+                                "name": "input",
+                                "voidElement": true,
+                                "attrs": {
+                                  "aria-invalid": "false",
+                                  "type": "text",
+                                  "class": "MuiInputBase-input MuiInput-input",
+                                  "value": "initial value"
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "div",
+                        "voidElement": false,
+                        "attrs": {
+                          "class": "MuiFormControl-root MuiTextField-root",
+                          "data-qa": "material-password-input"
+                        },
+                        "children": [
+                          {
+                            "type": "tag",
+                            "name": "label",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated",
+                              "data-shrink": "false"
+                            },
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Password input"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tag",
+                            "name": "div",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+                            },
+                            "children": [
+                              {
+                                "type": "tag",
+                                "name": "input",
+                                "voidElement": true,
+                                "attrs": {
+                                  "aria-invalid": "false",
+                                  "type": "password",
+                                  "class": "MuiInputBase-input MuiInput-input",
+                                  "value": ""
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "div",
+                        "voidElement": false,
+                        "attrs": {
+                          "class": "MuiFormControl-root MuiTextField-root",
+                          "data-qa": "material-number-input"
+                        },
+                        "children": [
+                          {
+                            "type": "tag",
+                            "name": "label",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated",
+                              "data-shrink": "false"
+                            },
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Number input"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tag",
+                            "name": "div",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+                            },
+                            "children": [
+                              {
+                                "type": "tag",
+                                "name": "input",
+                                "voidElement": true,
+                                "attrs": {
+                                  "aria-invalid": "false",
+                                  "type": "number",
+                                  "class": "MuiInputBase-input MuiInput-input",
+                                  "value": ""
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "div",
+                        "voidElement": false,
+                        "attrs": {
+                          "class": "MuiFormControl-root MuiTextField-root",
+                          "data-qa": "material-textarea"
+                        },
+                        "children": [
+                          {
+                            "type": "tag",
+                            "name": "label",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated",
+                              "data-shrink": "false"
+                            },
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Textarea"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tag",
+                            "name": "div",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl MuiInputBase-multiline MuiInput-multiline"
+                            },
+                            "children": [
+                              {
+                                "type": "tag",
+                                "name": "textarea",
+                                "voidElement": false,
+                                "attrs": {
+                                  "rows": "1",
+                                  "aria-invalid": "false",
+                                  "class": "MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline MuiInput-inputMultiline",
+                                  "style": "height: 16px; overflow: hidden;"
+                                },
+                                "children": []
+                              },
+                              {
+                                "type": "tag",
+                                "name": "textarea",
+                                "voidElement": false,
+                                "attrs": {
+                                  "aria-hidden": "true",
+                                  "class": "MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline MuiInput-inputMultiline",
+                                  "readonly": "",
+                                  "tabindex": "-1",
+                                  "style": "visibility: hidden; position: absolute; overflow: hidden; height: 0px; top: 0px; left: 0px; transform: translateZ(0px); width: 155px;"
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "!--",
+            "voidElement": false,
+            "attrs": {
+              "This": "",
+              "HTML": "",
+              "file": "",
+              "is": "",
+              "a": "",
+              "template.": "",
+              "If": "",
+              "you": "",
+              "open": "",
+              "it": "",
+              "directly": "",
+              "in": "",
+              "the": "",
+              "browser,": "",
+              "will": "",
+              "see": "",
+              "an": "",
+              "empty": "",
+              "page.": "",
+              "You": "",
+              "can": "",
+              "add": "",
+              "webfonts,": "",
+              "meta": "",
+              "tags,": "",
+              "or": "",
+              "analytics": "",
+              "to": "",
+              "this": "",
+              "file.": "",
+              "The": "",
+              "build": "",
+              "step": "",
+              "place": "",
+              "bundled": "",
+              "scripts": "",
+              "into": ""
+            },
+            "children": [
+              {
+                "type": "text",
+                "content": " tag.      To begin the development, run `npm start` or `yarn start`.      To create a production bundle, use `npm run build` or `yarn build`.    -->  "
+              },
+              {
+                "type": "tag",
+                "name": "script",
+                "voidElement": false,
+                "attrs": {
+                  "src": "/static/js/bundle.js"
+                },
+                "children": []
+              },
+              {
+                "type": "tag",
+                "name": "script",
+                "voidElement": false,
+                "attrs": {
+                  "src": "/static/js/1.chunk.js"
+                },
+                "children": []
+              },
+              {
+                "type": "tag",
+                "name": "script",
+                "voidElement": false,
+                "attrs": {
+                  "src": "/static/js/main.chunk.js"
+                },
+                "children": []
+              },
+              {
+                "type": "tag",
+                "name": "script",
+                "voidElement": false,
+                "attrs": {
+                  "src": "/main.45b517d682200d870ece.hot-update.js"
+                },
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594494207041,
+      "value": "Escape"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "body",
+      "target": {
+        "type": "tag",
+        "name": "body",
+        "voidElement": false,
+        "attrs": {},
+        "children": [
+          {
+            "type": "text",
+            "content": "    "
+          },
+          {
+            "type": "tag",
+            "name": "noscript",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "You need to enable JavaScript to run this app."
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "div",
+            "voidElement": false,
+            "attrs": {
+              "id": "root"
+            },
+            "children": [
+              {
+                "type": "tag",
+                "name": "div",
+                "voidElement": false,
+                "attrs": {
+                  "style": "display: flex; flex-wrap: wrap;"
+                },
+                "children": [
+                  {
+                    "type": "tag",
+                    "name": "div",
+                    "voidElement": false,
+                    "attrs": {
+                      "class": "container"
+                    },
+                    "children": [
+                      {
+                        "type": "tag",
+                        "name": "h3",
+                        "voidElement": false,
+                        "attrs": {},
+                        "children": [
+                          {
+                            "type": "text",
+                            "content": "Native HTML"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-text-input",
+                          "placeholder": "Text input",
+                          "type": "text"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-text-input-filled",
+                          "placeholder": "Filled text input",
+                          "type": "text",
+                          "value": "initial text"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-search-input",
+                          "placeholder": "Search input",
+                          "type": "search"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-email-input",
+                          "placeholder": "Email input",
+                          "type": "email"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-url-input",
+                          "placeholder": "URL input",
+                          "type": "url"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-tel-input",
+                          "placeholder": "Telephone input",
+                          "type": "tel"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-password-input",
+                          "placeholder": "Password input",
+                          "type": "password"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "input",
+                        "voidElement": true,
+                        "attrs": {
+                          "data-qa": "html-number-input",
+                          "placeholder": "Number input",
+                          "type": "number"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "textarea",
+                        "voidElement": false,
+                        "attrs": {
+                          "data-qa": "html-textarea",
+                          "placeholder": "Textarea"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "tag",
+                    "name": "div",
+                    "voidElement": false,
+                    "attrs": {
+                      "class": "container"
+                    },
+                    "children": [
+                      {
+                        "type": "tag",
+                        "name": "h3",
+                        "voidElement": false,
+                        "attrs": {},
+                        "children": [
+                          {
+                            "type": "tag",
+                            "name": "a",
+                            "voidElement": false,
+                            "attrs": {
+                              "href": "https://github.com/mui-org/material-ui"
+                            },
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Material UI"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tag",
+                        "name": "div",
+                        "voidElement": false,
+                        "attrs": {
+                          "class": "MuiFormControl-root MuiTextField-root",
+                          "data-qa": "material-text-input"
+                        },
+                        "children": [
+                          {
+                            "type": "tag",
+                            "name": "label",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated",
+                              "data-shrink": "false"
+                            },
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Text input"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tag",
+                            "name": "div",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+                            },
+                            "children": [
+                              {
+                                "type": "tag",
+                                "name": "input",
+                                "voidElement": true,
+                                "attrs": {
+                                  "aria-invalid": "false",
+                                  "type": "text",
+                                  "class": "MuiInputBase-input MuiInput-input",
+                                  "value": ""
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "div",
+                        "voidElement": false,
+                        "attrs": {
+                          "class": "MuiFormControl-root MuiTextField-root",
+                          "data-qa": "material-text-input-filled"
+                        },
+                        "children": [
+                          {
+                            "type": "tag",
+                            "name": "label",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled",
+                              "data-shrink": "true"
+                            },
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Filled text input"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tag",
+                            "name": "div",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+                            },
+                            "children": [
+                              {
+                                "type": "tag",
+                                "name": "input",
+                                "voidElement": true,
+                                "attrs": {
+                                  "aria-invalid": "false",
+                                  "type": "text",
+                                  "class": "MuiInputBase-input MuiInput-input",
+                                  "value": "initial value"
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "div",
+                        "voidElement": false,
+                        "attrs": {
+                          "class": "MuiFormControl-root MuiTextField-root",
+                          "data-qa": "material-password-input"
+                        },
+                        "children": [
+                          {
+                            "type": "tag",
+                            "name": "label",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated",
+                              "data-shrink": "false"
+                            },
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Password input"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tag",
+                            "name": "div",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+                            },
+                            "children": [
+                              {
+                                "type": "tag",
+                                "name": "input",
+                                "voidElement": true,
+                                "attrs": {
+                                  "aria-invalid": "false",
+                                  "type": "password",
+                                  "class": "MuiInputBase-input MuiInput-input",
+                                  "value": ""
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "div",
+                        "voidElement": false,
+                        "attrs": {
+                          "class": "MuiFormControl-root MuiTextField-root",
+                          "data-qa": "material-number-input"
+                        },
+                        "children": [
+                          {
+                            "type": "tag",
+                            "name": "label",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated",
+                              "data-shrink": "false"
+                            },
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Number input"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tag",
+                            "name": "div",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+                            },
+                            "children": [
+                              {
+                                "type": "tag",
+                                "name": "input",
+                                "voidElement": true,
+                                "attrs": {
+                                  "aria-invalid": "false",
+                                  "type": "number",
+                                  "class": "MuiInputBase-input MuiInput-input",
+                                  "value": ""
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "br",
+                        "voidElement": true,
+                        "attrs": {},
+                        "children": []
+                      },
+                      {
+                        "type": "tag",
+                        "name": "div",
+                        "voidElement": false,
+                        "attrs": {
+                          "class": "MuiFormControl-root MuiTextField-root",
+                          "data-qa": "material-textarea"
+                        },
+                        "children": [
+                          {
+                            "type": "tag",
+                            "name": "label",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated",
+                              "data-shrink": "false"
+                            },
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Textarea"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "tag",
+                            "name": "div",
+                            "voidElement": false,
+                            "attrs": {
+                              "class": "MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl MuiInputBase-multiline MuiInput-multiline"
+                            },
+                            "children": [
+                              {
+                                "type": "tag",
+                                "name": "textarea",
+                                "voidElement": false,
+                                "attrs": {
+                                  "rows": "1",
+                                  "aria-invalid": "false",
+                                  "class": "MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline MuiInput-inputMultiline",
+                                  "style": "height: 16px; overflow: hidden;"
+                                },
+                                "children": []
+                              },
+                              {
+                                "type": "tag",
+                                "name": "textarea",
+                                "voidElement": false,
+                                "attrs": {
+                                  "aria-hidden": "true",
+                                  "class": "MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline MuiInput-inputMultiline",
+                                  "readonly": "",
+                                  "tabindex": "-1",
+                                  "style": "visibility: hidden; position: absolute; overflow: hidden; height: 0px; top: 0px; left: 0px; transform: translateZ(0px); width: 155px;"
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "!--",
+            "voidElement": false,
+            "attrs": {
+              "This": "",
+              "HTML": "",
+              "file": "",
+              "is": "",
+              "a": "",
+              "template.": "",
+              "If": "",
+              "you": "",
+              "open": "",
+              "it": "",
+              "directly": "",
+              "in": "",
+              "the": "",
+              "browser,": "",
+              "will": "",
+              "see": "",
+              "an": "",
+              "empty": "",
+              "page.": "",
+              "You": "",
+              "can": "",
+              "add": "",
+              "webfonts,": "",
+              "meta": "",
+              "tags,": "",
+              "or": "",
+              "analytics": "",
+              "to": "",
+              "this": "",
+              "file.": "",
+              "The": "",
+              "build": "",
+              "step": "",
+              "place": "",
+              "bundled": "",
+              "scripts": "",
+              "into": ""
+            },
+            "children": [
+              {
+                "type": "text",
+                "content": " tag.      To begin the development, run `npm start` or `yarn start`.      To create a production bundle, use `npm run build` or `yarn build`.    -->  "
+              },
+              {
+                "type": "tag",
+                "name": "script",
+                "voidElement": false,
+                "attrs": {
+                  "src": "/static/js/bundle.js"
+                },
+                "children": []
+              },
+              {
+                "type": "tag",
+                "name": "script",
+                "voidElement": false,
+                "attrs": {
+                  "src": "/static/js/1.chunk.js"
+                },
+                "children": []
+              },
+              {
+                "type": "tag",
+                "name": "script",
+                "voidElement": false,
+                "attrs": {
+                  "src": "/static/js/main.chunk.js"
+                },
+                "children": []
+              },
+              {
+                "type": "tag",
+                "name": "script",
+                "voidElement": false,
+                "attrs": {
+                  "src": "/main.45b517d682200d870ece.hot-update.js"
+                },
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "time": 1594494207124,
+      "value": "Escape"
+    }
+  ]
+}
