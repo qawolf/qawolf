@@ -16,8 +16,13 @@ const debug = Debug('qawolf:buildPressSteps');
 
 const KEYS_TO_TRACK_FOR_CONTENTEDITABLE = new Set([
   // Enter types a line break, shouldn't be a press.
-  // Tab types a tab character, shouldn't be a press.
-  'Escape'
+  'Escape',
+  // NOTE: Sometimes tab types a tab character, but this seems to be
+  // only with libraries like Quill that must intercept the keydown.
+  // It seems difficult to detect when this is happening, so for now
+  // an extra Tab press may be built and would need to be manually
+  // deleted from the generated test.
+  'Tab'
 ]);
 
 const KEYS_TO_TRACK_FOR_INPUT = new Set([
