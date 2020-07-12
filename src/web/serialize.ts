@@ -1,4 +1,4 @@
-import { parse as parseHtml } from '@jperl/html-parse-stringify';
+import HTML from 'html-parse-stringify';
 import { Doc } from '../types';
 
 const buildXpath = (node: Node | null): string => {
@@ -38,7 +38,7 @@ export const getXpath = (node: Node): string => {
 };
 
 export const htmlToDoc = (html: string): Doc => {
-  const result = parseHtml(html);
+  const result = HTML.parse(html);
 
   if (result.length !== 1) {
     console.debug('qawolf: invalid html', html, result);

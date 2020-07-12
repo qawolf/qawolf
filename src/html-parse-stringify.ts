@@ -1,5 +1,5 @@
 /* eslint-disable */
-declare module '@jperl/html-parse-stringify' {
+declare module 'html-parse-stringify' {
   interface Doc {
     attrs?: any;
     children?: Doc[];
