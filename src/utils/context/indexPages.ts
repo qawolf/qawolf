@@ -4,7 +4,7 @@ import { BrowserContext, Page } from 'playwright-core';
 const debug = Debug('qawolf:indexPages');
 
 type IndexedBrowserContext = BrowserContext & {
-  _putilsIndexed: boolean;
+  _qawIndexed: boolean;
 };
 
 export type IndexedPage = Page & {
@@ -15,8 +15,8 @@ export const indexPages = async (context: BrowserContext): Promise<void> => {
   /**
    * Set page.createdIndex on pages.
    */
-  if ((context as IndexedBrowserContext)._putilsIndexed) return;
-  (context as IndexedBrowserContext)._putilsIndexed = true;
+  if ((context as IndexedBrowserContext)._qawIndexed) return;
+  (context as IndexedBrowserContext)._qawIndexed = true;
 
   let index = 0;
 

@@ -4,7 +4,7 @@ import { BrowserContext } from 'playwright-core';
 import { webScript } from '../web/addScript';
 import { loadConfig } from '../config';
 import { ElementEvent } from '../types';
-import { indexPages, IndexedPage, forEachPage } from '../utils';
+import { indexPages, IndexedPage } from '../utils';
 
 const debug = Debug('qawolf:ContextEventCollector');
 
@@ -26,7 +26,7 @@ export class ContextEventCollector extends EventEmitter {
     this._context = context;
   }
 
-  async _start() {
+  async _start(): Promise<void> {
     await indexPages(this._context);
 
     await this._context.exposeBinding(
@@ -42,7 +42,13 @@ export class ContextEventCollector extends EventEmitter {
     const script =
       `window.qawAttribute = ${JSON.stringify(this._attribute)};` + webScript;
 
-    await this._context.addInitScript(script);
+    try {
+      await this._context.addInitScript(script);
+    } catch (error) {
+      // ignore target closed error, since some targets could close
+      if (!error.message.includes('Target closed')) throw error;
+    }
+
     await Promise.all(
       this._context.pages().map((page) => {
         page.evaluate(script);
