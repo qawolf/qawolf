@@ -40,7 +40,12 @@ export class ContextEventCollector extends EventEmitter {
     );
 
     const script =
-      `window.qawAttribute = ${JSON.stringify(this._attribute)};` + webScript;
+      '(() => {\n' +
+      webScript +
+      `\nnew qawolf.PageEventCollector({ attribute: ${JSON.stringify(
+        this._attribute,
+      )} });\n` +
+      '})();';
 
     try {
       await this._context.addInitScript(script);

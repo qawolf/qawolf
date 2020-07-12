@@ -4,10 +4,7 @@ import { initEvaluateScript } from '../utils';
 
 const scriptPath = require.resolve('../../build/qawolf.web.js');
 
-export const webScript = readFileSync(scriptPath, 'utf8').replace(
-  'var qawolf =',
-  'window.qawolf = window.qawolf ||',
-);
+export const webScript = readFileSync(scriptPath, 'utf8');
 
 type InjectedPage = Page & {
   _hasQAWolfWeb: boolean;
