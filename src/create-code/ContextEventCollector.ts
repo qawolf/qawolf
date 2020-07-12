@@ -36,21 +36,15 @@ export class ContextEventCollector extends EventEmitter {
   async _start(): Promise<void> {
     await indexPages(this._context);
 
-    try {
-      await this._context.exposeBinding(
-        'qawElementEvent',
-        ({ page }, elementEvent: ElementEvent) => {
-          const pageIndex = (page as IndexedPage).createdIndex;
-          const event: ElementEvent = { ...elementEvent, page: pageIndex };
-          debug(`emit %j`, event);
-          this.emit('elementevent', event);
-        },
-      );
-    } catch (error) {
-      if (!ignoreError(error)) throw error;
-
-      debug('exposeBinding error we ignored: ' + error.message);
-    }
+    await this._context.exposeBinding(
+      'qawElementEvent',
+      ({ page }, elementEvent: ElementEvent) => {
+        const pageIndex = (page as IndexedPage).createdIndex;
+        const event: ElementEvent = { ...elementEvent, page: pageIndex };
+        debug(`emit %j`, event);
+        this.emit('elementevent', event);
+      },
+    );
 
     const script =
       '(() => {\n' +
@@ -61,23 +55,21 @@ export class ContextEventCollector extends EventEmitter {
       '})();';
 
     try {
+      await Promise.all(
+        this._context.pages().map((page) => page.evaluate(script)),
+      );
+    } catch (error) {
+      if (!ignoreError(error)) throw error;
+
+      debug('evaluate error we ignored: ' + error.message);
+    }
+
+    try {
       await this._context.addInitScript(script);
     } catch (error) {
       if (!ignoreError(error)) throw error;
 
       debug('addInitScript error we ignored: ' + error.message);
-    }
-
-    try {
-      await Promise.all(
-        this._context.pages().map((page) => {
-          page.evaluate(script);
-        }),
-      );
-    } catch (error) {
-      if (!ignoreError(error)) throw error;
-
-      debug('page.evaluate error we ignored: ' + error.message);
     }
   }
 }
