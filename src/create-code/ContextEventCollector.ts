@@ -8,6 +8,13 @@ import { indexPages, IndexedPage } from '../utils';
 
 const debug = Debug('qawolf:ContextEventCollector');
 
+const ignoreError = (error: Error) => {
+  // when an iframe closes it will throw an error we can ignore
+  return !!['Session closed', 'Target closed'].find((ignore) =>
+    error.message.includes(ignore),
+  );
+};
+
 export class ContextEventCollector extends EventEmitter {
   readonly _attribute: string;
   readonly _context: BrowserContext;
@@ -29,15 +36,21 @@ export class ContextEventCollector extends EventEmitter {
   async _start(): Promise<void> {
     await indexPages(this._context);
 
-    await this._context.exposeBinding(
-      'qawElementEvent',
-      ({ page }, elementEvent: ElementEvent) => {
-        const pageIndex = (page as IndexedPage).createdIndex;
-        const event: ElementEvent = { ...elementEvent, page: pageIndex };
-        debug(`emit %j`, event);
-        this.emit('elementevent', event);
-      },
-    );
+    try {
+      await this._context.exposeBinding(
+        'qawElementEvent',
+        ({ page }, elementEvent: ElementEvent) => {
+          const pageIndex = (page as IndexedPage).createdIndex;
+          const event: ElementEvent = { ...elementEvent, page: pageIndex };
+          debug(`emit %j`, event);
+          this.emit('elementevent', event);
+        },
+      );
+    } catch (error) {
+      if (!ignoreError(error)) throw error;
+
+      debug('exposeBinding error we ignored: ' + error.message);
+    }
 
     const script =
       '(() => {\n' +
@@ -50,14 +63,21 @@ export class ContextEventCollector extends EventEmitter {
     try {
       await this._context.addInitScript(script);
     } catch (error) {
-      // ignore target closed error, since some targets could close
-      if (!error.message.includes('Target closed')) throw error;
+      if (!ignoreError(error)) throw error;
+
+      debug('addInitScript error we ignored: ' + error.message);
     }
 
-    await Promise.all(
-      this._context.pages().map((page) => {
-        page.evaluate(script);
-      }),
-    );
+    try {
+      await Promise.all(
+        this._context.pages().map((page) => {
+          page.evaluate(script);
+        }),
+      );
+    } catch (error) {
+      if (!ignoreError(error)) throw error;
+
+      debug('page.evaluate error we ignored: ' + error.message);
+    }
   }
 }
