@@ -11,12 +11,8 @@ export type BrowserName = 'chromium' | 'firefox' | 'webkit';
 export type Callback<S = void, T = void> = (data?: S) => T;
 
 export interface Doc {
-  attrs?: any;
-  children?: Doc[];
-  content?: string;
-  name?: string;
-  type: string;
-  voidElement?: boolean;
+  attrs: Record<string, string>;
+  name: string;
 }
 
 export interface ElementEvent {

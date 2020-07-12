@@ -1,14 +1,17 @@
-import { htmlToDoc } from '../../src/web/serialize';
 import { ElementEvent, Step } from '../../src/types';
-
-const html = "<input id='my-input' data-qa='test-input' />";
 
 export const baseEvent: ElementEvent = {
   isTrusted: true,
   name: 'mousedown',
   page: 0,
   selector: `[data-qa="test-input"]`,
-  target: htmlToDoc(html),
+  target: {
+    attrs: {
+      'data-qa': 'test-input',
+      id: 'my-input',
+    },
+    name: 'input',
+  },
   time: 0,
 };
 

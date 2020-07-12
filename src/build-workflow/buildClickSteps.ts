@@ -28,9 +28,7 @@ const filterClickEvents = (events: ElementEvent[]): ElementEvent[] => {
     }
 
     // ignore clicks on selects
-    let name = event.target.name;
-    if (name) name = name.toLowerCase();
-    return name !== 'select';
+    return event.target.name !== 'select';
   });
 };
 

@@ -1,4 +1,3 @@
-import HTML from 'html-parse-stringify';
 import { Doc } from '../types';
 
 const buildXpath = (node: Node | null): string => {
@@ -37,29 +36,18 @@ export const getXpath = (node: Node): string => {
     .replace('path', "*[name()='path']");
 };
 
-export const htmlToDoc = (html: string): Doc => {
-  const result = HTML.parse(html);
+export const nodeToDoc = (node: Node): Doc => {
+  const name = ((node as HTMLElement).tagName || '').toLowerCase();
 
-  if (result.length !== 1) {
-    console.debug('qawolf: invalid html', html, result);
-    throw new Error('htmlToDoc: only supports individual nodes');
+  const attrs = {};
+
+  const attributes = (node as HTMLElement).attributes || [];
+  for (let i = attributes.length - 1; i >= 0; i--) {
+    attrs[attributes[i].name] = attributes[i].value;
   }
 
-  return result[0];
-};
-
-export const nodeToHtml = (node: Node): string => {
-  const serializer = new XMLSerializer();
-
-  const serialized = serializer
-    .serializeToString(node)
-    .replace(/ xmlns="(.*?)"/g, '') // remove namespace
-    .replace(/(\r\n|\n|\r)/gm, ''); // remove newlines
-
-  return serialized;
-};
-
-export const nodeToDoc = (node: Node): Doc => {
-  const html = nodeToHtml(node);
-  return htmlToDoc(html);
+  return {
+    attrs,
+    name,
+  };
 };

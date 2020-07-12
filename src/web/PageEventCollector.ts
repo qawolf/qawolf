@@ -105,7 +105,11 @@ export class PageEventCollector {
 
     this.listen('input', (event) => {
       const target = event.target as HTMLInputElement;
-      this.sendEvent('input', event, target.isContentEditable ? target.innerText : target.value);
+      this.sendEvent(
+        'input',
+        event,
+        target.isContentEditable ? target.innerText : target.value,
+      );
     });
 
     this.listen('keydown', (event) => {
