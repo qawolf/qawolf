@@ -16,35 +16,23 @@ beforeAll(async () => {
 
 afterAll(() => browser.close());
 
-describe('nodeToHtml', () => {
-  it('serializes image alt and src', async () => {
+describe('nodeToDoc', () => {
+  it('serializes tag name and attributes', async () => {
     await page.goto(`${TEST_URL}images`);
 
-    const html = await page.evaluate(() => {
+    const doc = await page.evaluate(() => {
       const web: QAWolfWeb = (window as any).qawolf;
       const element = document.querySelector('img');
       if (!element) throw new Error('element not found');
-
-      return web.nodeToHtml(element);
+      return web.nodeToDoc(element);
     });
 
-    expect(html).toEqual('<img alt="spirit" src="logo192.png" />');
-  });
-
-  it('serializes labels', async () => {
-    await page.goto(`${TEST_URL}login`);
-
-    const html = await page.evaluate(() => {
-      const web: QAWolfWeb = (window as any).qawolf;
-
-      const element = document.querySelector('input');
-      if (!element) throw new Error('element not found');
-
-      return web.nodeToHtml(element);
+    expect(doc).toEqual({
+      attrs: {
+        alt: 'spirit',
+        src: 'logo192.png',
+      },
+      name: 'img',
     });
-
-    expect(html).toEqual(
-      '<input autocomplete="off" id="username" type="text" value="" />',
-    );
   });
 });
