@@ -19,9 +19,8 @@
     "build": "tsc -p tsconfig.release.json",
     "watch": "tsc -w -p tsconfig.release.json",
     "lint": "eslint . --ext .ts,.tsx --config .eslintrc.json",
-    "release": "np --no-cleanup",
-    "test": "jest",
-    "version": "npm run clean && npm run build"
+    "release": "npm run clean && npm run build && npm test && npm publish",
+    "test": "jest"
   },
   "dependencies": {
     "debug": "*",
@@ -41,7 +40,6 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-jest": "^23.18.0",
     "jest": "^26.1.0",
-    "np": "^6.3.2",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.1.2",
