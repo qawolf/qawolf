@@ -67,7 +67,7 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/qawolf/qawolf/edit/master/docs',
+          editUrl: 'https://github.com/qawolf/qawolf/edit/main/docs',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

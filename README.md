@@ -143,4 +143,4 @@ If you have a feature request or feedback, please [open an issue](https://github
 
 ## 📝 License
 
-QA Wolf is licensed under [BSD-3-Clause](https://github.com/qawolf/qawolf/blob/master/LICENSE.md).
+QA Wolf is licensed under [BSD-3-Clause](https://github.com/qawolf/qawolf/blob/main/LICENSE.md).
