@@ -1,8 +1,8 @@
 import { Browser, Page } from 'playwright';
 import { launch } from '../../src/utils';
 import { QAWolfWeb } from '../../src/web';
-import { webScript } from '../../src/web/addScript';
 import { buildSelectorParts, Cue } from '../../src/web/cues';
+import { addInitScript } from '../../src/utils/context/register';
 import { TEST_URL } from '../utils';
 
 describe('browser tests', () => {
@@ -11,8 +11,9 @@ describe('browser tests', () => {
 
   beforeAll(async () => {
     browser = await launch();
-    page = await browser.newPage();
-    await page.addInitScript(webScript);
+    const context = await browser.newContext();
+    await addInitScript(context);
+    page = await context.newPage();
     await page.goto(`${TEST_URL}checkbox-inputs`);
   });
 

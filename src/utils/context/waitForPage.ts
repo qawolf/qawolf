@@ -1,6 +1,6 @@
 import { BrowserContext } from 'playwright-core';
 import { isNull } from 'util';
-import { IndexedPage, isRegistered } from './register';
+import { IndexedPage, indexPages } from './indexPages';
 import { waitFor } from '../waitFor';
 
 export interface WaitForPageOptions {
@@ -13,9 +13,8 @@ export const waitForPage = async (
   index: number,
   options: WaitForPageOptions = {},
 ): Promise<IndexedPage> => {
-  if (!isRegistered(this._context)) {
-    throw new Error('Use qawolf.register(context) before qawolf.waitForPage');
-  }
+  // index pages if they are not yet
+  await indexPages(context);
 
   const page = await waitFor(
     async () => {

@@ -1,19 +1,13 @@
-import Debug from 'debug';
 import { readFileSync } from 'fs';
-import { BrowserContext, Page } from 'playwright-core';
+import { BrowserContext } from 'playwright-core';
 import { basename, join } from 'path';
 import { loadConfig } from '../../config';
+import { indexPages } from './indexPages';
 import { Registry } from '../Registry';
 import { saveArtifacts } from './saveArtifacts';
 
-const debug = Debug('qawolf:register');
-
 const scriptPath = require.resolve('../../../build/qawolf.web.js');
 const webScript = readFileSync(scriptPath, 'utf8');
-
-export type IndexedPage = Page & {
-  createdIndex: number;
-};
 
 export type RegisteredBrowserContext = BrowserContext & {
   _qawRegistered: boolean;
@@ -25,7 +19,8 @@ export const addInitScript = async (context: BrowserContext): Promise<void> => {
   const script =
     '(() => {\n' +
     webScript +
-    `\nnew qawolf.PageEventCollector({ attribute: ${attribute} });\n` +
+    `new qawolf.PageEventCollector({ attribute: ${attribute} });\n` +
+    'qawolf.interceptConsoleLogs();\n' +
     '})();';
 
   await context.addInitScript(script);
@@ -52,30 +47,6 @@ export const getArtifactPath = (): string | null => {
   }
 
   return artifactPath;
-};
-
-export const indexPages = async (context: BrowserContext): Promise<void> => {
-  /**
-   * Set page.createdIndex on pages.
-   */
-  let index = 0;
-
-  const pages = context.pages();
-  if (pages.length > 1) {
-    throw new Error(
-      `Cannot index pages when more than 1 exist (${pages.length})`,
-    );
-  }
-
-  if (pages[0]) {
-    debug(`index existing page ${index}`);
-    (pages[0] as IndexedPage).createdIndex = index++;
-  }
-
-  context.on('page', (page: IndexedPage) => {
-    debug(`index created page ${index}`);
-    page.createdIndex = index++;
-  });
 };
 
 export const register = async (context: BrowserContext): Promise<void> => {

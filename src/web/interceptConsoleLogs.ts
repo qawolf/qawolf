@@ -1,7 +1,5 @@
 import { getXpath } from './serialize';
 
-export type LogCallback = (level: string, message: string) => void;
-
 const LOG_LEVELS = ['debug', 'error', 'info', 'log', 'warn'];
 
 export const formatArgument = (argument: unknown): string => {
@@ -25,9 +23,9 @@ export const formatArgument = (argument: unknown): string => {
   }
 };
 
-export const patchConsole = (): void => {
-  if ((window as any).pwutilsPatchedConsole) return;
-  (window as any).pwutilsPatchedConsole = true;
+export const interceptConsoleLogs = (): void => {
+  if ((window as any).qawInterceptLogs) return;
+  (window as any).qawInterceptLogs = true;
 
   LOG_LEVELS.forEach((level: keyof Console) => {
     const browserLog = console[level].bind(console);
@@ -42,18 +40,8 @@ export const patchConsole = (): void => {
       // playwright is currently using logs as its message transport. prevent infinite loop.
       if (message.includes('__playwright')) return;
 
-      const callbacks = (window as any).pwutilsLogCallbacks || [];
-      callbacks.forEach((callback: LogCallback) => {
-        callback(level, message);
-      });
+      const logCallback = (window as any).qawLogEvent;
+      if (logCallback) logCallback({ level, message });
     };
   });
-};
-
-export const interceptConsoleLogs = (callbackName: string): void => {
-  patchConsole();
-
-  const callbacks = (window as any).pwutilsLogCallbacks || [];
-  callbacks.push(window[callbackName]);
-  (window as any).pwutilsLogCallbacks = callbacks;
 };

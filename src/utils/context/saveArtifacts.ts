@@ -1,15 +1,41 @@
 import Debug from 'debug';
+import { appendFileSync, ensureDir } from 'fs-extra';
 import { join } from 'path';
 import { BrowserContext } from 'playwright-core';
 import { getFfmpegPath, saveVideo, PageVideoCapture } from 'playwright-video';
 import { forEachPage } from './forEachPage';
-import { saveConsoleLogs } from '../page/saveConsoleLogs';
+import { IndexedPage } from './indexPages';
+import { LogEvent } from '../../types';
 
 const debug = Debug('qawolf:saveArtifacts');
 
 const capturesToStop: PageVideoCapture[] = [];
 
-export const saveArtifacts = (
+export const saveConsoleLogs = async (
+  context: BrowserContext,
+  saveDir: string,
+): Promise<void> => {
+  const logPath = new Map<number, string>();
+
+  await context.exposeBinding(
+    'qawLogEvent',
+    ({ page }, { level, message }: LogEvent) => {
+      const pageIndex = (page as IndexedPage).createdIndex;
+      if (!logPath.has(pageIndex)) {
+        const timestamp = Date.now();
+        debug(`save logs for page ${pageIndex} at ${timestamp}`);
+        logPath.set(
+          pageIndex,
+          join(saveDir, `logs_${pageIndex}_${timestamp}.txt`),
+        );
+      }
+
+      appendFileSync(logPath.get(pageIndex), `${level}: ${message}\n`);
+    },
+  );
+};
+
+export const saveArtifacts = async (
   context: BrowserContext,
   saveDir: string,
 ): Promise<void> => {
@@ -17,17 +43,16 @@ export const saveArtifacts = (
   const includeVideo = !!getFfmpegPath();
   let pageCount = 0;
 
-  return forEachPage(context, async (page) => {
+  await ensureDir(saveDir);
+
+  await saveConsoleLogs(context, saveDir);
+
+  await forEachPage(context, async (page) => {
     const timestamp = Date.now();
     const pageIndex = pageCount++;
     debug(`save artifacts for page ${pageIndex} at ${timestamp}`);
 
     try {
-      await saveConsoleLogs(
-        page,
-        join(saveDir, `logs_${pageIndex}_${timestamp}.txt`),
-      );
-
       if (includeVideo) {
         debug(`save video for page ${pageIndex}`);
         const capture = await saveVideo(

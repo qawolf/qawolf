@@ -46,6 +46,11 @@ export interface KeyEvent extends ElementEvent {
   value: string;
 }
 
+export interface LogEvent {
+  level: string;
+  message: string;
+}
+
 export interface PasteEvent extends ElementEvent {
   name: 'paste';
   value: string;

@@ -1,4 +1,4 @@
-import { getArtifactPath } from '../../src/utils/register';
+import { getArtifactPath } from '../../src/utils/context/register';
 
 describe('getArtifactPath', () => {
   it('returns null when there is no artifact path', () => {

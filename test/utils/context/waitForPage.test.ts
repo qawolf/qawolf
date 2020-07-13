@@ -1,5 +1,6 @@
 import { Browser, BrowserContext } from 'playwright-core';
-import { launch, waitForPage, IndexedPage } from '../../../src/utils';
+import { IndexedPage } from '../../../src/utils/context/indexPages';
+import { launch, waitForPage, register } from '../../../src/utils';
 import { TEST_URL } from '../../utils';
 
 describe('waitForPage', () => {
@@ -9,6 +10,7 @@ describe('waitForPage', () => {
   beforeAll(async () => {
     browser = await launch();
     context = await browser.newContext();
+    await register(context);
   });
 
   afterAll(() => browser.close());

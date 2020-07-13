@@ -1,7 +1,8 @@
 import Debug from 'debug';
 import { EventEmitter } from 'events';
 import { BrowserContext } from 'playwright-core';
-import { IndexedPage, isRegistered } from '../utils/context/register';
+import { IndexedPage } from '../utils/context/indexPages';
+import { isRegistered } from '../utils/context/register';
 import { ElementEvent } from '../types';
 
 const debug = Debug('qawolf:ContextEventCollector');

@@ -12,7 +12,7 @@ import {
   PasteEvent,
   ScrollEvent,
 } from '../../src/types';
-import { getLaunchOptions, launch } from '../../src/utils';
+import { getLaunchOptions, launch, register } from '../../src/utils';
 import { sleep, selectElementContent, TEST_URL } from '../utils';
 
 describe('ContextEventCollector', () => {
@@ -23,6 +23,7 @@ describe('ContextEventCollector', () => {
   beforeAll(async () => {
     browser = await launch();
     context = await browser.newContext();
+    await register(context);
 
     const collector = await ContextEventCollector.create(context);
     collector.on('elementevent', (event) => events.push(event));
