@@ -3,7 +3,7 @@ import { prompt } from 'inquirer';
 import { dirname, join } from 'path';
 import { ContextEventCollector } from '../src/create-code/ContextEventCollector';
 import { ElementEvent } from '../src/types';
-import { launch } from '../src/utils';
+import { launch, register } from '../src/utils';
 
 // QAW_NAME=login QAW_URL=http://localhost:5000 npm run ts-node ./test/saveFixture
 (async (): Promise<void> => {
@@ -16,6 +16,7 @@ import { launch } from '../src/utils';
 
   const browser = await launch({ headless: false });
   const context = await browser.newContext();
+  await register(context);
   const collector = await ContextEventCollector.create(context);
   const page = await context.newPage();
 

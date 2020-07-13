@@ -1,12 +1,10 @@
 // context utils
 export { forEachPage } from './context/forEachPage';
-export { indexPages, IndexedPage } from './context/indexPages';
+export { register } from './context/register';
 export { saveArtifacts, stopVideos } from './context/saveArtifacts';
 export { waitForPage, WaitForPageOptions } from './context/waitForPage';
 
 // page utils
-export { initEvaluateScript } from './page/initEvaluateScript';
-export { interceptConsoleLogs } from './page/interceptConsoleLogs';
 export { openScreenshot } from './page/openScreenshot';
 export { saveConsoleLogs } from './page/saveConsoleLogs';
 export { saveState } from './page/saveState';
@@ -17,5 +15,4 @@ export { setState } from './page/setState';
 export { getLaunchOptions, launch } from './launch';
 export { repl } from './repl/repl';
 export { Registry } from './Registry';
-export { register } from './register';
 export { waitFor } from './waitFor';
