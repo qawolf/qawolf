@@ -1,8 +1,8 @@
 import { Browser, Page } from 'playwright';
+import { addInitScript } from '../../src/utils/context/register';
 import { launch } from '../../src/utils';
-import { QAWolfWeb } from '../../src/web';
-import { webScript } from '../../src/web/addScript';
 import { TEST_URL } from '../utils';
+import { QAWolfWeb } from '../../src/web';
 
 describe('buildSelector', () => {
   let browser: Browser;
@@ -10,8 +10,9 @@ describe('buildSelector', () => {
 
   beforeAll(async () => {
     browser = await launch();
-    page = await browser.newPage();
-    await page.addInitScript(webScript);
+    const context = await browser.newContext();
+    await addInitScript(context);
+    page = await context.newPage();
   });
 
   afterAll(() => browser.close());

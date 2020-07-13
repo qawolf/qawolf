@@ -7,20 +7,14 @@ type EventCallback = types.Callback<types.ElementEvent>;
 
 type ConstructorOptions = {
   attribute?: string;
-  pageIndex: number;
-  sendEvent: EventCallback;
 };
 
 export class PageEventCollector {
   private _attribute?: string;
   private _onDispose: types.Callback[] = [];
-  private _pageIndex: number;
-  private _sendEvent: EventCallback;
 
   constructor(options: ConstructorOptions) {
     this._attribute = options.attribute;
-    this._pageIndex = options.pageIndex;
-    this._sendEvent = options.sendEvent;
     this.collectEvents();
     console.debug('PageEventCollector: created', options);
   }
@@ -49,13 +43,16 @@ export class PageEventCollector {
     event: DocumentEventMap[K],
     value?: string | types.ScrollValue | null,
   ): void {
+    const eventCallback: EventCallback = (window as any).qawElementEvent;
+    if (!eventCallback) return;
+
     const target = event.target as HTMLElement;
     const isTargetVisible = isVisible(target, window.getComputedStyle(target));
 
     const elementEvent = {
       isTrusted: event.isTrusted && isTargetVisible,
       name: eventName,
-      page: this._pageIndex,
+      page: -1, // set in ContextEventCollector
       selector: buildSelector({
         attribute: this._attribute,
         isClick: ['click', 'mousedown'].includes(eventName),
@@ -73,7 +70,8 @@ export class PageEventCollector {
       'recorded:',
       elementEvent,
     );
-    this._sendEvent(elementEvent);
+
+    eventCallback(elementEvent);
   }
 
   private collectEvents(): void {

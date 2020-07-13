@@ -1,6 +1,6 @@
 import { BrowserContext } from 'playwright-core';
 import { isNull } from 'util';
-import { indexPages, IndexedPage } from './indexPages';
+import { IndexedPage, indexPages } from './indexPages';
 import { waitFor } from '../waitFor';
 
 export interface WaitForPageOptions {

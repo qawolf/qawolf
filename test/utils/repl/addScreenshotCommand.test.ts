@@ -1,9 +1,10 @@
 import { ChildProcess } from 'child_process';
 import { Browser, BrowserContext } from 'playwright-core';
 import { start } from 'repl';
-import { IndexedPage, launch } from '../../../src/utils';
-import * as openScreenshot from '../../../src/utils/page/openScreenshot';
 import { addScreenshotCommand } from '../../../src/utils/repl/addScreenshotCommand';
+import { IndexedPage } from '../../../src/utils/context/indexPages';
+import * as openScreenshot from '../../../src/utils/page/openScreenshot';
+import { launch, register } from '../../../src/utils';
 
 describe('addScreenshotCommand', () => {
   let browser: Browser;
@@ -12,6 +13,7 @@ describe('addScreenshotCommand', () => {
   beforeAll(async () => {
     browser = await launch();
     context = await browser.newContext();
+    await register(context);
     await context.newPage();
   });
 

@@ -1,7 +1,7 @@
 import { Browser, Page } from 'playwright-core';
-import { launch } from '../../src/utils';
+import { addInitScript } from '../../src/utils/context/register';
 import { QAWolfWeb } from '../../src/web';
-import { webScript } from '../../src/web/addScript';
+import { launch } from '../../src/utils';
 import { TEST_URL } from '../utils';
 
 let browser: Browser;
@@ -9,8 +9,9 @@ let page: Page;
 
 beforeAll(async () => {
   browser = await launch();
-  page = await browser.newPage();
-  await page.addInitScript(webScript);
+  const context = await browser.newContext();
+  await addInitScript(context);
+  page = await context.newPage();
   await page.goto(`${TEST_URL}login`);
 });
 

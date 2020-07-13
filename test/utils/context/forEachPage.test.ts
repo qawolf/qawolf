@@ -1,5 +1,5 @@
 import { Page } from 'playwright-core';
-import { forEachPage, launch, waitForPage } from '../../../src/utils';
+import { forEachPage, launch, waitForPage, register } from '../../../src/utils';
 
 it('runs for existing and new pages', async () => {
   const browser = await launch();

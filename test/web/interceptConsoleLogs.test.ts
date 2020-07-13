@@ -1,7 +1,8 @@
 import { Browser, Page } from 'playwright-core';
+import { addInitScript } from '../../src/utils/context/register';
 import { launch } from '../../src/utils';
+import { TEST_URL } from '../utils';
 import { QAWolfWeb } from '../../src/web';
-import { addScriptToPage } from '../../src/web/addScript';
 
 let page: Page;
 
@@ -24,8 +25,10 @@ describe('interceptConsoleLogs', () => {
 
   beforeAll(async () => {
     browser = await launch();
-    page = await browser.newPage();
-    await addScriptToPage(page);
+    const context = await browser.newContext();
+    await addInitScript(context);
+    page = await context.newPage();
+    await page.goto(TEST_URL);
   });
 
   afterAll(() => browser.close());

@@ -11,7 +11,6 @@ export { Config } from './config';
 export { create } from './create-code/create';
 
 export {
-  interceptConsoleLogs,
   launch,
   register,
   repl,
