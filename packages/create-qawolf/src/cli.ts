@@ -58,7 +58,7 @@ export const promptRootDir = async (): Promise<string> => {
 export const promptConfirmOverwrite = async (
   path: string,
 ): Promise<boolean> => {
-  const answers = await inquirer.prompt([
+  const answers = await inquirer.prompt<{ overwrite: boolean }>([
     {
       default: false,
       message: `"${path}" already exists, overwrite it?`,
@@ -78,7 +78,7 @@ export const promptOverwrite = async (path: string): Promise<boolean> => {
 };
 
 export const promptGithubActions = async (): Promise<void> => {
-  const answers = await inquirer.prompt([
+  const answers = await inquirer.prompt<{ setup: boolean }>([
     {
       default: false,
       message: `Set up CI with GitHub Actions?`,
