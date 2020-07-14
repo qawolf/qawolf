@@ -11,25 +11,24 @@ type ReconcileOptions = {
 
 export class CodeReconciler {
   // the virtual representation of the current code
-  private _virtualCode: VirtualCode = new VirtualCode([]);
+  _virtualCode: VirtualCode = new VirtualCode([]);
 
-  private _insertNewLines({
-    actualCode,
-    virtualCode,
-  }: ReconcileOptions): string {
+  _insertNewLines({ actualCode, virtualCode }: ReconcileOptions): string {
     const newLines = this._virtualCode.newLines(virtualCode);
     if (newLines.length < 1) return actualCode;
 
-    const patch = newLines.map(line => `${line}\n`).join('') + PATCH_HANDLE;
+    const patch = newLines.map((line) => `${line}\n`).join('') + PATCH_HANDLE;
     debug(`insert new lines: ${patch}`);
 
-    return patchCode({ code: actualCode, patch });
+    try {
+      return patchCode({ code: actualCode, patch });
+    } catch (e) {
+      debug('skip new lines: cannot find patch handle');
+      return actualCode;
+    }
   }
 
-  private _updateLastLine({
-    actualCode,
-    virtualCode,
-  }: ReconcileOptions): string {
+  _updateLastLine({ actualCode, virtualCode }: ReconcileOptions): string {
     /**
      * Update the last expression if it changed.
      */
