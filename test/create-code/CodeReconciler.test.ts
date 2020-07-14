@@ -13,6 +13,19 @@ describe('CodeReconciler.reconcile', () => {
     steps = buildSteps(events);
   });
 
+  it('ignores new expressions when patch handle is missing', () => {
+    const reconciler = new CodeReconciler();
+
+    const newCode = buildVirtualCode([steps[0]]);
+    expect(reconciler.hasChanges(newCode)).toBeTruthy();
+
+    const reconciled = reconciler.reconcile({
+      actualCode: 'original code',
+      virtualCode: newCode,
+    });
+    expect(reconciled).toEqual('original code');
+  });
+
   it('inserts new expressions', () => {
     const reconciler = new CodeReconciler();
 
