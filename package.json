@@ -24,7 +24,7 @@
     "watch": "npm run clean && concurrently --kill-others \"npm run watch:tsc\" \"npm run watch:web\"",
     "lint": "eslint --ext .ts,.tsx --config .eslintrc.json --no-eslintrc src",
     "postinstall": "node ./postInstallMessage.js",
-    "release": "np --no-cleanup",
+    "release": "np --no-cleanup --any-branch",
     "test": "jest",
     "test:server": "npx @qawolf/sandbox",
     "ts-node": "ts-node",
