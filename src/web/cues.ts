@@ -4,7 +4,7 @@ import { isDynamic } from './isDynamic';
 import { SelectorPart } from './types';
 
 const DEFAULT_ATTRIBUTE =
-  'data-cy,data-e2e,data-qa,data-test,data-testid,/^qa-.*/';
+  'data-cy,data-e2e,data-qa,/^data-test.*/,/^qa-.*/';
 
 // make sure to update CueTypeRank if editing this
 const CSS_ATTRIBUTES = [
@@ -122,6 +122,8 @@ export const buildTextCues = ({
   ) {
     text = element.value;
   }
+
+  console.debug(`qawolf: found text="${text}" for element`, element);
 
   if (
     !text ||
