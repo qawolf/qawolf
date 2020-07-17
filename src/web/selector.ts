@@ -38,11 +38,6 @@ export const toSelector = (selectorParts: SelectorPart[]): string => {
 };
 
 export const buildSelector = (options: BuildCues): string => {
-  const tagName = options.target.tagName.toLowerCase();
-  if (['body', 'html'].includes(tagName)) {
-    return tagName;
-  }
-
   const cues = buildCues(options);
 
   for (const cueGroup of iterateCues(cues)) {

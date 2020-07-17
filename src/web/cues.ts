@@ -1,39 +1,15 @@
 import { getAttribute } from './attribute';
-import { canTargetValue } from './element';
+import { getElementText } from './element';
 import { isDynamic } from './isDynamic';
 import { SelectorPart } from './types';
 
-const DEFAULT_ATTRIBUTE =
+const DEFAULT_ATTRIBUTE_LIST =
   'data-cy,data-e2e,data-qa,/^data-test.*/,/^qa-.*/';
-
-// make sure to update CueTypeRank if editing this
-const CSS_ATTRIBUTES = [
-  'alt',
-  'aria-label',
-  'contenteditable',
-  'for',
-  'href',
-  'name',
-  'placeholder',
-  'src',
-  'title',
-  'value',
-] as const;
-
-const CueTypes = [
-  ...CSS_ATTRIBUTES,
-  'attribute',
-  'class',
-  'id',
-  'tag',
-  'text',
-] as const;
-
-export type CueType = typeof CueTypes[number];
 
 export type Cue = {
   level: number; // 0 is target, 1 is parent, etc.
-  type: CueType;
+  penalty: number; // Cue type penalty plus PENALTY_PER_LEVEL
+  type: string;
   value: string;
 };
 
@@ -50,38 +26,108 @@ export type BuildCues = {
   target: HTMLElement;
 };
 
+type CueTypeConfig = {
+  elements: string[];
+  penalty: number;
+};
+
+type CueTypesConfig = Record<string, CueTypeConfig>
+
 type BuildCuesForElement = {
-  attributes: string[];
+  cueTypesConfig: CueTypesConfig;
   element: HTMLElement;
   isClick: boolean;
   level: number;
 };
 
-type BuildTextCues = {
-  element: HTMLElement;
-  isClick: boolean;
-  level: number;
+/**
+ * For each cue type, this defines which elements it applies to and a penalty
+ * value. Higher penalty means it is less likely that this will be helpful in
+ * constructing a unique, short, and attractive selector. We can and should
+ * work to fine tune the penalty values over time.
+ *
+ * Users may add attributes to this list using the `attribute` config option.
+ */
+const ConfigByCueType: CueTypesConfig = {
+  'alt': {
+    elements: ['area', 'img', 'input[type=image]'],
+    penalty: 20,
+  },
+  'aria-label': {
+    elements: ['*'],
+    penalty: 20,
+  },
+  'class': {
+    elements: ['*'],
+    penalty: 10,
+  },
+  'contenteditable': {
+    elements: ['*'],
+    // High penalty because it is unlikely to be unique given that the value is always the same
+    penalty: 50,
+  },
+  'for': {
+    elements: ['label', 'output'],
+    penalty: 5,
+  },
+  'href': {
+    elements: ['a'],
+    penalty: 10,
+  },
+  'id': {
+    elements: ['*'],
+    penalty: 5,
+  },
+  'name': {
+    elements: ['button', 'form', 'fieldset', 'iframe', 'input', 'object', 'output', 'select', 'textarea', 'map'],
+    penalty: 10,
+  },
+  'placeholder': {
+    elements: ['input', 'textarea'],
+    penalty: 10,
+  },
+  'src': {
+    elements: ['audio', 'iframe', 'img', 'input[type=image]', 'video'],
+    penalty: 15,
+  },
+  'tag': {
+    elements: ['*'],
+    penalty: 40,
+  },
+  'text': {
+    elements: ['*'],
+    penalty: 12,
+  },
+  'title': {
+    elements: ['area', 'img', 'input[type=image]'],
+    penalty: 20,
+  },
+  'value': {
+    elements: ['option', 'button', 'input[type=submit]', 'input[type=button]', 'input[type=checkbox]', 'input[type=radio]'],
+    penalty: 10,
+  },
 };
 
-export const buildAttributeCues = ({
-  attributes,
-  element,
-  level,
-  useAttributeName,
-}: BuildAttributeCues): Cue[] => {
-  const cues: Cue[] = [];
+/**
+ * @summary Get final cue types config
+ * @return Cue type config with preferred attributes added. For now,
+ *   all attributes are given 0 penalty, but eventually the user
+ *   config could support custom penalties for each.
+ */
+export const getCueTypesConfig = (attributes: string[]): CueTypesConfig => {
+  const preferredAttributes: CueTypesConfig = {};
 
   attributes.forEach((attribute) => {
-    const attributeValuePair = getAttribute({ attribute, element });
-    if (!attributeValuePair) return;
+    preferredAttributes[attribute] = {
+      elements: ['*'],
+      penalty: 0,
+    };
+  }, {});
 
-    const { name, value } = attributeValuePair;
-    const type = (useAttributeName ? name : 'attribute') as CueType;
-
-    cues.push({ level, type, value: `[${name}="${value}"]` });
-  });
-
-  return cues;
+  return {
+    ...ConfigByCueType,
+    ...preferredAttributes,
+  };
 };
 
 export const buildCueValueForTag = (element: HTMLElement): string => {
@@ -107,85 +153,85 @@ export const buildCueValueForTag = (element: HTMLElement): string => {
   return `${tagName}:nth-of-type(${nthIndex})`;
 };
 
-export const buildTextCues = ({
-  element,
-  isClick,
-  level,
-}: BuildTextCues): Cue[] => {
-  if (!isClick) return [];
-
-  let text = element.innerText.trim();
-
-  if (
-    element instanceof HTMLInputElement &&
-    ['button', 'submit'].includes(element.type)
-  ) {
-    text = element.value;
-  }
-
-  console.debug(`qawolf: found text="${text}" for element`, element);
-
-  if (
-    !text ||
-    text.length > 200 ||
-    text.match(/[\n\r\t]+/) ||
-    // ignore invisible characters which look like an empty string but have a length
-    // https://www.w3resource.com/javascript-exercises/javascript-string-exercise-32.php
-    // https://stackoverflow.com/a/21797208/230462
-    text.match(/[^\x20-\x7E]/g)
-  )
-    return [];
-
-  return [{ level, type: 'text', value: text }];
-};
-
 export const buildCuesForElement = ({
-  attributes,
+  cueTypesConfig,
   element,
   isClick,
   level,
 }: BuildCuesForElement): Cue[] => {
-  let cssAttributes = [...CSS_ATTRIBUTES];
-
-  if (!canTargetValue(element)) {
-    cssAttributes = cssAttributes.filter((attribute) => attribute !== 'value');
+  // For body and html, we never have more than one, so
+  // just 'tag' cue is needed and we can save some time.
+  const tagName = element.tagName.toLowerCase();
+  if (['html', 'body'].includes(tagName)) {
+    return [{ level, penalty: 0, type: 'tag', value: tagName }];
   }
 
-  const cues: Cue[] = [
-    ...buildAttributeCues({ attributes, element, level }),
-    ...buildAttributeCues({
-      attributes: cssAttributes,
-      element,
-      level,
-      useAttributeName: true,
-    }),
-    ...buildTextCues({ element, isClick, level }),
-  ];
+  const cues: Cue[] = Object.keys(cueTypesConfig).reduce((list, cueType) => {
+    const { elements, penalty } = cueTypesConfig[cueType];
 
-  element.classList.forEach((c) => {
-    if (isDynamic(c)) return;
+    // First find out whether this cue type is relevant for this element
+    if (!elements.some((selector: string) => element.matches(selector))) {
+      return list;
+    }
 
-    cues.push({ level, type: 'class', value: `.${c}` });
-  });
+    switch (cueType) {
+      // Special handling for "class" attribute
+      case 'class': {
+        element.classList.forEach((c) => {
+          if (isDynamic(c)) return;
 
-  if (element.id && !isDynamic(element.id)) {
-    cues.push({ level, type: 'id', value: `#${element.id}` });
-  }
+          list.push({ level, penalty, type: 'class', value: `.${c}` });
+        });
+        break;
+      }
+      // Special handling for "id" attribute
+      case 'id': {
+        const elementId = element.id;
+        if (elementId && !isDynamic(elementId)) {
+          list.push({ level, penalty, type: 'id', value: `#${elementId}` });
+        }
+        break;
+      }
+      // Special handling for "tag" type
+      case 'tag':
+        list.push({ level, penalty, type: 'tag', value: buildCueValueForTag(element) });
+        break;
+      // Special handling for "text" type
+      case 'text': {
+        if (!isClick) return list;
+        const value = getElementText(element);
+        if (value) {
+          list.push({ level, penalty, type: 'text', value });
+        }
+        break;
+      }
+      // Everything else is just an attribute
+      default: {
+        const attributeValuePair = getAttribute({ attribute: cueType, element });
+        if (attributeValuePair) {
+          const { name, value } = attributeValuePair;
+          list.push({ level, penalty, type: 'attribute', value: `[${name}="${value}"]` });
+        }
+        break;
+      }
+    }
 
-  cues.push({ level, type: 'tag', value: buildCueValueForTag(element) });
+    return list;
+  }, []);
 
   return cues;
 };
 
 export const buildCues = ({ attribute, isClick, target }: BuildCues): Cue[] => {
-  const attributes = (attribute || DEFAULT_ATTRIBUTE).split(',');
+  const attributes = (attribute || DEFAULT_ATTRIBUTE_LIST).split(',');
+  const cueTypesConfig = getCueTypesConfig(attributes);
 
   const cues: Cue[] = [];
   let element: HTMLElement = target;
   let level = 0;
 
   while (element) {
-    cues.push(...buildCuesForElement({ attributes, element, isClick, level }));
+    cues.push(...buildCuesForElement({ cueTypesConfig, element, isClick, level }));
 
     element = element.parentElement;
     level += 1;

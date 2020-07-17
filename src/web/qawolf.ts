@@ -1,14 +1,13 @@
 export { getAttribute, getRegexAttribute } from './attribute';
 export {
-  buildAttributeCues,
   buildCues,
   buildCuesForElement,
   buildCueValueForTag,
-  buildTextCues,
+  getCueTypesConfig,
 } from './cues';
 export {
-  canTargetValue,
   getClickableAncestor,
+  getElementText,
   isClickable,
   isVisible,
 } from './element';

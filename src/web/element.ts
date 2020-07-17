@@ -1,16 +1,5 @@
 import { getXpath } from './serialize';
 
-export const canTargetValue = (element: HTMLElement): boolean => {
-  // do not target value of inputs where the value will change
-  const tagName = element.tagName.toLowerCase();
-
-  if (tagName === 'input') {
-    return ['checkbox', 'radio'].includes((element as HTMLInputElement).type);
-  }
-
-  return tagName !== 'textarea';
-};
-
 export const isVisible = (
   element: Element,
   computedStyle?: CSSStyleDeclaration,
@@ -78,4 +67,30 @@ export const getClickableAncestor = (element: HTMLElement): HTMLElement => {
   console.debug('qawolf: found clickable ancestor', getXpath(ancestor));
 
   return ancestor;
+};
+
+export const getElementText = (element: HTMLElement): string => {
+  let text = element.innerText.trim();
+
+  if (
+    element instanceof HTMLInputElement &&
+    ['button', 'submit'].includes(element.type)
+  ) {
+    text = element.value;
+  }
+
+  if (
+    !text ||
+    text.length > 200 ||
+    text.match(/[\n\r\t]+/) ||
+    // ignore invisible characters which look like an empty string but have a length
+    // https://www.w3resource.com/javascript-exercises/javascript-string-exercise-32.php
+    // https://stackoverflow.com/a/21797208/230462
+    text.match(/[^\x20-\x7E]/g)
+  )
+    return null;
+
+  console.debug(`qawolf: found text="${text}" for element`, element);
+
+  return text;
 };

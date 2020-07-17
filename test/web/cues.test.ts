@@ -19,59 +19,6 @@ describe('browser tests', () => {
 
   afterAll(() => browser.close());
 
-  describe('buildAttributeCues', () => {
-    const buildAttributeCues = async (
-      selector: string,
-      attributes: string[],
-      level: number,
-      useAttributeName = false,
-    ): Promise<Cue[]> => {
-      return page.evaluate(
-        ({ attributes, level, selector, useAttributeName }) => {
-          const qawolf: QAWolfWeb = (window as any).qawolf;
-          const element = document.querySelector(selector) as HTMLElement;
-
-          return qawolf.buildAttributeCues({
-            attributes,
-            element,
-            level,
-            useAttributeName,
-          });
-        },
-        { attributes, level, selector, useAttributeName },
-      );
-    };
-
-    it('returns attribute cues', async () => {
-      const cues = await buildAttributeCues('#single', ['data-qa', 'id'], 1);
-
-      expect(cues).toEqual([
-        { level: 1, type: 'attribute', value: '[data-qa="html-checkbox"]' },
-        { level: 1, type: 'attribute', value: '[id="single"]' },
-      ]);
-    });
-
-    it('uses attribute name as cue type if specified', async () => {
-      const cues = await buildAttributeCues(
-        '#single',
-        ['data-qa', 'id'],
-        1,
-        true,
-      );
-
-      expect(cues).toEqual([
-        { level: 1, type: 'data-qa', value: '[data-qa="html-checkbox"]' },
-        { level: 1, type: 'id', value: '[id="single"]' },
-      ]);
-    });
-
-    it('returns empty array if element has no specified attributes', async () => {
-      const cues = await buildAttributeCues('#single', ['alt', 'title'], 1);
-
-      expect(cues).toEqual([]);
-    });
-  });
-
   describe('buildCues', () => {
     const buildCues = async (selector: string): Promise<Cue[]> => {
       return page.evaluate((selector) => {
@@ -95,8 +42,9 @@ describe('browser tests', () => {
           const qawolf: QAWolfWeb = (window as any).qawolf;
           const element = document.querySelector(selector) as HTMLElement;
 
+          const cueTypesConfig = qawolf.getCueTypesConfig(['data-qa']);
           return qawolf.buildCuesForElement({
-            attributes: ['data-qa'],
+            cueTypesConfig,
             element,
             isClick: true,
             level: 1,
@@ -111,16 +59,16 @@ describe('browser tests', () => {
     it('builds cues for an element', async () => {
       const cues = await buildCuesForElement('#single');
       expect(cues).toEqual([
-        { level: 1, type: 'attribute', value: '[data-qa="html-checkbox"]' },
-        { level: 1, type: 'id', value: '#single' },
-        { level: 1, type: 'tag', value: 'input' },
+        { level: 1, penalty: 5, type: 'id', value: '#single' },
+        { level: 1, penalty: 40, type: 'tag', value: 'input' },
+        { level: 1, penalty: 0, type: 'attribute', value: '[data-qa="html-checkbox"]' },
       ]);
 
       const cues2 = await buildCuesForElement('[for="single"]');
       expect(cues2).toEqual([
-        { level: 1, type: 'for', value: '[for="single"]' },
-        { level: 1, type: 'text', value: 'Single checkbox' },
-        { level: 1, type: 'tag', value: 'label' },
+        { level: 1, penalty: 5, type: 'attribute', value: '[for="single"]' },
+        { level: 1, penalty: 40, type: 'tag', value: 'label' },
+        { level: 1, penalty: 12, type: 'text', value: 'Single checkbox' },
       ]);
     });
   });
@@ -156,70 +104,51 @@ describe('browser tests', () => {
     });
   });
 
-  describe('buildTextCues', () => {
+  describe('getElementText', () => {
     afterAll(() => page.goto(`${TEST_URL}checkbox-inputs`));
 
-    const buildTextCues = async (
+    const getElementText = async (
       selector: string,
-      level: number,
-      isClick: boolean,
-    ): Promise<Cue[]> => {
+    ): Promise<string|null> => {
       return page.evaluate(
-        ({ isClick, level, selector }) => {
+        ({ selector }) => {
           const qawolf: QAWolfWeb = (window as any).qawolf;
           const element = document.querySelector(selector) as HTMLElement;
 
-          return qawolf.buildTextCues({
-            element,
-            isClick,
-            level,
-          });
+          return qawolf.getElementText(element);
         },
-        { isClick, level, selector },
+        { selector },
       );
     };
 
-    it('returns empty array if not a click', async () => {
-      const cues = await buildTextCues('#single', 1, false);
-      expect(cues).toEqual([]);
+    it('returns null if no text', async () => {
+      const cues = await getElementText('#single');
+      expect(cues).toBe(null);
     });
 
-    it('returns empty array if no text', async () => {
-      const cues = await buildTextCues('#single', 1, true);
-      expect(cues).toEqual([]);
+    it('returns null if excessive text', async () => {
+      const cues = await getElementText('.container');
+      expect(cues).toBe(null);
     });
 
-    it('returns empty array if excessive text', async () => {
-      const cues = await buildTextCues('.container', 1, true);
-      expect(cues).toEqual([]);
-    });
-
-    it('returns text cue if applicable', async () => {
+    it('returns text if applicable', async () => {
       await page.goto(`${TEST_URL}buttons`);
 
-      const cues = await buildTextCues('#submit-input', 1, true);
+      const cues = await getElementText('#submit-input');
 
-      expect(cues).toEqual([{ level: 1, type: 'text', value: 'Submit Input' }]);
+      expect(cues).toBe('Submit Input');
     });
 
     it('handles quotes in text', async () => {
-      const cues = await buildTextCues('.quote-button', 1, true);
+      const cues = await getElementText('.quote-button');
 
-      expect(cues).toEqual([
-        {
-          level: 1,
-          type: 'text',
-          value: 'Button "with" extra \'quotes\'',
-        },
-      ]);
+      expect(cues).toBe('Button "with" extra \'quotes\'');
     });
 
     it('trims extra whitespace', async () => {
-      const cues = await buildTextCues('#whitespace-button', 1, true);
+      const cues = await getElementText('#whitespace-button');
 
-      expect(cues).toEqual([
-        { level: 1, type: 'text', value: 'I have extra whitespace' },
-      ]);
+      expect(cues).toBe('I have extra whitespace');
     });
   });
 });
@@ -227,14 +156,15 @@ describe('browser tests', () => {
 describe('buildSelectorParts', () => {
   it('builds selector from cues', () => {
     const cues = [
-      { level: 0, type: 'class' as 'class', value: '.search-input' },
+      { level: 0, penalty: 0, type: 'class', value: '.search-input' },
       {
         level: 1,
-        type: 'attribute' as 'attribute',
+        penalty: 0,
+        type: 'attribute',
         value: '[data-qa="search"]',
       },
-      { level: 0, type: 'tag' as 'tag', value: 'input' },
-      { level: 0, type: 'id' as 'id', value: '#search' },
+      { level: 0, penalty: 0, type: 'tag', value: 'input' },
+      { level: 0, penalty: 0, type: 'id', value: '#search' },
     ];
 
     const selector = buildSelectorParts(cues);
@@ -247,10 +177,11 @@ describe('buildSelectorParts', () => {
 
   it('includes text selector if applicable', () => {
     const cues = [
-      { level: 1, type: 'id' as 'id', value: '#container' },
+      { level: 1, penalty: 0, type: 'id', value: '#container' },
       {
         level: 0,
-        type: 'text' as 'text',
+        penalty: 0,
+        type: 'text',
         value: '"Submit"',
       },
     ];

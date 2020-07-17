@@ -16,35 +16,6 @@ beforeAll(async () => {
 
 afterAll(() => browser.close());
 
-describe('canTargetValue', () => {
-  const canTargetValue = async (selector: string): Promise<boolean> => {
-    return page.evaluate(
-      ({ selector }) => {
-        const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.querySelector(selector) as HTMLElement;
-        return qawolf.canTargetValue(element);
-      },
-      { selector },
-    );
-  };
-
-  it('allows checkbox inputs', async () => {
-    await page.goto(`${TEST_URL}checkbox-inputs`);
-    expect(await canTargetValue('[data-qa="html-checkbox"]')).toEqual(true);
-  });
-
-  it('allows radio inputs', async () => {
-    await page.goto(`${TEST_URL}radio-inputs`);
-    expect(await canTargetValue('[data-qa="html-radio"]')).toEqual(true);
-  });
-
-  it('disallows text inputs', async () => {
-    await page.goto(`${TEST_URL}text-inputs`);
-    expect(await canTargetValue('[data-qa="html-text-input"]')).toEqual(false);
-    expect(await canTargetValue('[data-qa="html-textarea"]')).toEqual(false);
-  });
-});
-
 describe('getClickableAncestor', () => {
   beforeAll(async () => {
     await page.goto(`${TEST_URL}login`);
