@@ -12,6 +12,9 @@ type IsMatch = {
   target: HTMLElement;
 };
 
+const selectorCache = new Map<HTMLElement, SelectorPart[]>();
+const clickSelectorCache = new Map<HTMLElement, SelectorPart[]>();
+
 export const isMatch = ({ selectorParts, target }: IsMatch): boolean => {
   const result = querySelectorAll({ parts: selectorParts }, document.body);
 
@@ -38,16 +41,59 @@ export const toSelector = (selectorParts: SelectorPart[]): string => {
 };
 
 export const buildSelector = (options: BuildCues): string => {
-  const cues = buildCues(options);
+  const { isClick, target } = options;
 
-  for (const cueGroup of iterateCues(cues)) {
-    const selectorParts = buildSelectorParts(cueGroup);
+  // To save looping, see if we have already figured out a unique
+  // selector for this target.
+  let cachedSelectorParts: SelectorPart[];
+  if (isClick) {
+    cachedSelectorParts = clickSelectorCache.get(target);
+  } else {
+    cachedSelectorParts = selectorCache.get(target);
+  }
 
-    if (isMatch({ selectorParts, target: options.target })) {
-      const selector = toSelector(selectorParts);
+  let selector: string;
+  if (cachedSelectorParts) {
+    // Even if we have cached a selector, it is possible that the DOM
+    // has changed since the cached one was built. Confirm it's a match.
+    if (isMatch({ selectorParts: cachedSelectorParts, target })) {
+      selector = toSelector(cachedSelectorParts);
+      // console.debug('Using cached selector', selector, 'for target', target);
       return selector;
     }
   }
 
-  return `xpath=${getXpath(options.target)}`;
+  const cues = buildCues(options);
+
+  // iterateCues will dynamically figure out increasingly
+  // complex cue groups to suggest
+  for (const cueGroup of iterateCues(cues)) {
+    const selectorParts = buildSelectorParts(cueGroup);
+
+    // If the suggested cue group matches this target and no others, use it.
+    if (isMatch({ selectorParts, target })) {
+      // First cache it so that we don't need to do all the looping for this
+      // same target next time. We cache `selectorParts` rather than `selector`
+      // because the DOM can change, so when we later use the cached selector,
+      // we will need to run it through `isMatch` again, which needs the parsed
+      // selector.
+      if (isClick) {
+        clickSelectorCache.set(target, selectorParts);
+      } else {
+        selectorCache.set(target, selectorParts);
+      }
+
+      // Now convert selectorParts (a Playwright thing) to a string selector
+      selector = toSelector(selectorParts);
+      break;
+    }
+  }
+
+  // If no selector was unique, fall back to xpath.
+  if (!selector) {
+    selector = `xpath=${getXpath(target)}`
+  }
+
+  // console.debug('Built selector', selector, 'for target', target);
+  return selector;
 };
