@@ -8,7 +8,8 @@ export type ParsedSelector = {
   parts: SelectorPart[];
 };
 
-export type QuerySelectorAllFn = (
-  selector: ParsedSelector,
-  root: HTMLElement,
-) => HTMLElement[];
+export type Evaluator = {
+  isVisible(element: Element): boolean;
+
+  querySelectorAll(selector: ParsedSelector, root: HTMLElement): HTMLElement[];
+};

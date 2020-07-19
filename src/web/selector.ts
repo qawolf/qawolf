@@ -1,11 +1,13 @@
 import { buildCues, buildSelectorParts, BuildCues } from './cues';
 import { iterateCues } from './iterateCues';
 import { getXpath } from './serialize';
-import { SelectorPart, QuerySelectorAllFn } from './types';
+import { Evaluator, SelectorPart } from './types';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const evaluator = require('playwright-evaluator');
-const querySelectorAll: QuerySelectorAllFn = evaluator.querySelectorAll;
+const {
+  isVisible,
+  querySelectorAll,
+}: Evaluator = require('playwright-evaluator');
 
 type IsMatch = {
   selectorParts: SelectorPart[];
@@ -16,7 +18,10 @@ const selectorCache = new Map<HTMLElement, SelectorPart[]>();
 const clickSelectorCache = new Map<HTMLElement, SelectorPart[]>();
 
 export const isMatch = ({ selectorParts, target }: IsMatch): boolean => {
-  const result = querySelectorAll({ parts: selectorParts }, document.body);
+  const result = querySelectorAll(
+    { parts: selectorParts },
+    document.body,
+  ).filter((element) => isVisible(element));
 
   // console.debug('Try selector', selectorParts[0], selectorParts[1], target);
 
@@ -91,7 +96,7 @@ export const buildSelector = (options: BuildCues): string => {
 
   // If no selector was unique, fall back to xpath.
   if (!selector) {
-    selector = `xpath=${getXpath(target)}`
+    selector = `xpath=${getXpath(target)}`;
   }
 
   // console.debug('Built selector', selector, 'for target', target);
