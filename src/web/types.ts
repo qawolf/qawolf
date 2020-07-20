@@ -11,5 +11,5 @@ export type ParsedSelector = {
 export type Evaluator = {
   isVisible(element: Element): boolean;
 
-  querySelectorAll(selector: ParsedSelector, root: HTMLElement): HTMLElement[];
+  querySelectorAll(selector: ParsedSelector, root: Node): HTMLElement[];
 };

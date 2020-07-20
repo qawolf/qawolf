@@ -20,7 +20,7 @@ const clickSelectorCache = new Map<HTMLElement, SelectorPart[]>();
 export const isMatch = ({ selectorParts, target }: IsMatch): boolean => {
   const result = querySelectorAll(
     { parts: selectorParts },
-    document.body,
+    document,
   ).filter((element) => isVisible(element));
 
   // console.debug('Try selector', selectorParts[0], selectorParts[1], target);
