@@ -1,10 +1,14 @@
 import { Cue } from './cues';
 
 type CombineCuesOptions = {
+  baseGroup?: Cue[];
+  lastAddedCueIndex?: number;
   minPenalty: number;
   maxPenalty: number;
-  startingGroup?: Cue[];
-  startingGroupIndexes?: number[];
+};
+
+type IterateCuesOptions = {
+  penaltyRangeIncrement?: number;
 };
 
 // A larger number for INCREMENT results in less unnecessary looping
@@ -38,20 +42,21 @@ const sortCues = (cues: Cue[]): Cue[] =>
  *   penalty is the result of multiple cues.
  */
 function* combineCues(allCues: Cue[], {
+  lastAddedCueIndex = -1,
   minPenalty,
   maxPenalty,
-  startingGroup = [],
-  startingGroupIndexes = []
+  baseGroup = [],
 }: CombineCuesOptions): Generator<Cue[], void, undefined> {
   const trialGroups = [];
-  const trialGroupsIndexes = [];
+  const baseGroupsIndexes = [];
+  const baseGroups = [];
 
-  for (let index = 0; index < allCues.length; index++) {
-    // There is never any reason to add a cue twice to the same group
-    if (startingGroupIndexes.includes(index)) continue;
-
+  // NOTE: starting looping from lastAddedCueIndex+1 ensures we won't include
+  // the same cue twice, but it also requires that we sort allCues by penalty
+  // before the initial call. Otherwise some combinations will be missed.
+  for (let index = lastAddedCueIndex + 1; index < allCues.length; index++) {
     const cue = allCues[index];
-    const expandedGroup = [...startingGroup, cue];
+    const expandedGroup = [...baseGroup, cue];
 
     // Groups that have no level=0 cues are useless
     const level0Cue = expandedGroup.find((cue) => cue.level === 0);
@@ -60,27 +65,53 @@ function* combineCues(allCues: Cue[], {
     // Groups that are outside the current acceptable penalty
     // range will be tried later or were already tried.
     const totalPenalty = expandedGroup.reduce((acc, cue) => acc + cue.penalty, 0);
-    if (totalPenalty > maxPenalty || totalPenalty < minPenalty) continue;
 
-    trialGroups.push(expandedGroup);
-    trialGroupsIndexes.push([...startingGroupIndexes, index]);
+    if (totalPenalty < minPenalty) {
+      // A group that hasn't hit the minimum penalty can be added to baseGroups
+      // until we potentially hit the correct penalty range, but should not
+      // be tried yet.
+      baseGroups.push(expandedGroup);
+      baseGroupsIndexes.push(index);
+    } else if (totalPenalty > maxPenalty) {
+      // We exceeded the max penalty so we shouldn't try it and there is no point
+      // in adding it to baseGroups.
+    } else {
+      // We're in the current penalty range. Try the group and add it to baseGroups
+      // for further expansion.
+      trialGroups.push(expandedGroup);
+      baseGroups.push(expandedGroup);
+      baseGroupsIndexes.push(index);
+    }
   }
 
   yield* trialGroups;
 
-  for (let index = 0; index < trialGroups.length; index++) {
-    const trialGroup = trialGroups[index];
-    const trialGroupIndexes = trialGroupsIndexes[index];
+  for (let index = 0; index < baseGroups.length; index++) {
     yield* combineCues(allCues, {
+      baseGroup: baseGroups[index],
+      lastAddedCueIndex: baseGroupsIndexes[index],
       minPenalty,
       maxPenalty,
-      startingGroup: trialGroup,
-      startingGroupIndexes: trialGroupIndexes,
     });
   }
 }
 
-export function* iterateCues(cues: Cue[]): Generator<Cue[], void, undefined> {
+/**
+ * @summary Iterates through all possible groups (combinations) of cues, in such an order
+ *   as to hopefully provide the best short, readable, and unique selector as quickly as possible.
+ * @param {Object[]} cues The list of all cues, in any order.
+ * @param {Object} [options] Options
+ * @param {Object} [options.penaltyRangeIncrement=5] A higher value means a greater chance
+ *   that higher penalty groups are returned before lower penalty groups, but a lower value
+ *   potentially does a lot more unnecessary looping. The value must be 1 or greater, and a
+ *   value of 1, although slowest, ensures results are 100% sorted in total penalty order.
+ *   Values above 1 cause the penalty sorting to be increasingly fuzzy.
+ */
+export function* iterateCues(cues: Cue[], options?: IterateCuesOptions): Generator<Cue[], void, undefined> {
+  const {
+    penaltyRangeIncrement = MAX_PENALTY_INCREMENT
+  } = options || {};
+
   const cuesSortedByPenalty = sortCues(cues);
 
   let minPenalty = 0;
@@ -88,6 +119,6 @@ export function* iterateCues(cues: Cue[]): Generator<Cue[], void, undefined> {
   do {
     yield* combineCues(cuesSortedByPenalty, { minPenalty, maxPenalty });
     minPenalty = maxPenalty + 1;
-    maxPenalty = maxPenalty + MAX_PENALTY_INCREMENT;
+    maxPenalty = maxPenalty + penaltyRangeIncrement;
   } while (maxPenalty <= MAX_PENALTY_BEFORE_FALLBACK);
 }
