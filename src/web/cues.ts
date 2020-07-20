@@ -72,7 +72,7 @@ const ConfigByCueType: CueTypesConfig = {
   },
   'href': {
     elements: ['a'],
-    penalty: 10,
+    penalty: 15,
   },
   'id': {
     elements: ['*'],
