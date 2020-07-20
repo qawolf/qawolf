@@ -42,6 +42,8 @@ describe('browser tests', () => {
           const qawolf: QAWolfWeb = (window as any).qawolf;
           const element = document.querySelector(selector) as HTMLElement;
 
+          if (!element) return [];
+
           const cueTypesConfig = qawolf.getCueTypesConfig(['data-qa']);
           return qawolf.buildCuesForElement({
             cueTypesConfig,
@@ -79,7 +81,7 @@ describe('browser tests', () => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
         const element = document.querySelector(selector) as HTMLElement;
 
-        return qawolf.buildCueValueForTag(element);
+        return element ? qawolf.buildCueValueForTag(element) : 'ELEMENT NOT FOUND';
       }, selector);
     };
 
@@ -115,7 +117,7 @@ describe('browser tests', () => {
           const qawolf: QAWolfWeb = (window as any).qawolf;
           const element = document.querySelector(selector) as HTMLElement;
 
-          return qawolf.getElementText(element);
+          return element ? qawolf.getElementText(element) : 'ELEMENT NOT FOUND';
         },
         { selector },
       );

@@ -52,13 +52,13 @@ Array [
   },
   Object {
     "level": 4,
-    "penalty": 0,
+    "penalty": 40,
     "type": "tag",
     "value": "body",
   },
   Object {
     "level": 5,
-    "penalty": 0,
+    "penalty": 40,
     "type": "tag",
     "value": "html",
   },

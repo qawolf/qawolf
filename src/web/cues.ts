@@ -163,7 +163,7 @@ export const buildCuesForElement = ({
   // just 'tag' cue is needed and we can save some time.
   const tagName = element.tagName.toLowerCase();
   if (['html', 'body'].includes(tagName)) {
-    return [{ level, penalty: 0, type: 'tag', value: tagName }];
+    return [{ level, penalty: ConfigByCueType.tag.penalty, type: 'tag', value: tagName }];
   }
 
   const cues: Cue[] = Object.keys(cueTypesConfig).reduce((list, cueType) => {
