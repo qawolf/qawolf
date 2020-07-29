@@ -69,6 +69,35 @@ export const getClickableAncestor = (element: HTMLElement): HTMLElement => {
   return ancestor;
 };
 
+/**
+ * @summary Returns the topmost isContentEditable ancestor. Editable areas can
+ *   have HTML elements in them, and these elements emit events, but in general
+ *   I don't think we want to keep track of anything within the editable area.
+ *   For example, if you click a particular paragraph in a `contenteditable`
+ *   div, we should just record it as a click/focus of the editable div.
+ */
+export const getTopmostEditableElement = (element: HTMLElement): HTMLElement => {
+  if (!element.isContentEditable) return element;
+
+  console.debug('qawolf: get editable ancestor for', getXpath(element));
+
+  let ancestor = element;
+  do {
+    if (!ancestor.parentElement || !ancestor.parentElement.isContentEditable) {
+      console.debug(
+        `qawolf: found editable ancestor: ${ancestor.tagName}`,
+        getXpath(ancestor),
+      );
+      return ancestor;
+    }
+
+    ancestor = ancestor.parentElement;
+  } while (ancestor);
+
+  // This should never be hit, but here as a safety
+  return element;
+};
+
 export const getElementText = (element: HTMLElement): string => {
   let text = element.innerText.trim();
 

@@ -1,5 +1,5 @@
 import { buildSelector } from './selector';
-import { getClickableAncestor, isVisible } from './element';
+import { getClickableAncestor, getTopmostEditableElement, isVisible } from './element';
 import { nodeToDoc } from './serialize';
 import * as types from '../types';
 
@@ -85,7 +85,8 @@ export class PageEventCollector {
       // Ex. when you click on the i (button > i) or rect (a > svg > rect)
       // chances are the ancestor (button, a) is a better target to find.
       // XXX if anyone runs into issues with this behavior we can allow disabling it from a flag.
-      const target = getClickableAncestor(event.target as HTMLElement);
+      let target = getClickableAncestor(event.target as HTMLElement);
+      target = getTopmostEditableElement(target);
       this.sendEvent('mousedown', { ...event, target });
     });
 
@@ -97,7 +98,8 @@ export class PageEventCollector {
     this.listen('click', (event) => {
       if (event.button !== 0) return;
 
-      const target = getClickableAncestor(event.target as HTMLElement);
+      let target = getClickableAncestor(event.target as HTMLElement);
+      target = getTopmostEditableElement(target);
       this.sendEvent('click', { ...event, target });
     });
 
