@@ -58,10 +58,6 @@ function* combineCues(allCues: Cue[], {
     const cue = allCues[index];
     const expandedGroup = [...baseGroup, cue];
 
-    // Groups that have no level=0 cues are useless
-    const level0Cue = expandedGroup.find((cue) => cue.level === 0);
-    if (!level0Cue) continue;
-
     // Groups that are outside the current acceptable penalty
     // range will be tried later or were already tried.
     const totalPenalty = expandedGroup.reduce((acc, cue) => acc + cue.penalty, 0);
@@ -78,9 +74,12 @@ function* combineCues(allCues: Cue[], {
     } else {
       // We're in the current penalty range. Try the group and add it to baseGroups
       // for further expansion.
-      trialGroups.push(expandedGroup);
       baseGroups.push(expandedGroup);
       baseGroupsIndexes.push(index);
+
+      // Groups that have no level=0 cues are useless
+      const level0Cue = expandedGroup.find((cue) => cue.level === 0);
+      if (level0Cue) trialGroups.push(expandedGroup);
     }
   }
 
