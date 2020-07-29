@@ -64,7 +64,7 @@ const ConfigByCueType: CueTypesConfig = {
   'contenteditable': {
     elements: ['*'],
     // High penalty because it is unlikely to be unique given that the value is always the same
-    penalty: 50,
+    penalty: 30,
   },
   'for': {
     elements: ['label', 'output'],
@@ -178,6 +178,7 @@ export const buildCuesForElement = ({
       // Special handling for "class" attribute
       case 'class': {
         element.classList.forEach((c) => {
+          // console.log("class", c, isDynamic(c));
           if (isDynamic(c)) return;
 
           list.push({ level, penalty, type: 'class', value: `.${c}` });
