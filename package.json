@@ -82,7 +82,7 @@
     "fs-extra": "^9.0.1",
     "jest": "^26.1.0",
     "jest-mock-process": "^1.4.0",
-    "playwright": "1.2.0",
+    "playwright": "1.2.1",
     "playwright-webkit": "1.2.1",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
