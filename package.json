@@ -74,7 +74,7 @@
     "@types/update-notifier": "^4.1.0",
     "@types/ws": "^7.2.6",
     "@typescript-eslint/eslint-plugin": "^3.6.1",
-    "@typescript-eslint/parser": "^3.6.1",
+    "@typescript-eslint/parser": "^3.7.1",
     "concurrently": "^5.2.0",
     "eslint": "^7.4.0",
     "eslint-config-prettier": "^6.11.0",
