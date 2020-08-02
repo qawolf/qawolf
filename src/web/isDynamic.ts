@@ -1,12 +1,14 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const englishWords = require('an-array-of-english-words/index.json');
 
-const layoutWords = ['col', 'fa', 'grid'];
-
-const allowedWords = new Set([
+const allWords = new Set([
   'btn',
+  'col',
   'div',
   'dropdown',
+  // favicon
+  'fa',
+  'grid',
   'html',
   'img',
   'inputtext',
@@ -14,6 +16,9 @@ const allowedWords = new Set([
   'li',
   'login',
   'logout',
+  // medium
+  'md',
+  // material ui
   'mui',
   'nav',
   'signin',
@@ -24,22 +29,26 @@ const allowedWords = new Set([
   'textinput',
   'todo',
   'ul',
-  ...layoutWords,
   ...englishWords,
 ]);
 
 const SCORE_THRESHOLD = 0.5;
 
-export const getWords = (value: string): string[] => {
-  const classWords = [];
-  // split by space characters and camel case
-  value.split(/[ \-_]+|(?=[A-Z])/).forEach((word) => {
-    if (!word) return; // ignore empty string
+export const getTokens = (value: string): string[] => {
+  const tokens = [];
 
-    classWords.push(word.toLowerCase());
+  // remove a numeric or alphabetic suffix
+  // ex: btn-1, btn_z -> btn
+  const symbol = value.replace(/[-_]+(\d+|\w)$/, '');
+
+  // split by space, dash, and camel case
+  symbol.split(/[ \-_]+|(?=[A-Z])/).forEach((token) => {
+    if (!token) return; // ignore empty string
+
+    tokens.push(token.toLowerCase());
   });
 
-  return classWords;
+  return tokens;
 };
 
 export const isDynamic = (
@@ -48,17 +57,13 @@ export const isDynamic = (
 ): boolean => {
   if (!value) return true;
 
-  const classWords = getWords(value);
+  const tokens = getTokens(value);
 
-  // dynamic if there is more than 1 digit and it does not include a layout word
-  const digits = (value.match(/\d+/g) || []).join('').length;
-  if (digits > 1 && !layoutWords.find((word) => classWords.includes(word))) {
-    return true;
-  }
+  const words = tokens.filter((token) => allWords.has(token));
 
-  const includedWords = classWords.filter((word) => allowedWords.has(word));
-  // dynamic if more than two non-included words
-  if (classWords.length - includedWords.length >= 2) return true;
+  // if there are more than 2 non-word tokens, mark it as dynamic
+  if (tokens.length - words.length >= 2) return true;
 
-  return includedWords.length / classWords.length <= threshold;
+  // if less than half of the tokens are words, mark it as dynamic
+  return words.length / tokens.length <= threshold;
 };
