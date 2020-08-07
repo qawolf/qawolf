@@ -8,6 +8,7 @@ export {
 export {
   getClickableAncestor,
   getElementText,
+  getTopmostEditableElement,
   isClickable,
   isVisible,
 } from './element';
