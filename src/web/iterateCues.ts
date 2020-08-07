@@ -42,14 +42,14 @@ const sortCues = (cues: Cue[]): Cue[] =>
  *   penalty is the result of multiple cues.
  */
 function* combineCues(allCues: Cue[], {
-  lastAddedCueIndex = -1,
-  minPenalty,
-  maxPenalty,
   baseGroup = [],
+  lastAddedCueIndex = -1,
+  maxPenalty,
+  minPenalty,
 }: CombineCuesOptions): Generator<Cue[], void, undefined> {
-  const trialGroups = [];
+  const trialGroups: Cue[][] = [];
   const baseGroupsIndexes = [];
-  const baseGroups = [];
+  const baseGroups: Cue[][] = [];
 
   // NOTE: starting looping from lastAddedCueIndex+1 ensures we won't include
   // the same cue twice, but it also requires that we sort allCues by penalty
@@ -89,8 +89,8 @@ function* combineCues(allCues: Cue[], {
     yield* combineCues(allCues, {
       baseGroup: baseGroups[index],
       lastAddedCueIndex: baseGroupsIndexes[index],
-      minPenalty,
       maxPenalty,
+      minPenalty,
     });
   }
 }
