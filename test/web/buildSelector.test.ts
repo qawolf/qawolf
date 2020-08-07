@@ -53,7 +53,6 @@ describe('buildSelector', () => {
     beforeAll(() => page.goto(`${TEST_URL}fixtures/amazon.html`));
 
     it.each([
-      '#nav-hamburger-menu',
       '[name="field-keywords"]',
       'text=Start here.',
     ])('builds expected selector %o', (selector) => expectSelector(selector));
