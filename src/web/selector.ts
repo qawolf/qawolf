@@ -3,11 +3,12 @@ import { iterateCues } from './iterateCues';
 import { getXpath } from './serialize';
 import { Evaluator, SelectorPart } from './types';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/* eslint-disable @typescript-eslint/no-var-requires */
 const {
   isVisible,
   querySelectorAll,
 }: Evaluator = require('playwright-evaluator');
+/* eslint-enable @typescript-eslint/no-var-requires */
 
 type IsMatch = {
   selectorParts: SelectorPart[];
@@ -16,6 +17,14 @@ type IsMatch = {
 
 const selectorCache = new Map<HTMLElement, SelectorPart[]>();
 const clickSelectorCache = new Map<HTMLElement, SelectorPart[]>();
+
+/**
+ * @summary Clear the selector cache. Currently only used for tests.
+ */
+export const clearSelectorCache = (): void => {
+  selectorCache.clear();
+  clickSelectorCache.clear();
+};
 
 export const isMatch = ({ selectorParts, target }: IsMatch): boolean => {
   const result = querySelectorAll(
