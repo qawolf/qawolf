@@ -55,7 +55,7 @@ const ConfigByCueType: CueTypesConfig = {
   },
   'aria-label': {
     elements: ['*'],
-    penalty: 20,
+    penalty: 8,
   },
   'class': {
     elements: ['*'],
@@ -84,7 +84,7 @@ const ConfigByCueType: CueTypesConfig = {
   },
   'placeholder': {
     elements: ['input', 'textarea'],
-    penalty: 10,
+    penalty: 12,
   },
   'src': {
     elements: ['audio', 'iframe', 'img', 'input[type=image]', 'video'],
