@@ -79,9 +79,25 @@ export const buildSelector = (options: BuildCues): string => {
 
   const cues = buildCues(options);
 
+  const nearestPreferredAttributeCue = cues.reduce((foundCue, cue) => {
+    if (cue.penalty === 0 && (!foundCue || foundCue.level > cue.level)) {
+      return cue;
+    }
+    return foundCue;
+  }, null);
+
   // iterateCues will dynamically figure out increasingly
   // complex cue groups to suggest
-  for (const cueGroup of iterateCues(cues)) {
+  for (let cueGroup of iterateCues(cues)) {
+    // Because custom attributes are preferred, we assume that at least one (nearest)
+    // should ALWAYS be included in every group, even if the selector might be
+    // unique without it.
+    if (nearestPreferredAttributeCue) {
+      if (!cueGroup.find((cue) => cue.penalty === 0)) {
+        cueGroup = [...cueGroup, nearestPreferredAttributeCue];
+      }
+    }
+
     const selectorParts = buildSelectorParts(cueGroup);
 
     // If the suggested cue group matches this target and no others, use it.
