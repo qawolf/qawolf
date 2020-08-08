@@ -4,51 +4,61 @@ exports[`browser tests buildCues builds cues for a target 1`] = `
 Array [
   Object {
     "level": 0,
-    "type": "attribute",
-    "value": "[data-qa=\\"html-checkbox\\"]",
-  },
-  Object {
-    "level": 0,
+    "penalty": 5,
     "type": "id",
     "value": "#single",
   },
   Object {
     "level": 0,
+    "penalty": 40,
     "type": "tag",
     "value": "input",
   },
   Object {
+    "level": 0,
+    "penalty": 0,
+    "type": "attribute",
+    "value": "[data-qa=\\"html-checkbox\\"]",
+  },
+  Object {
     "level": 1,
+    "penalty": 10,
     "type": "class",
     "value": ".container",
   },
   Object {
     "level": 1,
+    "penalty": 40,
     "type": "tag",
     "value": "div",
   },
   Object {
     "level": 2,
+    "penalty": 40,
     "type": "tag",
     "value": "div",
   },
   Object {
     "level": 3,
+    "penalty": 5,
     "type": "id",
     "value": "#root",
   },
   Object {
     "level": 3,
+    "penalty": 40,
     "type": "tag",
     "value": "div",
   },
   Object {
     "level": 4,
+    "penalty": 40,
     "type": "tag",
     "value": "body",
   },
   Object {
     "level": 5,
+    "penalty": 40,
     "type": "tag",
     "value": "html",
   },

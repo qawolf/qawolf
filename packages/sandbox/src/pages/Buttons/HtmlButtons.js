@@ -23,6 +23,12 @@ function HtmlButtons() {
       <button id="whitespace-button">{'     I have extra whitespace  '}</button>
       <br />
       <br />
+      <button className="btn-a btn-1">Classes</button>
+      <button className="btn-a btn-2">Classes</button>
+      <button className="btn-b btn-1">Classes</button>
+      <button className="btn-b btn-2">Classes</button>
+      <br />
+      <br />
       <input id="submit-input" type="submit" value="Submit Input" />
     </div>
   );

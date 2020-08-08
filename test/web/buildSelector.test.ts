@@ -22,7 +22,7 @@ describe('buildSelector', () => {
   ): Promise<void> => {
     const isArray = Array.isArray(options);
 
-    // [target selector, expected selector, isClick]
+    // [target selector, expected selector, isClick, attribute]
     const targetSelector = (isArray ? options[0] : options) as string;
     const expectedSelector = (isArray ? options[1] : options) as string;
     const isClick = typeof options[2] === 'boolean' ? options[2] : true;
@@ -34,6 +34,8 @@ describe('buildSelector', () => {
       ({ attribute, element, isClick }) => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
         const target = qawolf.getClickableAncestor(element as HTMLElement);
+
+        qawolf.clearSelectorCache();
 
         return qawolf.buildSelector({
           attribute,
@@ -51,7 +53,6 @@ describe('buildSelector', () => {
     beforeAll(() => page.goto(`${TEST_URL}fixtures/amazon.html`));
 
     it.each([
-      '#nav-hamburger-menu',
       '[name="field-keywords"]',
       'text=Start here.',
     ])('builds expected selector %o', (selector) => expectSelector(selector));
@@ -61,7 +62,7 @@ describe('buildSelector', () => {
     beforeAll(() => page.goto(`${TEST_URL}fixtures/todomvc.html`));
 
     it.each([
-      '[placeholder="What needs to be done?"]',
+      '.new-todo',
       '.toggle', // first one is the match
       'li:nth-of-type(2) .toggle',
       'text=Active',
@@ -90,10 +91,10 @@ describe('buildSelector', () => {
       it.each([
         // selects the target
         [['[data-qa="html-button"]', '[data-qa="html-button"]']],
+        [['.quote-button', `.quote-button`]],
         // selects the ancestor
         [['#html-button-child', '[data-qa="html-button-with-children"]']],
         [['.MuiButton-label', '[data-qa="material-button"]']],
-        [['.quote-button', `text=Button "with" extra 'quotes'`]],
       ])('builds expected selector %o', (selector) => expectSelector(selector));
     });
 
@@ -175,7 +176,7 @@ describe('buildSelector', () => {
         [
           [
             '[data-qa="draftjs"] [contenteditable="true"]',
-            '[data-qa="draftjs"] [contenteditable="true"]',
+            '[data-qa="draftjs"] .public-DraftEditor-content',
             false,
           ],
         ],
@@ -217,7 +218,7 @@ describe('buildSelector', () => {
         [['#button', '[data-test="click"] [data-qa="button"]']],
         // unique selectors
         [['#unique', '[data-qa="unique"]']],
-        [['#dog-0', '[data-qa="radio-group"] [value="dog-0"]']],
+        [['#dog-0', '[data-qa="radio-group"] #dog-0']],
       ])('builds expected selector %o', (selector) => expectSelector(selector));
     });
 
@@ -234,7 +235,7 @@ describe('buildSelector', () => {
           ],
         ],
         // ignore non-matching attributes
-        [['#button', 'text=Click me!', true, '/^qa-.*/']],
+        [['#button', '#button', true, '/^qa-.*/']],
         // ignore invalid regex
         [
           [

@@ -1,46 +1,60 @@
-import { Cue } from '../../src/web/cues';
-import { CueTypesRanked, iterateCues } from '../../src/web/iterateCues';
+import { Cue, getCueTypesConfig } from '../../src/web/cues';
+import { iterateCues } from '../../src/web/iterateCues';
 
-const buildCues = (level = 0): Cue[] =>
-  CueTypesRanked.slice(0, 4).map((type) => ({ level, type, value: 'value' }));
+const cueTypes: string[] = [
+  'aria-label',
+  'data-qa',
+  'data-testid',
+  'id',
+  'text',
+];
+
+const buildCues = (level = 0): Cue[] => {
+  const cueTypesConfig = getCueTypesConfig(['data-qa', 'data-testid']);
+  return cueTypes.map((type) => {
+    const { penalty } = cueTypesConfig[type];
+    return {
+      level,
+      penalty,
+      type,
+      value: 'value'
+    };
+  });
+};
 
 describe('iterate cues', () => {
+  let cues: Cue[];
+  let mockCueGroups: Cue[][];
+  beforeAll(() => {
+    cues = [...buildCues(0), ...buildCues(1)];
+    mockCueGroups = Array.from(iterateCues(cues));
+  });
+
   it('orders attributes cues first then types with equal or higher rank', () => {
-    const cues = [...buildCues(0), ...buildCues(1), ...buildCues(2)];
-    const iterated = Array.from(iterateCues(cues));
-    expect(
-      iterated.map((cues) => cues.map((c) => `${c.level}${c.type}`)),
-    ).toEqual([
-      ['0attribute'],
-      ['1attribute', '0attribute'],
-      ['1attribute', '0text'],
-      ['1attribute', '0id'],
-      ['1attribute', '0aria-label'],
-      ['2attribute', '0attribute'],
-      ['2attribute', '0text'],
-      ['2attribute', '0id'],
-      ['2attribute', '0aria-label'],
-      ['0text'],
-      ['1text', '0text'],
-      ['2text', '0text'],
-      ['0id'],
-      ['1text', '0id'],
-      ['2text', '0id'],
-      ['1id', '0text'],
-      ['1id', '0id'],
-      ['2id', '0text'],
-      ['2id', '0id'],
-      ['0aria-label'],
-      ['1text', '0aria-label'],
-      ['2text', '0aria-label'],
-      ['1id', '0aria-label'],
-      ['2id', '0aria-label'],
-      ['1aria-label', '0text'],
-      ['1aria-label', '0id'],
-      ['1aria-label', '0aria-label'],
-      ['2aria-label', '0text'],
-      ['2aria-label', '0id'],
-      ['2aria-label', '0aria-label'],
-    ]);
+    expect(mockCueGroups.map((cues) => cues.map((c) => `${c.level}${c.type}`))).toMatchSnapshot();
+  });
+
+  it('does not include the same group twice', () => {
+    // Ensure that it has logic to prevent [0att1, 0att2] AND [0att2, 0att1],
+    // for example, which are flipped but would result in the same selector.
+    const normalizedGroups = new Set();
+    const duplicateGroup = mockCueGroups.find((group) => {
+      const normalizedGroup = group.map((c) => `${c.level}${c.type}`).sort().join(',');
+      if (normalizedGroups.has(normalizedGroup)) return true;
+      normalizedGroups.add(normalizedGroup);
+      return false;
+    });
+
+    expect(duplicateGroup).toBe(undefined);
+  });
+
+  it('is sorted by total group penalty, ascending, when penaltyRangeIncrement is 1', () => {
+    const groups = Array.from(iterateCues(cues, { penaltyRangeIncrement: 1 }));
+    let lastTotalPenalty = 0;
+    for (const group of groups) {
+      const totalPenalty = group.reduce((acc, cue) => acc + cue.penalty, 0);
+      expect(totalPenalty).toBeGreaterThanOrEqual(lastTotalPenalty);
+      lastTotalPenalty = totalPenalty;
+    }
   });
 });

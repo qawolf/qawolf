@@ -1,19 +1,36 @@
 import { buildCues, buildSelectorParts, BuildCues } from './cues';
 import { iterateCues } from './iterateCues';
 import { getXpath } from './serialize';
-import { SelectorPart, QuerySelectorAllFn } from './types';
+import { Evaluator, SelectorPart } from './types';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const evaluator = require('playwright-evaluator');
-const querySelectorAll: QuerySelectorAllFn = evaluator.querySelectorAll;
+/* eslint-disable @typescript-eslint/no-var-requires */
+const {
+  isVisible,
+  querySelectorAll,
+}: Evaluator = require('playwright-evaluator');
+/* eslint-enable @typescript-eslint/no-var-requires */
 
 type IsMatch = {
   selectorParts: SelectorPart[];
   target: HTMLElement;
 };
 
+const selectorCache = new Map<HTMLElement, SelectorPart[]>();
+const clickSelectorCache = new Map<HTMLElement, SelectorPart[]>();
+
+/**
+ * @summary Clear the selector cache. Currently only used for tests.
+ */
+export const clearSelectorCache = (): void => {
+  selectorCache.clear();
+  clickSelectorCache.clear();
+};
+
 export const isMatch = ({ selectorParts, target }: IsMatch): boolean => {
-  const result = querySelectorAll({ parts: selectorParts }, document.body);
+  const result = querySelectorAll(
+    { parts: selectorParts },
+    document,
+  ).filter((element) => isVisible(element));
 
   // console.debug('Try selector', selectorParts[0], selectorParts[1], target);
 
@@ -38,21 +55,75 @@ export const toSelector = (selectorParts: SelectorPart[]): string => {
 };
 
 export const buildSelector = (options: BuildCues): string => {
-  const tagName = options.target.tagName.toLowerCase();
-  if (['body', 'html'].includes(tagName)) {
-    return tagName;
+  const { isClick, target } = options;
+
+  // To save looping, see if we have already figured out a unique
+  // selector for this target.
+  let cachedSelectorParts: SelectorPart[];
+  if (isClick) {
+    cachedSelectorParts = clickSelectorCache.get(target);
+  } else {
+    cachedSelectorParts = selectorCache.get(target);
   }
 
-  const cues = buildCues(options);
-
-  for (const cueGroup of iterateCues(cues)) {
-    const selectorParts = buildSelectorParts(cueGroup);
-
-    if (isMatch({ selectorParts, target: options.target })) {
-      const selector = toSelector(selectorParts);
+  let selector: string;
+  if (cachedSelectorParts) {
+    // Even if we have cached a selector, it is possible that the DOM
+    // has changed since the cached one was built. Confirm it's a match.
+    if (isMatch({ selectorParts: cachedSelectorParts, target })) {
+      selector = toSelector(cachedSelectorParts);
+      // console.debug('Using cached selector', selector, 'for target', target);
       return selector;
     }
   }
 
-  return `xpath=${getXpath(options.target)}`;
+  const cues = buildCues(options);
+
+  const nearestPreferredAttributeCue = cues.reduce((foundCue, cue) => {
+    if (cue.penalty === 0 && (!foundCue || foundCue.level > cue.level)) {
+      return cue;
+    }
+    return foundCue;
+  }, null);
+
+  // iterateCues will dynamically figure out increasingly
+  // complex cue groups to suggest
+  for (let cueGroup of iterateCues(cues)) {
+    // Because custom attributes are preferred, we assume that at least one (nearest)
+    // should ALWAYS be included in every group, even if the selector might be
+    // unique without it.
+    if (nearestPreferredAttributeCue) {
+      if (!cueGroup.find((cue) => cue.penalty === 0)) {
+        cueGroup = [...cueGroup, nearestPreferredAttributeCue];
+      }
+    }
+
+    const selectorParts = buildSelectorParts(cueGroup);
+
+    // If the suggested cue group matches this target and no others, use it.
+    if (isMatch({ selectorParts, target })) {
+      // First cache it so that we don't need to do all the looping for this
+      // same target next time. We cache `selectorParts` rather than `selector`
+      // because the DOM can change, so when we later use the cached selector,
+      // we will need to run it through `isMatch` again, which needs the parsed
+      // selector.
+      if (isClick) {
+        clickSelectorCache.set(target, selectorParts);
+      } else {
+        selectorCache.set(target, selectorParts);
+      }
+
+      // Now convert selectorParts (a Playwright thing) to a string selector
+      selector = toSelector(selectorParts);
+      break;
+    }
+  }
+
+  // If no selector was unique, fall back to xpath.
+  if (!selector) {
+    selector = `xpath=${getXpath(target)}`;
+  }
+
+  // console.debug('Built selector', selector, 'for target', target);
+  return selector;
 };
