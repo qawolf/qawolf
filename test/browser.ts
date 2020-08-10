@@ -12,8 +12,8 @@ export const connect = async (): Promise<ChromiumBrowser> => {
   if (!wsEndpoint) {
     throw new Error('Must provide QAW_WS_ENDPOINT env variable');
   }
-
-  const browser = await chromium.connect({ wsEndpoint });
+  // cast as ChromiumBrowser from playwright-core to make the types work
+  const browser = (await chromium.connect({ wsEndpoint })) as ChromiumBrowser;
   Registry.instance().setBrowser(browser);
 
   debug('connected to browser');
