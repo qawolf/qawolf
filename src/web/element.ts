@@ -101,8 +101,7 @@ export const getTopmostEditableElement = (
 };
 
 export const getElementText = (element: HTMLElement): string | null => {
-  if (!element.innerText) return null;
-  let text = element.innerText.trim();
+  let text = (element.innerText || '').trim();
 
   if (
     element instanceof HTMLInputElement &&
