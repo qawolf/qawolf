@@ -92,9 +92,7 @@ describe('getTopmostEditableElement', () => {
 describe('getElementText', () => {
   beforeAll(() => page.goto(`${TEST_URL}checkbox-inputs`));
 
-  const getElementText = async (
-    selector: string,
-  ): Promise<string|null> => {
+  const getElementText = async (selector: string): Promise<string | null> => {
     return page.evaluate(
       ({ selector }) => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
@@ -106,14 +104,20 @@ describe('getElementText', () => {
     );
   };
 
+  it('returns null if no inner text', async () => {
+    // an svg for the checkbox is visible on the page
+    const cues = await getElementText('svg');
+    expect(cues).toBeNull();
+  });
+
   it('returns null if no text', async () => {
     const cues = await getElementText('#single');
-    expect(cues).toBe(null);
+    expect(cues).toBeNull();
   });
 
   it('returns null if excessive text', async () => {
     const cues = await getElementText('.container');
-    expect(cues).toBe(null);
+    expect(cues).toBeNull();
   });
 
   it('returns text if applicable', async () => {
