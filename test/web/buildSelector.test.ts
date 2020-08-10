@@ -1,4 +1,4 @@
-import { Browser, Page } from 'playwright';
+import { Browser, Page } from 'playwright-core';
 import { addInitScript } from '../../src/utils/context/register';
 import { launch } from '../../src/utils';
 import { TEST_URL } from '../utils';
