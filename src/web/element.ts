@@ -76,7 +76,9 @@ export const getClickableAncestor = (element: HTMLElement): HTMLElement => {
  *   For example, if you click a particular paragraph in a `contenteditable`
  *   div, we should just record it as a click/focus of the editable div.
  */
-export const getTopmostEditableElement = (element: HTMLElement): HTMLElement => {
+export const getTopmostEditableElement = (
+  element: HTMLElement,
+): HTMLElement => {
   if (!element.isContentEditable) return element;
 
   console.debug('qawolf: get editable ancestor for', getXpath(element));
@@ -98,8 +100,8 @@ export const getTopmostEditableElement = (element: HTMLElement): HTMLElement => 
   return element;
 };
 
-export const getElementText = (element: HTMLElement): string => {
-  let text = element.innerText.trim();
+export const getElementText = (element: HTMLElement): string | null => {
+  let text = (element.innerText || '').trim();
 
   if (
     element instanceof HTMLInputElement &&
