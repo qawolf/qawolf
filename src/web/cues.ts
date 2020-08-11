@@ -13,13 +13,6 @@ export type Cue = {
   value: string;
 };
 
-type BuildAttributeCues = {
-  attributes: string[];
-  element: HTMLElement;
-  level: number;
-  useAttributeName?: boolean;
-};
-
 export type BuildCues = {
   attribute?: string;
   isClick: boolean;
