@@ -1,4 +1,4 @@
-import { Browser, BrowserContext } from 'playwright-core';
+import { Browser, BrowserContext } from 'playwright';
 import { IndexedPage } from '../../../src/utils/context/indexPages';
 import { launch, waitForPage, register } from '../../../src/utils';
 import { TEST_URL } from '../../utils';

@@ -1,7 +1,7 @@
 import { ChildProcess } from 'child_process';
 import Debug from 'debug';
 import open from 'open';
-import { Page } from 'playwright-core';
+import { Page } from 'playwright';
 import { file } from 'tempy';
 
 const debug = Debug('qawolf:openScreenshot');

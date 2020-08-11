@@ -63,7 +63,12 @@ describe('browser tests', () => {
       expect(cues).toEqual([
         { level: 1, penalty: 5, type: 'id', value: '#single' },
         { level: 1, penalty: 40, type: 'tag', value: 'input' },
-        { level: 1, penalty: 0, type: 'attribute', value: '[data-qa="html-checkbox"]' },
+        {
+          level: 1,
+          penalty: 0,
+          type: 'attribute',
+          value: '[data-qa="html-checkbox"]',
+        },
       ]);
 
       const cues2 = await buildCuesForElement('[for="single"]');
@@ -81,7 +86,9 @@ describe('browser tests', () => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
         const element = document.querySelector(selector) as HTMLElement;
 
-        return element ? qawolf.buildCueValueForTag(element) : 'ELEMENT NOT FOUND';
+        return element
+          ? qawolf.buildCueValueForTag(element)
+          : 'ELEMENT NOT FOUND';
       }, selector);
     };
 

@@ -4,7 +4,7 @@ import playwrightCore, {
   Browser,
   BrowserType,
   LaunchOptions as PlaywrightLaunchOptions,
-} from 'playwright-core';
+} from 'playwright';
 import { isNullOrUndefined } from 'util';
 import { Registry } from './Registry';
 

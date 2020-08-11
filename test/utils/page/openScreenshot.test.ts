@@ -1,5 +1,5 @@
 import { pathExists } from 'fs-extra';
-import { Browser, Page } from 'playwright-core';
+import { Browser, Page } from 'playwright';
 import tempy from 'tempy';
 import { launch, openScreenshot } from '../../../src/utils';
 

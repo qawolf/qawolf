@@ -1,5 +1,5 @@
 import { readJSON } from 'fs-extra';
-import { Page } from 'playwright-core';
+import { Page } from 'playwright';
 import { State } from './saveState';
 
 interface SetStorageOptions {
