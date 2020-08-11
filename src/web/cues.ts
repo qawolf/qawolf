@@ -31,7 +31,7 @@ type CueTypeConfig = {
   penalty: number;
 };
 
-type CueTypesConfig = Record<string, CueTypeConfig>
+type CueTypesConfig = Record<string, CueTypeConfig>;
 
 type BuildCuesForElement = {
   cueTypesConfig: CueTypesConfig;
@@ -49,7 +49,7 @@ type BuildCuesForElement = {
  * Users may add attributes to this list using the `attribute` config option.
  */
 const ConfigByCueType: CueTypesConfig = {
-  'alt': {
+  alt: {
     elements: ['area', 'img', 'input[type=image]'],
     penalty: 20,
   },
@@ -57,53 +57,71 @@ const ConfigByCueType: CueTypesConfig = {
     elements: ['*'],
     penalty: 8,
   },
-  'class': {
+  class: {
     elements: ['*'],
     penalty: 10,
   },
-  'contenteditable': {
+  contenteditable: {
     elements: ['*'],
     // High penalty because it is unlikely to be unique given that the value is always the same
     penalty: 30,
   },
-  'for': {
+  for: {
     elements: ['label', 'output'],
     penalty: 5,
   },
-  'href': {
+  href: {
     elements: ['a'],
     penalty: 15,
   },
-  'id': {
+  id: {
     elements: ['*'],
     penalty: 5,
   },
-  'name': {
-    elements: ['button', 'form', 'fieldset', 'iframe', 'input', 'object', 'output', 'select', 'textarea', 'map'],
+  name: {
+    elements: [
+      'button',
+      'form',
+      'fieldset',
+      'iframe',
+      'input',
+      'object',
+      'output',
+      'select',
+      'textarea',
+      'map',
+    ],
     penalty: 10,
   },
-  'placeholder': {
+  placeholder: {
     elements: ['input', 'textarea'],
     penalty: 12,
   },
-  'src': {
+  src: {
     elements: ['audio', 'iframe', 'img', 'input[type=image]', 'video'],
     penalty: 15,
   },
-  'tag': {
+  tag: {
     elements: ['*'],
     penalty: 40,
   },
-  'text': {
+  text: {
     elements: ['*'],
     penalty: 12,
   },
-  'title': {
+  title: {
     elements: ['area', 'img', 'input[type=image]'],
     penalty: 20,
   },
-  'value': {
-    elements: ['option', 'button', 'input[type=submit]', 'input[type=button]', 'input[type=checkbox]', 'input[type=radio]'],
+  value: {
+    elements: [
+      'option',
+      'button',
+      'input[type=submit]',
+      'input[type=button]',
+      'input[type=checkbox]',
+      'input[type=radio]',
+    ],
     penalty: 10,
   },
 };
@@ -163,7 +181,14 @@ export const buildCuesForElement = ({
   // just 'tag' cue is needed and we can save some time.
   const tagName = element.tagName.toLowerCase();
   if (['html', 'body'].includes(tagName)) {
-    return [{ level, penalty: ConfigByCueType.tag.penalty, type: 'tag', value: tagName }];
+    return [
+      {
+        level,
+        penalty: ConfigByCueType.tag.penalty,
+        type: 'tag',
+        value: tagName,
+      },
+    ];
   }
 
   const cues: Cue[] = Object.keys(cueTypesConfig).reduce((list, cueType) => {
@@ -195,7 +220,12 @@ export const buildCuesForElement = ({
       }
       // Special handling for "tag" type
       case 'tag':
-        list.push({ level, penalty, type: 'tag', value: buildCueValueForTag(element) });
+        list.push({
+          level,
+          penalty,
+          type: 'tag',
+          value: buildCueValueForTag(element),
+        });
         break;
       // Special handling for "text" type
       case 'text': {
@@ -208,10 +238,18 @@ export const buildCuesForElement = ({
       }
       // Everything else is just an attribute
       default: {
-        const attributeValuePair = getAttribute({ attribute: cueType, element });
+        const attributeValuePair = getAttribute({
+          attribute: cueType,
+          element,
+        });
         if (attributeValuePair) {
           const { name, value } = attributeValuePair;
-          list.push({ level, penalty, type: 'attribute', value: `[${name}="${value}"]` });
+          list.push({
+            level,
+            penalty,
+            type: 'attribute',
+            value: `[${name}="${value}"]`,
+          });
         }
         break;
       }
@@ -232,7 +270,9 @@ export const buildCues = ({ attribute, isClick, target }: BuildCues): Cue[] => {
   let level = 0;
 
   while (element) {
-    cues.push(...buildCuesForElement({ cueTypesConfig, element, isClick, level }));
+    cues.push(
+      ...buildCuesForElement({ cueTypesConfig, element, isClick, level }),
+    );
 
     element = element.parentElement;
     level += 1;
@@ -243,7 +283,9 @@ export const buildCues = ({ attribute, isClick, target }: BuildCues): Cue[] => {
 
 export const buildSelectorParts = (cues: Cue[]): SelectorPart[] => {
   const levels = [...new Set(cues.map((cue) => cue.level))];
-  levels.sort().reverse();
+
+  // sort descending
+  levels.sort((a, b) => b - a);
 
   const parts: SelectorPart[] = [];
 

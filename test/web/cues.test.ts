@@ -154,4 +154,21 @@ describe('buildSelectorParts', () => {
       { name: 'text', body: '"Submit"' },
     ]);
   });
+
+  it('orders selectors based on level', () => {
+    const cues = [
+      { level: 0, penalty: 0, type: 'id', value: '#search' },
+      // check sort is not alphabetical
+      { level: 10, penalty: 0, type: 'tag', value: 'nav' },
+      { level: 2, penalty: 0, type: 'class', value: '.search-input' },
+    ];
+
+    const selector = buildSelectorParts(cues);
+
+    expect(selector).toEqual([
+      { name: 'css', body: 'nav' },
+      { name: 'css', body: '.search-input' },
+      { name: 'css', body: '#search' },
+    ]);
+  });
 });
