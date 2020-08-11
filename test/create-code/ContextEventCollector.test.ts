@@ -9,7 +9,7 @@ import {
   ScrollEvent,
 } from '../../src/types';
 import { getLaunchOptions, launch, register } from '../../src/utils';
-import { sleep, selectElementContent, TEST_URL } from '../utils';
+import { sleep, TEST_URL } from '../utils';
 
 describe('ContextEventCollector', () => {
   let browser: Browser;
@@ -135,30 +135,6 @@ describe('ContextEventCollector', () => {
     expect(name).toEqual('input');
     expect(target.attrs['data-qa']).toEqual('html-select');
     expect(value).toEqual('hedgehog');
-  });
-
-  it('records selectall for text input', async () => {
-    // XXX use keyboard shortcuts if/when https://github.com/microsoft/playwright/issues/1067 is resolved
-    // selectElementContent does not trigger "select" on webkit
-    if (getLaunchOptions().browserName === 'webkit') return;
-
-    const page = await context.newPage();
-    await page.goto(`${TEST_URL}text-inputs`);
-
-    const element = await page.$('[data-qa="html-text-input-filled"]');
-    await selectElementContent(element);
-
-    // give time for event
-    await sleep(1000);
-
-    await page.close();
-
-    const { isTrusted, name, target } = events[
-      events.length - 1
-    ] as ElementEvent;
-    expect(name).toEqual('selectall');
-    expect(isTrusted).toEqual(true);
-    expect(target.attrs['data-qa']).toEqual('html-text-input-filled');
   });
 
   it('records type', async () => {

@@ -57,25 +57,6 @@
     },
     {
       "isTrusted": true,
-      "name": "selectall",
-      "page": 0,
-      "selector": "[data-qa=\"html-text-input-filled\"]",
-      "target": {
-        "type": "tag",
-        "name": "input",
-        "voidElement": true,
-        "attrs": {
-          "data-qa": "html-text-input-filled",
-          "placeholder": "Filled text input",
-          "type": "text",
-          "value": "initial text"
-        },
-        "children": []
-      },
-      "time": 1594495008458
-    },
-    {
-      "isTrusted": true,
       "name": "keyup",
       "page": 0,
       "selector": "[data-qa=\"html-text-input-filled\"]",

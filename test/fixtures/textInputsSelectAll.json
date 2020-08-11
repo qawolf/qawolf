@@ -86,26 +86,6 @@
       "cssSelector": "[data-qa='html-text-input-filled']",
       "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input-filled\" placeholder=\"Filled text input\" type=\"text\" value=\"initial text\" /></div></div>",
       "isTrusted": true,
-      "name": "selectall",
-      "page": 0,
-      "target": {
-        "type": "tag",
-        "name": "input",
-        "voidElement": true,
-        "attrs": {
-          "data-qa": "html-text-input-filled",
-          "placeholder": "Filled text input",
-          "type": "text",
-          "value": "initial text"
-        },
-        "children": []
-      },
-      "time": 1583107775924
-    },
-    {
-      "cssSelector": "[data-qa='html-text-input-filled']",
-      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input-filled\" placeholder=\"Filled text input\" type=\"text\" value=\"initial text\" /></div></div>",
-      "isTrusted": true,
       "name": "keyup",
       "page": 0,
       "target": {
@@ -488,26 +468,6 @@
         "children": []
       },
       "time": 1583107780058
-    },
-    {
-      "cssSelector": "[data-qa='html-text-input-filled']",
-      "htmlSelector": "<div style=\"display: flex; flex-wrap: wrap;\" qaw_innertext=\"Native HTML Material UI Text input Filled text input Password input Number input Textarea\"><div class=\"container\" qaw_innertext=\"Native HTML\"><input data-qa=\"html-text-input-filled\" placeholder=\"Filled text input\" type=\"text\" value=\"initial text\" /></div></div>",
-      "isTrusted": true,
-      "name": "selectall",
-      "page": 0,
-      "target": {
-        "type": "tag",
-        "name": "input",
-        "voidElement": true,
-        "attrs": {
-          "data-qa": "html-text-input-filled",
-          "placeholder": "Filled text input",
-          "type": "text",
-          "value": "initial text"
-        },
-        "children": []
-      },
-      "time": 1583107780059
     },
     {
       "cssSelector": "[data-qa='html-text-input-filled']",
