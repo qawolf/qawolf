@@ -49,10 +49,7 @@ export const getArtifactPath = (): string | null => {
   return artifactPath;
 };
 
-// playwright-core types are out of date
-export const register = async (
-  context: BrowserContext | any,
-): Promise<void> => {
+export const register = async (context: BrowserContext): Promise<void> => {
   Registry.instance().setContext(context);
 
   if (isRegistered(context)) return;
