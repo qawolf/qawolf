@@ -4,7 +4,7 @@ import { start } from 'repl';
 import { addScreenshotCommand } from '../../../src/utils/repl/addScreenshotCommand';
 import { IndexedPage } from '../../../src/utils/context/indexPages';
 import * as openScreenshot from '../../../src/utils/page/openScreenshot';
-import { launch, register } from '../../../src/utils';
+import { launch, register, waitFor } from '../../../src/utils';
 
 describe('addScreenshotCommand', () => {
   let browser: Browser;
@@ -37,7 +37,7 @@ describe('addScreenshotCommand', () => {
       process.stdin.push('.screenshot 0');
       process.stdin.push('\n');
       // let repl process stdin
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await waitFor(() => !!pageArgument);
 
       expect(pageArgument.createdIndex).toEqual(0);
       replServer.close();

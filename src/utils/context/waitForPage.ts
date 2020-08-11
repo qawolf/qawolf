@@ -31,5 +31,7 @@ export const waitForPage = async (
     await page.waitForLoadState(options.waitUntil || 'load');
   }
 
+  await page.bringToFront();
+
   return page as IndexedPage;
 };
