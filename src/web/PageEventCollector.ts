@@ -1,5 +1,9 @@
 import { buildSelector } from './selector';
-import { getClickableAncestor, getTopmostEditableElement, isVisible } from './element';
+import {
+  getClickableAncestor,
+  getTopmostEditableElement,
+  isVisible,
+} from './element';
 import { nodeToDoc } from './serialize';
 import * as types from '../types';
 
@@ -126,21 +130,6 @@ export class PageEventCollector {
       const value = event.clipboardData.getData('text');
 
       this.sendEvent('paste', event, value);
-    });
-
-    // XXX select only supports input/textarea
-    // We can combine selectstart/mouseup to support content editables
-    this.listen('select', (event) => {
-      const target = event.target as HTMLInputElement;
-      if (
-        target.selectionStart !== 0 ||
-        target.selectionEnd !== target.value.length
-      ) {
-        // Only record select all, not other selection events
-        return;
-      }
-
-      this.sendEvent('selectall', event);
     });
 
     this.collectScrollEvent();
