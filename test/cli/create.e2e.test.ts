@@ -1,7 +1,7 @@
 import { spawn, ChildProcess } from 'child_process';
 import { readFile, pathExists } from 'fs-extra';
 import { join } from 'path';
-import { BrowserServer } from 'playwright-core';
+import { BrowserServer } from 'playwright';
 import { launchServer } from '../browser';
 import { CDPSession } from './CDPSession';
 import { waitFor } from '../../src/utils';

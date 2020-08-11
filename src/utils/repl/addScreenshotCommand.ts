@@ -1,5 +1,5 @@
+import { BrowserContext } from 'playwright';
 import { REPLServer } from 'repl';
-import { BrowserContext } from 'playwright-core';
 import { waitForPage } from '../context/waitForPage';
 import { openScreenshot } from '../page/openScreenshot';
 

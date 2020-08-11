@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import { Browser, BrowserContext } from 'playwright-core';
+import { Browser, BrowserContext } from 'playwright';
 import * as qawolf from '../qawolf';
 
 type RegistryData = {

@@ -1,5 +1,5 @@
 import { ensureFile, writeJSON } from 'fs-extra';
-import { Cookie, Page } from 'playwright-core';
+import { Cookie, Page } from 'playwright';
 
 export interface State {
   cookies: Cookie[];

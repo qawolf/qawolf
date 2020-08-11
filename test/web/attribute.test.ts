@@ -1,4 +1,4 @@
-import { Browser, Page } from 'playwright-core';
+import { Browser, Page } from 'playwright';
 import { launch } from '../../src/utils';
 import { AttributeValuePair, deserializeRegex } from '../../src/web/attribute';
 import { addInitScript } from '../../src/utils/context/register';

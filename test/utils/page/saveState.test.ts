@@ -1,7 +1,7 @@
 import { pathExists, readJSON } from 'fs-extra';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { Browser } from 'playwright-core';
+import { Browser } from 'playwright';
 import { launch, saveState } from '../../../src/utils';
 import { randomString, TEST_URL } from '../../utils';
 

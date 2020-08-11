@@ -1,4 +1,4 @@
-import { Page } from 'playwright-core';
+import { Page } from 'playwright';
 import { forEachPage, launch, waitForPage, register } from '../../../src/utils';
 
 it('runs for existing and new pages', async () => {

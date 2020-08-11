@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
-import { BrowserContext } from 'playwright-core';
 import { basename, join } from 'path';
+import { BrowserContext } from 'playwright';
 import { loadConfig } from '../../config';
 import { indexPages } from './indexPages';
 import { Registry } from '../Registry';

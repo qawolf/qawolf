@@ -1,6 +1,6 @@
 import Debug from 'debug';
 import { EventEmitter } from 'events';
-import { BrowserContext } from 'playwright-core';
+import { BrowserContext } from 'playwright';
 import { IndexedPage } from '../utils/context/indexPages';
 import { isRegistered } from '../utils/context/register';
 import { ElementEvent } from '../types';

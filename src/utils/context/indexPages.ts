@@ -1,5 +1,5 @@
 import Debug from 'debug';
-import { BrowserContext, Page } from 'playwright-core';
+import { BrowserContext, Page } from 'playwright';
 
 export type IndexedPage = Page & {
   createdIndex: number;

@@ -1,7 +1,7 @@
 import { readdir } from 'fs-extra';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { Browser, Page } from 'playwright-core';
+import { Browser, Page } from 'playwright';
 import * as playwrightVideoSave from 'playwright-video/build/saveVideo';
 import * as playwrightVideoUtils from 'playwright-video/build/utils';
 import { indexPages } from '../../../src/utils/context/indexPages';

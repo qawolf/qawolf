@@ -1,5 +1,5 @@
 import { camelCase } from 'lodash';
-import { devices } from 'playwright-core';
+import { devices } from 'playwright';
 
 export interface BuildTemplateOptions {
   device?: string;

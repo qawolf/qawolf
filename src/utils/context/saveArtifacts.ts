@@ -1,7 +1,7 @@
 import Debug from 'debug';
 import { appendFileSync, ensureDir } from 'fs-extra';
 import { join } from 'path';
-import { BrowserContext } from 'playwright-core';
+import { BrowserContext } from 'playwright';
 import { getFfmpegPath, saveVideo, PageVideoCapture } from 'playwright-video';
 import { forEachPage } from './forEachPage';
 import { IndexedPage } from './indexPages';
