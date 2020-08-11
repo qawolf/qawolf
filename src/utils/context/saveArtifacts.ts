@@ -56,7 +56,8 @@ export const saveArtifacts = async (
       if (includeVideo) {
         debug(`save video for page ${pageIndex}`);
         const capture = await saveVideo(
-          page,
+          // playwright-video still depends on playwright-core
+          page as any,
           join(saveDir, `video_${pageIndex}_${timestamp}.mp4`),
         );
         capturesToStop.push(capture);
