@@ -13,61 +13,249 @@ beforeAll(async () => {
   const context = await browser.newContext();
   await addInitScript(context);
   page = await context.newPage();
-  await page.goto(`${TEST_URL}checkbox-inputs`);
 });
 
 afterAll(() => browser.close());
 
-describe('isMatch', () => {
-  const isMatch = async (
-    selectorParts: SelectorPart[],
-    targetSelector: string,
-  ): Promise<boolean> => {
-    return page.evaluate(
-      ({ selectorParts, targetSelector }) => {
-        const qawolf: QAWolfWeb = (window as any).qawolf;
-        const target = document.querySelector(targetSelector) as HTMLElement;
+describe('buildSelector', () => {
+  const expectSelector = async (
+    options: string | (string | boolean)[],
+  ): Promise<void> => {
+    const isArray = Array.isArray(options);
 
-        return qawolf.isMatch({ selectorParts, target });
+    // [target selector, expected selector, isClick, attribute]
+    const targetSelector = (isArray ? options[0] : options) as string;
+    const expectedSelector = (isArray ? options[1] : options) as string;
+    const isClick = typeof options[2] === 'boolean' ? options[2] : true;
+    const attribute = typeof options[3] === 'string' ? options[3] : undefined;
+
+    const element = await page.$(targetSelector);
+
+    const builtSelector = await page.evaluate(
+      ({ attribute, element, isClick }) => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const target = qawolf.getClickableAncestor(element as HTMLElement);
+
+        qawolf.clearSelectorCache();
+
+        return qawolf.buildSelector({
+          attribute,
+          isClick,
+          target,
+        });
       },
-      { selectorParts, targetSelector },
+      { attribute, element, isClick },
     );
+
+    expect(builtSelector).toEqual(expectedSelector);
   };
 
-  it('returns true if selector matches element', async () => {
-    const result = await isMatch(
-      [{ body: '[data-qa="html-checkbox"]', name: 'css' }],
-      '#single',
-    );
-    expect(result).toBe(true);
+  describe('amazon', () => {
+    beforeAll(() => page.goto(`${TEST_URL}fixtures/amazon.html`));
 
-    const result2 = await isMatch(
-      [{ body: 'Single checkbox', name: 'text' }],
-      '[for="single"]',
-    );
-    expect(result2).toBe(true);
+    it.each([
+      '[name="field-keywords"]',
+      'text=Start here.',
+    ])('builds expected selector %o', (selector) => expectSelector(selector));
   });
 
-  it('return false if selector does not match element', async () => {
-    const result = await isMatch([{ body: '#cat', name: 'css' }], '#single');
-    expect(result).toBe(false);
+  describe('todomvc', () => {
+    beforeAll(() => page.goto(`${TEST_URL}fixtures/todomvc.html`));
+
+    it.each([
+      '.new-todo',
+      '.toggle', // first one is the match
+      'li:nth-of-type(2) .toggle',
+      'text=Active',
+      'text=Completed',
+    ])('builds expected selector %s', (selector) => expectSelector(selector));
   });
 
-  it('handles strange quotes in text selector', async () => {
-    await page.goto(`${TEST_URL}buttons`);
+  describe('sandbox', () => {
+    describe('html and body', () => {
+      beforeAll(async () => {
+        await page.goto(`${TEST_URL}buttons`);
+        await page.evaluate(() => {
+          document.querySelector('html').setAttribute('data-qa', 'main');
+          document.querySelector('body').setAttribute('data-qa', 'container');
+        });
 
-    const result = await isMatch(
-      [{ body: '"Button \\"with\\" extra \'quotes\'"', name: 'text' }],
-      '.quote-button',
-    );
+        it.each(['html', 'body'])('builds expected selector %o', (selector) =>
+          expectSelector(selector),
+        );
+      });
+    });
 
-    expect(result).toBe(true);
+    describe('buttons', () => {
+      beforeAll(() => page.goto(`${TEST_URL}buttons`));
 
-    await page.goto(`${TEST_URL}checkbox-inputs`);
+      it.each([
+        // selects the target
+        [['[data-qa="html-button"]', '[data-qa="html-button"]']],
+        [['.quote-button', `.quote-button`]],
+        // selects the ancestor
+        [['#html-button-child', '[data-qa="html-button-with-children"]']],
+        [['.MuiButton-label', '[data-qa="material-button"]']],
+      ])('builds expected selector %o', (selector) => expectSelector(selector));
+    });
+
+    describe('date pickers', () => {
+      beforeAll(() => page.goto(`${TEST_URL}date-pickers`));
+
+      it.each([
+        // selects the ancestor and clickable descendant
+        [
+          [
+            '[data-qa="material-date-picker"] path',
+            '[data-qa="material-date-picker"] [aria-label="change date"]',
+          ],
+        ],
+      ])('builds expected selector %o', (selector) => expectSelector(selector));
+    });
+
+    describe('click: radio', () => {
+      beforeAll(() => page.goto(`${TEST_URL}radio-inputs`));
+
+      it.each([
+        [['#single', '[data-qa="html-radio"]']],
+        [['.MuiFormControlLabel-label', '[data-qa="material-radio"]']],
+        // ancestor group and descendant
+        [['#dog', '[data-qa="html-radio-group"] #dog']],
+        [['#blue', '[data-qa="material-radio-group"] #blue']],
+      ])('builds expected selector %o', (selector) => expectSelector(selector));
+    });
+
+    describe('click: checkbox', () => {
+      beforeAll(() => page.goto(`${TEST_URL}checkbox-inputs`));
+
+      it.each([
+        // target checkbox/label
+        [['#single', '[data-qa="html-checkbox"]']],
+        [['.MuiFormControlLabel-label', '[data-qa="material-checkbox"]']],
+        // ancestor group and descendant
+        [['#dog', '[data-qa="html-checkbox-group"] #dog']],
+        [['#blue', '[data-qa="material-checkbox-group"] #blue']],
+      ])('builds expected selector %o', (selector) => expectSelector(selector));
+    });
+
+    describe('type: input', () => {
+      beforeAll(() => page.goto(`${TEST_URL}text-inputs`));
+
+      it.each([
+        // target input/textarea
+        [['[type="password"]', '[data-qa="html-password-input"]', false]],
+        [['textarea', '[data-qa="html-textarea"]', false]],
+        // ancestor and descendant
+        [
+          [
+            '[data-qa="material-text-input"] input',
+            '[data-qa="material-text-input"] .MuiInput-input',
+            false,
+          ],
+        ],
+        [
+          [
+            '[data-qa="material-textarea"] textarea',
+            '[data-qa="material-textarea"] .MuiInput-input',
+            false,
+          ],
+        ],
+      ])('builds expected selector %o', (selector) => expectSelector(selector));
+    });
+
+    describe('type: content editable', () => {
+      beforeAll(() => page.goto(`${TEST_URL}content-editables`));
+
+      it.each([
+        [
+          [
+            '[data-qa="content-editable"]',
+            '[data-qa="content-editable"]',
+            false,
+          ],
+        ],
+        [
+          [
+            '[data-qa="draftjs"] [contenteditable="true"]',
+            '[data-qa="draftjs"] .public-DraftEditor-content',
+            false,
+          ],
+        ],
+        [
+          [
+            '[data-qa="quill"] [contenteditable="true"]',
+            '[data-qa="quill"] [contenteditable="true"]',
+            false,
+          ],
+        ],
+      ])('builds expected selector %o', (selector) => expectSelector(selector));
+    });
+
+    describe('select', () => {
+      beforeAll(() => page.goto(`${TEST_URL}selects`));
+
+      it.each([
+        [['[data-qa="html-select"]', '[data-qa="html-select"]']],
+        // target and descendant
+        [
+          [
+            '[data-qa="material-select-native"] select',
+            '[data-qa="material-select-native"] #material-select-native',
+          ],
+          // check the invisible text is not targeted
+          [
+            '[data-qa="material-select"] #material-select',
+            '[data-qa="material-select"] #material-select',
+          ],
+        ],
+      ])('builds expected selector %o', (selector) => expectSelector(selector));
+    });
+
+    describe('nested data attributes', () => {
+      beforeAll(() => page.goto(`${TEST_URL}nested-data-attributes`));
+
+      it.each([
+        // multiple ancestors
+        [['#button', '[data-test="click"] [data-qa="button"]']],
+        // unique selectors
+        [['#unique', '[data-qa="unique"]']],
+        [['#dog-0', '[data-qa="radio-group"] #dog-0']],
+      ])('builds expected selector %o', (selector) => expectSelector(selector));
+    });
+
+    describe('regex attributes', () => {
+      beforeAll(() => page.goto(`${TEST_URL}nested-data-attributes`));
+
+      it.each([
+        [
+          [
+            '#button',
+            '[data-test="click"] [data-qa="button"]',
+            true,
+            '/^data-.*/',
+          ],
+        ],
+        // ignore non-matching attributes
+        [['#button', '#button', true, '/^qa-.*/']],
+        // ignore invalid regex
+        [
+          [
+            '#button',
+            '[data-test="click"] [data-qa="button"]',
+            true,
+            '/[/,/^data-.*/',
+          ],
+        ],
+      ])('builds expected selector %o', (selector) => expectSelector(selector));
+    });
   });
 });
 
 describe('toSelector', () => {
+  beforeAll(async () => {
+    await page.goto(`${TEST_URL}checkbox-inputs`);
+  });
+
   const toSelector = async (selectorParts: SelectorPart[]): Promise<string> => {
     return page.evaluate(
       ({ selectorParts }) => {

@@ -14,5 +14,6 @@ export {
 } from './element';
 export { formatArgument, interceptConsoleLogs } from './interceptConsoleLogs';
 export { PageEventCollector } from './PageEventCollector';
-export { buildSelector, clearSelectorCache, isMatch, toSelector } from './selector';
+export { buildSelector, clearSelectorCache, toSelector } from './selector';
+export { isMatch } from './selectorParts';
 export { getXpath, nodeToDoc } from './serialize';
