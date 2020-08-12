@@ -75,14 +75,13 @@ export const buildLongestCueGroups = (cues: Cue[]) => {
   return cueGroups;
 };
 
-// Remove cues as long as the selector still matches the target
-export const minimizeCues = (
-  cues: Cue[],
-  target: HTMLElement,
-): RankedCues | null => {
-  // Order by penalty descending
-  let minCues = [...cues].sort((a, b) => {
-    // first sort by penalty
+const sortCues = (cues: Cue[]) => {
+  return [...cues].sort((a, b) => {
+    // first sort by level
+    if (a.level < b.level) return 1;
+    if (a.level > b.level) return -1;
+
+    // then sort by penalty
     if (a.penalty < b.penalty) return 1;
     if (a.penalty > b.penalty) return -1;
 
@@ -92,7 +91,37 @@ export const minimizeCues = (
 
     return 0;
   });
+};
 
+var combine = function (a, min) {
+  var fn = function (n, src, got, all) {
+    if (n == 0) {
+      if (got.length > 0) {
+        all[all.length] = got;
+      }
+      return;
+    }
+    for (var j = 0; j < src.length; j++) {
+      fn(n - 1, src.slice(j + 1), got.concat([src[j]]), all);
+    }
+    return;
+  };
+
+  var all = [];
+
+  fn(min, a, [], all);
+
+  // TODO?
+  // all.push(a);
+  return all;
+};
+
+// Remove cues as long as the selector still matches the target
+export const minimizeCues = (
+  cues: Cue[],
+  target: HTMLElement,
+): RankedCues | null => {
+  // Order by penalty descending
   let minSelectorParts = buildSelectorParts(cues);
 
   if (!isMatch({ selectorParts: minSelectorParts, target })) {
@@ -106,10 +135,16 @@ export const minimizeCues = (
   }
 
   // Keep the nearest attribute
+  // TODO
   const cueToKeep = findNearestPreferredAttributeCue(cues);
 
-  for (let i = 0; i < minCues.length; i++) {
-    if (minCues[i] === cueToKeep) continue;
+  let minCues = sortCues(cues);
+
+  // Slim down the cues by removing any unnecessary cues
+  // until we can try all combinations in a reasonable time
+  for (let i = 0; i < minCues.length && minCues.length > 8; i++) {
+    // keep attribute cues
+    if (minCues[i].penalty === 0) continue;
 
     const cuesWithoutI = [...minCues];
     cuesWithoutI.splice(i, 1);
@@ -121,16 +156,47 @@ export const minimizeCues = (
       minSelectorParts = partsWithoutCue;
       i -= 1;
     }
-
-    continue;
   }
 
-  const penalty = minCues.reduce((a, b) => a + b.penalty, 0);
+  let minPenalty = minCues.reduce((a, b) => a + b.penalty, 0);
+
+  const cuesOptions = minCues;
+
+  // We hopefully slimmed down the sample size to 8 above
+  // If we try all combinations of sample size 1..5 we only need to try 218 combos
+  // Which is reasonable computationally
+  for (let i = 1; i < 5; i++) {
+    const cueCombinations = combine(cuesOptions, i);
+
+    // check each combination for this level
+    for (let j = 0; j < cueCombinations.length; j++) {
+      const cuesToTest: Cue[] = cueCombinations[j];
+      const penalty = cuesToTest.reduce((a, b) => a + b.penalty, 0);
+
+      if (penalty > minPenalty) continue;
+
+      // TODO consider other things here like length amongst cues
+      if (penalty === minPenalty && cuesToTest.length > minCues.length)
+        continue;
+
+      if (cueToKeep && !cuesToTest.includes(cueToKeep)) {
+        cuesToTest.push(cueToKeep);
+      }
+
+      const trySelectorParts = buildSelectorParts(cuesToTest);
+
+      if (isMatch({ selectorParts: trySelectorParts, target })) {
+        minCues = cuesToTest;
+        minPenalty = penalty;
+        minSelectorParts = trySelectorParts;
+      }
+    }
+  }
 
   return {
     cues: minCues,
-    penalty,
-    selectorParts: minSelectorParts,
+    penalty: minPenalty,
+    selectorParts: buildSelectorParts(minCues),
   };
 };
 

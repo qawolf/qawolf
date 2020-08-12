@@ -96,6 +96,7 @@ describe('buildSelector', () => {
         // selects the ancestor
         [['#html-button-child', '[data-qa="html-button-with-children"]']],
         [['.MuiButton-label', '[data-qa="material-button"]']],
+        ['.btn-b.btn-2'],
       ])('builds expected selector %o', (selector) => expectSelector(selector));
     });
 
