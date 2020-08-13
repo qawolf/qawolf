@@ -25,7 +25,7 @@ describe('getClickableAncestor', () => {
       const element = document.getElementsByTagName('p')[1];
       if (!element) throw new Error('element not found');
 
-      const ancestor = web.getClickableAncestor(element);
+      const ancestor = web.getClickableAncestor(element, []);
       return web.getXpath(ancestor);
     });
 
@@ -38,7 +38,7 @@ describe('getClickableAncestor', () => {
       const element = document.getElementsByTagName('button')[0];
       if (!element) throw new Error('element not found');
 
-      const ancestor = web.getClickableAncestor(element);
+      const ancestor = web.getClickableAncestor(element, []);
       return web.getXpath(ancestor);
     });
 

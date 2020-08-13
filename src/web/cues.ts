@@ -2,9 +2,6 @@ import { getAttribute } from './attribute';
 import { getElementText } from './selectorEngine';
 import { isDynamic } from './isDynamic';
 
-const DEFAULT_ATTRIBUTE_LIST =
-  'data-cy,data-e2e,data-qa,/^data-test.*/,/^qa-.*/';
-
 export type Cue = {
   level: number; // 0 is target, 1 is parent, etc.
   penalty: number; // Cue type penalty plus PENALTY_PER_LEVEL
@@ -13,7 +10,7 @@ export type Cue = {
 };
 
 export type BuildCues = {
-  attribute?: string;
+  attributes: string[];
   isClick: boolean;
   target: HTMLElement;
 };
@@ -253,8 +250,11 @@ export const buildCuesForElement = ({
   return cues;
 };
 
-export const buildCues = ({ attribute, isClick, target }: BuildCues): Cue[] => {
-  const attributes = (attribute || DEFAULT_ATTRIBUTE_LIST).split(',');
+export const buildCues = ({
+  attributes,
+  isClick,
+  target,
+}: BuildCues): Cue[] => {
   const cueTypesConfig = getCueTypesConfig(attributes);
 
   const cues: Cue[] = [];

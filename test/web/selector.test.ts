@@ -1,9 +1,10 @@
 import { Browser, Page } from 'playwright';
+import { DEFAULT_ATTRIBUTE_LIST } from '../../src/web/attribute';
 import { addInitScript } from '../../src/utils/context/register';
 import { SelectorPart } from '../../src/web/types';
-import { QAWolfWeb } from '../../src/web';
 import { launch } from '../../src/utils';
 import { TEST_URL } from '../utils';
+import { QAWolfWeb } from '../../src/web';
 
 let browser: Browser;
 let page: Page;
@@ -27,24 +28,27 @@ describe('buildSelector', () => {
     const targetSelector = (isArray ? options[0] : options) as string;
     const expectedSelector = (isArray ? options[1] : options) as string;
     const isClick = typeof options[2] === 'boolean' ? options[2] : true;
-    const attribute = typeof options[3] === 'string' ? options[3] : undefined;
+    const attributes =
+      typeof options[3] === 'string'
+        ? options[3].split(',')
+        : DEFAULT_ATTRIBUTE_LIST.split(',');
 
     const element = await page.$(targetSelector);
 
     const builtSelector = await page.evaluate(
-      ({ attribute, element, isClick }) => {
+      ({ attributes, element, isClick }) => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const target = qawolf.getClickableAncestor(element as HTMLElement);
+        const target = qawolf.getClickableAncestor(element as HTMLElement, []);
 
         qawolf.clearSelectorCache();
 
         return qawolf.buildSelector({
-          attribute,
+          attributes,
           isClick,
           target,
         });
       },
-      { attribute, element, isClick },
+      { attributes, element, isClick },
     );
 
     expect(builtSelector).toEqual(expectedSelector);

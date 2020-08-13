@@ -1,9 +1,10 @@
 import { Browser, Page } from 'playwright';
-import { launch } from '../../src/utils';
-import { QAWolfWeb } from '../../src/web';
+import { DEFAULT_ATTRIBUTE_LIST } from '../../src/web/attribute';
 import { Cue } from '../../src/web/cues';
 import { addInitScript } from '../../src/utils/context/register';
+import { launch } from '../../src/utils';
 import { TEST_URL } from '../utils';
+import { QAWolfWeb } from '../../src/web';
 
 let browser: Browser;
 let page: Page;
@@ -20,12 +21,19 @@ afterAll(() => browser.close());
 
 describe('buildCues', () => {
   const buildCues = async (selector: string): Promise<Cue[]> => {
-    return page.evaluate((selector) => {
-      const qawolf: QAWolfWeb = (window as any).qawolf;
-      const target = document.querySelector(selector) as HTMLElement;
+    return page.evaluate(
+      ({ attributes, selector }) => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const target = document.querySelector(selector) as HTMLElement;
 
-      return qawolf.buildCues({ isClick: true, target });
-    }, selector);
+        return qawolf.buildCues({
+          attributes,
+          isClick: true,
+          target,
+        });
+      },
+      { attributes: DEFAULT_ATTRIBUTE_LIST.split(','), selector },
+    );
   };
 
   it('builds cues for a target', async () => {
