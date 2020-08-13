@@ -148,7 +148,7 @@ export const trimExcessCues = (
   if (!isMatch({ selectorParts, target })) {
     // Short-circuit if the cues do not match the target
     // This should never happen but we are being precautious
-    console.log('selectors did not match', selectorParts, target);
+    console.debug('qawolf: selectors did not match', selectorParts, target);
     return null;
   }
 
@@ -238,15 +238,19 @@ export const optimizeCues = (
 ): CueGroup | null => {
   const cueSets = buildCueSets(cues);
 
+  // Only use the first 50 cue sets (there should never be this many, usually just ~2-3)
   const cueGroups = cueSets
+    .slice(0, 50)
     .map((cueSet) => {
-      // Trim down the cue group to 8
-      const trimmedCues = trimExcessCues(cueSet, target, 8);
-      if (!trimmedCues) return null;
+      // Trim down the cue group to 10 if possible
+      // 10 cues, samples of 5 is ~700 combinations which took ~20ms on my machine
+      const cueGroup = trimExcessCues(cueSet, target, 10);
 
-      // Try all combinations up to 5
-      // This is ~200 combinations which should be reasonable
-      return findBestCueGroup(trimmedCues, target, 5);
+      // Skip if we cannot trim the group to <= 16 cues (this should rarely happen)
+      // 16 cues, samples of 5 is ~7000 combinations which took ~100ms on my machine
+      if (!cueGroup || cueGroup.cues.length > 16) return null;
+
+      return findBestCueGroup(cueGroup, target, 5);
     })
     // Ignore invalid groups
     .filter((a) => !!a)

@@ -192,7 +192,6 @@ export const buildCuesForElement = ({
       // Special handling for "class" attribute
       case 'class': {
         element.classList.forEach((c) => {
-          // console.log("class", c, isDynamic(c));
           if (isDynamic(c)) return;
 
           list.push({ level, penalty, type: 'class', value: `.${c}` });
