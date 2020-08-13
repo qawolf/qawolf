@@ -52,7 +52,7 @@ export const buildSelector = (options: BuildCues): string => {
 
   const cues = buildCues(options);
 
-  const selectorParts = optimizeCues(cues, target);
+  const { selectorParts } = optimizeCues(cues, target) || {};
   if (selectorParts) {
     // First cache it so that we don't need to do all the looping for this
     // same target next time. We cache `selectorParts` rather than `selector`

@@ -282,3 +282,11 @@ export const findNearestPreferredAttributeCue = (cues: Cue[]): Cue | null => {
     return foundCue;
   }, null);
 };
+
+export const getPenalty = (cues: Cue[]): number => {
+  return cues.reduce((a, b) => a + b.penalty, 0);
+};
+
+export const getValueLength = (cues: Cue[]): number => {
+  return cues.reduce((total, cue) => total + cue.value.length, 0);
+};

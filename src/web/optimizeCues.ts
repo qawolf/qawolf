@@ -1,91 +1,134 @@
-import { Cue, findNearestPreferredAttributeCue } from './cues';
+import {
+  Cue,
+  findNearestPreferredAttributeCue,
+  getPenalty,
+  getValueLength,
+} from './cues';
 import { buildSelectorParts, isMatch } from './selectorParts';
 import { SelectorPart } from './types';
 
-type CueTypes = {
+type CueGroup = {
+  cues: Cue[];
+  penalty: number;
+  selectorParts: SelectorPart[];
+  valueLength: number;
+};
+
+type CueLevel = {
   css: Cue[];
   text: Cue[];
 };
 
-type RankedCues = {
-  cues: Cue[];
-  penalty: number;
-  selectorParts: SelectorPart[];
-};
-
 /**
- * Build all permutations of the longest cue group.
- * There are multiple permutations, since each level can have either css or text cues.
+ * Build the cue sets.
+ * There are multiple since each level of cues
+ * can only have one type per level (css/text).
  */
-export const buildLongestCueGroups = (cues: Cue[]) => {
-  const cuesByLevel = new Map<number, CueTypes>();
+export const buildCueSets = (cues: Cue[]): Cue[][] => {
+  const cueLevels = new Map<number, CueLevel>();
 
-  // group cues by level and type
+  // Group cues into levels.
   cues.forEach((cue) => {
-    const cueTypes = cuesByLevel.has(cue.level)
-      ? cuesByLevel.get(cue.level)
+    const cueLevel = cueLevels.has(cue.level)
+      ? cueLevels.get(cue.level)
       : { css: [], text: [] };
 
     if (cue.type === 'text') {
-      cueTypes.text.push(cue);
+      cueLevel.text.push(cue);
     } else {
-      cueTypes.css.push(cue);
+      cueLevel.css.push(cue);
     }
 
-    cuesByLevel.set(cue.level, cueTypes);
+    cueLevels.set(cue.level, cueLevel);
   });
 
-  let cueGroups: Cue[][] = [];
+  let cueSets: Cue[][] = [];
 
-  // levels descending
-  const levels = [...cuesByLevel.keys()].sort((a, b) => b - a);
-
-  // go through each level and append it to each cue group
-  // cue groups can only have one type per level
-  // so we create a new group per type
+  const levels = [...cueLevels.keys()].sort((a, b) => b - a);
   levels.forEach((level) => {
-    const cueLevel = cuesByLevel.get(level);
+    const cueLevel = cueLevels.get(level);
 
-    const cueGroupsWithLevel: Cue[][] = [];
+    const cueSetsWithLevel: Cue[][] = [];
 
-    cueGroups.forEach((cueGroup) => {
+    // Append the level to each cue set
+    // keeping css and text cues separate.
+    cueSets.forEach((cueSet) => {
       if (cueLevel.css.length) {
-        cueGroupsWithLevel.push([...cueGroup, ...cueLevel.css]);
+        cueSetsWithLevel.push([...cueSet, ...cueLevel.css]);
       }
 
       if (cueLevel.text.length) {
-        cueGroupsWithLevel.push([...cueGroup, ...cueLevel.text]);
+        cueSetsWithLevel.push([...cueSet, ...cueLevel.text]);
       }
     });
 
-    // if this is the first level create a group per type
-    if (!cueGroups.length) {
+    if (!cueSets.length) {
+      // Create the first cue sets.
       if (cueLevel.css.length) {
-        cueGroupsWithLevel.push([...cueLevel.css]);
+        cueSetsWithLevel.push([...cueLevel.css]);
       }
 
       if (cueLevel.text.length) {
-        cueGroupsWithLevel.push([...cueLevel.text]);
+        cueSetsWithLevel.push([...cueLevel.text]);
       }
     }
 
-    cueGroups = cueGroupsWithLevel;
+    cueSets = cueSetsWithLevel;
   });
 
-  return cueGroups;
+  return cueSets;
 };
 
-const sortCues = (cues: Cue[]) => {
+const doCombine = <T>(
+  items: T[],
+  remaining: number,
+  combination: T[],
+  result: T[][],
+) => {
+  if (remaining === 0) {
+    if (combination.length > 0) {
+      result.push(combination);
+    }
+    return;
+  }
+
+  // For each item
+  for (let i = 0; i < items.length; i++) {
+    doCombine(
+      // Combine the later items
+      items.slice(i + 1),
+      // Recursively add items until we reach the correct size
+      remaining - 1,
+      // Include the item in the selection
+      combination.concat([items[i]]),
+      result,
+    );
+  }
+  return;
+};
+
+/**
+ * Build all combinations of items with the specified size.
+ */
+export const combine = <T>(items: T[], size: number): T[][] => {
+  const result = [];
+
+  doCombine(items, size, [], result);
+
+  return result;
+};
+
+export const sortCues = (cues: Cue[]): Cue[] => {
   return [...cues].sort((a, b) => {
-    // first sort by level
+    // Sort by level
     if (a.level < b.level) return 1;
     if (a.level > b.level) return -1;
 
-    // then sort by penalty
+    // Then by penalty
     if (a.penalty < b.penalty) return 1;
     if (a.penalty > b.penalty) return -1;
 
-    // prefer shorter values for the same penalty
+    // Then by the value length
     if (a.value.length < b.value.length) return 1;
     if (a.value.length > b.value.length) return -1;
 
@@ -93,128 +136,129 @@ const sortCues = (cues: Cue[]) => {
   });
 };
 
-var combine = function (a, min) {
-  var fn = function (n, src, got, all) {
-    if (n == 0) {
-      if (got.length > 0) {
-        all[all.length] = got;
-      }
-      return;
-    }
-    for (var j = 0; j < src.length; j++) {
-      fn(n - 1, src.slice(j + 1), got.concat([src[j]]), all);
-    }
-    return;
-  };
-
-  var all = [];
-
-  fn(min, a, [], all);
-
-  // TODO?
-  // all.push(a);
-  return all;
-};
-
-// Remove cues as long as the selector still matches the target
-export const minimizeCues = (
-  cues: Cue[],
+// Remove cues that are not necessary to target the element
+// until we get to a size that we can try all combinations of
+export const trimExcessCues = (
+  cuesToTrim: Cue[],
   target: HTMLElement,
-): RankedCues | null => {
-  // Order by penalty descending
-  let minSelectorParts = buildSelectorParts(cues);
+  goalSize: number,
+): CueGroup | null => {
+  let selectorParts = buildSelectorParts(cuesToTrim);
 
-  if (!isMatch({ selectorParts: minSelectorParts, target })) {
-    // this should never happen
-    console.debug(
-      'qawolf: element did not match all selector parts',
-      minSelectorParts,
-      target,
-    );
+  if (!isMatch({ selectorParts, target })) {
+    // Short-circuit if the cues do not match the target
+    // This might happen if our text selector does not line up with playwright
     return null;
   }
 
-  // Keep the nearest attribute
-  // TODO
-  const cueToKeep = findNearestPreferredAttributeCue(cues);
+  // Remove the cues furthest away from the target first
+  let cues = sortCues(cuesToTrim);
 
-  let minCues = sortCues(cues);
+  for (let i = 0; i < cues.length && cues.length > goalSize; i++) {
+    // Keep preferred attribute cues even if they are unnecessary
+    if (cues[i].penalty === 0) continue;
 
-  // Slim down the cues by removing any unnecessary cues
-  // until we can try all combinations in a reasonable time
-  for (let i = 0; i < minCues.length && minCues.length > 8; i++) {
-    // keep attribute cues
-    if (minCues[i].penalty === 0) continue;
-
-    const cuesWithoutI = [...minCues];
+    const cuesWithoutI = [...cues];
     cuesWithoutI.splice(i, 1);
 
-    const partsWithoutCue = buildSelectorParts(cuesWithoutI);
+    const selectorPartsWithoutI = buildSelectorParts(cuesWithoutI);
 
-    if (isMatch({ selectorParts: partsWithoutCue, target })) {
-      minCues = cuesWithoutI;
-      minSelectorParts = partsWithoutCue;
+    if (isMatch({ selectorParts: selectorPartsWithoutI, target })) {
+      cues = cuesWithoutI;
+      selectorParts = selectorPartsWithoutI;
       i -= 1;
     }
   }
 
-  let minPenalty = minCues.reduce((a, b) => a + b.penalty, 0);
+  return {
+    cues,
+    penalty: getPenalty(cues),
+    selectorParts,
+    valueLength: getValueLength(cues),
+  };
+};
 
-  const cuesOptions = minCues;
+// Go through every combination of cues from 1..max size
+// Pick the cues that match the target with the lowest penalty
+export const findBestCueGroup = (
+  seedGroup: CueGroup,
+  target: HTMLElement,
+  maxSize: number,
+): CueGroup => {
+  let bestGroup = seedGroup;
 
-  // We hopefully slimmed down the sample size to 8 above
-  // If we try all combinations of sample size 1..5 we only need to try 218 combos
-  // Which is reasonable computationally
-  for (let i = 1; i < 5; i++) {
-    const cueCombinations = combine(cuesOptions, i);
+  // Keep the nearest attribute
+  const cueToKeep = findNearestPreferredAttributeCue(seedGroup.cues);
 
-    // check each combination for this level
-    for (let j = 0; j < cueCombinations.length; j++) {
-      const cuesToTest: Cue[] = cueCombinations[j];
-      const penalty = cuesToTest.reduce((a, b) => a + b.penalty, 0);
+  for (let i = 1; i <= maxSize; i++) {
+    const combinations = combine(seedGroup.cues, i);
 
-      if (penalty > minPenalty) continue;
+    combinations.forEach((cues: Cue[]) => {
+      const penalty = getPenalty(cues);
 
-      // TODO consider other things here like length amongst cues
-      if (penalty === minPenalty && cuesToTest.length > minCues.length)
-        continue;
+      // Skip these cues if they are not better
+      if (penalty > bestGroup.penalty) return;
 
-      if (cueToKeep && !cuesToTest.includes(cueToKeep)) {
-        cuesToTest.push(cueToKeep);
+      const valueLength = getValueLength(cues);
+
+      if (penalty === bestGroup.penalty) {
+        if (bestGroup.cues.length < cues.length) return;
+
+        if (
+          bestGroup.cues.length === cues.length &&
+          valueLength >= bestGroup.valueLength
+        )
+          return;
       }
 
-      const trySelectorParts = buildSelectorParts(cuesToTest);
-
-      if (isMatch({ selectorParts: trySelectorParts, target })) {
-        minCues = cuesToTest;
-        minPenalty = penalty;
-        minSelectorParts = trySelectorParts;
+      if (cueToKeep && !cues.includes(cueToKeep)) {
+        cues.push(cueToKeep);
       }
-    }
+
+      const selectorParts = buildSelectorParts(cues);
+
+      if (isMatch({ selectorParts, target })) {
+        bestGroup = {
+          cues,
+          penalty,
+          selectorParts,
+          valueLength,
+        };
+      }
+    });
   }
 
-  return {
-    cues: minCues,
-    penalty: minPenalty,
-    selectorParts: buildSelectorParts(minCues),
-  };
+  return bestGroup;
 };
 
 export const optimizeCues = (
   cues: Cue[],
   target: HTMLElement,
-): SelectorPart[] | null => {
-  const cueGroups = buildLongestCueGroups(cues);
+): CueGroup | null => {
+  const cueSets = buildCueSets(cues);
 
-  // minimize all the cue groups
-  // pick the lowest penalty one
-  const rankedSelectorParts = cueGroups
-    .map((cueGroup) => minimizeCues(cueGroup, target))
+  const cueGroups = cueSets
+    .map((cueSet) => {
+      // Trim down the cue group to 8
+      const trimmedCues = trimExcessCues(cueSet, target, 8);
+      if (!trimmedCues) return null;
+
+      // Try all combinations up to 5
+      // This is ~200 combinations which should be reasonable
+      return findBestCueGroup(trimmedCues, target, 5);
+    })
+    // Ignore invalid groups
     .filter((a) => !!a)
-    // order by penalty ascending
-    .sort((a, b) => a.penalty - b.penalty);
+    // Rank by the total penalty then by value length
+    .sort((a, b) => {
+      if (a.penalty < b.penalty) return -1;
+      if (a.penalty > b.penalty) return 1;
 
-  return rankedSelectorParts.length
-    ? rankedSelectorParts[0].selectorParts
-    : null;
+      if (a.valueLength < b.valueLength) return -1;
+      if (a.valueLength > b.valueLength) return 1;
+
+      return 0;
+    });
+
+  return cueGroups.length ? cueGroups[0] : null;
 };

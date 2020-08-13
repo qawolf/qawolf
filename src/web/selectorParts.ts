@@ -4,9 +4,11 @@ import { Cue } from './cues';
 /* eslint-disable @typescript-eslint/no-var-requires */
 let evaluator: Evaluator;
 try {
-  // wrap in try-catch for server side tests
   evaluator = require('playwright-evaluator');
-} catch (e) {}
+} catch (e) {
+  // this will only error on server side tests that
+  // do not require the evaluator but depend on this file
+}
 
 const { querySelectorAll } = evaluator || {};
 /* eslint-enable @typescript-eslint/no-var-requires */
