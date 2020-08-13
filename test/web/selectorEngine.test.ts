@@ -1,6 +1,6 @@
 import { Browser, Page } from 'playwright';
 import { addInitScript } from '../../src/utils/context/register';
-import { buildSelectorParts } from '../../src/web/selectorParts';
+import { buildSelectorParts } from '../../src/web/selectorEngine';
 import { SelectorPart } from '../../src/web/types';
 import { launch } from '../../src/utils';
 import { TEST_URL } from '../utils';

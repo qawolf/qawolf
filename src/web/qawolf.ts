@@ -7,7 +7,6 @@ export {
 } from './cues';
 export {
   getClickableAncestor,
-  getElementText,
   getTopmostEditableElement,
   isClickable,
   isVisible,
@@ -15,5 +14,5 @@ export {
 export { formatArgument, interceptConsoleLogs } from './interceptConsoleLogs';
 export { PageEventCollector } from './PageEventCollector';
 export { buildSelector, clearSelectorCache, toSelector } from './selector';
-export { isMatch } from './selectorParts';
+export { getElementText, isMatch } from './selectorEngine';
 export { getXpath, nodeToDoc } from './serialize';

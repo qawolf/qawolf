@@ -4,7 +4,7 @@ import {
   getPenalty,
   getValueLength,
 } from './cues';
-import { buildSelectorParts, isMatch } from './selectorParts';
+import { buildSelectorParts, isMatch } from './selectorEngine';
 import { SelectorPart } from './types';
 
 type CueGroup = {
@@ -147,7 +147,8 @@ export const trimExcessCues = (
 
   if (!isMatch({ selectorParts, target })) {
     // Short-circuit if the cues do not match the target
-    // This might happen if our text selector does not line up with playwright
+    // This should never happen but we are being precautious
+    console.log('selectors did not match', selectorParts, target);
     return null;
   }
 

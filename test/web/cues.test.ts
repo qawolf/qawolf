@@ -74,7 +74,7 @@ describe('buildCuesForElement', () => {
     expect(cues2).toEqual([
       { level: 1, penalty: 5, type: 'attribute', value: '[for="single"]' },
       { level: 1, penalty: 40, type: 'tag', value: 'label' },
-      { level: 1, penalty: 12, type: 'text', value: 'Single checkbox' },
+      { level: 1, penalty: 12, type: 'text', value: '" Single checkbox"' },
     ]);
   });
 });

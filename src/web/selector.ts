@@ -1,7 +1,7 @@
 import { buildCues, BuildCues } from './cues';
 import { optimizeCues } from './optimizeCues';
 import { getXpath } from './serialize';
-import { isMatch } from './selectorParts';
+import { isMatch } from './selectorEngine';
 import { SelectorPart } from './types';
 
 const selectorCache = new Map<HTMLElement, SelectorPart[]>();

@@ -89,58 +89,6 @@ describe('getTopmostEditableElement', () => {
   });
 });
 
-describe('getElementText', () => {
-  beforeAll(() => page.goto(`${TEST_URL}checkbox-inputs`));
-
-  const getElementText = async (selector: string): Promise<string | null> => {
-    return page.evaluate(
-      ({ selector }) => {
-        const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.querySelector(selector) as HTMLElement;
-
-        return element ? qawolf.getElementText(element) : 'ELEMENT NOT FOUND';
-      },
-      { selector },
-    );
-  };
-
-  it('returns null if no inner text', async () => {
-    // an svg for the checkbox is visible on the page
-    const cues = await getElementText('svg');
-    expect(cues).toBeNull();
-  });
-
-  it('returns null if no text', async () => {
-    const cues = await getElementText('#single');
-    expect(cues).toBeNull();
-  });
-
-  it('returns null if excessive text', async () => {
-    const cues = await getElementText('.container');
-    expect(cues).toBeNull();
-  });
-
-  it('returns text if applicable', async () => {
-    await page.goto(`${TEST_URL}buttons`);
-
-    const cues = await getElementText('#submit-input');
-
-    expect(cues).toBe('Submit Input');
-  });
-
-  it('handles quotes in text', async () => {
-    const cues = await getElementText('.quote-button');
-
-    expect(cues).toBe('Button "with" extra \'quotes\'');
-  });
-
-  it('trims extra whitespace', async () => {
-    const cues = await getElementText('#whitespace-button');
-
-    expect(cues).toBe('I have extra whitespace');
-  });
-});
-
 describe('isVisible', () => {
   beforeAll(() => page.goto(`${TEST_URL}login`));
 

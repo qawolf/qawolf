@@ -55,7 +55,7 @@ describe('buildSelector', () => {
 
     it.each([
       '[name="field-keywords"]',
-      'text=Start here.',
+      'text="Start here."',
     ])('builds expected selector %o', (selector) => expectSelector(selector));
   });
 

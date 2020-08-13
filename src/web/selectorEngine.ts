@@ -1,5 +1,5 @@
-import { Evaluator, SelectorPart } from './types';
 import { Cue } from './cues';
+import { Evaluator, SelectorPart } from './types';
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 let evaluator: Evaluator;
@@ -10,7 +10,7 @@ try {
   // do not require the evaluator but depend on this file
 }
 
-const { querySelectorAll } = evaluator || {};
+const { createTextSelector, querySelectorAll } = evaluator || {};
 /* eslint-enable @typescript-eslint/no-var-requires */
 
 type IsMatch = {
@@ -47,6 +47,10 @@ export const buildSelectorParts = (cues: Cue[]): SelectorPart[] => {
   });
 
   return parts;
+};
+
+export const getElementText = (element: HTMLElement): string | undefined => {
+  return createTextSelector(element);
 };
 
 export const isMatch = ({ selectorParts, target }: IsMatch): boolean => {

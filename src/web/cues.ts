@@ -1,5 +1,5 @@
 import { getAttribute } from './attribute';
-import { getElementText } from './element';
+import { getElementText } from './selectorEngine';
 import { isDynamic } from './isDynamic';
 
 const DEFAULT_ATTRIBUTE_LIST =
