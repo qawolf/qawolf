@@ -1,10 +1,10 @@
 import { Browser, Page } from 'playwright';
+import { launch } from '../../src/utils';
+import { addInitScript } from '../../src/utils/context/register';
+import { QAWolfWeb } from '../../src/web';
 import { DEFAULT_ATTRIBUTE_LIST } from '../../src/web/attribute';
 import { Cue } from '../../src/web/cues';
-import { addInitScript } from '../../src/utils/context/register';
-import { launch } from '../../src/utils';
 import { TEST_URL } from '../utils';
-import { QAWolfWeb } from '../../src/web';
 
 let browser: Browser;
 let page: Page;
