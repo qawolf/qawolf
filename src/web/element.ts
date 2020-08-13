@@ -1,3 +1,4 @@
+import { hasAttribute } from './attribute';
 import { getXpath } from './serialize';
 
 export const isVisible = (
@@ -30,10 +31,14 @@ export const isClickable = (
   return clickable && isVisible(element, computedStyle);
 };
 
-export const getClickableAncestor = (element: HTMLElement): HTMLElement => {
+export const getClickableAncestor = (
+  element: HTMLElement,
+  attributes: string[],
+): HTMLElement => {
   /**
    * Crawl up until we reach the top "clickable" ancestor.
    * If the target is the descendant of "a"/"button"/"input" or a clickable element choose it.
+   * If the target has a preferred attribute choose it.
    * Otherwise choose the original element as the target.
    */
   let ancestor = element;
@@ -46,6 +51,11 @@ export const getClickableAncestor = (element: HTMLElement): HTMLElement => {
         `qawolf: found clickable ancestor: ${ancestor.tagName}`,
         getXpath(ancestor),
       );
+      return ancestor;
+    }
+
+    if (hasAttribute(ancestor, attributes)) {
+      // stop crawling when the ancestor has a preferred attribute
       return ancestor;
     }
 
@@ -98,30 +108,4 @@ export const getTopmostEditableElement = (
 
   // This should never be hit, but here as a safety
   return element;
-};
-
-export const getElementText = (element: HTMLElement): string | null => {
-  let text = (element.innerText || '').trim();
-
-  if (
-    element instanceof HTMLInputElement &&
-    ['button', 'submit'].includes(element.type)
-  ) {
-    text = element.value;
-  }
-
-  if (
-    !text ||
-    text.length > 200 ||
-    text.match(/[\n\r\t]+/) ||
-    // ignore invisible characters which look like an empty string but have a length
-    // https://www.w3resource.com/javascript-exercises/javascript-string-exercise-32.php
-    // https://stackoverflow.com/a/21797208/230462
-    text.match(/[^\x20-\x7E]/g)
-  )
-    return null;
-
-  console.debug(`qawolf: found text="${text}" for element`, element);
-
-  return text;
 };

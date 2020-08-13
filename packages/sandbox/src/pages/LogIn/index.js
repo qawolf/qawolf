@@ -1,21 +1,21 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-const USERNAME = "tomsmith";
-const PASSWORD = "SuperSecretPassword!";
+const USERNAME = 'tomsmith';
+const PASSWORD = 'SuperSecretPassword!';
 
 function LogIn() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
 
   const handleClick = () => {
     if (username !== USERNAME) {
-      setError("Your username is invalid!");
+      setError('Your username is invalid!');
     } else if (password !== PASSWORD) {
-      setError("Your password is invalid!");
+      setError('Your password is invalid!');
     } else {
-      setError("");
+      setError('');
       setLoggedIn(true);
     }
   };
@@ -33,13 +33,13 @@ function LogIn() {
 
   return (
     <React.Fragment>
-      {error && <div style={{ color: "red" }}>{error}</div>}
+      {error && <div style={{ color: 'red' }}>{error}</div>}
       <p>
-        To log in, use <i>tomsmith</i> as the username, and{" "}
+        To log in, use <i>tomsmith</i> as the username, and{' '}
         <i>SuperSecretPassword!</i> as the password.
       </p>
       <form
-        onSubmit={e => {
+        onSubmit={(e) => {
           e.preventDefault();
           handleClick();
         }}
@@ -49,7 +49,7 @@ function LogIn() {
         <input
           autoComplete="off"
           id="username"
-          onChange={e => setUsername(e.target.value)}
+          onChange={(e) => setUsername(e.target.value)}
           type="text"
           value={username}
         />
@@ -59,14 +59,14 @@ function LogIn() {
         <input
           autoComplete="off"
           id="password"
-          onChange={e => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
           type="password"
           value={password}
         />
         <br />
         <button
           onClick={handleClick}
-          style={{ cursor: "pointer" }}
+          style={{ cursor: 'pointer' }}
           type="submit"
         >
           <p>Log in</p>

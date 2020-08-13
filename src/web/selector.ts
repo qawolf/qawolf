@@ -1,19 +1,8 @@
-import { buildCues, buildSelectorParts, BuildCues } from './cues';
-import { iterateCues } from './iterateCues';
+import { buildCues, BuildCues } from './cues';
+import { optimizeCues } from './optimizeCues';
 import { getXpath } from './serialize';
-import { Evaluator, SelectorPart } from './types';
-
-/* eslint-disable @typescript-eslint/no-var-requires */
-const {
-  isVisible,
-  querySelectorAll,
-}: Evaluator = require('playwright-evaluator');
-/* eslint-enable @typescript-eslint/no-var-requires */
-
-type IsMatch = {
-  selectorParts: SelectorPart[];
-  target: HTMLElement;
-};
+import { isMatch } from './selectorEngine';
+import { SelectorPart } from './types';
 
 const selectorCache = new Map<HTMLElement, SelectorPart[]>();
 const clickSelectorCache = new Map<HTMLElement, SelectorPart[]>();
@@ -24,22 +13,6 @@ const clickSelectorCache = new Map<HTMLElement, SelectorPart[]>();
 export const clearSelectorCache = (): void => {
   selectorCache.clear();
   clickSelectorCache.clear();
-};
-
-export const isMatch = ({ selectorParts, target }: IsMatch): boolean => {
-  const result = querySelectorAll(
-    { parts: selectorParts },
-    document,
-  ).filter((element) => isVisible(element));
-
-  // console.debug('Try selector', selectorParts[0], selectorParts[1], target);
-
-  if (result[0] !== target && !target.contains(result[0])) {
-    // console.error('Selector matches another element');
-    return false;
-  }
-
-  return true;
 };
 
 export const toSelector = (selectorParts: SelectorPart[]): string => {
@@ -79,48 +52,23 @@ export const buildSelector = (options: BuildCues): string => {
 
   const cues = buildCues(options);
 
-  const nearestPreferredAttributeCue = cues.reduce((foundCue, cue) => {
-    if (cue.penalty === 0 && (!foundCue || foundCue.level > cue.level)) {
-      return cue;
-    }
-    return foundCue;
-  }, null);
-
-  // iterateCues will dynamically figure out increasingly
-  // complex cue groups to suggest
-  for (let cueGroup of iterateCues(cues)) {
-    // Because custom attributes are preferred, we assume that at least one (nearest)
-    // should ALWAYS be included in every group, even if the selector might be
-    // unique without it.
-    if (nearestPreferredAttributeCue) {
-      if (!cueGroup.find((cue) => cue.penalty === 0)) {
-        cueGroup = [...cueGroup, nearestPreferredAttributeCue];
-      }
+  const { selectorParts } = optimizeCues(cues, target) || {};
+  if (selectorParts) {
+    // First cache it so that we don't need to do all the looping for this
+    // same target next time. We cache `selectorParts` rather than `selector`
+    // because the DOM can change, so when we later use the cached selector,
+    // we will need to run it through `isMatch` again, which needs the parsed
+    // selector.
+    if (isClick) {
+      clickSelectorCache.set(target, selectorParts);
+    } else {
+      selectorCache.set(target, selectorParts);
     }
 
-    const selectorParts = buildSelectorParts(cueGroup);
-
-    // If the suggested cue group matches this target and no others, use it.
-    if (isMatch({ selectorParts, target })) {
-      // First cache it so that we don't need to do all the looping for this
-      // same target next time. We cache `selectorParts` rather than `selector`
-      // because the DOM can change, so when we later use the cached selector,
-      // we will need to run it through `isMatch` again, which needs the parsed
-      // selector.
-      if (isClick) {
-        clickSelectorCache.set(target, selectorParts);
-      } else {
-        selectorCache.set(target, selectorParts);
-      }
-
-      // Now convert selectorParts (a Playwright thing) to a string selector
-      selector = toSelector(selectorParts);
-      break;
-    }
-  }
-
-  // If no selector was unique, fall back to xpath.
-  if (!selector) {
+    // Now convert selectorParts (a Playwright thing) to a string selector
+    selector = toSelector(selectorParts);
+  } else {
+    // No selector was found, fall back to xpath.
     selector = `xpath=${getXpath(target)}`;
   }
 

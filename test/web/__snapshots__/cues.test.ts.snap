@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`browser tests buildCues builds cues for a target 1`] = `
+exports[`buildCues builds cues for a target 1`] = `
 Array [
   Object {
     "level": 0,

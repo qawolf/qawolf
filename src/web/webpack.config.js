@@ -5,9 +5,10 @@ const selectorEvaluatorSource = require('playwright-core/lib/generated/injectedS
 const virtualModules = new VirtualModulesPlugin({
   'node_modules/playwright-evaluator.js': `
   const evaluator = new (${selectorEvaluatorSource.source})([]);
+  const createTextSelector = (element) => evaluator.engines.get('text').create(document, element);
   const isVisible = (element) => evaluator.isVisible(element);
   const querySelectorAll = (...args) => evaluator.querySelectorAll(...args);
-  module.exports = { isVisible, querySelectorAll };`,
+  module.exports = { createTextSelector, isVisible, querySelectorAll };`,
 });
 
 module.exports = {

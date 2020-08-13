@@ -29,6 +29,18 @@ function HtmlButtons() {
       <button className="btn-b btn-2">Classes</button>
       <br />
       <br />
+      <button id="nested">
+        <div>
+          <span>Nested</span>
+        </div>
+      </button>
+      <button>
+        <div data-qa="nested-attribute">
+          <span>Nested Attribute</span>
+        </div>
+      </button>
+      <br />
+      <br />
       <input id="submit-input" type="submit" value="Submit Input" />
     </div>
   );

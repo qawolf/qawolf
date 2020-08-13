@@ -1,10 +1,6 @@
 import { getAttribute } from './attribute';
-import { getElementText } from './element';
+import { getElementText } from './selectorEngine';
 import { isDynamic } from './isDynamic';
-import { SelectorPart } from './types';
-
-const DEFAULT_ATTRIBUTE_LIST =
-  'data-cy,data-e2e,data-qa,/^data-test.*/,/^qa-.*/';
 
 export type Cue = {
   level: number; // 0 is target, 1 is parent, etc.
@@ -13,15 +9,8 @@ export type Cue = {
   value: string;
 };
 
-type BuildAttributeCues = {
-  attributes: string[];
-  element: HTMLElement;
-  level: number;
-  useAttributeName?: boolean;
-};
-
 export type BuildCues = {
-  attribute?: string;
+  attributes: string[];
   isClick: boolean;
   target: HTMLElement;
 };
@@ -203,7 +192,6 @@ export const buildCuesForElement = ({
       // Special handling for "class" attribute
       case 'class': {
         element.classList.forEach((c) => {
-          // console.log("class", c, isDynamic(c));
           if (isDynamic(c)) return;
 
           list.push({ level, penalty, type: 'class', value: `.${c}` });
@@ -261,8 +249,11 @@ export const buildCuesForElement = ({
   return cues;
 };
 
-export const buildCues = ({ attribute, isClick, target }: BuildCues): Cue[] => {
-  const attributes = (attribute || DEFAULT_ATTRIBUTE_LIST).split(',');
+export const buildCues = ({
+  attributes,
+  isClick,
+  target,
+}: BuildCues): Cue[] => {
   const cueTypesConfig = getCueTypesConfig(attributes);
 
   const cues: Cue[] = [];
@@ -281,33 +272,20 @@ export const buildCues = ({ attribute, isClick, target }: BuildCues): Cue[] => {
   return cues;
 };
 
-export const buildSelectorParts = (cues: Cue[]): SelectorPart[] => {
-  const levels = [...new Set(cues.map((cue) => cue.level))];
-
-  // sort descending
-  levels.sort((a, b) => b - a);
-
-  const parts: SelectorPart[] = [];
-
-  levels.forEach((level) => {
-    const cuesForLevel = cues.filter((cue) => cue.level === level);
-
-    const textCues = cuesForLevel.filter((cue) => cue.type === 'text');
-    if (textCues.length) {
-      parts.push({ name: 'text', body: textCues[0].value });
-      return;
+export const findNearestPreferredAttributeCue = (cues: Cue[]): Cue | null => {
+  return cues.reduce((foundCue, cue) => {
+    if (cue.penalty === 0 && (!foundCue || foundCue.level > cue.level)) {
+      return cue;
     }
 
-    cuesForLevel.sort((a, b) => {
-      if (a.type === 'tag') return -1;
-      if (b.type === 'tag') return 1;
-      return 0;
-    });
+    return foundCue;
+  }, null);
+};
 
-    const bodyValues = cuesForLevel.map((cue) => cue.value);
+export const getPenalty = (cues: Cue[]): number => {
+  return cues.reduce((a, b) => a + b.penalty, 0);
+};
 
-    parts.push({ name: 'css', body: bodyValues.join('') });
-  });
-
-  return parts;
+export const getValueLength = (cues: Cue[]): number => {
+  return cues.reduce((total, cue) => total + cue.value.length, 0);
 };

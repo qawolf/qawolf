@@ -1,3 +1,6 @@
+export const DEFAULT_ATTRIBUTE_LIST =
+  'data-cy,data-e2e,data-qa,/^data-test.*/,/^qa-.*/';
+
 export type AttributeValuePair = {
   name: string;
   value: string;
@@ -63,4 +66,11 @@ export const getAttribute = ({
   if (!value) return null;
 
   return { name: attribute, value };
+};
+
+export const hasAttribute = (
+  element: HTMLElement,
+  attributes: string[],
+): boolean => {
+  return !!attributes.find((attribute) => getAttribute({ attribute, element }));
 };

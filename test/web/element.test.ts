@@ -1,8 +1,8 @@
 import { Browser, Page } from 'playwright';
 import { addInitScript } from '../../src/utils/context/register';
 import { launch } from '../../src/utils';
-import { TEST_URL } from '../utils';
 import { QAWolfWeb } from '../../src/web';
+import { TEST_URL } from '../utils';
 
 let browser: Browser;
 let page: Page;
@@ -17,32 +17,48 @@ beforeAll(async () => {
 afterAll(() => browser.close());
 
 describe('getClickableAncestor', () => {
-  beforeAll(() => page.goto(`${TEST_URL}login`));
+  beforeAll(() => page.goto(`${TEST_URL}buttons`));
 
   it('chooses the top most clickable ancestor', async () => {
-    const xpath = await page.evaluate(() => {
+    const id = await page.evaluate(() => {
       const web: QAWolfWeb = (window as any).qawolf;
-      const element = document.getElementsByTagName('p')[1];
+      const element = document.querySelector('#nested span') as HTMLElement;
       if (!element) throw new Error('element not found');
 
-      const ancestor = web.getClickableAncestor(element);
-      return web.getXpath(ancestor);
+      const ancestor = web.getClickableAncestor(element, []);
+      return ancestor.id;
     });
 
-    expect(xpath).toEqual("//*[@id='root']/form/button");
+    expect(id).toEqual('nested');
   });
 
   it('chooses the original element when there is no clickable ancestor', async () => {
-    const xpath = await page.evaluate(() => {
+    const id = await page.evaluate(() => {
       const web: QAWolfWeb = (window as any).qawolf;
-      const element = document.getElementsByTagName('button')[0];
+      const element = document.querySelector('#nested') as HTMLElement;
       if (!element) throw new Error('element not found');
 
-      const ancestor = web.getClickableAncestor(element);
-      return web.getXpath(ancestor);
+      const ancestor = web.getClickableAncestor(element, []);
+      return ancestor.id;
     });
 
-    expect(xpath).toEqual("//*[@id='root']/form/button");
+    expect(id).toEqual('nested');
+  });
+
+  it('stops at an ancestor with a preferred attribute', async () => {
+    const attribute = await page.evaluate(() => {
+      const web: QAWolfWeb = (window as any).qawolf;
+
+      const element = document.querySelector(
+        '[data-qa="nested-attribute"] span',
+      ) as HTMLElement;
+      if (!element) throw new Error('element not found');
+
+      const ancestor = web.getClickableAncestor(element, ['data-qa']);
+      return ancestor.getAttribute('data-qa');
+    });
+
+    expect(attribute).toEqual('nested-attribute');
   });
 });
 
@@ -86,58 +102,6 @@ describe('getTopmostEditableElement', () => {
     });
 
     expect(xpath).toEqual("//*[@id='root']/div[3]/div");
-  });
-});
-
-describe('getElementText', () => {
-  beforeAll(() => page.goto(`${TEST_URL}checkbox-inputs`));
-
-  const getElementText = async (selector: string): Promise<string | null> => {
-    return page.evaluate(
-      ({ selector }) => {
-        const qawolf: QAWolfWeb = (window as any).qawolf;
-        const element = document.querySelector(selector) as HTMLElement;
-
-        return element ? qawolf.getElementText(element) : 'ELEMENT NOT FOUND';
-      },
-      { selector },
-    );
-  };
-
-  it('returns null if no inner text', async () => {
-    // an svg for the checkbox is visible on the page
-    const cues = await getElementText('svg');
-    expect(cues).toBeNull();
-  });
-
-  it('returns null if no text', async () => {
-    const cues = await getElementText('#single');
-    expect(cues).toBeNull();
-  });
-
-  it('returns null if excessive text', async () => {
-    const cues = await getElementText('.container');
-    expect(cues).toBeNull();
-  });
-
-  it('returns text if applicable', async () => {
-    await page.goto(`${TEST_URL}buttons`);
-
-    const cues = await getElementText('#submit-input');
-
-    expect(cues).toBe('Submit Input');
-  });
-
-  it('handles quotes in text', async () => {
-    const cues = await getElementText('.quote-button');
-
-    expect(cues).toBe('Button "with" extra \'quotes\'');
-  });
-
-  it('trims extra whitespace', async () => {
-    const cues = await getElementText('#whitespace-button');
-
-    expect(cues).toBe('I have extra whitespace');
   });
 });
 

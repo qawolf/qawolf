@@ -1,9 +1,10 @@
-import { buildSelector } from './selector';
+import { DEFAULT_ATTRIBUTE_LIST } from './attribute';
 import {
   getClickableAncestor,
   getTopmostEditableElement,
   isVisible,
 } from './element';
+import { buildSelector } from './selector';
 import { nodeToDoc } from './serialize';
 import * as types from '../types';
 
@@ -14,11 +15,11 @@ type ConstructorOptions = {
 };
 
 export class PageEventCollector {
-  private _attribute?: string;
+  private _attributes: string[];
   private _onDispose: types.Callback[] = [];
 
   constructor(options: ConstructorOptions) {
-    this._attribute = options.attribute;
+    this._attributes = (options.attribute || DEFAULT_ATTRIBUTE_LIST).split(',');
     this.collectEvents();
     console.debug('PageEventCollector: created', options);
   }
@@ -58,7 +59,7 @@ export class PageEventCollector {
       name: eventName,
       page: -1, // set in ContextEventCollector
       selector: buildSelector({
-        attribute: this._attribute,
+        attributes: this._attributes,
         isClick: ['click', 'mousedown'].includes(eventName),
         target,
       }),
@@ -89,7 +90,10 @@ export class PageEventCollector {
       // Ex. when you click on the i (button > i) or rect (a > svg > rect)
       // chances are the ancestor (button, a) is a better target to find.
       // XXX if anyone runs into issues with this behavior we can allow disabling it from a flag.
-      let target = getClickableAncestor(event.target as HTMLElement);
+      let target = getClickableAncestor(
+        event.target as HTMLElement,
+        this._attributes,
+      );
       target = getTopmostEditableElement(target);
       this.sendEvent('mousedown', { ...event, target });
     });
@@ -102,7 +106,10 @@ export class PageEventCollector {
     this.listen('click', (event) => {
       if (event.button !== 0) return;
 
-      let target = getClickableAncestor(event.target as HTMLElement);
+      let target = getClickableAncestor(
+        event.target as HTMLElement,
+        this._attributes,
+      );
       target = getTopmostEditableElement(target);
       this.sendEvent('click', { ...event, target });
     });

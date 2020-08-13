@@ -9,6 +9,8 @@ export type ParsedSelector = {
 };
 
 export type Evaluator = {
+  createTextSelector(element: Element): string | undefined;
+
   isVisible(element: Element): boolean;
 
   querySelectorAll(selector: ParsedSelector, root: Node): HTMLElement[];
