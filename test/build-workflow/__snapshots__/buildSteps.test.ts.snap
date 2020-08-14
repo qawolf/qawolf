@@ -5,7 +5,6 @@ Array [
   Object {
     "action": "click",
     "event": Object {
-      "index": 0,
       "isTrusted": true,
       "name": "mousedown",
       "page": 0,
@@ -31,7 +30,6 @@ Array [
   Object {
     "action": "click",
     "event": Object {
-      "index": 2,
       "isTrusted": true,
       "name": "mousedown",
       "page": 0,
@@ -55,7 +53,6 @@ Array [
   Object {
     "action": "fill",
     "event": Object {
-      "index": 26,
       "isTrusted": true,
       "name": "input",
       "page": 0,
@@ -81,7 +78,6 @@ Array [
   Object {
     "action": "press",
     "event": Object {
-      "index": 28,
       "isTrusted": true,
       "name": "keydown",
       "page": 0,
@@ -107,7 +103,6 @@ Array [
   Object {
     "action": "fill",
     "event": Object {
-      "index": 34,
       "isTrusted": true,
       "name": "input",
       "page": 0,
@@ -133,7 +128,6 @@ Array [
   Object {
     "action": "press",
     "event": Object {
-      "index": 37,
       "isTrusted": true,
       "name": "keydown",
       "page": 0,
@@ -159,7 +153,6 @@ Array [
   Object {
     "action": "click",
     "event": Object {
-      "index": 41,
       "isTrusted": true,
       "name": "mousedown",
       "page": 0,

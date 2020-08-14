@@ -154,7 +154,6 @@ export class PageEventCollector {
         // to avoid recording system initiated scrolls (after selecting an item/etc).
         // This will not capture scrolls triggered by the keyboard (PgUp/PgDown/Space)
         // however we already record key events so that encompasses those.
-        console.debug('ignore non-wheel s:croll event', event);
         return;
       }
 

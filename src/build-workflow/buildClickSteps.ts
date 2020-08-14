@@ -1,74 +1,67 @@
-import Debug from 'debug';
-import { ElementEvent, Step } from '../types';
 import { isInputTarget } from './target';
+import { ElementEvent, Step } from '../types';
 
-const debug = Debug('qawolf:buildClickSteps');
+const CLICK_EVENTS = ['click', 'mousedown'];
 
-const filterClickEvents = (events: ElementEvent[]): ElementEvent[] => {
-  return events.filter((event, i) => {
-    // track original event index
-    (event as any).index = i;
+const shouldIncludeClickEvent = (
+  event: ElementEvent,
+  previousEvent?: ElementEvent,
+): boolean => {
+  // ignore system initiated clicks
+  if (!event.isTrusted) return false;
 
-    // ignore system initiated clicks
-    if (!event.isTrusted) return false;
+  // ignore non-click events
+  if (!CLICK_EVENTS.includes(event.name)) return false;
 
-    // ignore other actions
-    if (!['click', 'mousedown'].includes(event.name)) return false;
+  // ignore clicks on selects
+  if (event.target.name === 'select') return false;
 
-    const previousEvent = events[i - 1];
-    if (
-      previousEvent &&
-      ['change', 'keydown', 'keyup'].includes(previousEvent.name) &&
-      event.time - previousEvent.time < 50
-    ) {
-      // skip system-initiated clicks triggered by a key press
-      // ex. "Enter" triggers a click on a submit input
-      debug(`skip click shortly after previous event ${event.time}`);
-      return false;
-    }
+  // skip system-initiated clicks triggered by a key press
+  // ex. "Enter" triggers a click on a submit input
+  if (
+    previousEvent &&
+    ['change', 'keydown', 'keyup'].includes(previousEvent.name) &&
+    event.time - previousEvent.time < 50
+  ) {
+    return false;
+  }
 
-    // ignore clicks on selects
-    return event.target.name !== 'select';
-  });
+  return true;
 };
 
-const groupClickEvents = (
-  events: ElementEvent[],
-  timeWindow = 200,
-): ElementEvent[][] => {
-  const groupedEvents = [];
+const groupClickEvents = (events: ElementEvent[]): ElementEvent[][] => {
+  const clickGroups = [];
+
   let group: ElementEvent[] = [];
 
-  events.forEach((event) => {
-    if (!group.length) {
-      // first group
-      group.push(event);
-      return;
-    }
+  events.forEach((event, i) => {
+    const previousEvent = events[i - 1];
 
-    const lastEvent = group[group.length - 1] as ElementEvent;
-    if (event.time - lastEvent.time < timeWindow) {
-      // event is within time window
+    if (!shouldIncludeClickEvent(event, previousEvent)) return;
+
+    // always group clicks with the previous mousedown/click events
+    // a click will follow a mousedown if the mouse was released within the same element
+    // a click will follow a click if it propagated to a higher element (a click on a label propagates to the input)
+    if (!group.length || event.name === 'click') {
       group.push(event);
       return;
     }
 
     // start a new group
-    groupedEvents.push(group);
+    clickGroups.push(group);
     group = [event];
   });
 
   if (group.length) {
     // append last group
-    groupedEvents.push(group);
+    clickGroups.push(group);
   }
 
-  return groupedEvents;
+  return clickGroups;
 };
 
 export const buildClickSteps = (events: ElementEvent[]): Step[] => {
-  const clickEvents = filterClickEvents(events);
-  const groupedClickEvents = groupClickEvents(clickEvents);
+  const groupedClickEvents = groupClickEvents(events);
   const steps: Step[] = [];
 
   groupedClickEvents.forEach((events) => {
@@ -76,15 +69,15 @@ export const buildClickSteps = (events: ElementEvent[]): Step[] => {
 
     const inputEvent = events.find((event) => isInputTarget(event.target));
     if (inputEvent) {
-      // if an event in the group is on an  input, assume the click propagated
+      // if an event in the group is on an input, assume the click propagated
       // to an element like a checkbox or radio, which is most accurate target
       event = inputEvent;
     }
 
     steps.push({
       action: 'click',
+      event,
       index: steps.length,
-      event: event,
     });
   });
 
