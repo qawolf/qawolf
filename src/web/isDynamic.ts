@@ -39,12 +39,9 @@ export const getTokens = (value: string): string[] => {
 
   // split by space, dash, and camel case
   value.split(/[ \-_]+|(?=[A-Z])/).forEach((token) => {
-    // remove a numeric or alphabetic suffix
-    // ex: btn-1, btn_z -> btn
-    const symbol = token.replace(/[-_]+(\d+|\w)$/, '');
-    if (!symbol) return; // ignore empty string
+    if (!token) return; // ignore empty string
 
-    tokens.push(symbol.toLowerCase());
+    tokens.push(token.toLowerCase());
   });
 
   return tokens;
