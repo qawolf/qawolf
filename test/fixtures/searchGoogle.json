@@ -1,0 +1,578 @@
+{
+  "events": [
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[aria-label=\"Search\"]",
+      "target": {
+        "attrs": {
+          "data-ved": "0ahUKEwjFnZ-6nZvrAhUSGTQIHYDZDF4Q39UDCAY",
+          "aria-label": "Search",
+          "value": "",
+          "title": "Search",
+          "spellcheck": "false",
+          "role": "combobox",
+          "autofocus": "",
+          "autocorrect": "off",
+          "autocomplete": "off",
+          "autocapitalize": "off",
+          "aria-haspopup": "false",
+          "aria-autocomplete": "both",
+          "jsaction": "paste:puy29d",
+          "type": "text",
+          "name": "q",
+          "maxlength": "2048",
+          "class": "gLFyf gsfi"
+        },
+        "name": "input"
+      },
+      "time": 1597426504917
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[aria-label=\"Search\"]",
+      "target": {
+        "attrs": {
+          "data-ved": "0ahUKEwjFnZ-6nZvrAhUSGTQIHYDZDF4Q39UDCAY",
+          "aria-label": "Search",
+          "value": "",
+          "title": "Search",
+          "spellcheck": "false",
+          "role": "combobox",
+          "autofocus": "",
+          "autocorrect": "off",
+          "autocomplete": "off",
+          "autocapitalize": "off",
+          "aria-haspopup": "false",
+          "aria-autocomplete": "both",
+          "jsaction": "paste:puy29d",
+          "type": "text",
+          "name": "q",
+          "maxlength": "2048",
+          "class": "gLFyf gsfi"
+        },
+        "name": "input"
+      },
+      "time": 1597426504919
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[aria-label=\"Search\"]",
+      "target": {
+        "attrs": {
+          "data-ved": "0ahUKEwjFnZ-6nZvrAhUSGTQIHYDZDF4Q39UDCAY",
+          "aria-label": "Search",
+          "value": "",
+          "title": "Search",
+          "spellcheck": "false",
+          "role": "combobox",
+          "autofocus": "",
+          "autocorrect": "off",
+          "autocomplete": "off",
+          "autocapitalize": "off",
+          "aria-haspopup": "false",
+          "aria-autocomplete": "both",
+          "jsaction": "paste:puy29d",
+          "type": "text",
+          "name": "q",
+          "maxlength": "2048",
+          "class": "gLFyf gsfi"
+        },
+        "name": "input"
+      },
+      "time": 1597426505818,
+      "value": "h"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[aria-label=\"Search\"]",
+      "target": {
+        "attrs": {
+          "data-ved": "0ahUKEwjFnZ-6nZvrAhUSGTQIHYDZDF4Q39UDCAY",
+          "aria-label": "Search",
+          "value": "",
+          "title": "Search",
+          "spellcheck": "false",
+          "role": "combobox",
+          "autofocus": "",
+          "autocorrect": "off",
+          "autocomplete": "off",
+          "autocapitalize": "off",
+          "aria-haspopup": "false",
+          "aria-autocomplete": "both",
+          "jsaction": "paste:puy29d",
+          "type": "text",
+          "name": "q",
+          "maxlength": "2048",
+          "class": "gLFyf gsfi"
+        },
+        "name": "input"
+      },
+      "time": 1597426505822,
+      "value": "h"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[aria-label=\"Search\"]",
+      "target": {
+        "attrs": {
+          "data-ved": "0ahUKEwjFnZ-6nZvrAhUSGTQIHYDZDF4Q39UDCAY",
+          "aria-label": "Search",
+          "value": "",
+          "title": "Search",
+          "spellcheck": "false",
+          "role": "combobox",
+          "autofocus": "",
+          "autocorrect": "off",
+          "autocomplete": "off",
+          "autocapitalize": "off",
+          "aria-haspopup": "false",
+          "aria-autocomplete": "both",
+          "jsaction": "paste:puy29d",
+          "type": "text",
+          "name": "q",
+          "maxlength": "2048",
+          "class": "gLFyf gsfi"
+        },
+        "name": "input"
+      },
+      "time": 1597426505827,
+      "value": "h"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[aria-label=\"Search\"]",
+      "target": {
+        "attrs": {
+          "data-ved": "0ahUKEwjFnZ-6nZvrAhUSGTQIHYDZDF4Q39UDCAY",
+          "aria-label": "Search",
+          "value": "",
+          "title": "Search",
+          "spellcheck": "false",
+          "role": "combobox",
+          "autofocus": "",
+          "autocorrect": "off",
+          "autocomplete": "off",
+          "autocapitalize": "off",
+          "aria-haspopup": "false",
+          "aria-autocomplete": "both",
+          "jsaction": "paste:puy29d",
+          "type": "text",
+          "name": "q",
+          "maxlength": "2048",
+          "class": "gLFyf gsfi"
+        },
+        "name": "input"
+      },
+      "time": 1597426505900,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[aria-label=\"Search\"]",
+      "target": {
+        "attrs": {
+          "data-ved": "0ahUKEwjFnZ-6nZvrAhUSGTQIHYDZDF4Q39UDCAY",
+          "aria-label": "Search",
+          "value": "",
+          "title": "Search",
+          "spellcheck": "false",
+          "role": "combobox",
+          "autofocus": "",
+          "autocorrect": "off",
+          "autocomplete": "off",
+          "autocapitalize": "off",
+          "aria-haspopup": "false",
+          "aria-autocomplete": "both",
+          "jsaction": "paste:puy29d",
+          "type": "text",
+          "name": "q",
+          "maxlength": "2048",
+          "class": "gLFyf gsfi"
+        },
+        "name": "input"
+      },
+      "time": 1597426505902,
+      "value": "he"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[aria-label=\"Search\"]",
+      "target": {
+        "attrs": {
+          "data-ved": "0ahUKEwjFnZ-6nZvrAhUSGTQIHYDZDF4Q39UDCAY",
+          "aria-label": "Search",
+          "value": "",
+          "title": "Search",
+          "spellcheck": "false",
+          "role": "combobox",
+          "autofocus": "",
+          "autocorrect": "off",
+          "autocomplete": "off",
+          "autocapitalize": "off",
+          "aria-haspopup": "false",
+          "aria-autocomplete": "both",
+          "jsaction": "paste:puy29d",
+          "type": "text",
+          "name": "q",
+          "maxlength": "2048",
+          "class": "gLFyf gsfi"
+        },
+        "name": "input"
+      },
+      "time": 1597426505984,
+      "value": "e"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[aria-label=\"Search\"]",
+      "target": {
+        "attrs": {
+          "data-ved": "0ahUKEwjFnZ-6nZvrAhUSGTQIHYDZDF4Q39UDCAY",
+          "aria-label": "Search",
+          "value": "",
+          "title": "Search",
+          "spellcheck": "false",
+          "role": "combobox",
+          "autofocus": "",
+          "autocorrect": "off",
+          "autocomplete": "off",
+          "autocapitalize": "off",
+          "aria-haspopup": "false",
+          "aria-autocomplete": "both",
+          "jsaction": "paste:puy29d",
+          "type": "text",
+          "name": "q",
+          "maxlength": "2048",
+          "class": "gLFyf gsfi"
+        },
+        "name": "input"
+      },
+      "time": 1597426506020,
+      "value": "l"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[aria-label=\"Search\"]",
+      "target": {
+        "attrs": {
+          "data-ved": "0ahUKEwjFnZ-6nZvrAhUSGTQIHYDZDF4Q39UDCAY",
+          "aria-label": "Search",
+          "value": "",
+          "title": "Search",
+          "spellcheck": "false",
+          "role": "combobox",
+          "autofocus": "",
+          "autocorrect": "off",
+          "autocomplete": "off",
+          "autocapitalize": "off",
+          "aria-haspopup": "false",
+          "aria-autocomplete": "both",
+          "jsaction": "paste:puy29d",
+          "type": "text",
+          "name": "q",
+          "maxlength": "2048",
+          "class": "gLFyf gsfi"
+        },
+        "name": "input"
+      },
+      "time": 1597426506022,
+      "value": "hel"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[aria-label=\"Search\"]",
+      "target": {
+        "attrs": {
+          "data-ved": "0ahUKEwjFnZ-6nZvrAhUSGTQIHYDZDF4Q39UDCAY",
+          "aria-label": "Search",
+          "value": "",
+          "title": "Search",
+          "spellcheck": "false",
+          "role": "combobox",
+          "autofocus": "",
+          "autocorrect": "off",
+          "autocomplete": "off",
+          "autocapitalize": "off",
+          "aria-haspopup": "false",
+          "aria-autocomplete": "both",
+          "jsaction": "paste:puy29d",
+          "type": "text",
+          "name": "q",
+          "maxlength": "2048",
+          "class": "gLFyf gsfi"
+        },
+        "name": "input"
+      },
+      "time": 1597426506096,
+      "value": "l"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[aria-label=\"Search\"]",
+      "target": {
+        "attrs": {
+          "data-ved": "0ahUKEwjFnZ-6nZvrAhUSGTQIHYDZDF4Q39UDCAY",
+          "aria-label": "Search",
+          "value": "",
+          "title": "Search",
+          "spellcheck": "false",
+          "role": "combobox",
+          "autofocus": "",
+          "autocorrect": "off",
+          "autocomplete": "off",
+          "autocapitalize": "off",
+          "aria-haspopup": "false",
+          "aria-autocomplete": "both",
+          "jsaction": "paste:puy29d",
+          "type": "text",
+          "name": "q",
+          "maxlength": "2048",
+          "class": "gLFyf gsfi"
+        },
+        "name": "input"
+      },
+      "time": 1597426506148,
+      "value": "l"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[aria-label=\"Search\"]",
+      "target": {
+        "attrs": {
+          "data-ved": "0ahUKEwjFnZ-6nZvrAhUSGTQIHYDZDF4Q39UDCAY",
+          "aria-label": "Search",
+          "value": "",
+          "title": "Search",
+          "spellcheck": "false",
+          "role": "combobox",
+          "autofocus": "",
+          "autocorrect": "off",
+          "autocomplete": "off",
+          "autocapitalize": "off",
+          "aria-haspopup": "false",
+          "aria-autocomplete": "both",
+          "jsaction": "paste:puy29d",
+          "type": "text",
+          "name": "q",
+          "maxlength": "2048",
+          "class": "gLFyf gsfi"
+        },
+        "name": "input"
+      },
+      "time": 1597426506151,
+      "value": "hell"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[aria-label=\"Search\"]",
+      "target": {
+        "attrs": {
+          "data-ved": "0ahUKEwjFnZ-6nZvrAhUSGTQIHYDZDF4Q39UDCAY",
+          "aria-label": "Search",
+          "value": "",
+          "title": "Search",
+          "spellcheck": "false",
+          "role": "combobox",
+          "autofocus": "",
+          "autocorrect": "off",
+          "autocomplete": "off",
+          "autocapitalize": "off",
+          "aria-haspopup": "false",
+          "aria-autocomplete": "both",
+          "jsaction": "paste:puy29d",
+          "type": "text",
+          "name": "q",
+          "maxlength": "2048",
+          "class": "gLFyf gsfi"
+        },
+        "name": "input"
+      },
+      "time": 1597426506270,
+      "value": "l"
+    },
+    {
+      "isTrusted": true,
+      "name": "keydown",
+      "page": 0,
+      "selector": "[aria-label=\"Search\"]",
+      "target": {
+        "attrs": {
+          "data-ved": "0ahUKEwjFnZ-6nZvrAhUSGTQIHYDZDF4Q39UDCAY",
+          "aria-label": "Search",
+          "value": "",
+          "title": "Search",
+          "spellcheck": "false",
+          "role": "combobox",
+          "autofocus": "",
+          "autocorrect": "off",
+          "autocomplete": "off",
+          "autocapitalize": "off",
+          "aria-haspopup": "false",
+          "aria-autocomplete": "both",
+          "jsaction": "paste:puy29d",
+          "type": "text",
+          "name": "q",
+          "maxlength": "2048",
+          "class": "gLFyf gsfi"
+        },
+        "name": "input"
+      },
+      "time": 1597426506317,
+      "value": "o"
+    },
+    {
+      "isTrusted": true,
+      "name": "input",
+      "page": 0,
+      "selector": "[aria-label=\"Search\"]",
+      "target": {
+        "attrs": {
+          "data-ved": "0ahUKEwjFnZ-6nZvrAhUSGTQIHYDZDF4Q39UDCAY",
+          "aria-label": "Search",
+          "value": "",
+          "title": "Search",
+          "spellcheck": "false",
+          "role": "combobox",
+          "autofocus": "",
+          "autocorrect": "off",
+          "autocomplete": "off",
+          "autocapitalize": "off",
+          "aria-haspopup": "false",
+          "aria-autocomplete": "both",
+          "jsaction": "paste:puy29d",
+          "type": "text",
+          "name": "q",
+          "maxlength": "2048",
+          "class": "gLFyf gsfi"
+        },
+        "name": "input"
+      },
+      "time": 1597426506319,
+      "value": "hello"
+    },
+    {
+      "isTrusted": true,
+      "name": "keyup",
+      "page": 0,
+      "selector": "[aria-label=\"Search\"]",
+      "target": {
+        "attrs": {
+          "data-ved": "0ahUKEwjFnZ-6nZvrAhUSGTQIHYDZDF4Q39UDCAY",
+          "aria-label": "Search",
+          "value": "",
+          "title": "Search",
+          "spellcheck": "false",
+          "role": "combobox",
+          "autofocus": "",
+          "autocorrect": "off",
+          "autocomplete": "off",
+          "autocapitalize": "off",
+          "aria-haspopup": "false",
+          "aria-autocomplete": "both",
+          "jsaction": "paste:puy29d",
+          "type": "text",
+          "name": "q",
+          "maxlength": "2048",
+          "class": "gLFyf gsfi"
+        },
+        "name": "input"
+      },
+      "time": 1597426506392,
+      "value": "o"
+    },
+    {
+      "isTrusted": true,
+      "name": "mousedown",
+      "page": 0,
+      "selector": "[aria-label=\"Google Search\"]",
+      "target": {
+        "attrs": {
+          "data-ved": "0ahUKEwjFnZ-6nZvrAhUSGTQIHYDZDF4Q4dUDCAk",
+          "type": "submit",
+          "name": "btnK",
+          "aria-label": "Google Search",
+          "value": "Google Search",
+          "class": "gNO89b"
+        },
+        "name": "input"
+      },
+      "time": 1597426509441
+    },
+    {
+      "isTrusted": true,
+      "name": "change",
+      "page": 0,
+      "selector": "[aria-label=\"Search\"]",
+      "target": {
+        "attrs": {
+          "data-ved": "0ahUKEwjFnZ-6nZvrAhUSGTQIHYDZDF4Q39UDCAY",
+          "aria-label": "Search",
+          "value": "",
+          "title": "Search",
+          "spellcheck": "false",
+          "role": "combobox",
+          "autofocus": "",
+          "autocorrect": "off",
+          "autocomplete": "off",
+          "autocapitalize": "off",
+          "aria-haspopup": "false",
+          "aria-autocomplete": "both",
+          "jsaction": "paste:puy29d",
+          "type": "text",
+          "name": "q",
+          "maxlength": "2048",
+          "class": "gLFyf gsfi"
+        },
+        "name": "input"
+      },
+      "time": 1597426509442,
+      "value": "hello"
+    },
+    {
+      "isTrusted": true,
+      "name": "click",
+      "page": 0,
+      "selector": "[aria-label=\"Google Search\"]",
+      "target": {
+        "attrs": {
+          "data-ved": "0ahUKEwjFnZ-6nZvrAhUSGTQIHYDZDF4Q4dUDCAk",
+          "type": "submit",
+          "name": "btnK",
+          "aria-label": "Google Search",
+          "value": "Google Search",
+          "class": "gNO89b"
+        },
+        "name": "input"
+      },
+      "time": 1597426509464
+    }
+  ]
+}

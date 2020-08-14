@@ -3,26 +3,35 @@ import { buildClickSteps } from '../../src/build-workflow';
 import { ElementEvent } from '../../src/types';
 
 describe('buildClickSteps', () => {
-  let radioEvents: ElementEvent[];
-  let loginEvents: ElementEvent[];
-  let selectEvents: ElementEvent[];
+  const events: Record<string, ElementEvent[]> = {};
 
   beforeAll(async () => {
-    radioEvents = (await loadFixtures('radioInputs')).events;
-    loginEvents = (await loadFixtures('login')).events;
-    selectEvents = (await loadFixtures('selectNative')).events;
+    await Promise.all(
+      ['login', 'radioInputs', 'searchGoogle', 'selectNative'].map(
+        async (name) => {
+          events[name] = (await loadFixtures(name)).events;
+        },
+      ),
+    );
   });
 
   it('builds one click per group of mousedown/click events', () => {
-    const steps = buildClickSteps(loginEvents);
+    const steps = buildClickSteps(events.login);
+    expect(steps.map((step) => step.event.selector)).toMatchSnapshot();
+  });
 
-    expect(
-      steps.map((step) => loginEvents.indexOf(step.event)),
-    ).toMatchSnapshot();
+  it('groups [mousedown, change, click] sequence together', () => {
+    const steps = buildClickSteps(events.searchGoogle);
+    expect(steps.map((step) => step.event.selector)).toMatchSnapshot();
+  });
+
+  it('prefers clicks on inputs', () => {
+    const steps = buildClickSteps(events.radioInputs);
+    expect(steps.map((step) => step.event.selector)).toMatchSnapshot();
   });
 
   it('skips click triggered by Enter', () => {
-    const steps = buildClickSteps(loginEvents);
+    const steps = buildClickSteps(events.login);
 
     // click on login link
     expect(steps[0].event.target.attrs.href).toEqual('/login');
@@ -35,12 +44,7 @@ describe('buildClickSteps', () => {
   });
 
   it('skips click on select', () => {
-    const steps = buildClickSteps(selectEvents);
+    const steps = buildClickSteps(events.selectNative);
     expect(steps.length).toBe(0);
-  });
-
-  it('prefers clicks on inputs', () => {
-    const steps = buildClickSteps(radioEvents);
-    expect(steps.map((step) => step.event.selector)).toMatchSnapshot();
   });
 });
