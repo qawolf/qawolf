@@ -9,6 +9,7 @@ describe('isDynamic', () => {
     'gLFyf',
     'intercom-123v9c3',
     'StyledBox-sc-13pk1d4-0',
+    'StyledLayer-rmtehz-0',
     'TSPr2b',
     'u_0_b',
   ])('is dynamic: %s', (example) => {
@@ -19,7 +20,6 @@ describe('isDynamic', () => {
     'app',
     'b-content__page-input',
     'btn',
-    'btn-b',
     'btn-playr-primary',
     'central-textlogo__image',
     'col-sm-12',

@@ -100,7 +100,7 @@ describe('buildSelector', () => {
         // selects the ancestor
         [['#html-button-child', '[data-qa="html-button-with-children"]']],
         [['.MuiButton-label', '[data-qa="material-button"]']],
-        ['.btn-b.btn-2'],
+        ['.second-half.type-two'],
       ])('builds expected selector %o', (selector) => expectSelector(selector));
     });
 
@@ -224,7 +224,7 @@ describe('buildSelector', () => {
         [['#button', '[data-test="click"] [data-qa="button"]']],
         // unique selectors
         [['#unique', '[data-qa="unique"]']],
-        [['#dog-0', '[data-qa="radio-group"] #dog-0']],
+        [['#dog-0', '[data-qa="radio-group"] [value="dog-0"]']],
       ])('builds expected selector %o', (selector) => expectSelector(selector));
     });
 
