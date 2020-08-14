@@ -11,6 +11,7 @@ describe('isDynamic', () => {
     'StyledBox-sc-13pk1d4-0',
     'TSPr2b',
     'u_0_b',
+    'StyledLayer-rmtehz-0',
   ])('is dynamic: %s', (example) => {
     expect(isDynamic(example)).toBe(true);
   });
@@ -19,7 +20,6 @@ describe('isDynamic', () => {
     'app',
     'b-content__page-input',
     'btn',
-    'btn-b',
     'btn-playr-primary',
     'central-textlogo__image',
     'col-sm-12',

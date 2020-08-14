@@ -37,15 +37,14 @@ const SCORE_THRESHOLD = 0.5;
 export const getTokens = (value: string): string[] => {
   const tokens = [];
 
-  // remove a numeric or alphabetic suffix
-  // ex: btn-1, btn_z -> btn
-  const symbol = value.replace(/[-_]+(\d+|\w)$/, '');
-
   // split by space, dash, and camel case
-  symbol.split(/[ \-_]+|(?=[A-Z])/).forEach((token) => {
-    if (!token) return; // ignore empty string
+  value.split(/[ \-_]+|(?=[A-Z])/).forEach((token) => {
+    // remove a numeric or alphabetic suffix
+    // ex: btn-1, btn_z -> btn
+    const symbol = token.replace(/[-_]+(\d+|\w)$/, '');
+    if (!symbol) return; // ignore empty string
 
-    tokens.push(token.toLowerCase());
+    tokens.push(symbol.toLowerCase());
   });
 
   return tokens;
