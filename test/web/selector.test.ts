@@ -140,6 +140,8 @@ describe('buildSelector', () => {
         // ancestor group and descendant
         [['#dog', '[data-qa="html-checkbox-group"] #dog']],
         [['#blue', '[data-qa="material-checkbox-group"] #blue']],
+        // special characters
+        [['.special\\:class', '#another\\:checkbox']],
       ])('builds expected selector %o', (selector) => expectSelector(selector));
     });
 

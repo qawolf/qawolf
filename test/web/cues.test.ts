@@ -48,7 +48,6 @@ describe('buildCuesForElement', () => {
       ({ selector }) => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
         const element = document.querySelector(selector) as HTMLElement;
-
         if (!element) return [];
 
         const cueTypesConfig = qawolf.getCueTypesConfig(['data-qa']);
@@ -83,6 +82,28 @@ describe('buildCuesForElement', () => {
       { level: 1, penalty: 5, type: 'attribute', value: '[for="single"]' },
       { level: 1, penalty: 40, type: 'tag', value: 'label' },
       { level: 1, penalty: 12, type: 'text', value: '" Single checkbox"' },
+    ]);
+
+    const cues3 = await buildCuesForElement('#another\\:checkbox');
+    expect(cues3).toEqual([
+      {
+        level: 1,
+        penalty: 10,
+        type: 'class',
+        value: '.special\\:class',
+      },
+      {
+        level: 1,
+        penalty: 5,
+        type: 'id',
+        value: '#another\\:checkbox',
+      },
+      {
+        level: 1,
+        penalty: 40,
+        type: 'tag',
+        value: 'input:nth-of-type(2)',
+      },
     ]);
   });
 });

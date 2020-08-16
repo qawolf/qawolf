@@ -3,6 +3,7 @@ const englishWords = require('an-array-of-english-words/index.json');
 
 const allWords = new Set([
   'btn',
+  'checkbox',
   'col',
   'div',
   'dropdown',
@@ -37,8 +38,8 @@ const SCORE_THRESHOLD = 0.5;
 export const getTokens = (value: string): string[] => {
   const tokens = [];
 
-  // split by space, dash, and camel case
-  value.split(/[ \-_]+|(?=[A-Z])/).forEach((token) => {
+  // split by space, dash, colon, and camel case
+  value.split(/[ \-_:]+|(?=[A-Z])/).forEach((token) => {
     if (!token) return; // ignore empty string
 
     tokens.push(token.toLowerCase());

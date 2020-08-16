@@ -17,6 +17,7 @@ describe('isDynamic', () => {
   });
 
   it.each([
+    'another:checkbox',
     'app',
     'b-content__page-input',
     'btn',
@@ -39,6 +40,7 @@ describe('isDynamic', () => {
     'learn-bar',
     'login-button',
     'mat',
+    'my:account',
     'MyAccount__label',
     'MyCart__itemCount__label',
     'nav-link',
