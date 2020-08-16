@@ -10,8 +10,8 @@ function HtmlCheckboxInputs() {
       <input data-qa="html-checkbox" id="single" type="checkbox" />
       <label htmlFor="single"> Single checkbox</label>
       <br />
-      <input id="another" type="checkbox" />
-      <label htmlFor="another"> Another checkbox</label>
+      <input className="special:class" id="special:id" type="checkbox" />
+      <label htmlFor="special:id"> Another checkbox</label>
       <br />
       <input
         checked={isChecked}

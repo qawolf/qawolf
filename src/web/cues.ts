@@ -194,7 +194,12 @@ export const buildCuesForElement = ({
         element.classList.forEach((c) => {
           if (isDynamic(c)) return;
 
-          list.push({ level, penalty, type: 'class', value: `.${c}` });
+          list.push({
+            level,
+            penalty,
+            type: 'class',
+            value: `.${CSS.escape(c)}`,
+          });
         });
         break;
       }
@@ -202,7 +207,12 @@ export const buildCuesForElement = ({
       case 'id': {
         const elementId = element.id;
         if (elementId && !isDynamic(elementId)) {
-          list.push({ level, penalty, type: 'id', value: `#${elementId}` });
+          list.push({
+            level,
+            penalty,
+            type: 'id',
+            value: `#${CSS.escape(elementId)}`,
+          });
         }
         break;
       }
