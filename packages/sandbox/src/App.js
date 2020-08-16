@@ -11,6 +11,7 @@ import CheckboxInputs from './pages/CheckboxInputs';
 import ContentEditables from './pages/ContentEditables';
 import DatePickers from './pages/DatePickers';
 import Images from './pages/Images';
+import InlineFrames from './pages/InlineFrames';
 import InfiniteScroll from './pages/InfiniteScroll';
 import Large from './pages/Large';
 import LogIn from './pages/LogIn';
@@ -40,6 +41,9 @@ function Navigation() {
       </li>
       <li>
         <Link to="/images">Images</Link>
+      </li>
+      <li>
+        <Link to="/iframes">Inline Frames</Link>
       </li>
       <li>
         <Link to="/infinite-scroll">Infinite scroll</Link>
@@ -82,6 +86,7 @@ function App() {
         <Route component={ContentEditables} path="/content-editables" />
         <Route component={DatePickers} path="/date-pickers" />
         <Route component={Images} path="/images" />
+        <Route component={InlineFrames} path="/iframes" />
         <Route component={InfiniteScroll} path="/infinite-scroll" />
         <Route component={Large} path="/large" />
         <Route component={LogIn} path="/login" />
