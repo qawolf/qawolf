@@ -1,5 +1,6 @@
 import { DEFAULT_ATTRIBUTE_LIST } from './attribute';
 import {
+  findFrameFromDocument,
   getClickableAncestor,
   getTopmostEditableElement,
   isVisible,
@@ -54,7 +55,7 @@ export class PageEventCollector {
     const target = event.target as HTMLElement;
     const isTargetVisible = isVisible(target, window.getComputedStyle(target));
 
-    const elementEvent = {
+    const elementEvent: types.ElementEvent = {
       isTrusted: event.isTrusted && isTargetVisible,
       name: eventName,
       page: -1, // set in ContextEventCollector
@@ -67,6 +68,22 @@ export class PageEventCollector {
       time: Date.now(),
       value,
     };
+
+    // Did this event originate in an iframe?
+    if (window !== top) {
+      const frameElement = findFrameFromDocument(target.ownerDocument);
+      if (!frameElement) {
+        console.debug('No frameElement found in PageEventCollector sendEvent');
+        return;
+      }
+
+      // Build a selector for the nearest `iframe` element
+      elementEvent.frameSelector = buildSelector({
+        attributes: this._attributes,
+        isClick: false,
+        target: frameElement,
+      });
+    }
 
     console.debug(
       `PageEventCollector: ${eventName} event`,

@@ -109,3 +109,15 @@ export const getTopmostEditableElement = (
   // This should never be hit, but here as a safety
   return element;
 };
+
+/**
+ * @summary Given a Document instance, returns a reference to the
+ *   `iframe` element in the `top` document that has that Document
+ *   as its content.
+ */
+export const findFrameFromDocument = (doc: Document): HTMLElement => {
+  for (const frameElement of top.document.getElementsByTagName("iframe")) {
+    if (frameElement.contentDocument === doc) return frameElement;
+  }
+  return null;
+};

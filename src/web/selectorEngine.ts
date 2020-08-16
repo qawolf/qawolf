@@ -54,7 +54,9 @@ export const getElementText = (element: HTMLElement): string | undefined => {
 };
 
 export const isMatch = ({ selectorParts, target }: IsMatch): boolean => {
-  const result = querySelectorAll({ parts: selectorParts }, document);
+  // We must pass `target.ownerDocument` rather than `document`
+  // because sometimes this is called from other frames.
+  const result = querySelectorAll({ parts: selectorParts }, target.ownerDocument);
 
   return result[0] === target;
 };

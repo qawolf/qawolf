@@ -16,12 +16,14 @@ export interface Doc {
 }
 
 export interface ElementEvent {
+  frameSelector?: string;
   isTrusted: boolean;
   name: ElementEventName;
   page: number;
   selector: string;
   target: Doc;
   time: number;
+  value?: string | ScrollValue | null;
 }
 
 export type ElementEventName =
