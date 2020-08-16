@@ -17,7 +17,6 @@ describe('isDynamic', () => {
   });
 
   it.each([
-    'another:checkbox',
     'app',
     'b-content__page-input',
     'btn',
@@ -50,6 +49,7 @@ describe('isDynamic', () => {
     'SearchBox__cover',
     'searchInput',
     'slider',
+    'special:id',
     'svg',
     'toggle',
     'tnt__zipInput',

@@ -84,7 +84,7 @@ describe('buildCuesForElement', () => {
       { level: 1, penalty: 12, type: 'text', value: '" Single checkbox"' },
     ]);
 
-    const cues3 = await buildCuesForElement('#another\\:checkbox');
+    const cues3 = await buildCuesForElement('#special\\:id');
     expect(cues3).toEqual([
       {
         level: 1,
@@ -96,7 +96,7 @@ describe('buildCuesForElement', () => {
         level: 1,
         penalty: 5,
         type: 'id',
-        value: '#another\\:checkbox',
+        value: '#special\\:id',
       },
       {
         level: 1,
@@ -136,7 +136,7 @@ describe('buildCueValueForTag', () => {
   });
 
   it('returns nth-of-type tag if element is a lower sibling', async () => {
-    const value = await buildCueValueForTag('[for="another"]');
+    const value = await buildCueValueForTag('[for="special\\:id"]');
     expect(value).toBe('label:nth-of-type(2)');
   });
 });
