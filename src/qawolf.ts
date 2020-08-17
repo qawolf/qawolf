@@ -11,6 +11,7 @@ export { Config } from './config';
 export { create } from './create-code/create';
 
 export {
+  assertElementText,
   launch,
   register,
   repl,
