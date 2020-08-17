@@ -37,5 +37,5 @@ Assert that the element with the `class` of `"my-class"` contains the text `"my 
 ```js
 const qawolf = require('qawolf');
 // ...
-qawolf.scroll(page, '.my-class', 'my text', { timeout: 10000 });
+qawolf.assertElementText(page, '.my-class', 'my text', { timeout: 10000 });
 ```
