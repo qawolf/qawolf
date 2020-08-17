@@ -37,7 +37,7 @@ describe('buildStepLines', () => {
 
     expect(lines).toMatchInlineSnapshot(`
       Array [
-        "const page2 = await qawolf.waitForPage(context, 1);",
+        "const page2 = await qawolf.waitForPage(page.context(), 1);",
         "await page2.click('[data-qa=\\"test-input\\"]');",
       ]
     `);

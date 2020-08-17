@@ -33,7 +33,10 @@ export const buildValue = ({ action, value }: Step): string => {
   return JSON.stringify(value);
 };
 
-export const buildExpressionLine = (step: Step, frameVariable?: string): string => {
+export const buildExpressionLine = (
+  step: Step,
+  frameVariable?: string,
+): string => {
   const { action, event } = step;
 
   const args: string[] = [escapeSelector(event.selector)];
@@ -57,7 +60,7 @@ export const buildStepLines = (
   buildContext: StepLineBuildContext = {
     initializedFrames: new Map<string, string>(),
     initializedPages: new Set(),
-  }
+  },
 ): string[] => {
   const lines: string[] = [];
 
@@ -66,7 +69,9 @@ export const buildStepLines = (
 
   const pageVariableName = getStepPageVariableName(step);
   if (page > 0 && !initializedPages.has(page)) {
-    lines.push(`const ${pageVariableName} = await qawolf.waitForPage(context, ${page});`);
+    lines.push(
+      `const ${pageVariableName} = await qawolf.waitForPage(page.context(), ${page});`,
+    );
     initializedPages.add(page);
   }
 
@@ -74,8 +79,14 @@ export const buildStepLines = (
   if (frameSelector) {
     frameVariableName = initializedFrames.get(frameSelector);
     if (!frameVariableName) {
-      frameVariableName = `frame${initializedFrames.size ? initializedFrames.size + 1 : ''}`;
-      lines.push(`const ${frameVariableName} = await (await ${pageVariableName}.$(${escapeSelector(frameSelector)})).contentFrame();`);
+      frameVariableName = `frame${
+        initializedFrames.size ? initializedFrames.size + 1 : ''
+      }`;
+      lines.push(
+        `const ${frameVariableName} = await (await ${pageVariableName}.$(${escapeSelector(
+          frameSelector,
+        )})).contentFrame();`,
+      );
       initializedFrames.set(frameSelector, frameVariableName);
     }
   }
