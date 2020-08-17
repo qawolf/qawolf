@@ -78,21 +78,21 @@ npx qawolf create url [name]
 
 💪 Convert your actions into [Playwright](https://github.com/microsoft/playwright) code:
 
-| Action                                                       | Status | Example                                         |
-| ------------------------------------------------------------ | :----: | ----------------------------------------------- |
-| Click                                                        |   ✅   | `page.click('#login')`                          |
-| Type                                                         |   ✅   | `page.fill('.username', 'spirit@qawolf.com')`   |
-| Scroll                                                       |   ✅   | `qawolf.scroll(page, 'html', { x: 0, y: 200 })` |
-| Select                                                       |   ✅   | `page.selectOption('.ice_cream', 'chocolate')`  |
-| Replace text                                                 |   ✅   | `page.fill('.username', 'username')`            |
-| Paste                                                        |   ✅   | `page.type('password', 'pasted')`               |
-| Use a test attribute                                         |   ✅   | `page.click("[data-qa='submit']")`              |
-| Use a test attribute on an ancestor                          |   ✅   | `page.click("[data-qa='radio'] [value='cat']")` |
-| Use multiple pages/tabs                                      |   ✅   | `qawolf.waitForPage(page.context(), 1)`         |
-| [Iframes](https://github.com/qawolf/qawolf/issues/279)       |   🗺️   | Coming soon                                     |
-| [Drag and drop](https://github.com/qawolf/qawolf/issues/315) |   🗺️   | Coming soon                                     |
-| [File upload](https://github.com/qawolf/qawolf/issues/331)   |   🗺️   | Coming soon                                     |
-| [Back button](https://github.com/qawolf/qawolf/issues/438)   |   🗺️   | Coming soon                                     |
+| Action                                                             | Status | Example                                                      |
+| ------------------------------------------------------------------ | :----: | ------------------------------------------------------------ |
+| Click                                                              |   ✅   | `page.click('#login')`                                       |
+| Type                                                               |   ✅   | `page.fill('.username', 'spirit@qawolf.com')`                |
+| Scroll                                                             |   ✅   | `qawolf.scroll(page, 'html', { x: 0, y: 200 })`              |
+| Select                                                             |   ✅   | `page.selectOption('.ice_cream', 'chocolate')`               |
+| Paste                                                              |   ✅   | `page.fill('password', 'pasted')`                            |
+| Replace text                                                       |   ✅   | `page.fill('.username', 'username')`                         |
+| Use a test attribute                                               |   ✅   | `page.click("[data-qa='submit']")`                           |
+| Use a test attribute on an ancestor                                |   ✅   | `page.click("[data-qa='radio'] [value='cat']")`              |
+| Use iframes                                                        |   ✅   | `(await page.$("#storybook-preview-iframe")).contentFrame()` |
+| Use multiple tabs                                                  |   ✅   | `qawolf.waitForPage(page.context(), 1)`                      |
+| [Drag and drop](https://github.com/qawolf/qawolf/issues/315)       |   🗺️   | Coming soon                                                  |
+| [File upload](https://github.com/qawolf/qawolf/issues/331)         |   🗺️   | Coming soon                                                  |
+| [Back/Forward button](https://github.com/qawolf/qawolf/issues/438) |   🗺️   | Coming soon                                                  |
 
 As your test is created:
 
