@@ -3,7 +3,7 @@ id: table_of_contents
 title: API Table of Contents
 ---
 
-### [`qawolf@v1.3.2`](https://www.npmjs.com/package/qawolf/v/1.3.2)
+### [`qawolf@v1.3.4`](https://www.npmjs.com/package/qawolf/v/1.3.4)
 
 <a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version" /></a>
 <br/>
@@ -32,6 +32,8 @@ The QA Wolf API is minimal by design, since we want to leverage the power of Pla
 [QAW_BROWSER](environment_variables#qaw_browser)
 
 ## module: qawolf
+
+[assertElementText](qawolf/assert_element_text)
 
 [create](qawolf/create)
 

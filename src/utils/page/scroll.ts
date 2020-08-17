@@ -9,7 +9,7 @@ export interface ScrollOptions extends ScrollValue {
   timeout?: number;
 }
 
-const DEFAULT_TIMEOUT = 30000; // milliseconds
+export const DEFAULT_TIMEOUT = 30000; // milliseconds
 
 export const getScrollValue = (
   page: Page,

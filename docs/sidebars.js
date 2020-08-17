@@ -38,6 +38,7 @@ module.exports = {
       type: 'category',
       label: 'module: qawolf',
       items: [
+        'api/qawolf/assert_element_text',
         'api/qawolf/create',
         'api/qawolf/launch',
         'api/qawolf/register',

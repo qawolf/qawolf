@@ -1,0 +1,41 @@
+---
+id: assert_element_text
+sidebar_label: assertElementText
+title: qawolf.assertElementText
+---
+
+import ArgumentAssertElementText from '../components/qawolf/ArgumentAssertElementText';
+import ReturnVoid from '../components/qawolf/ReturnVoid';
+import Syntax from '../components/Syntax';
+
+<Syntax code="assertElementText(page, selector, text[, options])" />
+
+Assert that text appears in an element on the specified [Playwright `Page`](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page) instance.
+
+If the element is not found before timeout or the element never contains the specified text, an error is thrown.
+
+### Arguments
+
+<ArgumentAssertElementText />
+
+### Returns
+
+<ReturnVoid />
+
+### Examples
+
+Assert that the element with the `id` of `"container"` contains the text `"hello"`:
+
+```js
+const qawolf = require('qawolf');
+// ...
+qawolf.assertElementText(page, '#container', 'hello');
+```
+
+Assert that the element with the `class` of `"my-class"` contains the text `"my text"`, timing out in 10 seconds if the element does not contain the specified text:
+
+```js
+const qawolf = require('qawolf');
+// ...
+qawolf.assertElementText(page, '.my-class', 'my text', { timeout: 10000 });
+```
