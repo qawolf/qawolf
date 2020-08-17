@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, ChromiumBrowserContext } from 'playwright';
-import { ContextEventCollector } from '../../src/create-code/ContextEventCollector';
 import { isKeyEvent } from '../../src/build-workflow/event';
+import { ContextEventCollector } from '../../src/create-code/ContextEventCollector';
 import {
   ElementEvent,
   InputEvent,
@@ -8,7 +8,7 @@ import {
   PasteEvent,
   ScrollEvent,
 } from '../../src/types';
-import { getLaunchOptions, launch, register } from '../../src/utils';
+import { getLaunchOptions, launch, register, waitFor } from '../../src/utils';
 import { sleep, TEST_URL } from '../utils';
 
 describe('ContextEventCollector', () => {
@@ -53,7 +53,26 @@ describe('ContextEventCollector', () => {
     ]);
   });
 
-  it('records paste', async () => {
+  it('collects frameSelector', async () => {
+    const page = await context.newPage();
+
+    await page.goto(`${TEST_URL}iframes`);
+
+    const frame = await (
+      await page.$('iframe[src="/text-inputs"]')
+    ).contentFrame();
+    await frame.fill('[data-qa="html-text-input"]', 'hello');
+
+    await waitFor(() => events.length);
+
+    await page.close();
+
+    expect(events[0].frameSelector).toEqual('[data-qa="second"]');
+    expect(events[0].selector).toEqual('[data-qa="html-text-input"]');
+    expect(events[0].value).toEqual('hello');
+  });
+
+  it('collects paste', async () => {
     const page = await context.newPage();
 
     await page.goto(`${TEST_URL}text-inputs`);
@@ -78,7 +97,7 @@ describe('ContextEventCollector', () => {
     expect(events[0].selector).toEqual('[data-qa="html-text-input"]');
   });
 
-  it('records scroll event', async () => {
+  it('collects scroll event', async () => {
     // only test this on chrome for now
     if (getLaunchOptions().browserName !== 'chromium') return;
 
@@ -120,7 +139,7 @@ describe('ContextEventCollector', () => {
     // await page.close();
   });
 
-  it('records input event for select', async () => {
+  it('collects input event for select', async () => {
     const page = await context.newPage();
     await page.goto(`${TEST_URL}selects`);
 
@@ -137,7 +156,7 @@ describe('ContextEventCollector', () => {
     expect(value).toEqual('hedgehog');
   });
 
-  it('records type', async () => {
+  it('collects type', async () => {
     const page = await context.newPage();
     await page.goto(`${TEST_URL}text-inputs`);
 

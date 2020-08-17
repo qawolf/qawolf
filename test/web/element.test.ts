@@ -177,20 +177,3 @@ describe('isClickable', () => {
     expect(isClickable).toBe(false);
   });
 });
-
-describe('findFrameFromDocument', () => {
-  beforeAll(() => page.goto(`${TEST_URL}iframes`));
-
-  it('finds the correct iframe', async () => {
-    const foundFrame = await page.evaluate(() => {
-      const web: QAWolfWeb = (window as any).qawolf;
-      const element = document.querySelector('iframe[src="/text-inputs"]') as HTMLIFrameElement;
-      if (!element) throw new Error('element not found');
-
-      const frameElement = web.findFrameFromDocument(element.contentDocument);
-      return element === frameElement;
-    });
-
-    expect(foundFrame).toBe(true);
-  });
-});

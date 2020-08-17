@@ -6,7 +6,6 @@ export {
   getCueTypesConfig,
 } from './cues';
 export {
-  findFrameFromDocument,
   getClickableAncestor,
   getTopmostEditableElement,
   isClickable,
