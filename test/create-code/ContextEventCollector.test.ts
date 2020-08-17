@@ -54,6 +54,9 @@ describe('ContextEventCollector', () => {
   });
 
   it('collects frameSelector', async () => {
+    // does not work on firefox (which is fine since we only record with chromium)
+    if (getLaunchOptions().browserName === 'firefox') return;
+
     const page = await context.newPage();
 
     await page.goto(`${TEST_URL}iframes`);
