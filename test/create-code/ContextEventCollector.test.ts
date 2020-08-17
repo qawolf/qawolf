@@ -135,8 +135,7 @@ describe('ContextEventCollector', () => {
     expect(value.y).toBeGreaterThan(200);
     expect(isTrusted).toEqual(true);
 
-    // TODO: page.close broken https://github.com/microsoft/playwright/issues/1258
-    // await page.close();
+    await page.close();
   });
 
   it('collects input event for select', async () => {
