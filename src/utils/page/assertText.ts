@@ -9,22 +9,29 @@ export const assertElementText = async (
   page: Page,
   selector: string,
   text: string,
-  { timeout }: AssertTextOptions,
+  options?: AssertTextOptions,
 ): Promise<void> => {
   try {
     await page.waitForFunction(
       ({ selector, text }): boolean => {
-        const element = document.querySelector(selector);
+        const element = document.querySelector(selector) as HTMLElement;
         if (!element) return false;
 
-        return (element as HTMLElement).innerText.includes(text);
+        const elementText =
+          (element as HTMLInputElement).value || element.innerText || '';
+
+        return elementText.includes(text);
       },
       { selector, text },
-      { polling: 100, timeout: timeout || DEFAULT_TIMEOUT },
+      { polling: 100, timeout: (options || {}).timeout || DEFAULT_TIMEOUT },
     );
   } catch (error) {
-    throw new Error(
-      `assertElementText: text ${text} not found in element ${selector}`,
-    );
+    if (error.message.includes('page.waitForFunction: Timeout')) {
+      throw new Error(
+        `assertElementText: text "${text}" not found in element ${selector}`,
+      );
+    }
+
+    throw error;
   }
 };
