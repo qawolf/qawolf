@@ -1,36 +1,24 @@
 import {
-  buildSelector,
   buildStepLines,
+  escapeSelector,
 } from '../../src/build-code/buildStepLines';
 import { Action } from '../../src/types';
 import { baseStep } from './fixtures';
 
-describe('buildSelector', () => {
-  const expectEqual = (selector: string, expected: string) => {
-    const built = buildSelector({
-      ...baseStep,
-      event: {
-        ...baseStep.event,
-        selector,
-      },
-    });
-    expect(built).toEqual(expected);
-  };
-
+describe('escapeSelector', () => {
   it('uses double quotes by default', () => {
-    expectEqual('a', `"a"`);
+    expect(escapeSelector('a')).toBe(`"a"`);
   });
 
   it('uses single quotes when there are double quotes in the selector', () => {
-    expectEqual('"a"', `'"a"'`);
+    expect(escapeSelector('"a"')).toBe(`'"a"'`);
   });
 
   it('uses backtick when there are double and single quotes', () => {
-    expectEqual(`text="a" and 'b'`, '`text="a" and \'b\'`');
+    expect(escapeSelector(`text="a" and 'b'`)).toBe('`text="a" and \'b\'`');
 
     // escapes backtick
-    expectEqual(
-      'text="a" and \'b\' and `c`',
+    expect(escapeSelector('text="a" and \'b\' and `c`')).toBe(
       '`text="a" and \'b\' and \\`c\\``',
     );
   });
@@ -38,22 +26,90 @@ describe('buildSelector', () => {
 
 describe('buildStepLines', () => {
   test('consecutive steps on different pages', () => {
+    const lines = buildStepLines({
+      ...baseStep,
+      event: {
+        ...baseStep.event,
+        page: 1,
+      },
+      index: 1,
+    });
+
+    expect(lines).toMatchInlineSnapshot(`
+      Array [
+        "const page2 = await qawolf.waitForPage(page.context(), 1);",
+        "await page2.click('[data-qa=\\"test-input\\"]');",
+      ]
+    `);
+  });
+
+  test('iframe step', () => {
+    const lines = buildStepLines({
+      ...baseStep,
+      event: {
+        ...baseStep.event,
+        frameSelector: '#frameId',
+      },
+      index: 1,
+    });
+
+    expect(lines).toMatchInlineSnapshot(`
+      Array [
+        "const frame = await (await page.$(\\"#frameId\\")).contentFrame();",
+        "await frame.click('[data-qa=\\"test-input\\"]');",
+      ]
+    `);
+  });
+
+  test('iframe step, variable init already done', () => {
+    const initializedFrames = new Map<string, string>();
+    initializedFrames.set('#frameId', 'frame');
+
     const lines = buildStepLines(
       {
         ...baseStep,
         event: {
           ...baseStep.event,
-          page: 1,
+          frameSelector: '#frameId',
         },
         index: 1,
       },
-      baseStep,
+      {
+        initializedFrames,
+        initializedPages: new Set(),
+      },
     );
 
     expect(lines).toMatchInlineSnapshot(`
       Array [
-        "page = await qawolf.waitForPage(page.context(), 1);",
-        "await page.click('[data-qa=\\"test-input\\"]');",
+        "await frame.click('[data-qa=\\"test-input\\"]');",
+      ]
+    `);
+  });
+
+  test('second iframe step', () => {
+    const initializedFrames = new Map<string, string>();
+    initializedFrames.set('#frameId', 'frame');
+
+    const lines = buildStepLines(
+      {
+        ...baseStep,
+        event: {
+          ...baseStep.event,
+          frameSelector: '#frameId2',
+        },
+        index: 1,
+      },
+      {
+        initializedFrames,
+        initializedPages: new Set(),
+      },
+    );
+
+    expect(lines).toMatchInlineSnapshot(`
+      Array [
+        "const frame2 = await (await page.$(\\"#frameId2\\")).contentFrame();",
+        "await frame2.click('[data-qa=\\"test-input\\"]');",
       ]
     `);
   });

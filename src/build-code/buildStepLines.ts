@@ -1,19 +1,21 @@
 import { ScrollValue, Step } from '../types';
 import { isUndefined } from 'util';
 
-export const didPageChange = (step: Step, previous?: Step): boolean => {
-  if (!previous) return false;
-
-  return step.event.page !== previous.event.page;
+export type StepLineBuildContext = {
+  initializedFrames: Map<string, string>;
+  initializedPages: Set<number>;
 };
 
-export const buildPageLine = (step: Step): string => {
-  return `page = await qawolf.waitForPage(page.context(), ${step.event.page});`;
+/**
+ * @summary Given a step, returns the correct page variable for it,
+ *   such as `page` for the main page or `page2` for the second page.
+ */
+export const getStepPageVariableName = (step: Step): string => {
+  const { page } = step.event;
+  return `page${page === 0 ? '' : page + 1}`;
 };
 
-export const buildSelector = (step: Step): string => {
-  const { selector } = step.event;
-
+export const escapeSelector = (selector: string): string => {
   if (!selector.includes(`"`)) return `"${selector}"`;
   if (!selector.includes(`'`)) return `'${selector}'`;
 
@@ -31,31 +33,65 @@ export const buildValue = ({ action, value }: Step): string => {
   return JSON.stringify(value);
 };
 
-export const buildExpressionLine = (step: Step): string => {
-  const { action } = step;
+export const buildExpressionLine = (
+  step: Step,
+  frameVariable?: string,
+): string => {
+  const { action, event } = step;
 
-  const args: string[] = [buildSelector(step)];
+  const args: string[] = [escapeSelector(event.selector)];
 
   const value = buildValue(step);
   if (value) args.push(value);
 
-  let methodOpen = `page.${action}(`;
+  const browsingContext = frameVariable || getStepPageVariableName(step);
+
+  let methodOpen = `${browsingContext}.${action}(`;
   if (action === 'scroll') {
-    methodOpen = `qawolf.scroll(page, `;
+    methodOpen = `qawolf.scroll(${browsingContext}, `;
   }
 
   const expression = `await ${methodOpen}${args.join(', ')});`;
   return expression;
 };
 
-export const buildStepLines = (step: Step, previous?: Step): string[] => {
+export const buildStepLines = (
+  step: Step,
+  buildContext: StepLineBuildContext = {
+    initializedFrames: new Map<string, string>(),
+    initializedPages: new Set(),
+  },
+): string[] => {
   const lines: string[] = [];
 
-  if (didPageChange(step, previous)) {
-    lines.push(buildPageLine(step));
+  const { frameSelector, page } = step.event;
+  const { initializedFrames, initializedPages } = buildContext;
+
+  const pageVariableName = getStepPageVariableName(step);
+  if (page > 0 && !initializedPages.has(page)) {
+    lines.push(
+      `const ${pageVariableName} = await qawolf.waitForPage(page.context(), ${page});`,
+    );
+    initializedPages.add(page);
   }
 
-  lines.push(buildExpressionLine(step));
+  let frameVariableName: string;
+  if (frameSelector) {
+    frameVariableName = initializedFrames.get(frameSelector);
+    if (!frameVariableName) {
+      frameVariableName = `frame${
+        initializedFrames.size ? initializedFrames.size + 1 : ''
+      }`;
+      lines.push(
+        `const ${frameVariableName} = await (await ${pageVariableName}.$(${escapeSelector(
+          frameSelector,
+        )})).contentFrame();`,
+      );
+      initializedFrames.set(frameSelector, frameVariableName);
+    }
+  }
+
+  lines.push(buildExpressionLine(step, frameVariableName));
 
   return lines;
 };

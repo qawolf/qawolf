@@ -54,7 +54,7 @@ export class PageEventCollector {
     const target = event.target as HTMLElement;
     const isTargetVisible = isVisible(target, window.getComputedStyle(target));
 
-    const elementEvent = {
+    const elementEvent: types.ElementEvent = {
       isTrusted: event.isTrusted && isTargetVisible,
       name: eventName,
       page: -1, // set in ContextEventCollector
