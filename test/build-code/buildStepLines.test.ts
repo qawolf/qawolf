@@ -55,7 +55,7 @@ describe('buildStepLines', () => {
 
     expect(lines).toMatchInlineSnapshot(`
       Array [
-        "const frame = await (await page.$(\\"#frameId\\")).contentFrame();",
+        "const frame = await (await page.waitForSelector(\\"#frameId\\")).contentFrame();",
         "await frame.click('[data-qa=\\"test-input\\"]');",
       ]
     `);
@@ -108,7 +108,7 @@ describe('buildStepLines', () => {
 
     expect(lines).toMatchInlineSnapshot(`
       Array [
-        "const frame2 = await (await page.$(\\"#frameId2\\")).contentFrame();",
+        "const frame2 = await (await page.waitForSelector(\\"#frameId2\\")).contentFrame();",
         "await frame2.click('[data-qa=\\"test-input\\"]');",
       ]
     `);

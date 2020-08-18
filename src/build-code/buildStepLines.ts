@@ -83,7 +83,7 @@ export const buildStepLines = (
         initializedFrames.size ? initializedFrames.size + 1 : ''
       }`;
       lines.push(
-        `const ${frameVariableName} = await (await ${pageVariableName}.$(${escapeSelector(
+        `const ${frameVariableName} = await (await ${pageVariableName}.waitForSelector(${escapeSelector(
           frameSelector,
         )})).contentFrame();`,
       );
