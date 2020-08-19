@@ -3,7 +3,7 @@ import { appendFileSync, ensureDir } from 'fs-extra';
 import { join } from 'path';
 import { BrowserContext } from 'playwright';
 import { getFfmpegPath, saveVideo, PageVideoCapture } from 'playwright-video';
-import { forEachPage } from './forEachPage';
+import { forEachPage } from './forEach';
 import { IndexedPage } from './indexPages';
 import { LogEvent } from '../../types';
 

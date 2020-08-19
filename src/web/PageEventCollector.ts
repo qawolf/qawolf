@@ -14,21 +14,6 @@ type ConstructorOptions = {
   attribute?: string;
 };
 
-const buildFrameSelector = async () => {
-  // wait for binding to be ready
-  while (!(window as any).qawBuildFrameSelector) {
-    await new Promise((r) => setTimeout(r, 500));
-  }
-
-  try {
-    // Iframes created using srcdoc and document.open cannot call bindings
-    // https://github.com/puppeteer/puppeteer/issues/4126s
-    (window as any).qawBuildFrameSelector();
-  } catch (error) {
-    console.debug('buildFrameSelector: failed', error);
-  }
-};
-
 export class PageEventCollector {
   private _attributes: string[];
   private _onDispose: types.Callback[] = [];
@@ -37,7 +22,6 @@ export class PageEventCollector {
     this._attributes = (options.attribute || DEFAULT_ATTRIBUTE_LIST).split(',');
     this.collectEvents();
     console.debug('PageEventCollector: created', options);
-    buildFrameSelector();
   }
 
   public dispose(): void {
@@ -59,11 +43,11 @@ export class PageEventCollector {
     );
   }
 
-  private async sendEvent<K extends keyof DocumentEventMap>(
+  private sendEvent<K extends keyof DocumentEventMap>(
     eventName: types.ElementEventName,
     event: DocumentEventMap[K],
     value?: string | types.ScrollValue | null,
-  ): Promise<void> {
+  ): void {
     const eventCallback: EventCallback = (window as any).qawElementEvent;
     if (!eventCallback) return;
 

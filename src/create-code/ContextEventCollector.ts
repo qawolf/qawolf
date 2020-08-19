@@ -6,6 +6,7 @@ import { ElementEvent } from '../types';
 import { IndexedPage } from '../utils/context/indexPages';
 import { QAWolfWeb } from '../web';
 import { DEFAULT_ATTRIBUTE_LIST } from '../web/attribute';
+import { forEachFrame } from '../utils/context/forEach';
 import { isRegistered } from '../utils/context/register';
 
 const debug = Debug('qawolf:ContextEventCollector');
@@ -70,20 +71,17 @@ export class ContextEventCollector extends EventEmitter {
       throw new Error('Use qawolf.register(context) first');
     }
 
-    // eagerly build frame selectors so we have them after a page navigation
-    await this._context.exposeBinding(
-      'qawBuildFrameSelector',
-      async ({ frame }: BindingOptions) => {
-        if (this._frameSelectors.has(frame)) return;
+    await forEachFrame(this._context, async ({ page, frame }) => {
+      // eagerly build frame selectors so we have them after a page navigation
+      try {
+        if (frame.isDetached() || page.isClosed()) return;
 
-        try {
-          const selector = await buildFrameSelector(frame, this._attributes);
-          this._frameSelectors.set(frame, selector);
-        } catch (error) {
-          debug(`cannot build frame selector: ${error.message}`);
-        }
-      },
-    );
+        const selector = await buildFrameSelector(frame, this._attributes);
+        this._frameSelectors.set(frame, selector);
+      } catch (error) {
+        debug(`cannot build frame selector: ${error.message}`);
+      }
+    });
 
     await this._context.exposeBinding(
       'qawElementEvent',
