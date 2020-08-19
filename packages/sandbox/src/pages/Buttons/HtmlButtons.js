@@ -42,6 +42,11 @@ function HtmlButtons() {
       <br />
       <br />
       <input id="submit-input" type="submit" value="Submit Input" />
+      <br />
+      <br />
+      <button data-qa="reload-top" onClick={() => window.top.location.reload()}>
+        Reload Top
+      </button>
     </div>
   );
 }

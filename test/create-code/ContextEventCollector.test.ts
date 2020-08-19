@@ -53,26 +53,37 @@ describe('ContextEventCollector', () => {
     ]);
   });
 
-  it('collects frameSelector', async () => {
-    // does not work on firefox (which is fine since we only record with chromium)
-    if (getLaunchOptions().browserName === 'firefox') return;
+  it('collects frame selector and index', async () => {
+    // this only works properly with chromium which is fine since that is what we record with
+    if (getLaunchOptions().browserName !== 'chromium') return;
 
     const page = await context.newPage();
 
     await page.goto(`${TEST_URL}iframes`);
 
     const frame = await (
-      await page.$('iframe[src="/text-inputs"]')
+      await page.waitForSelector('iframe[src="/buttons"]')
     ).contentFrame();
-    await frame.fill('[data-qa="html-text-input"]', 'hello');
+    await frame.click('[data-qa="reload-top"]');
+    await waitFor(() => events.length > 0);
+    expect(events[0].frameSelector).toEqual('[data-qa="first"]');
+    expect(events[0].selector).toEqual('[data-qa="reload-top"]');
 
-    await waitFor(() => events.length);
+    const frame2 = await (
+      await page.waitForSelector('iframe[src="/buttons"]')
+    ).contentFrame();
+    await frame2.click('[data-qa="reload-top"]');
+    await waitFor(() => events.filter((e) => e.name === 'click').length > 1);
+
+    const clickEvents = events.filter((e) => e.name === 'click');
+
+    expect(clickEvents[1].frameSelector).toEqual(clickEvents[0].frameSelector);
+    expect(clickEvents[1].selector).toEqual(clickEvents[0].selector);
+
+    // the index must be different so that the code fetches the new frame
+    expect(clickEvents[1].frameIndex).not.toEqual(clickEvents[0].frameIndex);
 
     await page.close();
-
-    expect(events[0].frameSelector).toEqual('[data-qa="second"]');
-    expect(events[0].selector).toEqual('[data-qa="html-text-input"]');
-    expect(events[0].value).toEqual('hello');
   });
 
   it('collects paste', async () => {
