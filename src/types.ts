@@ -16,6 +16,7 @@ export interface Doc {
 }
 
 export interface ElementEvent {
+  frameIndex?: number;
   frameSelector?: string;
   isTrusted: boolean;
   name: ElementEventName;

@@ -16,6 +16,11 @@ type BindingOptions = {
   page: Page;
 };
 
+type FrameSelector = {
+  index: number;
+  selector: string;
+};
+
 export const buildFrameSelector = async (
   frame: Frame,
   attributes: string[],
@@ -26,7 +31,7 @@ export const buildFrameSelector = async (
   if (parentFrame && !parentFrame.parentFrame()) {
     const frameElement = await frame.frameElement();
 
-    const frameSelector = await parentFrame.evaluate(
+    const selector = await parentFrame.evaluate(
       ({ attributes, frameElement }) => {
         const web: QAWolfWeb = (window as any).qawolf;
 
@@ -39,7 +44,7 @@ export const buildFrameSelector = async (
       { attributes, frameElement },
     );
 
-    return frameSelector;
+    return selector;
   }
 
   return undefined;
@@ -48,7 +53,7 @@ export const buildFrameSelector = async (
 export class ContextEventCollector extends EventEmitter {
   readonly _attributes: string[];
   readonly _context: BrowserContext;
-  readonly _frameSelectors = new Map<Frame, string>();
+  readonly _frameSelectors = new Map<Frame, FrameSelector>();
 
   public static async create(
     context: BrowserContext,
@@ -71,13 +76,17 @@ export class ContextEventCollector extends EventEmitter {
       throw new Error('Use qawolf.register(context) first');
     }
 
+    let frameIndex = 0;
+
     await forEachFrame(this._context, async ({ page, frame }) => {
       // eagerly build frame selectors so we have them after a page navigation
       try {
         if (frame.isDetached() || page.isClosed()) return;
 
+        frameIndex += 1;
+
         const selector = await buildFrameSelector(frame, this._attributes);
-        this._frameSelectors.set(frame, selector);
+        this._frameSelectors.set(frame, { index: frameIndex, selector });
       } catch (error) {
         debug(`cannot build frame selector: ${error.message}`);
       }
@@ -88,7 +97,13 @@ export class ContextEventCollector extends EventEmitter {
       async ({ frame, page }: BindingOptions, elementEvent: ElementEvent) => {
         const pageIndex = (page as IndexedPage).createdIndex;
         const event: ElementEvent = { ...elementEvent, page: pageIndex };
-        event.frameSelector = this._frameSelectors.get(frame);
+
+        const { index, selector } = this._frameSelectors.get(frame) || {};
+        if (selector) {
+          event.frameIndex = index;
+          event.frameSelector = selector;
+        }
+
         debug(`emit %j`, event);
         this.emit('elementevent', event);
       },
