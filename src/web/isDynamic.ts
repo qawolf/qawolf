@@ -52,7 +52,7 @@ export const isDynamic = (
   value: string,
   threshold = SCORE_THRESHOLD,
 ): boolean => {
-  if (!value) return true;
+  if (!value || typeof value !== 'string') return true;
 
   const tokens = getTokens(value);
 

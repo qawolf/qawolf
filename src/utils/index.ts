@@ -1,5 +1,5 @@
 // context utils
-export { forEachPage } from './context/forEachPage';
+export { forEachFrame, forEachPage } from './context/forEach';
 export { register } from './context/register';
 export {
   saveArtifacts,
