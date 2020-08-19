@@ -64,7 +64,7 @@ export const buildStepLines = (
 ): string[] => {
   const lines: string[] = [];
 
-  const { frameSelector, page } = step.event;
+  const { frameIndex, frameSelector, page } = step.event;
   const { initializedFrames, initializedPages } = buildContext;
 
   const pageVariableName = getStepPageVariableName(step);
@@ -77,7 +77,7 @@ export const buildStepLines = (
 
   let frameVariableName: string;
   if (frameSelector) {
-    frameVariableName = initializedFrames.get(frameSelector);
+    frameVariableName = initializedFrames.get(frameIndex + frameSelector);
     if (!frameVariableName) {
       frameVariableName = `frame${
         initializedFrames.size ? initializedFrames.size + 1 : ''
@@ -87,7 +87,7 @@ export const buildStepLines = (
           frameSelector,
         )})).contentFrame();`,
       );
-      initializedFrames.set(frameSelector, frameVariableName);
+      initializedFrames.set(frameIndex + frameSelector, frameVariableName);
     }
   }
 

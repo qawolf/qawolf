@@ -48,6 +48,7 @@ describe('buildStepLines', () => {
       ...baseStep,
       event: {
         ...baseStep.event,
+        frameIndex: 0,
         frameSelector: '#frameId',
       },
       index: 1,
@@ -61,15 +62,16 @@ describe('buildStepLines', () => {
     `);
   });
 
-  test('iframe step, variable init already done', () => {
+  test('iframe step with an existing frame', () => {
     const initializedFrames = new Map<string, string>();
-    initializedFrames.set('#frameId', 'frame');
+    initializedFrames.set('0#frameId', 'frame');
 
     const lines = buildStepLines(
       {
         ...baseStep,
         event: {
           ...baseStep.event,
+          frameIndex: 0,
           frameSelector: '#frameId',
         },
         index: 1,
@@ -87,16 +89,17 @@ describe('buildStepLines', () => {
     `);
   });
 
-  test('second iframe step', () => {
+  test('iframe step with a new frame', () => {
     const initializedFrames = new Map<string, string>();
-    initializedFrames.set('#frameId', 'frame');
+    initializedFrames.set('0#frameId', 'frame');
 
     const lines = buildStepLines(
       {
         ...baseStep,
         event: {
           ...baseStep.event,
-          frameSelector: '#frameId2',
+          frameIndex: 1,
+          frameSelector: '#frameId',
         },
         index: 1,
       },
@@ -108,7 +111,7 @@ describe('buildStepLines', () => {
 
     expect(lines).toMatchInlineSnapshot(`
       Array [
-        "const frame2 = await (await page.waitForSelector(\\"#frameId2\\")).contentFrame();",
+        "const frame2 = await (await page.waitForSelector(\\"#frameId\\")).contentFrame();",
         "await frame2.click('[data-qa=\\"test-input\\"]');",
       ]
     `);
