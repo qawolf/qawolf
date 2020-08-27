@@ -7,8 +7,8 @@ const virtualModules = new VirtualModulesPlugin({
   const evaluator = new (${selectorEvaluatorSource.source})([]);
   const createTextSelector = (element) => evaluator.engines.get('text').create(document, element);
   const isVisible = (element) => evaluator.isVisible(element);
-  const querySelectorAll = (...args) => evaluator.querySelectorAll(...args);
-  module.exports = { createTextSelector, isVisible, querySelectorAll };`,
+  const querySelector = (...args) => evaluator.querySelector(...args);
+  module.exports = { createTextSelector, isVisible, querySelector };`,
 });
 
 module.exports = {

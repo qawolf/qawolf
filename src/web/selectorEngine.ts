@@ -10,7 +10,7 @@ try {
   // do not require the evaluator but depend on this file
 }
 
-const { createTextSelector, querySelectorAll } = evaluator || {};
+const { createTextSelector, querySelector } = evaluator || {};
 /* eslint-enable @typescript-eslint/no-var-requires */
 
 type IsMatch = {
@@ -56,7 +56,7 @@ export const getElementText = (element: HTMLElement): string | undefined => {
 export const isMatch = ({ selectorParts, target }: IsMatch): boolean => {
   // We must pass `target.ownerDocument` rather than `document`
   // because sometimes this is called from other frames.
-  const result = querySelectorAll({ parts: selectorParts }, target.ownerDocument);
+  const result = querySelector({ parts: selectorParts }, target.ownerDocument);
 
-  return result[0] === target;
+  return result === target;
 };
