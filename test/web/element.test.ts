@@ -62,6 +62,54 @@ describe('getClickableAncestor', () => {
   });
 });
 
+describe('getInputElementValue', () => {
+  it('gets value from text input', async () => {
+    await page.goto(`${TEST_URL}text-inputs`);
+
+    const value = await page.evaluate(() => {
+      const web: QAWolfWeb = (window as any).qawolf;
+      const element = document.querySelector('[data-qa="html-text-input"]') as HTMLInputElement;
+      if (!element) throw new Error('element not found');
+
+      element.value = 'I have value';
+
+      return web.getInputElementValue(element);
+    });
+
+    expect(value).toEqual('I have value');
+  });
+
+  it('gets value from contenteditable element', async () => {
+    await page.goto(`${TEST_URL}content-editables`);
+
+    const value = await page.evaluate(() => {
+      const web: QAWolfWeb = (window as any).qawolf;
+      const element = document.querySelector('[data-qa="content-editable"]') as HTMLInputElement;
+      if (!element) throw new Error('element not found');
+
+      return web.getInputElementValue(element);
+    });
+
+    expect(value).toEqual('Edit me!');
+  });
+
+  it('gets value from input element that also has contenteditable attribute', async () => {
+    await page.goto(`${TEST_URL}text-inputs`);
+
+    const value = await page.evaluate(() => {
+      const web: QAWolfWeb = (window as any).qawolf;
+      const element = document.querySelector('[data-qa="html-text-input-content-editable"]') as HTMLInputElement;
+      if (!element) throw new Error('element not found');
+
+      element.value = 'I have value';
+
+      return web.getInputElementValue(element);
+    });
+
+    expect(value).toEqual('I have value');
+  });
+});
+
 describe('getTopmostEditableElement', () => {
   beforeAll(() => page.goto(`${TEST_URL}content-editables`));
 

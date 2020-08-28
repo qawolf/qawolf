@@ -42,6 +42,15 @@ function HtmlTextInputs() {
       <br />
       <br />
       <textarea data-qa="html-textarea" placeholder="Textarea" />
+      <br />
+      <br />
+      <h4>Edge Cases</h4>
+      <input
+        contenteditable="true"
+        data-qa="html-text-input-content-editable"
+        placeholder="Content editable text input"
+        type="text"
+      />
     </div>
   );
 }

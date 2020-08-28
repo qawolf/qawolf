@@ -7,6 +7,7 @@ export {
 } from './cues';
 export {
   getClickableAncestor,
+  getInputElementValue,
   getTopmostEditableElement,
   isClickable,
   isVisible,
