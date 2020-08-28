@@ -115,7 +115,9 @@ export const getTopmostEditableElement = (
  *   For example, returns the `.value` or the `.innerText` of a content-editable.
  *   If no value can be determined, returns `null`.
  */
-export const getInputElementValue = (element: HTMLInputElement): string|null => {
+export const getInputElementValue = (
+  element: HTMLInputElement,
+): string | null => {
   // In the wild, we've seen examples of input elements with `contenteditable=true`,
   // but an `input` never has inner text, so we check for `input` tag name here.
   if (element.isContentEditable && element.tagName.toLowerCase() !== 'input') {
