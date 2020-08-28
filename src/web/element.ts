@@ -109,3 +109,20 @@ export const getTopmostEditableElement = (
   // This should never be hit, but here as a safety
   return element;
 };
+
+/**
+ * @summary Returns the current "value" of an element. Pass in an event `target`.
+ *   For example, returns the `.value` or the `.innerText` of a content-editable.
+ *   If no value can be determined, returns `null`.
+ */
+export const getInputElementValue = (
+  element: HTMLInputElement,
+): string | null => {
+  // In the wild, we've seen examples of input elements with `contenteditable=true`,
+  // but an `input` never has inner text, so we check for `input` tag name here.
+  if (element.isContentEditable && element.tagName.toLowerCase() !== 'input') {
+    return element.innerText;
+  }
+
+  return element.value || null;
+};

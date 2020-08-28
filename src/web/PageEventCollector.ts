@@ -1,6 +1,7 @@
 import { DEFAULT_ATTRIBUTE_LIST } from './attribute';
 import {
   getClickableAncestor,
+  getInputElementValue,
   getTopmostEditableElement,
   isVisible,
 } from './element';
@@ -100,7 +101,7 @@ export class PageEventCollector {
 
     this.listen('change', (event) => {
       const target = event.target as HTMLInputElement;
-      this.sendEvent('change', event, target.value);
+      this.sendEvent('change', event, getInputElementValue(target));
     });
 
     this.listen('click', (event) => {
@@ -116,11 +117,7 @@ export class PageEventCollector {
 
     this.listen('input', (event) => {
       const target = event.target as HTMLInputElement;
-      this.sendEvent(
-        'input',
-        event,
-        target.isContentEditable ? target.innerText : target.value,
-      );
+      this.sendEvent('input', event, getInputElementValue(target));
     });
 
     this.listen('keydown', (event) => {
