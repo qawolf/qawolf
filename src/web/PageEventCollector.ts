@@ -1,8 +1,7 @@
 import { DEFAULT_ATTRIBUTE_LIST } from './attribute';
 import {
-  getClickableAncestor,
   getInputElementValue,
-  getTopmostEditableElement,
+  getMouseEventTarget,
   isVisible,
 } from './element';
 import { buildSelector } from './selector';
@@ -52,16 +51,24 @@ export class PageEventCollector {
     const eventCallback: EventCallback = (window as any).qawElementEvent;
     if (!eventCallback) return;
 
-    const target = event.target as HTMLElement;
+    const isClick = ['click', 'mousedown'].includes(eventName);
+
+    let target = event.target as HTMLElement;
+    if (isClick) {
+      target = getMouseEventTarget(event as MouseEvent, this._attributes);
+    }
+
     const isTargetVisible = isVisible(target, window.getComputedStyle(target));
+    const clickCount = eventName === 'click' ? (event as UIEvent).detail : 0;
 
     const elementEvent: types.ElementEvent = {
+      isDoubleClick: clickCount > 1,
       isTrusted: event.isTrusted && isTargetVisible,
       name: eventName,
       page: -1, // set in ContextEventCollector
       selector: buildSelector({
         attributes: this._attributes,
-        isClick: ['click', 'mousedown'].includes(eventName),
+        isClick,
         target,
       }),
       target: nodeToDoc(target),
@@ -81,22 +88,29 @@ export class PageEventCollector {
   }
 
   private collectEvents(): void {
+    //////// MOUSE EVENTS ////////
+
     this.listen('mousedown', (event) => {
       // only the main button (not right clicks/etc)
       // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
       if (event.button !== 0) return;
 
-      // getClickableAncestor chooses the top most clickable ancestor.
-      // The ancestor is likely a better target than the descendant.
-      // Ex. when you click on the i (button > i) or rect (a > svg > rect)
-      // chances are the ancestor (button, a) is a better target to find.
-      // XXX if anyone runs into issues with this behavior we can allow disabling it from a flag.
-      let target = getClickableAncestor(
-        event.target as HTMLElement,
-        this._attributes,
-      );
-      target = getTopmostEditableElement(target);
-      this.sendEvent('mousedown', { ...event, target });
+      this.sendEvent('mousedown', event);
+    });
+
+    this.listen('click', (event) => {
+      // only the main button (not right clicks/etc)
+      // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
+      if (event.button !== 0) return;
+
+      this.sendEvent('click', event);
+    });
+
+    //////// INPUT EVENTS ////////
+
+    this.listen('input', (event) => {
+      const target = event.target as HTMLInputElement;
+      this.sendEvent('input', event, getInputElementValue(target));
     });
 
     this.listen('change', (event) => {
@@ -104,21 +118,7 @@ export class PageEventCollector {
       this.sendEvent('change', event, getInputElementValue(target));
     });
 
-    this.listen('click', (event) => {
-      if (event.button !== 0) return;
-
-      let target = getClickableAncestor(
-        event.target as HTMLElement,
-        this._attributes,
-      );
-      target = getTopmostEditableElement(target);
-      this.sendEvent('click', { ...event, target });
-    });
-
-    this.listen('input', (event) => {
-      const target = event.target as HTMLInputElement;
-      this.sendEvent('input', event, getInputElementValue(target));
-    });
+    //////// KEYBOARD EVENTS ////////
 
     this.listen('keydown', (event) => {
       this.sendEvent('keydown', event, event.key);
@@ -127,6 +127,8 @@ export class PageEventCollector {
     this.listen('keyup', (event) => {
       this.sendEvent('keyup', event, event.key);
     });
+
+    //////// OTHER EVENTS ////////
 
     this.listen('paste', (event) => {
       if (!event.clipboardData) return;

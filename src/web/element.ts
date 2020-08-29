@@ -111,6 +111,26 @@ export const getTopmostEditableElement = (
 };
 
 /**
+ * @summary Returns the best target element for reproducing a mouse event.
+ */
+export const getMouseEventTarget = (
+  event: MouseEvent,
+  attributes: string[],
+): HTMLElement => {
+  // getClickableAncestor chooses the top most clickable ancestor.
+  // The ancestor is likely a better target than the descendant.
+  // Ex. when you click on the i (button > i) or rect (a > svg > rect)
+  // chances are the ancestor (button, a) is a better target to find.
+  // XXX if anyone runs into issues with this behavior we can allow disabling it from a flag.
+  const target = getClickableAncestor(
+    event.target as HTMLElement,
+    attributes,
+  );
+
+  return getTopmostEditableElement(target);
+};
+
+/**
  * @summary Returns the current "value" of an element. Pass in an event `target`.
  *   For example, returns the `.value` or the `.innerText` of a content-editable.
  *   If no value can be determined, returns `null`.

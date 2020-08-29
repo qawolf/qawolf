@@ -1,5 +1,6 @@
 export type Action =
   | 'click'
+  | 'dblclick'
   | 'fill'
   | 'press'
   | 'scroll'
@@ -18,6 +19,7 @@ export interface Doc {
 export interface ElementEvent {
   frameIndex?: number;
   frameSelector?: string;
+  isDoubleClick: boolean;
   isTrusted: boolean;
   name: ElementEventName;
   page: number;
@@ -30,6 +32,7 @@ export interface ElementEvent {
 export type ElementEventName =
   | 'change'
   | 'click'
+  | 'dblclick'
   | 'input'
   | 'keydown'
   | 'keyup'

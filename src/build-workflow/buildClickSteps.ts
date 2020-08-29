@@ -65,13 +65,37 @@ export const buildClickSteps = (events: ElementEvent[]): Step[] => {
   const steps: Step[] = [];
 
   groupedClickEvents.forEach((events) => {
-    let event = events[0] as ElementEvent;
+    let firstClickEvent: ElementEvent;
+    let firstEventWithInputTarget: ElementEvent;
+    let firstDoubleClickEvent: ElementEvent;
 
-    const inputEvent = events.find((event) => isInputTarget(event.target));
-    if (inputEvent) {
-      // if an event in the group is on an input, assume the click propagated
-      // to an element like a checkbox or radio, which is most accurate target
-      event = inputEvent;
+    // Loop through all events in group to gather some details about the group
+    for (const event of events) {
+      if (!firstEventWithInputTarget && isInputTarget(event.target)) {
+        firstEventWithInputTarget = event;
+      }
+      if (!firstClickEvent && event.name === 'click') {
+        firstClickEvent = event;
+      }
+      if (!firstDoubleClickEvent && event.isDoubleClick) {
+        firstDoubleClickEvent = event;
+      }
+    }
+
+    // Use the first "click" event in the group.
+    // Except if an event in the group is on an input, assume the click propagated
+    // to an element like a checkbox or radio, which is most accurate target.
+    const event = firstEventWithInputTarget || firstClickEvent || events[0];
+
+    // If there's a click that is the second in a double-click series,
+    // replace the already-pushed first click with a dblclick.
+    if (firstDoubleClickEvent && steps.length) {
+      steps[steps.length - 1] = {
+        action: 'dblclick',
+        event: firstDoubleClickEvent,
+        index: steps.length - 1,
+      };
+      return;
     }
 
     steps.push({
