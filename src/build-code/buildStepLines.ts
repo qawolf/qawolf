@@ -4,6 +4,7 @@ import { isUndefined } from 'util';
 export type StepLineBuildContext = {
   initializedFrames: Map<string, string>;
   initializedPages: Set<number>;
+  visiblePage: number;
 };
 
 /**
@@ -59,7 +60,8 @@ export const buildStepLines = (
   step: Step,
   buildContext: StepLineBuildContext = {
     initializedFrames: new Map<string, string>(),
-    initializedPages: new Set(),
+    initializedPages: new Set([0]),
+    visiblePage: 0,
   },
 ): string[] => {
   const lines: string[] = [];
@@ -67,14 +69,27 @@ export const buildStepLines = (
   const { frameIndex, frameSelector, page } = step.event;
   const { initializedFrames, initializedPages } = buildContext;
 
+  // The page variable is the word "page" followed by 1-based index, but just "page" for first page.
   const pageVariableName = getStepPageVariableName(step);
-  if (page > 0 && !initializedPages.has(page)) {
+
+  // If we haven't done anything on this page yet, add a `qawolf.waitForPage` call.
+  // Otherwise, if we were doing steps on a different page and have now switched back
+  // to this one, add a `bringToFront` call. Otherwise no extra page-waiting line is needed.
+  if (!initializedPages.has(page)) {
     lines.push(
       `const ${pageVariableName} = await qawolf.waitForPage(page.context(), ${page});`,
     );
     initializedPages.add(page);
+    buildContext.visiblePage = page;
+  } else if (buildContext.visiblePage !== page) {
+    lines.push(
+      `await ${pageVariableName}.bringToFront();`,
+    );
+    buildContext.visiblePage = page;
   }
 
+  // If the step occurred within an iframe on the page, use the frame variable as the
+  // context for the step. If this is the first use of this frame variable, create it first.
   let frameVariableName: string;
   if (frameSelector) {
     frameVariableName = initializedFrames.get(frameIndex + frameSelector);
@@ -91,6 +106,7 @@ export const buildStepLines = (
     }
   }
 
+  // Now add the line for what the user actually did (click, scroll, fill, etc.)
   lines.push(buildExpressionLine(step, frameVariableName));
 
   return lines;
