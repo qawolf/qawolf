@@ -1,6 +1,7 @@
 import { ElementEvent, Step } from '../../src/types';
 
 export const baseEvent: ElementEvent = {
+  isDoubleClick: false,
   isTrusted: true,
   name: 'mousedown',
   page: 0,
