@@ -1,27 +1,54 @@
 import { buildVirtualCode } from '../../src/build-code/buildVirtualCode';
-import { VirtualCode } from '../../src/build-code/VirtualCode';
 import { baseStep } from './fixtures';
 
 const virtualCode = buildVirtualCode([baseStep]);
 
 describe('VirtualCode', () => {
-  test('buildPatch returns the last expression when it changed', () => {
+  test('buildPatch returns null when nothing changed', () => {
     expect(virtualCode.buildPatch(virtualCode)).toBeNull();
+  });
 
+  test('buildPatch returns correct diff when there are new lines', () => {
+    const virtualCodeTwo = buildVirtualCode([
+      baseStep,
+      { ...baseStep, action: 'type', value: 'world' },
+    ]);
+
+    expect(virtualCode.buildPatch(virtualCodeTwo)).toEqual({
+      newLines: ['await page.type(\'[data-qa="test-input"]\', "world");'],
+      removedLines: [],
+    });
+  });
+
+  test('buildPatch returns correct diff when the last line has changed', () => {
     const virtualCodeTwo = buildVirtualCode([
       { ...baseStep, action: 'type', value: 'world' },
     ]);
 
     expect(virtualCode.buildPatch(virtualCodeTwo)).toEqual({
-      original: 'await page.click(\'[data-qa="test-input"]\');',
-      updated: 'await page.type(\'[data-qa="test-input"]\', "world");',
+      newLines: ['await page.type(\'[data-qa="test-input"]\', "world");'],
+      removedLines: ['await page.click(\'[data-qa="test-input"]\');'],
     });
   });
 
-  test('newExpressions returns the new expressions', () => {
-    expect(virtualCode.newLines(virtualCode)).toHaveLength(0);
+  test('buildPatch returns correct diff when the last 2 lines have changed', () => {
+    const virtualCodeWithTwoLines = buildVirtualCode([
+      { ...baseStep, action: 'click' },
+      { ...baseStep, action: 'click' },
+    ]);
 
-    const newExpressions = new VirtualCode([]).newLines(virtualCode);
-    expect(newExpressions).toEqual(virtualCode.lines());
+    const virtualCodeTwo = buildVirtualCode([
+      { ...baseStep, action: 'dblclick' },
+    ]);
+
+    expect(virtualCodeWithTwoLines.buildPatch(virtualCodeTwo)).toEqual({
+      newLines: [
+        'await page.dblclick(\'[data-qa="test-input"]\');',
+      ],
+      removedLines: [
+        'await page.click(\'[data-qa="test-input"]\');',
+        'await page.click(\'[data-qa="test-input"]\');',
+      ],
+    });
   });
 });

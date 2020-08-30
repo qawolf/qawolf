@@ -2,7 +2,8 @@ import { getIndentation, indent, removeLinesIncluding } from './format';
 
 type PatchOptions = {
   code: string;
-  patch: string;
+  patchLines: string[];
+  replaceLines: string[];
 };
 
 export const CREATE_HANDLE = 'qawolf.create()';
@@ -22,13 +23,18 @@ export const indentPatch = (code: string, patch: string): string => {
   return indent(patch, numSpaces, 1);
 };
 
-export const patchCode = ({ code, patch }: PatchOptions): string => {
+export const patchCode = ({ code, patchLines, replaceLines }: PatchOptions): string => {
   if (!canPatch(code)) {
     throw new Error('Cannot patch without handle');
   }
 
-  const patchedCode = code.replace(PATCH_HANDLE, indentPatch(code, patch));
-  return patchedCode;
+  const replaceLinesWithHandle = [...(replaceLines || []), PATCH_HANDLE];
+  const indentedReplaceLines = indentPatch(code, replaceLinesWithHandle.join('\n'));
+
+  const patchLinesWithHandle = [...(patchLines || []), PATCH_HANDLE];
+  const indentedPatch = indentPatch(code, patchLinesWithHandle.join('\n'));
+
+  return code.replace(indentedReplaceLines, indentedPatch);
 };
 
 export const removePatchHandle = (code: string): string => {

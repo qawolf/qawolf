@@ -19,9 +19,19 @@ describe('patchCode', () => {
   it('matches indentation', () => {
     const patched = patchCode({
       code: `  myMethod();\n  ${PATCH_HANDLE}`,
-      patch: 'myPatch();',
+      patchLines: ['myPatch();'],
+      replaceLines: [],
     });
-    expect(patched).toEqual('  myMethod();\n  myPatch();');
+    expect(patched).toEqual(`  myMethod();\n  myPatch();\n  ${PATCH_HANDLE}`);
+  });
+
+  it('replaces lines', () => {
+    const patched = patchCode({
+      code: `  myMethod();\n  ${PATCH_HANDLE}`,
+      patchLines: ['myPatch();'],
+      replaceLines: ['myMethod();'],
+    });
+    expect(patched).toEqual(`  myPatch();\n  ${PATCH_HANDLE}`);
   });
 });
 

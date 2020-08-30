@@ -7,10 +7,10 @@ exports[`CodeReconciler.reconcile inserts new expressions 1`] = `
 
 exports[`CodeReconciler.reconcile updates the last expression 1`] = `
 "await page.click(\\"#username\\");
-"
+// 🐺 create code here"
 `;
 
 exports[`CodeReconciler.reconcile updates the last expression after a step was removed (ex: paste) 1`] = `
 "await page.click(\\"#username\\");
-"
+// 🐺 create code here"
 `;

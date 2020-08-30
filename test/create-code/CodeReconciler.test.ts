@@ -43,13 +43,19 @@ describe('CodeReconciler.reconcile', () => {
     const reconciler = new CodeReconciler();
 
     const originalCode = buildVirtualCode([steps[0]]);
+
+    const actualCode = reconciler.reconcile({
+      actualCode: PATCH_HANDLE,
+      virtualCode: originalCode,
+    });
+
     reconciler.update(originalCode);
 
     const newCode = buildVirtualCode([steps[1]]);
     expect(reconciler.hasChanges(newCode)).toBeTruthy();
 
     const reconciled = reconciler.reconcile({
-      actualCode: originalCode.code(),
+      actualCode,
       virtualCode: newCode,
     });
     expect(reconciled).toMatchSnapshot();
@@ -59,23 +65,31 @@ describe('CodeReconciler.reconcile', () => {
     const reconciler = new CodeReconciler();
 
     const originalCode = buildVirtualCode([steps[0]]);
+
+    const actualCode = reconciler.reconcile({
+      actualCode: PATCH_HANDLE,
+      virtualCode: originalCode,
+    });
+
     reconciler.update(originalCode);
 
     const removedStepCode = buildVirtualCode([]);
 
-    // we dont want it to do anything until a new step arrives
+    // we don't want it to do anything until a new step arrives
     expect(reconciler.hasChanges(removedStepCode)).toBeFalsy();
     let reconciled = reconciler.reconcile({
-      actualCode: originalCode.code(),
+      actualCode,
       virtualCode: removedStepCode,
     });
-    expect(reconciled).toEqual(originalCode.code());
+    expect(reconciled).toEqual(actualCode);
+
+    reconciler.update(removedStepCode);
 
     const stepAddedCode = buildVirtualCode([steps[1]]);
     expect(reconciler.hasChanges(stepAddedCode)).toBeTruthy();
 
     reconciled = reconciler.reconcile({
-      actualCode: originalCode.code(),
+      actualCode,
       virtualCode: stepAddedCode,
     });
     expect(reconciled).toMatchSnapshot();
