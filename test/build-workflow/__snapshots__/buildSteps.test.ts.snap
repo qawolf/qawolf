@@ -6,7 +6,7 @@ Array [
     "action": "click",
     "event": Object {
       "isTrusted": true,
-      "name": "mousedown",
+      "name": "click",
       "page": 0,
       "selector": "text=Log in",
       "target": Object {
@@ -23,7 +23,7 @@ Array [
         "type": "tag",
         "voidElement": false,
       },
-      "time": 1594320817272,
+      "time": 1594320817350,
     },
     "index": 0,
   },
@@ -154,7 +154,7 @@ Array [
     "action": "click",
     "event": Object {
       "isTrusted": true,
-      "name": "mousedown",
+      "name": "click",
       "page": 0,
       "selector": "text=Log out",
       "target": Object {
@@ -177,7 +177,7 @@ Array [
         "type": "tag",
         "voidElement": false,
       },
-      "time": 1594320839676,
+      "time": 1594320839746,
     },
     "index": 6,
   },
