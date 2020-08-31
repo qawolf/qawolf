@@ -7,6 +7,7 @@ describe('isDynamic', () => {
     'gb_C',
     'ggWlfB2BMlWvNeAo2F0uqw',
     'gLFyf',
+    'haSfzA',
     'intercom-123v9c3',
     'StyledBox-sc-13pk1d4-0',
     'StyledLayer-rmtehz-0',

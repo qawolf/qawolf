@@ -33,6 +33,9 @@ const allWords = new Set([
   ...englishWords,
 ]);
 
+// remove the alphabet from word list
+for (let i = 0; i < 26; i++) allWords.delete((i + 10).toString(36));
+
 const SCORE_THRESHOLD = 0.5;
 
 export const getTokens = (value: string): string[] => {
