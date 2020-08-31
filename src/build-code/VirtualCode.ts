@@ -32,8 +32,10 @@ export class VirtualCode {
           compareToLine,
           existingLineIndex
         );
+        // remove all existing lines after the first changed line
         removedLines = this._lines.slice(existingLineIndex);
-        debug('found removed lines: %j', removedLines);
+        debug('remove lines: %j', removedLines);
+        // and on the compareTo side, we now know that every line after this is new
         newLines = compareToLines.slice(existingLineIndex);
         break;
       }
@@ -41,6 +43,8 @@ export class VirtualCode {
 
     if (removedLines.length === 0) {
       debug('no changed lines');
+      // if compareToLines started with all the same lines as we previously
+      // had, then every additional line (if any) is new.
       newLines = compareToLines.slice(this._lines.length);
     }
 
@@ -49,7 +53,7 @@ export class VirtualCode {
       return null;
     }
 
-    debug('found new lines: %j', newLines);
+    debug('new lines: %j', newLines);
     return { newLines, removedLines };
   }
 
