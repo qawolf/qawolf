@@ -25,7 +25,7 @@ describe('escapeSelector', () => {
 });
 
 describe('buildStepLines', () => {
-  test('consecutive steps on different pages', () => {
+  test('step on new page, after step on a different page', () => {
     const lines = buildStepLines({
       ...baseStep,
       event: {
@@ -38,6 +38,31 @@ describe('buildStepLines', () => {
     expect(lines).toMatchInlineSnapshot(`
       Array [
         "const page2 = await qawolf.waitForPage(page.context(), 1);",
+        "await page2.click('[data-qa=\\"test-input\\"]');",
+      ]
+    `);
+  });
+
+  test('step on existing page, after step on a different page', () => {
+    const lines = buildStepLines(
+      {
+        ...baseStep,
+        event: {
+          ...baseStep.event,
+          page: 1,
+        },
+        index: 1,
+      },
+      {
+        initializedFrames: new Map<string, string>(),
+        initializedPages: new Set([0, 1]),
+        visiblePage: 0,
+      },
+    );
+
+    expect(lines).toMatchInlineSnapshot(`
+      Array [
+        "await page2.bringToFront();",
         "await page2.click('[data-qa=\\"test-input\\"]');",
       ]
     `);
@@ -78,7 +103,8 @@ describe('buildStepLines', () => {
       },
       {
         initializedFrames,
-        initializedPages: new Set(),
+        initializedPages: new Set([0]),
+        visiblePage: 0,
       },
     );
 
@@ -105,7 +131,8 @@ describe('buildStepLines', () => {
       },
       {
         initializedFrames,
-        initializedPages: new Set(),
+        initializedPages: new Set([0]),
+        visiblePage: 0,
       },
     );
 
