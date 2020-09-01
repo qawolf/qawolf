@@ -27,7 +27,7 @@
     "fs-extra": "^9.0.1",
     "glob": "^7.1.6",
     "inquirer": "^7.3.3",
-    "kleur": "^4.0.3",
+    "kleur": "^4.1.1",
     "tslib": "^2.0.1"
   },
   "devDependencies": {
