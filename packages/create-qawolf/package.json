@@ -42,7 +42,7 @@
     "jest": "^26.3.0",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
-    "ts-jest": "^26.1.4",
+    "ts-jest": "^26.3.0",
     "tsutils": "^3.17.1",
     "typescript": "^3.9.7"
   },
