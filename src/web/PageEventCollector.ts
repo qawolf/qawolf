@@ -1,7 +1,8 @@
 import { DEFAULT_ATTRIBUTE_LIST } from './attribute';
 import {
   getInputElementValue,
-  getMouseEventTarget,
+  getClickableGroup,
+  getTopmostEditableElement,
   isVisible,
 } from './element';
 import { buildSelector } from './selector';
@@ -53,22 +54,27 @@ export class PageEventCollector {
 
     const isClick = ['click', 'mousedown'].includes(eventName);
 
-    let target = event.target as HTMLElement;
+    const target = getTopmostEditableElement(event.target as HTMLElement);
+
+    let targetGroup: HTMLElement[];
     if (isClick) {
-      target = getMouseEventTarget(event as MouseEvent);
+      targetGroup = getClickableGroup(target);
     }
 
     const isTargetVisible = isVisible(target, window.getComputedStyle(target));
+
+    const selector = buildSelector({
+      attributes: this._attributes,
+      isClick,
+      target,
+      targetGroup,
+    });
 
     const elementEvent: types.ElementEvent = {
       isTrusted: event.isTrusted && isTargetVisible,
       name: eventName,
       page: -1, // set in ContextEventCollector
-      selector: buildSelector({
-        attributes: this._attributes,
-        isClick,
-        target,
-      }),
+      selector,
       target: nodeToDoc(target),
       time: Date.now(),
       value,

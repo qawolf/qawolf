@@ -8,7 +8,6 @@ export {
 export {
   getClickableGroup,
   getInputElementValue,
-  getMouseEventTarget,
   getTopmostEditableElement,
   isClickable,
   isVisible,

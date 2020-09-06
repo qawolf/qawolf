@@ -42,7 +42,7 @@ function HtmlButtons() {
       <br />
       <br />
       <button>
-        <span>Better attribute on span</span>
+        <span data-for-test="selection">Better attribute on span</span>
       </button>
       <br />
       <br />

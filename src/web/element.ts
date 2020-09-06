@@ -96,23 +96,6 @@ export const getTopmostEditableElement = (
 };
 
 /**
- * @summary Returns the best target element for reproducing a mouse event.
- */
-export const getMouseEventTarget = (event: MouseEvent): HTMLElement => {
-  const originalTarget = event.target as HTMLElement;
-
-  const clickableGroup = getClickableGroup(originalTarget);
-
-  // If originalTarget wasn't part of a clickable group
-  if (clickableGroup.length === 0) {
-    return getTopmostEditableElement(originalTarget);
-  }
-
-  // For now, just return the topmost clickable element in the group
-  return clickableGroup[clickableGroup.length - 1];
-};
-
-/**
  * @summary Returns the current "value" of an element. Pass in an event `target`.
  *   For example, returns the `.value` or the `.innerText` of a content-editable.
  *   If no value can be determined, returns `null`.
