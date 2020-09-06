@@ -16,49 +16,53 @@ beforeAll(async () => {
 
 afterAll(() => browser.close());
 
-describe('getClickableAncestor', () => {
+describe('getClickableGroup', () => {
   beforeAll(() => page.goto(`${TEST_URL}buttons`));
 
-  it('chooses the top most clickable ancestor', async () => {
-    const id = await page.evaluate(() => {
+  it('returns a clickable group', async () => {
+    const group = await page.evaluate(() => {
       const web: QAWolfWeb = (window as any).qawolf;
       const element = document.querySelector('#nested span') as HTMLElement;
       if (!element) throw new Error('element not found');
 
-      const ancestor = web.getClickableAncestor(element, []);
-      return ancestor.id;
+      return web.getClickableGroup(element).map((el) => el.tagName);
     });
 
-    expect(id).toEqual('nested');
+    expect(group).toMatchInlineSnapshot(`
+      Array [
+        "SPAN",
+        "DIV",
+        "BUTTON",
+      ]
+    `);
   });
 
-  it('chooses the original element when there is no clickable ancestor', async () => {
-    const id = await page.evaluate(() => {
+  it('group has only the original element when there is no clickable ancestor', async () => {
+    const group = await page.evaluate(() => {
       const web: QAWolfWeb = (window as any).qawolf;
       const element = document.querySelector('#nested') as HTMLElement;
       if (!element) throw new Error('element not found');
 
-      const ancestor = web.getClickableAncestor(element, []);
-      return ancestor.id;
+      return web.getClickableGroup(element).map((el) => el.tagName);
     });
 
-    expect(id).toEqual('nested');
+    expect(group).toMatchInlineSnapshot(`
+      Array [
+        "BUTTON",
+      ]
+    `);
   });
 
-  it('stops at an ancestor with a preferred attribute', async () => {
-    const attribute = await page.evaluate(() => {
+  it('returns empty array if the element is not clickable', async () => {
+    const groupLength = await page.evaluate(() => {
       const web: QAWolfWeb = (window as any).qawolf;
-
-      const element = document.querySelector(
-        '[data-qa="nested-attribute"] span',
-      ) as HTMLElement;
+      const element = document.querySelector('h3') as HTMLElement;
       if (!element) throw new Error('element not found');
 
-      const ancestor = web.getClickableAncestor(element, ['data-qa']);
-      return ancestor.getAttribute('data-qa');
+      return web.getClickableGroup(element).length;
     });
 
-    expect(attribute).toEqual('nested-attribute');
+    expect(groupLength).toBe(0);
   });
 });
 
@@ -68,7 +72,9 @@ describe('getInputElementValue', () => {
 
     const value = await page.evaluate(() => {
       const web: QAWolfWeb = (window as any).qawolf;
-      const element = document.querySelector('[data-qa="html-text-input"]') as HTMLInputElement;
+      const element = document.querySelector(
+        '[data-qa="html-text-input"]',
+      ) as HTMLInputElement;
       if (!element) throw new Error('element not found');
 
       element.value = 'I have value';
@@ -84,7 +90,9 @@ describe('getInputElementValue', () => {
 
     const value = await page.evaluate(() => {
       const web: QAWolfWeb = (window as any).qawolf;
-      const element = document.querySelector('[data-qa="content-editable"]') as HTMLInputElement;
+      const element = document.querySelector(
+        '[data-qa="content-editable"]',
+      ) as HTMLInputElement;
       if (!element) throw new Error('element not found');
 
       return web.getInputElementValue(element);
@@ -98,7 +106,9 @@ describe('getInputElementValue', () => {
 
     const value = await page.evaluate(() => {
       const web: QAWolfWeb = (window as any).qawolf;
-      const element = document.querySelector('[data-qa="html-text-input-content-editable"]') as HTMLInputElement;
+      const element = document.querySelector(
+        '[data-qa="html-text-input-content-editable"]',
+      ) as HTMLInputElement;
       if (!element) throw new Error('element not found');
 
       element.value = 'I have value';

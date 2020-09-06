@@ -1,4 +1,3 @@
-import { hasAttribute } from './attribute';
 import { getXpath } from './serialize';
 
 export const isVisible = (
@@ -31,52 +30,38 @@ export const isClickable = (
   return clickable && isVisible(element, computedStyle);
 };
 
-export const getClickableAncestor = (
-  element: HTMLElement,
-  attributes: string[],
-): HTMLElement => {
-  /**
-   * Crawl up until we reach the top "clickable" ancestor.
-   * If the target is the descendant of "a"/"button"/"input" or a clickable element choose it.
-   * If the target has a preferred attribute choose it.
-   * Otherwise choose the original element as the target.
-   */
-  let ancestor = element;
+/**
+ * @summary Sometimes there is a group of elements that together make up what appears
+ *   to be a single button, link, image, etc. Examples: a > span | button > div > span
+ *   For these we want to take into consideration the entire "clickable group" when
+ *   building a good selector. The topmost clickable (a | button | input) should be
+ *   preferred in many cases, but if an inner element has a lower-penalty attribute
+ *   then that should be preferred.
+ *
+ * @return An array of HTMLElement that make up the clickable group. If `element`
+ *   itself is not clickable, the array is empty.
+ */
+export const getClickableGroup = (element: HTMLElement): HTMLElement[] => {
   console.debug('qawolf: get clickable ancestor for', getXpath(element));
 
-  while (ancestor.parentElement) {
-    if (['a', 'button', 'input'].includes(ancestor.tagName.toLowerCase())) {
-      // stop crawling when the ancestor is a good clickable tag
-      console.debug(
-        `qawolf: found clickable ancestor: ${ancestor.tagName}`,
-        getXpath(ancestor),
-      );
-      return ancestor;
+  const clickableElements = [];
+  let checkElement = element;
+
+  while (isClickable(checkElement, window.getComputedStyle(checkElement))) {
+    clickableElements.push(checkElement);
+
+    if (['a', 'button', 'input'].includes(checkElement.tagName.toLowerCase())) {
+      // stop crawling when the checkElement is a good clickable tag
+      break;
     }
 
-    if (hasAttribute(ancestor, attributes)) {
-      // stop crawling when the ancestor has a preferred attribute
-      return ancestor;
-    }
+    checkElement = checkElement.parentElement;
 
-    if (
-      !isClickable(
-        ancestor.parentElement,
-        window.getComputedStyle(ancestor.parentElement),
-      )
-    ) {
-      // stop crawling at the first non-clickable element
-      console.debug('qawolf: found clickable ancestor', getXpath(ancestor));
-      return ancestor;
-    }
-
-    ancestor = ancestor.parentElement;
+    // stop crawling at the root
+    if (!checkElement) break;
   }
 
-  // stop crawling at the root
-  console.debug('qawolf: found clickable ancestor', getXpath(ancestor));
-
-  return ancestor;
+  return clickableElements;
 };
 
 /**
@@ -108,6 +93,23 @@ export const getTopmostEditableElement = (
 
   // This should never be hit, but here as a safety
   return element;
+};
+
+/**
+ * @summary Returns the best target element for reproducing a mouse event.
+ */
+export const getMouseEventTarget = (event: MouseEvent): HTMLElement => {
+  const originalTarget = event.target as HTMLElement;
+
+  const clickableGroup = getClickableGroup(originalTarget);
+
+  // If originalTarget wasn't part of a clickable group
+  if (clickableGroup.length === 0) {
+    return getTopmostEditableElement(originalTarget);
+  }
+
+  // For now, just return the topmost clickable element in the group
+  return clickableGroup[clickableGroup.length - 1];
 };
 
 /**

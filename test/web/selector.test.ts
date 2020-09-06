@@ -38,7 +38,8 @@ describe('buildSelector', () => {
     const builtSelector = await page.evaluate(
       ({ attributes, element, isClick }) => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const target = qawolf.getClickableAncestor(element as HTMLElement, []);
+        let target = qawolf.getClickableGroup(element as HTMLElement).pop();
+        if (!target) target = element as HTMLElement;
 
         qawolf.clearSelectorCache();
 

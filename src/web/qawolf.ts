@@ -6,8 +6,9 @@ export {
   getCueTypesConfig,
 } from './cues';
 export {
-  getClickableAncestor,
+  getClickableGroup,
   getInputElementValue,
+  getMouseEventTarget,
   getTopmostEditableElement,
   isClickable,
   isVisible,
