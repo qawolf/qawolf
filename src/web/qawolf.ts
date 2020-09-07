@@ -6,7 +6,7 @@ export {
   getCueTypesConfig,
 } from './cues';
 export {
-  getClickableAncestor,
+  getClickableGroup,
   getInputElementValue,
   getTopmostEditableElement,
   isClickable,

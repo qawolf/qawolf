@@ -41,6 +41,11 @@ function HtmlButtons() {
       </button>
       <br />
       <br />
+      <button>
+        <span data-for-test="selection">Better attribute on span</span>
+      </button>
+      <br />
+      <br />
       <input id="submit-input" type="submit" value="Submit Input" />
       <br />
       <br />

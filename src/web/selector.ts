@@ -28,7 +28,7 @@ export const toSelector = (selectorParts: SelectorPart[]): string => {
 };
 
 export const buildSelector = (options: BuildCues): string => {
-  const { isClick, target } = options;
+  const { isClick, target, targetGroup } = options;
 
   // To save looping, see if we have already figured out a unique
   // selector for this target.
@@ -52,7 +52,7 @@ export const buildSelector = (options: BuildCues): string => {
 
   const cues = buildCues(options);
 
-  const { selectorParts } = optimizeCues(cues, target) || {};
+  const { selectorParts } = optimizeCues(cues, target, targetGroup) || {};
   if (selectorParts) {
     // First cache it so that we don't need to do all the looping for this
     // same target next time. We cache `selectorParts` rather than `selector`

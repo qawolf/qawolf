@@ -38,7 +38,13 @@ describe('buildSelector', () => {
     const builtSelector = await page.evaluate(
       ({ attributes, element, isClick }) => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
-        const target = qawolf.getClickableAncestor(element as HTMLElement, []);
+
+        const target = qawolf.getTopmostEditableElement(element as HTMLElement);
+
+        let targetGroup: HTMLElement[];
+        if (isClick) {
+          targetGroup = qawolf.getClickableGroup(target);
+        }
 
         qawolf.clearSelectorCache();
 
@@ -46,6 +52,7 @@ describe('buildSelector', () => {
           attributes,
           isClick,
           target,
+          targetGroup,
         });
       },
       { attributes, element, isClick },
@@ -101,6 +108,8 @@ describe('buildSelector', () => {
         [['#html-button-child', '[data-qa="html-button-with-children"]']],
         [['.MuiButton-label', '[data-qa="material-button"]']],
         ['.second-half.type-two'],
+        // selects the better selector for target despite having clickable ancestors
+        [['[data-for-test="selection"]', 'text="Better attribute on span"']],
       ])('builds expected selector %o', (selector) => expectSelector(selector));
     });
 

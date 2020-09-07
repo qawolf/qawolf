@@ -13,6 +13,7 @@ export type BuildCues = {
   attributes: string[];
   isClick: boolean;
   target: HTMLElement;
+  targetGroup?: HTMLElement[];
 };
 
 type CueTypeConfig = {

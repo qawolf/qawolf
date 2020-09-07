@@ -185,6 +185,7 @@ export const findBestCueGroup = (
   seedGroup: CueGroup,
   target: HTMLElement,
   maxSize: number,
+  targetGroup?: HTMLElement[],
 ): CueGroup => {
   let bestGroup = seedGroup;
 
@@ -218,7 +219,16 @@ export const findBestCueGroup = (
 
       const selectorParts = buildSelectorParts(cues);
 
-      if (isMatch({ selectorParts, target })) {
+      // If these selector parts match the `target` element or any element in the
+      // target group, if there is one, then it's currently the best group.
+      if (
+        (
+          targetGroup &&
+          targetGroup.length &&
+          targetGroup.some((groupElement) => isMatch({ selectorParts, target: groupElement }))
+        ) ||
+        isMatch({ selectorParts, target })
+      ) {
         bestGroup = {
           cues,
           penalty,
@@ -235,6 +245,7 @@ export const findBestCueGroup = (
 export const optimizeCues = (
   cues: Cue[],
   target: HTMLElement,
+  targetGroup?: HTMLElement[],
 ): CueGroup | null => {
   const cueSets = buildCueSets(cues);
 
@@ -250,7 +261,7 @@ export const optimizeCues = (
       // 16 cues, samples of 5 is ~7000 combinations which took ~100ms on my machine
       if (!cueGroup || cueGroup.cues.length > 16) return null;
 
-      return findBestCueGroup(cueGroup, target, 5);
+      return findBestCueGroup(cueGroup, target, 5, targetGroup);
     })
     // Ignore invalid groups
     .filter((a) => !!a)
