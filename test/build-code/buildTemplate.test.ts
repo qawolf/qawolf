@@ -41,26 +41,26 @@ describe('buildTemplate', () => {
       ...options,
       device: 'iPhone 11',
     });
-    expect(template).toMatchSnapshot();
+    expect(template).toMatchSnapshot('device');
 
     template = buildTemplate({
       ...options,
       statePath: 'admin.json',
     });
-    expect(template).toMatchSnapshot();
+    expect(template).toMatchSnapshot('state');
 
     template = buildTemplate({
       ...options,
       useTypeScript: true,
     });
-    expect(template).toMatchSnapshot();
+    expect(template).toMatchSnapshot('typescript');
 
     template = buildTemplate({
       ...options,
       device: 'iPhone 7',
       useTypeScript: true,
     });
-    expect(template).toMatchSnapshot();
+    expect(template).toMatchSnapshot('device typescript');
   });
 });
 

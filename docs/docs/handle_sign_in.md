@@ -92,12 +92,10 @@ A browser will open and the [cookies](https://developer.mozilla.org/en-US/docs/W
 If you open your test file (`.qawolf/mySignInTest.test.js` in our example), you will see that it calls the [`qawolf.setState` method](api/qawolf/set_state) in the [Jest `test` block](https://jestjs.io/docs/en/api#testname-fn-timeout). This method loads the state data from the specified file and applies it to the page:
 
 ```js
-// ...
-test('mySignInTest', async () => {
-  await page.goto('https://www.twitter.com/');
+  // ...
+  await page.goto('https://www.twitter.com/', { waitUntil: 'domcontentloaded' });
   await qawolf.setState(page, './.qawolf/state/user.json');
   // ...
-});
 ```
 
 The actions you take will be converted to test code after `qawolf.setState` is called. Now you can test your application as a signed in user!
@@ -121,23 +119,16 @@ Your test file (`.qawolf/mySignInTest.test.js` in our example) should look like 
 ```js
 const qawolf = require('qawolf');
 
-let browser;
-let page;
-
-beforeAll(async () => {
-  browser = await qawolf.launch();
+test('mySignInTest', async () => {
+  const browser = await qawolf.launch();
   const context = await browser.newContext();
   await qawolf.register(context);
-  page = await context.newPage();
-});
+  const page = await context.newPage();
 
-afterAll(async () => {
+  await page.goto('https://www.myawesomesite.com/', { waitUntil: 'domcontentloaded' });
+
   await qawolf.stopVideos();
   await browser.close();
-});
-
-test('mySignInTest', async () => {
-  await page.goto('https://www.myawesomesite.com/');
 });
 ```
 
@@ -149,10 +140,8 @@ We'll first add a line to our file that tells QA Wolf where to insert new code. 
 
 ```js
 // ...
-test('mySignInTest', async () => {
-  await page.goto('https://www.myawesomesite.com/');
+  await page.goto('https://www.myawesomesite.com/', { waitUntil: 'domcontentloaded' });
   await qawolf.create(); // add this line
-});
 ```
 
 Now let's update our test to sign in programmatically. This code will run first, so that we are signed in when `qawolf.create` is called.
@@ -161,14 +150,14 @@ Now let's update our test to sign in programmatically. This code will run first,
 
 If your application involves setting cookies for authentication, use the [Playwright `context.addCookies`](https://github.com/microsoft/playwright/blob/master/docs/api.md#browsercontextaddcookiescookies) method.
 
-At the end of the `beforeAll` block, call `context.addCookies` and pass it an array of cookie objects. Below is an example `beforeAll` block that does this:
+After the `page` is created in the `test` block, call `context.addCookies` and pass it an array of cookie objects:
 
 ```js
-beforeAll(async () => {
-  browser = await qawolf.launch();
+test('myTest', async () => {
+  const browser = await qawolf.launch();
   const context = await browser.newContext();
   await qawolf.register(context);
-  page = await context.newPage();
+  const page = await context.newPage();
 
   // sign in code starts
   await context.addCookies([
@@ -193,38 +182,33 @@ After `page.goto` is called in the `test` block, call `page.evaluate` and pass i
 
 ```js
 // ...
-test('mySignInTest', async () => {
-  await page.goto('https://www.myawesomesite.com/');
+  await page.goto('https://www.myawesomesite.com/', { waitUntil: 'domcontentloaded' });
   // sign in code starts
   await page.evaluate(() => {
     localStorage.setItem('token', 'value');
   });
   // sign in code ends
   await qawolf.create();
-});
 ```
 
 Below is an example that sets a value in `sessionStorage` with the [`setItem` method](https://developer.mozilla.org/en-US/docs/Web/API/Storage/setItem):
 
 ```js
 // ...
-test('mySignInTest', async () => {
-  await page.goto('https://www.myawesomesite.com/');
+  await page.goto('https://www.myawesomesite.com/', { waitUntil: 'domcontentloaded' });
   // sign in code starts
   await page.evaluate(() => {
     sessionStorage.setItem('token', 'value');
   });
   // sign in code ends
   await qawolf.create();
-});
 ```
 
 You may have to call the [`page.reload` method](https://github.com/microsoft/playwright/blob/master/docs/api.md#pagereloadoptions) after `page.evaluate` so the `localStorage` and `sessionStorage` changes can take effect:
 
 ```js
 // ...
-test('mySignInTest', async () => {
-  await page.goto('https://www.myawesomesite.com/');
+  await page.goto('https://www.myawesomesite.com/', { waitUntil: 'domcontentloaded' });
   // sign in code starts
   await page.evaluate(() => {
     localStorage.setItem('token', 'value');
@@ -232,7 +216,6 @@ test('mySignInTest', async () => {
   await page.reload();
   // sign in code ends
   await qawolf.create();
-});
 ```
 
 See [Playwright documentation](https://github.com/microsoft/playwright/blob/master/docs/api.md#pageevaluatepagefunction-args) to learn more about the `page.evaluate` method.

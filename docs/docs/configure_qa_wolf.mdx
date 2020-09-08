@@ -43,7 +43,7 @@ module.exports = {
   // default timeout of a test in milliseconds
   testTimeout: 60000,
   // generate .ts files
-  useTypeScript: false
+  useTypeScript: false,
 };
 ```
 
@@ -99,24 +99,17 @@ const createTemplate = (options) => {
 
   const code = `const qawolf = require("qawolf");
 
-let browser;
-let page;
-
-beforeAll(async () => {
-  browser = await qawolf.launch();
+test('${name}', async () => {
+  const browser = await qawolf.launch();
   const context = await browser.newContext();
   await qawolf.register(context);
-  page = await context.newPage();
-});
+  const page = await context.newPage();
 
-afterAll(async () => {
+  await page.goto("${url}", { waitUntil: "domcontentloaded" });
+  await qawolf.create();
+
   await qawolf.stopVideos();
   await browser.close();
-});
-
-test('${name}', async () => {
-  await page.goto("${url}");
-  await qawolf.create();
 });`;
 
   return code;

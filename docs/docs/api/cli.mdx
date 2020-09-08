@@ -88,13 +88,11 @@ When using edit mode, you can add steps to an existing test by calling the [`qaw
 ```js
 // ...
 
-test('myTest', async () => {
-  await page.goto('http://todomvc.com/examples/react');
+  await page.goto('http://todomvc.com/examples/react', { waitUntil: 'domcontentloaded' });
   // previous test steps
   // ...
   // call qawolf.create to add steps
   await qawolf.create();
-});
 ```
 
 ## npx qawolf test [name][...options]
