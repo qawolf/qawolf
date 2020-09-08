@@ -1,7 +1,6 @@
 import { DEFAULT_ATTRIBUTE_LIST } from './attribute';
 import {
   getInputElementValue,
-  getClickableGroup,
   getTopmostEditableElement,
   isVisible,
 } from './element';
@@ -40,7 +39,11 @@ export class PageEventCollector {
     });
 
     this._onDispose.push(() =>
-      document.removeEventListener(eventName, handler),
+      document.removeEventListener(eventName, handler, {
+        // `capture` value must match for proper removal
+        // https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener#Matching_event_listeners_for_removal
+        capture: true,
+      }),
     );
   }
 
@@ -56,18 +59,12 @@ export class PageEventCollector {
 
     const target = getTopmostEditableElement(event.target as HTMLElement);
 
-    let targetGroup: HTMLElement[];
-    if (isClick) {
-      targetGroup = getClickableGroup(target);
-    }
-
     const isTargetVisible = isVisible(target, window.getComputedStyle(target));
 
     const selector = buildSelector({
       attributes: this._attributes,
       isClick,
       target,
-      targetGroup,
     });
 
     const elementEvent: types.ElementEvent = {

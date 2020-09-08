@@ -30,14 +30,14 @@ describe('getClickableGroup', () => {
 
     expect(group).toMatchInlineSnapshot(`
       Array [
-        "SPAN",
-        "DIV",
         "BUTTON",
+        "DIV",
+        "SPAN",
       ]
     `);
   });
 
-  it('group has only the original element when there is no clickable ancestor', async () => {
+  it('group has all elements when target is the topmost element in group', async () => {
     const group = await page.evaluate(() => {
       const web: QAWolfWeb = (window as any).qawolf;
       const element = document.querySelector('#nested') as HTMLElement;
@@ -49,6 +49,69 @@ describe('getClickableGroup', () => {
     expect(group).toMatchInlineSnapshot(`
       Array [
         "BUTTON",
+        "DIV",
+        "SPAN",
+      ]
+    `);
+  });
+
+  it('group has sibling elements and does not have svg descendants', async () => {
+    const group = await page.evaluate(() => {
+      const web: QAWolfWeb = (window as any).qawolf;
+      const element = document.querySelector(
+        '[data-qa="nested-svg"] > svg > circle',
+      ) as HTMLElement;
+      if (!element) throw new Error('element not found');
+
+      return web.getClickableGroup(element).map((el) => el.tagName);
+    });
+
+    expect(group).toMatchInlineSnapshot(`
+      Array [
+        "BUTTON",
+        "svg",
+        "DIV",
+        "SPAN",
+      ]
+    `);
+  });
+
+  it('group omits nested button groups', async () => {
+    const group = await page.evaluate(() => {
+      const web: QAWolfWeb = (window as any).qawolf;
+      const element = document.querySelector(
+        '[data-qa="nested-svg-with-nested-link"]',
+      ) as HTMLElement;
+      if (!element) throw new Error('element not found');
+
+      return web.getClickableGroup(element).map((el) => el.tagName);
+    });
+
+    expect(group).toMatchInlineSnapshot(`
+      Array [
+        "BUTTON",
+        "svg",
+        "DIV",
+        "SPAN",
+      ]
+    `);
+  });
+
+  it('works on a nested button group', async () => {
+    const group = await page.evaluate(() => {
+      const web: QAWolfWeb = (window as any).qawolf;
+      const element = document.querySelector(
+        '[data-qa="nested-svg-with-nested-link"] > a > span',
+      ) as HTMLElement;
+      if (!element) throw new Error('element not found');
+
+      return web.getClickableGroup(element).map((el) => el.tagName);
+    });
+
+    expect(group).toMatchInlineSnapshot(`
+      Array [
+        "A",
+        "SPAN",
       ]
     `);
   });
@@ -217,7 +280,7 @@ describe('isClickable', () => {
       const web: QAWolfWeb = (window as any).qawolf;
 
       const loginButton = document.getElementsByTagName('button')[0];
-      return web.isClickable(loginButton, window.getComputedStyle(loginButton));
+      return web.isClickable(loginButton);
     });
 
     expect(isClickable).toBe(true);
@@ -229,7 +292,7 @@ describe('isClickable', () => {
       const element = document.getElementById('username');
       if (!element) throw new Error('element not found');
 
-      return web.isClickable(element, window.getComputedStyle(element));
+      return web.isClickable(element);
     });
 
     expect(isClickable).toBe(false);
