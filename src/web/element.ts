@@ -72,14 +72,15 @@ const traverseClickableElements = (
   if (direction === 'down' && depth > 0 && isLikelyTopOfClickGroup(element)) return;
 
   const newDepth = depth + 1;
-  if (newDepth > maxDepth) return;
-
   const lowerTagName = element.tagName.toLowerCase();
 
   if (direction === 'up') {
     // Call self for the parent element, incrementing depth
     traverseClickableElements(element.parentElement, group, direction, maxDepth, newDepth, [lowerTagName, ...ancestorChain]);
   } else {
+    // Respect max depth only when going down
+    if (newDepth > maxDepth) return;
+
     // If we make it this far, this element should be part of the current group.
     // We add elements to the group only on the way down to avoid adding any twice.
     group.push(element);
