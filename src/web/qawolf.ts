@@ -9,7 +9,6 @@ export {
   getClickableGroup,
   getInputElementValue,
   getTopmostEditableElement,
-  isClickable,
   isVisible,
 } from './element';
 export { formatArgument, interceptConsoleLogs } from './interceptConsoleLogs';

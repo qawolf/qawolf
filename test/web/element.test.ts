@@ -59,7 +59,7 @@ describe('getClickableGroup', () => {
     const group = await page.evaluate(() => {
       const web: QAWolfWeb = (window as any).qawolf;
       const element = document.querySelector(
-        '[data-qa="nested-svg"] > svg > circle',
+        '[data-for-test="nested-svg"] > svg > circle',
       ) as HTMLElement;
       if (!element) throw new Error('element not found');
 
@@ -80,7 +80,7 @@ describe('getClickableGroup', () => {
     const group = await page.evaluate(() => {
       const web: QAWolfWeb = (window as any).qawolf;
       const element = document.querySelector(
-        '[data-qa="nested-svg-with-nested-link"]',
+        '[data-for-test="nested-svg-with-nested-link"]',
       ) as HTMLElement;
       if (!element) throw new Error('element not found');
 
@@ -101,7 +101,7 @@ describe('getClickableGroup', () => {
     const group = await page.evaluate(() => {
       const web: QAWolfWeb = (window as any).qawolf;
       const element = document.querySelector(
-        '[data-qa="nested-svg-with-nested-link"] > a > span',
+        '[data-for-test="nested-svg-with-nested-link"] > a > span',
       ) as HTMLElement;
       if (!element) throw new Error('element not found');
 
@@ -269,32 +269,5 @@ describe('isVisible', () => {
     });
 
     expect(isElementVisible).toBe(false);
-  });
-});
-
-describe('isClickable', () => {
-  beforeAll(() => page.goto(`${TEST_URL}login`));
-
-  it('returns true if element is clickable', async () => {
-    const isClickable = await page.evaluate(() => {
-      const web: QAWolfWeb = (window as any).qawolf;
-
-      const loginButton = document.getElementsByTagName('button')[0];
-      return web.isClickable(loginButton);
-    });
-
-    expect(isClickable).toBe(true);
-  });
-
-  it('returns false if element is not clickable', async () => {
-    const isClickable = await page.evaluate(() => {
-      const web: QAWolfWeb = (window as any).qawolf;
-      const element = document.getElementById('username');
-      if (!element) throw new Error('element not found');
-
-      return web.isClickable(element);
-    });
-
-    expect(isClickable).toBe(false);
   });
 });

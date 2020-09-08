@@ -63,7 +63,7 @@ function HtmlButtons() {
       </button>
       <br />
       <br />
-      <button data-qa="nested-svg" type="button" style={{ display: 'inline-flex', alignItems: 'center' }}>
+      <button data-for-test="nested-svg" type="button" style={{ display: 'inline-flex', alignItems: 'center' }}>
         <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" style={{ marginRight: 6 }}>
           <circle cx="5" cy="5" r="5" stroke="black" strokeWidth="0" fill="red"></circle>
         </svg>
@@ -73,7 +73,7 @@ function HtmlButtons() {
       </button>
       <br />
       <br />
-      <button data-qa="nested-svg-with-nested-link" type="button" style={{ display: 'inline-flex', alignItems: 'center' }}>
+      <button data-for-test="nested-svg-with-nested-link" type="button" style={{ display: 'inline-flex', alignItems: 'center' }}>
         <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" style={{ marginRight: 6 }}>
           <circle cx="5" cy="5" r="5" stroke="black" strokeWidth="0" fill="red"></circle>
         </svg>

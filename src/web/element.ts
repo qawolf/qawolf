@@ -1,6 +1,7 @@
 import { getXpath } from './serialize';
 
 const BUTTON_INPUT_TYPES = ['button', 'image', 'reset', 'submit'];
+const CLICK_GROUP_ELEMENTS = ['a', 'button', 'label'];
 const MAX_CLICKABLE_ELEMENT_TRAVERSE_DEPTH = 10;
 
 export const isVisible = (
@@ -23,24 +24,12 @@ export const isVisible = (
   return true;
 };
 
-export const isClickable = (
-  element: HTMLElement,
-  computedStyle: CSSStyleDeclaration = window.getComputedStyle(element),
-): boolean => {
-  // assume it is clickable if the cursor is a pointer
-  const clickable = computedStyle.cursor === 'pointer';
-
-  return clickable && isVisible(element, computedStyle);
-};
-
 export const isLikelyTopOfClickGroup = (element: HTMLElement): boolean => {
   const tagName = element.tagName.toLowerCase();
   return (
-    ['a', 'button'].includes(tagName) ||
+    CLICK_GROUP_ELEMENTS.includes(tagName) ||
     element.getAttribute('role') === 'button' ||
-    (tagName === 'input' && BUTTON_INPUT_TYPES.includes(element.getAttribute('type'))) ||
-    !element.parentElement ||
-    !isClickable(element.parentElement)
+    (tagName === 'input' && BUTTON_INPUT_TYPES.includes(element.getAttribute('type')))
   );
 };
 
@@ -58,8 +47,8 @@ const traverseClickableElements = (
   depth = 0,
   ancestorChain: string[] = [],
 ): void => {
-  // Regardless of which direction we're moving, stop if we hit a non-clickable element
-  if (!isClickable(element)) return;
+  // Regardless of which direction we're moving, stop if we hit an invisible element
+  if (!isVisible(element, window.getComputedStyle(element))) return;
 
   // When moving up, when we reach the topmost clickable element, we
   // stop traversing up and begin traversing down from there.
@@ -76,7 +65,9 @@ const traverseClickableElements = (
 
   if (direction === 'up') {
     // Call self for the parent element, incrementing depth
-    traverseClickableElements(element.parentElement, group, direction, maxDepth, newDepth, [lowerTagName, ...ancestorChain]);
+    if (element.parentElement) {
+      traverseClickableElements(element.parentElement, group, direction, maxDepth, newDepth, [lowerTagName, ...ancestorChain]);
+    }
   } else {
     // Respect max depth only when going down
     if (newDepth > maxDepth) return;
