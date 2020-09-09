@@ -41,7 +41,8 @@ const SCORE_THRESHOLD = 0.5;
 export const getTokens = (value: string): string[] => {
   const tokens = [];
 
-  // split by space, dash, colon, and camel case
+  // split by space, dash, underscore, colon
+  // split by and camel case. TODO: unless there are numbers
   value.split(/[ \-_:]+|(?=[A-Z])/).forEach((token) => {
     if (!token) return; // ignore empty string
 

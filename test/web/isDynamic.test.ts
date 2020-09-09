@@ -1,4 +1,25 @@
-import { isDynamic } from '../../src/web/isDynamic';
+import { getTokens, isDynamic } from '../../src/web/isDynamic';
+
+describe('getTokens', () => {
+  it('splits space, dash, underscore, colon', () => {
+    expect(getTokens('hi there-how_are:you')).toEqual([
+      'hi',
+      'there',
+      'how',
+      'are',
+      'you',
+    ]);
+  });
+
+  it('splits camelCase without numbers', () => {
+    expect(getTokens('hiThere')).toEqual(['hi', 'there']);
+  });
+
+  it('does not split camelCase with numbers', () => {
+    expect(getTokens('input-3Di')).toEqual(['input', '3Di']);
+    expect(getTokens('input-Di3')).toEqual(['input', 'Di3']);
+  });
+});
 
 describe('isDynamic', () => {
   it.each([
@@ -8,6 +29,7 @@ describe('isDynamic', () => {
     'ggWlfB2BMlWvNeAo2F0uqw',
     'gLFyf',
     'haSfzA',
+    'input-bu32879fDi',
     'intercom-123v9c3',
     'StyledBox-sc-13pk1d4-0',
     'StyledLayer-rmtehz-0',
