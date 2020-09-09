@@ -41,14 +41,17 @@ const SCORE_THRESHOLD = 0.5;
 export const getTokens = (value: string): string[] => {
   const tokens = [];
 
-  // split by space, dash, colon, and camel case
-  value.split(/[ \-_:]+|(?=[A-Z])/).forEach((token) => {
-    if (!token) return; // ignore empty string
-
-    tokens.push(token.toLowerCase());
+  // split by space, dash, underscore, colon
+  value.split(/[ \-_:]+/).forEach((token) => {
+    if (token.match(/\d/)) {
+      tokens.push(token);
+    } else {
+      // split by and camel case when there are no numbers
+      tokens.push(...token.split(/(?=[A-Z])/));
+    }
   });
 
-  return tokens;
+  return tokens.map((token) => token.toLowerCase());
 };
 
 export const isDynamic = (
