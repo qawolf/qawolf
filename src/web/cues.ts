@@ -2,6 +2,8 @@ import { getAttribute } from './attribute';
 import { getElementText } from './selectorEngine';
 import { isDynamic } from './isDynamic';
 
+const DYNAMIC_VALUE_OK_ATTRIBUTES = ['href', 'src'];
+
 export type Cue = {
   level: number; // 0 is target, 1 is parent, etc.
   penalty: number; // Cue type penalty plus PENALTY_PER_LEVEL
@@ -242,12 +244,14 @@ export const buildCuesForElement = ({
         });
         if (attributeValuePair) {
           const { name, value } = attributeValuePair;
-          list.push({
-            level,
-            penalty,
-            type: 'attribute',
-            value: `[${name}="${value}"]`,
-          });
+          if (value.length && (DYNAMIC_VALUE_OK_ATTRIBUTES.includes(name) || !isDynamic(value))) {
+            list.push({
+              level,
+              penalty,
+              type: 'attribute',
+              value: `[${name}="${value}"]`,
+            });
+          }
         }
         break;
       }

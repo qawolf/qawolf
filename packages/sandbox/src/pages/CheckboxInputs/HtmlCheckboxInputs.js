@@ -13,6 +13,18 @@ function HtmlCheckboxInputs() {
       <input className="special:class" id="special:id" type="checkbox" />
       <label htmlFor="special:id"> Another checkbox</label>
       <br />
+      <input id="sadovh89r" type="checkbox" name="nonDynamicInput" />
+      <label htmlFor="sadovh89r"> Checkbox with non-dynamic name</label>
+      <br />
+      <input id="sdf980ergm" type="checkbox" name="input-bu32879fDi" />
+      <label htmlFor="sdf980ergm"> Checkbox with half-dynamic name</label>
+      <br />
+      <input id="b98joifbon" type="checkbox" name="bu32879fDi" />
+      <label htmlFor="b98joifbon"> Checkbox with dynamic name</label>
+      <br />
+      <input id="y908drgun4" type="checkbox" name="" />
+      <label htmlFor="y908drgun4"> Checkbox with empty name</label>
+      <br />
       <input
         checked={isChecked}
         data-qa="html-checkbox-hidden"

@@ -106,6 +106,74 @@ describe('buildCuesForElement', () => {
       },
     ]);
   });
+
+  it('ignores dynamic attr values when building cues', async () => {
+    const cues = await buildCuesForElement('[name="bu32879fDi"]');
+    expect(cues).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "level": 1,
+          "penalty": 40,
+          "type": "tag",
+          "value": "input:nth-of-type(5)",
+        },
+      ]
+    `);
+  });
+
+  it('ignores empty attr values when building cues', async () => {
+    const cues = await buildCuesForElement('#y908drgun4');
+    expect(cues).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "level": 1,
+          "penalty": 40,
+          "type": "tag",
+          "value": "input:nth-of-type(6)",
+        },
+      ]
+    `);
+  });
+
+  it('uses half-dynamic attr values when building cues', async () => {
+    const cues = await buildCuesForElement('[name="input-bu32879fDi"]');
+    expect(cues).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "level": 1,
+          "penalty": 10,
+          "type": "attribute",
+          "value": "[name=\\"input-bu32879fDi\\"]",
+        },
+        Object {
+          "level": 1,
+          "penalty": 40,
+          "type": "tag",
+          "value": "input:nth-of-type(4)",
+        },
+      ]
+    `);
+  });
+
+  it('uses non-dynamic attr values when building cues', async () => {
+    const cues = await buildCuesForElement('[name="nonDynamicInput"]');
+    expect(cues).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "level": 1,
+          "penalty": 10,
+          "type": "attribute",
+          "value": "[name=\\"nonDynamicInput\\"]",
+        },
+        Object {
+          "level": 1,
+          "penalty": 40,
+          "type": "tag",
+          "value": "input:nth-of-type(3)",
+        },
+      ]
+    `);
+  });
 });
 
 describe('buildCueValueForTag', () => {
