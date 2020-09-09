@@ -42,14 +42,16 @@ export const getTokens = (value: string): string[] => {
   const tokens = [];
 
   // split by space, dash, underscore, colon
-  // split by and camel case. TODO: unless there are numbers
-  value.split(/[ \-_:]+|(?=[A-Z])/).forEach((token) => {
-    if (!token) return; // ignore empty string
-
-    tokens.push(token.toLowerCase());
+  value.split(/[ \-_:]+/).forEach((token) => {
+    if (token.match(/\d/)) {
+      tokens.push(token);
+    } else {
+      // split by and camel case when there are no numbers
+      tokens.push(...token.split(/(?=[A-Z])/));
+    }
   });
 
-  return tokens;
+  return tokens.map((token) => token.toLowerCase());
 };
 
 export const isDynamic = (

@@ -16,8 +16,8 @@ describe('getTokens', () => {
   });
 
   it('does not split camelCase with numbers', () => {
-    expect(getTokens('input-3Di')).toEqual(['input', '3Di']);
-    expect(getTokens('input-Di3')).toEqual(['input', 'Di3']);
+    expect(getTokens('input-3Di')).toEqual(['input', '3di']);
+    expect(getTokens('input-Di3')).toEqual(['input', 'di3']);
   });
 });
 
