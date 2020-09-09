@@ -7,7 +7,7 @@ import {
 import { buildSelectorParts, isMatch } from './selectorEngine';
 import { SelectorPart } from './types';
 
-type CueGroup = {
+export type CueGroup = {
   cues: Cue[];
   penalty: number;
   selectorParts: SelectorPart[];
@@ -183,9 +183,8 @@ export const trimExcessCues = (
 // Pick the cues that match the target with the lowest penalty
 export const findBestCueGroup = (
   seedGroup: CueGroup,
-  target: HTMLElement,
   maxSize: number,
-  targetGroup?: HTMLElement[],
+  targetGroup: HTMLElement[],
 ): CueGroup => {
   let bestGroup = seedGroup;
 
@@ -219,16 +218,9 @@ export const findBestCueGroup = (
 
       const selectorParts = buildSelectorParts(cues);
 
-      // If these selector parts match the `target` element or any element in the
-      // target group, if there is one, then it's currently the best group.
-      if (
-        (
-          targetGroup &&
-          targetGroup.length &&
-          targetGroup.some((groupElement) => isMatch({ selectorParts, target: groupElement }))
-        ) ||
-        isMatch({ selectorParts, target })
-      ) {
+      // If these selector parts match any element that we are targeting,
+      // then it's currently the best group.
+      if (targetGroup.some((target) => isMatch({ selectorParts, target }))) {
         bestGroup = {
           cues,
           penalty,
@@ -243,14 +235,12 @@ export const findBestCueGroup = (
 };
 
 export const optimizeCues = (
-  cues: Cue[],
+  cueSets: Cue[][],
   target: HTMLElement,
-  targetGroup?: HTMLElement[],
-): CueGroup | null => {
-  const cueSets = buildCueSets(cues);
-
+  targetGroup: HTMLElement[],
+): CueGroup[] => {
   // Only use the first 50 cue sets (there should never be this many, usually just ~2-3)
-  const cueGroups = cueSets
+  return cueSets
     .slice(0, 50)
     .map((cueSet) => {
       // Trim down the cue group to 10 if possible
@@ -261,20 +251,28 @@ export const optimizeCues = (
       // 16 cues, samples of 5 is ~7000 combinations which took ~100ms on my machine
       if (!cueGroup || cueGroup.cues.length > 16) return null;
 
-      return findBestCueGroup(cueGroup, target, 5, targetGroup);
+      return findBestCueGroup(cueGroup, 5, targetGroup);
     })
     // Ignore invalid groups
-    .filter((a) => !!a)
-    // Rank by the total penalty then by value length
-    .sort((a, b) => {
-      if (a.penalty < b.penalty) return -1;
-      if (a.penalty > b.penalty) return 1;
+    .filter((a) => !!a);
+};
 
-      if (a.valueLength < b.valueLength) return -1;
-      if (a.valueLength > b.valueLength) return 1;
+export const pickBestCueGroup = (cueGroups: CueGroup[]): CueGroup | null => {
+  let bestCueGroup: CueGroup;
 
-      return 0;
-    });
+  if (cueGroups.length === 0) return null;
 
-  return cueGroups.length ? cueGroups[0] : null;
+  // Rank by the total penalty then by value length. This will take less
+  // time than .sort and will not mutate the cueGroups array.
+  for (const cueGroup of cueGroups) {
+    if (
+      !bestCueGroup ||
+      cueGroup.penalty < bestCueGroup.penalty ||
+      (cueGroup.penalty === bestCueGroup.penalty && cueGroup.valueLength < bestCueGroup.valueLength)
+    ) {
+      bestCueGroup = cueGroup;
+    }
+  }
+
+  return bestCueGroup;
 };

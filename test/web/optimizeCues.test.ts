@@ -1,4 +1,4 @@
-import { buildCueSets, combine } from '../../src/web/optimizeCues';
+import { buildCueSets, combine, pickBestCueGroup } from '../../src/web/optimizeCues';
 
 describe('buildCueSets', () => {
   const penalty = 1;
@@ -49,5 +49,38 @@ describe('combine', () => {
       [1, 3, 4],
       [2, 3, 4],
     ]);
+  });
+});
+
+describe('pickBestCueGroup', () => {
+  const baseCueGroup = {
+    cues: [],
+    penalty: 0,
+    selectorParts: [],
+    valueLength: 0
+  };
+
+  const penalty1Value1 = { ...baseCueGroup, penalty: 1, valueLength: 1 };
+  const penalty1Value2 = { ...baseCueGroup, penalty: 1, valueLength: 2 };
+  const penalty2Value1 = { ...baseCueGroup, penalty: 2, valueLength: 1 };
+
+  it('returns null if there are no groups', () => {
+    const group = pickBestCueGroup([]);
+    expect(group).toBe(null);
+  });
+
+  it('returns only group', () => {
+    const group = pickBestCueGroup([penalty1Value1]);
+    expect(group).toBe(penalty1Value1);
+  });
+
+  it('picks lowest penalty group', () => {
+    const group = pickBestCueGroup([penalty2Value1, penalty1Value1]);
+    expect(group).toBe(penalty1Value1);
+  });
+
+  it('picks shortest value group among groups with equal penalty', () => {
+    const group = pickBestCueGroup([penalty2Value1, penalty1Value1, penalty1Value2]);
+    expect(group).toBe(penalty1Value1);
   });
 });

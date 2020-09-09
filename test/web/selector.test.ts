@@ -41,18 +41,12 @@ describe('buildSelector', () => {
 
         const target = qawolf.getTopmostEditableElement(element as HTMLElement);
 
-        let targetGroup: HTMLElement[];
-        if (isClick) {
-          targetGroup = qawolf.getClickableGroup(target);
-        }
-
         qawolf.clearSelectorCache();
 
         return qawolf.buildSelector({
           attributes,
           isClick,
           target,
-          targetGroup,
         });
       },
       { attributes, element, isClick },

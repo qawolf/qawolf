@@ -1,5 +1,9 @@
 import { getXpath } from './serialize';
 
+const BUTTON_INPUT_TYPES = ['button', 'image', 'reset', 'submit'];
+const CLICK_GROUP_ELEMENTS = ['a', 'button', 'label'];
+const MAX_CLICKABLE_ELEMENT_TRAVERSE_DEPTH = 10;
+
 export const isVisible = (
   element: Element,
   computedStyle?: CSSStyleDeclaration,
@@ -20,14 +24,70 @@ export const isVisible = (
   return true;
 };
 
-export const isClickable = (
-  element: HTMLElement,
-  computedStyle: CSSStyleDeclaration,
-): boolean => {
-  // assume it is clickable if the cursor is a pointer
-  const clickable = computedStyle.cursor === 'pointer';
+export const isLikelyTopOfClickGroup = (element: HTMLElement): boolean => {
+  const tagName = element.tagName.toLowerCase();
+  return (
+    CLICK_GROUP_ELEMENTS.includes(tagName) ||
+    element.getAttribute('role') === 'button' ||
+    (tagName === 'input' && BUTTON_INPUT_TYPES.includes(element.getAttribute('type')))
+  );
+};
 
-  return clickable && isVisible(element, computedStyle);
+/**
+ * @summary Traverse the DOM in both directions, adding clickable elements to the array
+ *   until we've determined the full set of elements that are in the clickable area.
+ *   This is not foolproof because we can't know where exactly click handlers might
+ *   be attached, but we can do a pretty good job of guessing.
+ */
+const traverseClickableElements = (
+  element: HTMLElement,
+  group: HTMLElement[],
+  direction: 'up' | 'down' = 'up',
+  maxDepth: number = MAX_CLICKABLE_ELEMENT_TRAVERSE_DEPTH,
+  depth = 0,
+  ancestorChain: string[] = [],
+): void => {
+  // Regardless of which direction we're moving, stop if we hit an invisible element
+  if (!isVisible(element, window.getComputedStyle(element))) return;
+
+  // When moving up, when we reach the topmost clickable element, we
+  // stop traversing up and begin traversing down from there.
+  if (direction === 'up' && isLikelyTopOfClickGroup(element)) {
+    traverseClickableElements(element, group, 'down', maxDepth);
+    return;
+  }
+
+  // When moving down, stop if we hit the top of another click group (nested buttons)
+  if (direction === 'down' && depth > 0 && isLikelyTopOfClickGroup(element)) return;
+
+  const newDepth = depth + 1;
+  const lowerTagName = element.tagName.toLowerCase();
+
+  if (direction === 'up') {
+    // Call self for the parent element, incrementing depth
+    if (element.parentElement) {
+      traverseClickableElements(element.parentElement, group, direction, maxDepth, newDepth, [lowerTagName, ...ancestorChain]);
+    }
+  } else {
+    // Respect max depth only when going down
+    if (newDepth > maxDepth) return;
+
+    // If we make it this far, this element should be part of the current group.
+    // We add elements to the group only on the way down to avoid adding any twice.
+    group.push(element);
+
+    const newAncestorChain = [...ancestorChain, lowerTagName];
+    console.debug('qawolf: added %s to click group', newAncestorChain.join(' > '));
+
+    // For now, let's skip going down into SVG descendants to keep this fast. If anyone
+    // finds a situation in which this causes problems, we can remove this.
+    if (lowerTagName !== 'svg') {
+      for (const child of element.children) {
+        // Call self for each child element, incrementing depth
+        traverseClickableElements(child as HTMLElement, group, direction, maxDepth, newDepth, newAncestorChain);
+      }
+    }
+  }
 };
 
 /**
@@ -45,21 +105,10 @@ export const getClickableGroup = (element: HTMLElement): HTMLElement[] => {
   console.debug('qawolf: get clickable ancestor for', getXpath(element));
 
   const clickableElements = [];
-  let checkElement = element;
 
-  while (isClickable(checkElement, window.getComputedStyle(checkElement))) {
-    clickableElements.push(checkElement);
-
-    if (['a', 'button', 'input'].includes(checkElement.tagName.toLowerCase())) {
-      // stop crawling when the checkElement is a good clickable tag
-      break;
-    }
-
-    checkElement = checkElement.parentElement;
-
-    // stop crawling at the root
-    if (!checkElement) break;
-  }
+  // Recursive function that will mutate clickableElements array. A recursive
+  // function is better than loops to avoid blocking UI paint.
+  traverseClickableElements(element, clickableElements);
 
   return clickableElements;
 };

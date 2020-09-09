@@ -1,5 +1,9 @@
-import { buildCues, BuildCues } from './cues';
-import { optimizeCues } from './optimizeCues';
+import {
+  buildCues,
+  BuildCues,
+} from './cues';
+import { getClickableGroup } from './element';
+import { buildCueSets, CueGroup, optimizeCues, pickBestCueGroup } from './optimizeCues';
 import { getXpath } from './serialize';
 import { isMatch } from './selectorEngine';
 import { SelectorPart } from './types';
@@ -28,7 +32,15 @@ export const toSelector = (selectorParts: SelectorPart[]): string => {
 };
 
 export const buildSelector = (options: BuildCues): string => {
-  const { isClick, target, targetGroup } = options;
+  const { isClick, target } = options;
+
+  let targetGroup: HTMLElement[];
+  if (isClick) {
+    targetGroup = getClickableGroup(target);
+    if (targetGroup.length === 0) targetGroup = [target];
+  } else {
+    targetGroup = [target];
+  }
 
   // To save looping, see if we have already figured out a unique
   // selector for this target.
@@ -50,9 +62,17 @@ export const buildSelector = (options: BuildCues): string => {
     }
   }
 
-  const cues = buildCues(options);
+  const cueGroups: CueGroup[] = [];
 
-  const { selectorParts } = optimizeCues(cues, target, targetGroup) || {};
+  targetGroup.forEach((targetElement) => {
+    const cues = buildCues({ ...options, target: targetElement });
+    const cueSets = buildCueSets(cues);
+    cueGroups.push(
+      ...optimizeCues(cueSets, targetElement, targetGroup)
+    );
+  });
+
+  const { selectorParts } = pickBestCueGroup(cueGroups) || {};
   if (selectorParts) {
     // First cache it so that we don't need to do all the looping for this
     // same target next time. We cache `selectorParts` rather than `selector`
