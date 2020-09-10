@@ -16,11 +16,17 @@ function HtmlCheckboxInputs() {
       <input id="sadovh89r" type="checkbox" name="nonDynamicInput" />
       <label htmlFor="sadovh89r"> Checkbox with non-dynamic name</label>
       <br />
-      <input id="sdf980ergm" type="checkbox" name="input-bu32879fDi" />
-      <label htmlFor="sdf980ergm"> Checkbox with half-dynamic name</label>
-      <br />
       <input id="b98joifbon" type="checkbox" name="bu32879fDi" />
       <label htmlFor="b98joifbon"> Checkbox with dynamic name</label>
+      <br />
+      <input id="v9eonirh894" type="checkbox" name="input-bu32879fDi" />
+      <label htmlFor="v9eonirh894"> Checkbox with dynamic ending of name</label>
+      <br />
+      <input id="ern84j8g0" type="checkbox" name="bu32879fDi-check" />
+      <label htmlFor="ern84j8g0"> Checkbox with dynamic beginning of name</label>
+      <br />
+      <input id="fdg8e9v4" type="checkbox" name="f89ndrn4-blue-5" />
+      <label htmlFor="fdg8e9v4"> Checkbox with dynamic beginning and ending of name</label>
       <br />
       <input id="y908drgun4" type="checkbox" name="" />
       <label htmlFor="y908drgun4"> Checkbox with empty name</label>

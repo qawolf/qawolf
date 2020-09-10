@@ -1,8 +1,8 @@
 import { getAttribute } from './attribute';
 import { getElementText } from './selectorEngine';
-import { isDynamic } from './isDynamic';
+import { getValueMatchSelector, isDynamic } from './isDynamic';
 
-const DYNAMIC_VALUE_OK_ATTRIBUTES = ['href', 'src'];
+const DYNAMIC_VALUE_OK_ATTRIBUTES = ['href', 'src', 'value'];
 
 export type Cue = {
   level: number; // 0 is target, 1 is parent, etc.
@@ -19,6 +19,7 @@ export type BuildCues = {
 
 type CueTypeConfig = {
   elements: string[];
+  isPreferred?: boolean;
   penalty: number;
 };
 
@@ -129,6 +130,7 @@ export const getCueTypesConfig = (attributes: string[]): CueTypesConfig => {
   attributes.forEach((attribute) => {
     preferredAttributes[attribute] = {
       elements: ['*'],
+      isPreferred: true,
       penalty: 0,
     };
   }, {});
@@ -183,7 +185,7 @@ export const buildCuesForElement = ({
   }
 
   const cues: Cue[] = Object.keys(cueTypesConfig).reduce((list, cueType) => {
-    const { elements, penalty } = cueTypesConfig[cueType];
+    const { elements, isPreferred, penalty } = cueTypesConfig[cueType];
 
     // First find out whether this cue type is relevant for this element
     if (!elements.some((selector: string) => element.matches(selector))) {
@@ -244,13 +246,23 @@ export const buildCuesForElement = ({
         });
         if (attributeValuePair) {
           const { name, value } = attributeValuePair;
-          if (value.length && (DYNAMIC_VALUE_OK_ATTRIBUTES.includes(name) || !isDynamic(value))) {
+          if (value.length && (isPreferred || DYNAMIC_VALUE_OK_ATTRIBUTES.includes(name))) {
             list.push({
               level,
               penalty,
               type: 'attribute',
               value: `[${name}="${value}"]`,
             });
+          } else {
+            const { match, operator } = getValueMatchSelector(value) || {};
+            if (match) {
+              list.push({
+                level,
+                penalty,
+                type: 'attribute',
+                value: `[${name}${operator}"${match}"]`,
+              });
+            }
           }
         }
         break;

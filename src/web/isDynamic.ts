@@ -1,20 +1,47 @@
+import htmlTags from 'html-tags';
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const englishWords = require('an-array-of-english-words/index.json');
+
+type ValueMatchSelectorType =
+  | 'startsWith'
+  | 'endsWith'
+  | 'contains'
+  | 'equals';
+
+type ValueMatchOperator =
+  | '^='
+  | '$='
+  | '*='
+  | '=';
+
+type ValueMatchSelector = {
+  match: string;
+  operator: ValueMatchOperator;
+  type: ValueMatchSelectorType;
+  startPosition: number;
+};
+
+const matchOperators = new Map<ValueMatchSelectorType, ValueMatchOperator>([
+  ['startsWith', '^='],
+  ['endsWith', '$='],
+  ['contains', '*='],
+  ['equals', '='],
+]);
+
+// Keep these two in sync
+const SPLIT_CHARACTERS = [' ', '-', '_', ':'];
+const SPLIT_REGEXP = /[ \-_:]+/;
 
 const allWords = new Set([
   'btn',
   'checkbox',
-  'col',
-  'div',
   'dropdown',
   // favicon
   'fa',
   'grid',
-  'html',
-  'img',
   'inputtext',
   'lg',
-  'li',
   'login',
   'logout',
   // medium
@@ -26,10 +53,9 @@ const allWords = new Set([
   'signout',
   'signup',
   'sm',
-  'svg',
   'textinput',
   'todo',
-  'ul',
+  ...htmlTags,
   ...englishWords,
 ]);
 
@@ -42,16 +68,20 @@ export const getTokens = (value: string): string[] => {
   const tokens = [];
 
   // split by space, dash, underscore, colon
-  value.split(/[ \-_:]+/).forEach((token) => {
+  value.split(SPLIT_REGEXP).forEach((token) => {
     if (token.match(/\d/)) {
       tokens.push(token);
     } else {
-      // split by and camel case when there are no numbers
+      // split by camel case when there are no numbers
       tokens.push(...token.split(/(?=[A-Z])/));
     }
   });
 
   return tokens.map((token) => token.toLowerCase());
+};
+
+export const tokenIsDynamic = (value: string): boolean => {
+  return !allWords.has(value);
 };
 
 export const isDynamic = (
@@ -62,11 +92,94 @@ export const isDynamic = (
 
   const tokens = getTokens(value);
 
-  const words = tokens.filter((token) => allWords.has(token));
+  const dynamicTokens = tokens.filter(tokenIsDynamic);
 
-  // if there are more than 2 non-word tokens, mark it as dynamic
-  if (tokens.length - words.length >= 2) return true;
+  // if there are 2 or more dynamic tokens, mark it as dynamic
+  if (dynamicTokens.length >= 2) return true;
 
-  // if less than half of the tokens are words, mark it as dynamic
-  return words.length / tokens.length <= threshold;
+  // If half or more tokens are dynamic, mark value as dynamic
+  return dynamicTokens.length / tokens.length >= threshold;
+};
+
+export const getValueMatchSelector = (
+  value: string,
+): ValueMatchSelector | null => {
+  if (!value || typeof value !== 'string' || value.length === 0) return null;
+
+  const tokens = getTokens(value);
+
+  let currentPosition = 0;
+  let currentSubstring = '';
+  let blockCount = 0;
+  let lastTokenType: string;
+  let longestSubstring = '';
+  let longestSubstringStart = 0;
+  let type: ValueMatchSelectorType;
+
+  const checkLongest = (isEnd = false): void => {
+    if (currentSubstring.length > longestSubstring.length) {
+      longestSubstring = currentSubstring;
+      longestSubstringStart = currentPosition - currentSubstring.length;
+
+      if (longestSubstringStart === 0) {
+        type = 'startsWith';
+      } else {
+        const lastCharOfPreviousBlock = value[longestSubstringStart - 1];
+        if (SPLIT_CHARACTERS.includes(lastCharOfPreviousBlock)) {
+          longestSubstring = lastCharOfPreviousBlock + longestSubstring;
+          longestSubstringStart = longestSubstringStart - 1;
+        }
+        type = isEnd ? 'endsWith' : 'contains';
+      }
+    }
+    currentSubstring = '';
+  };
+
+  for (const token of tokens) {
+    const tokenType = tokenIsDynamic(token) ? 'dynamic' : 'static';
+
+    if (blockCount === 0 || tokenType !== lastTokenType) {
+      blockCount += 1;
+    }
+
+    if (tokenType === 'dynamic' && lastTokenType === 'static') {
+      checkLongest();
+    }
+
+    if (tokenType === 'static') currentSubstring += value.substr(currentPosition, token.length);
+    currentPosition += token.length;
+
+    // Add back in the split-by character
+    const nextCharacter = value[currentPosition];
+    if (SPLIT_CHARACTERS.includes(nextCharacter)) {
+      if (tokenType === 'static') currentSubstring += nextCharacter;
+      currentPosition += 1;
+    }
+
+    lastTokenType = tokenType;
+  }
+
+  if (blockCount === 1) {
+    // Entire string was dynamic, so we can't match on any part of it
+    if (lastTokenType === 'dynamic') return null;
+
+    // Entire string was static, so we can match the whole thing
+    longestSubstring = value;
+    longestSubstringStart = 0;
+    type = 'equals';
+  } else if (lastTokenType === 'static') {
+    // Do final check for longest if last token type was static
+    checkLongest(true);
+  }
+
+  const selectorInfo = {
+    match: longestSubstring,
+    operator: matchOperators.get(type),
+    type,
+    startPosition: longestSubstringStart,
+  };
+
+  console.debug('selector info for "%s": %j', value, selectorInfo);
+
+  return selectorInfo;
 };
