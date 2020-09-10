@@ -12,7 +12,7 @@ As your application changes, you may want to update the steps in an existing tes
 ```js
 // ...
 test('myTest', async () => {
-  await page.goto('www.myawesomesite.com', { waitUntil: 'domcontentloaded' });
+  await page.goto('www.myawesomesite.com');
   // ...
   await qawolf.create();
   // ...
@@ -36,21 +36,28 @@ For reference, our test code is saved at `.qawolf/myTest.test.js` and looks like
 ```js
 const qawolf = require('qawolf');
 
-test('myTest', async () => {
-  const browser = await qawolf.launch();
+let browser;
+let page;
+
+beforeAll(async () => {
+  browser = await qawolf.launch();
   const context = await browser.newContext();
   await qawolf.register(context);
-  const page = await context.newPage();
+  page = await context.newPage();
+});
 
-  await page.goto('http://todomvc.com/examples/react', { waitUntil: 'domcontentloaded' });
+afterAll(async () => {
+  await qawolf.stopVideos();
+  await browser.close();
+});
+
+test('myTest', async () => {
+  await page.goto('http://todomvc.com/examples/react');
   await page.click('[placeholder="What needs to be done?"]');
   await page.type('[placeholder="What needs to be done?"]', 'create test!');
   await page.press('[placeholder="What needs to be done?"]', 'Enter');
   await page.click('.toggle');
   await page.click('text=Clear completed');
-
-  await qawolf.stopVideos();
-  await browser.close();
 });
 ```
 
@@ -59,13 +66,17 @@ Let's update our test to create a second todo item after the first. To do this, 
 In your test code, call `qawolf.create` in your [Jest `test` block](https://jestjs.io/docs/en/api#testname-fn-timeout). Our test code now looks like this:
 
 ```js
-  await page.goto('http://todomvc.com/examples/react', { waitUntil: 'domcontentloaded' });
+// ...
+
+test('myTest', async () => {
+  await page.goto('http://todomvc.com/examples/react');
   await page.click('[placeholder="What needs to be done?"]');
   await page.type('[placeholder="What needs to be done?"]', 'create test!');
   await page.press('[placeholder="What needs to be done?"]', 'Enter');
   await qawolf.create(); // add this line
   await page.click('.toggle');
   await page.click('text=Clear completed');
+});
 ```
 
 ## Use edit mode
@@ -79,20 +90,26 @@ npx qawolf edit myTest
 The first few steps of our test will now run. For TodoMVC, this means that the first todo item will be created. The test will then pause where `qawolf.create` is called and replace it with a comment: `// 🐺 create code here`.
 
 ```js
-  await page.goto('http://todomvc.com/examples/react', { waitUntil: 'domcontentloaded' });
+// ...
+
+test('myTest', async () => {
+  await page.goto('http://todomvc.com/examples/react');
   await page.click('[placeholder="What needs to be done?"]');
   await page.type('[placeholder="What needs to be done?"]', 'create test!');
   await page.press('[placeholder="What needs to be done?"]', 'Enter');
   // 🐺 create code here
   await page.click('.toggle');
   await page.click('text=Clear completed');
+});
 ```
 
 Any actions you take in the browser will be converted to code and inserted where `// 🐺 create code here` is. To add a second todo item, let's 1) click on the todo input to focus it, 2) type `update test!`, and 3) press `Enter` to save the todo. Our test code now looks like this:
 
 ```js
 // ...
-  await page.goto('http://todomvc.com/examples/react', { waitUntil: 'domcontentloaded' });
+
+test('myTest', async () => {
+  await page.goto('http://todomvc.com/examples/react');
   await page.click('[placeholder="What needs to be done?"]');
   await page.type('[placeholder="What needs to be done?"]', 'create test!');
   await page.press('[placeholder="What needs to be done?"]', 'Enter');
@@ -102,6 +119,7 @@ Any actions you take in the browser will be converted to code and inserted where
   // 🐺 create code here
   await page.click('.toggle');
   await page.click('text=Clear completed');
+});
 ```
 
 Now that we've added our second todo item, let's save our test. In the command line, choose `💾 Save and exit` to save your updated test. The line `// 🐺 create code here` will be removed when your test is saved.

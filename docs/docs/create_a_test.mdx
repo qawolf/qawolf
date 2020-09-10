@@ -63,39 +63,45 @@ The test first requires the `qawolf` library, which is built on top of [Microsof
 const qawolf = require('qawolf');
 ```
 
+### beforeAll
+
+To start your test, a few things happen in the [Jest `beforeAll` block](https://jestjs.io/docs/en/api#beforeallfn-timeout). The test launches a [browser](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browser) and creates a new [context](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext), which is an "incognito" browser session. This context is passed to the [`qawolf.register` method](api/qawolf/register) so QA Wolf can access it. Finally, a new [page](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page) is created:
+
+```js
+let browser;
+let page;
+
+beforeAll(async () => {
+  browser = await qawolf.launch();
+  const context = await browser.newContext();
+  await qawolf.register(context);
+  page = await context.newPage();
+});
+```
+
+### afterAll
+
+After the test finishes running, the browser is closed in the [Jest `afterAll` block](https://jestjs.io/docs/en/api#afterallfn-timeout). If a video of your test is being recorded, the recording stops and the video is saved.
+
+```js
+afterAll(async () => {
+  await qawolf.stopVideos();
+  await browser.close();
+});
+```
+
 ### test
 
-The test is contained in a [Jest `test` block](https://jestjs.io/docs/en/api#testname-fn-timeout) with the name you specified (`"myTest"` in our example).
+The test itself is contained in a [Jest `test` block](https://jestjs.io/docs/en/api#testname-fn-timeout) with the name you specified (`"myTest"` in our example). The test first navigates to the specified URL. Then it repeats the actions that you took. In our case, it clicks the todo input, types `create test!`, presses Enter, clicks to complete the todo, and clicks the clear completed todos button:
 
 ```js
 test('myTest', async () => {
-```
-
-To start your test, a few things happen. The test launches a [browser](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browser) and creates a new [context](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext), which is an "incognito" browser session. This context is passed to the [`qawolf.register` method](api/qawolf/register) so QA Wolf can access it. Finally, a new [page](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page) is created.
-
-```js
-  const browser = await qawolf.launch();
-  const context = await browser.newContext();
-  await qawolf.register(context);
-  const page = await context.newPage();
-```
-
-The test first navigates to the specified URL. Then it repeats the actions that you took. In our case, it clicks the todo input, types `create test!`, presses Enter, clicks to complete the todo, and clicks the clear completed todos button:
-
-```js
-  await page.goto('http://todomvc.com/examples/react', { waitUntil: 'domcontentloaded' });
+  await page.goto('http://todomvc.com/examples/react');
   await page.click('[placeholder="What needs to be done?"]');
   await page.type('[placeholder="What needs to be done?"]', 'create test!');
   await page.press('[placeholder="What needs to be done?"]', 'Enter');
   await page.click('.toggle');
   await page.click('text=Clear completed');
-```
-
-After the test finishes running, the browser is closed. If a video of your test is being recorded, the recording stops and the video is saved.
-
-```js
-  await qawolf.stopVideos();
-  await browser.close();
 });
 ```
 

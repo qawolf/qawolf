@@ -20,14 +20,18 @@ const { devices } = require('playwright');
 const qawolf = require('qawolf');
 const device = devices['iPhone 7'];
 
-test('myTest', async () => {
-  const browser = await qawolf.launch();
+let browser;
+let page;
+
+beforeAll(async () => {
+  browser = await qawolf.launch();
   const context = await browser.newContext({
     userAgent: device.userAgent,
     viewport: device.viewport,
   });
   await qawolf.register(context);
-  const page = await context.newPage();
+  page = await context.newPage();
+});
 
 // ...
 ```
@@ -61,14 +65,18 @@ const { devices } = require('playwright');
 const qawolf = require('qawolf');
 const device = devices['iPad Mini'];
 
-test('myTest', async () => {
-  const browser = await qawolf.launch();
+let browser;
+let page;
+
+beforeAll(async () => {
+  browser = await qawolf.launch();
   const context = await browser.newContext({
     userAgent: device.userAgent,
     viewport: device.viewport,
   });
   await qawolf.register(context);
-  const page = await context.newPage();
+  page = await context.newPage();
+});
 
 // ...
 ```
@@ -86,13 +94,18 @@ For example, let's say we have a test that looks like this:
 ```js
 const qawolf = require('qawolf');
 
-test('myTest', async () => {
-  const browser = await qawolf.launch();
+let browser;
+let page;
+
+beforeAll(async () => {
+  browser = await qawolf.launch();
   const context = await browser.newContext();
   await qawolf.register(context);
-  const page = await context.newPage();
+  page = await context.newPage();
+});
 
   // ...
+});
 ```
 
 We can pass the `userAgent` and `viewport` keys when calling [`browser.newContext`](https://github.com/microsoft/playwright/blob/master/docs/api.md#browsernewcontextoptions). The value of these keys must match Playwright's device configuration.
@@ -104,14 +117,18 @@ const { devices } = require('playwright');
 const qawolf = require('qawolf');
 const device = devices['iPhone 7'];
 
-test('myTest', async () => {
-  const browser = await qawolf.launch();
+let browser;
+let page;
+
+beforeAll(async () => {
+  browser = await qawolf.launch();
   const context = await browser.newContext({
     userAgent: device.userAgent,
     viewport: device.viewport,
   });
   await qawolf.register(context);
-  const page = await context.newPage();
+  page = await context.newPage();
+});
 
 // ...
 ```
@@ -121,8 +138,11 @@ You can also specify a custom values for `userAgent` and `viewport`. This allows
 ```js
 const qawolf = require('qawolf');
 
-test('myTest', async () => {
-  const browser = await qawolf.launch();
+let browser;
+let page;
+
+beforeAll(async () => {
+  browser = await qawolf.launch();
   const context = await browser.newContext({
     userAgent:
       'Mozilla/5.0 (PlayBook; U; RIM Tablet OS 2.1.0; en-US) AppleWebKit/536.2+ (KHTML like Gecko) Version/7.2.1.0 Safari/536.2+',
@@ -134,7 +154,8 @@ test('myTest', async () => {
     },
   });
   await qawolf.register(context);
-  const page = await context.newPage();
+  page = await context.newPage();
+});
 
 // ...
 ```

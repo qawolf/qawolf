@@ -22,90 +22,125 @@ exports[`buildImports requires when not typescript 1`] = `"const qawolf = requir
 exports[`buildTemplate builds test template 1`] = `
 "const qawolf = require(\\"qawolf\\");
 
-test(\\"myName\\", async () => {
-  const browser = await qawolf.launch();
+let browser;
+let page;
+
+beforeAll(async () => {
+  browser = await qawolf.launch();
   const context = await browser.newContext();
   await qawolf.register(context);
-  const page = await context.newPage();
+  page = await context.newPage();
+});
 
-  await page.goto(\\"www.qawolf.com\\", { waitUntil: \\"domcontentloaded\\" });
-  await qawolf.create();
-  
+afterAll(async () => {
   await qawolf.stopVideos();
   await browser.close();
+});
+
+test(\\"myName\\", async () => {
+  await page.goto(\\"www.qawolf.com\\");
+  await qawolf.create();
 });"
 `;
 
-exports[`buildTemplate builds test template: device 1`] = `
+exports[`buildTemplate builds test template 2`] = `
 "const { devices } = require(\\"playwright\\");
 const qawolf = require(\\"qawolf\\");
 const device = devices[\\"iPhone 11\\"];
 
-test(\\"myName\\", async () => {
-  const browser = await qawolf.launch();
+let browser;
+let page;
+
+beforeAll(async () => {
+  browser = await qawolf.launch();
   const context = await browser.newContext({ ...device });
   await qawolf.register(context);
-  const page = await context.newPage();
+  page = await context.newPage();
+});
 
-  await page.goto(\\"www.qawolf.com\\", { waitUntil: \\"domcontentloaded\\" });
-  await qawolf.create();
-  
+afterAll(async () => {
   await qawolf.stopVideos();
   await browser.close();
+});
+
+test(\\"myName\\", async () => {
+  await page.goto(\\"www.qawolf.com\\");
+  await qawolf.create();
 });"
 `;
 
-exports[`buildTemplate builds test template: device typescript 1`] = `
+exports[`buildTemplate builds test template 3`] = `
+"const qawolf = require(\\"qawolf\\");
+
+let browser;
+let page;
+
+beforeAll(async () => {
+  browser = await qawolf.launch();
+  const context = await browser.newContext();
+  await qawolf.register(context);
+  page = await context.newPage();
+});
+
+afterAll(async () => {
+  await qawolf.stopVideos();
+  await browser.close();
+});
+
+test(\\"myName\\", async () => {
+  await page.goto(\\"www.qawolf.com\\");
+  await qawolf.setState(page, \\"admin.json\\");
+  await qawolf.create();
+});"
+`;
+
+exports[`buildTemplate builds test template 4`] = `
+"import { Browser, Page } from \\"playwright\\";
+import qawolf from \\"qawolf\\";
+
+let browser: Browser;
+let page: Page;
+
+beforeAll(async () => {
+  browser = await qawolf.launch();
+  const context = await browser.newContext();
+  await qawolf.register(context);
+  page = await context.newPage();
+});
+
+afterAll(async () => {
+  await qawolf.stopVideos();
+  await browser.close();
+});
+
+test(\\"myName\\", async () => {
+  await page.goto(\\"www.qawolf.com\\");
+  await qawolf.create();
+});"
+`;
+
+exports[`buildTemplate builds test template 5`] = `
 "import { Browser, Page, devices } from \\"playwright\\";
 import qawolf from \\"qawolf\\";
 const device = devices[\\"iPhone 7\\"];
 
-test(\\"myName\\", async () => {
-  const browser = await qawolf.launch();
+let browser: Browser;
+let page: Page;
+
+beforeAll(async () => {
+  browser = await qawolf.launch();
   const context = await browser.newContext({ ...device });
   await qawolf.register(context);
-  const page = await context.newPage();
+  page = await context.newPage();
+});
 
-  await page.goto(\\"www.qawolf.com\\", { waitUntil: \\"domcontentloaded\\" });
-  await qawolf.create();
-  
+afterAll(async () => {
   await qawolf.stopVideos();
   await browser.close();
-});"
-`;
-
-exports[`buildTemplate builds test template: state 1`] = `
-"const qawolf = require(\\"qawolf\\");
+});
 
 test(\\"myName\\", async () => {
-  const browser = await qawolf.launch();
-  const context = await browser.newContext();
-  await qawolf.register(context);
-  const page = await context.newPage();
-
-  await page.goto(\\"www.qawolf.com\\", { waitUntil: \\"domcontentloaded\\" });
-  await qawolf.setState(page, \\"admin.json\\");
+  await page.goto(\\"www.qawolf.com\\");
   await qawolf.create();
-  
-  await qawolf.stopVideos();
-  await browser.close();
-});"
-`;
-
-exports[`buildTemplate builds test template: typescript 1`] = `
-"import { Browser, Page } from \\"playwright\\";
-import qawolf from \\"qawolf\\";
-
-test(\\"myName\\", async () => {
-  const browser = await qawolf.launch();
-  const context = await browser.newContext();
-  await qawolf.register(context);
-  const page = await context.newPage();
-
-  await page.goto(\\"www.qawolf.com\\", { waitUntil: \\"domcontentloaded\\" });
-  await qawolf.create();
-  
-  await qawolf.stopVideos();
-  await browser.close();
 });"
 `;

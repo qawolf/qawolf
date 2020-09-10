@@ -89,19 +89,24 @@ export const buildTemplate: TemplateFunction = ({
 }: BuildTemplateOptions): string => {
   const code = `${buildImports({ device, useTypeScript })}
 
-test("${name}", async () => {
-  const browser = await qawolf.launch();
+let browser${useTypeScript ? ': Browser' : ''};
+let page${useTypeScript ? ': Page' : ''};
+
+beforeAll(async () => {
+  browser = await qawolf.launch();
   ${buildNewContext(device)}
   await qawolf.register(context);
-  const page = await context.newPage();
+  page = await context.newPage();
+});
 
-  await page.goto("${url}", { waitUntil: "domcontentloaded" });${buildSetState(
-    statePath,
-  )}
-  await qawolf.create();
-  
+afterAll(async () => {
   await qawolf.stopVideos();
   await browser.close();
+});
+
+test("${name}", async () => {
+  await page.goto("${url}");${buildSetState(statePath)}
+  await qawolf.create();
 });`;
 
   return code;
