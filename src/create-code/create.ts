@@ -39,7 +39,7 @@ export const getCreatePath = async (
   return item.filename;
 };
 
-export const create = async (): Promise<void> => {
+export const create = async (url?: string): Promise<void> => {
   const registryData = Registry.instance().data();
   const context = registryData.context;
   if (!context) {
@@ -56,6 +56,11 @@ export const create = async (): Promise<void> => {
     codePath,
     context,
   });
+
+  if (url) {
+    const firstPage = await context.newPage();
+    await firstPage.goto(url);
+  }
 
   console.log(bold().blue('🐺  QA Wolf is ready to create code!'));
 

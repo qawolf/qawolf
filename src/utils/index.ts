@@ -1,5 +1,6 @@
 // context utils
 export { forEachFrame, forEachPage } from './context/forEach';
+export { getPageAtIndex, GetPageAtIndexOptions } from './context/getPageAtIndex';
 export { register } from './context/register';
 export {
   saveArtifacts,

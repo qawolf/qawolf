@@ -1,7 +1,6 @@
 import { BrowserContext } from 'playwright';
-import { isNull } from 'util';
-import { IndexedPage, indexPages } from './indexPages';
-import { waitFor } from '../waitFor';
+import { IndexedPage } from './indexPages';
+import { getPageAtIndex } from './getPageAtIndex';
 
 export interface WaitForPageOptions {
   timeout?: number;
@@ -13,21 +12,9 @@ export const waitForPage = async (
   index: number,
   options: WaitForPageOptions = {},
 ): Promise<IndexedPage> => {
-  // index pages if they are not yet
-  await indexPages(context);
+  const page = await getPageAtIndex(context, index, { timeout: options.timeout });
 
-  const page = await waitFor(
-    async () => {
-      const pages = context.pages();
-      const match = pages.find(
-        (page) => (page as IndexedPage).createdIndex === index,
-      );
-      return match;
-    },
-    { timeout: options.timeout || 30000 },
-  );
-
-  if (!isNull(options.waitUntil)) {
+  if (options.waitUntil !== null) {
     await page.waitForLoadState(options.waitUntil || 'load');
   }
 

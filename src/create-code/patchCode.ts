@@ -5,7 +5,7 @@ type PatchOptions = {
   patch: string;
 };
 
-export const CREATE_HANDLE = 'qawolf.create()';
+export const CREATE_HANDLE = 'qawolf.create(';
 
 export const PATCH_HANDLE = '// 🐺 create code here';
 

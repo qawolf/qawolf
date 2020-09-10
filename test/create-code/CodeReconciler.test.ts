@@ -63,7 +63,7 @@ describe('CodeReconciler.reconcile', () => {
 
     const removedStepCode = buildVirtualCode([]);
 
-    // we dont want it to do anything until a new step arrives
+    // we don't want it to do anything until a new step arrives
     expect(reconciler.hasChanges(removedStepCode)).toBeFalsy();
     let reconciled = reconciler.reconcile({
       actualCode: originalCode.code(),

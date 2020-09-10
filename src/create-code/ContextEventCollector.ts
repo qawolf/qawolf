@@ -1,12 +1,12 @@
 import Debug from 'debug';
 import { EventEmitter } from 'events';
-import { BrowserContext, Frame, Page } from 'playwright';
+import { BrowserContext, Frame, Page, ChromiumBrowserContext, CDPSession } from 'playwright';
 import { loadConfig } from '../config';
-import { ElementEvent } from '../types';
+import { ElementEvent, WindowEvent, WindowEventName } from '../types';
 import { IndexedPage } from '../utils/context/indexPages';
 import { QAWolfWeb } from '../web';
 import { DEFAULT_ATTRIBUTE_LIST } from '../web/attribute';
-import { forEachFrame } from '../utils/context/forEach';
+import { forEachFrame, forEachPage } from '../utils/context/forEach';
 import { isRegistered } from '../utils/context/register';
 
 const debug = Debug('qawolf:ContextEventCollector');
@@ -19,6 +19,11 @@ type BindingOptions = {
 type FrameSelector = {
   index: number;
   selector: string;
+};
+
+type LastPageNavigation = {
+  lastHistoryEntriesLength: number;
+  lastHistoryIndex: number;
 };
 
 export const buildFrameSelector = async (
@@ -51,9 +56,11 @@ export const buildFrameSelector = async (
 };
 
 export class ContextEventCollector extends EventEmitter {
+  readonly _activeSessions = new Set<CDPSession>();
   readonly _attributes: string[];
   readonly _context: BrowserContext;
   readonly _frameSelectors = new Map<Frame, FrameSelector>();
+  readonly _pageNavigationHistory = new Map<Page, LastPageNavigation>();
 
   public static async create(
     context: BrowserContext,
@@ -108,5 +115,87 @@ export class ContextEventCollector extends EventEmitter {
         this.emit('elementevent', event);
       },
     );
+
+    await forEachPage(this._context, async (page) => {
+      const pageIndex = (page as IndexedPage).createdIndex;
+
+      // Currently only ChromiumBrowserContext can do CDP, so we cannot support adding
+      // new tabs manually or back/forward/reload on other browsers
+      if ((this._context as any)._browser._options.name === 'chromium') {
+        const session = await (this._context as ChromiumBrowserContext).newCDPSession(page);
+        const { currentIndex, entries } = await session.send("Page.getNavigationHistory");
+        console.log("initial", currentIndex, entries);
+
+        const currentHistoryEntry = entries[currentIndex];
+        if (currentHistoryEntry.transitionType === 'typed' && currentHistoryEntry.url !== 'chrome://newtab/') {
+          this.emit('windowevent', {
+            name: 'goto',
+            page: pageIndex,
+            time: Date.now(),
+            value: currentHistoryEntry.url,
+          });
+        }
+
+        this._pageNavigationHistory.set(page, {
+          lastHistoryIndex: currentIndex,
+          lastHistoryEntriesLength: entries.length,
+        });
+
+        page.on('framenavigated', async (frame) => {
+          if (frame.parentFrame()) return;
+
+          const { currentIndex, entries } = await session.send("Page.getNavigationHistory");
+          const currentHistoryEntry = entries[currentIndex];
+          console.log("updated", currentIndex, entries);
+
+          const { lastHistoryEntriesLength, lastHistoryIndex } = this._pageNavigationHistory.get(page);
+
+          let name: WindowEventName;
+          let url: string;
+
+          if (entries.length > lastHistoryEntriesLength && currentHistoryEntry.transitionType === 'typed') {
+            // NEW ADDRESS ENTERED
+            name = 'goto';
+            url = currentHistoryEntry.url;
+          } else if (lastHistoryEntriesLength === entries.length) {
+            if (currentIndex < lastHistoryIndex) {
+              // BACK
+              name = 'goBack';
+            } else if (currentIndex > lastHistoryIndex) {
+              // FORWARD OR NEW ADDRESS ENTERED
+              name = 'goForward';
+            } else if (currentIndex === lastHistoryIndex && currentHistoryEntry.transitionType === 'reload') {
+              // RELOAD
+              name = 'reload';
+            }
+          }
+
+          this._pageNavigationHistory.set(page, {
+            lastHistoryIndex: currentIndex,
+            lastHistoryEntriesLength: entries.length,
+          });
+
+          if (!name) return;
+
+          const event: WindowEvent = {
+            name,
+            page: pageIndex,
+            time: Date.now(),
+            value: url,
+          };
+
+          this.emit('windowevent', event);
+        });
+
+        this._activeSessions.add(session);
+      } else if (pageIndex === 0) {
+        this.emit('windowevent', {
+          name: 'goto',
+          page: 0,
+          time: Date.now(),
+          value: page.url(),
+        });
+      }
+    });
   }
 }

@@ -1,5 +1,4 @@
-import { ScrollValue, Step } from '../types';
-import { isUndefined } from 'util';
+import { ElementEvent, ScrollValue, Step } from '../types';
 
 export type StepLineBuildContext = {
   initializedFrames: Map<string, string>;
@@ -29,7 +28,7 @@ export const buildValue = ({ action, value }: Step): string => {
     return `{ x: ${scrollValue.x}, y: ${scrollValue.y} }`;
   }
 
-  if (isUndefined(value)) return '';
+  if (value === undefined) return '';
 
   return JSON.stringify(value);
 };
@@ -40,10 +39,17 @@ export const buildExpressionLine = (
 ): string => {
   const { action, event } = step;
 
-  const args: string[] = [escapeSelector(event.selector)];
+  const args: string[] = [];
+
+  const selector = (event as ElementEvent).selector;
+  if (selector) args.push(escapeSelector(selector));
 
   const value = buildValue(step);
   if (value) args.push(value);
+
+  if (['goto', 'goBack', 'goForward', 'reload'].includes(action)) {
+    args.push('{ waitUntil: "domcontentloaded" }');
+  }
 
   const browsingContext = frameVariable || getStepPageVariableName(step);
 
@@ -60,7 +66,7 @@ export const buildStepLines = (
   step: Step,
   buildContext: StepLineBuildContext = {
     initializedFrames: new Map<string, string>(),
-    initializedPages: new Set([0]),
+    initializedPages: new Set([]),
     visiblePage: 0,
   },
 ): string[] => {
@@ -76,12 +82,20 @@ export const buildStepLines = (
   // Otherwise, if we were doing steps on a different page and have now switched back
   // to this one, add a `bringToFront` call. Otherwise no extra page-waiting line is needed.
   if (!initializedPages.has(page)) {
-    lines.push(
-      `const ${pageVariableName} = await qawolf.waitForPage(page.context(), ${page});`,
-    );
+    if (step.action === 'goto') {
+      lines.push(
+        `const ${pageVariableName} = await context.newPage();`,
+      );
+    } else {
+      lines.push(
+        `const ${pageVariableName} = await qawolf.getPageAtIndex(context, ${page}, { waitUntil: "domcontentloaded" });`,
+        `await ${pageVariableName}.waitForLoadState("domcontentloaded");`
+      );
+    }
     initializedPages.add(page);
-    buildContext.visiblePage = page;
-  } else if (buildContext.visiblePage !== page) {
+  }
+
+  if (buildContext.visiblePage !== page) {
     lines.push(
       `await ${pageVariableName}.bringToFront();`,
     );

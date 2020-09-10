@@ -96,7 +96,6 @@ beforeAll(async () => {
   browser = await qawolf.launch();
   ${buildNewContext(device)}
   await qawolf.register(context);
-  page = await context.newPage();
 });
 
 afterAll(async () => {
@@ -104,9 +103,8 @@ afterAll(async () => {
   await browser.close();
 });
 
-test("${name}", async () => {
-  await page.goto("${url}");${buildSetState(statePath)}
-  await qawolf.create();
+test("${name}", async () => {${buildSetState(statePath)}
+  await qawolf.create("${url}");
 });`;
 
   return code;
