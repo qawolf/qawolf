@@ -44,9 +44,9 @@ export const buildImports = ({
 
   if (useTypeScript) {
     if (device) {
-      imports = 'import { Browser, Page, devices } from "playwright";';
+      imports = 'import { Browser, BrowserContext, devices } from "playwright";';
     } else {
-      imports = 'import { Browser, Page } from "playwright";';
+      imports = 'import { Browser, BrowserContext } from "playwright";';
     }
 
     imports += '\nimport qawolf from "qawolf";';
@@ -67,9 +67,9 @@ export const buildImports = ({
 };
 
 export const buildNewContext = (device?: string): string => {
-  if (!device) return 'const context = await browser.newContext();';
+  if (!device) return 'context = await browser.newContext();';
 
-  const context = `const context = await browser.newContext({ ...device });`;
+  const context = `context = await browser.newContext({ ...device });`;
 
   return context;
 };
@@ -90,7 +90,7 @@ export const buildTemplate: TemplateFunction = ({
   const code = `${buildImports({ device, useTypeScript })}
 
 let browser${useTypeScript ? ': Browser' : ''};
-let page${useTypeScript ? ': Page' : ''};
+let context${useTypeScript ? ': BrowserContext' : ''};
 
 beforeAll(async () => {
   browser = await qawolf.launch();
