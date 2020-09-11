@@ -4,7 +4,6 @@ export type Action =
   | 'goBack'
   | 'goForward'
   | 'goto'
-  | 'newPage'
   | 'press'
   | 'reload'
   | 'scroll'
