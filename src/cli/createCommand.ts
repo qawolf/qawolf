@@ -5,6 +5,8 @@ import { buildEditOptions } from '../run/buildEditOptions';
 import { runTests } from '../run/runTests';
 import { saveTemplate } from './saveTemplate';
 
+const DEFAULT_TEST_FILE_BASE_NAME = 'qawolf'
+
 export type CreateOptions = {
   args?: string[];
   device?: string;
@@ -59,19 +61,26 @@ export const buildCreateCommand = (): program.Command => {
       const opts = command.opts();
       const [urlArgument, nameArgument] = command.args;
 
-      const urlString = opts.url || urlArgument || 'http://example.org';
-      const url = parseUrl(urlString);
-
+      let url = opts.url || urlArgument;
       let name = opts.name || nameArgument;
-      if (!name) {
-        name = (url.hostname || '').replace(/\..*/g, '');
+
+      if (url && url.length) {
+        const parsedUrl = parseUrl(url);
+        url = parsedUrl.href;
+
+        if (!name) {
+          name = (parsedUrl.hostname || '').replace(/\..*/g, '');
+          if (name.length === 0) name = DEFAULT_TEST_FILE_BASE_NAME;
+        }
+      } else {
+        name = DEFAULT_TEST_FILE_BASE_NAME;
       }
 
       await runCreate({
         device: opts.device,
         name,
         statePath: opts.statePath,
-        url: url.href,
+        url,
       });
     });
 

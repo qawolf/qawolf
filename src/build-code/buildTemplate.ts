@@ -104,7 +104,7 @@ afterAll(async () => {
 });
 
 test("${name}", async () => {${buildSetState(statePath)}
-  await qawolf.create("${url}");
+  await qawolf.create(${url && url.length ? `"${url}"` : ''});
 });`;
 
   return code;

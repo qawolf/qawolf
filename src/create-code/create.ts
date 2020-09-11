@@ -57,9 +57,9 @@ export const create = async (url?: string): Promise<void> => {
     context,
   });
 
-  if (url) {
+  if (context.pages().length === 0) {
     const firstPage = await context.newPage();
-    await firstPage.goto(url);
+    if (url) await firstPage.goto(url);
   }
 
   console.log(bold().blue('🐺  QA Wolf is ready to create code!'));

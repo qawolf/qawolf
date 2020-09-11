@@ -148,6 +148,11 @@ export class ContextEventCollector extends EventEmitter {
 
           const { lastHistoryEntriesLength, lastHistoryIndex } = this._pageNavigationHistory.get(page);
 
+          this._pageNavigationHistory.set(page, {
+            lastHistoryIndex: currentIndex,
+            lastHistoryEntriesLength: entries.length,
+          });
+
           let name: WindowEventName;
           let url: string;
 
@@ -160,18 +165,16 @@ export class ContextEventCollector extends EventEmitter {
               // BACK
               name = 'goBack';
             } else if (currentIndex > lastHistoryIndex) {
-              // FORWARD OR NEW ADDRESS ENTERED
-              name = 'goForward';
+              // FORWARD
+              // name = 'goForward';
+              // TODO: goForward works pretty well, but we can't currently tell the difference
+              // between the user clicking the Forward button and the user re-clicking a link
+              // that causes us to go forward in the history. So not implementing this yet.
             } else if (currentIndex === lastHistoryIndex && currentHistoryEntry.transitionType === 'reload') {
               // RELOAD
               name = 'reload';
             }
           }
-
-          this._pageNavigationHistory.set(page, {
-            lastHistoryIndex: currentIndex,
-            lastHistoryEntriesLength: entries.length,
-          });
 
           if (!name) return;
 

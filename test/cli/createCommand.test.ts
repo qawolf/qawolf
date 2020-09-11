@@ -13,7 +13,7 @@ describe('cli argument parsing', () => {
     device: undefined,
     name: 'example',
     statePath: undefined,
-    url: 'http://example.org/',
+    url: undefined,
   };
 
   const parse = (args: string[]): void => {
@@ -21,7 +21,7 @@ describe('cli argument parsing', () => {
     command.parse(['index.js', 'create', ...args]);
   };
 
-  test('defaults to example.org', () => {
+  test('defaults', () => {
     parse([]);
     expect(createOptions).toEqual(defaultOpts);
   });

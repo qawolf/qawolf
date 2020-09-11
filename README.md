@@ -73,7 +73,7 @@ This will install `qawolf`, `jest` and `playwright` as dev dependencies and crea
 <br />
 
 ```bash
-npx qawolf create url [name]
+npx qawolf create [url] [name]
 ```
 
 💪 Convert your actions into [Playwright](https://github.com/microsoft/playwright) code:
