@@ -144,7 +144,7 @@ describe('getValueMatches', () => {
   });
 
   test('multiple matches', () => {
-    const matches = getValueMatches('input-25-red-bj84jd9-_-lastName');
+    const matches = getValueMatches('input-25-red--bj84jd9-_-lastName');
     expect(matches).toMatchInlineSnapshot(`
       Array [
         Object {
@@ -154,15 +154,15 @@ describe('getValueMatches', () => {
           "type": "startsWith",
         },
         Object {
-          "match": "-red-",
+          "match": "-red--",
           "operator": "*=",
           "startPosition": 8,
           "type": "contains",
         },
         Object {
-          "match": "-lastName",
+          "match": "-_-lastName",
           "operator": "$=",
-          "startPosition": 20,
+          "startPosition": 21,
           "type": "endsWith",
         },
       ]

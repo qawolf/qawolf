@@ -182,12 +182,14 @@ export const getValueMatches = (
       addMatchToList();
     } else if (tokenType === 'static' && lastTokenType === 'dynamic') {
       // When we start a new static block after a dynamic block, reset the current
-      // block string, and potentially add the previous split character to it.
-      const lastCharOfPreviousBlock = value[currentPosition - 1];
-      if (SPLIT_CHARACTERS.includes(lastCharOfPreviousBlock)) {
-        currentStaticBlock = lastCharOfPreviousBlock;
-      } else {
-        currentStaticBlock = '';
+      // block string, and potentially add all preceding split characters to it.
+      currentStaticBlock = '';
+      let backwardPosition = currentPosition - 1;
+      let previousCharacter = value[backwardPosition];
+      while (SPLIT_CHARACTERS.includes(previousCharacter)) {
+        if (tokenType === 'static') currentStaticBlock = previousCharacter + currentStaticBlock;
+        backwardPosition -= 1;
+        previousCharacter = value[backwardPosition];
       }
     }
 
@@ -201,11 +203,12 @@ export const getValueMatches = (
     // Keep track of where we are in the original value string
     currentPosition += token.length;
 
-    // Add back in the split-by character
-    const nextCharacter = value[currentPosition];
-    if (SPLIT_CHARACTERS.includes(nextCharacter)) {
+    // Add back in any split-by characters
+    let nextCharacter = value[currentPosition];
+    while (SPLIT_CHARACTERS.includes(nextCharacter)) {
       if (tokenType === 'static') currentStaticBlock += nextCharacter;
       currentPosition += 1;
+      nextCharacter = value[currentPosition];
     }
 
     lastTokenType = tokenType;
