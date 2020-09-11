@@ -124,7 +124,6 @@ export class ContextEventCollector extends EventEmitter {
       if ((this._context as any)._browser._options.name === 'chromium') {
         const session = await (this._context as ChromiumBrowserContext).newCDPSession(page);
         const { currentIndex, entries } = await session.send("Page.getNavigationHistory");
-        console.log("initial", currentIndex, entries);
 
         const currentHistoryEntry = entries[currentIndex];
         if (currentHistoryEntry.transitionType === 'typed' && currentHistoryEntry.url !== 'chrome://newtab/') {
@@ -146,7 +145,6 @@ export class ContextEventCollector extends EventEmitter {
 
           const { currentIndex, entries } = await session.send("Page.getNavigationHistory");
           const currentHistoryEntry = entries[currentIndex];
-          console.log("updated", currentIndex, entries);
 
           const { lastHistoryEntriesLength, lastHistoryIndex } = this._pageNavigationHistory.get(page);
 
