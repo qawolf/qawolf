@@ -144,7 +144,7 @@ describe('getValueMatches', () => {
   });
 
   test('multiple matches', () => {
-    const matches = getValueMatches('input-25-red-bj84jd9-lastName');
+    const matches = getValueMatches('input-25-red-bj84jd9-_-lastName');
     expect(matches).toMatchInlineSnapshot(`
       Array [
         Object {
