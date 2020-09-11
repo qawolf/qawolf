@@ -1,4 +1,4 @@
-import { getTokens, isDynamic } from '../../src/web/isDynamic';
+import { getValueMatches, getTokens, isDynamic } from '../../src/web/isDynamic';
 
 describe('getTokens', () => {
   it('splits space, dash, underscore, colon', () => {
@@ -78,5 +78,94 @@ describe('isDynamic', () => {
     'tnt__zipInput',
   ])('is not dynamic: %s', (example) => {
     expect(isDynamic(example)).toBe(false);
+  });
+});
+
+describe('getValueMatches', () => {
+  test('all dynamic', () => {
+    const matches = getValueMatches('bj84jd9');
+    expect(matches.length).toBe(0);
+  });
+
+  test('all static', () => {
+    const matches = getValueMatches('firstName');
+    expect(matches).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "match": "firstName",
+          "operator": "=",
+          "startPosition": 0,
+          "type": "equals",
+        },
+      ]
+    `);
+  });
+
+  test('starts with static', () => {
+    const matches = getValueMatches('input-bj84jd9');
+    expect(matches).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "match": "input-",
+          "operator": "^=",
+          "startPosition": 0,
+          "type": "startsWith",
+        },
+      ]
+    `);
+  });
+
+  test('ends with static', () => {
+    const matches = getValueMatches('bj84jd9-input');
+    expect(matches).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "match": "-input",
+          "operator": "$=",
+          "startPosition": 7,
+          "type": "endsWith",
+        },
+      ]
+    `);
+  });
+
+  test('contains static', () => {
+    const matches = getValueMatches('25-input-bj84jd9');
+    expect(matches).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "match": "-input-",
+          "operator": "*=",
+          "startPosition": 2,
+          "type": "contains",
+        },
+      ]
+    `);
+  });
+
+  test('multiple matches', () => {
+    const matches = getValueMatches('input-25-red-bj84jd9-lastName');
+    expect(matches).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "match": "input-",
+          "operator": "^=",
+          "startPosition": 0,
+          "type": "startsWith",
+        },
+        Object {
+          "match": "-red-",
+          "operator": "*=",
+          "startPosition": 8,
+          "type": "contains",
+        },
+        Object {
+          "match": "-lastName",
+          "operator": "$=",
+          "startPosition": 20,
+          "type": "endsWith",
+        },
+      ]
+    `);
   });
 });

@@ -1,6 +1,6 @@
 import { getAttribute } from './attribute';
 import { getElementText } from './selectorEngine';
-import { getValueMatchSelector, isDynamic } from './isDynamic';
+import { getValueMatches, isDynamic } from './isDynamic';
 
 const DYNAMIC_VALUE_OK_ATTRIBUTES = ['href', 'src', 'value'];
 
@@ -254,15 +254,14 @@ export const buildCuesForElement = ({
               value: `[${name}="${value}"]`,
             });
           } else {
-            const { match, operator } = getValueMatchSelector(value) || {};
-            if (match) {
+            getValueMatches(value).forEach(({ match, operator }) => {
               list.push({
                 level,
                 penalty,
                 type: 'attribute',
                 value: `[${name}${operator}"${match}"]`,
               });
-            }
+            });
           }
         }
         break;
