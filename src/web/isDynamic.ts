@@ -187,7 +187,7 @@ export const getValueMatches = (
       let backwardPosition = currentPosition - 1;
       let previousCharacter = value[backwardPosition];
       while (SPLIT_CHARACTERS.includes(previousCharacter)) {
-        if (tokenType === 'static') currentStaticBlock = previousCharacter + currentStaticBlock;
+        currentStaticBlock = previousCharacter + currentStaticBlock;
         backwardPosition -= 1;
         previousCharacter = value[backwardPosition];
       }
