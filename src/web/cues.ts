@@ -2,7 +2,7 @@ import { getAttribute } from './attribute';
 import { getElementText } from './selectorEngine';
 import { getValueMatches, isDynamic } from './isDynamic';
 
-const DYNAMIC_VALUE_OK_ATTRIBUTES = ['href', 'src', 'value'];
+const DYNAMIC_VALUE_OK_ATTRIBUTES = ['placeholder', 'href', 'src', 'value'];
 
 export type Cue = {
   level: number; // 0 is target, 1 is parent, etc.
