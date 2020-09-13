@@ -106,6 +106,114 @@ describe('buildCuesForElement', () => {
       },
     ]);
   });
+
+  it('ignores dynamic attr values when building cues', async () => {
+    const cues = await buildCuesForElement('[name="bu32879fDi"]');
+    expect(cues).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "level": 1,
+          "penalty": 40,
+          "type": "tag",
+          "value": "input:nth-of-type(4)",
+        },
+      ]
+    `);
+  });
+
+  it('ignores empty attr values when building cues', async () => {
+    const cues = await buildCuesForElement('#y908drgun4');
+    expect(cues).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "level": 1,
+          "penalty": 40,
+          "type": "tag",
+          "value": "input:nth-of-type(8)",
+        },
+      ]
+    `);
+  });
+
+  it('uses non-dynamic attr values when building cues', async () => {
+    const cues = await buildCuesForElement('[name="nonDynamicInput"]');
+    expect(cues).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "level": 1,
+          "penalty": 10,
+          "type": "attribute",
+          "value": "[name=\\"nonDynamicInput\\"]",
+        },
+        Object {
+          "level": 1,
+          "penalty": 40,
+          "type": "tag",
+          "value": "input:nth-of-type(3)",
+        },
+      ]
+    `);
+  });
+
+  it('builds cues with attributes that have dynamic beginning', async () => {
+    const cues = await buildCuesForElement('#ern84j8g0');
+    expect(cues).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "level": 1,
+          "penalty": 10,
+          "type": "attribute",
+          "value": "[name$=\\"-check\\"]",
+        },
+        Object {
+          "level": 1,
+          "penalty": 40,
+          "type": "tag",
+          "value": "input:nth-of-type(6)",
+        },
+      ]
+    `);
+  });
+
+  it('builds cues with attributes that have dynamic ending', async () => {
+    const cues = await buildCuesForElement('#v9eonirh894');
+    expect(cues).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "level": 1,
+          "penalty": 10,
+          "type": "attribute",
+          "value": "[name^=\\"input-\\"]",
+        },
+        Object {
+          "level": 1,
+          "penalty": 40,
+          "type": "tag",
+          "value": "input:nth-of-type(5)",
+        },
+      ]
+    `);
+  });
+
+  it('builds cues with attributes that have dynamic beginning and ending', async () => {
+    const cues = await buildCuesForElement('#fdg8e9v4');
+    expect(cues).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "level": 1,
+          "penalty": 10,
+          "type": "attribute",
+          "value": "[name*=\\"-blue-\\"]",
+        },
+        Object {
+          "level": 1,
+          "penalty": 40,
+          "type": "tag",
+          "value": "input:nth-of-type(7)",
+        },
+      ]
+    `);
+  });
 });
 
 describe('buildCueValueForTag', () => {
