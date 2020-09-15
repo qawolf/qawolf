@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`buildImports imports when typescript 1`] = `
-"import { Browser, Page } from \\"playwright\\";
+"import { Browser, BrowserContext } from \\"playwright\\";
 import qawolf from \\"qawolf\\";"
 `;
 
 exports[`buildImports imports when typescript 2`] = `
-"import { Browser, Page, devices } from \\"playwright\\";
+"import { Browser, BrowserContext, devices } from \\"playwright\\";
 import qawolf from \\"qawolf\\";
 const device = devices[\\"iPhone 11\\"];"
 `;
@@ -23,13 +23,12 @@ exports[`buildTemplate builds test template 1`] = `
 "const qawolf = require(\\"qawolf\\");
 
 let browser;
-let page;
+let context;
 
 beforeAll(async () => {
   browser = await qawolf.launch();
-  const context = await browser.newContext();
+  context = await browser.newContext();
   await qawolf.register(context);
-  page = await context.newPage();
 });
 
 afterAll(async () => {
@@ -38,8 +37,7 @@ afterAll(async () => {
 });
 
 test(\\"myName\\", async () => {
-  await page.goto(\\"www.qawolf.com\\");
-  await qawolf.create();
+  await qawolf.create(\\"www.qawolf.com\\");
 });"
 `;
 
@@ -49,13 +47,12 @@ const qawolf = require(\\"qawolf\\");
 const device = devices[\\"iPhone 11\\"];
 
 let browser;
-let page;
+let context;
 
 beforeAll(async () => {
   browser = await qawolf.launch();
-  const context = await browser.newContext({ ...device });
+  context = await browser.newContext({ ...device });
   await qawolf.register(context);
-  page = await context.newPage();
 });
 
 afterAll(async () => {
@@ -64,8 +61,7 @@ afterAll(async () => {
 });
 
 test(\\"myName\\", async () => {
-  await page.goto(\\"www.qawolf.com\\");
-  await qawolf.create();
+  await qawolf.create(\\"www.qawolf.com\\");
 });"
 `;
 
@@ -73,13 +69,12 @@ exports[`buildTemplate builds test template 3`] = `
 "const qawolf = require(\\"qawolf\\");
 
 let browser;
-let page;
+let context;
 
 beforeAll(async () => {
   browser = await qawolf.launch();
-  const context = await browser.newContext();
+  context = await browser.newContext();
   await qawolf.register(context);
-  page = await context.newPage();
 });
 
 afterAll(async () => {
@@ -88,24 +83,22 @@ afterAll(async () => {
 });
 
 test(\\"myName\\", async () => {
-  await page.goto(\\"www.qawolf.com\\");
   await qawolf.setState(page, \\"admin.json\\");
-  await qawolf.create();
+  await qawolf.create(\\"www.qawolf.com\\");
 });"
 `;
 
 exports[`buildTemplate builds test template 4`] = `
-"import { Browser, Page } from \\"playwright\\";
+"import { Browser, BrowserContext } from \\"playwright\\";
 import qawolf from \\"qawolf\\";
 
 let browser: Browser;
-let page: Page;
+let context: BrowserContext;
 
 beforeAll(async () => {
   browser = await qawolf.launch();
-  const context = await browser.newContext();
+  context = await browser.newContext();
   await qawolf.register(context);
-  page = await context.newPage();
 });
 
 afterAll(async () => {
@@ -114,24 +107,22 @@ afterAll(async () => {
 });
 
 test(\\"myName\\", async () => {
-  await page.goto(\\"www.qawolf.com\\");
-  await qawolf.create();
+  await qawolf.create(\\"www.qawolf.com\\");
 });"
 `;
 
 exports[`buildTemplate builds test template 5`] = `
-"import { Browser, Page, devices } from \\"playwright\\";
+"import { Browser, BrowserContext, devices } from \\"playwright\\";
 import qawolf from \\"qawolf\\";
 const device = devices[\\"iPhone 7\\"];
 
 let browser: Browser;
-let page: Page;
+let context: BrowserContext;
 
 beforeAll(async () => {
   browser = await qawolf.launch();
-  const context = await browser.newContext({ ...device });
+  context = await browser.newContext({ ...device });
   await qawolf.register(context);
-  page = await context.newPage();
 });
 
 afterAll(async () => {
@@ -140,7 +131,6 @@ afterAll(async () => {
 });
 
 test(\\"myName\\", async () => {
-  await page.goto(\\"www.qawolf.com\\");
-  await qawolf.create();
+  await qawolf.create(\\"www.qawolf.com\\");
 });"
 `;
