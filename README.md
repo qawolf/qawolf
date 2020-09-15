@@ -89,7 +89,7 @@ npx qawolf create [url] [name]
 | Use a test attribute                                               |   ✅   | `page.click("[data-qa='submit']")`                                         |
 | Use a test attribute on an ancestor                                |   ✅   | `page.click("[data-qa='radio'] [value='cat']")`                            |
 | Use iframes                                                        |   ✅   | `(await page.waitForSelector("#storybook-preview-iframe")).contentFrame()` |
-| Use multiple tabs                                                  |   ✅   | `qawolf.waitForPage(page.context(), 1)`                                    |
+| Use multiple tabs                                                  |   ✅   | `qawolf.waitForPage(context, 1)`                                     |
 | [Drag and drop](https://github.com/qawolf/qawolf/issues/315)       |   🗺️   | Coming soon                                                                |
 | [File upload](https://github.com/qawolf/qawolf/issues/331)         |   🗺️   | Coming soon                                                                |
 | [Back/Forward button](https://github.com/qawolf/qawolf/issues/438) |   🗺️   | Coming soon                                                                |

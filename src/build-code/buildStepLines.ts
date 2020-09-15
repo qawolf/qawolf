@@ -88,9 +88,12 @@ export const buildStepLines = (
       );
     } else {
       lines.push(
-        `const ${pageVariableName} = await qawolf.getPageAtIndex(context, ${page}, { waitUntil: "domcontentloaded" });`,
-        `await ${pageVariableName}.waitForLoadState("domcontentloaded");`
+        `const ${pageVariableName} = await qawolf.waitForPage(context, ${page}, { waitUntil: "domcontentloaded" });`,
       );
+
+      // Since waitForPage calls `bringToFront`, update our visible page tracking.
+      // This will also ensure we don't call `bringToFront` again below.
+      buildContext.visiblePage = page;
     }
     initializedPages.add(page);
   }

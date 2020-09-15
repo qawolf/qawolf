@@ -11,6 +11,8 @@ import { isRegistered } from '../utils/context/register';
 
 const debug = Debug('qawolf:ContextEventCollector');
 
+const BLANK_URLS = ['chrome://newtab/', 'about:blank'];
+
 type BindingOptions = {
   frame: Frame;
   page: Page;
@@ -126,7 +128,7 @@ export class ContextEventCollector extends EventEmitter {
         const { currentIndex, entries } = await session.send("Page.getNavigationHistory");
 
         const currentHistoryEntry = entries[currentIndex];
-        if (currentHistoryEntry.transitionType === 'typed' && currentHistoryEntry.url !== 'chrome://newtab/') {
+        if (currentHistoryEntry.transitionType === 'typed' && !BLANK_URLS.includes(currentHistoryEntry.url)) {
           this.emit('windowevent', {
             name: 'goto',
             page: pageIndex,
@@ -156,7 +158,7 @@ export class ContextEventCollector extends EventEmitter {
           let name: WindowEventName;
           let url: string;
 
-          if (entries.length > lastHistoryEntriesLength && currentHistoryEntry.transitionType === 'typed') {
+          if (entries.length > lastHistoryEntriesLength && currentHistoryEntry.transitionType === 'typed' && !BLANK_URLS.includes(currentHistoryEntry.url)) {
             // NEW ADDRESS ENTERED
             name = 'goto';
             url = currentHistoryEntry.url;
