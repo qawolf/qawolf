@@ -1,6 +1,7 @@
 import {
   buildStepLines,
   escapeSelector,
+  StepLineBuildContext,
 } from '../../src/build-code/buildStepLines';
 import { Action } from '../../src/types';
 import { baseStep } from './fixtures';
@@ -37,7 +38,7 @@ describe('buildStepLines', () => {
 
     expect(lines).toMatchInlineSnapshot(`
       Array [
-        "const page2 = await qawolf.waitForPage(page.context(), 1);",
+        "const page2 = await qawolf.waitForPage(context, 1, { waitUntil: \\"domcontentloaded\\" });",
         "await page2.click('[data-qa=\\"test-input\\"]');",
       ]
     `);
@@ -81,6 +82,7 @@ describe('buildStepLines', () => {
 
     expect(lines).toMatchInlineSnapshot(`
       Array [
+        "const page = await qawolf.waitForPage(context, 0, { waitUntil: \\"domcontentloaded\\" });",
         "const frame = await (await page.waitForSelector(\\"#frameId\\")).contentFrame();",
         "await frame.click('[data-qa=\\"test-input\\"]');",
       ]
@@ -149,6 +151,7 @@ describe('buildStepLines', () => {
 
     expect(lines).toMatchInlineSnapshot(`
       Array [
+        "const page = await qawolf.waitForPage(context, 0, { waitUntil: \\"domcontentloaded\\" });",
         "await page.click('[data-qa=\\"test-input\\"]');",
       ]
     `);
@@ -163,6 +166,7 @@ describe('buildStepLines', () => {
 
     expect(lines).toMatchInlineSnapshot(`
       Array [
+        "const page = await qawolf.waitForPage(context, 0, { waitUntil: \\"domcontentloaded\\" });",
         "await page.fill('[data-qa=\\"test-input\\"]', \\"hello\\");",
       ]
     `);
@@ -177,6 +181,7 @@ describe('buildStepLines', () => {
 
     expect(lines).toMatchInlineSnapshot(`
       Array [
+        "const page = await qawolf.waitForPage(context, 0, { waitUntil: \\"domcontentloaded\\" });",
         "await page.press('[data-qa=\\"test-input\\"]', \\"Enter\\");",
       ]
     `);
@@ -194,6 +199,7 @@ describe('buildStepLines', () => {
 
     expect(lines).toMatchInlineSnapshot(`
       Array [
+        "const page = await qawolf.waitForPage(context, 0, { waitUntil: \\"domcontentloaded\\" });",
         "await qawolf.scroll(page, '[data-qa=\\"test-input\\"]', { x: 100, y: 200 });",
       ]
     `);
@@ -208,6 +214,7 @@ describe('buildStepLines', () => {
 
     expect(lines).toMatchInlineSnapshot(`
       Array [
+        "const page = await qawolf.waitForPage(context, 0, { waitUntil: \\"domcontentloaded\\" });",
         "await page.selectOption('[data-qa=\\"test-input\\"]', \\"spirit\\");",
       ]
     `);
@@ -223,6 +230,7 @@ describe('buildStepLines', () => {
 
       expect(lines).toMatchInlineSnapshot(`
         Array [
+          "const page = await qawolf.waitForPage(context, 0, { waitUntil: \\"domcontentloaded\\" });",
           "await page.type('[data-qa=\\"test-input\\"]', \\"spirit\\");",
         ]
       `);
@@ -237,9 +245,119 @@ describe('buildStepLines', () => {
 
       expect(lines).toMatchInlineSnapshot(`
         Array [
+          "const page = await qawolf.waitForPage(context, 0, { waitUntil: \\"domcontentloaded\\" });",
           "await page.type('[data-qa=\\"test-input\\"]', null);",
         ]
       `);
     });
+  });
+
+  test('goto step', () => {
+    const buildContext: StepLineBuildContext = {
+      initializedFrames: new Map<string, string>(),
+      initializedPages: new Set([]),
+      visiblePage: 0,
+    };
+
+    // Initial page
+    let lines = buildStepLines(
+      {
+        action: 'goto' as Action,
+        event: {
+          name: 'goto',
+          page: 0,
+          time: Date.now(),
+        },
+        index: 0,
+        value: 'http://localhost:5000',
+      },
+      buildContext,
+    );
+
+    expect(lines).toMatchInlineSnapshot(`
+      Array [
+        "const page = await context.newPage();",
+        "await page.goto(\\"http://localhost:5000\\", { waitUntil: \\"domcontentloaded\\" });",
+      ]
+    `);
+
+    // Manual new tab
+    lines = buildStepLines(
+      {
+        action: 'goto' as Action,
+        event: {
+          name: 'goto',
+          page: 1,
+          time: Date.now(),
+        },
+        index: 1,
+        value: 'https://google.com',
+      },
+      buildContext,
+    );
+
+    expect(lines).toMatchInlineSnapshot(`
+      Array [
+        "const page2 = await context.newPage();",
+        "await page2.bringToFront();",
+        "await page2.goto(\\"https://google.com\\", { waitUntil: \\"domcontentloaded\\" });",
+      ]
+    `);
+  });
+
+  test('back step', () => {
+    const buildContext: StepLineBuildContext = {
+      initializedFrames: new Map<string, string>(),
+      initializedPages: new Set([]),
+      visiblePage: 0,
+    };
+
+    const lines = buildStepLines(
+      {
+        action: 'goBack' as Action,
+        event: {
+          name: 'goBack',
+          page: 0,
+          time: Date.now(),
+        },
+        index: 0,
+      },
+      buildContext,
+    );
+
+    expect(lines).toMatchInlineSnapshot(`
+      Array [
+        "const page = await qawolf.waitForPage(context, 0, { waitUntil: \\"domcontentloaded\\" });",
+        "await page.goBack({ waitUntil: \\"domcontentloaded\\" });",
+      ]
+    `);
+  });
+
+  test('reload step', () => {
+    const buildContext: StepLineBuildContext = {
+      initializedFrames: new Map<string, string>(),
+      initializedPages: new Set([]),
+      visiblePage: 0,
+    };
+
+    const lines = buildStepLines(
+      {
+        action: 'reload' as Action,
+        event: {
+          name: 'reload',
+          page: 0,
+          time: Date.now(),
+        },
+        index: 0,
+      },
+      buildContext,
+    );
+
+    expect(lines).toMatchInlineSnapshot(`
+      Array [
+        "const page = await qawolf.waitForPage(context, 0, { waitUntil: \\"domcontentloaded\\" });",
+        "await page.reload({ waitUntil: \\"domcontentloaded\\" });",
+      ]
+    `);
   });
 });
