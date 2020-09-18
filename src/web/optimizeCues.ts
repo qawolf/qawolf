@@ -14,6 +14,15 @@ export type CueGroup = {
   valueLength: number;
 };
 
+export type OnFoundFn = (cueGroup: CueGroup) => void;
+
+export type FindOptimalCueGroupsInput = {
+  cues: Cue[];
+  onFound: OnFoundFn;
+  target: HTMLElement;
+  targetGroup: HTMLElement[];
+};
+
 type CueLevel = {
   css: Cue[];
   text: Cue[];
@@ -228,6 +237,9 @@ export const findBestCueGroup = (
           selectorParts,
           valueLength,
         };
+        // I considered breaking out of the loop here if penalty is 0, but then we would
+        // not find other 0-penalty groups that might have a shorter value. We could
+        // consider breaking out if `penalty` is 0 and `valueLength` is "low enough"
       }
     });
   }
@@ -235,29 +247,34 @@ export const findBestCueGroup = (
   return bestGroup;
 };
 
-export const optimizeCues = (
-  cueSets: Cue[][],
-  target: HTMLElement,
-  targetGroup: HTMLElement[],
-): CueGroup[] => {
-  // Only use the first 50 cue sets (there should never be this many, usually just ~2-3)
-  return cueSets
-    .slice(0, 50)
-    .map((cueSet) => {
-      // Trim down the cue group to 10 if possible
-      // 10 cues, samples of 5 is ~700 combinations which took ~20ms on my machine
-      const cueGroup = trimExcessCues(cueSet, target, 10);
+export const findOptimalCueGroups = (input: FindOptimalCueGroupsInput): void => {
+  const { cues, onFound, target, targetGroup } = input;
 
-      // Skip if we cannot trim the group to <= 16 cues (this should rarely happen)
-      // 16 cues, samples of 5 is ~7000 combinations which took ~100ms on my machine
-      if (!cueGroup || cueGroup.cues.length > 16) return null;
+  const cueSets = buildCueSets(cues);
 
-      return findBestCueGroup(cueGroup, 5, targetGroup);
-    })
-    // Ignore invalid groups
-    .filter((a) => !!a);
+  for (let index = 0; index < cueSets.length; index++) {
+    // Only use the first 50 cue sets (there should never be this many, usually just ~2-3)
+    if (index > 49) break;
+
+    const cueSet = cueSets[index];
+
+    // Trim down the cue group to 10 if possible
+    // 10 cues, samples of 5 is ~700 combinations which took ~20ms on my machine
+    const cueGroup = trimExcessCues(cueSet, target, 5);
+
+    // Skip if we cannot trim the group to <= 16 cues (this should rarely happen)
+    // 16 cues, samples of 5 is ~7000 combinations which took ~100ms on my machine
+    if (cueGroup && cueGroup.cues.length <= 16) {
+      onFound(findBestCueGroup(cueGroup, 3, targetGroup));
+    }
+  }
 };
 
+/**
+ * @summary Given a list of cue groups, picks the one with the lowest total penalty
+ *   and lowest total value length. That is, the one that is likely to produce the
+ *   shortest and most accurate selector.
+ */
 export const pickBestCueGroup = (cueGroups: CueGroup[]): CueGroup | null => {
   let bestCueGroup: CueGroup;
 

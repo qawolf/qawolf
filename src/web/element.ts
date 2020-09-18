@@ -1,5 +1,7 @@
 import { getXpath } from './serialize';
 
+type OnElementAddedToGroupFn = (element: HTMLElement, depth: number) => void;
+
 const BUTTON_INPUT_TYPES = ['button', 'image', 'reset', 'submit'];
 const CLICK_GROUP_ELEMENTS = ['a', 'button', 'label'];
 const MAX_CLICKABLE_ELEMENT_TRAVERSE_DEPTH = 10;
@@ -42,6 +44,7 @@ export const isLikelyTopOfClickGroup = (element: HTMLElement): boolean => {
 const traverseClickableElements = (
   element: HTMLElement,
   group: HTMLElement[],
+  onElementAddedToGroup?: OnElementAddedToGroupFn,
   direction: 'up' | 'down' = 'up',
   maxDepth: number = MAX_CLICKABLE_ELEMENT_TRAVERSE_DEPTH,
   depth = 0,
@@ -53,7 +56,7 @@ const traverseClickableElements = (
   // When moving up, when we reach the topmost clickable element, we
   // stop traversing up and begin traversing down from there.
   if (direction === 'up' && isLikelyTopOfClickGroup(element)) {
-    traverseClickableElements(element, group, 'down', maxDepth);
+    traverseClickableElements(element, group, onElementAddedToGroup, 'down', maxDepth);
     return;
   }
 
@@ -66,7 +69,7 @@ const traverseClickableElements = (
   if (direction === 'up') {
     // Call self for the parent element, incrementing depth
     if (element.parentElement) {
-      traverseClickableElements(element.parentElement, group, direction, maxDepth, newDepth, [lowerTagName, ...ancestorChain]);
+      traverseClickableElements(element.parentElement, group, onElementAddedToGroup, direction, maxDepth, newDepth, [lowerTagName, ...ancestorChain]);
     }
   } else {
     // Respect max depth only when going down
@@ -76,6 +79,9 @@ const traverseClickableElements = (
     // We add elements to the group only on the way down to avoid adding any twice.
     group.push(element);
 
+    // Let caller do additional things with each element as we add it
+    if (onElementAddedToGroup) onElementAddedToGroup(element, depth);
+
     const newAncestorChain = [...ancestorChain, lowerTagName];
     console.debug('qawolf: added %s to click group', newAncestorChain.join(' > '));
 
@@ -84,7 +90,7 @@ const traverseClickableElements = (
     if (lowerTagName !== 'svg') {
       for (const child of element.children) {
         // Call self for each child element, incrementing depth
-        traverseClickableElements(child as HTMLElement, group, direction, maxDepth, newDepth, newAncestorChain);
+        traverseClickableElements(child as HTMLElement, group, onElementAddedToGroup, direction, maxDepth, newDepth, newAncestorChain);
       }
     }
   }
@@ -101,14 +107,17 @@ const traverseClickableElements = (
  * @return An array of HTMLElement that make up the clickable group. If `element`
  *   itself is not clickable, the array is empty.
  */
-export const getClickableGroup = (element: HTMLElement): HTMLElement[] => {
+export const getClickableGroup = (
+  element: HTMLElement,
+  onElementAddedToGroup?: OnElementAddedToGroupFn,
+): HTMLElement[] => {
   console.debug('qawolf: get clickable ancestor for', getXpath(element));
 
   const clickableElements = [];
 
   // Recursive function that will mutate clickableElements array. A recursive
   // function is better than loops to avoid blocking UI paint.
-  traverseClickableElements(element, clickableElements);
+  traverseClickableElements(element, clickableElements, onElementAddedToGroup);
 
   return clickableElements;
 };

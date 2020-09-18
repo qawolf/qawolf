@@ -25,9 +25,10 @@ describe('buildCues', () => {
       ({ attributes, selector }) => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
         const target = document.querySelector(selector) as HTMLElement;
+        const cueTypesConfig = qawolf.getCueTypesConfig(attributes);
 
         return qawolf.buildCues({
-          attributes,
+          cueTypesConfig,
           isClick: true,
           target,
         });
