@@ -12,7 +12,7 @@ export type Cue = {
 };
 
 export type BuildCues = {
-  attributes: string[];
+  cueTypesConfig: CueTypesConfig;
   isClick: boolean;
   target: HTMLElement;
 };
@@ -275,12 +275,10 @@ export const buildCuesForElement = ({
 };
 
 export const buildCues = ({
-  attributes,
+  cueTypesConfig,
   isClick,
   target,
 }: BuildCues): Cue[] => {
-  const cueTypesConfig = getCueTypesConfig(attributes);
-
   const cues: Cue[] = [];
   let element: HTMLElement = target;
   let level = 0;
