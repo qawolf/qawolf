@@ -60,3 +60,7 @@ export const isMatch = ({ selectorParts, target }: IsMatch): boolean => {
 
   return result === target;
 };
+
+export const getElementMatchingSelectorParts = (selectorParts: SelectorPart[], root: Node): HTMLElement => {
+  return querySelector({ parts: selectorParts }, root);
+};
