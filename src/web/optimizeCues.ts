@@ -4,7 +4,7 @@ import {
   getPenalty,
   getValueLength,
 } from './cues';
-import { buildSelectorParts, isMatch } from './selectorEngine';
+import { buildSelectorParts, getElementMatchingSelectorParts, isMatch } from './selectorEngine';
 import { SelectorPart } from './types';
 
 export type CueGroup = {
@@ -220,7 +220,8 @@ export const findBestCueGroup = (
 
       // If these selector parts match any element that we are targeting,
       // then it's currently the best group.
-      if (targetGroup.some((target) => isMatch({ selectorParts, target }))) {
+      const matchedElement = getElementMatchingSelectorParts(selectorParts, targetGroup[0].ownerDocument);
+      if (targetGroup.includes(matchedElement)) {
         bestGroup = {
           cues,
           penalty,
