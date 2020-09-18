@@ -5,11 +5,17 @@ import {
 import { getClickableGroup } from './element';
 import { buildCueSets, CueGroup, optimizeCues, pickBestCueGroup } from './optimizeCues';
 import { getXpath } from './serialize';
-import { isMatch } from './selectorEngine';
+import { getElementMatchingSelectorParts, isMatch } from './selectorEngine';
 import { SelectorPart } from './types';
 
-const selectorCache = new Map<HTMLElement, SelectorPart[]>();
-const clickSelectorCache = new Map<HTMLElement, SelectorPart[]>();
+type CachedSelectorInfo = {
+  matchedTarget: HTMLElement;
+  selector: string;
+  selectorParts: SelectorPart[];
+};
+
+const selectorCache = new Map<HTMLElement, CachedSelectorInfo>();
+const clickSelectorCache = new Map<HTMLElement, CachedSelectorInfo>();
 
 /**
  * @summary Clear the selector cache. Currently only used for tests.
@@ -34,32 +40,32 @@ export const toSelector = (selectorParts: SelectorPart[]): string => {
 export const buildSelector = (options: BuildCues): string => {
   const { isClick, target } = options;
 
+  // To save looping, see if we have already figured out a unique
+  // selector for this target.
+  let cachedSelectorInfo: CachedSelectorInfo;
+  if (isClick) {
+    cachedSelectorInfo = clickSelectorCache.get(target);
+  } else {
+    cachedSelectorInfo = selectorCache.get(target);
+  }
+
+  let selector: string;
+  if (cachedSelectorInfo) {
+    const { matchedTarget, selector, selectorParts } = cachedSelectorInfo;
+    // Even if we have cached a selector, it is possible that the DOM
+    // has changed since the cached one was built. Confirm it's a match.
+    if (isMatch({ selectorParts, target: matchedTarget })) {
+      // console.debug('Using cached selector', selector, 'for target', target);
+      return selector;
+    }
+  }
+
   let targetGroup: HTMLElement[];
   if (isClick) {
     targetGroup = getClickableGroup(target);
     if (targetGroup.length === 0) targetGroup = [target];
   } else {
     targetGroup = [target];
-  }
-
-  // To save looping, see if we have already figured out a unique
-  // selector for this target.
-  let cachedSelectorParts: SelectorPart[];
-  if (isClick) {
-    cachedSelectorParts = clickSelectorCache.get(target);
-  } else {
-    cachedSelectorParts = selectorCache.get(target);
-  }
-
-  let selector: string;
-  if (cachedSelectorParts) {
-    // Even if we have cached a selector, it is possible that the DOM
-    // has changed since the cached one was built. Confirm it's a match.
-    if (isMatch({ selectorParts: cachedSelectorParts, target })) {
-      selector = toSelector(cachedSelectorParts);
-      // console.debug('Using cached selector', selector, 'for target', target);
-      return selector;
-    }
   }
 
   const cueGroups: CueGroup[] = [];
@@ -74,19 +80,35 @@ export const buildSelector = (options: BuildCues): string => {
 
   const { selectorParts } = pickBestCueGroup(cueGroups) || {};
   if (selectorParts) {
-    // First cache it so that we don't need to do all the looping for this
-    // same target next time. We cache `selectorParts` rather than `selector`
+    // Now convert selectorParts (a Playwright thing) to a string selector
+    selector = toSelector(selectorParts);
+
+    // This selector should match one of the elements in `targetGroup`, but it
+    // may not be the original target. If so, determine what the matched target is.
+    let matchedTarget: HTMLElement;
+    if (targetGroup.length === 1 && targetGroup[0] === target) {
+      matchedTarget = target;
+    } else {
+      // We must pass `target.ownerDocument` rather than `document`
+      // because sometimes this is called from other frames.
+      matchedTarget = getElementMatchingSelectorParts(selectorParts, target.ownerDocument);
+    }
+
+    // Cache it so that we don't need to do all the looping for this
+    // same target next time. We cache `selectorParts` along with `selector`
     // because the DOM can change, so when we later use the cached selector,
     // we will need to run it through `isMatch` again, which needs the parsed
     // selector.
+    const selectorInfo: CachedSelectorInfo = {
+      matchedTarget,
+      selector,
+      selectorParts,
+    };
     if (isClick) {
-      clickSelectorCache.set(target, selectorParts);
+      clickSelectorCache.set(target, selectorInfo);
     } else {
-      selectorCache.set(target, selectorParts);
+      selectorCache.set(target, selectorInfo);
     }
-
-    // Now convert selectorParts (a Playwright thing) to a string selector
-    selector = toSelector(selectorParts);
   } else {
     // No selector was found, fall back to xpath.
     selector = `xpath=${getXpath(target)}`;
