@@ -28,6 +28,10 @@ type CueLevel = {
   text: Cue[];
 };
 
+const TRIM_EXCESS_CUES_GOAL_SIZE = 8;
+const CUE_GROUP_CUES_MAX_SIZE = 10;
+const FINAL_CUE_GROUP_MAX_SIZE = 3;
+
 /**
  * Build the cue sets.
  * There are multiple since each level of cues
@@ -258,14 +262,13 @@ export const findOptimalCueGroups = (input: FindOptimalCueGroupsInput): void => 
 
     const cueSet = cueSets[index];
 
-    // Trim down the cue group to 10 if possible
-    // 10 cues, samples of 5 is ~700 combinations which took ~20ms on my machine
-    const cueGroup = trimExcessCues(cueSet, target, 5);
+    // Trim down the cue group before exhaustively trying the combinations
+    const cueGroup = trimExcessCues(cueSet, target, TRIM_EXCESS_CUES_GOAL_SIZE);
 
-    // Skip if we cannot trim the group to <= 16 cues (this should rarely happen)
-    // 16 cues, samples of 5 is ~7000 combinations which took ~100ms on my machine
-    if (cueGroup && cueGroup.cues.length <= 16) {
-      onFound(findBestCueGroup(cueGroup, 3, targetGroup));
+    // Skip if we cannot trim the group (this should rarely happen)
+    // Then exhaustively try all combinations
+    if (cueGroup && cueGroup.cues.length <= CUE_GROUP_CUES_MAX_SIZE) {
+      onFound(findBestCueGroup(cueGroup, FINAL_CUE_GROUP_MAX_SIZE, targetGroup));
     }
   }
 };
