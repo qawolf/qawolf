@@ -2,6 +2,16 @@ import { getXpath } from './serialize';
 
 type OnElementAddedToGroupFn = (element: HTMLElement, depth: number) => void;
 
+type TraverseClickableElementsInput = {
+  ancestorChain?: string[];
+  depth?: number;
+  direction?: 'up' | 'down';
+  element: HTMLElement;
+  group: HTMLElement[];
+  maxDepth?: number;
+  onElementAddedToGroup?: OnElementAddedToGroupFn;
+};
+
 const BUTTON_INPUT_TYPES = ['button', 'image', 'reset', 'submit'];
 const CLICK_GROUP_ELEMENTS = ['a', 'button', 'label'];
 const MAX_CLICKABLE_ELEMENT_TRAVERSE_DEPTH = 10;
@@ -41,22 +51,30 @@ export const isLikelyTopOfClickGroup = (element: HTMLElement): boolean => {
  *   This is not foolproof because we can't know where exactly click handlers might
  *   be attached, but we can do a pretty good job of guessing.
  */
-const traverseClickableElements = (
-  element: HTMLElement,
-  group: HTMLElement[],
-  onElementAddedToGroup?: OnElementAddedToGroupFn,
-  direction: 'up' | 'down' = 'up',
-  maxDepth: number = MAX_CLICKABLE_ELEMENT_TRAVERSE_DEPTH,
-  depth = 0,
-  ancestorChain: string[] = [],
-): void => {
+const traverseClickableElements = (input: TraverseClickableElementsInput): void => {
+  const {
+    ancestorChain = [],
+    depth = 0,
+    direction = 'up',
+    element,
+    group,
+    maxDepth = MAX_CLICKABLE_ELEMENT_TRAVERSE_DEPTH,
+    onElementAddedToGroup,
+  } = input;
+
   // Regardless of which direction we're moving, stop if we hit an invisible element
   if (!isVisible(element, window.getComputedStyle(element))) return;
 
   // When moving up, when we reach the topmost clickable element, we
   // stop traversing up and begin traversing down from there.
   if (direction === 'up' && isLikelyTopOfClickGroup(element)) {
-    traverseClickableElements(element, group, onElementAddedToGroup, 'down', maxDepth);
+    traverseClickableElements({
+      direction: 'down',
+      element,
+      group,
+      maxDepth,
+      onElementAddedToGroup,
+    });
     return;
   }
 
@@ -69,7 +87,15 @@ const traverseClickableElements = (
   if (direction === 'up') {
     // Call self for the parent element, incrementing depth
     if (element.parentElement) {
-      traverseClickableElements(element.parentElement, group, onElementAddedToGroup, direction, maxDepth, newDepth, [lowerTagName, ...ancestorChain]);
+      traverseClickableElements({
+        ancestorChain: [lowerTagName, ...ancestorChain],
+        direction,
+        element: element.parentElement,
+        group,
+        maxDepth,
+        depth: newDepth,
+        onElementAddedToGroup,
+      });
     }
   } else {
     // Respect max depth only when going down
@@ -90,7 +116,15 @@ const traverseClickableElements = (
     if (lowerTagName !== 'svg') {
       for (const child of element.children) {
         // Call self for each child element, incrementing depth
-        traverseClickableElements(child as HTMLElement, group, onElementAddedToGroup, direction, maxDepth, newDepth, newAncestorChain);
+        traverseClickableElements({
+          ancestorChain: newAncestorChain,
+          direction,
+          element: child as HTMLElement,
+          group,
+          maxDepth,
+          depth: newDepth,
+          onElementAddedToGroup,
+        });
       }
     }
   }
@@ -113,13 +147,13 @@ export const getClickableGroup = (
 ): HTMLElement[] => {
   console.debug('qawolf: get clickable ancestor for', getXpath(element));
 
-  const clickableElements = [];
+  const group = [];
 
   // Recursive function that will mutate clickableElements array. A recursive
   // function is better than loops to avoid blocking UI paint.
-  traverseClickableElements(element, clickableElements, onElementAddedToGroup);
+  traverseClickableElements({ element, group, onElementAddedToGroup });
 
-  return clickableElements;
+  return group;
 };
 
 /**
