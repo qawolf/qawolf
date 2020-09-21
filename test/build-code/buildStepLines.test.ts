@@ -328,7 +328,7 @@ describe('buildStepLines', () => {
     expect(lines).toMatchInlineSnapshot(`
       Array [
         "const page = await qawolf.waitForPage(context, 0, { waitUntil: \\"domcontentloaded\\" });",
-        "await page.goBack({ waitUntil: \\"domcontentloaded\\" });",
+        "await page.goBack();",
       ]
     `);
   });
@@ -356,7 +356,7 @@ describe('buildStepLines', () => {
     expect(lines).toMatchInlineSnapshot(`
       Array [
         "const page = await qawolf.waitForPage(context, 0, { waitUntil: \\"domcontentloaded\\" });",
-        "await page.reload({ waitUntil: \\"domcontentloaded\\" });",
+        "await page.reload();",
       ]
     `);
   });

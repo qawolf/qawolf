@@ -47,7 +47,7 @@ export const buildExpressionLine = (
   const value = buildValue(step);
   if (value) args.push(value);
 
-  if (['goto', 'goBack', 'goForward', 'reload'].includes(action)) {
+  if (['goto'].includes(action)) {
     args.push('{ waitUntil: "domcontentloaded" }');
   }
 
@@ -83,9 +83,7 @@ export const buildStepLines = (
   // to this one, add a `bringToFront` call. Otherwise no extra page-waiting line is needed.
   if (!initializedPages.has(page)) {
     if (step.action === 'goto') {
-      lines.push(
-        `const ${pageVariableName} = await context.newPage();`,
-      );
+      lines.push(`const ${pageVariableName} = await context.newPage();`);
     } else {
       lines.push(
         `const ${pageVariableName} = await qawolf.waitForPage(context, ${page}, { waitUntil: "domcontentloaded" });`,
@@ -99,9 +97,7 @@ export const buildStepLines = (
   }
 
   if (buildContext.visiblePage !== page) {
-    lines.push(
-      `await ${pageVariableName}.bringToFront();`,
-    );
+    lines.push(`await ${pageVariableName}.bringToFront();`);
     buildContext.visiblePage = page;
   }
 
