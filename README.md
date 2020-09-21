@@ -78,21 +78,23 @@ npx qawolf create [url] [name]
 
 💪 Convert your actions into [Playwright](https://github.com/microsoft/playwright) code:
 
-| Action                                                             | Status | Example                                                                    |
-| ------------------------------------------------------------------ | :----: | -------------------------------------------------------------------------- |
-| Click                                                              |   ✅   | `page.click('#login')`                                                     |
-| Type                                                               |   ✅   | `page.fill('.username', 'spirit@qawolf.com')`                              |
-| Scroll                                                             |   ✅   | `qawolf.scroll(page, 'html', { x: 0, y: 200 })`                            |
-| Select                                                             |   ✅   | `page.selectOption('.ice_cream', 'chocolate')`                             |
-| Paste                                                              |   ✅   | `page.fill('password', 'pasted')`                                          |
-| Replace text                                                       |   ✅   | `page.fill('.username', 'username')`                                       |
-| Use a test attribute                                               |   ✅   | `page.click("[data-qa='submit']")`                                         |
-| Use a test attribute on an ancestor                                |   ✅   | `page.click("[data-qa='radio'] [value='cat']")`                            |
-| Use iframes                                                        |   ✅   | `(await page.waitForSelector("#storybook-preview-iframe")).contentFrame()` |
-| Use multiple tabs                                                  |   ✅   | `qawolf.waitForPage(context, 1)`                                     |
-| [Drag and drop](https://github.com/qawolf/qawolf/issues/315)       |   🗺️   | Coming soon                                                                |
-| [File upload](https://github.com/qawolf/qawolf/issues/331)         |   🗺️   | Coming soon                                                                |
-| [Back/Forward button](https://github.com/qawolf/qawolf/issues/438) |   🗺️   | Coming soon                                                                |
+| Action                                                       | Status | Example                                                                    |
+| ------------------------------------------------------------ | :----: | -------------------------------------------------------------------------- |
+| Click                                                        |   ✅   | `page.click('#login')`                                                     |
+| Type                                                         |   ✅   | `page.fill('.username', 'spirit@qawolf.com')`                              |
+| Scroll                                                       |   ✅   | `qawolf.scroll(page, 'html', { x: 0, y: 200 })`                            |
+| Select                                                       |   ✅   | `page.selectOption('.ice_cream', 'chocolate')`                             |
+| Paste                                                        |   ✅   | `page.fill('password', 'pasted')`                                          |
+| Reload                                                       |   ✅   | `page.reload()`                                                            |
+| Replace text                                                 |   ✅   | `page.fill('.username', 'username')`                                       |
+| Go back                                                      |   ✅   | `page.goBack()`                                                            |
+| Use iframes                                                  |   ✅   | `(await page.waitForSelector("#storybook-preview-iframe")).contentFrame()` |
+| Use multiple tabs                                            |   ✅   | `context.newPage()`                                                        |
+| Use a popup                                                  |   ✅   | `qawolf.waitForPage(context, 1)`                                           |
+| Use a test attribute                                         |   ✅   | `page.click("[data-qa='submit']")`                                         |
+| Use a test attribute on an ancestor                          |   ✅   | `page.click("[data-qa='radio'] [value='cat']")`                            |
+| [Drag and drop](https://github.com/qawolf/qawolf/issues/315) |   🗺️   | Coming soon                                                                |
+| [File upload](https://github.com/qawolf/qawolf/issues/331)   |   🗺️   | Coming soon                                                                |
 
 As your test is created:
 
