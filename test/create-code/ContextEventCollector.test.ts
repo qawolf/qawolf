@@ -191,6 +191,9 @@ describe('ContextEventCollector', () => {
   });
 
   it('collects back button press and new tab with typed address', async () => {
+    // only test this on chrome for now
+    if (getLaunchOptions().browserName !== 'chromium') return;
+
     const page = await context.newPage();
 
     await page.goto(TEST_URL);
@@ -203,6 +206,9 @@ describe('ContextEventCollector', () => {
   });
 
   it('collects reload button', async () => {
+    // only test this on chrome for now
+    if (getLaunchOptions().browserName !== 'chromium') return;
+
     const page = await context.newPage();
 
     await page.goto(TEST_URL);
