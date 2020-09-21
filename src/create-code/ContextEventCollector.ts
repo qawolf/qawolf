@@ -24,6 +24,7 @@ type FrameSelector = {
 };
 
 type LastPageNavigation = {
+  lastHighestEntryId: number;
   lastHistoryEntriesLength: number;
   lastHistoryIndex: number;
 };
@@ -126,6 +127,7 @@ export class ContextEventCollector extends EventEmitter {
       if ((this._context as any)._browser._options.name === 'chromium') {
         const session = await (this._context as ChromiumBrowserContext).newCDPSession(page);
         const { currentIndex, entries } = await session.send("Page.getNavigationHistory");
+        const highestEntryId = entries.reduce((highest, entry) => entry.id > highest ? entry.id : highest, 0);
 
         const currentHistoryEntry = entries[currentIndex];
         if (currentHistoryEntry.transitionType === 'typed' && !BLANK_URLS.includes(currentHistoryEntry.url)) {
@@ -138,8 +140,9 @@ export class ContextEventCollector extends EventEmitter {
         }
 
         this._pageNavigationHistory.set(page, {
-          lastHistoryIndex: currentIndex,
+          lastHighestEntryId: highestEntryId,
           lastHistoryEntriesLength: entries.length,
+          lastHistoryIndex: currentIndex,
         });
 
         page.on('framenavigated', async (frame) => {
@@ -147,18 +150,42 @@ export class ContextEventCollector extends EventEmitter {
 
           const { currentIndex, entries } = await session.send("Page.getNavigationHistory");
           const currentHistoryEntry = entries[currentIndex];
+          const highestEntryId = entries.reduce((highest, entry) => entry.id > highest ? entry.id : highest, 0);
 
-          const { lastHistoryEntriesLength, lastHistoryIndex } = this._pageNavigationHistory.get(page);
+          const {
+            lastHighestEntryId,
+            lastHistoryEntriesLength,
+            lastHistoryIndex,
+          } = this._pageNavigationHistory.get(page);
 
           this._pageNavigationHistory.set(page, {
-            lastHistoryIndex: currentIndex,
+            lastHighestEntryId: highestEntryId,
             lastHistoryEntriesLength: entries.length,
+            lastHistoryIndex: currentIndex,
           });
 
           let name: WindowEventName;
           let url: string;
 
-          if (entries.length > lastHistoryEntriesLength && currentHistoryEntry.transitionType === 'typed' && !BLANK_URLS.includes(currentHistoryEntry.url)) {
+          // Detecting a `goto` (typed address) is the most difficult. There are a few factors:
+          // (1) The current history entry will have a transitionType of "typed"
+          // (2) But if we click Back and this goes back to a previous entry that was originally
+          //     typed, then it still has a transitionType of "typed".
+          // (3) Also, entries may stay the same length but yet have a different typed address
+          //     as the last entry, such as if we clicked Back and then entered a new address.
+          //
+          // The way we can detect these edge cases is by checking the `id` on the current entry
+          // and also tracking when a new `id` has been generated. We do this by finding the
+          // highest `id` because Chromium seems to always use an incrementing integer as the ID.
+          //
+          // If the current entry is both `typed` and has a newly-generated ID, then it is a `goto`
+          // unless it's a blank page, in which case we'll catch the real goto on the next run.
+          if (
+            highestEntryId > lastHighestEntryId &&
+            currentHistoryEntry.id === highestEntryId &&
+            currentHistoryEntry.transitionType === 'typed' &&
+            !BLANK_URLS.includes(currentHistoryEntry.url)
+          ) {
             // NEW ADDRESS ENTERED
             name = 'goto';
             url = currentHistoryEntry.url;

@@ -205,6 +205,22 @@ describe('ContextEventCollector', () => {
     expect(windowEvents.pop().name).toBe('goto');
   });
 
+  it('collects a new typed address after back button press (rewritten browser history)', async () => {
+    // only test this on chrome for now
+    if (getLaunchOptions().browserName !== 'chromium') return;
+
+    const page = await context.newPage();
+
+    await page.goto(TEST_URL);
+    await page.goBack();
+    await page.goto(`${TEST_URL}text-inputs`);
+    await page.close();
+
+    expect(windowEvents.pop().name).toBe('goto');
+    expect(windowEvents.pop().name).toBe('goBack');
+    expect(windowEvents.pop().name).toBe('goto');
+  });
+
   it('collects reload button', async () => {
     // only test this on chrome for now
     if (getLaunchOptions().browserName !== 'chromium') return;
