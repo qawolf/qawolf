@@ -11,7 +11,7 @@ describe('cli argument parsing', () => {
 
   const defaultOpts = {
     device: undefined,
-    name: 'example',
+    name: 'qawolf',
     statePath: undefined,
     url: undefined,
   };
