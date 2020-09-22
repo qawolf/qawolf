@@ -3,7 +3,7 @@ import { EventEmitter } from 'events';
 import { buildVirtualCode } from '../build-code/buildVirtualCode';
 import { CodeReconciler } from './CodeReconciler';
 import { getLineIncludes, removeLinesIncluding } from './format';
-import { PATCH_HANDLE } from './patchCode';
+import { CREATE_HANDLE, PATCH_HANDLE } from './patchCode';
 import { Step } from '../types';
 
 const debug = Debug('qawolf:CodeUpdater');
@@ -37,7 +37,7 @@ export abstract class CodeUpdater extends EventEmitter {
   protected async _prepare(): Promise<void> {
     const code = await this._loadCode();
 
-    const createLine = getLineIncludes(code, `qawolf.create()`);
+    const createLine = getLineIncludes(code, CREATE_HANDLE);
     if (!createLine) return;
 
     const updatedCode = code.replace(createLine.trim(), PATCH_HANDLE);

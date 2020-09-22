@@ -4,7 +4,7 @@ import { buildSteps } from '../build-workflow/buildSteps';
 import { CodeFileUpdater } from './CodeFileUpdater';
 import { ContextEventCollector } from './ContextEventCollector';
 import { createPrompt } from './createPrompt';
-import { ElementEvent } from '../types';
+import { ElementEvent, PageEvent, WindowEvent } from '../types';
 
 type CreateCliOptions = {
   codePath: string;
@@ -39,18 +39,24 @@ export class CreateManager {
   private _codeUpdater: CodeFileUpdater;
   private _collector: ContextEventCollector;
   private _events: ElementEvent[] = [];
+  private _windowEvents: WindowEvent[] = [];
 
   protected constructor(options: ConstructorOptions) {
     this._codeUpdater = options.codeUpdater;
     this._collector = options.collector;
 
     this._collector.on('elementevent', (event) => this.update(event));
+    this._collector.on('windowevent', (event) => this.update(event, true));
   }
 
-  protected async update(event: ElementEvent): Promise<void> {
-    this._events.push(event);
+  protected async update(event: PageEvent, isWindowEvent = false): Promise<void> {
+    if (isWindowEvent) {
+      this._windowEvents.push(event as WindowEvent);
+    } else {
+      this._events.push(event as ElementEvent);
+    }
 
-    const steps = buildSteps(this._events);
+    const steps = buildSteps(this._events, this._windowEvents);
     await this._codeUpdater.update({ steps });
   }
 

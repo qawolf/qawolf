@@ -15,6 +15,7 @@ describe('ContextEventCollector', () => {
   let browser: Browser;
   let context: BrowserContext;
   let events: ElementEvent[];
+  let windowEvents: ElementEvent[];
 
   beforeAll(async () => {
     browser = await launch();
@@ -23,9 +24,13 @@ describe('ContextEventCollector', () => {
 
     const collector = await ContextEventCollector.create(context);
     collector.on('elementevent', (event) => events.push(event));
+    collector.on('windowevent', (event) => windowEvents.push(event));
   });
 
-  beforeEach(() => (events = []));
+  beforeEach(() => {
+    events = [];
+    windowEvents = [];
+  });
 
   afterAll(() => browser.close());
 
@@ -183,5 +188,49 @@ describe('ContextEventCollector', () => {
     expect(
       (events.filter((e) => isKeyEvent(e)) as KeyEvent[]).map((e) => e.value),
     ).toEqual(['s', 's', 'u', 'u', 'p', 'p', 'Tab', 'Tab', 'y', 'y', 'o', 'o']);
+  });
+
+  it('collects back button press and new tab with typed address', async () => {
+    // only test this on chrome for now
+    if (getLaunchOptions().browserName !== 'chromium') return;
+
+    const page = await context.newPage();
+
+    await page.goto(TEST_URL);
+    await page.goto(`${TEST_URL}text-inputs`);
+    await page.goBack();
+    await page.close();
+
+    expect(windowEvents.pop().name).toBe('goBack');
+    expect(windowEvents.pop().name).toBe('goto');
+  });
+
+  it('collects a new typed address after back button press (rewritten browser history)', async () => {
+    // only test this on chrome for now
+    if (getLaunchOptions().browserName !== 'chromium') return;
+
+    const page = await context.newPage();
+
+    await page.goto(TEST_URL);
+    await page.goBack();
+    await page.goto(`${TEST_URL}text-inputs`);
+    await page.close();
+
+    expect(windowEvents.pop().name).toBe('goto');
+    expect(windowEvents.pop().name).toBe('goBack');
+    expect(windowEvents.pop().name).toBe('goto');
+  });
+
+  it('collects reload button', async () => {
+    // only test this on chrome for now
+    if (getLaunchOptions().browserName !== 'chromium') return;
+
+    const page = await context.newPage();
+
+    await page.goto(TEST_URL);
+    await page.reload();
+    await page.close();
+
+    expect(windowEvents.pop().name).toBe('reload');
   });
 });

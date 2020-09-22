@@ -2,6 +2,7 @@
 
 exports[`CodeFileUpdater update saves code with new steps 1`] = `
 "  someCode();
+  const page = await qawolf.waitForPage(context, 0, { waitUntil: \\"domcontentloaded\\" });
   await page.click(\\"text=Log in\\");
   await page.click(\\"#username\\");
   // 🐺 create code here
@@ -10,6 +11,7 @@ exports[`CodeFileUpdater update saves code with new steps 1`] = `
 
 exports[`CodeFileUpdater update saves code with new steps 2`] = `
 "  someCode();
+  const page = await qawolf.waitForPage(context, 0, { waitUntil: \\"domcontentloaded\\" });
   await page.click(\\"text=Log in\\");
   await page.click(\\"#username\\");
   await page.fill(\\"#username\\", \\"tomsmith\\");

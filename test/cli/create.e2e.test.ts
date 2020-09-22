@@ -10,7 +10,7 @@ import { KEYS, sleep } from '../utils';
 // help us debug flakes
 process.env.DEBUG = 'qawolf*';
 
-const testPath = join(__dirname, '../.qawolf/example.test.ts');
+const testPath = join(__dirname, '../.qawolf/qawolf.test.ts');
 
 const loadCode = async (): Promise<string> => {
   if (!(await pathExists(testPath))) return null;

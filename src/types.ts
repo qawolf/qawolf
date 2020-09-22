@@ -1,7 +1,11 @@
 export type Action =
   | 'click'
   | 'fill'
+  | 'goBack'
+  | 'goForward'
+  | 'goto'
   | 'press'
+  | 'reload'
   | 'scroll'
   | 'selectOption'
   | 'type';
@@ -15,16 +19,30 @@ export interface Doc {
   name: string;
 }
 
-export interface ElementEvent {
+export interface PageEvent {
   frameIndex?: number;
   frameSelector?: string;
-  isTrusted: boolean;
-  name: ElementEventName;
+  name: string;
   page: number;
-  selector: string;
-  target: Doc;
   time: number;
   value?: string | ScrollValue | null;
+}
+
+export interface WindowEvent extends PageEvent {
+  name: WindowEventName;
+}
+
+export type WindowEventName =
+  | 'goBack'
+  | 'goForward'
+  | 'goto'
+  | 'reload';
+
+export interface ElementEvent extends PageEvent {
+  isTrusted: boolean;
+  name: ElementEventName;
+  selector: string;
+  target: Doc;
 }
 
 export type ElementEventName =
@@ -70,7 +88,7 @@ export type ScrollValue = {
 
 export interface Step {
   action: Action;
-  event: ElementEvent;
+  event: PageEvent;
   // needed to build selector key
   index: number;
   value?: StepValue;

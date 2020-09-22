@@ -1,18 +1,20 @@
 import { concat, sortBy } from 'lodash';
 import { buildClickSteps } from './buildClickSteps';
 import { buildFillSteps } from './buildFillSteps';
+import { buildNavigationSteps } from './buildNavigationSteps';
 import { buildPressSteps } from './buildPressSteps';
 import { buildScrollSteps } from './buildScrollSteps';
 import { buildSelectOptionSteps } from './buildSelectOptionSteps';
-import { ElementEvent, Step } from '../types';
+import { ElementEvent, Step, WindowEvent } from '../types';
 
-export const buildSteps = (events: ElementEvent[]): Step[] => {
+export const buildSteps = (elementEvents: ElementEvent[], windowEvents: WindowEvent[] = []): Step[] => {
   const unorderedSteps = concat(
-    buildClickSteps(events),
-    buildFillSteps(events),
-    buildPressSteps(events),
-    buildScrollSteps(events),
-    buildSelectOptionSteps(events),
+    buildClickSteps(elementEvents),
+    buildFillSteps(elementEvents),
+    buildPressSteps(elementEvents),
+    buildScrollSteps(elementEvents),
+    buildSelectOptionSteps(elementEvents),
+    buildNavigationSteps(windowEvents),
   );
 
   let steps = sortBy(

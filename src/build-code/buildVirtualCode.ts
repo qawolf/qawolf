@@ -7,8 +7,7 @@ export const buildVirtualCode = (steps: Step[]): VirtualCode => {
 
   const buildContext: StepLineBuildContext = {
     initializedFrames: new Map<string, string>(),
-    // page 0 is initialized and brought to front in "before"
-    initializedPages: new Set([0]),
+    initializedPages: new Set([]),
     visiblePage: 0,
   };
 

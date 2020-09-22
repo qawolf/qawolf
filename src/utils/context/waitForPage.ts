@@ -1,5 +1,4 @@
 import { BrowserContext } from 'playwright';
-import { isNull } from 'util';
 import { IndexedPage, indexPages } from './indexPages';
 import { waitFor } from '../waitFor';
 
@@ -27,7 +26,7 @@ export const waitForPage = async (
     { timeout: options.timeout || 30000 },
   );
 
-  if (!isNull(options.waitUntil)) {
+  if (options.waitUntil !== null) {
     await page.waitForLoadState(options.waitUntil || 'load');
   }
 

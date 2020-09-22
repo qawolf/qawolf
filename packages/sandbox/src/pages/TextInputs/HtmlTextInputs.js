@@ -46,7 +46,7 @@ function HtmlTextInputs() {
       <br />
       <h4>Edge Cases</h4>
       <input
-        contenteditable="true"
+        contentEditable="true"
         data-qa="html-text-input-content-editable"
         placeholder="Content editable text input"
         type="text"
