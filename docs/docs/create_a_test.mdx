@@ -69,13 +69,12 @@ To start your test, a few things happen in the [Jest `beforeAll` block](https://
 
 ```js
 let browser;
-let page;
+let context;
 
 beforeAll(async () => {
   browser = await qawolf.launch();
-  const context = await browser.newContext();
+  context = await browser.newContext();
   await qawolf.register(context);
-  page = await context.newPage();
 });
 ```
 
@@ -96,6 +95,7 @@ The test itself is contained in a [Jest `test` block](https://jestjs.io/docs/en/
 
 ```js
 test('myTest', async () => {
+  const page = await context.newPage();
   await page.goto('http://todomvc.com/examples/react');
   await page.click('[placeholder="What needs to be done?"]');
   await page.type('[placeholder="What needs to be done?"]', 'create test!');

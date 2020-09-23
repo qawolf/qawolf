@@ -46,7 +46,7 @@ Set up your project for browser tests:
 
 ```bash
 cd /my/awesome/project
-npm init qawolf
+npm init qawolf@latest
 # or yarn create qawolf
 ```
 

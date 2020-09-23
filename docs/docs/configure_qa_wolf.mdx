@@ -100,13 +100,12 @@ const createTemplate = (options) => {
   const code = `const qawolf = require("qawolf");
 
 let browser;
-let page;
+let context;
 
 beforeAll(async () => {
   browser = await qawolf.launch();
-  const context = await browser.newContext();
+  context = await browser.newContext();
   await qawolf.register(context);
-  page = await context.newPage();
 });
 
 afterAll(async () => {
@@ -115,8 +114,7 @@ afterAll(async () => {
 });
 
 test('${name}', async () => {
-  await page.goto("${url}");
-  await qawolf.create();
+  await qawolf.create("${url}");
 });`;
 
   return code;

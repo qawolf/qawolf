@@ -21,16 +21,15 @@ const qawolf = require('qawolf');
 const device = devices['iPhone 7'];
 
 let browser;
-let page;
+let context;
 
 beforeAll(async () => {
   browser = await qawolf.launch();
-  const context = await browser.newContext({
+  context = await browser.newContext({
     userAgent: device.userAgent,
     viewport: device.viewport,
   });
   await qawolf.register(context);
-  page = await context.newPage();
 });
 
 // ...
@@ -66,11 +65,11 @@ const qawolf = require('qawolf');
 const device = devices['iPad Mini'];
 
 let browser;
-let page;
+let context;
 
 beforeAll(async () => {
   browser = await qawolf.launch();
-  const context = await browser.newContext({
+  context = await browser.newContext({
     userAgent: device.userAgent,
     viewport: device.viewport,
   });
@@ -95,13 +94,12 @@ For example, let's say we have a test that looks like this:
 const qawolf = require('qawolf');
 
 let browser;
-let page;
+let context;
 
 beforeAll(async () => {
   browser = await qawolf.launch();
-  const context = await browser.newContext();
+  context = await browser.newContext();
   await qawolf.register(context);
-  page = await context.newPage();
 });
 
   // ...
@@ -118,16 +116,15 @@ const qawolf = require('qawolf');
 const device = devices['iPhone 7'];
 
 let browser;
-let page;
+let context;
 
 beforeAll(async () => {
   browser = await qawolf.launch();
-  const context = await browser.newContext({
+  context = await browser.newContext({
     userAgent: device.userAgent,
     viewport: device.viewport,
   });
   await qawolf.register(context);
-  page = await context.newPage();
 });
 
 // ...
@@ -139,11 +136,11 @@ You can also specify a custom values for `userAgent` and `viewport`. This allows
 const qawolf = require('qawolf');
 
 let browser;
-let page;
+let context;
 
 beforeAll(async () => {
   browser = await qawolf.launch();
-  const context = await browser.newContext({
+  context = await browser.newContext({
     userAgent:
       'Mozilla/5.0 (PlayBook; U; RIM Tablet OS 2.1.0; en-US) AppleWebKit/536.2+ (KHTML like Gecko) Version/7.2.1.0 Safari/536.2+',
     viewport: {
@@ -154,7 +151,6 @@ beforeAll(async () => {
     },
   });
   await qawolf.register(context);
-  page = await context.newPage();
 });
 
 // ...

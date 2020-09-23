@@ -37,13 +37,12 @@ For reference, our test code is saved at `.qawolf/myTest.test.js` and looks like
 const qawolf = require('qawolf');
 
 let browser;
-let page;
+let context;
 
 beforeAll(async () => {
   browser = await qawolf.launch();
-  const context = await browser.newContext();
+  context = await browser.newContext();
   await qawolf.register(context);
-  page = await context.newPage();
 });
 
 afterAll(async () => {
@@ -52,6 +51,7 @@ afterAll(async () => {
 });
 
 test('myTest', async () => {
+  const page = await context.newPage();
   await page.goto('http://todomvc.com/examples/react');
   await page.click('[placeholder="What needs to be done?"]');
   await page.type('[placeholder="What needs to be done?"]', 'create test!');

@@ -122,13 +122,12 @@ Your test file (`.qawolf/mySignInTest.test.js` in our example) should look like 
 const qawolf = require('qawolf');
 
 let browser;
-let page;
+let context;
 
 beforeAll(async () => {
   browser = await qawolf.launch();
-  const context = await browser.newContext();
+  context = await browser.newContext();
   await qawolf.register(context);
-  page = await context.newPage();
 });
 
 afterAll(async () => {
@@ -137,6 +136,7 @@ afterAll(async () => {
 });
 
 test('mySignInTest', async () => {
+  const page = await context.newPage();
   await page.goto('https://www.myawesomesite.com/');
 });
 ```
