@@ -56,7 +56,7 @@
     "kleur": "^4.1.1",
     "open": "^7.2.1",
     "playwright": "1.4.1",
-    "playwright-video": "^2.3.1",
+    "playwright-video": "^2.4.0",
     "split": "^1.0.1",
     "tempy": "^0.7.0",
     "update-notifier": "^4.1.1"
