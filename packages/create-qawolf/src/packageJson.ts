@@ -11,7 +11,6 @@ const debug = Debug('create-qawolf:packageJson');
 
 const defaultPackages: Packages = {
   jest: selfPkg.devDependencies['jest'],
-  playwright: selfPkg.createDevDependencies['playwright'],
   qawolf: selfPkg.createDevDependencies['qawolf'],
 };
 
