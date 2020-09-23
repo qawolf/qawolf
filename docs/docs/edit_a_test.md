@@ -12,6 +12,7 @@ As your application changes, you may want to update the steps in an existing tes
 ```js
 // ...
 test('myTest', async () => {
+  const page = await context.newPage();
   await page.goto('www.myawesomesite.com');
   // ...
   await qawolf.create();
@@ -69,6 +70,7 @@ In your test code, call `qawolf.create` in your [Jest `test` block](https://jest
 // ...
 
 test('myTest', async () => {
+  const page = await context.newPage();
   await page.goto('http://todomvc.com/examples/react');
   await page.click('[placeholder="What needs to be done?"]');
   await page.type('[placeholder="What needs to be done?"]', 'create test!');
@@ -93,6 +95,7 @@ The first few steps of our test will now run. For TodoMVC, this means that the f
 // ...
 
 test('myTest', async () => {
+  const page = await context.newPage();
   await page.goto('http://todomvc.com/examples/react');
   await page.click('[placeholder="What needs to be done?"]');
   await page.type('[placeholder="What needs to be done?"]', 'create test!');
@@ -109,6 +112,7 @@ Any actions you take in the browser will be converted to code and inserted where
 // ...
 
 test('myTest', async () => {
+  const page = await context.newPage();
   await page.goto('http://todomvc.com/examples/react');
   await page.click('[placeholder="What needs to be done?"]');
   await page.type('[placeholder="What needs to be done?"]', 'create test!');

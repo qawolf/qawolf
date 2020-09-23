@@ -94,6 +94,7 @@ If you open your test file (`.qawolf/mySignInTest.test.js` in our example), you 
 ```js
 // ...
 test('mySignInTest', async () => {
+  const page = await context.newPage();
   await page.goto('https://www.twitter.com/');
   await qawolf.setState(page, './.qawolf/state/user.json');
   // ...
@@ -150,6 +151,7 @@ We'll first add a line to our file that tells QA Wolf where to insert new code. 
 ```js
 // ...
 test('mySignInTest', async () => {
+  const page = await context.newPage();
   await page.goto('https://www.myawesomesite.com/');
   await qawolf.create(); // add this line
 });
@@ -194,6 +196,7 @@ After `page.goto` is called in the `test` block, call `page.evaluate` and pass i
 ```js
 // ...
 test('mySignInTest', async () => {
+  const page = await context.newPage();
   await page.goto('https://www.myawesomesite.com/');
   // sign in code starts
   await page.evaluate(() => {
@@ -209,6 +212,7 @@ Below is an example that sets a value in `sessionStorage` with the [`setItem` me
 ```js
 // ...
 test('mySignInTest', async () => {
+  const page = await context.newPage();
   await page.goto('https://www.myawesomesite.com/');
   // sign in code starts
   await page.evaluate(() => {
@@ -224,6 +228,7 @@ You may have to call the [`page.reload` method](https://github.com/microsoft/pla
 ```js
 // ...
 test('mySignInTest', async () => {
+  const page = await context.newPage();
   await page.goto('https://www.myawesomesite.com/');
   // sign in code starts
   await page.evaluate(() => {

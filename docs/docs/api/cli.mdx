@@ -89,6 +89,7 @@ When using edit mode, you can add steps to an existing test by calling the [`qaw
 // ...
 
 test('myTest', async () => {
+  const page = await context.newPage();
   await page.goto('http://todomvc.com/examples/react');
   // previous test steps
   // ...
