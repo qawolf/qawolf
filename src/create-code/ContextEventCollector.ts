@@ -124,7 +124,7 @@ export class ContextEventCollector extends EventEmitter {
 
       // Currently only ChromiumBrowserContext can do CDP, so we cannot support adding
       // new tabs manually or back/forward/reload on other browsers
-      if ((this._context as any)._browser._options.name === 'chromium') {
+      if ((this._context as ChromiumBrowserContext).newCDPSession) {
         const session = await (this._context as ChromiumBrowserContext).newCDPSession(page);
         const { currentIndex, entries } = await session.send("Page.getNavigationHistory");
         const highestEntryId = entries.reduce((highest, entry) => entry.id > highest ? entry.id : highest, 0);
