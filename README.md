@@ -26,7 +26,7 @@
 
 ## 🐺 What is QA Wolf?
 
-QA Wolf is a Node.js library for creating browser tests. Run one command (`npx qawolf init`) to configure your project and set up CI.
+QA Wolf is a Node.js library for creating browser tests. Run one command (`npm init qawolf@latest` or `yarn create qawolf`) to configure your project and set up CI.
 
 - **Skip writing boilerplate:** Your browser actions are converted to [Playwright](https://github.com/microsoft/playwright)/[Jest](https://jestjs.io) code.
 - **Create stable tests:** Your tests automatically wait for elements. Element selectors use test attributes when possible, and CSS/text otherwise.
