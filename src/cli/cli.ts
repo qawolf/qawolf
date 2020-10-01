@@ -26,9 +26,4 @@ program.allowUnknownOption(false);
 
 export const runCli = (): void => {
   program.parse(process.argv);
-
-  if (!process.argv.slice(2).length) {
-    console.log('\n');
-    program.outputHelp();
-  }
 };
