@@ -24,8 +24,7 @@
     "**/*.js",
     "docs/",
     "node_modules/",
-    "packages/",
-    "sandbox/"
+    "packages/"
   ],
   "rules": {
     "@typescript-eslint/no-explicit-any": "off"
