@@ -2,7 +2,7 @@
   "author": "QA Wolf",
   "name": "create-qawolf",
   "license": "BSD-3-Clause",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "🛠️ Install qawolf in your application",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
@@ -47,7 +47,7 @@
     "typescript": "^4.0.3"
   },
   "createDevDependencies": {
-    "qawolf": "1.6.0"
+    "qawolf": "1.7.0"
   },
   "bin": {
     "create-qawolf": "./build/index.js"
