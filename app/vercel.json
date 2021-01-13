@@ -1,0 +1,9 @@
+{
+    "functions": {
+      "pages/api/worker.ts": {
+        "memory": 128,
+        "maxDuration": 60
+      }
+    },
+    "regions": ["iad1"]
+  }

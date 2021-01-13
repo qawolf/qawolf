@@ -1,0 +1,83 @@
+{
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "createDefaultProgram": true,
+    "project": "tsconfig.json",
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "jest",
+    "simple-import-sort"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:jest/recommended",
+    "plugin:react-hooks/recommended",
+    "prettier",
+    "prettier/@typescript-eslint"
+  ],
+  "rules": {
+    "@typescript-eslint/camelcase": 0,
+    "simple-import-sort/imports": "error"
+  },
+  "overrides": [
+    {
+      "files": ["*.tsx", "*.ts", "*.jsx", "*.js"],
+      "processor": "@graphql-eslint/graphql"
+    },
+    {
+      "files": ["*.graphql"],
+      "parser": "@graphql-eslint/eslint-plugin",
+      "parserOptions": {
+        "schema": "./server/schema.graphql"
+      },
+      "plugins": ["@graphql-eslint"],
+      "rules": {
+        "@graphql-eslint/known-argument-names": "error",
+        "@graphql-eslint/known-directives": "error",
+        "@graphql-eslint/known-type-names": "error",
+        "@graphql-eslint/naming-convention": [
+          "error",
+          {
+            "EnumTypeDefinition": "PascalCase",
+            "InputObjectTypeDefinition": "PascalCase",
+            "InterfaceTypeDefinition": "PascalCase",
+            "leadingUnderscore": "forbid",
+            "ObjectTypeDefinition": "PascalCase",
+            "ScalarTypeDefinition": "PascalCase",
+            "trailingUnderscore": "forbid",
+            "UnionTypeDefinition": "PascalCase"
+          }
+        ],
+        "@graphql-eslint/no-undefined-variables": "error",
+        "@graphql-eslint/no-unused-variables": "error",
+        "@graphql-eslint/require-deprecation-reason": "error",
+        "@graphql-eslint/require-description": [
+          "error", 
+          {
+            "on": [
+              "DirectiveDefinition",
+              "EnumTypeDefinition",
+              "EnumValueDefinition",
+              "FieldDefinition",
+              "InputObjectTypeDefinition",
+              "InputValueDefinition",
+              "InterfaceTypeDefinition",
+              "ObjectTypeDefinition",
+              "SchemaDefinition",
+              "UnionTypeDefinition"
+            ]
+          }
+        ],
+        "@graphql-eslint/value-literals-of-correct-type": "error"
+      }
+    }
+  ]
+}

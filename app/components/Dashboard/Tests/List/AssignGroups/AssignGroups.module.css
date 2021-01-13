@@ -1,0 +1,8 @@
+.selectGroup:hover {
+  background: #e8f1f1;
+}
+
+/* do not target svg on assignGroups since include other icons */
+.selectGroups:hover .down {
+  margin-top: 4px;
+}

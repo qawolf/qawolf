@@ -1,0 +1,17 @@
+.glyphFail:before,
+.glyphInProgress:before,
+.glyphPass:before {
+  padding-left: 8px;
+}
+
+.glyphFail:before {
+  content: "❌";
+}
+
+.glyphInProgress:before {
+  content: "🐺";
+}
+
+.glyphPass:before {
+  content: "✅";
+}

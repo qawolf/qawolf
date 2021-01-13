@@ -1,0 +1,7 @@
+.toggle span {
+  opacity: 0;
+}
+
+.toggle:hover span {
+  opacity: 1;
+}

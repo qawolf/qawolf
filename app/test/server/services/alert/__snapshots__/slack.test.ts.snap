@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`buildMessageForSuite builds a Slack message for a failing suite 1`] = `
+Object {
+  "blocks": Array [
+    Object {
+      "elements": Array [
+        Object {
+          "alt_text": "Wolf1",
+          "image_url": "https://storage.googleapis.com/spirit-imgs/wolf-brown-slack.png",
+          "type": "image",
+        },
+        Object {
+          "text": "Wolf1 here: <http://localhost:3000/tests/suiteId|group1 tests> failed.",
+          "type": "mrkdwn",
+        },
+      ],
+      "type": "context",
+    },
+    Object {
+      "accessory": Object {
+        "alt_text": "testName",
+        "image_url": "url",
+        "type": "image",
+      },
+      "text": Object {
+        "text": "<http://localhost:3000/run/runId|testName>",
+        "type": "mrkdwn",
+      },
+      "type": "section",
+    },
+  ],
+}
+`;
+
+exports[`buildMessageForSuite builds a Slack message for a passing suite 1`] = `
+Object {
+  "blocks": Array [
+    Object {
+      "elements": Array [
+        Object {
+          "alt_text": "Wolf1",
+          "image_url": "https://storage.googleapis.com/spirit-imgs/wolf-brown-slack.png",
+          "type": "image",
+        },
+        Object {
+          "text": "Wolf1 here: <http://localhost:3000/tests/suiteId|group1 tests> passed!",
+          "type": "mrkdwn",
+        },
+      ],
+      "type": "context",
+    },
+  ],
+}
+`;

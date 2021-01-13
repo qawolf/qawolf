@@ -1,0 +1,54 @@
+name: Runner Tests
+
+on:
+  push:
+    paths:
+      - ".github/workflows/test_runner.yml"
+      - "recorder/**"
+      - "runner/**"
+      - "sandbox/**"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./runner
+
+      - name: Install recorder dependencies
+        run: npm install
+        working-directory: ./recorder
+
+      - name: Lint runner
+        run: npm run lint
+        working-directory: ./runner
+
+      - run: Xvfb :0 -ac -screen 0 1288x804x24 &
+
+      - name: Install ffmpeg
+        run: npm install @ffmpeg-installer/ffmpeg
+        working-directory: ./runner
+
+      - name: Build and copy recorder script
+        run: npm run build:recorder-script
+        working-directory: ./runner
+
+      - name: Start sandbox
+        run: |
+          npm install --no-package-lock --no-save serve-handler
+          ./bin/serve.js &
+        working-directory: ./sandbox
+
+      - name: Wait for sandbox
+        run: npx wait-on http://localhost:5000
+
+      - name: Test runner
+        run: |
+          export FFMPEG_PATH=$(node -e "console.log(require('@ffmpeg-installer/ffmpeg').path)")
+          DEBUG=spirit* npm run test
+        working-directory: ./runner

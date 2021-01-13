@@ -1,0 +1,1081 @@
+"""
+Information about an API key. The token can be used for GraphQL queries and
+mutations that require an 'api_key' parameter.
+"""
+type ApiKey {
+  "Date and time at which the API key was created"
+  created_at: String!
+
+  "ID"
+  id: ID!
+
+  "Date and time at which the API key was last created"
+  last_used_at: String
+
+  "A name for this key, supplied by the user who created it and used to track what uses it"
+  name: String!
+
+  "The token. This is set in the response from creating the token but otherwise is null"
+  token: String
+
+  "The last four characters of the token, for showing in the UI to help identify tokens in use"
+  token_end: String!
+}
+
+"URLs where artifacts from a test run can be found"
+type Artifacts {
+  "Secure URL for a GIF of a test run"
+  gifUrl: String
+
+  "Secure URL for the logs of a test run"
+  logsUrl: String!
+
+  "Secure URL for the video of a test run"
+  videoUrl: String
+}
+
+"A grouper for a user with their access token"
+type AuthenticatedUser {
+  "An access token that can be used to authenticate future requests"
+  access_token: String!
+
+  "The user who is associated with this access token"
+  user: User!
+}
+
+"A grouper for data used by the dashboard"
+type Dashboard {
+  "ID of the test group that this dashboard data is for"
+  group_id: ID!
+
+  "List of the most recent 50 suites in this group, from newest to oldest"
+  suites: [Suite!]!
+
+  "List of all tests in this group, ordered alphabetically by test name ascending."
+  tests: [Test!]!
+}
+
+"A response from the deleteGroup mutation"
+type DeleteGroup {
+  "ID of the default group"
+  default_group_id: ID!
+
+  "ID of the deleted group"
+  id: ID!
+}
+
+"Environment for a deployment"
+enum DeploymentEnvironment {
+  "Preview"
+  preview
+
+  "Production"
+  production
+}
+
+"A single defined environment variable for a test group"
+type EnvironmentVariable {
+  "Date and time at which the environment variable record was created"
+  created_at: String!
+
+  "Test group associated with this environment variable"
+  group_id: ID!
+
+  "Environment variable ID"
+  id: ID!
+
+  "Variable name, as it will be set on `process.env`"
+  name: String!
+
+  "Team associated with this environment variable"
+  team_id: ID!
+}
+
+"A grouper for environment variable records and resolved environment variables with values"
+type EnvironmentVariables {
+  """
+  A JSON object with key:value env variables, with decrypted values. This
+  includes all environment variables from the team's default test group.
+  """
+  env: String!
+
+  """
+  All environment variable records for the group. Unlike the 'env' field these
+  do not include team defaults.
+  """
+  variables: [EnvironmentVariable!]!
+}
+
+"Valid types for Integration.type"
+enum IntegrationType {
+  "GitHub (https://github.com/)"
+  github
+  "Slack (https://slack.com/)"
+  slack
+}
+
+"Represents one integration with an external system such as Slack"
+type Integration {
+  "GitHub repo name"
+  github_repo_name: String
+
+  "Integration ID"
+  id: ID!
+
+  "Slack channel name"
+  slack_channel: String
+
+  "Slack team name"
+  team_name: String
+
+  "Integration type"
+  type: IntegrationType!
+}
+
+"An invite sent to a user to join a QA Wolf team"
+type Invite {
+  "Email address invite was sent to"
+  email: String!
+
+  "Invite ID"
+  id: ID!
+
+  "ID of the team the user was invited to join"
+  team_id: ID!
+
+  "The name of the wolf assigned to this user"
+  wolf_name: String!
+
+  "The number of the wolf assigned to this user"
+  wolf_number: Int!
+
+  "The name of the wolf variant assigned to this user"
+  wolf_variant: String!
+}
+
+"A test group"
+type Group {
+  "The ID of a Slack integration associated with this test group"
+  alert_integration_id: ID
+
+  "The branches to run tests on for the GitHub integration (comma separated list)."
+  deployment_branches: String
+
+  "The deployment environment to run tests on for the GitHub integration."
+  deployment_environment: DeploymentEnvironment
+
+  "The ID of a deployment integration associated with this test group"
+  deployment_integration_id: ID
+
+  "Test group ID"
+  id: String!
+
+  "True if this is the default test group for the team that owns it"
+  is_default: Boolean!
+
+  """
+  True if all users on the associated team should be alerted by email whenever
+  a test run finished for this group.
+  """
+  is_email_enabled: Boolean!
+
+  "A name for the group, for users to identify it in the UI"
+  name: String!
+
+  "Date and time at which this test group is next scheduled to run"
+  next_at: String
+
+  "Number of minutes between test runs for the group"
+  repeat_minutes: Int
+}
+
+"Status of a test run"
+enum RunStatus {
+  "Created (in progress)"
+  created
+
+  "Completed but failed"
+  fail
+
+  "Completed and passed"
+  pass
+}
+
+"Current details and status for one run of a single test"
+type Run {
+  "The test code"
+  code: String!
+
+  "Date and time at which the run finished, if it is done"
+  completed_at: String
+
+  "Date and time at which the run was created"
+  created_at: String!
+
+  "If the run is in progress, which line of `code` it is currently executing"
+  current_line: Int
+
+  "Test run ID"
+  id: ID!
+
+  "URL for logs from the test run, if any"
+  logs_url: String
+
+  "Date and time at which the run started"
+  started_at: String
+
+  "Current status of the run"
+  status: RunStatus!
+
+  "Associated suite ID"
+  suite_id: ID
+
+  "Associated test ID (which test we are running)"
+  test_id: ID!
+
+  "URL for a video of the test run, if there's a video"
+  video_url: String
+}
+
+"Connection information for a test runner"
+type Runner {
+  "The API key associated with the test runner"
+  api_key: String
+
+  "The WebSockets URL for connecting to the runner"
+  ws_url: String
+}
+
+"Information needed by a test runner to run a single test"
+type RunnerRun {
+  "The secure URLs at which to store artifacts"
+  artifacts: Artifacts!
+
+  "Test code to run"
+  code: String!
+
+  """
+  Environment variables as a JSON key:value object string. The runner
+  makes these available on `process.env`.
+  """
+  env: String!
+
+  "The RunnerRun ID"
+  id: ID!
+
+  "ID of the record for the running test"
+  test_id: ID!
+
+  "Test version, incremented as the test code changes"
+  version: Int!
+}
+
+"A response from the sendLoginCode mutation"
+type SendLoginCode {
+  "Email address to which a login code was sent"
+  email: String!
+}
+
+"All the test runs for one run of a test group"
+type Suite {
+  "Date and time at which the suite was created (group test run began)"
+  created_at: String!
+
+  "Associated test group ID"
+  group_id: ID!
+
+  "Suite ID"
+  id: ID!
+
+  "Associated test runs"
+  runs: [SuiteRun!]!
+
+  "ID of the team that owns the associated test group"
+  team_id: ID!
+}
+
+"One run for one test that is part of a test group we are running all at once"
+type SuiteRun {
+  "Date and time at which the run finished, if it is done"
+  completed_at: String
+
+  "Secure URL to a GIF of the run"
+  gif_url: String
+
+  "Suite run ID"
+  id: ID!
+
+  "True if the test is deleted"
+  is_test_deleted: Boolean!
+
+  "Date and time at which the run started, if it has started"
+  started_at: String
+
+  "Current status of the run"
+  status: RunStatus!
+
+  "ID of the test we are running"
+  test_id: ID!
+
+  "Name of the test we are running"
+  test_name: String!
+}
+
+"A team of users"
+type Team {
+  "Team ID"
+  id: ID!
+
+  "True if the team is enabled"
+  is_enabled: Boolean!
+
+  """
+  List of all invites to the team that are not yet
+  expired or accepted, sorted by email ascending
+  """
+  invites: [Invite!]!
+
+  "Team name, for display in UI"
+  name: String!
+
+  "Current plan this team is on"
+  plan: String!
+
+  "Date and time at which this team's plan subscription was last renewed"
+  renewed_at: String
+
+  "All users who belong to this team, sorted by email ascending"
+  users: [User!]!
+}
+
+"A browser test"
+type Test {
+  "The test code (JavaScript)"
+  code: String!
+
+  "Date and time at which this test was deleted, if it was"
+  deleted_at: String
+
+  "List of test groups this test belongs to"
+  groups: [Group!]!
+
+  "Test ID"
+  id: ID!
+
+  "True if the test is enabled"
+  is_enabled: Boolean!
+
+  "A name for the test, for display in UI"
+  name: String!
+
+  "Summary of most recent runs of this test"
+  summary: TestSummary
+
+  "Date and time at which this test was last updated"
+  updated_at: String!
+
+  "Test URL"
+  url: String!
+
+  "Test version, incremented as the test code changes"
+  version: Int!
+}
+
+"Results for a test run"
+type TestResult {
+  "The test run"
+  run: Run
+
+  "The test"
+  test: Test!
+}
+
+"Summary of most recent runs of a test"
+type TestSummary {
+  "URL for a GIF of the most recent test run"
+  gif_url: String
+
+  "The most recent 10 runs of this test, in descending order of when they started"
+  last_runs: [SuiteRun!]!
+}
+
+"A registered QA Wolf user"
+type User {
+  "URL for an avatar image, suitable for use in an `img` element"
+  avatar_url: String
+
+  "Primary registered email address for login"
+  email: String!
+
+  "GitHub login name, if they have a linked GitHub account"
+  github_login: String
+
+  "User ID"
+  id: ID!
+
+  "Date and time at which this user was onboarded, if they were"
+  onboarded_at: String
+
+  "List of teams this user belongs to"
+  teams: [Team!]!
+
+  "The name of the wolf assigned to this user"
+  wolf_name: String!
+
+  "The number of the wolf assigned to this user"
+  wolf_number: Int!
+
+  "The name of the wolf variant assigned to this user"
+  wolf_variant: String!
+}
+
+"A QA Wolf wolf character"
+type Wolf {
+  "Name, for display"
+  name: String!
+
+  "Wolf number"
+  number: Int!
+
+  "Wolf variant"
+  variant: String!
+}
+
+"Mutations allow you to modify data"
+type Mutation {
+  """
+  Accept an invite to join a team. This mutation requires authentication,
+  so you would first create a user or sign in and then accept one or more
+  invites.
+  """
+  acceptInvite(
+    """
+    Invite ID
+    """
+    id: ID!
+  ): Invite!
+
+  """
+  Create an API key. The returned token can be used for GraphQL queries and
+  mutations that require an `api_key` parameter. The response is the only
+  time the `token` is visible. If you don't save it for later use, you will
+  have to generate a new API key.
+
+  Requires that you have access to the team.
+  """
+  createApiKey(
+    """
+    A name for this key, shown in the UI for users to understand what uses it
+    """
+    name: String!
+
+    """
+    The API key will be able to call certain queries and mutations on behalf
+    of this team.
+    """
+    team_id: ID!
+  ): ApiKey!
+
+  """
+  Create GitHub integrations. When the GitHub app is installed, this reconciles
+  the integrations in the database with the repos that the GitHub app has access to.
+  The response is the list of integrations created as a result of the specified
+  GitHub app installation.
+
+  Requires that you have access to the team.
+  """
+  createGitHubIntegrations(
+    """
+    The installation id of the GitHub app
+    """
+    installation_id: ID!
+
+    """
+    The GitHub repos accessible to the app installation will belong to this team.
+    """
+    team_id: ID!
+  ): [Integration!]!
+
+  """
+  Create a new test group. The group is given an automatic
+  unique name, which can then be changed using `updateGroup`.
+
+  Requires that you have access to the team.
+  """
+  createGroup(
+    """
+    ID of the team that should own the group
+    """
+    team_id: ID!
+  ): Group!
+
+  """
+  Creates a new environment variable record for a test group.
+
+  Requires that you have access to the team that owns the group.
+  """
+  createEnvironmentVariable(
+    "ID of the test group to associate this variable with"
+    group_id: ID!
+
+    "Name (key) for the variable"
+    name: String!
+
+    "Value for the variable. This will be encrypted before being stored."
+    value: String!
+  ): EnvironmentVariable!
+
+  """
+  Invites one or more people to join a team by email. Emails are sent
+  immediately, so this may take a little longer to respond.
+
+  Requires that you have access to the team.
+  """
+  createInvites(
+    """
+    List of email addresses to invite
+    """
+    emails: [String!]!
+
+    """
+    Team ID
+    """
+    team_id: ID!
+  ): [Invite!]!
+
+  """
+  Creates a GitHub sign-in URL. Because this is used to support
+  signing in, no authentication is required.
+  """
+  createSignInUrl(
+    """
+    Relative app URL to redirect to after signing in
+    """
+    redirect_uri: String!
+  ): String!
+
+  """
+  Creates a new Slack integration record, which links one test group
+  with one Slack channel.
+
+  Requires that you have access to the team that owns the group.
+  """
+  createSlackIntegration(
+    """
+    Test group ID
+    """
+    group_id: ID!
+
+    """
+    Relative app URL to redirect to after approving the integration
+    """
+    redirect_uri: String!
+
+    """
+    The code to send to Slack for the OAuth flow
+    """
+    slack_code: String!
+  ): Integration!
+
+  """
+  Creates and returns a URL that can be used to begin a Slack OAuth flow,
+  which allows you to authorize a Slack integration.
+  """
+  createSlackIntegrationUrl(
+    """
+    Relative app URL to redirect to after the OAuth flow
+    """
+    redirect_uri: String!
+  ): String!
+
+  """
+  Creates a new test suite for one or more tests from a single test group.
+  Returns the ID of the created suite.
+
+  Requires that you have access to the team that owns the group, and that
+  the team's plan limit for test runs has not been reached.
+  """
+  createSuite(
+    """
+    Group ID
+    """
+    group_id: ID!
+
+    """
+    List of test IDs to include in the suite. Only those that are
+    enabled and not deleted will be included, and any that are not
+    in the specified test group will be ignored.
+    """
+    test_ids: [ID!]
+  ): String!
+
+  """
+  Creates a new test. The URL is used as the first page the browser
+  will visit in the test, but this can be changed later.
+
+  Requires that you are logged in and a member of at least one team.
+  """
+  createTest(
+    """
+    ID of test group to put the test in. If not provided, it will be
+    put in the default test group for the authenticated user's team.
+    If the user is on multiple teams and you don't specify a group ID,
+    creation will fail.
+    """
+    group_id: ID
+
+    """
+    The URL to navigate to first in the test browser (the URL
+    of the page you want to test)
+    """
+    url: String!
+  ): Test!
+
+  """
+  Deletes an API key record by ID. The token is always `null` in the
+  returned API key.
+
+  Requires that you have access to the team that owns the API key
+  """
+  deleteApiKey(
+    """
+    API key ID
+    """
+    id: ID!
+  ): ApiKey!
+
+  """
+  Deletes an environment variable record by ID.
+
+  Requires that you have access to the team that owns the group
+  that is associated with the variable.
+  """
+  deleteEnvironmentVariable(
+    "Environment variable ID"
+    id: ID!
+  ): EnvironmentVariable!
+
+  """
+  Soft deletes a test group record by ID. You cannot delete the
+  default test group for a team. All tests are removed from a
+  group when it is soft deleted, but the tests themselves are
+  not deleted an remain in any other groups as well as the default
+  group.
+
+  Requires that you have access to the team that owns the test group
+  """
+  deleteGroup(
+    """
+    Test group ID
+    """
+    id: ID!
+  ): DeleteGroup!
+
+  """
+  Soft deletes one or more tests by ID. Tests are removed from
+  all groups when they are soft deleted.
+
+  Requires that you have access to the team that owns each test.
+  """
+  deleteTests(
+    """
+    Array of test IDs to delete
+    """
+    ids: [ID!]!
+  ): [Test!]!
+
+  """
+  Track run metrics.
+  """
+  instrumentTestRun(
+    """
+    The current status of the run
+    """
+    status: RunStatus!
+    """
+    The test ID of the run
+    """
+    test_id: ID!
+  ): Boolean!
+
+  """
+  Join the QA Wolf email list.
+  """
+  joinMailingList(
+    """
+    Email address
+    """
+    email: String
+  ): Boolean!
+
+  """
+  A multi-purpose mutation that always ends with sending a magic logic code
+  to an email address, which can then be used as a parameter value for the
+  `signInWithEmail` mutation.
+
+  Because this is used to support signing in, no authentication is required.
+  """
+  sendLoginCode(
+    """
+    The email address for the user who wants to sign in (i.e., obtain an
+    authentication token for API requests). If this is not the email address
+    assocated with an existing user account, then a new user account with
+    this address will be created before the login code is sent.
+    """
+    email: String!
+
+    """
+    If `email` is not associated with an existing user account (if this is a
+    sign up), you may optionally provide an invite ID, which will prevent a
+    new default team from being created for the new user account. This does
+    not accept the invite. You must call the `acceptInvite` mutation after
+    you obtain an access token to accept the invite.
+    """
+    invite_id: ID
+  ): SendLoginCode!
+
+  """
+  Completes a login request, returning a valid access token. This is
+  the second step of email login after the `sendLoginCode` mutation.
+
+  Because this is used to support signing in, no authentication is required.
+  """
+  signInWithEmail(
+    """
+    The email address for the user who wants to sign in (i.e., obtain an
+    authentication token for API requests). Use the same email that was
+    passed to the `sendLoginCode` mutation.
+    """
+    email: String!
+
+    """
+    The login code that was sent by email to the email address. If this
+    code is expired, a new code will be sent immediately, and you can
+    then call this mutation again with the new code.
+    """
+    login_code: String!
+  ): AuthenticatedUser!
+
+  """
+  After going through the GitHub OAuth flow, use this mutation to obtain
+  a valid access token.
+
+  Because this is used to support signing in, no authentication is required.
+  """
+  signInWithGitHub(
+    """
+    Code received from GitHub OAuth flow
+    """
+    github_code: String!
+
+    """
+    State value received from GitHub OAuth flow
+    """
+    github_state: String!
+
+    """
+    If accepting an invitation to join a team, provide the invite ID. This
+    will prevent a new default team from being created if this is a new
+    user account. This does not accept the invite. You must call the
+    `acceptInvite` mutation after you obtain an access token to accept
+    the invite.
+    """
+    invite_id: ID
+  ): AuthenticatedUser!
+
+  """
+  Updates a test group by ID.
+
+  Requires that you have access to the team that owns the group.
+  """
+  updateGroup(
+    """
+    Updated value for this field. If this field is omitted, it will
+    not be changed. If it is `null`, it will be cleared.
+    """
+    deployment_branches: String
+
+    """
+    Updated value for this field. If this field is omitted, it will
+    not be changed. If it is `null`, it will be cleared.
+    """
+    deployment_environment: DeploymentEnvironment
+
+    """
+    Updated deployment integration ID. If this field is omitted, it will not be
+    changed. If it is `null`, it will be cleared.
+    """
+    deployment_integration_id: ID
+
+    "Test group ID"
+    id: ID!
+
+    """
+    Updated value for this field. If this field is omitted, it will
+    not be changed. If it is `null`, it will be cleared.
+    """
+    is_email_enabled: Boolean
+
+    """
+    Updated group name. If this field is omitted, it will
+    not be changed. If it is `null`, it will be cleared. If
+    `group.is_default` is `true`, an error will occur. The
+    default group cannot be renamed.
+    """
+    name: String
+
+    """
+    Updated alert integration ID. If this field is omitted, it will not be
+    changed. If it is `null`, it will be cleared.
+    """
+    alert_integration_id: ID
+
+    """
+    Updated time in minutes between test runs for the group.
+    If this field is omitted, it will not be changed. If it
+    is `null`, it will be cleared. Whenever you change this
+    value, the next upcoming run is also immediately rescheduled.
+    """
+    repeat_minutes: Int
+  ): Group!
+
+  """
+  Adds one or more tests to a group. Returns the number of
+  group-test relationships that were added or removed.
+
+  Requires that you have access to the team that owns the group.
+  """
+  updateGroupTests(
+    """
+    ID of test group to add all the tests to. If this field is set,
+    `remove_group_id` may not be set.
+    """
+    add_group_id: ID
+
+    """
+    ID of test group to remove all the tests from. If this field is set,
+    `add_group_id` may not be set.
+    """
+    remove_group_id: ID
+
+    """
+    List of test IDs to add to / remove from the test group.
+    """
+    test_ids: [ID!]
+  ): Int!
+
+  """
+  Updates information about a test run by run ID. A runner service calls
+  this to provide status updates.
+
+  An API key is needed to call this mutation.
+  """
+  updateRun(
+    """
+    Which line of code is currently being executed by the runner.
+    If not provided, defaults to `1`.
+    """
+    current_line: Int
+
+    """
+    The ID of the run to update
+    """
+    id: ID!
+
+    """
+    The current status of the run
+    """
+    status: RunStatus!
+  ): Run!
+
+  """
+  Updates information about a test runner by runner ID. A
+  runner service calls this to provide status updates.
+
+  You are expected to provide either `is_healthy` or `is_ready`
+  but not both. If both are provided, only `is_ready` is
+  used. If neither are provided, there will be an error.
+
+  If the runner has no suite run currently associated with it,
+  this will return `null`.
+
+  An API key is needed to call this mutation.
+  """
+  updateRunner(
+    """
+    The ID of the runner to update
+    """
+    id: ID!
+
+    """
+    Whether the runner is currently in a healthy state
+    """
+    is_healthy: Boolean
+
+    """
+    Whether the runner is currently in a ready state
+    """
+    is_ready: Boolean
+  ): RunnerRun
+
+  """
+  Updates a team by ID.
+
+  Requires that you have access to the team.
+  """
+  updateTeam(
+    """
+    Team ID
+    """
+    id: ID!
+
+    """
+    New name for the team
+    """
+    name: String!
+  ): Team!
+
+  """
+  Updates a test by ID.
+
+  Requires that you have access to the team that owns the test.
+  """
+  updateTest(
+    """
+    Updated test code (JavaScript that runs). If omitted or `null`,
+    the code will not be updated. Pass an empty string to clear the
+    code.
+    """
+    code: String
+
+    """
+    ID of test to update
+    """
+    id: ID!
+
+    """
+    Whether the test is enabled. If omitted or `null`,
+    the field will not be updated.
+    """
+    is_enabled: Boolean
+
+    """
+    Updated test name. If omitted or `null` or an empty string,
+    the name will not be updated.
+    """
+    name: String
+
+    """
+    Updated code version number. If omitted or `null`,
+    the version will not be updated. If this is provided and is
+    not higher than the current version, the update will fail.
+    This is done to prevent out-of-order updates from being
+    accepted.
+    """
+    version: Int
+  ): Test!
+
+  """
+  Update the currently authenticated user record.
+
+  Requires that you are signed in (provide a valid access token)
+  """
+  updateUser(
+    """
+    Set the date and time at which the user finished the onboarding flow
+    """
+    onboarded_at: String!
+  ): User!
+}
+
+"Queries allow you to retrieve but not modify data"
+type Query {
+  """
+  Returns all API keys for a team. The token field is always null for security reasons.
+
+  Requires that you have access to the team.
+  """
+  apiKeys("The team ID" team_id: ID!): [ApiKey!]!
+
+  """
+  Returns the user associated with the request authentication token, or null if not logged in
+  """
+  currentUser: User
+
+  """
+  Returns dashboard data (tests and suites) for a single test group.
+
+  One of the teams you are on must have access to the test group.
+  """
+  dashboard("The group ID" group_id: ID!): Dashboard!
+
+  """
+  Returns environment variables for a single test group by group ID.
+
+  One of the teams you are on must have access to the test group.
+  """
+  environmentVariables("The group ID" group_id: ID!): EnvironmentVariables!
+
+  """
+  Returns the runner for the run or test.
+  """
+  runner(
+    """
+    Run ID
+    """
+    run_id: ID
+
+    """
+    Request a runner for the test
+    """
+    should_request_runner: Boolean
+
+    """
+    Test ID
+    """
+    test_id: ID
+  ): Runner
+
+  """
+  Returns all test groups for a single team by team ID. The default group is
+  always first, followed by other groups ordered by name ascending.
+
+  Requires that you have access to the team.
+  """
+  groups("The team ID" team_id: ID!): [Group!]!
+
+  """
+  Returns all integrations for a single team by team ID.
+
+  Requires that you have access to the team.
+  """
+  integrations("The team ID" team_id: ID!): [Integration!]!
+
+  """
+  Returns a single test suite by ID.
+
+  Requires that one of the teams you are on owns the test suite.
+  """
+  suite("The suite ID" id: ID!): Suite!
+
+  """
+  Returns a single team by ID.
+
+  Requires that you are on the team.
+  """
+  team("The team ID" id: ID!): Team!
+
+  """
+  Returns a test result by test ID or run ID. If 'run_id' is provided,
+  then 'TestResult.run' will be set. Otherwise it will be null.
+
+  Requires that one of the teams you are on owns the test.
+  """
+  test(
+    "The test ID"
+    id: ID
+
+    "The test run ID"
+    run_id: ID
+  ): TestResult!
+}

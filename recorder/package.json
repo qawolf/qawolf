@@ -1,0 +1,49 @@
+{
+  "name": "qawolf-recorder",
+  "version": "1.0.0",
+  "description": "Create browser tests 10x faster",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "files": [
+    "build"
+  ],
+  "engines": {
+    "node": ">=14.15.1"
+  },
+  "scripts": {
+    "clean": "rimraf build tmp",
+    "build": "npx webpack --config webpack.config.js",
+    "build:watch": "npx webpack --config webpack.config.js --watch",
+    "lint": "eslint --ext .ts,.tsx --config .eslintrc.json --no-eslintrc src",
+    "test": "jest",
+    "test:speed": "ts-node -O '{\"module\":\"commonjs\"}' ./test/performance/speed.ts"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "an-array-of-english-words": "^2.0.0",
+    "html-tags": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.14",
+    "@types/node": "^14.11.8",
+    "@typescript-eslint/eslint-plugin": "^4.2.0",
+    "@typescript-eslint/parser": "^4.2.0",
+    "eslint": "^7.9.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-jest": "^24.0.2",
+    "jest": "^26.4.2",
+    "jest-mock-process": "^1.4.0",
+    "playwright": "^1.4.2",
+    "playwright-core": "^1.4.2",
+    "prettier": "^2.1.2",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^26.4.0",
+    "ts-loader": "^8.0.4",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.3",
+    "wait-for-expect": "^3.0.2",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12",
+    "webpack-virtual-modules": "^0.3.1"
+  }
+}

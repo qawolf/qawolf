@@ -1,0 +1,305 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getExpressions parses expressions from code 1`] = `
+Array [
+  Object {
+    "code": "await page.click(\\"a\\");",
+    "endLine": 1,
+    "startLine": 1,
+    "variableNames": Array [],
+  },
+]
+`;
+
+exports[`getExpressions parses expressions from code 2`] = `
+Array [
+  Object {
+    "code": "await page.click(
+  '[placeholder=\\"Search by location..\\"]'
+);",
+    "endLine": 5,
+    "startLine": 3,
+    "variableNames": Array [],
+  },
+  Object {
+    "code": "await page.fill('[placeholder=\\"Search by location..\\"]', \\"Lakeside Village\\");",
+    "endLine": 6,
+    "startLine": 6,
+    "variableNames": Array [],
+  },
+  Object {
+    "code": "await page.click(\\"a\\");",
+    "endLine": 7,
+    "startLine": 7,
+    "variableNames": Array [],
+  },
+  Object {
+    "code": "// comment about function
+function myFunction() {
+  const myInnerConst = \\"hi\\";
+  console.log(\\"SUP\\"!);
+}",
+    "endLine": 13,
+    "startLine": 9,
+    "variableNames": Array [],
+  },
+  Object {
+    "code": "myFunction();",
+    "endLine": 15,
+    "startLine": 15,
+    "variableNames": Array [],
+  },
+  Object {
+    "code": "await myFunction();",
+    "endLine": 17,
+    "startLine": 17,
+    "variableNames": Array [],
+  },
+  Object {
+    "code": "var myVar = \\"hello\\";",
+    "endLine": 19,
+    "startLine": 19,
+    "variableNames": Array [
+      "myVar",
+    ],
+  },
+  Object {
+    "code": "const myConst =  \\"world\\";",
+    "endLine": 20,
+    "startLine": 20,
+    "variableNames": Array [
+      "myConst",
+    ],
+  },
+  Object {
+    "code": "let myLet = \\"!\\";",
+    "endLine": 21,
+    "startLine": 21,
+    "variableNames": Array [
+      "myLet",
+    ],
+  },
+  Object {
+    "code": "myLet = \\"!!\\";",
+    "endLine": 22,
+    "startLine": 22,
+    "variableNames": Array [
+      "myLet",
+    ],
+  },
+]
+`;
+
+exports[`getExpressions parses expressions from code 3`] = `
+Array [
+  Object {
+    "code": "const todo = \\"hi there!\\";",
+    "endLine": 1,
+    "startLine": 1,
+    "variableNames": Array [
+      "todo",
+    ],
+  },
+  Object {
+    "code": "await page.goto('http://todomvc.com/examples/react');",
+    "endLine": 2,
+    "startLine": 2,
+    "variableNames": Array [],
+  },
+  Object {
+    "code": "// enter new todo
+await page.click(\\".new-todo\\");",
+    "endLine": 5,
+    "startLine": 4,
+    "variableNames": Array [],
+  },
+  Object {
+    "code": "await page.fill(\\".new-todo\\", todo);",
+    "endLine": 7,
+    "startLine": 7,
+    "variableNames": Array [],
+  },
+  Object {
+    "code": "await page.press(\\".new-todo\\", \\"Enter\\");",
+    "endLine": 8,
+    "startLine": 8,
+    "variableNames": Array [],
+  },
+  Object {
+    "code": "// complete todo
+await page.click(
+    \\".toggle\\"
+);",
+    "endLine": 13,
+    "startLine": 10,
+    "variableNames": Array [],
+  },
+  Object {
+    "code": "// clear completed
+await page.click(\\".clear-completed\\");",
+    "endLine": 16,
+    "startLine": 15,
+    "variableNames": Array [],
+  },
+]
+`;
+
+exports[`transformCode takes start and end lines into account 1`] = `
+"
+const webEditorCode = async (variables, { vmEnv, vmLineStarted }) => {
+var { page  } = variables;
+process.env = { ...process.env, ...vmEnv };
+vmLineStarted(1)
+await page.click(\\"a\\");
+};
+
+module.exports = webEditorCode;
+"
+`;
+
+exports[`transformCode takes start and end lines into account 2`] = `
+"
+const webEditorCode = async (variables, { vmEnv, vmLineStarted }) => {
+var { page, x, y, z  } = variables;
+process.env = { ...process.env, ...vmEnv };
+vmLineStarted(5)
+await page.click(
+  '[placeholder=\\"Search by location..\\"]'
+);
+};
+
+module.exports = webEditorCode;
+"
+`;
+
+exports[`transformCode takes start and end lines into account 3`] = `
+"
+const webEditorCode = async (variables, { vmEnv, vmLineStarted }) => {
+var { page, x, y, z  } = variables;
+process.env = { ...process.env, ...vmEnv };
+vmLineStarted(5)
+await page.click(
+  '[placeholder=\\"Search by location..\\"]'
+);
+vmLineStarted(6)
+await page.fill('[placeholder=\\"Search by location..\\"]', \\"Lakeside Village\\");
+vmLineStarted(7)
+await page.click(\\"a\\");
+vmLineStarted(13)
+// comment about function
+function myFunction() {
+  const myInnerConst = \\"hi\\";
+  console.log(\\"SUP\\"!);
+}
+};
+
+module.exports = webEditorCode;
+"
+`;
+
+exports[`transformCode takes start and end lines into account 4`] = `
+"
+const webEditorCode = async (variables, { vmEnv, vmLineStarted }) => {
+var {   } = variables;
+process.env = { ...process.env, ...vmEnv };
+vmLineStarted(1)
+var todo = \\"hi there!\\";
+variables[\\"todo\\"] = todo;
+vmLineStarted(2)
+await page.goto('http://todomvc.com/examples/react');
+vmLineStarted(5)
+// enter new todo
+await page.click(\\".new-todo\\");
+};
+
+module.exports = webEditorCode;
+"
+`;
+
+exports[`transformCode takes start and end lines into account 5`] = `
+"
+const webEditorCode = async (variables, { vmEnv, vmLineStarted }) => {
+var {   } = variables;
+process.env = { ...process.env, ...vmEnv };
+vmLineStarted(7)
+await page.fill(\\".new-todo\\", todo);
+vmLineStarted(8)
+await page.press(\\".new-todo\\", \\"Enter\\");
+};
+
+module.exports = webEditorCode;
+"
+`;
+
+exports[`transformCode takes start and end lines into account 6`] = `
+"
+const webEditorCode = async (variables, { vmEnv, vmLineStarted }) => {
+var {   } = variables;
+process.env = { ...process.env, ...vmEnv };
+vmLineStarted(13)
+// complete todo
+await page.click(
+    \\".toggle\\"
+);
+vmLineStarted(16)
+// clear completed
+await page.click(\\".clear-completed\\");
+};
+
+module.exports = webEditorCode;
+"
+`;
+
+exports[`transformCode transforms web editor code 1`] = `
+"
+const webEditorCode = async (variables, { vmEnv, vmLineStarted }) => {
+var { page  } = variables;
+process.env = { ...process.env, ...vmEnv };
+vmLineStarted(1)
+await page.click(\\"a\\");
+};
+
+module.exports = webEditorCode;
+"
+`;
+
+exports[`transformCode transforms web editor code 2`] = `
+"
+const webEditorCode = async (variables, { vmEnv, vmLineStarted }) => {
+var { page, x, y, z  } = variables;
+process.env = { ...process.env, ...vmEnv };
+vmLineStarted(5)
+await page.click(
+  '[placeholder=\\"Search by location..\\"]'
+);
+vmLineStarted(6)
+await page.fill('[placeholder=\\"Search by location..\\"]', \\"Lakeside Village\\");
+vmLineStarted(7)
+await page.click(\\"a\\");
+vmLineStarted(13)
+// comment about function
+function myFunction() {
+  const myInnerConst = \\"hi\\";
+  console.log(\\"SUP\\"!);
+}
+vmLineStarted(15)
+myFunction();
+vmLineStarted(17)
+await myFunction();
+vmLineStarted(19)
+var myVar = \\"hello\\";
+variables[\\"myVar\\"] = myVar;
+vmLineStarted(20)
+var myConst =  \\"world\\";
+variables[\\"myConst\\"] = myConst;
+vmLineStarted(21)
+var myLet = \\"!\\";
+variables[\\"myLet\\"] = myLet;
+vmLineStarted(22)
+myLet = \\"!!\\";
+variables[\\"myLet\\"] = myLet;
+};
+
+module.exports = webEditorCode;
+"
+`;
