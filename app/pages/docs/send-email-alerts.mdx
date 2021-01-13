@@ -1,0 +1,44 @@
+import Header from "../../components/Docs/Header";
+import Image from "../../components/Docs/Image";
+import Layout from "../../components/Docs/Layout";
+import SubHeader from "../../components/Docs/SubHeader";
+import Summary from "../../components/Docs/Summary";
+
+<Layout>
+
+<Header>Send Email Alerts</Header>
+
+In this tutorial, we'll set up QA Wolf to send an email when tests run.
+
+<SubHeader>Email Alerts</SubHeader>
+
+Go to your <a href="https://qawolf.com/tests" target="_blank">test dashboard</a>. Click on "No alerts" and select "Email".
+
+<Image
+  alt="Email alerts"
+  height={200}
+  src="/docs/send-email-alerts/email-on-failure.png"
+  width={600}
+/>
+
+<SubHeader>Conclusion</SubHeader>
+
+When your tests run everyone on your team will receive an email.
+
+<Image
+  alt="Email"
+  height={722}
+  src="/docs/send-email-alerts/email-message.png"
+  width={800}
+/>
+
+The email will link to any failing tests with a video and detailed logs.
+
+<Image
+  alt="Failed test logs"
+  height={672}
+  src="/docs/failed-test.png"
+  width={1600}
+/>
+
+</Layout>

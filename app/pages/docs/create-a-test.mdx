@@ -1,0 +1,85 @@
+import Link from "next/link";
+
+import Header from "../../components/Docs/Header";
+import Image from "../../components/Docs/Image";
+import Layout from "../../components/Docs/Layout";
+import SubHeader from "../../components/Docs/SubHeader";
+import Summary from "../../components/Docs/Summary";
+import TellaVideo from "../../components/Docs/TellaVideo";
+
+<Layout>
+
+<Header>Create a Test</Header>
+
+QA Wolf helps you create tests on your web application. As you use your site, your actions are converted to <a href="https://playwright.dev/docs/core-concepts" target="_blank">Playwright</a> test code.
+
+In this tutorial, we'll create a test on <a href='http://todomvc.com/examples/react' target="_blank">TodoMVC</a>.
+
+<TellaVideo id="ckh6kl6vp000008jj8hfpbt8o" />
+
+<SubHeader>Open Editor</SubHeader>
+
+If you haven't already, [sign up for QA Wolf](/sign-up).
+
+If you just signed up, you will automatically be redirected to the test editor.
+
+Otherwise, click the <strong>Create test</strong> button on the dashboard.
+
+<Image
+  alt="Create test button"
+  height={262}
+  src="/docs/create-a-test/create-test-button.png"
+  width={1600}
+/>
+
+<SubHeader>Create a Test</SubHeader>
+
+Enter the URL you want to test in the input below your QA Wolf.
+
+<Image
+  alt="Enter URL"
+  height={398}
+  src="/docs/create-a-test/enter-url.png"
+  width={800}
+/>
+
+Note: If you want to test a local URL like `localhost:3000`, you need to use our local runner. <a className="open-intercom">Chat with us</a> and we'll help you get set up.
+
+After the page loads, go through the workflow you want to test in the browser. In our example, we 1) created a todo item, 2) completed it, and 3) cleared completed todos.
+
+<Image
+  alt="Create a test in the browser"
+  height={398}
+  src="/docs/create-a-test/created-test.png"
+  width={800}
+/>
+
+As you use your site, your actions are converted to <a href="https://playwright.dev/docs/core-concepts" target="_blank">Playwright</a> test code. You can edit this code as you like, and you have full access to the <a href="https://playwright.dev/docs/api/playwright-module" target="_blank">Playwright API</a>.
+
+<SubHeader>Run a Test</SubHeader>
+
+Now that we have our test, let's run it by clicking the "Run" button. As your test runs, the current line of code is indicated by 🐺. ✅ appears next to passing lines and ❌ appears next to failing lines.
+
+<Image
+  alt="Run tests"
+  height={398}
+  src="/docs/create-a-test/run-test.png"
+  width={800}
+/>
+
+You can view the logs from your test by clicking the "Logs" option next to "Code" above the code editor.
+
+<Image
+  alt="View logs"
+  height={398}
+  src="/docs/create-a-test/view-logs.png"
+  width={800}
+/>
+
+<SubHeader>Conclusion</SubHeader>
+
+Congratulations - you've created your first test with QA Wolf! 🎉
+
+Now let's <Link href="add-an-assertion">add an assertion</Link>.
+
+</Layout>

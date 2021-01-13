@@ -1,0 +1,56 @@
+name: Recorder Tests
+
+on:
+  push:
+    paths:
+      - ".github/workflows/test_recorder.yml"
+      - "recorder/**"
+      - "sandbox/**"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [12.x]
+        test: [lint, chromium, firefox, webkit]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - uses: microsoft/playwright-github-action@v1
+        if: matrix.test != 'lint'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./recorder
+
+      - name: Lint recorder
+        run: npm run lint
+        if: matrix.test == 'lint'
+        working-directory: ./recorder
+
+      - name: Start sandbox
+        run: |
+          npm install --no-package-lock --no-save serve-handler
+          ./bin/serve.js &
+        if: matrix.test != 'lint'
+        working-directory: ./sandbox
+
+      - name: Wait for sandbox
+        run: npx wait-on http://localhost:5000
+        if: matrix.test != 'lint'
+
+      - name: Test recorder
+        run: QAWOLF_BROWSER=${{ matrix.test }} npm test
+        if: matrix.test != 'lint'
+        working-directory: ./recorder
+        env:
+          CI: true

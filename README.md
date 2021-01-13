@@ -1,148 +1,69 @@
-<p align="center"><img src="https://docs.qawolf.com/img/logo_small.png" height="80" /></p>
+<p align="center"><img src="https://qawolf-public.s3.us-east-2.amazonaws.com/logo-small.png" height="80" /></p>
 
-<h1 align="center">QA Wolf</h1>
+<h1 align="center">QA Wolf - Ship confidently</h1>
 
-<h3 align="center">Create browser tests 10x faster</h3>
-
-<p align="center">Free and open source library to create <a href="https://github.com/microsoft/playwright">Playwright</a>/<a href="https://jestjs.io">Jest</a> browser tests and run them in CI</p>
+<p align="center">Set up browser tests in minutes to discover bugs before your users do</p>
 
 <p align="center">
-<a align="center" href="https://twitter.com/intent/tweet?text=%F0%9F%90%BA+QA+Wolf%3A+Create+browser+tests+10x+faster&url=https%3A%2F%2Fgithub.com%2Fqawolf%2Fqawolf"><img src="https://img.shields.io/twitter/url/https/github.com/tterb/hyde.svg?style=social" alt="tweet" /></a>
-  <a href="http://badge.fury.io/js/qawolf"><img src="https://badge.fury.io/js/qawolf.svg" alt="npm version" /></a>
-  <img src="https://github.com/qawolf/qawolf/workflows/QA%20Wolf%20Linux%20Tests/badge.svg" />
-  <img src="https://github.com/qawolf/qawolf/workflows/QA%20Wolf%20Windows%20Tests/badge.svg" />
+<a align="center" href="https://twitter.com/intent/tweet?text=%F0%9F%90%BA+QA+Wolf%3A+Ship+confidently&url=https%3A%2F%2Fqawolf.com"><img src="https://img.shields.io/twitter/url/https/github.com/tterb/hyde.svg?style=social" alt="tweet" /></a>
+<a href="http://slack.qawolf.com"><img src="https://img.shields.io/badge/slack-qawolf-36C5F0.svg?logo=slack" alt="slack" /></a>
 </p>
 
 <p align="center">
-    <a href="https://docs.qawolf.com/docs/install">🚀 Get Started</a> |
-    <a href="https://docs.qawolf.com/docs/api/table_of_contents">📖 API</a> |
-    <a href="https://gitter.im/qawolf/community">👋 Chat</a> |
+    <a href="https://www.qawolf.com/sign-up">🚀 Start Testing</a> |
+    <a href="https://www.qawolf.com/docs">📖 Documentation</a> |
     <a href="https://github.com/qawolf/qawolf/projects/4">🗺️ Roadmap</a>
 </p>
 
-<img src="https://storage.googleapis.com/docs.qawolf.com/website/create.gif">
+<a href="https://youtu.be/q4_kSEh2O7o" alt="create your first browser test">
+<img src="https://qawolf-public.s3.us-east-2.amazonaws.com/create.gif">
+</a>
 
 <br/>
 
 ## 🐺 What is QA Wolf?
 
-QA Wolf is a Node.js library for creating browser tests. Run one command (`npm init qawolf@latest` or `yarn create qawolf`) to configure your project and set up CI.
+We aspire to be the easiest way for developers to set up browser tests.
 
-- **Skip writing boilerplate:** Your browser actions are converted to [Playwright](https://github.com/microsoft/playwright)/[Jest](https://jestjs.io) code.
-- **Create stable tests:** Your tests automatically wait for elements. Element selectors use test attributes when possible, and CSS/text otherwise.
-- **Edit your tests:** Edit your code as it is created and add steps to existing tests. Re-run your tests automatically with watch mode.
-- **Run tests in CI:** A workflow file for your CI provider is automatically created for you.
-- **Debug with ease:** Each test run includes a video and browser logs.
+We found browser testing too difficult and often gave up on it entirely in our previous jobs. We built QA Wolf for people like us who want to ship confidently 🚀 by creating browser tests easily.
 
 <br/>
 
-## 🖥️ Install
-
-[Documentation](https://docs.qawolf.com/docs/install)
-
-<br />
-
-Set up your project for browser tests:
-
-```bash
-cd /my/awesome/project
-npm init qawolf@latest
-# or yarn create qawolf
-```
-
-Configure your test directory and CI provider:
-
-```
-? rootDir: Directory to create tests in (.qawolf)
-
-? Set up CI with GitHub Actions? (y/N)
-```
-
-This will install `qawolf`, `jest` and `playwright` as dev dependencies and create a [CI workflow file](https://docs.qawolf.com/docs/run_tests_in_ci) to:
-
-- 🐎 Run tests in parallel
-- 📹 Record a video of each test
-- 📄 Capture browser logs
+## 🤔 Is QA Wolf a good fit for you?
 
 <br/>
 
-## 🎨 Create a test
-
-[Documentation](https://docs.qawolf.com/docs/create_a_test)
-
-<br />
-
-```bash
-npx qawolf create [url] [name]
-```
-
-💪 Convert your actions into [Playwright](https://github.com/microsoft/playwright) code:
-
-| Action                                                       | Status | Example                                                                    |
-| ------------------------------------------------------------ | :----: | -------------------------------------------------------------------------- |
-| Click                                                        |   ✅   | `page.click('#login')`                                                     |
-| Type                                                         |   ✅   | `page.fill('.username', 'spirit@qawolf.com')`                              |
-| Scroll                                                       |   ✅   | `qawolf.scroll(page, 'html', { x: 0, y: 200 })`                            |
-| Select                                                       |   ✅   | `page.selectOption('.ice_cream', 'chocolate')`                             |
-| Paste                                                        |   ✅   | `page.fill('password', 'pasted')`                                          |
-| Reload                                                       |   ✅   | `page.reload()`                                                            |
-| Replace text                                                 |   ✅   | `page.fill('.username', 'username')`                                       |
-| Go back                                                      |   ✅   | `page.goBack()`                                                            |
-| Use iframes                                                  |   ✅   | `(await page.waitForSelector("#storybook-preview-iframe")).contentFrame()` |
-| Use multiple tabs                                            |   ✅   | `context.newPage()`                                                        |
-| Use a popup                                                  |   ✅   | `qawolf.waitForPage(context, 1)`                                           |
-| Use a test attribute                                         |   ✅   | `page.click("[data-qa='submit']")`                                         |
-| Use a test attribute on an ancestor                          |   ✅   | `page.click("[data-qa='radio'] [value='cat']")`                            |
-| [Drag and drop](https://github.com/qawolf/qawolf/issues/315) |   🗺️   | Coming soon                                                                |
-| [File upload](https://github.com/qawolf/qawolf/issues/331)   |   🗺️   | Coming soon                                                                |
-
-As your test is created:
-
-- ✏️ Edit the code as you like
-- 🖥️ <a href="https://docs.qawolf.com/docs/use_the_repl">Use the REPL</a> to try out commands
+| 🐺 Yes                                                                                              | 🦌 No                                                                      |
+| :-------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------- |
+| ✅ You are a developer, or at least comfortable with code                                           | ✖️ You are not comfortable with code                                       |
+| ✅ You want to get going quickly with an out of the box solution                                    | ✖️ You need a lot of configuration options                                 |
+| ✅ You want to create tests without installing / learning a test framework                          | ✖️ You don't want your browser tests written in JavaScript with Playwright |
+| ✅ You want to run your tests against a public URL on deployment (Netlify, Vercel) or on a schedule | ✖️ You want to run your tests in your own CI                               |
 
 <br/>
 
-## ✅ Run your tests
-
-[Documentation](https://docs.qawolf.com/docs/run_tests_locally)
-
-<br />
-
-On Chromium:
-
-```bash
-npx qawolf test [name]
-```
-
-On Firefox:
-
-```bash
-npx qawolf test --firefox [name]
-```
-
-On Webkit:
-
-```bash
-npx qawolf test --webkit [name]
-```
-
-On all browsers:
-
-```bash
-npx qawolf test --all-browsers [name]
-```
+Curious yet? [🚀 Start testing here](https://www.qawolf.com/sign-up).
 
 <br/>
 
 ## 🙋 Get help
 
-We want QA Wolf to work for you, so please reach out to get help!
-
-If you have a feature request or feedback, please [open an issue](https://github.com/qawolf/qawolf/issues/new) or [chat with us](https://gitter.im/qawolf/community).
+We want QA Wolf to work well for you, so please reach out for help! Join our [Slack community](https://slack.qawolf.com) or email us at hello@qawolf.com.
 
 <br/>
 
-## 📝 License
+## 💻 Contribute
 
-QA Wolf is licensed under [BSD-3-Clause](https://github.com/qawolf/qawolf/blob/main/LICENSE.md).
+We welcome contributions big and small.
+
+Not sure how to started? Schedule a free, no-pressure pairing session with us [here](https://calendly.com/qawolf/30min).
+
+<br/>
+
+## 🙏 Acknowledgments
+
+QA Wolf is built with many awesome open source tools. We'd like to thank those who contributed to all of them, in particular Microsoft's [Playwright](https://github.com/microsoft/playwright) library.
+
+<br/>
+
+We'd also like to thank everyone who has provided us with invaluable feedback. 🐺

@@ -1,0 +1,53 @@
+name: App Tests
+
+on:
+  push:
+    paths:
+      - ".github/workflows/test_server.yml"
+      - "app/**"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    services:
+      postgres:
+        image: postgres:12
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./app
+
+      - name: Lint app
+        run: npm run lint
+        working-directory: ./app
+
+      - name: Test app
+        env:
+          APP_URL: http://localhost:3000
+          ENCRYPT_IV: 8c50331e68d333e51045f339218d50fa
+          ENCRYPT_KEY: b50ceef8a34520483508f8f0e9082ce95f67b9664a20085a6f9f2c03ab5dc3c3
+          GITHUB_OAUTH_CLIENT_ID: 12
+          GITHUB_OAUTH_CLIENT_SECRET: secret
+          GITHUB_USER_AGENT: QA Wolf Dev
+          GITHUB_WEBHOOK_SECRET: secret
+          JOB_SECRET: secret
+          JWT_EXPIRATION: 30d
+          JWT_SECRET: secret
+          # from https://node-postgres.com/features/connecting
+          PGUSER: postgres
+          PGPASSWORD: postgres
+          QAWOLF_AWS_REGION: us-west-1
+          SLACK_CLIENT_ID: client-id
+          TEST_GITHUB_ACCESS_TOKEN: ${{ secrets.TEST_GITHUB_ACCESS_TOKEN }}
+        run: npm run test
+        working-directory: ./app

@@ -1,0 +1,21 @@
+.contentEditable {
+  border: none;
+  outline: none;
+  overflow: hidden;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.rename button {
+  opacity: 0;
+}
+
+.rename:hover button {
+  opacity: 1;
+}
+
+/* disabled classes come last so they override earlier styles */
+.disabled button,
+.disabled:hover button {
+  opacity: 0;
+}

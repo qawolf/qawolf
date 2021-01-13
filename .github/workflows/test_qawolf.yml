@@ -1,0 +1,29 @@
+name: QA Wolf Tests
+
+on:
+  push:
+    paths:
+      - ".github/workflows/test_qawolf.yml"
+      - "qawolf/**"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v1
+
+      - uses: microsoft/playwright-github-action@v1
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./qawolf
+
+      - name: Test qawolf
+        run: npm test
+        working-directory: ./qawolf
+        env:
+          CI: true

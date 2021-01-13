@@ -1,0 +1,41 @@
+import Link from "next/link";
+
+import Header from "../../components/Docs/Header";
+import Image from "../../components/Docs/Image";
+import Layout from "../../components/Docs/Layout";
+import SubHeader from "../../components/Docs/SubHeader";
+import Summary from "../../components/Docs/Summary";
+
+<Layout>
+
+<Header>Schedule Tests</Header>
+
+In this tutorial, we'll schedule our tests to run every day. This helps us ensure our critical workflows are not broken.
+
+<SubHeader>Run Tests Every Day</SubHeader>
+
+Go to your <a href="https://qawolf.com/tests" target="_blank">test dashboard</a> . Click on "No trigger" and select "Run every day".
+
+<Image
+  alt="Schedule tests"
+  height={275}
+  src="/docs/schedule-tests/schedule-tests.png"
+  width={600}
+/>
+
+Now your tests will run every day in parallel.
+
+You can see view previous runs in the "History" panel on the right of the test list.
+
+<Image
+  alt="Test history"
+  height={234}
+  src="/docs/schedule-tests/history.png"
+  width={300}
+/>
+
+<SubHeader>Conclusion</SubHeader>
+
+Now that we scheduled our tests to run, let's <Link href="send-slack-alerts">alert our team</Link> when they fail.
+
+</Layout>

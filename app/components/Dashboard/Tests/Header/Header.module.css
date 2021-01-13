@@ -1,0 +1,18 @@
+.addSlack:hover {
+  background: #e8f1f1;
+}
+
+.selectTrigger p {
+  margin: 0;
+  opacity: 0;
+}
+
+.selectTrigger:hover p {
+  opacity: 1;
+}
+
+/* do not target svg on selectAlert since include other icons */
+.selectAlert:hover .down,
+.selectTrigger:hover svg {
+  margin-top: 4px;
+}

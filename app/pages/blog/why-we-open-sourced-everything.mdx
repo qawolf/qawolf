@@ -1,0 +1,106 @@
+import Layout from "../../components/Blog/Layout";
+import Header from "../../components/Docs/Header";
+import Image from "../../components/Docs/Image";
+
+<Layout>
+
+<Header>Why We Open Sourced Everything</Header>
+
+January 13, 2021
+
+<Image
+  alt="Wolf family"
+  height={450}
+  src="/blog/why-we-open-sourced-everything/index.png"
+  width={680}
+/>
+
+A little over one year ago, <a href="https://twitter.com/jon_perl/status/1193726557988118530" target="\_blank">we open sourced</a> the first version of <a href="https://github.com/qawolf/qawolf" target="_blank">QA Wolf</a>, a tool to help developers create browser tests.
+
+Our goal with QA Wolf was to help developers ship confidently and improve the quality of web-based software. Since then, we've shipped over a hundred releases based on feedback from our users. ❤️
+
+Despite these improvements, we learned that QA Wolf was still too difficult to use for many developers (including ourselves). They still needed to install a Node.js package, set up CI, and become a detective to understand why their test failed. 🕵️
+
+These learnings inspired us to build <a href="https://www.qawolf.com/" target="_blank">QA Wolf 2.0</a>: an easy way to create, run, and debug tests directly from the browser. And we had an important decision to make...
+
+### Should QA Wolf 2.0 be open source?
+
+We kicked around various ideas, including open sourcing parts of the codebase while keeping others closed source. Then we asked ourselves, "what if we just open source all of it?"
+
+It sounded terrifying at first. Our minds dwelled on the possibility of someone ripping off our entire product.
+
+After the initial wave of anxiety subsided, the arguments for open sourcing came clearer into focus. We talked it over with our investors, and they agreed: the pros vastly outweighed the cons.
+
+So today we are <a href="https://github.com/qawolf/qawolf" target="_blank">open sourcing QA Wolf 2.0</a>. We are excited for you to check it out, and look forward to your feedback!
+
+<Image
+  alt="Confused dog"
+  caption="Our code reviewer Finn"
+  src="https://qawolf-public.s3.us-east-2.amazonaws.com/finn-code-review.gif"
+/>
+
+Here is why we open sourced everything:
+
+### It helps build a community
+
+QA Wolf is built for developers who want an easy way to set up browser tests. Open sourcing allows us to meet our audience where they are, and invites the feedback we need to build a great experience.
+
+Open sourcing helps gain developers' trust. They can use QA Wolf without worrying about vendor lock-in. They can peek at the source code, and edit it for their own use case.
+
+Being open source also makes product improvements public, building confidence about the future of the project.
+
+### We will move faster and build a better product
+
+Building in the open is scary. Someone might discover a security hole, or make fun of that gross code we wrote.
+
+We've found this to be a powerful forcing function. Having open issues motivates us to fix them faster, and we feel embarrassed if we don't show consistent progress. We also write better code knowing that anyone can see it.
+
+Finally, we will be grateful for any contributions we get from being open source. 🙏
+
+### Open core is a headache
+
+We considered adopting an "open core" model, where only some parts of the codebase would be publicly available. As we evaluated this option, we realized that it created more problems than it solved.
+
+Open core software is harder to contribute to and maintain. We would have to manage separate packages for various parts of the codebase, and no one else could contribute to the closed source code.
+
+On top of deployment headaches, we would need to constantly evaluate whether new code should be open or closed source. Having a single open source project relieves us and future developers from this burden. It also allows our community to have maximum visibility into our codebase.
+
+### It just feels right
+
+"Be open" is one of our values, and open sourcing feels like the right thing to do.
+
+When we reflect on the good things that have happened to us this year, all of them came from being an open source company. We got invaluable feedback from the very first iteration of QA Wolf. We were also able to raise a pre-seed round (more to come soon in an upcoming post!).
+
+After committing to making our source code public, we had to answer one more question.
+
+### What license do we use?
+
+We want to clarify one thing upfront: <b>we're still not sure we made the right decision</b>. We did what we thought was best at the time to keep moving forward. In the future, our license may change based on your feedback.
+
+After studying open source licenses, we narrowed down our options:
+
+1. Use a permissive license like Apache-2.0. This license allows people to use your code however they want, including to directly compete with your service.
+2. Use the Business Source License (BSL). This license allows people to use your code however they want, except to directly compete with your service without buying a license. Over the past few years, companies like <a href="https://blog.sentry.io/2019/11/06/relicensing-sentry" target="_blank">Sentry</a> and <a href="https://www.cockroachlabs.com/blog/oss-relicensing-cockroachdb/" target="_blank">CockroachDB</a> have adopted this license.
+
+We decided to pursue both options.
+
+We've licensed <a href="https://github.com/qawolf/qawolf/blob/main/LICENSE.md" target="_blank">most folders</a> (CLI and helpers, code generation and test runner) under Apache-2.0. QA Wolf 2.0 would not be possible without similarly licensed open source projects like the <a href="https://github.com/microsoft/playwright" target="_blank">Playwright test framework</a>. It's important that we give back to the community that has given so much to us.
+
+The remainder of our product is licensed under BSL. When evaluating this option, we found that <a href="https://blog.sentry.io/2019/11/06/relicensing-sentry#deciding-to-re-license" target="_blank">Sentry's goals for licensing</a> resonated with us:
+
+- "Anyone should be able to run [the service] for themselves or their business"
+- "No difference between our cloud service and our open source product (no open core model)"
+- "Minimal limitations on usage of code, as free as possible"
+- "Protection from other companies selling our work"
+
+Our goal is to build a sustainable business around our product, and we need to have the resources to do that. BSL allows us to share our source code while giving us some protection over our work.
+
+In the future, we may license the entirety of QA Wolf under Apache-2.0. We're starting here to ensure that we get more rather than less permissive over time.
+
+### Conclusion
+
+Thanks for making it this far. We hope you'll try <a href="https://www.qawolf.com" target="_blank">QA Wolf 2.0</a> and let us know how it goes. 🐺
+
+If you'd like to get in touch, we'd love to hear from you at hello@qawolf.com.
+
+</Layout>

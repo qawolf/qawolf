@@ -1,0 +1,62 @@
+import Header from "../../components/Docs/Header";
+import Image from "../../components/Docs/Image";
+import Layout from "../../components/Docs/Layout";
+import SubHeader from "../../components/Docs/SubHeader";
+import Summary from "../../components/Docs/Summary";
+
+<Layout>
+
+<Header>Send Slack Alerts</Header>
+
+In this tutorial, we'll set up QA Wolf to alert a Slack channel when tests run.
+
+<SubHeader>Add Slack Channel</SubHeader>
+
+Go to your <a href="https://qawolf.com/tests" target="_blank">test dashboard</a>. Click on "No alerts" and select "Add Slack channel".
+
+<Image
+  alt="Add Slack channel"
+  height={200}
+  src="/docs/send-slack-alerts/add-slack-channel.png"
+  width={600}
+/>
+
+Choose the channel to post the alerts to and click "Allow".
+
+<Image
+  alt="Accept Slack permissions"
+  height={600}
+  src="/docs/send-slack-alerts/accept-slack-permissions.png"
+  width={800}
+/>
+
+Finally, choose the relevant Slack channel from the dropdown.
+
+<Image
+  alt="Choose Slack channel"
+  height={250}
+  src="/docs/send-slack-alerts/choose-slack-channel.png"
+  width={600}
+/>
+
+<SubHeader>Conclusion</SubHeader>
+
+When your tests run an alert will be posted to your channel.
+
+<Image
+  alt="Slack message"
+  height={232}
+  src="/docs/send-slack-alerts/slack-message.png"
+  width={800}
+/>
+
+The alert will link to any failing test with a video and detailed logs.
+
+<Image
+  alt="Failed test logs"
+  height={672}
+  src="/docs/failed-test.png"
+  width={1600}
+/>
+
+</Layout>

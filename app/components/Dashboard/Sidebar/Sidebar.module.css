@@ -1,0 +1,20 @@
+.groupLink:hover,
+.teamButton:hover {
+  background: #e8f1f1;
+}
+
+.groupMenuButton {
+  cursor: pointer;
+}
+
+.groupMenuButton:hover {
+  background: #dadfe2;
+}
+
+.userWolf span {
+  opacity: 0;
+}
+
+.userWolf:hover span {
+  opacity: 1;
+}
