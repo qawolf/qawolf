@@ -44,6 +44,7 @@ RUN apt-get update && \
   libxss1 \
   libasound2 \
   fonts-noto-color-emoji \
+  fonts-wqy-zenhei \
   libxtst6 \
   # firefox
   libdbus-glib-1-2 \
