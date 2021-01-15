@@ -22,7 +22,7 @@ type Props = {
   textAlign?: TextProps["textAlign"];
   textAs?: TextProps["as"];
   style?: CSSProperties;
-  weight: Weight;
+  weight?: Weight;
 };
 
 function Text({
