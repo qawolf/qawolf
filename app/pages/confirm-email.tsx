@@ -75,8 +75,8 @@ export default function ConfirmEmail(): JSX.Element {
             {email}
           </StyledText>
         </StyledBox>
-        {/* <CodeInput error={error?.message} onSubmit={handleSubmit} />
-      <CodeError error={error?.message} /> */}
+        <CodeInput error={error?.message} onSubmit={handleSubmit} />
+        {/* <CodeError error={error?.message} /> */}
       </Box>
     </ThemeContext.Extend>
   );

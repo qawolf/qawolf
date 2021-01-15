@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 import { useEffect, useRef, useState } from "react";
 
-import { edgeSize } from "../../theme/theme";
+import Text from "../shared-new/Text";
 import CodeSegment from "./CodeSegment";
 
 const DEFAULT_STATE = new Array(6).fill("");
@@ -101,7 +101,7 @@ export default function CodeInput({ error, onSubmit }: Props): JSX.Element {
     <Box
       align="center"
       direction="row"
-      margin={{ top: "xxlarge" }}
+      margin={{ top: "large" }}
       onKeyDown={handleDelete}
     >
       <CodeSegment
@@ -110,12 +110,14 @@ export default function CodeInput({ error, onSubmit }: Props): JSX.Element {
         onPaste={handlePaste}
         startIndex={0}
       />
-      <Box
-        background="darkGray"
-        height="1px"
-        margin={{ horizontal: "small" }}
-        width={edgeSize.medium}
-      />
+      <Text
+        color="textDark"
+        margin={{ horizontal: "xsmall" }}
+        size="xsmall"
+        weight="medium"
+      >
+        -
+      </Text>
       <CodeSegment
         code={code}
         onChange={handleChange}
