@@ -1,6 +1,7 @@
 import { Box, ThemeContext } from "grommet";
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
+import styled from "styled-components";
 
 import CodeError from "../components/ConfirmEmail/CodeError";
 import CodeInput from "../components/ConfirmEmail/CodeInput";
@@ -11,7 +12,21 @@ import { UserContext } from "../components/UserContext";
 import { useSignInWithEmail } from "../hooks/mutations";
 import { routes } from "../lib/routes";
 import { copy } from "../theme/copy";
-import { edgeSize, theme } from "../theme/theme-new";
+import { breakpoints, edgeSize, theme } from "../theme/theme-new";
+
+const StyledBox = styled(Box)`
+  flex-direction: column;
+
+  @media screen and (min-width: ${breakpoints.small.value}px) {
+    flex-direction: row;
+  }
+`;
+
+const StyledText = styled(Text)`
+  @media screen and (min-width: ${breakpoints.small.value}px) {
+    margin-left: ${edgeSize.xxxsmall};
+  }
+`;
 
 export default function ConfirmEmail(): JSX.Element {
   const { email, signUp } = useContext(StateContext);
@@ -36,24 +51,30 @@ export default function ConfirmEmail(): JSX.Element {
 
   return (
     <ThemeContext.Extend value={theme}>
-      <Box align='center' background='white' justify='center' overflow={{ vertical: 'auto' }} style={{ minHeight: '100vh' }}>
+      <Box
+        align="center"
+        background="white"
+        justify="center"
+        overflow={{ vertical: "auto" }}
+        style={{ minHeight: "100vh" }}
+      >
         <Logo width={edgeSize.xxxlarge} />
         <Text
           color="textDark"
-          margin={{ bottom: 'xxsmall', top: "large" }}
+          margin={{ bottom: "xxsmall", top: "large" }}
           size="medium"
           weight="bold"
         >
           {copy.checkEmail}
         </Text>
-        <Box align='center' direction='row'>
-          <Text color="textLight" size="xsmall" weight='normal'>
+        <StyledBox align="center">
+          <Text color="textLight" size="xsmall" weight="normal">
             {copy.loginCodeSent}
           </Text>
-          <Text color="textDark" margin={{left: 'xxxsmall'}} size="xsmall" weight='medium'>
+          <StyledText color="textDark" size="xsmall" weight="medium">
             {email}
-          </Text>
-        </Box>
+          </StyledText>
+        </StyledBox>
         {/* <CodeInput error={error?.message} onSubmit={handleSubmit} />
       <CodeError error={error?.message} /> */}
       </Box>
