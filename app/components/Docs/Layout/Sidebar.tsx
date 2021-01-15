@@ -28,7 +28,7 @@ export default function Sidebar({ pathname }: Props): JSX.Element {
       flex={false}
       margin={{ left: `calc((100% - ${width.content}) / 2)` }}
       overflow={{ vertical: "auto" }}
-      pad={{ top: edgeSize.large }}
+      pad={{ top: edgeSize.medium }}
       width={width.docsSidebar}
     >
       {sectionsHtml}
