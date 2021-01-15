@@ -26,16 +26,22 @@ const postRunFailedMessageToSlack = async (
   run: Run,
   logger: Logger
 ): Promise<void> => {
+  const log = logger.prefix("postRunFailedMessageToSlack");
+
   if (!environment.SLACK_UPDATES_WEBHOOK || run.status !== "fail") return;
 
-  return postMessageToSlack({
-    message: {
-      text: `🚨 Run failure: run ${run.id} failed (test ${run.test_id})!`,
-    },
-    webhook_url: environment.SLACK_UPDATES_WEBHOOK,
-  }).catch((error) => {
-    logger.alert("could not send slack message", error.message);
-  });
+  try {
+    await postMessageToSlack({
+      message: {
+        text: `🚨 Run failure: run ${run.id} failed (test ${run.test_id})!`,
+      },
+      webhook_url: environment.SLACK_UPDATES_WEBHOOK,
+    });
+
+    log.debug("sent");
+  } catch (error) {
+    log.alert("could not send slack message", error.message);
+  }
 };
 
 /**
@@ -127,6 +133,8 @@ export const updateRunResolver = async (
     const run = await findRun(id, { logger, trx });
     await validateApiKey({ api_key, run }, { logger, trx });
 
+    postRunFailedMessageToSlack(run, logger);
+
     const updates: UpdateRun = { id };
 
     if (status === "created") {
@@ -139,8 +147,6 @@ export const updateRunResolver = async (
     if (status === "pass") {
       await expireRunner({ run_id: id }, { logger, trx });
     }
-
-    postRunFailedMessageToSlack(run, logger);
 
     return updateRun(updates, { logger });
   });
