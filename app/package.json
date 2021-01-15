@@ -59,7 +59,6 @@
     "react-virtualized": "^9.22.2",
     "socket.io-client": "^3.0.4",
     "styled-components": "^5.2.1",
-    "upgrade": "^1.1.0",
     "uuid": "^8.3.1",
     "video.js": "^7.10.2"
   },
