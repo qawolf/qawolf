@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { edgeSize, height, width } from "../../../theme/theme-new";
 import { docs } from "../docs";
 import Section from "./Section";
+import Wolf from "./Wolf";
 
 type Props = { pathname: string };
 
@@ -26,12 +27,13 @@ export default function Sidebar({ pathname }: Props): JSX.Element {
   return (
     <StyledBox
       flex={false}
+      justify="between"
       margin={{ left: `calc((100% - ${width.content}) / 2)` }}
-      overflow={{ vertical: "auto" }}
       pad={{ top: edgeSize.large }}
       width={width.docsSidebar}
     >
-      {sectionsHtml}
+      <Box overflow={{ vertical: "auto" }}>{sectionsHtml}</Box>
+      <Wolf />
     </StyledBox>
   );
 }
