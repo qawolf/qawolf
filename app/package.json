@@ -41,7 +41,7 @@
     "dotenv": "^8.2.0",
     "email-validator": "^2.0.4",
     "graphql": "^15.4.0",
-    "grommet": "2.15.2",
+    "grommet": "^2.15.2",
     "hamburger-react": "^2.3.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.21.12",
@@ -59,6 +59,7 @@
     "react-virtualized": "^9.22.2",
     "socket.io-client": "^3.0.4",
     "styled-components": "^5.2.1",
+    "upgrade": "^1.1.0",
     "uuid": "^8.3.1",
     "video.js": "^7.10.2"
   },
