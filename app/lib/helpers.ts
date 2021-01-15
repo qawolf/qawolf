@@ -100,14 +100,13 @@ export const isValidURL = (url: string): boolean => {
 export const parseUrl = (url: string): string => {
   if (!url) return DEFAULT_URL;
 
-  const parsed = url.toLowerCase();
-  if (parsed.includes("http://") || parsed.includes("https://")) return parsed;
+  if (url.includes("http://") || url.includes("https://")) return url;
 
-  if (parsed.startsWith("localhost")) {
-    return "http://" + parsed;
+  if (url.startsWith("localhost")) {
+    return "http://" + url;
   }
 
-  return "https://" + parsed;
+  return "https://" + url;
 };
 
 const pluralCharacter = (digit: number): string => {
