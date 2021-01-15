@@ -2,7 +2,10 @@ import styled from "styled-components";
 
 import { breakpoints, edgeSize } from "../../theme/theme-new";
 
-type Props = { id: string };
+type Props = {
+  tellaId?: string;
+  youTubeId?: string;
+};
 
 const StyledDiv = styled.div`
   margin-top: ${edgeSize.small};
@@ -26,10 +29,14 @@ const StyledIframe = styled.iframe`
   width: 100%;
 `;
 
-export default function TellaVideo({ id }: Props): JSX.Element {
+export default function Video({ tellaId, youTubeId }: Props): JSX.Element {
+  const src = tellaId
+    ? `https://app.tella.tv/embed/${tellaId}`
+    : `https://www.youtube.com/embed/${youTubeId}`;
+
   return (
     <StyledDiv>
-      <StyledIframe src={`https://app.tella.tv/embed/${id}`} />
+      <StyledIframe allowFullScreen src={src} />
     </StyledDiv>
   );
 }
