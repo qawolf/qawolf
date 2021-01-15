@@ -11,6 +11,7 @@ import {
 } from "../../theme/theme-new";
 
 type Props = {
+  className?: string;
   code: string[];
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onPaste: (e: React.ClipboardEvent<HTMLInputElement>) => void;
@@ -38,6 +39,7 @@ const StyledInput = styled(TextInput)`
 `;
 
 export default function CodeSegment({
+  className,
   code,
   onChange,
   onPaste,
@@ -49,11 +51,14 @@ export default function CodeSegment({
     const index = startIndex + i;
 
     children.push(
-      <Box flex={false} margin={{ right: i < 2 ? edgeSize.xsmall : "0px" }}>
+      <Box
+        flex={false}
+        key={index}
+        margin={{ right: i < 2 ? edgeSize.xsmall : "0px" }}
+      >
         <StyledInput
           {...inputProps}
           id={`${index}-code`}
-          key={index}
           onChange={onChange}
           onPaste={onPaste}
           value={code[index] || ""}
@@ -62,5 +67,9 @@ export default function CodeSegment({
     );
   }
 
-  return <>{children}</>;
+  return (
+    <Box className={className} direction="row">
+      {children}
+    </Box>
+  );
 }

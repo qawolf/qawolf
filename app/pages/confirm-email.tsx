@@ -44,6 +44,11 @@ export default function ConfirmEmail(): JSX.Element {
     }
   }, [called, replace, user]);
 
+  // focus first input
+  useEffect(() => {
+    document.getElementById("0-code")?.focus();
+  }, []);
+
   const handleSubmit = (login_code: string) => {
     if (loading) return;
     signInWithEmail({ variables: { email: email || "", login_code } });
