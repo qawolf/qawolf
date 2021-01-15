@@ -1,26 +1,37 @@
 import { Box } from "grommet";
-import { Alert } from "grommet-icons";
+import styled from "styled-components";
 
-import { colors, iconSize } from "../../theme/theme";
-import Text from "../shared/Text";
+import {
+  breakpoints,
+  edgeSize,
+  text,
+  textDesktop,
+} from "../../theme/theme-new";
+import Text from "../shared-new/Text";
 
 type Props = { error?: string };
 
+const StyledBox = styled(Box)`
+  height: ${text.xsmall.height};
+  margin-top: ${edgeSize.xxsmall};
+
+  @media screen and (min-width: ${breakpoints.medium.value}px) {
+    height: ${textDesktop.xsmall.height};
+  }
+`;
+
 export default function CodeError({ error }: Props): JSX.Element {
-  if (!error) return null;
+  // prevent height from changing if error appears
+  if (!error) return <StyledBox />;
 
   return (
-    <Box
-      align="center"
-      background="lightRed"
-      border={{ color: "red" }}
-      direction="row"
-      margin={{ top: "large" }}
-      pad={{ horizontal: "medium", vertical: "small" }}
-      round="small"
-    >
-      <Alert color={colors.black} size={iconSize} />
-      <Text color="black" margin={{ left: "small" }} size="small">
+    <Box>
+      <Text
+        color="error"
+        margin={{ top: "xxsmall" }}
+        size="xsmall"
+        weight="medium"
+      >
         {error}
       </Text>
     </Box>

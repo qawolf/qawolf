@@ -1,15 +1,33 @@
 import { Box } from "grommet";
 import { useEffect, useRef, useState } from "react";
+import styled from "styled-components";
 
-import { edgeSize } from "../../theme/theme";
+import { breakpoints, edgeSize } from "../../theme/theme-new";
 import CodeSegment from "./CodeSegment";
-
-const DEFAULT_STATE = new Array(6).fill("");
+import Separator from "./Separator";
 
 type Props = {
   error?: string;
   onSubmit: (code: string) => void;
 };
+
+const DEFAULT_STATE = new Array(6).fill("");
+
+const StyledBox = styled(Box)`
+  flex-direction: column;
+
+  @media screen and (min-width: ${breakpoints.small.value}px) {
+    flex-direction: row;
+  }
+`;
+
+const StyledCodeSegment = styled(CodeSegment)`
+  margin-top: ${edgeSize.xsmall};
+
+  @media screen and (min-width: ${breakpoints.small.value}px) {
+    margin-top: 0;
+  }
+`;
 
 export default function CodeInput({ error, onSubmit }: Props): JSX.Element {
   const [code, setCode] = useState(DEFAULT_STATE);
@@ -98,10 +116,9 @@ export default function CodeInput({ error, onSubmit }: Props): JSX.Element {
   };
 
   return (
-    <Box
+    <StyledBox
       align="center"
-      direction="row"
-      margin={{ top: "xxlarge" }}
+      margin={{ top: "large" }}
       onKeyDown={handleDelete}
     >
       <CodeSegment
@@ -110,18 +127,13 @@ export default function CodeInput({ error, onSubmit }: Props): JSX.Element {
         onPaste={handlePaste}
         startIndex={0}
       />
-      <Box
-        background="darkGray"
-        height="1px"
-        margin={{ horizontal: "small" }}
-        width={edgeSize.medium}
-      />
-      <CodeSegment
+      <Separator />
+      <StyledCodeSegment
         code={code}
         onChange={handleChange}
         onPaste={handlePaste}
         startIndex={3}
       />
-    </Box>
+    </StyledBox>
   );
 }

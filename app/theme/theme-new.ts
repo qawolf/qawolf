@@ -88,7 +88,7 @@ export const textDesktop = {
 export const theme = {
   box: {
     // prevent default grommet styling on mobile as we handle manually
-    responsiveBreakpoint: null,
+    responsiveBreakpoint: "1px",
   },
   global: {
     borderSize,
