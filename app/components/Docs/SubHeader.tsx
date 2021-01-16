@@ -8,6 +8,7 @@ import styled from "styled-components";
 import {
   colors,
   edgeSize,
+  height,
   transition,
   transitionDuration,
 } from "../../theme/theme-new";
@@ -46,7 +47,14 @@ export default function SubHeader({ children }: Props): JSX.Element {
     <>
       <Divider />
       <Link href={`${pathname}#${id}`}>
-        <a id={id}>
+        <a
+          id={id}
+          // offset sticky navigation
+          style={{
+            marginTop: `-${height.navigation}`,
+            paddingTop: height.navigation,
+          }}
+        >
           <StyledBox align="center" direction="row">
             <Text
               color="textDark"

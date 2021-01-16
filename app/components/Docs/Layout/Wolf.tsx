@@ -1,5 +1,6 @@
 import { Box } from "grommet";
 import { useEffect, useState } from "react";
+
 import WolfLeft from "./icons/WolfLeft";
 import WolfRight from "./icons/WolfRight";
 
@@ -35,6 +36,8 @@ export default function Wolf(): JSX.Element {
     let interval: NodeJS.Timeout;
 
     if (isScrolling) {
+      setIsLeft((prev) => !prev);
+
       interval = setInterval(() => {
         setIsLeft((prev) => !prev);
       }, animateMs);
