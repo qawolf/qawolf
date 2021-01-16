@@ -1,0 +1,95 @@
+import Header from "../../components/Docs/Header";
+import Image from "../../components/Docs/Image";
+import Layout from "../../components/Docs/Layout";
+import SubHeader from "../../components/Docs/SubHeader";
+import Video from "../../components/Docs/Video";
+
+<Layout>
+
+<Header>Use Environment Variables</Header>
+
+Environment variables are secret values that you can use in your test code. Because they are encrypted, they are useful for storing sensitive values like passwords.
+
+Environment variables can also be used to change the behavior of your test by group. For example, you may want to write a test that goes to one URL for staging and a different URL for production.
+
+In this tutorial, we'll use environment variables in our QA Wolf test.
+
+<Video youTubeId="WLj9tY7orLw" />
+
+<SubHeader>Create an Environment Variable</SubHeader>
+
+Each group in QA Wolf has its own set of environment variables.
+
+You can access a group's environment variables by clicking the wrench icon next to the group name. You can do this from the test editor or from the dashboard.
+
+<Image
+  alt="Manage environment variables from editor"
+  height={1244}
+  src="/docs/use-environment-variables/wrench-editor.png"
+  width={1600}
+/>
+
+<Image
+  alt="Manage environment variables from dashboard"
+  height={286}
+  src="/docs/use-environment-variables/wrench-dashboard.png"
+  width={1414}
+/>
+
+Clicking on the wrench icon opens a popup where you can manage environment variables.
+
+To create an environment variable, fill out the name and value fields before pressing the "Add" button. In our example, we name our variable `TODO_TEXT` and give it a value of `secret todo`.
+
+<Image
+  alt="Create an environment variable"
+  height={544}
+  src="/docs/use-environment-variables/create-environment-variable.png"
+  width={1296}
+/>
+
+After pressing the "Add" button, the environment variable will be saved.
+
+<Image
+  alt="Saved environment variable"
+  height={646}
+  src="/docs/use-environment-variables/saved-environment-variable.png"
+  width={1296}
+/>
+
+Click outside the popup to close it.
+
+<SubHeader>Use an Environment Variable</SubHeader>
+
+We can now use our `TODO_TEXT` environment variable in our test. Environment variables are accessible under `process.env`.
+
+First, make sure you are viewing a test in the editor to update the code. In our example, we'll replace a hard-coded todo value with the value saved as `TODO_TEXT` (`secret todo`). We'll change this line of code:
+
+```js
+await page.fill(".new-todo", "todo");
+```
+
+To this line of code:
+
+```js
+await page.fill(".new-todo", process.env.TODO_TEXT);
+```
+
+In the code editor, we can delete the existing todo value (`"todo"`) and replace it with `process.env.TODO_TEXT`. You'll notice as you type `process.env.` that your environment variables will be shown as suggestions.
+
+<Image
+  alt="Use environment variable in editor"
+  height={540}
+  src="/docs/use-environment-variables/use-environment-variable.png"
+  width={1086}
+/>
+
+If we run our test, it will now create a todo with the value `secret todo`, which comes from our environment variable.
+
+<Image
+  alt="Run a test with an environmetn variable"
+  height={747}
+  src="/docs/use-environment-variables/run-test-environment-variable.png"
+  width={1600}
+/>
+
+</Layout>

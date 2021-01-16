@@ -37,6 +37,10 @@ export const docs: Section[] = [
     color: "#77D9C8",
     docs: [
       { href: `${routes.docs}/create-a-test`, name: "Create a Test" },
+      {
+        href: `${routes.docs}/use-environment-variables`,
+        name: "Use Environment Variables",
+      },
       { href: `${routes.docs}/add-an-assertion`, name: "Add an Assertion" },
     ],
     name: "Create Tests",
