@@ -341,7 +341,9 @@ describe("requestRunnerForTest", () => {
   const runner = buildRunner({});
 
   beforeAll(() => {
-    jest.spyOn(locationService, "rankLocations").mockResolvedValue(["eastus2"]);
+    jest
+      .spyOn(locationService, "rankLocations")
+      .mockResolvedValue(["eastus2", "westus2", "centralindia"]);
   });
 
   afterAll(() => {
@@ -381,7 +383,7 @@ describe("requestRunnerForTest", () => {
     expect(updateTest).toBeCalledWith(
       {
         id: "testId",
-        runner_locations: ["eastus2"],
+        runner_locations: ["eastus2", "westus2"],
         runner_requested_at: expect.any(String),
       },
       options
