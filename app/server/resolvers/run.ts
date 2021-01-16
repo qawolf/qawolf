@@ -133,7 +133,11 @@ export const updateRunResolver = async (
     const run = await findRun(id, { logger, trx });
     await validateApiKey({ api_key, run }, { logger, trx });
 
-    postRunFailedMessageToSlack(run, logger);
+    // wait up to 100ms for message to post
+    await Promise.race([
+      postRunFailedMessageToSlack(run, logger),
+      new Promise((resolve) => setTimeout(resolve, 100)),
+    ]);
 
     const updates: UpdateRun = { id };
 
