@@ -26,9 +26,9 @@ const postRunFailedMessageToSlack = async (
   run: Run,
   logger: Logger
 ): Promise<void> => {
-  const log = logger.prefix("postRunFailedMessageToSlack");
+  if (!environment.SLACK_UPDATES_WEBHOOK) return;
 
-  if (!environment.SLACK_UPDATES_WEBHOOK || run.status !== "fail") return;
+  const log = logger.prefix("postRunFailedMessageToSlack");
 
   try {
     await postMessageToSlack({
@@ -129,15 +129,20 @@ export const updateRunResolver = async (
   const log = logger.prefix("updateRunResolver");
   log.debug(id);
 
-  return db.transaction(async (trx) => {
+  let postMessagePromise: Promise<unknown> = Promise.resolve();
+
+  const updatedRun = await db.transaction(async (trx) => {
     const run = await findRun(id, { logger, trx });
+
     await validateApiKey({ api_key, run }, { logger, trx });
 
-    // wait up to 100ms for message to post
-    await Promise.race([
-      postRunFailedMessageToSlack(run, logger),
-      new Promise((resolve) => setTimeout(resolve, 100)),
-    ]);
+    if (status === "fail") {
+      // wait up to 100ms for message to post
+      postMessagePromise = Promise.race([
+        postRunFailedMessageToSlack(run, logger),
+        new Promise((resolve) => setTimeout(resolve, 100)),
+      ]);
+    }
 
     const updates: UpdateRun = { id };
 
@@ -154,4 +159,8 @@ export const updateRunResolver = async (
 
     return updateRun(updates, { logger });
   });
+
+  await postMessagePromise;
+
+  return updatedRun;
 };
