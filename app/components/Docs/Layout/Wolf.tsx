@@ -36,7 +36,10 @@ export default function Wolf(): JSX.Element {
     let interval: NodeJS.Timeout;
 
     if (isScrolling) {
-      setIsLeft((prev) => !prev);
+      // check document ready state because scroll event can fire as page loads
+      if (document.readyState === "complete") {
+        setIsLeft((prev) => !prev);
+      }
 
       interval = setInterval(() => {
         setIsLeft((prev) => !prev);
