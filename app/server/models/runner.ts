@@ -301,7 +301,7 @@ export const requestRunnerForTest = async (
     await updateTest(
       {
         id: test.id,
-        runner_locations: locations,
+        runner_locations: locations.slice(0, 2),
         runner_requested_at: minutesFromNow(),
       },
       options
