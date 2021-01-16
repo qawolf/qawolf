@@ -83,7 +83,7 @@ export const assignRunner = async (
     return result;
   } catch (error) {
     // its possible two updates happen concurrently so this one rolls back
-    if (ASSIGN_CONSTRAINTS.find((c) => error.message.include(c))) return null;
+    if (ASSIGN_CONSTRAINTS.find((c) => error.message.includes(c))) return null;
 
     throw error;
   }
