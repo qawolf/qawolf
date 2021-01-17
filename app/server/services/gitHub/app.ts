@@ -84,8 +84,13 @@ export const createCommitStatus = async ({
   const token = await createInstallationAccessToken(installationId);
   const octokit = new Octokit({ auth: token });
 
+  let description = "Running";
+  if (state === "failure") description = "Fail";
+  if (state === "success") description = "Pass";
+
   const { data } = await octokit.repos.createCommitStatus({
     context,
+    description,
     owner,
     repo,
     sha,
