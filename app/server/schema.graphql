@@ -925,6 +925,11 @@ type Mutation {
   """
   updateTeam(
     """
+    Updated helpers for the team
+    """
+    helpers: String
+
+    """
     Team ID
     """
     id: ID!
@@ -932,7 +937,7 @@ type Mutation {
     """
     New name for the team
     """
-    name: String!
+    name: String
   ): Team!
 
   """

@@ -420,8 +420,9 @@ export type UpdateRunnerMutation = {
 };
 
 export type UpdateTeamMutation = {
+  helpers?: string | null;
   id: string;
-  name: string;
+  name?: string | null;
 };
 
 export type UpdateTestMutation = {

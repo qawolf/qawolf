@@ -258,8 +258,9 @@ type UpdateTeamData = {
 };
 
 type UpdateTeamVariables = {
+  helpers?: string;
   id: string;
-  name: string;
+  name?: string;
 };
 
 type UpdateTestData = {
