@@ -14,16 +14,18 @@ export default function Navigation({
   selected,
   setSelected,
 }: Props): JSX.Element {
-  const options = (["code", "logs"] as NavigationOption[]).map((option) => {
-    return (
-      <Option
-        isSelected={option === selected}
-        key={option}
-        onClick={() => setSelected(option)}
-        option={option}
-      />
-    );
-  });
+  const options = (["code", "logs", "helpers"] as NavigationOption[]).map(
+    (option) => {
+      return (
+        <Option
+          isSelected={option === selected}
+          key={option}
+          onClick={() => setSelected(option)}
+          option={option}
+        />
+      );
+    }
+  );
 
   const isCodeSelected = selected === "code";
 

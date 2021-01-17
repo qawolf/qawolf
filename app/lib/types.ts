@@ -156,7 +156,7 @@ export type Modal =
   | "deleteTest"
   | "teamSettings";
 
-export type NavigationOption = "code" | "logs";
+export type NavigationOption = "code" | "logs" | "helpers";
 
 export type NavigationType = "dark" | "light";
 
