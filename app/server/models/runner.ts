@@ -234,10 +234,23 @@ export const findRunner = async (
   if (!include_deleted) filter.deleted_at = null;
 
   if (id) filter.id = id;
-  if (run_id !== undefined) filter.run_id = run_id;
-  else if (test_id !== undefined) filter.test_id = test_id;
 
-  let query = (trx || db)("runners").select("*").from("runners").where(filter);
+  let query = (trx || db)("runners").select("*").from("runners");
+
+  if (run_id && test_id) {
+    // allow either
+    query = query
+      .where(function () {
+        this.where({ run_id }).orWhere({ test_id });
+      })
+      // prefer the run's runner
+      .orderBy("run_id", "asc");
+  } else {
+    if (run_id !== undefined) filter.run_id = run_id;
+    if (test_id !== undefined) filter.test_id = test_id;
+  }
+
+  query = query.where(filter);
 
   if (is_ready) query = query.whereNotNull("ready_at");
 

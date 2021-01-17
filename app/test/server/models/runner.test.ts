@@ -208,13 +208,27 @@ describe("findRunner", () => {
   });
 
   it("finds a runner by run_id", async () => {
-    const runner = await findRunner({ run_id: "runId" }, options);
-    expect(runner.id).toEqual("runnerId");
+    const result = await findRunner({ run_id: "runId" }, options);
+    expect(result.id).toEqual("runnerId");
+
+    // check it prefers the runner for the run if the test id is also specified
+    const result2 = await findRunner(
+      { run_id: "runId", test_id: "testId" },
+      options
+    );
+    expect(result2.id).toEqual("runnerId");
   });
 
   it("finds a runner by test_id", async () => {
-    const runner = await findRunner({ test_id: "testId" }, options);
-    expect(runner.id).toEqual("runner2Id");
+    const result = await findRunner({ test_id: "testId" }, options);
+    expect(result.id).toEqual("runner2Id");
+
+    // check it finds the runner if the run id is also specified
+    const result2 = await findRunner(
+      { run_id: "fakeRunId", test_id: "testId" },
+      options
+    );
+    expect(result2.id).toEqual("runner2Id");
   });
 
   it("finds a runner in the closest location possible", async () => {
