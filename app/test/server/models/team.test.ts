@@ -30,6 +30,7 @@ describe("team model", () => {
       const teams = await db.select("*").from("teams");
       expect(teams).toMatchObject([
         {
+          helpers: "",
           id: expect.any(String),
           is_enabled: true,
           name: "My Team",
@@ -124,6 +125,21 @@ describe("team model", () => {
     });
 
     afterAll(() => db("teams").del());
+
+    it("updates a team helpers", async () => {
+      const team = await updateTeam(
+        { helpers: "helpers", id: "teamId" },
+        { logger }
+      );
+
+      const updatedTeam = await db.select("*").from("teams").first();
+
+      expect(team.helpers).toBe("helpers");
+      expect(team).toEqual({
+        ...updatedTeam,
+        updated_at: (updatedTeam.updated_at as Date).toISOString(),
+      });
+    });
 
     it("updates a team name", async () => {
       const team = await updateTeam(

@@ -231,6 +231,7 @@ export type Team = {
   created_at?: string;
   deleted_at?: string | null;
   id: string;
+  helpers: string;
   is_enabled: boolean;
   name: string;
   plan: TeamPlan;
