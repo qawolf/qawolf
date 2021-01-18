@@ -360,6 +360,7 @@ export type RunnerRun = {
   artifacts: SaveArtifacts;
   code: string;
   env: string;
+  helpers: string;
   id: string;
   test_id: string;
   version: number;

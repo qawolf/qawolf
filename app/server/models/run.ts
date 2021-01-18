@@ -197,9 +197,11 @@ export const findSuiteRunForRunner = async (
       .select("suites.environment_variables AS environment_variables")
       .select("suites.group_id AS group_id")
       .select("suites.team_id AS team_id")
+      .select("teams.helpers AS helpers")
       .select("tests.version AS test_version")
       .from("runs")
       .innerJoin("suites", "runs.suite_id", "suites.id")
+      .innerJoin("teams", "suites.team_id", "teams.id")
       .innerJoin("tests", "runs.test_id", "tests.id")
       .andWhere({ "runs.id": run_id })
       .first();
@@ -218,6 +220,7 @@ export const findSuiteRunForRunner = async (
       artifacts: await getArtifactsOptions({ name: row.id }),
       code: row.code,
       env,
+      helpers: row.helpers,
       id: row.id,
       test_id: row.test_id,
       version: row.test_version,
