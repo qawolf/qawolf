@@ -63,8 +63,10 @@ export const useConnectRunner = ({
 
   // connect the runner to the ws url
   useEffect(() => {
+    if (!runnerResult) return;
+
     runnerClient?.connect({ apiKey, wsUrl });
-  }, [apiKey, runnerClient, wsUrl]);
+  }, [apiKey, runnerClient, runnerResult, wsUrl]);
 
   return { apiKey, wsUrl };
 };
