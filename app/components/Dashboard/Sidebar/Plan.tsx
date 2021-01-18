@@ -1,6 +1,6 @@
 import { Box } from "grommet";
 
-import { Team, Wolf as WolfType } from "../../../lib/types";
+import { ShortTeam, Wolf as WolfType } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import { hoverTransition } from "../../../theme/theme";
 import Wolf from "../../shared/icons/Wolf";
@@ -8,7 +8,7 @@ import Text from "../../shared/Text";
 import styles from "./Sidebar.module.css";
 
 type Props = {
-  team: Team | null;
+  team: ShortTeam | null;
   wolf: WolfType;
 };
 

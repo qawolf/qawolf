@@ -2,12 +2,11 @@ import debounce from "debounce";
 import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
 import { useContext, useEffect, useState } from "react";
 
-import { useUpdateTeam } from "../../../../hooks/mutations";
-import { useTeam } from "../../../../hooks/queries";
-import { StateContext } from "../../../StateContext";
-import { TestContext } from "../../contexts/TestContext";
-import { includeTypes } from "../CodeEditor";
+import { useUpdateTeam } from "../../../hooks/mutations";
+import { StateContext } from "../../StateContext";
+import { TestContext } from "../contexts/TestContext";
 import EditorComponent from "../Editor";
+import { includeTypes } from "./helpers";
 
 type Editor = monacoEditor.editor.IStandaloneCodeEditor;
 
