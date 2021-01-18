@@ -93,11 +93,14 @@ export type SuiteRun = {
   test_name: string;
 };
 
-export type Team = {
-  helpers: string;
+export type ShortTeam = {
   id: string;
-  is_enabled: boolean;
   name: string;
+};
+
+export type Team = ShortTeam & {
+  helpers: string;
+  is_enabled: boolean;
   renewed_at: string | null;
 };
 
@@ -125,7 +128,7 @@ export type User = {
   email: string;
   id: string;
   onboarded_at: string | null;
-  teams: { id: string; name: string }[];
+  teams: ShortTeam[];
   wolf_name: string;
   wolf_number: number;
   wolf_variant: string;

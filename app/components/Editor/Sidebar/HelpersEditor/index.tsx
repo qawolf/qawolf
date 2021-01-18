@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { useUpdateTeam } from "../../../../hooks/mutations";
 import { useTeam } from "../../../../hooks/queries";
 import { StateContext } from "../../../StateContext";
+import { TestContext } from "../../contexts/TestContext";
 import { includeTypes } from "../CodeEditor";
 import EditorComponent from "../Editor";
 
@@ -14,22 +15,26 @@ const DEBOUNCE_MS = 250;
 
 export default function HelpersEditor(): JSX.Element {
   const { teamId } = useContext(StateContext);
+  const { team } = useContext(TestContext);
+
   const [editor, setEditor] = useState<Editor | null>(null);
 
-  const { data } = useTeam({ id: teamId });
   const [updateTeam] = useUpdateTeam();
 
   const debouncedUpdateTeam = debounce(updateTeam, DEBOUNCE_MS);
-
-  const team = data?.team;
 
   const editorDidMount = ({ editor, monaco }) => {
     setEditor(editor);
     includeTypes(monaco);
 
     editor.onDidChangeModelContent(() => {
+      const helpers = editor.getValue();
+
       debouncedUpdateTeam({
-        variables: { helpers: editor.getValue(), id: teamId },
+        optimisticResponse: {
+          updateTeam: { ...team, helpers },
+        },
+        variables: { helpers, id: teamId },
       });
     });
   };
