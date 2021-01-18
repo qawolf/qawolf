@@ -13,7 +13,7 @@ As you create multiple tests, you may find yourself reusing similar pieces of co
 
 <SubHeader>Edit Helpers</SubHeader>
 
-QA Wolf lets you share code between all tests for your team. A common use case for this is handling authentication. For example, you may have code to set a token in local storage:
+QA Wolf lets you share code between all tests for your team. A common use case for this is handling authentication. For example, you may have code to set a token in <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank">local storage</a>:
 
 ```js
 await page.evaluate(() => localStorage.setItem("token", "myToken"));
