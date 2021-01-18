@@ -3,6 +3,7 @@ import flatten from "lodash/flatten";
 import { IconType } from "react-icons";
 import {
   RiCodeSSlashFill,
+  RiMedalFill,
   RiNotification2Fill,
   RiRocketFill,
 } from "react-icons/ri";
@@ -69,6 +70,17 @@ export const docs: Section[] = [
       },
     ],
     name: "Alert Your Team",
+  },
+  {
+    IconComponent: RiMedalFill,
+    color: "#AA61F2",
+    docs: [
+      {
+        href: `${routes.docs}/reuse-helper-code`,
+        name: "Reuse Helper Code",
+      },
+    ],
+    name: "Advanced",
   },
 ];
 

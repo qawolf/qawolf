@@ -1,0 +1,96 @@
+import Link from "next/link";
+
+import Header from "../../components/Docs/Header";
+import Image from "../../components/Docs/Image";
+import Layout from "../../components/Docs/Layout";
+import SubHeader from "../../components/Docs/SubHeader";
+
+<Layout>
+
+<Header>Reuse Helper Code</Header>
+
+As you create multiple tests, you may find yourself reusing similar pieces of code. In this tutorial, we'll learn how to share code between tests.
+
+<SubHeader>Edit Helpers</SubHeader>
+
+QA Wolf lets you share code between all tests for your team. A common use case for this is handling authentication. For example, you may have code to set a token in local storage:
+
+```js
+await page.evaluate(() => localStorage.setItem("token", "myToken"));
+await page.reload();
+```
+
+Rather than paste this code into every test that uses it, you can store it in your team's helpers file. You can access your team's helpers in the code editor, next to the "Logs" tab.
+
+TODO: INSERT IMAGE
+
+In this example, we'll create a function called `signIn` that sets the token in local storage and reloads the page:
+
+```js
+async function signIn(page) {
+  await page.evaluate(() => localStorage.setItem("token", "myToken"));
+  await page.reload();
+}
+```
+
+We'll update the code in the "Helpers" tab to include our `signIn` function.
+
+TODO: INSERT IMAGE
+
+Now the `signIn` function will be available to use in all of our tests.
+
+<SubHeader>Use Helpers</SubHeader>
+
+Next we'll edit our test code to call our `signIn` helper. Return to the test code by clicking the "Code" tab.
+
+We can replace the part of our test that signs in with a token:
+
+```js
+await page.evaluate(() => localStorage.setItem("token", "myToken"));
+await page.reload();
+```
+
+With a call to our `signIn` helper:
+
+```js
+await signIn(page);
+```
+
+Now our test looks like the following.
+
+TODO: INSERT IMAGE
+
+<SubHeader>Pass Variables to Helpers</SubHeader>
+
+Helpers are just JavaScript code, so you can also create functions that take any number of variables.
+
+For example, below is a modified version of our `signIn` function that takes the desired token as an additional variable and sets it in local storage:
+
+```js
+async function signInWithToken(page, token) {
+  await page.evaluate((token) => localStorage.setItem("token", token), token);
+  await page.reload();
+}
+```
+
+In our test, we can now call `signInWithToken` and pass it the token of our choice:
+
+```js
+await signInWithToken(page, "adminToken");
+```
+
+Helpers also have access to <Link href="use-environment-variables">environment variables</Link>. These variables are found under `process.env`.
+
+For example, we could modify the function above to read the token from an environment variable rather than from an argument:
+
+```js
+async function signInWithToken(page) {
+  await page.evaluate(
+    (token) => localStorage.setItem("token", token),
+    process.env.TOKEN
+  );
+  await page.reload();
+}
+```
+
+</Layout>
