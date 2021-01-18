@@ -38,6 +38,10 @@ export const docs: Section[] = [
     docs: [
       { href: `${routes.docs}/create-a-test`, name: "Create a Test" },
       {
+        href: `${routes.docs}/convert-actions-to-code`,
+        name: "Convert Actions to Code",
+      },
+      {
         href: `${routes.docs}/use-environment-variables`,
         name: "Use Environment Variables",
       },

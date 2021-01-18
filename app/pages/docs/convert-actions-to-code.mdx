@@ -1,0 +1,54 @@
+import Header from "../../components/Docs/Header";
+import Image from "../../components/Docs/Image";
+import Layout from "../../components/Docs/Layout";
+import SubHeader from "../../components/Docs/SubHeader";
+
+<Layout>
+
+<Header>Convert Actions to Code</Header>
+
+In this guide, we dive a bit deeper into how QA Wolf converts your actions to code.
+
+You'll learn how to toggle auto code creation on and off. You'll also learn how QA Wolf chooses selectors and about best practices for front end code.
+
+<SubHeader>Toggle Code Creation</SubHeader>
+
+As you use your site, QA Wolf converts your actions to <a href="https://playwright.dev/docs/core-concepts" target="_blank">Playwright</a> test code. You can turn auto code creation on or off depending on your needs.
+
+In the top right corner of the test editor, there is a toggle in the "Code" tab. When this toggle is set to on, it has a magic wand icon. This means that when you use your site, your actions will be converted to test code.
+
+<Image
+  alt="Create code toggle"
+  height={739}
+  src="/docs/convert-actions-to-code/create-code-toggle.png"
+  width={1600}
+/>
+
+When the create code toggle is set to on, you'll notice that the comment below is added to your test code:
+
+```js
+// 🐺 create code here
+```
+
+This comment tells QA Wolf where to insert new test code. If you want to insert test code in a different place (like in the middle of your test), move this comment where you want the new test code to go.
+
+If you delete the `// 🐺 create code here` comment, you'll notice that the code create toggle is set to off. Turn the toggle on again to add this comment back to your code.
+
+Clicking on the toggle also turns off auto code generation. When code creation is turned off, the toggle has a pause icon. Now when you use your site, your actions will **not** be converted to test code.
+
+<Image
+  alt="Code creation turned off"
+  height={118}
+  src="/docs/convert-actions-to-code/create-code-off.png"
+  width={1076}
+/>
+
+You can turn code creation on and off as much as you like.
+
+One caveat is that code generation does not work while a test is running. QA Wolf will wait until your test passes or fails before converting additional actions to code.
+
+<SubHeader>How QA Wolf Picks Selectors</SubHeader>
+
+<SubHeader>Selector Best Practices</SubHeader>
+
+</Layout>
