@@ -14,7 +14,7 @@ import {
 } from "../../../server/models/runner";
 import * as runnerModel from "../../../server/models/runner";
 import * as testModel from "../../../server/models/test";
-import { findTest, updateTest } from "../../../server/models/test";
+import { findTest, updateTestToPending } from "../../../server/models/test";
 import * as locationService from "../../../server/services/location";
 import { Runner } from "../../../server/types";
 import { minutesFromNow } from "../../../server/utils";
@@ -63,8 +63,8 @@ describe("assignRunner", () => {
   });
 
   it("assigns a test to the runner", async () => {
-    await updateTest(
-      { id: "testId", runner_requested_at: minutesFromNow() },
+    await updateTestToPending(
+      { id: "testId", runner_locations: ["westus2"] },
       { logger }
     );
     await assignRunner({ runner, test_id: "testId" }, { logger });
@@ -208,13 +208,27 @@ describe("findRunner", () => {
   });
 
   it("finds a runner by run_id", async () => {
-    const runner = await findRunner({ run_id: "runId" }, options);
-    expect(runner.id).toEqual("runnerId");
+    const result = await findRunner({ run_id: "runId" }, options);
+    expect(result.id).toEqual("runnerId");
+
+    // check it prefers the runner for the run if the test id is also specified
+    const result2 = await findRunner(
+      { run_id: "runId", test_id: "testId" },
+      options
+    );
+    expect(result2.id).toEqual("runnerId");
   });
 
   it("finds a runner by test_id", async () => {
-    const runner = await findRunner({ test_id: "testId" }, options);
-    expect(runner.id).toEqual("runner2Id");
+    const result = await findRunner({ test_id: "testId" }, options);
+    expect(result.id).toEqual("runner2Id");
+
+    // check it finds the runner if the run id is also specified
+    const result2 = await findRunner(
+      { run_id: "fakeRunId", test_id: "testId" },
+      options
+    );
+    expect(result2.id).toEqual("runner2Id");
   });
 
   it("finds a runner in the closest location possible", async () => {
@@ -370,7 +384,7 @@ describe("requestRunnerForTest", () => {
     jest.spyOn(runnerModel, "findRunner").mockResolvedValue(null);
 
     const assignRunner = jest.spyOn(runnerModel, "assignRunner").mockReset();
-    const updateTest = jest.spyOn(testModel, "updateTest");
+    const updateTestToPending = jest.spyOn(testModel, "updateTestToPending");
 
     const result = await requestRunnerForTest(
       { ip: "", test: buildTest({}) },
@@ -380,11 +394,10 @@ describe("requestRunnerForTest", () => {
 
     expect(assignRunner).not.toBeCalled();
 
-    expect(updateTest).toBeCalledWith(
+    expect(updateTestToPending).toBeCalledWith(
       {
         id: "testId",
-        runner_locations: ["eastus2", "westus2"],
-        runner_requested_at: expect.any(String),
+        runner_locations: ["eastus2", "westus2", "centralindia"],
       },
       options
     );

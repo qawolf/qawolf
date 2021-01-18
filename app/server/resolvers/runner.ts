@@ -14,7 +14,6 @@ import {
 import { findTest } from "../models/test";
 import {
   Context,
-  Runner,
   RunnerResult,
   RunnerRun,
   UpdateRunnerMutation,
@@ -74,19 +73,12 @@ export const runnerResolver = async (
     const test = await findTest(testId, { logger, trx });
     await ensureTestAccess({ logger, teams, test });
 
-    let runner: Runner;
+    let runner = await findRunner(
+      { run_id: run_id, test_id: testId },
+      { logger, trx }
+    );
 
-    // find the runner for the run
-    if (run) {
-      runner = await findRunner({ run_id: run.id }, { logger, trx });
-    }
-
-    // otherwise find the runner for the test
-    if (!runner) {
-      runner = await findRunner({ test_id: test.id }, { logger, trx });
-    }
-
-    // fallback to requesting a runner for the test
+    // if there is no runner, request one for the test
     if (!runner && should_request_runner) {
       runner = await requestRunnerForTest({ ip, test }, { logger, trx });
     }

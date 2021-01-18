@@ -1,10 +1,12 @@
 import { db, dropTestDb, migrateDb } from "../../../server/db";
 import * as testModel from "../../../server/models/test";
+import { updateTestToPending } from "../../../server/models/test";
 import { Test } from "../../../server/types";
 import * as utils from "../../../server/utils";
 import { minutesFromNow } from "../../../server/utils";
 import {
   buildGroup,
+  buildRun,
   buildRunner,
   buildTeam,
   buildTest,
@@ -29,52 +31,9 @@ const {
 beforeAll(async () => {
   await migrateDb();
 
-  return db.transaction(async (trx) => {
-    await trx("runners").insert(buildRunner({}));
-
-    await trx("users").insert([buildUser({}), buildUser({ i: 2 })]);
-    await trx("teams").insert([
-      buildTeam({}),
-      buildTeam({ i: 2 }),
-      buildTeam({ i: 3 }),
-    ]);
-    await trx("groups").insert(buildGroup({}));
-
-    await trx("tests").insert([
-      buildTest({
-        creator_id: "user2Id",
-        runner_locations: ["eastus2"],
-        runner_requested_at: minutesFromNow(1),
-      }),
-      buildTest({
-        code: 'const x = "world"',
-        creator_id: "userId",
-        i: 2,
-        runner_locations: ["eastus2"],
-        runner_requested_at: minutesFromNow(),
-        team_id: "team2Id",
-        version: 0,
-      }),
-      buildTest({
-        code: 'const x = "!"',
-        creator_id: "userId",
-        i: 3,
-        is_enabled: false,
-        team_id: "team2Id",
-        version: 1,
-      }),
-      buildTest({
-        code: "deleted code",
-        creator_id: "userId",
-        deleted_at: minutesFromNow(),
-        id: "deletedId",
-        name: "deleted",
-        runner_requested_at: minutesFromNow(),
-        team_id: "team2Id",
-        version: 8,
-      }),
-    ]);
-  });
+  await db("users").insert(buildUser({}));
+  await db("teams").insert(buildTeam({}));
+  await db("groups").insert(buildGroup({}));
 });
 
 afterAll(() => {
@@ -144,17 +103,14 @@ describe("buildTestName", () => {
   });
 });
 
-describe("countPendingTests", () => {
-  it("counts tests that requested a runner", async () => {
-    const result = await countPendingTests("eastus2", { logger });
-    expect(result).toEqual([{ count: 2, location: "eastus2" }]);
-  });
-});
-
 describe("createTestAndGroupTests", () => {
   beforeAll(() => db("groups").insert(buildGroup({ i: 2 })));
 
-  afterAll(() => db("groups").where({ id: "group2Id" }).del());
+  afterAll(async () => {
+    await db("group_tests").del();
+    await db("groups").where({ id: "group2Id" }).del();
+    await db("tests").del();
+  });
 
   it("creates a new test", async () => {
     await createTestAndGroupTests(
@@ -162,7 +118,7 @@ describe("createTestAndGroupTests", () => {
         code: "code",
         creator_id: "userId",
         group_ids: ["groupId", "group2Id"],
-        team_id: "team3Id",
+        team_id: "teamId",
         url: "https://qawolf.com",
       },
       { logger }
@@ -174,7 +130,7 @@ describe("createTestAndGroupTests", () => {
       .where({ url: "https://qawolf.com" });
 
     expect(tests[0]).toMatchObject({
-      team_id: "team3Id",
+      team_id: "teamId",
       code: "code",
       creator_id: "userId",
       deleted_at: null,
@@ -195,6 +151,11 @@ describe("createTestAndGroupTests", () => {
 });
 
 describe("deleteTests", () => {
+  afterAll(async () => {
+    await db("group_tests").del();
+    await db("tests").del();
+  });
+
   it("deletes the specified tests", async () => {
     jest
       .spyOn(utils, "cuid")
@@ -207,7 +168,7 @@ describe("deleteTests", () => {
         code: "code",
         creator_id: "userId",
         group_ids: ["groupId"],
-        team_id: "team3Id",
+        team_id: "teamId",
         url: "https://qawolf.com",
       },
       { logger }
@@ -218,7 +179,7 @@ describe("deleteTests", () => {
         code: "code",
         creator_id: "userId",
         group_ids: ["groupId"],
-        team_id: "team3Id",
+        team_id: "teamId",
         url: "https://qawolf.com",
       },
       { logger }
@@ -242,74 +203,171 @@ describe("deleteTests", () => {
 });
 
 describe("findEnabledTestsForGroup", () => {
+  beforeAll(async () => {
+    await db("tests").insert([buildTest({}), buildTest({ i: 2 })]);
+
+    await db("group_tests").insert([
+      {
+        group_id: "groupId",
+        id: "groupTestId",
+        test_id: "testId",
+      },
+      {
+        group_id: "groupId",
+        id: "groupTest2Id",
+        test_id: "test2Id",
+      },
+    ]);
+  });
+
+  afterAll(async () => {
+    await db("group_tests").del();
+    await db("tests").del();
+  });
+
   it("finds the enabled tests for a group", async () => {
     const tests = await findEnabledTestsForGroup(
       { group_id: "groupId" },
       { logger }
     );
 
-    expect(tests).toMatchObject([{ is_enabled: true, team_id: "team3Id" }]);
+    expect(tests).toMatchObject([
+      { id: "testId", is_enabled: true, team_id: "teamId" },
+      { id: "test2Id", is_enabled: true, team_id: "teamId" },
+    ]);
   });
 
   it("filters by test id if specified", async () => {
-    await db("tests").insert(
-      buildTest({
-        code: 'const y = "?"',
-        creator_id: "userId",
-        i: 4,
-        is_enabled: true,
-        team_id: "team3Id",
-        version: 1,
-      })
-    );
-    await db("group_tests").insert({
-      group_id: "groupId",
-      id: "groupTest2Id",
-      test_id: "test4Id",
-    });
-
     const tests = await findEnabledTestsForGroup(
-      { group_id: "groupId", test_ids: ["test4Id"] },
+      { group_id: "groupId", test_ids: ["test2Id"] },
       { logger }
     );
 
     expect(tests).toMatchObject([
-      { id: "test4Id", is_enabled: true, team_id: "team3Id" },
+      { id: "test2Id", is_enabled: true, team_id: "teamId" },
     ]);
-
-    await db("group_tests").where({ id: "groupTest2Id" }).del();
-    await db("tests").where({ id: "test4Id" }).del();
   });
 });
 
-describe("findPendingTest", () => {
-  it("returns the first test that requested a runner", async () => {
-    const pending = await findPendingTest("eastus2", { logger });
-    expect(pending).toMatchObject({
-      id: "test2Id",
-      runner_requested_at: expect.any(Date),
+describe("pending tests", () => {
+  beforeAll(async () => {
+    await db("tests").insert([
+      buildTest({}),
+      buildTest({ i: 2 }),
+      buildTest({
+        i: 3,
+        runner_locations: ["eastus2"],
+        runner_requested_at: minutesFromNow(1),
+      }),
+      buildTest({
+        i: 4,
+        runner_locations: ["eastus2"],
+        runner_requested_at: minutesFromNow(),
+      }),
+      buildTest({
+        i: 5,
+        runner_locations: ["westus2"],
+        runner_requested_at: minutesFromNow(),
+      }),
+    ]);
+
+    await db("runners").insert(buildRunner({ test_id: "testId" }));
+  });
+
+  afterAll(async () => {
+    await db("runners").del();
+    await db("tests").del();
+  });
+
+  describe("countPendingTests", () => {
+    it("counts tests that requested a runner", async () => {
+      const result = await countPendingTests("eastus2", { logger });
+      expect(result).toEqual([
+        { count: 2, location: "eastus2" },
+        { count: 1, location: "westus2" },
+      ]);
+    });
+  });
+
+  describe("findPendingTest", () => {
+    it("returns the first test that requested a runner", async () => {
+      const pending = await findPendingTest("eastus2", { logger });
+      expect(pending).toMatchObject({
+        id: "test4Id",
+        runner_requested_at: expect.any(Date),
+      });
+    });
+  });
+
+  describe("updateTestToPending", () => {
+    it("does not update a test that is assigned a runner", async () => {
+      const didUpdate = await updateTestToPending(
+        { id: "testId", runner_locations: ["eastus2"] },
+        { logger }
+      );
+      expect(didUpdate).toEqual(false);
+    });
+
+    it("does not update a test that is already pending", async () => {
+      const didUpdate = await updateTestToPending(
+        { id: "test3Id", runner_locations: ["eastus2"] },
+        { logger }
+      );
+      expect(didUpdate).toEqual(false);
+    });
+
+    it("updates the test to pending", async () => {
+      const didUpdate = await updateTestToPending(
+        {
+          id: "test2Id",
+          runner_locations: ["westus2", "eastus2", "centralindia"],
+        },
+        { logger }
+      );
+      expect(didUpdate).toEqual(true);
+
+      const result = await findTest("test2Id", { logger });
+      expect(result).toMatchObject({
+        id: "test2Id",
+        // check it only uses the first two locations
+        runner_locations: ["westus2", "eastus2"],
+        runner_requested_at: expect.any(Date),
+      });
     });
   });
 });
 
 describe("findTest", () => {
+  beforeAll(() =>
+    db("tests").insert([
+      buildTest({}),
+      buildTest({
+        deleted_at: minutesFromNow(),
+        i: 2,
+      }),
+    ])
+  );
+
+  afterAll(() => db("tests").del());
+
   it("returns test if it exists", async () => {
     const test = await findTest("testId", { logger });
 
     expect(test).toMatchObject({
       team_id: "teamId",
       code: 'const x = "hello"',
-      creator_id: "user2Id",
+      creator_id: "userId",
       id: "testId",
+      runner_locations: null,
       url: "https://github.com",
       version: 11,
     });
   });
 
   it("returns deleted test", async () => {
-    const test = await findTest("deletedId", { logger });
+    const test = await findTest("test2Id", { logger });
 
-    expect(test).toMatchObject({ id: "deletedId" });
+    expect(test).toMatchObject({ id: "test2Id" });
   });
 
   it("throws an error if test does not exist", async () => {
@@ -320,19 +378,19 @@ describe("findTest", () => {
 });
 
 describe("findTestForRun", () => {
-  beforeAll(() => {
-    return db("runs").insert({
-      id: "runId",
-      status: "created",
-      test_id: "testId",
-    });
+  beforeAll(async () => {
+    await db("tests").insert(buildTest({}));
+    await db("runs").insert(buildRun({}));
   });
 
-  afterAll(() => db("runs").del());
+  afterAll(async () => {
+    await db("runs").del();
+    await db("tests").del();
+  });
 
   it("returns test for a given run", async () => {
     const test = await findTestForRun("runId", { logger });
-    expect(test).toMatchObject({ creator_id: "user2Id", id: "testId" });
+    expect(test).toMatchObject({ id: "testId" });
   });
 
   it("throws an error if run does not exist", async () => {
@@ -343,19 +401,27 @@ describe("findTestForRun", () => {
 });
 
 describe("findTestsForGroup", () => {
-  beforeAll(() => {
+  beforeAll(async () => {
+    await db("tests").insert([
+      buildTest({}),
+      buildTest({ deleted_at: minutesFromNow(), i: 2 }),
+    ]);
+
     return db("group_tests").insert([
+      { group_id: "groupId", id: "groupTestId", test_id: "testId" },
       { group_id: "groupId", id: "groupTest2Id", test_id: "test2Id" },
-      { group_id: "groupId", id: "groupTest3Id", test_id: "deletedId" },
     ]);
   });
 
-  afterAll(() => db("group_tests").del());
+  afterAll(async () => {
+    await db("group_tests").del();
+    await db("tests").del();
+  });
 
-  it("returns list of tests for a group", async () => {
+  it("returns the non-deleted tests of a group", async () => {
     const tests = await findTestsForGroup("groupId", { logger });
 
-    expect(tests).toMatchObject([{ team_id: "team3Id" }, { id: "test2Id" }]);
+    expect(tests).toMatchObject([{ id: "testId" }]);
   });
 
   it("returns empty list if no tests for group exist", async () => {
@@ -366,19 +432,14 @@ describe("findTestsForGroup", () => {
 });
 
 describe("findTestsForTeam", () => {
+  beforeAll(() => db("tests").insert(buildTest({})));
+
+  afterAll(() => db("tests").del());
+
   it("returns list of tests for an team", async () => {
-    const tests = await db.transaction(async (trx) => {
-      await trx("tests")
-        .update({ created_at: new Date("2020-01-01").toISOString() })
-        .where({ id: "test2Id" });
+    const tests = await findTestsForTeam("teamId", { logger });
 
-      return findTestsForTeam("team2Id", { logger, trx });
-    });
-
-    expect(tests).toMatchObject([
-      { creator_id: "userId", id: "test2Id" },
-      { creator_id: "userId", id: "test3Id" },
-    ]);
+    expect(tests).toMatchObject([{ creator_id: "userId", id: "testId" }]);
   });
 
   it("returns empty list if no tests for user exist", async () => {
@@ -389,12 +450,27 @@ describe("findTestsForTeam", () => {
 });
 
 describe("updateTest", () => {
+  beforeAll(() =>
+    db("tests").insert([
+      buildTest({
+        name: "diffname",
+        runner_locations: ["eastus2"],
+        runner_requested_at: minutesFromNow(),
+        version: 2,
+      }),
+      buildTest({ i: 2 }),
+      buildTest({ deleted_at: minutesFromNow(), i: 3 }),
+    ])
+  );
+
+  afterAll(() => db("tests").del());
+
   it("does not update test if newer version saved", async () => {
     const test = await updateTest(
       {
         code: "code",
         id: "testId",
-        version: 8,
+        version: 1,
       },
       { logger }
     );
@@ -402,21 +478,18 @@ describe("updateTest", () => {
     expect(test).toMatchObject({
       code: 'const x = "hello"',
       id: "testId",
-      version: 11,
+      version: 2,
     });
   });
 
   it("updates existing test", async () => {
-    const now = minutesFromNow();
-
     const test = await updateTest(
       {
         code: "newCode",
         id: "testId",
         is_enabled: true,
-        runner_locations: ["eastus2", "westus2"],
-        runner_requested_at: now,
-        name: "newName",
+        name: "test",
+        runner_requested_at: null,
         version: 13,
       },
       { logger }
@@ -426,50 +499,35 @@ describe("updateTest", () => {
       code: "newCode",
       id: "testId",
       is_enabled: true,
-      runner_locations: '["eastus2","westus2"]',
-      runner_requested_at: now,
-      name: "newName",
-      version: 13,
-    });
-
-    const test2 = await updateTest(
-      {
-        id: "testId",
-        runner_locations: null,
-        runner_requested_at: null,
-      },
-      { logger }
-    );
-    expect(test2).toMatchObject({
-      runner_locations: null,
+      runner_locations: ["eastus2"],
       runner_requested_at: null,
+      name: "test",
+      version: 13,
     });
   });
 
   it("throws an error if updating to non-unique name", async () => {
-    const testFn = async (): Promise<Test> => {
-      return updateTest({ id: "test3Id", name: "test2" }, { logger });
-    };
-
-    await expect(testFn()).rejects.toThrowError("test name must be unique");
+    await expect(
+      updateTest({ id: "test2Id", name: "test" }, { logger })
+    ).rejects.toThrowError("test name must be unique");
   });
 
   it("throws an error if test does not exist", async () => {
-    const testFn = async (): Promise<Test> => {
-      return updateTest({ code: "code", id: "fakeId", version: 1 }, { logger });
-    };
-
-    await expect(testFn()).rejects.toThrowError("not found");
+    await expect(
+      updateTest({ code: "code", id: "fakeId", version: 1 }, { logger })
+    ).rejects.toThrowError("not found");
   });
 
   it("does not throw an error if test was deleted", async () => {
-    const testFn = async (): Promise<Test> => {
-      return updateTest(
-        { code: "code", id: "deletedId", version: 12 },
-        { logger }
-      );
-    };
+    const result = await updateTest(
+      { code: "code", id: "test3Id", version: 12 },
+      { logger }
+    );
 
-    await expect(testFn()).resolves.not.toThrowError("not found");
+    expect(result).toMatchObject({
+      code: "code",
+      id: "test3Id",
+      version: 12,
+    });
   });
 });
