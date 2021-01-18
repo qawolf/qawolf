@@ -1,7 +1,7 @@
 import KeyTable from "@novnc/novnc/core/input/keysym";
 import RFB from "@novnc/novnc/core/rfb";
 import { EventEmitter } from "events";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { isMac } from "../../../lib/detection";
 
@@ -28,29 +28,27 @@ export class Browser extends EventEmitter {
   _reconnectedAt = 0;
 
   _disconnect(): void {
-    const rfb = this._rfb;
-    if (!rfb) return;
-
-    this._rfb = null;
-
-    if (this._ensureInterval) {
-      clearInterval(this._ensureInterval);
-      this._ensureInterval = null;
-    }
-
     this._ready = false;
     this.emit("readychange");
 
-    // Without this `if` I got errors because rfb.disconnect tries to do a state change
-    // to "disconnecting", but the state change function throws an error if the state
-    // is already currently "disconnected". If _rfb_connection_state is "disconnected",
-    // then everything has been cleaned up already in the RFB instance, but we need
-    // to do our own cleanup. (We know we haven't done our cleanup yet because
-    // this._rfb isn't `null`.)
-    if (rfb._rfb_connection_state !== "disconnected") rfb.disconnect();
-    rfb.removeEventListener("clipboard", this._onCopy);
-    rfb._canvas.removeEventListener("keydown", this._onKeyDown, true);
-    rfb.removeEventListener("ready", this._onReady);
+    try {
+      const rfb = this._rfb;
+      if (rfb) {
+        this._rfb = null;
+        rfb.removeEventListener("clipboard", this._onCopy);
+        rfb.removeEventListener("ready", this._onReady);
+        // Without this `if` I got errors because rfb.disconnect tries to do a state change
+        // to "disconnecting", but the state change function throws an error if the state
+        // is already currently "disconnected". If _rfb_connection_state is "disconnected",
+        // then everything has been cleaned up already in the RFB instance, but we need
+        // to do our own cleanup. (We know we haven't done our cleanup yet because
+        // this._rfb isn't `null`.)
+        rfb._canvas.removeEventListener("keydown", this._onKeyDown, true);
+        if (rfb._rfb_connection_state !== "disconnected") rfb.disconnect();
+      }
+    } catch (error) {
+      console.debug("Error disconnecting browser", error);
+    }
   }
 
   _connect(): void {
@@ -72,10 +70,9 @@ export class Browser extends EventEmitter {
     rfb.addEventListener("clipboard", this._onCopy);
     rfb.addEventListener("ready", this._onReady);
     rfb._canvas.addEventListener("keydown", this._onKeyDown, true);
-    this._ensureInterval = window.setInterval(this._ensureConnection, 500);
   }
 
-  _ensureConnection = (): void => {
+  _ensureConnection(): void {
     const state = this._rfb?._rfbConnectionState;
     if (
       !["connecting", "connected"].includes(state) &&
@@ -87,7 +84,7 @@ export class Browser extends EventEmitter {
       this._disconnect();
       this._connect();
     }
-  };
+  }
 
   // This is called whenever we get the "clipboard" event from the RFB.
   // The `text` is from the runner copy or cut event. We call `writeText`
@@ -171,15 +168,34 @@ export class Browser extends EventEmitter {
   };
 
   close(): void {
+    if (this._ensureInterval) {
+      clearInterval(this._ensureInterval);
+      this._ensureInterval = null;
+    }
+
     this._disconnect();
   }
 
   connect(container: HTMLDivElement, url: string, password: string): void {
-    if (this._container === container && this._url === url) return;
-    this._disconnect();
+    if (
+      this._container === container &&
+      this._url === url &&
+      this._password === password
+    )
+      return;
+
     this._container = container;
     this._password = password;
     this._url = url;
+
+    if (!this._ensureInterval) {
+      this._ensureInterval = window.setInterval(
+        () => this._ensureConnection(),
+        500
+      );
+    }
+
+    this._disconnect();
     this._connect();
   }
 
@@ -220,14 +236,15 @@ export type BrowserHook = {
 };
 
 export const useBrowser = (): BrowserHook => {
-  const browserRef = useRef(new Browser());
-
-  const [isBrowserReady, setIsBrowserReady] = useState(
-    browserRef.current.ready
-  );
+  const [isBrowserReady, setIsBrowserReady] = useState(false);
+  const [browser, setBrowser] = useState<Browser>();
 
   useEffect(() => {
-    const browser = browserRef.current;
+    setBrowser(new Browser());
+  }, []);
+
+  useEffect(() => {
+    if (!browser) return;
 
     const onReadyChange = async () => setIsBrowserReady(browser.ready);
 
@@ -237,10 +254,10 @@ export const useBrowser = (): BrowserHook => {
       browser.off("readychange", onReadyChange);
       browser.close();
     };
-  }, [browserRef]);
+  }, [browser]);
 
   return {
-    browser: browserRef.current,
+    browser,
     isBrowserReady,
   };
 };

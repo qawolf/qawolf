@@ -33,6 +33,7 @@ const EVENTS = [
 ];
 
 export class RunnerClient extends EventEmitter {
+  _apiKey: string | null = null;
   _browserReady = false;
   _socket: SocketIOClient.Socket | null = null;
   _subscriptions: SubscriptionMessage[] = [];
@@ -56,9 +57,10 @@ export class RunnerClient extends EventEmitter {
   }
 
   connect({ apiKey, wsUrl }: ConnectOptions): void {
-    if (this._wsUrl === wsUrl) return;
+    if (apiKey === this._apiKey && wsUrl === this._wsUrl) return;
 
-    this._wsUrl = wsUrl || null;
+    this._apiKey = apiKey;
+    this._wsUrl = wsUrl;
 
     if (this._socket) {
       this._socket.removeAllListeners();
@@ -81,14 +83,10 @@ export class RunnerClient extends EventEmitter {
 
     EVENTS.forEach((event) =>
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      this._socket?.on(event, (...args: any[]) => {
+      this._socket.on(event, (...args: any[]) => {
         this.emit(event, ...args);
       })
     );
-  }
-
-  get connected(): boolean {
-    return !!this._socket?.connected;
   }
 
   close(): void {
