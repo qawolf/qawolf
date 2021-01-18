@@ -109,7 +109,6 @@ export const teamFragment = gql`
     id
     is_enabled
     name
-    renewed_at
   }
 `;
 
@@ -133,7 +132,8 @@ export const userFragment = gql`
     id
     onboarded_at
     teams {
-      ...TeamFragment
+      id
+      name
     }
     wolf_name
     wolf_number
