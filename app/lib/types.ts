@@ -94,6 +94,7 @@ export type SuiteRun = {
 };
 
 export type Team = {
+  helpers: string;
   id: string;
   is_enabled: boolean;
   name: string;

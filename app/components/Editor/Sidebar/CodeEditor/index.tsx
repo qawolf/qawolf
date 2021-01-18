@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 
 import { RunnerContext } from "../../contexts/RunnerContext";
 import { TestContext } from "../../contexts/TestContext";
-import EditorComponent from "./Editor";
+import EditorComponent from "../Editor";
 import { useEnvTypes } from "./hooks/envTypes";
 import { useGlyphs } from "./hooks/glyphs";
 
@@ -12,7 +12,7 @@ type Editor = monacoEditor.editor.IStandaloneCodeEditor;
 
 const TYPES_URL = "/types.txt";
 
-const includeTypes = (monaco: typeof monacoEditor) => {
+export const includeTypes = (monaco: typeof monacoEditor) => {
   axios.get(TYPES_URL).then(({ data: types }) => {
     const uri = monaco.Uri.file("qawolf/types.d.ts");
     if (monaco.editor.getModel(uri)) return;

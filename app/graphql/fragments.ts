@@ -105,6 +105,7 @@ export const suiteFragment = gql`
 
 export const teamFragment = gql`
   fragment TeamFragment on Team {
+    helpers
     id
     is_enabled
     name

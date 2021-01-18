@@ -323,6 +323,9 @@ type SuiteRun {
 
 "A team of users"
 type Team {
+  "Team helper code, for sharing functionality between tests"
+  helpers: String!
+
   "Team ID"
   id: ID!
 
