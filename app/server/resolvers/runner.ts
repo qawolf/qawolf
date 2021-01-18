@@ -14,7 +14,6 @@ import {
 import { findTest } from "../models/test";
 import {
   Context,
-  Runner,
   RunnerResult,
   RunnerRun,
   UpdateRunnerMutation,

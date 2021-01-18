@@ -34,9 +34,13 @@ type UpdateTest = {
   id: string;
   is_enabled?: boolean;
   name?: string;
-  runner_locations?: string[];
-  runner_requested_at?: string;
+  runner_requested_at?: null;
   version?: number;
+};
+
+type UpdateTestToPending = {
+  id: string;
+  runner_locations: string[];
 };
 
 export const buildTestName = async (
@@ -80,7 +84,7 @@ export const countPendingTests = async (
     location: row.location,
   }));
 
-  log.debug(result.length);
+  log.debug(result);
 
   return result;
 };
@@ -231,6 +235,10 @@ export const findTest = async (
     throw new Error(`test not found ${id}`);
   }
 
+  if (test.runner_locations) {
+    test.runner_locations = JSON.parse(test.runner_locations);
+  }
+
   return test;
 };
 
@@ -276,25 +284,13 @@ export const deleteTests = async (
 };
 
 export const updateTest = async (
-  {
-    code,
-    id,
-    is_enabled,
-    name,
-    runner_locations,
-    runner_requested_at,
-    version,
-  }: UpdateTest,
+  { code, id, is_enabled, name, runner_requested_at, version }: UpdateTest,
   { logger, trx }: ModelOptions
 ): Promise<Test> => {
   const log = logger.prefix("updateTest");
 
   return (trx || db).transaction(async (trx) => {
-    const existingTest = await trx
-      .select("*")
-      .from("tests")
-      .where({ id })
-      .first();
+    const existingTest = await findTest(id, { logger, trx });
 
     if (!existingTest) {
       log.debug("test not found", id);
@@ -314,15 +310,12 @@ export const updateTest = async (
       code: code || existingTest.code,
       is_enabled: isNil(is_enabled) ? existingTest.is_enabled : is_enabled,
       name: name || existingTest.name,
-      runner_requested_at,
       updated_at: minutesFromNow(),
       version: version || existingTest.version,
     };
 
-    if (runner_locations !== undefined) {
-      updates.runner_locations = runner_locations?.length
-        ? JSON.stringify(runner_locations)
-        : null;
+    if (runner_requested_at === null) {
+      updates.runner_requested_at = runner_requested_at;
     }
 
     try {
@@ -339,4 +332,30 @@ export const updateTest = async (
 
     return { ...existingTest, ...updates };
   });
+};
+
+export const updateTestToPending = async (
+  options: UpdateTestToPending,
+  { logger, trx }: ModelOptions
+): Promise<boolean> => {
+  const log = logger.prefix("updateTestToPending");
+
+  const runner_locations = options.runner_locations?.length
+    ? JSON.stringify(options.runner_locations.slice(0, 2))
+    : null;
+
+  // do not update if there is a runner assigned
+  // this could happen during a concurrent assignment
+  const sql = `UPDATE tests
+  SET runner_locations = ?, runner_requested_at = now()
+  WHERE id = ? 
+    AND runner_requested_at IS NULL 
+    AND id NOT IN (SELECT test_id FROM runners)`;
+
+  const result = await (trx || db).raw(sql, [runner_locations, options.id]);
+
+  const didUpdate = result.rowCount > 0;
+  log.debug(options, didUpdate ? "updated" : "skipped");
+
+  return didUpdate;
 };

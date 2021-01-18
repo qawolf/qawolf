@@ -14,7 +14,7 @@ import {
 } from "../../../server/models/runner";
 import * as runnerModel from "../../../server/models/runner";
 import * as testModel from "../../../server/models/test";
-import { findTest, updateTest } from "../../../server/models/test";
+import { findTest, updateTestToPending } from "../../../server/models/test";
 import * as locationService from "../../../server/services/location";
 import { Runner } from "../../../server/types";
 import { minutesFromNow } from "../../../server/utils";
@@ -63,8 +63,8 @@ describe("assignRunner", () => {
   });
 
   it("assigns a test to the runner", async () => {
-    await updateTest(
-      { id: "testId", runner_requested_at: minutesFromNow() },
+    await updateTestToPending(
+      { id: "testId", runner_locations: ["westus2"] },
       { logger }
     );
     await assignRunner({ runner, test_id: "testId" }, { logger });
@@ -384,7 +384,7 @@ describe("requestRunnerForTest", () => {
     jest.spyOn(runnerModel, "findRunner").mockResolvedValue(null);
 
     const assignRunner = jest.spyOn(runnerModel, "assignRunner").mockReset();
-    const updateTest = jest.spyOn(testModel, "updateTest");
+    const updateTestToPending = jest.spyOn(testModel, "updateTestToPending");
 
     const result = await requestRunnerForTest(
       { ip: "", test: buildTest({}) },
@@ -394,11 +394,10 @@ describe("requestRunnerForTest", () => {
 
     expect(assignRunner).not.toBeCalled();
 
-    expect(updateTest).toBeCalledWith(
+    expect(updateTestToPending).toBeCalledWith(
       {
         id: "testId",
-        runner_locations: ["eastus2", "westus2"],
-        runner_requested_at: expect.any(String),
+        runner_locations: ["eastus2", "westus2", "centralindia"],
       },
       options
     );

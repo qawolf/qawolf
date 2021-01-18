@@ -4,7 +4,7 @@ import { rankLocations } from "../services/location";
 import { ModelOptions, Runner, Test } from "../types";
 import { cuid, minutesFromNow } from "../utils";
 import { findPendingRun, findRun, updateRun } from "./run";
-import { findPendingTest, updateTest } from "./test";
+import { findPendingTest, updateTest, updateTestToPending } from "./test";
 
 type AssignRunner = {
   runner: Runner;
@@ -310,13 +310,8 @@ export const requestRunnerForTest = async (
   }
 
   if (!test.runner_requested_at) {
-    // mark the test as pending a runner
-    await updateTest(
-      {
-        id: test.id,
-        runner_locations: locations.slice(0, 2),
-        runner_requested_at: minutesFromNow(),
-      },
+    await updateTestToPending(
+      { id: test.id, runner_locations: locations },
       options
     );
   }
