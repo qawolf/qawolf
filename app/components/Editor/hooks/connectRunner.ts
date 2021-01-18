@@ -31,25 +31,25 @@ export const useConnectRunner = ({
 
   const { isLatestCode } = useContext(TestContext);
 
-  const { data: runnerResult, startPolling, stopPolling } = useRunner(
+  const { data: runnerResult, loading, startPolling, stopPolling } = useRunner(
     {
       run_id,
       should_request_runner: isRunnerPending,
       test_id,
     },
-    !isLatestCode || useLocalRunner
+    isRunnerConnected || !isLatestCode || useLocalRunner
   );
 
   useEffect(() => {
     // poll for the runner when none is connected
-    if (!isLatestCode || isRunnerConnected) return;
+    if (!isLatestCode || isRunnerConnected || loading) return;
 
     startPolling(POLL_INTERVAL);
 
     return () => {
       stopPolling();
     };
-  }, [isLatestCode, isRunnerConnected, startPolling, stopPolling]);
+  }, [isLatestCode, isRunnerConnected, loading, startPolling, stopPolling]);
 
   let apiKey: string = null;
   let wsUrl: string = null;
