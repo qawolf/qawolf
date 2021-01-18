@@ -17,7 +17,14 @@ describe("createHooks", () => {
 
   it("includes artifact hooks if specified", () => {
     const hooks = createHooks(
-      { artifacts, code: "code", restart: false, test_id: "", version: 1 },
+      {
+        artifacts,
+        code: "code",
+        helpers: "",
+        restart: false,
+        test_id: "",
+        version: 1,
+      },
       environment
     );
 
@@ -31,6 +38,7 @@ describe("createHooks", () => {
     const hooks = createHooks(
       {
         code: "code",
+        helpers: "",
         restart: false,
         run_id: "runId",
         test_id: "",
@@ -57,6 +65,7 @@ describe("Runner", () => {
   it("runs code", async () => {
     const progress = await runner.run({
       code,
+      helpers: "",
       restart: false,
       test_id: "",
       version: 1,
@@ -75,6 +84,7 @@ describe("Runner", () => {
 
     await runner.run({
       code,
+      helpers: "",
       restart: true,
       test_id: "",
       version: 1,

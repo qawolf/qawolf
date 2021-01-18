@@ -27,7 +27,7 @@ describe("Run", () => {
 
     const result = await run.run({}, []);
     expect(result.error).toEqual(
-      "Error: oh no!\n    at webEditorCode (vm.js:6:7)"
+      "Error: oh no!\n    at webEditorCode (vm.js:7:7)"
     );
   });
 
