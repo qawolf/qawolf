@@ -214,6 +214,7 @@ export type RunOptions = {
   code: string;
   end_line?: number;
   env: Env;
+  helpers?: string;
   restart: boolean;
   run_id?: string;
   start_line?: number;
