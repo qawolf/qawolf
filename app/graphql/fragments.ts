@@ -139,5 +139,4 @@ export const userFragment = gql`
     wolf_number
     wolf_variant
   }
-  ${teamFragment}
 `;

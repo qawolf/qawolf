@@ -125,7 +125,7 @@ export type User = {
   email: string;
   id: string;
   onboarded_at: string | null;
-  teams: Team[];
+  teams: { id: string; name: string }[];
   wolf_name: string;
   wolf_number: number;
   wolf_variant: string;
