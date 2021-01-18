@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { useUpdateTeam } from "../../../hooks/mutations";
 import { StateContext } from "../../StateContext";
 import { TestContext } from "../contexts/TestContext";
-import EditorComponent from "../Editor";
+import EditorComponent from "./Editor";
 import { includeTypes } from "./helpers";
 
 type Editor = monacoEditor.editor.IStandaloneCodeEditor;

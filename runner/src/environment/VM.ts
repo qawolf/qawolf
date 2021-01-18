@@ -80,6 +80,7 @@ export class VM {
   async run({
     code,
     endLine,
+    helpers,
     onLineStarted,
     startLine,
     variables,
@@ -87,6 +88,7 @@ export class VM {
     const codeToRun = transformCode({
       code,
       endLine,
+      helpers,
       startLine,
       variables,
     });

@@ -65,6 +65,7 @@ export class StatusReporter {
         artifacts: run.artifacts,
         code: run.code,
         env: run.env,
+        helpers: run.helpers,
         restart: true,
         run_id: run.id,
         test_id: run.test_id,

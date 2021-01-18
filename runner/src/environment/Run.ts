@@ -70,6 +70,7 @@ export class Run extends EventEmitter {
       await this._vm.run({
         code: this._progress.code,
         endLine: this._runOptions.end_line,
+        helpers: this._runOptions.helpers,
         onLineStarted: this._onLineStarted.bind(this),
         startLine: this._runOptions.start_line,
         variables,
