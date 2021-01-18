@@ -1,7 +1,7 @@
 import KeyTable from "@novnc/novnc/core/input/keysym";
 import RFB from "@novnc/novnc/core/rfb";
 import { EventEmitter } from "events";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { isMac } from "../../../lib/detection";
 
