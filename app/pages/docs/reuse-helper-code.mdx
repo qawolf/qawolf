@@ -35,9 +35,7 @@ Now the `signIn` function will be available to use in all of our tests.
 
 <SubHeader>Use Helpers</SubHeader>
 
-Next we'll edit our test code to call our `signIn` helper. Return to the test code by clicking the "Code" tab.
-
-We can replace the part of our test that signs in with a token:
+From the test's "Code" tab, we can now replace this:
 
 ```js
 await page.evaluate(() => localStorage.setItem("token", "myToken"));
@@ -63,7 +61,7 @@ Now our test looks like the following.
 
 Helpers are just JavaScript code, so you can also create functions that take any number of variables.
 
-For example, below is a modified version of our `signIn` function that takes the desired token as an additional variable and sets it in local storage:
+Below is a modified version of our `signIn` function that takes the desired token as an additional variable and sets it in local storage:
 
 ```js
 async function signInWithToken(page, token) {
@@ -80,7 +78,7 @@ await signInWithToken(page, "adminToken");
 
 Helpers also have access to <Link href="use-environment-variables">environment variables</Link>. These variables are found under `process.env`.
 
-For example, we could modify the function above to read the token from an environment variable rather than from an argument:
+We could modify the function above to read the token from an environment variable rather than from an argument:
 
 ```js
 async function signInWithToken(page) {
