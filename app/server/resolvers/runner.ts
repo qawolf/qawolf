@@ -9,6 +9,7 @@ import {
   findPendingTestOrRunId,
   findRunner,
   requestRunnerForTest,
+  UpdateRunner,
   updateRunner,
 } from "../models/runner";
 import { findTest } from "../models/test";
@@ -117,6 +118,8 @@ export const updateRunnerResolver = async (
     return null;
   }
 
+  let runnerUpdates: UpdateRunner;
+
   if (is_ready) {
     if (!api_key) throw new Error("must provide api_key");
 
@@ -125,15 +128,12 @@ export const updateRunnerResolver = async (
       logger
     );
 
-    await updateRunner(
-      {
-        api_key,
-        health_checked_at: timestamp,
-        id,
-        ready_at: timestamp,
-      },
-      { logger }
-    );
+    runnerUpdates = {
+      api_key,
+      health_checked_at: timestamp,
+      id,
+      ready_at: timestamp,
+    };
   } else if (is_healthy) {
     if (api_key !== runner.api_key) {
       log.error("invalid api key for runner", id);
@@ -146,9 +146,18 @@ export const updateRunnerResolver = async (
       return null;
     }
 
-    await updateRunner({ health_checked_at: timestamp, id }, { logger });
+    runnerUpdates = { health_checked_at: timestamp, id };
   } else {
     throw new Error("Must provide a status update");
+  }
+
+  try {
+    await updateRunner(runnerUpdates, { logger });
+  } catch (error) {
+    // the runner could be deleted, handle that gracefully
+    if (error.message.includes("runner not found")) return null;
+
+    throw error;
   }
 
   let runId = runner.run_id;
