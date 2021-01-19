@@ -37,7 +37,7 @@ type RequestRunnerForTest = {
   test: Test;
 };
 
-type UpdateRunner = {
+export type UpdateRunner = {
   allow_skip?: boolean;
   api_key?: string | null;
   deployed_at?: string | null;
