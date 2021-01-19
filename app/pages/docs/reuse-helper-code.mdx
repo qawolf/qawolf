@@ -9,22 +9,11 @@ import SubHeader from "../../components/Docs/SubHeader";
 
 <Header>Reuse Helper Code</Header>
 
-As you create multiple tests, you may find yourself reusing similar pieces of code. In this tutorial, we'll learn how to share code between tests.
+In this tutorial, we'll learn how to share code between tests.
 
 <SubHeader>Edit Helpers</SubHeader>
 
-QA Wolf lets you share code between all tests for your team. A common use case for this is handling authentication. For example, you may have code to set a token in <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank">local storage</a>:
-
-```js
-await page.evaluate(() => localStorage.setItem("token", "myToken"));
-await page.reload();
-```
-
-Rather than paste this code into every test that uses it, you can store it in your team's helpers file. You can access your team's helpers in the code editor, next to the "Logs" tab.
-
-TODO: INSERT IMAGE
-
-In this example, we'll create a function called `signIn` that sets the token in local storage and reloads the page:
+Let's share a sign in helper that sets a token in <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank">local storage</a>:
 
 ```js
 async function signIn(page) {
@@ -33,9 +22,14 @@ async function signIn(page) {
 }
 ```
 
-We'll update the code in the "Helpers" tab to include our `signIn` function.
+Rather than paste this code into every test that uses it, you can store it in your team's helpers.
 
-TODO: INSERT IMAGE
+<Image
+  alt="Helpers toggle"
+  height={198}
+  src="/docs/reuse-helper-code/helpers.png"
+  width={800}
+/>
 
 Now the `signIn` function will be available to use in all of our tests.
 
@@ -58,7 +52,12 @@ await signIn(page);
 
 Now our test looks like the following.
 
-TODO: INSERT IMAGE
+<Image
+  alt="Helpers toggle"
+  height={165}
+  src="/docs/reuse-helper-code/use-helper.png"
+  width={400}
+/>
 
 <SubHeader>Pass Variables to Helpers</SubHeader>
 

@@ -11,7 +11,6 @@ import { useGlyphs } from "./hooks/glyphs";
 type Editor = monacoEditor.editor.IStandaloneCodeEditor;
 
 export default function CodeEditor(): JSX.Element {
-  // code, env, onSelectionChange,
   const [editor, setEditor] = useState<Editor | null>(null);
   const [monaco, setMonaco] = useState<typeof monacoEditor | null>(null);
 
