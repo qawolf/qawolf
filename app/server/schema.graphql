@@ -260,6 +260,9 @@ type RunnerRun {
   """
   env: String!
 
+  "Team helper code, for sharing functionality between tests"
+  helpers: String!
+
   "The RunnerRun ID"
   id: ID!
 
