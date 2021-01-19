@@ -5,7 +5,7 @@ import { RunnerContext } from "../../contexts/RunnerContext";
 import { TestContext } from "../../contexts/TestContext";
 import EditorComponent from "../Editor";
 import { includeTypes } from "../helpers";
-import { useEnvTypes } from "./hooks/envTypes";
+import { useEnvTypes, useHelpersTypes } from "./hooks/envTypes";
 import { useGlyphs } from "./hooks/glyphs";
 
 type Editor = monacoEditor.editor.IStandaloneCodeEditor;
@@ -16,9 +16,10 @@ export default function CodeEditor(): JSX.Element {
   const [monaco, setMonaco] = useState<typeof monacoEditor | null>(null);
 
   const { env, progress, onSelectionChange } = useContext(RunnerContext);
-  const { code, controller, hasWriteAccess } = useContext(TestContext);
+  const { code, controller, hasWriteAccess, team } = useContext(TestContext);
 
   useEnvTypes({ env, monaco });
+  useHelpersTypes({ helpers: team?.helpers, monaco });
   useGlyphs({ code, editor, progress });
 
   const editorDidMount = ({ editor, monaco }) => {
