@@ -16,13 +16,15 @@ export const editorColors = {
   "editorSuggestWidget.selectedBackground": colors.fadedBlue,
 };
 
-export const options: monacoEditor.editor.IEditorConstructionOptions = {
+export const options: monacoEditor.editor.IStandaloneEditorConstructionOptions = {
   fontSize: 14,
+  insertSpaces: true,
   minimap: {
     enabled: false,
   },
   scrollBeyondLastLine: false,
   selectOnLineNumbers: true,
+  tabSize: 2,
 };
 
 export const rules: monacoEditor.editor.ITokenThemeRule[] = [

@@ -1,3 +1,5 @@
+import isNil from "lodash/isNil";
+
 import { findTeam, updateTeam } from "../models/team";
 import { Context, IdQuery, Team, UpdateTeamMutation } from "../types";
 import { ensureTeamAccess } from "./utils";
@@ -20,7 +22,7 @@ export const teamResolver = async (
  */
 export const updateTeamResolver = async (
   _: Record<string, unknown>,
-  { id, name }: UpdateTeamMutation,
+  { helpers, id, name }: UpdateTeamMutation,
   { logger, teams }: Context
 ): Promise<Team> => {
   const log = logger.prefix("updateTeamResolver");
@@ -28,5 +30,9 @@ export const updateTeamResolver = async (
 
   ensureTeamAccess({ logger, team_id: id, teams });
 
-  return updateTeam({ id, name }, { logger });
+  if (isNil(helpers) && isNil(name)) {
+    throw new Error("Must pass helpers or name");
+  }
+
+  return updateTeam({ helpers, id, name }, { logger });
 };

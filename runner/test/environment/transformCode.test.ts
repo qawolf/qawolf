@@ -48,6 +48,10 @@ await page.click(
 // clear completed
 await page.click(".clear-completed");`;
 
+const helpers = `function assertWelcomeText(page) {
+  return assertText(page, "Welcome!");
+}`;
+
 describe("getExpressions", () => {
   it("parses expressions from code", () => {
     expect(getExpressions(simpleSourceCode)).toMatchSnapshot();
@@ -89,6 +93,7 @@ describe("transformCode", () => {
     expect(
       transformCode({
         code: simpleSourceCode,
+        helpers: "",
         variables: { page: "page" },
       })
     ).toMatchSnapshot();
@@ -96,6 +101,7 @@ describe("transformCode", () => {
     expect(
       transformCode({
         code: sourceCode,
+        helpers: "",
         variables: { page: "page", x: 1, y: null, z: "hi" },
       })
     ).toMatchSnapshot();
@@ -105,6 +111,7 @@ describe("transformCode", () => {
     expect(
       transformCode({
         code: simpleSourceCode,
+        helpers: "",
         endLine: 1,
         startLine: 1,
         variables: { page: "page" },
@@ -114,6 +121,7 @@ describe("transformCode", () => {
     expect(
       transformCode({
         code: sourceCode,
+        helpers: "",
         endLine: 5,
         startLine: 4,
         variables: { page: "page", x: 1, y: null, z: "hi" },
@@ -123,6 +131,7 @@ describe("transformCode", () => {
     expect(
       transformCode({
         code: sourceCode,
+        helpers: "",
         endLine: 12,
         startLine: 2,
         variables: { page: "page", x: 1, y: null, z: "hi" },
@@ -132,6 +141,7 @@ describe("transformCode", () => {
     expect(
       transformCode({
         code: sourceCode2,
+        helpers: "",
         endLine: 4,
         startLine: 1,
         variables: {},
@@ -142,6 +152,7 @@ describe("transformCode", () => {
       transformCode({
         code: sourceCode2,
         endLine: 8,
+        helpers: "",
         startLine: 6,
         variables: {},
       })
@@ -150,6 +161,27 @@ describe("transformCode", () => {
     expect(
       transformCode({
         code: sourceCode2,
+        helpers: "",
+        endLine: 15,
+        startLine: 10,
+        variables: {},
+      })
+    ).toMatchSnapshot();
+  });
+
+  it("includes helpers if specified", () => {
+    expect(
+      transformCode({
+        code: simpleSourceCode,
+        helpers,
+        variables: { page: "page" },
+      })
+    ).toMatchSnapshot();
+
+    expect(
+      transformCode({
+        code: sourceCode2,
+        helpers,
         endLine: 15,
         startLine: 10,
         variables: {},

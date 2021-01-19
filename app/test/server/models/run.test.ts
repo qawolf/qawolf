@@ -259,13 +259,17 @@ describe("run model", () => {
   });
 
   describe("findSuiteRunForRunner", () => {
-    beforeAll(() => {
+    beforeAll(async () => {
+      await db("teams").update({ helpers: "helpers" });
+
       return db("environment_variables").insert(
         buildEnvironmentVariable({ group_id: "group2Id", team_id: "team3Id" })
       );
     });
 
-    afterAll(() => {
+    afterAll(async () => {
+      await db("teams").update({ helpers: "" });
+
       return db("environment_variables").del();
     });
 
@@ -289,6 +293,7 @@ describe("run model", () => {
           ENV_VARIABLE: "secret",
           SUITE_VARIABLE: "suite_value",
         }),
+        helpers: "helpers",
         id: "run6Id",
         test_id: "test4Id",
         version: 11,
@@ -310,6 +315,7 @@ describe("run model", () => {
         env: JSON.stringify({
           ENV_VARIABLE: "secret",
         }),
+        helpers: "helpers",
         id: "run6Id",
         test_id: "test4Id",
         version: 11,

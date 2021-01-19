@@ -3,6 +3,7 @@ import {
   teamResolver,
   updateTeamResolver,
 } from "../../../server/resolvers/team";
+import { Team } from "../../../server/types";
 import { buildTeam, buildTeamUser, buildUser, logger } from "../utils";
 
 const testContext = {
@@ -53,6 +54,16 @@ describe("updateTeamResolver", () => {
     return db("teams").del();
   });
 
+  it("updates a team helpers", async () => {
+    const team = await updateTeamResolver(
+      {},
+      { helpers: "helpers", id: "teamId" },
+      testContext
+    );
+
+    expect(team.helpers).toBe("helpers");
+  });
+
   it("updates a team name", async () => {
     const team = await updateTeamResolver(
       {},
@@ -61,5 +72,13 @@ describe("updateTeamResolver", () => {
     );
 
     expect(team.name).toBe("another name");
+  });
+
+  it("throws an error if no helpers or name passed", async () => {
+    const testFn = async (): Promise<Team> => {
+      return updateTeamResolver({}, { id: "teamId" }, testContext);
+    };
+
+    await expect(testFn()).rejects.toThrowError();
   });
 });

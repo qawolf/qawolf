@@ -105,10 +105,10 @@ export const suiteFragment = gql`
 
 export const teamFragment = gql`
   fragment TeamFragment on Team {
+    helpers
     id
     is_enabled
     name
-    renewed_at
   }
 `;
 
@@ -132,11 +132,11 @@ export const userFragment = gql`
     id
     onboarded_at
     teams {
-      ...TeamFragment
+      id
+      name
     }
     wolf_name
     wolf_number
     wolf_variant
   }
-  ${teamFragment}
 `;

@@ -323,6 +323,9 @@ type SuiteRun {
 
 "A team of users"
 type Team {
+  "Team helper code, for sharing functionality between tests"
+  helpers: String!
+
   "Team ID"
   id: ID!
 
@@ -925,6 +928,11 @@ type Mutation {
   """
   updateTeam(
     """
+    Updated helpers for the team
+    """
+    helpers: String
+
+    """
     Team ID
     """
     id: ID!
@@ -932,7 +940,7 @@ type Mutation {
     """
     New name for the team
     """
-    name: String!
+    name: String
   ): Team!
 
   """

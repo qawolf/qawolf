@@ -1,7 +1,7 @@
 import { Box, Button } from "grommet";
 import { useRef, useState } from "react";
 
-import { Team as TeamType, User } from "../../../lib/types";
+import { ShortTeam, User } from "../../../lib/types";
 import { hoverTransition } from "../../../theme/theme";
 import Avatar from "../../shared/Avatar";
 import Drop from "../../shared/Drop";
@@ -10,7 +10,7 @@ import styles from "./Sidebar.module.css";
 import TeamMenu from "./TeamMenu";
 
 type Props = {
-  selectedTeam: TeamType | null;
+  selectedTeam: ShortTeam | null;
   user: User;
 };
 

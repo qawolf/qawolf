@@ -367,6 +367,7 @@ export const buildTeam = ({ i, is_enabled, name, plan }: BuildTeam): Team => {
   const finalI = i || 1;
 
   return {
+    helpers: "",
     id: `team${finalI === 1 ? "" : i}Id`,
     is_enabled: is_enabled === undefined ? true : is_enabled,
     name: name || "Awesome Company",

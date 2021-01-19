@@ -6,12 +6,12 @@ import { RunnerContext } from "../contexts/RunnerContext";
 import { TestContext } from "../contexts/TestContext";
 
 export default function RunButton(): JSX.Element {
-  const { controller, test } = useContext(TestContext);
+  const { controller, team, test } = useContext(TestContext);
   const { runTest, selection } = useContext(RunnerContext);
 
   const runCurrentTest = () => {
     const { code, id: test_id, version } = controller;
-    runTest({ code, selection, test_id, version });
+    runTest({ code, helpers: team.helpers, selection, test_id, version });
   };
 
   if (!test) return null;

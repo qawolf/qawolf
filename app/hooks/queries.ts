@@ -270,6 +270,7 @@ export const useTeam = (
   return useQuery<TeamData, TeamVariables>(teamQuery, {
     fetchPolicy,
     onError,
+    skip: !variables.id,
     variables,
   });
 };

@@ -1,0 +1,93 @@
+import Link from "next/link";
+
+import Header from "../../components/Docs/Header";
+import Image from "../../components/Docs/Image";
+import Layout from "../../components/Docs/Layout";
+import SubHeader from "../../components/Docs/SubHeader";
+
+<Layout>
+
+<Header>Reuse Helper Code</Header>
+
+In this tutorial, we'll learn how to share code between tests.
+
+<SubHeader>Edit Helpers</SubHeader>
+
+Let's share a sign in helper that sets a token in <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank">local storage</a>:
+
+```js
+async function signIn(page) {
+  await page.evaluate(() => localStorage.setItem("token", "myToken"));
+  await page.reload();
+}
+```
+
+Rather than paste this code into every test that uses it, you can store it in your team's helpers.
+
+<Image
+  alt="Helpers toggle"
+  height={198}
+  src="/docs/reuse-helper-code/helpers.png"
+  width={800}
+/>
+
+Now the `signIn` function will be available to use in all of our tests.
+
+<SubHeader>Use Helpers</SubHeader>
+
+From the test's "Code" tab, we can now replace this:
+
+```js
+await page.evaluate(() => localStorage.setItem("token", "myToken"));
+await page.reload();
+```
+
+With a call to our `signIn` helper:
+
+```js
+await signIn(page);
+```
+
+Now our test looks like the following.
+
+<Image
+  alt="Helpers toggle"
+  height={165}
+  src="/docs/reuse-helper-code/use-helper.png"
+  width={400}
+/>
+
+<SubHeader>Pass Variables to Helpers</SubHeader>
+
+Helpers are just JavaScript code, so you can also create functions that take any number of variables.
+
+Below is a modified version of our `signIn` function that takes the desired token as an additional variable and sets it in local storage:
+
+```js
+async function signInWithToken(page, token) {
+  await page.evaluate((token) => localStorage.setItem("token", token), token);
+  await page.reload();
+}
+```
+
+In our test, we can now call `signInWithToken` and pass it the token of our choice:
+
+```js
+await signInWithToken(page, "adminToken");
+```
+
+Helpers also have access to <Link href="use-environment-variables">environment variables</Link>. These variables are found under `process.env`.
+
+We could modify the function above to read the token from an environment variable rather than from an argument:
+
+```js
+async function signInWithToken(page) {
+  await page.evaluate(
+    (token) => localStorage.setItem("token", token),
+    process.env.TOKEN
+  );
+  await page.reload();
+}
+```
+
+</Layout>

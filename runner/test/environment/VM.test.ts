@@ -4,6 +4,7 @@ import { Logger } from "../../src/services/Logger";
 
 const runOptions = {
   code: "",
+  helpers: "",
   onLineStarted: () => {
     // do nothing
   },

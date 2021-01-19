@@ -231,6 +231,7 @@ export type Team = {
   created_at?: string;
   deleted_at?: string | null;
   id: string;
+  helpers: string;
   is_enabled: boolean;
   name: string;
   plan: TeamPlan;
@@ -359,6 +360,7 @@ export type RunnerRun = {
   artifacts: SaveArtifacts;
   code: string;
   env: string;
+  helpers: string;
   id: string;
   test_id: string;
   version: number;
@@ -419,8 +421,9 @@ export type UpdateRunnerMutation = {
 };
 
 export type UpdateTeamMutation = {
+  helpers?: string | null;
   id: string;
-  name: string;
+  name?: string | null;
 };
 
 export type UpdateTestMutation = {

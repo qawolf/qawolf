@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import { NavigationOption } from "../../../lib/types";
 import CodeEditor from "./CodeEditor";
+import HelpersEditor from "./HelpersEditor";
 import Navigation from "./Navigation";
 import RunLogs from "./RunLogs";
 
@@ -16,6 +17,7 @@ export default function Sidebar(): JSX.Element {
     <Box background="black" flex={false} height="full" width={width}>
       <Navigation selected={selected} setSelected={setSelected} />
       {selected === "code" && <CodeEditor />}
+      {selected === "helpers" && <HelpersEditor />}
       <RunLogs isVisible={selected === "logs"} />
     </Box>
   );

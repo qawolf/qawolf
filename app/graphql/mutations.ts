@@ -246,8 +246,8 @@ export const updateGroupTestsMutation = gql`
 `;
 
 export const updateTeamMutation = gql`
-  mutation updateTeam($id: ID!, $name: String!) {
-    updateTeam(id: $id, name: $name) {
+  mutation updateTeam($helpers: String, $id: ID!, $name: String) {
+    updateTeam(helpers: $helpers, id: $id, name: $name) {
       ...TeamFragment
     }
   }

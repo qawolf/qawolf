@@ -144,11 +144,50 @@ await page.click(\\".clear-completed\\");",
 ]
 `;
 
+exports[`transformCode includes helpers if specified 1`] = `
+"
+const webEditorCode = async (variables, { vmEnv, vmLineStarted }) => {
+process.env = { ...process.env, ...vmEnv };
+function assertWelcomeText(page) {
+  return assertText(page, \\"Welcome!\\");
+}
+var { page  } = variables;
+vmLineStarted(1)
+await page.click(\\"a\\");
+};
+
+module.exports = webEditorCode;
+"
+`;
+
+exports[`transformCode includes helpers if specified 2`] = `
+"
+const webEditorCode = async (variables, { vmEnv, vmLineStarted }) => {
+process.env = { ...process.env, ...vmEnv };
+function assertWelcomeText(page) {
+  return assertText(page, \\"Welcome!\\");
+}
+var {   } = variables;
+vmLineStarted(13)
+// complete todo
+await page.click(
+    \\".toggle\\"
+);
+vmLineStarted(16)
+// clear completed
+await page.click(\\".clear-completed\\");
+};
+
+module.exports = webEditorCode;
+"
+`;
+
 exports[`transformCode takes start and end lines into account 1`] = `
 "
 const webEditorCode = async (variables, { vmEnv, vmLineStarted }) => {
-var { page  } = variables;
 process.env = { ...process.env, ...vmEnv };
+
+var { page  } = variables;
 vmLineStarted(1)
 await page.click(\\"a\\");
 };
@@ -160,8 +199,9 @@ module.exports = webEditorCode;
 exports[`transformCode takes start and end lines into account 2`] = `
 "
 const webEditorCode = async (variables, { vmEnv, vmLineStarted }) => {
-var { page, x, y, z  } = variables;
 process.env = { ...process.env, ...vmEnv };
+
+var { page, x, y, z  } = variables;
 vmLineStarted(5)
 await page.click(
   '[placeholder=\\"Search by location..\\"]'
@@ -175,8 +215,9 @@ module.exports = webEditorCode;
 exports[`transformCode takes start and end lines into account 3`] = `
 "
 const webEditorCode = async (variables, { vmEnv, vmLineStarted }) => {
-var { page, x, y, z  } = variables;
 process.env = { ...process.env, ...vmEnv };
+
+var { page, x, y, z  } = variables;
 vmLineStarted(5)
 await page.click(
   '[placeholder=\\"Search by location..\\"]'
@@ -200,8 +241,9 @@ module.exports = webEditorCode;
 exports[`transformCode takes start and end lines into account 4`] = `
 "
 const webEditorCode = async (variables, { vmEnv, vmLineStarted }) => {
-var {   } = variables;
 process.env = { ...process.env, ...vmEnv };
+
+var {   } = variables;
 vmLineStarted(1)
 var todo = \\"hi there!\\";
 variables[\\"todo\\"] = todo;
@@ -219,8 +261,9 @@ module.exports = webEditorCode;
 exports[`transformCode takes start and end lines into account 5`] = `
 "
 const webEditorCode = async (variables, { vmEnv, vmLineStarted }) => {
-var {   } = variables;
 process.env = { ...process.env, ...vmEnv };
+
+var {   } = variables;
 vmLineStarted(7)
 await page.fill(\\".new-todo\\", todo);
 vmLineStarted(8)
@@ -234,8 +277,9 @@ module.exports = webEditorCode;
 exports[`transformCode takes start and end lines into account 6`] = `
 "
 const webEditorCode = async (variables, { vmEnv, vmLineStarted }) => {
-var {   } = variables;
 process.env = { ...process.env, ...vmEnv };
+
+var {   } = variables;
 vmLineStarted(13)
 // complete todo
 await page.click(
@@ -253,8 +297,9 @@ module.exports = webEditorCode;
 exports[`transformCode transforms web editor code 1`] = `
 "
 const webEditorCode = async (variables, { vmEnv, vmLineStarted }) => {
-var { page  } = variables;
 process.env = { ...process.env, ...vmEnv };
+
+var { page  } = variables;
 vmLineStarted(1)
 await page.click(\\"a\\");
 };
@@ -266,8 +311,9 @@ module.exports = webEditorCode;
 exports[`transformCode transforms web editor code 2`] = `
 "
 const webEditorCode = async (variables, { vmEnv, vmLineStarted }) => {
-var { page, x, y, z  } = variables;
 process.env = { ...process.env, ...vmEnv };
+
+var { page, x, y, z  } = variables;
 vmLineStarted(5)
 await page.click(
   '[placeholder=\\"Search by location..\\"]'

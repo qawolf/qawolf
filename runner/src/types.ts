@@ -17,6 +17,7 @@ export type Run = {
   artifacts?: Artifacts;
   code: string;
   env?: Record<string, string>;
+  helpers: string;
   id: string;
   test_id: string;
   version: number;
@@ -27,6 +28,7 @@ export type RunOptions = {
   code: string;
   end_line?: number;
   env?: Record<string, string>;
+  helpers: string;
   restart: boolean;
   run_id?: string;
   start_line?: number;

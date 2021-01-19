@@ -105,6 +105,7 @@ export const copy = {
   growRevenue: "Grow revenue",
   growRevenueDetail:
     "2/3 of consumers abandon a purchase when they find a bug.",
+  helpers: "Helpers",
   history: "History",
   inProgress: "In progress",
   invalidUrl: "Please enter a valid URL",

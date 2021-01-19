@@ -4,6 +4,7 @@ import { RunOptions, RunProgress } from "../../src/types";
 
 const runOptions: RunOptions = {
   code: "",
+  helpers: "",
   restart: true,
   test_id: "",
   version: 0,
@@ -26,7 +27,7 @@ describe("Run", () => {
 
     const result = await run.run({}, []);
     expect(result.error).toEqual(
-      "Error: oh no!\n    at webEditorCode (vm.js:6:7)"
+      "Error: oh no!\n    at webEditorCode (vm.js:7:7)"
     );
   });
 
@@ -40,6 +41,51 @@ describe("Run", () => {
       runOptions: {
         ...runOptions,
         code,
+      },
+      vm: environment._vm,
+    });
+
+    run.on("runprogress", (progress: RunProgress) => events.push(progress));
+
+    await run.run({}, []);
+
+    const event = {
+      code,
+      completed_at: null,
+      current_line: 1,
+      run_id: undefined,
+      start_line: undefined,
+      status: "created",
+      test_id: "",
+    };
+
+    expect(events).toEqual([
+      event,
+      event,
+      {
+        ...event,
+        current_line: 2,
+      },
+      {
+        ...event,
+        completed_at: expect.any(String),
+        current_line: 2,
+        status: "pass",
+      },
+    ]);
+  });
+
+  it("includes helpers", async () => {
+    const events: RunProgress[] = [];
+
+    const code = "const b = 1;\na+b";
+
+    const run = new Run({
+      logger: environment._logger,
+      runOptions: {
+        ...runOptions,
+        code,
+        helpers: "const a = 2;",
       },
       vm: environment._vm,
     });

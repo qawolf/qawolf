@@ -93,10 +93,14 @@ export type SuiteRun = {
   test_name: string;
 };
 
-export type Team = {
+export type ShortTeam = {
   id: string;
-  is_enabled: boolean;
   name: string;
+};
+
+export type Team = ShortTeam & {
+  helpers: string;
+  is_enabled: boolean;
   renewed_at: string | null;
 };
 
@@ -124,7 +128,7 @@ export type User = {
   email: string;
   id: string;
   onboarded_at: string | null;
-  teams: Team[];
+  teams: ShortTeam[];
   wolf_name: string;
   wolf_number: number;
   wolf_variant: string;
@@ -156,7 +160,7 @@ export type Modal =
   | "deleteTest"
   | "teamSettings";
 
-export type NavigationOption = "code" | "logs";
+export type NavigationOption = "code" | "logs" | "helpers";
 
 export type NavigationType = "dark" | "light";
 
@@ -210,6 +214,7 @@ export type RunOptions = {
   code: string;
   end_line?: number;
   env: Env;
+  helpers?: string;
   restart: boolean;
   run_id?: string;
   start_line?: number;

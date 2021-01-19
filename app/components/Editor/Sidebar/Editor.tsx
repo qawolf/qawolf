@@ -9,7 +9,7 @@ import {
   background,
   options as baseOptions,
   theme,
-} from "../../../../theme/codeEditor";
+} from "../../../theme/codeEditor";
 
 const language = "javascript";
 
@@ -67,8 +67,8 @@ export default function Editor({
       const monaco = monacoRef.current;
 
       const editor = monaco.editor.create(containerRef.current, {
-        language,
         automaticLayout: true,
+        language,
         ...baseOptions,
         ...options,
       });

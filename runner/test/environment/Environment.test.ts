@@ -7,6 +7,7 @@ import { TEST_URL } from "../utils";
 
 const runOptions: RunOptions = {
   code: "",
+  helpers: "",
   restart: true,
   test_id: "",
   version: 0,

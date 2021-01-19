@@ -8,6 +8,7 @@ import { createGroup, DEFAULT_GROUP_NAME } from "./group";
 const DEFAULT_NAME = "My Team";
 
 type UpdateTeam = {
+  helpers?: string;
   id: string;
   is_enabled?: boolean;
   name?: string;
@@ -27,6 +28,7 @@ export const createFreeTeamWithGroup = async (
   log.debug(id);
 
   const team = {
+    helpers: "",
     id,
     is_enabled: true,
     name: DEFAULT_NAME,
@@ -91,6 +93,7 @@ export const findTeamsForUser = async (
 
 export const updateTeam = async (
   {
+    helpers,
     id,
     is_enabled,
     name,
@@ -107,6 +110,7 @@ export const updateTeam = async (
     updated_at: minutesFromNow(),
   };
 
+  if (!isNil(helpers)) updates.helpers = helpers;
   if (!isNil(is_enabled)) updates.is_enabled = is_enabled;
   if (!isNil(name)) updates.name = name;
   if (plan) updates.plan = plan;

@@ -5,7 +5,7 @@ import { resetIntercom } from "../../../hooks/intercom";
 import { JWT_KEY } from "../../../lib/client";
 import { routes } from "../../../lib/routes";
 import { state } from "../../../lib/state";
-import { Team } from "../../../lib/types";
+import { ShortTeam } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import Dropdown from "../../shared/Dropdown";
 import MenuButton from "./MenuButton";
@@ -13,7 +13,7 @@ import MenuButton from "./MenuButton";
 type Props = {
   closeMenu: () => void;
   teamId: string;
-  teams: Team[];
+  teams: ShortTeam[];
 };
 
 export default function TeamMenu({

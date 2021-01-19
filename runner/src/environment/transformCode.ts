@@ -19,6 +19,7 @@ type FilterExpressions = {
 export type TransformCode = {
   code: string;
   endLine?: number;
+  helpers: string;
   startLine?: number;
   variables: Variables;
 };
@@ -112,6 +113,7 @@ export const getExpressions = (sourceCode: string): Expression[] => {
 export const transformCode = ({
   code,
   endLine,
+  helpers,
   startLine,
   variables,
 }: TransformCode): string => {
@@ -141,8 +143,9 @@ export const transformCode = ({
 
   return `
 const webEditorCode = async (variables, { vmEnv, vmLineStarted }) => {
-var { ${Object.keys(variables).join(", ")}  } = variables;
 process.env = { ...process.env, ...vmEnv };
+${helpers}
+var { ${Object.keys(variables).join(", ")}  } = variables;
 ${lines.join("\n")}
 };
 

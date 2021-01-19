@@ -4,6 +4,7 @@ import { Selection } from "./selection";
 
 type RunTestOptions = {
   code: string;
+  helpers?: string;
   selection: Selection | null;
   test_id: string;
   version: number;
@@ -26,6 +27,7 @@ export const useRunTest = ({
 }: UseRunTest): RunTest => {
   const runTest = async ({
     code,
+    helpers,
     selection,
     test_id,
     version,
@@ -36,6 +38,7 @@ export const useRunTest = ({
     const options: RunOptions = {
       code,
       env: env || {},
+      helpers: helpers || "",
       restart: !selection || selection.startLine === 1,
       test_id,
       version,
