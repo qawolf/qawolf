@@ -40,7 +40,9 @@ export const useLogs = ({ apiKey, run, wsUrl }: UseLogs): LogsHook => {
         setLogs(response.data);
       });
 
-    return () => signal.cancel();
+    return () => {
+      signal.cancel();
+    };
   }, [logsUrl]);
 
   useEffect(() => {
@@ -57,7 +59,9 @@ export const useLogs = ({ apiKey, run, wsUrl }: UseLogs): LogsHook => {
 
     client.connect({ apiKey, wsUrl });
 
-    return () => client.close();
+    return () => {
+      client.close();
+    };
   }, [apiKey, wsUrl]);
 
   return { logs };

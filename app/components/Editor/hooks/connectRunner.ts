@@ -37,7 +37,7 @@ export const useConnectRunner = ({
       should_request_runner: isRunnerPending,
       test_id,
     },
-    isRunnerConnected || !isLatestCode || useLocalRunner
+    !isLatestCode || useLocalRunner
   );
 
   useEffect(() => {
@@ -63,10 +63,8 @@ export const useConnectRunner = ({
 
   // connect the runner to the ws url
   useEffect(() => {
-    if (!runnerResult) return;
-
     runnerClient?.connect({ apiKey, wsUrl });
-  }, [apiKey, runnerClient, runnerResult, wsUrl]);
+  }, [apiKey, runnerClient, wsUrl]);
 
   return { apiKey, wsUrl };
 };
