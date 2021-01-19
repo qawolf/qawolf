@@ -45,6 +45,7 @@ mutation updateRunner($id: ID!, $is_healthy: Boolean, $is_ready: Boolean) {
     }
     code
     env
+    helpers
     id
     test_id
     version
