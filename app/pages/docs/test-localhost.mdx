@@ -1,0 +1,60 @@
+import Link from "next/link";
+
+import Header from "../../components/Docs/Header";
+import Image from "../../components/Docs/Image";
+import Layout from "../../components/Docs/Layout";
+import SubHeader from "../../components/Docs/SubHeader";
+
+<Layout>
+
+<Header>Test localhost</Header>
+
+In this tutorial, we'll create a test against `localhost`.
+
+This is helpful for:
+
+- testing a new feature while you are developing it
+- adding test attributes like `data-qa=search-button` to your site while creating a test
+
+<SubHeader>Local Runner</SubHeader>
+
+First we need to start a local runner.
+
+Make sure you have [Docker](https://www.docker.com/products/docker-desktop) and [Node.js](https://nodejs.org/en/download/) installed on your computer.
+
+Now run `npx qawolf@latest` to start the runner.
+
+<Image
+  alt="Start the runner"
+  height={247}
+  src="/docs/test-localhost/start-runner.png"
+  width={800}
+/>
+
+To stop the runner, press `CTRL+C`.
+
+<SubHeader>Test localhost</SubHeader>
+
+To connect to the runner add `?local=1` to the test URL.
+
+For example change `https://qawolf.com/test/ckk4tp4qp00053w3q0j5xd9cd` to `http://qawolf.com/test/ckk4tp4qp00053w3q0j5xd9cd?local=1`.
+
+When you enter `localhost` into the URL prompt, we automatically add `?local=1` for you.
+
+<Image
+  alt="Enter the localhost URL"
+  height={204}
+  src="/docs/test-localhost/enter-url.png"
+  width={400}
+/>
+
+Now we can create our test on `localhost`. 🎉
+
+<Image
+  alt="Test localhost"
+  height={715}
+  src="/docs/test-localhost/editor-localhost.png"
+  width={1600}
+/>
+
+</Layout>

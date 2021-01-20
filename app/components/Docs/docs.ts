@@ -85,6 +85,10 @@ export const docs: Section[] = [
         href: `${routes.docs}/reuse-helper-code`,
         name: "Reuse Helper Code",
       },
+      {
+        href: `${routes.docs}/test-localhost`,
+        name: "Test localhost",
+      },
     ],
     name: "Advanced",
   },
