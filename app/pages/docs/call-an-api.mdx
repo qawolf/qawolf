@@ -1,0 +1,67 @@
+import Header from "../../components/Docs/Header";
+import Image from "../../components/Docs/Image";
+import Layout from "../../components/Docs/Layout";
+import SubHeader from "../../components/Docs/SubHeader";
+
+<Layout>
+
+<Header>Call an API</Header>
+
+In this tutorial, we'll learn how to call an API in our test with <a href="https://github.com/axios/axios" target="_blank">axios</a>.
+
+<SubHeader>Use Axios</SubHeader>
+
+QA Wolf gives you access to the <a href="https://github.com/axios/axios" target="_blank">axios</a> library, which allows you to make <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods" target="_blank">HTTP requests</a>.
+
+For example, let's say we are testing the sign up flow for QA Wolf. When you sign up with email, you need to enter a login code that we send to your email address.
+
+To test sign up on QA Wolf, we use a service called <a href="https://testmail.app/" target="_blank">testmail.app</a> that gives us access to a test email inbox. We can call their API to read the email with the login code.
+
+In our test, we add the following code. Note the call to `axios.get`, which makes a `GET` request to the testmail.app API:
+
+```js
+// get code from email
+const { data } = await axios.get("https://api.testmail.app/api/json", {
+  params: {
+    apikey: process.env.TESTMAIL_API_KEY,
+    namespace: "namespace",
+    livequery: true,
+    pretty: true,
+    tag,
+  },
+  timeout: 30 * 1000,
+});
+```
+
+If we log the response `data` to the console, it looks like this. Our test can now enter the code from the email subject:
+
+```js
+{
+  emails: [
+    {
+      subject: "🐺 QA Wolf code: ABC-DEF",
+      // ...
+    },
+  ];
+}
+```
+
+You can also make other types of requests with axios. For example, here is a `POST` request that creates a new user:
+
+```js
+await axios.post(
+  "https://myapi.com/users/new",
+  {
+    email: "new@user.com",
+    name: "New User",
+  },
+  {
+    headers: {
+      authorization: "Bearer token",
+      "content-type": "application/json",
+    },
+  }
+);
+```
+
+</Layout>
