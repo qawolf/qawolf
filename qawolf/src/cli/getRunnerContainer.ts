@@ -10,19 +10,24 @@ export default async function getRunnerContainer(
   docker: Docker
 ): Promise<GetRunnerContainerResponse> {
   const container = docker.getContainer(DOCKER_CONTAINER_NAME);
-  let info;
+
+  const response = {
+    container: null,
+    isRunning: false,
+  };
 
   try {
-    info = await container.inspect();
-  } catch (error) {
-    return {
-      container: null,
-      isRunning: false,
-    };
-  }
+    const inspectResult = await Promise.race([
+      container.inspect(),
+      // workaround since docker modem does not resolve 404 🤷
+      new Promise((resolve) => setTimeout(() => resolve(null), 1000)),
+    ]);
 
-  return {
-    container,
-    isRunning: info?.State.Running,
-  };
+    if (inspectResult) {
+      response.container = container;
+      response.isRunning = inspectResult?.State.Running;
+    }
+  } catch (error) {}
+
+  return response;
 }

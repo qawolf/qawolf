@@ -1,6 +1,8 @@
+import { useRouter } from "next/router";
 import { createContext, FC, useContext, useEffect, useState } from "react";
 
 import { CreateTestVariables, useCreateTest } from "../../../hooks/mutations";
+import { routes } from "../../../lib/routes";
 import { state } from "../../../lib/state";
 import { RunProgress } from "../../../lib/types";
 import { ConnectRunnerHook, useConnectRunner } from "../hooks/connectRunner";
@@ -44,6 +46,7 @@ export const RunnerProvider: FC = ({ children }) => {
   const [isRunnerPending, setIsRunnerPending] = useState(!!state.pendingRun);
   const { env } = useEnv();
   const { mouseLineNumber, onSelectionChange, selection } = useSelection();
+  const { replace } = useRouter();
   const { isRunnerConnected, runner } = useRunner();
 
   const { controller, run } = useContext(TestContext);
@@ -66,7 +69,12 @@ export const RunnerProvider: FC = ({ children }) => {
 
   const createRunTest = async (variables: CreateTestVariables) => {
     const test = await createTest({ variables });
+
     const { code, id, version } = test.data.createTest;
+
+    const params = variables.url.includes("localhost") ? "?local=1" : "";
+    replace(`${routes.test}/${id}${params}`);
+
     runTest({ code, selection: null, test_id: id, version });
   };
 
