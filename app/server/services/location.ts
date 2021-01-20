@@ -113,7 +113,11 @@ export const rankLocations = async ({
 
   possibleLocations.sort(sortLocationsByDistance(userLocation));
 
-  log.debug("sort locations by closeness to user", ip, possibleLocations);
+  log.debug(
+    "sort locations by closeness to user",
+    ip,
+    possibleLocations.map((location, index) => `${index}${location}`)
+  );
 
   return possibleLocations;
 };
