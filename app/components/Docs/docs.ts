@@ -53,7 +53,7 @@ export const docs: Section[] = [
   {
     IconComponent: RiRocketFill,
     color: "#F2D479",
-    docs: [{ href: `${routes.docs}/schedule-tests`, name: "Schedule Tests" }],
+    docs: [{ href: `${routes.docs}/run-on-interval`, name: "Run on Interval" }],
     name: "Run Tests",
   },
   {
