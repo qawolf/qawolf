@@ -103,7 +103,7 @@ test("if no container exists, calls createContainer; create succeeds", async () 
       "
     🎉  All set - let's get testing!",
       "
-        (If the QA Wolf app did not open, go to https://app.qawolf.com in a web browser.)",
+        (If the QA Wolf app did not open, go to https://www.qawolf.com in a web browser.)",
       "
         When you are done, press CTRL+C to stop QA Wolf.
     ",
@@ -178,7 +178,7 @@ test("starts existing container; start succeeds", async () => {
       "
     🎉  All set - let's get testing!",
       "
-        (If the QA Wolf app did not open, go to https://app.qawolf.com in a web browser.)",
+        (If the QA Wolf app did not open, go to https://www.qawolf.com in a web browser.)",
       "
         When you are done, press CTRL+C to stop QA Wolf.
     ",
@@ -265,7 +265,7 @@ test("starts new container; start succeeds", async () => {
       "
     🎉  All set - let's get testing!",
       "
-        (If the QA Wolf app did not open, go to https://app.qawolf.com in a web browser.)",
+        (If the QA Wolf app did not open, go to https://www.qawolf.com in a web browser.)",
       "
         When you are done, press CTRL+C to stop QA Wolf.
     ",
