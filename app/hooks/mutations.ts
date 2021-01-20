@@ -485,15 +485,7 @@ export const useCreateTest = (): MutationTuple<
   CreateTestData,
   CreateTestVariables
 > => {
-  const { replace } = useRouter();
-
   return useMutation<CreateTestData, CreateTestVariables>(createTestMutation, {
-    onCompleted: (response) => {
-      const { createTest } = response || {};
-      if (!createTest) return;
-
-      replace(`${routes.test}/${createTest.id}`);
-    },
     onError,
     refetchQueries: ["tests"],
   });
