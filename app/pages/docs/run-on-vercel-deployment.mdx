@@ -1,0 +1,130 @@
+import Link from "next/link";
+
+import Header from "../../components/Docs/Header";
+import Image from "../../components/Docs/Image";
+import Layout from "../../components/Docs/Layout";
+import SubHeader from "../../components/Docs/SubHeader";
+
+<Layout>
+
+<Header>Run on Vercel Deployment</Header>
+
+In this tutorial, we'll set up our tests to run when <a href="https://vercel.com/" target="_blank">Vercel</a> <a href="https://vercel.com/docs/platform/deployments" target="_blank">deploys</a> our site. This helps ensure our critical workflows don't break when we make changes.
+
+<SubHeader>Install GitHub App</SubHeader>
+
+The first step is to install the QA Wolf GitHub App on the repository (repo) you want to test.
+
+Make sure you are on your <a href="https://qawolf.com/tests" target="_blank">test dashboard</a>, looking at the group you want to test on deployment. Open the trigger dropdown and click on the button to "Add GitHub repo".
+
+<Image
+  alt="Add GitHub repo"
+  height={278}
+  src="/docs/run-on-netlify-deployment/add-github-repo.png"
+  width={300}
+/>
+
+You will be redirected to GitHub and asked to choose the repo(s) you want QA Wolf to access.
+
+<Image
+  alt="Install GitHub App"
+  height={528}
+  src="/docs/run-on-netlify-deployment/install-github-app.png"
+  width={400}
+/>
+
+Choose the repo(s) you want to test and click the green "Install" button. After the installation succeeds, you will be redirected back to QA Wolf.
+
+<SubHeader>Trigger Tests on Vercel Deployment</SubHeader>
+
+Open the trigger dropdown again. This time, you will see the repo(s) you installed listed. Click on the option to run on your repo's deployment.
+
+<Image
+  alt="Run on Vercel deployment"
+  height={435}
+  src="/docs/run-on-vercel-deployment/run-on-deployment.png"
+  width={400}
+/>
+
+A popup will appear asking which tool you use to deploy. Select the "Vercel" option.
+
+<Image
+  alt="Choose Vercel"
+  height={388}
+  src="/docs/run-on-vercel-deployment/choose-vercel.png"
+  width={1298}
+/>
+
+### Choose Deployment Type
+
+Vercel has <a href="https://vercel.com/docs/platform/deployments#deployment-types" target="\_blank">two types of deployments</a>: **production** and **preview**. Production deployments happen when you merge to your production branch or run the `vercel -- prod` command. Preview deployments are all other deployments, like deployments of commits in a GitHub pull request.
+
+QA Wolf allows you to run your tests on all deployments (preview and production), just preview deployments, or just production deployments. Choose which deployments you want to test in the popup. In this case, we want to only test preview deployments:
+
+<Image
+  alt="Choose deployment"
+  height={180}
+  src="/docs/run-on-vercel-deployment/choose-deployment.png"
+  width={1310}
+/>
+
+### Choose Branches (Optional)
+
+You can also optionally specify which GitHub branches your tests should run on.
+
+For example, at QA Wolf we have a group of tests that we run when staging is deployed. We deploy to staging automatically when we merge to the `develop` branch.
+
+If you only want your tests to run on specific GitHub branches, choose "Selected branches". You will be prompted to list these branches in an input. Enter a comma-separated list of branches like `develop,main`.
+
+<Image
+  alt="Choose branches"
+  height={554}
+  src="/docs/run-on-vercel-deployment/choose-branches.png"
+  width={1316}
+/>
+
+Press the "Save" button to complete the Vercel integration. 🎉
+
+<SubHeader>Update Tests to Use Deployment URL</SubHeader>
+
+Because our Vercel deployment URL isn't known in advance, QA Wolf passes it as an <Link href="use-environment-variables">environment variable</Link> (`process.env.URL`) when a deployment succeeds.
+
+We need to update our tests to use this environment variable when specified.
+
+Replace the URL in your tests with `process.env.URL`. For example, let's say our test currently starts with:
+
+```js
+const { context } = await launch();
+const page = await context.newPage();
+await page.goto("https://default.vercel.app/", {
+  waitUntil: "domcontentloaded",
+});
+```
+
+Let's update the `page.goto` call to go to `process.env.URL` if it exists, and our default URL otherwise:
+
+```js
+const { context } = await launch();
+const page = await context.newPage();
+// go to process.env.URL if specified, and the default URL otherwise
+await page.goto(process.env.URL || "https://default.vercel.app/", {
+  waitUntil: "domcontentloaded",
+});
+```
+
+<SubHeader>See QA Wolf Results in GitHub</SubHeader>
+
+Now when you make a pull request on GitHub, your tests will run after your Vercel deployment succeeds.
+
+<Image
+  alt="See QA Wolf results in GitHub"
+  height={403}
+  src="/docs/run-on-vercel-deployment/github-checks.png"
+  width={1200}
+/>
+
+<SubHeader>Conclusion</SubHeader>
+
+Now that our tests run on Vercel deployments, let's <Link href="send-slack-alerts">alert our team</Link> when they fail.
+
+</Layout>

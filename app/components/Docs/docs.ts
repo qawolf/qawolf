@@ -56,6 +56,10 @@ export const docs: Section[] = [
     docs: [
       { href: `${routes.docs}/run-on-interval`, name: "Run on Interval" },
       {
+        href: `${routes.docs}/run-on-vercel-deployment`,
+        name: "Run on Vercel Deployment",
+      },
+      {
         href: `${routes.docs}/run-on-netlify-deployment`,
         name: "Run on Netlify Deployment",
       },
