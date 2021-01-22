@@ -317,7 +317,7 @@ export type CreateGitHubIntegrationsMutation = {
 };
 
 export type CreateEnvironmentVariableMutation = {
-  group_id: string;
+  environment_id: string;
   name: string;
   value: string;
 };

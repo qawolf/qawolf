@@ -514,13 +514,13 @@ type Mutation {
   ): Group!
 
   """
-  Creates a new environment variable record for a test group.
+  Creates a new environment variable record for an environment.
 
-  Requires that you have access to the team that owns the group.
+  Requires that you have access to the team that owns the environment.
   """
   createEnvironmentVariable(
-    "ID of the test group to associate this variable with"
-    group_id: ID!
+    "ID of the environment to associate this variable with"
+    environment_id: ID!
 
     "Name (key) for the variable"
     name: String!
@@ -651,7 +651,7 @@ type Mutation {
   """
   Deletes an environment variable record by ID.
 
-  Requires that you have access to the team that owns the group
+  Requires that you have access to the team that owns the environment
   that is associated with the variable.
   """
   deleteEnvironmentVariable(
@@ -1019,9 +1019,9 @@ type Query {
   dashboard("The group ID" group_id: ID!): Dashboard!
 
   """
-  Returns environment variables for a single test group by group ID.
+  Returns environment variables for a single environment by environment ID.
 
-  One of the teams you are on must have access to the test group.
+  One of the teams you are on must have access to the environment.
   """
   environmentVariables(
     "The environment ID"

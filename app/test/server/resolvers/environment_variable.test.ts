@@ -1,7 +1,7 @@
 import { db, dropTestDb, migrateDb } from "../../../server/db";
 import {
-  // createEnvironmentVariableResolver,
-  // deleteEnvironmentVariableResolver,
+  createEnvironmentVariableResolver,
+  deleteEnvironmentVariableResolver,
   environmentVariablesResolver,
 } from "../../../server/resolvers/environment_variable";
 import { EnvironmentVariable } from "../../../server/types";
@@ -35,63 +35,63 @@ const testContext = {
   user: buildUser({}),
 };
 
-// describe("createEnvironmentVariableResolver", () => {
-//   afterEach(() => db("environment_variables").del());
+describe("createEnvironmentVariableResolver", () => {
+  afterEach(() => db("environment_variables").del());
 
-//   it("creates an environment variable", async () => {
-//     const environmentVariable = await createEnvironmentVariableResolver(
-//       {},
-//       { group_id: "groupId", name: "my_VARIABLE", value: "secret" },
-//       testContext
-//     );
+  it("creates an environment variable", async () => {
+    const environmentVariable = await createEnvironmentVariableResolver(
+      {},
+      { environment_id: "environmentId", name: "my_VARIABLE", value: "secret" },
+      testContext
+    );
 
-//     expect(environmentVariable).toMatchObject({
-//       group_id: "groupId",
-//       name: "MY_VARIABLE",
-//       team_id: "teamId",
-//     });
-//     expect(environmentVariable.value).not.toBe("secret");
-//   });
-// });
+    expect(environmentVariable).toMatchObject({
+      environment_id: "environmentId",
+      name: "MY_VARIABLE",
+      team_id: "teamId",
+    });
+    expect(environmentVariable.value).not.toBe("secret");
+  });
+});
 
-// describe("deleteEnvironmentVariableResolver", () => {
-//   beforeAll(() => {
-//     return db("environment_variables").insert([
-//       buildEnvironmentVariable({}),
-//       buildEnvironmentVariable({ i: 2 }),
-//     ]);
-//   });
+describe("deleteEnvironmentVariableResolver", () => {
+  beforeAll(() => {
+    return db("environment_variables").insert([
+      buildEnvironmentVariable({}),
+      buildEnvironmentVariable({ i: 2 }),
+    ]);
+  });
 
-//   afterAll(() => db("environment_variables").del());
+  afterAll(() => db("environment_variables").del());
 
-//   it("deletes an environment variable", async () => {
-//     const environmentVariable = await deleteEnvironmentVariableResolver(
-//       {},
-//       { id: "environmentVariableId" },
-//       testContext
-//     );
+  it("deletes an environment variable", async () => {
+    const environmentVariable = await deleteEnvironmentVariableResolver(
+      {},
+      { id: "environmentVariableId" },
+      testContext
+    );
 
-//     expect(environmentVariable).toMatchObject({ id: "environmentVariableId" });
+    expect(environmentVariable).toMatchObject({ id: "environmentVariableId" });
 
-//     const environmentVariables = await db("environment_variables").select("*");
+    const environmentVariables = await db("environment_variables").select("*");
 
-//     expect(environmentVariables).toMatchObject([
-//       { id: "environmentVariable2Id" },
-//     ]);
-//   });
+    expect(environmentVariables).toMatchObject([
+      { id: "environmentVariable2Id" },
+    ]);
+  });
 
-//   it("throws an error if cannot access group", async () => {
-//     const testFn = async (): Promise<EnvironmentVariable> => {
-//       return deleteEnvironmentVariableResolver(
-//         {},
-//         { id: "environmentVariable2Id" },
-//         { ...testContext, teams: [{ ...buildTeam({ i: 2 }) }] }
-//       );
-//     };
+  it("throws an error if cannot access environment", async () => {
+    const testFn = async (): Promise<EnvironmentVariable> => {
+      return deleteEnvironmentVariableResolver(
+        {},
+        { id: "environmentVariable2Id" },
+        { ...testContext, teams: [{ ...buildTeam({ i: 2 }) }] }
+      );
+    };
 
-//     await expect(testFn()).rejects.toThrowError("cannot access group");
-//   });
-// });
+    await expect(testFn()).rejects.toThrowError("cannot access environment");
+  });
+});
 
 describe("environmentVariablesResolver", () => {
   beforeAll(() => {
