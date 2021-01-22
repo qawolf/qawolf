@@ -40,11 +40,6 @@ export const UserProvider: FC = ({ children }) => {
   useEffect(() => {
     if (!user) return;
 
-    updateSentryUser({ email: user.email, id: user.id });
-    setTimeout(() => {
-      console.error("BAD STUFF");
-    }, 10000);
-
     const isValidTeamId =
       teamId && user.teams.some((team) => team.id === teamId);
     if (isValidTeamId) return;
@@ -55,6 +50,12 @@ export const UserProvider: FC = ({ children }) => {
     // set team id if no valid team id
     state.setTeamId(fallbackTeamId);
   }, [teamId, user]);
+
+  useEffect(() => {
+    if (!user) return;
+
+    updateSentryUser({ email: user.email, id: user.id });
+  }, [user]);
 
   useIdentifyPostHog(user);
 
