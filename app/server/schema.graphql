@@ -691,20 +691,6 @@ type Mutation {
   ): [Test!]!
 
   """
-  Track run metrics.
-  """
-  instrumentTestRun(
-    """
-    The current status of the run
-    """
-    status: RunStatus!
-    """
-    The test ID of the run
-    """
-    test_id: ID!
-  ): Boolean!
-
-  """
   Join the QA Wolf email list.
   """
   joinMailingList(

@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { resetIntercom } from "../../../hooks/intercom";
 import { JWT_KEY } from "../../../lib/client";
 import { routes } from "../../../lib/routes";
+import { updateSentryUser } from "../../../lib/sentry";
 import { state } from "../../../lib/state";
 import { ShortTeam } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
@@ -32,6 +33,7 @@ export default function TeamMenu({
     localStorage.removeItem(JWT_KEY);
     state.clear();
     resetIntercom();
+    updateSentryUser({ email: null });
     replace(routes.home);
   };
 

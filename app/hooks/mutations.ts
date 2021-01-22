@@ -18,7 +18,6 @@ import {
   deleteEnvironmentVariableMutation,
   deleteGroupMutation,
   deleteTestsMutation,
-  instrumentTestRunMutation,
   joinMailingListMutation,
   sendLoginCodeMutation,
   signInWithEmailMutation,
@@ -32,6 +31,7 @@ import {
 import { currentUserQuery } from "../graphql/queries";
 import { client, JWT_KEY } from "../lib/client";
 import { routes } from "../lib/routes";
+import { updateSentryUser } from "../lib/sentry";
 import { state } from "../lib/state";
 import {
   ApiKey,
@@ -181,15 +181,6 @@ type DeleteTestsVariables = {
   ids: string[];
 };
 
-type InstrumentTestRunData = {
-  instrumentTestRun: boolean;
-};
-
-type InstrumentTestRunVariables = {
-  status: RunStatus;
-  test_id: string;
-};
-
 type JoinMailingListData = {
   joinMailingList: boolean;
 };
@@ -308,6 +299,7 @@ const handleAuthenticatedUser = ({
   localStorage.setItem(JWT_KEY, access_token);
   updateCurrentUser(user);
   updateIntercomUser(user.email);
+  updateSentryUser({ email: user.email, id: user.id });
 
   // redirect to stored redirect uri if possible
   if (signUp.redirectUri) {
@@ -546,16 +538,6 @@ export const useDeleteTests = (
       refetchQueries: ["dashboard"],
       variables,
     }
-  );
-};
-
-export const useInstrumentTestRun = (): MutationTuple<
-  InstrumentTestRunData,
-  InstrumentTestRunVariables
-> => {
-  return useMutation<InstrumentTestRunData, InstrumentTestRunVariables>(
-    instrumentTestRunMutation,
-    { onError }
   );
 };
 

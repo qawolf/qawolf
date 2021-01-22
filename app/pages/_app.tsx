@@ -1,5 +1,6 @@
 import "../theme/global.css";
 import "../theme/wolf-animations.css";
+import "../lib/sentry";
 
 import { ApolloProvider } from "@apollo/client";
 import { MDXProvider } from "@mdx-js/react";

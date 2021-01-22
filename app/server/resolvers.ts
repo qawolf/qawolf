@@ -25,11 +25,7 @@ import {
   createInvitesResolver,
   teamInvitesResolver,
 } from "./resolvers/invite";
-import {
-  instrumentTestRunResolver,
-  suiteRunsResolver,
-  updateRunResolver,
-} from "./resolvers/run";
+import { suiteRunsResolver, updateRunResolver } from "./resolvers/run";
 import { runnerResolver, updateRunnerResolver } from "./resolvers/runner";
 import { joinMailingListResolver } from "./resolvers/sendgrid";
 import {
@@ -91,7 +87,6 @@ export const resolvers = {
     deleteEnvironmentVariable: deleteEnvironmentVariableResolver,
     deleteGroup: deleteGroupResolver,
     deleteTests: deleteTestsResolver,
-    instrumentTestRun: instrumentTestRunResolver,
     joinMailingList: joinMailingListResolver,
     sendLoginCode: sendLoginCodeResolver,
     signInWithEmail: signInWithEmailResolver,
