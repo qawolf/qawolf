@@ -3,10 +3,18 @@ import { Transaction } from "knex";
 
 import { AuthenticationError } from "../errors";
 import { Logger } from "../Logger";
+import { findEnvrionment } from "../models/environment";
 import { findGroup } from "../models/group";
 import { findSuite } from "../models/suite";
 import { findTest } from "../models/test";
 import { Team, Test, User } from "../types";
+
+type EnsureEnvironmentAccess = {
+  environment_id: string;
+  logger: Logger;
+  teams: Team[] | null;
+  trx?: Transaction;
+};
 
 type EnsureGroupAccess = {
   group_id: string;
@@ -59,6 +67,28 @@ export const ensureTeams = ({ logger, teams }: EnsureTeams): Team[] => {
   return teams;
 };
 
+export const ensureEnvironmentAccess = async ({
+  environment_id,
+  logger,
+  teams,
+  trx,
+}: EnsureEnvironmentAccess): Promise<Team> => {
+  const log = logger.prefix("ensureEnvironmentAccess");
+
+  const teamIds = ensureTeams({ teams, logger }).map((team) => team.id);
+  log.debug("ensure teams", teamIds, "can access environment", environment_id);
+
+  const environment = await findEnvrionment(environment_id, { logger, trx });
+  const selectedTeam = teams!.find((team) => environment.team_id === team.id);
+
+  if (!selectedTeam) {
+    log.error("teams", teamIds, "cannot access environment", environment_id);
+    throw new AuthenticationError("cannot access environment");
+  }
+
+  return selectedTeam;
+};
+
 export const ensureGroupAccess = async ({
   group_id,
   logger,
@@ -68,7 +98,6 @@ export const ensureGroupAccess = async ({
   const log = logger.prefix("ensureGroupAccess");
 
   const teamIds = ensureTeams({ teams, logger }).map((team) => team.id);
-
   log.debug("ensure teams", teamIds, "can access group", group_id);
 
   const group = await findGroup(group_id, { logger, trx });

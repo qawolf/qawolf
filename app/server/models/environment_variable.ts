@@ -10,8 +10,7 @@ import { decrypt, encrypt } from "./encrypt";
 
 type BuildEnvironmentVariables = {
   custom_variables?: FormattedVariables;
-  environment_id: string;
-  team_id: string;
+  environment_id: string | null;
 };
 
 type CreateEnvironmentVariable = {
@@ -112,16 +111,15 @@ export const findEnvironmentVariablesForEnvironment = async (
  * @returns JSON object with key:value env variables, with decrypted values.
  */
 export const buildEnvironmentVariables = async (
-  { custom_variables, environment_id, team_id }: BuildEnvironmentVariables,
+  { custom_variables, environment_id }: BuildEnvironmentVariables,
   { logger, trx }: ModelOptions
-): Promise<string> => {
-  const variables = await findEnvironmentVariablesForEnvironment(
-    environment_id,
-    {
-      logger,
-      trx,
-    }
-  );
+): Promise<{ env: string; variables: EnvironmentVariable[] }> => {
+  const variables = environment_id
+    ? await findEnvironmentVariablesForEnvironment(environment_id, {
+        logger,
+        trx,
+      })
+    : [];
 
   const formattedVariables: FormattedVariables = {};
 
@@ -129,7 +127,10 @@ export const buildEnvironmentVariables = async (
     formattedVariables[variable.name] = decrypt(variable.value);
   });
 
-  return JSON.stringify({ ...formattedVariables, ...(custom_variables || {}) });
+  return {
+    env: JSON.stringify({ ...formattedVariables, ...(custom_variables || {}) }),
+    variables,
+  };
 };
 
 export const findSystemEnvironmentVariable = async (

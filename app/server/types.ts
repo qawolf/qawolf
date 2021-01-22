@@ -456,6 +456,10 @@ export type CurrentUser = User & {
   teams: Team[];
 };
 
+export type EnvironmentIdQuery = {
+  environment_id: string;
+};
+
 export type GroupIdQuery = {
   group_id: string;
 };

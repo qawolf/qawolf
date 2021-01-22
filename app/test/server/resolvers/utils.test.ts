@@ -1,8 +1,9 @@
-import { dropTestDb, migrateDb } from "../../../server/db";
+import { db, dropTestDb, migrateDb } from "../../../server/db";
 import * as groupModel from "../../../server/models/group";
 import * as suiteModel from "../../../server/models/suite";
 import * as testModel from "../../../server/models/test";
 import {
+  ensureEnvironmentAccess,
   ensureGroupAccess,
   ensureSuiteAccess,
   ensureTeamAccess,
@@ -11,7 +12,7 @@ import {
   ensureUser,
 } from "../../../server/resolvers/utils";
 import { Group, Team, Test, User } from "../../../server/types";
-import { buildSuite, buildTeam, logger } from "../utils";
+import { buildEnvironment, buildSuite, buildTeam, logger } from "../utils";
 
 const teams = [buildTeam({})];
 const suite = buildSuite({ team_id: "team2Id" });
@@ -19,6 +20,55 @@ const suite = buildSuite({ team_id: "team2Id" });
 beforeAll(() => migrateDb());
 
 afterAll(() => dropTestDb());
+
+describe("ensureEnvironmentAccess", () => {
+  beforeAll(async () => {
+    await db("teams").insert([buildTeam({}), buildTeam({ i: 2 })]);
+    return db("environments").insert([
+      buildEnvironment({}),
+      buildEnvironment({ i: 2, team_id: "team2Id" }),
+    ]);
+  });
+
+  afterAll(async () => {
+    await db("environments").del();
+    return db("teams").del();
+  });
+
+  it("throws an error if teams not provided", async () => {
+    const testFn = async (): Promise<Team> => {
+      return ensureEnvironmentAccess({
+        environment_id: "environmentId",
+        logger,
+        teams: null,
+      });
+    };
+
+    await expect(testFn()).rejects.toThrowError("no teams");
+  });
+
+  it("throws an error if teams do not have access", async () => {
+    const testFn = async (): Promise<Team> => {
+      return ensureEnvironmentAccess({
+        environment_id: "environment2Id",
+        logger,
+        teams,
+      });
+    };
+
+    await expect(testFn()).rejects.toThrowError("cannot access environment");
+  });
+
+  it("returns selected team if teams have access", async () => {
+    const team = await ensureEnvironmentAccess({
+      environment_id: "environmentId",
+      logger,
+      teams,
+    });
+
+    expect(team).toEqual(teams[0]);
+  });
+});
 
 describe("ensureGroupAccess", () => {
   afterEach(jest.restoreAllMocks);

@@ -78,33 +78,39 @@ describe("buildEnvironmentVariablesForGroup", () => {
   });
 
   it("builds environment variables for an environment", async () => {
-    const variables = await buildEnvironmentVariables(
-      { environment_id: "environment2Id", team_id: "teamId" },
+    const { env, variables } = await buildEnvironmentVariables(
+      { environment_id: "environment2Id" },
       { logger }
     );
 
-    expect(variables).toBe(
+    expect(env).toBe(
       JSON.stringify({
         LOGIN_CODE: "production_login_code",
         PASSWORD: "production_password",
       })
     );
+
+    expect(variables).toMatchObject([
+      {
+        name: "LOGIN_CODE",
+      },
+      { name: "PASSWORD" },
+    ]);
   });
 
-  it("includes custom variables", async () => {
-    const variables = await buildEnvironmentVariables(
+  it("includes custom variables with environment id", async () => {
+    const { env } = await buildEnvironmentVariables(
       {
         custom_variables: {
           CUSTOM_VARIABLE: "custom_value",
           EMAIL: "custom@qawolf.com",
         },
         environment_id: "environmentId",
-        team_id: "teamId",
       },
       { logger }
     );
 
-    expect(variables).toBe(
+    expect(env).toBe(
       JSON.stringify({
         EMAIL: "custom@qawolf.com",
         NODE_ENV: "staging",
@@ -114,13 +120,33 @@ describe("buildEnvironmentVariablesForGroup", () => {
     );
   });
 
-  it("returns empty object if no environment variables for environment", async () => {
-    const variables = await buildEnvironmentVariables(
-      { environment_id: "environment3Id", team_id: "team2Id" },
+  it("includes custom variables without environment id", async () => {
+    const { env } = await buildEnvironmentVariables(
+      {
+        custom_variables: {
+          CUSTOM_VARIABLE: "custom_value",
+          EMAIL: "custom@qawolf.com",
+        },
+        environment_id: null,
+      },
       { logger }
     );
 
-    expect(variables).toBe("{}");
+    expect(env).toBe(
+      JSON.stringify({
+        CUSTOM_VARIABLE: "custom_value",
+        EMAIL: "custom@qawolf.com",
+      })
+    );
+  });
+
+  it("returns empty object if no environment variables for environment", async () => {
+    const { env } = await buildEnvironmentVariables(
+      { environment_id: "environment3Id" },
+      { logger }
+    );
+
+    expect(env).toBe("{}");
   });
 });
 

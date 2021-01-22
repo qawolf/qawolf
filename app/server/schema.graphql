@@ -73,13 +73,13 @@ enum DeploymentEnvironment {
   production
 }
 
-"A single defined environment variable for a test group"
+"A single defined environment variable for an environment"
 type EnvironmentVariable {
   "Date and time at which the environment variable record was created"
   created_at: String!
 
-  "Test group associated with this environment variable"
-  group_id: ID!
+  "Environment associated with this environment variable"
+  environment_id: ID!
 
   "Environment variable ID"
   id: ID!
@@ -94,14 +94,12 @@ type EnvironmentVariable {
 "A grouper for environment variable records and resolved environment variables with values"
 type EnvironmentVariables {
   """
-  A JSON object with key:value env variables, with decrypted values. This
-  includes all environment variables from the team's default test group.
+  A JSON object with key:value env variables, with decrypted values.
   """
   env: String!
 
   """
-  All environment variable records for the group. Unlike the 'env' field these
-  do not include team defaults.
+  All environment variable records for the environment.
   """
   variables: [EnvironmentVariable!]!
 }
@@ -1025,7 +1023,10 @@ type Query {
 
   One of the teams you are on must have access to the test group.
   """
-  environmentVariables("The group ID" group_id: ID!): EnvironmentVariables!
+  environmentVariables(
+    "The environment ID"
+    environment_id: ID!
+  ): EnvironmentVariables!
 
   """
   Returns the runner for the run or test.

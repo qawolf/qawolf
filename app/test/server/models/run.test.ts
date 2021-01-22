@@ -16,6 +16,7 @@ import { Run } from "../../../server/types";
 import { minutesFromNow } from "../../../server/utils";
 import {
   buildArtifacts,
+  buildEnvironment,
   buildEnvironmentVariable,
   buildGroup,
   buildRun,
@@ -262,15 +263,25 @@ describe("run model", () => {
     beforeAll(async () => {
       await db("teams").update({ helpers: "helpers" });
 
+      await db("environments").insert(buildEnvironment({ team_id: "team3Id" }));
+      await db("groups")
+        .where({ id: "groupId" })
+        .update({ environment_id: "environmentId" });
+
       return db("environment_variables").insert(
-        buildEnvironmentVariable({ group_id: "group2Id", team_id: "team3Id" })
+        buildEnvironmentVariable({
+          environment_id: "environmentId",
+          team_id: "team3Id",
+        })
       );
     });
 
     afterAll(async () => {
       await db("teams").update({ helpers: "" });
+      await db("groups").update({ environment_id: null });
 
-      return db("environment_variables").del();
+      await db("environment_variables").del();
+      return db("environments").del();
     });
 
     it("returns a run and associated test version", async () => {
