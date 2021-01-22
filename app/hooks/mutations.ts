@@ -18,7 +18,6 @@ import {
   deleteEnvironmentVariableMutation,
   deleteGroupMutation,
   deleteTestsMutation,
-  instrumentTestRunMutation,
   joinMailingListMutation,
   sendLoginCodeMutation,
   signInWithEmailMutation,
@@ -180,15 +179,6 @@ type DeleteTestsData = {
 
 type DeleteTestsVariables = {
   ids: string[];
-};
-
-type InstrumentTestRunData = {
-  instrumentTestRun: boolean;
-};
-
-type InstrumentTestRunVariables = {
-  status: RunStatus;
-  test_id: string;
 };
 
 type JoinMailingListData = {
@@ -548,16 +538,6 @@ export const useDeleteTests = (
       refetchQueries: ["dashboard"],
       variables,
     }
-  );
-};
-
-export const useInstrumentTestRun = (): MutationTuple<
-  InstrumentTestRunData,
-  InstrumentTestRunVariables
-> => {
-  return useMutation<InstrumentTestRunData, InstrumentTestRunVariables>(
-    instrumentTestRunMutation,
-    { onError }
   );
 };
 

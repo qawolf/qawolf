@@ -347,11 +347,6 @@ export type DeleteTestsMutation = {
   ids: string[];
 };
 
-export type InstrumentTestRunMutation = {
-  status: RunStatus;
-  test_id: string;
-};
-
 export type JoinMailingListMutation = {
   email: string;
 };

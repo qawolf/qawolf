@@ -1,9 +1,10 @@
+import * as Sentry from "@sentry/browser";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
-import { useInstrumentTestRun } from "../../../hooks/mutations";
 import { RunnerClient } from "../../../lib/runner";
 import { Run, RunProgress } from "../../../lib/types";
+import { UserContext } from "../../UserContext";
 
 export type RunProgressHook = {
   progress: RunProgress | null;
@@ -19,10 +20,10 @@ export const useRunProgress = ({
   run,
   runner,
 }: UseRunProgress): RunProgressHook => {
+  const { user } = useContext(UserContext);
   const { query } = useRouter();
 
   const [progress, setProgress] = useState<RunProgress | null>(null);
-  const [instrumentTestRun] = useInstrumentTestRun();
 
   useEffect(() => {
     if (!runner) return;
@@ -30,13 +31,10 @@ export const useRunProgress = ({
     const onRunProgress = (value: RunProgress): void => {
       setProgress(value);
 
-      if (value.status === "fail" || value.status === "pass") {
-        instrumentTestRun({
-          variables: {
-            status: value.status,
-            test_id: (query.test_id as string) || run?.test_id,
-          },
-        });
+      if (value.status === "fail") {
+        Sentry.captureMessage(
+          `🕵️ Preview failure: (test ${run?.test_id}, user ${user?.id})`
+        );
       }
     };
 
@@ -45,7 +43,7 @@ export const useRunProgress = ({
     return () => {
       runner.off("runprogress", onRunProgress);
     };
-  }, [instrumentTestRun, query.test_id, runner, run?.test_id]);
+  }, [query.test_id, runner, run?.test_id]);
 
   useEffect(() => {
     if (!run) return;

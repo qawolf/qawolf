@@ -7,7 +7,6 @@ import { expireRunner, findRunner } from "../models/runner";
 import { postMessageToSlack } from "../services/alert/slack";
 import {
   Context,
-  InstrumentTestRunMutation,
   ModelOptions,
   Run,
   Suite,
@@ -15,7 +14,7 @@ import {
   UpdateRunMutation,
 } from "../types";
 import { minutesFromNow } from "../utils";
-import { ensureSuiteAccess, ensureTestAccess, ensureUser } from "./utils";
+import { ensureSuiteAccess } from "./utils";
 
 type ValidateApiKey = {
   api_key: string | null;
@@ -65,42 +64,6 @@ export const validateApiKey = async (
   if (!runner || api_key !== runner.api_key) {
     log.error("incorrect api key for run", run?.id, "runner", runner?.id);
     throw new AuthenticationError("invalid api key");
-  }
-};
-
-/**
- * @summary Logs the run status and notifies us if a run fails
- */
-export const instrumentTestRunResolver = async (
-  _: Record<string, unknown>,
-  { status, test_id }: InstrumentTestRunMutation,
-  { logger, teams, user: contextUser }: Context
-): Promise<boolean> => {
-  const log = logger.prefix("instrumentTestRun");
-
-  try {
-    const user = ensureUser({ logger, user: contextUser });
-    await ensureTestAccess({ logger, teams, test_id });
-
-    if (status === "pass") {
-      log.debug(`pass (test ${test_id})`);
-    } else if (status === "fail") {
-      log.debug(`fail (test ${test_id})`);
-      if (!environment.SLACK_UPDATES_WEBHOOK) return true;
-
-      await postMessageToSlack({
-        message: {
-          text: `🕵️‍♀️ Preview failure: ${user.email} (test ${test_id}, user ${user.id})!`,
-        },
-        webhook_url: environment.SLACK_UPDATES_WEBHOOK,
-      });
-    }
-
-    return true;
-  } catch (error) {
-    log.alert(error.message);
-
-    return false;
   }
 };
 
