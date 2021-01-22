@@ -60,8 +60,8 @@ export const dashboardQuery = gql`
 `;
 
 export const environmentVariablesQuery = gql`
-  query environmentVariables($group_id: ID!) {
-    environmentVariables(group_id: $group_id) {
+  query environmentVariables($environment_id: ID!) {
+    environmentVariables(environment_id: $environment_id) {
       env
       variables {
         ...EnvironmentVariableFragment

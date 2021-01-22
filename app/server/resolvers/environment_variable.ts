@@ -12,7 +12,7 @@ import {
   EnvironmentVariable,
   IdQuery,
 } from "../types";
-import { ensureEnvironmentAccess, ensureGroupAccess } from "./utils";
+import { ensureEnvironmentAccess } from "./utils";
 
 /**
  * @returns New environment variable record

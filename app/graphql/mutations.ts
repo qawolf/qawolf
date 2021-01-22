@@ -31,11 +31,15 @@ export const createApiKeyMutation = gql`
 
 export const createEnvironmentVariableMutation = gql`
   mutation createEnvironmentVariable(
-    $group_id: ID!
+    $environment_id: ID!
     $name: String!
     $value: String!
   ) {
-    createEnvironmentVariable(group_id: $group_id, name: $name, value: $value) {
+    createEnvironmentVariable(
+      environment_id: $environment_id
+      name: $name
+      value: $value
+    ) {
       ...EnvironmentVariableFragment
     }
   }
