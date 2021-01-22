@@ -6,6 +6,7 @@ import { db, dropTestDb, migrateDb } from "../../../server/db";
 import { buildDigest } from "../../../server/utils";
 import {
   buildApiKey,
+  buildEnvironment,
   buildEnvironmentVariable,
   buildGroup,
   buildGroupTest,
@@ -30,13 +31,15 @@ describe("handleSuitesRequest", () => {
     await db("teams").insert(buildTeam({}));
     await db("api_keys").insert(buildApiKey({ token_digest }));
 
+    await db("environments").insert(buildEnvironment({}));
+    await db("environment_variables").insert(buildEnvironmentVariable({}));
+
     await db("groups").insert([
       buildGroup({ is_default: true }),
       buildGroup({ i: 2 }),
     ]);
     await db("tests").insert(buildTest({}));
 
-    await db("environment_variables").insert(buildEnvironmentVariable({}));
     return db("group_tests").insert(buildGroupTest());
   });
 
@@ -47,6 +50,7 @@ describe("handleSuitesRequest", () => {
 
     await db("api_keys").del();
     await db("environment_variables").del();
+    await db("environments").del();
     await db("users").del();
 
     await db("group_tests").del();
