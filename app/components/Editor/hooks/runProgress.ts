@@ -1,10 +1,9 @@
 import * as Sentry from "@sentry/browser";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { RunnerClient } from "../../../lib/runner";
 import { Run, RunProgress } from "../../../lib/types";
-import { UserContext } from "../../UserContext";
 
 export type RunProgressHook = {
   progress: RunProgress | null;
@@ -20,7 +19,6 @@ export const useRunProgress = ({
   run,
   runner,
 }: UseRunProgress): RunProgressHook => {
-  const { user } = useContext(UserContext);
   const { query } = useRouter();
 
   const [progress, setProgress] = useState<RunProgress | null>(null);
@@ -32,7 +30,9 @@ export const useRunProgress = ({
       setProgress(value);
 
       if (value.status === "fail") {
-        Sentry.captureMessage(`🕵️ Test preview failed: ${run?.test_id}`);
+        Sentry.captureMessage(
+          `🕵️ Test preview failed: ${(query.test_id as string) || run?.test_id}`
+        );
       }
     };
 

@@ -2,6 +2,7 @@ import { createContext, FC, useContext, useEffect } from "react";
 
 import { useIdentifyPostHog } from "../hooks/postHog";
 import { useCurrentUser } from "../hooks/queries";
+import { updateSentryUser } from "../lib/sentry";
 import { state } from "../lib/state";
 import { User, Wolf } from "../lib/types";
 import { StateContext } from "./StateContext";
@@ -38,6 +39,11 @@ export const UserProvider: FC = ({ children }) => {
 
   useEffect(() => {
     if (!user) return;
+
+    updateSentryUser({ email: user.email, id: user.id });
+    setTimeout(() => {
+      console.error("BAD STUFF");
+    }, 10000);
 
     const isValidTeamId =
       teamId && user.teams.some((team) => team.id === teamId);
