@@ -31,6 +31,8 @@
     "@octokit/rest": "^18.0.9",
     "@octokit/webhooks": "^7.21.0",
     "@sendgrid/mail": "^7.4.0",
+    "@sentry/browser": "^6.0.0",
+    "@sentry/tracing": "^6.0.0",
     "@slack/webhook": "^5.0.3",
     "apollo-server-micro": "^2.19.0",
     "axios": "^0.21.0",
