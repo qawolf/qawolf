@@ -1,4 +1,5 @@
 import { createContext, FC, useContext, useEffect } from "react";
+import { updateIntercomUser } from "../hooks/intercom";
 
 import { useIdentifyPostHog } from "../hooks/postHog";
 import { useCurrentUser } from "../hooks/queries";
@@ -54,6 +55,7 @@ export const UserProvider: FC = ({ children }) => {
   useEffect(() => {
     if (!user) return;
 
+    updateIntercomUser(user.email);
     updateSentryUser({ email: user.email, id: user.id });
   }, [user]);
 

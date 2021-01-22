@@ -45,7 +45,6 @@ import {
   Test,
   User,
 } from "../lib/types";
-import { updateIntercomUser } from "./intercom";
 
 type AcceptInviteData = {
   acceptInvite: Invite;
@@ -296,7 +295,6 @@ const handleAuthenticatedUser = ({
 
   localStorage.setItem(JWT_KEY, access_token);
   updateCurrentUser(user);
-  updateIntercomUser(user.email);
 
   // redirect to stored redirect uri if possible
   if (signUp.redirectUri) {
