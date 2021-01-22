@@ -20,7 +20,9 @@ describe("SocketServer", () => {
     runner = new Runner();
     await runner._createEnvironment();
     server = new SocketServer({ apiKey: "qawolf_key", httpServer, runner });
-    await new Promise((resolve) => httpServer.listen({ port }, resolve));
+    await new Promise((resolve) =>
+      httpServer.listen({ port }, () => resolve(null))
+    );
 
     socket = io(serverUrl, {
       auth: { apiKey: "qawolf_key" },

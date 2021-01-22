@@ -24,7 +24,7 @@ export class RunnerServer {
     await new Promise((resolve) => {
       server._httpServer.listen(port, () => {
         debug("listening on %s", port);
-        resolve();
+        resolve(null);
       });
     });
 
@@ -39,7 +39,6 @@ export class RunnerServer {
 
   constructor() {
     this._app.use(cors());
-    this._app.options("*", cors());
     this._app.use(express.json());
 
     this._httpServer = createServer(this._app);
