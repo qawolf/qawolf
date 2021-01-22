@@ -33,7 +33,7 @@ export default function TeamMenu({
     localStorage.removeItem(JWT_KEY);
     state.clear();
     resetIntercom();
-    updateSentryUser(null);
+    updateSentryUser({ email: null });
     replace(routes.home);
   };
 

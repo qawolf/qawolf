@@ -299,7 +299,7 @@ const handleAuthenticatedUser = ({
   localStorage.setItem(JWT_KEY, access_token);
   updateCurrentUser(user);
   updateIntercomUser(user.email);
-  updateSentryUser(user.email);
+  updateSentryUser({ email: user.email, id: user.id });
 
   // redirect to stored redirect uri if possible
   if (signUp.redirectUri) {

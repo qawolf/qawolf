@@ -32,9 +32,7 @@ export const useRunProgress = ({
       setProgress(value);
 
       if (value.status === "fail") {
-        Sentry.captureMessage(
-          `🕵️ Preview failure: (test ${run?.test_id}, user ${user?.id})`
-        );
+        Sentry.captureMessage(`🕵️ Test preview failed: ${run?.test_id}`);
       }
     };
 
