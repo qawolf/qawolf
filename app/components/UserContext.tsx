@@ -1,6 +1,6 @@
 import { createContext, FC, useContext, useEffect } from "react";
-import { updateIntercomUser } from "../hooks/intercom";
 
+import { updateIntercomUser } from "../hooks/intercom";
 import { useIdentifyPostHog } from "../hooks/postHog";
 import { useCurrentUser } from "../hooks/queries";
 import { updateSentryUser } from "../lib/sentry";
