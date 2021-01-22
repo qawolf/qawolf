@@ -47,6 +47,17 @@ import { cuid } from "../server/utils";
               .update({ environment_id: environment.id });
           })
         );
+
+        // update group to point to environment
+        await Promise.all(
+          groups.map((group) => {
+            const environment = environments.find((e) => e.name === group.name);
+
+            return trx("groups")
+              .where({ id: group.id })
+              .update({ environment_id: environment.id });
+          })
+        );
       })
     );
   });

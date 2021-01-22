@@ -3,19 +3,19 @@ import { decrypt } from "../../../server/models/encrypt";
 import * as environmentVariableModel from "../../../server/models/environment_variable";
 import { EnvironmentVariable } from "../../../server/types";
 import {
+  buildEnvironment,
   buildEnvironmentVariable,
-  buildGroup,
   buildTeam,
   buildUser,
   logger,
 } from "../utils";
 
 const {
-  buildEnvironmentVariablesForGroup,
+  buildEnvironmentVariables,
   createEnvironmentVariable,
   deleteEnvironmentVariable,
   findEnvironmentVariable,
-  findEnvironmentVariablesForGroup,
+  findEnvironmentVariablesForEnvironment,
   findSystemEnvironmentVariable,
 } = environmentVariableModel;
 
@@ -24,9 +24,9 @@ beforeAll(async () => {
 
   await db("users").insert(buildUser({}));
   await db("teams").insert(buildTeam({}));
-  return db("groups").insert([
-    buildGroup({ is_default: true }),
-    buildGroup({ i: 2 }),
+  return db("environments").insert([
+    buildEnvironment({}),
+    buildEnvironment({ i: 2, name: "Production" }),
   ]);
 });
 
@@ -34,40 +34,37 @@ afterAll(() => dropTestDb());
 
 describe("buildEnvironmentVariablesForGroup", () => {
   beforeAll(async () => {
-    await db("teams").insert(buildTeam({ i: 2 }));
-    await db("groups").insert(
-      buildGroup({ i: 3, is_default: true, team_id: "team2Id" })
-    );
+    await db("environments").insert(buildEnvironment({ i: 3, name: "Other" }));
 
     return db("environment_variables").insert([
       buildEnvironmentVariable({
-        group_id: "groupId",
+        environment_id: "environmentId",
         name: "EMAIL",
-        value: "default@qawolf.com",
+        value: "staging@qawolf.com",
       }),
       buildEnvironmentVariable({
-        group_id: "groupId",
+        environment_id: "environmentId",
         i: 2,
         name: "NODE_ENV",
-        value: "default_env",
+        value: "staging",
       }),
       buildEnvironmentVariable({
-        group_id: "groupId",
+        environment_id: "environmentId",
         i: 3,
         name: "PASSWORD",
-        value: "default_password",
+        value: "staging_password",
       }),
       buildEnvironmentVariable({
-        group_id: "group2Id",
+        environment_id: "environment2Id",
         i: 4,
         name: "LOGIN_CODE",
-        value: "group2_login_code",
+        value: "production_login_code",
       }),
       buildEnvironmentVariable({
-        group_id: "group2Id",
+        environment_id: "environment2Id",
         i: 5,
         name: "PASSWORD",
-        value: "group2_password",
+        value: "production_password",
       }),
     ]);
   });
@@ -77,81 +74,31 @@ describe("buildEnvironmentVariablesForGroup", () => {
   afterAll(async () => {
     await db("environment_variables").del();
 
-    await db("groups").where({ id: "group3Id" }).del();
-    return db("teams").where({ id: "team2Id" }).del();
+    return db("environments").where({ id: "environment3Id" }).del();
   });
 
-  it("builds environment variables for a non-default group", async () => {
-    jest.spyOn(environmentVariableModel, "findEnvironmentVariablesForGroup");
-
-    const variables = await buildEnvironmentVariablesForGroup(
-      { group_id: "group2Id", team_id: "teamId" },
+  it("builds environment variables for an environment", async () => {
+    const variables = await buildEnvironmentVariables(
+      { environment_id: "environment2Id", team_id: "teamId" },
       { logger }
     );
 
     expect(variables).toBe(
       JSON.stringify({
-        EMAIL: "default@qawolf.com",
-        NODE_ENV: "default_env",
-        PASSWORD: "group2_password",
-        LOGIN_CODE: "group2_login_code",
+        LOGIN_CODE: "production_login_code",
+        PASSWORD: "production_password",
       })
     );
-
-    expect(
-      environmentVariableModel.findEnvironmentVariablesForGroup
-    ).toBeCalledTimes(2);
-  });
-
-  it("builds environment variables for a default group", async () => {
-    const variables = await buildEnvironmentVariablesForGroup(
-      { group_id: "groupId", team_id: "teamId" },
-      { logger }
-    );
-
-    expect(variables).toBe(
-      JSON.stringify({
-        EMAIL: "default@qawolf.com",
-        NODE_ENV: "default_env",
-        PASSWORD: "default_password",
-      })
-    );
-  });
-
-  it("uses passed environment variables for group if possible", async () => {
-    jest.spyOn(environmentVariableModel, "findEnvironmentVariablesForGroup");
-
-    const group_variables = await findEnvironmentVariablesForGroup("group2Id", {
-      logger,
-    });
-
-    const variables = await buildEnvironmentVariablesForGroup(
-      { group_id: "group2Id", group_variables, team_id: "teamId" },
-      { logger }
-    );
-
-    expect(variables).toBe(
-      JSON.stringify({
-        EMAIL: "default@qawolf.com",
-        NODE_ENV: "default_env",
-        PASSWORD: "group2_password",
-        LOGIN_CODE: "group2_login_code",
-      })
-    );
-
-    expect(
-      environmentVariableModel.findEnvironmentVariablesForGroup
-    ).toBeCalledTimes(1);
   });
 
   it("includes custom variables", async () => {
-    const variables = await buildEnvironmentVariablesForGroup(
+    const variables = await buildEnvironmentVariables(
       {
         custom_variables: {
           CUSTOM_VARIABLE: "custom_value",
           EMAIL: "custom@qawolf.com",
         },
-        group_id: "groupId",
+        environment_id: "environmentId",
         team_id: "teamId",
       },
       { logger }
@@ -160,16 +107,16 @@ describe("buildEnvironmentVariablesForGroup", () => {
     expect(variables).toBe(
       JSON.stringify({
         EMAIL: "custom@qawolf.com",
-        NODE_ENV: "default_env",
-        PASSWORD: "default_password",
+        NODE_ENV: "staging",
+        PASSWORD: "staging_password",
         CUSTOM_VARIABLE: "custom_value",
       })
     );
   });
 
-  it("returns empty object if no environment variables for group", async () => {
-    const variables = await buildEnvironmentVariablesForGroup(
-      { group_id: "group3Id", team_id: "team2Id" },
+  it("returns empty object if no environment variables for environment", async () => {
+    const variables = await buildEnvironmentVariables(
+      { environment_id: "environment3Id", team_id: "team2Id" },
       { logger }
     );
 
@@ -183,7 +130,7 @@ describe("createEnvironmentVariable", () => {
   it("creates an environment variable", async () => {
     await createEnvironmentVariable(
       {
-        group_id: "groupId",
+        environment_id: "environmentId",
         name: "my Secret",
         team_id: "teamId",
         value: "spirit",
@@ -196,7 +143,7 @@ describe("createEnvironmentVariable", () => {
       .first();
 
     expect(environmentVariable).toMatchObject({
-      group_id: "groupId",
+      environment_id: "environmentId",
       is_system: false,
       name: "MY_SECRET",
       team_id: "teamId",
@@ -206,10 +153,10 @@ describe("createEnvironmentVariable", () => {
     expect(decrypt(environmentVariable.value)).toBe("spirit");
   });
 
-  it("does not create an environment variable if name taken for group", async () => {
+  it("does not create an environment variable if name taken for environment", async () => {
     await createEnvironmentVariable(
       {
-        group_id: "groupId",
+        environment_id: "environmentId",
         name: "my_Secret",
         team_id: "teamId",
         value: "spirit",
@@ -220,7 +167,7 @@ describe("createEnvironmentVariable", () => {
     const testFn = async (): Promise<EnvironmentVariable> => {
       return createEnvironmentVariable(
         {
-          group_id: "groupId",
+          environment_id: "environmentId",
           name: "MY_SECRET",
           team_id: "teamId",
           value: "spirit",
@@ -281,20 +228,20 @@ describe("findEnvironmentVariable", () => {
   });
 });
 
-describe("findEnvironmentVariablesForGroup", () => {
+describe("findEnvironmentVariablesForEnvironment", () => {
   beforeAll(() => {
     return db("environment_variables").insert([
       buildEnvironmentVariable({ name: "B_VAR" }),
       buildEnvironmentVariable({ i: 2, name: "A_VAR" }),
-      buildEnvironmentVariable({ i: 3, group_id: "group2Id" }),
+      buildEnvironmentVariable({ i: 3, environment_id: "environment2Id" }),
     ]);
   });
 
   afterAll(() => db("environment_variables").del());
 
   it("finds environment variables for a group", async () => {
-    const environmentVariables = await findEnvironmentVariablesForGroup(
-      "groupId",
+    const environmentVariables = await findEnvironmentVariablesForEnvironment(
+      "environmentId",
       { logger }
     );
 

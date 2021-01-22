@@ -7,24 +7,22 @@ import {
 } from "../types";
 import { cuid, minutesFromNow } from "../utils";
 import { decrypt, encrypt } from "./encrypt";
-import { findDefaultGroupForTeam } from "./group";
 
-type BuildEnvironmentVariablesForGroup = {
+type BuildEnvironmentVariables = {
   custom_variables?: FormattedVariables;
-  group_id: string;
-  group_variables?: EnvironmentVariable[];
+  environment_id: string;
   team_id: string;
 };
 
 type CreateEnvironmentVariable = {
-  group_id: string;
+  environment_id: string;
   name: string;
   team_id: string;
   value: string;
 };
 
 export const createEnvironmentVariable = async (
-  { group_id, name, team_id, value }: CreateEnvironmentVariable,
+  { environment_id, name, team_id, value }: CreateEnvironmentVariable,
   { logger, trx }: ModelOptions
 ): Promise<EnvironmentVariable> => {
   const log = logger.prefix("createEnvironmentVariable");
@@ -34,9 +32,9 @@ export const createEnvironmentVariable = async (
 
   const environmentVariable = {
     created_at: timestamp,
+    environment_id,
     id: cuid(),
     is_system: false,
-    group_id,
     name: name.replace(/\s+/g, "_").toUpperCase(),
     team_id,
     updated_at: timestamp,
@@ -46,7 +44,9 @@ export const createEnvironmentVariable = async (
   try {
     await (trx || db)("environment_variables").insert(environmentVariable);
   } catch (error) {
-    if (error.message.includes("environment_variables_group_id_name_unique")) {
+    if (
+      error.message.includes("environment_variables_environment_id_name_unique")
+    ) {
       throw new ClientError("variable name must be unique");
     }
 
@@ -94,52 +94,38 @@ export const findEnvironmentVariable = async (
   return environmentVariable;
 };
 
-export const findEnvironmentVariablesForGroup = async (
-  group_id: string,
+export const findEnvironmentVariablesForEnvironment = async (
+  environment_id: string,
   { trx }: ModelOptions
 ): Promise<EnvironmentVariable[]> => {
   const environmentVariables = await (trx || db)("environment_variables")
     .select("*")
-    .where({ group_id })
+    .where({ environment_id })
     .orderBy("name", "asc");
 
   return environmentVariables;
 };
 
 /**
- * @summary Look up env variable team defaults, merge with group and custom
- *   variables, and decrypt all values.
+ * @summary Look up env variables for environment, merge with custom variables,
+ *   and decrypt all values.
  * @returns JSON object with key:value env variables, with decrypted values.
  */
-export const buildEnvironmentVariablesForGroup = async (
-  {
-    custom_variables,
-    group_id,
-    group_variables,
-    team_id,
-  }: BuildEnvironmentVariablesForGroup,
+export const buildEnvironmentVariables = async (
+  { custom_variables, environment_id, team_id }: BuildEnvironmentVariables,
   { logger, trx }: ModelOptions
 ): Promise<string> => {
-  const variables =
-    group_variables ||
-    (await findEnvironmentVariablesForGroup(group_id, {
+  const variables = await findEnvironmentVariablesForEnvironment(
+    environment_id,
+    {
       logger,
       trx,
-    }));
-
-  const defaultGroup = await findDefaultGroupForTeam(team_id, { logger, trx });
-  let defaultVariables: EnvironmentVariable[] = [];
-
-  if (defaultGroup.id !== group_id) {
-    defaultVariables = await findEnvironmentVariablesForGroup(defaultGroup.id, {
-      logger,
-      trx,
-    });
-  }
+    }
+  );
 
   const formattedVariables: FormattedVariables = {};
 
-  [...defaultVariables, ...variables].forEach((variable) => {
+  variables.forEach((variable) => {
     formattedVariables[variable.name] = decrypt(variable.value);
   });
 

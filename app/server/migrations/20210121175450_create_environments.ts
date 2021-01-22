@@ -17,12 +17,20 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp("updated_at").defaultTo(knex.fn.now()).notNullable();
   });
 
-  return knex.schema.alterTable("environment_variables", (table) => {
+  await knex.schema.alterTable("environment_variables", (table) => {
+    table.string("environment_id").references("id").inTable("environments");
+  });
+
+  return knex.schema.alterTable("groups", (table) => {
     table.string("environment_id").references("id").inTable("environments");
   });
 }
 
 export async function down(knex: Knex): Promise<void> {
+  await knex.schema.alterTable("groups", (table) => {
+    table.dropColumn("environment_id");
+  });
+
   await knex.schema.alterTable("environment_variables", (table) => {
     table.dropColumn("environment_id");
   });

@@ -112,6 +112,7 @@ describe("group model", () => {
           creator_id: "userId",
           deleted_at: null,
           deployment_integration_id: null,
+          environment_id: null,
           id: expect.any(String),
           is_default: false,
           is_email_enabled: true,

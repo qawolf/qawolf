@@ -98,6 +98,7 @@ export const createGroup = async (
     creator_id,
     deleted_at: null,
     deployment_integration_id: null,
+    environment_id: null,
     id: cuid(),
     is_default: is_default || false,
     is_email_enabled: true,

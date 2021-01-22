@@ -77,9 +77,17 @@ export type CreateUserWithGitHub = GitHubFields & WolfFields;
 
 export type DeploymentEnvironment = "preview" | "production";
 
+export type Environment = {
+  created_at?: string;
+  id: string;
+  name: string;
+  team_id: string;
+  updated_at?: string;
+};
+
 export type EnvironmentVariable = {
   created_at?: string;
-  group_id: string;
+  environment_id: string;
   id: string;
   is_system?: boolean;
   name: string;
@@ -127,6 +135,7 @@ export type Group = {
   deployment_branches?: string | null;
   deployment_environment?: DeploymentEnvironment | null;
   deployment_integration_id: string | null;
+  environment_id: string | null;
   id: string;
   is_default: boolean;
   is_email_enabled: boolean;
