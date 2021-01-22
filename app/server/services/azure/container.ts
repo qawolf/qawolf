@@ -136,7 +136,7 @@ export const createRunnerContainerGroup = async ({
       resources: {
         requests: {
           cpu: 2,
-          memoryInGB: 2,
+          memoryInGB: 4,
         },
       },
     },
