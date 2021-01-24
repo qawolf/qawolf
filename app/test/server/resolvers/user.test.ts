@@ -113,7 +113,7 @@ describe("sendLoginCodeResolver", () => {
 
     const result = await sendLoginCodeResolver(
       {},
-      { email },
+      { email: email.toUpperCase() },
       { ...testContext, user: null }
     );
 
@@ -256,7 +256,7 @@ describe("signInWithEmailResolver", () => {
   it("signs in if correct credentials", async () => {
     const result = await signInWithEmailResolver(
       {},
-      { email: "spice@qawolf.com", login_code },
+      { email: "Spice@qawolf.com", login_code },
       { logger } as Context
     );
 
