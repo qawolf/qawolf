@@ -69,7 +69,7 @@ export const createUserWithEmail = async (
 
   const user = {
     avatar_url: null,
-    email: fields.email,
+    email: fields.email.toLowerCase(),
     github_id: null,
     github_login: null,
     id: cuid(),
@@ -129,7 +129,7 @@ export const findUser = async (
   }
 
   const query = (trx || db)("users").select("*");
-  if (email) query.orWhere({ email });
+  if (email) query.orWhere({ email: email.toLowerCase() });
   if (id) query.orWhere({ id });
   if (github_id) query.orWhere({ github_id });
 

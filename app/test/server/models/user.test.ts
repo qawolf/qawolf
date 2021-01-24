@@ -128,7 +128,7 @@ describe("user model", () => {
   });
 
   describe("createUserWithEmail", () => {
-    const email = "socks@qawolf.com";
+    const email = "SOCKS@qawolf.com";
 
     afterEach(() => {
       return db("users").where({ email }).del();
@@ -137,7 +137,10 @@ describe("user model", () => {
     it("creates a new user from email", async () => {
       await createUserWithEmail({ email, login_code: "ABCDEF" }, { logger });
 
-      const user = await db("users").select("*").where({ email }).first();
+      const user = await db("users")
+        .select("*")
+        .where({ email: email.toLowerCase() })
+        .first();
 
       expect(user).toMatchObject({
         avatar_url: null,
@@ -241,10 +244,17 @@ describe("user model", () => {
       });
     });
 
-    it("returns user by email", async () => {
+    it("returns user by email (case insensitive)", async () => {
       const user = await findUser({ email: "spirit@qawolf.com" }, { logger });
 
       expect(user).toMatchObject({
+        id: "spirit",
+        name: "Spirit",
+      });
+
+      const user2 = await findUser({ email: "SpIriT@QAWOLF.com" }, { logger });
+
+      expect(user2).toMatchObject({
         id: "spirit",
         name: "Spirit",
       });
