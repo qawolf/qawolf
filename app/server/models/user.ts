@@ -99,6 +99,7 @@ export const createUserWithGitHub = async (
 
   const user = {
     ...fields,
+    email: fields.email.toLowerCase(),
     id: cuid(),
     is_enabled: true,
     login_code_digest: null,

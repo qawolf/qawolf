@@ -113,7 +113,7 @@ describe("sendLoginCodeResolver", () => {
 
     const result = await sendLoginCodeResolver(
       {},
-      { email },
+      { email: email.toUpperCase() },
       { ...testContext, user: null }
     );
 

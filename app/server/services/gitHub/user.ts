@@ -45,7 +45,7 @@ export const findGitHubUser = async (
     const user = await octokit.users.getAuthenticated();
 
     const { data } = await octokit.users.listEmailsForAuthenticated();
-    const email = findBestEmail(data as GitHubEmail[]).toLowerCase();
+    const email = findBestEmail(data as GitHubEmail[]);
 
     return { ...user.data, email };
   } catch (error) {

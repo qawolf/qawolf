@@ -179,7 +179,7 @@ describe("user model", () => {
       await createUserWithGitHub(
         {
           avatar_url: "url",
-          email: "email",
+          email: "Buck@QAWOLF.com",
           github_id: 345,
           github_login: "spirit",
           name: "name",
@@ -198,7 +198,7 @@ describe("user model", () => {
 
       expect(user).toMatchObject({
         avatar_url: "url",
-        email: "email",
+        email: "buck@qawolf.com",
         github_id: 345,
         github_login: "spirit",
         is_enabled: true,
