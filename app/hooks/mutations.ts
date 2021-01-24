@@ -31,7 +31,6 @@ import {
 import { currentUserQuery } from "../graphql/queries";
 import { client, JWT_KEY } from "../lib/client";
 import { routes } from "../lib/routes";
-import { updateSentryUser } from "../lib/sentry";
 import { state } from "../lib/state";
 import {
   ApiKey,
@@ -41,13 +40,11 @@ import {
   Group,
   Integration,
   Invite,
-  RunStatus,
   State,
   Team,
   Test,
   User,
 } from "../lib/types";
-import { updateIntercomUser } from "./intercom";
 
 type AcceptInviteData = {
   acceptInvite: Invite;
@@ -298,8 +295,6 @@ const handleAuthenticatedUser = ({
 
   localStorage.setItem(JWT_KEY, access_token);
   updateCurrentUser(user);
-  updateIntercomUser(user.email);
-  updateSentryUser({ email: user.email, id: user.id });
 
   // redirect to stored redirect uri if possible
   if (signUp.redirectUri) {
