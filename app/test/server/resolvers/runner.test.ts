@@ -100,10 +100,9 @@ describe("runnerResolver", () => {
     expect(runnerModel.updateRunner).not.toBeCalled();
   });
 
-  it("updates the runner expiry if specified", async () => {
-    const initialExpiresAt = (
-      await db("runners").select("*").where({ run_id: "runId" }).first()
-    ).session_expires_at;
+  it("extends the current runner's session when should_request_runner is specified", async () => {
+    const initialExpiresAt = (await findRunner({ run_id: "runId" }, { logger }))
+      .session_expires_at;
 
     const runner = await runnerResolver(
       null,
@@ -115,10 +114,7 @@ describe("runnerResolver", () => {
       ws_url: "wss://westus2.qawolf.com/runner/runnerId/.qawolf",
     });
 
-    const dbRunner = await db("runners")
-      .select("*")
-      .where({ run_id: "runId" })
-      .first();
+    const dbRunner = await findRunner({ run_id: "runId" }, { logger });
     expect(dbRunner.session_expires_at).not.toBe(initialExpiresAt);
   });
 
