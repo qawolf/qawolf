@@ -1,8 +1,8 @@
 import { Box } from "grommet";
 import { Play } from "grommet-icons";
 import { ReactNode, useContext } from "react";
-import { state } from "../../lib/state";
 
+import { state } from "../../lib/state";
 import { copy } from "../../theme/copy";
 import Paw from "../shared/icons/Paw";
 import Wolf from "../shared/icons/Wolf";

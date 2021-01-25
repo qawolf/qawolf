@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { runAndSetInterval, setAndRunInterval } from "../../../lib/helpers";
 
+import { runAndSetInterval } from "../../../lib/helpers";
 import { RunnerClient } from "../../../lib/runner";
 import { state } from "../../../lib/state";
 import { Env, RunOptions } from "../../../lib/types";
