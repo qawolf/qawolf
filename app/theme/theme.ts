@@ -14,6 +14,8 @@ export const customFontLinks = [
   "/fonts/circular-regular.woff",
   "/fonts/ibm-plex-mono-semibold.woff2",
   "/fonts/ibm-plex-mono-semibold.woff",
+  "/fonts/inter-regular.woff2",
+  "/fonts/inter-regular.woff",
   "/fonts/sofiapro-bold-webfont.ttf",
   "/fonts/sofiapro-bold-webfont.woff",
   "/fonts/sofiapro-regular-webfont.ttf",

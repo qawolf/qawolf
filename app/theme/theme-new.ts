@@ -21,6 +21,12 @@ export const colors = {
   fill20: "#E6E7EB",
   fill30: "#CED3E0",
   fill50: "#7282A3",
+  gray0: "#FFFFFF",
+  gray3: "#E9ECF2",
+  gray5: "#ABB3C2",
+  gray7: "#667080",
+  gray9: "#2A3140",
+  gray10: "#151B26",
   primaryFill: "#4545E5",
   primaryFillLight: "#8E9CF5",
   primaryHover: "#695EFF",
@@ -71,6 +77,7 @@ export const text = {
   large: { height: "36px", size: "28px" },
   xlarge: { height: "40px", size: "36px" },
   xxlarge: { height: "52px", size: "46px" },
+  component: { height: "16px", size: "14px" },
   eyebrow: { height: "18px", size: "16px" },
 };
 
@@ -82,6 +89,7 @@ export const textDesktop = {
   large: { height: "52px", size: "40px" },
   xlarge: { height: "62px", size: "56px" },
   xxlarge: { height: "84px", size: "76px" },
+  component: { height: "16px", size: "14px" },
   eyebrow: { height: "18px", size: "16px" },
 };
 

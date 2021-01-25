@@ -1,5 +1,6 @@
 import { Box } from "grommet";
 import { useContext, useEffect, useState } from "react";
+import EnvVariables from "../shared-new/EnvVariables";
 
 import { RunnerContext } from "./contexts/RunnerContext";
 import { TestContext } from "./contexts/TestContext";
@@ -62,7 +63,7 @@ export default function Canvas({ height, mode, width }: Props): JSX.Element {
           videoUrl={videoUrl}
         />
       </Box>
-      {/* <EnvVariables /> */}
+      <EnvVariables />
       {!showPlaceholder && (
         <VideoToggle
           isBrowserReady={isBrowserReady}
