@@ -222,13 +222,12 @@ export const useIntegrations = (
 
 export const useRunner = (
   variables: RunnerQueryVariables,
-  { pollInterval, skip }: { pollInterval: number; skip?: boolean }
+  { skip }: { skip?: boolean }
 ): QueryResult<RunnerData, RunnerQueryVariables> => {
   return useQuery<RunnerData, RunnerQueryVariables>(runnerQuery, {
     fetchPolicy,
     nextFetchPolicy,
     onError,
-    pollInterval,
     skip: (!variables.run_id && !variables.test_id) || skip,
     variables,
   });

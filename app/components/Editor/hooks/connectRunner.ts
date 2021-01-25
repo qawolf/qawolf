@@ -29,17 +29,26 @@ export const useConnectRunner = ({
 
   const { isLatestCode } = useContext(TestContext);
 
-  const { data: runnerResult } = useRunner(
+  const { data: runnerResult, loading, startPolling, stopPolling } = useRunner(
     {
       run_id,
       should_request_runner: !isIdle,
       test_id,
     },
     {
-      pollInterval: isRunnerConnected ? 30000 : 5000,
       skip: !isLatestCode || useLocalRunner,
     }
   );
+
+  // manually poll instead of passing pollInterval
+  // to prevent a duplicate request
+  useEffect(() => {
+    if (loading) return;
+
+    startPolling(isRunnerConnected ? 30 * 1000 : 5 * 1000);
+
+    return () => stopPolling();
+  }, [isRunnerConnected, loading, startPolling, stopPolling]);
 
   let apiKey: string = null;
   let wsUrl: string = null;
