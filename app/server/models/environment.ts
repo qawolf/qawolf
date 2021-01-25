@@ -19,3 +19,18 @@ export const findEnvrionment = async (
 
   return environment;
 };
+
+export const findEnvironmentsForTeam = async (
+  team_id: string,
+  { logger, trx }: ModelOptions
+): Promise<Environment[]> => {
+  const log = logger.prefix("findEnvironmentsForTeam");
+
+  const environments = await (trx || db)("environments")
+    .where({ team_id })
+    .orderBy("name", "asc");
+
+  log.debug(`found ${environments.length} environments`);
+
+  return environments;
+};

@@ -63,7 +63,9 @@ export default function Canvas({ height, mode, width }: Props): JSX.Element {
           videoUrl={videoUrl}
         />
       </Box>
-      <EnvVariables />
+      <Box margin={{ top: "medium" }}>
+        <EnvVariables />
+      </Box>
       {!showPlaceholder && (
         <VideoToggle
           isBrowserReady={isBrowserReady}

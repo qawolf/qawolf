@@ -16,16 +16,17 @@ type Props = {
   isOpen: boolean;
 };
 
+export const height = edgeSize.large;
 const width = "160px";
 
 function Chooser({ className }: Props): JSX.Element {
   return (
     <Box
       align="center"
-      border={{ color: "gray3", size: borderSize.xsmall }}
+      border={{ color: "gray8", size: borderSize.xsmall }}
       className={className}
       direction="row"
-      height={edgeSize.large}
+      height={height}
       justify="between"
       pad={{ horizontal: "xsmall" }}
       round={borderSize.small}
@@ -42,10 +43,10 @@ function Chooser({ className }: Props): JSX.Element {
 const StyledChooser = styled(Chooser)`
   transition: border-color ${transitionDuration};
 
-  ${(props) => props.isOpen && `border-color: ${colors.gray7};`}
+  ${(props) => props.isOpen && `border-color: ${colors.gray4};`}
 
   &:hover {
-    border-color: ${colors.gray5};
+    border-color: ${colors.gray6};
   }
 `;
 

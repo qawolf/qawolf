@@ -53,6 +53,8 @@ export const createFreeTeamWithGroup = async (
     { logger, trx }
   );
 
+  // TODO: create default environments?
+
   return team;
 };
 
