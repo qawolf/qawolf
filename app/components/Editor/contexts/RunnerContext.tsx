@@ -5,7 +5,6 @@ import { CreateTestVariables, useCreateTest } from "../../../hooks/mutations";
 import { routes } from "../../../lib/routes";
 import { state } from "../../../lib/state";
 import { RunProgress } from "../../../lib/types";
-import { minutesFromNow } from "../../../shared/utils";
 import { ConnectRunnerHook, useConnectRunner } from "../hooks/connectRunner";
 import { EnvHook, useEnv } from "../hooks/env";
 import { RunnerHook, useRunner } from "../hooks/runner";
@@ -24,7 +23,7 @@ type RunnerContext = ConnectRunnerHook &
     isCreateTestLoading: boolean;
     isRunnerPending: boolean;
     progress: RunProgress | null;
-    runTest: RunTest;
+    runTest: RunTest["runTest"];
   };
 
 export const RunnerContext = createContext<RunnerContext>({
@@ -44,9 +43,6 @@ export const RunnerContext = createContext<RunnerContext>({
 });
 
 export const RunnerProvider: FC = ({ children }) => {
-  const [lastRunPress, setLastRunPress] = useState(new Date().toISOString());
-  // const [isRunnerPending, setIsRunnerPending] = useState(!!state.pendingRun);
-
   const { env } = useEnv();
   const { mouseLineNumber, onSelectionChange, selection } = useSelection();
   const { replace } = useRouter();
@@ -54,22 +50,19 @@ export const RunnerProvider: FC = ({ children }) => {
 
   const { controller, run } = useContext(TestContext);
 
-  const isRunnerPending =
-    !!state.pendingRun || lastRunPress >= minutesFromNow(-1);
-
-  const { apiKey, wsUrl } = useConnectRunner({
-    isRunnerConnected,
-    isRunnerPending,
-    runner,
-  });
   const { progress, resetProgress } = useRunProgress({ run, runner });
 
   const [createTest, { loading: isCreateTestLoading }] = useCreateTest();
 
-  const runTest = useRunTest({
+  const { isRunnerPending, runTest } = useRunTest({
     env,
     resetProgress,
-    resetRunPress: () => setLastRunPress(new Date().toISOString()),
+    runner,
+  });
+
+  const { apiKey, wsUrl } = useConnectRunner({
+    isRunnerConnected,
+    isRunnerPending,
     runner,
   });
 

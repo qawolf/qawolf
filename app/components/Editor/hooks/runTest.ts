@@ -1,5 +1,8 @@
+import { useEffect, useState } from "react";
 import { RunnerClient } from "../../../lib/runner";
+import { state } from "../../../lib/state";
 import { Env, RunOptions } from "../../../lib/types";
+import { minutesFromNow } from "../../../shared/utils";
 import { Selection } from "./selection";
 
 type RunTestOptions = {
@@ -10,21 +13,39 @@ type RunTestOptions = {
   version: number;
 };
 
-export type RunTest = (options: RunTestOptions) => void;
+export type RunTest = {
+  isRunnerPending: boolean;
+  runTest: (options: RunTestOptions) => void;
+};
 
 type UseRunTest = {
   env: Env | null;
   resetProgress: (code: string) => void;
-  resetRunPress: () => void;
   runner: RunnerClient | null;
 };
 
 export const useRunTest = ({
   env,
   resetProgress,
-  resetRunPress,
   runner,
 }: UseRunTest): RunTest => {
+  const [lastRunPress, setLastRunPress] = useState<string | null>(
+    state.pendingRun ? new Date().toISOString() : null
+  );
+  const [isRunnerPending, setIsRunnerPending] = useState(!!state.pendingRun);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const isPending =
+        !!state.pendingRun ||
+        (!!lastRunPress && lastRunPress >= minutesFromNow(-1));
+
+      if (isPending !== isRunnerPending) setIsRunnerPending(isPending);
+    }, 10 * 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const runTest = async ({
     code,
     helpers,
@@ -33,7 +54,7 @@ export const useRunTest = ({
     version,
   }: RunTestOptions) => {
     resetProgress(code);
-    resetRunPress();
+    setLastRunPress(new Date().toISOString());
 
     const options: RunOptions = {
       code,
@@ -54,5 +75,5 @@ export const useRunTest = ({
     runner.run(options);
   };
 
-  return runTest;
+  return { isRunnerPending, runTest };
 };
