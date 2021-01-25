@@ -30,15 +30,15 @@ export const useRunTest = ({
   resetProgress,
   runner,
 }: UseRunTest): RunTest => {
-  const [lastRunPress, setLastRunPress] = useState<string | null>(
-    state.pendingRun ? new Date().toISOString() : null
+  const [lastRunPress, setLastRunPress] = useState<Date | null>(
+    state.pendingRun ? new Date() : null
   );
   const [isRunnerPending, setIsRunnerPending] = useState(!!state.pendingRun);
 
   useEffect(() => {
     const interval = setInterval(() => {
       const isPending =
-        !!state.pendingRun || lastRunPress >= minutesFromNow(-1);
+        !!state.pendingRun || lastRunPress >= new Date(minutesFromNow(-1));
 
       setIsRunnerPending(isPending);
     }, 10 * 1000);
@@ -54,7 +54,7 @@ export const useRunTest = ({
     version,
   }: RunTestOptions) => {
     resetProgress(code);
-    setLastRunPress(new Date().toISOString());
+    setLastRunPress(new Date());
 
     const options: RunOptions = {
       code,
