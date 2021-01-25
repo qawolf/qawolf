@@ -23,7 +23,8 @@ import {
   Test,
   User,
 } from "../../server/types";
-import { cuid, minutesFromNow } from "../../server/utils";
+import { cuid } from "../../server/utils";
+import { minutesFromNow } from "../../shared/utils";
 
 type BuildApiKey = {
   i?: number;

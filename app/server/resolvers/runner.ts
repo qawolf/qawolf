@@ -76,7 +76,7 @@ export const runnerResolver = async (
     );
 
     // extend the session
-    if (should_request_runner) {
+    if (runner && should_request_runner) {
       await updateRunner(
         { id: runner.id, session_expires_at: minutesFromNow(10) },
         { logger, trx }
