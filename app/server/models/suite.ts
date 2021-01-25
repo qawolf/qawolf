@@ -1,7 +1,8 @@
+import { minutesFromNow } from "../../shared/utils";
 import { db } from "../db";
 import { Logger } from "../Logger";
 import { FormattedVariables, ModelOptions, Run, Suite, Test } from "../types";
-import { cuid, minutesFromNow } from "../utils";
+import { cuid } from "../utils";
 import { encrypt } from "./encrypt";
 import { createRunsForTests } from "./run";
 

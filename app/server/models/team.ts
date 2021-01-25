@@ -1,8 +1,9 @@
 import isNil from "lodash/isNil";
 
+import { minutesFromNow } from "../../shared/utils";
 import { db } from "../db";
 import { ModelOptions, Team, TeamPlan } from "../types";
-import { cuid, minutesFromNow } from "../utils";
+import { cuid } from "../utils";
 import { createGroup, DEFAULT_GROUP_NAME } from "./group";
 
 const DEFAULT_NAME = "My Team";

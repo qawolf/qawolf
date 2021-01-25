@@ -1,9 +1,8 @@
 import { useRouter } from "next/router";
-import { createContext, FC, useContext, useEffect, useState } from "react";
+import { createContext, FC, useContext, useEffect } from "react";
 
 import { CreateTestVariables, useCreateTest } from "../../../hooks/mutations";
 import { routes } from "../../../lib/routes";
-import { state } from "../../../lib/state";
 import { RunProgress } from "../../../lib/types";
 import { ConnectRunnerHook, useConnectRunner } from "../hooks/connectRunner";
 import { EnvHook, useEnv } from "../hooks/env";
@@ -21,9 +20,8 @@ type RunnerContext = ConnectRunnerHook &
   SelectionHook & {
     createRunTest: CreateRunTest;
     isCreateTestLoading: boolean;
-    isRunnerPending: boolean;
     progress: RunProgress | null;
-    runTest: RunTest;
+    runTest: RunTest["runTest"];
   };
 
 export const RunnerContext = createContext<RunnerContext>({
@@ -32,7 +30,6 @@ export const RunnerContext = createContext<RunnerContext>({
   env: null,
   isCreateTestLoading: false,
   isRunnerConnected: false,
-  isRunnerPending: false,
   mouseLineNumber: null,
   onSelectionChange: () => null,
   progress: null,
@@ -43,7 +40,6 @@ export const RunnerContext = createContext<RunnerContext>({
 });
 
 export const RunnerProvider: FC = ({ children }) => {
-  const [isRunnerPending, setIsRunnerPending] = useState(!!state.pendingRun);
   const { env } = useEnv();
   const { mouseLineNumber, onSelectionChange, selection } = useSelection();
   const { replace } = useRouter();
@@ -51,20 +47,20 @@ export const RunnerProvider: FC = ({ children }) => {
 
   const { controller, run } = useContext(TestContext);
 
-  const { apiKey, wsUrl } = useConnectRunner({
-    isRunnerConnected,
-    isRunnerPending,
-    runner,
-  });
   const { progress, resetProgress } = useRunProgress({ run, runner });
 
   const [createTest, { loading: isCreateTestLoading }] = useCreateTest();
 
-  const runTest = useRunTest({
+  const { isIdle, runTest } = useRunTest({
     env,
     resetProgress,
     runner,
-    setIsRunnerPending,
+  });
+
+  const { apiKey, wsUrl } = useConnectRunner({
+    isIdle,
+    isRunnerConnected,
+    runner,
   });
 
   const createRunTest = async (variables: CreateTestVariables) => {
@@ -88,7 +84,6 @@ export const RunnerProvider: FC = ({ children }) => {
     env,
     isCreateTestLoading,
     isRunnerConnected,
-    isRunnerPending,
     mouseLineNumber,
     onSelectionChange,
     progress,

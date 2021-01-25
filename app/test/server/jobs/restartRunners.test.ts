@@ -2,7 +2,7 @@ import { db, dropTestDb, migrateDb } from "../../../server/db";
 import { restartRunners } from "../../../server/jobs/restartRunners";
 import { findRunner } from "../../../server/models/runner";
 import * as azureContainer from "../../../server/services/azure/container";
-import { minutesFromNow } from "../../../server/utils";
+import { minutesFromNow } from "../../../shared/utils";
 import { buildRunner, logger } from "../utils";
 
 const restartRunnerContainerGroup = jest

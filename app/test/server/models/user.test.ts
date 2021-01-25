@@ -2,7 +2,8 @@ import { db, dropTestDb, migrateDb } from "../../../server/db";
 import * as userModel from "../../../server/models/user";
 import { WOLF_NAMES, WOLF_VARIANTS } from "../../../server/models/wolfOptions";
 import { GitHubFields, User } from "../../../server/types";
-import { isCorrectCode, minutesFromNow } from "../../../server/utils";
+import { isCorrectCode } from "../../../server/utils";
+import { minutesFromNow } from "../../../shared/utils";
 import { buildTeam, buildTeamUser, buildUser, logger } from "../utils";
 
 const {

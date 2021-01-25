@@ -86,11 +86,6 @@ export const isCorrectCode = async ({
   });
 };
 
-// https://stackoverflow.com/a/1214753
-export const minutesFromNow = (minutes = 0): string => {
-  return new Date(Date.now() + minutes * 60000).toISOString();
-};
-
 export const validateEmail = (email: string, logger: Logger): void => {
   const isValid = EmailValidator.validate(email);
   if (isValid) return;

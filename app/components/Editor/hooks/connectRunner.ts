@@ -11,16 +11,14 @@ export type ConnectRunnerHook = {
 };
 
 type UseConnectRunner = {
+  isIdle: boolean;
   isRunnerConnected: boolean;
-  isRunnerPending: boolean;
   runner: RunnerClient | null;
 };
 
-const POLL_INTERVAL = 5000;
-
 export const useConnectRunner = ({
+  isIdle,
   isRunnerConnected,
-  isRunnerPending,
   runner: runnerClient,
 }: UseConnectRunner): ConnectRunnerHook => {
   const { query } = useRouter();
@@ -34,22 +32,23 @@ export const useConnectRunner = ({
   const { data: runnerResult, loading, startPolling, stopPolling } = useRunner(
     {
       run_id,
-      should_request_runner: isRunnerPending,
+      should_request_runner: !isIdle,
       test_id,
     },
-    !isLatestCode || useLocalRunner
+    {
+      skip: !isLatestCode || useLocalRunner,
+    }
   );
 
+  // manually poll instead of passing pollInterval
+  // to prevent a duplicate request
   useEffect(() => {
-    // poll for the runner when none is connected
-    if (!isLatestCode || isRunnerConnected || loading) return;
+    if (loading) return;
 
-    startPolling(POLL_INTERVAL);
+    startPolling(isRunnerConnected ? 30 * 1000 : 5 * 1000);
 
-    return () => {
-      stopPolling();
-    };
-  }, [isLatestCode, isRunnerConnected, loading, startPolling, stopPolling]);
+    return () => stopPolling();
+  }, [isRunnerConnected, loading, startPolling, stopPolling]);
 
   let apiKey: string = null;
   let wsUrl: string = null;

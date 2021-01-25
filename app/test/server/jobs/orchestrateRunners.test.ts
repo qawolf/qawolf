@@ -3,7 +3,7 @@ import environment from "../../../server/environment";
 import * as orchestrateRunners from "../../../server/jobs/orchestrateRunners";
 import * as runModel from "../../../server/models/run";
 import * as testModel from "../../../server/models/test";
-import { minutesFromNow } from "../../../server/utils";
+import { minutesFromNow } from "../../../shared/utils";
 import { buildRunner, logger } from "../utils";
 
 describe("calculateRunnerPool", () => {

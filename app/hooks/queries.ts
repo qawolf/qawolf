@@ -222,7 +222,7 @@ export const useIntegrations = (
 
 export const useRunner = (
   variables: RunnerQueryVariables,
-  skip?: boolean
+  { skip }: { skip?: boolean }
 ): QueryResult<RunnerData, RunnerQueryVariables> => {
   return useQuery<RunnerData, RunnerQueryVariables>(runnerQuery, {
     fetchPolicy,

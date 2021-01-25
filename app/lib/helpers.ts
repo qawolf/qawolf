@@ -107,6 +107,15 @@ export const randomWolfVariant = (): string => {
   return variants[Math.floor(Math.random() * variants.length)];
 };
 
+export const runAndSetInterval = (
+  fn: () => void,
+  ms: number
+): NodeJS.Timeout => {
+  fn();
+
+  return setInterval(fn, ms);
+};
+
 // https://stackoverflow.com/a/6109105
 export const timeToText = (previousString: string): string => {
   const current = Date.now();

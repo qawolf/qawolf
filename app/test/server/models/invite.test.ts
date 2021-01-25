@@ -8,7 +8,7 @@ import {
 } from "../../../server/models/invite";
 import { WOLF_NAMES, WOLF_VARIANTS } from "../../../server/models/wolfOptions";
 import { Invite } from "../../../server/types";
-import { minutesFromNow } from "../../../server/utils";
+import { minutesFromNow } from "../../../shared/utils";
 import {
   buildInvite,
   buildTeam,

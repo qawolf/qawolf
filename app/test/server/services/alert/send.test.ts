@@ -3,7 +3,7 @@ import { updateSuite } from "../../../../server/models/suite";
 import * as email from "../../../../server/services/alert/email";
 import { sendAlert } from "../../../../server/services/alert/send";
 import * as slack from "../../../../server/services/alert/slack";
-import { minutesFromNow } from "../../../../server/utils";
+import { minutesFromNow } from "../../../../shared/utils";
 import {
   buildGroup,
   buildIntegration,

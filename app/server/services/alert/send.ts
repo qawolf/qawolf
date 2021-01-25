@@ -1,8 +1,8 @@
+import { minutesFromNow } from "../../../shared/utils";
 import { Logger } from "../../Logger";
 import { findGroup } from "../../models/group";
 import { findRunsForSuite } from "../../models/run";
 import { findSuite, updateSuite } from "../../models/suite";
-import { minutesFromNow } from "../../utils";
 import { sendEmailAlert } from "./email";
 import { sendSlackAlert } from "./slack";
 

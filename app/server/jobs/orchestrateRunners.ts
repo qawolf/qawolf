@@ -1,3 +1,4 @@
+import { minutesFromNow } from "../../shared/utils";
 import { db } from "../db";
 import environment from "../environment";
 import { Logger } from "../Logger";
@@ -9,7 +10,6 @@ import {
   updateRunner,
 } from "../models/runner";
 import { countPendingTests, LocationCount } from "../models/test";
-import { minutesFromNow } from "../utils";
 
 /**
  * @summary Calculate the number of runners per location.

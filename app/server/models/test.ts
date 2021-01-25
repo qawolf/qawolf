@@ -1,9 +1,10 @@
 import isNil from "lodash/isNil";
 
+import { minutesFromNow } from "../../shared/utils";
 import { db } from "../db";
 import { ClientError } from "../errors";
 import { ModelOptions, Test } from "../types";
-import { cuid, minutesFromNow } from "../utils";
+import { cuid } from "../utils";
 
 type BuildTestName = {
   name?: string;

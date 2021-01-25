@@ -1,7 +1,8 @@
+import { minutesFromNow } from "../../shared/utils";
 import { db } from "../db";
 import { ClientError } from "../errors";
 import { Invite, ModelOptions } from "../types";
-import { cuid, minutesFromNow } from "../utils";
+import { cuid } from "../utils";
 import {
   findUser,
   randomWolfName,

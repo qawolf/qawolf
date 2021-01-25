@@ -1,3 +1,4 @@
+import { minutesFromNow } from "../../shared/utils";
 import { db } from "../db";
 import { ClientError } from "../errors";
 import {
@@ -11,7 +12,6 @@ import {
   buildDigest,
   cuid,
   isCorrectCode,
-  minutesFromNow,
   randomChoice,
   validateEmail,
 } from "../utils";
