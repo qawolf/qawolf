@@ -6,7 +6,7 @@ import {
   updateTeam,
 } from "../../../server/models/team";
 import { Team } from "../../../server/types";
-import { minutesFromNow } from "../../../server/utils";
+import { minutesFromNow } from "../../../shared/utils";
 import { buildTeam, buildTeamUser, buildUser, logger } from "../utils";
 
 beforeAll(async () => {

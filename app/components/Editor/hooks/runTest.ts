@@ -15,15 +15,15 @@ export type RunTest = (options: RunTestOptions) => void;
 type UseRunTest = {
   env: Env | null;
   resetProgress: (code: string) => void;
+  resetRunPress: () => void;
   runner: RunnerClient | null;
-  setIsRunnerPending: (isPending: boolean) => void;
 };
 
 export const useRunTest = ({
   env,
   resetProgress,
+  resetRunPress,
   runner,
-  setIsRunnerPending,
 }: UseRunTest): RunTest => {
   const runTest = async ({
     code,
@@ -33,7 +33,7 @@ export const useRunTest = ({
     version,
   }: RunTestOptions) => {
     resetProgress(code);
-    setIsRunnerPending(true);
+    resetRunPress();
 
     const options: RunOptions = {
       code,

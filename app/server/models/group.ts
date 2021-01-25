@@ -1,7 +1,8 @@
+import { minutesFromNow } from "../../shared/utils";
 import { db } from "../db";
 import { ClientError } from "../errors";
 import { DeploymentEnvironment, Group, ModelOptions } from "../types";
-import { cuid, minutesFromNow } from "../utils";
+import { cuid } from "../utils";
 
 const DAILY_HOUR = 16; // 9 am PST
 const MINUTES_PER_DAY = 24 * 60;

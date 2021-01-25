@@ -1,7 +1,8 @@
+import { minutesFromNow } from "../../shared/utils";
 import { db } from "../db";
 import { AuthenticationError } from "../errors";
 import { ApiKey, ModelOptions } from "../types";
-import { buildDigest, cuid, isCorrectCode, minutesFromNow } from "../utils";
+import { buildDigest, cuid, isCorrectCode } from "../utils";
 
 const END_CHARACTER_COUNT = 4;
 

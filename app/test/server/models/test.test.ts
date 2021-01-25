@@ -3,7 +3,7 @@ import * as testModel from "../../../server/models/test";
 import { updateTestToPending } from "../../../server/models/test";
 import { Test } from "../../../server/types";
 import * as utils from "../../../server/utils";
-import { minutesFromNow } from "../../../server/utils";
+import { minutesFromNow } from "../../../shared/utils";
 import {
   buildGroup,
   buildRun,

@@ -1,3 +1,4 @@
+import { minutesFromNow } from "../../shared/utils";
 import { db } from "../db";
 import environment from "../environment";
 import { AuthenticationError } from "../errors";
@@ -13,7 +14,6 @@ import {
   SuiteRun,
   UpdateRunMutation,
 } from "../types";
-import { minutesFromNow } from "../utils";
 import { ensureSuiteAccess } from "./utils";
 
 type ValidateApiKey = {

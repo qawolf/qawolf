@@ -1,8 +1,9 @@
+import { minutesFromNow } from "../../shared/utils";
 import { db } from "../db";
 import environment from "../environment";
 import { rankLocations } from "../services/location";
 import { ModelOptions, Runner, Test } from "../types";
-import { cuid, minutesFromNow } from "../utils";
+import { cuid } from "../utils";
 import { findPendingRun, findRun, updateRun } from "./run";
 import { findPendingTest, updateTest, updateTestToPending } from "./test";
 

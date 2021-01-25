@@ -2,7 +2,7 @@ import { db, dropTestDb, migrateDb } from "../../../../server/db";
 import { Logger } from "../../../../server/Logger";
 import { findRunsForSuite } from "../../../../server/models/run";
 import * as email from "../../../../server/services/alert/email";
-import { minutesFromNow } from "../../../../server/utils";
+import { minutesFromNow } from "../../../../shared/utils";
 import {
   buildGroup,
   buildRun,

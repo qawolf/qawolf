@@ -8,7 +8,7 @@ import {
   updateSuite,
 } from "../../../server/models/suite";
 import { Suite } from "../../../server/types";
-import { minutesFromNow } from "../../../server/utils";
+import { minutesFromNow } from "../../../shared/utils";
 import {
   buildGroup,
   buildSuite,

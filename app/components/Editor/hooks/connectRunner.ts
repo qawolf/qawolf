@@ -16,8 +16,6 @@ type UseConnectRunner = {
   runner: RunnerClient | null;
 };
 
-const POLL_INTERVAL = 5000;
-
 export const useConnectRunner = ({
   isRunnerConnected,
   isRunnerPending,
@@ -31,25 +29,17 @@ export const useConnectRunner = ({
 
   const { isLatestCode } = useContext(TestContext);
 
-  const { data: runnerResult, loading, startPolling, stopPolling } = useRunner(
+  const { data: runnerResult } = useRunner(
     {
       run_id,
       should_request_runner: isRunnerPending,
       test_id,
     },
-    !isLatestCode || useLocalRunner
+    {
+      pollInterval: isRunnerConnected ? 30000 : 5000,
+      skip: !isLatestCode || useLocalRunner,
+    }
   );
-
-  useEffect(() => {
-    // poll for the runner when none is connected
-    if (!isLatestCode || isRunnerConnected || loading) return;
-
-    startPolling(POLL_INTERVAL);
-
-    return () => {
-      stopPolling();
-    };
-  }, [isLatestCode, isRunnerConnected, loading, startPolling, stopPolling]);
 
   let apiKey: string = null;
   let wsUrl: string = null;

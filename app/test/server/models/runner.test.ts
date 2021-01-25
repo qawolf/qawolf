@@ -17,7 +17,7 @@ import * as testModel from "../../../server/models/test";
 import { findTest, updateTestToPending } from "../../../server/models/test";
 import * as locationService from "../../../server/services/location";
 import { Runner } from "../../../server/types";
-import { minutesFromNow } from "../../../server/utils";
+import { minutesFromNow } from "../../../shared/utils";
 import {
   buildRun,
   buildRunner,

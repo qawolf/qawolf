@@ -1,5 +1,6 @@
 import axios from "axios";
 
+import { minutesFromNow } from "../../shared/utils";
 import { db } from "../db";
 import { AuthenticationError } from "../errors";
 import { Logger } from "../Logger";
@@ -19,12 +20,7 @@ import {
   RunnerRun,
   UpdateRunnerMutation,
 } from "../types";
-import {
-  buildRunnerStatusUrl,
-  buildRunnerWsUrl,
-  minutesFromNow,
-  RunnerUrl,
-} from "../utils";
+import { buildRunnerStatusUrl, buildRunnerWsUrl, RunnerUrl } from "../utils";
 import { ensureTeams, ensureTestAccess, ensureUser } from "./utils";
 
 type AuthenticateRunner = RunnerUrl & {

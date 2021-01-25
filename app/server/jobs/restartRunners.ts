@@ -1,9 +1,9 @@
 import ContainerInstanceManagementClient from "azure-arm-containerinstance";
 
+import { minutesFromNow } from "../../shared/utils";
 import { Logger } from "../Logger";
 import { findRunners, updateRunner } from "../models/runner";
 import { restartRunnerContainerGroup } from "../services/azure/container";
-import { minutesFromNow } from "../utils";
 
 type RestartRunners = {
   client: ContainerInstanceManagementClient;

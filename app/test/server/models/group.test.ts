@@ -1,7 +1,7 @@
 import { db, dropTestDb, migrateDb } from "../../../server/db";
 import * as groupModel from "../../../server/models/group";
 import { Group } from "../../../server/types";
-import { minutesFromNow } from "../../../server/utils";
+import { minutesFromNow } from "../../../shared/utils";
 import {
   buildGroup,
   buildIntegration,
