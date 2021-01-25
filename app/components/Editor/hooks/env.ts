@@ -9,9 +9,11 @@ export type EnvHook = {
 };
 
 export const useEnv = (): EnvHook => {
-  const { groupId } = useContext(StateContext);
+  const { environmentId } = useContext(StateContext);
 
-  const { data } = useEnvironmentVariables({ group_id: groupId || "" });
+  const { data } = useEnvironmentVariables({
+    environment_id: environmentId || "",
+  });
 
   const envString = data?.environmentVariables.env;
   const env = envString ? JSON.parse(envString) : null;

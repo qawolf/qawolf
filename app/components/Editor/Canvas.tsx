@@ -3,7 +3,6 @@ import { useContext, useEffect, useState } from "react";
 
 import { RunnerContext } from "./contexts/RunnerContext";
 import { TestContext } from "./contexts/TestContext";
-import EnvVariables from "./EnvVariables";
 import { useBrowser } from "./hooks/browser";
 import { Mode } from "./hooks/mode";
 import Placeholder from "./Placeholder";
@@ -63,7 +62,7 @@ export default function Canvas({ height, mode, width }: Props): JSX.Element {
           videoUrl={videoUrl}
         />
       </Box>
-      <EnvVariables />
+      {/* <EnvVariables /> */}
       {!showPlaceholder && (
         <VideoToggle
           isBrowserReady={isBrowserReady}

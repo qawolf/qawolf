@@ -64,7 +64,7 @@ type EnvironmentVariablesData = {
 };
 
 type EnvironmentVariablesVariables = {
-  group_id: string;
+  environment_id: string;
 };
 
 type GroupsData = {
@@ -177,7 +177,7 @@ export const useEnvironmentVariables = (
       fetchPolicy,
       nextFetchPolicy,
       onError,
-      skip: !variables.group_id,
+      skip: !variables.environment_id,
       variables,
     }
   );

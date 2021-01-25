@@ -250,6 +250,7 @@ type ModalState = {
 export type State = {
   dashboardUri: string | null;
   email: string | null;
+  environmentId: string | null;
   error: string | null;
   groupId: string | null;
   image: { wolf: number };

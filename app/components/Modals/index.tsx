@@ -37,8 +37,8 @@ export default function Modals(): JSX.Element {
     );
   }
 
-  if (name === "envVariables" && group) {
-    return <EnvVariables closeModal={closeModal} group={group} />;
+  if (name === "envVariables") {
+    return <EnvVariables closeModal={closeModal} />;
   }
 
   if (name === "teamSettings" && teamId) {
