@@ -78,6 +78,11 @@ export const runnerResolver = async (
     // if there is no runner, request one for the test
     if (!runner && should_request_runner) {
       runner = await requestRunnerForTest({ ip, test }, { logger, trx });
+    } else if (runner && should_request_runner) {
+      await updateRunner(
+        { id: runner.id, session_expires_at: minutesFromNow(10) },
+        { logger, trx }
+      );
     }
 
     if (runner) {
