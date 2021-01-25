@@ -13,7 +13,7 @@ import * as accessService from "../../../server/services/access";
 import * as emailService from "../../../server/services/alert/email";
 import * as gitHubUserService from "../../../server/services/gitHub/user";
 import { AuthenticatedUser, Context, User } from "../../../server/types";
-import { minutesFromNow } from "../../../server/utils";
+import { minutesFromNow } from "../../../shared/utils";
 import {
   buildInvite,
   buildTeam,
