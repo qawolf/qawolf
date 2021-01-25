@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import { RunnerClient } from "../../../lib/runner";
 import { state } from "../../../lib/state";
 import { Env, RunOptions } from "../../../lib/types";
@@ -37,14 +38,13 @@ export const useRunTest = ({
   useEffect(() => {
     const interval = setInterval(() => {
       const isPending =
-        !!state.pendingRun ||
-        (!!lastRunPress && lastRunPress >= minutesFromNow(-1));
+        !!state.pendingRun || lastRunPress >= minutesFromNow(-1);
 
-      if (isPending !== isRunnerPending) setIsRunnerPending(isPending);
+      setIsRunnerPending(isPending);
     }, 10 * 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [lastRunPress]);
 
   const runTest = async ({
     code,

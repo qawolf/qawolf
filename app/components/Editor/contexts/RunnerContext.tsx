@@ -1,9 +1,8 @@
 import { useRouter } from "next/router";
-import { createContext, FC, useContext, useEffect, useState } from "react";
+import { createContext, FC, useContext, useEffect } from "react";
 
 import { CreateTestVariables, useCreateTest } from "../../../hooks/mutations";
 import { routes } from "../../../lib/routes";
-import { state } from "../../../lib/state";
 import { RunProgress } from "../../../lib/types";
 import { ConnectRunnerHook, useConnectRunner } from "../hooks/connectRunner";
 import { EnvHook, useEnv } from "../hooks/env";
