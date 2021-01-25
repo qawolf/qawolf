@@ -13,7 +13,7 @@ import {
 import * as alertService from "../../../server/services/alert/send";
 import * as storageService from "../../../server/services/aws/storage";
 import { Run } from "../../../server/types";
-import { minutesFromNow } from "../../../server/utils";
+import { minutesFromNow } from "../../../shared/utils";
 import {
   buildArtifacts,
   buildEnvironment,

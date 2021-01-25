@@ -64,6 +64,9 @@ RUN apt-get update && \
   apt-get clean && \
   apt-get autoclean
 
+# upgrade npm to support lockfile v2
+RUN npm i -g npm@7
+
 COPY package.json package-lock.json ./
 RUN npm i
 

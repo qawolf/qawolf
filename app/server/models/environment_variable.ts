@@ -1,3 +1,4 @@
+import { minutesFromNow } from "../../shared/utils";
 import { db } from "../db";
 import { ClientError } from "../errors";
 import {
@@ -5,7 +6,7 @@ import {
   FormattedVariables,
   ModelOptions,
 } from "../types";
-import { cuid, minutesFromNow } from "../utils";
+import { cuid } from "../utils";
 import { decrypt, encrypt } from "./encrypt";
 
 type BuildEnvironmentVariables = {

@@ -1,7 +1,7 @@
 import { deleteRunners } from "../../../server/jobs/deleteRunners";
 import * as runnerModel from "../../../server/models/runner";
 import * as azureContainer from "../../../server/services/azure/container";
-import { minutesFromNow } from "../../../server/utils";
+import { minutesFromNow } from "../../../shared/utils";
 import { buildRunner, logger } from "../utils";
 
 describe("deleteRunners", () => {

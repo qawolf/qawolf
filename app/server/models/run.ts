@@ -1,3 +1,4 @@
+import { minutesFromNow } from "../../shared/utils";
 import { db } from "../db";
 import { sendAlert } from "../services/alert/send";
 import {
@@ -14,7 +15,7 @@ import {
   SuiteRun,
   Test,
 } from "../types";
-import { cuid, minutesFromNow } from "../utils";
+import { cuid } from "../utils";
 import { decrypt } from "./encrypt";
 import { buildEnvironmentVariables } from "./environment_variable";
 

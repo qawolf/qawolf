@@ -1,10 +1,10 @@
 import ContainerInstanceManagementClient from "azure-arm-containerinstance";
 
+import { minutesFromNow } from "../../shared/utils";
 import { db } from "../db";
 import { Logger } from "../Logger";
 import { findRunners, updateRunner } from "../models/runner";
 import { createRunnerContainerGroup } from "../services/azure/container";
-import { minutesFromNow } from "../utils";
 
 type DeployRunner = {
   client: ContainerInstanceManagementClient;

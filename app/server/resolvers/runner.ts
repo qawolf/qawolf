@@ -1,5 +1,6 @@
 import axios from "axios";
 
+import { minutesFromNow } from "../../shared/utils";
 import { db } from "../db";
 import { AuthenticationError } from "../errors";
 import { Logger } from "../Logger";
@@ -19,12 +20,7 @@ import {
   RunnerRun,
   UpdateRunnerMutation,
 } from "../types";
-import {
-  buildRunnerStatusUrl,
-  buildRunnerWsUrl,
-  minutesFromNow,
-  RunnerUrl,
-} from "../utils";
+import { buildRunnerStatusUrl, buildRunnerWsUrl, RunnerUrl } from "../utils";
 import { ensureTeams, ensureTestAccess, ensureUser } from "./utils";
 
 type AuthenticateRunner = RunnerUrl & {
@@ -78,6 +74,14 @@ export const runnerResolver = async (
       { run_id: run_id, test_id: testId },
       { logger, trx }
     );
+
+    // extend the session
+    if (runner && should_request_runner) {
+      await updateRunner(
+        { id: runner.id, session_expires_at: minutesFromNow(10) },
+        { logger, trx }
+      );
+    }
 
     // if there is no runner, request one for the test
     if (!runner && should_request_runner) {

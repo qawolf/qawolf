@@ -34,6 +34,8 @@ export default function HelpersEditor(): JSX.Element {
     includeTypes(monaco);
 
     editor.onDidChangeModelContent(() => {
+      if (!team) return; // do not overwrite if team not loaded
+
       const helpers = editor.getValue();
 
       debouncedUpdateTeam({

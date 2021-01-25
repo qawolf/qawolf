@@ -7,7 +7,7 @@ import { findRunner, updateRunner } from "../../../server/models/runner";
 import { findTest } from "../../../server/models/test";
 import * as runnerResolvers from "../../../server/resolvers/runner";
 import { Runner, RunnerRun } from "../../../server/types";
-import { minutesFromNow } from "../../../server/utils";
+import { minutesFromNow } from "../../../shared/utils";
 import {
   buildRun,
   buildRunner,
@@ -89,11 +89,33 @@ describe("runnerResolver", () => {
   });
 
   it("returns the run's runner", async () => {
+    jest.spyOn(runnerModel, "updateRunner");
+
     const runner = await runnerResolver(null, { run_id: "runId" }, context);
     expect(runner).toEqual({
       api_key: null,
       ws_url: "wss://westus2.qawolf.com/runner/runnerId/.qawolf",
     });
+
+    expect(runnerModel.updateRunner).not.toBeCalled();
+  });
+
+  it("extends the current runner's session when should_request_runner is specified", async () => {
+    const initialExpiresAt = (await findRunner({ run_id: "runId" }, { logger }))
+      .session_expires_at;
+
+    const runner = await runnerResolver(
+      null,
+      { run_id: "runId", should_request_runner: true },
+      context
+    );
+    expect(runner).toEqual({
+      api_key: null,
+      ws_url: "wss://westus2.qawolf.com/runner/runnerId/.qawolf",
+    });
+
+    const dbRunner = await findRunner({ run_id: "runId" }, { logger });
+    expect(dbRunner.session_expires_at).not.toBe(initialExpiresAt);
   });
 
   it("returns the test's runner", async () => {

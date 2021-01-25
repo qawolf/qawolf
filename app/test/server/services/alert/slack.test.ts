@@ -2,7 +2,7 @@ import { db, dropTestDb, migrateDb } from "../../../../server/db";
 import { findRunsForSuite } from "../../../../server/models/run";
 import * as slack from "../../../../server/services/alert/slack";
 import * as azure from "../../../../server/services/aws/storage";
-import { minutesFromNow } from "../../../../server/utils";
+import { minutesFromNow } from "../../../../shared/utils";
 import {
   buildGroup,
   buildIntegration,

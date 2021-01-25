@@ -8,7 +8,8 @@ import {
   validateToken,
 } from "../../../server/models/api_key";
 import { ApiKey } from "../../../server/types";
-import { buildDigest, minutesFromNow } from "../../../server/utils";
+import { buildDigest } from "../../../server/utils";
+import { minutesFromNow } from "../../../shared/utils";
 import { buildApiKey, buildTeam, logger } from "../utils";
 
 beforeAll(async () => {

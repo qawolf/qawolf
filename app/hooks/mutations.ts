@@ -18,7 +18,6 @@ import {
   deleteEnvironmentVariableMutation,
   deleteGroupMutation,
   deleteTestsMutation,
-  instrumentTestRunMutation,
   joinMailingListMutation,
   sendLoginCodeMutation,
   signInWithEmailMutation,
@@ -41,13 +40,11 @@ import {
   Group,
   Integration,
   Invite,
-  RunStatus,
   State,
   Team,
   Test,
   User,
 } from "../lib/types";
-import { updateIntercomUser } from "./intercom";
 
 type AcceptInviteData = {
   acceptInvite: Invite;
@@ -181,15 +178,6 @@ type DeleteTestsVariables = {
   ids: string[];
 };
 
-type InstrumentTestRunData = {
-  instrumentTestRun: boolean;
-};
-
-type InstrumentTestRunVariables = {
-  status: RunStatus;
-  test_id: string;
-};
-
 type JoinMailingListData = {
   joinMailingList: boolean;
 };
@@ -307,7 +295,6 @@ const handleAuthenticatedUser = ({
 
   localStorage.setItem(JWT_KEY, access_token);
   updateCurrentUser(user);
-  updateIntercomUser(user.email);
 
   // redirect to stored redirect uri if possible
   if (signUp.redirectUri) {
@@ -546,16 +533,6 @@ export const useDeleteTests = (
       refetchQueries: ["dashboard"],
       variables,
     }
-  );
-};
-
-export const useInstrumentTestRun = (): MutationTuple<
-  InstrumentTestRunData,
-  InstrumentTestRunVariables
-> => {
-  return useMutation<InstrumentTestRunData, InstrumentTestRunVariables>(
-    instrumentTestRunMutation,
-    { onError }
   );
 };
 

@@ -156,12 +156,6 @@ export const deleteTestsMutation = gql`
   ${testFragment}
 `;
 
-export const instrumentTestRunMutation = gql`
-  mutation instrumentTestRun($status: RunStatus!, $test_id: ID!) {
-    instrumentTestRun(status: $status, test_id: $test_id)
-  }
-`;
-
 export const joinMailingListMutation = gql`
   mutation joinMailingList($email: String!) {
     joinMailingList(email: $email)
