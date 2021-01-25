@@ -20,7 +20,6 @@ type RunnerContext = ConnectRunnerHook &
   SelectionHook & {
     createRunTest: CreateRunTest;
     isCreateTestLoading: boolean;
-    isRunnerPending: boolean;
     progress: RunProgress | null;
     runTest: RunTest["runTest"];
   };
@@ -31,7 +30,6 @@ export const RunnerContext = createContext<RunnerContext>({
   env: null,
   isCreateTestLoading: false,
   isRunnerConnected: false,
-  isRunnerPending: false,
   mouseLineNumber: null,
   onSelectionChange: () => null,
   progress: null,
@@ -53,15 +51,15 @@ export const RunnerProvider: FC = ({ children }) => {
 
   const [createTest, { loading: isCreateTestLoading }] = useCreateTest();
 
-  const { isRunnerPending, runTest } = useRunTest({
+  const { isIdle, runTest } = useRunTest({
     env,
     resetProgress,
     runner,
   });
 
   const { apiKey, wsUrl } = useConnectRunner({
+    isIdle,
     isRunnerConnected,
-    isRunnerPending,
     runner,
   });
 
@@ -86,7 +84,6 @@ export const RunnerProvider: FC = ({ children }) => {
     env,
     isCreateTestLoading,
     isRunnerConnected,
-    isRunnerPending,
     mouseLineNumber,
     onSelectionChange,
     progress,

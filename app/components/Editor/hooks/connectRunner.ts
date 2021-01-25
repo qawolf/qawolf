@@ -11,14 +11,14 @@ export type ConnectRunnerHook = {
 };
 
 type UseConnectRunner = {
+  isIdle: boolean;
   isRunnerConnected: boolean;
-  isRunnerPending: boolean;
   runner: RunnerClient | null;
 };
 
 export const useConnectRunner = ({
+  isIdle,
   isRunnerConnected,
-  isRunnerPending,
   runner: runnerClient,
 }: UseConnectRunner): ConnectRunnerHook => {
   const { query } = useRouter();
@@ -32,7 +32,7 @@ export const useConnectRunner = ({
   const { data: runnerResult } = useRunner(
     {
       run_id,
-      should_request_runner: isRunnerPending,
+      should_request_runner: !isIdle,
       test_id,
     },
     {

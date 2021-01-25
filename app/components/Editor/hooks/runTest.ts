@@ -15,7 +15,7 @@ type RunTestOptions = {
 };
 
 export type RunTest = {
-  isRunnerPending: boolean;
+  isIdle: boolean;
   runTest: (options: RunTestOptions) => void;
 };
 
@@ -30,21 +30,19 @@ export const useRunTest = ({
   resetProgress,
   runner,
 }: UseRunTest): RunTest => {
-  const [lastRunPress, setLastRunPress] = useState<Date | null>(
-    state.pendingRun ? new Date() : null
-  );
-  const [isRunnerPending, setIsRunnerPending] = useState(!!state.pendingRun);
+  const [isIdle, setIsIdle] = useState(!state.pendingRun);
+  const [ranAt, setRanAt] = useState<Date | null>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const isPending =
-        !!state.pendingRun || lastRunPress >= new Date(minutesFromNow(-1));
+      const isActive =
+        !!state.pendingRun || ranAt >= new Date(minutesFromNow(-1));
 
-      setIsRunnerPending(isPending);
+      setIsIdle(!isActive);
     }, 10 * 1000);
 
     return () => clearInterval(interval);
-  }, [lastRunPress]);
+  }, [ranAt]);
 
   const runTest = async ({
     code,
@@ -54,7 +52,7 @@ export const useRunTest = ({
     version,
   }: RunTestOptions) => {
     resetProgress(code);
-    setLastRunPress(new Date());
+    setRanAt(new Date());
 
     const options: RunOptions = {
       code,
@@ -75,5 +73,5 @@ export const useRunTest = ({
     runner.run(options);
   };
 
-  return { isRunnerPending, runTest };
+  return { isIdle, runTest };
 };
