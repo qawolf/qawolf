@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { runAndSetInterval, setAndRunInterval } from "../../../lib/helpers";
 
 import { RunnerClient } from "../../../lib/runner";
 import { state } from "../../../lib/state";
@@ -34,7 +35,7 @@ export const useRunTest = ({
   const [ranAt, setRanAt] = useState<Date | null>(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const interval = runAndSetInterval(() => {
       const isActive =
         !!state.pendingRun || ranAt >= new Date(minutesFromNow(-1));
 
