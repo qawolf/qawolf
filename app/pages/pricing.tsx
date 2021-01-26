@@ -12,7 +12,7 @@ export default function Pricing(): JSX.Element {
     <ThemeContext.Extend value={theme}>
       <Box>
         <Navigation />
-        <Box overflow={{ vertical: "scroll" }}>
+        <Box overflow={{ vertical: "auto" }}>
           <Overview />
           <Plans />
           <JoinWolfpack />

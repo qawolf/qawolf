@@ -1,6 +1,6 @@
-import { Box } from "grommet";
 import { Icon } from "grommet-icons";
 
+import Divider from "../Divider";
 import Option from "./Option";
 
 type Props = {
@@ -8,8 +8,6 @@ type Props = {
   label: string;
   onClick: () => void;
 };
-
-const borderHeight = "1px";
 
 export default function Action({
   IconComponent,
@@ -19,12 +17,7 @@ export default function Action({
   return (
     <>
       <Option IconComponent={IconComponent} label={label} onClick={onClick} />
-      <Box
-        background="gray3"
-        height={borderHeight}
-        margin={{ vertical: "xxxsmall" }}
-        width="full"
-      />
+      <Divider margin={{ vertical: "xxxsmall" }} />
     </>
   );
 }

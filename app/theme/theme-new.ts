@@ -56,6 +56,7 @@ export const fontFamily = {
   bold: "Circular Black",
   component: "Inter",
   componentHeader: "Inter Semibold",
+  componentParagraph: "Inter",
   eyebrow: "Plex Mono Semibold",
   medium: "Circular Medium",
   normal: "Circular",
@@ -90,7 +91,9 @@ export const text = {
   xlarge: { height: "40px", size: "36px" },
   xxlarge: { height: "52px", size: "46px" },
   component: { height: "16px", size: "14px" },
+  componentBold: { height: "16px", size: "14px" },
   componentHeader: { height: "24px", size: "18px" },
+  componentParagraph: { height: "20px", size: "14px" },
   eyebrow: { height: "18px", size: "16px" },
 };
 
@@ -103,7 +106,9 @@ export const textDesktop = {
   xlarge: { height: "62px", size: "56px" },
   xxlarge: { height: "84px", size: "76px" },
   component: { height: "16px", size: "14px" },
+  componentBold: { height: "16px", size: "14px" },
   componentHeader: { height: "24px", size: "18px" },
+  componentParagraph: { height: "20px", size: "14px" },
   eyebrow: { height: "18px", size: "16px" },
 };
 
