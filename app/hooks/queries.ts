@@ -6,6 +6,7 @@ import {
   apiKeysQuery,
   currentUserQuery,
   dashboardQuery,
+  environmentsQuery,
   environmentVariablesQuery,
   groupsQuery,
   integrationsQuery,
@@ -20,6 +21,7 @@ import { routes } from "../lib/routes";
 import { state } from "../lib/state";
 import {
   ApiKey,
+  Environment,
   EnvironmentVariable,
   Group,
   Integration,
@@ -54,6 +56,14 @@ type DashboardData = {
 
 type DashboardVariables = {
   group_id?: string | null;
+};
+
+type EnvironmentsData = {
+  environments: Environment[];
+};
+
+type EnvironmentsVariables = {
+  team_id: string;
 };
 
 type EnvironmentVariablesData = {
@@ -164,6 +174,18 @@ export const useDashboard = (
     nextFetchPolicy,
     onError,
     skip: !variables.group_id,
+    variables,
+  });
+};
+
+export const useEnvironments = (
+  variables: EnvironmentsVariables
+): QueryResult<EnvironmentsData, EnvironmentsVariables> => {
+  return useQuery<EnvironmentsData, EnvironmentsVariables>(environmentsQuery, {
+    fetchPolicy,
+    nextFetchPolicy,
+    onError,
+    skip: !variables.team_id,
     variables,
   });
 };

@@ -59,6 +59,15 @@ export const dashboardQuery = gql`
   ${suiteRunFragment}
 `;
 
+export const environmentsQuery = gql`
+  query environments($team_id: ID!) {
+    environments(team_id: $team_id) {
+      id
+      name
+    }
+  }
+`;
+
 export const environmentVariablesQuery = gql`
   query environmentVariables($environment_id: ID!) {
     environmentVariables(environment_id: $environment_id) {

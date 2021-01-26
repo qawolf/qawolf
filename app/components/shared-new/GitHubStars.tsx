@@ -42,7 +42,7 @@ const textProps = {
 };
 
 function GitHubStars({ className, type }: Props): JSX.Element {
-  const [starCount, setStarCount] = useState(2450);
+  const [starCount, setStarCount] = useState(2475);
 
   useEffect(() => {
     const cancelTokenSource = axios.CancelToken.source();

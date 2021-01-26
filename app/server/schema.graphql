@@ -73,6 +73,18 @@ enum DeploymentEnvironment {
   production
 }
 
+"An environment for a team"
+type Environment {
+  "Environment ID"
+  id: ID!
+
+  "Environment name"
+  name: String!
+
+  "Team associated with this environment"
+  team_id: ID!
+}
+
 "A single defined environment variable for an environment"
 type EnvironmentVariable {
   "Date and time at which the environment variable record was created"
@@ -1003,6 +1015,13 @@ type Query {
   One of the teams you are on must have access to the test group.
   """
   dashboard("The group ID" group_id: ID!): Dashboard!
+
+  """
+  Returns environments by team ID.
+
+  You must be on the team to list environments.
+  """
+  environments("The team ID" team_id: ID!): [Environment!]!
 
   """
   Returns environment variables for a single environment by environment ID.

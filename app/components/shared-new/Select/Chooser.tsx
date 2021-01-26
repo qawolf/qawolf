@@ -28,7 +28,7 @@ function Chooser({ className }: Props): JSX.Element {
       direction="row"
       height={height}
       justify="between"
-      pad={{ horizontal: "xsmall" }}
+      pad={{ left: "xsmall", right: "xxsmall" }}
       round={borderSize.small}
       width={width}
     >

@@ -17,6 +17,11 @@ export type DeploymentEnvironment = "all" | "preview" | "production";
 
 export type Env = { [name: string]: string };
 
+export type Environment = {
+  id: string;
+  name: string;
+};
+
 export type EnvironmentVariable = {
   created_at: string;
   id: string;
