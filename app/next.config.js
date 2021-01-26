@@ -20,6 +20,6 @@ module.exports = {
   // move to non-experimental in 10.0.5
   // broken in 10.0.4: https://github.com/vercel/next.js/issues/20500
   experimental: {
-    productionBrowserSourceMaps: process.env.NODE_ENV !== "production",
+    productionBrowserSourceMaps: true,
   },
 };
