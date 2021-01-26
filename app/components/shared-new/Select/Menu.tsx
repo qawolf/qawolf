@@ -5,7 +5,10 @@ import styled, { keyframes } from "styled-components";
 import { edgeSize } from "../../../theme/theme-new";
 import { height } from "./Chooser";
 
-type Props = { children: ReactNode };
+type Props = {
+  children: ReactNode;
+  onClick: () => void;
+};
 
 const round = "2px";
 
@@ -31,10 +34,11 @@ const StyledBox = styled(Box)`
   transform-origin: bottom center;
 `;
 
-export default function Menu({ children }: Props): JSX.Element {
+export default function Menu({ children, onClick }: Props): JSX.Element {
   return (
     <StyledBox
       background="gray0"
+      onClick={onClick}
       overflow="hidden"
       pad={{ vertical: "xxxsmall" }}
       round={round}

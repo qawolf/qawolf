@@ -91,13 +91,7 @@ export const copy = {
   emptyTriggers: "You don't have any triggers yet!",
   encrypted: "Encrypted",
   enterUrl: "Enter your URL to create a test with",
-  envVariableName: "MY_ENV_VARIABLE",
-  envVariables: "Environment variables",
-  envVariablesDetail:
-    "Use environment variables for values that you don't want to share in your code or to change the behavior of your code by group",
-  envVariablesEmpty: (name: string): string =>
-    `No environment variables are set for ${name}`,
-  envVariableValue: "secret value",
+  environmentNotSelected: "No environment",
   getInTouch: "Get in touch",
   getStarted: "Get started",
   gitHub: "GitHub",

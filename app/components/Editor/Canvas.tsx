@@ -1,6 +1,6 @@
 import { Box } from "grommet";
 import { useContext, useEffect, useState } from "react";
-import EnvVariables from "../shared-new/EnvVariables";
+import EnvVariables from "../shared-new/Environments";
 
 import { RunnerContext } from "./contexts/RunnerContext";
 import { TestContext } from "./contexts/TestContext";

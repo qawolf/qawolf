@@ -4,6 +4,7 @@ import {
   borderSize,
   colors,
   edgeSize,
+  overflowStyle,
   transitionDuration,
 } from "../../../theme/theme-new";
 
@@ -13,12 +14,13 @@ import Selector from "../icons/Selector";
 type Props = {
   className?: string;
   isOpen: boolean;
+  label: string;
 };
 
 export const height = edgeSize.large;
 const width = "160px";
 
-function Chooser({ className }: Props): JSX.Element {
+function Chooser({ className, label }: Props): JSX.Element {
   return (
     <Box
       align="center"
@@ -31,8 +33,8 @@ function Chooser({ className }: Props): JSX.Element {
       round={borderSize.small}
       width={width}
     >
-      <Text color="gray0" size="component">
-        Select
+      <Text color="gray0" size="component" style={overflowStyle}>
+        {label}
       </Text>
       <Selector color="gray0" size={edgeSize.small} />
     </Box>

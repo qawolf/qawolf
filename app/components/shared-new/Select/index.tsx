@@ -4,19 +4,23 @@ import { ReactNode, useState } from "react";
 import Chooser from "./Chooser";
 import Menu from "./Menu";
 
-type Props = { children: ReactNode };
+type Props = {
+  children: ReactNode;
+  label: string;
+};
 
-export default function Select({ children }: Props): JSX.Element {
+export default function Select({ children, label }: Props): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClick = (): void => setIsOpen((prev) => !prev);
+  const handleClose = (): void => setIsOpen(false);
 
   return (
     <Box style={{ position: "relative" }}>
       <Button onClick={handleClick} plain>
-        <Chooser isOpen={isOpen} />
+        <Chooser isOpen={isOpen} label={label} />
       </Button>
-      {isOpen && <Menu>{children}</Menu>}
+      {isOpen && <Menu onClick={handleClose}>{children}</Menu>}
     </Box>
   );
 }
