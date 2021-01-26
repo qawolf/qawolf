@@ -1,6 +1,5 @@
 import { Box } from "grommet";
 
-import { copy } from "../../../theme/copy";
 import Layer from "../../shared/Layer";
 
 type Props = {

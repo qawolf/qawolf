@@ -91,6 +91,7 @@ export const copy = {
   emptyTriggers: "You don't have any triggers yet!",
   encrypted: "Encrypted",
   enterUrl: "Enter your URL to create a test with",
+  environmentsEdit: "Edit envrionments",
   environmentNotSelected: "No environment",
   getInTouch: "Get in touch",
   getStarted: "Get started",

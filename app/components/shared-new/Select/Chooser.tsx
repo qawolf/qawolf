@@ -1,5 +1,6 @@
 import { Box } from "grommet";
 import styled from "styled-components";
+
 import {
   borderSize,
   colors,
@@ -7,9 +8,8 @@ import {
   overflowStyle,
   transitionDuration,
 } from "../../../theme/theme-new";
-
-import Text from "../Text";
 import Selector from "../icons/Selector";
+import Text from "../Text";
 
 type Props = {
   className?: string;
@@ -18,7 +18,7 @@ type Props = {
 };
 
 export const height = edgeSize.large;
-const width = "160px";
+const width = "180px";
 
 function Chooser({ className, label }: Props): JSX.Element {
   return (

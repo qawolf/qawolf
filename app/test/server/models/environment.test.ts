@@ -1,7 +1,7 @@
 import { db, dropTestDb, migrateDb } from "../../../server/db";
 import {
-  findEnvrionment,
   findEnvironmentsForTeam,
+  findEnvrionment,
 } from "../../../server/models/environment";
 import { Environment } from "../../../server/types";
 import { buildEnvironment, buildTeam, logger } from "../utils";

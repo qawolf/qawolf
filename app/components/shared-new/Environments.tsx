@@ -1,14 +1,15 @@
 import { Box, ThemeContext } from "grommet";
 import { useContext } from "react";
-import { useEnvironments } from "../../hooks/queries";
-import { theme } from "../../theme/theme-new";
-import { StateContext } from "../StateContext";
 
-import Option from "./Select/Option";
-import Select from "./Select";
+import { useEnvironments } from "../../hooks/queries";
 import { state } from "../../lib/state";
 import { copy } from "../../theme/copy";
-import environment from "../../server/environment";
+import { theme } from "../../theme/theme-new";
+import { StateContext } from "../StateContext";
+import Edit from "./icons/Edit";
+import Select from "./Select";
+import Action from "./Select/Action";
+import Option from "./Select/Option";
 
 export default function EnvVariables(): JSX.Element {
   const { environmentId, teamId } = useContext(StateContext);
@@ -24,6 +25,8 @@ export default function EnvVariables(): JSX.Element {
       : copy.environmentNotSelected;
   }
 
+  const openModal = (): void => state.setModal({ name: "envVariables" });
+
   const optionsHtml = (data?.environments || []).map((e) => {
     return (
       <Option
@@ -38,7 +41,14 @@ export default function EnvVariables(): JSX.Element {
   return (
     <ThemeContext.Extend value={theme}>
       <Box alignSelf="center" background="gray10" round="2px">
-        <Select label={label}>{optionsHtml}</Select>
+        <Select label={label}>
+          <Action
+            IconComponent={Edit}
+            label={copy.environmentsEdit}
+            onClick={openModal}
+          />
+          {optionsHtml}
+        </Select>
       </Box>
     </ThemeContext.Extend>
   );

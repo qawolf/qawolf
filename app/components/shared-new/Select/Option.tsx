@@ -1,20 +1,26 @@
 import { Box, Button } from "grommet";
+import { Icon } from "grommet-icons";
 import styled from "styled-components";
+
 import {
   colors,
   edgeSize,
   overflowStyle,
   transitionDuration,
 } from "../../../theme/theme-new";
-
 import Check from "../icons/Check";
-
 import Text from "../Text";
 
 type Props = {
+  IconComponent?: Icon;
   isSelected?: boolean;
   label: string;
   onClick: () => void;
+};
+
+const iconProps = {
+  color: colors.gray9,
+  size: edgeSize.small,
 };
 
 const StyledBox = styled(Box)`
@@ -26,10 +32,13 @@ const StyledBox = styled(Box)`
 `;
 
 export default function Option({
+  IconComponent: PropsIconComponent,
   isSelected,
   label,
   onClick,
 }: Props): JSX.Element {
+  const IconComponent = PropsIconComponent || (isSelected ? Check : undefined);
+
   return (
     <Button onClick={onClick} plain>
       <StyledBox
@@ -37,11 +46,11 @@ export default function Option({
         direction="row"
         pad={{ right: "xsmall", left: "xxsmall", vertical: "xxsmall" }}
       >
-        {!!isSelected && <Check color={colors.gray9} size={edgeSize.small} />}
+        {!!IconComponent && <IconComponent {...iconProps} />}
         <Text
           color="gray9"
           margin={{
-            left: isSelected
+            left: IconComponent
               ? "xxsmall"
               : `calc(${edgeSize.small} + ${edgeSize.xxsmall})`,
           }}
