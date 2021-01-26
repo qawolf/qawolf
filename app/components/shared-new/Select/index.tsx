@@ -1,20 +1,22 @@
-import { Button } from "grommet";
-import { useState } from "react";
+import { Box, Button } from "grommet";
+import { ReactNode, useState } from "react";
 
 import Chooser from "./Chooser";
 import Menu from "./Menu";
 
-type Props = {};
+type Props = { children: ReactNode };
 
-export default function Select({}: Props): JSX.Element {
+export default function Select({ children }: Props): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClick = (): void => setIsOpen((prev) => !prev);
 
   return (
-    <Button onClick={handleClick} plain style={{ position: "relative" }}>
-      <Chooser isOpen={isOpen} />
-      {isOpen && <Menu />}
-    </Button>
+    <Box style={{ position: "relative" }}>
+      <Button onClick={handleClick} plain>
+        <Chooser isOpen={isOpen} />
+      </Button>
+      {isOpen && <Menu>{children}</Menu>}
+    </Box>
   );
 }

@@ -22,6 +22,7 @@ export const colors = {
   fill30: "#CED3E0",
   fill50: "#7282A3",
   gray0: "#FFFFFF",
+  gray2: "#F2F4F7",
   gray3: "#E9ECF2",
   gray4: "#C9D0DB",
   gray5: "#ABB3C2",
@@ -70,6 +71,12 @@ export const height = {
 
 export const offset = {
   demoVideo: "-80px",
+};
+
+export const overflowStyle = {
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap" as const,
 };
 
 export const text = {

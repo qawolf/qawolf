@@ -1,9 +1,11 @@
 import { Box } from "grommet";
+import { ReactNode } from "react";
 import styled, { keyframes } from "styled-components";
 
 import { edgeSize } from "../../../theme/theme-new";
-
 import { height } from "./Chooser";
+
+type Props = { children: ReactNode };
 
 const round = "2px";
 
@@ -29,8 +31,16 @@ const StyledBox = styled(Box)`
   transform-origin: bottom center;
 `;
 
-export default function Menu(): JSX.Element {
+export default function Menu({ children }: Props): JSX.Element {
   return (
-    <StyledBox background="gray0" height="100px" round={round} width="100%" />
+    <StyledBox
+      background="gray0"
+      overflow="hidden"
+      pad={{ vertical: "xxxsmall" }}
+      round={round}
+      width="100%"
+    >
+      {children}
+    </StyledBox>
   );
 }
