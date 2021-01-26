@@ -79,6 +79,13 @@ const StyledText = styled(Text)`
   `}
 
   ${(props) =>
+    props.size === "componentHeader" &&
+    `
+  font-family: Inter Semibold;
+  font-weight: 600;
+  `}
+
+  ${(props) =>
     props.size === "eyebrow" &&
     `
   font-family: Plex Mono Semibold;

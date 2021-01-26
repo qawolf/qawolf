@@ -160,7 +160,7 @@ export type GroupTests = {
 export type Modal =
   | "apiKeys"
   | "deployment"
-  | "envVariables"
+  | "environments"
   | "deleteGroup"
   | "deleteTest"
   | "teamSettings";

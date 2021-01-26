@@ -6,7 +6,7 @@ import ApiKeys from "./ApiKeys";
 import ConfirmDeleteGroup from "./ConfirmDeleteGroup";
 import ConfirmDeleteTests from "./ConfirmDeleteTests";
 import Deployment from "./Deployment";
-import EnvVariables from "./EnvVariables";
+import Environments from "./Environments";
 import TeamSettings from "./TeamSettings";
 
 export default function Modals(): JSX.Element {
@@ -37,8 +37,8 @@ export default function Modals(): JSX.Element {
     );
   }
 
-  if (name === "envVariables") {
-    return <EnvVariables closeModal={closeModal} />;
+  if (name === "environments") {
+    return <Environments closeModal={closeModal} />;
   }
 
   if (name === "teamSettings" && teamId) {

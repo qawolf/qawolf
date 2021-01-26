@@ -16,6 +16,8 @@ export const customFontLinks = [
   "/fonts/ibm-plex-mono-semibold.woff",
   "/fonts/inter-regular.woff2",
   "/fonts/inter-regular.woff",
+  "/fonts/inter-semibold.woff2",
+  "/fonts/inter-semibold.woff",
   "/fonts/sofiapro-bold-webfont.ttf",
   "/fonts/sofiapro-bold-webfont.woff",
   "/fonts/sofiapro-regular-webfont.ttf",

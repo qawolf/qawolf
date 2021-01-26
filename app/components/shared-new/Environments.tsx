@@ -25,7 +25,7 @@ export default function EnvVariables(): JSX.Element {
       : copy.environmentNotSelected;
   }
 
-  const openModal = (): void => state.setModal({ name: "envVariables" });
+  const openModal = (): void => state.setModal({ name: "environments" });
 
   const optionsHtml = (data?.environments || []).map((e) => {
     return (
