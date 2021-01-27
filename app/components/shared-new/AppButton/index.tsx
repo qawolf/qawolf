@@ -48,8 +48,8 @@ function AppButton({
         className={className}
         direction="row"
         pad={{
-          left: IconComponent && label ? "xxsmall" : "xsmall",
-          right: "xsmall",
+          left: IconComponent ? "xxsmall" : "xsmall",
+          right: IconComponent && !label ? "xxsmall" : "xsmall",
         }}
         round={borderSize.small}
       >

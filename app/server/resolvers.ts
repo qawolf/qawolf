@@ -7,6 +7,7 @@ import { createGitHubSignInUrlResolver } from "./resolvers/auth";
 import { dashboardResolver } from "./resolvers/dashboard";
 import {
   createEnvironmentResolver,
+  deleteEnvironmentResolver,
   environmentsResolver,
   updateEnvironmentResolver,
 } from "./resolvers/environment";
@@ -90,6 +91,7 @@ export const resolvers = {
     createSuite: createSuiteResolver,
     createTest: createTestResolver,
     deleteApiKey: deleteApiKeyResolver,
+    deleteEnvironment: deleteEnvironmentResolver,
     deleteEnvironmentVariable: deleteEnvironmentVariableResolver,
     deleteGroup: deleteGroupResolver,
     deleteTests: deleteTestsResolver,

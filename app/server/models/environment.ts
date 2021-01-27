@@ -2,6 +2,7 @@ import { db } from "../db";
 import { ClientError } from "../errors";
 import { Environment, ModelOptions } from "../types";
 import { cuid } from "../utils";
+import { deleteEnvironmentVariablesForEnvironment } from "./environment_variable";
 
 type CreateEnvironment = {
   name: string;
@@ -41,6 +42,22 @@ export const createEnvironment = async (
   }
 
   log.debug("created", environment.id);
+
+  return environment;
+};
+
+export const deleteEnvironment = async (
+  id: string,
+  { logger, trx }: ModelOptions
+): Promise<Environment> => {
+  const log = logger.prefix("deleteEnvironment");
+
+  const environment = await findEnvrionment(id, { logger, trx });
+
+  await deleteEnvironmentVariablesForEnvironment(id, { logger, trx });
+  await (trx || db)("environments").where({ id }).del();
+
+  log.debug("deleted", id);
 
   return environment;
 };

@@ -1,6 +1,7 @@
-import { update } from "lodash";
+import { db } from "../db";
 import {
   createEnvironment,
+  deleteEnvironment,
   findEnvironmentsForTeam,
   updateEnvironment,
 } from "../models/environment";
@@ -8,6 +9,7 @@ import {
   Context,
   CreateEnvironmentMutation,
   Environment,
+  IdQuery,
   TeamIdQuery,
   UpdateEnvironmentMutation,
 } from "../types";
@@ -24,6 +26,21 @@ export const createEnvironmentResolver = async (
   ensureTeamAccess({ logger, team_id, teams });
 
   return createEnvironment({ name, team_id }, { logger });
+};
+
+export const deleteEnvironmentResolver = async (
+  _: Record<string, unknown>,
+  { id }: IdQuery,
+  { logger, teams }: Context
+): Promise<Environment> => {
+  const log = logger.prefix("deleteEnvironmentResolver");
+  log.debug("delete", id);
+
+  ensureEnvironmentAccess({ environment_id: id, logger, teams });
+
+  return db.transaction(async (trx) => {
+    return deleteEnvironment(id, { logger, trx });
+  });
 };
 
 export const environmentsResolver = async (
@@ -49,5 +66,7 @@ export const updateEnvironmentResolver = async (
 
   ensureEnvironmentAccess({ environment_id: id, logger, teams });
 
-  return updateEnvironment({ id, name }, { logger });
+  return db.transaction(async (trx) => {
+    return updateEnvironment({ id, name }, { logger, trx });
+  });
 };

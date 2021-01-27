@@ -678,6 +678,14 @@ type Mutation {
   ): ApiKey!
 
   """
+  Deletes an environment record by ID and all its associated
+  environment variables.
+
+  Requires that you have access to the team that owns the environment.
+  """
+  deleteEnvironment("Environment ID" id: ID!): Environment!
+
+  """
   Deletes an environment variable record by ID.
 
   Requires that you have access to the team that owns the environment

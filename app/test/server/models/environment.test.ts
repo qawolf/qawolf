@@ -1,12 +1,18 @@
 import { db, dropTestDb, migrateDb } from "../../../server/db";
 import {
   createEnvironment,
+  deleteEnvironment,
   findEnvironmentsForTeam,
   findEnvrionment,
   updateEnvironment,
 } from "../../../server/models/environment";
 import { Environment } from "../../../server/types";
-import { buildEnvironment, buildTeam, logger } from "../utils";
+import {
+  buildEnvironment,
+  buildEnvironmentVariable,
+  buildTeam,
+  logger,
+} from "../utils";
 
 beforeAll(async () => {
   await migrateDb();
@@ -42,6 +48,47 @@ describe("createEnvironment", () => {
     };
 
     await expect(testFn()).rejects.toThrowError("Must provide name");
+  });
+});
+
+describe("deleteEnvironment", () => {
+  beforeAll(async () => {
+    await db("environments").insert([
+      buildEnvironment({}),
+      buildEnvironment({ i: 2, name: "Production" }),
+    ]);
+
+    return db("environment_variables").insert([
+      buildEnvironmentVariable({ i: 1 }),
+      buildEnvironmentVariable({ i: 2 }),
+      buildEnvironmentVariable({ environment_id: "environment2Id", i: 3 }),
+    ]);
+  });
+
+  afterAll(async () => {
+    await db("environment_variables").del();
+
+    return db("environments").del();
+  });
+
+  it("deletes an environment and all associated environment variables", async () => {
+    const environment = await deleteEnvironment("environmentId", { logger });
+
+    expect(environment.id).toBe("environmentId");
+
+    const dbEnvironments = await db("environments").select("*");
+
+    expect(dbEnvironments).toMatchObject([
+      { id: "environment2Id", name: "Production" },
+    ]);
+
+    const dbEnvironmentVariables = await db("environment_variables").select(
+      "*"
+    );
+
+    expect(dbEnvironmentVariables).toMatchObject([
+      { id: "environmentVariable3Id" },
+    ]);
   });
 });
 

@@ -2,6 +2,7 @@ import { db, dropTestDb, migrateDb } from "../../../server/db";
 import { updateEnvironment } from "../../../server/models/environment";
 import {
   createEnvironmentResolver,
+  deleteEnvironmentResolver,
   environmentsResolver,
   updateEnvironmentResolver,
 } from "../../../server/resolvers/environment";
@@ -41,6 +42,20 @@ describe("createEnvironmentResolver", () => {
     });
 
     await db("environments").where({ name: "New Environment" }).del();
+  });
+});
+
+describe("deleteEnvironmentResolver", () => {
+  it("deletes an environment", async () => {
+    const environment = await deleteEnvironmentResolver(
+      {},
+      { id: "environmentId" },
+      testContext
+    );
+
+    expect(environment.id).toBe("environmentId");
+
+    await db("environments").insert(buildEnvironment({}));
   });
 });
 
