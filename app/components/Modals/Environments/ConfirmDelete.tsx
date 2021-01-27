@@ -5,7 +5,7 @@ import { copy } from "../../../theme/copy";
 import Button from "../../shared-new/AppButton";
 import TextInput from "../../shared-new/AppTextInput";
 import Text from "../../shared-new/Text";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 type Props = {
   environment: Environment;
@@ -18,6 +18,13 @@ export default function ConfirmDelete({
 }: Props): JSX.Element {
   const [hasError, setHasError] = useState(false);
   const [name, setName] = useState("");
+
+  const ref = useRef<HTMLInputElement>(null);
+
+  // focus text input
+  useEffect(() => {
+    if (ref.current) ref.current.focus();
+  }, [ref.current]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setName(e.target.value);
@@ -46,8 +53,9 @@ export default function ConfirmDelete({
         </Text>
         <TextInput
           hasError={hasError}
-          placeholder={environment.name}
           onChange={handleChange}
+          placeholder={environment.name}
+          ref={ref}
           value={name}
         />
         <Box direction="row" justify="between" margin={{ top: "medium" }}>

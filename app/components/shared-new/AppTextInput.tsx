@@ -1,4 +1,5 @@
 import { TextInput as GrommetTextInput } from "grommet";
+import { Ref, forwardRef } from "react";
 import styled from "styled-components";
 
 import {
@@ -42,22 +43,22 @@ const StyledGrommetTextInput = styled(GrommetTextInput)`
   }
 `;
 
-export default function TextInput({
-  hasError,
-  id,
-  name,
-  onChange,
-  placeholder,
-  value,
-}: Props): JSX.Element {
+function TextInput(
+  { hasError, id, name, onChange, placeholder, value }: Props,
+  ref?: Ref<HTMLInputElement>
+): JSX.Element {
   return (
     <StyledGrommetTextInput
       id={id}
       name={name}
       onChange={onChange}
       placeholder={placeholder}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ref={ref as any}
       style={hasError ? { borderColor: colors.danger5 } : undefined}
       value={value}
     />
   );
 }
+
+export default forwardRef(TextInput);
