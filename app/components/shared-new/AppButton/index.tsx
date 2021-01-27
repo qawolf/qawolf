@@ -2,6 +2,7 @@ import { Box, BoxProps, Button, ButtonProps } from "grommet";
 import { Icon } from "grommet-icons";
 import styled from "styled-components";
 
+import { Side } from "../../../lib/types";
 import {
   borderSize,
   colors,
@@ -10,17 +11,18 @@ import {
 } from "../../../theme/theme-new";
 import Text from "../Text";
 import { background, hoverBackground, textColor, Type } from "./config";
-import { IconPosition, getTextMargin, getBoxPad } from "./helpers";
+import { getBoxPad,getTextMargin } from "./helpers";
 
 type Props = {
   IconComponent?: Icon;
   a11yTitle?: string;
   className?: string;
   hoverType?: Type;
-  iconPosition?: IconPosition;
+  iconPosition?: Side;
   isDisabled?: boolean;
   label?: string;
   margin?: ButtonProps["margin"];
+  noBorderSide?: Side;
   onClick: () => void;
   type: Type;
   width?: BoxProps["width"];
@@ -87,6 +89,14 @@ const StyledAppButton = styled(AppButton)`
     props.type === "secondary" &&
     `
   border: ${borderSize.xsmall} solid ${colors.gray3};
+  `}
+
+  ${(props) =>
+    !!props.noBorderSide &&
+    `
+  border-${props.noBorderSide}: none;
+  border-bottom-${props.noBorderSide}-radius: 0;
+  border-top-${props.noBorderSide}-radius: 0;
   `}
 
   svg {

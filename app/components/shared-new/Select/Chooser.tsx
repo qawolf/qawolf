@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
-import { colors, edgeSize } from "../../../theme/theme-new";
+import { Side } from "../../../lib/types";
+import { colors } from "../../../theme/theme-new";
 import Button from "../AppButton";
 import Selector from "../icons/Selector";
 
@@ -8,18 +9,25 @@ type Props = {
   className?: string;
   isOpen: boolean;
   label: string;
+  noBorderSide?: Side;
   onClick: () => void;
 };
 
 const width = "180px";
 
-function Chooser({ className, label, onClick }: Props): JSX.Element {
+function Chooser({
+  className,
+  label,
+  noBorderSide,
+  onClick,
+}: Props): JSX.Element {
   return (
     <Button
       IconComponent={Selector}
       className={className}
       iconPosition="right"
       label={label}
+      noBorderSide={noBorderSide}
       onClick={onClick}
       type="dark"
       width={width}

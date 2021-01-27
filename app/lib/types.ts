@@ -185,6 +185,8 @@ export type SelectedTest = {
   name: string;
 };
 
+export type Side = "left" | "right";
+
 export type UserSubscription = {
   email: string;
   wolfName: string;

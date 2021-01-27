@@ -1,11 +1,11 @@
 import { BoxProps, TextProps } from "grommet";
 
-export type IconPosition = "left" | "right";
+import { Side } from "../../../lib/types";
 
 export const getBoxPad = (
   hasLabel: boolean,
   hasIcon: boolean,
-  iconPosition: IconPosition = "left"
+  iconPosition: Side = "left"
 ): BoxProps["pad"] => {
   if (!hasLabel) return { horizontal: "xxsmall" };
   if (!hasIcon) return { horizontal: "xsmall" };
@@ -18,7 +18,7 @@ export const getBoxPad = (
 
 export const getTextMargin = (
   hasIcon: boolean,
-  iconPosition: IconPosition = "left"
+  iconPosition: Side = "left"
 ): TextProps["margin"] => {
   if (!hasIcon) return undefined;
 
