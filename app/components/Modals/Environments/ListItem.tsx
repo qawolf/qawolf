@@ -1,11 +1,11 @@
 import { Box } from "grommet";
+import styled from "styled-components";
+
 import { Environment } from "../../../lib/types";
 import { overflowStyle, transitionDuration } from "../../../theme/theme-new";
-
 import Text from "../../shared-new/Text";
-import styled from "styled-components";
-import Form from "./Form";
 import EnvironmentActions from "./EnvironmentActions";
+import Form from "./Form";
 
 type Props = {
   editEnvironmentId: string | null;

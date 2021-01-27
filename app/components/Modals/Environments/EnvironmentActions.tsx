@@ -1,6 +1,6 @@
 import { Box } from "grommet";
-import { copy } from "../../../theme/copy";
 
+import { copy } from "../../../theme/copy";
 import Button from "../../shared-new/AppButton";
 import Edit from "../../shared-new/icons/Edit";
 import Trash from "../../shared-new/icons/Trash";

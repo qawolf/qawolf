@@ -16,6 +16,7 @@ import {
   createSuiteMutation,
   createTestMutation,
   deleteApiKeyMutation,
+  deleteEnvironmentMutation,
   deleteEnvironmentVariableMutation,
   deleteGroupMutation,
   deleteTestsMutation,
@@ -48,7 +49,6 @@ import {
   Test,
   User,
 } from "../lib/types";
-import { updateEnvironment } from "../server/models/environment";
 
 type AcceptInviteData = {
   acceptInvite: Invite;
@@ -161,6 +161,14 @@ type DeleteApiKeyData = {
 };
 
 type DeleteApiKeyVariables = {
+  id: string;
+};
+
+type DeleteEnvironmentData = {
+  deleteEnvironment: Environment;
+};
+
+type DeleteEnvironmentVariables = {
   id: string;
 };
 
@@ -521,6 +529,20 @@ export const useDeleteApiKey = (): MutationTuple<
   return useMutation<DeleteApiKeyData, DeleteApiKeyVariables>(
     deleteApiKeyMutation,
     { awaitRefetchQueries: true, onError, refetchQueries: ["apiKeys"] }
+  );
+};
+
+export const useDeleteEnvironment = (): MutationTuple<
+  DeleteEnvironmentData,
+  DeleteEnvironmentVariables
+> => {
+  return useMutation<DeleteEnvironmentData, DeleteEnvironmentVariables>(
+    deleteEnvironmentMutation,
+    {
+      awaitRefetchQueries: true,
+      onError,
+      refetchQueries: ["environments"],
+    }
   );
 };
 

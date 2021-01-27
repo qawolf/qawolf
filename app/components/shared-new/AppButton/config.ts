@@ -1,4 +1,5 @@
 import { BoxProps } from "grommet";
+
 import { colors } from "../../../theme/theme-new";
 
 export type Type = "danger" | "ghost" | "primary" | "secondary";

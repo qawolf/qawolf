@@ -1,14 +1,15 @@
 import { Box } from "grommet";
-import { useEnvironments } from "../../../hooks/queries";
 import { ReactNode, useContext, useState } from "react";
-import { StateContext } from "../../StateContext";
-import Text from "../../shared-new/Text";
+
+import { useEnvironments } from "../../../hooks/queries";
+import { Environment } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import Divider from "../../shared-new/Divider";
-import ListItem from "./ListItem";
+import Text from "../../shared-new/Text";
+import { StateContext } from "../../StateContext";
 import Buttons from "./Buttons";
 import Form, { id as formInputId } from "./Form";
-import { Environment } from "../../../lib/types";
+import ListItem from "./ListItem";
 
 type Props = {
   closeModal: () => void;

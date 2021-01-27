@@ -1,15 +1,15 @@
 import { Box, ThemeContext } from "grommet";
-import { theme } from "../../../theme/theme-new";
+import { useState } from "react";
 
+import { Environment } from "../../../lib/types";
+import { copy } from "../../../theme/copy";
+import { theme } from "../../../theme/theme-new";
 import Button from "../../shared-new/AppButton";
 import Close from "../../shared-new/icons/Close";
 import Layer from "../../shared-new/Layer";
 import Text from "../../shared-new/Text";
-import { copy } from "../../../theme/copy";
-import List from "./List";
-import { useState } from "react";
-import { Environment } from "../../../lib/types";
 import ConfirmDelete from "./ConfirmDelete";
+import List from "./List";
 
 type Props = {
   closeModal: () => void;

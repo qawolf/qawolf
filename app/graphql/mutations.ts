@@ -139,6 +139,15 @@ export const deleteApiKeyMutation = gql`
   ${apiKeyFragment}
 `;
 
+export const deleteEnvironmentMutation = gql`
+  mutation deleteEnvironment($id: ID!) {
+    deleteEnvironment(id: $id) {
+      ...EnvironmentFragment
+    }
+  }
+  ${environmentFragment}
+`;
+
 export const deleteEnvironmentVariableMutation = gql`
   mutation deleteEnvironmentVariable($id: ID!) {
     deleteEnvironmentVariable(id: $id) {

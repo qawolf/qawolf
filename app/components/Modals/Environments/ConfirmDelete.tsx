@@ -1,11 +1,12 @@
 import { Box, Keyboard } from "grommet";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+
+import { useDeleteEnvironment } from "../../../hooks/mutations";
 import { Environment } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
-
 import Button from "../../shared-new/AppButton";
 import TextInput from "../../shared-new/AppTextInput";
 import Text from "../../shared-new/Text";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 type Props = {
   environment: Environment;
@@ -24,7 +25,9 @@ export default function ConfirmDelete({
   // focus text input
   useEffect(() => {
     if (ref.current) ref.current.focus();
-  }, [ref.current]);
+  }, []);
+
+  const [deleteEnvironment, { loading }] = useDeleteEnvironment();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setName(e.target.value);
@@ -37,6 +40,9 @@ export default function ConfirmDelete({
     }
 
     setHasError(false);
+    deleteEnvironment({ variables: { id: environment.id } }).then(
+      onCancelClick // return to main screen after envrionment deleted
+    );
   };
 
   return (
@@ -65,6 +71,7 @@ export default function ConfirmDelete({
             type="secondary"
           />
           <Button
+            isDisabled={loading}
             label={copy.delete}
             onClick={handleDeleteClick}
             type="danger"

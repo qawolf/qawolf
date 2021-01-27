@@ -1,16 +1,15 @@
 import { Box, Button, ButtonProps } from "grommet";
 import { Icon } from "grommet-icons";
 import styled from "styled-components";
+
 import {
   borderSize,
   colors,
   edgeSize,
-  fontFamily,
-  fontWeight,
   transitionDuration,
 } from "../../../theme/theme-new";
-import { Type, background, hoverBackground, textColor } from "./config";
 import Text from "../Text";
+import { background, hoverBackground, textColor, Type } from "./config";
 
 type Props = {
   IconComponent?: Icon;
