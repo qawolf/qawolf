@@ -66,6 +66,7 @@ export class RunnerClient extends EventEmitter {
       this._socket.removeAllListeners();
       this._socket.close();
       this._socket = null;
+      this.emit("disconnect");
     }
 
     if (!wsUrl) return;

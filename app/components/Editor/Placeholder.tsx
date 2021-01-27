@@ -2,7 +2,6 @@ import { Box } from "grommet";
 import { Play } from "grommet-icons";
 import { ReactNode, useContext } from "react";
 
-import { state } from "../../lib/state";
 import { copy } from "../../theme/copy";
 import Paw from "../shared/icons/Paw";
 import Wolf from "../shared/icons/Wolf";
@@ -27,7 +26,7 @@ export default function Placeholder({
 }: Props): JSX.Element {
   const { isTestLoading, run } = useContext(TestContext);
   const { isUserLoading, user, wolf } = useContext(UserContext);
-  const { isRunnerConnected } = useContext(RunnerContext);
+  const { isRunnerConnected, shouldRequestRunner } = useContext(RunnerContext);
 
   // default to loading
   let message = copy.loading;
@@ -53,8 +52,8 @@ export default function Placeholder({
   else if (
     mode === "test" &&
     !isRunnerConnected &&
-    !state.pendingRun &&
-    !isTestLoading
+    !isTestLoading &&
+    !shouldRequestRunner
   ) {
     iconHtml = <Play {...iconProps} />;
     message = copy.placeholderRunTest;

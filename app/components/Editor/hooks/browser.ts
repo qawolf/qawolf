@@ -19,72 +19,42 @@ const COMMAND_KEYS_TO_INTERCEPT = [
 ];
 
 export class Browser extends EventEmitter {
+  _connected: boolean;
   _container?: HTMLDivElement;
   _ensureInterval: number | null = null;
   _password = "";
-  _ready = false;
   _rfb?: typeof RFB;
   _url?: string;
   _reconnectedAt = 0;
 
-  _disconnect(): void {
-    this._ready = false;
-    this.emit("readychange");
-
-    try {
-      const rfb = this._rfb;
-      if (rfb) {
-        this._rfb = null;
-        rfb.removeEventListener("clipboard", this._onCopy);
-        rfb.removeEventListener("ready", this._onReady);
-        // Without this `if` I got errors because rfb.disconnect tries to do a state change
-        // to "disconnecting", but the state change function throws an error if the state
-        // is already currently "disconnected". If _rfb_connection_state is "disconnected",
-        // then everything has been cleaned up already in the RFB instance, but we need
-        // to do our own cleanup. (We know we haven't done our cleanup yet because
-        // this._rfb isn't `null`.)
-        rfb._canvas.removeEventListener("keydown", this._onKeyDown, true);
-        if (rfb._rfb_connection_state !== "disconnected") rfb.disconnect();
-      }
-    } catch (error) {
-      console.debug("Error disconnecting browser", error);
-    }
-  }
-
   _connect(): void {
-    if (!this._container || !this._url) return;
+    if (!this._container || !this._url || this._connected) return;
 
     const rfb = new RFB(this._container, this._url, {
       credentials: { password: this._password },
     });
-    const framebufferUpdate = rfb._framebufferUpdate.bind(rfb);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    rfb._framebufferUpdate = (...args: any[]) => {
-      // only emit ready once
-      rfb._framebufferUpdate = framebufferUpdate;
-      framebufferUpdate(...args);
-      rfb.dispatchEvent({ type: "ready" });
-    };
+
     this._rfb = rfb;
     rfb.scaleViewport = true;
+
+    rfb.addEventListener("connect", this._onConnect);
     rfb.addEventListener("clipboard", this._onCopy);
-    rfb.addEventListener("ready", this._onReady);
+    rfb.addEventListener("disconnect", this._onDisconnect);
     rfb._canvas.addEventListener("keydown", this._onKeyDown, true);
   }
 
-  _ensureConnection(): void {
-    const state = this._rfb?._rfbConnectionState;
-    if (
-      !["connecting", "connected"].includes(state) &&
-      // give the last reconnection attempt 10 seconds
-      Date.now() - this._reconnectedAt > 10000
-    ) {
-      console.debug(`Status ${state}, reconnecting...`);
-      this._reconnectedAt = Date.now();
-      this._disconnect();
-      this._connect();
-    }
-  }
+  _onConnect = (): void => {
+    this._connected = true;
+    this.emit("connectedchanged");
+  };
+
+  _onDisconnect = (): void => {
+    this._connected = false;
+    this.emit("connectedchanged");
+
+    // try to reconnect on a delay
+    setTimeout(() => this._connect(), 5000);
+  };
 
   // This is called whenever we get the "clipboard" event from the RFB.
   // The `text` is from the runner copy or cut event. We call `writeText`
@@ -162,20 +132,6 @@ export class Browser extends EventEmitter {
     }
   };
 
-  _onReady = (): void => {
-    this._ready = true;
-    this.emit("readychange");
-  };
-
-  close(): void {
-    if (this._ensureInterval) {
-      clearInterval(this._ensureInterval);
-      this._ensureInterval = null;
-    }
-
-    this._disconnect();
-  }
-
   connect(container: HTMLDivElement, url: string, password: string): void {
     if (
       this._container === container &&
@@ -184,23 +140,38 @@ export class Browser extends EventEmitter {
     )
       return;
 
+    this.disconnect();
+
     this._container = container;
     this._password = password;
     this._url = url;
-
-    if (!this._ensureInterval) {
-      this._ensureInterval = window.setInterval(
-        () => this._ensureConnection(),
-        500
-      );
-    }
-
-    this._disconnect();
     this._connect();
   }
 
-  get ready(): boolean {
-    return this._ready;
+  disconnect(): void {
+    this._container = null;
+    this._password = null;
+    this._url = null;
+
+    this._connected = false;
+    this.emit("connectedchanged");
+
+    const rfb = this._rfb;
+    if (!rfb) return;
+
+    this._rfb = null;
+    rfb.removeEventListener("clipboard", this._onCopy);
+    rfb.removeEventListener("connect", this._onDisconnect);
+    rfb.removeEventListener("disconnect", this._onDisconnect);
+    rfb._canvas.removeEventListener("keydown", this._onKeyDown, true);
+
+    if (["connected", "connecting"].includes(rfb._rfb_connection_state)) {
+      rfb.disconnect();
+    }
+  }
+
+  get connected(): boolean {
+    return this._connected;
   }
 
   refresh(): void {
@@ -246,13 +217,13 @@ export const useBrowser = (): BrowserHook => {
   useEffect(() => {
     if (!browser) return;
 
-    const onReadyChange = async () => setIsBrowserReady(browser.ready);
+    const onConnectedChanged = async () => setIsBrowserReady(browser.connected);
 
-    browser.on("readychange", onReadyChange);
+    browser.on("connectedchanged", onConnectedChanged);
 
     return () => {
-      browser.off("readychange", onReadyChange);
-      browser.close();
+      browser.off("connectedchanged", onConnectedChanged);
+      browser.disconnect();
     };
   }, [browser]);
 
