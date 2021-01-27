@@ -33,6 +33,8 @@ export const colors = {
   gray8: "#404857",
   gray9: "#2A3140",
   gray10: "#151B26",
+  primary5: "#4545E5",
+  primary6: "#2F2FC2",
   primaryFill: "#4545E5",
   primaryFillLight: "#8E9CF5",
   primaryHover: "#695EFF",

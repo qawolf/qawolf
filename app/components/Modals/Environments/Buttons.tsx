@@ -5,16 +5,26 @@ import Button from "../../shared-new/AppButton";
 import Edit from "../../shared-new/icons/Edit";
 import Trash from "../../shared-new/icons/Trash";
 
-export default function Buttons(): JSX.Element {
+type Props = {
+  onEditClick: () => void;
+};
+
+export default function Buttons({ onEditClick }: Props): JSX.Element {
   return (
     <Box direction="row" margin={{ vertical: "xxsmall" }}>
-      <Button IconComponent={Edit} a11yTitle={copy.edit} onClick={() => null} />
+      <Button
+        IconComponent={Edit}
+        a11yTitle={copy.edit}
+        onClick={onEditClick}
+        type="ghost"
+      />
       <Button
         IconComponent={Trash}
         a11yTitle={copy.delete}
         hoverType="danger"
         margin={{ left: "xxsmall" }}
         onClick={() => null}
+        type="ghost"
       />
     </Box>
   );

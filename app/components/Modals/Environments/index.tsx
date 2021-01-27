@@ -32,6 +32,7 @@ export default function Environments({ closeModal }: Props): JSX.Element {
               IconComponent={Close}
               a11yTitle={copy.close}
               onClick={closeModal}
+              type="ghost"
             />
           </Box>
           <Text color="gray8" size="componentParagraph">

@@ -1,6 +1,6 @@
 import { Box } from "grommet";
 import { useEnvironments } from "../../../hooks/queries";
-import { ReactNode, useContext } from "react";
+import { ReactNode, useContext, useState } from "react";
 import { StateContext } from "../../StateContext";
 import Text from "../../shared-new/Text";
 import { copy } from "../../../theme/copy";
@@ -8,6 +8,10 @@ import Divider from "../../shared-new/Divider";
 import ListItem from "./ListItem";
 
 export default function List(): JSX.Element {
+  const [editEnvironmentId, setEditEnvironmentId] = useState<string | null>(
+    null
+  );
+
   const { teamId } = useContext(StateContext);
   const { data } = useEnvironments({ team_id: teamId });
 
@@ -29,11 +33,16 @@ export default function List(): JSX.Element {
       const environment = data.environments[i];
 
       environmentsHtml.push(
-        <ListItem environment={environment} key={environment.id} />
+        <ListItem
+          editEnvironmentId={editEnvironmentId}
+          environment={environment}
+          key={environment.id}
+          setEditEnvironmentId={setEditEnvironmentId}
+        />
       );
 
       if (i < data.environments.length - 1) {
-        environmentsHtml.push(<Divider />);
+        environmentsHtml.push(<Divider key={i} />);
       }
     }
   }
