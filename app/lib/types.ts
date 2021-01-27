@@ -26,6 +26,7 @@ export type EnvironmentVariable = {
   created_at: string;
   id: string;
   name: string;
+  value: string;
 };
 
 export type Group = {

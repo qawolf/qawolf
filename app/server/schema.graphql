@@ -101,6 +101,9 @@ type EnvironmentVariable {
 
   "Team associated with this environment variable"
   team_id: ID!
+
+  "Variable value, stored encrypted in the database"
+  value: String!
 }
 
 "A grouper for environment variable records and resolved environment variables with values"

@@ -33,7 +33,7 @@ beforeAll(async () => {
 
 afterAll(() => dropTestDb());
 
-describe("buildEnvironmentVariablesForGroup", () => {
+describe("buildEnvironmentVariables", () => {
   beforeAll(async () => {
     await db("environments").insert(buildEnvironment({ i: 3, name: "Other" }));
 
@@ -94,8 +94,9 @@ describe("buildEnvironmentVariablesForGroup", () => {
     expect(variables).toMatchObject([
       {
         name: "LOGIN_CODE",
+        value: "production_login_code",
       },
-      { name: "PASSWORD" },
+      { name: "PASSWORD", value: "production_password" },
     ]);
   });
 
@@ -285,7 +286,7 @@ describe("findEnvironmentVariable", () => {
 describe("findEnvironmentVariablesForEnvironment", () => {
   beforeAll(() => {
     return db("environment_variables").insert([
-      buildEnvironmentVariable({ name: "B_VAR" }),
+      buildEnvironmentVariable({ name: "B_VAR", value: "another secret" }),
       buildEnvironmentVariable({ i: 2, name: "A_VAR" }),
       buildEnvironmentVariable({ i: 3, environment_id: "environment2Id" }),
     ]);
@@ -300,8 +301,8 @@ describe("findEnvironmentVariablesForEnvironment", () => {
     );
 
     expect(environmentVariables).toMatchObject([
-      { id: "environmentVariable2Id", name: "A_VAR" },
-      { id: "environmentVariableId", name: "B_VAR" },
+      { id: "environmentVariable2Id", name: "A_VAR", value: "secret" },
+      { id: "environmentVariableId", name: "B_VAR", value: "another secret" },
     ]);
   });
 });

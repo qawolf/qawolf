@@ -6,6 +6,7 @@ import Text from "../../shared-new/Text";
 import EditDeleteButtons, {
   StyledBox,
 } from "../../shared-new/EditDeleteButtons";
+import { useState } from "react";
 
 type Props = {
   environmentVariable: EnvironmentVariable;
@@ -14,8 +15,16 @@ type Props = {
 export const nameWidth = "220px";
 
 export default function ListItem({ environmentVariable }: Props): JSX.Element {
+  const [isHover, setIsHover] = useState(false);
+
   return (
-    <StyledBox align="center" direction="row" flex={false}>
+    <StyledBox
+      align="center"
+      direction="row"
+      flex={false}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
+    >
       <Box
         flex={false}
         margin={{ right: "xxsmall", vertical: "small" }}
@@ -26,8 +35,12 @@ export default function ListItem({ environmentVariable }: Props): JSX.Element {
         </Text>
       </Box>
       <Box align="center" direction="row" justify="between" width="full">
-        <Text color="gray7" size="component">
-          {copy.encrypted}
+        <Text
+          color={isHover ? "gray9" : "gray7"}
+          size="component"
+          style={overflowStyle}
+        >
+          {isHover ? environmentVariable.value : copy.encrypted}
         </Text>
         <EditDeleteButtons onDeleteClick={() => {}} onEditClick={() => {}} />
       </Box>

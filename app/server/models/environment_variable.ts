@@ -118,7 +118,9 @@ export const findEnvironmentVariablesForEnvironment = async (
     .where({ environment_id })
     .orderBy("name", "asc");
 
-  return environmentVariables;
+  return environmentVariables.map((variable) => {
+    return { ...variable, value: decrypt(variable.value) };
+  });
 };
 
 /**
@@ -140,7 +142,7 @@ export const buildEnvironmentVariables = async (
   const formattedVariables: FormattedVariables = {};
 
   variables.forEach((variable) => {
-    formattedVariables[variable.name] = decrypt(variable.value);
+    formattedVariables[variable.name] = variable.value;
   });
 
   return {

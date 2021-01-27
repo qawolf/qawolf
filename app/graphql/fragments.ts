@@ -23,6 +23,7 @@ export const environmentVariableFragment = gql`
     created_at
     id
     name
+    value
   }
 `;
 
