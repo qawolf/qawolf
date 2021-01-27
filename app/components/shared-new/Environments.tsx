@@ -72,7 +72,7 @@ export default function EnvVariables(): JSX.Element {
         alignSelf="center"
         background="gray10"
         direction="row"
-        round="2px"
+        round={borderSize.small}
       >
         <Button
           IconComponent={Configure}
