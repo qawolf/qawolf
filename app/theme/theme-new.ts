@@ -15,6 +15,8 @@ export const colors = {
   codePink: "#F562A0",
   codeTeal: "#6CCED9",
   codeYellow: "#F0D278",
+  danger5: "#DB4B4B",
+  danger6: "#C23232",
   error: "#DE4343",
   fill0: "#F5F6FA",
   fill10: "#F2F4F7",
