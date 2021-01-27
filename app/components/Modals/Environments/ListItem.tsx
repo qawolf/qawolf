@@ -1,10 +1,9 @@
-import { Box } from "grommet";
-import styled from "styled-components";
-
 import { Environment } from "../../../lib/types";
-import { overflowStyle, transitionDuration } from "../../../theme/theme-new";
+import { overflowStyle } from "../../../theme/theme-new";
 import Text from "../../shared-new/Text";
-import EnvironmentActions from "./EnvironmentActions";
+import EditDeleteButtons, {
+  StyledBox,
+} from "../../shared-new/EditDeleteButtons";
 import Form from "./Form";
 
 type Props = {
@@ -14,19 +13,6 @@ type Props = {
   onDeleteClick: (environment: Environment) => void;
   onEditClick: (editEnvironmentId: string) => void;
 };
-
-const StyledBox = styled(Box)`
-  button {
-    opacity: 0;
-    transition: opacity ${transitionDuration};
-  }
-
-  &:hover {
-    button {
-      opacity: 1;
-    }
-  }
-`;
 
 export default function ListItem({
   editEnvironmentId,
@@ -52,7 +38,7 @@ export default function ListItem({
       >
         {environment.name}
       </Text>
-      <EnvironmentActions
+      <EditDeleteButtons
         onDeleteClick={handleDeleteClick}
         onEditClick={handleEditClick}
       />

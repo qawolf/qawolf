@@ -1,19 +1,34 @@
 import { Box } from "grommet";
+import styled from "styled-components";
 
-import { copy } from "../../../theme/copy";
-import Button from "../../shared-new/AppButton";
-import Edit from "../../shared-new/icons/Edit";
-import Trash from "../../shared-new/icons/Trash";
+import { copy } from "../../theme/copy";
+import { transitionDuration } from "../../theme/theme-new";
+import Button from "./AppButton";
+import Edit from "./icons/Edit";
+import Trash from "./icons/Trash";
 
 type Props = {
   onDeleteClick: () => void;
   onEditClick: () => void;
 };
 
-export default function EnvironmentActions({
+export const StyledBox = styled(Box)`
+  button {
+    opacity: 0;
+    transition: opacity ${transitionDuration};
+  }
+
+  &:hover {
+    button {
+      opacity: 1;
+    }
+  }
+`;
+
+export default function EditDeleteButtons({
   onDeleteClick,
   onEditClick,
-}: Props): JSX.Element {
+}: Props) {
   return (
     <Box direction="row" margin={{ vertical: "xxsmall" }}>
       <Button

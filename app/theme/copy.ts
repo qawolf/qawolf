@@ -96,6 +96,7 @@ export const copy = {
   envVariables: "Environment variables",
   envVariablesDetail:
     "Use environment variables for values that you don’t want visible in your code or to change the behavior of your test based on the environment",
+  envVariablesEmpty: "No variables added to this environment",
   environment: "Environment",
   environmentDelete: "Delete environment",
   environmentDeleteConfirm:
