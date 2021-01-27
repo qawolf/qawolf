@@ -5,6 +5,8 @@ import {
   borderSize,
   colors,
   edgeSize,
+  fontFamily,
+  fontWeight,
   transitionDuration,
 } from "../../../theme/theme-new";
 import { Type, background, hoverBackground, textColor } from "./config";

@@ -6,10 +6,12 @@ import Edit from "../../shared-new/icons/Edit";
 import Trash from "../../shared-new/icons/Trash";
 
 type Props = {
+  onDeleteClick: () => void;
   onEditClick: () => void;
 };
 
 export default function EnvironmentActions({
+  onDeleteClick,
   onEditClick,
 }: Props): JSX.Element {
   return (
@@ -25,7 +27,7 @@ export default function EnvironmentActions({
         a11yTitle={copy.delete}
         hoverType="danger"
         margin={{ left: "xxsmall" }}
-        onClick={() => null}
+        onClick={onDeleteClick}
         type="ghost"
       />
     </Box>

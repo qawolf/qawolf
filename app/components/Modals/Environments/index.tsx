@@ -7,6 +7,9 @@ import Layer from "../../shared-new/Layer";
 import Text from "../../shared-new/Text";
 import { copy } from "../../../theme/copy";
 import List from "./List";
+import { useState } from "react";
+import { Environment } from "../../../lib/types";
+import ConfirmDelete from "./ConfirmDelete";
 
 type Props = {
   closeModal: () => void;
@@ -15,6 +18,17 @@ type Props = {
 const WIDTH = "576px";
 
 export default function Environments({ closeModal }: Props): JSX.Element {
+  const [
+    deleteEnvironment,
+    setDeleteEnvironment,
+  ] = useState<Environment | null>(null);
+
+  const handleCancelClick = (): void => setDeleteEnvironment(null);
+
+  const handleDeleteClick = (environment: Environment): void => {
+    setDeleteEnvironment(environment);
+  };
+
   return (
     <ThemeContext.Extend value={theme}>
       <Layer onClickOutside={closeModal} onEsc={closeModal}>
@@ -26,7 +40,9 @@ export default function Environments({ closeModal }: Props): JSX.Element {
             margin={{ bottom: "xxsmall" }}
           >
             <Text color="gray9" size="componentHeader">
-              {copy.environmentsEdit}
+              {deleteEnvironment
+                ? copy.environmentDelete
+                : copy.environmentsEdit}
             </Text>
             <Button
               IconComponent={Close}
@@ -35,10 +51,19 @@ export default function Environments({ closeModal }: Props): JSX.Element {
               type="ghost"
             />
           </Box>
-          <Text color="gray8" size="componentParagraph">
-            {copy.environmentsEditDetail}
-          </Text>
-          <List closeModal={closeModal} />
+          {deleteEnvironment ? (
+            <ConfirmDelete
+              environment={deleteEnvironment}
+              onCancelClick={handleCancelClick}
+            />
+          ) : (
+            <>
+              <Text color="gray8" size="componentParagraph">
+                {copy.environmentsEditDetail}
+              </Text>
+              <List closeModal={closeModal} onDeleteClick={handleDeleteClick} />
+            </>
+          )}
         </Box>
       </Layer>
     </ThemeContext.Extend>

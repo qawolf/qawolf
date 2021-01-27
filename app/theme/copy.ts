@@ -94,6 +94,10 @@ export const copy = {
   encrypted: "Encrypted",
   enterUrl: "Enter your URL to create a test with",
   environment: "Environment",
+  environmentDelete: "Delete environment",
+  environmentDeleteConfirm:
+    "Are you sure? This will permanently delete all variables in this environment. Please type",
+  environmentDeleteConfirm2: "to confirm.",
   environmentName: "Environment name",
   environmentNew: "New environment",
   environmentNotSelected: "No environment",

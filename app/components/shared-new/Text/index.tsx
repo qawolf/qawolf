@@ -76,6 +76,11 @@ const StyledText = styled(Text)`
     `
   font-family: Inter;
   font-weight: 400;
+
+  b {
+    font-family: ${fontFamily.componentBold};
+    font-weight: ${fontWeight.semibold};
+  }
   `}
 
   ${(props) =>

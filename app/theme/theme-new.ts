@@ -59,6 +59,7 @@ export const edgeSize = {
 export const fontFamily = {
   bold: "Circular Black",
   component: "Inter",
+  componentBold: "Inter Semibold",
   componentHeader: "Inter Semibold",
   componentParagraph: "Inter",
   eyebrow: "Plex Mono Semibold",
@@ -68,6 +69,7 @@ export const fontFamily = {
 
 export const fontWeight = {
   bold: 900,
+  semibold: 600,
   medium: 500,
   normal: 400,
 };

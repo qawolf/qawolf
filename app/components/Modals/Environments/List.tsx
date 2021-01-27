@@ -8,12 +8,17 @@ import Divider from "../../shared-new/Divider";
 import ListItem from "./ListItem";
 import Buttons from "./Buttons";
 import Form, { id as formInputId } from "./Form";
+import { Environment } from "../../../lib/types";
 
 type Props = {
   closeModal: () => void;
+  onDeleteClick: (environment: Environment) => void;
 };
 
-export default function List({ closeModal }: Props): JSX.Element {
+export default function List({
+  closeModal,
+  onDeleteClick,
+}: Props): JSX.Element {
   const [isCreate, setIsCreate] = useState(false);
   const [editEnvironmentId, setEditEnvironmentId] = useState<string | null>(
     null
@@ -62,6 +67,7 @@ export default function List({ closeModal }: Props): JSX.Element {
           environment={environment}
           key={environment.id}
           onCancelClick={handleCancelClick}
+          onDeleteClick={onDeleteClick}
           onEditClick={handleEditClick}
         />
       );
