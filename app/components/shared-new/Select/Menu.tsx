@@ -3,9 +3,12 @@ import { ReactNode } from "react";
 import styled, { keyframes } from "styled-components";
 
 import { edgeSize } from "../../../theme/theme-new";
+import { Direction } from "./Chooser";
 
 type Props = {
   children: ReactNode;
+  className?: string;
+  direction?: Direction;
   onClick: () => void;
 };
 
@@ -23,20 +26,11 @@ const menuKeyFrames = keyframes`
   }
 `;
 
-const StyledBox = styled(Box)`
-  animation: ${menuKeyFrames} 0.1s forwards;
-  animation-delay: 0.01s;
-  bottom: calc(${edgeSize.large} + ${edgeSize.xxxsmall});
-  box-shadow: 0px 4px 16px rgba(21, 27, 38, 0.16);
-  opacity: 0;
-  position: absolute;
-  transform-origin: bottom center;
-`;
-
-export default function Menu({ children, onClick }: Props): JSX.Element {
+function Menu({ children, className, onClick }: Props): JSX.Element {
   return (
-    <StyledBox
+    <Box
       background="gray0"
+      className={className}
       onClick={onClick}
       overflow="hidden"
       pad={{ vertical: "xxxsmall" }}
@@ -44,6 +38,23 @@ export default function Menu({ children, onClick }: Props): JSX.Element {
       width="100%"
     >
       {children}
-    </StyledBox>
+    </Box>
   );
 }
+
+const StyledMenu = styled(Menu)`
+  animation: ${menuKeyFrames} 0.1s forwards;
+  animation-delay: 0.01s;
+  box-shadow: 0px 4px 16px rgba(21, 27, 38, 0.16);
+  opacity: 0;
+  position: absolute;
+  transform-origin: ${(props) => (props.direction === "up" ? "bottom" : "top")}
+    center;
+
+  ${(props) =>
+    props.direction === "up"
+      ? `bottom: calc(${edgeSize.large} + ${edgeSize.xxxsmall});`
+      : `top: calc(${edgeSize.large} + ${edgeSize.xxxsmall});`}
+`;
+
+export default StyledMenu;

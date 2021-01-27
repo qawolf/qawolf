@@ -1,21 +1,20 @@
-import { Box } from "grommet";
+import { Box, BoxProps } from "grommet";
 import { ReactNode, useState } from "react";
 
 import { Side } from "../../../lib/types";
-import Chooser from "./Chooser";
+import Chooser, { Direction, Type } from "./Chooser";
 import Menu from "./Menu";
 
 type Props = {
   children: ReactNode;
+  direction?: Direction;
   label: string;
   noBorderSide?: Side;
+  type?: Type;
+  width?: BoxProps["width"];
 };
 
-export default function Select({
-  children,
-  label,
-  noBorderSide,
-}: Props): JSX.Element {
+export default function Select({ children, ...props }: Props): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClick = (): void => setIsOpen((prev) => !prev);
@@ -23,13 +22,12 @@ export default function Select({
 
   return (
     <Box style={{ position: "relative" }}>
-      <Chooser
-        isOpen={isOpen}
-        label={label}
-        noBorderSide={noBorderSide}
-        onClick={handleClick}
-      />
-      {isOpen && <Menu onClick={handleClose}>{children}</Menu>}
+      <Chooser {...props} isOpen={isOpen} onClick={handleClick} />
+      {isOpen && (
+        <Menu direction={props.direction} onClick={handleClose}>
+          {children}
+        </Menu>
+      )}
     </Box>
   );
 }

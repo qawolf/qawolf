@@ -20,6 +20,7 @@ import Action from "./Select/Action";
 import Option from "./Select/Option";
 
 const dividerId = "environments-divider";
+const width = "180px";
 
 const StyledBox = styled(Box)`
   #${dividerId} {
@@ -35,13 +36,14 @@ const StyledBox = styled(Box)`
 
 export default function EnvVariables(): JSX.Element {
   const { environmentId, teamId } = useContext(StateContext);
-  const { data } = useEnvironments({ team_id: teamId });
+  const { data } = useEnvironments({ team_id: teamId }, { environmentId });
+
+  const selectedEnvironment = (data?.environments || []).find(
+    (e) => e.id === environmentId
+  );
 
   let label = copy.loading;
   if (data?.environments) {
-    const selectedEnvironment = data.environments.find(
-      (e) => e.id === environmentId
-    );
     label = selectedEnvironment
       ? selectedEnvironment.name
       : copy.environmentNotSelected;
@@ -52,6 +54,7 @@ export default function EnvVariables(): JSX.Element {
   };
 
   const openVariablesModal = (): void => {
+    if (!selectedEnvironment) return;
     state.setModal({ name: "envVariables" });
   };
 
@@ -85,7 +88,13 @@ export default function EnvVariables(): JSX.Element {
           id="environments-divider"
           width={borderSize.xsmall}
         />
-        <Select label={label} noBorderSide="left">
+        <Select
+          direction="up"
+          label={label}
+          noBorderSide="left"
+          type="dark"
+          width={width}
+        >
           <Action
             IconComponent={Edit}
             label={copy.environmentsEdit}

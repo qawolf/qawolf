@@ -1,4 +1,7 @@
+import { copy } from "../../../theme/copy";
 import Modal from "../../shared-new/Modal";
+import Text from "../../shared-new/Text";
+import SelectEnvironment from "./SelectEnvironment";
 
 type Props = {
   closeModal: () => void;
@@ -6,8 +9,11 @@ type Props = {
 
 export default function Environments({ closeModal }: Props): JSX.Element {
   return (
-    <Modal closeModal={closeModal}>
-      <h1>todo</h1>
+    <Modal closeModal={closeModal} label={copy.envVariables}>
+      <Text color="gray9" margin={{ top: "xxsmall" }} size="componentParagraph">
+        {copy.envVariablesDetail}
+      </Text>
+      <SelectEnvironment />
     </Modal>
   );
 }

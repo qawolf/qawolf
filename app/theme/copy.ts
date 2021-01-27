@@ -93,6 +93,9 @@ export const copy = {
   emptyTriggers: "You don't have any triggers yet!",
   encrypted: "Encrypted",
   enterUrl: "Enter your URL to create a test with",
+  envVariables: "Environment variables",
+  envVariablesDetail:
+    "Use environment variables for values that you don’t want visible in your code or to change the behavior of your test based on the environment",
   environment: "Environment",
   environmentDelete: "Delete environment",
   environmentDeleteConfirm:

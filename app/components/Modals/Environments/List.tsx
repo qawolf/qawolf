@@ -25,8 +25,8 @@ export default function List({
     null
   );
 
-  const { teamId } = useContext(StateContext);
-  const { data } = useEnvironments({ team_id: teamId });
+  const { environmentId, teamId } = useContext(StateContext);
+  const { data } = useEnvironments({ team_id: teamId }, { environmentId });
 
   const handleCreateClick = (): void => {
     setEditEnvironmentId(null); // clear existing forms

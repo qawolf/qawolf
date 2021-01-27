@@ -179,11 +179,23 @@ export const useDashboard = (
 };
 
 export const useEnvironments = (
-  variables: EnvironmentsVariables
+  variables: EnvironmentsVariables,
+  { environmentId }: { environmentId: string | null }
 ): QueryResult<EnvironmentsData, EnvironmentsVariables> => {
   return useQuery<EnvironmentsData, EnvironmentsVariables>(environmentsQuery, {
     fetchPolicy,
     nextFetchPolicy,
+    onCompleted: (response) => {
+      if (!response?.environments) return;
+
+      const selected = response.environments.find(
+        (e) => e.id === environmentId
+      );
+      // set an environment if possible and if none are currently selected
+      if (!selected && response.environments.length) {
+        state.setEnvironmentId(response.environments[0].id);
+      }
+    },
     onError,
     skip: !variables.team_id,
     variables,

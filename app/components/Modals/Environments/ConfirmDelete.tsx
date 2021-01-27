@@ -50,7 +50,7 @@ export default function ConfirmDelete({
       <Box>
         <Text
           color="gray9"
-          margin={{ bottom: "medium" }}
+          margin={{ bottom: "medium", top: "xxsmall" }}
           size="componentParagraph"
           style={{ display: "inline" }}
         >
