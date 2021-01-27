@@ -1,6 +1,7 @@
 import { Box } from "grommet";
-import { ReactNode } from "react";
+import { ReactNode, useRef } from "react";
 import styled, { keyframes } from "styled-components";
+import { useOnClickOutside } from "../../../hooks/onClickOutside";
 
 import { edgeSize } from "../../../theme/theme-new";
 import { Direction } from "./Chooser";
@@ -27,6 +28,10 @@ const menuKeyFrames = keyframes`
 `;
 
 function Menu({ children, className, onClick }: Props): JSX.Element {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useOnClickOutside({ onClickOutside: onClick, ref });
+
   return (
     <Box
       background="gray0"
@@ -34,6 +39,7 @@ function Menu({ children, className, onClick }: Props): JSX.Element {
       onClick={onClick}
       overflow="hidden"
       pad={{ vertical: "xxxsmall" }}
+      ref={ref}
       round={round}
       width="100%"
     >
