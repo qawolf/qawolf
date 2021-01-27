@@ -10,6 +10,8 @@ import Edit from "./icons/Edit";
 import Select from "./Select";
 import Action from "./Select/Action";
 import Option from "./Select/Option";
+import Button from "./AppButton";
+import Configure from "./icons/Configure";
 
 export default function EnvVariables(): JSX.Element {
   const { environmentId, teamId } = useContext(StateContext);
@@ -25,7 +27,13 @@ export default function EnvVariables(): JSX.Element {
       : copy.environmentNotSelected;
   }
 
-  const openModal = (): void => state.setModal({ name: "environments" });
+  const openEnvironmentsModal = (): void => {
+    state.setModal({ name: "environments" });
+  };
+
+  const openVariablesModal = (): void => {
+    state.setModal({ name: "envVariables" });
+  };
 
   const optionsHtml = (data?.environments || []).map((e) => {
     return (
@@ -40,12 +48,17 @@ export default function EnvVariables(): JSX.Element {
 
   return (
     <ThemeContext.Extend value={theme}>
-      <Box alignSelf="center" background="gray10" round="2px">
+      <Box alignSelf="center" background="gray10" direction="row" round="2px">
+        <Button
+          IconComponent={Configure}
+          onClick={openVariablesModal}
+          type="dark"
+        />
         <Select label={label}>
           <Action
             IconComponent={Edit}
             label={copy.environmentsEdit}
-            onClick={openModal}
+            onClick={openEnvironmentsModal}
           />
           {optionsHtml}
         </Select>

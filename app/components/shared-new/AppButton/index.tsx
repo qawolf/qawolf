@@ -72,6 +72,13 @@ function AppButton({
 const StyledAppButton = styled(AppButton)`
   height: ${edgeSize.large};
   transition: all ${transitionDuration};
+
+  ${(props) =>
+    props.type === "dark" &&
+    `
+  border: ${borderSize.xsmall} solid ${colors.gray8};
+  `}
+
   ${(props) =>
     props.type === "secondary" &&
     `
@@ -94,6 +101,7 @@ const StyledAppButton = styled(AppButton)`
     }
     `}
 
+    ${(props) => props.type === "dark" && `border-color: ${colors.gray6};`}
     ${(props) => props.type === "secondary" && `border-color: ${colors.gray5};`}
   }
 `;
