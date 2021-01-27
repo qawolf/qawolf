@@ -22,6 +22,7 @@ import {
   sendLoginCodeMutation,
   signInWithEmailMutation,
   signInWithGitHubMutation,
+  updateEnvironmentMutation,
   updateGroupMutation,
   updateGroupTestsMutation,
   updateTeamMutation,
@@ -36,6 +37,7 @@ import {
   ApiKey,
   AuthenticatedUser,
   DeploymentEnvironment,
+  Environment,
   EnvironmentVariable,
   Group,
   Integration,
@@ -45,6 +47,7 @@ import {
   Test,
   User,
 } from "../lib/types";
+import { updateEnvironment } from "../server/models/environment";
 
 type AcceptInviteData = {
   acceptInvite: Invite;
@@ -214,6 +217,15 @@ type SignInWithGitHubVariables = {
   github_code: string;
   github_state: string;
   invite_id?: string | null;
+};
+
+type UpdateEnvironmentData = {
+  updateEnvironment: Environment;
+};
+
+type UpdateEnvironmentVariables = {
+  id: string;
+  name: string;
 };
 
 type UpdateGroupData = {
@@ -619,6 +631,16 @@ export const useSignInWithGitHub = (
         invite_id: signUp.inviteId,
       },
     }
+  );
+};
+
+export const useUpdateEnvironment = (): MutationTuple<
+  UpdateEnvironmentData,
+  UpdateEnvironmentVariables
+> => {
+  return useMutation<UpdateEnvironmentData, UpdateEnvironmentVariables>(
+    updateEnvironmentMutation,
+    { onError }
   );
 };
 

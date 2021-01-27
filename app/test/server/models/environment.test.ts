@@ -2,6 +2,7 @@ import { db, dropTestDb, migrateDb } from "../../../server/db";
 import {
   findEnvironmentsForTeam,
   findEnvrionment,
+  updateEnvironment,
 } from "../../../server/models/environment";
 import { Environment } from "../../../server/types";
 import { buildEnvironment, buildTeam, logger } from "../utils";
@@ -54,5 +55,33 @@ describe("findEnvironmentsForTeam", () => {
       { name: "Production" },
       { name: "Staging" },
     ]);
+  });
+});
+
+describe("updateEnvironment", () => {
+  beforeAll(() => {
+    return db("environments").insert(buildEnvironment({}));
+  });
+
+  afterAll(() => db("environments").del());
+
+  it("updates an environment", async () => {
+    const environment = await updateEnvironment(
+      { id: "environmentId", name: "New Name" },
+      { logger }
+    );
+
+    const dbEnvironment = await db("environments").select("*").first();
+
+    expect(environment.name).toBe("New Name");
+    expect(dbEnvironment.name).toBe("New Name");
+  });
+
+  it("throws an error if name not provided", async () => {
+    const testFn = async (): Promise<Environment> => {
+      return updateEnvironment({ id: "environmentId", name: "" }, { logger });
+    };
+
+    await expect(testFn()).rejects.toThrowError("Must provide name");
   });
 });

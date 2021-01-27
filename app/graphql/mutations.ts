@@ -2,6 +2,7 @@ import { gql } from "@apollo/client";
 
 import {
   apiKeyFragment,
+  environmentFragment,
   environmentVariableFragment,
   groupFragment,
   integrationFragment,
@@ -200,6 +201,15 @@ export const signInWithGitHubMutation = gql`
     }
   }
   ${userFragment}
+`;
+
+export const updateEnvironmentMutation = gql`
+  mutation updateEnvironment($id: ID!, $name: String!) {
+    updateEnvironment(id: $id, name: $name) {
+      ...EnvironmentFragment
+    }
+  }
+  ${environmentFragment}
 `;
 
 export const updateGroupMutation = gql`

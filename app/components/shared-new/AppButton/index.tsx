@@ -15,6 +15,7 @@ type Props = {
   a11yTitle?: string;
   className?: string;
   hoverType?: Type;
+  isDisabled?: boolean;
   label?: string;
   margin?: ButtonProps["margin"];
   onClick: () => void;
@@ -25,6 +26,7 @@ function AppButton({
   IconComponent,
   a11yTitle,
   className,
+  isDisabled,
   label,
   margin,
   onClick,
@@ -33,6 +35,7 @@ function AppButton({
   return (
     <Button
       a11yTitle={a11yTitle || label}
+      disabled={isDisabled}
       margin={margin}
       onClick={onClick}
       plain

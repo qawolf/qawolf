@@ -786,6 +786,19 @@ type Mutation {
   ): AuthenticatedUser!
 
   """
+  Updates an environment by ID.
+
+  Requires that you have access to the team that owns the environment.
+  """
+  updateEnvironment(
+    "Environment ID"
+    id: ID!
+
+    "Updated environment name"
+    name: String!
+  ): Environment!
+
+  """
   Updates a test group by ID.
 
   Requires that you have access to the team that owns the group.

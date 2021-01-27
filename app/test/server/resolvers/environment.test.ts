@@ -1,6 +1,16 @@
 import { db, dropTestDb, migrateDb } from "../../../server/db";
-import { environmentsResolver } from "../../../server/resolvers/environment";
-import { buildEnvironment, buildTeam, buildUser, testContext } from "../utils";
+import { updateEnvironment } from "../../../server/models/environment";
+import {
+  environmentsResolver,
+  updateEnvironmentResolver,
+} from "../../../server/resolvers/environment";
+import {
+  buildEnvironment,
+  buildTeam,
+  buildUser,
+  logger,
+  testContext,
+} from "../utils";
 
 beforeAll(async () => {
   await migrateDb();
@@ -28,5 +38,25 @@ describe("environmentsResolver", () => {
       { name: "Production" },
       { name: "Staging" },
     ]);
+  });
+});
+
+describe("updateEnvironmentResolver", () => {
+  it("updates an environment", async () => {
+    const environment = await updateEnvironmentResolver(
+      {},
+      { id: "environmentId", name: "New Name" },
+      testContext
+    );
+
+    expect(environment).toMatchObject({
+      id: "environmentId",
+      name: "New Name",
+    });
+
+    await updateEnvironment(
+      { id: "environmentId", name: "Staging" },
+      { logger }
+    );
   });
 });

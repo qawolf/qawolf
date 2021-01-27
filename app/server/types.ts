@@ -395,6 +395,11 @@ export type SignInWithGitHubMutation = {
   invite_id?: string | null;
 };
 
+export type UpdateEnvironmentMutation = {
+  id: string;
+  name: string;
+};
+
 export type UpdateGroupMutation = {
   deployment_branches?: string | null;
   deployment_environment?: DeploymentEnvironment | null;

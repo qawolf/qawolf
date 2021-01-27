@@ -11,6 +11,13 @@ export const apiKeyFragment = gql`
   }
 `;
 
+export const environmentFragment = gql`
+  fragment EnvironmentFragment on Environment {
+    id
+    name
+  }
+`;
+
 export const environmentVariableFragment = gql`
   fragment EnvironmentVariableFragment on EnvironmentVariable {
     created_at

@@ -3,17 +3,16 @@ import styled from "styled-components";
 
 import {
   borderSize,
-  breakpoints,
   colors,
   edgeSize,
   fontFamily,
   fontWeight,
   text,
-  textDesktop,
   transition,
 } from "../../theme/theme-new";
 
 type Props = {
+  hasError?: boolean;
   id?: string;
   name?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -44,6 +43,7 @@ const StyledGrommetTextInput = styled(GrommetTextInput)`
 `;
 
 export default function TextInput({
+  hasError,
   id,
   name,
   onChange,
@@ -56,6 +56,7 @@ export default function TextInput({
       name={name}
       onChange={onChange}
       placeholder={placeholder}
+      style={hasError ? { borderColor: colors.danger5 } : undefined}
       value={value}
     />
   );

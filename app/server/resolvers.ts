@@ -5,7 +5,10 @@ import {
 } from "./resolvers/api_key";
 import { createGitHubSignInUrlResolver } from "./resolvers/auth";
 import { dashboardResolver } from "./resolvers/dashboard";
-import { environmentsResolver } from "./resolvers/environment";
+import {
+  environmentsResolver,
+  updateEnvironmentResolver,
+} from "./resolvers/environment";
 import {
   createEnvironmentVariableResolver,
   deleteEnvironmentVariableResolver,
@@ -92,6 +95,7 @@ export const resolvers = {
     sendLoginCode: sendLoginCodeResolver,
     signInWithEmail: signInWithEmailResolver,
     signInWithGitHub: signInWithGitHubResolver,
+    updateEnvironment: updateEnvironmentResolver,
     updateGroup: updateGroupResolver,
     updateGroupTests: updateGroupTestsResolver,
     updateRun: updateRunResolver,

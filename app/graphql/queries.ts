@@ -2,6 +2,7 @@ import { gql } from "@apollo/client";
 
 import {
   apiKeyFragment,
+  environmentFragment,
   environmentVariableFragment,
   groupFragment,
   integrationFragment,
@@ -62,10 +63,10 @@ export const dashboardQuery = gql`
 export const environmentsQuery = gql`
   query environments($team_id: ID!) {
     environments(team_id: $team_id) {
-      id
-      name
+      ...EnvironmentFragment
     }
   }
+  ${environmentFragment}
 `;
 
 export const environmentVariablesQuery = gql`
