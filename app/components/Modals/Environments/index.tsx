@@ -38,7 +38,7 @@ export default function Environments({ closeModal }: Props): JSX.Element {
           <Text color="gray8" size="componentParagraph">
             {copy.environmentsEditDetail}
           </Text>
-          <List />
+          <List closeModal={closeModal} />
         </Box>
       </Layer>
     </ThemeContext.Extend>

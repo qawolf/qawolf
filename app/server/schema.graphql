@@ -493,6 +493,23 @@ type Mutation {
   ): ApiKey!
 
   """
+  Create an environment.
+
+  Requires that you have access to the team.
+  """
+  createEnvironment(
+    """
+    Name of the new environment
+    """
+    name: String!
+
+    """
+    ID of the team that should own the environment
+    """
+    team_id: ID!
+  ): Environment!
+
+  """
   Create GitHub integrations. When the GitHub app is installed, this reconciles
   the integrations in the database with the repos that the GitHub app has access to.
   The response is the list of integrations created as a result of the specified

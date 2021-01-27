@@ -6,6 +6,7 @@ import {
 import { createGitHubSignInUrlResolver } from "./resolvers/auth";
 import { dashboardResolver } from "./resolvers/dashboard";
 import {
+  createEnvironmentResolver,
   environmentsResolver,
   updateEnvironmentResolver,
 } from "./resolvers/environment";
@@ -78,9 +79,10 @@ export const resolvers = {
   Mutation: {
     acceptInvite: acceptInviteResolver,
     createApiKey: createApiKeyResolver,
+    createEnvironment: createEnvironmentResolver,
+    createEnvironmentVariable: createEnvironmentVariableResolver,
     createGitHubIntegrations: createGitHubIntegrationsResolver,
     createGroup: createGroupResolver,
-    createEnvironmentVariable: createEnvironmentVariableResolver,
     createInvites: createInvitesResolver,
     createSignInUrl: createGitHubSignInUrlResolver,
     createSlackIntegration: createSlackIntegrationResolver,

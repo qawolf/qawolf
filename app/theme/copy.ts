@@ -95,6 +95,7 @@ export const copy = {
   enterUrl: "Enter your URL to create a test with",
   environment: "Environment",
   environmentName: "Environment name",
+  environmentNew: "New environment",
   environmentNotSelected: "No environment",
   environmentsEdit: "Edit environments",
   environmentsEditDetail: "Create, rename, or delete environments",

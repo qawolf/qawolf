@@ -1,15 +1,30 @@
 import { update } from "lodash";
 import {
+  createEnvironment,
   findEnvironmentsForTeam,
   updateEnvironment,
 } from "../models/environment";
 import {
   Context,
+  CreateEnvironmentMutation,
   Environment,
   TeamIdQuery,
   UpdateEnvironmentMutation,
 } from "../types";
 import { ensureEnvironmentAccess, ensureTeamAccess } from "./utils";
+
+export const createEnvironmentResolver = async (
+  _: Record<string, unknown>,
+  { name, team_id }: CreateEnvironmentMutation,
+  { logger, teams }: Context
+): Promise<Environment> => {
+  const log = logger.prefix("updateEnvironmentResolver");
+  log.debug("create for team", team_id);
+
+  ensureTeamAccess({ logger, team_id, teams });
+
+  return createEnvironment({ name, team_id }, { logger });
+};
 
 export const environmentsResolver = async (
   _: Record<string, unknown>,

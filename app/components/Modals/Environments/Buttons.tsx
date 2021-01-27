@@ -2,30 +2,26 @@ import { Box } from "grommet";
 import { copy } from "../../../theme/copy";
 
 import Button from "../../shared-new/AppButton";
-import Edit from "../../shared-new/icons/Edit";
-import Trash from "../../shared-new/icons/Trash";
+import Add from "../../shared-new/icons/Add";
 
 type Props = {
-  onEditClick: () => void;
+  closeModal: () => void;
+  onCreateClick: () => void;
 };
 
-export default function Buttons({ onEditClick }: Props): JSX.Element {
+export default function Buttons({
+  closeModal,
+  onCreateClick,
+}: Props): JSX.Element {
   return (
-    <Box direction="row" margin={{ vertical: "xxsmall" }}>
+    <Box direction="row" justify="between" margin={{ top: "medium" }}>
       <Button
-        IconComponent={Edit}
-        a11yTitle={copy.edit}
-        onClick={onEditClick}
-        type="ghost"
+        IconComponent={Add}
+        label={copy.environmentNew}
+        onClick={onCreateClick}
+        type="secondary"
       />
-      <Button
-        IconComponent={Trash}
-        a11yTitle={copy.delete}
-        hoverType="danger"
-        margin={{ left: "xxsmall" }}
-        onClick={() => null}
-        type="ghost"
-      />
+      <Button label={copy.done} onClick={closeModal} type="primary" />
     </Box>
   );
 }

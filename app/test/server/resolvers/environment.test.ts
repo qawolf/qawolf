@@ -1,6 +1,7 @@
 import { db, dropTestDb, migrateDb } from "../../../server/db";
 import { updateEnvironment } from "../../../server/models/environment";
 import {
+  createEnvironmentResolver,
   environmentsResolver,
   updateEnvironmentResolver,
 } from "../../../server/resolvers/environment";
@@ -25,6 +26,23 @@ beforeAll(async () => {
 });
 
 afterAll(() => dropTestDb());
+
+describe("createEnvironmentResolver", () => {
+  it("creates an environment", async () => {
+    const environment = await createEnvironmentResolver(
+      {},
+      { name: "New Environment", team_id: "teamId" },
+      testContext
+    );
+
+    expect(environment).toMatchObject({
+      name: "New Environment",
+      team_id: "teamId",
+    });
+
+    await db("environments").where({ name: "New Environment" }).del();
+  });
+});
 
 describe("environmentsResolver", () => {
   it("returns environments for a team", async () => {

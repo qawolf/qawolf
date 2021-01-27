@@ -1,5 +1,6 @@
 import { db, dropTestDb, migrateDb } from "../../../server/db";
 import {
+  createEnvironment,
   findEnvironmentsForTeam,
   findEnvrionment,
   updateEnvironment,
@@ -14,6 +15,35 @@ beforeAll(async () => {
 });
 
 afterAll(() => dropTestDb());
+
+describe("createEnvironment", () => {
+  afterAll(() => db("environments").del());
+
+  it("creates an environment", async () => {
+    const expected = {
+      name: "New Environment",
+      team_id: "teamId",
+    };
+
+    const environment = await createEnvironment(
+      { name: "New Environment", team_id: "teamId" },
+      { logger }
+    );
+
+    const dbEnvironment = await db("environments").select("*").first();
+
+    expect(environment).toMatchObject(expected);
+    expect(dbEnvironment).toMatchObject(expected);
+  });
+
+  it("throws an error if name not provided", async () => {
+    const testFn = async (): Promise<Environment> => {
+      return createEnvironment({ name: "", team_id: "teamId" }, { logger });
+    };
+
+    await expect(testFn()).rejects.toThrowError("Must provide name");
+  });
+});
 
 describe("findEnvironment", () => {
   beforeAll(() => {

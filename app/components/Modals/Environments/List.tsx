@@ -6,14 +6,38 @@ import Text from "../../shared-new/Text";
 import { copy } from "../../../theme/copy";
 import Divider from "../../shared-new/Divider";
 import ListItem from "./ListItem";
+import Buttons from "./Buttons";
+import Form, { id as formInputId } from "./Form";
 
-export default function List(): JSX.Element {
+type Props = {
+  closeModal: () => void;
+};
+
+export default function List({ closeModal }: Props): JSX.Element {
+  const [isCreate, setIsCreate] = useState(false);
   const [editEnvironmentId, setEditEnvironmentId] = useState<string | null>(
     null
   );
 
   const { teamId } = useContext(StateContext);
   const { data } = useEnvironments({ team_id: teamId });
+
+  const handleCreateClick = (): void => {
+    setEditEnvironmentId(null); // clear existing forms
+    setIsCreate(true);
+    // focus form if it already exists
+    document.getElementById(formInputId)?.focus();
+  };
+
+  const handleCancelClick = (): void => {
+    setEditEnvironmentId(null);
+    setIsCreate(false);
+  };
+
+  const handleEditClick = (environmentId: string): void => {
+    setEditEnvironmentId(environmentId);
+    setIsCreate(false);
+  };
 
   const placeholderHtml = data?.environments.length ? null : (
     <Text
@@ -37,7 +61,8 @@ export default function List(): JSX.Element {
           editEnvironmentId={editEnvironmentId}
           environment={environment}
           key={environment.id}
-          setEditEnvironmentId={setEditEnvironmentId}
+          onCancelClick={handleCancelClick}
+          onEditClick={handleEditClick}
         />
       );
 
@@ -55,7 +80,14 @@ export default function List(): JSX.Element {
       <Divider margin={{ top: "xxsmall" }} />
       <Box overflow="auto">{environmentsHtml}</Box>
       {placeholderHtml}
+      {isCreate && (
+        <>
+          <Divider />
+          <Form onCancelClick={handleCancelClick} />
+        </>
+      )}
       <Divider />
+      <Buttons closeModal={closeModal} onCreateClick={handleCreateClick} />
     </Box>
   );
 }

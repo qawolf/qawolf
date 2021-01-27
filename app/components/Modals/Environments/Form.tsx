@@ -1,17 +1,21 @@
 import { Box, Keyboard } from "grommet";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { Environment } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import TextInput from "../../shared-new/AppTextInput";
 import Button from "../../shared-new/AppButton";
-import { useUpdateEnvironment } from "../../../hooks/mutations";
+import {
+  useCreateEnvironment,
+  useUpdateEnvironment,
+} from "../../../hooks/mutations";
+import { StateContext } from "../../StateContext";
 
 type Props = {
   environment?: Environment;
   onCancelClick: () => void;
 };
 
-const id = "environment";
+export const id = "environment";
 
 export default function Form({
   environment,
@@ -20,7 +24,13 @@ export default function Form({
   const [hasError, setHasError] = useState(false);
   const [name, setName] = useState(environment?.name || "");
 
-  const [updateEnvironment, { loading }] = useUpdateEnvironment();
+  const { teamId } = useContext(StateContext);
+
+  const [
+    createEnvironment,
+    { loading: createLoading },
+  ] = useCreateEnvironment();
+  const [updateEnvironment, { loading: editLoading }] = useUpdateEnvironment();
 
   // focus input when form renders
   useEffect(() => {
@@ -38,13 +48,16 @@ export default function Form({
     }
 
     setHasError(false);
-    // TODO: create environment
-    if (!environment) return;
 
-    // close form after environment is updated
-    updateEnvironment({ variables: { id: environment.id, name } }).then(
-      onCancelClick
-    );
+    if (environment) {
+      updateEnvironment({ variables: { id: environment.id, name } }).then(
+        onCancelClick // close form after environment is updated
+      );
+    } else {
+      createEnvironment({ variables: { name, team_id: teamId } }).then(
+        onCancelClick // close form after environment is updated
+      );
+    }
   };
 
   return (
@@ -64,7 +77,7 @@ export default function Form({
           type="secondary"
         />
         <Button
-          isDisabled={loading}
+          isDisabled={createLoading || editLoading}
           label={copy.save}
           onClick={handleSaveClick}
           type="primary"

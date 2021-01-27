@@ -29,7 +29,7 @@ const StyledGrommetTextInput = styled(GrommetTextInput)`
   font-size: ${text.component.size};
   font-weight: ${fontWeight.normal};
   height: ${edgeSize.large};
-  line-height: ${text.component.height};
+  line-height: ${edgeSize.large};
   padding: 0 ${edgeSize.xsmall};
   transition: ${transition};
 

@@ -2,15 +2,16 @@ import { Box } from "grommet";
 import { Environment } from "../../../lib/types";
 import { overflowStyle, transitionDuration } from "../../../theme/theme-new";
 
-import Buttons from "./Buttons";
 import Text from "../../shared-new/Text";
 import styled from "styled-components";
 import Form from "./Form";
+import EnvironmentActions from "./EnvironmentActions";
 
 type Props = {
   editEnvironmentId: string | null;
   environment: Environment;
-  setEditEnvironmentId: (editEnvironmentId: string | null) => void;
+  onCancelClick: () => void;
+  onEditClick: (editEnvironmentId: string) => void;
 };
 
 const StyledBox = styled(Box)`
@@ -29,15 +30,14 @@ const StyledBox = styled(Box)`
 export default function ListItem({
   editEnvironmentId,
   environment,
-  setEditEnvironmentId,
+  onCancelClick,
+  onEditClick,
 }: Props): JSX.Element {
   if (environment.id === editEnvironmentId) {
-    const handleCancelClick = (): void => setEditEnvironmentId(null);
-
-    return <Form environment={environment} onCancelClick={handleCancelClick} />;
+    return <Form environment={environment} onCancelClick={onCancelClick} />;
   }
 
-  const handleEditClick = (): void => setEditEnvironmentId(environment.id);
+  const handleEditClick = (): void => onEditClick(environment.id);
 
   return (
     <StyledBox align="center" direction="row" flex={false} justify="between">
@@ -49,7 +49,7 @@ export default function ListItem({
       >
         {environment.name}
       </Text>
-      <Buttons onEditClick={handleEditClick} />
+      <EnvironmentActions onEditClick={handleEditClick} />
     </StyledBox>
   );
 }

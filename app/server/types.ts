@@ -311,8 +311,8 @@ export type CreateApiKeyMutation = {
   team_id: string;
 };
 
-export type CreateGitHubIntegrationsMutation = {
-  installation_id: number;
+export type CreateEnvironmentMutation = {
+  name: string;
   team_id: string;
 };
 
@@ -320,6 +320,11 @@ export type CreateEnvironmentVariableMutation = {
   environment_id: string;
   name: string;
   value: string;
+};
+
+export type CreateGitHubIntegrationsMutation = {
+  installation_id: number;
+  team_id: string;
 };
 
 export type CreateInviteMutation = {

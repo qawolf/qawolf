@@ -5,6 +5,7 @@ import { NextRouter, useRouter } from "next/router";
 import {
   acceptInviteMutation,
   createApiKeyMutation,
+  createEnvironmentMutation,
   createEnvironmentVariableMutation,
   createGitHubIntegrationsMutation,
   createGroupMutation,
@@ -62,6 +63,15 @@ type CreateApiKeyData = {
 };
 
 type CreateApiKeyVariables = {
+  name: string;
+  team_id: string;
+};
+
+type CreateEnvironmentData = {
+  createEnvironment: Environment;
+};
+
+type CreateEnvironmentVariables = {
   name: string;
   team_id: string;
 };
@@ -346,6 +356,20 @@ export const useCreateApiKey = (): MutationTuple<
   return useMutation<CreateApiKeyData, CreateApiKeyVariables>(
     createApiKeyMutation,
     { awaitRefetchQueries: true, onError, refetchQueries: ["apiKeys"] }
+  );
+};
+
+export const useCreateEnvironment = (): MutationTuple<
+  CreateEnvironmentData,
+  CreateEnvironmentVariables
+> => {
+  return useMutation<CreateEnvironmentData, CreateEnvironmentVariables>(
+    createEnvironmentMutation,
+    {
+      awaitRefetchQueries: true,
+      onError,
+      refetchQueries: ["environments"],
+    }
   );
 };
 

@@ -45,14 +45,21 @@ function AppButton({
         background={background[type]}
         className={className}
         direction="row"
-        pad={{ horizontal: "xxsmall" }}
+        pad={{
+          left: IconComponent && label ? "xxsmall" : "xsmall",
+          right: "xsmall",
+        }}
         round={borderSize.small}
       >
         {!!IconComponent && (
           <IconComponent color={textColor[type]} size={edgeSize.small} />
         )}
         {!!label && (
-          <Text color={textColor[type]} size="component">
+          <Text
+            color={textColor[type]}
+            margin={IconComponent ? { left: "xxsmall" } : undefined}
+            size="component"
+          >
             {label}
           </Text>
         )}
