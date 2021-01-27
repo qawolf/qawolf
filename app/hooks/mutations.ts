@@ -664,7 +664,7 @@ export const useUpdateEnvironment = (): MutationTuple<
 > => {
   return useMutation<UpdateEnvironmentData, UpdateEnvironmentVariables>(
     updateEnvironmentMutation,
-    { onError }
+    { onError, refetchQueries: ["environments"] }
   );
 };
 
