@@ -22,6 +22,7 @@ type RunnerContext = ConnectRunnerHook &
     isCreateTestLoading: boolean;
     progress: RunProgress | null;
     runTest: RunTest["runTest"];
+    shouldRequestRunner: boolean;
   };
 
 export const RunnerContext = createContext<RunnerContext>({
@@ -36,6 +37,7 @@ export const RunnerContext = createContext<RunnerContext>({
   runner: null,
   runTest: () => null,
   selection: null,
+  shouldRequestRunner: false,
   wsUrl: null,
 });
 
@@ -51,14 +53,14 @@ export const RunnerProvider: FC = ({ children }) => {
 
   const [createTest, { loading: isCreateTestLoading }] = useCreateTest();
 
-  const { isIdle, runTest } = useRunTest({
+  const { shouldRequestRunner, runTest } = useRunTest({
     env,
     resetProgress,
     runner,
   });
 
   const { apiKey, wsUrl } = useConnectRunner({
-    isIdle,
+    shouldRequestRunner,
     isRunnerConnected,
     runner,
   });
@@ -90,6 +92,7 @@ export const RunnerProvider: FC = ({ children }) => {
     runner,
     runTest,
     selection,
+    shouldRequestRunner,
     wsUrl,
   };
 

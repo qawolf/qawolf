@@ -16,8 +16,8 @@ type RunTestOptions = {
 };
 
 export type RunTest = {
-  isIdle: boolean;
   runTest: (options: RunTestOptions) => void;
+  shouldRequestRunner: boolean;
 };
 
 type UseRunTest = {
@@ -31,15 +31,15 @@ export const useRunTest = ({
   resetProgress,
   runner,
 }: UseRunTest): RunTest => {
-  const [isIdle, setIsIdle] = useState(!state.pendingRun);
+  const [shouldRequestRunner, setShouldRequestRunner] = useState(
+    !state.pendingRun
+  );
   const [ranAt, setRanAt] = useState<Date | null>(null);
 
   useEffect(() => {
     const interval = runAndSetInterval(() => {
-      const isActive =
-        !!state.pendingRun || ranAt >= new Date(minutesFromNow(-1));
-
-      setIsIdle(!isActive);
+      const value = !!state.pendingRun || ranAt >= new Date(minutesFromNow(-1));
+      setShouldRequestRunner(value);
     }, 10 * 1000);
 
     return () => clearInterval(interval);
@@ -74,5 +74,5 @@ export const useRunTest = ({
     runner.run(options);
   };
 
-  return { isIdle, runTest };
+  return { runTest, shouldRequestRunner };
 };

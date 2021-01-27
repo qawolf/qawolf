@@ -21,11 +21,11 @@ export default function Screencast({
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!browser || !containerRef.current || !wsUrl) return;
+    if (!browser || !containerRef.current) return;
 
     browser.connect(
       containerRef.current,
-      `${wsUrl}/websockify`,
+      wsUrl ? `${wsUrl}/websockify` : null,
       apiKey || "local"
     );
   }, [apiKey, browser, containerRef, wsUrl]);

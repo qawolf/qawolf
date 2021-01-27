@@ -11,15 +11,15 @@ export type ConnectRunnerHook = {
 };
 
 type UseConnectRunner = {
-  isIdle: boolean;
   isRunnerConnected: boolean;
   runner: RunnerClient | null;
+  shouldRequestRunner: boolean;
 };
 
 export const useConnectRunner = ({
-  isIdle,
   isRunnerConnected,
   runner: runnerClient,
+  shouldRequestRunner,
 }: UseConnectRunner): ConnectRunnerHook => {
   const { query } = useRouter();
 
@@ -32,7 +32,7 @@ export const useConnectRunner = ({
   const { data: runnerResult, loading, startPolling, stopPolling } = useRunner(
     {
       run_id,
-      should_request_runner: !isIdle,
+      should_request_runner: shouldRequestRunner,
       test_id,
     },
     {
@@ -62,8 +62,10 @@ export const useConnectRunner = ({
 
   // connect the runner to the ws url
   useEffect(() => {
+    if (loading) return;
+
     runnerClient?.connect({ apiKey, wsUrl });
-  }, [apiKey, runnerClient, wsUrl]);
+  }, [apiKey, loading, runnerClient, wsUrl]);
 
   return { apiKey, wsUrl };
 };
