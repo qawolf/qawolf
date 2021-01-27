@@ -3,7 +3,6 @@ import { ReactNode } from "react";
 import styled, { keyframes } from "styled-components";
 
 import { edgeSize } from "../../../theme/theme-new";
-import { height } from "./Chooser";
 
 type Props = {
   children: ReactNode;
@@ -27,7 +26,7 @@ const menuKeyFrames = keyframes`
 const StyledBox = styled(Box)`
   animation: ${menuKeyFrames} 0.1s forwards;
   animation-delay: 0.01s;
-  bottom: calc(${height} + ${edgeSize.xxxsmall});
+  bottom: calc(${edgeSize.large} + ${edgeSize.xxxsmall});
   box-shadow: 0px 4px 16px rgba(21, 27, 38, 0.16);
   opacity: 0;
   position: absolute;

@@ -1,4 +1,4 @@
-import { Box, Button, ButtonProps } from "grommet";
+import { Box, BoxProps, Button, ButtonProps } from "grommet";
 import { Icon } from "grommet-icons";
 import styled from "styled-components";
 
@@ -10,28 +10,33 @@ import {
 } from "../../../theme/theme-new";
 import Text from "../Text";
 import { background, hoverBackground, textColor, Type } from "./config";
+import { IconPosition, getTextMargin, getBoxPad } from "./helpers";
 
 type Props = {
   IconComponent?: Icon;
   a11yTitle?: string;
   className?: string;
   hoverType?: Type;
+  iconPosition?: IconPosition;
   isDisabled?: boolean;
   label?: string;
   margin?: ButtonProps["margin"];
   onClick: () => void;
   type: Type;
+  width?: BoxProps["width"];
 };
 
 function AppButton({
   IconComponent,
   a11yTitle,
   className,
+  iconPosition,
   isDisabled,
   label,
   margin,
   onClick,
   type,
+  width,
 }: Props): JSX.Element {
   return (
     <Button
@@ -45,12 +50,11 @@ function AppButton({
         align="center"
         background={background[type]}
         className={className}
-        direction="row"
-        pad={{
-          left: IconComponent ? "xxsmall" : "xsmall",
-          right: IconComponent && !label ? "xxsmall" : "xsmall",
-        }}
+        direction={iconPosition === "right" ? "row-reverse" : "row"}
+        justify="between"
+        pad={getBoxPad(!!label, !!IconComponent, iconPosition)}
         round={borderSize.small}
+        width={width}
       >
         {!!IconComponent && (
           <IconComponent color={textColor[type]} size={edgeSize.small} />
@@ -58,7 +62,7 @@ function AppButton({
         {!!label && (
           <Text
             color={textColor[type]}
-            margin={IconComponent ? { left: "xxsmall" } : undefined}
+            margin={getTextMargin(!!IconComponent, iconPosition)}
             size="component"
           >
             {label}

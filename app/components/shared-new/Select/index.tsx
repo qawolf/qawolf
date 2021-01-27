@@ -1,4 +1,4 @@
-import { Box, Button } from "grommet";
+import { Box } from "grommet";
 import { ReactNode, useState } from "react";
 
 import Chooser from "./Chooser";
@@ -17,9 +17,7 @@ export default function Select({ children, label }: Props): JSX.Element {
 
   return (
     <Box style={{ position: "relative" }}>
-      <Button onClick={handleClick} plain>
-        <Chooser isOpen={isOpen} label={label} />
-      </Button>
+      <Chooser isOpen={isOpen} label={label} onClick={handleClick} />
       {isOpen && <Menu onClick={handleClose}>{children}</Menu>}
     </Box>
   );
