@@ -4,6 +4,7 @@ import {
   createEnvironmentVariable,
   deleteEnvironmentVariable,
   findEnvironmentVariable,
+  updateEnvironmentVariable,
 } from "../models/environment_variable";
 import {
   Context,
@@ -11,8 +12,12 @@ import {
   EnvironmentIdQuery,
   EnvironmentVariable,
   IdQuery,
+  UpdateEnvironmentVariableMutation,
 } from "../types";
-import { ensureEnvironmentAccess } from "./utils";
+import {
+  ensureEnvironmentAccess,
+  ensureEnvironmentVariableAccess,
+} from "./utils";
 
 /**
  * @returns New environment variable record
@@ -74,5 +79,25 @@ export const environmentVariablesResolver = async (
     await ensureEnvironmentAccess({ environment_id, logger, teams, trx });
 
     return buildEnvironmentVariables({ environment_id }, { logger, trx });
+  });
+};
+
+export const updateEnvironmentVariableResolver = async (
+  _: Record<string, unknown>,
+  args: UpdateEnvironmentVariableMutation,
+  { logger, teams }: Context
+): Promise<EnvironmentVariable> => {
+  const log = logger.prefix("updateEnvironmentVariableResolver");
+  log.debug("variable", args.id);
+
+  return db.transaction(async (trx) => {
+    await ensureEnvironmentVariableAccess({
+      environment_variable_id: args.id,
+      logger,
+      teams,
+      trx,
+    });
+
+    return updateEnvironmentVariable(args, { logger, trx });
   });
 };

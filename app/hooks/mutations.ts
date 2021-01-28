@@ -25,6 +25,7 @@ import {
   signInWithEmailMutation,
   signInWithGitHubMutation,
   updateEnvironmentMutation,
+  updateEnvironmentVariableMutation,
   updateGroupMutation,
   updateGroupTestsMutation,
   updateTeamMutation,
@@ -244,6 +245,16 @@ type UpdateEnvironmentData = {
 type UpdateEnvironmentVariables = {
   id: string;
   name: string;
+};
+
+type UpdateEnvironmentVariableData = {
+  updateEnvironmentVariable: EnvironmentVariable;
+};
+
+type UpdateEnvironmentVariableVariables = {
+  id: string;
+  name: string;
+  value: string;
 };
 
 type UpdateGroupData = {
@@ -688,6 +699,20 @@ export const useUpdateEnvironment = (): MutationTuple<
     updateEnvironmentMutation,
     { onError, refetchQueries: ["environments"] }
   );
+};
+
+export const useUpdateEnvironmentVariable = (): MutationTuple<
+  UpdateEnvironmentVariableData,
+  UpdateEnvironmentVariableVariables
+> => {
+  return useMutation<
+    UpdateEnvironmentVariableData,
+    UpdateEnvironmentVariableVariables
+  >(updateEnvironmentVariableMutation, {
+    awaitRefetchQueries: true,
+    onError,
+    refetchQueries: ["environmentVariables"],
+  });
 };
 
 export const useUpdateGroup = (): MutationTuple<

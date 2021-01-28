@@ -230,6 +230,19 @@ export const updateEnvironmentMutation = gql`
   ${environmentFragment}
 `;
 
+export const updateEnvironmentVariableMutation = gql`
+  mutation updateEnvironmentVariable(
+    $id: ID!
+    $name: String!
+    $value: String!
+  ) {
+    updateEnvironmentVariable(id: $id, name: $name, value: $value) {
+      ...EnvironmentVariableFragment
+    }
+  }
+  ${environmentVariableFragment}
+`;
+
 export const updateGroupMutation = gql`
   mutation updateGroup(
     $deployment_branches: String

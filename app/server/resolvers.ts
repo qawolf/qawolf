@@ -15,6 +15,7 @@ import {
   createEnvironmentVariableResolver,
   deleteEnvironmentVariableResolver,
   environmentVariablesResolver,
+  updateEnvironmentVariableResolver,
 } from "./resolvers/environment_variable";
 import { createGitHubIntegrationsResolver } from "./resolvers/github";
 import {
@@ -100,6 +101,7 @@ export const resolvers = {
     signInWithEmail: signInWithEmailResolver,
     signInWithGitHub: signInWithGitHubResolver,
     updateEnvironment: updateEnvironmentResolver,
+    updateEnvironmentVariable: updateEnvironmentVariableResolver,
     updateGroup: updateGroupResolver,
     updateGroupTests: updateGroupTestsResolver,
     updateRun: updateRunResolver,

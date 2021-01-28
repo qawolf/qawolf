@@ -21,6 +21,16 @@ type CreateEnvironmentVariable = {
   value: string;
 };
 
+type UpdateEnvrionmentVariable = {
+  id: string;
+  name: string;
+  value: string;
+};
+
+const formatName = (name: string): string => {
+  return name.replace(/\s+/g, "_").toUpperCase();
+};
+
 export const createEnvironmentVariable = async (
   { environment_id, name, team_id, value }: CreateEnvironmentVariable,
   { logger, trx }: ModelOptions
@@ -35,7 +45,7 @@ export const createEnvironmentVariable = async (
     environment_id,
     id: cuid(),
     is_system: false,
-    name: name.replace(/\s+/g, "_").toUpperCase(),
+    name: formatName(name),
     team_id,
     updated_at: timestamp,
     value: encrypt(value),
@@ -164,4 +174,34 @@ export const findSystemEnvironmentVariable = async (
   }
 
   return environmentVariable;
+};
+
+export const updateEnvironmentVariable = async (
+  { id, name, value }: UpdateEnvrionmentVariable,
+  { logger, trx }: ModelOptions
+): Promise<EnvironmentVariable> => {
+  const log = logger.prefix("updateEnvironmentVariable");
+  log.debug(id);
+
+  if (!name || !value) {
+    log.error("name or value not provided");
+    throw new Error("Must provide name and value");
+  }
+
+  const updates = {
+    name: formatName(name),
+    updated_at: new Date().toISOString(),
+    value,
+  };
+
+  const environmentVariable = await findEnvironmentVariable(id, {
+    logger,
+    trx,
+  });
+
+  await (trx || db)("environment_variables")
+    .where({ id })
+    .update({ ...updates, value: encrypt(value) });
+
+  return { ...environmentVariable, ...updates };
 };

@@ -3,6 +3,7 @@ import {
   createEnvironmentVariableResolver,
   deleteEnvironmentVariableResolver,
   environmentVariablesResolver,
+  updateEnvironmentVariableResolver,
 } from "../../../server/resolvers/environment_variable";
 import { EnvironmentVariable } from "../../../server/types";
 import {
@@ -117,6 +118,29 @@ describe("environmentVariablesResolver", () => {
         { id: "environmentVariable2Id", name: "A_VAR" },
         { id: "environmentVariableId", name: "B_VAR" },
       ],
+    });
+  });
+});
+
+describe("updateEnvironmentVariableResolver", () => {
+  beforeAll(() => {
+    return db("environment_variables").insert(
+      buildEnvironmentVariable({ name: "A_VAR" })
+    );
+  });
+
+  afterAll(() => db("environment_variables").del());
+
+  it("updates an environment variable", async () => {
+    const environmentVariable = await updateEnvironmentVariableResolver(
+      {},
+      { id: "environmentVariableId", name: "NEW_NAME", value: "newValue" },
+      testContext
+    );
+
+    expect(environmentVariable).toMatchObject({
+      name: "NEW_NAME",
+      value: "newValue",
     });
   });
 });

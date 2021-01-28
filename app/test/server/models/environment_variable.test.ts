@@ -18,6 +18,7 @@ const {
   findEnvironmentVariable,
   findEnvironmentVariablesForEnvironment,
   findSystemEnvironmentVariable,
+  updateEnvironmentVariable,
 } = environmentVariableModel;
 
 beforeAll(async () => {
@@ -334,5 +335,78 @@ describe("findSystemEnvironmentVariable", () => {
     };
 
     await expect(testFn()).rejects.toThrowError("not found");
+  });
+});
+
+describe("updateEnvironmentVariable", () => {
+  beforeAll(() => {
+    return db("environment_variables").insert(buildEnvironmentVariable({}));
+  });
+
+  afterAll(() => db("environment_variables").del());
+
+  it("updates an environment variable", async () => {
+    const environmentVariable = await updateEnvironmentVariable(
+      {
+        id: "environmentVariableId",
+        name: "NEW_NAME",
+        value: "newValue",
+      },
+      { logger }
+    );
+
+    expect(environmentVariable).toMatchObject({
+      name: "NEW_NAME",
+      value: "newValue",
+    });
+
+    const dbEnvrionmentVariable = await findEnvironmentVariable(
+      "environmentVariableId",
+      { logger }
+    );
+
+    expect(dbEnvrionmentVariable.value).not.toBe("newValue");
+    expect(decrypt(dbEnvrionmentVariable.value)).toBe("newValue");
+  });
+
+  it("formats name if needed", async () => {
+    const environmentVariable = await updateEnvironmentVariable(
+      {
+        id: "environmentVariableId",
+        name: "another name",
+        value: "newValue",
+      },
+      { logger }
+    );
+
+    expect(environmentVariable.name).toBe("ANOTHER_NAME");
+  });
+
+  it("throws an error if name or value not provided", async () => {
+    const testFn = async (): Promise<EnvironmentVariable> => {
+      return updateEnvironmentVariable(
+        {
+          id: "environmentVariableId",
+          name: "",
+          value: "newValue",
+        },
+        { logger }
+      );
+    };
+
+    await expect(testFn()).rejects.toThrowError("Must provide name and value");
+
+    const testFn2 = async (): Promise<EnvironmentVariable> => {
+      return updateEnvironmentVariable(
+        {
+          id: "environmentVariableId",
+          name: "NEW_NAME",
+          value: "",
+        },
+        { logger }
+      );
+    };
+
+    await expect(testFn2()).rejects.toThrowError("Must provide name and value");
   });
 });

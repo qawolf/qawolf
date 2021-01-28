@@ -4,6 +4,7 @@ import * as suiteModel from "../../../server/models/suite";
 import * as testModel from "../../../server/models/test";
 import {
   ensureEnvironmentAccess,
+  ensureEnvironmentVariableAccess,
   ensureGroupAccess,
   ensureSuiteAccess,
   ensureTeamAccess,
@@ -12,7 +13,13 @@ import {
   ensureUser,
 } from "../../../server/resolvers/utils";
 import { Group, Team, Test, User } from "../../../server/types";
-import { buildEnvironment, buildSuite, buildTeam, logger } from "../utils";
+import {
+  buildEnvironment,
+  buildEnvironmentVariable,
+  buildSuite,
+  buildTeam,
+  logger,
+} from "../utils";
 
 const teams = [buildTeam({})];
 const suite = buildSuite({ team_id: "team2Id" });
@@ -62,6 +69,66 @@ describe("ensureEnvironmentAccess", () => {
   it("returns selected team if teams have access", async () => {
     const team = await ensureEnvironmentAccess({
       environment_id: "environmentId",
+      logger,
+      teams,
+    });
+
+    expect(team).toEqual(teams[0]);
+  });
+});
+
+describe("ensureEnvironmentVariableAccess", () => {
+  beforeAll(async () => {
+    await db("teams").insert([buildTeam({}), buildTeam({ i: 2 })]);
+
+    await db("environments").insert([
+      buildEnvironment({}),
+      buildEnvironment({ i: 2, team_id: "team2Id" }),
+    ]);
+
+    return db("environment_variables").insert([
+      buildEnvironmentVariable({}),
+      buildEnvironmentVariable({
+        i: 2,
+        environment_id: "environment2Id",
+        team_id: "team2Id",
+      }),
+    ]);
+  });
+
+  afterAll(async () => {
+    await db("environment_variables").del();
+    await db("environments").del();
+    return db("teams").del();
+  });
+
+  it("throws an error if teams not provided", async () => {
+    const testFn = async (): Promise<Team> => {
+      return ensureEnvironmentVariableAccess({
+        environment_variable_id: "environmentVariableId",
+        logger,
+        teams: null,
+      });
+    };
+
+    await expect(testFn()).rejects.toThrowError("no teams");
+  });
+
+  it("throws an error if teams do not have access", async () => {
+    const testFn = async (): Promise<Team> => {
+      return ensureEnvironmentVariableAccess({
+        environment_variable_id: "environmentVariable2Id",
+        logger,
+        teams,
+      });
+    };
+
+    await expect(testFn()).rejects.toThrowError("cannot access environment");
+  });
+
+  it("returns selected team if teams have access", async () => {
+    const team = await ensureEnvironmentVariableAccess({
+      environment_variable_id: "environmentVariableId",
       logger,
       teams,
     });

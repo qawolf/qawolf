@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Transaction } from "knex";
 
+import { db } from "../db";
 import { AuthenticationError } from "../errors";
 import { Logger } from "../Logger";
 import { findEnvrionment } from "../models/environment";
+import { findEnvironmentVariable } from "../models/environment_variable";
 import { findGroup } from "../models/group";
 import { findSuite } from "../models/suite";
 import { findTest } from "../models/test";
@@ -11,6 +13,13 @@ import { Team, Test, User } from "../types";
 
 type EnsureEnvironmentAccess = {
   environment_id: string;
+  logger: Logger;
+  teams: Team[] | null;
+  trx?: Transaction;
+};
+
+type EnsureEnvironmentVariableAccess = {
+  environment_variable_id: string;
   logger: Logger;
   teams: Team[] | null;
   trx?: Transaction;
@@ -84,6 +93,41 @@ export const ensureEnvironmentAccess = async ({
   if (!selectedTeam) {
     log.error("teams", teamIds, "cannot access environment", environment_id);
     throw new AuthenticationError("cannot access environment");
+  }
+
+  return selectedTeam;
+};
+
+export const ensureEnvironmentVariableAccess = async ({
+  environment_variable_id,
+  logger,
+  teams,
+  trx,
+}: EnsureEnvironmentVariableAccess): Promise<Team> => {
+  const log = logger.prefix("ensureEnvironmentVariableAccess");
+
+  const teamIds = ensureTeams({ teams, logger }).map((team) => team.id);
+  log.debug(
+    "ensure teams",
+    teamIds,
+    "can access environment variable",
+    environment_variable_id
+  );
+
+  const variable = await findEnvironmentVariable(environment_variable_id, {
+    logger,
+    trx,
+  });
+  const selectedTeam = teams!.find((team) => variable.team_id === team.id);
+
+  if (!selectedTeam) {
+    log.error(
+      "teams",
+      teamIds,
+      "cannot access environment variable",
+      environment_variable_id
+    );
+    throw new AuthenticationError("cannot access environment variable");
   }
 
   return selectedTeam;

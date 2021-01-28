@@ -405,6 +405,12 @@ export type UpdateEnvironmentMutation = {
   name: string;
 };
 
+export type UpdateEnvironmentVariableMutation = {
+  id: string;
+  name: string;
+  value: string;
+};
+
 export type UpdateGroupMutation = {
   deployment_branches?: string | null;
   deployment_environment?: DeploymentEnvironment | null;

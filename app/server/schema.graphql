@@ -827,6 +827,22 @@ type Mutation {
   ): Environment!
 
   """
+  Updates an environment variable by ID.
+
+  Requires that you have access to the team that owns the environment.
+  """
+  updateEnvironmentVariable(
+    "Environment variable ID"
+    id: ID!
+
+    "Updated environment variable name"
+    name: String!
+
+    "Updated environment variable value"
+    value: String!
+  ): Environment!
+
+  """
   Updates a test group by ID.
 
   Requires that you have access to the team that owns the group.
