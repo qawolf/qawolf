@@ -3,8 +3,8 @@ import {
   createDefaultEnvironments,
   createEnvironment,
   deleteEnvironment,
-  findEnvironmentsForTeam,
   findEnvironment,
+  findEnvironmentsForTeam,
   updateEnvironment,
 } from "../../../server/models/environment";
 import { Environment } from "../../../server/types";
