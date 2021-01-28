@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 import { useEnvironments } from "../../../hooks/queries";
 import { state } from "../../../lib/state";
@@ -12,19 +12,26 @@ import { StateContext } from "../../StateContext";
 
 export default function SelectEnvironment(): JSX.Element {
   const { environmentId, teamId } = useContext(StateContext);
+  // have internal state for selected environment so editing variables
+  // doesn't change the currently selected environment
+  const [selectedEnvrionmentId, setSelectedEnvironmentId] = useState(
+    environmentId
+  );
 
   const { data } = useEnvironments({ team_id: teamId }, { environmentId });
 
   const environments = data?.environments || [];
-  const selectedEnvironment = environments.find((e) => e.id === environmentId);
+  const selectedEnvironment = environments.find(
+    (e) => e.id === selectedEnvrionmentId
+  );
 
   const optionsHtml = environments.map((e) => {
     return (
       <Option
-        isSelected={e.id === environmentId}
+        isSelected={e.id === selectedEnvrionmentId}
         key={e.id}
         label={e.name}
-        onClick={() => state.setEnvironmentId(e.id)}
+        onClick={() => setSelectedEnvironmentId(e.id)}
       />
     );
   });
