@@ -94,6 +94,7 @@ export const copy = {
   encrypted: "Encrypted",
   enterUrl: "Enter your URL to create a test with",
   envVariableNamePlaceholder: "MY_VARIABLE",
+  envVariableNew: "Add variable",
   envVariableValuePlaceholder: "value",
   envVariables: "Environment variables",
   envVariablesDetail:
@@ -105,7 +106,7 @@ export const copy = {
     "Are you sure? This will permanently delete all variables in this environment. Please type",
   environmentDeleteConfirm2: "to confirm.",
   environmentName: "Environment name",
-  environmentNew: "New environment",
+  environmentNew: "Add environment",
   environmentNotSelected: "No environment",
   environmentsEdit: "Edit environments",
   environmentsEditDetail: "Create, rename, or delete environments",

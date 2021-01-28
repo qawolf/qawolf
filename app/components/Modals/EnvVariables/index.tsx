@@ -15,7 +15,7 @@ export default function Environments({ closeModal }: Props): JSX.Element {
         {copy.envVariablesDetail}
       </Text>
       <SelectEnvironment />
-      <List />
+      <List closeModal={closeModal} />
     </Modal>
   );
 }

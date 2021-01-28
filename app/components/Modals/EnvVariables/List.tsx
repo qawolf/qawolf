@@ -1,13 +1,20 @@
 import { Box } from "grommet";
-import { ReactNode, useContext, useState } from "react";
+import { ReactNode, useContext, useEffect, useState } from "react";
 import { useEnvironmentVariables } from "../../../hooks/queries";
 import { copy } from "../../../theme/copy";
 import Divider from "../../shared-new/Divider";
 import Text from "../../shared-new/Text";
 import { StateContext } from "../../StateContext";
 import ListItem, { nameWidth } from "./ListItem";
+import ModalButtons from "../../shared-new/ModalButtons";
+import Form, { id as formInputId } from "./Form";
 
-export default function List(): JSX.Element {
+type Props = {
+  closeModal: () => void;
+};
+
+export default function List({ closeModal }: Props): JSX.Element {
+  const [isCreate, setIsCreate] = useState(false);
   const [editEnvironmentVariableId, setEditEnvironmentVariableId] = useState<
     string | null
   >(null);
@@ -17,12 +24,22 @@ export default function List(): JSX.Element {
 
   const handleCancelClick = (): void => {
     setEditEnvironmentVariableId(null);
-    // setIsCreate(false);
+    setIsCreate(false);
+  };
+
+  // reset forms if selected environment changes
+  useEffect(handleCancelClick, [environmentId]);
+
+  const handleCreateClick = (): void => {
+    setEditEnvironmentVariableId(null); // clear existing forms
+    setIsCreate(true);
+    // focus form if it already exists
+    document.getElementById(formInputId)?.focus();
   };
 
   const handleEditClick = (variableId: string): void => {
     setEditEnvironmentVariableId(variableId);
-    // setIsCreate(false);
+    setIsCreate(false);
   };
 
   const placeholderHtml = data?.environmentVariables?.variables
@@ -74,7 +91,18 @@ export default function List(): JSX.Element {
       <Divider />
       <Box overflow="auto">{variablesHtml}</Box>
       {placeholderHtml}
+      {isCreate && (
+        <>
+          <Divider />
+          <Form onCancelClick={handleCancelClick} />
+        </>
+      )}
       <Divider />
+      <ModalButtons
+        closeModal={closeModal}
+        onCreateClick={handleCreateClick}
+        secondaryLabel={copy.envVariableNew}
+      />
     </>
   );
 }

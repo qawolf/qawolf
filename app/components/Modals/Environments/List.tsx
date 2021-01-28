@@ -7,7 +7,7 @@ import { copy } from "../../../theme/copy";
 import Divider from "../../shared-new/Divider";
 import Text from "../../shared-new/Text";
 import { StateContext } from "../../StateContext";
-import Buttons from "./Buttons";
+import ModalButtons from "../../shared-new/ModalButtons";
 import Form, { id as formInputId } from "./Form";
 import ListItem from "./ListItem";
 
@@ -28,16 +28,16 @@ export default function List({
   const { environmentId, teamId } = useContext(StateContext);
   const { data } = useEnvironments({ team_id: teamId }, { environmentId });
 
+  const handleCancelClick = (): void => {
+    setEditEnvironmentId(null);
+    setIsCreate(false);
+  };
+
   const handleCreateClick = (): void => {
     setEditEnvironmentId(null); // clear existing forms
     setIsCreate(true);
     // focus form if it already exists
     document.getElementById(formInputId)?.focus();
-  };
-
-  const handleCancelClick = (): void => {
-    setEditEnvironmentId(null);
-    setIsCreate(false);
   };
 
   const handleEditClick = (environmentId: string): void => {
@@ -94,7 +94,11 @@ export default function List({
         </>
       )}
       <Divider />
-      <Buttons closeModal={closeModal} onCreateClick={handleCreateClick} />
+      <ModalButtons
+        closeModal={closeModal}
+        onCreateClick={handleCreateClick}
+        secondaryLabel={copy.environmentNew}
+      />
     </Box>
   );
 }

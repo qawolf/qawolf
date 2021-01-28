@@ -50,6 +50,7 @@ const StyledMenu = styled(Menu)`
   position: absolute;
   transform-origin: ${(props) => (props.direction === "up" ? "bottom" : "top")}
     center;
+  z-index: 1;
 
   ${(props) =>
     props.direction === "up"

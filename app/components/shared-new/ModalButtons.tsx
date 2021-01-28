@@ -1,23 +1,25 @@
 import { Box } from "grommet";
 
-import { copy } from "../../../theme/copy";
-import Button from "../../shared-new/AppButton";
-import Add from "../../shared-new/icons/Add";
+import { copy } from "../../theme/copy";
+import Button from "./AppButton";
+import Add from "./icons/Add";
 
 type Props = {
   closeModal: () => void;
   onCreateClick: () => void;
+  secondaryLabel: string;
 };
 
-export default function Buttons({
+export default function ModalButtons({
   closeModal,
   onCreateClick,
+  secondaryLabel,
 }: Props): JSX.Element {
   return (
     <Box direction="row" justify="between" margin={{ top: "medium" }}>
       <Button
         IconComponent={Add}
-        label={copy.environmentNew}
+        label={secondaryLabel}
         onClick={onCreateClick}
         type="secondary"
       />
