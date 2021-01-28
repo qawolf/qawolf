@@ -80,6 +80,9 @@ export const deleteEnvironment = async (
 
   const environment = await findEnvrionment(id, { logger, trx });
 
+  await (trx || db)("groups")
+    .where({ environment_id: id })
+    .update({ environment_id: null });
   await deleteEnvironmentVariablesForEnvironment(id, { logger, trx });
   await (trx || db)("environments").where({ id }).del();
 

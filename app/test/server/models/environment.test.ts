@@ -11,13 +11,16 @@ import { Environment } from "../../../server/types";
 import {
   buildEnvironment,
   buildEnvironmentVariable,
+  buildGroup,
   buildTeam,
+  buildUser,
   logger,
 } from "../utils";
 
 beforeAll(async () => {
   await migrateDb();
 
+  await db("users").insert(buildUser({}));
   return db("teams").insert([buildTeam({}), buildTeam({ i: 2 })]);
 });
 
@@ -76,14 +79,18 @@ describe("deleteEnvironment", () => {
       buildEnvironment({ i: 2, name: "Production" }),
     ]);
 
-    return db("environment_variables").insert([
+    await db("environment_variables").insert([
       buildEnvironmentVariable({ i: 1 }),
       buildEnvironmentVariable({ i: 2 }),
       buildEnvironmentVariable({ environment_id: "environment2Id", i: 3 }),
     ]);
+
+    return db("groups").insert(buildGroup({ environment_id: "environmentId" }));
   });
 
   afterAll(async () => {
+    await db("groups").del();
+
     await db("environment_variables").del();
 
     return db("environments").del();
@@ -107,6 +114,9 @@ describe("deleteEnvironment", () => {
     expect(dbEnvironmentVariables).toMatchObject([
       { id: "environmentVariable3Id" },
     ]);
+
+    const dbGroup = await db("groups").select("*").first();
+    expect(dbGroup.environment_id).toBeNull();
   });
 });
 

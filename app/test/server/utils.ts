@@ -56,6 +56,7 @@ type BuildGroup = {
   deployment_branches?: string;
   deployment_environment?: DeploymentEnvironment;
   deployment_integration_id?: string;
+  environment_id?: string;
   i?: number;
   is_default?: boolean;
   name?: string;
@@ -231,6 +232,7 @@ export const buildGroup = ({
   deployment_branches,
   deployment_environment,
   deployment_integration_id,
+  environment_id,
   i,
   is_default,
   name,
@@ -247,7 +249,7 @@ export const buildGroup = ({
     deployment_branches: deployment_branches || null,
     deployment_environment: deployment_environment || null,
     deployment_integration_id: deployment_integration_id || null,
-    environment_id: null,
+    environment_id: environment_id || null,
     id: `group${finalI === 1 ? "" : i}Id`,
     alert_integration_id: alert_integration_id || null,
     is_default: is_default === undefined ? false : is_default,
