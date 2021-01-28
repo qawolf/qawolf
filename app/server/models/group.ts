@@ -19,6 +19,7 @@ type UpdateGroup = {
   deployment_branches?: string | null;
   deployment_environment?: DeploymentEnvironment | null;
   deployment_integration_id?: string | null;
+  environment_id?: string | null;
   id: string;
   is_email_enabled?: boolean;
   name?: string;
@@ -290,6 +291,7 @@ export const updateGroup = async (
     deployment_branches,
     deployment_environment,
     deployment_integration_id,
+    environment_id,
     id,
     is_email_enabled,
     name,
@@ -318,6 +320,9 @@ export const updateGroup = async (
     }
     if (deployment_integration_id !== undefined) {
       updates.deployment_integration_id = deployment_integration_id;
+    }
+    if (environment_id !== undefined) {
+      updates.environment_id = environment_id;
     }
     if (is_email_enabled !== undefined) {
       updates.is_email_enabled = is_email_enabled;

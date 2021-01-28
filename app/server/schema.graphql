@@ -866,6 +866,12 @@ type Mutation {
     """
     deployment_integration_id: ID
 
+    """
+    Updated environment ID. If this field is omitted, it will not be changed.
+    If it is `null`, it will be cleared.
+    """
+    environment_id: ID
+
     "Test group ID"
     id: ID!
 
