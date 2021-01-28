@@ -481,6 +481,13 @@ export const deleteUser = async (
     .from("team_users")
     .where({ user_id: id });
 
+  await trx("environments")
+    .whereIn(
+      "team_id",
+      teamUsers.map((t) => t.team_id)
+    )
+    .del();
+
   await trx("groups")
     .whereIn(
       "team_id",

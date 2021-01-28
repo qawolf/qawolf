@@ -14,6 +14,32 @@ type UpdateEnvironment = {
   name: string;
 };
 
+const defaultEnvironments = ["Production", "Staging"];
+
+export const createDefaultEnvironments = async (
+  team_id: string,
+  { logger, trx }: ModelOptions
+): Promise<Environment[]> => {
+  const log = logger.prefix("createDefaultEnvironments");
+
+  const environments = defaultEnvironments.map((name) => {
+    return {
+      id: cuid(),
+      name,
+      team_id,
+    };
+  });
+
+  await (trx || db)("environments").insert(environments);
+
+  log.debug(
+    "created",
+    environments.map((e) => e.id)
+  );
+
+  return environments;
+};
+
 export const createEnvironment = async (
   { name, team_id }: CreateEnvironment,
   { logger, trx }: ModelOptions

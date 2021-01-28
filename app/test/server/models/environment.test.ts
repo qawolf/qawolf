@@ -1,5 +1,6 @@
 import { db, dropTestDb, migrateDb } from "../../../server/db";
 import {
+  createDefaultEnvironments,
   createEnvironment,
   deleteEnvironment,
   findEnvironmentsForTeam,
@@ -21,6 +22,23 @@ beforeAll(async () => {
 });
 
 afterAll(() => dropTestDb());
+
+describe("createDefaultEnvironments", () => {
+  afterAll(() => db("environments").del());
+
+  it("creates default environments for a team", async () => {
+    await createDefaultEnvironments("teamId", { logger });
+
+    const environments = await db("environments")
+      .select("*")
+      .orderBy("name", "asc");
+
+    expect(environments).toMatchObject([
+      { name: "Production", team_id: "teamId" },
+      { name: "Staging", team_id: "teamId" },
+    ]);
+  });
+});
 
 describe("createEnvironment", () => {
   afterAll(() => db("environments").del());
