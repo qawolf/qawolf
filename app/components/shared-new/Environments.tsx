@@ -66,6 +66,8 @@ export default function Environments({
 
   const openVariablesModal = (): void => {
     if (!selectedEnvironment) return;
+
+    state.setEnvironmentId(selectedEnvironmentId);
     state.setModal({ name: "envVariables" });
   };
 
