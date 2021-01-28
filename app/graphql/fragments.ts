@@ -33,6 +33,7 @@ export const groupFragment = gql`
     deployment_branches
     deployment_environment
     deployment_integration_id
+    environment_id
     id
     is_default
     is_email_enabled

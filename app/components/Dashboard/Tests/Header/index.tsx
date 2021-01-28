@@ -12,6 +12,7 @@ import PlayButton from "../../../shared/PlayButton";
 import { StateContext } from "../../../StateContext";
 import GroupName from "./GroupName";
 import SelectAlert from "./SelectAlert";
+import SelectEnvironment from "./SelectEnvironment";
 import SelectTrigger from "./SelectTrigger";
 
 type Props = {
@@ -57,6 +58,7 @@ export default function Header({ group, selectedIds }: Props): JSX.Element {
         <GroupName group={group} />
         <SelectTrigger group={group} integrations={gitHubIntegrations} />
         <SelectAlert group={group} integrations={slackIntegrations} />
+        <SelectEnvironment group={group} />
       </Box>
       <PlayButton
         disabled={loading}

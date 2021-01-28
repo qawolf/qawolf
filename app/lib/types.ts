@@ -35,6 +35,7 @@ export type Group = {
   deployment_branches: string | null;
   deployment_environment: DeploymentEnvironment | null;
   deployment_integration_id: string | null;
+  environment_id: string | null;
   id: string;
   is_default: boolean;
   is_email_enabled: boolean;

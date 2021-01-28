@@ -180,6 +180,9 @@ type Group {
   "The ID of a deployment integration associated with this test group"
   deployment_integration_id: ID
 
+  "The ID of an environment associated with this test group"
+  environment_id: ID
+
   "Test group ID"
   id: String!
 

@@ -248,6 +248,7 @@ export const updateGroupMutation = gql`
     $deployment_branches: String
     $deployment_environment: DeploymentEnvironment
     $deployment_integration_id: ID
+    $environment_id: ID
     $id: ID!
     $is_email_enabled: Boolean
     $name: String
@@ -258,6 +259,7 @@ export const updateGroupMutation = gql`
       deployment_branches: $deployment_branches
       deployment_environment: $deployment_environment
       deployment_integration_id: $deployment_integration_id
+      environment_id: $environment_id
       id: $id
       is_email_enabled: $is_email_enabled
       name: $name

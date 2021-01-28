@@ -17,7 +17,14 @@ import Configure from "./icons/Configure";
 import Edit from "./icons/Edit";
 import Select from "./Select";
 import Action from "./Select/Action";
+import { Direction } from "./Select/Chooser";
 import Option from "./Select/Option";
+
+type Props = {
+  direction?: Direction;
+  onEnvironmentClick: (environmentId: string) => void;
+  selectedEnvironmentId: string | null;
+};
 
 const dividerId = "environments-divider";
 const width = "180px";
@@ -34,12 +41,16 @@ const StyledBox = styled(Box)`
   }
 `;
 
-export default function EnvVariables(): JSX.Element {
+export default function Environments({
+  direction,
+  onEnvironmentClick,
+  selectedEnvironmentId,
+}: Props): JSX.Element {
   const { environmentId, teamId } = useContext(StateContext);
   const { data } = useEnvironments({ team_id: teamId }, { environmentId });
 
   const selectedEnvironment = (data?.environments || []).find(
-    (e) => e.id === environmentId
+    (e) => e.id === selectedEnvironmentId
   );
 
   let label = copy.loading;
@@ -61,10 +72,10 @@ export default function EnvVariables(): JSX.Element {
   const optionsHtml = (data?.environments || []).map((e) => {
     return (
       <Option
-        isSelected={e.id === environmentId}
+        isSelected={e.id === selectedEnvironmentId}
         key={e.id}
         label={e.name}
-        onClick={() => state.setEnvironmentId(e.id)}
+        onClick={() => onEnvironmentClick(e.id)}
       />
     );
   });
@@ -89,7 +100,7 @@ export default function EnvVariables(): JSX.Element {
           width={borderSize.xsmall}
         />
         <Select
-          direction="up"
+          direction={direction || "up"}
           label={label}
           noBorderSide="left"
           type="dark"
