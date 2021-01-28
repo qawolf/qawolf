@@ -1,11 +1,10 @@
-import { Box, Keyboard } from "grommet";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 import { useDeleteEnvironment } from "../../../hooks/mutations";
 import { Environment } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
-import Button from "../../shared-new/AppButton";
 import TextInput from "../../shared-new/AppTextInput";
+import ModalConfirmDelete from "../../shared-new/ModalConfirmDelete";
 import Text from "../../shared-new/Text";
 
 type Props = {
@@ -46,38 +45,26 @@ export default function ConfirmDelete({
   };
 
   return (
-    <Keyboard onEnter={handleDeleteClick}>
-      <Box>
-        <Text
-          color="gray9"
-          margin={{ bottom: "medium", top: "xxsmall" }}
-          size="componentParagraph"
-          style={{ display: "inline" }}
-        >
-          {copy.environmentDeleteConfirm} <b>{environment.name}</b>{" "}
-          {copy.environmentDeleteConfirm2}
-        </Text>
-        <TextInput
-          hasError={hasError}
-          onChange={handleChange}
-          placeholder={environment.name}
-          ref={ref}
-          value={name}
-        />
-        <Box direction="row" justify="between" margin={{ top: "medium" }}>
-          <Button
-            label={copy.cancel}
-            onClick={onCancelClick}
-            type="secondary"
-          />
-          <Button
-            isDisabled={loading}
-            label={copy.delete}
-            onClick={handleDeleteClick}
-            type="danger"
-          />
-        </Box>
-      </Box>
-    </Keyboard>
+    <ModalConfirmDelete
+      isDeleteDisabled={loading}
+      onCancelClick={onCancelClick}
+      onDeleteClick={handleDeleteClick}
+    >
+      <Text
+        color="gray9"
+        margin={{ bottom: "medium", top: "xxsmall" }}
+        size="componentParagraph"
+      >
+        {copy.environmentDeleteConfirm} <b>{environment.name}</b>{" "}
+        {copy.environmentDeleteConfirm2}
+      </Text>
+      <TextInput
+        hasError={hasError}
+        onChange={handleChange}
+        placeholder={environment.name}
+        ref={ref}
+        value={name}
+      />
+    </ModalConfirmDelete>
   );
 }

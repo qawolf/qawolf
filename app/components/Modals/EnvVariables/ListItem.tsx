@@ -14,6 +14,7 @@ type Props = {
   editEnvironmentVariableId: string;
   environmentVariable: EnvironmentVariable;
   onCancelClick: () => void;
+  onDeleteClick: () => void;
   onEditClick: (editEnvironmentVariableId: string) => void;
 };
 
@@ -23,6 +24,7 @@ export default function ListItem({
   editEnvironmentVariableId,
   environmentVariable,
   onCancelClick,
+  onDeleteClick,
   onEditClick,
 }: Props): JSX.Element {
   const [isHover, setIsHover] = useState(false);
@@ -68,7 +70,7 @@ export default function ListItem({
           {isHover ? environmentVariable.value : copy.encrypted}
         </Text>
         <EditDeleteButtons
-          onDeleteClick={() => {}}
+          onDeleteClick={onDeleteClick}
           onEditClick={handleEditClick}
         />
       </Box>

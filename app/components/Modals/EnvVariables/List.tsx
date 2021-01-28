@@ -2,6 +2,7 @@ import { Box } from "grommet";
 import { ReactNode, useContext, useEffect, useState } from "react";
 
 import { useEnvironmentVariables } from "../../../hooks/queries";
+import { EnvironmentVariable } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import Divider from "../../shared-new/Divider";
 import ModalButtons from "../../shared-new/ModalButtons";
@@ -12,9 +13,13 @@ import ListItem, { nameWidth } from "./ListItem";
 
 type Props = {
   closeModal: () => void;
+  onDeleteClick: (environmentVariable: EnvironmentVariable) => void;
 };
 
-export default function List({ closeModal }: Props): JSX.Element {
+export default function List({
+  closeModal,
+  onDeleteClick,
+}: Props): JSX.Element {
   const [isCreate, setIsCreate] = useState(false);
   const [editEnvironmentVariableId, setEditEnvironmentVariableId] = useState<
     string | null
@@ -67,6 +72,7 @@ export default function List({ closeModal }: Props): JSX.Element {
           environmentVariable={environmentVariable}
           key={environmentVariable.id}
           onCancelClick={handleCancelClick}
+          onDeleteClick={() => onDeleteClick(environmentVariable)}
           onEditClick={handleEditClick}
         />
       );

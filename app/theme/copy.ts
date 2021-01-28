@@ -93,6 +93,9 @@ export const copy = {
   emptyTriggers: "You don't have any triggers yet!",
   encrypted: "Encrypted",
   enterUrl: "Enter your URL to create a test with",
+  envVariableDelete: "Delete environment variable",
+  envVariableDeleteConfirm:
+    "The following environment variable will be permanently deleted. Are you sure you want to continue?",
   envVariableNamePlaceholder: "MY_VARIABLE",
   envVariableNew: "Add variable",
   envVariableValuePlaceholder: "value",
