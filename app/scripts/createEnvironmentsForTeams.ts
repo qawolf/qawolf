@@ -4,9 +4,11 @@ import { cuid } from "../server/utils";
 (async () => {
   const teams = await db("teams").select("*");
 
-  return db.transaction(async (trx) => {
+  await db.transaction(async (trx) => {
     await Promise.all(
       teams.map(async (team) => {
+        console.log(`updating team ${team.id}`);
+
         // only create environments for groups that have environment variables
         const groups = await trx("groups")
           .select("groups.*" as "*")
@@ -58,9 +60,11 @@ import { cuid } from "../server/utils";
               .update({ environment_id: environment.id });
           })
         );
+
+        console.log(`updated team ${team.id}`);
       })
     );
   });
 
-  console.log("done");
+  console.log("success");
 })();
