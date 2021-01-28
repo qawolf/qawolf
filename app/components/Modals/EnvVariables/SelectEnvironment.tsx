@@ -14,7 +14,7 @@ export default function SelectEnvironment(): JSX.Element {
   const { environmentId, teamId } = useContext(StateContext);
   // have internal state for selected environment so editing variables
   // doesn't change the currently selected environment
-  const [selectedEnvrionmentId, setSelectedEnvironmentId] = useState(
+  const [selectedEnvironmentId, setSelectedEnvironmentId] = useState(
     environmentId
   );
 
@@ -22,13 +22,13 @@ export default function SelectEnvironment(): JSX.Element {
 
   const environments = data?.environments || [];
   const selectedEnvironment = environments.find(
-    (e) => e.id === selectedEnvrionmentId
+    (e) => e.id === selectedEnvironmentId
   );
 
   const optionsHtml = environments.map((e) => {
     return (
       <Option
-        isSelected={e.id === selectedEnvrionmentId}
+        isSelected={e.id === selectedEnvironmentId}
         key={e.id}
         label={e.name}
         onClick={() => setSelectedEnvironmentId(e.id)}

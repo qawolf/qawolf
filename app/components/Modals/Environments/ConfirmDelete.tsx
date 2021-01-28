@@ -40,7 +40,7 @@ export default function ConfirmDelete({
 
     setHasError(false);
     deleteEnvironment({ variables: { id: environment.id } }).then(
-      onClose // return to main screen after envrionment deleted
+      onClose // return to main screen after environment deleted
     );
   };
 

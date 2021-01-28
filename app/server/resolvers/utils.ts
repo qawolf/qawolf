@@ -3,7 +3,7 @@ import { Transaction } from "knex";
 
 import { AuthenticationError } from "../errors";
 import { Logger } from "../Logger";
-import { findEnvrionment } from "../models/environment";
+import { findEnvironment } from "../models/environment";
 import { findEnvironmentVariable } from "../models/environment_variable";
 import { findGroup } from "../models/group";
 import { findSuite } from "../models/suite";
@@ -86,7 +86,7 @@ export const ensureEnvironmentAccess = async ({
   const teamIds = ensureTeams({ teams, logger }).map((team) => team.id);
   log.debug("ensure teams", teamIds, "can access environment", environment_id);
 
-  const environment = await findEnvrionment(environment_id, { logger, trx });
+  const environment = await findEnvironment(environment_id, { logger, trx });
   const selectedTeam = teams!.find((team) => environment.team_id === team.id);
 
   if (!selectedTeam) {

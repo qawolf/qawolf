@@ -21,7 +21,7 @@ type CreateEnvironmentVariable = {
   value: string;
 };
 
-type UpdateEnvrionmentVariable = {
+type UpdateEnvironmentVariable = {
   id: string;
   name: string;
   value: string;
@@ -177,7 +177,7 @@ export const findSystemEnvironmentVariable = async (
 };
 
 export const updateEnvironmentVariable = async (
-  { id, name, value }: UpdateEnvrionmentVariable,
+  { id, name, value }: UpdateEnvironmentVariable,
   { logger, trx }: ModelOptions
 ): Promise<EnvironmentVariable> => {
   const log = logger.prefix("updateEnvironmentVariable");

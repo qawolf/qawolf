@@ -4,7 +4,7 @@ import {
   createEnvironment,
   deleteEnvironment,
   findEnvironmentsForTeam,
-  findEnvrionment,
+  findEnvironment,
   updateEnvironment,
 } from "../../../server/models/environment";
 import { Environment } from "../../../server/types";
@@ -128,14 +128,14 @@ describe("findEnvironment", () => {
   afterAll(() => db("environments").del());
 
   it("finds an environment", async () => {
-    const environment = await findEnvrionment("environmentId", { logger });
+    const environment = await findEnvironment("environmentId", { logger });
 
     expect(environment).toMatchObject({ name: "Staging", team_id: "teamId" });
   });
 
   it("throws an error if environment not found", async () => {
     const testFn = async (): Promise<Environment> => {
-      return findEnvrionment("fakeId", { logger });
+      return findEnvironment("fakeId", { logger });
     };
 
     await expect(testFn()).rejects.toThrowError("not found");

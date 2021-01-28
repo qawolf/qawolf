@@ -78,7 +78,7 @@ export const deleteEnvironment = async (
 ): Promise<Environment> => {
   const log = logger.prefix("deleteEnvironment");
 
-  const environment = await findEnvrionment(id, { logger, trx });
+  const environment = await findEnvironment(id, { logger, trx });
 
   await (trx || db)("groups")
     .where({ environment_id: id })
@@ -91,7 +91,7 @@ export const deleteEnvironment = async (
   return environment;
 };
 
-export const findEnvrionment = async (
+export const findEnvironment = async (
   id: string,
   { logger, trx }: ModelOptions
 ): Promise<Environment> => {
@@ -136,7 +136,7 @@ export const updateEnvironment = async (
     throw new Error("Must provide name");
   }
 
-  const existingEnvironment = await findEnvrionment(id, { logger, trx });
+  const existingEnvironment = await findEnvironment(id, { logger, trx });
 
   const updates = { name, updated_at: new Date().toISOString() };
 

@@ -360,13 +360,13 @@ describe("updateEnvironmentVariable", () => {
       value: "newValue",
     });
 
-    const dbEnvrionmentVariable = await findEnvironmentVariable(
+    const dbEnvironmentVariable = await findEnvironmentVariable(
       "environmentVariableId",
       { logger }
     );
 
-    expect(dbEnvrionmentVariable.value).not.toBe("newValue");
-    expect(decrypt(dbEnvrionmentVariable.value)).toBe("newValue");
+    expect(dbEnvironmentVariable.value).not.toBe("newValue");
+    expect(decrypt(dbEnvironmentVariable.value)).toBe("newValue");
   });
 
   it("formats name if needed", async () => {
