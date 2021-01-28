@@ -17,7 +17,7 @@ export default function Environments({ closeModal }: Props): JSX.Element {
     setDeleteEnvironment,
   ] = useState<Environment | null>(null);
 
-  const handleCancelClick = (): void => setDeleteEnvironment(null);
+  const handleClose = (): void => setDeleteEnvironment(null);
 
   const handleDeleteClick = (environment: Environment): void => {
     setDeleteEnvironment(environment);
@@ -29,10 +29,7 @@ export default function Environments({ closeModal }: Props): JSX.Element {
       label={deleteEnvironment ? copy.environmentDelete : copy.environmentsEdit}
     >
       {deleteEnvironment ? (
-        <ConfirmDelete
-          environment={deleteEnvironment}
-          onCancelClick={handleCancelClick}
-        />
+        <ConfirmDelete environment={deleteEnvironment} onClose={handleClose} />
       ) : (
         <>
           <Text

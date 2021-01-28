@@ -10,12 +10,12 @@ import Text from "../../shared-new/Text";
 
 type Props = {
   environmentVariable: EnvironmentVariable;
-  onCancelClick: () => void;
+  onClose: () => void;
 };
 
 export default function ConfirmDelete({
   environmentVariable,
-  onCancelClick,
+  onClose,
 }: Props): JSX.Element {
   const [
     deleteEnvironmentVariable,
@@ -25,14 +25,14 @@ export default function ConfirmDelete({
   const handleDeleteClick = (): void => {
     deleteEnvironmentVariable({
       variables: { id: environmentVariable.id },
-      // return to main screen after envrionment variable deleted
-    }).then(onCancelClick);
+      // return to main screen after environment variable deleted
+    }).then(onClose);
   };
 
   return (
     <ModalConfirmDelete
       isDeleteDisabled={loading}
-      onCancelClick={onCancelClick}
+      onCancelClick={onClose}
       onDeleteClick={handleDeleteClick}
     >
       <Text
