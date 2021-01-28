@@ -1,5 +1,5 @@
 import { Box } from "grommet";
-import { ReactNode, useContext } from "react";
+import { ReactNode, useContext, useState } from "react";
 import { useEnvironmentVariables } from "../../../hooks/queries";
 import { copy } from "../../../theme/copy";
 import Divider from "../../shared-new/Divider";
@@ -7,10 +7,23 @@ import Text from "../../shared-new/Text";
 import { StateContext } from "../../StateContext";
 import ListItem, { nameWidth } from "./ListItem";
 
-// TODO: handle long list
 export default function List(): JSX.Element {
+  const [editEnvironmentVariableId, setEditEnvironmentVariableId] = useState<
+    string | null
+  >(null);
+
   const { environmentId } = useContext(StateContext);
   const { data } = useEnvironmentVariables({ environment_id: environmentId });
+
+  const handleCancelClick = (): void => {
+    setEditEnvironmentVariableId(null);
+    // setIsCreate(false);
+  };
+
+  const handleEditClick = (variableId: string): void => {
+    setEditEnvironmentVariableId(variableId);
+    // setIsCreate(false);
+  };
 
   const placeholderHtml = data?.environmentVariables?.variables
     .length ? null : (
@@ -32,8 +45,11 @@ export default function List(): JSX.Element {
 
       variablesHtml.push(
         <ListItem
+          editEnvironmentVariableId={editEnvironmentVariableId}
           environmentVariable={environmentVariable}
           key={environmentVariable.id}
+          onCancelClick={handleCancelClick}
+          onEditClick={handleEditClick}
         />
       );
 

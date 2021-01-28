@@ -30,7 +30,7 @@ export default function EditDeleteButtons({
   onEditClick,
 }: Props) {
   return (
-    <Box direction="row" margin={{ vertical: "xxsmall" }}>
+    <Box direction="row" flex={false} margin={{ vertical: "xxsmall" }}>
       <Button
         IconComponent={Edit}
         a11yTitle={copy.edit}

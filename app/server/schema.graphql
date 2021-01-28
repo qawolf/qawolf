@@ -840,7 +840,7 @@ type Mutation {
 
     "Updated environment variable value"
     value: String!
-  ): Environment!
+  ): EnvironmentVariable!
 
   """
   Updates a test group by ID.

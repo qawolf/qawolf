@@ -1,5 +1,4 @@
-import { Box, Keyboard } from "grommet";
-import { ChangeEvent, useContext, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 
 import {
   useCreateEnvironment,
@@ -7,9 +6,9 @@ import {
 } from "../../../hooks/mutations";
 import { Environment } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
-import Button from "../../shared-new/AppButton";
 import TextInput from "../../shared-new/AppTextInput";
 import { StateContext } from "../../StateContext";
+import ListItemForm from "../../shared-new/ListItemForm";
 
 type Props = {
   environment?: Environment;
@@ -29,14 +28,12 @@ export default function Form({
 
   const [
     createEnvironment,
-    { loading: createLoading },
+    { loading: isCreateLoading },
   ] = useCreateEnvironment();
-  const [updateEnvironment, { loading: editLoading }] = useUpdateEnvironment();
-
-  // focus input when form renders
-  useEffect(() => {
-    document.getElementById(id)?.focus();
-  }, []);
+  const [
+    updateEnvironment,
+    { loading: isEditLoading },
+  ] = useUpdateEnvironment();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setName(e.target.value);
@@ -62,28 +59,19 @@ export default function Form({
   };
 
   return (
-    <Keyboard onEnter={handleSaveClick}>
-      <Box align="center" direction="row" margin={{ vertical: "xxsmall" }}>
-        <TextInput
-          hasError={hasError}
-          id={id}
-          onChange={handleChange}
-          placeholder={copy.environmentName}
-          value={name}
-        />
-        <Button
-          label={copy.cancel}
-          margin={{ horizontal: "xxsmall" }}
-          onClick={onCancelClick}
-          type="secondary"
-        />
-        <Button
-          isDisabled={createLoading || editLoading}
-          label={copy.save}
-          onClick={handleSaveClick}
-          type="primary"
-        />
-      </Box>
-    </Keyboard>
+    <ListItemForm
+      focusId={id}
+      isSaveDisabled={isCreateLoading || isEditLoading}
+      onCancelClick={onCancelClick}
+      onSaveClick={handleSaveClick}
+    >
+      <TextInput
+        hasError={hasError}
+        id={id}
+        onChange={handleChange}
+        placeholder={copy.environmentName}
+        value={name}
+      />
+    </ListItemForm>
   );
 }
