@@ -1,8 +1,8 @@
 import { copy } from "../../../theme/copy";
 import Modal from "../../shared-new/Modal";
 import Text from "../../shared-new/Text";
-import SelectEnvironment from "./SelectEnvironment";
 import List from "./List";
+import SelectEnvironment from "./SelectEnvironment";
 
 type Props = {
   closeModal: () => void;

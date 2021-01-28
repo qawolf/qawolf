@@ -1,9 +1,9 @@
 import { Environment } from "../../../lib/types";
 import { overflowStyle } from "../../../theme/theme-new";
-import Text from "../../shared-new/Text";
 import EditDeleteButtons, {
   StyledBox,
 } from "../../shared-new/EditDeleteButtons";
+import Text from "../../shared-new/Text";
 import Form from "./Form";
 
 type Props = {

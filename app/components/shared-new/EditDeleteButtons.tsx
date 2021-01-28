@@ -28,7 +28,7 @@ export const StyledBox = styled(Box)`
 export default function EditDeleteButtons({
   onDeleteClick,
   onEditClick,
-}: Props) {
+}: Props): JSX.Element {
   return (
     <Box direction="row" flex={false} margin={{ vertical: "xxsmall" }}>
       <Button

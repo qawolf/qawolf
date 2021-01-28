@@ -1,5 +1,6 @@
 import { Box } from "grommet";
 import { ChangeEvent, useContext, useState } from "react";
+
 import {
   useCreateEnvironmentVariable,
   useUpdateEnvironmentVariable,
@@ -7,7 +8,6 @@ import {
 import { EnvironmentVariable } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import { edgeSize } from "../../../theme/theme-new";
-
 import TextInput from "../../shared-new/AppTextInput";
 import ListItemForm from "../../shared-new/ListItemForm";
 import { StateContext } from "../../StateContext";

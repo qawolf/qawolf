@@ -7,8 +7,8 @@ import {
 import { Environment } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import TextInput from "../../shared-new/AppTextInput";
-import { StateContext } from "../../StateContext";
 import ListItemForm from "../../shared-new/ListItemForm";
+import { StateContext } from "../../StateContext";
 
 type Props = {
   environment?: Environment;

@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Transaction } from "knex";
 
-import { db } from "../db";
 import { AuthenticationError } from "../errors";
 import { Logger } from "../Logger";
 import { findEnvrionment } from "../models/environment";

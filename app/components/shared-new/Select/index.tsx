@@ -1,7 +1,7 @@
 import { Box, BoxProps } from "grommet";
 import { ReactNode, useRef, useState } from "react";
-import { useOnClickOutside } from "../../../hooks/onClickOutside";
 
+import { useOnClickOutside } from "../../../hooks/onClickOutside";
 import { Side } from "../../../lib/types";
 import Chooser, { Direction, Type } from "./Chooser";
 import Menu from "./Menu";

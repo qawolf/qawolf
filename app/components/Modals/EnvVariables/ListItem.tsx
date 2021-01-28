@@ -1,12 +1,13 @@
 import { Box } from "grommet";
+import { useState } from "react";
+
 import { EnvironmentVariable } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import { overflowStyle } from "../../../theme/theme-new";
-import Text from "../../shared-new/Text";
 import EditDeleteButtons, {
   StyledBox,
 } from "../../shared-new/EditDeleteButtons";
-import { useState } from "react";
+import Text from "../../shared-new/Text";
 import Form from "./Form";
 
 type Props = {
