@@ -2,7 +2,6 @@ import Header from "../../components/Docs/Header";
 import Image from "../../components/Docs/Image";
 import Layout from "../../components/Docs/Layout";
 import SubHeader from "../../components/Docs/SubHeader";
-import Video from "../../components/Docs/Video";
 
 <Layout>
 
@@ -14,13 +13,11 @@ Environment variables can also be used to change the behavior of your test by gr
 
 In this tutorial, we'll use environment variables in our QA Wolf test.
 
-<Video youTubeId="WLj9tY7orLw" />
-
 <SubHeader>Create an Environment Variable</SubHeader>
 
-Each group in QA Wolf has its own set of environment variables.
+Environments are collections of environment variables in QA Wolf. When you sign up, QA Wolf creates Staging and Production environments for your team by default. Learn more about managing environments <a href="#manage-environments">here</a>.
 
-You can access a group's environment variables by clicking the wrench icon next to the group name. You can do this from the test editor or from the dashboard.
+You can edit the variables in an environment by clicking on the configure button next to the environment name. You can do this from the test editor or from the dashboard.
 
 <Image
   alt="Manage environment variables from editor"
@@ -36,7 +33,7 @@ You can access a group's environment variables by clicking the wrench icon next 
   width={1414}
 />
 
-Clicking on the wrench icon opens a popup where you can manage environment variables.
+Clicking on the configure button opens a popup where you can manage environment variables. In this tutorial, we'll add a variable to the Staging environment.
 
 To create an environment variable, fill out the name and value fields before pressing the "Add" button. In our example, we name our variable `TODO_TEXT` and give it a value of `secret todo`.
 
@@ -91,5 +88,11 @@ If we run our test, it will now create a todo with the value `secret todo`, whic
   src="/docs/use-environment-variables/run-test-environment-variable.png"
   width={1600}
 />
+
+<SubHeader>Manage Environments</SubHeader>
+
+Environments are collections of environment variables in QA Wolf. When you sign up, QA Wolf creates Staging and Production environments for your team by default.
+
+Environments can be assigned to test groups. When a group runs, it will have access to the specified environment variables.
 
 </Layout>
