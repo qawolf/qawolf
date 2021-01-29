@@ -66,6 +66,25 @@ export type VideoChapter = {
   start: number;
 };
 
+export type VideoMetadataChapter = {
+  end: number;
+  end_time: string;
+  id: number;
+  start: number;
+  start_time: string;
+  tags: Record<string, string>;
+  time_base: string;
+};
+
+export type VideoMetadataFormat = {
+  duration: number;
+};
+
+export type VideoMetadata = {
+  chapters?: VideoMetadataChapter[];
+  format?: VideoMetadataFormat;
+};
+
 export type BrowserName = "chromium" | "firefox" | "webkit";
 
 export type Callback<S = void, T = void> = (data?: S) => T;

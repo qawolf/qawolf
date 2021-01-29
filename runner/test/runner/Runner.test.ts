@@ -1,6 +1,5 @@
 // Xvfb :0 -screen 0 1288x804x24 -listen tcp &
 // DEBUG=qawolf* npm run test Runner.test.ts
-import { probeVideoFile } from "../../src/services/ffprobe";
 import { Environment } from "../../src/environment/Environment";
 import { LogArtifactHook } from "../../src/runner/LogArtifactHook";
 import { createHooks, Runner } from "../../src/runner/Runner";
@@ -155,7 +154,8 @@ console.log("Line 2");`;
     });
 
     // Exact start and end times will vary, but we can do some simple sanity checks
-    const [chapter1, chapter2] = videoMetadata.chapters;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const [chapter1, chapter2] = videoMetadata.chapters!;
 
     expect(chapter1.end).toBe(chapter2.start);
     expect(chapter1.end_time).toBe(chapter2.start_time);

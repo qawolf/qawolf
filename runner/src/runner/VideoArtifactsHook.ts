@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import Debug from "debug";
-import { RunHook, RunProgress } from "../types";
 import { intersection, noop } from "lodash";
 
 import { uploadFile } from "../services/aws";
 import { VideoCapture } from "../services/VideoCapture";
+import { RunHook, RunProgress } from "../types";
 import { Artifacts } from "../types";
 
 const debug = Debug("qawolf:VideoArtifactsHook");

@@ -3,7 +3,7 @@ import axios from "axios";
 import Debug from "debug";
 
 import config from "../config";
-import { Run, Suite } from "../types";
+import { Run } from "../types";
 
 type GraphQLRequestData = {
   query: string;

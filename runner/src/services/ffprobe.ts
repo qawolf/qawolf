@@ -2,6 +2,7 @@ import { execFile as execFileWithCallback } from "child_process";
 import util from "util";
 
 import config from "../config";
+import { VideoMetadata } from "../types";
 
 const execFile = util.promisify(execFileWithCallback);
 
@@ -13,7 +14,7 @@ export type ProbeVideoFileOptions = {
 export const probeVideoFile = async (
   videoPath: string,
   options: ProbeVideoFileOptions = {}
-) => {
+): Promise<VideoMetadata> => {
   const args = [];
 
   if (options.showChapters === true) {
