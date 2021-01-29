@@ -101,7 +101,10 @@ export default function List({
       {isCreate && (
         <>
           <Divider />
-          <Form onCancelClick={handleCancelClick} />
+          <Form
+            environmentId={environmentId}
+            onCancelClick={handleCancelClick}
+          />
         </>
       )}
       <Divider />
