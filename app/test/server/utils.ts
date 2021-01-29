@@ -5,6 +5,7 @@ import { encrypt } from "../../server/models/encrypt";
 import {
   ApiKey,
   DeploymentEnvironment,
+  Environment,
   EnvironmentVariable,
   GitHubCommitStatus,
   Group,
@@ -33,8 +34,14 @@ type BuildApiKey = {
   token_digest?: string;
 };
 
+type BuildEnvironment = {
+  i?: number;
+  name?: string;
+  team_id?: string;
+};
+
 type BuildEnvironmentVariable = {
-  group_id?: string;
+  environment_id?: string;
   i?: number;
   name?: string;
   team_id?: string;
@@ -49,6 +56,7 @@ type BuildGroup = {
   deployment_branches?: string;
   deployment_environment?: DeploymentEnvironment;
   deployment_integration_id?: string;
+  environment_id?: string;
   i?: number;
   is_default?: boolean;
   name?: string;
@@ -168,8 +176,22 @@ export const buildApiKey = ({
   };
 };
 
+export const buildEnvironment = ({
+  i,
+  name,
+  team_id,
+}: BuildEnvironment): Environment => {
+  const finalI = i || 1;
+
+  return {
+    id: `environment${finalI === 1 ? "" : i}Id`,
+    name: name || "Staging",
+    team_id: team_id || "teamId",
+  };
+};
+
 export const buildEnvironmentVariable = ({
-  group_id,
+  environment_id,
   i,
   name,
   team_id,
@@ -179,7 +201,7 @@ export const buildEnvironmentVariable = ({
 
   return {
     created_at: minutesFromNow(),
-    group_id: group_id || "groupId",
+    environment_id: environment_id || "environmentId",
     id: `environmentVariable${finalI === 1 ? "" : i}Id`,
     name: name || `ENV_VARIABLE${finalI === 1 ? "" : "_" + i}`,
     team_id: team_id || "teamId",
@@ -210,6 +232,7 @@ export const buildGroup = ({
   deployment_branches,
   deployment_environment,
   deployment_integration_id,
+  environment_id,
   i,
   is_default,
   name,
@@ -226,6 +249,7 @@ export const buildGroup = ({
     deployment_branches: deployment_branches || null,
     deployment_environment: deployment_environment || null,
     deployment_integration_id: deployment_integration_id || null,
+    environment_id: environment_id || null,
     id: `group${finalI === 1 ? "" : i}Id`,
     alert_integration_id: alert_integration_id || null,
     is_default: is_default === undefined ? false : is_default,
@@ -458,6 +482,13 @@ export const deleteUser = async (
     .select("*")
     .from("team_users")
     .where({ user_id: id });
+
+  await trx("environments")
+    .whereIn(
+      "team_id",
+      teamUsers.map((t) => t.team_id)
+    )
+    .del();
 
   await trx("groups")
     .whereIn(

@@ -8,11 +8,11 @@ import { routes } from "../../../../lib/routes";
 import { Group } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import { edgeSize } from "../../../../theme/theme";
-import EnvVariableSettings from "../../../shared/EnvVariablesSettings";
 import PlayButton from "../../../shared/PlayButton";
 import { StateContext } from "../../../StateContext";
 import GroupName from "./GroupName";
 import SelectAlert from "./SelectAlert";
+import SelectEnvironment from "./SelectEnvironment";
 import SelectTrigger from "./SelectTrigger";
 
 type Props = {
@@ -56,9 +56,9 @@ export default function Header({ group, selectedIds }: Props): JSX.Element {
     >
       <Box align="center" direction="row">
         <GroupName group={group} />
-        <EnvVariableSettings group={group} />
         <SelectTrigger group={group} integrations={gitHubIntegrations} />
         <SelectAlert group={group} integrations={slackIntegrations} />
+        <SelectEnvironment group={group} />
       </Box>
       <PlayButton
         disabled={loading}

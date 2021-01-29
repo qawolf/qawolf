@@ -6,9 +6,16 @@ import {
 import { createGitHubSignInUrlResolver } from "./resolvers/auth";
 import { dashboardResolver } from "./resolvers/dashboard";
 import {
+  createEnvironmentResolver,
+  deleteEnvironmentResolver,
+  environmentsResolver,
+  updateEnvironmentResolver,
+} from "./resolvers/environment";
+import {
   createEnvironmentVariableResolver,
   deleteEnvironmentVariableResolver,
   environmentVariablesResolver,
+  updateEnvironmentVariableResolver,
 } from "./resolvers/environment_variable";
 import { createGitHubIntegrationsResolver } from "./resolvers/github";
 import {
@@ -74,9 +81,10 @@ export const resolvers = {
   Mutation: {
     acceptInvite: acceptInviteResolver,
     createApiKey: createApiKeyResolver,
+    createEnvironment: createEnvironmentResolver,
+    createEnvironmentVariable: createEnvironmentVariableResolver,
     createGitHubIntegrations: createGitHubIntegrationsResolver,
     createGroup: createGroupResolver,
-    createEnvironmentVariable: createEnvironmentVariableResolver,
     createInvites: createInvitesResolver,
     createSignInUrl: createGitHubSignInUrlResolver,
     createSlackIntegration: createSlackIntegrationResolver,
@@ -84,6 +92,7 @@ export const resolvers = {
     createSuite: createSuiteResolver,
     createTest: createTestResolver,
     deleteApiKey: deleteApiKeyResolver,
+    deleteEnvironment: deleteEnvironmentResolver,
     deleteEnvironmentVariable: deleteEnvironmentVariableResolver,
     deleteGroup: deleteGroupResolver,
     deleteTests: deleteTestsResolver,
@@ -91,6 +100,8 @@ export const resolvers = {
     sendLoginCode: sendLoginCodeResolver,
     signInWithEmail: signInWithEmailResolver,
     signInWithGitHub: signInWithGitHubResolver,
+    updateEnvironment: updateEnvironmentResolver,
+    updateEnvironmentVariable: updateEnvironmentVariableResolver,
     updateGroup: updateGroupResolver,
     updateGroupTests: updateGroupTestsResolver,
     updateRun: updateRunResolver,
@@ -103,6 +114,7 @@ export const resolvers = {
     apiKeys: apiKeysResolver,
     currentUser: currentUserResolver,
     dashboard: dashboardResolver,
+    environments: environmentsResolver,
     environmentVariables: environmentVariablesResolver,
     groups: groupsResolver,
     integrations: integrationsResolver,

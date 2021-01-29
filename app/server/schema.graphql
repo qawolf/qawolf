@@ -73,13 +73,25 @@ enum DeploymentEnvironment {
   production
 }
 
-"A single defined environment variable for a test group"
+"An environment for a team"
+type Environment {
+  "Environment ID"
+  id: ID!
+
+  "Environment name"
+  name: String!
+
+  "Team associated with this environment"
+  team_id: ID!
+}
+
+"A single defined environment variable for an environment"
 type EnvironmentVariable {
   "Date and time at which the environment variable record was created"
   created_at: String!
 
-  "Test group associated with this environment variable"
-  group_id: ID!
+  "Environment associated with this environment variable"
+  environment_id: ID!
 
   "Environment variable ID"
   id: ID!
@@ -89,19 +101,20 @@ type EnvironmentVariable {
 
   "Team associated with this environment variable"
   team_id: ID!
+
+  "Variable value, stored encrypted in the database"
+  value: String!
 }
 
 "A grouper for environment variable records and resolved environment variables with values"
 type EnvironmentVariables {
   """
-  A JSON object with key:value env variables, with decrypted values. This
-  includes all environment variables from the team's default test group.
+  A JSON object with key:value env variables, with decrypted values.
   """
   env: String!
 
   """
-  All environment variable records for the group. Unlike the 'env' field these
-  do not include team defaults.
+  All environment variable records for the environment.
   """
   variables: [EnvironmentVariable!]!
 }
@@ -166,6 +179,9 @@ type Group {
 
   "The ID of a deployment integration associated with this test group"
   deployment_integration_id: ID
+
+  "The ID of an environment associated with this test group"
+  environment_id: ID
 
   "Test group ID"
   id: String!
@@ -483,6 +499,23 @@ type Mutation {
   ): ApiKey!
 
   """
+  Create an environment.
+
+  Requires that you have access to the team.
+  """
+  createEnvironment(
+    """
+    Name of the new environment
+    """
+    name: String!
+
+    """
+    ID of the team that should own the environment
+    """
+    team_id: ID!
+  ): Environment!
+
+  """
   Create GitHub integrations. When the GitHub app is installed, this reconciles
   the integrations in the database with the repos that the GitHub app has access to.
   The response is the list of integrations created as a result of the specified
@@ -516,13 +549,13 @@ type Mutation {
   ): Group!
 
   """
-  Creates a new environment variable record for a test group.
+  Creates a new environment variable record for an environment.
 
-  Requires that you have access to the team that owns the group.
+  Requires that you have access to the team that owns the environment.
   """
   createEnvironmentVariable(
-    "ID of the test group to associate this variable with"
-    group_id: ID!
+    "ID of the environment to associate this variable with"
+    environment_id: ID!
 
     "Name (key) for the variable"
     name: String!
@@ -651,9 +684,17 @@ type Mutation {
   ): ApiKey!
 
   """
+  Deletes an environment record by ID and all its associated
+  environment variables.
+
+  Requires that you have access to the team that owns the environment.
+  """
+  deleteEnvironment("Environment ID" id: ID!): Environment!
+
+  """
   Deletes an environment variable record by ID.
 
-  Requires that you have access to the team that owns the group
+  Requires that you have access to the team that owns the environment
   that is associated with the variable.
   """
   deleteEnvironmentVariable(
@@ -776,6 +817,35 @@ type Mutation {
   ): AuthenticatedUser!
 
   """
+  Updates an environment by ID.
+
+  Requires that you have access to the team that owns the environment.
+  """
+  updateEnvironment(
+    "Environment ID"
+    id: ID!
+
+    "Updated environment name"
+    name: String!
+  ): Environment!
+
+  """
+  Updates an environment variable by ID.
+
+  Requires that you have access to the team that owns the environment.
+  """
+  updateEnvironmentVariable(
+    "Environment variable ID"
+    id: ID!
+
+    "Updated environment variable name"
+    name: String!
+
+    "Updated environment variable value"
+    value: String!
+  ): EnvironmentVariable!
+
+  """
   Updates a test group by ID.
 
   Requires that you have access to the team that owns the group.
@@ -798,6 +868,12 @@ type Mutation {
     changed. If it is `null`, it will be cleared.
     """
     deployment_integration_id: ID
+
+    """
+    Updated environment ID. If this field is omitted, it will not be changed.
+    If it is `null`, it will be cleared.
+    """
+    environment_id: ID
 
     "Test group ID"
     id: ID!
@@ -1007,11 +1083,21 @@ type Query {
   dashboard("The group ID" group_id: ID!): Dashboard!
 
   """
-  Returns environment variables for a single test group by group ID.
+  Returns environments by team ID.
 
-  One of the teams you are on must have access to the test group.
+  You must be on the team to list environments.
   """
-  environmentVariables("The group ID" group_id: ID!): EnvironmentVariables!
+  environments("The team ID" team_id: ID!): [Environment!]!
+
+  """
+  Returns environment variables for a single environment by environment ID.
+
+  One of the teams you are on must have access to the environment.
+  """
+  environmentVariables(
+    "The environment ID"
+    environment_id: ID!
+  ): EnvironmentVariables!
 
   """
   Returns the runner for the run or test.

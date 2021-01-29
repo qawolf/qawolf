@@ -17,10 +17,17 @@ export type DeploymentEnvironment = "all" | "preview" | "production";
 
 export type Env = { [name: string]: string };
 
-export type EnvironmentVariable = {
-  created_at: string;
+export type Environment = {
   id: string;
   name: string;
+};
+
+export type EnvironmentVariable = {
+  created_at: string;
+  environment_id: string;
+  id: string;
+  name: string;
+  value: string;
 };
 
 export type Group = {
@@ -29,6 +36,7 @@ export type Group = {
   deployment_branches: string | null;
   deployment_environment: DeploymentEnvironment | null;
   deployment_integration_id: string | null;
+  environment_id: string | null;
   id: string;
   is_default: boolean;
   is_email_enabled: boolean;
@@ -156,6 +164,7 @@ export type Modal =
   | "apiKeys"
   | "deployment"
   | "envVariables"
+  | "environments"
   | "deleteGroup"
   | "deleteTest"
   | "teamSettings";
@@ -178,6 +187,8 @@ export type SelectedTest = {
   id: string;
   name: string;
 };
+
+export type Side = "left" | "right";
 
 export type UserSubscription = {
   email: string;
@@ -250,6 +261,7 @@ type ModalState = {
 export type State = {
   dashboardUri: string | null;
   email: string | null;
+  environmentId: string | null;
   error: string | null;
   groupId: string | null;
   image: { wolf: number };

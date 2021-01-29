@@ -180,6 +180,17 @@ describe("sendLoginCodeResolver", () => {
       repeat_minutes: null,
     });
 
+    const environments = await db
+      .select("*")
+      .from("environments")
+      .orderBy("name", "asc");
+    expect(environments).toMatchObject([
+      {
+        name: "Production",
+      },
+      { name: "Staging" },
+    ]);
+
     await db.transaction(async (trx) => deleteUser(newUser.id, trx));
   });
 

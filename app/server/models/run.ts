@@ -17,7 +17,7 @@ import {
 } from "../types";
 import { cuid } from "../utils";
 import { decrypt } from "./encrypt";
-import { buildEnvironmentVariablesForGroup } from "./environment_variable";
+import { buildEnvironmentVariables } from "./environment_variable";
 
 type CreateRunsForTests = {
   suite_id: string;
@@ -195,13 +195,14 @@ export const findSuiteRunForRunner = async (
   return (trx || db).transaction(async (trx) => {
     const row = await trx
       .select("runs.*")
+      .select("groups.environment_id AS environment_id")
       .select("suites.environment_variables AS environment_variables")
-      .select("suites.group_id AS group_id")
       .select("suites.team_id AS team_id")
       .select("teams.helpers AS helpers")
       .select("tests.version AS test_version")
       .from("runs")
       .innerJoin("suites", "runs.suite_id", "suites.id")
+      .innerJoin("groups", "groups.id", "suites.group_id")
       .innerJoin("teams", "suites.team_id", "teams.id")
       .innerJoin("tests", "runs.test_id", "tests.id")
       .andWhere({ "runs.id": run_id })
@@ -212,8 +213,8 @@ export const findSuiteRunForRunner = async (
     const custom_variables = row.environment_variables
       ? JSON.parse(decrypt(row.environment_variables))
       : {};
-    const env = await buildEnvironmentVariablesForGroup(
-      { custom_variables, group_id: row.group_id, team_id: row.team_id },
+    const { env } = await buildEnvironmentVariables(
+      { custom_variables, environment_id: row.environment_id },
       { logger, trx }
     );
 

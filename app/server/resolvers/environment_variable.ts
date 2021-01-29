@@ -1,35 +1,39 @@
 import { db } from "../db";
 import {
-  buildEnvironmentVariablesForGroup,
+  buildEnvironmentVariables,
   createEnvironmentVariable,
   deleteEnvironmentVariable,
   findEnvironmentVariable,
-  findEnvironmentVariablesForGroup,
+  updateEnvironmentVariable,
 } from "../models/environment_variable";
 import {
   Context,
   CreateEnvironmentVariableMutation,
+  EnvironmentIdQuery,
   EnvironmentVariable,
-  GroupIdQuery,
   IdQuery,
+  UpdateEnvironmentVariableMutation,
 } from "../types";
-import { ensureGroupAccess } from "./utils";
+import {
+  ensureEnvironmentAccess,
+  ensureEnvironmentVariableAccess,
+} from "./utils";
 
 /**
  * @returns New environment variable record
  */
 export const createEnvironmentVariableResolver = async (
   _: Record<string, unknown>,
-  { group_id, name, value }: CreateEnvironmentVariableMutation,
+  { environment_id, name, value }: CreateEnvironmentVariableMutation,
   { logger, teams }: Context
 ): Promise<EnvironmentVariable> => {
   const log = logger.prefix("createEnvironmentVariableResolver");
-  log.debug("group", group_id);
+  log.debug("environment", environment_id);
 
-  const team = await ensureGroupAccess({ group_id, logger, teams });
+  const team = await ensureEnvironmentAccess({ environment_id, logger, teams });
 
   return createEnvironmentVariable(
-    { group_id, name, team_id: team.id, value },
+    { environment_id, name, team_id: team.id, value },
     { logger }
   );
 };
@@ -51,8 +55,8 @@ export const deleteEnvironmentVariableResolver = async (
       trx,
     });
 
-    await ensureGroupAccess({
-      group_id: environmentVariable.group_id,
+    await ensureEnvironmentAccess({
+      environment_id: environmentVariable.environment_id,
       logger,
       teams,
     });
@@ -65,28 +69,35 @@ export const deleteEnvironmentVariableResolver = async (
 
 export const environmentVariablesResolver = async (
   _: Record<string, unknown>,
-  { group_id }: GroupIdQuery,
+  { environment_id }: EnvironmentIdQuery,
   { logger, teams }: Context
 ): Promise<{ env: string; variables: EnvironmentVariable[] }> => {
   const log = logger.prefix("environmentVariablesResolver");
-  log.debug("group", group_id);
+  log.debug("environment", environment_id);
 
   return db.transaction(async (trx) => {
-    const team = await ensureGroupAccess({ group_id, logger, teams, trx });
+    await ensureEnvironmentAccess({ environment_id, logger, teams, trx });
 
-    // Get all env variable records for this group sorted by name ascending
-    const variables = await findEnvironmentVariablesForGroup(group_id, {
+    return buildEnvironmentVariables({ environment_id }, { logger, trx });
+  });
+};
+
+export const updateEnvironmentVariableResolver = async (
+  _: Record<string, unknown>,
+  args: UpdateEnvironmentVariableMutation,
+  { logger, teams }: Context
+): Promise<EnvironmentVariable> => {
+  const log = logger.prefix("updateEnvironmentVariableResolver");
+  log.debug("variable", args.id);
+
+  return db.transaction(async (trx) => {
+    await ensureEnvironmentVariableAccess({
+      environment_variable_id: args.id,
       logger,
+      teams,
       trx,
     });
 
-    // Look up env variable team defaults, merge with group variables,
-    // and decrypt all values. `env` is a key:value JSON object (as string).
-    const env = await buildEnvironmentVariablesForGroup(
-      { group_id, group_variables: variables, team_id: team.id },
-      { logger, trx }
-    );
-
-    return { env, variables };
+    return updateEnvironmentVariable(args, { logger, trx });
   });
 };

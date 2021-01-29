@@ -3,6 +3,7 @@ import * as groupModel from "../../../server/models/group";
 import { Group } from "../../../server/types";
 import { minutesFromNow } from "../../../shared/utils";
 import {
+  buildEnvironment,
   buildGroup,
   buildIntegration,
   buildTeam,
@@ -112,6 +113,7 @@ describe("group model", () => {
           creator_id: "userId",
           deleted_at: null,
           deployment_integration_id: null,
+          environment_id: null,
           id: expect.any(String),
           is_default: false,
           is_email_enabled: true,
@@ -487,11 +489,15 @@ describe("group model", () => {
   });
 
   describe("updateGroup", () => {
-    beforeEach(() => {
+    beforeEach(async () => {
+      await db("environments").insert(buildEnvironment({}));
       return db("groups").insert(buildGroup({}));
     });
 
-    afterEach(() => db("groups").del());
+    afterEach(async () => {
+      await db("groups").del();
+      return db("environments").del();
+    });
 
     it("updates a group", async () => {
       const oldGroup = await db.select("*").from("groups").first();
@@ -528,7 +534,6 @@ describe("group model", () => {
       await updateGroup(
         {
           deployment_branches: "main, develop",
-
           deployment_integration_id: "integration2Id",
           id: "groupId",
         },
@@ -552,6 +557,30 @@ describe("group model", () => {
 
       expect(updatedGroup2.deployment_branches).toBeNull();
       expect(updatedGroup2.deployment_environment).toBe("preview");
+    });
+
+    it("updates group environment", async () => {
+      await updateGroup(
+        {
+          environment_id: "environmentId",
+          id: "groupId",
+        },
+        { logger }
+      );
+      const updatedGroup = await db.select("*").from("groups").first();
+
+      expect(updatedGroup.environment_id).toBe("environmentId");
+
+      await updateGroup(
+        {
+          environment_id: null,
+          id: "groupId",
+        },
+        { logger }
+      );
+      const updatedGroup2 = await db.select("*").from("groups").first();
+
+      expect(updatedGroup2.environment_id).toBeNull();
     });
 
     it("updates repeat_minutes", async () => {
