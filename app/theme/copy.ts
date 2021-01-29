@@ -108,6 +108,8 @@ export const copy = {
   environmentDeleteConfirm:
     "Are you sure? This will permanently delete all variables in this environment. Please type",
   environmentDeleteConfirm2: "to confirm.",
+  environmentEdit: (name: string): string =>
+    name ? `Edit ${name} environment` : "",
   environmentName: "Environment name",
   environmentNew: "Add environment",
   environmentNotSelected: "No environment",

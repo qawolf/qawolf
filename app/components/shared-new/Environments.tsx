@@ -91,6 +91,7 @@ export default function Environments({
         round={borderSize.small}
       >
         <Button
+          a11yTitle={copy.environmentEdit(selectedEnvironment?.name)}
           IconComponent={Configure}
           noBorderSide="right"
           onClick={openVariablesModal}
