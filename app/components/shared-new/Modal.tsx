@@ -23,9 +23,13 @@ export default function Modal({
 }: Props): JSX.Element {
   return (
     <ThemeContext.Extend value={theme}>
-      <Layer onClickOutside={closeModal} onEsc={closeModal}>
+      <Layer
+        margin={{ vertical: "xlarge" }}
+        onClickOutside={closeModal}
+        onEsc={closeModal}
+      >
         <Box pad="medium" width={WIDTH}>
-          <Box align="center" direction="row" justify="between">
+          <Box align="center" direction="row" flex={false} justify="between">
             <Text color="gray9" size="componentHeader">
               {label}
             </Text>

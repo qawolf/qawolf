@@ -16,7 +16,12 @@ export default function ModalButtons({
   secondaryLabel,
 }: Props): JSX.Element {
   return (
-    <Box direction="row" justify="between" margin={{ top: "medium" }}>
+    <Box
+      direction="row"
+      flex={false}
+      justify="between"
+      margin={{ top: "medium" }}
+    >
       <Button
         IconComponent={Add}
         label={secondaryLabel}
