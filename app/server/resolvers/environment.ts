@@ -20,7 +20,7 @@ export const createEnvironmentResolver = async (
   { name, team_id }: CreateEnvironmentMutation,
   { logger, teams }: Context
 ): Promise<Environment> => {
-  const log = logger.prefix("updateEnvironmentResolver");
+  const log = logger.prefix("createEnvironmentResolver");
   log.debug("create for team", team_id);
 
   ensureTeamAccess({ logger, team_id, teams });

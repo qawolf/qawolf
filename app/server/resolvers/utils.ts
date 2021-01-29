@@ -87,14 +87,16 @@ export const ensureEnvironmentAccess = async ({
   log.debug("ensure teams", teamIds, "can access environment", environment_id);
 
   const environment = await findEnvironment(environment_id, { logger, trx });
-  const selectedTeam = teams!.find((team) => environment.team_id === team.id);
+  const teamForEnvironment = teams!.find(
+    (team) => environment.team_id === team.id
+  );
 
-  if (!selectedTeam) {
+  if (!teamForEnvironment) {
     log.error("teams", teamIds, "cannot access environment", environment_id);
     throw new AuthenticationError("cannot access environment");
   }
 
-  return selectedTeam;
+  return teamForEnvironment;
 };
 
 export const ensureEnvironmentVariableAccess = async ({
