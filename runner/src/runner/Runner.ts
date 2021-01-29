@@ -81,6 +81,7 @@ export class Runner extends EventEmitter {
       this._environment = await this._createEnvironment();
       // create hooks for fresh runs
       hooks = createHooks(options, this._environment);
+      this._hooks = hooks;
     }
 
     return this._environment.run(options, hooks);

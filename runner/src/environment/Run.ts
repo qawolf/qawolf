@@ -63,6 +63,12 @@ export class Run extends EventEmitter {
     try {
       await Promise.all(hooks.map((hook) => hook.before && hook.before()));
 
+      this.on("runprogress", async () => {
+        await Promise.all(
+          hooks.map((hook) => hook.progress && hook.progress(this.progress))
+        );
+      });
+
       this._emitProgress();
 
       if (this._runOptions.env) this._vm.setEnv(this._runOptions.env);

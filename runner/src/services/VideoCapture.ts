@@ -6,6 +6,8 @@ import { tmpdir } from "os";
 import { sep } from "path";
 
 import config from "../config";
+import { probeVideoFile } from "../services/ffprobe";
+import { VideoChapter } from "../types";
 
 const debug = Debug("qawolf:VideoCapture");
 
@@ -13,15 +15,19 @@ export class VideoCapture {
   readonly _framesPerSecond = 20;
   readonly _shrunkHeight = 640;
 
+  _chapters: VideoChapter[] = [];
   _ffmpeg?: FfmpegCommand;
   _gifPath = "set_in_start_function.gif";
   _rejectStopped?: (reason: string) => void;
   _resolveStarted?: () => void;
   _resolveStopped?: () => void;
+  _startedAt: number = 0;
   _startedPromise: Promise<void>;
   _stopped = false;
   _stoppedPromise: Promise<void>;
+  _videoMetadataPath = "set_in_start_function.txt";
   _videoPath = "set_in_start_function.mp4";
+  _videoWithMetadataPath = "set_in_start_function.mp4";
 
   constructor() {
     this._startedPromise = new Promise((resolve) => {
@@ -42,7 +48,7 @@ export class VideoCapture {
     debug("create gif %s", this._gifPath);
 
     return new Promise((resolve, reject) => {
-      console.log("try to spawn", config.FFMPEG_PATH);
+      debug("try to spawn %s", config.FFMPEG_PATH);
 
       const ffmpeg = spawn("sh", [
         "-c",
@@ -75,10 +81,83 @@ export class VideoCapture {
     return this._gifPath;
   }
 
+  markChapter(lineNum: number, lineCode: string) {
+    // Setting by index rather than .push in case this is called
+    // multiple times for the same line number, which it seems to be.
+    this._chapters[lineNum] = {
+      lineCode,
+      lineNum,
+      start: Date.now() - this._startedAt,
+    };
+  }
+
+  async _setChapterMetadata(): Promise<void> {
+    if (!this._stopped) {
+      throw new Error("Cannot set chapter metadata before video is stopped");
+    }
+
+    debug("set chapters in %s", this._videoPath);
+
+    const videoMetadata = await probeVideoFile(this._videoPath, {
+      showFormat: true,
+    });
+
+    const videoLengthMS = videoMetadata.format.duration * 1000;
+
+    let metadata = `;FFMETADATA1
+title=Test Run
+artist=QA Wolf, Inc.
+${this._chapters.reduce(
+  (acc: string, chapter: VideoChapter, currentIndex) => `${acc}
+
+[CHAPTER]
+TIMEBASE=1/1000
+START=${chapter.start}
+END=${this._chapters[currentIndex + 1]?.start || videoLengthMS}
+line=${chapter.lineNum}
+title=${chapter.lineCode}
+`,
+  ""
+)}
+`;
+
+    await fs.writeFile(this._videoMetadataPath, metadata);
+
+    return new Promise((resolve, reject) => {
+      debug("try to spawn %s", config.FFMPEG_PATH);
+
+      const ffmpeg = spawn("sh", [
+        "-c",
+        `${config.FFMPEG_PATH} -i ${this._videoPath} -i ${this._videoMetadataPath} -map_metadata 1 -codec copy ${this._videoWithMetadataPath}`,
+      ]);
+
+      let stderr = "";
+
+      ffmpeg.stderr.on("data", (data) => {
+        stderr += data.toString();
+      });
+
+      ffmpeg.on("close", (code) => {
+        if (code === 0) {
+          debug(
+            "created video copy with metadata %s",
+            this._videoWithMetadataPath
+          );
+          resolve();
+        } else {
+          debug("could not add video metadata %s", stderr);
+          reject();
+        }
+      });
+    });
+  }
+
   async start(display = ":0.0"): Promise<void> {
     const path = await fs.mkdtemp(`${tmpdir()}${sep}`);
     this._gifPath = `${path}${sep}video.gif`;
+    this._videoMetadataPath = `${path}${sep}video-metadata.txt`;
     this._videoPath = `${path}${sep}video.mp4`;
+    this._videoWithMetadataPath = `${path}${sep}video-with-metadata.mp4`;
     debug("start video capture to %s", this._videoPath);
 
     let stderr = "";
@@ -95,6 +174,7 @@ export class VideoCapture {
       ])
       .outputOptions(["-preset ultrafast", "-pix_fmt yuv420p"])
       .on("start", () => {
+        this._startedAt = Date.now();
         debug("started");
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this._resolveStarted!();
@@ -142,9 +222,15 @@ export class VideoCapture {
     if (proc) proc.stdin.write("q");
 
     await this._stoppedPromise;
+
+    await this._setChapterMetadata();
   }
 
   get videoPath(): string {
     return this._videoPath;
+  }
+
+  get videoWithMetadataPath(): string {
+    return this._videoWithMetadataPath;
   }
 }

@@ -38,6 +38,7 @@ export type RunOptions = {
 
 export type RunHook = {
   after?(result: RunProgress): Promise<void>;
+  progress?(progress: RunProgress): Promise<void>;
   before?(): Promise<void>;
 };
 
@@ -57,6 +58,12 @@ export type RunProgress = {
 export type Suite = {
   env?: Record<string, string>;
   runs: Run[];
+};
+
+export type VideoChapter = {
+  lineCode: string;
+  lineNum: number;
+  start: number;
 };
 
 export type BrowserName = "chromium" | "firefox" | "webkit";
