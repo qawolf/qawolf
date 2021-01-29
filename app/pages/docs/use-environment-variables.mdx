@@ -2,7 +2,6 @@ import Header from "../../components/Docs/Header";
 import Image from "../../components/Docs/Image";
 import Layout from "../../components/Docs/Layout";
 import SubHeader from "../../components/Docs/SubHeader";
-import Video from "../../components/Docs/Video";
 
 <Layout>
 
@@ -14,49 +13,56 @@ Environment variables can also be used to change the behavior of your test by gr
 
 In this tutorial, we'll use environment variables in our QA Wolf test.
 
-<Video youTubeId="WLj9tY7orLw" />
-
 <SubHeader>Create an Environment Variable</SubHeader>
 
-Each group in QA Wolf has its own set of environment variables.
+Environments are collections of environment variables in QA Wolf. When you sign up, QA Wolf creates Staging and Production environments for your team by default. Learn more about managing environments <a href="#manage-environments">here</a>.
 
-You can access a group's environment variables by clicking the wrench icon next to the group name. You can do this from the test editor or from the dashboard.
+You can edit the variables in an environment by clicking on the configure button next to the environment name. You can do this from the test editor or from the dashboard.
 
 <Image
   alt="Manage environment variables from editor"
-  height={1244}
-  src="/docs/use-environment-variables/wrench-editor.png"
+  height={1280}
+  src="/docs/use-environment-variables/configure-editor.png"
   width={1600}
 />
 
 <Image
   alt="Manage environment variables from dashboard"
-  height={286}
-  src="/docs/use-environment-variables/wrench-dashboard.png"
-  width={1414}
+  height={294}
+  src="/docs/use-environment-variables/configure-dashboard.png"
+  width={1430}
 />
 
-Clicking on the wrench icon opens a popup where you can manage environment variables.
+Clicking on the configure button opens a popup where you can manage environment variables. In this tutorial, we'll add a variable to the Production environment.
 
-To create an environment variable, fill out the name and value fields before pressing the "Add" button. In our example, we name our variable `TODO_TEXT` and give it a value of `secret todo`.
+To create an environment variable, click on the "Add variable" button at the bottom of the popup.
+
+<Image
+  alt="Add variable button"
+  height={950}
+  src="/docs/use-environment-variables/add-variable.png"
+  width={1162}
+/>
+
+Provide the name of the variable in the create form. In our example, we name our variable `TODO_TEXT` and give it a value of `secret todo`.
 
 <Image
   alt="Create an environment variable"
-  height={544}
+  height={1062}
   src="/docs/use-environment-variables/create-environment-variable.png"
-  width={1296}
+  width={1184}
 />
 
-After pressing the "Add" button, the environment variable will be saved.
+After pressing the "Save" button, the environment variable will be saved. If you hover over it, you will see options to edit or delete it.
 
 <Image
   alt="Saved environment variable"
-  height={646}
+  height={756}
   src="/docs/use-environment-variables/saved-environment-variable.png"
-  width={1296}
+  width={1168}
 />
 
-Click outside the popup to close it.
+Click "Done" to close the popup.
 
 <SubHeader>Use an Environment Variable</SubHeader>
 
@@ -78,18 +84,53 @@ In the code editor, we can delete the existing todo value (`"todo"`) and replace
 
 <Image
   alt="Use environment variable in editor"
-  height={540}
+  height={478}
   src="/docs/use-environment-variables/use-environment-variable.png"
-  width={1086}
+  width={1052}
 />
 
 If we run our test, it will now create a todo with the value `secret todo`, which comes from our environment variable.
 
 <Image
-  alt="Run a test with an environmetn variable"
-  height={747}
+  alt="Run a test with an environment variable"
+  height={789}
   src="/docs/use-environment-variables/run-test-environment-variable.png"
   width={1600}
+/>
+
+<SubHeader>Assign Environment to Group</SubHeader>
+
+Each group of tests in QA Wolf can be assigned an environment. This means that when this group runs, it will use the variables specified in the assigned environment.
+
+Go to the <a href="https://www.qawolf.com/tests" target="_blank">dashboard</a> and make sure the group you want to modify is selected.
+
+Open the environments dropdown at the top of the dashboard. Click on the environment you want to assign to the group. In our example, we'll assign the Production environment to the All Tests group.
+
+<Image
+  alt="Assign an environment to a group"
+  height={303}
+  src="/docs/use-environment-variables/assign-environment-to-group.png"
+  width={1600}
+/>
+
+<SubHeader>Manage Environments</SubHeader>
+
+You can create, rename, and delete environments in QA Wolf. To manage environments, click the "Edit environments" button in the dropdown.
+
+<Image
+  alt="Edit environments"
+  height={348}
+  src="/docs/use-environment-variables/edit-environments.png"
+  width={630}
+/>
+
+Create an environment by pressing the "Add environment" button. Hover over an existing environment to reveal options to edit or delete.
+
+<Image
+  alt="Edit environments popup"
+  height={650}
+  src="/docs/use-environment-variables/edit-environments-popup.png"
+  width={1162}
 />
 
 </Layout>
