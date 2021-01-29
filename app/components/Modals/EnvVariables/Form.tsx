@@ -10,7 +10,6 @@ import { copy } from "../../../theme/copy";
 import { edgeSize } from "../../../theme/theme-new";
 import TextInput from "../../shared-new/AppTextInput";
 import ListItemForm from "../../shared-new/ListItemForm";
-import { StateContext } from "../../StateContext";
 
 type Props = {
   environmentId: string;
