@@ -32,6 +32,7 @@ export default function ListItem({
   if (environmentVariable.id === editEnvironmentVariableId) {
     return (
       <Form
+        environmentId={environmentVariable.environment_id}
         environmentVariable={environmentVariable}
         onCancelClick={onCancelClick}
       />

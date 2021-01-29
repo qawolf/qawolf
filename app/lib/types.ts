@@ -24,6 +24,7 @@ export type Environment = {
 
 export type EnvironmentVariable = {
   created_at: string;
+  environment_id: string;
   id: string;
   name: string;
   value: string;

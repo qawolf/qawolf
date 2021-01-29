@@ -21,6 +21,7 @@ export const environmentFragment = gql`
 export const environmentVariableFragment = gql`
   fragment EnvironmentVariableFragment on EnvironmentVariable {
     created_at
+    environment_id
     id
     name
     value

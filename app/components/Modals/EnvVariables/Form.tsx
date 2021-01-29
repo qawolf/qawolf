@@ -10,9 +10,9 @@ import { copy } from "../../../theme/copy";
 import { edgeSize } from "../../../theme/theme-new";
 import TextInput from "../../shared-new/AppTextInput";
 import ListItemForm from "../../shared-new/ListItemForm";
-import { StateContext } from "../../StateContext";
 
 type Props = {
+  environmentId: string;
   environmentVariable?: EnvironmentVariable;
   onCancelClick: () => void;
 };
@@ -20,6 +20,7 @@ type Props = {
 export const id = "environment-variable";
 
 export default function Form({
+  environmentId,
   environmentVariable,
   onCancelClick,
 }: Props): JSX.Element {
@@ -28,8 +29,6 @@ export default function Form({
 
   const [name, setName] = useState(environmentVariable?.name || "");
   const [value, setValue] = useState(environmentVariable?.value || "");
-
-  const { environmentId } = useContext(StateContext);
 
   const [
     createEnvironmentVariable,
