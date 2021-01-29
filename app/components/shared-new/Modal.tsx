@@ -2,7 +2,7 @@ import { Box, ThemeContext } from "grommet";
 import { ReactNode } from "react";
 
 import { copy } from "../../theme/copy";
-import { edgeSize, theme } from "../../theme/theme-new";
+import { theme } from "../../theme/theme-new";
 import Button from "./AppButton";
 import Close from "./icons/Close";
 import Layer from "./Layer";
