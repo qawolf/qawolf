@@ -1,3 +1,6 @@
+// Xvfb :0 -screen 0 1288x804x24 -listen tcp &
+// DEBUG=qawolf* npm run test Runner.test.ts
+import { probeVideoFile } from "../../src/services/ffprobe";
 import { Environment } from "../../src/environment/Environment";
 import { LogArtifactHook } from "../../src/runner/LogArtifactHook";
 import { createHooks, Runner } from "../../src/runner/Runner";
@@ -95,5 +98,69 @@ describe("Runner", () => {
     });
 
     expect(initialEnvironment === runner._environment).toBe(false);
+  });
+
+  it("saves a video of the run with step chapter metadata", async () => {
+    const multiLineCode = `console.log("Line 1");
+console.log("Line 2");`;
+
+    await runner.run({
+      artifacts: {
+        gifUrl: "local-only",
+        logsUrl: "logsUrl",
+        videoUrl: "local-only",
+      },
+      code: multiLineCode,
+      helpers: "",
+      restart: true,
+      test_id: "",
+      version: 1,
+    });
+
+    const videoHook = runner._hooks[1] as VideoArtifactsHook;
+
+    await videoHook.waitForUpload();
+    const videoMetadata = await probeVideoFile(
+      videoHook._videoCapture.videoWithMetadataPath,
+      {
+        showChapters: true,
+      }
+    );
+
+    expect(videoMetadata).toEqual({
+      chapters: [
+        {
+          end: expect.any(Number),
+          end_time: expect.any(String),
+          id: 0,
+          start: expect.any(Number),
+          start_time: expect.any(String),
+          tags: {
+            title: 'console.log("Line 1");',
+          },
+          time_base: "1/1000",
+        },
+        {
+          end: expect.any(Number),
+          end_time: expect.any(String),
+          id: 1,
+          start: expect.any(Number),
+          start_time: expect.any(String),
+          tags: {
+            title: 'console.log("Line 2");',
+          },
+          time_base: "1/1000",
+        },
+      ],
+    });
+
+    // Exact start and end times will vary, but we can do some simple sanity checks
+    const [chapter1, chapter2] = videoMetadata.chapters;
+
+    expect(chapter1.end).toBe(chapter2.start);
+    expect(chapter1.end_time).toBe(chapter2.start_time);
+    expect(chapter1.start).toBeLessThan(chapter2.start);
+    expect(chapter1.start).toBeLessThan(chapter1.end);
+    expect(chapter2.start).toBeLessThan(chapter2.end);
   });
 });
