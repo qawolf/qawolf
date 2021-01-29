@@ -1,5 +1,5 @@
 import { Box } from "grommet";
-import { ChangeEvent, useContext, useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 import {
   useCreateEnvironmentVariable,
