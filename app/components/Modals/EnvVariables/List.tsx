@@ -1,5 +1,5 @@
 import { Box } from "grommet";
-import { ReactNode, useContext, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 import { useEnvironmentVariables } from "../../../hooks/queries";
 import { EnvironmentVariable } from "../../../lib/types";

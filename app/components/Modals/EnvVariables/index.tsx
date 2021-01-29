@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
-import { useEnvironments } from "../../../hooks/queries";
 
+import { useEnvironments } from "../../../hooks/queries";
 import { EnvironmentVariable } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import Modal from "../../shared-new/Modal";
