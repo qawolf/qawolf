@@ -21,7 +21,7 @@ export class VideoCapture {
   _rejectStopped?: (reason: string) => void;
   _resolveStarted?: () => void;
   _resolveStopped?: () => void;
-  _startedAt: number = 0;
+  _startedAt = 0;
   _startedPromise: Promise<void>;
   _stopped = false;
   _stoppedPromise: Promise<void>;
@@ -81,7 +81,7 @@ export class VideoCapture {
     return this._gifPath;
   }
 
-  markChapter(lineNum: number, lineCode: string) {
+  markChapter(lineNum: number, lineCode: string): void {
     // Setting by index rather than .push in case this is called
     // multiple times for the same line number, which it seems to be.
     this._chapters[lineNum] = {
@@ -102,9 +102,10 @@ export class VideoCapture {
       showFormat: true,
     });
 
-    const videoLengthMS = videoMetadata.format.duration * 1000;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const videoLengthMS = videoMetadata.format!.duration * 1000;
 
-    let metadata = `;FFMETADATA1
+    const metadata = `;FFMETADATA1
 title=Test Run
 artist=QA Wolf, Inc.
 ${this._chapters.reduce(
