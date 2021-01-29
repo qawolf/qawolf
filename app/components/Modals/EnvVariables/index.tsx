@@ -18,7 +18,7 @@ export default function Environments({ closeModal }: Props): JSX.Element {
   const { environmentId, teamId } = useContext(StateContext);
 
   // have internal state for selected environment so editing variables
-  // doesn't change the currently selected environment
+  // doesn't change environment id in global state
   const [selectedEnvironmentId, setSelectedEnvironmentId] = useState(
     environmentId
   );
