@@ -23,7 +23,7 @@
 
 ## 🐺 What is QA Wolf?
 
-QA Wolf is a tool that helps you create, run, and debug end-to-end tests directly from the browser. We aspire to be the easiest way for developers to set up browser tests.
+QA Wolf helps you create, run, and debug end-to-end tests directly from the browser. We aspire to be the easiest way for developers to set up browser tests.
 
 We found browser testing too difficult and often gave up on it entirely in our previous jobs. We built QA Wolf for people like us who want to ship confidently 🚀 by creating browser tests easily.
 
