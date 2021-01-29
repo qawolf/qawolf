@@ -32,7 +32,7 @@ export const useRunTest = ({
   runner,
 }: UseRunTest): RunTest => {
   const [shouldRequestRunner, setShouldRequestRunner] = useState(
-    !state.pendingRun
+    !!state.pendingRun
   );
   const [ranAt, setRanAt] = useState<Date | null>(null);
 
