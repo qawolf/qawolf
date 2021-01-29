@@ -12,7 +12,7 @@ import { cuid } from "../server/utils";
         // only create environments for groups that have environment variables
         const groups = await trx("groups")
           .select("groups.*" as "*")
-          .where({ "groups.team_id": team.id })
+          .where({ "groups.deleted_at": null, "groups.team_id": team.id })
           .innerJoin(
             "environment_variables",
             "environment_variables.group_id",
