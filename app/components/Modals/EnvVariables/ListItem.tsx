@@ -48,7 +48,6 @@ export default function ListItem({
     <StyledBox
       align="center"
       direction="row"
-      flex={false}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >

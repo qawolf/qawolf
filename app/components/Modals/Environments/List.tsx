@@ -85,7 +85,7 @@ export default function List({
         {copy.environment}
       </Text>
       <Divider margin={{ top: "xxsmall" }} />
-      <Box overflow="auto">{environmentsHtml}</Box>
+      {environmentsHtml}
       {placeholderHtml}
       {isCreate && (
         <>

@@ -96,7 +96,7 @@ export default function List({
         </Text>
       </Box>
       <Divider />
-      <Box overflow="auto">{variablesHtml}</Box>
+      {variablesHtml}
       {placeholderHtml}
       {isCreate && (
         <>

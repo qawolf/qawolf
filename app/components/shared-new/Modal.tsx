@@ -2,7 +2,7 @@ import { Box, ThemeContext } from "grommet";
 import { ReactNode } from "react";
 
 import { copy } from "../../theme/copy";
-import { theme } from "../../theme/theme-new";
+import { edgeSize, theme } from "../../theme/theme-new";
 import Button from "./AppButton";
 import Close from "./icons/Close";
 import Layer from "./Layer";
@@ -23,20 +23,26 @@ export default function Modal({
 }: Props): JSX.Element {
   return (
     <ThemeContext.Extend value={theme}>
-      <Layer onClickOutside={closeModal} onEsc={closeModal}>
-        <Box pad="medium" width={WIDTH}>
-          <Box align="center" direction="row" justify="between">
-            <Text color="gray9" size="componentHeader">
-              {label}
-            </Text>
-            <Button
-              IconComponent={Close}
-              a11yTitle={copy.close}
-              onClick={closeModal}
-              type="ghost"
-            />
+      <Layer
+        margin={{ vertical: "xlarge" }}
+        onClickOutside={closeModal}
+        onEsc={closeModal}
+      >
+        <Box overflow={{ vertical: "auto" }} pad="medium" width={WIDTH}>
+          <Box flex={false}>
+            <Box align="center" direction="row" justify="between">
+              <Text color="gray9" size="componentHeader">
+                {label}
+              </Text>
+              <Button
+                IconComponent={Close}
+                a11yTitle={copy.close}
+                onClick={closeModal}
+                type="ghost"
+              />
+            </Box>
+            {children}
           </Box>
-          {children}
         </Box>
       </Layer>
     </ThemeContext.Extend>

@@ -27,12 +27,7 @@ export default function ListItemForm({
 
   return (
     <Keyboard onEnter={onSaveClick}>
-      <Box
-        align="center"
-        direction="row"
-        flex={false}
-        margin={{ vertical: "xxsmall" }}
-      >
+      <Box align="center" direction="row" margin={{ vertical: "xxsmall" }}>
         {children}
         <Button
           label={copy.cancel}
