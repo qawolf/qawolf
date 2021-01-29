@@ -1,26 +1,23 @@
-import { useContext, useState } from "react";
-
-import { useEnvironments } from "../../../hooks/queries";
 import { state } from "../../../lib/state";
+import { Environment } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import Edit from "../../shared-new/icons/Edit";
 import Select from "../../shared-new/Select";
 import Action from "../../shared-new/Select/Action";
 import Option from "../../shared-new/Select/Option";
 import Text from "../../shared-new/Text";
-import { StateContext } from "../../StateContext";
 
-export default function SelectEnvironment(): JSX.Element {
-  const { environmentId, teamId } = useContext(StateContext);
-  // have internal state for selected environment so editing variables
-  // doesn't change the currently selected environment
-  const [selectedEnvironmentId, setSelectedEnvironmentId] = useState(
-    environmentId
-  );
+type Props = {
+  environments: Environment[];
+  onOptionClick: (environmentId: string) => void;
+  selectedEnvironmentId: string;
+};
 
-  const { data } = useEnvironments({ team_id: teamId }, { environmentId });
-
-  const environments = data?.environments || [];
+export default function SelectEnvironment({
+  environments,
+  onOptionClick,
+  selectedEnvironmentId,
+}: Props): JSX.Element {
   const selectedEnvironment = environments.find(
     (e) => e.id === selectedEnvironmentId
   );
@@ -31,7 +28,7 @@ export default function SelectEnvironment(): JSX.Element {
         isSelected={e.id === selectedEnvironmentId}
         key={e.id}
         label={e.name}
-        onClick={() => setSelectedEnvironmentId(e.id)}
+        onClick={() => onOptionClick(e.id)}
       />
     );
   });

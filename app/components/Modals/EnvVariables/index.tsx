@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { useEnvironments } from "../../../hooks/queries";
 
 import { EnvironmentVariable } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import Modal from "../../shared-new/Modal";
 import Text from "../../shared-new/Text";
+import { StateContext } from "../../StateContext";
 import ConfirmDelete from "./ConfirmDelete";
 import List from "./List";
 import SelectEnvironment from "./SelectEnvironment";
@@ -13,10 +15,20 @@ type Props = {
 };
 
 export default function Environments({ closeModal }: Props): JSX.Element {
+  const { environmentId, teamId } = useContext(StateContext);
+
+  // have internal state for selected environment so editing variables
+  // doesn't change the currently selected environment
+  const [selectedEnvironmentId, setSelectedEnvironmentId] = useState(
+    environmentId
+  );
+
   const [
     deleteEnvironmentVariable,
     setDeleteEnvironmentVariable,
   ] = useState<EnvironmentVariable | null>(null);
+
+  const { data } = useEnvironments({ team_id: teamId }, { environmentId });
 
   const handleClose = (): void => setDeleteEnvironmentVariable(null);
 
@@ -47,8 +59,16 @@ export default function Environments({ closeModal }: Props): JSX.Element {
           >
             {copy.envVariablesDetail}
           </Text>
-          <SelectEnvironment />
-          <List closeModal={closeModal} onDeleteClick={handleDeleteClick} />
+          <SelectEnvironment
+            environments={data?.environments || []}
+            onOptionClick={setSelectedEnvironmentId}
+            selectedEnvironmentId={selectedEnvironmentId}
+          />
+          <List
+            closeModal={closeModal}
+            environmentId={selectedEnvironmentId}
+            onDeleteClick={handleDeleteClick}
+          />
         </>
       )}
     </Modal>
