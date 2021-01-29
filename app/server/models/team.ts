@@ -4,6 +4,7 @@ import { minutesFromNow } from "../../shared/utils";
 import { db } from "../db";
 import { ModelOptions, Team, TeamPlan } from "../types";
 import { cuid } from "../utils";
+import { createDefaultEnvironments } from "./environment";
 import { createGroup, DEFAULT_GROUP_NAME } from "./group";
 
 const DEFAULT_NAME = "My Team";
@@ -52,6 +53,8 @@ export const createFreeTeamWithGroup = async (
     },
     { logger, trx }
   );
+
+  await createDefaultEnvironments(team.id, { logger, trx });
 
   return team;
 };

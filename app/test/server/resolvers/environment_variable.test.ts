@@ -3,11 +3,12 @@ import {
   createEnvironmentVariableResolver,
   deleteEnvironmentVariableResolver,
   environmentVariablesResolver,
+  updateEnvironmentVariableResolver,
 } from "../../../server/resolvers/environment_variable";
 import { EnvironmentVariable } from "../../../server/types";
 import {
+  buildEnvironment,
   buildEnvironmentVariable,
-  buildGroup,
   buildTeam,
   buildUser,
   logger,
@@ -18,9 +19,10 @@ beforeAll(async () => {
 
   await db("users").insert(buildUser({}));
   await db("teams").insert(buildTeam({}));
-  return db("groups").insert([
-    buildGroup({ is_default: true }),
-    buildGroup({ i: 2 }),
+
+  return db("environments").insert([
+    buildEnvironment({}),
+    buildEnvironment({ i: 2, name: "Production" }),
   ]);
 });
 
@@ -40,12 +42,12 @@ describe("createEnvironmentVariableResolver", () => {
   it("creates an environment variable", async () => {
     const environmentVariable = await createEnvironmentVariableResolver(
       {},
-      { group_id: "groupId", name: "my_VARIABLE", value: "secret" },
+      { environment_id: "environmentId", name: "my_VARIABLE", value: "secret" },
       testContext
     );
 
     expect(environmentVariable).toMatchObject({
-      group_id: "groupId",
+      environment_id: "environmentId",
       name: "MY_VARIABLE",
       team_id: "teamId",
     });
@@ -79,7 +81,7 @@ describe("deleteEnvironmentVariableResolver", () => {
     ]);
   });
 
-  it("throws an error if cannot access group", async () => {
+  it("throws an error if cannot access environment", async () => {
     const testFn = async (): Promise<EnvironmentVariable> => {
       return deleteEnvironmentVariableResolver(
         {},
@@ -88,7 +90,7 @@ describe("deleteEnvironmentVariableResolver", () => {
       );
     };
 
-    await expect(testFn()).rejects.toThrowError("cannot access group");
+    await expect(testFn()).rejects.toThrowError("cannot access environment");
   });
 });
 
@@ -97,16 +99,16 @@ describe("environmentVariablesResolver", () => {
     return db("environment_variables").insert([
       buildEnvironmentVariable({ name: "B_VAR" }),
       buildEnvironmentVariable({ i: 2, name: "A_VAR", value: "anotherSecret" }),
-      buildEnvironmentVariable({ group_id: "group2Id", i: 3 }),
+      buildEnvironmentVariable({ environment_id: "environment2Id", i: 3 }),
     ]);
   });
 
   afterAll(() => db("environment_variables").del());
 
-  it("finds environment variables for a team", async () => {
+  it("finds environment variables for an environment", async () => {
     const environmentVariables = await environmentVariablesResolver(
       {},
-      { group_id: "groupId" },
+      { environment_id: "environmentId" },
       testContext
     );
 
@@ -116,6 +118,29 @@ describe("environmentVariablesResolver", () => {
         { id: "environmentVariable2Id", name: "A_VAR" },
         { id: "environmentVariableId", name: "B_VAR" },
       ],
+    });
+  });
+});
+
+describe("updateEnvironmentVariableResolver", () => {
+  beforeAll(() => {
+    return db("environment_variables").insert(
+      buildEnvironmentVariable({ name: "A_VAR" })
+    );
+  });
+
+  afterAll(() => db("environment_variables").del());
+
+  it("updates an environment variable", async () => {
+    const environmentVariable = await updateEnvironmentVariableResolver(
+      {},
+      { id: "environmentVariableId", name: "NEW_NAME", value: "newValue" },
+      testContext
+    );
+
+    expect(environmentVariable).toMatchObject({
+      name: "NEW_NAME",
+      value: "newValue",
     });
   });
 });

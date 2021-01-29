@@ -5,6 +5,7 @@ import { NextRouter, useRouter } from "next/router";
 import {
   acceptInviteMutation,
   createApiKeyMutation,
+  createEnvironmentMutation,
   createEnvironmentVariableMutation,
   createGitHubIntegrationsMutation,
   createGroupMutation,
@@ -15,6 +16,7 @@ import {
   createSuiteMutation,
   createTestMutation,
   deleteApiKeyMutation,
+  deleteEnvironmentMutation,
   deleteEnvironmentVariableMutation,
   deleteGroupMutation,
   deleteTestsMutation,
@@ -22,6 +24,8 @@ import {
   sendLoginCodeMutation,
   signInWithEmailMutation,
   signInWithGitHubMutation,
+  updateEnvironmentMutation,
+  updateEnvironmentVariableMutation,
   updateGroupMutation,
   updateGroupTestsMutation,
   updateTeamMutation,
@@ -36,6 +40,7 @@ import {
   ApiKey,
   AuthenticatedUser,
   DeploymentEnvironment,
+  Environment,
   EnvironmentVariable,
   Group,
   Integration,
@@ -63,12 +68,21 @@ type CreateApiKeyVariables = {
   team_id: string;
 };
 
+type CreateEnvironmentData = {
+  createEnvironment: Environment;
+};
+
+type CreateEnvironmentVariables = {
+  name: string;
+  team_id: string;
+};
+
 type CreateEnvironmentVariableData = {
   createEnvironmentVariable: EnvironmentVariable;
 };
 
 type CreateEnvironmentVariableVariables = {
-  group_id: string;
+  environment_id: string;
   name: string;
   value: string;
 };
@@ -151,6 +165,14 @@ type DeleteApiKeyVariables = {
   id: string;
 };
 
+type DeleteEnvironmentData = {
+  deleteEnvironment: Environment;
+};
+
+type DeleteEnvironmentVariables = {
+  id: string;
+};
+
 type DeleteEnvironmentVariableData = {
   deleteEnvironmentVariable: EnvironmentVariable;
 };
@@ -216,6 +238,25 @@ type SignInWithGitHubVariables = {
   invite_id?: string | null;
 };
 
+type UpdateEnvironmentData = {
+  updateEnvironment: Environment;
+};
+
+type UpdateEnvironmentVariables = {
+  id: string;
+  name: string;
+};
+
+type UpdateEnvironmentVariableData = {
+  updateEnvironmentVariable: EnvironmentVariable;
+};
+
+type UpdateEnvironmentVariableVariables = {
+  id: string;
+  name: string;
+  value: string;
+};
+
 type UpdateGroupData = {
   updateGroup: Group;
 };
@@ -224,6 +265,7 @@ type UpdateGroupVariables = {
   deployment_branches?: string | null;
   deployment_environment?: DeploymentEnvironment | null;
   deployment_integration_id?: string | null;
+  environment_id?: string | null;
   id: string;
   is_email_enabled?: boolean;
   name?: string;
@@ -334,6 +376,20 @@ export const useCreateApiKey = (): MutationTuple<
   return useMutation<CreateApiKeyData, CreateApiKeyVariables>(
     createApiKeyMutation,
     { awaitRefetchQueries: true, onError, refetchQueries: ["apiKeys"] }
+  );
+};
+
+export const useCreateEnvironment = (): MutationTuple<
+  CreateEnvironmentData,
+  CreateEnvironmentVariables
+> => {
+  return useMutation<CreateEnvironmentData, CreateEnvironmentVariables>(
+    createEnvironmentMutation,
+    {
+      awaitRefetchQueries: true,
+      onError,
+      refetchQueries: ["environments"],
+    }
   );
 };
 
@@ -488,6 +544,20 @@ export const useDeleteApiKey = (): MutationTuple<
   );
 };
 
+export const useDeleteEnvironment = (): MutationTuple<
+  DeleteEnvironmentData,
+  DeleteEnvironmentVariables
+> => {
+  return useMutation<DeleteEnvironmentData, DeleteEnvironmentVariables>(
+    deleteEnvironmentMutation,
+    {
+      awaitRefetchQueries: true,
+      onError,
+      refetchQueries: ["environments"],
+    }
+  );
+};
+
 export const useDeleteEnvironmentVariable = (): MutationTuple<
   DeleteEnvironmentVariableData,
   DeleteEnvironmentVariableVariables
@@ -620,6 +690,30 @@ export const useSignInWithGitHub = (
       },
     }
   );
+};
+
+export const useUpdateEnvironment = (): MutationTuple<
+  UpdateEnvironmentData,
+  UpdateEnvironmentVariables
+> => {
+  return useMutation<UpdateEnvironmentData, UpdateEnvironmentVariables>(
+    updateEnvironmentMutation,
+    { onError, refetchQueries: ["environments"] }
+  );
+};
+
+export const useUpdateEnvironmentVariable = (): MutationTuple<
+  UpdateEnvironmentVariableData,
+  UpdateEnvironmentVariableVariables
+> => {
+  return useMutation<
+    UpdateEnvironmentVariableData,
+    UpdateEnvironmentVariableVariables
+  >(updateEnvironmentVariableMutation, {
+    awaitRefetchQueries: true,
+    onError,
+    refetchQueries: ["environmentVariables"],
+  });
 };
 
 export const useUpdateGroup = (): MutationTuple<

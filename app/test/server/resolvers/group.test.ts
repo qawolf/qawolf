@@ -7,6 +7,7 @@ import {
   updateGroupResolver,
 } from "../../../server/resolvers/group";
 import {
+  buildEnvironment,
   buildGroup,
   buildIntegration,
   buildTeam,
@@ -148,11 +149,12 @@ describe("testGroupsResolver", () => {
 
 describe("updateGroupResolver", () => {
   beforeAll(async () => {
+    await db("environments").insert(buildEnvironment({}));
     await db("integrations").insert([
       buildIntegration({}),
       buildIntegration({ i: 2, type: "github" }),
     ]);
-    await db("groups").insert(buildGroup({}));
+    return db("groups").insert(buildGroup({}));
   });
 
   afterAll(() => db("groups").del());
@@ -202,6 +204,23 @@ describe("updateGroupResolver", () => {
       deployment_branches: "main",
       deployment_environment: "preview",
       deployment_integration_id: "integration2Id",
+      repeat_minutes: null,
+    });
+  });
+
+  it("updates environment for group", async () => {
+    const updatedGroup = await updateGroupResolver(
+      {},
+      {
+        environment_id: "environmentId",
+        id: "groupId",
+        repeat_minutes: null,
+      },
+      testContext
+    );
+
+    expect(updatedGroup).toMatchObject({
+      environment_id: "environmentId",
       repeat_minutes: null,
     });
   });

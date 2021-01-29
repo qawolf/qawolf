@@ -15,12 +15,26 @@ export const colors = {
   codePink: "#F562A0",
   codeTeal: "#6CCED9",
   codeYellow: "#F0D278",
+  danger5: "#DB4B4B",
+  danger6: "#C23232",
   error: "#DE4343",
   fill0: "#F5F6FA",
   fill10: "#F2F4F7",
   fill20: "#E6E7EB",
   fill30: "#CED3E0",
   fill50: "#7282A3",
+  gray0: "#FFFFFF",
+  gray2: "#F2F4F7",
+  gray3: "#E9ECF2",
+  gray4: "#C9D0DB",
+  gray5: "#ABB3C2",
+  gray6: "#8992A3",
+  gray7: "#667080",
+  gray8: "#404857",
+  gray9: "#2A3140",
+  gray10: "#151B26",
+  primary5: "#4545E5",
+  primary6: "#2F2FC2",
   primaryFill: "#4545E5",
   primaryFillLight: "#8E9CF5",
   primaryHover: "#695EFF",
@@ -44,6 +58,10 @@ export const edgeSize = {
 
 export const fontFamily = {
   bold: "Circular Black",
+  component: "Inter",
+  componentBold: "Inter Semibold",
+  componentHeader: "Inter Semibold",
+  componentParagraph: "Inter",
   eyebrow: "Plex Mono Semibold",
   medium: "Circular Medium",
   normal: "Circular",
@@ -51,6 +69,7 @@ export const fontFamily = {
 
 export const fontWeight = {
   bold: 900,
+  semibold: 600,
   medium: 500,
   normal: 400,
 };
@@ -63,6 +82,12 @@ export const offset = {
   demoVideo: "-80px",
 };
 
+export const overflowStyle = {
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap" as const,
+};
+
 export const text = {
   xxsmall: { height: "24px", size: "14px" },
   xsmall: { height: "24px", size: "16px" },
@@ -71,6 +96,10 @@ export const text = {
   large: { height: "36px", size: "28px" },
   xlarge: { height: "40px", size: "36px" },
   xxlarge: { height: "52px", size: "46px" },
+  component: { height: "16px", size: "14px" },
+  componentBold: { height: "16px", size: "14px" },
+  componentHeader: { height: "24px", size: "18px" },
+  componentParagraph: { height: "20px", size: "14px" },
   eyebrow: { height: "18px", size: "16px" },
 };
 
@@ -82,6 +111,10 @@ export const textDesktop = {
   large: { height: "52px", size: "40px" },
   xlarge: { height: "62px", size: "56px" },
   xxlarge: { height: "84px", size: "76px" },
+  component: { height: "16px", size: "14px" },
+  componentBold: { height: "16px", size: "14px" },
+  componentHeader: { height: "24px", size: "18px" },
+  componentParagraph: { height: "20px", size: "14px" },
   eyebrow: { height: "18px", size: "16px" },
 };
 
@@ -102,8 +135,11 @@ export const theme = {
     edgeSize,
   },
   layer: {
+    border: {
+      radius: edgeSize.xxsmall,
+    },
     overlay: {
-      background: "rgba(0, 0, 0, 0.8)",
+      background: "rgba(21, 27, 38, 0.6)",
     },
     responsiveBreakpoint: null,
   },

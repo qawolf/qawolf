@@ -77,9 +77,17 @@ export type CreateUserWithGitHub = GitHubFields & WolfFields;
 
 export type DeploymentEnvironment = "preview" | "production";
 
+export type Environment = {
+  created_at?: string;
+  id: string;
+  name: string;
+  team_id: string;
+  updated_at?: string;
+};
+
 export type EnvironmentVariable = {
   created_at?: string;
-  group_id: string;
+  environment_id: string;
   id: string;
   is_system?: boolean;
   name: string;
@@ -127,6 +135,7 @@ export type Group = {
   deployment_branches?: string | null;
   deployment_environment?: DeploymentEnvironment | null;
   deployment_integration_id: string | null;
+  environment_id: string | null;
   id: string;
   is_default: boolean;
   is_email_enabled: boolean;
@@ -302,15 +311,20 @@ export type CreateApiKeyMutation = {
   team_id: string;
 };
 
-export type CreateGitHubIntegrationsMutation = {
-  installation_id: number;
+export type CreateEnvironmentMutation = {
+  name: string;
   team_id: string;
 };
 
 export type CreateEnvironmentVariableMutation = {
-  group_id: string;
+  environment_id: string;
   name: string;
   value: string;
+};
+
+export type CreateGitHubIntegrationsMutation = {
+  installation_id: number;
+  team_id: string;
 };
 
 export type CreateInviteMutation = {
@@ -386,10 +400,22 @@ export type SignInWithGitHubMutation = {
   invite_id?: string | null;
 };
 
+export type UpdateEnvironmentMutation = {
+  id: string;
+  name: string;
+};
+
+export type UpdateEnvironmentVariableMutation = {
+  id: string;
+  name: string;
+  value: string;
+};
+
 export type UpdateGroupMutation = {
   deployment_branches?: string | null;
   deployment_environment?: DeploymentEnvironment | null;
   deployment_integration_id?: string | null;
+  environment_id?: string | null;
   id: string;
   is_email_enabled?: boolean;
   name?: string;
@@ -440,6 +466,10 @@ export type UseTestSessionMutation = {
 // Query types
 export type CurrentUser = User & {
   teams: Team[];
+};
+
+export type EnvironmentIdQuery = {
+  environment_id: string;
 };
 
 export type GroupIdQuery = {

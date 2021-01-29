@@ -1,40 +1,56 @@
-import { Box } from "grommet";
+import { useState } from "react";
 
-import { SelectedGroup } from "../../../lib/types";
+import { EnvironmentVariable } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
-import Layer from "../../shared/Layer";
-import Text from "../../shared/Text";
-import CreateEnvVariable from "./CreateEnvVariable";
-import EnvVariablesList from "./EnvVariablesList";
+import Modal from "../../shared-new/Modal";
+import Text from "../../shared-new/Text";
+import ConfirmDelete from "./ConfirmDelete";
+import List from "./List";
+import SelectEnvironment from "./SelectEnvironment";
 
 type Props = {
   closeModal: () => void;
-  group: SelectedGroup;
 };
 
-const WIDTH = "640px";
+export default function Environments({ closeModal }: Props): JSX.Element {
+  const [
+    deleteEnvironmentVariable,
+    setDeleteEnvironmentVariable,
+  ] = useState<EnvironmentVariable | null>(null);
 
-export default function EnvVariables({
-  closeModal,
-  group,
-}: Props): JSX.Element {
+  const handleClose = (): void => setDeleteEnvironmentVariable(null);
+
+  const handleDeleteClick = (
+    environmentVariable: EnvironmentVariable
+  ): void => {
+    setDeleteEnvironmentVariable(environmentVariable);
+  };
+
   return (
-    <Layer onClickOutside={closeModal} onEsc={closeModal}>
-      <Box pad="large" width={WIDTH}>
-        <Text
-          color="black"
-          margin={{ bottom: "small" }}
-          size="large"
-          weight="bold"
-        >
-          {`${copy.envVariables}: ${group.name}`}
-        </Text>
-        <Text color="gray" size="small">
-          {copy.envVariablesDetail}
-        </Text>
-        <EnvVariablesList group={group} />
-        <CreateEnvVariable groupId={group.id} />
-      </Box>
-    </Layer>
+    <Modal
+      closeModal={closeModal}
+      label={
+        deleteEnvironmentVariable ? copy.envVariableDelete : copy.envVariables
+      }
+    >
+      {deleteEnvironmentVariable ? (
+        <ConfirmDelete
+          environmentVariable={deleteEnvironmentVariable}
+          onClose={handleClose}
+        />
+      ) : (
+        <>
+          <Text
+            color="gray9"
+            margin={{ top: "xxsmall" }}
+            size="componentParagraph"
+          >
+            {copy.envVariablesDetail}
+          </Text>
+          <SelectEnvironment />
+          <List closeModal={closeModal} onDeleteClick={handleDeleteClick} />
+        </>
+      )}
+    </Modal>
   );
 }

@@ -2,6 +2,7 @@ import { gql } from "@apollo/client";
 
 import {
   apiKeyFragment,
+  environmentFragment,
   environmentVariableFragment,
   groupFragment,
   integrationFragment,
@@ -29,13 +30,26 @@ export const createApiKeyMutation = gql`
   ${apiKeyFragment}
 `;
 
+export const createEnvironmentMutation = gql`
+  mutation createEnvironment($name: String!, $team_id: ID!) {
+    createEnvironment(name: $name, team_id: $team_id) {
+      ...EnvironmentFragment
+    }
+  }
+  ${environmentFragment}
+`;
+
 export const createEnvironmentVariableMutation = gql`
   mutation createEnvironmentVariable(
-    $group_id: ID!
+    $environment_id: ID!
     $name: String!
     $value: String!
   ) {
-    createEnvironmentVariable(group_id: $group_id, name: $name, value: $value) {
+    createEnvironmentVariable(
+      environment_id: $environment_id
+      name: $name
+      value: $value
+    ) {
       ...EnvironmentVariableFragment
     }
   }
@@ -125,6 +139,15 @@ export const deleteApiKeyMutation = gql`
   ${apiKeyFragment}
 `;
 
+export const deleteEnvironmentMutation = gql`
+  mutation deleteEnvironment($id: ID!) {
+    deleteEnvironment(id: $id) {
+      ...EnvironmentFragment
+    }
+  }
+  ${environmentFragment}
+`;
+
 export const deleteEnvironmentVariableMutation = gql`
   mutation deleteEnvironmentVariable($id: ID!) {
     deleteEnvironmentVariable(id: $id) {
@@ -198,11 +221,34 @@ export const signInWithGitHubMutation = gql`
   ${userFragment}
 `;
 
+export const updateEnvironmentMutation = gql`
+  mutation updateEnvironment($id: ID!, $name: String!) {
+    updateEnvironment(id: $id, name: $name) {
+      ...EnvironmentFragment
+    }
+  }
+  ${environmentFragment}
+`;
+
+export const updateEnvironmentVariableMutation = gql`
+  mutation updateEnvironmentVariable(
+    $id: ID!
+    $name: String!
+    $value: String!
+  ) {
+    updateEnvironmentVariable(id: $id, name: $name, value: $value) {
+      ...EnvironmentVariableFragment
+    }
+  }
+  ${environmentVariableFragment}
+`;
+
 export const updateGroupMutation = gql`
   mutation updateGroup(
     $deployment_branches: String
     $deployment_environment: DeploymentEnvironment
     $deployment_integration_id: ID
+    $environment_id: ID
     $id: ID!
     $is_email_enabled: Boolean
     $name: String
@@ -213,6 +259,7 @@ export const updateGroupMutation = gql`
       deployment_branches: $deployment_branches
       deployment_environment: $deployment_environment
       deployment_integration_id: $deployment_integration_id
+      environment_id: $environment_id
       id: $id
       is_email_enabled: $is_email_enabled
       name: $name

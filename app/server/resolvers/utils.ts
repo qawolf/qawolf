@@ -3,10 +3,26 @@ import { Transaction } from "knex";
 
 import { AuthenticationError } from "../errors";
 import { Logger } from "../Logger";
+import { findEnvironment } from "../models/environment";
+import { findEnvironmentVariable } from "../models/environment_variable";
 import { findGroup } from "../models/group";
 import { findSuite } from "../models/suite";
 import { findTest } from "../models/test";
 import { Team, Test, User } from "../types";
+
+type EnsureEnvironmentAccess = {
+  environment_id: string;
+  logger: Logger;
+  teams: Team[] | null;
+  trx?: Transaction;
+};
+
+type EnsureEnvironmentVariableAccess = {
+  environment_variable_id: string;
+  logger: Logger;
+  teams: Team[] | null;
+  trx?: Transaction;
+};
 
 type EnsureGroupAccess = {
   group_id: string;
@@ -59,6 +75,65 @@ export const ensureTeams = ({ logger, teams }: EnsureTeams): Team[] => {
   return teams;
 };
 
+export const ensureEnvironmentAccess = async ({
+  environment_id,
+  logger,
+  teams,
+  trx,
+}: EnsureEnvironmentAccess): Promise<Team> => {
+  const log = logger.prefix("ensureEnvironmentAccess");
+
+  const teamIds = ensureTeams({ teams, logger }).map((team) => team.id);
+  log.debug("ensure teams", teamIds, "can access environment", environment_id);
+
+  const environment = await findEnvironment(environment_id, { logger, trx });
+  const teamForEnvironment = teams!.find(
+    (team) => environment.team_id === team.id
+  );
+
+  if (!teamForEnvironment) {
+    log.error("teams", teamIds, "cannot access environment", environment_id);
+    throw new AuthenticationError("cannot access environment");
+  }
+
+  return teamForEnvironment;
+};
+
+export const ensureEnvironmentVariableAccess = async ({
+  environment_variable_id,
+  logger,
+  teams,
+  trx,
+}: EnsureEnvironmentVariableAccess): Promise<Team> => {
+  const log = logger.prefix("ensureEnvironmentVariableAccess");
+
+  const teamIds = ensureTeams({ teams, logger }).map((team) => team.id);
+  log.debug(
+    "ensure teams",
+    teamIds,
+    "can access environment variable",
+    environment_variable_id
+  );
+
+  const variable = await findEnvironmentVariable(environment_variable_id, {
+    logger,
+    trx,
+  });
+  const selectedTeam = teams!.find((team) => variable.team_id === team.id);
+
+  if (!selectedTeam) {
+    log.error(
+      "teams",
+      teamIds,
+      "cannot access environment variable",
+      environment_variable_id
+    );
+    throw new AuthenticationError("cannot access environment variable");
+  }
+
+  return selectedTeam;
+};
+
 export const ensureGroupAccess = async ({
   group_id,
   logger,
@@ -68,7 +143,6 @@ export const ensureGroupAccess = async ({
   const log = logger.prefix("ensureGroupAccess");
 
   const teamIds = ensureTeams({ teams, logger }).map((team) => team.id);
-
   log.debug("ensure teams", teamIds, "can access group", group_id);
 
   const group = await findGroup(group_id, { logger, trx });

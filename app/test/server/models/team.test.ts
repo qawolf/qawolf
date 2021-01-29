@@ -20,11 +20,12 @@ afterAll(() => dropTestDb());
 describe("team model", () => {
   describe("createFreeTeamWithGroup", () => {
     afterAll(async () => {
+      await db("environments").del();
       await db("groups").del();
       return db("teams").del();
     });
 
-    it("creates a free team with the default group", async () => {
+    it("creates a free team with the default group and environments", async () => {
       await createFreeTeamWithGroup("userId", { logger });
 
       const teams = await db.select("*").from("teams");
@@ -51,6 +52,15 @@ describe("team model", () => {
           repeat_minutes: null,
           team_id: teams[0].id,
         },
+      ]);
+
+      const environments = await db
+        .select("*")
+        .from("environments")
+        .orderBy("name", "asc");
+      expect(environments).toMatchObject([
+        { name: "Production", team_id: teams[0].id },
+        { name: "Staging", team_id: teams[0].id },
       ]);
     });
   });

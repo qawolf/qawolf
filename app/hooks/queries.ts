@@ -6,6 +6,7 @@ import {
   apiKeysQuery,
   currentUserQuery,
   dashboardQuery,
+  environmentsQuery,
   environmentVariablesQuery,
   groupsQuery,
   integrationsQuery,
@@ -20,6 +21,7 @@ import { routes } from "../lib/routes";
 import { state } from "../lib/state";
 import {
   ApiKey,
+  Environment,
   EnvironmentVariable,
   Group,
   Integration,
@@ -56,6 +58,14 @@ type DashboardVariables = {
   group_id?: string | null;
 };
 
+type EnvironmentsData = {
+  environments: Environment[];
+};
+
+type EnvironmentsVariables = {
+  team_id: string;
+};
+
 type EnvironmentVariablesData = {
   environmentVariables: {
     env: string;
@@ -64,7 +74,7 @@ type EnvironmentVariablesData = {
 };
 
 type EnvironmentVariablesVariables = {
-  group_id: string;
+  environment_id: string;
 };
 
 type GroupsData = {
@@ -168,6 +178,30 @@ export const useDashboard = (
   });
 };
 
+export const useEnvironments = (
+  variables: EnvironmentsVariables,
+  { environmentId }: { environmentId: string | null }
+): QueryResult<EnvironmentsData, EnvironmentsVariables> => {
+  return useQuery<EnvironmentsData, EnvironmentsVariables>(environmentsQuery, {
+    fetchPolicy,
+    nextFetchPolicy,
+    onCompleted: (response) => {
+      if (!response?.environments) return;
+
+      const selected = response.environments.find(
+        (e) => e.id === environmentId
+      );
+      // set an environment if possible and if none are currently selected
+      if (!selected && response.environments.length) {
+        state.setEnvironmentId(response.environments[0].id);
+      }
+    },
+    onError,
+    skip: !variables.team_id,
+    variables,
+  });
+};
+
 export const useEnvironmentVariables = (
   variables: EnvironmentVariablesVariables
 ): QueryResult<EnvironmentVariablesData, EnvironmentVariablesVariables> => {
@@ -177,7 +211,7 @@ export const useEnvironmentVariables = (
       fetchPolicy,
       nextFetchPolicy,
       onError,
-      skip: !variables.group_id,
+      skip: !variables.environment_id,
       variables,
     }
   );

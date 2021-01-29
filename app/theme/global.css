@@ -46,6 +46,22 @@ p {
 
 @font-face {
   font-display: block;
+  font-family: "Inter";
+  font-weight: 400;
+  src: url("/fonts/inter-regular.woff2") format("woff2"),
+    url("/fonts/inter-regular.woff") format("woff");
+}
+
+@font-face {
+  font-display: block;
+  font-family: "Inter Semibold";
+  font-weight: 600;
+  src: url("/fonts/inter-semibold.woff2") format("woff2"),
+    url("/fonts/inter-semibold.woff") format("woff");
+}
+
+@font-face {
+  font-display: block;
   font-family: "Plex Mono Semibold";
   font-weight: 600;
   src: url("/fonts/ibm-plex-mono-semibold.woff2") format("woff2"),

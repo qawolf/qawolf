@@ -6,6 +6,7 @@ import { ImageGroup, RunOptions, State as StateType } from "./types";
 export const defaultState: StateType = {
   dashboardUri: null,
   email: null,
+  environmentId: null,
   error: null,
   groupId: null,
   image: {
@@ -71,6 +72,10 @@ class State extends EventEmitter {
 
   setEmail(email: StateType["email"]): void {
     this._setState({ email });
+  }
+
+  setEnvironmentId(environmentId: StateType["environmentId"]): void {
+    this._setState({ environmentId });
   }
 
   setError(error: StateType["error"]): void {

@@ -38,7 +38,7 @@ export default function SelectAlert({
       onClick={handleClick}
       plain
     >
-      <Box align="center" direction="row" ref={ref}>
+      <Box align="center" direction="row" margin={{ right: "large" }} ref={ref}>
         <AlertHeader group={group} integrations={integrations} />
         <Down
           className={styles.down}

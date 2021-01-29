@@ -11,11 +11,19 @@ export const apiKeyFragment = gql`
   }
 `;
 
+export const environmentFragment = gql`
+  fragment EnvironmentFragment on Environment {
+    id
+    name
+  }
+`;
+
 export const environmentVariableFragment = gql`
   fragment EnvironmentVariableFragment on EnvironmentVariable {
     created_at
     id
     name
+    value
   }
 `;
 
@@ -25,6 +33,7 @@ export const groupFragment = gql`
     deployment_branches
     deployment_environment
     deployment_integration_id
+    environment_id
     id
     is_default
     is_email_enabled

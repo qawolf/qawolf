@@ -107,34 +107,13 @@ export const testGroupsResolver = async (
  */
 export const updateGroupResolver = async (
   _: Record<string, unknown>,
-  {
-    deployment_branches,
-    deployment_environment,
-    deployment_integration_id,
-    id,
-    is_email_enabled,
-    name,
-    alert_integration_id,
-    repeat_minutes,
-  }: UpdateGroupMutation,
+  args: UpdateGroupMutation,
   { logger, teams }: Context
 ): Promise<Group> => {
-  logger.debug("updateGroupResolver", id);
-  await ensureGroupAccess({ logger, group_id: id, teams });
+  logger.debug("updateGroupResolver", args.id);
+  await ensureGroupAccess({ logger, group_id: args.id, teams });
 
-  const updatedGroup = await updateGroup(
-    {
-      deployment_branches,
-      deployment_environment,
-      deployment_integration_id,
-      id,
-      is_email_enabled,
-      name,
-      alert_integration_id,
-      repeat_minutes,
-    },
-    { logger }
-  );
+  const updatedGroup = await updateGroup(args, { logger });
 
   return updatedGroup;
 };
