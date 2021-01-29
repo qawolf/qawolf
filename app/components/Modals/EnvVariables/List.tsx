@@ -85,7 +85,11 @@ export default function List({
 
   return (
     <>
-      <Box direction="row" margin={{ bottom: "xxsmall", top: "medium" }}>
+      <Box
+        direction="row"
+        flex={false}
+        margin={{ bottom: "xxsmall", top: "medium" }}
+      >
         <Box width={nameWidth}>
           <Text color="gray9" size="componentBold">
             {copy.name}
@@ -96,7 +100,7 @@ export default function List({
         </Text>
       </Box>
       <Divider />
-      <Box overflow="auto">{variablesHtml}</Box>
+      <Box overflow={{ vertical: "auto" }}>{variablesHtml}</Box>
       {placeholderHtml}
       {isCreate && (
         <>

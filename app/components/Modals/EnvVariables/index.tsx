@@ -1,3 +1,4 @@
+import { Box } from "grommet";
 import { useContext, useState } from "react";
 
 import { useEnvironments } from "../../../hooks/queries";
@@ -52,18 +53,20 @@ export default function Environments({ closeModal }: Props): JSX.Element {
         />
       ) : (
         <>
-          <Text
-            color="gray9"
-            margin={{ top: "xxsmall" }}
-            size="componentParagraph"
-          >
-            {copy.envVariablesDetail}
-          </Text>
-          <SelectEnvironment
-            environments={data?.environments || []}
-            onOptionClick={setSelectedEnvironmentId}
-            selectedEnvironmentId={selectedEnvironmentId}
-          />
+          <Box flex={false}>
+            <Text
+              color="gray9"
+              margin={{ top: "xxsmall" }}
+              size="componentParagraph"
+            >
+              {copy.envVariablesDetail}
+            </Text>
+            <SelectEnvironment
+              environments={data?.environments || []}
+              onOptionClick={setSelectedEnvironmentId}
+              selectedEnvironmentId={selectedEnvironmentId}
+            />
+          </Box>
           <List
             closeModal={closeModal}
             environmentId={selectedEnvironmentId}
