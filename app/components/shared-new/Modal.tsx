@@ -28,7 +28,7 @@ export default function Modal({
         onClickOutside={closeModal}
         onEsc={closeModal}
       >
-        <Box pad="medium" width={WIDTH}>
+        <Box overflow="hidden" pad="medium" width={WIDTH}>
           <Box align="center" direction="row" flex={false} justify="between">
             <Text color="gray9" size="componentHeader">
               {label}
