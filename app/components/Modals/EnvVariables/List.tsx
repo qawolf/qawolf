@@ -1,5 +1,5 @@
 import { Box } from "grommet";
-import { ReactNode, useContext, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 import { useEnvironmentVariables } from "../../../hooks/queries";
 import { EnvironmentVariable } from "../../../lib/types";
@@ -7,17 +7,18 @@ import { copy } from "../../../theme/copy";
 import Divider from "../../shared-new/Divider";
 import ModalButtons from "../../shared-new/ModalButtons";
 import Text from "../../shared-new/Text";
-import { StateContext } from "../../StateContext";
 import Form, { id as formInputId } from "./Form";
 import ListItem, { nameWidth } from "./ListItem";
 
 type Props = {
   closeModal: () => void;
+  environmentId: string;
   onDeleteClick: (environmentVariable: EnvironmentVariable) => void;
 };
 
 export default function List({
   closeModal,
+  environmentId,
   onDeleteClick,
 }: Props): JSX.Element {
   const [isCreate, setIsCreate] = useState(false);
@@ -25,7 +26,6 @@ export default function List({
     string | null
   >(null);
 
-  const { environmentId } = useContext(StateContext);
   const { data } = useEnvironmentVariables({ environment_id: environmentId });
 
   const handleCancelClick = (): void => {

@@ -7,11 +7,12 @@ import {
   borderSize,
   colors,
   edgeSize,
+  overflowStyle,
   transitionDuration,
 } from "../../../theme/theme-new";
 import Text from "../Text";
 import { background, hoverBackground, textColor, Type } from "./config";
-import { getBoxPad,getTextMargin } from "./helpers";
+import { getBoxPad, getTextMargin } from "./helpers";
 
 type Props = {
   IconComponent?: Icon;
@@ -66,6 +67,7 @@ function AppButton({
             color={textColor[type]}
             margin={getTextMargin(!!IconComponent, iconPosition)}
             size="component"
+            style={overflowStyle}
           >
             {label}
           </Text>
