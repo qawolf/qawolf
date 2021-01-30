@@ -6,9 +6,8 @@ import { Side } from "../../../lib/types";
 import Button from "../../shared-new/AppButton";
 import ArrowDown from "../icons/ArrowDown";
 import Selector from "../icons/Selector";
-import Menu from "./Menu";
+import Menu, { Direction } from "./Menu";
 
-export type Direction = "down" | "up";
 type Type = "dark" | "light";
 
 type Props = {
