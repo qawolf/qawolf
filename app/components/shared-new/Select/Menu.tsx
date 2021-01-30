@@ -3,7 +3,8 @@ import { ReactNode } from "react";
 import styled, { keyframes } from "styled-components";
 
 import { edgeSize } from "../../../theme/theme-new";
-import { Direction } from "./Chooser";
+
+export type Direction = "down" | "up";
 
 type Props = {
   children: ReactNode;

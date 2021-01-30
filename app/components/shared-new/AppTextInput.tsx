@@ -35,7 +35,7 @@ const StyledGrommetTextInput = styled(GrommetTextInput)`
   transition: ${transition};
 
   &:focus {
-    border-color: ${colors.primary5};
+    border-color: ${colors.primary};
   }
 
   &::placeholder {
@@ -55,7 +55,7 @@ function TextInput(
       placeholder={placeholder}
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ref={ref as any}
-      style={hasError ? { borderColor: colors.danger5 } : undefined}
+      style={hasError ? { borderColor: colors.danger } : undefined}
       value={value}
     />
   );

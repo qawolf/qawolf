@@ -3,8 +3,12 @@ import { ReactNode, useRef, useState } from "react";
 
 import { useOnClickOutside } from "../../../hooks/onClickOutside";
 import { Side } from "../../../lib/types";
-import Chooser, { Direction, Type } from "./Chooser";
-import Menu from "./Menu";
+import Button from "../../shared-new/AppButton";
+import ArrowDown from "../icons/ArrowDown";
+import Selector from "../icons/Selector";
+import Menu, { Direction } from "./Menu";
+
+type Type = "dark" | "light";
 
 type Props = {
   children: ReactNode;
@@ -15,7 +19,14 @@ type Props = {
   width?: BoxProps["width"];
 };
 
-export default function Select({ children, ...props }: Props): JSX.Element {
+export default function Select({
+  children,
+  direction,
+  label,
+  noBorderSide,
+  type,
+  width,
+}: Props): JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -27,9 +38,17 @@ export default function Select({ children, ...props }: Props): JSX.Element {
 
   return (
     <Box ref={ref} style={{ position: "relative" }}>
-      <Chooser {...props} isOpen={isOpen} onClick={handleClick} />
+      <Button
+        IconComponent={direction === "up" ? Selector : ArrowDown}
+        iconPosition="right"
+        label={label}
+        noBorderSide={noBorderSide}
+        onClick={handleClick}
+        type={type === "dark" ? "dark" : "secondary"}
+        width={width}
+      />
       {isOpen && (
-        <Menu direction={props.direction} onClick={handleClose}>
+        <Menu direction={direction} onClick={handleClose}>
           {children}
         </Menu>
       )}

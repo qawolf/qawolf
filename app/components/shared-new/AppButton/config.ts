@@ -4,19 +4,27 @@ import { colors } from "../../../theme/theme-new";
 
 export type Type = "danger" | "dark" | "ghost" | "primary" | "secondary";
 
+export const activeBackground: { [type in Type]: BoxProps["background"] } = {
+  danger: colors.dangerDarker,
+  dark: colors.gray10,
+  ghost: colors.gray3,
+  primary: colors.primaryDarker,
+  secondary: colors.gray0,
+};
+
 export const background: { [type in Type]: BoxProps["background"] } = {
-  danger: colors.danger5,
+  danger: colors.danger,
   dark: colors.gray10,
   ghost: colors.gray0,
-  primary: colors.primary5,
+  primary: colors.primary,
   secondary: colors.gray0,
 };
 
 export const hoverBackground: { [type in Type]: string } = {
-  danger: colors.danger6,
+  danger: colors.dangerDark,
   dark: colors.gray10,
   ghost: colors.gray2,
-  primary: colors.primary6,
+  primary: colors.primaryDark,
   secondary: colors.gray0,
 };
 
