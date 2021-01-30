@@ -26,12 +26,12 @@ const iconProps = {
 const StyledButton = styled(Button)`
   transition: background ${transitionDuration};
 
-  &:active {
-    background: ${colors.gray3};
-  }
-
   &:hover {
     background: ${colors.gray2};
+  }
+
+  &:active {
+    background: ${colors.gray3};
   }
 `;
 
