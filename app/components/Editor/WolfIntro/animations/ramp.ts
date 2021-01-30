@@ -17,7 +17,7 @@ type GrowHelper = {
 
 const WIDTH = "136px";
 const LEFT = `calc(50% - ${WIDTH} / 2)`;
-const TOP = "96px";
+const TOP = "180px";
 
 export const startScalePosition = {
   transform: "scale(0)",
