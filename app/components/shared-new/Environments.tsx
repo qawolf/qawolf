@@ -15,9 +15,8 @@ import { StateContext } from "../StateContext";
 import Button from "./AppButton";
 import Configure from "./icons/Configure";
 import Edit from "./icons/Edit";
-import Select from "./Select";
+import Select, { Direction } from "./Select";
 import Action from "./Select/Action";
-import { Direction } from "./Select/Chooser";
 import Option from "./Select/Option";
 
 type Props = {

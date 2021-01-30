@@ -8,12 +8,15 @@ import ArrowDown from "../icons/ArrowDown";
 import Selector from "../icons/Selector";
 import Menu from "./Menu";
 
+export type Direction = "down" | "up";
+type Type = "dark" | "light";
+
 type Props = {
   children: ReactNode;
-  direction?: "down" | "up";
+  direction?: Direction;
   label: string;
   noBorderSide?: Side;
-  type?: "dark" | "light";
+  type?: Type;
   width?: BoxProps["width"];
 };
 
