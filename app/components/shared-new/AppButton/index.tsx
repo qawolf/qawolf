@@ -112,15 +112,6 @@ const StyledAppButton = styled(AppButton)`
     transition: fill ${transitionDuration};
   }
 
-  &:active {
-    ${(props) => `
-    background: ${activeBackground[props.hoverType || props.type]};
-    `}
-
-    ${(props) => props.type === "dark" && `border-color: ${colors.gray4};`}
-    ${(props) => props.type === "secondary" && `border-color: ${colors.gray7};`}
-  }
-
   &:hover {
     ${(props) =>
       `
@@ -133,6 +124,15 @@ const StyledAppButton = styled(AppButton)`
 
     ${(props) => props.type === "dark" && `border-color: ${colors.gray6};`}
     ${(props) => props.type === "secondary" && `border-color: ${colors.gray5};`}
+  }
+
+  &:active {
+    ${(props) => `
+    background: ${activeBackground[props.hoverType || props.type]};
+    `}
+
+    ${(props) => props.type === "dark" && `border-color: ${colors.gray4};`}
+    ${(props) => props.type === "secondary" && `border-color: ${colors.gray7};`}
   }
 `;
 
