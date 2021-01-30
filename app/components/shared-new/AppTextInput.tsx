@@ -35,7 +35,7 @@ const StyledGrommetTextInput = styled(GrommetTextInput)`
   transition: ${transition};
 
   &:focus {
-    border-color: ${colors.primary5};
+    border-color: ${colors.primary};
   }
 
   &::placeholder {
