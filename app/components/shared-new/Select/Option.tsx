@@ -23,8 +23,12 @@ const iconProps = {
   size: edgeSize.small,
 };
 
-const StyledBox = styled(Box)`
+const StyledButton = styled(Button)`
   transition: background ${transitionDuration};
+
+  &:active {
+    background: ${colors.gray3};
+  }
 
   &:hover {
     background: ${colors.gray2};
@@ -40,8 +44,8 @@ export default function Option({
   const IconComponent = PropsIconComponent || (isSelected ? Check : undefined);
 
   return (
-    <Button onClick={onClick} plain>
-      <StyledBox
+    <StyledButton onClick={onClick} plain>
+      <Box
         align="center"
         direction="row"
         pad={{ right: "xsmall", left: "xxsmall", vertical: "xxsmall" }}
@@ -59,7 +63,7 @@ export default function Option({
         >
           {label}
         </Text>
-      </StyledBox>
-    </Button>
+      </Box>
+    </StyledButton>
   );
 }

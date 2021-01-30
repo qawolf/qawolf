@@ -11,7 +11,13 @@ import {
   transitionDuration,
 } from "../../../theme/theme-new";
 import Text from "../Text";
-import { background, hoverBackground, textColor, Type } from "./config";
+import {
+  activeBackground,
+  background,
+  hoverBackground,
+  textColor,
+  Type,
+} from "./config";
 import { getBoxPad, getTextMargin } from "./helpers";
 
 type Props = {
@@ -39,11 +45,11 @@ function AppButton({
   margin,
   onClick,
   type,
-  width,
 }: Props): JSX.Element {
   return (
     <Button
       a11yTitle={a11yTitle || label}
+      className={className}
       disabled={isDisabled}
       margin={margin}
       onClick={onClick}
@@ -51,13 +57,10 @@ function AppButton({
     >
       <Box
         align="center"
-        background={background[type]}
-        className={className}
         direction={iconPosition === "right" ? "row-reverse" : "row"}
+        fill
         justify="between"
         pad={getBoxPad(!!label, !!IconComponent, iconPosition)}
-        round={borderSize.small}
-        width={width}
       >
         {!!IconComponent && (
           <IconComponent color={textColor[type]} size={edgeSize.small} />
@@ -78,8 +81,12 @@ function AppButton({
 }
 
 const StyledAppButton = styled(AppButton)`
+  background: ${(props) => `${background[props.type]}`};
+  border-radius: ${borderSize.small};
   height: ${edgeSize.large};
   transition: all ${transitionDuration};
+
+  ${(props) => !!props.width && `width: ${props.width};`}
 
   ${(props) =>
     props.type === "dark" &&
@@ -105,15 +112,22 @@ const StyledAppButton = styled(AppButton)`
     transition: fill ${transitionDuration};
   }
 
+  &:active {
+    ${(props) => `
+    background: ${activeBackground[props.hoverType || props.type]};
+    `}
+
+    ${(props) => props.type === "dark" && `border-color: ${colors.gray4};`}
+    ${(props) => props.type === "secondary" && `border-color: ${colors.gray7};`}
+  }
+
   &:hover {
     ${(props) =>
       `
-    background: ${
-      hoverBackground[props.hoverType] || hoverBackground[props.type]
-    };
+    background: ${hoverBackground[props.hoverType || props.type]};
 
     svg {
-      fill: ${textColor[props.hoverType] || textColor[props.type]};
+      fill: ${textColor[props.hoverType || props.type]};
     }
     `}
 
