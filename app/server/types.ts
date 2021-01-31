@@ -129,6 +129,7 @@ export type Invite = {
 
 export type Group = {
   alert_integration_id: string | null;
+  alert_only_on_failure?: boolean;
   created_at?: string;
   creator_id: string;
   deleted_at: string | null;

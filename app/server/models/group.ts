@@ -97,6 +97,7 @@ export const createGroup = async (
 
   const group = {
     alert_integration_id: null,
+    alert_only_on_failure: false,
     creator_id,
     deleted_at: null,
     deployment_integration_id: null,

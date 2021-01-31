@@ -110,6 +110,7 @@ describe("group model", () => {
       expect(groups).toMatchObject([
         {
           alert_integration_id: null,
+          alert_only_on_failure: false,
           creator_id: "userId",
           deleted_at: null,
           deployment_integration_id: null,
