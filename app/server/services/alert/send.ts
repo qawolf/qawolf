@@ -51,7 +51,6 @@ export const sendAlert = async ({
   const group = await findGroup(suite.group_id, { logger });
 
   if (!shouldSendAlert({ group, runs })) {
-    console.log("RUNS", runs);
     log.debug("skip: should not send alert");
     return;
   }

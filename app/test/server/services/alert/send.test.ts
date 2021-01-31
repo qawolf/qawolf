@@ -136,7 +136,7 @@ describe("shouldSendAlert", () => {
   const runFail = { status: "fail" } as SuiteRun;
   const runPass = { status: "pass" } as SuiteRun;
 
-  it("returns true if should not only alert on failure", async () => {
+  it("returns true if alert only on failure disabled and all runs passed", async () => {
     expect(
       shouldSendAlert({
         group: { ...group, alert_only_on_failure: false },
@@ -145,7 +145,7 @@ describe("shouldSendAlert", () => {
     ).toBe(true);
   });
 
-  it("returns false if should alert only on failure and all runs passsed", async () => {
+  it("returns false if should alert only on failure enabled and all runs passsed", async () => {
     expect(
       shouldSendAlert({
         group: { ...group, alert_only_on_failure: true },
@@ -154,7 +154,7 @@ describe("shouldSendAlert", () => {
     ).toBe(false);
   });
 
-  it("returns true if should alert only on failure but some runs failed", async () => {
+  it("returns true if should alert only on failure enabled but some runs failed", async () => {
     expect(
       shouldSendAlert({
         group: { ...group, alert_only_on_failure: true },
