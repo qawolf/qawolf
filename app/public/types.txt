@@ -26056,10 +26056,35 @@ declare const assert: typeof import("assert");
 declare const axios: typeof import("axios").default;
 declare const devices: typeof import("playwright").devices;
 
-type LaunchOptions = Pick<import("playwright").BrowserContextOptions, "bypassCSP" | "colorScheme" | "deviceScaleFactor" | "extraHTTPHeaders" | "geolocation" | "hasTouch" | "httpCredentials" | "ignoreHTTPSErrors" | "isMobile" | "locale" | "permissions" | "timezoneId" | "userAgent" | "viewport"
-> & {
+type LaunchOptions = Pick<import("playwright").BrowserContextOptions,
+"acceptDownloads" |
+"bypassCSP" |
+"colorScheme" |
+"deviceScaleFactor" |
+"extraHTTPHeaders" |
+"geolocation" |
+"hasTouch" |
+"httpCredentials" |
+"ignoreHTTPSErrors" |
+"isMobile" |
+"locale" |
+"offline" |
+"permissions" |
+"proxy" |
+"storageState" |
+"timezoneId" |
+"userAgent" |
+"viewport"
+> &
+Pick<import("playwright").LaunchOptions, "args" |
+"devtools" |
+"env" |
+"firefoxUserPrefs" |
+"proxy" |
+"slowMo" |
+"timeout"> & {
   browser?: "chromium" | "firefox" | "webkit";
-  devtools?: boolean;
+  headless?: boolean;
 };
 
 /**
