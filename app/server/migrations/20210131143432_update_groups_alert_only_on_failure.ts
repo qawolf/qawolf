@@ -7,7 +7,7 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return knex.schema.alterTable("groupss", (table) => {
+  return knex.schema.alterTable("groups", (table) => {
     table.dropColumn("alert_only_on_failure");
   });
 }
