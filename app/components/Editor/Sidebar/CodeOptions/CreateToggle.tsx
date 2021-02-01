@@ -1,10 +1,7 @@
-import { Box, Drop } from "grommet";
-import { useRef, useState } from "react";
+import { Box } from "grommet";
 import { FaMagic, FaPause } from "react-icons/fa";
 
-import { copy } from "../../../../theme/copy";
-import { edgeSize, hoverTransition } from "../../../../theme/theme";
-import Text from "../../../shared/Text";
+import { edgeSize } from "../../../../theme/theme-new";
 import Toggle, { TOGGLE_SIZE } from "../../../shared/Toggle";
 
 type Props = {
@@ -20,19 +17,12 @@ export default function CreateToggle({
   isVisible,
   onClick,
 }: Props): JSX.Element {
-  const [showTooltip, setShowTooltip] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
   if (!isVisible) return null;
 
   const IconComponent = isCreateOn ? FaMagic : FaPause;
-  const message = isCreateOn ? copy.createStop : copy.createStart;
 
   return (
     <Box
-      onMouseEnter={() => setShowTooltip(true)}
-      onMouseLeave={() => setShowTooltip(false)}
-      ref={ref}
       style={{
         right: edgeSize.large,
         position: "absolute",
@@ -45,21 +35,6 @@ export default function CreateToggle({
         isOn={isCreateOn}
         onClick={onClick}
       />
-      {!!ref.current && (
-        <Drop align={{ bottom: "top" }} plain target={ref.current}>
-          <Text
-            color="white"
-            margin={{ bottom: "small" }}
-            size="small"
-            style={{
-              opacity: showTooltip ? 1 : 0,
-              transition: hoverTransition,
-            }}
-          >
-            {isEnabled ? message : copy.createDisabled}
-          </Text>
-        </Drop>
-      )}
     </Box>
   );
 }

@@ -1,11 +1,16 @@
 import { Box } from "grommet";
-import Tab from "./Tab";
+import { borderSize } from "../../../theme/theme-new";
 
-type Props = { children: Array<typeof Tab> };
+type Props = { children: JSX.Element[] };
 
 export default function Tabs({ children }: Props): JSX.Element {
   return (
-    <Box direction="row" gap="medium">
+    <Box
+      border={{ color: "gray9", side: "bottom", size: borderSize.xsmall }}
+      direction="row"
+      gap="small"
+      pad={{ horizontal: "small" }}
+    >
       {children}
     </Box>
   );

@@ -1,5 +1,6 @@
 import { Box } from "grommet";
 import { useContext, useEffect, useState } from "react";
+import { edgeSize } from "../../../../theme/theme-new";
 
 import { RunnerContext } from "../../contexts/RunnerContext";
 import { TestContext } from "../../contexts/TestContext";
@@ -42,13 +43,21 @@ export default function CodeOptions(): JSX.Element {
   };
 
   return (
-    <Box style={{ position: "relative" }}>
-      <CreateToggle
-        isCreateOn={isCreateOn}
-        isEnabled={progress?.status !== "created"}
-        isVisible={hasWriteAccess}
-        onClick={handleClick}
-      />
+    <Box
+      style={{
+        right: edgeSize.small,
+        position: "absolute",
+        top: `calc(${edgeSize.small} + ${edgeSize.xxsmall})`,
+      }}
+    >
+      <Box style={{ position: "relative" }}>
+        <CreateToggle
+          isCreateOn={isCreateOn}
+          isEnabled={progress?.status !== "created"}
+          isVisible={hasWriteAccess}
+          onClick={handleClick}
+        />
+      </Box>
     </Box>
   );
 }
