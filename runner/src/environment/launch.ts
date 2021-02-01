@@ -7,7 +7,18 @@ import playwright, {
 
 import { addInitScript } from "./addInitScript";
 
+const BROWSER_OPTIONS = [
+  "args",
+  "devtools",
+  "env",
+  "firefoxUserPrefs",
+  "proxy",
+  "slowMo",
+  "timeout",
+];
+
 const CONTEXT_OPTIONS = [
+  "acceptDownloads",
   "bypassCSP",
   "colorScheme",
   "deviceScaleFactor",
@@ -16,12 +27,15 @@ const CONTEXT_OPTIONS = [
   "hasTouch",
   "httpCredentials",
   "ignoreHTTPSErrors",
-  "timezoneId",
+  "isMobile",
   "locale",
+  "offline",
   "permissions",
+  "proxy",
+  "storageState",
+  "timezoneId",
   "userAgent",
   "viewport",
-  "isMobile",
 ] as const;
 
 const BROWSER_NAMES = ["chromium", "firefox", "webkit"] as const;
@@ -32,9 +46,11 @@ export type LaunchOptions = Pick<
   BrowserContextOptions,
   typeof CONTEXT_OPTIONS[number]
 > & {
+  args?: string[];
   browser?: BrowserName;
   devtools?: boolean;
   headless?: boolean;
+  slowMo?: number;
 };
 
 export type LaunchResult = {
@@ -61,8 +77,10 @@ export const launch = async (
   const browserName = getBrowserName(options.browser);
 
   const args = browserName === "chromium" ? chromiumArgs : [];
+  args.push(...(options.args || []));
 
   const browser = await playwright[browserName].launch({
+    ...pick(options, BROWSER_OPTIONS),
     args,
     devtools: typeof options.devtools === "boolean" ? options.devtools : false,
     headless: typeof options.headless === "boolean" ? options.headless : false,
