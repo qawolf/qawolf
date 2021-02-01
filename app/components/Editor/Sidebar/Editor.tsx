@@ -75,8 +75,8 @@ export default function Editor({
 
       editorRef.current = editor;
 
-      monaco.editor.defineTheme("dark", theme);
-      monaco.editor.setTheme("dark");
+      monaco.editor.defineTheme("qawolf", theme);
+      monaco.editor.setTheme("qawolf");
 
       monaco.editor.setModelLanguage(editorRef.current.getModel(), language);
 

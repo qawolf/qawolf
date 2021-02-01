@@ -6,6 +6,10 @@ a:visited {
   text-decoration: none;
 }
 
+.current-line ~ .line-numbers {
+  background: pink;
+}
+
 body,
 h1,
 h2,

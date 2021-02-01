@@ -12,7 +12,8 @@ export const breakpoints = {
 export const colors = {
   code: "#0E8A7D",
   codeBackground: "#0A0A30",
-  codeCyan: "#7EE2E5",
+  codeBlue: "#6E9DFA",
+  codeHighlight: "#213866",
   codePink: "#EF86B4",
   codePurple: "#B899F8",
   codeTeal: "#6CCED9",
