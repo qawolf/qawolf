@@ -19,7 +19,7 @@ export default function Sidebar(): JSX.Element {
       <Box background="gray10" flex={false} height="full" width={width}>
         <Navigation selected={selected} setSelected={setSelected} />
         {selected === "code" && <CodeEditor />}
-        {/* {selected === "helpers" && <HelpersEditor />} */}
+        {selected === "helpers" && <HelpersEditor />}
         {/* <RunLogs isVisible={selected === "logs"} /> */}
       </Box>
     </ThemeContext.Extend>
