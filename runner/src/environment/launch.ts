@@ -3,21 +3,12 @@ import playwright, {
   Browser,
   BrowserContext,
   BrowserContextOptions,
+  LaunchOptions as PlaywrightLaunchOptions,
 } from "playwright";
 
 import { addInitScript } from "./addInitScript";
 
-const BROWSER_OPTIONS = [
-  "args",
-  "devtools",
-  "env",
-  "firefoxUserPrefs",
-  "proxy",
-  "slowMo",
-  "timeout",
-];
-
-const CONTEXT_OPTIONS = [
+const BROWSER_CONTEXT_OPTIONS = [
   "acceptDownloads",
   "bypassCSP",
   "colorScheme",
@@ -38,19 +29,28 @@ const CONTEXT_OPTIONS = [
   "viewport",
 ] as const;
 
+const LAUNCH_OPTIONS = [
+  "args",
+  "devtools",
+  "env",
+  "firefoxUserPrefs",
+  "proxy",
+  "slowMo",
+  "timeout",
+] as const;
+
 const BROWSER_NAMES = ["chromium", "firefox", "webkit"] as const;
 
 export type BrowserName = typeof BROWSER_NAMES[number];
 
 export type LaunchOptions = Pick<
   BrowserContextOptions,
-  typeof CONTEXT_OPTIONS[number]
-> & {
-  args?: string[];
-  browser?: BrowserName;
-  devtools?: boolean;
-  headless?: boolean;
-};
+  typeof BROWSER_CONTEXT_OPTIONS[number]
+> &
+  Pick<PlaywrightLaunchOptions, typeof LAUNCH_OPTIONS[number]> & {
+    browser?: BrowserName;
+    headless?: boolean;
+  };
 
 export type LaunchResult = {
   browser: Browser;
@@ -79,9 +79,8 @@ export const launch = async (
   args.push(...(options.args || []));
 
   const browser = await playwright[browserName].launch({
-    ...pick(options, BROWSER_OPTIONS),
+    ...pick(options, LAUNCH_OPTIONS),
     args,
-    devtools: typeof options.devtools === "boolean" ? options.devtools : false,
     headless: typeof options.headless === "boolean" ? options.headless : false,
   });
 
@@ -96,7 +95,9 @@ export const launch = async (
     return context;
   };
 
-  const context = await browser.newContext(pick(options, CONTEXT_OPTIONS));
+  const context = await browser.newContext(
+    pick(options, BROWSER_CONTEXT_OPTIONS)
+  );
 
   return { browser, context };
 };
