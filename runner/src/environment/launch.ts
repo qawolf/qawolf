@@ -50,7 +50,6 @@ export type LaunchOptions = Pick<
   browser?: BrowserName;
   devtools?: boolean;
   headless?: boolean;
-  slowMo?: number;
 };
 
 export type LaunchResult = {
