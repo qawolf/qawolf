@@ -54,7 +54,8 @@ type LaunchOptions = Pick<import("playwright").BrowserContextOptions,
 "userAgent" |
 "viewport"
 > &
-Pick<import("playwright").LaunchOptions, "args" |
+Pick<import("playwright").LaunchOptions,
+"args" |
 "devtools" |
 "env" |
 "firefoxUserPrefs" |
