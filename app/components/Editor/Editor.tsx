@@ -36,11 +36,11 @@ export default function Editor(): JSX.Element {
           justify="between"
           overflow={isLarge ? "hidden" : "auto"}
         >
+          {isLarge && <Sidebar />}
           <Box fill margin={isLarge ? { horizontal: "large" } : undefined}>
             <Header mode={mode} />
             {isLarge ? <Application mode={mode} /> : <Mobile mode={mode} />}
           </Box>
-          {isLarge && <Sidebar />}
         </Box>
         <Modals mode={mode} />
       </Box>
