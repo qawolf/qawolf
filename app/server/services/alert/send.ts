@@ -3,12 +3,24 @@ import { Logger } from "../../Logger";
 import { findGroup } from "../../models/group";
 import { findRunsForSuite } from "../../models/run";
 import { findSuite, updateSuite } from "../../models/suite";
+import { Group, SuiteRun } from "../../types";
 import { sendEmailAlert } from "./email";
 import { sendSlackAlert } from "./slack";
 
 type SendAlert = {
   logger: Logger;
   suite_id: string;
+};
+
+type ShouldSendAlert = {
+  group: Group;
+  runs: SuiteRun[];
+};
+
+export const shouldSendAlert = ({ group, runs }: ShouldSendAlert): boolean => {
+  if (!group.alert_only_on_failure) return true;
+
+  return runs.some((r) => r.status === "fail");
 };
 
 export const sendAlert = async ({
@@ -37,6 +49,11 @@ export const sendAlert = async ({
   );
 
   const group = await findGroup(suite.group_id, { logger });
+
+  if (!shouldSendAlert({ group, runs })) {
+    log.debug("skip: should not send alert");
+    return;
+  }
 
   if (group.is_email_enabled) {
     await sendEmailAlert({ group, logger, runs, suite });

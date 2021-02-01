@@ -1,8 +1,12 @@
 import { db, dropTestDb, migrateDb } from "../../../../server/db";
 import { updateSuite } from "../../../../server/models/suite";
 import * as email from "../../../../server/services/alert/email";
-import { sendAlert } from "../../../../server/services/alert/send";
+import {
+  sendAlert,
+  shouldSendAlert,
+} from "../../../../server/services/alert/send";
 import * as slack from "../../../../server/services/alert/slack";
+import { SuiteRun } from "../../../../server/types";
 import { minutesFromNow } from "../../../../shared/utils";
 import {
   buildGroup,
@@ -74,10 +78,11 @@ describe("sendAlert", () => {
     // check it does not send it again
     await sendAlert({ logger, suite_id: "suiteId" });
     expect(email.sendEmailAlert).toBeCalledTimes(1);
+
+    await updateSuite({ alert_sent_at: null, id: "suite3Id" }, { logger });
   });
 
   it("sends Slack alert per group settings", async () => {
-    await updateSuite({ alert_sent_at: null, id: "suite3Id" }, { logger });
     await db("groups").update({ alert_integration_id: "integrationId" });
 
     await sendAlert({ logger, suite_id: "suite3Id" });
@@ -85,6 +90,7 @@ describe("sendAlert", () => {
     expect(slack.sendSlackAlert).toBeCalled();
 
     await db("groups").update({ alert_integration_id: null });
+    await updateSuite({ alert_sent_at: null, id: "suite3Id" }, { logger });
   });
 
   it("does not send alerts if suite not complete", async () => {
@@ -92,6 +98,26 @@ describe("sendAlert", () => {
 
     expect(email.sendEmailAlert).not.toBeCalled();
     expect(slack.sendSlackAlert).not.toBeCalled();
+  });
+
+  it("does not send alert if alert only on failure enabled and runs passed", async () => {
+    await db("groups").update({ alert_only_on_failure: true });
+
+    await sendAlert({ logger, suite_id: "suite4Id" });
+    expect(email.sendEmailAlert).not.toBeCalled();
+    expect(slack.sendSlackAlert).not.toBeCalled();
+
+    await db("groups").update({ alert_only_on_failure: false });
+  });
+
+  it("sends alert if alert only on failure enabled but runs failed", async () => {
+    await db("groups").update({ alert_only_on_failure: true });
+
+    await sendAlert({ logger, suite_id: "suite3Id" });
+    expect(email.sendEmailAlert).toBeCalled();
+    expect(slack.sendSlackAlert).not.toBeCalled();
+
+    await db("groups").update({ alert_only_on_failure: false });
   });
 
   it("does not send alerts per group settings", async () => {
@@ -102,5 +128,38 @@ describe("sendAlert", () => {
     expect(slack.sendSlackAlert).not.toBeCalled();
 
     await db("groups").update({ is_email_enabled: true });
+  });
+});
+
+describe("shouldSendAlert", () => {
+  const group = buildGroup({});
+  const runFail = { status: "fail" } as SuiteRun;
+  const runPass = { status: "pass" } as SuiteRun;
+
+  it("returns true if alert only on failure disabled and all runs passed", async () => {
+    expect(
+      shouldSendAlert({
+        group: { ...group, alert_only_on_failure: false },
+        runs: [runPass],
+      })
+    ).toBe(true);
+  });
+
+  it("returns false if should alert only on failure enabled and all runs passsed", async () => {
+    expect(
+      shouldSendAlert({
+        group: { ...group, alert_only_on_failure: true },
+        runs: [runPass],
+      })
+    ).toBe(false);
+  });
+
+  it("returns true if should alert only on failure enabled but some runs failed", async () => {
+    expect(
+      shouldSendAlert({
+        group: { ...group, alert_only_on_failure: true },
+        runs: [runPass, runFail],
+      })
+    ).toBe(true);
   });
 });
