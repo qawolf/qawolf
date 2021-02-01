@@ -124,12 +124,13 @@ export const createRunnerContainerGroup = async ({
       image: environment.RUNNER_IMAGE,
       livenessProbe: {
         exec: {
-          command: ["/bin/sh", "-c", "curl -m 2 $QAWOLF_RUNNER_STATUS_URL"],
+          command: ["/bin/sh", "-c", "curl -m 15 $QAWOLF_RUNNER_STATUS_URL"],
         },
         initialDelaySeconds: 60,
         periodSeconds: 30,
         failureThreshold: 3,
-        timeoutSeconds: 5,
+        successThreshold: 1,
+        timeoutSeconds: 20,
       },
       name,
       ports,
