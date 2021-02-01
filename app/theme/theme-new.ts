@@ -19,6 +19,9 @@ export const colors = {
   codeTeal: "#6CCED9",
   codeYellow: "#F0D278",
   danger: "#DB4B4B",
+  danger4: "#F07D7D",
+  danger9: "#66141B",
+  danger10: "#33050D",
   dangerDark: "#C23232",
   dangerDarker: "#AD1F1F",
   error: "#DE4343",
@@ -46,6 +49,9 @@ export const colors = {
   primaryTextLight: "#ABB5F5",
   textDark: "#17174C",
   textLight: "#60708A",
+  warning4: "#EBC963",
+  warning9: "#615013",
+  warning10: "#332B05",
   white: "#FFFFFF",
 };
 

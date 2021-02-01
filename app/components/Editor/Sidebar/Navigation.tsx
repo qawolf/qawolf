@@ -11,7 +11,7 @@ type Props = {
   setSelected: (selected: NavigationOption) => void;
 };
 
-const options = ["code", "logs", "helpers"] as NavigationOption[];
+const options = ["code", "helpers", "logs"] as NavigationOption[];
 
 export default function Navigation({
   selected,

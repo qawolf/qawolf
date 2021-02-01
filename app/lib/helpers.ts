@@ -58,11 +58,29 @@ export const formatDate = (timestamp: string): string => {
   return `${day} at ${time}`;
 };
 
-export const formatLogColor = (logLevel: Log["severity"]): string => {
-  if (logLevel === "error") return "red";
-  if (logLevel === "warning") return "yellow";
+export const formatLogBackground = (logLevel: Log["severity"]): string => {
+  if (logLevel === "error") return "danger10";
+  if (logLevel === "warning") return "warning10";
 
-  return "white";
+  return "transparent";
+};
+
+export const formatLogBorder = (logLevel: Log["severity"]): string => {
+  if (logLevel === "error") return "danger9";
+  if (logLevel === "warning") return "warning9";
+
+  return "transparent";
+};
+
+export const formatLogColor = (
+  logLevel: Log["severity"],
+  isTimestamp?: boolean
+): string => {
+  if (logLevel === "error") return "danger4";
+  if (logLevel === "warning") return "warning4";
+
+  if (isTimestamp) return "gray5";
+  return "gray3";
 };
 
 export const formatTimestamp = (timestamp: string): string => {
