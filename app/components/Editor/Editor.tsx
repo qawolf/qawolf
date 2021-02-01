@@ -2,7 +2,6 @@ import { Box, ResponsiveContext } from "grommet";
 import React, { FC, useContext } from "react";
 
 import Application from "./Application";
-import { ActionsProvider } from "./contexts/ActionsContext";
 import { RunnerProvider } from "./contexts/RunnerContext";
 import { TestProvider } from "./contexts/TestContext";
 import Header from "./Header";
@@ -14,9 +13,7 @@ import Sidebar from "./Sidebar";
 const WithProviders: FC = ({ children }) => {
   return (
     <TestProvider>
-      <ActionsProvider>
-        <RunnerProvider>{children}</RunnerProvider>
-      </ActionsProvider>
+      <RunnerProvider>{children}</RunnerProvider>
     </TestProvider>
   );
 };

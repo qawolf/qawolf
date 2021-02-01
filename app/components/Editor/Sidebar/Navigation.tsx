@@ -1,7 +1,6 @@
 import { Box } from "grommet";
 
 import { NavigationOption } from "../../../lib/types";
-import { edgeSize } from "../../../theme/theme";
 import CodeOptions from "./CodeOptions";
 import Option from "./Option";
 
@@ -36,8 +35,8 @@ export default function Navigation({
       flex={false}
       justify="between"
       margin={{
-        horizontal: "large",
-        vertical: `calc(${edgeSize.large} + ${edgeSize.small} + ${edgeSize.xsmall})`,
+        horizontal: "medium",
+        vertical: "small",
       }}
     >
       <Box align="center" direction="row">

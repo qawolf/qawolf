@@ -143,12 +143,6 @@ export type User = {
 };
 
 // Component Types
-export type Action = {
-  id: string;
-  x: number;
-  y: number;
-};
-
 export type AuthMode = "logIn" | "signUp";
 
 export type CreateCode = {
