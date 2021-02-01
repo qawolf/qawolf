@@ -89,7 +89,7 @@ export default function Editor({
   }, [editorDidMount, isMonacoMounting, isEditorReady, options]);
 
   return (
-    <Box background={background} data-test="code" fill>
+    <Box background={background} data-test="code" fill pad={{ left: "16px" }}>
       <AutoSizer>
         {({ height, width }) => (
           <div ref={containerRef} style={{ height, width }} />

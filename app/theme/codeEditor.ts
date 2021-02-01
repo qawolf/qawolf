@@ -7,8 +7,8 @@ export const background = colors.gray10;
 export const editorColors = {
   "editor.background": background,
   "editor.foreground": background,
-  "editor.lineHighlightBackground": colors.codeHighlight,
-  "editor.selectionBackground": colors.gray7,
+  "editor.lineHighlightBackground": colors.gray9,
+  "editor.selectionBackground": colors.codeHighlight,
   "editorCursor.foreground": colors.gray0,
   "editorLineNumber.foreground": colors.gray5,
   "editorSuggestWidget.background": background,
@@ -16,6 +16,7 @@ export const editorColors = {
   "editorSuggestWidget.foreground": colors.gray3,
   "editorSuggestWidget.highlightForeground": colors.codePurple,
   "editorSuggestWidget.selectedBackground": colors.gray9,
+  "editorWhitespace.foreground": colors.gray7,
   "editorWidget.background": background,
   "editorWidget.border": colors.gray9,
 };
