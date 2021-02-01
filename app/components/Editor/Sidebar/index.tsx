@@ -18,9 +18,9 @@ export default function Sidebar(): JSX.Element {
     <ThemeContext.Extend value={theme}>
       <Box background="gray10" flex={false} height="full" width={width}>
         <Navigation selected={selected} setSelected={setSelected} />
-        {/* {selected === "code" && <CodeEditor />}
-        {selected === "helpers" && <HelpersEditor />}
-        <RunLogs isVisible={selected === "logs"} /> */}
+        {selected === "code" && <CodeEditor />}
+        {/* {selected === "helpers" && <HelpersEditor />} */}
+        {/* <RunLogs isVisible={selected === "logs"} /> */}
       </Box>
     </ThemeContext.Extend>
   );
