@@ -151,13 +151,13 @@ describe("updateRunnerResolver", () => {
     await db("tests").insert(
       buildTest({
         runner_requested_at: minutesFromNow(),
-        runner_locations: ["westus2"],
+        runner_locations: ["eastus2"],
       })
     );
     await db("runs").insert(buildRun({}));
 
     await db("runners").insert([
-      buildRunner({}),
+      buildRunner({ location: "eastus2" }),
       buildRunner({ api_key: "apiKey", i: 2, ready_at: minutesFromNow() }),
     ]);
 

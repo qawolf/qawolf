@@ -34,7 +34,7 @@ beforeAll(async () => {
   await db("teams").insert(buildTeam({}));
   await db("users").insert(buildUser({}));
   await db("tests").insert(buildTest({}));
-  await db("runs").insert(buildRun({}));
+  await db("runs").insert(buildRun({ started_at: minutesFromNow() }));
 });
 
 afterAll(() => dropTestDb());
@@ -336,10 +336,17 @@ describe("findPendingTestOrRunId", () => {
     expect(pending).toMatchObject({ test_id: "pendingTestId" });
   });
 
-  it("does not returns a run if there are no excess runners", async () => {
+  it("does not return a run if there are no excess runners", async () => {
     findPendingTestSpy.mockResolvedValue(null);
     countExcessRunnersSpy.mockResolvedValue(0);
     const pending = await findPendingTestOrRunId("eastus2", { logger });
+    expect(pending).toEqual(null);
+  });
+
+  it("does not return a run if the location is not eastus2", async () => {
+    findPendingTestSpy.mockResolvedValue(null);
+    countExcessRunnersSpy.mockResolvedValue(1);
+    const pending = await findPendingTestOrRunId("westus2", { logger });
     expect(pending).toEqual(null);
   });
 
