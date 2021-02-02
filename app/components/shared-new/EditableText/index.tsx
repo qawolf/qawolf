@@ -40,7 +40,6 @@ export default function EditableText({
   value,
 }: Props): JSX.Element {
   const [editedValue, setEditedValue] = useState(value);
-  const [hasError, setHasError] = useState(false);
 
   const BoxComponent = disabled ? Box : StyledBox;
 
@@ -71,20 +70,19 @@ export default function EditableText({
   };
 
   const handleSave = (): void => {
+    setIsEdit(false);
+
     if (!editedValue) {
-      setHasError(true);
+      setEditedValue(value);
       return;
     }
 
-    setHasError(false);
     onSave(editedValue);
-    setIsEdit(false);
   };
 
   if (isEdit) {
     return (
       <TextInput
-        hasError={hasError}
         onChange={handleChange}
         onSave={handleSave}
         value={editedValue}

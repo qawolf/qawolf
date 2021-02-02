@@ -5,7 +5,6 @@ import { edgeSize } from "../../../theme/theme-new";
 import AppTextInput from "../AppTextInput";
 
 type Props = {
-  hasError?: boolean;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onSave: () => void;
   value: string;
@@ -14,7 +13,6 @@ type Props = {
 const width = "480px";
 
 export default function TextInput({
-  hasError,
   onChange,
   onSave,
   value,
@@ -37,7 +35,6 @@ export default function TextInput({
     <Keyboard onEnter={onSave} onEsc={handleBlur}>
       <Box>
         <AppTextInput
-          hasError={hasError}
           onChange={onChange}
           pad={edgeSize.xxsmall}
           ref={ref}
