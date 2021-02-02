@@ -1,4 +1,4 @@
-import { Box, ThemeContext } from "grommet";
+import { Box, BoxProps, ThemeContext } from "grommet";
 import { useContext } from "react";
 import styled from "styled-components";
 
@@ -8,7 +8,6 @@ import { copy } from "../../theme/copy";
 import {
   borderSize,
   colors,
-  edgeSize,
   theme,
   transitionDuration,
 } from "../../theme/theme-new";
@@ -25,10 +24,10 @@ type Props = {
   direction?: Direction;
   onEnvironmentClick: (environmentId: string) => void;
   selectedEnvironmentId: string | null;
+  width?: BoxProps["width"];
 };
 
 const dividerId = "environments-divider";
-export const width = "220px";
 
 const StyledBox = styled(Box)`
   #${dividerId} {
@@ -46,6 +45,7 @@ export default function Environments({
   direction,
   onEnvironmentClick,
   selectedEnvironmentId,
+  width,
 }: Props): JSX.Element {
   const { environmentId, teamId } = useContext(StateContext);
   const { data } = useEnvironments({ team_id: teamId }, { environmentId });
@@ -90,7 +90,7 @@ export default function Environments({
         background="pink"
         direction="row"
         round={borderSize.small}
-        width={width}
+        width={width || "200px"}
       >
         <Button
           a11yTitle={copy.environmentEdit(selectedEnvironment?.name)}
