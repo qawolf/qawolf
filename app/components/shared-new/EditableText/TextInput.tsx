@@ -1,5 +1,6 @@
 import { Box, Keyboard } from "grommet";
 import { ChangeEvent, useEffect, useRef } from "react";
+import { useOnClickOutside } from "../../../hooks/onClickOutside";
 import { edgeSize } from "../../../theme/theme-new";
 import AppTextInput from "../AppTextInput";
 
@@ -25,8 +26,15 @@ export default function TextInput({
     if (ref.current) ref.current.focus();
   }, [ref.current]);
 
+  const handleBlur = (): void => {
+    onSave();
+    if (ref.current) ref.current.blur();
+  };
+
+  useOnClickOutside({ onClickOutside: handleBlur, ref });
+
   return (
-    <Keyboard onEnter={onSave}>
+    <Keyboard onEnter={onSave} onEsc={handleBlur}>
       <Box>
         <AppTextInput
           hasError={hasError}
