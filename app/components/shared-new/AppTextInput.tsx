@@ -52,7 +52,7 @@ function TextInput(
   const finalSize = size || "component";
 
   const style = {
-    borderColor: hasError ? colors.danger : undefined,
+    borderColor: hasError ? colors.danger5 : undefined,
     fontFamily: fontFamily[finalSize],
     fontSize: text[finalSize].size,
     padding: `0 ${pad || edgeSize.xsmall}`,

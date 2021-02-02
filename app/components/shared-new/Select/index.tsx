@@ -6,7 +6,7 @@ import { Side } from "../../../lib/types";
 import Button from "../../shared-new/AppButton";
 import ArrowDown from "../icons/ArrowDown";
 import Selector from "../icons/Selector";
-import Menu, { Direction } from "./Menu";
+import Menu, { Direction } from "../Menu";
 
 type Type = "dark" | "light";
 

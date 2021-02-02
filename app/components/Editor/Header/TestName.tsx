@@ -1,17 +1,17 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 
 import { useUpdateTest } from "../../../hooks/mutations";
+import { Test } from "../../../lib/types";
 import { borderSize, edgeSize } from "../../../theme/theme-new";
 import Divider from "../../shared-new/Divider";
 import EditableText from "../../shared-new/EditableText";
-import StatusBadge from "../../shared-new/StatusBadge";
-import { RunnerContext } from "../contexts/RunnerContext";
-import { TestContext } from "../contexts/TestContext";
 
-export default function TestName(): JSX.Element {
-  const { progress } = useContext(RunnerContext);
-  const { run, test } = useContext(TestContext);
+type Props = {
+  disabled?: boolean;
+  test: Test | null;
+};
 
+export default function TestName({ disabled, test }: Props): JSX.Element {
   const [isEdit, setIsEdit] = useState(false);
 
   const [updateTest] = useUpdateTest();
@@ -30,7 +30,7 @@ export default function TestName(): JSX.Element {
   return (
     <>
       <EditableText
-        disabled={!!run}
+        disabled={disabled}
         isEdit={isEdit}
         onSave={handleSave}
         setIsEdit={setIsEdit}
@@ -41,7 +41,6 @@ export default function TestName(): JSX.Element {
         margin={{ left: "xxsmall", right: "small" }}
         width={borderSize.xsmall}
       />
-      <StatusBadge status={progress?.status} />
     </>
   );
 }

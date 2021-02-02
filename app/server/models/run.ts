@@ -230,6 +230,25 @@ export const findSuiteRunForRunner = async (
   });
 };
 
+export const findTestHistory = async (
+  test_id: string,
+  { logger, trx }: ModelOptions
+): Promise<Run[]> => {
+  const log = logger.prefix("findRunHistory");
+  log.debug("test", test_id);
+
+  const runs = await (trx || db)
+    .select("runs.*" as "*")
+    .from("runs")
+    .where({ test_id })
+    .orderBy("created_at", "desc")
+    .limit(8);
+
+  log.debug(`found ${runs.length} runs`);
+
+  return runs;
+};
+
 export const updateRun = async (
   { id, ...options }: UpdateRun,
   { logger, trx }: ModelOptions

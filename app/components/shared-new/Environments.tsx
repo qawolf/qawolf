@@ -17,7 +17,7 @@ import Configure from "./icons/Configure";
 import Edit from "./icons/Edit";
 import Select from "./Select";
 import Action from "./Select/Action";
-import { Direction } from "./Select/Menu";
+import { Direction } from "./Menu";
 import Option from "./Select/Option";
 
 type Props = {

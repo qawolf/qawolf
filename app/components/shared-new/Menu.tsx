@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import { ReactNode } from "react";
 import styled, { keyframes } from "styled-components";
 
-import { edgeSize } from "../../../theme/theme-new";
+import { edgeSize } from "../../theme/theme-new";
 
 export type Direction = "down" | "up";
 
