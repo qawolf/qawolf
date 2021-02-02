@@ -27,6 +27,7 @@ type Props = {
   hoverType?: Type;
   iconPosition?: Side;
   isDisabled?: boolean;
+  justify?: BoxProps["justify"];
   label?: string;
   margin?: ButtonProps["margin"];
   noBorderSide?: Side;
@@ -41,6 +42,7 @@ function AppButton({
   className,
   iconPosition,
   isDisabled,
+  justify,
   label,
   margin,
   onClick,
@@ -59,7 +61,7 @@ function AppButton({
         align="center"
         direction={iconPosition === "right" ? "row-reverse" : "row"}
         fill
-        justify="between"
+        justify={justify || "between"}
         pad={getBoxPad(!!label, !!IconComponent, iconPosition)}
       >
         {!!IconComponent && (

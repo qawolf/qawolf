@@ -1,9 +1,6 @@
 import { Box } from "grommet";
 import { useContext, useEffect, useState } from "react";
 
-import { state } from "../../lib/state";
-import Environments from "../shared-new/Environments";
-import { StateContext } from "../StateContext";
 import { RunnerContext } from "./contexts/RunnerContext";
 import { TestContext } from "./contexts/TestContext";
 import { useBrowser } from "./hooks/browser";
@@ -24,7 +21,6 @@ export const BORDER_SIZE = 6;
 
 export default function Canvas({ height, mode, width }: Props): JSX.Element {
   const { runner } = useContext(RunnerContext);
-  const { environmentId } = useContext(StateContext);
   const { run } = useContext(TestContext);
 
   const [isVideoToggled, toggleVideo] = useState(mode === "run");
@@ -40,10 +36,6 @@ export default function Canvas({ height, mode, width }: Props): JSX.Element {
 
   const showVideo = videoUrl && isVideoToggled;
   const showPlaceholder = !videoUrl && !isBrowserReady;
-
-  const handleEnvironmentClick = (environmentId: string): void => {
-    state.setEnvironmentId(environmentId);
-  };
 
   return (
     <>
@@ -68,12 +60,6 @@ export default function Canvas({ height, mode, width }: Props): JSX.Element {
           isVisible={!showPlaceholder && showVideo}
           width={width}
           videoUrl={videoUrl}
-        />
-      </Box>
-      <Box margin={{ top: "medium" }}>
-        <Environments
-          onEnvironmentClick={handleEnvironmentClick}
-          selectedEnvironmentId={environmentId}
         />
       </Box>
       {!showPlaceholder && (

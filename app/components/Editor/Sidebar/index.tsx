@@ -7,12 +7,12 @@ import CodeEditor from "./CodeEditor";
 import HelpersEditor from "./HelpersEditor";
 import Navigation from "./Navigation";
 import RunLogs from "./RunLogs";
+import Buttons from "./Buttons";
 
-const WIDTH = "40%";
+const width = "480px";
 
 export default function Sidebar(): JSX.Element {
   const [selected, setSelected] = useState<NavigationOption>("code");
-  const width = selected ? WIDTH : undefined;
 
   return (
     <ThemeContext.Extend value={theme}>
@@ -21,6 +21,7 @@ export default function Sidebar(): JSX.Element {
         {selected === "code" && <CodeEditor />}
         {selected === "helpers" && <HelpersEditor />}
         <RunLogs isVisible={selected === "logs"} />
+        <Buttons />
       </Box>
     </ThemeContext.Extend>
   );

@@ -8,6 +8,7 @@ import { copy } from "../../theme/copy";
 import {
   borderSize,
   colors,
+  edgeSize,
   theme,
   transitionDuration,
 } from "../../theme/theme-new";
@@ -27,7 +28,7 @@ type Props = {
 };
 
 const dividerId = "environments-divider";
-const width = "180px";
+export const width = "220px";
 
 const StyledBox = styled(Box)`
   #${dividerId} {
@@ -86,9 +87,10 @@ export default function Environments({
     <ThemeContext.Extend value={theme}>
       <StyledBox
         alignSelf="center"
-        background="gray10"
+        background="pink"
         direction="row"
         round={borderSize.small}
+        width={width}
       >
         <Button
           a11yTitle={copy.environmentEdit(selectedEnvironment?.name)}
@@ -107,7 +109,6 @@ export default function Environments({
           label={label}
           noBorderSide="left"
           type="dark"
-          width={width}
         >
           <Action
             IconComponent={Edit}

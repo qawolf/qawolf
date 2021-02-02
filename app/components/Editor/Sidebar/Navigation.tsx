@@ -29,11 +29,7 @@ export default function Navigation({
   });
 
   return (
-    <Box
-      flex={false}
-      margin={{ bottom: "xxsmall" }}
-      style={{ position: "relative" }}
-    >
+    <Box flex={false} style={{ position: "relative" }}>
       <Tabs>{tabs}</Tabs>
       {selected === "code" && <CodeOptions />}
     </Box>

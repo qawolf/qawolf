@@ -16,7 +16,6 @@ type Props = {
   label: string;
   noBorderSide?: Side;
   type?: Type;
-  width?: BoxProps["width"];
 };
 
 export default function Select({
@@ -25,7 +24,6 @@ export default function Select({
   label,
   noBorderSide,
   type,
-  width,
 }: Props): JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +35,7 @@ export default function Select({
   useOnClickOutside({ onClickOutside: handleClose, ref });
 
   return (
-    <Box ref={ref} style={{ position: "relative" }}>
+    <Box ref={ref} style={{ position: "relative" }} width="full">
       <Button
         IconComponent={direction === "up" ? Selector : ArrowDown}
         iconPosition="right"
@@ -45,7 +43,6 @@ export default function Select({
         noBorderSide={noBorderSide}
         onClick={handleClick}
         type={type === "dark" ? "dark" : "secondary"}
-        width={width}
       />
       {isOpen && (
         <Menu direction={direction} onClick={handleClose}>

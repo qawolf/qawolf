@@ -179,6 +179,7 @@ export const copy = {
   runOnDeployment: (repoName: string): string =>
     `Run on ${repoName} deployment`,
   runTagline: "Run tests without rocket science",
+  runTest: "Run test",
   runsFail: "Failing tests",
   runGroup: (count: number): string =>
     `Run ${count ? `${count} ` : ""}test${count === 1 ? "" : "s"}`,
