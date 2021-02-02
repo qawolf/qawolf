@@ -203,6 +203,9 @@ export const findPendingTestOrRunId = async (
   const pendingTest = await findPendingTest(location, options);
   if (pendingTest) return { test_id: pendingTest.id };
 
+  // lock run location (for now)
+  if (location !== "eastus2") return null;
+
   const excessRunners = await countExcessRunners(location, options);
   if (excessRunners > 0) {
     // if there are excess runners, find a run
@@ -345,7 +348,7 @@ export const updateRunner = async (
 
     if (updates.run_id === null && runner.run_id) {
       const run = await findRun(runner.run_id, { logger, trx });
-      if (run.status === "created") {
+      if (run.status === "created" && run.started_at) {
         // mark it as failed since it is not finished
         logger.alert("run expired", run.id);
         await updateRun({ id: run.id, status: "fail" }, { logger, trx });
