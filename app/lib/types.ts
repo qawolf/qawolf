@@ -254,6 +254,7 @@ type ModalState = {
 
 export type State = {
   dashboardUri: string | null;
+  editorSidebarWidth: number;
   email: string | null;
   environmentId: string | null;
   error: string | null;
