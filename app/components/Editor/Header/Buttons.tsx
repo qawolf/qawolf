@@ -7,7 +7,6 @@ import { routes } from "../../../lib/routes";
 import { copy } from "../../../theme/copy";
 import PlayButton from "../../shared/PlayButton";
 import { TestContext } from "../contexts/TestContext";
-import RunButton from "./RunButton";
 import ShareButton from "./ShareButton";
 
 type Props = {
@@ -27,7 +26,7 @@ export default function Buttons({ isMobile }: Props): JSX.Element {
   return (
     <Box direction="row" justify="end">
       <ShareButton isMobile={isMobile} />
-      {showRun && <RunButton />}
+      {showRun && <Box />}
       {!isLatestCode && (
         <PlayButton
           IconComponent={FastForward}
