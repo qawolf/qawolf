@@ -1,5 +1,12 @@
+.glyphFail:before,
+.glyphInProgress:before,
+.glyphPass:before {
+  display: block;
+  margin-top: 3px;
+}
+
 .glyphFail:before {
-  content: url("data:image/svg+xml,%3Csvg style='margin-top:2px' width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='8' cy='8' r='6' fill='%23DB4B4B'/%3E%3Cpath d='M5.5 10.5L10.5 5.5' stroke='white' stroke-width='1.5'/%3E%3Cpath d='M5.5 5.5L10.5 10.5' stroke='white' stroke-width='1.5'/%3E%3C/svg%3E%0A");
+  content: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='8' cy='8' r='7' fill='%23DB4B4B'/%3E%3Cpath d='M5.5 10.5L10.5 5.5' stroke='white' stroke-width='1.5'/%3E%3Cpath d='M5.5 5.5L10.5 10.5' stroke='white' stroke-width='1.5'/%3E%3C/svg%3E%0A");
 }
 
 .glyphInProgress:before {
@@ -7,5 +14,5 @@
 }
 
 .glyphPass:before {
-  content: url("data:image/svg+xml,%3Csvg style='margin-top:2px' width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='8' cy='8' r='6' fill='%2344C76B'/%3E%3Cpath d='M5 8L7 10L11 6' stroke='white' stroke-width='1.5'/%3E%3C/svg%3E");
+  content: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='8' cy='8' r='7' fill='%2344C76B'/%3E%3Cpath d='M5 8L7 10L11 6' stroke='white' stroke-width='1.5'/%3E%3C/svg%3E%0A");
 }
