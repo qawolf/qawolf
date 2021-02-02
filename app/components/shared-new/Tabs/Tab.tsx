@@ -1,13 +1,12 @@
 import { Box, Button } from "grommet";
-
 import styled from "styled-components";
+
 import {
   borderSize,
   colors,
   edgeSize,
   transitionDuration,
 } from "../../../theme/theme-new";
-
 import Text from "../Text";
 
 type Props = {
@@ -39,7 +38,11 @@ const StyledButton = styled(Button)`
 
 const borderHeight = `calc(${borderSize.small} + ${borderSize.xsmall})`;
 
-export default function Tab({ isSelected, label, onClick }: Props) {
+export default function Tab({
+  isSelected,
+  label,
+  onClick,
+}: Props): JSX.Element {
   return (
     <StyledButton a11yTitle={label} onClick={onClick} plain>
       <Box pad={{ top: "small" }}>

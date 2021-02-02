@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 import { useContext, useEffect, useState } from "react";
-import { edgeSize } from "../../../../theme/theme-new";
 
+import { edgeSize } from "../../../../theme/theme-new";
 import { RunnerContext } from "../../contexts/RunnerContext";
 import { TestContext } from "../../contexts/TestContext";
 import CreateToggle from "./CreateToggle";

@@ -1,10 +1,10 @@
 import { Box } from "grommet";
 
 import { NavigationOption } from "../../../lib/types";
-import CodeOptions from "./CodeOptions";
+import { copy } from "../../../theme/copy";
 import Tabs from "../../shared-new/Tabs";
 import Tab from "../../shared-new/Tabs/Tab";
-import { copy } from "../../../theme/copy";
+import CodeOptions from "./CodeOptions";
 
 type Props = {
   selected: NavigationOption;
