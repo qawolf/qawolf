@@ -1,5 +1,6 @@
-import { Box, ResponsiveContext } from "grommet";
-import React, { FC, useContext } from "react";
+import { Box, ThemeContext } from "grommet";
+import React, { FC } from "react";
+import { theme } from "../../theme/theme-new";
 
 import Application from "./Application";
 import { RunnerProvider } from "./contexts/RunnerContext";
@@ -10,7 +11,7 @@ import Mobile from "./Mobile";
 import Modals from "./Modals";
 import Sidebar from "./Sidebar";
 
-const WithProviders: FC = ({ children }) => {
+const WithProviders: FC = ({ children }): JSX.Element => {
   return (
     <TestProvider>
       <RunnerProvider>{children}</RunnerProvider>
@@ -18,29 +19,25 @@ const WithProviders: FC = ({ children }) => {
   );
 };
 
+// TODO: mobile view
 export default function Editor(): JSX.Element {
   const mode = useMode();
-  const size = useContext(ResponsiveContext);
-  const isLarge = size === "large";
 
-  // use overflow hidden because Grommet adds small amount of space
   return (
-    <WithProviders>
-      <Box background="lightBlue" height="100vh">
-        <Box
-          direction="row"
-          fill
-          justify="between"
-          overflow={isLarge ? "hidden" : "auto"}
-        >
-          {isLarge && <Sidebar />}
-          <Box fill margin={isLarge ? { horizontal: "large" } : undefined}>
+    <ThemeContext.Extend value={theme}>
+      <WithProviders>
+        <Box background="gray0" height="100vh">
+          <Header />
+          <Box direction="row" fill justify="between">
+            <Sidebar />
+            {/* <Box fill>
             <Header mode={mode} />
-            {isLarge ? <Application mode={mode} /> : <Mobile mode={mode} />}
+            <Application mode={mode} />
+          </Box> */}
           </Box>
+          <Modals mode={mode} />
         </Box>
-        <Modals mode={mode} />
-      </Box>
-    </WithProviders>
+      </WithProviders>
+    </ThemeContext.Extend>
   );
 }

@@ -1,56 +1,19 @@
-import { Box, ResponsiveContext } from "grommet";
-import { useContext } from "react";
+import { Box } from "grommet";
+import { routes } from "../../../lib/routes";
 
-import { UserContext } from "../../UserContext";
-import { TestContext } from "../contexts/TestContext";
-import { Mode } from "../hooks/mode";
-import Buttons from "./Buttons";
-import TestName from "./TestName";
-import TestStatus from "./TestStatus";
+import { borderSize } from "../../../theme/theme-new";
+import Button from "../../shared-new/AppButton";
+import ArrowLeft from "../../shared-new/icons/ArrowLeft";
 
-const BASIS = "1/3";
-const BASIS_LARGE = "1/2";
-const BASIS_SMALL = "1/4";
-
-type Props = {
-  mode: Mode;
-};
-
-export default function Header({ mode }: Props): JSX.Element {
-  const size = useContext(ResponsiveContext);
-  const isLarge = size === "large";
-
-  const { test } = useContext(TestContext);
-  const { isUserLoading, user, wolf } = useContext(UserContext);
-
-  // on screens where there is sufficient space, allow test name to take up half the size
-  const centerBasis = isLarge ? BASIS_LARGE : BASIS;
-  const sideBasis = isLarge ? BASIS_SMALL : BASIS;
-
-  const hideWolf =
-    isUserLoading || (user && !user.onboarded_at) || mode === "create";
-
+export default function Header(): JSX.Element {
   return (
     <Box
-      align="center"
-      as="header"
+      border={{ color: "gray3", side: "bottom", size: borderSize.xsmall }}
       direction="row"
-      flex={false}
-      justify="between"
-      margin={{
-        horizontal: isLarge ? undefined : "large",
-        vertical: "large",
-      }}
+      pad="small"
+      width="full"
     >
-      <Box basis={sideBasis}>
-        <TestStatus hideWolf={hideWolf} isMobile={!isLarge} wolf={wolf} />
-      </Box>
-      <Box basis={centerBasis}>
-        {!!test && <TestName isMobile={!isLarge} test={test} />}
-      </Box>
-      <Box basis={sideBasis}>
-        <Buttons isMobile={!isLarge} />
-      </Box>
+      <Button IconComponent={ArrowLeft} href={routes.tests} type="ghost" />
     </Box>
   );
 }

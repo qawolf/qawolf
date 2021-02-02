@@ -24,6 +24,7 @@ type Props = {
   IconComponent?: Icon;
   a11yTitle?: string;
   className?: string;
+  href?: string;
   hoverType?: Type;
   iconPosition?: Side;
   isDisabled?: boolean;
@@ -31,7 +32,7 @@ type Props = {
   label?: string;
   margin?: ButtonProps["margin"];
   noBorderSide?: Side;
-  onClick: () => void;
+  onClick?: () => void;
   type: Type;
   width?: BoxProps["width"];
 };
@@ -40,6 +41,7 @@ function AppButton({
   IconComponent,
   a11yTitle,
   className,
+  href,
   iconPosition,
   isDisabled,
   justify,
@@ -53,6 +55,7 @@ function AppButton({
       a11yTitle={a11yTitle || label}
       className={className}
       disabled={isDisabled}
+      href={href}
       margin={margin}
       onClick={onClick}
       plain
