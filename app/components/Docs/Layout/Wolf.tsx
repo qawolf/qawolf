@@ -52,7 +52,13 @@ export default function Wolf(): JSX.Element {
   }, [isScrolling]);
 
   return (
-    <Box align="center" flex={false}>
+    <Box
+      align="center"
+      background="gray0"
+      flex={false}
+      height="184px" // prevent resizing as wolf changes
+      justify="end"
+    >
       {isLeft ? <WolfLeft width={width} /> : <WolfRight width={width} />}
     </Box>
   );
