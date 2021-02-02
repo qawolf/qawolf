@@ -19,6 +19,7 @@ export const editorColors = {
   "editorWhitespace.foreground": colors.gray7,
   "editorWidget.background": background,
   "editorWidget.border": colors.gray9,
+  "scrollbar.shadow": "#00000000", // transparent
 };
 
 export const options: monacoEditor.editor.IStandaloneEditorConstructionOptions = {

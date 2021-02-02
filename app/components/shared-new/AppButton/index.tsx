@@ -62,7 +62,12 @@ function AppButton({
         direction={iconPosition === "right" ? "row-reverse" : "row"}
         fill
         justify={justify || "between"}
-        pad={getBoxPad(!!label, !!IconComponent, iconPosition)}
+        pad={getBoxPad({
+          hasIcon: !!IconComponent,
+          hasLabel: !!label,
+          iconPosition,
+          justify,
+        })}
       >
         {!!IconComponent && (
           <IconComponent color={textColor[type]} size={edgeSize.small} />
