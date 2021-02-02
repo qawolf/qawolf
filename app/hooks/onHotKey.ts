@@ -8,8 +8,8 @@ type UseOnHotKey = {
 export const useOnHotKey = ({ hotKey, onHotKey }: UseOnHotKey): void => {
   useEffect(() => {
     const handleHotKey = (e: KeyboardEvent): void => {
-      // const isKeyboardShortcut = e.ctrlKey || e.metaKey;
-      if (e.key !== hotKey) return;
+      const isKeyboardShortcut = e.ctrlKey || e.metaKey;
+      if (!isKeyboardShortcut || e.key !== hotKey) return;
 
       onHotKey();
     };
