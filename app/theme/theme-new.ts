@@ -44,6 +44,7 @@ export const colors = {
   primaryFillLight: "#8E9CF5",
   primaryHover: "#695EFF",
   primaryTextLight: "#ABB5F5",
+  success5: "#44C76B",
   textDark: "#17174C",
   textLight: "#60708A",
   warning4: "#EBC963",

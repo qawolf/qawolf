@@ -1,15 +1,17 @@
-import { Box, Button, Keyboard } from "grommet";
+import { Box, Button } from "grommet";
+import { ChangeEvent, useState } from "react";
 import styled from "styled-components";
+
 import {
   borderSize,
   colors,
   edgeSize,
+  overflowStyle,
   transitionDuration,
 } from "../../../theme/theme-new";
+import Edit from "../icons/Edit";
 import Text from "../Text";
 import TextInput from "./TextInput";
-import { ChangeEvent, useState } from "react";
-import Edit from "../icons/Edit";
 
 type Props = {
   disabled?: boolean;
@@ -56,6 +58,7 @@ export default function EditableText({
         color="gray9"
         margin={disabled ? undefined : { right: "xxsmall" }}
         size="componentHeader"
+        style={{ maxWidth: "378px", ...overflowStyle }}
       >
         {editedValue}
       </Text>

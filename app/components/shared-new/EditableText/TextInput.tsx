@@ -1,5 +1,6 @@
 import { Box, Keyboard } from "grommet";
 import { ChangeEvent, useEffect, useRef } from "react";
+
 import { useOnClickOutside } from "../../../hooks/onClickOutside";
 import { edgeSize } from "../../../theme/theme-new";
 import AppTextInput from "../AppTextInput";

@@ -1,17 +1,19 @@
 import { Box, BoxProps } from "grommet";
 
-const height = "1px";
+type Props = {
+  height?: BoxProps["height"];
+  margin?: BoxProps["margin"];
+  width?: BoxProps["width"];
+};
 
-type Props = { margin?: BoxProps["margin"] };
-
-export default function Divider({ margin }: Props): JSX.Element {
+export default function Divider({ height, margin, width }: Props): JSX.Element {
   return (
     <Box
       background="gray3"
       flex={false}
-      height={height}
+      height={height || "1px"}
       margin={margin}
-      width="full"
+      width={width || "full"}
     />
   );
 }

@@ -1,15 +1,15 @@
 import { Box } from "grommet";
-import { useContext, useState } from "react";
 import { Resizable, ResizeCallback } from "re-resizable";
+import { useContext, useState } from "react";
 
+import { state } from "../../../lib/state";
 import { NavigationOption } from "../../../lib/types";
+import { StateContext } from "../../StateContext";
+import Buttons from "./Buttons";
 import CodeEditor from "./CodeEditor";
 import HelpersEditor from "./HelpersEditor";
 import Navigation from "./Navigation";
 import RunLogs from "./RunLogs";
-import Buttons from "./Buttons";
-import { state } from "../../../lib/state";
-import { StateContext } from "../../StateContext";
 
 const enable = {
   top: false,

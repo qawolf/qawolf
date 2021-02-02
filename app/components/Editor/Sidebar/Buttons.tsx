@@ -1,15 +1,16 @@
 import { Box } from "grommet";
 import { useContext } from "react";
-import { state } from "../../../lib/state";
-import { borderSize, edgeSize } from "../../../theme/theme-new";
-import Environments from "../../shared-new/Environments";
-import { StateContext } from "../../StateContext";
-import Button from "../../shared-new/AppButton";
-import Play from "../../shared-new/icons/Play";
-import { copy } from "../../../theme/copy";
-import { TestContext } from "../contexts/TestContext";
-import { RunnerContext } from "../contexts/RunnerContext";
+
 import { useOnHotKey } from "../../../hooks/onHotKey";
+import { state } from "../../../lib/state";
+import { copy } from "../../../theme/copy";
+import { borderSize, edgeSize } from "../../../theme/theme-new";
+import Button from "../../shared-new/AppButton";
+import Environments from "../../shared-new/Environments";
+import Play from "../../shared-new/icons/Play";
+import { StateContext } from "../../StateContext";
+import { RunnerContext } from "../contexts/RunnerContext";
+import { TestContext } from "../contexts/TestContext";
 
 const width = `calc(50% - (${edgeSize.xxsmall} / 2))`;
 

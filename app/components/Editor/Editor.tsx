@@ -1,7 +1,7 @@
 import { Box, ThemeContext } from "grommet";
 import React, { FC } from "react";
-import { theme } from "../../theme/theme-new";
 
+import { theme } from "../../theme/theme-new";
 import Application from "./Application";
 import { RunnerProvider } from "./contexts/RunnerContext";
 import { TestProvider } from "./contexts/TestContext";
