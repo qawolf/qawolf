@@ -9,6 +9,7 @@ import Play from "../../shared-new/icons/Play";
 import { copy } from "../../../theme/copy";
 import { TestContext } from "../contexts/TestContext";
 import { RunnerContext } from "../contexts/RunnerContext";
+import { useOnHotKey } from "../../../hooks/onHotKey";
 
 export default function Buttons(): JSX.Element {
   const { environmentId } = useContext(StateContext);
@@ -24,6 +25,8 @@ export default function Buttons(): JSX.Element {
     const { code, id: test_id, version } = controller;
     runTest({ code, helpers: team.helpers, selection, test_id, version });
   };
+
+  useOnHotKey({ hotKey: "Enter", onHotKey: handleRunClick });
 
   const runLabel = selection
     ? copy.runLines(selection.endLine - selection.startLine + 1)
