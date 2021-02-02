@@ -19,8 +19,8 @@ type Props = {
 const fontFamily = 'Monaco, "Lucida Console", monospace';
 
 const textProps: TextProps & { style: CSSProperties } = {
-  size: "12px",
-  style: { fontFamily, lineHeight: "20px" },
+  size: "14px",
+  style: { fontFamily, lineHeight: "24px" },
 };
 
 export default function LogLine({ log, measure, style }: Props): JSX.Element {

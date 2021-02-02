@@ -22,9 +22,9 @@ export const editorColors = {
 };
 
 export const options: monacoEditor.editor.IStandaloneEditorConstructionOptions = {
-  fontSize: 12,
+  fontSize: 14,
   insertSpaces: true,
-  lineHeight: 20,
+  lineHeight: 24,
   minimap: {
     enabled: false,
   },
