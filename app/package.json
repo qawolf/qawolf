@@ -55,6 +55,7 @@
     "pg": "^8.5.1",
     "prism-react-renderer": "^1.1.1",
     "querystring": "^0.2.0",
+    "re-resizable": "^6.9.0",
     "react": "16.13.1",
     "react-contenteditable": "^3.3.5",
     "react-dom": "16.13.1",
