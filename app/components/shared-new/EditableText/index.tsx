@@ -9,6 +9,7 @@ import {
 import Text from "../Text";
 import TextInput from "./TextInput";
 import { ChangeEvent, useState } from "react";
+import Edit from "../icons/Edit";
 
 type Props = {
   disabled?: boolean;
@@ -19,8 +20,6 @@ type Props = {
 };
 
 const StyledBox = styled(Box)`
-  border: ${borderSize.xsmall} solid transparent;
-  height: ${edgeSize.large};
   transition: background ${transitionDuration}, border-color: ${transitionDuration};
 
   &:hover {
@@ -43,16 +42,26 @@ export default function EditableText({
   const [editedValue, setEditedValue] = useState(value);
   const [hasError, setHasError] = useState(false);
 
+  const BoxComponent = disabled ? Box : StyledBox;
+
   const textHtml = (
-    <StyledBox
-      justify="center"
+    <BoxComponent
+      align="center"
+      border={{ color: "transparent", size: "xsmall" }}
+      direction="row"
+      height={edgeSize.large}
       pad={{ horizontal: "xxsmall" }}
       round={borderSize.small}
     >
-      <Text color="gray9" size="componentHeader">
+      <Text
+        color="gray9"
+        margin={disabled ? undefined : { right: "xxsmall" }}
+        size="componentHeader"
+      >
         {editedValue}
       </Text>
-    </StyledBox>
+      {!disabled && <Edit color={colors.gray9} size={edgeSize.small} />}
+    </BoxComponent>
   );
 
   if (disabled) return textHtml;
