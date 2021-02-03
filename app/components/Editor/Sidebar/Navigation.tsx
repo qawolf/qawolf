@@ -4,7 +4,6 @@ import { NavigationOption } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import Tabs from "../../shared-new/Tabs";
 import Tab from "../../shared-new/Tabs/Tab";
-import CodeOptions from "./CodeOptions";
 
 type Props = {
   selected: NavigationOption;
@@ -29,9 +28,8 @@ export default function Navigation({
   });
 
   return (
-    <Box flex={false} style={{ position: "relative" }}>
+    <Box flex={false}>
       <Tabs>{tabs}</Tabs>
-      {selected === "code" && <CodeOptions />}
     </Box>
   );
 }

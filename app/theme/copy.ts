@@ -117,6 +117,7 @@ export const copy = {
   environmentsEdit: "Edit environments",
   environmentsEditDetail: "Create, rename, or delete environments",
   environmentsEmpty: "You don't have any environments",
+  generateCode: "Generate code",
   getInTouch: "Get in touch",
   getStarted: "Get started",
   gitHub: "GitHub",

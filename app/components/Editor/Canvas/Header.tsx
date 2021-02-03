@@ -5,6 +5,7 @@ import { borderSize } from "../../../theme/theme-new";
 import Browser from "../../shared-new/icons/Browser";
 import Video from "../../shared-new/icons/Video";
 import Text from "../../shared-new/Text";
+import CodeToggle from "./CodeToggle";
 
 type Props = { hasVideo: boolean };
 
@@ -16,6 +17,7 @@ export default function Header({ hasVideo }: Props): JSX.Element {
       align="center"
       border={{ color: "gray3", side: "bottom", size: borderSize.xsmall }}
       direction="row"
+      justify="between"
       pad="small"
     >
       <Box align="center" direction="row">
@@ -24,6 +26,7 @@ export default function Header({ hasVideo }: Props): JSX.Element {
           {hasVideo ? copy.video : copy.browser}
         </Text>
       </Box>
+      <CodeToggle />
     </Box>
   );
 }
