@@ -55,14 +55,20 @@ export default function TestVideo({
   useEffect(() => {
     if (!player || !videoUrl) return;
     // show first frame as preview
-    player.src({ src: `${videoUrl}#t=1` });
+    console.log("UR", videoUrl);
+    player.src({ src: videoUrl });
   }, [player, videoUrl]);
 
   if (!isVisible || !videoUrl) return null;
 
   return (
     <div data-vjs-player style={{ height, width }}>
-      <video className="video-js" id="video" ref={videoRef} />
+      <video
+        className="video-js"
+        id="video"
+        preload="metadata"
+        ref={videoRef}
+      />
     </div>
   );
 }
