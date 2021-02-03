@@ -1,11 +1,10 @@
 import { Box } from "grommet";
-import { useRef } from "react";
-import { useOnClickOutside } from "../../../hooks/onClickOutside";
 import { useTestHistory } from "../../../hooks/queries";
 import { copy } from "../../../theme/copy";
 import { edgeSize } from "../../../theme/theme-new";
 import Menu from "../../shared-new/Menu";
 import Text from "../../shared-new/Text";
+import RunListItem from "./RunListItem";
 
 type Props = { testId: string | null };
 
@@ -14,7 +13,7 @@ const width = "160px";
 export default function RunList({ testId }: Props): JSX.Element {
   const { data } = useTestHistory({ id: testId });
 
-  let innerHtml: JSX.Element;
+  let innerHtml: JSX.Element | JSX.Element[];
 
   if (!data?.testHistory?.length) {
     const message = data?.testHistory ? copy.noHistory : copy.loading;
@@ -31,7 +30,9 @@ export default function RunList({ testId }: Props): JSX.Element {
       </Box>
     );
   } else {
-    innerHtml = <h1>runs here</h1>;
+    innerHtml = data.testHistory.map((run) => {
+      return <RunListItem key={run.id} run={run} />;
+    });
   }
 
   return (

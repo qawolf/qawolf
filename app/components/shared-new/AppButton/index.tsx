@@ -1,5 +1,6 @@
 import { Box, BoxProps, Button, ButtonProps } from "grommet";
 import { Icon } from "grommet-icons";
+import Link from "next/link";
 import styled from "styled-components";
 
 import { Side } from "../../../lib/types";
@@ -50,12 +51,11 @@ function AppButton({
   onClick,
   type,
 }: Props): JSX.Element {
-  return (
+  const innerHtml = (
     <Button
       a11yTitle={a11yTitle || label}
       className={className}
       disabled={isDisabled}
-      href={href}
       margin={margin}
       onClick={onClick}
       plain
@@ -88,6 +88,16 @@ function AppButton({
       </Box>
     </Button>
   );
+
+  if (href) {
+    return (
+      <Link href={href}>
+        <a>{innerHtml}</a>
+      </Link>
+    );
+  }
+
+  return innerHtml;
 }
 
 const StyledAppButton = styled(AppButton)`

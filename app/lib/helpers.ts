@@ -149,25 +149,25 @@ export const timeToText = (previousString: string): string => {
 
   if (elapsed < msPerMinute) {
     const seconds = Math.floor(elapsed / 1000);
-    return seconds + ` second${pluralCharacter(seconds)} ago`;
+    return seconds + "s ago";
   }
   if (elapsed < msPerHour) {
     const minutes = Math.floor(elapsed / msPerMinute);
-    return minutes + ` minute${pluralCharacter(minutes)} ago`;
+    return minutes + "m ago";
   }
   if (elapsed < msPerDay) {
     const hours = Math.floor(elapsed / msPerHour);
-    return hours + ` hour${pluralCharacter(hours)} ago`;
+    return hours + "h ago";
   }
   if (elapsed < msPerMonth) {
     const days = Math.floor(elapsed / msPerDay);
-    return days + ` day${pluralCharacter(days)} ago`;
+    return days + "d ago";
   }
   if (elapsed < msPerYear) {
     const months = Math.floor(elapsed / msPerMonth);
-    return months + ` month${pluralCharacter(months)} ago`;
+    return months + "mo ago";
   }
   const years = Math.floor(elapsed / msPerYear);
 
-  return years + ` year${pluralCharacter(years)} ago`;
+  return years + "y ago";
 };
