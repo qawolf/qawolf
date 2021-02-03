@@ -241,7 +241,6 @@ export const copy = {
   upgradePlan: "Upgrade plan",
   value: "Value",
   vercel: "Vercel",
-  viewLatest: "View latest",
   watchCreate: "Watch Jon create a test",
   watchTime: "in 1 minute",
   welcome: "Welcome to QA Wolf!",

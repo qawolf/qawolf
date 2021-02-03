@@ -27,8 +27,6 @@ export const useConnectRunner = ({
   const run_id = query.run_id as string;
   const test_id = query.test_id as string;
 
-  const { isLatestCode } = useContext(TestContext);
-
   const { data: runnerResult, loading, startPolling, stopPolling } = useRunner(
     {
       run_id,
@@ -36,7 +34,7 @@ export const useConnectRunner = ({
       test_id,
     },
     {
-      skip: !isLatestCode || useLocalRunner,
+      skip: useLocalRunner,
     }
   );
 
