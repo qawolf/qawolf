@@ -27,7 +27,7 @@ export default function Header({ hasVideo }: Props): JSX.Element {
           {hasVideo ? copy.video : copy.browser}
         </Text>
       </Box>
-      <CodeToggle />
+      {!hasVideo && <CodeToggle />}
     </Box>
   );
 }
