@@ -10,11 +10,15 @@ import { useEnvTypes } from "./CodeEditor/hooks/envTypes";
 import EditorComponent from "./Editor";
 import { includeTypes } from "./helpers";
 
+type Props = {
+  onKeyDown: (e: monacoEditor.IKeyboardEvent) => void;
+};
+
 type Editor = monacoEditor.editor.IStandaloneCodeEditor;
 
 const DEBOUNCE_MS = 250;
 
-export default function HelpersEditor(): JSX.Element {
+export default function HelpersEditor({ onKeyDown }: Props): JSX.Element {
   const { env } = useContext(RunnerContext);
   const { teamId } = useContext(StateContext);
   const { team } = useContext(TestContext);
@@ -54,5 +58,11 @@ export default function HelpersEditor(): JSX.Element {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor, team?.id]);
 
-  return <EditorComponent editorDidMount={editorDidMount} options={{}} />;
+  return (
+    <EditorComponent
+      editorDidMount={editorDidMount}
+      onKeyDown={onKeyDown}
+      options={{}}
+    />
+  );
 }

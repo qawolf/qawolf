@@ -1,6 +1,6 @@
 import { monaco } from "@monaco-editor/react";
 import { Box } from "grommet";
-import { editor } from "monaco-editor";
+import { editor, IKeyboardEvent } from "monaco-editor";
 import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
 import React, { useEffect, useRef, useState } from "react";
 import { AutoSizer } from "react-virtualized";
@@ -20,11 +20,13 @@ type EditorDidMount = {
 
 type Props = {
   editorDidMount: (options: EditorDidMount) => void;
+  onKeyDown: (e: IKeyboardEvent) => void;
   options: editor.IEditorOptions & editor.IGlobalEditorOptions;
 };
 
 export default function Editor({
   editorDidMount,
+  onKeyDown,
   options,
 }: Props): JSX.Element {
   const [isEditorReady, setIsEditorReady] = useState(false);
@@ -79,6 +81,8 @@ export default function Editor({
       monaco.editor.setTheme("qawolf");
 
       monaco.editor.setModelLanguage(editorRef.current.getModel(), language);
+
+      editor.onKeyDown(onKeyDown);
 
       setIsEditorReady(true);
 
