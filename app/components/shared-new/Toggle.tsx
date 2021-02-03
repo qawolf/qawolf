@@ -21,12 +21,11 @@ export default function Toggle({
   const background = isOn ? "primary" : "gray4";
 
   return (
-    <Button a11yTitle={a11yTitle} disabled={disabled} plain>
+    <Button a11yTitle={a11yTitle} disabled={disabled} onClick={onClick} plain>
       <Box
         align={align}
         background={background}
         height={`calc(${switchWidth} + 2 * ${borderSize.xsmall})`}
-        onClick={onClick}
         round="xlarge"
         style={{ transition: `background ${transitionDuration}` }}
         width={toggleWidth}
