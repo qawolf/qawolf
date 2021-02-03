@@ -48,6 +48,7 @@ export default function CodeToggle(): JSX.Element {
       </Text>
       <Toggle
         a11yTitle={`toggle ${copy.generateCode}`}
+        disabled={progress?.status === "created"}
         isOn={isOn}
         onClick={handleClick}
       />
