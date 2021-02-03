@@ -6,11 +6,14 @@ import Menu from "../../shared-new/Menu";
 import Text from "../../shared-new/Text";
 import RunListItem from "./RunListItem";
 
-type Props = { testId: string | null };
+type Props = {
+  onClose: () => void;
+  testId: string | null;
+};
 
 const width = "160px";
 
-export default function RunList({ testId }: Props): JSX.Element {
+export default function RunList({ onClose, testId }: Props): JSX.Element {
   const { data } = useTestHistory({ id: testId });
 
   let innerHtml: JSX.Element | JSX.Element[];
@@ -36,7 +39,7 @@ export default function RunList({ testId }: Props): JSX.Element {
   }
 
   return (
-    <Menu direction="down" width={width}>
+    <Menu direction="down" onClick={onClose} width={width}>
       {innerHtml}
     </Menu>
   );

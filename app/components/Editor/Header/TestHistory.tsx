@@ -20,7 +20,7 @@ export default function TestHistory({ testId }: Props): JSX.Element {
   return (
     <Box ref={ref} style={{ position: "relative" }}>
       <Button IconComponent={History} onClick={handleClick} type="ghost" />
-      {isOpen && <RunList testId={testId} />}
+      {isOpen && <RunList onClose={handleClose} testId={testId} />}
     </Box>
   );
 }
