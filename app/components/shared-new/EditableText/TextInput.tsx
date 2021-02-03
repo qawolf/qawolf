@@ -23,7 +23,7 @@ export default function TextInput({
   // focus text input
   useEffect(() => {
     if (ref.current) ref.current.focus();
-  }, [ref.current]);
+  }, []);
 
   const handleBlur = (): void => {
     onSave();

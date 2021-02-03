@@ -1,5 +1,5 @@
 import { Box, BoxProps } from "grommet";
-import { ReactNode } from "react";
+import { LegacyRef, ReactNode } from "react";
 import styled, { keyframes } from "styled-components";
 
 import { edgeSize } from "../../theme/theme-new";
@@ -10,7 +10,7 @@ type Props = {
   children: ReactNode;
   className?: string;
   direction?: Direction;
-  onClick: () => void;
+  onClick?: () => void;
   width?: BoxProps["width"];
 };
 
