@@ -17,6 +17,7 @@ export default function Header({ hasVideo }: Props): JSX.Element {
       align="center"
       border={{ color: "gray3", side: "bottom", size: borderSize.xsmall }}
       direction="row"
+      flex={false}
       justify="between"
       pad="small"
     >
