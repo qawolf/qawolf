@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { getCanvasSize } from "../../lib/size";
 import Canvas from "./Canvas";
+import Header from "./Canvas/Header";
 import { Mode } from "./hooks/mode";
 
 type Props = { mode: Mode };
@@ -49,8 +50,11 @@ export default function Application({ mode }: Props): JSX.Element {
   const canvasWidth = canvasSize.width || null;
 
   return (
-    <Box fill ref={ref}>
-      <Canvas height={canvasHeight} mode={mode} width={canvasWidth} />
+    <Box fill>
+      <Header hasVideo={mode === "run"} />
+      <Box fill ref={ref}>
+        <Canvas height={canvasHeight} mode={mode} width={canvasWidth} />
+      </Box>
     </Box>
   );
 }

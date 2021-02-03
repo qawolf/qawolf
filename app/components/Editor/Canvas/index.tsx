@@ -31,23 +31,20 @@ export default function Canvas({ height, mode, width }: Props): JSX.Element {
   const videoUrl = run?.video_url;
   const showPlaceholder = !videoUrl && !isBrowserReady;
 
-  const applicationHeight = height - 53;
-
   return (
     <>
-      <Header hasVideo={!!videoUrl} />
       <Box alignSelf="center" background="darkGray">
         {showPlaceholder && (
           <Placeholder height={height} mode={mode} width={width} />
         )}
         <Screencast
           browser={browser}
-          height={applicationHeight}
+          height={height}
           isVisible={!showPlaceholder && !videoUrl}
           width={width}
         />
         <TestVideo
-          height={applicationHeight}
+          height={height}
           isVisible={!!videoUrl}
           width={width}
           videoUrl={videoUrl}
