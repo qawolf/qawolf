@@ -62,12 +62,7 @@ export default function TestVideo({
 
   return (
     <div data-vjs-player style={{ height, width }}>
-      <video
-        className="video-js"
-        id="video"
-        preload="metadata"
-        ref={videoRef}
-      />
+      <video className="video-js" id="video" ref={videoRef} />
     </div>
   );
 }
