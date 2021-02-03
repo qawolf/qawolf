@@ -26,7 +26,7 @@ export default function Editor(): JSX.Element {
   return (
     <ThemeContext.Extend value={theme}>
       <WithProviders>
-        <Box background="gray0" height="100vh">
+        <Box background="gray0" height="100vh" overflow="hidden">
           <Header mode={mode} />
           <Box direction="row" fill justify="between">
             <Sidebar mode={mode} />
