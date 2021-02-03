@@ -210,8 +210,6 @@ export const copy = {
   shipFeatures: "Ship features, not bugs",
   shipFeaturesDetail: "It costs 5x as much to fix a bug after it is released.",
   shipTagline: "Launch your product to new heights",
-  showBrowser: "Switch to browser",
-  showVideo: "Switch to video",
   signUp: "Sign up",
   signUpWithEmail: "Sign up with email",
   signUpWithGitHub: "Sign up with GitHub",

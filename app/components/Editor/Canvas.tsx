@@ -1,5 +1,5 @@
 import { Box } from "grommet";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 
 import { RunnerContext } from "./contexts/RunnerContext";
 import { TestContext } from "./contexts/TestContext";
@@ -8,7 +8,6 @@ import { Mode } from "./hooks/mode";
 import Placeholder from "./Placeholder";
 import Screencast from "./Screencast";
 import TestVideo from "./TestVideo";
-import VideoToggle from "./VideoToggle";
 
 type Props = {
   height: number | null;
@@ -20,7 +19,6 @@ export default function Canvas({ height, mode, width }: Props): JSX.Element {
   const { runner } = useContext(RunnerContext);
   const { run } = useContext(TestContext);
 
-  const [isVideoToggled, toggleVideo] = useState(mode === "run");
   const { browser, isBrowserReady } = useBrowser();
 
   useEffect(() => {
@@ -30,8 +28,6 @@ export default function Canvas({ height, mode, width }: Props): JSX.Element {
   if (!height || !width) return null;
 
   const videoUrl = run?.video_url;
-
-  const showVideo = videoUrl && isVideoToggled;
   const showPlaceholder = !videoUrl && !isBrowserReady;
 
   return (
@@ -43,24 +39,16 @@ export default function Canvas({ height, mode, width }: Props): JSX.Element {
         <Screencast
           browser={browser}
           height={height}
-          isVisible={!showPlaceholder && !showVideo}
+          isVisible={!showPlaceholder && !videoUrl}
           width={width}
         />
         <TestVideo
           height={height}
-          isVisible={!showPlaceholder && showVideo}
+          isVisible={!!videoUrl}
           width={width}
           videoUrl={videoUrl}
         />
       </Box>
-      {!showPlaceholder && (
-        <VideoToggle
-          isBrowserReady={isBrowserReady}
-          isVideoToggled={isVideoToggled}
-          toggleVideo={toggleVideo}
-          videoUrl={videoUrl}
-        />
-      )}
     </>
   );
 }
