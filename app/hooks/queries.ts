@@ -13,8 +13,8 @@ import {
   runnerQuery,
   suiteQuery,
   teamQuery,
-  testQuery,
   testHistoryQuery,
+  testQuery,
 } from "../graphql/queries";
 import { JWT_KEY } from "../lib/client";
 import { isServer } from "../lib/detection";

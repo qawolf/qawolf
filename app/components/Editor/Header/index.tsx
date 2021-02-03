@@ -5,13 +5,13 @@ import { routes } from "../../../lib/routes";
 import { borderSize } from "../../../theme/theme-new";
 import Button from "../../shared-new/AppButton";
 import ArrowLeft from "../../shared-new/icons/ArrowLeft";
-import { RunnerContext } from "../contexts/RunnerContext";
-import TestName from "./TestName";
 import StatusBadge from "../../shared-new/StatusBadge";
+import { RunnerContext } from "../contexts/RunnerContext";
 import { TestContext } from "../contexts/TestContext";
-import TestHistory from "./TestHistory";
 import { Mode } from "../hooks/mode";
 import RunSummary from "./RunSummary";
+import TestHistory from "./TestHistory";
+import TestName from "./TestName";
 
 type Props = { mode: Mode };
 

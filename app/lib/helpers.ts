@@ -116,10 +116,6 @@ export const parseUrl = (url: string): string => {
   return "https://" + url;
 };
 
-const pluralCharacter = (digit: number): string => {
-  return digit === 1 ? "" : "s";
-};
-
 export const runAndSetInterval = (
   fn: () => void,
   ms: number

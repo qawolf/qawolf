@@ -7,8 +7,8 @@ import {
   findPendingRun,
   findRun,
   findRunsForSuite,
-  findTestHistory,
   findSuiteRunForRunner,
+  findTestHistory,
   updateRun,
 } from "../../../server/models/run";
 import * as alertService from "../../../server/services/alert/send";

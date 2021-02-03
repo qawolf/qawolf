@@ -8,7 +8,6 @@ import { Mode } from "../hooks/mode";
 import Placeholder from "./Placeholder";
 import Screencast from "./Screencast";
 import TestVideo from "./TestVideo";
-import Header from "./Header";
 
 type Props = {
   height: number | null;

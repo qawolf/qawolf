@@ -1,9 +1,8 @@
 import { useRouter } from "next/router";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 
 import { useRunner } from "../../../hooks/queries";
 import { RunnerClient } from "../../../lib/runner";
-import { TestContext } from "../contexts/TestContext";
 
 export type ConnectRunnerHook = {
   apiKey: string | null;

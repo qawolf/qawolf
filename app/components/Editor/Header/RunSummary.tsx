@@ -1,8 +1,8 @@
 import { Box } from "grommet";
+
 import { durationToText, timeToText } from "../../../lib/helpers";
 import { Run } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
-
 import Text from "../../shared-new/Text";
 
 type Props = { run: Run };
@@ -13,7 +13,7 @@ const textProps = {
 };
 
 export default function RunSummary({ run }: Props): JSX.Element {
-  let duration = run.started_at
+  const duration = run.started_at
     ? durationToText(
         run.started_at,
         run.completed_at || new Date().toISOString()

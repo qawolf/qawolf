@@ -1,10 +1,10 @@
+import { Box } from "grommet";
 import { useRef, useState } from "react";
 
-import History from "../../shared-new/icons/History";
-import Button from "../../shared-new/AppButton";
-import { Box } from "grommet";
-import RunList from "./RunList";
 import { useOnClickOutside } from "../../../hooks/onClickOutside";
+import Button from "../../shared-new/AppButton";
+import History from "../../shared-new/icons/History";
+import RunList from "./RunList";
 
 type Props = { testId: string | null };
 

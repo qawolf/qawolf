@@ -1,5 +1,6 @@
 import { Box } from "grommet";
 import { useContext, useEffect, useState } from "react";
+
 import { copy } from "../../../theme/copy";
 import Text from "../../shared-new/Text";
 import Toggle from "../../shared-new/Toggle";
@@ -10,7 +11,7 @@ const patchHandle = "// 🐺 create code here";
 
 export default function CodeToggle(): JSX.Element {
   const { mouseLineNumber, progress } = useContext(RunnerContext);
-  const { code, controller, hasWriteAccess } = useContext(TestContext);
+  const { code, controller } = useContext(TestContext);
 
   // track isOn in state so toggle will update instantly
   const [isOn, setIsOn] = useState(!!code?.includes(patchHandle));

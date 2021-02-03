@@ -1,5 +1,5 @@
 import { Box, BoxProps } from "grommet";
-import { LegacyRef, ReactNode } from "react";
+import { ReactNode } from "react";
 import styled, { keyframes } from "styled-components";
 
 import { edgeSize } from "../../theme/theme-new";

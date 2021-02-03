@@ -1,19 +1,19 @@
 import { Box } from "grommet";
+import { IKeyboardEvent } from "monaco-editor";
 import { Resizable, ResizeCallback } from "re-resizable";
-import { useCallback, useContext, useState } from "react";
+import { useContext, useState } from "react";
 
 import { state } from "../../../lib/state";
 import { NavigationOption } from "../../../lib/types";
 import { StateContext } from "../../StateContext";
+import { RunnerContext } from "../contexts/RunnerContext";
+import { TestContext } from "../contexts/TestContext";
+import { Mode } from "../hooks/mode";
 import Buttons from "./Buttons";
 import CodeEditor from "./CodeEditor";
 import HelpersEditor from "./HelpersEditor";
 import Navigation from "./Navigation";
 import RunLogs from "./RunLogs";
-import { Mode } from "../hooks/mode";
-import { TestContext } from "../contexts/TestContext";
-import { RunnerContext } from "../contexts/RunnerContext";
-import { IKeyboardEvent } from "monaco-editor";
 
 type Props = { mode: Mode };
 

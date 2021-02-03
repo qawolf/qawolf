@@ -3,6 +3,7 @@ import "video.js/dist/video-js.min.css";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import videojs, { VideoJsPlayer, VideoJsPlayerOptions } from "video.js";
+
 import { colors } from "../../../theme/theme-new";
 
 type Props = {

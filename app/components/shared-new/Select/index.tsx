@@ -1,4 +1,4 @@
-import { Box, BoxProps } from "grommet";
+import { Box } from "grommet";
 import { ReactNode, useRef, useState } from "react";
 
 import { useOnClickOutside } from "../../../hooks/onClickOutside";
