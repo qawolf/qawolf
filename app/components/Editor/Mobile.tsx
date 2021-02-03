@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { TestContext } from "./contexts/TestContext";
 import { Mode } from "./hooks/mode";
 import Placeholder from "./Canvas/Placeholder";
-import TestVideo from "./TestVideo";
+import TestVideo from "./Canvas/TestVideo";
 
 type Props = {
   mode: Mode;
