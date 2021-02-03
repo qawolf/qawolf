@@ -10,6 +10,9 @@ import CodeEditor from "./CodeEditor";
 import HelpersEditor from "./HelpersEditor";
 import Navigation from "./Navigation";
 import RunLogs from "./RunLogs";
+import { Mode } from "../hooks/mode";
+
+type Props = { mode: Mode };
 
 const enable = {
   top: false,
@@ -22,7 +25,7 @@ const enable = {
   topLeft: false,
 };
 
-export default function Sidebar(): JSX.Element {
+export default function Sidebar({ mode }: Props): JSX.Element {
   const { editorSidebarWidth } = useContext(StateContext);
 
   const [selected, setSelected] = useState<NavigationOption>("code");
@@ -47,7 +50,7 @@ export default function Sidebar(): JSX.Element {
         {selected === "code" && <CodeEditor />}
         {selected === "helpers" && <HelpersEditor />}
         <RunLogs isVisible={selected === "logs"} />
-        <Buttons />
+        {mode === "test" && <Buttons />}
       </Box>
     </Resizable>
   );

@@ -124,6 +124,7 @@ export type Test = {
 };
 
 export type TestHistoryRun = {
+  created_at: string;
   id: string;
   started_at: string;
   status: RunStatus;

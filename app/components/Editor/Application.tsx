@@ -5,9 +5,7 @@ import { getCanvasSize } from "../../lib/size";
 import Canvas from "./Canvas";
 import { Mode } from "./hooks/mode";
 
-type Props = {
-  mode: Mode;
-};
+type Props = { mode: Mode };
 
 type State = {
   height: number | null;

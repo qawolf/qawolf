@@ -10,8 +10,12 @@ import TestName from "./TestName";
 import StatusBadge from "../../shared-new/StatusBadge";
 import { TestContext } from "../contexts/TestContext";
 import TestHistory from "./TestHistory";
+import { Mode } from "../hooks/mode";
+import RunSummary from "./RunSummary";
 
-export default function Header(): JSX.Element {
+type Props = { mode: Mode };
+
+export default function Header({ mode }: Props): JSX.Element {
   const { progress } = useContext(RunnerContext);
   const { run, test } = useContext(TestContext);
 
@@ -31,7 +35,8 @@ export default function Header(): JSX.Element {
           margin={{ right: "xxxsmall" }}
           type="ghost"
         />
-        <TestName disabled={!!run} test={test} />
+        <TestName disabled={mode !== "test"} test={test} />
+        {!!run && <RunSummary run={run} />}
         <StatusBadge status={progress?.status} />
       </Box>
       <TestHistory testId={test?.id || null} />

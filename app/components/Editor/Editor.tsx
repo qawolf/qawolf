@@ -27,12 +27,10 @@ export default function Editor(): JSX.Element {
     <ThemeContext.Extend value={theme}>
       <WithProviders>
         <Box background="gray0" height="100vh">
-          <Header />
+          <Header mode={mode} />
           <Box direction="row" fill justify="between">
-            <Sidebar />
-            <Box fill>
-              <Application mode={mode} />
-            </Box>
+            <Sidebar mode={mode} />
+            <Application mode={mode} />
           </Box>
           <Modals mode={mode} />
         </Box>

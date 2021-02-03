@@ -30,7 +30,7 @@ export default function RunListItem({ run }: Props): JSX.Element {
           pad={{ horizontal: "xsmall" }}
         >
           <Text color="gray9" size="component">
-            {timeToText(run.started_at)}
+            {timeToText(run.created_at)}
           </Text>
           <StatusBadge status={run.status} />
         </StyledBox>

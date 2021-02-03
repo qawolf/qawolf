@@ -160,6 +160,7 @@ export const testQuery = gql`
 export const testHistoryQuery = gql`
   query testHistory($id: ID!) {
     testHistory(id: $id) {
+      created_at
       id
       started_at
       status

@@ -11,7 +11,7 @@ type Props = {
   testId: string | null;
 };
 
-const width = "160px";
+const width = "180px";
 
 export default function RunList({ onClose, testId }: Props): JSX.Element {
   const { data } = useTestHistory({ id: testId });

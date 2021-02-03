@@ -120,11 +120,6 @@ const pluralCharacter = (digit: number): string => {
   return digit === 1 ? "" : "s";
 };
 
-export const randomWolfVariant = (): string => {
-  const variants = ["black", "blue", "brown", "gray", "husky", "white"];
-  return variants[Math.floor(Math.random() * variants.length)];
-};
-
 export const runAndSetInterval = (
   fn: () => void,
   ms: number
