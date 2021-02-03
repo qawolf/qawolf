@@ -1,4 +1,4 @@
-import { Box } from "grommet";
+import { Box, BoxProps } from "grommet";
 import { ReactNode } from "react";
 import styled, { keyframes } from "styled-components";
 
@@ -11,6 +11,7 @@ type Props = {
   className?: string;
   direction?: Direction;
   onClick: () => void;
+  width?: BoxProps["width"];
 };
 
 const round = "2px";
@@ -27,7 +28,7 @@ const menuKeyFrames = keyframes`
   }
 `;
 
-function Menu({ children, className, onClick }: Props): JSX.Element {
+function Menu({ children, className, onClick, width }: Props): JSX.Element {
   return (
     <Box
       background="gray0"
@@ -36,7 +37,7 @@ function Menu({ children, className, onClick }: Props): JSX.Element {
       overflow="hidden"
       pad={{ vertical: "xxxsmall" }}
       round={round}
-      width="100%"
+      width={width || "full"}
     >
       {children}
     </Box>
@@ -47,8 +48,10 @@ const StyledMenu = styled(Menu)`
   animation: ${menuKeyFrames} 0.1s forwards;
   animation-delay: 0.01s;
   box-shadow: 0px 4px 16px rgba(21, 27, 38, 0.16);
+  max-width: none;
   opacity: 0;
   position: absolute;
+  right: 0;
   transform-origin: ${(props) => (props.direction === "up" ? "bottom" : "top")}
     center;
   z-index: 1;

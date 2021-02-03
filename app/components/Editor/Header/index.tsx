@@ -34,7 +34,7 @@ export default function Header(): JSX.Element {
         <TestName disabled={!!run} test={test} />
         <StatusBadge status={progress?.status} />
       </Box>
-      <TestHistory />
+      <TestHistory testId={test?.id || null} />
     </Box>
   );
 }

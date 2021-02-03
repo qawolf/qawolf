@@ -1135,6 +1135,13 @@ type Query {
   integrations("The team ID" team_id: ID!): [Integration!]!
 
   """
+  Returns the last 8 runs for a test by ID.
+
+  Requires that one of the teams you are on own the test.
+  """
+  testHistory("The test ID" id: ID!): [Run!]!
+
+  """
   Returns a single test suite by ID.
 
   Requires that one of the teams you are on owns the test suite.

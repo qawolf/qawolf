@@ -123,6 +123,12 @@ export type Test = {
   version: number;
 };
 
+export type TestHistoryRun = {
+  id: string;
+  started_at: string;
+  status: RunStatus;
+};
+
 export type TestWithSummary = Test & {
   groups: SelectedGroup[];
   summary: {
