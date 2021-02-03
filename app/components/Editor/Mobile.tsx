@@ -3,7 +3,7 @@ import { useContext } from "react";
 
 import { TestContext } from "./contexts/TestContext";
 import { Mode } from "./hooks/mode";
-import Placeholder from "./Placeholder";
+import Placeholder from "./Canvas/Placeholder";
 import TestVideo from "./TestVideo";
 
 type Props = {

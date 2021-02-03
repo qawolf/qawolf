@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef } from "react";
 
-import { RunnerContext } from "./contexts/RunnerContext";
-import type { Browser } from "./hooks/browser";
+import { RunnerContext } from "../contexts/RunnerContext";
+import type { Browser } from "../hooks/browser";
 
 type Props = {
   browser: Browser;

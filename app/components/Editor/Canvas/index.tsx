@@ -1,13 +1,14 @@
 import { Box } from "grommet";
 import { useContext, useEffect } from "react";
 
-import { RunnerContext } from "./contexts/RunnerContext";
-import { TestContext } from "./contexts/TestContext";
-import { useBrowser } from "./hooks/browser";
-import { Mode } from "./hooks/mode";
+import { RunnerContext } from "../contexts/RunnerContext";
+import { TestContext } from "../contexts/TestContext";
+import { useBrowser } from "../hooks/browser";
+import { Mode } from "../hooks/mode";
 import Placeholder from "./Placeholder";
 import Screencast from "./Screencast";
 import TestVideo from "./TestVideo";
+import Header from "./Header";
 
 type Props = {
   height: number | null;
@@ -32,7 +33,8 @@ export default function Canvas({ height, mode, width }: Props): JSX.Element {
 
   return (
     <>
-      <Box alignSelf="center" background="darkGray" overflow="hidden">
+      <Header hasVideo={!!videoUrl} />
+      <Box alignSelf="center" background="darkGray">
         {showPlaceholder && (
           <Placeholder height={height} mode={mode} width={width} />
         )}

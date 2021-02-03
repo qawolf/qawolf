@@ -2,14 +2,14 @@ import { Box } from "grommet";
 import { Play } from "grommet-icons";
 import { ReactNode, useContext } from "react";
 
-import { copy } from "../../theme/copy";
-import Paw from "../shared/icons/Paw";
-import Wolf from "../shared/icons/Wolf";
-import Text from "../shared/Text";
-import { UserContext } from "../UserContext";
-import { RunnerContext } from "./contexts/RunnerContext";
-import { TestContext } from "./contexts/TestContext";
-import { Mode } from "./hooks/mode";
+import { copy } from "../../../theme/copy";
+import Paw from "../../shared/icons/Paw";
+import Wolf from "../../shared/icons/Wolf";
+import Text from "../../shared/Text";
+import { UserContext } from "../../UserContext";
+import { RunnerContext } from "../contexts/RunnerContext";
+import { TestContext } from "../contexts/TestContext";
+import { Mode } from "../hooks/mode";
 
 type Props = {
   height?: number;
