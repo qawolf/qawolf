@@ -1,13 +1,14 @@
 import { Box, ThemeContext } from "grommet";
 import React, { FC } from "react";
+import { useWindowSize } from "../../hooks/windowSize";
 
-import { theme } from "../../theme/theme-new";
+import { breakpoints, theme } from "../../theme/theme-new";
 import Application from "./Application";
 import { RunnerProvider } from "./contexts/RunnerContext";
 import { TestProvider } from "./contexts/TestContext";
+import EditorMobile from "./EditorMobile";
 import Header from "./Header";
 import { useMode } from "./hooks/mode";
-import Mobile from "./Mobile";
 import Modals from "./Modals";
 import Sidebar from "./Sidebar";
 
@@ -19,9 +20,12 @@ const WithProviders: FC = ({ children }): JSX.Element => {
   );
 };
 
-// TODO: mobile view
 export default function Editor(): JSX.Element {
   const mode = useMode();
+  const { width } = useWindowSize();
+
+  if (width && width < breakpoints.medium.value)
+    return <EditorMobile mode={mode} />;
 
   return (
     <ThemeContext.Extend value={theme}>

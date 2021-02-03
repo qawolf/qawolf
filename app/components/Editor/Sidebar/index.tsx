@@ -48,7 +48,7 @@ export default function Sidebar({ mode }: Props): JSX.Element {
 
   const handleEditorKeyDown = (e: IKeyboardEvent): void => {
     if ((e.ctrlKey || e.metaKey) && e.code === "Enter") {
-      e.preventDefault();
+      console.log("SELECTION", selection);
       e.stopPropagation();
       handleRunClick();
     }
