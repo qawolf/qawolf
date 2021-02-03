@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import { useEffect, useRef, useState } from "react";
 
 import { getCanvasSize } from "../../lib/size";
-import Canvas, { BORDER_SIZE } from "./Canvas";
+import Canvas from "./Canvas";
 import { Mode } from "./hooks/mode";
 
 type Props = {
@@ -47,12 +47,8 @@ export default function Application({ mode }: Props): JSX.Element {
     return () => observer.unobserve(el);
   }, [ref]);
 
-  const canvasHeight = canvasSize.height
-    ? canvasSize.height - 2 * BORDER_SIZE
-    : null;
-  const canvasWidth = canvasSize.width
-    ? canvasSize.width - 2 * BORDER_SIZE
-    : null;
+  const canvasHeight = canvasSize.height || null;
+  const canvasWidth = canvasSize.width || null;
 
   return (
     <Box fill ref={ref}>

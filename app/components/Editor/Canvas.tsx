@@ -16,9 +16,6 @@ type Props = {
   width: number | null;
 };
 
-const BORDER_RADIUS = "16px";
-export const BORDER_SIZE = 6;
-
 export default function Canvas({ height, mode, width }: Props): JSX.Element {
   const { runner } = useContext(RunnerContext);
   const { run } = useContext(TestContext);
@@ -39,13 +36,7 @@ export default function Canvas({ height, mode, width }: Props): JSX.Element {
 
   return (
     <>
-      <Box
-        alignSelf="center"
-        background="darkGray"
-        border={{ color: "borderBlue", size: `${BORDER_SIZE}px` }}
-        overflow="hidden"
-        round={BORDER_RADIUS}
-      >
+      <Box alignSelf="center" background="darkGray" overflow="hidden">
         {showPlaceholder && (
           <Placeholder height={height} mode={mode} width={width} />
         )}

@@ -30,10 +30,9 @@ export default function Editor(): JSX.Element {
           <Header />
           <Box direction="row" fill justify="between">
             <Sidebar />
-            {/* <Box fill>
-            <Header mode={mode} />
-            <Application mode={mode} />
-          </Box> */}
+            <Box fill>
+              <Application mode={mode} />
+            </Box>
           </Box>
           <Modals mode={mode} />
         </Box>
