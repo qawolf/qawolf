@@ -3,6 +3,7 @@ import "video.js/dist/video-js.min.css";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import videojs, { VideoJsPlayer, VideoJsPlayerOptions } from "video.js";
+import { colors } from "../../../theme/theme-new";
 
 type Props = {
   height?: number;
@@ -62,13 +63,8 @@ export default function TestVideo({
   if (!isVisible || !videoUrl) return null;
 
   return (
-    <div data-vjs-player style={{ height, width }}>
-      <video
-        className="video-js"
-        id="video"
-        preload="metadata"
-        ref={videoRef}
-      />
+    <div data-vjs-player style={{ background: colors.gray0, height, width }}>
+      <video className="video-js" id="video" ref={videoRef} />
     </div>
   );
 }
