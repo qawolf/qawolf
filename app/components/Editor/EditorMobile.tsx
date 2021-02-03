@@ -19,10 +19,16 @@ export default function EditorMobile({ mode }: Props) {
 
   return (
     <Box align="center" pad="small">
-      <Box align="center" direction="row" justify="between" width="full">
+      <Box
+        align="center"
+        direction="row"
+        justify="between"
+        margin={{ bottom: "small" }}
+        width="full"
+      >
         <Text
           color="gray9"
-          margin={{ bottom: "small", right: "small" }}
+          margin={{ right: "small" }}
           size="componentHeader"
           style={overflowStyle}
         >
