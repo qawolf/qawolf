@@ -56,7 +56,7 @@ export default function TestVideo({
     if (!player || !videoUrl) return;
     // show first frame as preview
     console.log("UR", videoUrl);
-    player.src({ src: videoUrl });
+    player.src({ src: `${videoUrl}#t=1` });
   }, [player, videoUrl]);
 
   if (!isVisible || !videoUrl) return null;
