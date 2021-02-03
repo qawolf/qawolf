@@ -24,20 +24,21 @@ export default function Editor(): JSX.Element {
   const mode = useMode();
   const { width } = useWindowSize();
 
-  if (width && width < breakpoints.medium.value)
-    return <EditorMobile mode={mode} />;
-
   return (
     <ThemeContext.Extend value={theme}>
       <WithProviders>
-        <Box background="gray0" height="100vh" overflow="hidden">
-          <Header mode={mode} />
-          <Box direction="row" fill justify="between">
-            <Sidebar mode={mode} />
-            <Application mode={mode} />
+        {width && width < breakpoints.medium.value ? (
+          <EditorMobile mode={mode} />
+        ) : (
+          <Box background="gray0" height="100vh" overflow="hidden">
+            <Header mode={mode} />
+            <Box direction="row" fill justify="between">
+              <Sidebar mode={mode} />
+              <Application mode={mode} />
+            </Box>
+            <Modals mode={mode} />
           </Box>
-          <Modals mode={mode} />
-        </Box>
+        )}
       </WithProviders>
     </ThemeContext.Extend>
   );

@@ -6,6 +6,7 @@ import Text from "../shared-new/Text";
 import { Box } from "grommet";
 import StatusBadge from "../shared-new/StatusBadge";
 import TestVideo from "./Canvas/TestVideo";
+import { overflowStyle } from "../../theme/theme-new";
 
 type Props = { mode: Mode };
 
@@ -17,11 +18,19 @@ export default function EditorMobile({ mode }: Props) {
   const videoUrl = run?.video_url;
 
   return (
-    <Box>
-      <Text color="gray9" size="componentHeader">
-        {test?.name || ""}
-      </Text>
-      <StatusBadge status={run?.status} />
+    <Box align="center" pad="small">
+      <Box align="center" direction="row" justify="between" width="full">
+        <Text
+          color="gray9"
+          margin={{ bottom: "small", right: "small" }}
+          size="componentHeader"
+          style={overflowStyle}
+        >
+          {test?.name || ""}
+        </Text>
+        <StatusBadge status={run?.status} />
+      </Box>
+
       {!!videoUrl && <TestVideo isMobile isVisible videoUrl={videoUrl} />}
     </Box>
   );

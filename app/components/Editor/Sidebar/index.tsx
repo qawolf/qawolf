@@ -1,6 +1,6 @@
 import { Box } from "grommet";
 import { Resizable, ResizeCallback } from "re-resizable";
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 
 import { state } from "../../../lib/state";
 import { NavigationOption } from "../../../lib/types";
@@ -42,13 +42,14 @@ export default function Sidebar({ mode }: Props): JSX.Element {
 
   const handleRunClick = (): void => {
     if (!test) return;
+
     const { code, id: test_id, version } = controller;
+
     runTest({ code, helpers: team.helpers, selection, test_id, version });
   };
 
   const handleEditorKeyDown = (e: IKeyboardEvent): void => {
     if ((e.ctrlKey || e.metaKey) && e.code === "Enter") {
-      console.log("SELECTION", selection);
       e.stopPropagation();
       handleRunClick();
     }

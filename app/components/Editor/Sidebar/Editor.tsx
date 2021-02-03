@@ -63,6 +63,16 @@ export default function Editor({
   }, [options, isEditorReady]);
 
   useEffect(() => {
+    if (!isEditorReady) return;
+
+    const handler = editorRef.current.onKeyDown(onKeyDown);
+
+    return () => {
+      handler.dispose();
+    };
+  }, [isEditorReady, onKeyDown]);
+
+  useEffect(() => {
     if (isMonacoMounting || isEditorReady) return;
 
     function createEditor() {
@@ -81,8 +91,6 @@ export default function Editor({
       monaco.editor.setTheme("qawolf");
 
       monaco.editor.setModelLanguage(editorRef.current.getModel(), language);
-
-      editor.onKeyDown(onKeyDown);
 
       setIsEditorReady(true);
 
