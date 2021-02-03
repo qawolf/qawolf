@@ -1,5 +1,5 @@
 import { Box, Button } from "grommet";
-import { borderSize } from "../../theme/theme-new";
+import { borderSize, transitionDuration } from "../../theme/theme-new";
 
 type Props = {
   a11yTitle: string;
@@ -8,6 +8,7 @@ type Props = {
   onClick: () => void;
 };
 
+const toggleWidth = "36px";
 const switchWidth = "18px";
 
 export default function Toggle({
@@ -20,13 +21,15 @@ export default function Toggle({
   const background = isOn ? "primary" : "gray4";
 
   return (
-    <Button a11yTitle={a11yTitle} onClick={onClick} plain>
+    <Button a11yTitle={a11yTitle} disabled={disabled} plain>
       <Box
         align={align}
         background={background}
         height={`calc(${switchWidth} + 2 * ${borderSize.xsmall})`}
+        onClick={onClick}
         round="xlarge"
-        width="36px"
+        style={{ transition: `background ${transitionDuration}` }}
+        width={toggleWidth}
       >
         <Box
           background="gray0"
