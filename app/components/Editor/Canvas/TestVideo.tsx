@@ -46,6 +46,7 @@ export default function TestVideo({
       setPlayer(vjsPlayer);
 
       if (timestamp) node.currentTime = timestamp;
+      else node.currentTime = 1;
 
       return () => vjsPlayer.dispose();
     },
@@ -54,9 +55,8 @@ export default function TestVideo({
 
   useEffect(() => {
     if (!player || !videoUrl) return;
-    // show first frame as preview
-    console.log("UR", videoUrl);
-    player.src({ src: `${videoUrl}#t=1` });
+
+    player.src({ src: videoUrl });
   }, [player, videoUrl]);
 
   if (!isVisible || !videoUrl) return null;
