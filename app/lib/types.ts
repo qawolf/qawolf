@@ -191,12 +191,6 @@ export type SelectedTest = {
 
 export type Side = "left" | "right";
 
-export type UserSubscription = {
-  email: string;
-  wolfName: string;
-  wolfVariant: string;
-};
-
 export type ValueProp = {
   detail: string;
   message: string;
