@@ -1,7 +1,9 @@
 import { Box } from "grommet";
 import { IKeyboardEvent } from "monaco-editor";
+import { useRouter } from "next/router";
 import { Resizable, ResizeCallback } from "re-resizable";
 import { useContext, useState } from "react";
+import { routes } from "../../../lib/routes";
 
 import { state } from "../../../lib/state";
 import { NavigationOption } from "../../../lib/types";
@@ -29,9 +31,10 @@ const enable = {
 };
 
 export default function Sidebar({ mode }: Props): JSX.Element {
+  const { push } = useRouter();
   const { editorSidebarWidth } = useContext(StateContext);
 
-  const { controller, team, test } = useContext(TestContext);
+  const { controller, run, team, test } = useContext(TestContext);
   const { runTest, selection } = useContext(RunnerContext);
 
   const [selected, setSelected] = useState<NavigationOption>("code");
@@ -41,6 +44,11 @@ export default function Sidebar({ mode }: Props): JSX.Element {
   };
 
   const handleRunClick = (): void => {
+    if (run) {
+      push(`${routes.test}/${run.test_id}`);
+      return;
+    }
+
     if (!test) return;
 
     const { code, id: test_id, version } = controller;
@@ -73,9 +81,11 @@ export default function Sidebar({ mode }: Props): JSX.Element {
           <HelpersEditor onKeyDown={handleEditorKeyDown} />
         )}
         <RunLogs isVisible={selected === "logs"} />
-        {mode === "test" && (
-          <Buttons onRunClick={handleRunClick} selection={selection} />
-        )}
+        <Buttons
+          isRun={!!run}
+          onRunClick={handleRunClick}
+          selection={selection}
+        />
       </Box>
     </Resizable>
   );

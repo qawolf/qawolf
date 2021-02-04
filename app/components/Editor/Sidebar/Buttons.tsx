@@ -3,10 +3,12 @@ import { useContext } from "react";
 
 import { useOnHotKey } from "../../../hooks/onHotKey";
 import { state } from "../../../lib/state";
+import { Run } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import { borderSize, edgeSize } from "../../../theme/theme-new";
 import Button from "../../shared-new/AppButton";
 import Environments from "../../shared-new/Environments";
+import Edit from "../../shared-new/icons/Edit";
 import Play from "../../shared-new/icons/Play";
 import { StateContext } from "../../StateContext";
 import { Selection } from "../hooks/selection";
@@ -14,11 +16,16 @@ import { Selection } from "../hooks/selection";
 const width = `calc(50% - (${edgeSize.xxsmall} / 2))`;
 
 type Props = {
+  isRun: boolean;
   onRunClick: () => void;
   selection: Selection;
 };
 
-export default function Buttons({ onRunClick, selection }: Props): JSX.Element {
+export default function Buttons({
+  isRun,
+  onRunClick,
+  selection,
+}: Props): JSX.Element {
   const { environmentId } = useContext(StateContext);
 
   const handleEnvironmentClick = (environmentId: string): void => {
@@ -45,9 +52,9 @@ export default function Buttons({ onRunClick, selection }: Props): JSX.Element {
         width={width}
       />
       <Button
-        IconComponent={Play}
+        IconComponent={isRun ? Edit : Play}
         justify="center"
-        label={runLabel}
+        label={isRun ? copy.editTest : runLabel}
         onClick={onRunClick}
         type="primary"
         width={width}

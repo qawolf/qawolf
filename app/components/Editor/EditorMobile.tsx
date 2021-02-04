@@ -37,7 +37,6 @@ export default function EditorMobile({ mode }: Props): JSX.Element {
         </Text>
         <StatusBadge status={run?.status} />
       </Box>
-
       {!!videoUrl && <TestVideo isMobile isVisible videoUrl={videoUrl} />}
     </Box>
   );
