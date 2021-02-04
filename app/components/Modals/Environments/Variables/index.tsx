@@ -9,21 +9,15 @@ import List from "./List";
 
 type Props = {
   closeModal: () => void;
+  environmentId: string;
   onDelete: (environmentVariable: EnvironmentVariable) => void;
 };
 
 export default function Variables({
   closeModal,
+  environmentId,
   onDelete,
 }: Props): JSX.Element {
-  const { environmentId, teamId } = useContext(StateContext);
-
-  // have internal state for selected environment so editing variables
-  // doesn't change environment id in global state
-  const [selectedEnvironmentId, setSelectedEnvironmentId] = useState(
-    environmentId
-  );
-
   return (
     <Box
       border={{ color: "gray3", side: "left", size: "xsmall" }}
@@ -36,7 +30,7 @@ export default function Variables({
       </Text>
       <List
         closeModal={closeModal}
-        environmentId={selectedEnvironmentId}
+        environmentId={environmentId}
         onDelete={onDelete}
       />
     </Box>
