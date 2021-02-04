@@ -1,11 +1,10 @@
 import { Box } from "grommet";
-import { Play } from "grommet-icons";
 import { ReactNode, useContext } from "react";
 
 import { copy } from "../../../theme/copy";
 import Paw from "../../shared/icons/Paw";
 import Wolf from "../../shared/icons/Wolf";
-import Text from "../../shared/Text";
+import Text from "../../shared-new/Text";
 import { UserContext } from "../../UserContext";
 import { RunnerContext } from "../contexts/RunnerContext";
 import { TestContext } from "../contexts/TestContext";
@@ -55,7 +54,7 @@ export default function Placeholder({
     !isTestLoading &&
     !shouldRequestRunner
   ) {
-    iconHtml = <Play {...iconProps} />;
+    iconHtml = null;
     message = copy.placeholderRunTest;
   }
 
@@ -64,14 +63,14 @@ export default function Placeholder({
   return (
     <Box
       align="center"
-      background="black"
+      background="gray0"
       height={height ? `${height}px` : undefined}
       justify="center"
       pad={pad}
       width={width ? `${width}px` : undefined}
     >
       {iconHtml}
-      <Text color="white" margin={{ top: "medium" }} size="large">
+      <Text color="gray9" margin={{ top: "medium" }} size="componentHeader">
         {message}
       </Text>
     </Box>

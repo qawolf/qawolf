@@ -170,7 +170,7 @@ export const copy = {
   perUserPerMonth: "/mo per user",
   placeholderInProgress: "Test in progress...",
   placeholderInvite: "Enter emails to invite...",
-  placeholderRunTest: "Run your test to see it here!",
+  placeholderRunTest: 'Press the "Run test" button to run your test!',
   preview: "Preview",
   pricing: "Pricing",
   prioritySupport: "Priority support",
