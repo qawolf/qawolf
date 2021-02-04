@@ -34,7 +34,6 @@ const StyledGrommetTextInput = styled(GrommetTextInput)`
   font-weight: ${fontWeight.normal};
   height: ${edgeSize.large};
   line-height: ${edgeSize.large};
-  padding: 0 ${edgeSize.xsmall};
   transition: ${transition};
 
   &:focus {
@@ -67,7 +66,7 @@ function TextInput(
     borderColor: hasError ? colors.danger5 : undefined,
     fontFamily: fontFamily[finalSize],
     fontSize: text[finalSize].size,
-    padding: `0 ${pad || edgeSize.xsmall}`,
+    padding: `0 ${pad || `calc(${edgeSize.xsmall} - ${borderSize.xsmall})`}`,
     width,
   };
 

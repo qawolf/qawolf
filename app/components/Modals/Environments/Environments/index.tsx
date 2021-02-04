@@ -22,26 +22,26 @@ export default function Environments({
   setSelectedEnvironmentId,
   teamId,
 }: Props): JSX.Element {
-  const [editEnvrionmentId, setEditEnvrionmentId] = useState<string | null>(
+  const [editEnvironmentId, setEditEnvironmentId] = useState<string | null>(
     null
   );
 
   const { data } = useEnvironments({ team_id: teamId }, { environmentId });
 
   const handleCancel = (): void => {
-    setEditEnvrionmentId(null);
+    setEditEnvironmentId(null);
   };
 
   const environmentsHtml = (data?.environments || []).map((environment) => {
     return (
       <ListItem
-        editEnvironmentId={editEnvrionmentId}
+        editEnvironmentId={editEnvironmentId}
         environment={environment}
         key={environment.id}
         onCancel={handleCancel}
         onClick={() => setSelectedEnvironmentId(environment.id)}
         onDelete={() => onDelete(environment)}
-        onEdit={() => setEditEnvrionmentId(environment.id)}
+        onEdit={() => setEditEnvironmentId(environment.id)}
       />
     );
   });

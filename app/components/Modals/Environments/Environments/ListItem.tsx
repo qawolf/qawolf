@@ -64,13 +64,11 @@ export default function ListItem({
   return (
     <StyledBox
       align="center"
-      border={{ color: "transparent", size: "xsmall" }}
       direction="row"
       justify="between"
-      height={edgeSize.large}
       margin={{ bottom: "2px" }}
       onClick={onClick}
-      pad={{ left: "xsmall", right: "xxsmall" }}
+      pad={{ left: "xsmall", right: "xxsmall", vertical: "xxsmall" }}
       round={borderSize.small}
     >
       <Text color="gray9" size="component" style={overflowStyle}>
