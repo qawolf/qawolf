@@ -15,6 +15,7 @@ import { Selection } from "../hooks/selection";
 const width = `calc(50% - (${edgeSize.xxsmall} / 2))`;
 
 type Props = {
+  isActionDisabled: boolean;
   isRun: boolean;
   onAction: () => void;
   runEnvironmentId: string;
@@ -22,6 +23,7 @@ type Props = {
 };
 
 export default function Buttons({
+  isActionDisabled,
   isRun,
   onAction,
   runEnvironmentId,
@@ -55,6 +57,7 @@ export default function Buttons({
       />
       <Button
         IconComponent={isRun ? Edit : Play}
+        isDisabled={isActionDisabled}
         justify="center"
         label={isRun ? copy.editTest : runLabel}
         onClick={onAction}

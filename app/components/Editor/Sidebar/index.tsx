@@ -36,11 +36,15 @@ export default function Sidebar(): JSX.Element {
 
   const [selected, setSelected] = useState<NavigationOption>("code");
 
+  const isTestDeleted = !!test.deleted_at;
+
   const handleResizeStop: ResizeCallback = (_, __, ___, delta): void => {
     state.setEditorSidebarWidth(editorSidebarWidth + delta.width);
   };
 
   const handleAction = (): void => {
+    if (isTestDeleted) return;
+
     if (run) {
       // edit the test
       push(`${routes.test}/${run.test_id}`);
@@ -80,6 +84,7 @@ export default function Sidebar(): JSX.Element {
         )}
         <RunLogs isVisible={selected === "logs"} />
         <Buttons
+          isActionDisabled={isTestDeleted}
           isRun={!!query.run_id}
           onAction={handleAction}
           runEnvironmentId={run?.environment_id || null}
