@@ -1,47 +1,19 @@
-import { useState } from "react";
-
-import { Environment } from "../../../lib/types";
-import { copy } from "../../../theme/copy";
+import { Box } from "grommet";
 import Modal from "../../shared-new/Modal";
-import Text from "../../shared-new/Text";
-import ConfirmDelete from "./ConfirmDelete";
-import List from "./List";
+import Variables from "./Variables";
+import Environments from "./Environments";
 
-type Props = {
-  closeModal: () => void;
-};
+type Props = { closeModal: () => void };
 
-export default function Environments({ closeModal }: Props): JSX.Element {
-  const [
-    deleteEnvironment,
-    setDeleteEnvironment,
-  ] = useState<Environment | null>(null);
+const width = "800px";
 
-  const handleClose = (): void => setDeleteEnvironment(null);
-
-  const handleDeleteClick = (environment: Environment): void => {
-    setDeleteEnvironment(environment);
-  };
-
+export default function EnvironmentsModal({ closeModal }: Props): JSX.Element {
   return (
-    <Modal
-      closeModal={closeModal}
-      label={deleteEnvironment ? copy.environmentDelete : copy.environmentsEdit}
-    >
-      {deleteEnvironment ? (
-        <ConfirmDelete environment={deleteEnvironment} onClose={handleClose} />
-      ) : (
-        <>
-          <Text
-            color="gray8"
-            margin={{ top: "xxsmall" }}
-            size="componentParagraph"
-          >
-            {copy.environmentsEditDetail}
-          </Text>
-          <List closeModal={closeModal} onDeleteClick={handleDeleteClick} />
-        </>
-      )}
+    <Modal closeModal={closeModal} width={width}>
+      <Box direction="row">
+        <Environments />
+        <Variables closeModal={closeModal} />
+      </Box>
     </Modal>
   );
 }

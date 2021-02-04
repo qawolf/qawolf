@@ -113,6 +113,7 @@ export const copy = {
   environmentName: "Environment name",
   environmentNew: "Add environment",
   environmentNotSelected: "No environment",
+  environments: "Environments",
   environmentsEdit: "Edit environments",
   environmentsEditDetail: "Create, rename, or delete environments",
   environmentsEmpty: "You don't have any environments",

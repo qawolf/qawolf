@@ -7,7 +7,6 @@ import ConfirmDeleteGroup from "./ConfirmDeleteGroup";
 import ConfirmDeleteTests from "./ConfirmDeleteTests";
 import Deployment from "./Deployment";
 import Environments from "./Environments";
-import EnvVariables from "./EnvVariables";
 import TeamSettings from "./TeamSettings";
 
 export default function Modals(): JSX.Element {
@@ -36,10 +35,6 @@ export default function Modals(): JSX.Element {
         integration={integration}
       />
     );
-  }
-
-  if (name === "envVariables") {
-    return <EnvVariables closeModal={closeModal} />;
   }
 
   if (name === "environments") {

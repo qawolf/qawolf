@@ -5,7 +5,7 @@ import { useEnvironmentVariables } from "../../../hooks/queries";
 import { EnvironmentVariable } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import Divider from "../../shared-new/Divider";
-import ModalButtons from "../../shared-new/ModalButtons";
+import ModalButtons from "../../shared-new/Modal/Buttons";
 import Text from "../../shared-new/Text";
 import Form, { id as formInputId } from "./Form";
 import ListItem, { nameWidth } from "./ListItem";

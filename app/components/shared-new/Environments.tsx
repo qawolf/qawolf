@@ -15,10 +15,8 @@ import {
 import { StateContext } from "../StateContext";
 import Button from "./AppButton";
 import Configure from "./icons/Configure";
-import Edit from "./icons/Edit";
 import { Direction } from "./Menu";
 import Select from "./Select";
-import Action from "./Select/Action";
 import Option from "./Select/Option";
 
 type Props = {
@@ -65,14 +63,10 @@ export default function Environments({
   }
 
   const openEnvironmentsModal = (): void => {
-    state.setModal({ name: "environments" });
-  };
-
-  const openVariablesModal = (): void => {
     if (!selectedEnvironment) return;
 
     state.setEnvironmentId(selectedEnvironmentId);
-    state.setModal({ name: "envVariables" });
+    state.setModal({ name: "environments" });
   };
 
   const optionsHtml = (data?.environments || []).map((e) => {
@@ -99,7 +93,7 @@ export default function Environments({
           a11yTitle={copy.environmentEdit(selectedEnvironment?.name)}
           isDisabled={isDisabled}
           noBorderSide="right"
-          onClick={openVariablesModal}
+          onClick={openEnvironmentsModal}
           type="dark"
         />
         <Box
@@ -115,11 +109,6 @@ export default function Environments({
           noBorderSide="left"
           type="dark"
         >
-          <Action
-            IconComponent={Edit}
-            label={copy.environmentsEdit}
-            onClick={openEnvironmentsModal}
-          />
           {optionsHtml}
         </Select>
       </StyledBox>

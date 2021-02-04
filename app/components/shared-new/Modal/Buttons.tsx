@@ -1,8 +1,8 @@
 import { Box } from "grommet";
 
-import { copy } from "../../theme/copy";
-import Button from "./AppButton";
-import Add from "./icons/Add";
+import { copy } from "../../../theme/copy";
+import Button from "../AppButton";
+import Add from "../icons/Add";
 
 type Props = {
   closeModal: () => void;
@@ -10,7 +10,7 @@ type Props = {
   secondaryLabel: string;
 };
 
-export default function ModalButtons({
+export default function Buttons({
   closeModal,
   onCreateClick,
   secondaryLabel,

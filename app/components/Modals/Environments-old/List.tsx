@@ -5,7 +5,7 @@ import { useEnvironments } from "../../../hooks/queries";
 import { Environment } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import Divider from "../../shared-new/Divider";
-import ModalButtons from "../../shared-new/ModalButtons";
+import ModalButtons from "../../shared-new/Modal/Buttons";
 import Text from "../../shared-new/Text";
 import { StateContext } from "../../StateContext";
 import Form, { id as formInputId } from "./Form";

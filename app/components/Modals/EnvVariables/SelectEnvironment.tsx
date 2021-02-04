@@ -1,9 +1,7 @@
 import { state } from "../../../lib/state";
 import { Environment } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
-import Edit from "../../shared-new/icons/Edit";
 import Select from "../../shared-new/Select";
-import Action from "../../shared-new/Select/Action";
 import Option from "../../shared-new/Select/Option";
 import Text from "../../shared-new/Text";
 
@@ -47,12 +45,6 @@ export default function SelectEnvironment({
       </Text>
       <Select label={selectedEnvironment?.name || copy.loading}>
         {optionsHtml}
-        <Action
-          IconComponent={Edit}
-          dividerSide="top"
-          label={copy.environmentsEdit}
-          onClick={openEnvironmentsModal}
-        />
       </Select>
     </>
   );
