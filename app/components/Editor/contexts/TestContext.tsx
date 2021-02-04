@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { createContext, FC, useContext } from "react";
+import { createContext, FC, useContext, useEffect } from "react";
 
 import { useTeam, useTest } from "../../../hooks/queries";
 import { Run, Team, Test } from "../../../lib/types";
@@ -27,6 +27,8 @@ export const TestContext = createContext<TestContextValue>({
   test: null,
 });
 
+const pollInterval = 2000;
+
 export const TestProvider: FC = ({ children }) => {
   const { teamId } = useContext(StateContext);
 
@@ -35,13 +37,26 @@ export const TestProvider: FC = ({ children }) => {
   const test_id = query.test_id as string;
 
   const { data: teamData } = useTeam({ id: teamId });
-  const { data, loading } = useTest({ id: test_id, run_id });
+  const { data, loading, startPolling, stopPolling } = useTest({
+    id: test_id,
+    run_id,
+  });
 
   const run = data?.test?.run || null;
   const team = teamData?.team || null;
   const test = data?.test?.test || null;
 
   const { code, controller } = useController({ run, test });
+
+  useEffect(() => {
+    if (!run || run.completed_at) return;
+
+    startPolling(pollInterval);
+
+    return () => {
+      stopPolling();
+    };
+  }, [run, startPolling, stopPolling]);
 
   const value = {
     // this is more up-to-date than test.code since it does not wait for apollo to update
