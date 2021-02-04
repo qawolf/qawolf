@@ -31,8 +31,7 @@ export default function Placeholder({
   let message = copy.loading;
 
   let iconHtml: ReactNode = <Paw {...iconProps} />;
-  // do not show wolf if user not onboarded so it can appear in modal
-  if (wolf && user?.onboarded_at) {
+  if (wolf) {
     iconHtml = <Wolf animate wolf={wolf} />;
   } else if (isUserLoading) {
     // if the user is loading do not include an icon
