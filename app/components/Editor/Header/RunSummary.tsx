@@ -23,7 +23,7 @@ export default function RunSummary({ run }: Props): JSX.Element {
   return (
     <Box direction="row" margin={{ right: "small" }}>
       <Text {...textProps} margin={{ right: "small" }}>
-        {timeToText(run.started_at)}
+        {run.started_at ? timeToText(run.started_at) : copy.notStarted}
       </Text>
       <Text {...textProps}>{duration}</Text>
     </Box>
