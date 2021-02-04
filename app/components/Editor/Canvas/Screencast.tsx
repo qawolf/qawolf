@@ -16,19 +16,19 @@ export default function Screencast({
   isVisible,
   width,
 }: Props): JSX.Element {
-  const { apiKey, wsUrl } = useContext(RunnerContext);
+  const { apiKey, isRunnerLoading, wsUrl } = useContext(RunnerContext);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!browser || !containerRef.current) return;
+    if (!browser || !containerRef.current || isRunnerLoading) return;
 
     browser.connect(
       containerRef.current,
       wsUrl ? `${wsUrl}/websockify` : null,
       apiKey || "local"
     );
-  }, [apiKey, browser, containerRef, wsUrl]);
+  }, [apiKey, browser, containerRef, isRunnerLoading, wsUrl]);
 
   useEffect(() => {
     if (!browser || !isVisible) return;

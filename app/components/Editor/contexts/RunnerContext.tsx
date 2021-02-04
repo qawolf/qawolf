@@ -31,6 +31,7 @@ export const RunnerContext = createContext<RunnerContext>({
   env: null,
   isCreateTestLoading: false,
   isRunnerConnected: false,
+  isRunnerLoading: false,
   mouseLineNumber: null,
   onSelectionChange: () => null,
   progress: null,
@@ -59,7 +60,7 @@ export const RunnerProvider: FC = ({ children }) => {
     runner,
   });
 
-  const { apiKey, wsUrl } = useConnectRunner({
+  const { apiKey, isRunnerLoading, wsUrl } = useConnectRunner({
     shouldRequestRunner,
     isRunnerConnected,
     runner,
@@ -86,6 +87,7 @@ export const RunnerProvider: FC = ({ children }) => {
     env,
     isCreateTestLoading,
     isRunnerConnected,
+    isRunnerLoading,
     mouseLineNumber,
     onSelectionChange,
     progress,
