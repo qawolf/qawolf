@@ -3,21 +3,18 @@ import { IKeyboardEvent } from "monaco-editor";
 import { useRouter } from "next/router";
 import { Resizable, ResizeCallback } from "re-resizable";
 import { useContext, useState } from "react";
-import { routes } from "../../../lib/routes";
 
+import { routes } from "../../../lib/routes";
 import { state } from "../../../lib/state";
 import { NavigationOption } from "../../../lib/types";
 import { StateContext } from "../../StateContext";
 import { RunnerContext } from "../contexts/RunnerContext";
 import { TestContext } from "../contexts/TestContext";
-import { Mode } from "../hooks/mode";
 import Buttons from "./Buttons";
 import CodeEditor from "./CodeEditor";
 import HelpersEditor from "./HelpersEditor";
 import Navigation from "./Navigation";
 import RunLogs from "./RunLogs";
-
-type Props = { mode: Mode };
 
 const enable = {
   top: false,
@@ -30,7 +27,7 @@ const enable = {
   topLeft: false,
 };
 
-export default function Sidebar({ mode }: Props): JSX.Element {
+export default function Sidebar(): JSX.Element {
   const { push } = useRouter();
   const { editorSidebarWidth } = useContext(StateContext);
 

@@ -33,7 +33,7 @@ export default function Editor(): JSX.Element {
           <Box background="gray0" height="100vh" overflow="hidden">
             <Header mode={mode} />
             <Box direction="row" fill justify="between">
-              <Sidebar mode={mode} />
+              <Sidebar />
               <Application mode={mode} />
             </Box>
             <Modals mode={mode} />
