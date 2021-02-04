@@ -2,6 +2,7 @@ import { Box } from "grommet";
 import { useRef, useState } from "react";
 
 import { useOnClickOutside } from "../../../hooks/onClickOutside";
+import { copy } from "../../../theme/copy";
 import Button from "../../shared-new/AppButton";
 import History from "../../shared-new/icons/History";
 import RunList from "./RunList";
@@ -19,7 +20,12 @@ export default function TestHistory({ testId }: Props): JSX.Element {
 
   return (
     <Box ref={ref} style={{ position: "relative" }}>
-      <Button IconComponent={History} onClick={handleClick} type="ghost" />
+      <Button
+        a11yTitle={copy.history}
+        IconComponent={History}
+        onClick={handleClick}
+        type="ghost"
+      />
       {isOpen && <RunList onClose={handleClose} testId={testId} />}
     </Box>
   );
