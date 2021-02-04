@@ -2,9 +2,12 @@ import { Box } from "grommet";
 import { useContext } from "react";
 
 import { routes } from "../../../lib/routes";
-import { borderSize } from "../../../theme/theme-new";
+import { copy } from "../../../theme/copy";
+import { borderSize, edgeSize } from "../../../theme/theme-new";
 import Button from "../../shared-new/AppButton";
+import Divider from "../../shared-new/Divider";
 import ArrowLeft from "../../shared-new/icons/ArrowLeft";
+import Edit from "../../shared-new/icons/Edit";
 import StatusBadge from "../../shared-new/StatusBadge";
 import { RunnerContext } from "../contexts/RunnerContext";
 import { TestContext } from "../contexts/TestContext";
@@ -39,7 +42,24 @@ export default function Header({ mode }: Props): JSX.Element {
         {!!run && <RunSummary run={run} />}
         <StatusBadge status={progress?.status} />
       </Box>
-      <TestHistory testId={test?.id || null} />
+      <Box align="center" direction="row">
+        <TestHistory testId={test?.id || null} />
+        {!!run && (
+          <>
+            <Divider
+              height={edgeSize.large}
+              margin={{ horizontal: "small" }}
+              width={borderSize.xsmall}
+            />
+            <Button
+              IconComponent={Edit}
+              href={`${routes.test}/${test.id}`}
+              label={copy.editTest}
+              type="primary"
+            />
+          </>
+        )}
+      </Box>
     </Box>
   );
 }

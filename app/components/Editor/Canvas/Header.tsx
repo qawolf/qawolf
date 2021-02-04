@@ -19,6 +19,7 @@ export default function Header({ hasVideo }: Props): JSX.Element {
       border={{ color: "gray3", side: "bottom", size: borderSize.xsmall }}
       direction="row"
       flex={false}
+      height={`calc(20px + (2 * ${edgeSize.small}))`} // height of code toggle
       justify="between"
       pad="small"
     >

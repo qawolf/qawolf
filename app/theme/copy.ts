@@ -87,6 +87,7 @@ export const copy = {
   easyDebugDetail:
     "Debug with video, logs, and the exact line a test failed on.",
   edit: "Edit",
+  editTest: "Edit test",
   email: "Email",
   emailPlaceholder: "you@awesome.com",
   emptyTests: "You don't have any tests yet!",
