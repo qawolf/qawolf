@@ -1,7 +1,8 @@
 import { Box, Button } from "grommet";
-import { useRef } from "react";
+import { MouseEvent, useRef } from "react";
 import styled from "styled-components";
 import { useOnClickOutside } from "../../../../hooks/onClickOutside";
+import { copy } from "../../../../theme/copy";
 import {
   colors,
   edgeSize,
@@ -9,11 +10,14 @@ import {
 } from "../../../../theme/theme-new";
 import More from "../../../shared-new/icons/More";
 import Menu from "../../../shared-new/Menu";
+import Option from "../../../shared-new/Select/Option";
 
 type Props = {
   isOpen: boolean;
-  onClick: () => void;
+  onClick: (e: MouseEvent) => void;
   onClose: () => void;
+  onDelete: () => void;
+  onEdit: () => void;
 };
 
 const StyledButton = styled(Button)`
@@ -35,6 +39,8 @@ export default function Options({
   isOpen,
   onClick,
   onClose,
+  onDelete,
+  onEdit,
 }: Props): JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -42,7 +48,7 @@ export default function Options({
 
   return (
     <Box ref={ref} style={{ position: "relative" }}>
-      <StyledButton onClick={onClick} plain>
+      <StyledButton className="env-options" onClick={onClick} plain>
         <Box>
           <More size={edgeSize.small} />
         </Box>
@@ -51,10 +57,12 @@ export default function Options({
         <Menu
           direction="down"
           onClick={onClose}
+          right={`-${edgeSize.xxsmall}`}
           top={`calc(${edgeSize.xxxsmall} + ${edgeSize.small})`}
           width={width}
         >
-          <h1>menu</h1>
+          <Option label={copy.rename} noIcon onClick={onEdit} />
+          <Option label={copy.delete} noIcon onClick={onDelete} type="danger" />
         </Menu>
       )}
     </Box>

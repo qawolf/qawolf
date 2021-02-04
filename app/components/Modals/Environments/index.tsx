@@ -4,7 +4,8 @@ import Variables from "./Variables";
 import Environments from "./Environments";
 import { Environment, EnvironmentVariable } from "../../../lib/types";
 import { useContext, useState } from "react";
-import ConfirmDelete from "./Variables/ConfirmDelete";
+import ConfirmDeleteEnvironment from "./Environments/ConfirmDelete";
+import ConfirmDeleteVariable from "./Variables/ConfirmDelete";
 import { StateContext } from "../../StateContext";
 
 type Props = { closeModal: () => void };
@@ -30,20 +31,40 @@ export default function EnvironmentsModal({ closeModal }: Props): JSX.Element {
     setDeleteEnvironmentVariable,
   ] = useState<EnvironmentVariable | null>(null);
 
-  const handleDeleteVariable = (
-    environmentVariable: EnvironmentVariable
-  ): void => {
-    setDeleteEnvironmentVariable(environmentVariable);
+  const handleCancelDeleteEnvironment = (): void => {
+    setDeleteEnvironment(null);
   };
 
   const handleCancelDeleteVariable = (): void => {
     setDeleteEnvironmentVariable(null);
   };
 
+  const handleDeleteEnvironment = (environment: Environment): void => {
+    setDeleteEnvironment(environment);
+  };
+
+  const handleDeleteVariable = (
+    environmentVariable: EnvironmentVariable
+  ): void => {
+    setDeleteEnvironmentVariable(environmentVariable);
+  };
+
+  if (deleteEnvironment) {
+    return (
+      <Modal closeModal={closeModal}>
+        <ConfirmDeleteEnvironment
+          closeModal={closeModal}
+          environment={deleteEnvironment}
+          onCancel={handleCancelDeleteEnvironment}
+        />
+      </Modal>
+    );
+  }
+
   if (deleteEnvironmentVariable) {
     return (
       <Modal closeModal={closeModal}>
-        <ConfirmDelete
+        <ConfirmDeleteVariable
           closeModal={closeModal}
           environmentVariable={deleteEnvironmentVariable}
           onCancel={handleCancelDeleteVariable}
@@ -57,6 +78,7 @@ export default function EnvironmentsModal({ closeModal }: Props): JSX.Element {
       <Box direction="row">
         <Environments
           environmentId={selectedEnvironmentId}
+          onDelete={handleDeleteEnvironment}
           setSelectedEnvironmentId={setSelectedEnvironmentId}
           teamId={teamId}
         />

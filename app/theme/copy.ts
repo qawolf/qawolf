@@ -171,6 +171,7 @@ export const copy = {
   production: "Production",
   qawolf: "QA Wolf",
   readDocs: "Read the docs",
+  rename: "Rename",
   roadmap: "Roadmap",
   run: "Run",
   runOnDeployment: (repoName: string): string =>
@@ -230,7 +231,7 @@ export const copy = {
   testAcrossBrowsers: "Test in Chromium, Firefox, and WebKit",
   testFail: "Fail",
   testInProgress: "Running",
-  testMinutes: "Minutes",
+  testNamePlaceholder: "Name your test",
   testPass: "Pass",
   tryForFree: "Try for free",
   upgradePlan: "Upgrade plan",

@@ -1,5 +1,5 @@
 import { TextInput as GrommetTextInput } from "grommet";
-import { forwardRef, Ref } from "react";
+import { ChangeEvent, KeyboardEvent, forwardRef, Ref } from "react";
 import styled from "styled-components";
 
 import {
@@ -17,7 +17,8 @@ type Props = {
   hasError?: boolean;
   id?: string;
   name?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
   pad?: string;
   placeholder?: string;
   size?: Size;
@@ -46,7 +47,18 @@ const StyledGrommetTextInput = styled(GrommetTextInput)`
 `;
 
 function TextInput(
-  { hasError, id, name, onChange, pad, placeholder, size, value, width }: Props,
+  {
+    hasError,
+    id,
+    name,
+    onChange,
+    onKeyDown,
+    pad,
+    placeholder,
+    size,
+    value,
+    width,
+  }: Props,
   ref?: Ref<HTMLInputElement>
 ): JSX.Element {
   const finalSize = size || "component";
@@ -64,6 +76,7 @@ function TextInput(
       id={id}
       name={name}
       onChange={onChange}
+      onKeyDown={onKeyDown}
       placeholder={placeholder}
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ref={ref as any}
