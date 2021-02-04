@@ -36,7 +36,7 @@ export default function Sidebar(): JSX.Element {
 
   const [selected, setSelected] = useState<NavigationOption>("code");
 
-  const isTestDeleted = !!test.deleted_at;
+  const isTestDeleted = !!test?.deleted_at;
 
   const handleResizeStop: ResizeCallback = (_, __, ___, delta): void => {
     state.setEditorSidebarWidth(editorSidebarWidth + delta.width);

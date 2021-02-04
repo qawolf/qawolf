@@ -60,7 +60,7 @@ export default function EditableText({
         size="componentHeader"
         style={{ maxWidth: "378px", ...overflowStyle }}
       >
-        {editedValue}
+        {value}
       </Text>
       {!disabled && <Edit color={colors.gray9} size={edgeSize.small} />}
     </BoxComponent>
