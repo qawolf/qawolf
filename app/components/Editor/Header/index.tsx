@@ -2,6 +2,7 @@ import { Box } from "grommet";
 import { useContext } from "react";
 
 import { routes } from "../../../lib/routes";
+import { copy } from "../../../theme/copy";
 import { borderSize } from "../../../theme/theme-new";
 import Button from "../../shared-new/AppButton";
 import ArrowLeft from "../../shared-new/icons/ArrowLeft";
@@ -32,6 +33,7 @@ export default function Header({ mode }: Props): JSX.Element {
       <Box align="center" direction="row">
         <Button
           IconComponent={ArrowLeft}
+          a11yTitle={copy.back}
           href={routes.tests}
           margin={{ right: "xxxsmall" }}
           type="ghost"
