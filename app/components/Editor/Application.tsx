@@ -1,9 +1,10 @@
 import { Box } from "grommet";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import { getCanvasSize } from "../../lib/size";
 import Canvas from "./Canvas";
 import Header from "./Canvas/Header";
+import { TestContext } from "./contexts/TestContext";
 import { Mode } from "./hooks/mode";
 
 type Props = { mode: Mode };
@@ -14,6 +15,8 @@ type State = {
 };
 
 export default function Application({ mode }: Props): JSX.Element {
+  const { run } = useContext(TestContext);
+
   const ref = useRef<HTMLDivElement>(null);
   const [canvasSize, setCanvasSize] = useState<State>({
     height: null,
@@ -51,9 +54,14 @@ export default function Application({ mode }: Props): JSX.Element {
 
   return (
     <Box fill>
-      <Header hasVideo={mode === "run"} />
+      <Header hasVideo={!!run?.video_url} />
       <Box fill ref={ref}>
-        <Canvas height={canvasHeight} mode={mode} width={canvasWidth} />
+        <Canvas
+          height={canvasHeight}
+          mode={mode}
+          videoUrl={run?.video_url}
+          width={canvasWidth}
+        />
       </Box>
     </Box>
   );
