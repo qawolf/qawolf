@@ -47,8 +47,8 @@ export default function TestVideo({
       } as VideoJsPlayerOptions);
       setPlayer(vjsPlayer);
 
-      if (timestamp) node.currentTime = timestamp;
-      else node.currentTime = 1; // prevent blank screen from being preview image
+      // prevent blank screen from being preview image
+      node.currentTime = timestamp || 1;
 
       return () => vjsPlayer.dispose();
     },
