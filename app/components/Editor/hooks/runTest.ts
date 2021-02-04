@@ -8,6 +8,7 @@ import { minutesFromNow } from "../../../shared/utils";
 import { Selection } from "./selection";
 
 type RunTestOptions = {
+  cancel?: boolean;
   code: string;
   helpers?: string;
   selection: Selection | null;
@@ -46,6 +47,7 @@ export const useRunTest = ({
   }, [ranAt]);
 
   const runTest = async ({
+    cancel,
     code,
     helpers,
     selection,
@@ -56,6 +58,7 @@ export const useRunTest = ({
     setRanAt(new Date());
 
     const options: RunOptions = {
+      cancel,
       code,
       env: env || {},
       helpers: helpers || "",

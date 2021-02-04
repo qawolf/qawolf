@@ -217,6 +217,7 @@ export type Log = {
 };
 
 export type RunOptions = {
+  cancel?: boolean;
   code: string;
   end_line?: number;
   env: Env;

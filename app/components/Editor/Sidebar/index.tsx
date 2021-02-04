@@ -54,7 +54,14 @@ export default function Sidebar(): JSX.Element {
     if (test) {
       // run the test
       const { code, id: test_id, version } = controller;
-      runTest({ code, helpers: team.helpers, selection, test_id, version });
+      runTest({
+        cancel: (window as any)._cancel,
+        code,
+        helpers: team.helpers,
+        selection,
+        test_id,
+        version,
+      });
     }
   };
 

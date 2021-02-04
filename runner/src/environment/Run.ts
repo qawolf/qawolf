@@ -41,9 +41,15 @@ export class Run extends EventEmitter {
     this.emit("runprogress", this.progress);
   }
 
-  _onLineStarted(line: number): void {
+  _onLineStarted(line: number): boolean {
+    if (this._cancelled) {
+      console.log("skip remaining lines since run is cancelled");
+      return false;
+    }
+
     this._progress.current_line = line;
     this._emitProgress();
+    return true;
   }
 
   cancel(): void {

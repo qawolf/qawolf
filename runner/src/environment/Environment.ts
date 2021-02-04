@@ -56,37 +56,37 @@ export class Environment extends EventEmitter {
     return run?.progress;
   }
 
-  async run(options: RunOptions, hooks: RunHook[] = []): Promise<RunProgress> {
+  async run(options: RunOptions, hooks: RunHook[] = []): Promise<void> {
     this._updater.disable();
     this._updater.updateCode(options);
 
     this._inProgress.forEach((runInProgress) => runInProgress.cancel());
 
-    const run = new Run({
-      runOptions: options,
-      logger: this._logger,
-      vm: this._vm,
-    });
+    if (!options.cancel) {
+      const run = new Run({
+        runOptions: options,
+        logger: this._logger,
+        vm: this._vm,
+      });
 
-    this._inProgress.push(run);
+      this._inProgress.push(run);
 
-    const emitRunProgress = (progress: RunProgress) =>
-      this.emit("runprogress", progress);
+      const emitRunProgress = (progress: RunProgress) =>
+        this.emit("runprogress", progress);
 
-    run.on("runprogress", emitRunProgress);
+      run.on("runprogress", emitRunProgress);
 
-    const result = await run.run(this._variables, hooks);
+      await run.run(this._variables, hooks);
 
-    run.off("runprogress", emitRunProgress);
+      run.off("runprogress", emitRunProgress);
 
-    this._inProgress = without(this._inProgress, run);
+      this._inProgress = without(this._inProgress, run);
+    }
 
-    if (this._inProgress.length === 0) {
+    if (options.cancel || this._inProgress.length === 0) {
       // enable code generation after there are no runs in progress
       await this._updater.enable();
     }
-
-    return result;
   }
 
   get updater(): CodeUpdater {

@@ -25,6 +25,7 @@ export type Run = {
 
 export type RunOptions = {
   artifacts?: Artifacts;
+  cancel?: boolean;
   code: string;
   end_line?: number;
   env?: Record<string, string>;

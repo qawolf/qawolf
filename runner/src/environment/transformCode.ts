@@ -127,7 +127,7 @@ export const transformCode = ({
   const variableNames: string[] = [];
 
   expressions.forEach((e) => {
-    lines.push(`vmLineStarted(${e.endLine})`);
+    lines.push(`if (!vmLineStarted(${e.endLine})) return;`);
 
     lines.push(allowRedeclaration(e.code));
 
