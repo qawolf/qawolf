@@ -110,13 +110,9 @@ export const copy = {
   environmentDeleteConfirm2: "to confirm.",
   environmentEdit: (name: string): string =>
     name ? `Edit ${name} environment` : "",
-  environmentName: "Environment name",
   environmentNew: "Add environment",
   environmentNotSelected: "No environment",
   environments: "Environments",
-  environmentsEdit: "Edit environments",
-  environmentsEditDetail: "Create, rename, or delete environments",
-  environmentsEmpty: "You don't have any environments",
   getInTouch: "Get in touch",
   getStarted: "Get started",
   gitHub: "GitHub",

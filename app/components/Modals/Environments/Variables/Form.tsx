@@ -47,7 +47,7 @@ export default function Form({
     setValue(e.target.value);
   };
 
-  const handleSaveClick = (): void => {
+  const handleSave = (): void => {
     if (!name) {
       setHasNameError(true);
       return;
@@ -81,7 +81,7 @@ export default function Form({
       focusId={id}
       isSaveDisabled={isCreateLoading || isEditLoading}
       onCancel={onCancel}
-      onSaveClick={handleSaveClick}
+      onSave={handleSave}
     >
       <TextInput
         hasError={hasNameError}
