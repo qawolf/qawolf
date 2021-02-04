@@ -55,7 +55,11 @@ export default function EnvironmentsModal({ closeModal }: Props): JSX.Element {
   return (
     <Modal closeModal={closeModal} width={width}>
       <Box direction="row">
-        <Environments environmentId={selectedEnvironmentId} teamId={teamId} />
+        <Environments
+          environmentId={selectedEnvironmentId}
+          setSelectedEnvironmentId={setSelectedEnvironmentId}
+          teamId={teamId}
+        />
         <Variables
           closeModal={closeModal}
           environmentId={selectedEnvironmentId}

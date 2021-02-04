@@ -8,6 +8,7 @@ import ListItem from "./ListItem";
 
 type Props = {
   environmentId: string;
+  setSelectedEnvironmentId: (environmentId: string) => void;
   teamId: string;
 };
 
@@ -15,6 +16,7 @@ const width = "240px";
 
 export default function Environments({
   environmentId,
+  setSelectedEnvironmentId,
   teamId,
 }: Props): JSX.Element {
   const [editEnvrionmentId, setEditEnvrionmentId] = useState<string | null>(
@@ -24,7 +26,13 @@ export default function Environments({
   const { data } = useEnvironments({ team_id: teamId }, { environmentId });
 
   const environmentsHtml = (data?.environments || []).map((environment) => {
-    return <ListItem environment={environment} key={environment.id} />;
+    return (
+      <ListItem
+        environment={environment}
+        key={environment.id}
+        onClick={() => setSelectedEnvironmentId(environment.id)}
+      />
+    );
   });
 
   return (

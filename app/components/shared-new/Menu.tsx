@@ -11,6 +11,7 @@ type Props = {
   className?: string;
   direction?: Direction;
   onClick?: () => void;
+  top?: string;
   width?: BoxProps["width"];
 };
 
@@ -59,7 +60,9 @@ const StyledMenu = styled(Menu)`
   ${(props) =>
     props.direction === "up"
       ? `bottom: calc(${edgeSize.large} + ${edgeSize.xxxsmall});`
-      : `top: calc(${edgeSize.large} + ${edgeSize.xxxsmall});`}
+      : `top: ${
+          props.top || `calc(${edgeSize.large} + ${edgeSize.xxxsmall})`
+        };`}
 `;
 
 export default StyledMenu;
