@@ -43,23 +43,24 @@ export default function Sidebar({ mode }: Props): JSX.Element {
     state.setEditorSidebarWidth(editorSidebarWidth + delta.width);
   };
 
-  const handleRunClick = (): void => {
+  const handleAction = (): void => {
     if (run) {
+      // edit the test
       push(`${routes.test}/${run.test_id}`);
       return;
     }
 
-    if (!test) return;
-
-    const { code, id: test_id, version } = controller;
-
-    runTest({ code, helpers: team.helpers, selection, test_id, version });
+    if (test) {
+      // run the test
+      const { code, id: test_id, version } = controller;
+      runTest({ code, helpers: team.helpers, selection, test_id, version });
+    }
   };
 
   const handleEditorKeyDown = (e: IKeyboardEvent): void => {
     if ((e.ctrlKey || e.metaKey) && e.code === "Enter") {
       e.stopPropagation();
-      handleRunClick();
+      handleAction();
     }
   };
 
@@ -82,8 +83,8 @@ export default function Sidebar({ mode }: Props): JSX.Element {
         )}
         <RunLogs isVisible={selected === "logs"} />
         <Buttons
-          isRun={!!run}
-          onRunClick={handleRunClick}
+          action={run ? "edit" : "run"}
+          onClick={handleAction}
           selection={selection}
         />
       </Box>
