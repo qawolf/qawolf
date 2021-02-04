@@ -1,6 +1,6 @@
 import { repeat } from "lodash";
 
-export const PATCH_HANDLE = "// 🐺 create code here";
+export const PATCH_HANDLE = "// 🐺 QA Wolf will create code here";
 
 export const getIndentation = (
   stringValue: string,

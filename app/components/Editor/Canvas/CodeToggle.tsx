@@ -7,7 +7,7 @@ import Toggle from "../../shared-new/Toggle";
 import { RunnerContext } from "../contexts/RunnerContext";
 import { TestContext } from "../contexts/TestContext";
 
-const patchHandle = "// 🐺 create code here";
+const patchHandle = "// 🐺 QA Wolf will create code here";
 
 export default function CodeToggle(): JSX.Element {
   const { mouseLineNumber, progress } = useContext(RunnerContext);
@@ -45,10 +45,10 @@ export default function CodeToggle(): JSX.Element {
   return (
     <Box align="center" direction="row">
       <Text color="gray9" margin={{ right: "xxsmall" }} size="component">
-        {copy.generateCode}
+        {copy.createCode}
       </Text>
       <Toggle
-        a11yTitle={`toggle ${copy.generateCode}`}
+        a11yTitle={`toggle ${copy.createCode}`}
         disabled={progress?.status === "created"}
         isOn={isOn}
         onClick={handleClick}
