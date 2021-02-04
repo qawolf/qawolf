@@ -4,7 +4,7 @@ import { useDeleteEnvironment } from "../../../hooks/mutations";
 import { Environment } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import TextInput from "../../shared-new/AppTextInput";
-import ModalConfirmDelete from "../../shared-new/ModalConfirmDelete";
+import ModalConfirmDelete from "../../shared-new/Modal/ConfirmDelete";
 import Text from "../../shared-new/Text";
 
 type Props = {
@@ -32,7 +32,7 @@ export default function ConfirmDelete({
     setName(e.target.value);
   };
 
-  const handleDeleteClick = (): void => {
+  const handleDelete = (): void => {
     if (name !== environment.name) {
       setHasError(true);
       return;
@@ -47,8 +47,8 @@ export default function ConfirmDelete({
   return (
     <ModalConfirmDelete
       isDeleteDisabled={loading}
-      onCancelClick={onClose}
-      onDeleteClick={handleDeleteClick}
+      onCancel={onClose}
+      onDelete={handleDelete}
     >
       <Text
         color="gray9"
