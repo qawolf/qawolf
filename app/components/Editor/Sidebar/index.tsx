@@ -84,7 +84,7 @@ export default function Sidebar({ mode }: Props): JSX.Element {
         <RunLogs isVisible={selected === "logs"} />
         <Buttons
           action={run ? "edit" : "run"}
-          onClick={handleAction}
+          onAction={handleAction}
           selection={selection}
         />
       </Box>

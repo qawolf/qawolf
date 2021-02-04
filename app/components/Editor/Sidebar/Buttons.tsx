@@ -16,13 +16,13 @@ const width = `calc(50% - (${edgeSize.xxsmall} / 2))`;
 
 type Props = {
   action: "edit" | "run";
-  onClick: () => void;
+  onAction: () => void;
   selection: Selection;
 };
 
 export default function Buttons({
   action,
-  onClick,
+  onAction,
   selection,
 }: Props): JSX.Element {
   const { environmentId } = useContext(StateContext);
@@ -31,7 +31,7 @@ export default function Buttons({
     state.setEnvironmentId(environmentId);
   };
 
-  useOnHotKey({ hotKey: "Enter", onHotKey: onClick });
+  useOnHotKey({ hotKey: "Enter", onHotKey: onAction });
 
   const runLabel = selection
     ? copy.runLines(selection.endLine - selection.startLine + 1)
@@ -54,7 +54,7 @@ export default function Buttons({
         IconComponent={action === "edit" ? Edit : Play}
         justify="center"
         label={action === "edit" ? copy.editTest : runLabel}
-        onClick={onClick}
+        onClick={onAction}
         type="primary"
         width={width}
       />
