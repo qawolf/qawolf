@@ -47,7 +47,7 @@ export default function Buttons({
       pad="small"
     >
       <Environments
-        isDisabled={run ? !run.environment_id : false}
+        isDisabled={!!run}
         onEnvironmentClick={handleEnvironmentClick}
         selectedEnvironmentId={run ? run.environment_id : environmentId}
         width={width}
