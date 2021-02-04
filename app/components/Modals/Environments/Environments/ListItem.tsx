@@ -64,6 +64,10 @@ export default function ListItem({
     );
   }
 
+  const handleClick = (): void => {
+    if (!isOpen) onClick();
+  };
+
   const handleOptionsClick = (e: MouseEvent): void => {
     e.stopPropagation(); // do not change selected environment
     setIsOpen((prev) => !prev);
@@ -78,7 +82,7 @@ export default function ListItem({
       direction="row"
       justify="between"
       margin={{ bottom: "2px" }}
-      onClick={onClick}
+      onClick={handleClick}
       pad={{ left: "xsmall", right: "xxsmall", vertical: "xxsmall" }}
       round={borderSize.small}
     >
