@@ -41,7 +41,7 @@ export default function Header({ mode }: Props): JSX.Element {
         />
         <TestName disabled={mode !== "test"} test={test} />
         {!!run && <RunSummary run={run} />}
-        <StatusBadge status={progress?.status} />
+        <StatusBadge status={run ? run.status : progress?.status} />
       </Box>
       <Box align="center" direction="row">
         <TestHistory testId={test?.id || null} />
