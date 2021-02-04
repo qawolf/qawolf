@@ -231,6 +231,9 @@ type Run {
   "If the run is in progress, which line of `code` it is currently executing"
   current_line: Int
 
+  "Associated environment ID"
+  environment_id: ID
+
   "Test run ID"
   id: ID!
 

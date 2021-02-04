@@ -242,7 +242,12 @@ describe("testResolver", () => {
     const result = await testResolver({}, { run_id: "runId" }, testContext);
 
     expect(result).toMatchObject({
-      run: { id: "runId", logs_url: "url", video_url: "url" },
+      run: {
+        environment_id: null,
+        id: "runId",
+        logs_url: "url",
+        video_url: "url",
+      },
       test: {
         team_id: "teamId",
         creator_id: "userId",

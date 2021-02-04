@@ -68,6 +68,7 @@ export type Run = {
   code: string;
   completed_at: string | null;
   current_line: number | null;
+  environment_id: string | null;
   id: string;
   logs_url: string | null;
   started_at: string | null;

@@ -53,6 +53,8 @@ export const colors = {
   white: "#FFFFFF",
 };
 
+export const disabledOpacity = 0.4;
+
 export const edgeSize = {
   xxxsmall: "4px",
   xxsmall: "8px",
@@ -131,6 +133,11 @@ export const theme = {
   box: {
     // prevent default grommet styling on mobile as we handle manually
     responsiveBreakpoint: "1px",
+  },
+  button: {
+    disabled: {
+      opacity: disabledOpacity,
+    },
   },
   global: {
     borderSize,

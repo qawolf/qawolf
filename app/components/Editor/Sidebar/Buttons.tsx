@@ -3,6 +3,7 @@ import { useContext } from "react";
 
 import { useOnHotKey } from "../../../hooks/onHotKey";
 import { state } from "../../../lib/state";
+import { Run } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import { borderSize, edgeSize } from "../../../theme/theme-new";
 import Button from "../../shared-new/AppButton";
@@ -15,14 +16,14 @@ import { Selection } from "../hooks/selection";
 const width = `calc(50% - (${edgeSize.xxsmall} / 2))`;
 
 type Props = {
-  action: "edit" | "run";
   onAction: () => void;
+  run: Run;
   selection: Selection;
 };
 
 export default function Buttons({
-  action,
   onAction,
+  run,
   selection,
 }: Props): JSX.Element {
   const { environmentId } = useContext(StateContext);
@@ -46,14 +47,15 @@ export default function Buttons({
       pad="small"
     >
       <Environments
+        isDisabled={run ? !run.environment_id : false}
         onEnvironmentClick={handleEnvironmentClick}
-        selectedEnvironmentId={environmentId}
+        selectedEnvironmentId={run ? run.environment_id : environmentId}
         width={width}
       />
       <Button
-        IconComponent={action === "edit" ? Edit : Play}
+        IconComponent={run ? Edit : Play}
         justify="center"
-        label={action === "edit" ? copy.editTest : runLabel}
+        label={run ? copy.editTest : runLabel}
         onClick={onAction}
         type="primary"
         width={width}

@@ -482,6 +482,7 @@ export type IdQuery = {
 };
 
 export type RunResult = Run & {
+  environment_id: string | null;
   logs_url: string | null;
   video_url: string | null;
 };

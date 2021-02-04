@@ -17,6 +17,7 @@ import {
 } from "../types";
 import { cuid } from "../utils";
 import { decrypt } from "./encrypt";
+import { findEnvironmentIdForRun } from "./environment";
 import { buildEnvironmentVariables } from "./environment_variable";
 
 type CreateRunsForTests = {
@@ -149,6 +150,7 @@ export const findRunResult = async (
   { logger, trx }: ModelOptions
 ): Promise<RunResult> => {
   const run = await findRun(id, { logger, trx });
+  const environment_id = await findEnvironmentIdForRun(id, { logger, trx });
 
   let logs_url: string | null = null;
   let video_url: string | null = null;
@@ -158,7 +160,7 @@ export const findRunResult = async (
     video_url = createStorageReadAccessUrl(`${run.id}.mp4`);
   }
 
-  return { ...run, logs_url, video_url };
+  return { ...run, environment_id, logs_url, video_url };
 };
 
 export const findRunsForSuite = async (

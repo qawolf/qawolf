@@ -4,6 +4,7 @@ import {
   createEnvironment,
   deleteEnvironment,
   findEnvironment,
+  findEnvironmentIdForRun,
   findEnvironmentsForTeam,
   updateEnvironment,
 } from "../../../server/models/environment";
@@ -12,7 +13,10 @@ import {
   buildEnvironment,
   buildEnvironmentVariable,
   buildGroup,
+  buildRun,
+  buildSuite,
   buildTeam,
+  buildTest,
   buildUser,
   logger,
 } from "../utils";
@@ -139,6 +143,49 @@ describe("findEnvironment", () => {
     };
 
     await expect(testFn()).rejects.toThrowError("not found");
+  });
+});
+
+describe("findEnvironmentIdForRun", () => {
+  beforeAll(async () => {
+    await db("tests").insert(buildTest({}));
+
+    await db("environments").insert(buildEnvironment({}));
+
+    await db("groups").insert([
+      buildGroup({ environment_id: "environmentId" }),
+      buildGroup({ i: 2 }),
+    ]);
+
+    await db("suites").insert([
+      buildSuite({}),
+      buildSuite({ group_id: "group2Id", i: 2 }),
+    ]);
+
+    await db("runs").insert([
+      buildRun({ suite_id: "suiteId" }),
+      buildRun({ i: 2, suite_id: "suite2Id" }),
+    ]);
+  });
+
+  afterAll(async () => {
+    await db("runs").del();
+    await db("suites").del();
+    await db("groups").del();
+    await db("environments").del();
+    await db("tests").del();
+  });
+
+  it("returns an environment id for a run", async () => {
+    const environment = await findEnvironmentIdForRun("runId", { logger });
+
+    expect(environment).toBe("environmentId");
+  });
+
+  it("returns null if run does not have an environment", async () => {
+    const environment = await findEnvironmentIdForRun("run2Id", { logger });
+
+    expect(environment).toBeNull();
   });
 });
 

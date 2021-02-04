@@ -79,11 +79,7 @@ export default function Sidebar(): JSX.Element {
           <HelpersEditor onKeyDown={handleEditorKeyDown} />
         )}
         <RunLogs isVisible={selected === "logs"} />
-        <Buttons
-          action={run ? "edit" : "run"}
-          onAction={handleAction}
-          selection={selection}
-        />
+        <Buttons onAction={handleAction} run={run} selection={selection} />
       </Box>
     </Resizable>
   );

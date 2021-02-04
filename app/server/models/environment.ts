@@ -110,6 +110,26 @@ export const findEnvironment = async (
   return environment;
 };
 
+export const findEnvironmentIdForRun = async (
+  run_id: string,
+  { logger, trx }: ModelOptions
+): Promise<string | null> => {
+  const log = logger.prefix("findEnvironmentIdForRun");
+  log.debug("run", run_id);
+
+  const row = await (trx || db)
+    .select("groups.environment_id" as "*")
+    .from("groups")
+    .innerJoin("suites", "groups.id", "suites.group_id")
+    .innerJoin("runs", "runs.suite_id", "suites.id")
+    .where({ "runs.id": run_id })
+    .first();
+
+  log.debug(row ? `found ${row.environment_id}` : "not found");
+
+  return row?.environment_id || null;
+};
+
 export const findEnvironmentsForTeam = async (
   team_id: string,
   { logger, trx }: ModelOptions
