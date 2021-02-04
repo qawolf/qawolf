@@ -20,11 +20,15 @@ export default function RunSummary({ run }: Props): JSX.Element {
       )
     : copy.notStarted;
 
+  const isCompleted = !!(run.started_at && run.completed_at);
+
   return (
     <Box direction="row" margin={{ right: "small" }}>
-      <Text {...textProps} margin={{ right: "small" }}>
-        {run.started_at ? timeToText(run.started_at) : copy.notStarted}
-      </Text>
+      {isCompleted && (
+        <Text {...textProps} margin={{ right: "small" }}>
+          {timeToText(run.started_at)}
+        </Text>
+      )}
       <Text {...textProps}>{duration}</Text>
     </Box>
   );
