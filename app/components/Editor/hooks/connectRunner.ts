@@ -6,6 +6,7 @@ import { RunnerClient } from "../../../lib/runner";
 
 export type ConnectRunnerHook = {
   apiKey: string | null;
+  isRunnerLoading: boolean;
   wsUrl: string | null;
 };
 
@@ -64,5 +65,5 @@ export const useConnectRunner = ({
     runnerClient?.connect({ apiKey, wsUrl });
   }, [apiKey, loading, runnerClient, wsUrl]);
 
-  return { apiKey, wsUrl };
+  return { apiKey, isRunnerLoading: loading, wsUrl };
 };
