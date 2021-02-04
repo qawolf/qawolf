@@ -75,7 +75,11 @@ export default function Environments({
       <Box flex={false} margin={{ top: "xxsmall" }}>
         {environmentsHtml}
         {isCreate && (
-          <EnvironmentName onCancel={handleCancel} teamId={teamId} />
+          <EnvironmentName
+            onCancel={handleCancel}
+            setSelectedEnvironmentId={setSelectedEnvironmentId}
+            teamId={teamId}
+          />
         )}
         <AddEnvironment onClick={handleCreate} />
       </Box>

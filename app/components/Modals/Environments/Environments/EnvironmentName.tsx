@@ -13,6 +13,7 @@ import TextInput from "../../../shared-new/AppTextInput";
 type Props = {
   environment?: Environment;
   onCancel: () => void;
+  setSelectedEnvironmentId?: (environmentId: string) => void;
   teamId: string;
 };
 
@@ -21,6 +22,7 @@ export const id = "environment";
 export default function EnvironmentName({
   environment,
   onCancel,
+  setSelectedEnvironmentId,
   teamId,
 }: Props): JSX.Element {
   const ref = useRef<HTMLInputElement>(null);
@@ -59,10 +61,16 @@ export default function EnvironmentName({
           },
         },
         variables: { id: environment.id, name },
-      }).then(onCancel); // close form after environment is updated
+      }).then(onCancel);
     } else {
       createEnvironment({ variables: { name, team_id: teamId } }).then(
-        onCancel
+        ({ data }) => {
+          // show newly created environment if possible
+          if (setSelectedEnvironmentId) {
+            setSelectedEnvironmentId(data?.createEnvironment.id);
+          }
+          onCancel();
+        }
       );
     }
   };

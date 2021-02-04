@@ -12,7 +12,7 @@ import ListItem, { nameWidth } from "./ListItem";
 
 type Props = {
   closeModal: () => void;
-  environmentId: string;
+  environmentId: string | null;
   onDelete: (environmentVariable: EnvironmentVariable) => void;
 };
 
@@ -48,17 +48,24 @@ export default function List({
     setIsCreate(false);
   };
 
-  const placeholderHtml = data?.environmentVariables?.variables
-    .length ? null : (
-    <Text
-      color="gray9"
-      margin={{ vertical: "xxxlarge" }}
-      size="componentParagraph"
-      textAlign="center"
-    >
-      {data?.environmentVariables ? copy.envVariablesEmpty : copy.loading}
-    </Text>
-  );
+  let placeholderHtml: JSX.Element | null = null;
+
+  if (!data?.environmentVariables?.variables.length) {
+    let message = copy.loading;
+    if (data?.environmentVariables) message = copy.envVariablesEmpty;
+    if (!environmentId) message = copy.envVariablesNoEnvironment;
+
+    placeholderHtml = (
+      <Text
+        color="gray9"
+        margin={{ vertical: "xxxlarge" }}
+        size="componentParagraph"
+        textAlign="center"
+      >
+        {message}
+      </Text>
+    );
+  }
 
   const variablesHtml: ReactNode[] = [];
 

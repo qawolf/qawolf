@@ -18,9 +18,9 @@ export default function EnvironmentsModal({ closeModal }: Props): JSX.Element {
 
   // have internal state for selected environment so editing variables
   // doesn't change environment id in global state
-  const [selectedEnvironmentId, setSelectedEnvironmentId] = useState(
-    environmentId
-  );
+  const [selectedEnvironmentId, setSelectedEnvironmentId] = useState<
+    string | null
+  >(environmentId);
 
   const [
     deleteEnvironment,
@@ -40,6 +40,10 @@ export default function EnvironmentsModal({ closeModal }: Props): JSX.Element {
     setDeleteEnvironmentVariable(null);
   };
 
+  const handleClearDeletedEnvironment = (deletedId: string): void => {
+    if (selectedEnvironmentId === deletedId) setSelectedEnvironmentId(null);
+  };
+
   const handleDeleteEnvironment = (environment: Environment): void => {
     setDeleteEnvironment(environment);
   };
@@ -54,6 +58,7 @@ export default function EnvironmentsModal({ closeModal }: Props): JSX.Element {
     return (
       <Modal closeModal={closeModal}>
         <ConfirmDeleteEnvironment
+          clearDeletedEnvironment={handleClearDeletedEnvironment}
           closeModal={closeModal}
           environment={deleteEnvironment}
           onCancel={handleCancelDeleteEnvironment}

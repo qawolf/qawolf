@@ -10,12 +10,14 @@ import Header from "../../../shared-new/Modal/Header";
 import Text from "../../../shared-new/Text";
 
 type Props = {
+  clearDeletedEnvironment: (environmentId: string) => void;
   closeModal: () => void;
   environment: Environment;
   onCancel: () => void;
 };
 
 export default function ConfirmDeleteEnvironment({
+  clearDeletedEnvironment,
   closeModal,
   environment,
   onCancel,
@@ -44,7 +46,10 @@ export default function ConfirmDeleteEnvironment({
 
     setHasError(false);
     deleteEnvironment({ variables: { id: environment.id } }).then(
-      onCancel // return to main screen after environment deleted
+      ({ data }) => {
+        clearDeletedEnvironment(data?.deleteEnvironment.id);
+        onCancel();
+      }
     );
   };
 
