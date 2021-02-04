@@ -7,8 +7,8 @@ import { copy } from "../../../theme/copy";
 import Modal from "../../shared-new/Modal";
 import Text from "../../shared-new/Text";
 import { StateContext } from "../../StateContext";
-import ConfirmDelete from "./ConfirmDelete";
-import List from "./List";
+import ConfirmDelete from "../Environments/Variables/ConfirmDelete";
+import List from "../Environments/Variables/List";
 import SelectEnvironment from "./SelectEnvironment";
 
 type Props = {

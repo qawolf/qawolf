@@ -1,25 +1,25 @@
 import { Box } from "grommet";
 import { ReactNode, useEffect, useState } from "react";
 
-import { useEnvironmentVariables } from "../../../hooks/queries";
-import { EnvironmentVariable } from "../../../lib/types";
-import { copy } from "../../../theme/copy";
-import Divider from "../../shared-new/Divider";
-import ModalButtons from "../../shared-new/Modal/Buttons";
-import Text from "../../shared-new/Text";
+import { useEnvironmentVariables } from "../../../../hooks/queries";
+import { EnvironmentVariable } from "../../../../lib/types";
+import { copy } from "../../../../theme/copy";
+import Divider from "../../../shared-new/Divider";
+import ModalButtons from "../../../shared-new/Modal/Buttons";
+import Text from "../../../shared-new/Text";
 import Form, { id as formInputId } from "./Form";
 import ListItem, { nameWidth } from "./ListItem";
 
 type Props = {
   closeModal: () => void;
   environmentId: string;
-  onDeleteClick: (environmentVariable: EnvironmentVariable) => void;
+  onDelete: (environmentVariable: EnvironmentVariable) => void;
 };
 
 export default function List({
   closeModal,
   environmentId,
-  onDeleteClick,
+  onDelete,
 }: Props): JSX.Element {
   const [isCreate, setIsCreate] = useState(false);
   const [editEnvironmentVariableId, setEditEnvironmentVariableId] = useState<
@@ -28,22 +28,22 @@ export default function List({
 
   const { data } = useEnvironmentVariables({ environment_id: environmentId });
 
-  const handleCancelClick = (): void => {
+  const handleCancel = (): void => {
     setEditEnvironmentVariableId(null);
     setIsCreate(false);
   };
 
   // reset forms if selected environment changes
-  useEffect(handleCancelClick, [environmentId]);
+  useEffect(handleCancel, [environmentId]);
 
-  const handleCreateClick = (): void => {
+  const handleCreate = (): void => {
     setEditEnvironmentVariableId(null); // clear existing forms
     setIsCreate(true);
     // focus form if it already exists
     document.getElementById(formInputId)?.focus();
   };
 
-  const handleEditClick = (variableId: string): void => {
+  const handleEdit = (variableId: string): void => {
     setEditEnvironmentVariableId(variableId);
     setIsCreate(false);
   };
@@ -71,9 +71,9 @@ export default function List({
           editEnvironmentVariableId={editEnvironmentVariableId}
           environmentVariable={environmentVariable}
           key={environmentVariable.id}
-          onCancelClick={handleCancelClick}
-          onDeleteClick={() => onDeleteClick(environmentVariable)}
-          onEditClick={handleEditClick}
+          onCancel={handleCancel}
+          onDelete={() => onDelete(environmentVariable)}
+          onEdit={handleEdit}
         />
       );
 
@@ -105,16 +105,13 @@ export default function List({
       {isCreate && (
         <>
           <Divider />
-          <Form
-            environmentId={environmentId}
-            onCancelClick={handleCancelClick}
-          />
+          <Form environmentId={environmentId} onCancel={handleCancel} />
         </>
       )}
       <Divider />
       <ModalButtons
         closeModal={closeModal}
-        onCreateClick={handleCreateClick}
+        onCreate={handleCreate}
         secondaryLabel={copy.envVariableNew}
       />
     </>

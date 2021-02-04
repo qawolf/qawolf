@@ -1,36 +1,32 @@
 import { Box, Keyboard } from "grommet";
 import { ReactNode } from "react";
 
-import { copy } from "../../theme/copy";
-import Button from "./AppButton";
+import { copy } from "../../../theme/copy";
+import Button from "../AppButton";
 
 type Props = {
   children: ReactNode;
   isDeleteDisabled: boolean;
-  onCancelClick: () => void;
-  onDeleteClick: () => void;
+  onCancel: () => void;
+  onDelete: () => void;
 };
 
-export default function ModalConfirmDelete({
+export default function ConfirmDelete({
   children,
   isDeleteDisabled,
-  onCancelClick,
-  onDeleteClick,
+  onCancel,
+  onDelete,
 }: Props): JSX.Element {
   return (
-    <Keyboard onEnter={onDeleteClick}>
+    <Keyboard onEnter={onDelete}>
       <Box>
         {children}
         <Box direction="row" justify="between" margin={{ top: "medium" }}>
-          <Button
-            label={copy.cancel}
-            onClick={onCancelClick}
-            type="secondary"
-          />
+          <Button label={copy.cancel} onClick={onCancel} type="secondary" />
           <Button
             isDisabled={isDeleteDisabled}
             label={copy.delete}
-            onClick={onDeleteClick}
+            onClick={onDelete}
             type="danger"
           />
         </Box>
