@@ -1,6 +1,6 @@
 import { Box } from "grommet";
 import throttle from "lodash/throttle";
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
   AutoSizer,
   CellMeasurer,
@@ -30,6 +30,10 @@ const scrollToBottom = throttle((list: List, index: number) => {
 
   wasAutoScroll = true;
   list.scrollToRow(index);
+}, 200);
+
+const clearCache = throttle(() => {
+  cache.clearAll();
 }, 200);
 
 function onScroll(this: List | undefined, options: OnScrollParams): void {
@@ -67,10 +71,17 @@ export default function RunLogs({ isVisible }: Props): JSX.Element {
   const { logs } = useLogs({ apiKey, run, wsUrl });
   const ref = useRef<List>(null);
 
+  const [size, setSize] = useState(0);
+
   useEffect(() => {
     if (!ref.current) return;
     scrollToBottom(ref.current, logs.length);
   }, [logs.length, ref]);
+
+  useEffect(() => {
+    // clear the heights cache when the size changes
+    clearCache();
+  }, [size]);
 
   if (!isVisible) return null;
 
@@ -78,6 +89,8 @@ export default function RunLogs({ isVisible }: Props): JSX.Element {
     <Box fill>
       <AutoSizer>
         {({ height, width }) => {
+          setSize(height + width);
+
           return (
             <List
               deferredMeasurementCache={cache}

@@ -1,5 +1,6 @@
 import { Box, BoxProps, Button, ButtonProps } from "grommet";
 import { Icon } from "grommet-icons";
+import Link from "next/link";
 import styled from "styled-components";
 
 import { Side } from "../../../lib/types";
@@ -24,13 +25,15 @@ type Props = {
   IconComponent?: Icon;
   a11yTitle?: string;
   className?: string;
+  href?: string;
   hoverType?: Type;
   iconPosition?: Side;
   isDisabled?: boolean;
+  justify?: BoxProps["justify"];
   label?: string;
   margin?: ButtonProps["margin"];
   noBorderSide?: Side;
-  onClick: () => void;
+  onClick?: () => void;
   type: Type;
   width?: BoxProps["width"];
 };
@@ -39,14 +42,16 @@ function AppButton({
   IconComponent,
   a11yTitle,
   className,
+  href,
   iconPosition,
   isDisabled,
+  justify,
   label,
   margin,
   onClick,
   type,
 }: Props): JSX.Element {
-  return (
+  const innerHtml = (
     <Button
       a11yTitle={a11yTitle || label}
       className={className}
@@ -59,8 +64,13 @@ function AppButton({
         align="center"
         direction={iconPosition === "right" ? "row-reverse" : "row"}
         fill
-        justify="between"
-        pad={getBoxPad(!!label, !!IconComponent, iconPosition)}
+        justify={justify || "between"}
+        pad={getBoxPad({
+          hasIcon: !!IconComponent,
+          hasLabel: !!label,
+          iconPosition,
+          justify,
+        })}
       >
         {!!IconComponent && (
           <IconComponent color={textColor[type]} size={edgeSize.small} />
@@ -78,6 +88,16 @@ function AppButton({
       </Box>
     </Button>
   );
+
+  if (href) {
+    return (
+      <Link href={href}>
+        <a>{innerHtml}</a>
+      </Link>
+    );
+  }
+
+  return innerHtml;
 }
 
 const StyledAppButton = styled(AppButton)`

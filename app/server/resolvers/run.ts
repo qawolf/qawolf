@@ -3,18 +3,25 @@ import { db } from "../db";
 import environment from "../environment";
 import { AuthenticationError } from "../errors";
 import { Logger } from "../Logger";
-import { findRun, findRunsForSuite, UpdateRun, updateRun } from "../models/run";
+import {
+  findRun,
+  findRunsForSuite,
+  findTestHistory,
+  UpdateRun,
+  updateRun,
+} from "../models/run";
 import { expireRunner, findRunner } from "../models/runner";
 import { postMessageToSlack } from "../services/alert/slack";
 import {
   Context,
+  IdQuery,
   ModelOptions,
   Run,
   Suite,
   SuiteRun,
   UpdateRunMutation,
 } from "../types";
-import { ensureSuiteAccess } from "./utils";
+import { ensureSuiteAccess, ensureTestAccess } from "./utils";
 
 type ValidateApiKey = {
   api_key: string | null;
@@ -79,6 +86,22 @@ export const suiteRunsResolver = async (
   await ensureSuiteAccess({ logger, teams, suite_id: id });
 
   return findRunsForSuite(id, { logger });
+};
+
+/**
+ * @returns Array of Runs
+ */
+export const testHistoryResolver = async (
+  _: Record<string, unknown>,
+  { id }: IdQuery,
+  { logger, teams }: Context
+): Promise<Run[]> => {
+  const log = logger.prefix("testHistoryResolver");
+  log.debug("test", id);
+
+  await ensureTestAccess({ logger, teams, test_id: id });
+
+  return findTestHistory(id, { logger });
 };
 
 /**

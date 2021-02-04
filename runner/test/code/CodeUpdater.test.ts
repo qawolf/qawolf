@@ -19,7 +19,7 @@ describe("CodeUpdater", () => {
     updater.setContext(context);
 
     updater.updateCode({
-      code: `// 🐺 create code here`,
+      code: "// 🐺 QA Wolf will create code here",
       version: 1,
     });
   });
@@ -43,7 +43,7 @@ describe("CodeUpdater", () => {
     // since we enabled the updater after those steps
     expect(updater._code).toMatchInlineSnapshot(`
       "await page.click(\\"text=Buttons\\");
-      // 🐺 create code here"
+      // 🐺 QA Wolf will create code here
     `);
   });
 });

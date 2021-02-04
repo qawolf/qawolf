@@ -11,11 +11,14 @@ export const breakpoints = {
 
 export const colors = {
   code: "#0E8A7D",
-  codeBackground: "#0A0A30",
-  codePink: "#F562A0",
-  codeTeal: "#6CCED9",
-  codeYellow: "#F0D278",
-  danger: "#DB4B4B",
+  codeBlue: "#6E9DFA",
+  codeHighlight: "#213866",
+  codePink: "#EF86B4",
+  codePurple: "#B899F8",
+  danger4: "#F07D7D",
+  danger5: "#DB4B4B",
+  danger9: "#66141B",
+  danger10: "#33050D",
   dangerDark: "#C23232",
   dangerDarker: "#AD1F1F",
   error: "#DE4343",
@@ -41,10 +44,16 @@ export const colors = {
   primaryFillLight: "#8E9CF5",
   primaryHover: "#695EFF",
   primaryTextLight: "#ABB5F5",
+  success5: "#44C76B",
   textDark: "#17174C",
   textLight: "#60708A",
+  warning4: "#EBC963",
+  warning9: "#615013",
+  warning10: "#332B05",
   white: "#FFFFFF",
 };
+
+export const disabledOpacity = 0.4;
 
 export const edgeSize = {
   xxxsmall: "4px",
@@ -124,6 +133,11 @@ export const theme = {
   box: {
     // prevent default grommet styling on mobile as we handle manually
     responsiveBreakpoint: "1px",
+  },
+  button: {
+    disabled: {
+      opacity: disabledOpacity,
+    },
   },
   global: {
     borderSize,

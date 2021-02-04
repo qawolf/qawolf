@@ -156,3 +156,14 @@ export const testQuery = gql`
   ${runFragment}
   ${testFragment}
 `;
+
+export const testHistoryQuery = gql`
+  query testHistory($id: ID!) {
+    testHistory(id: $id) {
+      created_at
+      id
+      started_at
+      status
+    }
+  }
+`;

@@ -1,49 +1,35 @@
 import { Box } from "grommet";
 
 import { NavigationOption } from "../../../lib/types";
-import { edgeSize } from "../../../theme/theme";
-import CodeOptions from "./CodeOptions";
-import Option from "./Option";
+import { copy } from "../../../theme/copy";
+import Tabs from "../../shared-new/Tabs";
+import Tab from "../../shared-new/Tabs/Tab";
 
 type Props = {
   selected: NavigationOption;
   setSelected: (selected: NavigationOption) => void;
 };
 
+const options = ["code", "helpers", "logs"] as NavigationOption[];
+
 export default function Navigation({
   selected,
   setSelected,
 }: Props): JSX.Element {
-  const options = (["code", "logs", "helpers"] as NavigationOption[]).map(
-    (option) => {
-      return (
-        <Option
-          isSelected={option === selected}
-          key={option}
-          onClick={() => setSelected(option)}
-          option={option}
-        />
-      );
-    }
-  );
-
-  const isCodeSelected = selected === "code";
+  const tabs = options.map((option) => {
+    return (
+      <Tab
+        isSelected={option === selected}
+        key={option}
+        label={copy[option]}
+        onClick={() => setSelected(option)}
+      />
+    );
+  });
 
   return (
-    <Box
-      align="center"
-      direction="row"
-      flex={false}
-      justify="between"
-      margin={{
-        horizontal: "large",
-        vertical: `calc(${edgeSize.large} + ${edgeSize.small} + ${edgeSize.xsmall})`,
-      }}
-    >
-      <Box align="center" direction="row">
-        {options}
-      </Box>
-      {isCodeSelected && <CodeOptions />}
+    <Box flex={false}>
+      <Tabs>{tabs}</Tabs>
     </Box>
   );
 }

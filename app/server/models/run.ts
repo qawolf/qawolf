@@ -17,6 +17,7 @@ import {
 } from "../types";
 import { cuid } from "../utils";
 import { decrypt } from "./encrypt";
+import { findEnvironmentIdForRun } from "./environment";
 import { buildEnvironmentVariables } from "./environment_variable";
 
 type CreateRunsForTests = {
@@ -149,6 +150,7 @@ export const findRunResult = async (
   { logger, trx }: ModelOptions
 ): Promise<RunResult> => {
   const run = await findRun(id, { logger, trx });
+  const environment_id = await findEnvironmentIdForRun(id, { logger, trx });
 
   let logs_url: string | null = null;
   let video_url: string | null = null;
@@ -158,7 +160,7 @@ export const findRunResult = async (
     video_url = createStorageReadAccessUrl(`${run.id}.mp4`);
   }
 
-  return { ...run, logs_url, video_url };
+  return { ...run, environment_id, logs_url, video_url };
 };
 
 export const findRunsForSuite = async (
@@ -228,6 +230,25 @@ export const findSuiteRunForRunner = async (
       version: row.test_version,
     };
   });
+};
+
+export const findTestHistory = async (
+  test_id: string,
+  { logger, trx }: ModelOptions
+): Promise<Run[]> => {
+  const log = logger.prefix("findRunHistory");
+  log.debug("test", test_id);
+
+  const runs = await (trx || db)
+    .select("runs.*" as "*")
+    .from("runs")
+    .where({ test_id })
+    .orderBy("created_at", "desc")
+    .limit(8);
+
+  log.debug(`found ${runs.length} runs`);
+
+  return runs;
 };
 
 export const updateRun = async (

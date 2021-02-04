@@ -1,3 +1,5 @@
+import cssEscape from "css.escape";
+
 import { getAttribute } from "./attribute";
 import { buildTextSelector } from "./selectorEngine";
 import { getValueMatches } from "./isDynamic";
@@ -206,7 +208,7 @@ export const buildCuesForElement = ({
                 level,
                 penalty,
                 type: "class",
-                value: `.${CSS.escape(c)}`,
+                value: `.${cssEscape(c)}`,
               });
             } else {
               list.push({
@@ -230,7 +232,7 @@ export const buildCuesForElement = ({
               level,
               penalty,
               type: "id",
-              value: `#${CSS.escape(match)}`,
+              value: `#${cssEscape(match)}`,
             });
           } else {
             list.push({

@@ -13,6 +13,7 @@ import {
   runnerQuery,
   suiteQuery,
   teamQuery,
+  testHistoryQuery,
   testQuery,
 } from "../graphql/queries";
 import { JWT_KEY } from "../lib/client";
@@ -31,6 +32,7 @@ import {
   Suite,
   Team,
   Test,
+  TestHistoryRun,
   TestWithSummary,
   User,
 } from "../lib/types";
@@ -132,6 +134,14 @@ type TestData = {
 type TestQueryVariables = {
   id?: string;
   run_id?: string | null;
+};
+
+type TestHistoryData = {
+  testHistory: TestHistoryRun[];
+};
+
+type TestHistoryVariables = {
+  id: string;
 };
 
 const fetchPolicy = "cache-and-network";
@@ -326,6 +336,16 @@ export const useTest = (
       }
     },
     skip: !variables.id && !variables.run_id,
+    variables,
+  });
+};
+
+export const useTestHistory = (
+  variables: TestHistoryVariables
+): QueryResult<TestHistoryData, TestHistoryVariables> => {
+  return useQuery<TestHistoryData, TestHistoryVariables>(testHistoryQuery, {
+    fetchPolicy,
+    skip: !variables.id,
     variables,
   });
 };

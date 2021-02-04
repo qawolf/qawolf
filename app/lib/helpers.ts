@@ -58,11 +58,29 @@ export const formatDate = (timestamp: string): string => {
   return `${day} at ${time}`;
 };
 
-export const formatLogColor = (logLevel: Log["severity"]): string => {
-  if (logLevel === "error") return "red";
-  if (logLevel === "warning") return "yellow";
+export const formatLogBackground = (logLevel: Log["severity"]): string => {
+  if (logLevel === "error") return "danger10";
+  if (logLevel === "warning") return "warning10";
 
-  return "white";
+  return "transparent";
+};
+
+export const formatLogBorder = (logLevel: Log["severity"]): string => {
+  if (logLevel === "error") return "danger9";
+  if (logLevel === "warning") return "warning9";
+
+  return "transparent";
+};
+
+export const formatLogColor = (
+  logLevel: Log["severity"],
+  isTimestamp?: boolean
+): string => {
+  if (logLevel === "error") return "danger4";
+  if (logLevel === "warning") return "warning4";
+
+  if (isTimestamp) return "gray5";
+  return "gray3";
 };
 
 export const formatTimestamp = (timestamp: string): string => {
@@ -98,15 +116,6 @@ export const parseUrl = (url: string): string => {
   return "https://" + url;
 };
 
-const pluralCharacter = (digit: number): string => {
-  return digit === 1 ? "" : "s";
-};
-
-export const randomWolfVariant = (): string => {
-  const variants = ["black", "blue", "brown", "gray", "husky", "white"];
-  return variants[Math.floor(Math.random() * variants.length)];
-};
-
 export const runAndSetInterval = (
   fn: () => void,
   ms: number
@@ -131,25 +140,25 @@ export const timeToText = (previousString: string): string => {
 
   if (elapsed < msPerMinute) {
     const seconds = Math.floor(elapsed / 1000);
-    return seconds + ` second${pluralCharacter(seconds)} ago`;
+    return seconds + "s ago";
   }
   if (elapsed < msPerHour) {
     const minutes = Math.floor(elapsed / msPerMinute);
-    return minutes + ` minute${pluralCharacter(minutes)} ago`;
+    return minutes + "m ago";
   }
   if (elapsed < msPerDay) {
     const hours = Math.floor(elapsed / msPerHour);
-    return hours + ` hour${pluralCharacter(hours)} ago`;
+    return hours + "h ago";
   }
   if (elapsed < msPerMonth) {
     const days = Math.floor(elapsed / msPerDay);
-    return days + ` day${pluralCharacter(days)} ago`;
+    return days + "d ago";
   }
   if (elapsed < msPerYear) {
     const months = Math.floor(elapsed / msPerMonth);
-    return months + ` month${pluralCharacter(months)} ago`;
+    return months + "mo ago";
   }
   const years = Math.floor(elapsed / msPerYear);
 
-  return years + ` year${pluralCharacter(years)} ago`;
+  return years + "y ago";
 };

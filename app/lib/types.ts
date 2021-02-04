@@ -68,6 +68,7 @@ export type Run = {
   code: string;
   completed_at: string | null;
   current_line: number | null;
+  environment_id: string | null;
   id: string;
   logs_url: string | null;
   started_at: string | null;
@@ -123,6 +124,13 @@ export type Test = {
   version: number;
 };
 
+export type TestHistoryRun = {
+  created_at: string;
+  id: string;
+  started_at: string;
+  status: RunStatus;
+};
+
 export type TestWithSummary = Test & {
   groups: SelectedGroup[];
   summary: {
@@ -143,12 +151,6 @@ export type User = {
 };
 
 // Component Types
-export type Action = {
-  id: string;
-  x: number;
-  y: number;
-};
-
 export type AuthMode = "logIn" | "signUp";
 
 export type CreateCode = {
@@ -189,12 +191,6 @@ export type SelectedTest = {
 };
 
 export type Side = "left" | "right";
-
-export type UserSubscription = {
-  email: string;
-  wolfName: string;
-  wolfVariant: string;
-};
 
 export type ValueProp = {
   detail: string;
@@ -260,6 +256,7 @@ type ModalState = {
 
 export type State = {
   dashboardUri: string | null;
+  editorSidebarWidth: number;
   email: string | null;
   environmentId: string | null;
   error: string | null;

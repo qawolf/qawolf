@@ -10,7 +10,9 @@ import { useGlyphs } from "./hooks/glyphs";
 
 type Editor = monacoEditor.editor.IStandaloneCodeEditor;
 
-export default function CodeEditor(): JSX.Element {
+type Props = { onKeyDown: (e: monacoEditor.IKeyboardEvent) => void };
+
+export default function CodeEditor({ onKeyDown }: Props): JSX.Element {
   const [editor, setEditor] = useState<Editor | null>(null);
   const [monaco, setMonaco] = useState<typeof monacoEditor | null>(null);
 
@@ -24,8 +26,9 @@ export default function CodeEditor(): JSX.Element {
   const editorDidMount = ({ editor, monaco }) => {
     setEditor(editor);
     setMonaco(monaco);
-    editor.onDidChangeCursorSelection(onSelectionChange);
     includeTypes(monaco);
+
+    editor.onDidChangeCursorSelection(onSelectionChange);
   };
 
   useEffect(() => {
@@ -55,6 +58,7 @@ export default function CodeEditor(): JSX.Element {
   return (
     <EditorComponent
       editorDidMount={editorDidMount}
+      onKeyDown={onKeyDown}
       options={{
         readOnly: !hasWriteAccess,
       }}

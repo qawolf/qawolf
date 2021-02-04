@@ -5,6 +5,7 @@ import { ImageGroup, RunOptions, State as StateType } from "./types";
 
 export const defaultState: StateType = {
   dashboardUri: null,
+  editorSidebarWidth: 480,
   email: null,
   environmentId: null,
   error: null,
@@ -33,7 +34,11 @@ class State extends EventEmitter {
     if (isServer()) return;
 
     const existingState = localStorage.getItem(STATE_KEY) || "{}";
-    this._state = { ...this._state, ...JSON.parse(existingState) };
+    this._state = {
+      ...defaultState,
+      ...this._state,
+      ...JSON.parse(existingState),
+    };
   }
 
   _persist(): void {
@@ -68,6 +73,12 @@ class State extends EventEmitter {
 
   setDashboardUri(dashboardUri: StateType["dashboardUri"]): void {
     this._setState({ dashboardUri });
+  }
+
+  setEditorSidebarWidth(
+    editorSidebarWidth: StateType["editorSidebarWidth"]
+  ): void {
+    this._setState({ editorSidebarWidth });
   }
 
   setEmail(email: StateType["email"]): void {

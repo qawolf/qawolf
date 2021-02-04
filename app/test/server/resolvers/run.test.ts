@@ -2,6 +2,7 @@ import { db, dropTestDb, migrateDb } from "../../../server/db";
 import * as runnerModel from "../../../server/models/runner";
 import {
   suiteRunsResolver,
+  testHistoryResolver,
   updateRunResolver,
   validateApiKey,
 } from "../../../server/resolvers/run";
@@ -69,6 +70,18 @@ describe("suiteRunsResolver", () => {
         test_name: "testName",
       },
     ]);
+  });
+});
+
+describe("testHistoryResolver", () => {
+  it("returns the last runs for a test", async () => {
+    const runs = await testHistoryResolver(
+      {},
+      { id: "testId" },
+      { api_key: null, ip: null, logger, teams, user }
+    );
+
+    expect(runs).toMatchObject([{ id: "runId" }, { id: "run3Id" }]);
   });
 });
 

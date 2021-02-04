@@ -1,27 +1,46 @@
-import { Box } from "grommet";
+import { useState } from "react";
 
+import { useUpdateTest } from "../../../hooks/mutations";
 import { Test } from "../../../lib/types";
-import { overflowStyle } from "../../../theme/theme";
-import Text from "../../shared/Text";
-import EditTestName from "./EditTestName";
+import { borderSize, edgeSize } from "../../../theme/theme-new";
+import Divider from "../../shared-new/Divider";
+import EditableText from "../../shared-new/EditableText";
 
 type Props = {
-  isMobile?: boolean;
-  test: Test;
+  disabled?: boolean;
+  test: Test | null;
 };
 
-export default function TestName({ isMobile, test }: Props): JSX.Element {
-  const innerHtml = isMobile ? (
-    <Text color="black" size="large" style={overflowStyle}>
-      {test.name}
-    </Text>
-  ) : (
-    <EditTestName test={test} />
-  );
+export default function TestName({ disabled, test }: Props): JSX.Element {
+  const [isEdit, setIsEdit] = useState(false);
+
+  const [updateTest] = useUpdateTest();
+
+  if (!test) return null;
+
+  const handleSave = (name: string): void => {
+    updateTest({
+      optimisticResponse: {
+        updateTest: { ...test, name },
+      },
+      variables: { id: test.id, name },
+    });
+  };
 
   return (
-    <Box align="center" direction="row" fill="horizontal" justify="center">
-      {innerHtml}
-    </Box>
+    <>
+      <EditableText
+        disabled={disabled}
+        isEdit={isEdit}
+        onSave={handleSave}
+        setIsEdit={setIsEdit}
+        value={test.name}
+      />
+      <Divider
+        height={edgeSize.large}
+        margin={{ left: "xxsmall", right: "small" }}
+        width={borderSize.xsmall}
+      />
+    </>
   );
 }

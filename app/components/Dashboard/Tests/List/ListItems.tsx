@@ -54,9 +54,6 @@ export default function ListItems({
       const inProgress = test.summary.last_runs.length
         ? test.summary.last_runs[0].status === "created"
         : false;
-      const route = test.summary.last_runs.length
-        ? `${routes.run}/${test.summary.last_runs[0].id}`
-        : `${routes.test}/${test.id}`;
 
       return (
         <TestCard
@@ -66,7 +63,7 @@ export default function ListItems({
           key={test.id}
           name={test.name}
           onCheck={() => onCheck(test.id)}
-          route={route}
+          route={`${routes.test}/${test.id}`}
           wolfVariant={wolfVariant}
         >
           <StatusBars runs={test.summary.last_runs} />

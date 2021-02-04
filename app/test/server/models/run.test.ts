@@ -8,6 +8,7 @@ import {
   findRun,
   findRunsForSuite,
   findSuiteRunForRunner,
+  findTestHistory,
   updateRun,
 } from "../../../server/models/run";
 import * as alertService from "../../../server/services/alert/send";
@@ -343,6 +344,19 @@ describe("run model", () => {
       const run = await findSuiteRunForRunner("run8Id", { logger });
 
       expect(run).toBeNull();
+    });
+  });
+
+  describe("findTestHistory", () => {
+    it("returns the latest runs for a test and group", async () => {
+      const runs = await findTestHistory("test2Id", { logger });
+
+      expect(runs).toMatchObject([
+        { id: "run2Id" },
+        { id: "run3Id" },
+        { id: "run4Id" },
+        { id: "run7Id" },
+      ]);
     });
   });
 

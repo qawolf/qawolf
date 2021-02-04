@@ -6,57 +6,46 @@ import { colors } from "../../../theme/theme-new";
 // https://github.com/FormidableLabs/prism-react-renderer/blob/master/src/themes/dracula.js
 export const theme: PrismTheme = {
   plain: {
-    color: colors.fill20,
-    backgroundColor: colors.codeBackground,
+    color: colors.gray3,
+    backgroundColor: colors.gray10,
   },
   styles: [
     {
-      types: ["prolog", "constant", "builtin"],
-      style: {
-        color: colors.codeTeal,
-      },
-    },
-    {
-      types: ["inserted", "function"],
-      style: {
-        color: colors.codePink,
-      },
-    },
-    {
       types: ["deleted"],
       style: {
-        color: colors.textLight,
+        color: colors.gray7,
       },
     },
     {
       types: ["punctuation", "symbol"],
       style: {
-        color: colors.codeTeal,
+        color: colors.codeBlue,
       },
     },
     {
-      types: ["boolean", "char", "number", "string", "tag", "selector"],
+      types: ["char", "number", "string", "tag", "selector"],
       style: {
-        color: colors.codeYellow,
+        color: colors.codePink,
       },
     },
     {
-      types: ["keyword", "variable"],
+      types: [
+        "attr-name",
+        "boolean",
+        "constant",
+        "inserted",
+        "keyword",
+        "variable",
+      ],
       style: {
-        color: colors.codeTeal,
+        color: colors.codePurple,
       },
     },
     {
       types: ["comment"],
       style: {
-        color: colors.textLight,
+        color: colors.gray7,
         fontStyle: "italic",
-      },
-    },
-    {
-      types: ["attr-name"],
-      style: {
-        color: colors.codeTeal,
       },
     },
   ],

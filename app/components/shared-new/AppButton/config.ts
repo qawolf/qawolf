@@ -13,7 +13,7 @@ export const activeBackground: { [type in Type]: BoxProps["background"] } = {
 };
 
 export const background: { [type in Type]: BoxProps["background"] } = {
-  danger: colors.danger,
+  danger: colors.danger5,
   dark: colors.gray10,
   ghost: colors.gray0,
   primary: colors.primary,

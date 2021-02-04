@@ -231,6 +231,9 @@ type Run {
   "If the run is in progress, which line of `code` it is currently executing"
   current_line: Int
 
+  "Associated environment ID"
+  environment_id: ID
+
   "Test run ID"
   id: ID!
 
@@ -1133,6 +1136,13 @@ type Query {
   Requires that you have access to the team.
   """
   integrations("The team ID" team_id: ID!): [Integration!]!
+
+  """
+  Returns the last 8 runs for a test by ID.
+
+  Requires that one of the teams you are on own the test.
+  """
+  testHistory("The test ID" id: ID!): [Run!]!
 
   """
   Returns a single test suite by ID.

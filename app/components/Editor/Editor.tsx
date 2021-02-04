@@ -1,49 +1,45 @@
-import { Box, ResponsiveContext } from "grommet";
-import React, { FC, useContext } from "react";
+import { Box, ThemeContext } from "grommet";
+import React, { FC } from "react";
 
+import { useWindowSize } from "../../hooks/windowSize";
+import { breakpoints, theme } from "../../theme/theme-new";
 import Application from "./Application";
-import { ActionsProvider } from "./contexts/ActionsContext";
 import { RunnerProvider } from "./contexts/RunnerContext";
 import { TestProvider } from "./contexts/TestContext";
+import EditorMobile from "./EditorMobile";
 import Header from "./Header";
 import { useMode } from "./hooks/mode";
-import Mobile from "./Mobile";
 import Modals from "./Modals";
 import Sidebar from "./Sidebar";
 
-const WithProviders: FC = ({ children }) => {
+const WithProviders: FC = ({ children }): JSX.Element => {
   return (
     <TestProvider>
-      <ActionsProvider>
-        <RunnerProvider>{children}</RunnerProvider>
-      </ActionsProvider>
+      <RunnerProvider>{children}</RunnerProvider>
     </TestProvider>
   );
 };
 
 export default function Editor(): JSX.Element {
   const mode = useMode();
-  const size = useContext(ResponsiveContext);
-  const isLarge = size === "large";
+  const { width } = useWindowSize();
 
-  // use overflow hidden because Grommet adds small amount of space
   return (
-    <WithProviders>
-      <Box background="lightBlue" height="100vh">
-        <Box
-          direction="row"
-          fill
-          justify="between"
-          overflow={isLarge ? "hidden" : "auto"}
-        >
-          <Box fill margin={isLarge ? { horizontal: "large" } : undefined}>
+    <ThemeContext.Extend value={theme}>
+      <WithProviders>
+        {width && width < breakpoints.medium.value ? (
+          <EditorMobile mode={mode} />
+        ) : (
+          <Box background="gray0" height="100vh" overflow="hidden">
             <Header mode={mode} />
-            {isLarge ? <Application mode={mode} /> : <Mobile mode={mode} />}
+            <Box direction="row" fill justify="between">
+              <Sidebar />
+              <Application mode={mode} />
+            </Box>
+            <Modals mode={mode} />
           </Box>
-          {isLarge && <Sidebar />}
-        </Box>
-        <Modals mode={mode} />
-      </Box>
-    </WithProviders>
+        )}
+      </WithProviders>
+    </ThemeContext.Extend>
   );
 }

@@ -9,8 +9,7 @@ import { CodeUpdate, Run, Test } from "../../../lib/types";
 // We do this outside of hooks to avoid performance overhead.
 export class TestController extends EventEmitter {
   _code = "";
-  // set when we are viewing an outdated run
-  _readonlyRun: Run | null = null;
+  _run: Run | null = null;
   _runner: RunnerClient | null = null;
   _id = "";
   _version = -1;
@@ -28,8 +27,7 @@ export class TestController extends EventEmitter {
     test_id,
     version,
   }: CodeUpdate): void => {
-    if (this._readonlyRun || test_id !== this._id || version <= this._version)
-      return;
+    if (this._run || test_id !== this._id || version <= this._version) return;
 
     if (generated) this._emitGeneratedLines(code);
     this._code = code;
@@ -66,19 +64,15 @@ export class TestController extends EventEmitter {
     this._runner?.on("codeupdated", this._onRunnerUpdate);
   }
 
-  setTest(test: Test | null, readonlyRun: Run | null): void {
+  setTest(test: Test | null, run: Run | null): void {
     // ignore out-of-date test updates
-    if (
-      !readonlyRun &&
-      test?.id === this._id &&
-      test.version <= this._version
-    ) {
+    if (!run && test?.id === this._id && test.version <= this._version) {
       return;
     }
 
-    this._readonlyRun = readonlyRun;
+    this._run = run;
 
-    const newCode = readonlyRun ? readonlyRun.code : test?.code || "";
+    const newCode = run ? run.code : test?.code || "";
     const codeChanged = newCode !== this._code;
 
     this._code = newCode;
@@ -89,7 +83,7 @@ export class TestController extends EventEmitter {
   }
 
   updateCode(code: string): void {
-    if (this._readonlyRun || code === this._code) return;
+    if (this._run || code === this._code) return;
 
     this._code = code;
     this._version += 1;

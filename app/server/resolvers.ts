@@ -32,7 +32,11 @@ import {
   createInvitesResolver,
   teamInvitesResolver,
 } from "./resolvers/invite";
-import { suiteRunsResolver, updateRunResolver } from "./resolvers/run";
+import {
+  suiteRunsResolver,
+  testHistoryResolver,
+  updateRunResolver,
+} from "./resolvers/run";
 import { runnerResolver, updateRunnerResolver } from "./resolvers/runner";
 import { joinMailingListResolver } from "./resolvers/sendgrid";
 import {
@@ -122,5 +126,6 @@ export const resolvers = {
     suite: suiteResolver,
     team: teamResolver,
     test: testResolver,
+    testHistory: testHistoryResolver,
   },
 };

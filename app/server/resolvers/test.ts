@@ -90,7 +90,7 @@ export const createTestResolver = async (
     throw new ClientError("recursion requires an enterprise plan");
   }
 
-  const code = `const { context } = await launch();\nconst page = await context.newPage();\nawait page.goto('${url}', { waitUntil: "domcontentloaded" });\n// 🐺 create code here`;
+  const code = `const { context } = await launch();\nconst page = await context.newPage();\nawait page.goto('${url}', { waitUntil: "domcontentloaded" });\n// 🐺 QA Wolf will create code here`;
 
   const { groupIds, team } = await findGroupIdsAndTeamForCreateTest({
     logger,

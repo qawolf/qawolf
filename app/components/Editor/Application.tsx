@@ -2,14 +2,12 @@ import { Box } from "grommet";
 import { useContext, useEffect, useRef, useState } from "react";
 
 import { getCanvasSize } from "../../lib/size";
-import Action from "./Action";
-import Canvas, { BORDER_SIZE } from "./Canvas";
-import { ActionsContext } from "./contexts/ActionsContext";
+import Canvas from "./Canvas";
+import Header from "./Canvas/Header";
+import { TestContext } from "./contexts/TestContext";
 import { Mode } from "./hooks/mode";
 
-type Props = {
-  mode: Mode;
-};
+type Props = { mode: Mode };
 
 type State = {
   height: number | null;
@@ -17,13 +15,13 @@ type State = {
 };
 
 export default function Application({ mode }: Props): JSX.Element {
+  const { run } = useContext(TestContext);
+
   const ref = useRef<HTMLDivElement>(null);
   const [canvasSize, setCanvasSize] = useState<State>({
     height: null,
     width: null,
   });
-
-  const { actions, removeAction } = useContext(ActionsContext);
 
   useEffect(() => {
     const el = ref.current;
@@ -51,23 +49,20 @@ export default function Application({ mode }: Props): JSX.Element {
     return () => observer.unobserve(el);
   }, [ref]);
 
-  const actionsHtml = actions.map(({ id, x, y }) => {
-    return <Action id={id} key={id} removeAction={removeAction} x={x} y={y} />;
-  });
-
-  const canvasHeight = canvasSize.height
-    ? canvasSize.height - 2 * BORDER_SIZE
-    : null;
-  const canvasWidth = canvasSize.width
-    ? canvasSize.width - 2 * BORDER_SIZE
-    : null;
+  const canvasHeight = canvasSize.height || null;
+  const canvasWidth = canvasSize.width || null;
 
   return (
-    <>
+    <Box fill>
+      <Header hasVideo={!!run?.video_url} />
       <Box fill ref={ref}>
-        <Canvas height={canvasHeight} mode={mode} width={canvasWidth} />
+        <Canvas
+          height={canvasHeight}
+          mode={mode}
+          videoUrl={run?.video_url}
+          width={canvasWidth}
+        />
       </Box>
-      {actionsHtml}
-    </>
+    </Box>
   );
 }

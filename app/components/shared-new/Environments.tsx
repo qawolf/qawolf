@@ -1,4 +1,4 @@
-import { Box, ThemeContext } from "grommet";
+import { Box, BoxProps, ThemeContext } from "grommet";
 import { useContext } from "react";
 import styled from "styled-components";
 
@@ -8,6 +8,7 @@ import { copy } from "../../theme/copy";
 import {
   borderSize,
   colors,
+  disabledOpacity,
   theme,
   transitionDuration,
 } from "../../theme/theme-new";
@@ -15,19 +16,20 @@ import { StateContext } from "../StateContext";
 import Button from "./AppButton";
 import Configure from "./icons/Configure";
 import Edit from "./icons/Edit";
+import { Direction } from "./Menu";
 import Select from "./Select";
 import Action from "./Select/Action";
-import { Direction } from "./Select/Menu";
 import Option from "./Select/Option";
 
 type Props = {
   direction?: Direction;
+  isDisabled?: boolean;
   onEnvironmentClick: (environmentId: string) => void;
   selectedEnvironmentId: string | null;
+  width?: BoxProps["width"];
 };
 
 const dividerId = "environments-divider";
-const width = "180px";
 
 const StyledBox = styled(Box)`
   #${dividerId} {
@@ -43,8 +45,10 @@ const StyledBox = styled(Box)`
 
 export default function Environments({
   direction,
+  isDisabled,
   onEnvironmentClick,
   selectedEnvironmentId,
+  width,
 }: Props): JSX.Element {
   const { environmentId, teamId } = useContext(StateContext);
   const { data } = useEnvironments({ team_id: teamId }, { environmentId });
@@ -86,13 +90,14 @@ export default function Environments({
     <ThemeContext.Extend value={theme}>
       <StyledBox
         alignSelf="center"
-        background="gray10"
         direction="row"
         round={borderSize.small}
+        width={width || "200px"}
       >
         <Button
-          a11yTitle={copy.environmentEdit(selectedEnvironment?.name)}
           IconComponent={Configure}
+          a11yTitle={copy.environmentEdit(selectedEnvironment?.name)}
+          isDisabled={isDisabled}
           noBorderSide="right"
           onClick={openVariablesModal}
           type="dark"
@@ -100,14 +105,15 @@ export default function Environments({
         <Box
           background={colors.gray8}
           id="environments-divider"
+          style={{ opacity: isDisabled ? disabledOpacity : 1 }}
           width={borderSize.xsmall}
         />
         <Select
           direction={direction || "up"}
+          isDisabled={isDisabled}
           label={label}
           noBorderSide="left"
           type="dark"
-          width={width}
         >
           <Action
             IconComponent={Edit}

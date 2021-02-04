@@ -70,6 +70,7 @@ export const runFragment = gql`
     code
     completed_at
     current_line
+    environment_id
     id
     logs_url
     started_at

@@ -51,7 +51,7 @@ describe("Environment", () => {
     await environment.run(
       {
         ...runOptions,
-        code: `const { context } = await launch({ headless: true });\nconst page = await context.newPage();\nawait page.goto("${TEST_URL}");\n// 🐺 create code here`,
+        code: `const { context } = await launch({ headless: true });\nconst page = await context.newPage();\nawait page.goto("${TEST_URL}");\n// 🐺 QA Wolf will create code here`,
       },
       []
     );

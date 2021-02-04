@@ -61,6 +61,7 @@ export default function UrlInput({
   return (
     <>
       <Box
+        align="center"
         background="brand"
         className={styles.inputContainer}
         direction="row"
