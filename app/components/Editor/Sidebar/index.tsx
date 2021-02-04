@@ -28,7 +28,7 @@ const enable = {
 };
 
 export default function Sidebar(): JSX.Element {
-  const { push } = useRouter();
+  const { query, push } = useRouter();
   const { editorSidebarWidth } = useContext(StateContext);
 
   const { controller, run, team, test } = useContext(TestContext);
@@ -79,7 +79,12 @@ export default function Sidebar(): JSX.Element {
           <HelpersEditor onKeyDown={handleEditorKeyDown} />
         )}
         <RunLogs isVisible={selected === "logs"} />
-        <Buttons onAction={handleAction} run={run} selection={selection} />
+        <Buttons
+          isRun={!!query.run_id}
+          onAction={handleAction}
+          runEnvironmentId={run?.environment_id || null}
+          selection={selection}
+        />
       </Box>
     </Resizable>
   );
