@@ -21,6 +21,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "an-array-of-english-words": "^2.0.0",
+    "css.escape": "^1.5.1",
     "html-tags": "^3.1.0"
   },
   "devDependencies": {
