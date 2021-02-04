@@ -67,13 +67,10 @@ export default function ListItem({
       border={{ color: "transparent", size: "xsmall" }}
       direction="row"
       justify="between"
+      height={edgeSize.large}
       margin={{ bottom: "2px" }}
       onClick={onClick}
-      pad={{
-        left: "xsmall",
-        right: "xxsmall",
-        vertical: `calc(${edgeSize.xxsmall} - ${borderSize.xsmall})`,
-      }}
+      pad={{ left: "xsmall", right: "xxsmall" }}
       round={borderSize.small}
     >
       <Text color="gray9" size="component" style={overflowStyle}>
