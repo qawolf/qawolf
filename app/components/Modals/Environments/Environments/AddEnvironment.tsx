@@ -1,5 +1,6 @@
 import { Box, Button } from "grommet";
 import styled from "styled-components";
+
 import { copy } from "../../../../theme/copy";
 import {
   colors,
@@ -7,7 +8,6 @@ import {
   transitionDuration,
 } from "../../../../theme/theme-new";
 import Add from "../../../shared-new/icons/Add";
-
 import Text from "../../../shared-new/Text";
 
 type Props = { onClick: () => void };

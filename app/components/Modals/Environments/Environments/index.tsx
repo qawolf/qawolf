@@ -1,13 +1,14 @@
 import { Box } from "grommet";
 import { useState } from "react";
+
 import { useEnvironments } from "../../../../hooks/queries";
 import { Environment } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import { edgeSize } from "../../../../theme/theme";
 import Text from "../../../shared-new/Text";
-import ListItem from "./ListItem";
 import AddEnvironment from "./AddEnvironment";
 import EnvironmentName, { id as formInputId } from "./EnvironmentName";
+import ListItem from "./ListItem";
 
 type Props = {
   environmentId: string;
@@ -53,6 +54,7 @@ export default function Environments({
       <ListItem
         editEnvironmentId={editEnvironmentId}
         environment={environment}
+        isSelected={environment.id === environmentId}
         key={environment.id}
         onCancel={handleCancel}
         onClick={() => setSelectedEnvironmentId(environment.id)}

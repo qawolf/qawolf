@@ -1,12 +1,13 @@
 import { Box } from "grommet";
-import Modal from "../../shared-new/Modal";
-import Variables from "./Variables";
-import Environments from "./Environments";
-import { Environment, EnvironmentVariable } from "../../../lib/types";
 import { useContext, useState } from "react";
-import ConfirmDeleteEnvironment from "./Environments/ConfirmDelete";
-import ConfirmDeleteVariable from "./Variables/ConfirmDelete";
+
+import { Environment, EnvironmentVariable } from "../../../lib/types";
+import Modal from "../../shared-new/Modal";
 import { StateContext } from "../../StateContext";
+import Environments from "./Environments";
+import ConfirmDeleteEnvironment from "./Environments/ConfirmDelete";
+import Variables from "./Variables";
+import ConfirmDeleteVariable from "./Variables/ConfirmDelete";
 
 type Props = { closeModal: () => void };
 

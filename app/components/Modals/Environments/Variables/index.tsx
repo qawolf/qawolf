@@ -1,10 +1,9 @@
 import { Box } from "grommet";
-import { useContext, useState } from "react";
+
 import { EnvironmentVariable } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import Header from "../../../shared-new/Modal/Header";
 import Text from "../../../shared-new/Text";
-import { StateContext } from "../../../StateContext";
 import List from "./List";
 
 type Props = {

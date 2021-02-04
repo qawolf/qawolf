@@ -1,7 +1,8 @@
 import { Box } from "grommet";
+
 import { copy } from "../../../theme/copy";
-import Close from "../icons/Close";
 import Button from "../AppButton";
+import Close from "../icons/Close";
 import Text from "../Text";
 
 type Props = {

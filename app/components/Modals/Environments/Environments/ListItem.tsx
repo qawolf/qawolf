@@ -1,11 +1,11 @@
 import { Box } from "grommet";
 import { MouseEvent, useState } from "react";
 import styled from "styled-components";
+
 import { Environment } from "../../../../lib/types";
 import {
   borderSize,
   colors,
-  edgeSize,
   overflowStyle,
   transitionDuration,
 } from "../../../../theme/theme-new";
@@ -16,6 +16,7 @@ import Options from "./Options";
 type Props = {
   editEnvironmentId: string;
   environment: Environment;
+  isSelected: boolean;
   onCancel: () => void;
   onClick: () => void;
   onDelete: () => void;
@@ -44,6 +45,7 @@ const StyledBox = styled(Box)`
 export default function ListItem({
   editEnvironmentId,
   environment,
+  isSelected,
   onCancel,
   onClick,
   onDelete,
@@ -72,6 +74,7 @@ export default function ListItem({
   return (
     <StyledBox
       align="center"
+      background={isSelected ? "gray2" : "transparent"}
       direction="row"
       justify="between"
       margin={{ bottom: "2px" }}

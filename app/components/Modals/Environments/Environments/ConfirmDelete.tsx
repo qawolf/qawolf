@@ -6,8 +6,8 @@ import { Environment } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import TextInput from "../../../shared-new/AppTextInput";
 import ConfirmDelete from "../../../shared-new/Modal/ConfirmDelete";
-import Text from "../../../shared-new/Text";
 import Header from "../../../shared-new/Modal/Header";
+import Text from "../../../shared-new/Text";
 
 type Props = {
   closeModal: () => void;
