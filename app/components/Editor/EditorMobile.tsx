@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 import { useContext } from "react";
 
-import { overflowStyle } from "../../theme/theme-new";
+import { edgeSize, overflowStyle } from "../../theme/theme-new";
 import NoMobile from "../NoMobile";
 import StatusBadge from "../shared-new/StatusBadge";
 import Text from "../shared-new/Text";
@@ -24,7 +24,7 @@ export default function EditorMobile({ mode }: Props): JSX.Element {
         align="center"
         direction="row"
         justify="between"
-        margin={{ bottom: "small" }}
+        margin={{ bottom: edgeSize.small }}
         width="full"
       >
         <Text
