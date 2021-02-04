@@ -6,6 +6,8 @@ import { copy } from "../../../../theme/copy";
 import { edgeSize } from "../../../../theme/theme";
 import Text from "../../../shared-new/Text";
 import ListItem from "./ListItem";
+import AddEnvironment from "./AddEnvironment";
+import EnvironmentName, { id as formInputId } from "./EnvironmentName";
 
 type Props = {
   environmentId: string;
@@ -25,11 +27,25 @@ export default function Environments({
   const [editEnvironmentId, setEditEnvironmentId] = useState<string | null>(
     null
   );
+  const [isCreate, setIsCreate] = useState(false);
 
   const { data } = useEnvironments({ team_id: teamId }, { environmentId });
 
   const handleCancel = (): void => {
     setEditEnvironmentId(null);
+    setIsCreate(false);
+  };
+
+  const handleCreate = (): void => {
+    setEditEnvironmentId(null); // clear existing forms
+    setIsCreate(true);
+    // focus form if it already exists
+    document.getElementById(formInputId)?.focus();
+  };
+
+  const handleEdit = (environmentId: string): void => {
+    setEditEnvironmentId(environmentId);
+    setIsCreate(false);
   };
 
   const environmentsHtml = (data?.environments || []).map((environment) => {
@@ -41,7 +57,8 @@ export default function Environments({
         onCancel={handleCancel}
         onClick={() => setSelectedEnvironmentId(environment.id)}
         onDelete={() => onDelete(environment)}
-        onEdit={() => setEditEnvironmentId(environment.id)}
+        onEdit={() => handleEdit(environment.id)}
+        teamId={teamId}
       />
     );
   });
@@ -55,6 +72,10 @@ export default function Environments({
       </Box>
       <Box flex={false} margin={{ top: "xxsmall" }}>
         {environmentsHtml}
+        {isCreate && (
+          <EnvironmentName onCancel={handleCancel} teamId={teamId} />
+        )}
+        <AddEnvironment onClick={handleCreate} />
       </Box>
     </Box>
   );

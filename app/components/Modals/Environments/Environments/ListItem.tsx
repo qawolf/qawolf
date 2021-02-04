@@ -20,6 +20,7 @@ type Props = {
   onClick: () => void;
   onDelete: () => void;
   onEdit: () => void;
+  teamId: string;
 };
 
 const StyledBox = styled(Box)`
@@ -47,11 +48,18 @@ export default function ListItem({
   onClick,
   onDelete,
   onEdit,
+  teamId,
 }: Props): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
 
   if (environment.id === editEnvironmentId) {
-    return <EnvironmentName environment={environment} onCancel={onCancel} />;
+    return (
+      <EnvironmentName
+        environment={environment}
+        onCancel={onCancel}
+        teamId={teamId}
+      />
+    );
   }
 
   const handleOptionsClick = (e: MouseEvent): void => {
