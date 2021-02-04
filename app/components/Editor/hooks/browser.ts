@@ -165,7 +165,7 @@ export class Browser extends EventEmitter {
     rfb.removeEventListener("disconnect", this._onDisconnect);
     rfb._canvas.removeEventListener("keydown", this._onKeyDown, true);
 
-    if (["connected", "connecting"].includes(rfb._rfb_connection_state)) {
+    if (["connected", "connecting"].includes(rfb._rfbConnectionState)) {
       rfb.disconnect();
     }
   }
