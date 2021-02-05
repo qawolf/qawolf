@@ -105,7 +105,6 @@ export const createTestResolver = async (
         creator_id: user.id,
         group_ids: groupIds,
         team_id: team.id,
-        url,
       },
       { logger, trx }
     );

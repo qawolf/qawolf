@@ -17,7 +17,6 @@ type CreateTest = {
   group_ids: string[];
   name?: string;
   team_id: string;
-  url: string;
 };
 
 type FindEnabledTestsForGroup = {
@@ -91,7 +90,7 @@ export const countPendingTests = async (
 };
 
 export const createTestAndGroupTests = async (
-  { code, creator_id, group_ids, name, team_id, url }: CreateTest,
+  { code, creator_id, group_ids, name, team_id }: CreateTest,
   { logger, trx }: ModelOptions
 ): Promise<{ groupTestIds: string[]; test: Test }> => {
   const log = logger.prefix("createTestAndGroupTest");
@@ -111,7 +110,6 @@ export const createTestAndGroupTests = async (
       is_enabled: true,
       name: finalName,
       team_id,
-      url,
       updated_at: timestamp,
       version: 0,
     };

@@ -271,7 +271,6 @@ export type Test = {
   runner_locations?: string | null;
   runner_requested_at?: string | null;
   team_id: string;
-  url: string;
   updated_at: string;
   version: number;
 };
