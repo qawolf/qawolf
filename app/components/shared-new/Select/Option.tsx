@@ -32,7 +32,7 @@ function Option({
 }: Props): JSX.Element {
   const IconComponent = PropsIconComponent || (isSelected ? Check : undefined);
 
-  const color = type === "danger" ? "danger5" : "gray9";
+  const color = type === "danger" ? colors.danger5 : colors.gray9;
 
   return (
     <Button className={className} onClick={onClick} plain>

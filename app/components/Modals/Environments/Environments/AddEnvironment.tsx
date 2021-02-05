@@ -34,7 +34,7 @@ const color = colors.gray6;
 export default function AddEnvironment({ onClick }: Props): JSX.Element {
   return (
     <StyledButton onClick={onClick} plain>
-      <Box align="center" direction="row" pad="xxsmall">
+      <Box align="center" direction="row" flex={false} pad="xxsmall">
         <Add color={color} size={edgeSize.small} />
         <Text color={color} margin={{ left: "xxsmall" }} size="component">
           {copy.environmentNew}

@@ -36,7 +36,7 @@ export default function SelectEnvironment({ group }: Props): JSX.Element {
     <Environments
       direction="down"
       onEnvironmentClick={handleEnvironmentClick}
-      selectedEnvironmentId={group.environment_id}
+      selectedEnvironmentId={group.environment_id || null}
     />
   );
 }

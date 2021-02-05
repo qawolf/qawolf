@@ -553,7 +553,7 @@ export const useDeleteEnvironment = (): MutationTuple<
     {
       awaitRefetchQueries: true,
       onError,
-      refetchQueries: ["environments"],
+      refetchQueries: ["environments", "groups"],
     }
   );
 };

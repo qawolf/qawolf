@@ -80,6 +80,7 @@ export default function ListItem({
       align="center"
       background={isSelected ? "gray2" : "transparent"}
       direction="row"
+      flex={false}
       justify="between"
       margin={{ bottom: "2px" }}
       onClick={handleClick}
