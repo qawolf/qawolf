@@ -3,6 +3,7 @@ import { MouseEvent, useState } from "react";
 import styled from "styled-components";
 
 import { Environment } from "../../../../lib/types";
+import { copy } from "../../../../theme/copy";
 import {
   borderSize,
   colors,
@@ -77,6 +78,7 @@ export default function ListItem({
 
   return (
     <StyledBox
+      a11yTitle={`${copy.environment} ${environment.name}`}
       align="center"
       background={isSelected ? "gray2" : "transparent"}
       direction="row"
@@ -87,12 +89,7 @@ export default function ListItem({
       pad={{ left: "xsmall", right: "xxsmall", vertical: "xxsmall" }}
       round={borderSize.small}
     >
-      <Text
-        color="gray9"
-        data-test="environment"
-        size="component"
-        style={overflowStyle}
-      >
+      <Text color="gray9" size="component" style={overflowStyle}>
         {environment.name}
       </Text>
       <Options
