@@ -120,7 +120,6 @@ export type Test = {
   is_enabled: boolean;
   name: string;
   updated_at: string;
-  url: string;
   version: number;
 };
 
