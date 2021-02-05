@@ -92,7 +92,7 @@ export const copy = {
   emptyTestsSearch: "No tests found",
   emptyTriggers: "You don't have any triggers yet!",
   encrypted: "Encrypted",
-  enterUrl: "Enter your URL to create a test with",
+  enterUrl: "Enter your URL to create a test",
   envVariableDelete: "Delete environment variable",
   envVariableDeleteConfirm:
     "The following environment variable will be permanently deleted. Are you sure you want to continue?",
@@ -129,7 +129,6 @@ export const copy = {
   joinWolfPack: "Join the wolf pack",
   key: "Key",
   lastUsed: "Last used",
-  limitReached: "Plan limit reached",
   loading: "Loading...",
   logIn: "Log in",
   logInWithEmail: "Log in with email",

@@ -344,8 +344,7 @@ const handleAuthenticatedUser = ({
     return;
   }
 
-  const route = user.onboarded_at ? routes.tests : routes.create;
-  replace(route);
+  replace(routes.tests);
 };
 
 export const useAcceptInvite = (): MutationTuple<

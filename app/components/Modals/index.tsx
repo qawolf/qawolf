@@ -5,6 +5,7 @@ import { StateContext } from "../StateContext";
 import ApiKeys from "./ApiKeys";
 import ConfirmDeleteGroup from "./ConfirmDeleteGroup";
 import ConfirmDeleteTests from "./ConfirmDeleteTests";
+import CreateTest from "./CreateTest";
 import Deployment from "./Deployment";
 import Environments from "./Environments";
 import TeamSettings from "./TeamSettings";
@@ -17,6 +18,10 @@ export default function Modals(): JSX.Element {
 
   if (name === "apiKeys") {
     return <ApiKeys closeModal={closeModal} />;
+  }
+
+  if (name === "createTest") {
+    return <CreateTest closeModal={closeModal} />;
   }
 
   if (name === "deleteGroup" && group) {

@@ -163,6 +163,7 @@ export type GroupTests = {
 
 export type Modal =
   | "apiKeys"
+  | "createTest"
   | "deployment"
   | "environments"
   | "deleteGroup"
