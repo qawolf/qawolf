@@ -66,13 +66,23 @@ export default function Environments({
   });
 
   return (
-    <Box flex={false} pad="medium" width={width}>
-      <Box flex={false} height={edgeSize.large} justify="center">
+    <Box flex={false} width={width}>
+      <Box
+        flex={false}
+        height={edgeSize.large}
+        justify="center"
+        margin={{ horizontal: "medium", top: "medium" }}
+      >
         <Text color="gray9" size="componentHeader">
           {copy.environments}
         </Text>
       </Box>
-      <Box margin={{ top: "xxsmall" }} overflow={{ vertical: "auto" }}>
+      <Box
+        height="full"
+        margin={{ top: "xxsmall" }}
+        overflow={{ vertical: "auto" }}
+        pad={{ bottom: "medium", horizontal: "medium" }}
+      >
         {environmentsHtml}
         {isCreate && (
           <EnvironmentName
