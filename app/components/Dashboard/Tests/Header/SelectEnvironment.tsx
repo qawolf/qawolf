@@ -8,7 +8,6 @@ import Environments from "../../../shared-new/Environments";
 type Props = { group: Group };
 
 export default function SelectEnvironment({ group }: Props): JSX.Element {
-  console.log("GROUP", group);
   // update selected environment to current group's environment
   useEffect(() => {
     if (group.environment_id) state.setEnvironmentId(group.environment_id);
@@ -37,7 +36,7 @@ export default function SelectEnvironment({ group }: Props): JSX.Element {
     <Environments
       direction="down"
       onEnvironmentClick={handleEnvironmentClick}
-      selectedEnvironmentId={group.environment_id || null}
+      selectedEnvironmentId={group.environment_id}
     />
   );
 }
