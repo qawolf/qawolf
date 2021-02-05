@@ -10,17 +10,15 @@ import Header from "../../../shared-new/Modal/Header";
 import Text from "../../../shared-new/Text";
 
 type Props = {
-  clearDeletedEnvironment: (environmentId: string) => void;
   closeModal: () => void;
   environment: Environment;
-  onCancel: () => void;
+  onClose: (deletedEnvironmentId?: string) => void;
 };
 
 export default function ConfirmDeleteEnvironment({
-  clearDeletedEnvironment,
   closeModal,
   environment,
-  onCancel,
+  onClose,
 }: Props): JSX.Element {
   const [hasError, setHasError] = useState(false);
   const [name, setName] = useState("");
@@ -47,8 +45,7 @@ export default function ConfirmDeleteEnvironment({
     setHasError(false);
     deleteEnvironment({ variables: { id: environment.id } }).then(
       ({ data }) => {
-        clearDeletedEnvironment(data?.deleteEnvironment.id);
-        onCancel();
+        onClose(data?.deleteEnvironment.id);
       }
     );
   };
@@ -58,7 +55,7 @@ export default function ConfirmDeleteEnvironment({
       <Header closeModal={closeModal} label={copy.environmentDelete} />
       <ConfirmDelete
         isDeleteDisabled={loading}
-        onCancel={onCancel}
+        onCancel={onClose}
         onDelete={handleDelete}
       >
         <Text

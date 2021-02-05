@@ -32,7 +32,7 @@ export default function Environments({
 
   const { data } = useEnvironments({ team_id: teamId }, { environmentId });
 
-  const handleCancel = (): void => {
+  const handleClose = (): void => {
     setEditEnvironmentId(null);
     setIsCreate(false);
   };
@@ -56,7 +56,7 @@ export default function Environments({
         environment={environment}
         isSelected={environment.id === environmentId}
         key={environment.id}
-        onCancel={handleCancel}
+        onClose={handleClose}
         onClick={() => setSelectedEnvironmentId(environment.id)}
         onDelete={() => onDelete(environment)}
         onEdit={() => handleEdit(environment.id)}
@@ -86,7 +86,7 @@ export default function Environments({
         {environmentsHtml}
         {isCreate && (
           <EnvironmentName
-            onCancel={handleCancel}
+            onClose={handleClose}
             setSelectedEnvironmentId={setSelectedEnvironmentId}
             teamId={teamId}
           />

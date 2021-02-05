@@ -12,13 +12,13 @@ import Text from "../../../shared-new/Text";
 type Props = {
   closeModal: () => void;
   environmentVariable: EnvironmentVariable;
-  onCancel: () => void;
+  onClose: () => void;
 };
 
 export default function ConfirmDeleteVariable({
   closeModal,
   environmentVariable,
-  onCancel,
+  onClose,
 }: Props): JSX.Element {
   const [
     deleteEnvironmentVariable,
@@ -29,7 +29,7 @@ export default function ConfirmDeleteVariable({
     deleteEnvironmentVariable({
       variables: { id: environmentVariable.id },
       // return to main screen after environment variable deleted
-    }).then(onCancel);
+    }).then(onClose);
   };
 
   return (
@@ -37,7 +37,7 @@ export default function ConfirmDeleteVariable({
       <Header closeModal={closeModal} label={copy.envVariableDelete} />
       <ConfirmDelete
         isDeleteDisabled={loading}
-        onCancel={onCancel}
+        onCancel={onClose}
         onDelete={handleDelete}
       >
         <Text

@@ -17,7 +17,7 @@ type Props = {
   editEnvironmentId: string;
   environment: Environment;
   isSelected: boolean;
-  onCancel: () => void;
+  onClose: () => void;
   onClick: () => void;
   onDelete: () => void;
   onEdit: () => void;
@@ -46,7 +46,7 @@ export default function ListItem({
   editEnvironmentId,
   environment,
   isSelected,
-  onCancel,
+  onClose,
   onClick,
   onDelete,
   onEdit,
@@ -58,7 +58,7 @@ export default function ListItem({
     return (
       <EnvironmentName
         environment={environment}
-        onCancel={onCancel}
+        onClose={onClose}
         teamId={teamId}
       />
     );

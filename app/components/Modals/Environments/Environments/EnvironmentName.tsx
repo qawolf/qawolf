@@ -12,7 +12,7 @@ import TextInput from "../../../shared-new/AppTextInput";
 
 type Props = {
   environment?: Environment;
-  onCancel: () => void;
+  onClose: () => void;
   setSelectedEnvironmentId?: (environmentId: string) => void;
   teamId: string;
 };
@@ -21,7 +21,7 @@ export const id = "environment";
 
 export default function EnvironmentName({
   environment,
-  onCancel,
+  onClose,
   setSelectedEnvironmentId,
   teamId,
 }: Props): JSX.Element {
@@ -48,7 +48,7 @@ export default function EnvironmentName({
     if (isCreateLoading || isEditLoading) return;
 
     if (!name) {
-      onCancel();
+      onClose();
       return;
     }
 
@@ -61,7 +61,7 @@ export default function EnvironmentName({
           },
         },
         variables: { id: environment.id, name },
-      }).then(onCancel);
+      }).then(onClose);
     } else {
       createEnvironment({ variables: { name, team_id: teamId } }).then(
         ({ data }) => {
@@ -69,7 +69,8 @@ export default function EnvironmentName({
           if (setSelectedEnvironmentId) {
             setSelectedEnvironmentId(data?.createEnvironment.id);
           }
-          onCancel();
+
+          onClose();
         }
       );
     }
