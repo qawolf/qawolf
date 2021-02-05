@@ -1,5 +1,5 @@
 import { TextInput as GrommetTextInput } from "grommet";
-import { forwardRef, Ref } from "react";
+import { ChangeEvent, forwardRef, KeyboardEvent, Ref } from "react";
 import styled from "styled-components";
 
 import {
@@ -17,7 +17,8 @@ type Props = {
   hasError?: boolean;
   id?: string;
   name?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
   pad?: string;
   placeholder?: string;
   size?: Size;
@@ -33,7 +34,6 @@ const StyledGrommetTextInput = styled(GrommetTextInput)`
   font-weight: ${fontWeight.normal};
   height: ${edgeSize.large};
   line-height: ${edgeSize.large};
-  padding: 0 ${edgeSize.xsmall};
   transition: ${transition};
 
   &:focus {
@@ -46,7 +46,18 @@ const StyledGrommetTextInput = styled(GrommetTextInput)`
 `;
 
 function TextInput(
-  { hasError, id, name, onChange, pad, placeholder, size, value, width }: Props,
+  {
+    hasError,
+    id,
+    name,
+    onChange,
+    onKeyDown,
+    pad,
+    placeholder,
+    size,
+    value,
+    width,
+  }: Props,
   ref?: Ref<HTMLInputElement>
 ): JSX.Element {
   const finalSize = size || "component";
@@ -55,7 +66,7 @@ function TextInput(
     borderColor: hasError ? colors.danger5 : undefined,
     fontFamily: fontFamily[finalSize],
     fontSize: text[finalSize].size,
-    padding: `0 ${pad || edgeSize.xsmall}`,
+    padding: `0 ${pad || `calc(${edgeSize.xsmall} - ${borderSize.xsmall})`}`,
     width,
   };
 
@@ -64,6 +75,7 @@ function TextInput(
       id={id}
       name={name}
       onChange={onChange}
+      onKeyDown={onKeyDown}
       placeholder={placeholder}
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ref={ref as any}

@@ -4,17 +4,17 @@ import { ChangeEvent, useState } from "react";
 import {
   useCreateEnvironmentVariable,
   useUpdateEnvironmentVariable,
-} from "../../../hooks/mutations";
-import { EnvironmentVariable } from "../../../lib/types";
-import { copy } from "../../../theme/copy";
-import { edgeSize } from "../../../theme/theme-new";
-import TextInput from "../../shared-new/AppTextInput";
-import ListItemForm from "../../shared-new/ListItemForm";
+} from "../../../../hooks/mutations";
+import { EnvironmentVariable } from "../../../../lib/types";
+import { copy } from "../../../../theme/copy";
+import { edgeSize } from "../../../../theme/theme-new";
+import TextInput from "../../../shared-new/AppTextInput";
+import ListItemForm from "../../../shared-new/ListItemForm";
 
 type Props = {
   environmentId: string;
   environmentVariable?: EnvironmentVariable;
-  onCancelClick: () => void;
+  onCancel: () => void;
 };
 
 export const id = "environment-variable";
@@ -22,7 +22,7 @@ export const id = "environment-variable";
 export default function Form({
   environmentId,
   environmentVariable,
-  onCancelClick,
+  onCancel,
 }: Props): JSX.Element {
   const [hasNameError, setHasNameError] = useState(false);
   const [hasValueError, setHasValueError] = useState(false);
@@ -47,7 +47,7 @@ export default function Form({
     setValue(e.target.value);
   };
 
-  const handleSaveClick = (): void => {
+  const handleSave = (): void => {
     if (!name) {
       setHasNameError(true);
       return;
@@ -64,7 +64,7 @@ export default function Form({
       updateEnvironmentVariable({
         variables: { id: environmentVariable.id, name, value },
         // close form after environment variable is updated
-      }).then(onCancelClick);
+      }).then(onCancel);
     } else {
       createEnvironmentVariable({
         variables: {
@@ -72,7 +72,7 @@ export default function Form({
           name,
           value,
         },
-      }).then(onCancelClick);
+      }).then(onCancel);
     }
   };
 
@@ -80,8 +80,8 @@ export default function Form({
     <ListItemForm
       focusId={id}
       isSaveDisabled={isCreateLoading || isEditLoading}
-      onCancelClick={onCancelClick}
-      onSaveClick={handleSaveClick}
+      onCancel={onCancel}
+      onSave={handleSave}
     >
       <TextInput
         hasError={hasNameError}

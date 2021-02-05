@@ -1,21 +1,21 @@
 import { Box } from "grommet";
 import { useState } from "react";
 
-import { EnvironmentVariable } from "../../../lib/types";
-import { copy } from "../../../theme/copy";
-import { overflowStyle } from "../../../theme/theme-new";
+import { EnvironmentVariable } from "../../../../lib/types";
+import { copy } from "../../../../theme/copy";
+import { overflowStyle } from "../../../../theme/theme-new";
 import EditDeleteButtons, {
   StyledBox,
-} from "../../shared-new/EditDeleteButtons";
-import Text from "../../shared-new/Text";
+} from "../../../shared-new/EditDeleteButtons";
+import Text from "../../../shared-new/Text";
 import Form from "./Form";
 
 type Props = {
   editEnvironmentVariableId: string;
   environmentVariable: EnvironmentVariable;
-  onCancelClick: () => void;
-  onDeleteClick: () => void;
-  onEditClick: (editEnvironmentVariableId: string) => void;
+  onCancel: () => void;
+  onDelete: () => void;
+  onEdit: (editEnvironmentVariableId: string) => void;
 };
 
 export const nameWidth = "220px";
@@ -23,9 +23,9 @@ export const nameWidth = "220px";
 export default function ListItem({
   editEnvironmentVariableId,
   environmentVariable,
-  onCancelClick,
-  onDeleteClick,
-  onEditClick,
+  onCancel,
+  onDelete,
+  onEdit,
 }: Props): JSX.Element {
   const [isHover, setIsHover] = useState(false);
 
@@ -34,14 +34,14 @@ export default function ListItem({
       <Form
         environmentId={environmentVariable.environment_id}
         environmentVariable={environmentVariable}
-        onCancelClick={onCancelClick}
+        onCancel={onCancel}
       />
     );
   }
 
   const handleEditClick = (): void => {
     setIsHover(false);
-    onEditClick(environmentVariable.id);
+    onEdit(environmentVariable.id);
   };
 
   return (
@@ -70,10 +70,7 @@ export default function ListItem({
         >
           {isHover ? environmentVariable.value : copy.encrypted}
         </Text>
-        <EditDeleteButtons
-          onDeleteClick={onDeleteClick}
-          onEditClick={handleEditClick}
-        />
+        <EditDeleteButtons onDelete={onDelete} onEdit={handleEditClick} />
       </Box>
     </StyledBox>
   );

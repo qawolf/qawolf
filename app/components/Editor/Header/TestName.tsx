@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { useUpdateTest } from "../../../hooks/mutations";
 import { Test } from "../../../lib/types";
+import { copy } from "../../../theme/copy";
 import { borderSize, edgeSize } from "../../../theme/theme-new";
 import Divider from "../../shared-new/Divider";
 import EditableText from "../../shared-new/EditableText";
@@ -33,6 +34,7 @@ export default function TestName({ disabled, test }: Props): JSX.Element {
         disabled={disabled}
         isEdit={isEdit}
         onSave={handleSave}
+        placeholder={copy.testNamePlaceholder}
         setIsEdit={setIsEdit}
         value={test.name}
       />

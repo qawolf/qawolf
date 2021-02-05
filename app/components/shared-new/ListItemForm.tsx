@@ -8,16 +8,16 @@ type Props = {
   children: ReactNode;
   focusId: string;
   isSaveDisabled: boolean;
-  onCancelClick: () => void;
-  onSaveClick: () => void;
+  onCancel: () => void;
+  onSave: () => void;
 };
 
 export default function ListItemForm({
   children,
   focusId,
   isSaveDisabled,
-  onCancelClick,
-  onSaveClick,
+  onCancel,
+  onSave,
 }: Props): JSX.Element {
   // focus input when form renders
   useEffect(() => {
@@ -26,7 +26,7 @@ export default function ListItemForm({
   }, [focusId]);
 
   return (
-    <Keyboard onEnter={onSaveClick}>
+    <Keyboard onEnter={onSave}>
       <Box
         align="center"
         direction="row"
@@ -37,13 +37,13 @@ export default function ListItemForm({
         <Button
           label={copy.cancel}
           margin={{ horizontal: "xxsmall" }}
-          onClick={onCancelClick}
+          onClick={onCancel}
           type="secondary"
         />
         <Button
           isDisabled={isSaveDisabled}
           label={copy.save}
-          onClick={onSaveClick}
+          onClick={onSave}
           type="primary"
         />
       </Box>

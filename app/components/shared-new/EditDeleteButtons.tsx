@@ -8,8 +8,8 @@ import Edit from "./icons/Edit";
 import Trash from "./icons/Trash";
 
 type Props = {
-  onDeleteClick: () => void;
-  onEditClick: () => void;
+  onDelete: () => void;
+  onEdit: () => void;
 };
 
 export const StyledBox = styled(Box)`
@@ -26,15 +26,15 @@ export const StyledBox = styled(Box)`
 `;
 
 export default function EditDeleteButtons({
-  onDeleteClick,
-  onEditClick,
+  onDelete,
+  onEdit,
 }: Props): JSX.Element {
   return (
     <Box direction="row" flex={false} margin={{ vertical: "xxsmall" }}>
       <Button
         IconComponent={Edit}
         a11yTitle={copy.edit}
-        onClick={onEditClick}
+        onClick={onEdit}
         type="ghost"
       />
       <Button
@@ -42,7 +42,7 @@ export default function EditDeleteButtons({
         a11yTitle={copy.delete}
         hoverType="danger"
         margin={{ left: "xxsmall" }}
-        onClick={onDeleteClick}
+        onClick={onDelete}
         type="ghost"
       />
     </Box>

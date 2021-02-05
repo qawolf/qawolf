@@ -17,6 +17,7 @@ type Props = {
   disabled?: boolean;
   isEdit: boolean;
   onSave: (value: string) => void;
+  placeholder: string;
   setIsEdit: (isEdit: boolean) => void;
   value: string;
 };
@@ -38,6 +39,7 @@ export default function EditableText({
   disabled,
   isEdit,
   onSave,
+  placeholder,
   setIsEdit,
   value,
 }: Props): JSX.Element {
@@ -88,6 +90,7 @@ export default function EditableText({
       <TextInput
         onChange={handleChange}
         onSave={handleSave}
+        placeholder={placeholder}
         value={editedValue}
       />
     );

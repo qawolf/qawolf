@@ -11,7 +11,7 @@ import Menu, { Direction } from "../Menu";
 type Type = "dark" | "light";
 
 type Props = {
-  children: ReactNode;
+  children: ReactNode[];
   direction?: Direction;
   isDisabled?: boolean;
   label: string;
@@ -30,7 +30,10 @@ export default function Select({
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleClick = (): void => setIsOpen((prev) => !prev);
+  const handleClick = (): void => {
+    if (!children.length) return;
+    setIsOpen((prev) => !prev);
+  };
 
   const handleClose = (): void => setIsOpen(false);
 

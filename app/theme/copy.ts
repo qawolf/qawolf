@@ -103,6 +103,7 @@ export const copy = {
   envVariablesDetail:
     "Use environment variables for values that you don’t want visible in your code or to change the behavior of your test based on the environment",
   envVariablesEmpty: "No variables added to this environment",
+  envVariablesNoEnvironment: "Please select an environment to see variables",
   environment: "Environment",
   environmentDelete: "Delete environment",
   environmentDeleteConfirm:
@@ -110,12 +111,9 @@ export const copy = {
   environmentDeleteConfirm2: "to confirm.",
   environmentEdit: (name: string): string =>
     name ? `Edit ${name} environment` : "",
-  environmentName: "Environment name",
   environmentNew: "Add environment",
   environmentNotSelected: "No environment",
-  environmentsEdit: "Edit environments",
-  environmentsEditDetail: "Create, rename, or delete environments",
-  environmentsEmpty: "You don't have any environments",
+  environments: "Environments",
   getInTouch: "Get in touch",
   getStarted: "Get started",
   gitHub: "GitHub",
@@ -174,6 +172,7 @@ export const copy = {
   production: "Production",
   qawolf: "QA Wolf",
   readDocs: "Read the docs",
+  rename: "Rename",
   roadmap: "Roadmap",
   run: "Run",
   runOnDeployment: (repoName: string): string =>
@@ -233,7 +232,7 @@ export const copy = {
   testAcrossBrowsers: "Test in Chromium, Firefox, and WebKit",
   testFail: "Fail",
   testInProgress: "Running",
-  testMinutes: "Minutes",
+  testNamePlaceholder: "Name your test",
   testPass: "Pass",
   tryForFree: "Try for free",
   upgradePlan: "Upgrade plan",

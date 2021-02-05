@@ -13,57 +13,82 @@ import Text from "../Text";
 
 type Props = {
   IconComponent?: Icon;
+  className?: string;
   isSelected?: boolean;
   label: string;
+  noIcon?: boolean;
   onClick: () => void;
+  type?: "danger";
 };
 
-const iconProps = {
-  color: colors.gray9,
-  size: edgeSize.small,
-};
-
-const StyledButton = styled(Button)`
-  transition: background ${transitionDuration};
-
-  &:hover {
-    background: ${colors.gray2};
-  }
-
-  &:active {
-    background: ${colors.gray3};
-  }
-`;
-
-export default function Option({
+function Option({
   IconComponent: PropsIconComponent,
+  className,
   isSelected,
   label,
+  noIcon,
   onClick,
+  type,
 }: Props): JSX.Element {
   const IconComponent = PropsIconComponent || (isSelected ? Check : undefined);
 
+  const color = type === "danger" ? colors.danger5 : colors.gray9;
+
   return (
-    <StyledButton onClick={onClick} plain>
+    <Button className={className} onClick={onClick} plain>
       <Box
         align="center"
         direction="row"
         pad={{ right: "xsmall", left: "xxsmall", vertical: "xxsmall" }}
       >
-        {!!IconComponent && <IconComponent {...iconProps} />}
+        {!!IconComponent && (
+          <IconComponent color={color} size={edgeSize.small} />
+        )}
         <Text
-          color="gray9"
-          margin={{
-            left: IconComponent
-              ? "xxsmall"
-              : `calc(${edgeSize.small} + ${edgeSize.xxsmall})`,
-          }}
+          color={color}
+          margin={
+            noIcon
+              ? { left: "xxxsmall" }
+              : {
+                  left: IconComponent
+                    ? "xxsmall"
+                    : `calc(${edgeSize.small} + ${edgeSize.xxsmall})`,
+                }
+          }
           size="component"
           style={overflowStyle}
         >
           {label}
         </Text>
       </Box>
-    </StyledButton>
+    </Button>
   );
 }
+
+const StyledOption = styled(Option)`
+  transition: background ${transitionDuration};
+
+  p {
+    transition: color ${transitionDuration};
+  }
+
+  &:hover {
+    background: ${(props) =>
+      props.type === "danger" ? colors.danger5 : colors.gray2};
+
+    ${(props) =>
+      props.type === "danger" &&
+      `
+      p {
+        color: ${colors.gray0};
+      }
+    `}
+  }
+
+  &:active {
+    background: ${(props) =>
+      props.type === "danger" ? colors.dangerDarker : colors.gray3};
+  }
+`;
+
+export default StyledOption;

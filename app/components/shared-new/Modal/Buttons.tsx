@@ -1,18 +1,18 @@
 import { Box } from "grommet";
 
-import { copy } from "../../theme/copy";
-import Button from "./AppButton";
-import Add from "./icons/Add";
+import { copy } from "../../../theme/copy";
+import Button from "../AppButton";
+import Add from "../icons/Add";
 
 type Props = {
   closeModal: () => void;
-  onCreateClick: () => void;
+  onCreate: () => void;
   secondaryLabel: string;
 };
 
-export default function ModalButtons({
+export default function Buttons({
   closeModal,
-  onCreateClick,
+  onCreate,
   secondaryLabel,
 }: Props): JSX.Element {
   return (
@@ -25,7 +25,7 @@ export default function ModalButtons({
       <Button
         IconComponent={Add}
         label={secondaryLabel}
-        onClick={onCreateClick}
+        onClick={onCreate}
         type="secondary"
       />
       <Button label={copy.done} onClick={closeModal} type="primary" />

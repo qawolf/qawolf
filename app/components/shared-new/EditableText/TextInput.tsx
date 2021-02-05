@@ -8,6 +8,7 @@ import AppTextInput from "../AppTextInput";
 type Props = {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onSave: () => void;
+  placeholder: string;
   value: string;
 };
 
@@ -16,6 +17,7 @@ const width = "480px";
 export default function TextInput({
   onChange,
   onSave,
+  placeholder,
   value,
 }: Props): JSX.Element {
   const ref = useRef<HTMLInputElement>(null);
@@ -38,6 +40,7 @@ export default function TextInput({
         <AppTextInput
           onChange={onChange}
           pad={edgeSize.xxsmall}
+          placeholder={placeholder}
           ref={ref}
           size="componentHeader"
           value={value}
