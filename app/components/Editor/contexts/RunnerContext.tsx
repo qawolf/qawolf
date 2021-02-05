@@ -66,6 +66,8 @@ export const RunnerProvider: FC = ({ children }) => {
     runner,
   });
 
+  // create happens in dashboard
+  // check state -> createdCodeToRun (version 0, test id in URL)
   const createRunTest = async (variables: CreateTestVariables) => {
     const test = await createTest({ variables });
 

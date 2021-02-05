@@ -1,7 +1,5 @@
 import { Log } from "./types";
 
-export const DEFAULT_URL = "http://todomvc.com/examples/react";
-
 export const durationToText = (
   startedAt: string,
   completedAt: string
