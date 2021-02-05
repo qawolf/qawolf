@@ -114,7 +114,7 @@ describe("updateRunResolver", () => {
     expect(run.started_at).toBeTruthy();
   });
 
-  it("updates the run if run failed", async () => {
+  it("updates the run and expires the runner if run failed", async () => {
     await updateRunResolver(
       {},
       { current_line: 2, id: "run2Id", status: "fail" },
@@ -124,7 +124,7 @@ describe("updateRunResolver", () => {
     const run = await db("runs").select("*").where({ id: "run2Id" }).first();
 
     expect(run).toMatchObject({ current_line: 2, status: "fail" });
-    expect(runnerModel.expireRunner).not.toBeCalled();
+    expect(runnerModel.expireRunner).toBeCalled();
   });
 
   it("updates the run and expires the runner if run succeeded", async () => {
