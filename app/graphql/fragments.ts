@@ -131,7 +131,6 @@ export const testFragment = gql`
     is_enabled
     name
     updated_at
-    url
     version
   }
 `;

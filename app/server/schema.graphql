@@ -399,9 +399,6 @@ type Test {
   "Date and time at which this test was last updated"
   updated_at: String!
 
-  "Test URL"
-  url: String!
-
   "Test version, incremented as the test code changes"
   version: Int!
 }

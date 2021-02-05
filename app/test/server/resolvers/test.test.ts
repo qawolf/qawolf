@@ -106,7 +106,6 @@ describe("createTestResolver", () => {
       creator_id: "userId",
       id: expect.any(String),
       name: "My Test 2",
-      url: "https://google.com",
     });
 
     await db("group_tests").where({ test_id: test.id }).del();
@@ -227,7 +226,6 @@ describe("testResolver", () => {
         creator_id: "userId",
         code: 'const x = "hello"',
         id: "testId",
-        url: "https://github.com",
       },
     });
   });
@@ -253,7 +251,6 @@ describe("testResolver", () => {
         creator_id: "userId",
         code: 'const x = "hello"',
         id: "testId",
-        url: "https://github.com",
       },
     });
   });

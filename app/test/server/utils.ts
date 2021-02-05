@@ -142,7 +142,6 @@ type BuildTest = {
   runner_locations?: string[];
   runner_requested_at?: string;
   team_id?: string;
-  url?: string;
   version?: number;
 };
 
@@ -429,7 +428,6 @@ export const buildTest = ({
   name,
   runner_locations,
   runner_requested_at,
-  url,
   version,
 }: BuildTest): Test => {
   const finalI = i || 1;
@@ -449,7 +447,6 @@ export const buildTest = ({
       : null,
     runner_requested_at: runner_requested_at || null,
     updated_at: timestamp,
-    url: url || "https://github.com",
     version: version || 11,
   };
 };

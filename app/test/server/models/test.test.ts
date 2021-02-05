@@ -119,25 +119,20 @@ describe("createTestAndGroupTests", () => {
         creator_id: "userId",
         group_ids: ["groupId", "group2Id"],
         team_id: "teamId",
-        url: "https://qawolf.com",
       },
       { logger }
     );
 
-    const tests = await db
-      .select("*")
-      .from("tests")
-      .where({ url: "https://qawolf.com" });
+    const tests = await db.select("*").from("tests").where({ code: "code" });
 
     expect(tests[0]).toMatchObject({
-      team_id: "teamId",
       code: "code",
       creator_id: "userId",
       deleted_at: null,
       id: expect.any(String),
       is_enabled: true,
       name: "My Test",
-      url: "https://qawolf.com",
+      team_id: "teamId",
       version: 0,
     });
 
@@ -169,7 +164,6 @@ describe("deleteTests", () => {
         creator_id: "userId",
         group_ids: ["groupId"],
         team_id: "teamId",
-        url: "https://qawolf.com",
       },
       { logger }
     );
@@ -180,7 +174,6 @@ describe("deleteTests", () => {
         creator_id: "userId",
         group_ids: ["groupId"],
         team_id: "teamId",
-        url: "https://qawolf.com",
       },
       { logger }
     );
@@ -359,7 +352,6 @@ describe("findTest", () => {
       creator_id: "userId",
       id: "testId",
       runner_locations: null,
-      url: "https://github.com",
       version: 11,
     });
   });
