@@ -87,7 +87,12 @@ export default function ListItem({
       pad={{ left: "xsmall", right: "xxsmall", vertical: "xxsmall" }}
       round={borderSize.small}
     >
-      <Text color="gray9" size="component" style={overflowStyle}>
+      <Text
+        color="gray9"
+        data-test="environment"
+        size="component"
+        style={overflowStyle}
+      >
         {environment.name}
       </Text>
       <Options
