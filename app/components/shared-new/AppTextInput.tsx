@@ -1,4 +1,4 @@
-import { TextInput as GrommetTextInput } from "grommet";
+import { Box, TextInput as GrommetTextInput } from "grommet";
 import { ChangeEvent, forwardRef, KeyboardEvent, Ref } from "react";
 import styled from "styled-components";
 
@@ -14,7 +14,7 @@ import {
 import { Size } from "./Text/config";
 
 type Props = {
-  hasError?: boolean;
+  error?: string;
   id?: string;
   name?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -47,7 +47,7 @@ const StyledGrommetTextInput = styled(GrommetTextInput)`
 
 function TextInput(
   {
-    hasError,
+    error,
     id,
     name,
     onChange,
@@ -63,7 +63,7 @@ function TextInput(
   const finalSize = size || "component";
 
   const style = {
-    borderColor: hasError ? colors.danger5 : undefined,
+    borderColor: error ? colors.danger5 : undefined,
     fontFamily: fontFamily[finalSize],
     fontSize: text[finalSize].size,
     padding: `0 ${pad || `calc(${edgeSize.xsmall} - ${borderSize.xsmall})`}`,
@@ -71,17 +71,19 @@ function TextInput(
   };
 
   return (
-    <StyledGrommetTextInput
-      id={id}
-      name={name}
-      onChange={onChange}
-      onKeyDown={onKeyDown}
-      placeholder={placeholder}
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ref={ref as any}
-      style={style}
-      value={value}
-    />
+    <Box>
+      <StyledGrommetTextInput
+        id={id}
+        name={name}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        placeholder={placeholder}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ref={ref as any}
+        style={style}
+        value={value}
+      />
+    </Box>
   );
 }
 

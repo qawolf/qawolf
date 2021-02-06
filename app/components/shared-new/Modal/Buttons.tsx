@@ -6,12 +6,14 @@ import Add from "../icons/Add";
 
 type Props = {
   closeModal: () => void;
+  hideSecondary?: boolean;
   onCreate: () => void;
   secondaryLabel: string;
 };
 
 export default function Buttons({
   closeModal,
+  hideSecondary,
   onCreate,
   secondaryLabel,
 }: Props): JSX.Element {
@@ -19,15 +21,17 @@ export default function Buttons({
     <Box
       direction="row"
       flex={false}
-      justify="between"
+      justify={hideSecondary ? "end" : "between"}
       margin={{ top: "medium" }}
     >
-      <Button
-        IconComponent={Add}
-        label={secondaryLabel}
-        onClick={onCreate}
-        type="secondary"
-      />
+      {!hideSecondary && (
+        <Button
+          IconComponent={Add}
+          label={secondaryLabel}
+          onClick={onCreate}
+          type="secondary"
+        />
+      )}
       <Button label={copy.done} onClick={closeModal} type="primary" />
     </Box>
   );

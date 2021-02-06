@@ -172,6 +172,7 @@ export const copy = {
   qawolf: "QA Wolf",
   readDocs: "Read the docs",
   rename: "Rename",
+  required: "Required",
   roadmap: "Roadmap",
   run: "Run",
   runOnDeployment: (repoName: string): string =>

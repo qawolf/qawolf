@@ -118,6 +118,7 @@ export default function List({
       <Divider />
       <ModalButtons
         closeModal={closeModal}
+        hideSecondary={!environmentId}
         onCreate={handleCreate}
         secondaryLabel={copy.envVariableNew}
       />
