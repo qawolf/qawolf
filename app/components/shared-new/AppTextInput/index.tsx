@@ -1,4 +1,4 @@
-import { Box, TextInput as GrommetTextInput } from "grommet";
+import { Box, BoxProps, TextInput as GrommetTextInput } from "grommet";
 import {
   ChangeEvent,
   forwardRef,
@@ -23,8 +23,10 @@ import { Size } from "../Text/config";
 import ErrorBadge from "./ErrorBadge";
 
 type Props = {
+  autoFocus?: boolean;
   error?: string;
   id?: string;
+  margin?: BoxProps["margin"];
   name?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
@@ -56,8 +58,10 @@ const StyledGrommetTextInput = styled(GrommetTextInput)`
 
 function TextInput(
   {
+    autoFocus,
     error,
     id,
+    margin,
     name,
     onChange,
     onKeyDown,
@@ -91,8 +95,9 @@ function TextInput(
   };
 
   return (
-    <Box style={{ position: "relative" }} width={width}>
+    <Box margin={margin} style={{ position: "relative" }} width={width}>
       <StyledGrommetTextInput
+        autoFocus={autoFocus}
         id={id}
         name={name}
         onChange={onChange}

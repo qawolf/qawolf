@@ -23,13 +23,6 @@ export default function ConfirmDeleteEnvironment({
   const [error, setError] = useState("");
   const [name, setName] = useState("");
 
-  const ref = useRef<HTMLInputElement>(null);
-
-  // focus text input
-  useEffect(() => {
-    if (ref.current) ref.current.focus();
-  }, []);
-
   const [deleteEnvironment, { loading }] = useDeleteEnvironment();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -67,10 +60,10 @@ export default function ConfirmDeleteEnvironment({
           {copy.environmentDeleteConfirm2}
         </Text>
         <TextInput
+          autoFocus
           error={error}
           onChange={handleChange}
           placeholder={environment.name}
-          ref={ref}
           value={name}
         />
       </ConfirmDelete>

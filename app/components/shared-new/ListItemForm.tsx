@@ -6,7 +6,6 @@ import Button from "./AppButton";
 
 type Props = {
   children: ReactNode;
-  focusId: string;
   isSaveDisabled: boolean;
   onCancel: () => void;
   onSave: () => void;
@@ -14,17 +13,10 @@ type Props = {
 
 export default function ListItemForm({
   children,
-  focusId,
   isSaveDisabled,
   onCancel,
   onSave,
 }: Props): JSX.Element {
-  // focus input when form renders
-  useEffect(() => {
-    if (!focusId) return;
-    document.getElementById(focusId)?.focus();
-  }, [focusId]);
-
   return (
     <Keyboard onEnter={onSave}>
       <Box

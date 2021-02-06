@@ -26,4 +26,4 @@ function ErrorBadge(
   );
 }
 
-export default forwardRef(ErrorBadge);
+export default forwardRef<HTMLDivElement, Props>(ErrorBadge);

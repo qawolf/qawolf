@@ -76,12 +76,12 @@ export default function Form({
 
   return (
     <ListItemForm
-      focusId={id}
       isSaveDisabled={isCreateLoading || isEditLoading}
       onCancel={onCancel}
       onSave={handleSave}
     >
       <TextInput
+        autoFocus
         error={nameError}
         id={id}
         onChange={handleNameChange}

@@ -1,5 +1,5 @@
 import { Box, Keyboard } from "grommet";
-import { ChangeEvent, useEffect, useRef } from "react";
+import { ChangeEvent, useRef } from "react";
 
 import { useOnClickOutside } from "../../../hooks/onClickOutside";
 import { edgeSize } from "../../../theme/theme-new";
@@ -22,11 +22,6 @@ export default function TextInput({
 }: Props): JSX.Element {
   const ref = useRef<HTMLInputElement>(null);
 
-  // focus text input
-  useEffect(() => {
-    if (ref.current) ref.current.focus();
-  }, []);
-
   const handleBlur = (): void => {
     onSave();
     if (ref.current) ref.current.blur();
@@ -38,6 +33,7 @@ export default function TextInput({
     <Keyboard onEnter={onSave} onEsc={handleBlur}>
       <Box>
         <AppTextInput
+          autoFocus
           onChange={onChange}
           pad={edgeSize.xxsmall}
           placeholder={placeholder}
