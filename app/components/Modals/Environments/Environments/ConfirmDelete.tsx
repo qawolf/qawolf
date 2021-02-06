@@ -20,7 +20,7 @@ export default function ConfirmDeleteEnvironment({
   environment,
   onClose,
 }: Props): JSX.Element {
-  const [hasError, setHasError] = useState(false);
+  const [error, setError] = useState("");
   const [name, setName] = useState("");
 
   const ref = useRef<HTMLInputElement>(null);
@@ -38,11 +38,11 @@ export default function ConfirmDeleteEnvironment({
 
   const handleDelete = (): void => {
     if (name !== environment.name) {
-      setHasError(true);
+      setError(copy.mustMatch);
       return;
     }
 
-    setHasError(false);
+    setError("");
     deleteEnvironment({ variables: { id: environment.id } }).then(
       ({ data }) => {
         onClose(data?.deleteEnvironment.id);
@@ -67,7 +67,7 @@ export default function ConfirmDeleteEnvironment({
           {copy.environmentDeleteConfirm2}
         </Text>
         <TextInput
-          hasError={hasError}
+          error={error}
           onChange={handleChange}
           placeholder={environment.name}
           ref={ref}

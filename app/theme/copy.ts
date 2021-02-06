@@ -96,7 +96,7 @@ export const copy = {
   envVariableDelete: "Delete environment variable",
   envVariableDeleteConfirm:
     "The following environment variable will be permanently deleted. Are you sure you want to continue?",
-  envVariableNamePlaceholder: "MY_VARIABLE",
+  envVariableNamePlaceholder: "MY_VAR",
   envVariableNew: "Add variable",
   envVariableValuePlaceholder: "value",
   envVariables: "Environment variables",
@@ -142,6 +142,7 @@ export const copy = {
   manageGitHubRepos: "Manage GitHub repos",
   meet: "Meet your QA Wolf",
   members: "Members:",
+  mustMatch: "Must match",
   myTests: "My tests",
   name: "Name",
   netlify: "Netlify",

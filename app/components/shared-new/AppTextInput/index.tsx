@@ -1,5 +1,13 @@
 import { Box, TextInput as GrommetTextInput } from "grommet";
-import { ChangeEvent, forwardRef, KeyboardEvent, Ref } from "react";
+import {
+  ChangeEvent,
+  forwardRef,
+  KeyboardEvent,
+  Ref,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import styled from "styled-components";
 
 import {
@@ -10,8 +18,9 @@ import {
   fontWeight,
   text,
   transition,
-} from "../../theme/theme-new";
-import { Size } from "./Text/config";
+} from "../../../theme/theme-new";
+import { Size } from "../Text/config";
+import ErrorBadge from "./ErrorBadge";
 
 type Props = {
   error?: string;
@@ -60,18 +69,29 @@ function TextInput(
   }: Props,
   ref?: Ref<HTMLInputElement>
 ): JSX.Element {
+  const errorRef = useRef<HTMLDivElement>(null);
+  const [errorWidth, setErrorWidth] = useState(0);
+
+  useEffect(() => {
+    setErrorWidth(errorRef.current?.clientWidth || 0);
+  }, [error]);
+
   const finalSize = size || "component";
 
   const style = {
     borderColor: error ? colors.danger5 : undefined,
     fontFamily: fontFamily[finalSize],
     fontSize: text[finalSize].size,
-    padding: `0 ${pad || `calc(${edgeSize.xsmall} - ${borderSize.xsmall})`}`,
-    width,
+    paddingBottom: 0,
+    paddingLeft: pad || `calc(${edgeSize.xsmall} - ${borderSize.xsmall})`,
+    paddingRight:
+      pad ||
+      `calc(${edgeSize.xsmall} - ${borderSize.xsmall} + ${errorWidth}px)`,
+    paddingTop: 0,
   };
 
   return (
-    <Box>
+    <Box style={{ position: "relative" }} width={width}>
       <StyledGrommetTextInput
         id={id}
         name={name}
@@ -83,6 +103,7 @@ function TextInput(
         style={style}
         value={value}
       />
+      {!!error && <ErrorBadge error={error} ref={errorRef} />}
     </Box>
   );
 }

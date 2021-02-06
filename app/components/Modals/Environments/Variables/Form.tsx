@@ -1,4 +1,3 @@
-import { Box } from "grommet";
 import { ChangeEvent, useState } from "react";
 
 import {
@@ -19,13 +18,15 @@ type Props = {
 
 export const id = "environment-variable";
 
+const width = `calc(50% - (${edgeSize.xxsmall} / 2))`;
+
 export default function Form({
   environmentId,
   environmentVariable,
   onCancel,
 }: Props): JSX.Element {
-  const [hasNameError, setHasNameError] = useState(false);
-  const [hasValueError, setHasValueError] = useState(false);
+  const [nameError, setNameError] = useState("");
+  const [valueError, setValueError] = useState("");
 
   const [name, setName] = useState(environmentVariable?.name || "");
   const [value, setValue] = useState(environmentVariable?.value || "");
@@ -48,17 +49,14 @@ export default function Form({
   };
 
   const handleSave = (): void => {
-    if (!name) {
-      setHasNameError(true);
-      return;
-    }
-    if (!value) {
-      setHasValueError(true);
+    if (!name || !value) {
+      setNameError(name ? "" : copy.required);
+      setValueError(value ? "" : copy.required);
       return;
     }
 
-    setHasNameError(false);
-    setHasValueError(false);
+    setNameError("");
+    setValueError("");
 
     if (environmentVariable) {
       updateEnvironmentVariable({
@@ -84,18 +82,19 @@ export default function Form({
       onSave={handleSave}
     >
       <TextInput
-        hasError={hasNameError}
+        error={nameError}
         id={id}
         onChange={handleNameChange}
         placeholder={copy.envVariableNamePlaceholder}
         value={name}
+        width={width}
       />
-      <Box flex={false} width={edgeSize.xxsmall} />
       <TextInput
-        hasError={hasValueError}
+        error={valueError}
         onChange={handleValueChange}
         placeholder={copy.envVariableValuePlaceholder}
         value={value}
+        width={width}
       />
     </ListItemForm>
   );

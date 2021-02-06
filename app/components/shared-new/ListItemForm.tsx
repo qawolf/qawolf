@@ -33,7 +33,9 @@ export default function ListItemForm({
         flex={false}
         margin={{ vertical: "xxsmall" }}
       >
-        {children}
+        <Box direction="row" justify="between">
+          {children}
+        </Box>
         <Button
           label={copy.cancel}
           margin={{ horizontal: "xxsmall" }}

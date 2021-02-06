@@ -87,7 +87,7 @@ const StyledOption = styled(Option)`
 
   &:active {
     background: ${(props) =>
-      props.type === "danger" ? colors.dangerDarker : colors.gray3};
+      props.type === "danger" ? colors.danger7 : colors.gray3};
   }
 `;
 
