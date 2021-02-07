@@ -21,7 +21,7 @@ export default function CreateTest({ closeModal }: Props): JSX.Element {
   const { groupId } = useContext(StateContext);
 
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [url, setUrl] = useState("");
 
   const [createTest] = useCreateTest();
