@@ -124,6 +124,7 @@ export const copy = {
   helpers: "Helpers",
   history: "History",
   inProgress: "In progress",
+  invalidUrl: "Not a valid URL",
   joinMailingList: "Join our mailing list",
   joinWolfPack: "Join the wolf pack",
   key: "Key",
@@ -216,6 +217,7 @@ export const copy = {
   skipBoilerplateDetail:
     "Create tests 10x faster by converting your actions to code.",
   slackIntegration: "Add Slack channel",
+  somethingWrong: "Something went wrong",
   star: "Star",
   startTesting: "Start testing",
   startTestingFree: "Start testing for free",

@@ -12,13 +12,10 @@ import { RunTest, useRunTest } from "../hooks/runTest";
 import { SelectionHook, useSelection } from "../hooks/selection";
 import { TestContext } from "./TestContext";
 
-type CreateRunTest = (options: CreateTestVariables) => Promise<void>;
-
 type RunnerContext = ConnectRunnerHook &
   EnvHook &
   RunnerHook &
   SelectionHook & {
-    createRunTest: CreateRunTest;
     isCreateTestLoading: boolean;
     progress: RunProgress | null;
     runTest: RunTest["runTest"];
@@ -27,7 +24,6 @@ type RunnerContext = ConnectRunnerHook &
 
 export const RunnerContext = createContext<RunnerContext>({
   apiKey: null,
-  createRunTest: () => null,
   env: null,
   isCreateTestLoading: false,
   isRunnerConnected: false,
@@ -66,26 +62,12 @@ export const RunnerProvider: FC = ({ children }) => {
     runner,
   });
 
-  // create happens in dashboard
-  // check state -> createdCodeToRun (version 0, test id in URL)
-  const createRunTest = async (variables: CreateTestVariables) => {
-    const test = await createTest({ variables });
-
-    const { code, id, version } = test.data.createTest;
-
-    const params = variables.url.includes("localhost") ? "?local=1" : "";
-    replace(`${routes.test}/${id}${params}`);
-
-    runTest({ code, selection: null, test_id: id, version });
-  };
-
   useEffect(() => {
     controller?.setRunner(runner);
   }, [controller, runner]);
 
   const value = {
     apiKey,
-    createRunTest,
     env,
     isCreateTestLoading,
     isRunnerConnected,

@@ -1,20 +1,26 @@
 import { Box } from "grommet";
+import { Icon } from "grommet-icons";
 
 import { copy } from "../../../theme/copy";
 import Button from "../AppButton";
-import Add from "../icons/Add";
 
 type Props = {
-  closeModal: () => void;
+  SecondaryIconComponent?: Icon;
   hideSecondary?: boolean;
-  onCreate: () => void;
+  onPrimaryClick: () => void;
+  onSecondaryClick: () => void;
+  primaryIsDisabled?: boolean;
+  primaryLabel?: string;
   secondaryLabel: string;
 };
 
 export default function Buttons({
-  closeModal,
+  SecondaryIconComponent,
   hideSecondary,
-  onCreate,
+  onPrimaryClick,
+  onSecondaryClick,
+  primaryIsDisabled,
+  primaryLabel,
   secondaryLabel,
 }: Props): JSX.Element {
   return (
@@ -26,13 +32,18 @@ export default function Buttons({
     >
       {!hideSecondary && (
         <Button
-          IconComponent={Add}
+          IconComponent={SecondaryIconComponent}
           label={secondaryLabel}
-          onClick={onCreate}
+          onClick={onSecondaryClick}
           type="secondary"
         />
       )}
-      <Button label={copy.done} onClick={closeModal} type="primary" />
+      <Button
+        isDisabled={primaryIsDisabled}
+        label={primaryLabel || copy.done}
+        onClick={onPrimaryClick}
+        type="primary"
+      />
     </Box>
   );
 }
