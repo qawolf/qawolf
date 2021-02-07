@@ -362,6 +362,9 @@ describe("run model", () => {
 
   describe("updateRun", () => {
     it("updates existing run", async () => {
+      const run = await findRun("runId", { logger });
+      expect(run).toMatchObject({ completed_at: null, started_at: null });
+
       await updateRun(
         {
           code: "code",
@@ -372,12 +375,14 @@ describe("run model", () => {
         { logger }
       );
 
-      const run2 = await findRun("runId", { logger });
-      expect(run2).toMatchObject({
+      const updated = await findRun("runId", { logger });
+      // it should set completed_at and started_at
+      expect(updated).toMatchObject({
         code: "code",
         current_line: 11,
         completed_at: expect.any(Date),
         id: "runId",
+        started_at: expect.any(Date),
         status: "pass",
       });
     });
