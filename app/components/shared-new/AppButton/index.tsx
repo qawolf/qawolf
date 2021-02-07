@@ -106,6 +106,7 @@ const StyledAppButton = styled(AppButton)`
   height: ${edgeSize.large};
   transition: all ${transitionDuration};
 
+  ${(props) => !!props.isDisabled && "cursor: wait;"}
   ${(props) => !!props.width && `width: ${props.width};`}
 
   ${(props) =>
