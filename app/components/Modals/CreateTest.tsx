@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { ChangeEvent, useContext, useState } from "react";
 
 import { useCreateTest } from "../../hooks/mutations";
-import { isValidURL } from "../../lib/helpers";
+import { isValidURL, parseUrl } from "../../lib/helpers";
 import { routes } from "../../lib/routes";
 import { state } from "../../lib/state";
 import { copy } from "../../theme/copy";
@@ -43,13 +43,14 @@ export default function CreateTest({ closeModal }: Props): JSX.Element {
       return;
     }
 
-    if (!isValidURL(url)) {
+    const parsedUrl = parseUrl(url);
+    if (!isValidURL(parsedUrl)) {
       handleError(copy.invalidUrl);
       return;
     }
 
     createTest({
-      variables: { group_id: groupId, url },
+      variables: { group_id: groupId, url: parsedUrl },
     }).then(
       ({ data }) => {
         if (!data?.createTest) return;
