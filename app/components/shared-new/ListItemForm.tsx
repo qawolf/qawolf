@@ -1,5 +1,5 @@
 import { Box, Keyboard } from "grommet";
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 
 import { copy } from "../../theme/copy";
 import Button from "./AppButton";

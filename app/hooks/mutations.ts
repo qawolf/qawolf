@@ -152,7 +152,7 @@ type CreateTestData = {
   createTest: Test;
 };
 
-export type CreateTestVariables = {
+type CreateTestVariables = {
   group_id?: string | null;
   url: string;
 };

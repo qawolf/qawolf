@@ -1,9 +1,7 @@
 import { Box, CheckBox } from "grommet";
 import { Add } from "grommet-icons";
-import { useRouter } from "next/router";
 import { Dispatch, SetStateAction } from "react";
 
-import { routes } from "../../../../lib/routes";
 import { state } from "../../../../lib/state";
 import { Group, GroupTests, SelectedTest } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";

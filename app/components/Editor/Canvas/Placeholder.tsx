@@ -23,7 +23,7 @@ export default function Placeholder({
   mode,
   width,
 }: Props): JSX.Element {
-  const { isTestLoading, run } = useContext(TestContext);
+  const { isTestLoading } = useContext(TestContext);
   const { isUserLoading, wolf } = useContext(UserContext);
   const { isRunnerConnected, shouldRequestRunner } = useContext(RunnerContext);
 

@@ -1,5 +1,5 @@
 import { Box } from "grommet";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 import { useDeleteEnvironment } from "../../../../hooks/mutations";
 import { Environment } from "../../../../lib/types";

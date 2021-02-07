@@ -1,5 +1,5 @@
 import { Box } from "grommet";
-import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useRef, useState } from "react";
 
 import {
   useCreateEnvironment,
