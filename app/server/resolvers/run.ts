@@ -139,7 +139,7 @@ export const updateRunResolver = async (
       updates.status = status;
     }
 
-    if (status === "pass") {
+    if (["fail", "pass"].includes(status)) {
       await expireRunner({ run_id: id }, { logger, trx });
     }
 

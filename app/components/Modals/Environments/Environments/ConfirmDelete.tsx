@@ -1,5 +1,5 @@
 import { Box } from "grommet";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 import { useDeleteEnvironment } from "../../../../hooks/mutations";
 import { Environment } from "../../../../lib/types";
@@ -20,15 +20,8 @@ export default function ConfirmDeleteEnvironment({
   environment,
   onClose,
 }: Props): JSX.Element {
-  const [hasError, setHasError] = useState(false);
+  const [error, setError] = useState("");
   const [name, setName] = useState("");
-
-  const ref = useRef<HTMLInputElement>(null);
-
-  // focus text input
-  useEffect(() => {
-    if (ref.current) ref.current.focus();
-  }, []);
 
   const [deleteEnvironment, { loading }] = useDeleteEnvironment();
 
@@ -38,11 +31,11 @@ export default function ConfirmDeleteEnvironment({
 
   const handleDelete = (): void => {
     if (name !== environment.name) {
-      setHasError(true);
+      setError(copy.mustMatch);
       return;
     }
 
-    setHasError(false);
+    setError("");
     deleteEnvironment({ variables: { id: environment.id } }).then(
       ({ data }) => {
         onClose(data?.deleteEnvironment.id);
@@ -67,10 +60,10 @@ export default function ConfirmDeleteEnvironment({
           {copy.environmentDeleteConfirm2}
         </Text>
         <TextInput
-          hasError={hasError}
+          autoFocus
+          error={error}
           onChange={handleChange}
           placeholder={environment.name}
-          ref={ref}
           value={name}
         />
       </ConfirmDelete>

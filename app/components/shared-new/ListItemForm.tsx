@@ -1,12 +1,11 @@
 import { Box, Keyboard } from "grommet";
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 
 import { copy } from "../../theme/copy";
 import Button from "./AppButton";
 
 type Props = {
   children: ReactNode;
-  focusId: string;
   isSaveDisabled: boolean;
   onCancel: () => void;
   onSave: () => void;
@@ -14,17 +13,10 @@ type Props = {
 
 export default function ListItemForm({
   children,
-  focusId,
   isSaveDisabled,
   onCancel,
   onSave,
 }: Props): JSX.Element {
-  // focus input when form renders
-  useEffect(() => {
-    if (!focusId) return;
-    document.getElementById(focusId)?.focus();
-  }, [focusId]);
-
   return (
     <Keyboard onEnter={onSave}>
       <Box
@@ -33,7 +25,9 @@ export default function ListItemForm({
         flex={false}
         margin={{ vertical: "xxsmall" }}
       >
-        {children}
+        <Box direction="row" justify="between">
+          {children}
+        </Box>
         <Button
           label={copy.cancel}
           margin={{ horizontal: "xxsmall" }}

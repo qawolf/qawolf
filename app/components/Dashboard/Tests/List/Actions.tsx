@@ -1,9 +1,8 @@
 import { Box, CheckBox } from "grommet";
 import { Add } from "grommet-icons";
-import { useRouter } from "next/router";
 import { Dispatch, SetStateAction } from "react";
 
-import { routes } from "../../../../lib/routes";
+import { state } from "../../../../lib/state";
 import { Group, GroupTests, SelectedTest } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import IconButton from "../../../shared/IconButton";
@@ -31,10 +30,8 @@ export default function Actions({
   selectedTests,
   setSearch,
 }: Props): JSX.Element {
-  const { push } = useRouter();
-
   const handleClick = () => {
-    push(routes.create);
+    state.setModal({ name: "createTest" });
   };
 
   return (

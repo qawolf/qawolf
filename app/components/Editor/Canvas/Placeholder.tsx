@@ -23,7 +23,7 @@ export default function Placeholder({
   mode,
   width,
 }: Props): JSX.Element {
-  const { isTestLoading, run } = useContext(TestContext);
+  const { isTestLoading } = useContext(TestContext);
   const { isUserLoading, wolf } = useContext(UserContext);
   const { isRunnerConnected, shouldRequestRunner } = useContext(RunnerContext);
 
@@ -39,13 +39,6 @@ export default function Placeholder({
     iconHtml = null;
   }
 
-  if (run?.suite_id && !run.started_at) {
-    // show preparing placeholder if suite run has not started
-    message = `${copy.notStarted}...`;
-  } else if (mode === "create") {
-    iconHtml = null;
-    message = "";
-  }
   // ask the user to run the test if there is no runner connected or pending
   else if (
     mode === "test" &&

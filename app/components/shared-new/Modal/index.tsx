@@ -5,6 +5,7 @@ import { theme } from "../../../theme/theme-new";
 import Layer from "../Layer";
 
 type Props = {
+  a11yTitle?: string;
   children: ReactNode;
   closeModal: () => void;
   width?: BoxProps["width"];
@@ -13,6 +14,7 @@ type Props = {
 const defaultWidth = "480px";
 
 export default function Modal({
+  a11yTitle,
   children,
   closeModal,
   width,
@@ -24,7 +26,9 @@ export default function Modal({
         onClickOutside={closeModal}
         onEsc={closeModal}
       >
-        <Box width={width || defaultWidth}>{children}</Box>
+        <Box a11yTitle={a11yTitle} width={width || defaultWidth}>
+          {children}
+        </Box>
       </Layer>
     </ThemeContext.Extend>
   );

@@ -1,0 +1,116 @@
+import { Box, BoxProps, TextInput as GrommetTextInput } from "grommet";
+import {
+  ChangeEvent,
+  forwardRef,
+  KeyboardEvent,
+  Ref,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import styled from "styled-components";
+
+import {
+  borderSize,
+  colors,
+  edgeSize,
+  fontFamily,
+  fontWeight,
+  text,
+  transition,
+} from "../../../theme/theme-new";
+import { Size } from "../Text/config";
+import ErrorBadge from "./ErrorBadge";
+
+type Props = {
+  autoFocus?: boolean;
+  error?: string;
+  id?: string;
+  margin?: BoxProps["margin"];
+  name?: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
+  pad?: string;
+  placeholder?: string;
+  size?: Size;
+  value: string;
+  width?: string;
+};
+
+const StyledGrommetTextInput = styled(GrommetTextInput)`
+  border-color: ${colors.fill20};
+  border-radius: ${borderSize.small};
+  border-width: ${borderSize.xsmall};
+  color: ${colors.textDark};
+  font-weight: ${fontWeight.normal};
+  height: ${edgeSize.large};
+  line-height: ${edgeSize.large};
+  transition: ${transition};
+
+  &:focus {
+    border-color: ${colors.primary};
+  }
+
+  &::placeholder {
+    color: ${colors.gray5};
+  }
+`;
+
+function TextInput(
+  {
+    autoFocus,
+    error,
+    id,
+    margin,
+    name,
+    onChange,
+    onKeyDown,
+    pad,
+    placeholder,
+    size,
+    value,
+    width,
+  }: Props,
+  ref?: Ref<HTMLInputElement>
+): JSX.Element {
+  const errorRef = useRef<HTMLDivElement>(null);
+  const [errorWidth, setErrorWidth] = useState(0);
+
+  useEffect(() => {
+    setErrorWidth(errorRef.current?.clientWidth || 0);
+  }, [error]);
+
+  const finalSize = size || "component";
+
+  const style = {
+    borderColor: error ? colors.danger5 : undefined,
+    fontFamily: fontFamily[finalSize],
+    fontSize: text[finalSize].size,
+    paddingBottom: 0,
+    paddingLeft: pad || `calc(${edgeSize.xsmall} - ${borderSize.xsmall})`,
+    paddingRight:
+      pad ||
+      `calc(${edgeSize.xsmall} - ${borderSize.xsmall} + ${errorWidth}px)`,
+    paddingTop: 0,
+  };
+
+  return (
+    <Box margin={margin} style={{ position: "relative" }} width={width}>
+      <StyledGrommetTextInput
+        autoFocus={autoFocus}
+        id={id}
+        name={name}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        placeholder={placeholder}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ref={ref as any}
+        style={style}
+        value={value}
+      />
+      {!!error && <ErrorBadge error={error} ref={errorRef} />}
+    </Box>
+  );
+}
+
+export default forwardRef(TextInput);

@@ -5,7 +5,7 @@ import { colors } from "../../../theme/theme-new";
 export type Type = "danger" | "dark" | "ghost" | "primary" | "secondary";
 
 export const activeBackground: { [type in Type]: BoxProps["background"] } = {
-  danger: colors.dangerDarker,
+  danger: colors.danger7,
   dark: colors.gray10,
   ghost: colors.gray3,
   primary: colors.primaryDarker,

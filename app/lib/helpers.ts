@@ -1,7 +1,5 @@
 import { Log } from "./types";
 
-export const DEFAULT_URL = "http://todomvc.com/examples/react";
-
 export const durationToText = (
   startedAt: string,
   completedAt: string
@@ -105,8 +103,6 @@ export const isValidURL = (url: string): boolean => {
 };
 
 export const parseUrl = (url: string): string => {
-  if (!url) return DEFAULT_URL;
-
   if (url.includes("http://") || url.includes("https://")) return url;
 
   if (url.startsWith("localhost")) {

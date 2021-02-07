@@ -9,7 +9,6 @@ import { TestProvider } from "./contexts/TestContext";
 import EditorMobile from "./EditorMobile";
 import Header from "./Header";
 import { useMode } from "./hooks/mode";
-import Modals from "./Modals";
 import Sidebar from "./Sidebar";
 
 const WithProviders: FC = ({ children }): JSX.Element => {
@@ -36,7 +35,6 @@ export default function Editor(): JSX.Element {
               <Sidebar />
               <Application mode={mode} />
             </Box>
-            <Modals mode={mode} />
           </Box>
         )}
       </WithProviders>

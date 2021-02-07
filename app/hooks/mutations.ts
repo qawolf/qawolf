@@ -152,7 +152,7 @@ type CreateTestData = {
   createTest: Test;
 };
 
-export type CreateTestVariables = {
+type CreateTestVariables = {
   group_id?: string | null;
   url: string;
 };
@@ -344,8 +344,7 @@ const handleAuthenticatedUser = ({
     return;
   }
 
-  const route = user.onboarded_at ? routes.tests : routes.create;
-  replace(route);
+  replace(routes.tests);
 };
 
 export const useAcceptInvite = (): MutationTuple<

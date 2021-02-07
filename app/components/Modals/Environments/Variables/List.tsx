@@ -5,6 +5,7 @@ import { useEnvironmentVariables } from "../../../../hooks/queries";
 import { EnvironmentVariable } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import Divider from "../../../shared-new/Divider";
+import Add from "../../../shared-new/icons/Add";
 import ModalButtons from "../../../shared-new/Modal/Buttons";
 import Text from "../../../shared-new/Text";
 import Form, { id as formInputId } from "./Form";
@@ -117,8 +118,10 @@ export default function List({
       )}
       <Divider />
       <ModalButtons
-        closeModal={closeModal}
-        onCreate={handleCreate}
+        SecondaryIconComponent={Add}
+        hideSecondary={!environmentId}
+        onPrimaryClick={closeModal}
+        onSecondaryClick={handleCreate}
         secondaryLabel={copy.envVariableNew}
       />
     </>

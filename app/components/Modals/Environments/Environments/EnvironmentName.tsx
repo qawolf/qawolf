@@ -1,5 +1,5 @@
 import { Box } from "grommet";
-import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useRef, useState } from "react";
 
 import {
   useCreateEnvironment,
@@ -36,9 +36,6 @@ export default function EnvironmentName({
     updateEnvironment,
     { loading: isEditLoading },
   ] = useUpdateEnvironment();
-
-  // focus input
-  useEffect(() => ref.current?.focus(), []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setName(e.target.value);
@@ -94,6 +91,7 @@ export default function EnvironmentName({
   return (
     <Box margin={{ bottom: "2px" }}>
       <TextInput
+        autoFocus
         id={id}
         onChange={handleChange}
         onKeyDown={handleKeyDown}

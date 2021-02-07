@@ -1,4 +1,4 @@
-import { DEFAULT_URL, isValidURL, parseUrl } from "../../lib/helpers";
+import { isValidURL, parseUrl } from "../../lib/helpers";
 
 describe("isValidURL", () => {
   it("returns true if URL is valid", () => {
@@ -17,10 +17,6 @@ describe("isValidURL", () => {
 });
 
 describe("parseUrl", () => {
-  it("returns default URL if no URL specified", () => {
-    expect(parseUrl("")).toBe(DEFAULT_URL);
-  });
-
   it("returns URL if protocol included", () => {
     expect(parseUrl("https://news.ycombinator.com")).toBe(
       "https://news.ycombinator.com"
