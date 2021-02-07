@@ -264,11 +264,16 @@ export const updateRun = async (
     updated_at: timestamp,
   };
 
+  const run = await findRun(id, { logger, trx });
+
   if (options.status === "fail" || options.status === "pass") {
     updates.completed_at = timestamp;
+
+    // ensure started_at is set, so the run is no longer pending
+    // this could happen if the run started request never made it through
+    if (!run.started_at) updates.started_at = timestamp;
   }
 
-  const run = await findRun(id, { logger, trx });
   await (trx || db)("runs").where({ id }).update(updates);
 
   if (updates.completed_at && run.suite_id) {
