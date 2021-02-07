@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 
 import { useEnsureUser } from "../../hooks/ensureUser";
+import { useUpdateUser } from "../../hooks/mutations";
 import { useGroups, useSuite } from "../../hooks/queries";
 import { state } from "../../lib/state";
 import Spinner from "../shared/Spinner";
@@ -28,6 +29,16 @@ export default function Dashboard(): JSX.Element {
     { team_id: teamId },
     { groupId, skipOnCompleted: !!suiteId }
   );
+
+  const [updateUser] = useUpdateUser();
+
+  // show create test modal once if not onboarded
+  useEffect(() => {
+    if (!user || user.onboarded_at) return;
+
+    state.setModal({ name: "createTest" });
+    updateUser({ variables: { onboarded_at: new Date().toISOString() } });
+  }, [updateUser, user]);
 
   // update the current location in global state for use in editor back button
   useEffect(() => {
