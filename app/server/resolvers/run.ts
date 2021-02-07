@@ -1,8 +1,6 @@
 import { minutesFromNow } from "../../shared/utils";
 import { db } from "../db";
-import environment from "../environment";
 import { AuthenticationError } from "../errors";
-import { Logger } from "../Logger";
 import {
   findRun,
   findRunsForSuite,
@@ -11,7 +9,6 @@ import {
   updateRun,
 } from "../models/run";
 import { expireRunner, findRunner } from "../models/runner";
-import { postMessageToSlack } from "../services/alert/slack";
 import {
   Context,
   IdQuery,
@@ -26,28 +23,6 @@ import { ensureSuiteAccess, ensureTestAccess } from "./utils";
 type ValidateApiKey = {
   api_key: string | null;
   run: Run;
-};
-
-const postRunFailedMessageToSlack = async (
-  run: Run,
-  logger: Logger
-): Promise<void> => {
-  if (!environment.SLACK_UPDATES_WEBHOOK) return;
-
-  const log = logger.prefix("postRunFailedMessageToSlack");
-
-  try {
-    await postMessageToSlack({
-      message: {
-        text: `🚨 Run failure: run ${run.id} failed (test ${run.test_id})!`,
-      },
-      webhook_url: environment.SLACK_UPDATES_WEBHOOK,
-    });
-
-    log.debug("sent");
-  } catch (error) {
-    log.alert("could not send slack message", error.message);
-  }
 };
 
 /**
@@ -115,20 +90,10 @@ export const updateRunResolver = async (
   const log = logger.prefix("updateRunResolver");
   log.debug(id);
 
-  let postMessagePromise: Promise<unknown> = Promise.resolve();
-
   const updatedRun = await db.transaction(async (trx) => {
     const run = await findRun(id, { logger, trx });
 
     await validateApiKey({ api_key, run }, { logger, trx });
-
-    if (status === "fail") {
-      // wait up to 100ms for message to post
-      postMessagePromise = Promise.race([
-        postRunFailedMessageToSlack(run, logger),
-        new Promise((resolve) => setTimeout(resolve, 100)),
-      ]);
-    }
 
     const updates: UpdateRun = { id };
 
@@ -145,8 +110,6 @@ export const updateRunResolver = async (
 
     return updateRun(updates, { logger });
   });
-
-  await postMessagePromise;
 
   return updatedRun;
 };

@@ -31,7 +31,7 @@ export const useRunProgress = ({
 
       if (value.status === "fail") {
         Sentry.captureMessage(
-          `🕵️ Test preview failed: ${(query.test_id as string) || run?.test_id}`
+          `Test preview failed: ${(query.test_id as string) || run?.test_id}`
         );
       }
     };
