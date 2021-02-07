@@ -78,7 +78,7 @@ export default function CreateTest({ closeModal }: Props): JSX.Element {
 
   return (
     <ThemeContext.Extend value={theme}>
-      <Modal closeModal={closeModal}>
+      <Modal a11yTitle="create test modal" closeModal={closeModal}>
         <Box pad="medium">
           <Header closeModal={closeModal} label={copy.enterUrl} />
           <Keyboard onEnter={handleCreate}>
