@@ -40,7 +40,7 @@ export default function Placeholder({
   }
 
   // ask the user to run the test if there is no runner connected or pending
-  else if (
+  if (
     mode === "test" &&
     !isRunnerConnected &&
     !isTestLoading &&
