@@ -21,10 +21,10 @@ export class VideoCapture {
   _rejectStopped?: (reason: string) => void;
   _resolveStarted?: () => void;
   _resolveStopped?: () => void;
-  _startedAt = 0;
   _startedPromise: Promise<void>;
   _stopped = false;
   _stoppedPromise: Promise<void>;
+  _timingsPath = "set_in_start_function.txt";
   _videoMetadataPath = "set_in_start_function.txt";
   _videoPath = "set_in_start_function.mp4";
   _videoWithMetadataPath = "set_in_start_function.mp4";
@@ -87,7 +87,7 @@ export class VideoCapture {
     this._chapters[lineNum] = {
       lineCode,
       lineNum,
-      start: Date.now() - this._startedAt,
+      start: Date.now(),
     };
   }
 
@@ -97,6 +97,14 @@ export class VideoCapture {
     }
 
     debug("set chapters in %s", this._videoPath);
+
+    const timings = (await fs.readFile(this._timingsPath))
+      .toString()
+      .split("\n")
+      .slice(1);
+
+    const firstFrame = Number(timings[0]);
+    this._chapters.forEach((c) => (c.start = c.start - firstFrame));
 
     const videoMetadata = await probeVideoFile(this._videoPath, {
       showFormat: true,
@@ -156,6 +164,7 @@ title=${chapter.lineCode}
   async start(display = ":0.0"): Promise<void> {
     const path = await fs.mkdtemp(`${tmpdir()}${sep}`);
     this._gifPath = `${path}${sep}video.gif`;
+    this._timingsPath = `${path}${sep}timings.txt`;
     this._videoMetadataPath = `${path}${sep}video-metadata.txt`;
     this._videoPath = `${path}${sep}video.mp4`;
     this._videoWithMetadataPath = `${path}${sep}video-with-metadata.mp4`;
@@ -172,10 +181,18 @@ title=${chapter.lineCode}
         "-f",
         "x11grab",
         `-video_size ${config.DISPLAY_WIDTH}x${config.DISPLAY_HEIGHT}`,
+        "-use_wallclock_as_timestamps 1",
+        "-copyts",
       ])
-      .outputOptions(["-preset ultrafast", "-pix_fmt yuv420p"])
+      .outputOptions(["-preset ultrafast", "-pix_fmt yuv420p", "-vsync 0"])
+      .output(this._videoPath)
+      // balance high quality and good compression https://superuser.com/a/582327/856890
+      .videoCodec("libx264")
+      // save timings to correlate frames with time https://stackoverflow.com/a/49313678/230462
+      .output(this._timingsPath)
+      .outputOptions(["-c copy", "-vsync 0", "-flush_packets 1"])
+      .format("mkvtimestamp_v2")
       .on("start", () => {
-        this._startedAt = Date.now();
         debug("started");
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this._resolveStarted!();
@@ -193,8 +210,9 @@ title=${chapter.lineCode}
         debug("ended");
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this._resolveStopped!();
-      })
-      .save(this._videoPath);
+      });
+
+    this._ffmpeg.run();
 
     await this._startedPromise;
   }
