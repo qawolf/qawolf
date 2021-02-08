@@ -5,8 +5,8 @@ import { useRef, useState } from "react";
 import { Trigger } from "../../../lib/types";
 import { hoverTransition, iconSize } from "../../../theme/theme";
 import Drop from "../../shared/Drop";
-import TriggerMenu from "./TriggerMenu";
 import styles from "./Sidebar.module.css";
+import TriggerMenu from "./TriggerMenu";
 
 type Props = {
   isVisible: boolean;

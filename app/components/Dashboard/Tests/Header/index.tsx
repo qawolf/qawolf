@@ -10,10 +10,10 @@ import { copy } from "../../../../theme/copy";
 import { edgeSize } from "../../../../theme/theme";
 import PlayButton from "../../../shared/PlayButton";
 import { StateContext } from "../../../StateContext";
-import TriggerName from "./TriggerName";
 import SelectAlert from "./SelectAlert";
 import SelectEnvironment from "./SelectEnvironment";
 import SelectTrigger from "./SelectTrigger";
+import TriggerName from "./TriggerName";
 
 type Props = {
   selectedIds: string[];

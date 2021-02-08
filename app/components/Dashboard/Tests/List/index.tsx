@@ -4,8 +4,8 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import {
   SuiteRun,
-  TestWithSummary,
   TestTriggers,
+  TestWithSummary,
   Trigger,
 } from "../../../../lib/types";
 import { getSelectedTests } from "../utils";

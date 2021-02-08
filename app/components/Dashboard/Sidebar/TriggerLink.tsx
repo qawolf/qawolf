@@ -5,8 +5,8 @@ import { Trigger } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import { hoverTransition, overflowStyle } from "../../../theme/theme";
 import Text from "../../shared/Text";
-import TriggerMenuButton from "./TriggerMenuButton";
 import styles from "./Sidebar.module.css";
+import TriggerMenuButton from "./TriggerMenuButton";
 
 type Props = {
   isSelected: boolean;

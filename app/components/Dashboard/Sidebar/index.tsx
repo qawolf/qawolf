@@ -8,9 +8,9 @@ import { Trigger, User, Wolf } from "../../../lib/types";
 import { edgeSize } from "../../../theme/theme";
 import { StateContext } from "../../StateContext";
 import CreateTrigger from "./CreateTrigger";
-import TriggerLink from "./TriggerLink";
 import Plan from "./Plan";
 import Team from "./Team";
+import TriggerLink from "./TriggerLink";
 
 type Props = {
   triggerId?: string | null;
