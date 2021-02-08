@@ -3,9 +3,9 @@ import {
   buildLoginCodeHtml,
   buildSuiteHtml,
 } from "../../../../server/services/alert/html";
-import { buildGroup, buildInvite, buildUser } from "../../utils";
+import { buildInvite, buildTrigger, buildUser } from "../../utils";
 
-const group = buildGroup({});
+const trigger = buildTrigger({});
 
 describe("buildInviteHtml", () => {
   it("builds html for invite", () => {
@@ -33,7 +33,6 @@ describe("buildLoginCodeHtml", () => {
 describe("buildSuiteHtml", () => {
   it("builds html for failure email", () => {
     const html = buildSuiteHtml({
-      group,
       runs: [
         {
           gif_url: "https://gif.gif",
@@ -61,6 +60,7 @@ describe("buildSuiteHtml", () => {
         },
       ],
       suite_id: "suiteId",
+      trigger,
     });
 
     expect(html).toMatchSnapshot();
@@ -68,7 +68,6 @@ describe("buildSuiteHtml", () => {
 
   it("builds html for success email", () => {
     const html = buildSuiteHtml({
-      group,
       runs: [
         {
           gif_url: "https://gif.gif",
@@ -80,6 +79,7 @@ describe("buildSuiteHtml", () => {
         },
       ],
       suite_id: "suiteId",
+      trigger,
     });
 
     expect(html).toMatchSnapshot();

@@ -104,12 +104,12 @@ export type GitHubCommitStatus = {
   created_at?: string;
   deployment_url: string;
   github_installation_id: number;
-  group_id: string;
   id: string;
   owner: string;
   repo: string;
   sha: string;
   suite_id: string;
+  trigger_id: string;
   updated_at?: string;
 };
 
@@ -125,32 +125,6 @@ export type Invite = {
   wolf_name: string;
   wolf_number: number;
   wolf_variant: string;
-};
-
-export type Group = {
-  alert_integration_id: string | null;
-  alert_only_on_failure?: boolean;
-  created_at?: string;
-  creator_id: string;
-  deleted_at: string | null;
-  deployment_branches?: string | null;
-  deployment_environment?: DeploymentEnvironment | null;
-  deployment_integration_id: string | null;
-  environment_id: string | null;
-  id: string;
-  is_default: boolean;
-  is_email_enabled: boolean;
-  name: string;
-  next_at: string | null;
-  repeat_minutes: number | null;
-  team_id: string;
-  updated_at?: string;
-};
-
-export type GroupTest = {
-  group_id: string;
-  id: string;
-  test_id: string;
 };
 
 export type IntegrationType = "github" | "slack";
@@ -220,9 +194,9 @@ export type Suite = {
   created_at: string;
   creator_id: string | null;
   environment_variables: string | null;
-  group_id: string;
   id: string;
   team_id: string;
+  trigger_id: string;
   updated_at?: string;
 };
 
@@ -275,11 +249,37 @@ export type Test = {
   version: number;
 };
 
+export type TestTrigger = {
+  id: string;
+  test_id: string;
+  trigger_id: string;
+};
+
 export type TestUpdate = {
   code: string;
   generated?: boolean;
   id: string;
   version: number;
+};
+
+export type Trigger = {
+  alert_integration_id: string | null;
+  alert_only_on_failure?: boolean;
+  created_at?: string;
+  creator_id: string;
+  deleted_at: string | null;
+  deployment_branches?: string | null;
+  deployment_environment?: DeploymentEnvironment | null;
+  deployment_integration_id: string | null;
+  environment_id: string | null;
+  id: string;
+  is_default: boolean;
+  is_email_enabled: boolean;
+  name: string;
+  next_at: string | null;
+  repeat_minutes: number | null;
+  team_id: string;
+  updated_at?: string;
 };
 
 export type User = {

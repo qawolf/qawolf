@@ -1,6 +1,6 @@
 import { db } from "../server/db";
 import { Logger } from "../server/Logger";
-import { createGroupTest } from "../server/models/group_test";
+import { createGroupTest } from "../server/models/test_trigger";
 
 const logger = new Logger();
 

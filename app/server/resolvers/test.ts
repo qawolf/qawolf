@@ -1,8 +1,8 @@
 import { db } from "../db";
 import { ClientError } from "../errors";
 import { Logger } from "../Logger";
-import { findDefaultGroupForTeam } from "../models/group";
-import { deleteGroupTestsForTests } from "../models/group_test";
+import { findDefaultGroupForTeam } from "../models/trigger";
+import { deleteGroupTestsForTests } from "../models/test_trigger";
 import { findLatestRuns, findRunResult } from "../models/run";
 import {
   createTestAndGroupTests,

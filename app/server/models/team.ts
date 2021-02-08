@@ -5,7 +5,7 @@ import { db } from "../db";
 import { ModelOptions, Team, TeamPlan } from "../types";
 import { cuid } from "../utils";
 import { createDefaultEnvironments } from "./environment";
-import { createGroup, DEFAULT_GROUP_NAME } from "./group";
+import { createGroup, DEFAULT_GROUP_NAME } from "./trigger";
 
 const DEFAULT_NAME = "My Team";
 

@@ -5,7 +5,7 @@ import { AuthenticationError } from "../errors";
 import { Logger } from "../Logger";
 import { findEnvironment } from "../models/environment";
 import { findEnvironmentVariable } from "../models/environment_variable";
-import { findGroup } from "../models/group";
+import { findGroup } from "../models/trigger";
 import { findSuite } from "../models/suite";
 import { findTest } from "../models/test";
 import { Team, Test, User } from "../types";

@@ -2,7 +2,7 @@ import { db } from "../db";
 import {
   createGroupTestsForGroup,
   deleteGroupTestsForGroup,
-} from "../models/group_test";
+} from "../models/test_trigger";
 import { Context, UpdateGroupTestsMutation } from "../types";
 import { ensureGroupAccess, ensureTestAccess } from "./utils";
 

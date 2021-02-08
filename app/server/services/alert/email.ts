@@ -4,7 +4,7 @@ import environment from "../../environment";
 import { Logger } from "../../Logger";
 import { deleteInvite, findInvite } from "../../models/invite";
 import { findUsersForTeam } from "../../models/user";
-import { Group, Suite, SuiteRun, User } from "../../types";
+import { Suite, SuiteRun, Trigger, User } from "../../types";
 import {
   buildInviteHtml,
   buildLoginCode,
@@ -26,18 +26,18 @@ type SendEmailForLoginCode = {
 };
 
 type SendEmailForSuite = {
-  group: Group;
   logger: Logger;
   runs: SuiteRun[];
   suite_id: string;
+  trigger: Trigger;
   user: User;
 };
 
 type SendEmailAlert = {
-  group: Group;
   logger: Logger;
   runs: SuiteRun[];
   suite: Suite;
+  trigger: Trigger;
 };
 
 const buildFrom = (wolfName: string): MailDataRequired["from"] => {
@@ -104,10 +104,10 @@ export const sendEmailForLoginCode = async ({
 };
 
 export const sendEmailForSuite = async ({
-  group,
   logger,
   runs,
   suite_id,
+  trigger,
   user,
 }: SendEmailForSuite): Promise<void> => {
   const log = logger.prefix("sendEmailForSuite");
@@ -116,15 +116,15 @@ export const sendEmailForSuite = async ({
   const is_fail = runs.some((r) => r.status === "fail");
 
   const subject = is_fail
-    ? `🐺 Oh no! Your ${group.name} tests failed.`
-    : `🎉 All good! Your ${group.name} tests passed.`;
+    ? `🐺 Oh no! Your ${trigger.name} tests failed.`
+    : `🎉 All good! Your ${trigger.name} tests passed.`;
 
   try {
     const message = {
       to: [{ email: user.email }],
       from: buildFrom(user.wolf_name),
       subject,
-      html: buildSuiteHtml({ group, runs, suite_id }),
+      html: buildSuiteHtml({ runs, suite_id, trigger }),
       reply_to: { email: "hello@qawolf.com" },
     };
 
@@ -136,10 +136,10 @@ export const sendEmailForSuite = async ({
 };
 
 export const sendEmailAlert = async ({
-  group,
   logger,
   runs,
   suite,
+  trigger,
 }: SendEmailAlert): Promise<void> => {
   const log = logger.prefix("sendEmailAlert");
   log.debug("suite", suite.id);
@@ -147,7 +147,7 @@ export const sendEmailAlert = async ({
   const users = await findUsersForTeam(suite.team_id, { logger });
 
   const sendPromises = users.map((user) =>
-    sendEmailForSuite({ group, logger, runs, suite_id: suite.id, user })
+    sendEmailForSuite({ logger, runs, suite_id: suite.id, trigger, user })
   );
 
   await Promise.all(sendPromises);

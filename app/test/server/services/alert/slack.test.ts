@@ -4,20 +4,20 @@ import * as slack from "../../../../server/services/alert/slack";
 import * as azure from "../../../../server/services/aws/storage";
 import { minutesFromNow } from "../../../../shared/utils";
 import {
-  buildGroup,
   buildIntegration,
   buildRun,
   buildSuite,
   buildTeam,
   buildTeamUser,
   buildTest,
+  buildTrigger,
   buildUser,
   logger,
 } from "../../utils";
 
 const { buildMessageForSuite, sendSlackAlert } = slack;
 
-const group = buildGroup({ alert_integration_id: "integrationId" });
+const trigger = buildTrigger({ alert_integration_id: "integrationId" });
 const integration = buildIntegration({});
 const user = buildUser({});
 
@@ -29,7 +29,7 @@ beforeAll(async () => {
   await db("team_users").insert(buildTeamUser({}));
 
   await db("integrations").insert(integration);
-  await db("groups").insert(group);
+  await db("triggers").insert(trigger);
 
   await db("suites").insert([buildSuite({})]);
   await db("tests").insert(buildTest({ name: "testName" }));
@@ -58,24 +58,24 @@ describe("buildMessageForSuite", () => {
   afterAll(jest.restoreAllMocks);
 
   it("builds a Slack message for a failing suite", async () => {
-    const group = await db.select("*").from("groups").first();
+    const trigger = await db.select("*").from("triggers").first();
     const suite = await db.select("*").from("suites").first();
     const runs = await findRunsForSuite(suite.id, { logger });
 
     expect(
-      buildMessageForSuite({ group, runs, suite, user })
+      buildMessageForSuite({ runs, suite, trigger, user })
     ).toMatchSnapshot();
   });
 
   it("builds a Slack message for a passing suite", async () => {
     await db("runs").where({ id: "runId" }).update({ status: "pass" });
 
-    const group = await db.select("*").from("groups").first();
+    const trigger = await db.select("*").from("triggers").first();
     const suite = await db.select("*").from("suites").first();
     const runs = await findRunsForSuite(suite.id, { logger });
 
     expect(
-      buildMessageForSuite({ group, runs, suite, user })
+      buildMessageForSuite({ runs, suite, trigger, user })
     ).toMatchSnapshot();
 
     await db("runs").where({ id: "runId" }).update({ status: "fail" });
@@ -90,14 +90,14 @@ describe("sendSlackAlert", () => {
   afterEach(jest.clearAllMocks);
 
   it("sends Slack alert", async () => {
-    const group = await db.select("*").from("groups").first();
+    const trigger = await db.select("*").from("triggers").first();
     const suite = await db.select("*").from("suites").first();
     const runs = await findRunsForSuite(suite.id, { logger });
 
-    await sendSlackAlert({ group, logger, runs, suite });
+    await sendSlackAlert({ logger, runs, suite, trigger });
 
     expect(slack.postMessageToSlack).toBeCalledWith({
-      message: buildMessageForSuite({ group, runs, suite, user }),
+      message: buildMessageForSuite({ runs, suite, trigger, user }),
       webhook_url: integration.webhook_url,
     });
   });

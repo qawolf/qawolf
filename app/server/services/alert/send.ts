@@ -1,9 +1,9 @@
 import { minutesFromNow } from "../../../shared/utils";
 import { Logger } from "../../Logger";
-import { findGroup } from "../../models/group";
+import { findTrigger } from "../../models/trigger";
 import { findRunsForSuite } from "../../models/run";
 import { findSuite, updateSuite } from "../../models/suite";
-import { Group, SuiteRun } from "../../types";
+import { SuiteRun, Trigger } from "../../types";
 import { sendEmailAlert } from "./email";
 import { sendSlackAlert } from "./slack";
 
@@ -13,12 +13,15 @@ type SendAlert = {
 };
 
 type ShouldSendAlert = {
-  group: Group;
   runs: SuiteRun[];
+  trigger: Trigger;
 };
 
-export const shouldSendAlert = ({ group, runs }: ShouldSendAlert): boolean => {
-  if (!group.alert_only_on_failure) return true;
+export const shouldSendAlert = ({
+  runs,
+  trigger,
+}: ShouldSendAlert): boolean => {
+  if (!trigger.alert_only_on_failure) return true;
 
   return runs.some((r) => r.status === "fail");
 };
@@ -48,18 +51,18 @@ export const sendAlert = async ({
     { logger }
   );
 
-  const group = await findGroup(suite.group_id, { logger });
+  const trigger = await findTrigger(suite.trigger_id, { logger });
 
-  if (!shouldSendAlert({ group, runs })) {
+  if (!shouldSendAlert({ runs, trigger })) {
     log.debug("skip: should not send alert");
     return;
   }
 
-  if (group.is_email_enabled) {
-    await sendEmailAlert({ group, logger, runs, suite });
+  if (trigger.is_email_enabled) {
+    await sendEmailAlert({ logger, runs, suite, trigger });
   }
 
-  if (group.alert_integration_id) {
-    await sendSlackAlert({ group, logger, runs, suite });
+  if (trigger.alert_integration_id) {
+    await sendSlackAlert({ logger, runs, suite, trigger });
   }
 };

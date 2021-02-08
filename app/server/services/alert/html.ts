@@ -1,5 +1,5 @@
 import environment from "../../environment";
-import { Group, Invite, SuiteRun, User } from "../../types";
+import { Invite, SuiteRun, Trigger, User } from "../../types";
 
 type BuildLoginCodeHtml = {
   login_code: string;
@@ -7,9 +7,9 @@ type BuildLoginCodeHtml = {
 };
 
 type BuildSuiteHtml = {
-  group: Group;
   runs: SuiteRun[];
   suite_id: string;
+  trigger: Trigger;
 };
 
 const buildFailingRunHtml = ({ gif_url, id, test_name }: SuiteRun): string => {
@@ -76,14 +76,14 @@ export const buildLoginCodeHtml = ({
 };
 
 export const buildSuiteHtml = ({
-  group,
   runs,
   suite_id,
+  trigger,
 }: BuildSuiteHtml): string => {
   const failingRuns = runs.filter((r) => r.status === "fail");
 
   const suiteHref = new URL(`/tests/${suite_id}`, environment.APP_URL).href;
-  const anchor = `<a href='${suiteHref}'>${group.name} tests</a>`;
+  const anchor = `<a href='${suiteHref}'>${trigger.name} tests</a>`;
 
   if (!failingRuns.length) {
     return `<p>All good! Your ${anchor} all passed.`;

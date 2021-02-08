@@ -1,6 +1,6 @@
 import { db } from "../db";
 import { Logger } from "../Logger";
-import { findPendingGroups, updateGroupNextAt } from "../models/group";
+import { findPendingGroups, updateGroupNextAt } from "../models/trigger";
 import { createSuiteForTests } from "../models/suite";
 import { findEnabledTestsForGroup } from "../models/test";
 import { Group } from "../types";

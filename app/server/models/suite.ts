@@ -15,21 +15,21 @@ export type SuiteForTeam = Suite & {
 type CreateSuite = {
   creator_id?: string;
   environment_variables?: FormattedVariables;
-  group_id: string;
   team_id: string;
+  trigger_id: string;
 };
 
 type CreateSuiteForTests = {
   creator_id?: string;
   environment_variables?: FormattedVariables;
-  group_id: string;
   team_id: string;
   tests: Test[];
+  trigger_id: string;
 };
 
-type FindSuitesForGroup = {
-  group_id: string;
+type FindSuitesForTrigger = {
   limit: number;
+  trigger_id: string;
 };
 
 type UpdateSuite = {
@@ -38,11 +38,11 @@ type UpdateSuite = {
 };
 
 export const createSuite = async (
-  { creator_id, environment_variables, group_id, team_id }: CreateSuite,
+  { creator_id, environment_variables, team_id, trigger_id }: CreateSuite,
   { logger, trx }: ModelOptions
 ): Promise<Suite> => {
   const log = logger.prefix("createSuite");
-  log.debug("creator", creator_id, "group", group_id);
+  log.debug("creator", creator_id, "trigger", trigger_id);
 
   const timestamp = minutesFromNow();
 
@@ -54,9 +54,9 @@ export const createSuite = async (
     created_at: timestamp,
     creator_id: creator_id || null,
     environment_variables: formattedVariables,
-    group_id,
     id: cuid(),
     team_id,
+    trigger_id,
     updated_at: timestamp,
   };
 
@@ -71,9 +71,9 @@ export const createSuiteForTests = async (
   {
     creator_id,
     environment_variables,
-    group_id,
     team_id,
     tests,
+    trigger_id,
   }: CreateSuiteForTests,
   { logger, trx }: ModelOptions
 ): Promise<{ runs: Run[]; suite: Suite }> => {
@@ -85,7 +85,7 @@ export const createSuiteForTests = async (
   );
 
   const suite = await createSuite(
-    { creator_id, environment_variables, group_id, team_id },
+    { creator_id, environment_variables, team_id, trigger_id },
     { logger, trx }
   );
 
@@ -122,22 +122,22 @@ export const findSuite = async (
   return suite;
 };
 
-export const findSuitesForGroup = async (
-  { group_id, limit }: FindSuitesForGroup,
+export const findSuitesForTrigger = async (
+  { limit, trigger_id }: FindSuitesForTrigger,
   logger: Logger
 ): Promise<Suite[]> => {
-  const log = logger.prefix("findSuitesForGroup");
+  const log = logger.prefix("findSuitesForTrigger");
 
-  log.debug("group", group_id);
+  log.debug("trigger", trigger_id);
 
   const suites = await db
     .select("*")
     .from("suites")
-    .where({ group_id })
+    .where({ trigger_id })
     .orderBy("created_at", "desc")
     .limit(limit);
 
-  log.debug(`found ${suites.length} suites for group ${group_id}`);
+  log.debug(`found ${suites.length} suites for trigger ${trigger_id}`);
 
   return suites;
 };

@@ -1,13 +1,13 @@
 import { minutesFromNow } from "../../shared/utils";
 import { db } from "../db";
 import { ClientError } from "../errors";
-import { DeploymentEnvironment, Group, ModelOptions } from "../types";
+import { DeploymentEnvironment, ModelOptions, Trigger } from "../types";
 import { cuid } from "../utils";
 
 const DAILY_HOUR = 16; // 9 am PST
 const MINUTES_PER_DAY = 24 * 60;
 
-type CreateGroup = {
+type CreateTrigger = {
   creator_id: string;
   is_default?: boolean;
   name: string;
@@ -15,7 +15,7 @@ type CreateGroup = {
   team_id: string;
 };
 
-type UpdateGroup = {
+type UpdateTrigger = {
   deployment_branches?: string | null;
   deployment_environment?: DeploymentEnvironment | null;
   deployment_integration_id?: string | null;
@@ -27,7 +27,7 @@ type UpdateGroup = {
   repeat_minutes?: number | null;
 };
 
-export const DEFAULT_GROUP_NAME = "All Tests";
+export const defaultName = "All Tests";
 
 const clearMinutes = (date: Date): void => {
   date.setUTCMinutes(0);
@@ -74,7 +74,7 @@ export const getNextAt = (repeat_minutes: number | null): string | null => {
 export const getUpdatedNextAt = ({
   next_at,
   repeat_minutes,
-}: Group): string | null => {
+}: Trigger): string | null => {
   if (!next_at || !repeat_minutes) return null;
 
   const nextDate = new Date(next_at);
@@ -87,15 +87,15 @@ export const getUpdatedNextAt = ({
   return getNextAt(repeat_minutes);
 };
 
-export const createGroup = async (
-  { creator_id, is_default, name, repeat_minutes, team_id }: CreateGroup,
+export const createTrigger = async (
+  { creator_id, is_default, name, repeat_minutes, team_id }: CreateTrigger,
   { logger, trx }: ModelOptions
-): Promise<Group> => {
-  const log = logger.prefix("createGroup");
+): Promise<Trigger> => {
+  const log = logger.prefix("createTrigger");
 
   log.debug(`create ${name} for team ${team_id}`);
 
-  const group = {
+  const trigger = {
     alert_integration_id: null,
     alert_only_on_failure: false,
     creator_id,
@@ -110,183 +110,185 @@ export const createGroup = async (
     repeat_minutes,
     team_id,
   };
-  await (trx || db)("groups").insert(group);
+  await (trx || db)("triggers").insert(trigger);
 
-  log.debug(`create ${group.id}`);
+  log.debug(`create ${trigger.id}`);
 
-  return group;
+  return trigger;
 };
 
-export const findDefaultGroupForTeam = async (
+export const findDefaultTriggerForTeam = async (
   team_id: string,
   { logger, trx }: ModelOptions
-): Promise<Group> => {
-  const log = logger.prefix("findDefaultGroupForTeam");
+): Promise<Trigger> => {
+  const log = logger.prefix("findDefaultTriggerForTeam");
 
-  const groups = await (trx || db)
+  const triggers = await (trx || db)
     .select("*")
-    .from("groups")
+    .from("triggers")
     .where({ deleted_at: null, is_default: true, team_id });
 
-  if (!groups.length) {
-    log.error(`no default group for team ${team_id}`);
-    throw new Error("group not found");
+  if (!triggers.length) {
+    log.error(`no default trigger for team ${team_id}`);
+    throw new Error("trigger not found");
   }
 
-  return groups[0];
+  return triggers[0];
 };
 
-export const findGroup = async (
+export const findTrigger = async (
   id: string,
   { logger, trx }: ModelOptions
-): Promise<Group> => {
-  const log = logger.prefix("findGroup");
+): Promise<Trigger> => {
+  const log = logger.prefix("findTrigger");
   log.debug(`find ${id}`);
 
-  const group = await (trx || db)
+  const trigger = await (trx || db)
     .select("*")
-    .from("groups")
+    .from("triggers")
     .where({ id })
     .first();
 
-  if (!group || group.deleted_at) {
+  if (!trigger || trigger.deleted_at) {
     log.error(`not found ${id}`);
-    throw new Error("group not found");
+    throw new Error("trigger not found");
   }
 
   log.debug(`found ${id}`);
-  return group;
+  return trigger;
 };
 
-export const findGroupsForGitHubIntegration = async (
+export const findTriggersForGitHubIntegration = async (
   github_repo_id: number,
   { logger, trx }: ModelOptions
-): Promise<Group[]> => {
-  const log = logger.prefix("findGroupsForGitHubIntegration");
+): Promise<Trigger[]> => {
+  const log = logger.prefix("findTriggersForGitHubIntegration");
   log.debug("github repo", github_repo_id);
 
-  const groups = await (trx || db)
-    .select("groups.*" as "*")
-    .from("groups")
+  const triggers = await (trx || db)
+    .select("triggers.*" as "*")
+    .from("triggers")
     .innerJoin(
       "integrations",
-      "groups.deployment_integration_id",
+      "triggers.deployment_integration_id",
       "integrations.id"
     )
     .where({
-      "groups.deleted_at": null,
+      "triggers.deleted_at": null,
       "integrations.github_repo_id": github_repo_id,
     })
-    .orderBy("groups.name", "asc");
-  log.debug(`found ${groups.length} groups`);
+    .orderBy("triggers.name", "asc");
+  log.debug(`found ${triggers.length} triggers`);
 
-  return groups;
+  return triggers;
 };
 
-export const findGroupsForTest = async (
+export const findTriggersForTest = async (
   test_id: string,
   { logger, trx }: ModelOptions
-): Promise<Group[]> => {
-  const log = logger.prefix("findGroupsForTest");
+): Promise<Trigger[]> => {
+  const log = logger.prefix("findTriggersForTest");
   log.debug("test", test_id);
 
-  const groups = await (trx || db)
-    .select("groups.*" as "*")
-    .from("groups")
-    .innerJoin("group_tests", "groups.id", "group_tests.group_id")
-    .where({ "groups.deleted_at": null, "group_tests.test_id": test_id })
-    .orderBy("groups.name", "asc");
-  log.debug(`found ${groups.length} groups`);
+  const triggers = await (trx || db)
+    .select("triggers.*" as "*")
+    .from("triggers")
+    .innerJoin("test_triggers", "triggers.id", "test_triggers.trigger_id")
+    .where({ "triggers.deleted_at": null, "test_triggers.test_id": test_id })
+    .orderBy("triggers.name", "asc");
+  log.debug(`found ${triggers.length} triggers`);
 
-  return groups;
+  return triggers;
 };
 
-export const deleteGroup = async (
+export const deleteTrigger = async (
   id: string,
   { logger, trx }: ModelOptions
-): Promise<Group> => {
-  const log = logger.prefix("deleteGroup");
-  log.debug("group", id);
+): Promise<Trigger> => {
+  const log = logger.prefix("deleteTrigger");
+  log.debug("trigger", id);
 
-  const group = await findGroup(id, { logger, trx });
-  if (group.is_default) {
-    log.error(`do not delete default group ${id}`);
-    throw new Error("cannot delete default group");
+  const trigger = await findTrigger(id, { logger, trx });
+  if (trigger.is_default) {
+    log.error(`do not delete default trigger ${id}`);
+    throw new Error("cannot delete default trigger");
   }
 
   const deleted_at = minutesFromNow();
 
-  await (trx || db)("groups").where({ id }).update({ deleted_at });
-  log.debug("deleted group", id);
+  await (trx || db)("triggers").where({ id }).update({ deleted_at });
+  log.debug("deleted trigger", id);
 
-  return { ...group, deleted_at };
+  return { ...trigger, deleted_at };
 };
 
-export const findGroupsForTeam = async (
+export const findTriggersForTeam = async (
   team_id: string,
   { logger, trx }: ModelOptions
-): Promise<Group[]> => {
-  const log = logger.prefix("findGroupsForTeam");
+): Promise<Trigger[]> => {
+  const log = logger.prefix("findTriggersForTeam");
 
   log.debug(team_id);
 
-  const groups = await (trx || db)
+  const triggers = await (trx || db)
     .select("*")
-    .from("groups")
+    .from("triggers")
     .where({ deleted_at: null, team_id })
-    .orderBy("is_default", "desc") // show default group first
+    .orderBy("is_default", "desc") // show default trigger first
     .orderBy("name", "asc");
 
-  log.debug(`found ${groups.length} groups for team ${team_id}`);
+  log.debug(`found ${triggers.length} triggers for team ${team_id}`);
 
-  return groups;
+  return triggers;
 };
 
-export const buildGroupName = async (
+export const buildTriggerName = async (
   team_id: string,
   { logger, trx }: ModelOptions
 ): Promise<string> => {
-  const log = logger.prefix("buildGroupName");
+  const log = logger.prefix("buildTriggerName");
 
   log.debug("team", team_id);
-  const groups = await findGroupsForTeam(team_id, { logger, trx });
+  const triggers = await findTriggersForTeam(team_id, { logger, trx });
 
-  const groupNames = new Set(groups.map((group) => group.name));
-  let groupNumber = 1;
+  const triggerNames = new Set(triggers.map((trigger) => trigger.name));
+  let triggerNumber = 1;
 
   while (
-    groupNames.has(`My Tests${groupNumber === 1 ? "" : ` ${groupNumber}`}`)
+    triggerNames.has(
+      `My Tests${triggerNumber === 1 ? "" : ` ${triggerNumber}`}`
+    )
   ) {
-    groupNumber++;
+    triggerNumber++;
   }
 
-  const name = `My Tests${groupNumber === 1 ? "" : ` ${groupNumber}`}`;
+  const name = `My Tests${triggerNumber === 1 ? "" : ` ${triggerNumber}`}`;
   log.debug(`built name ${name} for team ${team_id}`);
 
   return name;
 };
 
-export const findPendingGroups = async ({
+export const findPendingTriggers = async ({
   logger,
   trx,
-}: ModelOptions): Promise<Group[]> => {
-  const log = logger.prefix("findPendingGroups");
+}: ModelOptions): Promise<Trigger[]> => {
+  const log = logger.prefix("findPendingTriggers");
 
-  const groups = await (trx || db)
-    .select("groups.*" as "*")
-    .from("groups")
-    .innerJoin("teams", "groups.team_id", "teams.id")
-    .whereNull("groups.deleted_at")
-    .andWhere("groups.next_at", "<=", minutesFromNow())
+  const triggers = await (trx || db)
+    .select("triggers.*" as "*")
+    .from("triggers")
+    .innerJoin("teams", "triggers.team_id", "teams.id")
+    .whereNull("triggers.deleted_at")
+    .andWhere("triggers.next_at", "<=", minutesFromNow())
     .andWhere({ "teams.is_enabled": true })
     .orderBy("next_at", "asc");
 
-  log.debug(`found ${groups.length} pending groups`);
+  log.debug(`found ${triggers.length} pending triggers`);
 
-  return groups;
+  return triggers;
 };
 
-export const updateGroup = async (
+export const updateTrigger = async (
   {
     alert_integration_id,
     deployment_branches,
@@ -297,16 +299,16 @@ export const updateGroup = async (
     is_email_enabled,
     name,
     repeat_minutes,
-  }: UpdateGroup,
+  }: UpdateTrigger,
   { logger, trx }: ModelOptions
-): Promise<Group> => {
-  const log = logger.prefix("updateGroup");
-  log.debug(`update group ${id} name ${name}`);
+): Promise<Trigger> => {
+  const log = logger.prefix("updateTrigger");
+  log.debug(`update trigger ${id} name ${name}`);
 
-  const group = await (trx || db).transaction(async (trx) => {
-    const existingGroup = await findGroup(id, { logger, trx });
+  return (trx || db).transaction(async (trx) => {
+    const existingTrigger = await findTrigger(id, { logger, trx });
 
-    const updates: Partial<Group> = {
+    const updates: Partial<Trigger> = {
       updated_at: minutesFromNow(),
     };
 
@@ -329,9 +331,9 @@ export const updateGroup = async (
       updates.is_email_enabled = is_email_enabled;
     }
     if (name !== undefined) {
-      if (existingGroup.is_default) {
-        log.error(`do not rename default group ${id}`);
-        throw new Error("cannot rename default group");
+      if (existingTrigger.is_default) {
+        log.error(`do not rename default trigger ${id}`);
+        throw new Error("cannot rename default trigger");
       }
       updates.name = name;
     }
@@ -341,37 +343,35 @@ export const updateGroup = async (
     }
 
     try {
-      await trx("groups").update(updates).where({ id });
+      await trx("triggers").update(updates).where({ id });
     } catch (error) {
-      if (error.message.includes("groups_unique_name_team_id")) {
-        throw new ClientError("group name must be unique");
+      if (error.message.includes("triggers_unique_name_team_id")) {
+        throw new ClientError("trigger name must be unique");
       }
 
       throw error;
     }
 
-    log.debug("updated group", id, updates);
+    log.debug("updated trigger", id, updates);
 
-    return { ...existingGroup, ...updates };
+    return { ...existingTrigger, ...updates };
   });
-
-  return group;
 };
 
-// TODO make this part of updateGroup
-export const updateGroupNextAt = async (
-  group: Group,
+// TODO make this part of updateTrigger
+export const updateTriggerNextAt = async (
+  trigger: Trigger,
   { logger, trx }: ModelOptions
 ): Promise<void> => {
-  const log = logger.prefix("updateGroupNextAt");
+  const log = logger.prefix("updateTriggerNextAt");
 
-  const next_at = getUpdatedNextAt(group);
+  const next_at = getUpdatedNextAt(trigger);
 
-  await (trx || db)("groups")
+  await (trx || db)("triggers")
     .update({ next_at, updated_at: minutesFromNow() })
-    .where({ id: group.id });
+    .where({ id: trigger.id });
 
   log.debug(
-    `updated group ${group.id} repeat_minutes ${group.repeat_minutes} next_at ${next_at}`
+    `updated trigger ${trigger.id} repeat_minutes ${trigger.repeat_minutes} next_at ${next_at}`
   );
 };

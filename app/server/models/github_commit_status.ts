@@ -6,11 +6,11 @@ type CreateGitHubCommitStatus = {
   context: string;
   deployment_url: string;
   github_installation_id: number;
-  group_id: string;
   owner: string;
   repo: string;
   sha: string;
   suite_id: string;
+  trigger_id: string;
 };
 
 type UpdateGitHubCommitStatus = {

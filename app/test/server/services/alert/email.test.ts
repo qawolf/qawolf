@@ -4,19 +4,19 @@ import { findRunsForSuite } from "../../../../server/models/run";
 import * as email from "../../../../server/services/alert/email";
 import { minutesFromNow } from "../../../../shared/utils";
 import {
-  buildGroup,
   buildRun,
   buildSuite,
   buildTeam,
   buildTeamUser,
   buildTest,
+  buildTrigger,
   buildUser,
   logger,
 } from "../../utils";
 
 const { sendEmailAlert } = email;
 
-const group = buildGroup({});
+const trigger = buildTrigger({});
 const user = buildUser({});
 
 beforeAll(() => migrateDb());
@@ -31,7 +31,7 @@ describe("sendEmailAlert", () => {
     await db("teams").insert(buildTeam({}));
     await db("team_users").insert(buildTeamUser({}));
 
-    await db("groups").insert(group);
+    await db("triggers").insert(trigger);
 
     await db("suites").insert([buildSuite({})]);
     await db("tests").insert(buildTest({ name: "testName" }));
@@ -51,11 +51,11 @@ describe("sendEmailAlert", () => {
   });
 
   it("sends email alert", async () => {
-    const group = await db.select("*").from("groups").first();
+    const trigger = await db.select("*").from("triggers").first();
     const suite = await db.select("*").from("suites").first();
     const runs = await findRunsForSuite(suite.id, { logger });
 
-    await sendEmailAlert({ group, logger, runs, suite });
+    await sendEmailAlert({ logger, runs, suite, trigger });
     const run = await db
       .select("*")
       .from("runs")
@@ -63,8 +63,8 @@ describe("sendEmailAlert", () => {
       .first();
 
     expect(email.sendEmailForSuite).toBeCalledWith({
-      group: {
-        ...group,
+      trigger: {
+        ...trigger,
         created_at: expect.any(Date),
         deleted_at: null,
         updated_at: expect.any(Date),

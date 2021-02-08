@@ -1,6 +1,6 @@
 import { db } from "../db";
 import { ClientError } from "../errors";
-import { findGroup } from "../models/group";
+import { findGroup } from "../models/trigger";
 import {
   createSuiteForTests,
   findSuite,

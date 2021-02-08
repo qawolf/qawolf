@@ -7,8 +7,8 @@ import {
   findGroupsForTeam,
   findGroupsForTest,
   updateGroup,
-} from "../models/group";
-import { deleteGroupTestsForGroup } from "../models/group_test";
+} from "../models/trigger";
+import { deleteGroupTestsForGroup } from "../models/test_trigger";
 import {
   Context,
   DeleteGroup,

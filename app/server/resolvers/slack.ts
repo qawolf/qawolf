@@ -1,5 +1,5 @@
 import { db } from "../db";
-import { updateGroup } from "../models/group";
+import { updateGroup } from "../models/trigger";
 import { createIntegration } from "../models/integration";
 import { createSlackIntegrationUrl, findSlackWebhook } from "../services/slack";
 import {
