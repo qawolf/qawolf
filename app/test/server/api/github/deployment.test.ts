@@ -1,15 +1,15 @@
 import {
   createSuitesForDeployment,
-  shouldRunGroupOnDeployment,
+  shouldRunTriggerOnDeployment,
 } from "../../../../server/api/github/deployment";
 import { db, dropTestDb, migrateDb } from "../../../../server/db";
 import * as gitHubService from "../../../../server/services/gitHub/app";
 import {
-  buildGroup,
-  buildGroupTest,
   buildIntegration,
   buildTeam,
   buildTest,
+  buildTestTrigger,
+  buildTrigger,
   buildUser,
   logger,
 } from "../../utils";
@@ -26,20 +26,20 @@ describe("createSuitesForDeployment", () => {
     await db("integrations").insert(
       buildIntegration({ github_installation_id: 123, github_repo_id: 1 })
     );
-    await db("groups").insert([
-      buildGroup({ deployment_integration_id: "integrationId" }),
-      buildGroup({ deployment_integration_id: "integrationId", i: 2 }),
+    await db("triggers").insert([
+      buildTrigger({ deployment_integration_id: "integrationId" }),
+      buildTrigger({ deployment_integration_id: "integrationId", i: 2 }),
     ]);
 
     await db("tests").insert(buildTest({}));
-    await db("group_tests").insert(buildGroupTest());
+    await db("test_triggers").insert(buildTestTrigger());
   });
 
   afterAll(async () => {
-    await db("group_tests").del();
+    await db("test_triggers").del();
     await db("tests").del();
 
-    await db("groups").del();
+    await db("triggers").del();
     await db("integrations").del();
 
     await db("teams").del();
@@ -64,15 +64,17 @@ describe("createSuitesForDeployment", () => {
     });
 
     const suites = await db("suites").select("*");
-    expect(suites).toMatchObject([{ group_id: "groupId", team_id: "teamId" }]);
+    expect(suites).toMatchObject([
+      { team_id: "teamId", trigger_id: "triggerId" },
+    ]);
 
     const commitStatuses = await db("github_commit_statuses").select("*");
     expect(commitStatuses).toMatchObject([
       {
         context: "context",
-        group_id: "groupId",
         sha: "sha",
         suite_id: suites[0].id,
+        trigger_id: "triggerId",
       },
     ]);
 
@@ -84,7 +86,7 @@ describe("createSuitesForDeployment", () => {
     });
 
     expect(gitHubService.createCommitStatus).toBeCalledWith({
-      context: "QA Wolf - group1",
+      context: "QA Wolf - trigger1",
       installationId: 123,
       owner: "qawolf",
       repo: "repo",
@@ -94,44 +96,44 @@ describe("createSuitesForDeployment", () => {
   });
 });
 
-describe("shouldRunGroupOnDeployment", () => {
-  it("returns true if specified branches match group", () => {
+describe("shouldRunTriggerOnDeployment", () => {
+  it("returns true if specified branches match trigger", () => {
     expect(
-      shouldRunGroupOnDeployment({
+      shouldRunTriggerOnDeployment({
         branches: ["main", "develop"],
-        group: buildGroup({ deployment_branches: "main,production" }),
+        trigger: buildTrigger({ deployment_branches: "main,production" }),
       })
     ).toBe(true);
 
     expect(
-      shouldRunGroupOnDeployment({
+      shouldRunTriggerOnDeployment({
         branches: ["main"],
-        group: buildGroup({}),
+        trigger: buildTrigger({}),
       })
     ).toBe(true);
 
     expect(
-      shouldRunGroupOnDeployment({
+      shouldRunTriggerOnDeployment({
         branches: ["main", "develop"],
         environment: "preview",
-        group: buildGroup({ deployment_branches: "main,production" }),
+        trigger: buildTrigger({ deployment_branches: "main,production" }),
       })
     ).toBe(true);
   });
 
-  it("returns false if specified branches do not match group", () => {
+  it("returns false if specified branches do not match trigger", () => {
     expect(
-      shouldRunGroupOnDeployment({
+      shouldRunTriggerOnDeployment({
         branches: ["main", "develop"],
-        group: buildGroup({ deployment_branches: "feature" }),
+        trigger: buildTrigger({ deployment_branches: "feature" }),
       })
     ).toBe(false);
 
     expect(
-      shouldRunGroupOnDeployment({
+      shouldRunTriggerOnDeployment({
         branches: ["main", "develop"],
         environment: "preview",
-        group: buildGroup({
+        trigger: buildTrigger({
           deployment_branches: "feature",
           deployment_environment: "preview",
         }),
@@ -141,18 +143,18 @@ describe("shouldRunGroupOnDeployment", () => {
 
   it("returns false if environment does not match", () => {
     expect(
-      shouldRunGroupOnDeployment({
+      shouldRunTriggerOnDeployment({
         branches: ["develop"],
         environment: "production",
-        group: buildGroup({ deployment_environment: "preview" }),
+        trigger: buildTrigger({ deployment_environment: "preview" }),
       })
     ).toBe(false);
 
     expect(
-      shouldRunGroupOnDeployment({
+      shouldRunTriggerOnDeployment({
         branches: ["main"],
         environment: "production",
-        group: buildGroup({
+        trigger: buildTrigger({
           deployment_branches: "main",
           deployment_environment: "preview",
         }),
@@ -160,20 +162,20 @@ describe("shouldRunGroupOnDeployment", () => {
     ).toBe(false);
   });
 
-  it("returns true if environment matches group", () => {
+  it("returns true if environment matches trigger", () => {
     expect(
-      shouldRunGroupOnDeployment({
+      shouldRunTriggerOnDeployment({
         branches: ["develop"],
         environment: "preview",
-        group: buildGroup({ deployment_environment: "preview" }),
+        trigger: buildTrigger({ deployment_environment: "preview" }),
       })
     ).toBe(true);
 
     expect(
-      shouldRunGroupOnDeployment({
+      shouldRunTriggerOnDeployment({
         branches: ["main"],
         environment: "preview",
-        group: buildGroup({
+        trigger: buildTrigger({
           deployment_branches: "main",
           deployment_environment: "preview",
         }),

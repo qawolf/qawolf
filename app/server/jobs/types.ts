@@ -2,8 +2,8 @@ export const JOB_TYPES = [
   "checkPending",
   "deleteRunners",
   "deployRunners",
-  "orchestrateGroups",
   "orchestrateRunners",
+  "orchestrateTriggers",
   "restartRunners",
 ] as const;
 

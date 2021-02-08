@@ -2,8 +2,8 @@ import { db, dropTestDb, migrateDb } from "../../../server/db";
 import {
   createTriggerResolver,
   deleteTriggerResolver,
-  triggersResolver,
   testTriggersResolver,
+  triggersResolver,
   updateTriggerResolver,
 } from "../../../server/resolvers/trigger";
 import {

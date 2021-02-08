@@ -18,14 +18,6 @@ import {
   updateEnvironmentVariableResolver,
 } from "./resolvers/environment_variable";
 import { createGitHubIntegrationsResolver } from "./resolvers/github";
-import {
-  createTriggerResolver,
-  deleteTriggerResolver,
-  testTriggersResolver,
-  triggersResolver,
-  updateTriggerResolver,
-} from "./resolvers/trigger";
-import { updateTestTriggersResolver } from "./resolvers/test_trigger";
 import { integrationsResolver } from "./resolvers/integration";
 import {
   acceptInviteResolver,
@@ -57,6 +49,14 @@ import {
   testSummaryResolver,
   updateTestResolver,
 } from "./resolvers/test";
+import { updateTestTriggersResolver } from "./resolvers/test_trigger";
+import {
+  createTriggerResolver,
+  deleteTriggerResolver,
+  testTriggersResolver,
+  triggersResolver,
+  updateTriggerResolver,
+} from "./resolvers/trigger";
 import {
   currentUserResolver,
   sendLoginCodeResolver,

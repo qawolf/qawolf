@@ -5,11 +5,11 @@ import * as triggerModel from "../../../server/models/trigger";
 import {
   ensureEnvironmentAccess,
   ensureEnvironmentVariableAccess,
-  ensureTriggerAccess,
   ensureSuiteAccess,
   ensureTeamAccess,
   ensureTeams,
   ensureTestAccess,
+  ensureTriggerAccess,
   ensureUser,
 } from "../../../server/resolvers/utils";
 import { Team, Test, Trigger, User } from "../../../server/types";

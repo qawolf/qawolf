@@ -4,24 +4,24 @@ import { db } from "../../db";
 import { Logger } from "../../Logger";
 import { createGitHubCommitStatus } from "../../models/github_commit_status";
 import { createSuiteForTests } from "../../models/suite";
-import { findEnabledTestsForGroup } from "../../models/test";
-import { findGroupsForGitHubIntegration } from "../../models/trigger";
+import { findEnabledTestsForTrigger } from "../../models/test";
+import { findTriggersForGitHubIntegration } from "../../models/trigger";
 import {
   createCommitStatus,
   findBranchesForCommit,
 } from "../../services/gitHub/app";
-import { Group } from "../../types";
+import { Trigger } from "../../types";
 
 type CreateSuiteForDeployment = {
   branches: string[];
   deploymentUrl: string;
   environment?: string;
-  group: Group;
   installationId: number;
   logger: Logger;
   owner: string;
   repo: string;
   sha: string;
+  trigger: Trigger;
   trx: Transaction;
 };
 
@@ -35,23 +35,23 @@ type CreateSuitesForDeployment = {
   sha: string;
 };
 
-type ShouldRunGroupOnDeployment = {
+type ShouldRunTriggerOnDeployment = {
   branches: string[];
   environment?: string;
-  group: Group;
+  trigger: Trigger;
 };
 
-export const shouldRunGroupOnDeployment = ({
+export const shouldRunTriggerOnDeployment = ({
   branches,
   environment,
-  group,
-}: ShouldRunGroupOnDeployment): boolean => {
-  const isBranchMatch = group.deployment_branches
-    ? group.deployment_branches.split(",").some((b) => branches.includes(b))
+  trigger,
+}: ShouldRunTriggerOnDeployment): boolean => {
+  const isBranchMatch = trigger.deployment_branches
+    ? trigger.deployment_branches.split(",").some((b) => branches.includes(b))
     : true;
 
-  const isEnvironmentMatch = group.deployment_environment
-    ? group.deployment_environment === environment
+  const isEnvironmentMatch = trigger.deployment_environment
+    ? trigger.deployment_environment === environment
     : true;
 
   return isBranchMatch && isEnvironmentMatch;
@@ -61,45 +61,45 @@ const createSuiteForDeployment = async ({
   branches,
   deploymentUrl,
   environment,
-  group,
   installationId,
   logger,
   owner,
   repo,
   sha,
+  trigger,
   trx,
 }: CreateSuiteForDeployment): Promise<void> => {
   const log = logger.prefix("createSuiteForDeployment");
 
-  if (!shouldRunGroupOnDeployment({ branches, environment, group })) {
+  if (!shouldRunTriggerOnDeployment({ branches, environment, trigger })) {
     log.debug(
-      `skip group ${group.id} on branches ${branches} and environment ${environment}`
+      `skip trigger ${trigger.id} on branches ${branches} and environment ${environment}`
     );
     return;
   }
 
-  const tests = await findEnabledTestsForGroup(
-    { group_id: group.id },
+  const tests = await findEnabledTestsForTrigger(
+    { trigger_id: trigger.id },
     { logger, trx }
   );
 
   if (!tests.length) {
-    log.debug("skip, no enabled tests for group", group.id);
+    log.debug("skip, no enabled tests for trigger", trigger.id);
     return;
   }
 
   const { suite } = await createSuiteForTests(
     {
       environment_variables: { URL: deploymentUrl },
-      group_id: group.id,
-      team_id: group.team_id,
+      trigger_id: trigger.id,
+      team_id: trigger.team_id,
       tests,
     },
     { logger, trx }
   );
 
   const commitStatus = await createCommitStatus({
-    context: `QA Wolf - ${group.name}`,
+    context: `QA Wolf - ${trigger.name}`,
     installationId,
     owner,
     repo,
@@ -112,11 +112,11 @@ const createSuiteForDeployment = async ({
       context: commitStatus.context,
       deployment_url: deploymentUrl,
       github_installation_id: installationId,
-      group_id: group.id,
       owner,
       repo,
       sha,
       suite_id: suite.id,
+      trigger_id: trigger.id,
     },
     { logger, trx }
   );
@@ -141,23 +141,23 @@ export const createSuitesForDeployment = async ({
   });
 
   return db.transaction(async (trx) => {
-    const groups = await findGroupsForGitHubIntegration(repoId, {
+    const triggers = await findTriggersForGitHubIntegration(repoId, {
       logger,
       trx,
     });
 
     await Promise.all(
-      groups.map((group) => {
+      triggers.map((trigger) => {
         return createSuiteForDeployment({
           branches,
           deploymentUrl,
           environment,
-          group,
           installationId,
           logger,
           owner,
           repo,
           sha,
+          trigger,
           trx,
         });
       })

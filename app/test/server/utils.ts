@@ -228,7 +228,7 @@ export const buildGitHubCommitStatus = ({
 };
 
 export const buildTestTrigger = (): TestTrigger => {
-  return { id: "groupTestId", test_id: "testId", trigger_id: "triggerId" };
+  return { id: "testTriggerId", test_id: "testId", trigger_id: "triggerId" };
 };
 
 export const buildInvite = ({
@@ -487,7 +487,7 @@ export const deleteUser = async (
     )
     .del();
 
-  await trx("groups")
+  await trx("triggers")
     .whereIn(
       "team_id",
       teamUsers.map((t) => t.team_id)
