@@ -30,21 +30,6 @@ export type EnvironmentVariable = {
   value: string;
 };
 
-export type Group = {
-  alert_integration_id: string | null;
-  created_at: string;
-  deployment_branches: string | null;
-  deployment_environment: DeploymentEnvironment | null;
-  deployment_integration_id: string | null;
-  environment_id: string | null;
-  id: string;
-  is_default: boolean;
-  is_email_enabled: boolean;
-  name: string;
-  next_at: string | null;
-  repeat_minutes: number | null;
-};
-
 export type Integration = {
   github_repo_name: string;
   id: string;
@@ -85,10 +70,10 @@ export type Runner = {
 
 export type Suite = {
   created_at: string;
-  group_id: string;
   id: string;
   runs: SuiteRun[];
   team_id: string;
+  trigger_id: string;
 };
 
 export type SuiteRun = {
@@ -131,11 +116,26 @@ export type TestHistoryRun = {
 };
 
 export type TestWithSummary = Test & {
-  groups: SelectedGroup[];
   summary: {
     gif_url: string | null;
     last_runs: SuiteRun[];
   };
+  triggers: SelectedTrigger[];
+};
+
+export type Trigger = {
+  alert_integration_id: string | null;
+  created_at: string;
+  deployment_branches: string | null;
+  deployment_environment: DeploymentEnvironment | null;
+  deployment_integration_id: string | null;
+  environment_id: string | null;
+  id: string;
+  is_default: boolean;
+  is_email_enabled: boolean;
+  name: string;
+  next_at: string | null;
+  repeat_minutes: number | null;
 };
 
 export type User = {
@@ -157,27 +157,18 @@ export type CreateCode = {
   test_id: string | null;
 };
 
-export type GroupTests = {
-  [testId: string]: string[];
-};
-
 export type Modal =
   | "apiKeys"
   | "createTest"
   | "deployment"
   | "environments"
-  | "deleteGroup"
   | "deleteTest"
+  | "deleteTrigger"
   | "teamSettings";
 
 export type NavigationOption = "code" | "logs" | "helpers";
 
 export type NavigationType = "dark" | "light";
-
-export type SelectedGroup = {
-  id: string;
-  name: string;
-};
 
 export type SelectedIntegration = {
   github_repo_name: string;
@@ -189,7 +180,16 @@ export type SelectedTest = {
   name: string;
 };
 
+export type SelectedTrigger = {
+  id: string;
+  name: string;
+};
+
 export type Side = "left" | "right";
+
+export type TestTriggers = {
+  [testId: string]: string[];
+};
 
 export type ValueProp = {
   detail: string;
@@ -238,19 +238,17 @@ export type RunProgress = {
 };
 
 // State Types
-export type ImageGroup = "wolf";
-
 type SignUp = {
   inviteId?: string | null;
   redirectUri?: string | null;
 };
 
 type ModalState = {
-  group?: SelectedGroup;
   integration?: SelectedIntegration;
   name: Modal | null;
   teamId?: string;
   tests?: SelectedTest[];
+  trigger?: SelectedTrigger;
 };
 
 export type State = {
@@ -259,10 +257,9 @@ export type State = {
   email: string | null;
   environmentId: string | null;
   error: string | null;
-  groupId: string | null;
-  image: { wolf: number };
   modal: ModalState;
   run: RunOptions | null;
   signUp: SignUp;
   teamId: string | null;
+  triggerId: string | null;
 };
