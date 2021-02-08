@@ -1,6 +1,6 @@
 import { db, dropTestDb, migrateDb } from "../../../server/db";
 import {
-  createFreeTeamWithGroup,
+  createFreeTeamWithTrigger,
   findTeam,
   findTeamsForUser,
   updateTeam,
@@ -18,15 +18,15 @@ beforeAll(async () => {
 afterAll(() => dropTestDb());
 
 describe("team model", () => {
-  describe("createFreeTeamWithGroup", () => {
+  describe("createFreeTeamWithTrigger", () => {
     afterAll(async () => {
       await db("environments").del();
-      await db("groups").del();
+      await db("triggers").del();
       return db("teams").del();
     });
 
-    it("creates a free team with the default group and environments", async () => {
-      await createFreeTeamWithGroup("userId", { logger });
+    it("creates a free team with the default trigger and environments", async () => {
+      await createFreeTeamWithTrigger("userId", { logger });
 
       const teams = await db.select("*").from("teams");
       expect(teams).toMatchObject([
@@ -42,8 +42,8 @@ describe("team model", () => {
         },
       ]);
 
-      const groups = await db.select("*").from("groups");
-      expect(groups).toMatchObject([
+      const triggers = await db.select("*").from("triggers");
+      expect(triggers).toMatchObject([
         {
           creator_id: "userId",
           id: expect.any(String),

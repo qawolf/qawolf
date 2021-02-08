@@ -19,12 +19,12 @@ import {
   buildArtifacts,
   buildEnvironment,
   buildEnvironmentVariable,
-  buildGroup,
   buildRun,
   buildRunner,
   buildSuite,
   buildTeam,
   buildTest,
+  buildTrigger,
   buildUser,
   logger,
 } from "../utils";
@@ -46,9 +46,9 @@ describe("run model", () => {
       buildTeam({ i: 3 }),
       buildTeam({ i: 4 }),
     ]);
-    await db("groups").insert([
-      buildGroup({}),
-      buildGroup({ i: 2, is_default: true, team_id: "team3Id" }),
+    await db("triggers").insert([
+      buildTrigger({}),
+      buildTrigger({ i: 2, is_default: true, team_id: "team3Id" }),
     ]);
 
     await db("suites").insert([
@@ -65,16 +65,16 @@ describe("run model", () => {
       buildTest({ i: 4 }),
     ]);
 
-    await db("group_tests").insert([
+    await db("test_triggers").insert([
       {
-        group_id: "groupId",
-        id: "groupTestId",
+        id: "testTriggerId",
         test_id: "test2Id",
+        trigger_id: "triggerId",
       },
       {
-        group_id: "groupId",
-        id: "groupTest2Id",
+        id: "testTrigger2Id",
         test_id: "test4Id",
+        trigger_id: "triggerId",
       },
     ]);
 
@@ -160,11 +160,11 @@ describe("run model", () => {
   });
 
   describe("findLatestRuns", () => {
-    it("returns the latest runs for a test and group", async () => {
+    it("returns the latest runs for a test and trigger", async () => {
       const runs = await findLatestRuns(
         {
-          group_id: "groupId",
           test_id: "test2Id",
+          trigger_id: "triggerId",
         },
         { logger }
       );
@@ -265,8 +265,8 @@ describe("run model", () => {
       await db("teams").update({ helpers: "helpers" });
 
       await db("environments").insert(buildEnvironment({ team_id: "team3Id" }));
-      await db("groups")
-        .where({ id: "groupId" })
+      await db("triggers")
+        .where({ id: "triggerId" })
         .update({ environment_id: "environmentId" });
 
       return db("environment_variables").insert(
@@ -279,7 +279,7 @@ describe("run model", () => {
 
     afterAll(async () => {
       await db("teams").update({ helpers: "" });
-      await db("groups").update({ environment_id: null });
+      await db("triggers").update({ environment_id: null });
 
       await db("environment_variables").del();
       return db("environments").del();
@@ -348,7 +348,7 @@ describe("run model", () => {
   });
 
   describe("findTestHistory", () => {
-    it("returns the latest runs for a test and group", async () => {
+    it("returns the latest runs for a test and trigger", async () => {
       const runs = await findTestHistory("test2Id", { logger });
 
       expect(runs).toMatchObject([

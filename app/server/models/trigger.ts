@@ -27,7 +27,7 @@ type UpdateTrigger = {
   repeat_minutes?: number | null;
 };
 
-export const defaultName = "All Tests";
+export const DEFAUlT_TRIGGER_NAME = "All Tests";
 
 const clearMinutes = (date: Date): void => {
   date.setUTCMinutes(0);

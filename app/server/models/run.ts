@@ -26,8 +26,8 @@ type CreateRunsForTests = {
 };
 
 type FindLatestRuns = {
-  group_id: string;
   test_id: string;
+  trigger_id: string;
 };
 
 export type UpdateRun = {
@@ -86,12 +86,12 @@ export const createRunsForTests = async (
 };
 
 export const findLatestRuns = async (
-  { group_id, test_id }: FindLatestRuns,
+  { test_id, trigger_id }: FindLatestRuns,
   { logger, trx }: ModelOptions
 ): Promise<SuiteRun[]> => {
   const log = logger.prefix("findLatestRuns");
 
-  log.debug("group", group_id, "test", test_id);
+  log.debug("test", test_id, "trigger", trigger_id);
 
   const runs = await (trx || db)
     .select("runs.*" as "*")
@@ -100,7 +100,7 @@ export const findLatestRuns = async (
     .from("runs")
     .innerJoin("suites", "runs.suite_id", "suites.id")
     .innerJoin("tests", "runs.test_id", "tests.id")
-    .where({ group_id, test_id })
+    .where({ test_id, trigger_id })
     .orderBy("created_at", "desc")
     .limit(10);
 
@@ -197,14 +197,14 @@ export const findSuiteRunForRunner = async (
   return (trx || db).transaction(async (trx) => {
     const row = await trx
       .select("runs.*")
-      .select("groups.environment_id AS environment_id")
+      .select("triggers.environment_id AS environment_id")
       .select("suites.environment_variables AS environment_variables")
       .select("suites.team_id AS team_id")
       .select("teams.helpers AS helpers")
       .select("tests.version AS test_version")
       .from("runs")
       .innerJoin("suites", "runs.suite_id", "suites.id")
-      .innerJoin("groups", "groups.id", "suites.group_id")
+      .innerJoin("triggers", "triggers.id", "suites.trigger_id")
       .innerJoin("teams", "suites.team_id", "teams.id")
       .innerJoin("tests", "runs.test_id", "tests.id")
       .andWhere({ "runs.id": run_id })
