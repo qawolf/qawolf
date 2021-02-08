@@ -122,7 +122,7 @@ describe("triggersResolver", () => {
 describe("testTriggersResolver", () => {
   beforeAll(async () => {
     await db("triggers").insert([
-      buildTrigger({ name: "A Trigger" }),
+      buildTrigger({ name: "B Trigger" }),
       buildTrigger({ i: 2, is_default: true, name: "All Tests" }),
       buildTrigger({ i: 3 }),
     ]);
@@ -143,10 +143,8 @@ describe("testTriggersResolver", () => {
     const triggers = await testTriggersResolver(buildTest({}), {}, testContext);
 
     expect(triggers).toMatchObject([
-      {
-        name: "A Trigger",
-      },
       { name: "All Tests" },
+      { name: "B Trigger" },
     ]);
   });
 });
