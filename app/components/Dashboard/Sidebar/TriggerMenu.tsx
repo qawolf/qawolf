@@ -7,21 +7,21 @@ import Option from "../../shared/Dropdown/Option";
 
 type Props = {
   closeMenu: () => void;
-  groupId: string;
-  groupName: string;
+  triggerId: string;
+  triggerName: string;
 };
 
-export default function GroupMenu({
+export default function TriggerMenu({
   closeMenu,
-  groupId,
-  groupName,
+  triggerId,
+  triggerName,
 }: Props): JSX.Element {
   const handleClick = () => {
     closeMenu();
 
     state.setModal({
-      group: { id: groupId, name: groupName },
-      name: "deleteGroup",
+      name: "deleteTrigger",
+      trigger: { id: triggerId, name: triggerName },
     });
   };
 

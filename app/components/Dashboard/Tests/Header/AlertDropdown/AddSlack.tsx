@@ -11,15 +11,15 @@ import styles from "../Header.module.css";
 export default function AddSlack(): JSX.Element {
   const isRedirectingRef = useRef(false);
 
-  const { groupId } = useContext(StateContext);
+  const { triggerId } = useContext(StateContext);
 
   const [
     createSlackIntegrationUrl,
     { data, loading },
   ] = useCreateSlackIntegrationUrl({
-    // include group id so we can update that group's alert
+    // include trigger id so we can update that trigger's alert
     // preferences after they install the Slack app
-    redirect_uri: `${routes.slack}/${groupId}`,
+    redirect_uri: `${routes.slack}/${triggerId}`,
   });
 
   const handleClick = (e: MouseEvent) => {

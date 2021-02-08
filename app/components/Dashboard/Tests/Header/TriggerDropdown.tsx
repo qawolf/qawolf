@@ -1,33 +1,33 @@
 import { Github } from "grommet-icons";
 
 import { state } from "../../../../lib/state";
-import { Group, Integration } from "../../../../lib/types";
+import { Integration, Trigger } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import Dropdown from "../../../shared/Dropdown";
 import Option from "../../../shared/Dropdown/Option";
 import IconButton from "../../../shared/IconButton";
-import { formatGroupTrigger } from "../utils";
+import { formatTrigger } from "../utils";
 import styles from "./Header.module.css";
 
 type Props = {
-  group: Group;
   integrations: Integration[];
   onClick: (repeatMinutes: number | null) => void;
+  trigger: Trigger;
 };
 
 const REPEAT_MINUTES_OPTIONS = [60 * 24, 60];
 
 export default function TriggerDropdown({
-  group,
   integrations,
   onClick,
+  trigger,
 }: Props): JSX.Element {
   const scheduleOptionsHtml = REPEAT_MINUTES_OPTIONS.map((option) => {
     return (
       <Option
-        isSelected={option === group.repeat_minutes}
+        isSelected={option === trigger.repeat_minutes}
         key={option}
-        message={formatGroupTrigger({ repeatMinutes: option })}
+        message={formatTrigger({ repeatMinutes: option })}
         onClick={() => onClick(option)}
       />
     );
@@ -36,19 +36,19 @@ export default function TriggerDropdown({
   const integrationOptionsHtml = integrations.map((integration) => {
     const handleClick = () =>
       state.setModal({
-        group: { id: group.id, name: group.name },
         integration: {
           github_repo_name: integration.github_repo_name,
           id: integration.id,
         },
         name: "deployment",
+        trigger: { id: trigger.id, name: trigger.name },
       });
 
     return (
       <Option
-        isSelected={group.deployment_integration_id === integration.id}
+        isSelected={trigger.deployment_integration_id === integration.id}
         key={integration.id}
-        message={formatGroupTrigger({ repoName: integration.github_repo_name })}
+        message={formatTrigger({ repoName: integration.github_repo_name })}
         onClick={handleClick}
       />
     );
@@ -59,8 +59,10 @@ export default function TriggerDropdown({
       {scheduleOptionsHtml}
       {integrationOptionsHtml}
       <Option
-        isSelected={!group.deployment_integration_id && !group.repeat_minutes}
-        message={formatGroupTrigger({})}
+        isSelected={
+          !trigger.deployment_integration_id && !trigger.repeat_minutes
+        }
+        message={formatTrigger({})}
         onClick={() => onClick(null)}
       />
       <IconButton

@@ -1,23 +1,25 @@
 import { useEffect } from "react";
 
-import { useDeleteGroup } from "../../hooks/mutations";
-import { SelectedGroup } from "../../lib/types";
+import { useDeleteTrigger } from "../../hooks/mutations";
+import { SelectedTrigger } from "../../lib/types";
 import { copy } from "../../theme/copy";
 import ConfirmDelete from "../shared/ConfirmDelete";
 
 type Props = {
   closeModal: () => void;
-  group: SelectedGroup;
+  trigger: SelectedTrigger;
 };
 
-export default function ConfirmDeleteGroup({
+export default function ConfirmDeleteTrigger({
   closeModal,
-  group,
+  trigger,
 }: Props): JSX.Element {
-  const [deleteGroup, { data, loading }] = useDeleteGroup({ id: group.id });
+  const [deleteTrigger, { data, loading }] = useDeleteTrigger({
+    id: trigger.id,
+  });
 
   useEffect(() => {
-    if (data?.deleteGroup) {
+    if (data?.deleteTrigger) {
       closeModal();
     }
   }, [closeModal, data]);
@@ -27,8 +29,8 @@ export default function ConfirmDeleteGroup({
       closeModal={closeModal}
       disabled={loading}
       message={copy.confirmDelete("group")}
-      namesToDelete={[group.name]}
-      onClick={deleteGroup}
+      namesToDelete={[trigger.name]}
+      onClick={deleteTrigger}
     />
   );
 }

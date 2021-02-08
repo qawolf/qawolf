@@ -2,28 +2,28 @@ import { Box, Button } from "grommet";
 import { More } from "grommet-icons";
 import { useRef, useState } from "react";
 
-import { Group } from "../../../lib/types";
+import { Trigger } from "../../../lib/types";
 import { hoverTransition, iconSize } from "../../../theme/theme";
 import Drop from "../../shared/Drop";
-import GroupMenu from "./GroupMenu";
+import TriggerMenu from "./TriggerMenu";
 import styles from "./Sidebar.module.css";
 
 type Props = {
-  group: Group;
   isVisible: boolean;
+  trigger: Trigger;
 };
 
 const PAD = "2px"; // small enough it doesn't affect height of link
 
-export default function GroupMenuButton({
-  group,
+export default function TriggerMenuButton({
   isVisible,
+  trigger,
 }: Props): JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleClick = (e: React.MouseEvent) => {
-    if (group.is_default) return;
+    if (trigger.is_default) return;
     e.stopPropagation(); // do not click on entire button
     setIsMenuOpen((prev) => !prev);
   };
@@ -38,14 +38,14 @@ export default function GroupMenuButton({
     <>
       <Button
         a11yTitle="show options"
-        data-test="group options"
-        // do not show delete menu for default group
-        disabled={group.is_default}
+        data-test="trigger options"
+        // do not show delete menu for default trigger
+        disabled={trigger.is_default}
         onClick={handleClick}
         plain
       >
         <Box
-          className={styles.groupMenuButton}
+          className={styles.triggerMenuButton}
           flex={false}
           margin={{ right: "small" }}
           pad={PAD}
@@ -63,10 +63,10 @@ export default function GroupMenuButton({
           onEsc={() => setIsMenuOpen(false)}
           target={ref.current}
         >
-          <GroupMenu
+          <TriggerMenu
             closeMenu={() => setIsMenuOpen(false)}
-            groupId={group.id}
-            groupName={group.name}
+            triggerId={trigger.id}
+            triggerName={trigger.name}
           />
         </Drop>
       )}

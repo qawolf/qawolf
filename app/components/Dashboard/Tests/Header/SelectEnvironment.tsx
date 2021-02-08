@@ -1,33 +1,33 @@
 import { useEffect } from "react";
 
-import { useUpdateGroup } from "../../../../hooks/mutations";
+import { useUpdateTrigger } from "../../../../hooks/mutations";
 import { state } from "../../../../lib/state";
-import { Group } from "../../../../lib/types";
+import { Trigger } from "../../../../lib/types";
 import Environments from "../../../shared-new/Environments";
 
-type Props = { group: Group };
+type Props = { trigger: Trigger };
 
-export default function SelectEnvironment({ group }: Props): JSX.Element {
-  // update selected environment to current group's environment
+export default function SelectEnvironment({ trigger }: Props): JSX.Element {
+  // update selected environment to current trigger's environment
   useEffect(() => {
-    if (group.environment_id) state.setEnvironmentId(group.environment_id);
-  }, [group.environment_id]);
+    if (trigger.environment_id) state.setEnvironmentId(trigger.environment_id);
+  }, [trigger.environment_id]);
 
-  const [updateGroup] = useUpdateGroup();
+  const [updateTrigger] = useUpdateTrigger();
 
   const handleEnvironmentClick = (environmentId: string): void => {
     state.setEnvironmentId(environmentId);
 
-    updateGroup({
+    updateTrigger({
       optimisticResponse: {
-        updateGroup: {
-          ...group,
+        updateTrigger: {
+          ...trigger,
           environment_id: environmentId,
         },
       },
       variables: {
         environment_id: environmentId,
-        id: group.id,
+        id: trigger.id,
       },
     });
   };
@@ -36,7 +36,7 @@ export default function SelectEnvironment({ group }: Props): JSX.Element {
     <Environments
       direction="down"
       onEnvironmentClick={handleEnvironmentClick}
-      selectedEnvironmentId={group.environment_id}
+      selectedEnvironmentId={trigger.environment_id}
     />
   );
 }

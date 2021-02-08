@@ -3,8 +3,8 @@ import { useContext } from "react";
 import { state } from "../../lib/state";
 import { StateContext } from "../StateContext";
 import ApiKeys from "./ApiKeys";
-import ConfirmDeleteGroup from "./ConfirmDeleteGroup";
 import ConfirmDeleteTests from "./ConfirmDeleteTests";
+import ConfirmDeleteTrigger from "./ConfirmDeleteTrigger";
 import CreateTest from "./CreateTest";
 import Deployment from "./Deployment";
 import Environments from "./Environments";
@@ -12,7 +12,7 @@ import TeamSettings from "./TeamSettings";
 
 export default function Modals(): JSX.Element {
   const { modal } = useContext(StateContext);
-  const { group, integration, name, teamId, tests } = modal || {};
+  const { integration, name, teamId, tests, trigger } = modal || {};
 
   const closeModal = () => state.setModal({ name: null });
 
@@ -24,20 +24,20 @@ export default function Modals(): JSX.Element {
     return <CreateTest closeModal={closeModal} />;
   }
 
-  if (name === "deleteGroup" && group) {
-    return <ConfirmDeleteGroup closeModal={closeModal} group={group} />;
-  }
-
   if (name === "deleteTest" && tests) {
     return <ConfirmDeleteTests closeModal={closeModal} tests={tests} />;
   }
 
-  if (name === "deployment" && group && integration) {
+  if (name === "deleteTrigger" && trigger) {
+    return <ConfirmDeleteTrigger closeModal={closeModal} trigger={trigger} />;
+  }
+
+  if (name === "deployment" && integration && trigger) {
     return (
       <Deployment
         closeModal={closeModal}
-        group={group}
         integration={integration}
+        trigger={trigger}
       />
     );
   }

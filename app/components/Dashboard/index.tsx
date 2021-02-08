@@ -4,7 +4,7 @@ import { useContext, useEffect } from "react";
 
 import { useEnsureUser } from "../../hooks/ensureUser";
 import { useUpdateUser } from "../../hooks/mutations";
-import { useGroups, useSuite } from "../../hooks/queries";
+import { useSuite, useTriggers } from "../../hooks/queries";
 import { state } from "../../lib/state";
 import Spinner from "../shared/Spinner";
 import { StateContext } from "../StateContext";
@@ -20,14 +20,14 @@ export default function Dashboard(): JSX.Element {
   const { asPath, query } = useRouter();
   const suiteId = (query.suite_id as string) || null;
 
-  const { groupId, teamId } = useContext(StateContext);
+  const { teamId, triggerId } = useContext(StateContext);
 
-  // this query sets selected group and team ids as needed
-  useSuite({ id: suiteId || null }, { groupId, teamId });
+  // this query sets selected team and trigger ids as needed
+  useSuite({ id: suiteId || null }, { teamId, triggerId });
 
-  const { data } = useGroups(
+  const { data } = useTriggers(
     { team_id: teamId },
-    { groupId, skipOnCompleted: !!suiteId }
+    { skipOnCompleted: !!suiteId, triggerId }
   );
 
   const [updateUser] = useUpdateUser();
@@ -45,21 +45,26 @@ export default function Dashboard(): JSX.Element {
     state.setDashboardUri(asPath);
   }, [asPath]);
 
-  const groups = data?.groups;
-  const selectedGroup = groups?.find((group) => group.id === groupId);
+  const triggers = data?.triggers;
+  const selectedTrigger = triggers?.find((t) => t.id === triggerId);
 
-  if (!groups || !user || !wolf) {
+  if (!triggers || !user || !wolf) {
     return <Spinner />;
   }
 
   return (
     <Box direction="row" height="100vh">
-      <Sidebar groupId={groupId} groups={groups} wolf={wolf} user={user} />
+      <Sidebar
+        triggerId={triggerId}
+        triggers={triggers}
+        user={user}
+        wolf={wolf}
+      />
       <Box background="lightBlue" fill="horizontal" pad="large">
-        {!!selectedGroup && (
+        {!!selectedTrigger && (
           <Tests
-            groups={groups}
-            selectedGroup={selectedGroup}
+            selectedTrigger={selectedTrigger}
+            triggers={triggers}
             wolfVariant={wolf.variant}
           />
         )}

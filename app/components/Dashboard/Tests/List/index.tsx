@@ -3,36 +3,36 @@ import { useRouter } from "next/router";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import {
-  Group,
-  GroupTests,
   SuiteRun,
   TestWithSummary,
+  TestTriggers,
+  Trigger,
 } from "../../../../lib/types";
 import { getSelectedTests } from "../utils";
 import Actions from "./Actions";
 import ListItems from "./ListItems";
 
 type Props = {
-  groups: Group[];
-  groupTests: GroupTests;
   isLoading: boolean;
   runs: SuiteRun[] | null;
-  selectedGroupId: string;
   selectedIds: string[];
+  selectedTriggerId: string;
   setSelectedIds: Dispatch<SetStateAction<string[]>>;
+  testTriggers: TestTriggers;
   tests: TestWithSummary[] | null;
+  triggers: Trigger[];
   wolfVariant: string;
 };
 
 export default function List({
-  groups,
-  groupTests,
   isLoading,
   runs,
-  selectedGroupId,
   selectedIds,
+  selectedTriggerId,
   setSelectedIds,
+  testTriggers,
   tests,
+  triggers,
   wolfVariant,
 }: Props): JSX.Element {
   const { query } = useRouter();
@@ -40,10 +40,10 @@ export default function List({
 
   const [search, setSearch] = useState("");
 
-  // reset check boxes when group or suite changes
+  // reset check boxes when trigger or suite changes
   useEffect(() => {
     setSelectedIds([]);
-  }, [selectedGroupId, setSelectedIds, suiteId]);
+  }, [selectedTriggerId, setSelectedIds, suiteId]);
 
   const selectableRuns = runs?.filter((run) => !run.is_test_deleted) || null;
 
@@ -83,13 +83,13 @@ export default function List({
   return (
     <Box fill>
       <Actions
-        groups={groups}
-        groupTests={groupTests}
         isChecked={isChecked}
         onCheck={handleAllCheck}
         search={search}
         selectedTests={selectedTests}
         setSearch={setSearch}
+        testTriggers={testTriggers}
+        triggers={triggers}
       />
       <ListItems
         isLoading={isLoading}

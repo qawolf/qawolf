@@ -2,29 +2,30 @@ import { Box, Button } from "grommet";
 import { Down, Tag } from "grommet-icons";
 import { useRef, useState } from "react";
 
-import { Group, GroupTests, SelectedTest } from "../../../../../lib/types";
+import { SelectedTest, TestTriggers, Trigger } from "../../../../../lib/types";
 import { copy } from "../../../../../theme/copy";
 import { hoverTransition, iconSize } from "../../../../../theme/theme";
 import Drop from "../../../../shared/Drop";
 import Text from "../../../../shared/Text";
-import styles from "./AssignGroups.module.css";
-import GroupsDropdown from "./GroupsDropdown";
+import styles from "./AssignTriggers.module.css";
+import TriggersDropdown from "./TriggersDropdown";
 
 type Props = {
-  groups: Group[];
-  groupTests: GroupTests;
   selectedTests: SelectedTest[];
+  testTriggers: TestTriggers;
+  triggers: Trigger[];
 };
 
-export default function AssignGroups({
-  groups,
-  groupTests,
+export default function AssignTriggers({
   selectedTests,
+  testTriggers,
+  triggers,
 }: Props): JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
-  // do not show this if no non-default group
-  if (!selectedTests.length || !groups.some((g) => !g.is_default)) return null;
+  // do not show this if no non-default trigger
+  if (!selectedTests.length || !triggers.some((g) => !g.is_default))
+    return null;
 
   const handleClick = () => {
     setIsOpen((prev) => !prev);
@@ -39,7 +40,7 @@ export default function AssignGroups({
   return (
     <Button
       a11yTitle={copy.assignGroups}
-      className={styles.selectGroups}
+      className={styles.selectTriggers}
       onClick={handleClick}
       plain
     >
@@ -61,10 +62,10 @@ export default function AssignGroups({
           onEsc={() => setIsOpen(false)}
           target={ref.current}
         >
-          <GroupsDropdown
-            groups={groups}
-            groupTests={groupTests}
+          <TriggersDropdown
             selectedTests={selectedTests}
+            testTriggers={testTriggers}
+            triggers={triggers}
           />
         </Drop>
       )}
