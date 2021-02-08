@@ -9,8 +9,6 @@ import { Artifacts } from "../types";
 
 const debug = Debug("qawolf:VideoArtifactsHook");
 
-const REQUIRED_KEYS = ["gifUrl", "videoUrl"];
-
 export class VideoArtifactsHook implements RunHook {
   _artifacts: Artifacts;
   _onUploaded: () => void = noop;
@@ -23,14 +21,10 @@ export class VideoArtifactsHook implements RunHook {
   constructor(artifacts: Artifacts) {
     this._artifacts = artifacts;
 
+    // To skip capturing, do not supply a gif or video url.
     // To skip upload of either URL but enable recording (primarily for
-    // testing), the URL string can be set to "local-only". Note that
-    // both URLs must be supplied either way, or `_skip` will be true
-    // and no recording will happen.
-    const hasRequiredKeys =
-      intersection(Object.keys(artifacts), REQUIRED_KEYS).length ===
-      REQUIRED_KEYS.length;
-    this._skip = !hasRequiredKeys;
+    // testing), the URL string can be set to "local-only".
+    this._skip = !this._artifacts.gifUrl && !this._artifacts.videoUrl;
   }
 
   async after(): Promise<void> {
@@ -51,14 +45,17 @@ export class VideoArtifactsHook implements RunHook {
       );
     }
 
-    if (gifUrl !== "local-only") {
+    if (gifUrl) {
       promises.push(
         (async () => {
           await this._videoCapture.createGif();
-          await uploadFile({
-            savePath: this._videoCapture.gifPath,
-            url: gifUrl!,
-          });
+
+          if (gifUrl !== "local-only") {
+            await uploadFile({
+              savePath: this._videoCapture.gifPath,
+              url: gifUrl!,
+            });
+          }
         })()
       );
     }
