@@ -1,6 +1,6 @@
 import { db } from "../db";
-import { updateGroup } from "../models/trigger";
 import { createIntegration } from "../models/integration";
+import { updateGroup } from "../models/trigger";
 import { createSlackIntegrationUrl, findSlackWebhook } from "../services/slack";
 import {
   Context,

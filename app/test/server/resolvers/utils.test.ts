@@ -1,7 +1,7 @@
 import { db, dropTestDb, migrateDb } from "../../../server/db";
-import * as groupModel from "../../../server/models/trigger";
 import * as suiteModel from "../../../server/models/suite";
 import * as testModel from "../../../server/models/test";
+import * as groupModel from "../../../server/models/trigger";
 import {
   ensureEnvironmentAccess,
   ensureEnvironmentVariableAccess,

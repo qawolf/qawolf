@@ -2,8 +2,8 @@ import { db, dropTestDb, migrateDb } from "../../../server/db";
 import {
   createTestTrigger,
   createTestTriggersForTrigger,
-  deleteTestTriggersForTrigger,
   deleteTestTriggersForTests,
+  deleteTestTriggersForTrigger,
 } from "../../../server/models/test_trigger";
 import { TestTrigger } from "../../../server/types";
 import {

@@ -5,25 +5,25 @@ import { Test } from "../../../server/types";
 import * as utils from "../../../server/utils";
 import { minutesFromNow } from "../../../shared/utils";
 import {
-  buildGroup,
   buildRun,
   buildRunner,
   buildTeam,
   buildTest,
+  buildTrigger,
   buildUser,
   logger,
 } from "../utils";
 
 const {
   buildTestName,
-  createTestAndGroupTests,
+  createTestAndTestTriggers,
   countPendingTests,
   deleteTests,
-  findEnabledTestsForGroup,
+  findEnabledTestsForTrigger,
   findPendingTest,
   findTest,
   findTestForRun,
-  findTestsForGroup,
+  findTestsForTrigger,
   findTestsForTeam,
   updateTest,
 } = testModel;
@@ -33,7 +33,7 @@ beforeAll(async () => {
 
   await db("users").insert(buildUser({}));
   await db("teams").insert(buildTeam({}));
-  await db("groups").insert(buildGroup({}));
+  await db("triggers").insert(buildTrigger({}));
 });
 
 afterAll(() => {
@@ -103,22 +103,22 @@ describe("buildTestName", () => {
   });
 });
 
-describe("createTestAndGroupTests", () => {
-  beforeAll(() => db("groups").insert(buildGroup({ i: 2 })));
+describe("createTestAndTestTriggers", () => {
+  beforeAll(() => db("triggers").insert(buildTrigger({ i: 2 })));
 
   afterAll(async () => {
-    await db("group_tests").del();
-    await db("groups").where({ id: "group2Id" }).del();
+    await db("test_triggers").del();
+    await db("triggers").where({ id: "trigger2Id" }).del();
     await db("tests").del();
   });
 
   it("creates a new test", async () => {
-    await createTestAndGroupTests(
+    await createTestAndTestTriggers(
       {
         code: "code",
         creator_id: "userId",
-        group_ids: ["groupId", "group2Id"],
         team_id: "teamId",
+        trigger_ids: ["triggerId", "trigger2Id"],
       },
       { logger }
     );
@@ -136,18 +136,18 @@ describe("createTestAndGroupTests", () => {
       version: 0,
     });
 
-    const groupTests = await db.select("*").from("group_tests");
+    const testTriggers = await db.select("*").from("test_triggers");
 
-    expect(groupTests).toMatchObject([
-      { group_id: "groupId", test_id: tests[0].id },
-      { group_id: "group2Id", test_id: tests[0].id },
+    expect(testTriggers).toMatchObject([
+      { test_id: tests[0].id, trigger_id: "triggerId" },
+      { test_id: tests[0].id, trigger_id: "trigger2Id" },
     ]);
   });
 });
 
 describe("deleteTests", () => {
   afterAll(async () => {
-    await db("group_tests").del();
+    await db("test_triggers").del();
     await db("tests").del();
   });
 
@@ -155,25 +155,25 @@ describe("deleteTests", () => {
     jest
       .spyOn(utils, "cuid")
       .mockReturnValueOnce("deleteMe")
-      .mockReturnValueOnce("deleteMeGroupTest")
+      .mockReturnValueOnce("deleteMeTestTrigger")
       .mockReturnValue("deleteMe2");
 
-    await createTestAndGroupTests(
+    await createTestAndTestTriggers(
       {
         code: "code",
         creator_id: "userId",
-        group_ids: ["groupId"],
         team_id: "teamId",
+        trigger_ids: ["triggerId"],
       },
       { logger }
     );
 
-    await createTestAndGroupTests(
+    await createTestAndTestTriggers(
       {
         code: "code",
         creator_id: "userId",
-        group_ids: ["groupId"],
         team_id: "teamId",
+        trigger_ids: ["triggerId"],
       },
       { logger }
     );
@@ -195,32 +195,32 @@ describe("deleteTests", () => {
   });
 });
 
-describe("findEnabledTestsForGroup", () => {
+describe("findEnabledTestsForTrigger", () => {
   beforeAll(async () => {
     await db("tests").insert([buildTest({}), buildTest({ i: 2 })]);
 
-    await db("group_tests").insert([
+    await db("test_triggers").insert([
       {
-        group_id: "groupId",
-        id: "groupTestId",
+        id: "testTriggerId",
         test_id: "testId",
+        trigger_id: "triggerId",
       },
       {
-        group_id: "groupId",
-        id: "groupTest2Id",
+        id: "testTrigger2Id",
         test_id: "test2Id",
+        trigger_id: "triggerId",
       },
     ]);
   });
 
   afterAll(async () => {
-    await db("group_tests").del();
+    await db("test_triggers").del();
     await db("tests").del();
   });
 
-  it("finds the enabled tests for a group", async () => {
-    const tests = await findEnabledTestsForGroup(
-      { group_id: "groupId" },
+  it("finds the enabled tests for a trigger", async () => {
+    const tests = await findEnabledTestsForTrigger(
+      { trigger_id: "triggerId" },
       { logger }
     );
 
@@ -231,8 +231,8 @@ describe("findEnabledTestsForGroup", () => {
   });
 
   it("filters by test id if specified", async () => {
-    const tests = await findEnabledTestsForGroup(
-      { group_id: "groupId", test_ids: ["test2Id"] },
+    const tests = await findEnabledTestsForTrigger(
+      { trigger_id: "triggerId", test_ids: ["test2Id"] },
       { logger }
     );
 
@@ -392,32 +392,32 @@ describe("findTestForRun", () => {
   });
 });
 
-describe("findTestsForGroup", () => {
+describe("findTestsForTrigger", () => {
   beforeAll(async () => {
     await db("tests").insert([
       buildTest({}),
       buildTest({ deleted_at: minutesFromNow(), i: 2 }),
     ]);
 
-    return db("group_tests").insert([
-      { group_id: "groupId", id: "groupTestId", test_id: "testId" },
-      { group_id: "groupId", id: "groupTest2Id", test_id: "test2Id" },
+    return db("test_triggers").insert([
+      { id: "testTriggerId", test_id: "testId", trigger_id: "triggerId" },
+      { id: "testTrigger2Id", test_id: "test2Id", trigger_id: "triggerId" },
     ]);
   });
 
   afterAll(async () => {
-    await db("group_tests").del();
+    await db("test_triggers").del();
     await db("tests").del();
   });
 
-  it("returns the non-deleted tests of a group", async () => {
-    const tests = await findTestsForGroup("groupId", { logger });
+  it("returns the non-deleted tests of a trigger", async () => {
+    const tests = await findTestsForTrigger("triggerId", { logger });
 
     expect(tests).toMatchObject([{ id: "testId" }]);
   });
 
-  it("returns empty list if no tests for group exist", async () => {
-    const tests = await findTestsForGroup("fakeId", { logger });
+  it("returns empty list if no tests for trigger exist", async () => {
+    const tests = await findTestsForTrigger("fakeId", { logger });
 
     expect(tests).toEqual([]);
   });

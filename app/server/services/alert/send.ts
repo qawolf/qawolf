@@ -1,8 +1,8 @@
 import { minutesFromNow } from "../../../shared/utils";
 import { Logger } from "../../Logger";
-import { findTrigger } from "../../models/trigger";
 import { findRunsForSuite } from "../../models/run";
 import { findSuite, updateSuite } from "../../models/suite";
+import { findTrigger } from "../../models/trigger";
 import { SuiteRun, Trigger } from "../../types";
 import { sendEmailAlert } from "./email";
 import { sendSlackAlert } from "./slack";

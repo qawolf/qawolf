@@ -1,12 +1,12 @@
 import { db } from "../db";
 import { ClientError } from "../errors";
-import { findGroup } from "../models/trigger";
 import {
   createSuiteForTests,
   findSuite,
   findSuitesForGroup,
 } from "../models/suite";
 import { findEnabledTestsForGroup } from "../models/test";
+import { findGroup } from "../models/trigger";
 import {
   Context,
   CreateSuiteMutation,

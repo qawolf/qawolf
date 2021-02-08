@@ -1,8 +1,6 @@
 import { db } from "../db";
 import { ClientError } from "../errors";
 import { Logger } from "../Logger";
-import { findDefaultGroupForTeam } from "../models/trigger";
-import { deleteGroupTestsForTests } from "../models/test_trigger";
 import { findLatestRuns, findRunResult } from "../models/run";
 import {
   createTestAndGroupTests,
@@ -12,6 +10,8 @@ import {
   findTestsForGroup,
   updateTest,
 } from "../models/test";
+import { deleteGroupTestsForTests } from "../models/test_trigger";
+import { findDefaultGroupForTeam } from "../models/trigger";
 import {
   Context,
   CreateTestMutation,

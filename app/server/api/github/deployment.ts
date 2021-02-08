@@ -3,9 +3,9 @@ import { Transaction } from "knex";
 import { db } from "../../db";
 import { Logger } from "../../Logger";
 import { createGitHubCommitStatus } from "../../models/github_commit_status";
-import { findGroupsForGitHubIntegration } from "../../models/trigger";
 import { createSuiteForTests } from "../../models/suite";
 import { findEnabledTestsForGroup } from "../../models/test";
+import { findGroupsForGitHubIntegration } from "../../models/trigger";
 import {
   createCommitStatus,
   findBranchesForCommit,

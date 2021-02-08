@@ -4,9 +4,9 @@ import { db } from "../db";
 import environment from "../environment";
 import { Logger } from "../Logger";
 import { validateToken } from "../models/api_key";
-import { findGroup } from "../models/trigger";
 import { createSuiteForTests } from "../models/suite";
 import { findEnabledTestsForGroup } from "../models/test";
+import { findGroup } from "../models/trigger";
 import { Group } from "../types";
 
 class AuthenticationError extends Error {

@@ -1,4 +1,5 @@
 import { db } from "../db";
+import { deleteGroupTestsForGroup } from "../models/test_trigger";
 import {
   buildGroupName,
   createGroup,
@@ -8,7 +9,6 @@ import {
   findGroupsForTest,
   updateGroup,
 } from "../models/trigger";
-import { deleteGroupTestsForGroup } from "../models/test_trigger";
 import {
   Context,
   DeleteGroup,

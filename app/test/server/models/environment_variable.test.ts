@@ -295,7 +295,7 @@ describe("findEnvironmentVariablesForEnvironment", () => {
 
   afterAll(() => db("environment_variables").del());
 
-  it("finds environment variables for a group", async () => {
+  it("finds environment variables for an environment", async () => {
     const environmentVariables = await findEnvironmentVariablesForEnvironment(
       "environmentId",
       { logger }

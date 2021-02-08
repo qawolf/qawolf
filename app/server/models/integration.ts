@@ -91,8 +91,8 @@ export const deleteIntegrations = async (
 
   const integrationIds = integrations.map((i) => i.id);
 
-  // remove deleted deployment integrations from associated groups
-  await (trx || db)("groups")
+  // remove deleted deployment integrations from associated triggers
+  await (trx || db)("triggers")
     .whereIn("deployment_integration_id", integrationIds)
     .update({
       deployment_branches: null,
