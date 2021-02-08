@@ -12,11 +12,11 @@ import {
 } from "../../../server/types";
 import { minutesFromNow } from "../../../shared/utils";
 import {
-  buildGroup,
   buildRun,
   buildTeam,
   buildTeamUser,
   buildTest,
+  buildTrigger,
   buildUser,
   logger,
 } from "../utils";
@@ -24,7 +24,7 @@ import {
 const {
   createTestResolver,
   deleteTestsResolver,
-  findGroupIdsAndTeamForCreateTest,
+  findTeamAndTriggerIdsForCreateTest,
   testResolver,
   testSummaryResolver,
   testsResolver,
@@ -51,10 +51,10 @@ beforeAll(async () => {
       buildTeamUser({ i: 2, team_id: "team2Id", user_id: "user2Id" }),
     ]);
 
-    await trx("groups").insert([
-      buildGroup({}),
-      buildGroup({ i: 2, team_id: "team2Id" }),
-      buildGroup({ i: 3, is_default: true, name: "All Tests" }),
+    await trx("triggers").insert([
+      buildTrigger({}),
+      buildTrigger({ i: 2, team_id: "team2Id" }),
+      buildTrigger({ i: 3, is_default: true, name: "All Tests" }),
     ]);
 
     await trx("tests").insert([
@@ -72,16 +72,16 @@ beforeAll(async () => {
       }),
     ]);
 
-    await trx("group_tests").insert([
+    await trx("test_triggers").insert([
       {
-        group_id: "groupId",
-        id: "groupTestId",
+        id: "testTriggerId",
         test_id: "testId",
+        trigger_id: "triggerId",
       },
       {
-        group_id: "groupId",
-        id: "groupTest2Id",
+        id: "testTrigger2Id",
         test_id: "deleteMe",
+        trigger_id: "triggerId",
       },
     ]);
 
@@ -97,7 +97,7 @@ describe("createTestResolver", () => {
   it("creates a test", async () => {
     const test = await createTestResolver(
       {},
-      { group_id: "groupId", url: "https://google.com" },
+      { trigger_id: "triggerId", url: "https://google.com" },
       testContext
     );
 
@@ -108,7 +108,7 @@ describe("createTestResolver", () => {
       name: "My Test 2",
     });
 
-    await db("group_tests").where({ test_id: test.id }).del();
+    await db("test_triggers").where({ test_id: test.id }).del();
     await db("tests").where({ id: test.id }).del();
   });
 
@@ -116,7 +116,7 @@ describe("createTestResolver", () => {
     const testFn = async (): Promise<Test> => {
       return createTestResolver(
         {},
-        { group_id: "groupId", url: "https://qawolf.com" },
+        { trigger_id: "triggerId", url: "https://qawolf.com" },
         testContext
       );
     };
@@ -149,66 +149,67 @@ describe("deleteTestsResolver", () => {
     const test = await testModel.findTest("deleteMe", { logger });
     expect(test.deleted_at).not.toBeNull();
 
-    const groupTest = await db
+    const testTrigger = await db
       .select("*")
-      .from("group_tests")
+      .from("test_triggers")
       .where("test_id", "deleteMe")
       .first();
-    expect(groupTest).toBeFalsy();
+    expect(testTrigger).toBeFalsy();
   });
 });
 
-describe("findGroupIdsAndTeamForCreateTest", () => {
-  it("returns group id and default group id if applicable", async () => {
-    const result = await findGroupIdsAndTeamForCreateTest({
+describe("findTeamAndTriggerIdsForCreateTest", () => {
+  it("returns trigger id and default trigger id if applicable", async () => {
+    const result = await findTeamAndTriggerIdsForCreateTest({
       logger,
-      group_id: "groupId",
       teams: testContext.teams,
+      trigger_id: "triggerId",
     });
 
-    result.groupIds.sort();
+    result.triggerIds.sort();
 
     expect(result).toMatchObject({
-      groupIds: ["group3Id", "groupId"],
       team: testContext.teams[0],
+      triggerIds: ["trigger3Id", "triggerId"],
     });
   });
 
-  it("returns group id if default group provided", async () => {
-    const result = await findGroupIdsAndTeamForCreateTest({
+  it("returns trigger id if default trigger provided", async () => {
+    const result = await findTeamAndTriggerIdsForCreateTest({
       logger,
-      group_id: "group3Id",
+
       teams: testContext.teams,
+      trigger_id: "trigger3Id",
     });
 
     expect(result).toMatchObject({
-      groupIds: ["group3Id"],
       team: testContext.teams[0],
+      triggerIds: ["trigger3Id"],
     });
   });
 
-  it("returns default group otherwise", async () => {
-    const result = await findGroupIdsAndTeamForCreateTest({
+  it("returns default trigger otherwise", async () => {
+    const result = await findTeamAndTriggerIdsForCreateTest({
       logger,
-      group_id: null,
       teams: testContext.teams,
+      trigger_id: null,
     });
 
     expect(result).toMatchObject({
-      groupIds: ["group3Id"],
       team: testContext.teams[0],
+      triggerIds: ["trigger3Id"],
     });
   });
 
-  it("throws an error if user on multiple teams and no group provided", async () => {
+  it("throws an error if user on multiple teams and no trigger provided", async () => {
     const testFn = async (): Promise<{
-      groupIds: string[];
       team: Team;
+      triggerIds: string[];
     }> => {
-      return findGroupIdsAndTeamForCreateTest({
+      return findTeamAndTriggerIdsForCreateTest({
         logger,
-        group_id: null,
         teams: [...testContext.teams, buildTeam({ i: 2 })],
+        trigger_id: null,
       });
     };
 
@@ -296,9 +297,9 @@ describe("testSummaryResolver", () => {
 
     const summary = await testSummaryResolver(
       {
-        group_id: "groupId",
         id: "testId",
-      } as Test & { group_id: string },
+        trigger_id: "triggerId",
+      } as Test & { trigger_id: string },
       {},
       { logger } as Context
     );
@@ -319,9 +320,9 @@ describe("testSummaryResolver", () => {
 
     const summary = await testSummaryResolver(
       {
-        group_id: "groupId",
         id: "testId",
-      } as Test & { group_id: string },
+        trigger_id: "triggerId",
+      } as Test & { trigger_id: string },
       {},
       { logger } as Context
     );
@@ -334,8 +335,12 @@ describe("testSummaryResolver", () => {
 });
 
 describe("testsResolver", () => {
-  it("finds tests for a group", async () => {
-    const tests = await testsResolver({ group_id: "groupId" }, {}, testContext);
+  it("finds tests for a trigger", async () => {
+    const tests = await testsResolver(
+      { trigger_id: "triggerId" },
+      {},
+      testContext
+    );
 
     expect(tests).toMatchObject([{ creator_id: "userId", id: "testId" }]);
   });

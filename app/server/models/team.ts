@@ -5,7 +5,7 @@ import { db } from "../db";
 import { ModelOptions, Team, TeamPlan } from "../types";
 import { cuid } from "../utils";
 import { createDefaultEnvironments } from "./environment";
-import { createTrigger, DEFAUlT_TRIGGER_NAME } from "./trigger";
+import { createTrigger, DEFAULT_TRIGGER_NAME } from "./trigger";
 
 const DEFAULT_NAME = "My Team";
 
@@ -47,7 +47,7 @@ export const createFreeTeamWithTrigger = async (
     {
       creator_id,
       is_default: true,
-      name: DEFAUlT_TRIGGER_NAME,
+      name: DEFAULT_TRIGGER_NAME,
       repeat_minutes: null,
       team_id: team.id,
     },

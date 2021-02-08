@@ -333,18 +333,18 @@ export type CreateInviteMutation = {
 };
 
 export type CreateSlackIntegrationMutation = {
-  group_id: string;
   redirect_uri: string;
   slack_code: string;
+  trigger_id: string;
 };
 
 export type CreateSuiteMutation = {
-  group_id: string;
   test_ids?: string[] | null;
+  trigger_id: string;
 };
 
 export type CreateTestMutation = {
-  group_id: string | null;
+  trigger_id: string | null;
   url: string;
 };
 
@@ -352,8 +352,8 @@ export type CreateUrlMutation = {
   redirect_uri: string;
 };
 
-export type DeleteGroup = {
-  default_group_id: string;
+export type DeleteTrigger = {
+  default_trigger_id: string;
   id: string;
 };
 
@@ -411,7 +411,7 @@ export type UpdateEnvironmentVariableMutation = {
   value: string;
 };
 
-export type UpdateGroupMutation = {
+export type UpdateTriggerMutation = {
   deployment_branches?: string | null;
   deployment_environment?: DeploymentEnvironment | null;
   deployment_integration_id?: string | null;
@@ -423,9 +423,9 @@ export type UpdateGroupMutation = {
   repeat_minutes?: number | null;
 };
 
-export type UpdateGroupTestsMutation = {
-  add_group_id: string | null;
-  remove_group_id: string | null;
+export type UpdateTestTriggersMutation = {
+  add_trigger_id: string | null;
+  remove_trigger_id: string | null;
   test_ids: string[];
 };
 
@@ -472,10 +472,6 @@ export type EnvironmentIdQuery = {
   environment_id: string;
 };
 
-export type GroupIdQuery = {
-  group_id: string;
-};
-
 export type IdQuery = {
   id: string;
 };
@@ -508,6 +504,10 @@ export type TestResult = {
 export type TestSummary = {
   gif_url: string | null;
   last_runs: SuiteRun[];
+};
+
+export type TriggerIdQuery = {
+  trigger_id: string;
 };
 
 export type Wolf = {
