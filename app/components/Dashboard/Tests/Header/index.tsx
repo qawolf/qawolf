@@ -5,22 +5,22 @@ import { useContext } from "react";
 import { useCreateSuite } from "../../../../hooks/mutations";
 import { useIntegrations } from "../../../../hooks/queries";
 import { routes } from "../../../../lib/routes";
-import { Group } from "../../../../lib/types";
+import { Trigger } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import { edgeSize } from "../../../../theme/theme";
 import PlayButton from "../../../shared/PlayButton";
 import { StateContext } from "../../../StateContext";
-import GroupName from "./GroupName";
 import SelectAlert from "./SelectAlert";
 import SelectEnvironment from "./SelectEnvironment";
 import SelectTrigger from "./SelectTrigger";
+import TriggerName from "./TriggerName";
 
 type Props = {
-  group: Group;
   selectedIds: string[];
+  trigger: Trigger;
 };
 
-export default function Header({ group, selectedIds }: Props): JSX.Element {
+export default function Header({ selectedIds, trigger }: Props): JSX.Element {
   const { teamId } = useContext(StateContext);
 
   const { replace } = useRouter();
@@ -37,7 +37,7 @@ export default function Header({ group, selectedIds }: Props): JSX.Element {
 
   const handleClick = () => {
     createSuite({
-      variables: { group_id: group.id, test_ids: selectedIds },
+      variables: { test_ids: selectedIds, trigger_id: trigger.id },
     }).then((response) => {
       const { data } = response || {};
       if (!data?.createSuite) return;
@@ -55,10 +55,10 @@ export default function Header({ group, selectedIds }: Props): JSX.Element {
       justify="between"
     >
       <Box align="center" direction="row">
-        <GroupName group={group} />
-        <SelectTrigger group={group} integrations={gitHubIntegrations} />
-        <SelectAlert group={group} integrations={slackIntegrations} />
-        <SelectEnvironment group={group} />
+        <TriggerName trigger={trigger} />
+        <SelectTrigger integrations={gitHubIntegrations} trigger={trigger} />
+        <SelectAlert integrations={slackIntegrations} trigger={trigger} />
+        <SelectEnvironment trigger={trigger} />
       </Box>
       <PlayButton
         disabled={loading}

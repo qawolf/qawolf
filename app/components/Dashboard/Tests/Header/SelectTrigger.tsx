@@ -2,34 +2,35 @@ import { Box, Button } from "grommet";
 import { Down } from "grommet-icons";
 import { useRef, useState } from "react";
 
-import { useUpdateGroup } from "../../../../hooks/mutations";
-import { Group, Integration } from "../../../../lib/types";
+import { useUpdateTrigger } from "../../../../hooks/mutations";
+import { Integration, Trigger } from "../../../../lib/types";
 import { hoverTransition, iconSize } from "../../../../theme/theme";
 import Drop from "../../../shared/Drop";
 import Text from "../../../shared/Text";
-import { formatGroupTrigger } from "../utils";
+import { formatTrigger } from "../utils";
 import styles from "./Header.module.css";
 import TriggerDropdown from "./TriggerDropdown";
 import TriggerHoverText from "./TriggerHoverText";
 
 type Props = {
-  group: Group;
   integrations: Integration[];
+  trigger: Trigger;
 };
 
 export default function SelectTrigger({
-  group,
   integrations,
+  trigger,
 }: Props): JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  const [updateGroup, { loading }] = useUpdateGroup();
+  const [updateTrigger, { loading }] = useUpdateTrigger();
 
-  const headline = formatGroupTrigger({
-    repeatMinutes: group.repeat_minutes,
-    repoName: integrations.find((i) => i.id === group.deployment_integration_id)
-      ?.github_repo_name,
+  const headline = formatTrigger({
+    repeatMinutes: trigger.repeat_minutes,
+    repoName: integrations.find(
+      (i) => i.id === trigger.deployment_integration_id
+    )?.github_repo_name,
     skipOwnerInRepoName: true,
   });
 
@@ -51,11 +52,11 @@ export default function SelectTrigger({
       repeat_minutes,
     };
 
-    updateGroup({
+    updateTrigger({
       optimisticResponse: {
-        updateGroup: { ...group, ...updates },
+        updateTrigger: { ...trigger, ...updates },
       },
-      variables: { id: group.id, ...updates },
+      variables: { id: trigger.id, ...updates },
     });
   };
 
@@ -78,7 +79,7 @@ export default function SelectTrigger({
             {headline}
           </Text>
         </Box>
-        {!isOpen && <TriggerHoverText group={group} loading={loading} />}
+        {!isOpen && <TriggerHoverText loading={loading} trigger={trigger} />}
         <Down
           color="fadedBlue"
           size={iconSize}
@@ -92,9 +93,9 @@ export default function SelectTrigger({
           target={ref.current}
         >
           <TriggerDropdown
-            group={group}
             integrations={integrations}
             onClick={handleUpdate}
+            trigger={trigger}
           />
         </Drop>
       )}

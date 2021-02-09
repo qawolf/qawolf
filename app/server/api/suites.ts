@@ -4,10 +4,10 @@ import { db } from "../db";
 import environment from "../environment";
 import { Logger } from "../Logger";
 import { validateToken } from "../models/api_key";
-import { findGroup } from "../models/group";
 import { createSuiteForTests } from "../models/suite";
-import { findEnabledTestsForGroup } from "../models/test";
-import { Group } from "../types";
+import { findEnabledTestsForTrigger } from "../models/test";
+import { findTrigger } from "../models/trigger";
+import { Trigger } from "../types";
 
 class AuthenticationError extends Error {
   code: number;
@@ -19,14 +19,14 @@ class AuthenticationError extends Error {
 }
 
 // errors example: https://stripe.com/docs/api/errors
-const ensureGroupAccess = async (
+const ensureTriggerAccess = async (
   req: NextApiRequest,
   logger: Logger
-): Promise<Group> => {
-  const log = logger.prefix("ensureGroupAccess");
+): Promise<Trigger> => {
+  const log = logger.prefix("ensureTriggerAccess");
 
   const token = req.headers.authorization;
-  const { group_id } = req.body;
+  const { trigger_id } = req.body;
 
   if (!token) {
     log.error("no token provided");
@@ -36,30 +36,30 @@ const ensureGroupAccess = async (
     });
   }
 
-  if (!group_id) {
-    log.error("no group id provided");
+  if (!trigger_id) {
+    log.error("no trigger id provided");
     throw new AuthenticationError({
       code: 400,
-      message: "No group id provided",
+      message: "No trigger id provided",
     });
   }
 
   try {
-    const group = await db.transaction(async (trx) => {
-      const group = await findGroup(group_id, { logger, trx });
-      await validateToken({ team_id: group.team_id, token }, { logger, trx });
+    const trigger = await db.transaction(async (trx) => {
+      const trigger = await findTrigger(trigger_id, { logger, trx });
+      await validateToken({ team_id: trigger.team_id, token }, { logger, trx });
 
-      return group;
+      return trigger;
     });
 
-    log.debug("no errors for group", group.id);
-    return group;
+    log.debug("no errors for trigger", trigger.id);
+    return trigger;
   } catch (error) {
     if (error.message.includes("not found")) {
-      log.error("group not found");
+      log.error("trigger not found");
       throw new AuthenticationError({
         code: 404,
-        message: "Invalid group id",
+        message: "Invalid trigger id",
       });
     }
 
@@ -79,23 +79,23 @@ export const handleSuitesRequest: NextApiHandler = async (
   logger.debug("body", req.body);
 
   try {
-    const { id: group_id, team_id } = await ensureGroupAccess(req, logger);
+    const { id: trigger_id, team_id } = await ensureTriggerAccess(req, logger);
 
     const body = await db.transaction(async (trx) => {
-      const tests = await findEnabledTestsForGroup(
-        { group_id },
+      const tests = await findEnabledTestsForTrigger(
+        { trigger_id },
         { logger, trx }
       );
       if (!tests.length) {
-        logger.error("no tests for group", group_id);
-        throw new Error("No tests in group");
+        logger.error("no tests for trigger", trigger_id);
+        throw new Error("No tests in trigger");
       }
 
       const { suite } = await createSuiteForTests(
         {
           environment_variables: req.body.env,
-          group_id,
           team_id,
+          trigger_id,
           tests,
         },
         { logger, trx }

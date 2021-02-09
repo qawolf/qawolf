@@ -18,7 +18,6 @@ const config = {
   // 1280 viewport + 8 scrollbar
   DISPLAY_WIDTH: process.env.QAWOLF_DISPLAY_WIDTH || 1288,
   FFMPEG_PATH: process.env.FFMPEG_PATH || "/usr/bin/ffmpeg",
-  GROUP_ID: process.env.QAWOLF_GROUP_ID,
   INTERNAL_SERVER_PORT: 26368,
   RECORDER_SCRIPT_FILENAME: "qawolf.recorder.js",
   RUNNER_API_KEY: RUNNER_ID ? buildRunnerApiKey() : undefined,

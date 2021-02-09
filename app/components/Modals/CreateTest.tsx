@@ -18,7 +18,7 @@ type Props = { closeModal: () => void };
 
 export default function CreateTest({ closeModal }: Props): JSX.Element {
   const { push } = useRouter();
-  const { groupId } = useContext(StateContext);
+  const { triggerId } = useContext(StateContext);
 
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -50,7 +50,7 @@ export default function CreateTest({ closeModal }: Props): JSX.Element {
     }
 
     createTest({
-      variables: { group_id: groupId, url: parsedUrl },
+      variables: { trigger_id: triggerId, url: parsedUrl },
     }).then(
       ({ data }) => {
         if (!data?.createTest) return;

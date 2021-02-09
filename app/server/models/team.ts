@@ -5,7 +5,7 @@ import { db } from "../db";
 import { ModelOptions, Team, TeamPlan } from "../types";
 import { cuid } from "../utils";
 import { createDefaultEnvironments } from "./environment";
-import { createGroup, DEFAULT_GROUP_NAME } from "./group";
+import { createTrigger, DEFAULT_TRIGGER_NAME } from "./trigger";
 
 const DEFAULT_NAME = "My Team";
 
@@ -20,13 +20,13 @@ type UpdateTeam = {
   stripe_subscription_id?: string;
 };
 
-export const createFreeTeamWithGroup = async (
+export const createFreeTeamWithTrigger = async (
   creator_id: string,
   { logger, trx }: ModelOptions
 ): Promise<Team> => {
   const id = cuid();
 
-  const log = logger.prefix("createFreeTeamWithGroup");
+  const log = logger.prefix("createFreeTeamWithTrigger");
   log.debug(id);
 
   const team = {
@@ -43,11 +43,11 @@ export const createFreeTeamWithGroup = async (
   await (trx || db)("teams").insert(team);
   log.debug("created", team);
 
-  await createGroup(
+  await createTrigger(
     {
       creator_id,
       is_default: true,
-      name: DEFAULT_GROUP_NAME,
+      name: DEFAULT_TRIGGER_NAME,
       repeat_minutes: null,
       team_id: team.id,
     },

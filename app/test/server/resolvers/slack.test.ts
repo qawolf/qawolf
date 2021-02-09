@@ -6,9 +6,9 @@ import {
 } from "../../../server/resolvers/slack";
 import * as slackService from "../../../server/services/slack";
 import {
-  buildGroup,
   buildTeam,
   buildTeamUser,
+  buildTrigger,
   buildUser,
   logger,
 } from "../utils";
@@ -25,7 +25,7 @@ beforeAll(async () => {
   await db("teams").insert(teams);
   await db("team_users").insert(buildTeamUser({}));
 
-  await db("groups").insert(buildGroup({}));
+  await db("triggers").insert(buildTrigger({}));
 });
 
 afterAll(() => dropTestDb());
@@ -34,7 +34,7 @@ describe("createSlackIntegrationResolver", () => {
   afterAll(async () => {
     jest.restoreAllMocks();
 
-    await db("groups").update({
+    await db("triggers").update({
       is_email_enabled: true,
       alert_integration_id: null,
     });
@@ -49,8 +49,8 @@ describe("createSlackIntegrationResolver", () => {
       webhook_url: "webhookUrl",
     });
 
-    const oldGroup = await db.select("*").from("groups").first();
-    expect(oldGroup).toMatchObject({
+    const oldTrigger = await db.select("*").from("triggers").first();
+    expect(oldTrigger).toMatchObject({
       is_email_enabled: true,
       alert_integration_id: null,
     });
@@ -58,9 +58,9 @@ describe("createSlackIntegrationResolver", () => {
     await createSlackIntegrationResolver(
       {},
       {
-        group_id: "groupId",
         redirect_uri: "/slack",
         slack_code: "code",
+        trigger_id: "triggerId",
       },
       testContext
     );
@@ -77,10 +77,10 @@ describe("createSlackIntegrationResolver", () => {
       },
     ]);
 
-    const group = await db.select("*").from("groups").first();
-    expect(group).toMatchObject({
-      is_email_enabled: false,
+    const triggers = await db.select("*").from("triggers").first();
+    expect(triggers).toMatchObject({
       alert_integration_id: integrations[0].id,
+      is_email_enabled: false,
     });
   });
 });

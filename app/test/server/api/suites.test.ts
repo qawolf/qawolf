@@ -8,10 +8,10 @@ import {
   buildApiKey,
   buildEnvironment,
   buildEnvironmentVariable,
-  buildGroup,
-  buildGroupTest,
   buildTeam,
   buildTest,
+  buildTestTrigger,
+  buildTrigger,
   buildUser,
 } from "../utils";
 
@@ -34,13 +34,13 @@ describe("handleSuitesRequest", () => {
     await db("environments").insert(buildEnvironment({}));
     await db("environment_variables").insert(buildEnvironmentVariable({}));
 
-    await db("groups").insert([
-      buildGroup({ is_default: true }),
-      buildGroup({ i: 2 }),
+    await db("triggers").insert([
+      buildTrigger({ is_default: true }),
+      buildTrigger({ i: 2 }),
     ]);
     await db("tests").insert(buildTest({}));
 
-    return db("group_tests").insert(buildGroupTest());
+    return db("test_triggers").insert(buildTestTrigger());
   });
 
   afterEach(() => jest.clearAllMocks());
@@ -53,9 +53,9 @@ describe("handleSuitesRequest", () => {
     await db("environments").del();
     await db("users").del();
 
-    await db("group_tests").del();
+    await db("test_triggers").del();
     await db("tests").del();
-    await db("groups").del();
+    await db("triggers").del();
 
     await db("runs").del();
     await db("suites").del();
@@ -73,7 +73,7 @@ describe("handleSuitesRequest", () => {
     expect(send).toBeCalledWith("No API key provided");
   });
 
-  it("returns 400 if group id not provided", async () => {
+  it("returns 400 if trigger id not provided", async () => {
     await handleSuitesRequest(
       {
         body: {},
@@ -83,26 +83,26 @@ describe("handleSuitesRequest", () => {
     );
 
     expect(status).toBeCalledWith(400);
-    expect(send).toBeCalledWith("No group id provided");
+    expect(send).toBeCalledWith("No trigger id provided");
   });
 
-  it("returns 404 if group id invalid", async () => {
+  it("returns 404 if triggger id invalid", async () => {
     await handleSuitesRequest(
       {
-        body: { group_id: "fakeId" },
+        body: { trigger_id: "fakeId" },
         headers: { authorization: "token" },
       } as NextApiRequest,
       res as any
     );
 
     expect(status).toBeCalledWith(404);
-    expect(send).toBeCalledWith("Invalid group id");
+    expect(send).toBeCalledWith("Invalid trigger id");
   });
 
   it("returns 403 if invalid auth token", async () => {
     await handleSuitesRequest(
       {
-        body: { group_id: "groupId" },
+        body: { trigger_id: "triggerId" },
         headers: { authorization: "invalid" },
       } as NextApiRequest,
       res as any
@@ -112,23 +112,23 @@ describe("handleSuitesRequest", () => {
     expect(send).toBeCalledWith("API key cannot create suite");
   });
 
-  it("returns 500 if no tests in group", async () => {
+  it("returns 500 if no tests in trigger", async () => {
     await handleSuitesRequest(
       {
-        body: { group_id: "group2Id" },
+        body: { trigger_id: "trigger2Id" },
         headers: { authorization: "secret" },
       } as NextApiRequest,
       res as any
     );
 
     expect(status).toBeCalledWith(500);
-    expect(send).toBeCalledWith("No tests in group");
+    expect(send).toBeCalledWith("No tests in trigger");
   });
 
   it("creates a suite and returns url", async () => {
     await handleSuitesRequest(
       {
-        body: { env: { secret: "shh" }, group_id: "groupId" },
+        body: { env: { secret: "shh" }, trigger_id: "triggerId" },
         headers: { authorization: "secret" },
       } as NextApiRequest,
       res as any

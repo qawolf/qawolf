@@ -1,14 +1,14 @@
 import capitalize from "lodash/capitalize";
 
 import { formatDate } from "../../../../lib/helpers";
-import { Group } from "../../../../lib/types";
+import { Trigger } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import { edgeSize, hoverTransition } from "../../../../theme/theme";
 import Text from "../../../shared/Text";
 
 type Props = {
-  group: Group;
   loading: boolean;
+  trigger: Trigger;
 };
 
 const formatBranches = (branches: string): string => {
@@ -18,7 +18,7 @@ const formatBranches = (branches: string): string => {
 const formatDeployment = ({
   deployment_branches,
   deployment_environment,
-}: Group): string | null => {
+}: Trigger): string | null => {
   if (!deployment_branches && !deployment_environment) return null;
 
   const deployments = `${capitalize(
@@ -32,14 +32,14 @@ const formatDeployment = ({
 };
 
 export default function TriggerHoverText({
-  group,
   loading,
+  trigger,
 }: Props): JSX.Element {
-  const deployment = formatDeployment(group);
+  const deployment = formatDeployment(trigger);
 
   const timestamp =
-    !loading && group.next_at
-      ? `${copy.next}: ${formatDate(group.next_at)}`
+    !loading && trigger.next_at
+      ? `${copy.next}: ${formatDate(trigger.next_at)}`
       : null;
 
   if (!deployment && !timestamp) return null;

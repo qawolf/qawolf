@@ -8,8 +8,6 @@ import {
   Environment,
   EnvironmentVariable,
   GitHubCommitStatus,
-  Group,
-  GroupTest,
   Integration,
   IntegrationType,
   Invite,
@@ -22,6 +20,8 @@ import {
   TeamPlan,
   TeamUser,
   Test,
+  TestTrigger,
+  Trigger,
   User,
 } from "../../server/types";
 import { cuid } from "../../server/utils";
@@ -50,20 +50,6 @@ type BuildEnvironmentVariable = {
 
 type BuildGitHubCommitStatus = {
   i?: number;
-};
-
-type BuildGroup = {
-  deployment_branches?: string;
-  deployment_environment?: DeploymentEnvironment;
-  deployment_integration_id?: string;
-  environment_id?: string;
-  i?: number;
-  is_default?: boolean;
-  name?: string;
-  next_at?: string | null;
-  alert_integration_id?: string;
-  repeat_minutes?: number | null;
-  team_id?: string;
 };
 
 type BuildIntegration = {
@@ -113,9 +99,9 @@ type BuildSuite = {
   alert_sent_at?: string;
   created_at?: string;
   creator_id?: string;
-  group_id?: string;
-  team_id?: string;
   i?: number;
+  team_id?: string;
+  trigger_id?: string;
 };
 
 type BuildTeam = {
@@ -143,6 +129,20 @@ type BuildTest = {
   runner_requested_at?: string;
   team_id?: string;
   version?: number;
+};
+
+type BuildTrigger = {
+  deployment_branches?: string;
+  deployment_environment?: DeploymentEnvironment;
+  deployment_integration_id?: string;
+  environment_id?: string;
+  i?: number;
+  is_default?: boolean;
+  name?: string;
+  next_at?: string | null;
+  alert_integration_id?: string;
+  repeat_minutes?: number | null;
+  team_id?: string;
 };
 
 type BuildUser = {
@@ -218,50 +218,17 @@ export const buildGitHubCommitStatus = ({
     context: "context",
     deployment_url: "url",
     github_installation_id: 123,
-    group_id: "groupId",
     id: `gitHubCommitStatus${finalI === 1 ? "" : i}Id`,
     owner: "qawolf",
     repo: "repo",
     sha: "sha",
     suite_id: "suiteId",
+    trigger_id: "triggerId",
   };
 };
 
-export const buildGroup = ({
-  deployment_branches,
-  deployment_environment,
-  deployment_integration_id,
-  environment_id,
-  i,
-  is_default,
-  name,
-  next_at,
-  alert_integration_id,
-  repeat_minutes,
-  team_id,
-}: BuildGroup): Group => {
-  const finalI = i || 1;
-
-  return {
-    creator_id: "userId",
-    deleted_at: null,
-    deployment_branches: deployment_branches || null,
-    deployment_environment: deployment_environment || null,
-    deployment_integration_id: deployment_integration_id || null,
-    environment_id: environment_id || null,
-    id: `group${finalI === 1 ? "" : i}Id`,
-    alert_integration_id: alert_integration_id || null,
-    is_default: is_default === undefined ? false : is_default,
-    is_email_enabled: true,
-    name: name || `group${finalI}`,
-    next_at: next_at || null,
-    repeat_minutes: repeat_minutes === undefined ? 60 : repeat_minutes,
-    team_id: team_id || "teamId",
-  };
-};
-
-export const buildGroupTest = (): GroupTest => {
-  return { group_id: "groupId", id: "groupTestId", test_id: "testId" };
+export const buildTestTrigger = (): TestTrigger => {
+  return { id: "testTriggerId", test_id: "testId", trigger_id: "triggerId" };
 };
 
 export const buildInvite = ({
@@ -370,8 +337,8 @@ export const buildSuite = ({
   alert_sent_at,
   created_at,
   creator_id,
-  group_id,
   team_id,
+  trigger_id,
   i,
 }: BuildSuite): Suite => {
   const finalI = i || 1;
@@ -381,9 +348,9 @@ export const buildSuite = ({
     created_at: created_at || minutesFromNow(),
     creator_id: creator_id || null,
     environment_variables: null,
-    group_id: group_id || "groupId",
     id: `suite${finalI === 1 ? "" : i}Id`,
     team_id: team_id || "teamId",
+    trigger_id: trigger_id || "triggerId",
   };
 };
 
@@ -451,6 +418,39 @@ export const buildTest = ({
   };
 };
 
+export const buildTrigger = ({
+  deployment_branches,
+  deployment_environment,
+  deployment_integration_id,
+  environment_id,
+  i,
+  is_default,
+  name,
+  next_at,
+  alert_integration_id,
+  repeat_minutes,
+  team_id,
+}: BuildTrigger): Trigger => {
+  const finalI = i || 1;
+
+  return {
+    alert_integration_id: alert_integration_id || null,
+    creator_id: "userId",
+    deleted_at: null,
+    deployment_branches: deployment_branches || null,
+    deployment_environment: deployment_environment || null,
+    deployment_integration_id: deployment_integration_id || null,
+    environment_id: environment_id || null,
+    id: `trigger${finalI === 1 ? "" : i}Id`,
+    is_default: is_default === undefined ? false : is_default,
+    is_email_enabled: true,
+    name: name || `trigger${finalI}`,
+    next_at: next_at || null,
+    repeat_minutes: repeat_minutes === undefined ? 60 : repeat_minutes,
+    team_id: team_id || "teamId",
+  };
+};
+
 export const buildUser = ({ i, is_enabled }: BuildUser): User => {
   const finalI = i || 1;
 
@@ -487,7 +487,7 @@ export const deleteUser = async (
     )
     .del();
 
-  await trx("groups")
+  await trx("triggers")
     .whereIn(
       "team_id",
       teamUsers.map((t) => t.team_id)

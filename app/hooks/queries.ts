@@ -8,13 +8,13 @@ import {
   dashboardQuery,
   environmentsQuery,
   environmentVariablesQuery,
-  groupsQuery,
   integrationsQuery,
   runnerQuery,
   suiteQuery,
   teamQuery,
   testHistoryQuery,
   testQuery,
+  triggersQuery,
 } from "../graphql/queries";
 import { JWT_KEY } from "../lib/client";
 import { isServer } from "../lib/detection";
@@ -24,7 +24,6 @@ import {
   ApiKey,
   Environment,
   EnvironmentVariable,
-  Group,
   Integration,
   Invite,
   Run,
@@ -34,6 +33,7 @@ import {
   Test,
   TestHistoryRun,
   TestWithSummary,
+  Trigger,
   User,
 } from "../lib/types";
 
@@ -57,7 +57,7 @@ type DashboardData = {
 };
 
 type DashboardVariables = {
-  group_id?: string | null;
+  trigger_id?: string | null;
 };
 
 type EnvironmentsData = {
@@ -77,14 +77,6 @@ type EnvironmentVariablesData = {
 
 type EnvironmentVariablesVariables = {
   environment_id: string;
-};
-
-type GroupsData = {
-  groups: Group[];
-};
-
-type GroupsVariables = {
-  team_id: string | null;
 };
 
 type IntegrationsData = {
@@ -144,6 +136,14 @@ type TestHistoryVariables = {
   id: string;
 };
 
+type TriggersData = {
+  triggers: Trigger[];
+};
+
+type TriggersVariables = {
+  team_id: string | null;
+};
+
 const fetchPolicy = "cache-and-network";
 const nextFetchPolicy = "cache-first";
 const onError = noop;
@@ -183,7 +183,7 @@ export const useDashboard = (
     fetchPolicy,
     nextFetchPolicy,
     onError,
-    skip: !variables.group_id,
+    skip: !variables.trigger_id,
     variables,
   });
 };
@@ -227,31 +227,6 @@ export const useEnvironmentVariables = (
   );
 };
 
-export const useGroups = (
-  variables: GroupsVariables,
-  { groupId, skipOnCompleted }: { groupId: string; skipOnCompleted: boolean }
-): QueryResult<GroupsData, GroupsVariables> => {
-  return useQuery<GroupsData, GroupsVariables>(groupsQuery, {
-    fetchPolicy,
-    nextFetchPolicy,
-    // ensure that valid group is selected
-    onCompleted: (response) => {
-      const { groups } = response || {};
-      if (skipOnCompleted || !groups?.length) return;
-
-      const currentGroup = groups.find((g) => g.id === groupId);
-      const newSelectedGroupId = currentGroup?.id || groups[0].id;
-
-      if (groupId !== newSelectedGroupId) {
-        state.setGroupId(newSelectedGroupId);
-      }
-    },
-    onError,
-    skip: !variables.team_id,
-    variables,
-  });
-};
-
 export const useIntegrations = (
   variables: IntegrationsVariables
 ): QueryResult<IntegrationsData, IntegrationsVariables> => {
@@ -279,7 +254,7 @@ export const useRunner = (
 
 export const useSuite = (
   variables: SuiteVariables,
-  { groupId, teamId }: { groupId: string; teamId: string }
+  { teamId, triggerId }: { teamId: string; triggerId: string }
 ): QueryResult<SuiteData, SuiteVariables> => {
   const { replace } = useRouter();
 
@@ -289,13 +264,13 @@ export const useSuite = (
     onCompleted: (response) => {
       const { suite } = response || {};
       if (!suite) return;
-      // update team and group ids in global state as needed
+      // update team and trigger ids in global state as needed
       if (suite.team_id !== teamId) {
         state.setTeamId(suite.team_id);
       }
-      // redirect to correct route if invalid group id in url
-      if (suite.group_id !== groupId) {
-        state.setGroupId(suite.group_id);
+      // redirect to correct route if invalid trigger id in url
+      if (suite.trigger_id !== triggerId) {
+        state.setTriggerId(suite.trigger_id);
       }
     },
     onError: (error) => {
@@ -346,6 +321,34 @@ export const useTestHistory = (
   return useQuery<TestHistoryData, TestHistoryVariables>(testHistoryQuery, {
     fetchPolicy,
     skip: !variables.id,
+    variables,
+  });
+};
+
+export const useTriggers = (
+  variables: TriggersVariables,
+  {
+    skipOnCompleted,
+    triggerId,
+  }: { skipOnCompleted: boolean; triggerId: string }
+): QueryResult<TriggersData, TriggersVariables> => {
+  return useQuery<TriggersData, TriggersVariables>(triggersQuery, {
+    fetchPolicy,
+    nextFetchPolicy,
+    // ensure that valid trigger is selected
+    onCompleted: (response) => {
+      const { triggers } = response || {};
+      if (skipOnCompleted || !triggers?.length) return;
+
+      const currentTrigger = triggers.find((t) => t.id === triggerId);
+      const newSelectedTriggerId = currentTrigger?.id || triggers[0].id;
+
+      if (triggerId !== newSelectedTriggerId) {
+        state.setTriggerId(newSelectedTriggerId);
+      }
+    },
+    onError,
+    skip: !variables.team_id,
     variables,
   });
 };

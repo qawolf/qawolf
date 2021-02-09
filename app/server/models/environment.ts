@@ -80,7 +80,7 @@ export const deleteEnvironment = async (
 
   const environment = await findEnvironment(id, { logger, trx });
 
-  await (trx || db)("groups")
+  await (trx || db)("triggers")
     .where({ environment_id: id })
     .update({ environment_id: null });
   await deleteEnvironmentVariablesForEnvironment(id, { logger, trx });
@@ -118,9 +118,9 @@ export const findEnvironmentIdForRun = async (
   log.debug("run", run_id);
 
   const row = await (trx || db)
-    .select("groups.environment_id" as "*")
-    .from("groups")
-    .innerJoin("suites", "groups.id", "suites.group_id")
+    .select("triggers.environment_id" as "*")
+    .from("triggers")
+    .innerJoin("suites", "triggers.id", "suites.trigger_id")
     .innerJoin("runs", "runs.suite_id", "suites.id")
     .where({ "runs.id": run_id })
     .first();

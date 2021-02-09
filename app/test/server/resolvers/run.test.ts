@@ -10,13 +10,13 @@ import * as runResolver from "../../../server/resolvers/run";
 import * as alertService from "../../../server/services/alert/send";
 import { Suite } from "../../../server/types";
 import {
-  buildGroup,
   buildRun,
   buildRunner,
   buildSuite,
   buildTeam,
   buildTeamUser,
   buildTest,
+  buildTrigger,
   buildUser,
   logger,
 } from "../utils";
@@ -37,7 +37,7 @@ beforeAll(async () => {
   await db("teams").insert(teams);
   await db("team_users").insert(buildTeamUser({}));
 
-  await db("groups").insert(buildGroup({}));
+  await db("triggers").insert(buildTrigger({}));
 
   await db("suites").insert(buildSuite({ team_id: "teamId" }));
   await db("tests").insert([test, buildTest({ i: 2, name: "testName" })]);

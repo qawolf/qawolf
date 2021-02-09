@@ -1,18 +1,18 @@
 import { db, dropTestDb, migrateDb } from "../../../server/db";
-import * as groupModel from "../../../server/models/group";
 import * as suiteModel from "../../../server/models/suite";
 import * as testModel from "../../../server/models/test";
+import * as triggerModel from "../../../server/models/trigger";
 import {
   ensureEnvironmentAccess,
   ensureEnvironmentVariableAccess,
-  ensureGroupAccess,
   ensureSuiteAccess,
   ensureTeamAccess,
   ensureTeams,
   ensureTestAccess,
+  ensureTriggerAccess,
   ensureUser,
 } from "../../../server/resolvers/utils";
-import { Group, Team, Test, User } from "../../../server/types";
+import { Team, Test, Trigger, User } from "../../../server/types";
 import {
   buildEnvironment,
   buildEnvironmentVariable,
@@ -129,53 +129,6 @@ describe("ensureEnvironmentVariableAccess", () => {
   it("returns selected team if teams have access", async () => {
     const team = await ensureEnvironmentVariableAccess({
       environment_variable_id: "environmentVariableId",
-      logger,
-      teams,
-    });
-
-    expect(team).toEqual(teams[0]);
-  });
-});
-
-describe("ensureGroupAccess", () => {
-  afterEach(jest.restoreAllMocks);
-
-  it("throws an error if teams not provided", async () => {
-    const testFn = async (): Promise<Team> => {
-      return ensureGroupAccess({
-        group_id: "groupId",
-        logger,
-        teams: null,
-      });
-    };
-
-    await expect(testFn()).rejects.toThrowError("no teams");
-  });
-
-  it("throws an error if teams do not have access", async () => {
-    jest.spyOn(groupModel, "findGroup").mockResolvedValue({
-      id: "groupId",
-      team_id: "anotherTeamId",
-    } as Group);
-
-    const testFn = async (): Promise<Team> => {
-      return ensureGroupAccess({
-        group_id: "groupId",
-        logger,
-        teams,
-      });
-    };
-
-    await expect(testFn()).rejects.toThrowError("cannot access group");
-  });
-
-  it("returns selected team if teams have access", async () => {
-    jest
-      .spyOn(groupModel, "findGroup")
-      .mockResolvedValue({ id: "groupId", team_id: "teamId" } as Group);
-
-    const team = await ensureGroupAccess({
-      group_id: "groupId",
       logger,
       teams,
     });
@@ -329,6 +282,53 @@ describe("ensureTestAccess", () => {
 
     await expect(testFn()).resolves.not.toThrowError();
     expect(testModel.findTest).not.toBeCalled();
+  });
+});
+
+describe("ensureTriggerAccess", () => {
+  afterEach(jest.restoreAllMocks);
+
+  it("throws an error if teams not provided", async () => {
+    const testFn = async (): Promise<Team> => {
+      return ensureTriggerAccess({
+        logger,
+        teams: null,
+        trigger_id: "triggerId",
+      });
+    };
+
+    await expect(testFn()).rejects.toThrowError("no teams");
+  });
+
+  it("throws an error if teams do not have access", async () => {
+    jest.spyOn(triggerModel, "findTrigger").mockResolvedValue({
+      id: "triggerId",
+      team_id: "anotherTeamId",
+    } as Trigger);
+
+    const testFn = async (): Promise<Team> => {
+      return ensureTriggerAccess({
+        logger,
+        teams,
+        trigger_id: "triggerId",
+      });
+    };
+
+    await expect(testFn()).rejects.toThrowError("cannot access trigger");
+  });
+
+  it("returns selected team if teams have access", async () => {
+    jest
+      .spyOn(triggerModel, "findTrigger")
+      .mockResolvedValue({ id: "triggerId", team_id: "teamId" } as Trigger);
+
+    const team = await ensureTriggerAccess({
+      logger,
+      teams,
+      trigger_id: "triggerId",
+    });
+
+    expect(team).toEqual(teams[0]);
   });
 });
 

@@ -2,17 +2,17 @@ import { Checkmark, Close, IconProps } from "grommet-icons";
 import { ComponentType } from "react";
 
 import {
-  GroupTests,
   RunStatus,
   SelectedTest,
   Suite,
   SuiteRun,
+  TestTriggers,
   TestWithSummary,
 } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import Paw from "../../shared/icons/Paw";
 
-type FormatGroupTrigger = {
+type FormatTrigger = {
   repeatMinutes?: number | null;
   repoName?: string | null;
   skipOwnerInRepoName?: boolean;
@@ -28,11 +28,11 @@ const countRunsForStatus = ({ runs }: Suite, status: RunStatus): number => {
   return runs.filter((suiteRun) => suiteRun.status === status).length;
 };
 
-export const formatGroupTrigger = ({
+export const formatTrigger = ({
   repeatMinutes,
   repoName,
   skipOwnerInRepoName,
-}: FormatGroupTrigger): string => {
+}: FormatTrigger): string => {
   if (repoName) {
     const formattedRepoName = skipOwnerInRepoName
       ? repoName.split("/")[1]
@@ -46,17 +46,6 @@ export const formatGroupTrigger = ({
 
   const hours = Math.floor(repeatMinutes / 60);
   return `Run every ${hours} hours`;
-};
-
-export const getGroupTests = (tests?: TestWithSummary[]): GroupTests => {
-  if (!tests) return {};
-  const groupTests: GroupTests = {};
-
-  tests.forEach(({ groups, id }) => {
-    groupTests[id] = groups.map((group) => group.id);
-  });
-
-  return groupTests;
 };
 
 export const getSelectedTests = ({
@@ -83,6 +72,17 @@ export const getSelectedTests = ({
   }
 
   return selectedTests;
+};
+
+export const getTestTriggers = (tests?: TestWithSummary[]): TestTriggers => {
+  if (!tests) return {};
+  const testTriggers: TestTriggers = {};
+
+  tests.forEach(({ id, triggers }) => {
+    testTriggers[id] = triggers.map((t) => t.id);
+  });
+
+  return testTriggers;
 };
 
 const isFailed = ({ runs }: Suite): boolean => {

@@ -1,6 +1,6 @@
 import { Add } from "grommet-icons";
 
-import { useCreateGroup } from "../../../hooks/mutations";
+import { useCreateTrigger } from "../../../hooks/mutations";
 import { copy } from "../../../theme/copy";
 import { colors, edgeSize } from "../../../theme/theme";
 import IconButton from "../../shared/IconButton";
@@ -8,12 +8,12 @@ import styles from "./Sidebar.module.css";
 
 type Props = { teamId: string | null };
 
-export default function CreateGroup({ teamId }: Props): JSX.Element {
-  const [createGroup, { loading }] = useCreateGroup();
+export default function CreateTrigger({ teamId }: Props): JSX.Element {
+  const [createTrigger, { loading }] = useCreateTrigger();
 
   const handleClick = () => {
     if (!teamId) return;
-    createGroup({ variables: { team_id: teamId } });
+    createTrigger({ variables: { team_id: teamId } });
   };
   // account for border in text margin
   const leftMargin = `calc(${edgeSize.medium} - 1px)`;
@@ -21,7 +21,7 @@ export default function CreateGroup({ teamId }: Props): JSX.Element {
   return (
     <IconButton
       IconComponent={Add}
-      className={styles.groupLink}
+      className={styles.triggerLink}
       color={colors.black}
       disabled={loading}
       message={copy.createGroup}

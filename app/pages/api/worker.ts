@@ -4,8 +4,8 @@ import environment from "../../server/environment";
 import { checkPending } from "../../server/jobs/checkPending";
 import { deleteRunners } from "../../server/jobs/deleteRunners";
 import { deployRunners } from "../../server/jobs/deployRunners";
-import { orchestrateGroups } from "../../server/jobs/orchestrateGroups";
 import { orchestrateRunners } from "../../server/jobs/orchestrateRunners";
+import { orchestrateTriggers } from "../../server/jobs/orchestrateTriggers";
 import { restartRunners } from "../../server/jobs/restartRunners";
 import { Job, JOB_TYPES } from "../../server/jobs/types";
 import { Logger } from "../../server/Logger";
@@ -31,10 +31,10 @@ const handleWorkerRequest: NextApiHandler = async (
   try {
     if (job === "checkPending") {
       await checkPending(logger);
-    } else if (job === "orchestrateGroups") {
-      await orchestrateGroups(logger);
     } else if (job === "orchestrateRunners") {
       await orchestrateRunners(logger);
+    } else if (job === "orchestrateTriggers") {
+      await orchestrateTriggers(logger);
     } else {
       const client = await getAzureClient();
       const options = { client, logger };

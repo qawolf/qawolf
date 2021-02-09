@@ -1,5 +1,5 @@
-import { useUpdateGroup } from "../../../../../hooks/mutations";
-import { Group, Integration } from "../../../../../lib/types";
+import { useUpdateTrigger } from "../../../../../hooks/mutations";
+import { Integration, Trigger } from "../../../../../lib/types";
 import { copy } from "../../../../../theme/copy";
 import Dropdown from "../../../../shared/Dropdown";
 import Option from "../../../../shared/Dropdown/Option";
@@ -10,28 +10,31 @@ type HandleClick = {
   alert_integration_id: string | null;
 };
 
-type Props = { group: Group; integrations: Integration[] };
+type Props = {
+  integrations: Integration[];
+  trigger: Trigger;
+};
 
 export default function AlertDropdown({
-  group,
   integrations,
+  trigger,
 }: Props): JSX.Element {
-  const [updateGroup] = useUpdateGroup();
+  const [updateTrigger] = useUpdateTrigger();
 
   const handleClick = ({
     is_email_enabled,
     alert_integration_id,
   }: HandleClick) => {
-    updateGroup({
+    updateTrigger({
       optimisticResponse: {
-        updateGroup: {
-          ...group,
+        updateTrigger: {
+          ...trigger,
           is_email_enabled,
           alert_integration_id,
         },
       },
       variables: {
-        id: group.id,
+        id: trigger.id,
         is_email_enabled,
         alert_integration_id,
       },
@@ -41,7 +44,7 @@ export default function AlertDropdown({
   const slackOptions = integrations.map((integration) => {
     return (
       <Option
-        isSelected={group.alert_integration_id === integration.id}
+        isSelected={trigger.alert_integration_id === integration.id}
         key={integration.id}
         message={copy.alertSlack({
           channel: integration.slack_channel || "",
@@ -60,7 +63,7 @@ export default function AlertDropdown({
   return (
     <Dropdown pad={{ vertical: "small" }}>
       <Option
-        isSelected={group.is_email_enabled}
+        isSelected={trigger.is_email_enabled}
         message={copy.alertEmail}
         onClick={() =>
           handleClick({
@@ -71,7 +74,7 @@ export default function AlertDropdown({
       />
       {slackOptions}
       <Option
-        isSelected={!group.is_email_enabled && !group.alert_integration_id}
+        isSelected={!trigger.is_email_enabled && !trigger.alert_integration_id}
         message={copy.alertNone}
         onClick={() =>
           handleClick({

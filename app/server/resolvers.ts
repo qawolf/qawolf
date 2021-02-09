@@ -18,14 +18,6 @@ import {
   updateEnvironmentVariableResolver,
 } from "./resolvers/environment_variable";
 import { createGitHubIntegrationsResolver } from "./resolvers/github";
-import {
-  createGroupResolver,
-  deleteGroupResolver,
-  groupsResolver,
-  testGroupsResolver,
-  updateGroupResolver,
-} from "./resolvers/group";
-import { updateGroupTestsResolver } from "./resolvers/group_test";
 import { integrationsResolver } from "./resolvers/integration";
 import {
   acceptInviteResolver,
@@ -57,6 +49,14 @@ import {
   testSummaryResolver,
   updateTestResolver,
 } from "./resolvers/test";
+import { updateTestTriggersResolver } from "./resolvers/test_trigger";
+import {
+  createTriggerResolver,
+  deleteTriggerResolver,
+  testTriggersResolver,
+  triggersResolver,
+  updateTriggerResolver,
+} from "./resolvers/trigger";
 import {
   currentUserResolver,
   sendLoginCodeResolver,
@@ -76,8 +76,8 @@ export const resolvers = {
     users: teamUsersResolver,
   },
   Test: {
-    groups: testGroupsResolver,
     summary: testSummaryResolver,
+    triggers: testTriggersResolver,
   },
   Suite: {
     runs: suiteRunsResolver,
@@ -88,30 +88,30 @@ export const resolvers = {
     createEnvironment: createEnvironmentResolver,
     createEnvironmentVariable: createEnvironmentVariableResolver,
     createGitHubIntegrations: createGitHubIntegrationsResolver,
-    createGroup: createGroupResolver,
     createInvites: createInvitesResolver,
     createSignInUrl: createGitHubSignInUrlResolver,
     createSlackIntegration: createSlackIntegrationResolver,
     createSlackIntegrationUrl: createSlackIntegrationUrlResolver,
     createSuite: createSuiteResolver,
     createTest: createTestResolver,
+    createTrigger: createTriggerResolver,
     deleteApiKey: deleteApiKeyResolver,
     deleteEnvironment: deleteEnvironmentResolver,
     deleteEnvironmentVariable: deleteEnvironmentVariableResolver,
-    deleteGroup: deleteGroupResolver,
     deleteTests: deleteTestsResolver,
+    deleteTrigger: deleteTriggerResolver,
     joinMailingList: joinMailingListResolver,
     sendLoginCode: sendLoginCodeResolver,
     signInWithEmail: signInWithEmailResolver,
     signInWithGitHub: signInWithGitHubResolver,
     updateEnvironment: updateEnvironmentResolver,
     updateEnvironmentVariable: updateEnvironmentVariableResolver,
-    updateGroup: updateGroupResolver,
-    updateGroupTests: updateGroupTestsResolver,
     updateRun: updateRunResolver,
     updateRunner: updateRunnerResolver,
     updateTeam: updateTeamResolver,
     updateTest: updateTestResolver,
+    updateTestTriggers: updateTestTriggersResolver,
+    updateTrigger: updateTriggerResolver,
     updateUser: updateUserResolver,
   },
   Query: {
@@ -120,12 +120,12 @@ export const resolvers = {
     dashboard: dashboardResolver,
     environments: environmentsResolver,
     environmentVariables: environmentVariablesResolver,
-    groups: groupsResolver,
     integrations: integrationsResolver,
     runner: runnerResolver,
     suite: suiteResolver,
     team: teamResolver,
     test: testResolver,
     testHistory: testHistoryResolver,
+    triggers: triggersResolver,
   },
 };

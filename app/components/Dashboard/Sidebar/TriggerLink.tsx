@@ -1,43 +1,43 @@
 import { Box } from "grommet";
 import { useState } from "react";
 
-import { Group } from "../../../lib/types";
+import { Trigger } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import { hoverTransition, overflowStyle } from "../../../theme/theme";
 import Text from "../../shared/Text";
-import GroupMenuButton from "./GroupMenuButton";
 import styles from "./Sidebar.module.css";
+import TriggerMenuButton from "./TriggerMenuButton";
 
 type Props = {
-  group: Group;
   isSelected: boolean;
   onClick: () => void;
+  trigger: Trigger;
 };
 
-export default function GroupLink({
-  group,
+export default function TriggerLink({
   isSelected,
   onClick,
+  trigger,
 }: Props): JSX.Element {
   const [showMenuButton, setShowMenuButton] = useState(false);
 
   const background = isSelected ? "lightBlue" : "transparent";
   const color = isSelected ? "fadedBlue" : "black";
 
-  // group name with space at end is indicated with &nbsp;
-  const formattedName = group.name.replace(/&nbsp;/g, " ");
+  // trigger name with space at end is indicated with &nbsp;
+  const formattedName = trigger.name.replace(/&nbsp;/g, " ");
 
   const handleMouseEnter = () => {
-    if (group.is_default) return;
+    if (trigger.is_default) return;
     setShowMenuButton(true);
   };
 
   return (
     <Box
-      a11yTitle={group.name}
+      a11yTitle={trigger.name}
       align="center"
       background={background}
-      className={styles.groupLink}
+      className={styles.triggerLink}
       direction="row"
       flex={false}
       justify="between"
@@ -51,14 +51,14 @@ export default function GroupLink({
     >
       <Text
         // use a placeholder message to prevent height from collapsing
-        // if group name is an empty string
+        // if trigger name is an empty string
         color={formattedName ? color : "transparent"}
         size="medium"
         style={overflowStyle}
       >
         {formattedName || copy.woof}
       </Text>
-      <GroupMenuButton group={group} isVisible={showMenuButton} />
+      <TriggerMenuButton isVisible={showMenuButton} trigger={trigger} />
     </Box>
   );
 }

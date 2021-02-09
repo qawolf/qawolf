@@ -12,11 +12,11 @@ import { Environment } from "../../../server/types";
 import {
   buildEnvironment,
   buildEnvironmentVariable,
-  buildGroup,
   buildRun,
   buildSuite,
   buildTeam,
   buildTest,
+  buildTrigger,
   buildUser,
   logger,
 } from "../utils";
@@ -89,11 +89,13 @@ describe("deleteEnvironment", () => {
       buildEnvironmentVariable({ environment_id: "environment2Id", i: 3 }),
     ]);
 
-    return db("groups").insert(buildGroup({ environment_id: "environmentId" }));
+    return db("triggers").insert(
+      buildTrigger({ environment_id: "environmentId" })
+    );
   });
 
   afterAll(async () => {
-    await db("groups").del();
+    await db("triggers").del();
 
     await db("environment_variables").del();
 
@@ -119,8 +121,8 @@ describe("deleteEnvironment", () => {
       { id: "environmentVariable3Id" },
     ]);
 
-    const dbGroup = await db("groups").select("*").first();
-    expect(dbGroup.environment_id).toBeNull();
+    const dbTrigger = await db("triggers").select("*").first();
+    expect(dbTrigger.environment_id).toBeNull();
   });
 });
 
@@ -152,14 +154,14 @@ describe("findEnvironmentIdForRun", () => {
 
     await db("environments").insert(buildEnvironment({}));
 
-    await db("groups").insert([
-      buildGroup({ environment_id: "environmentId" }),
-      buildGroup({ i: 2 }),
+    await db("triggers").insert([
+      buildTrigger({ environment_id: "environmentId" }),
+      buildTrigger({ i: 2 }),
     ]);
 
     await db("suites").insert([
       buildSuite({}),
-      buildSuite({ group_id: "group2Id", i: 2 }),
+      buildSuite({ i: 2, trigger_id: "trigger2Id" }),
     ]);
 
     await db("runs").insert([
@@ -171,7 +173,7 @@ describe("findEnvironmentIdForRun", () => {
   afterAll(async () => {
     await db("runs").del();
     await db("suites").del();
-    await db("groups").del();
+    await db("triggers").del();
     await db("environments").del();
     await db("tests").del();
   });

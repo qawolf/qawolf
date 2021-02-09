@@ -46,6 +46,6 @@ exports[`buildLoginCodeHtml builds html for login code 1`] = `
   </div>"
 `;
 
-exports[`buildSuiteHtml builds html for failure email 1`] = `"<p>Oh no! The following <a href='http://localhost:3000/tests/suiteId'>group1 tests</a> failed:<p><br /><a href='http://localhost:3000/run/run2Id'>signUp</a><br /><img src=\\"https://gif.gif\\" width=\\"320px\\" /><br /><a href='http://localhost:3000/run/run3Id'>logOut</a><br />"`;
+exports[`buildSuiteHtml builds html for failure email 1`] = `"<p>Oh no! The following <a href='http://localhost:3000/tests/suiteId'>trigger1 tests</a> failed:<p><br /><a href='http://localhost:3000/run/run2Id'>signUp</a><br /><img src=\\"https://gif.gif\\" width=\\"320px\\" /><br /><a href='http://localhost:3000/run/run3Id'>logOut</a><br />"`;
 
-exports[`buildSuiteHtml builds html for success email 1`] = `"<p>All good! Your <a href='http://localhost:3000/tests/suiteId'>group1 tests</a> all passed."`;
+exports[`buildSuiteHtml builds html for success email 1`] = `"<p>All good! Your <a href='http://localhost:3000/tests/suiteId'>trigger1 tests</a> all passed."`;

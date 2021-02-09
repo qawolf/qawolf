@@ -8,9 +8,9 @@ import {
 } from "../../../server/models/integration";
 import { Integration } from "../../../server/types";
 import {
-  buildGroup,
   buildIntegration,
   buildTeam,
+  buildTrigger,
   buildUser,
   logger,
 } from "../utils";
@@ -130,8 +130,8 @@ describe("deleteIntegrations", () => {
 
     await db("users").insert(buildUser({}));
 
-    await db("groups").insert(
-      buildGroup({
+    await db("triggers").insert(
+      buildTrigger({
         deployment_branches: "main",
         deployment_integration_id: "integrationId",
         repeat_minutes: null,
@@ -140,12 +140,12 @@ describe("deleteIntegrations", () => {
   });
 
   afterAll(async () => {
-    await db("groups").del();
+    await db("triggers").del();
     await db("users").del();
     return db("integrations").del();
   });
 
-  it("deletes integrations and removes them from associated groups", async () => {
+  it("deletes integrations and removes them from associated triggers", async () => {
     const deletedIntegrations = await deleteIntegrations(
       ["integrationId", "integration3Id"],
       { logger }
@@ -160,9 +160,9 @@ describe("deleteIntegrations", () => {
 
     expect(integrations).toMatchObject([{ id: "integration2Id" }]);
 
-    const groups = await db("groups").select("*");
+    const triggers = await db("triggers").select("*");
 
-    expect(groups).toMatchObject([
+    expect(triggers).toMatchObject([
       {
         deployment_branches: null,
         deployment_environment: null,

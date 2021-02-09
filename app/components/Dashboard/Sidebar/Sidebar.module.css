@@ -1,13 +1,13 @@
-.groupLink:hover,
-.teamButton:hover {
+.teamButton:hover,
+.triggerLink:hover {
   background: #e8f1f1;
 }
 
-.groupMenuButton {
+.triggerMenuButton {
   cursor: pointer;
 }
 
-.groupMenuButton:hover {
+.triggerMenuButton:hover {
   background: #dadfe2;
 }
 

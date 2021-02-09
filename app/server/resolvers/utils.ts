@@ -5,9 +5,9 @@ import { AuthenticationError } from "../errors";
 import { Logger } from "../Logger";
 import { findEnvironment } from "../models/environment";
 import { findEnvironmentVariable } from "../models/environment_variable";
-import { findGroup } from "../models/group";
 import { findSuite } from "../models/suite";
 import { findTest } from "../models/test";
+import { findTrigger } from "../models/trigger";
 import { Team, Test, User } from "../types";
 
 type EnsureEnvironmentAccess = {
@@ -19,13 +19,6 @@ type EnsureEnvironmentAccess = {
 
 type EnsureEnvironmentVariableAccess = {
   environment_variable_id: string;
-  logger: Logger;
-  teams: Team[] | null;
-  trx?: Transaction;
-};
-
-type EnsureGroupAccess = {
-  group_id: string;
   logger: Logger;
   teams: Team[] | null;
   trx?: Transaction;
@@ -53,6 +46,13 @@ type EnsureTestAccess = {
   teams: Team[] | null;
   test?: Test;
   test_id?: string;
+};
+
+type EnsureTriggerAccess = {
+  logger: Logger;
+  teams: Team[] | null;
+  trigger_id: string;
+  trx?: Transaction;
 };
 
 type EnsureUser = {
@@ -134,28 +134,6 @@ export const ensureEnvironmentVariableAccess = async ({
   return selectedTeam;
 };
 
-export const ensureGroupAccess = async ({
-  group_id,
-  logger,
-  teams,
-  trx,
-}: EnsureGroupAccess): Promise<Team> => {
-  const log = logger.prefix("ensureGroupAccess");
-
-  const teamIds = ensureTeams({ teams, logger }).map((team) => team.id);
-  log.debug("ensure teams", teamIds, "can access group", group_id);
-
-  const group = await findGroup(group_id, { logger, trx });
-  const selectedTeam = teams!.find((team) => group.team_id === team.id);
-
-  if (!selectedTeam) {
-    log.error("teams", teamIds, "cannot access group", group_id);
-    throw new AuthenticationError("cannot access group");
-  }
-
-  return selectedTeam;
-};
-
 /**
  * @summary Throws if `teams` is falsy or doesn't include `suite.team_id`. Can also
  *   throw if `suite_id` doesn't match any suite.
@@ -231,6 +209,28 @@ export const ensureTestAccess = async ({
   }
 
   return team;
+};
+
+export const ensureTriggerAccess = async ({
+  logger,
+  teams,
+  trigger_id,
+  trx,
+}: EnsureTriggerAccess): Promise<Team> => {
+  const log = logger.prefix("ensureTriggerAccess");
+
+  const teamIds = ensureTeams({ teams, logger }).map((team) => team.id);
+  log.debug("ensure teams", teamIds, "can access trigger", trigger_id);
+
+  const trigger = await findTrigger(trigger_id, { logger, trx });
+  const selectedTeam = teams!.find((team) => trigger.team_id === team.id);
+
+  if (!selectedTeam) {
+    log.error("teams", teamIds, "cannot access trigger", trigger_id);
+    throw new AuthenticationError("cannot access trigger");
+  }
+
+  return selectedTeam;
 };
 
 /**

@@ -1,71 +1,71 @@
 import { db } from "../db";
 import { ClientError } from "../errors";
 import { Logger } from "../Logger";
-import { findDefaultGroupForTeam } from "../models/group";
-import { deleteGroupTestsForTests } from "../models/group_test";
 import { findLatestRuns, findRunResult } from "../models/run";
 import {
-  createTestAndGroupTests,
+  createTestAndTestTriggers,
   deleteTests,
   findTest,
   findTestForRun,
-  findTestsForGroup,
+  findTestsForTrigger,
   updateTest,
 } from "../models/test";
+import { deleteTestTriggersForTests } from "../models/test_trigger";
+import { findDefaultTriggerForTeam } from "../models/trigger";
 import {
   Context,
   CreateTestMutation,
   DeleteTestsMutation,
-  GroupIdQuery,
   Team,
   Test,
   TestQuery,
   TestResult,
   TestSummary,
+  TriggerIdQuery,
   UpdateTestMutation,
 } from "../types";
 import {
-  ensureGroupAccess,
   ensureTeams,
   ensureTestAccess,
+  ensureTriggerAccess,
   ensureUser,
 } from "./utils";
 
 const ALLOW_LIST = ["flaurida", "jperl"];
 
-type FindGroupAndTeamIdsForCreateTest = {
+type FindTeamAndTriggerIdsForCreateTest = {
   logger: Logger;
-  group_id: string | null;
   teams: Team[];
+  trigger_id: string | null;
 };
 
-export const findGroupIdsAndTeamForCreateTest = async ({
+export const findTeamAndTriggerIdsForCreateTest = async ({
   logger,
-  group_id,
   teams,
-}: FindGroupAndTeamIdsForCreateTest): Promise<{
-  groupIds: string[];
+  trigger_id,
+}: FindTeamAndTriggerIdsForCreateTest): Promise<{
   team: Team;
+  triggerIds: string[];
 }> => {
-  // if group id provided, ensure group access and return associated team
-  if (group_id) {
-    const team = await ensureGroupAccess({ group_id, logger, teams });
-    const defaultGroup = await findDefaultGroupForTeam(team.id, { logger });
+  // if trigger id provided, ensure trigger access and return associated team
+  if (trigger_id) {
+    const team = await ensureTriggerAccess({ logger, teams, trigger_id });
+    const defaultTrigger = await findDefaultTriggerForTeam(team.id, { logger });
 
-    const groupIds = Array.from(new Set([defaultGroup.id, group_id]));
+    const triggerIds = Array.from(new Set([defaultTrigger.id, trigger_id]));
 
-    return { groupIds, team };
+    return { triggerIds, team };
   }
   // if user on multiple teams, cannot choose which team to create test for
   if (teams.length > 1) {
     logger.error("user on multiple teams");
-    throw new Error("group not specified");
+    throw new Error("trigger not specified");
   }
 
   const team = teams[0];
-  const defaultGroup = await findDefaultGroupForTeam(team.id, { logger });
+  const defaultTrigger = await findDefaultTriggerForTeam(team.id, { logger });
 
-  return { groupIds: [defaultGroup.id], team };
+  return { triggerIds: [defaultTrigger.id], team };
 };
 
 /**
@@ -73,7 +73,7 @@ export const findGroupIdsAndTeamForCreateTest = async ({
  */
 export const createTestResolver = async (
   _: Record<string, unknown>,
-  { group_id, url }: CreateTestMutation,
+  { trigger_id, url }: CreateTestMutation,
   { logger, user: contextUser, teams: contextTeams }: Context
 ): Promise<Test> => {
   const log = logger.prefix("createTestResolver");
@@ -92,19 +92,19 @@ export const createTestResolver = async (
 
   const code = `const { context } = await launch();\nconst page = await context.newPage();\nawait page.goto('${url}', { waitUntil: "domcontentloaded" });\n// 🐺 QA Wolf will create code here`;
 
-  const { groupIds, team } = await findGroupIdsAndTeamForCreateTest({
+  const { team, triggerIds } = await findTeamAndTriggerIdsForCreateTest({
     logger,
-    group_id,
     teams,
+    trigger_id,
   });
 
   return db.transaction(async (trx) => {
-    const { test } = await createTestAndGroupTests(
+    const { test } = await createTestAndTestTriggers(
       {
         code,
         creator_id: user.id,
-        group_ids: groupIds,
         team_id: team.id,
+        trigger_ids: triggerIds,
       },
       { logger, trx }
     );
@@ -126,7 +126,7 @@ export const deleteTestsResolver = async (
   );
 
   return db.transaction(async (trx) => {
-    await deleteGroupTestsForTests(ids, { logger, trx });
+    await deleteTestTriggersForTests(ids, { logger, trx });
     return deleteTests(ids, { logger, trx });
   });
 };
@@ -160,11 +160,11 @@ export const testResolver = async (
 };
 
 export const testSummaryResolver = async (
-  { group_id, id }: Test & { group_id: string },
+  { id, trigger_id }: Test & { trigger_id: string },
   _: Record<string, unknown>,
   { logger }: Context
 ): Promise<TestSummary> => {
-  const runs = await findLatestRuns({ group_id, test_id: id }, { logger });
+  const runs = await findLatestRuns({ test_id: id, trigger_id }, { logger });
 
   const lastRun = runs[0] || null;
   const gif_url = lastRun?.gif_url;
@@ -173,19 +173,19 @@ export const testSummaryResolver = async (
 };
 
 /**
- * @returns All tests for a single group, ordered alphabetically by test name ascending.
+ * @returns All tests for a single trigger, ordered alphabetically by test name ascending.
  */
 export const testsResolver = async (
-  { group_id }: GroupIdQuery,
+  { trigger_id }: TriggerIdQuery,
   _: Record<string, unknown>,
   { logger, teams }: Context
 ): Promise<Test[]> => {
-  await ensureGroupAccess({ logger, group_id, teams });
-  const tests = await findTestsForGroup(group_id, { logger });
+  await ensureTriggerAccess({ logger, trigger_id, teams });
+  const tests = await findTestsForTrigger(trigger_id, { logger });
 
-  // include group ID so we can load appropriate runs in nested query
+  // include trigger ID so we can load appropriate runs in nested query
   return tests.map((test) => {
-    return { ...test, group_id };
+    return { ...test, trigger_id };
   });
 };
 

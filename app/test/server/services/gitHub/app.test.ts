@@ -3,12 +3,12 @@ import * as gitHubService from "../../../../server/services/gitHub/app";
 import { GitHubCommitStatus, SuiteRun } from "../../../../server/types";
 import {
   buildGitHubCommitStatus,
-  buildGroup,
   buildRun,
   buildSuite,
   buildTeam,
   buildTeamUser,
   buildTest,
+  buildTrigger,
   buildUser,
   logger,
 } from "../../utils";
@@ -22,7 +22,7 @@ beforeAll(async () => {
   await db("teams").insert(buildTeam({}));
   await db("team_users").insert(buildTeamUser({}));
 
-  await db("groups").insert(buildGroup({}));
+  await db("triggers").insert(buildTrigger({}));
 
   await db("suites").insert([buildSuite({}), buildSuite({ i: 2 })]);
 

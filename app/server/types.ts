@@ -104,12 +104,12 @@ export type GitHubCommitStatus = {
   created_at?: string;
   deployment_url: string;
   github_installation_id: number;
-  group_id: string;
   id: string;
   owner: string;
   repo: string;
   sha: string;
   suite_id: string;
+  trigger_id: string;
   updated_at?: string;
 };
 
@@ -125,32 +125,6 @@ export type Invite = {
   wolf_name: string;
   wolf_number: number;
   wolf_variant: string;
-};
-
-export type Group = {
-  alert_integration_id: string | null;
-  alert_only_on_failure?: boolean;
-  created_at?: string;
-  creator_id: string;
-  deleted_at: string | null;
-  deployment_branches?: string | null;
-  deployment_environment?: DeploymentEnvironment | null;
-  deployment_integration_id: string | null;
-  environment_id: string | null;
-  id: string;
-  is_default: boolean;
-  is_email_enabled: boolean;
-  name: string;
-  next_at: string | null;
-  repeat_minutes: number | null;
-  team_id: string;
-  updated_at?: string;
-};
-
-export type GroupTest = {
-  group_id: string;
-  id: string;
-  test_id: string;
 };
 
 export type IntegrationType = "github" | "slack";
@@ -220,9 +194,9 @@ export type Suite = {
   created_at: string;
   creator_id: string | null;
   environment_variables: string | null;
-  group_id: string;
   id: string;
   team_id: string;
+  trigger_id: string;
   updated_at?: string;
 };
 
@@ -275,11 +249,37 @@ export type Test = {
   version: number;
 };
 
+export type TestTrigger = {
+  id: string;
+  test_id: string;
+  trigger_id: string;
+};
+
 export type TestUpdate = {
   code: string;
   generated?: boolean;
   id: string;
   version: number;
+};
+
+export type Trigger = {
+  alert_integration_id: string | null;
+  alert_only_on_failure?: boolean;
+  created_at?: string;
+  creator_id: string;
+  deleted_at: string | null;
+  deployment_branches?: string | null;
+  deployment_environment?: DeploymentEnvironment | null;
+  deployment_integration_id: string | null;
+  environment_id: string | null;
+  id: string;
+  is_default: boolean;
+  is_email_enabled: boolean;
+  name: string;
+  next_at: string | null;
+  repeat_minutes: number | null;
+  team_id: string;
+  updated_at?: string;
 };
 
 export type User = {
@@ -333,18 +333,18 @@ export type CreateInviteMutation = {
 };
 
 export type CreateSlackIntegrationMutation = {
-  group_id: string;
   redirect_uri: string;
   slack_code: string;
+  trigger_id: string;
 };
 
 export type CreateSuiteMutation = {
-  group_id: string;
   test_ids?: string[] | null;
+  trigger_id: string;
 };
 
 export type CreateTestMutation = {
-  group_id: string | null;
+  trigger_id: string | null;
   url: string;
 };
 
@@ -352,8 +352,8 @@ export type CreateUrlMutation = {
   redirect_uri: string;
 };
 
-export type DeleteGroup = {
-  default_group_id: string;
+export type DeleteTrigger = {
+  default_trigger_id: string;
   id: string;
 };
 
@@ -411,7 +411,7 @@ export type UpdateEnvironmentVariableMutation = {
   value: string;
 };
 
-export type UpdateGroupMutation = {
+export type UpdateTriggerMutation = {
   deployment_branches?: string | null;
   deployment_environment?: DeploymentEnvironment | null;
   deployment_integration_id?: string | null;
@@ -423,9 +423,9 @@ export type UpdateGroupMutation = {
   repeat_minutes?: number | null;
 };
 
-export type UpdateGroupTestsMutation = {
-  add_group_id: string | null;
-  remove_group_id: string | null;
+export type UpdateTestTriggersMutation = {
+  add_trigger_id: string | null;
+  remove_trigger_id: string | null;
   test_ids: string[];
 };
 
@@ -472,10 +472,6 @@ export type EnvironmentIdQuery = {
   environment_id: string;
 };
 
-export type GroupIdQuery = {
-  group_id: string;
-};
-
 export type IdQuery = {
   id: string;
 };
@@ -508,6 +504,10 @@ export type TestResult = {
 export type TestSummary = {
   gif_url: string | null;
   last_runs: SuiteRun[];
+};
+
+export type TriggerIdQuery = {
+  trigger_id: string;
 };
 
 export type Wolf = {

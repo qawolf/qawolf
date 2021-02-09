@@ -9,10 +9,10 @@ import {
 import { Suite } from "../../../server/types";
 import { minutesFromNow } from "../../../shared/utils";
 import {
-  buildGroup,
-  buildGroupTest,
   buildTeam,
   buildTest,
+  buildTestTrigger,
+  buildTrigger,
   buildUser,
   logger,
 } from "../utils";
@@ -25,22 +25,23 @@ const suites = [
     creator_github_login: "spirit",
     creator_id: null,
     environment_variables: null,
-    group_id: "groupId",
-    group_name: "schedule",
     id: "suiteId",
-    team_id: "teamId",
     repeat_minutes: 60,
+    team_id: "teamId",
+    trigger_id: "triggerId",
+    trigger_name: "schedule",
   },
   {
     created_at: timestamp,
     creator_github_login: null,
     creator_id: null,
     environment_variables: null,
-    group_id: "groupId",
-    group_name: "schedule",
+
     id: "suite2Id",
-    team_id: "teamId",
     repeat_minutes: 60,
+    team_id: "teamId",
+    trigger_id: "triggerId",
+    trigger_name: "schedule",
   },
 ];
 const user = buildUser({});
@@ -58,25 +59,25 @@ afterAll(() => dropTestDb());
 
 describe("createSuiteResolver", () => {
   beforeAll(async () => {
-    await db("groups").insert(buildGroup({}));
+    await db("triggers").insert(buildTrigger({}));
     await db("tests").insert([buildTest({}), buildTest({ i: 2 })]);
-    return db("group_tests").insert([
-      buildGroupTest(),
-      { ...buildGroupTest(), id: "groupTest2Id", test_id: "test2Id" },
+    return db("test_triggers").insert([
+      buildTestTrigger(),
+      { ...buildTestTrigger(), id: "testTrigger2Id", test_id: "test2Id" },
     ]);
   });
 
   afterAll(async () => {
     await db("suites").del();
-    await db("groups").del();
+    await db("triggers").del();
     await db("tests").del();
-    return db("group_tests").del();
+    return db("test_triggers").del();
   });
 
-  it("creates a suite for a group with all tests", async () => {
+  it("creates a suite for a trigger with all tests", async () => {
     const suiteId = await createSuiteResolver(
       {},
-      { group_id: "groupId", test_ids: null },
+      { test_ids: null, trigger_id: "triggerId" },
       testContext
     );
 
@@ -87,8 +88,8 @@ describe("createSuiteResolver", () => {
       .first();
     expect(suite).toMatchObject({
       creator_id: user.id,
-      group_id: "groupId",
       team_id: teams[0].id,
+      trigger_id: "triggerId",
     });
 
     const runs = await db("runs").select("*").where({ suite_id: suite.id });
@@ -98,10 +99,10 @@ describe("createSuiteResolver", () => {
     ]);
   });
 
-  it("creates a suite for a group with selected tests", async () => {
+  it("creates a suite for a trigger with selected tests", async () => {
     const suiteId = await createSuiteResolver(
       {},
-      { group_id: "groupId", test_ids: ["testId"] },
+      { test_ids: ["testId"], trigger_id: "triggerId" },
       testContext
     );
 
@@ -112,15 +113,15 @@ describe("createSuiteResolver", () => {
       .first();
     expect(suite).toMatchObject({
       creator_id: user.id,
-      group_id: "groupId",
       team_id: teams[0].id,
+      trigger_id: "triggerId",
     });
 
     const runs = await db("runs").select("*").where({ suite_id: suite.id });
     expect(runs).toMatchObject([{ suite_id: suite.id, test_id: "testId" }]);
 
     await db("runs").del();
-    await db("group_tests").del();
+    await db("test_triggers").del();
     await db("tests").del();
   });
 
@@ -128,7 +129,7 @@ describe("createSuiteResolver", () => {
     const testFn = async (): Promise<string> => {
       return createSuiteResolver(
         {},
-        { group_id: "groupId" },
+        { trigger_id: "triggerId" },
         { ...testContext, teams: [{ ...teams[0], is_enabled: false }] }
       );
     };
@@ -140,7 +141,7 @@ describe("createSuiteResolver", () => {
 
   it("throws an error if no tests exist for a team", async () => {
     const testFn = async (): Promise<string> => {
-      return createSuiteResolver({}, { group_id: "groupId" }, testContext);
+      return createSuiteResolver({}, { trigger_id: "triggerId" }, testContext);
     };
 
     await expect(testFn()).rejects.toThrowError("tests to run");
@@ -149,11 +150,11 @@ describe("createSuiteResolver", () => {
 
 describe("suiteResolver", () => {
   beforeAll(async () => {
-    return db("groups").insert(buildGroup({}));
+    return db("triggers").insert(buildTrigger({}));
   });
 
   afterAll(async () => {
-    return db("groups").del();
+    return db("triggers").del();
   });
 
   it("returns a suite", async () => {
@@ -168,8 +169,8 @@ describe("suiteResolver", () => {
     });
   });
 
-  it("throws an error if group deleted", async () => {
-    await db("groups").update({ deleted_at: minutesFromNow() });
+  it("throws an error if trigger deleted", async () => {
+    await db("triggers").update({ deleted_at: minutesFromNow() });
 
     jest.spyOn(suiteModel, "findSuite").mockResolvedValue(suites[0]);
 
@@ -179,24 +180,24 @@ describe("suiteResolver", () => {
 
     await expect(testFn()).rejects.toThrowError("not found");
 
-    await db("groups").update({ deleted_at: null });
+    await db("triggers").update({ deleted_at: null });
   });
 });
 
 describe("suitesResolver", () => {
   beforeAll(async () => {
-    return db("groups").insert(buildGroup({}));
+    return db("triggers").insert(buildTrigger({}));
   });
 
   afterAll(async () => {
-    return db("groups").del();
+    return db("triggers").del();
   });
 
   it("returns suites for a team", async () => {
-    jest.spyOn(suiteModel, "findSuitesForGroup").mockResolvedValue(suites);
+    jest.spyOn(suiteModel, "findSuitesForTrigger").mockResolvedValue(suites);
 
     const formattedSuites = await suitesResolver(
-      { group_id: "groupId" },
+      { trigger_id: "triggerId" },
       {},
       testContext
     );
@@ -204,24 +205,24 @@ describe("suitesResolver", () => {
     expect(formattedSuites).toMatchObject([
       {
         created_at: timestamp,
-        group_name: "schedule",
         id: "suiteId",
         repeat_minutes: 60,
         team_id: "teamId",
+        trigger_name: "schedule",
       },
       {
         created_at: timestamp,
-        group_name: "schedule",
         id: "suite2Id",
         repeat_minutes: 60,
         team_id: "teamId",
+        trigger_name: "schedule",
       },
     ]);
 
-    expect(suiteModel.findSuitesForGroup).toBeCalledWith(
+    expect(suiteModel.findSuitesForTrigger).toBeCalledWith(
       {
-        group_id: "groupId",
         limit: 50,
+        trigger_id: "triggerId",
       },
       expect.any(Logger)
     );

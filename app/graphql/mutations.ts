@@ -4,11 +4,11 @@ import {
   apiKeyFragment,
   environmentFragment,
   environmentVariableFragment,
-  groupFragment,
   integrationFragment,
   inviteFragment,
   teamFragment,
   testFragment,
+  triggerFragment,
   userFragment,
 } from "./fragments";
 
@@ -68,15 +68,6 @@ export const createGitHubIntegrationsMutation = gql`
   ${integrationFragment}
 `;
 
-export const createGroupMutation = gql`
-  mutation createGroup($team_id: ID!) {
-    createGroup(team_id: $team_id) {
-      ...GroupFragment
-    }
-  }
-  ${groupFragment}
-`;
-
 export const createInvitesMutation = gql`
   mutation createInvites($emails: [String!]!, $team_id: ID!) {
     createInvites(emails: $emails, team_id: $team_id) {
@@ -94,14 +85,14 @@ export const createSignInUrlMutation = gql`
 
 export const createSlackIntegrationMutation = gql`
   mutation createSlackIntegration(
-    $group_id: ID!
     $redirect_uri: String!
     $slack_code: String!
+    $trigger_id: ID!
   ) {
     createSlackIntegration(
-      group_id: $group_id
       redirect_uri: $redirect_uri
       slack_code: $slack_code
+      trigger_id: $trigger_id
     ) {
       ...IntegrationFragment
     }
@@ -116,18 +107,27 @@ export const createSlackIntegrationUrlMutation = gql`
 `;
 
 export const createSuiteMutation = gql`
-  mutation createSuite($group_id: ID!, $test_ids: [ID!]) {
-    createSuite(group_id: $group_id, test_ids: $test_ids)
+  mutation createSuite($test_ids: [ID!], $trigger_id: ID!) {
+    createSuite(test_ids: $test_ids, trigger_id: $trigger_id)
   }
 `;
 
 export const createTestMutation = gql`
-  mutation createTest($group_id: ID, $url: String!) {
-    createTest(group_id: $group_id, url: $url) {
+  mutation createTest($trigger_id: ID, $url: String!) {
+    createTest(trigger_id: $trigger_id, url: $url) {
       ...TestFragment
     }
   }
   ${testFragment}
+`;
+
+export const createTriggerMutation = gql`
+  mutation createTrigger($team_id: ID!) {
+    createTrigger(team_id: $team_id) {
+      ...TriggerFragment
+    }
+  }
+  ${triggerFragment}
 `;
 
 export const deleteApiKeyMutation = gql`
@@ -157,15 +157,6 @@ export const deleteEnvironmentVariableMutation = gql`
   ${environmentVariableFragment}
 `;
 
-export const deleteGroupMutation = gql`
-  mutation deleteGroup($id: ID!) {
-    deleteGroup(id: $id) {
-      default_group_id
-      id
-    }
-  }
-`;
-
 export const deleteTestsMutation = gql`
   mutation deleteTests($ids: [ID!]!) {
     deleteTests(ids: $ids) {
@@ -173,6 +164,15 @@ export const deleteTestsMutation = gql`
     }
   }
   ${testFragment}
+`;
+
+export const deleteTriggerMutation = gql`
+  mutation deleteTrigger($id: ID!) {
+    deleteTrigger(id: $id) {
+      default_trigger_id
+      id
+    }
+  }
 `;
 
 export const joinMailingListMutation = gql`
@@ -243,8 +243,9 @@ export const updateEnvironmentVariableMutation = gql`
   ${environmentVariableFragment}
 `;
 
-export const updateGroupMutation = gql`
-  mutation updateGroup(
+export const updateTriggerMutation = gql`
+  mutation updateTrigger(
+    $alert_integration_id: ID
     $deployment_branches: String
     $deployment_environment: DeploymentEnvironment
     $deployment_integration_id: ID
@@ -252,10 +253,10 @@ export const updateGroupMutation = gql`
     $id: ID!
     $is_email_enabled: Boolean
     $name: String
-    $alert_integration_id: ID
     $repeat_minutes: Int
   ) {
-    updateGroup(
+    updateTrigger(
+      alert_integration_id: $alert_integration_id
       deployment_branches: $deployment_branches
       deployment_environment: $deployment_environment
       deployment_integration_id: $deployment_integration_id
@@ -263,24 +264,23 @@ export const updateGroupMutation = gql`
       id: $id
       is_email_enabled: $is_email_enabled
       name: $name
-      alert_integration_id: $alert_integration_id
       repeat_minutes: $repeat_minutes
     ) {
-      ...GroupFragment
+      ...TriggerFragment
     }
   }
-  ${groupFragment}
+  ${triggerFragment}
 `;
 
-export const updateGroupTestsMutation = gql`
-  mutation updateGroupTests(
-    $add_group_id: ID
-    $remove_group_id: ID
+export const updateTestTriggersMutation = gql`
+  mutation updateTestTriggers(
+    $add_trigger_id: ID
+    $remove_trigger_id: ID
     $test_ids: [ID!]
   ) {
-    updateGroupTests(
-      add_group_id: $add_group_id
-      remove_group_id: $remove_group_id
+    updateTestTriggers(
+      add_trigger_id: $add_trigger_id
+      remove_trigger_id: $remove_trigger_id
       test_ids: $test_ids
     )
   }

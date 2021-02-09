@@ -14,14 +14,14 @@ type BuildTestName = {
 type CreateTest = {
   code: string;
   creator_id: string;
-  group_ids: string[];
   name?: string;
   team_id: string;
+  trigger_ids: string[];
 };
 
-type FindEnabledTestsForGroup = {
-  group_id: string;
+type FindEnabledTestsForTrigger = {
   test_ids?: string[] | null;
+  trigger_id: string;
 };
 
 export type LocationCount = {
@@ -89,62 +89,64 @@ export const countPendingTests = async (
   return result;
 };
 
-export const createTestAndGroupTests = async (
-  { code, creator_id, group_ids, name, team_id }: CreateTest,
+export const createTestAndTestTriggers = async (
+  { code, creator_id, name, team_id, trigger_ids }: CreateTest,
   { logger, trx }: ModelOptions
-): Promise<{ groupTestIds: string[]; test: Test }> => {
-  const log = logger.prefix("createTestAndGroupTest");
+): Promise<{ test: Test; testTriggerIds: string[] }> => {
+  const log = logger.prefix("createTestAndTestTriggers");
 
   log.debug("creator", creator_id);
   const timestamp = minutesFromNow();
 
-  const { groupTestIds, test } = await (trx || db).transaction(async (trx) => {
-    const finalName = await buildTestName({ name, team_id }, { logger, trx });
+  const { test, testTriggerIds } = await (trx || db).transaction(
+    async (trx) => {
+      const finalName = await buildTestName({ name, team_id }, { logger, trx });
 
-    const test: Test = {
-      created_at: timestamp,
-      creator_id,
-      code,
-      deleted_at: null,
-      id: cuid(),
-      is_enabled: true,
-      name: finalName,
-      team_id,
-      updated_at: timestamp,
-      version: 0,
-    };
+      const test: Test = {
+        created_at: timestamp,
+        creator_id,
+        code,
+        deleted_at: null,
+        id: cuid(),
+        is_enabled: true,
+        name: finalName,
+        team_id,
+        updated_at: timestamp,
+        version: 0,
+      };
 
-    await trx("tests").insert(test);
+      await trx("tests").insert(test);
 
-    const groupTests = group_ids.map((group_id) => {
-      return { group_id, id: cuid(), test_id: test.id };
-    });
-    await trx("group_tests").insert(groupTests);
+      const testTriggers = trigger_ids.map((trigger_id) => {
+        return { id: cuid(), test_id: test.id, trigger_id };
+      });
+      await trx("test_triggers").insert(testTriggers);
 
-    return { groupTestIds: groupTests.map((g) => g.id), test };
-  });
+      return { testTriggerIds: testTriggers.map((g) => g.id), test };
+    }
+  );
 
   log.debug("created test", test.id);
 
-  return { groupTestIds, test };
+  return { test, testTriggerIds };
 };
 
-export const findTestsForGroup = async (
-  group_id: string,
+export const findTestsForTrigger = async (
+  trigger_id: string,
   { logger, trx }: ModelOptions
 ): Promise<Test[]> => {
-  const log = logger.prefix("findTestsForGroup");
+  const log = logger.prefix("findTestsForTrigger");
 
-  log.debug(group_id);
+  log.debug(trigger_id);
 
   const tests = await (trx || db)
     .select("tests.*" as "*")
     .from("tests")
-    .innerJoin("group_tests", "group_tests.test_id", "tests.id")
-    .where({ deleted_at: null, "group_tests.group_id": group_id })
+    .innerJoin("test_triggers", "test_triggers.test_id", "tests.id")
+    .where({ deleted_at: null, "test_triggers.trigger_id": trigger_id })
     .orderBy("name", "asc");
 
-  log.debug(`found ${tests.length} tests for group ${group_id}`);
+  log.debug(`found ${tests.length} tests for trigger ${trigger_id}`);
 
   return tests;
 };
@@ -168,18 +170,18 @@ export const findTestsForTeam = async (
   return tests;
 };
 
-export const findEnabledTestsForGroup = async (
-  { group_id, test_ids }: FindEnabledTestsForGroup,
+export const findEnabledTestsForTrigger = async (
+  { test_ids, trigger_id }: FindEnabledTestsForTrigger,
   { logger, trx }: ModelOptions
 ): Promise<Test[]> => {
-  const log = logger.prefix("findEnabledTestsForGroup");
-  log.debug(group_id);
+  const log = logger.prefix("findEnabledTestsForTrigger");
+  log.debug(trigger_id);
 
   const query = (trx || db)
     .select("tests.*" as "*")
     .from("tests")
-    .innerJoin("group_tests", "group_tests.test_id", "tests.id")
-    .where({ deleted_at: null, group_id, is_enabled: true });
+    .innerJoin("test_triggers", "test_triggers.test_id", "tests.id")
+    .where({ deleted_at: null, trigger_id, is_enabled: true });
 
   if (test_ids && test_ids.length) {
     query.whereIn("tests.id", test_ids);
@@ -187,7 +189,7 @@ export const findEnabledTestsForGroup = async (
 
   const tests = await query.orderBy("created_at", "asc");
 
-  log.debug(`found ${tests.length} enabled tests for group ${group_id}`);
+  log.debug(`found ${tests.length} enabled tests for trigger ${trigger_id}`);
 
   return tests;
 };

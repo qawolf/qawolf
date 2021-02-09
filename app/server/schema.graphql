@@ -45,22 +45,22 @@ type AuthenticatedUser {
 
 "A grouper for data used by the dashboard"
 type Dashboard {
-  "ID of the test group that this dashboard data is for"
-  group_id: ID!
-
-  "List of the most recent 50 suites in this group, from newest to oldest"
+  "List of the most recent 50 suites in this trigger, from newest to oldest"
   suites: [Suite!]!
 
-  "List of all tests in this group, ordered alphabetically by test name ascending."
+  "List of all tests in this trigger, ordered alphabetically by test name ascending."
   tests: [Test!]!
+
+  "ID of the test trigger that this dashboard data is for"
+  trigger_id: ID!
 }
 
-"A response from the deleteGroup mutation"
-type DeleteGroup {
-  "ID of the default group"
-  default_group_id: ID!
+"A response from the deleteTrigger mutation"
+type DeleteTrigger {
+  "ID of the default trigger"
+  default_trigger_id: ID!
 
-  "ID of the deleted group"
+  "ID of the deleted trigger"
   id: ID!
 }
 
@@ -166,45 +166,6 @@ type Invite {
   wolf_variant: String!
 }
 
-"A test group"
-type Group {
-  "The ID of a Slack integration associated with this test group"
-  alert_integration_id: ID
-
-  "The branches to run tests on for the GitHub integration (comma separated list)."
-  deployment_branches: String
-
-  "The deployment environment to run tests on for the GitHub integration."
-  deployment_environment: DeploymentEnvironment
-
-  "The ID of a deployment integration associated with this test group"
-  deployment_integration_id: ID
-
-  "The ID of an environment associated with this test group"
-  environment_id: ID
-
-  "Test group ID"
-  id: String!
-
-  "True if this is the default test group for the team that owns it"
-  is_default: Boolean!
-
-  """
-  True if all users on the associated team should be alerted by email whenever
-  a test run finished for this group.
-  """
-  is_email_enabled: Boolean!
-
-  "A name for the group, for users to identify it in the UI"
-  name: String!
-
-  "Date and time at which this test group is next scheduled to run"
-  next_at: String
-
-  "Number of minutes between test runs for the group"
-  repeat_minutes: Int
-}
-
 "Status of a test run"
 enum RunStatus {
   "Created (in progress)"
@@ -298,13 +259,10 @@ type SendLoginCode {
   email: String!
 }
 
-"All the test runs for one run of a test group"
+"All the test runs for one run of a test trigger"
 type Suite {
-  "Date and time at which the suite was created (group test run began)"
+  "Date and time at which the suite was created (trigger test run began)"
   created_at: String!
-
-  "Associated test group ID"
-  group_id: ID!
 
   "Suite ID"
   id: ID!
@@ -312,11 +270,14 @@ type Suite {
   "Associated test runs"
   runs: [SuiteRun!]!
 
-  "ID of the team that owns the associated test group"
+  "ID of the team that owns the associated test trigger"
   team_id: ID!
+
+  "Associated test trigger ID"
+  trigger_id: ID!
 }
 
-"One run for one test that is part of a test group we are running all at once"
+"One run for one test that is part of a test trigger we are running all at once"
 type SuiteRun {
   "Date and time at which the run finished, if it is done"
   completed_at: String
@@ -381,9 +342,6 @@ type Test {
   "Date and time at which this test was deleted, if it was"
   deleted_at: String
 
-  "List of test groups this test belongs to"
-  groups: [Group!]!
-
   "Test ID"
   id: ID!
 
@@ -395,6 +353,9 @@ type Test {
 
   "Summary of most recent runs of this test"
   summary: TestSummary
+
+  "List of test triggers this test belongs to"
+  triggers: [Trigger!]!
 
   "Date and time at which this test was last updated"
   updated_at: String!
@@ -419,6 +380,45 @@ type TestSummary {
 
   "The most recent 10 runs of this test, in descending order of when they started"
   last_runs: [SuiteRun!]!
+}
+
+"A test trigger"
+type Trigger {
+  "The ID of a Slack integration associated with this test trigger"
+  alert_integration_id: ID
+
+  "The branches to run tests on for the GitHub integration (comma separated list)."
+  deployment_branches: String
+
+  "The deployment environment to run tests on for the GitHub integration."
+  deployment_environment: DeploymentEnvironment
+
+  "The ID of a deployment integration associated with this test trigger"
+  deployment_integration_id: ID
+
+  "The ID of an environment associated with this test trigger"
+  environment_id: ID
+
+  "Test trigger ID"
+  id: String!
+
+  "True if this is the default test trigger for the team that owns it"
+  is_default: Boolean!
+
+  """
+  True if all users on the associated team should be alerted by email whenever
+  a test run finished for this trigger.
+  """
+  is_email_enabled: Boolean!
+
+  "A name for the trigger, for users to identify it in the UI"
+  name: String!
+
+  "Date and time at which this test trigger is next scheduled to run"
+  next_at: String
+
+  "Number of minutes between test runs for the trigger"
+  repeat_minutes: Int
 }
 
 "A registered QA Wolf user"
@@ -536,17 +536,17 @@ type Mutation {
   ): [Integration!]!
 
   """
-  Create a new test group. The group is given an automatic
-  unique name, which can then be changed using `updateGroup`.
+  Create a new test trigger. The trigger is given an automatic
+  unique name, which can then be changed using `updateTrigger`.
 
   Requires that you have access to the team.
   """
-  createGroup(
+  createTrigger(
     """
-    ID of the team that should own the group
+    ID of the team that should own the trigger
     """
     team_id: ID!
-  ): Group!
+  ): Trigger!
 
   """
   Creates a new environment variable record for an environment.
@@ -594,17 +594,12 @@ type Mutation {
   ): String!
 
   """
-  Creates a new Slack integration record, which links one test group
+  Creates a new Slack integration record, which links one test trigger
   with one Slack channel.
 
-  Requires that you have access to the team that owns the group.
+  Requires that you have access to the team that owns the trigger.
   """
   createSlackIntegration(
-    """
-    Test group ID
-    """
-    group_id: ID!
-
     """
     Relative app URL to redirect to after approving the integration
     """
@@ -614,6 +609,11 @@ type Mutation {
     The code to send to Slack for the OAuth flow
     """
     slack_code: String!
+
+    """
+    Test trigger ID
+    """
+    trigger_id: ID!
   ): Integration!
 
   """
@@ -628,24 +628,24 @@ type Mutation {
   ): String!
 
   """
-  Creates a new test suite for one or more tests from a single test group.
+  Creates a new test suite for one or more tests from a single test trigger.
   Returns the ID of the created suite.
 
-  Requires that you have access to the team that owns the group, and that
+  Requires that you have access to the team that owns the trigger, and that
   the team's plan limit for test runs has not been reached.
   """
   createSuite(
     """
-    Group ID
-    """
-    group_id: ID!
-
-    """
     List of test IDs to include in the suite. Only those that are
     enabled and not deleted will be included, and any that are not
-    in the specified test group will be ignored.
+    in the specified test trigger will be ignored.
     """
     test_ids: [ID!]
+
+    """
+    Trigger ID
+    """
+    trigger_id: ID!
   ): String!
 
   """
@@ -656,12 +656,12 @@ type Mutation {
   """
   createTest(
     """
-    ID of test group to put the test in. If not provided, it will be
-    put in the default test group for the authenticated user's team.
-    If the user is on multiple teams and you don't specify a group ID,
+    ID of test trigger to put the test in. If not provided, it will be
+    put in the default test trigger for the authenticated user's team.
+    If the user is on multiple teams and you don't specify a trigger ID,
     creation will fail.
     """
-    group_id: ID
+    trigger_id: ID
 
     """
     The URL to navigate to first in the test browser (the URL
@@ -703,24 +703,24 @@ type Mutation {
   ): EnvironmentVariable!
 
   """
-  Soft deletes a test group record by ID. You cannot delete the
-  default test group for a team. All tests are removed from a
-  group when it is soft deleted, but the tests themselves are
-  not deleted an remain in any other groups as well as the default
-  group.
+  Soft deletes a test trigger record by ID. You cannot delete the
+  default test trigger for a team. All tests are removed from a
+  trigger when it is soft deleted, but the tests themselves are
+  not deleted an remain in any other triggers as well as the default
+  trigger.
 
-  Requires that you have access to the team that owns the test group
+  Requires that you have access to the team that owns the test trigger
   """
-  deleteGroup(
+  deleteTrigger(
     """
-    Test group ID
+    Test trigger ID
     """
     id: ID!
-  ): DeleteGroup!
+  ): DeleteTrigger!
 
   """
   Soft deletes one or more tests by ID. Tests are removed from
-  all groups when they are soft deleted.
+  all triggers when they are soft deleted.
 
   Requires that you have access to the team that owns each test.
   """
@@ -846,11 +846,11 @@ type Mutation {
   ): EnvironmentVariable!
 
   """
-  Updates a test group by ID.
+  Updates a test trigger by ID.
 
-  Requires that you have access to the team that owns the group.
+  Requires that you have access to the team that owns the trigger.
   """
-  updateGroup(
+  updateTrigger(
     """
     Updated value for this field. If this field is omitted, it will
     not be changed. If it is `null`, it will be cleared.
@@ -875,7 +875,7 @@ type Mutation {
     """
     environment_id: ID
 
-    "Test group ID"
+    "Test trigger ID"
     id: ID!
 
     """
@@ -885,10 +885,10 @@ type Mutation {
     is_email_enabled: Boolean
 
     """
-    Updated group name. If this field is omitted, it will
+    Updated trigger name. If this field is omitted, it will
     not be changed. If it is `null`, it will be cleared. If
-    `group.is_default` is `true`, an error will occur. The
-    default group cannot be renamed.
+    `trigger.is_default` is `true`, an error will occur. The
+    default trigger cannot be renamed.
     """
     name: String
 
@@ -899,35 +899,35 @@ type Mutation {
     alert_integration_id: ID
 
     """
-    Updated time in minutes between test runs for the group.
+    Updated time in minutes between test runs for the trigger.
     If this field is omitted, it will not be changed. If it
     is `null`, it will be cleared. Whenever you change this
     value, the next upcoming run is also immediately rescheduled.
     """
     repeat_minutes: Int
-  ): Group!
+  ): Trigger!
 
   """
-  Adds one or more tests to a group. Returns the number of
-  group-test relationships that were added or removed.
+  Adds one or more tests to a trigger. Returns the number of
+  test_trigger relationships that were added or removed.
 
-  Requires that you have access to the team that owns the group.
+  Requires that you have access to the team that owns the trigger.
   """
-  updateGroupTests(
+  updateTestTriggers(
     """
-    ID of test group to add all the tests to. If this field is set,
-    `remove_group_id` may not be set.
+    ID of test trigger to add all the tests to. If this field is set,
+    `remove_trigger_id` may not be set.
     """
-    add_group_id: ID
+    add_trigger_id: ID
 
     """
-    ID of test group to remove all the tests from. If this field is set,
-    `add_group_id` may not be set.
+    ID of test trigger to remove all the tests from. If this field is set,
+    `add_trigger_id` may not be set.
     """
-    remove_group_id: ID
+    remove_trigger_id: ID
 
     """
-    List of test IDs to add to / remove from the test group.
+    List of test IDs to add to / remove from the test trigger.
     """
     test_ids: [ID!]
   ): Int!
@@ -1076,11 +1076,11 @@ type Query {
   currentUser: User
 
   """
-  Returns dashboard data (tests and suites) for a single test group.
+  Returns dashboard data (tests and suites) for a single test trigger.
 
-  One of the teams you are on must have access to the test group.
+  One of the teams you are on must have access to the test trigger.
   """
-  dashboard("The group ID" group_id: ID!): Dashboard!
+  dashboard("The trigger ID" trigger_id: ID!): Dashboard!
 
   """
   Returns environments by team ID.
@@ -1120,12 +1120,12 @@ type Query {
   ): Runner
 
   """
-  Returns all test groups for a single team by team ID. The default group is
-  always first, followed by other groups ordered by name ascending.
+  Returns all test triggers for a single team by team ID. The default trigger is
+  always first, followed by other triggers ordered by name ascending.
 
   Requires that you have access to the team.
   """
-  groups("The team ID" team_id: ID!): [Group!]!
+  triggers("The team ID" team_id: ID!): [Trigger!]!
 
   """
   Returns all integrations for a single team by team ID.

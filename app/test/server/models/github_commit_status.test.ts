@@ -5,7 +5,13 @@ import {
   updateGitHubCommitStatus,
 } from "../../../server/models/github_commit_status";
 import { GitHubCommitStatus } from "../../../server/types";
-import { buildGroup, buildSuite, buildTeam, buildUser, logger } from "../utils";
+import {
+  buildSuite,
+  buildTeam,
+  buildTrigger,
+  buildUser,
+  logger,
+} from "../utils";
 
 describe("github commit status model", () => {
   beforeAll(async () => {
@@ -13,7 +19,7 @@ describe("github commit status model", () => {
 
     await db("users").insert(buildUser({}));
     await db("teams").insert(buildTeam({}));
-    await db("groups").insert(buildGroup({}));
+    await db("triggers").insert(buildTrigger({}));
     return db("suites").insert(buildSuite({}));
   });
 
@@ -28,11 +34,11 @@ describe("github commit status model", () => {
           context: "QA Wolf - All Tests",
           deployment_url: "url",
           github_installation_id: 123,
-          group_id: "groupId",
           owner: "qawolf",
           repo: "repo",
           sha: "sha",
           suite_id: "suiteId",
+          trigger_id: "triggerId",
         },
         { logger }
       );

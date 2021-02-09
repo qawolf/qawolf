@@ -1,7 +1,7 @@
 import { EventEmitter } from "events";
 
 import { isServer } from "./detection";
-import { ImageGroup, RunOptions, State as StateType } from "./types";
+import { RunOptions, State as StateType } from "./types";
 
 export const defaultState: StateType = {
   dashboardUri: null,
@@ -9,14 +9,11 @@ export const defaultState: StateType = {
   email: null,
   environmentId: null,
   error: null,
-  groupId: null,
-  image: {
-    wolf: 0,
-  },
   modal: { name: null },
   run: null,
   signUp: {},
   teamId: null,
+  triggerId: null,
 };
 
 const STATE_KEY = "qaw_state";
@@ -55,13 +52,6 @@ class State extends EventEmitter {
     this.emit("changed");
   }
 
-  incrementImageCount(group: ImageGroup): void {
-    this._setState({
-      ...this._state,
-      image: { ...this._state.image, [group]: this._state.image[group] + 1 },
-    });
-  }
-
   clear(): void {
     this._state = { ...defaultState };
     this._persist();
@@ -97,10 +87,6 @@ class State extends EventEmitter {
     this._pendingRun = options;
   }
 
-  setGroupId(groupId: StateType["groupId"]): void {
-    this._setState({ groupId });
-  }
-
   setModal(modal: StateType["modal"]): void {
     this._setState({ modal });
   }
@@ -111,6 +97,10 @@ class State extends EventEmitter {
 
   setTeamId(teamId: StateType["teamId"]): void {
     this._setState({ teamId });
+  }
+
+  setTriggerId(triggerId: StateType["triggerId"]): void {
+    this._setState({ triggerId });
   }
 
   get state(): StateType | null {

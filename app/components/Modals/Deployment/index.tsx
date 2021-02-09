@@ -1,11 +1,11 @@
 import { Box, Keyboard } from "grommet";
 import { useEffect, useState } from "react";
 
-import { useUpdateGroup } from "../../../hooks/mutations";
+import { useUpdateTrigger } from "../../../hooks/mutations";
 import {
   DeploymentEnvironment,
-  SelectedGroup,
   SelectedIntegration,
+  SelectedTrigger,
 } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import Button from "../../shared/Button";
@@ -17,16 +17,16 @@ import Vercel, { allBranches } from "./Vercel";
 
 type Props = {
   closeModal: () => void;
-  group: SelectedGroup;
   integration: SelectedIntegration;
+  trigger: SelectedTrigger;
 };
 
 const WIDTH = "640px";
 
 export default function Deployment({
   closeModal,
-  group,
   integration,
+  trigger,
 }: Props): JSX.Element {
   const [branches, setBranches] = useState("");
   const [environment, setEnvironment] = useState<DeploymentEnvironment>("all");
@@ -34,10 +34,10 @@ export default function Deployment({
   const [isAllBranches, setIsAllBranches] = useState(true);
   const [platform, setPlatform] = useState<PlatformType>("netlify");
 
-  const [updateGroup, { data, loading }] = useUpdateGroup();
+  const [updateTrigger, { data, loading }] = useUpdateTrigger();
 
   useEffect(() => {
-    if (data?.updateGroup) closeModal();
+    if (data?.updateTrigger) closeModal();
   }, [closeModal, data]);
 
   useEffect(() => {
@@ -64,12 +64,12 @@ export default function Deployment({
     }
 
     setHasError(false);
-    updateGroup({
+    updateTrigger({
       variables: {
         deployment_branches: isAllBranches ? null : branches,
         deployment_environment: environment === "all" ? null : environment,
         deployment_integration_id: integration.id,
-        id: group.id,
+        id: trigger.id,
         repeat_minutes: null,
       },
     });

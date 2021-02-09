@@ -9,40 +9,42 @@ import { cuid } from "../server/utils";
       teams.map(async (team) => {
         console.log(`updating team ${team.id}`);
 
-        // only create environments for groups that have environment variables
-        const groups = await trx("groups")
-          .select("groups.*" as "*")
-          .where({ "groups.deleted_at": null, "groups.team_id": team.id })
+        // only create environments for triggers that have environment variables
+        const triggers = await trx("triggers")
+          .select("triggers.*" as "*")
+          .where({ "triggers.deleted_at": null, "triggers.team_id": team.id })
           .innerJoin(
             "environment_variables",
-            "environment_variables.group_id",
-            "groups.id"
+            "environment_variables.trigger_id",
+            "triggers.id"
           )
-          .groupBy("groups.id");
+          .groupBy("triggers.id");
 
         const environmentVariables = await trx("environment_variables")
           .select("*")
           .whereIn(
-            "group_id",
-            groups.map((g) => g.id)
+            "trigger_id",
+            triggers.map((t) => t.id)
           );
 
-        const environments = groups.map((group) => {
+        const environments = triggers.map((trigger) => {
           return {
             id: cuid(),
-            name: group.name,
+            name: trigger.name,
             team_id: team.id,
           };
         });
 
-        // create environments for each group
+        // create environments for each trigger
         await trx("environments").insert(environments);
 
         // update environment variables to point to environment
         await Promise.all(
           environmentVariables.map((variable) => {
-            const group = groups.find((g) => g.id === variable.group_id);
-            const environment = environments.find((e) => e.name === group.name);
+            const trigger = triggers.find((t) => t.id === variable.trigger_id);
+            const environment = environments.find(
+              (e) => e.name === trigger.name
+            );
 
             return trx("environment_variables")
               .where({ id: variable.id })
@@ -50,13 +52,15 @@ import { cuid } from "../server/utils";
           })
         );
 
-        // update group to point to environment
+        // update trigger to point to environment
         await Promise.all(
-          groups.map((group) => {
-            const environment = environments.find((e) => e.name === group.name);
+          triggers.map((trigger) => {
+            const environment = environments.find(
+              (e) => e.name === trigger.name
+            );
 
-            return trx("groups")
-              .where({ id: group.id })
+            return trx("triggers")
+              .where({ id: trigger.id })
               .update({ environment_id: environment.id });
           })
         );

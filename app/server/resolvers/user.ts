@@ -2,7 +2,7 @@ import { db } from "../db";
 import environment from "../environment";
 import { Logger } from "../Logger";
 import { findInvite } from "../models/invite";
-import { createFreeTeamWithGroup, findTeamsForUser } from "../models/team";
+import { createFreeTeamWithTrigger, findTeamsForUser } from "../models/team";
 import { createTeamUser } from "../models/team_user";
 import {
   authenticateUser,
@@ -41,7 +41,7 @@ type BuildAuthenticatedUser = {
   user: User;
 };
 
-type CreateUserWithGroup = {
+type CreateUserWithTrigger = {
   emailFields?: CreateUserWithEmail;
   gitHubFields?: CreateUserWithGitHub;
   hasInvite?: boolean;
@@ -77,11 +77,11 @@ const postNewUserMessageToSlack = async (
 };
 
 const createUserWithTeam = async (
-  { emailFields, gitHubFields, hasInvite }: CreateUserWithGroup,
+  { emailFields, gitHubFields, hasInvite }: CreateUserWithTrigger,
   { logger, trx }: ModelOptions
 ): Promise<User> => {
   if (!emailFields && !gitHubFields) {
-    logger.error("createUserWithGroup: no fields provided");
+    logger.error("createUserWithTrigger: no fields provided");
     throw new Error("Could not create user");
   }
 
@@ -99,7 +99,7 @@ const createUserWithTeam = async (
         await createUserWithEmail(emailFields!, { logger, trx });
 
     if (!hasInvite) {
-      const team = await createFreeTeamWithGroup(user.id, { logger, trx });
+      const team = await createFreeTeamWithTrigger(user.id, { logger, trx });
 
       await createTeamUser(
         { team_id: team.id, user_id: user.id },

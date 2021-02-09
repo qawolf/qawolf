@@ -4,13 +4,13 @@ import environment from "../../environment";
 import { Logger } from "../../Logger";
 import { findIntegration } from "../../models/integration";
 import { findUsersForTeam } from "../../models/user";
-import { Group, Suite, SuiteRun, User } from "../../types";
+import { Suite, SuiteRun, Trigger, User } from "../../types";
 import { randomChoice } from "../../utils";
 
 type BuildSuiteMessage = {
-  group: Group;
   runs: SuiteRun[];
   suite: Suite;
+  trigger: Trigger;
   user: User | null;
 };
 
@@ -20,16 +20,16 @@ type PostMessageToSlack = {
 };
 
 type SendSlackAlert = {
-  group: Group;
   logger: Logger;
   runs: SuiteRun[];
   suite: Suite;
+  trigger: Trigger;
 };
 
 export const buildMessageForSuite = ({
-  group,
   runs,
   suite,
+  trigger,
   user,
 }: BuildSuiteMessage): IncomingWebhookSendArguments => {
   const wolfName = user?.wolf_name || "Spirit";
@@ -38,7 +38,7 @@ export const buildMessageForSuite = ({
   const failingRuns = runs.filter((r) => r.status === "fail");
 
   const suiteHref = new URL(`/tests/${suite.id}`, environment.APP_URL).href;
-  const headline = `${wolfName} here: <${suiteHref}|${group.name} tests> ${
+  const headline = `${wolfName} here: <${suiteHref}|${trigger.name} tests> ${
     failingRuns.length ? "failed." : "passed!"
   }`;
 
@@ -87,10 +87,10 @@ export const postMessageToSlack = async ({
 };
 
 export const sendSlackAlert = async ({
-  group,
   logger,
   runs,
   suite,
+  trigger,
 }: SendSlackAlert): Promise<void> => {
   const log = logger.prefix("sendSlackAlert");
   log.debug("suite", suite.id);
@@ -98,7 +98,7 @@ export const sendSlackAlert = async ({
   try {
     const users = await findUsersForTeam(suite.team_id, { logger });
     const integration = await findIntegration(
-      group.alert_integration_id || "",
+      trigger.alert_integration_id || "",
       {
         logger,
       }
@@ -112,7 +112,7 @@ export const sendSlackAlert = async ({
     const user = users.length ? (randomChoice(users) as User) : null;
 
     await postMessageToSlack({
-      message: buildMessageForSuite({ group, runs, suite, user }),
+      message: buildMessageForSuite({ runs, suite, trigger, user }),
       webhook_url: integration.webhook_url,
     });
     log.debug("sent");

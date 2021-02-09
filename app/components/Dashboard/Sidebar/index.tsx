@@ -4,17 +4,17 @@ import { useContext } from "react";
 
 import { routes } from "../../../lib/routes";
 import { state } from "../../../lib/state";
-import { Group, User, Wolf } from "../../../lib/types";
+import { Trigger, User, Wolf } from "../../../lib/types";
 import { edgeSize } from "../../../theme/theme";
 import { StateContext } from "../../StateContext";
-import CreateGroup from "./CreateGroup";
-import GroupLink from "./GroupLink";
+import CreateTrigger from "./CreateTrigger";
 import Plan from "./Plan";
 import Team from "./Team";
+import TriggerLink from "./TriggerLink";
 
 type Props = {
-  groupId?: string | null;
-  groups: Group[];
+  triggerId?: string | null;
+  triggers: Trigger[];
   user: User;
   wolf: Wolf;
 };
@@ -23,8 +23,8 @@ const TOP_PAD = `calc(${edgeSize.large} - ${edgeSize.small})`;
 const WIDTH = "320px";
 
 export default function Sidebar({
-  groups,
-  groupId,
+  triggerId,
+  triggers,
   user,
   wolf,
 }: Props): JSX.Element {
@@ -34,21 +34,21 @@ export default function Sidebar({
 
   const selectedTeam = user.teams.find((team) => team.id === teamId) || null;
 
-  const groupsHtml = groups.map((group) => {
+  const triggersHtml = triggers.map((trigger) => {
     const handleClick = () => {
       // clear suite id if there is one
       if (query.suite_id) {
         replace(routes.tests);
       }
 
-      state.setGroupId(group.id);
+      state.setTriggerId(trigger.id);
     };
 
     return (
-      <GroupLink
-        isSelected={group.id === groupId}
-        group={group}
-        key={group.id}
+      <TriggerLink
+        isSelected={trigger.id === triggerId}
+        key={trigger.id}
+        trigger={trigger}
         onClick={handleClick}
       />
     );
@@ -67,8 +67,8 @@ export default function Sidebar({
       <Box width="full">
         <Team selectedTeam={selectedTeam} user={user} />
         <Box margin={{ top: TOP_PAD }} overflow="auto">
-          {groupsHtml}
-          <CreateGroup teamId={teamId} />
+          {triggersHtml}
+          <CreateTrigger teamId={teamId} />
         </Box>
       </Box>
       <Plan team={selectedTeam} wolf={wolf} />

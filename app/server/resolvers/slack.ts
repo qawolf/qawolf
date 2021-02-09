@@ -1,6 +1,6 @@
 import { db } from "../db";
-import { updateGroup } from "../models/group";
 import { createIntegration } from "../models/integration";
+import { updateTrigger } from "../models/trigger";
 import { createSlackIntegrationUrl, findSlackWebhook } from "../services/slack";
 import {
   Context,
@@ -8,15 +8,15 @@ import {
   CreateUrlMutation,
   Integration,
 } from "../types";
-import { ensureGroupAccess, ensureUser } from "./utils";
+import { ensureTriggerAccess, ensureUser } from "./utils";
 
 export const createSlackIntegrationResolver = async (
   _: Record<string, unknown>,
-  { group_id, redirect_uri, slack_code }: CreateSlackIntegrationMutation,
+  { redirect_uri, slack_code, trigger_id }: CreateSlackIntegrationMutation,
   { logger, teams }: Context
 ): Promise<Integration> => {
   const log = logger.prefix("createSlackIntegrationResolver");
-  const team = await ensureGroupAccess({ group_id, logger, teams });
+  const team = await ensureTriggerAccess({ logger, teams, trigger_id });
 
   const slackWebhook = await findSlackWebhook({
     logger,
@@ -38,15 +38,15 @@ export const createSlackIntegrationResolver = async (
     );
     log.debug("created integration", integration.id);
 
-    await updateGroup(
+    await updateTrigger(
       {
-        id: group_id,
+        id: trigger_id,
         is_email_enabled: false,
         alert_integration_id: integration.id,
       },
       { logger, trx }
     );
-    log.debug("updated group", group_id);
+    log.debug("updated trigger", trigger_id);
 
     return integration;
   });

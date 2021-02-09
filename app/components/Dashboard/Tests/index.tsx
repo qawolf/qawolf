@@ -3,36 +3,36 @@ import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 
 import { useDashboard } from "../../../hooks/queries";
-import { Group } from "../../../lib/types";
+import { Trigger } from "../../../lib/types";
 import { StateContext } from "../../StateContext";
 import Header from "./Header";
 import History from "./History";
 import List from "./List";
-import { getGroupTests } from "./utils";
+import { getTestTriggers } from "./utils";
 
 type Props = {
-  groups: Group[];
-  selectedGroup: Group;
+  selectedTrigger: Trigger;
+  triggers: Trigger[];
   wolfVariant: string;
 };
 
 const POLL_INTERVAL = 10 * 1000;
 
 export default function Tests({
-  groups,
-  selectedGroup,
+  selectedTrigger,
+  triggers,
   wolfVariant,
 }: Props): JSX.Element {
   const { query } = useRouter();
   const suiteId = (query.suite_id as string) || null;
 
-  const { groupId } = useContext(StateContext);
+  const { triggerId } = useContext(StateContext);
 
   const [hoverSuiteId, setHoverSuiteId] = useState<string | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   const { data, loading, startPolling, stopPolling } = useDashboard({
-    group_id: groupId,
+    trigger_id: triggerId,
   });
 
   const finalSuiteId = hoverSuiteId || suiteId;
@@ -42,7 +42,7 @@ export default function Tests({
 
   // poll for suites
   useEffect(() => {
-    if (!groupId) {
+    if (!triggerId) {
       stopPolling();
       return;
     }
@@ -50,7 +50,7 @@ export default function Tests({
     startPolling(POLL_INTERVAL);
 
     return () => stopPolling();
-  }, [groupId, startPolling, stopPolling]);
+  }, [startPolling, stopPolling, triggerId]);
 
   const selectedSuite = finalSuiteId
     ? suites?.find((suite) => suite.id === finalSuiteId)
@@ -59,11 +59,11 @@ export default function Tests({
   // it is not possible to have a suite without runs
   // so suite is loading if runs are not defined
   const isLoading = finalSuiteId ? !selectedSuite?.runs : loading;
-  const groupTests = getGroupTests(data?.dashboard.tests);
+  const testTriggers = getTestTriggers(data?.dashboard.tests);
 
   return (
     <>
-      <Header group={selectedGroup} selectedIds={selectedIds} />
+      <Header selectedIds={selectedIds} trigger={selectedTrigger} />
       <Box
         align="start"
         direction="row"
@@ -72,14 +72,14 @@ export default function Tests({
         margin={{ top: "large" }}
       >
         <List
-          groups={groups}
-          groupTests={groupTests}
           isLoading={isLoading}
           runs={selectedSuite?.runs || null}
-          selectedGroupId={groupId}
           selectedIds={selectedIds}
+          selectedTriggerId={triggerId}
           setSelectedIds={setSelectedIds}
+          testTriggers={testTriggers}
           tests={tests}
+          triggers={triggers}
           wolfVariant={wolfVariant}
         />
         <History

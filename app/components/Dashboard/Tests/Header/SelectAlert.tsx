@@ -2,7 +2,7 @@ import { Box, Button } from "grommet";
 import { Down } from "grommet-icons";
 import { useRef, useState } from "react";
 
-import { Group, Integration } from "../../../../lib/types";
+import { Integration, Trigger } from "../../../../lib/types";
 import { hoverTransition, iconSize } from "../../../../theme/theme";
 import Drop from "../../../shared/Drop";
 import AlertDropdown from "./AlertDropdown";
@@ -10,13 +10,13 @@ import AlertHeader from "./AlertHeader";
 import styles from "./Header.module.css";
 
 type Props = {
-  group: Group;
   integrations: Integration[];
+  trigger: Trigger;
 };
 
 export default function SelectAlert({
-  group,
   integrations,
+  trigger,
 }: Props): JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -39,7 +39,7 @@ export default function SelectAlert({
       plain
     >
       <Box align="center" direction="row" margin={{ right: "large" }} ref={ref}>
-        <AlertHeader group={group} integrations={integrations} />
+        <AlertHeader integrations={integrations} trigger={trigger} />
         <Down
           className={styles.down}
           color="fadedBlue"
@@ -53,7 +53,7 @@ export default function SelectAlert({
           onEsc={() => setIsOpen(false)}
           target={ref.current}
         >
-          <AlertDropdown group={group} integrations={integrations} />
+          <AlertDropdown integrations={integrations} trigger={trigger} />
         </Drop>
       )}
     </Button>
