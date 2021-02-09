@@ -294,13 +294,11 @@ type UpdateTriggerData = {
 };
 
 type UpdateTriggerVariables = {
-  alert_integration_id?: string | null;
   deployment_branches?: string | null;
   deployment_environment?: DeploymentEnvironment | null;
   deployment_integration_id?: string | null;
   environment_id?: string | null;
   id: string;
-  is_email_enabled?: boolean;
   name?: string;
   repeat_minutes?: number | null;
 };
