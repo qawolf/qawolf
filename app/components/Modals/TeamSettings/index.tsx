@@ -7,6 +7,7 @@ import EditableText from "../../shared/EditableText";
 import Layer from "../../shared/Layer";
 import Spinner from "../../shared/Spinner";
 import Text from "../../shared/Text";
+import Alerts from "./Alerts";
 import Members from "./Members";
 
 type Props = {
@@ -38,9 +39,9 @@ export default function TeamSettings({
 
   return (
     <Layer onClickOutside={closeModal} onEsc={closeModal}>
-      <Box pad="large" width={WIDTH}>
+      <Box overflow={{ vertical: "auto" }} pad="large" width={WIDTH}>
         {team ? (
-          <>
+          <Box flex={false}>
             <Box align="center" direction="row" width="full">
               <Text
                 color="gray"
@@ -52,8 +53,9 @@ export default function TeamSettings({
               </Text>
               <EditableText bold onChange={handleChange} value={team.name} />
             </Box>
+            <Alerts team={team} />
             <Members invites={team.invites} users={team.users} />
-          </>
+          </Box>
         ) : (
           <Spinner noMargin />
         )}

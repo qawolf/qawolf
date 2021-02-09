@@ -338,7 +338,7 @@ export type CreateInviteMutation = {
 export type CreateSlackIntegrationMutation = {
   redirect_uri: string;
   slack_code: string;
-  trigger_id: string;
+  team_id: string;
 };
 
 export type CreateSuiteMutation = {

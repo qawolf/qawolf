@@ -87,12 +87,12 @@ export const createSlackIntegrationMutation = gql`
   mutation createSlackIntegration(
     $redirect_uri: String!
     $slack_code: String!
-    $trigger_id: ID!
+    $team_id: ID!
   ) {
     createSlackIntegration(
       redirect_uri: $redirect_uri
       slack_code: $slack_code
-      trigger_id: $trigger_id
+      team_id: $team_id
     ) {
       ...IntegrationFragment
     }
