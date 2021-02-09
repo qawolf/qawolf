@@ -17,7 +17,7 @@ import {
 
 const { buildMessageForSuite, sendSlackAlert } = slack;
 
-const trigger = buildTrigger({ alert_integration_id: "integrationId" });
+const trigger = buildTrigger({});
 const integration = buildIntegration({});
 const user = buildUser({});
 
@@ -29,6 +29,8 @@ beforeAll(async () => {
   await db("team_users").insert(buildTeamUser({}));
 
   await db("integrations").insert(integration);
+  await db("teams").update({ alert_integration_id: "integrationId" });
+
   await db("triggers").insert(trigger);
 
   await db("suites").insert([buildSuite({})]);
@@ -94,7 +96,13 @@ describe("sendSlackAlert", () => {
     const suite = await db.select("*").from("suites").first();
     const runs = await findRunsForSuite(suite.id, { logger });
 
-    await sendSlackAlert({ logger, runs, suite, trigger });
+    await sendSlackAlert({
+      integrationId: "integrationId",
+      logger,
+      runs,
+      suite,
+      trigger,
+    });
 
     expect(slack.postMessageToSlack).toBeCalledWith({
       message: buildMessageForSuite({ runs, suite, trigger, user }),
