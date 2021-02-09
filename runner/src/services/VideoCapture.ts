@@ -18,6 +18,7 @@ export class VideoCapture {
   _chapters: VideoChapter[] = [];
   _ffmpeg?: FfmpegCommand;
   _gifPath = "set_in_start_function.gif";
+  _jsonPath = "set_in_start_function.json";
   _rejectStopped?: (reason: string) => void;
   _resolveStarted?: () => void;
   _resolveStopped?: () => void;
@@ -100,10 +101,15 @@ export class VideoCapture {
 
     const timings = (await fs.readFile(this._timingsPath))
       .toString()
-      .split("\n")
-      .slice(1);
+      .split("\n");
 
-    const firstFrame = Number(timings[0]);
+    const firstFrame = Number(timings[1]);
+
+    await fs.writeFile(
+      this._jsonPath,
+      JSON.stringify({ chapters: this._chapters, timings })
+    );
+
     this._chapters.forEach((c) => (c.start = c.start - firstFrame));
 
     const videoMetadata = await probeVideoFile(this._videoPath, {
@@ -163,6 +169,7 @@ title=${chapter.lineCode}
 
   async start(display = ":0.0"): Promise<void> {
     const path = await fs.mkdtemp(`${tmpdir()}${sep}`);
+    this._jsonPath = `${path}${sep}metadata.json`;
     this._gifPath = `${path}${sep}video.gif`;
     this._timingsPath = `${path}${sep}timings.txt`;
     this._videoMetadataPath = `${path}${sep}video-metadata.txt`;
