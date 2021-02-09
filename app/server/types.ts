@@ -266,8 +266,6 @@ export type TestUpdate = {
 };
 
 export type Trigger = {
-  alert_integration_id: string | null;
-  alert_only_on_failure?: boolean;
   created_at?: string;
   creator_id: string;
   deleted_at: string | null;
@@ -277,7 +275,6 @@ export type Trigger = {
   environment_id: string | null;
   id: string;
   is_default: boolean;
-  is_email_enabled: boolean;
   name: string;
   next_at: string | null;
   repeat_minutes: number | null;
