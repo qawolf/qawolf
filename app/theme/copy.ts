@@ -7,7 +7,6 @@ export const copy = {
   addGitHubRepo: "Add GitHub repo",
   aka: "A.K.A.",
   alertEmail: "Email",
-  alertNone: "No alerts",
   alertSlack: ({
     channel,
     team_name,
@@ -17,6 +16,7 @@ export const copy = {
   }): string => `Slack ${channel}${team_name ? ` in ${team_name}` : ""}`,
   alertTeam: "Alert your team",
   alertTeamDetail: "Receive email or Slack alerts with one click.",
+  alerts: "Alerts:",
   all: "All",
   allBranches: "All branches",
   apiKeyCreate: "Create API key",

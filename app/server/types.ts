@@ -212,10 +212,13 @@ export type SuiteRun = {
 export type TeamPlan = "free" | "business";
 
 export type Team = {
+  alert_integration_id: string | null;
+  alert_only_on_failure?: boolean;
   created_at?: string;
   deleted_at?: string | null;
   id: string;
   helpers: string;
+  is_email_alert_enabled: boolean;
   is_enabled: boolean;
   name: string;
   plan: TeamPlan;
@@ -335,7 +338,7 @@ export type CreateInviteMutation = {
 export type CreateSlackIntegrationMutation = {
   redirect_uri: string;
   slack_code: string;
-  trigger_id: string;
+  team_id: string;
 };
 
 export type CreateSuiteMutation = {
@@ -417,9 +420,7 @@ export type UpdateTriggerMutation = {
   deployment_integration_id?: string | null;
   environment_id?: string | null;
   id: string;
-  is_email_enabled?: boolean;
   name?: string;
-  alert_integration_id?: string | null;
   repeat_minutes?: number | null;
 };
 
@@ -442,8 +443,10 @@ export type UpdateRunnerMutation = {
 };
 
 export type UpdateTeamMutation = {
+  alert_integration_id?: string | null;
   helpers?: string | null;
   id: string;
+  is_email_alert_enabled?: boolean;
   name?: string | null;
 };
 

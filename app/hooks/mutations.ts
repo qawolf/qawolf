@@ -120,7 +120,7 @@ type CreateSlackIntegrationData = {
 type CreateSlackIntegrationVariables = {
   redirect_uri: string;
   slack_code: string;
-  trigger_id: string;
+  team_id: string;
 };
 
 type CreateSlackIntegrationUrlData = {
@@ -472,7 +472,7 @@ export const useCreateSlackIntegration = (
       replace(dashboardUri || routes.tests);
     },
     onError,
-    refetchQueries: ["integrations", "triggers"],
+    refetchQueries: ["integrations", "team"],
     variables,
   });
 };

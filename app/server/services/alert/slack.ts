@@ -20,6 +20,7 @@ type PostMessageToSlack = {
 };
 
 type SendSlackAlert = {
+  integrationId: string;
   logger: Logger;
   runs: SuiteRun[];
   suite: Suite;
@@ -87,6 +88,7 @@ export const postMessageToSlack = async ({
 };
 
 export const sendSlackAlert = async ({
+  integrationId,
   logger,
   runs,
   suite,
@@ -97,12 +99,9 @@ export const sendSlackAlert = async ({
 
   try {
     const users = await findUsersForTeam(suite.team_id, { logger });
-    const integration = await findIntegration(
-      trigger.alert_integration_id || "",
-      {
-        logger,
-      }
-    );
+    const integration = await findIntegration(integrationId, {
+      logger,
+    });
 
     if (!integration.webhook_url) {
       log.error("no webhook url for integration", integration.id);

@@ -20,7 +20,6 @@ import {
   logger,
 } from "../../utils";
 
-const trigger = buildTrigger({});
 const user = buildUser({});
 
 beforeAll(async () => {
@@ -30,7 +29,7 @@ beforeAll(async () => {
   await db("teams").insert(buildTeam({}));
   await db("team_users").insert(buildTeamUser({}));
 
-  await db("triggers").insert(trigger);
+  await db("triggers").insert(buildTrigger({}));
   await db("integrations").insert(buildIntegration({}));
 
   await db("suites").insert([
@@ -70,7 +69,7 @@ describe("sendAlert", () => {
 
   afterAll(jest.restoreAllMocks);
 
-  it("sends email alert per trigger settings", async () => {
+  it("sends email alert per team settings", async () => {
     await sendAlert({ logger, suite_id: "suite3Id" });
     expect(email.sendEmailAlert).toBeCalledTimes(1);
     expect(slack.sendSlackAlert).not.toBeCalled();
@@ -82,14 +81,14 @@ describe("sendAlert", () => {
     await updateSuite({ alert_sent_at: null, id: "suite3Id" }, { logger });
   });
 
-  it("sends Slack alert per trigger settings", async () => {
-    await db("triggers").update({ alert_integration_id: "integrationId" });
+  it("sends Slack alert per team settings", async () => {
+    await db("teams").update({ alert_integration_id: "integrationId" });
 
     await sendAlert({ logger, suite_id: "suite3Id" });
     expect(email.sendEmailAlert).toBeCalled();
     expect(slack.sendSlackAlert).toBeCalled();
 
-    await db("triggers").update({ alert_integration_id: null });
+    await db("teams").update({ alert_integration_id: null });
     await updateSuite({ alert_sent_at: null, id: "suite3Id" }, { logger });
   });
 
@@ -101,38 +100,38 @@ describe("sendAlert", () => {
   });
 
   it("does not send alert if alert only on failure enabled and runs passed", async () => {
-    await db("triggers").update({ alert_only_on_failure: true });
+    await db("teams").update({ alert_only_on_failure: true });
 
     await sendAlert({ logger, suite_id: "suite4Id" });
     expect(email.sendEmailAlert).not.toBeCalled();
     expect(slack.sendSlackAlert).not.toBeCalled();
 
-    await db("triggers").update({ alert_only_on_failure: false });
+    await db("teams").update({ alert_only_on_failure: false });
   });
 
   it("sends alert if alert only on failure enabled but runs failed", async () => {
-    await db("triggers").update({ alert_only_on_failure: true });
+    await db("teams").update({ alert_only_on_failure: true });
 
     await sendAlert({ logger, suite_id: "suite3Id" });
     expect(email.sendEmailAlert).toBeCalled();
     expect(slack.sendSlackAlert).not.toBeCalled();
 
-    await db("triggers").update({ alert_only_on_failure: false });
+    await db("teams").update({ alert_only_on_failure: false });
   });
 
-  it("does not send alerts per trigger settings", async () => {
-    await db("triggers").update({ is_email_enabled: false });
+  it("does not send alerts per team settings", async () => {
+    await db("teams").update({ is_email_alert_enabled: false });
 
     await sendAlert({ logger, suite_id: "suite3Id" });
     expect(email.sendEmailAlert).not.toBeCalled();
     expect(slack.sendSlackAlert).not.toBeCalled();
 
-    await db("triggers").update({ is_email_enabled: true });
+    await db("teams").update({ is_email_alert_enabled: true });
   });
 });
 
 describe("shouldSendAlert", () => {
-  const trigger = buildTrigger({});
+  const team = buildTeam({});
   const runFail = { status: "fail" } as SuiteRun;
   const runPass = { status: "pass" } as SuiteRun;
 
@@ -140,7 +139,7 @@ describe("shouldSendAlert", () => {
     expect(
       shouldSendAlert({
         runs: [runPass],
-        trigger: { ...trigger, alert_only_on_failure: false },
+        team: { ...team, alert_only_on_failure: false },
       })
     ).toBe(true);
   });
@@ -149,7 +148,7 @@ describe("shouldSendAlert", () => {
     expect(
       shouldSendAlert({
         runs: [runPass],
-        trigger: { ...trigger, alert_only_on_failure: true },
+        team: { ...team, alert_only_on_failure: true },
       })
     ).toBe(false);
   });
@@ -158,7 +157,7 @@ describe("shouldSendAlert", () => {
     expect(
       shouldSendAlert({
         runs: [runPass, runFail],
-        trigger: { ...trigger, alert_only_on_failure: true },
+        team: { ...team, alert_only_on_failure: true },
       })
     ).toBe(true);
   });

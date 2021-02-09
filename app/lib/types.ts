@@ -93,7 +93,9 @@ export type ShortTeam = {
 };
 
 export type Team = ShortTeam & {
+  alert_integration_id: string | null;
   helpers: string;
+  is_email_alert_enabled: boolean;
   is_enabled: boolean;
   renewed_at: string | null;
 };
@@ -124,7 +126,6 @@ export type TestWithSummary = Test & {
 };
 
 export type Trigger = {
-  alert_integration_id: string | null;
   created_at: string;
   deployment_branches: string | null;
   deployment_environment: DeploymentEnvironment | null;
@@ -132,7 +133,6 @@ export type Trigger = {
   environment_id: string | null;
   id: string;
   is_default: boolean;
-  is_email_enabled: boolean;
   name: string;
   next_at: string | null;
   repeat_minutes: number | null;

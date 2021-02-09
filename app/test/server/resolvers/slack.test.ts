@@ -5,13 +5,7 @@ import {
   createSlackIntegrationUrlResolver,
 } from "../../../server/resolvers/slack";
 import * as slackService from "../../../server/services/slack";
-import {
-  buildTeam,
-  buildTeamUser,
-  buildTrigger,
-  buildUser,
-  logger,
-} from "../utils";
+import { buildTeam, buildTeamUser, buildUser, logger } from "../utils";
 
 const teams = [buildTeam({})];
 const user = buildUser({});
@@ -24,8 +18,6 @@ beforeAll(async () => {
   await db("users").insert(user);
   await db("teams").insert(teams);
   await db("team_users").insert(buildTeamUser({}));
-
-  await db("triggers").insert(buildTrigger({}));
 });
 
 afterAll(() => dropTestDb());
@@ -49,9 +41,9 @@ describe("createSlackIntegrationResolver", () => {
       webhook_url: "webhookUrl",
     });
 
-    const oldTrigger = await db.select("*").from("triggers").first();
-    expect(oldTrigger).toMatchObject({
-      is_email_enabled: true,
+    const oldTeam = await db.select("*").from("teams").first();
+    expect(oldTeam).toMatchObject({
+      is_email_alert_enabled: true,
       alert_integration_id: null,
     });
 
@@ -60,7 +52,7 @@ describe("createSlackIntegrationResolver", () => {
       {
         redirect_uri: "/slack",
         slack_code: "code",
-        trigger_id: "triggerId",
+        team_id: "teamId",
       },
       testContext
     );
@@ -77,10 +69,10 @@ describe("createSlackIntegrationResolver", () => {
       },
     ]);
 
-    const triggers = await db.select("*").from("triggers").first();
-    expect(triggers).toMatchObject({
+    const team = await db.select("*").from("teams").first();
+    expect(team).toMatchObject({
       alert_integration_id: integrations[0].id,
-      is_email_enabled: false,
+      is_email_alert_enabled: false,
     });
   });
 });

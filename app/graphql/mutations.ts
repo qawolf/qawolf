@@ -87,12 +87,12 @@ export const createSlackIntegrationMutation = gql`
   mutation createSlackIntegration(
     $redirect_uri: String!
     $slack_code: String!
-    $trigger_id: ID!
+    $team_id: ID!
   ) {
     createSlackIntegration(
       redirect_uri: $redirect_uri
       slack_code: $slack_code
-      trigger_id: $trigger_id
+      team_id: $team_id
     ) {
       ...IntegrationFragment
     }
@@ -245,24 +245,20 @@ export const updateEnvironmentVariableMutation = gql`
 
 export const updateTriggerMutation = gql`
   mutation updateTrigger(
-    $alert_integration_id: ID
     $deployment_branches: String
     $deployment_environment: DeploymentEnvironment
     $deployment_integration_id: ID
     $environment_id: ID
     $id: ID!
-    $is_email_enabled: Boolean
     $name: String
     $repeat_minutes: Int
   ) {
     updateTrigger(
-      alert_integration_id: $alert_integration_id
       deployment_branches: $deployment_branches
       deployment_environment: $deployment_environment
       deployment_integration_id: $deployment_integration_id
       environment_id: $environment_id
       id: $id
-      is_email_enabled: $is_email_enabled
       name: $name
       repeat_minutes: $repeat_minutes
     ) {
@@ -287,8 +283,20 @@ export const updateTestTriggersMutation = gql`
 `;
 
 export const updateTeamMutation = gql`
-  mutation updateTeam($helpers: String, $id: ID!, $name: String) {
-    updateTeam(helpers: $helpers, id: $id, name: $name) {
+  mutation updateTeam(
+    $alert_integration_id: String
+    $helpers: String
+    $id: ID!
+    $is_email_alert_enabled: Boolean
+    $name: String
+  ) {
+    updateTeam(
+      alert_integration_id: $alert_integration_id
+      helpers: $helpers
+      id: $id
+      is_email_alert_enabled: $is_email_alert_enabled
+      name: $name
+    ) {
       ...TeamFragment
     }
   }

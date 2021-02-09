@@ -21,9 +21,7 @@ type UpdateTrigger = {
   deployment_integration_id?: string | null;
   environment_id?: string | null;
   id: string;
-  is_email_enabled?: boolean;
   name?: string;
-  alert_integration_id?: string | null;
   repeat_minutes?: number | null;
 };
 
@@ -290,13 +288,11 @@ export const findPendingTriggers = async ({
 
 export const updateTrigger = async (
   {
-    alert_integration_id,
     deployment_branches,
     deployment_environment,
     deployment_integration_id,
     environment_id,
     id,
-    is_email_enabled,
     name,
     repeat_minutes,
   }: UpdateTrigger,
@@ -312,9 +308,6 @@ export const updateTrigger = async (
       updated_at: minutesFromNow(),
     };
 
-    if (alert_integration_id !== undefined) {
-      updates.alert_integration_id = alert_integration_id;
-    }
     if (deployment_branches !== undefined) {
       updates.deployment_branches = formatBranches(deployment_branches);
     }
@@ -327,9 +320,7 @@ export const updateTrigger = async (
     if (environment_id !== undefined) {
       updates.environment_id = environment_id;
     }
-    if (is_email_enabled !== undefined) {
-      updates.is_email_enabled = is_email_enabled;
-    }
+
     if (name !== undefined) {
       if (existingTrigger.is_default) {
         log.error(`do not rename default trigger ${id}`);

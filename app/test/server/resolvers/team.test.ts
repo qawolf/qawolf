@@ -3,8 +3,13 @@ import {
   teamResolver,
   updateTeamResolver,
 } from "../../../server/resolvers/team";
-import { Team } from "../../../server/types";
-import { buildTeam, buildTeamUser, buildUser, logger } from "../utils";
+import {
+  buildIntegration,
+  buildTeam,
+  buildTeamUser,
+  buildUser,
+  logger,
+} from "../utils";
 
 const testContext = {
   api_key: null,
@@ -43,15 +48,34 @@ describe("updateTeamResolver", () => {
   beforeAll(async () => {
     await db("teams").insert(buildTeam({}));
     await db("users").insert(buildUser({}));
+    await db("integrations").insert(buildIntegration({}));
 
     return db("team_users").insert(buildTeamUser({}));
   });
 
   afterAll(async () => {
+    await db("integrations").del();
     await db("team_users").del();
     await db("users").del();
 
     return db("teams").del();
+  });
+
+  it("updates a team alert settings", async () => {
+    const team = await updateTeamResolver(
+      {},
+      {
+        alert_integration_id: "integrationId",
+        id: "teamId",
+        is_email_alert_enabled: false,
+      },
+      testContext
+    );
+
+    expect(team).toMatchObject({
+      alert_integration_id: "integrationId",
+      is_email_alert_enabled: false,
+    });
   });
 
   it("updates a team helpers", async () => {
@@ -72,13 +96,5 @@ describe("updateTeamResolver", () => {
     );
 
     expect(team.name).toBe("another name");
-  });
-
-  it("throws an error if no helpers or name passed", async () => {
-    const testFn = async (): Promise<Team> => {
-      return updateTeamResolver({}, { id: "teamId" }, testContext);
-    };
-
-    await expect(testFn()).rejects.toThrowError();
   });
 });

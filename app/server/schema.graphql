@@ -306,11 +306,20 @@ type SuiteRun {
 
 "A team of users"
 type Team {
+  "The ID of a Slack integration associated with this team"
+  alert_integration_id: ID
+
   "Team helper code, for sharing functionality between tests"
   helpers: String!
 
   "Team ID"
   id: ID!
+
+  """
+  True if all users on the associated team should be alerted by email whenever
+  a test run finishes.
+  """
+  is_email_alert_enabled: Boolean!
 
   "True if the team is enabled"
   is_enabled: Boolean!
@@ -384,9 +393,6 @@ type TestSummary {
 
 "A test trigger"
 type Trigger {
-  "The ID of a Slack integration associated with this test trigger"
-  alert_integration_id: ID
-
   "The branches to run tests on for the GitHub integration (comma separated list)."
   deployment_branches: String
 
@@ -404,12 +410,6 @@ type Trigger {
 
   "True if this is the default test trigger for the team that owns it"
   is_default: Boolean!
-
-  """
-  True if all users on the associated team should be alerted by email whenever
-  a test run finished for this trigger.
-  """
-  is_email_enabled: Boolean!
 
   "A name for the trigger, for users to identify it in the UI"
   name: String!
@@ -611,9 +611,9 @@ type Mutation {
     slack_code: String!
 
     """
-    Test trigger ID
+    Team ID
     """
-    trigger_id: ID!
+    team_id: ID!
   ): Integration!
 
   """
@@ -879,24 +879,12 @@ type Mutation {
     id: ID!
 
     """
-    Updated value for this field. If this field is omitted, it will
-    not be changed. If it is `null`, it will be cleared.
-    """
-    is_email_enabled: Boolean
-
-    """
     Updated trigger name. If this field is omitted, it will
     not be changed. If it is `null`, it will be cleared. If
     `trigger.is_default` is `true`, an error will occur. The
     default trigger cannot be renamed.
     """
     name: String
-
-    """
-    Updated alert integration ID. If this field is omitted, it will not be
-    changed. If it is `null`, it will be cleared.
-    """
-    alert_integration_id: ID
 
     """
     Updated time in minutes between test runs for the trigger.
@@ -993,6 +981,12 @@ type Mutation {
   """
   updateTeam(
     """
+    Updated alert integration ID. If this field is omitted, it will not be
+    changed. If it is `null`, it will be cleared.
+    """
+    alert_integration_id: String
+
+    """
     Updated helpers for the team
     """
     helpers: String
@@ -1001,6 +995,11 @@ type Mutation {
     Team ID
     """
     id: ID!
+
+    """
+    Whether the team members receive email alerts for tests
+    """
+    is_email_alert_enabled: Boolean
 
     """
     New name for the team

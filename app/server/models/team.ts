@@ -10,8 +10,10 @@ import { createTrigger, DEFAULT_TRIGGER_NAME } from "./trigger";
 const DEFAULT_NAME = "My Team";
 
 type UpdateTeam = {
+  alert_integration_id?: string | null;
   helpers?: string;
   id: string;
+  is_email_alert_enabled?: boolean;
   is_enabled?: boolean;
   name?: string;
   plan?: TeamPlan;
@@ -30,8 +32,10 @@ export const createFreeTeamWithTrigger = async (
   log.debug(id);
 
   const team = {
+    alert_integration_id: null,
     helpers: "",
     id,
+    is_email_alert_enabled: true,
     is_enabled: true,
     name: DEFAULT_NAME,
     plan: "free" as const,
@@ -97,8 +101,10 @@ export const findTeamsForUser = async (
 
 export const updateTeam = async (
   {
+    alert_integration_id,
     helpers,
     id,
+    is_email_alert_enabled,
     is_enabled,
     name,
     plan,
@@ -114,7 +120,13 @@ export const updateTeam = async (
     updated_at: minutesFromNow(),
   };
 
+  if (alert_integration_id !== undefined) {
+    updates.alert_integration_id = alert_integration_id;
+  }
   if (!isNil(helpers)) updates.helpers = helpers;
+  if (!isNil(is_email_alert_enabled)) {
+    updates.is_email_alert_enabled = is_email_alert_enabled;
+  }
   if (!isNil(is_enabled)) updates.is_enabled = is_enabled;
   if (!isNil(name)) updates.name = name;
   if (plan) updates.plan = plan;

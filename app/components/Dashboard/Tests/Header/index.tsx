@@ -10,7 +10,6 @@ import { copy } from "../../../../theme/copy";
 import { edgeSize } from "../../../../theme/theme";
 import PlayButton from "../../../shared/PlayButton";
 import { StateContext } from "../../../StateContext";
-import SelectAlert from "./SelectAlert";
 import SelectEnvironment from "./SelectEnvironment";
 import SelectTrigger from "./SelectTrigger";
 import TriggerName from "./TriggerName";
@@ -30,9 +29,6 @@ export default function Header({ selectedIds, trigger }: Props): JSX.Element {
 
   const gitHubIntegrations = (data?.integrations || []).filter(
     (i) => i.type === "github"
-  );
-  const slackIntegrations = (data?.integrations || []).filter(
-    (i) => i.type === "slack"
   );
 
   const handleClick = () => {
@@ -57,7 +53,6 @@ export default function Header({ selectedIds, trigger }: Props): JSX.Element {
       <Box align="center" direction="row">
         <TriggerName trigger={trigger} />
         <SelectTrigger integrations={gitHubIntegrations} trigger={trigger} />
-        <SelectAlert integrations={slackIntegrations} trigger={trigger} />
         <SelectEnvironment trigger={trigger} />
       </Box>
       <PlayButton

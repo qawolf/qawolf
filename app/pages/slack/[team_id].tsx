@@ -13,13 +13,13 @@ export default function Slack(): JSX.Element {
   const { dashboardUri } = useContext(StateContext);
 
   const { asPath, query, replace } = useRouter();
-  const { code, state, trigger_id } = query as { [param: string]: string };
+  const { code, state, team_id } = query as { [param: string]: string };
 
   const [createSlackIntegration, { called, error }] = useCreateSlackIntegration(
     {
-      redirect_uri: `${routes.slack}/${trigger_id}`,
+      redirect_uri: `${routes.slack}/${team_id}`,
       slack_code: code || "",
-      trigger_id: trigger_id || "",
+      team_id: team_id || "",
     },
     { dashboardUri }
   );
@@ -38,10 +38,10 @@ export default function Slack(): JSX.Element {
 
   // create Slack integration
   useEffect(() => {
-    if (!called && code && state && trigger_id) {
+    if (!called && code && state && team_id) {
       createSlackIntegration();
     }
-  }, [called, code, createSlackIntegration, state, trigger_id]);
+  }, [called, code, createSlackIntegration, state, team_id]);
 
   return <Spinner />;
 }
