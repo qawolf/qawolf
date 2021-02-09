@@ -518,30 +518,18 @@ describe("trigger model", () => {
 
       await updateTrigger(
         {
-          alert_integration_id: "integrationId",
           deployment_integration_id: "integration2Id",
           id: "triggerId",
-          is_email_enabled: false,
           name: "newName",
         },
         { logger }
       );
       const updatedTrigger = await db.select("*").from("triggers").first();
 
-      expect(updatedTrigger.alert_integration_id).toBe("integrationId");
       expect(updatedTrigger.deployment_integration_id).toBe("integration2Id");
-      expect(updatedTrigger.is_email_enabled).toBe(false);
       expect(updatedTrigger.name).toBe("newName");
       expect(oldTrigger.repeat_minutes).toBe(updatedTrigger.repeat_minutes);
       expect(oldTrigger.updated_at).not.toBe(updatedTrigger.updated_at);
-
-      await updateTrigger(
-        { alert_integration_id: null, id: "triggerId" },
-        { logger }
-      );
-      const updatedTrigger2 = await db.select("*").from("triggers").first();
-
-      expect(updatedTrigger2.alert_integration_id).toBeNull();
     });
 
     it("updates trigger deployment settings", async () => {

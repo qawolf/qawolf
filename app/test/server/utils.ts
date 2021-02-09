@@ -358,8 +358,10 @@ export const buildTeam = ({ i, is_enabled, name, plan }: BuildTeam): Team => {
   const finalI = i || 1;
 
   return {
+    alert_integration_id: null,
     helpers: "",
     id: `team${finalI === 1 ? "" : i}Id`,
+    is_email_alert_enabled: true,
     is_enabled: is_enabled === undefined ? true : is_enabled,
     name: name || "Awesome Company",
     plan: plan || "free",

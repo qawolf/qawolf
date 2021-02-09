@@ -100,8 +100,10 @@ export const suiteFragment = gql`
 
 export const teamFragment = gql`
   fragment TeamFragment on Team {
+    alert_integration_id
     helpers
     id
+    is_email_alert_enabled
     is_enabled
     name
   }
@@ -121,14 +123,12 @@ export const testFragment = gql`
 
 export const triggerFragment = gql`
   fragment TriggerFragment on Trigger {
-    alert_integration_id
     deployment_branches
     deployment_environment
     deployment_integration_id
     environment_id
     id
     is_default
-    is_email_enabled
     name
     next_at
     repeat_minutes

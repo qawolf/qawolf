@@ -879,24 +879,12 @@ type Mutation {
     id: ID!
 
     """
-    Updated value for this field. If this field is omitted, it will
-    not be changed. If it is `null`, it will be cleared.
-    """
-    is_email_enabled: Boolean
-
-    """
     Updated trigger name. If this field is omitted, it will
     not be changed. If it is `null`, it will be cleared. If
     `trigger.is_default` is `true`, an error will occur. The
     default trigger cannot be renamed.
     """
     name: String
-
-    """
-    Updated alert integration ID. If this field is omitted, it will not be
-    changed. If it is `null`, it will be cleared.
-    """
-    alert_integration_id: ID
 
     """
     Updated time in minutes between test runs for the trigger.
@@ -993,6 +981,12 @@ type Mutation {
   """
   updateTeam(
     """
+    Updated alert integration ID. If this field is omitted, it will not be
+    changed. If it is `null`, it will be cleared.
+    """
+    alert_integration_id: String
+
+    """
     Updated helpers for the team
     """
     helpers: String
@@ -1001,6 +995,11 @@ type Mutation {
     Team ID
     """
     id: ID!
+
+    """
+    Whether the team members receive email alerts for tests
+    """
+    is_email_alert_enabled: Boolean
 
     """
     New name for the team

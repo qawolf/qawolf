@@ -7,7 +7,13 @@ import {
 } from "../../../server/models/team";
 import { Team } from "../../../server/types";
 import { minutesFromNow } from "../../../shared/utils";
-import { buildTeam, buildTeamUser, buildUser, logger } from "../utils";
+import {
+  buildIntegration,
+  buildTeam,
+  buildTeamUser,
+  buildUser,
+  logger,
+} from "../utils";
 
 beforeAll(async () => {
   await migrateDb();
@@ -31,8 +37,10 @@ describe("team model", () => {
       const teams = await db.select("*").from("teams");
       expect(teams).toMatchObject([
         {
+          alert_integration_id: null,
           helpers: "",
           id: expect.any(String),
+          is_email_alert_enabled: true,
           is_enabled: true,
           name: "My Team",
           plan: "free",
@@ -131,10 +139,52 @@ describe("team model", () => {
 
   describe("updateTeam", () => {
     beforeAll(async () => {
-      return db("teams").insert(buildTeam({}));
+      await db("teams").insert(buildTeam({}));
+      return db("integrations").insert(buildIntegration({}));
     });
 
-    afterAll(() => db("teams").del());
+    afterAll(async () => {
+      await db("integrations").del();
+      return db("teams").del();
+    });
+
+    it("updates team alert settings", async () => {
+      const team = await updateTeam(
+        {
+          alert_integration_id: "integrationId",
+          id: "teamId",
+          is_email_alert_enabled: false,
+        },
+        { logger }
+      );
+
+      const updatedTeam = await db.select("*").from("teams").first();
+
+      expect(team.alert_integration_id).toBe("integrationId");
+      expect(team.is_email_alert_enabled).toBe(false);
+      expect(team).toEqual({
+        ...updatedTeam,
+        updated_at: (updatedTeam.updated_at as Date).toISOString(),
+      });
+
+      const team2 = await updateTeam(
+        {
+          alert_integration_id: null,
+          id: "teamId",
+          is_email_alert_enabled: true,
+        },
+        { logger }
+      );
+
+      const updatedTeam2 = await db.select("*").from("teams").first();
+
+      expect(team2.alert_integration_id).toBeNull();
+      expect(team2.is_email_alert_enabled).toBe(true);
+      expect(team2).toEqual({
+        ...updatedTeam2,
+        updated_at: (updatedTeam2.updated_at as Date).toISOString(),
+      });
+    });
 
     it("updates a team helpers", async () => {
       const team = await updateTeam(

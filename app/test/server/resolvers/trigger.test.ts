@@ -172,23 +172,6 @@ describe("updateTriggerResolver", () => {
     expect(updateTrigger.repeat_minutes).toBe(24 * 60);
   });
 
-  it("updates alert preferences for trigger", async () => {
-    const updateTrigger = await updateTriggerResolver(
-      {},
-      {
-        id: "triggerId",
-        is_email_enabled: false,
-        alert_integration_id: "integrationId",
-      },
-      testContext
-    );
-
-    expect(updateTrigger).toMatchObject({
-      is_email_enabled: false,
-      alert_integration_id: "integrationId",
-    });
-  });
-
   it("updates deployment preferences for trigger", async () => {
     const updateTrigger = await updateTriggerResolver(
       {},
