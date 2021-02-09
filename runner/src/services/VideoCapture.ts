@@ -8,6 +8,7 @@ import { sep } from "path";
 import config from "../config";
 import { probeVideoFile } from "../services/ffprobe";
 import { VideoChapter } from "../types";
+import { runCommand } from "../util";
 
 const debug = Debug("qawolf:VideoCapture");
 
@@ -48,34 +49,20 @@ export class VideoCapture {
 
     debug("create gif %s", this._gifPath);
 
-    return new Promise((resolve, reject) => {
-      debug("try to spawn %s", config.FFMPEG_PATH);
-
-      const ffmpeg = spawn("sh", [
-        "-c",
-        // https://askubuntu.com/a/837574/856776
-        // skip 1 second (launch is black screen)
-        // speed up by 2x
-        // limit gif to 30 seconds (1 minute of test time)
+    try {
+      // https://askubuntu.com/a/837574/856776
+      // skip 1 second (launch is black screen)
+      // speed up by 2x
+      // limit gif to 30 seconds (1 minute of test time)
+      await runCommand(
         `${config.FFMPEG_PATH} -i ${this._videoPath} -ss 1 -vf "fps=10,scale=${this._shrunkHeight}:-1:flags=lanczos,setpts=0.5*PTS" -t 30 ${this._gifPath}`,
-      ]);
+        { debug }
+      );
+    } catch (error) {
+      debug("could not create gif %s", error);
+    }
 
-      let stderr = "";
-
-      ffmpeg.stderr.on("data", (data) => {
-        stderr += data.toString();
-      });
-
-      ffmpeg.on("close", (code) => {
-        if (code === 0) {
-          debug("created gif %s", this._gifPath);
-          resolve();
-        } else {
-          debug("could not create gif %s", stderr);
-          reject();
-        }
-      });
-    });
+    debug("created gif %s", this._gifPath);
   }
 
   get gifPath(): string {
@@ -83,12 +70,15 @@ export class VideoCapture {
   }
 
   markChapter(lineNum: number, lineCode: string): void {
+    if (lineNum < 1)
+      throw new Error("markChapter: lineNum must be 1 or greater");
+
     // Setting by index rather than .push in case this is called
     // multiple times for the same line number, which it seems to be.
-    this._chapters[lineNum] = {
+    this._chapters[lineNum - 1] = {
       lineCode,
       lineNum,
-      start: Date.now(),
+      start: Date.now(), // here this is approximate; in _setChapterMetadata we use final timing data to get more exact
     };
   }
 
@@ -99,19 +89,38 @@ export class VideoCapture {
 
     debug("set chapters in %s", this._videoPath);
 
-    const timings = (await fs.readFile(this._timingsPath))
+    let timings = (await fs.readFile(this._timingsPath))
       .toString()
-      .split("\n");
+      .split("\n")
+      // Remove blank lines
+      .filter((timestamp) => timestamp.trim().length > 0)
+      // All remaining lines should be numbers, except first line, which we'll remove next
+      .map((timestamp) => Number(timestamp));
 
-    const firstFrame = Number(timings[1]);
+    // The first line is a header so remove it
+    timings.shift();
 
-    await fs.writeFile(
-      this._jsonPath,
-      JSON.stringify({ chapters: this._chapters, timings })
-    );
+    // As a caution, if there is no timing information, log and skip the rest
+    if (timings.length === 0) {
+      debug("timings is empty");
+      return;
+    }
 
-    this._chapters.forEach((c) => (c.start = c.start - firstFrame));
+    // uncomment for testing
+    // await fs.writeFile(
+    //   this._jsonPath,
+    //   JSON.stringify({ chapters: this._chapters, timings })
+    // );
 
+    const firstFrameTime = timings[0];
+    for (const chapter of this._chapters) {
+      const absoluteStartTime =
+        timings.find((frameTime) => frameTime >= chapter.start) ||
+        timings[timings.length - 1];
+      chapter.start = absoluteStartTime - firstFrameTime;
+    }
+
+    // Get video length to use as the END value of the final chapter.
     const videoMetadata = await probeVideoFile(this._videoPath, {
       showFormat: true,
     });
@@ -138,33 +147,18 @@ title=${chapter.lineCode}
 
     await fs.writeFile(this._videoMetadataPath, metadata);
 
-    return new Promise((resolve, reject) => {
-      debug("try to spawn %s", config.FFMPEG_PATH);
+    debug("try to spawn %s", config.FFMPEG_PATH);
 
-      const ffmpeg = spawn("sh", [
-        "-c",
+    try {
+      await runCommand(
         `${config.FFMPEG_PATH} -i ${this._videoPath} -i ${this._videoMetadataPath} -map_metadata 1 -codec copy ${this._videoWithMetadataPath}`,
-      ]);
+        { debug }
+      );
+    } catch (error) {
+      debug("could not add video metadata %s", error);
+    }
 
-      let stderr = "";
-
-      ffmpeg.stderr.on("data", (data) => {
-        stderr += data.toString();
-      });
-
-      ffmpeg.on("close", (code) => {
-        if (code === 0) {
-          debug(
-            "created video copy with metadata %s",
-            this._videoWithMetadataPath
-          );
-          resolve();
-        } else {
-          debug("could not add video metadata %s", stderr);
-          reject();
-        }
-      });
-    });
+    debug("created video copy with metadata %s", this._videoWithMetadataPath);
   }
 
   async start(display = ":0.0"): Promise<void> {
