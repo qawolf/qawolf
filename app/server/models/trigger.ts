@@ -94,15 +94,12 @@ export const createTrigger = async (
   log.debug(`create ${name} for team ${team_id}`);
 
   const trigger = {
-    alert_integration_id: null,
-    alert_only_on_failure: false,
     creator_id,
     deleted_at: null,
     deployment_integration_id: null,
     environment_id: null,
     id: cuid(),
     is_default: is_default || false,
-    is_email_enabled: true,
     name,
     next_at: getNextAt(repeat_minutes),
     repeat_minutes,
