@@ -74,7 +74,7 @@ export class Runner extends EventEmitter {
     return this._environment?.progress;
   }
 
-  async run(options: RunOptions): Promise<RunProgress> {
+  async run(options: RunOptions): Promise<void> {
     let hooks: RunHook[] = [];
 
     if (!this._environment || options.restart) {
@@ -83,7 +83,11 @@ export class Runner extends EventEmitter {
       hooks = createHooks(options, this._environment);
     }
 
-    return this._environment.run(options, hooks);
+    await this._environment.run(options, hooks);
+  }
+
+  async stop(): Promise<void> {
+    await this._environment?.stop();
   }
 
   updateCode(update: CodeUpdate): boolean {

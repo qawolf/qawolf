@@ -3,6 +3,7 @@ import { LogArtifactHook } from "../../src/runner/LogArtifactHook";
 import { createHooks, Runner } from "../../src/runner/Runner";
 import { StatusReporterHook } from "../../src/runner/StatusReporterHook";
 import { VideoArtifactsHook } from "../../src/runner/VideoArtifactsHook";
+import { RunProgress } from "../../src/types";
 
 describe("createHooks", () => {
   const artifacts = {
@@ -63,7 +64,10 @@ describe("Runner", () => {
   afterAll(() => runner.close());
 
   it("runs code", async () => {
-    const progress = await runner.run({
+    let progress: RunProgress | undefined;
+    runner.on("runprogress", (value) => (progress = value));
+
+    await runner.run({
       code,
       helpers: "",
       restart: false,

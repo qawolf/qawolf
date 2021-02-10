@@ -32,7 +32,7 @@ export default function Sidebar(): JSX.Element {
   const { editorSidebarWidth } = useContext(StateContext);
 
   const { controller, run, team, test } = useContext(TestContext);
-  const { runTest, selection } = useContext(RunnerContext);
+  const { progress, runTest, selection, stopTest } = useContext(RunnerContext);
 
   const [selected, setSelected] = useState<NavigationOption>("code");
 
@@ -41,6 +41,8 @@ export default function Sidebar(): JSX.Element {
   const handleResizeStop: ResizeCallback = (_, __, ___, delta): void => {
     state.setEditorSidebarWidth(editorSidebarWidth + delta.width);
   };
+
+  const isRunning = query.test_id && progress && !progress?.completed_at;
 
   const handleAction = (): void => {
     if (isTestDeleted) return;
@@ -52,9 +54,13 @@ export default function Sidebar(): JSX.Element {
     }
 
     if (test) {
-      // run the test
-      const { code, id: test_id, version } = controller;
-      runTest({ code, helpers: team.helpers, selection, test_id, version });
+      if (isRunning) {
+        stopTest();
+      } else {
+        // run the test
+        const { code, id: test_id, version } = controller;
+        runTest({ code, helpers: team.helpers, selection, test_id, version });
+      }
     }
   };
 
@@ -86,6 +92,7 @@ export default function Sidebar(): JSX.Element {
         <Buttons
           isActionDisabled={isTestDeleted}
           isRun={!!query.run_id}
+          isRunning={isRunning}
           onAction={handleAction}
           runEnvironmentId={run?.environment_id || null}
           selection={selection}

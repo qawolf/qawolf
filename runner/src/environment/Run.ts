@@ -11,10 +11,10 @@ type RunConstructorOptions = {
 };
 
 export class Run extends EventEmitter {
-  _cancelled = false;
   _logger: Logger;
   _progress: RunProgress;
   _runOptions: RunOptions;
+  _stopped = false;
   _vm: VM;
 
   constructor({ runOptions, logger, vm }: RunConstructorOptions) {
@@ -37,21 +37,19 @@ export class Run extends EventEmitter {
   }
 
   _emitProgress(): void {
-    if (this._cancelled) return;
+    if (this._stopped) return;
     this.emit("runprogress", this.progress);
   }
 
-  _onLineStarted(line: number): void {
+  _onLineStarted(line: number): boolean {
+    if (this._stopped) {
+      console.error("skip remaining lines since run is stopped");
+      return false;
+    }
+
     this._progress.current_line = line;
     this._emitProgress();
-  }
-
-  cancel(): void {
-    this._cancelled = true;
-  }
-
-  get cancelled(): boolean {
-    return this._cancelled;
+    return true;
   }
 
   get progress(): RunProgress {
@@ -59,11 +57,10 @@ export class Run extends EventEmitter {
     return { ...this._progress };
   }
 
-  async run(variables: Variables, hooks: RunHook[]): Promise<RunProgress> {
+  async run(variables: Variables, hooks: RunHook[]): Promise<void> {
     try {
+      this._stopped = false;
       await Promise.all(hooks.map((hook) => hook.before && hook.before()));
-
-      this._emitProgress();
 
       if (this._runOptions.env) this._vm.setEnv(this._runOptions.env);
 
@@ -89,8 +86,14 @@ export class Run extends EventEmitter {
     await Promise.all(
       hooks.map((hook) => hook.after && hook.after(this.progress))
     );
+  }
 
-    return this._progress;
+  stop(): void {
+    this._stopped = true;
+  }
+
+  get stopped(): boolean {
+    return this._stopped;
   }
 }
 
@@ -98,7 +101,7 @@ export const formatError = (e: Error): string => {
   const lines = (e.stack as string).split("\n");
 
   const systemStackIndex =
-    lines.findIndex((line) => line.includes("webEditorCode")) + 1;
+    lines.findIndex((line) => line.includes("qawolfTest")) + 1;
 
   if (systemStackIndex < 1) {
     return lines.join("\n");

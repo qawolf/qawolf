@@ -236,6 +236,7 @@ export const copy = {
   startTestingFree: "Start testing for free",
   startTestingFreeDetail:
     "Ship confidently with the easiest way to set up browser tests.",
+  stopRunning: "Stop running",
   subscribe: "Subscribe",
   subscribeError: "Something went wrong, please try again",
   subscribeSuccess: "Thanks for subscribing 🎉",

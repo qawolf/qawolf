@@ -5,9 +5,7 @@ import { Logger } from "../../src/services/Logger";
 const runOptions = {
   code: "",
   helpers: "",
-  onLineStarted: () => {
-    // do nothing
-  },
+  onLineStarted: () => true,
   variables: {},
 };
 
@@ -43,6 +41,7 @@ describe("VM", () => {
         ...runOptions,
         onLineStarted: (line) => {
           lines.push(line);
+          return true;
         },
         code: "const a = '1';\nconst b = '2';\n",
       });
