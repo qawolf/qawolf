@@ -1,8 +1,10 @@
 import { RadioButtonGroup } from "grommet";
-import { ChangeEvent, useState } from "react";
-import { copy } from "../../../theme/copy";
+import { ChangeEvent, useContext, useState } from "react";
 
+import { copy } from "../../../theme/copy";
 import Text from "../../shared-new/Text";
+import { StateContext } from "../../StateContext";
+import Environment from "./Environment";
 
 const repeatMinutesOptions = [
   { label: copy.frequencyDaily, value: 1440 },
@@ -10,6 +12,11 @@ const repeatMinutesOptions = [
 ];
 
 export default function ScheduleForm(): JSX.Element {
+  const { environmentId } = useContext(StateContext);
+
+  const [selectedEnvironmentId, setSelectedEnvironmentId] = useState<
+    string | null
+  >(environmentId);
   const [name, setname] = useState("");
   const [repeatMinutes, setRepeatMinutes] = useState(
     repeatMinutesOptions[0].value
@@ -19,6 +26,7 @@ export default function ScheduleForm(): JSX.Element {
     setRepeatMinutes(Number(e.target.value));
   };
 
+  // TODO: name input
   return (
     <>
       <Text color="gray9" margin={{ bottom: "small" }} size="componentBold">
@@ -31,6 +39,10 @@ export default function ScheduleForm(): JSX.Element {
         onChange={handleChange}
         options={repeatMinutesOptions}
         value={repeatMinutes}
+      />
+      <Environment
+        selectedEnvironmentId={selectedEnvironmentId}
+        setSelectedEnvironmentId={setSelectedEnvironmentId}
       />
     </>
   );

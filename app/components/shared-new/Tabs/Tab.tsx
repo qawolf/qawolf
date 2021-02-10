@@ -1,8 +1,8 @@
 import { Box, Button } from "grommet";
 import { CSSProperties } from "react";
 import styled from "styled-components";
-import { NavigationType } from "../../../lib/types";
 
+import { NavigationType } from "../../../lib/types";
 import {
   borderSize,
   colors,

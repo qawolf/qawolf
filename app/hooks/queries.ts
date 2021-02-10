@@ -204,6 +204,9 @@ export const useEnvironments = (
       // set an environment if possible and if none are currently selected
       if (!selected && response.environments.length) {
         state.setEnvironmentId(response.environments[0].id);
+      } else if (environmentId && !response.environments.length) {
+        // if no environments, clear selection
+        state.setEnvironmentId(null);
       }
     },
     onError,
