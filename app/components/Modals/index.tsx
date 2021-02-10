@@ -9,6 +9,7 @@ import CreateTest from "./CreateTest";
 import Deployment from "./Deployment";
 import Environments from "./Environments";
 import TeamSettings from "./TeamSettings";
+import Triggers from "./Triggers";
 
 export default function Modals(): JSX.Element {
   const { modal } = useContext(StateContext);
@@ -48,6 +49,10 @@ export default function Modals(): JSX.Element {
 
   if (name === "teamSettings" && teamId) {
     return <TeamSettings closeModal={closeModal} teamId={teamId} />;
+  }
+
+  if (name === "triggers") {
+    return <Triggers closeModal={closeModal} />;
   }
 
   return null;

@@ -141,6 +141,10 @@ export const testQuery = gql`
       }
       test {
         ...TestFragment
+        triggers {
+          id
+          name
+        }
       }
     }
   }

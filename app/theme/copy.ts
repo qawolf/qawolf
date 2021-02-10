@@ -5,6 +5,7 @@ export const copy = {
   accountNotExists: "No account yet?",
   add: "Add",
   addGitHubRepo: "Add GitHub repo",
+  addTrigger: "Add trigger",
   aka: "A.K.A.",
   alertEmail: "Email",
   alertSlack: ({
@@ -61,6 +62,7 @@ export const copy = {
   createOnline: "Create and run tests online",
   createTagline: "Create tests at warp speed",
   createTest: "Create test",
+  createTrigger: "Create trigger",
   curious: "Curious yet?",
   custom: "Custom",
   debugEasily: "Debug easily with a video and detailed logs",
@@ -86,6 +88,7 @@ export const copy = {
     "Debug with video, logs, and the exact line a test failed on.",
   edit: "Edit",
   editTest: "Edit test",
+  editTriggers: "Edit triggers",
   email: "Email",
   emailPlaceholder: "you@awesome.com",
   emptyTests: "You don't have any tests yet!",

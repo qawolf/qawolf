@@ -106,6 +106,7 @@ export type Test = {
   id: string;
   is_enabled: boolean;
   name: string;
+  triggers: SelectedTrigger[];
   updated_at: string;
   version: number;
 };
@@ -164,7 +165,8 @@ export type Modal =
   | "environments"
   | "deleteTest"
   | "deleteTrigger"
-  | "teamSettings";
+  | "teamSettings"
+  | "triggers";
 
 export type NavigationOption = "code" | "logs" | "helpers";
 
