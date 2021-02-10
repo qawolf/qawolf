@@ -29,6 +29,7 @@ const EVENTS = [
   "logs",
   "logscreated",
   "runprogress",
+  "runstopped",
   "users",
 ];
 

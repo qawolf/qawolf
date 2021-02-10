@@ -69,7 +69,10 @@ export class SocketServer {
     socket.on("codeupdated", (message) => this._onCodeUpdated(message));
     socket.on("disconnect", () => this._onDisconnect(socket));
     socket.on("run", (message) => this._runner.run(message));
-    socket.on("stop", () => this._runner.stop());
+    socket.on("stop", async () => {
+      this._subscriptions.emit("run", { data: null, event: "runstopped" });
+      await this._runner.stop();
+    });
     socket.on("subscribe", (message) => this._onSubscribe(socket, message));
     socket.on("unsubscribe", (message) => this._onUnsubscribe(socket, message));
   }

@@ -36,10 +36,14 @@ export const useRunProgress = ({
       }
     };
 
+    const onRunStopped = (): void => setProgress(null);
+
     runner.on("runprogress", onRunProgress);
+    runner.on("runstopped", onRunStopped);
 
     return () => {
       runner.off("runprogress", onRunProgress);
+      runner.off("runstopped", onRunStopped);
     };
   }, [query.test_id, runner, run?.test_id]);
 
