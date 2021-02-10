@@ -75,6 +75,7 @@ export const copy = {
   delightUsers: "Delight users",
   delightUsersDetail:
     "9/10 users form a bad opinion of your brand if your app does not work.",
+  deployment: "Deployment",
   deploymentsDetail: "Which deployments do you want to test?",
   discoverBugs:
     "Set up browser tests in minutes to discover bugs before your users do.",
@@ -159,6 +160,7 @@ export const copy = {
   noPassword: "Please provide your password",
   notFound: "(404. Page not found.)",
   notStarted: "Preparing",
+  onDemand: "On demand",
   onPremise: "Run on-premise",
   openSourceDiscount:
     "Ask us about our free or discounted plans for open source projects.",
@@ -196,6 +198,7 @@ export const copy = {
   tenTeamMembers: "Up to 10 team members",
   save: "Save",
   saveTest: "Save Test",
+  schedule: "Schedule",
   scheduleOnboarding: "Schedule onboarding",
   scheduleOneClick: "Schedule or run tests on deployments with one click",
   searchTests: "Search...",

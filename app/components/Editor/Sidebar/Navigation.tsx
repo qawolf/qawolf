@@ -29,7 +29,7 @@ export default function Navigation({
 
   return (
     <Box flex={false}>
-      <Tabs>{tabs}</Tabs>
+      <Tabs pad={{ horizontal: "small" }}>{tabs}</Tabs>
     </Box>
   );
 }
