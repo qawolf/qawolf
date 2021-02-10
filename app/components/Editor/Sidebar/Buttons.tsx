@@ -18,6 +18,7 @@ const width = `calc(50% - (${edgeSize.xxsmall} / 2))`;
 type Props = {
   isActionDisabled: boolean;
   isRun: boolean;
+  isRunning: boolean;
   onAction: () => void;
   runEnvironmentId: string;
   selection: Selection;
@@ -26,6 +27,7 @@ type Props = {
 export default function Buttons({
   isActionDisabled,
   isRun,
+  isRunning,
   onAction,
   runEnvironmentId,
   selection,
@@ -41,8 +43,6 @@ export default function Buttons({
   const runLabel = selection
     ? copy.runLines(selection.endLine - selection.startLine + 1)
     : copy.runTest;
-
-  const isRunning = true;
 
   return (
     <Box
@@ -63,7 +63,7 @@ export default function Buttons({
           IconComponent={Stop}
           justify="center"
           label={copy.stopRunning}
-          onClick={() => {}}
+          onClick={onAction}
           type="dark"
           width={width}
         />

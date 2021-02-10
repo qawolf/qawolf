@@ -7,7 +7,7 @@ import { Run, RunProgress } from "../../../lib/types";
 
 export type RunProgressHook = {
   progress: RunProgress | null;
-  resetProgress: (code: string) => void;
+  resetProgress: (code: string | null) => void;
 };
 
 type UseRunProgress = {
@@ -56,7 +56,12 @@ export const useRunProgress = ({
 
   return {
     progress,
-    resetProgress: (code: string) => {
+    resetProgress: (code: string | null) => {
+      if (code === null) {
+        setProgress(null);
+        return;
+      }
+
       setProgress({
         code,
         completed_at: null,

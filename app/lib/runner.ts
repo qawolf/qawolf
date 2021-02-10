@@ -100,6 +100,14 @@ export class RunnerClient extends EventEmitter {
     this._sendRun();
   }
 
+  stop(): void {
+    state.setPendingRun(null);
+
+    if (this._socket?.connected) {
+      this._socket.emit("stop");
+    }
+  }
+
   setBrowserReady(ready: boolean): void {
     this._browserReady = ready;
     this._sendRun();

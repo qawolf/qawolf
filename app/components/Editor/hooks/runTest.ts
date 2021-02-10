@@ -17,12 +17,13 @@ type RunTestOptions = {
 
 export type RunTest = {
   runTest: (options: RunTestOptions) => void;
+  stopTest: () => void;
   shouldRequestRunner: boolean;
 };
 
 type UseRunTest = {
   env: Env | null;
-  resetProgress: (code: string) => void;
+  resetProgress: (code: string | null) => void;
   runner: RunnerClient | null;
 };
 
@@ -74,5 +75,10 @@ export const useRunTest = ({
     runner.run(options);
   };
 
-  return { runTest, shouldRequestRunner };
+  const stopTest = () => {
+    resetProgress(null);
+    runner.stop();
+  };
+
+  return { runTest, shouldRequestRunner, stopTest };
 };
