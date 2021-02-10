@@ -1,7 +1,6 @@
 import { db } from "../db";
 import { deleteTestTriggersForTrigger } from "../models/test_trigger";
 import {
-  buildTriggerName,
   createTrigger,
   deleteTrigger,
   findDefaultTriggerForTeam,
@@ -11,6 +10,7 @@ import {
 } from "../models/trigger";
 import {
   Context,
+  CreateTriggerMutation,
   DeleteTrigger,
   IdQuery,
   TeamIdQuery,
@@ -25,26 +25,22 @@ import { ensureTeamAccess, ensureTriggerAccess, ensureUser } from "./utils";
  */
 export const createTriggerResolver = async (
   _: Record<string, unknown>,
-  { team_id }: TeamIdQuery,
+  args: CreateTriggerMutation,
   { logger, teams, user: contextUser }: Context
 ): Promise<Trigger> => {
   const log = logger.prefix("createTriggerResolver");
 
   const user = ensureUser({ logger, user: contextUser });
-  ensureTeamAccess({ logger, team_id, teams });
+  ensureTeamAccess({ logger, team_id: args.team_id, teams });
 
-  log.debug(`user ${user.id} for team ${team_id}`);
+  log.debug(`user ${user.id} for team ${args.team_id}`);
 
-  const trigger = await db.transaction(async (trx) => {
-    const name = await buildTriggerName(team_id, { logger, trx });
+  const trigger = await createTrigger(
+    { ...args, creator_id: user.id },
+    { logger }
+  );
 
-    return createTrigger(
-      { creator_id: user.id, name, repeat_minutes: null, team_id },
-      { logger, trx }
-    );
-  });
-
-  log.debug(`created trigger ${trigger.id} for team ${team_id}`);
+  log.debug(`created trigger ${trigger.id} for team ${args.team_id}`);
 
   return trigger;
 };

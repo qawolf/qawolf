@@ -542,9 +542,16 @@ type Mutation {
   Requires that you have access to the team.
   """
   createTrigger(
-    """
-    ID of the team that should own the trigger
-    """
+    "ID of the environment on the trigger"
+    environment_id: ID
+
+    "Name of the trigger"
+    name: String!
+
+    "Interval to run the trigger on"
+    repeat_minutes: Int
+
+    "ID of the team that should own the trigger"
     team_id: ID!
   ): Trigger!
 

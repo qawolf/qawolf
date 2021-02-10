@@ -24,18 +24,26 @@ export default function Triggers({ closeModal }: Props): JSX.Element {
 
   // do not show "All tests" trigger
   const triggers = (data?.triggers || []).filter((t) => !t.is_default);
+  const shouldCreate = data?.triggers && !triggers.length;
 
   useEffect(() => {
     // enter create mode if there are no non-default triggers
-    if (data?.triggers && !triggers.length) {
-      setIsCreate(true);
-    }
-  }, [data?.triggers, triggers]);
+    if (shouldCreate) setIsCreate(true);
+  }, [shouldCreate]);
+
+  const handleBack = (): void => setIsCreate(false);
 
   return (
     <Modal closeModal={closeModal}>
-      <Box pad="medium">
-        {isCreate && <CreateTrigger closeModal={closeModal} />}
+      <Box overflow={{ vertical: "auto" }} pad="medium">
+        {isCreate && (
+          <CreateTrigger
+            closeModal={closeModal}
+            hideBack={shouldCreate}
+            onBack={handleBack}
+            triggers={triggers}
+          />
+        )}
       </Box>
     </Modal>
   );

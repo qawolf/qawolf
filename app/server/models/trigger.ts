@@ -9,9 +9,10 @@ const MINUTES_PER_DAY = 24 * 60;
 
 type CreateTrigger = {
   creator_id: string;
+  environment_id?: string;
   is_default?: boolean;
   name: string;
-  repeat_minutes: number | null;
+  repeat_minutes?: number | null;
   team_id: string;
 };
 
@@ -86,7 +87,14 @@ export const getUpdatedNextAt = ({
 };
 
 export const createTrigger = async (
-  { creator_id, is_default, name, repeat_minutes, team_id }: CreateTrigger,
+  {
+    creator_id,
+    environment_id,
+    is_default,
+    name,
+    repeat_minutes,
+    team_id,
+  }: CreateTrigger,
   { logger, trx }: ModelOptions
 ): Promise<Trigger> => {
   const log = logger.prefix("createTrigger");
@@ -97,12 +105,12 @@ export const createTrigger = async (
     creator_id,
     deleted_at: null,
     deployment_integration_id: null,
-    environment_id: null,
+    environment_id: environment_id || null,
     id: cuid(),
     is_default: is_default || false,
     name,
     next_at: getNextAt(repeat_minutes),
-    repeat_minutes,
+    repeat_minutes: repeat_minutes || null,
     team_id,
   };
   await (trx || db)("triggers").insert(trigger);
@@ -235,32 +243,6 @@ export const findTriggersForTeam = async (
   log.debug(`found ${triggers.length} triggers for team ${team_id}`);
 
   return triggers;
-};
-
-export const buildTriggerName = async (
-  team_id: string,
-  { logger, trx }: ModelOptions
-): Promise<string> => {
-  const log = logger.prefix("buildTriggerName");
-
-  log.debug("team", team_id);
-  const triggers = await findTriggersForTeam(team_id, { logger, trx });
-
-  const triggerNames = new Set(triggers.map((trigger) => trigger.name));
-  let triggerNumber = 1;
-
-  while (
-    triggerNames.has(
-      `My Tests${triggerNumber === 1 ? "" : ` ${triggerNumber}`}`
-    )
-  ) {
-    triggerNumber++;
-  }
-
-  const name = `My Tests${triggerNumber === 1 ? "" : ` ${triggerNumber}`}`;
-  log.debug(`built name ${name} for team ${team_id}`);
-
-  return name;
 };
 
 export const findPendingTriggers = async ({

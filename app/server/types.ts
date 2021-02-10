@@ -348,6 +348,13 @@ export type CreateTestMutation = {
   url: string;
 };
 
+export type CreateTriggerMutation = {
+  environment_id: string | null;
+  name: string;
+  repeat_minutes: number | null;
+  team_id: string;
+};
+
 export type CreateUrlMutation = {
   redirect_uri: string;
 };

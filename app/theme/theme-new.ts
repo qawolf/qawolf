@@ -1,4 +1,4 @@
-import { fontSize } from "./theme";
+import { CSSProperties } from "react";
 
 export const borderSize = {
   xsmall: "1px",
@@ -166,22 +166,19 @@ export const theme = {
     border: { color: colors.gray7, width: borderSize.xsmall },
     check: {
       color: colors.gray9,
-      extend: () => {
+      extend: (): CSSProperties => {
         return { transition };
       },
     },
     color: colors.gray9,
     container: {
-      extend: () => {
+      extend: (): CSSProperties => {
         return {
           fontFamily: fontFamily.component,
           fontSize: textDesktop.component.size,
           lineHeight: textDesktop.component.height,
         };
       },
-    },
-    extend: () => {
-      return { transition: "all 5s" };
     },
     hover: { border: { color: colors.gray8 } },
     gap: edgeSize.xxsmall,

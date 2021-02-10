@@ -21,6 +21,7 @@ beforeAll(async () => {
 
   await db("users").insert(buildUser({}));
   await db("teams").insert([buildTeam({}), buildTeam({ i: 2 })]);
+  await db("environments").insert(buildEnvironment({}));
 });
 
 afterAll(() => dropTestDb());
@@ -39,14 +40,20 @@ describe("createTriggerResolver", () => {
   it("creates a new trigger", async () => {
     const trigger = await createTriggerResolver(
       {},
-      { team_id: "teamId" },
+      {
+        environment_id: "environmentId",
+        name: "Daily",
+        repeat_minutes: 1440,
+        team_id: "teamId",
+      },
       testContext
     );
 
     expect(trigger).toMatchObject({
       creator_id: "userId",
-      name: "My Tests",
-      repeat_minutes: null,
+      environment_id: "environmentId",
+      name: "Daily",
+      repeat_minutes: 1440,
       team_id: "teamId",
     });
   });
@@ -151,7 +158,6 @@ describe("testTriggersResolver", () => {
 
 describe("updateTriggerResolver", () => {
   beforeAll(async () => {
-    await db("environments").insert(buildEnvironment({}));
     await db("integrations").insert([
       buildIntegration({}),
       buildIntegration({ i: 2, type: "github" }),

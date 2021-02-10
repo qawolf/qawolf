@@ -25,7 +25,7 @@ export default function Environment({
   let environmentsHtml = null;
   const environments = data?.environments;
 
-  if (environments.length) {
+  if (environments?.length) {
     const options = environments.map((e) => {
       return { label: e.name, value: e.id };
     });

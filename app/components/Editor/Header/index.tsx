@@ -40,7 +40,7 @@ export default function Header({ mode }: Props): JSX.Element {
       <Box align="center" direction="row">
         <Button
           IconComponent={ArrowLeft}
-          a11yTitle={copy.back}
+          a11yTitle={copy.backToDashboard}
           href={routes.tests}
           margin={{ right: "xxxsmall" }}
           type="ghost"

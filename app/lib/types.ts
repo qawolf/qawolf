@@ -193,6 +193,12 @@ export type TestTriggers = {
   [testId: string]: string[];
 };
 
+export type TriggerFields = {
+  environment_id: string | null;
+  name: string;
+  repeat_minutes: number | null;
+};
+
 export type ValueProp = {
   detail: string;
   message: string;

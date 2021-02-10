@@ -122,8 +122,18 @@ export const createTestMutation = gql`
 `;
 
 export const createTriggerMutation = gql`
-  mutation createTrigger($team_id: ID!) {
-    createTrigger(team_id: $team_id) {
+  mutation createTrigger(
+    $environment_id: ID
+    $name: String!
+    $repeat_minutes: Int
+    $team_id: ID!
+  ) {
+    createTrigger(
+      environment_id: $environment_id
+      name: $name
+      repeat_minutes: $repeat_minutes
+      team_id: $team_id
+    ) {
       ...TriggerFragment
     }
   }
