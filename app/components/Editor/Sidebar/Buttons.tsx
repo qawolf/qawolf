@@ -9,6 +9,7 @@ import Button from "../../shared-new/AppButton";
 import Environments from "../../shared-new/Environments";
 import Edit from "../../shared-new/icons/Edit";
 import Play from "../../shared-new/icons/Play";
+import Stop from "../../shared-new/icons/Stop";
 import { StateContext } from "../../StateContext";
 import { Selection } from "../hooks/selection";
 
@@ -17,6 +18,7 @@ const width = `calc(50% - (${edgeSize.xxsmall} / 2))`;
 type Props = {
   isActionDisabled: boolean;
   isRun: boolean;
+  isRunning: boolean;
   onAction: () => void;
   runEnvironmentId: string;
   selection: Selection;
@@ -25,6 +27,7 @@ type Props = {
 export default function Buttons({
   isActionDisabled,
   isRun,
+  isRunning,
   onAction,
   runEnvironmentId,
   selection,
@@ -55,15 +58,26 @@ export default function Buttons({
         selectedEnvironmentId={isRun ? runEnvironmentId : environmentId}
         width={width}
       />
-      <Button
-        IconComponent={isRun ? Edit : Play}
-        isDisabled={isActionDisabled}
-        justify="center"
-        label={isRun ? copy.editTest : runLabel}
-        onClick={onAction}
-        type="primary"
-        width={width}
-      />
+      {isRunning ? (
+        <Button
+          IconComponent={Stop}
+          justify="center"
+          label={copy.stopRunning}
+          onClick={onAction}
+          type="dark"
+          width={width}
+        />
+      ) : (
+        <Button
+          IconComponent={isRun ? Edit : Play}
+          isDisabled={isActionDisabled}
+          justify="center"
+          label={isRun ? copy.editTest : runLabel}
+          onClick={onAction}
+          type="primary"
+          width={width}
+        />
+      )}
     </Box>
   );
 }

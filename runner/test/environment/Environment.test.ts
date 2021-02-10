@@ -13,8 +13,8 @@ const runOptions: RunOptions = {
   version: 0,
 };
 
-describe("Environment", () => {
-  it("closes the browser when close is called", async () => {
+describe("close", () => {
+  it("closes the browser", async () => {
     const environment = new Environment();
     await environment.run({
       ...runOptions,
@@ -26,8 +26,10 @@ describe("Environment", () => {
     await environment.close();
     expect(browser.isConnected()).toBe(false);
   });
+});
 
-  it("disables the updater while runs are in progress", async () => {
+describe("run", () => {
+  it("disables the updater until runs are complete", async () => {
     const environment = new Environment();
 
     const runPromise = environment.run({
@@ -107,7 +109,7 @@ describe("Environment", () => {
     );
 
     expect(events.filter((e) => e.code.includes("hello"))).toHaveLength(0);
-    expect(events.filter((e) => e.code.includes("world"))).toHaveLength(3);
+    expect(events.filter((e) => e.code.includes("world"))).toHaveLength(2);
 
     await environment.close();
   });
@@ -145,5 +147,31 @@ describe("Environment", () => {
     });
 
     await environment.close();
+  });
+});
+
+describe("stop", () => {
+  it("stops runs in progress and enables the updater", async () => {
+    const environment = new Environment();
+
+    const runPromise = environment.run({
+      ...runOptions,
+      code:
+        "await new Promise((r) => setTimeout(r, 100));\nthrow new Error('hello');",
+    });
+
+    const run = environment._inProgress[0];
+
+    expect(environment.updater._enabled).toBe(false);
+    await environment.stop();
+    expect(run.stopped).toBe(true);
+    expect(environment._inProgress.length).toEqual(0);
+    expect(environment.updater._enabled).toBe(true);
+
+    await runPromise;
+
+    // it should not reach the error
+    expect(run.progress.current_line).toEqual(1);
+    expect(run.progress.error).toBeUndefined();
   });
 });

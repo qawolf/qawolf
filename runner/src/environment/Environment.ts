@@ -52,15 +52,15 @@ export class Environment extends EventEmitter {
   }
 
   get progress(): RunProgress | undefined {
-    const run = this._inProgress.find((run) => !run.cancelled);
+    const run = this._inProgress.find((run) => !run.stopped);
     return run?.progress;
   }
 
-  async run(options: RunOptions, hooks: RunHook[] = []): Promise<RunProgress> {
+  async run(options: RunOptions, hooks: RunHook[] = []): Promise<void> {
     this._updater.disable();
     this._updater.updateCode(options);
 
-    this._inProgress.forEach((runInProgress) => runInProgress.cancel());
+    this._inProgress.forEach((runInProgress) => runInProgress.stop());
 
     const run = new Run({
       runOptions: options,
@@ -75,7 +75,7 @@ export class Environment extends EventEmitter {
 
     run.on("runprogress", emitRunProgress);
 
-    const result = await run.run(this._variables, hooks);
+    await run.run(this._variables, hooks);
 
     run.off("runprogress", emitRunProgress);
 
@@ -85,8 +85,12 @@ export class Environment extends EventEmitter {
       // enable code generation after there are no runs in progress
       await this._updater.enable();
     }
+  }
 
-    return result;
+  async stop(): Promise<void> {
+    this._inProgress.forEach((run) => run.stop());
+    this._inProgress = [];
+    await this._updater.enable();
   }
 
   get updater(): CodeUpdater {

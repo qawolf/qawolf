@@ -15,6 +15,7 @@ type RunnerContext = ConnectRunnerHook &
   SelectionHook & {
     progress: RunProgress | null;
     runTest: RunTest["runTest"];
+    stopTest: RunTest["stopTest"];
     shouldRequestRunner: boolean;
   };
 
@@ -30,6 +31,7 @@ export const RunnerContext = createContext<RunnerContext>({
   runTest: () => null,
   selection: null,
   shouldRequestRunner: false,
+  stopTest: () => null,
   wsUrl: null,
 });
 
@@ -42,7 +44,7 @@ export const RunnerProvider: FC = ({ children }) => {
 
   const { progress, resetProgress } = useRunProgress({ run, runner });
 
-  const { shouldRequestRunner, runTest } = useRunTest({
+  const { shouldRequestRunner, runTest, stopTest } = useRunTest({
     env,
     resetProgress,
     runner,
@@ -70,6 +72,7 @@ export const RunnerProvider: FC = ({ children }) => {
     runTest,
     selection,
     shouldRequestRunner,
+    stopTest,
     wsUrl,
   };
 

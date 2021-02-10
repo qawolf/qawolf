@@ -127,7 +127,7 @@ export const transformCode = ({
   const variableNames: string[] = [];
 
   expressions.forEach((e) => {
-    lines.push(`vmLineStarted(${e.endLine})`);
+    lines.push(`if (!vmLineStarted(${e.endLine})) return;`);
 
     lines.push(allowRedeclaration(e.code));
 
@@ -142,13 +142,13 @@ export const transformCode = ({
   });
 
   return `
-const webEditorCode = async (variables, { vmEnv, vmLineStarted }) => {
+async function qawolfTest(variables, { vmEnv, vmLineStarted }) {
 process.env = { ...process.env, ...vmEnv };
 ${helpers}
 var { ${Object.keys(variables).join(", ")}  } = variables;
 ${lines.join("\n")}
 };
 
-module.exports = webEditorCode;
+module.exports = qawolfTest;
 `;
 };
