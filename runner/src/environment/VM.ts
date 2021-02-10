@@ -15,7 +15,7 @@ type VMOptions = {
 };
 
 export type RunOptions = TransformCode & {
-  onLineStarted: (line: number) => void;
+  onLineStarted: (line: number) => boolean;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -107,7 +107,7 @@ describe("Environment", () => {
     );
 
     expect(events.filter((e) => e.code.includes("hello"))).toHaveLength(0);
-    expect(events.filter((e) => e.code.includes("world"))).toHaveLength(3);
+    expect(events.filter((e) => e.code.includes("world"))).toHaveLength(2);
 
     await environment.close();
   });

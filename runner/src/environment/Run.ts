@@ -41,9 +41,15 @@ export class Run extends EventEmitter {
     this.emit("runprogress", this.progress);
   }
 
-  _onLineStarted(line: number): void {
+  _onLineStarted(line: number): boolean {
+    if (this._stopped) {
+      console.error("skip remaining lines since run is stopped");
+      return false;
+    }
+
     this._progress.current_line = line;
     this._emitProgress();
+    return true;
   }
 
   get progress(): RunProgress {
@@ -55,8 +61,6 @@ export class Run extends EventEmitter {
     try {
       this._stopped = false;
       await Promise.all(hooks.map((hook) => hook.before && hook.before()));
-
-      this._emitProgress();
 
       if (this._runOptions.env) this._vm.setEnv(this._runOptions.env);
 
@@ -97,7 +101,7 @@ export const formatError = (e: Error): string => {
   const lines = (e.stack as string).split("\n");
 
   const systemStackIndex =
-    lines.findIndex((line) => line.includes("webEditorCode")) + 1;
+    lines.findIndex((line) => line.includes("qawolfTest")) + 1;
 
   if (systemStackIndex < 1) {
     return lines.join("\n");

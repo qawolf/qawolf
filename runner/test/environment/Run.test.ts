@@ -27,7 +27,7 @@ describe("Run", () => {
 
     await run.run({}, []);
     expect(run._progress.error).toEqual(
-      "Error: oh no!\n    at webEditorCode (vm.js:7:7)"
+      "Error: oh no!\n    at qawolfTest (vm.js:7:7)"
     );
   });
 
@@ -60,7 +60,6 @@ describe("Run", () => {
     };
 
     expect(events).toEqual([
-      event,
       event,
       {
         ...event,
@@ -106,7 +105,6 @@ describe("Run", () => {
 
     expect(events).toEqual([
       event,
-      event,
       {
         ...event,
         current_line: 2,
@@ -150,5 +148,34 @@ describe("Run", () => {
 
     expect(before).toEqual(2);
     expect(after).toEqual(2);
+  });
+
+  it("stop prevents it from running more lines", async () => {
+    const events: RunProgress[] = [];
+
+    const run = new Run({
+      logger: environment._logger,
+      runOptions: {
+        ...runOptions,
+        code:
+          "await new Promise((r) => setTimeout(r, 50));\nthrow new Error('should not reach here')",
+      },
+      vm: environment._vm,
+    });
+
+    run.on("runprogress", (progress: RunProgress) => events.push(progress));
+
+    const promise = run.run({}, []);
+    // give it enough time to run the first line
+    // but not enough to run the second line
+    await new Promise((r) => setTimeout(r, 0));
+    run.stop();
+
+    await promise;
+
+    expect(run.progress.error).toBeUndefined();
+    expect(run.progress).toMatchObject({
+      completed_at: expect.any(String),
+    });
   });
 });
