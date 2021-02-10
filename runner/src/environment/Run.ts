@@ -11,10 +11,10 @@ type RunConstructorOptions = {
 };
 
 export class Run extends EventEmitter {
-  _cancelled = false;
   _logger: Logger;
   _progress: RunProgress;
   _runOptions: RunOptions;
+  _stopped = false;
   _vm: VM;
 
   constructor({ runOptions, logger, vm }: RunConstructorOptions) {
@@ -37,7 +37,7 @@ export class Run extends EventEmitter {
   }
 
   _emitProgress(): void {
-    if (this._cancelled) return;
+    if (this._stopped) return;
     this.emit("runprogress", this.progress);
   }
 
@@ -46,21 +46,14 @@ export class Run extends EventEmitter {
     this._emitProgress();
   }
 
-  cancel(): void {
-    this._cancelled = true;
-  }
-
-  get cancelled(): boolean {
-    return this._cancelled;
-  }
-
   get progress(): RunProgress {
     // clone the current progress
     return { ...this._progress };
   }
 
-  async run(variables: Variables, hooks: RunHook[]): Promise<RunProgress> {
+  async run(variables: Variables, hooks: RunHook[]): Promise<void> {
     try {
+      this._stopped = false;
       await Promise.all(hooks.map((hook) => hook.before && hook.before()));
 
       this._emitProgress();
@@ -89,8 +82,14 @@ export class Run extends EventEmitter {
     await Promise.all(
       hooks.map((hook) => hook.after && hook.after(this.progress))
     );
+  }
 
-    return this._progress;
+  stop(): void {
+    this._stopped = true;
+  }
+
+  get stopped(): boolean {
+    return this._stopped;
   }
 }
 

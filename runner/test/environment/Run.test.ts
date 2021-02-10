@@ -25,8 +25,8 @@ describe("Run", () => {
       vm: environment._vm,
     });
 
-    const result = await run.run({}, []);
-    expect(result.error).toEqual(
+    await run.run({}, []);
+    expect(run._progress.error).toEqual(
       "Error: oh no!\n    at webEditorCode (vm.js:7:7)"
     );
   });
