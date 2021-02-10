@@ -7,7 +7,6 @@ import {
   CellMeasurerCache,
   List,
   ListRowRenderer,
-  OnScrollParams,
 } from "react-virtualized";
 
 import { RunnerContext } from "../contexts/RunnerContext";
@@ -22,31 +21,17 @@ const cache = new CellMeasurerCache({
   fixedWidth: true,
 });
 
-let wasAutoScroll = false;
-let shouldAutoScroll = true;
-
-const scrollToBottom = throttle((list: List, index: number) => {
-  if (!shouldAutoScroll) return;
-
-  wasAutoScroll = true;
-  list.scrollToRow(index);
-}, 200);
+const scrollToBottom = throttle(
+  (list: List, index: number) => {
+    list.scrollToRow(index);
+  },
+  200,
+  { leading: true }
+);
 
 const clearCache = throttle(() => {
   cache.clearAll();
 }, 200);
-
-function onScroll(this: List | undefined, options: OnScrollParams): void {
-  if (!this || wasAutoScroll) {
-    wasAutoScroll = false;
-    return;
-  }
-
-  const maxScroll = this.getOffsetForRow(this.props.logs.length);
-
-  // autoscroll if the user scrolled to the bottom 90%
-  shouldAutoScroll = options.scrollTop >= maxScroll * 0.9;
-}
 
 const rowRenderer: ListRowRenderer = function ({
   index,
@@ -75,6 +60,7 @@ export default function RunLogs({ isVisible }: Props): JSX.Element {
 
   useEffect(() => {
     if (!ref.current) return;
+
     scrollToBottom(ref.current, logs.length);
   }, [logs.length, ref]);
 
@@ -97,7 +83,6 @@ export default function RunLogs({ isVisible }: Props): JSX.Element {
               estimatedRowSize={20}
               height={height}
               logs={logs}
-              onScroll={onScroll.bind(ref.current)}
               overscanRowCount={10}
               ref={ref}
               rowCount={logs.length}
