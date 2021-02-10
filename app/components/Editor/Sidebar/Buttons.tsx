@@ -9,6 +9,7 @@ import Button from "../../shared-new/AppButton";
 import Environments from "../../shared-new/Environments";
 import Edit from "../../shared-new/icons/Edit";
 import Play from "../../shared-new/icons/Play";
+import Stop from "../../shared-new/icons/Stop";
 import { StateContext } from "../../StateContext";
 import { Selection } from "../hooks/selection";
 
@@ -41,6 +42,8 @@ export default function Buttons({
     ? copy.runLines(selection.endLine - selection.startLine + 1)
     : copy.runTest;
 
+  const isRunning = true;
+
   return (
     <Box
       border={{ color: "gray9", side: "top", size: borderSize.xsmall }}
@@ -55,15 +58,26 @@ export default function Buttons({
         selectedEnvironmentId={isRun ? runEnvironmentId : environmentId}
         width={width}
       />
-      <Button
-        IconComponent={isRun ? Edit : Play}
-        isDisabled={isActionDisabled}
-        justify="center"
-        label={isRun ? copy.editTest : runLabel}
-        onClick={onAction}
-        type="primary"
-        width={width}
-      />
+      {isRunning ? (
+        <Button
+          IconComponent={Stop}
+          justify="center"
+          label={copy.stopRunning}
+          onClick={() => {}}
+          type="dark"
+          width={width}
+        />
+      ) : (
+        <Button
+          IconComponent={isRun ? Edit : Play}
+          isDisabled={isActionDisabled}
+          justify="center"
+          label={isRun ? copy.editTest : runLabel}
+          onClick={onAction}
+          type="primary"
+          width={width}
+        />
+      )}
     </Box>
   );
 }
