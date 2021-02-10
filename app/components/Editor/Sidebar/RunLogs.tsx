@@ -1,6 +1,6 @@
 import { Box } from "grommet";
 import throttle from "lodash/throttle";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import {
   AutoSizer,
   CellMeasurer,
@@ -54,15 +54,19 @@ export default function RunLogs({ isVisible }: Props): JSX.Element {
   const { apiKey, wsUrl } = useContext(RunnerContext);
   const { run } = useContext(TestContext);
   const { logs } = useLogs({ apiKey, run, wsUrl });
-  const ref = useRef<List>(null);
+  const [list, setList] = useState<List>(null);
 
   const [size, setSize] = useState(0);
 
-  useEffect(() => {
-    if (!ref.current) return;
+  const onRef = useCallback((value) => {
+    setList(value);
+  }, []);
 
-    scrollToBottom(ref.current, logs.length);
-  }, [logs.length, ref]);
+  useEffect(() => {
+    if (!list) return;
+
+    scrollToBottom(list, logs.length);
+  }, [list, logs.length]);
 
   useEffect(() => {
     // clear the heights cache when the size changes
@@ -84,7 +88,7 @@ export default function RunLogs({ isVisible }: Props): JSX.Element {
               height={height}
               logs={logs}
               overscanRowCount={10}
-              ref={ref}
+              ref={onRef}
               rowCount={logs.length}
               rowHeight={cache.rowHeight}
               rowRenderer={rowRenderer}
