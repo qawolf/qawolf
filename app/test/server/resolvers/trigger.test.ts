@@ -35,7 +35,14 @@ const testContext = {
 };
 
 describe("createTriggerResolver", () => {
-  afterAll(() => db("triggers").del());
+  beforeAll(() => db("tests").insert(buildTest({})));
+
+  afterEach(async () => {
+    await db("test_triggers").del();
+    return db("triggers").del();
+  });
+
+  afterAll(() => db("tests").del());
 
   it("creates a new trigger", async () => {
     const trigger = await createTriggerResolver(
@@ -45,6 +52,7 @@ describe("createTriggerResolver", () => {
         name: "Daily",
         repeat_minutes: 1440,
         team_id: "teamId",
+        test_ids: null,
       },
       testContext
     );
@@ -56,6 +64,30 @@ describe("createTriggerResolver", () => {
       repeat_minutes: 1440,
       team_id: "teamId",
     });
+
+    const testTriggers = await db("test_triggers").select("*");
+
+    expect(testTriggers).toEqual([]);
+  });
+
+  it("creates test triggers if specified", async () => {
+    const trigger = await createTriggerResolver(
+      {},
+      {
+        environment_id: "environmentId",
+        name: "Daily",
+        repeat_minutes: 1440,
+        team_id: "teamId",
+        test_ids: ["testId"],
+      },
+      testContext
+    );
+
+    const testTriggers = await db("test_triggers").select("*");
+
+    expect(testTriggers).toMatchObject([
+      { test_id: "testId", trigger_id: trigger.id },
+    ]);
   });
 });
 

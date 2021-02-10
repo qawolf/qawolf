@@ -353,6 +353,7 @@ export type CreateTriggerMutation = {
   name: string;
   repeat_minutes: number | null;
   team_id: string;
+  test_ids: string[] | null;
 };
 
 export type CreateUrlMutation = {

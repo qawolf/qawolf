@@ -127,12 +127,14 @@ export const createTriggerMutation = gql`
     $name: String!
     $repeat_minutes: Int
     $team_id: ID!
+    $test_ids: [ID!]
   ) {
     createTrigger(
       environment_id: $environment_id
       name: $name
       repeat_minutes: $repeat_minutes
       team_id: $team_id
+      test_ids: $test_ids
     ) {
       ...TriggerFragment
     }

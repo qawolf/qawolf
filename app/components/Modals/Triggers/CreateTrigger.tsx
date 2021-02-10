@@ -1,4 +1,5 @@
 import { Box } from "grommet";
+import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { useCreateTrigger } from "../../../hooks/mutations";
 
@@ -28,6 +29,9 @@ export default function CreateTrigger({
   triggers,
 }: Props): JSX.Element {
   const { teamId } = useContext(StateContext);
+  const {
+    query: { test_id },
+  } = useRouter();
 
   const [createTrigger, { loading }] = useCreateTrigger();
 
@@ -48,7 +52,13 @@ export default function CreateTrigger({
 
   // TODO: create test_trigger records in mutation
   const handleSave = (fields: TriggerFields): void => {
-    createTrigger({ variables: { ...fields, team_id: teamId } }).then(onBack);
+    createTrigger({
+      variables: {
+        ...fields,
+        team_id: teamId,
+        test_ids: [test_id as string],
+      },
+    }).then(onBack);
   };
 
   return (

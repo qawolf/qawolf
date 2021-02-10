@@ -553,6 +553,9 @@ type Mutation {
 
     "ID of the team that should own the trigger"
     team_id: ID!
+
+    "IDs of the tests to add the trigger to"
+    test_ids: [ID!]
   ): Trigger!
 
   """

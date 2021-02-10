@@ -158,6 +158,7 @@ export type CreateTriggerVariables = {
   name: string;
   repeat_minutes?: number | null;
   team_id: string;
+  test_ids?: string[] | null;
 };
 
 type DeleteApiKeyData = {
@@ -529,7 +530,7 @@ export const useCreateTrigger = (): MutationTuple<
         state.setTriggerId(createTrigger.id);
       },
       onError,
-      refetchQueries: ["triggers"],
+      refetchQueries: ["test", "triggers"],
     }
   );
 };
