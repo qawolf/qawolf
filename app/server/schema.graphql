@@ -27,6 +27,9 @@ type Artifacts {
   "Secure URL for a GIF of a test run"
   gifUrl: String
 
+  "Secure URL for JSON video metadata from a test run
+  jsonUrl: String
+
   "Secure URL for the logs of a test run"
   logsUrl: String!
 

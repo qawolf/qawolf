@@ -1,5 +1,6 @@
 // Xvfb :0 -screen 0 1288x804x24 -listen tcp &
 // DEBUG=qawolf* npm run test Runner.test.ts
+import { promises as fs } from "fs";
 import { Environment } from "../../src/environment/Environment";
 import { LogArtifactHook } from "../../src/runner/LogArtifactHook";
 import { createHooks, Runner } from "../../src/runner/Runner";
@@ -10,6 +11,7 @@ import { RunProgress } from "../../src/types";
 describe("createHooks", () => {
   const artifacts = {
     gifUrl: "gifUrl",
+    jsonUrl: "jsonUrl",
     logsUrl: "logsUrl",
     videoUrl: "videoUrl",
   };
@@ -99,15 +101,18 @@ describe("Runner", () => {
     expect(initialEnvironment === runner._environment).toBe(false);
   });
 
-  it("saves a video of the run with step chapter metadata", async () => {
+  it("saves a JSON file with code line metadata", async () => {
     const multiLineCode = `console.log("Line 1");
-await page.waitForTimeout(1);
-console.log("Line 2");`;
+await page.waitForTimeout(500);
+console.log("Line 3");
+console.log("Line 4");
+`;
 
     await runner.run({
       artifacts: {
         gifUrl: "local-only",
-        logsUrl: "logsUrl",
+        jsonUrl: "local-only",
+        logsUrl: "local-only",
         videoUrl: "local-only",
       },
       code: multiLineCode,
@@ -120,60 +125,57 @@ console.log("Line 2");`;
     const videoHook = runner._hooks[1] as VideoArtifactsHook;
 
     await videoHook.waitForUpload();
-    const videoMetadata = await probeVideoFile(
-      videoHook._videoCapture.videoWithMetadataPath,
-      {
-        showChapters: true,
-      }
+    const videoMetadataJSON = await fs.readFile(
+      videoHook._videoCapture._jsonPath,
+      "utf8"
     );
+    const videoMetadata = JSON.parse(videoMetadataJSON);
 
-    expect(videoMetadata).toEqual({
-      chapters: [
-        {
-          end: expect.any(Number),
-          end_time: expect.any(String),
-          id: 0,
-          start: expect.any(Number),
-          start_time: expect.any(String),
-          tags: {
-            title: 'console.log("Line 1");',
-          },
-          time_base: "1/1000",
-        },
-        {
-          end: expect.any(Number),
-          end_time: expect.any(String),
-          id: 1,
-          start: expect.any(Number),
-          start_time: expect.any(String),
-          tags: {
-            title: "await page.waitForTimeout(1);",
-          },
-          time_base: "1/1000",
-        },
-        // TODO figure out why this chapter is missing
-        // {
-        //   end: expect.any(Number),
-        //   end_time: expect.any(String),
-        //   id: 1,
-        //   start: expect.any(Number),
-        //   start_time: expect.any(String),
-        //   tags: {
-        //     title: 'console.log("Line 2");',
-        //   },
-        //   time_base: "1/1000",
-        // },
-      ],
-    });
+    expect(videoMetadata.markers).toEqual([
+      {
+        lineCode: 'console.log("Line 1");',
+        lineNum: 1,
+        startFrame: expect.any(Number),
+        startTimeAbsolute: expect.any(Number),
+        startTimeRelative: expect.any(Number),
+      },
+      {
+        lineCode: "await page.waitForTimeout(1);",
+        lineNum: 2,
+        startFrame: expect.any(Number),
+        startTimeAbsolute: expect.any(Number),
+        startTimeRelative: expect.any(Number),
+      },
+      {
+        lineCode: 'console.log("Line 2");',
+        lineNum: 3,
+        startFrame: expect.any(Number),
+        startTimeAbsolute: expect.any(Number),
+        startTimeRelative: expect.any(Number),
+      },
+    ]);
 
-    // Exact start and end times will vary, but we can do some simple sanity checks
+    expect(Array.isArray(videoMetadata.timings)).toBe(true);
+    expect(videoMetadata.timings.length).toBeGreaterThan(0);
+
+    // Exact start times and frames will vary, but we can do some simple sanity checks
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const [chapter1, chapter2] = videoMetadata.chapters!;
+    const [marker1, marker2, marker3] = videoMetadata.markers!;
 
-    expect(chapter1.end).toBe(chapter2.start);
-    expect(chapter1.end_time).toBe(chapter2.start_time);
-    expect(chapter1.start).toBeLessThan(chapter2.start);
-    expect(chapter1.start).toBeLessThan(chapter1.end);
-    expect(chapter2.start).toBeLessThan(chapter2.end);
+    expect(marker1.startTimeAbsolute).toBeLessThanOrEqual(
+      marker2.startTimeAbsolute
+    );
+    expect(marker2.startTimeAbsolute).toBeLessThanOrEqual(
+      marker3.startTimeAbsolute
+    );
+    expect(marker1.startTimeRelative).toBeLessThanOrEqual(
+      marker2.startTimeRelative
+    );
+    expect(marker2.startTimeRelative).toBeLessThanOrEqual(
+      marker3.startTimeRelative
+    );
+    expect(marker1.startFrame).toBeGreaterThanOrEqual(1);
+    expect(marker1.startFrame).toBeLessThanOrEqual(marker2.startFrame);
+    expect(marker2.startFrame).toBeLessThanOrEqual(marker3.startFrame);
   });
 });

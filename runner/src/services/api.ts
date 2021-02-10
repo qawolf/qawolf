@@ -40,6 +40,7 @@ mutation updateRunner($id: ID!, $is_healthy: Boolean, $is_ready: Boolean) {
   updateRunner(id: $id, is_healthy: $is_healthy, is_ready: $is_ready) {
     artifacts {
       gifUrl
+      jsonUrl
       logsUrl
       videoUrl
     }

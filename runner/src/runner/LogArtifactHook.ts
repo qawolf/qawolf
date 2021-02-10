@@ -14,9 +14,12 @@ export class LogArtifactHook implements RunHook {
   async after(): Promise<void> {
     const { logsUrl } = this._artifacts;
 
-    uploadFile({
-      data: JSON.stringify(this._logger.logs),
-      url: logsUrl,
-    });
+    // Can set to "local-only" to skip upload when running tests
+    if (logsUrl !== "local-only") {
+      await uploadFile({
+        data: JSON.stringify(this._logger.logs),
+        url: logsUrl,
+      });
+    }
   }
 }

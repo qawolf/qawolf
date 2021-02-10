@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import Debug from "debug";
-import { intersection, noop } from "lodash";
+import { noop } from "lodash";
 
 import { uploadFile } from "../services/aws";
 import { VideoCapture } from "../services/VideoCapture";
@@ -24,7 +24,10 @@ export class VideoArtifactsHook implements RunHook {
     // To skip capturing, do not supply a gif or video url.
     // To skip upload of either URL but enable recording (primarily for
     // testing), the URL string can be set to "local-only".
-    this._skip = !this._artifacts.gifUrl && !this._artifacts.videoUrl;
+    this._skip =
+      !this._artifacts.gifUrl &&
+      !this._artifacts.jsonUrl &&
+      !this._artifacts.videoUrl;
   }
 
   async after(): Promise<void> {
@@ -32,7 +35,7 @@ export class VideoArtifactsHook implements RunHook {
 
     await this._videoCapture.stop();
 
-    const { gifUrl, videoUrl } = this._artifacts;
+    const { gifUrl, jsonUrl, videoUrl } = this._artifacts;
 
     const promises = [];
 
@@ -60,7 +63,22 @@ export class VideoArtifactsHook implements RunHook {
       );
     }
 
-    // Upload video file and create and upload GIF in parallel
+    if (jsonUrl) {
+      promises.push(
+        (async () => {
+          await this._videoCapture.createMetadataJson();
+
+          if (jsonUrl !== "local-only") {
+            await uploadFile({
+              savePath: this._videoCapture.jsonPath,
+              url: jsonUrl!,
+            });
+          }
+        })()
+      );
+    }
+
+    // Upload video file and create and upload GIF and JSON in parallel
     await Promise.all(promises);
 
     this._onUploaded();
@@ -78,7 +96,7 @@ export class VideoArtifactsHook implements RunHook {
     const lineNum = progress.current_line;
     const lineCode = progress.code.split("\n")[lineNum - 1];
 
-    this._videoCapture.markChapter(lineNum, lineCode);
+    this._videoCapture.markLine(lineNum, lineCode);
   }
 
   async waitForUpload(): Promise<void> {
@@ -86,6 +104,6 @@ export class VideoArtifactsHook implements RunHook {
 
     await this._uploadedPromise;
 
-    debug("video and gif uploaded");
+    debug("video and related assets uploaded");
   }
 }

@@ -6,8 +6,7 @@ import { tmpdir } from "os";
 import { sep } from "path";
 
 import config from "../config";
-import { probeVideoFile } from "../services/ffprobe";
-import { VideoChapter } from "../types";
+import { CustomVideoMetadata } from "../types";
 import { runCommand } from "../util";
 
 const debug = Debug("qawolf:VideoCapture");
@@ -16,10 +15,12 @@ export class VideoCapture {
   readonly _framesPerSecond = 20;
   readonly _shrunkHeight = 640;
 
-  _chapters: VideoChapter[] = [];
   _ffmpeg?: FfmpegCommand;
   _gifPath = "set_in_start_function.gif";
   _jsonPath = "set_in_start_function.json";
+  _metadata: CustomVideoMetadata = {
+    markers: [],
+  };
   _rejectStopped?: (reason: string) => void;
   _resolveStarted?: () => void;
   _resolveStopped?: () => void;
@@ -65,29 +66,44 @@ export class VideoCapture {
     debug("created gif %s", this._gifPath);
   }
 
+  async createMetadataJson(): Promise<void> {
+    await this._buildMarkerMetadata();
+
+    await fs.writeFile(this._jsonPath, JSON.stringify(this._metadata));
+  }
+
   get gifPath(): string {
     return this._gifPath;
   }
 
-  markChapter(lineNum: number, lineCode: string): void {
-    if (lineNum < 1)
-      throw new Error("markChapter: lineNum must be 1 or greater");
+  get jsonPath(): string {
+    return this._jsonPath;
+  }
+
+  markLine(lineNum: number, lineCode: string): void {
+    if (lineNum < 1) throw new Error("markLine: lineNum must be 1 or greater");
+
+    debug("mark line %d: %s", lineNum, lineCode);
+
+    if (!Array.isArray(this._metadata.markers)) this._metadata.markers = [];
 
     // Setting by index rather than .push in case this is called
     // multiple times for the same line number, which it seems to be.
-    this._chapters[lineNum - 1] = {
+    this._metadata.markers[lineNum - 1] = {
       lineCode,
       lineNum,
-      start: Date.now(), // here this is approximate; in _setChapterMetadata we use final timing data to get more exact
+      startFrame: 1, // set in _buildMarkerMetadata
+      startTimeAbsolute: Date.now(), // here this is approximate; in _buildMarkerMetadata we use final timing data to get more exact
+      startTimeRelative: 0, // set in _buildMarkerMetadata
     };
   }
 
-  async _setChapterMetadata(): Promise<void> {
+  async _buildMarkerMetadata(): Promise<void> {
     if (!this._stopped) {
-      throw new Error("Cannot set chapter metadata before video is stopped");
+      throw new Error("Cannot build marker metadata before video is stopped");
     }
 
-    debug("set chapters in %s", this._videoPath);
+    debug("build markers for %s", this._videoPath);
 
     let timings = (await fs.readFile(this._timingsPath))
       .toString()
@@ -103,62 +119,21 @@ export class VideoCapture {
     // As a caution, if there is no timing information, log and skip the rest
     if (timings.length === 0) {
       debug("timings is empty");
-      return;
+      // Continue so at least we can save something to look at for debugging
+    } else {
+      const firstFrameTime = timings[0];
+      for (const marker of this._metadata.markers || []) {
+        const exactStartTimeAbsolute =
+          timings.find((frameTime) => frameTime >= marker.startTimeAbsolute) ||
+          timings[timings.length - 1];
+        marker.startTimeAbsolute = exactStartTimeAbsolute;
+        marker.startTimeRelative = exactStartTimeAbsolute - firstFrameTime;
+        marker.startFrame = timings.indexOf(exactStartTimeAbsolute) + 1;
+        if (marker.startFrame === 0) marker.startFrame = 1; // shouldn't happen but just in case
+      }
     }
 
-    // uncomment for testing
-    // await fs.writeFile(
-    //   this._jsonPath,
-    //   JSON.stringify({ chapters: this._chapters, timings })
-    // );
-
-    const firstFrameTime = timings[0];
-    for (const chapter of this._chapters) {
-      const absoluteStartTime =
-        timings.find((frameTime) => frameTime >= chapter.start) ||
-        timings[timings.length - 1];
-      chapter.start = absoluteStartTime - firstFrameTime;
-    }
-
-    // Get video length to use as the END value of the final chapter.
-    const videoMetadata = await probeVideoFile(this._videoPath, {
-      showFormat: true,
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const videoLengthMS = videoMetadata.format!.duration * 1000;
-
-    const metadata = `;FFMETADATA1
-title=Test Run
-artist=QA Wolf, Inc.
-${this._chapters.reduce(
-  (acc: string, chapter: VideoChapter, currentIndex) => `${acc}
-
-[CHAPTER]
-TIMEBASE=1/1000
-START=${chapter.start}
-END=${this._chapters[currentIndex + 1]?.start || videoLengthMS}
-line=${chapter.lineNum}
-title=${chapter.lineCode}
-`,
-  ""
-)}
-`;
-
-    await fs.writeFile(this._videoMetadataPath, metadata);
-
-    debug("try to spawn %s", config.FFMPEG_PATH);
-
-    try {
-      await runCommand(
-        `${config.FFMPEG_PATH} -i ${this._videoPath} -i ${this._videoMetadataPath} -map_metadata 1 -codec copy ${this._videoWithMetadataPath}`,
-        { debug }
-      );
-    } catch (error) {
-      debug("could not add video metadata %s", error);
-    }
-
-    debug("created video copy with metadata %s", this._videoWithMetadataPath);
+    this._metadata.timings = timings;
   }
 
   async start(display = ":0.0"): Promise<void> {
@@ -242,8 +217,6 @@ title=${chapter.lineCode}
     if (proc) proc.stdin.write("q");
 
     await this._stoppedPromise;
-
-    await this._setChapterMetadata();
   }
 
   get videoPath(): string {

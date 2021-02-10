@@ -5,6 +5,7 @@ import { Logger } from "./Logger";
 // Azure types
 export type SaveArtifacts = {
   gifUrl: string | null;
+  jsonUrl: string | null;
   logsUrl: string;
   videoUrl: string | null;
 };

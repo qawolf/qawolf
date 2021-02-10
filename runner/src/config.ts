@@ -17,7 +17,6 @@ const config = {
   DISPLAY_HEIGHT: process.env.QAWOLF_DISPLAY_HEIGHT || 804,
   // 1280 viewport + 8 scrollbar
   DISPLAY_WIDTH: process.env.QAWOLF_DISPLAY_WIDTH || 1288,
-  FFPROBE_PATH: process.env.FFPROBE_PATH || "/usr/bin/ffprobe",
   FFMPEG_PATH: process.env.FFMPEG_PATH || "/usr/bin/ffmpeg",
   INTERNAL_SERVER_PORT: 26368,
   RECORDER_SCRIPT_FILENAME: "qawolf.recorder.js",

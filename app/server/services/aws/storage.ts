@@ -53,6 +53,7 @@ export const getArtifactsOptions = async ({
   name,
 }: GetArtifactsOptions): Promise<SaveArtifacts> => {
   const gifFileName = `${name}.gif`;
+  const jsonFileName = `${name}.json`;
   const logsFileName = `${name}.txt`;
   const videoFileName = `${name}.mp4`;
 
@@ -60,6 +61,9 @@ export const getArtifactsOptions = async ({
     gifUrl: excludeVideo
       ? null
       : await createStorageWriteAccessUrl(gifFileName),
+    jsonUrl: excludeVideo
+      ? null
+      : await createStorageWriteAccessUrl(jsonFileName),
     logsUrl: await createStorageWriteAccessUrl(logsFileName),
     videoUrl: excludeVideo
       ? null
