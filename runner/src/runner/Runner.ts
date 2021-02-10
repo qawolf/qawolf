@@ -86,6 +86,10 @@ export class Runner extends EventEmitter {
     await this._environment.run(options, hooks);
   }
 
+  async stop(): Promise<void> {
+    await this._environment?.stop();
+  }
+
   updateCode(update: CodeUpdate): boolean {
     const updated = this._environment?.updater.updateCode(update);
     return !!updated;

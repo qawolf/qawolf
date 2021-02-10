@@ -131,6 +131,16 @@ describe("SocketServer", () => {
     });
   });
 
+  describe("socket emits stop", () => {
+    it("invokes runner stop", async () => {
+      const spy = jest.spyOn(server._runner, "stop").mockImplementation();
+      socket.emit("stop");
+      await waitUntil(() => spy.mock.calls.length > 0);
+      expect(spy).toBeCalledTimes(1);
+      spy.mockRestore();
+    });
+  });
+
   describe("socket emits subscribe", () => {
     it("registers the subscription", async () => {
       const spy = jest.spyOn(server._subscriptions, "subscribe");
