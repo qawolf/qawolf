@@ -87,6 +87,12 @@ export class Environment extends EventEmitter {
     }
   }
 
+  async stop(): Promise<void> {
+    this._inProgress.forEach((run) => run.stop());
+    this._inProgress = [];
+    await this._updater.enable();
+  }
+
   get updater(): CodeUpdater {
     return this._updater;
   }
