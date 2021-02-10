@@ -109,15 +109,12 @@ describe("trigger model", () => {
 
       expect(triggers).toMatchObject([
         {
-          alert_integration_id: null,
-          alert_only_on_failure: false,
           creator_id: "userId",
           deleted_at: null,
           deployment_integration_id: null,
           environment_id: null,
           id: expect.any(String),
           is_default: false,
-          is_email_enabled: true,
           name: "Schedule (once an hour)",
           next_at: expect.any(Date),
           repeat_minutes: 60,
@@ -142,11 +139,9 @@ describe("trigger model", () => {
 
       expect(triggers).toMatchObject([
         {
-          alert_integration_id: null,
           creator_id: "userId",
           id: expect.any(String),
           is_default: true,
-          is_email_enabled: true,
           name: "All Tests",
           next_at: null,
           repeat_minutes: null,

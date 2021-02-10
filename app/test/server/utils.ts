@@ -140,7 +140,6 @@ type BuildTrigger = {
   is_default?: boolean;
   name?: string;
   next_at?: string | null;
-  alert_integration_id?: string;
   repeat_minutes?: number | null;
   team_id?: string;
 };
@@ -429,14 +428,12 @@ export const buildTrigger = ({
   is_default,
   name,
   next_at,
-  alert_integration_id,
   repeat_minutes,
   team_id,
 }: BuildTrigger): Trigger => {
   const finalI = i || 1;
 
   return {
-    alert_integration_id: alert_integration_id || null,
     creator_id: "userId",
     deleted_at: null,
     deployment_branches: deployment_branches || null,
@@ -445,7 +442,6 @@ export const buildTrigger = ({
     environment_id: environment_id || null,
     id: `trigger${finalI === 1 ? "" : i}Id`,
     is_default: is_default === undefined ? false : is_default,
-    is_email_enabled: true,
     name: name || `trigger${finalI}`,
     next_at: next_at || null,
     repeat_minutes: repeat_minutes === undefined ? 60 : repeat_minutes,

@@ -118,16 +118,6 @@ describe("sendAlert", () => {
 
     await db("teams").update({ alert_only_on_failure: false });
   });
-
-  it("does not send alerts per team settings", async () => {
-    await db("teams").update({ is_email_alert_enabled: false });
-
-    await sendAlert({ logger, suite_id: "suite3Id" });
-    expect(email.sendEmailAlert).not.toBeCalled();
-    expect(slack.sendSlackAlert).not.toBeCalled();
-
-    await db("teams").update({ is_email_alert_enabled: true });
-  });
 });
 
 describe("shouldSendAlert", () => {
