@@ -1,13 +1,12 @@
 import { Box } from "grommet";
 import throttle from "lodash/throttle";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import {
   AutoSizer,
   CellMeasurer,
   CellMeasurerCache,
   List,
   ListRowRenderer,
-  OnScrollParams,
 } from "react-virtualized";
 
 import { RunnerContext } from "../contexts/RunnerContext";
@@ -22,31 +21,17 @@ const cache = new CellMeasurerCache({
   fixedWidth: true,
 });
 
-let wasAutoScroll = false;
-let shouldAutoScroll = true;
-
-const scrollToBottom = throttle((list: List, index: number) => {
-  if (!shouldAutoScroll) return;
-
-  wasAutoScroll = true;
-  list.scrollToRow(index);
-}, 200);
+const scrollToBottom = throttle(
+  (list: List, index: number) => {
+    list.scrollToRow(index);
+  },
+  200,
+  { leading: true }
+);
 
 const clearCache = throttle(() => {
   cache.clearAll();
 }, 200);
-
-function onScroll(this: List | undefined, options: OnScrollParams): void {
-  if (!this || wasAutoScroll) {
-    wasAutoScroll = false;
-    return;
-  }
-
-  const maxScroll = this.getOffsetForRow(this.props.logs.length);
-
-  // autoscroll if the user scrolled to the bottom 90%
-  shouldAutoScroll = options.scrollTop >= maxScroll * 0.9;
-}
 
 const rowRenderer: ListRowRenderer = function ({
   index,
@@ -69,14 +54,19 @@ export default function RunLogs({ isVisible }: Props): JSX.Element {
   const { apiKey, wsUrl } = useContext(RunnerContext);
   const { run } = useContext(TestContext);
   const { logs } = useLogs({ apiKey, run, wsUrl });
-  const ref = useRef<List>(null);
+  const [list, setList] = useState<List>(null);
 
   const [size, setSize] = useState(0);
 
+  const onRef = useCallback((value) => {
+    setList(value);
+  }, []);
+
   useEffect(() => {
-    if (!ref.current) return;
-    scrollToBottom(ref.current, logs.length);
-  }, [logs.length, ref]);
+    if (!list) return;
+
+    scrollToBottom(list, logs.length);
+  }, [list, logs.length]);
 
   useEffect(() => {
     // clear the heights cache when the size changes
@@ -97,9 +87,8 @@ export default function RunLogs({ isVisible }: Props): JSX.Element {
               estimatedRowSize={20}
               height={height}
               logs={logs}
-              onScroll={onScroll.bind(ref.current)}
               overscanRowCount={10}
-              ref={ref}
+              ref={onRef}
               rowCount={logs.length}
               rowHeight={cache.rowHeight}
               rowRenderer={rowRenderer}
