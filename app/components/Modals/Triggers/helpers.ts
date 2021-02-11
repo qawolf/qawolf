@@ -1,4 +1,5 @@
 import { Icon } from "grommet-icons";
+import isNil from "lodash/isNil";
 
 import { TestTriggers, Trigger } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
@@ -8,6 +9,17 @@ type GetIsSelected = {
   testIds: string[];
   testTriggers: TestTriggers[];
   triggerId: string;
+};
+
+export type TriggerMode = "deployment" | "onDemand" | "schedule";
+
+export const defaultRepeatMinutes = 24 * 60; // daily
+
+export const getDefaultMode = (trigger: Trigger | null): TriggerMode => {
+  if (!trigger || !isNil(trigger.repeat_minutes)) return "schedule";
+  if (trigger.deployment_integration_id) return "deployment";
+
+  return "onDemand";
 };
 
 export const getDefaultScheduleName = (
@@ -44,3 +56,8 @@ export const labelTextProps = {
   margin: { bottom: "small" },
   size: "componentBold" as const,
 };
+
+export const repeatMinutesOptions = [
+  { label: copy.frequencyDaily, value: defaultRepeatMinutes },
+  { label: copy.frequencyHourly, value: 60 },
+];

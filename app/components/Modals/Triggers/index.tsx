@@ -6,7 +6,7 @@ import { Trigger } from "../../../lib/types";
 import Modal from "../../shared-new/Modal";
 import { StateContext } from "../../StateContext";
 import ConfirmDelete from "./ConfirmDelete";
-import CreateTrigger from "./CreateTrigger";
+import CreateOrEditTrigger from "./CreateOrEditTrigger";
 import EditTriggers from "./EditTriggers";
 
 type Props = {
@@ -63,9 +63,10 @@ export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
             trigger={deleteTrigger}
           />
         )}
-        {isCreate && (
-          <CreateTrigger
+        {(!!editTrigger || isCreate) && (
+          <CreateOrEditTrigger
             closeModal={closeModal}
+            editTrigger={editTrigger}
             onBack={handleBack}
             triggers={triggers || []}
           />

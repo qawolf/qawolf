@@ -7,19 +7,24 @@ import Text from "../../shared-new/Text";
 import { StateContext } from "../../StateContext";
 
 type Props = {
-  selectedEnvironmentId: string;
-  setSelectedEnvironmentId: (environmentId: string) => void;
+  environmentId: string;
+  setEnvironmentId: (environmentId: string) => void;
 };
 
 export default function Environment({
-  selectedEnvironmentId,
-  setSelectedEnvironmentId,
+  environmentId,
+  setEnvironmentId,
 }: Props): JSX.Element {
-  const { environmentId, teamId } = useContext(StateContext);
-  const { data } = useEnvironments({ team_id: teamId }, { environmentId });
+  const { environmentId: stateEnvironmentId, teamId } = useContext(
+    StateContext
+  );
+  const { data } = useEnvironments(
+    { team_id: teamId },
+    { environmentId: stateEnvironmentId }
+  );
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setSelectedEnvironmentId(e.target.value);
+    setEnvironmentId(e.target.value);
   };
 
   let environmentsHtml = null;
@@ -37,7 +42,7 @@ export default function Environment({
         name="environment"
         onChange={handleChange}
         options={options}
-        value={selectedEnvironmentId}
+        value={environmentId}
         wrap
       />
     );

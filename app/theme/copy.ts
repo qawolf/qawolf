@@ -92,6 +92,7 @@ export const copy = {
     "Debug with video, logs, and the exact line a test failed on.",
   edit: "Edit",
   editTest: "Edit test",
+  editTrigger: "Edit trigger",
   editTriggers: "Edit triggers",
   email: "Email",
   emailPlaceholder: "you@awesome.com",
