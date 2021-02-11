@@ -38,10 +38,11 @@ export const buildMessageForSuite = ({
 
   const failingRuns = runs.filter((r) => r.status === "fail");
 
+  const status = failingRuns.length ? "failed." : "passed!";
+
   const suiteHref = new URL(`/tests/${suite.id}`, environment.APP_URL).href;
-  const headline = `${wolfName} here: <${suiteHref}|${trigger.name} tests> ${
-    failingRuns.length ? "failed." : "passed!"
-  }`;
+  const headline = `${wolfName} here: <${suiteHref}|${trigger.name} tests> ${status}`;
+  const text = `${trigger.name} tests ${status}`;
 
   const runBlocks = failingRuns.map((run) => {
     return {
@@ -76,6 +77,7 @@ export const buildMessageForSuite = ({
       },
       ...runBlocks,
     ],
+    text,
   };
 };
 
