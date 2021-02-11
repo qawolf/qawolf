@@ -29,6 +29,7 @@ export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
   const triggers = (data?.triggers || []).filter((t) => !t.is_default);
   const shouldCreate = data?.triggers && !triggers.length;
 
+  // TODO: do not do this after deleting last trigger
   useEffect(() => {
     // enter create mode if there are no non-default triggers
     if (shouldCreate) setIsCreate(true);
