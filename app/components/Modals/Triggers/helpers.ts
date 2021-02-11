@@ -1,9 +1,26 @@
 import { Icon } from "grommet-icons";
-import isNil from "lodash/isNil";
+import capitalize from "lodash/capitalize";
 
-import { TestTriggers, Trigger } from "../../../lib/types";
+import {
+  DeploymentEnvironment,
+  TestTriggers,
+  Trigger,
+  TriggerFields,
+} from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import Calendar from "../../shared-new/icons/Calendar";
+
+export type TriggerMode = "deployment" | "onDemand" | "schedule";
+
+type BuildTriggerFields = {
+  deployBranches: string | null;
+  deployEnv: DeploymentEnvironment | null;
+  deployIntegrationId: string | null;
+  environmentId: string | null;
+  mode: TriggerMode;
+  name: string;
+  repeatMinutes: number;
+};
 
 type GetIsSelected = {
   testIds: string[];
@@ -11,22 +28,79 @@ type GetIsSelected = {
   triggerId: string;
 };
 
-export type TriggerMode = "deployment" | "onDemand" | "schedule";
+type GetDefaultName = {
+  deployEnv: DeploymentEnvironment | null;
+  mode: TriggerMode;
+  repeatMinutes: number;
+  triggers: Trigger[];
+};
 
 export const defaultRepeatMinutes = 24 * 60; // daily
 
+const nullDeploymentFields = {
+  deployment_branches: null,
+  deployment_environment: null,
+  deployment_integration_id: null,
+};
+
+export const buildTriggerFields = ({
+  deployBranches,
+  deployEnv,
+  deployIntegrationId,
+  environmentId,
+  mode,
+  name,
+  repeatMinutes,
+}: BuildTriggerFields): TriggerFields => {
+  const constantFields = { environment_id: environmentId, name };
+
+  if (mode === "schedule") {
+    return {
+      ...constantFields,
+      ...nullDeploymentFields,
+      repeat_minutes: repeatMinutes,
+    };
+  }
+
+  if (mode === "deployment") {
+    return {
+      ...constantFields,
+      deployment_branches: deployBranches,
+      deployment_environment: deployEnv,
+      deployment_integration_id: deployIntegrationId,
+      repeat_minutes: null,
+    };
+  }
+
+  return {
+    ...constantFields,
+    ...nullDeploymentFields,
+    repeat_minutes: null,
+  };
+};
+
 export const getDefaultMode = (trigger: Trigger | null): TriggerMode => {
-  if (!trigger || !isNil(trigger.repeat_minutes)) return "schedule";
+  if (!trigger || trigger.repeat_minutes) return "schedule";
   if (trigger.deployment_integration_id) return "deployment";
 
   return "onDemand";
 };
 
-export const getDefaultScheduleName = (
-  repeatMinutes: number,
-  triggers: Trigger[]
-): string => {
-  const defaultName = repeatMinutes === 60 ? copy.hourly : copy.daily;
+export const getDefaultName = ({
+  deployEnv,
+  mode,
+  repeatMinutes,
+  triggers,
+}: GetDefaultName): string => {
+  let defaultName = copy.onDemand;
+
+  if (mode === "schedule") {
+    defaultName = repeatMinutes === 60 ? copy.hourly : copy.daily;
+  } else if (mode === "deployment") {
+    defaultName = deployEnv
+      ? capitalize(`${deployEnv} ${copy.deployment}`)
+      : copy.deployment;
+  }
 
   if (triggers.some((t) => t.name === defaultName)) {
     return copy.triggerNamePlaceholder;
@@ -53,7 +127,7 @@ export const getTriggerIconComponent = (trigger: Trigger): Icon => {
 
 export const labelTextProps = {
   color: "gray9",
-  margin: { bottom: "small" },
+  margin: { bottom: "small", top: "medium" },
   size: "componentBold" as const,
 };
 

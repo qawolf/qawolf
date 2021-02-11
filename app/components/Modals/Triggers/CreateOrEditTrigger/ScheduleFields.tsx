@@ -20,9 +20,7 @@ export default function ScheduleFields({
 
   return (
     <>
-      <Text {...labelTextProps} margin={{ bottom: "small", top: "medium" }}>
-        {copy.frequency}
-      </Text>
+      <Text {...labelTextProps}>{copy.frequency}</Text>
       <RadioButtonGroup
         direction="row"
         gap="medium"

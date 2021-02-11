@@ -18,18 +18,18 @@ export default function SelectEnvironment({ trigger }: Props): JSX.Element {
   const handleEnvironmentClick = (environmentId: string): void => {
     state.setEnvironmentId(environmentId);
 
-    updateTrigger({
-      optimisticResponse: {
-        updateTrigger: {
-          ...trigger,
-          environment_id: environmentId,
-        },
-      },
-      variables: {
-        environment_id: environmentId,
-        id: trigger.id,
-      },
-    });
+    // updateTrigger({
+    //   optimisticResponse: {
+    //     updateTrigger: {
+    //       ...trigger,
+    //       environment_id: environmentId,
+    //     },
+    //   },
+    //   variables: {
+    //     environment_id: environmentId,
+    //     id: trigger.id,
+    //   },
+    // });
   };
 
   return (

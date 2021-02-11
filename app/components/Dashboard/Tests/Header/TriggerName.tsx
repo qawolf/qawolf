@@ -10,15 +10,15 @@ export default function TriggerName({ trigger }: Props): JSX.Element {
   const [updateTrigger] = useUpdateTrigger();
 
   const handleChange = (newName: string) => {
-    updateTrigger({
-      optimisticResponse: {
-        updateTrigger: {
-          ...trigger,
-          name: newName,
-        },
-      },
-      variables: { id: trigger.id, name: newName },
-    });
+    // updateTrigger({
+    //   optimisticResponse: {
+    //     updateTrigger: {
+    //       ...trigger,
+    //       name: newName,
+    //     },
+    //   },
+    //   variables: { id: trigger.id, name: newName },
+    // });
   };
 
   return (

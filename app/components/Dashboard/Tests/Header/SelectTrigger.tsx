@@ -52,12 +52,12 @@ export default function SelectTrigger({
       repeat_minutes,
     };
 
-    updateTrigger({
-      optimisticResponse: {
-        updateTrigger: { ...trigger, ...updates },
-      },
-      variables: { id: trigger.id, ...updates },
-    });
+    // updateTrigger({
+    //   optimisticResponse: {
+    //     updateTrigger: { ...trigger, ...updates },
+    //   },
+    //   variables: { id: trigger.id, ...updates },
+    // });
   };
 
   return (

@@ -2,7 +2,11 @@ import { Box } from "grommet";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 
 import { useOnHotKey } from "../../../../hooks/onHotKey";
-import { Trigger, TriggerFields } from "../../../../lib/types";
+import {
+  DeploymentEnvironment,
+  Trigger,
+  TriggerFields,
+} from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import TextInput from "../../../shared-new/AppTextInput";
 import ArrowLeft from "../../../shared-new/icons/ArrowLeft";
@@ -11,12 +15,14 @@ import Text from "../../../shared-new/Text";
 import { StateContext } from "../../../StateContext";
 import Environment from "../Environment";
 import {
+  buildTriggerFields,
   defaultRepeatMinutes,
   getDefaultMode,
-  getDefaultScheduleName,
+  getDefaultName,
   labelTextProps,
   TriggerMode,
 } from "../helpers";
+import DeploymentFields from "./DeploymentFields";
 import ModeTabs from "./ModeTabs";
 import ScheduleFields from "./ScheduleFields";
 
@@ -47,6 +53,14 @@ export default function Form({
     editTrigger?.repeat_minutes || defaultRepeatMinutes
   );
 
+  const [deployBranches, setDeployBranches] = useState<string | null>(null);
+  const [deployEnv, setDeployEnv] = useState<DeploymentEnvironment | null>(
+    null
+  );
+  const [deployIntegrationId, setDeployIntegrationId] = useState<string | null>(
+    null
+  );
+
   const [environmentId, setEnvironmentId] = useState<string | null>(
     editTrigger?.environment_id || stateEnvironmentId
   );
@@ -55,8 +69,8 @@ export default function Form({
   useEffect(() => {
     if (editTrigger || hasEditedName) return;
 
-    setName(getDefaultScheduleName(repeatMinutes, triggers));
-  }, [editTrigger, hasEditedName, repeatMinutes, triggers]);
+    setName(getDefaultName({ deployEnv, mode, repeatMinutes, triggers }));
+  }, [deployEnv, editTrigger, hasEditedName, mode, repeatMinutes, triggers]);
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
     if (!hasEditedName) setHasEditedName(true);
@@ -69,11 +83,17 @@ export default function Form({
       return;
     }
 
-    onSave({
-      environment_id: environmentId,
-      name,
-      repeat_minutes: repeatMinutes,
-    });
+    onSave(
+      buildTriggerFields({
+        deployBranches,
+        deployEnv,
+        deployIntegrationId,
+        environmentId,
+        mode,
+        name,
+        repeatMinutes,
+      })
+    );
   };
 
   useOnHotKey({ hotKey: "Enter", onHotKey: handleSave });
@@ -82,7 +102,9 @@ export default function Form({
     <Box margin={{ top: "xxsmall" }}>
       <ModeTabs mode={mode} setMode={setMode} />
       <Box margin={{ top: "medium" }}>
-        <Text {...labelTextProps}>{copy.name}</Text>
+        <Text {...labelTextProps} margin={{ bottom: "small" }}>
+          {copy.name}
+        </Text>
         <TextInput
           error={nameError}
           onChange={handleNameChange}
@@ -95,6 +117,7 @@ export default function Form({
             setRepeatMinutes={setRepeatMinutes}
           />
         )}
+        {mode === "deployment" && <DeploymentFields />}
         <Environment
           environmentId={environmentId}
           setEnvironmentId={setEnvironmentId}

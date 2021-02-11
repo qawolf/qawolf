@@ -39,7 +39,6 @@ import { state } from "../lib/state";
 import {
   ApiKey,
   AuthenticatedUser,
-  DeploymentEnvironment,
   Environment,
   EnvironmentVariable,
   Integration,
@@ -48,6 +47,7 @@ import {
   Team,
   Test,
   Trigger,
+  TriggerFields,
   User,
 } from "../lib/types";
 
@@ -297,14 +297,8 @@ type UpdateTriggerData = {
   updateTrigger: Trigger;
 };
 
-type UpdateTriggerVariables = {
-  deployment_branches?: string | null;
-  deployment_environment?: DeploymentEnvironment | null;
-  deployment_integration_id?: string | null;
-  environment_id?: string | null;
+type UpdateTriggerVariables = TriggerFields & {
   id: string;
-  name?: string;
-  repeat_minutes?: number | null;
 };
 
 type UpdateUserData = {

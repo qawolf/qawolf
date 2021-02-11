@@ -181,9 +181,12 @@ export type TestTriggers = {
 };
 
 export type TriggerFields = {
-  environment_id?: string | null;
+  deployment_branches: string | null;
+  deployment_environment: DeploymentEnvironment | null;
+  deployment_integration_id: string | null;
+  environment_id: string | null;
   name: string;
-  repeat_minutes?: number | null;
+  repeat_minutes: number | null;
 };
 
 export type ValueProp = {

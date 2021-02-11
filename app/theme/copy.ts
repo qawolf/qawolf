@@ -78,6 +78,7 @@ export const copy = {
   delightUsers: "Delight users",
   delightUsersDetail:
     "9/10 users form a bad opinion of your brand if your app does not work.",
+  deployService: "Deploy service",
   deployment: "Deployment",
   deploymentsDetail: "Which deployments do you want to test?",
   discoverBugs:
@@ -213,7 +214,6 @@ export const copy = {
   selectedBranches: "Selected branches",
   selectedBranchesInput:
     "Run tests only when these branches are deployed (comma separated list)",
-  selectPlatform: "Which tool do you use to deploy?",
   sendInvites: "Send invites",
   setEnvVariables: "Set environment variables",
   share: "Share run",
