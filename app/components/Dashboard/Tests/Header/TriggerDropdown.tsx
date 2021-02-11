@@ -34,15 +34,7 @@ export default function TriggerDropdown({
   });
 
   const integrationOptionsHtml = integrations.map((integration) => {
-    const handleClick = () =>
-      state.setModal({
-        integration: {
-          github_repo_name: integration.github_repo_name,
-          id: integration.id,
-        },
-        name: "deployment",
-        trigger: { id: trigger.id, name: trigger.name },
-      });
+    const handleClick = () => {};
 
     return (
       <Option
