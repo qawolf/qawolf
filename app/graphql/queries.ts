@@ -48,10 +48,6 @@ export const dashboardQuery = gql`
             ...SuiteRunFragment
           }
         }
-        triggers {
-          id
-          name
-        }
       }
     }
   }
@@ -141,10 +137,6 @@ export const testQuery = gql`
       }
       test {
         ...TestFragment
-        triggers {
-          id
-          name
-        }
       }
     }
   }
@@ -160,6 +152,12 @@ export const testHistoryQuery = gql`
       started_at
       status
     }
+  }
+`;
+
+export const testTriggersQuery = gql`
+  query testTriggers($test_ids: [ID!]!) {
+    testTriggers(test_ids: $test_ids)
   }
 `;
 

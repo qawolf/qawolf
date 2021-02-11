@@ -8,7 +8,6 @@ import {
   deleteTrigger,
   findDefaultTriggerForTeam,
   findTriggersForTeam,
-  findTriggersForTest,
   updateTrigger,
 } from "../models/trigger";
 import {
@@ -101,21 +100,6 @@ export const triggersResolver = async (
   ensureTeamAccess({ logger, team_id, teams });
 
   return findTriggersForTeam(team_id, { logger });
-};
-
-/**
- * @returns An array of the non-deleted triggers this test belongs to,
- *   sorted alphabetically ascending by name.
- */
-export const testTriggersResolver = async (
-  { id }: Test,
-  _: Record<string, unknown>,
-  { logger }: Context
-): Promise<Trigger[]> => {
-  const log = logger.prefix("testTriggersResolver");
-  log.debug("test", id);
-
-  return findTriggersForTest(id, { logger });
 };
 
 /**

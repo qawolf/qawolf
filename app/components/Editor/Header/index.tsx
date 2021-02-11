@@ -1,5 +1,6 @@
 import { Box } from "grommet";
 import { Trigger } from "grommet-icons";
+import { useRouter } from "next/router";
 import { useContext } from "react";
 
 import { routes } from "../../../lib/routes";
@@ -20,11 +21,15 @@ import TestName from "./TestName";
 type Props = { mode: Mode };
 
 export default function Header({ mode }: Props): JSX.Element {
+  const {
+    query: { test_id },
+  } = useRouter();
+
   const { progress } = useContext(RunnerContext);
   const { run, test } = useContext(TestContext);
 
   const handleTriggerClick = (): void => {
-    state.setModal({ name: "triggers" });
+    state.setModal({ name: "triggers", testIds: [test_id] as string[] });
   };
 
   return (

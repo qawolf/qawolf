@@ -363,9 +363,6 @@ type Test {
   "Summary of most recent runs of this test"
   summary: TestSummary
 
-  "List of test triggers this test belongs to"
-  triggers: [Trigger!]!
-
   "Date and time at which this test was last updated"
   updated_at: String!
 
@@ -1177,4 +1174,12 @@ type Query {
     "The test run ID"
     run_id: ID
   ): TestResult!
+
+  """
+  Returns JSON with a test id as the key and a list of trigger ids
+  as the value.
+
+  Requires that one of the teams you are on owns the tests.
+  """
+  testTriggers("The test IDs" test_ids: [ID!]!): String!
 }

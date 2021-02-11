@@ -2,9 +2,32 @@ import { db } from "../db";
 import {
   createTestTriggersForTrigger,
   deleteTestTriggersForTrigger,
+  findTestTriggersForTests,
 } from "../models/test_trigger";
-import { Context, UpdateTestTriggersMutation } from "../types";
+import { Context, TestIdsQuery, UpdateTestTriggersMutation } from "../types";
 import { ensureTestAccess, ensureTriggerAccess } from "./utils";
+
+/**
+ * @returns JSON of test ids and associated trigger ids
+ */
+export const testTriggersResolver = async (
+  _: Record<string, unknown>,
+  { test_ids }: TestIdsQuery,
+  { logger, teams }: Context
+): Promise<string> => {
+  const log = logger.prefix("testTriggersResolver");
+  log.debug("tests", test_ids);
+
+  await Promise.all(
+    test_ids.map((test_id) => {
+      return ensureTestAccess({ logger, teams, test_id });
+    })
+  );
+
+  const testTriggers = await findTestTriggersForTests(test_ids, { logger });
+
+  return JSON.stringify(testTriggers);
+};
 
 /**
  * @returns Count of test triggers deleted

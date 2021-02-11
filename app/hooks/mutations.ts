@@ -154,7 +154,7 @@ type CreateTriggerData = {
 };
 
 export type CreateTriggerVariables = {
-  environment_id: string | null;
+  environment_id?: string | null;
   name: string;
   repeat_minutes?: number | null;
   team_id: string;
@@ -530,7 +530,7 @@ export const useCreateTrigger = (): MutationTuple<
         state.setTriggerId(createTrigger.id);
       },
       onError,
-      refetchQueries: ["test", "triggers"],
+      refetchQueries: ["testTriggers", "triggers"],
     }
   );
 };

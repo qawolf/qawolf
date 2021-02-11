@@ -14,6 +14,7 @@ import {
   teamQuery,
   testHistoryQuery,
   testQuery,
+  testTriggersQuery,
   triggersQuery,
 } from "../graphql/queries";
 import { JWT_KEY } from "../lib/client";
@@ -134,6 +135,14 @@ type TestHistoryData = {
 
 type TestHistoryVariables = {
   id: string;
+};
+
+type TestTriggersData = {
+  testTriggers: string;
+};
+
+type TestTriggersVariables = {
+  test_ids: string[];
 };
 
 type TriggersData = {
@@ -324,6 +333,16 @@ export const useTestHistory = (
   return useQuery<TestHistoryData, TestHistoryVariables>(testHistoryQuery, {
     fetchPolicy,
     skip: !variables.id,
+    variables,
+  });
+};
+
+export const useTestTriggers = (
+  variables: TestTriggersVariables
+): QueryResult<TestTriggersData, TestTriggersVariables> => {
+  return useQuery<TestTriggersData, TestTriggersVariables>(testTriggersQuery, {
+    fetchPolicy,
+    skip: !variables.test_ids.length,
     variables,
   });
 };

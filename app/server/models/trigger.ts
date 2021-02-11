@@ -186,24 +186,6 @@ export const findTriggersForGitHubIntegration = async (
   return triggers;
 };
 
-export const findTriggersForTest = async (
-  test_id: string,
-  { logger, trx }: ModelOptions
-): Promise<Trigger[]> => {
-  const log = logger.prefix("findTriggersForTest");
-  log.debug("test", test_id);
-
-  const triggers = await (trx || db)
-    .select("triggers.*" as "*")
-    .from("triggers")
-    .innerJoin("test_triggers", "triggers.id", "test_triggers.trigger_id")
-    .where({ "triggers.deleted_at": null, "test_triggers.test_id": test_id })
-    .orderBy("triggers.name", "asc");
-  log.debug(`found ${triggers.length} triggers`);
-
-  return triggers;
-};
-
 export const deleteTrigger = async (
   id: string,
   { logger, trx }: ModelOptions

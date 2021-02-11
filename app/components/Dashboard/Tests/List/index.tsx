@@ -2,12 +2,7 @@ import { Box } from "grommet";
 import { useRouter } from "next/router";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-import {
-  SuiteRun,
-  TestTriggers,
-  TestWithSummary,
-  Trigger,
-} from "../../../../lib/types";
+import { SuiteRun, TestWithSummary, Trigger } from "../../../../lib/types";
 import { getSelectedTests } from "../utils";
 import Actions from "./Actions";
 import ListItems from "./ListItems";
@@ -18,7 +13,6 @@ type Props = {
   selectedIds: string[];
   selectedTriggerId: string;
   setSelectedIds: Dispatch<SetStateAction<string[]>>;
-  testTriggers: TestTriggers;
   tests: TestWithSummary[] | null;
   triggers: Trigger[];
   wolfVariant: string;
@@ -30,7 +24,6 @@ export default function List({
   selectedIds,
   selectedTriggerId,
   setSelectedIds,
-  testTriggers,
   tests,
   triggers,
   wolfVariant,
@@ -88,7 +81,6 @@ export default function List({
         search={search}
         selectedTests={selectedTests}
         setSearch={setSearch}
-        testTriggers={testTriggers}
         triggers={triggers}
       />
       <ListItems

@@ -106,7 +106,6 @@ export type Test = {
   id: string;
   is_enabled: boolean;
   name: string;
-  triggers: SelectedTrigger[];
   updated_at: string;
   version: number;
 };
@@ -123,7 +122,6 @@ export type TestWithSummary = Test & {
     gif_url: string | null;
     last_runs: SuiteRun[];
   };
-  triggers: SelectedTrigger[];
 };
 
 export type Trigger = {
@@ -161,10 +159,8 @@ export type CreateCode = {
 export type Modal =
   | "apiKeys"
   | "createTest"
-  | "deployment"
   | "environments"
   | "deleteTest"
-  | "deleteTrigger"
   | "teamSettings"
   | "triggers";
 
@@ -172,17 +168,7 @@ export type NavigationOption = "code" | "logs" | "helpers";
 
 export type NavigationType = "dark" | "light";
 
-export type SelectedIntegration = {
-  github_repo_name: string;
-  id: string;
-};
-
 export type SelectedTest = {
-  id: string;
-  name: string;
-};
-
-export type SelectedTrigger = {
   id: string;
   name: string;
 };
@@ -194,9 +180,9 @@ export type TestTriggers = {
 };
 
 export type TriggerFields = {
-  environment_id: string | null;
+  environment_id?: string | null;
   name: string;
-  repeat_minutes: number | null;
+  repeat_minutes?: number | null;
 };
 
 export type ValueProp = {
@@ -252,11 +238,10 @@ type SignUp = {
 };
 
 type ModalState = {
-  integration?: SelectedIntegration;
   name: Modal | null;
   teamId?: string;
+  testIds?: string[];
   tests?: SelectedTest[];
-  trigger?: SelectedTrigger;
 };
 
 export type State = {

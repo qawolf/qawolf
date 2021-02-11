@@ -50,7 +50,6 @@ export default function CreateTrigger({
     );
   });
 
-  // TODO: create test_trigger records in mutation
   const handleSave = (fields: TriggerFields): void => {
     createTrigger({
       variables: {

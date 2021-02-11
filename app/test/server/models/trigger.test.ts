@@ -19,7 +19,6 @@ const {
   findTrigger,
   findTriggersForGitHubIntegration,
   findTriggersForTeam,
-  findTriggersForTest,
   findPendingTriggers,
   getNextAt,
   getNextDay,
@@ -322,46 +321,6 @@ describe("trigger model", () => {
         { id: "trigger2Id", name: "All Tests" },
         { id: "triggerId", name: "A Trigger" },
         { id: "trigger4Id", name: "B Trigger" },
-      ]);
-    });
-  });
-
-  describe("findTriggersForTest", () => {
-    beforeAll(async () => {
-      await db("triggers").insert([
-        buildTrigger({ name: "B Trigger" }),
-        buildTrigger({ i: 2, is_default: true, name: "All Tests" }),
-        buildTrigger({ i: 3 }),
-        {
-          ...buildTrigger({}),
-          deleted_at: minutesFromNow(),
-          id: "deletedTriggerId",
-        },
-      ]);
-      await db("tests").insert(buildTest({}));
-      return db("test_triggers").insert([
-        { id: "triggerTestId", test_id: "testId", trigger_id: "triggerId" },
-        { id: "triggerTest2Id", test_id: "testId", trigger_id: "trigger2Id" },
-        {
-          id: "triggerTest3Id",
-          test_id: "testId",
-          trigger_id: "deletedTriggerId",
-        },
-      ]);
-    });
-
-    afterAll(async () => {
-      await db("test_triggers").del();
-      await db("triggers").del();
-      return db("tests").del();
-    });
-
-    it("finds triggers for a test", async () => {
-      const triggers = await findTriggersForTest("testId", { logger });
-
-      expect(triggers).toMatchObject([
-        { name: "All Tests" },
-        { name: "B Trigger" },
       ]);
     });
   });

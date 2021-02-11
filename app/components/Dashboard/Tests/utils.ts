@@ -74,17 +74,6 @@ export const getSelectedTests = ({
   return selectedTests;
 };
 
-export const getTestTriggers = (tests?: TestWithSummary[]): TestTriggers => {
-  if (!tests) return {};
-  const testTriggers: TestTriggers = {};
-
-  tests.forEach(({ id, triggers }) => {
-    testTriggers[id] = triggers.map((t) => t.id);
-  });
-
-  return testTriggers;
-};
-
 const isFailed = ({ runs }: Suite): boolean => {
   const failRun = runs.find((suiteRun) => suiteRun.status === "fail");
   return !!failRun;

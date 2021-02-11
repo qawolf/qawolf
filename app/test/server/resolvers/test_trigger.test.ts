@@ -1,8 +1,12 @@
 import { db, dropTestDb, migrateDb } from "../../../server/db";
-import { updateTestTriggersResolver } from "../../../server/resolvers/test_trigger";
+import {
+  testTriggersResolver,
+  updateTestTriggersResolver,
+} from "../../../server/resolvers/test_trigger";
 import {
   buildTeam,
   buildTest,
+  buildTestTrigger,
   buildTrigger,
   buildUser,
   logger,
@@ -24,6 +28,30 @@ const testContext = {
   teams: [buildTeam({})],
   user: buildUser({}),
 };
+
+describe("testTriggersResolver", () => {
+  beforeAll(async () => {
+    await db("triggers").insert([buildTrigger({}), buildTrigger({ i: 2 })]);
+    await db("tests").insert(buildTest({}));
+    await db("test_triggers").insert(buildTestTrigger());
+  });
+
+  afterAll(async () => {
+    await db("test_triggers").del();
+    await db("triggers").del();
+    return db("tests").del();
+  });
+
+  it("returns trigger ids for specified tests", async () => {
+    const testTriggers = await testTriggersResolver(
+      {},
+      { test_ids: ["testId"] },
+      testContext
+    );
+
+    expect(testTriggers).toEqual(JSON.stringify({ testId: ["triggerId"] }));
+  });
+});
 
 describe("updateTestTriggersResolver", () => {
   beforeAll(async () => {

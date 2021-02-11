@@ -499,6 +499,10 @@ export type TeamIdQuery = {
   team_id: string;
 };
 
+export type TestIdsQuery = {
+  test_ids: string[];
+};
+
 export type TestQuery = {
   id?: string;
   run_id?: string;
@@ -512,6 +516,10 @@ export type TestResult = {
 export type TestSummary = {
   gif_url: string | null;
   last_runs: SuiteRun[];
+};
+
+export type TestTriggers = {
+  [testId: string]: string[];
 };
 
 export type TriggerIdQuery = {

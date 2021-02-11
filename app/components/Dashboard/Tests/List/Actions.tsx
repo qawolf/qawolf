@@ -3,10 +3,9 @@ import { Add } from "grommet-icons";
 import { Dispatch, SetStateAction } from "react";
 
 import { state } from "../../../../lib/state";
-import { SelectedTest, TestTriggers, Trigger } from "../../../../lib/types";
+import { SelectedTest, Trigger } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import IconButton from "../../../shared/IconButton";
-import AssignTriggers from "./AssignTriggers";
 import DeleteTests from "./DeleteTests";
 import styles from "./List.module.css";
 import SearchInput from "./SearchInput";
@@ -17,7 +16,6 @@ type Props = {
   search: string;
   selectedTests: SelectedTest[];
   setSearch: Dispatch<SetStateAction<string>>;
-  testTriggers: TestTriggers;
   triggers: Trigger[];
 };
 
@@ -27,8 +25,6 @@ export default function Actions({
   search,
   selectedTests,
   setSearch,
-  testTriggers,
-  triggers,
 }: Props): JSX.Element {
   const handleClick = () => {
     state.setModal({ name: "createTest" });
@@ -52,11 +48,6 @@ export default function Actions({
           onClick={handleClick}
         />
         <DeleteTests selectedTests={selectedTests} />
-        <AssignTriggers
-          selectedTests={selectedTests}
-          testTriggers={testTriggers}
-          triggers={triggers}
-        />
       </Box>
       <SearchInput search={search} setSearch={setSearch} />
     </Box>

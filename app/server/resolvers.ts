@@ -49,11 +49,13 @@ import {
   testSummaryResolver,
   updateTestResolver,
 } from "./resolvers/test";
-import { updateTestTriggersResolver } from "./resolvers/test_trigger";
+import {
+  testTriggersResolver,
+  updateTestTriggersResolver,
+} from "./resolvers/test_trigger";
 import {
   createTriggerResolver,
   deleteTriggerResolver,
-  testTriggersResolver,
   triggersResolver,
   updateTriggerResolver,
 } from "./resolvers/trigger";
@@ -77,7 +79,6 @@ export const resolvers = {
   },
   Test: {
     summary: testSummaryResolver,
-    triggers: testTriggersResolver,
   },
   Suite: {
     runs: suiteRunsResolver,
@@ -126,6 +127,7 @@ export const resolvers = {
     team: teamResolver,
     test: testResolver,
     testHistory: testHistoryResolver,
+    testTriggers: testTriggersResolver,
     triggers: triggersResolver,
   },
 };
