@@ -1,16 +1,16 @@
-import { Box, RadioButtonGroup } from "grommet";
+import { RadioButtonGroup } from "grommet";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 
+import { useOnHotKey } from "../../../hooks/onHotKey";
 import { Trigger, TriggerFields } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import TextInput from "../../shared-new/AppTextInput";
+import ArrowLeft from "../../shared-new/icons/ArrowLeft";
+import Buttons from "../../shared-new/Modal/Buttons";
 import Text from "../../shared-new/Text";
 import { StateContext } from "../../StateContext";
 import Environment from "./Environment";
 import { getDefaultScheduleName, labelTextProps } from "./helpers";
-import Buttons from "../../shared-new/Modal/Buttons";
-import ArrowLeft from "../../shared-new/icons/ArrowLeft";
-import { useOnHotKey } from "../../../hooks/onHotKey";
 
 type Props = {
   hideBack: boolean;

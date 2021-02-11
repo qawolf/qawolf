@@ -6,7 +6,6 @@ import {
   buildEnvironment,
   buildIntegration,
   buildTeam,
-  buildTest,
   buildTrigger,
   buildUser,
   logger,

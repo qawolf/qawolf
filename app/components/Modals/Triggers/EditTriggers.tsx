@@ -1,14 +1,17 @@
+import { Box } from "grommet";
+
+import { useUpdateTestTriggers } from "../../../hooks/mutations";
 import { TestTriggers, Trigger } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
-import ListItem from "./ListItem";
-
+import Add from "../../shared-new/icons/Add";
+import Buttons from "../../shared-new/Modal/Buttons";
 import Header from "../../shared-new/Modal/Header";
-import { Box } from "grommet";
-import { useUpdateTestTriggers } from "../../../hooks/mutations";
 import { getIsSelected } from "./helpers";
+import ListItem from "./ListItem";
 
 type Props = {
   closeModal: () => void;
+  onCreate: () => void;
   testIds: string[];
   testTriggers: TestTriggers;
   triggers: Trigger[];
@@ -16,6 +19,7 @@ type Props = {
 
 export default function EditTriggers({
   closeModal,
+  onCreate,
   testIds,
   testTriggers,
   triggers,
@@ -59,6 +63,13 @@ export default function EditTriggers({
       <Box gap="xxxsmall" margin={{ top: "medium" }}>
         {triggersHtml}
       </Box>
+      <Buttons
+        onPrimaryClick={closeModal}
+        onSecondaryClick={onCreate}
+        primaryLabel={copy.done}
+        SecondaryIconComponent={Add}
+        secondaryLabel={copy.createTrigger}
+      />
     </>
   );
 }

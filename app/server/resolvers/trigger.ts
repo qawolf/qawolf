@@ -16,7 +16,6 @@ import {
   DeleteTrigger,
   IdQuery,
   TeamIdQuery,
-  Test,
   Trigger,
   UpdateTriggerMutation,
 } from "../types";

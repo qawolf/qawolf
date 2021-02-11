@@ -36,6 +36,7 @@ export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
   }, [shouldCreate]);
 
   const handleBack = (): void => setIsCreate(false);
+  const handleCreate = (): void => setIsCreate(true);
 
   return (
     <Modal closeModal={closeModal}>
@@ -51,6 +52,7 @@ export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
         {!isCreate && (
           <EditTriggers
             closeModal={closeModal}
+            onCreate={handleCreate}
             testIds={testIds}
             testTriggers={testTriggers}
             triggers={triggers}

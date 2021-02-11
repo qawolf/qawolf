@@ -2,8 +2,8 @@ import { Box } from "grommet";
 import { Trigger } from "grommet-icons";
 import { useRouter } from "next/router";
 import { useContext } from "react";
-import { useTestTriggers } from "../../../hooks/queries";
 
+import { useTestTriggers } from "../../../hooks/queries";
 import { routes } from "../../../lib/routes";
 import { state } from "../../../lib/state";
 import { copy } from "../../../theme/copy";

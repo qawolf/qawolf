@@ -1,5 +1,6 @@
 import { Box, Button } from "grommet";
 import styled from "styled-components";
+
 import { Trigger } from "../../../lib/types";
 import {
   borderSize,
@@ -55,6 +56,14 @@ const StyledListItem = styled(ListItem)`
   background: ${(props) => (props.isSelected ? colors.primary : "transparent")};
   border-radius: ${borderSize.small};
   transition: background ${transitionDuration};
+
+  p {
+    transition: color ${transitionDuration};
+  }
+
+  svg {
+    transition: fill ${transitionDuration};
+  }
 
   &:hover {
     background: ${(props) =>

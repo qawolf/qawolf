@@ -1,8 +1,8 @@
 import { Box } from "grommet";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
-import { useCreateTrigger } from "../../../hooks/mutations";
 
+import { useCreateTrigger } from "../../../hooks/mutations";
 import { Trigger, TriggerFields } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import Header from "../../shared-new/Modal/Header";
