@@ -72,7 +72,7 @@ export default function Header({ mode }: Props): JSX.Element {
             <Button
               IconComponent={Trigger}
               label={
-                testTriggers[test.id]?.length > 1
+                testTriggers[test?.id]?.length > 1
                   ? copy.editTriggers
                   : copy.addTrigger
               }

@@ -1,8 +1,14 @@
 import { Icon } from "grommet-icons";
 
-import { Trigger } from "../../../lib/types";
+import { TestTriggers, Trigger } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import Calendar from "../../shared-new/icons/Calendar";
+
+type GetIsSelected = {
+  testIds: string[];
+  testTriggers: TestTriggers;
+  triggerId: string;
+};
 
 export const getDefaultScheduleName = (
   repeatMinutes: number,
@@ -15,6 +21,16 @@ export const getDefaultScheduleName = (
   }
 
   return defaultName;
+};
+
+export const getIsSelected = ({
+  testIds,
+  testTriggers,
+  triggerId,
+}: GetIsSelected): boolean => {
+  return testIds.every((testId) => {
+    return (testTriggers[testId] || []).includes(triggerId);
+  });
 };
 
 export const getTriggerIconComponent = (trigger: Trigger): Icon => {
