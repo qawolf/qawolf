@@ -33,6 +33,7 @@ import {
   Team,
   Test,
   TestHistoryRun,
+  TestTriggers,
   TestWithSummary,
   Trigger,
   User,
@@ -138,7 +139,7 @@ type TestHistoryVariables = {
 };
 
 type TestTriggersData = {
-  testTriggers: string;
+  testTriggers: TestTriggers[];
 };
 
 type TestTriggersVariables = {

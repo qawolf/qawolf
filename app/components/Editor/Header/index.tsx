@@ -32,10 +32,12 @@ export default function Header({ mode }: Props): JSX.Element {
   const testIds = [test_id] as string[];
 
   const { data: testTriggersData } = useTestTriggers({ test_ids: testIds });
-  const testTriggers = JSON.parse(testTriggersData?.testTriggers || "{}");
+  const hasTriggers = testTriggersData?.testTriggers[0]
+    ? !!testTriggersData?.testTriggers[0].trigger_ids.length
+    : false;
 
   const handleTriggerClick = (): void => {
-    state.setModal({ name: "triggers", testIds, testTriggers });
+    state.setModal({ name: "triggers", testIds });
   };
 
   return (
@@ -71,11 +73,7 @@ export default function Header({ mode }: Props): JSX.Element {
             />
             <Button
               IconComponent={Trigger}
-              label={
-                testTriggers[test?.id]?.length > 1
-                  ? copy.editTriggers
-                  : copy.addTrigger
-              }
+              label={hasTriggers ? copy.editTriggers : copy.addTrigger}
               onClick={handleTriggerClick}
               type="primary"
             />

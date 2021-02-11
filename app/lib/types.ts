@@ -176,7 +176,8 @@ export type SelectedTest = {
 export type Side = "left" | "right";
 
 export type TestTriggers = {
-  [testId: string]: string[];
+  test_id: string;
+  trigger_ids: string[];
 };
 
 export type TriggerFields = {
@@ -241,7 +242,6 @@ type ModalState = {
   name: Modal | null;
   teamId?: string;
   testIds?: string[];
-  testTriggers?: TestTriggers;
   tests?: SelectedTest[];
 };
 

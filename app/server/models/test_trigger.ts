@@ -102,7 +102,7 @@ export const deleteTestTriggersForTests = async (
 export const findTestTriggersForTests = async (
   testIds: string[],
   { logger, trx }: ModelOptions
-): Promise<TestTriggers> => {
+): Promise<TestTriggers[]> => {
   const log = logger.prefix("findTestTriggersForTests");
   log.debug(testIds);
 
@@ -110,13 +110,18 @@ export const findTestTriggersForTests = async (
     .select("test_triggers.*")
     .innerJoin("triggers", "test_triggers.trigger_id", "triggers.id")
     .whereIn("test_triggers.test_id", testIds)
-    .andWhere({ "triggers.deleted_at": null });
+    .andWhere({ "triggers.deleted_at": null, "triggers.is_default": false });
 
-  const result: TestTriggers = {};
+  const result: TestTriggers[] = [];
 
   testTriggers.forEach((t) => {
-    if (!result[t.test_id]) result[t.test_id] = [];
-    result[t.test_id].push(t.trigger_id);
+    const existingRow = result.find((r) => r.test_id === t.test_id);
+
+    if (existingRow) {
+      existingRow.trigger_ids.push(t.trigger_id);
+    } else {
+      result.push({ test_id: t.test_id, trigger_ids: [t.trigger_id] });
+    }
   });
 
   return result;

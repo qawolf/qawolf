@@ -157,7 +157,10 @@ export const testHistoryQuery = gql`
 
 export const testTriggersQuery = gql`
   query testTriggers($test_ids: [ID!]!) {
-    testTriggers(test_ids: $test_ids)
+    testTriggers(test_ids: $test_ids) {
+      test_id
+      trigger_ids
+    }
   }
 `;
 

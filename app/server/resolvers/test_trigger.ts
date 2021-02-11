@@ -4,17 +4,22 @@ import {
   deleteTestTriggersForTrigger,
   findTestTriggersForTests,
 } from "../models/test_trigger";
-import { Context, TestIdsQuery, UpdateTestTriggersMutation } from "../types";
+import {
+  Context,
+  TestIdsQuery,
+  TestTriggers,
+  UpdateTestTriggersMutation,
+} from "../types";
 import { ensureTestAccess, ensureTriggerAccess } from "./utils";
 
 /**
- * @returns JSON of test ids and associated trigger ids
+ * @returns array of test ids and associated trigger ids
  */
 export const testTriggersResolver = async (
   _: Record<string, unknown>,
   { test_ids }: TestIdsQuery,
   { logger, teams }: Context
-): Promise<string> => {
+): Promise<TestTriggers[]> => {
   const log = logger.prefix("testTriggersResolver");
   log.debug("tests", test_ids);
 
@@ -24,9 +29,7 @@ export const testTriggersResolver = async (
     })
   );
 
-  const testTriggers = await findTestTriggersForTests(test_ids, { logger });
-
-  return JSON.stringify(testTriggers);
+  return findTestTriggersForTests(test_ids, { logger });
 };
 
 /**

@@ -11,7 +11,7 @@ import Triggers from "./Triggers";
 
 export default function Modals(): JSX.Element {
   const { modal } = useContext(StateContext);
-  const { name, teamId, testIds, testTriggers, tests } = modal || {};
+  const { name, teamId, testIds, tests } = modal || {};
 
   const closeModal = () => state.setModal({ name: null });
 

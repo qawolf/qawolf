@@ -27,7 +27,7 @@ export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
   );
 
   const { data: testTriggersData } = useTestTriggers({ test_ids: testIds });
-  const testTriggers = JSON.parse(testTriggersData?.testTriggers || "{}");
+  const testTriggers = testTriggersData?.testTriggers || [];
 
   // do not show "All tests" trigger
   const triggers = (data?.triggers || []).filter((t) => !t.is_default);

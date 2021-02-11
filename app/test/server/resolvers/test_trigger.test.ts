@@ -49,7 +49,9 @@ describe("testTriggersResolver", () => {
       testContext
     );
 
-    expect(testTriggers).toEqual(JSON.stringify({ testId: ["triggerId"] }));
+    expect(testTriggers).toEqual([
+      { test_id: "testId", trigger_ids: ["triggerId"] },
+    ]);
   });
 });
 

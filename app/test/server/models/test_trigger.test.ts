@@ -1,3 +1,4 @@
+import { testTriggersQuery } from "../../../graphql/queries";
 import { db, dropTestDb, migrateDb } from "../../../server/db";
 import {
   createTestTrigger,
@@ -217,6 +218,7 @@ describe("test trigger model", () => {
       await db("triggers").insert([
         buildTrigger({ i: 2, is_default: true, name: "All Tests" }),
         buildTrigger({ i: 3 }),
+        buildTrigger({ i: 4 }),
         {
           ...buildTrigger({}),
           deleted_at: new Date().toISOString(),
@@ -235,6 +237,7 @@ describe("test trigger model", () => {
           trigger_id: "deletedTriggerId",
         },
         { id: "testTrigger4Id", test_id: "test2Id", trigger_id: "trigger3Id" },
+        { id: "testTrigger5Id", test_id: "testId", trigger_id: "trigger4Id" },
       ]);
     });
 
@@ -252,12 +255,15 @@ describe("test trigger model", () => {
         }
       );
 
-      testTriggers?.testId.sort();
-
-      expect(testTriggers).toEqual({
-        testId: ["trigger2Id", "triggerId"],
-        test2Id: ["trigger3Id"],
+      testTriggers.sort((a, b) => {
+        return a.test_id.length - b.test_id.length;
       });
+      testTriggers[0].trigger_ids.sort();
+
+      expect(testTriggers).toEqual([
+        { test_id: "testId", trigger_ids: ["trigger4Id", "triggerId"] },
+        { test_id: "test2Id", trigger_ids: ["trigger3Id"] },
+      ]);
     });
   });
 });

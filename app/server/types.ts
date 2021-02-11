@@ -519,7 +519,8 @@ export type TestSummary = {
 };
 
 export type TestTriggers = {
-  [testId: string]: string[];
+  test_id: string;
+  trigger_ids: string[];
 };
 
 export type TriggerIdQuery = {

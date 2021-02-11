@@ -388,6 +388,12 @@ type TestSummary {
   last_runs: [SuiteRun!]!
 }
 
+"A list of trigger IDs for a test"
+type TestTriggers {
+  test_id: ID!
+  trigger_ids: [ID!]!
+}
+
 "A test trigger"
 type Trigger {
   "The branches to run tests on for the GitHub integration (comma separated list)."
@@ -1176,10 +1182,9 @@ type Query {
   ): TestResult!
 
   """
-  Returns JSON with a test id as the key and a list of trigger ids
-  as the value.
+  Returns a test trigger for each test ID.
 
   Requires that one of the teams you are on owns the tests.
   """
-  testTriggers("The test IDs" test_ids: [ID!]!): String!
+  testTriggers("The test IDs" test_ids: [ID!]!): [TestTriggers!]!
 }

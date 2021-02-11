@@ -6,7 +6,7 @@ import Calendar from "../../shared-new/icons/Calendar";
 
 type GetIsSelected = {
   testIds: string[];
-  testTriggers: TestTriggers;
+  testTriggers: TestTriggers[];
   triggerId: string;
 };
 
@@ -29,7 +29,9 @@ export const getIsSelected = ({
   triggerId,
 }: GetIsSelected): boolean => {
   return testIds.every((testId) => {
-    return (testTriggers[testId] || []).includes(triggerId);
+    const testTriggersForTest = testTriggers.find((t) => t.test_id === testId);
+
+    return (testTriggersForTest?.trigger_ids || []).includes(triggerId);
   });
 };
 

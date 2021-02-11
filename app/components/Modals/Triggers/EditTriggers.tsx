@@ -15,7 +15,7 @@ type Props = {
   onDelete: (trigger: Trigger) => void;
   onEdit: (trigger: Trigger) => void;
   testIds: string[];
-  testTriggers: TestTriggers;
+  testTriggers: TestTriggers[];
   triggers: Trigger[];
 };
 
