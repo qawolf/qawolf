@@ -1,4 +1,4 @@
-import { getTopmostEditableElement } from "./element";
+import { getTopmostEditableElement, isVisible } from "./element";
 import { nodeToDoc } from "./serialize";
 import { shouldTrackKeyPress } from "./shouldTrackKeyPress";
 import { shouldTrackFill } from "./shouldTrackFill";
@@ -31,6 +31,12 @@ export const resolveAction = (
   const target = getTopmostEditableElement(
     possibleAction.target as HTMLElement
   );
+
+  // Never emit actions on invisible targets
+  if (!isVisible(target, window.getComputedStyle(target))) {
+    console.debug("resolveAction: ignoring action on invisible target");
+    return;
+  }
 
   const targetDoc = nodeToDoc(target);
   let action = possibleAction.action as Action;

@@ -95,6 +95,29 @@ it("returns undefined for clicks on selects", async () => {
   expect(result).toBe(undefined);
 });
 
+it("returns undefined for actions on invisible targets", async () => {
+  const page = await getFreshPage();
+
+  const result = await page.evaluate(() => {
+    const qawolf: QAWolfWeb = (window as any).qawolf;
+    const target = document.querySelector(
+      'input[type="hidden"]'
+    ) as HTMLElement;
+
+    const mockAction: PossibleAction = {
+      action: "click",
+      isTrusted: false,
+      target,
+      time: Date.now(),
+      value: null,
+    };
+
+    return qawolf.resolveAction(mockAction, undefined);
+  });
+
+  expect(result).toBe(undefined);
+});
+
 it("returns 'selectInput' for 'fill' action on a select", async () => {
   const page = await getFreshPage();
 
