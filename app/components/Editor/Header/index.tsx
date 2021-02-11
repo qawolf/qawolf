@@ -2,6 +2,7 @@ import { Box } from "grommet";
 import { Trigger } from "grommet-icons";
 import { useRouter } from "next/router";
 import { useContext } from "react";
+import { useTestTriggers } from "../../../hooks/queries";
 
 import { routes } from "../../../lib/routes";
 import { state } from "../../../lib/state";
@@ -28,8 +29,13 @@ export default function Header({ mode }: Props): JSX.Element {
   const { progress } = useContext(RunnerContext);
   const { run, test } = useContext(TestContext);
 
+  const testIds = [test_id] as string[];
+
+  const { data: testTriggersData } = useTestTriggers({ test_ids: testIds });
+  const testTriggers = JSON.parse(testTriggersData?.testTriggers || "{}");
+
   const handleTriggerClick = (): void => {
-    state.setModal({ name: "triggers", testIds: [test_id] as string[] });
+    state.setModal({ name: "triggers", testIds, testTriggers });
   };
 
   return (
@@ -66,7 +72,9 @@ export default function Header({ mode }: Props): JSX.Element {
             <Button
               IconComponent={Trigger}
               label={
-                test?.triggers?.length > 1 ? copy.editTriggers : copy.addTrigger
+                testTriggers[test.id]?.length > 1
+                  ? copy.editTriggers
+                  : copy.addTrigger
               }
               onClick={handleTriggerClick}
               type="primary"

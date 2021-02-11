@@ -4,6 +4,7 @@ import ListItem from "./ListItem";
 
 import Header from "../../shared-new/Modal/Header";
 import { Box } from "grommet";
+import { useUpdateTestTriggers } from "../../../hooks/mutations";
 
 type Props = {
   closeModal: () => void;
@@ -18,6 +19,8 @@ export default function EditTriggers({
   testTriggers,
   triggers,
 }: Props): JSX.Element {
+  const [updateTestTriggers] = useUpdateTestTriggers();
+
   const triggersHtml = triggers.map((t) => {
     const isSelected = testIds.some((testId) => {
       return (testTriggers[testId] || []).includes(t.id);

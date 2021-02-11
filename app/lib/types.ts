@@ -241,6 +241,7 @@ type ModalState = {
   name: Modal | null;
   teamId?: string;
   testIds?: string[];
+  testTriggers?: TestTriggers;
   tests?: SelectedTest[];
 };
 

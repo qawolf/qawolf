@@ -741,7 +741,7 @@ export const useUpdateTestTriggers = (): MutationTuple<
 > => {
   return useMutation<UpdateTestTriggersData, UpdateTestTriggersVariables>(
     updateTestTriggersMutation,
-    { awaitRefetchQueries: true, onError, refetchQueries: ["dashboard"] }
+    { awaitRefetchQueries: true, onError, refetchQueries: ["testTriggers"] }
   );
 };
 
