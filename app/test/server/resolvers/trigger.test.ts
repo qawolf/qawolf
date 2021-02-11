@@ -2,7 +2,6 @@ import { db, dropTestDb, migrateDb } from "../../../server/db";
 import {
   createTriggerResolver,
   deleteTriggerResolver,
-  testTriggersResolver,
   triggersResolver,
   updateTriggerResolver,
 } from "../../../server/resolvers/trigger";
@@ -155,36 +154,6 @@ describe("triggersResolver", () => {
     );
 
     expect(triggers).toMatchObject([{ id: "triggerId" }, { id: "trigger2Id" }]);
-  });
-});
-
-describe("testTriggersResolver", () => {
-  beforeAll(async () => {
-    await db("triggers").insert([
-      buildTrigger({ name: "B Trigger" }),
-      buildTrigger({ i: 2, is_default: true, name: "All Tests" }),
-      buildTrigger({ i: 3 }),
-    ]);
-    await db("tests").insert(buildTest({}));
-    return db("test_triggers").insert([
-      { id: "testTriggerId", test_id: "testId", trigger_id: "triggerId" },
-      { id: "testTrigger2Id", test_id: "testId", trigger_id: "trigger2Id" },
-    ]);
-  });
-
-  afterAll(async () => {
-    await db("test_triggers").del();
-    await db("triggers").del();
-    return db("tests").del();
-  });
-
-  it("finds triggers for a test", async () => {
-    const triggers = await testTriggersResolver(buildTest({}), {}, testContext);
-
-    expect(triggers).toMatchObject([
-      { name: "All Tests" },
-      { name: "B Trigger" },
-    ]);
   });
 });
 

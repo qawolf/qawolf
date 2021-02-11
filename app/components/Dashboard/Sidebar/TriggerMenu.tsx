@@ -19,10 +19,10 @@ export default function TriggerMenu({
   const handleClick = () => {
     closeMenu();
 
-    state.setModal({
-      name: "deleteTrigger",
-      trigger: { id: triggerId, name: triggerName },
-    });
+    // state.setModal({
+    //   name: "deleteTrigger",
+    //   trigger: { id: triggerId, name: triggerName },
+    // });
   };
 
   return (
