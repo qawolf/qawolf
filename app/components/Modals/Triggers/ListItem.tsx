@@ -11,6 +11,7 @@ import {
 } from "../../../theme/theme-new";
 import AppButton from "../../shared-new/AppButton";
 import Check from "../../shared-new/icons/Check";
+import Edit from "../../shared-new/icons/Edit";
 import Trash from "../../shared-new/icons/Trash";
 import Text from "../../shared-new/Text";
 import { getTriggerIconComponent } from "./helpers";
@@ -20,6 +21,7 @@ type Props = {
   isSelected: boolean;
   onClick: () => void;
   onDelete: () => void;
+  onEdit: () => void;
   trigger: Trigger;
 };
 
@@ -28,6 +30,7 @@ function ListItem({
   isSelected,
   onClick,
   onDelete,
+  onEdit,
   trigger,
 }: Props): JSX.Element {
   const IconComponent = getTriggerIconComponent(trigger);
@@ -62,10 +65,15 @@ function ListItem({
         </Box>
       </Button>
       <AppButton
+        IconComponent={Edit}
+        onClick={onEdit}
+        margin={{ horizontal: "xxsmall" }}
+        type="ghost"
+      />
+      <AppButton
         IconComponent={Trash}
         hoverType="danger"
         onClick={onDelete}
-        margin={{ left: "xxsmall" }}
         type="ghost"
       />
     </Box>

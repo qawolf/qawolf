@@ -13,6 +13,7 @@ type Props = {
   closeModal: () => void;
   onCreate: () => void;
   onDelete: (trigger: Trigger) => void;
+  onEdit: (trigger: Trigger) => void;
   testIds: string[];
   testTriggers: TestTriggers;
   triggers: Trigger[];
@@ -22,6 +23,7 @@ export default function EditTriggers({
   closeModal,
   onCreate,
   onDelete,
+  onEdit,
   testIds,
   testTriggers,
   triggers,
@@ -55,6 +57,7 @@ export default function EditTriggers({
         key={t.id}
         onClick={() => handleClick(t.id)}
         onDelete={() => onDelete(t)}
+        onEdit={() => onEdit(t)}
         trigger={t}
       />
     );

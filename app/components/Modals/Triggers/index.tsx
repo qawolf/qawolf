@@ -18,6 +18,7 @@ export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
   const { teamId, triggerId } = useContext(StateContext);
 
   const [deleteTrigger, setDeleteTrigger] = useState<Trigger | null>(null);
+  const [editTrigger, setEditTrigger] = useState<Trigger | null>(null);
   const [isCreate, setIsCreate] = useState(false);
 
   const { data } = useTriggers(
@@ -40,11 +41,13 @@ export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
 
   const handleBack = (): void => {
     setDeleteTrigger(null);
+    setEditTrigger(null);
     setIsCreate(false);
   };
 
   const handleCreate = (): void => setIsCreate(true);
   const handleDelete = (trigger: Trigger): void => setDeleteTrigger(trigger);
+  const handleEdit = (trigger: Trigger): void => setEditTrigger(trigger);
 
   return (
     <Modal closeModal={closeModal}>
@@ -64,11 +67,12 @@ export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
             triggers={triggers}
           />
         )}
-        {!isCreate && !deleteTrigger && (
+        {!deleteTrigger && !editTrigger && !isCreate && (
           <EditTriggers
             closeModal={closeModal}
             onCreate={handleCreate}
             onDelete={handleDelete}
+            onEdit={handleEdit}
             testIds={testIds}
             testTriggers={testTriggers}
             triggers={triggers}
