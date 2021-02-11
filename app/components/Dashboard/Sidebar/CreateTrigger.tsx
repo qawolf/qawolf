@@ -13,7 +13,7 @@ export default function CreateTrigger({ teamId }: Props): JSX.Element {
 
   const handleClick = () => {
     if (!teamId) return;
-    createTrigger({ variables: { team_id: teamId } });
+    createTrigger({ variables: { name: "placeholder", team_id: teamId } });
   };
   // account for border in text margin
   const leftMargin = `calc(${edgeSize.medium} - 1px)`;

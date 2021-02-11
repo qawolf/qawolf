@@ -4,10 +4,10 @@ import { useUpdateTestTriggers } from "../../../hooks/mutations";
 import { TestTriggers, Trigger } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import Divider from "../../shared-new/Divider";
-import Text from "../../shared-new/Text";
 import Add from "../../shared-new/icons/Add";
 import Buttons from "../../shared-new/Modal/Buttons";
 import Header from "../../shared-new/Modal/Header";
+import Text from "../../shared-new/Text";
 import { getIsSelected } from "./helpers";
 import ListItem from "./ListItem";
 

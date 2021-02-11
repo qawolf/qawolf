@@ -1,6 +1,15 @@
 import { Box } from "grommet";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
+
+import { useOnHotKey } from "../../../../hooks/onHotKey";
 import { Trigger, TriggerFields } from "../../../../lib/types";
+import { copy } from "../../../../theme/copy";
+import TextInput from "../../../shared-new/AppTextInput";
+import ArrowLeft from "../../../shared-new/icons/ArrowLeft";
+import Buttons from "../../../shared-new/Modal/Buttons";
+import Text from "../../../shared-new/Text";
+import { StateContext } from "../../../StateContext";
+import Environment from "../Environment";
 import {
   defaultRepeatMinutes,
   getDefaultMode,
@@ -8,16 +17,8 @@ import {
   labelTextProps,
   TriggerMode,
 } from "../helpers";
-import { copy } from "../../../../theme/copy";
-import TextInput from "../../../shared-new/AppTextInput";
-import Text from "../../../shared-new/Text";
-import { StateContext } from "../../../StateContext";
-import Environment from "../Environment";
-import ScheduleFields from "./ScheduleFields";
-import Buttons from "../../../shared-new/Modal/Buttons";
-import ArrowLeft from "../../../shared-new/icons/ArrowLeft";
-import { useOnHotKey } from "../../../../hooks/onHotKey";
 import ModeTabs from "./ModeTabs";
+import ScheduleFields from "./ScheduleFields";
 
 type Props = {
   editTrigger: Trigger | null;

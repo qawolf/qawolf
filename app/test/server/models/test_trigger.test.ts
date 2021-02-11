@@ -1,4 +1,3 @@
-import { testTriggersQuery } from "../../../graphql/queries";
 import { db, dropTestDb, migrateDb } from "../../../server/db";
 import {
   createTestTrigger,

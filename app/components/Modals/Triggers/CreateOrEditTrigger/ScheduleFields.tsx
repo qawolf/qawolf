@@ -3,7 +3,6 @@ import { ChangeEvent } from "react";
 
 import { copy } from "../../../../theme/copy";
 import Text from "../../../shared-new/Text";
-
 import { labelTextProps, repeatMinutesOptions } from "../helpers";
 
 type Props = {

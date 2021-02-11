@@ -1,6 +1,6 @@
 import { Box } from "grommet";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 
 import {
   useCreateTrigger,
@@ -29,8 +29,6 @@ export default function CreateOrEditTrigger({
   const {
     query: { test_id },
   } = useRouter();
-
-  const [name, setName] = useState(editTrigger?.name || "");
 
   const [createTrigger, { loading: createLoading }] = useCreateTrigger();
   const [updateTrigger, { loading: updateLoading }] = useUpdateTrigger();

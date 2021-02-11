@@ -390,7 +390,10 @@ type TestSummary {
 
 "A list of trigger IDs for a test"
 type TestTriggers {
+  "The test ID"
   test_id: ID!
+
+  "A list of associated trigger IDs"
   trigger_ids: [ID!]!
 }
 
