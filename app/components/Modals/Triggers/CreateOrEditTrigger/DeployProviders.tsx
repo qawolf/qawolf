@@ -1,5 +1,4 @@
 import { Box } from "grommet";
-import { useState } from "react";
 import { SiNetlify, SiZeit } from "react-icons/si";
 
 import { copy } from "../../../../theme/copy";
@@ -31,17 +30,17 @@ export default function DeployProvider({
       <Box direction="row" justify="between">
         <Button
           {...buttonProps}
-          IconComponent={SiNetlify}
-          isSelected={provider === "netlify"}
-          label={copy.netlify}
-          onClick={() => setProvider("netlify")}
-        />
-        <Button
-          {...buttonProps}
           IconComponent={SiZeit}
           isSelected={provider === "vercel"}
           label={copy.vercel}
           onClick={() => setProvider("vercel")}
+        />
+        <Button
+          {...buttonProps}
+          IconComponent={SiNetlify}
+          isSelected={provider === "netlify"}
+          label={copy.netlify}
+          onClick={() => setProvider("netlify")}
         />
       </Box>
     </>

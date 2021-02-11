@@ -117,7 +117,16 @@ export default function Form({
             setRepeatMinutes={setRepeatMinutes}
           />
         )}
-        {mode === "deployment" && <DeploymentFields />}
+        {mode === "deployment" && (
+          <DeploymentFields
+            deployBranches={deployBranches}
+            deployEnv={deployEnv}
+            deployIntegrationId={deployIntegrationId}
+            setDeployBranches={setDeployBranches}
+            setDeployEnv={setDeployEnv}
+            setDeployIntegrationId={setDeployIntegrationId}
+          />
+        )}
         <Environment
           environmentId={environmentId}
           setEnvironmentId={setEnvironmentId}
