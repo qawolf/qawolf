@@ -34,14 +34,12 @@ export default function TriggerDropdown({
   });
 
   const integrationOptionsHtml = integrations.map((integration) => {
-    const handleClick = () => {};
-
     return (
       <Option
         isSelected={trigger.deployment_integration_id === integration.id}
         key={integration.id}
         message={formatTrigger({ repoName: integration.github_repo_name })}
-        onClick={handleClick}
+        onClick={() => null}
       />
     );
   });
