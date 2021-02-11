@@ -586,23 +586,16 @@ export const useDeleteTests = (
   );
 };
 
-export const useDeleteTrigger = (
-  variables: DeleteTriggerVariables
-): MutationTuple<DeleteTriggerData, DeleteTriggerVariables> => {
+export const useDeleteTrigger = (): MutationTuple<
+  DeleteTriggerData,
+  DeleteTriggerVariables
+> => {
   return useMutation<DeleteTriggerData, DeleteTriggerVariables>(
     deleteTriggerMutation,
     {
-      onCompleted: (response) => {
-        const { deleteTrigger } = response || {};
-        if (!deleteTrigger) return;
-        // if viewing deleted trigger, redirect to all tests
-        if (variables.id === deleteTrigger.id) {
-          state.setTriggerId(deleteTrigger.default_trigger_id);
-        }
-      },
+      awaitRefetchQueries: true,
       onError,
       refetchQueries: ["triggers"],
-      variables,
     }
   );
 };

@@ -12,6 +12,7 @@ import ListItem from "./ListItem";
 type Props = {
   closeModal: () => void;
   onCreate: () => void;
+  onDelete: (trigger: Trigger) => void;
   testIds: string[];
   testTriggers: TestTriggers;
   triggers: Trigger[];
@@ -20,6 +21,7 @@ type Props = {
 export default function EditTriggers({
   closeModal,
   onCreate,
+  onDelete,
   testIds,
   testTriggers,
   triggers,
@@ -52,6 +54,7 @@ export default function EditTriggers({
         isSelected={isSelected}
         key={t.id}
         onClick={() => handleClick(t.id)}
+        onDelete={() => onDelete(t)}
         trigger={t}
       />
     );

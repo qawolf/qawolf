@@ -74,6 +74,7 @@ export const copy = {
   deleteGroup: "Delete group",
   deleteOk: "Yes, delete",
   deleteTests: "Delete tests",
+  deleteTrigger: "Delete trigger",
   delightUsers: "Delight users",
   delightUsersDetail:
     "9/10 users form a bad opinion of your brand if your app does not work.",
@@ -250,6 +251,9 @@ export const copy = {
   testInProgress: "Running",
   testNamePlaceholder: "Name your test",
   testPass: "Pass",
+  triggerDeleteConfirm:
+    "Are you sure? This will permanently delete this trigger. Please type",
+  triggerDeleteConfirm2: "to confirm.",
   triggerNamePlaceholder: "Name your trigger",
   tryForFree: "Try for free",
   urlPlaceholder: "https://myawesomesite.com",

@@ -2,8 +2,10 @@ import { Box } from "grommet";
 import { useContext, useEffect, useState } from "react";
 
 import { useTestTriggers, useTriggers } from "../../../hooks/queries";
+import { Trigger } from "../../../lib/types";
 import Modal from "../../shared-new/Modal";
 import { StateContext } from "../../StateContext";
+import ConfirmDelete from "./ConfirmDelete";
 import CreateTrigger from "./CreateTrigger";
 import EditTriggers from "./EditTriggers";
 
@@ -15,6 +17,7 @@ type Props = {
 export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
   const { teamId, triggerId } = useContext(StateContext);
 
+  const [deleteTrigger, setDeleteTrigger] = useState<Trigger | null>(null);
   const [isCreate, setIsCreate] = useState(false);
 
   const { data } = useTriggers(
@@ -35,12 +38,24 @@ export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
     if (shouldCreate) setIsCreate(true);
   }, [shouldCreate]);
 
-  const handleBack = (): void => setIsCreate(false);
+  const handleBack = (): void => {
+    setDeleteTrigger(null);
+    setIsCreate(false);
+  };
+
   const handleCreate = (): void => setIsCreate(true);
+  const handleDelete = (trigger: Trigger): void => setDeleteTrigger(trigger);
 
   return (
     <Modal closeModal={closeModal}>
       <Box overflow={{ vertical: "auto" }} pad="medium">
+        {!!deleteTrigger && (
+          <ConfirmDelete
+            closeModal={closeModal}
+            onClose={handleBack}
+            trigger={deleteTrigger}
+          />
+        )}
         {isCreate && (
           <CreateTrigger
             closeModal={closeModal}
@@ -49,10 +64,11 @@ export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
             triggers={triggers}
           />
         )}
-        {!isCreate && (
+        {!isCreate && !deleteTrigger && (
           <EditTriggers
             closeModal={closeModal}
             onCreate={handleCreate}
+            onDelete={handleDelete}
             testIds={testIds}
             testTriggers={testTriggers}
             triggers={triggers}
