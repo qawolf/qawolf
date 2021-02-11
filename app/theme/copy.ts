@@ -97,7 +97,6 @@ export const copy = {
   emailPlaceholder: "you@awesome.com",
   emptyTests: "You don't have any tests yet!",
   emptyTestsSearch: "No tests found",
-  emptyTriggers: "You don't have any triggers yet!",
   encrypted: "Encrypted",
   enterUrl: "Enter your URL to create a test",
   envVariableDelete: "Delete environment variable",
@@ -254,6 +253,7 @@ export const copy = {
   triggerDeleteConfirm:
     "Are you sure? This will permanently delete this trigger. Please type",
   triggerDeleteConfirm2: "to confirm.",
+  triggersEmpty: "No triggers created",
   triggerNamePlaceholder: "Name your trigger",
   tryForFree: "Try for free",
   urlPlaceholder: "https://myawesomesite.com",

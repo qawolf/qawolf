@@ -13,7 +13,6 @@ import Environment from "./Environment";
 import { getDefaultScheduleName, labelTextProps } from "./helpers";
 
 type Props = {
-  hideBack: boolean;
   isLoading: boolean;
   onBack: () => void;
   onSave: (fields: TriggerFields) => void;
@@ -26,7 +25,6 @@ const repeatMinutesOptions = [
 ];
 
 export default function ScheduleForm({
-  hideBack,
   isLoading,
   onBack,
   onSave,
@@ -101,12 +99,12 @@ export default function ScheduleForm({
       />
       <Buttons
         SecondaryIconComponent={ArrowLeft}
-        hideSecondary={hideBack}
         onPrimaryClick={handleSave}
         onSecondaryClick={onBack}
         primaryIsDisabled={isLoading}
         primaryLabel={copy.createTrigger}
         secondaryLabel={copy.back}
+        showDivider
       />
     </>
   );

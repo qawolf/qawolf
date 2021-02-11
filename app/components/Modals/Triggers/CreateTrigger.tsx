@@ -13,7 +13,6 @@ import ScheduleForm from "./ScheduleForm";
 
 type Props = {
   closeModal: () => void;
-  hideBack: boolean;
   onBack: () => void;
   triggers: Trigger[];
 };
@@ -24,7 +23,6 @@ const options: Mode[] = ["schedule", "deployment", "onDemand"];
 
 export default function CreateTrigger({
   closeModal,
-  hideBack,
   onBack,
   triggers,
 }: Props): JSX.Element {
@@ -68,7 +66,6 @@ export default function CreateTrigger({
         <Box margin={{ top: "medium" }}>
           {mode === "schedule" && (
             <ScheduleForm
-              hideBack={hideBack}
               isLoading={loading}
               onBack={onBack}
               onSave={handleSave}

@@ -1,5 +1,5 @@
 import { Box } from "grommet";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import { useTestTriggers, useTriggers } from "../../../hooks/queries";
 import { Trigger } from "../../../lib/types";
@@ -21,6 +21,8 @@ export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
   const [editTrigger, setEditTrigger] = useState<Trigger | null>(null);
   const [isCreate, setIsCreate] = useState(false);
 
+  const isRendered = useRef(false);
+
   const { data } = useTriggers(
     { team_id: teamId },
     { skipOnCompleted: false, triggerId }
@@ -30,14 +32,16 @@ export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
   const testTriggers = testTriggersData?.testTriggers || [];
 
   // do not show "All tests" trigger
-  const triggers = (data?.triggers || []).filter((t) => !t.is_default);
-  const shouldCreate = data?.triggers && !triggers.length;
+  const triggers = data?.triggers
+    ? data.triggers.filter((t) => !t.is_default)
+    : null;
 
-  // TODO: do not do this after deleting last trigger
   useEffect(() => {
+    if (!data?.triggers || isRendered.current) return;
+    isRendered.current = true;
     // enter create mode if there are no non-default triggers
-    if (shouldCreate) setIsCreate(true);
-  }, [shouldCreate]);
+    if (!triggers.length) setIsCreate(true);
+  }, [data?.triggers, triggers]);
 
   const handleBack = (): void => {
     setDeleteTrigger(null);
@@ -62,9 +66,8 @@ export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
         {isCreate && (
           <CreateTrigger
             closeModal={closeModal}
-            hideBack={shouldCreate}
             onBack={handleBack}
-            triggers={triggers}
+            triggers={triggers || []}
           />
         )}
         {!deleteTrigger && !editTrigger && !isCreate && (

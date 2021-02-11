@@ -75,7 +75,6 @@ export default function Tests({
           selectedIds={selectedIds}
           selectedTriggerId={triggerId}
           setSelectedIds={setSelectedIds}
-          testTriggers={testTriggers}
           tests={tests}
           triggers={triggers}
           wolfVariant={wolfVariant}

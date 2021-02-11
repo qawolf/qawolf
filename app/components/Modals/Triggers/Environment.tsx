@@ -1,4 +1,4 @@
-import { RadioButtonGroup } from "grommet";
+import { Box, RadioButtonGroup } from "grommet";
 import { ChangeEvent, useContext } from "react";
 
 import { useEnvironments } from "../../../hooks/queries";
@@ -53,7 +53,7 @@ export default function Environment({
   }
 
   return (
-    <>
+    <Box margin={{ bottom: "medium" }}>
       <Text
         color="gray9"
         margin={{ bottom: "small", top: "medium" }}
@@ -62,6 +62,6 @@ export default function Environment({
         {copy.environment}
       </Text>
       {environmentsHtml}
-    </>
+    </Box>
   );
 }
