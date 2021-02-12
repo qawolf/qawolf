@@ -47,19 +47,21 @@ export default function Form({
   const [hasEditedName, setHasEditedName] = useState(false);
   const [name, setName] = useState(editTrigger?.name || "");
   const [nameError, setNameError] = useState("");
-
+  // schedule fields
   const [repeatMinutes, setRepeatMinutes] = useState(
     editTrigger?.repeat_minutes || defaultRepeatMinutes
   );
-
-  const [deployBranches, setDeployBranches] = useState<string | null>(null);
+  // deployment fields
+  const [deployBranches, setDeployBranches] = useState<string | null>(
+    editTrigger?.deployment_branches || null
+  );
   const [deployEnv, setDeployEnv] = useState<DeploymentEnvironment | null>(
-    null
+    editTrigger?.deployment_environment || null
   );
   const [deployIntegrationId, setDeployIntegrationId] = useState<string | null>(
-    null
+    editTrigger?.deployment_integration_id || null
   );
-
+  // environment
   const [environmentId, setEnvironmentId] = useState<string | null>(
     editTrigger?.environment_id || stateEnvironmentId
   );

@@ -26,7 +26,7 @@ const formatDeployment = ({
   )}`;
   const branches = deployment_branches
     ? `${copy.branches}: ${formatBranches(deployment_branches)}`
-    : copy.allBranches;
+    : copy.all;
 
   return `${deployments} - ${branches}`;
 };

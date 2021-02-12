@@ -408,8 +408,6 @@ export const useCreateGitHubIntegrations = (
   CreateGitHubIntegrationsData,
   CreateGitHubIntegrationsVariables
 > => {
-  const { replace } = useRouter();
-
   return useMutation<
     CreateGitHubIntegrationsData,
     CreateGitHubIntegrationsVariables

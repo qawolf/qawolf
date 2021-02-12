@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { DeploymentEnvironment } from "../../../../lib/types";
 
+import { DeploymentEnvironment } from "../../../../lib/types";
 import DeployProviders, { Provider } from "./DeployProviders";
 import GitHubRepo from "./GitHubRepo";
+import VercelFields from "./VercelFields";
 
 type Props = {
   deployBranches: string | null;
@@ -14,6 +15,8 @@ type Props = {
 };
 
 export default function DeploymentFields({
+  deployBranches,
+  deployEnv,
   deployIntegrationId,
   setDeployBranches,
   setDeployEnv,
@@ -21,13 +24,13 @@ export default function DeploymentFields({
 }: Props): JSX.Element {
   const [provider, setProvider] = useState<Provider>("vercel");
 
-  // clear extra settings if switching to netlify
+  // clear Vercel settings if switching to Netlify
   useEffect(() => {
     if (provider !== "netlify") return;
 
     setDeployBranches(null);
     setDeployEnv(null);
-  }, [provider]);
+  }, [provider, setDeployBranches, setDeployEnv]);
 
   return (
     <>
@@ -36,6 +39,14 @@ export default function DeploymentFields({
         deployIntegrationId={deployIntegrationId}
         setDeployIntegrationId={setDeployIntegrationId}
       />
+      {provider === "vercel" && (
+        <VercelFields
+          deployBranches={deployBranches}
+          deployEnv={deployEnv}
+          setDeployBranches={setDeployBranches}
+          setDeployEnv={setDeployEnv}
+        />
+      )}
     </>
   );
 }

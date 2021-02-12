@@ -1,14 +1,15 @@
-import { useContext, useEffect, useState } from "react";
+import { Box } from "grommet";
 import { Github } from "grommet-icons";
+import { useContext, useEffect, useState } from "react";
+
 import { useIntegrations } from "../../../../hooks/queries";
 import { copy } from "../../../../theme/copy";
 import Button from "../../../shared-new/AppButton";
-import Text from "../../../shared-new/Text";
 import Select from "../../../shared-new/Select";
 import Option from "../../../shared-new/Select/Option";
+import Text from "../../../shared-new/Text";
 import { StateContext } from "../../../StateContext";
 import { labelTextProps } from "../helpers";
-import { Box } from "grommet";
 
 type Props = {
   deployIntegrationId: string | null;
@@ -29,6 +30,7 @@ export default function GitHubRepo({
     (i) => i.type === "github"
   );
 
+  // get latest integrations if they open GitHub
   useEffect(() => {
     if (isGitHubClicked) startPolling(2000);
 

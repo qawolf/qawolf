@@ -3,14 +3,14 @@ import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 
 import Spinner from "../components/shared/Spinner";
+import Logo from "../components/shared-new/icons/Logo";
 import Text from "../components/shared-new/Text";
 import { StateContext } from "../components/StateContext";
 import { useEnsureUser } from "../hooks/ensureUser";
 import { useCreateGitHubIntegrations } from "../hooks/mutations";
 import { routes } from "../lib/routes";
-import { edgeSize, theme } from "../theme/theme-new";
 import { copy } from "../theme/copy";
-import Logo from "../components/shared-new/icons/Logo";
+import { edgeSize, theme } from "../theme/theme-new";
 
 export default function GitHubIntegration(): JSX.Element {
   useEnsureUser();

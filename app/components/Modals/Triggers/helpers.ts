@@ -65,8 +65,10 @@ export const buildTriggerFields = ({
   if (mode === "deployment") {
     return {
       ...constantFields,
-      deployment_branches: deployBranches,
-      deployment_environment: deployEnv,
+      deployment_branches: deployBranches || null,
+      deployment_environment: ["preview", "production"].includes(deployEnv)
+        ? deployEnv
+        : null,
       deployment_integration_id: deployIntegrationId,
       repeat_minutes: null,
     };
@@ -97,7 +99,7 @@ export const getDefaultName = ({
   if (mode === "schedule") {
     defaultName = repeatMinutes === 60 ? copy.hourly : copy.daily;
   } else if (mode === "deployment") {
-    defaultName = deployEnv
+    defaultName = ["preview", "production"].includes(deployEnv)
       ? capitalize(`${deployEnv} ${copy.deployment}`)
       : copy.deployment;
   }
