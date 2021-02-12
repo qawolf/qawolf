@@ -136,30 +136,22 @@ console.log("Line 4");
       {
         lineCode: 'console.log("Line 1");',
         lineNum: 1,
-        startFrame: expect.any(Number),
-        startTimeAbsolute: expect.any(Number),
-        startTimeRelative: expect.any(Number),
+        startTime: expect.any(Number),
       },
       {
         lineCode: "await new Promise((r) => setTimeout(r, 500));",
         lineNum: 2,
-        startFrame: expect.any(Number),
-        startTimeAbsolute: expect.any(Number),
-        startTimeRelative: expect.any(Number),
+        startTime: expect.any(Number),
       },
       {
         lineCode: 'console.log("Line 3");',
         lineNum: 3,
-        startFrame: expect.any(Number),
-        startTimeAbsolute: expect.any(Number),
-        startTimeRelative: expect.any(Number),
+        startTime: expect.any(Number),
       },
       {
         lineCode: 'console.log("Line 4");',
         lineNum: 4,
-        startFrame: expect.any(Number),
-        startTimeAbsolute: expect.any(Number),
-        startTimeRelative: expect.any(Number),
+        startTime: expect.any(Number),
       },
     ]);
 
@@ -170,20 +162,7 @@ console.log("Line 4");
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const [marker1, marker2, marker3] = videoMetadata.markers!;
 
-    expect(marker1.startTimeAbsolute).toBeLessThanOrEqual(
-      marker2.startTimeAbsolute
-    );
-    expect(marker2.startTimeAbsolute).toBeLessThanOrEqual(
-      marker3.startTimeAbsolute
-    );
-    expect(marker1.startTimeRelative).toBeLessThanOrEqual(
-      marker2.startTimeRelative
-    );
-    expect(marker2.startTimeRelative).toBeLessThanOrEqual(
-      marker3.startTimeRelative
-    );
-    expect(marker1.startFrame).toBeGreaterThanOrEqual(1);
-    expect(marker1.startFrame).toBeLessThanOrEqual(marker2.startFrame);
-    expect(marker2.startFrame).toBeLessThanOrEqual(marker3.startFrame);
+    expect(marker1.startTime).toBeLessThanOrEqual(marker2.startTime);
+    expect(marker2.startTime).toBeLessThanOrEqual(marker3.startTime);
   });
 });
