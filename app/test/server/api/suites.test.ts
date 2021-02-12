@@ -3,9 +3,7 @@ import { NextApiRequest } from "next";
 
 import { handleSuitesRequest } from "../../../server/api/suites";
 import { db, dropTestDb, migrateDb } from "../../../server/db";
-import { buildDigest } from "../../../server/utils";
 import {
-  buildApiKey,
   buildEnvironment,
   buildEnvironmentVariable,
   buildTeam,

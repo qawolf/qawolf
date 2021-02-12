@@ -1,8 +1,3 @@
-import {
-  apiKeysResolver,
-  createApiKeyResolver,
-  deleteApiKeyResolver,
-} from "./resolvers/api_key";
 import { createGitHubSignInUrlResolver } from "./resolvers/auth";
 import { dashboardResolver } from "./resolvers/dashboard";
 import {
@@ -85,7 +80,6 @@ export const resolvers = {
   },
   Mutation: {
     acceptInvite: acceptInviteResolver,
-    createApiKey: createApiKeyResolver,
     createEnvironment: createEnvironmentResolver,
     createEnvironmentVariable: createEnvironmentVariableResolver,
     createGitHubIntegrations: createGitHubIntegrationsResolver,
@@ -96,7 +90,6 @@ export const resolvers = {
     createSuite: createSuiteResolver,
     createTest: createTestResolver,
     createTrigger: createTriggerResolver,
-    deleteApiKey: deleteApiKeyResolver,
     deleteEnvironment: deleteEnvironmentResolver,
     deleteEnvironmentVariable: deleteEnvironmentVariableResolver,
     deleteTests: deleteTestsResolver,
@@ -116,7 +109,6 @@ export const resolvers = {
     updateUser: updateUserResolver,
   },
   Query: {
-    apiKeys: apiKeysResolver,
     currentUser: currentUserResolver,
     dashboard: dashboardResolver,
     environments: environmentsResolver,
