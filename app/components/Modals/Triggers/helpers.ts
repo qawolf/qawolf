@@ -1,4 +1,4 @@
-import { Icon } from "grommet-icons";
+import { Action, Clock, Deploy, Icon } from "grommet-icons";
 import capitalize from "lodash/capitalize";
 
 import {
@@ -10,7 +10,7 @@ import {
 import { copy } from "../../../theme/copy";
 import Calendar from "../../shared-new/icons/Calendar";
 
-export type TriggerMode = "deployment" | "onDemand" | "schedule";
+export type TriggerMode = "api" | "deployment" | "schedule";
 
 type BuildTriggerFields = {
   deployBranches: string | null;
@@ -116,7 +116,7 @@ export const getDefaultMode = (trigger: Trigger | null): TriggerMode => {
   if (!trigger || trigger.repeat_minutes) return "schedule";
   if (trigger.deployment_integration_id) return "deployment";
 
-  return "onDemand";
+  return "api";
 };
 
 export const getDefaultName = ({
@@ -125,7 +125,7 @@ export const getDefaultName = ({
   repeatMinutes,
   triggers,
 }: GetDefaultName): string => {
-  let defaultName = copy.onDemand;
+  let defaultName = copy.api;
 
   if (mode === "schedule") {
     defaultName = repeatMinutes === 60 ? copy.hourly : copy.daily;
@@ -155,7 +155,11 @@ export const getIsSelected = ({
 };
 
 export const getTriggerIconComponent = (trigger: Trigger): Icon => {
-  return Calendar;
+  if (trigger.deployment_integration_id) return Deploy;
+  if (trigger.repeat_minutes === 60) return Clock;
+  if (trigger.repeat_minutes) return Calendar;
+
+  return Action;
 };
 
 export const labelTextProps = {

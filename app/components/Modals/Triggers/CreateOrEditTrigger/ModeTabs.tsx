@@ -3,7 +3,7 @@ import Tabs from "../../../shared-new/Tabs";
 import Tab from "../../../shared-new/Tabs/Tab";
 import { TriggerMode } from "../helpers";
 
-const options: TriggerMode[] = ["schedule", "deployment", "onDemand"];
+const options: TriggerMode[] = ["schedule", "deployment", "api"];
 
 type Props = {
   mode: TriggerMode;

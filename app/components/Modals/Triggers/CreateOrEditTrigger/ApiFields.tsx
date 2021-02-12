@@ -10,7 +10,7 @@ import { labelTextProps } from "../helpers";
 
 type Props = { editTriggerId?: string };
 
-export default function OnDemandFields({ editTriggerId }: Props): JSX.Element {
+export default function ApiFields({ editTriggerId }: Props): JSX.Element {
   const { teamId } = useContext(StateContext);
 
   const { data } = useTeam({ id: teamId });
@@ -24,7 +24,7 @@ export default function OnDemandFields({ editTriggerId }: Props): JSX.Element {
   return (
     <>
       <Text {...labelTextProps} size="component">
-        {copy.onDemandDetail}
+        {copy.apiDetail}
       </Text>
       <Box background="gray2" pad="small" round={borderSize.small}>
         <code

@@ -21,9 +21,9 @@ import {
   labelTextProps,
   TriggerMode,
 } from "../helpers";
+import ApiFields from "./ApiFields";
 import DeploymentFields from "./DeploymentFields";
 import ModeTabs from "./ModeTabs";
-import OnDemandFields from "./OnDemandFields";
 import ScheduleFields from "./ScheduleFields";
 
 type Props = {
@@ -138,9 +138,7 @@ export default function Form({
             setDeployIntegrationId={setDeployIntegrationId}
           />
         )}
-        {mode === "onDemand" && (
-          <OnDemandFields editTriggerId={editTrigger?.id} />
-        )}
+        {mode === "api" && <ApiFields editTriggerId={editTrigger?.id} />}
         <Environment
           environmentId={environmentId}
           setEnvironmentId={setEnvironmentId}

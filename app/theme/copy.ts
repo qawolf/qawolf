@@ -18,6 +18,8 @@ export const copy = {
   alertTeamDetail: "Receive email or Slack alerts with one click.",
   alerts: "Alerts:",
   all: "All",
+  api: "API",
+  apiDetail: "Trigger tests by calling the QA Wolf API:",
   apiKeyHere: "API KEY HERE",
   back: "Back",
   backToDashboard: "Back to dashboard",
@@ -163,9 +165,6 @@ export const copy = {
   none: "None",
   notFound: "(404. Page not found.)",
   notStarted: "Preparing",
-  onDemand: "On demand",
-  onDemandDetail:
-    "Trigger tests from the dashboard or by calling the QA Wolf API:",
   onPremise: "Run on-premise",
   openSourceDiscount:
     "Ask us about our free or discounted plans for open source projects.",
