@@ -3,7 +3,6 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { db } from "../db";
 import environment from "../environment";
 import { Logger } from "../Logger";
-import { validateToken } from "../models/api_key";
 import { createSuiteForTests } from "../models/suite";
 import { findEnabledTestsForTrigger } from "../models/test";
 import { findTrigger } from "../models/trigger";
@@ -47,7 +46,7 @@ const ensureTriggerAccess = async (
   try {
     const trigger = await db.transaction(async (trx) => {
       const trigger = await findTrigger(trigger_id, { logger, trx });
-      await validateToken({ team_id: trigger.team_id, token }, { logger, trx });
+      // await validateToken({ team_id: trigger.team_id, token }, { logger, trx });
 
       return trigger;
     });
