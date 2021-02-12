@@ -1,4 +1,3 @@
-import { spawn } from "child_process";
 import Debug from "debug";
 import ffmpeg, { FfmpegCommand } from "fluent-ffmpeg";
 import { promises as fs } from "fs";
@@ -55,8 +54,7 @@ export class VideoCapture {
       // speed up by 2x
       // limit gif to 30 seconds (1 minute of test time)
       await runCommand(
-        `${config.FFMPEG_PATH} -i ${this._videoPath} -ss 1 -vf "fps=10,scale=${this._shrunkHeight}:-1:flags=lanczos,setpts=0.5*PTS" -t 30 ${this._gifPath}`,
-        { debug }
+        `${config.FFMPEG_PATH} -i ${this._videoPath} -ss 1 -vf "fps=10,scale=${this._shrunkHeight}:-1:flags=lanczos,setpts=0.5*PTS" -t 30 ${this._gifPath}`
       );
     } catch (error) {
       debug("could not create gif %s", error);
@@ -104,7 +102,7 @@ export class VideoCapture {
 
     debug("build markers for %s", this._videoPath);
 
-    let timings = (await fs.readFile(this._timingsPath))
+    const timings = (await fs.readFile(this._timingsPath))
       .toString()
       .split("\n")
       // Remove blank lines

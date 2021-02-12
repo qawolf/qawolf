@@ -1,6 +1,7 @@
 // Xvfb :0 -screen 0 1288x804x24 -listen tcp &
 // DEBUG=qawolf* npm run test Runner.test.ts
 import { promises as fs } from "fs";
+
 import { Environment } from "../../src/environment/Environment";
 import { LogArtifactHook } from "../../src/runner/LogArtifactHook";
 import { createHooks, Runner } from "../../src/runner/Runner";

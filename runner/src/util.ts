@@ -1,14 +1,6 @@
 import { spawn } from "child_process";
-import Debug, { Debugger } from "debug";
 
-interface RunCommandOptions {
-  debug: Debugger;
-}
-
-export function runCommand(
-  cmd: string,
-  { debug = Debug("qawolf:runCommand") }: RunCommandOptions
-): Promise<void> {
+export function runCommand(cmd: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const proc = spawn("sh", ["-c", cmd]);
 
