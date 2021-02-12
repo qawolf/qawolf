@@ -65,8 +65,6 @@ export const useRunTest = ({
       version,
     };
 
-    (options as any).artifacts = { videoUrl: "local-only" };
-
     if (selection) {
       options.end_line = selection.endLine;
       options.start_line = selection.startLine;

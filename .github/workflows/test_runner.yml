@@ -34,10 +34,6 @@ jobs:
         run: npm install @ffmpeg-installer/ffmpeg
         working-directory: ./runner
 
-      - name: Install ffprobe
-        run: npm install @ffprobe-installer/ffprobe
-        working-directory: ./runner
-
       - name: Build and copy recorder script
         run: npm run build:recorder-script
         working-directory: ./runner
@@ -54,6 +50,5 @@ jobs:
       - name: Test runner
         run: |
           export FFMPEG_PATH=$(node -e "console.log(require('@ffmpeg-installer/ffmpeg').path)")
-          export FFPROBE_PATH=$(node -e "console.log(require('@ffprobe-installer/ffprobe').path)")
           DEBUG=spirit* npm run test
         working-directory: ./runner

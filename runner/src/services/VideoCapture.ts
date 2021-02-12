@@ -30,7 +30,6 @@ export class VideoCapture {
   _timingsPath = "set_in_start_function.txt";
   _videoMetadataPath = "set_in_start_function.txt";
   _videoPath = "set_in_start_function.mp4";
-  _videoWithMetadataPath = "set_in_start_function.mp4";
 
   constructor() {
     this._startedPromise = new Promise((resolve) => {
@@ -143,7 +142,6 @@ export class VideoCapture {
     this._timingsPath = `${path}${sep}timings.txt`;
     this._videoMetadataPath = `${path}${sep}video-metadata.txt`;
     this._videoPath = `${path}${sep}video.mp4`;
-    this._videoWithMetadataPath = `${path}${sep}video-with-metadata.mp4`;
     debug("start video capture to %s", this._videoPath);
 
     let stderr = "";
@@ -221,9 +219,5 @@ export class VideoCapture {
 
   get videoPath(): string {
     return this._videoPath;
-  }
-
-  get videoWithMetadataPath(): string {
-    return this._videoWithMetadataPath;
   }
 }
