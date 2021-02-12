@@ -9,6 +9,7 @@ type Props = {
   deployBranches: string | null;
   deployEnv: DeploymentEnvironment | null;
   deployIntegrationId: string | null;
+  hasDeployError: boolean;
   setDeployBranches: (branches: string | null) => void;
   setDeployEnv: (env: DeploymentEnvironment | null) => void;
   setDeployIntegrationId: (integrationId: string | null) => void;
@@ -18,6 +19,7 @@ export default function DeploymentFields({
   deployBranches,
   deployEnv,
   deployIntegrationId,
+  hasDeployError,
   setDeployBranches,
   setDeployEnv,
   setDeployIntegrationId,
@@ -37,6 +39,7 @@ export default function DeploymentFields({
       <DeployProviders provider={provider} setProvider={setProvider} />
       <GitHubRepo
         deployIntegrationId={deployIntegrationId}
+        hasDeployError={hasDeployError}
         setDeployIntegrationId={setDeployIntegrationId}
       />
       {provider === "vercel" && (

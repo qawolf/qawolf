@@ -101,6 +101,9 @@ describe("trigger model", () => {
       expect(triggers).toMatchObject([
         {
           creator_id: "userId",
+          deployment_branches: null,
+          deployment_environment: null,
+          deployment_integration_id: null,
           id: expect.any(String),
           is_default: true,
           name: "All Tests",
@@ -111,10 +114,13 @@ describe("trigger model", () => {
       ]);
     });
 
-    it("creates a new trigger with environment", async () => {
+    it("creates a new trigger for deployment", async () => {
       await createTrigger(
         {
           creator_id: "userId",
+          deployment_branches: "develop, main",
+          deployment_environment: "preview",
+          deployment_integration_id: "integrationId",
           environment_id: "environmentId",
           name: "Hourly (Staging)",
           repeat_minutes: 60,
@@ -129,7 +135,9 @@ describe("trigger model", () => {
         {
           creator_id: "userId",
           deleted_at: null,
-          deployment_integration_id: null,
+          deployment_branches: "develop,main",
+          deployment_environment: "preview",
+          deployment_integration_id: "integrationId",
           environment_id: "environmentId",
           id: expect.any(String),
           is_default: false,

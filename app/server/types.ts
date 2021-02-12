@@ -349,6 +349,9 @@ export type CreateTestMutation = {
 };
 
 export type CreateTriggerMutation = {
+  deployment_branches: string | null;
+  deployment_environment: DeploymentEnvironment | null;
+  deployment_integration_id: string | null;
   environment_id: string | null;
   name: string;
   repeat_minutes: number | null;

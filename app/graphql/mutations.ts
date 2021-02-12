@@ -123,6 +123,9 @@ export const createTestMutation = gql`
 
 export const createTriggerMutation = gql`
   mutation createTrigger(
+    $deployment_branches: String
+    $deployment_environment: DeploymentEnvironment
+    $deployment_integration_id: ID
     $environment_id: ID
     $name: String!
     $repeat_minutes: Int
@@ -130,6 +133,9 @@ export const createTriggerMutation = gql`
     $test_ids: [ID!]
   ) {
     createTrigger(
+      deployment_branches: $deployment_branches
+      deployment_environment: $deployment_environment
+      deployment_integration_id: $deployment_integration_id
       environment_id: $environment_id
       name: $name
       repeat_minutes: $repeat_minutes

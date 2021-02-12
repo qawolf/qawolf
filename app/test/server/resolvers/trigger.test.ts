@@ -47,6 +47,9 @@ describe("createTriggerResolver", () => {
     const trigger = await createTriggerResolver(
       {},
       {
+        deployment_branches: null,
+        deployment_environment: null,
+        deployment_integration_id: null,
         environment_id: "environmentId",
         name: "Daily",
         repeat_minutes: 1440,
@@ -58,6 +61,9 @@ describe("createTriggerResolver", () => {
 
     expect(trigger).toMatchObject({
       creator_id: "userId",
+      deployment_branches: null,
+      deployment_environment: null,
+      deployment_integration_id: null,
       environment_id: "environmentId",
       name: "Daily",
       repeat_minutes: 1440,
@@ -73,6 +79,9 @@ describe("createTriggerResolver", () => {
     const trigger = await createTriggerResolver(
       {},
       {
+        deployment_branches: null,
+        deployment_environment: null,
+        deployment_integration_id: null,
         environment_id: "environmentId",
         name: "Daily",
         repeat_minutes: 1440,

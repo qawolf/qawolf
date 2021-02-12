@@ -44,6 +44,13 @@ export default function GitHubIntegration(): JSX.Element {
     }
   }, [called, createGitHubIntegrations, installation_id, teamId]);
 
+  // close window if mutation succeeds
+  useEffect(() => {
+    if (data?.createGitHubIntegrations) {
+      window.close();
+    }
+  }, [data?.createGitHubIntegrations]);
+
   return (
     <ThemeContext.Extend value={theme}>
       {!data?.createGitHubIntegrations && !error ? (

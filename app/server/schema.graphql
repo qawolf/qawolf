@@ -548,6 +548,21 @@ type Mutation {
   Requires that you have access to the team.
   """
   createTrigger(
+    """
+    If specified, run tests only when these branches (comma separated list) are deployed.
+    """
+    deployment_branches: String
+
+    """
+    If specified, run tests only on this deployment environment.
+    """
+    deployment_environment: DeploymentEnvironment
+
+    """
+    The ID of the integration for the connected GitHub repository.
+    """
+    deployment_integration_id: ID
+
     "ID of the environment on the trigger"
     environment_id: ID
 

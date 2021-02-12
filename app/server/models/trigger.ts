@@ -9,6 +9,9 @@ const MINUTES_PER_DAY = 24 * 60;
 
 type CreateTrigger = {
   creator_id: string;
+  deployment_branches?: string | null;
+  deployment_environment?: DeploymentEnvironment | null;
+  deployment_integration_id?: string | null;
   environment_id?: string;
   is_default?: boolean;
   name: string;
@@ -89,6 +92,9 @@ export const getUpdatedNextAt = ({
 export const createTrigger = async (
   {
     creator_id,
+    deployment_branches,
+    deployment_environment,
+    deployment_integration_id,
     environment_id,
     is_default,
     name,
@@ -104,7 +110,9 @@ export const createTrigger = async (
   const trigger = {
     creator_id,
     deleted_at: null,
-    deployment_integration_id: null,
+    deployment_branches: formatBranches(deployment_branches),
+    deployment_environment: deployment_environment || null,
+    deployment_integration_id: deployment_integration_id || null,
     environment_id: environment_id || null,
     id: cuid(),
     is_default: is_default || false,

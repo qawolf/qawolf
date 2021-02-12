@@ -61,6 +61,7 @@ export default function Form({
   const [deployIntegrationId, setDeployIntegrationId] = useState<string | null>(
     editTrigger?.deployment_integration_id || null
   );
+  const [hasDeployError, setHasDeployError] = useState(false);
   // environment
   const [environmentId, setEnvironmentId] = useState<string | null>(
     editTrigger?.environment_id || stateEnvironmentId
@@ -79,8 +80,15 @@ export default function Form({
   };
 
   const handleSave = (): void => {
+    setHasDeployError(false);
+    setNameError("");
+
     if (!name) {
       setNameError(copy.required);
+      return;
+    }
+    if (mode === "deployment" && !deployIntegrationId) {
+      setHasDeployError(true);
       return;
     }
 
@@ -123,6 +131,7 @@ export default function Form({
             deployBranches={deployBranches}
             deployEnv={deployEnv}
             deployIntegrationId={deployIntegrationId}
+            hasDeployError={hasDeployError}
             setDeployBranches={setDeployBranches}
             setDeployEnv={setDeployEnv}
             setDeployIntegrationId={setDeployIntegrationId}

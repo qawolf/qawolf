@@ -153,10 +153,7 @@ type CreateTriggerData = {
   createTrigger: Trigger;
 };
 
-export type CreateTriggerVariables = {
-  environment_id?: string | null;
-  name: string;
-  repeat_minutes?: number | null;
+export type CreateTriggerVariables = TriggerFields & {
   team_id: string;
   test_ids?: string[] | null;
 };

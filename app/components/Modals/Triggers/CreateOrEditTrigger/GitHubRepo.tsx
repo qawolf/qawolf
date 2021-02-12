@@ -13,11 +13,13 @@ import { labelTextProps } from "../helpers";
 
 type Props = {
   deployIntegrationId: string | null;
+  hasDeployError: boolean;
   setDeployIntegrationId: (integrationId: string | null) => void;
 };
 
 export default function GitHubRepo({
   deployIntegrationId,
+  hasDeployError,
   setDeployIntegrationId,
 }: Props): JSX.Element {
   const { teamId } = useContext(StateContext);
@@ -37,7 +39,14 @@ export default function GitHubRepo({
     return () => {
       stopPolling();
     };
-  }, [isGitHubClicked]);
+  }, [isGitHubClicked, startPolling, stopPolling]);
+
+  // choose a GitHub repo if possible
+  useEffect(() => {
+    if (!deployIntegrationId && gitHubIntegrations.length) {
+      setDeployIntegrationId(gitHubIntegrations[0].id);
+    }
+  }, [deployIntegrationId, gitHubIntegrations, setDeployIntegrationId]);
 
   const handleGitHubClick = (): void => {
     setIsGitHubClicked(true);
@@ -71,11 +80,14 @@ export default function GitHubRepo({
       {gitHubIntegrations.length ? (
         <Box align="center" direction="row">
           <Button {...buttonProps} margin={{ right: "xxsmall" }} />
-          <Select label={selectLabel}>{optionsHtml}</Select>
+          <Select hasError={hasDeployError} label={selectLabel}>
+            {optionsHtml}
+          </Select>
         </Box>
       ) : (
         <Button
           {...buttonProps}
+          hasError={hasDeployError}
           justify="center"
           label={data?.integrations ? copy.connectGitHubRepo : copy.loading}
         />

@@ -26,13 +26,7 @@ import { ensureTeamAccess, ensureTriggerAccess, ensureUser } from "./utils";
  */
 export const createTriggerResolver = async (
   _: Record<string, unknown>,
-  {
-    environment_id,
-    name,
-    repeat_minutes,
-    team_id,
-    test_ids,
-  }: CreateTriggerMutation,
+  { team_id, test_ids, ...args }: CreateTriggerMutation,
   { logger, teams, user: contextUser }: Context
 ): Promise<Trigger> => {
   const log = logger.prefix("createTriggerResolver");
@@ -44,7 +38,7 @@ export const createTriggerResolver = async (
 
   const trigger = await db.transaction(async (trx) => {
     const trigger = await createTrigger(
-      { creator_id: user.id, environment_id, name, repeat_minutes, team_id },
+      { creator_id: user.id, team_id, ...args },
       { logger, trx }
     );
 
