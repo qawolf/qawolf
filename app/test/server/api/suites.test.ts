@@ -25,11 +25,8 @@ afterAll(() => dropTestDb());
 
 describe("handleSuitesRequest", () => {
   beforeAll(async () => {
-    const token_digest = await buildDigest("secret");
-
     await db("users").insert(buildUser({}));
     await db("teams").insert(buildTeam({}));
-    await db("api_keys").insert(buildApiKey({ token_digest }));
 
     await db("environments").insert(buildEnvironment({}));
     await db("environment_variables").insert(buildEnvironmentVariable({}));

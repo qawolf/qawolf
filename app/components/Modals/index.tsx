@@ -4,7 +4,6 @@ import { useContext } from "react";
 import { routes } from "../../lib/routes";
 import { state } from "../../lib/state";
 import { StateContext } from "../StateContext";
-import ApiKeys from "./ApiKeys";
 import ConfirmDeleteTests from "./ConfirmDeleteTests";
 import CreateTest from "./CreateTest";
 import Environments from "./Environments";
@@ -23,10 +22,6 @@ export default function Modals(): JSX.Element {
 
   if (noModalRoutes.some((r) => asPath.includes(r))) {
     return null;
-  }
-
-  if (name === "apiKeys") {
-    return <ApiKeys closeModal={closeModal} />;
   }
 
   if (name === "createTest") {

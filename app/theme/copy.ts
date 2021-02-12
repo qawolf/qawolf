@@ -18,13 +18,6 @@ export const copy = {
   alertTeamDetail: "Receive email or Slack alerts with one click.",
   alerts: "Alerts:",
   all: "All",
-  apiKeyCreate: "Create API key",
-  apiKeyName: "API key name",
-  apiKeyWarning:
-    "This key is only shown once. Store it in a safe, secure location.",
-  apiKeys: "API keys",
-  apiKeysDetail: "These keys allow you to authenticate API requests",
-  apiKeysEmpty: "You don't have any API keys yet!",
   assignGroups: "Assign groups",
   back: "Back",
   backToDashboard: "Back to dashboard",

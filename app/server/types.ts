@@ -51,17 +51,6 @@ export type SlackWebhook = {
 };
 
 // Model types
-export type ApiKey = {
-  created_at: string;
-  id: string;
-  last_used_at: string | null;
-  name: string;
-  team_id: string;
-  token_digest: string;
-  token_end: string;
-  updated_at?: string;
-};
-
 type WolfFields = {
   wolf_name?: string | null;
   wolf_number?: number | null;
@@ -214,6 +203,7 @@ export type TeamPlan = "free" | "business";
 export type Team = {
   alert_integration_id: string | null;
   alert_only_on_failure?: boolean;
+  api_key: string;
   created_at?: string;
   deleted_at?: string | null;
   id: string;
@@ -304,11 +294,6 @@ export type User = {
 export type AuthenticatedUser = {
   access_token: string;
   user: CurrentUser;
-};
-
-export type CreateApiKeyMutation = {
-  name: string;
-  team_id: string;
 };
 
 export type CreateEnvironmentMutation = {

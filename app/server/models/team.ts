@@ -3,7 +3,8 @@ import isNil from "lodash/isNil";
 import { minutesFromNow } from "../../shared/utils";
 import { db } from "../db";
 import { ModelOptions, Team, TeamPlan } from "../types";
-import { cuid } from "../utils";
+import { buildApiKey, cuid } from "../utils";
+import { encrypt } from "./encrypt";
 import { createDefaultEnvironments } from "./environment";
 import { createTrigger, DEFAULT_TRIGGER_NAME } from "./trigger";
 
@@ -33,6 +34,7 @@ export const createFreeTeamWithTrigger = async (
 
   const team = {
     alert_integration_id: null,
+    api_key: encrypt(buildApiKey()),
     helpers: "",
     id,
     is_email_alert_enabled: true,

@@ -1,4 +1,5 @@
 import { db, dropTestDb, migrateDb } from "../../../server/db";
+import { decrypt } from "../../../server/models/encrypt";
 import {
   createFreeTeamWithTrigger,
   findTeam,
@@ -38,6 +39,7 @@ describe("team model", () => {
       expect(teams).toMatchObject([
         {
           alert_integration_id: null,
+          api_key: expect.any(String),
           helpers: "",
           id: expect.any(String),
           is_email_alert_enabled: true,
@@ -49,6 +51,8 @@ describe("team model", () => {
           stripe_subscription_id: null,
         },
       ]);
+
+      expect(decrypt(teams[0].api_key)).toMatch("qawolf_");
 
       const triggers = await db.select("*").from("triggers");
       expect(triggers).toMatchObject([
@@ -82,7 +86,7 @@ describe("team model", () => {
 
     it("finds a team", async () => {
       const team = await findTeam("teamId", { logger });
-      expect(team).toMatchObject(buildTeam({}));
+      expect(team).toMatchObject({ id: "teamId" });
     });
 
     it("throws an error if team not found", async () => {

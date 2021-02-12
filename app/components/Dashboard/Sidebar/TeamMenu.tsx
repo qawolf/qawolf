@@ -24,11 +24,6 @@ export default function TeamMenu({
 }: Props): JSX.Element {
   const { replace } = useRouter();
 
-  const handleApiKeysClick = () => {
-    state.setModal({ name: "apiKeys" });
-    closeMenu();
-  };
-
   const handleLogOutClick = () => {
     localStorage.removeItem(JWT_KEY);
     state.clear();
@@ -67,11 +62,6 @@ export default function TeamMenu({
         hasBorder
         message={copy.teamSettings}
         onClick={handleSettingsClick}
-      />
-      <MenuButton
-        IconComponent={License}
-        message={copy.apiKeys}
-        onClick={handleApiKeysClick}
       />
       <MenuButton
         IconComponent={Logout}
