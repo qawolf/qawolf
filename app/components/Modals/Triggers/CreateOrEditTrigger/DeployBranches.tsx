@@ -28,7 +28,7 @@ export default function DeployBranches({
 }: Props): JSX.Element {
   const ref = useRef<HTMLInputElement>(null);
 
-  const [isAllBranches, setIsAllBranches] = useState(!!deployBranches);
+  const [isAllBranches, setIsAllBranches] = useState(!deployBranches);
 
   // clear select branches if needed
   useEffect(() => {
