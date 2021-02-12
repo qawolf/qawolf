@@ -58,15 +58,17 @@ export class Run extends EventEmitter {
   }
 
   async run(variables: Variables, hooks: RunHook[]): Promise<void> {
+    const handleHookProgress = async () => {
+      await Promise.all(
+        hooks.map((hook) => hook.progress && hook.progress(this.progress))
+      );
+    };
+
+    this.on("runprogress", handleHookProgress);
+
     try {
       this._stopped = false;
       await Promise.all(hooks.map((hook) => hook.before && hook.before()));
-
-      this.on("runprogress", async () => {
-        await Promise.all(
-          hooks.map((hook) => hook.progress && hook.progress(this.progress))
-        );
-      });
 
       if (this._runOptions.env) this._vm.setEnv(this._runOptions.env);
 
@@ -88,6 +90,8 @@ export class Run extends EventEmitter {
 
     this._progress.completed_at = new Date().toISOString();
     this._emitProgress();
+
+    this.off("runprogress", handleHookProgress);
 
     await Promise.all(
       hooks.map((hook) => hook.after && hook.after(this.progress))
