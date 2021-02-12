@@ -3,7 +3,6 @@ import noop from "lodash/noop";
 import { useRouter } from "next/router";
 
 import {
-  apiKeysQuery,
   currentUserQuery,
   dashboardQuery,
   environmentsQuery,
@@ -22,7 +21,6 @@ import { isServer } from "../lib/detection";
 import { routes } from "../lib/routes";
 import { state } from "../lib/state";
 import {
-  ApiKey,
   Environment,
   EnvironmentVariable,
   Integration,
@@ -38,14 +36,6 @@ import {
   Trigger,
   User,
 } from "../lib/types";
-
-type ApiKeysData = {
-  apiKeys: ApiKey[];
-};
-
-type ApiKeysVariables = {
-  team_id: string;
-};
 
 type CurrentUserData = {
   currentUser: User;
@@ -157,18 +147,6 @@ type TriggersVariables = {
 const fetchPolicy = "cache-and-network";
 const nextFetchPolicy = "cache-first";
 const onError = noop;
-
-export const useApiKeys = (
-  variables: ApiKeysVariables
-): QueryResult<ApiKeysData, ApiKeysVariables> => {
-  return useQuery<ApiKeysData, ApiKeysVariables>(apiKeysQuery, {
-    fetchPolicy,
-    nextFetchPolicy,
-    onError,
-    skip: !variables.team_id,
-    variables,
-  });
-};
 
 export const useCurrentUser = (): QueryResult<CurrentUserData> => {
   return useQuery<CurrentUserData>(currentUserQuery, {

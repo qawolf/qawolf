@@ -1,7 +1,6 @@
 import { gql } from "@apollo/client";
 
 import {
-  apiKeyFragment,
   environmentFragment,
   environmentVariableFragment,
   integrationFragment,
@@ -15,15 +14,6 @@ import {
   triggerFragment,
   userFragment,
 } from "./fragments";
-
-export const apiKeysQuery = gql`
-  query apiKeys($team_id: ID!) {
-    apiKeys(team_id: $team_id) {
-      ...ApiKeyFragment
-    }
-  }
-  ${apiKeyFragment}
-`;
 
 export const currentUserQuery = gql`
   query currentUser {

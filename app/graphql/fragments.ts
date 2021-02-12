@@ -1,16 +1,5 @@
 import { gql } from "@apollo/client";
 
-export const apiKeyFragment = gql`
-  fragment ApiKeyFragment on ApiKey {
-    created_at
-    id
-    last_used_at
-    name
-    token
-    token_end
-  }
-`;
-
 export const environmentFragment = gql`
   fragment EnvironmentFragment on Environment {
     id

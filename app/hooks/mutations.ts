@@ -4,7 +4,6 @@ import { NextRouter, useRouter } from "next/router";
 
 import {
   acceptInviteMutation,
-  createApiKeyMutation,
   createEnvironmentMutation,
   createEnvironmentVariableMutation,
   createGitHubIntegrationsMutation,
@@ -15,7 +14,6 @@ import {
   createSuiteMutation,
   createTestMutation,
   createTriggerMutation,
-  deleteApiKeyMutation,
   deleteEnvironmentMutation,
   deleteEnvironmentVariableMutation,
   deleteTestsMutation,
@@ -37,7 +35,6 @@ import { client, JWT_KEY } from "../lib/client";
 import { routes } from "../lib/routes";
 import { state } from "../lib/state";
 import {
-  ApiKey,
   AuthenticatedUser,
   Environment,
   EnvironmentVariable,
@@ -57,15 +54,6 @@ type AcceptInviteData = {
 
 type AcceptInviteVariables = {
   id: string;
-};
-
-type CreateApiKeyData = {
-  createApiKey: ApiKey;
-};
-
-type CreateApiKeyVariables = {
-  name: string;
-  team_id: string;
 };
 
 type CreateEnvironmentData = {
@@ -156,14 +144,6 @@ type CreateTriggerData = {
 export type CreateTriggerVariables = TriggerFields & {
   team_id: string;
   test_ids?: string[] | null;
-};
-
-type DeleteApiKeyData = {
-  deleteApiKey: ApiKey;
-};
-
-type DeleteApiKeyVariables = {
-  id: string;
 };
 
 type DeleteEnvironmentData = {
@@ -361,16 +341,6 @@ export const useAcceptInvite = (): MutationTuple<
   );
 };
 
-export const useCreateApiKey = (): MutationTuple<
-  CreateApiKeyData,
-  CreateApiKeyVariables
-> => {
-  return useMutation<CreateApiKeyData, CreateApiKeyVariables>(
-    createApiKeyMutation,
-    { awaitRefetchQueries: true, onError, refetchQueries: ["apiKeys"] }
-  );
-};
-
 export const useCreateEnvironment = (): MutationTuple<
   CreateEnvironmentData,
   CreateEnvironmentVariables
@@ -511,16 +481,6 @@ export const useCreateTrigger = (): MutationTuple<
       onError,
       refetchQueries: ["testTriggers", "triggers"],
     }
-  );
-};
-
-export const useDeleteApiKey = (): MutationTuple<
-  DeleteApiKeyData,
-  DeleteApiKeyVariables
-> => {
-  return useMutation<DeleteApiKeyData, DeleteApiKeyVariables>(
-    deleteApiKeyMutation,
-    { awaitRefetchQueries: true, onError, refetchQueries: ["apiKeys"] }
   );
 };
 

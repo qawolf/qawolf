@@ -1,7 +1,6 @@
 import { gql } from "@apollo/client";
 
 import {
-  apiKeyFragment,
   environmentFragment,
   environmentVariableFragment,
   integrationFragment,
@@ -19,15 +18,6 @@ export const acceptInviteMutation = gql`
     }
   }
   ${inviteFragment}
-`;
-
-export const createApiKeyMutation = gql`
-  mutation createApiKey($name: String!, $team_id: ID!) {
-    createApiKey(name: $name, team_id: $team_id) {
-      ...ApiKeyFragment
-    }
-  }
-  ${apiKeyFragment}
 `;
 
 export const createEnvironmentMutation = gql`
@@ -146,15 +136,6 @@ export const createTriggerMutation = gql`
     }
   }
   ${triggerFragment}
-`;
-
-export const deleteApiKeyMutation = gql`
-  mutation deleteApiKey($id: ID!) {
-    deleteApiKey(id: $id) {
-      ...ApiKeyFragment
-    }
-  }
-  ${apiKeyFragment}
 `;
 
 export const deleteEnvironmentMutation = gql`
