@@ -285,6 +285,9 @@ type Team {
   "The ID of a Slack integration associated with this team"
   alert_integration_id: ID
 
+  "The API key for the team"
+  api_key: String!
+
   "Team helper code, for sharing functionality between tests"
   helpers: String!
 
@@ -308,6 +311,12 @@ type Team {
 
   "Team name, for display in UI"
   name: String!
+
+  """
+  The ID of the next trigger the team creates, used
+  to copy API call example when creating a trigger
+  """
+  next_trigger_id: ID!
 
   "Current plan this team is on"
   plan: String!

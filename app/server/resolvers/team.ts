@@ -1,3 +1,4 @@
+import { decrypt } from "../models/encrypt";
 import { findTeam, updateTeam } from "../models/team";
 import { Context, IdQuery, Team, UpdateTeamMutation } from "../types";
 import { ensureTeamAccess } from "./utils";
@@ -12,7 +13,9 @@ export const teamResolver = async (
 
   ensureTeamAccess({ logger, team_id: id, teams });
 
-  return findTeam(id, { logger });
+  const team = await findTeam(id, { logger });
+
+  return { ...team, api_key: decrypt(team.api_key) };
 };
 
 /**

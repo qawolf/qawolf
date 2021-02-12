@@ -90,7 +90,7 @@ export default function EditTriggers({
   }
 
   return (
-    <>
+    <Box flex={false}>
       <Header closeModal={closeModal} label={copy.editTriggers} />
       <Divider margin={{ top: "medium" }} />
       {innerHtml}
@@ -102,6 +102,6 @@ export default function EditTriggers({
         secondaryLabel={copy.createTrigger}
         showDivider
       />
-    </>
+    </Box>
   );
 }

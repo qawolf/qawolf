@@ -23,6 +23,7 @@ import {
 } from "../helpers";
 import DeploymentFields from "./DeploymentFields";
 import ModeTabs from "./ModeTabs";
+import OnDemandFields from "./OnDemandFields";
 import ScheduleFields from "./ScheduleFields";
 
 type Props = {
@@ -136,6 +137,9 @@ export default function Form({
             setDeployEnv={setDeployEnv}
             setDeployIntegrationId={setDeployIntegrationId}
           />
+        )}
+        {mode === "onDemand" && (
+          <OnDemandFields editTriggerId={editTrigger?.id} />
         )}
         <Environment
           environmentId={environmentId}

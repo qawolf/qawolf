@@ -90,11 +90,13 @@ export const suiteFragment = gql`
 export const teamFragment = gql`
   fragment TeamFragment on Team {
     alert_integration_id
+    api_key
     helpers
     id
     is_email_alert_enabled
     is_enabled
     name
+    next_trigger_id
   }
 `;
 

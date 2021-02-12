@@ -1,4 +1,5 @@
 import { db, dropTestDb, migrateDb } from "../../../server/db";
+import { encrypt } from "../../../server/models/encrypt";
 import {
   teamResolver,
   updateTeamResolver,
@@ -26,6 +27,8 @@ afterAll(() => dropTestDb());
 describe("teamResolver", () => {
   beforeAll(async () => {
     await db("teams").insert(buildTeam({}));
+    await db("teams").update({ api_key: encrypt("qawolf_api_key") });
+
     await db("users").insert(buildUser({}));
 
     return db("team_users").insert(buildTeamUser({}));
@@ -40,7 +43,7 @@ describe("teamResolver", () => {
 
   it("finds a team", async () => {
     const team = await teamResolver({}, { id: "teamId" }, testContext);
-    expect(team).toMatchObject({ id: "teamId" });
+    expect(team).toMatchObject({ api_key: "qawolf_api_key", id: "teamId" });
   });
 });
 
