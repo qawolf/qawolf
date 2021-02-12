@@ -27,7 +27,6 @@ export class VideoCapture {
   _stopped = false;
   _stoppedPromise: Promise<void>;
   _timingsPath = "set_in_start_function.txt";
-  _videoMetadataPath = "set_in_start_function.txt";
   _videoPath = "set_in_start_function.mp4";
 
   constructor() {
@@ -138,7 +137,6 @@ export class VideoCapture {
     this._jsonPath = `${path}${sep}metadata.json`;
     this._gifPath = `${path}${sep}video.gif`;
     this._timingsPath = `${path}${sep}timings.txt`;
-    this._videoMetadataPath = `${path}${sep}video-metadata.txt`;
     this._videoPath = `${path}${sep}video.mp4`;
     debug("start video capture to %s", this._videoPath);
 
