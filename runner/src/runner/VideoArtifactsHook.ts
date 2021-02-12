@@ -39,10 +39,10 @@ export class VideoArtifactsHook implements RunHook {
 
     const promises = [];
 
-    if (videoUrl !== "local-only") {
+    if (videoUrl && videoUrl !== "local-only") {
       promises.push(
         uploadFile({
-          savePath: this._videoCapture.videoWithMetadataPath,
+          savePath: this._videoCapture.videoPath,
           url: videoUrl!,
         })
       );

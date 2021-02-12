@@ -104,7 +104,7 @@ describe("Runner", () => {
 
   it("saves a JSON file with code line metadata", async () => {
     const multiLineCode = `console.log("Line 1");
-await page.waitForTimeout(500);
+await new Promise((r) => setTimeout(r, 500));
 console.log("Line 3");
 console.log("Line 4");
 `;
@@ -141,15 +141,22 @@ console.log("Line 4");
         startTimeRelative: expect.any(Number),
       },
       {
-        lineCode: "await page.waitForTimeout(1);",
+        lineCode: "await new Promise((r) => setTimeout(r, 500));",
         lineNum: 2,
         startFrame: expect.any(Number),
         startTimeAbsolute: expect.any(Number),
         startTimeRelative: expect.any(Number),
       },
       {
-        lineCode: 'console.log("Line 2");',
+        lineCode: 'console.log("Line 3");',
         lineNum: 3,
+        startFrame: expect.any(Number),
+        startTimeAbsolute: expect.any(Number),
+        startTimeRelative: expect.any(Number),
+      },
+      {
+        lineCode: 'console.log("Line 4");',
+        lineNum: 4,
         startFrame: expect.any(Number),
         startTimeAbsolute: expect.any(Number),
         startTimeRelative: expect.any(Number),
