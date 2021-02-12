@@ -17,6 +17,7 @@ type UpdateTeam = {
   is_email_alert_enabled?: boolean;
   is_enabled?: boolean;
   name?: string;
+  next_trigger_id?: string;
   plan?: TeamPlan;
   renewed_at?: string;
   stripe_customer_id?: string;
@@ -115,6 +116,7 @@ export const updateTeam = async (
     is_email_alert_enabled,
     is_enabled,
     name,
+    next_trigger_id,
     plan,
     renewed_at,
     stripe_customer_id,
@@ -137,6 +139,7 @@ export const updateTeam = async (
   }
   if (!isNil(is_enabled)) updates.is_enabled = is_enabled;
   if (!isNil(name)) updates.name = name;
+  if (next_trigger_id) updates.next_trigger_id = next_trigger_id;
   if (plan) updates.plan = plan;
   if (renewed_at) updates.renewed_at = renewed_at;
   if (stripe_customer_id) updates.stripe_customer_id = stripe_customer_id;

@@ -264,6 +264,20 @@ describe("team model", () => {
       });
     });
 
+    it("updates next trigger id for a team", async () => {
+      const team = await updateTeam(
+        { id: "teamId", next_trigger_id: "nextTriggerId" },
+        { logger }
+      );
+
+      const updatedTeam = await db.select("*").from("teams").first();
+      expect(updatedTeam).toEqual({
+        ...team,
+        next_trigger_id: "nextTriggerId",
+        updated_at: expect.anything(),
+      });
+    });
+
     it("throws an error if team not found", async () => {
       const testFn = async (): Promise<Team> => {
         return updateTeam({ id: "fakeId", name: "name" }, { logger });

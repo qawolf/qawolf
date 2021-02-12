@@ -13,6 +13,7 @@ type CreateTrigger = {
   deployment_environment?: DeploymentEnvironment | null;
   deployment_integration_id?: string | null;
   environment_id?: string;
+  id?: string;
   is_default?: boolean;
   name: string;
   repeat_minutes?: number | null;
@@ -96,6 +97,7 @@ export const createTrigger = async (
     deployment_environment,
     deployment_integration_id,
     environment_id,
+    id,
     is_default,
     name,
     repeat_minutes,
@@ -114,7 +116,7 @@ export const createTrigger = async (
     deployment_environment: deployment_environment || null,
     deployment_integration_id: deployment_integration_id || null,
     environment_id: environment_id || null,
-    id: cuid(),
+    id: id || cuid(),
     is_default: is_default || false,
     name,
     next_at: getNextAt(repeat_minutes),

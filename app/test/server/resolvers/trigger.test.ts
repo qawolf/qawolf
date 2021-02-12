@@ -15,11 +15,13 @@ import {
   logger,
 } from "../utils";
 
+const team = buildTeam({});
+
 beforeAll(async () => {
   await migrateDb();
 
   await db("users").insert(buildUser({}));
-  await db("teams").insert([buildTeam({}), buildTeam({ i: 2 })]);
+  await db("teams").insert([team, buildTeam({ i: 2 })]);
   await db("environments").insert(buildEnvironment({}));
 });
 
@@ -29,7 +31,7 @@ const testContext = {
   api_key: null,
   ip: "127.0.0.1",
   logger,
-  teams: [buildTeam({})],
+  teams: [team],
   user: buildUser({}),
 };
 
@@ -43,7 +45,7 @@ describe("createTriggerResolver", () => {
 
   afterAll(() => db("tests").del());
 
-  it("creates a new trigger", async () => {
+  it("creates a new trigger with team next trigger id", async () => {
     const trigger = await createTriggerResolver(
       {},
       {
@@ -65,6 +67,7 @@ describe("createTriggerResolver", () => {
       deployment_environment: null,
       deployment_integration_id: null,
       environment_id: "environmentId",
+      id: team.next_trigger_id,
       name: "Daily",
       repeat_minutes: 1440,
       team_id: "teamId",
@@ -73,6 +76,13 @@ describe("createTriggerResolver", () => {
     const testTriggers = await db("test_triggers").select("*");
 
     expect(testTriggers).toEqual([]);
+
+    const updatedTeam = await db("teams")
+      .select("*")
+      .where({ id: "teamId" })
+      .first();
+
+    expect(updatedTeam.next_trigger_id).not.toBe(team.next_trigger_id);
   });
 
   it("creates test triggers if specified", async () => {

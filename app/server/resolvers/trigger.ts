@@ -1,4 +1,5 @@
 import { db } from "../db";
+import { updateTeam } from "../models/team";
 import {
   createTestTriggersForTrigger,
   deleteTestTriggersForTrigger,
@@ -19,6 +20,7 @@ import {
   Trigger,
   UpdateTriggerMutation,
 } from "../types";
+import { cuid } from "../utils";
 import { ensureTeamAccess, ensureTriggerAccess, ensureUser } from "./utils";
 
 /**
@@ -32,15 +34,17 @@ export const createTriggerResolver = async (
   const log = logger.prefix("createTriggerResolver");
 
   const user = ensureUser({ logger, user: contextUser });
-  ensureTeamAccess({ logger, team_id: team_id, teams });
+  const team = ensureTeamAccess({ logger, team_id: team_id, teams });
 
   log.debug(`user ${user.id} for team ${team_id}`);
 
   const trigger = await db.transaction(async (trx) => {
     const trigger = await createTrigger(
-      { creator_id: user.id, team_id, ...args },
+      { ...args, creator_id: user.id, id: team.next_trigger_id, team_id },
       { logger, trx }
     );
+
+    await updateTeam({ id: team.id, next_trigger_id: cuid() }, { logger, trx });
 
     if (test_ids?.length) {
       await createTestTriggersForTrigger(
