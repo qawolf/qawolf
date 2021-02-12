@@ -9,7 +9,6 @@ import {
 } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import TextInput from "../../../shared-new/AppTextInput";
-import ArrowLeft from "../../../shared-new/icons/ArrowLeft";
 import Buttons from "../../../shared-new/Modal/Buttons";
 import Text from "../../../shared-new/Text";
 import { StateContext } from "../../../StateContext";
@@ -132,12 +131,11 @@ export default function Form({
           setEnvironmentId={setEnvironmentId}
         />
         <Buttons
-          SecondaryIconComponent={ArrowLeft}
           onPrimaryClick={handleSave}
           onSecondaryClick={onBack}
           primaryIsDisabled={isLoading}
           primaryLabel={editTrigger ? copy.save : copy.createTrigger}
-          secondaryLabel={copy.back}
+          secondaryLabel={copy.cancel}
           showDivider
         />
       </Box>

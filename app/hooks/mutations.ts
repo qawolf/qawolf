@@ -403,8 +403,7 @@ export const useCreateEnvironmentVariable = (): MutationTuple<
 };
 
 export const useCreateGitHubIntegrations = (
-  variables: CreateGitHubIntegrationsVariables,
-  { dashboardUri }: { dashboardUri: string }
+  variables: CreateGitHubIntegrationsVariables
 ): MutationTuple<
   CreateGitHubIntegrationsData,
   CreateGitHubIntegrationsVariables
@@ -414,16 +413,7 @@ export const useCreateGitHubIntegrations = (
   return useMutation<
     CreateGitHubIntegrationsData,
     CreateGitHubIntegrationsVariables
-  >(createGitHubIntegrationsMutation, {
-    awaitRefetchQueries: true,
-    onCompleted: (response) => {
-      if (!response) return;
-      replace(dashboardUri || routes.tests);
-    },
-    onError,
-    refetchQueries: ["integrations"],
-    variables,
-  });
+  >(createGitHubIntegrationsMutation, { onError, variables });
 };
 
 export const useCreateInvites = (): MutationTuple<

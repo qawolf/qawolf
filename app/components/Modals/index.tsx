@@ -1,4 +1,6 @@
+import { useRouter } from "next/router";
 import { useContext } from "react";
+import { routes } from "../../lib/routes";
 
 import { state } from "../../lib/state";
 import { StateContext } from "../StateContext";
@@ -9,11 +11,19 @@ import Environments from "./Environments";
 import TeamSettings from "./TeamSettings";
 import Triggers from "./Triggers";
 
+const noModalRoutes = [routes.gitHubIntegration];
+
 export default function Modals(): JSX.Element {
+  const { asPath } = useRouter();
+
   const { modal } = useContext(StateContext);
   const { name, teamId, testIds, tests } = modal || {};
 
   const closeModal = () => state.setModal({ name: null });
+
+  if (noModalRoutes.some((r) => asPath.includes(r))) {
+    return null;
+  }
 
   if (name === "apiKeys") {
     return <ApiKeys closeModal={closeModal} />;

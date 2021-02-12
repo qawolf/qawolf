@@ -245,7 +245,6 @@ export const useIntegrations = (
 ): QueryResult<IntegrationsData, IntegrationsVariables> => {
   return useQuery<IntegrationsData, IntegrationsVariables>(integrationsQuery, {
     fetchPolicy,
-    nextFetchPolicy,
     onError,
     skip: !variables.team_id,
     variables,

@@ -62,9 +62,7 @@ export default function TriggerDropdown({
         href={process.env.NEXT_PUBLIC_GITHUB_APP_URL}
         justify="center"
         margin={{ horizontal: "medium", vertical: "small" }}
-        message={
-          integrations.length ? copy.manageGitHubRepos : copy.addGitHubRepo
-        }
+        message={copy.chooseGitHubRepo}
       />
     </Dropdown>
   );
