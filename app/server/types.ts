@@ -211,6 +211,7 @@ export type Team = {
   is_email_alert_enabled: boolean;
   is_enabled: boolean;
   name: string;
+  next_trigger_id: string;
   plan: TeamPlan;
   renewed_at: string | null;
   stripe_customer_id: string | null;

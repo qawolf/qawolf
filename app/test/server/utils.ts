@@ -23,7 +23,7 @@ import {
   Trigger,
   User,
 } from "../../server/types";
-import { buildApiKey } from "../../server/utils";
+import { buildApiKey, cuid } from "../../server/utils";
 import { minutesFromNow } from "../../shared/utils";
 
 type BuildEnvironment = {
@@ -337,6 +337,7 @@ export const buildTeam = ({ i, is_enabled, name, plan }: BuildTeam): Team => {
     is_email_alert_enabled: true,
     is_enabled: is_enabled === undefined ? true : is_enabled,
     name: name || "Awesome Company",
+    next_trigger_id: cuid(),
     plan: plan || "free",
     stripe_customer_id: null,
     stripe_subscription_id: null,

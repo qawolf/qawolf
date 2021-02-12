@@ -1,10 +1,11 @@
 import { db, dropTestDb, migrateDb } from "../../../server/db";
-import { decrypt } from "../../../server/models/encrypt";
+import { decrypt, encrypt } from "../../../server/models/encrypt";
 import {
   createFreeTeamWithTrigger,
   findTeam,
   findTeamsForUser,
   updateTeam,
+  validateApiKeyForTeam,
 } from "../../../server/models/team";
 import { Team } from "../../../server/types";
 import { minutesFromNow } from "../../../shared/utils";
@@ -45,6 +46,7 @@ describe("team model", () => {
           is_email_alert_enabled: true,
           is_enabled: true,
           name: "My Team",
+          next_trigger_id: expect.any(String),
           plan: "free",
           renewed_at: null,
           stripe_customer_id: null,
@@ -268,6 +270,39 @@ describe("team model", () => {
       };
 
       await expect(testFn()).rejects.toThrowError("not found");
+    });
+  });
+
+  describe("validateApiKeyForTeam", () => {
+    beforeAll(async () => {
+      await db("teams").insert(buildTeam({}));
+      return db("teams")
+        .where({ id: "teamId" })
+        .update({ api_key: encrypt("qawolf_api_key") });
+    });
+
+    afterAll(() => db("teams").del());
+
+    it("throws an error if api key is invalid", async () => {
+      const testFn = async (): Promise<void> => {
+        return validateApiKeyForTeam(
+          { api_key: "invalidApiKey", team_id: "teamId" },
+          { logger }
+        );
+      };
+
+      await expect(testFn()).rejects.toThrowError("invalid api key");
+    });
+
+    it("does not throw an error if api key is valid", async () => {
+      const testFn = async (): Promise<void> => {
+        return validateApiKeyForTeam(
+          { api_key: "qawolf_api_key", team_id: "teamId" },
+          { logger }
+        );
+      };
+
+      await expect(testFn()).resolves.not.toThrowError();
     });
   });
 });

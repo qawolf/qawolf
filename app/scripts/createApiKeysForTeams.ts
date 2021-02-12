@@ -1,6 +1,6 @@
 import { db } from "../server/db";
 import { encrypt } from "../server/models/encrypt";
-import { buildApiKey } from "../server/utils";
+import { buildApiKey, cuid } from "../server/utils";
 
 (async () => {
   const teams = await db("teams").select("*");
@@ -8,9 +8,16 @@ import { buildApiKey } from "../server/utils";
   await db.transaction(async (trx) => {
     await Promise.all(
       teams.map((team) => {
-        return trx("teams")
-          .update({ api_key: encrypt(buildApiKey()) })
-          .where({ id: team.id });
+        return (async () => {
+          if (team.api_key && team.next_trigger_id) return;
+
+          return trx("teams")
+            .update({
+              api_key: encrypt(buildApiKey()),
+              next_trigger_id: cuid(),
+            })
+            .where({ id: team.id });
+        })();
       })
     );
   });

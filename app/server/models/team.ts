@@ -4,7 +4,7 @@ import { minutesFromNow } from "../../shared/utils";
 import { db } from "../db";
 import { ModelOptions, Team, TeamPlan } from "../types";
 import { buildApiKey, cuid } from "../utils";
-import { encrypt } from "./encrypt";
+import { decrypt, encrypt } from "./encrypt";
 import { createDefaultEnvironments } from "./environment";
 import { createTrigger, DEFAULT_TRIGGER_NAME } from "./trigger";
 
@@ -21,6 +21,11 @@ type UpdateTeam = {
   renewed_at?: string;
   stripe_customer_id?: string;
   stripe_subscription_id?: string;
+};
+
+type ValidateApiKeyForTeam = {
+  api_key: string;
+  team_id: string;
 };
 
 export const createFreeTeamWithTrigger = async (
@@ -40,6 +45,7 @@ export const createFreeTeamWithTrigger = async (
     is_email_alert_enabled: true,
     is_enabled: true,
     name: DEFAULT_NAME,
+    next_trigger_id: cuid(),
     plan: "free" as const,
     renewed_at: null,
     stripe_customer_id: null,
@@ -143,4 +149,19 @@ export const updateTeam = async (
   log.debug("updated", id, updates);
 
   return { ...team, ...updates };
+};
+
+export const validateApiKeyForTeam = async (
+  { api_key, team_id }: ValidateApiKeyForTeam,
+  { logger, trx }: ModelOptions
+): Promise<void> => {
+  const log = logger.prefix("validateApiKeyForTeam");
+  log.debug("team", team_id);
+
+  const team = await findTeam(team_id, { logger, trx });
+
+  if (api_key !== decrypt(team.api_key)) {
+    log.error("invalid api key");
+    throw new Error("invalid api key");
+  }
 };

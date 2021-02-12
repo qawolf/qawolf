@@ -8,12 +8,14 @@ export async function up(knex: Knex): Promise<void> {
 
   return knex.schema.alterTable("teams", (table) => {
     table.string("api_key").unique();
+    table.string("next_trigger_id").unique();
   });
 }
 
 export async function down(knex: Knex): Promise<void> {
   await knex.schema.alterTable("teams", (table) => {
     table.dropColumn("api_key");
+    table.dropColumn("next_trigger_id");
   });
 
   const exists = await knex.schema.hasTable("api_keys");
