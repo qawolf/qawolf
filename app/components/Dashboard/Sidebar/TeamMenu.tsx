@@ -1,4 +1,4 @@
-import { Blank, Checkmark, License, Logout, UserSettings } from "grommet-icons";
+import { Blank, Checkmark, Logout, UserSettings } from "grommet-icons";
 import { useRouter } from "next/router";
 
 import { resetIntercom } from "../../../hooks/intercom";

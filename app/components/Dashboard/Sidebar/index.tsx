@@ -7,7 +7,6 @@ import { state } from "../../../lib/state";
 import { Trigger, User, Wolf } from "../../../lib/types";
 import { edgeSize } from "../../../theme/theme";
 import { StateContext } from "../../StateContext";
-import CreateTrigger from "./CreateTrigger";
 import Plan from "./Plan";
 import Team from "./Team";
 import TriggerLink from "./TriggerLink";
@@ -68,7 +67,6 @@ export default function Sidebar({
         <Team selectedTeam={selectedTeam} user={user} />
         <Box margin={{ top: TOP_PAD }} overflow="auto">
           {triggersHtml}
-          <CreateTrigger teamId={teamId} />
         </Box>
       </Box>
       <Plan team={selectedTeam} wolf={wolf} />
