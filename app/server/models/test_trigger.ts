@@ -112,16 +112,13 @@ export const findTestTriggersForTests = async (
     .whereIn("test_triggers.test_id", testIds)
     .andWhere({ "triggers.deleted_at": null, "triggers.is_default": false });
 
-  const result: TestTriggers[] = [];
+  const result: TestTriggers[] = testIds.map((test_id) => {
+    return { test_id, trigger_ids: [] };
+  });
 
   testTriggers.forEach((t) => {
     const existingRow = result.find((r) => r.test_id === t.test_id);
-
-    if (existingRow) {
-      existingRow.trigger_ids.push(t.trigger_id);
-    } else {
-      result.push({ test_id: t.test_id, trigger_ids: [t.trigger_id] });
-    }
+    if (existingRow) existingRow.trigger_ids.push(t.trigger_id);
   });
 
   return result;

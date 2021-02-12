@@ -39,7 +39,7 @@ export const updateTestTriggersResolver = async (
   _: Record<string, unknown>,
   { add_trigger_id, remove_trigger_id, test_ids }: UpdateTestTriggersMutation,
   { logger, teams }: Context
-): Promise<number> => {
+): Promise<TestTriggers[]> => {
   const log = logger.prefix("updateTestTriggersResolver");
   log.debug("tests", test_ids);
 
@@ -48,6 +48,10 @@ export const updateTestTriggersResolver = async (
     throw new Error("Must provide add or remove trigger id");
   }
 
+  await Promise.all(
+    test_ids.map((test_id) => ensureTestAccess({ logger, teams, test_id }))
+  );
+
   await ensureTriggerAccess({
     logger,
     teams,
@@ -55,26 +59,23 @@ export const updateTestTriggersResolver = async (
     trigger_id: (add_trigger_id || remove_trigger_id)!,
   });
 
-  if (add_trigger_id) {
-    await Promise.all(
-      test_ids.map((test_id) => ensureTestAccess({ logger, teams, test_id }))
-    );
-    // use a transaction since we check for existing test triggers before inserting
-    const testTriggers = await db.transaction(async (trx) => {
-      return createTestTriggersForTrigger(
+  return db.transaction(async (trx) => {
+    if (add_trigger_id) {
+      await createTestTriggersForTrigger(
         { test_ids, trigger_id: add_trigger_id },
         { logger, trx }
       );
-    });
-    return testTriggers.length;
-  }
+    } else {
+      await deleteTestTriggersForTrigger(
+        {
+          test_ids,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          trigger_id: remove_trigger_id!,
+        },
+        { logger, trx }
+      );
+    }
 
-  return deleteTestTriggersForTrigger(
-    {
-      test_ids,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      trigger_id: remove_trigger_id!,
-    },
-    { logger }
-  );
+    return findTestTriggersForTests(test_ids, { logger, trx });
+  });
 };

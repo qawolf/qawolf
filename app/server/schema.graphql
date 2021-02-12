@@ -878,8 +878,8 @@ type Mutation {
   ): Trigger!
 
   """
-  Adds one or more tests to a trigger. Returns the number of
-  test_trigger relationships that were added or removed.
+  Adds one or more tests to a trigger. Returns the updated
+  test_trigger relationships.
 
   Requires that you have access to the team that owns the trigger.
   """
@@ -900,7 +900,7 @@ type Mutation {
     List of test IDs to add to / remove from the test trigger.
     """
     test_ids: [ID!]
-  ): Int!
+  ): [TestTriggers!]!
 
   """
   Updates information about a test run by run ID. A runner service calls

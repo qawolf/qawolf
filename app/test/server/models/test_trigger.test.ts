@@ -225,7 +225,7 @@ describe("test trigger model", () => {
         },
       ]);
 
-      await db("tests").insert(buildTest({ i: 2 }));
+      await db("tests").insert([buildTest({ i: 2 }), buildTest({ i: 3 })]);
 
       return db("test_triggers").insert([
         { id: "testTriggerId", test_id: "testId", trigger_id: "triggerId" },
@@ -248,7 +248,7 @@ describe("test trigger model", () => {
 
     it("finds test triggers for tests", async () => {
       const testTriggers = await findTestTriggersForTests(
-        ["testId", "test2Id"],
+        ["testId", "test2Id", "test3Id"],
         {
           logger,
         }
@@ -262,6 +262,7 @@ describe("test trigger model", () => {
       expect(testTriggers).toEqual([
         { test_id: "testId", trigger_ids: ["trigger4Id", "triggerId"] },
         { test_id: "test2Id", trigger_ids: ["trigger3Id"] },
+        { test_id: "test3Id", trigger_ids: [] },
       ]);
     });
   });

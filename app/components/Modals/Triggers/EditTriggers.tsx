@@ -9,7 +9,7 @@ import Add from "../../shared-new/icons/Add";
 import Buttons from "../../shared-new/Modal/Buttons";
 import Header from "../../shared-new/Modal/Header";
 import Text from "../../shared-new/Text";
-import { getIsSelected } from "./helpers";
+import { buildUpdateTestTriggersResponse, getIsSelected } from "./helpers";
 import ListItem from "./ListItem";
 
 type Props = {
@@ -39,13 +39,19 @@ export default function EditTriggers({
     if (loading) return;
 
     const isSelected = getIsSelected({ testIds, testTriggers, triggerId });
+    const add_trigger_id = isSelected ? null : triggerId;
+    const remove_trigger_id = isSelected ? triggerId : null;
 
     updateTestTriggers({
-      variables: {
-        add_trigger_id: isSelected ? null : triggerId,
-        remove_trigger_id: isSelected ? triggerId : null,
-        test_ids: testIds,
+      optimisticResponse: {
+        updateTestTriggers: buildUpdateTestTriggersResponse({
+          addTriggerId: add_trigger_id,
+          removeTriggerId: remove_trigger_id,
+          testIds,
+          testTriggers,
+        }),
       },
+      variables: { add_trigger_id, remove_trigger_id, test_ids: testIds },
     });
   };
 

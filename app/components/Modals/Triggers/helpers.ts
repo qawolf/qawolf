@@ -22,6 +22,13 @@ type BuildTriggerFields = {
   repeatMinutes: number;
 };
 
+type BuildUpdateTestTriggersResponse = {
+  addTriggerId: string;
+  testIds: string[];
+  testTriggers: TestTriggers[];
+  removeTriggerId: string;
+};
+
 type GetIsSelected = {
   testIds: string[];
   testTriggers: TestTriggers[];
@@ -79,6 +86,30 @@ export const buildTriggerFields = ({
     ...nullDeploymentFields,
     repeat_minutes: null,
   };
+};
+
+export const buildUpdateTestTriggersResponse = ({
+  addTriggerId,
+  removeTriggerId,
+  testIds,
+  testTriggers,
+}: BuildUpdateTestTriggersResponse): TestTriggers[] => {
+  const updatedTestTriggers = testTriggers.filter((t) =>
+    testIds.includes(t.test_id)
+  );
+
+  return updatedTestTriggers.map((t) => {
+    const trigger_ids = [...t.trigger_ids];
+
+    if (addTriggerId) trigger_ids.push(addTriggerId);
+
+    if (removeTriggerId) {
+      const removeIndex = trigger_ids.indexOf(removeTriggerId);
+      if (removeIndex > -1) trigger_ids.splice(removeIndex, 1);
+    }
+
+    return { test_id: t.test_id, trigger_ids };
+  });
 };
 
 export const getDefaultMode = (trigger: Trigger | null): TriggerMode => {

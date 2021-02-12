@@ -277,7 +277,10 @@ export const updateTestTriggersMutation = gql`
       add_trigger_id: $add_trigger_id
       remove_trigger_id: $remove_trigger_id
       test_ids: $test_ids
-    )
+    ) {
+      test_id
+      trigger_ids
+    }
   }
 `;
 

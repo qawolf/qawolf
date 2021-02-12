@@ -58,6 +58,12 @@ const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
 const httpLink = new HttpLink({ uri: "/api/graphql" });
 
 export const client = new ApolloClient({
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      TestTriggers: {
+        keyFields: ["test_id"],
+      },
+    },
+  }),
   link: authLink.concat(errorLink).concat(httpLink),
 });

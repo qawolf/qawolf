@@ -43,6 +43,7 @@ import {
   State,
   Team,
   Test,
+  TestTriggers,
   Trigger,
   TriggerFields,
   User,
@@ -261,7 +262,7 @@ type UpdateTestVariables = {
 };
 
 type UpdateTestTriggersData = {
-  updateTestTriggers: number;
+  updateTestTriggers: TestTriggers[];
 };
 
 export type UpdateTestTriggersVariables = {
