@@ -3,7 +3,7 @@ import axios from "axios";
 import Debug from "debug";
 
 import config from "../config";
-import { Run, Suite } from "../types";
+import { Run } from "../types";
 
 type GraphQLRequestData = {
   query: string;
@@ -40,6 +40,7 @@ mutation updateRunner($id: ID!, $is_healthy: Boolean, $is_ready: Boolean) {
   updateRunner(id: $id, is_healthy: $is_healthy, is_ready: $is_ready) {
     artifacts {
       gifUrl
+      jsonUrl
       logsUrl
       videoUrl
     }

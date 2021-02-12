@@ -2,6 +2,7 @@ import { Frame, Page } from "playwright";
 
 export type Artifacts = {
   gifUrl: string | null;
+  jsonUrl: string | null;
   logsUrl: string;
   videoUrl: string | null;
 };
@@ -38,6 +39,7 @@ export type RunOptions = {
 
 export type RunHook = {
   after?(result: RunProgress): Promise<void>;
+  progress?(progress: RunProgress): Promise<void>;
   before?(): Promise<void>;
 };
 
@@ -58,6 +60,19 @@ export type Suite = {
   env?: Record<string, string>;
   runs: Run[];
 };
+
+export interface CustomVideoMarkerMetadata {
+  lineCode: string;
+  lineNum: number;
+  startFrame: number;
+  startTimeAbsolute: number;
+  startTimeRelative: number;
+}
+
+export interface CustomVideoMetadata {
+  markers?: CustomVideoMarkerMetadata[];
+  timings?: number[];
+}
 
 export type BrowserName = "chromium" | "firefox" | "webkit";
 

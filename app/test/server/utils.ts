@@ -151,6 +151,7 @@ type BuildUser = {
 
 export const buildArtifacts = (): SaveArtifacts => ({
   gifUrl: "gif_url",
+  jsonUrl: "json_url",
   logsUrl: "logs_url",
   videoUrl: "video_url",
 });

@@ -75,15 +75,15 @@ export class Runner extends EventEmitter {
   }
 
   async run(options: RunOptions): Promise<void> {
-    let hooks: RunHook[] = [];
+    this._hooks = [];
 
     if (!this._environment || options.restart) {
       this._environment = await this._createEnvironment();
-      // create hooks for fresh runs
-      hooks = createHooks(options, this._environment);
+      // create new hooks for restarted runs
+      this._hooks = createHooks(options, this._environment);
     }
 
-    await this._environment.run(options, hooks);
+    await this._environment.run(options, this._hooks);
   }
 
   async stop(): Promise<void> {
