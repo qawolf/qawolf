@@ -64,9 +64,7 @@ export type Suite = {
 export interface CustomVideoMarkerMetadata {
   lineCode: string;
   lineNum: number;
-  startFrame: number;
-  startTimeAbsolute: number;
-  startTimeRelative: number;
+  startTime: number;
 }
 
 export interface CustomVideoMetadata {

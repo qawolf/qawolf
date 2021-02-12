@@ -63,7 +63,7 @@ export class VideoCapture {
   }
 
   async createMetadataJson(): Promise<void> {
-    await this._buildMarkerMetadata();
+    await this._buildTimings();
 
     await fs.writeFile(this._jsonPath, JSON.stringify(this._metadata));
   }
@@ -88,13 +88,11 @@ export class VideoCapture {
     this._metadata.markers[lineNum - 1] = {
       lineCode,
       lineNum,
-      startFrame: 1, // set in _buildMarkerMetadata
-      startTimeAbsolute: Date.now(), // here this is approximate; in _buildMarkerMetadata we use final timing data to get more exact
-      startTimeRelative: 0, // set in _buildMarkerMetadata
+      startTime: Date.now(),
     };
   }
 
-  async _buildMarkerMetadata(): Promise<void> {
+  async _buildTimings(): Promise<void> {
     if (!this._stopped) {
       throw new Error("Cannot build marker metadata before video is stopped");
     }
@@ -111,23 +109,6 @@ export class VideoCapture {
 
     // The first line is a header so remove it
     timings.shift();
-
-    // As a caution, if there is no timing information, log and skip the rest
-    if (timings.length === 0) {
-      debug("timings is empty");
-      // Continue so at least we can save something to look at for debugging
-    } else {
-      const firstFrameTime = timings[0];
-      for (const marker of this._metadata.markers || []) {
-        const exactStartTimeAbsolute =
-          timings.find((frameTime) => frameTime >= marker.startTimeAbsolute) ||
-          timings[timings.length - 1];
-        marker.startTimeAbsolute = exactStartTimeAbsolute;
-        marker.startTimeRelative = exactStartTimeAbsolute - firstFrameTime;
-        marker.startFrame = timings.indexOf(exactStartTimeAbsolute) + 1;
-        if (marker.startFrame === 0) marker.startFrame = 1; // shouldn't happen but just in case
-      }
-    }
 
     this._metadata.timings = timings;
   }
