@@ -320,7 +320,8 @@ export const useTestTriggers = (
 ): QueryResult<TestTriggersData, TestTriggersVariables> => {
   return useQuery<TestTriggersData, TestTriggersVariables>(testTriggersQuery, {
     fetchPolicy,
-    skip: !variables.test_ids.length,
+    // if null is passed as an id, skip the query (this happens prehydration)
+    skip: !variables.test_ids.length || variables.test_ids.some((id) => !id),
     variables,
   });
 };
