@@ -71,10 +71,7 @@ export default function Sidebar(): JSX.Element {
       handleAction();
     } else if ((e.ctrlKey || e.metaKey) && e.code === "KeyS") {
       e.preventDefault();
-      state.setToast({
-        expiresIn: 3000,
-        message: copy.toastAutosave,
-      });
+      state.setToast({ expiresIn: 3000, message: copy.toastAutosave });
     }
   };
 
