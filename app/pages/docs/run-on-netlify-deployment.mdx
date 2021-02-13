@@ -13,20 +13,33 @@ In this tutorial, we'll set up our tests to run on <a href="https://www.netlify.
 
 Specifically, we'll run our tests whenever a <a href="https://www.netlify.com/blog/2016/07/20/introducing-deploy-previews-in-netlify/" target="_blank">Netlify Deploy Preview</a> succeeds in a <a href="https://github.com/" target="_blank">GitHub</a> pull request. If you have a different workflow, please <Link href="community">reach out for help</Link>.
 
-<SubHeader>Install GitHub App</SubHeader>
+<SubHeader>Create Deployment Trigger</SubHeader>
 
-The first step is to install the QA Wolf GitHub App on the repository (repo) you want to test.
+First, we'll create a trigger that runs our tests on Netlify deployments. QA Wolf uses triggers to know how and when to run your tests.
 
-Make sure you are on your <a href="https://www.qawolf.com/tests" target="_blank">test dashboard</a>, looking at the group you want to test on deployment. Open the trigger dropdown and click on the button to "Add GitHub repo".
+Open a test you want to run on Netlify deployments. Click the "Add trigger" button in the top right corner to open the triggers menu.
 
 <Image
-  alt="Add GitHub repo"
-  height={278}
-  src="/docs/run-on-netlify-deployment/add-github-repo.png"
-  width={300}
+  alt="Add trigger"
+  height={221}
+  src="/docs/run-on-schedule/add-trigger.png"
+  width={1600}
 />
 
-You will be redirected to GitHub and asked to choose the repo(s) you want QA Wolf to access.
+A popup will open with options to create a trigger. Click on the "Deployment" tab in the middle.
+
+Make sure that Netlify is selected as your deploy service. You can also optionally rename your trigger.
+
+Now we'll connect our GitHub repository (repo) to QA Wolf. Click the "Connect GitHub repository" button to get started.
+
+<Image
+  alt="Connect GitHub repository"
+  height={489}
+  src="/docs/run-on-netlify-deployment/github-repo.png"
+  width={600}
+/>
+
+A new tab will open and visit GitHub. You will be asked to choose the repo(s) you want QA Wolf to access.
 
 <Image
   alt="Install GitHub App"
@@ -35,26 +48,39 @@ You will be redirected to GitHub and asked to choose the repo(s) you want QA Wol
   width={400}
 />
 
-Choose the repo(s) you want to test and click the green "Install" button. After the installation succeeds, you will be redirected back to QA Wolf.
+Choose the repo(s) you want to test and click the green "Install" button. After the installation succeeds, the new tab will close.
 
-<SubHeader>Trigger Tests on Netlify Deployment</SubHeader>
-
-Open the trigger dropdown again. This time, you will see the repo(s) you installed listed. Click on the option to run on your repo's deployment.
+Confirm the repo you want to test is now selected in the dropdown.
 
 <Image
-  alt="Run on Netlify deployment"
-  height={408}
-  src="/docs/run-on-netlify-deployment/run-on-deployment.png"
-  width={400}
+  alt="Choose GitHub repo"
+  height={340}
+  src="/docs/run-on-netlify-deployment/choose-repo.png"
+  width={974}
 />
 
-A popup will appear asking which tool you use to deploy. Make sure Netlify (the default option) is selected and click the "Save" button.
+### Choose Environment
+
+Finally, specify which <Link href="use-environment-variables">environment</Link> you want to use when your tests run.
 
 <Image
-  alt="Save trigger"
-  height={837}
-  src="/docs/run-on-netlify-deployment/save.png"
-  width={1600}
+  alt="Choose environment"
+  height={322}
+  src="/docs/run-on-vercel-deployment/choose-environment.png"
+  width={978}
+/>
+
+Press the "Create trigger" button to save your new trigger. 🎉
+
+After your trigger is created, the popup will show a list of triggers and whether they are assigned to your test.
+
+Clicking on the trigger will toggle whether it is assigned to your test. You can also edit or delete a trigger from this popup.
+
+<Image
+  alt="Edit triggers for test"
+  height={496}
+  src="/docs/run-on-netlify-deployment/edit-triggers.png"
+  width={972}
 />
 
 <SubHeader>Update Tests to Use Deploy Preview URL</SubHeader>
