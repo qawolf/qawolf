@@ -8,7 +8,6 @@ import { StateContext } from "../../StateContext";
 import Header from "./Header";
 import History from "./History";
 import List from "./List";
-import { getTestTriggers } from "./utils";
 
 type Props = {
   selectedTrigger: Trigger;
@@ -59,7 +58,6 @@ export default function Tests({
   // it is not possible to have a suite without runs
   // so suite is loading if runs are not defined
   const isLoading = finalSuiteId ? !selectedSuite?.runs : loading;
-  const testTriggers = getTestTriggers(data?.dashboard.tests);
 
   return (
     <>
@@ -77,7 +75,6 @@ export default function Tests({
           selectedIds={selectedIds}
           selectedTriggerId={triggerId}
           setSelectedIds={setSelectedIds}
-          testTriggers={testTriggers}
           tests={tests}
           triggers={triggers}
           wolfVariant={wolfVariant}

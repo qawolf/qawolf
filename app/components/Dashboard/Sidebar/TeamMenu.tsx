@@ -1,4 +1,4 @@
-import { Blank, Checkmark, License, Logout, UserSettings } from "grommet-icons";
+import { Blank, Checkmark, Logout, UserSettings } from "grommet-icons";
 import { useRouter } from "next/router";
 
 import { resetIntercom } from "../../../hooks/intercom";
@@ -23,11 +23,6 @@ export default function TeamMenu({
   teams,
 }: Props): JSX.Element {
   const { replace } = useRouter();
-
-  const handleApiKeysClick = () => {
-    state.setModal({ name: "apiKeys" });
-    closeMenu();
-  };
 
   const handleLogOutClick = () => {
     localStorage.removeItem(JWT_KEY);
@@ -67,11 +62,6 @@ export default function TeamMenu({
         hasBorder
         message={copy.teamSettings}
         onClick={handleSettingsClick}
-      />
-      <MenuButton
-        IconComponent={License}
-        message={copy.apiKeys}
-        onClick={handleApiKeysClick}
       />
       <MenuButton
         IconComponent={Logout}

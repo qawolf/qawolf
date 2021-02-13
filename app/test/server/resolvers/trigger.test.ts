@@ -2,7 +2,6 @@ import { db, dropTestDb, migrateDb } from "../../../server/db";
 import {
   createTriggerResolver,
   deleteTriggerResolver,
-  testTriggersResolver,
   triggersResolver,
   updateTriggerResolver,
 } from "../../../server/resolvers/trigger";
@@ -16,11 +15,14 @@ import {
   logger,
 } from "../utils";
 
+const team = buildTeam({});
+
 beforeAll(async () => {
   await migrateDb();
 
   await db("users").insert(buildUser({}));
-  await db("teams").insert([buildTeam({}), buildTeam({ i: 2 })]);
+  await db("teams").insert([team, buildTeam({ i: 2 })]);
+  await db("environments").insert(buildEnvironment({}));
 });
 
 afterAll(() => dropTestDb());
@@ -29,26 +31,81 @@ const testContext = {
   api_key: null,
   ip: "127.0.0.1",
   logger,
-  teams: [buildTeam({})],
+  teams: [team],
   user: buildUser({}),
 };
 
 describe("createTriggerResolver", () => {
-  afterAll(() => db("triggers").del());
+  beforeAll(() => db("tests").insert(buildTest({})));
 
-  it("creates a new trigger", async () => {
+  afterEach(async () => {
+    await db("test_triggers").del();
+    return db("triggers").del();
+  });
+
+  afterAll(() => db("tests").del());
+
+  it("creates a new trigger with team next trigger id", async () => {
     const trigger = await createTriggerResolver(
       {},
-      { team_id: "teamId" },
+      {
+        deployment_branches: null,
+        deployment_environment: null,
+        deployment_integration_id: null,
+        environment_id: "environmentId",
+        name: "Daily",
+        repeat_minutes: 1440,
+        team_id: "teamId",
+        test_ids: null,
+      },
       testContext
     );
 
     expect(trigger).toMatchObject({
       creator_id: "userId",
-      name: "My Tests",
-      repeat_minutes: null,
+      deployment_branches: null,
+      deployment_environment: null,
+      deployment_integration_id: null,
+      environment_id: "environmentId",
+      id: team.next_trigger_id,
+      name: "Daily",
+      repeat_minutes: 1440,
       team_id: "teamId",
     });
+
+    const testTriggers = await db("test_triggers").select("*");
+
+    expect(testTriggers).toEqual([]);
+
+    const updatedTeam = await db("teams")
+      .select("*")
+      .where({ id: "teamId" })
+      .first();
+
+    expect(updatedTeam.next_trigger_id).not.toBe(team.next_trigger_id);
+  });
+
+  it("creates test triggers if specified", async () => {
+    const trigger = await createTriggerResolver(
+      {},
+      {
+        deployment_branches: null,
+        deployment_environment: null,
+        deployment_integration_id: null,
+        environment_id: "environmentId",
+        name: "Daily",
+        repeat_minutes: 1440,
+        team_id: "teamId",
+        test_ids: ["testId"],
+      },
+      testContext
+    );
+
+    const testTriggers = await db("test_triggers").select("*");
+
+    expect(testTriggers).toMatchObject([
+      { test_id: "testId", trigger_id: trigger.id },
+    ]);
   });
 });
 
@@ -119,39 +176,8 @@ describe("triggersResolver", () => {
   });
 });
 
-describe("testTriggersResolver", () => {
-  beforeAll(async () => {
-    await db("triggers").insert([
-      buildTrigger({ name: "B Trigger" }),
-      buildTrigger({ i: 2, is_default: true, name: "All Tests" }),
-      buildTrigger({ i: 3 }),
-    ]);
-    await db("tests").insert(buildTest({}));
-    return db("test_triggers").insert([
-      { id: "testTriggerId", test_id: "testId", trigger_id: "triggerId" },
-      { id: "testTrigger2Id", test_id: "testId", trigger_id: "trigger2Id" },
-    ]);
-  });
-
-  afterAll(async () => {
-    await db("test_triggers").del();
-    await db("triggers").del();
-    return db("tests").del();
-  });
-
-  it("finds triggers for a test", async () => {
-    const triggers = await testTriggersResolver(buildTest({}), {}, testContext);
-
-    expect(triggers).toMatchObject([
-      { name: "All Tests" },
-      { name: "B Trigger" },
-    ]);
-  });
-});
-
 describe("updateTriggerResolver", () => {
   beforeAll(async () => {
-    await db("environments").insert(buildEnvironment({}));
     await db("integrations").insert([
       buildIntegration({}),
       buildIntegration({ i: 2, type: "github" }),

@@ -1,9 +1,11 @@
 import { db, dropTestDb, migrateDb } from "../../../server/db";
+import { decrypt, encrypt } from "../../../server/models/encrypt";
 import {
   createFreeTeamWithTrigger,
   findTeam,
   findTeamsForUser,
   updateTeam,
+  validateApiKeyForTeam,
 } from "../../../server/models/team";
 import { Team } from "../../../server/types";
 import { minutesFromNow } from "../../../shared/utils";
@@ -38,17 +40,21 @@ describe("team model", () => {
       expect(teams).toMatchObject([
         {
           alert_integration_id: null,
+          api_key: expect.any(String),
           helpers: "",
           id: expect.any(String),
           is_email_alert_enabled: true,
           is_enabled: true,
           name: "My Team",
+          next_trigger_id: expect.any(String),
           plan: "free",
           renewed_at: null,
           stripe_customer_id: null,
           stripe_subscription_id: null,
         },
       ]);
+
+      expect(decrypt(teams[0].api_key)).toMatch("qawolf_");
 
       const triggers = await db.select("*").from("triggers");
       expect(triggers).toMatchObject([
@@ -82,7 +88,7 @@ describe("team model", () => {
 
     it("finds a team", async () => {
       const team = await findTeam("teamId", { logger });
-      expect(team).toMatchObject(buildTeam({}));
+      expect(team).toMatchObject({ id: "teamId" });
     });
 
     it("throws an error if team not found", async () => {
@@ -258,12 +264,59 @@ describe("team model", () => {
       });
     });
 
+    it("updates next trigger id for a team", async () => {
+      const team = await updateTeam(
+        { id: "teamId", next_trigger_id: "nextTriggerId" },
+        { logger }
+      );
+
+      const updatedTeam = await db.select("*").from("teams").first();
+      expect(updatedTeam).toEqual({
+        ...team,
+        next_trigger_id: "nextTriggerId",
+        updated_at: expect.anything(),
+      });
+    });
+
     it("throws an error if team not found", async () => {
       const testFn = async (): Promise<Team> => {
         return updateTeam({ id: "fakeId", name: "name" }, { logger });
       };
 
       await expect(testFn()).rejects.toThrowError("not found");
+    });
+  });
+
+  describe("validateApiKeyForTeam", () => {
+    beforeAll(async () => {
+      await db("teams").insert(buildTeam({}));
+      return db("teams")
+        .where({ id: "teamId" })
+        .update({ api_key: encrypt("qawolf_api_key") });
+    });
+
+    afterAll(() => db("teams").del());
+
+    it("throws an error if api key is invalid", async () => {
+      const testFn = async (): Promise<void> => {
+        return validateApiKeyForTeam(
+          { api_key: "invalidApiKey", team_id: "teamId" },
+          { logger }
+        );
+      };
+
+      await expect(testFn()).rejects.toThrowError("invalid api key");
+    });
+
+    it("does not throw an error if api key is valid", async () => {
+      const testFn = async (): Promise<void> => {
+        return validateApiKeyForTeam(
+          { api_key: "qawolf_api_key", team_id: "teamId" },
+          { logger }
+        );
+      };
+
+      await expect(testFn()).resolves.not.toThrowError();
     });
   });
 });

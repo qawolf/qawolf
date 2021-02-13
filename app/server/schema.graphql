@@ -1,27 +1,3 @@
-"""
-Information about an API key. The token can be used for GraphQL queries and
-mutations that require an 'api_key' parameter.
-"""
-type ApiKey {
-  "Date and time at which the API key was created"
-  created_at: String!
-
-  "ID"
-  id: ID!
-
-  "Date and time at which the API key was last created"
-  last_used_at: String
-
-  "A name for this key, supplied by the user who created it and used to track what uses it"
-  name: String!
-
-  "The token. This is set in the response from creating the token but otherwise is null"
-  token: String
-
-  "The last four characters of the token, for showing in the UI to help identify tokens in use"
-  token_end: String!
-}
-
 "URLs where artifacts from a test run can be found"
 type Artifacts {
   "Secure URL for a GIF of a test run"
@@ -312,6 +288,9 @@ type Team {
   "The ID of a Slack integration associated with this team"
   alert_integration_id: ID
 
+  "The API key for the team"
+  api_key: String!
+
   "Team helper code, for sharing functionality between tests"
   helpers: String!
 
@@ -335,6 +314,12 @@ type Team {
 
   "Team name, for display in UI"
   name: String!
+
+  """
+  The ID of the next trigger the team creates, used
+  to copy API call example when creating a trigger
+  """
+  next_trigger_id: ID!
 
   "Current plan this team is on"
   plan: String!
@@ -366,9 +351,6 @@ type Test {
   "Summary of most recent runs of this test"
   summary: TestSummary
 
-  "List of test triggers this test belongs to"
-  triggers: [Trigger!]!
-
   "Date and time at which this test was last updated"
   updated_at: String!
 
@@ -392,6 +374,15 @@ type TestSummary {
 
   "The most recent 10 runs of this test, in descending order of when they started"
   last_runs: [SuiteRun!]!
+}
+
+"A list of trigger IDs for a test"
+type TestTriggers {
+  "The test ID"
+  test_id: ID!
+
+  "A list of associated trigger IDs"
+  trigger_ids: [ID!]!
 }
 
 "A test trigger"
@@ -481,27 +472,6 @@ type Mutation {
   ): Invite!
 
   """
-  Create an API key. The returned token can be used for GraphQL queries and
-  mutations that require an `api_key` parameter. The response is the only
-  time the `token` is visible. If you don't save it for later use, you will
-  have to generate a new API key.
-
-  Requires that you have access to the team.
-  """
-  createApiKey(
-    """
-    A name for this key, shown in the UI for users to understand what uses it
-    """
-    name: String!
-
-    """
-    The API key will be able to call certain queries and mutations on behalf
-    of this team.
-    """
-    team_id: ID!
-  ): ApiKey!
-
-  """
   Create an environment.
 
   Requires that you have access to the team.
@@ -546,9 +516,34 @@ type Mutation {
   """
   createTrigger(
     """
-    ID of the team that should own the trigger
+    If specified, run tests only when these branches (comma separated list) are deployed.
     """
+    deployment_branches: String
+
+    """
+    If specified, run tests only on this deployment environment.
+    """
+    deployment_environment: DeploymentEnvironment
+
+    """
+    The ID of the integration for the connected GitHub repository.
+    """
+    deployment_integration_id: ID
+
+    "ID of the environment on the trigger"
+    environment_id: ID
+
+    "Name of the trigger"
+    name: String!
+
+    "Interval to run the trigger on"
+    repeat_minutes: Int
+
+    "ID of the team that should own the trigger"
     team_id: ID!
+
+    "IDs of the tests to add the trigger to"
+    test_ids: [ID!]
   ): Trigger!
 
   """
@@ -672,19 +667,6 @@ type Mutation {
     """
     url: String!
   ): Test!
-
-  """
-  Deletes an API key record by ID. The token is always `null` in the
-  returned API key.
-
-  Requires that you have access to the team that owns the API key
-  """
-  deleteApiKey(
-    """
-    API key ID
-    """
-    id: ID!
-  ): ApiKey!
 
   """
   Deletes an environment record by ID and all its associated
@@ -899,8 +881,8 @@ type Mutation {
   ): Trigger!
 
   """
-  Adds one or more tests to a trigger. Returns the number of
-  test_trigger relationships that were added or removed.
+  Adds one or more tests to a trigger. Returns the updated
+  test_trigger relationships.
 
   Requires that you have access to the team that owns the trigger.
   """
@@ -921,7 +903,7 @@ type Mutation {
     List of test IDs to add to / remove from the test trigger.
     """
     test_ids: [ID!]
-  ): Int!
+  ): [TestTriggers!]!
 
   """
   Updates information about a test run by run ID. A runner service calls
@@ -1066,13 +1048,6 @@ type Mutation {
 "Queries allow you to retrieve but not modify data"
 type Query {
   """
-  Returns all API keys for a team. The token field is always null for security reasons.
-
-  Requires that you have access to the team.
-  """
-  apiKeys("The team ID" team_id: ID!): [ApiKey!]!
-
-  """
   Returns the user associated with the request authentication token, or null if not logged in
   """
   currentUser: User
@@ -1170,4 +1145,11 @@ type Query {
     "The test run ID"
     run_id: ID
   ): TestResult!
+
+  """
+  Returns a test trigger for each test ID.
+
+  Requires that one of the teams you are on owns the tests.
+  """
+  testTriggers("The test IDs" test_ids: [ID!]!): [TestTriggers!]!
 }

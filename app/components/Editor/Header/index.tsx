@@ -1,10 +1,15 @@
 import { Box } from "grommet";
+import { Trigger } from "grommet-icons";
+import { useRouter } from "next/router";
 import { useContext } from "react";
 
+import { useTestTriggers } from "../../../hooks/queries";
 import { routes } from "../../../lib/routes";
+import { state } from "../../../lib/state";
 import { copy } from "../../../theme/copy";
-import { borderSize } from "../../../theme/theme-new";
+import { borderSize, edgeSize } from "../../../theme/theme-new";
 import Button from "../../shared-new/AppButton";
+import Divider from "../../shared-new/Divider";
 import ArrowLeft from "../../shared-new/icons/ArrowLeft";
 import StatusBadge from "../../shared-new/StatusBadge";
 import { RunnerContext } from "../contexts/RunnerContext";
@@ -17,8 +22,23 @@ import TestName from "./TestName";
 type Props = { mode: Mode };
 
 export default function Header({ mode }: Props): JSX.Element {
+  const {
+    query: { test_id },
+  } = useRouter();
+
   const { progress } = useContext(RunnerContext);
   const { run, test } = useContext(TestContext);
+
+  const testIds = [test_id] as string[];
+
+  const { data: testTriggersData } = useTestTriggers({ test_ids: testIds });
+  const hasTriggers = testTriggersData?.testTriggers[0]
+    ? !!testTriggersData?.testTriggers[0].trigger_ids.length
+    : false;
+
+  const handleTriggerClick = (): void => {
+    state.setModal({ name: "triggers", testIds });
+  };
 
   return (
     <Box
@@ -33,7 +53,7 @@ export default function Header({ mode }: Props): JSX.Element {
       <Box align="center" direction="row">
         <Button
           IconComponent={ArrowLeft}
-          a11yTitle={copy.back}
+          a11yTitle={copy.backToDashboard}
           href={routes.tests}
           margin={{ right: "xxxsmall" }}
           type="ghost"
@@ -44,6 +64,21 @@ export default function Header({ mode }: Props): JSX.Element {
       </Box>
       <Box align="center" direction="row">
         <TestHistory testId={test?.id || null} />
+        {mode === "test" && (
+          <>
+            <Divider
+              height={edgeSize.large}
+              margin={{ horizontal: "small" }}
+              width={borderSize.xsmall}
+            />
+            <Button
+              IconComponent={Trigger}
+              label={hasTriggers ? copy.editTriggers : copy.addTrigger}
+              onClick={handleTriggerClick}
+              type="primary"
+            />
+          </>
+        )}
       </Box>
     </Box>
   );

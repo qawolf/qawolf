@@ -6,17 +6,10 @@ import {
   SelectedTest,
   Suite,
   SuiteRun,
-  TestTriggers,
   TestWithSummary,
 } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import Paw from "../../shared/icons/Paw";
-
-type FormatTrigger = {
-  repeatMinutes?: number | null;
-  repoName?: string | null;
-  skipOwnerInRepoName?: boolean;
-};
 
 type GetSelectedTests = {
   runs: SuiteRun[] | null;
@@ -26,26 +19,6 @@ type GetSelectedTests = {
 
 const countRunsForStatus = ({ runs }: Suite, status: RunStatus): number => {
   return runs.filter((suiteRun) => suiteRun.status === status).length;
-};
-
-export const formatTrigger = ({
-  repeatMinutes,
-  repoName,
-  skipOwnerInRepoName,
-}: FormatTrigger): string => {
-  if (repoName) {
-    const formattedRepoName = skipOwnerInRepoName
-      ? repoName.split("/")[1]
-      : repoName;
-    return `Run on deployment: ${formattedRepoName}`;
-  }
-
-  if (!repeatMinutes) return "No trigger";
-  if (repeatMinutes === 60 * 24) return "Run every day";
-  if (repeatMinutes === 60) return "Run every hour";
-
-  const hours = Math.floor(repeatMinutes / 60);
-  return `Run every ${hours} hours`;
 };
 
 export const getSelectedTests = ({
@@ -72,17 +45,6 @@ export const getSelectedTests = ({
   }
 
   return selectedTests;
-};
-
-export const getTestTriggers = (tests?: TestWithSummary[]): TestTriggers => {
-  if (!tests) return {};
-  const testTriggers: TestTriggers = {};
-
-  tests.forEach(({ id, triggers }) => {
-    testTriggers[id] = triggers.map((t) => t.id);
-  });
-
-  return testTriggers;
 };
 
 const isFailed = ({ runs }: Suite): boolean => {

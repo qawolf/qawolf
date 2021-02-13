@@ -2,9 +2,35 @@ import { db } from "../db";
 import {
   createTestTriggersForTrigger,
   deleteTestTriggersForTrigger,
+  findTestTriggersForTests,
 } from "../models/test_trigger";
-import { Context, UpdateTestTriggersMutation } from "../types";
+import {
+  Context,
+  TestIdsQuery,
+  TestTriggers,
+  UpdateTestTriggersMutation,
+} from "../types";
 import { ensureTestAccess, ensureTriggerAccess } from "./utils";
+
+/**
+ * @returns array of test ids and associated trigger ids
+ */
+export const testTriggersResolver = async (
+  _: Record<string, unknown>,
+  { test_ids }: TestIdsQuery,
+  { logger, teams }: Context
+): Promise<TestTriggers[]> => {
+  const log = logger.prefix("testTriggersResolver");
+  log.debug("tests", test_ids);
+
+  await Promise.all(
+    test_ids.map((test_id) => {
+      return ensureTestAccess({ logger, teams, test_id });
+    })
+  );
+
+  return findTestTriggersForTests(test_ids, { logger });
+};
 
 /**
  * @returns Count of test triggers deleted
@@ -13,7 +39,7 @@ export const updateTestTriggersResolver = async (
   _: Record<string, unknown>,
   { add_trigger_id, remove_trigger_id, test_ids }: UpdateTestTriggersMutation,
   { logger, teams }: Context
-): Promise<number> => {
+): Promise<TestTriggers[]> => {
   const log = logger.prefix("updateTestTriggersResolver");
   log.debug("tests", test_ids);
 
@@ -22,33 +48,41 @@ export const updateTestTriggersResolver = async (
     throw new Error("Must provide add or remove trigger id");
   }
 
-  await ensureTriggerAccess({
+  const testTeams = await Promise.all(
+    test_ids.map((test_id) => ensureTestAccess({ logger, teams, test_id }))
+  );
+
+  const triggerTeam = await ensureTriggerAccess({
     logger,
     teams,
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     trigger_id: (add_trigger_id || remove_trigger_id)!,
   });
 
-  if (add_trigger_id) {
-    await Promise.all(
-      test_ids.map((test_id) => ensureTestAccess({ logger, teams, test_id }))
-    );
-    // use a transaction since we check for existing test triggers before inserting
-    const testTriggers = await db.transaction(async (trx) => {
-      return createTestTriggersForTrigger(
+  // check the test team matches the trigger's team
+  testTeams.forEach((testTeam) => {
+    if (testTeam.id !== triggerTeam.id) {
+      throw new Error("Invalid team");
+    }
+  });
+
+  return db.transaction(async (trx) => {
+    if (add_trigger_id) {
+      await createTestTriggersForTrigger(
         { test_ids, trigger_id: add_trigger_id },
         { logger, trx }
       );
-    });
-    return testTriggers.length;
-  }
+    } else {
+      await deleteTestTriggersForTrigger(
+        {
+          test_ids,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          trigger_id: remove_trigger_id!,
+        },
+        { logger, trx }
+      );
+    }
 
-  return deleteTestTriggersForTrigger(
-    {
-      test_ids,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      trigger_id: remove_trigger_id!,
-    },
-    { logger }
-  );
+    return findTestTriggersForTests(test_ids, { logger, trx });
+  });
 };

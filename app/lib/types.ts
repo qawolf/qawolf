@@ -1,13 +1,4 @@
 // GraphQL Types
-export type ApiKey = {
-  created_at: string;
-  id: string;
-  last_used_at: string | null;
-  name: string;
-  token: string | null;
-  token_end: string;
-};
-
 export type AuthenticatedUser = {
   access_token: string;
   user: User;
@@ -94,9 +85,11 @@ export type ShortTeam = {
 
 export type Team = ShortTeam & {
   alert_integration_id: string | null;
+  api_key: string;
   helpers: string;
   is_email_alert_enabled: boolean;
   is_enabled: boolean;
+  next_trigger_id: string;
   renewed_at: string | null;
 };
 
@@ -122,7 +115,6 @@ export type TestWithSummary = Test & {
     gif_url: string | null;
     last_runs: SuiteRun[];
   };
-  triggers: SelectedTrigger[];
 };
 
 export type Trigger = {
@@ -158,29 +150,17 @@ export type CreateCode = {
 };
 
 export type Modal =
-  | "apiKeys"
   | "createTest"
-  | "deployment"
   | "environments"
   | "deleteTest"
-  | "deleteTrigger"
-  | "teamSettings";
+  | "teamSettings"
+  | "triggers";
 
 export type NavigationOption = "code" | "logs" | "helpers";
 
 export type NavigationType = "dark" | "light";
 
-export type SelectedIntegration = {
-  github_repo_name: string;
-  id: string;
-};
-
 export type SelectedTest = {
-  id: string;
-  name: string;
-};
-
-export type SelectedTrigger = {
   id: string;
   name: string;
 };
@@ -188,7 +168,17 @@ export type SelectedTrigger = {
 export type Side = "left" | "right";
 
 export type TestTriggers = {
-  [testId: string]: string[];
+  test_id: string;
+  trigger_ids: string[];
+};
+
+export type TriggerFields = {
+  deployment_branches: string | null;
+  deployment_environment: DeploymentEnvironment | null;
+  deployment_integration_id: string | null;
+  environment_id: string | null;
+  name: string;
+  repeat_minutes: number | null;
 };
 
 export type ValueProp = {
@@ -244,11 +234,10 @@ type SignUp = {
 };
 
 type ModalState = {
-  integration?: SelectedIntegration;
   name: Modal | null;
   teamId?: string;
+  testIds?: string[];
   tests?: SelectedTest[];
-  trigger?: SelectedTrigger;
 };
 
 export type State = {

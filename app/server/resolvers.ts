@@ -1,8 +1,3 @@
-import {
-  apiKeysResolver,
-  createApiKeyResolver,
-  deleteApiKeyResolver,
-} from "./resolvers/api_key";
 import { createGitHubSignInUrlResolver } from "./resolvers/auth";
 import { dashboardResolver } from "./resolvers/dashboard";
 import {
@@ -49,11 +44,13 @@ import {
   testSummaryResolver,
   updateTestResolver,
 } from "./resolvers/test";
-import { updateTestTriggersResolver } from "./resolvers/test_trigger";
+import {
+  testTriggersResolver,
+  updateTestTriggersResolver,
+} from "./resolvers/test_trigger";
 import {
   createTriggerResolver,
   deleteTriggerResolver,
-  testTriggersResolver,
   triggersResolver,
   updateTriggerResolver,
 } from "./resolvers/trigger";
@@ -77,14 +74,12 @@ export const resolvers = {
   },
   Test: {
     summary: testSummaryResolver,
-    triggers: testTriggersResolver,
   },
   Suite: {
     runs: suiteRunsResolver,
   },
   Mutation: {
     acceptInvite: acceptInviteResolver,
-    createApiKey: createApiKeyResolver,
     createEnvironment: createEnvironmentResolver,
     createEnvironmentVariable: createEnvironmentVariableResolver,
     createGitHubIntegrations: createGitHubIntegrationsResolver,
@@ -95,7 +90,6 @@ export const resolvers = {
     createSuite: createSuiteResolver,
     createTest: createTestResolver,
     createTrigger: createTriggerResolver,
-    deleteApiKey: deleteApiKeyResolver,
     deleteEnvironment: deleteEnvironmentResolver,
     deleteEnvironmentVariable: deleteEnvironmentVariableResolver,
     deleteTests: deleteTestsResolver,
@@ -115,7 +109,6 @@ export const resolvers = {
     updateUser: updateUserResolver,
   },
   Query: {
-    apiKeys: apiKeysResolver,
     currentUser: currentUserResolver,
     dashboard: dashboardResolver,
     environments: environmentsResolver,
@@ -126,6 +119,7 @@ export const resolvers = {
     team: teamResolver,
     test: testResolver,
     testHistory: testHistoryResolver,
+    testTriggers: testTriggersResolver,
     triggers: triggersResolver,
   },
 };

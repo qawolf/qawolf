@@ -3,9 +3,8 @@ import { NextApiRequest } from "next";
 
 import { handleSuitesRequest } from "../../../server/api/suites";
 import { db, dropTestDb, migrateDb } from "../../../server/db";
-import { buildDigest } from "../../../server/utils";
+import { encrypt } from "../../../server/models/encrypt";
 import {
-  buildApiKey,
   buildEnvironment,
   buildEnvironmentVariable,
   buildTeam,
@@ -25,11 +24,12 @@ afterAll(() => dropTestDb());
 
 describe("handleSuitesRequest", () => {
   beforeAll(async () => {
-    const token_digest = await buildDigest("secret");
-
     await db("users").insert(buildUser({}));
     await db("teams").insert(buildTeam({}));
-    await db("api_keys").insert(buildApiKey({ token_digest }));
+
+    await db("teams")
+      .where({ id: "teamId" })
+      .update({ api_key: encrypt("qawolf_api_key") });
 
     await db("environments").insert(buildEnvironment({}));
     await db("environment_variables").insert(buildEnvironmentVariable({}));
@@ -63,7 +63,7 @@ describe("handleSuitesRequest", () => {
     return db("teams").del();
   });
 
-  it("returns 401 if auth token not provided", async () => {
+  it("returns 401 if api key not provided", async () => {
     await handleSuitesRequest(
       { body: {}, headers: {} } as NextApiRequest,
       res as any
@@ -99,7 +99,7 @@ describe("handleSuitesRequest", () => {
     expect(send).toBeCalledWith("Invalid trigger id");
   });
 
-  it("returns 403 if invalid auth token", async () => {
+  it("returns 403 if invalid api key", async () => {
     await handleSuitesRequest(
       {
         body: { trigger_id: "triggerId" },
@@ -116,7 +116,7 @@ describe("handleSuitesRequest", () => {
     await handleSuitesRequest(
       {
         body: { trigger_id: "trigger2Id" },
-        headers: { authorization: "secret" },
+        headers: { authorization: "qawolf_api_key" },
       } as NextApiRequest,
       res as any
     );
@@ -129,7 +129,7 @@ describe("handleSuitesRequest", () => {
     await handleSuitesRequest(
       {
         body: { env: { secret: "shh" }, trigger_id: "triggerId" },
-        headers: { authorization: "secret" },
+        headers: { authorization: "qawolf_api_key" },
       } as NextApiRequest,
       res as any
     );

@@ -1,3 +1,5 @@
+import { CSSProperties } from "react";
+
 export const borderSize = {
   xsmall: "1px",
   small: "2px",
@@ -159,6 +161,28 @@ export const theme = {
       background: "rgba(21, 27, 38, 0.6)",
     },
     responsiveBreakpoint: null,
+  },
+  radioButton: {
+    border: { color: colors.gray7, width: borderSize.xsmall },
+    check: {
+      color: colors.gray9,
+      extend: (): CSSProperties => {
+        return { transition };
+      },
+    },
+    color: colors.gray9,
+    container: {
+      extend: (): CSSProperties => {
+        return {
+          fontFamily: fontFamily.component,
+          fontSize: textDesktop.component.size,
+          lineHeight: textDesktop.component.height,
+        };
+      },
+    },
+    hover: { border: { color: colors.gray8 } },
+    gap: edgeSize.xxsmall,
+    size: edgeSize.small,
   },
   text,
 };

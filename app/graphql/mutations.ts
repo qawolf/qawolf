@@ -1,7 +1,6 @@
 import { gql } from "@apollo/client";
 
 import {
-  apiKeyFragment,
   environmentFragment,
   environmentVariableFragment,
   integrationFragment,
@@ -19,15 +18,6 @@ export const acceptInviteMutation = gql`
     }
   }
   ${inviteFragment}
-`;
-
-export const createApiKeyMutation = gql`
-  mutation createApiKey($name: String!, $team_id: ID!) {
-    createApiKey(name: $name, team_id: $team_id) {
-      ...ApiKeyFragment
-    }
-  }
-  ${apiKeyFragment}
 `;
 
 export const createEnvironmentMutation = gql`
@@ -122,21 +112,30 @@ export const createTestMutation = gql`
 `;
 
 export const createTriggerMutation = gql`
-  mutation createTrigger($team_id: ID!) {
-    createTrigger(team_id: $team_id) {
+  mutation createTrigger(
+    $deployment_branches: String
+    $deployment_environment: DeploymentEnvironment
+    $deployment_integration_id: ID
+    $environment_id: ID
+    $name: String!
+    $repeat_minutes: Int
+    $team_id: ID!
+    $test_ids: [ID!]
+  ) {
+    createTrigger(
+      deployment_branches: $deployment_branches
+      deployment_environment: $deployment_environment
+      deployment_integration_id: $deployment_integration_id
+      environment_id: $environment_id
+      name: $name
+      repeat_minutes: $repeat_minutes
+      team_id: $team_id
+      test_ids: $test_ids
+    ) {
       ...TriggerFragment
     }
   }
   ${triggerFragment}
-`;
-
-export const deleteApiKeyMutation = gql`
-  mutation deleteApiKey($id: ID!) {
-    deleteApiKey(id: $id) {
-      ...ApiKeyFragment
-    }
-  }
-  ${apiKeyFragment}
 `;
 
 export const deleteEnvironmentMutation = gql`
@@ -278,7 +277,10 @@ export const updateTestTriggersMutation = gql`
       add_trigger_id: $add_trigger_id
       remove_trigger_id: $remove_trigger_id
       test_ids: $test_ids
-    )
+    ) {
+      test_id
+      trigger_ids
+    }
   }
 `;
 

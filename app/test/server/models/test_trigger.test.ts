@@ -4,6 +4,7 @@ import {
   createTestTriggersForTrigger,
   deleteTestTriggersForTests,
   deleteTestTriggersForTrigger,
+  findTestTriggersForTests,
 } from "../../../server/models/test_trigger";
 import { TestTrigger } from "../../../server/types";
 import {
@@ -208,6 +209,61 @@ describe("test trigger model", () => {
       const testTriggers = await db.select("*").from("test_triggers");
 
       expect(testTriggers).toMatchObject([{ id: "testTrigger4Id" }]);
+    });
+  });
+
+  describe("findTestTriggersForTests", () => {
+    beforeAll(async () => {
+      await db("triggers").insert([
+        buildTrigger({ i: 2, is_default: true, name: "All Tests" }),
+        buildTrigger({ i: 3 }),
+        buildTrigger({ i: 4 }),
+        {
+          ...buildTrigger({}),
+          deleted_at: new Date().toISOString(),
+          id: "deletedTriggerId",
+        },
+      ]);
+
+      await db("tests").insert([buildTest({ i: 2 }), buildTest({ i: 3 })]);
+
+      return db("test_triggers").insert([
+        { id: "testTriggerId", test_id: "testId", trigger_id: "triggerId" },
+        { id: "testTrigger2Id", test_id: "testId", trigger_id: "trigger2Id" },
+        {
+          id: "testTrigger3Id",
+          test_id: "testId",
+          trigger_id: "deletedTriggerId",
+        },
+        { id: "testTrigger4Id", test_id: "test2Id", trigger_id: "trigger3Id" },
+        { id: "testTrigger5Id", test_id: "testId", trigger_id: "trigger4Id" },
+      ]);
+    });
+
+    afterAll(async () => {
+      await db("test_triggers").del();
+      await db("triggers").del();
+      return db("tests").del();
+    });
+
+    it("finds test triggers for tests", async () => {
+      const testTriggers = await findTestTriggersForTests(
+        ["testId", "test2Id", "test3Id"],
+        {
+          logger,
+        }
+      );
+
+      testTriggers.sort((a, b) => {
+        return a.test_id.length - b.test_id.length;
+      });
+      testTriggers[0].trigger_ids.sort();
+
+      expect(testTriggers).toEqual([
+        { test_id: "testId", trigger_ids: ["trigger4Id", "triggerId"] },
+        { test_id: "test2Id", trigger_ids: ["trigger3Id"] },
+        { test_id: "test3Id", trigger_ids: [] },
+      ]);
     });
   });
 });

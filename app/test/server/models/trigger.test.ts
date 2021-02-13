@@ -6,21 +6,18 @@ import {
   buildEnvironment,
   buildIntegration,
   buildTeam,
-  buildTest,
   buildTrigger,
   buildUser,
   logger,
 } from "../utils";
 
 const {
-  buildTriggerName,
   createTrigger,
   deleteTrigger,
   findDefaultTriggerForTeam,
   findTrigger,
   findTriggersForGitHubIntegration,
   findTriggersForTeam,
-  findTriggersForTest,
   findPendingTriggers,
   getNextAt,
   getNextDay,
@@ -47,49 +44,13 @@ beforeAll(async () => {
     buildIntegration({}),
     buildIntegration({ i: 2, type: "github" }),
   ]);
+  await db("environments").insert(buildEnvironment({}));
 });
 
 afterAll(() => dropTestDb());
 
 describe("trigger model", () => {
   afterEach(jest.restoreAllMocks);
-
-  describe("buildTriggerName", () => {
-    it("returns default name if no triggers", async () => {
-      jest
-        .spyOn(triggerModel, "findTriggersForTeam")
-        .mockReturnValue(Promise.resolve([]));
-
-      const name = await buildTriggerName("teamId", { logger });
-
-      expect(name).toBe("My Tests");
-    });
-
-    it("returns incremented name if possible", async () => {
-      jest
-        .spyOn(triggerModel, "findTriggersForTeam")
-        .mockReturnValue(Promise.resolve([{ name: "My Tests" }] as Trigger[]));
-
-      const name = await buildTriggerName("teamId", { logger });
-
-      expect(name).toBe("My Tests 2");
-    });
-
-    it("keeps incrementing until unique name found", async () => {
-      jest
-        .spyOn(triggerModel, "findTriggersForTeam")
-        .mockReturnValue(
-          Promise.resolve([
-            { name: "My Tests" },
-            { name: "My Tests 2" },
-          ] as Trigger[])
-        );
-
-      const name = await buildTriggerName("teamId", { logger });
-
-      expect(name).toBe("My Tests 3");
-    });
-  });
 
   describe("createTrigger", () => {
     afterEach(() => db("triggers").del());
@@ -140,12 +101,49 @@ describe("trigger model", () => {
       expect(triggers).toMatchObject([
         {
           creator_id: "userId",
+          deployment_branches: null,
+          deployment_environment: null,
+          deployment_integration_id: null,
           id: expect.any(String),
           is_default: true,
           name: "All Tests",
           next_at: null,
           repeat_minutes: null,
           team_id: "teamId",
+        },
+      ]);
+    });
+
+    it("creates a new trigger for deployment", async () => {
+      await createTrigger(
+        {
+          creator_id: "userId",
+          deployment_branches: "develop, main",
+          deployment_environment: "preview",
+          deployment_integration_id: "integrationId",
+          environment_id: "environmentId",
+          id: "deployTriggerId",
+          name: "Hourly (Staging)",
+          repeat_minutes: 60,
+          team_id: "teamId",
+        },
+        { logger }
+      );
+
+      const triggers = await db.select("*").from("triggers");
+
+      expect(triggers).toMatchObject([
+        {
+          creator_id: "userId",
+          deleted_at: null,
+          deployment_branches: "develop,main",
+          deployment_environment: "preview",
+          deployment_integration_id: "integrationId",
+          environment_id: "environmentId",
+          id: "deployTriggerId",
+          is_default: false,
+          name: "Hourly (Staging)",
+          repeat_minutes: 60,
         },
       ]);
     });
@@ -335,46 +333,6 @@ describe("trigger model", () => {
     });
   });
 
-  describe("findTriggersForTest", () => {
-    beforeAll(async () => {
-      await db("triggers").insert([
-        buildTrigger({ name: "B Trigger" }),
-        buildTrigger({ i: 2, is_default: true, name: "All Tests" }),
-        buildTrigger({ i: 3 }),
-        {
-          ...buildTrigger({}),
-          deleted_at: minutesFromNow(),
-          id: "deletedTriggerId",
-        },
-      ]);
-      await db("tests").insert(buildTest({}));
-      return db("test_triggers").insert([
-        { id: "triggerTestId", test_id: "testId", trigger_id: "triggerId" },
-        { id: "triggerTest2Id", test_id: "testId", trigger_id: "trigger2Id" },
-        {
-          id: "triggerTest3Id",
-          test_id: "testId",
-          trigger_id: "deletedTriggerId",
-        },
-      ]);
-    });
-
-    afterAll(async () => {
-      await db("test_triggers").del();
-      await db("triggers").del();
-      return db("tests").del();
-    });
-
-    it("finds triggers for a test", async () => {
-      const triggers = await findTriggersForTest("testId", { logger });
-
-      expect(triggers).toMatchObject([
-        { name: "All Tests" },
-        { name: "B Trigger" },
-      ]);
-    });
-  });
-
   describe("findPendingTriggers", () => {
     beforeAll(async () => {
       await db("teams").where({ id: "team2Id" }).update({ is_enabled: false });
@@ -499,14 +457,10 @@ describe("trigger model", () => {
 
   describe("updateTrigger", () => {
     beforeEach(async () => {
-      await db("environments").insert(buildEnvironment({}));
       return db("triggers").insert(buildTrigger({}));
     });
 
-    afterEach(async () => {
-      await db("triggers").del();
-      return db("environments").del();
-    });
+    afterEach(() => db("triggers").del());
 
     it("updates a trigger", async () => {
       const oldTrigger = await db.select("*").from("triggers").first();

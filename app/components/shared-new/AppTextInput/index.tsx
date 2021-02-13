@@ -26,6 +26,7 @@ type Props = {
   autoFocus?: boolean;
   error?: string;
   id?: string;
+  isDisabled?: boolean;
   margin?: BoxProps["margin"];
   name?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -61,6 +62,7 @@ function TextInput(
     autoFocus,
     error,
     id,
+    isDisabled,
     margin,
     name,
     onChange,
@@ -98,6 +100,7 @@ function TextInput(
     <Box margin={margin} style={{ position: "relative" }} width={width}>
       <StyledGrommetTextInput
         autoFocus={autoFocus}
+        disabled={isDisabled}
         id={id}
         name={name}
         onChange={onChange}

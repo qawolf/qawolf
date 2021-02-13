@@ -3,12 +3,17 @@ import { useEffect } from "react";
 type UseOnHotKey = {
   hotKey: string;
   onHotKey: () => void;
+  requireMeta?: boolean;
 };
 
-export const useOnHotKey = ({ hotKey, onHotKey }: UseOnHotKey): void => {
+export const useOnHotKey = ({
+  hotKey,
+  onHotKey,
+  requireMeta,
+}: UseOnHotKey): void => {
   useEffect(() => {
     const handleHotKey = (e: KeyboardEvent): void => {
-      const isKeyboardShortcut = e.ctrlKey || e.metaKey;
+      const isKeyboardShortcut = !requireMeta || e.ctrlKey || e.metaKey;
       if (!isKeyboardShortcut || e.key !== hotKey) return;
 
       onHotKey();
@@ -19,5 +24,5 @@ export const useOnHotKey = ({ hotKey, onHotKey }: UseOnHotKey): void => {
     return () => {
       document.removeEventListener("keydown", handleHotKey);
     };
-  }, [hotKey, onHotKey]);
+  }, [hotKey, onHotKey, requireMeta]);
 };

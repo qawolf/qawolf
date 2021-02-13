@@ -4,7 +4,6 @@ import { NextRouter, useRouter } from "next/router";
 
 import {
   acceptInviteMutation,
-  createApiKeyMutation,
   createEnvironmentMutation,
   createEnvironmentVariableMutation,
   createGitHubIntegrationsMutation,
@@ -15,7 +14,6 @@ import {
   createSuiteMutation,
   createTestMutation,
   createTriggerMutation,
-  deleteApiKeyMutation,
   deleteEnvironmentMutation,
   deleteEnvironmentVariableMutation,
   deleteTestsMutation,
@@ -37,9 +35,7 @@ import { client, JWT_KEY } from "../lib/client";
 import { routes } from "../lib/routes";
 import { state } from "../lib/state";
 import {
-  ApiKey,
   AuthenticatedUser,
-  DeploymentEnvironment,
   Environment,
   EnvironmentVariable,
   Integration,
@@ -47,7 +43,9 @@ import {
   State,
   Team,
   Test,
+  TestTriggers,
   Trigger,
+  TriggerFields,
   User,
 } from "../lib/types";
 
@@ -57,15 +55,6 @@ type AcceptInviteData = {
 
 type AcceptInviteVariables = {
   id: string;
-};
-
-type CreateApiKeyData = {
-  createApiKey: ApiKey;
-};
-
-type CreateApiKeyVariables = {
-  name: string;
-  team_id: string;
 };
 
 type CreateEnvironmentData = {
@@ -153,16 +142,9 @@ type CreateTriggerData = {
   createTrigger: Trigger;
 };
 
-type CreateTriggerVariables = {
+export type CreateTriggerVariables = TriggerFields & {
   team_id: string;
-};
-
-type DeleteApiKeyData = {
-  deleteApiKey: ApiKey;
-};
-
-type DeleteApiKeyVariables = {
-  id: string;
+  test_ids?: string[] | null;
 };
 
 type DeleteEnvironmentData = {
@@ -280,7 +262,7 @@ type UpdateTestVariables = {
 };
 
 type UpdateTestTriggersData = {
-  updateTestTriggers: number;
+  updateTestTriggers: TestTriggers[];
 };
 
 export type UpdateTestTriggersVariables = {
@@ -293,14 +275,8 @@ type UpdateTriggerData = {
   updateTrigger: Trigger;
 };
 
-type UpdateTriggerVariables = {
-  deployment_branches?: string | null;
-  deployment_environment?: DeploymentEnvironment | null;
-  deployment_integration_id?: string | null;
-  environment_id?: string | null;
+type UpdateTriggerVariables = TriggerFields & {
   id: string;
-  name?: string;
-  repeat_minutes?: number | null;
 };
 
 type UpdateUserData = {
@@ -366,16 +342,6 @@ export const useAcceptInvite = (): MutationTuple<
   );
 };
 
-export const useCreateApiKey = (): MutationTuple<
-  CreateApiKeyData,
-  CreateApiKeyVariables
-> => {
-  return useMutation<CreateApiKeyData, CreateApiKeyVariables>(
-    createApiKeyMutation,
-    { awaitRefetchQueries: true, onError, refetchQueries: ["apiKeys"] }
-  );
-};
-
 export const useCreateEnvironment = (): MutationTuple<
   CreateEnvironmentData,
   CreateEnvironmentVariables
@@ -405,27 +371,15 @@ export const useCreateEnvironmentVariable = (): MutationTuple<
 };
 
 export const useCreateGitHubIntegrations = (
-  variables: CreateGitHubIntegrationsVariables,
-  { dashboardUri }: { dashboardUri: string }
+  variables: CreateGitHubIntegrationsVariables
 ): MutationTuple<
   CreateGitHubIntegrationsData,
   CreateGitHubIntegrationsVariables
 > => {
-  const { replace } = useRouter();
-
   return useMutation<
     CreateGitHubIntegrationsData,
     CreateGitHubIntegrationsVariables
-  >(createGitHubIntegrationsMutation, {
-    awaitRefetchQueries: true,
-    onCompleted: (response) => {
-      if (!response) return;
-      replace(dashboardUri || routes.tests);
-    },
-    onError,
-    refetchQueries: ["integrations"],
-    variables,
-  });
+  >(createGitHubIntegrationsMutation, { onError, variables });
 };
 
 export const useCreateInvites = (): MutationTuple<
@@ -526,18 +480,8 @@ export const useCreateTrigger = (): MutationTuple<
         state.setTriggerId(createTrigger.id);
       },
       onError,
-      refetchQueries: ["triggers"],
+      refetchQueries: ["testTriggers", "triggers"],
     }
-  );
-};
-
-export const useDeleteApiKey = (): MutationTuple<
-  DeleteApiKeyData,
-  DeleteApiKeyVariables
-> => {
-  return useMutation<DeleteApiKeyData, DeleteApiKeyVariables>(
-    deleteApiKeyMutation,
-    { awaitRefetchQueries: true, onError, refetchQueries: ["apiKeys"] }
   );
 };
 
@@ -582,23 +526,16 @@ export const useDeleteTests = (
   );
 };
 
-export const useDeleteTrigger = (
-  variables: DeleteTriggerVariables
-): MutationTuple<DeleteTriggerData, DeleteTriggerVariables> => {
+export const useDeleteTrigger = (): MutationTuple<
+  DeleteTriggerData,
+  DeleteTriggerVariables
+> => {
   return useMutation<DeleteTriggerData, DeleteTriggerVariables>(
     deleteTriggerMutation,
     {
-      onCompleted: (response) => {
-        const { deleteTrigger } = response || {};
-        if (!deleteTrigger) return;
-        // if viewing deleted trigger, redirect to all tests
-        if (variables.id === deleteTrigger.id) {
-          state.setTriggerId(deleteTrigger.default_trigger_id);
-        }
-      },
+      awaitRefetchQueries: true,
       onError,
       refetchQueries: ["triggers"],
-      variables,
     }
   );
 };
@@ -737,7 +674,7 @@ export const useUpdateTestTriggers = (): MutationTuple<
 > => {
   return useMutation<UpdateTestTriggersData, UpdateTestTriggersVariables>(
     updateTestTriggersMutation,
-    { awaitRefetchQueries: true, onError, refetchQueries: ["dashboard"] }
+    { onError }
   );
 };
 

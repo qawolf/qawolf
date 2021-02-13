@@ -1,16 +1,23 @@
-import { Box } from "grommet";
+import { Box, BoxProps } from "grommet";
 
+import { NavigationType } from "../../../lib/types";
 import { borderSize } from "../../../theme/theme-new";
 
-type Props = { children: JSX.Element[] };
+type Props = {
+  children: JSX.Element[];
+  pad?: BoxProps["pad"];
+  type?: NavigationType;
+};
 
-export default function Tabs({ children }: Props): JSX.Element {
+export default function Tabs({ children, pad, type }: Props): JSX.Element {
+  const borderColor = type === "light" ? "gray3" : "gray9";
+
   return (
     <Box
-      border={{ color: "gray9", side: "bottom", size: borderSize.xsmall }}
+      border={{ color: borderColor, side: "bottom", size: borderSize.xsmall }}
       direction="row"
       gap="small"
-      pad={{ horizontal: "small" }}
+      pad={pad}
     >
       {children}
     </Box>

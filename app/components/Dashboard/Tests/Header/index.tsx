@@ -1,17 +1,12 @@
 import { Box } from "grommet";
 import { useRouter } from "next/router";
-import { useContext } from "react";
 
 import { useCreateSuite } from "../../../../hooks/mutations";
-import { useIntegrations } from "../../../../hooks/queries";
 import { routes } from "../../../../lib/routes";
 import { Trigger } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import { edgeSize } from "../../../../theme/theme";
 import PlayButton from "../../../shared/PlayButton";
-import { StateContext } from "../../../StateContext";
-import SelectEnvironment from "./SelectEnvironment";
-import SelectTrigger from "./SelectTrigger";
 import TriggerName from "./TriggerName";
 
 type Props = {
@@ -20,16 +15,8 @@ type Props = {
 };
 
 export default function Header({ selectedIds, trigger }: Props): JSX.Element {
-  const { teamId } = useContext(StateContext);
-
   const { replace } = useRouter();
   const [createSuite, { loading }] = useCreateSuite();
-
-  const { data } = useIntegrations({ team_id: teamId || "" });
-
-  const gitHubIntegrations = (data?.integrations || []).filter(
-    (i) => i.type === "github"
-  );
 
   const handleClick = () => {
     createSuite({
@@ -52,8 +39,6 @@ export default function Header({ selectedIds, trigger }: Props): JSX.Element {
     >
       <Box align="center" direction="row">
         <TriggerName trigger={trigger} />
-        <SelectTrigger integrations={gitHubIntegrations} trigger={trigger} />
-        <SelectEnvironment trigger={trigger} />
       </Box>
       <PlayButton
         disabled={loading}

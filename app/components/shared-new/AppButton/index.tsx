@@ -25,10 +25,12 @@ type Props = {
   IconComponent?: Icon;
   a11yTitle?: string;
   className?: string;
+  hasError?: boolean;
   href?: string;
   hoverType?: Type;
   iconPosition?: Side;
   isDisabled?: boolean;
+  isSelected?: boolean;
   justify?: BoxProps["justify"];
   label?: string;
   margin?: ButtonProps["margin"];
@@ -128,6 +130,9 @@ const StyledAppButton = styled(AppButton)`
   border-bottom-${props.noBorderSide}-radius: 0;
   border-top-${props.noBorderSide}-radius: 0;
   `}
+
+  ${(props) => !!props.hasError && `border-color: ${colors.danger5};`}
+  ${(props) => !!props.isSelected && `border-color: ${colors.gray9};`}
 
   svg {
     transition: fill ${transitionDuration};

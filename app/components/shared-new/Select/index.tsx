@@ -13,6 +13,7 @@ type Type = "dark" | "light";
 type Props = {
   children: ReactNode[];
   direction?: Direction;
+  hasError?: boolean;
   isDisabled?: boolean;
   label: string;
   noBorderSide?: Side;
@@ -22,6 +23,7 @@ type Props = {
 export default function Select({
   children,
   direction,
+  hasError,
   isDisabled,
   label,
   noBorderSide,
@@ -44,6 +46,7 @@ export default function Select({
       <Button
         IconComponent={direction === "up" ? Selector : ArrowDown}
         iconPosition="right"
+        hasError={hasError}
         isDisabled={isDisabled}
         label={label}
         noBorderSide={noBorderSide}

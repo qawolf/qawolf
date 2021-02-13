@@ -1,8 +1,0 @@
-.selectTrigger:hover {
-  background: #e8f1f1;
-}
-
-/* do not target svg on assignTriggers since include other icons */
-.selectTriggers:hover .down {
-  margin-top: 4px;
-}

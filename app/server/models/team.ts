@@ -3,7 +3,8 @@ import isNil from "lodash/isNil";
 import { minutesFromNow } from "../../shared/utils";
 import { db } from "../db";
 import { ModelOptions, Team, TeamPlan } from "../types";
-import { cuid } from "../utils";
+import { buildApiKey, cuid } from "../utils";
+import { decrypt, encrypt } from "./encrypt";
 import { createDefaultEnvironments } from "./environment";
 import { createTrigger, DEFAULT_TRIGGER_NAME } from "./trigger";
 
@@ -16,10 +17,16 @@ type UpdateTeam = {
   is_email_alert_enabled?: boolean;
   is_enabled?: boolean;
   name?: string;
+  next_trigger_id?: string;
   plan?: TeamPlan;
   renewed_at?: string;
   stripe_customer_id?: string;
   stripe_subscription_id?: string;
+};
+
+type ValidateApiKeyForTeam = {
+  api_key: string;
+  team_id: string;
 };
 
 export const createFreeTeamWithTrigger = async (
@@ -33,11 +40,13 @@ export const createFreeTeamWithTrigger = async (
 
   const team = {
     alert_integration_id: null,
+    api_key: encrypt(buildApiKey()),
     helpers: "",
     id,
     is_email_alert_enabled: true,
     is_enabled: true,
     name: DEFAULT_NAME,
+    next_trigger_id: cuid(),
     plan: "free" as const,
     renewed_at: null,
     stripe_customer_id: null,
@@ -107,6 +116,7 @@ export const updateTeam = async (
     is_email_alert_enabled,
     is_enabled,
     name,
+    next_trigger_id,
     plan,
     renewed_at,
     stripe_customer_id,
@@ -129,6 +139,7 @@ export const updateTeam = async (
   }
   if (!isNil(is_enabled)) updates.is_enabled = is_enabled;
   if (!isNil(name)) updates.name = name;
+  if (next_trigger_id) updates.next_trigger_id = next_trigger_id;
   if (plan) updates.plan = plan;
   if (renewed_at) updates.renewed_at = renewed_at;
   if (stripe_customer_id) updates.stripe_customer_id = stripe_customer_id;
@@ -141,4 +152,19 @@ export const updateTeam = async (
   log.debug("updated", id, updates);
 
   return { ...team, ...updates };
+};
+
+export const validateApiKeyForTeam = async (
+  { api_key, team_id }: ValidateApiKeyForTeam,
+  { logger, trx }: ModelOptions
+): Promise<void> => {
+  const log = logger.prefix("validateApiKeyForTeam");
+  log.debug("team", team_id);
+
+  const team = await findTeam(team_id, { logger, trx });
+
+  if (api_key !== decrypt(team.api_key)) {
+    log.error("invalid api key");
+    throw new Error("invalid api key");
+  }
 };

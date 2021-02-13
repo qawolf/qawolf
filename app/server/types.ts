@@ -52,17 +52,6 @@ export type SlackWebhook = {
 };
 
 // Model types
-export type ApiKey = {
-  created_at: string;
-  id: string;
-  last_used_at: string | null;
-  name: string;
-  team_id: string;
-  token_digest: string;
-  token_end: string;
-  updated_at?: string;
-};
-
 type WolfFields = {
   wolf_name?: string | null;
   wolf_number?: number | null;
@@ -215,6 +204,7 @@ export type TeamPlan = "free" | "business";
 export type Team = {
   alert_integration_id: string | null;
   alert_only_on_failure?: boolean;
+  api_key: string;
   created_at?: string;
   deleted_at?: string | null;
   id: string;
@@ -222,6 +212,7 @@ export type Team = {
   is_email_alert_enabled: boolean;
   is_enabled: boolean;
   name: string;
+  next_trigger_id: string;
   plan: TeamPlan;
   renewed_at: string | null;
   stripe_customer_id: string | null;
@@ -307,11 +298,6 @@ export type AuthenticatedUser = {
   user: CurrentUser;
 };
 
-export type CreateApiKeyMutation = {
-  name: string;
-  team_id: string;
-};
-
 export type CreateEnvironmentMutation = {
   name: string;
   team_id: string;
@@ -347,6 +333,17 @@ export type CreateSuiteMutation = {
 export type CreateTestMutation = {
   trigger_id: string | null;
   url: string;
+};
+
+export type CreateTriggerMutation = {
+  deployment_branches: string | null;
+  deployment_environment: DeploymentEnvironment | null;
+  deployment_integration_id: string | null;
+  environment_id: string | null;
+  name: string;
+  repeat_minutes: number | null;
+  team_id: string;
+  test_ids: string[] | null;
 };
 
 export type CreateUrlMutation = {
@@ -492,6 +489,10 @@ export type TeamIdQuery = {
   team_id: string;
 };
 
+export type TestIdsQuery = {
+  test_ids: string[];
+};
+
 export type TestQuery = {
   id?: string;
   run_id?: string;
@@ -505,6 +506,11 @@ export type TestResult = {
 export type TestSummary = {
   gif_url: string | null;
   last_runs: SuiteRun[];
+};
+
+export type TestTriggers = {
+  test_id: string;
+  trigger_ids: string[];
 };
 
 export type TriggerIdQuery = {

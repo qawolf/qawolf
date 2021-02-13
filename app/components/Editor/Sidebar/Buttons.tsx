@@ -38,7 +38,7 @@ export default function Buttons({
     state.setEnvironmentId(environmentId);
   };
 
-  useOnHotKey({ hotKey: "Enter", onHotKey: onAction });
+  useOnHotKey({ hotKey: "Enter", onHotKey: onAction, requireMeta: true });
 
   const runLabel = selection
     ? copy.runLines(selection.endLine - selection.startLine + 1)

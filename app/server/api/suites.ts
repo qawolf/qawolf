@@ -3,8 +3,8 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { db } from "../db";
 import environment from "../environment";
 import { Logger } from "../Logger";
-import { validateToken } from "../models/api_key";
 import { createSuiteForTests } from "../models/suite";
+import { validateApiKeyForTeam } from "../models/team";
 import { findEnabledTestsForTrigger } from "../models/test";
 import { findTrigger } from "../models/trigger";
 import { Trigger } from "../types";
@@ -25,11 +25,11 @@ const ensureTriggerAccess = async (
 ): Promise<Trigger> => {
   const log = logger.prefix("ensureTriggerAccess");
 
-  const token = req.headers.authorization;
+  const api_key = req.headers.authorization;
   const { trigger_id } = req.body;
 
-  if (!token) {
-    log.error("no token provided");
+  if (!api_key) {
+    log.error("no api key provided");
     throw new AuthenticationError({
       code: 401,
       message: "No API key provided",
@@ -47,7 +47,10 @@ const ensureTriggerAccess = async (
   try {
     const trigger = await db.transaction(async (trx) => {
       const trigger = await findTrigger(trigger_id, { logger, trx });
-      await validateToken({ team_id: trigger.team_id, token }, { logger, trx });
+      await validateApiKeyForTeam(
+        { api_key, team_id: trigger.team_id },
+        { logger, trx }
+      );
 
       return trigger;
     });
@@ -63,7 +66,7 @@ const ensureTriggerAccess = async (
       });
     }
 
-    log.error("invalid api key for team");
+    log.error("invalid api key");
     throw new AuthenticationError({
       code: 403,
       message: "API key cannot create suite",

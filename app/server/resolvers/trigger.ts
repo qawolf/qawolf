@@ -1,23 +1,26 @@
 import { db } from "../db";
-import { deleteTestTriggersForTrigger } from "../models/test_trigger";
+import { updateTeam } from "../models/team";
 import {
-  buildTriggerName,
+  createTestTriggersForTrigger,
+  deleteTestTriggersForTrigger,
+} from "../models/test_trigger";
+import {
   createTrigger,
   deleteTrigger,
   findDefaultTriggerForTeam,
   findTriggersForTeam,
-  findTriggersForTest,
   updateTrigger,
 } from "../models/trigger";
 import {
   Context,
+  CreateTriggerMutation,
   DeleteTrigger,
   IdQuery,
   TeamIdQuery,
-  Test,
   Trigger,
   UpdateTriggerMutation,
 } from "../types";
+import { cuid } from "../utils";
 import { ensureTeamAccess, ensureTriggerAccess, ensureUser } from "./utils";
 
 /**
@@ -25,23 +28,32 @@ import { ensureTeamAccess, ensureTriggerAccess, ensureUser } from "./utils";
  */
 export const createTriggerResolver = async (
   _: Record<string, unknown>,
-  { team_id }: TeamIdQuery,
+  { team_id, test_ids, ...args }: CreateTriggerMutation,
   { logger, teams, user: contextUser }: Context
 ): Promise<Trigger> => {
   const log = logger.prefix("createTriggerResolver");
 
   const user = ensureUser({ logger, user: contextUser });
-  ensureTeamAccess({ logger, team_id, teams });
+  const team = ensureTeamAccess({ logger, team_id: team_id, teams });
 
   log.debug(`user ${user.id} for team ${team_id}`);
 
   const trigger = await db.transaction(async (trx) => {
-    const name = await buildTriggerName(team_id, { logger, trx });
-
-    return createTrigger(
-      { creator_id: user.id, name, repeat_minutes: null, team_id },
+    const trigger = await createTrigger(
+      { ...args, creator_id: user.id, id: team.next_trigger_id, team_id },
       { logger, trx }
     );
+
+    await updateTeam({ id: team.id, next_trigger_id: cuid() }, { logger, trx });
+
+    if (test_ids?.length) {
+      await createTestTriggersForTrigger(
+        { test_ids, trigger_id: trigger.id },
+        { logger, trx }
+      );
+    }
+
+    return trigger;
   });
 
   log.debug(`created trigger ${trigger.id} for team ${team_id}`);
@@ -85,21 +97,6 @@ export const triggersResolver = async (
   ensureTeamAccess({ logger, team_id, teams });
 
   return findTriggersForTeam(team_id, { logger });
-};
-
-/**
- * @returns An array of the non-deleted triggers this test belongs to,
- *   sorted alphabetically ascending by name.
- */
-export const testTriggersResolver = async (
-  { id }: Test,
-  _: Record<string, unknown>,
-  { logger }: Context
-): Promise<Trigger[]> => {
-  const log = logger.prefix("testTriggersResolver");
-  log.debug("test", id);
-
-  return findTriggersForTest(id, { logger });
 };
 
 /**

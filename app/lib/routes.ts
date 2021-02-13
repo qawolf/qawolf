@@ -3,6 +3,7 @@ export const routes = {
   confirmEmail: "/confirm-email",
   docs: "/docs",
   gitHub: "/github",
+  gitHubIntegration: "/github-integration",
   home: "/",
   invite: "/invite",
   logIn: "/log-in",

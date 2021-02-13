@@ -1,7 +1,6 @@
 import { gql } from "@apollo/client";
 
 import {
-  apiKeyFragment,
   environmentFragment,
   environmentVariableFragment,
   integrationFragment,
@@ -15,15 +14,6 @@ import {
   triggerFragment,
   userFragment,
 } from "./fragments";
-
-export const apiKeysQuery = gql`
-  query apiKeys($team_id: ID!) {
-    apiKeys(team_id: $team_id) {
-      ...ApiKeyFragment
-    }
-  }
-  ${apiKeyFragment}
-`;
 
 export const currentUserQuery = gql`
   query currentUser {
@@ -47,10 +37,6 @@ export const dashboardQuery = gql`
           last_runs {
             ...SuiteRunFragment
           }
-        }
-        triggers {
-          id
-          name
         }
       }
     }
@@ -155,6 +141,15 @@ export const testHistoryQuery = gql`
       id
       started_at
       status
+    }
+  }
+`;
+
+export const testTriggersQuery = gql`
+  query testTriggers($test_ids: [ID!]!) {
+    testTriggers(test_ids: $test_ids) {
+      test_id
+      trigger_ids
     }
   }
 `;

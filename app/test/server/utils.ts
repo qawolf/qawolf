@@ -3,7 +3,6 @@ import { Transaction } from "knex";
 import { Logger } from "../../server/Logger";
 import { encrypt } from "../../server/models/encrypt";
 import {
-  ApiKey,
   DeploymentEnvironment,
   Environment,
   EnvironmentVariable,
@@ -24,15 +23,8 @@ import {
   Trigger,
   User,
 } from "../../server/types";
-import { cuid } from "../../server/utils";
+import { buildApiKey, cuid } from "../../server/utils";
 import { minutesFromNow } from "../../shared/utils";
-
-type BuildApiKey = {
-  i?: number;
-  name?: string;
-  team_id?: string;
-  token_digest?: string;
-};
 
 type BuildEnvironment = {
   i?: number;
@@ -155,25 +147,6 @@ export const buildArtifacts = (): SaveArtifacts => ({
   logsUrl: "logs_url",
   videoUrl: "video_url",
 });
-
-export const buildApiKey = ({
-  i,
-  name,
-  team_id,
-  token_digest,
-}: BuildApiKey): ApiKey => {
-  const finalI = i || 1;
-
-  return {
-    created_at: minutesFromNow(),
-    id: `apiKey${finalI === 1 ? "" : i}Id`,
-    last_used_at: null,
-    name: name || "My API Key",
-    team_id: team_id || "teamId",
-    token_digest: token_digest || cuid(),
-    token_end: "abcd",
-  };
-};
 
 export const buildEnvironment = ({
   i,
@@ -359,11 +332,13 @@ export const buildTeam = ({ i, is_enabled, name, plan }: BuildTeam): Team => {
 
   return {
     alert_integration_id: null,
+    api_key: buildApiKey(),
     helpers: "",
     id: `team${finalI === 1 ? "" : i}Id`,
     is_email_alert_enabled: true,
     is_enabled: is_enabled === undefined ? true : is_enabled,
     name: name || "Awesome Company",
+    next_trigger_id: cuid(),
     plan: plan || "free",
     stripe_customer_id: null,
     stripe_subscription_id: null,

@@ -1,5 +1,5 @@
 import { db } from "../db";
-import { ModelOptions, TestTrigger } from "../types";
+import { ModelOptions, TestTrigger, TestTriggers } from "../types";
 import { cuid } from "../utils";
 
 type CreateTestTrigger = {
@@ -97,4 +97,29 @@ export const deleteTestTriggersForTests = async (
     .del();
 
   log.debug(`deleted ${deleteCount} test_triggers`);
+};
+
+export const findTestTriggersForTests = async (
+  testIds: string[],
+  { logger, trx }: ModelOptions
+): Promise<TestTriggers[]> => {
+  const log = logger.prefix("findTestTriggersForTests");
+  log.debug(testIds);
+
+  const testTriggers = await (trx || db)("test_triggers")
+    .select("test_triggers.*")
+    .innerJoin("triggers", "test_triggers.trigger_id", "triggers.id")
+    .whereIn("test_triggers.test_id", testIds)
+    .andWhere({ "triggers.deleted_at": null, "triggers.is_default": false });
+
+  const result: TestTriggers[] = testIds.map((test_id) => {
+    return { test_id, trigger_ids: [] };
+  });
+
+  testTriggers.forEach((t) => {
+    const existingRow = result.find((r) => r.test_id === t.test_id);
+    if (existingRow) existingRow.trigger_ids.push(t.trigger_id);
+  });
+
+  return result;
 };

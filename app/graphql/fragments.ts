@@ -1,16 +1,5 @@
 import { gql } from "@apollo/client";
 
-export const apiKeyFragment = gql`
-  fragment ApiKeyFragment on ApiKey {
-    created_at
-    id
-    last_used_at
-    name
-    token
-    token_end
-  }
-`;
-
 export const environmentFragment = gql`
   fragment EnvironmentFragment on Environment {
     id
@@ -101,11 +90,13 @@ export const suiteFragment = gql`
 export const teamFragment = gql`
   fragment TeamFragment on Team {
     alert_integration_id
+    api_key
     helpers
     id
     is_email_alert_enabled
     is_enabled
     name
+    next_trigger_id
   }
 `;
 
