@@ -54,7 +54,7 @@ export const docs: Section[] = [
     IconComponent: RiRocketFill,
     color: "#F2D479",
     docs: [
-      { href: `${routes.docs}/run-on-interval`, name: "Run on Interval" },
+      { href: `${routes.docs}/run-on-schedule`, name: "Run on Schedule" },
       {
         href: `${routes.docs}/run-on-vercel-deployment`,
         name: "Run on Vercel Deployment",
