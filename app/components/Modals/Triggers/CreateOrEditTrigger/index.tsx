@@ -36,6 +36,9 @@ export default function CreateOrEditTrigger({
   const handleSave = (fields: TriggerFields): void => {
     if (editTrigger) {
       updateTrigger({
+        optimisticResponse: {
+          updateTrigger: { ...editTrigger, ...fields },
+        },
         variables: {
           ...fields,
           id: editTrigger.id,
