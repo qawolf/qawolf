@@ -48,15 +48,22 @@ export const updateTestTriggersResolver = async (
     throw new Error("Must provide add or remove trigger id");
   }
 
-  await Promise.all(
+  const testTeams = await Promise.all(
     test_ids.map((test_id) => ensureTestAccess({ logger, teams, test_id }))
   );
 
-  await ensureTriggerAccess({
+  const triggerTeam = await ensureTriggerAccess({
     logger,
     teams,
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     trigger_id: (add_trigger_id || remove_trigger_id)!,
+  });
+
+  // check the test team matches the trigger's team
+  testTeams.forEach((testTeam) => {
+    if (testTeam.id !== triggerTeam.id) {
+      throw new Error("Invalid team");
+    }
   });
 
   return db.transaction(async (trx) => {
