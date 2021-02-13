@@ -1,20 +1,18 @@
-import { db, dropTestDb, migrateDb } from "../../../server/db";
-import { Logger } from "../../../server/Logger";
 import * as suiteModel from "../../../server/models/suite";
 import {
   createSuiteResolver,
   suiteResolver,
   suitesResolver,
 } from "../../../server/resolvers/suite";
-import { Suite } from "../../../server/types";
 import { minutesFromNow } from "../../../shared/utils";
+import { prepareTestDb } from "../db";
 import {
   buildTeam,
   buildTest,
   buildTestTrigger,
   buildTrigger,
   buildUser,
-  logger,
+  testContext,
 } from "../utils";
 
 const teams = [buildTeam({})];
@@ -46,16 +44,13 @@ const suites = [
 ];
 const user = buildUser({});
 
-const testContext = { api_key: null, ip: null, logger, teams, user };
+const db = prepareTestDb();
+const context = { ...testContext, api_key: "apiKey", db };
 
 beforeAll(async () => {
-  await migrateDb();
-
   await db("users").insert(user);
   await db("teams").insert(teams);
 });
-
-afterAll(() => dropTestDb());
 
 describe("createSuiteResolver", () => {
   beforeAll(async () => {
@@ -78,7 +73,7 @@ describe("createSuiteResolver", () => {
     const suiteId = await createSuiteResolver(
       {},
       { test_ids: null, trigger_id: "triggerId" },
-      testContext
+      context
     );
 
     const suite = await db
@@ -103,7 +98,7 @@ describe("createSuiteResolver", () => {
     const suiteId = await createSuiteResolver(
       {},
       { test_ids: ["testId"], trigger_id: "triggerId" },
-      testContext
+      context
     );
 
     const suite = await db
@@ -126,25 +121,19 @@ describe("createSuiteResolver", () => {
   });
 
   it("throws an error if team is not enabled", async () => {
-    const testFn = async (): Promise<string> => {
-      return createSuiteResolver(
+    await expect(
+      createSuiteResolver(
         {},
         { trigger_id: "triggerId" },
-        { ...testContext, teams: [{ ...teams[0], is_enabled: false }] }
-      );
-    };
-
-    await expect(testFn()).rejects.toThrowError(
-      "team disabled, please contact support"
-    );
+        { ...context, teams: [{ ...teams[0], is_enabled: false }] }
+      )
+    ).rejects.toThrowError("team disabled, please contact support");
   });
 
   it("throws an error if no tests exist for a team", async () => {
-    const testFn = async (): Promise<string> => {
-      return createSuiteResolver({}, { trigger_id: "triggerId" }, testContext);
-    };
-
-    await expect(testFn()).rejects.toThrowError("tests to run");
+    await expect(
+      createSuiteResolver({}, { trigger_id: "triggerId" }, context)
+    ).rejects.toThrowError("tests to run");
   });
 });
 
@@ -158,15 +147,15 @@ describe("suiteResolver", () => {
   });
 
   it("returns a suite", async () => {
-    jest.spyOn(suiteModel, "findSuite").mockResolvedValue(suites[0]);
+    const findSuiteSpy = jest
+      .spyOn(suiteModel, "findSuite")
+      .mockResolvedValue(suites[0]);
 
-    const suite = await suiteResolver({}, { id: "suiteId" }, testContext);
+    const suite = await suiteResolver({}, { id: "suiteId" }, context);
 
     expect(suite).toEqual(suites[0]);
 
-    expect(suiteModel.findSuite).toBeCalledWith("suiteId", {
-      logger: expect.any(Logger),
-    });
+    expect(findSuiteSpy.mock.calls[0][0]).toEqual("suiteId");
   });
 
   it("throws an error if trigger deleted", async () => {
@@ -174,11 +163,9 @@ describe("suiteResolver", () => {
 
     jest.spyOn(suiteModel, "findSuite").mockResolvedValue(suites[0]);
 
-    const testFn = async (): Promise<Suite> => {
-      return suiteResolver({}, { id: "suiteId" }, testContext);
-    };
-
-    await expect(testFn()).rejects.toThrowError("not found");
+    await expect(
+      suiteResolver({}, { id: "suiteId" }, context)
+    ).rejects.toThrowError("not found");
 
     await db("triggers").update({ deleted_at: null });
   });
@@ -194,12 +181,14 @@ describe("suitesResolver", () => {
   });
 
   it("returns suites for a team", async () => {
-    jest.spyOn(suiteModel, "findSuitesForTrigger").mockResolvedValue(suites);
+    const findSuitesForTriggerSpy = jest
+      .spyOn(suiteModel, "findSuitesForTrigger")
+      .mockResolvedValue(suites);
 
     const formattedSuites = await suitesResolver(
       { trigger_id: "triggerId" },
       {},
-      testContext
+      context
     );
 
     expect(formattedSuites).toMatchObject([
@@ -219,12 +208,9 @@ describe("suitesResolver", () => {
       },
     ]);
 
-    expect(suiteModel.findSuitesForTrigger).toBeCalledWith(
-      {
-        limit: 50,
-        trigger_id: "triggerId",
-      },
-      expect.any(Logger)
-    );
+    expect(findSuitesForTriggerSpy.mock.calls[0][0]).toEqual({
+      limit: 50,
+      trigger_id: "triggerId",
+    });
   });
 });

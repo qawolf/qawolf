@@ -1,4 +1,3 @@
-import { db, dropTestDb, migrateDb } from "../../../server/db";
 import {
   createDefaultEnvironments,
   createEnvironment,
@@ -8,7 +7,7 @@ import {
   findEnvironmentsForTeam,
   updateEnvironment,
 } from "../../../server/models/environment";
-import { Environment } from "../../../server/types";
+import { prepareTestDb } from "../db";
 import {
   buildEnvironment,
   buildEnvironmentVariable,
@@ -21,20 +20,19 @@ import {
   logger,
 } from "../utils";
 
-beforeAll(async () => {
-  await migrateDb();
+const db = prepareTestDb();
+const options = { db, logger };
 
+beforeAll(async () => {
   await db("users").insert(buildUser({}));
   return db("teams").insert([buildTeam({}), buildTeam({ i: 2 })]);
 });
-
-afterAll(() => dropTestDb());
 
 describe("createDefaultEnvironments", () => {
   afterAll(() => db("environments").del());
 
   it("creates default environments for a team", async () => {
-    await createDefaultEnvironments("teamId", { logger });
+    await createDefaultEnvironments("teamId", options);
 
     const environments = await db("environments")
       .select("*")
@@ -58,7 +56,7 @@ describe("createEnvironment", () => {
 
     const environment = await createEnvironment(
       { name: "New Environment", team_id: "teamId" },
-      { logger }
+      options
     );
 
     const dbEnvironment = await db("environments").select("*").first();
@@ -68,11 +66,9 @@ describe("createEnvironment", () => {
   });
 
   it("throws an error if name not provided", async () => {
-    const testFn = async (): Promise<Environment> => {
-      return createEnvironment({ name: "", team_id: "teamId" }, { logger });
-    };
-
-    await expect(testFn()).rejects.toThrowError("Must provide name");
+    await expect(
+      createEnvironment({ name: "", team_id: "teamId" }, options)
+    ).rejects.toThrowError("Must provide name");
   });
 });
 
@@ -103,7 +99,10 @@ describe("deleteEnvironment", () => {
   });
 
   it("deletes an environment and all associated environment variables", async () => {
-    const environment = await deleteEnvironment("environmentId", { logger });
+    const environment = await deleteEnvironment("environmentId", {
+      db,
+      logger,
+    });
 
     expect(environment.id).toBe("environmentId");
 
@@ -134,17 +133,15 @@ describe("findEnvironment", () => {
   afterAll(() => db("environments").del());
 
   it("finds an environment", async () => {
-    const environment = await findEnvironment("environmentId", { logger });
+    const environment = await findEnvironment("environmentId", options);
 
     expect(environment).toMatchObject({ name: "Staging", team_id: "teamId" });
   });
 
   it("throws an error if environment not found", async () => {
-    const testFn = async (): Promise<Environment> => {
-      return findEnvironment("fakeId", { logger });
-    };
-
-    await expect(testFn()).rejects.toThrowError("not found");
+    await expect(findEnvironment("fakeId", options)).rejects.toThrowError(
+      "not found"
+    );
   });
 });
 
@@ -179,13 +176,13 @@ describe("findEnvironmentIdForRun", () => {
   });
 
   it("returns an environment id for a run", async () => {
-    const environment = await findEnvironmentIdForRun("runId", { logger });
+    const environment = await findEnvironmentIdForRun("runId", options);
 
     expect(environment).toBe("environmentId");
   });
 
   it("returns null if run does not have an environment", async () => {
-    const environment = await findEnvironmentIdForRun("run2Id", { logger });
+    const environment = await findEnvironmentIdForRun("run2Id", options);
 
     expect(environment).toBeNull();
   });
@@ -203,7 +200,10 @@ describe("findEnvironmentsForTeam", () => {
   afterAll(() => db("environments").del());
 
   it("finds environments for a team", async () => {
-    const environments = await findEnvironmentsForTeam("teamId", { logger });
+    const environments = await findEnvironmentsForTeam("teamId", {
+      db,
+      logger,
+    });
 
     expect(environments).toMatchObject([
       { name: "Production" },
@@ -222,7 +222,7 @@ describe("updateEnvironment", () => {
   it("updates an environment", async () => {
     const environment = await updateEnvironment(
       { id: "environmentId", name: "New Name" },
-      { logger }
+      options
     );
 
     const dbEnvironment = await db("environments").select("*").first();
@@ -232,10 +232,8 @@ describe("updateEnvironment", () => {
   });
 
   it("throws an error if name not provided", async () => {
-    const testFn = async (): Promise<Environment> => {
-      return updateEnvironment({ id: "environmentId", name: "" }, { logger });
-    };
-
-    await expect(testFn()).rejects.toThrowError("Must provide name");
+    await expect(
+      updateEnvironment({ id: "environmentId", name: "" }, options)
+    ).rejects.toThrowError("Must provide name");
   });
 });

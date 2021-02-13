@@ -1,26 +1,23 @@
-import { db, dropTestDb, migrateDb } from "../../../server/db";
 import environment from "../../../server/environment";
 import {
   createSlackIntegrationResolver,
   createSlackIntegrationUrlResolver,
 } from "../../../server/resolvers/slack";
 import * as slackService from "../../../server/services/slack";
-import { buildTeam, buildTeamUser, buildUser, logger } from "../utils";
+import { prepareTestDb } from "../db";
+import { buildTeam, buildTeamUser, buildUser, testContext } from "../utils";
 
 const teams = [buildTeam({})];
 const user = buildUser({});
 
-const testContext = { api_key: null, ip: null, logger, teams, user };
+const db = prepareTestDb();
+const context = { ...testContext, api_key: "apiKey", db };
 
 beforeAll(async () => {
-  await migrateDb();
-
   await db("users").insert(user);
   await db("teams").insert(teams);
   await db("team_users").insert(buildTeamUser({}));
 });
-
-afterAll(() => dropTestDb());
 
 describe("createSlackIntegrationResolver", () => {
   afterAll(async () => {
@@ -54,7 +51,7 @@ describe("createSlackIntegrationResolver", () => {
         slack_code: "code",
         team_id: "teamId",
       },
-      testContext
+      context
     );
 
     const integrations = await db.select("*").from("integrations");
@@ -82,7 +79,7 @@ describe("createSlackIntegrationUrlResolver", () => {
     const url = createSlackIntegrationUrlResolver(
       {},
       { redirect_uri: "/slack" },
-      testContext
+      context
     );
 
     expect(url).toMatch(

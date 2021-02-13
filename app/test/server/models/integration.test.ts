@@ -1,4 +1,3 @@
-import { db, dropTestDb, migrateDb } from "../../../server/db";
 import {
   createIntegration,
   createIntegrations,
@@ -6,7 +5,7 @@ import {
   findIntegration,
   findIntegrationsForTeam,
 } from "../../../server/models/integration";
-import { Integration } from "../../../server/types";
+import { prepareTestDb } from "../db";
 import {
   buildIntegration,
   buildTeam,
@@ -17,13 +16,10 @@ import {
 
 const team = buildTeam({});
 
-beforeAll(async () => {
-  await migrateDb();
+const db = prepareTestDb();
+const options = { db, logger };
 
-  await db("teams").insert(team);
-});
-
-afterAll(() => dropTestDb());
+beforeAll(() => db("teams").insert(team));
 
 const gitHubIntegrationOptions = {
   github_installation_id: 123,
@@ -48,7 +44,7 @@ describe("createIntegration", () => {
   afterEach(() => db("integrations").del());
 
   it("creates a GitHub integration", async () => {
-    await createIntegration(gitHubIntegrationOptions, { logger });
+    await createIntegration(gitHubIntegrationOptions, options);
 
     const integrations = await db.select("*").from("integrations");
 
@@ -65,7 +61,7 @@ describe("createIntegration", () => {
   });
 
   it("creates a Slack integration", async () => {
-    await createIntegration(slackIntegrationOptions, { logger });
+    await createIntegration(slackIntegrationOptions, options);
 
     const integrations = await db.select("*").from("integrations");
 
@@ -89,7 +85,7 @@ describe("createIntegrations", () => {
   it("creates multiple integrations", async () => {
     const integrations = await createIntegrations(
       [gitHubIntegrationOptions, slackIntegrationOptions],
-      { logger }
+      options
     );
 
     expect(integrations).toMatchObject([{ type: "github" }, { type: "slack" }]);
@@ -148,7 +144,7 @@ describe("deleteIntegrations", () => {
   it("deletes integrations and removes them from associated triggers", async () => {
     const deletedIntegrations = await deleteIntegrations(
       ["integrationId", "integration3Id"],
-      { logger }
+      options
     );
 
     expect(deletedIntegrations).toMatchObject([
@@ -180,7 +176,7 @@ describe("findIntegration", () => {
   afterAll(() => db("integrations").del());
 
   it("finds an integration", async () => {
-    const integration = await findIntegration("integrationId", { logger });
+    const integration = await findIntegration("integrationId", options);
 
     expect(integration).toMatchObject({
       id: "integrationId",
@@ -189,11 +185,9 @@ describe("findIntegration", () => {
   });
 
   it("throws an error if integration does not exist", async () => {
-    const testFn = async (): Promise<Integration> => {
-      return findIntegration("fakeId", { logger });
-    };
-
-    await expect(testFn()).rejects.toThrowError("not found");
+    await expect(findIntegration("fakeId", options)).rejects.toThrowError(
+      "not found"
+    );
   });
 });
 
@@ -229,7 +223,7 @@ describe("findIntegrationsForTeam", () => {
   it("finds integrations for a team", async () => {
     const integrations = await findIntegrationsForTeam(
       { team_id: "teamId" },
-      { logger }
+      options
     );
 
     expect(integrations).toMatchObject([
@@ -244,7 +238,7 @@ describe("findIntegrationsForTeam", () => {
   it("filters by github installation id if specified", async () => {
     const integrations = await findIntegrationsForTeam(
       { github_installation_id: 123, team_id: "teamId" },
-      { logger }
+      options
     );
 
     expect(integrations).toMatchObject([

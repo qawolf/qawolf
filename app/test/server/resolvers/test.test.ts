@@ -1,16 +1,10 @@
-import { db, dropTestDb, migrateDb } from "../../../server/db";
 import * as runModel from "../../../server/models/run";
 import * as testModel from "../../../server/models/test";
 import * as testResolvers from "../../../server/resolvers/test";
 import * as azure from "../../../server/services/aws/storage";
-import {
-  Context,
-  SuiteRun,
-  Team,
-  Test,
-  TestResult,
-} from "../../../server/types";
+import { Context, SuiteRun, Test } from "../../../server/types";
 import { minutesFromNow } from "../../../shared/utils";
+import { prepareTestDb } from "../db";
 import {
   buildRun,
   buildTeam,
@@ -19,6 +13,7 @@ import {
   buildTrigger,
   buildUser,
   logger,
+  testContext,
 } from "../utils";
 
 const {
@@ -32,17 +27,12 @@ const {
 } = testResolvers;
 
 const run = buildRun({ code: "run code" });
-const testContext = {
-  api_key: null,
-  ip: "127.0.0.1",
-  logger,
-  teams: [buildTeam({})],
-  user: buildUser({}),
-};
+
+const db = prepareTestDb();
+const context = { ...testContext, db };
+const options = { db, logger };
 
 beforeAll(async () => {
-  await migrateDb();
-
   return db.transaction(async (trx) => {
     await trx("users").insert([buildUser({}), buildUser({ i: 2 })]);
     await trx("teams").insert([buildTeam({}), buildTeam({ i: 2 })]);
@@ -89,8 +79,6 @@ beforeAll(async () => {
   });
 });
 
-afterAll(() => dropTestDb());
-
 describe("createTestResolver", () => {
   afterAll(jest.clearAllMocks);
 
@@ -98,7 +86,7 @@ describe("createTestResolver", () => {
     const test = await createTestResolver(
       {},
       { trigger_id: "triggerId", url: "https://google.com" },
-      testContext
+      context
     );
 
     expect(test).toMatchObject({
@@ -113,17 +101,13 @@ describe("createTestResolver", () => {
   });
 
   it("throws an error if testing qawolf.com", async () => {
-    const testFn = async (): Promise<Test> => {
-      return createTestResolver(
+    await expect(
+      createTestResolver(
         {},
         { trigger_id: "triggerId", url: "https://qawolf.com" },
-        testContext
-      );
-    };
-
-    await expect(testFn()).rejects.toThrowError(
-      "recursion requires an enterprise plan"
-    );
+        context
+      )
+    ).rejects.toThrowError("recursion requires an enterprise plan");
   });
 });
 
@@ -133,7 +117,7 @@ describe("deleteTestsResolver", () => {
       {},
       { ids: ["deleteMe"] },
       {
-        ...testContext,
+        ...context,
         teams: [buildTeam({ i: 2 })],
         user: buildUser({ i: 2 }),
       }
@@ -146,7 +130,7 @@ describe("deleteTestsResolver", () => {
       },
     ]);
 
-    const test = await testModel.findTest("deleteMe", { logger });
+    const test = await testModel.findTest("deleteMe", options);
     expect(test.deleted_at).not.toBeNull();
 
     const testTrigger = await db
@@ -160,66 +144,68 @@ describe("deleteTestsResolver", () => {
 
 describe("findTeamAndTriggerIdsForCreateTest", () => {
   it("returns trigger id and default trigger id if applicable", async () => {
-    const result = await findTeamAndTriggerIdsForCreateTest({
-      logger,
-      teams: testContext.teams,
-      trigger_id: "triggerId",
-    });
+    const result = await findTeamAndTriggerIdsForCreateTest(
+      {
+        teams: context.teams,
+        trigger_id: "triggerId",
+      },
+      options
+    );
 
     result.triggerIds.sort();
 
     expect(result).toMatchObject({
-      team: testContext.teams[0],
+      team: context.teams[0],
       triggerIds: ["trigger3Id", "triggerId"],
     });
   });
 
   it("returns trigger id if default trigger provided", async () => {
-    const result = await findTeamAndTriggerIdsForCreateTest({
-      logger,
-
-      teams: testContext.teams,
-      trigger_id: "trigger3Id",
-    });
+    const result = await findTeamAndTriggerIdsForCreateTest(
+      {
+        teams: context.teams,
+        trigger_id: "trigger3Id",
+      },
+      options
+    );
 
     expect(result).toMatchObject({
-      team: testContext.teams[0],
+      team: context.teams[0],
       triggerIds: ["trigger3Id"],
     });
   });
 
   it("returns default trigger otherwise", async () => {
-    const result = await findTeamAndTriggerIdsForCreateTest({
-      logger,
-      teams: testContext.teams,
-      trigger_id: null,
-    });
+    const result = await findTeamAndTriggerIdsForCreateTest(
+      {
+        teams: context.teams,
+        trigger_id: null,
+      },
+      options
+    );
 
     expect(result).toMatchObject({
-      team: testContext.teams[0],
+      team: context.teams[0],
       triggerIds: ["trigger3Id"],
     });
   });
 
   it("throws an error if user on multiple teams and no trigger provided", async () => {
-    const testFn = async (): Promise<{
-      team: Team;
-      triggerIds: string[];
-    }> => {
-      return findTeamAndTriggerIdsForCreateTest({
-        logger,
-        teams: [...testContext.teams, buildTeam({ i: 2 })],
-        trigger_id: null,
-      });
-    };
-
-    await expect(testFn()).rejects.toThrowError("not specified");
+    await expect(
+      findTeamAndTriggerIdsForCreateTest(
+        {
+          teams: [...context.teams, buildTeam({ i: 2 })],
+          trigger_id: null,
+        },
+        options
+      )
+    ).rejects.toThrowError("not specified");
   });
 });
 
 describe("testResolver", () => {
   it("finds a test by id", async () => {
-    const result = await testResolver({}, { id: "testId" }, testContext);
+    const result = await testResolver({}, { id: "testId" }, context);
     expect(result).toMatchObject({
       run: null,
       test: {
@@ -238,7 +224,7 @@ describe("testResolver", () => {
       .where({ id: "runId" })
       .update({ completed_at: minutesFromNow() });
 
-    const result = await testResolver({}, { run_id: "runId" }, testContext);
+    const result = await testResolver({}, { run_id: "runId" }, context);
 
     expect(result).toMatchObject({
       run: {
@@ -257,32 +243,29 @@ describe("testResolver", () => {
   });
 
   it("throws an error if user does not have access", async () => {
-    const testFn = async (): Promise<TestResult> => {
-      return testResolver(
+    await expect(
+      testResolver(
         {},
         { id: "testId" },
-        { api_key: null, ip: null, logger, teams: null, user: null }
-      );
-    };
-
-    await expect(testFn()).rejects.toThrowError("no teams");
+        { api_key: null, db, ip: null, logger, teams: null, user: null }
+      )
+    ).rejects.toThrowError("no teams");
   });
 
   it("throws an error if user passes both test id and run id and does not have run access", async () => {
     await db("runs").insert(buildRun({ i: 2, test_id: "test3Id" }));
 
-    const testFn = async (): Promise<TestResult> =>
-      testResolver({}, { id: "testId", run_id: "run2Id" }, testContext);
-
-    await expect(testFn()).rejects.toThrowError("cannot access test");
+    await expect(
+      testResolver({}, { id: "testId", run_id: "run2Id" }, context)
+    ).rejects.toThrowError("cannot access test");
 
     await db("runs").where({ id: "run2Id" }).del();
   });
 
   it("throws an error if no test or run id provided", async () => {
-    const testFn = async (): Promise<TestResult> =>
-      testResolver({}, {}, testContext);
-    await expect(testFn()).rejects.toThrowError("Must provide id or run_id");
+    await expect(testResolver({}, {}, context)).rejects.toThrowError(
+      "Must provide id or run_id"
+    );
   });
 });
 
@@ -336,11 +319,7 @@ describe("testSummaryResolver", () => {
 
 describe("testsResolver", () => {
   it("finds tests for a trigger", async () => {
-    const tests = await testsResolver(
-      { trigger_id: "triggerId" },
-      {},
-      testContext
-    );
+    const tests = await testsResolver({ trigger_id: "triggerId" }, {}, context);
 
     expect(tests).toMatchObject([{ creator_id: "userId", id: "testId" }]);
   });
@@ -356,7 +335,7 @@ describe("updateTestResolver", () => {
         is_enabled: true,
         version: 13,
       },
-      testContext
+      context
     );
 
     expect(test).toMatchObject({

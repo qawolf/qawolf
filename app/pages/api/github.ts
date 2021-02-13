@@ -1,3 +1,17 @@
-import { handleGitHubRequest } from "../../server/api/github";
+import { NextApiRequest, NextApiResponse } from "next";
 
-export default handleGitHubRequest;
+import { handleGitHubRequest } from "../../server/api/github";
+import { connectDb } from "../../server/db";
+import { Logger } from "../../server/Logger";
+
+export default async function (
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> {
+  const db = connectDb();
+  const logger = new Logger({ prefix: "handleGitHubRequest" });
+
+  await handleGitHubRequest(req, res, { db, logger });
+
+  await db.destroy();
+}

@@ -1,6 +1,6 @@
-import { db, dropTestDb, migrateDb } from "../../../../server/db";
 import * as gitHubService from "../../../../server/services/gitHub/app";
 import { GitHubCommitStatus, SuiteRun } from "../../../../server/types";
+import { prepareTestDb } from "../../db";
 import {
   buildGitHubCommitStatus,
   buildRun,
@@ -15,9 +15,10 @@ import {
 
 const { shouldUpdateCommitStatus, updateCommitStatus } = gitHubService;
 
-beforeAll(async () => {
-  await migrateDb();
+const db = prepareTestDb();
+const options = { db, logger };
 
+beforeAll(async () => {
   await db("users").insert(buildUser({}));
   await db("teams").insert(buildTeam({}));
   await db("team_users").insert(buildTeamUser({}));
@@ -46,8 +47,6 @@ beforeAll(async () => {
 
   return db("github_commit_statuses").insert(buildGitHubCommitStatus({}));
 });
-
-afterAll(() => dropTestDb());
 
 describe("shouldUpdateCommitStatus", () => {
   it("returns false if no github commit status", () => {
@@ -82,10 +81,14 @@ describe("shouldUpdateCommitStatus", () => {
 });
 
 describe("updateCommitStatus", () => {
+  let createCommitStatusSpy: jest.SpyInstance;
+
   beforeAll(() => {
-    jest.spyOn(gitHubService, "createCommitStatus").mockResolvedValue({
-      context: "context",
-    } as gitHubService.GitHubCommitStatus);
+    createCommitStatusSpy = jest
+      .spyOn(gitHubService, "createCommitStatus")
+      .mockResolvedValue({
+        context: "context",
+      } as gitHubService.GitHubCommitStatus);
   });
 
   afterEach(() => jest.clearAllMocks());
@@ -93,9 +96,9 @@ describe("updateCommitStatus", () => {
   afterAll(() => jest.restoreAllMocks());
 
   it("updates github commit status if suite complete", async () => {
-    await updateCommitStatus({ logger, suite_id: "suiteId" });
+    await updateCommitStatus("suiteId", options);
 
-    expect(gitHubService.createCommitStatus).toBeCalledWith({
+    expect(createCommitStatusSpy.mock.calls[0][0]).toEqual({
       context: "context",
       installationId: 123,
       owner: "qawolf",
@@ -113,7 +116,7 @@ describe("updateCommitStatus", () => {
   });
 
   it("does nothing if suite not complete", async () => {
-    await updateCommitStatus({ logger, suite_id: "suite2Id" });
+    await updateCommitStatus("suite2Id", options);
 
     expect(gitHubService.createCommitStatus).not.toBeCalled();
   });

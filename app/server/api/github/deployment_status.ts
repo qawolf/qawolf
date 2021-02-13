@@ -1,18 +1,13 @@
 import { EventPayloads } from "@octokit/webhooks";
 
-import { Logger } from "../../Logger";
+import { ModelOptions } from "../../types";
 import { createSuitesForDeployment } from "./deployment";
 
-type HandleDeploymentStatusEvent = {
-  logger: Logger;
-  payload: EventPayloads.WebhookPayloadDeploymentStatus;
-};
-
-export const handleDeploymentStatusEvent = async ({
-  logger,
-  payload,
-}: HandleDeploymentStatusEvent): Promise<void> => {
-  const log = logger.prefix("handleDeploymentStatusEvent");
+export const handleDeploymentStatusEvent = async (
+  payload: EventPayloads.WebhookPayloadDeploymentStatus,
+  options: ModelOptions
+): Promise<void> => {
+  const log = options.logger.prefix("handleDeploymentStatusEvent");
   const {
     deployment,
     deployment_status: { environment, state, target_url },
@@ -29,13 +24,15 @@ export const handleDeploymentStatusEvent = async ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const deploymentUrl = (deployment.payload as any)?.web_url || target_url;
 
-  return createSuitesForDeployment({
-    deploymentUrl,
-    environment: environment.toLowerCase(),
-    installationId: installation.id,
-    logger,
-    repoId: repository.id,
-    repoFullName: repository.full_name,
-    sha: deployment.sha,
-  });
+  return createSuitesForDeployment(
+    {
+      deploymentUrl,
+      environment: environment.toLowerCase(),
+      installationId: installation.id,
+      repoId: repository.id,
+      repoFullName: repository.full_name,
+      sha: deployment.sha,
+    },
+    options
+  );
 };

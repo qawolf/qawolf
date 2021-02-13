@@ -1,7 +1,6 @@
 import { createAppAuth } from "@octokit/auth-app";
 import { Octokit, RestEndpointMethodTypes } from "@octokit/rest";
 
-import { db } from "../../db";
 import environment from "../../environment";
 import { Logger } from "../../Logger";
 import { findSystemEnvironmentVariable } from "../../models/environment_variable";
@@ -12,6 +11,7 @@ import {
 import { findRunsForSuite } from "../../models/run";
 import {
   GitHubCommitStatus as GitHubCommitStatusModel,
+  ModelOptions,
   SuiteRun,
 } from "../../types";
 
@@ -36,27 +36,19 @@ type FindBranchesForCommit = {
   sha: string;
 };
 
-type FindGitHubReposForInstallation = {
-  installationId: number;
-  logger: Logger;
-};
-
 type ShouldUpdateCommitStatus = {
   gitHubCommitStatus: GitHubCommitStatusModel | null;
   logger: Logger;
   runs: SuiteRun[];
 };
 
-type UpdateCommitStatusForSuite = {
-  logger: Logger;
-  suite_id: string;
-};
-
 export const createInstallationAccessToken = async (
-  installationId: number
+  installationId: number,
+  options: ModelOptions
 ): Promise<string> => {
   const privateKeyVariable = await findSystemEnvironmentVariable(
-    "GITHUB_APP_PRIVATE_KEY"
+    "GITHUB_APP_PRIVATE_KEY",
+    options
   );
 
   const auth = createAppAuth({
@@ -72,16 +64,19 @@ export const createInstallationAccessToken = async (
   return token;
 };
 
-export const createCommitStatus = async ({
-  context,
-  installationId,
-  owner,
-  repo,
-  sha,
-  state,
-  suiteId,
-}: CreateCommitStatus): Promise<GitHubCommitStatus> => {
-  const token = await createInstallationAccessToken(installationId);
+export const createCommitStatus = async (
+  {
+    context,
+    installationId,
+    owner,
+    repo,
+    sha,
+    state,
+    suiteId,
+  }: CreateCommitStatus,
+  options: ModelOptions
+): Promise<GitHubCommitStatus> => {
+  const token = await createInstallationAccessToken(installationId, options);
   const octokit = new Octokit({ auth: token });
 
   let description = "Running";
@@ -101,13 +96,11 @@ export const createCommitStatus = async ({
   return data;
 };
 
-export const findBranchesForCommit = async ({
-  installationId,
-  owner,
-  repo,
-  sha,
-}: FindBranchesForCommit): Promise<string[]> => {
-  const token = await createInstallationAccessToken(installationId);
+export const findBranchesForCommit = async (
+  { installationId, owner, repo, sha }: FindBranchesForCommit,
+  options: ModelOptions
+): Promise<string[]> => {
+  const token = await createInstallationAccessToken(installationId, options);
   const octokit = new Octokit({ auth: token });
 
   const { data } = await octokit.checks.listSuitesForRef({
@@ -119,14 +112,14 @@ export const findBranchesForCommit = async ({
   return Array.from(new Set(data.check_suites.map((s) => s.head_branch)));
 };
 
-export const findGitHubReposForInstallation = async ({
-  installationId,
-  logger,
-}: FindGitHubReposForInstallation): Promise<GitHubRepos> => {
-  const log = logger.prefix("findGitHubReposForInstallation");
+export const findGitHubReposForInstallation = async (
+  installationId: number,
+  options: ModelOptions
+): Promise<GitHubRepos> => {
+  const log = options.logger.prefix("findGitHubReposForInstallation");
 
   try {
-    const token = await createInstallationAccessToken(installationId);
+    const token = await createInstallationAccessToken(installationId, options);
     const octokit = new Octokit({ auth: token });
 
     const {
@@ -165,16 +158,16 @@ export const shouldUpdateCommitStatus = ({
   return true;
 };
 
-export const updateCommitStatus = async ({
-  logger,
-  suite_id,
-}: UpdateCommitStatusForSuite): Promise<void> => {
+export const updateCommitStatus = async (
+  suite_id: string,
+  { logger, db }: ModelOptions
+): Promise<void> => {
   await db.transaction(async (trx) => {
     const gitHubCommitStatus = await findGitHubCommitStatusForSuite(suite_id, {
+      db: trx,
       logger,
-      trx,
     });
-    const runs = await findRunsForSuite(suite_id, { logger, trx });
+    const runs = await findRunsForSuite(suite_id, { db: trx, logger });
 
     const shouldUpdate = shouldUpdateCommitStatus({
       gitHubCommitStatus,
@@ -186,19 +179,22 @@ export const updateCommitStatus = async ({
 
     const state = runs.some((r) => r.status === "fail") ? "failure" : "success";
 
-    await createCommitStatus({
-      context: gitHubCommitStatus.context,
-      installationId: gitHubCommitStatus.github_installation_id,
-      owner: gitHubCommitStatus.owner,
-      repo: gitHubCommitStatus.repo,
-      sha: gitHubCommitStatus.sha,
-      state,
-      suiteId: suite_id,
-    });
+    await createCommitStatus(
+      {
+        context: gitHubCommitStatus.context,
+        installationId: gitHubCommitStatus.github_installation_id,
+        owner: gitHubCommitStatus.owner,
+        repo: gitHubCommitStatus.repo,
+        sha: gitHubCommitStatus.sha,
+        state,
+        suiteId: suite_id,
+      },
+      { db: trx, logger }
+    );
 
     await updateGitHubCommitStatus(
       { completed_at: new Date().toISOString(), id: gitHubCommitStatus.id },
-      { logger, trx }
+      { db: trx, logger }
     );
   });
 };

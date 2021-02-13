@@ -1,22 +1,22 @@
-import { db, dropTestDb, migrateDb } from "../../../server/db";
 import {
   createEnvironmentVariableResolver,
   deleteEnvironmentVariableResolver,
   environmentVariablesResolver,
   updateEnvironmentVariableResolver,
 } from "../../../server/resolvers/environment_variable";
-import { EnvironmentVariable } from "../../../server/types";
+import { prepareTestDb } from "../db";
 import {
   buildEnvironment,
   buildEnvironmentVariable,
   buildTeam,
   buildUser,
-  logger,
+  testContext,
 } from "../utils";
 
-beforeAll(async () => {
-  await migrateDb();
+const db = prepareTestDb();
+const context = { ...testContext, db };
 
+beforeAll(async () => {
   await db("users").insert(buildUser({}));
   await db("teams").insert(buildTeam({}));
 
@@ -26,16 +26,6 @@ beforeAll(async () => {
   ]);
 });
 
-afterAll(() => dropTestDb());
-
-const testContext = {
-  api_key: null,
-  ip: "127.0.0.1",
-  logger,
-  teams: [buildTeam({})],
-  user: buildUser({}),
-};
-
 describe("createEnvironmentVariableResolver", () => {
   afterEach(() => db("environment_variables").del());
 
@@ -43,7 +33,7 @@ describe("createEnvironmentVariableResolver", () => {
     const environmentVariable = await createEnvironmentVariableResolver(
       {},
       { environment_id: "environmentId", name: "my_VARIABLE", value: "secret" },
-      testContext
+      context
     );
 
     expect(environmentVariable).toMatchObject({
@@ -69,7 +59,7 @@ describe("deleteEnvironmentVariableResolver", () => {
     const environmentVariable = await deleteEnvironmentVariableResolver(
       {},
       { id: "environmentVariableId" },
-      testContext
+      context
     );
 
     expect(environmentVariable).toMatchObject({ id: "environmentVariableId" });
@@ -82,15 +72,13 @@ describe("deleteEnvironmentVariableResolver", () => {
   });
 
   it("throws an error if cannot access environment", async () => {
-    const testFn = async (): Promise<EnvironmentVariable> => {
-      return deleteEnvironmentVariableResolver(
+    await expect(
+      deleteEnvironmentVariableResolver(
         {},
         { id: "environmentVariable2Id" },
-        { ...testContext, teams: [{ ...buildTeam({ i: 2 }) }] }
-      );
-    };
-
-    await expect(testFn()).rejects.toThrowError("cannot access environment");
+        { ...context, teams: [{ ...buildTeam({ i: 2 }) }] }
+      )
+    ).rejects.toThrowError("cannot access environment");
   });
 });
 
@@ -109,7 +97,7 @@ describe("environmentVariablesResolver", () => {
     const environmentVariables = await environmentVariablesResolver(
       {},
       { environment_id: "environmentId" },
-      testContext
+      context
     );
 
     expect(environmentVariables).toMatchObject({
@@ -135,7 +123,7 @@ describe("updateEnvironmentVariableResolver", () => {
     const environmentVariable = await updateEnvironmentVariableResolver(
       {},
       { id: "environmentVariableId", name: "NEW_NAME", value: "newValue" },
-      testContext
+      context
     );
 
     expect(environmentVariable).toMatchObject({

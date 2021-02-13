@@ -2,8 +2,8 @@ import {
   createSuitesForDeployment,
   shouldRunTriggerOnDeployment,
 } from "../../../../server/api/github/deployment";
-import { db, dropTestDb, migrateDb } from "../../../../server/db";
 import * as gitHubService from "../../../../server/services/gitHub/app";
+import { prepareTestDb } from "../../db";
 import {
   buildIntegration,
   buildTeam,
@@ -14,9 +14,7 @@ import {
   logger,
 } from "../../utils";
 
-beforeAll(() => migrateDb());
-
-afterAll(() => dropTestDb());
+const db = prepareTestDb();
 
 describe("createSuitesForDeployment", () => {
   beforeAll(async () => {
@@ -47,21 +45,26 @@ describe("createSuitesForDeployment", () => {
   });
 
   it("creates suites for a deployment", async () => {
-    jest
+    const findBranchesForCommitSpy = jest
       .spyOn(gitHubService, "findBranchesForCommit")
       .mockResolvedValue(["feature"]);
-    jest.spyOn(gitHubService, "createCommitStatus").mockResolvedValue({
-      context: "context",
-    } as gitHubService.GitHubCommitStatus);
 
-    await createSuitesForDeployment({
-      deploymentUrl: "url",
-      installationId: 123,
-      logger,
-      repoId: 1,
-      repoFullName: "qawolf/repo",
-      sha: "sha",
-    });
+    const createCommitStatusSpy = jest
+      .spyOn(gitHubService, "createCommitStatus")
+      .mockResolvedValue({
+        context: "context",
+      } as gitHubService.GitHubCommitStatus);
+
+    await createSuitesForDeployment(
+      {
+        deploymentUrl: "url",
+        installationId: 123,
+        repoId: 1,
+        repoFullName: "qawolf/repo",
+        sha: "sha",
+      },
+      { db, logger }
+    );
 
     const suites = await db("suites").select("*");
     expect(suites).toMatchObject([
@@ -78,14 +81,14 @@ describe("createSuitesForDeployment", () => {
       },
     ]);
 
-    expect(gitHubService.findBranchesForCommit).toBeCalledWith({
+    expect(findBranchesForCommitSpy.mock.calls[0][0]).toEqual({
       installationId: 123,
       owner: "qawolf",
       repo: "repo",
       sha: "sha",
     });
 
-    expect(gitHubService.createCommitStatus).toBeCalledWith({
+    expect(createCommitStatusSpy.mock.calls[0][0]).toEqual({
       context: "QA Wolf - trigger1",
       installationId: 123,
       owner: "qawolf",

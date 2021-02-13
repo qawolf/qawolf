@@ -1,28 +1,19 @@
-import { db, dropTestDb, migrateDb } from "../../../server/db";
 import { encrypt } from "../../../server/models/encrypt";
 import {
   teamResolver,
   updateTeamResolver,
 } from "../../../server/resolvers/team";
+import { prepareTestDb } from "../db";
 import {
   buildIntegration,
   buildTeam,
   buildTeamUser,
   buildUser,
-  logger,
+  testContext,
 } from "../utils";
 
-const testContext = {
-  api_key: null,
-  ip: "127.0.0.1",
-  logger,
-  teams: [buildTeam({})],
-  user: buildUser({}),
-};
-
-beforeAll(() => migrateDb());
-
-afterAll(() => dropTestDb());
+const db = prepareTestDb();
+const context = { ...testContext, db };
 
 describe("teamResolver", () => {
   beforeAll(async () => {
@@ -42,7 +33,7 @@ describe("teamResolver", () => {
   });
 
   it("finds a team", async () => {
-    const team = await teamResolver({}, { id: "teamId" }, testContext);
+    const team = await teamResolver({}, { id: "teamId" }, context);
     expect(team).toMatchObject({ api_key: "qawolf_api_key", id: "teamId" });
   });
 });
@@ -72,7 +63,7 @@ describe("updateTeamResolver", () => {
         id: "teamId",
         is_email_alert_enabled: false,
       },
-      testContext
+      context
     );
 
     expect(team).toMatchObject({
@@ -85,7 +76,7 @@ describe("updateTeamResolver", () => {
     const team = await updateTeamResolver(
       {},
       { helpers: "helpers", id: "teamId" },
-      testContext
+      context
     );
 
     expect(team.helpers).toBe("helpers");
@@ -95,7 +86,7 @@ describe("updateTeamResolver", () => {
     const team = await updateTeamResolver(
       {},
       { id: "teamId", name: "another name" },
-      testContext
+      context
     );
 
     expect(team.name).toBe("another name");

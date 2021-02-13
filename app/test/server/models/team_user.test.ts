@@ -1,16 +1,14 @@
-import { db, dropTestDb, migrateDb } from "../../../server/db";
 import { createTeamUser } from "../../../server/models/team_user";
-import { TeamUser } from "../../../server/types";
+import { prepareTestDb } from "../db";
 import { buildTeam, buildUser, logger } from "../utils";
 
-beforeAll(async () => {
-  await migrateDb();
+const db = prepareTestDb();
+const options = { db, logger };
 
+beforeAll(async () => {
   await db("users").insert(buildUser({}));
   return db("teams").insert(buildTeam({}));
 });
-
-afterAll(() => dropTestDb());
 
 describe("team_user model", () => {
   describe("createTeamUser", () => {
@@ -23,7 +21,7 @@ describe("team_user model", () => {
           role: "admin",
           user_id: "userId",
         },
-        { logger }
+        options
       );
       const teamUsers = await db.select("*").from("team_users");
 
@@ -44,21 +42,19 @@ describe("team_user model", () => {
           role: "admin",
           user_id: "userId",
         },
-        { logger }
+        options
       );
 
-      const testFn = async (): Promise<TeamUser> => {
-        return createTeamUser(
+      await expect(
+        createTeamUser(
           {
             team_id: "teamId",
             role: "admin",
             user_id: "userId",
           },
-          { logger }
-        );
-      };
-
-      await expect(testFn()).rejects.toThrowError("user already on team");
+          options
+        )
+      ).rejects.toThrowError("user already on team");
     });
   });
 });

@@ -1,13 +1,14 @@
 import { NextApiRequest } from "next";
 
 import { context } from "../../server/context";
-import { db, dropTestDb, migrateDb } from "../../server/db";
 import { Logger } from "../../server/Logger";
 import * as accessService from "../../server/services/access";
+import { prepareTestDb } from "./db";
 import { buildTeam, buildTeamUser, buildUser } from "./utils";
 
+const db = prepareTestDb();
+
 beforeAll(async () => {
-  await migrateDb();
   await db("users").insert([
     buildUser({}),
     buildUser({ i: 2, is_enabled: false }),
@@ -16,19 +17,22 @@ beforeAll(async () => {
   return db("team_users").insert(buildTeamUser({}));
 });
 
-afterAll(() => dropTestDb());
-
 afterEach(jest.restoreAllMocks);
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const req = { db } as any;
 
 describe("context", () => {
   it("returns null if no user access token", async () => {
     jest.spyOn(accessService, "verifyAccessToken").mockReturnValue(null);
-    const user = await context({
-      req: { headers: { authorization: "" } } as NextApiRequest,
+
+    const result = await context({
+      req: { ...req, headers: { authorization: "" } },
     });
 
-    expect(user).toEqual({
+    expect(result).toEqual({
       api_key: null,
+      db,
       ip: null,
       logger: expect.any(Logger),
       teams: null,
@@ -41,17 +45,19 @@ describe("context", () => {
   it("returns user by user id if possible", async () => {
     jest.spyOn(accessService, "verifyAccessToken").mockReturnValue("userId");
 
-    const user = await context({
+    const result = await context({
       req: {
+        ...req,
         headers: {
           authorization: "auth",
           "x-forwarded-for": "63.18.64.140:11639",
         } as NextApiRequest["headers"],
-      } as NextApiRequest,
+      },
     });
 
-    expect(user).toMatchObject({
+    expect(result).toMatchObject({
       api_key: null,
+      db,
       ip: "63.18.64.140",
       logger: expect.any(Logger),
       teams: [{ id: "teamId", plan: "free" }],
@@ -62,16 +68,18 @@ describe("context", () => {
   it("returns api key if possible", async () => {
     jest.spyOn(accessService, "verifyAccessToken");
 
-    const user = await context({
+    const result = await context({
       req: {
+        ...req,
         headers: {
           authorization: "qawolf_api_key",
         } as NextApiRequest["headers"],
-      } as NextApiRequest,
+      },
     });
 
-    expect(user).toEqual({
+    expect(result).toEqual({
       api_key: "qawolf_api_key",
+      db,
       ip: null,
       logger: expect.any(Logger),
       teams: null,
@@ -87,11 +95,12 @@ describe("context", () => {
     await expect(
       context({
         req: {
+          ...req,
           headers: {
             authorization: "auth",
             "x-forwarded-for": "63.18.64.140:11639",
           } as NextApiRequest["headers"],
-        } as NextApiRequest,
+        },
       })
     ).rejects.toThrowError(
       "This account is disabled, email us at hello@qawolf.com"

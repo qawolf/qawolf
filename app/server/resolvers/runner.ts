@@ -1,7 +1,6 @@
 import axios from "axios";
 
 import { minutesFromNow } from "../../shared/utils";
-import { db } from "../db";
 import { AuthenticationError } from "../errors";
 import { Logger } from "../Logger";
 import { findRun, findSuiteRunForRunner } from "../models/run";
@@ -53,7 +52,7 @@ export const authenticateRunner = async (
 export const runnerResolver = async (
   _: Record<string, unknown>,
   { run_id, should_request_runner, test_id }: RunnerQuery,
-  { ip, logger, user: contextUser, teams }: Context
+  { db, ip, logger, user: contextUser, teams }: Context
 ): Promise<RunnerResult | null> => {
   const log = logger.prefix("runnerResolver");
 
@@ -61,31 +60,31 @@ export const runnerResolver = async (
   ensureTeams({ logger, teams });
   log.debug(user.id);
 
-  const run = run_id ? await findRun(run_id, { logger }) : null;
+  const run = run_id ? await findRun(run_id, { db, logger }) : null;
 
   const testId = run?.test_id || test_id;
   if (!testId) throw new Error(`test not found ${testId}`);
 
   return db.transaction(async (trx) => {
-    const test = await findTest(testId, { logger, trx });
-    await ensureTestAccess({ logger, teams, test });
+    const test = await findTest(testId, { db: trx, logger });
+    await ensureTestAccess({ teams, test }, { db: trx, logger });
 
     let runner = await findRunner(
       { run_id: run_id, test_id: testId },
-      { logger, trx }
+      { db: trx, logger }
     );
 
     // extend the session
     if (runner && should_request_runner) {
       await updateRunner(
         { id: runner.id, session_expires_at: minutesFromNow(10) },
-        { logger, trx }
+        { db: trx, logger }
       );
     }
 
     // if there is no runner, request one for the test
     if (!runner && should_request_runner) {
-      runner = await requestRunnerForTest({ ip, test }, { logger, trx });
+      runner = await requestRunnerForTest({ ip, test }, { db: trx, logger });
     }
 
     if (runner) {
@@ -105,7 +104,7 @@ export const runnerResolver = async (
 export const updateRunnerResolver = async (
   _: Record<string, unknown>,
   options: UpdateRunnerMutation,
-  { api_key, logger }: Context
+  { api_key, db, logger }: Context
 ): Promise<RunnerRun | null> => {
   const log = logger.prefix("updateRunnerResolver");
   log.debug(options);
@@ -114,7 +113,10 @@ export const updateRunnerResolver = async (
 
   const timestamp = minutesFromNow();
 
-  const runner = await findRunner({ id, include_deleted: true }, { logger });
+  const runner = await findRunner(
+    { id, include_deleted: true },
+    { db, logger }
+  );
   if (!runner) throw new Error("Runner not found");
 
   if (runner.deleted_at) {
@@ -156,7 +158,7 @@ export const updateRunnerResolver = async (
   }
 
   try {
-    await updateRunner(runnerUpdates, { logger });
+    await updateRunner(runnerUpdates, { db, logger });
   } catch (error) {
     // the runner could be deleted, handle that gracefully
     if (error.message.includes("runner not found")) return null;
@@ -168,21 +170,24 @@ export const updateRunnerResolver = async (
 
   // assign the runner if there is a pending test or run
   if (!runner.run_id && !runner.test_id) {
-    const pending = await findPendingTestOrRunId(runner.location, { logger });
+    const pending = await findPendingTestOrRunId(runner.location, {
+      db,
+      logger,
+    });
 
     if (pending?.test_id) {
-      await assignRunner({ runner, test_id: pending.test_id }, { logger });
+      await assignRunner({ runner, test_id: pending.test_id }, { db, logger });
     } else if (pending?.run_id) {
       const updatedRunner = await assignRunner(
         { run_id: pending.run_id, runner },
-        { logger }
+        { db, logger }
       );
       if (updatedRunner?.run_id) runId = updatedRunner?.run_id;
     }
   }
 
   if (runId) {
-    return findSuiteRunForRunner(runId, { logger });
+    return findSuiteRunForRunner(runId, { db, logger });
   }
 
   return null;

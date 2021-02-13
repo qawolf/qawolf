@@ -1,10 +1,11 @@
 import { WebhookEvents } from "@octokit/webhooks";
 import { createHmac, timingSafeEqual } from "crypto";
-import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 
 import environment from "../../environment";
 import { AuthenticationError } from "../../errors";
 import { Logger } from "../../Logger";
+import { ModelOptions } from "../../types";
 import { handleCommitStatusEvent } from "./commit_status";
 import { handleDeploymentStatusEvent } from "./deployment_status";
 
@@ -31,12 +32,11 @@ export const verifySignature = (req: NextApiRequest, logger: Logger): void => {
   log.debug("valid signature");
 };
 
-export const handleGitHubRequest: NextApiHandler = async (
+export const handleGitHubRequest = async (
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
+  { db, logger }: ModelOptions
 ): Promise<void> => {
-  const logger = new Logger({ prefix: "handleGitHubRequest" });
-
   try {
     verifySignature(req, logger);
     const event = req.headers["x-github-event"] as WebhookEvents;
@@ -44,10 +44,10 @@ export const handleGitHubRequest: NextApiHandler = async (
 
     switch (event) {
       case "deployment_status":
-        await handleDeploymentStatusEvent({ logger, payload: req.body });
+        await handleDeploymentStatusEvent(req.body, { db, logger });
         break;
       case "status":
-        await handleCommitStatusEvent({ logger, payload: req.body });
+        await handleCommitStatusEvent(req.body, { db, logger });
         break;
       default:
         logger.debug("ignore event", event);

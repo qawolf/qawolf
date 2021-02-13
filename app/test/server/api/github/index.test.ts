@@ -7,18 +7,13 @@ import {
   verifySignature,
 } from "../../../../server/api/github";
 import * as deploymentStautsHandler from "../../../../server/api/github/deployment_status";
-import { dropTestDb, migrateDb } from "../../../../server/db";
 import environment from "../../../../server/environment";
-import { Logger } from "../../../../server/Logger";
 import { logger } from "../../utils";
 
 const body = { hello: "world" };
 
-beforeAll(() => migrateDb());
-
-afterAll(() => dropTestDb());
-
 describe("handleGitHubRequest", () => {
+  let handleDeploymentStatusEventSpy: jest.SpyInstance;
   const end = jest.fn();
   const status = jest.fn().mockReturnValue({ end });
 
@@ -29,7 +24,7 @@ describe("handleGitHubRequest", () => {
       .digest("hex");
 
   beforeAll(() => {
-    jest
+    handleDeploymentStatusEventSpy = jest
       .spyOn(deploymentStautsHandler, "handleDeploymentStatusEvent")
       .mockResolvedValue();
   });
@@ -45,16 +40,14 @@ describe("handleGitHubRequest", () => {
           "x-hub-signature-256": signature,
         } as NextApiRequest["headers"],
       } as NextApiRequest,
-      { status } as any
+      { status } as any,
+      { db: null, logger }
     );
 
     expect(status).toBeCalledWith(200);
     expect(end).toBeCalled();
 
-    expect(deploymentStautsHandler.handleDeploymentStatusEvent).toBeCalledWith({
-      logger: expect.any(Logger),
-      payload: body,
-    });
+    expect(handleDeploymentStatusEventSpy.mock.calls[0][0]).toEqual(body);
   });
 
   it("ignores other events", async () => {
@@ -66,7 +59,8 @@ describe("handleGitHubRequest", () => {
           "x-hub-signature-256": signature,
         } as NextApiRequest["headers"],
       } as NextApiRequest,
-      { status } as any
+      { status } as any,
+      { db: null, logger }
     );
 
     expect(status).toBeCalledWith(200);

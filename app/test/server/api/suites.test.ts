@@ -2,8 +2,8 @@
 import { NextApiRequest } from "next";
 
 import { handleSuitesRequest } from "../../../server/api/suites";
-import { db, dropTestDb, migrateDb } from "../../../server/db";
 import { encrypt } from "../../../server/models/encrypt";
+import { prepareTestDb } from "../db";
 import {
   buildEnvironment,
   buildEnvironmentVariable,
@@ -12,15 +12,14 @@ import {
   buildTestTrigger,
   buildTrigger,
   buildUser,
+  logger,
 } from "../utils";
 
 const send = jest.fn();
 const status = jest.fn().mockReturnValue({ send });
 const res = { status };
 
-beforeAll(() => migrateDb());
-
-afterAll(() => dropTestDb());
+const db = prepareTestDb();
 
 describe("handleSuitesRequest", () => {
   beforeAll(async () => {
@@ -66,7 +65,8 @@ describe("handleSuitesRequest", () => {
   it("returns 401 if api key not provided", async () => {
     await handleSuitesRequest(
       { body: {}, headers: {} } as NextApiRequest,
-      res as any
+      res as any,
+      { db, logger }
     );
 
     expect(status).toBeCalledWith(401);
@@ -79,7 +79,8 @@ describe("handleSuitesRequest", () => {
         body: {},
         headers: { authorization: "token" },
       } as NextApiRequest,
-      res as any
+      res as any,
+      { db, logger }
     );
 
     expect(status).toBeCalledWith(400);
@@ -92,7 +93,8 @@ describe("handleSuitesRequest", () => {
         body: { trigger_id: "fakeId" },
         headers: { authorization: "token" },
       } as NextApiRequest,
-      res as any
+      res as any,
+      { db, logger }
     );
 
     expect(status).toBeCalledWith(404);
@@ -105,7 +107,8 @@ describe("handleSuitesRequest", () => {
         body: { trigger_id: "triggerId" },
         headers: { authorization: "invalid" },
       } as NextApiRequest,
-      res as any
+      res as any,
+      { db, logger }
     );
 
     expect(status).toBeCalledWith(403);
@@ -118,7 +121,8 @@ describe("handleSuitesRequest", () => {
         body: { trigger_id: "trigger2Id" },
         headers: { authorization: "qawolf_api_key" },
       } as NextApiRequest,
-      res as any
+      res as any,
+      { db, logger }
     );
 
     expect(status).toBeCalledWith(500);
@@ -131,7 +135,8 @@ describe("handleSuitesRequest", () => {
         body: { env: { secret: "shh" }, trigger_id: "triggerId" },
         headers: { authorization: "qawolf_api_key" },
       } as NextApiRequest,
-      res as any
+      res as any,
+      { db, logger }
     );
 
     expect(status).toBeCalledWith(200);

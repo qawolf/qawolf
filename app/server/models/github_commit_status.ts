@@ -1,4 +1,3 @@
-import { db } from "../db";
 import { GitHubCommitStatus, ModelOptions } from "../types";
 import { cuid } from "../utils";
 
@@ -20,7 +19,7 @@ type UpdateGitHubCommitStatus = {
 
 export const createGitHubCommitStatus = async (
   options: CreateGitHubCommitStatus,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<GitHubCommitStatus> => {
   const log = logger.prefix("createGitHubCommitStatus");
   log.debug("suite", options.suite_id);
@@ -30,7 +29,7 @@ export const createGitHubCommitStatus = async (
     completed_at: null,
     id: cuid(),
   };
-  await (trx || db)("github_commit_statuses").insert(gitHubCommitStatus);
+  await db("github_commit_statuses").insert(gitHubCommitStatus);
 
   log.debug(`created ${gitHubCommitStatus.id}`);
 
@@ -39,9 +38,9 @@ export const createGitHubCommitStatus = async (
 
 export const findGitHubCommitStatusForSuite = async (
   suite_id: string,
-  { trx }: ModelOptions
+  { db }: ModelOptions
 ): Promise<GitHubCommitStatus | null> => {
-  const gitHubCommitStatus = await (trx || db)("github_commit_statuses")
+  const gitHubCommitStatus = await db("github_commit_statuses")
     .select("*")
     .where({ suite_id })
     .first();
@@ -51,12 +50,12 @@ export const findGitHubCommitStatusForSuite = async (
 
 export const updateGitHubCommitStatus = async (
   { completed_at, id }: UpdateGitHubCommitStatus,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<GitHubCommitStatus> => {
   const log = logger.prefix("updateGitHubCommitStatus");
   log.debug(id);
 
-  const gitHubCommitStatus = await (trx || db)("github_commit_statuses")
+  const gitHubCommitStatus = await db("github_commit_statuses")
     .select("*")
     .where({ id })
     .first();
@@ -70,7 +69,7 @@ export const updateGitHubCommitStatus = async (
     completed_at,
     updated_at: new Date().toISOString(),
   };
-  await (trx || db)("github_commit_statuses").where({ id }).update(updates);
+  await db("github_commit_statuses").where({ id }).update(updates);
 
   log.debug("updated", updates);
 

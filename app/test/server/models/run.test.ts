@@ -1,4 +1,3 @@
-import { db, dropTestDb, migrateDb } from "../../../server/db";
 import { encrypt } from "../../../server/models/encrypt";
 import {
   countPendingRuns,
@@ -13,8 +12,8 @@ import {
 } from "../../../server/models/run";
 import * as alertService from "../../../server/services/alert/send";
 import * as storageService from "../../../server/services/aws/storage";
-import { Run } from "../../../server/types";
 import { minutesFromNow } from "../../../shared/utils";
+import { prepareTestDb } from "../db";
 import {
   buildArtifacts,
   buildEnvironment,
@@ -33,10 +32,11 @@ const artifacts = buildArtifacts();
 const test = buildTest({});
 const test2 = buildTest({ i: 2, name: "testName" });
 
+const db = prepareTestDb();
+const options = { db, logger };
+
 describe("run model", () => {
   beforeAll(async () => {
-    await migrateDb();
-
     await db("runners").insert(buildRunner({}));
 
     await db("users").insert(buildUser({}));
@@ -112,14 +112,11 @@ describe("run model", () => {
     ]);
   });
 
-  afterAll(() => {
-    jest.restoreAllMocks();
-    return dropTestDb();
-  });
+  afterAll(() => jest.restoreAllMocks());
 
   describe("countPendingRuns", () => {
     it("counts the unassigned runs that have not started", async () => {
-      const result = await countPendingRuns({ logger });
+      const result = await countPendingRuns(options);
       expect(result).toEqual(4);
     });
   });
@@ -131,7 +128,7 @@ describe("run model", () => {
           suite_id: "suiteId",
           tests: [test, test2],
         },
-        { logger }
+        options
       );
 
       expect(runs).toMatchObject([
@@ -166,7 +163,7 @@ describe("run model", () => {
           test_id: "test2Id",
           trigger_id: "triggerId",
         },
-        { logger }
+        options
       );
 
       expect(runs).toMatchObject([
@@ -179,7 +176,7 @@ describe("run model", () => {
 
   describe("findRun", () => {
     it("finds a run", async () => {
-      const run = await findRun("runId", { logger });
+      const run = await findRun("runId", options);
 
       expect(run).toMatchObject({
         id: "runId",
@@ -189,7 +186,7 @@ describe("run model", () => {
     });
 
     it("finds a run if transaction passed", async () => {
-      const run = await findRun("runId", { logger });
+      const run = await findRun("runId", options);
 
       expect(run).toMatchObject({
         id: "runId",
@@ -199,17 +196,15 @@ describe("run model", () => {
     });
 
     it("throws an error if run does not exist", async () => {
-      const testFn = async (): Promise<Run> => {
-        return findRun("fakeId", { logger });
-      };
-
-      await expect(testFn()).rejects.toThrowError("not found");
+      await expect(findRun("fakeId", options)).rejects.toThrowError(
+        "not found"
+      );
     });
   });
 
   describe("findPendingRun", () => {
     it("finds the oldest uncompleted run", async () => {
-      const pending = await findPendingRun({}, { logger });
+      const pending = await findPendingRun({}, options);
       expect(pending).toMatchObject({
         created_at: expect.any(Date),
         id: "run5Id",
@@ -217,7 +212,7 @@ describe("run model", () => {
     });
 
     it("finds a run that needs a runner", async () => {
-      const pending = await findPendingRun({ needs_runner: true }, { logger });
+      const pending = await findPendingRun({ needs_runner: true }, options);
       expect(pending).toMatchObject({
         created_at: expect.any(Date),
         id: "runId",
@@ -237,7 +232,7 @@ describe("run model", () => {
     });
 
     it("finds runs for a suite", async () => {
-      const runs = await findRunsForSuite("suite2Id", { logger });
+      const runs = await findRunsForSuite("suite2Id", options);
 
       expect(runs).toMatchObject([
         {
@@ -296,7 +291,7 @@ describe("run model", () => {
         .spyOn(storageService, "getArtifactsOptions")
         .mockResolvedValue(artifacts);
 
-      const run = await findSuiteRunForRunner("run6Id", { logger });
+      const run = await findSuiteRunForRunner("run6Id", options);
 
       expect(run).toEqual({
         artifacts,
@@ -319,7 +314,7 @@ describe("run model", () => {
         .spyOn(storageService, "getArtifactsOptions")
         .mockResolvedValue(artifacts);
 
-      const run = await findSuiteRunForRunner("run6Id", { logger });
+      const run = await findSuiteRunForRunner("run6Id", options);
 
       expect(run).toEqual({
         artifacts,
@@ -335,13 +330,13 @@ describe("run model", () => {
     });
 
     it("returns null if run is not found", async () => {
-      const run = await findSuiteRunForRunner("fakeId", { logger });
+      const run = await findSuiteRunForRunner("fakeId", options);
 
       expect(run).toBeNull();
     });
 
     it("returns null if run does not have a suite", async () => {
-      const run = await findSuiteRunForRunner("run8Id", { logger });
+      const run = await findSuiteRunForRunner("run8Id", options);
 
       expect(run).toBeNull();
     });
@@ -349,7 +344,7 @@ describe("run model", () => {
 
   describe("findTestHistory", () => {
     it("returns the latest runs for a test and trigger", async () => {
-      const runs = await findTestHistory("test2Id", { logger });
+      const runs = await findTestHistory("test2Id", options);
 
       expect(runs).toMatchObject([
         { id: "run2Id" },
@@ -362,7 +357,7 @@ describe("run model", () => {
 
   describe("updateRun", () => {
     it("updates existing run", async () => {
-      const run = await findRun("runId", { logger });
+      const run = await findRun("runId", options);
       expect(run).toMatchObject({ completed_at: null, started_at: null });
 
       await updateRun(
@@ -372,10 +367,10 @@ describe("run model", () => {
           id: "runId",
           status: "pass",
         },
-        { logger }
+        options
       );
 
-      const updated = await findRun("runId", { logger });
+      const updated = await findRun("runId", options);
       // it should set completed_at and started_at
       expect(updated).toMatchObject({
         code: "code",
@@ -388,34 +383,31 @@ describe("run model", () => {
     });
 
     it("calls sendAlert when a suite run completes", async () => {
-      jest.spyOn(alertService, "sendAlert").mockResolvedValue();
+      const sendAlertSpy = jest
+        .spyOn(alertService, "sendAlert")
+        .mockResolvedValue();
 
       await updateRun(
         {
           id: "run5Id",
           status: "pass",
         },
-        { logger }
+        options
       );
 
-      expect(alertService.sendAlert).toBeCalledWith({
-        logger,
-        suite_id: "suite2Id",
-      });
+      expect(sendAlertSpy.mock.calls[0][0]).toEqual("suite2Id");
     });
 
     it("throws an error if run does not exist", async () => {
-      const testFn = async (): Promise<Run> => {
-        return updateRun(
+      await expect(
+        updateRun(
           {
             id: "fakeId",
             status: "pass",
           },
-          { logger }
-        );
-      };
-
-      await expect(testFn()).rejects.toThrowError("not found");
+          options
+        )
+      ).rejects.toThrowError("not found");
     });
   });
 });

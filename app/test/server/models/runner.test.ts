@@ -1,4 +1,3 @@
-import { db, dropTestDb, migrateDb } from "../../../server/db";
 import environment from "../../../server/environment";
 import * as runModel from "../../../server/models/run";
 import {
@@ -16,8 +15,8 @@ import * as runnerModel from "../../../server/models/runner";
 import * as testModel from "../../../server/models/test";
 import { findTest, updateTestToPending } from "../../../server/models/test";
 import * as locationService from "../../../server/services/location";
-import { Runner } from "../../../server/types";
 import { minutesFromNow } from "../../../shared/utils";
+import { prepareTestDb } from "../db";
 import {
   buildRun,
   buildRunner,
@@ -27,53 +26,46 @@ import {
   logger,
 } from "../utils";
 
-const options = { logger };
+const db = prepareTestDb();
+const options = { db, logger };
 
 beforeAll(async () => {
-  await migrateDb();
   await db("teams").insert(buildTeam({}));
   await db("users").insert(buildUser({}));
   await db("tests").insert(buildTest({}));
   await db("runs").insert(buildRun({ started_at: minutesFromNow() }));
 });
 
-afterAll(() => dropTestDb());
-
 describe("assignRunner", () => {
   const runner = buildRunner({});
 
-  beforeAll(async () => {
-    await db("runners").insert(runner);
-  });
+  beforeAll(() => db("runners").insert(runner));
 
-  afterEach(async () => {
-    await updateRunner(
-      { id: "runnerId", run_id: null, test_id: null },
-      options
-    );
-  });
+  afterEach(() =>
+    updateRunner({ id: "runnerId", run_id: null, test_id: null }, options)
+  );
 
   afterAll(() => db("runners").del());
 
   it("assigns a run to the runner", async () => {
     await assignRunner({ runner, run_id: "runId" }, options);
 
-    const result = await findRunner({ id: "runnerId" }, { logger });
+    const result = await findRunner({ id: "runnerId" }, options);
     expect(result).toMatchObject({ id: "runnerId", run_id: "runId" });
   });
 
   it("assigns a test to the runner", async () => {
     await updateTestToPending(
       { id: "testId", runner_locations: ["westus2"] },
-      { logger }
+      options
     );
-    await assignRunner({ runner, test_id: "testId" }, { logger });
+    await assignRunner({ runner, test_id: "testId" }, options);
 
-    const result = await findRunner({ id: "runnerId" }, { logger });
+    const result = await findRunner({ id: "runnerId" }, options);
     expect(result).toMatchObject({ id: "runnerId", test_id: "testId" });
 
     // check it clears test.runner_request_at when it is assigned
-    const test = await findTest("testId", { logger });
+    const test = await findTest("testId", options);
     expect(test).toMatchObject({ runner_requested_at: null });
   });
 });
@@ -142,7 +134,7 @@ describe("deleteUnhealthyRunners", () => {
 
     const runner = await findRunner(
       { id: "runnerId", include_deleted: true },
-      { logger }
+      options
     );
     expect(runner).toMatchObject({ deleted_at: new Date(deleted_at) });
   });
@@ -252,7 +244,7 @@ describe("findRunner", () => {
   it("includes deleted runners when include_deleted is passed", async () => {
     await updateRunner(
       { id: "runnerId", deleted_at: minutesFromNow() },
-      { logger }
+      options
     );
 
     const runner = await findRunner({ id: "runnerId" }, options);
@@ -332,28 +324,28 @@ describe("findPendingTestOrRunId", () => {
 
   it("returns a test first", async () => {
     findPendingTestSpy.mockResolvedValue({ id: "pendingTestId" });
-    const pending = await findPendingTestOrRunId("eastus2", { logger });
+    const pending = await findPendingTestOrRunId("eastus2", options);
     expect(pending).toMatchObject({ test_id: "pendingTestId" });
   });
 
   it("does not return a run if there are no excess runners", async () => {
     findPendingTestSpy.mockResolvedValue(null);
     countExcessRunnersSpy.mockResolvedValue(0);
-    const pending = await findPendingTestOrRunId("eastus2", { logger });
+    const pending = await findPendingTestOrRunId("eastus2", options);
     expect(pending).toEqual(null);
   });
 
   it("does not return a run if the location is not eastus2", async () => {
     findPendingTestSpy.mockResolvedValue(null);
     countExcessRunnersSpy.mockResolvedValue(1);
-    const pending = await findPendingTestOrRunId("westus2", { logger });
+    const pending = await findPendingTestOrRunId("westus2", options);
     expect(pending).toEqual(null);
   });
 
   it("returns a run if there are excess runners", async () => {
     findPendingTestSpy.mockResolvedValue(null);
     countExcessRunnersSpy.mockResolvedValue(1);
-    const pending = await findPendingTestOrRunId("eastus2", { logger });
+    const pending = await findPendingTestOrRunId("eastus2", options);
     expect(pending).toMatchObject({ run_id: "pendingRunId" });
   });
 });
@@ -380,7 +372,7 @@ describe("requestRunnerForTest", () => {
 
     const result = await requestRunnerForTest(
       { ip: "", test: buildTest({}) },
-      { logger }
+      options
     );
     expect(result).toEqual(runner);
 
@@ -435,10 +427,10 @@ describe("updateRunner", () => {
         restarted_at,
         session_expires_at,
       },
-      { logger }
+      options
     );
 
-    const runner = await findRunner({ id: "runnerId" }, { logger });
+    const runner = await findRunner({ id: "runnerId" }, options);
 
     expect(runner).toMatchObject({
       api_key: "apiKey",
@@ -456,7 +448,7 @@ describe("updateRunner", () => {
 
     const runner = await updateRunner(
       { deleted_at: minutesFromNow(), id: "runnerId" },
-      { logger }
+      options
     );
     expect(runner).toMatchObject({ test_id: null });
 
@@ -467,8 +459,8 @@ describe("updateRunner", () => {
     await db("runners").update({ run_id: "runId", test_id: null });
 
     // check it fails the run when it is unassigned since it was not completed
-    await updateRunner({ id: "runnerId", run_id: null }, { logger });
-    const run = await runModel.findRun("runId", { logger });
+    await updateRunner({ id: "runnerId", run_id: null }, options);
+    const run = await runModel.findRun("runId", options);
     expect(run).toMatchObject({ status: "fail" });
   });
 
@@ -477,7 +469,7 @@ describe("updateRunner", () => {
 
     const runner = await updateRunner(
       { deleted_at: minutesFromNow(), id: "runnerId" },
-      { logger }
+      options
     );
     expect(runner).toMatchObject({ run_id: null });
 
@@ -485,9 +477,8 @@ describe("updateRunner", () => {
   });
 
   it("throws an error when the runner is not found", async () => {
-    const testFn = async (): Promise<Runner> =>
-      updateRunner({ api_key: "apiKey", id: "fakeId" }, { logger });
-
-    await expect(testFn()).rejects.toThrowError("not found");
+    await expect(
+      updateRunner({ api_key: "apiKey", id: "fakeId" }, options)
+    ).rejects.toThrowError("not found");
   });
 });

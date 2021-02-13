@@ -1,8 +1,10 @@
-import { db } from "../server/db";
+import { connectDb } from "../server/db";
 import { cuid } from "../server/utils";
 import { readFile } from "./generateTypesFile";
 
 const generateSystemEnvVariables = async (): Promise<void> => {
+  const db = connectDb();
+
   const privateKey = JSON.stringify(readFile("./qawolf-dev.pem"));
 
   await db("environment_variables").insert({
@@ -13,6 +15,8 @@ const generateSystemEnvVariables = async (): Promise<void> => {
   });
 
   console.log("generated system env variables");
+
+  await db.destroy();
 };
 
 generateSystemEnvVariables();

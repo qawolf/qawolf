@@ -1,7 +1,6 @@
 import isNil from "lodash/isNil";
 
 import { minutesFromNow } from "../../shared/utils";
-import { db } from "../db";
 import { ClientError } from "../errors";
 import { ModelOptions, Test } from "../types";
 import { cuid } from "../utils";
@@ -45,9 +44,9 @@ type UpdateTestToPending = {
 
 export const buildTestName = async (
   { name, team_id }: BuildTestName,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<string> => {
-  const tests = await findTestsForTeam(team_id, { logger, trx });
+  const tests = await findTestsForTeam(team_id, { db, logger });
 
   const testNames = new Set(tests.map((test) => test.name));
   // use current name if possible
@@ -64,7 +63,7 @@ export const buildTestName = async (
 
 export const countPendingTests = async (
   defaultLocation: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<LocationCount[]> => {
   const log = logger.prefix("countPendingTests");
 
@@ -77,7 +76,7 @@ export const countPendingTests = async (
   ) as s
   GROUP BY s.location`;
 
-  const { rows } = await (trx || db).raw(countQuery, [defaultLocation]);
+  const { rows } = await db.raw(countQuery, [defaultLocation]);
 
   const result = rows.map((row) => ({
     count: Number(row.count),
@@ -91,40 +90,41 @@ export const countPendingTests = async (
 
 export const createTestAndTestTriggers = async (
   { code, creator_id, name, team_id, trigger_ids }: CreateTest,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<{ test: Test; testTriggerIds: string[] }> => {
   const log = logger.prefix("createTestAndTestTriggers");
 
   log.debug("creator", creator_id);
   const timestamp = minutesFromNow();
 
-  const { test, testTriggerIds } = await (trx || db).transaction(
-    async (trx) => {
-      const finalName = await buildTestName({ name, team_id }, { logger, trx });
+  const { test, testTriggerIds } = await db.transaction(async (trx) => {
+    const finalName = await buildTestName(
+      { name, team_id },
+      { db: trx, logger }
+    );
 
-      const test: Test = {
-        created_at: timestamp,
-        creator_id,
-        code,
-        deleted_at: null,
-        id: cuid(),
-        is_enabled: true,
-        name: finalName,
-        team_id,
-        updated_at: timestamp,
-        version: 0,
-      };
+    const test: Test = {
+      created_at: timestamp,
+      creator_id,
+      code,
+      deleted_at: null,
+      id: cuid(),
+      is_enabled: true,
+      name: finalName,
+      team_id,
+      updated_at: timestamp,
+      version: 0,
+    };
 
-      await trx("tests").insert(test);
+    await trx("tests").insert(test);
 
-      const testTriggers = trigger_ids.map((trigger_id) => {
-        return { id: cuid(), test_id: test.id, trigger_id };
-      });
-      await trx("test_triggers").insert(testTriggers);
+    const testTriggers = trigger_ids.map((trigger_id) => {
+      return { id: cuid(), test_id: test.id, trigger_id };
+    });
+    await trx("test_triggers").insert(testTriggers);
 
-      return { testTriggerIds: testTriggers.map((g) => g.id), test };
-    }
-  );
+    return { testTriggerIds: testTriggers.map((g) => g.id), test };
+  });
 
   log.debug("created test", test.id);
 
@@ -133,13 +133,13 @@ export const createTestAndTestTriggers = async (
 
 export const findTestsForTrigger = async (
   trigger_id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Test[]> => {
   const log = logger.prefix("findTestsForTrigger");
 
   log.debug(trigger_id);
 
-  const tests = await (trx || db)
+  const tests = await db
     .select("tests.*" as "*")
     .from("tests")
     .innerJoin("test_triggers", "test_triggers.test_id", "tests.id")
@@ -153,13 +153,13 @@ export const findTestsForTrigger = async (
 
 export const findTestsForTeam = async (
   team_id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Test[]> => {
   const log = logger.prefix("findTestsForTeam");
 
   log.debug(team_id);
 
-  const tests = await (trx || db)
+  const tests = await db
     .select("*")
     .from("tests")
     .where({ deleted_at: null, team_id })
@@ -172,12 +172,12 @@ export const findTestsForTeam = async (
 
 export const findEnabledTestsForTrigger = async (
   { test_ids, trigger_id }: FindEnabledTestsForTrigger,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Test[]> => {
   const log = logger.prefix("findEnabledTestsForTrigger");
   log.debug(trigger_id);
 
-  const query = (trx || db)
+  const query = db
     .select("tests.*" as "*")
     .from("tests")
     .innerJoin("test_triggers", "test_triggers.test_id", "tests.id")
@@ -196,11 +196,11 @@ export const findEnabledTestsForTrigger = async (
 
 export const findPendingTest = async (
   location: string | null,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Pick<Test, "id" | "runner_requested_at"> | null> => {
   const log = logger.prefix("findPendingTest");
 
-  let query = (trx || db)("tests")
+  let query = db("tests")
     .select("id")
     .select("runner_requested_at")
     .whereNotNull("runner_requested_at")
@@ -219,17 +219,13 @@ export const findPendingTest = async (
 
 export const findTest = async (
   id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Test> => {
   const log = logger.prefix("findTest");
 
   if (!id) throw new Error("Id required");
 
-  const test = await (trx || db)
-    .select("*")
-    .from("tests")
-    .where({ id })
-    .first();
+  const test = await db.select("*").from("tests").where({ id }).first();
 
   if (!test) {
     log.error("not found", id);
@@ -245,11 +241,11 @@ export const findTest = async (
 
 export const findTestForRun = async (
   run_id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Test> => {
   const log = logger.prefix("findTestForRun");
 
-  const test = await (trx || db)
+  const test = await db
     .select("tests.*" as "*")
     .from("tests")
     .innerJoin("runs", "runs.test_id", "tests.id")
@@ -266,13 +262,13 @@ export const findTestForRun = async (
 
 export const deleteTests = async (
   ids: string[],
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Test[]> => {
   const log = logger.prefix("deleteTests");
 
   log.debug(ids);
 
-  const tests = await (trx || db).transaction(async (trx) => {
+  const tests = await db.transaction(async (trx) => {
     const tests = await trx.select("*").from("tests").whereIn("id", ids);
     const updates = { deleted_at: minutesFromNow() };
     await trx("tests").update(updates).whereIn("id", ids);
@@ -286,12 +282,12 @@ export const deleteTests = async (
 
 export const updateTest = async (
   { code, id, is_enabled, name, runner_requested_at, version }: UpdateTest,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Test> => {
   const log = logger.prefix("updateTest");
 
-  return (trx || db).transaction(async (trx) => {
-    const existingTest = await findTest(id, { logger, trx });
+  return db.transaction(async (trx) => {
+    const existingTest = await findTest(id, { db: trx, logger });
 
     if (!existingTest) {
       log.debug("test not found", id);
@@ -337,7 +333,7 @@ export const updateTest = async (
 
 export const updateTestToPending = async (
   options: UpdateTestToPending,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<boolean> => {
   const log = logger.prefix("updateTestToPending");
 
@@ -353,7 +349,7 @@ export const updateTestToPending = async (
     AND runner_requested_at IS NULL 
     AND id NOT IN (SELECT test_id FROM runners)`;
 
-  const result = await (trx || db).raw(sql, [runner_locations, options.id]);
+  const result = await db.raw(sql, [runner_locations, options.id]);
 
   const didUpdate = result.rowCount > 0;
   log.debug(options, didUpdate ? "updated" : "skipped");

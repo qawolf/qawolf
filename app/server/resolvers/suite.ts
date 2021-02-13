@@ -1,4 +1,3 @@
-import { db } from "../db";
 import { ClientError } from "../errors";
 import {
   createSuiteForTests,
@@ -24,18 +23,14 @@ const SUITES_LIMIT = 50;
 export const createSuiteResolver = async (
   _: Record<string, unknown>,
   { test_ids, trigger_id }: CreateSuiteMutation,
-  { logger, teams, user: contextUser }: Context
+  { db, logger, teams, user: contextUser }: Context
 ): Promise<string> => {
   const log = logger.prefix("createSuiteResolver");
   const user = ensureUser({ logger, user: contextUser });
 
   log.debug(`creator ${user.id} and trigger ${trigger_id}`);
 
-  const team = await ensureTriggerAccess({
-    logger,
-    teams,
-    trigger_id,
-  });
+  const team = await ensureTriggerAccess({ teams, trigger_id }, { db, logger });
 
   if (!team.is_enabled) {
     log.error("team disabled", team.id);
@@ -45,7 +40,7 @@ export const createSuiteResolver = async (
   const suite = await db.transaction(async (trx) => {
     const tests = await findEnabledTestsForTrigger(
       { test_ids, trigger_id },
-      { logger, trx }
+      { db: trx, logger }
     );
     if (!tests.length) {
       log.error("no tests for trigger", trigger_id);
@@ -59,7 +54,7 @@ export const createSuiteResolver = async (
         tests,
         trigger_id,
       },
-      { logger, trx }
+      { db: trx, logger }
     );
 
     return suite;
@@ -73,20 +68,19 @@ export const createSuiteResolver = async (
 export const suiteResolver = async (
   _: Record<string, unknown>,
   { id }: IdQuery,
-  { logger, teams }: Context
+  { db, logger, teams }: Context
 ): Promise<Suite> => {
   const log = logger.prefix("suiteResolver");
 
   log.debug("suite", id);
-  await ensureSuiteAccess({ logger, suite_id: id, teams });
+  await ensureSuiteAccess({ suite_id: id, teams }, { db, logger });
 
-  return db.transaction(async (trx) => {
-    const suite = await findSuite(id, { logger });
-    // throws an error if trigger deleted
-    await findTrigger(suite.trigger_id, { logger, trx });
+  const suite = await findSuite(id, { db, logger });
 
-    return suite;
-  });
+  // throws an error if trigger deleted
+  await findTrigger(suite.trigger_id, { db, logger });
+
+  return suite;
 };
 
 /**
@@ -95,19 +89,19 @@ export const suiteResolver = async (
 export const suitesResolver = async (
   { trigger_id }: TriggerIdQuery,
   _: Record<string, unknown>,
-  { logger, teams }: Context
+  { db, logger, teams }: Context
 ): Promise<Suite[]> => {
   const log = logger.prefix("suitesResolver");
 
   log.debug("trigger", trigger_id);
 
-  await ensureTriggerAccess({ logger, teams, trigger_id });
+  await ensureTriggerAccess({ teams, trigger_id }, { db, logger });
 
   return findSuitesForTrigger(
     {
       limit: SUITES_LIMIT,
       trigger_id,
     },
-    logger
+    { db, logger }
   );
 };

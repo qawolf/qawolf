@@ -1,5 +1,6 @@
 import { NextApiRequest } from "next";
 
+import { connectDb } from "./db";
 import { AuthenticationError } from "./errors";
 import { Logger } from "./Logger";
 import { findTeamsForUser } from "./models/team";
@@ -21,6 +22,9 @@ export const context = async ({
 }: {
   req: NextApiRequest;
 }): Promise<Context> => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const db = (req as any).db || connectDb();
+
   const logger = new Logger({ prefix: "graphql" });
 
   const authToken = req.headers.authorization || "";
@@ -33,10 +37,10 @@ export const context = async ({
 
   if (!user_id) {
     logger.debug("no current user");
-    return { api_key, ip, logger, teams: null, user: null };
+    return { api_key, db, ip, logger, teams: null, user: null };
   }
 
-  const user = await findUser({ id: user_id }, { logger });
+  const user = await findUser({ id: user_id }, { db, logger });
 
   if (user && !user.is_enabled) {
     throw new AuthenticationError(
@@ -44,10 +48,10 @@ export const context = async ({
     );
   }
 
-  const teams = user ? await findTeamsForUser(user.id, { logger }) : null;
+  const teams = user ? await findTeamsForUser(user.id, { db, logger }) : null;
   const teamIds = teams?.map((team) => team.id);
 
   logger.debug(`user ${user?.id} teams ${teamIds}`);
 
-  return { api_key, ip, logger, teams, user };
+  return { api_key, db, ip, logger, teams, user };
 };

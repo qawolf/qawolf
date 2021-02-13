@@ -1,4 +1,3 @@
-import { db } from "../db";
 import { ClientError } from "../errors";
 import { Environment, ModelOptions } from "../types";
 import { cuid } from "../utils";
@@ -18,7 +17,7 @@ const defaultEnvironments = ["Production", "Staging"];
 
 export const createDefaultEnvironments = async (
   team_id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Environment[]> => {
   const log = logger.prefix("createDefaultEnvironments");
 
@@ -30,7 +29,7 @@ export const createDefaultEnvironments = async (
     };
   });
 
-  await (trx || db)("environments").insert(environments);
+  await db("environments").insert(environments);
 
   log.debug(
     "created",
@@ -42,7 +41,7 @@ export const createDefaultEnvironments = async (
 
 export const createEnvironment = async (
   { name, team_id }: CreateEnvironment,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Environment> => {
   const log = logger.prefix("createEnvironment");
 
@@ -58,7 +57,7 @@ export const createEnvironment = async (
   };
 
   try {
-    await (trx || db)("environments").insert(environment);
+    await db("environments").insert(environment);
   } catch (error) {
     if (error.message.includes("environments_name_team_id_unique")) {
       throw new ClientError("environment name must be unique");
@@ -74,17 +73,17 @@ export const createEnvironment = async (
 
 export const deleteEnvironment = async (
   id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Environment> => {
   const log = logger.prefix("deleteEnvironment");
 
-  const environment = await findEnvironment(id, { logger, trx });
+  const environment = await findEnvironment(id, { db, logger });
 
-  await (trx || db)("triggers")
+  await db("triggers")
     .where({ environment_id: id })
     .update({ environment_id: null });
-  await deleteEnvironmentVariablesForEnvironment(id, { logger, trx });
-  await (trx || db)("environments").where({ id }).del();
+  await deleteEnvironmentVariablesForEnvironment(id, { db, logger });
+  await db("environments").where({ id }).del();
 
   log.debug("deleted", id);
 
@@ -93,11 +92,11 @@ export const deleteEnvironment = async (
 
 export const findEnvironment = async (
   id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Environment> => {
   const log = logger.prefix("findEnvironment");
 
-  const environment = await (trx || db)("environments")
+  const environment = await db("environments")
     .select("*")
     .where({ id })
     .first();
@@ -112,12 +111,12 @@ export const findEnvironment = async (
 
 export const findEnvironmentIdForRun = async (
   run_id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<string | null> => {
   const log = logger.prefix("findEnvironmentIdForRun");
   log.debug("run", run_id);
 
-  const row = await (trx || db)
+  const row = await db
     .select("triggers.environment_id" as "*")
     .from("triggers")
     .innerJoin("suites", "triggers.id", "suites.trigger_id")
@@ -132,11 +131,11 @@ export const findEnvironmentIdForRun = async (
 
 export const findEnvironmentsForTeam = async (
   team_id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Environment[]> => {
   const log = logger.prefix("findEnvironmentsForTeam");
 
-  const environments = await (trx || db)("environments")
+  const environments = await db("environments")
     .where({ team_id })
     .orderBy("name", "asc");
 
@@ -147,7 +146,7 @@ export const findEnvironmentsForTeam = async (
 
 export const updateEnvironment = async (
   { id, name }: UpdateEnvironment,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Environment> => {
   const log = logger.prefix("updateEnvironment");
 
@@ -156,12 +155,12 @@ export const updateEnvironment = async (
     throw new Error("Must provide name");
   }
 
-  const existingEnvironment = await findEnvironment(id, { logger, trx });
+  const existingEnvironment = await findEnvironment(id, { db, logger });
 
   const updates = { name, updated_at: new Date().toISOString() };
 
   try {
-    await (trx || db)("environments").where({ id }).update(updates);
+    await db("environments").where({ id }).update(updates);
   } catch (error) {
     if (error.message.includes("environments_name_team_id_unique")) {
       throw new ClientError("environment name must be unique");

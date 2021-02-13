@@ -5,12 +5,12 @@ import { ensureTeamAccess } from "./utils";
 export const integrationsResolver = async (
   _: Record<string, unknown>,
   { team_id }: TeamIdQuery,
-  { logger, teams }: Context
+  { db, logger, teams }: Context
 ): Promise<Integration[]> => {
   ensureTeamAccess({ logger, team_id, teams });
 
   const log = logger.prefix("integrationsResolver");
   log.debug("team", team_id);
 
-  return findIntegrationsForTeam({ team_id }, { logger });
+  return findIntegrationsForTeam({ team_id }, { db, logger });
 };

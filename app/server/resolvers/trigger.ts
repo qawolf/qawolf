@@ -1,4 +1,3 @@
-import { db } from "../db";
 import { updateTeam } from "../models/team";
 import {
   createTestTriggersForTrigger,
@@ -29,7 +28,7 @@ import { ensureTeamAccess, ensureTriggerAccess, ensureUser } from "./utils";
 export const createTriggerResolver = async (
   _: Record<string, unknown>,
   { team_id, test_ids, ...args }: CreateTriggerMutation,
-  { logger, teams, user: contextUser }: Context
+  { db, logger, teams, user: contextUser }: Context
 ): Promise<Trigger> => {
   const log = logger.prefix("createTriggerResolver");
 
@@ -41,15 +40,18 @@ export const createTriggerResolver = async (
   const trigger = await db.transaction(async (trx) => {
     const trigger = await createTrigger(
       { ...args, creator_id: user.id, id: team.next_trigger_id, team_id },
-      { logger, trx }
+      { db: trx, logger }
     );
 
-    await updateTeam({ id: team.id, next_trigger_id: cuid() }, { logger, trx });
+    await updateTeam(
+      { id: team.id, next_trigger_id: cuid() },
+      { db: trx, logger }
+    );
 
     if (test_ids?.length) {
       await createTestTriggersForTrigger(
         { test_ids, trigger_id: trigger.id },
-        { logger, trx }
+        { db: trx, logger }
       );
     }
 
@@ -67,19 +69,26 @@ export const createTriggerResolver = async (
 export const deleteTriggerResolver = async (
   _: Record<string, unknown>,
   { id }: IdQuery,
-  { logger, teams }: Context
+  { db, logger, teams }: Context
 ): Promise<DeleteTrigger> => {
   const log = logger.prefix("deleteTriggerResolver");
   log.debug("trigger", id);
 
-  const team = await ensureTriggerAccess({ logger, trigger_id: id, teams });
+  const team = await ensureTriggerAccess(
+    { trigger_id: id, teams },
+    { db, logger }
+  );
 
   const trigger = await db.transaction(async (trx) => {
-    await deleteTestTriggersForTrigger({ trigger_id: id }, { logger, trx });
-    return deleteTrigger(id, { logger, trx });
+    await deleteTestTriggersForTrigger({ trigger_id: id }, { db: trx, logger });
+
+    return deleteTrigger(id, { db: trx, logger });
   });
 
-  const defaultTrigger = await findDefaultTriggerForTeam(team.id, { logger });
+  const defaultTrigger = await findDefaultTriggerForTeam(team.id, {
+    db,
+    logger,
+  });
 
   log.debug("deleted trigger", id);
   return { default_trigger_id: defaultTrigger.id, id: trigger.id };
@@ -92,11 +101,11 @@ export const deleteTriggerResolver = async (
 export const triggersResolver = async (
   _: Record<string, unknown>,
   { team_id }: TeamIdQuery,
-  { logger, teams }: Context
+  { db, logger, teams }: Context
 ): Promise<Trigger[]> => {
   ensureTeamAccess({ logger, team_id, teams });
 
-  return findTriggersForTeam(team_id, { logger });
+  return findTriggersForTeam(team_id, { db, logger });
 };
 
 /**
@@ -105,10 +114,10 @@ export const triggersResolver = async (
 export const updateTriggerResolver = async (
   _: Record<string, unknown>,
   args: UpdateTriggerMutation,
-  { logger, teams }: Context
+  { db, logger, teams }: Context
 ): Promise<Trigger> => {
   logger.debug("updateTriggerResolver", args.id);
-  await ensureTriggerAccess({ logger, teams, trigger_id: args.id });
+  await ensureTriggerAccess({ teams, trigger_id: args.id }, { db, logger });
 
-  return updateTrigger(args, { logger });
+  return updateTrigger(args, { db, logger });
 };

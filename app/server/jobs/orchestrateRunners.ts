@@ -1,7 +1,5 @@
 import { minutesFromNow } from "../../shared/utils";
-import { db } from "../db";
 import environment from "../environment";
-import { Logger } from "../Logger";
 import { countPendingRuns } from "../models/run";
 import {
   createRunners,
@@ -10,18 +8,19 @@ import {
   updateRunner,
 } from "../models/runner";
 import { countPendingTests, LocationCount } from "../models/test";
+import { ModelOptions } from "../types";
 
 /**
  * @summary Calculate the number of runners per location.
  *  The buffer + pending runs and tests.
  */
 export const calculateRunnerPool = async (
-  logger: Logger
+  options: ModelOptions
 ): Promise<LocationCount[]> => {
-  const log = logger.prefix("calculateRunnerPool");
+  const log = options.logger.prefix("calculateRunnerPool");
 
-  const pendingRuns = await countPendingRuns({ logger });
-  const pendingTests = await countPendingTests("eastus2", { logger });
+  const pendingRuns = await countPendingRuns(options);
+  const pendingTests = await countPendingTests("eastus2", options);
 
   const pool: LocationCount[] = [];
 
@@ -48,13 +47,16 @@ export const calculateRunnerPool = async (
 /**
  * @summary Create or delete runners to match the calculated runner pool.
  */
-export const balanceRunnerPool = async (logger: Logger): Promise<void> => {
-  const pool = await calculateRunnerPool(logger);
+export const balanceRunnerPool = async ({
+  db,
+  logger,
+}: ModelOptions): Promise<void> => {
+  const pool = await calculateRunnerPool({ db, logger });
 
   // this must be in a transaction because we do not
   // want to delete runners that become assigned
   await db.transaction(async (trx) => {
-    const runners = await findRunners({}, { logger, trx });
+    const runners = await findRunners({}, { db: trx, logger });
 
     const deletableRunners = runners
       // only include unassigned runners
@@ -95,18 +97,20 @@ export const balanceRunnerPool = async (logger: Logger): Promise<void> => {
           id,
           deleted_at: minutesFromNow(),
         },
-        { logger, trx }
+        { db: trx, logger }
       )
     );
 
     await Promise.all([
-      createRunners(locationsToCreate, { logger, trx }),
+      createRunners(locationsToCreate, { db: trx, logger }),
       ...deletePromises,
     ]);
   });
 };
 
-export const orchestrateRunners = async (logger: Logger): Promise<void> => {
-  await deleteUnhealthyRunners({ logger });
-  await balanceRunnerPool(logger);
+export const orchestrateRunners = async (
+  options: ModelOptions
+): Promise<void> => {
+  await deleteUnhealthyRunners(options);
+  await balanceRunnerPool(options);
 };

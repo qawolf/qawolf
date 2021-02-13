@@ -1,5 +1,4 @@
 import { minutesFromNow } from "../../shared/utils";
-import { db } from "../db";
 import { ClientError } from "../errors";
 import {
   CreateUserWithEmail,
@@ -59,7 +58,7 @@ export const buildWolfVariant = (wolfVariant?: string | null): string => {
 
 export const createUserWithEmail = async (
   fields: CreateUserWithEmail,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<User> => {
   const log = logger.prefix("createUserWithEmail");
 
@@ -82,7 +81,7 @@ export const createUserWithEmail = async (
     wolf_number: fields.wolf_number || randomWolfNumber(),
     wolf_variant: buildWolfVariant(fields.wolf_variant),
   };
-  await (trx || db)("users").insert(user);
+  await db("users").insert(user);
 
   log.debug("created", user.id);
 
@@ -91,7 +90,7 @@ export const createUserWithEmail = async (
 
 export const createUserWithGitHub = async (
   fields: CreateUserWithGitHub,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<User> => {
   const log = logger.prefix("createUserWithGitHub");
 
@@ -109,7 +108,7 @@ export const createUserWithGitHub = async (
     wolf_number: fields.wolf_number || randomWolfNumber(),
     wolf_variant: buildWolfVariant(fields.wolf_variant),
   };
-  await (trx || db)("users").insert(user);
+  await db("users").insert(user);
 
   log.debug("created", user.id);
 
@@ -118,7 +117,7 @@ export const createUserWithGitHub = async (
 
 export const findUser = async (
   findOptions: FindUser,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<User | null> => {
   const log = logger.prefix("findUser");
 
@@ -129,7 +128,7 @@ export const findUser = async (
     throw new Error("Must provide user id, email, or GitHub id");
   }
 
-  const query = (trx || db)("users").select("*");
+  const query = db("users").select("*");
   if (email) query.orWhere({ email: email.toLowerCase() });
   if (id) query.orWhere({ id });
   if (github_id) query.orWhere({ github_id });
@@ -145,12 +144,12 @@ export const findUser = async (
 
 export const authenticateUser = async (
   { email, login_code }: AuthenticateUser,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<User> => {
   const log = logger.prefix("authenticateUser");
   log.debug(email);
 
-  const user = await findUser({ email }, { logger, trx });
+  const user = await findUser({ email }, { db, logger });
 
   if (!user || !user.login_code_digest || !user.login_code_expires_at) {
     log.error(`user not found ${email}`);
@@ -175,7 +174,7 @@ export const authenticateUser = async (
     login_code_expires_at: null,
     updated_at: minutesFromNow(),
   };
-  await (trx || db)("users").where({ id: user.id }).update(updates);
+  await db("users").where({ id: user.id }).update(updates);
 
   log.debug(`authenticated ${user.email}`);
 
@@ -184,12 +183,12 @@ export const authenticateUser = async (
 
 export const findUsersForTeam = async (
   team_id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<User[]> => {
   const log = logger.prefix("findUsersForTeam");
   log.debug(team_id);
 
-  const users = await (trx || db)
+  const users = await db
     .select("users.*" as "*")
     .from("users")
     .innerJoin("team_users", "team_users.user_id", "users.id")
@@ -204,15 +203,15 @@ export const findUsersForTeam = async (
 export const updateGitHubFields = async (
   id: string,
   gitHubFields: Partial<GitHubFields>,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<User> => {
   const log = logger.prefix("updateGitHubFields");
   log.debug(gitHubFields);
 
   const updates = { ...gitHubFields, updated_at: minutesFromNow() };
 
-  const user = await (trx || db).transaction(async (trx) => {
-    const existingUser = await findUser({ id }, { logger, trx });
+  const user = await db.transaction(async (trx) => {
+    const existingUser = await findUser({ id }, { db: trx, logger });
 
     await trx("users").where({ id }).update(updates);
 
@@ -226,12 +225,12 @@ export const updateGitHubFields = async (
 
 export const updateUser = async (
   { id, login_code, onboarded_at }: UpdateUser,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<User> => {
   const log = logger.prefix("updateUser");
   log.debug(id);
 
-  const existingUser = await findUser({ id }, { logger, trx });
+  const existingUser = await findUser({ id }, { db, logger });
 
   if (!existingUser) {
     log.error("user not found", id);
@@ -254,7 +253,7 @@ export const updateUser = async (
     throw new Error("No updates provided");
   }
 
-  await (trx || db)("users").where({ id }).update(updates);
+  await db("users").where({ id }).update(updates);
 
   log.debug("updated", id);
 

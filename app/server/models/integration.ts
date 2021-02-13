@@ -1,6 +1,5 @@
 import isNil from "lodash/isNil";
 
-import { db } from "../db";
 import { Integration, IntegrationType, ModelOptions } from "../types";
 import { cuid } from "../utils";
 
@@ -48,13 +47,13 @@ const buildIntegration = ({
 
 export const createIntegration = async (
   options: CreateIntegration,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Integration> => {
   const log = logger.prefix("createIntegration");
   log.debug(`team ${options.team_id}`);
 
   const integration = buildIntegration(options);
-  await (trx || db)("integrations").insert(integration);
+  await db("integrations").insert(integration);
 
   log.debug("created", integration.id);
 
@@ -63,12 +62,12 @@ export const createIntegration = async (
 
 export const createIntegrations = async (
   options: CreateIntegration[],
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Integration[]> => {
   const log = logger.prefix("createIntegrations");
 
   const integrations = options.map((o) => buildIntegration(o));
-  await (trx || db)("integrations").insert(integrations);
+  await db("integrations").insert(integrations);
 
   log.debug(
     "created",
@@ -80,19 +79,17 @@ export const createIntegrations = async (
 
 export const deleteIntegrations = async (
   ids: string[],
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Integration[]> => {
   const log = logger.prefix("deleteIntegrations");
   log.debug("integrations", ids);
 
-  const integrations = await (trx || db)("integrations")
-    .select("*")
-    .whereIn("id", ids);
+  const integrations = await db("integrations").select("*").whereIn("id", ids);
 
   const integrationIds = integrations.map((i) => i.id);
 
   // remove deleted deployment integrations from associated triggers
-  await (trx || db)("triggers")
+  await db("triggers")
     .whereIn("deployment_integration_id", integrationIds)
     .update({
       deployment_branches: null,
@@ -100,7 +97,7 @@ export const deleteIntegrations = async (
       deployment_integration_id: null,
     });
 
-  await (trx || db)("integrations").whereIn("id", integrationIds).del();
+  await db("integrations").whereIn("id", integrationIds).del();
   log.debug("deleted integrations", integrationIds);
 
   return integrations;
@@ -108,11 +105,11 @@ export const deleteIntegrations = async (
 
 export const findIntegration = async (
   id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Integration> => {
   const log = logger.prefix("findIntegration");
 
-  const integration = await (trx || db)
+  const integration = await db
     .select("*")
     .from("integrations")
     .where({ id })
@@ -130,12 +127,12 @@ export const findIntegration = async (
 
 export const findIntegrationsForTeam = async (
   { github_installation_id, team_id }: FindIntegrationsForTeam,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Integration[]> => {
   const log = logger.prefix("findIntegrationsForTeam");
   log.debug(`team ${team_id}`);
 
-  const query = (trx || db).select("*").from("integrations").where({ team_id });
+  const query = db.select("*").from("integrations").where({ team_id });
 
   if (!isNil(github_installation_id)) {
     query.andWhere({ github_installation_id });

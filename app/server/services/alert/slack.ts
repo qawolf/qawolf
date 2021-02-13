@@ -1,10 +1,9 @@
 import { IncomingWebhook, IncomingWebhookSendArguments } from "@slack/webhook";
 
 import environment from "../../environment";
-import { Logger } from "../../Logger";
 import { findIntegration } from "../../models/integration";
 import { findUsersForTeam } from "../../models/user";
-import { Suite, SuiteRun, Trigger, User } from "../../types";
+import { ModelOptions, Suite, SuiteRun, Trigger, User } from "../../types";
 import { randomChoice } from "../../utils";
 
 type BuildSuiteMessage = {
@@ -21,7 +20,6 @@ type PostMessageToSlack = {
 
 type SendSlackAlert = {
   integrationId: string;
-  logger: Logger;
   runs: SuiteRun[];
   suite: Suite;
   trigger: Trigger;
@@ -89,21 +87,16 @@ export const postMessageToSlack = async ({
   await webhook.send(message);
 };
 
-export const sendSlackAlert = async ({
-  integrationId,
-  logger,
-  runs,
-  suite,
-  trigger,
-}: SendSlackAlert): Promise<void> => {
-  const log = logger.prefix("sendSlackAlert");
+export const sendSlackAlert = async (
+  { integrationId, runs, suite, trigger }: SendSlackAlert,
+  options: ModelOptions
+): Promise<void> => {
+  const log = options.logger.prefix("sendSlackAlert");
   log.debug("suite", suite.id);
 
   try {
-    const users = await findUsersForTeam(suite.team_id, { logger });
-    const integration = await findIntegration(integrationId, {
-      logger,
-    });
+    const users = await findUsersForTeam(suite.team_id, options);
+    const integration = await findIntegration(integrationId, options);
 
     if (!integration.webhook_url) {
       log.error("no webhook url for integration", integration.id);
@@ -118,6 +111,6 @@ export const sendSlackAlert = async ({
     });
     log.debug("sent");
   } catch (error) {
-    logger.alert("error: Slack alert", error.message);
+    log.alert("error: Slack alert", error.message);
   }
 };

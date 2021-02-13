@@ -1,4 +1,3 @@
-import { db } from "../db";
 import {
   createIntegrations,
   deleteIntegrations,
@@ -17,21 +16,21 @@ import { ensureTeamAccess } from "./utils";
 export const createGitHubIntegrationsResolver = async (
   _: Record<string, unknown>,
   { installation_id, team_id }: CreateGitHubIntegrationsMutation,
-  { logger, teams }: Context
+  { db, logger, teams }: Context
 ): Promise<Integration[]> => {
   ensureTeamAccess({ logger, team_id, teams });
 
-  const repos = await findGitHubReposForInstallation({
-    installationId: installation_id,
-    logger,
-  });
-
   return db.transaction(async (trx) => {
+    const repos = await findGitHubReposForInstallation(installation_id, {
+      db: trx,
+      logger,
+    });
+
     const integrations = await findIntegrationsForTeam(
       { github_installation_id: installation_id, team_id },
       {
+        db: trx,
         logger,
-        trx,
       }
     );
 
@@ -51,7 +50,7 @@ export const createGitHubIntegrationsResolver = async (
             type: "github",
           };
         }),
-      { logger, trx }
+      { db: trx, logger }
     );
 
     await deleteIntegrations(
@@ -61,7 +60,7 @@ export const createGitHubIntegrationsResolver = async (
           return !repos.some((r) => i.github_repo_id === r.id);
         })
         .map((i) => i.id),
-      { logger, trx }
+      { db: trx, logger }
     );
 
     return newIntegrations;

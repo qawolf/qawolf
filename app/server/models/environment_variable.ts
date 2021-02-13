@@ -1,5 +1,4 @@
 import { minutesFromNow } from "../../shared/utils";
-import { db } from "../db";
 import { ClientError } from "../errors";
 import {
   EnvironmentVariable,
@@ -33,7 +32,7 @@ const formatName = (name: string): string => {
 
 export const createEnvironmentVariable = async (
   { environment_id, name, team_id, value }: CreateEnvironmentVariable,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<EnvironmentVariable> => {
   const log = logger.prefix("createEnvironmentVariable");
   log.debug("name", name, "team", team_id);
@@ -52,7 +51,7 @@ export const createEnvironmentVariable = async (
   };
 
   try {
-    await (trx || db)("environment_variables").insert(environmentVariable);
+    await db("environment_variables").insert(environmentVariable);
   } catch (error) {
     if (
       error.message.includes("environment_variables_environment_id_name_unique")
@@ -70,14 +69,12 @@ export const createEnvironmentVariable = async (
 
 export const deleteEnvironmentVariable = async (
   id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<string> => {
   const log = logger.prefix("deleteEnvironmentVariable");
   log.debug(id);
 
-  const deleteCount = await (trx || db)("environment_variables")
-    .where({ id })
-    .del();
+  const deleteCount = await db("environment_variables").where({ id }).del();
   log.debug(`deleted ${deleteCount} environment variables`);
 
   return id;
@@ -85,12 +82,12 @@ export const deleteEnvironmentVariable = async (
 
 export const deleteEnvironmentVariablesForEnvironment = async (
   environment_id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<number> => {
   const log = logger.prefix("deleteEnvironmentVariablesForEnvironment");
   log.debug("environment", environment_id);
 
-  const deleteCount = await (trx || db)("environment_variables")
+  const deleteCount = await db("environment_variables")
     .where({ environment_id })
     .del();
   log.debug(`deleted ${deleteCount} environment variables`);
@@ -100,12 +97,12 @@ export const deleteEnvironmentVariablesForEnvironment = async (
 
 export const findEnvironmentVariable = async (
   id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<EnvironmentVariable> => {
   const log = logger.prefix("findEnvironmentVariable");
   log.debug("id");
 
-  const environmentVariable = await (trx || db)("environment_variables")
+  const environmentVariable = await db("environment_variables")
     .select("*")
     .where({ id })
     .first();
@@ -121,9 +118,9 @@ export const findEnvironmentVariable = async (
 
 export const findEnvironmentVariablesForEnvironment = async (
   environment_id: string,
-  { trx }: ModelOptions
+  { db }: ModelOptions
 ): Promise<EnvironmentVariable[]> => {
-  const environmentVariables = await (trx || db)("environment_variables")
+  const environmentVariables = await db("environment_variables")
     .select("*")
     .where({ environment_id })
     .orderBy("name", "asc");
@@ -140,12 +137,12 @@ export const findEnvironmentVariablesForEnvironment = async (
  */
 export const buildEnvironmentVariables = async (
   { custom_variables, environment_id }: BuildEnvironmentVariables,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<{ env: string; variables: EnvironmentVariable[] }> => {
   const variables = environment_id
     ? await findEnvironmentVariablesForEnvironment(environment_id, {
+        db,
         logger,
-        trx,
       })
     : [];
 
@@ -162,7 +159,8 @@ export const buildEnvironmentVariables = async (
 };
 
 export const findSystemEnvironmentVariable = async (
-  name: string
+  name: string,
+  { db }: ModelOptions
 ): Promise<EnvironmentVariable> => {
   const environmentVariable = await db("environment_variables")
     .select("*")
@@ -178,7 +176,7 @@ export const findSystemEnvironmentVariable = async (
 
 export const updateEnvironmentVariable = async (
   { id, name, value }: UpdateEnvironmentVariable,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<EnvironmentVariable> => {
   const log = logger.prefix("updateEnvironmentVariable");
   log.debug(id);
@@ -195,11 +193,11 @@ export const updateEnvironmentVariable = async (
   };
 
   const environmentVariable = await findEnvironmentVariable(id, {
+    db,
     logger,
-    trx,
   });
 
-  await (trx || db)("environment_variables")
+  await db("environment_variables")
     .where({ id })
     .update({ ...updates, value: encrypt(value) });
 

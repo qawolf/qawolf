@@ -1,24 +1,19 @@
 import ContainerInstanceManagementClient from "azure-arm-containerinstance";
 
-import { Logger } from "../Logger";
 import { findRunners } from "../models/runner";
 import {
   deleteContainerGroup,
   getRunnerContainerGroups,
 } from "../services/azure/container";
-
-type DeleteRunners = {
-  client: ContainerInstanceManagementClient;
-  logger: Logger;
-};
+import { ModelOptions } from "../types";
 
 /**
  * @summary Delete container groups that do not have a runner.
  */
-export const deleteRunners = async ({
-  client,
-  logger,
-}: DeleteRunners): Promise<void> => {
+export const deleteRunners = async (
+  client: ContainerInstanceManagementClient,
+  { db, logger }: ModelOptions
+): Promise<void> => {
   const log = logger.prefix("deleteRunners");
 
   const groups = await getRunnerContainerGroups(client);
@@ -27,7 +22,7 @@ export const deleteRunners = async ({
 
   const runners = await findRunners(
     { ids: groups.map(({ name }) => name.replace("runner-", "")) },
-    { logger }
+    { db, logger }
   );
 
   const promises = groups.map(async (group) => {

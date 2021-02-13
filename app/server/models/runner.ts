@@ -1,5 +1,4 @@
 import { minutesFromNow } from "../../shared/utils";
-import { db } from "../db";
 import environment from "../environment";
 import { rankLocations } from "../services/location";
 import { ModelOptions, Runner, Test } from "../types";
@@ -56,12 +55,12 @@ const ASSIGN_CONSTRAINTS = ["runners_run_id_unique", "runners_test_id_unique"];
 
 export const assignRunner = async (
   { runner, ...assignTo }: AssignRunner,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Runner | null> => {
   const log = logger.prefix("assignRunner");
 
   try {
-    const result = await (trx || db).transaction(async (trx) => {
+    const result = await db.transaction(async (trx) => {
       const updates = { ...assignTo, session_expires_at: minutesFromNow(10) };
 
       const result = await trx("runners")
@@ -74,7 +73,7 @@ export const assignRunner = async (
       if (didUpdate && assignTo.test_id) {
         await updateTest(
           { id: assignTo.test_id, runner_requested_at: null },
-          { logger, trx }
+          { db: trx, logger }
         );
       }
 
@@ -92,11 +91,11 @@ export const assignRunner = async (
 
 export const countExcessRunners = async (
   location: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<number> => {
   const log = logger.prefix("countExcessRunners");
 
-  const [result] = await (trx || db)("runners")
+  const [result] = await db("runners")
     .count("id")
     .where({ deleted_at: null, location, run_id: null, test_id: null })
     .whereNotNull("ready_at");
@@ -114,7 +113,7 @@ export const countExcessRunners = async (
 
 export const createRunners = async (
   locations: string[],
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Runner[]> => {
   if (locations.length <= 0) return;
 
@@ -130,7 +129,7 @@ export const createRunners = async (
     updated_at: timestamp,
   }));
 
-  await (trx || db)("runners").insert(runners);
+  await db("runners").insert(runners);
 
   log.debug(
     "created",
@@ -158,12 +157,12 @@ export const expireRunner = async (
  *   and workers that have not reported a health check for 2 minutes.
  **/
 export const deleteUnhealthyRunners = async ({
+  db,
   logger,
-  trx,
 }: ModelOptions): Promise<void> => {
   const log = logger.prefix("deleteUnhealthyRunners");
 
-  const rows = await (trx || db)("runners")
+  const rows = await db("runners")
     .select("id")
     .where(function () {
       this.where({ health_checked_at: null, deleted_at: null }).andWhere(
@@ -188,7 +187,7 @@ export const deleteUnhealthyRunners = async ({
     ids.map((id) =>
       updateRunner(
         { allow_skip: true, id, deleted_at: minutesFromNow() },
-        { logger, trx }
+        { db, logger }
       )
     )
   );
@@ -231,7 +230,7 @@ const findClosestRunner = ({
 
 export const findRunner = async (
   { id, include_deleted, is_ready, locations, run_id, test_id }: FindRunner,
-  { trx }: ModelOptions
+  { db }: ModelOptions
 ): Promise<Runner | null> => {
   const filter: Record<string, unknown> = {};
 
@@ -239,7 +238,7 @@ export const findRunner = async (
 
   if (id) filter.id = id;
 
-  let query = (trx || db)("runners").select("*").from("runners");
+  let query = db("runners").select("*").from("runners");
 
   if (run_id && test_id) {
     // allow either
@@ -270,9 +269,9 @@ export const findRunner = async (
 
 export const findRunners = async (
   options: FindRunners,
-  { trx }: ModelOptions
+  { db }: ModelOptions
 ): Promise<Runner[]> => {
-  let query = (trx || db)("runners")
+  let query = db("runners")
     .select("*")
     .from("runners")
     .where({ deleted_at: null });
@@ -325,12 +324,12 @@ export const requestRunnerForTest = async (
 
 export const updateRunner = async (
   { allow_skip, id, ...options }: UpdateRunner,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Runner> => {
   const log = logger.prefix("updateRunner");
 
-  return (trx || db).transaction(async (trx) => {
-    const runner = await findRunner({ id }, { logger, trx });
+  return db.transaction(async (trx) => {
+    const runner = await findRunner({ id }, { db: trx, logger });
     if (!runner) {
       if (allow_skip) return;
       throw new Error(`runner not found ${id}`);
@@ -347,11 +346,11 @@ export const updateRunner = async (
     }
 
     if (updates.run_id === null && runner.run_id) {
-      const run = await findRun(runner.run_id, { logger, trx });
+      const run = await findRun(runner.run_id, { db: trx, logger });
       if (run.status === "created" && run.started_at) {
         // mark it as failed since it is not finished
         logger.alert("run expired", run.id);
-        await updateRun({ id: run.id, status: "fail" }, { logger, trx });
+        await updateRun({ id: run.id, status: "fail" }, { db: trx, logger });
       }
     }
 
