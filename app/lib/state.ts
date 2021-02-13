@@ -8,7 +8,6 @@ export const defaultState: StateType = {
   editorSidebarWidth: 480,
   email: null,
   environmentId: null,
-  error: null,
   modal: { name: null },
   run: null,
   signUp: {},
@@ -22,6 +21,7 @@ const STATE_KEY = "qaw_state";
 class State extends EventEmitter {
   _pendingRun: RunOptions | null = null;
   _state: StateType = defaultState;
+  _toastTimeout: NodeJS.Timeout | null = null;
 
   constructor() {
     super();
@@ -43,7 +43,7 @@ class State extends EventEmitter {
     if (isServer()) return;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { error, ...stateToPersist } = this._state;
+    const { toast, ...stateToPersist } = this._state;
     localStorage.setItem(STATE_KEY, JSON.stringify(stateToPersist));
   }
 
@@ -80,10 +80,6 @@ class State extends EventEmitter {
     this._setState({ environmentId });
   }
 
-  setError(error: StateType["error"]): void {
-    this._setState({ error });
-  }
-
   setPendingRun(options: RunOptions | null): void {
     this._pendingRun = options;
   }
@@ -101,11 +97,17 @@ class State extends EventEmitter {
   }
 
   setToast(toast: StateType["toast"]): void {
+    if (this._toastTimeout) {
+      clearTimeout(this._toastTimeout);
+      this._toastTimeout = null;
+    }
+
     this._setState({ toast });
 
     if (toast?.expiresIn) {
-      setTimeout(() => {
+      this._toastTimeout = setTimeout(() => {
         this._setState({ toast: null });
+        this._toastTimeout = null;
       }, toast.expiresIn);
     }
   }

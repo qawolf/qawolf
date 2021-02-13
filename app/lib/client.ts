@@ -34,7 +34,10 @@ const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
     // include errors in console logs so that we can help users debug
     console.warn("qawolf:", networkError);
     if (isDevelopment) {
-      state.setError(`Network error: ${networkError}`);
+      state.setToast({
+        error: true,
+        message: `Network error: ${networkError}`,
+      });
     }
   }
 
@@ -49,7 +52,7 @@ const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
       console.warn("qawolf:", error);
 
       if (!ERROR_OPERATION_DENYLIST.includes(operation.operationName)) {
-        state.setError(error);
+        state.setToast({ error: true, message: error });
       }
     });
   }

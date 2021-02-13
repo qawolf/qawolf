@@ -245,12 +245,12 @@ export type State = {
   editorSidebarWidth: number;
   email: string | null;
   environmentId: string | null;
-  error: string | null;
   modal: ModalState;
   run: RunOptions | null;
   signUp: SignUp;
   teamId: string | null;
   toast: {
+    error?: boolean;
     expiresIn?: number;
     message: string;
   } | null;
