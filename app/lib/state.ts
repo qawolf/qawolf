@@ -13,6 +13,7 @@ export const defaultState: StateType = {
   run: null,
   signUp: {},
   teamId: null,
+  toast: null,
   triggerId: null,
 };
 
@@ -97,6 +98,16 @@ class State extends EventEmitter {
 
   setTeamId(teamId: StateType["teamId"]): void {
     this._setState({ teamId });
+  }
+
+  setToast(toast: StateType["toast"]): void {
+    this._setState({ toast });
+
+    if (toast?.expiresIn) {
+      setTimeout(() => {
+        this._setState({ toast: null });
+      }, toast.expiresIn);
+    }
   }
 
   setTriggerId(triggerId: StateType["triggerId"]): void {

@@ -2,7 +2,7 @@ import { Box, BoxProps } from "grommet";
 import { ReactNode } from "react";
 import styled, { keyframes } from "styled-components";
 
-import { edgeSize } from "../../theme/theme-new";
+import { boxShadow, edgeSize } from "../../theme/theme-new";
 
 export type Direction = "down" | "up";
 
@@ -49,7 +49,7 @@ function Menu({ children, className, onClick, width }: Props): JSX.Element {
 const StyledMenu = styled(Menu)`
   animation: ${menuKeyFrames} 0.1s forwards;
   animation-delay: 0.01s;
-  box-shadow: 0px 4px 16px rgba(21, 27, 38, 0.16);
+  box-shadow: ${boxShadow};
   max-width: none;
   opacity: 0;
   position: absolute;

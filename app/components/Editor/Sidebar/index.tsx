@@ -7,6 +7,7 @@ import { useContext, useState } from "react";
 import { routes } from "../../../lib/routes";
 import { state } from "../../../lib/state";
 import { NavigationOption } from "../../../lib/types";
+import { copy } from "../../../theme/copy";
 import { StateContext } from "../../StateContext";
 import { RunnerContext } from "../contexts/RunnerContext";
 import { TestContext } from "../contexts/TestContext";
@@ -68,6 +69,9 @@ export default function Sidebar(): JSX.Element {
     if ((e.ctrlKey || e.metaKey) && e.code === "Enter") {
       e.stopPropagation();
       handleAction();
+    } else if ((e.ctrlKey || e.metaKey) && e.code === "KeyS") {
+      e.preventDefault();
+      state.setToast({ expiresIn: 3000, message: copy.toastAutosave });
     }
   };
 

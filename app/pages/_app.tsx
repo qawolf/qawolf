@@ -12,6 +12,7 @@ import React from "react";
 import { components } from "../components/Docs/components";
 import Modals from "../components/Modals";
 import Error from "../components/shared/Error";
+import Toast from "../components/Toast";
 import { StateProvider } from "../components/StateContext";
 import { UserProvider } from "../components/UserContext";
 import { useBootIntercom } from "../hooks/intercom";
@@ -38,6 +39,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
           <Grommet theme={theme}>
             <MDXProvider components={components}>
               <Error />
+              <Toast />
               <Modals />
               <UserProvider>
                 <Component {...pageProps} />

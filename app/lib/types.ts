@@ -250,5 +250,9 @@ export type State = {
   run: RunOptions | null;
   signUp: SignUp;
   teamId: string | null;
+  toast: {
+    expiresIn?: number;
+    message: string;
+  } | null;
   triggerId: string | null;
 };

@@ -34,11 +34,18 @@ export default function Buttons({
 }: Props): JSX.Element {
   const { environmentId } = useContext(StateContext);
 
+  const handleAutosave = (e: KeyboardEvent): void => {
+    e.preventDefault();
+    state.setToast({ expiresIn: 3000, message: copy.toastAutosave });
+  };
+
   const handleEnvironmentClick = (environmentId: string): void => {
     state.setEnvironmentId(environmentId);
   };
 
   useOnHotKey({ hotKey: "Enter", onHotKey: onAction, requireMeta: true });
+
+  useOnHotKey({ hotKey: "s", onHotKey: handleAutosave, requireMeta: true });
 
   const runLabel = selection
     ? copy.runLines(selection.endLine - selection.startLine + 1)
