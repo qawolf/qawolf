@@ -1,4 +1,3 @@
-import { db } from "../db";
 import { createIntegration } from "../models/integration";
 import { updateTeam } from "../models/team";
 import { createSlackIntegrationUrl, findSlackWebhook } from "../services/slack";
@@ -13,7 +12,7 @@ import { ensureTeamAccess, ensureUser } from "./utils";
 export const createSlackIntegrationResolver = async (
   _: Record<string, unknown>,
   { redirect_uri, slack_code, team_id }: CreateSlackIntegrationMutation,
-  { logger, teams }: Context
+  { db, logger, teams }: Context
 ): Promise<Integration> => {
   const log = logger.prefix("createSlackIntegrationResolver");
   const team = ensureTeamAccess({ logger, teams, team_id });
@@ -34,7 +33,7 @@ export const createSlackIntegrationResolver = async (
         type: "slack",
         webhook_url: slackWebhook.webhook_url,
       },
-      { logger, trx }
+      { db: trx, logger }
     );
     log.debug("created integration", integration.id);
 
@@ -44,7 +43,7 @@ export const createSlackIntegrationResolver = async (
         is_email_alert_enabled: false,
         alert_integration_id: integration.id,
       },
-      { logger, trx }
+      { db: trx, logger }
     );
     log.debug("updated team", team_id);
 

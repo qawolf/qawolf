@@ -1,38 +1,10 @@
 jest.mock("jsonwebtoken");
 import jwt from "jsonwebtoken";
 
-import { db, dropTestDb, migrateDb } from "../../../server/db";
 import {
   signAccessToken,
   verifyAccessToken,
 } from "../../../server/services/access";
-
-const gitHubUser = {
-  avatar_url: "avatar.png",
-  github_id: 123,
-  email: "spirit@qawolf.com",
-  name: "Spirit",
-};
-
-beforeAll(async () => {
-  await migrateDb();
-
-  return db.transaction(async (trx) => {
-    return trx("users").insert({
-      ...gitHubUser,
-      github_login: "spirit_github",
-      id: "spirit",
-      wolf_name: "Alpine",
-      wolf_number: 123,
-      wolf_variant: "black",
-    });
-  });
-});
-
-afterAll(() => {
-  jest.restoreAllMocks();
-  return dropTestDb();
-});
 
 describe("signAccessToken", () => {
   it("signs an access token", () => {

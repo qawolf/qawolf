@@ -1,4 +1,3 @@
-import { db, dropTestDb, migrateDb } from "../../../server/db";
 import {
   createInvite,
   deleteInvite,
@@ -7,8 +6,8 @@ import {
   updateInvite,
 } from "../../../server/models/invite";
 import { WOLF_NAMES, WOLF_VARIANTS } from "../../../server/models/wolfOptions";
-import { Invite } from "../../../server/types";
 import { minutesFromNow } from "../../../shared/utils";
+import { prepareTestDb } from "../db";
 import {
   buildInvite,
   buildTeam,
@@ -21,14 +20,13 @@ const team = buildTeam({});
 const user = buildUser({});
 const user2 = buildUser({ i: 2 });
 
-beforeAll(async () => {
-  await migrateDb();
+const db = prepareTestDb();
+const options = { db, logger };
 
+beforeAll(async () => {
   await db("teams").insert([team, buildTeam({ i: 2 })]);
   await db("users").insert([user, user2]);
 });
-
-afterAll(() => dropTestDb());
 
 describe("invite model", () => {
   describe("createInvite", () => {
@@ -53,7 +51,7 @@ describe("invite model", () => {
     it("returns existing invite if possible", async () => {
       const invite = await createInvite(
         { creator_id: "userId", email: "spirit@qawolf.com", team_id: "teamId" },
-        { logger }
+        options
       );
 
       expect(invite).toMatchObject({ email: "spirit@qawolf.com" });
@@ -69,7 +67,7 @@ describe("invite model", () => {
           email: "glacier@qawolf.com",
           team_id: "teamId",
         },
-        { logger }
+        options
       );
 
       const invites = await db
@@ -91,7 +89,7 @@ describe("invite model", () => {
     it("creates a new invite if existing invite expired", async () => {
       await createInvite(
         { creator_id: "userId", email: "rocky@qawolf.com", team_id: "teamId" },
-        { logger }
+        options
       );
 
       const invites = await db
@@ -113,7 +111,7 @@ describe("invite model", () => {
           email: user2.email,
           team_id: "teamId",
         },
-        { logger }
+        options
       );
 
       const invites = await db
@@ -130,14 +128,12 @@ describe("invite model", () => {
     });
 
     it("throws an error if user already on team", async () => {
-      const testFn = async (): Promise<Invite> => {
-        return createInvite(
+      await expect(
+        createInvite(
           { creator_id: "userId", email: user.email, team_id: "teamId" },
-          { logger }
-        );
-      };
-
-      await expect(testFn()).rejects.toThrowError("already on team");
+          options
+        )
+      ).rejects.toThrowError("already on team");
     });
   });
 
@@ -152,7 +148,7 @@ describe("invite model", () => {
       const invites = await db.select("*").from("invites");
       expect(invites).toMatchObject([{ id: "inviteId" }]);
 
-      await deleteInvite("inviteId", { logger });
+      await deleteInvite("inviteId", options);
 
       const invites2 = await db.select("*").from("invites");
       expect(invites2).toEqual([]);
@@ -167,7 +163,7 @@ describe("invite model", () => {
     afterAll(() => db("invites").del());
 
     it("finds an invite", async () => {
-      const invite = await findInvite("inviteId", { logger });
+      const invite = await findInvite("inviteId", options);
 
       expect(invite).toMatchObject({
         creator_email: user.email,
@@ -177,11 +173,9 @@ describe("invite model", () => {
     });
 
     it("throws an error if invite not found", async () => {
-      const testFn = async (): Promise<Invite> => {
-        return findInvite("fakeId", { logger });
-      };
-
-      await expect(testFn()).rejects.toThrowError("not found");
+      await expect(findInvite("fakeId", options)).rejects.toThrowError(
+        "not found"
+      );
     });
   });
 
@@ -205,7 +199,7 @@ describe("invite model", () => {
     afterAll(() => db("invites").del());
 
     it("returns non-expired invites for a team", async () => {
-      const invites = await findInvitesForTeam("teamId", { logger });
+      const invites = await findInvitesForTeam("teamId", options);
 
       expect(invites).toMatchObject([{ id: "inviteId" }]);
     });
@@ -231,7 +225,7 @@ describe("invite model", () => {
     afterAll(() => db("invites").del());
 
     it("updates an invite", async () => {
-      await updateInvite("inviteId", { logger });
+      await updateInvite("inviteId", options);
 
       const invite = await db
         .select("*")
@@ -244,27 +238,21 @@ describe("invite model", () => {
     });
 
     it("throws an error if invite not found", async () => {
-      const testFn = async (): Promise<Invite> => {
-        return updateInvite("fakeId", { logger });
-      };
-
-      await expect(testFn()).rejects.toThrowError("not found");
+      await expect(updateInvite("fakeId", options)).rejects.toThrowError(
+        "not found"
+      );
     });
 
     it("throws an error if invite already accepted", async () => {
-      const testFn = async (): Promise<Invite> => {
-        return updateInvite("invite3Id", { logger });
-      };
-
-      await expect(testFn()).rejects.toThrowError("already accepted");
+      await expect(updateInvite("invite3Id", options)).rejects.toThrowError(
+        "already accepted"
+      );
     });
 
     it("throws an error if invite expired", async () => {
-      const testFn = async (): Promise<Invite> => {
-        return updateInvite("invite2Id", { logger });
-      };
-
-      await expect(testFn()).rejects.toThrowError("invite expired");
+      await expect(updateInvite("invite2Id", options)).rejects.toThrowError(
+        "invite expired"
+      );
     });
   });
 });

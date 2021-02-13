@@ -1,4 +1,3 @@
-import { db, dropTestDb, migrateDb } from "../../../server/db";
 import * as suiteModel from "../../../server/models/suite";
 import * as testModel from "../../../server/models/test";
 import * as triggerModel from "../../../server/models/trigger";
@@ -12,7 +11,8 @@ import {
   ensureTriggerAccess,
   ensureUser,
 } from "../../../server/resolvers/utils";
-import { Team, Test, Trigger, User } from "../../../server/types";
+import { Test, Trigger, User } from "../../../server/types";
+import { prepareTestDb } from "../db";
 import {
   buildEnvironment,
   buildEnvironmentVariable,
@@ -24,9 +24,8 @@ import {
 const teams = [buildTeam({})];
 const suite = buildSuite({ team_id: "team2Id" });
 
-beforeAll(() => migrateDb());
-
-afterAll(() => dropTestDb());
+const db = prepareTestDb();
+const options = { db, logger };
 
 describe("ensureEnvironmentAccess", () => {
   beforeAll(async () => {
@@ -43,35 +42,37 @@ describe("ensureEnvironmentAccess", () => {
   });
 
   it("throws an error if teams not provided", async () => {
-    const testFn = async (): Promise<Team> => {
-      return ensureEnvironmentAccess({
-        environment_id: "environmentId",
-        logger,
-        teams: null,
-      });
-    };
-
-    await expect(testFn()).rejects.toThrowError("no teams");
+    await expect(
+      ensureEnvironmentAccess(
+        {
+          environment_id: "environmentId",
+          teams: null,
+        },
+        options
+      )
+    ).rejects.toThrowError("no teams");
   });
 
   it("throws an error if teams do not have access", async () => {
-    const testFn = async (): Promise<Team> => {
-      return ensureEnvironmentAccess({
-        environment_id: "environment2Id",
-        logger,
-        teams,
-      });
-    };
-
-    await expect(testFn()).rejects.toThrowError("cannot access environment");
+    await expect(
+      ensureEnvironmentAccess(
+        {
+          environment_id: "environment2Id",
+          teams,
+        },
+        options
+      )
+    ).rejects.toThrowError("cannot access environment");
   });
 
   it("returns selected team if teams have access", async () => {
-    const team = await ensureEnvironmentAccess({
-      environment_id: "environmentId",
-      logger,
-      teams,
-    });
+    const team = await ensureEnvironmentAccess(
+      {
+        environment_id: "environmentId",
+        teams,
+      },
+      options
+    );
 
     expect(team).toEqual(teams[0]);
   });
@@ -103,59 +104,57 @@ describe("ensureEnvironmentVariableAccess", () => {
   });
 
   it("throws an error if teams not provided", async () => {
-    const testFn = async (): Promise<Team> => {
-      return ensureEnvironmentVariableAccess({
-        environment_variable_id: "environmentVariableId",
-        logger,
-        teams: null,
-      });
-    };
-
-    await expect(testFn()).rejects.toThrowError("no teams");
+    await expect(
+      ensureEnvironmentVariableAccess(
+        {
+          environment_variable_id: "environmentVariableId",
+          teams: null,
+        },
+        options
+      )
+    ).rejects.toThrowError("no teams");
   });
 
   it("throws an error if teams do not have access", async () => {
-    const testFn = async (): Promise<Team> => {
-      return ensureEnvironmentVariableAccess({
-        environment_variable_id: "environmentVariable2Id",
-        logger,
-        teams,
-      });
-    };
-
-    await expect(testFn()).rejects.toThrowError("cannot access environment");
+    await expect(
+      ensureEnvironmentVariableAccess(
+        {
+          environment_variable_id: "environmentVariable2Id",
+          teams,
+        },
+        options
+      )
+    ).rejects.toThrowError("cannot access environment");
   });
 
   it("returns selected team if teams have access", async () => {
-    const team = await ensureEnvironmentVariableAccess({
-      environment_variable_id: "environmentVariableId",
-      logger,
-      teams,
-    });
+    const team = await ensureEnvironmentVariableAccess(
+      {
+        environment_variable_id: "environmentVariableId",
+        teams,
+      },
+      options
+    );
 
     expect(team).toEqual(teams[0]);
   });
 });
 
 describe("ensureTeamAccess", () => {
-  it("throws an error if no teams provided", () => {
-    const testFn = (): Team => {
-      return ensureTeamAccess({ logger, team_id: "teamId", teams: null });
-    };
-
-    expect(testFn).toThrowError("no teams");
+  it("throws an error if no teams provided", async () => {
+    expect(() =>
+      ensureTeamAccess({ logger, team_id: "teamId", teams: null })
+    ).toThrowError("no teams");
   });
 
   it("throws an error if teams do not have access", () => {
-    const testFn = (): Team => {
-      return ensureTeamAccess({
+    expect(() =>
+      ensureTeamAccess({
         logger,
         team_id: "anotherTeamId",
         teams,
-      });
-    };
-
-    expect(testFn).toThrowError("cannot access team");
+      })
+    ).toThrowError("cannot access team");
   });
 
   it("returns selected team if teams have access", () => {
@@ -171,11 +170,7 @@ describe("ensureTeamAccess", () => {
 
 describe("ensureTeams", () => {
   it("throws an error if no teams provided", () => {
-    const testFn = (): Team[] => {
-      return ensureTeams({ logger, teams: null });
-    };
-
-    expect(testFn).toThrowError("no teams");
+    expect(() => ensureTeams({ logger, teams: null })).toThrowError("no teams");
   });
 
   it("returns provided teams if possible", () => {
@@ -190,43 +185,43 @@ describe("ensureTeams", () => {
 
 describe("ensureSuiteAccess", () => {
   it("throws an error if teams not provided", async () => {
-    const testFn = async (): Promise<void> => {
-      return ensureSuiteAccess({
-        logger,
-        teams: null,
-        suite_id: "suiteId",
-      });
-    };
-
-    await expect(testFn()).rejects.toThrowError("no teams");
+    await expect(
+      ensureSuiteAccess(
+        {
+          teams: null,
+          suite_id: "suiteId",
+        },
+        options
+      )
+    ).rejects.toThrowError("no teams");
   });
 
   it("throws an error if teams do not have access", async () => {
     jest.spyOn(suiteModel, "findSuite").mockResolvedValue(suite);
 
-    const testFn = async (): Promise<void> => {
-      return ensureSuiteAccess({
-        logger,
-        teams,
-        suite_id: "suite2Id",
-      });
-    };
-
-    await expect(testFn()).rejects.toThrowError("cannot access suite");
+    await expect(
+      ensureSuiteAccess(
+        {
+          teams,
+          suite_id: "suite2Id",
+        },
+        options
+      )
+    ).rejects.toThrowError("cannot access suite");
   });
 
   it("does not throw an error if teams have access", async () => {
     jest.spyOn(suiteModel, "findSuite").mockResolvedValue(suite);
 
-    const testFn = async (): Promise<void> => {
-      return ensureSuiteAccess({
-        logger,
-        teams: [{ ...teams[0], id: "team2Id" }],
-        suite_id: "suiteId",
-      });
-    };
-
-    await expect(testFn()).resolves.not.toThrowError();
+    await expect(
+      ensureSuiteAccess(
+        {
+          teams: [{ ...teams[0], id: "team2Id" }],
+          suite_id: "suiteId",
+        },
+        options
+      )
+    ).resolves.not.toThrowError();
   });
 });
 
@@ -234,10 +229,9 @@ describe("ensureTestAccess", () => {
   afterEach(jest.restoreAllMocks);
 
   it("throws an error if teams not provided", async () => {
-    const testFn = async (): Promise<Team> =>
-      ensureTestAccess({ logger, teams: null, test_id: "testId" });
-
-    await expect(testFn()).rejects.toThrowError("no teams");
+    await expect(
+      ensureTestAccess({ teams: null, test_id: "testId" }, options)
+    ).rejects.toThrowError("no teams");
   });
 
   it("throws an error if teams do not have access", async () => {
@@ -246,11 +240,9 @@ describe("ensureTestAccess", () => {
       id: "testId",
     } as Test);
 
-    const testFn = async (): Promise<Team> => {
-      return ensureTestAccess({ logger, teams, test_id: "testId" });
-    };
-
-    await expect(testFn()).rejects.toThrowError("cannot access");
+    await expect(
+      ensureTestAccess({ teams, test_id: "testId" }, options)
+    ).rejects.toThrowError("cannot access");
   });
 
   it("does not throw an error if teams have access", async () => {
@@ -258,29 +250,29 @@ describe("ensureTestAccess", () => {
       .spyOn(testModel, "findTest")
       .mockResolvedValue({ team_id: "teamId", id: "testId" } as Test);
 
-    const testFn = async (): Promise<Team> => {
-      return ensureTestAccess({
-        logger,
-        teams,
-        test_id: "testId",
-      });
-    };
-
-    await expect(testFn()).resolves.not.toThrowError();
+    await expect(
+      ensureTestAccess(
+        {
+          teams,
+          test_id: "testId",
+        },
+        options
+      )
+    ).resolves.not.toThrowError();
   });
 
   it("allows passing a test instead of a test id", async () => {
     jest.spyOn(testModel, "findTest");
 
-    const testFn = async (): Promise<Team> => {
-      return ensureTestAccess({
-        logger,
-        teams,
-        test: { team_id: "teamId", id: "testId" } as Test,
-      });
-    };
-
-    await expect(testFn()).resolves.not.toThrowError();
+    await expect(
+      ensureTestAccess(
+        {
+          teams,
+          test: { team_id: "teamId", id: "testId" } as Test,
+        },
+        options
+      )
+    ).resolves.not.toThrowError();
     expect(testModel.findTest).not.toBeCalled();
   });
 });
@@ -289,15 +281,15 @@ describe("ensureTriggerAccess", () => {
   afterEach(jest.restoreAllMocks);
 
   it("throws an error if teams not provided", async () => {
-    const testFn = async (): Promise<Team> => {
-      return ensureTriggerAccess({
-        logger,
-        teams: null,
-        trigger_id: "triggerId",
-      });
-    };
-
-    await expect(testFn()).rejects.toThrowError("no teams");
+    await expect(
+      ensureTriggerAccess(
+        {
+          teams: null,
+          trigger_id: "triggerId",
+        },
+        options
+      )
+    ).rejects.toThrowError("no teams");
   });
 
   it("throws an error if teams do not have access", async () => {
@@ -306,15 +298,15 @@ describe("ensureTriggerAccess", () => {
       team_id: "anotherTeamId",
     } as Trigger);
 
-    const testFn = async (): Promise<Team> => {
-      return ensureTriggerAccess({
-        logger,
-        teams,
-        trigger_id: "triggerId",
-      });
-    };
-
-    await expect(testFn()).rejects.toThrowError("cannot access trigger");
+    await expect(
+      ensureTriggerAccess(
+        {
+          teams,
+          trigger_id: "triggerId",
+        },
+        options
+      )
+    ).rejects.toThrowError("cannot access trigger");
   });
 
   it("returns selected team if teams have access", async () => {
@@ -322,11 +314,13 @@ describe("ensureTriggerAccess", () => {
       .spyOn(triggerModel, "findTrigger")
       .mockResolvedValue({ id: "triggerId", team_id: "teamId" } as Trigger);
 
-    const team = await ensureTriggerAccess({
-      logger,
-      teams,
-      trigger_id: "triggerId",
-    });
+    const team = await ensureTriggerAccess(
+      {
+        teams,
+        trigger_id: "triggerId",
+      },
+      options
+    );
 
     expect(team).toEqual(teams[0]);
   });
@@ -334,11 +328,7 @@ describe("ensureTriggerAccess", () => {
 
 describe("ensureUser", () => {
   it("throws an error if no user provided", () => {
-    const testFn = (): User => {
-      return ensureUser({ logger, user: null });
-    };
-
-    expect(testFn).toThrowError("no user");
+    expect(() => ensureUser({ logger, user: null })).toThrowError("no user");
   });
 
   it("returns provided user if possible", () => {

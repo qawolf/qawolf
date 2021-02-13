@@ -1,6 +1,4 @@
-import { db } from "../db";
 import environment from "../environment";
-import { Logger } from "../Logger";
 import { findInvite } from "../models/invite";
 import { createFreeTeamWithTrigger, findTeamsForUser } from "../models/team";
 import { createTeamUser } from "../models/team_user";
@@ -36,23 +34,18 @@ import {
 import { buildLoginCode } from "../utils";
 import { ensureTeamAccess, ensureUser } from "./utils";
 
-type BuildAuthenticatedUser = {
-  logger: Logger;
-  user: User;
-};
-
 type CreateUserWithTrigger = {
   emailFields?: CreateUserWithEmail;
   gitHubFields?: CreateUserWithGitHub;
   hasInvite?: boolean;
 };
 
-const buildAuthenticatedUser = async ({
-  logger,
-  user,
-}: BuildAuthenticatedUser): Promise<AuthenticatedUser> => {
+const buildAuthenticatedUser = async (
+  user: User,
+  options: ModelOptions
+): Promise<AuthenticatedUser> => {
   const access_token = signAccessToken(user.id);
-  const teams = await findTeamsForUser(user.id, { logger });
+  const teams = await findTeamsForUser(user.id, options);
 
   return {
     access_token,
@@ -78,7 +71,7 @@ const postNewUserMessageToSlack = async (
 
 const createUserWithTeam = async (
   { emailFields, gitHubFields, hasInvite }: CreateUserWithTrigger,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<User> => {
   if (!emailFields && !gitHubFields) {
     logger.error("createUserWithTrigger: no fields provided");
@@ -92,18 +85,21 @@ const createUserWithTeam = async (
     logger.alert("could not send slack message", error.message);
   });
 
-  return (trx || db).transaction(async (trx) => {
+  return db.transaction(async (trx) => {
     const user = gitHubFields
-      ? await createUserWithGitHub(gitHubFields, { logger, trx })
+      ? await createUserWithGitHub(gitHubFields, { db: trx, logger })
       : // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        await createUserWithEmail(emailFields!, { logger, trx });
+        await createUserWithEmail(emailFields!, { db: trx, logger });
 
     if (!hasInvite) {
-      const team = await createFreeTeamWithTrigger(user.id, { logger, trx });
+      const team = await createFreeTeamWithTrigger(user.id, {
+        db: trx,
+        logger,
+      });
 
       await createTeamUser(
         { team_id: team.id, user_id: user.id },
-        { logger, trx }
+        { db: trx, logger }
       );
     }
 
@@ -138,19 +134,21 @@ export const currentUserResolver = async (
 export const sendLoginCodeResolver = async (
   _: Record<string, unknown>,
   { email, invite_id }: SendLoginCodeMutation,
-  { logger }: Context
+  { db, logger }: Context
 ): Promise<SendLoginCode> => {
   const log = logger.prefix("sendLoginCodeResolver");
   log.debug(email);
 
-  let user = await findUser({ email }, { logger });
+  let user = await findUser({ email }, { db, logger });
   const login_code = buildLoginCode();
 
   if (user) {
     log.debug(`user ${email} already created`);
-    user = await updateUser({ id: user.id, login_code }, { logger });
+    user = await updateUser({ id: user.id, login_code }, { db, logger });
   } else {
-    const invite = invite_id ? await findInvite(invite_id, { logger }) : null;
+    const invite = invite_id
+      ? await findInvite(invite_id, { db, logger })
+      : null;
 
     user = await createUserWithTeam(
       {
@@ -163,7 +161,7 @@ export const sendLoginCodeResolver = async (
         },
         hasInvite: !!invite,
       },
-      { logger }
+      { db, logger }
     );
 
     log.debug(`create new user ${user.id} from email ${email}`);
@@ -180,27 +178,24 @@ export const sendLoginCodeResolver = async (
 export const signInWithEmailResolver = async (
   _: Record<string, unknown>,
   { email, login_code }: SignInWithEmailMutation,
-  { logger }: Context
+  { db, logger }: Context
 ): Promise<AuthenticatedUser> => {
   const log = logger.prefix("signInWithEmailResolver");
   log.debug(email);
 
   try {
-    const user = await authenticateUser({ email, login_code }, { logger });
+    const user = await authenticateUser({ email, login_code }, { db, logger });
 
-    return buildAuthenticatedUser({
-      logger,
-      user,
-    });
+    return buildAuthenticatedUser(user, { db, logger });
   } catch (error) {
     // if code is expired, send a new one
     if (error.message === EXPIRED_CODE_ERROR) {
       const login_code = buildLoginCode();
 
       const user = await db.transaction(async (trx) => {
-        const oldUser = await findUser({ email }, { logger, trx });
+        const oldUser = await findUser({ email }, { db: trx, logger });
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return updateUser({ id: oldUser!.id, login_code }, { logger, trx });
+        return updateUser({ id: oldUser!.id, login_code }, { db: trx, logger });
       });
 
       await sendEmailForLoginCode({ logger, login_code, user });
@@ -216,14 +211,14 @@ export const signInWithEmailResolver = async (
 export const signInWithGitHubResolver = async (
   _: Record<string, unknown>,
   { github_code, github_state, invite_id }: SignInWithGitHubMutation,
-  { logger }: Context
+  { db, logger }: Context
 ): Promise<AuthenticatedUser> => {
   const log = logger.prefix("signInWithGitHubResolver");
   const gitHubFields = await findGitHubFields({ github_code, github_state });
   const existingUser = await findUser(
     // look up by email OR GitHub ID
     { email: gitHubFields.email, github_id: gitHubFields.github_id },
-    { logger }
+    { db, logger }
   );
 
   let user: User;
@@ -235,13 +230,16 @@ export const signInWithGitHubResolver = async (
     const { email, ...gitHubFieldsWithoutEmail } = gitHubFields;
 
     user = await updateGitHubFields(existingUser.id, gitHubFieldsWithoutEmail, {
+      db,
       logger,
     });
     log.debug(
       `update existing user ${user.id} from GitHub ${user.github_login}`
     );
   } else {
-    const invite = invite_id ? await findInvite(invite_id, { logger }) : null;
+    const invite = invite_id
+      ? await findInvite(invite_id, { db, logger })
+      : null;
 
     user = await createUserWithTeam(
       {
@@ -253,13 +251,13 @@ export const signInWithGitHubResolver = async (
         },
         hasInvite: !!invite,
       },
-      { logger }
+      { db, logger }
     );
 
     log.debug(`create new user ${user.id} from GitHub ${user.github_login}`);
   }
 
-  return buildAuthenticatedUser({ logger, user });
+  return buildAuthenticatedUser(user, { db, logger });
 };
 
 /**
@@ -268,14 +266,14 @@ export const signInWithGitHubResolver = async (
 export const teamUsersResolver = async (
   { id }: Team,
   _: Record<string, unknown>,
-  { logger, teams }: Context
+  { db, logger, teams }: Context
 ): Promise<User[]> => {
   const log = logger.prefix("teamUsersResolver");
   log.debug(id);
 
   ensureTeamAccess({ logger, team_id: id, teams });
 
-  return findUsersForTeam(id, { logger });
+  return findUsersForTeam(id, { db, logger });
 };
 
 /**
@@ -284,15 +282,16 @@ export const teamUsersResolver = async (
 export const updateUserResolver = async (
   _: Record<string, unknown>,
   args: UpdateUserMutation,
-  { logger, teams, user: contextUser }: Context
+  { db, logger, teams, user: contextUser }: Context
 ): Promise<CurrentUser> => {
   const user = ensureUser({ logger, user: contextUser });
 
   logger.debug("updateUserResolver", user.id, args);
 
-  const updatedUser = await db.transaction(async (trx) => {
-    return updateUser({ id: user.id, ...args }, { logger, trx });
-  });
+  const updatedUser = await updateUser(
+    { id: user.id, ...args },
+    { db, logger }
+  );
 
   return { ...updatedUser, teams: teams || [] };
 };

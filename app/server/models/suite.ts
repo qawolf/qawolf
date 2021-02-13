@@ -1,10 +1,9 @@
 import { minutesFromNow } from "../../shared/utils";
-import { db } from "../db";
-import { Logger } from "../Logger";
 import { FormattedVariables, ModelOptions, Run, Suite, Test } from "../types";
 import { cuid } from "../utils";
 import { encrypt } from "./encrypt";
 import { createRunsForTests } from "./run";
+import { findEnabledTestsForTrigger } from "./test";
 
 export type SuiteForTeam = Suite & {
   github_login: string | null;
@@ -27,6 +26,17 @@ type CreateSuiteForTests = {
   trigger_id: string;
 };
 
+type CreateSuiteForTrigger = {
+  environment_variables?: FormattedVariables;
+  team_id: string;
+  trigger_id: string;
+};
+
+type CreatedSuite = {
+  runs: Run[];
+  suite: Suite;
+};
+
 type FindSuitesForTrigger = {
   limit: number;
   trigger_id: string;
@@ -39,7 +49,7 @@ type UpdateSuite = {
 
 export const createSuite = async (
   { creator_id, environment_variables, team_id, trigger_id }: CreateSuite,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Suite> => {
   const log = logger.prefix("createSuite");
   log.debug("creator", creator_id, "trigger", trigger_id);
@@ -60,11 +70,37 @@ export const createSuite = async (
     updated_at: timestamp,
   };
 
-  await (trx || db)("suites").insert(suite);
+  await db("suites").insert(suite);
 
   log.debug("created suite", suite.id);
 
   return suite;
+};
+
+export const createSuiteForTrigger = async (
+  { environment_variables, team_id, trigger_id }: CreateSuiteForTrigger,
+  { db, logger }: ModelOptions
+): Promise<CreatedSuite | null> => {
+  const log = logger.prefix("createSuiteForTrigger");
+
+  log.debug("trigger", trigger_id, "team", team_id);
+
+  const tests = await findEnabledTestsForTrigger(
+    { trigger_id },
+    { db, logger }
+  );
+
+  if (tests.length) {
+    const result = await createSuiteForTests(
+      { environment_variables, team_id, trigger_id, tests },
+      { db, logger }
+    );
+
+    return result;
+  } else {
+    log.debug("skip creating suite, no enabled tests");
+    return null;
+  }
 };
 
 export const createSuiteForTests = async (
@@ -75,8 +111,8 @@ export const createSuiteForTests = async (
     tests,
     trigger_id,
   }: CreateSuiteForTests,
-  { logger, trx }: ModelOptions
-): Promise<{ runs: Run[]; suite: Suite }> => {
+  { db, logger }: ModelOptions
+): Promise<CreatedSuite> => {
   const log = logger.prefix("createSuiteForTests");
 
   log.debug(
@@ -86,7 +122,7 @@ export const createSuiteForTests = async (
 
   const suite = await createSuite(
     { creator_id, environment_variables, team_id, trigger_id },
-    { logger, trx }
+    { db, logger }
   );
 
   const runs = await createRunsForTests(
@@ -94,7 +130,7 @@ export const createSuiteForTests = async (
       suite_id: suite.id,
       tests,
     },
-    { logger, trx }
+    { db, logger }
   );
 
   log.debug("created suite", suite.id);
@@ -104,11 +140,11 @@ export const createSuiteForTests = async (
 
 export const findSuite = async (
   suite_id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Suite> => {
   const log = logger.prefix("findSuite");
 
-  const suite = await (trx || db)
+  const suite = await db
     .select("*")
     .from("suites")
     .where({ id: suite_id })
@@ -124,7 +160,7 @@ export const findSuite = async (
 
 export const findSuitesForTrigger = async (
   { limit, trigger_id }: FindSuitesForTrigger,
-  logger: Logger
+  { db, logger }: ModelOptions
 ): Promise<Suite[]> => {
   const log = logger.prefix("findSuitesForTrigger");
 
@@ -144,18 +180,18 @@ export const findSuitesForTrigger = async (
 
 export const updateSuite = async (
   { alert_sent_at, id }: UpdateSuite,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Suite> => {
   const log = logger.prefix("updateSuite");
 
-  const existingSuite = await findSuite(id, { logger, trx });
+  const existingSuite = await findSuite(id, { db, logger });
   if (!existingSuite) throw new Error("Suite not found");
 
   const updates: Partial<Suite> = { updated_at: minutesFromNow() };
 
   if (alert_sent_at !== undefined) updates.alert_sent_at = alert_sent_at;
 
-  await (trx || db)("suites").where({ id }).update(updates);
+  await db("suites").where({ id }).update(updates);
 
   log.debug("updated", id, updates);
 

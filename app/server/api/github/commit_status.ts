@@ -1,12 +1,7 @@
 import { EventPayloads } from "@octokit/webhooks";
 
-import { Logger } from "../../Logger";
+import { ModelOptions } from "../../types";
 import { createSuitesForDeployment } from "./deployment";
-
-type HandleCommitStatusEvent = {
-  logger: Logger;
-  payload: EventPayloads.WebhookPayloadStatus;
-};
 
 export const isNetlifyDeploymentEvent = ({
   description,
@@ -18,11 +13,11 @@ export const isNetlifyDeploymentEvent = ({
   return isFromNetlify && isDeployment;
 };
 
-export const handleCommitStatusEvent = async ({
-  logger,
-  payload,
-}: HandleCommitStatusEvent): Promise<void> => {
-  const log = logger.prefix("handleCommitStatusEvent");
+export const handleCommitStatusEvent = async (
+  payload: EventPayloads.WebhookPayloadStatus,
+  options: ModelOptions
+): Promise<void> => {
+  const log = options.logger.prefix("handleCommitStatusEvent");
   const { installation, repository, sha, state, target_url } = payload;
 
   if (!isNetlifyDeploymentEvent(payload)) {
@@ -35,12 +30,14 @@ export const handleCommitStatusEvent = async ({
     return;
   }
 
-  return createSuitesForDeployment({
-    deploymentUrl: target_url,
-    installationId: installation.id,
-    logger,
-    repoId: repository.id,
-    repoFullName: repository.full_name,
-    sha,
-  });
+  return createSuitesForDeployment(
+    {
+      deploymentUrl: target_url,
+      installationId: installation.id,
+      repoId: repository.id,
+      repoFullName: repository.full_name,
+      sha,
+    },
+    options
+  );
 };

@@ -1,5 +1,4 @@
 import { minutesFromNow } from "../../shared/utils";
-import { db } from "../db";
 import { AuthenticationError } from "../errors";
 import {
   findRun,
@@ -31,7 +30,7 @@ type ValidateApiKey = {
  */
 export const validateApiKey = async (
   { api_key, run }: ValidateApiKey,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<void> => {
   const log = logger.prefix("validateApiKey");
   log.debug();
@@ -41,7 +40,7 @@ export const validateApiKey = async (
     throw new AuthenticationError("invalid api key");
   }
 
-  const runner = await findRunner({ run_id: run.id }, { logger, trx });
+  const runner = await findRunner({ run_id: run.id }, { db, logger });
 
   if (!runner || api_key !== runner.api_key) {
     log.error("incorrect api key for run", run?.id, "runner", runner?.id);
@@ -55,12 +54,12 @@ export const validateApiKey = async (
 export const suiteRunsResolver = async (
   { id }: Suite,
   _: Record<string, unknown>,
-  { logger, teams }: Context
+  { db, logger, teams }: Context
 ): Promise<SuiteRun[]> => {
   logger.debug("suiteRunsResolver");
-  await ensureSuiteAccess({ logger, teams, suite_id: id });
+  await ensureSuiteAccess({ suite_id: id, teams }, { db, logger });
 
-  return findRunsForSuite(id, { logger });
+  return findRunsForSuite(id, { db, logger });
 };
 
 /**
@@ -69,14 +68,14 @@ export const suiteRunsResolver = async (
 export const testHistoryResolver = async (
   _: Record<string, unknown>,
   { id }: IdQuery,
-  { logger, teams }: Context
+  { db, logger, teams }: Context
 ): Promise<Run[]> => {
   const log = logger.prefix("testHistoryResolver");
   log.debug("test", id);
 
-  await ensureTestAccess({ logger, teams, test_id: id });
+  await ensureTestAccess({ teams, test_id: id }, { db, logger });
 
-  return findTestHistory(id, { logger });
+  return findTestHistory(id, { db, logger });
 };
 
 /**
@@ -85,15 +84,15 @@ export const testHistoryResolver = async (
 export const updateRunResolver = async (
   _: Record<string, unknown>,
   { current_line, id, status }: UpdateRunMutation,
-  { api_key, logger }: Context
+  { api_key, db, logger }: Context
 ): Promise<Run> => {
   const log = logger.prefix("updateRunResolver");
   log.debug(id);
 
   const updatedRun = await db.transaction(async (trx) => {
-    const run = await findRun(id, { logger, trx });
+    const run = await findRun(id, { db: trx, logger });
 
-    await validateApiKey({ api_key, run }, { logger, trx });
+    await validateApiKey({ api_key, run }, { db: trx, logger });
 
     const updates: UpdateRun = { id };
 
@@ -105,10 +104,10 @@ export const updateRunResolver = async (
     }
 
     if (["fail", "pass"].includes(status)) {
-      await expireRunner({ run_id: id }, { logger, trx });
+      await expireRunner({ run_id: id }, { db: trx, logger });
     }
 
-    return updateRun(updates, { logger });
+    return updateRun(updates, { db: trx, logger });
   });
 
   return updatedRun;

@@ -4,7 +4,7 @@ import environment from "../../environment";
 import { Logger } from "../../Logger";
 import { deleteInvite, findInvite } from "../../models/invite";
 import { findUsersForTeam } from "../../models/user";
-import { Suite, SuiteRun, Trigger, User } from "../../types";
+import { ModelOptions, Suite, SuiteRun, Trigger, User } from "../../types";
 import {
   buildInviteHtml,
   buildLoginCode,
@@ -13,11 +13,6 @@ import {
 } from "./html";
 
 sgMail.setApiKey(environment.SENDGRID_API_KEY);
-
-type SendEmailForInvite = {
-  inviteId: string;
-  logger: Logger;
-};
 
 type SendEmailForLoginCode = {
   logger: Logger;
@@ -34,7 +29,6 @@ type SendEmailForSuite = {
 };
 
 type SendEmailAlert = {
-  logger: Logger;
   runs: SuiteRun[];
   suite: Suite;
   trigger: Trigger;
@@ -47,14 +41,14 @@ const buildFrom = (wolfName: string): MailDataRequired["from"] => {
   };
 };
 
-export const sendEmailForInvite = async ({
-  inviteId,
-  logger,
-}: SendEmailForInvite): Promise<void> => {
-  const log = logger.prefix("sendEmailForInvite");
+export const sendEmailForInvite = async (
+  inviteId: string,
+  options: ModelOptions
+): Promise<void> => {
+  const log = options.logger.prefix("sendEmailForInvite");
   log.debug("invite", inviteId);
 
-  const invite = await findInvite(inviteId, { logger });
+  const invite = await findInvite(inviteId, options);
 
   try {
     const message = {
@@ -68,9 +62,9 @@ export const sendEmailForInvite = async ({
     await sgMail.send(message);
     log.debug("email sent");
   } catch (error) {
-    logger.alert("error: email invite", invite);
+    log.alert("error: email invite", invite);
     // delete invite from database if cannot send email
-    await deleteInvite(invite.id, { logger });
+    await deleteInvite(invite.id, options);
   }
 };
 
@@ -131,23 +125,27 @@ export const sendEmailForSuite = async ({
     log.debug("send email to %s", user.email);
     await sgMail.send(message);
   } catch (error) {
-    logger.alert("error: email alert", user.email, error.message);
+    log.alert("error: email alert", user.email, error.message);
   }
 };
 
-export const sendEmailAlert = async ({
-  logger,
-  runs,
-  suite,
-  trigger,
-}: SendEmailAlert): Promise<void> => {
-  const log = logger.prefix("sendEmailAlert");
+export const sendEmailAlert = async (
+  { runs, suite, trigger }: SendEmailAlert,
+  options: ModelOptions
+): Promise<void> => {
+  const log = options.logger.prefix("sendEmailAlert");
   log.debug("suite", suite.id);
 
-  const users = await findUsersForTeam(suite.team_id, { logger });
+  const users = await findUsersForTeam(suite.team_id, options);
 
   const sendPromises = users.map((user) =>
-    sendEmailForSuite({ logger, runs, suite_id: suite.id, trigger, user })
+    sendEmailForSuite({
+      logger: options.logger,
+      runs,
+      suite_id: suite.id,
+      trigger,
+      user,
+    })
   );
 
   await Promise.all(sendPromises);

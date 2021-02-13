@@ -1,5 +1,4 @@
 import { minutesFromNow } from "../../shared/utils";
-import { db } from "../db";
 import { ClientError } from "../errors";
 import { DeploymentEnvironment, ModelOptions, Trigger } from "../types";
 import { cuid } from "../utils";
@@ -103,7 +102,7 @@ export const createTrigger = async (
     repeat_minutes,
     team_id,
   }: CreateTrigger,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Trigger> => {
   const log = logger.prefix("createTrigger");
 
@@ -123,7 +122,7 @@ export const createTrigger = async (
     repeat_minutes: repeat_minutes || null,
     team_id,
   };
-  await (trx || db)("triggers").insert(trigger);
+  await db("triggers").insert(trigger);
 
   log.debug(`create ${trigger.id}`);
 
@@ -132,11 +131,11 @@ export const createTrigger = async (
 
 export const findDefaultTriggerForTeam = async (
   team_id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Trigger> => {
   const log = logger.prefix("findDefaultTriggerForTeam");
 
-  const triggers = await (trx || db)
+  const triggers = await db
     .select("*")
     .from("triggers")
     .where({ deleted_at: null, is_default: true, team_id });
@@ -151,16 +150,12 @@ export const findDefaultTriggerForTeam = async (
 
 export const findTrigger = async (
   id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Trigger> => {
   const log = logger.prefix("findTrigger");
   log.debug(`find ${id}`);
 
-  const trigger = await (trx || db)
-    .select("*")
-    .from("triggers")
-    .where({ id })
-    .first();
+  const trigger = await db.select("*").from("triggers").where({ id }).first();
 
   if (!trigger || trigger.deleted_at) {
     log.error(`not found ${id}`);
@@ -173,12 +168,12 @@ export const findTrigger = async (
 
 export const findTriggersForGitHubIntegration = async (
   github_repo_id: number,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Trigger[]> => {
   const log = logger.prefix("findTriggersForGitHubIntegration");
   log.debug("github repo", github_repo_id);
 
-  const triggers = await (trx || db)
+  const triggers = await db
     .select("triggers.*" as "*")
     .from("triggers")
     .innerJoin(
@@ -198,12 +193,12 @@ export const findTriggersForGitHubIntegration = async (
 
 export const deleteTrigger = async (
   id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Trigger> => {
   const log = logger.prefix("deleteTrigger");
   log.debug("trigger", id);
 
-  const trigger = await findTrigger(id, { logger, trx });
+  const trigger = await findTrigger(id, { db, logger });
   if (trigger.is_default) {
     log.error(`do not delete default trigger ${id}`);
     throw new Error("cannot delete default trigger");
@@ -211,7 +206,7 @@ export const deleteTrigger = async (
 
   const deleted_at = minutesFromNow();
 
-  await (trx || db)("triggers").where({ id }).update({ deleted_at });
+  await db("triggers").where({ id }).update({ deleted_at });
   log.debug("deleted trigger", id);
 
   return { ...trigger, deleted_at };
@@ -219,13 +214,13 @@ export const deleteTrigger = async (
 
 export const findTriggersForTeam = async (
   team_id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Trigger[]> => {
   const log = logger.prefix("findTriggersForTeam");
 
   log.debug(team_id);
 
-  const triggers = await (trx || db)
+  const triggers = await db
     .select("*")
     .from("triggers")
     .where({ deleted_at: null, team_id })
@@ -238,12 +233,12 @@ export const findTriggersForTeam = async (
 };
 
 export const findPendingTriggers = async ({
+  db,
   logger,
-  trx,
 }: ModelOptions): Promise<Trigger[]> => {
   const log = logger.prefix("findPendingTriggers");
 
-  const triggers = await (trx || db)
+  const triggers = await db
     .select("triggers.*" as "*")
     .from("triggers")
     .innerJoin("teams", "triggers.team_id", "teams.id")
@@ -267,13 +262,13 @@ export const updateTrigger = async (
     name,
     repeat_minutes,
   }: UpdateTrigger,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Trigger> => {
   const log = logger.prefix("updateTrigger");
   log.debug(`update trigger ${id} name ${name}`);
 
-  return (trx || db).transaction(async (trx) => {
-    const existingTrigger = await findTrigger(id, { logger, trx });
+  return db.transaction(async (trx) => {
+    const existingTrigger = await findTrigger(id, { db, logger });
 
     const updates: Partial<Trigger> = {
       updated_at: minutesFromNow(),
@@ -323,13 +318,13 @@ export const updateTrigger = async (
 // TODO make this part of updateTrigger
 export const updateTriggerNextAt = async (
   trigger: Trigger,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<void> => {
   const log = logger.prefix("updateTriggerNextAt");
 
   const next_at = getUpdatedNextAt(trigger);
 
-  await (trx || db)("triggers")
+  await db("triggers")
     .update({ next_at, updated_at: minutesFromNow() })
     .where({ id: trigger.id });
 

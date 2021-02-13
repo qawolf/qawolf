@@ -1,7 +1,3 @@
-import { Transaction } from "knex";
-
-import { db } from "../../db";
-import { Logger } from "../../Logger";
 import { createGitHubCommitStatus } from "../../models/github_commit_status";
 import { createSuiteForTests } from "../../models/suite";
 import { findEnabledTestsForTrigger } from "../../models/test";
@@ -10,26 +6,23 @@ import {
   createCommitStatus,
   findBranchesForCommit,
 } from "../../services/gitHub/app";
-import { Trigger } from "../../types";
+import { ModelOptions, Trigger } from "../../types";
 
 type CreateSuiteForDeployment = {
   branches: string[];
   deploymentUrl: string;
   environment?: string;
   installationId: number;
-  logger: Logger;
   owner: string;
   repo: string;
   sha: string;
   trigger: Trigger;
-  trx: Transaction;
 };
 
 type CreateSuitesForDeployment = {
   deploymentUrl: string;
   environment?: string;
   installationId: number;
-  logger: Logger;
   repoFullName: string;
   repoId: number;
   sha: string;
@@ -57,19 +50,20 @@ export const shouldRunTriggerOnDeployment = ({
   return isBranchMatch && isEnvironmentMatch;
 };
 
-const createSuiteForDeployment = async ({
-  branches,
-  deploymentUrl,
-  environment,
-  installationId,
-  logger,
-  owner,
-  repo,
-  sha,
-  trigger,
-  trx,
-}: CreateSuiteForDeployment): Promise<void> => {
-  const log = logger.prefix("createSuiteForDeployment");
+const createSuiteForDeployment = async (
+  {
+    branches,
+    deploymentUrl,
+    environment,
+    installationId,
+    owner,
+    repo,
+    sha,
+    trigger,
+  }: CreateSuiteForDeployment,
+  options: ModelOptions
+): Promise<void> => {
+  const log = options.logger.prefix("createSuiteForDeployment");
 
   if (!shouldRunTriggerOnDeployment({ branches, environment, trigger })) {
     log.debug(
@@ -80,7 +74,7 @@ const createSuiteForDeployment = async ({
 
   const tests = await findEnabledTestsForTrigger(
     { trigger_id: trigger.id },
-    { logger, trx }
+    options
   );
 
   if (!tests.length) {
@@ -95,17 +89,20 @@ const createSuiteForDeployment = async ({
       team_id: trigger.team_id,
       tests,
     },
-    { logger, trx }
+    options
   );
 
-  const commitStatus = await createCommitStatus({
-    context: `QA Wolf - ${trigger.name}`,
-    installationId,
-    owner,
-    repo,
-    sha,
-    suiteId: suite.id,
-  });
+  const commitStatus = await createCommitStatus(
+    {
+      context: `QA Wolf - ${trigger.name}`,
+      installationId,
+      owner,
+      repo,
+      sha,
+      suiteId: suite.id,
+    },
+    options
+  );
 
   await createGitHubCommitStatus(
     {
@@ -118,49 +115,55 @@ const createSuiteForDeployment = async ({
       suite_id: suite.id,
       trigger_id: trigger.id,
     },
-    { logger, trx }
+    options
   );
 };
 
-export const createSuitesForDeployment = async ({
-  deploymentUrl,
-  environment,
-  installationId,
-  logger,
-  repoFullName,
-  repoId,
-  sha,
-}: CreateSuitesForDeployment): Promise<void> => {
+export const createSuitesForDeployment = async (
+  {
+    deploymentUrl,
+    environment,
+    installationId,
+    repoFullName,
+    repoId,
+    sha,
+  }: CreateSuitesForDeployment,
+  options: ModelOptions
+): Promise<void> => {
   const [owner, repo] = repoFullName.split("/");
 
-  const branches = await findBranchesForCommit({
-    installationId,
-    owner,
-    repo,
-    sha,
-  });
+  const branches = await findBranchesForCommit(
+    {
+      installationId,
+      owner,
+      repo,
+      sha,
+    },
+    options
+  );
 
-  return db.transaction(async (trx) => {
+  return options.db.transaction(async (trx) => {
     const triggers = await findTriggersForGitHubIntegration(repoId, {
-      logger,
-      trx,
+      db: trx,
+      logger: options.logger,
     });
 
     await Promise.all(
-      triggers.map((trigger) => {
-        return createSuiteForDeployment({
-          branches,
-          deploymentUrl,
-          environment,
-          installationId,
-          logger,
-          owner,
-          repo,
-          sha,
-          trigger,
-          trx,
-        });
-      })
+      triggers.map((trigger) =>
+        createSuiteForDeployment(
+          {
+            branches,
+            deploymentUrl,
+            environment,
+            installationId,
+            owner,
+            repo,
+            sha,
+            trigger,
+          },
+          { db: trx, logger: options.logger }
+        )
+      )
     );
   });
 };

@@ -1,5 +1,6 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 
+import { connectDb } from "../../server/db";
 import environment from "../../server/environment";
 import { checkPending } from "../../server/jobs/checkPending";
 import { deleteRunners } from "../../server/jobs/deleteRunners";
@@ -11,10 +12,12 @@ import { Job, JOB_TYPES } from "../../server/jobs/types";
 import { Logger } from "../../server/Logger";
 import { getAzureClient } from "../../server/services/azure/container";
 
-const handleWorkerRequest: NextApiHandler = async (
+export default async function (
   req: NextApiRequest,
   res: NextApiResponse
-): Promise<void> => {
+): Promise<void> {
+  const db = connectDb();
+
   const logger = new Logger({ prefix: "worker" });
 
   if (req.headers.authorization !== environment.JOB_SECRET) {
@@ -28,22 +31,23 @@ const handleWorkerRequest: NextApiHandler = async (
 
   logger.debug("start", job);
 
+  const options = { db, logger };
+
   try {
     if (job === "checkPending") {
-      await checkPending(logger);
+      await checkPending(options);
     } else if (job === "orchestrateRunners") {
-      await orchestrateRunners(logger);
+      await orchestrateRunners(options);
     } else if (job === "orchestrateTriggers") {
-      await orchestrateTriggers(logger);
+      await orchestrateTriggers(options);
     } else {
       const client = await getAzureClient();
-      const options = { client, logger };
       if (job === "deleteRunners") {
-        await deleteRunners(options);
+        await deleteRunners(client, options);
       } else if (job === "deployRunners") {
-        await deployRunners(options);
+        await deployRunners(client, options);
       } else if (job === "restartRunners") {
-        await restartRunners(options);
+        await restartRunners(client, options);
       }
     }
 
@@ -55,6 +59,6 @@ const handleWorkerRequest: NextApiHandler = async (
 
     res.status(500).end();
   }
-};
 
-export default handleWorkerRequest;
+  await db.destroy();
+}

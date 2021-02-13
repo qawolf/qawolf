@@ -8,8 +8,18 @@ import { context } from "../../server/context";
 import { CLIENT_ERROR_CODES, ClientError } from "../../server/errors";
 import { resolvers } from "../../server/resolvers";
 import * as typeDefs from "../../server/schema.graphql";
+import { Context } from "../../server/types";
 
-const plugins: PluginDefinition[] = [];
+const plugins: PluginDefinition[] = [
+  {
+    requestDidStart: () => ({
+      willSendResponse: ({ context }) => {
+        const { db } = context as Context;
+        if (db) db.destroy();
+      },
+    }),
+  },
+];
 
 if (process.env.APOLLO_KEY) {
   plugins.push(

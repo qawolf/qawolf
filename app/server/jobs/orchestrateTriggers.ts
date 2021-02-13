@@ -1,51 +1,26 @@
-import { db } from "../db";
-import { Logger } from "../Logger";
-import { createSuiteForTests } from "../models/suite";
-import { findEnabledTestsForTrigger } from "../models/test";
+import { createSuiteForTrigger } from "../models/suite";
 import { findPendingTriggers, updateTriggerNextAt } from "../models/trigger";
-import { Trigger } from "../types";
+import { ModelOptions } from "../types";
 
-type RunTrigger = {
-  logger: Logger;
-  trigger: Trigger;
-};
-
-// TODO this and handleSuitesRequest should be combined
-export const runTrigger = async ({
+export const orchestrateTriggers = async ({
+  db,
   logger,
-  trigger,
-}: RunTrigger): Promise<void> => {
-  const { id, team_id } = trigger;
-  const log = logger.prefix("runTrigger");
-
-  log.debug("trigger", id, "team", team_id);
-
-  await db.transaction(async (trx) => {
-    const tests = await findEnabledTestsForTrigger(
-      { trigger_id: id },
-      { logger, trx }
-    );
-
-    if (tests.length) {
-      await createSuiteForTests(
-        { trigger_id: id, team_id, tests },
-        { logger, trx }
-      );
-    } else {
-      log.debug("skip creating suite, no enabled tests");
-    }
-
-    return updateTriggerNextAt(trigger, { logger, trx });
-  });
-};
-
-export const orchestrateTriggers = async (logger: Logger): Promise<void> => {
+}: ModelOptions): Promise<void> => {
   const log = logger.prefix("orchestrateTriggers");
 
-  const triggers = await findPendingTriggers({ logger });
-  const triggerPromises = triggers.map((trigger) =>
-    runTrigger({ logger, trigger })
-  );
+  const triggers = await findPendingTriggers({ db, logger });
+
+  const triggerPromises = triggers.map(async (trigger) => {
+    await db.transaction(async (trx) => {
+      await createSuiteForTrigger(
+        { trigger_id: trigger.id, team_id: trigger.team_id },
+        { db: trx, logger }
+      );
+
+      await updateTriggerNextAt(trigger, { db: trx, logger });
+    });
+  });
+
   await Promise.all(triggerPromises);
 
   log.debug("success");

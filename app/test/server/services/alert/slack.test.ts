@@ -1,8 +1,8 @@
-import { db, dropTestDb, migrateDb } from "../../../../server/db";
 import { findRunsForSuite } from "../../../../server/models/run";
 import * as slack from "../../../../server/services/alert/slack";
 import * as azure from "../../../../server/services/aws/storage";
 import { minutesFromNow } from "../../../../shared/utils";
+import { prepareTestDb } from "../../db";
 import {
   buildIntegration,
   buildRun,
@@ -21,9 +21,10 @@ const trigger = buildTrigger({});
 const integration = buildIntegration({});
 const user = buildUser({});
 
-beforeAll(async () => {
-  await migrateDb();
+const db = prepareTestDb();
+const options = { db, logger };
 
+beforeAll(async () => {
   await db("users").insert(user);
   await db("teams").insert(buildTeam({}));
   await db("team_users").insert(buildTeamUser({}));
@@ -50,8 +51,6 @@ beforeAll(async () => {
   ]);
 });
 
-afterAll(() => dropTestDb());
-
 describe("buildMessageForSuite", () => {
   beforeAll(() => {
     jest.spyOn(azure, "createStorageReadAccessUrl").mockReturnValue("url");
@@ -62,7 +61,7 @@ describe("buildMessageForSuite", () => {
   it("builds a Slack message for a failing suite", async () => {
     const trigger = await db.select("*").from("triggers").first();
     const suite = await db.select("*").from("suites").first();
-    const runs = await findRunsForSuite(suite.id, { logger });
+    const runs = await findRunsForSuite(suite.id, options);
 
     expect(
       buildMessageForSuite({ runs, suite, trigger, user })
@@ -74,7 +73,7 @@ describe("buildMessageForSuite", () => {
 
     const trigger = await db.select("*").from("triggers").first();
     const suite = await db.select("*").from("suites").first();
-    const runs = await findRunsForSuite(suite.id, { logger });
+    const runs = await findRunsForSuite(suite.id, options);
 
     expect(
       buildMessageForSuite({ runs, suite, trigger, user })
@@ -85,8 +84,12 @@ describe("buildMessageForSuite", () => {
 });
 
 describe("sendSlackAlert", () => {
+  let postMessageToSlackSpy: jest.SpyInstance;
+
   beforeAll(() => {
-    jest.spyOn(slack, "postMessageToSlack").mockResolvedValue();
+    postMessageToSlackSpy = jest
+      .spyOn(slack, "postMessageToSlack")
+      .mockResolvedValue();
   });
 
   afterEach(jest.clearAllMocks);
@@ -94,17 +97,19 @@ describe("sendSlackAlert", () => {
   it("sends Slack alert", async () => {
     const trigger = await db.select("*").from("triggers").first();
     const suite = await db.select("*").from("suites").first();
-    const runs = await findRunsForSuite(suite.id, { logger });
+    const runs = await findRunsForSuite(suite.id, options);
 
-    await sendSlackAlert({
-      integrationId: "integrationId",
-      logger,
-      runs,
-      suite,
-      trigger,
-    });
+    await sendSlackAlert(
+      {
+        integrationId: "integrationId",
+        runs,
+        suite,
+        trigger,
+      },
+      options
+    );
 
-    expect(slack.postMessageToSlack).toBeCalledWith({
+    expect(postMessageToSlackSpy.mock.calls[0][0]).toEqual({
       message: buildMessageForSuite({ runs, suite, trigger, user }),
       webhook_url: integration.webhook_url,
     });

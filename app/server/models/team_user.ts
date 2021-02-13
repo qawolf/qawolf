@@ -1,4 +1,3 @@
-import { db } from "../db";
 import { ClientError } from "../errors";
 import { ModelOptions, TeamUser, TeamUserRole } from "../types";
 import { cuid } from "../utils";
@@ -11,7 +10,7 @@ type CreateTeamUser = {
 
 export const createTeamUser = async (
   { team_id, role, user_id }: CreateTeamUser,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<TeamUser> => {
   const log = logger.prefix("createTeamUser");
 
@@ -25,7 +24,7 @@ export const createTeamUser = async (
   };
 
   try {
-    await (trx || db)("team_users").insert(teamUser);
+    await db("team_users").insert(teamUser);
   } catch (error) {
     if (error.message.includes("team_users_team_id_user_id_unique")) {
       throw new ClientError("user already on team");

@@ -1,10 +1,12 @@
-import { db, dropTestDb, migrateDb } from "../../../server/db";
 import environment from "../../../server/environment";
 import * as orchestrateRunners from "../../../server/jobs/orchestrateRunners";
 import * as runModel from "../../../server/models/run";
 import * as testModel from "../../../server/models/test";
 import { minutesFromNow } from "../../../shared/utils";
+import { prepareTestDb } from "../db";
 import { buildRunner, logger } from "../utils";
+
+const db = prepareTestDb();
 
 describe("calculateRunnerPool", () => {
   let countPendingRuns: jest.SpyInstance;
@@ -27,7 +29,10 @@ describe("calculateRunnerPool", () => {
 
     countPendingTests.mockResolvedValue([]);
 
-    const targets = await orchestrateRunners.calculateRunnerPool(logger);
+    const targets = await orchestrateRunners.calculateRunnerPool({
+      db,
+      logger,
+    });
     expect(targets).toEqual([
       { count: 1, location: "eastus2" },
       { count: 2, location: "japaneast" },
@@ -41,7 +46,10 @@ describe("calculateRunnerPool", () => {
 
     countPendingTests.mockResolvedValue([{ count: 3, location: "eastus2" }]);
 
-    const targets = await orchestrateRunners.calculateRunnerPool(logger);
+    const targets = await orchestrateRunners.calculateRunnerPool({
+      db,
+      logger,
+    });
     expect(targets).toEqual([{ count: 3, location: "eastus2" }]);
   });
 
@@ -53,7 +61,10 @@ describe("calculateRunnerPool", () => {
     countPendingRuns.mockResolvedValue(3);
     countPendingTests.mockResolvedValue([{ count: 1, location: "eastus2" }]);
 
-    const targets = await orchestrateRunners.calculateRunnerPool(logger);
+    const targets = await orchestrateRunners.calculateRunnerPool({
+      db,
+      logger,
+    });
     expect(targets).toEqual([{ count: 4, location: "eastus2" }]);
   });
 });
@@ -63,20 +74,17 @@ describe("balanceRunnerPool", () => {
 
   beforeAll(async () => {
     calculateRunnerPool = jest.spyOn(orchestrateRunners, "calculateRunnerPool");
-
-    await migrateDb();
   });
 
   afterEach(() => db("runners").del());
 
-  afterAll(() => dropTestDb());
   afterAll(() => jest.restoreAllMocks());
 
   it("creates runners to match the pool", async () => {
     calculateRunnerPool.mockResolvedValue([{ count: 2, location: "westus2" }]);
 
     await db("runners").insert(buildRunner({ location: "westus2" }));
-    await orchestrateRunners.balanceRunnerPool(logger);
+    await orchestrateRunners.balanceRunnerPool({ db, logger });
 
     const runners = await db("runners").where({ location: "westus2" });
     expect(runners.map((r) => r.deleted_at)).toEqual([null, null]);
@@ -97,7 +105,7 @@ describe("balanceRunnerPool", () => {
       buildRunner({ i: 3, location: "westus2" }),
     ]);
 
-    await orchestrateRunners.balanceRunnerPool(logger);
+    await orchestrateRunners.balanceRunnerPool({ db, logger });
 
     const runners = await db("runners").where({ location: "westus2" });
 

@@ -1,9 +1,9 @@
-import { db, dropTestDb, migrateDb } from "../../../server/db";
 import * as userModel from "../../../server/models/user";
 import { WOLF_NAMES, WOLF_VARIANTS } from "../../../server/models/wolfOptions";
 import { GitHubFields, User } from "../../../server/types";
 import { isCorrectCode } from "../../../server/utils";
 import { minutesFromNow } from "../../../shared/utils";
+import { prepareTestDb } from "../db";
 import { buildTeam, buildTeamUser, buildUser, logger } from "../utils";
 
 const {
@@ -23,10 +23,11 @@ const gitHubUser = {
   name: "Spirit",
 };
 
+const db = prepareTestDb();
+const options = { db, logger };
+
 describe("user model", () => {
   beforeAll(async () => {
-    await migrateDb();
-
     await db("teams").insert(buildTeam({}));
 
     return db("users").insert([
@@ -41,10 +42,7 @@ describe("user model", () => {
     ]);
   });
 
-  afterAll(() => {
-    jest.restoreAllMocks();
-    return dropTestDb();
-  });
+  afterAll(() => jest.restoreAllMocks());
 
   describe("authenticateUser", () => {
     const login_code = "ABCDEF";
@@ -52,7 +50,7 @@ describe("user model", () => {
     beforeAll(() => {
       return createUserWithEmail(
         { email: "acorn@qawolf.com", login_code: "ABCDEF" },
-        { logger }
+        options
       );
     });
 
@@ -63,49 +61,45 @@ describe("user model", () => {
     it("returns user if correct credentials (case insensitive)", async () => {
       const user = await authenticateUser(
         { email: "acorn@qawolf.com", login_code },
-        { logger }
+        options
       );
 
       expect(user).toMatchObject({ email: "acorn@qawolf.com" });
       // reset login code after authenticating
-      await updateUser({ id: user.id, login_code }, { logger });
+      await updateUser({ id: user.id, login_code }, options);
 
       const user2 = await authenticateUser(
         { email: "acorn@qawolf.com", login_code: login_code.toLowerCase() },
-        { logger }
+        options
       );
 
       expect(user2).toMatchObject({ email: "acorn@qawolf.com" });
 
-      const user3 = (await findUser({ id: user.id }, { logger })) as User;
+      const user3 = (await findUser({ id: user.id }, options)) as User;
       expect(user3).toMatchObject({
         login_code_digest: null,
         login_code_expires_at: null,
       });
       // reset login code after authenticating
-      await updateUser({ id: user.id, login_code }, { logger });
+      await updateUser({ id: user.id, login_code }, options);
     });
 
     it("throws an error if user not found", async () => {
-      const testFn = async (): Promise<User> => {
-        return authenticateUser(
+      await expect(
+        authenticateUser(
           { email: "fake@email.com", login_code: "ABCDEF" },
-          { logger }
-        );
-      };
-
-      await expect(testFn()).rejects.toThrowError("not found");
+          options
+        )
+      ).rejects.toThrowError("not found");
     });
 
     it("throws an error if incorrect credentials", async () => {
-      const testFn = async (): Promise<User> => {
-        return authenticateUser(
+      await expect(
+        authenticateUser(
           { email: "acorn@qawolf.com", login_code: "ABC123" },
-          { logger }
-        );
-      };
-
-      await expect(testFn()).rejects.toThrowError("wasn't valid");
+          options
+        )
+      ).rejects.toThrowError("wasn't valid");
     });
 
     it("throws an error if login code expired", async () => {
@@ -113,14 +107,9 @@ describe("user model", () => {
         .where({ email: "acorn@qawolf.com" })
         .update({ login_code_expires_at: new Date("2000") });
 
-      const testFn = async (): Promise<User> => {
-        return authenticateUser(
-          { email: "acorn@qawolf.com", login_code },
-          { logger }
-        );
-      };
-
-      await expect(testFn()).rejects.toThrowError("expired");
+      await expect(
+        authenticateUser({ email: "acorn@qawolf.com", login_code }, options)
+      ).rejects.toThrowError("expired");
 
       await db("users")
         .where({ email: "acorn@qawolf.com" })
@@ -136,7 +125,7 @@ describe("user model", () => {
     });
 
     it("creates a new user from email", async () => {
-      await createUserWithEmail({ email, login_code: "ABCDEF" }, { logger });
+      await createUserWithEmail({ email, login_code: "ABCDEF" }, options);
 
       const user = await db("users")
         .select("*")
@@ -188,7 +177,7 @@ describe("user model", () => {
           wolf_number,
           wolf_variant,
         },
-        { logger }
+        options
       );
 
       return db.select("*").from("users").where({ github_id: 345 }).first();
@@ -228,7 +217,7 @@ describe("user model", () => {
 
   describe("findUser", () => {
     it("returns user by id", async () => {
-      const user = await findUser({ id: "spirit" }, { logger });
+      const user = await findUser({ id: "spirit" }, options);
 
       expect(user).toMatchObject({
         id: "spirit",
@@ -237,7 +226,7 @@ describe("user model", () => {
     });
 
     it("returns user by id with no transaction", async () => {
-      const user = await findUser({ id: "spirit" }, { logger });
+      const user = await findUser({ id: "spirit" }, options);
 
       expect(user).toMatchObject({
         id: "spirit",
@@ -246,14 +235,14 @@ describe("user model", () => {
     });
 
     it("returns user by email (case insensitive)", async () => {
-      const user = await findUser({ email: "spirit@qawolf.com" }, { logger });
+      const user = await findUser({ email: "spirit@qawolf.com" }, options);
 
       expect(user).toMatchObject({
         id: "spirit",
         name: "Spirit",
       });
 
-      const user2 = await findUser({ email: "SpIriT@QAWOLF.com" }, { logger });
+      const user2 = await findUser({ email: "SpIriT@QAWOLF.com" }, options);
 
       expect(user2).toMatchObject({
         id: "spirit",
@@ -262,7 +251,7 @@ describe("user model", () => {
     });
 
     it("returns user by GitHub id", async () => {
-      const user = await findUser({ github_id: 123 }, { logger });
+      const user = await findUser({ github_id: 123 }, options);
 
       expect(user).toMatchObject({
         id: "spirit",
@@ -273,7 +262,7 @@ describe("user model", () => {
     it("returns user with multiple criteria", async () => {
       const user = await findUser(
         { email: "fake@email.com", github_id: 123 },
-        { logger }
+        options
       );
 
       expect(user).toMatchObject({
@@ -283,17 +272,15 @@ describe("user model", () => {
     });
 
     it("returns null if user not found", async () => {
-      const user = await findUser({ id: "fakeId" }, { logger });
+      const user = await findUser({ id: "fakeId" }, options);
 
       expect(user).toBeNull();
     });
 
     it("throws an error if email, id, and github_id not provided", async () => {
-      const testFn = async (): Promise<User | null> => {
-        return findUser({}, { logger });
-      };
-
-      await expect(testFn()).rejects.toThrowError("id, email, or GitHub id");
+      await expect(findUser({}, options)).rejects.toThrowError(
+        "id, email, or GitHub id"
+      );
     });
   });
 
@@ -312,13 +299,13 @@ describe("user model", () => {
     });
 
     it("finds all users for a given team", async () => {
-      const users = await findUsersForTeam("teamId", { logger });
+      const users = await findUsersForTeam("teamId", options);
 
       expect(users).toMatchObject([{ id: "spirit" }, { id: "user2Id" }]);
     });
 
     it("returns an empty array if no users found", async () => {
-      const users = await findUsersForTeam("fakeId", { logger });
+      const users = await findUsersForTeam("fakeId", options);
 
       expect(users).toEqual([]);
     });
@@ -333,7 +320,7 @@ describe("user model", () => {
           github_id: 123,
           github_login: "spirit_github_new",
         } as GitHubFields,
-        { logger }
+        options
       );
 
       expect(updatedUser).toMatchObject({
@@ -348,14 +335,9 @@ describe("user model", () => {
     const onboarded_at = minutesFromNow();
 
     it("updates login code on user", async () => {
-      const user = await db.transaction(async (trx) => {
-        await updateUser(
-          { id: "spirit", login_code: "ABCDEF" },
-          { logger, trx }
-        );
+      await updateUser({ id: "spirit", login_code: "ABCDEF" }, { db, logger });
 
-        return findUser({ id: "spirit" }, { logger, trx });
-      });
+      const user = await findUser({ id: "spirit" }, { db, logger });
 
       expect(user).toMatchObject({
         login_code_digest: expect.any(String),
@@ -370,11 +352,9 @@ describe("user model", () => {
     });
 
     it("updates onboarded at on user", async () => {
-      const user = await db.transaction(async (trx) => {
-        await updateUser({ id: "spirit", onboarded_at }, { logger, trx });
+      await updateUser({ id: "spirit", onboarded_at }, { db, logger });
 
-        return findUser({ id: "spirit" }, { logger, trx });
-      });
+      const user = await findUser({ id: "spirit" }, { db, logger });
 
       expect(user).toMatchObject({
         id: "spirit",
@@ -383,21 +363,15 @@ describe("user model", () => {
     });
 
     it("throws an error if user not found", async () => {
-      const testFn = async (): Promise<User> => {
-        return db.transaction(async (trx) => {
-          return updateUser({ id: "fakeId", onboarded_at }, { logger, trx });
-        });
-      };
-
-      await expect(testFn()).rejects.toThrowError("not found");
+      await expect(
+        updateUser({ id: "fakeId", onboarded_at }, { db, logger })
+      ).rejects.toThrowError("not found");
     });
 
     it("throws an error if no updates provided", async () => {
-      const testFn = async (): Promise<User> => {
-        return updateUser({ id: "spirit" }, { logger });
-      };
-
-      await expect(testFn()).rejects.toThrowError("No updates");
+      await expect(updateUser({ id: "spirit" }, options)).rejects.toThrowError(
+        "No updates"
+      );
     });
   });
 });

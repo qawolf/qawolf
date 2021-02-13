@@ -1,8 +1,10 @@
-import { db } from "../server/db";
+import { connectDb } from "../server/db";
 import { encrypt } from "../server/models/encrypt";
 import { buildApiKey, cuid } from "../server/utils";
 
 (async () => {
+  const db = connectDb();
+
   const teams = await db("teams").select("*");
 
   await db.transaction(async (trx) => {
@@ -23,4 +25,6 @@ import { buildApiKey, cuid } from "../server/utils";
   });
 
   console.log("success");
+
+  await db.destroy();
 })();

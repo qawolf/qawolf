@@ -1,4 +1,3 @@
-import { db } from "../db";
 import {
   createInvite,
   findInvitesForTeam,
@@ -15,7 +14,7 @@ import { ensureTeamAccess, ensureUser } from "./utils";
 export const acceptInviteResolver = async (
   _: Record<string, unknown>,
   { id }: IdQuery,
-  { logger, user: contextUser }: Context
+  { db, logger, user: contextUser }: Context
 ): Promise<Invite> => {
   const log = logger.prefix("acceptInviteResolver");
   log.debug("invite", id);
@@ -23,10 +22,11 @@ export const acceptInviteResolver = async (
   const user = ensureUser({ logger, user: contextUser });
 
   return db.transaction(async (trx) => {
-    const invite = await updateInvite(id, { logger, trx });
+    const invite = await updateInvite(id, { db: trx, logger });
+
     await createTeamUser(
       { team_id: invite.team_id, user_id: user.id },
-      { logger, trx }
+      { db: trx, logger }
     );
 
     return invite;
@@ -40,7 +40,7 @@ export const acceptInviteResolver = async (
 export const createInvitesResolver = async (
   _: Record<string, unknown>,
   { emails, team_id }: CreateInviteMutation,
-  { logger, teams, user }: Context
+  { db, logger, teams, user }: Context
 ): Promise<Invite[]> => {
   const log = logger.prefix("createInviteResolver");
   log.debug(`team ${team_id}, emails ${emails.join(", ")}`);
@@ -50,13 +50,12 @@ export const createInvitesResolver = async (
 
   const promises = emails.map((email) => {
     return (async (): Promise<Invite> => {
-      const invite = await db.transaction(async (trx) => {
-        return createInvite(
-          { creator_id: id, email, team_id },
-          { logger, trx }
-        );
-      });
-      await sendEmailForInvite({ inviteId: invite.id, logger });
+      const invite = await createInvite(
+        { creator_id: id, email, team_id },
+        { db, logger }
+      );
+
+      await sendEmailForInvite(invite.id, { db, logger });
 
       return invite;
     })();
@@ -72,12 +71,12 @@ export const createInvitesResolver = async (
 export const teamInvitesResolver = async (
   { id }: Team,
   _: Record<string, unknown>,
-  { logger, teams }: Context
+  { db, logger, teams }: Context
 ): Promise<Invite[]> => {
   const log = logger.prefix("teamInvitesResolver");
   log.debug(id);
 
   ensureTeamAccess({ logger, team_id: id, teams });
 
-  return findInvitesForTeam(id, { logger });
+  return findInvitesForTeam(id, { db, logger });
 };

@@ -1,4 +1,3 @@
-import { db, dropTestDb, migrateDb } from "../../../server/db";
 import { Logger } from "../../../server/Logger";
 import * as userModel from "../../../server/models/user";
 import {
@@ -12,19 +11,18 @@ import {
 import * as accessService from "../../../server/services/access";
 import * as emailService from "../../../server/services/alert/email";
 import * as gitHubUserService from "../../../server/services/gitHub/user";
-import { AuthenticatedUser, Context, User } from "../../../server/types";
+import { User } from "../../../server/types";
 import { minutesFromNow } from "../../../shared/utils";
+import { prepareTestDb } from "../db";
 import {
   buildInvite,
-  buildTeam,
   buildTeamUser,
-  buildUser,
   deleteUser,
   logger,
+  testContext,
 } from "../utils";
 
 const invite = buildInvite({});
-const teams = [buildTeam({})];
 
 const gitHubUser = {
   avatar_url: "avatar.png",
@@ -50,41 +48,33 @@ const gitHubUser3 = {
   name: "GitHub User 3",
 };
 
-const testContext = {
-  api_key: null,
-  ip: null,
-  logger,
-  teams,
-  user: buildUser({}),
-};
+const db = prepareTestDb();
+const context = { ...testContext, db };
+const options = { db, logger };
+const teams = testContext.teams;
 
 beforeAll(async () => {
-  await migrateDb();
-
   await db("users").insert(testContext.user);
   await db("teams").insert(teams);
   await db("team_users").insert(buildTeamUser({}));
 });
 
-afterAll(() => {
-  jest.restoreAllMocks();
-  return dropTestDb();
-});
+afterAll(() => jest.restoreAllMocks());
 
 describe("currentUserResolver", () => {
   afterEach(jest.restoreAllMocks);
 
   it("returns user if user exists", async () => {
-    const user = await currentUserResolver({}, {}, testContext);
+    const user = await currentUserResolver({}, {}, context);
 
-    expect(user).toEqual({ ...testContext.user, teams });
+    expect(user).toEqual({ ...context.user, teams });
   });
 
   it("returns null otherwise", async () => {
     const user = await currentUserResolver(
       {},
       {},
-      { api_key: null, ip: null, logger, teams: null, user: null }
+      { api_key: null, db, ip: null, logger, teams: null, user: null }
     );
 
     expect(user).toBeNull();
@@ -108,13 +98,13 @@ describe("sendLoginCodeResolver", () => {
   });
 
   it("updates login code if user already exists", async () => {
-    const email = testContext.user.email;
+    const email = context.user.email;
     const user = await db.select("*").from("users").where({ email }).first();
 
     const result = await sendLoginCodeResolver(
       {},
       { email: email.toUpperCase() },
-      { ...testContext, user: null }
+      { ...context, user: null }
     );
 
     const updatedUser = await db
@@ -145,7 +135,7 @@ describe("sendLoginCodeResolver", () => {
     const result = await sendLoginCodeResolver(
       {},
       { email },
-      { ...testContext, user: null }
+      { ...context, user: null }
     );
 
     const newUser = await db.select("*").from("users").where({ email }).first();
@@ -200,7 +190,7 @@ describe("sendLoginCodeResolver", () => {
     const result = await sendLoginCodeResolver(
       {},
       { email, invite_id: invite.id },
-      { ...testContext, user: null }
+      { ...context, user: null }
     );
 
     const newUser = await db.select("*").from("users").where({ email }).first();
@@ -246,7 +236,7 @@ describe("signInWithEmailResolver", () => {
   beforeAll(async () => {
     user = await userModel.createUserWithEmail(
       { email: "spice@qawolf.com", login_code },
-      { logger }
+      options
     );
 
     await db("team_users").insert(buildTeamUser({ i: 2, user_id: user.id }));
@@ -268,7 +258,7 @@ describe("signInWithEmailResolver", () => {
     const result = await signInWithEmailResolver(
       {},
       { email: "Spice@qawolf.com", login_code },
-      { logger } as Context
+      { ...context, user: null }
     );
 
     expect(user).toMatchObject({ email: "spice@qawolf.com" });
@@ -280,39 +270,36 @@ describe("signInWithEmailResolver", () => {
 
     expect(sendEmailForLoginCodeSpy).not.toBeCalled();
 
-    await userModel.updateUser({ id: user.id, login_code }, { logger });
+    await userModel.updateUser({ id: user.id, login_code }, options);
   });
 
   it("throws an error if incorrect credentials", async () => {
-    const testFn = async (): Promise<AuthenticatedUser> => {
-      return signInWithEmailResolver(
+    await expect(
+      signInWithEmailResolver(
         {},
         { email: "spice@qawolf.com", login_code: "ABC123" },
-        { logger } as Context
-      );
-    };
-
-    await expect(testFn()).rejects.toThrowError("wasn't valid");
+        context
+      )
+    ).rejects.toThrowError("wasn't valid");
     expect(sendEmailForLoginCodeSpy).not.toBeCalled();
   });
 
   it("throws an error and resets code if code expired", async () => {
-    await userModel.updateUser({ id: user.id, login_code }, { logger });
+    await userModel.updateUser({ id: user.id, login_code }, options);
+
     await db("users")
       .where({ id: user.id })
       .update({
         login_code_expires_at: new Date("2000"),
       });
 
-    const testFn = async (): Promise<AuthenticatedUser> => {
-      return signInWithEmailResolver(
+    await expect(
+      signInWithEmailResolver(
         {},
         { email: "spice@qawolf.com", login_code },
-        { logger } as Context
-      );
-    };
-
-    await expect(testFn()).rejects.toThrowError("expired");
+        context
+      )
+    ).rejects.toThrowError("expired");
 
     const updatedUser = await db
       .select("*")
@@ -335,7 +322,7 @@ describe("signInWithEmailResolver", () => {
       },
     });
 
-    await userModel.updateUser({ id: user.id, login_code }, { logger });
+    await userModel.updateUser({ id: user.id, login_code }, options);
   });
 });
 
@@ -359,7 +346,7 @@ describe("signInWithGitHubResolver", () => {
     const { access_token, user } = await signInWithGitHubResolver(
       {},
       { github_code: "code", github_state: "state" },
-      { logger } as Context
+      { ...context, user: null }
     );
 
     expect(access_token).toBe("signedToken");
@@ -378,7 +365,7 @@ describe("signInWithGitHubResolver", () => {
     const { access_token, user } = await signInWithGitHubResolver(
       {},
       { github_code: "code", github_state: "state", invite_id: invite.id },
-      { logger } as Context
+      { ...context, user: null }
     );
 
     expect(access_token).toBeTruthy();
@@ -415,7 +402,7 @@ describe("signInWithGitHubResolver", () => {
     const { access_token, user } = await signInWithGitHubResolver(
       {},
       { github_code: "code", github_state: "state" },
-      { logger } as Context
+      { ...context, user: null }
     );
 
     expect(access_token).toBe("signedToken");
@@ -456,7 +443,7 @@ describe("signInWithGitHubResolver", () => {
   it("allows sign in if email already taken", async () => {
     const user = await userModel.createUserWithEmail(
       { email: "spice@qawolf.com", login_code: "ABCDEF" },
-      { logger }
+      options
     );
 
     jest
@@ -465,13 +452,10 @@ describe("signInWithGitHubResolver", () => {
     jest.spyOn(userModel, "updateGitHubFields");
     jest.spyOn(accessService, "signAccessToken").mockReturnValue("signedToken");
 
-    const {
-      access_token,
-      user: updatedUser,
-    } = await signInWithGitHubResolver(
+    const { access_token, user: updatedUser } = await signInWithGitHubResolver(
       {},
       { github_code: "code", github_state: "state" },
-      { logger } as Context
+      { ...context, user: null }
     );
 
     expect(access_token).toBe("signedToken");
@@ -489,21 +473,17 @@ describe("signInWithGitHubResolver", () => {
 
 describe("teamUsersResolver", () => {
   it("returns users in a team", async () => {
-    const users = await teamUsersResolver(
-      testContext.teams[0],
-      {},
-      testContext
-    );
+    const users = await teamUsersResolver(context.teams[0], {}, context);
 
     expect(users).toHaveLength(1);
-    expect(users).toMatchObject([{ id: testContext.user.id }]);
+    expect(users).toMatchObject([{ id: context.user.id }]);
   });
 });
 
 describe("updateUserResolver", () => {
   it("updates user", async () => {
     const onboarded_at = minutesFromNow();
-    const user = await updateUserResolver({}, { onboarded_at }, testContext);
+    const user = await updateUserResolver({}, { onboarded_at }, context);
 
     expect(user).toMatchObject({ id: "userId", onboarded_at });
   });

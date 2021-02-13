@@ -1,4 +1,3 @@
-import { db, dropTestDb, migrateDb } from "../../../server/db";
 import {
   createTestTrigger,
   createTestTriggersForTrigger,
@@ -6,7 +5,7 @@ import {
   deleteTestTriggersForTrigger,
   findTestTriggersForTests,
 } from "../../../server/models/test_trigger";
-import { TestTrigger } from "../../../server/types";
+import { prepareTestDb } from "../db";
 import {
   buildTeam,
   buildTest,
@@ -15,28 +14,25 @@ import {
   logger,
 } from "../utils";
 
+const db = prepareTestDb();
+const options = { db, logger };
+
 describe("test trigger model", () => {
   beforeAll(async () => {
-    await migrateDb();
-
     await db("users").insert(buildUser({}));
     await db("teams").insert(buildTeam({}));
     await db("tests").insert(buildTest({}));
     return db("triggers").insert(buildTrigger({}));
   });
 
-  afterAll(() => dropTestDb());
-
   describe("createTestTrigger", () => {
     afterEach(() => db("test_triggers").del());
 
     it("creates a test trigger", async () => {
-      await db.transaction(async (trx) => {
-        return createTestTrigger(
-          { test_id: "testId", trigger_id: "triggerId" },
-          { logger, trx }
-        );
-      });
+      await createTestTrigger(
+        { test_id: "testId", trigger_id: "triggerId" },
+        options
+      );
 
       const testTriggers = await db.select("*").from("test_triggers");
 
@@ -52,17 +48,15 @@ describe("test trigger model", () => {
     it("does not create team user if user already on team", async () => {
       await createTestTrigger(
         { test_id: "testId", trigger_id: "triggerId" },
-        { logger }
+        options
       );
 
-      const testFn = async (): Promise<TestTrigger> => {
-        return createTestTrigger(
+      await expect(
+        createTestTrigger(
           { test_id: "testId", trigger_id: "triggerId" },
-          { logger }
-        );
-      };
-
-      await expect(testFn()).rejects.toThrowError("unique constraint");
+          options
+        )
+      ).rejects.toThrowError("unique constraint");
     });
   });
 
@@ -86,7 +80,7 @@ describe("test trigger model", () => {
     it("creates test triggers for a trigger", async () => {
       const result = await createTestTriggersForTrigger(
         { test_ids: ["test2Id", "test3Id"], trigger_id: "trigger2Id" },
-        { logger }
+        options
       );
 
       expect(result).toHaveLength(2);
@@ -110,7 +104,7 @@ describe("test trigger model", () => {
 
       const result = await createTestTriggersForTrigger(
         { test_ids: ["test2Id", "test3Id"], trigger_id: "trigger2Id" },
-        { logger }
+        options
       );
 
       expect(result).toHaveLength(1);
@@ -153,7 +147,7 @@ describe("test trigger model", () => {
     it("deletes test triggers for specified trigger", async () => {
       const deleteCount = await deleteTestTriggersForTrigger(
         { trigger_id: "trigger2Id" },
-        { logger }
+        options
       );
       expect(deleteCount).toBe(2);
 
@@ -165,7 +159,7 @@ describe("test trigger model", () => {
     it("deletes test triggers for specified trigger and test ids", async () => {
       const deleteCount = await deleteTestTriggersForTrigger(
         { test_ids: ["test3Id"], trigger_id: "trigger2Id" },
-        { logger }
+        options
       );
       expect(deleteCount).toBe(1);
 
@@ -204,7 +198,7 @@ describe("test trigger model", () => {
     });
 
     it("deletes test triggers for specified tests", async () => {
-      await deleteTestTriggersForTests(["test2Id", "test3Id"], { logger });
+      await deleteTestTriggersForTests(["test2Id", "test3Id"], options);
 
       const testTriggers = await db.select("*").from("test_triggers");
 
@@ -249,9 +243,7 @@ describe("test trigger model", () => {
     it("finds test triggers for tests", async () => {
       const testTriggers = await findTestTriggersForTests(
         ["testId", "test2Id", "test3Id"],
-        {
-          logger,
-        }
+        options
       );
 
       testTriggers.sort((a, b) => {

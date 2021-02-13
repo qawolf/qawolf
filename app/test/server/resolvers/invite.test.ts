@@ -1,38 +1,22 @@
-import { db, dropTestDb, migrateDb } from "../../../server/db";
 import {
   acceptInviteResolver,
   createInvitesResolver,
   teamInvitesResolver,
 } from "../../../server/resolvers/invite";
 import * as emailService from "../../../server/services/alert/email";
-import {
-  buildInvite,
-  buildTeam,
-  buildTeamUser,
-  buildUser,
-  logger,
-} from "../utils";
+import { prepareTestDb } from "../db";
+import { buildInvite, buildTeamUser, buildUser, testContext } from "../utils";
 
-const testContext = {
-  api_key: null,
-  ip: null,
-  logger,
-  teams: [buildTeam({})],
-  user: buildUser({}),
-};
+const db = prepareTestDb();
+const context = { ...testContext, db };
 
 beforeAll(async () => {
-  await migrateDb();
-
   await db("users").insert(testContext.user);
   await db("teams").insert(testContext.teams);
   await db("team_users").insert(buildTeamUser({}));
 });
 
-afterAll(() => {
-  jest.restoreAllMocks();
-  return dropTestDb();
-});
+afterAll(() => jest.restoreAllMocks());
 
 describe("acceptInviteResolver", () => {
   const user2 = buildUser({ i: 2 });
@@ -54,7 +38,7 @@ describe("acceptInviteResolver", () => {
     const invite = await acceptInviteResolver(
       {},
       { id: "inviteId" },
-      { api_key: null, ip: null, logger, teams: [], user: user2 }
+      { ...context, user: user2 }
     );
 
     expect(invite.accepted_at).toBeTruthy();
@@ -79,7 +63,7 @@ describe("createInvitesResolver", () => {
     await createInvitesResolver(
       {},
       { emails: ["aspen@qawolf.com", "pumpkin@qawolf.com"], team_id: "teamId" },
-      testContext
+      context
     );
 
     const invites = await db
@@ -105,7 +89,7 @@ describe("teamInvitesResolver", () => {
     const invites = await teamInvitesResolver(
       testContext.teams[0],
       {},
-      testContext
+      context
     );
 
     expect(invites).toMatchObject([{ id: "inviteId" }]);

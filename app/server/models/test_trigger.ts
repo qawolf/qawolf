@@ -1,4 +1,3 @@
-import { db } from "../db";
 import { ModelOptions, TestTrigger, TestTriggers } from "../types";
 import { cuid } from "../utils";
 
@@ -19,7 +18,7 @@ type DeleteTestTriggersForTrigger = {
 
 export const createTestTrigger = async (
   { test_id, trigger_id }: CreateTestTrigger,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<TestTrigger> => {
   const log = logger.prefix("createTestTrigger");
   log.debug(`test ${test_id} and trigger ${trigger_id}`);
@@ -29,7 +28,7 @@ export const createTestTrigger = async (
     test_id,
     trigger_id,
   };
-  await (trx || db)("test_triggers").insert(testTrigger);
+  await db("test_triggers").insert(testTrigger);
 
   log.debug(`created ${testTrigger.id}`);
 
@@ -38,12 +37,12 @@ export const createTestTrigger = async (
 
 export const createTestTriggersForTrigger = async (
   { test_ids, trigger_id }: CreateTestTriggersForTrigger,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<TestTrigger[]> => {
   const log = logger.prefix("createTestTriggersForTrigger");
   log.debug("trigger", trigger_id, "tests", test_ids);
 
-  const existingTestTriggers = await (trx || db)
+  const existingTestTriggers = await db
     .select("*")
     .from("test_triggers")
     .where({ trigger_id });
@@ -59,7 +58,7 @@ export const createTestTriggersForTrigger = async (
     testTriggers.push({ id: cuid(), test_id, trigger_id });
   });
 
-  await (trx || db)("test_triggers").insert(testTriggers);
+  await db("test_triggers").insert(testTriggers);
 
   log.debug(`created ${testTriggers.length} test triggers`);
   return testTriggers;
@@ -67,12 +66,12 @@ export const createTestTriggersForTrigger = async (
 
 export const deleteTestTriggersForTrigger = async (
   { test_ids, trigger_id }: DeleteTestTriggersForTrigger,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<number> => {
   const log = logger.prefix("deleteTestTriggersForTrigger");
   log.debug("trigger", trigger_id);
 
-  const deleteCount = await (trx || db)("test_triggers")
+  const deleteCount = await db("test_triggers")
     .where((builder) => {
       if (test_ids) {
         builder.whereIn("test_id", test_ids);
@@ -87,12 +86,12 @@ export const deleteTestTriggersForTrigger = async (
 
 export const deleteTestTriggersForTests = async (
   testIds: string[],
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<void> => {
   const log = logger.prefix("deleteTestTriggersForTests");
   log.debug(testIds);
 
-  const deleteCount = await (trx || db)("test_triggers")
+  const deleteCount = await db("test_triggers")
     .whereIn("test_id", testIds)
     .del();
 
@@ -101,12 +100,12 @@ export const deleteTestTriggersForTests = async (
 
 export const findTestTriggersForTests = async (
   testIds: string[],
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<TestTriggers[]> => {
   const log = logger.prefix("findTestTriggersForTests");
   log.debug(testIds);
 
-  const testTriggers = await (trx || db)("test_triggers")
+  const testTriggers = await db("test_triggers")
     .select("test_triggers.*")
     .innerJoin("triggers", "test_triggers.trigger_id", "triggers.id")
     .whereIn("test_triggers.test_id", testIds)

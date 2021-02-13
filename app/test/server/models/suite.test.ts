@@ -1,4 +1,3 @@
-import { db, dropTestDb, migrateDb } from "../../../server/db";
 import { decrypt, encrypt } from "../../../server/models/encrypt";
 import {
   createSuite,
@@ -7,8 +6,8 @@ import {
   findSuitesForTrigger,
   updateSuite,
 } from "../../../server/models/suite";
-import { Suite } from "../../../server/types";
 import { minutesFromNow } from "../../../shared/utils";
+import { prepareTestDb } from "../db";
 import {
   buildSuite,
   buildTeam,
@@ -25,16 +24,15 @@ const trigger = buildTrigger({});
 const test = buildTest({});
 const test2 = buildTest({ i: 2 });
 
-beforeAll(async () => {
-  await migrateDb();
+const db = prepareTestDb();
+const options = { db, logger };
 
+beforeAll(async () => {
   await db("users").insert(buildUser({}));
   await db("teams").insert([buildTeam({}), buildTeam({ i: 2 })]);
   await db("triggers").insert([trigger, buildTrigger({ i: 2 })]);
   await db("tests").insert([test, test2]);
 });
-
-afterAll(() => dropTestDb());
 
 describe("suite model", () => {
   describe("createSuite", () => {
@@ -43,7 +41,7 @@ describe("suite model", () => {
     it("creates a new suite", async () => {
       await createSuite(
         { team_id: trigger.team_id, trigger_id: trigger.id },
-        { logger }
+        options
       );
 
       const suites = await db.select("*").from("suites");
@@ -66,7 +64,7 @@ describe("suite model", () => {
           team_id: trigger.team_id,
           trigger_id: trigger.id,
         },
-        { logger }
+        options
       );
 
       const suites = await db.select("*").from("suites");
@@ -101,7 +99,7 @@ describe("suite model", () => {
           trigger_id: "triggerId",
           tests: [test, test2],
         },
-        { logger }
+        options
       );
 
       const suites = await db.select("*").from("suites");
@@ -128,7 +126,7 @@ describe("suite model", () => {
     afterAll(() => db("suites").del());
 
     it("finds a suite", async () => {
-      const suite = await findSuite("suiteId", { logger });
+      const suite = await findSuite("suiteId", options);
 
       expect(suite).toMatchObject({
         id: "suiteId",
@@ -138,11 +136,9 @@ describe("suite model", () => {
     });
 
     it("throws an error if suite not found", async () => {
-      const testFn = async (): Promise<Suite> => {
-        return findSuite("fakeId", { logger });
-      };
-
-      await expect(testFn()).rejects.toThrowError("not found");
+      await expect(findSuite("fakeId", options)).rejects.toThrowError(
+        "not found"
+      );
     });
   });
 
@@ -167,7 +163,7 @@ describe("suite model", () => {
           limit: 20,
           trigger_id: "triggerId",
         },
-        logger
+        options
       );
 
       expect(suites).toMatchObject([
@@ -188,7 +184,7 @@ describe("suite model", () => {
           limit: 1,
           trigger_id: "triggerId",
         },
-        logger
+        options
       );
 
       expect(suites).toMatchObject([
@@ -213,7 +209,7 @@ describe("suite model", () => {
 
       const suite = await updateSuite(
         { alert_sent_at, id: "suiteId" },
-        { logger }
+        options
       );
 
       expect(suite).toMatchObject({ alert_sent_at, id: "suiteId" });

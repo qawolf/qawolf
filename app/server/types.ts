@@ -1,4 +1,4 @@
-import { Transaction } from "knex";
+import knex, { Transaction } from "knex";
 
 import { Logger } from "./Logger";
 
@@ -13,6 +13,7 @@ export type SaveArtifacts = {
 // Context type
 export type Context = {
   api_key: string | null;
+  db: knex;
   ip: string | null;
   logger: Logger;
   teams: Team[] | null;
@@ -135,7 +136,7 @@ export type Integration = {
 };
 
 export type ModelOptions = {
-  trx?: Transaction;
+  db: knex | Transaction;
   logger: Logger;
 };
 

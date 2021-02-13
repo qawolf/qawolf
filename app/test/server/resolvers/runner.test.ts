@@ -1,20 +1,19 @@
 import axios from "axios";
 
-import { db, dropTestDb, migrateDb } from "../../../server/db";
 import * as runModel from "../../../server/models/run";
 import * as runnerModel from "../../../server/models/runner";
 import { findRunner, updateRunner } from "../../../server/models/runner";
 import { findTest } from "../../../server/models/test";
 import * as runnerResolvers from "../../../server/resolvers/runner";
-import { Runner, RunnerRun } from "../../../server/types";
+import { Runner } from "../../../server/types";
 import { minutesFromNow } from "../../../shared/utils";
+import { prepareTestDb } from "../db";
 import {
   buildRun,
   buildRunner,
-  buildTeam,
   buildTest,
-  buildUser,
   logger,
+  testContext,
 } from "../utils";
 
 const {
@@ -25,49 +24,32 @@ const {
 
 jest.mock("axios");
 
-const context = {
-  api_key: "apiKey",
-  ip: "127.0.0.1",
-  logger,
-  teams: [buildTeam({})],
-  user: buildUser({}),
-};
+const db = prepareTestDb();
+const context = { ...testContext, api_key: "apiKey", db };
+const options = { db, logger };
 
 beforeAll(async () => {
-  await migrateDb();
   await db("users").insert(context.user);
   await db("teams").insert(context.teams[0]);
 });
-
-afterAll(() => dropTestDb());
 
 describe("authenticateRunner", () => {
   it("resolves if api key valid", async () => {
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     (axios.get as any).mockResolvedValueOnce({});
 
-    const testFn = async (): Promise<void> => {
-      return authenticateRunner(
-        { id: "", location: "", api_key: "apiKey" },
-        logger
-      );
-    };
-
-    await expect(testFn()).resolves.not.toThrowError();
+    await expect(
+      authenticateRunner({ id: "", location: "", api_key: "apiKey" }, logger)
+    ).resolves.not.toThrowError();
   });
 
   it("throws an error if api key not valid", async () => {
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     (axios.get as any).mockRejectedValueOnce(new Error("invalid"));
 
-    const testFn = async (): Promise<void> => {
-      return authenticateRunner(
-        { id: "", location: "", api_key: "apiKey" },
-        logger
-      );
-    };
-
-    await expect(testFn()).rejects.toThrowError("invalid api key");
+    await expect(
+      authenticateRunner({ id: "", location: "", api_key: "apiKey" }, logger)
+    ).rejects.toThrowError("invalid api key");
   });
 });
 
@@ -101,8 +83,9 @@ describe("runnerResolver", () => {
   });
 
   it("extends the current runner's session when should_request_runner is specified", async () => {
-    const initialExpiresAt = (await findRunner({ run_id: "runId" }, { logger }))
-      .session_expires_at;
+    const initialExpiresAt = (
+      await findRunner({ run_id: "runId" }, { db, logger })
+    ).session_expires_at;
 
     const runner = await runnerResolver(
       null,
@@ -114,7 +97,7 @@ describe("runnerResolver", () => {
       ws_url: "wss://westus2.qawolf.com/runner/runnerId/.qawolf",
     });
 
-    const dbRunner = await findRunner({ run_id: "runId" }, { logger });
+    const dbRunner = await findRunner({ run_id: "runId" }, options);
     expect(dbRunner.session_expires_at).not.toBe(initialExpiresAt);
   });
 
@@ -195,7 +178,7 @@ describe("updateRunnerResolver", () => {
         test_id: "testId",
       });
 
-      const test = await findTest("testId", { logger });
+      const test = await findTest("testId", options);
       expect(test).toMatchObject({ runner_requested_at: null });
     });
 
@@ -224,21 +207,19 @@ describe("updateRunnerResolver", () => {
 
   describe("update is_healthy", () => {
     it("authenticates the api key", async () => {
-      const testFn = async (): Promise<RunnerRun | null> => {
-        return updateRunnerResolver(
+      await expect(
+        updateRunnerResolver(
           {},
           { id: "runnerId", is_healthy: true },
           { ...context, api_key: "fakeKey" }
-        );
-      };
-
-      await expect(testFn()).rejects.toThrowError("invalid api key");
+        )
+      ).rejects.toThrowError("invalid api key");
     });
 
     it("skips if the runner is not ready", async () => {
       await updateRunner(
         { health_checked_at: null, id: "runnerId", ready_at: null },
-        { logger }
+        options
       );
 
       const run = await updateRunnerResolver(
@@ -263,7 +244,7 @@ describe("updateRunnerResolver", () => {
 
       await updateRunner(
         { id: "runnerId", ready_at: minutesFromNow(), test_id: null },
-        { logger }
+        options
       );
 
       const result = await updateRunnerResolver(
@@ -273,7 +254,7 @@ describe("updateRunnerResolver", () => {
       );
       expect(result).toMatchObject({ id: "mockedSuiteRunForRunnerId" });
 
-      const runner = await findRunner({ id: "runnerId" }, { logger });
+      const runner = await findRunner({ id: "runnerId" }, options);
       expect(runner).toMatchObject({
         run_id: "runId",
         session_expires_at: expect.any(Date),

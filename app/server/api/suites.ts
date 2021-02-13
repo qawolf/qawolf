@@ -1,13 +1,10 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 
-import { db } from "../db";
 import environment from "../environment";
-import { Logger } from "../Logger";
-import { createSuiteForTests } from "../models/suite";
+import { createSuiteForTrigger } from "../models/suite";
 import { validateApiKeyForTeam } from "../models/team";
-import { findEnabledTestsForTrigger } from "../models/test";
 import { findTrigger } from "../models/trigger";
-import { Trigger } from "../types";
+import { ModelOptions, Trigger } from "../types";
 
 class AuthenticationError extends Error {
   code: number;
@@ -21,9 +18,9 @@ class AuthenticationError extends Error {
 // errors example: https://stripe.com/docs/api/errors
 const ensureTriggerAccess = async (
   req: NextApiRequest,
-  logger: Logger
+  options: ModelOptions
 ): Promise<Trigger> => {
-  const log = logger.prefix("ensureTriggerAccess");
+  const log = options.logger.prefix("ensureTriggerAccess");
 
   const api_key = req.headers.authorization;
   const { trigger_id } = req.body;
@@ -45,17 +42,12 @@ const ensureTriggerAccess = async (
   }
 
   try {
-    const trigger = await db.transaction(async (trx) => {
-      const trigger = await findTrigger(trigger_id, { logger, trx });
-      await validateApiKeyForTeam(
-        { api_key, team_id: trigger.team_id },
-        { logger, trx }
-      );
+    const trigger = await findTrigger(trigger_id, options);
 
-      return trigger;
-    });
+    await validateApiKeyForTeam({ api_key, team_id: trigger.team_id }, options);
 
     log.debug("no errors for trigger", trigger.id);
+
     return trigger;
   } catch (error) {
     if (error.message.includes("not found")) {
@@ -74,44 +66,36 @@ const ensureTriggerAccess = async (
   }
 };
 
-export const handleSuitesRequest: NextApiHandler = async (
+export const handleSuitesRequest = async (
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
+  options: ModelOptions
 ): Promise<void> => {
-  const logger = new Logger({ prefix: "handleSuitesRequest" });
-  logger.debug("body", req.body);
+  const log = options.logger.prefix("handleSuitesRequest");
 
   try {
-    const { id: trigger_id, team_id } = await ensureTriggerAccess(req, logger);
+    log.debug("body", req.body);
 
-    const body = await db.transaction(async (trx) => {
-      const tests = await findEnabledTestsForTrigger(
-        { trigger_id },
-        { logger, trx }
-      );
-      if (!tests.length) {
-        logger.error("no tests for trigger", trigger_id);
-        throw new Error("No tests in trigger");
-      }
+    const { id, team_id } = await ensureTriggerAccess(req, options);
 
-      const { suite } = await createSuiteForTests(
-        {
-          environment_variables: req.body.env,
-          team_id,
-          trigger_id,
-          tests,
-        },
-        { logger, trx }
-      );
+    const environment_variables = req.body.env;
 
-      const url = `${environment.APP_URL}/tests/${suite.id}`;
-      return { url };
-    });
+    const result = await createSuiteForTrigger(
+      { environment_variables, team_id, trigger_id: id },
+      options
+    );
 
-    logger.debug("completed");
-    res.status(200).send(body);
+    if (!result) {
+      log.error("no tests for trigger", id);
+      throw new Error("No tests found");
+    }
+
+    const url = `${environment.APP_URL}/tests/${result.suite.id}`;
+    res.status(200).send({ url });
+
+    log.debug("completed");
   } catch (error) {
-    logger.alert("create suite error", error.message);
+    log.alert("create suite error", error.message);
     res.status(error.code || 500).send(error.message);
   }
 };

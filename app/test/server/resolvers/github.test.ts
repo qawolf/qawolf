@@ -1,17 +1,14 @@
-import { db, dropTestDb, migrateDb } from "../../../server/db";
-import { Logger } from "../../../server/Logger";
 import { createGitHubIntegrationsResolver } from "../../../server/resolvers/github";
 import * as gitHubService from "../../../server/services/gitHub/app";
+import { prepareTestDb } from "../db";
 import { buildIntegration, buildTeam, buildUser, testContext } from "../utils";
 
-beforeAll(async () => {
-  await migrateDb();
+const db = prepareTestDb();
 
+beforeAll(async () => {
   await db("users").insert(buildUser({}));
   await db("teams").insert(buildTeam({}));
 });
-
-afterAll(() => dropTestDb());
 
 describe("createGitHubIntegrationsResolver", () => {
   afterEach(() => {
@@ -24,7 +21,7 @@ describe("createGitHubIntegrationsResolver", () => {
       buildIntegration({ github_installation_id: 123 })
     );
 
-    jest
+    const findGitHubReposForInstallationSpy = jest
       .spyOn(gitHubService, "findGitHubReposForInstallation")
       .mockResolvedValue([
         { full_name: "qawolf/repo", id: 11 },
@@ -33,7 +30,7 @@ describe("createGitHubIntegrationsResolver", () => {
     await createGitHubIntegrationsResolver(
       {},
       { installation_id: 123, team_id: "teamId" },
-      testContext
+      { ...testContext, db }
     );
 
     const integrations = await db("integrations").select("*");
@@ -46,9 +43,6 @@ describe("createGitHubIntegrationsResolver", () => {
       },
     ]);
 
-    expect(gitHubService.findGitHubReposForInstallation).toBeCalledWith({
-      installationId: 123,
-      logger: expect.any(Logger),
-    });
+    expect(findGitHubReposForInstallationSpy.mock.calls[0][0]).toEqual(123);
   });
 });

@@ -1,7 +1,6 @@
 import isNil from "lodash/isNil";
 
 import { minutesFromNow } from "../../shared/utils";
-import { db } from "../db";
 import { ModelOptions, Team, TeamPlan } from "../types";
 import { buildApiKey, cuid } from "../utils";
 import { decrypt, encrypt } from "./encrypt";
@@ -31,7 +30,7 @@ type ValidateApiKeyForTeam = {
 
 export const createFreeTeamWithTrigger = async (
   creator_id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Team> => {
   const id = cuid();
 
@@ -53,7 +52,7 @@ export const createFreeTeamWithTrigger = async (
     stripe_subscription_id: null,
   };
 
-  await (trx || db)("teams").insert(team);
+  await db("teams").insert(team);
   log.debug("created", team);
 
   await createTrigger(
@@ -64,25 +63,21 @@ export const createFreeTeamWithTrigger = async (
       repeat_minutes: null,
       team_id: team.id,
     },
-    { logger, trx }
+    { db, logger }
   );
 
-  await createDefaultEnvironments(team.id, { logger, trx });
+  await createDefaultEnvironments(team.id, { db, logger });
 
   return team;
 };
 
 export const findTeam = async (
   id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Team> => {
   const log = logger.prefix("findTeam");
 
-  const team = await (trx || db)
-    .select("*")
-    .from("teams")
-    .where({ id })
-    .first();
+  const team = await db.select("*").from("teams").where({ id }).first();
 
   if (!team) {
     log.error("not found", id);
@@ -96,9 +91,9 @@ export const findTeam = async (
 
 export const findTeamsForUser = async (
   user_id: string,
-  { trx }: ModelOptions
+  { db }: ModelOptions
 ): Promise<Team[] | null> => {
-  const teams = await (trx || db)
+  const teams = await db
     .select("teams.*" as "*")
     .from("teams")
     .innerJoin("team_users", "teams.id", "team_users.team_id")
@@ -122,7 +117,7 @@ export const updateTeam = async (
     stripe_customer_id,
     stripe_subscription_id,
   }: UpdateTeam,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Team> => {
   const log = logger.prefix("updateTeam");
 
@@ -147,8 +142,8 @@ export const updateTeam = async (
     updates.stripe_subscription_id = stripe_subscription_id;
   }
 
-  const team = await findTeam(id, { logger });
-  await (trx || db)("teams").where({ id }).update(updates);
+  const team = await findTeam(id, { db, logger });
+  await db("teams").where({ id }).update(updates);
   log.debug("updated", id, updates);
 
   return { ...team, ...updates };
@@ -156,12 +151,12 @@ export const updateTeam = async (
 
 export const validateApiKeyForTeam = async (
   { api_key, team_id }: ValidateApiKeyForTeam,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<void> => {
   const log = logger.prefix("validateApiKeyForTeam");
   log.debug("team", team_id);
 
-  const team = await findTeam(team_id, { logger, trx });
+  const team = await findTeam(team_id, { db, logger });
 
   if (api_key !== decrypt(team.api_key)) {
     log.error("invalid api key");

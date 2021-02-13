@@ -1,5 +1,4 @@
 import { minutesFromNow } from "../../shared/utils";
-import { db } from "../db";
 import { ClientError } from "../errors";
 import { Invite, ModelOptions } from "../types";
 import { cuid } from "../utils";
@@ -23,9 +22,9 @@ type EnsureUserNotOnTeam = {
 
 const ensureUserNotOnTeam = async (
   { team_id, user_id }: EnsureUserNotOnTeam,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<void> => {
-  const teamUser = await (trx || db)
+  const teamUser = await db
     .select("*")
     .from("team_users")
     .where({ team_id, user_id })
@@ -39,12 +38,12 @@ const ensureUserNotOnTeam = async (
 
 export const findInvitesForTeam = async (
   team_id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Invite[]> => {
   const log = logger.prefix("findInvitesForTeam");
   log.debug(team_id);
 
-  const invites = await (trx || db)
+  const invites = await db
     .select("*")
     .from("invites")
     .where("expires_at", ">", new Date())
@@ -58,12 +57,12 @@ export const findInvitesForTeam = async (
 
 export const createInvite = async (
   { creator_id, email, team_id }: CreateInvite,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Invite> => {
   const log = logger.prefix("createInvite");
   log.debug(`email ${email} and team ${team_id}`);
 
-  const existingInvites = await findInvitesForTeam(team_id, { logger, trx });
+  const existingInvites = await findInvitesForTeam(team_id, { db, logger });
   const existingInvite = existingInvites.find((invite) => {
     return invite.email === email;
   });
@@ -73,11 +72,11 @@ export const createInvite = async (
     return existingInvite;
   }
 
-  const existingUser = await findUser({ email }, { logger, trx });
+  const existingUser = await findUser({ email }, { db, logger });
   if (existingUser) {
     await ensureUserNotOnTeam(
       { team_id, user_id: existingUser.id },
-      { logger, trx }
+      { db, logger }
     );
   }
 
@@ -92,7 +91,7 @@ export const createInvite = async (
     wolf_number: existingUser?.wolf_number || randomWolfNumber(),
     wolf_variant: existingUser?.wolf_variant || randomWolfVariant(),
   };
-  await (trx || db)("invites").insert(invite);
+  await db("invites").insert(invite);
 
   log.debug("created", invite.id);
 
@@ -101,23 +100,23 @@ export const createInvite = async (
 
 export const deleteInvite = async (
   id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<void> => {
   const log = logger.prefix("deleteInvite");
   log.debug(id);
 
-  const deleteCount = await (trx || db)("invites").where({ id }).del();
+  const deleteCount = await db("invites").where({ id }).del();
   log.debug(`delete ${deleteCount} invites`);
 };
 
 export const findInvite = async (
   id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Invite & { creator_email: string; team_name: string }> => {
   const log = logger.prefix("findInvite");
   log.debug(id);
 
-  const invite = await (trx || db)
+  const invite = await db
     .select("invites.*" as "*")
     .select("teams.name AS team_name")
     .select("users.email AS creator_email")
@@ -139,16 +138,12 @@ export const findInvite = async (
 
 export const updateInvite = async (
   id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Invite> => {
   const log = logger.prefix("updateInvite");
   log.debug(id);
 
-  const invite = await (trx || db)
-    .select("*")
-    .from("invites")
-    .where({ id })
-    .first();
+  const invite = await db.select("*").from("invites").where({ id }).first();
 
   if (!invite) {
     log.error("not found", id);
@@ -171,7 +166,7 @@ export const updateInvite = async (
     updated_at: timestamp,
   };
 
-  await (trx || db)("invites").where({ id }).update(updates);
+  await db("invites").where({ id }).update(updates);
   log.debug("update invite", updates);
 
   return { ...invite, ...updates };

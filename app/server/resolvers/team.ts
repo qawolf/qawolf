@@ -6,14 +6,14 @@ import { ensureTeamAccess } from "./utils";
 export const teamResolver = async (
   _: Record<string, unknown>,
   { id }: IdQuery,
-  { logger, teams }: Context
+  { db, logger, teams }: Context
 ): Promise<Team> => {
   const log = logger.prefix("teamResolver");
   log.debug(id);
 
   ensureTeamAccess({ logger, team_id: id, teams });
 
-  const team = await findTeam(id, { logger });
+  const team = await findTeam(id, { db, logger });
 
   return { ...team, api_key: decrypt(team.api_key) };
 };
@@ -24,12 +24,12 @@ export const teamResolver = async (
 export const updateTeamResolver = async (
   _: Record<string, unknown>,
   args: UpdateTeamMutation,
-  { logger, teams }: Context
+  { db, logger, teams }: Context
 ): Promise<Team> => {
   const log = logger.prefix("updateTeamResolver");
   log.debug(args.id);
 
   ensureTeamAccess({ logger, team_id: args.id, teams });
 
-  return updateTeam(args, { logger });
+  return updateTeam(args, { db, logger });
 };

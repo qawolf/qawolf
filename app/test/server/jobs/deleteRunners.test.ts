@@ -21,11 +21,7 @@ describe("deleteRunners", () => {
       .spyOn(azureContainer, "deleteContainerGroup")
       .mockResolvedValue(null);
 
-    await deleteRunners({
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      client: null,
-      logger,
-    });
+    await deleteRunners(null, { db: null, logger });
   });
 
   afterAll(() => jest.restoreAllMocks());

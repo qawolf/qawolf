@@ -1,5 +1,4 @@
 import { minutesFromNow } from "../../shared/utils";
-import { db } from "../db";
 import { sendAlert } from "../services/alert/send";
 import {
   createStorageReadAccessUrl,
@@ -39,12 +38,12 @@ export type UpdateRun = {
 };
 
 export const countPendingRuns = async ({
+  db,
   logger,
-  trx,
 }: ModelOptions): Promise<number> => {
   const log = logger.prefix("countPendingRuns");
 
-  const result = await (trx || db)("runs")
+  const result = await db("runs")
     .count("*", { as: "count" })
     .from("runs")
     .leftJoin("runners", "runners.run_id", "runs.id")
@@ -58,7 +57,7 @@ export const countPendingRuns = async ({
 
 export const createRunsForTests = async (
   { suite_id, tests }: CreateRunsForTests,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Run[]> => {
   const log = logger.prefix("createRunsForTests");
 
@@ -75,7 +74,7 @@ export const createRunsForTests = async (
     suite_id,
     test_id,
   }));
-  await (trx || db)("runs").insert(runs);
+  await db("runs").insert(runs);
 
   log.debug(
     "created",
@@ -87,13 +86,13 @@ export const createRunsForTests = async (
 
 export const findLatestRuns = async (
   { test_id, trigger_id }: FindLatestRuns,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<SuiteRun[]> => {
   const log = logger.prefix("findLatestRuns");
 
   log.debug("test", test_id, "trigger", trigger_id);
 
-  const runs = await (trx || db)
+  const runs = await db
     .select("runs.*" as "*")
     .select("tests.name AS test_name")
     .select("tests.deleted_at AS test_deleted_at")
@@ -117,9 +116,9 @@ export const findLatestRuns = async (
 
 export const findPendingRun = async (
   { needs_runner }: { needs_runner?: true },
-  { trx }: ModelOptions
+  { db }: ModelOptions
 ): Promise<Pick<Run, "created_at" | "id"> | null> => {
-  let query = (trx || db)
+  let query = db
     .select("runs.id" as "*")
     .select("runs.created_at" as "*")
     .from("runs")
@@ -138,19 +137,19 @@ export const findPendingRun = async (
 
 export const findRun = async (
   id: string,
-  { trx }: ModelOptions
+  { db }: ModelOptions
 ): Promise<Run> => {
-  const run = await (trx || db).select("*").from("runs").where({ id }).first();
+  const run = await db.select("*").from("runs").where({ id }).first();
   if (!run) throw new Error("run not found " + id);
   return run;
 };
 
 export const findRunResult = async (
   id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<RunResult> => {
-  const run = await findRun(id, { logger, trx });
-  const environment_id = await findEnvironmentIdForRun(id, { logger, trx });
+  const run = await findRun(id, { db, logger });
+  const environment_id = await findEnvironmentIdForRun(id, { db, logger });
 
   let logs_url: string | null = null;
   let video_url: string | null = null;
@@ -165,9 +164,9 @@ export const findRunResult = async (
 
 export const findRunsForSuite = async (
   suite_id: string,
-  { trx }: ModelOptions
+  { db }: ModelOptions
 ): Promise<SuiteRun[]> => {
-  const runs = await (trx || db)
+  const runs = await db
     .select("runs.*" as "*")
     .select("tests.deleted_at AS test_deleted_at")
     .select("tests.name AS test_name")
@@ -192,9 +191,9 @@ export const findRunsForSuite = async (
 
 export const findSuiteRunForRunner = async (
   run_id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<RunnerRun | null> => {
-  return (trx || db).transaction(async (trx) => {
+  return db.transaction(async (trx) => {
     const row = await trx
       .select("runs.*")
       .select("triggers.environment_id AS environment_id")
@@ -217,7 +216,7 @@ export const findSuiteRunForRunner = async (
       : {};
     const { env } = await buildEnvironmentVariables(
       { custom_variables, environment_id: row.environment_id },
-      { logger, trx }
+      { db, logger }
     );
 
     return {
@@ -234,12 +233,12 @@ export const findSuiteRunForRunner = async (
 
 export const findTestHistory = async (
   test_id: string,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Run[]> => {
   const log = logger.prefix("findRunHistory");
   log.debug("test", test_id);
 
-  const runs = await (trx || db)
+  const runs = await db
     .select("runs.*" as "*")
     .from("runs")
     .where({ test_id })
@@ -253,7 +252,7 @@ export const findTestHistory = async (
 
 export const updateRun = async (
   { id, ...options }: UpdateRun,
-  { logger, trx }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Run> => {
   const log = logger.prefix("updateRun");
 
@@ -264,7 +263,7 @@ export const updateRun = async (
     updated_at: timestamp,
   };
 
-  const run = await findRun(id, { logger, trx });
+  const run = await findRun(id, { db, logger });
 
   if (options.status === "fail" || options.status === "pass") {
     updates.completed_at = timestamp;
@@ -274,12 +273,12 @@ export const updateRun = async (
     if (!run.started_at) updates.started_at = timestamp;
   }
 
-  await (trx || db)("runs").where({ id }).update(updates);
+  await db("runs").where({ id }).update(updates);
 
   if (updates.completed_at && run.suite_id) {
     await Promise.all([
-      sendAlert({ logger, suite_id: run.suite_id }),
-      updateCommitStatus({ logger, suite_id: run.suite_id }),
+      sendAlert(run.suite_id, { db, logger }),
+      updateCommitStatus(run.suite_id, { db, logger }),
     ]);
   }
 

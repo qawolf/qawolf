@@ -1,4 +1,3 @@
-import { db, dropTestDb, migrateDb } from "../../../server/db";
 import * as runnerModel from "../../../server/models/runner";
 import {
   suiteRunsResolver,
@@ -9,6 +8,7 @@ import {
 import * as runResolver from "../../../server/resolvers/run";
 import * as alertService from "../../../server/services/alert/send";
 import { Suite } from "../../../server/types";
+import { prepareTestDb } from "../db";
 import {
   buildRun,
   buildRunner,
@@ -19,6 +19,7 @@ import {
   buildTrigger,
   buildUser,
   logger,
+  testContext,
 } from "../utils";
 
 const runs = [
@@ -30,9 +31,10 @@ const teams = [buildTeam({})];
 const test = buildTest({});
 const user = buildUser({});
 
-beforeAll(async () => {
-  await migrateDb();
+const db = prepareTestDb();
+const context = { ...testContext, db };
 
+beforeAll(async () => {
   await db("users").insert(user);
   await db("teams").insert(teams);
   await db("team_users").insert(buildTeamUser({}));
@@ -51,16 +53,14 @@ beforeAll(async () => {
   ]);
 });
 
-afterAll(() => dropTestDb());
-
-afterEach(jest.restoreAllMocks);
+afterEach(() => jest.restoreAllMocks());
 
 describe("suiteRunsResolver", () => {
   it("returns the runs for a suite", async () => {
     const runs = await suiteRunsResolver(
       { id: "suiteId" } as Suite,
       {},
-      { api_key: null, ip: null, logger, teams, user }
+      context
     );
 
     expect(runs).toMatchObject([
@@ -75,11 +75,7 @@ describe("suiteRunsResolver", () => {
 
 describe("testHistoryResolver", () => {
   it("returns the last runs for a test", async () => {
-    const runs = await testHistoryResolver(
-      {},
-      { id: "testId" },
-      { api_key: null, ip: null, logger, teams, user }
-    );
+    const runs = await testHistoryResolver({}, { id: "testId" }, context);
 
     expect(runs).toMatchObject([{ id: "runId" }, { id: "run3Id" }]);
   });
@@ -106,7 +102,7 @@ describe("updateRunResolver", () => {
     await updateRunResolver(
       {},
       { current_line: null, id: "runId", status: "created" },
-      { api_key: "apiKey", ip: null, logger, teams, user }
+      context
     );
 
     const run = await db("runs").select("*").where({ id: "runId" }).first();
@@ -118,7 +114,7 @@ describe("updateRunResolver", () => {
     await updateRunResolver(
       {},
       { current_line: 2, id: "run2Id", status: "fail" },
-      { api_key: "apiKey", ip: null, logger, teams, user }
+      context
     );
 
     const run = await db("runs").select("*").where({ id: "run2Id" }).first();
@@ -131,7 +127,7 @@ describe("updateRunResolver", () => {
     await updateRunResolver(
       {},
       { current_line: 2, id: "run2Id", status: "pass" },
-      { api_key: "apiKey", ip: null, logger, teams, user }
+      context
     );
 
     const run = await db("runs").select("*").where({ id: "run2Id" }).first();
@@ -145,26 +141,20 @@ describe("validateApiKey", () => {
   const [run] = runs;
 
   it("throws an error if api key not provided", async () => {
-    const testFn = async (): Promise<void> => {
-      return validateApiKey({ api_key: null, run }, { logger });
-    };
-
-    await expect(testFn()).rejects.toThrowError("invalid api key");
+    await expect(
+      validateApiKey({ api_key: null, run }, { db, logger })
+    ).rejects.toThrowError("invalid api key");
   });
 
   it("throws an error if api key does not match runner", async () => {
-    const testFn = async (): Promise<void> => {
-      return validateApiKey({ api_key: "wrongApiKey", run }, { logger });
-    };
-
-    await expect(testFn()).rejects.toThrowError("invalid api key");
+    await expect(
+      validateApiKey({ api_key: "wrongApiKey", run }, { db, logger })
+    ).rejects.toThrowError("invalid api key");
   });
 
   it("does not throw an error if api key matches runner", async () => {
-    const testFn = async (): Promise<void> => {
-      return validateApiKey({ api_key: "apiKey", run }, { logger });
-    };
-
-    await expect(testFn()).resolves.not.toThrowError();
+    await expect(
+      validateApiKey({ api_key: "apiKey", run }, { db, logger })
+    ).resolves.not.toThrowError();
   });
 });

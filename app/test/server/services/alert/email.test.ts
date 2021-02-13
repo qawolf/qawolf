@@ -1,8 +1,8 @@
-import { db, dropTestDb, migrateDb } from "../../../../server/db";
 import { Logger } from "../../../../server/Logger";
 import { findRunsForSuite } from "../../../../server/models/run";
 import * as email from "../../../../server/services/alert/email";
 import { minutesFromNow } from "../../../../shared/utils";
+import { prepareTestDb } from "../../db";
 import {
   buildRun,
   buildSuite,
@@ -19,9 +19,8 @@ const { sendEmailAlert } = email;
 const trigger = buildTrigger({});
 const user = buildUser({});
 
-beforeAll(() => migrateDb());
-
-afterAll(() => dropTestDb());
+const db = prepareTestDb();
+const options = { db, logger };
 
 describe("sendEmailAlert", () => {
   beforeAll(async () => {
@@ -53,9 +52,9 @@ describe("sendEmailAlert", () => {
   it("sends email alert", async () => {
     const trigger = await db.select("*").from("triggers").first();
     const suite = await db.select("*").from("suites").first();
-    const runs = await findRunsForSuite(suite.id, { logger });
+    const runs = await findRunsForSuite(suite.id, options);
 
-    await sendEmailAlert({ logger, runs, suite, trigger });
+    await sendEmailAlert({ runs, suite, trigger }, options);
     const run = await db
       .select("*")
       .from("runs")

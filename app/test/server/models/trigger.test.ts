@@ -1,7 +1,7 @@
-import { db, dropTestDb, migrateDb } from "../../../server/db";
 import * as triggerModel from "../../../server/models/trigger";
 import { Trigger } from "../../../server/types";
 import { minutesFromNow } from "../../../shared/utils";
+import { prepareTestDb } from "../db";
 import {
   buildEnvironment,
   buildIntegration,
@@ -35,9 +35,10 @@ const mockDateConstructor = (dateString: string): void => {
   });
 };
 
-beforeAll(async () => {
-  await migrateDb();
+const db = prepareTestDb();
+const options = { db, logger };
 
+beforeAll(async () => {
   await db("teams").insert([buildTeam({}), buildTeam({ i: 2 })]);
   await db("users").insert(buildUser({}));
   await db("integrations").insert([
@@ -46,8 +47,6 @@ beforeAll(async () => {
   ]);
   await db("environments").insert(buildEnvironment({}));
 });
-
-afterAll(() => dropTestDb());
 
 describe("trigger model", () => {
   afterEach(jest.restoreAllMocks);
@@ -63,7 +62,7 @@ describe("trigger model", () => {
           repeat_minutes: 60,
           team_id: "teamId",
         },
-        { logger }
+        options
       );
 
       const triggers = await db.select("*").from("triggers");
@@ -93,7 +92,7 @@ describe("trigger model", () => {
           repeat_minutes: null,
           team_id: "teamId",
         },
-        { logger }
+        options
       );
 
       const triggers = await db.select("*").from("triggers");
@@ -127,7 +126,7 @@ describe("trigger model", () => {
           repeat_minutes: 60,
           team_id: "teamId",
         },
-        { logger }
+        options
       );
 
       const triggers = await db.select("*").from("triggers");
@@ -160,7 +159,7 @@ describe("trigger model", () => {
     afterAll(() => db("triggers").del());
 
     it("deletes a trigger", async () => {
-      const trigger = await deleteTrigger("triggerId", { logger });
+      const trigger = await deleteTrigger("triggerId", options);
 
       expect(trigger).toMatchObject({
         deleted_at: expect.any(String),
@@ -177,11 +176,9 @@ describe("trigger model", () => {
     });
 
     it("throws an error if trigger is default", async () => {
-      const testFn = async (): Promise<Trigger> => {
-        return deleteTrigger("trigger2Id", { logger });
-      };
-
-      await expect(testFn()).rejects.toThrowError("cannot delete");
+      await expect(deleteTrigger("trigger2Id", options)).rejects.toThrowError(
+        "cannot delete"
+      );
     });
   });
 
@@ -204,18 +201,16 @@ describe("trigger model", () => {
     });
 
     it("finds the default trigger for a team", async () => {
-      const trigger = await findDefaultTriggerForTeam("team3Id", { logger });
+      const trigger = await findDefaultTriggerForTeam("team3Id", options);
       expect(trigger).toMatchObject({ is_default: true, name: "All Tests" });
     });
 
     it("throws an error if a team has no default trigger", async () => {
       await db("triggers").where({ is_default: true }).del();
 
-      const testFn = async (): Promise<Trigger> => {
-        return findDefaultTriggerForTeam("team3Id", { logger });
-      };
-
-      await expect(testFn()).rejects.toThrowError("not found");
+      await expect(
+        findDefaultTriggerForTeam("team3Id", options)
+      ).rejects.toThrowError("not found");
 
       await db("triggers").insert(
         buildTrigger({
@@ -233,27 +228,23 @@ describe("trigger model", () => {
     afterAll(() => db("triggers").del());
 
     it("finds a trigger", async () => {
-      const trigger = await findTrigger("triggerId", { logger });
+      const trigger = await findTrigger("triggerId", options);
 
       expect(trigger).toMatchObject({ id: "triggerId" });
     });
 
     it("throws an error if trigger does not exist", async () => {
-      const testFn = async (): Promise<Trigger> => {
-        return findTrigger("fakeId", { logger });
-      };
-
-      await expect(testFn()).rejects.toThrowError("not found");
+      await expect(findTrigger("fakeId", options)).rejects.toThrowError(
+        "not found"
+      );
     });
 
     it("throws an error if trigger is deleted", async () => {
       await db("triggers").update({ deleted_at: minutesFromNow() });
 
-      const testFn = async (): Promise<Trigger> => {
-        return findTrigger("triggerId", { logger });
-      };
-
-      await expect(testFn()).rejects.toThrowError("not found");
+      await expect(findTrigger("triggerId", options)).rejects.toThrowError(
+        "not found"
+      );
 
       await db("triggers").update({ deleted_at: null });
     });
@@ -297,7 +288,7 @@ describe("trigger model", () => {
     });
 
     it("returns triggers for a github integration", async () => {
-      const triggers = await findTriggersForGitHubIntegration(1, { logger });
+      const triggers = await findTriggersForGitHubIntegration(1, options);
 
       expect(triggers).toMatchObject([
         { deployment_integration_id: "integration3Id", id: "triggerId" },
@@ -323,7 +314,7 @@ describe("trigger model", () => {
     afterAll(() => db("triggers").del());
 
     it("returns triggers for a team", async () => {
-      const triggers = await findTriggersForTeam("teamId", { logger });
+      const triggers = await findTriggersForTeam("teamId", options);
 
       expect(triggers).toMatchObject([
         { id: "trigger2Id", name: "All Tests" },
@@ -369,7 +360,7 @@ describe("trigger model", () => {
     });
 
     it("returns pending triggers", async () => {
-      const triggers = await findPendingTriggers({ logger });
+      const triggers = await findPendingTriggers(options);
 
       expect(triggers).toMatchObject([
         { id: "trigger4Id" },
@@ -394,8 +385,7 @@ describe("trigger model", () => {
     });
 
     it("throws an error if unsupported interval", () => {
-      const testFn = (): string | null => getNextAt(160);
-      expect(testFn).toThrowError("Cannot get next_at");
+      expect(() => getNextAt(160)).toThrowError("Cannot get next_at");
     });
   });
 
@@ -471,7 +461,7 @@ describe("trigger model", () => {
           id: "triggerId",
           name: "newName",
         },
-        { logger }
+        options
       );
       const updatedTrigger = await db.select("*").from("triggers").first();
 
@@ -488,7 +478,7 @@ describe("trigger model", () => {
           deployment_integration_id: "integration2Id",
           id: "triggerId",
         },
-        { logger }
+        options
       );
       const updatedTrigger = await db.select("*").from("triggers").first();
 
@@ -502,7 +492,7 @@ describe("trigger model", () => {
           deployment_integration_id: "integration2Id",
           id: "triggerId",
         },
-        { logger }
+        options
       );
       const updatedTrigger2 = await db.select("*").from("triggers").first();
 
@@ -516,7 +506,7 @@ describe("trigger model", () => {
           environment_id: "environmentId",
           id: "triggerId",
         },
-        { logger }
+        options
       );
       const updatedTrigger = await db.select("*").from("triggers").first();
 
@@ -527,7 +517,7 @@ describe("trigger model", () => {
           environment_id: null,
           id: "triggerId",
         },
-        { logger }
+        options
       );
       const updatedTrigger2 = await db.select("*").from("triggers").first();
 
@@ -539,7 +529,7 @@ describe("trigger model", () => {
 
       await updateTrigger(
         { id: "triggerId", repeat_minutes: 24 * 60 },
-        { logger }
+        options
       );
 
       const updatedTrigger = await db.select("*").from("triggers").first();
@@ -549,10 +539,7 @@ describe("trigger model", () => {
     });
 
     it("clears repeat_minutes", async () => {
-      await updateTrigger(
-        { id: "triggerId", repeat_minutes: null },
-        { logger }
-      );
+      await updateTrigger({ id: "triggerId", repeat_minutes: null }, options);
 
       const updatedTrigger = await db.select("*").from("triggers").first();
 
@@ -565,22 +552,17 @@ describe("trigger model", () => {
 
       await db("triggers").insert(buildTrigger({ i: 2 }));
 
-      const testFn = async (): Promise<Trigger> =>
-        updateTrigger({ id: "trigger2Id", name: oldTrigger.name }, { logger });
-
-      await expect(testFn()).rejects.toThrowError(
-        "trigger name must be unique"
-      );
+      await expect(
+        updateTrigger({ id: "trigger2Id", name: oldTrigger.name }, options)
+      ).rejects.toThrowError("trigger name must be unique");
 
       await db("triggers").where({ id: "trigger2Id" }).del();
     });
 
     it("throws an error if trigger id invalid", async () => {
-      const testFn = async (): Promise<Trigger> => {
-        return updateTrigger({ id: "fakeId", name: "name" }, { logger });
-      };
-
-      await expect(testFn()).rejects.toThrowError("not found");
+      await expect(
+        updateTrigger({ id: "fakeId", name: "name" }, options)
+      ).rejects.toThrowError("not found");
     });
 
     it("throws an error if trying to rename default trigger", async () => {
@@ -588,11 +570,9 @@ describe("trigger model", () => {
         .where({ id: "triggerId" })
         .update({ is_default: true });
 
-      const testFn = async (): Promise<Trigger> => {
-        return updateTrigger({ id: "triggerId", name: "newName" }, { logger });
-      };
-
-      await expect(testFn()).rejects.toThrowError("default trigger");
+      await expect(
+        updateTrigger({ id: "triggerId", name: "newName" }, options)
+      ).rejects.toThrowError("default trigger");
 
       await db("triggers")
         .where({ id: "triggerId" })
@@ -614,7 +594,7 @@ describe("trigger model", () => {
     it("updates next_at timestamp of a trigger", async () => {
       const updateTrigger = await db.transaction(async (trx) => {
         const trigger = await trx.select("*").from("triggers").first();
-        await updateTriggerNextAt(trigger, { logger, trx });
+        await updateTriggerNextAt(trigger, { db, logger });
 
         return trx.select("*").from("triggers").first();
       });

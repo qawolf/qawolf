@@ -1,23 +1,18 @@
 import ContainerInstanceManagementClient from "azure-arm-containerinstance";
 
 import { minutesFromNow } from "../../shared/utils";
-import { Logger } from "../Logger";
 import { findRunners, updateRunner } from "../models/runner";
 import { restartRunnerContainerGroup } from "../services/azure/container";
-
-type RestartRunners = {
-  client: ContainerInstanceManagementClient;
-  logger: Logger;
-};
+import { ModelOptions } from "../types";
 
 /**
  * @summary Restart expired runner's container groups.
  */
-export const restartRunners = async ({
-  client,
-  logger,
-}: RestartRunners): Promise<void> => {
-  const runners = await findRunners({ is_expired: true }, { logger });
+export const restartRunners = async (
+  client: ContainerInstanceManagementClient,
+  options: ModelOptions
+): Promise<void> => {
+  const runners = await findRunners({ is_expired: true }, options);
 
   const restartPromises = runners.map((runner) => {
     const now = minutesFromNow();
@@ -34,13 +29,13 @@ export const restartRunners = async ({
         session_expires_at: null,
         test_id: null,
       },
-      { logger }
+      options
     );
 
     const restartPromise = restartRunnerContainerGroup({
       client,
       id: runner.id,
-      logger,
+      logger: options.logger,
     });
 
     return Promise.all([updateRunnerPromise, restartPromise]);

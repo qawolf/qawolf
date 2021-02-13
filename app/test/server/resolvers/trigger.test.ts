@@ -1,10 +1,10 @@
-import { db, dropTestDb, migrateDb } from "../../../server/db";
 import {
   createTriggerResolver,
   deleteTriggerResolver,
   triggersResolver,
   updateTriggerResolver,
 } from "../../../server/resolvers/trigger";
+import { prepareTestDb } from "../db";
 import {
   buildEnvironment,
   buildIntegration,
@@ -12,28 +12,18 @@ import {
   buildTest,
   buildTrigger,
   buildUser,
-  logger,
+  testContext,
 } from "../utils";
 
-const team = buildTeam({});
+const db = prepareTestDb();
+const team = testContext.teams[0];
+const context = { ...testContext, db };
 
 beforeAll(async () => {
-  await migrateDb();
-
   await db("users").insert(buildUser({}));
   await db("teams").insert([team, buildTeam({ i: 2 })]);
   await db("environments").insert(buildEnvironment({}));
 });
-
-afterAll(() => dropTestDb());
-
-const testContext = {
-  api_key: null,
-  ip: "127.0.0.1",
-  logger,
-  teams: [team],
-  user: buildUser({}),
-};
 
 describe("createTriggerResolver", () => {
   beforeAll(() => db("tests").insert(buildTest({})));
@@ -58,7 +48,7 @@ describe("createTriggerResolver", () => {
         team_id: "teamId",
         test_ids: null,
       },
-      testContext
+      context
     );
 
     expect(trigger).toMatchObject({
@@ -98,7 +88,7 @@ describe("createTriggerResolver", () => {
         team_id: "teamId",
         test_ids: ["testId"],
       },
-      testContext
+      context
     );
 
     const testTriggers = await db("test_triggers").select("*");
@@ -134,7 +124,7 @@ describe("deleteTriggerResolver", () => {
     const result = await deleteTriggerResolver(
       {},
       { id: "triggerId" },
-      testContext
+      context
     );
 
     expect(result).toEqual({
@@ -166,11 +156,7 @@ describe("triggersResolver", () => {
   afterAll(() => db("triggers").del());
 
   it("returns triggers for a team", async () => {
-    const triggers = await triggersResolver(
-      {},
-      { team_id: "teamId" },
-      testContext
-    );
+    const triggers = await triggersResolver({}, { team_id: "teamId" }, context);
 
     expect(triggers).toMatchObject([{ id: "triggerId" }, { id: "trigger2Id" }]);
   });
@@ -191,7 +177,7 @@ describe("updateTriggerResolver", () => {
     const updateTrigger = await updateTriggerResolver(
       {},
       { id: "triggerId", name: "newName", repeat_minutes: 24 * 60 },
-      testContext
+      context
     );
 
     expect(updateTrigger.name).toBe("newName");
@@ -208,7 +194,7 @@ describe("updateTriggerResolver", () => {
         id: "triggerId",
         repeat_minutes: null,
       },
-      testContext
+      context
     );
 
     expect(updateTrigger).toMatchObject({
@@ -227,7 +213,7 @@ describe("updateTriggerResolver", () => {
         id: "triggerId",
         repeat_minutes: null,
       },
-      testContext
+      context
     );
 
     expect(updateTrigger).toMatchObject({

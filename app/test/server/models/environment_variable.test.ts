@@ -1,7 +1,7 @@
-import { db, dropTestDb, migrateDb } from "../../../server/db";
 import { decrypt } from "../../../server/models/encrypt";
 import * as environmentVariableModel from "../../../server/models/environment_variable";
 import { EnvironmentVariable } from "../../../server/types";
+import { prepareTestDb } from "../db";
 import {
   buildEnvironment,
   buildEnvironmentVariable,
@@ -21,9 +21,10 @@ const {
   updateEnvironmentVariable,
 } = environmentVariableModel;
 
-beforeAll(async () => {
-  await migrateDb();
+const db = prepareTestDb();
+const options = { db, logger };
 
+beforeAll(async () => {
   await db("users").insert(buildUser({}));
   await db("teams").insert(buildTeam({}));
   return db("environments").insert([
@@ -31,8 +32,6 @@ beforeAll(async () => {
     buildEnvironment({ i: 2, name: "Production" }),
   ]);
 });
-
-afterAll(() => dropTestDb());
 
 describe("buildEnvironmentVariables", () => {
   beforeAll(async () => {
@@ -82,7 +81,7 @@ describe("buildEnvironmentVariables", () => {
   it("builds environment variables for an environment", async () => {
     const { env, variables } = await buildEnvironmentVariables(
       { environment_id: "environment2Id" },
-      { logger }
+      options
     );
 
     expect(env).toBe(
@@ -110,7 +109,7 @@ describe("buildEnvironmentVariables", () => {
         },
         environment_id: "environmentId",
       },
-      { logger }
+      options
     );
 
     expect(env).toBe(
@@ -132,7 +131,7 @@ describe("buildEnvironmentVariables", () => {
         },
         environment_id: null,
       },
-      { logger }
+      options
     );
 
     expect(env).toBe(
@@ -146,7 +145,7 @@ describe("buildEnvironmentVariables", () => {
   it("returns empty object if no environment variables for environment", async () => {
     const { env } = await buildEnvironmentVariables(
       { environment_id: "environment3Id" },
-      { logger }
+      options
     );
 
     expect(env).toBe("{}");
@@ -164,7 +163,7 @@ describe("createEnvironmentVariable", () => {
         team_id: "teamId",
         value: "spirit",
       },
-      { logger }
+      options
     );
 
     const environmentVariable = await db("environment_variables")
@@ -190,7 +189,7 @@ describe("createEnvironmentVariable", () => {
         team_id: "teamId",
         value: "spirit",
       },
-      { logger }
+      options
     );
 
     const testFn = async (): Promise<EnvironmentVariable> => {
@@ -201,7 +200,7 @@ describe("createEnvironmentVariable", () => {
           team_id: "teamId",
           value: "spirit",
         },
-        { logger }
+        options
       );
     };
 
@@ -220,7 +219,7 @@ describe("deleteEnvironmentVariable", () => {
   afterAll(() => db("environment_variables").del());
 
   it("deletes an environment variable", async () => {
-    await deleteEnvironmentVariable("environmentVariableId", { logger });
+    await deleteEnvironmentVariable("environmentVariableId", options);
     const environmentVariables = await db("environment_variables").select("*");
 
     expect(environmentVariables).toMatchObject([
@@ -243,7 +242,7 @@ describe("deleteEnvironmentVariablesForEnvironment", () => {
   it("deletes all environment variables for an environment", async () => {
     const deleteCount = await deleteEnvironmentVariablesForEnvironment(
       "environmentId",
-      { logger }
+      options
     );
 
     expect(deleteCount).toBe(2);
@@ -269,7 +268,7 @@ describe("findEnvironmentVariable", () => {
   it("finds an environment variable", async () => {
     const environmentVariable = await findEnvironmentVariable(
       "environmentVariableId",
-      { logger }
+      options
     );
 
     expect(environmentVariable).toMatchObject({ id: "environmentVariableId" });
@@ -277,7 +276,7 @@ describe("findEnvironmentVariable", () => {
 
   it("throws an error if environment variable not found", async () => {
     const testFn = async (): Promise<EnvironmentVariable> => {
-      return findEnvironmentVariable("fakeId", { logger });
+      return findEnvironmentVariable("fakeId", options);
     };
 
     await expect(testFn()).rejects.toThrowError("not found");
@@ -298,7 +297,7 @@ describe("findEnvironmentVariablesForEnvironment", () => {
   it("finds environment variables for an environment", async () => {
     const environmentVariables = await findEnvironmentVariablesForEnvironment(
       "environmentId",
-      { logger }
+      options
     );
 
     expect(environmentVariables).toMatchObject([
@@ -320,7 +319,8 @@ describe("findSystemEnvironmentVariable", () => {
 
   it("finds a system environment variable", async () => {
     const environmentVariable = await findSystemEnvironmentVariable(
-      "SYSTEM_ENV"
+      "SYSTEM_ENV",
+      options
     );
 
     expect(environmentVariable).toMatchObject({
@@ -330,11 +330,9 @@ describe("findSystemEnvironmentVariable", () => {
   });
 
   it("throws an error if environment variable not found", async () => {
-    const testFn = async (): Promise<EnvironmentVariable> => {
-      return findSystemEnvironmentVariable("FAKE_NAME");
-    };
-
-    await expect(testFn()).rejects.toThrowError("not found");
+    await expect(
+      findSystemEnvironmentVariable("FAKE_NAME", options)
+    ).rejects.toThrowError("not found");
   });
 });
 
@@ -352,7 +350,7 @@ describe("updateEnvironmentVariable", () => {
         name: "NEW_NAME",
         value: "newValue",
       },
-      { logger }
+      options
     );
 
     expect(environmentVariable).toMatchObject({
@@ -362,7 +360,7 @@ describe("updateEnvironmentVariable", () => {
 
     const dbEnvironmentVariable = await findEnvironmentVariable(
       "environmentVariableId",
-      { logger }
+      options
     );
 
     expect(dbEnvironmentVariable.value).not.toBe("newValue");
@@ -376,37 +374,33 @@ describe("updateEnvironmentVariable", () => {
         name: "another name",
         value: "newValue",
       },
-      { logger }
+      options
     );
 
     expect(environmentVariable.name).toBe("ANOTHER_NAME");
   });
 
   it("throws an error if name or value not provided", async () => {
-    const testFn = async (): Promise<EnvironmentVariable> => {
-      return updateEnvironmentVariable(
+    await expect(
+      updateEnvironmentVariable(
         {
           id: "environmentVariableId",
           name: "",
           value: "newValue",
         },
-        { logger }
-      );
-    };
+        options
+      )
+    ).rejects.toThrowError("Must provide name and value");
 
-    await expect(testFn()).rejects.toThrowError("Must provide name and value");
-
-    const testFn2 = async (): Promise<EnvironmentVariable> => {
-      return updateEnvironmentVariable(
+    await expect(
+      updateEnvironmentVariable(
         {
           id: "environmentVariableId",
           name: "NEW_NAME",
           value: "",
         },
-        { logger }
-      );
-    };
-
-    await expect(testFn2()).rejects.toThrowError("Must provide name and value");
+        options
+      )
+    ).rejects.toThrowError("Must provide name and value");
   });
 });

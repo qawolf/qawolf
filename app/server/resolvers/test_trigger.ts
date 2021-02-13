@@ -1,4 +1,3 @@
-import { db } from "../db";
 import {
   createTestTriggersForTrigger,
   deleteTestTriggersForTrigger,
@@ -18,18 +17,18 @@ import { ensureTestAccess, ensureTriggerAccess } from "./utils";
 export const testTriggersResolver = async (
   _: Record<string, unknown>,
   { test_ids }: TestIdsQuery,
-  { logger, teams }: Context
+  { db, logger, teams }: Context
 ): Promise<TestTriggers[]> => {
   const log = logger.prefix("testTriggersResolver");
   log.debug("tests", test_ids);
 
   await Promise.all(
-    test_ids.map((test_id) => {
-      return ensureTestAccess({ logger, teams, test_id });
-    })
+    test_ids.map((test_id) =>
+      ensureTestAccess({ teams, test_id }, { db, logger })
+    )
   );
 
-  return findTestTriggersForTests(test_ids, { logger });
+  return findTestTriggersForTests(test_ids, { db, logger });
 };
 
 /**
@@ -38,7 +37,7 @@ export const testTriggersResolver = async (
 export const updateTestTriggersResolver = async (
   _: Record<string, unknown>,
   { add_trigger_id, remove_trigger_id, test_ids }: UpdateTestTriggersMutation,
-  { logger, teams }: Context
+  { db, logger, teams }: Context
 ): Promise<TestTriggers[]> => {
   const log = logger.prefix("updateTestTriggersResolver");
   log.debug("tests", test_ids);
@@ -49,15 +48,19 @@ export const updateTestTriggersResolver = async (
   }
 
   const testTeams = await Promise.all(
-    test_ids.map((test_id) => ensureTestAccess({ logger, teams, test_id }))
+    test_ids.map((test_id) =>
+      ensureTestAccess({ teams, test_id }, { db, logger })
+    )
   );
 
-  const triggerTeam = await ensureTriggerAccess({
-    logger,
-    teams,
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    trigger_id: (add_trigger_id || remove_trigger_id)!,
-  });
+  const triggerTeam = await ensureTriggerAccess(
+    {
+      teams,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      trigger_id: (add_trigger_id || remove_trigger_id)!,
+    },
+    { db, logger }
+  );
 
   // check the test team matches the trigger's team
   testTeams.forEach((testTeam) => {
@@ -70,7 +73,7 @@ export const updateTestTriggersResolver = async (
     if (add_trigger_id) {
       await createTestTriggersForTrigger(
         { test_ids, trigger_id: add_trigger_id },
-        { logger, trx }
+        { db: trx, logger }
       );
     } else {
       await deleteTestTriggersForTrigger(
@@ -79,10 +82,10 @@ export const updateTestTriggersResolver = async (
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           trigger_id: remove_trigger_id!,
         },
-        { logger, trx }
+        { db: trx, logger }
       );
     }
 
-    return findTestTriggersForTests(test_ids, { logger, trx });
+    return findTestTriggersForTests(test_ids, { db: trx, logger });
   });
 };

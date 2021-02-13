@@ -1,22 +1,16 @@
-import { db, dropTestDb, migrateDb } from "../../../server/db";
-import { updateEnvironment } from "../../../server/models/environment";
 import {
   createEnvironmentResolver,
   deleteEnvironmentResolver,
   environmentsResolver,
   updateEnvironmentResolver,
 } from "../../../server/resolvers/environment";
-import {
-  buildEnvironment,
-  buildTeam,
-  buildUser,
-  logger,
-  testContext,
-} from "../utils";
+import { prepareTestDb } from "../db";
+import { buildEnvironment, buildTeam, buildUser, testContext } from "../utils";
+
+const db = prepareTestDb();
+const context = { ...testContext, db };
 
 beforeAll(async () => {
-  await migrateDb();
-
   await db("users").insert(buildUser({}));
   await db("teams").insert(buildTeam({}));
 
@@ -26,14 +20,12 @@ beforeAll(async () => {
   ]);
 });
 
-afterAll(() => dropTestDb());
-
 describe("createEnvironmentResolver", () => {
   it("creates an environment", async () => {
     const environment = await createEnvironmentResolver(
       {},
       { name: "New Environment", team_id: "teamId" },
-      testContext
+      context
     );
 
     expect(environment).toMatchObject({
@@ -50,7 +42,7 @@ describe("deleteEnvironmentResolver", () => {
     const environment = await deleteEnvironmentResolver(
       {},
       { id: "environmentId" },
-      testContext
+      context
     );
 
     expect(environment.id).toBe("environmentId");
@@ -64,7 +56,7 @@ describe("environmentsResolver", () => {
     const environments = await environmentsResolver(
       {},
       { team_id: "teamId" },
-      testContext
+      context
     );
 
     expect(environments).toMatchObject([
@@ -79,17 +71,12 @@ describe("updateEnvironmentResolver", () => {
     const environment = await updateEnvironmentResolver(
       {},
       { id: "environmentId", name: "New Name" },
-      testContext
+      context
     );
 
     expect(environment).toMatchObject({
       id: "environmentId",
       name: "New Name",
     });
-
-    await updateEnvironment(
-      { id: "environmentId", name: "Staging" },
-      { logger }
-    );
   });
 });
