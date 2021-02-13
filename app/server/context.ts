@@ -1,6 +1,5 @@
 import { NextApiRequest } from "next";
 
-import { connectDb } from "./db";
 import { AuthenticationError } from "./errors";
 import { Logger } from "./Logger";
 import { findTeamsForUser } from "./models/team";
@@ -23,7 +22,9 @@ export const context = async ({
   req: NextApiRequest;
 }): Promise<Context> => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const db = (req as any).db || connectDb();
+  const db = (req as any).db;
+
+  if (!db) throw new Error("db must be provided to request");
 
   const logger = new Logger({ prefix: "graphql" });
 

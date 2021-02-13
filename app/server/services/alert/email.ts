@@ -90,8 +90,8 @@ export const sendEmailForLoginCode = async ({
       reply_to: { email: "hello@qawolf.com" },
     };
 
-    log.debug(`send email to ${user.email}`);
     await sgMail.send(message);
+    log.debug(`sent email to ${user.email}`);
   } catch (error) {
     logger.alert("error: email code", user.email, error.message);
   }
