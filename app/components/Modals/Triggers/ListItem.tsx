@@ -66,12 +66,14 @@ function ListItem({
       </Button>
       <AppButton
         IconComponent={Edit}
+        a11yTitle={`Edit ${trigger.name}`}
         onClick={onEdit}
         margin={{ horizontal: "xxsmall" }}
         type="ghost"
       />
       <AppButton
         IconComponent={Trash}
+        a11yTitle={`Delete ${trigger.name}`}
         hoverType="danger"
         onClick={onDelete}
         type="ghost"
