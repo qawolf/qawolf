@@ -10,37 +10,34 @@ import Environments from "./Environments";
 import TeamSettings from "./TeamSettings";
 import Triggers from "./Triggers";
 
-const noModalRoutes = [routes.gitHubIntegration];
-
 export default function Modals(): JSX.Element {
-  const { asPath } = useRouter();
+  const { asPath, query } = useRouter();
 
   const { modal } = useContext(StateContext);
   const { name, teamId, testIds, tests } = modal || {};
 
   const closeModal = () => state.setModal({ name: null });
 
-  if (noModalRoutes.some((r) => asPath.includes(r))) {
-    return null;
-  }
+  const isDashboard = asPath.includes(routes.tests);
+  const isTest = !!query.test_id;
 
-  if (name === "createTest") {
+  if (isDashboard && name === "createTest") {
     return <CreateTest closeModal={closeModal} />;
   }
 
-  if (name === "deleteTest" && tests) {
+  if (isDashboard && name === "deleteTest" && tests) {
     return <ConfirmDeleteTests closeModal={closeModal} tests={tests} />;
   }
 
-  if (name === "environments") {
+  if (isTest && name === "environments") {
     return <Environments closeModal={closeModal} />;
   }
 
-  if (name === "teamSettings" && teamId) {
+  if (isDashboard && name === "teamSettings" && teamId) {
     return <TeamSettings closeModal={closeModal} teamId={teamId} />;
   }
 
-  if (name === "triggers" && testIds) {
+  if (isTest && name === "triggers" && testIds) {
     return <Triggers closeModal={closeModal} testIds={testIds} />;
   }
 
