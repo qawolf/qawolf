@@ -11,7 +11,7 @@ import TeamSettings from "./TeamSettings";
 import Triggers from "./Triggers";
 
 export default function Modals(): JSX.Element {
-  const { asPath, query } = useRouter();
+  const { asPath } = useRouter();
 
   const { modal } = useContext(StateContext);
   const { name, teamId, testIds, tests } = modal || {};
@@ -19,7 +19,7 @@ export default function Modals(): JSX.Element {
   const closeModal = () => state.setModal({ name: null });
 
   const isDashboard = asPath.includes(routes.tests);
-  const isTest = !!query.test_id;
+  const isTest = asPath.includes(`${routes.test}/`); // include slash to not match dashboard
 
   if (isDashboard && name === "createTest") {
     return <CreateTest closeModal={closeModal} />;
