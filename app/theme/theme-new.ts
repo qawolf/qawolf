@@ -11,6 +11,8 @@ export const breakpoints = {
   medium: { value: 1264 },
 };
 
+export const boxShadow = "0px 4px 16px rgba(21, 27, 38, 0.16)";
+
 export const colors = {
   code: "#0E8A7D",
   codeBlue: "#6E9DFA",

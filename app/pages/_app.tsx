@@ -11,8 +11,8 @@ import React from "react";
 
 import { components } from "../components/Docs/components";
 import Modals from "../components/Modals";
-import Error from "../components/shared/Error";
 import { StateProvider } from "../components/StateContext";
+import Toast from "../components/Toast";
 import { UserProvider } from "../components/UserContext";
 import { useBootIntercom } from "../hooks/intercom";
 import { client } from "../lib/client";
@@ -37,7 +37,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
         <ApolloProvider client={client}>
           <Grommet theme={theme}>
             <MDXProvider components={components}>
-              <Error />
+              <Toast />
               <Modals />
               <UserProvider>
                 <Component {...pageProps} />

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 type UseOnHotKey = {
   hotKey: string;
-  onHotKey: () => void;
+  onHotKey: (e?: KeyboardEvent) => void;
   requireMeta?: boolean;
 };
 
@@ -16,7 +16,7 @@ export const useOnHotKey = ({
       const isKeyboardShortcut = !requireMeta || e.ctrlKey || e.metaKey;
       if (!isKeyboardShortcut || e.key !== hotKey) return;
 
-      onHotKey();
+      onHotKey(e);
     };
 
     document.addEventListener("keydown", handleHotKey);
