@@ -115,7 +115,7 @@ describe("handleSuitesRequest", () => {
     expect(send).toBeCalledWith("API key cannot create suite");
   });
 
-  it("returns 500 if no tests in trigger", async () => {
+  it("returns 500 if no tests for trigger", async () => {
     await handleSuitesRequest(
       {
         body: { trigger_id: "trigger2Id" },
@@ -126,7 +126,7 @@ describe("handleSuitesRequest", () => {
     );
 
     expect(status).toBeCalledWith(500);
-    expect(send).toBeCalledWith("No tests in trigger");
+    expect(send).toBeCalledWith("No tests found");
   });
 
   it("creates a suite and returns url", async () => {

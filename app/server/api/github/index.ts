@@ -35,27 +35,29 @@ export const verifySignature = (req: NextApiRequest, logger: Logger): void => {
 export const handleGitHubRequest = async (
   req: NextApiRequest,
   res: NextApiResponse,
-  { db, logger }: ModelOptions
+  options: ModelOptions
 ): Promise<void> => {
+  const log = options.logger.prefix("handleGitHubRequest");
+
   try {
-    verifySignature(req, logger);
+    verifySignature(req, log);
     const event = req.headers["x-github-event"] as WebhookEvents;
-    logger.debug("event", event);
+    log.debug("event", event);
 
     switch (event) {
       case "deployment_status":
-        await handleDeploymentStatusEvent(req.body, { db, logger });
+        await handleDeploymentStatusEvent(req.body, options);
         break;
       case "status":
-        await handleCommitStatusEvent(req.body, { db, logger });
+        await handleCommitStatusEvent(req.body, options);
         break;
       default:
-        logger.debug("ignore event", event);
+        log.debug("ignore event", event);
     }
 
     res.status(200).end();
   } catch (error) {
-    logger.alert("github error", error.message);
+    log.alert("github error", error.message);
     res.status(error.code || 500).send(error.message);
   }
 };

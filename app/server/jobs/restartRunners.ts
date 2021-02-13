@@ -10,9 +10,9 @@ import { ModelOptions } from "../types";
  */
 export const restartRunners = async (
   client: ContainerInstanceManagementClient,
-  { db, logger }: ModelOptions
+  options: ModelOptions
 ): Promise<void> => {
-  const runners = await findRunners({ is_expired: true }, { db, logger });
+  const runners = await findRunners({ is_expired: true }, options);
 
   const restartPromises = runners.map((runner) => {
     const now = minutesFromNow();
@@ -29,13 +29,13 @@ export const restartRunners = async (
         session_expires_at: null,
         test_id: null,
       },
-      { db, logger }
+      options
     );
 
     const restartPromise = restartRunnerContainerGroup({
       client,
       id: runner.id,
-      logger,
+      logger: options.logger,
     });
 
     return Promise.all([updateRunnerPromise, restartPromise]);

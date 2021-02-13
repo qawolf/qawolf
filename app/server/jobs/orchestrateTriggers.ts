@@ -8,10 +8,10 @@ export const orchestrateTriggers = async ({
 }: ModelOptions): Promise<void> => {
   const log = logger.prefix("orchestrateTriggers");
 
-  await db.transaction(async (trx) => {
-    const triggers = await findPendingTriggers({ db: trx, logger });
+  const triggers = await findPendingTriggers({ db, logger });
 
-    const triggerPromises = triggers.map(async (trigger) => {
+  const triggerPromises = triggers.map(async (trigger) => {
+    await db.transaction(async (trx) => {
       await createSuiteForTrigger(
         { trigger_id: trigger.id, team_id: trigger.team_id },
         { db: trx, logger }
@@ -19,9 +19,9 @@ export const orchestrateTriggers = async ({
 
       await updateTriggerNextAt(trigger, { db: trx, logger });
     });
-
-    await Promise.all(triggerPromises);
   });
+
+  await Promise.all(triggerPromises);
 
   log.debug("success");
 };

@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
 import environment from "../environment";
-import { Logger } from "../Logger";
 import { createSuiteForTrigger } from "../models/suite";
 import { validateApiKeyForTeam } from "../models/team";
 import { findTrigger } from "../models/trigger";
@@ -72,7 +71,7 @@ export const handleSuitesRequest = async (
   res: NextApiResponse,
   options: ModelOptions
 ): Promise<void> => {
-  const log = options.logger;
+  const log = options.logger.prefix("handleSuitesRequest");
 
   try {
     log.debug("body", req.body);
@@ -88,7 +87,7 @@ export const handleSuitesRequest = async (
 
     if (!result) {
       log.error("no tests for trigger", id);
-      throw new Error("No tests in trigger");
+      throw new Error("No tests found");
     }
 
     const url = `${environment.APP_URL}/tests/${result.suite.id}`;

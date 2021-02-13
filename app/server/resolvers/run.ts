@@ -57,7 +57,7 @@ export const suiteRunsResolver = async (
   { db, logger, teams }: Context
 ): Promise<SuiteRun[]> => {
   logger.debug("suiteRunsResolver");
-  await ensureSuiteAccess({ teams, suite_id: id }, { db, logger });
+  await ensureSuiteAccess({ suite_id: id, teams }, { db, logger });
 
   return findRunsForSuite(id, { db, logger });
 };

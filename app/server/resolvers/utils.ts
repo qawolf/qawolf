@@ -126,7 +126,7 @@ export const ensureEnvironmentVariableAccess = async (
  * @returns The team from `teams` that matches `suite.team_id`, if we didn't throw.
  */
 export const ensureSuiteAccess = async (
-  { teams, suite_id }: EnsureSuiteAccess,
+  { suite_id, teams }: EnsureSuiteAccess,
   options: ModelOptions
 ): Promise<void> => {
   const log = options.logger.prefix("ensureSuiteAccess");

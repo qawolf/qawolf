@@ -69,21 +69,23 @@ export const updateTestTriggersResolver = async (
     }
   });
 
-  if (add_trigger_id) {
-    await createTestTriggersForTrigger(
-      { test_ids, trigger_id: add_trigger_id },
-      { db, logger }
-    );
-  } else {
-    await deleteTestTriggersForTrigger(
-      {
-        test_ids,
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        trigger_id: remove_trigger_id!,
-      },
-      { db, logger }
-    );
-  }
+  return db.transaction(async (trx) => {
+    if (add_trigger_id) {
+      await createTestTriggersForTrigger(
+        { test_ids, trigger_id: add_trigger_id },
+        { db: trx, logger }
+      );
+    } else {
+      await deleteTestTriggersForTrigger(
+        {
+          test_ids,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          trigger_id: remove_trigger_id!,
+        },
+        { db: trx, logger }
+      );
+    }
 
-  return findTestTriggersForTests(test_ids, { db, logger });
+    return findTestTriggersForTests(test_ids, { db: trx, logger });
+  });
 };

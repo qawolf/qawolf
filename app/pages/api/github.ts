@@ -9,7 +9,7 @@ export default async function (
   res: NextApiResponse
 ): Promise<void> {
   const db = connectDb();
-  const logger = new Logger({ prefix: "handleGitHubRequest" });
+  const logger = new Logger();
 
   await handleGitHubRequest(req, res, { db, logger });
 

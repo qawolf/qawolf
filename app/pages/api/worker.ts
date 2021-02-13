@@ -1,4 +1,4 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 
 import { connectDb } from "../../server/db";
 import environment from "../../server/environment";
@@ -12,10 +12,10 @@ import { Job, JOB_TYPES } from "../../server/jobs/types";
 import { Logger } from "../../server/Logger";
 import { getAzureClient } from "../../server/services/azure/container";
 
-const handleWorkerRequest: NextApiHandler = async (
+export default async function (
   req: NextApiRequest,
   res: NextApiResponse
-): Promise<void> => {
+): Promise<void> {
   const db = connectDb();
 
   const logger = new Logger({ prefix: "worker" });
@@ -61,6 +61,4 @@ const handleWorkerRequest: NextApiHandler = async (
   }
 
   await db.destroy();
-};
-
-export default handleWorkerRequest;
+}
