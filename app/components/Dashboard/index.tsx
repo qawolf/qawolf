@@ -48,6 +48,10 @@ export default function Dashboard(): JSX.Element {
   const triggers = data?.triggers;
   const selectedTrigger = triggers?.find((t) => t.id === triggerId);
 
+  useEffect(() => {
+    if (selectedTrigger) state.setEnvironmentId(selectedTrigger.environment_id);
+  }, [selectedTrigger]);
+
   if (!triggers || !user || !wolf) {
     return <Spinner />;
   }
