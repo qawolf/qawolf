@@ -1,5 +1,4 @@
 import { Box } from "grommet";
-import { Trigger } from "grommet-icons";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 
@@ -13,6 +12,7 @@ import Button from "../../shared-new/AppButton";
 import Divider from "../../shared-new/Divider";
 import ArrowLeft from "../../shared-new/icons/ArrowLeft";
 import Edit from "../../shared-new/icons/Edit";
+import Lightning from "../../shared-new/icons/Lightning";
 import StatusBadge from "../../shared-new/StatusBadge";
 import Text from "../../shared-new/Text";
 import { RunnerContext } from "../contexts/RunnerContext";
@@ -79,7 +79,7 @@ export default function Header({ mode }: Props): JSX.Element {
           />
           {mode === "test" ? (
             <Button
-              IconComponent={Trigger}
+              IconComponent={Lightning}
               label={hasTriggers ? copy.editTriggers : copy.addTrigger}
               onClick={handleTriggerClick}
               type="primary"
