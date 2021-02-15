@@ -66,6 +66,7 @@ export type Suite = {
   runs: SuiteRun[];
   team_id: string;
   trigger_id: string;
+  trigger_name: string;
 };
 
 export type SuiteRun = {

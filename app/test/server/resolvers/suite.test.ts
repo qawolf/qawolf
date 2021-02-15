@@ -153,7 +153,7 @@ describe("suiteResolver", () => {
 
     const suite = await suiteResolver({}, { id: "suiteId" }, context);
 
-    expect(suite).toEqual(suites[0]);
+    expect(suite).toEqual({ ...suites[0], trigger_name: "trigger1" });
 
     expect(findSuiteSpy.mock.calls[0][0]).toEqual("suiteId");
   });

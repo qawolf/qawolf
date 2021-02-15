@@ -95,6 +95,7 @@ export const suiteQuery = gql`
       id
       team_id
       trigger_id
+      trigger_name
     }
   }
 `;

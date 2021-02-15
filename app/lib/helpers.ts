@@ -1,5 +1,20 @@
 import { Log } from "./types";
 
+const monthNames = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sept",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
 export const durationToText = (
   startedAt: string,
   completedAt: string
@@ -157,4 +172,19 @@ export const timeToText = (previousString: string): string => {
   const years = Math.floor(elapsed / msPerYear);
 
   return years + "y ago";
+};
+
+export const timestampToText = (timestamp: string | number): string => {
+  const date = new Date(Number(timestamp) || timestamp);
+
+  const month = monthNames[date.getMonth()];
+  const day = date.getDate();
+
+  const hour = date.getHours();
+  const minutes = date.getMinutes();
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+  const suffix = hour < 12 ? "AM" : "PM";
+
+  return `${month} ${day}, ${hour % 12}:${formattedMinutes} ${suffix}`;
 };

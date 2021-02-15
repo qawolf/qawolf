@@ -1,5 +1,7 @@
 import { Box, BoxProps } from "grommet";
 import { ReactNode } from "react";
+
+import { edgeSize } from "../../theme/theme-new";
 import Text from "./Text";
 
 type Props = {
@@ -18,7 +20,9 @@ export default function LabeledBox({
       <Text color="gray7" margin={{ bottom: "xxsmall" }} size="component">
         {label}
       </Text>
-      {children}
+      <Box justify="center" style={{ minHeight: edgeSize.medium }}>
+        {children}
+      </Box>
     </Box>
   );
 }

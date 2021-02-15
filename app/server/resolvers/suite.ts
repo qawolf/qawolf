@@ -69,18 +69,17 @@ export const suiteResolver = async (
   _: Record<string, unknown>,
   { id }: IdQuery,
   { db, logger, teams }: Context
-): Promise<Suite> => {
+): Promise<Suite & { trigger_name: string }> => {
   const log = logger.prefix("suiteResolver");
 
   log.debug("suite", id);
   await ensureSuiteAccess({ suite_id: id, teams }, { db, logger });
 
   const suite = await findSuite(id, { db, logger });
-
   // throws an error if trigger deleted
-  await findTrigger(suite.trigger_id, { db, logger });
+  const trigger = await findTrigger(suite.trigger_id, { db, logger });
 
-  return suite;
+  return { ...suite, trigger_name: trigger.name };
 };
 
 /**

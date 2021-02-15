@@ -254,6 +254,9 @@ type Suite {
 
   "Associated test trigger ID"
   trigger_id: ID!
+
+  "Associated test trigger name"
+  trigger_name: String!
 }
 
 "One run for one test that is part of a test trigger we are running all at once"
