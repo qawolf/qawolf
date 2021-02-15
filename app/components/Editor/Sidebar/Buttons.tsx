@@ -71,7 +71,7 @@ export default function Buttons({
           justify="center"
           label={copy.stopRunning}
           onClick={onAction}
-          type="dark"
+          type="tertiary"
           width={width}
         />
       ) : (
