@@ -59,12 +59,13 @@ export default function Buttons({
       justify="between"
       pad="small"
     >
-      <Environments
-        isDisabled={isRun}
-        onEnvironmentClick={handleEnvironmentClick}
-        selectedEnvironmentId={isRun ? runEnvironmentId : environmentId}
-        width={width}
-      />
+      {!isRun && (
+        <Environments
+          onEnvironmentClick={handleEnvironmentClick}
+          selectedEnvironmentId={isRun ? runEnvironmentId : environmentId}
+          width={width}
+        />
+      )}
       {isRunning ? (
         <Button
           IconComponent={Stop}
@@ -81,8 +82,8 @@ export default function Buttons({
           justify="center"
           label={isRun ? copy.editTest : runLabel}
           onClick={onAction}
-          type="primary"
-          width={width}
+          type={isRun ? "dark" : "primary"}
+          width={isRun ? "100%" : width}
         />
       )}
     </Box>

@@ -8,7 +8,6 @@ import { copy } from "../../theme/copy";
 import {
   borderSize,
   colors,
-  disabledOpacity,
   theme,
   transitionDuration,
 } from "../../theme/theme-new";
@@ -21,7 +20,6 @@ import Option from "./Select/Option";
 
 type Props = {
   direction?: Direction;
-  isDisabled?: boolean;
   onEnvironmentClick: (environmentId: string) => void;
   selectedEnvironmentId: string | null;
   width?: BoxProps["width"];
@@ -43,7 +41,6 @@ const StyledBox = styled(Box)`
 
 export default function Environments({
   direction,
-  isDisabled,
   onEnvironmentClick,
   selectedEnvironmentId,
   width,
@@ -89,7 +86,6 @@ export default function Environments({
         <Button
           IconComponent={Configure}
           a11yTitle={copy.environmentEdit(selectedEnvironment?.name)}
-          isDisabled={isDisabled}
           noBorderSide="right"
           onClick={openEnvironmentsModal}
           type="dark"
@@ -97,12 +93,10 @@ export default function Environments({
         <Box
           background={colors.gray8}
           id="environments-divider"
-          style={{ opacity: isDisabled ? disabledOpacity : 1 }}
           width={borderSize.xsmall}
         />
         <Select
           direction={direction || "up"}
-          isDisabled={isDisabled}
           label={label}
           noBorderSide="left"
           type="dark"
