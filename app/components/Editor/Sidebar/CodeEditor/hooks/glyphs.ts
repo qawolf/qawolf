@@ -19,6 +19,7 @@ const INTERVAL_MS = 100;
 
 const getGlyphClass = (status: RunStatus, readOnly: boolean): string => {
   if (status === "created") return styles.glyphInProgress;
+  if (readOnly && status === "fail") return styles.glyphFailReadOnly;
   if (status === "fail") return styles.glyphFail;
   if (readOnly) return styles.glyphPassReadOnly;
 
@@ -46,7 +47,7 @@ const getGlyphs = ({
     },
   ];
 
-  if (status === "fail") {
+  if (readOnly && status === "fail") {
     glyphs.push({
       range: new monacoEditor.Range(currentLine, COLUMN, currentLine, COLUMN),
       options: {
