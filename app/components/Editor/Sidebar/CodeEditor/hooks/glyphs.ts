@@ -57,7 +57,7 @@ const getGlyphs = ({
         COLUMN
       ),
       options: {
-        marginClassName: styles.glyphPass,
+        marginClassName: readOnly ? styles.glyphPassReadOnly : styles.glyphPass,
       },
     });
   }
