@@ -3,6 +3,7 @@
 .glyphPass:before,
 .glyphPassReadOnly:before {
   display: block;
+  margin-left: 16px;
   margin-top: 3px;
 }
 
@@ -20,4 +21,11 @@
 
 .glyphPassReadOnly:before {
   content: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='8' cy='8' r='7' fill='%23ABB3C2'/%3E%3Cpath d='M5 8L7 10L11 6' stroke='%23151B26' stroke-width='1.5'/%3E%3C/svg%3E%0A");
+}
+
+.glyphFail,
+.lineFail {
+  background: #33050d;
+  border-bottom: 1px solid #66141b;
+  border-top: 1px solid #66141b;
 }

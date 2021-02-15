@@ -26,6 +26,7 @@ export const options: monacoEditor.editor.IStandaloneEditorConstructionOptions =
   fontSize: 14,
   insertSpaces: true,
   lineHeight: 24,
+  lineNumbersMinChars: 7,
   minimap: {
     enabled: false,
   },

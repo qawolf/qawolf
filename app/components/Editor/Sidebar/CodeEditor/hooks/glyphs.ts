@@ -46,6 +46,16 @@ const getGlyphs = ({
     },
   ];
 
+  if (status === "fail") {
+    glyphs.push({
+      range: new monacoEditor.Range(currentLine, COLUMN, currentLine, COLUMN),
+      options: {
+        className: styles.lineFail,
+        isWholeLine: true,
+      },
+    });
+  }
+
   // glyphs for the previous lines
   // do not include if only running one line
   if ((startLine || 1) < currentLine) {

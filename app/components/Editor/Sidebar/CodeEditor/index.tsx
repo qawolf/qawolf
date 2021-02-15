@@ -21,7 +21,12 @@ export default function CodeEditor({ onKeyDown }: Props): JSX.Element {
 
   useEnvTypes({ env, monaco });
   useHelpersTypes({ helpers: team?.helpers, monaco });
-  useGlyphs({ code, editor, progress });
+  // useGlyphs({ code, editor, progress });
+  useGlyphs({
+    code,
+    editor,
+    progress: { ...progress, current_line: 3, status: "fail" },
+  });
 
   const editorDidMount = ({ editor, monaco }) => {
     setEditor(editor);
