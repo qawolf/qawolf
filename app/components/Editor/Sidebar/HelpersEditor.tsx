@@ -21,7 +21,7 @@ const DEBOUNCE_MS = 250;
 export default function HelpersEditor({ onKeyDown }: Props): JSX.Element {
   const { env } = useContext(RunnerContext);
   const { teamId } = useContext(StateContext);
-  const { team } = useContext(TestContext);
+  const { hasWriteAccess, team } = useContext(TestContext);
 
   const [editor, setEditor] = useState<Editor | null>(null);
   const [monaco, setMonaco] = useState<typeof monacoEditor | null>(null);
@@ -62,7 +62,9 @@ export default function HelpersEditor({ onKeyDown }: Props): JSX.Element {
     <EditorComponent
       editorDidMount={editorDidMount}
       onKeyDown={onKeyDown}
-      options={{}}
+      options={{
+        readOnly: !hasWriteAccess,
+      }}
     />
   );
 }

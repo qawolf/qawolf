@@ -9,6 +9,7 @@ import {
   background,
   options as baseOptions,
   theme,
+  themeReadOnly,
 } from "../../../theme/codeEditor";
 
 const language = "javascript";
@@ -87,7 +88,10 @@ export default function Editor({
 
       editorRef.current = editor;
 
-      monaco.editor.defineTheme("qawolf", theme);
+      monaco.editor.defineTheme(
+        "qawolf",
+        options.readOnly ? themeReadOnly : theme
+      );
       monaco.editor.setTheme("qawolf");
 
       monaco.editor.setModelLanguage(editorRef.current.getModel(), language);
