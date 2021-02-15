@@ -4,15 +4,10 @@ import { copy } from "../../../theme/copy";
 import { colors, edgeSize } from "../../../theme/theme-new";
 import { borderSize } from "../../../theme/theme-new";
 import Browser from "../../shared-new/icons/Browser";
-import Video from "../../shared-new/icons/Video";
 import Text from "../../shared-new/Text";
 import CodeToggle from "./CodeToggle";
 
-type Props = { hasVideo: boolean };
-
-export default function Header({ hasVideo }: Props): JSX.Element {
-  const IconComponent = hasVideo ? Video : Browser;
-
+export default function Header(): JSX.Element {
   return (
     <Box
       align="center"
@@ -23,13 +18,13 @@ export default function Header({ hasVideo }: Props): JSX.Element {
       justify="between"
       pad="small"
     >
+      <CodeToggle />
       <Box align="center" direction="row">
-        <IconComponent color={colors.gray9} size={edgeSize.small} />
+        <Browser color={colors.gray9} size={edgeSize.small} />
         <Text color="gray9" margin={{ left: "xxsmall" }} size="component">
-          {hasVideo ? copy.video : copy.browser}
+          {copy.browser}
         </Text>
       </Box>
-      {!hasVideo && <CodeToggle />}
     </Box>
   );
 }

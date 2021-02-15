@@ -43,6 +43,7 @@ export type RunStatus = "created" | "fail" | "pass";
 export type Run = {
   code: string;
   completed_at: string | null;
+  created_at: string;
   current_line: number | null;
   environment_id: string | null;
   id: string;

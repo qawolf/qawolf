@@ -245,6 +245,7 @@ export const copy = {
   testNamePlaceholder: "Name your test",
   testPass: "Pass",
   toastAutosave: "🐺 QA Wolf autosaves your tests",
+  trigger: "Trigger",
   triggerDeleteConfirm:
     "Are you sure? This will permanently delete this trigger. Please type",
   triggerDeleteConfirm2: "to confirm.",

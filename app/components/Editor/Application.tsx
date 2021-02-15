@@ -54,7 +54,7 @@ export default function Application({ mode }: Props): JSX.Element {
 
   return (
     <Box fill>
-      <Header hasVideo={!!run?.video_url} />
+      {!run?.video_url && <Header />}
       <Box fill ref={ref}>
         <Canvas
           height={canvasHeight}
