@@ -6,6 +6,7 @@ import styles from "../CodeEditor.module.css";
 
 type GetGlyphs = {
   currentLine: number | null;
+  readOnly: boolean;
   startLine: number | null;
   status: RunStatus | null;
 };
@@ -16,13 +17,20 @@ const COLUMN = 1;
 
 const INTERVAL_MS = 100;
 
-const getGlyphClass = (status: RunStatus): string => {
+const getGlyphClass = (status: RunStatus, readOnly: boolean): string => {
   if (status === "created") return styles.glyphInProgress;
   if (status === "fail") return styles.glyphFail;
+  if (readOnly) return styles.glyphPassReadOnly;
+
   return styles.glyphPass;
 };
 
-const getGlyphs = ({ currentLine, startLine, status }: GetGlyphs): Glyph[] => {
+const getGlyphs = ({
+  currentLine,
+  readOnly,
+  startLine,
+  status,
+}: GetGlyphs): Glyph[] => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const monacoEditor = (window as any).monaco;
 
@@ -33,7 +41,7 @@ const getGlyphs = ({ currentLine, startLine, status }: GetGlyphs): Glyph[] => {
     {
       range: new monacoEditor.Range(currentLine, COLUMN, currentLine, COLUMN),
       options: {
-        marginClassName: getGlyphClass(status),
+        marginClassName: getGlyphClass(status, readOnly),
       },
     },
   ];
@@ -105,6 +113,7 @@ export const useGlyphs = ({ code, editor, progress }: UseGlyphs): void => {
 
     const glyphs = getGlyphs({
       currentLine: progress?.current_line || null,
+      readOnly: editor.getOption(72), // readOnly
       startLine: progress?.start_line || null,
       status: progress?.status || null,
     });
