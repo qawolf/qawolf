@@ -2,6 +2,7 @@ import { Box } from "grommet";
 import { useContext } from "react";
 
 import { useSuite } from "../../hooks/queries";
+import { copy } from "../../theme/copy";
 import { StateContext } from "../StateContext";
 import Text from "./Text";
 
@@ -15,8 +16,6 @@ export default function TriggerBadge({ suiteId }: Props): JSX.Element {
   const { data } = useSuite({ id: suiteId }, { teamId, triggerId });
   const name = data?.suite?.trigger_name;
 
-  if (!name) return null;
-
   return (
     <Box
       background="gray2"
@@ -24,7 +23,7 @@ export default function TriggerBadge({ suiteId }: Props): JSX.Element {
       round="xlarge"
     >
       <Text color="gray9" size="component">
-        {name}
+        {name || copy.loading}
       </Text>
     </Box>
   );
