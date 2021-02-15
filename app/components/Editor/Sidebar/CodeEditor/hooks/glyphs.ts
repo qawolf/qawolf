@@ -51,7 +51,8 @@ const getGlyphs = ({
     glyphs.push({
       range: new monacoEditor.Range(currentLine, COLUMN, currentLine, COLUMN),
       options: {
-        className: styles.lineFail,
+        className: styles.lineFailReadOnly,
+        inlineClassName: styles.textFailReadOnly,
         isWholeLine: true,
       },
     });
