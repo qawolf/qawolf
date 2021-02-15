@@ -18,7 +18,7 @@ if (dsn && !isServer()) {
       new Integrations.BrowserTracing(),
       new CaptureConsole({ levels: ["error", "warn"] }),
     ],
-    tracesSampleRate: 1.0,
+    tracesSampleRate: 0.01,
   });
 }
 
