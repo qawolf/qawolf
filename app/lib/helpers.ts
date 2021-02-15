@@ -181,10 +181,11 @@ export const timestampToText = (timestamp: string | number): string => {
   const day = date.getDate();
 
   const hour = date.getHours();
+  const formattedHour = hour > 12 ? hour % 12 : hour;
   const minutes = date.getMinutes();
   const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
 
   const suffix = hour < 12 ? "AM" : "PM";
 
-  return `${month} ${day}, ${hour % 12}:${formattedMinutes} ${suffix}`;
+  return `${month} ${day}, ${formattedHour}:${formattedMinutes} ${suffix}`;
 };
