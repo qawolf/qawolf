@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest } from "next";
 
 import { context } from "../../server/context";
 import { Logger } from "../../server/Logger";
