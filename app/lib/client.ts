@@ -59,7 +59,7 @@ const versionLink = new ApolloLink((operation, forward) => {
 
     const serverVersion = context.response?.headers?.get("version");
 
-    let clientVersion = sessionStorage.getItem(VERSION_KEY);
+    const clientVersion = sessionStorage.getItem(VERSION_KEY);
     if (!clientVersion || serverVersion !== clientVersion) {
       sessionStorage.setItem(VERSION_KEY, serverVersion);
     }
