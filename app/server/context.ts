@@ -29,6 +29,9 @@ export const context = async ({
 
   if (!db) throw new Error("db must be provided to request");
 
+  // include version in response header
+  res.setHeader("version", environment.VERCEL_GIT_COMMIT_SHA.slice(0, 7));
+
   const logger = new Logger({ prefix: "graphql" });
 
   const authToken = req.headers.authorization || "";
@@ -56,9 +59,6 @@ export const context = async ({
   const teamIds = teams?.map((team) => team.id);
 
   logger.debug(`user ${user?.id} teams ${teamIds}`);
-
-  // include version in response header
-  res.setHeader("version", environment.VERCEL_GIT_COMMIT_SHA.slice(0, 7));
 
   return { api_key, db, ip, logger, teams, user };
 };

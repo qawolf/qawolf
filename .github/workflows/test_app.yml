@@ -49,5 +49,6 @@ jobs:
           QAWOLF_AWS_REGION: us-west-1
           SLACK_CLIENT_ID: client-id
           TEST_GITHUB_ACCESS_TOKEN: ${{ secrets.TEST_GITHUB_ACCESS_TOKEN }}
+          VERCEL_GIT_COMMIT_SHA: abcdefghijk
         run: npm run test
         working-directory: ./app
