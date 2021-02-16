@@ -18,7 +18,7 @@ export const useEnv = (suiteVariables?: string | null): EnvHook => {
 
   const combinedEnv = { ...env, ...suiteEnv };
 
-  if (Object.keys(combinedEnv).length) return { env: combinedEnv };
-
-  return null;
+  return {
+    env: Object.keys(combinedEnv).length ? combinedEnv : null,
+  };
 };
