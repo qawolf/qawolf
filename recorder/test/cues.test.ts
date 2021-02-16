@@ -40,7 +40,10 @@ describe("buildCues", () => {
 });
 
 describe("buildCuesForElement", () => {
-  const buildCuesForElement = async (selector: string, level = 1): Promise<Cue[]> => {
+  const buildCuesForElement = async (
+    selector: string,
+    level = 1
+  ): Promise<Cue[]> => {
     return page.evaluate(
       ({ level, selector }) => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
@@ -109,7 +112,7 @@ describe("buildCuesForElement", () => {
     expect(cues).toEqual([
       { level: 0, penalty: 5, type: "attribute", value: '[for="single"]' },
       { level: 0, penalty: 40, type: "tag", value: "label" },
-      { level: 0, penalty: 12, type: "text", value: '" Single checkbox"' },
+      { level: 0, penalty: 12, type: "text", value: " Single checkbox" },
     ]);
 
     const cues2 = await buildCuesForElement('[for="single"]', 1);

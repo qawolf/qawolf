@@ -13,6 +13,6 @@ export {
   isVisible,
 } from "./element";
 export { ActionRecorder } from "./ActionRecorder";
-export { buildSelector, clearSelectorCache, toSelector } from "./selector";
+export { buildSelector, clearSelectorCache } from "./selector";
 export { buildTextSelector, isMatch } from "./selectorEngine";
 export { getXpath, nodeToDoc } from "./serialize";

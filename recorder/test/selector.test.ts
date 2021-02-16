@@ -1,5 +1,4 @@
 import { Browser, ElementHandle, Page } from "playwright";
-import { SelectorPart } from "../src/types";
 import { DEFAULT_ATTRIBUTE_LIST, launch, TEST_URL } from "./utils";
 import { QAWolfWeb } from "../src";
 
@@ -122,7 +121,7 @@ describe("buildSelector", () => {
 
     it.each([
       '[name="field-keywords"]',
-      'text="Start here."',
+      "text=Start here.",
     ])("builds expected selector %o", (selector) => expectSelector(selector));
   });
 
@@ -165,7 +164,7 @@ describe("buildSelector", () => {
         [[".MuiButton-label", '[data-qa="material-button"]']],
         [".second-half.type-two"],
         // selects the better selector for target despite having clickable ancestors
-        [['[data-for-test="selection"]', 'text="Better attribute on span"']],
+        [['[data-for-test="selection"]', "text=Better attribute on span"]],
       ])("builds expected selector %o", (selector) => expectSelector(selector));
     });
 
@@ -320,47 +319,5 @@ describe("buildSelector", () => {
         ],
       ])("builds expected selector %o", (selector) => expectSelector(selector));
     });
-  });
-});
-
-describe("toSelector", () => {
-  beforeAll(async () => {
-    await page.goto(`${TEST_URL}checkbox-inputs`);
-  });
-
-  const toSelector = async (selectorParts: SelectorPart[]): Promise<string> => {
-    return page.evaluate(
-      ({ selectorParts }) => {
-        const qawolf: QAWolfWeb = (window as any).qawolf;
-        return qawolf.toSelector(selectorParts);
-      },
-      { selectorParts }
-    );
-  };
-
-  it("returns a pure CSS selector if possible", async () => {
-    const selectorString = await toSelector([
-      { name: "css", body: '[data-qa="search"]' },
-      { name: "css", body: "input.search-input" },
-    ]);
-
-    expect(selectorString).toBe('[data-qa="search"] input.search-input');
-  });
-
-  it("returns a single text selector", async () => {
-    const selectorString = await toSelector([
-      { name: "text", body: '"Click Me!"' },
-    ]);
-
-    expect(selectorString).toBe('text="Click Me!"');
-  });
-
-  it("returns a mixed selector", async () => {
-    const selectorString = await toSelector([
-      { name: "css", body: ".container" },
-      { name: "text", body: '"Submit"' },
-    ]);
-
-    expect(selectorString).toBe('css=.container >> text="Submit"');
   });
 });

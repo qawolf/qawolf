@@ -1,8 +1,8 @@
 import cssEscape from "css.escape";
 
 import { getAttribute } from "./attribute";
-import { buildTextSelector } from "./selectorEngine";
 import { getValueMatches } from "./isDynamic";
+import { buildTextSelector } from "./selectorEngine";
 
 const DYNAMIC_VALUE_OK_ATTRIBUTES = ["placeholder", "href", "src", "value"];
 
@@ -262,6 +262,7 @@ export const buildCuesForElement = ({
         // selector for any element that is higher, and building a text selector becomes
         // extremely slow when some of the ancestor elements have many descendants.
         if (level > 0) return list;
+
         const value = buildTextSelector(element);
         if (typeof value === "string") {
           list.push({ level, penalty, type: "text", value });

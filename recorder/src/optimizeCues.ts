@@ -5,16 +5,15 @@ import {
   getValueLength,
 } from "./cues";
 import {
-  buildSelectorParts,
-  getElementMatchingSelectorParts,
+  buildSelectorForCues,
   isMatch,
+  evaluatorQuerySelector,
 } from "./selectorEngine";
-import { SelectorPart } from "./types";
 
 export type CueGroup = {
   cues: Cue[];
   penalty: number;
-  selectorParts: SelectorPart[];
+  selector: string;
   valueLength: number;
 };
 
@@ -160,12 +159,12 @@ export const trimExcessCues = (
   target: HTMLElement,
   goalSize: number
 ): CueGroup | null => {
-  let selectorParts = buildSelectorParts(cuesToTrim);
+  let selector = buildSelectorForCues(cuesToTrim);
 
-  if (!isMatch({ selectorParts, target })) {
+  if (!isMatch(selector, target)) {
     // Short-circuit if the cues do not match the target
     // This should never happen but we are being precautious
-    console.debug("qawolf: selectors did not match", selectorParts, target);
+    console.debug("qawolf: selectors did not match", selector, target);
     return null;
   }
 
@@ -179,11 +178,11 @@ export const trimExcessCues = (
     const cuesWithoutI = [...cues];
     cuesWithoutI.splice(i, 1);
 
-    const selectorPartsWithoutI = buildSelectorParts(cuesWithoutI);
+    const selectorWithoutI = buildSelectorForCues(cuesWithoutI);
 
-    if (isMatch({ selectorParts: selectorPartsWithoutI, target })) {
+    if (isMatch(selectorWithoutI, target)) {
       cues = cuesWithoutI;
-      selectorParts = selectorPartsWithoutI;
+      selector = selectorWithoutI;
       i -= 1;
     }
   }
@@ -191,7 +190,7 @@ export const trimExcessCues = (
   return {
     cues,
     penalty: getPenalty(cues),
-    selectorParts,
+    selector,
     valueLength: getValueLength(cues),
   };
 };
@@ -233,19 +232,19 @@ export const findBestCueGroup = (
         cues.push(cueToKeep);
       }
 
-      const selectorParts = buildSelectorParts(cues);
+      const selector = buildSelectorForCues(cues);
 
       // If these selector parts match any element that we are targeting,
       // then it's currently the best group.
-      const matchedElement = getElementMatchingSelectorParts(
-        selectorParts,
+      const matchedElement = evaluatorQuerySelector(
+        selector,
         targetGroup[0].ownerDocument
       );
       if (targetGroup.includes(matchedElement)) {
         bestGroup = {
           cues,
           penalty,
-          selectorParts,
+          selector,
           valueLength,
         };
         // I considered breaking out of the loop here if penalty is 0, but then we would

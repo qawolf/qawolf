@@ -1,8 +1,7 @@
 import { Browser, Page } from "playwright";
-import { buildSelectorParts } from "../src/selectorEngine";
-import { SelectorPart } from "../src/types";
-import { launch, TEST_URL } from "./utils";
+import { buildSelectorForCues } from "../src/selectorEngine";
 import { QAWolfWeb } from "../src";
+import { launch, TEST_URL } from "./utils";
 
 describe("browser tests", () => {
   let browser: Browser;
@@ -22,36 +21,29 @@ describe("browser tests", () => {
 
   describe("isMatch", () => {
     const isMatch = async (
-      selectorParts: SelectorPart[],
+      selector: string,
       targetSelector: string
     ): Promise<boolean> => {
       return page.evaluate(
-        ({ selectorParts, targetSelector }) => {
+        ({ selector, targetSelector }) => {
           const qawolf: QAWolfWeb = (window as any).qawolf;
           const target = document.querySelector(targetSelector) as HTMLElement;
-
-          return qawolf.isMatch({ selectorParts, target });
+          return qawolf.isMatch(selector, target);
         },
-        { selectorParts, targetSelector }
+        { selector, targetSelector }
       );
     };
 
     it("returns true if selector matches element", async () => {
-      const result = await isMatch(
-        [{ body: '[data-qa="html-checkbox"]', name: "css" }],
-        "#single"
-      );
+      const result = await isMatch('[data-qa="html-checkbox"]', "#single");
       expect(result).toBe(true);
 
-      const result2 = await isMatch(
-        [{ body: "Single checkbox", name: "text" }],
-        '[for="single"]'
-      );
+      const result2 = await isMatch("text=Single checkbox", '[for="single"]');
       expect(result2).toBe(true);
     });
 
     it("return false if selector does not match element", async () => {
-      const result = await isMatch([{ body: "#cat", name: "css" }], "#single");
+      const result = await isMatch("#cat", "#single");
       expect(result).toBe(false);
     });
 
@@ -59,10 +51,9 @@ describe("browser tests", () => {
       await page.goto(`${TEST_URL}buttons`);
 
       const result = await isMatch(
-        [{ body: '"Button \\"with\\" extra \'quotes\'"', name: "text" }],
+        'text="Button \\"with\\" extra \'quotes\'"',
         ".quote-button"
       );
-
       expect(result).toBe(true);
 
       await page.goto(`${TEST_URL}checkbox-inputs`);
@@ -110,7 +101,7 @@ describe("browser tests", () => {
   });
 });
 
-describe("buildSelectorParts", () => {
+describe("buildSelectorForCues", () => {
   it("builds selector from cues", () => {
     const cues = [
       { level: 0, penalty: 0, type: "class", value: ".search-input" },
@@ -124,12 +115,9 @@ describe("buildSelectorParts", () => {
       { level: 0, penalty: 0, type: "id", value: "#search" },
     ];
 
-    const selector = buildSelectorParts(cues);
+    const selector = buildSelectorForCues(cues);
 
-    expect(selector).toEqual([
-      { name: "css", body: '[data-qa="search"]' },
-      { name: "css", body: "input.search-input#search" },
-    ]);
+    expect(selector).toEqual('[data-qa="search"] input.search-input#search');
   });
 
   it("includes text selector if applicable", () => {
@@ -143,12 +131,8 @@ describe("buildSelectorParts", () => {
       },
     ];
 
-    const selector = buildSelectorParts(cues);
-
-    expect(selector).toEqual([
-      { name: "css", body: "#container" },
-      { name: "text", body: '"Submit"' },
-    ]);
+    const selector = buildSelectorForCues(cues);
+    expect(selector).toEqual('css=#container >> text="Submit"');
   });
 
   it("orders selectors based on level", () => {
@@ -159,12 +143,8 @@ describe("buildSelectorParts", () => {
       { level: 2, penalty: 0, type: "class", value: ".search-input" },
     ];
 
-    const selector = buildSelectorParts(cues);
+    const selector = buildSelectorForCues(cues);
 
-    expect(selector).toEqual([
-      { name: "css", body: "nav" },
-      { name: "css", body: ".search-input" },
-      { name: "css", body: "#search" },
-    ]);
+    expect(selector).toEqual("nav .search-input #search");
   });
 });

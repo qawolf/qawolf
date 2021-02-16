@@ -6,8 +6,7 @@ import {
   pickBestCueGroup,
 } from "./optimizeCues";
 import { getXpath } from "./serialize";
-import { getElementMatchingSelectorParts, isMatch } from "./selectorEngine";
-import { SelectorPart } from "./types";
+import { evaluatorQuerySelector, isMatch } from "./selectorEngine";
 
 export type BuildSelectorOptions = {
   attributes: string[];
@@ -19,7 +18,6 @@ export type BuildSelectorOptions = {
 type CachedSelectorInfo = {
   matchedTarget: HTMLElement;
   selector: string;
-  selectorParts: SelectorPart[];
 };
 
 type CuesForLevel = {
@@ -38,18 +36,6 @@ export const clearSelectorCache = (): void => {
   clickSelectorCache.clear();
 };
 
-export const toSelector = (selectorParts: SelectorPart[]): string => {
-  const names = selectorParts.map((s) => s.name);
-
-  // CSS selector
-  if (!names.includes("text")) {
-    return selectorParts.map((s) => s.body).join(" ");
-  }
-
-  // mixed selector
-  return selectorParts.map(({ body, name }) => `${name}=${body}`).join(" >> ");
-};
-
 export const buildSelector = (options: BuildSelectorOptions): string => {
   const { attributes, clearCache, isClick, target } = options;
 
@@ -66,10 +52,10 @@ export const buildSelector = (options: BuildSelectorOptions): string => {
 
   let selector: string;
   if (cachedSelectorInfo) {
-    const { matchedTarget, selector, selectorParts } = cachedSelectorInfo;
+    const { matchedTarget, selector } = cachedSelectorInfo;
     // Even if we have cached a selector, it is possible that the DOM
     // has changed since the cached one was built. Confirm it's a match.
-    if (isMatch({ selectorParts, target: matchedTarget })) {
+    if (isMatch(selector, matchedTarget)) {
       // console.debug('Using cached selector', selector, 'for target', target);
       return selector;
     }
@@ -150,11 +136,9 @@ export const buildSelector = (options: BuildSelectorOptions): string => {
   });
 
   // Now pick the one best of the best possible cue groups and build a selector from it
-  const { selectorParts } = pickBestCueGroup(cueGroups) || {};
-  if (selectorParts) {
-    // Convert selectorParts (a Playwright thing) to a string selector
-    selector = toSelector(selectorParts);
-
+  const { selector: bestSelector } = pickBestCueGroup(cueGroups) || {};
+  if (bestSelector) {
+    selector = bestSelector;
     // This selector should match one of the elements in `targetGroup`, but it
     // may not be the original target. If so, determine what the matched target is.
     let matchedTarget: HTMLElement;
@@ -163,21 +147,14 @@ export const buildSelector = (options: BuildSelectorOptions): string => {
     } else {
       // We must pass `target.ownerDocument` rather than `document`
       // because sometimes this is called from other frames.
-      matchedTarget = getElementMatchingSelectorParts(
-        selectorParts,
-        target.ownerDocument
-      );
+      matchedTarget = evaluatorQuerySelector(selector, target.ownerDocument);
     }
 
     // Cache it so that we don't need to do all the looping for this
-    // same target next time. We cache `selectorParts` along with `selector`
-    // because the DOM can change, so when we later use the cached selector,
-    // we will need to run it through `isMatch` again, which needs the parsed
-    // selector.
+    // same target next time.
     const selectorInfo: CachedSelectorInfo = {
       matchedTarget,
       selector,
-      selectorParts,
     };
     if (isClick) {
       clickSelectorCache.set(target, selectorInfo);

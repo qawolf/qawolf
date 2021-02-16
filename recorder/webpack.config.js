@@ -1,14 +1,19 @@
 const VirtualModulesPlugin = require("webpack-virtual-modules");
 const path = require("path");
-const selectorEvaluatorSource = require("playwright-core/lib/generated/injectedScriptSource");
+const injectedScriptSource = require("playwright-core/lib/generated/injectedScriptSource");
 
 const virtualModules = new VirtualModulesPlugin({
   "node_modules/playwright-evaluator.js": `
-  const evaluator = new (${selectorEvaluatorSource.source})([]);
-  const createTextSelector = (element) => evaluator.engines.get('text').create(document, element);
-  const isVisible = (element) => evaluator.isVisible(element);
-  const querySelector = (...args) => evaluator.querySelector(...args);
-  module.exports = { createTextSelector, isVisible, querySelector };`,
+  let pwQuerySelector;
+  (() => {
+    ${injectedScriptSource.source}
+    const injected = new pwExport(1, false, []);
+    pwQuerySelector = (selector, root) => {
+      const parsed = injected.parseSelector(selector);
+      return injected.querySelector(parsed, root);
+    };
+  })();
+  module.exports = { querySelector: pwQuerySelector };`,
 });
 
 module.exports = {
@@ -31,7 +36,7 @@ module.exports = {
     extensions: [".ts", ".js"],
   },
   optimization: {
-    minimize: true,
+    minimize: process.env.NODE_ENV !== "development",
   },
   output: {
     filename: "qawolf.recorder.js",
