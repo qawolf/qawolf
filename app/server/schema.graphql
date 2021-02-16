@@ -246,6 +246,9 @@ type Suite {
   "Associated test trigger environment ID"
   environment_id: ID
 
+  "A JSON object with key:value env variables, with decrypted values."
+  environment_variables: String
+
   "Suite ID"
   id: ID!
 

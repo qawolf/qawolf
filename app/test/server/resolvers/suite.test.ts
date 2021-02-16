@@ -22,7 +22,7 @@ const suites = [
     created_at: timestamp,
     creator_github_login: "spirit",
     creator_id: null,
-    environment_variables: null,
+    environment_variables: JSON.stringify({ hello: "world" }),
     id: "suiteId",
     repeat_minutes: 60,
     team_id: "teamId",

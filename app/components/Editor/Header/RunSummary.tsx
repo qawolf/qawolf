@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 
 import { durationToText, timestampToText } from "../../../lib/helpers";
-import { Run } from "../../../lib/types";
+import { Run, Suite } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import { borderSize } from "../../../theme/theme-new";
 import LabeledBox from "../../shared-new/LabeledBox";
@@ -9,11 +9,14 @@ import StatusBadge from "../../shared-new/StatusBadge";
 import Text from "../../shared-new/Text";
 import TriggerBadge from "../../shared-new/TriggerBadge";
 
-type Props = { run: Run };
+type Props = {
+  run: Run;
+  suite: Suite | null;
+};
 
 const rightMargin = { right: "large" };
 
-export default function RunSummary({ run }: Props): JSX.Element {
+export default function RunSummary({ run, suite }: Props): JSX.Element {
   const startedAt = run.started_at
     ? timestampToText(run.started_at)
     : copy.notStarted;
@@ -34,7 +37,7 @@ export default function RunSummary({ run }: Props): JSX.Element {
       pad="small"
     >
       <LabeledBox label={copy.trigger} margin={rightMargin}>
-        <TriggerBadge suiteId={run.suite_id} />
+        <TriggerBadge isLoading={!suite} name={suite?.trigger_name} />
       </LabeledBox>
       <LabeledBox label={copy.status} margin={rightMargin}>
         <StatusBadge status={run.status} />

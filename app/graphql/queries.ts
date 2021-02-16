@@ -93,6 +93,7 @@ export const suiteQuery = gql`
   query suite($id: ID!) {
     suite(id: $id) {
       environment_id
+      environment_variables
       id
       team_id
       trigger_id

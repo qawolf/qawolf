@@ -30,7 +30,7 @@ export default function Header({ mode }: Props): JSX.Element {
   } = useRouter();
 
   const { progress } = useContext(RunnerContext);
-  const { run, test } = useContext(TestContext);
+  const { run, suite, test } = useContext(TestContext);
 
   const testIds = [test_id] as string[];
 
@@ -96,7 +96,7 @@ export default function Header({ mode }: Props): JSX.Element {
           )}
         </Box>
       </Box>
-      {!!run && <RunSummary run={run} />}
+      {!!run && <RunSummary run={run} suite={suite} />}
     </>
   );
 }
