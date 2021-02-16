@@ -36,6 +36,7 @@ export const TestProvider: FC = ({ children }) => {
   const { environmentId, teamId, triggerId } = useContext(StateContext);
 
   const { query } = useRouter();
+
   const run_id = query.run_id as string;
   const test_id = query.test_id as string;
 
@@ -50,7 +51,7 @@ export const TestProvider: FC = ({ children }) => {
   const test = data?.test?.test || null;
 
   const { data: suiteData } = useSuite(
-    { id: run?.suite_id },
+    { id: run?.suite_id || (query?.suite_id as string) },
     { teamId, triggerId }
   );
   const suite = suiteData?.suite || null;

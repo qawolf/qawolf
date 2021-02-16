@@ -17,6 +17,7 @@ import StatusBadge from "../../shared-new/StatusBadge";
 import Text from "../../shared-new/Text";
 import { RunnerContext } from "../contexts/RunnerContext";
 import { TestContext } from "../contexts/TestContext";
+import { buildTestHref } from "../helpers";
 import { Mode } from "../hooks/mode";
 import RunSummary from "./RunSummary";
 import TestHistory from "./TestHistory";
@@ -88,7 +89,7 @@ export default function Header({ mode }: Props): JSX.Element {
           {run?.test_id && (
             <Button
               IconComponent={Edit}
-              href={`${routes.test}/${run?.test_id}`}
+              href={buildTestHref({ run, suite })}
               isDisabled={!run?.test_id}
               label={copy.editTest}
               type="primary"

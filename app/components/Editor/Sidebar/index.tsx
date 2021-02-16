@@ -4,13 +4,13 @@ import { useRouter } from "next/router";
 import { Resizable, ResizeCallback } from "re-resizable";
 import { useContext, useState } from "react";
 
-import { routes } from "../../../lib/routes";
 import { state } from "../../../lib/state";
 import { NavigationOption } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import { StateContext } from "../../StateContext";
 import { RunnerContext } from "../contexts/RunnerContext";
 import { TestContext } from "../contexts/TestContext";
+import { buildTestHref } from "../helpers";
 import Buttons from "./Buttons";
 import CodeEditor from "./CodeEditor";
 import HelpersEditor from "./HelpersEditor";
@@ -32,7 +32,7 @@ export default function Sidebar(): JSX.Element {
   const { query, push } = useRouter();
   const { editorSidebarWidth } = useContext(StateContext);
 
-  const { controller, run, team, test } = useContext(TestContext);
+  const { controller, run, suite, team, test } = useContext(TestContext);
   const { progress, runTest, selection, stopTest } = useContext(RunnerContext);
 
   const [selected, setSelected] = useState<NavigationOption>("code");
@@ -50,7 +50,7 @@ export default function Sidebar(): JSX.Element {
 
     if (run) {
       // edit the test
-      push(`${routes.test}/${run.test_id}`);
+      push(buildTestHref({ run, suite }));
       return;
     }
 
