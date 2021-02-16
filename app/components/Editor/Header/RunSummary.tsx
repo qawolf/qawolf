@@ -14,6 +14,10 @@ type Props = { run: Run };
 const rightMargin = { right: "large" };
 
 export default function RunSummary({ run }: Props): JSX.Element {
+  const startedAt = run.started_at
+    ? timestampToText(run.started_at)
+    : copy.notStarted;
+
   let duration = copy.notStarted;
 
   if (run.started_at && run.completed_at) {
@@ -35,9 +39,9 @@ export default function RunSummary({ run }: Props): JSX.Element {
       <LabeledBox label={copy.status} margin={rightMargin}>
         <StatusBadge status={run.status} />
       </LabeledBox>
-      <LabeledBox label={copy.timestamp} margin={rightMargin}>
+      <LabeledBox label={copy.startedAt} margin={rightMargin}>
         <Text color="gray9" size="component">
-          {timestampToText(run.created_at)}
+          {startedAt}
         </Text>
       </LabeledBox>
       <LabeledBox label={copy.duration}>

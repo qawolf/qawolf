@@ -231,6 +231,7 @@ export const copy = {
   startTestingFree: "Start testing for free",
   startTestingFreeDetail:
     "Ship confidently with the easiest way to set up browser tests.",
+  startedAt: "Started",
   status: "Status",
   stopRunning: "Stop running",
   subscribe: "Subscribe",
@@ -246,7 +247,6 @@ export const copy = {
   testInProgress: "Running",
   testNamePlaceholder: "Name your test",
   testPass: "Pass",
-  timestamp: "Timestamp",
   toastAutosave: "🐺 QA Wolf autosaves your tests",
   trigger: "Trigger",
   triggerDeleteConfirm:
