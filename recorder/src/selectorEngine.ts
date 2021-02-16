@@ -1,37 +1,32 @@
 import { Cue } from "./cues";
-import { Evaluator, SelectorPart } from "./types";
+import { elementText } from "./elementText";
+import { Evaluator } from "./types";
 
-/* eslint-disable @typescript-eslint/no-var-requires */
 let evaluator: Evaluator;
 try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   evaluator = require("playwright-evaluator");
 } catch (e) {
   // this will only error on server side tests that
   // do not require the evaluator but depend on this file
 }
 
-const { createTextSelector, querySelector } = evaluator || {};
-/* eslint-enable @typescript-eslint/no-var-requires */
-
-type IsMatch = {
-  selectorParts: SelectorPart[];
-  target: HTMLElement;
-};
-
-export const buildSelectorParts = (cues: Cue[]): SelectorPart[] => {
+export const buildSelectorForCues = (cues: Cue[]): string => {
   const levels = [...new Set(cues.map((cue) => cue.level))];
 
   // sort descending
   levels.sort((a, b) => b - a);
 
-  const parts: SelectorPart[] = [];
+  const parts = [];
+
+  const hasText = cues.some((c) => c.type === "text");
 
   levels.forEach((level) => {
     const cuesForLevel = cues.filter((cue) => cue.level === level);
 
     const textCues = cuesForLevel.filter((cue) => cue.type === "text");
     if (textCues.length) {
-      parts.push({ name: "text", body: textCues[0].value });
+      parts.push(`text=${textCues[0].value}`);
       return;
     }
 
@@ -41,38 +36,35 @@ export const buildSelectorParts = (cues: Cue[]): SelectorPart[] => {
       return 0;
     });
 
-    const bodyValues = cuesForLevel.map((cue) => cue.value);
-
-    parts.push({ name: "css", body: bodyValues.join("") });
+    const cssSelector = cuesForLevel.map((cue) => cue.value).join("");
+    parts.push(hasText ? `css=${cssSelector}` : cssSelector);
   });
 
-  return parts;
+  return hasText ? parts.join(" >> ") : parts.join(" ");
 };
 
 export const buildTextSelector = (element: HTMLElement): string | undefined => {
-  const selector = createTextSelector(element);
+  const selector = elementText(element);
 
-  // The selector is a string that starts and ends with quotation
-  // marks. But we want to be sure that there is something
-  // other than whitespace between those quotation marks.
-  if (typeof selector === "string" && !/^"\s*"$/g.test(selector)) {
+  // Make sure that there is something other than whitespace
+  if (typeof selector === "string" && !/^\s*$/g.test(selector)) {
     return selector;
   }
 
   return undefined;
 };
 
-export const isMatch = ({ selectorParts, target }: IsMatch): boolean => {
-  // We must pass `target.ownerDocument` rather than `document`
-  // because sometimes this is called from other frames.
-  const result = querySelector({ parts: selectorParts }, target.ownerDocument);
-
-  return result === target;
+export const evaluatorQuerySelector = (
+  selector: string,
+  root?: Node
+): HTMLElement => {
+  return evaluator.querySelector(selector, root || document);
 };
 
-export const getElementMatchingSelectorParts = (
-  selectorParts: SelectorPart[],
-  root: Node
-): HTMLElement => {
-  return querySelector({ parts: selectorParts }, root);
+export const isMatch = (selector: string, target: Node): boolean => {
+  // We must pass `target.ownerDocument` rather than `document`
+  // because sometimes this is called from other frames.
+  const result = evaluatorQuerySelector(selector, target.ownerDocument);
+
+  return result === target;
 };

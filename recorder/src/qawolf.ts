@@ -12,8 +12,7 @@ export {
   getTopmostEditableElement,
   isVisible,
 } from "./element";
-export { formatArgument, interceptConsoleLogs } from "./interceptConsoleLogs";
 export { ActionRecorder } from "./ActionRecorder";
-export { buildSelector, clearSelectorCache, toSelector } from "./selector";
+export { buildSelector, clearSelectorCache } from "./selector";
 export { buildTextSelector, isMatch } from "./selectorEngine";
 export { getXpath, nodeToDoc } from "./serialize";

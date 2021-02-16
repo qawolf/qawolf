@@ -22,7 +22,7 @@ Array [
   },
   Object {
     "level": 1,
-    "penalty": 10,
+    "penalty": 12,
     "type": "class",
     "value": ".container",
   },

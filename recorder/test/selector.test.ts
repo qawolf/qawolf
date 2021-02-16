@@ -1,5 +1,4 @@
 import { Browser, ElementHandle, Page } from "playwright";
-import { SelectorPart } from "../src/types";
 import { DEFAULT_ATTRIBUTE_LIST, launch, TEST_URL } from "./utils";
 import { QAWolfWeb } from "../src";
 
@@ -122,7 +121,7 @@ describe("buildSelector", () => {
 
     it.each([
       '[name="field-keywords"]',
-      'text="Start here."',
+      "text=Start here.",
     ])("builds expected selector %o", (selector) => expectSelector(selector));
   });
 
@@ -130,7 +129,7 @@ describe("buildSelector", () => {
     beforeAll(() => page.goto(`${TEST_URL}fixtures/todomvc.html`));
 
     it.each([
-      ".new-todo",
+      '[placeholder="What needs to be done?"]',
       ".toggle", // first one is the match
       "li:nth-of-type(2) .toggle",
       "text=Active",
@@ -159,13 +158,13 @@ describe("buildSelector", () => {
       it.each([
         // selects the target
         [['[data-qa="html-button"]', '[data-qa="html-button"]']],
-        [[".quote-button", `.quote-button`]],
+        [[".quote-button", "text=Button \"with\" extra 'quotes'"]],
         // selects the ancestor
         [["#html-button-child", '[data-qa="html-button-with-children"]']],
         [[".MuiButton-label", '[data-qa="material-button"]']],
         [".second-half.type-two"],
         // selects the better selector for target despite having clickable ancestors
-        [['[data-for-test="selection"]', 'text="Better attribute on span"']],
+        [['[data-for-test="selection"]', "text=Better attribute on span"]],
       ])("builds expected selector %o", (selector) => expectSelector(selector));
     });
 
@@ -256,7 +255,7 @@ describe("buildSelector", () => {
         [
           [
             '[data-qa="quill"] [contenteditable="true"]',
-            '[data-qa="quill"] [class*="-blank"]',
+            '[data-qa="quill"] [contenteditable="true"]',
             false,
           ],
         ],
@@ -274,7 +273,9 @@ describe("buildSelector", () => {
             '[data-qa="material-select-native"] select',
             '[data-qa="material-select-native"] #material-select-native',
           ],
-          // check the invisible text is not targeted
+        ],
+        // check the invisible text is not targeted
+        [
           [
             '[data-qa="material-select"] #material-select',
             '[data-qa="material-select"] #material-select',
@@ -291,7 +292,7 @@ describe("buildSelector", () => {
         [["#button", '[data-test="click"] [data-qa="button"]']],
         // unique selectors
         [["#unique", '[data-qa="unique"]']],
-        [["#dog-0", '[data-qa="radio-group"] [id^="dog-"]']],
+        [["#dog-0", '[data-qa="radio-group"] [value="dog-0"]']],
       ])("builds expected selector %o", (selector) => expectSelector(selector));
     });
 
@@ -320,47 +321,5 @@ describe("buildSelector", () => {
         ],
       ])("builds expected selector %o", (selector) => expectSelector(selector));
     });
-  });
-});
-
-describe("toSelector", () => {
-  beforeAll(async () => {
-    await page.goto(`${TEST_URL}checkbox-inputs`);
-  });
-
-  const toSelector = async (selectorParts: SelectorPart[]): Promise<string> => {
-    return page.evaluate(
-      ({ selectorParts }) => {
-        const qawolf: QAWolfWeb = (window as any).qawolf;
-        return qawolf.toSelector(selectorParts);
-      },
-      { selectorParts }
-    );
-  };
-
-  it("returns a pure CSS selector if possible", async () => {
-    const selectorString = await toSelector([
-      { name: "css", body: '[data-qa="search"]' },
-      { name: "css", body: "input.search-input" },
-    ]);
-
-    expect(selectorString).toBe('[data-qa="search"] input.search-input');
-  });
-
-  it("returns a single text selector", async () => {
-    const selectorString = await toSelector([
-      { name: "text", body: '"Click Me!"' },
-    ]);
-
-    expect(selectorString).toBe('text="Click Me!"');
-  });
-
-  it("returns a mixed selector", async () => {
-    const selectorString = await toSelector([
-      { name: "css", body: ".container" },
-      { name: "text", body: '"Submit"' },
-    ]);
-
-    expect(selectorString).toBe('css=.container >> text="Submit"');
   });
 });

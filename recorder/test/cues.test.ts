@@ -40,7 +40,10 @@ describe("buildCues", () => {
 });
 
 describe("buildCuesForElement", () => {
-  const buildCuesForElement = async (selector: string, level = 1): Promise<Cue[]> => {
+  const buildCuesForElement = async (
+    selector: string,
+    level = 1
+  ): Promise<Cue[]> => {
     return page.evaluate(
       ({ level, selector }) => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
@@ -85,7 +88,7 @@ describe("buildCuesForElement", () => {
     expect(cues3).toEqual([
       {
         level: 1,
-        penalty: 10,
+        penalty: 12,
         type: "class",
         value: ".special\\:class",
       },
@@ -109,7 +112,7 @@ describe("buildCuesForElement", () => {
     expect(cues).toEqual([
       { level: 0, penalty: 5, type: "attribute", value: '[for="single"]' },
       { level: 0, penalty: 40, type: "tag", value: "label" },
-      { level: 0, penalty: 12, type: "text", value: '" Single checkbox"' },
+      { level: 0, penalty: 10, type: "text", value: " Single checkbox" },
     ]);
 
     const cues2 = await buildCuesForElement('[for="single"]', 1);
@@ -184,66 +187,6 @@ describe("buildCuesForElement", () => {
           "penalty": 40,
           "type": "tag",
           "value": "input:nth-of-type(3)",
-        },
-      ]
-    `);
-  });
-
-  it("builds cues with attributes that have dynamic beginning", async () => {
-    const cues = await buildCuesForElement("#ern84j8g0");
-    expect(cues).toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "level": 1,
-          "penalty": 10,
-          "type": "attribute",
-          "value": "[name$=\\"-check\\"]",
-        },
-        Object {
-          "level": 1,
-          "penalty": 40,
-          "type": "tag",
-          "value": "input:nth-of-type(6)",
-        },
-      ]
-    `);
-  });
-
-  it("builds cues with attributes that have dynamic ending", async () => {
-    const cues = await buildCuesForElement("#v9eonirh894");
-    expect(cues).toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "level": 1,
-          "penalty": 10,
-          "type": "attribute",
-          "value": "[name^=\\"input-\\"]",
-        },
-        Object {
-          "level": 1,
-          "penalty": 40,
-          "type": "tag",
-          "value": "input:nth-of-type(5)",
-        },
-      ]
-    `);
-  });
-
-  it("builds cues with attributes that have dynamic beginning and ending", async () => {
-    const cues = await buildCuesForElement("#fdg8e9v4");
-    expect(cues).toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "level": 1,
-          "penalty": 10,
-          "type": "attribute",
-          "value": "[name*=\\"-blue-\\"]",
-        },
-        Object {
-          "level": 1,
-          "penalty": 40,
-          "type": "tag",
-          "value": "input:nth-of-type(7)",
         },
       ]
     `);

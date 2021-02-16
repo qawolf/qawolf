@@ -56,7 +56,7 @@ describe("pickBestCueGroup", () => {
   const baseCueGroup = {
     cues: [],
     penalty: 0,
-    selectorParts: [],
+    selector: "",
     valueLength: 0,
   };
 
