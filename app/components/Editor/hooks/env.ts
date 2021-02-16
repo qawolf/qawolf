@@ -4,7 +4,7 @@ import { useEnvironmentVariables } from "../../../hooks/queries";
 import { Env } from "../../../lib/types";
 import { StateContext } from "../../StateContext";
 
-export type EnvHook = { env: Env | null };
+export type EnvHook = { env: Env };
 
 export const useEnv = (suiteVariables?: string | null): EnvHook => {
   const { environmentId } = useContext(StateContext);
@@ -16,9 +16,7 @@ export const useEnv = (suiteVariables?: string | null): EnvHook => {
   const env = JSON.parse(data?.environmentVariables.env || "{}");
   const suiteEnv = JSON.parse(suiteVariables || "{}");
 
-  const combinedEnv = { ...env, ...suiteEnv };
-
   return {
-    env: Object.keys(combinedEnv).length ? combinedEnv : null,
+    env: { ...env, ...suiteEnv },
   };
 };
