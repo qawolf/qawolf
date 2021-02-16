@@ -10,7 +10,6 @@ import { isServer } from "./detection";
 import { state } from "./state";
 
 export const JWT_KEY = "qaw_token";
-let version: string | null = null;
 
 // these errors we handle with custom ui
 const ERROR_OPERATION_DENYLIST = ["sendLoginCode", "signInWithEmail"];
@@ -58,11 +57,15 @@ const versionLink = new ApolloLink((operation, forward) => {
     const context = operation.getContext();
 
     const responseVersion = context.response?.headers?.get("version");
+    let version = sessionStorage.getItem("version");
 
-    if (!version) version = responseVersion;
+    if (!version) {
+      sessionStorage.setItem("version", responseVersion);
+      version = responseVersion;
+    }
 
     if (responseVersion !== version) {
-      version = responseVersion;
+      sessionStorage.setItem("version", responseVersion);
       window.location.reload();
     }
 
