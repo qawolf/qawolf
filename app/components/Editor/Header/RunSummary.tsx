@@ -1,35 +1,54 @@
 import { Box } from "grommet";
 
-import { durationToText, timeToText } from "../../../lib/helpers";
+import { durationToText, timestampToText } from "../../../lib/helpers";
 import { Run } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
+import { borderSize } from "../../../theme/theme-new";
+import LabeledBox from "../../shared-new/LabeledBox";
+import StatusBadge from "../../shared-new/StatusBadge";
 import Text from "../../shared-new/Text";
+import TriggerBadge from "../../shared-new/TriggerBadge";
 
 type Props = { run: Run };
 
-const textProps = {
-  color: "gray9",
-  size: "component" as const,
-};
+const rightMargin = { right: "large" };
 
 export default function RunSummary({ run }: Props): JSX.Element {
-  const duration = run.started_at
-    ? durationToText(
-        run.started_at,
-        run.completed_at || new Date().toISOString()
-      )
+  const startedAt = run.started_at
+    ? timestampToText(run.started_at)
     : copy.notStarted;
 
-  const isCompleted = !!(run.started_at && run.completed_at);
+  let duration = copy.notStarted;
+
+  if (run.started_at && run.completed_at) {
+    duration = durationToText(run.started_at, run.completed_at);
+  } else if (run.started_at) {
+    duration = copy.inProgress;
+  }
 
   return (
-    <Box direction="row" margin={{ right: "small" }}>
-      {isCompleted && (
-        <Text {...textProps} margin={{ right: "small" }}>
-          {timeToText(run.started_at)}
+    <Box
+      border={{ color: "gray3", side: "bottom", size: borderSize.xsmall }}
+      direction="row"
+      flex={false}
+      pad="small"
+    >
+      <LabeledBox label={copy.trigger} margin={rightMargin}>
+        <TriggerBadge suiteId={run.suite_id} />
+      </LabeledBox>
+      <LabeledBox label={copy.status} margin={rightMargin}>
+        <StatusBadge status={run.status} />
+      </LabeledBox>
+      <LabeledBox label={copy.startedAt} margin={rightMargin}>
+        <Text color="gray9" size="component">
+          {startedAt}
         </Text>
-      )}
-      <Text {...textProps}>{duration}</Text>
+      </LabeledBox>
+      <LabeledBox label={copy.duration}>
+        <Text color="gray9" size="component">
+          {duration}
+        </Text>
+      </LabeledBox>
     </Box>
   );
 }

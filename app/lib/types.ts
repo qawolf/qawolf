@@ -43,6 +43,7 @@ export type RunStatus = "created" | "fail" | "pass";
 export type Run = {
   code: string;
   completed_at: string | null;
+  created_at: string;
   current_line: number | null;
   environment_id: string | null;
   id: string;
@@ -61,10 +62,12 @@ export type Runner = {
 
 export type Suite = {
   created_at: string;
+  environment_id: string | null;
   id: string;
   runs: SuiteRun[];
   team_id: string;
   trigger_id: string;
+  trigger_name: string;
 };
 
 export type SuiteRun = {

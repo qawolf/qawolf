@@ -44,15 +44,15 @@ export default function CodeToggle(): JSX.Element {
 
   return (
     <Box align="center" direction="row">
-      <Text color="gray9" margin={{ right: "xxsmall" }} size="component">
-        {copy.createCode}
-      </Text>
       <Toggle
         a11yTitle={`toggle ${copy.createCode}`}
         disabled={progress?.status === "created"}
         isOn={isOn}
         onClick={handleClick}
       />
+      <Text color="gray9" margin={{ left: "xxsmall" }} size="component">
+        {copy.createCode}
+      </Text>
     </Box>
   );
 }

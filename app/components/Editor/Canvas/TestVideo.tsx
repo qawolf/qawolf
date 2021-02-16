@@ -47,19 +47,18 @@ export default function TestVideo({
       } as VideoJsPlayerOptions);
       setPlayer(vjsPlayer);
 
-      // prevent blank screen from being preview image
-      node.currentTime = timestamp || 1;
-
       return () => vjsPlayer.dispose();
     },
-    [isMobile, timestamp]
+    [isMobile]
   );
 
   useEffect(() => {
     if (!player || !videoUrl) return;
 
     player.src({ src: videoUrl });
-  }, [player, videoUrl]);
+    // prevent blank screen from being preview image
+    player.currentTime(timestamp || 1);
+  }, [player, timestamp, videoUrl]);
 
   if (!isVisible || !videoUrl) return null;
 

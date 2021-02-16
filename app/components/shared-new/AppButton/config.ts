@@ -2,7 +2,13 @@ import { BoxProps } from "grommet";
 
 import { colors } from "../../../theme/theme-new";
 
-export type Type = "danger" | "dark" | "ghost" | "primary" | "secondary";
+export type Type =
+  | "danger"
+  | "dark"
+  | "ghost"
+  | "primary"
+  | "secondary"
+  | "tertiary";
 
 export const activeBackground: { [type in Type]: BoxProps["background"] } = {
   danger: colors.danger7,
@@ -10,6 +16,7 @@ export const activeBackground: { [type in Type]: BoxProps["background"] } = {
   ghost: colors.gray3,
   primary: colors.primaryDarker,
   secondary: colors.gray0,
+  tertiary: colors.gray6,
 };
 
 export const background: { [type in Type]: BoxProps["background"] } = {
@@ -18,6 +25,7 @@ export const background: { [type in Type]: BoxProps["background"] } = {
   ghost: colors.gray0,
   primary: colors.primary,
   secondary: colors.gray0,
+  tertiary: colors.gray8,
 };
 
 export const hoverBackground: { [type in Type]: string } = {
@@ -26,6 +34,7 @@ export const hoverBackground: { [type in Type]: string } = {
   ghost: colors.gray2,
   primary: colors.primaryDark,
   secondary: colors.gray0,
+  tertiary: colors.gray7,
 };
 
 export const textColor: { [type in Type]: string } = {
@@ -34,4 +43,5 @@ export const textColor: { [type in Type]: string } = {
   ghost: colors.gray9,
   primary: colors.gray0,
   secondary: colors.gray9,
+  tertiary: colors.gray0,
 };

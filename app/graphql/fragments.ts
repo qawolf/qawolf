@@ -42,6 +42,7 @@ export const runFragment = gql`
   fragment RunFragment on Run {
     code
     completed_at
+    created_at
     current_line
     environment_id
     id

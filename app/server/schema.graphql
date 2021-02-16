@@ -243,6 +243,9 @@ type Suite {
   "Date and time at which the suite was created (trigger test run began)"
   created_at: String!
 
+  "Associated test trigger environment ID"
+  environment_id: ID
+
   "Suite ID"
   id: ID!
 
@@ -254,6 +257,9 @@ type Suite {
 
   "Associated test trigger ID"
   trigger_id: ID!
+
+  "Associated test trigger name"
+  trigger_name: String!
 }
 
 "One run for one test that is part of a test trigger we are running all at once"

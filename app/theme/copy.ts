@@ -79,6 +79,7 @@ export const copy = {
     "Set up browser tests in minutes to discover bugs before your users do.",
   docs: "Docs",
   done: "Done",
+  duration: "Duration",
   easyCi: "CI without a PhD",
   easyCiDetail:
     "Run tests in QA Wolf with one click, on every deployment, or in your own CI.",
@@ -230,6 +231,8 @@ export const copy = {
   startTestingFree: "Start testing for free",
   startTestingFreeDetail:
     "Ship confidently with the easiest way to set up browser tests.",
+  startedAt: "Started",
+  status: "Status",
   stopRunning: "Stop running",
   subscribe: "Subscribe",
   subscribeError: "Something went wrong, please try again",
@@ -245,6 +248,7 @@ export const copy = {
   testNamePlaceholder: "Name your test",
   testPass: "Pass",
   toastAutosave: "🐺 QA Wolf autosaves your tests",
+  trigger: "Trigger",
   triggerDeleteConfirm:
     "Are you sure? This will permanently delete this trigger. Please type",
   triggerDeleteConfirm2: "to confirm.",

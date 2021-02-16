@@ -26,6 +26,7 @@ export const options: monacoEditor.editor.IStandaloneEditorConstructionOptions =
   fontSize: 14,
   insertSpaces: true,
   lineHeight: 24,
+  lineNumbersMinChars: 7,
   minimap: {
     enabled: false,
   },
@@ -45,9 +46,27 @@ export const rules: monacoEditor.editor.ITokenThemeRule[] = [
   { token: "type", foreground: colors.codePurple },
 ];
 
+export const rulesReadOnly: monacoEditor.editor.ITokenThemeRule[] = [
+  { token: "", foreground: colors.gray5 },
+  { token: "comment", fontStyle: "italic", foreground: colors.gray7 },
+  { token: "constant", foreground: colors.gray3 },
+  { token: "delimiter.js", foreground: colors.gray3 },
+  { token: "keyword", foreground: colors.gray3 },
+  { token: "number", foreground: colors.gray3 },
+  { token: "string", foreground: colors.gray3 },
+  { token: "type", foreground: colors.gray3 },
+];
+
 export const theme: monacoEditor.editor.IStandaloneThemeData = {
   base: "vs-dark",
   colors: editorColors,
   inherit: true,
   rules,
+};
+
+export const themeReadOnly: monacoEditor.editor.IStandaloneThemeData = {
+  base: "vs-dark",
+  colors: editorColors,
+  inherit: true,
+  rules: rulesReadOnly,
 };

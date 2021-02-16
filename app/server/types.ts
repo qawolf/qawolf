@@ -486,6 +486,11 @@ export type RunnerResult = {
   ws_url?: string;
 };
 
+export type SuiteResult = Suite & {
+  environment_id: string;
+  trigger_name: string;
+};
+
 export type TeamIdQuery = {
   team_id: string;
 };
