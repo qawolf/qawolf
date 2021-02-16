@@ -39,6 +39,7 @@ describe("team model", () => {
           api_key: expect.any(String),
           helpers: "",
           id: expect.any(String),
+          inbox: expect.any(String),
           is_email_alert_enabled: true,
           is_enabled: true,
           name: "My Team",

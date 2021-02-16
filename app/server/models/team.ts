@@ -42,6 +42,7 @@ export const createFreeTeamWithTrigger = async (
     api_key: encrypt(buildApiKey()),
     helpers: "",
     id,
+    inbox: cuid(),
     is_email_alert_enabled: true,
     is_enabled: true,
     name: DEFAULT_NAME,

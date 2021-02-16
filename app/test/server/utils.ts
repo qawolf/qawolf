@@ -335,6 +335,7 @@ export const buildTeam = ({ i, is_enabled, name, plan }: BuildTeam): Team => {
     api_key: buildApiKey(),
     helpers: "",
     id: `team${finalI === 1 ? "" : i}Id`,
+    inbox: cuid(),
     is_email_alert_enabled: true,
     is_enabled: is_enabled === undefined ? true : is_enabled,
     name: name || "Awesome Company",
