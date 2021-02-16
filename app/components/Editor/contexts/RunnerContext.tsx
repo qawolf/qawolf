@@ -36,11 +36,11 @@ export const RunnerContext = createContext<RunnerContext>({
 });
 
 export const RunnerProvider: FC = ({ children }) => {
-  const { env } = useEnv();
   const { mouseLineNumber, onSelectionChange, selection } = useSelection();
   const { isRunnerConnected, runner } = useRunner();
 
-  const { controller, run } = useContext(TestContext);
+  const { controller, run, suite } = useContext(TestContext);
+  const { env } = useEnv(suite?.environment_variables);
 
   const { progress, resetProgress } = useRunProgress({ run, runner });
 

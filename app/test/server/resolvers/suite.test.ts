@@ -1,3 +1,4 @@
+import { encrypt } from "../../../server/models/encrypt";
 import * as suiteModel from "../../../server/models/suite";
 import {
   createSuiteResolver,
@@ -22,7 +23,7 @@ const suites = [
     created_at: timestamp,
     creator_github_login: "spirit",
     creator_id: null,
-    environment_variables: JSON.stringify({ hello: "world" }),
+    environment_variables: encrypt(JSON.stringify({ hello: "world" })),
     id: "suiteId",
     repeat_minutes: 60,
     team_id: "teamId",
@@ -156,6 +157,7 @@ describe("suiteResolver", () => {
     expect(suite).toEqual({
       ...suites[0],
       environment_id: null,
+      environment_variables: JSON.stringify({ hello: "world" }),
       trigger_name: "trigger1",
     });
 

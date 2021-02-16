@@ -1,4 +1,5 @@
 import { ClientError } from "../errors";
+import { decrypt } from "../models/encrypt";
 import {
   createSuiteForTests,
   findSuite,
@@ -83,6 +84,9 @@ export const suiteResolver = async (
   return {
     ...suite,
     environment_id: trigger.environment_id,
+    environment_variables: suite.environment_variables
+      ? decrypt(suite.environment_variables)
+      : null,
     trigger_name: trigger.name,
   };
 };
