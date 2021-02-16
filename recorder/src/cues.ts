@@ -1,7 +1,7 @@
 import cssEscape from "css.escape";
 
 import { getAttribute } from "./attribute";
-import { getValueMatches } from "./isDynamic";
+import { isDynamic } from "./isDynamic";
 import { buildTextSelector } from "./selectorEngine";
 
 const DYNAMIC_VALUE_OK_ATTRIBUTES = ["placeholder", "href", "src", "value"];
@@ -198,51 +198,27 @@ export const buildCuesForElement = ({
       // Special handling for "class" attribute
       case "class": {
         element.classList.forEach((c) => {
-          // Get all exact and partial matches for this one class.
-          // However, all classes are space-delimited within a single
-          // class attribute, so we need to change starts-with and
-          // ends-with attribute operators to `contains`
-          getValueMatches(c).forEach(({ match, operator }) => {
-            if (operator === "=") {
-              list.push({
-                level,
-                penalty,
-                type: "class",
-                value: `.${cssEscape(c)}`,
-              });
-            } else {
-              list.push({
-                level,
-                penalty: penalty + 5, // add penalty because it's a partial match
-                type: "attribute",
-                value: `[class*="${match}"]`,
-              });
-            }
+          if (isDynamic(c)) return;
+
+          list.push({
+            level,
+            penalty,
+            type: "class",
+            value: `.${cssEscape(c)}`,
           });
         });
         break;
       }
       // Special handling for "id" attribute
       case "id": {
-        getValueMatches(element.id).forEach(({ match, operator }) => {
-          // This is mostly the same as the attribute logic below except
-          // that we use `#id` notation in place of an `=` attribute selector.
-          if (operator === "=") {
-            list.push({
-              level,
-              penalty,
-              type: "id",
-              value: `#${cssEscape(match)}`,
-            });
-          } else {
-            list.push({
-              level,
-              penalty: penalty + 5, // add penalty because it's a partial match
-              type: "attribute",
-              value: `[id${operator}"${match}"]`,
-            });
-          }
-        });
+        if (!isDynamic(element.id)) {
+          list.push({
+            level,
+            penalty,
+            type: "id",
+            value: `#${cssEscape(element.id)}`,
+          });
+        }
         break;
       }
       // Special handling for "tag" type
@@ -279,22 +255,15 @@ export const buildCuesForElement = ({
           const { name, value } = attributeValuePair;
           if (
             value.length &&
-            (isPreferred || DYNAMIC_VALUE_OK_ATTRIBUTES.includes(name))
+            (isPreferred ||
+              DYNAMIC_VALUE_OK_ATTRIBUTES.includes(name) ||
+              !isDynamic(value))
           ) {
             list.push({
               level,
               penalty,
               type: "attribute",
               value: `[${name}="${value}"]`,
-            });
-          } else {
-            getValueMatches(value).forEach(({ match, operator }) => {
-              list.push({
-                level,
-                penalty,
-                type: "attribute",
-                value: `[${name}${operator}"${match}"]`,
-              });
             });
           }
         }

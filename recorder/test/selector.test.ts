@@ -255,7 +255,7 @@ describe("buildSelector", () => {
         [
           [
             '[data-qa="quill"] [contenteditable="true"]',
-            '[data-qa="quill"] [class*="-blank"]',
+            '[data-qa="quill"] [contenteditable="true"]',
             false,
           ],
         ],
@@ -273,7 +273,9 @@ describe("buildSelector", () => {
             '[data-qa="material-select-native"] select',
             '[data-qa="material-select-native"] #material-select-native',
           ],
-          // check the invisible text is not targeted
+        ],
+        // check the invisible text is not targeted
+        [
           [
             '[data-qa="material-select"] #material-select',
             '[data-qa="material-select"] #material-select',
@@ -290,7 +292,7 @@ describe("buildSelector", () => {
         [["#button", '[data-test="click"] [data-qa="button"]']],
         // unique selectors
         [["#unique", '[data-qa="unique"]']],
-        [["#dog-0", '[data-qa="radio-group"] [id^="dog-"]']],
+        [["#dog-0", '[data-qa="radio-group"] [value="dog-0"]']],
       ])("builds expected selector %o", (selector) => expectSelector(selector));
     });
 
