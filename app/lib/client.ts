@@ -6,7 +6,6 @@ import {
 } from "@apollo/client";
 import { onError } from "@apollo/link-error";
 
-import { isServer } from "./detection";
 import { state } from "./state";
 
 export const JWT_KEY = "qaw_token";
@@ -16,6 +15,20 @@ const VERSION_KEY = "qaw_version";
 const ERROR_OPERATION_DENYLIST = ["sendLoginCode", "signInWithEmail"];
 
 const isDevelopment = process.env.NEXT_PUBLIC_ENV === "development";
+
+const authLink = new ApolloLink((operation, forward) => {
+  // add the recent-activity custom header to the headers
+  operation.setContext(
+    ({ headers = {} }: { headers?: { [name: string]: string } }) => ({
+      headers: {
+        ...headers,
+        authorization: localStorage.getItem(JWT_KEY),
+      },
+    })
+  );
+
+  return forward(operation);
+});
 
 const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
   if (networkError) {
@@ -46,12 +59,7 @@ const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
   }
 });
 
-const httpLink = new HttpLink({
-  headers: {
-    authorization: isServer() ? null : localStorage.getItem(JWT_KEY),
-  },
-  uri: "/api/graphql",
-});
+const httpLink = new HttpLink({ uri: "/api/graphql" });
 
 const versionLink = new ApolloLink((operation, forward) => {
   return forward(operation).map((response) => {
@@ -80,5 +88,5 @@ export const client = new ApolloClient({
       },
     },
   }),
-  link: errorLink.concat(versionLink).concat(httpLink),
+  link: authLink.concat(versionLink).concat(errorLink).concat(httpLink),
 });
