@@ -12,7 +12,7 @@
   },
   "scripts": {
     "clean": "rimraf build tmp",
-    "build": "npx webpack --config webpack.config.js",
+    "build": "NODE_ENV=production npx webpack --config webpack.config.js",
     "build:watch": "npx webpack --config webpack.config.js --watch",
     "lint": "eslint --ext .ts,.tsx --config .eslintrc.json --no-eslintrc src",
     "test": "jest",
