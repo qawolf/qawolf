@@ -244,7 +244,7 @@ type Suite {
   created_at: String!
 
   "Associated test trigger environment ID"
-  environment_id: ID!
+  environment_id: ID
 
   "Suite ID"
   id: ID!
