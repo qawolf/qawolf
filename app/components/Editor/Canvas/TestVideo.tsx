@@ -47,9 +47,6 @@ export default function TestVideo({
       } as VideoJsPlayerOptions);
       setPlayer(vjsPlayer);
 
-      // prevent blank screen from being preview image
-      node.currentTime = timestamp || 1;
-
       return () => vjsPlayer.dispose();
     },
     [isMobile, timestamp]
@@ -59,6 +56,8 @@ export default function TestVideo({
     if (!player || !videoUrl) return;
 
     player.src({ src: videoUrl });
+    // prevent blank screen from being preview image
+    player.currentTime(timestamp || 1);
   }, [player, videoUrl]);
 
   if (!isVisible || !videoUrl) return null;
