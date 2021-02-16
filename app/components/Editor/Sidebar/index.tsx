@@ -96,9 +96,9 @@ export default function Sidebar(): JSX.Element {
         <Buttons
           isActionDisabled={isTestDeleted}
           isRun={!!query.run_id}
+          isRunLoading={!run}
           isRunning={isRunning}
           onAction={handleAction}
-          runEnvironmentId={run?.environment_id || null}
           selection={selection}
         />
       </Box>

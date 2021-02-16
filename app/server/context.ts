@@ -1,5 +1,6 @@
-import { NextApiRequest } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 
+import environment from "./environment";
 import { AuthenticationError } from "./errors";
 import { Logger } from "./Logger";
 import { findTeamsForUser } from "./models/team";
@@ -18,13 +19,18 @@ const formatIp = (ip: string | null): string | null => {
 
 export const context = async ({
   req,
+  res,
 }: {
   req: NextApiRequest;
+  res: NextApiResponse;
 }): Promise<Context> => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const db = (req as any).db;
 
   if (!db) throw new Error("db must be provided to request");
+
+  // include version in response header
+  res.setHeader("version", environment.VERCEL_GIT_COMMIT_SHA.slice(0, 7));
 
   const logger = new Logger({ prefix: "graphql" });
 

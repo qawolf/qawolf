@@ -18,18 +18,18 @@ const width = `calc(50% - (${edgeSize.xxsmall} / 2))`;
 type Props = {
   isActionDisabled: boolean;
   isRun: boolean;
+  isRunLoading: boolean;
   isRunning: boolean;
   onAction: () => void;
-  runEnvironmentId: string;
   selection: Selection;
 };
 
 export default function Buttons({
   isActionDisabled,
   isRun,
+  isRunLoading,
   isRunning,
   onAction,
-  runEnvironmentId,
   selection,
 }: Props): JSX.Element {
   const { environmentId } = useContext(StateContext);
@@ -47,9 +47,10 @@ export default function Buttons({
 
   useOnHotKey({ hotKey: "s", onHotKey: handleAutosave, requireMeta: true });
 
-  const runLabel = selection
+  const testLabel = selection
     ? copy.runLines(selection.endLine - selection.startLine + 1)
     : copy.runTest;
+  const runLabel = isRunLoading ? copy.loading : copy.editTest;
 
   return (
     <Box
@@ -62,7 +63,7 @@ export default function Buttons({
       {!isRun && (
         <Environments
           onEnvironmentClick={handleEnvironmentClick}
-          selectedEnvironmentId={isRun ? runEnvironmentId : environmentId}
+          selectedEnvironmentId={environmentId}
           width={width}
         />
       )}
@@ -80,7 +81,7 @@ export default function Buttons({
           IconComponent={isRun ? Edit : Play}
           isDisabled={isActionDisabled}
           justify="center"
-          label={isRun ? copy.editTest : runLabel}
+          label={isRun ? runLabel : testLabel}
           onClick={onAction}
           type={isRun ? "dark" : "primary"}
           width={isRun ? "100%" : width}

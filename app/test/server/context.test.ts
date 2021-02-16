@@ -7,6 +7,7 @@ import { prepareTestDb } from "./db";
 import { buildTeam, buildTeamUser, buildUser } from "./utils";
 
 const db = prepareTestDb();
+const setHeader = jest.fn();
 
 beforeAll(async () => {
   await db("users").insert([
@@ -21,6 +22,8 @@ afterEach(jest.restoreAllMocks);
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const req = { db } as any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const res = { setHeader } as any;
 
 describe("context", () => {
   it("returns null if no user access token", async () => {
@@ -28,6 +31,7 @@ describe("context", () => {
 
     const result = await context({
       req: { ...req, headers: { authorization: "" } },
+      res,
     });
 
     expect(result).toEqual({
@@ -40,6 +44,7 @@ describe("context", () => {
     });
 
     expect(accessService.verifyAccessToken).toBeCalledWith("");
+    expect(setHeader).toBeCalledWith("version", "abcdefg");
   });
 
   it("returns user by user id if possible", async () => {
@@ -53,6 +58,7 @@ describe("context", () => {
           "x-forwarded-for": "63.18.64.140:11639",
         } as NextApiRequest["headers"],
       },
+      res,
     });
 
     expect(result).toMatchObject({
@@ -75,6 +81,7 @@ describe("context", () => {
           authorization: "qawolf_api_key",
         } as NextApiRequest["headers"],
       },
+      res,
     });
 
     expect(result).toEqual({
@@ -101,6 +108,7 @@ describe("context", () => {
             "x-forwarded-for": "63.18.64.140:11639",
           } as NextApiRequest["headers"],
         },
+        res,
       })
     ).rejects.toThrowError(
       "This account is disabled, email us at hello@qawolf.com"
