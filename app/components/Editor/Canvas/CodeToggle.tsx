@@ -10,7 +10,9 @@ import { TestContext } from "../contexts/TestContext";
 const patchHandle = "// 🐺 QA Wolf will create code here";
 
 export default function CodeToggle(): JSX.Element {
-  const { mouseLineNumber, progress } = useContext(RunnerContext);
+  const { isRunnerConnected, mouseLineNumber, progress } = useContext(
+    RunnerContext
+  );
   const { code, controller } = useContext(TestContext);
 
   // track isOn in state so toggle will update instantly
@@ -46,7 +48,7 @@ export default function CodeToggle(): JSX.Element {
     <Box align="center" direction="row">
       <Toggle
         a11yTitle={`toggle ${copy.createCode}`}
-        disabled={progress?.status === "created"}
+        disabled={!isRunnerConnected || progress?.status === "created"}
         isOn={isOn}
         onClick={handleClick}
       />

@@ -28,7 +28,6 @@ export const copy = {
   branches: "Branches",
   branchesDetail: "Which branches do you want to test?",
   branchesPlaceholder: "Example: develop,main",
-  browser: "Browser",
   cancel: "Cancel",
   checkEmail: "Check your email for a code",
   chooseGitHubRepo: "Choose GitHub repository",
