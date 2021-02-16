@@ -62,6 +62,7 @@ export type Runner = {
 
 export type Suite = {
   created_at: string;
+  environment_id: string | null;
   id: string;
   runs: SuiteRun[];
   team_id: string;

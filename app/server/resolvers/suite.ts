@@ -11,6 +11,7 @@ import {
   CreateSuiteMutation,
   IdQuery,
   Suite,
+  SuiteResult,
   TriggerIdQuery,
 } from "../types";
 import { ensureSuiteAccess, ensureTriggerAccess, ensureUser } from "./utils";
@@ -69,7 +70,7 @@ export const suiteResolver = async (
   _: Record<string, unknown>,
   { id }: IdQuery,
   { db, logger, teams }: Context
-): Promise<Suite & { trigger_name: string }> => {
+): Promise<SuiteResult> => {
   const log = logger.prefix("suiteResolver");
 
   log.debug("suite", id);
@@ -79,7 +80,11 @@ export const suiteResolver = async (
   // throws an error if trigger deleted
   const trigger = await findTrigger(suite.trigger_id, { db, logger });
 
-  return { ...suite, trigger_name: trigger.name };
+  return {
+    ...suite,
+    environment_id: trigger.environment_id,
+    trigger_name: trigger.name,
+  };
 };
 
 /**

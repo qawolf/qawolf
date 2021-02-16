@@ -49,7 +49,7 @@ export default function TestVideo({
 
       return () => vjsPlayer.dispose();
     },
-    [isMobile, timestamp]
+    [isMobile]
   );
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export default function TestVideo({
     player.src({ src: videoUrl });
     // prevent blank screen from being preview image
     player.currentTime(timestamp || 1);
-  }, [player, videoUrl]);
+  }, [player, timestamp, videoUrl]);
 
   if (!isVisible || !videoUrl) return null;
 

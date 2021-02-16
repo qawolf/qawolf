@@ -92,6 +92,7 @@ export const runnerQuery = gql`
 export const suiteQuery = gql`
   query suite($id: ID!) {
     suite(id: $id) {
+      environment_id
       id
       team_id
       trigger_id

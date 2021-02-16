@@ -487,6 +487,7 @@ export type RunnerResult = {
 };
 
 export type SuiteResult = Suite & {
+  environment_id: string;
   trigger_name: string;
 };
 
