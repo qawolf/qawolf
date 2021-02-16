@@ -1,4 +1,5 @@
 import * as Knex from "knex";
+
 import { cuid } from "../utils";
 
 export async function up(knex: Knex): Promise<void> {
