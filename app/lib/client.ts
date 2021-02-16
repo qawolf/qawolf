@@ -5,8 +5,8 @@ import {
   InMemoryCache,
 } from "@apollo/client";
 import { onError } from "@apollo/link-error";
-import { isServer } from "./detection";
 
+import { isServer } from "./detection";
 import { state } from "./state";
 
 export const JWT_KEY = "qaw_token";
@@ -17,39 +17,34 @@ const ERROR_OPERATION_DENYLIST = ["sendLoginCode", "signInWithEmail"];
 
 const isDevelopment = process.env.NEXT_PUBLIC_ENV === "development";
 
-const errorLink = onError(
-  ({ graphQLErrors, networkError, operation, response }) => {
-    if (networkError) {
-      // include errors in console logs so that we can help users debug
-      console.warn("qawolf:", networkError);
-      if (isDevelopment) {
-        state.setToast({
-          error: true,
-          message: `Network error: ${networkError}`,
-        });
-      }
-    }
-
-    if (graphQLErrors) {
-      graphQLErrors.forEach(({ message }) => {
-        const formattedMessage = message.replace(
-          "Context creation failed: ",
-          ""
-        );
-
-        const error = isDevelopment
-          ? `Error (${operation.operationName}): ${formattedMessage}`
-          : `Error: ${formattedMessage}`;
-
-        console.warn("qawolf:", error);
-
-        if (!ERROR_OPERATION_DENYLIST.includes(operation.operationName)) {
-          state.setToast({ error: true, message: error });
-        }
+const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
+  if (networkError) {
+    // include errors in console logs so that we can help users debug
+    console.warn("qawolf:", networkError);
+    if (isDevelopment) {
+      state.setToast({
+        error: true,
+        message: `Network error: ${networkError}`,
       });
     }
   }
-);
+
+  if (graphQLErrors) {
+    graphQLErrors.forEach(({ message }) => {
+      const formattedMessage = message.replace("Context creation failed: ", "");
+
+      const error = isDevelopment
+        ? `Error (${operation.operationName}): ${formattedMessage}`
+        : `Error: ${formattedMessage}`;
+
+      console.warn("qawolf:", error);
+
+      if (!ERROR_OPERATION_DENYLIST.includes(operation.operationName)) {
+        state.setToast({ error: true, message: error });
+      }
+    });
+  }
+});
 
 const httpLink = new HttpLink({
   headers: {
