@@ -53,7 +53,7 @@ const ConfigByCueType: CueTypesConfig = {
   },
   class: {
     elements: ["*"],
-    penalty: 10,
+    penalty: 12,
   },
   contenteditable: {
     elements: ["*"],
@@ -89,7 +89,7 @@ const ConfigByCueType: CueTypesConfig = {
   },
   placeholder: {
     elements: ["input", "textarea"],
-    penalty: 12,
+    penalty: 10,
   },
   src: {
     elements: ["audio", "iframe", "img", "input[type=image]", "video"],
@@ -101,7 +101,7 @@ const ConfigByCueType: CueTypesConfig = {
   },
   text: {
     elements: ["*"],
-    penalty: 12,
+    penalty: 10,
   },
   title: {
     elements: ["*"],

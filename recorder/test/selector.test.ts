@@ -129,7 +129,7 @@ describe("buildSelector", () => {
     beforeAll(() => page.goto(`${TEST_URL}fixtures/todomvc.html`));
 
     it.each([
-      ".new-todo",
+      '[placeholder="What needs to be done?"]',
       ".toggle", // first one is the match
       "li:nth-of-type(2) .toggle",
       "text=Active",
@@ -158,7 +158,7 @@ describe("buildSelector", () => {
       it.each([
         // selects the target
         [['[data-qa="html-button"]', '[data-qa="html-button"]']],
-        [[".quote-button", `.quote-button`]],
+        [[".quote-button", "text=Button \"with\" extra 'quotes'"]],
         // selects the ancestor
         [["#html-button-child", '[data-qa="html-button-with-children"]']],
         [[".MuiButton-label", '[data-qa="material-button"]']],
