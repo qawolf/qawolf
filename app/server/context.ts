@@ -1,4 +1,5 @@
-import { NextApiRequest } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
+import environment from "./environment";
 
 import { AuthenticationError } from "./errors";
 import { Logger } from "./Logger";
@@ -18,8 +19,10 @@ const formatIp = (ip: string | null): string | null => {
 
 export const context = async ({
   req,
+  res,
 }: {
   req: NextApiRequest;
+  res: NextApiResponse;
 }): Promise<Context> => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const db = (req as any).db;
@@ -53,6 +56,9 @@ export const context = async ({
   const teamIds = teams?.map((team) => team.id);
 
   logger.debug(`user ${user?.id} teams ${teamIds}`);
+
+  // include version in response header
+  res.setHeader("version", environment.VERCEL_GIT_COMMIT_SHA.slice(0, 7));
 
   return { api_key, db, ip, logger, teams, user };
 };
