@@ -1,4 +1,4 @@
-// Xvfb :0 -screen 0 1288x804x24 -listen tcp &
+// Xvfb :0 -screen 0 1288x1180x24 -listen tcp &
 // DEBUG=qawolf* npm run test VideoCapture
 import { existsSync } from "fs";
 import { platform } from "os";

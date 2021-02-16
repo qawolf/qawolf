@@ -28,7 +28,7 @@ jobs:
         run: npm run lint
         working-directory: ./runner
 
-      - run: Xvfb :0 -ac -screen 0 1288x804x24 &
+      - run: Xvfb :0 -ac -screen 0 1288x1180x24 &
 
       - name: Install ffmpeg
         run: npm install @ffmpeg-installer/ffmpeg

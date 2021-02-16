@@ -86,7 +86,7 @@ ENV DEBUG=pw:api*,qawolf* \
   LANGUAGE=en_US.UTF-8 \
   LC_ALL=C.UTF-8 \
   QAWOLF_DISPLAY_WIDTH=1288 \
-  QAWOLF_DISPLAY_HEIGHT=804
+  QAWOLF_DISPLAY_HEIGHT=1180
 
 CMD ["/scripts/entrypoint.sh"]
 

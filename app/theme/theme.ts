@@ -67,7 +67,7 @@ export const colors = {
 };
 
 export const canvasSize = {
-  height: 800,
+  height: 1180,
   width: 1288,
 };
 
