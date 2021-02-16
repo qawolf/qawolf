@@ -77,17 +77,19 @@ export default function Header({ mode }: Props): JSX.Element {
             margin={{ horizontal: "small" }}
             width={borderSize.xsmall}
           />
-          {mode === "test" ? (
+          {mode === "test" && (
             <Button
               IconComponent={Lightning}
               label={hasTriggers ? copy.editTriggers : copy.addTrigger}
               onClick={handleTriggerClick}
               type="primary"
             />
-          ) : (
+          )}
+          {run?.test_id && (
             <Button
               IconComponent={Edit}
               href={`${routes.test}/${run?.test_id}`}
+              isDisabled={!run?.test_id}
               label={copy.editTest}
               type="primary"
             />
