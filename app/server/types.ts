@@ -70,11 +70,13 @@ export type DeploymentEnvironment = "preview" | "production";
 
 export type Email = {
   body: string;
+  created_at?: string;
   from: string;
   id: string;
   subject: string;
   team_id: string;
   to: string;
+  updated_at?: string;
 };
 
 export type Environment = {

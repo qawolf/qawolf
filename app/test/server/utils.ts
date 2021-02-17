@@ -4,6 +4,7 @@ import { Logger } from "../../server/Logger";
 import { encrypt } from "../../server/models/encrypt";
 import {
   DeploymentEnvironment,
+  Email,
   Environment,
   EnvironmentVariable,
   GitHubCommitStatus,
@@ -25,6 +26,12 @@ import {
 } from "../../server/types";
 import { buildApiKey, cuid } from "../../server/utils";
 import { minutesFromNow } from "../../shared/utils";
+
+type BuildEmail = {
+  created_at?: string;
+  i?: number;
+  to?: string;
+};
 
 type BuildEnvironment = {
   i?: number;
@@ -147,6 +154,20 @@ export const buildArtifacts = (): SaveArtifacts => ({
   logsUrl: "logs_url",
   videoUrl: "video_url",
 });
+
+export const buildEmail = ({ created_at, i, to }: BuildEmail): Email => {
+  const finalI = i || 1;
+
+  return {
+    body: "body",
+    created_at: created_at || new Date().toISOString(),
+    from: "testing@email.com",
+    id: `email${finalI === 1 ? "" : i}Id`,
+    subject: "subject",
+    team_id: "teamId",
+    to: to || "spirit@test.com",
+  };
+};
 
 export const buildEnvironment = ({
   i,

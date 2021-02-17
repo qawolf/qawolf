@@ -9,6 +9,11 @@ type CreateEmail = {
   to: string;
 };
 
+type FindEmail = {
+  created_after: string;
+  to: string;
+};
+
 export const createEmail = async (
   fields: CreateEmail,
   { db, logger }: ModelOptions
@@ -22,4 +27,22 @@ export const createEmail = async (
   log.debug("created", email.id);
 
   return email;
+};
+
+export const findEmail = async (
+  { created_after, to }: FindEmail,
+  { db, logger }: ModelOptions
+): Promise<Email | null> => {
+  const log = logger.prefix("findEmail");
+  log.debug(`find email to ${to} created after ${created_after}`);
+
+  const email = await db("emails")
+    .where("created_at", ">=", created_after)
+    .andWhere({ to })
+    .orderBy("created_at", "desc")
+    .first();
+
+  log.debug(email ? `found ${email.id}` : "not found");
+
+  return email || null;
 };
