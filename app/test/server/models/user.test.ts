@@ -37,7 +37,7 @@ describe("user model", () => {
         id: "spirit",
         wolf_name: "Autumn",
         wolf_number: 123,
-        wolf_variant: "gray",
+        wolf_variant: "gold",
       },
     ]);
   });

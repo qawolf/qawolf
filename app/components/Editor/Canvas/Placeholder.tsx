@@ -3,12 +3,12 @@ import { ReactNode, useContext } from "react";
 
 import { copy } from "../../../theme/copy";
 import Paw from "../../shared/icons/Paw";
-import Wolf from "../../shared/icons/Wolf";
 import Text from "../../shared-new/Text";
 import { UserContext } from "../../UserContext";
 import { RunnerContext } from "../contexts/RunnerContext";
 import { TestContext } from "../contexts/TestContext";
 import { Mode } from "../hooks/mode";
+import WolfSitting from "../../shared-new/icons/WolfSitting";
 
 type Props = {
   height?: number;
@@ -32,7 +32,7 @@ export default function Placeholder({
 
   let iconHtml: ReactNode = <Paw {...iconProps} />;
   if (wolf) {
-    iconHtml = <Wolf animate wolf={wolf} />;
+    iconHtml = <WolfSitting />;
   } else if (isUserLoading) {
     // if the user is loading do not include an icon
     // to prevent a jarring change when the wolf loads
@@ -40,15 +40,15 @@ export default function Placeholder({
   }
 
   // ask the user to run the test if there is no runner connected or pending
-  if (
-    mode === "test" &&
-    !isRunnerConnected &&
-    !isTestLoading &&
-    !shouldRequestRunner
-  ) {
-    iconHtml = null;
-    message = copy.placeholderRunTest;
-  }
+  // if (
+  //   mode === "test" &&
+  //   !isRunnerConnected &&
+  //   !isTestLoading &&
+  //   !shouldRequestRunner
+  // ) {
+  //   iconHtml = null;
+  //   message = copy.placeholderRunTest;
+  // }
 
   const pad = height && width ? undefined : { vertical: "xxlarge" };
 

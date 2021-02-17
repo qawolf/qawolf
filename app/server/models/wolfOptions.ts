@@ -2,7 +2,7 @@ export const WOLF_VARIANTS = [
   "black",
   "blue",
   "brown",
-  "gray",
+  "gold",
   "husky",
   "white",
 ];
