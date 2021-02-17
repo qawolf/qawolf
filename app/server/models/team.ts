@@ -90,6 +90,22 @@ export const findTeam = async (
   return team;
 };
 
+export const findTeamForEmail = async (
+  email: string,
+  { db, logger }: ModelOptions
+): Promise<Team | null> => {
+  const log = logger.prefix("findTeamForEmail");
+
+  log.debug("email", email);
+
+  const inbox = email.split("@")[0].split("+")[0];
+  const team = await db("teams").where({ inbox }).first();
+
+  log.debug(team ? `found ${team.id}` : "not found");
+
+  return team || null;
+};
+
 export const findTeamsForUser = async (
   user_id: string,
   { db }: ModelOptions

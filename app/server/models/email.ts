@@ -3,10 +3,11 @@ import { Email, ModelOptions } from "../types";
 import { cuid } from "../utils";
 
 type CreateEmail = {
-  body: string;
   from: string;
+  html: string;
   subject: string;
   team_id: string;
+  text: string;
   to: string;
 };
 

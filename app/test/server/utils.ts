@@ -105,6 +105,7 @@ type BuildSuite = {
 
 type BuildTeam = {
   i?: number;
+  inbox?: string;
   is_enabled?: boolean;
   name?: string;
   plan?: TeamPlan;
@@ -159,12 +160,13 @@ export const buildEmail = ({ created_at, i, to }: BuildEmail): Email => {
   const finalI = i || 1;
 
   return {
-    body: "body",
     created_at: created_at || new Date().toISOString(),
     from: "testing@email.com",
+    html: "html",
     id: `email${finalI === 1 ? "" : i}Id`,
     subject: "subject",
     team_id: "teamId",
+    text: "text",
     to: to || "spirit@test.com",
   };
 };
@@ -348,7 +350,13 @@ export const buildSuite = ({
   };
 };
 
-export const buildTeam = ({ i, is_enabled, name, plan }: BuildTeam): Team => {
+export const buildTeam = ({
+  i,
+  inbox,
+  is_enabled,
+  name,
+  plan,
+}: BuildTeam): Team => {
   const finalI = i || 1;
 
   return {
@@ -356,7 +364,7 @@ export const buildTeam = ({ i, is_enabled, name, plan }: BuildTeam): Team => {
     api_key: buildApiKey(),
     helpers: "",
     id: `team${finalI === 1 ? "" : i}Id`,
-    inbox: cuid(),
+    inbox: inbox || cuid(),
     is_email_alert_enabled: true,
     is_enabled: is_enabled === undefined ? true : is_enabled,
     name: name || "Awesome Company",

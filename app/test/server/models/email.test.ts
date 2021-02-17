@@ -19,10 +19,11 @@ describe("email model", () => {
     it("creates an email", async () => {
       const email = await createEmail(
         {
-          body: "body",
           from: "spirit@qawolf.com",
+          html: "html",
           subject: "subject",
           team_id: "teamId",
+          text: "text",
           to: "teamId@test.com",
         },
         options

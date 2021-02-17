@@ -69,12 +69,13 @@ export type CreateUserWithGitHub = GitHubFields & WolfFields;
 export type DeploymentEnvironment = "preview" | "production";
 
 export type Email = {
-  body: string;
   created_at?: string;
   from: string;
+  html: string;
   id: string;
   subject: string;
   team_id: string;
+  text: string;
   to: string;
   updated_at?: string;
 };
