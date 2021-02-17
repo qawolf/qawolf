@@ -3,7 +3,7 @@ import axios from "axios";
 import Debug from "debug";
 
 import config from "../config";
-import { Run } from "../types";
+import { Email, Run } from "../types";
 
 type GraphQLRequestData = {
   query: string;
@@ -26,6 +26,18 @@ type UpdateRunner = {
 };
 
 const debug = Debug("qawolf:api");
+
+const emailQuery = `
+query email($created_after: String!, $to: String!) {
+  email(created_after: $created_after, to: $to) {
+    from
+    html
+    subject
+    text
+    to
+  }
+}
+`;
 
 const updateRunMutation = `
 mutation updateRun($current_line: Int, $id: ID!, $status: RunStatus!) {
@@ -90,6 +102,50 @@ export const mutateWithRetry = async (
   });
 };
 
+export const pollForQuery = async (
+  requestData: GraphQLRequestData,
+  dataKey: string,
+  logName: string,
+  timeoutError: string,
+  timeoutMs: number = 60 * 1000
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<any> => {
+  await Promise.race([
+    retry(async (_, attempt) => {
+      debug("%s attempt %s", logName, attempt);
+
+      try {
+        const result = await axios.post(
+          `${config.API_URL}/graphql`,
+          requestData,
+          { headers: { authorization: process.env.AUTHORIZATION } }
+        );
+
+        const errors = result.data?.errors;
+        if (errors?.length > 0) {
+          debug("%s failed %o", logName, errors);
+          throw new Error("GraphQL Errors " + JSON.stringify(errors));
+        }
+
+        if (!(result.data?.data || {})[dataKey]) {
+          debug("%s not found", dataKey);
+          throw new Error("Not found");
+        }
+
+        return result.data;
+      } catch (e) {
+        debug(`${logName} failed ${e} ${JSON.stringify(e.response.data)}`);
+        throw e;
+      }
+    }),
+    new Promise((_, reject) => {
+      setTimeout(() => {
+        reject(new Error(timeoutError));
+      }, timeoutMs);
+    }),
+  ]);
+};
+
 export const notifyRunStarted = async ({
   run_id,
 }: RunStartedParams): Promise<void> => {
@@ -120,6 +176,24 @@ export const notifyRunFinished = async ({
       },
     },
     "notifyRunFinished"
+  );
+};
+
+export const pollForEmail = async (
+  to: string,
+  created_after: string
+): Promise<Email> => {
+  return pollForQuery(
+    {
+      query: emailQuery,
+      variables: {
+        created_after,
+        to,
+      },
+    },
+    "email",
+    "pollForEmail",
+    `Email to ${to} not received`
   );
 };
 

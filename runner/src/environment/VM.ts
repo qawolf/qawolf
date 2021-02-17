@@ -4,6 +4,7 @@ import { devices } from "playwright";
 import { assertText } from "qawolf";
 import { NodeVM } from "vm2";
 
+import { getInbox } from "../services/inbox";
 import { Logger } from "../services/Logger";
 import { launch, LaunchOptions, LaunchResult } from "./launch";
 import { TransformCode, transformCode } from "./transformCode";
@@ -47,6 +48,7 @@ export class VM {
       assertText,
       axios,
       devices,
+      getInbox,
       launch: async (launchOptions: LaunchOptions) => {
         process.env.DISPLAY = vmOptions.display || ":0.0";
 
