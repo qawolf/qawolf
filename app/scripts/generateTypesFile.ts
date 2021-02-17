@@ -115,6 +115,30 @@ declare function launch(
  * \`\`\`
  */
 declare function assertText(page: import('playwright').Page | import('playwright').Frame, text: string, options?: { selector?: string, timeout?: number }): Promise<void>;
+
+/**
+ * Create a test email address and function that waits for the test email to receive a message.
+ * 
+ * Set new to true to get a fresh inbox.
+ * 
+ * \`\`\`js
+ * const { email, getMessage } = getInbox({ new: true });
+ * 
+ * await page.fill("#email", email);
+ * const { from, html, subject, text } = await waitForMessage();
+ * \`\`\`
+ *
+ * \`\`\`js
+ * const { email, getMessage } = getInbox();
+ * \`\`\`
+ */
+declare function getInbox(options?: { new?: boolean; }): { email: string; getMessage: () => Promise<{
+  from: string;
+  html: string;
+  subject: string;
+  text: string;
+  to: string;
+}>; };
 `;
 
   writeFileSync("./public/types.txt", types);
