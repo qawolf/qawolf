@@ -1,10 +1,8 @@
 import * as Knex from "knex";
 
-import { cuid } from "../utils";
-
 export async function up(knex: Knex): Promise<void> {
   await knex.schema.alterTable("teams", (table) => {
-    table.string("inbox").notNullable().unique().defaultTo(cuid());
+    table.string("inbox").unique();
   });
 
   const exists = await knex.schema.hasTable("emails");

@@ -23,7 +23,7 @@ export const createEmail = async (
   const log = logger.prefix("createTrigger");
   log.debug(`create email for team ${fields.team_id}`);
 
-  const email = { ...fields, id: cuid() };
+  const email = { ...fields, id: cuid(), to: fields.to.toLowerCase() };
   await db("emails").insert(email);
 
   log.debug("created", email.id);

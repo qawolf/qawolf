@@ -31,7 +31,7 @@ describe("email model", () => {
 
       const dbEmail = await db("emails").first();
 
-      expect(dbEmail).toMatchObject(email);
+      expect(dbEmail).toMatchObject({ ...email, to: "teamid@test.com" });
     });
   });
 

@@ -16,7 +16,7 @@ const randomCharacters = (): string => {
 
 export const getInbox = (args: GetInbox = {}): GetInboxResult => {
   const tail = args.new ? `+${randomCharacters()}` : "";
-  const email = `${process.env.TEAM_INBOX}${tail}@qawolf.email`;
+  const email = `${process.env.TEAM_INBOX}${tail}@qawolf.email`.toLowerCase();
 
   const getMessage = async (): Promise<Email> => {
     return pollForEmail(email, new Date().toISOString());

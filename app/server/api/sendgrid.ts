@@ -53,15 +53,14 @@ export const handleSendGridRequest = async (
     verifyRequest(req.url, logger);
     const { from, html, subject, text, to } = await buildEmailFields(req);
 
-    await db.transaction(async (trx) => {
-      const team = await findTeamForEmail(to, { db: trx, logger });
-      if (!team) return;
+    const team = await findTeamForEmail(to, { db, logger });
 
+    if (team) {
       await createEmail(
         { from, html, subject, team_id: team.id, text, to },
-        { db: trx, logger }
+        { db, logger }
       );
-    });
+    }
 
     res.status(200).end();
   } catch (error) {
