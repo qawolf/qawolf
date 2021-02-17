@@ -480,6 +480,11 @@ export type CurrentUser = User & {
   teams: Team[];
 };
 
+export type EmailQuery = {
+  created_after: string;
+  to: string;
+};
+
 export type EnvironmentIdQuery = {
   environment_id: string;
 };

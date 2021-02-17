@@ -1,5 +1,6 @@
 import { createGitHubSignInUrlResolver } from "./resolvers/auth";
 import { dashboardResolver } from "./resolvers/dashboard";
+import { emailResolver } from "./resolvers/email";
 import {
   createEnvironmentResolver,
   deleteEnvironmentResolver,
@@ -111,6 +112,7 @@ export const resolvers = {
   Query: {
     currentUser: currentUserResolver,
     dashboard: dashboardResolver,
+    email: emailResolver,
     environments: environmentsResolver,
     environmentVariables: environmentVariablesResolver,
     integrations: integrationsResolver,
