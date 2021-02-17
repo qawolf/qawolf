@@ -52,7 +52,7 @@ describe("handleSendGridRequest", () => {
       html: "html",
       subject: "subject",
       text: "text",
-      to: "inbox+new@test.com",
+      to: "inbox+new@dev.qawolf.com",
     });
 
     await handleSendGridRequest({ url } as NextApiRequest, res, { db, logger });
@@ -63,7 +63,7 @@ describe("handleSendGridRequest", () => {
       {
         from: "spirit@qawolf.com",
         team_id: "teamId",
-        to: "inbox+new@test.com",
+        to: "inbox+new@dev.qawolf.com",
       },
     ]);
   });
