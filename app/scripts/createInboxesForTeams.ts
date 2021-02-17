@@ -8,12 +8,10 @@ import { cuid } from "../server/utils";
 
   await db.transaction(async (trx) => {
     await Promise.all(
-      teams.map((team) => {
-        return (async () => {
-          if (team.inbox) return;
+      teams.map(async (team) => {
+        if (team.inbox) return;
 
-          return trx("teams").update({ inbox: cuid() }).where({ id: team.id });
-        })();
+        return trx("teams").update({ inbox: cuid() }).where({ id: team.id });
       })
     );
   });
