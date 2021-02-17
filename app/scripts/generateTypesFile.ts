@@ -118,8 +118,9 @@ declare function assertText(page: import('playwright').Page | import('playwright
 
 /**
  * Create a test email address and function that waits for the test email to receive a message.
+ * If no message is received within one minute, an error is thrown.
  * 
- * Set new to true to get a fresh inbox.
+ * Call with { new: true } to get a fresh inbox.
  * 
  * \`\`\`js
  * const { email, getMessage } = getInbox({ new: true });
