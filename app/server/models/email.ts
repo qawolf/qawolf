@@ -53,7 +53,7 @@ export const findEmail = async (
 
   const email = await db("emails")
     .where("created_at", ">=", created_after)
-    .andWhere({ to })
+    .andWhere({ to: to.toLowerCase() })
     .orderBy("created_at", "desc")
     .first();
 

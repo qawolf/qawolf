@@ -71,8 +71,8 @@ describe("email model", () => {
           created_at: new Date("2020").toISOString(),
           to: "myInbox@test.com",
         }),
-        buildEmail({ i: 2, to: "myInbox@test.com" }),
-        buildEmail({ i: 3, to: "anotherInbox@test.com" }),
+        buildEmail({ i: 2, to: "my_inbox@test.com" }),
+        buildEmail({ i: 3, to: "another_inbox@test.com" }),
       ]);
     });
 
@@ -82,12 +82,12 @@ describe("email model", () => {
       const email = await findEmail(
         {
           created_after: new Date("2019").toISOString(),
-          to: "myInbox@test.com",
+          to: "My_Inbox@test.com",
         },
         options
       );
 
-      expect(email).toMatchObject({ id: "email2Id", to: "myInbox@test.com" });
+      expect(email).toMatchObject({ id: "email2Id", to: "my_inbox@test.com" });
     });
 
     it("returns null if no matching email exists", async () => {
