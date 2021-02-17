@@ -1,4 +1,5 @@
 import { connectDb } from "../server/db";
+import environment from "../server/environment";
 import { cuid } from "../server/utils";
 
 (async () => {
@@ -11,7 +12,9 @@ import { cuid } from "../server/utils";
       teams.map(async (team) => {
         if (team.inbox) return;
 
-        return trx("teams").update({ inbox: cuid() }).where({ id: team.id });
+        return trx("teams")
+          .update({ inbox: `${cuid()}@${environment.EMAIL_DOMAIN}` })
+          .where({ id: team.id });
       })
     );
   });

@@ -1,6 +1,7 @@
 import isNil from "lodash/isNil";
 
 import { minutesFromNow } from "../../shared/utils";
+import environment from "../environment";
 import { ModelOptions, Team, TeamPlan } from "../types";
 import { buildApiKey, cuid } from "../utils";
 import { decrypt, encrypt } from "./encrypt";
@@ -42,7 +43,7 @@ export const createFreeTeamWithTrigger = async (
     api_key: encrypt(buildApiKey()),
     helpers: "",
     id,
-    inbox: cuid(),
+    inbox: `${cuid()}@${environment.EMAIL_DOMAIN}`,
     is_email_alert_enabled: true,
     is_enabled: true,
     name: DEFAULT_NAME,
@@ -98,7 +99,12 @@ export const findTeamForEmail = async (
 
   log.debug("email", email);
 
-  const inbox = email.split("@")[0].split("+")[0];
+  let inbox = email;
+  if (email.includes("+")) {
+    const [prefix, suffix] = email.split("+");
+    inbox = prefix + "@" + suffix.split("@")[1];
+  }
+
   const team = await db("teams").where({ inbox }).first();
 
   log.debug(team ? `found ${team.id}` : "not found");

@@ -16,7 +16,9 @@ const db = prepareTestDb();
 const url = `/api/sendgrid?key=${environment.SENDGRID_WEBHOOK_SECRET}`;
 
 describe("handleSendGridRequest", () => {
-  beforeAll(() => db("teams").insert(buildTeam({ inbox: "inbox" })));
+  beforeAll(() =>
+    db("teams").insert(buildTeam({ inbox: "inbox@dev.qawolf.com" }))
+  );
 
   afterEach(() => {
     jest.clearAllMocks();

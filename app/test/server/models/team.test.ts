@@ -98,23 +98,28 @@ describe("team model", () => {
 
   describe("findTeamForEmail", () => {
     beforeAll(async () => {
-      return db("teams").insert(buildTeam({ inbox: "pumpkin" }));
+      return db("teams").insert(
+        buildTeam({ inbox: "pumpkin@dev.qawolf.email" })
+      );
     });
 
     afterAll(() => db("teams").del());
 
     it("returns team for email", async () => {
-      const team = await findTeamForEmail("pumpkin@test.com", options);
+      const team = await findTeamForEmail("pumpkin@dev.qawolf.email", options);
 
       expect(team).toMatchObject({ id: "teamId" });
 
-      const team2 = await findTeamForEmail("pumpkin+abc@test.com", options);
+      const team2 = await findTeamForEmail(
+        "pumpkin+abc@dev.qawolf.email",
+        options
+      );
 
       expect(team2).toMatchObject({ id: "teamId" });
     });
 
     it("returns null if team not found", async () => {
-      const team = await findTeamForEmail("logan@test.com", options);
+      const team = await findTeamForEmail("logan@dev.qawolf.email", options);
 
       expect(team).toBeNull();
     });

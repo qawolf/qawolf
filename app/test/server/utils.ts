@@ -364,7 +364,7 @@ export const buildTeam = ({
     api_key: buildApiKey(),
     helpers: "",
     id: `team${finalI === 1 ? "" : i}Id`,
-    inbox: inbox || cuid(),
+    inbox: inbox || `${cuid()}@dev.qawolf.email`,
     is_email_alert_enabled: true,
     is_enabled: is_enabled === undefined ? true : is_enabled,
     name: name || "Awesome Company",

@@ -21,6 +21,7 @@ export default {
   AZURE_WORKSPACE_KEY: process.env.AZURE_WORKSPACE_KEY!,
   DATABASE_SSL: databaseSsl ? JSON.parse(databaseSsl) : null,
   DATABASE_URL: process.env.DATABASE_URL,
+  EMAIL_DOMAIN: process.env.EMAIL_DOMAIN!,
   ENCRYPT_IV: process.env.ENCRYPT_IV,
   ENCRYPT_KEY: process.env.ENCRYPT_KEY,
   GITHUB_APP_CLIENT_ID: process.env.GITHUB_APP_CLIENT_ID!,
