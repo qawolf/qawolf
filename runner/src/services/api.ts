@@ -118,38 +118,47 @@ export const pollForQuery = async ({
   requestData,
 }: PollForQuery): // eslint-disable-next-line @typescript-eslint/no-explicit-any
 Promise<any> => {
+  const timeoutIn = timeoutMs || 60 * 1000;
+
   await Promise.race([
-    retry(async (_, attempt) => {
-      debug("%s attempt %s", logName, attempt);
+    retry(
+      async (_, attempt) => {
+        debug("%s attempt %s", logName, attempt);
 
-      try {
-        const result = await axios.post(
-          `${config.API_URL}/graphql`,
-          requestData,
-          { headers: { authorization: process.env.AUTHORIZATION } }
-        );
+        try {
+          const result = await axios.post(
+            `${config.API_URL}/graphql`,
+            requestData,
+            { headers: { authorization: process.env.QAWOLF_TEAM_API_KEY } }
+          );
 
-        const errors = result.data?.errors;
-        if (errors?.length > 0) {
-          debug("%s failed %o", logName, errors);
-          throw new Error("GraphQL Errors " + JSON.stringify(errors));
+          const errors = result.data?.errors;
+          if (errors?.length > 0) {
+            debug("%s failed %o", logName, errors);
+            throw new Error("GraphQL Errors " + JSON.stringify(errors));
+          }
+
+          if (!(result.data?.data || {})[dataKey]) {
+            debug("%s not found", dataKey);
+            throw new Error("Not found");
+          }
+
+          return result.data;
+        } catch (e) {
+          debug(`${logName} failed ${e} ${JSON.stringify(e.response.data)}`);
+          throw e;
         }
-
-        if (!(result.data?.data || {})[dataKey]) {
-          debug("%s not found", dataKey);
-          throw new Error("Not found");
-        }
-
-        return result.data;
-      } catch (e) {
-        debug(`${logName} failed ${e} ${JSON.stringify(e.response.data)}`);
-        throw e;
+      },
+      {
+        factor: 1,
+        minTimeout: 3000,
+        retries: Math.round(timeoutIn / 3000),
       }
-    }),
+    ),
     new Promise((_, reject) => {
       setTimeout(() => {
         reject(new Error(timeoutError));
-      }, timeoutMs || 60 * 1000);
+      }, timeoutIn);
     }),
   ]);
 };

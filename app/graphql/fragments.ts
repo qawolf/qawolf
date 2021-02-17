@@ -94,6 +94,7 @@ export const teamFragment = gql`
     api_key
     helpers
     id
+    inbox
     is_email_alert_enabled
     is_enabled
     name

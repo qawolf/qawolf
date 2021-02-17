@@ -13,7 +13,7 @@ type GetInboxResult = {
 };
 
 export const getInbox = (args: GetInbox = {}): GetInboxResult => {
-  let email = process.env.TEAM_INBOX!;
+  let email = process.env.QAWOLF_TEAM_INBOX!;
   if (args.new) {
     const [inbox, domain] = email.split("@");
     email = `${inbox}+${slug()}@${domain}`;

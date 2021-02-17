@@ -327,6 +327,9 @@ type Team {
   "Team ID"
   id: ID!
 
+  "Team email address"
+  inbox: String!
+
   """
   True if all users on the associated team should be alerted by email whenever
   a test run finishes.

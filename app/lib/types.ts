@@ -91,6 +91,7 @@ export type Team = ShortTeam & {
   alert_integration_id: string | null;
   api_key: string;
   helpers: string;
+  inbox: string;
   is_email_alert_enabled: boolean;
   is_enabled: boolean;
   next_trigger_id: string;
