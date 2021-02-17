@@ -11,6 +11,7 @@ type GraphQLRequestData = {
 };
 
 type PollForQuery = {
+  apiKey: string;
   dataKey: string;
   logName: string;
   requestData: GraphQLRequestData;
@@ -111,6 +112,7 @@ export const mutateWithRetry = async (
 };
 
 export const pollForQuery = async ({
+  apiKey,
   dataKey,
   logName,
   timeoutError,
@@ -120,7 +122,7 @@ export const pollForQuery = async ({
 Promise<any> => {
   const timeoutIn = timeoutMs || 60 * 1000;
 
-  await Promise.race([
+  return Promise.race([
     retry(
       async (_, attempt) => {
         debug("%s attempt %s", logName, attempt);
@@ -129,7 +131,7 @@ Promise<any> => {
           const result = await axios.post(
             `${config.API_URL}/graphql`,
             requestData,
-            { headers: { authorization: process.env.QAWOLF_TEAM_API_KEY } }
+            { headers: { authorization: apiKey } }
           );
 
           const errors = result.data?.errors;
@@ -143,7 +145,7 @@ Promise<any> => {
             throw new Error("Not found");
           }
 
-          return result.data;
+          return result.data?.data[dataKey];
         } catch (e) {
           debug(`${logName} failed ${e} ${JSON.stringify(e.response.data)}`);
           throw e;
@@ -198,9 +200,11 @@ export const notifyRunFinished = async ({
 
 export const pollForEmail = async (
   to: string,
-  created_after: string
+  created_after: string,
+  apiKey: string
 ): Promise<Email> => {
   return pollForQuery({
+    apiKey,
     dataKey: "email",
     logName: "pollForEmail",
     requestData: {

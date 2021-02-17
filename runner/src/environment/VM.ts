@@ -4,7 +4,7 @@ import { devices } from "playwright";
 import { assertText } from "qawolf";
 import { NodeVM } from "vm2";
 
-import { getInbox } from "../services/inbox";
+import { GetInbox, getInbox } from "../services/inbox";
 import { Logger } from "../services/Logger";
 import { launch, LaunchOptions, LaunchResult } from "./launch";
 import { TransformCode, transformCode } from "./transformCode";
@@ -48,7 +48,12 @@ export class VM {
       assertText,
       axios,
       devices,
-      getInbox,
+      getInbox: (options: GetInbox) => {
+        return getInbox(options, {
+          apiKey: this._env.QAWOLF_TEAM_API_KEY!,
+          inbox: this._env.QAWOLF_TEAM_INBOX!,
+        });
+      },
       launch: async (launchOptions: LaunchOptions) => {
         process.env.DISPLAY = vmOptions.display || ":0.0";
 
