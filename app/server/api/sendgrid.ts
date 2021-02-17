@@ -1,7 +1,7 @@
 import { IncomingForm } from "formidable";
 import { NextApiRequest, NextApiResponse } from "next";
-import environment from "../environment";
 
+import environment from "../environment";
 import { AuthenticationError } from "../errors";
 import { Logger } from "../Logger";
 import { createEmail } from "../models/email";

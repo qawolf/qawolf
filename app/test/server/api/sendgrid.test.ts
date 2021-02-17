@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { prepareTestDb } from "../db";
+import { NextApiRequest } from "next";
+
 import * as sendGridApi from "../../../server/api/sendgrid";
 import environment from "../../../server/environment";
+import { prepareTestDb } from "../db";
 import { buildTeam, logger } from "../utils";
-import { NextApiRequest, NextApiResponse } from "next";
 
 const { handleSendGridRequest, verifyRequest } = sendGridApi;
 
