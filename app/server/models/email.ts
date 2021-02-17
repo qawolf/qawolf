@@ -1,3 +1,4 @@
+import { minutesFromNow } from "../../shared/utils";
 import { Email, ModelOptions } from "../types";
 import { cuid } from "../utils";
 
@@ -27,6 +28,19 @@ export const createEmail = async (
   log.debug("created", email.id);
 
   return email;
+};
+
+export const deleteOldEmails = async ({
+  db,
+  logger,
+}: ModelOptions): Promise<void> => {
+  const log = logger.prefix("deleteOldEmails");
+
+  const deleteCount = await db("emails")
+    .where("created_at", "<", minutesFromNow(-60))
+    .del();
+
+  log.debug(`deleted ${deleteCount} emails`);
 };
 
 export const findEmail = async (

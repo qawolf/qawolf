@@ -1,4 +1,9 @@
-import { createEmail, findEmail } from "../../../server/models/email";
+import {
+  createEmail,
+  deleteOldEmails,
+  findEmail,
+} from "../../../server/models/email";
+import { minutesFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
 import { buildEmail, buildTeam, logger } from "../utils";
 
@@ -29,8 +34,37 @@ describe("email model", () => {
     });
   });
 
+  describe("deleteOldEmails", () => {
+    beforeAll(() => {
+      return db("emails").insert([
+        buildEmail({
+          created_at: minutesFromNow(-55),
+        }),
+        buildEmail({
+          created_at: minutesFromNow(-65),
+          i: 2,
+        }),
+        buildEmail({
+          created_at: new Date("2000").toISOString(),
+          i: 3,
+        }),
+        buildEmail({ i: 4 }),
+      ]);
+    });
+
+    afterAll(() => db("emails").del());
+
+    it("deletes old emails", async () => {
+      await deleteOldEmails(options);
+
+      const emails = await db("emails").orderBy("created_at", "asc");
+
+      expect(emails).toMatchObject([{ id: "emailId" }, { id: "email4Id" }]);
+    });
+  });
+
   describe("findEmail", () => {
-    beforeAll(async () => {
+    beforeAll(() => {
       return db("emails").insert([
         buildEmail({
           created_at: new Date("2020").toISOString(),
