@@ -200,6 +200,8 @@ export const findSuiteRunForRunner = async (
       .select("suites.environment_variables AS environment_variables")
       .select("suites.team_id AS team_id")
       .select("teams.helpers AS helpers")
+      .select("teams.api_key AS api_key")
+      .select("teams.inbox AS inbox")
       .select("tests.version AS test_version")
       .from("runs")
       .innerJoin("suites", "runs.suite_id", "suites.id")
@@ -214,8 +216,16 @@ export const findSuiteRunForRunner = async (
     const custom_variables = row.environment_variables
       ? JSON.parse(decrypt(row.environment_variables))
       : {};
+
     const { env } = await buildEnvironmentVariables(
-      { custom_variables, environment_id: row.environment_id },
+      {
+        custom_variables: {
+          ...custom_variables,
+          QAWOLF_TEAM_API_KEY: decrypt(row.api_key),
+          QAWOLF_TEAM_INBOX: row.inbox,
+        },
+        environment_id: row.environment_id,
+      },
       { db, logger }
     );
 
