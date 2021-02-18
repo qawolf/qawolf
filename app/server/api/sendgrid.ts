@@ -33,7 +33,10 @@ export const buildEmailFields = async (
 export const buildSendDate = (headers: string): string => {
   const timestamp = headers.split("Date:")[1]?.split("\n")[0];
 
-  return new Date(timestamp).toISOString();
+  let date = new Date(timestamp);
+  if (isNaN(date.getTime())) date = new Date();
+
+  return date.toISOString();
 };
 
 export const verifyRequest = (url: string, logger: Logger): void => {

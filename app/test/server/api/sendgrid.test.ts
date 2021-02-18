@@ -20,7 +20,7 @@ describe("buildSendDate", () => {
 
   it("parses date from headers", () => {
     expect(buildSendDate(" Date: Thu, 18 Feb 2021 10:18:51 -0700\n")).toBe(
-      new Date("Thu, 18 Feb 2021 10:18:51").toISOString()
+      new Date("Thu, 18 Feb 2021 10:18:51 -0700").toISOString()
     );
   });
 
@@ -32,6 +32,18 @@ describe("buildSendDate", () => {
     });
 
     expect(buildSendDate("invalid")).toBe(new Date("2021-01-01").toISOString());
+  });
+
+  it("defaults to now if headers specify invalid date", () => {
+    const mockDate = new Date("2021-01-01");
+    jest.spyOn(global, "Date").mockImplementation(() => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return mockDate as any;
+    });
+
+    expect(buildSendDate(" Date: XXX\n")).toBe(
+      new Date("2021-01-01").toISOString()
+    );
   });
 });
 
@@ -83,7 +95,7 @@ describe("handleSendGridRequest", () => {
 
     expect(dbEmails).toMatchObject([
       {
-        created_at: new Date("Thu, 18 Feb 2021 10:18:51"),
+        created_at: new Date("Thu, 18 Feb 2021 10:18:51 -0700"),
         from: "spirit@qawolf.com",
         team_id: "teamId",
         to: "inbox+new@dev.qawolf.com",
