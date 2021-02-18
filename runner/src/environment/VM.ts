@@ -21,7 +21,15 @@ export type RunOptions = TransformCode & {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const formatMessage = (args: any[]): string => {
-  return args.join(" ");
+  return args
+    .map((arg) => {
+      try {
+        return JSON.stringify(arg);
+      } catch (e) {
+        return arg;
+      }
+    })
+    .join(" ");
 };
 
 export class VM {
