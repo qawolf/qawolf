@@ -32,7 +32,7 @@ export default function Placeholder({
 
   let iconHtml: ReactNode = <Paw {...iconProps} />;
   if (wolf) {
-    iconHtml = <WolfSitting />;
+    iconHtml = <WolfSitting color={wolf.variant} />;
   } else if (isUserLoading) {
     // if the user is loading do not include an icon
     // to prevent a jarring change when the wolf loads

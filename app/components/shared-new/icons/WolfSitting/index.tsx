@@ -4,10 +4,11 @@ import WolfSittingIcon from "./WolfSittingIcon";
 type Props = {
   animate?: boolean;
   className?: string;
+  color: string;
 };
 
-function WolfSitting({ className }: Props): JSX.Element {
-  return <WolfSittingIcon className={className} />;
+function WolfSitting({ className, color }: Props): JSX.Element {
+  return <WolfSittingIcon className={className} color={color} />;
 }
 
 const tailWagKeyFrames = keyframes`
