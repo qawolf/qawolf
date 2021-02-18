@@ -1,6 +1,6 @@
 import { colors } from "./theme-new";
 
-type WolfColors = {
+export type WolfColors = {
   back: string;
   ear: string;
   earShadow: string;

@@ -3,8 +3,8 @@ import { Box } from "grommet";
 import { ShortTeam, Wolf as WolfType } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import { hoverTransition } from "../../../theme/theme";
-import WolfSitting from "../../shared-new/icons/WolfSitting";
 import Text from "../../shared/Text";
+import WolfSitting from "../../shared-new/icons/WolfSitting";
 import styles from "./Sidebar.module.css";
 
 type Props = {

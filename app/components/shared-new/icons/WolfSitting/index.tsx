@@ -1,4 +1,5 @@
 import styled, { css, keyframes } from "styled-components";
+
 import WolfSittingIcon from "./WolfSittingIcon";
 
 type Props = {

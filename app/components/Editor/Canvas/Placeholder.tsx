@@ -3,12 +3,12 @@ import { ReactNode, useContext } from "react";
 
 import { copy } from "../../../theme/copy";
 import Paw from "../../shared/icons/Paw";
+import WolfSitting from "../../shared-new/icons/WolfSitting";
 import Text from "../../shared-new/Text";
 import { UserContext } from "../../UserContext";
 import { RunnerContext } from "../contexts/RunnerContext";
 import { TestContext } from "../contexts/TestContext";
 import { Mode } from "../hooks/mode";
-import WolfSitting from "../../shared-new/icons/WolfSitting";
 
 type Props = {
   height?: number;
