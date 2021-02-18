@@ -1,9 +1,9 @@
 import { Box, Image } from "grommet";
 
 import { copy } from "../../../../theme/copy";
-import WolfHead from "../../../shared/icons/WolfHead";
 import Spinner from "../../../shared/Spinner";
 import Text from "../../../shared/Text";
+import WolfHead from "../../../shared-new/icons/WolfHead";
 
 type Props = {
   gifUrl: string | null;
@@ -30,7 +30,7 @@ export default function TestGif({
       justify="center"
       width={WIDTH}
     >
-      <WolfHead variant={wolfVariant} />
+      <WolfHead color={wolfVariant} />
       <Text color="black" size="small">
         {copy.noRuns}
       </Text>

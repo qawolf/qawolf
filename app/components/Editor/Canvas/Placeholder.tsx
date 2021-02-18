@@ -3,7 +3,7 @@ import { ReactNode, useContext } from "react";
 
 import { copy } from "../../../theme/copy";
 import Paw from "../../shared/icons/Paw";
-import Wolf from "../../shared/icons/Wolf";
+import WolfSitting from "../../shared-new/icons/WolfSitting";
 import Text from "../../shared-new/Text";
 import { UserContext } from "../../UserContext";
 import { RunnerContext } from "../contexts/RunnerContext";
@@ -32,7 +32,7 @@ export default function Placeholder({
 
   let iconHtml: ReactNode = <Paw {...iconProps} />;
   if (wolf) {
-    iconHtml = <Wolf animate wolf={wolf} />;
+    iconHtml = <WolfSitting animate color={wolf.variant} />;
   } else if (isUserLoading) {
     // if the user is loading do not include an icon
     // to prevent a jarring change when the wolf loads

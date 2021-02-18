@@ -1,4 +1,5 @@
 import environment from "../../environment";
+import { WOLF_VARIANTS } from "../../models/wolfOptions";
 import { Invite, SuiteRun, Trigger, User } from "../../types";
 
 type BuildLoginCodeHtml = {
@@ -19,12 +20,14 @@ const buildFailingRunHtml = ({ gif_url, id, test_name }: SuiteRun): string => {
 };
 
 const buildFooter = (wolfVariant: string): string => {
+  const wolf = WOLF_VARIANTS.includes(wolfVariant) ? wolfVariant : "white";
+
   return `
   <div style='margin-top: 48px;'>
-    <img src='https://storage.googleapis.com/spirit-imgs/wolf-${wolfVariant}.png' style='display: block; margin: auto;' width="80px" />
+    <img src='https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-${wolf}.png' style='display: block; margin: auto;' width="120px" />
   </div>
-  <div style="border-top: 1px solid #979797; font-size: 12px; margin: 0 32px 48px; text-align: center;">
-    <p style='color: #979797; margin: 48px 32px;'>QA Wolf is an end-to-end testing platform that helps teams ship confidently. Create, run, and share tests - all without leaving the browser.</p>
+  <div style="border-top: 1px solid #667080; font-size: 12px; margin: 0 32px 48px; text-align: center;">
+    <p style='color: #667080; margin: 48px 32px;'>QA Wolf is an end-to-end testing platform that helps teams ship confidently. Create, run, and share tests - all without leaving the browser.</p>
   </div>`;
 };
 
@@ -32,7 +35,7 @@ const buildHeader = (): string => {
   return `
   <table>
     <tr>
-      <td><img src='https://storage.googleapis.com/docs.qawolf.com/website/logo_small.png' style='object-fit: contain; width: 48px;' /></td>
+      <td><img src='https://qawolf-public.s3.us-east-2.amazonaws.com/logo-small.png' style='object-fit: contain; width: 48px;' /></td>
       <td><h1 style='display: inline-block; font-size: 24px; font-weight: normal; margin: 0 8px;'>QA Wolf</h1></td>
     </tr>
   </table>`;
@@ -41,7 +44,7 @@ const buildHeader = (): string => {
 export const buildInviteHtml = (
   invite: Invite & { creator_email: string; team_name: string }
 ): string => {
-  return `<div style='color: #1C2F46; font-family: Helvetica, Arial, sans-serif;'>${buildHeader()}
+  return `<div style='color: #2A3140; font-family: Helvetica, Arial, sans-serif;'>${buildHeader()}
   <div style='font-size: 16px; margin-top: 32px; text-align: center; width: 100%;'>
       <a style='color: inherit !important; font-weight: bold; text-decoration: none !important;'>${
         invite.creator_email
@@ -51,7 +54,7 @@ export const buildInviteHtml = (
       <br />
       <a href='${environment.APP_URL}/invite/${
     invite.id
-  }' style='background: #44E5E7; border-radius: 8px; color: #1C2F46; display: inline-block; margin-top: 32px; font-weight: bold; padding: 16px 32px; text-decoration: none;'>Accept Invite</a>
+  }' style='background: #4545E5; border-radius: 8px; color: #FFFFFF; display: inline-block; margin-top: 32px; font-weight: bold; padding: 16px 32px; text-decoration: none;'>Accept Invite</a>
   </div>${buildFooter(invite.wolf_variant)}
   </div>`;
 };
@@ -64,10 +67,10 @@ export const buildLoginCodeHtml = ({
   login_code,
   user,
 }: BuildLoginCodeHtml): string => {
-  return `<div style='color: #1C2F46; font-family: Helvetica, Arial, sans-serif;'>${buildHeader()}
+  return `<div style='color: #2A3140; font-family: Helvetica, Arial, sans-serif;'>${buildHeader()}
   <div style='font-size: 16px; margin-top: 32px; text-align: center; width: 100%;'>
     <p>Enter the code below to log in to QA Wolf:</p>
-    <p style="background: #d2e0e2; border-radius: 8px; display: inline-block; font-size: 48px; font-weight: bold; margin: 8px 0; padding: 8px 16px;">${buildLoginCode(
+    <p style="background: #F2F4F7; border-radius: 8px; display: inline-block; font-size: 48px; font-weight: bold; margin: 8px 0; padding: 8px 16px;">${buildLoginCode(
       login_code
     )}</p>
     <p>If you didn’t request this email, you can safely ignore it.</p>

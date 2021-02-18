@@ -1,14 +1,18 @@
 import { Box } from "grommet";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
+import { getWolfColors } from "../../../theme/wolf";
+import { UserContext } from "../../UserContext";
 import WolfLeft from "./icons/WolfLeft";
 import WolfRight from "./icons/WolfRight";
 
 const animateMs = 800;
 const timeoutMs = 250;
-const width = 160;
+const width = 120;
 
 export default function Wolf(): JSX.Element {
+  const { wolf } = useContext(UserContext);
+
   const [isLeft, setIsLeft] = useState(true);
   const [isScrolling, setIsScrolling] = useState(false);
 
@@ -51,15 +55,21 @@ export default function Wolf(): JSX.Element {
     };
   }, [isScrolling]);
 
+  const colors = getWolfColors(wolf?.variant);
+
   return (
     <Box
       align="center"
       background="gray0"
       flex={false}
-      height="184px" // prevent resizing as wolf changes
+      height="139px" // prevent resizing as wolf changes
       justify="end"
     >
-      {isLeft ? <WolfLeft width={width} /> : <WolfRight width={width} />}
+      {isLeft ? (
+        <WolfLeft colors={colors} width={width} />
+      ) : (
+        <WolfRight colors={colors} width={width} />
+      )}
     </Box>
   );
 }
