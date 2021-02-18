@@ -26,8 +26,9 @@ export const getInbox = (
   args: GetInbox = {},
   context: GetInboxContext
 ): GetInboxResult => {
-  let email = context.inbox;
+  const apiKey = context.apiKey;
 
+  let email = context.inbox;
   if (args.new) {
     const [inbox, domain] = email.split("@");
     email = `${inbox}+${slug()}@${domain}`;
@@ -39,8 +40,12 @@ export const getInbox = (
     after,
     timeout,
   }: WaitForMessage = {}): Promise<Email> => {
+    if (after && !(after instanceof Date)) {
+      throw new Error("after must be a Date");
+    }
+
     return pollForEmail({
-      apiKey: context.apiKey,
+      apiKey,
       createdAfter: (after || calledAt).toISOString(),
       timeoutMs: timeout || 60000,
       to: email,
