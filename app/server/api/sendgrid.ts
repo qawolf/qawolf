@@ -69,11 +69,19 @@ export const handleSendGridRequest = async (
 
     if (team) {
       await createEmail(
-        { ...fields, created_at: buildSendDate(headers), team_id: team.id },
+        {
+          ...fields,
+          created_at: buildSendDate(headers),
+          html: fields.html || "",
+          team_id: team.id,
+        },
         { db, logger }
       );
+    } else {
+      log.debug("skip create email, no team for", fields.to);
     }
 
+    log.debug("sendgrid success");
     res.status(200).end();
   } catch (error) {
     log.alert("sendgrid error", error.message);
