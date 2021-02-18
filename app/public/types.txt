@@ -26157,12 +26157,17 @@ declare function assertText(page: import('playwright').Page | import('playwright
  * // Call with { new: true } to get a fresh inbox.
  * const { email, waitForMessage } = getInbox({ new: true });
  * 
- * // Provide a timeout in milliseconds to override the default 60 seconds.
+ * // Pass after to wait for a message after that date.
+ * // If not provided it will for a message after when getInbox was called.
+ * const after = new Date();
+ * const message = await waitForMessage({ after });
+ * 
+ * // Pass a timeout in milliseconds to override the default 60 seconds.
  * const message = await waitForMessage({ timeout: 120000 });
  * ```
  */
 declare function getInbox(options?: { new?: boolean; }): 
   {
     email: string; 
-    waitForMessage: function({ timeout?: number }): Promise<{ from: string; html: string; subject: string; text: string; to: string; }>;
+    waitForMessage: function({ after?: Date, timeout?: number }): Promise<{ from: string; html: string; subject: string; text: string; to: string; }>;
   };

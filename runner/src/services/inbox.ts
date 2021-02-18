@@ -18,6 +18,7 @@ type GetInboxResult = {
 };
 
 type WaitForMessage = {
+  after?: Date;
   timeout?: number;
 };
 
@@ -32,14 +33,15 @@ export const getInbox = (
     email = `${inbox}+${slug()}@${domain}`;
   }
 
-  const createdAfter = new Date().toISOString();
+  const calledAt = new Date();
 
   const waitForMessage = async ({
+    after,
     timeout,
   }: WaitForMessage = {}): Promise<Email> => {
     return pollForEmail({
       apiKey: context.apiKey,
-      createdAfter,
+      createdAfter: (after || calledAt).toISOString(),
       timeoutMs: timeout || 60000,
       to: email,
     });
