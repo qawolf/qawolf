@@ -24,7 +24,17 @@ export const getWolfColors = (color?: string | null): WolfColors => {
         shadow: colors.gray7,
         sparkle: colors.gray4,
       };
-
+    case "husky":
+      return {
+        back: "#575757",
+        ear: "#F0ADAD",
+        earShadow: "#383838",
+        eyebrow: "#A3A3A3",
+        front: "#E5E5E5",
+        line: "#262626",
+        shadow: "#BDBDBD",
+        sparkle: "#E5E5E5",
+      };
     default:
       return {
         back: colors.gray4,

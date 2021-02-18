@@ -32,6 +32,8 @@ const StyledWolfSitting = styled(WolfSitting)`
   }
 
   &:hover {
+    cursor: grab;
+
     #wolf-tail {
       ${animationMixin};
     }
