@@ -11,7 +11,7 @@ const timeoutMs = 250;
 const width = 120;
 
 export default function Wolf(): JSX.Element {
-  const { wolf } = useContext(UserContext);
+  const { isUserLoading, wolf } = useContext(UserContext);
 
   const [isLeft, setIsLeft] = useState(true);
   const [isScrolling, setIsScrolling] = useState(false);
@@ -54,6 +54,8 @@ export default function Wolf(): JSX.Element {
       if (interval) clearInterval(interval);
     };
   }, [isScrolling]);
+
+  if (isUserLoading) return null;
 
   const colors = getWolfColors(wolf?.variant);
 
