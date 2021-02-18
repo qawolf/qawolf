@@ -18,5 +18,11 @@ export const emailResolver = async (
     throw new Error("Unauthorized");
   }
 
-  return findEmail({ created_after, to }, { db, logger });
+  const createdAfterWithoutMs = new Date(created_after);
+  createdAfterWithoutMs.setMilliseconds(0);
+
+  return findEmail(
+    { created_after: createdAfterWithoutMs.toISOString(), to },
+    { db, logger }
+  );
 };

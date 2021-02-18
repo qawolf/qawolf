@@ -20,9 +20,10 @@ beforeAll(async () => {
 
 describe("emailResolver", () => {
   beforeAll(() => {
-    return db("emails").insert(
-      buildEmail({ to: "inbox+abc@dev.qawolf.email" })
-    );
+    return db("emails").insert({
+      ...buildEmail({ to: "inbox+abc@dev.qawolf.email" }),
+      created_at: new Date("2021-02-18T18:47:56.000Z"),
+    });
   });
 
   afterAll(() => db("emails").del());
