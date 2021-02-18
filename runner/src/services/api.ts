@@ -10,13 +10,20 @@ type GraphQLRequestData = {
   variables: Record<string, unknown>;
 };
 
+type PollForEamil = {
+  apiKey: string;
+  createdAfter: string;
+  timeoutMs: number;
+  to: string;
+};
+
 type PollForQuery = {
   apiKey: string;
   dataKey: string;
   logName: string;
   requestData: GraphQLRequestData;
   timeoutError: string;
-  timeoutMs?: number;
+  timeoutMs: number;
 };
 
 type RunFinishedParams = {
@@ -120,8 +127,6 @@ export const pollForQuery = async ({
   requestData,
 }: PollForQuery): // eslint-disable-next-line @typescript-eslint/no-explicit-any
 Promise<any> => {
-  const timeoutIn = timeoutMs || 60 * 1000;
-
   return Promise.race([
     retry(
       async (_, attempt) => {
@@ -154,13 +159,13 @@ Promise<any> => {
       {
         factor: 1,
         minTimeout: 3000,
-        retries: Math.round(timeoutIn / 3000),
+        retries: Math.round(timeoutMs / 3000),
       }
     ),
     new Promise((_, reject) => {
       setTimeout(() => {
         reject(new Error(timeoutError));
-      }, timeoutIn);
+      }, timeoutMs);
     }),
   ]);
 };
@@ -198,11 +203,12 @@ export const notifyRunFinished = async ({
   );
 };
 
-export const pollForEmail = async (
-  to: string,
-  created_after: string,
-  apiKey: string
-): Promise<Email> => {
+export const pollForEmail = async ({
+  apiKey,
+  createdAfter,
+  timeoutMs,
+  to,
+}: PollForEamil): Promise<Email> => {
   return pollForQuery({
     apiKey,
     dataKey: "email",
@@ -210,11 +216,12 @@ export const pollForEmail = async (
     requestData: {
       query: emailQuery,
       variables: {
-        created_after,
+        created_after: createdAfter,
         to,
       },
     },
     timeoutError: `Email to ${to} not received`,
+    timeoutMs,
   });
 };
 

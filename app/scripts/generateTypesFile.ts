@@ -117,29 +117,33 @@ declare function launch(
 declare function assertText(page: import('playwright').Page | import('playwright').Frame, text: string, options?: { selector?: string, timeout?: number }): Promise<void>;
 
 /**
- * Create a test email address and function that waits for the test email to receive a message.
- * If no message is received within one minute, an error is thrown.
- * 
- * Call with { new: true } to get a fresh inbox.
+ * Test receiving an email to your team's inbox.
  * 
  * \`\`\`js
- * const { email, getMessage } = getInbox({ new: true });
+ * const { email, waitForMessage } = getInbox();
  * 
+ * // use the email address in the test
  * await page.fill("#email", email);
+ * await page.click("#submit");
+ * 
+ * // check the received email
  * const { from, html, subject, text } = await waitForMessage();
+ * assert(subject.includes("Reset password"));
  * \`\`\`
- *
+ * 
  * \`\`\`js
- * const { email, getMessage } = getInbox();
+ * // Call with { new: true } to get a fresh inbox.
+ * const { email, waitForMessage } = getInbox({ new: true });
+ * 
+ * // Provide a timeout in milliseconds to override the default 60 seconds.
+ * const message = await waitForMessage({ timeout: 120000 });
  * \`\`\`
  */
-declare function getInbox(options?: { new?: boolean; }): { email: string; getMessage: () => Promise<{
-  from: string;
-  html: string;
-  subject: string;
-  text: string;
-  to: string;
-}>; };
+declare function getInbox(options?: { new?: boolean; }): 
+  {
+    email: string; 
+    waitForMessage: function({ timeout?: number }): Promise<{ from: string; html: string; subject: string; text: string; to: string; }>;
+  };
 `;
 
   writeFileSync("./public/types.txt", types);

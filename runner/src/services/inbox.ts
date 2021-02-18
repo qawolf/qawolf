@@ -14,7 +14,11 @@ type GetInboxContext = {
 
 type GetInboxResult = {
   email: string;
-  getMessage: () => Promise<Email>;
+  waitForMessage: (options: WaitForMessage) => Promise<Email>;
+};
+
+type WaitForMessage = {
+  timeout?: number;
 };
 
 export const getInbox = (
@@ -30,9 +34,16 @@ export const getInbox = (
 
   const createdAfter = new Date().toISOString();
 
-  const getMessage = async (): Promise<Email> => {
-    return pollForEmail(email, createdAfter, context.apiKey);
+  const waitForMessage = async ({
+    timeout,
+  }: WaitForMessage = {}): Promise<Email> => {
+    return pollForEmail({
+      apiKey: context.apiKey,
+      createdAfter,
+      timeoutMs: timeout || 60000,
+      to: email,
+    });
   };
 
-  return { email, getMessage };
+  return { email, waitForMessage };
 };
