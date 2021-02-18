@@ -90,6 +90,10 @@ export const docs: Section[] = [
         name: "Reuse Helper Code",
       },
       {
+        href: `${routes.docs}/test-receiving-email`,
+        name: "Test Receiving Email",
+      },
+      {
         href: `${routes.docs}/call-an-api`,
         name: "Call an API",
       },
