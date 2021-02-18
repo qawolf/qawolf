@@ -104,6 +104,7 @@ type BuildSuite = {
 };
 
 type BuildTeam = {
+  apiKey?: string;
   i?: number;
   inbox?: string;
   is_enabled?: boolean;
@@ -351,6 +352,7 @@ export const buildSuite = ({
 };
 
 export const buildTeam = ({
+  apiKey,
   i,
   inbox,
   is_enabled,
@@ -361,7 +363,7 @@ export const buildTeam = ({
 
   return {
     alert_integration_id: null,
-    api_key: buildApiKey(),
+    api_key: apiKey ? encrypt(apiKey) : encrypt(buildApiKey()),
     helpers: "",
     id: `team${finalI === 1 ? "" : i}Id`,
     inbox: inbox || `${cuid()}@dev.qawolf.email`,

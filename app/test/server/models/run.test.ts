@@ -43,7 +43,11 @@ describe("run model", () => {
     await db("teams").insert([
       buildTeam({}),
       buildTeam({ i: 2 }),
-      buildTeam({ i: 3 }),
+      buildTeam({
+        apiKey: "qawolf_testapikey",
+        inbox: "test@dev.qawolf.email",
+        i: 3,
+      }),
       buildTeam({ i: 4 }),
     ]);
     await db("triggers").insert([
@@ -299,6 +303,8 @@ describe("run model", () => {
         env: JSON.stringify({
           ENV_VARIABLE: "secret",
           SUITE_VARIABLE: "suite_value",
+          QAWOLF_TEAM_API_KEY: "qawolf_testapikey",
+          QAWOLF_TEAM_INBOX: "test@dev.qawolf.email",
         }),
         helpers: "helpers",
         id: "run6Id",
@@ -321,6 +327,8 @@ describe("run model", () => {
         code: 'const x = "hello"',
         env: JSON.stringify({
           ENV_VARIABLE: "secret",
+          QAWOLF_TEAM_API_KEY: "qawolf_testapikey",
+          QAWOLF_TEAM_INBOX: "test@dev.qawolf.email",
         }),
         helpers: "helpers",
         id: "run6Id",
