@@ -25,7 +25,9 @@ export const buildEmailFields = async (
 
     form.parse(req, (err, fields): void => {
       if (err) return reject(err);
-      resolve(fields as EmailFields);
+      const { from, headers, html, subject, text, to } = fields;
+
+      resolve({ from, headers, html, subject, text, to } as EmailFields);
     });
   });
 };
