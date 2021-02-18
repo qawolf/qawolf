@@ -20,7 +20,7 @@ export const createEmail = async (
   fields: CreateEmail,
   { db, logger }: ModelOptions
 ): Promise<Email> => {
-  const log = logger.prefix("createTrigger");
+  const log = logger.prefix("createEmail");
   log.debug(`create email for team ${fields.team_id}`);
 
   const email = { ...fields, id: cuid(), to: fields.to.toLowerCase() };
