@@ -3,6 +3,7 @@ import { Email, ModelOptions } from "../types";
 import { cuid } from "../utils";
 
 type CreateEmail = {
+  created_at: string;
   from: string;
   html: string;
   subject: string;

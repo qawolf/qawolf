@@ -10,6 +10,7 @@ import { ModelOptions } from "../types";
 
 type EmailFields = {
   from: string;
+  headers: string;
   html: string;
   subject: string;
   text: string;
@@ -27,6 +28,12 @@ export const buildEmailFields = async (
       resolve(fields as EmailFields);
     });
   });
+};
+
+export const buildSendDate = (headers: string): string => {
+  const timestamp = headers.split("Date:")[1]?.split("\n")[0];
+
+  return new Date(timestamp).toISOString();
 };
 
 export const verifyRequest = (url: string, logger: Logger): void => {
@@ -51,13 +58,13 @@ export const handleSendGridRequest = async (
 
   try {
     verifyRequest(req.url, logger);
-    const { from, html, subject, text, to } = await buildEmailFields(req);
+    const { headers, ...fields } = await buildEmailFields(req);
 
-    const team = await findTeamForEmail(to, { db, logger });
+    const team = await findTeamForEmail(fields.to, { db, logger });
 
     if (team) {
       await createEmail(
-        { from, html, subject, team_id: team.id, text, to },
+        { ...fields, created_at: buildSendDate(headers), team_id: team.id },
         { db, logger }
       );
     }

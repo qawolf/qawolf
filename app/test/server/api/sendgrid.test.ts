@@ -6,7 +6,7 @@ import environment from "../../../server/environment";
 import { prepareTestDb } from "../db";
 import { buildTeam, logger } from "../utils";
 
-const { handleSendGridRequest, verifyRequest } = sendGridApi;
+const { buildSendDate, handleSendGridRequest, verifyRequest } = sendGridApi;
 
 const send = jest.fn();
 const status = jest.fn().mockReturnValue({ send });
@@ -14,6 +14,26 @@ const res = { status } as any;
 
 const db = prepareTestDb();
 const url = `/api/sendgrid?key=${environment.SENDGRID_WEBHOOK_SECRET}`;
+
+describe("buildSendDate", () => {
+  afterEach(() => jest.restoreAllMocks());
+
+  it("parses date from headers", () => {
+    expect(buildSendDate(" Date: Thu, 18 Feb 2021 10:18:51 -0700\n")).toBe(
+      new Date("Thu, 18 Feb 2021 10:18:51").toISOString()
+    );
+  });
+
+  it("defaults to now if headers do not include date", () => {
+    const mockDate = new Date("2021-01-01");
+    jest.spyOn(global, "Date").mockImplementation(() => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return mockDate as any;
+    });
+
+    expect(buildSendDate("invalid")).toBe(new Date("2021-01-01").toISOString());
+  });
+});
 
 describe("handleSendGridRequest", () => {
   beforeAll(() =>
@@ -33,6 +53,7 @@ describe("handleSendGridRequest", () => {
   it("ignores email if no corresponding team", async () => {
     jest.spyOn(sendGridApi, "buildEmailFields").mockResolvedValue({
       from: "spirit@qawolf.com",
+      headers: "Date: Thu, 18 Feb 2021 10:18:51 -0700\n",
       html: "html",
       subject: "subject",
       text: "text",
@@ -49,6 +70,7 @@ describe("handleSendGridRequest", () => {
   it("creates email record if corresponding team", async () => {
     jest.spyOn(sendGridApi, "buildEmailFields").mockResolvedValue({
       from: "spirit@qawolf.com",
+      headers: "Date: Thu, 18 Feb 2021 10:18:51 -0700\n",
       html: "html",
       subject: "subject",
       text: "text",
@@ -61,6 +83,7 @@ describe("handleSendGridRequest", () => {
 
     expect(dbEmails).toMatchObject([
       {
+        created_at: new Date("Thu, 18 Feb 2021 10:18:51"),
         from: "spirit@qawolf.com",
         team_id: "teamId",
         to: "inbox+new@dev.qawolf.com",
