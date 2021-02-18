@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`buildInviteHtml builds html for invite 1`] = `
-"<div style='color: #1C2F46; font-family: Helvetica, Arial, sans-serif;'>
+"<div style='color: #2A3140; font-family: Helvetica, Arial, sans-serif;'>
   <table>
     <tr>
-      <td><img src='https://storage.googleapis.com/docs.qawolf.com/website/logo_small.png' style='object-fit: contain; width: 48px;' /></td>
+      <td><img src='https://qawolf-public.s3.us-east-2.amazonaws.com/logo-small.png' style='object-fit: contain; width: 48px;' /></td>
       <td><h1 style='display: inline-block; font-size: 24px; font-weight: normal; margin: 0 8px;'>QA Wolf</h1></td>
     </tr>
   </table>
@@ -13,35 +13,35 @@ exports[`buildInviteHtml builds html for invite 1`] = `
       <p style='margin: 8px 0'>has invited you to join the team</p>
       <b>My Team</b>
       <br />
-      <a href='http://localhost:3000/invite/inviteId' style='background: #44E5E7; border-radius: 8px; color: #1C2F46; display: inline-block; margin-top: 32px; font-weight: bold; padding: 16px 32px; text-decoration: none;'>Accept Invite</a>
+      <a href='http://localhost:3000/invite/inviteId' style='background: #4545E5; border-radius: 8px; color: #FFFFFF; display: inline-block; margin-top: 32px; font-weight: bold; padding: 16px 32px; text-decoration: none;'>Accept Invite</a>
   </div>
   <div style='margin-top: 48px;'>
-    <img src='https://storage.googleapis.com/spirit-imgs/wolf-husky.png' style='display: block; margin: auto;' width=\\"80px\\" />
+    <img src='https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky.png' style='display: block; margin: auto;' width=\\"120px\\" />
   </div>
-  <div style=\\"border-top: 1px solid #979797; font-size: 12px; margin: 0 32px 48px; text-align: center;\\">
-    <p style='color: #979797; margin: 48px 32px;'>QA Wolf is an end-to-end testing platform that helps teams ship confidently. Create, run, and share tests - all without leaving the browser.</p>
+  <div style=\\"border-top: 1px solid #667080; font-size: 12px; margin: 0 32px 48px; text-align: center;\\">
+    <p style='color: #667080; margin: 48px 32px;'>QA Wolf is an end-to-end testing platform that helps teams ship confidently. Create, run, and share tests - all without leaving the browser.</p>
   </div>
   </div>"
 `;
 
 exports[`buildLoginCodeHtml builds html for login code 1`] = `
-"<div style='color: #1C2F46; font-family: Helvetica, Arial, sans-serif;'>
+"<div style='color: #2A3140; font-family: Helvetica, Arial, sans-serif;'>
   <table>
     <tr>
-      <td><img src='https://storage.googleapis.com/docs.qawolf.com/website/logo_small.png' style='object-fit: contain; width: 48px;' /></td>
+      <td><img src='https://qawolf-public.s3.us-east-2.amazonaws.com/logo-small.png' style='object-fit: contain; width: 48px;' /></td>
       <td><h1 style='display: inline-block; font-size: 24px; font-weight: normal; margin: 0 8px;'>QA Wolf</h1></td>
     </tr>
   </table>
   <div style='font-size: 16px; margin-top: 32px; text-align: center; width: 100%;'>
     <p>Enter the code below to log in to QA Wolf:</p>
-    <p style=\\"background: #d2e0e2; border-radius: 8px; display: inline-block; font-size: 48px; font-weight: bold; margin: 8px 0; padding: 8px 16px;\\">SPI-RIT</p>
+    <p style=\\"background: #F2F4F7; border-radius: 8px; display: inline-block; font-size: 48px; font-weight: bold; margin: 8px 0; padding: 8px 16px;\\">SPI-RIT</p>
     <p>If you didn’t request this email, you can safely ignore it.</p>
   </div>
   <div style='margin-top: 48px;'>
-    <img src='https://storage.googleapis.com/spirit-imgs/wolf-brown.png' style='display: block; margin: auto;' width=\\"80px\\" />
+    <img src='https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-brown.png' style='display: block; margin: auto;' width=\\"120px\\" />
   </div>
-  <div style=\\"border-top: 1px solid #979797; font-size: 12px; margin: 0 32px 48px; text-align: center;\\">
-    <p style='color: #979797; margin: 48px 32px;'>QA Wolf is an end-to-end testing platform that helps teams ship confidently. Create, run, and share tests - all without leaving the browser.</p>
+  <div style=\\"border-top: 1px solid #667080; font-size: 12px; margin: 0 32px 48px; text-align: center;\\">
+    <p style='color: #667080; margin: 48px 32px;'>QA Wolf is an end-to-end testing platform that helps teams ship confidently. Create, run, and share tests - all without leaving the browser.</p>
   </div>
   </div>"
 `;
