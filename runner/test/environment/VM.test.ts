@@ -58,8 +58,8 @@ describe("VM", () => {
       });
 
       expect(
-        logger.logs.filter((l) => l.message.includes("CONSOLE: hello"))
-      ).toMatchObject([{ message: "CONSOLE: hello", severity: "info" }]);
+        logger.logs.filter((l) => l.message.includes('CONSOLE: "hello"'))
+      ).toMatchObject([{ message: 'CONSOLE: "hello"', severity: "info" }]);
     });
 
     it("intercepts console logs with arguments", async () => {
@@ -70,7 +70,9 @@ describe("VM", () => {
 
       expect(
         logger.logs.filter((l) => l.message.includes("world"))
-      ).toMatchObject([{ message: "CONSOLE: hello world", severity: "info" }]);
+      ).toMatchObject([
+        { message: 'CONSOLE: "hello" "world"', severity: "info" },
+      ]);
     });
 
     it("passes through variables", async () => {
@@ -82,7 +84,7 @@ describe("VM", () => {
 
       expect(
         logger.logs.filter((l) => l.message.includes("MY_VAR"))
-      ).toMatchObject([{ message: "CONSOLE: MY_VAR", severity: "info" }]);
+      ).toMatchObject([{ message: 'CONSOLE: "MY_VAR"', severity: "info" }]);
     });
   });
 
@@ -97,7 +99,9 @@ describe("VM", () => {
 
       expect(
         logger.logs.filter((l) => l.message.includes("SET_ENV_ONE"))
-      ).toMatchObject([{ message: "CONSOLE: SET_ENV_ONE", severity: "info" }]);
+      ).toMatchObject([
+        { message: 'CONSOLE: "SET_ENV_ONE"', severity: "info" },
+      ]);
     });
   });
 });
