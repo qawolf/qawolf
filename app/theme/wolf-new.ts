@@ -13,6 +13,17 @@ type WolfColors = {
 
 export const getWolfColors = (color?: string | null): WolfColors => {
   switch (color) {
+    case "black":
+      return {
+        back: "#292929",
+        ear: "#F0ADAD",
+        earShadow: "#1A1A1A",
+        eyebrow: "#666666",
+        front: "#666666",
+        line: "#000000",
+        shadow: "#4C4C4C",
+        sparkle: "#E5E5E5",
+      };
     case "blue":
       return {
         back: colors.gray8,

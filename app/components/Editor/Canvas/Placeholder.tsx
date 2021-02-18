@@ -32,7 +32,7 @@ export default function Placeholder({
 
   let iconHtml: ReactNode = <Paw {...iconProps} />;
   if (wolf) {
-    iconHtml = <WolfSitting color={wolf.variant} />;
+    iconHtml = <WolfSitting animate color={wolf.variant} />;
   } else if (isUserLoading) {
     // if the user is loading do not include an icon
     // to prevent a jarring change when the wolf loads
@@ -40,15 +40,15 @@ export default function Placeholder({
   }
 
   // ask the user to run the test if there is no runner connected or pending
-  // if (
-  //   mode === "test" &&
-  //   !isRunnerConnected &&
-  //   !isTestLoading &&
-  //   !shouldRequestRunner
-  // ) {
-  //   iconHtml = null;
-  //   message = copy.placeholderRunTest;
-  // }
+  if (
+    mode === "test" &&
+    !isRunnerConnected &&
+    !isTestLoading &&
+    !shouldRequestRunner
+  ) {
+    iconHtml = null;
+    message = copy.placeholderRunTest;
+  }
 
   const pad = height && width ? undefined : { vertical: "xxlarge" };
 
