@@ -68,6 +68,18 @@ export type CreateUserWithGitHub = GitHubFields & WolfFields;
 
 export type DeploymentEnvironment = "preview" | "production";
 
+export type Email = {
+  created_at?: string;
+  from: string;
+  html: string;
+  id: string;
+  subject: string;
+  team_id: string;
+  text: string;
+  to: string;
+  updated_at?: string;
+};
+
 export type Environment = {
   created_at?: string;
   id: string;
@@ -209,6 +221,7 @@ export type Team = {
   created_at?: string;
   deleted_at?: string | null;
   id: string;
+  inbox: string;
   helpers: string;
   is_email_alert_enabled: boolean;
   is_enabled: boolean;
@@ -465,6 +478,11 @@ export type UseTestSessionMutation = {
 // Query types
 export type CurrentUser = User & {
   teams: Team[];
+};
+
+export type EmailQuery = {
+  created_after: string;
+  to: string;
 };
 
 export type EnvironmentIdQuery = {

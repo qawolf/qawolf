@@ -1,5 +1,6 @@
 export const JOB_TYPES = [
   "checkPending",
+  "deleteOldEmails",
   "deleteRunners",
   "deployRunners",
   "orchestrateRunners",

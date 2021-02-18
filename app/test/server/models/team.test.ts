@@ -2,6 +2,7 @@ import { decrypt, encrypt } from "../../../server/models/encrypt";
 import {
   createFreeTeamWithTrigger,
   findTeam,
+  findTeamForEmail,
   findTeamsForUser,
   updateTeam,
   validateApiKeyForTeam,
@@ -39,6 +40,7 @@ describe("team model", () => {
           api_key: expect.any(String),
           helpers: "",
           id: expect.any(String),
+          inbox: expect.any(String),
           is_email_alert_enabled: true,
           is_enabled: true,
           name: "My Team",
@@ -91,6 +93,35 @@ describe("team model", () => {
       await expect(findTeam("fakeId", options)).rejects.toThrowError(
         "not found"
       );
+    });
+  });
+
+  describe("findTeamForEmail", () => {
+    beforeAll(async () => {
+      return db("teams").insert(
+        buildTeam({ inbox: "pumpkin@dev.qawolf.email" })
+      );
+    });
+
+    afterAll(() => db("teams").del());
+
+    it("returns team for email", async () => {
+      const team = await findTeamForEmail("pumpkin@dev.qawolf.email", options);
+
+      expect(team).toMatchObject({ id: "teamId" });
+
+      const team2 = await findTeamForEmail(
+        "pumpkin+abc@dev.qawolf.email",
+        options
+      );
+
+      expect(team2).toMatchObject({ id: "teamId" });
+    });
+
+    it("returns null if team not found", async () => {
+      const team = await findTeamForEmail("logan@dev.qawolf.email", options);
+
+      expect(team).toBeNull();
     });
   });
 

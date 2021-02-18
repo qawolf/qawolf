@@ -6,7 +6,13 @@ import { StateContext } from "../../StateContext";
 
 export type EnvHook = { env: Env };
 
-export const useEnv = (suiteVariables?: string | null): EnvHook => {
+type UseEnv = {
+  apiKey: string;
+  inbox: string;
+  suiteVariables?: string | null;
+};
+
+export const useEnv = ({ apiKey, inbox, suiteVariables }: UseEnv): EnvHook => {
   const { environmentId } = useContext(StateContext);
 
   const { data } = useEnvironmentVariables({
@@ -17,6 +23,11 @@ export const useEnv = (suiteVariables?: string | null): EnvHook => {
   const suiteEnv = JSON.parse(suiteVariables || "{}");
 
   return {
-    env: { ...env, ...suiteEnv },
+    env: {
+      ...env,
+      ...suiteEnv,
+      QAWOLF_TEAM_API_KEY: apiKey,
+      QAWOLF_TEAM_INBOX: inbox,
+    },
   };
 };

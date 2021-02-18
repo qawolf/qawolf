@@ -52,6 +52,27 @@ enum DeploymentEnvironment {
   production
 }
 
+"An email sent to a test email address"
+type Email {
+  "Email sender"
+  from: String!
+
+  "Email HTML"
+  html: String!
+
+  "Email ID"
+  id: ID!
+
+  "Email subject line"
+  subject: String!
+
+  "Email text"
+  text: String!
+
+  "Email recipient"
+  to: String!
+}
+
 "An environment for a team"
 type Environment {
   "Environment ID"
@@ -305,6 +326,9 @@ type Team {
 
   "Team ID"
   id: ID!
+
+  "Team email address"
+  inbox: String!
 
   """
   True if all users on the associated team should be alerted by email whenever
@@ -1067,6 +1091,19 @@ type Query {
   One of the teams you are on must have access to the test trigger.
   """
   dashboard("The trigger ID" trigger_id: ID!): Dashboard!
+
+  """
+  Returns the latest email that matches the criteria.
+
+  You must be on the team that owns the test email address.
+  """
+  email(
+    "Timestamp to filter emails by time of receipt"
+    created_after: String!
+
+    "Email address that email was sent to"
+    to: String!
+  ): Email
 
   """
   Returns environments by team ID.

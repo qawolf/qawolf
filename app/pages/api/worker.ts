@@ -10,6 +10,7 @@ import { orchestrateTriggers } from "../../server/jobs/orchestrateTriggers";
 import { restartRunners } from "../../server/jobs/restartRunners";
 import { Job, JOB_TYPES } from "../../server/jobs/types";
 import { Logger } from "../../server/Logger";
+import { deleteOldEmails } from "../../server/models/email";
 import { getAzureClient } from "../../server/services/azure/container";
 
 export default async function (
@@ -36,6 +37,8 @@ export default async function (
   try {
     if (job === "checkPending") {
       await checkPending(options);
+    } else if (job === "deleteOldEmails") {
+      await deleteOldEmails(options);
     } else if (job === "orchestrateRunners") {
       await orchestrateRunners(options);
     } else if (job === "orchestrateTriggers") {

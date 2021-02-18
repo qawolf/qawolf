@@ -3,11 +3,27 @@ import axios from "axios";
 import Debug from "debug";
 
 import config from "../config";
-import { Run } from "../types";
+import { Email, Run } from "../types";
 
 type GraphQLRequestData = {
   query: string;
   variables: Record<string, unknown>;
+};
+
+type PollForEamil = {
+  apiKey: string;
+  createdAfter: string;
+  timeoutMs: number;
+  to: string;
+};
+
+type PollForQuery = {
+  apiKey: string;
+  dataKey: string;
+  logName: string;
+  requestData: GraphQLRequestData;
+  timeoutError: string;
+  timeoutMs: number;
 };
 
 type RunFinishedParams = {
@@ -26,6 +42,18 @@ type UpdateRunner = {
 };
 
 const debug = Debug("qawolf:api");
+
+const emailQuery = `
+query email($created_after: String!, $to: String!) {
+  email(created_after: $created_after, to: $to) {
+    from
+    html
+    subject
+    text
+    to
+  }
+}
+`;
 
 const updateRunMutation = `
 mutation updateRun($current_line: Int, $id: ID!, $status: RunStatus!) {
@@ -90,6 +118,58 @@ export const mutateWithRetry = async (
   });
 };
 
+export const pollForQuery = async ({
+  apiKey,
+  dataKey,
+  logName,
+  timeoutError,
+  timeoutMs,
+  requestData,
+}: PollForQuery): // eslint-disable-next-line @typescript-eslint/no-explicit-any
+Promise<any> => {
+  return Promise.race([
+    retry(
+      async (_, attempt) => {
+        debug("%s attempt %s", logName, attempt);
+
+        try {
+          const result = await axios.post(
+            `${config.API_URL}/graphql`,
+            requestData,
+            { headers: { authorization: apiKey } }
+          );
+
+          const errors = result.data?.errors;
+          if (errors?.length > 0) {
+            debug("%s failed %o", logName, errors);
+            throw new Error("GraphQL Errors " + JSON.stringify(errors));
+          }
+
+          if (!(result.data?.data || {})[dataKey]) {
+            debug("%s not found", dataKey);
+            throw new Error("Not found");
+          }
+
+          return result.data?.data[dataKey];
+        } catch (e) {
+          debug(`${logName} failed ${e} ${JSON.stringify(e.response.data)}`);
+          throw e;
+        }
+      },
+      {
+        factor: 1,
+        minTimeout: 3000,
+        retries: Math.round(timeoutMs / 3000),
+      }
+    ),
+    new Promise((_, reject) => {
+      setTimeout(() => {
+        reject(new Error(timeoutError));
+      }, timeoutMs);
+    }),
+  ]);
+};
+
 export const notifyRunStarted = async ({
   run_id,
 }: RunStartedParams): Promise<void> => {
@@ -121,6 +201,28 @@ export const notifyRunFinished = async ({
     },
     "notifyRunFinished"
   );
+};
+
+export const pollForEmail = async ({
+  apiKey,
+  createdAfter,
+  timeoutMs,
+  to,
+}: PollForEamil): Promise<Email> => {
+  return pollForQuery({
+    apiKey,
+    dataKey: "email",
+    logName: "pollForEmail",
+    requestData: {
+      query: emailQuery,
+      variables: {
+        created_after: createdAfter,
+        to,
+      },
+    },
+    timeoutError: `Email to ${to} not received`,
+    timeoutMs,
+  });
 };
 
 export const updateRunner = async ({
