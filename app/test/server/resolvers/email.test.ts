@@ -20,9 +20,10 @@ beforeAll(async () => {
 
 describe("emailResolver", () => {
   beforeAll(() => {
-    return db("emails").insert(
-      buildEmail({ to: "inbox+abc@dev.qawolf.email" })
-    );
+    return db("emails").insert({
+      ...buildEmail({ to: "inbox+abc@dev.qawolf.email" }),
+      created_at: new Date("2021-02-18T18:47:56.000Z"),
+    });
   });
 
   afterAll(() => db("emails").del());
@@ -31,7 +32,7 @@ describe("emailResolver", () => {
     const email = await emailResolver(
       {},
       {
-        created_after: minutesFromNow(-2),
+        created_after: new Date("2021-02-18T18:47:56.646Z").toISOString(),
         to: "inbox+abc@dev.qawolf.email",
       },
       { ...testContext, api_key, db }

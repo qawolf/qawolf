@@ -19,6 +19,7 @@ describe("email model", () => {
     it("creates an email", async () => {
       const email = await createEmail(
         {
+          created_at: new Date("2021-01-01").toISOString(),
           from: "spirit@qawolf.com",
           html: "html",
           subject: "subject",
@@ -31,7 +32,12 @@ describe("email model", () => {
 
       const dbEmail = await db("emails").first();
 
-      expect(dbEmail).toMatchObject({ ...email, to: "teamid@test.com" });
+      expect(dbEmail).toMatchObject({
+        ...email,
+        created_at: new Date(email.created_at),
+        to: "teamid@test.com",
+      });
+      expect(dbEmail.created_at).toEqual(new Date("2021-01-01"));
     });
   });
 
