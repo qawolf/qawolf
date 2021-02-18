@@ -1,4 +1,4 @@
-import { getWolfColors } from "../../../../theme/wolf-new";
+import { getWolfColors } from "../../../../theme/wolf";
 
 type Props = {
   className?: string;

@@ -1,10 +1,8 @@
 import { Box } from "grommet";
 
-import WolfHead from "../icons/WolfHead";
+import WolfHead from "../../shared-new/icons/WolfHead";
 
 type Props = { wolfVariant: string };
-
-const WOLF_WIDTH = "24px";
 
 export default function DefaultAvatar({ wolfVariant }: Props): JSX.Element {
   return (
@@ -15,10 +13,7 @@ export default function DefaultAvatar({ wolfVariant }: Props): JSX.Element {
       fill
       justify="center"
     >
-      {/* goose wolf head a bit */}
-      <Box margin={{ left: "1px" }}>
-        <WolfHead variant={wolfVariant} width={WOLF_WIDTH} />
-      </Box>
+      <WolfHead color={wolfVariant} width="24px" />
     </Box>
   );
 }

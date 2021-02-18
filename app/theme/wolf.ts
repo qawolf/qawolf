@@ -1,113 +1,83 @@
+import { colors } from "./theme-new";
+
 type WolfColors = {
-  backLeg?: string;
-  belly?: string;
-  chin: string;
+  back: string;
   ear: string;
-  earFill: string;
-  eye: string;
-  face: string;
-  head: string;
-  innerEye?: string;
-  mouth: string;
-  noseOpacity?: string;
-  paw?: string;
-  pawOutline?: string;
-  strokeOpacity: string;
-  tail?: string;
-  tailOutline?: string;
+  earShadow: string;
+  eyebrow: string;
+  front: string;
+  line: string;
+  shadow: string;
+  sparkle: string;
 };
 
-export const getWolfColors = (variant: string | null): WolfColors => {
-  switch (variant) {
+export const getWolfColors = (color?: string | null): WolfColors => {
+  switch (color) {
     case "black":
       return {
-        chin: "#39393A",
-        ear: "#0A0A0B",
-        earFill: "#FFFFFF",
-        eye: "#7C4BDE",
-        face: "#484848",
-        head: "#161616",
-        innerEye: "#161616",
-        mouth: "#0A0A0B",
-        noseOpacity: "0.138",
-        paw: "#232323",
-        pawOutline: "#3C3C3C",
-        strokeOpacity: "0.4",
-        tailOutline: "#3C3C3C",
+        back: "#292929",
+        ear: "#F0ADAD",
+        earShadow: "#1A1A1A",
+        eyebrow: "#666666",
+        front: "#666666",
+        line: "#000000",
+        shadow: "#4C4C4C",
+        sparkle: "#E5E5E5",
       };
     case "blue":
       return {
-        chin: "#285867",
-        ear: "#0E3C4B",
-        earFill: "#FFFFFF",
-        eye: "#CBB088",
-        face: "#2F687A",
-        head: "#114B5F",
-        mouth: "#383838",
-        paw: "#1E586C",
-        pawOutline: "#2B6579",
-        strokeOpacity: "1",
-        tailOutline: "#1E586C",
+        back: colors.gray8,
+        ear: "#FABED4",
+        earShadow: colors.gray9,
+        eyebrow: colors.gray7,
+        front: colors.gray6,
+        line: colors.gray10,
+        shadow: colors.gray7,
+        sparkle: colors.gray4,
       };
     case "brown":
       return {
-        chin: "#8B8080",
-        ear: "#706160",
-        earFill: "#FFFFFF",
-        eye: "#90f0c4",
-        face: "#9D9898",
-        head: "#8B8080",
-        mouth: "#383838",
-        paw: "#988D8D",
-        pawOutline: "#A59A9A",
-        strokeOpacity: "1",
-        tailOutline: "#988D8D",
+        back: "#66341B",
+        ear: "#F0996E",
+        earShadow: "#4D250C",
+        eyebrow: "#8C6243",
+        front: "#8C6243",
+        line: "#290D06",
+        shadow: "#75462A",
+        sparkle: "#DBC2AF",
       };
-    case "gray":
+    case "gold":
       return {
-        chin: "#79868F",
-        ear: "#616E77",
-        earFill: "#FFFFFF",
-        eye: "#44E0E5",
-        face: "#8F9CA5",
-        head: "#79868F",
-        mouth: "#254D61",
-        paw: "#86939C",
-        pawOutline: "#93A0A9",
-        strokeOpacity: "0.6",
-        tailOutline: "#86939C",
+        back: "#996937",
+        ear: "#F0996E",
+        earShadow: "#7A4F11",
+        eyebrow: "#E5D9C5",
+        front: "#E5D9C5",
+        line: "#382807",
+        shadow: "#C7AF8F",
+        sparkle: "#E5D9C5",
       };
-
     case "husky":
       return {
-        chin: "#D2D2D2",
-        ear: "#262626",
-        earFill: "#FFFFFF",
-        eye: "#44E5E7",
-        face: "#DFDEDE",
-        head: "#343434",
-        mouth: "#383838",
-        paw: "#414141",
-        pawOutline: "#5A5A5A",
-        strokeOpacity: "0.5",
-        tailOutline: "#5A5A5A",
+        back: "#575757",
+        ear: "#F0ADAD",
+        earShadow: "#383838",
+        eyebrow: "#A3A3A3",
+        front: "#E5E5E5",
+        line: "#262626",
+        shadow: "#BDBDBD",
+        sparkle: "#E5E5E5",
       };
     default:
       return {
-        backLeg: "#C0C7DD",
-        belly: "#D7DCE7",
-        chin: "#DDE2F1",
-        ear: "#7281AC",
-        earFill: "#7281AC",
-        eye: "#44E0E5",
-        face: "#EBEEF8",
-        head: "#C4CCE1",
-        mouth: "#254D61",
-        paw: "#E9EDF5",
-        pawOutline: "#ffffff",
-        strokeOpacity: "0.6",
-        tail: "#ADB6CD",
-        tailOutline: "#F5F6F9",
+        back: colors.gray4,
+        ear: "#FABED3",
+        earShadow: colors.gray6,
+        eyebrow: colors.gray0,
+        front: colors.gray0,
+        line: colors.gray9,
+        shadow: colors.gray3,
+        sparkle: colors.gray0,
       };
   }
 };
