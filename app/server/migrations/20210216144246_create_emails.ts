@@ -11,10 +11,10 @@ export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable("emails", (table) => {
     table.string("id").primary();
     table.text("from").notNullable();
-    table.text("html").notNullable();
-    table.text("subject").notNullable();
+    table.text("html").notNullable().defaultTo("");
+    table.text("subject").notNullable().defaultTo("");
     table.string("team_id").notNullable().references("id").inTable("teams");
-    table.text("text").notNullable();
+    table.text("text").notNullable().defaultTo("");
     table.string("to").notNullable();
 
     table.timestamp("created_at").defaultTo(knex.fn.now()).notNullable();
