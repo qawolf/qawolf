@@ -1,6 +1,7 @@
 import { Box } from "grommet";
 import { useContext, useEffect, useState } from "react";
 
+import { isServer } from "../../../lib/detection";
 import { getWolfColors } from "../../../theme/wolf";
 import { UserContext } from "../../UserContext";
 import WolfLeft from "./icons/WolfLeft";
@@ -55,7 +56,7 @@ export default function Wolf(): JSX.Element {
     };
   }, [isScrolling]);
 
-  if (isUserLoading) return null;
+  if (isServer() || isUserLoading) return null;
 
   const colors = getWolfColors(wolf?.variant);
 
