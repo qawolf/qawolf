@@ -1,34 +1,20 @@
-import { Box } from "grommet";
+import { Box, ThemeContext } from "grommet";
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 
 import { useEnsureUser } from "../../hooks/ensureUser";
 import { useUpdateUser } from "../../hooks/mutations";
-import { useSuite, useTriggers } from "../../hooks/queries";
 import { state } from "../../lib/state";
-import Spinner from "../shared/Spinner";
-import { StateContext } from "../StateContext";
-import { UserContext } from "../UserContext";
+import { theme } from "../../theme/theme-new";
 import Sidebar from "./Sidebar";
-import Tests from "./Tests";
+import Spinner from "../shared/Spinner";
+import { UserContext } from "../UserContext";
 
 export default function Dashboard(): JSX.Element {
   useEnsureUser();
 
-  const { user, wolf } = useContext(UserContext);
-
-  const { asPath, query } = useRouter();
-  const suiteId = (query.suite_id as string) || null;
-
-  const { teamId, triggerId } = useContext(StateContext);
-
-  // this query sets selected team and trigger ids as needed
-  useSuite({ id: suiteId || null }, { teamId, triggerId });
-
-  const { data } = useTriggers(
-    { team_id: teamId },
-    { skipOnCompleted: !!suiteId, triggerId }
-  );
+  const { asPath } = useRouter();
+  const { user } = useContext(UserContext);
 
   const [updateUser] = useUpdateUser();
 
@@ -45,34 +31,13 @@ export default function Dashboard(): JSX.Element {
     state.setDashboardUri(asPath);
   }, [asPath]);
 
-  const triggers = data?.triggers;
-  const selectedTrigger = triggers?.find((t) => t.id === triggerId);
-
-  useEffect(() => {
-    if (selectedTrigger) state.setEnvironmentId(selectedTrigger.environment_id);
-  }, [selectedTrigger]);
-
-  if (!triggers || !user || !wolf) {
-    return <Spinner />;
-  }
+  if (!user) return <Spinner />;
 
   return (
-    <Box direction="row" height="100vh">
-      <Sidebar
-        triggerId={triggerId}
-        triggers={triggers}
-        user={user}
-        wolf={wolf}
-      />
-      <Box background="lightBlue" fill="horizontal" pad="large">
-        {!!selectedTrigger && (
-          <Tests
-            selectedTrigger={selectedTrigger}
-            triggers={triggers}
-            wolfVariant={wolf.variant}
-          />
-        )}
+    <ThemeContext.Extend value={theme}>
+      <Box direction="row" height="100vh">
+        <Sidebar />
       </Box>
-    </Box>
+    </ThemeContext.Extend>
   );
 }
