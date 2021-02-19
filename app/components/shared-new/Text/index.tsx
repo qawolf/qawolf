@@ -84,6 +84,13 @@ const StyledText = styled(Text)`
   `}
 
   ${(props) =>
+    props.size === "componentMedium" &&
+    `
+  font-family: Inter Medium;
+  font-weight: 500;
+  `}
+
+  ${(props) =>
     (props.size === "componentBold" || props.size === "componentHeader") &&
     `
   font-family: Inter Semibold;

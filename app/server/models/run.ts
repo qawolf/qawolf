@@ -26,7 +26,7 @@ type CreateRunsForTests = {
 
 type FindLatestRuns = {
   test_id: string;
-  trigger_id: string;
+  trigger_id: string | null;
 };
 
 export type UpdateRun = {
@@ -92,16 +92,18 @@ export const findLatestRuns = async (
 
   log.debug("test", test_id, "trigger", trigger_id);
 
-  const runs = await db
+  const query = db
     .select("runs.*" as "*")
     .select("tests.name AS test_name")
     .select("tests.deleted_at AS test_deleted_at")
     .from("runs")
     .innerJoin("suites", "runs.suite_id", "suites.id")
     .innerJoin("tests", "runs.test_id", "tests.id")
-    .where({ test_id, trigger_id })
-    .orderBy("created_at", "desc")
-    .limit(5);
+    .where({ test_id });
+
+  if (trigger_id) query.andWhere({ trigger_id });
+
+  const runs = await query.orderBy("created_at", "desc").limit(5);
 
   log.debug(`found ${runs.length} runs`);
 

@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { Box, BoxProps } from "grommet";
 
-import { colors, edgeSize } from "../../../theme/theme";
+import { colors, edgeSize } from "../../../theme/theme-new";
 import Paw from "../icons/Paw";
 import styles from "./Spinner.module.css";
 
@@ -33,7 +33,7 @@ export default function Spinner({
   small,
 }: Props): JSX.Element {
   const pawComponents: JSX.Element[] = [];
-  const pawColor = colors[color] || colors.black;
+  const pawColor = colors[color] || colors.gray9;
   const pawSize = small ? `${SMALL_SIZE}px` : "large";
   const topMarginSize = pawSize === "large" ? 80 : SMALL_SIZE;
 
@@ -44,7 +44,7 @@ export default function Spinner({
     });
     const topMargin =
       i % 2 === 0 ? `-${topMarginSize}px` : `${topMarginSize}px`;
-    const rightMargin = i < NUM_PAWS - 1 ? edgeSize.medium : "0";
+    const rightMargin = i < NUM_PAWS - 1 ? edgeSize.small : "0";
     const style = formatDelay(`${(i + 1) * ANIMATION_DELAY}ms`);
 
     pawComponents.push(

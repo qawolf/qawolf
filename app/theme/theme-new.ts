@@ -77,6 +77,7 @@ export const fontFamily = {
   bold: "Circular Black",
   component: "Inter",
   componentBold: "Inter Semibold",
+  componentMedium: "Inter Medium",
   componentHeader: "Inter Semibold",
   componentParagraph: "Inter",
   eyebrow: "Plex Mono Semibold",
@@ -116,6 +117,7 @@ export const text = {
   component: { height: "16px", size: "14px" },
   componentBold: { height: "16px", size: "14px" },
   componentHeader: { height: "24px", size: "18px" },
+  componentMedium: { height: "16px", size: "14px" },
   componentParagraph: { height: "20px", size: "14px" },
   eyebrow: { height: "18px", size: "16px" },
 };
@@ -131,6 +133,7 @@ export const textDesktop = {
   component: { height: "16px", size: "14px" },
   componentBold: { height: "16px", size: "14px" },
   componentHeader: { height: "24px", size: "18px" },
+  componentMedium: { height: "16px", size: "14px" },
   componentParagraph: { height: "20px", size: "14px" },
   eyebrow: { height: "18px", size: "16px" },
 };

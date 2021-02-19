@@ -173,14 +173,11 @@ export const testResolver = async (
 };
 
 export const testSummaryResolver = async (
-  { id, trigger_id }: Test & { trigger_id: string },
+  { id }: Test,
   _: Record<string, unknown>,
   { db, logger }: Context
 ): Promise<TestSummary> => {
-  const runs = await findLatestRuns(
-    { test_id: id, trigger_id },
-    { db, logger }
-  );
+  const runs = await findLatestRuns({ test_id: id }, { db, logger });
 
   const lastRun = runs[0] || null;
   const gif_url = lastRun?.gif_url;
@@ -192,8 +189,8 @@ export const testSummaryResolver = async (
  * @returns All tests for a team, ordered alphabetically by test name ascending.
  */
 export const testsResolver = async (
-  { team_id }: TeamIdQuery,
   _: Record<string, unknown>,
+  { team_id }: TeamIdQuery,
   { db, logger, teams }: Context
 ): Promise<Test[]> => {
   ensureTeamAccess({ logger, team_id, teams });

@@ -1,11 +1,12 @@
 import { Box } from "grommet";
 import { ChangeEvent, useRef } from "react";
+
+import { useOnHotKey } from "../../../../hooks/onHotKey";
 import { copy } from "../../../../theme/copy";
 import { borderSize, colors, edgeSize } from "../../../../theme/theme-new";
-import Text from "../../../shared-new/Text";
 import TextInput from "../../../shared-new/AppTextInput";
 import SearchIcon from "../../../shared-new/icons/Search";
-import { useOnHotKey } from "../../../../hooks/onHotKey";
+import Text from "../../../shared-new/Text";
 
 type Props = {
   search: string;
@@ -56,7 +57,7 @@ export default function Search({ search, setSearch }: Props): JSX.Element {
         round={borderSize.small}
         style={{
           position: "absolute",
-          right: edgeSize.xxsmall,
+          right: edgeSize.xxxsmall,
           top: edgeSize.xxxsmall,
         }}
         width={edgeSize.medium}

@@ -13,6 +13,7 @@ export type Size =
   | "component"
   | "componentBold"
   | "componentHeader"
+  | "componentMedium"
   | "componentParagraph"
   | "eyebrow";
 
@@ -29,6 +30,7 @@ export const defaultTag: { [size in Size]: TextProps["as"] } = {
   component: "p",
   componentBold: "p",
   componentHeader: "h1",
+  componentMedium: "p",
   componentParagraph: "p",
   eyebrow: "h2",
 };

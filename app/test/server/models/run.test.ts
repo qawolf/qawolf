@@ -161,6 +161,20 @@ describe("run model", () => {
   });
 
   describe("findLatestRuns", () => {
+    beforeAll(async () => {
+      await db("suites").insert(
+        buildSuite({ i: 10, trigger_id: "trigger2Id" })
+      );
+      return db("runs").insert(
+        buildRun({ i: 10, suite_id: "suite10Id", test_id: "test2Id" })
+      );
+    });
+
+    afterAll(async () => {
+      await db("runs").where({ id: "run10Id" }).del();
+      return db("suites").where({ id: "suite10Id" }).del();
+    });
+
     it("returns the latest runs for a test and trigger", async () => {
       const runs = await findLatestRuns(
         {
@@ -171,6 +185,23 @@ describe("run model", () => {
       );
 
       expect(runs).toMatchObject([
+        { id: "run3Id" },
+        { id: "run4Id" },
+        { id: "run7Id" },
+      ]);
+    });
+
+    it("does not filter by trigger if trigger not specified", async () => {
+      const runs = await findLatestRuns(
+        {
+          test_id: "test2Id",
+          trigger_id: null,
+        },
+        options
+      );
+
+      expect(runs).toMatchObject([
+        { id: "run10Id" },
         { id: "run3Id" },
         { id: "run4Id" },
         { id: "run7Id" },

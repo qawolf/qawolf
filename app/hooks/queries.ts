@@ -12,6 +12,7 @@ import {
   teamQuery,
   testHistoryQuery,
   testQuery,
+  testsQuery,
   testTriggersQuery,
   triggersQuery,
 } from "../graphql/queries";
@@ -26,6 +27,7 @@ import {
   Invite,
   Run,
   Runner,
+  ShortTest,
   Suite,
   Team,
   Test,
@@ -122,6 +124,14 @@ type TestTriggersData = {
 
 type TestTriggersVariables = {
   test_ids: string[];
+};
+
+type TestsData = {
+  tests: ShortTest[];
+};
+
+type TestsVariables = {
+  team_id: string;
 };
 
 type TriggersData = {
@@ -298,6 +308,16 @@ export const useTestTriggers = (
     fetchPolicy,
     // if null is passed as an id, skip the query (this happens prehydration)
     skip: !variables.test_ids.length || variables.test_ids.some((id) => !id),
+    variables,
+  });
+};
+
+export const useTests = (
+  variables: TestsVariables
+): QueryResult<TestsData, TestsVariables> => {
+  return useQuery<TestsData, TestsVariables>(testsQuery, {
+    fetchPolicy,
+    skip: !variables.team_id,
     variables,
   });
 };

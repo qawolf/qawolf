@@ -245,6 +245,8 @@ export const copy = {
   teamSettings: "Settings & members",
   terms: "Terms",
   testAcrossBrowsers: "Test in Chromium, Firefox, and WebKit",
+  testCount: (count: number): string =>
+    `${count} test${count === 1 ? "" : "s"}`,
   testFail: "Fail",
   testInProgress: "Running",
   testNamePlaceholder: "Name your test",
