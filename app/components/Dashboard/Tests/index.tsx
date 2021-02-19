@@ -11,7 +11,10 @@ export default function Tests(): JSX.Element {
   const [search, setSearch] = useState("");
 
   const { data, startPolling, stopPolling } = useTests({ team_id: teamId });
-  const tests = data?.tests || null;
+  const tests =
+    data?.tests?.filter((t) => {
+      return t.name.toLowerCase().includes(search.toLowerCase());
+    }) || null;
 
   useEffect(() => {
     startPolling(10 * 1000);
