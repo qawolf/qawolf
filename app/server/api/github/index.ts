@@ -26,7 +26,7 @@ export const verifySignature = (req: NextApiRequest, logger: Logger): void => {
     !timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))
   ) {
     log.error("invalid signature");
-    throw new AuthenticationError("Unauthorized");
+    throw new AuthenticationError();
   }
 
   log.debug("valid signature");
