@@ -38,8 +38,6 @@ const allWords = new Set([
 // remove the alphabet from word list
 for (let i = 0; i < 26; i++) allWords.delete((i + 10).toString(36));
 
-const SCORE_THRESHOLD = 0.5;
-
 function splitCamelCaseWithAbbreviations(text: string) {
   return text.split(/([A-Z][a-z]+)/).filter((val: string) => val.length);
 }
@@ -61,37 +59,31 @@ export const getTokens = (value: string): string[] => {
 };
 
 /**
- * @summary Given a value string that has already been pieced out,
- *   determines whether it appears to be dynamically generated (random, non-word)
- * @param {String} value The string to check
- * @return {Boolean} True if it appears to be dynamically generated
- */
-export const tokenIsDynamic = (value: string): boolean => {
-  return !allWords.has(value);
-};
-
-/**
  * @summary Given an attribute value, breaks it apart into pieces/words, and
  *   then determines how many pieces are dynamically generated.
  * @param {String} value The attribute value to check
- * @param {Number} [threshold=0.5] Provide a threshold override if necessary
  * @return {Boolean} If two or more pieces are dynamic, or if 1 out of 2 pieces
  *   or 1 out of 1 piece are dynamic, returns true. Also returns `true` if
  *   `value` is not a string.
  */
-export const isDynamic = (
-  value: string,
-  threshold = SCORE_THRESHOLD
-): boolean => {
+export const isDynamic = (value: string): boolean => {
   if (!value || typeof value !== "string") return true;
 
   const tokens = getTokens(value);
 
-  const dynamicTokens = tokens.filter(tokenIsDynamic);
+  let known = 0;
+  let mixed = 0;
+  let numbers = 0;
 
-  // if there are 2 or more dynamic tokens, mark it as dynamic
-  if (dynamicTokens.length >= 2) return true;
+  tokens.forEach((token) => {
+    if (allWords.has(token)) known += 1;
+    else if (!isNaN(Number(token))) numbers += 1;
+    else if (/\d/.test(token)) mixed += 1;
+  });
+
+  // allow a number if the other tokens are known
+  if (numbers === 1 && known >= tokens.length - 1) return false;
 
   // If half or more tokens are dynamic, mark value as dynamic
-  return dynamicTokens.length / tokens.length >= threshold;
+  return (known - mixed) / tokens.length <= 0.5;
 };

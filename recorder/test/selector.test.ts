@@ -292,7 +292,7 @@ describe("buildSelector", () => {
         [["#button", '[data-test="click"] [data-qa="button"]']],
         // unique selectors
         [["#unique", '[data-qa="unique"]']],
-        [["#dog-0", '[data-qa="radio-group"] [value="dog-0"]']],
+        [["#dog-0", '[data-qa="radio-group"] #dog-0']],
       ])("builds expected selector %o", (selector) => expectSelector(selector));
     });
 
