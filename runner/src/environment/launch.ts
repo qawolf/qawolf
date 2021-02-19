@@ -7,6 +7,7 @@ import playwright, {
 } from "playwright";
 
 import { addInitScript } from "./addInitScript";
+import trackingHosts from "./trackingHosts";
 
 const BROWSER_CONTEXT_OPTIONS = [
   "acceptDownloads",
@@ -48,6 +49,7 @@ export type LaunchOptions = Pick<
   typeof BROWSER_CONTEXT_OPTIONS[number]
 > &
   Pick<PlaywrightLaunchOptions, typeof LAUNCH_OPTIONS[number]> & {
+    allowTracking?: boolean;
     browser?: BrowserName;
     headless?: boolean;
   };
@@ -98,6 +100,13 @@ export const launch = async (
   const context = await browser.newContext(
     pick(options, BROWSER_CONTEXT_OPTIONS)
   );
+
+  if (!options.allowTracking) {
+    await context.route(
+      (url) => trackingHosts.has(url.hostname),
+      (route) => route.abort("aborted")
+    );
+  }
 
   return { browser, context };
 };
