@@ -5,6 +5,7 @@ import {
   deleteTests,
   findTest,
   findTestForRun,
+  findTestsForTeam,
   findTestsForTrigger,
   updateTest,
 } from "../models/test";
@@ -16,6 +17,7 @@ import {
   DeleteTestsMutation,
   ModelOptions,
   Team,
+  TeamIdQuery,
   Test,
   TestQuery,
   TestResult,
@@ -24,6 +26,7 @@ import {
   UpdateTestMutation,
 } from "../types";
 import {
+  ensureTeamAccess,
   ensureTeams,
   ensureTestAccess,
   ensureTriggerAccess,
@@ -186,20 +189,16 @@ export const testSummaryResolver = async (
 };
 
 /**
- * @returns All tests for a single trigger, ordered alphabetically by test name ascending.
+ * @returns All tests for a team, ordered alphabetically by test name ascending.
  */
 export const testsResolver = async (
-  { trigger_id }: TriggerIdQuery,
+  { team_id }: TeamIdQuery,
   _: Record<string, unknown>,
   { db, logger, teams }: Context
 ): Promise<Test[]> => {
-  await ensureTriggerAccess({ trigger_id, teams }, { db, logger });
-  const tests = await findTestsForTrigger(trigger_id, { db, logger });
+  ensureTeamAccess({ logger, team_id, teams });
 
-  // include trigger ID so we can load appropriate runs in nested query
-  return tests.map((test) => {
-    return { ...test, trigger_id };
-  });
+  return findTestsForTeam(team_id, { db, logger });
 };
 
 export const updateTestResolver = async (

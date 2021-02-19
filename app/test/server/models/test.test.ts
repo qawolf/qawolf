@@ -390,37 +390,6 @@ describe("findTestForRun", () => {
   });
 });
 
-describe("findTestsForTrigger", () => {
-  beforeAll(async () => {
-    await db("tests").insert([
-      buildTest({}),
-      buildTest({ deleted_at: minutesFromNow(), i: 2 }),
-    ]);
-
-    return db("test_triggers").insert([
-      { id: "testTriggerId", test_id: "testId", trigger_id: "triggerId" },
-      { id: "testTrigger2Id", test_id: "test2Id", trigger_id: "triggerId" },
-    ]);
-  });
-
-  afterAll(async () => {
-    await db("test_triggers").del();
-    await db("tests").del();
-  });
-
-  it("returns the non-deleted tests of a trigger", async () => {
-    const tests = await findTestsForTrigger("triggerId", options);
-
-    expect(tests).toMatchObject([{ id: "testId" }]);
-  });
-
-  it("returns empty list if no tests for trigger exist", async () => {
-    const tests = await findTestsForTrigger("fakeId", options);
-
-    expect(tests).toEqual([]);
-  });
-});
-
 describe("findTestsForTeam", () => {
   beforeAll(() => db("tests").insert(buildTest({})));
 
@@ -432,7 +401,7 @@ describe("findTestsForTeam", () => {
     expect(tests).toMatchObject([{ creator_id: "userId", id: "testId" }]);
   });
 
-  it("returns empty list if no tests for user exist", async () => {
+  it("returns empty list if no tests for team exist", async () => {
     const tests = await findTestsForTeam("fakeId", options);
 
     expect(tests).toEqual([]);

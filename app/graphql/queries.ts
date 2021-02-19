@@ -24,28 +24,6 @@ export const currentUserQuery = gql`
   ${userFragment}
 `;
 
-export const dashboardQuery = gql`
-  query dashboard($trigger_id: ID!) {
-    dashboard(trigger_id: $trigger_id) {
-      suites {
-        ...SuiteFragment
-      }
-      tests {
-        ...TestFragment
-        summary {
-          gif_url
-          last_runs {
-            ...SuiteRunFragment
-          }
-        }
-      }
-    }
-  }
-  ${suiteFragment}
-  ${testFragment}
-  ${suiteRunFragment}
-`;
-
 export const environmentsQuery = gql`
   query environments($team_id: ID!) {
     environments(team_id: $team_id) {
@@ -153,6 +131,22 @@ export const testTriggersQuery = gql`
     testTriggers(test_ids: $test_ids) {
       test_id
       trigger_ids
+    }
+  }
+`;
+
+export const testsQuery = gql`
+  query tests($team_id: ID!) {
+    tests(team_id: $team_id) {
+      id
+      name
+      summary {
+        gif_url
+        last_runs {
+          id
+          status
+        }
+      }
     }
   }
 `;

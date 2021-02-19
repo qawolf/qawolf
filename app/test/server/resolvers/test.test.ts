@@ -318,8 +318,8 @@ describe("testSummaryResolver", () => {
 });
 
 describe("testsResolver", () => {
-  it("finds tests for a trigger", async () => {
-    const tests = await testsResolver({ trigger_id: "triggerId" }, {}, context);
+  it("finds tests for a team", async () => {
+    const tests = await testsResolver({ team_id: "teamId" }, {}, context);
 
     expect(tests).toMatchObject([{ creator_id: "userId", id: "testId" }]);
   });

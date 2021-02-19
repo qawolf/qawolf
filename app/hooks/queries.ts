@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 
 import {
   currentUserQuery,
-  dashboardQuery,
   environmentsQuery,
   environmentVariablesQuery,
   integrationsQuery,
@@ -39,17 +38,6 @@ import {
 
 type CurrentUserData = {
   currentUser: User;
-};
-
-type DashboardData = {
-  dashboard: {
-    suites: Suite[];
-    tests: TestWithSummary[];
-  };
-};
-
-type DashboardVariables = {
-  trigger_id?: string | null;
 };
 
 type EnvironmentsData = {
@@ -161,18 +149,6 @@ export const useCurrentUser = (): QueryResult<CurrentUserData> => {
     },
     onError,
     skip: isServer() || !localStorage.getItem(JWT_KEY),
-  });
-};
-
-export const useDashboard = (
-  variables: DashboardVariables
-): QueryResult<DashboardData, DashboardVariables> => {
-  return useQuery<DashboardData, DashboardVariables>(dashboardQuery, {
-    fetchPolicy,
-    nextFetchPolicy,
-    onError,
-    skip: !variables.trigger_id,
-    variables,
   });
 };
 

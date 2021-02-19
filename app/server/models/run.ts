@@ -101,7 +101,7 @@ export const findLatestRuns = async (
     .innerJoin("tests", "runs.test_id", "tests.id")
     .where({ test_id, trigger_id })
     .orderBy("created_at", "desc")
-    .limit(10);
+    .limit(5);
 
   log.debug(`found ${runs.length} runs`);
 

@@ -22,18 +22,6 @@ type AuthenticatedUser {
   user: User!
 }
 
-"A grouper for data used by the dashboard"
-type Dashboard {
-  "List of the most recent 50 suites in this trigger, from newest to oldest"
-  suites: [Suite!]!
-
-  "List of all tests in this trigger, ordered alphabetically by test name ascending."
-  tests: [Test!]!
-
-  "ID of the test trigger that this dashboard data is for"
-  trigger_id: ID!
-}
-
 "A response from the deleteTrigger mutation"
 type DeleteTrigger {
   "ID of the default trigger"
@@ -405,7 +393,7 @@ type TestSummary {
   "URL for a GIF of the most recent test run"
   gif_url: String
 
-  "The most recent 10 runs of this test, in descending order of when they started"
+  "The most recent 5 runs of this test, in descending order of when they started"
   last_runs: [SuiteRun!]!
 }
 
@@ -1086,13 +1074,6 @@ type Query {
   currentUser: User
 
   """
-  Returns dashboard data (tests and suites) for a single test trigger.
-
-  One of the teams you are on must have access to the test trigger.
-  """
-  dashboard("The trigger ID" trigger_id: ID!): Dashboard!
-
-  """
   Returns the latest email that matches the criteria.
 
   You must be on the team that owns the test email address.
@@ -1198,4 +1179,11 @@ type Query {
   Requires that one of the teams you are on owns the tests.
   """
   testTriggers("The test IDs" test_ids: [ID!]!): [TestTriggers!]!
+
+  """
+  Returns a list of tests for the team ID.
+
+  Requires that you are on the team.
+  """
+  tests("The team ID" team_id: ID!): [Test!]!
 }
