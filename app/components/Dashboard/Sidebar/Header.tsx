@@ -32,16 +32,20 @@ export default function Header(): JSX.Element {
           <Box background="textDark" pad="xxxsmall" round={borderSize.small}>
             <Logo width={edgeSize.small} />
           </Box>
-          <Text
-            color="gray9"
-            margin={{ left: "xsmall" }}
-            size="componentBold"
-            style={overflowStyle}
-          >
-            {team?.name}
-          </Text>
+          {!!team && (
+            <Text
+              color="gray9"
+              margin={{ left: "xsmall" }}
+              size="componentBold"
+              style={overflowStyle}
+            >
+              {team.name}
+            </Text>
+          )}
         </Box>
-        <Avatar avatarUrl={user?.avatar_url} wolfColor={wolf?.variant} />
+        {!!user && (
+          <Avatar avatarUrl={user.avatar_url} wolfColor={wolf?.variant} />
+        )}
       </Box>
       <Box gap={borderSize.small} margin={{ top: "medium" }}>
         <DashboardLink

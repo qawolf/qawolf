@@ -6,7 +6,6 @@ import { useEnsureUser } from "../../hooks/ensureUser";
 import { useUpdateUser } from "../../hooks/mutations";
 import { state } from "../../lib/state";
 import { theme } from "../../theme/theme-new";
-import Spinner from "../shared/Spinner";
 import { UserContext } from "../UserContext";
 import Sidebar from "./Sidebar";
 import Tests from "./Tests";
@@ -31,8 +30,6 @@ export default function Dashboard(): JSX.Element {
   useEffect(() => {
     state.setDashboardUri(asPath);
   }, [asPath]);
-
-  if (!user) return <Spinner />;
 
   return (
     <ThemeContext.Extend value={theme}>
