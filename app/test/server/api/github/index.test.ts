@@ -92,7 +92,7 @@ describe("verifySignature", () => {
       );
     };
 
-    expect(testFn).toThrowError("Unauthorized");
+    expect(testFn).toThrowError("unauthorized");
   });
 
   it("does not throw an error if signature is valid", () => {

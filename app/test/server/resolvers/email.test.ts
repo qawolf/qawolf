@@ -66,6 +66,6 @@ describe("emailResolver", () => {
           { ...testContext, api_key: "fakeApiKey", db }
         );
       }
-    ).rejects.toThrowError("Unauthorized");
+    ).rejects.toThrowError("unauthorized");
   });
 });

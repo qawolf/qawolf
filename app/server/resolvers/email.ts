@@ -1,3 +1,4 @@
+import { AuthenticationError } from "../errors";
 import { findEmail } from "../models/email";
 import { decrypt } from "../models/encrypt";
 import { findTeamForEmail } from "../models/team";
@@ -12,10 +13,13 @@ export const emailResolver = async (
   log.debug("to", to);
 
   const team = await findTeamForEmail(to, { db, logger });
+  if (!team) {
+    throw new AuthenticationError();
+  }
 
-  if (!team || api_key !== decrypt(team.api_key)) {
-    log.error("unauthorized");
-    throw new Error("Unauthorized");
+  if (api_key !== decrypt(team.api_key)) {
+    log.debug("invalid api key", api_key);
+    throw new AuthenticationError();
   }
 
   const createdAfterWithoutMs = new Date(created_after);

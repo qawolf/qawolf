@@ -48,7 +48,7 @@ export const verifyRequest = (url: string, logger: Logger): void => {
 
   if (key !== environment.SENDGRID_WEBHOOK_SECRET) {
     log.error("invalid secret");
-    throw new AuthenticationError("Unauthorized");
+    throw new AuthenticationError();
   }
 
   log.debug("valid request");
