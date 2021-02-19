@@ -71,19 +71,19 @@ export const isDynamic = (value: string): boolean => {
 
   const tokens = getTokens(value);
 
-  let known = 0;
-  let mixed = 0;
+  let words = 0;
   let numbers = 0;
+  let mixed = 0;
 
   tokens.forEach((token) => {
-    if (allWords.has(token)) known += 1;
+    if (allWords.has(token)) words += 1;
     else if (!isNaN(Number(token))) numbers += 1;
     else if (/\d/.test(token)) mixed += 1;
   });
 
-  // allow a number if the other tokens are known
-  if (numbers === 1 && known >= tokens.length - 1) return false;
+  // allow numbers if the other tokens are words
+  if (words + numbers === tokens.length) return false;
 
   // If half or more tokens are dynamic, mark value as dynamic
-  return (known - mixed) / tokens.length <= 0.5;
+  return (words - mixed) / tokens.length <= 0.5;
 };
