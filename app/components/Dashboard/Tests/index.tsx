@@ -7,7 +7,7 @@ export default function Tests(): JSX.Element {
   const [search, setSearch] = useState("");
 
   return (
-    <Box width="full">
+    <Box pad="medium" width="full">
       <Header search={search} setSearch={setSearch} />
     </Box>
   );

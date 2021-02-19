@@ -12,8 +12,6 @@ type Props = {
   setSearch: (search: string) => void;
 };
 
-const width = "240px";
-
 export default function Search({ search, setSearch }: Props): JSX.Element {
   const ref = useRef<HTMLInputElement>(null);
 
@@ -48,7 +46,6 @@ export default function Search({ search, setSearch }: Props): JSX.Element {
         placeholder={copy.search}
         ref={ref}
         value={search}
-        width={width}
       />
       <Box
         align="center"
