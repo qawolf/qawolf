@@ -35,7 +35,7 @@ export default function TextInput({
         <AppTextInput
           autoFocus
           onChange={onChange}
-          pad={edgeSize.xxsmall}
+          pad={{ left: edgeSize.xxsmall, right: edgeSize.xxsmall }}
           placeholder={placeholder}
           ref={ref}
           size="componentHeader"

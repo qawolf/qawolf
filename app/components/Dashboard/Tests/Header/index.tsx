@@ -4,8 +4,14 @@ import { copy } from "../../../../theme/copy";
 import { borderSize } from "../../../../theme/theme-new";
 import Text from "../../../shared-new/Text";
 import Buttons from "./Buttons";
+import Search from "./Search";
 
-export default function Header(): JSX.Element {
+type Props = {
+  search: string;
+  setSearch: (search: string) => void;
+};
+
+export default function Header({ search, setSearch }: Props): JSX.Element {
   return (
     <Box
       align="center"
@@ -15,9 +21,10 @@ export default function Header(): JSX.Element {
       pad="medium"
     >
       <Box align="center" direction="row">
-        <Text color="gray9" size="componentHeader">
+        <Text color="gray9" margin={{ right: "medium" }} size="componentHeader">
           {copy.allTests}
         </Text>
+        <Search search={search} setSearch={setSearch} />
       </Box>
       <Buttons />
     </Box>

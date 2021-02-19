@@ -33,6 +33,7 @@ export const colors = {
   fill30: "#CED3E0",
   fill50: "#7282A3",
   gray0: "#FFFFFF",
+  gray1: "#FAFBFC",
   gray2: "#F2F4F7",
   gray3: "#E9ECF2",
   gray4: "#C9D0DB",

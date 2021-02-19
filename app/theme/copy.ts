@@ -207,7 +207,7 @@ export const copy = {
   schedule: "Schedule",
   scheduleOnboarding: "Schedule onboarding",
   scheduleOneClick: "Schedule or run tests on deployments with one click",
-  searchTests: "Search...",
+  search: "Search",
   select: "Select",
   sendInvites: "Send invites",
   setEnvVariables: "Set environment variables",
