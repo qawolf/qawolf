@@ -3,9 +3,9 @@ import { CSSProperties } from "react";
 
 type Props = IconProps & { style?: CSSProperties };
 
-export default function Search({ style, ...props }: Props): JSX.Element {
+export default function Search(props: Props): JSX.Element {
   return (
-    <Blank {...props} style={style} viewBox="0 0 16 16">
+    <Blank {...props} viewBox="0 0 16 16">
       <path
         fillRule="evenodd"
         clipRule="evenodd"

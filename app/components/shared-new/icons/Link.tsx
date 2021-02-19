@@ -1,6 +1,9 @@
 import { Blank, IconProps } from "grommet-icons";
+import { CSSProperties } from "react";
 
-export default function Link(props: IconProps): JSX.Element {
+type Props = IconProps & { style?: CSSProperties };
+
+export default function Link(props: Props): JSX.Element {
   return (
     <Blank {...props} viewBox="0 0 16 16">
       <path
