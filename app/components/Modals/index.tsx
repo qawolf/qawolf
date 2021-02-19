@@ -29,7 +29,7 @@ export default function Modals(): JSX.Element {
     return <ConfirmDeleteTests closeModal={closeModal} tests={tests} />;
   }
 
-  if (isTest && name === "environments") {
+  if ((isDashboard || isTest) && name === "environments") {
     return <Environments closeModal={closeModal} />;
   }
 
@@ -37,7 +37,7 @@ export default function Modals(): JSX.Element {
     return <TeamSettings closeModal={closeModal} teamId={teamId} />;
   }
 
-  if (isTest && name === "triggers" && testIds) {
+  if ((isDashboard || isTest) && name === "triggers" && testIds) {
     return <Triggers closeModal={closeModal} testIds={testIds} />;
   }
 

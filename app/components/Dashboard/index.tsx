@@ -9,6 +9,7 @@ import { theme } from "../../theme/theme-new";
 import Sidebar from "./Sidebar";
 import Spinner from "../shared/Spinner";
 import { UserContext } from "../UserContext";
+import Tests from "./Tests";
 
 export default function Dashboard(): JSX.Element {
   useEnsureUser();
@@ -37,6 +38,7 @@ export default function Dashboard(): JSX.Element {
     <ThemeContext.Extend value={theme}>
       <Box direction="row" height="100vh">
         <Sidebar />
+        <Tests />
       </Box>
     </ThemeContext.Extend>
   );
