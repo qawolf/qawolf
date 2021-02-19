@@ -1,7 +1,6 @@
 import { encrypt } from "../../../server/models/encrypt";
 import { emailResolver } from "../../../server/resolvers/email";
 import { Email } from "../../../server/types";
-import { minutesFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
 import { buildEmail, buildTeam, buildUser, testContext } from "../utils";
 

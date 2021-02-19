@@ -6,9 +6,9 @@ import { useEnsureUser } from "../../hooks/ensureUser";
 import { useUpdateUser } from "../../hooks/mutations";
 import { state } from "../../lib/state";
 import { theme } from "../../theme/theme-new";
-import Sidebar from "./Sidebar";
 import Spinner from "../shared/Spinner";
 import { UserContext } from "../UserContext";
+import Sidebar from "./Sidebar";
 import Tests from "./Tests";
 
 export default function Dashboard(): JSX.Element {

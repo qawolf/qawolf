@@ -1,10 +1,11 @@
 import { Box } from "grommet";
+
 import { state } from "../../../../lib/state";
 import { copy } from "../../../../theme/copy";
-import Divider from "../../../shared-new/Divider";
-import Button from "../../../shared-new/AppButton";
-import Add from "../../../shared-new/icons/Add";
 import { borderSize, edgeSize } from "../../../../theme/theme-new";
+import Button from "../../../shared-new/AppButton";
+import Divider from "../../../shared-new/Divider";
+import Add from "../../../shared-new/icons/Add";
 import Configure from "../../../shared-new/icons/Configure";
 import Lightning from "../../../shared-new/icons/Lightning";
 
