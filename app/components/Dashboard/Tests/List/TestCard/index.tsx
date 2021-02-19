@@ -3,6 +3,7 @@ import { Box } from "grommet";
 import { ShortTest } from "../../../../../lib/types";
 import { borderSize } from "../../../../../theme/theme-new";
 import Text from "../../../../shared-new/Text";
+import TestGif from "./TestGif";
 
 type Props = {
   noBorder?: boolean;
@@ -19,7 +20,8 @@ export default function TestCard({ noBorder, test }: Props): JSX.Element {
       }
       pad="small"
     >
-      <Box>
+      <Box align="center" direction="row">
+        <TestGif gifUrl={test.summary.gif_url} testName={test.name} />
         <Text color="gray9" size="componentMedium">
           {test.name}
         </Text>

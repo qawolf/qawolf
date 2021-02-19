@@ -120,10 +120,8 @@ export type TestHistoryRun = {
 };
 
 type TestSummary = {
-  summary: {
-    gif_url: string | null;
-    last_runs: SuiteRun[];
-  };
+  gif_url: string | null;
+  last_runs: SuiteRun[];
 };
 
 export type TestWithSummary = Test & TestSummary;
