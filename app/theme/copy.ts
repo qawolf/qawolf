@@ -18,6 +18,7 @@ export const copy = {
   alertTeamDetail: "Receive email or Slack alerts with one click.",
   alerts: "Alerts:",
   all: "All",
+  allTests: "All tests",
   api: "API",
   apiDetail: "Trigger tests by calling the QA Wolf API:",
   apiKeyHere: "API KEY HERE",
@@ -185,6 +186,7 @@ export const copy = {
   required: "Required",
   roadmap: "Roadmap",
   run: "Run",
+  runHistory: "Run history",
   runOnDeployment: (repoName: string): string =>
     `Run on ${repoName} deployment`,
   runTagline: "Run tests without rocket science",
@@ -209,6 +211,7 @@ export const copy = {
   select: "Select",
   sendInvites: "Send invites",
   setEnvVariables: "Set environment variables",
+  settings: "Settings",
   share: "Share run",
   shareFail: "Error copying",
   shareSuccess: "Copied link!",
