@@ -62,6 +62,7 @@ Pick<import("playwright").LaunchOptions,
 "proxy" |
 "slowMo" |
 "timeout"> & {
+  allowTracking?: boolean;
   browser?: "chromium" | "firefox" | "webkit";
   headless?: boolean;
 };

@@ -64,6 +64,7 @@ class MyDocument extends Document {
               }}
             />
           )}
+          {/* Intercom */}
           {!!intercomAppId && (
             <script
               dangerouslySetInnerHTML={{
