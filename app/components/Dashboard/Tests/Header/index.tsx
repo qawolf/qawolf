@@ -12,7 +12,7 @@ type Props = {
 
 export default function Header({ search, setSearch }: Props): JSX.Element {
   return (
-    <>
+    <Box flex={false}>
       <Box
         align="center"
         direction="row"
@@ -31,6 +31,6 @@ export default function Header({ search, setSearch }: Props): JSX.Element {
         <Buttons />
       </Box>
       <Search search={search} setSearch={setSearch} />
-    </>
+    </Box>
   );
 }
