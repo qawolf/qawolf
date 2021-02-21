@@ -440,6 +440,7 @@ export const buildTrigger = ({
   const finalI = i || 1;
 
   return {
+    color: "#4545E5",
     creator_id: "userId",
     deleted_at: null,
     deployment_branches: deployment_branches || null,

@@ -272,6 +272,7 @@ export type TestUpdate = {
 };
 
 export type Trigger = {
+  color: string;
   created_at?: string;
   creator_id: string;
   deleted_at: string | null;
@@ -500,6 +501,7 @@ export type RunnerResult = {
 
 export type SuiteResult = Suite & {
   environment_id: string;
+  trigger_color: string;
   trigger_name: string;
 };
 

@@ -12,6 +12,7 @@ import {
 } from "../utils";
 
 const {
+  buildTriggerColor,
   createTrigger,
   deleteTrigger,
   findTrigger,
@@ -49,6 +50,52 @@ beforeAll(async () => {
 
 describe("trigger model", () => {
   afterEach(jest.restoreAllMocks);
+
+  describe("buildTriggerColor", () => {
+    const colors = ["red", "blue", "green"];
+
+    it("returns the first unused color if possible", () => {
+      expect(buildTriggerColor([], colors)).toBe("red");
+      expect(buildTriggerColor([{ color: "blue" }] as Trigger[], colors)).toBe(
+        "red"
+      );
+
+      expect(buildTriggerColor([{ color: "red" }] as Trigger[], colors)).toBe(
+        "blue"
+      );
+      expect(
+        buildTriggerColor(
+          [{ color: "red" }, { color: "blue" }, { color: "blue" }] as Trigger[],
+          colors
+        )
+      ).toBe("green");
+    });
+
+    it("returns the next color otherwise", () => {
+      expect(
+        buildTriggerColor(
+          [
+            { color: "red" },
+            { color: "blue" },
+            { color: "green" },
+          ] as Trigger[],
+          colors
+        )
+      ).toBe("red");
+
+      expect(
+        buildTriggerColor(
+          [
+            { color: "red" },
+            { color: "blue" },
+            { color: "green" },
+            { color: "red" },
+          ] as Trigger[],
+          colors
+        )
+      ).toBe("blue");
+    });
+  });
 
   describe("createTrigger", () => {
     afterEach(() => db("triggers").del());

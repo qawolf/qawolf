@@ -116,6 +116,7 @@ export const testFragment = gql`
 
 export const triggerFragment = gql`
   fragment TriggerFragment on Trigger {
+    color
     deployment_branches
     deployment_environment
     deployment_integration_id

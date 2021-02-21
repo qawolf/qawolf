@@ -172,10 +172,7 @@ type DeleteTestsVariables = {
 };
 
 type DeleteTriggerData = {
-  deleteTrigger: {
-    default_trigger_id: string;
-    id: string;
-  };
+  deleteTrigger: Trigger;
 };
 
 type DeleteTriggerVariables = {

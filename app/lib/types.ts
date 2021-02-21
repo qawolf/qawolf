@@ -67,6 +67,7 @@ export type Suite = {
   id: string;
   runs: SuiteRun[];
   team_id: string;
+  trigger_color: string;
   trigger_id: string;
   trigger_name: string;
 };
@@ -125,6 +126,7 @@ type TestSummary = {
 };
 
 export type Trigger = {
+  color: string;
   created_at: string;
   deployment_branches: string | null;
   deployment_environment: DeploymentEnvironment | null;

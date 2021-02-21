@@ -96,7 +96,12 @@ export const triggersResolver = async (
 ): Promise<Trigger[]> => {
   ensureTeamAccess({ logger, team_id, teams });
 
-  return findTriggersForTeam(team_id, { db, logger });
+  // return findTriggersForTeam(team_id, { db, logger });
+  // TODO: revert this after migration
+  const triggers = await findTriggersForTeam(team_id, { db, logger });
+  return triggers.map((t, i) => {
+    return { ...t, color: i % 2 === 0 ? "#4545E5" : "#CA45E5" };
+  });
 };
 
 /**

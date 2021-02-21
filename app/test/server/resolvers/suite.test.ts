@@ -158,6 +158,7 @@ describe("suiteResolver", () => {
       ...suites[0],
       environment_id: null,
       environment_variables: JSON.stringify({ hello: "world" }),
+      trigger_color: "#4545E5",
       trigger_name: "trigger1",
     });
 

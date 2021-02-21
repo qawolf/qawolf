@@ -87,6 +87,7 @@ export const suiteResolver = async (
     environment_variables: suite.environment_variables
       ? decrypt(suite.environment_variables)
       : null,
+    trigger_color: trigger.color,
     trigger_name: trigger.name,
   };
 };

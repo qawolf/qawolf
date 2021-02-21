@@ -168,10 +168,10 @@ export const deleteTestsMutation = gql`
 export const deleteTriggerMutation = gql`
   mutation deleteTrigger($id: ID!) {
     deleteTrigger(id: $id) {
-      default_trigger_id
-      id
+      ...TriggerFragment
     }
   }
+  ${triggerFragment}
 `;
 
 export const joinMailingListMutation = gql`

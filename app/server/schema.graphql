@@ -258,6 +258,9 @@ type Suite {
   "ID of the team that owns the associated test trigger"
   team_id: ID!
 
+  "Associated test trigger color"
+  trigger_color: ID!
+
   "Associated test trigger ID"
   trigger_id: ID!
 
@@ -399,6 +402,9 @@ type TestTriggers {
 
 "A test trigger"
 type Trigger {
+  "The color associated with this trigger"
+  color: String!
+
   "The branches to run tests on for the GitHub integration (comma separated list)."
   deployment_branches: String
 

@@ -1,21 +1,39 @@
 import { Box } from "grommet";
 
-import { ShortTest } from "../../../../lib/types";
+import { ShortTest, Trigger } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import { borderSize } from "../../../../theme/theme-new";
 import Spinner from "../../../shared/Spinner";
 import Text from "../../../shared-new/Text";
 import TestCard from "./TestCard";
+import { useTestTriggers } from "../../../../hooks/queries";
 
-type Props = { tests: ShortTest[] | null };
+type Props = {
+  tests: ShortTest[] | null;
+  triggers: Trigger[];
+};
 
 const border = { color: "gray3", size: borderSize.xsmall };
 
-export default function List({ tests }: Props): JSX.Element {
+export default function List({ tests, triggers }: Props): JSX.Element {
   if (!tests) return <Spinner />;
 
+  const { data } = useTestTriggers({ test_ids: tests.map((t) => t.id) });
+  const testTriggers = data?.testTriggers || [];
+
   const testsHtml = tests.map((test, i) => {
-    return <TestCard key={test.id} noBorder={!i} test={test} />;
+    const triggerIds =
+      testTriggers.find((t) => t.test_id === test.id)?.trigger_ids || [];
+    const filteredTriggers = triggers.filter((t) => triggerIds.includes(t.id));
+
+    return (
+      <TestCard
+        key={test.id}
+        noBorder={!i}
+        test={test}
+        triggers={filteredTriggers}
+      />
+    );
   });
 
   return (

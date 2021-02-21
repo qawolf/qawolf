@@ -5,6 +5,7 @@ import { cuid } from "../utils";
 
 const DAILY_HOUR = 16; // 9 am PST
 const MINUTES_PER_DAY = 24 * 60;
+export const TRIGGER_COLORS = ["#4545E5", "#CA45E5", "#45CAE5"];
 
 type CreateTrigger = {
   creator_id: string;
@@ -26,6 +27,19 @@ type UpdateTrigger = {
   id: string;
   name?: string;
   repeat_minutes?: number | null;
+};
+
+export const buildTriggerColor = (
+  triggers: Trigger[],
+  colors: string[] = TRIGGER_COLORS
+): string => {
+  const availableColor = colors.find(
+    (c) => !triggers.some((t) => t.color === c)
+  );
+
+  if (availableColor) return availableColor;
+
+  return colors[triggers.length % colors.length];
 };
 
 const clearMinutes = (date: Date): void => {
@@ -104,7 +118,10 @@ export const createTrigger = async (
 
   log.debug(`create ${name} for team ${team_id}`);
 
+  const teamTriggers = await findTriggersForTeam(team_id, { db, logger });
+
   const trigger = {
+    color: buildTriggerColor(teamTriggers),
     creator_id,
     deleted_at: null,
     deployment_branches: formatBranches(deployment_branches),
