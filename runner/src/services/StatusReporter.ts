@@ -61,6 +61,8 @@ export class StatusReporter {
     if (run && this._receivedRunId !== run.id) {
       this._receivedRunId = run.id;
 
+      debug(`run ${run.id}`);
+
       await this._runner.run({
         artifacts: run.artifacts,
         code: run.code,
