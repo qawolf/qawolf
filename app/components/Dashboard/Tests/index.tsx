@@ -6,7 +6,7 @@ import { useTests, useTriggers } from "../../../hooks/queries";
 import { StateContext } from "../../StateContext";
 import Header from "./Header";
 import List from "./List";
-import { filterTests } from "./List/helpers";
+import { filterTests } from "../helpers";
 
 export default function Tests(): JSX.Element {
   const { query } = useRouter();
@@ -16,9 +16,10 @@ export default function Tests(): JSX.Element {
   const [search, setSearch] = useState("");
 
   const { data, startPolling, stopPolling } = useTests({ team_id: teamId });
-  const tests = filterTests({ search, tests: data?.tests, trigger_id });
 
   const { data: triggersData } = useTriggers({ team_id: teamId });
+
+  const tests = filterTests({ search, tests: data?.tests, trigger_id });
 
   useEffect(() => {
     startPolling(10 * 1000);

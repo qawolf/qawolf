@@ -1,4 +1,4 @@
-import { ShortTest } from "../../../../lib/types";
+import { ShortTest } from "../../lib/types";
 
 type FilterTests = {
   search: string;
