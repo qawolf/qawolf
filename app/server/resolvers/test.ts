@@ -6,7 +6,6 @@ import {
   findTest,
   findTestForRun,
   findTestsForTeam,
-  findTestsForTrigger,
   updateTest,
 } from "../models/test";
 import { deleteTestTriggersForTests } from "../models/test_trigger";
