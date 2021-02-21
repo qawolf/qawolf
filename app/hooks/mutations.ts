@@ -473,12 +473,6 @@ export const useCreateTrigger = (): MutationTuple<
     {
       // cannot redirect to new trigger until trigger list loads
       awaitRefetchQueries: true,
-      onCompleted: (response) => {
-        const { createTrigger } = response || {};
-        if (!createTrigger) return;
-
-        state.setTriggerId(createTrigger.id);
-      },
       onError,
       refetchQueries: ["testTriggers", "triggers"],
     }
