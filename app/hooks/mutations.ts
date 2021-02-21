@@ -134,7 +134,7 @@ type CreateTestData = {
 };
 
 type CreateTestVariables = {
-  trigger_id?: string | null;
+  team_id: string;
   url: string;
 };
 

@@ -52,7 +52,7 @@ export const TestProvider: FC = ({ children }) => {
 
   const { data: suiteData } = useSuite(
     { id: run?.suite_id || (query?.suite_id as string) },
-    { teamId, triggerId }
+    { teamId }
   );
   const suite = suiteData?.suite || null;
 

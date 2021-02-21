@@ -5,17 +5,10 @@ import { ClientError } from "../errors";
 import { ModelOptions, Test } from "../types";
 import { cuid } from "../utils";
 
-type BuildTestName = {
-  name?: string;
-  team_id: string;
-};
-
 type CreateTest = {
   code: string;
   creator_id: string;
-  name?: string;
   team_id: string;
-  trigger_ids: string[];
 };
 
 type FindEnabledTestsForTrigger = {
@@ -43,15 +36,12 @@ type UpdateTestToPending = {
 };
 
 export const buildTestName = async (
-  { name, team_id }: BuildTestName,
+  team_id: string,
   { db, logger }: ModelOptions
 ): Promise<string> => {
   const tests = await findTestsForTeam(team_id, { db, logger });
 
   const testNames = new Set(tests.map((test) => test.name));
-  // use current name if possible
-  if (name && !testNames.has(name)) return name;
-
   let testNumber = tests.length + 1;
 
   while (testNames.has(`My Test${testNumber === 1 ? "" : ` ${testNumber}`}`)) {
@@ -88,47 +78,34 @@ export const countPendingTests = async (
   return result;
 };
 
-export const createTestAndTestTriggers = async (
-  { code, creator_id, name, team_id, trigger_ids }: CreateTest,
+export const createTest = async (
+  { code, creator_id, team_id }: CreateTest,
   { db, logger }: ModelOptions
-): Promise<{ test: Test; testTriggerIds: string[] }> => {
-  const log = logger.prefix("createTestAndTestTriggers");
+): Promise<Test> => {
+  const log = logger.prefix("createTest");
 
-  log.debug("creator", creator_id);
+  log.debug("team", team_id);
   const timestamp = minutesFromNow();
 
-  const { test, testTriggerIds } = await db.transaction(async (trx) => {
-    const finalName = await buildTestName(
-      { name, team_id },
-      { db: trx, logger }
-    );
+  const name = await buildTestName(team_id, { db, logger });
 
-    const test: Test = {
-      created_at: timestamp,
-      creator_id,
-      code,
-      deleted_at: null,
-      id: cuid(),
-      is_enabled: true,
-      name: finalName,
-      team_id,
-      updated_at: timestamp,
-      version: 0,
-    };
-
-    await trx("tests").insert(test);
-
-    const testTriggers = trigger_ids.map((trigger_id) => {
-      return { id: cuid(), test_id: test.id, trigger_id };
-    });
-    await trx("test_triggers").insert(testTriggers);
-
-    return { testTriggerIds: testTriggers.map((g) => g.id), test };
-  });
+  const test = {
+    created_at: timestamp,
+    creator_id,
+    code,
+    deleted_at: null,
+    id: cuid(),
+    is_enabled: true,
+    name,
+    team_id,
+    updated_at: timestamp,
+    version: 0,
+  };
+  await db("tests").insert(test);
 
   log.debug("created test", test.id);
 
-  return { test, testTriggerIds };
+  return test;
 };
 
 export const findTestsForTrigger = async (

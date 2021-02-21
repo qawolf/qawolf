@@ -345,7 +345,7 @@ export type CreateSuiteMutation = {
 };
 
 export type CreateTestMutation = {
-  trigger_id: string | null;
+  team_id: string;
   url: string;
 };
 

@@ -1,7 +1,7 @@
 import { ClientError } from "../errors";
 import { findLatestRuns, findRunResult } from "../models/run";
 import {
-  createTestAndTestTriggers,
+  createTest,
   deleteTests,
   findTest,
   findTestForRun,
@@ -15,23 +15,15 @@ import {
   Context,
   CreateTestMutation,
   DeleteTestsMutation,
-  ModelOptions,
   Team,
   TeamIdQuery,
   Test,
   TestQuery,
   TestResult,
   TestSummary,
-  TriggerIdQuery,
   UpdateTestMutation,
 } from "../types";
-import {
-  ensureTeamAccess,
-  ensureTeams,
-  ensureTestAccess,
-  ensureTriggerAccess,
-  ensureUser,
-} from "./utils";
+import { ensureTeamAccess, ensureTestAccess, ensureUser } from "./utils";
 
 const ALLOW_LIST = ["flaurida", "jperl"];
 
@@ -40,55 +32,19 @@ type FindTeamAndTriggerIdsForCreateTest = {
   trigger_id: string | null;
 };
 
-export const findTeamAndTriggerIdsForCreateTest = async (
-  { teams, trigger_id }: FindTeamAndTriggerIdsForCreateTest,
-  { db, logger }: ModelOptions
-): Promise<{
-  team: Team;
-  triggerIds: string[];
-}> => {
-  // if trigger id provided, ensure trigger access and return associated team
-  if (trigger_id) {
-    const team = await ensureTriggerAccess(
-      { teams, trigger_id },
-      { db, logger }
-    );
-    const defaultTrigger = await findDefaultTriggerForTeam(team.id, {
-      db,
-      logger,
-    });
-
-    const triggerIds = Array.from(new Set([defaultTrigger.id, trigger_id]));
-
-    return { triggerIds, team };
-  }
-  // if user on multiple teams, cannot choose which team to create test for
-  if (teams.length > 1) {
-    logger.error("user on multiple teams");
-    throw new Error("trigger not specified");
-  }
-
-  const team = teams[0];
-  const defaultTrigger = await findDefaultTriggerForTeam(team.id, {
-    db,
-    logger,
-  });
-
-  return { triggerIds: [defaultTrigger.id], team };
-};
-
 /**
  * @returns The new test object
  */
 export const createTestResolver = async (
   _: Record<string, unknown>,
-  { trigger_id, url }: CreateTestMutation,
-  { db, logger, user: contextUser, teams: contextTeams }: Context
+  { team_id, url }: CreateTestMutation,
+  { db, logger, user: contextUser, teams }: Context
 ): Promise<Test> => {
   const log = logger.prefix("createTestResolver");
 
   const user = ensureUser({ logger, user: contextUser });
-  const teams = ensureTeams({ logger, teams: contextTeams });
+  ensureTeamAccess({ logger, team_id, teams });
+
   log.debug(user.id);
 
   if (
@@ -101,25 +57,14 @@ export const createTestResolver = async (
 
   const code = `const { context } = await launch();\nconst page = await context.newPage();\nawait page.goto('${url}', { waitUntil: "domcontentloaded" });\n// 🐺 QA Wolf will create code here`;
 
-  const { team, triggerIds } = await findTeamAndTriggerIdsForCreateTest(
-    {
-      teams,
-      trigger_id,
-    },
-    { db, logger }
-  );
-
-  const { test } = await createTestAndTestTriggers(
+  return createTest(
     {
       code,
       creator_id: user.id,
-      team_id: team.id,
-      trigger_ids: triggerIds,
+      team_id: team_id,
     },
     { db, logger }
   );
-
-  return { ...test };
 };
 
 /**
@@ -177,7 +122,10 @@ export const testSummaryResolver = async (
   _: Record<string, unknown>,
   { db, logger }: Context
 ): Promise<TestSummary> => {
-  const runs = await findLatestRuns({ test_id: id }, { db, logger });
+  const runs = await findLatestRuns(
+    { test_id: id, trigger_id: null },
+    { db, logger }
+  );
 
   const lastRun = runs[0] || null;
   const gif_url = lastRun?.gif_url;

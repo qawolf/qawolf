@@ -19,7 +19,6 @@ import {
 const {
   createTestResolver,
   deleteTestsResolver,
-  findTeamAndTriggerIdsForCreateTest,
   testResolver,
   testSummaryResolver,
   testsResolver,
@@ -85,7 +84,7 @@ describe("createTestResolver", () => {
   it("creates a test", async () => {
     const test = await createTestResolver(
       {},
-      { trigger_id: "triggerId", url: "https://google.com" },
+      { team_id: "teamId", url: "https://google.com" },
       context
     );
 
@@ -96,7 +95,6 @@ describe("createTestResolver", () => {
       name: "My Test 2",
     });
 
-    await db("test_triggers").where({ test_id: test.id }).del();
     await db("tests").where({ id: test.id }).del();
   });
 
@@ -104,7 +102,7 @@ describe("createTestResolver", () => {
     await expect(
       createTestResolver(
         {},
-        { trigger_id: "triggerId", url: "https://qawolf.com" },
+        { team_id: "teamId", url: "https://qawolf.com" },
         context
       )
     ).rejects.toThrowError("recursion requires an enterprise plan");
@@ -139,67 +137,6 @@ describe("deleteTestsResolver", () => {
       .where("test_id", "deleteMe")
       .first();
     expect(testTrigger).toBeFalsy();
-  });
-});
-
-describe("findTeamAndTriggerIdsForCreateTest", () => {
-  it("returns trigger id and default trigger id if applicable", async () => {
-    const result = await findTeamAndTriggerIdsForCreateTest(
-      {
-        teams: context.teams,
-        trigger_id: "triggerId",
-      },
-      options
-    );
-
-    result.triggerIds.sort();
-
-    expect(result).toMatchObject({
-      team: context.teams[0],
-      triggerIds: ["trigger3Id", "triggerId"],
-    });
-  });
-
-  it("returns trigger id if default trigger provided", async () => {
-    const result = await findTeamAndTriggerIdsForCreateTest(
-      {
-        teams: context.teams,
-        trigger_id: "trigger3Id",
-      },
-      options
-    );
-
-    expect(result).toMatchObject({
-      team: context.teams[0],
-      triggerIds: ["trigger3Id"],
-    });
-  });
-
-  it("returns default trigger otherwise", async () => {
-    const result = await findTeamAndTriggerIdsForCreateTest(
-      {
-        teams: context.teams,
-        trigger_id: null,
-      },
-      options
-    );
-
-    expect(result).toMatchObject({
-      team: context.teams[0],
-      triggerIds: ["trigger3Id"],
-    });
-  });
-
-  it("throws an error if user on multiple teams and no trigger provided", async () => {
-    await expect(
-      findTeamAndTriggerIdsForCreateTest(
-        {
-          teams: [...context.teams, buildTeam({ i: 2 })],
-          trigger_id: null,
-        },
-        options
-      )
-    ).rejects.toThrowError("not specified");
   });
 });
 
@@ -319,7 +256,7 @@ describe("testSummaryResolver", () => {
 
 describe("testsResolver", () => {
   it("finds tests for a team", async () => {
-    const tests = await testsResolver({ team_id: "teamId" }, {}, context);
+    const tests = await testsResolver({}, { team_id: "teamId" }, context);
 
     expect(tests).toMatchObject([{ creator_id: "userId", id: "testId" }]);
   });

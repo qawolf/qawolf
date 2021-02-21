@@ -103,8 +103,8 @@ export const createSuiteMutation = gql`
 `;
 
 export const createTestMutation = gql`
-  mutation createTest($trigger_id: ID, $url: String!) {
-    createTest(trigger_id: $trigger_id, url: $url) {
+  mutation createTest($team_id: ID!, $url: String!) {
+    createTest(team_id: $team_id, url: $url) {
       ...TestFragment
     }
   }

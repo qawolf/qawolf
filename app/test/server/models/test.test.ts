@@ -16,7 +16,7 @@ import {
 
 const {
   buildTestName,
-  createTestAndTestTriggers,
+  createTest,
   countPendingTests,
   deleteTests,
   findEnabledTestsForTrigger,
@@ -49,32 +49,8 @@ describe("buildTestName", () => {
       .spyOn(testModel, "findTestsForTeam")
       .mockReturnValue(Promise.resolve([]));
 
-    const testName = await buildTestName({ team_id: "teamId" }, options);
+    const testName = await buildTestName("teamId", options);
     expect(testName).toBe("My Test");
-  });
-
-  it("returns specified name if possible", async () => {
-    jest
-      .spyOn(testModel, "findTestsForTeam")
-      .mockReturnValue(Promise.resolve([]));
-
-    const testName = await buildTestName(
-      { name: "Test Name", team_id: "teamId" },
-      options
-    );
-    expect(testName).toBe("Test Name");
-  });
-
-  it("returns default name if specified name not possible", async () => {
-    jest
-      .spyOn(testModel, "findTestsForTeam")
-      .mockReturnValue(Promise.resolve([{ name: "My Test" }] as Test[]));
-
-    const testName = await buildTestName(
-      { name: "My Test", team_id: "teamId" },
-      options
-    );
-    expect(testName).toBe("My Test 2");
   });
 
   it("returns incremented name if possible", async () => {
@@ -82,7 +58,7 @@ describe("buildTestName", () => {
       .spyOn(testModel, "findTestsForTeam")
       .mockReturnValue(Promise.resolve([{ name: "My Test" }] as Test[]));
 
-    const testName = await buildTestName({ team_id: "teamId" }, options);
+    const testName = await buildTestName("teamId", options);
     expect(testName).toBe("My Test 2");
   });
 
@@ -96,27 +72,20 @@ describe("buildTestName", () => {
         ] as Test[])
       );
 
-    const testName = await buildTestName({ team_id: "teamId" }, options);
+    const testName = await buildTestName("teamId", options);
     expect(testName).toBe("My Test 5");
   });
 });
 
-describe("createTestAndTestTriggers", () => {
-  beforeAll(() => db("triggers").insert(buildTrigger({ i: 2 })));
-
-  afterAll(async () => {
-    await db("test_triggers").del();
-    await db("triggers").where({ id: "trigger2Id" }).del();
-    await db("tests").del();
-  });
+describe("createTest", () => {
+  afterAll(() => db("tests").del());
 
   it("creates a new test", async () => {
-    await createTestAndTestTriggers(
+    await createTest(
       {
         code: "code",
         creator_id: "userId",
         team_id: "teamId",
-        trigger_ids: ["triggerId", "trigger2Id"],
       },
       options
     );
@@ -133,13 +102,6 @@ describe("createTestAndTestTriggers", () => {
       team_id: "teamId",
       version: 0,
     });
-
-    const testTriggers = await db.select("*").from("test_triggers");
-
-    expect(testTriggers).toMatchObject([
-      { test_id: tests[0].id, trigger_id: "triggerId" },
-      { test_id: tests[0].id, trigger_id: "trigger2Id" },
-    ]);
   });
 });
 
@@ -153,25 +115,22 @@ describe("deleteTests", () => {
     jest
       .spyOn(utils, "cuid")
       .mockReturnValueOnce("deleteMe")
-      .mockReturnValueOnce("deleteMeTestTrigger")
       .mockReturnValue("deleteMe2");
 
-    await createTestAndTestTriggers(
+    await createTest(
       {
         code: "code",
         creator_id: "userId",
         team_id: "teamId",
-        trigger_ids: ["triggerId"],
       },
       options
     );
 
-    await createTestAndTestTriggers(
+    await createTest(
       {
         code: "code",
         creator_id: "userId",
         team_id: "teamId",
-        trigger_ids: ["triggerId"],
       },
       options
     );

@@ -17,14 +17,12 @@ export default function Search({ search, setSearch }: Props): JSX.Element {
   const ref = useRef<HTMLInputElement>(null);
 
   const handleHotKey = (e: KeyboardEvent): void => {
-    // do not use shortcut if already typing in input
-    if (document.activeElement === ref.current) return;
-
     e.preventDefault();
     ref?.current.focus();
   };
 
-  useOnHotKey({ hotKey: "/", onHotKey: handleHotKey });
+  // if we type a slash in an input, we don't want that to focus search
+  useOnHotKey({ hotKey: "/", ignoreInput: true, onHotKey: handleHotKey });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setSearch(e.target.value);
