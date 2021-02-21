@@ -280,7 +280,6 @@ export type Trigger = {
   deployment_integration_id: string | null;
   environment_id: string | null;
   id: string;
-  is_default: boolean;
   name: string;
   next_at: string | null;
   repeat_minutes: number | null;
@@ -362,11 +361,6 @@ export type CreateTriggerMutation = {
 
 export type CreateUrlMutation = {
   redirect_uri: string;
-};
-
-export type DeleteTrigger = {
-  default_trigger_id: string;
-  id: string;
 };
 
 export type DeleteTestsMutation = {

@@ -121,7 +121,6 @@ export const triggerFragment = gql`
     deployment_integration_id
     environment_id
     id
-    is_default
     name
     next_at
     repeat_minutes

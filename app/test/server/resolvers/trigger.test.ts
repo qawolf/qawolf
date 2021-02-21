@@ -101,10 +101,7 @@ describe("createTriggerResolver", () => {
 
 describe("deleteTriggerResolver", () => {
   beforeAll(async () => {
-    await db("triggers").insert([
-      buildTrigger({}),
-      buildTrigger({ i: 2, is_default: true }),
-    ]);
+    await db("triggers").insert([buildTrigger({}), buildTrigger({ i: 2 })]);
     await db("tests").insert([buildTest({}), buildTest({ i: 2 })]);
 
     return db("test_triggers").insert([
@@ -121,23 +118,20 @@ describe("deleteTriggerResolver", () => {
   });
 
   it("deletes a trigger and associated test triggers", async () => {
-    const result = await deleteTriggerResolver(
+    const trigger = await deleteTriggerResolver(
       {},
       { id: "triggerId" },
       context
     );
 
-    expect(result).toEqual({
-      default_trigger_id: "trigger2Id",
-      id: "triggerId",
-    });
+    expect(trigger).toMatchObject({ id: "triggerId" });
 
-    const trigger = await db
+    const dbTrigger = await db
       .select("*")
       .from("triggers")
       .where({ id: "triggerId" })
       .first();
-    expect(trigger.deleted_at).toBeTruthy();
+    expect(dbTrigger.deleted_at).toBeTruthy();
 
     const testTriggers = await db.select("*").from("test_triggers");
     expect(testTriggers).toMatchObject([{ id: "testTrigger3Id" }]);

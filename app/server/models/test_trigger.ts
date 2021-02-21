@@ -109,7 +109,7 @@ export const findTestTriggersForTests = async (
     .select("test_triggers.*")
     .innerJoin("triggers", "test_triggers.trigger_id", "triggers.id")
     .whereIn("test_triggers.test_id", testIds)
-    .andWhere({ "triggers.deleted_at": null, "triggers.is_default": false });
+    .andWhere({ "triggers.deleted_at": null });
 
   const result: TestTriggers[] = testIds.map((test_id) => {
     return { test_id, trigger_ids: [] };

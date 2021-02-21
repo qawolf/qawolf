@@ -209,7 +209,7 @@ describe("test trigger model", () => {
   describe("findTestTriggersForTests", () => {
     beforeAll(async () => {
       await db("triggers").insert([
-        buildTrigger({ i: 2, is_default: true, name: "All Tests" }),
+        buildTrigger({ i: 2, name: "All Tests" }),
         buildTrigger({ i: 3 }),
         buildTrigger({ i: 4 }),
         {
@@ -252,7 +252,10 @@ describe("test trigger model", () => {
       testTriggers[0].trigger_ids.sort();
 
       expect(testTriggers).toEqual([
-        { test_id: "testId", trigger_ids: ["trigger4Id", "triggerId"] },
+        {
+          test_id: "testId",
+          trigger_ids: ["trigger2Id", "trigger4Id", "triggerId"],
+        },
         { test_id: "test2Id", trigger_ids: ["trigger3Id"] },
         { test_id: "test3Id", trigger_ids: [] },
       ]);

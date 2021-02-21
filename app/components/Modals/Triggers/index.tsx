@@ -28,10 +28,7 @@ export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
   const { data: testTriggersData } = useTestTriggers({ test_ids: testIds });
   const testTriggers = testTriggersData?.testTriggers || [];
 
-  // do not show "All tests" trigger
-  const triggers = data?.triggers
-    ? data.triggers.filter((t) => !t.is_default)
-    : null;
+  const triggers = data?.triggers || null;
 
   useEffect(() => {
     if (!data?.triggers || isRendered.current) return;

@@ -52,7 +52,7 @@ describe("run model", () => {
     ]);
     await db("triggers").insert([
       buildTrigger({}),
-      buildTrigger({ i: 2, is_default: true, team_id: "team3Id" }),
+      buildTrigger({ i: 2, team_id: "team3Id" }),
     ]);
 
     await db("suites").insert([

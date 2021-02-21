@@ -33,7 +33,6 @@ import {
   Test,
   TestHistoryRun,
   TestTriggers,
-  TestWithSummary,
   Trigger,
   User,
 } from "../lib/types";

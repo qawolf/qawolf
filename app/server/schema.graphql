@@ -22,15 +22,6 @@ type AuthenticatedUser {
   user: User!
 }
 
-"A response from the deleteTrigger mutation"
-type DeleteTrigger {
-  "ID of the default trigger"
-  default_trigger_id: ID!
-
-  "ID of the deleted trigger"
-  id: ID!
-}
-
 "Environment for a deployment"
 enum DeploymentEnvironment {
   "Preview"
@@ -423,9 +414,6 @@ type Trigger {
   "Test trigger ID"
   id: String!
 
-  "True if this is the default test trigger for the team that owns it"
-  is_default: Boolean!
-
   "A name for the trigger, for users to identify it in the UI"
   name: String!
 
@@ -719,7 +707,7 @@ type Mutation {
     Test trigger ID
     """
     id: ID!
-  ): DeleteTrigger!
+  ): Trigger!
 
   """
   Soft deletes one or more tests by ID. Tests are removed from
@@ -883,9 +871,7 @@ type Mutation {
 
     """
     Updated trigger name. If this field is omitted, it will
-    not be changed. If it is `null`, it will be cleared. If
-    `trigger.is_default` is `true`, an error will occur. The
-    default trigger cannot be renamed.
+    not be changed. If it is `null`, it will be cleared.
     """
     name: String
 

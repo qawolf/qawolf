@@ -1,6 +1,6 @@
 import { decrypt, encrypt } from "../../../server/models/encrypt";
 import {
-  createFreeTeamWithTrigger,
+  createDefaultTeam,
   findTeam,
   findTeamForEmail,
   findTeamsForUser,
@@ -23,15 +23,15 @@ const options = { db, logger };
 beforeAll(() => db("users").insert(buildUser({})));
 
 describe("team model", () => {
-  describe("createFreeTeamWithTrigger", () => {
+  describe("createDefaultTeam", () => {
     afterAll(async () => {
       await db("environments").del();
       await db("triggers").del();
       return db("teams").del();
     });
 
-    it("creates a free team with the default trigger and environments", async () => {
-      await createFreeTeamWithTrigger("userId", options);
+    it("creates a free team with the default environments", async () => {
+      await createDefaultTeam("userId", options);
 
       const teams = await db.select("*").from("teams");
       expect(teams).toMatchObject([
@@ -53,18 +53,6 @@ describe("team model", () => {
       ]);
 
       expect(decrypt(teams[0].api_key)).toMatch("qawolf_");
-
-      const triggers = await db.select("*").from("triggers");
-      expect(triggers).toMatchObject([
-        {
-          creator_id: "userId",
-          id: expect.any(String),
-          is_default: true,
-          name: "All Tests",
-          repeat_minutes: null,
-          team_id: teams[0].id,
-        },
-      ]);
 
       const environments = await db
         .select("*")

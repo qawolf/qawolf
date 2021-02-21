@@ -159,17 +159,6 @@ describe("sendLoginCodeResolver", () => {
       },
     });
 
-    const trigger = await db
-      .select("*")
-      .from("triggers")
-      .where({ creator_id: newUser.id })
-      .first();
-    expect(trigger).toMatchObject({
-      is_default: true,
-      name: "All Tests",
-      repeat_minutes: null,
-    });
-
     const environments = await db
       .select("*")
       .from("environments")
@@ -216,13 +205,6 @@ describe("sendLoginCodeResolver", () => {
         updated_at: undefined,
       },
     });
-    // should not create a new trigger since team already exists
-    const trigger = await db
-      .select("*")
-      .from("triggers")
-      .where({ creator_id: newUser.id })
-      .first();
-    expect(trigger).toBeFalsy();
 
     await db.transaction(async (trx) => deleteUser(newUser.id, trx));
   });
@@ -381,13 +363,6 @@ describe("signInWithGitHubResolver", () => {
       .from("team_users")
       .where({ user_id: user.id });
     expect(teamUsers).toEqual([]);
-    // should not create a new trigger since team already exists
-    const trigger = await db
-      .select("*")
-      .from("triggers")
-      .where({ creator_id: user.id })
-      .first();
-    expect(trigger).toBeFalsy();
 
     await db("users").where({ id: user.id }).del();
   });
@@ -424,17 +399,6 @@ describe("signInWithGitHubResolver", () => {
     expect(teamUsers).toMatchObject([
       { team_id: "teamId" },
       { team_id: user.teams[0].id, role: "admin" },
-    ]);
-
-    const triggers = await db.select("*").from("triggers");
-    expect(triggers).toMatchObject([
-      {
-        creator_id: user.id,
-        is_default: true,
-        name: "All Tests",
-        repeat_minutes: null,
-        team_id: user.teams[0].id,
-      },
     ]);
 
     expect(userModel.updateGitHubFields).not.toBeCalled();

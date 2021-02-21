@@ -138,7 +138,6 @@ type BuildTrigger = {
   deployment_integration_id?: string;
   environment_id?: string;
   i?: number;
-  is_default?: boolean;
   name?: string;
   next_at?: string | null;
   repeat_minutes?: number | null;
@@ -433,7 +432,6 @@ export const buildTrigger = ({
   deployment_integration_id,
   environment_id,
   i,
-  is_default,
   name,
   next_at,
   repeat_minutes,
@@ -449,7 +447,6 @@ export const buildTrigger = ({
     deployment_integration_id: deployment_integration_id || null,
     environment_id: environment_id || null,
     id: `trigger${finalI === 1 ? "" : i}Id`,
-    is_default: is_default === undefined ? false : is_default,
     name: name || `trigger${finalI}`,
     next_at: next_at || null,
     repeat_minutes: repeat_minutes === undefined ? 60 : repeat_minutes,

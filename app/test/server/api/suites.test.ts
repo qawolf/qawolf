@@ -33,10 +33,7 @@ describe("handleSuitesRequest", () => {
     await db("environments").insert(buildEnvironment({}));
     await db("environment_variables").insert(buildEnvironmentVariable({}));
 
-    await db("triggers").insert([
-      buildTrigger({ is_default: true }),
-      buildTrigger({ i: 2 }),
-    ]);
+    await db("triggers").insert([buildTrigger({}), buildTrigger({ i: 2 })]);
     await db("tests").insert(buildTest({}));
 
     return db("test_triggers").insert(buildTestTrigger());

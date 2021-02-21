@@ -1,6 +1,6 @@
 import environment from "../environment";
 import { findInvite } from "../models/invite";
-import { createFreeTeamWithTrigger, findTeamsForUser } from "../models/team";
+import { createDefaultTeam, findTeamsForUser } from "../models/team";
 import { createTeamUser } from "../models/team_user";
 import {
   authenticateUser,
@@ -92,7 +92,7 @@ const createUserWithTeam = async (
         await createUserWithEmail(emailFields!, { db: trx, logger });
 
     if (!hasInvite) {
-      const team = await createFreeTeamWithTrigger(user.id, {
+      const team = await createDefaultTeam(user.id, {
         db: trx,
         logger,
       });
