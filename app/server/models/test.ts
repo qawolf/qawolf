@@ -108,26 +108,6 @@ export const createTest = async (
   return test;
 };
 
-export const findTestsForTrigger = async (
-  trigger_id: string,
-  { db, logger }: ModelOptions
-): Promise<Test[]> => {
-  const log = logger.prefix("findTestsForTrigger");
-
-  log.debug(trigger_id);
-
-  const tests = await db
-    .select("tests.*" as "*")
-    .from("tests")
-    .innerJoin("test_triggers", "test_triggers.test_id", "tests.id")
-    .where({ deleted_at: null, "test_triggers.trigger_id": trigger_id })
-    .orderBy("name", "asc");
-
-  log.debug(`found ${tests.length} tests for trigger ${trigger_id}`);
-
-  return tests;
-};
-
 export const findTestsForTeam = async (
   team_id: string,
   { db, logger }: ModelOptions

@@ -10,7 +10,6 @@ import {
   updateTest,
 } from "../models/test";
 import { deleteTestTriggersForTests } from "../models/test_trigger";
-import { findDefaultTriggerForTeam } from "../models/trigger";
 import {
   Context,
   CreateTestMutation,

@@ -23,7 +23,6 @@ const {
   findPendingTest,
   findTest,
   findTestForRun,
-  findTestsForTrigger,
   findTestsForTeam,
   updateTest,
 } = testModel;
