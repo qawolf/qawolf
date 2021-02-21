@@ -1,5 +1,6 @@
 import { Box } from "grommet";
 import styled, { keyframes } from "styled-components";
+
 import { edgeSize } from "../../theme/theme-new";
 import Paw from "./icons/Paw";
 
