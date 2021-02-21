@@ -15,7 +15,7 @@ type Props = {
 };
 
 export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
-  const { teamId, triggerId } = useContext(StateContext);
+  const { teamId } = useContext(StateContext);
 
   const [deleteTrigger, setDeleteTrigger] = useState<Trigger | null>(null);
   const [editTrigger, setEditTrigger] = useState<Trigger | null>(null);
@@ -23,10 +23,7 @@ export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
 
   const isRendered = useRef(false);
 
-  const { data } = useTriggers(
-    { team_id: teamId },
-    { skipOnCompleted: false, triggerId }
-  );
+  const { data } = useTriggers({ team_id: teamId });
 
   const { data: testTriggersData } = useTestTriggers({ test_ids: testIds });
   const testTriggers = testTriggersData?.testTriggers || [];

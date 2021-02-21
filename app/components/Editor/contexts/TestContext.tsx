@@ -33,7 +33,7 @@ export const TestContext = createContext<TestContextValue>({
 const pollInterval = 2000;
 
 export const TestProvider: FC = ({ children }) => {
-  const { environmentId, teamId, triggerId } = useContext(StateContext);
+  const { environmentId, teamId } = useContext(StateContext);
 
   const { query } = useRouter();
 

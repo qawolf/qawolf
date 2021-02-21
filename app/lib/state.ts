@@ -13,7 +13,6 @@ export const defaultState: StateType = {
   signUp: {},
   teamId: null,
   toast: null,
-  triggerId: null,
 };
 
 const STATE_KEY = "qaw_state";
@@ -110,10 +109,6 @@ class State extends EventEmitter {
         this._toastTimeout = null;
       }, toast.expiresIn);
     }
-  }
-
-  setTriggerId(triggerId: StateType["triggerId"]): void {
-    this._setState({ triggerId });
   }
 
   get state(): StateType | null {

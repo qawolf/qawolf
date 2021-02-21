@@ -263,5 +263,4 @@ export type State = {
     expiresIn?: number;
     message: string;
   } | null;
-  triggerId: string | null;
 };

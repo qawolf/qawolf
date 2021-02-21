@@ -22,7 +22,11 @@ export default function TestCard({ noBorder, test }: Props): JSX.Element {
       pad="small"
     >
       <Box align="center" direction="row">
-        <TestGif gifUrl={test.summary.gif_url} testName={test.name} />
+        <TestGif
+          gifUrl={test.summary.gif_url}
+          isRunning={test.summary.last_runs.length && !test.summary.gif_url}
+          testName={test.name}
+        />
         <RunBars runs={test.summary.last_runs} />
         <Text color="gray9" size="componentMedium">
           {test.name}

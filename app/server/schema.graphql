@@ -671,16 +671,13 @@ type Mutation {
   Creates a new test. The URL is used as the first page the browser
   will visit in the test, but this can be changed later.
 
-  Requires that you are logged in and a member of at least one team.
+  Requires that you are on the team.
   """
   createTest(
     """
-    ID of test trigger to put the test in. If not provided, it will be
-    put in the default test trigger for the authenticated user's team.
-    If the user is on multiple teams and you don't specify a trigger ID,
-    creation will fail.
+    Team ID
     """
-    trigger_id: ID
+    team_id: ID!
 
     """
     The URL to navigate to first in the test browser (the URL

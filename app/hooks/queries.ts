@@ -230,7 +230,7 @@ export const useRunner = (
 
 export const useSuite = (
   variables: SuiteVariables,
-  { teamId, triggerId }: { teamId: string; triggerId: string }
+  { teamId }: { teamId: string }
 ): QueryResult<SuiteData, SuiteVariables> => {
   const { replace } = useRouter();
 
@@ -240,13 +240,9 @@ export const useSuite = (
     onCompleted: (response) => {
       const { suite } = response || {};
       if (!suite) return;
-      // update team and trigger ids in global state as needed
+      // update team id in global state as needed
       if (suite.team_id !== teamId) {
         state.setTeamId(suite.team_id);
-      }
-      // redirect to correct route if invalid trigger id in url
-      if (suite.trigger_id !== triggerId) {
-        state.setTriggerId(suite.trigger_id);
       }
     },
     onError: (error) => {
@@ -323,27 +319,11 @@ export const useTests = (
 };
 
 export const useTriggers = (
-  variables: TriggersVariables,
-  {
-    skipOnCompleted,
-    triggerId,
-  }: { skipOnCompleted: boolean; triggerId: string }
+  variables: TriggersVariables
 ): QueryResult<TriggersData, TriggersVariables> => {
   return useQuery<TriggersData, TriggersVariables>(triggersQuery, {
     fetchPolicy,
     nextFetchPolicy,
-    // ensure that valid trigger is selected
-    onCompleted: (response) => {
-      const { triggers } = response || {};
-      if (skipOnCompleted || !triggers?.length) return;
-
-      const currentTrigger = triggers.find((t) => t.id === triggerId);
-      const newSelectedTriggerId = currentTrigger?.id || triggers[0].id;
-
-      if (triggerId !== newSelectedTriggerId) {
-        state.setTriggerId(newSelectedTriggerId);
-      }
-    },
     onError,
     skip: !variables.team_id,
     variables,

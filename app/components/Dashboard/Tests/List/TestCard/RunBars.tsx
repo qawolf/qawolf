@@ -29,9 +29,10 @@ export default function RunBars({ runs }: Props): JSX.Element {
       </Link>
     );
   });
+
   return (
     <Box
-      direction="row"
+      direction="row-reverse"
       gap={borderSize.small}
       margin={{ left: "small", right: "xxsmall" }}
     >
