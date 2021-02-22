@@ -53,12 +53,14 @@ export default function TestCard({
           isRunning={runs?.length && !summary?.gif_url}
           testName={test.name}
         />
-        <RunBars runs={runs} />
-        <Text color="gray9" size="componentMedium">
+        <Text color="gray9" margin={{ left: "small" }} size="componentMedium">
           {test.name}
         </Text>
       </Box>
-      <Triggers triggers={triggers} />
+      <Box align="center" direction="row">
+        <Triggers triggers={triggers} />
+        {/* <RunBars runs={runs} /> */}
+      </Box>
     </Box>
   );
 }

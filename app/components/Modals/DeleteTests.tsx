@@ -31,7 +31,7 @@ export default function ConfirmDeleteTests({
   };
 
   const handleDelete = (): void => {
-    if (value !== copy.confirm) {
+    if (value.toLowerCase() !== copy.confirm.toLowerCase()) {
       setError(copy.mustMatch);
       return;
     }

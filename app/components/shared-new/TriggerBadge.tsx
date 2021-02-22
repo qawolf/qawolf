@@ -1,19 +1,22 @@
 import { Box, Button } from "grommet";
+import styled from "styled-components";
 
 import { copy } from "../../theme/copy";
-import { borderSize } from "../../theme/theme-new";
+import { borderSize, colors, transitionDuration } from "../../theme/theme-new";
 import ColorDot from "./ColorDot";
 import Text from "./Text";
 
 type Props = {
+  className?: string;
   color?: string | null;
   isLoading?: boolean;
   name?: string | null;
   onClick?: () => void;
 };
 
-export default function TriggerBadge({
+function TriggerBadge({
   color,
+  className,
   isLoading,
   name,
   onClick,
@@ -24,6 +27,7 @@ export default function TriggerBadge({
     <Box
       align="center"
       border={{ color: "gray3", size: borderSize.xsmall }}
+      className={onClick ? className : undefined}
       direction="row"
       pad={{ horizontal: "xsmall", vertical: "xxxsmall" }}
       round="xlarge"
@@ -43,3 +47,17 @@ export default function TriggerBadge({
     </Button>
   );
 }
+
+const StyledTriggerBadge = styled(TriggerBadge)`
+  transition: background ${transitionDuration};
+
+  &:hover {
+    background: ${colors.gray1};
+  }
+
+  &:active {
+    background: ${colors.gray2};
+  }
+`;
+
+export default StyledTriggerBadge;
