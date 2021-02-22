@@ -60,10 +60,10 @@ describe("browser tests", () => {
     });
   });
 
-  describe("buildTextSelector", () => {
-    const expectTextSelector = async (
+  describe("buildElementText", () => {
+    const expectText = async (
       elementText: string,
-      expectedSelector: string | undefined
+      expectedText: string | undefined
     ) => {
       await page.setContent(`
         <html>
@@ -78,25 +78,33 @@ describe("browser tests", () => {
           const element = document.querySelector(selector) as HTMLElement;
           if (!element) return null;
 
-          return qawolf.buildTextSelector(element);
+          return qawolf.buildElementText(element);
         },
         {
           selector: "header",
         }
       );
-      expect(textSelector).toBe(expectedSelector);
+      expect(textSelector).toBe(expectedText);
     };
 
     it("returns selector", async () => {
-      await expectTextSelector("leaves", "leaves");
+      await expectText("leaves", "leaves");
     });
 
     it("returns undefined if selector would be empty string", async () => {
-      await expectTextSelector("", undefined);
+      await expectText("", undefined);
     });
 
     it("returns undefined if selector would be only whitespace", async () => {
-      await expectTextSelector("&nbsp", undefined);
+      await expectText("&nbsp", undefined);
+    });
+
+    it("returns undefined for long text", async () => {
+      await expectText("a".repeat(101), undefined);
+    });
+
+    it("trims whitespace", async () => {
+      await expectText("\n hello world \n", "hello world");
     });
   });
 });

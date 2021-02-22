@@ -112,7 +112,7 @@ describe("buildCuesForElement", () => {
     expect(cues).toEqual([
       { level: 0, penalty: 5, type: "attribute", value: '[for="single"]' },
       { level: 0, penalty: 40, type: "tag", value: "label" },
-      { level: 0, penalty: 10, type: "text", value: " Single checkbox" },
+      { level: 0, penalty: 10, type: "text", value: "Single checkbox" },
     ]);
 
     const cues2 = await buildCuesForElement('[for="single"]', 1);
