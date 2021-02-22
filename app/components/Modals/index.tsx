@@ -4,8 +4,8 @@ import { useContext } from "react";
 import { routes } from "../../lib/routes";
 import { state } from "../../lib/state";
 import { StateContext } from "../StateContext";
-import ConfirmDeleteTests from "./ConfirmDeleteTests";
 import CreateTest from "./CreateTest";
+import DeleteTests from "./DeleteTests";
 import Environments from "./Environments";
 import TeamSettings from "./TeamSettings";
 import Triggers from "./Triggers";
@@ -25,8 +25,8 @@ export default function Modals(): JSX.Element {
     return <CreateTest closeModal={closeModal} />;
   }
 
-  if (isDashboard && name === "deleteTest" && tests) {
-    return <ConfirmDeleteTests closeModal={closeModal} tests={tests} />;
+  if (isDashboard && name === "deleteTests" && tests) {
+    return <DeleteTests closeModal={closeModal} tests={tests} />;
   }
 
   if ((isDashboard || isTest) && name === "environments") {

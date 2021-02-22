@@ -1,13 +1,15 @@
 import { Box } from "grommet";
 
-import { TestTriggers, Trigger } from "../../../../lib/types";
+import { ShortTest, TestTriggers, Trigger } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import Text from "../../../shared-new/Text";
+import Actions from "./Actions";
 import Buttons from "./Buttons";
 import Search from "./Search";
 import SelectTrigger from "./SelectTrigger";
 
 type Props = {
+  checkedTests: ShortTest[];
   search: string;
   setSearch: (search: string) => void;
   testTriggers: TestTriggers[];
@@ -15,6 +17,7 @@ type Props = {
 };
 
 export default function Header({
+  checkedTests,
   search,
   setSearch,
   testTriggers,
@@ -37,7 +40,10 @@ export default function Header({
             {copy.allTests}
           </Text>
         </Box>
-        <Buttons />
+        <Box align="center" direction="row">
+          <Actions checkedTests={checkedTests} />
+          <Buttons />
+        </Box>
       </Box>
       <Box align="center" direction="row" justify="between">
         <Search search={search} setSearch={setSearch} />

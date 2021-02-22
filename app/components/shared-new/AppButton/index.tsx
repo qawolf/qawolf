@@ -25,6 +25,7 @@ type Props = {
   IconComponent?: Icon;
   a11yTitle?: string;
   className?: string;
+  color?: string;
   hasError?: boolean;
   href?: string;
   hoverType?: Type;
@@ -44,6 +45,7 @@ function AppButton({
   IconComponent,
   a11yTitle,
   className,
+  color,
   href,
   iconPosition,
   isDisabled,
@@ -75,11 +77,14 @@ function AppButton({
         })}
       >
         {!!IconComponent && (
-          <IconComponent color={textColor[type]} size={edgeSize.small} />
+          <IconComponent
+            color={color || textColor[type]}
+            size={edgeSize.small}
+          />
         )}
         {!!label && (
           <Text
-            color={textColor[type]}
+            color={color || textColor[type]}
             margin={getTextMargin(!!IconComponent, iconPosition)}
             size="component"
             style={overflowStyle}
@@ -143,7 +148,9 @@ const StyledAppButton = styled(AppButton)`
       `
     background: ${hoverBackground[props.hoverType || props.type]};
 
+    p, 
     svg {
+      color: ${textColor[props.hoverType || props.type]};
       fill: ${textColor[props.hoverType || props.type]};
     }
     `}

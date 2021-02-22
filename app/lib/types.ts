@@ -160,7 +160,7 @@ export type CreateCode = {
 export type Modal =
   | "createTest"
   | "environments"
-  | "deleteTest"
+  | "deleteTests"
   | "teamSettings"
   | "triggers";
 

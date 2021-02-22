@@ -48,9 +48,14 @@ export default function Tests(): JSX.Element {
   const testTriggers = testTriggersData?.testTriggers || [];
   const triggers = triggersData?.triggers || [];
 
+  const checkedTests = (tests || []).filter((t) =>
+    checkedTestIds.includes(t.id)
+  );
+
   return (
     <Box pad="medium" width="full">
       <Header
+        checkedTests={checkedTests}
         search={search}
         setSearch={setSearch}
         testTriggers={testTriggers}
