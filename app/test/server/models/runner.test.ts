@@ -42,7 +42,10 @@ describe("assignRunner", () => {
   beforeAll(() => db("runners").insert(runner));
 
   afterEach(() =>
-    updateRunner({ id: "runnerId", run_id: null, test_id: null }, options)
+    updateRunner(
+      { id: "runnerId", run_id: null, session_expires_at: null, test_id: null },
+      options
+    )
   );
 
   afterAll(() => db("runners").del());
@@ -52,6 +55,8 @@ describe("assignRunner", () => {
 
     const result = await findRunner({ id: "runnerId" }, options);
     expect(result).toMatchObject({ id: "runnerId", run_id: "runId" });
+
+    expect(result.session_expires_at).toBeTruthy();
   });
 
   it("assigns a test to the runner", async () => {
@@ -63,6 +68,7 @@ describe("assignRunner", () => {
 
     const result = await findRunner({ id: "runnerId" }, options);
     expect(result).toMatchObject({ id: "runnerId", test_id: "testId" });
+    expect(result.session_expires_at).toBeTruthy();
 
     // check it clears test.runner_request_at when it is assigned
     const test = await findTest("testId", options);
@@ -460,8 +466,9 @@ describe("updateRunner", () => {
 
     // check it fails the run when it is unassigned since it was not completed
     await updateRunner({ id: "runnerId", run_id: null }, options);
+
     const run = await runModel.findRun("runId", options);
-    expect(run).toMatchObject({ status: "fail" });
+    expect(run).toMatchObject({ error: "expired", status: "fail" });
   });
 
   it("unassigns the run when the runner is deleted", async () => {

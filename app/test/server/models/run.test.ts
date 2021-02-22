@@ -390,6 +390,22 @@ describe("run model", () => {
       });
     });
 
+    it("updates the first 100 characters of an error", async () => {
+      await updateRun(
+        {
+          error: "error".repeat(100),
+          id: "runId",
+          retries: 1,
+          status: "fail",
+        },
+        options
+      );
+
+      const updated = await findRun("runId", options);
+      expect(updated.error).toHaveLength(100);
+      expect(updated.retries).toEqual(1);
+    });
+
     it("calls sendAlert when a suite run completes", async () => {
       const sendAlertSpy = jest
         .spyOn(alertService, "sendAlert")

@@ -32,7 +32,9 @@ type FindLatestRuns = {
 export type UpdateRun = {
   code?: string;
   current_line?: number;
+  error?: string;
   id: string;
+  retries?: number;
   started_at?: string;
   status?: RunStatus;
 };
@@ -261,7 +263,7 @@ export const findTestHistory = async (
 };
 
 export const updateRun = async (
-  { id, ...options }: UpdateRun,
+  { id, error, ...options }: UpdateRun,
   { db, logger }: ModelOptions
 ): Promise<Run> => {
   const log = logger.prefix("updateRun");
@@ -273,9 +275,13 @@ export const updateRun = async (
     updated_at: timestamp,
   };
 
+  if (error !== undefined) {
+    updates.error = error ? error.substring(0, 100) : null;
+  }
+
   const run = await findRun(id, { db, logger });
 
-  if (options.status === "fail" || options.status === "pass") {
+  if (["fail", "pass"].includes(options.status)) {
     updates.completed_at = timestamp;
 
     // ensure started_at is set, so the run is no longer pending

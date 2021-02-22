@@ -19,6 +19,7 @@ export class StatusReporterHook implements RunHook {
 
       await notifyRunFinished({
         current_line: result.current_line,
+        error: result.error,
         pass: result.status === "pass",
         run_id: this._runId,
       });
