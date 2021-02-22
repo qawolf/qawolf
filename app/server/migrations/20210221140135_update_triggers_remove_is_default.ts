@@ -1,8 +1,9 @@
 import * as Knex from "knex";
 
 export async function up(knex: Knex): Promise<void> {
-  await knex.schema.alterTable("triggers", (table) => {
-    table.dropIndex("triggers_unique_is_default_team_id");
+  await knex.raw("DROP INDEX triggers_unique_is_default_team_id");
+
+  return knex.schema.alterTable("triggers", (table) => {
     table.dropColumn("is_default");
 
     table.string("color").notNullable().defaultTo("#4545E5");
