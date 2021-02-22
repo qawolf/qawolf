@@ -9,10 +9,10 @@ import Button from "../../../shared-new/Button";
 import GitHubStars from "../../../shared-new/GitHubStars";
 import { UserContext } from "../../../UserContext";
 
-const calendlyHref = "https://slack.qawolf.com";
+const slackHref = "https://slack.qawolf.com";
 
 export const handleJoinClick = (): void => {
-  window.open(calendlyHref, "_blank");
+  window.open(slackHref, "_blank");
 };
 
 const StyledBox = styled(Box)`
