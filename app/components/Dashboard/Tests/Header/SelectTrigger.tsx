@@ -12,6 +12,7 @@ type Props = {
   triggers: Trigger[];
 };
 
+const dividerProps = { margin: { vertical: "xxxsmall" } };
 const width = "320px";
 
 export default function SelectTrigger({
@@ -61,9 +62,9 @@ export default function SelectTrigger({
         label={copy.allTriggers}
         onClick={handleAllTriggersClick}
       />
-      <Divider />
+      <Divider {...dividerProps} />
       {optionsHtml}
-      <Divider />
+      <Divider {...dividerProps} />
       <TriggerOption
         count={noTriggerCount}
         isSelected={triggerId === "none"}
