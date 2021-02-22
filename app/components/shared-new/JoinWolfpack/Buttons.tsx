@@ -5,7 +5,12 @@ import { routes } from "../../../lib/routes";
 import { copy } from "../../../theme/copy";
 import { breakpoints, edgeSize } from "../../../theme/theme-new";
 import Button from "../Button";
-import { handleScheduleClick } from "../handlers";
+
+const calendlyHref = "https://calendly.com/qawolf/30min";
+
+export const handleScheduleClick = (): void => {
+  window.open(calendlyHref, "_blank");
+};
 
 const StyledBox = styled(Box)`
   flex-direction: column;

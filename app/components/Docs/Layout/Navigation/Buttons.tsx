@@ -7,8 +7,13 @@ import { copy } from "../../../../theme/copy";
 import { edgeSize, width } from "../../../../theme/theme-new";
 import Button from "../../../shared-new/Button";
 import GitHubStars from "../../../shared-new/GitHubStars";
-import { handleScheduleClick } from "../../../shared-new/handlers";
 import { UserContext } from "../../../UserContext";
+
+const slackHref = "https://slack.qawolf.com";
+
+export const handleJoinClick = (): void => {
+  window.open(slackHref, "_blank");
+};
 
 const StyledBox = styled(Box)`
   display: none;
@@ -25,11 +30,11 @@ export default function Buttons(): JSX.Element {
     <StyledBox align="center" direction="row">
       <GitHubStars type="dark" />
       <Button
-        label={copy.bookSession}
+        label={copy.joinSlack}
         margin={{
           horizontal: `calc(${edgeSize.xlarge} - ${edgeSize.xsmall})`,
         }}
-        onClick={handleScheduleClick}
+        onClick={handleJoinClick}
         size="small"
         type="invisibleDark"
       />

@@ -30,7 +30,6 @@ export const docs: Section[] = [
     name: "Overview",
     docs: [
       { href: `${routes.docs}/what-is-qa-wolf`, name: "What is QA Wolf?" },
-      { href: `${routes.docs}/community`, name: "Community" },
     ],
   },
   {
