@@ -13,7 +13,6 @@ import {
   Context,
   CreateTestMutation,
   DeleteTestsMutation,
-  Team,
   TeamIdQuery,
   Test,
   TestQuery,

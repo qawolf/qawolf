@@ -1,4 +1,5 @@
 import { CSSProperties } from "react";
+
 import Check from "../components/shared-new/icons/Check";
 import Indeterminate from "../components/shared-new/icons/Indeterminate";
 
