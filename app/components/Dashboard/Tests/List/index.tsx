@@ -1,12 +1,12 @@
 import { Box } from "grommet";
 
+import { useTestTriggers } from "../../../../hooks/queries";
 import { ShortTest, TestTriggers, Trigger } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import { borderSize } from "../../../../theme/theme-new";
 import Spinner from "../../../shared/Spinner";
 import Text from "../../../shared-new/Text";
 import TestCard from "./TestCard";
-import { useTestTriggers } from "../../../../hooks/queries";
 
 type Props = {
   tests: ShortTest[] | null;

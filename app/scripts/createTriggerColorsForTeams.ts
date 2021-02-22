@@ -1,6 +1,6 @@
 import { connectDb } from "../server/db";
 import { Logger } from "../server/Logger";
-import { TRIGGER_COLORS, findTriggersForTeam } from "../server/models/trigger";
+import { findTriggersForTeam,TRIGGER_COLORS } from "../server/models/trigger";
 
 (async () => {
   const db = connectDb();

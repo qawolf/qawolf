@@ -1,4 +1,5 @@
 import { Box } from "grommet";
+
 import { Trigger } from "../../../../lib/types";
 import ColorDot from "../../../shared-new/ColorDot";
 import Option from "../../../shared-new/Select/Option";

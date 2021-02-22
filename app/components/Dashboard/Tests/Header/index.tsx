@@ -1,6 +1,6 @@
 import { Box } from "grommet";
-import { TestTriggers, Trigger } from "../../../../lib/types";
 
+import { TestTriggers, Trigger } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import Text from "../../../shared-new/Text";
 import Buttons from "./Buttons";

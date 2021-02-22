@@ -25,11 +25,6 @@ import { ensureTeamAccess, ensureTestAccess, ensureUser } from "./utils";
 
 const ALLOW_LIST = ["flaurida", "jperl"];
 
-type FindTeamAndTriggerIdsForCreateTest = {
-  teams: Team[];
-  trigger_id: string | null;
-};
-
 /**
  * @returns The new test object
  */

@@ -4,9 +4,9 @@ import { useContext, useEffect, useState } from "react";
 
 import { useTests, useTestTriggers, useTriggers } from "../../../hooks/queries";
 import { StateContext } from "../../StateContext";
+import { filterTests } from "../helpers";
 import Header from "./Header";
 import List from "./List";
-import { filterTests } from "../helpers";
 
 export default function Tests(): JSX.Element {
   const { query } = useRouter();
