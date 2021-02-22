@@ -17,6 +17,7 @@ type Props = {
 
 const boxProps = {
   height: "72px",
+  flex: false,
   round: borderSize.small,
   width: "115.2px",
 };
