@@ -12,7 +12,7 @@ type Props = {
   triggers: Trigger[];
 };
 
-const width = "240px";
+const width = "320px";
 
 export default function SelectTrigger({
   testTriggers,
