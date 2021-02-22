@@ -1,5 +1,4 @@
 import { Box } from "grommet";
-import { useRouter } from "next/router";
 import { useContext } from "react";
 
 import {
@@ -16,6 +15,7 @@ type Props = {
   closeModal: () => void;
   editTrigger: Trigger | null;
   onBack: () => void;
+  testIds: string[];
   triggers: Trigger[];
 };
 
@@ -23,12 +23,10 @@ export default function CreateOrEditTrigger({
   closeModal,
   editTrigger,
   onBack,
+  testIds,
   triggers,
 }: Props): JSX.Element {
   const { teamId } = useContext(StateContext);
-  const {
-    query: { test_id },
-  } = useRouter();
 
   const [createTrigger, { loading: createLoading }] = useCreateTrigger();
   const [updateTrigger, { loading: updateLoading }] = useUpdateTrigger();
@@ -49,7 +47,7 @@ export default function CreateOrEditTrigger({
         variables: {
           ...fields,
           team_id: teamId,
-          test_ids: [test_id as string],
+          test_ids: testIds,
         },
       }).then(onBack);
     }

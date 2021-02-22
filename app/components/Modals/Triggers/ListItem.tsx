@@ -19,6 +19,7 @@ import { getTriggerIconComponent, SelectState } from "./helpers";
 
 type Props = {
   className?: string;
+  isDisabled?: boolean;
   onClick: () => void;
   onDelete: () => void;
   onEdit: () => void;
@@ -99,15 +100,23 @@ const StyledListItem = styled(ListItem)`
     transition: fill ${transitionDuration};
   }
 
+  ${(props) => props.isDisabled && "cursor: default;"}
+
+  ${(props) =>
+    !props.isDisabled &&
+    `
   &:hover {
-    background: ${(props) =>
-      props.selectState !== "none" ? colors.primaryDark : colors.gray2};
+    background: ${
+      props.selectState !== "none" ? colors.primaryDark : colors.gray2
+    };
   }
 
   &:active {
-    background: ${(props) =>
-      props.selectState !== "none" ? colors.primaryDarker : colors.gray3};
+    background: ${
+      props.selectState !== "none" ? colors.primaryDarker : colors.gray3
+    };
   }
+  `}
 `;
 
 export default StyledListItem;

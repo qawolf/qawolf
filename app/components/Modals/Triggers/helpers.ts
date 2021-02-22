@@ -151,6 +151,8 @@ export const getSelectState = ({
   testTriggers,
   triggerId,
 }: GetSelectState): SelectState => {
+  if (!testIds.length) return "none";
+
   const testFn = (testId: string): boolean => {
     const testTriggersForTest = testTriggers.find((t) => t.test_id === testId);
     return (testTriggersForTest?.trigger_ids || []).includes(triggerId);

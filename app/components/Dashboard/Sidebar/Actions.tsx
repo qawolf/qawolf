@@ -8,6 +8,7 @@ import Book from "../../shared-new/icons/Book";
 import Configure from "../../shared-new/icons/Configure";
 import DotCircle from "../../shared-new/icons/DotCircle";
 import Gear from "../../shared-new/icons/Gear";
+import Lightning from "../../shared-new/icons/Lightning";
 import List from "../../shared-new/icons/List";
 import Share from "../../shared-new/icons/Share";
 import DashboardLink from "./DashboardLink";
@@ -21,6 +22,10 @@ export default function Actions({ teamId }: Props): JSX.Element {
 
   const handleSettingsClick = (): void => {
     state.setModal({ name: "teamSettings", teamId });
+  };
+
+  const handleTriggersClick = (): void => {
+    state.setModal({ name: "triggers", testIds: [] });
   };
 
   return (
@@ -41,6 +46,11 @@ export default function Actions({ teamId }: Props): JSX.Element {
         IconComponent={Configure}
         label={copy.environments}
         onClick={handleEnvironmentsClick}
+      />
+      <DashboardLink
+        IconComponent={Lightning}
+        label={copy.triggers}
+        onClick={handleTriggersClick}
       />
       <DashboardLink
         IconComponent={Gear}

@@ -62,6 +62,7 @@ export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
             closeModal={closeModal}
             editTrigger={editTrigger}
             onBack={handleBack}
+            testIds={testIds}
             triggers={triggers || []}
           />
         )}

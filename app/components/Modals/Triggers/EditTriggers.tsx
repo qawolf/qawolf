@@ -36,7 +36,7 @@ export default function EditTriggers({
   useOnHotKey({ hotKey: "Enter", onHotKey: closeModal });
 
   const handleClick = (triggerId: string): void => {
-    if (loading) return;
+    if (loading || !testIds.length) return;
 
     const state = getSelectState({ testIds, testTriggers, triggerId });
     const add_trigger_id = state === "all" ? null : triggerId;
@@ -67,6 +67,7 @@ export default function EditTriggers({
 
       return (
         <ListItem
+          isDisabled={!testIds.length}
           key={t.id}
           onClick={() => handleClick(t.id)}
           onDelete={() => onDelete(t)}
