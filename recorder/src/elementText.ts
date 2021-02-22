@@ -25,6 +25,12 @@ export function elementText(root: Element | ShadowRoot): string {
             value += elementText(child as Element);
           else if (child.nodeType === Node.TEXT_NODE)
             value += child.nodeValue || "";
+
+          // skip long text
+          if (value.length > 100) {
+            value = "";
+            break;
+          }
         }
         if ((root as Element).shadowRoot)
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

@@ -14,5 +14,5 @@ export {
 } from "./element";
 export { ActionRecorder } from "./ActionRecorder";
 export { buildSelector, clearSelectorCache } from "./selector";
-export { buildTextSelector, isMatch } from "./selectorEngine";
+export { buildElementText, isMatch } from "./selectorEngine";
 export { getXpath, nodeToDoc } from "./serialize";

@@ -43,15 +43,12 @@ export const buildSelectorForCues = (cues: Cue[]): string => {
   return hasText ? parts.join(" >> ") : parts.join(" ");
 };
 
-export const buildTextSelector = (element: HTMLElement): string | undefined => {
-  const selector = elementText(element);
+export const buildElementText = (element: HTMLElement): string | undefined => {
+  const text = elementText(element).trim();
 
-  // Make sure that there is something other than whitespace
-  if (typeof selector === "string" && !/^\s*$/g.test(selector)) {
-    return selector;
-  }
+  if (!text || text.length > 100) return undefined;
 
-  return undefined;
+  return text;
 };
 
 export const evaluatorQuerySelector = (

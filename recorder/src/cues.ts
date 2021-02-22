@@ -2,7 +2,7 @@ import cssEscape from "css.escape";
 
 import { getAttribute } from "./attribute";
 import { isDynamic } from "./isDynamic";
-import { buildTextSelector } from "./selectorEngine";
+import { buildElementText } from "./selectorEngine";
 
 const DYNAMIC_VALUE_OK_ATTRIBUTES = ["placeholder", "href", "src", "value"];
 
@@ -239,7 +239,7 @@ export const buildCuesForElement = ({
         // extremely slow when some of the ancestor elements have many descendants.
         if (level > 0) return list;
 
-        const value = buildTextSelector(element);
+        const value = buildElementText(element);
         if (typeof value === "string") {
           list.push({ level, penalty, type: "text", value });
         }
