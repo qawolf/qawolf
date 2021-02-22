@@ -20,14 +20,17 @@ export default function Options({ test }: Props): JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleClose = (e: MouseEvent): void => {
-    if (e.target === ref.current) return;
-
+  const handleClickOutside = (e: MouseEvent<HTMLDocument>) => {
+    // ignore clicks on the button
+    if (ref.current.contains(e.target as HTMLButtonElement)) return;
     setIsOpen(false);
   };
+
   const handleClick = (): void => {
     setIsOpen((prev) => !prev);
   };
+
+  const handleClose = (): void => setIsOpen(false);
 
   const handleDeleteClick = (): void => {
     state.setModal({ name: "deleteTests", tests: [test] });
@@ -51,7 +54,7 @@ export default function Options({ test }: Props): JSX.Element {
         <Drop
           align={{ right: "right", top: "bottom" }}
           onClick={handleClose}
-          onClickOutside={handleClose}
+          onClickOutside={handleClickOutside}
           style={{ marginTop: edgeSize.xxxsmall }}
           target={ref.current}
         >
