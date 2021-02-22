@@ -29,7 +29,7 @@ export default function TriggerOption({
         {!!trigger && (
           <ColorDot color={trigger.color} margin={{ right: "xxsmall" }} />
         )}
-        <Text color="gray9" size="component">
+        <Text color="gray9" size="component" style={overflowStyle}>
           {label || trigger?.name}
         </Text>
       </Box>
@@ -40,7 +40,7 @@ export default function TriggerOption({
         pad={{ horizontal: "xxsmall" }}
         round="xlarge"
       >
-        <Text color="gray9" size="component" style={overflowStyle}>
+        <Text color="gray9" size="component">
           {count}
         </Text>
       </Box>
