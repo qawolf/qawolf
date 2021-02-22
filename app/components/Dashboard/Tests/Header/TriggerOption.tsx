@@ -35,6 +35,7 @@ export default function TriggerOption({
       </Box>
       <Box
         background="gray3"
+        flex={false}
         height={badgeHeight}
         justify="center"
         pad={{ horizontal: "xxsmall" }}

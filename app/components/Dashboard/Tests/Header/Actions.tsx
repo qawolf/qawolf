@@ -6,6 +6,7 @@ import { copy } from "../../../../theme/copy";
 import { borderSize, colors, edgeSize } from "../../../../theme/theme-new";
 import Button from "../../../shared-new/AppButton";
 import Divider from "../../../shared-new/Divider";
+import Lightning from "../../../shared-new/icons/Lightning";
 import Trash from "../../../shared-new/icons/Trash";
 
 type Props = {
@@ -24,8 +25,22 @@ export default function Actions({ checkedTests }: Props): JSX.Element {
     });
   };
 
+  const handleTriggersClick = (): void => {
+    state.setModal({
+      name: "triggers",
+      testIds: checkedTests.map((t) => t.id),
+    });
+  };
+
   return (
     <Box align="center" direction="row">
+      <Button
+        IconComponent={Lightning}
+        label={copy.editTriggers}
+        margin={{ right: "xxsmall" }}
+        onClick={handleTriggersClick}
+        type="ghost"
+      />
       <Button
         IconComponent={Trash}
         color={colors.danger5}

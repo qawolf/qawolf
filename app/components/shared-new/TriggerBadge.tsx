@@ -1,7 +1,7 @@
 import { Box, Button } from "grommet";
 
 import { copy } from "../../theme/copy";
-import { borderSize, edgeSize } from "../../theme/theme-new";
+import { borderSize } from "../../theme/theme-new";
 import ColorDot from "./ColorDot";
 import Text from "./Text";
 

@@ -9,7 +9,7 @@ import Add from "../../shared-new/icons/Add";
 import Buttons from "../../shared-new/Modal/Buttons";
 import Header from "../../shared-new/Modal/Header";
 import Text from "../../shared-new/Text";
-import { buildUpdateTestTriggersResponse, getIsSelected } from "./helpers";
+import { buildUpdateTestTriggersResponse, getSelectState } from "./helpers";
 import ListItem from "./ListItem";
 
 type Props = {
@@ -38,9 +38,9 @@ export default function EditTriggers({
   const handleClick = (triggerId: string): void => {
     if (loading) return;
 
-    const isSelected = getIsSelected({ testIds, testTriggers, triggerId });
-    const add_trigger_id = isSelected ? null : triggerId;
-    const remove_trigger_id = isSelected ? triggerId : null;
+    const state = getSelectState({ testIds, testTriggers, triggerId });
+    const add_trigger_id = state === "all" ? null : triggerId;
+    const remove_trigger_id = state === "all" ? triggerId : null;
 
     updateTestTriggers({
       optimisticResponse: {
@@ -59,7 +59,7 @@ export default function EditTriggers({
 
   if (triggers?.length) {
     const triggersHtml = triggers.map((t) => {
-      const isSelected = getIsSelected({
+      const state = getSelectState({
         testIds,
         testTriggers,
         triggerId: t.id,
@@ -67,11 +67,11 @@ export default function EditTriggers({
 
       return (
         <ListItem
-          isSelected={isSelected}
           key={t.id}
           onClick={() => handleClick(t.id)}
           onDelete={() => onDelete(t)}
           onEdit={() => onEdit(t)}
+          selectState={state}
           trigger={t}
         />
       );

@@ -12,29 +12,32 @@ import {
 import AppButton from "../../shared-new/AppButton";
 import Check from "../../shared-new/icons/Check";
 import Edit from "../../shared-new/icons/Edit";
+import Indeterminate from "../../shared-new/icons/Indeterminate";
 import Trash from "../../shared-new/icons/Trash";
 import Text from "../../shared-new/Text";
-import { getTriggerIconComponent } from "./helpers";
+import { getTriggerIconComponent, SelectState } from "./helpers";
 
 type Props = {
   className?: string;
-  isSelected: boolean;
   onClick: () => void;
   onDelete: () => void;
   onEdit: () => void;
+  selectState: SelectState;
   trigger: Trigger;
 };
 
 function ListItem({
   className,
-  isSelected,
   onClick,
   onDelete,
   onEdit,
+  selectState,
   trigger,
 }: Props): JSX.Element {
   const IconComponent = getTriggerIconComponent(trigger);
-  const color = isSelected ? colors.gray0 : colors.gray9;
+  const SelectIconComponent = selectState === "all" ? Check : Indeterminate;
+
+  const color = selectState !== "none" ? colors.gray0 : colors.gray9;
 
   return (
     <Box align="center" direction="row">
@@ -57,9 +60,9 @@ function ListItem({
               {trigger.name}
             </Text>
           </Box>
-          {isSelected && (
+          {selectState !== "none" && (
             <Box background="primaryDarker" round={borderSize.small}>
-              <Check color={color} size={edgeSize.small} />
+              <SelectIconComponent color={color} size={edgeSize.small} />
             </Box>
           )}
         </Box>
@@ -83,7 +86,8 @@ function ListItem({
 }
 
 const StyledListItem = styled(ListItem)`
-  background: ${(props) => (props.isSelected ? colors.primary : "transparent")};
+  background: ${(props) =>
+    props.selectState !== "none" ? colors.primary : "transparent"};
   border-radius: ${borderSize.small};
   transition: background ${transitionDuration};
 
@@ -97,12 +101,12 @@ const StyledListItem = styled(ListItem)`
 
   &:hover {
     background: ${(props) =>
-      props.isSelected ? colors.primaryDark : colors.gray2};
+      props.selectState !== "none" ? colors.primaryDark : colors.gray2};
   }
 
   &:active {
     background: ${(props) =>
-      props.isSelected ? colors.primaryDarker : colors.gray3};
+      props.selectState !== "none" ? colors.primaryDarker : colors.gray3};
   }
 `;
 

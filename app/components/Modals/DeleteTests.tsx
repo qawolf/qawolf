@@ -1,5 +1,5 @@
 import { Box, ThemeContext } from "grommet";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 import { useDeleteTests } from "../../hooks/mutations";
 import { SelectedTest } from "../../lib/types";

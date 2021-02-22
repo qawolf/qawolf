@@ -13,6 +13,7 @@ import Clock from "../../shared-new/icons/Clock";
 import Plug from "../../shared-new/icons/Plug";
 import Rocket from "../../shared-new/icons/Rocket";
 
+export type SelectState = "all" | "none" | "some";
 export type TriggerMode = "api" | "deployment" | "schedule";
 
 type BuildTriggerFields = {
@@ -32,7 +33,7 @@ type BuildUpdateTestTriggersResponse = {
   removeTriggerId: string;
 };
 
-type GetIsSelected = {
+type GetSelectState = {
   testIds: string[];
   testTriggers: TestTriggers[];
   triggerId: string;
@@ -145,16 +146,20 @@ export const getDefaultName = ({
   return defaultName;
 };
 
-export const getIsSelected = ({
+export const getSelectState = ({
   testIds,
   testTriggers,
   triggerId,
-}: GetIsSelected): boolean => {
-  return testIds.every((testId) => {
+}: GetSelectState): SelectState => {
+  const testFn = (testId: string): boolean => {
     const testTriggersForTest = testTriggers.find((t) => t.test_id === testId);
-
     return (testTriggersForTest?.trigger_ids || []).includes(triggerId);
-  });
+  };
+
+  if (testIds.every(testFn)) return "all";
+  if (testIds.some(testFn)) return "some";
+
+  return "none";
 };
 
 export const getTriggerIconComponent = (trigger: Trigger): Icon => {
