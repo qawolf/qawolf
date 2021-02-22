@@ -41,6 +41,7 @@ export default function StatusBadge({
       background={background}
       flex={false}
       height={isSmall ? undefined : edgeSize.large}
+      justify="center"
       margin={margin}
       pad={{ horizontal: "xsmall", vertical: isSmall ? "xxxsmall" : undefined }}
       round="xlarge"
