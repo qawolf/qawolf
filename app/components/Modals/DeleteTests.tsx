@@ -5,11 +5,11 @@ import { useDeleteTests } from "../../hooks/mutations";
 import { SelectedTest } from "../../lib/types";
 import { copy } from "../../theme/copy";
 import { theme } from "../../theme/theme-new";
-import Modal from "../shared-new/Modal";
-import Text from "../shared-new/Text";
-import Header from "../shared-new/Modal/Header";
-import ConfirmDelete from "../shared-new/Modal/ConfirmDelete";
 import TextInput from "../shared-new/AppTextInput";
+import Modal from "../shared-new/Modal";
+import ConfirmDelete from "../shared-new/Modal/ConfirmDelete";
+import Header from "../shared-new/Modal/Header";
+import Text from "../shared-new/Text";
 
 type Props = {
   closeModal: () => void;

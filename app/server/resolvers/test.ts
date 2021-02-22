@@ -13,10 +13,10 @@ import {
   Context,
   CreateTestMutation,
   DeleteTestsMutation,
-  TestsQuery,
   Test,
   TestQuery,
   TestResult,
+  TestsQuery,
   TestSummary,
   UpdateTestMutation,
 } from "../types";
