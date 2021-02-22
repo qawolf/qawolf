@@ -13,7 +13,9 @@ export default function Tests(): JSX.Element {
   const trigger_id = query.trigger_id as string;
 
   const { teamId } = useContext(StateContext);
+
   const [search, setSearch] = useState("");
+  const [checkedTestIds, setCheckedTestIds] = useState<string[]>([]);
 
   const { data, startPolling, stopPolling } = useTests({ team_id: teamId });
 
@@ -41,6 +43,18 @@ export default function Tests(): JSX.Element {
   const testTriggers = testTriggersData?.testTriggers || [];
   const triggers = triggersData?.triggers || [];
 
+  const handleTestCheck = (testId: string): void => {
+    const index = checkedTestIds.indexOf(testId);
+    if (index > -1) {
+      const newSelectedTestIds = [...checkedTestIds];
+      newSelectedTestIds.splice(index, 1);
+
+      setCheckedTestIds(newSelectedTestIds);
+    } else {
+      setCheckedTestIds([...checkedTestIds, testId]);
+    }
+  };
+
   return (
     <Box pad="medium" width="full">
       <Header
@@ -49,7 +63,13 @@ export default function Tests(): JSX.Element {
         testTriggers={testTriggers}
         triggers={triggers}
       />
-      <List tests={tests} testTriggers={testTriggers} triggers={triggers} />
+      <List
+        checkedTestIds={checkedTestIds}
+        onTestCheck={handleTestCheck}
+        tests={tests}
+        testTriggers={testTriggers}
+        triggers={triggers}
+      />
     </Box>
   );
 }

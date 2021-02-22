@@ -1,6 +1,5 @@
 import { Box } from "grommet";
 
-import { useTestTriggers } from "../../../../hooks/queries";
 import { ShortTest, TestTriggers, Trigger } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import { borderSize } from "../../../../theme/theme-new";
@@ -9,6 +8,8 @@ import Text from "../../../shared-new/Text";
 import TestCard from "./TestCard";
 
 type Props = {
+  checkedTestIds: string[];
+  onTestCheck: (testId: string) => void;
   tests: ShortTest[] | null;
   testTriggers: TestTriggers[];
   triggers: Trigger[];
@@ -17,6 +18,8 @@ type Props = {
 const border = { color: "gray3", size: borderSize.xsmall };
 
 export default function List({
+  checkedTestIds,
+  onTestCheck,
   tests,
   testTriggers,
   triggers,
@@ -30,8 +33,10 @@ export default function List({
 
     return (
       <TestCard
+        isChecked={checkedTestIds.includes(test.id)}
         key={test.id}
         noBorder={!i}
+        onCheck={() => onTestCheck(test.id)}
         test={test}
         triggers={filteredTriggers}
       />

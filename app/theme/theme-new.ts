@@ -1,4 +1,5 @@
 import { CSSProperties } from "react";
+import Check from "../components/shared-new/icons/Check";
 
 export const borderSize = {
   xsmall: "1px",
@@ -147,6 +148,40 @@ export const theme = {
     disabled: {
       opacity: disabledOpacity,
     },
+  },
+  checkBox: {
+    border: {
+      color: colors.gray4,
+      width: borderSize.xsmall,
+    },
+    check: {
+      radius: borderSize.small,
+    },
+    color: colors.primary,
+    extend: ({ checked }: { checked: boolean }): CSSProperties => {
+      return {
+        background: checked ? colors.primary : "transparent",
+        borderRadius: borderSize.small,
+      };
+    },
+    hover: {
+      border: {
+        color: colors.gray6,
+      },
+    },
+    icon: {
+      extend: (): CSSProperties => {
+        return {
+          fill: colors.primary,
+          stroke: colors.white,
+        };
+      },
+      size: edgeSize.small,
+    },
+    icons: {
+      checked: Check,
+    },
+    size: edgeSize.small,
   },
   global: {
     borderSize,
