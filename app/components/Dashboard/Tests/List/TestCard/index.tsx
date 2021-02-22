@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 
 import { ShortTest, TestSummary, Trigger } from "../../../../../lib/types";
-import { borderSize } from "../../../../../theme/theme-new";
+import { borderSize, overflowStyle } from "../../../../../theme/theme-new";
 import CheckBox from "../../../../shared-new/CheckBox";
 import Text from "../../../../shared-new/Text";
 import RunBars from "./RunBars";
@@ -48,12 +48,17 @@ export default function TestCard({
           onChange={onCheck}
         />
         <TestGif
-          gifUrl={null}
+          gifUrl={summary?.gif_url}
           isLoading={isSummaryLoading}
           isRunning={runs?.length && !summary?.gif_url}
           testName={test.name}
         />
-        <Text color="gray9" margin={{ left: "small" }} size="componentMedium">
+        <Text
+          color="gray9"
+          margin={{ left: "small" }}
+          size="componentMedium"
+          style={overflowStyle}
+        >
           {test.name}
         </Text>
       </Box>
