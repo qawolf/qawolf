@@ -41,7 +41,7 @@ export default function TriggerOption({
         pad={{ horizontal: "xxsmall" }}
         round="xlarge"
       >
-        <Text color="gray9" size="component">
+        <Text color="gray9" size="componentSmall">
           {count}
         </Text>
       </Box>

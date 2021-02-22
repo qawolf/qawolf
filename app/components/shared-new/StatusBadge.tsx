@@ -36,7 +36,7 @@ export default function StatusBadge({ margin, status }: Props): JSX.Element {
       pad={{ horizontal: "xsmall", vertical: "xxxsmall" }}
       round="xlarge"
     >
-      <Text color={color} size="component">
+      <Text color={color} size="componentSmall">
         {label}
       </Text>
     </Box>
