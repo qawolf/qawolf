@@ -64,7 +64,7 @@ export const buildMessageForSuite = ({
         elements: [
           {
             type: "image",
-            image_url: `https://storage.googleapis.com/spirit-imgs/wolf-${wolfVariant}-slack.png`,
+            image_url: `'https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-${wolfVariant}.png'`,
             alt_text: wolfName,
           },
           {
