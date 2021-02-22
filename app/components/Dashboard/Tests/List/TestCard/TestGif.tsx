@@ -47,14 +47,14 @@ export default function TestGif({
   ) : (
     <>
       {!!wolf && <WolfHead color={wolf.variant} />}
-      <Text color="gray9" margin={{ top: "xxsmall" }} size="component">
+      <Text color="gray7" margin={{ top: "2px" }} size="componentSmall">
         {isLoading ? copy.loading : copy.noRuns}
       </Text>
     </>
   );
 
   return (
-    <Box {...boxProps} align="center" background="gray3" justify="center">
+    <Box {...boxProps} align="center" background="gray2" justify="center">
       {innerHtml}
     </Box>
   );
