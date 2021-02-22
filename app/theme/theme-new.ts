@@ -1,5 +1,6 @@
 import { CSSProperties } from "react";
 import Check from "../components/shared-new/icons/Check";
+import Indeterminate from "../components/shared-new/icons/Indeterminate";
 
 export const borderSize = {
   xsmall: "1px",
@@ -180,6 +181,7 @@ export const theme = {
     },
     icons: {
       checked: Check,
+      indeterminate: Indeterminate,
     },
     size: edgeSize.small,
   },

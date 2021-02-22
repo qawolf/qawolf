@@ -40,20 +40,13 @@ export default function Tests(): JSX.Element {
     };
   }, [startPolling, stopPolling, teamId]);
 
+  // clear checked tests when filters change
+  useEffect(() => {
+    if (checkedTestIds.length) setCheckedTestIds([]);
+  }, [search, trigger_id]);
+
   const testTriggers = testTriggersData?.testTriggers || [];
   const triggers = triggersData?.triggers || [];
-
-  const handleTestCheck = (testId: string): void => {
-    const index = checkedTestIds.indexOf(testId);
-    if (index > -1) {
-      const newSelectedTestIds = [...checkedTestIds];
-      newSelectedTestIds.splice(index, 1);
-
-      setCheckedTestIds(newSelectedTestIds);
-    } else {
-      setCheckedTestIds([...checkedTestIds, testId]);
-    }
-  };
 
   return (
     <Box pad="medium" width="full">
@@ -65,7 +58,7 @@ export default function Tests(): JSX.Element {
       />
       <List
         checkedTestIds={checkedTestIds}
-        onTestCheck={handleTestCheck}
+        setCheckedTestIds={setCheckedTestIds}
         tests={tests}
         testTriggers={testTriggers}
         triggers={triggers}

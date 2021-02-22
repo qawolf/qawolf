@@ -1,30 +1,39 @@
 import { Box } from "grommet";
 
 import { ShortTest, TestTriggers, Trigger } from "../../../../lib/types";
-import { copy } from "../../../../theme/copy";
 import { borderSize } from "../../../../theme/theme-new";
 import Spinner from "../../../shared/Spinner";
-import Text from "../../../shared-new/Text";
+import Header from "./Header";
 import TestCard from "./TestCard";
 
 type Props = {
   checkedTestIds: string[];
-  onTestCheck: (testId: string) => void;
+  setCheckedTestIds: (testIds: string[]) => void;
   tests: ShortTest[] | null;
   testTriggers: TestTriggers[];
   triggers: Trigger[];
 };
 
-const border = { color: "gray3", size: borderSize.xsmall };
-
 export default function List({
   checkedTestIds,
-  onTestCheck,
+  setCheckedTestIds,
   tests,
   testTriggers,
   triggers,
 }: Props): JSX.Element {
   if (!tests) return <Spinner />;
+
+  const handleTestCheck = (testId: string): void => {
+    const index = checkedTestIds.indexOf(testId);
+    if (index > -1) {
+      const newSelectedTestIds = [...checkedTestIds];
+      newSelectedTestIds.splice(index, 1);
+
+      setCheckedTestIds(newSelectedTestIds);
+    } else {
+      setCheckedTestIds([...checkedTestIds, testId]);
+    }
+  };
 
   const testsHtml = tests.map((test, i) => {
     const triggerIds =
@@ -36,7 +45,7 @@ export default function List({
         isChecked={checkedTestIds.includes(test.id)}
         key={test.id}
         noBorder={!i}
-        onCheck={() => onTestCheck(test.id)}
+        onCheck={() => handleTestCheck(test.id)}
         test={test}
         triggers={filteredTriggers}
       />
@@ -44,17 +53,16 @@ export default function List({
   });
 
   return (
-    <Box border={border} margin={{ top: "medium" }} round={borderSize.small}>
-      <Box
-        background="gray1"
-        border={tests.length ? { ...border, side: "bottom" } : undefined}
-        flex={false}
-        pad="small"
-      >
-        <Text color="gray9" size="componentBold">
-          {copy.testCount(tests.length)}
-        </Text>
-      </Box>
+    <Box
+      border={{ color: "gray3", size: borderSize.xsmall }}
+      margin={{ top: "medium" }}
+      round={borderSize.small}
+    >
+      <Header
+        checkedTestIds={checkedTestIds}
+        setCheckedTestIds={setCheckedTestIds}
+        tests={tests}
+      />
       <Box overflow={{ vertical: "scroll" }}>
         <Box flex={false}>{testsHtml}</Box>
       </Box>
