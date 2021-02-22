@@ -200,6 +200,13 @@ export const theme = {
         width: borderSize.medium,
       },
     },
+    drop: {
+      extend: (): CSSProperties => {
+        return {
+          boxShadow,
+        };
+      },
+    },
     edgeSize,
   },
   layer: {

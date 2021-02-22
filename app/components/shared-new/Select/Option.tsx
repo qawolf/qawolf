@@ -78,6 +78,10 @@ const StyledOption = styled(Option)`
     transition: color ${transitionDuration};
   }
 
+  svg {
+    transition: all ${transitionDuration};
+  }
+
   &:hover {
     background: ${(props) =>
       props.type === "danger" ? colors.danger5 : colors.gray2};
@@ -87,6 +91,11 @@ const StyledOption = styled(Option)`
       `
       p {
         color: ${colors.gray0};
+      }
+
+      svg {
+        fill: ${colors.gray0};
+        stroke: ${colors.gray0};
       }
     `}
   }
