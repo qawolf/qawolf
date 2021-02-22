@@ -1,4 +1,6 @@
 import { Box } from "grommet";
+import Link from "next/link";
+import { routes } from "../../../../../lib/routes";
 
 import { ShortTest, TestSummary, Trigger } from "../../../../../lib/types";
 import { borderSize, overflowStyle } from "../../../../../theme/theme-new";
@@ -39,30 +41,41 @@ export default function TestCard({
       }
       direction="row"
       justify="between"
-      pad="small"
+      pad={{ horizontal: "small" }}
     >
-      <Box align="center" direction="row" flex={false}>
+      <Box align="center" direction="row" fill="horizontal">
         <CheckBox
           a11yTitle={test.name}
           checked={isChecked}
           onChange={onCheck}
         />
-        <TestGif
-          gifUrl={summary?.gif_url}
-          isLoading={isSummaryLoading}
-          isRunning={runs?.length && !summary?.gif_url}
-          testName={test.name}
-        />
-        <Text
-          color="gray9"
-          margin={{ left: "small" }}
-          size="componentMedium"
-          style={overflowStyle}
-        >
-          {test.name}
-        </Text>
+        <Link href={`${routes.test}/${test.id}`}>
+          <a style={{ width: "100%" }}>
+            <Box
+              align="center"
+              direction="row"
+              fill="horizontal"
+              pad={{ vertical: "small" }}
+            >
+              <TestGif
+                gifUrl={summary?.gif_url}
+                isLoading={isSummaryLoading}
+                isRunning={!!runs?.length && !runs[0].gif_url}
+                testName={test.name}
+              />
+              <Text
+                color="gray9"
+                margin={{ left: "small" }}
+                size="componentMedium"
+                style={overflowStyle}
+              >
+                {test.name}
+              </Text>
+            </Box>
+          </a>
+        </Link>
       </Box>
-      <Box align="center" direction="row">
+      <Box align="center" direction="row" flex={false}>
         <Triggers triggers={triggers} />
         <RunBars runs={runs} />
       </Box>
