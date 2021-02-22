@@ -132,6 +132,7 @@ export const testSummariesQuery = gql`
       gif_url
       last_runs {
         created_at
+        gif_url
         id
         status
       }

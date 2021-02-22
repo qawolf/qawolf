@@ -121,6 +121,7 @@ export type TestHistoryRun = {
 
 export type TestSummaryRun = {
   created_at: string;
+  gif_url: string | null;
   id: string;
   status: RunStatus;
 };
