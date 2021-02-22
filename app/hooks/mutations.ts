@@ -510,8 +510,9 @@ export const useDeleteTests = (
   return useMutation<DeleteTestsData, DeleteTestsVariables>(
     deleteTestsMutation,
     {
+      awaitRefetchQueries: true,
       onError,
-      refetchQueries: ["dashboard"],
+      refetchQueries: ["tests"],
       variables,
     }
   );

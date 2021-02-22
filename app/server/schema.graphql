@@ -1174,5 +1174,11 @@ type Query {
 
   Requires that you are on the team.
   """
-  tests("The team ID" team_id: ID!): [Test!]!
+  tests(
+    "The team ID"
+    team_id: ID!
+
+    "The trigger ID. If provided, will filter run history by that trigger"
+    trigger_id: ID
+  ): [Test!]!
 }

@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 
 import { useTests, useTestTriggers, useTriggers } from "../../../hooks/queries";
 import { StateContext } from "../../StateContext";
-import { filterTests } from "../helpers";
+import { filterTests, noTriggerId } from "../helpers";
 import Header from "./Header";
 import List from "./List";
 
@@ -17,7 +17,10 @@ export default function Tests(): JSX.Element {
   const [search, setSearch] = useState("");
   const [checkedTestIds, setCheckedTestIds] = useState<string[]>([]);
 
-  const { data, startPolling, stopPolling } = useTests({ team_id: teamId });
+  const { data, startPolling, stopPolling } = useTests({
+    team_id: teamId,
+    trigger_id: trigger_id === noTriggerId ? null : trigger_id || null,
+  });
 
   const { data: triggersData } = useTriggers({ team_id: teamId });
 
@@ -43,7 +46,8 @@ export default function Tests(): JSX.Element {
   // clear checked tests when filters change
   useEffect(() => {
     if (checkedTestIds.length) setCheckedTestIds([]);
-  }, [search, trigger_id]);
+    // including data?.tests ensures we reset after deleting tests
+  }, [data?.tests, trigger_id]);
 
   const testTriggers = testTriggersData?.testTriggers || [];
   const triggers = triggersData?.triggers || [];

@@ -518,6 +518,11 @@ export type TestQuery = {
   run_id?: string;
 };
 
+export type TestsQuery = {
+  team_id: string;
+  trigger_id: string | null;
+};
+
 export type TestResult = {
   run: RunResult | null;
   test: Test;

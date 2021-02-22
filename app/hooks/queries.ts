@@ -131,6 +131,7 @@ type TestsData = {
 
 type TestsVariables = {
   team_id: string;
+  trigger_id: string | null;
 };
 
 type TriggersData = {

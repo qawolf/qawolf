@@ -203,6 +203,7 @@ export const copy = {
   oneTeamMember: "1 team member",
   other: "Other",
   otherDeploy: "Don't see the tool you use? Let us know!",
+  pleaseType: "Please type",
   tenTeamMembers: "Up to 10 team members",
   save: "Save",
   saveTest: "Save Test",

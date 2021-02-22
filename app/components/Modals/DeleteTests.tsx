@@ -1,9 +1,15 @@
-import { useEffect } from "react";
+import { Box, ThemeContext } from "grommet";
+import { ChangeEvent, useEffect, useState } from "react";
 
 import { useDeleteTests } from "../../hooks/mutations";
 import { SelectedTest } from "../../lib/types";
 import { copy } from "../../theme/copy";
-import ConfirmDelete from "../shared/ConfirmDelete";
+import { theme } from "../../theme/theme-new";
+import Modal from "../shared-new/Modal";
+import Text from "../shared-new/Text";
+import Header from "../shared-new/Modal/Header";
+import ConfirmDelete from "../shared-new/Modal/ConfirmDelete";
+import TextInput from "../shared-new/AppTextInput";
 
 type Props = {
   closeModal: () => void;
@@ -14,24 +20,63 @@ export default function ConfirmDeleteTests({
   closeModal,
   tests,
 }: Props): JSX.Element {
+  const [error, setError] = useState("");
+  const [value, setValue] = useState("");
+
   const testIds = tests.map((test) => test.id);
-  const [deleteTests, { data, loading }] = useDeleteTests({ ids: testIds });
+  const [deleteTests, { loading }] = useDeleteTests({ ids: testIds });
 
-  useEffect(() => {
-    if (data?.deleteTests) {
-      closeModal();
+  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setValue(e.target.value);
+  };
+
+  const handleDelete = (): void => {
+    if (value !== copy.confirm) {
+      setError(copy.mustMatch);
+      return;
     }
-  }, [closeModal, data]);
 
-  const testNames = tests.map((test) => test.name);
+    setError("");
+    deleteTests().then(closeModal);
+  };
+
+  const testNames = tests.map((test) => test.name).join(", ");
 
   return (
-    <ConfirmDelete
-      closeModal={closeModal}
-      disabled={loading}
-      message={copy.confirmDelete("tests")}
-      namesToDelete={testNames}
-      onClick={deleteTests}
-    />
+    <ThemeContext.Extend value={theme}>
+      <Modal a11yTitle="delete test modal" closeModal={closeModal}>
+        <Box pad="medium">
+          <Header closeModal={closeModal} label={copy.deleteTests} />
+          <ConfirmDelete
+            isDeleteDisabled={loading}
+            onCancel={closeModal}
+            onDelete={handleDelete}
+          >
+            <Text
+              color="gray9"
+              margin={{ top: "xxsmall" }}
+              size="componentParagraph"
+            >
+              {copy.confirmDelete("tests")} {copy.pleaseType}{" "}
+              <b>{copy.confirm}</b> {copy.environmentDeleteConfirm2}
+            </Text>
+            <Text
+              color="gray9"
+              margin={{ vertical: "medium" }}
+              size="componentBold"
+            >
+              {testNames}
+            </Text>
+            <TextInput
+              autoFocus
+              error={error}
+              onChange={handleChange}
+              placeholder={copy.confirm}
+              value={value}
+            />
+          </ConfirmDelete>
+        </Box>
+      </Modal>
+    </ThemeContext.Extend>
   );
 }

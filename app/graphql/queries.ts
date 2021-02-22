@@ -136,8 +136,8 @@ export const testTriggersQuery = gql`
 `;
 
 export const testsQuery = gql`
-  query tests($team_id: ID!) {
-    tests(team_id: $team_id) {
+  query tests($team_id: ID!, $trigger_id: ID) {
+    tests(team_id: $team_id, trigger_id: $trigger_id) {
       id
       name
       summary {

@@ -13,7 +13,7 @@ import {
   Context,
   CreateTestMutation,
   DeleteTestsMutation,
-  TeamIdQuery,
+  TestsQuery,
   Test,
   TestQuery,
   TestResult,
@@ -110,12 +110,12 @@ export const testResolver = async (
 };
 
 export const testSummaryResolver = async (
-  { id }: Test,
+  { id, trigger_id }: Test & { trigger_id: string | null },
   _: Record<string, unknown>,
   { db, logger }: Context
 ): Promise<TestSummary> => {
   const runs = await findLatestRuns(
-    { test_id: id, trigger_id: null },
+    { test_id: id, trigger_id },
     { db, logger }
   );
 
@@ -130,12 +130,17 @@ export const testSummaryResolver = async (
  */
 export const testsResolver = async (
   _: Record<string, unknown>,
-  { team_id }: TeamIdQuery,
+  { team_id, trigger_id }: TestsQuery,
   { db, logger, teams }: Context
-): Promise<Test[]> => {
+): Promise<(Test & { trigger_id: string | null })[]> => {
   ensureTeamAccess({ logger, team_id, teams });
 
-  return findTestsForTeam(team_id, { db, logger });
+  const tests = await findTestsForTeam(team_id, { db, logger });
+
+  // include trigger id so nested query can filter runs
+  return tests.map((t) => {
+    return { ...t, trigger_id };
+  });
 };
 
 export const updateTestResolver = async (
