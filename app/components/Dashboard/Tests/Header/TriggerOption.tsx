@@ -1,6 +1,7 @@
 import { Box } from "grommet";
 
 import { Trigger } from "../../../../lib/types";
+import { overflowStyle } from "../../../../theme/theme-new";
 import ColorDot from "../../../shared-new/ColorDot";
 import Option from "../../../shared-new/Select/Option";
 import Text from "../../../shared-new/Text";
@@ -39,7 +40,7 @@ export default function TriggerOption({
         pad={{ horizontal: "xxsmall" }}
         round="xlarge"
       >
-        <Text color="gray9" size="component">
+        <Text color="gray9" size="component" style={overflowStyle}>
           {count}
         </Text>
       </Box>
