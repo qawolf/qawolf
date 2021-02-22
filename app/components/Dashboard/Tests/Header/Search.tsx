@@ -29,7 +29,11 @@ export default function Search({ search, setSearch }: Props): JSX.Element {
   };
 
   return (
-    <Box style={{ position: "relative" }}>
+    <Box
+      margin={{ right: "small" }}
+      style={{ position: "relative" }}
+      width="full"
+    >
       <SearchIcon
         color={colors.gray5}
         size={edgeSize.small}

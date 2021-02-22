@@ -19,6 +19,7 @@ export const copy = {
   alerts: "Alerts:",
   all: "All",
   allTests: "All tests",
+  allTriggers: "All triggers",
   api: "API",
   apiDetail: "Trigger tests by calling the QA Wolf API:",
   apiKeyHere: "API KEY HERE",
