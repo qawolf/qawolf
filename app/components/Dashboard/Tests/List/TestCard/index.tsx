@@ -51,31 +51,33 @@ export default function TestCard({
             onChange={onCheck}
           />
         </Box>
-        <Link href={`${routes.test}/${test.id}`}>
-          <a style={{ width: "100%" }}>
-            <Box
-              align="center"
-              direction="row"
-              fill="horizontal"
-              pad={{ vertical: "small" }}
-            >
-              <TestGif
-                gifUrl={summary?.gif_url}
-                isLoading={isSummaryLoading}
-                isRunning={!!runs?.length && !runs[0].gif_url}
-                testName={test.name}
-              />
-              <Text
-                color="gray9"
-                margin={{ left: "small" }}
-                size="componentMedium"
-                style={overflowStyle}
+        <Box fill="horizontal">
+          <Link href={`${routes.test}/${test.id}`}>
+            <a>
+              <Box
+                align="center"
+                direction="row"
+                fill="horizontal"
+                pad={{ vertical: "small" }}
               >
-                {test.name}
-              </Text>
-            </Box>
-          </a>
-        </Link>
+                <TestGif
+                  gifUrl={summary?.gif_url}
+                  isLoading={isSummaryLoading}
+                  isRunning={!!runs?.length && !runs[0].gif_url}
+                  testName={test.name}
+                />
+                <Text
+                  color="gray9"
+                  margin={{ left: "small" }}
+                  size="componentMedium"
+                  style={overflowStyle}
+                >
+                  {test.name}
+                </Text>
+              </Box>
+            </a>
+          </Link>
+        </Box>
       </Box>
       <Box align="center" direction="row" flex={false}>
         <Triggers triggers={triggers} />
