@@ -1,6 +1,6 @@
 import { Box } from "grommet";
 
-import { ShortTest, Trigger } from "../../../../lib/types";
+import { ShortTest, TestTriggers, Trigger } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import { borderSize } from "../../../../theme/theme-new";
 import Spinner from "../../../shared/Spinner";
@@ -10,16 +10,18 @@ import { useTestTriggers } from "../../../../hooks/queries";
 
 type Props = {
   tests: ShortTest[] | null;
+  testTriggers: TestTriggers[];
   triggers: Trigger[];
 };
 
 const border = { color: "gray3", size: borderSize.xsmall };
 
-export default function List({ tests, triggers }: Props): JSX.Element {
+export default function List({
+  tests,
+  testTriggers,
+  triggers,
+}: Props): JSX.Element {
   if (!tests) return <Spinner />;
-
-  const { data } = useTestTriggers({ test_ids: tests.map((t) => t.id) });
-  const testTriggers = data?.testTriggers || [];
 
   const testsHtml = tests.map((test, i) => {
     const triggerIds =

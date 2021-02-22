@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 
-import { useTests, useTriggers } from "../../../hooks/queries";
+import { useTests, useTestTriggers, useTriggers } from "../../../hooks/queries";
 import { StateContext } from "../../StateContext";
 import Header from "./Header";
 import List from "./List";
@@ -19,7 +19,16 @@ export default function Tests(): JSX.Element {
 
   const { data: triggersData } = useTriggers({ team_id: teamId });
 
-  const tests = filterTests({ search, tests: data?.tests, trigger_id });
+  const { data: testTriggersData } = useTestTriggers({
+    test_ids: (data?.tests || []).map((t) => t.id),
+  });
+
+  const tests = filterTests({
+    search,
+    tests: data?.tests,
+    testTriggers: testTriggersData?.testTriggers,
+    trigger_id,
+  });
 
   useEffect(() => {
     startPolling(10 * 1000);
@@ -32,7 +41,11 @@ export default function Tests(): JSX.Element {
   return (
     <Box pad="medium" width="full">
       <Header search={search} setSearch={setSearch} />
-      <List tests={tests} triggers={triggersData?.triggers || []} />
+      <List
+        tests={tests}
+        testTriggers={testTriggersData?.testTriggers || []}
+        triggers={triggersData?.triggers || []}
+      />
     </Box>
   );
 }
