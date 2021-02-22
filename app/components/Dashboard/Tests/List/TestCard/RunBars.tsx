@@ -2,10 +2,11 @@ import { Box } from "grommet";
 import Link from "next/link";
 
 import { routes } from "../../../../../lib/routes";
-import { RunStatus, SuiteRun } from "../../../../../server/types";
+import { TestSummaryRun } from "../../../../../lib/types";
+import { RunStatus } from "../../../../../server/types";
 import { borderSize, edgeSize } from "../../../../../theme/theme-new";
 
-type Props = { runs: SuiteRun[] };
+type Props = { runs: TestSummaryRun[] };
 
 const getBackgroundForRun = (status: RunStatus): string => {
   if (status === "pass") return "success5";

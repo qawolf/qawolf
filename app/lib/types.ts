@@ -102,7 +102,6 @@ export type Team = ShortTeam & {
 export type ShortTest = {
   id: string;
   name: string;
-  summary: TestSummary;
 };
 
 export type Test = ShortTest & {
@@ -120,9 +119,16 @@ export type TestHistoryRun = {
   status: RunStatus;
 };
 
-type TestSummary = {
+export type TestSummaryRun = {
+  created_at: string;
+  id: string;
+  status: RunStatus;
+};
+
+export type TestSummary = {
   gif_url: string | null;
-  last_runs: SuiteRun[];
+  last_runs: TestSummaryRun[];
+  test_id: string;
 };
 
 export type Trigger = {

@@ -1,8 +1,11 @@
 import { Box } from "grommet";
+import { useRouter } from "next/router";
 
+import { useTestSummaries } from "../../../../hooks/queries";
 import { ShortTest, TestTriggers, Trigger } from "../../../../lib/types";
 import { borderSize } from "../../../../theme/theme-new";
 import Spinner from "../../../shared/Spinner";
+import { noTriggerId } from "../../helpers";
 import Header from "./Header";
 import TestCard from "./TestCard";
 
@@ -21,6 +24,16 @@ export default function List({
   testTriggers,
   triggers,
 }: Props): JSX.Element {
+  const { query } = useRouter();
+
+  const test_ids = (tests || []).map((t) => t.id);
+  const trigger_id =
+    query.trigger_id === noTriggerId
+      ? null
+      : (query.trigger_id as string) || null;
+
+  const { data, loading } = useTestSummaries({ test_ids, trigger_id });
+
   if (!tests) return <Spinner />;
 
   const handleTestCheck = (testId: string): void => {
@@ -40,12 +53,18 @@ export default function List({
       testTriggers.find((t) => t.test_id === test.id)?.trigger_ids || [];
     const filteredTriggers = triggers.filter((t) => triggerIds.includes(t.id));
 
+    const summary = (data?.testSummaries || []).find(
+      (s) => s.test_id === test.id
+    );
+
     return (
       <TestCard
         isChecked={checkedTestIds.includes(test.id)}
+        isSummaryLoading={loading}
         key={test.id}
         noBorder={!i}
         onCheck={() => handleTestCheck(test.id)}
+        summary={summary || null}
         test={test}
         triggers={filteredTriggers}
       />

@@ -174,6 +174,9 @@ type Run {
   "Associated environment ID"
   environment_id: ID
 
+  "URL for gif from the test run, if any"
+  gif_url: String
+
   "Test run ID"
   id: ID!
 
@@ -363,9 +366,6 @@ type Test {
   "A name for the test, for display in UI"
   name: String!
 
-  "Summary of most recent runs of this test"
-  summary: TestSummary
-
   "Date and time at which this test was last updated"
   updated_at: String!
 
@@ -388,7 +388,10 @@ type TestSummary {
   gif_url: String
 
   "The most recent 5 runs of this test, in descending order of when they started"
-  last_runs: [SuiteRun!]!
+  last_runs: [Run!]!
+
+  "The test ID"
+  test_id: ID!
 }
 
 "A list of trigger IDs for a test"
@@ -1163,6 +1166,19 @@ type Query {
   ): TestResult!
 
   """
+  Returns a test summary for each test ID. If 'trigger_id' is provided,
+  then the 'TestSummary.last_runs' will be filtered by that trigger.
+
+  Requires that one of the teams you are on owns the tests.
+  """
+  testSummaries(
+    "The test IDs"
+    test_ids: [ID!]!
+    "The trigger ID"
+    trigger_id: ID
+  ): [TestSummary!]!
+
+  """
   Returns a test trigger for each test ID.
 
   Requires that one of the teams you are on owns the tests.
@@ -1174,11 +1190,5 @@ type Query {
 
   Requires that you are on the team.
   """
-  tests(
-    "The team ID"
-    team_id: ID!
-
-    "The trigger ID. If provided, will filter run history by that trigger"
-    trigger_id: ID
-  ): [Test!]!
+  tests("The team ID" team_id: ID!): [Test!]!
 }

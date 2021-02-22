@@ -494,6 +494,10 @@ export type RunResult = Run & {
   video_url: string | null;
 };
 
+export type RunWithGif = Run & {
+  gif_url: string | null;
+};
+
 export type RunnerResult = {
   api_key?: string;
   ws_url?: string;
@@ -518,8 +522,8 @@ export type TestQuery = {
   run_id?: string;
 };
 
-export type TestsQuery = {
-  team_id: string;
+export type TestSummariesQuery = {
+  test_ids: string[];
   trigger_id: string | null;
 };
 
@@ -530,7 +534,8 @@ export type TestResult = {
 
 export type TestSummary = {
   gif_url: string | null;
-  last_runs: SuiteRun[];
+  last_runs: RunWithGif[];
+  test_id: string;
 };
 
 export type TestTriggers = {

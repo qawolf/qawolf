@@ -1,6 +1,6 @@
 import { Box } from "grommet";
 
-import { ShortTest, Trigger } from "../../../../../lib/types";
+import { ShortTest, TestSummary, Trigger } from "../../../../../lib/types";
 import { borderSize } from "../../../../../theme/theme-new";
 import CheckBox from "../../../../shared-new/CheckBox";
 import Text from "../../../../shared-new/Text";
@@ -10,19 +10,25 @@ import Triggers from "./Triggers";
 
 type Props = {
   isChecked: boolean;
+  isSummaryLoading: boolean;
   noBorder?: boolean;
   onCheck: () => void;
+  summary: TestSummary | null;
   test: ShortTest;
   triggers: Trigger[];
 };
 
 export default function TestCard({
   isChecked,
+  isSummaryLoading,
   noBorder,
   onCheck,
+  summary,
   test,
   triggers,
 }: Props): JSX.Element {
+  const runs = summary?.last_runs;
+
   return (
     <Box
       align="center"
@@ -42,11 +48,12 @@ export default function TestCard({
           onChange={onCheck}
         />
         <TestGif
-          gifUrl={test.summary.gif_url}
-          isRunning={test.summary.last_runs.length && !test.summary.gif_url}
+          gifUrl={null}
+          isLoading={isSummaryLoading}
+          isRunning={runs?.length && !summary?.gif_url}
           testName={test.name}
         />
-        <RunBars runs={test.summary.last_runs} />
+        {!!runs && <RunBars runs={runs} />}
         <Text color="gray9" size="componentMedium">
           {test.name}
         </Text>

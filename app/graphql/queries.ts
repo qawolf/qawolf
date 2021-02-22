@@ -126,6 +126,20 @@ export const testHistoryQuery = gql`
   }
 `;
 
+export const testSummariesQuery = gql`
+  query testSummaries($test_ids: [ID!]!, $trigger_id: ID) {
+    testSummaries(test_ids: $test_ids, trigger_id: $trigger_id) {
+      gif_url
+      last_runs {
+        created_at
+        id
+        status
+      }
+      test_id
+    }
+  }
+`;
+
 export const testTriggersQuery = gql`
   query testTriggers($test_ids: [ID!]!) {
     testTriggers(test_ids: $test_ids) {
@@ -136,17 +150,10 @@ export const testTriggersQuery = gql`
 `;
 
 export const testsQuery = gql`
-  query tests($team_id: ID!, $trigger_id: ID) {
-    tests(team_id: $team_id, trigger_id: $trigger_id) {
+  query tests($team_id: ID!) {
+    tests(team_id: $team_id) {
       id
       name
-      summary {
-        gif_url
-        last_runs {
-          id
-          status
-        }
-      }
     }
   }
 `;

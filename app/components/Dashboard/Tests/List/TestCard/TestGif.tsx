@@ -10,6 +10,7 @@ import { UserContext } from "../../../../UserContext";
 
 type Props = {
   gifUrl: string | null;
+  isLoading: boolean;
   isRunning: boolean;
   testName: string;
 };
@@ -23,6 +24,7 @@ const boxProps = {
 
 export default function TestGif({
   gifUrl,
+  isLoading,
   isRunning,
   testName,
 }: Props): JSX.Element {
@@ -46,7 +48,7 @@ export default function TestGif({
     <>
       {!!wolf && <WolfHead color={wolf.variant} />}
       <Text color="gray9" margin={{ top: "xxsmall" }} size="component">
-        {copy.noRuns}
+        {isLoading ? copy.loading : copy.noRuns}
       </Text>
     </>
   );

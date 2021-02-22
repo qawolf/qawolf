@@ -2,7 +2,7 @@ import * as runModel from "../../../server/models/run";
 import * as testModel from "../../../server/models/test";
 import * as testResolvers from "../../../server/resolvers/test";
 import * as azure from "../../../server/services/aws/storage";
-import { Context, SuiteRun, Test } from "../../../server/types";
+import { RunWithGif } from "../../../server/types";
 import { minutesFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
 import {
@@ -20,7 +20,7 @@ const {
   createTestResolver,
   deleteTestsResolver,
   testResolver,
-  testSummaryResolver,
+  testSummariesResolver,
   testsResolver,
   updateTestResolver,
 } = testResolvers;
@@ -206,28 +206,31 @@ describe("testResolver", () => {
   });
 });
 
-describe("testSummaryResolver", () => {
+describe("testSummariesResolver", () => {
   afterEach(jest.restoreAllMocks);
 
   it("returns a list of the last runs with gif", async () => {
     jest.spyOn(runModel, "findLatestRuns").mockResolvedValue([
       { completed_at: minutesFromNow(), gif_url: "url", id: "runId" },
       { gif_url: null, id: "run2Id" },
-    ] as SuiteRun[]);
+    ] as RunWithGif[]);
 
-    const summary = await testSummaryResolver(
-      {
-        id: "testId",
-        trigger_id: "triggerId",
-      } as Test & { trigger_id: string },
+    const summaries = await testSummariesResolver(
       {},
-      { logger } as Context
+      {
+        test_ids: ["testId"],
+        trigger_id: "triggerId",
+      },
+      { ...testContext, db }
     );
 
-    expect(summary).toMatchObject({
-      gif_url: "url",
-      last_runs: [{ id: "runId" }, { id: "run2Id" }],
-    });
+    expect(summaries).toMatchObject([
+      {
+        gif_url: "url",
+        last_runs: [{ id: "runId" }, { id: "run2Id" }],
+        test_id: "testId",
+      },
+    ]);
   });
 
   it("does not include gif if last run not completed", async () => {
@@ -236,35 +239,31 @@ describe("testSummaryResolver", () => {
       .mockResolvedValue([
         { gif_url: null, id: "runId" },
         { id: "run2Id" },
-      ] as SuiteRun[]);
+      ] as RunWithGif[]);
 
-    const summary = await testSummaryResolver(
-      {
-        id: "testId",
-        trigger_id: "triggerId",
-      } as Test & { trigger_id: string },
+    const summary = await testSummariesResolver(
       {},
-      { logger } as Context
+      {
+        test_ids: ["testId"],
+        trigger_id: "triggerId",
+      },
+      { ...testContext, db }
     );
 
-    expect(summary).toMatchObject({
-      gif_url: null,
-      last_runs: [{ id: "runId" }, { id: "run2Id" }],
-    });
+    expect(summary).toMatchObject([
+      {
+        gif_url: null,
+        last_runs: [{ id: "runId" }, { id: "run2Id" }],
+      },
+    ]);
   });
 });
 
 describe("testsResolver", () => {
   it("finds tests for a team", async () => {
-    const tests = await testsResolver(
-      {},
-      { team_id: "teamId", trigger_id: null },
-      context
-    );
+    const tests = await testsResolver({}, { team_id: "teamId" }, context);
 
-    expect(tests).toMatchObject([
-      { creator_id: "userId", id: "testId", trigger_id: null },
-    ]);
+    expect(tests).toMatchObject([{ creator_id: "userId", id: "testId" }]);
   });
 });
 

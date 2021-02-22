@@ -11,6 +11,7 @@ import {
   RunnerRun,
   RunResult,
   RunStatus,
+  RunWithGif,
   SuiteRun,
   Test,
 } from "../types";
@@ -87,19 +88,15 @@ export const createRunsForTests = async (
 export const findLatestRuns = async (
   { test_id, trigger_id }: FindLatestRuns,
   { db, logger }: ModelOptions
-): Promise<SuiteRun[]> => {
+): Promise<RunWithGif[]> => {
   const log = logger.prefix("findLatestRuns");
 
   log.debug("test", test_id, "trigger", trigger_id);
 
-  const query = db
+  const query = db("runs")
     .select("runs.*" as "*")
-    .select("tests.name AS test_name")
-    .select("tests.deleted_at AS test_deleted_at")
-    .from("runs")
-    .innerJoin("suites", "runs.suite_id", "suites.id")
-    .innerJoin("tests", "runs.test_id", "tests.id")
-    .where({ test_id });
+    .where({ test_id })
+    .innerJoin("suites", "runs.suite_id", "suites.id");
 
   if (trigger_id) query.andWhere({ trigger_id });
 
@@ -107,12 +104,12 @@ export const findLatestRuns = async (
 
   log.debug(`found ${runs.length} runs`);
 
-  return runs.map((run: Run & { test_deleted_at: string | null }) => {
+  return runs.map((run: Run) => {
     const gif_url = run.completed_at
       ? createStorageReadAccessUrl(`${run.id}.gif`)
       : null;
 
-    return { ...run, gif_url, is_test_deleted: !!run.test_deleted_at };
+    return { ...run, gif_url };
   });
 };
 

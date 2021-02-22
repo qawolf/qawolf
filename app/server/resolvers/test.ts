@@ -13,10 +13,11 @@ import {
   Context,
   CreateTestMutation,
   DeleteTestsMutation,
+  TeamIdQuery,
   Test,
   TestQuery,
   TestResult,
-  TestsQuery,
+  TestSummariesQuery,
   TestSummary,
   UpdateTestMutation,
 } from "../types";
@@ -109,20 +110,33 @@ export const testResolver = async (
   return { run: runResult, test };
 };
 
-export const testSummaryResolver = async (
-  { id, trigger_id }: Test & { trigger_id: string | null },
+export const testSummariesResolver = async (
   _: Record<string, unknown>,
-  { db, logger }: Context
-): Promise<TestSummary> => {
-  const runs = await findLatestRuns(
-    { test_id: id, trigger_id },
-    { db, logger }
+  { test_ids, trigger_id }: TestSummariesQuery,
+  { db, logger, teams }: Context
+): Promise<TestSummary[]> => {
+  const log = logger.prefix("testSummariesResolver");
+  log.debug("tests", test_ids);
+
+  await Promise.all(
+    test_ids.map((test_id) =>
+      ensureTestAccess({ teams, test_id }, { db, logger })
+    )
   );
 
-  const lastRun = runs[0] || null;
-  const gif_url = lastRun?.gif_url;
+  return Promise.all(
+    test_ids.map(async (test_id) => {
+      const runs = await findLatestRuns(
+        { test_id, trigger_id },
+        { db, logger }
+      );
 
-  return { gif_url, last_runs: runs };
+      const lastRun = runs[0] || null;
+      const gif_url = lastRun?.gif_url;
+
+      return { gif_url, last_runs: runs, test_id };
+    })
+  );
 };
 
 /**
@@ -130,17 +144,12 @@ export const testSummaryResolver = async (
  */
 export const testsResolver = async (
   _: Record<string, unknown>,
-  { team_id, trigger_id }: TestsQuery,
+  { team_id }: TeamIdQuery,
   { db, logger, teams }: Context
-): Promise<(Test & { trigger_id: string | null })[]> => {
+): Promise<Test[]> => {
   ensureTeamAccess({ logger, team_id, teams });
 
-  const tests = await findTestsForTeam(team_id, { db, logger });
-
-  // include trigger id so nested query can filter runs
-  return tests.map((t) => {
-    return { ...t, trigger_id };
-  });
+  return findTestsForTeam(team_id, { db, logger });
 };
 
 export const updateTestResolver = async (

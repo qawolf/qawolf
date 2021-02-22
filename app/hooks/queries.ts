@@ -13,6 +13,7 @@ import {
   testHistoryQuery,
   testQuery,
   testsQuery,
+  testSummariesQuery,
   testTriggersQuery,
   triggersQuery,
 } from "../graphql/queries";
@@ -32,6 +33,7 @@ import {
   Team,
   Test,
   TestHistoryRun,
+  TestSummary,
   TestTriggers,
   Trigger,
   User,
@@ -117,6 +119,15 @@ type TestHistoryVariables = {
   id: string;
 };
 
+type TestSummariesData = {
+  testSummaries: TestSummary[];
+};
+
+type TestSummariesVariables = {
+  test_ids: string[];
+  trigger_id: string | null;
+};
+
 type TestTriggersData = {
   testTriggers: TestTriggers[];
 };
@@ -131,7 +142,6 @@ type TestsData = {
 
 type TestsVariables = {
   team_id: string;
-  trigger_id: string | null;
 };
 
 type TriggersData = {
@@ -295,6 +305,20 @@ export const useTestHistory = (
     skip: !variables.id,
     variables,
   });
+};
+
+export const useTestSummaries = (
+  variables: TestSummariesVariables
+): QueryResult<TestSummariesData, TestSummariesVariables> => {
+  return useQuery<TestSummariesData, TestSummariesVariables>(
+    testSummariesQuery,
+    {
+      fetchPolicy,
+      // if null is passed as an id, skip the query (this happens prehydration)
+      skip: !variables.test_ids.length || variables.test_ids.some((id) => !id),
+      variables,
+    }
+  );
 };
 
 export const useTestTriggers = (

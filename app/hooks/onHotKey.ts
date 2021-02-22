@@ -38,5 +38,5 @@ export const useOnHotKey = ({
     return () => {
       document.removeEventListener("keydown", handleHotKey);
     };
-  }, [hotKey, onHotKey, requireMeta]);
+  }, [ignoreInput, hotKey, onHotKey, requireMeta]);
 };
