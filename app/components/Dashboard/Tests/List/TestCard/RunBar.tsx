@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 import Link from "next/link";
 import { useRef, useState } from "react";
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 
 import { routes } from "../../../../../lib/routes";
 import { RunStatus, TestSummaryRun } from "../../../../../lib/types";
@@ -19,8 +19,7 @@ type Props = {
   run: TestSummaryRun;
 };
 
-const activeBackground: { [status in RunStatus]: string } = {
-  created: colors.gray4,
+const activeBackground: { [status: string]: string } = {
   fail: colors.danger7,
   pass: colors.success7,
 };
@@ -31,8 +30,7 @@ const background: { [status in RunStatus]: string } = {
   pass: colors.success5,
 };
 
-const hoverBackground: { [status in RunStatus]: string } = {
-  created: colors.gray4,
+const hoverBackground: { [status: string]: string } = {
   fail: colors.danger6,
   pass: colors.success6,
 };
@@ -60,18 +58,41 @@ function RunBar({ className, run }: Props): JSX.Element {
   );
 }
 
+const inProgressKeyFrames = keyframes`
+0% {
+  background: ${colors.gray4};
+}
+50% {
+  background: ${colors.gray1};
+}
+100% {
+  background: ${colors.gray4};
+}
+`;
+
+const inProgressAnimation = css`
+  animation: ${inProgressKeyFrames} 2s ease-in-out infinite;
+`;
+
 const StyledRunBar = styled(RunBar)`
   background: ${(props) => background[props.run.status]};
   border-radius: ${edgeSize.xlarge};
-  transition: background ${transitionDuration};
 
+  ${(props) =>
+    props.run.status !== "created" &&
+    `
+  transition: background ${transitionDuration};
+    
   &:hover {
-    background: ${(props) => hoverBackground[props.run.status]};
+    background: ${(props: Props) => hoverBackground[props.run.status]};
   }
 
   &:active {
-    background: ${(props) => activeBackground[props.run.status]};
+    background: ${(props: Props) => activeBackground[props.run.status]};
   }
+  `}
+
+  ${(props) => props.run.status === "created" && inProgressAnimation}
 `;
 
 export default StyledRunBar;
