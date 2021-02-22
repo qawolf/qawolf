@@ -6,6 +6,7 @@ import { ShortTest, TestSummary, Trigger } from "../../../../../lib/types";
 import { borderSize, overflowStyle } from "../../../../../theme/theme-new";
 import CheckBox from "../../../../shared-new/CheckBox";
 import Text from "../../../../shared-new/Text";
+import Options from "./Options";
 import RunBars from "./RunBars";
 import TestGif from "./TestGif";
 import Triggers from "./Triggers";
@@ -82,6 +83,7 @@ export default function TestCard({
       <Box align="center" direction="row" flex={false}>
         <Triggers triggers={triggers} />
         <RunBars runs={runs} />
+        <Options test={test} />
       </Box>
     </Box>
   );

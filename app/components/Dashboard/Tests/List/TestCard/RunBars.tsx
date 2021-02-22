@@ -14,12 +14,17 @@ export default function RunBars({ runs }: Props): JSX.Element {
     return <RunBar key={run.id} run={run} />;
   });
 
-  while (innerHtml.length < runCount) {
-    innerHtml.push(<RunBarEmpty />);
+  const missingRunCount = runCount - innerHtml.length;
+  for (let i = 0; i < missingRunCount; i++) {
+    innerHtml.push(<RunBarEmpty key={i} />);
   }
 
   return (
-    <Box direction="row-reverse" gap={gap} margin={{ horizontal: "medium" }}>
+    <Box
+      direction="row-reverse"
+      gap={gap}
+      margin={{ left: "medium", right: "small" }}
+    >
       {innerHtml}
     </Box>
   );

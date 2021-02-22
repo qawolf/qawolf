@@ -2,6 +2,7 @@ import { Box, BoxProps } from "grommet";
 
 import { RunStatus } from "../../lib/types";
 import { copy } from "../../theme/copy";
+import { edgeSize } from "../../theme/theme-new";
 import Text from "./Text";
 
 type Props = {
@@ -39,8 +40,9 @@ export default function StatusBadge({
     <Box
       background={background}
       flex={false}
+      height={isSmall ? undefined : edgeSize.large}
       margin={margin}
-      pad={{ horizontal: "xsmall", vertical: "xxxsmall" }}
+      pad={{ horizontal: "xsmall", vertical: isSmall ? "xxxsmall" : undefined }}
       round="xlarge"
     >
       <Text color={color} size={textSize}>
