@@ -7,6 +7,13 @@ type UseOnHotKey = {
   requireMeta?: boolean;
 };
 
+const isTextInput = (element: EventTarget): boolean => {
+  if (!(element as HTMLElement)?.tagName) return false;
+  if ((element as HTMLElement).tagName.toLowerCase() !== "input") return false;
+
+  return (element as HTMLInputElement).type === "text";
+};
+
 export const useOnHotKey = ({
   hotKey,
   ignoreInput,
@@ -15,10 +22,7 @@ export const useOnHotKey = ({
 }: UseOnHotKey): void => {
   useEffect(() => {
     const handleHotKey = (e: KeyboardEvent): void => {
-      if (
-        ignoreInput &&
-        (e.target as HTMLElement)?.tagName.toLowerCase() === "input"
-      ) {
+      if (ignoreInput && isTextInput(e.target)) {
         // prevent typing in an input from triggering a keyboard shortcut
         return;
       }

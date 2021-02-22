@@ -17,7 +17,8 @@ export default function Header({
   setCheckedTestIds,
   tests,
 }: Props): JSX.Element {
-  const checked = tests.every((t) => checkedTestIds.includes(t.id));
+  const checked =
+    !!tests.length && tests.every((t) => checkedTestIds.includes(t.id));
   const indeterminate =
     !checked && tests.some((t) => checkedTestIds.includes(t.id));
 
