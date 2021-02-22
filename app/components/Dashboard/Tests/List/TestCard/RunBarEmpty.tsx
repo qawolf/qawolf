@@ -10,6 +10,10 @@ export const boxProps = {
 
 export default function RunBarEmpty(): JSX.Element {
   return (
-    <Box {...boxProps} border={{ color: "gray4", size: borderSize.xsmall }} />
+    <Box
+      {...boxProps}
+      background="gray1"
+      border={{ color: "gray3", size: borderSize.xsmall }}
+    />
   );
 }
