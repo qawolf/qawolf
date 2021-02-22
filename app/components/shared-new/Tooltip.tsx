@@ -17,10 +17,14 @@ export default function Tooltip({
   if (!isVisible) return null;
 
   return (
-    <Drop align={{ bottom: "top" }} plain target={target}>
+    <Drop
+      align={{ bottom: "top" }}
+      plain
+      style={{ marginBottom: "xxsmall" }}
+      target={target}
+    >
       <Box
         background="gray9"
-        margin={{ bottom: "xxsmall" }}
         pad={{ horizontal: "xxsmall", vertical: "xxxsmall" }}
         round={borderSize.small}
       >
