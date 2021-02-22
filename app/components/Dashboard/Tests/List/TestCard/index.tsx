@@ -27,7 +27,7 @@ export default function TestCard({
   test,
   triggers,
 }: Props): JSX.Element {
-  const runs = summary?.last_runs;
+  const runs = summary?.last_runs || null;
 
   return (
     <Box
@@ -53,7 +53,7 @@ export default function TestCard({
           isRunning={runs?.length && !summary?.gif_url}
           testName={test.name}
         />
-        {!!runs && <RunBars runs={runs} />}
+        <RunBars runs={runs} />
         <Text color="gray9" size="componentMedium">
           {test.name}
         </Text>

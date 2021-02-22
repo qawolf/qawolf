@@ -6,7 +6,7 @@ import { TestSummaryRun } from "../../../../../lib/types";
 import { RunStatus } from "../../../../../server/types";
 import { borderSize, edgeSize } from "../../../../../theme/theme-new";
 
-type Props = { runs: TestSummaryRun[] };
+type Props = { runs: TestSummaryRun[] | null };
 
 const getBackgroundForRun = (status: RunStatus): string => {
   if (status === "pass") return "success5";
@@ -16,7 +16,7 @@ const getBackgroundForRun = (status: RunStatus): string => {
 };
 
 export default function RunBars({ runs }: Props): JSX.Element {
-  const innerHtml = runs.map((run) => {
+  const innerHtml = (runs || []).map((run) => {
     return (
       <Link href={`${routes.run}/${run.id}`} key={run.id}>
         <a>
