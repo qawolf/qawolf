@@ -13,6 +13,7 @@ type Type = "dark" | "light";
 type Props = {
   children: ReactNode[];
   direction?: Direction;
+  flex?: BoxProps["flex"];
   hasError?: boolean;
   isDisabled?: boolean;
   label: string;
@@ -24,6 +25,7 @@ type Props = {
 export default function Select({
   children,
   direction,
+  flex,
   hasError,
   isDisabled,
   label,
@@ -45,7 +47,7 @@ export default function Select({
 
   return (
     <Box
-      flex={false}
+      flex={flex}
       ref={ref}
       style={{ position: "relative" }}
       width={width || "full"}

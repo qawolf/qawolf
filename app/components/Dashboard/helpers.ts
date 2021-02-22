@@ -7,6 +7,8 @@ type FilterTests = {
   trigger_id?: string | null;
 };
 
+export const noTriggerId = "none";
+
 export const filterTests = ({
   search,
   testTriggers,
@@ -23,7 +25,14 @@ export const filterTests = ({
     });
   }
 
-  if (trigger_id) {
+  if (trigger_id === noTriggerId) {
+    filteredTests = filteredTests.filter((test) => {
+      const triggerIds =
+        testTriggers.find((t) => t.test_id === test.id)?.trigger_ids || [];
+
+      return !triggerIds.length;
+    });
+  } else if (trigger_id) {
     filteredTests = filteredTests.filter((test) => {
       const triggerIds =
         testTriggers.find((t) => t.test_id === test.id)?.trigger_ids || [];

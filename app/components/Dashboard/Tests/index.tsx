@@ -38,16 +38,18 @@ export default function Tests(): JSX.Element {
     };
   }, [startPolling, stopPolling, teamId]);
 
+  const testTriggers = testTriggersData?.testTriggers || [];
   const triggers = triggersData?.triggers || [];
 
   return (
     <Box pad="medium" width="full">
-      <Header search={search} setSearch={setSearch} triggers={triggers} />
-      <List
-        tests={tests}
-        testTriggers={testTriggersData?.testTriggers || []}
+      <Header
+        search={search}
+        setSearch={setSearch}
+        testTriggers={testTriggers}
         triggers={triggers}
       />
+      <List tests={tests} testTriggers={testTriggers} triggers={triggers} />
     </Box>
   );
 }

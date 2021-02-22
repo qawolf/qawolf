@@ -15,7 +15,7 @@ type Props = {
   IconComponent?: Icon;
   className?: string;
   isSelected?: boolean;
-  label: string;
+  label: JSX.Element | string;
   noIcon?: boolean;
   onClick: () => void;
   type?: "danger";
@@ -44,8 +44,9 @@ function Option({
         {!!IconComponent && (
           <IconComponent color={color} size={edgeSize.small} />
         )}
-        <Text
-          color={color}
+        <Box
+          align="center"
+          direction="row"
           margin={
             noIcon
               ? { left: "xxxsmall" }
@@ -55,11 +56,16 @@ function Option({
                     : `calc(${edgeSize.small} + ${edgeSize.xxsmall})`,
                 }
           }
-          size="component"
-          style={overflowStyle}
+          width="full"
         >
-          {label}
-        </Text>
+          {typeof label === "string" ? (
+            <Text color={color} size="component" style={overflowStyle}>
+              {label}
+            </Text>
+          ) : (
+            label
+          )}
+        </Box>
       </Box>
     </Button>
   );

@@ -1,5 +1,5 @@
 import { Box } from "grommet";
-import { Trigger } from "../../../../lib/types";
+import { TestTriggers, Trigger } from "../../../../lib/types";
 
 import { copy } from "../../../../theme/copy";
 import Text from "../../../shared-new/Text";
@@ -10,12 +10,14 @@ import SelectTrigger from "./SelectTrigger";
 type Props = {
   search: string;
   setSearch: (search: string) => void;
+  testTriggers: TestTriggers[];
   triggers: Trigger[];
 };
 
 export default function Header({
   search,
   setSearch,
+  testTriggers,
   triggers,
 }: Props): JSX.Element {
   return (
@@ -39,7 +41,7 @@ export default function Header({
       </Box>
       <Box align="center" direction="row" justify="between">
         <Search search={search} setSearch={setSearch} />
-        <SelectTrigger triggers={triggers} />
+        <SelectTrigger testTriggers={testTriggers} triggers={triggers} />
       </Box>
     </Box>
   );

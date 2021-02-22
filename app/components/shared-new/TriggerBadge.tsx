@@ -2,6 +2,7 @@ import { Box, Button } from "grommet";
 
 import { copy } from "../../theme/copy";
 import { borderSize, edgeSize } from "../../theme/theme-new";
+import ColorDot from "./ColorDot";
 import Text from "./Text";
 
 type Props = {
@@ -27,15 +28,7 @@ export default function TriggerBadge({
       pad={{ horizontal: "xsmall", vertical: "xxxsmall" }}
       round="xlarge"
     >
-      {!!color && (
-        <Box
-          background={color}
-          height={edgeSize.xxsmall}
-          margin={{ right: "xxsmall" }}
-          round="full"
-          width={edgeSize.xxsmall}
-        />
-      )}
+      {!!color && <ColorDot color={color} margin={{ right: "xxsmall" }} />}
       <Text color="gray9" size="component">
         {name || copy.loading}
       </Text>

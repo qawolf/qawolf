@@ -164,6 +164,7 @@ export const copy = {
     "Woof. We're not mobile friendly yet. Please try again on a larger screen!",
   noRuns: "Not run yet",
   noPassword: "Please provide your password",
+  noTrigger: "No trigger",
   none: "None",
   notFound: "(404. Page not found.)",
   notStarted: "Preparing",
