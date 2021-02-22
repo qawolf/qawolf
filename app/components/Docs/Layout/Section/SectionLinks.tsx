@@ -41,7 +41,6 @@ const StyledSectionLinks = styled(SectionLinks)`
   // each link is 40 px tall including margin
   height: ${({ docs }) => `${docs.length * 40}px`};
   overflow: hidden;
-  transition: ${({ docs }) => `height ${docs.length * 0.2}s ease-in-out`};
 
   ${(props) =>
     !props.isOpen &&

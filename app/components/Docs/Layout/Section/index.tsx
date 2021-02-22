@@ -1,9 +1,9 @@
 import { Box, Button } from "grommet";
-import { useState } from "react";
+import { useRouter } from "next/router";
 
 import { colors, edgeSize } from "../../../../theme/theme-new";
 import Text from "../../../shared-new/Text";
-import { Doc, Section as SectionType } from "../../docs";
+import { Section as SectionType } from "../../docs";
 import SectionLinks, { iconSize } from "./SectionLinks";
 
 type Props = {
@@ -11,20 +11,16 @@ type Props = {
   section: SectionType;
 };
 
-const shouldBeOpen = (docs: Doc[], pathname: string): boolean => {
-  const matchingDoc = docs.find((doc) => doc.href === pathname);
-
-  return !!matchingDoc;
-};
-
 export default function Section({ pathname, section }: Props): JSX.Element {
+  const { push } = useRouter();
+
   const { IconComponent, color, docs, name } = section;
 
-  const [isOpen, setIsOpen] = useState(shouldBeOpen(docs, pathname));
+  const isOpen = !!docs.find((doc) => doc.href === pathname);
 
   const handleClick = (): void => {
-    if (shouldBeOpen(docs, pathname)) return;
-    setIsOpen((prev) => !prev);
+    // open the section's first doc
+    push(docs[0].href);
   };
 
   return (
