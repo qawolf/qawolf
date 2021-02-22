@@ -5,11 +5,16 @@ import { copy } from "../../theme/copy";
 import Text from "./Text";
 
 type Props = {
+  isSmall?: boolean;
   margin?: BoxProps["margin"];
   status?: RunStatus | null;
 };
 
-export default function StatusBadge({ margin, status }: Props): JSX.Element {
+export default function StatusBadge({
+  isSmall,
+  margin,
+  status,
+}: Props): JSX.Element {
   if (!status) return null;
 
   let background = "gray3";
@@ -28,6 +33,8 @@ export default function StatusBadge({ margin, status }: Props): JSX.Element {
     label = copy.testFail;
   }
 
+  const textSize = isSmall ? "componentSmall" : "component";
+
   return (
     <Box
       background={background}
@@ -36,7 +43,7 @@ export default function StatusBadge({ margin, status }: Props): JSX.Element {
       pad={{ horizontal: "xsmall", vertical: "xxxsmall" }}
       round="xlarge"
     >
-      <Text color={color} size="componentSmall">
+      <Text color={color} size={textSize}>
         {label}
       </Text>
     </Box>
