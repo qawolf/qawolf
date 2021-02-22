@@ -55,6 +55,7 @@ export default function Header(): JSX.Element {
             <Box align="center" direction="row">
               <Box
                 background="textDark"
+                flex={false}
                 pad="xxxsmall"
                 round={borderSize.small}
               >

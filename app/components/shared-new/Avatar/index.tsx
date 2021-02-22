@@ -11,6 +11,7 @@ type Props = {
 export default function Avatar({ avatarUrl, wolfColor }: Props): JSX.Element {
   return (
     <Box
+      flex={false}
       height={edgeSize.medium}
       overflow="hidden"
       round="full"
