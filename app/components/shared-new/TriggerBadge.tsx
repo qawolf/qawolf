@@ -2,7 +2,12 @@ import { Box, Button } from "grommet";
 import styled from "styled-components";
 
 import { copy } from "../../theme/copy";
-import { borderSize, colors, transitionDuration } from "../../theme/theme-new";
+import {
+  borderSize,
+  colors,
+  edgeSize,
+  transitionDuration,
+} from "../../theme/theme-new";
 import ColorDot from "./ColorDot";
 import Text from "./Text";
 
@@ -29,7 +34,8 @@ function TriggerBadge({
       border={{ color: "gray3", size: borderSize.xsmall }}
       className={onClick ? className : undefined}
       direction="row"
-      pad={{ horizontal: "xsmall", vertical: "xxxsmall" }}
+      height={edgeSize.large}
+      pad={{ horizontal: "xsmall" }}
       round="xlarge"
     >
       {!!color && <ColorDot color={color} margin={{ right: "xxsmall" }} />}

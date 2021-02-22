@@ -15,6 +15,7 @@ export type Size =
   | "componentHeader"
   | "componentMedium"
   | "componentParagraph"
+  | "componentSmall"
   | "eyebrow";
 
 export type Weight = "bold" | "medium" | "normal";
@@ -32,6 +33,7 @@ export const defaultTag: { [size in Size]: TextProps["as"] } = {
   componentHeader: "h1",
   componentMedium: "p",
   componentParagraph: "p",
+  componentSmall: "p",
   eyebrow: "h2",
 };
 

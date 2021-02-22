@@ -59,7 +59,7 @@ export default function TestCard({
       </Box>
       <Box align="center" direction="row">
         <Triggers triggers={triggers} />
-        {/* <RunBars runs={runs} /> */}
+        <RunBars runs={runs} />
       </Box>
     </Box>
   );

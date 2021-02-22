@@ -14,8 +14,10 @@ import {
 import Text from "../Text";
 import {
   activeBackground,
+  activeSecondaryBackground,
   background,
   hoverBackground,
+  hoverSecondaryBackground,
   textColor,
   Type,
 } from "./config";
@@ -146,7 +148,9 @@ const StyledAppButton = styled(AppButton)`
   &:hover {
     ${(props) =>
       `
-    background: ${hoverBackground[props.hoverType || props.type]};
+    background: ${
+      hoverSecondaryBackground[props.hoverType] || hoverBackground[props.type]
+    };
 
     p, 
     svg {
@@ -161,7 +165,9 @@ const StyledAppButton = styled(AppButton)`
 
   &:active {
     ${(props) => `
-    background: ${activeBackground[props.hoverType || props.type]};
+    background: ${
+      activeSecondaryBackground[props.hoverType] || activeBackground[props.type]
+    };
     `}
 
     ${(props) => props.type === "dark" && `border-color: ${colors.gray4};`}

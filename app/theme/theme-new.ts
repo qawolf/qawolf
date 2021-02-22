@@ -25,10 +25,10 @@ export const colors = {
   danger2: "#FAE6E6",
   danger4: "#F07D7D",
   danger5: "#DB4B4B",
+  danger6: "#C23232",
   danger7: "#AD1F1F",
   danger9: "#66141B",
   danger10: "#33050D",
-  dangerDark: "#C23232",
   error: "#DE4343",
   fill0: "#F5F6FA",
   fill10: "#F2F4F7",
@@ -54,6 +54,8 @@ export const colors = {
   primaryHover: "#695EFF",
   primaryTextLight: "#ABB5F5",
   success5: "#44C76B",
+  success6: "#2DAD54",
+  success7: "#1B943F",
   textDark: "#17174C",
   textLight: "#60708A",
   warning4: "#EBC963",
@@ -83,6 +85,7 @@ export const fontFamily = {
   componentMedium: "Inter Medium",
   componentHeader: "Inter Semibold",
   componentParagraph: "Inter",
+  componentSmall: "Inter",
   eyebrow: "Plex Mono Semibold",
   medium: "Circular Medium",
   normal: "Circular",
@@ -122,6 +125,7 @@ export const text = {
   componentHeader: { height: "24px", size: "18px" },
   componentMedium: { height: "16px", size: "14px" },
   componentParagraph: { height: "20px", size: "14px" },
+  componentSmall: { height: "16px", size: "12px" },
   eyebrow: { height: "18px", size: "16px" },
 };
 
@@ -138,6 +142,7 @@ export const textDesktop = {
   componentHeader: { height: "24px", size: "18px" },
   componentMedium: { height: "16px", size: "14px" },
   componentParagraph: { height: "20px", size: "14px" },
+  componentSmall: { height: "16px", size: "12px" },
   eyebrow: { height: "18px", size: "16px" },
 };
 
