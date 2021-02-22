@@ -44,11 +44,13 @@ export default function TestCard({
       pad={{ horizontal: "small" }}
     >
       <Box align="center" direction="row" fill="horizontal">
-        <CheckBox
-          a11yTitle={test.name}
-          checked={isChecked}
-          onChange={onCheck}
-        />
+        <Box flex={false} margin={{ right: "small" }}>
+          <CheckBox
+            a11yTitle={test.name}
+            checked={isChecked}
+            onChange={onCheck}
+          />
+        </Box>
         <Link href={`${routes.test}/${test.id}`}>
           <a style={{ width: "100%" }}>
             <Box
