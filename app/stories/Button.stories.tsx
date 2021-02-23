@@ -13,7 +13,14 @@ export default {
     type: {
       control: {
         type: "select",
-        options: ["primary", "secondary", "ghost"],
+        options: [
+          "primary",
+          "secondary",
+          "ghost",
+          "danger",
+          "dark",
+          "tertiary",
+        ],
       },
     },
   },
@@ -31,4 +38,28 @@ export const Primary = Template.bind({});
 Primary.args = {
   label: "Click me",
   type: "primary",
+};
+
+export const Secondary = Template.bind({});
+Secondary.args = {
+  label: "Click me",
+  type: "secondary",
+};
+
+export const Ghost = Template.bind({});
+Ghost.args = {
+  label: "Click me",
+  type: "ghost",
+};
+
+export const Danger = Template.bind({});
+Danger.args = {
+  label: "Click me",
+  type: "danger",
+};
+
+export const Dark = Template.bind({});
+Dark.args = {
+  label: "Click me",
+  type: "dark",
 };
