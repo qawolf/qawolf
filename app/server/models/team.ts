@@ -5,7 +5,6 @@ import environment from "../environment";
 import { ModelOptions, Team, TeamPlan } from "../types";
 import { buildApiKey, cuid } from "../utils";
 import { decrypt, encrypt } from "./encrypt";
-import { createDefaultEnvironments } from "./environment";
 
 const DEFAULT_NAME = "My Team";
 
@@ -28,10 +27,10 @@ type ValidateApiKeyForTeam = {
   team_id: string;
 };
 
-export const createDefaultTeam = async (
-  creator_id: string,
-  { db, logger }: ModelOptions
-): Promise<Team> => {
+export const createDefaultTeam = async ({
+  db,
+  logger,
+}: ModelOptions): Promise<Team> => {
   const id = cuid();
 
   const log = logger.prefix("createDefaultTeam");
@@ -55,8 +54,6 @@ export const createDefaultTeam = async (
 
   await db("teams").insert(team);
   log.debug("created", team);
-
-  await createDefaultEnvironments(team.id, { db, logger });
 
   return team;
 };

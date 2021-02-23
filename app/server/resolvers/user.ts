@@ -92,7 +92,7 @@ const createUserWithTeam = async (
         await createUserWithEmail(emailFields!, { db: trx, logger });
 
     if (!hasInvite) {
-      const team = await createDefaultTeam(user.id, {
+      const team = await createDefaultTeam({
         db: trx,
         logger,
       });
