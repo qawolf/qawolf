@@ -17,7 +17,7 @@ import Play from "../../../shared-new/icons/Play";
 import { StateContext } from "../../../StateContext";
 import EnvironmentsMenu from "./EnvironmentsMenu";
 
-type Props = { tests: ShortTest[] };
+type Props = { tests: ShortTest[] | null };
 
 const dividerId = "run-tests-divider";
 
@@ -54,7 +54,7 @@ export default function RunTests({ tests }: Props): JSX.Element {
   const handleMenuClick = (): void => setIsOpen((prev) => !prev);
   const handleMenuClose = (): void => setIsOpen(false);
 
-  const test_ids = tests.map((t) => t.id);
+  const test_ids = tests?.map((t) => t.id) || [];
 
   const handleRunClick = (): void => {
     if (!test_ids.length) return;

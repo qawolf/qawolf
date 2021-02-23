@@ -7,7 +7,7 @@ import Button from "../../../shared-new/AppButton";
 import Add from "../../../shared-new/icons/Add";
 import RunTests from "./RunTests";
 
-type Props = { tests: ShortTest[] };
+type Props = { tests: ShortTest[] | null };
 
 export default function Buttons({ tests }: Props): JSX.Element {
   const handleCreateTestClick = (): void => {

@@ -12,7 +12,7 @@ type Props = {
   checkedTests: ShortTest[];
   search: string;
   setSearch: (search: string) => void;
-  tests: ShortTest[];
+  tests: ShortTest[] | null;
   testTriggers: TestTriggers[];
   triggers: Trigger[];
 };
