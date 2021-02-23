@@ -19,9 +19,9 @@ export const calculateRunnerPool = async (
   const log = options.logger.prefix("calculateRunnerPool");
 
   // Each location should have enough runners for the buffer and
-  // the incomplete (pending / in progress) tests and runs
-  const incompleteRuns = await countIncompleteRuns(options);
-  const pendingTests = await countIncompleteTests("eastus2", options);
+  // the incomplete (pending / in progress) incompleteTests and runs
+  const incompleteRunCount = await countIncompleteRuns(options);
+  const incompleteTests = await countIncompleteTests("eastus2", options);
 
   const pool: LocationCount[] = [];
 
@@ -30,12 +30,12 @@ export const calculateRunnerPool = async (
 
     const buffer = entry?.buffer || 0;
 
-    const { count: numPendingTests } = pendingTests.find(
+    const { count: incompleteTestCount } = incompleteTests.find(
       (c) => c.location === location
     ) || { count: 0 };
 
-    let count = buffer + numPendingTests;
-    if (location === "eastus2") count += incompleteRuns;
+    let count = buffer + incompleteTestCount;
+    if (location === "eastus2") count += incompleteRunCount;
 
     pool.push({ count, location });
   });

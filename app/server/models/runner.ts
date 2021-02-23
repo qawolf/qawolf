@@ -246,6 +246,11 @@ export const deleteUnhealthyRunners = async ({
 
   const ids = rows.map((r) => r.id);
 
+  if (!ids.length) {
+    log.debug("skip: no unhealthy runners");
+    return;
+  }
+
   log.alert("delete unhealthy runners", ids.join(","));
 
   await Promise.all(
