@@ -98,6 +98,7 @@ type BuildSuite = {
   alert_sent_at?: string;
   created_at?: string;
   creator_id?: string;
+  environment_id?: string;
   i?: number;
   team_id?: string;
   trigger_id?: string;
@@ -333,6 +334,7 @@ export const buildSuite = ({
   alert_sent_at,
   created_at,
   creator_id,
+  environment_id,
   team_id,
   trigger_id,
   i,
@@ -343,6 +345,7 @@ export const buildSuite = ({
     alert_sent_at: alert_sent_at || null,
     created_at: created_at || minutesFromNow(),
     creator_id: creator_id || null,
+    environment_id: environment_id || null,
     environment_variables: null,
     id: `suite${finalI === 1 ? "" : i}Id`,
     team_id: team_id || "teamId",

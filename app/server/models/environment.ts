@@ -77,7 +77,6 @@ export const deleteEnvironment = async (
   const log = logger.prefix("deleteEnvironment");
 
   const environment = await findEnvironment(id, { db, logger });
-
   await db("environments").where({ id }).del();
 
   log.debug("deleted", id);

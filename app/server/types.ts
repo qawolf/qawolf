@@ -196,6 +196,7 @@ export type Suite = {
   alert_sent_at?: string;
   created_at: string;
   creator_id: string | null;
+  environment_id: string | null;
   environment_variables: string | null;
   id: string;
   team_id: string;

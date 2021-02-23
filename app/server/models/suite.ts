@@ -4,6 +4,7 @@ import { cuid } from "../utils";
 import { encrypt } from "./encrypt";
 import { createRunsForTests } from "./run";
 import { findEnabledTestsForTrigger } from "./test";
+import { findTrigger } from "./trigger";
 
 export type SuiteForTeam = Suite & {
   github_login: string | null;
@@ -13,6 +14,7 @@ export type SuiteForTeam = Suite & {
 
 type CreateSuite = {
   creator_id?: string;
+  environment_id: string | null;
   environment_variables?: FormattedVariables;
   team_id: string;
   trigger_id: string;
@@ -48,7 +50,13 @@ type UpdateSuite = {
 };
 
 export const createSuite = async (
-  { creator_id, environment_variables, team_id, trigger_id }: CreateSuite,
+  {
+    creator_id,
+    environment_id,
+    environment_variables,
+    team_id,
+    trigger_id,
+  }: CreateSuite,
   { db, logger }: ModelOptions
 ): Promise<Suite> => {
   const log = logger.prefix("createSuite");
@@ -63,6 +71,7 @@ export const createSuite = async (
   const suite = {
     created_at: timestamp,
     creator_id: creator_id || null,
+    environment_id,
     environment_variables: formattedVariables,
     id: cuid(),
     team_id,
@@ -120,8 +129,16 @@ export const createSuiteForTests = async (
     tests.map((test) => test.id)
   );
 
+  const trigger = await findTrigger(trigger_id, { db, logger });
+
   const suite = await createSuite(
-    { creator_id, environment_variables, team_id, trigger_id },
+    {
+      creator_id,
+      environment_id: trigger.environment_id,
+      environment_variables,
+      team_id,
+      trigger_id,
+    },
     { db, logger }
   );
 

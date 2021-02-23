@@ -9,6 +9,7 @@ import {
 import { minutesFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
 import {
+  buildEnvironment,
   buildSuite,
   buildTeam,
   buildTest,
@@ -19,7 +20,7 @@ import {
 
 const environment_variables = { secret: "shh" };
 
-const trigger = buildTrigger({});
+const trigger = buildTrigger({ environment_id: "environmentId" });
 
 const test = buildTest({});
 const test2 = buildTest({ i: 2 });
@@ -30,7 +31,10 @@ const options = { db, logger };
 beforeAll(async () => {
   await db("users").insert(buildUser({}));
   await db("teams").insert([buildTeam({}), buildTeam({ i: 2 })]);
+
+  await db("environments").insert(buildEnvironment({}));
   await db("triggers").insert([trigger, buildTrigger({ i: 2 })]);
+
   await db("tests").insert([test, test2]);
 });
 
@@ -40,7 +44,11 @@ describe("suite model", () => {
 
     it("creates a new suite", async () => {
       await createSuite(
-        { team_id: trigger.team_id, trigger_id: trigger.id },
+        {
+          environment_id: null,
+          team_id: trigger.team_id,
+          trigger_id: trigger.id,
+        },
         options
       );
 
@@ -48,6 +56,7 @@ describe("suite model", () => {
       expect(suites).toMatchObject([
         {
           creator_id: null,
+          environment_id: null,
           environment_variables: null,
           team_id: trigger.team_id,
           trigger_id: trigger.id,
@@ -56,10 +65,11 @@ describe("suite model", () => {
       ]);
     });
 
-    it("creates a new suite with specified creator and environment variables", async () => {
+    it("creates a new suite with specified creator and environment", async () => {
       await createSuite(
         {
           creator_id: trigger.creator_id,
+          environment_id: "environmentId",
           environment_variables,
           team_id: trigger.team_id,
           trigger_id: trigger.id,
@@ -71,6 +81,7 @@ describe("suite model", () => {
       expect(suites).toMatchObject([
         {
           creator_id: trigger.creator_id,
+          environment_id: "environmentId",
           environment_variables: encrypt(JSON.stringify(environment_variables)),
           id: expect.any(String),
           team_id: trigger.team_id,
@@ -106,6 +117,7 @@ describe("suite model", () => {
       expect(suites).toMatchObject([
         {
           creator_id: "userId",
+          environment_id: "environmentId",
           environment_variables: encrypt(JSON.stringify(environment_variables)),
           team_id: "teamId",
           trigger_id: "triggerId",
