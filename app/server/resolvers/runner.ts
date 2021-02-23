@@ -168,7 +168,7 @@ export const updateRunnerResolver = async (
 
   let runId = runner.run_id;
 
-  // assign the runner if it's session has not been
+  // assign the runner if its session has not been
   if (!runner.session_expires_at) {
     const pending = await findPendingTestOrRunId(runner.location, {
       db,
