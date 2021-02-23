@@ -1,4 +1,5 @@
 import { Box } from "grommet";
+import { useContext, useRef, useState } from "react";
 import styled from "styled-components";
 
 import { copy } from "../../../../theme/copy";
@@ -10,6 +11,8 @@ import {
 import Button from "../../../shared-new/AppButton";
 import ArrowDown from "../../../shared-new/icons/ArrowDown";
 import Play from "../../../shared-new/icons/Play";
+import { StateContext } from "../../../StateContext";
+import EnvironmentsMenu from "./EnvironmentsMenu";
 
 const dividerId = "run-tests-divider";
 
@@ -32,6 +35,14 @@ const StyledBox = styled(Box)`
 `;
 
 export default function RunTests(): JSX.Element {
+  const { environmentId, teamId } = useContext(StateContext);
+  const ref = useRef<HTMLDivElement>(null);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleMenuClick = (): void => setIsOpen((prev) => !prev);
+  const handleMenuClose = (): void => setIsOpen(false);
+
   return (
     <StyledBox direction="row" margin={{ right: "small" }}>
       <Button
@@ -42,12 +53,22 @@ export default function RunTests(): JSX.Element {
         type="secondary"
       />
       <Box background={colors.gray3} id={dividerId} width={borderSize.xsmall} />
-      <Button
-        a11yTitle="choose environment"
-        IconComponent={ArrowDown}
-        noBorderSide="left"
-        type="secondary"
-      />
+      <Box ref={ref}>
+        <Button
+          a11yTitle="choose environment"
+          IconComponent={ArrowDown}
+          noBorderSide="left"
+          onClick={handleMenuClick}
+          type="secondary"
+        />
+        <EnvironmentsMenu
+          environmentId={environmentId}
+          isOpen={isOpen}
+          onClose={handleMenuClose}
+          target={ref.current}
+          teamId={teamId}
+        />
+      </Box>
     </StyledBox>
   );
 }

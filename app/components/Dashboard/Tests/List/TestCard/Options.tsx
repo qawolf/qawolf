@@ -43,7 +43,7 @@ export default function Options({ test }: Props): JSX.Element {
   // use Drop instead of Menu because Drop is removed from
   // document flow (prevents menu from being trapped in test list)
   return (
-    <Box ref={ref} style={{ position: "relative" }}>
+    <Box ref={ref}>
       <Button
         IconComponent={More}
         a11yTitle={`${test.name} options`}

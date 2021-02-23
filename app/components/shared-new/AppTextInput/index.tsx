@@ -48,6 +48,10 @@ const StyledGrommetTextInput = styled(GrommetTextInput)`
   line-height: ${edgeSize.large};
   transition: ${transition};
 
+  &:hover {
+    border-color: ${colors.gray5};
+  }
+
   &:focus {
     border-color: ${colors.primary};
   }

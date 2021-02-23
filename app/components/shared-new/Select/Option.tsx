@@ -17,7 +17,7 @@ type Props = {
   isSelected?: boolean;
   label: JSX.Element | string;
   noIcon?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
   type?: "danger";
 };
 
