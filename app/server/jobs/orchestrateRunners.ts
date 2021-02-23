@@ -1,26 +1,28 @@
 import { minutesFromNow } from "../../shared/utils";
 import environment from "../environment";
-import { countPendingRuns } from "../models/run";
+import { countIncompleteRuns } from "../models/run";
 import {
   createRunners,
   deleteUnhealthyRunners,
   findRunners,
   updateRunner,
 } from "../models/runner";
-import { countPendingTests, LocationCount } from "../models/test";
+import { countIncompleteTests, LocationCount } from "../models/test";
 import { ModelOptions } from "../types";
 
 /**
  * @summary Calculate the number of runners per location.
- *  The buffer + pending runs and tests.
+ *          Our goal is that the available runners matches our buffer.
  */
 export const calculateRunnerPool = async (
   options: ModelOptions
 ): Promise<LocationCount[]> => {
   const log = options.logger.prefix("calculateRunnerPool");
 
-  const pendingRuns = await countPendingRuns(options);
-  const pendingTests = await countPendingTests("eastus2", options);
+  // Each location should have enough runners for the buffer and
+  // the incomplete (pending / in progress) tests and runs
+  const incompleteRuns = await countIncompleteRuns(options);
+  const pendingTests = await countIncompleteTests("eastus2", options);
 
   const pool: LocationCount[] = [];
 
@@ -34,7 +36,7 @@ export const calculateRunnerPool = async (
     ) || { count: 0 };
 
     let count = buffer + numPendingTests;
-    if (location === "eastus2") count += pendingRuns;
+    if (location === "eastus2") count += incompleteRuns;
 
     pool.push({ count, location });
   });

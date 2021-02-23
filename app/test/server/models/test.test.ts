@@ -17,7 +17,7 @@ import {
 const {
   buildTestName,
   createTestAndTestTriggers,
-  countPendingTests,
+  countIncompleteTests,
   deleteTests,
   findEnabledTestsForTrigger,
   findPendingTest,
@@ -270,12 +270,12 @@ describe("pending tests", () => {
     await db("tests").del();
   });
 
-  describe("countPendingTests", () => {
-    it("counts tests that requested a runner", async () => {
-      const result = await countPendingTests("eastus2", options);
+  describe("countIncompleteTests", () => {
+    it("counts tests assigned to and requesting a runner", async () => {
+      const result = await countIncompleteTests("eastus2", options);
       expect(result).toEqual([
         { count: 2, location: "eastus2" },
-        { count: 1, location: "westus2" },
+        { count: 2, location: "westus2" },
       ]);
     });
   });

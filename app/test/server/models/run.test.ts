@@ -1,6 +1,6 @@
 import { encrypt } from "../../../server/models/encrypt";
 import {
-  countPendingRuns,
+  countIncompleteRuns,
   createRunsForTests,
   findLatestRuns,
   findPendingRun,
@@ -118,10 +118,10 @@ describe("run model", () => {
 
   afterAll(() => jest.restoreAllMocks());
 
-  describe("countPendingRuns", () => {
-    it("counts the unassigned runs that have not started", async () => {
-      const result = await countPendingRuns(options);
-      expect(result).toEqual(4);
+  describe("countIncompleteRuns", () => {
+    it("counts the runs that have not completed", async () => {
+      const result = await countIncompleteRuns(options);
+      expect(result).toEqual(5);
     });
   });
 

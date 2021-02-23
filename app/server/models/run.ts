@@ -39,17 +39,16 @@ export type UpdateRun = {
   status?: RunStatus;
 };
 
-export const countPendingRuns = async ({
+export const countIncompleteRuns = async ({
   db,
   logger,
 }: ModelOptions): Promise<number> => {
-  const log = logger.prefix("countPendingRuns");
+  const log = logger.prefix("countIncompleteRuns");
 
   const result = await db("runs")
     .count("*", { as: "count" })
     .from("runs")
-    .leftJoin("runners", "runners.run_id", "runs.id")
-    .where({ "runners.id": null, started_at: null })
+    .where({ completed_at: null })
     .first();
 
   log.debug(result);
