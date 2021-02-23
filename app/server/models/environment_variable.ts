@@ -80,21 +80,6 @@ export const deleteEnvironmentVariable = async (
   return id;
 };
 
-export const deleteEnvironmentVariablesForEnvironment = async (
-  environment_id: string,
-  { db, logger }: ModelOptions
-): Promise<number> => {
-  const log = logger.prefix("deleteEnvironmentVariablesForEnvironment");
-  log.debug("environment", environment_id);
-
-  const deleteCount = await db("environment_variables")
-    .where({ environment_id })
-    .del();
-  log.debug(`deleted ${deleteCount} environment variables`);
-
-  return deleteCount;
-};
-
 export const findEnvironmentVariable = async (
   id: string,
   { db, logger }: ModelOptions

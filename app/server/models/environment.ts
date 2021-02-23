@@ -1,7 +1,6 @@
 import { ClientError } from "../errors";
 import { Environment, ModelOptions } from "../types";
 import { cuid } from "../utils";
-import { deleteEnvironmentVariablesForEnvironment } from "./environment_variable";
 
 type CreateEnvironment = {
   name: string;
@@ -79,13 +78,7 @@ export const deleteEnvironment = async (
 
   const environment = await findEnvironment(id, { db, logger });
 
-  await db.transaction(async (trx) => {
-    await trx("triggers")
-      .where({ environment_id: id })
-      .update({ environment_id: null });
-    await deleteEnvironmentVariablesForEnvironment(id, { db: trx, logger });
-    await trx("environments").where({ id }).del();
-  });
+  await db("environments").where({ id }).del();
 
   log.debug("deleted", id);
 
