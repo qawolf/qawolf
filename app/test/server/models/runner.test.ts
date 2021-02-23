@@ -42,10 +42,9 @@ describe("assignRunner", () => {
   beforeAll(() => db("runners").insert(runner));
 
   afterEach(() =>
-    updateRunner(
-      { id: "runnerId", run_id: null, session_expires_at: null, test_id: null },
-      options
-    )
+    db("runners")
+      .update({ run_id: null, session_expires_at: null, test_id: null })
+      .where({ id: "runnerId" })
   );
 
   afterAll(() => db("runners").del());
@@ -248,21 +247,17 @@ describe("findRunner", () => {
   });
 
   it("includes deleted runners when include_deleted is passed", async () => {
-    await updateRunner(
-      { id: "runnerId", deleted_at: minutesFromNow() },
-      options
+    await db("runners").insert(
+      buildRunner({ i: 4, deleted_at: minutesFromNow() })
     );
-
-    const runner = await findRunner({ id: "runnerId" }, options);
+    const runner = await findRunner({ id: "runner4Id" }, options);
     expect(runner).toBeNull();
 
     const runner2 = await findRunner(
-      { id: "runnerId", include_deleted: true },
+      { id: "runner4Id", include_deleted: true },
       options
     );
-    expect(runner2.id).toEqual("runnerId");
-
-    await db("runners").update({ deleted_at: null }).where({ id: "runnerId" });
+    expect(runner2.id).toEqual("runner4Id");
   });
 });
 
@@ -409,6 +404,46 @@ describe("requestRunnerForTest", () => {
   });
 });
 
+describe("resetRunner", () => {
+  // it("does not delete a runner if it is assigned", async () => {
+  //   await db("runners").update({ run_id: "runId", test_id: null });
+  //   const runner = await updateRunner(
+  //     { deleted_at: minutesFromNow(), id: "runnerId" },
+  //     options
+  //   );
+  //   expect(runner.deleted_at).toBeNull();
+  //   await db("runners").update({ run_id: null, test_id: null });
+  // });
+  // it("unassigns the test when the runner is deleted", async () => {
+  //   // TODO move this....
+  //   // if (updates.run_id === null && runner.run_id) {
+  //   // }
+  //   await db("runners").update({ run_id: null, test_id: "testId" });
+  //   const runner = await updateRunner(
+  //     { deleted_at: minutesFromNow(), id: "runnerId" },
+  //     options
+  //   );
+  //   expect(runner).toMatchObject({ test_id: null });
+  //   await db("runners").update({ deleted_at: null }).where({ id: "runnerId" });
+  // });
+  // it("fails a uncompleted run when the runner is unassigned", async () => {
+  //   await db("runners").update({ run_id: "runId", test_id: null });
+  //   // check it fails the run when it is unassigned since it was not completed
+  //   await updateRunner({ id: "runnerId", run_id: null }, options);
+  //   const run = await runModel.findRun("runId", options);
+  //   expect(run).toMatchObject({ error: "expired", status: "fail" });
+  // });
+  // it("unassigns the run when the runner is deleted", async () => {
+  //   await db("runners").update({ run_id: "runId", test_id: null });
+  //   const runner = await updateRunner(
+  //     { deleted_at: minutesFromNow(), id: "runnerId" },
+  //     options
+  //   );
+  //   expect(runner).toMatchObject({ run_id: null });
+  //   await db("runners").update({ deleted_at: null }).where({ id: "runnerId" });
+  // });
+});
+
 describe("updateRunner", () => {
   beforeAll(async () => {
     await db("runners").insert(buildRunner({}));
@@ -420,7 +455,6 @@ describe("updateRunner", () => {
     const deployed_at = minutesFromNow();
     const health_checked_at = minutesFromNow();
     const ready_at = minutesFromNow();
-    const restarted_at = minutesFromNow();
     const session_expires_at = minutesFromNow();
 
     await updateRunner(
@@ -430,7 +464,6 @@ describe("updateRunner", () => {
         health_checked_at,
         id: "runnerId",
         ready_at,
-        restarted_at,
         session_expires_at,
       },
       options
@@ -444,43 +477,8 @@ describe("updateRunner", () => {
       health_checked_at: new Date(health_checked_at),
       id: "runnerId",
       ready_at: new Date(ready_at),
-      restarted_at: new Date(restarted_at),
       session_expires_at: new Date(session_expires_at),
     });
-  });
-
-  it("unassigns the test when the runner is deleted", async () => {
-    await db("runners").update({ run_id: null, test_id: "testId" });
-
-    const runner = await updateRunner(
-      { deleted_at: minutesFromNow(), id: "runnerId" },
-      options
-    );
-    expect(runner).toMatchObject({ test_id: null });
-
-    await db("runners").update({ deleted_at: null }).where({ id: "runnerId" });
-  });
-
-  it("fails a uncompleted run when the runner is unassigned", async () => {
-    await db("runners").update({ run_id: "runId", test_id: null });
-
-    // check it fails the run when it is unassigned since it was not completed
-    await updateRunner({ id: "runnerId", run_id: null }, options);
-
-    const run = await runModel.findRun("runId", options);
-    expect(run).toMatchObject({ error: "expired", status: "fail" });
-  });
-
-  it("unassigns the run when the runner is deleted", async () => {
-    await db("runners").update({ run_id: "runId", test_id: null });
-
-    const runner = await updateRunner(
-      { deleted_at: minutesFromNow(), id: "runnerId" },
-      options
-    );
-    expect(runner).toMatchObject({ run_id: null });
-
-    await db("runners").update({ deleted_at: null }).where({ id: "runnerId" });
   });
 
   it("throws an error when the runner is not found", async () => {

@@ -108,7 +108,7 @@ describe("testHistoryResolver", () => {
 describe("updateRunResolver", () => {
   beforeEach(() => {
     jest.spyOn(alertService, "sendAlert").mockResolvedValue();
-    jest.spyOn(runnerModel, "expireRunner").mockResolvedValue();
+    jest.spyOn(runnerModel, "resetRunner").mockResolvedValue();
     jest.spyOn(runResolver, "validateApiKey").mockResolvedValue();
   });
 
@@ -144,7 +144,7 @@ describe("updateRunResolver", () => {
     const run = await db("runs").select("*").where({ id: "run2Id" }).first();
 
     expect(run).toMatchObject({ current_line: 2, status: "fail" });
-    expect(runnerModel.expireRunner).toBeCalled();
+    expect(runnerModel.resetRunner).toBeCalled();
   });
 
   it("updates the run and expires the runner if run succeeded", async () => {
@@ -157,7 +157,7 @@ describe("updateRunResolver", () => {
     const run = await db("runs").select("*").where({ id: "run2Id" }).first();
 
     expect(run).toMatchObject({ current_line: 2, status: "pass" });
-    expect(runnerModel.expireRunner).toBeCalled();
+    expect(runnerModel.resetRunner).toBeCalled();
   });
 
   it("retries the run if shouldRetry is true", async () => {
@@ -174,7 +174,7 @@ describe("updateRunResolver", () => {
       started_at: null,
       status: "created",
     });
-    expect(runnerModel.expireRunner).toBeCalled();
+    expect(runnerModel.resetRunner).toBeCalled();
   });
 });
 

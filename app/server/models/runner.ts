@@ -3,7 +3,7 @@ import environment from "../environment";
 import { rankLocations } from "../services/location";
 import { ModelOptions, Runner, Test } from "../types";
 import { cuid } from "../utils";
-import { findPendingRun, findRun, updateRun } from "./run";
+import { findPendingRun, findRun, UpdateRun, updateRun } from "./run";
 import { findPendingTest, updateTest, updateTestToPending } from "./test";
 
 type AssignRunner = {
@@ -37,18 +37,19 @@ type RequestRunnerForTest = {
   test: Test;
 };
 
+type ResetRunner = {
+  id?: string;
+  run_id?: string;
+  type: "delete_unassigned" | "delete_unhealthy" | "expire" | "restart";
+};
+
 export type UpdateRunner = {
-  allow_skip?: boolean;
-  api_key?: string | null;
-  deployed_at?: string | null;
-  deleted_at?: string;
+  api_key?: string;
+  deployed_at?: string;
   health_checked_at?: string;
   id: string;
-  ready_at?: string | null;
-  restarted_at?: string;
-  run_id?: null;
-  session_expires_at?: string | null;
-  test_id?: null;
+  ready_at?: string;
+  session_expires_at?: string;
 };
 
 const ASSIGN_CONSTRAINTS = ["runners_run_id_unique", "runners_test_id_unique"];
@@ -145,23 +146,77 @@ export const createRunners = async (
   return runners;
 };
 
-export const expireRunner = async (
-  find: FindRunner,
+export const resetRunner = async (
+  { id, run_id, type }: ResetRunner,
   options: ModelOptions
 ): Promise<void> => {
-  const runner = await findRunner(find, options);
-  if (!runner) return;
+  const log = options.logger.prefix("resetRunner");
 
-  // clear the run_id and test_id so they can be reassigned if needed
-  await updateRunner(
-    {
-      id: runner.id,
-      run_id: null,
-      session_expires_at: minutesFromNow(),
-      test_id: null,
-    },
-    options
-  );
+  const runner = await findRunner({ id, run_id }, options);
+  if (!runner) {
+    log.debug("skip: runner not found (deleted)", { id, run_id, type });
+    return;
+  }
+
+  const run = await findRun(runner.run_id, options);
+
+  log.debug({ id: runner.id, run_id: run?.id });
+
+  if (run && type === "delete_unassigned") {
+    log.debug(`skip: runner ${runner.id} assigned to run ${run.id}`);
+    return;
+  }
+
+  if (run?.status === "created" && run.started_at) {
+    // handle the incomplete run assigned to the runner
+    const runUpdates: UpdateRun = { id: run.id };
+
+    if (type === "delete_unhealthy" && !run.retries) {
+      // an unhealthy runner could be our fault so retry it once
+      // retry once only, since it could be a malicious user
+      log.alert("retry unhealthy runner run", run.id);
+      runUpdates.retries = (run.retries || 0) + 1;
+      runUpdates.started_at = null;
+      runUpdates.status = "created";
+    } else {
+      // fail the expired run
+      log.alert("fail expired run", run.id);
+      runUpdates.error = "expired";
+      runUpdates.status = "fail";
+    }
+
+    await updateRun(runUpdates, options);
+  }
+
+  const now = minutesFromNow();
+
+  const updates: Partial<Runner> = {
+    api_key: null,
+    id: runner.id,
+    ready_at: null,
+    run_id: null,
+    session_expires_at: null,
+    test_id: null,
+  };
+
+  if (type === "delete_unassigned" || type === "delete_unhealthy") {
+    updates.deleted_at = now;
+  } else if (type === "expire") {
+    updates.session_expires_at = now;
+  } else if (type === "restart") {
+    // reset the delete timer
+    updates.health_checked_at = now;
+    updates.restarted_at = now;
+  }
+
+  const where: Partial<Runner> = { id };
+  if (type == "delete_unassigned") {
+    where.run_id = null;
+    where.test_id = null;
+  }
+
+  const count = await options.db("runners").where(where).update(updates);
+  log.debug(count ? "updated" : "did not update", id, updates);
 };
 
 /**
@@ -193,14 +248,11 @@ export const deleteUnhealthyRunners = async ({
 
   const ids = rows.map((r) => r.id);
 
-  log.debug("delete unhealthy runners", ids.join(","));
+  log.alert("delete unhealthy runners", ids.join(","));
 
   await Promise.all(
     ids.map((id) =>
-      updateRunner(
-        { allow_skip: true, id, deleted_at: minutesFromNow() },
-        { db, logger }
-      )
+      resetRunner({ id, type: "delete_unhealthy" }, { db, logger })
     )
   );
 
@@ -335,43 +387,24 @@ export const requestRunnerForTest = async (
 };
 
 export const updateRunner = async (
-  { allow_skip, id, ...options }: UpdateRunner,
+  { id, ...options }: UpdateRunner,
   { db, logger }: ModelOptions
 ): Promise<Runner> => {
   const log = logger.prefix("updateRunner");
 
   return db.transaction(async (trx) => {
     const runner = await findRunner({ id }, { db: trx, logger });
-    if (!runner) {
-      if (allow_skip) return;
-      throw new Error(`runner not found ${id}`);
-    }
+    if (!runner) throw new Error(`runner not found ${id}`);
 
     const updates: Partial<Runner> = {
       ...options,
       updated_at: minutesFromNow(),
     };
 
-    if (updates.deleted_at) {
-      updates.run_id = null;
-      updates.test_id = null;
-    }
+    const count = await trx("runners").where({ id }).update(updates);
+    if (!count) throw new Error("runner not updated");
 
-    if (updates.run_id === null && runner.run_id) {
-      const run = await findRun(runner.run_id, { db: trx, logger });
-      if (run.status === "created" && run.started_at) {
-        // mark it as failed since it is not finished
-        logger.alert("run expired", run.id);
-        await updateRun(
-          { error: "expired", id: run.id, status: "fail" },
-          { db: trx, logger }
-        );
-      }
-    }
-
-    await trx("runners").where({ id }).update(updates);
     log.debug("updated", id, updates);
-
     return { ...runner, ...updates };
   });
 };

@@ -1,11 +1,10 @@
-import { minutesFromNow } from "../../shared/utils";
 import environment from "../environment";
 import { countIncompleteRuns } from "../models/run";
 import {
   createRunners,
   deleteUnhealthyRunners,
   findRunners,
-  updateRunner,
+  resetRunner,
 } from "../models/runner";
 import { countIncompleteTests, LocationCount } from "../models/test";
 import { ModelOptions } from "../types";
@@ -89,16 +88,7 @@ export const balanceRunnerPool = async ({
     });
 
     const deletePromises: Promise<unknown>[] = idsToDelete.map((id) =>
-      updateRunner(
-        {
-          // don't throw an error if the runner is not found since
-          // it could have already been deleted (for example it it was unhealthy)
-          allow_skip: true,
-          id,
-          deleted_at: minutesFromNow(),
-        },
-        { db: trx, logger }
-      )
+      resetRunner({ id, type: "delete_unassigned" }, { db: trx, logger })
     );
 
     await Promise.all([

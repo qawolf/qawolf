@@ -139,10 +139,9 @@ export const findPendingRun = async (
 export const findRun = async (
   id: string,
   { db }: ModelOptions
-): Promise<Run> => {
+): Promise<Run | null> => {
   const run = await db.select("*").from("runs").where({ id }).first();
-  if (!run) throw new Error("run not found " + id);
-  return run;
+  return run || null;
 };
 
 export const findRunResult = async (
@@ -150,6 +149,8 @@ export const findRunResult = async (
   { db, logger }: ModelOptions
 ): Promise<RunResult> => {
   const run = await findRun(id, { db, logger });
+  if (!run) throw new Error("run not found");
+
   const environment_id = await findEnvironmentIdForRun(id, { db, logger });
 
   let logs_url: string | null = null;
@@ -279,6 +280,7 @@ export const updateRun = async (
   }
 
   const run = await findRun(id, { db, logger });
+  if (!run) throw new Error("run not found");
 
   if (["fail", "pass"].includes(options.status)) {
     updates.completed_at = timestamp;

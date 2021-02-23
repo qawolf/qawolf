@@ -8,7 +8,7 @@ import {
   UpdateRun,
   updateRun,
 } from "../models/run";
-import { expireRunner, findRunner } from "../models/runner";
+import { findRunner, resetRunner } from "../models/runner";
 import {
   Context,
   IdQuery,
@@ -112,6 +112,7 @@ export const updateRunResolver = async (
 
   const updatedRun = await db.transaction(async (trx) => {
     const run = await findRun(id, { db: trx, logger });
+    if (!run) throw new Error("run not found");
 
     await validateApiKey({ api_key, run }, { db: trx, logger });
 
@@ -130,12 +131,12 @@ export const updateRunResolver = async (
       updates.status = status;
     }
 
-    // update the run before expiring the runner
-    // to avoid the run from being marked as expired
+    // update the run before resetRunner
+    // otherwise the run will be marked as expired
     const updatedRun = await updateRun(updates, { db: trx, logger });
 
     if (["fail", "pass"].includes(status)) {
-      await expireRunner({ run_id: id }, { db: trx, logger });
+      await resetRunner({ run_id: id, type: "expire" }, { db: trx, logger });
     }
 
     return updatedRun;

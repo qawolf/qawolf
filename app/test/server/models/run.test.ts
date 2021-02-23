@@ -199,10 +199,8 @@ describe("run model", () => {
       });
     });
 
-    it("throws an error if run does not exist", async () => {
-      await expect(findRun("fakeId", options)).rejects.toThrowError(
-        "not found"
-      );
+    it("returns null if run does not exist", async () => {
+      expect(await findRun("fakeId", options)).toEqual(null);
     });
   });
 
