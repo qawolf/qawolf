@@ -116,18 +116,14 @@ export const updateRunResolver = async (
 
     await validateApiKey({ api_key, run }, { db: trx, logger });
 
-    const updates: UpdateRun = { error, id };
-
+    const updates: UpdateRun = { id };
     if (shouldRetry({ error, retries: run.retries, status })) {
-      updates.retries = (run.retries || 0) + 1;
-      updates.started_at = null;
-      updates.status = "created";
-      log.alert("retry error", error.substring(0, 100));
+      updates.retry_error = error;
     } else if (status === "created") {
       updates.started_at = minutesFromNow();
     } else {
       updates.current_line = current_line;
-      updates.error = error || null;
+      updates.error = status === "pass" ? null : error || null;
       updates.status = status;
     }
 

@@ -34,7 +34,7 @@ export type UpdateRun = {
   current_line?: number;
   error?: string;
   id: string;
-  retries?: number;
+  retry_error?: string;
   started_at?: string;
   status?: RunStatus;
 };
@@ -263,7 +263,7 @@ export const findTestHistory = async (
 };
 
 export const updateRun = async (
-  { id, error, ...options }: UpdateRun,
+  { id, error, retry_error, ...options }: UpdateRun,
   { db, logger }: ModelOptions
 ): Promise<Run> => {
   const log = logger.prefix("updateRun");
@@ -275,14 +275,21 @@ export const updateRun = async (
     updated_at: timestamp,
   };
 
-  if (error !== undefined) {
-    updates.error = error ? error.substring(0, 100) : null;
-  }
-
   const run = await findRun(id, { db, logger });
   if (!run) throw new Error("run not found");
 
-  if (["fail", "pass"].includes(options.status)) {
+  if (retry_error) {
+    log.alert("retry error", retry_error.substring(0, 250));
+    updates.completed_at = null;
+    updates.error = retry_error.substring(0, 100);
+    updates.retries = (run.retries || 0) + 1;
+    updates.started_at = null;
+    updates.status = "created";
+  } else if (error !== undefined) {
+    updates.error = error ? error.substring(0, 100) : null;
+  }
+
+  if (["fail", "pass"].includes(updates.status)) {
     updates.completed_at = timestamp;
 
     // ensure started_at is set, so the run is no longer pending

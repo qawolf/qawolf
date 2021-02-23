@@ -293,6 +293,7 @@ export const buildRun = ({
     created_at: created_at || undefined,
     current_line: 1,
     id: `run${finalI === 1 ? "" : i}Id`,
+    retries: null,
     started_at: started_at || undefined,
     status: status || "created",
     suite_id: suite_id || null,

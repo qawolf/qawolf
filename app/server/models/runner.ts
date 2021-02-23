@@ -148,18 +148,17 @@ export const createRunners = async (
 
 export const resetRunner = async (
   { id, run_id, type }: ResetRunner,
-  options: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<void> => {
-  const log = options.logger.prefix("resetRunner");
+  const log = logger.prefix("resetRunner");
 
-  const runner = await findRunner({ id, run_id }, options);
+  const runner = await findRunner({ id, run_id }, { db, logger });
   if (!runner) {
     log.debug("skip: runner not found (deleted)", { id, run_id, type });
     return;
   }
 
-  const run = await findRun(runner.run_id, options);
-
+  const run = await findRun(runner.run_id, { db, logger });
   log.debug({ id: runner.id, run_id: run?.id });
 
   if (run && type === "delete_unassigned") {
@@ -167,56 +166,53 @@ export const resetRunner = async (
     return;
   }
 
-  if (run?.status === "created" && run.started_at) {
-    // handle the incomplete run assigned to the runner
-    const runUpdates: UpdateRun = { id: run.id };
+  return db.transaction(async (trx) => {
+    if (run?.status === "created" && run.started_at) {
+      const runUpdates: UpdateRun = { id: run.id };
 
-    if (type === "delete_unhealthy" && !run.retries) {
-      // an unhealthy runner could be our fault so retry it once
-      // retry once only, since it could be a malicious user
-      log.alert("retry unhealthy runner run", run.id);
-      runUpdates.retries = (run.retries || 0) + 1;
-      runUpdates.started_at = null;
-      runUpdates.status = "created";
-    } else {
-      // fail the expired run
-      log.alert("fail expired run", run.id);
-      runUpdates.error = "expired";
-      runUpdates.status = "fail";
+      if (type === "delete_unhealthy" && !run.retries) {
+        // an unhealthy runner could be our fault so retry it once
+        // retry once only, since it could be a malicious user
+        runUpdates.retry_error = "unhealthy_runner";
+      } else {
+        log.alert("fail expired run", run.id);
+        runUpdates.error = "expired";
+        runUpdates.status = "fail";
+      }
+
+      await updateRun(runUpdates, { db: trx, logger });
     }
 
-    await updateRun(runUpdates, options);
-  }
+    const now = minutesFromNow();
 
-  const now = minutesFromNow();
+    const updates: Partial<Runner> = {
+      api_key: null,
+      id: runner.id,
+      ready_at: null,
+      run_id: null,
+      session_expires_at: null,
+      test_id: null,
+    };
 
-  const updates: Partial<Runner> = {
-    api_key: null,
-    id: runner.id,
-    ready_at: null,
-    run_id: null,
-    session_expires_at: null,
-    test_id: null,
-  };
+    if (type === "delete_unassigned" || type === "delete_unhealthy") {
+      updates.deleted_at = now;
+    } else if (type === "expire") {
+      updates.session_expires_at = now;
+    } else if (type === "restart") {
+      // reset the delete timer
+      updates.health_checked_at = now;
+      updates.restarted_at = now;
+    }
 
-  if (type === "delete_unassigned" || type === "delete_unhealthy") {
-    updates.deleted_at = now;
-  } else if (type === "expire") {
-    updates.session_expires_at = now;
-  } else if (type === "restart") {
-    // reset the delete timer
-    updates.health_checked_at = now;
-    updates.restarted_at = now;
-  }
+    const where: Partial<Runner> = { id };
+    if (type == "delete_unassigned") {
+      where.run_id = null;
+      where.test_id = null;
+    }
 
-  const where: Partial<Runner> = { id };
-  if (type == "delete_unassigned") {
-    where.run_id = null;
-    where.test_id = null;
-  }
-
-  const count = await options.db("runners").where(where).update(updates);
-  log.debug(count ? "updated" : "did not update", id, updates);
+    const count = await trx("runners").where(where).update(updates);
+    log.debug(count ? "updated" : "did not update", id, updates);
+  });
 };
 
 /**
