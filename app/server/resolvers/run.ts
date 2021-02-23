@@ -1,3 +1,4 @@
+import { RunStatus } from "../../lib/types";
 import { minutesFromNow } from "../../shared/utils";
 import { AuthenticationError } from "../errors";
 import {
@@ -19,9 +20,29 @@ import {
 } from "../types";
 import { ensureSuiteAccess, ensureTestAccess } from "./utils";
 
+type ShouldRetry = {
+  error?: string;
+  retries?: number;
+  status: RunStatus;
+};
+
 type ValidateApiKey = {
   api_key: string | null;
   run: Run;
+};
+
+export const RETRY_ERRORS = ["page.goto: net::ERR_CONNECTION_REFUSED"];
+
+export const shouldRetry = ({
+  error,
+  retries,
+  status,
+}: ShouldRetry): boolean => {
+  return (
+    status === "fail" &&
+    !retries &&
+    !!RETRY_ERRORS.find((e) => error?.trim().startsWith(e))
+  );
 };
 
 /**
@@ -83,7 +104,7 @@ export const testHistoryResolver = async (
  */
 export const updateRunResolver = async (
   _: Record<string, unknown>,
-  { current_line, id, status }: UpdateRunMutation,
+  { current_line, error, id, status }: UpdateRunMutation,
   { api_key, db, logger }: Context
 ): Promise<Run> => {
   const log = logger.prefix("updateRunResolver");
@@ -94,20 +115,30 @@ export const updateRunResolver = async (
 
     await validateApiKey({ api_key, run }, { db: trx, logger });
 
-    const updates: UpdateRun = { id };
+    const updates: UpdateRun = { error, id };
 
-    if (status === "created") {
+    if (shouldRetry({ error, retries: run.retries, status })) {
+      updates.retries = (run.retries || 0) + 1;
+      updates.started_at = null;
+      updates.status = "created";
+      log.alert("retry error", error.substring(0, 100));
+    } else if (status === "created") {
       updates.started_at = minutesFromNow();
     } else {
       updates.current_line = current_line;
+      updates.error = error || null;
       updates.status = status;
     }
+
+    // update the run before expiring the runner
+    // to avoid the run from being marked as expired
+    const updatedRun = await updateRun(updates, { db: trx, logger });
 
     if (["fail", "pass"].includes(status)) {
       await expireRunner({ run_id: id }, { db: trx, logger });
     }
 
-    return updateRun(updates, { db: trx, logger });
+    return updatedRun;
   });
 
   return updatedRun;

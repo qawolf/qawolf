@@ -1,3 +1,4 @@
+import retry from "async-retry";
 import axios, { AxiosRequestConfig } from "axios";
 import Debug from "debug";
 import { createReadStream, ReadStream, statSync } from "fs";
@@ -15,11 +16,11 @@ export const uploadFile = async ({
   savePath,
   url,
 }: UploadFile): Promise<void> => {
-  debug(`upload ${savePath ? " from " + savePath : "data"}`);
-
   if (!data && !savePath) {
     throw new Error("Must provide data or save path");
   }
+
+  debug(`upload ${savePath}`);
 
   try {
     const headers: AxiosRequestConfig["headers"] = {
@@ -35,10 +36,17 @@ export const uploadFile = async ({
       headers["content-length"] = size;
     }
 
-    await axios.put(url, body, {
-      headers,
-      maxBodyLength: Infinity,
-    });
+    await retry(
+      async (_, attempt) => {
+        debug("upload attempt %s for %s", attempt, savePath);
+
+        await axios.put(url, body, {
+          headers,
+          maxBodyLength: Infinity,
+        });
+      },
+      { retries: 3 }
+    );
 
     debug("uploaded file");
   } catch (error) {

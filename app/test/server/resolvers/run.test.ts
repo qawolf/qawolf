@@ -1,5 +1,8 @@
+import { RunStatus } from "../../../lib/types";
 import * as runnerModel from "../../../server/models/runner";
 import {
+  RETRY_ERRORS,
+  shouldRetry,
   suiteRunsResolver,
   testHistoryResolver,
   updateRunResolver,
@@ -54,6 +57,27 @@ beforeAll(async () => {
 });
 
 afterEach(() => jest.restoreAllMocks());
+
+describe("shouldRetry", () => {
+  const retryOptions = {
+    error: RETRY_ERRORS[0],
+    status: "fail" as RunStatus,
+  };
+
+  it("retries for ERR_CONNECTION_REFUSED", () => {
+    expect(shouldRetry(retryOptions)).toEqual(true);
+  });
+
+  it("does not retry more than once", () => {
+    expect(shouldRetry({ ...retryOptions, retries: 1 })).toEqual(false);
+  });
+
+  it("does not retry passing runs", () => {
+    expect(
+      shouldRetry({ ...retryOptions, status: "pass" as RunStatus })
+    ).toEqual(false);
+  });
+});
 
 describe("suiteRunsResolver", () => {
   it("returns the runs for a suite", async () => {
@@ -133,6 +157,23 @@ describe("updateRunResolver", () => {
     const run = await db("runs").select("*").where({ id: "run2Id" }).first();
 
     expect(run).toMatchObject({ current_line: 2, status: "pass" });
+    expect(runnerModel.expireRunner).toBeCalled();
+  });
+
+  it("retries the run if shouldRetry is true", async () => {
+    await updateRunResolver(
+      {},
+      { error: RETRY_ERRORS[0], current_line: 2, id: "run2Id", status: "fail" },
+      context
+    );
+
+    const run = await db("runs").select("*").where({ id: "run2Id" }).first();
+
+    expect(run).toMatchObject({
+      retries: 1,
+      started_at: null,
+      status: "created",
+    });
     expect(runnerModel.expireRunner).toBeCalled();
   });
 });

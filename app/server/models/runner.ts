@@ -64,7 +64,13 @@ export const assignRunner = async (
       const updates = { ...assignTo, session_expires_at: minutesFromNow(10) };
 
       const result = await trx("runners")
-        .where({ id: runner.id, run_id: null, test_id: null })
+        .where({
+          id: runner.id,
+          run_id: null,
+          // exclude recently expired runners
+          session_expires_at: null,
+          test_id: null,
+        })
         .update(updates);
 
       const didUpdate = result > 0;
@@ -146,8 +152,14 @@ export const expireRunner = async (
   const runner = await findRunner(find, options);
   if (!runner) return;
 
+  // clear the run_id and test_id so they can be reassigned if needed
   await updateRunner(
-    { id: runner.id, session_expires_at: minutesFromNow() },
+    {
+      id: runner.id,
+      run_id: null,
+      session_expires_at: minutesFromNow(),
+      test_id: null,
+    },
     options
   );
 };
@@ -350,7 +362,10 @@ export const updateRunner = async (
       if (run.status === "created" && run.started_at) {
         // mark it as failed since it is not finished
         logger.alert("run expired", run.id);
-        await updateRun({ id: run.id, status: "fail" }, { db: trx, logger });
+        await updateRun(
+          { error: "expired", id: run.id, status: "fail" },
+          { db: trx, logger }
+        );
       }
     }
 

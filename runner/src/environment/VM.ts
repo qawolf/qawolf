@@ -58,7 +58,9 @@ export class VM {
       devices,
       getInbox: (options: GetInbox) => {
         return getInbox(options, {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           apiKey: this._env.QAWOLF_TEAM_API_KEY!,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           inbox: this._env.QAWOLF_TEAM_INBOX!,
         });
       },

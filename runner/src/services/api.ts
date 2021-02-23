@@ -28,6 +28,7 @@ type PollForQuery = {
 
 type RunFinishedParams = {
   current_line: number | null;
+  error?: string;
   pass: boolean;
   run_id: string;
 };
@@ -56,8 +57,8 @@ query email($created_after: String!, $to: String!) {
 `;
 
 const updateRunMutation = `
-mutation updateRun($current_line: Int, $id: ID!, $status: RunStatus!) {
-  updateRun(current_line: $current_line, id: $id, status: $status) {
+mutation updateRun($current_line: Int, $error: String, $id: ID!, $status: RunStatus!) {
+  updateRun(current_line: $current_line, error: $error, id: $id, status: $status) {
     id
   }
 }
@@ -187,6 +188,7 @@ export const notifyRunStarted = async ({
 
 export const notifyRunFinished = async ({
   current_line,
+  error,
   run_id,
   pass,
 }: RunFinishedParams): Promise<void> => {
@@ -195,6 +197,7 @@ export const notifyRunFinished = async ({
       query: updateRunMutation,
       variables: {
         current_line,
+        error,
         id: run_id,
         status: pass ? "pass" : "fail",
       },
