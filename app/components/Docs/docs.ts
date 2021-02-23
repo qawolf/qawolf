@@ -1,9 +1,9 @@
 import { Icon } from "grommet-icons";
 import flatten from "lodash/flatten";
 import { IconType } from "react-icons";
+import { IoTrailSign } from "react-icons/io5";
 import {
   RiCodeSSlashFill,
-  RiMedalFill,
   RiNotification2Fill,
   RiRocketFill,
 } from "react-icons/ri";
@@ -41,11 +41,15 @@ export const docs: Section[] = [
         href: `${routes.docs}/convert-actions-to-code`,
         name: "Convert Actions to Code",
       },
+      { href: `${routes.docs}/add-an-assertion`, name: "Add an Assertion" },
       {
         href: `${routes.docs}/use-environment-variables`,
         name: "Use Environment Variables",
       },
-      { href: `${routes.docs}/add-an-assertion`, name: "Add an Assertion" },
+      {
+        href: `${routes.docs}/reuse-helper-code`,
+        name: "Reuse Helper Code",
+      },
     ],
     name: "Create Tests",
   },
@@ -81,27 +85,23 @@ export const docs: Section[] = [
     name: "Alert Your Team",
   },
   {
-    IconComponent: RiMedalFill,
+    IconComponent: IoTrailSign,
     color: "#AA61F2",
     docs: [
       {
-        href: `${routes.docs}/reuse-helper-code`,
-        name: "Reuse Helper Code",
-      },
-      {
-        href: `${routes.docs}/test-receiving-email`,
-        name: "Test Receiving Email",
+        href: `${routes.docs}/receive-an-email`,
+        name: "Receive an Email",
       },
       {
         href: `${routes.docs}/call-an-api`,
         name: "Call an API",
       },
       {
-        href: `${routes.docs}/test-localhost`,
-        name: "Test localhost",
+        href: `${routes.docs}/use-localhost`,
+        name: "Use localhost",
       },
     ],
-    name: "Advanced",
+    name: "Guides",
   },
 ];
 
