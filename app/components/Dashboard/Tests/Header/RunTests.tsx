@@ -2,7 +2,9 @@ import { Box } from "grommet";
 import { useContext, useRef, useState } from "react";
 import styled from "styled-components";
 
+import { useCreateSuite } from "../../../../hooks/mutations";
 import { useEnvironments } from "../../../../hooks/queries";
+import { ShortTest } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import {
   borderSize,
@@ -14,6 +16,8 @@ import ArrowDown from "../../../shared-new/icons/ArrowDown";
 import Play from "../../../shared-new/icons/Play";
 import { StateContext } from "../../../StateContext";
 import EnvironmentsMenu from "./EnvironmentsMenu";
+
+type Props = { tests: ShortTest[] };
 
 const dividerId = "run-tests-divider";
 
@@ -35,12 +39,13 @@ const StyledBox = styled(Box)`
   }
 `;
 
-export default function RunTests(): JSX.Element {
+export default function RunTests({ tests }: Props): JSX.Element {
   const { environmentId, teamId } = useContext(StateContext);
   const ref = useRef<HTMLDivElement>(null);
 
   const [isOpen, setIsOpen] = useState(false);
 
+  const [createSuite, { loading }] = useCreateSuite();
   const { data } = useEnvironments({ team_id: teamId }, { environmentId });
 
   const environments = data?.environments || [];
@@ -49,13 +54,27 @@ export default function RunTests(): JSX.Element {
   const handleMenuClick = (): void => setIsOpen((prev) => !prev);
   const handleMenuClose = (): void => setIsOpen(false);
 
+  const test_ids = tests.map((t) => t.id);
+
+  const handleRunClick = (): void => {
+    if (!test_ids.length) return;
+
+    createSuite({
+      variables: { environment_id: environmentId, test_ids },
+    }).then((response) => {
+      // TODO: redirect to new suite page
+    });
+  };
+
   return (
     <StyledBox direction="row" margin={{ right: "small" }}>
       <Button
         IconComponent={Play}
         a11yTitle="run tests"
+        isDisabled={loading}
         label={copy.runTests(selected?.name)}
         noBorderSide={selected ? "right" : undefined}
+        onClick={handleRunClick}
         type="secondary"
       />
       {!!selected && (

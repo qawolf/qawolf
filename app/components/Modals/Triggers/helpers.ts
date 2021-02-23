@@ -20,7 +20,7 @@ type BuildTriggerFields = {
   deployBranches: string | null;
   deployEnv: DeploymentEnvironment | null;
   deployIntegrationId: string | null;
-  environmentId: string | null;
+  environmentId: string;
   mode: TriggerMode;
   name: string;
   repeatMinutes: number;
@@ -63,7 +63,7 @@ export const buildTriggerFields = ({
   name,
   repeatMinutes,
 }: BuildTriggerFields): TriggerFields => {
-  const constantFields = { environment_id: environmentId, name };
+  const constantFields = { environment_id: environmentId || null, name };
 
   if (mode === "schedule") {
     return {

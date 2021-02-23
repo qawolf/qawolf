@@ -59,6 +59,7 @@ export default function Tests(): JSX.Element {
         checkedTests={checkedTests}
         search={search}
         setSearch={setSearch}
+        tests={tests}
         testTriggers={testTriggers}
         triggers={triggers}
       />

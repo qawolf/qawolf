@@ -12,6 +12,7 @@ type Props = {
   checkedTests: ShortTest[];
   search: string;
   setSearch: (search: string) => void;
+  tests: ShortTest[];
   testTriggers: TestTriggers[];
   triggers: Trigger[];
 };
@@ -21,8 +22,11 @@ export default function Header({
   search,
   setSearch,
   testTriggers,
+  tests,
   triggers,
 }: Props): JSX.Element {
+  const selectedTests = checkedTests.length ? checkedTests : tests;
+
   return (
     <Box flex={false}>
       <Box
@@ -42,7 +46,7 @@ export default function Header({
         </Box>
         <Box align="center" direction="row">
           <Actions checkedTests={checkedTests} />
-          <Buttons />
+          <Buttons tests={selectedTests} />
         </Box>
       </Box>
       <Box align="center" direction="row" justify="between">
