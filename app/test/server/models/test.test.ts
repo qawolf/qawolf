@@ -166,6 +166,11 @@ describe("deleteTests", () => {
       options
     );
 
+    // request a runner to make sure it gets cleared after deletion
+    await db("tests")
+      .update({ runner_requested_at: minutesFromNow() })
+      .where({ id: "deleteMe" });
+
     await createTestAndTestTriggers(
       {
         code: "code",
@@ -177,7 +182,8 @@ describe("deleteTests", () => {
     );
 
     const testToDelete = await findTest("deleteMe", options);
-    expect(testToDelete).toMatchObject({ id: "deleteMe" });
+    expect(testToDelete.id).toEqual("deleteMe");
+    expect(testToDelete.runner_requested_at).toBeTruthy();
 
     await deleteTests(["deleteMe", "deleteMe2"], options);
 
@@ -187,8 +193,8 @@ describe("deleteTests", () => {
       .whereIn("id", ["deleteMe", "deleteMe2"]);
 
     expect(tests).toMatchObject([
-      { deleted_at: expect.any(Date) },
-      { deleted_at: expect.any(Date) },
+      { deleted_at: expect.any(Date), runner_requested_at: null },
+      { deleted_at: expect.any(Date), runner_requested_at: null },
     ]);
   });
 });

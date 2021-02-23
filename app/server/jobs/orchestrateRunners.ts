@@ -11,8 +11,8 @@ import { countIncompleteTests, LocationCount } from "../models/test";
 import { ModelOptions } from "../types";
 
 /**
- * @summary Calculate the number of runners per location.
- *          Our goal is that the available runners matches our buffer.
+ * @summary Calculate the number of runners per location
+ *          to get available runners to equal the buffer.
  */
 export const calculateRunnerPool = async (
   options: ModelOptions
@@ -55,8 +55,6 @@ export const balanceRunnerPool = async ({
 }: ModelOptions): Promise<void> => {
   const pool = await calculateRunnerPool({ db, logger });
 
-  // this must be in a transaction because we do not
-  // want to delete runners that become assigned
   await db.transaction(async (trx) => {
     const runners = await findRunners({}, { db: trx, logger });
 

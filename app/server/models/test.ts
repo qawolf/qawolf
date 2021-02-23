@@ -272,7 +272,7 @@ export const deleteTests = async (
 
   const tests = await db.transaction(async (trx) => {
     const tests = await trx.select("*").from("tests").whereIn("id", ids);
-    const updates = { deleted_at: minutesFromNow() };
+    const updates = { deleted_at: minutesFromNow(), runner_requested_at: null };
     await trx("tests").update(updates).whereIn("id", ids);
     return tests.map((test: Test) => ({ ...test, ...updates }));
   });
