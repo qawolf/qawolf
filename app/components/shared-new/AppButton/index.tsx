@@ -21,7 +21,7 @@ import {
 } from "./config";
 import { getBoxPad, getTextMargin } from "./helpers";
 
-type Props = {
+export type Props = {
   IconComponent?: Icon;
   a11yTitle?: string;
   className?: string;
