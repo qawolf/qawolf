@@ -4,7 +4,8 @@ import { Story, Meta } from "@storybook/react/types-6-0";
 
 import Button, { Props } from "../components/shared-new/AppButton";
 import { ThemeContext } from "grommet";
-import { theme } from "../theme/theme-new";
+import Edit from "../components/shared-new/icons/Edit";
+import theme from "./theme";
 
 export default {
   title: "Button",
@@ -36,6 +37,7 @@ const Template: Story<Props> = (props) => {
 
 export const Primary = Template.bind({});
 Primary.args = {
+  IconComponent: Edit,
   label: "Click me",
   type: "primary",
 };
