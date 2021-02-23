@@ -1,38 +1,34 @@
 import { Box, Drop, DropProps } from "grommet";
 import { MouseEvent } from "react";
 
-import { useEnvironments } from "../../../../hooks/queries";
 import { state } from "../../../../lib/state";
+import { Environment } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import { edgeSize } from "../../../../theme/theme-new";
 import Option from "../../../shared-new/Select/Option";
 
 type Props = {
   environmentId: string | null;
+  environments: Environment[];
   isOpen: boolean;
   onClose: () => void;
   target: DropProps["target"];
-  teamId: string | null;
 };
 
 const width = "240px";
 
 export default function EnvironmentsMenu({
   environmentId,
+  environments,
   isOpen,
   onClose,
   target,
-  teamId,
 }: Props): JSX.Element {
-  const { data, loading } = useEnvironments(
-    { team_id: teamId },
-    { environmentId }
-  );
-
   if (!isOpen) return null;
 
   const handleClick = (environmentId: string): void => {
     state.setEnvironmentId(environmentId);
+    onClose();
   };
 
   const handleClickOutside = (e: MouseEvent<HTMLDocument>) => {
@@ -42,20 +38,16 @@ export default function EnvironmentsMenu({
     onClose();
   };
 
-  const optionsHtml = data?.environments.length ? (
-    data.environments.map((e) => {
-      return (
-        <Option
-          isSelected={e.id === environmentId}
-          key={e.id}
-          label={e.name}
-          onClick={() => handleClick(e.id)}
-        />
-      );
-    })
-  ) : (
-    <Option label={loading ? copy.loading : copy.environmentNotSelected} />
-  );
+  const optionsHtml = environments.map((e) => {
+    return (
+      <Option
+        isSelected={e.id === environmentId}
+        key={e.id}
+        label={copy.runTests(e.name)}
+        onClick={() => handleClick(e.id)}
+      />
+    );
+  });
 
   // use drop to avoid hover activating divider
   return (

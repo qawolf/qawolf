@@ -3,9 +3,8 @@ import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 
 import { useTests, useTestTriggers, useTriggers } from "../../../hooks/queries";
-import { state } from "../../../lib/state";
 import { StateContext } from "../../StateContext";
-import { filterTests, noTriggerId } from "../helpers";
+import { filterTests } from "../helpers";
 import Header from "./Header";
 import List from "./List";
 
@@ -13,7 +12,7 @@ export default function Tests(): JSX.Element {
   const { query } = useRouter();
   const trigger_id = query.trigger_id as string;
 
-  const { environmentId, teamId } = useContext(StateContext);
+  const { teamId } = useContext(StateContext);
 
   const [search, setSearch] = useState("");
   const [checkedTestIds, setCheckedTestIds] = useState<string[]>([]);
@@ -49,17 +48,6 @@ export default function Tests(): JSX.Element {
 
   const testTriggers = testTriggersData?.testTriggers || [];
   const triggers = triggersData?.triggers || [];
-
-  // set environment based on selected trigger if applicable
-  useEffect(() => {
-    if (!trigger_id || trigger_id === noTriggerId) return;
-
-    const selected = triggers.find((t) => t.id === trigger_id);
-
-    if (selected?.environment_id && selected.environment_id !== environmentId) {
-      state.setEnvironmentId(selected.environment_id);
-    }
-  }, [environmentId, trigger_id, triggers]);
 
   const checkedTests = (tests || []).filter((t) =>
     checkedTestIds.includes(t.id)

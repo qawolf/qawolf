@@ -2,6 +2,7 @@ import { Box } from "grommet";
 import { useContext, useRef, useState } from "react";
 import styled from "styled-components";
 
+import { useEnvironments } from "../../../../hooks/queries";
 import { copy } from "../../../../theme/copy";
 import {
   borderSize,
@@ -40,6 +41,11 @@ export default function RunTests(): JSX.Element {
 
   const [isOpen, setIsOpen] = useState(false);
 
+  const { data } = useEnvironments({ team_id: teamId }, { environmentId });
+
+  const environments = data?.environments || [];
+  const selected = environments.find((e) => e.id === environmentId) || null;
+
   const handleMenuClick = (): void => setIsOpen((prev) => !prev);
   const handleMenuClose = (): void => setIsOpen(false);
 
@@ -47,28 +53,36 @@ export default function RunTests(): JSX.Element {
     <StyledBox direction="row" margin={{ right: "small" }}>
       <Button
         IconComponent={Play}
-        a11yTitle={copy.runTests}
-        label={copy.runTests}
-        noBorderSide="right"
+        a11yTitle="run tests"
+        label={copy.runTests(selected?.name)}
+        noBorderSide={selected ? "right" : undefined}
         type="secondary"
       />
-      <Box background={colors.gray3} id={dividerId} width={borderSize.xsmall} />
-      <Box ref={ref}>
-        <Button
-          a11yTitle="choose environment"
-          IconComponent={ArrowDown}
-          noBorderSide="left"
-          onClick={handleMenuClick}
-          type="secondary"
-        />
-        <EnvironmentsMenu
-          environmentId={environmentId}
-          isOpen={isOpen}
-          onClose={handleMenuClose}
-          target={ref.current}
-          teamId={teamId}
-        />
-      </Box>
+      {!!selected && (
+        <>
+          <Box
+            background={colors.gray3}
+            id={dividerId}
+            width={borderSize.xsmall}
+          />
+          <Box ref={ref}>
+            <Button
+              a11yTitle="choose environment"
+              IconComponent={ArrowDown}
+              noBorderSide="left"
+              onClick={handleMenuClick}
+              type="secondary"
+            />
+            <EnvironmentsMenu
+              environmentId={environmentId}
+              environments={environments}
+              isOpen={isOpen}
+              onClose={handleMenuClose}
+              target={ref.current}
+            />
+          </Box>
+        </>
+      )}
     </StyledBox>
   );
 }
