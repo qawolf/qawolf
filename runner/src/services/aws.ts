@@ -20,7 +20,7 @@ export const uploadFile = async ({
     throw new Error("Must provide data or save path");
   }
 
-  debug(`upload ${savePath}`);
+  debug(`upload ${savePath || "data"} to ${url}`);
 
   try {
     const headers: AxiosRequestConfig["headers"] = {
@@ -38,7 +38,7 @@ export const uploadFile = async ({
 
     await retry(
       async (_, attempt) => {
-        debug("upload attempt %s for %s", attempt, savePath);
+        debug(`upload attempt ${attempt} for ${savePath} to ${url}`);
 
         await axios.put(url, body, {
           headers,
@@ -48,7 +48,7 @@ export const uploadFile = async ({
       { retries: 3 }
     );
 
-    debug("uploaded file");
+    debug(`uploaded ${savePath || "data"} to ${url}`);
   } catch (error) {
     debug("error uploading file", error.response);
   }
