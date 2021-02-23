@@ -1,7 +1,7 @@
 import { Box, CheckBox as GrommetCheckBox, CheckBoxProps } from "grommet";
 import styled from "styled-components";
 
-import { colors, transitionDuration } from "../../theme/theme-new";
+import { borderSize, colors, transitionDuration } from "../../theme/theme-new";
 
 type Props = CheckBoxProps & {
   className?: string;
@@ -10,7 +10,7 @@ type Props = CheckBoxProps & {
 
 function CheckBox({ className, ...props }: Props): JSX.Element {
   return (
-    <Box className={className}>
+    <Box className={className} round={borderSize.small}>
       <GrommetCheckBox {...props} />
     </Box>
   );
@@ -19,9 +19,49 @@ function CheckBox({ className, ...props }: Props): JSX.Element {
 // monkey patch
 // https://github.com/grommet/grommet/blob/master/src/js/components/CheckBox/StyledCheckBox.js#L11
 const StyledCheckBox = styled(CheckBox)`
+  background: ${colors.gray0};
+
   input:not([disabled]) + div,
   input:not([disabled]) + span {
-    transition: border ${transitionDuration};
+    background: ${(props) => (props.checked ? colors.primary : "transparent")};
+    border-radius: ${borderSize.small};
+    transition: background ${transitionDuration}, border ${transitionDuration};
+
+    svg {
+      fill: ${colors.primary};
+      stroke: ${colors.gray0};
+      transition: fill ${transitionDuration};
+    }
+
+    &:hover {
+      ${(props) =>
+        props.checked
+          ? `background: ${colors.primaryDark}; border-color: ${colors.primaryDark};`
+          : `border-color: ${colors.gray6};`}
+
+      ${(props) =>
+        props.checked &&
+        `
+        svg {
+          fill: ${colors.primaryDark};
+        }
+      `}
+    }
+
+    &:active {
+      ${(props) =>
+        props.checked
+          ? `background: ${colors.primaryDarker}; border-color: ${colors.primaryDarker};`
+          : `border-color: ${colors.gray9};`}
+
+      ${(props) =>
+        props.checked &&
+        `
+        svg {
+          fill: ${colors.primaryDarker};
+        }
+      `}
+    }
   }
 
   ${(props) =>

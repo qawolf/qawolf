@@ -165,24 +165,7 @@ export const theme = {
       radius: borderSize.small,
     },
     color: colors.primary,
-    extend: ({ checked }: { checked: boolean }): CSSProperties => {
-      return {
-        background: checked ? colors.primary : "transparent",
-        borderRadius: borderSize.small,
-      };
-    },
-    hover: {
-      border: {
-        color: colors.gray6,
-      },
-    },
     icon: {
-      extend: (): CSSProperties => {
-        return {
-          fill: colors.primary,
-          stroke: colors.white,
-        };
-      },
       size: edgeSize.small,
     },
     icons: {

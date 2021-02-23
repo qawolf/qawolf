@@ -172,7 +172,7 @@ const StyledAppButton = styled(AppButton)`
     `}
 
     ${(props) => props.type === "dark" && `border-color: ${colors.gray4};`}
-    ${(props) => props.type === "secondary" && `border-color: ${colors.gray7};`}
+    ${(props) => props.type === "secondary" && `border-color: ${colors.gray9};`}
   }
 `;
 
