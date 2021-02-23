@@ -28,9 +28,7 @@ const StyledCheckBox = styled(CheckBox)`
     transition: background ${transitionDuration}, border ${transitionDuration};
 
     svg {
-      fill: ${colors.primary};
-      stroke: ${colors.gray0};
-      transition: fill ${transitionDuration};
+      fill: ${colors.gray0};
     }
 
     &:hover {
@@ -38,14 +36,6 @@ const StyledCheckBox = styled(CheckBox)`
         props.checked
           ? `background: ${colors.primaryDark}; border-color: ${colors.primaryDark};`
           : `border-color: ${colors.gray6};`}
-
-      ${(props) =>
-        props.checked &&
-        `
-        svg {
-          fill: ${colors.primaryDark};
-        }
-      `}
     }
 
     &:active {
@@ -53,14 +43,6 @@ const StyledCheckBox = styled(CheckBox)`
         props.checked
           ? `background: ${colors.primaryDarker}; border-color: ${colors.primaryDarker};`
           : `border-color: ${colors.gray9};`}
-
-      ${(props) =>
-        props.checked &&
-        `
-        svg {
-          fill: ${colors.primaryDarker};
-        }
-      `}
     }
   }
 
