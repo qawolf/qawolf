@@ -14,6 +14,7 @@ import ListItem from "./ListItem";
 
 type Props = {
   closeModal: () => void;
+  isLoading: boolean;
   onCreate: () => void;
   onDelete: (trigger: Trigger) => void;
   onEdit: (trigger: Trigger) => void;
@@ -24,6 +25,7 @@ type Props = {
 
 export default function EditTriggers({
   closeModal,
+  isLoading,
   onCreate,
   onDelete,
   onEdit,
@@ -57,7 +59,7 @@ export default function EditTriggers({
 
   let innerHtml: JSX.Element;
 
-  if (triggers?.length) {
+  if (!isLoading && triggers?.length) {
     const triggersHtml = triggers.map((t) => {
       const state = getSelectState({
         testIds,
@@ -91,7 +93,7 @@ export default function EditTriggers({
         size="componentParagraph"
         textAlign="center"
       >
-        {triggers ? copy.triggersEmpty : copy.loading}
+        {isLoading ? copy.loading : copy.triggersEmpty}
       </Text>
     );
   }
