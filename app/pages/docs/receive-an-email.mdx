@@ -12,7 +12,7 @@ In this tutorial we will receive an email in a test. This is helpful for scenari
 - Password reset
 - Email notifications after an event happens
 
-<SubHeader>Create Email Address</SubHeader>
+<SubHeader>Get Email Address</SubHeader>
 
 QA Wolf provides a helper method called `getInbox`. This method returns an object with the following keys:
 
@@ -28,12 +28,12 @@ const { email, waitForMessage } = getInbox({ new: true }); // unique inbox
 
 <SubHeader>Use Email Address</SubHeader>
 
-You can now use the email address in your test. For example, at QA Wolf we use `getInbox` in our sign in test, since our sign in requires a login code.
+Now let's use the email address in your test.
 
-In the example below, we 1) create a email address, 2) fill out the sign in form, and 3) get the login code from the email subject line.
+In the example below, we 1) get an email address, 2) fill out the sign form, and 3) get the login code from the email subject line.
 
 ```js
-// create email address
+// get email address
 const { email, waitForMessage } = getInbox();
 
 // fill out sign in form
