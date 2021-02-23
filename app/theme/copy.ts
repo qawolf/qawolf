@@ -200,6 +200,7 @@ export const copy = {
   runLines: (count: number): string =>
     `Run ${count} line${count === 1 ? "" : "s"}`,
   runsPass: "Passing tests",
+  runTests: "Run tests",
   oneTeamMember: "1 team member",
   other: "Other",
   otherDeploy: "Don't see the tool you use? Let us know!",

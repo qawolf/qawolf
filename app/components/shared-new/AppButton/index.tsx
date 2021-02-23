@@ -76,6 +76,7 @@ function AppButton({
           hasLabel: !!label,
           iconPosition,
           justify,
+          type,
         })}
       >
         {!!IconComponent && (

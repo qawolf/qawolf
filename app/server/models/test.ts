@@ -127,6 +127,22 @@ export const findTestsForTeam = async (
   return tests;
 };
 
+export const findEnabledTests = async (
+  test_ids: string[],
+  { db, logger }: ModelOptions
+): Promise<Test[]> => {
+  const log = logger.prefix("findEnabledTests");
+  log.debug("test ids", test_ids);
+
+  const tests = await db("tests")
+    .whereIn("id", test_ids)
+    .andWhere({ deleted_at: null, is_enabled: true });
+
+  log.debug(`found ${tests.length} enabeld tests`);
+
+  return tests;
+};
+
 export const findEnabledTestsForTrigger = async (
   { test_ids, trigger_id }: FindEnabledTestsForTrigger,
   { db, logger }: ModelOptions

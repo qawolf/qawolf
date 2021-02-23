@@ -14,7 +14,7 @@ export type SuiteForTeam = Suite & {
 
 type CreateSuite = {
   creator_id?: string;
-  environment_id: string | null;
+  environment_id?: string | null;
   environment_variables?: FormattedVariables;
   team_id: string;
   trigger_id: string;
@@ -22,10 +22,11 @@ type CreateSuite = {
 
 type CreateSuiteForTests = {
   creator_id?: string;
+  environment_id?: string | null;
   environment_variables?: FormattedVariables;
   team_id: string;
   tests: Test[];
-  trigger_id: string;
+  trigger_id?: string | null;
 };
 
 type CreateSuiteForTrigger = {
@@ -71,7 +72,7 @@ export const createSuite = async (
   const suite = {
     created_at: timestamp,
     creator_id: creator_id || null,
-    environment_id,
+    environment_id: environment_id || null,
     environment_variables: formattedVariables,
     id: cuid(),
     team_id,
@@ -115,6 +116,7 @@ export const createSuiteForTrigger = async (
 export const createSuiteForTests = async (
   {
     creator_id,
+    environment_id,
     environment_variables,
     team_id,
     tests,
@@ -129,12 +131,15 @@ export const createSuiteForTests = async (
     tests.map((test) => test.id)
   );
 
-  const trigger = await findTrigger(trigger_id, { db, logger });
+  if (!environment_id && trigger_id) {
+    const trigger = await findTrigger(trigger_id, { db, logger });
+    environment_id = trigger.environment_id;
+  }
 
   const suite = await createSuite(
     {
       creator_id,
-      environment_id: trigger.environment_id,
+      environment_id,
       environment_variables,
       team_id,
       trigger_id,

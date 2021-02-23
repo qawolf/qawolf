@@ -246,7 +246,7 @@ type Suite {
   "Date and time at which the suite was created (trigger test run began)"
   created_at: String!
 
-  "Associated test trigger environment ID"
+  "Associated environment ID"
   environment_id: ID
 
   "A JSON object with key:value env variables, with decrypted values."
@@ -262,13 +262,13 @@ type Suite {
   team_id: ID!
 
   "Associated test trigger color"
-  trigger_color: ID!
+  trigger_color: String
 
   "Associated test trigger ID"
-  trigger_id: ID!
+  trigger_id: ID
 
   "Associated test trigger name"
-  trigger_name: String!
+  trigger_name: String
 }
 
 "One run for one test that is part of a test trigger we are running all at once"
@@ -644,24 +644,23 @@ type Mutation {
   ): String!
 
   """
-  Creates a new test suite for one or more tests from a single test trigger.
-  Returns the ID of the created suite.
+  Creates a new test suite for one or more tests, optionally specifying
+  an environment. Returns the ID of the created suite.
 
-  Requires that you have access to the team that owns the trigger, and that
+  Requires that you have access to the team that owns the tests, and that
   the team's plan limit for test runs has not been reached.
   """
   createSuite(
     """
-    List of test IDs to include in the suite. Only those that are
-    enabled and not deleted will be included, and any that are not
-    in the specified test trigger will be ignored.
+    Environment ID
     """
-    test_ids: [ID!]
+    environment_id: ID
 
     """
-    Trigger ID
+    List of test IDs to include in the suite. Only those that are
+    enabled and not deleted will be included.
     """
-    trigger_id: ID!
+    test_ids: [ID!]!
   ): String!
 
   """

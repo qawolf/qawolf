@@ -67,9 +67,9 @@ export type Suite = {
   id: string;
   runs: SuiteRun[];
   team_id: string;
-  trigger_color: string;
-  trigger_id: string;
-  trigger_name: string;
+  trigger_color: string | null;
+  trigger_id: string | null;
+  trigger_name: string | null;
 };
 
 export type SuiteRun = {

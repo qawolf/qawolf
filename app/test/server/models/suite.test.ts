@@ -101,7 +101,7 @@ describe("suite model", () => {
       return db("suites").del();
     });
 
-    it("creates a suite and associated runs", async () => {
+    it("creates a suite and associated runs for a trigger", async () => {
       await createSuiteForTests(
         {
           creator_id: "userId",
@@ -128,6 +128,56 @@ describe("suite model", () => {
       expect(runs).toMatchObject([
         { suite_id: suites[0].id },
         { suite_id: suites[0].id },
+      ]);
+    });
+
+    it("creates a suite and associated runs without trigger", async () => {
+      await createSuiteForTests(
+        {
+          creator_id: "userId",
+          environment_id: "environmentId",
+          environment_variables: null,
+          team_id: "teamId",
+          tests: [test],
+        },
+        options
+      );
+
+      const suites = await db.select("*").from("suites");
+      expect(suites).toMatchObject([
+        {
+          creator_id: "userId",
+          environment_id: "environmentId",
+          environment_variables: null,
+          team_id: "teamId",
+          trigger_id: null,
+        },
+      ]);
+
+      const runs = await db.select("*").from("runs");
+      expect(runs).toMatchObject([{ suite_id: suites[0].id }]);
+    });
+
+    it("creates a suite and associated runs without trigger or environment", async () => {
+      await createSuiteForTests(
+        {
+          creator_id: "userId",
+          environment_variables: null,
+          team_id: "teamId",
+          tests: [test],
+        },
+        options
+      );
+
+      const suites = await db.select("*").from("suites");
+      expect(suites).toMatchObject([
+        {
+          creator_id: "userId",
+          environment_id: null,
+          environment_variables: null,
+          team_id: "teamId",
+          trigger_id: null,
+        },
       ]);
     });
   });

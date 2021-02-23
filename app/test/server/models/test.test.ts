@@ -19,6 +19,7 @@ const {
   createTest,
   countPendingTests,
   deleteTests,
+  findEnabledTests,
   findEnabledTestsForTrigger,
   findPendingTest,
   findTest,
@@ -148,6 +149,33 @@ describe("deleteTests", () => {
       { deleted_at: expect.any(Date) },
       { deleted_at: expect.any(Date) },
     ]);
+  });
+});
+
+describe("findEnabledTests", () => {
+  beforeAll(() => {
+    return db("tests").insert([
+      buildTest({}),
+      buildTest({ deleted_at: new Date().toDateString(), i: 2 }),
+      buildTest({ i: 3 }),
+      buildTest({ i: 4 }),
+      buildTest({ i: 5, is_enabled: false }),
+    ]);
+  });
+
+  afterAll(() => db("tests").del());
+
+  it("finds enabled and non-deleted tests", async () => {
+    const tests = await findEnabledTests(
+      ["testId", "test2Id", "test3Id", "test5Id"],
+      options
+    );
+
+    tests.sort((a, b) => {
+      return a < b ? -1 : 1;
+    });
+
+    expect(tests).toMatchObject([{ id: "testId" }, { id: "test3Id" }]);
   });
 });
 

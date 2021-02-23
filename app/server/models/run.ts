@@ -195,7 +195,7 @@ export const findSuiteRunForRunner = async (
   return db.transaction(async (trx) => {
     const row = await trx
       .select("runs.*")
-      .select("triggers.environment_id AS environment_id")
+      .select("suites.environment_id AS environment_id")
       .select("suites.environment_variables AS environment_variables")
       .select("suites.team_id AS team_id")
       .select("teams.helpers AS helpers")
@@ -204,7 +204,6 @@ export const findSuiteRunForRunner = async (
       .select("tests.version AS test_version")
       .from("runs")
       .innerJoin("suites", "runs.suite_id", "suites.id")
-      .innerJoin("triggers", "triggers.id", "suites.trigger_id")
       .innerJoin("teams", "suites.team_id", "teams.id")
       .innerJoin("tests", "runs.test_id", "tests.id")
       .andWhere({ "runs.id": run_id })

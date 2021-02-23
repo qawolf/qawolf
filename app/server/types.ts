@@ -341,8 +341,8 @@ export type CreateSlackIntegrationMutation = {
 };
 
 export type CreateSuiteMutation = {
-  test_ids?: string[] | null;
-  trigger_id: string;
+  environment_id: string | null;
+  test_ids: string[];
 };
 
 export type CreateTestMutation = {
@@ -505,9 +505,8 @@ export type RunnerResult = {
 };
 
 export type SuiteResult = Suite & {
-  environment_id: string;
-  trigger_color: string;
-  trigger_name: string;
+  trigger_color: string | null;
+  trigger_name: string | null;
 };
 
 export type TeamIdQuery = {

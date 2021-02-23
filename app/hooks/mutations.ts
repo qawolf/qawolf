@@ -125,8 +125,8 @@ type CreateSuiteData = {
 };
 
 type CreateSuiteVariables = {
+  environment_id: string | null;
   test_ids: string[];
-  trigger_id: string;
 };
 
 type CreateTestData = {
