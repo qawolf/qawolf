@@ -234,6 +234,7 @@ export type Team = {
   stripe_customer_id: string | null;
   stripe_subscription_id: string | null;
   updated_at?: string;
+  vercel_team?: string;
 };
 
 export type TeamUserRole = "admin";
