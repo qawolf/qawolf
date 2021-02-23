@@ -15,6 +15,7 @@ const generateTypesFile = () => {
 
   const assertTypes = readFile("../node_modules/@types/node/assert.d.ts");
   const axiosTypes = readFile("../node_modules/axios/index.d.ts");
+  const fakerTypes = readFile("../node_modules/@types/faker/index.d.ts");
   const globalTypes = readFile("../node_modules/@types/node/globals.d.ts");
 
   const types = `${globalTypes}
@@ -25,6 +26,10 @@ declare module 'axios' {
   ${axiosTypes}
 }
 
+declare module 'faker' {
+  ${fakerTypes}
+}
+
 declare module 'playwright' {
     ${playwrightProtocol}
     ${playwrightTypes}
@@ -33,6 +38,7 @@ declare module 'playwright' {
 declare const assert: typeof import("assert");
 declare const axios: typeof import("axios").default;
 declare const devices: typeof import("playwright").devices;
+declare const faker: typeof import("faker");
 
 type LaunchOptions = Pick<import("playwright").BrowserContextOptions,
 "acceptDownloads" |

@@ -1,5 +1,6 @@
 import assert from "assert";
 import axios from "axios";
+import faker from "faker";
 import { devices } from "playwright";
 import { assertText } from "qawolf";
 import { NodeVM } from "vm2";
@@ -56,6 +57,7 @@ export class VM {
       assertText,
       axios,
       devices,
+      faker,
       getInbox: (options: GetInbox) => {
         return getInbox(options, {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

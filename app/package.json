@@ -74,6 +74,7 @@
     "@types/bcrypt": "^3.0.0",
     "@types/classnames": "^2.2.11",
     "@types/debounce": "^1.2.0",
+    "@types/faker": "^5.1.7",
     "@types/formidable": "^1.0.32",
     "@types/jest": "^26.0.15",
     "@types/jsonwebtoken": "^8.5.0",
