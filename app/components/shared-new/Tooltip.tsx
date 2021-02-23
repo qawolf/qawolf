@@ -1,6 +1,6 @@
 import { Box, Drop, DropProps } from "grommet";
 
-import { borderSize } from "../../theme/theme-new";
+import { borderSize, edgeSize } from "../../theme/theme-new";
 import Text from "./Text";
 
 type Props = {
@@ -20,7 +20,7 @@ export default function Tooltip({
     <Drop
       align={{ bottom: "top" }}
       plain
-      style={{ marginBottom: "xxsmall" }}
+      style={{ marginBottom: edgeSize.xxsmall }}
       target={target}
     >
       <Box

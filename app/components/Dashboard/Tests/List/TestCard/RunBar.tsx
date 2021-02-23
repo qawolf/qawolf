@@ -84,11 +84,11 @@ const StyledRunBar = styled(RunBar)`
   transition: background ${transitionDuration};
     
   &:hover {
-    background: ${(props: Props) => hoverBackground[props.run.status]};
+    background: ${hoverBackground[props.run.status]};
   }
 
   &:active {
-    background: ${(props: Props) => activeBackground[props.run.status]};
+    background: ${activeBackground[props.run.status]};
   }
   `}
 
