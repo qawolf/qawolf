@@ -10,6 +10,7 @@ export default function Sidebar(): JSX.Element {
     <Box
       border={{ color: "gray3", side: "right", size: borderSize.xsmall }}
       height="full"
+      flex={false}
       pad="medium"
       width={width}
     >
