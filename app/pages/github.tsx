@@ -1,10 +1,11 @@
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 
-import Spinner from "../components/shared/Spinner";
+import Spinner from "../components/shared-new/Spinner";
 import { StateContext } from "../components/StateContext";
 import { useSignInWithGitHub } from "../hooks/mutations";
 import { routes } from "../lib/routes";
+import { edgeSize } from "../theme/theme-new";
 
 export default function GitHub(): JSX.Element {
   const {
@@ -42,5 +43,5 @@ export default function GitHub(): JSX.Element {
     }
   }, [called, code, signInWithGitHub, state]);
 
-  return <Spinner />;
+  return <Spinner margin={{ top: edgeSize.xxxlarge }} />;
 }

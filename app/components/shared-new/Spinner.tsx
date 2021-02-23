@@ -1,10 +1,13 @@
-import { Box } from "grommet";
+import { Box, BoxProps } from "grommet";
 import styled, { keyframes } from "styled-components";
 
 import { edgeSize } from "../../theme/theme-new";
 import Paw from "./icons/Paw";
 
-type Props = { size?: "large" | "small" };
+type Props = {
+  margin?: BoxProps["margin"];
+  size?: "large" | "small";
+};
 
 const animationDelay = 500;
 const pawCount = 6;
@@ -36,7 +39,7 @@ const StyledBox = styled(Box)`
   }
 `;
 
-export default function Spinner({ size }: Props): JSX.Element {
+export default function Spinner({ margin, size }: Props): JSX.Element {
   const pawsHtml: JSX.Element[] = [];
 
   const iconSize = size === "small" ? edgeSize.xxsmall : edgeSize.xlarge;
@@ -60,7 +63,14 @@ export default function Spinner({ size }: Props): JSX.Element {
   }
 
   return (
-    <StyledBox align="center" direction="row" fill flex justify="center">
+    <StyledBox
+      align="center"
+      direction="row"
+      fill
+      flex
+      justify="center"
+      margin={margin}
+    >
       {pawsHtml}
     </StyledBox>
   );
