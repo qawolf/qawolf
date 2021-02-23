@@ -168,6 +168,7 @@ export const resetRunner = async (
 
   return db.transaction(async (trx) => {
     if (run?.status === "created" && run.started_at) {
+      // deal with the assigned but incomplete run
       const runUpdates: UpdateRun = { id: run.id };
 
       if (type === "delete_unhealthy" && !run.retries) {
@@ -175,6 +176,7 @@ export const resetRunner = async (
         // retry once only, since it could be a malicious user
         runUpdates.retry_error = "unhealthy_runner";
       } else {
+        // for every other case expire the run
         log.alert("fail expired run", run.id);
         runUpdates.error = "expired";
         runUpdates.status = "fail";
