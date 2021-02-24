@@ -164,11 +164,12 @@ export const copy = {
   noHistory: "No history yet",
   noMobile:
     "Woof. We're not mobile friendly yet. Please try again on a larger screen!",
-  noRuns: "Not run yet",
+  noRuns: "No runs",
   noPassword: "Please provide your password",
   noTrigger: "No trigger",
   none: "None",
   notFound: "(404. Page not found.)",
+  notRunYet: "Not run yet",
   notStarted: "Preparing",
   onPremise: "Run on-premise",
   openSourceDiscount:

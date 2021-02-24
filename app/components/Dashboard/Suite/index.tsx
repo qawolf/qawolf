@@ -1,11 +1,12 @@
 import { Box } from "grommet";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { useSuite } from "../../../hooks/queries";
 import { RunStatus } from "../../../lib/types";
 import Spinner from "../../shared-new/Spinner";
 import { StateContext } from "../../StateContext";
 import Header from "./Header";
+import List from "./List";
 
 type Props = { suiteId: string };
 
@@ -15,8 +16,20 @@ export default function Suite({ suiteId }: Props): JSX.Element {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<RunStatus | null>(null);
 
-  const { data } = useSuite({ id: suiteId }, { includeRuns: true, teamId });
+  const { data, startPolling, stopPolling } = useSuite(
+    { id: suiteId },
+    { includeRuns: true, teamId }
+  );
   const suite = data?.suite;
+
+  // poll for updates if some runs in progress
+  useEffect(() => {
+    if (suite?.runs.some((r) => r.status === "created")) {
+      startPolling(10 * 1000);
+    }
+
+    return () => stopPolling();
+  }, [startPolling, stopPolling, suite]);
 
   const innerHtml = suite ? (
     <>
@@ -27,6 +40,7 @@ export default function Suite({ suiteId }: Props): JSX.Element {
         status={status}
         suite={suite}
       />
+      <List runs={suite.runs} search={search} status={status} />
     </>
   ) : (
     <Spinner />

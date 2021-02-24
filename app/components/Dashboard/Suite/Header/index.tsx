@@ -26,7 +26,7 @@ export default function Header({
   return (
     <Box flex={false}>
       <Box align="center" direction="row">
-        {suite.trigger_color && (
+        {!!suite.trigger_color && (
           <ColorDot color={suite.trigger_color} margin={{ right: "xxsmall" }} />
         )}
         <Text color="gray9" margin={{ right: "xxsmall" }} size="componentBold">

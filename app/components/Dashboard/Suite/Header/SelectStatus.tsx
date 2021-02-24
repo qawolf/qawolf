@@ -1,4 +1,4 @@
-import { RunStatus, Suite, SuiteRun } from "../../../../lib/types";
+import { RunStatus, SuiteRun } from "../../../../lib/types";
 import Divider from "../../../shared-new/Divider";
 import Select from "../../../shared-new/Select";
 import { getLabelForStatus } from "../../helpers";
@@ -10,7 +10,7 @@ type Props = {
   status: RunStatus | null;
 };
 
-const statuses: RunStatus[] = ["created", "fail", "pass"];
+const statuses: RunStatus[] = ["fail", "pass", "created"];
 const width = "240px";
 
 export default function SelectStatus({

@@ -2,10 +2,17 @@ import { timeToText } from "../../lib/helpers";
 import {
   RunStatus,
   ShortTest,
+  SuiteRun,
   TestSummaryRun,
   TestTriggers,
 } from "../../lib/types";
 import { copy } from "../../theme/copy";
+
+type FilterRuns = {
+  runs: SuiteRun[];
+  search: string;
+  status: RunStatus | null;
+};
 
 type FilterTests = {
   search: string;
@@ -15,6 +22,26 @@ type FilterTests = {
 };
 
 export const noTriggerId = "none";
+
+export const filterRuns = ({
+  runs,
+  search,
+  status,
+}: FilterRuns): SuiteRun[] => {
+  let filteredRuns: SuiteRun[] = [...runs];
+
+  if (search) {
+    filteredRuns = filteredRuns.filter((r) =>
+      r.test_name.toLowerCase().includes(search.toLowerCase())
+    );
+  }
+
+  if (status) {
+    filteredRuns = filteredRuns.filter((r) => r.status === status);
+  }
+
+  return filteredRuns;
+};
 
 export const filterTests = ({
   search,
@@ -65,4 +92,11 @@ export const getLabelForStatus = (status: RunStatus | null): string => {
   if (status === "pass") return copy.testPass;
 
   return copy.allStatuses;
+};
+
+export const getRunCountForStatus = (
+  runs: SuiteRun[],
+  status: RunStatus
+): number => {
+  return runs.filter((r) => r.status === status).length;
 };
