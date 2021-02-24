@@ -10,6 +10,7 @@ import { theme } from "../../theme/theme-new";
 import { UserContext } from "../UserContext";
 import Sidebar from "./Sidebar";
 import Suite from "./Suite";
+import Suites from "./Suites";
 import Tests from "./Tests";
 
 export default function Dashboard(): JSX.Element {
@@ -33,15 +34,18 @@ export default function Dashboard(): JSX.Element {
     state.setDashboardUri(asPath);
   }, [asPath]);
 
+  let innerHtml = <Tests />;
+  if (pathname.includes(routes.suites) && query.suite_id) {
+    innerHtml = <Suite suiteId={query.suite_id as string} />;
+  } else if (pathname.includes(routes.suites)) {
+    innerHtml = <Suites />;
+  }
+
   return (
     <ThemeContext.Extend value={theme}>
       <Box direction="row" height="100vh">
         <Sidebar />
-        {pathname.includes(routes.suites) ? (
-          <Suite suiteId={query.suite_id as string} />
-        ) : (
-          <Tests />
-        )}
+        {innerHtml}
       </Box>
     </ThemeContext.Extend>
   );

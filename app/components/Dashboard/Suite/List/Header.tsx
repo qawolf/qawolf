@@ -2,8 +2,8 @@ import { Box } from "grommet";
 
 import { SuiteRun } from "../../../../lib/types";
 import { borderSize, edgeSize } from "../../../../theme/theme-new";
+import StatusSummary from "../../../shared-new/StatusSummary";
 import { getRunCountForStatus } from "../../helpers";
-import StatusSummary from "./StatusSummary";
 
 type Props = { runs: SuiteRun[] };
 

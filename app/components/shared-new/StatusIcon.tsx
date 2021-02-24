@@ -4,11 +4,14 @@ import DotCircle from "./icons/DotCircle";
 import Fail from "./icons/Fail";
 import Pass from "./icons/Pass";
 
-type Props = { status: RunStatus };
+type Props = {
+  status: RunStatus;
+  width?: string;
+};
 
-export default function StatusIcon({ status }: Props): JSX.Element {
-  if (status === "fail") return <Fail />;
-  if (status === "pass") return <Pass />;
+export default function StatusIcon({ status, width }: Props): JSX.Element {
+  if (status === "fail") return <Fail width={width} />;
+  if (status === "pass") return <Pass width={width} />;
 
-  return <DotCircle color={colors.gray9} size={edgeSize.small} />;
+  return <DotCircle color={colors.gray9} size={width || edgeSize.small} />;
 }

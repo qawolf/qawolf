@@ -89,6 +89,25 @@ export const suiteQuery = gql`
   ${suiteFragment}
 `;
 
+export const suitesQuery = gql`
+  query suites($team_id: ID!) {
+    suites(team_id: $team_id) {
+      created_at
+      environment_id
+      id
+      status_counts {
+        created
+        fail
+        pass
+      }
+      team_id
+      trigger_color
+      trigger_id
+      trigger_name
+    }
+  }
+`;
+
 export const teamQuery = gql`
   query team($id: ID!) {
     team(id: $id) {
