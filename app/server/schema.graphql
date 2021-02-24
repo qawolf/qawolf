@@ -720,8 +720,7 @@ type Mutation {
   ): EnvironmentVariable!
 
   """
-  Soft deletes a test trigger record by ID. You cannot delete the
-  default test trigger for a team. All tests are removed from a
+  Soft deletes a test trigger record by ID. All tests are removed from a
   trigger when it is soft deleted, but the tests themselves are
   not deleted an remain in any other triggers as well as the default
   trigger.

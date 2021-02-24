@@ -135,6 +135,7 @@ describe("deleteTests", () => {
       options
     );
 
+    // request a runner to make sure it gets cleared after deletion
     await db("tests")
       .where({ id: "deleteMe" })
       .update({ runner_requested_at: new Date().toISOString() });
@@ -152,7 +153,7 @@ describe("deleteTests", () => {
 
     expect(tests).toMatchObject([
       { deleted_at: expect.any(Date), runner_requested_at: null },
-      { deleted_at: expect.any(Date), runner_requested_at: null },
+      { deleted_at: expect.any(Date) },
     ]);
   });
 });

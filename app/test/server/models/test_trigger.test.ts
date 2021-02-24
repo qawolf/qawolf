@@ -209,7 +209,7 @@ describe("test trigger model", () => {
   describe("findTestTriggersForTests", () => {
     beforeAll(async () => {
       await db("triggers").insert([
-        buildTrigger({ i: 2, name: "All Tests" }),
+        buildTrigger({ i: 2 }),
         buildTrigger({ i: 3 }),
         buildTrigger({ i: 4 }),
         {
