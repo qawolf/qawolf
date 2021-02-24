@@ -90,7 +90,7 @@ export const handleSuitesRequest = async (
       throw new Error("No tests found");
     }
 
-    const url = `${environment.APP_URL}/tests/${result.suite.id}`;
+    const url = `${environment.APP_URL}/suites/${result.suite.id}`;
     res.status(200).send({ url });
 
     log.debug("completed");

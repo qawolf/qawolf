@@ -78,12 +78,15 @@ export const suiteRunFragment = gql`
 export const suiteFragment = gql`
   fragment SuiteFragment on Suite {
     created_at
+    environment_id
+    environment_variables
     id
     runs {
       ...SuiteRunFragment
     }
     team_id
     trigger_id
+    trigger_name
   }
   ${suiteRunFragment}
 `;

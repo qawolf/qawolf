@@ -12,6 +12,7 @@ export const routes = {
   run: "/run",
   signUp: "/sign-up",
   slack: "/slack",
+  suites: "/suites",
   test: "/test",
   tests: "/tests",
 };

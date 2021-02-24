@@ -8,7 +8,6 @@ import {
   runFragment,
   runnerFragment,
   suiteFragment,
-  suiteRunFragment,
   teamFragment,
   testFragment,
   triggerFragment,
@@ -67,9 +66,10 @@ export const runnerQuery = gql`
   ${runnerFragment}
 `;
 
-export const suiteQuery = gql`
+export const shortSuiteQuery = gql`
   query suite($id: ID!) {
     suite(id: $id) {
+      created_at
       environment_id
       environment_variables
       id
@@ -78,6 +78,15 @@ export const suiteQuery = gql`
       trigger_name
     }
   }
+`;
+
+export const suiteQuery = gql`
+  query suite($id: ID!) {
+    suite(id: $id) {
+      ...SuiteFragment
+    }
+  }
+  ${suiteFragment}
 `;
 
 export const teamQuery = gql`

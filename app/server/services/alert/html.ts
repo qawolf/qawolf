@@ -85,7 +85,7 @@ export const buildSuiteHtml = ({
 }: BuildSuiteHtml): string => {
   const failingRuns = runs.filter((r) => r.status === "fail");
 
-  const suiteHref = new URL(`/tests/${suite_id}`, environment.APP_URL).href;
+  const suiteHref = new URL(`/suites/${suite_id}`, environment.APP_URL).href;
   const anchor = `<a href='${suiteHref}'>${trigger.name} tests</a>`;
 
   if (!failingRuns.length) {

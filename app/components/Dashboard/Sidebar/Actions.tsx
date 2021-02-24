@@ -1,4 +1,5 @@
 import { Box } from "grommet";
+import { useRouter } from "next/router";
 
 import { routes } from "../../../lib/routes";
 import { state } from "../../../lib/state";
@@ -16,6 +17,8 @@ import DashboardLink from "./DashboardLink";
 type Props = { teamId: string };
 
 export default function Actions({ teamId }: Props): JSX.Element {
+  const { pathname } = useRouter();
+
   const handleEnvironmentsClick = (): void => {
     state.setModal({ name: "environments" });
   };
@@ -33,13 +36,13 @@ export default function Actions({ teamId }: Props): JSX.Element {
       <DashboardLink
         IconComponent={List}
         href={routes.tests}
-        isSelected
+        isSelected={pathname.includes(routes.tests)}
         label={copy.allTests}
       />
       <DashboardLink
         IconComponent={DotCircle}
-        href={routes.tests}
-        isSelected={false}
+        href={routes.suites}
+        isSelected={pathname.includes(routes.suites)}
         label={copy.runHistory}
       />
       <DashboardLink

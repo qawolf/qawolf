@@ -8,6 +8,7 @@ import {
   environmentVariablesQuery,
   integrationsQuery,
   runnerQuery,
+  shortSuiteQuery,
   suiteQuery,
   teamQuery,
   testHistoryQuery,
@@ -240,11 +241,13 @@ export const useRunner = (
 
 export const useSuite = (
   variables: SuiteVariables,
-  { teamId }: { teamId: string }
+  { includeRuns, teamId }: { includeRuns?: boolean; teamId: string }
 ): QueryResult<SuiteData, SuiteVariables> => {
   const { replace } = useRouter();
 
-  return useQuery<SuiteData, SuiteVariables>(suiteQuery, {
+  const query = includeRuns ? suiteQuery : shortSuiteQuery;
+
+  return useQuery<SuiteData, SuiteVariables>(query, {
     fetchPolicy,
     nextFetchPolicy,
     onCompleted: (response) => {
@@ -257,7 +260,7 @@ export const useSuite = (
     },
     onError: (error) => {
       if (error.message.includes("not found")) {
-        replace(routes.tests);
+        replace(routes.suites);
       }
     },
     skip: !variables.id,

@@ -26,7 +26,7 @@ function TriggerBadge({
   name,
   onClick,
 }: Props): JSX.Element {
-  let label = copy.none;
+  let label = copy.manuallyTriggered;
   if (name) label = name;
   else if (isLoading) label = copy.loading;
 

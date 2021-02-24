@@ -90,7 +90,7 @@ export const createCommitStatus = async (
     repo,
     sha,
     state: state || "pending",
-    target_url: new URL(`/tests/${suiteId}`, environment.APP_URL).href,
+    target_url: new URL(`/suites/${suiteId}`, environment.APP_URL).href,
   });
 
   return data;

@@ -1,9 +1,11 @@
 import { Box } from "grommet";
+import { useRouter } from "next/router";
 import { useContext, useRef, useState } from "react";
 import styled from "styled-components";
 
 import { useCreateSuite } from "../../../../hooks/mutations";
 import { useEnvironments } from "../../../../hooks/queries";
+import { routes } from "../../../../lib/routes";
 import { ShortTest } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import {
@@ -40,6 +42,8 @@ const StyledBox = styled(Box)`
 `;
 
 export default function RunTests({ tests }: Props): JSX.Element {
+  const { push } = useRouter();
+
   const { environmentId, teamId } = useContext(StateContext);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -62,7 +66,8 @@ export default function RunTests({ tests }: Props): JSX.Element {
     createSuite({
       variables: { environment_id: environmentId, test_ids },
     }).then((response) => {
-      // TODO: redirect to new suite page
+      const { data } = response || {};
+      if (data?.createSuite) push(`${routes.suites}/${data.createSuite}`);
     });
   };
 

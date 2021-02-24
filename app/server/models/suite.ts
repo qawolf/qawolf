@@ -1,4 +1,5 @@
 import { minutesFromNow } from "../../shared/utils";
+import { ClientError } from "../errors";
 import { FormattedVariables, ModelOptions, Run, Suite, Test } from "../types";
 import { cuid } from "../utils";
 import { encrypt } from "./encrypt";
@@ -174,7 +175,7 @@ export const findSuite = async (
 
   if (!suite) {
     log.debug("not found", suite_id);
-    throw new Error("Suite not found");
+    throw new ClientError("Suite not found");
   }
 
   return suite;

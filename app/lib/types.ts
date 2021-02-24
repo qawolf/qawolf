@@ -60,16 +60,19 @@ export type Runner = {
   ws_url: string | null;
 };
 
-export type Suite = {
+export type ShortSuite = {
   created_at: string;
   environment_id: string | null;
   environment_variables: string | null;
   id: string;
-  runs: SuiteRun[];
   team_id: string;
   trigger_color: string | null;
   trigger_id: string | null;
   trigger_name: string | null;
+};
+
+export type Suite = ShortSuite & {
+  runs: SuiteRun[];
 };
 
 export type SuiteRun = {

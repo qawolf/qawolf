@@ -11,7 +11,7 @@ Object {
           "type": "image",
         },
         Object {
-          "text": "Wolf1 here: <http://localhost:3000/tests/suiteId|trigger1 tests> failed.",
+          "text": "Wolf1 here: <http://localhost:3000/suites/suiteId|trigger1 tests> failed.",
           "type": "mrkdwn",
         },
       ],
@@ -45,7 +45,7 @@ Object {
           "type": "image",
         },
         Object {
-          "text": "Wolf1 here: <http://localhost:3000/tests/suiteId|trigger1 tests> passed!",
+          "text": "Wolf1 here: <http://localhost:3000/suites/suiteId|trigger1 tests> passed!",
           "type": "mrkdwn",
         },
       ],

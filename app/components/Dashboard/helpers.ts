@@ -1,5 +1,10 @@
 import { timeToText } from "../../lib/helpers";
-import { ShortTest, TestSummaryRun, TestTriggers } from "../../lib/types";
+import {
+  RunStatus,
+  ShortTest,
+  TestSummaryRun,
+  TestTriggers,
+} from "../../lib/types";
 import { copy } from "../../theme/copy";
 
 type FilterTests = {
@@ -52,4 +57,12 @@ export const getLabelForRun = (run: TestSummaryRun): string => {
   if (run.status === "fail") prefix = copy.testFail;
 
   return `${prefix}: ${timeToText(run.created_at)}`;
+};
+
+export const getLabelForStatus = (status: RunStatus | null): string => {
+  if (status === "created") return copy.testInProgress;
+  if (status === "fail") return copy.testFail;
+  if (status === "pass") return copy.testPass;
+
+  return copy.allStatuses;
 };

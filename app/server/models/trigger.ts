@@ -5,7 +5,15 @@ import { cuid } from "../utils";
 
 const DAILY_HOUR = 16; // 9 am PST
 const MINUTES_PER_DAY = 24 * 60;
-export const TRIGGER_COLORS = ["#4545E5", "#CA45E5", "#45CAE5"];
+export const TRIGGER_COLORS = [
+  "#4545E5",
+  "#CA45E5",
+  "#45CAE5",
+  "#7EE2E5",
+  "#44C76B",
+  "#EF86B4",
+  "#213866",
+];
 
 type CreateTrigger = {
   creator_id: string;

@@ -1,35 +1,39 @@
 import { Box } from "grommet";
 
-import { Trigger } from "../../../../lib/types";
+import { RunStatus } from "../../../../server/types";
 import { overflowStyle } from "../../../../theme/theme-new";
-import ColorDot from "../../../shared-new/ColorDot";
 import CountBadge from "../../../shared-new/CountBadge";
 import Option from "../../../shared-new/Select/Option";
+import StatusIcon from "../../../shared-new/StatusIcon";
 import Text from "../../../shared-new/Text";
+import { getLabelForStatus } from "../../helpers";
 
 type Props = {
   count: number;
   isSelected: boolean;
-  label?: string;
   onClick: () => void;
-  trigger?: Trigger;
+  status: RunStatus | null;
 };
 
-export default function TriggerOption({
+export default function StatusOption({
   count,
   isSelected,
-  label,
   onClick,
-  trigger,
+  status,
 }: Props): JSX.Element {
+  const label = getLabelForStatus(status);
+
   const labelHtml = (
     <Box align="center" direction="row" justify="between" width="full">
       <Box align="center" direction="row">
-        {!!trigger && (
-          <ColorDot color={trigger.color} margin={{ right: "xxsmall" }} />
-        )}
-        <Text color="gray9" size="component" style={overflowStyle}>
-          {label || trigger?.name}
+        {!!status && <StatusIcon status={status} />}
+        <Text
+          color="gray9"
+          margin={status ? { left: "xxsmall" } : undefined}
+          size="component"
+          style={overflowStyle}
+        >
+          {label}
         </Text>
       </Box>
       <CountBadge count={count} />
