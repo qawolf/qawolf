@@ -39,13 +39,18 @@ beforeAll(async () => {
 });
 
 describe("assignRunner", () => {
-  const runner = buildRunner({});
+  const runner = buildRunner({ api_key: "apiKey", ready_at: minutesFromNow() });
 
   beforeAll(() => db("runners").insert(runner));
 
   afterEach(() =>
     db("runners")
-      .update({ run_id: null, session_expires_at: null, test_id: null })
+      .update({
+        ready_at: minutesFromNow(),
+        run_id: null,
+        session_expires_at: null,
+        test_id: null,
+      })
       .where({ id: "runnerId" })
   );
 

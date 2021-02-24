@@ -65,13 +65,10 @@ export const assignRunner = async (
       const updates = { ...assignTo, session_expires_at: minutesFromNow(10) };
 
       const result = await trx("runners")
-        .where({
-          id: runner.id,
-          run_id: null,
-          // exclude recently expired runners
-          session_expires_at: null,
-          test_id: null,
-        })
+        // exclude recently assigned runners
+        .where({ id: runner.id, run_id: null, test_id: null })
+        // exclude recently reset runners
+        .whereNot({ ready_at: null })
         .update(updates);
 
       const didUpdate = result > 0;
