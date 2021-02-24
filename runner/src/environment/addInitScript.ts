@@ -22,7 +22,6 @@ export const addInitScript = async (context: BrowserContext): Promise<void> => {
   ${webScript}
 
   new qawolf.ActionRecorder({ attribute: ${attribute} });
-  qawolf.interceptConsoleLogs();
 })();
 `;
 

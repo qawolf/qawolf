@@ -1,26 +1,27 @@
-import { minutesFromNow } from "../../shared/utils";
 import environment from "../environment";
-import { countPendingRuns } from "../models/run";
+import { countIncompleteRuns } from "../models/run";
 import {
   createRunners,
   deleteUnhealthyRunners,
   findRunners,
-  updateRunner,
+  resetRunner,
 } from "../models/runner";
-import { countPendingTests, LocationCount } from "../models/test";
+import { countIncompleteTests, LocationCount } from "../models/test";
 import { ModelOptions } from "../types";
 
 /**
- * @summary Calculate the number of runners per location.
- *  The buffer + pending runs and tests.
+ * @summary Calculate the number of runners per location
+ *          to get available runners to equal the buffer.
  */
 export const calculateRunnerPool = async (
   options: ModelOptions
 ): Promise<LocationCount[]> => {
   const log = options.logger.prefix("calculateRunnerPool");
 
-  const pendingRuns = await countPendingRuns(options);
-  const pendingTests = await countPendingTests("eastus2", options);
+  // Each location should have enough runners for the buffer and
+  // the incomplete (pending / in progress) incompleteTests and runs
+  const incompleteRunCount = await countIncompleteRuns(options);
+  const incompleteTests = await countIncompleteTests("eastus2", options);
 
   const pool: LocationCount[] = [];
 
@@ -29,12 +30,12 @@ export const calculateRunnerPool = async (
 
     const buffer = entry?.buffer || 0;
 
-    const { count: numPendingTests } = pendingTests.find(
+    const { count: incompleteTestCount } = incompleteTests.find(
       (c) => c.location === location
     ) || { count: 0 };
 
-    let count = buffer + numPendingTests;
-    if (location === "eastus2") count += pendingRuns;
+    let count = buffer + incompleteTestCount;
+    if (location === "eastus2") count += incompleteRunCount;
 
     pool.push({ count, location });
   });
@@ -53,8 +54,6 @@ export const balanceRunnerPool = async ({
 }: ModelOptions): Promise<void> => {
   const pool = await calculateRunnerPool({ db, logger });
 
-  // this must be in a transaction because we do not
-  // want to delete runners that become assigned
   await db.transaction(async (trx) => {
     const runners = await findRunners({}, { db: trx, logger });
 
@@ -89,16 +88,7 @@ export const balanceRunnerPool = async ({
     });
 
     const deletePromises: Promise<unknown>[] = idsToDelete.map((id) =>
-      updateRunner(
-        {
-          // don't throw an error if the runner is not found since
-          // it could have already been deleted (for example it it was unhealthy)
-          allow_skip: true,
-          id,
-          deleted_at: minutesFromNow(),
-        },
-        { db: trx, logger }
-      )
+      resetRunner({ id, type: "delete_unassigned" }, { db: trx, logger })
     );
 
     await Promise.all([

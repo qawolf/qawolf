@@ -242,20 +242,37 @@ describe("updateRunnerResolver", () => {
         id: "mockedSuiteRunForRunnerId",
       });
 
-      await updateRunner(
-        { id: "runnerId", ready_at: minutesFromNow(), test_id: null },
-        options
-      );
+      const now = minutesFromNow();
+
+      // check it does not assign to an expired runner
+      await db("runners")
+        .update({ ready_at: now, session_expires_at: now, test_id: null })
+        .where({ id: "runnerId" });
 
       const result = await updateRunnerResolver(
         {},
         { id: "runnerId", is_healthy: true },
         context
       );
-      expect(result).toMatchObject({ id: "mockedSuiteRunForRunnerId" });
+      expect(result).toBeNull();
 
       const runner = await findRunner({ id: "runnerId" }, options);
-      expect(runner).toMatchObject({
+      expect(runner).toMatchObject({ run_id: null, test_id: null });
+
+      // now check it assigns to a ready runner
+      await db("runners")
+        .update({ session_expires_at: null })
+        .where({ id: "runnerId" });
+
+      const result2 = await updateRunnerResolver(
+        {},
+        { id: "runnerId", is_healthy: true },
+        context
+      );
+      expect(result2).toMatchObject({ id: "mockedSuiteRunForRunnerId" });
+
+      const runner2 = await findRunner({ id: "runnerId" }, options);
+      expect(runner2).toMatchObject({
         run_id: "runId",
         session_expires_at: expect.any(Date),
       });

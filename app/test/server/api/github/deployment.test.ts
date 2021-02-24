@@ -1,4 +1,5 @@
 import {
+  buildDeploymentUrlForTeam,
   createSuitesForDeployment,
   shouldRunTriggerOnDeployment,
 } from "../../../../server/api/github/deployment";
@@ -15,6 +16,81 @@ import {
 } from "../../utils";
 
 const db = prepareTestDb();
+
+describe("buildDeploymentUrlForTeam", () => {
+  beforeAll(() => db("teams").insert(buildTeam({})));
+
+  afterAll(() => db("teams").del());
+
+  const deploymentUrl = "https://test-app-slug-spirit.vercel.app";
+
+  it("returns deployment url if there are multiple branches", async () => {
+    const url = await buildDeploymentUrlForTeam(
+      {
+        branches: ["hello", "world"],
+        deploymentUrl,
+        team_id: "teamId",
+      },
+      { db, logger }
+    );
+
+    expect(url).toBe(deploymentUrl);
+  });
+
+  it("returns deployment url if no vercel team on team", async () => {
+    const url = await buildDeploymentUrlForTeam(
+      {
+        branches: ["hello"],
+        deploymentUrl,
+        team_id: "teamId",
+      },
+      { db, logger }
+    );
+
+    expect(url).toBe(deploymentUrl);
+  });
+
+  it("builds url based on branch name otherwise", async () => {
+    await db("teams").update({ vercel_team: "spirit" });
+
+    const url = await buildDeploymentUrlForTeam(
+      {
+        branches: ["hello"],
+        deploymentUrl,
+        team_id: "teamId",
+      },
+      { db, logger }
+    );
+
+    expect(url).toBe("https://test-app-git-hello-spirit.vercel.app");
+
+    const url2 = await buildDeploymentUrlForTeam(
+      {
+        branches: ["hello-world"],
+        deploymentUrl,
+        team_id: "teamId",
+      },
+      { db, logger }
+    );
+
+    expect(url2).toBe("https://test-app-git-hello-world-spirit.vercel.app");
+
+    await db("teams").update({ vercel_team: "spirit-the-qawolf" });
+
+    const url3 = await buildDeploymentUrlForTeam(
+      {
+        branches: ["hello-world"],
+        deploymentUrl: "https://test-app-slug-spirit-the-qawolf.vercel.app",
+        team_id: "teamId",
+      },
+      { db, logger }
+    );
+
+    expect(url3).toBe(
+      "https://test-app-git-hello-world-spirit-the-qawolf.vercel.app"
+    );
+  });
+});
 
 describe("createSuitesForDeployment", () => {
   beforeAll(async () => {

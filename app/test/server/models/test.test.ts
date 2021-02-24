@@ -17,7 +17,7 @@ import {
 const {
   buildTestName,
   createTest,
-  countPendingTests,
+  countIncompleteTests,
   deleteTests,
   findEnabledTests,
   findEnabledTestsForTrigger,
@@ -135,8 +135,13 @@ describe("deleteTests", () => {
       options
     );
 
+    await db("tests")
+      .where({ id: "deleteMe" })
+      .update({ runner_requested_at: new Date().toISOString() });
+
     const testToDelete = await findTest("deleteMe", options);
-    expect(testToDelete).toMatchObject({ id: "deleteMe" });
+    expect(testToDelete.id).toEqual("deleteMe");
+    expect(testToDelete.runner_requested_at).toBeTruthy();
 
     await deleteTests(["deleteMe", "deleteMe2"], options);
 
@@ -146,8 +151,8 @@ describe("deleteTests", () => {
       .whereIn("id", ["deleteMe", "deleteMe2"]);
 
     expect(tests).toMatchObject([
-      { deleted_at: expect.any(Date) },
-      { deleted_at: expect.any(Date) },
+      { deleted_at: expect.any(Date), runner_requested_at: null },
+      { deleted_at: expect.any(Date), runner_requested_at: null },
     ]);
   });
 });
@@ -256,12 +261,12 @@ describe("pending tests", () => {
     await db("tests").del();
   });
 
-  describe("countPendingTests", () => {
-    it("counts tests that requested a runner", async () => {
-      const result = await countPendingTests("eastus2", options);
+  describe("countIncompleteTests", () => {
+    it("counts tests assigned to and requesting a runner", async () => {
+      const result = await countIncompleteTests("eastus2", options);
       expect(result).toEqual([
         { count: 2, location: "eastus2" },
-        { count: 1, location: "westus2" },
+        { count: 2, location: "westus2" },
       ]);
     });
   });

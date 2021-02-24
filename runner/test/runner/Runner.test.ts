@@ -165,4 +165,33 @@ console.log("Line 4");
     expect(marker1.startTime).toBeLessThanOrEqual(marker2.startTime);
     expect(marker2.startTime).toBeLessThanOrEqual(marker3.startTime);
   });
+
+  it("reports a navigation error", async () => {
+    const runner = new Runner();
+
+    let progress: RunProgress | undefined;
+    runner.on("runprogress", (value) => (progress = value));
+
+    await runner.run({
+      code: `const { browser, context } = await launch({ headless: true });
+const page = await context.newPage();
+await page.goto("http://localhost:1001");
+`,
+      helpers: "",
+      restart: true,
+      test_id: "",
+      version: 1,
+    });
+
+    // keep this error format in sync with updateRun since we use it to determine retries
+    expect(
+      progress?.error?.startsWith("page.goto: net::ERR_CONNECTION_REFUSED")
+    ).toBe(true);
+
+    // give enough time for bindings to be exposed before closing
+    // or playwright throws Protocol error (Runtime.addBinding): Target closed
+    await new Promise((r) => setTimeout(r, 1000));
+
+    await runner.close();
+  });
 });

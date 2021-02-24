@@ -51,18 +51,20 @@ export const buildTestName = async (
   return `My Test${testNumber === 1 ? "" : ` ${testNumber}`}`;
 };
 
-export const countPendingTests = async (
+export const countIncompleteTests = async (
   defaultLocation: string,
   { db, logger }: ModelOptions
 ): Promise<LocationCount[]> => {
-  const log = logger.prefix("countPendingTests");
+  const log = logger.prefix("countIncompleteTests");
 
   const countQuery = `SELECT COUNT(s.*), s.location
   FROM (
     SELECT coalesce(runner_locations::json->> 0, ?) as location
     FROM tests
-    WHERE runner_requested_at IS NOT NULL 
-      AND deleted_at IS NULL
+    WHERE runner_requested_at IS NOT NULL
+    UNION ALL
+    SELECT location FROM runners
+    WHERE test_id IS NOT NULL
   ) as s
   GROUP BY s.location`;
 
@@ -243,7 +245,7 @@ export const deleteTests = async (
 
   const tests = await db.transaction(async (trx) => {
     const tests = await trx.select("*").from("tests").whereIn("id", ids);
-    const updates = { deleted_at: minutesFromNow() };
+    const updates = { deleted_at: minutesFromNow(), runner_requested_at: null };
     await trx("tests").update(updates).whereIn("id", ids);
     return tests.map((test: Test) => ({ ...test, ...updates }));
   });

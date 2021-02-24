@@ -33,7 +33,7 @@ describe("getTokens", () => {
 describe("isDynamic", () => {
   it.each([
     "__BVID__71",
-    ".item_iv2wgb-o_O-hover_yhuzbt",
+    "item_iv2wgb-o_O-hover_yhuzbt",
     "gb_C",
     "ggWlfB2BMlWvNeAo2F0uqw",
     "gLFyf",
@@ -49,6 +49,7 @@ describe("isDynamic", () => {
   });
 
   it.each([
+    "1-code",
     "app",
     "b-content__page-input",
     "btn",

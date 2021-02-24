@@ -1,3 +1,4 @@
+import { RunStatus } from "../../lib/types";
 import { minutesFromNow } from "../../shared/utils";
 import { AuthenticationError } from "../errors";
 import {
@@ -7,7 +8,7 @@ import {
   UpdateRun,
   updateRun,
 } from "../models/run";
-import { expireRunner, findRunner } from "../models/runner";
+import { findRunner, resetRunner } from "../models/runner";
 import {
   Context,
   IdQuery,
@@ -19,9 +20,29 @@ import {
 } from "../types";
 import { ensureSuiteAccess, ensureTestAccess } from "./utils";
 
+type ShouldRetry = {
+  error?: string;
+  retries?: number;
+  status: RunStatus;
+};
+
 type ValidateApiKey = {
   api_key: string | null;
   run: Run;
+};
+
+export const RETRY_ERRORS = ["page.goto: net::ERR_CONNECTION_REFUSED"];
+
+export const shouldRetry = ({
+  error,
+  retries,
+  status,
+}: ShouldRetry): boolean => {
+  return (
+    status === "fail" &&
+    !retries &&
+    !!RETRY_ERRORS.find((e) => error?.trim().startsWith(e))
+  );
 };
 
 /**
@@ -83,7 +104,7 @@ export const testHistoryResolver = async (
  */
 export const updateRunResolver = async (
   _: Record<string, unknown>,
-  { current_line, id, status }: UpdateRunMutation,
+  { current_line, error, id, status }: UpdateRunMutation,
   { api_key, db, logger }: Context
 ): Promise<Run> => {
   const log = logger.prefix("updateRunResolver");
@@ -91,23 +112,30 @@ export const updateRunResolver = async (
 
   const updatedRun = await db.transaction(async (trx) => {
     const run = await findRun(id, { db: trx, logger });
+    if (!run) throw new Error("run not found");
 
     await validateApiKey({ api_key, run }, { db: trx, logger });
 
     const updates: UpdateRun = { id };
-
-    if (status === "created") {
+    if (shouldRetry({ error, retries: run.retries, status })) {
+      updates.retry_error = error;
+    } else if (status === "created") {
       updates.started_at = minutesFromNow();
     } else {
       updates.current_line = current_line;
+      updates.error = status === "pass" ? null : error || null;
       updates.status = status;
     }
 
+    // update the run before resetRunner
+    // otherwise the run will be marked as expired
+    const updatedRun = await updateRun(updates, { db: trx, logger });
+
     if (["fail", "pass"].includes(status)) {
-      await expireRunner({ run_id: id }, { db: trx, logger });
+      await resetRunner({ run_id: id, type: "expire" }, { db: trx, logger });
     }
 
-    return updateRun(updates, { db: trx, logger });
+    return updatedRun;
   });
 
   return updatedRun;

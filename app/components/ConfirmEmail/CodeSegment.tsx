@@ -58,6 +58,7 @@ export default function CodeSegment({
       >
         <StyledInput
           {...inputProps}
+          data-test={`${index}-code`}
           id={`${index}-code`}
           onChange={onChange}
           onPaste={onPaste}

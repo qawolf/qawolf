@@ -108,11 +108,11 @@ describe("verifyRequest", () => {
   it("throws an error if request is invalid", () => {
     expect((): void => {
       return verifyRequest("/api/sendgrid", logger);
-    }).toThrowError("Unauthorized");
+    }).toThrowError("unauthorized");
 
     expect((): void => {
       return verifyRequest("/api/sendgrid?key=invalid", logger);
-    }).toThrowError("Unauthorized");
+    }).toThrowError("unauthorized");
   });
 
   it("does not throw an error if request is valid", () => {

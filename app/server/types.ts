@@ -159,7 +159,9 @@ export type Run = {
   code: string;
   completed_at?: string;
   current_line: number | null;
+  error?: string;
   id: string;
+  retries?: number;
   started_at?: string;
   status: RunStatus;
   suite_id: string | null;
@@ -233,6 +235,7 @@ export type Team = {
   stripe_customer_id: string | null;
   stripe_subscription_id: string | null;
   updated_at?: string;
+  vercel_team?: string;
 };
 
 export type TeamUserRole = "admin";
@@ -436,6 +439,7 @@ export type UpdateTestTriggersMutation = {
 };
 
 export type UpdateRunMutation = {
+  error?: string;
   current_line: number | null;
   id: string;
   status: RunStatus;
