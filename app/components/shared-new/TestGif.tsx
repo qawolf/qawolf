@@ -1,17 +1,18 @@
-import { Box, Image } from "grommet";
+import { Box, BoxProps, Image } from "grommet";
 import { useContext } from "react";
 
-import { copy } from "../../../../../theme/copy";
-import { borderSize } from "../../../../../theme/theme-new";
-import WolfHead from "../../../../shared-new/icons/WolfHead";
-import Spinner from "../../../../shared-new/Spinner";
-import Text from "../../../../shared-new/Text";
-import { UserContext } from "../../../../UserContext";
+import { copy } from "../../theme/copy";
+import { borderSize } from "../../theme/theme-new";
+import { UserContext } from "../UserContext";
+import WolfHead from "./icons/WolfHead";
+import Spinner from "./Spinner";
+import Text from "./Text";
 
 type Props = {
   gifUrl: string | null;
-  isLoading: boolean;
-  isRunning: boolean;
+  isLoading?: boolean;
+  isRunning?: boolean;
+  margin?: BoxProps["margin"];
   testName: string;
 };
 
@@ -26,13 +27,14 @@ export default function TestGif({
   gifUrl,
   isLoading,
   isRunning,
+  margin,
   testName,
 }: Props): JSX.Element {
   const { wolf } = useContext(UserContext);
 
   if (gifUrl) {
     return (
-      <Box {...boxProps} overflow="hidden">
+      <Box {...boxProps} margin={margin} overflow="hidden">
         <Image
           a11yTitle={`${testName} latest run`}
           fit="contain"
@@ -54,7 +56,13 @@ export default function TestGif({
   );
 
   return (
-    <Box {...boxProps} align="center" background="gray2" justify="center">
+    <Box
+      {...boxProps}
+      align="center"
+      background="gray2"
+      justify="center"
+      margin={margin}
+    >
       {innerHtml}
     </Box>
   );

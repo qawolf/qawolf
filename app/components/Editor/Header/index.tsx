@@ -15,6 +15,7 @@ import Edit from "../../shared-new/icons/Edit";
 import Lightning from "../../shared-new/icons/Lightning";
 import StatusBadge from "../../shared-new/StatusBadge";
 import Text from "../../shared-new/Text";
+import { StateContext } from "../../StateContext";
 import { RunnerContext } from "../contexts/RunnerContext";
 import { TestContext } from "../contexts/TestContext";
 import { buildTestHref } from "../helpers";
@@ -30,6 +31,7 @@ export default function Header({ mode }: Props): JSX.Element {
     query: { test_id },
   } = useRouter();
 
+  const { dashboardUri } = useContext(StateContext);
   const { progress } = useContext(RunnerContext);
   const { run, suite, test } = useContext(TestContext);
 
@@ -59,7 +61,7 @@ export default function Header({ mode }: Props): JSX.Element {
           <Button
             IconComponent={ArrowLeft}
             a11yTitle={copy.backToDashboard}
-            href={routes.tests}
+            href={dashboardUri || routes.tests}
             margin={{ right: "xxxsmall" }}
             type="ghost"
           />

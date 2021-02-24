@@ -31,6 +31,7 @@ export default function SelectStatus({
       <StatusOption
         count={count}
         isSelected={s === status}
+        key={s}
         onClick={() => handleClick(s)}
         status={s}
       />

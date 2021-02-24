@@ -5,10 +5,10 @@ import { routes } from "../../../../../lib/routes";
 import { ShortTest, TestSummary, Trigger } from "../../../../../lib/types";
 import { borderSize, overflowStyle } from "../../../../../theme/theme-new";
 import CheckBox from "../../../../shared-new/CheckBox";
+import TestGif from "../../../../shared-new/TestGif";
 import Text from "../../../../shared-new/Text";
 import Options from "./Options";
 import RunBars from "./RunBars";
-import TestGif from "./TestGif";
 import Triggers from "./Triggers";
 
 type Props = {
