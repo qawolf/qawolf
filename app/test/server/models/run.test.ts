@@ -1,6 +1,6 @@
 import { encrypt } from "../../../server/models/encrypt";
 import {
-  countPendingRuns,
+  countIncompleteRuns,
   createRunsForTests,
   findLatestRuns,
   findPendingRun,
@@ -118,10 +118,10 @@ describe("run model", () => {
 
   afterAll(() => jest.restoreAllMocks());
 
-  describe("countPendingRuns", () => {
-    it("counts the unassigned runs that have not started", async () => {
-      const result = await countPendingRuns(options);
-      expect(result).toEqual(4);
+  describe("countIncompleteRuns", () => {
+    it("counts the runs that have not completed", async () => {
+      const result = await countIncompleteRuns(options);
+      expect(result).toEqual(5);
     });
   });
 
@@ -199,10 +199,8 @@ describe("run model", () => {
       });
     });
 
-    it("throws an error if run does not exist", async () => {
-      await expect(findRun("fakeId", options)).rejects.toThrowError(
-        "not found"
-      );
+    it("returns null if run does not exist", async () => {
+      expect(await findRun("fakeId", options)).toEqual(null);
     });
   });
 
@@ -364,7 +362,50 @@ describe("run model", () => {
   });
 
   describe("updateRun", () => {
-    it("updates existing run", async () => {
+    afterEach(() => db("runs").update(buildRun({})).where({ id: "runId" }));
+
+    it("calls sendAlert when a suite run completes", async () => {
+      const sendAlertSpy = jest
+        .spyOn(alertService, "sendAlert")
+        .mockResolvedValue();
+
+      await updateRun(
+        {
+          id: "run5Id",
+          status: "pass",
+        },
+        options
+      );
+
+      expect(sendAlertSpy.mock.calls[0][0]).toEqual("suite2Id");
+    });
+
+    it("retries an error", async () => {
+      await updateRun({ id: "runId", retry_error: "retry me" }, options);
+
+      const updated = await findRun("runId", options);
+      expect(updated).toMatchObject({
+        completed_at: null,
+        error: "retry me",
+        retries: 1,
+        started_at: null,
+        status: "created",
+      });
+    });
+
+    it("throws an error if run does not exist", async () => {
+      await expect(
+        updateRun(
+          {
+            id: "fakeId",
+            status: "pass",
+          },
+          options
+        )
+      ).rejects.toThrowError("not found");
+    });
+
+    it("updates a run", async () => {
       const run = await findRun("runId", options);
       expect(run).toMatchObject({ completed_at: null, started_at: null });
 
@@ -395,7 +436,6 @@ describe("run model", () => {
         {
           error: "error".repeat(100),
           id: "runId",
-          retries: 1,
           status: "fail",
         },
         options
@@ -403,35 +443,6 @@ describe("run model", () => {
 
       const updated = await findRun("runId", options);
       expect(updated.error).toHaveLength(100);
-      expect(updated.retries).toEqual(1);
-    });
-
-    it("calls sendAlert when a suite run completes", async () => {
-      const sendAlertSpy = jest
-        .spyOn(alertService, "sendAlert")
-        .mockResolvedValue();
-
-      await updateRun(
-        {
-          id: "run5Id",
-          status: "pass",
-        },
-        options
-      );
-
-      expect(sendAlertSpy.mock.calls[0][0]).toEqual("suite2Id");
-    });
-
-    it("throws an error if run does not exist", async () => {
-      await expect(
-        updateRun(
-          {
-            id: "fakeId",
-            status: "pass",
-          },
-          options
-        )
-      ).rejects.toThrowError("not found");
     });
   });
 });

@@ -34,22 +34,21 @@ export type UpdateRun = {
   current_line?: number;
   error?: string;
   id: string;
-  retries?: number;
+  retry_error?: string;
   started_at?: string;
   status?: RunStatus;
 };
 
-export const countPendingRuns = async ({
+export const countIncompleteRuns = async ({
   db,
   logger,
 }: ModelOptions): Promise<number> => {
-  const log = logger.prefix("countPendingRuns");
+  const log = logger.prefix("countIncompleteRuns");
 
   const result = await db("runs")
     .count("*", { as: "count" })
     .from("runs")
-    .leftJoin("runners", "runners.run_id", "runs.id")
-    .where({ "runners.id": null, started_at: null })
+    .where({ completed_at: null })
     .first();
 
   log.debug(result);
@@ -140,10 +139,9 @@ export const findPendingRun = async (
 export const findRun = async (
   id: string,
   { db }: ModelOptions
-): Promise<Run> => {
+): Promise<Run | null> => {
   const run = await db.select("*").from("runs").where({ id }).first();
-  if (!run) throw new Error("run not found " + id);
-  return run;
+  return run || null;
 };
 
 export const findRunResult = async (
@@ -151,6 +149,8 @@ export const findRunResult = async (
   { db, logger }: ModelOptions
 ): Promise<RunResult> => {
   const run = await findRun(id, { db, logger });
+  if (!run) throw new Error("run not found");
+
   const environment_id = await findEnvironmentIdForRun(id, { db, logger });
 
   let logs_url: string | null = null;
@@ -263,7 +263,7 @@ export const findTestHistory = async (
 };
 
 export const updateRun = async (
-  { id, error, ...options }: UpdateRun,
+  { id, error, retry_error, ...options }: UpdateRun,
   { db, logger }: ModelOptions
 ): Promise<Run> => {
   const log = logger.prefix("updateRun");
@@ -275,13 +275,21 @@ export const updateRun = async (
     updated_at: timestamp,
   };
 
-  if (error !== undefined) {
+  const run = await findRun(id, { db, logger });
+  if (!run) throw new Error("run not found");
+
+  if (retry_error) {
+    log.alert("retry error", retry_error.substring(0, 250));
+    updates.completed_at = null;
+    updates.error = retry_error.substring(0, 100);
+    updates.retries = (run.retries || 0) + 1;
+    updates.started_at = null;
+    updates.status = "created";
+  } else if (error !== undefined) {
     updates.error = error ? error.substring(0, 100) : null;
   }
 
-  const run = await findRun(id, { db, logger });
-
-  if (["fail", "pass"].includes(options.status)) {
+  if (["fail", "pass"].includes(updates.status)) {
     updates.completed_at = timestamp;
 
     // ensure started_at is set, so the run is no longer pending

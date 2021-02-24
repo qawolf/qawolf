@@ -8,7 +8,7 @@ import {
   UpdateRun,
   updateRun,
 } from "../models/run";
-import { expireRunner, findRunner } from "../models/runner";
+import { findRunner, resetRunner } from "../models/runner";
 import {
   Context,
   IdQuery,
@@ -112,30 +112,27 @@ export const updateRunResolver = async (
 
   const updatedRun = await db.transaction(async (trx) => {
     const run = await findRun(id, { db: trx, logger });
+    if (!run) throw new Error("run not found");
 
     await validateApiKey({ api_key, run }, { db: trx, logger });
 
-    const updates: UpdateRun = { error, id };
-
+    const updates: UpdateRun = { id };
     if (shouldRetry({ error, retries: run.retries, status })) {
-      updates.retries = (run.retries || 0) + 1;
-      updates.started_at = null;
-      updates.status = "created";
-      log.alert("retry error", error.substring(0, 100));
+      updates.retry_error = error;
     } else if (status === "created") {
       updates.started_at = minutesFromNow();
     } else {
       updates.current_line = current_line;
-      updates.error = error || null;
+      updates.error = status === "pass" ? null : error || null;
       updates.status = status;
     }
 
-    // update the run before expiring the runner
-    // to avoid the run from being marked as expired
+    // update the run before resetRunner
+    // otherwise the run will be marked as expired
     const updatedRun = await updateRun(updates, { db: trx, logger });
 
     if (["fail", "pass"].includes(status)) {
-      await expireRunner({ run_id: id }, { db: trx, logger });
+      await resetRunner({ run_id: id, type: "expire" }, { db: trx, logger });
     }
 
     return updatedRun;

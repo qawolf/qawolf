@@ -9,14 +9,14 @@ import { buildRunner, logger } from "../utils";
 const db = prepareTestDb();
 
 describe("calculateRunnerPool", () => {
-  let countPendingRuns: jest.SpyInstance;
-  let countPendingTests: jest.SpyInstance;
+  let countIncompleteRuns: jest.SpyInstance;
+  let countIncompleteTests: jest.SpyInstance;
 
   beforeAll(() => {
-    countPendingRuns = jest
-      .spyOn(runModel, "countPendingRuns")
+    countIncompleteRuns = jest
+      .spyOn(runModel, "countIncompleteRuns")
       .mockResolvedValue(0);
-    countPendingTests = jest.spyOn(testModel, "countPendingTests");
+    countIncompleteTests = jest.spyOn(testModel, "countIncompleteTests");
   });
 
   afterAll(() => jest.restoreAllMocks());
@@ -27,7 +27,7 @@ describe("calculateRunnerPool", () => {
       japaneast: { buffer: 2, latitude: 0, longitude: 0, reserved: 2 },
     };
 
-    countPendingTests.mockResolvedValue([]);
+    countIncompleteTests.mockResolvedValue([]);
 
     const targets = await orchestrateRunners.calculateRunnerPool({
       db,
@@ -39,12 +39,12 @@ describe("calculateRunnerPool", () => {
     ]);
   });
 
-  it("includes the pending tests", async () => {
+  it("includes the incomplete tests", async () => {
     environment.RUNNER_LOCATIONS = {
       eastus2: { buffer: 0, latitude: 0, longitude: 0, reserved: 0 },
     };
 
-    countPendingTests.mockResolvedValue([{ count: 3, location: "eastus2" }]);
+    countIncompleteTests.mockResolvedValue([{ count: 3, location: "eastus2" }]);
 
     const targets = await orchestrateRunners.calculateRunnerPool({
       db,
@@ -53,13 +53,13 @@ describe("calculateRunnerPool", () => {
     expect(targets).toEqual([{ count: 3, location: "eastus2" }]);
   });
 
-  it("includes the pending runs", async () => {
+  it("includes the incomplete runs", async () => {
     environment.RUNNER_LOCATIONS = {
       eastus2: { buffer: 0, latitude: 0, longitude: 0, reserved: 0 },
     };
 
-    countPendingRuns.mockResolvedValue(3);
-    countPendingTests.mockResolvedValue([{ count: 1, location: "eastus2" }]);
+    countIncompleteRuns.mockResolvedValue(3);
+    countIncompleteTests.mockResolvedValue([{ count: 1, location: "eastus2" }]);
 
     const targets = await orchestrateRunners.calculateRunnerPool({
       db,
