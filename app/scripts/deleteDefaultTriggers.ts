@@ -8,9 +8,15 @@ import { connectDb } from "../server/db";
 
   const defaultTriggerIds = defaultTriggers.map((t) => t.id);
 
-  await db("test_triggers").whereIn("trigger_id", defaultTriggerIds).del();
+  await db.transaction(async (trx) => {
+    await trx("suites")
+      .update({ trigger_id: null })
+      .whereIn("trigger_id", defaultTriggerIds);
 
-  await db("triggers").whereIn("id", defaultTriggerIds).del();
+    await trx("test_triggers").whereIn("trigger_id", defaultTriggerIds).del();
+
+    await trx("triggers").whereIn("id", defaultTriggerIds).del();
+  });
 
   console.log("success");
 
