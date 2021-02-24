@@ -43,7 +43,7 @@ beforeAll(async () => {
     await trx("triggers").insert([
       buildTrigger({}),
       buildTrigger({ i: 2, team_id: "team2Id" }),
-      buildTrigger({ i: 3, name: "All Tests" }),
+      buildTrigger({ i: 3 }),
     ]);
 
     await trx("tests").insert([

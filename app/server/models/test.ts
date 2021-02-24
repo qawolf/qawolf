@@ -140,7 +140,7 @@ export const findEnabledTests = async (
     .whereIn("id", test_ids)
     .andWhere({ deleted_at: null, is_enabled: true });
 
-  log.debug(`found ${tests.length} enabeld tests`);
+  log.debug(`found ${tests.length} enabled tests`);
 
   return tests;
 };
