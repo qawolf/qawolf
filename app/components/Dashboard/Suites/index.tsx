@@ -31,22 +31,22 @@ export default function Suites(): JSX.Element {
   });
 
   return (
-    <Box pad={{ top: "medium" }} width="full">
+    <Box width="full">
       <Box
         align="center"
+        border={{ ...border, side: "bottom" }}
         direction="row"
         flex={false}
-        height={edgeSize.large}
+        // line up with sidebar
+        height={`calc(${edgeSize.large} + 2 * ${edgeSize.medium})`}
         pad={{ horizontal: "medium" }}
       >
         <Text color="gray9" size="componentHeader">
           {copy.runHistory}
         </Text>
       </Box>
-      <Box margin={{ top: "medium" }} overflow={{ vertical: "scroll" }}>
-        <Box border={{ ...border, side: "top" }} flex={false}>
-          {suitesHtml}
-        </Box>
+      <Box overflow={{ vertical: "scroll" }}>
+        <Box flex={false}>{suitesHtml}</Box>
       </Box>
     </Box>
   );
