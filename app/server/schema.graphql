@@ -276,6 +276,9 @@ type SuiteRun {
   "Date and time at which the run finished, if it is done"
   completed_at: String
 
+  "Date and time at which the run was created"
+  created_at: String!
+
   "Secure URL to a GIF of the run"
   gif_url: String
 

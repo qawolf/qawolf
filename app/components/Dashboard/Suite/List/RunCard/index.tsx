@@ -7,6 +7,7 @@ import { borderSize, overflowStyle } from "../../../../../theme/theme-new";
 import StatusIcon from "../../../../shared-new/StatusIcon";
 import TestGif from "../../../../shared-new/TestGif";
 import Text from "../../../../shared-new/Text";
+import Details from "./Details";
 
 type Props = {
   noBorder?: boolean;
@@ -45,6 +46,7 @@ export default function RunCard({ noBorder, run }: Props): JSX.Element {
               {run.test_name}
             </Text>
           </Box>
+          <Details run={run} />
         </Box>
       </a>
     </Link>

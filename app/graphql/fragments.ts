@@ -65,6 +65,7 @@ export const runnerFragment = gql`
 export const suiteRunFragment = gql`
   fragment SuiteRunFragment on SuiteRun {
     completed_at
+    created_at
     gif_url
     id
     is_test_deleted

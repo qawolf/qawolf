@@ -77,6 +77,7 @@ export type Suite = ShortSuite & {
 
 export type SuiteRun = {
   completed_at: string | null;
+  created_at: string;
   gif_url: string | null;
   id: string;
   is_test_deleted: boolean;
