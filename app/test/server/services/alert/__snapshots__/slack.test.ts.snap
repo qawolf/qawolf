@@ -7,7 +7,7 @@ Object {
       "elements": Array [
         Object {
           "alt_text": "Wolf1",
-          "image_url": "https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-brown.png",
+          "image_url": "https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-brown-slack.png",
           "type": "image",
         },
         Object {
@@ -41,7 +41,7 @@ Object {
       "elements": Array [
         Object {
           "alt_text": "Wolf1",
-          "image_url": "https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-brown.png",
+          "image_url": "https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-brown-slack.png",
           "type": "image",
         },
         Object {
