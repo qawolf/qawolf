@@ -26,7 +26,9 @@ function TriggerBadge({
   name,
   onClick,
 }: Props): JSX.Element {
-  if (!isLoading && !name) return null;
+  let label = copy.none;
+  if (name) label = name;
+  else if (isLoading) label = copy.loading;
 
   const innerHtml = (
     <Box
@@ -40,7 +42,7 @@ function TriggerBadge({
     >
       {!!color && <ColorDot color={color} margin={{ right: "xxsmall" }} />}
       <Text color="gray9" size="component">
-        {name || copy.loading}
+        {label}
       </Text>
     </Box>
   );

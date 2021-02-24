@@ -13,6 +13,7 @@ import {
   IdQuery,
   Suite,
   SuiteResult,
+  Trigger,
   TriggerIdQuery,
 } from "../types";
 import {
@@ -96,8 +97,16 @@ export const suiteResolver = async (
   await ensureSuiteAccess({ suite_id: id, teams }, { db, logger });
 
   const suite = await findSuite(id, { db, logger });
-  // throws an error if trigger deleted
-  const trigger = await findTrigger(suite.trigger_id, { db, logger });
+  let trigger: Trigger | null = null;
+
+  if (suite.trigger_id) {
+    // TODO: do not throw error in find trigger if trigger deleted
+    try {
+      trigger = await findTrigger(suite.trigger_id, { db, logger });
+    } catch (e) {
+      trigger = null;
+    }
+  }
 
   return {
     ...suite,

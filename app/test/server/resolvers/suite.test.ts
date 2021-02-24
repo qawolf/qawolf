@@ -177,16 +177,40 @@ describe("suiteResolver", () => {
     expect(findSuiteSpy.mock.calls[0][0]).toEqual("suiteId");
   });
 
-  it("throws an error if trigger deleted", async () => {
+  it("returns a suite without a trigger", async () => {
+    jest
+      .spyOn(suiteModel, "findSuite")
+      .mockResolvedValue({ ...suites[0], trigger_id: null });
+
+    const suite = await suiteResolver({}, { id: "suiteId" }, context);
+
+    expect(suite).toEqual({
+      ...suites[0],
+      environment_id: null,
+      environment_variables: JSON.stringify({ hello: "world" }),
+      trigger_color: null,
+      trigger_id: null,
+      trigger_name: null,
+    });
+  });
+
+  it("returns a suite with a deleted trigger trigger", async () => {
     await db("triggers").update({ deleted_at: minutesFromNow() });
 
-    jest.spyOn(suiteModel, "findSuite").mockResolvedValue(suites[0]);
+    jest
+      .spyOn(suiteModel, "findSuite")
+      .mockResolvedValue({ ...suites[0], trigger_id: null });
 
-    await expect(
-      suiteResolver({}, { id: "suiteId" }, context)
-    ).rejects.toThrowError("not found");
+    const suite = await suiteResolver({}, { id: "suiteId" }, context);
 
-    await db("triggers").update({ deleted_at: null });
+    expect(suite).toEqual({
+      ...suites[0],
+      environment_id: null,
+      environment_variables: JSON.stringify({ hello: "world" }),
+      trigger_color: null,
+      trigger_id: null,
+      trigger_name: null,
+    });
   });
 });
 
