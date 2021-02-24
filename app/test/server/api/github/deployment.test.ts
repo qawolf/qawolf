@@ -22,72 +22,70 @@ describe("buildDeploymentUrlForTeam", () => {
 
   afterAll(() => db("teams").del());
 
-  const deploymentUrl = "https://test-app-slug-spirit.vercel.app";
-
   it("returns deployment url if there are multiple branches", async () => {
     const url = await buildDeploymentUrlForTeam(
       {
         branches: ["hello", "world"],
-        deploymentUrl,
+        deploymentUrl: "deploymenturl",
         team_id: "teamId",
       },
       { db, logger }
     );
 
-    expect(url).toBe(deploymentUrl);
+    expect(url).toBe("deploymenturl");
   });
 
   it("returns deployment url if no vercel team on team", async () => {
     const url = await buildDeploymentUrlForTeam(
       {
         branches: ["hello"],
-        deploymentUrl,
+        deploymentUrl: "deploymenturl",
         team_id: "teamId",
       },
       { db, logger }
     );
 
-    expect(url).toBe(deploymentUrl);
+    expect(url).toBe("deploymenturl");
   });
 
   it("builds url based on branch name otherwise", async () => {
-    await db("teams").update({ vercel_team: "spirit" });
+    await db("teams").update({ vercel_team: "team" });
 
+    // check the same project name and team
     const url = await buildDeploymentUrlForTeam(
       {
         branches: ["hello"],
-        deploymentUrl,
+        deploymentUrl: "https://team-slug-team.vercel.app",
         team_id: "teamId",
       },
       { db, logger }
     );
+    expect(url).toBe("https://team-git-hello-team.vercel.app");
 
-    expect(url).toBe("https://test-app-git-hello-spirit.vercel.app");
-
+    // check a different project name and team
     const url2 = await buildDeploymentUrlForTeam(
       {
         branches: ["hello-world"],
-        deploymentUrl,
+        deploymentUrl: "https://project-name-slug-team.vercel.app",
         team_id: "teamId",
       },
       { db, logger }
     );
+    expect(url2).toBe("https://project-name-git-hello-world-team.vercel.app");
 
-    expect(url2).toBe("https://test-app-git-hello-world-spirit.vercel.app");
-
-    await db("teams").update({ vercel_team: "spirit-the-qawolf" });
+    // check it works with a longer team name
+    await db("teams").update({ vercel_team: "team-qawolf-spirit" });
 
     const url3 = await buildDeploymentUrlForTeam(
       {
         branches: ["hello-world"],
-        deploymentUrl: "https://test-app-slug-spirit-the-qawolf.vercel.app",
+        deploymentUrl: "https://project-slug-team-qawolf-spirit.vercel.app",
         team_id: "teamId",
       },
       { db, logger }
     );
-
     expect(url3).toBe(
-      "https://test-app-git-hello-world-spirit-the-qawolf.vercel.app"
+      "https://project-git-hello-world-team-qawolf-spirit.vercel.app"
     );
   });
 });
