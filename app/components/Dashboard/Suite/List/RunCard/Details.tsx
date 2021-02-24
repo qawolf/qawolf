@@ -1,10 +1,9 @@
 import { Box } from "grommet";
 
-import { durationToText, timeToText } from "../../../../../lib/helpers";
+import { durationToText } from "../../../../../lib/helpers";
 import { SuiteRun } from "../../../../../lib/types";
 import { copy } from "../../../../../theme/copy";
 import { colors, edgeSize } from "../../../../../theme/theme-new";
-import Date from "../../../../shared-new/icons/Date";
 import Timer from "../../../../shared-new/icons/Timer";
 import Text from "../../../../shared-new/Text";
 
@@ -27,7 +26,6 @@ const textProps = {
 };
 
 export default function Details({ run }: Props): JSX.Element {
-  const created = timeToText(run.created_at);
   let duration = copy.notStarted;
 
   if (run.started_at && run.completed_at) {
@@ -38,10 +36,6 @@ export default function Details({ run }: Props): JSX.Element {
 
   return (
     <Box {...boxProps}>
-      <Box {...boxProps}>
-        <Date {...iconProps} />
-        <Text {...textProps}>{created}</Text>
-      </Box>
       <Box {...boxProps} margin={{ left: "small" }}>
         <Timer {...iconProps} />
         <Text {...textProps}>{duration}</Text>
