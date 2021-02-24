@@ -4,6 +4,7 @@ import { AuthenticationError } from "../errors";
 import {
   findRun,
   findRunsForSuite,
+  findStatusCountsForSuite,
   findTestHistory,
   UpdateRun,
   updateRun,
@@ -14,11 +15,12 @@ import {
   IdQuery,
   ModelOptions,
   Run,
+  StatusCounts,
   Suite,
   SuiteRun,
   UpdateRunMutation,
 } from "../types";
-import { ensureSuiteAccess, ensureTestAccess } from "./utils";
+import { ensureTestAccess } from "./utils";
 
 type ShouldRetry = {
   error?: string;
@@ -70,15 +72,29 @@ export const validateApiKey = async (
 };
 
 /**
+ * @returns StatusCounts for a suite
+ */
+export const statusCountsResolver = async (
+  { id }: Suite,
+  _: Record<string, unknown>,
+  { db, logger }: Context
+): Promise<StatusCounts> => {
+  logger.debug("statusCountsResolver: suite", id);
+  // access check not needed since done in the parent query
+
+  return findStatusCountsForSuite(id, { db, logger });
+};
+
+/**
  * @returns Array of SuiteRuns
  */
 export const suiteRunsResolver = async (
   { id }: Suite,
   _: Record<string, unknown>,
-  { db, logger, teams }: Context
+  { db, logger }: Context
 ): Promise<SuiteRun[]> => {
-  logger.debug("suiteRunsResolver");
-  await ensureSuiteAccess({ suite_id: id, teams }, { db, logger });
+  logger.debug("suiteRunsResolver: suite", id);
+  // access check not needed since done in the parent query
 
   return findRunsForSuite(id, { db, logger });
 };

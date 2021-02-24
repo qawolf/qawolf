@@ -3,6 +3,7 @@ import * as runnerModel from "../../../server/models/runner";
 import {
   RETRY_ERRORS,
   shouldRetry,
+  statusCountsResolver,
   suiteRunsResolver,
   testHistoryResolver,
   updateRunResolver,
@@ -76,6 +77,22 @@ describe("shouldRetry", () => {
     expect(
       shouldRetry({ ...retryOptions, status: "pass" as RunStatus })
     ).toEqual(false);
+  });
+});
+
+describe("statusCountsResolver", () => {
+  it("returns the run status counts for a suite", async () => {
+    const counts = await statusCountsResolver(
+      { id: "suiteId" } as Suite,
+      {},
+      context
+    );
+
+    expect(counts).toEqual({
+      created: 0,
+      fail: 0,
+      pass: 1,
+    });
   });
 });
 

@@ -12,6 +12,7 @@ import {
   RunResult,
   RunStatus,
   RunWithGif,
+  StatusCounts,
   SuiteRun,
   Test,
 } from "../types";
@@ -38,6 +39,16 @@ export type UpdateRun = {
   retry_error?: string;
   started_at?: string;
   status?: RunStatus;
+};
+
+const formatCountForStatus = (
+  counts: { count: string; status: RunStatus }[],
+  status: RunStatus
+): number => {
+  const count = counts.find((c) => c.status === status);
+  if (count) return Number(count.count);
+
+  return 0;
 };
 
 export const countIncompleteRuns = async ({
@@ -188,6 +199,26 @@ export const findRunsForSuite = async (
       is_test_deleted: !!run.test_deleted_at,
     };
   });
+};
+
+export const findStatusCountsForSuite = async (
+  suite_id: string,
+  { db, logger }: ModelOptions
+): Promise<StatusCounts> => {
+  const log = logger.prefix("findStatusCountsForSuite");
+  log.debug("suite", suite_id);
+
+  const counts = await db("runs")
+    .select("status")
+    .count("status")
+    .where({ suite_id })
+    .groupBy("status");
+
+  return {
+    created: formatCountForStatus(counts, "created"),
+    fail: formatCountForStatus(counts, "fail"),
+    pass: formatCountForStatus(counts, "pass"),
+  };
 };
 
 export const findSuiteRunForRunner = async (

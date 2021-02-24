@@ -20,6 +20,7 @@ import {
   teamInvitesResolver,
 } from "./resolvers/invite";
 import {
+  statusCountsResolver,
   suiteRunsResolver,
   testHistoryResolver,
   updateRunResolver,
@@ -70,6 +71,7 @@ export const resolvers = {
   },
   Suite: {
     runs: suiteRunsResolver,
+    status_counts: statusCountsResolver,
   },
   Mutation: {
     acceptInvite: acceptInviteResolver,
@@ -109,6 +111,7 @@ export const resolvers = {
     integrations: integrationsResolver,
     runner: runnerResolver,
     suite: suiteResolver,
+    suites: suitesResolver,
     team: teamResolver,
     test: testResolver,
     testHistory: testHistoryResolver,

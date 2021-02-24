@@ -194,6 +194,12 @@ export type RunnerLocation = {
 
 export type RunnerLocations = Record<string, RunnerLocation>;
 
+export type StatusCounts = {
+  created: number;
+  fail: number;
+  pass: number;
+};
+
 export type Suite = {
   alert_sent_at?: string;
   created_at: string;
