@@ -147,14 +147,14 @@ export const createRunners = async (
 };
 
 export const resetRunner = async (
-  { id, run_id, type }: ResetRunner,
+  { type, ...find }: ResetRunner,
   { db, logger }: ModelOptions
 ): Promise<void> => {
   const log = logger.prefix("resetRunner");
 
-  const runner = await findRunner({ id, run_id }, { db, logger });
+  const runner = await findRunner(find, { db, logger });
   if (!runner) {
-    log.debug("skip: runner not found (deleted)", { id, run_id, type });
+    log.debug("skip: runner not found (deleted)", { find, type });
     return;
   }
 
@@ -206,14 +206,14 @@ export const resetRunner = async (
       updates.restarted_at = now;
     }
 
-    const where: Partial<Runner> = { id };
+    const where: Partial<Runner> = { id: runner.id };
     if (type == "delete_unassigned") {
       where.run_id = null;
       where.test_id = null;
     }
 
     const count = await trx("runners").where(where).update(updates);
-    log.debug(count ? "updated" : "did not update", id, updates);
+    log.debug(count ? "updated" : "did not update", runner.id, updates);
   });
 };
 

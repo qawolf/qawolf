@@ -417,7 +417,7 @@ describe("resetRunner", () => {
       .where({ id: "runId" });
 
     await db("runners").update({ run_id: "runId" });
-    await resetRunner({ id: "runnerId", type: "expire" }, options);
+    await resetRunner({ run_id: "runId", type: "expire" }, options);
 
     const runner = await db("runners").where({ id: "runnerId" }).first();
     expect(runner).toMatchObject({
