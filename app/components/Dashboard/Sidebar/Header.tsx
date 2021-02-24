@@ -48,6 +48,7 @@ export default function Header(): JSX.Element {
             align="center"
             background={isOpen ? "gray2" : "transparent"}
             direction="row"
+            height={edgeSize.large}
             justify="between"
             pad="xxxsmall"
             round={borderSize.small}
