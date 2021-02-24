@@ -3,6 +3,7 @@ import { Box } from "grommet";
 import { timestampToText } from "../../../../lib/helpers";
 import { RunStatus, Suite } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
+import ColorDot from "../../../shared-new/ColorDot";
 import Search from "../../../shared-new/Search";
 import Text from "../../../shared-new/Text";
 import SelectStatus from "./SelectStatus";
@@ -25,6 +26,9 @@ export default function Header({
   return (
     <Box flex={false}>
       <Box align="center" direction="row">
+        {suite.trigger_color && (
+          <ColorDot color={suite.trigger_color} margin={{ right: "xxsmall" }} />
+        )}
         <Text color="gray9" margin={{ right: "xxsmall" }} size="componentBold">
           {suite.trigger_name || copy.manuallyTriggered}
         </Text>
