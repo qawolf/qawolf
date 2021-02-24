@@ -37,6 +37,7 @@ export default function UserMenu({ isOpen, onClose }: Props): JSX.Element {
 
   const handleTeamClick = (teamId: string): void => {
     state.setTeamId(teamId);
+    replace(routes.tests);
     onClose();
   };
 
