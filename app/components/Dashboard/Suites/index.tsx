@@ -1,5 +1,5 @@
 import { Box } from "grommet";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import { useSuites } from "../../../hooks/queries";
 import { copy } from "../../../theme/copy";
@@ -12,8 +12,17 @@ import SuiteCard from "./SuiteCard";
 export default function Suites(): JSX.Element {
   const { teamId } = useContext(StateContext);
 
-  const { data } = useSuites({ team_id: teamId });
+  const { data, startPolling, stopPolling } = useSuites({ team_id: teamId });
   const suites = data?.suites;
+
+  // poll for updates
+  useEffect(() => {
+    startPolling(10 * 1000);
+
+    return () => {
+      stopPolling();
+    };
+  }, [startPolling, stopPolling, teamId]);
 
   if (!suites) return <Spinner />;
 

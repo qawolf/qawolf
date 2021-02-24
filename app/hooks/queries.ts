@@ -283,6 +283,7 @@ export const useSuites = (
 ): QueryResult<SuitesData, SuitesVariables> => {
   return useQuery<SuitesData, SuitesVariables>(suitesQuery, {
     fetchPolicy,
+    nextFetchPolicy,
     onError,
     skip: !variables.team_id,
     variables,
