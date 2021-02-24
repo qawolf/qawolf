@@ -54,26 +54,31 @@ export const buildDeploymentUrlForTeam = async (
   }
 
   const team = await findTeam(team_id, options);
-
   if (!team.vercel_team) {
     log.debug(`use deployment url ${deploymentUrl} for team ${team_id}`);
     return deploymentUrl;
   }
 
-  // replace the slug in Vercel URL
+  // expect deploymentUrl to match this format: https://project-slug-team.vercel.app
   // https://vercel.com/changelog/urls-are-becoming-consistent
-  const [prefix, domain] = deploymentUrl.split(team.vercel_team);
 
-  const prefixPieces = prefix.split("-");
-  const prefixWithoutSlug = prefixPieces.slice(0, prefixPieces.length - 2);
+  // ["https://project-name-slug-team"]
+  const [prefix] = deploymentUrl.split(".");
+  const teamIndex = prefix.lastIndexOf(team.vercel_team);
 
-  const newUrl = `${prefixWithoutSlug.join("-")}-git-${branches[0]}-${
-    team.vercel_team
-  }${domain}`;
+  // https://project-name-slug
+  const projectSlug = prefix.substring(0, teamIndex - 1);
 
-  log.debug(`new url ${newUrl}`);
+  // team.vercel.app
+  const teamDomain = deploymentUrl.substring(teamIndex);
 
-  return newUrl;
+  // https://project-name
+  const project = projectSlug.substring(0, projectSlug.lastIndexOf("-"));
+
+  const gitUrl = `${project}-git-${branches[0]}-${teamDomain}`;
+  log.debug(`use git url ${gitUrl}`);
+
+  return gitUrl;
 };
 
 export const shouldRunTriggerOnDeployment = ({
