@@ -20,7 +20,7 @@ export default function LabeledBox({
       <Text color="gray7" margin={{ bottom: "xxsmall" }} size="component">
         {label}
       </Text>
-      <Box justify="center" style={{ minHeight: edgeSize.medium }}>
+      <Box justify="center" style={{ minHeight: edgeSize.large }}>
         {children}
       </Box>
     </Box>

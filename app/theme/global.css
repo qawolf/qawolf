@@ -54,6 +54,14 @@ p {
 
 @font-face {
   font-display: block;
+  font-family: "Inter Medium";
+  font-weight: 500;
+  src: url("/fonts/inter-medium.woff2") format("woff2"),
+    url("/fonts/inter-medium.woff") format("woff");
+}
+
+@font-face {
+  font-display: block;
   font-family: "Inter Semibold";
   font-weight: 600;
   src: url("/fonts/inter-semibold.woff2") format("woff2"),

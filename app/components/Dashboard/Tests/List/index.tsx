@@ -1,97 +1,90 @@
 import { Box } from "grommet";
 import { useRouter } from "next/router";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-import { SuiteRun, TestWithSummary, Trigger } from "../../../../lib/types";
-import { getSelectedTests } from "../utils";
-import Actions from "./Actions";
-import ListItems from "./ListItems";
+import { useTestSummaries } from "../../../../hooks/queries";
+import { ShortTest, TestTriggers, Trigger } from "../../../../lib/types";
+import { borderSize } from "../../../../theme/theme-new";
+import Spinner from "../../../shared/Spinner";
+import { noTriggerId } from "../../helpers";
+import Header from "./Header";
+import TestCard from "./TestCard";
 
 type Props = {
-  isLoading: boolean;
-  runs: SuiteRun[] | null;
-  selectedIds: string[];
-  selectedTriggerId: string;
-  setSelectedIds: Dispatch<SetStateAction<string[]>>;
-  tests: TestWithSummary[] | null;
+  checkedTestIds: string[];
+  setCheckedTestIds: (testIds: string[]) => void;
+  tests: ShortTest[] | null;
+  testTriggers: TestTriggers[];
   triggers: Trigger[];
-  wolfVariant: string;
 };
 
 export default function List({
-  isLoading,
-  runs,
-  selectedIds,
-  selectedTriggerId,
-  setSelectedIds,
+  checkedTestIds,
+  setCheckedTestIds,
   tests,
+  testTriggers,
   triggers,
-  wolfVariant,
 }: Props): JSX.Element {
   const { query } = useRouter();
-  const suiteId = (query.suite_id as string) || null;
 
-  const [search, setSearch] = useState("");
+  const test_ids = (tests || []).map((t) => t.id);
+  const trigger_id =
+    query.trigger_id === noTriggerId
+      ? null
+      : (query.trigger_id as string) || null;
 
-  // reset check boxes when trigger or suite changes
-  useEffect(() => {
-    setSelectedIds([]);
-  }, [selectedTriggerId, setSelectedIds, suiteId]);
+  const { data, loading } = useTestSummaries({ test_ids, trigger_id });
 
-  const selectableRuns = runs?.filter((run) => !run.is_test_deleted) || null;
+  if (!tests) return <Spinner />;
 
-  const handleAllCheck = () => {
-    setSelectedIds((prev) => {
-      if (tests && prev.length !== tests.length) {
-        return tests.map((test) => test.id);
-      }
+  const handleTestCheck = (testId: string): void => {
+    const index = checkedTestIds.indexOf(testId);
+    if (index > -1) {
+      const newSelectedTestIds = [...checkedTestIds];
+      newSelectedTestIds.splice(index, 1);
 
-      if (selectableRuns && prev.length !== selectableRuns.length) {
-        return selectableRuns.map((run) => run.test_id);
-      }
-
-      return [];
-    });
+      setCheckedTestIds(newSelectedTestIds);
+    } else {
+      setCheckedTestIds([...checkedTestIds, testId]);
+    }
   };
 
-  const handleCheck = (testId: string) => {
-    setSelectedIds((prev) => {
-      if (prev.includes(testId)) {
-        return prev.filter((id) => id !== testId);
-      }
+  const testsHtml = tests.map((test, i) => {
+    const triggerIds =
+      testTriggers.find((t) => t.test_id === test.id)?.trigger_ids || [];
+    const filteredTriggers = triggers.filter((t) => triggerIds.includes(t.id));
 
-      return [...prev, testId];
-    });
-  };
+    const summary = (data?.testSummaries || []).find(
+      (s) => s.test_id === test.id
+    );
 
-  let isChecked = false;
-  if (tests && tests.length) {
-    isChecked = selectedIds.length === tests.length;
-  } else if (selectableRuns && selectableRuns.length) {
-    isChecked = selectedIds.length === selectableRuns.length;
-  }
-
-  const selectedTests = getSelectedTests({ runs, selectedIds, tests });
+    return (
+      <TestCard
+        isChecked={checkedTestIds.includes(test.id)}
+        isSummaryLoading={loading}
+        key={test.id}
+        noBorder={!i}
+        onCheck={() => handleTestCheck(test.id)}
+        summary={summary || null}
+        test={test}
+        triggers={filteredTriggers}
+      />
+    );
+  });
 
   return (
-    <Box fill>
-      <Actions
-        isChecked={isChecked}
-        onCheck={handleAllCheck}
-        search={search}
-        selectedTests={selectedTests}
-        setSearch={setSearch}
-        triggers={triggers}
-      />
-      <ListItems
-        isLoading={isLoading}
-        onCheck={handleCheck}
-        runs={runs}
-        search={search}
-        selectedIds={selectedIds}
+    <Box
+      border={{ color: "gray3", size: borderSize.xsmall }}
+      margin={{ top: "medium" }}
+      round={borderSize.small}
+    >
+      <Header
+        checkedTestIds={checkedTestIds}
+        setCheckedTestIds={setCheckedTestIds}
         tests={tests}
-        wolfVariant={wolfVariant}
       />
+      <Box overflow={{ vertical: "scroll" }}>
+        <Box flex={false}>{testsHtml}</Box>
+      </Box>
     </Box>
   );
 }

@@ -31,7 +31,7 @@ type Props = {
   name?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
-  pad?: string;
+  pad?: { left: string; right: string };
   placeholder?: string;
   size?: Size;
   value: string;
@@ -39,7 +39,7 @@ type Props = {
 };
 
 const StyledGrommetTextInput = styled(GrommetTextInput)`
-  border-color: ${colors.fill20};
+  border-color: ${colors.gray3};
   border-radius: ${borderSize.small};
   border-width: ${borderSize.xsmall};
   color: ${colors.textDark};
@@ -47,6 +47,10 @@ const StyledGrommetTextInput = styled(GrommetTextInput)`
   height: ${edgeSize.large};
   line-height: ${edgeSize.large};
   transition: ${transition};
+
+  &:hover {
+    border-color: ${colors.gray5};
+  }
 
   &:focus {
     border-color: ${colors.primary};
@@ -89,9 +93,9 @@ function TextInput(
     fontFamily: fontFamily[finalSize],
     fontSize: text[finalSize].size,
     paddingBottom: 0,
-    paddingLeft: pad || `calc(${edgeSize.xsmall} - ${borderSize.xsmall})`,
+    paddingLeft: pad?.left || `calc(${edgeSize.xsmall} - ${borderSize.xsmall})`,
     paddingRight:
-      pad ||
+      pad?.right ||
       `calc(${edgeSize.xsmall} - ${borderSize.xsmall} + ${errorWidth}px)`,
     paddingTop: 0,
   };

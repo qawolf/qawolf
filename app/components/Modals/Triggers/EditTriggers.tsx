@@ -9,11 +9,12 @@ import Add from "../../shared-new/icons/Add";
 import Buttons from "../../shared-new/Modal/Buttons";
 import Header from "../../shared-new/Modal/Header";
 import Text from "../../shared-new/Text";
-import { buildUpdateTestTriggersResponse, getIsSelected } from "./helpers";
+import { buildUpdateTestTriggersResponse, getSelectState } from "./helpers";
 import ListItem from "./ListItem";
 
 type Props = {
   closeModal: () => void;
+  isLoading: boolean;
   onCreate: () => void;
   onDelete: (trigger: Trigger) => void;
   onEdit: (trigger: Trigger) => void;
@@ -24,6 +25,7 @@ type Props = {
 
 export default function EditTriggers({
   closeModal,
+  isLoading,
   onCreate,
   onDelete,
   onEdit,
@@ -36,11 +38,11 @@ export default function EditTriggers({
   useOnHotKey({ hotKey: "Enter", onHotKey: closeModal });
 
   const handleClick = (triggerId: string): void => {
-    if (loading) return;
+    if (loading || !testIds.length) return;
 
-    const isSelected = getIsSelected({ testIds, testTriggers, triggerId });
-    const add_trigger_id = isSelected ? null : triggerId;
-    const remove_trigger_id = isSelected ? triggerId : null;
+    const state = getSelectState({ testIds, testTriggers, triggerId });
+    const add_trigger_id = state === "all" ? null : triggerId;
+    const remove_trigger_id = state === "all" ? triggerId : null;
 
     updateTestTriggers({
       optimisticResponse: {
@@ -57,9 +59,9 @@ export default function EditTriggers({
 
   let innerHtml: JSX.Element;
 
-  if (triggers?.length) {
+  if (!isLoading && triggers?.length) {
     const triggersHtml = triggers.map((t) => {
-      const isSelected = getIsSelected({
+      const state = getSelectState({
         testIds,
         testTriggers,
         triggerId: t.id,
@@ -67,11 +69,12 @@ export default function EditTriggers({
 
       return (
         <ListItem
-          isSelected={isSelected}
+          isDisabled={!testIds.length}
           key={t.id}
           onClick={() => handleClick(t.id)}
           onDelete={() => onDelete(t)}
           onEdit={() => onEdit(t)}
+          selectState={state}
           trigger={t}
         />
       );
@@ -90,7 +93,7 @@ export default function EditTriggers({
         size="componentParagraph"
         textAlign="center"
       >
-        {triggers ? copy.triggersEmpty : copy.loading}
+        {isLoading ? copy.loading : copy.triggersEmpty}
       </Text>
     );
   }

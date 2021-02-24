@@ -33,10 +33,7 @@ describe("handleSuitesRequest", () => {
     await db("environments").insert(buildEnvironment({}));
     await db("environment_variables").insert(buildEnvironmentVariable({}));
 
-    await db("triggers").insert([
-      buildTrigger({ is_default: true }),
-      buildTrigger({ i: 2 }),
-    ]);
+    await db("triggers").insert([buildTrigger({}), buildTrigger({ i: 2 })]);
     await db("tests").insert(buildTest({}));
 
     return db("test_triggers").insert(buildTestTrigger());
@@ -143,7 +140,7 @@ describe("handleSuitesRequest", () => {
     expect(send).toBeCalledWith({ url: expect.any(String) });
 
     const suite = await db.select("*").from("suites").first();
-    expect(send.mock.calls[0][0].url).toMatch(`/tests/${suite.id}`);
+    expect(send.mock.calls[0][0].url).toMatch(`/suites/${suite.id}`);
     expect(suite.environment_variables).toBeTruthy();
 
     await db("runs").del();

@@ -65,6 +65,7 @@ export const runnerFragment = gql`
 export const suiteRunFragment = gql`
   fragment SuiteRunFragment on SuiteRun {
     completed_at
+    created_at
     gif_url
     id
     is_test_deleted
@@ -78,12 +79,15 @@ export const suiteRunFragment = gql`
 export const suiteFragment = gql`
   fragment SuiteFragment on Suite {
     created_at
+    environment_id
+    environment_variables
     id
     runs {
       ...SuiteRunFragment
     }
     team_id
     trigger_id
+    trigger_name
   }
   ${suiteRunFragment}
 `;
@@ -116,12 +120,12 @@ export const testFragment = gql`
 
 export const triggerFragment = gql`
   fragment TriggerFragment on Trigger {
+    color
     deployment_branches
     deployment_environment
     deployment_integration_id
     environment_id
     id
-    is_default
     name
     next_at
     repeat_minutes

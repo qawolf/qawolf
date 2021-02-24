@@ -1,50 +1,58 @@
 import { Box } from "grommet";
-import { useRouter } from "next/router";
 
-import { useCreateSuite } from "../../../../hooks/mutations";
-import { routes } from "../../../../lib/routes";
-import { Trigger } from "../../../../lib/types";
+import { ShortTest, TestTriggers, Trigger } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
-import { edgeSize } from "../../../../theme/theme";
-import PlayButton from "../../../shared/PlayButton";
-import TriggerName from "./TriggerName";
+import Search from "../../../shared-new/Search";
+import Text from "../../../shared-new/Text";
+import Actions from "./Actions";
+import Buttons from "./Buttons";
+import SelectTrigger from "./SelectTrigger";
 
 type Props = {
-  selectedIds: string[];
-  trigger: Trigger;
+  checkedTests: ShortTest[];
+  search: string;
+  setSearch: (search: string) => void;
+  tests: ShortTest[] | null;
+  testTriggers: TestTriggers[];
+  triggers: Trigger[];
 };
 
-export default function Header({ selectedIds, trigger }: Props): JSX.Element {
-  const { replace } = useRouter();
-  const [createSuite, { loading }] = useCreateSuite();
-
-  const handleClick = () => {
-    createSuite({
-      variables: { test_ids: selectedIds, trigger_id: trigger.id },
-    }).then((response) => {
-      const { data } = response || {};
-      if (!data?.createSuite) return;
-
-      replace(`${routes.tests}/${data.createSuite}`);
-    });
-  };
+export default function Header({
+  checkedTests,
+  search,
+  setSearch,
+  testTriggers,
+  tests,
+  triggers,
+}: Props): JSX.Element {
+  const selectedTests = checkedTests.length ? checkedTests : tests;
 
   return (
-    <Box
-      align="center"
-      direction="row"
-      flex={false}
-      height={edgeSize.large}
-      justify="between"
-    >
-      <Box align="center" direction="row">
-        <TriggerName trigger={trigger} />
+    <Box flex={false}>
+      <Box
+        align="center"
+        direction="row"
+        justify="between"
+        margin={{ bottom: "medium" }}
+      >
+        <Box align="center" direction="row">
+          <Text
+            color="gray9"
+            margin={{ right: "medium" }}
+            size="componentHeader"
+          >
+            {copy.allTests}
+          </Text>
+        </Box>
+        <Box align="center" direction="row">
+          <Actions checkedTests={checkedTests} />
+          <Buttons tests={selectedTests} />
+        </Box>
       </Box>
-      <PlayButton
-        disabled={loading}
-        message={copy.runGroup(selectedIds.length)}
-        onClick={handleClick}
-      />
+      <Box align="center" direction="row" justify="between">
+        <Search search={search} setSearch={setSearch} />
+        <SelectTrigger testTriggers={testTriggers} triggers={triggers} />
+      </Box>
     </Box>
   );
 }

@@ -33,7 +33,7 @@ export const TestContext = createContext<TestContextValue>({
 const pollInterval = 2000;
 
 export const TestProvider: FC = ({ children }) => {
-  const { environmentId, teamId, triggerId } = useContext(StateContext);
+  const { environmentId, teamId } = useContext(StateContext);
 
   const { query } = useRouter();
 
@@ -52,7 +52,7 @@ export const TestProvider: FC = ({ children }) => {
 
   const { data: suiteData } = useSuite(
     { id: run?.suite_id || (query?.suite_id as string) },
-    { teamId, triggerId }
+    { teamId }
   );
   const suite = suiteData?.suite || null;
 

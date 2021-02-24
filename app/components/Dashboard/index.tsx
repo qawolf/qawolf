@@ -1,78 +1,48 @@
-import { Box } from "grommet";
+import { Box, ThemeContext } from "grommet";
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 
 import { useEnsureUser } from "../../hooks/ensureUser";
 import { useUpdateUser } from "../../hooks/mutations";
-import { useSuite, useTriggers } from "../../hooks/queries";
+import { routes } from "../../lib/routes";
 import { state } from "../../lib/state";
-import Spinner from "../shared/Spinner";
-import { StateContext } from "../StateContext";
+import { theme } from "../../theme/theme-new";
 import { UserContext } from "../UserContext";
 import Sidebar from "./Sidebar";
+import Suite from "./Suite";
 import Tests from "./Tests";
 
 export default function Dashboard(): JSX.Element {
   useEnsureUser();
 
-  const { user, wolf } = useContext(UserContext);
-
-  const { asPath, query } = useRouter();
-  const suiteId = (query.suite_id as string) || null;
-
-  const { teamId, triggerId } = useContext(StateContext);
-
-  // this query sets selected team and trigger ids as needed
-  useSuite({ id: suiteId || null }, { teamId, triggerId });
-
-  const { data } = useTriggers(
-    { team_id: teamId },
-    { skipOnCompleted: !!suiteId, triggerId }
-  );
+  const { asPath, pathname, query } = useRouter();
+  const { user } = useContext(UserContext);
 
   const [updateUser] = useUpdateUser();
 
   // show create test modal once if not onboarded
   useEffect(() => {
-    if (!user || user.onboarded_at) return;
+    if (!pathname.includes(routes.tests) || !user || user.onboarded_at) return;
 
     state.setModal({ name: "createTest" });
     updateUser({ variables: { onboarded_at: new Date().toISOString() } });
-  }, [updateUser, user]);
+  }, [pathname, updateUser, user]);
 
   // update the current location in global state for use in editor back button
   useEffect(() => {
     state.setDashboardUri(asPath);
   }, [asPath]);
 
-  const triggers = data?.triggers;
-  const selectedTrigger = triggers?.find((t) => t.id === triggerId);
-
-  useEffect(() => {
-    if (selectedTrigger) state.setEnvironmentId(selectedTrigger.environment_id);
-  }, [selectedTrigger]);
-
-  if (!triggers || !user || !wolf) {
-    return <Spinner />;
-  }
-
   return (
-    <Box direction="row" height="100vh">
-      <Sidebar
-        triggerId={triggerId}
-        triggers={triggers}
-        user={user}
-        wolf={wolf}
-      />
-      <Box background="lightBlue" fill="horizontal" pad="large">
-        {!!selectedTrigger && (
-          <Tests
-            selectedTrigger={selectedTrigger}
-            triggers={triggers}
-            wolfVariant={wolf.variant}
-          />
+    <ThemeContext.Extend value={theme}>
+      <Box direction="row" height="100vh">
+        <Sidebar />
+        {pathname.includes(routes.suites) ? (
+          <Suite suiteId={query.suite_id as string} />
+        ) : (
+          <Tests />
         )}
       </Box>
-    </Box>
+    </ThemeContext.Extend>
   );
 }

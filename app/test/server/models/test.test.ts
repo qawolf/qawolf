@@ -16,14 +16,14 @@ import {
 
 const {
   buildTestName,
-  createTestAndTestTriggers,
+  createTest,
   countIncompleteTests,
   deleteTests,
+  findEnabledTests,
   findEnabledTestsForTrigger,
   findPendingTest,
   findTest,
   findTestForRun,
-  findTestsForTrigger,
   findTestsForTeam,
   updateTest,
 } = testModel;
@@ -49,32 +49,8 @@ describe("buildTestName", () => {
       .spyOn(testModel, "findTestsForTeam")
       .mockReturnValue(Promise.resolve([]));
 
-    const testName = await buildTestName({ team_id: "teamId" }, options);
+    const testName = await buildTestName("teamId", options);
     expect(testName).toBe("My Test");
-  });
-
-  it("returns specified name if possible", async () => {
-    jest
-      .spyOn(testModel, "findTestsForTeam")
-      .mockReturnValue(Promise.resolve([]));
-
-    const testName = await buildTestName(
-      { name: "Test Name", team_id: "teamId" },
-      options
-    );
-    expect(testName).toBe("Test Name");
-  });
-
-  it("returns default name if specified name not possible", async () => {
-    jest
-      .spyOn(testModel, "findTestsForTeam")
-      .mockReturnValue(Promise.resolve([{ name: "My Test" }] as Test[]));
-
-    const testName = await buildTestName(
-      { name: "My Test", team_id: "teamId" },
-      options
-    );
-    expect(testName).toBe("My Test 2");
   });
 
   it("returns incremented name if possible", async () => {
@@ -82,7 +58,7 @@ describe("buildTestName", () => {
       .spyOn(testModel, "findTestsForTeam")
       .mockReturnValue(Promise.resolve([{ name: "My Test" }] as Test[]));
 
-    const testName = await buildTestName({ team_id: "teamId" }, options);
+    const testName = await buildTestName("teamId", options);
     expect(testName).toBe("My Test 2");
   });
 
@@ -96,27 +72,20 @@ describe("buildTestName", () => {
         ] as Test[])
       );
 
-    const testName = await buildTestName({ team_id: "teamId" }, options);
+    const testName = await buildTestName("teamId", options);
     expect(testName).toBe("My Test 5");
   });
 });
 
-describe("createTestAndTestTriggers", () => {
-  beforeAll(() => db("triggers").insert(buildTrigger({ i: 2 })));
-
-  afterAll(async () => {
-    await db("test_triggers").del();
-    await db("triggers").where({ id: "trigger2Id" }).del();
-    await db("tests").del();
-  });
+describe("createTest", () => {
+  afterAll(() => db("tests").del());
 
   it("creates a new test", async () => {
-    await createTestAndTestTriggers(
+    await createTest(
       {
         code: "code",
         creator_id: "userId",
         team_id: "teamId",
-        trigger_ids: ["triggerId", "trigger2Id"],
       },
       options
     );
@@ -133,13 +102,6 @@ describe("createTestAndTestTriggers", () => {
       team_id: "teamId",
       version: 0,
     });
-
-    const testTriggers = await db.select("*").from("test_triggers");
-
-    expect(testTriggers).toMatchObject([
-      { test_id: tests[0].id, trigger_id: "triggerId" },
-      { test_id: tests[0].id, trigger_id: "trigger2Id" },
-    ]);
   });
 });
 
@@ -153,33 +115,30 @@ describe("deleteTests", () => {
     jest
       .spyOn(utils, "cuid")
       .mockReturnValueOnce("deleteMe")
-      .mockReturnValueOnce("deleteMeTestTrigger")
       .mockReturnValue("deleteMe2");
 
-    await createTestAndTestTriggers(
+    await createTest(
       {
         code: "code",
         creator_id: "userId",
         team_id: "teamId",
-        trigger_ids: ["triggerId"],
+      },
+      options
+    );
+
+    await createTest(
+      {
+        code: "code",
+        creator_id: "userId",
+        team_id: "teamId",
       },
       options
     );
 
     // request a runner to make sure it gets cleared after deletion
     await db("tests")
-      .update({ runner_requested_at: minutesFromNow() })
-      .where({ id: "deleteMe" });
-
-    await createTestAndTestTriggers(
-      {
-        code: "code",
-        creator_id: "userId",
-        team_id: "teamId",
-        trigger_ids: ["triggerId"],
-      },
-      options
-    );
+      .where({ id: "deleteMe" })
+      .update({ runner_requested_at: new Date().toISOString() });
 
     const testToDelete = await findTest("deleteMe", options);
     expect(testToDelete.id).toEqual("deleteMe");
@@ -194,8 +153,35 @@ describe("deleteTests", () => {
 
     expect(tests).toMatchObject([
       { deleted_at: expect.any(Date), runner_requested_at: null },
-      { deleted_at: expect.any(Date), runner_requested_at: null },
+      { deleted_at: expect.any(Date) },
     ]);
+  });
+});
+
+describe("findEnabledTests", () => {
+  beforeAll(() => {
+    return db("tests").insert([
+      buildTest({}),
+      buildTest({ deleted_at: new Date().toDateString(), i: 2 }),
+      buildTest({ i: 3 }),
+      buildTest({ i: 4 }),
+      buildTest({ i: 5, is_enabled: false }),
+    ]);
+  });
+
+  afterAll(() => db("tests").del());
+
+  it("finds enabled and non-deleted tests", async () => {
+    const tests = await findEnabledTests(
+      ["testId", "test2Id", "test3Id", "test5Id"],
+      options
+    );
+
+    tests.sort((a, b) => {
+      return a < b ? -1 : 1;
+    });
+
+    expect(tests).toMatchObject([{ id: "testId" }, { id: "test3Id" }]);
   });
 });
 
@@ -396,37 +382,6 @@ describe("findTestForRun", () => {
   });
 });
 
-describe("findTestsForTrigger", () => {
-  beforeAll(async () => {
-    await db("tests").insert([
-      buildTest({}),
-      buildTest({ deleted_at: minutesFromNow(), i: 2 }),
-    ]);
-
-    return db("test_triggers").insert([
-      { id: "testTriggerId", test_id: "testId", trigger_id: "triggerId" },
-      { id: "testTrigger2Id", test_id: "test2Id", trigger_id: "triggerId" },
-    ]);
-  });
-
-  afterAll(async () => {
-    await db("test_triggers").del();
-    await db("tests").del();
-  });
-
-  it("returns the non-deleted tests of a trigger", async () => {
-    const tests = await findTestsForTrigger("triggerId", options);
-
-    expect(tests).toMatchObject([{ id: "testId" }]);
-  });
-
-  it("returns empty list if no tests for trigger exist", async () => {
-    const tests = await findTestsForTrigger("fakeId", options);
-
-    expect(tests).toEqual([]);
-  });
-});
-
 describe("findTestsForTeam", () => {
   beforeAll(() => db("tests").insert(buildTest({})));
 
@@ -438,7 +393,7 @@ describe("findTestsForTeam", () => {
     expect(tests).toMatchObject([{ creator_id: "userId", id: "testId" }]);
   });
 
-  it("returns empty list if no tests for user exist", async () => {
+  it("returns empty list if no tests for team exist", async () => {
     const tests = await findTestsForTeam("fakeId", options);
 
     expect(tests).toEqual([]);

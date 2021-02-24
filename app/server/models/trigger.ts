@@ -5,6 +5,15 @@ import { cuid } from "../utils";
 
 const DAILY_HOUR = 16; // 9 am PST
 const MINUTES_PER_DAY = 24 * 60;
+export const TRIGGER_COLORS = [
+  "#4545E5",
+  "#CA45E5",
+  "#45CAE5",
+  "#7EE2E5",
+  "#44C76B",
+  "#EF86B4",
+  "#213866",
+];
 
 type CreateTrigger = {
   creator_id: string;
@@ -13,7 +22,6 @@ type CreateTrigger = {
   deployment_integration_id?: string | null;
   environment_id?: string;
   id?: string;
-  is_default?: boolean;
   name: string;
   repeat_minutes?: number | null;
   team_id: string;
@@ -29,7 +37,18 @@ type UpdateTrigger = {
   repeat_minutes?: number | null;
 };
 
-export const DEFAULT_TRIGGER_NAME = "All Tests";
+export const buildTriggerColor = (
+  triggers: Trigger[],
+  colors: string[] = TRIGGER_COLORS
+): string => {
+  const availableColor = colors.find(
+    (c) => !triggers.some((t) => t.color === c)
+  );
+
+  if (availableColor) return availableColor;
+
+  return colors[triggers.length % colors.length];
+};
 
 const clearMinutes = (date: Date): void => {
   date.setUTCMinutes(0);
@@ -97,7 +116,6 @@ export const createTrigger = async (
     deployment_integration_id,
     environment_id,
     id,
-    is_default,
     name,
     repeat_minutes,
     team_id,
@@ -108,7 +126,10 @@ export const createTrigger = async (
 
   log.debug(`create ${name} for team ${team_id}`);
 
+  const teamTriggers = await findTriggersForTeam(team_id, { db, logger });
+
   const trigger = {
+    color: buildTriggerColor(teamTriggers),
     creator_id,
     deleted_at: null,
     deployment_branches: formatBranches(deployment_branches),
@@ -116,7 +137,6 @@ export const createTrigger = async (
     deployment_integration_id: deployment_integration_id || null,
     environment_id: environment_id || null,
     id: id || cuid(),
-    is_default: is_default || false,
     name,
     next_at: getNextAt(repeat_minutes),
     repeat_minutes: repeat_minutes || null,
@@ -127,25 +147,6 @@ export const createTrigger = async (
   log.debug(`create ${trigger.id}`);
 
   return trigger;
-};
-
-export const findDefaultTriggerForTeam = async (
-  team_id: string,
-  { db, logger }: ModelOptions
-): Promise<Trigger> => {
-  const log = logger.prefix("findDefaultTriggerForTeam");
-
-  const triggers = await db
-    .select("*")
-    .from("triggers")
-    .where({ deleted_at: null, is_default: true, team_id });
-
-  if (!triggers.length) {
-    log.error(`no default trigger for team ${team_id}`);
-    throw new Error("trigger not found");
-  }
-
-  return triggers[0];
 };
 
 export const findTrigger = async (
@@ -199,14 +200,10 @@ export const deleteTrigger = async (
   log.debug("trigger", id);
 
   const trigger = await findTrigger(id, { db, logger });
-  if (trigger.is_default) {
-    log.error(`do not delete default trigger ${id}`);
-    throw new Error("cannot delete default trigger");
-  }
 
   const deleted_at = minutesFromNow();
-
   await db("triggers").where({ id }).update({ deleted_at });
+
   log.debug("deleted trigger", id);
 
   return { ...trigger, deleted_at };
@@ -224,7 +221,6 @@ export const findTriggersForTeam = async (
     .select("*")
     .from("triggers")
     .where({ deleted_at: null, team_id })
-    .orderBy("is_default", "desc") // show default trigger first
     .orderBy("name", "asc");
 
   log.debug(`found ${triggers.length} triggers for team ${team_id}`);
@@ -286,14 +282,8 @@ export const updateTrigger = async (
     if (environment_id !== undefined) {
       updates.environment_id = environment_id;
     }
+    if (name !== undefined) updates.name = name;
 
-    if (name !== undefined) {
-      if (existingTrigger.is_default) {
-        log.error(`do not rename default trigger ${id}`);
-        throw new Error("cannot rename default trigger");
-      }
-      updates.name = name;
-    }
     if (repeat_minutes !== undefined) {
       updates.repeat_minutes = repeat_minutes;
       updates.next_at = getNextAt(repeat_minutes);

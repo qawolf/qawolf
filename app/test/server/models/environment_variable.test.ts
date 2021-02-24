@@ -14,7 +14,6 @@ const {
   buildEnvironmentVariables,
   createEnvironmentVariable,
   deleteEnvironmentVariable,
-  deleteEnvironmentVariablesForEnvironment,
   findEnvironmentVariable,
   findEnvironmentVariablesForEnvironment,
   findSystemEnvironmentVariable,
@@ -224,33 +223,6 @@ describe("deleteEnvironmentVariable", () => {
 
     expect(environmentVariables).toMatchObject([
       { id: "environmentVariable2Id" },
-    ]);
-  });
-});
-
-describe("deleteEnvironmentVariablesForEnvironment", () => {
-  beforeAll(() => {
-    return db("environment_variables").insert([
-      buildEnvironmentVariable({}),
-      buildEnvironmentVariable({ i: 2 }),
-      buildEnvironmentVariable({ environment_id: "environment2Id", i: 3 }),
-    ]);
-  });
-
-  afterAll(() => db("environment_variables").del());
-
-  it("deletes all environment variables for an environment", async () => {
-    const deleteCount = await deleteEnvironmentVariablesForEnvironment(
-      "environmentId",
-      options
-    );
-
-    expect(deleteCount).toBe(2);
-
-    const environmentVariables = await db("environment_variables").select("*");
-
-    expect(environmentVariables).toMatchObject([
-      { id: "environmentVariable3Id" },
     ]);
   });
 });

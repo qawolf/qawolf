@@ -60,19 +60,24 @@ export type Runner = {
   ws_url: string | null;
 };
 
-export type Suite = {
+export type ShortSuite = {
   created_at: string;
   environment_id: string | null;
   environment_variables: string | null;
   id: string;
-  runs: SuiteRun[];
   team_id: string;
-  trigger_id: string;
-  trigger_name: string;
+  trigger_color: string | null;
+  trigger_id: string | null;
+  trigger_name: string | null;
+};
+
+export type Suite = ShortSuite & {
+  runs: SuiteRun[];
 };
 
 export type SuiteRun = {
   completed_at: string | null;
+  created_at: string;
   gif_url: string | null;
   id: string;
   is_test_deleted: boolean;
@@ -98,12 +103,15 @@ export type Team = ShortTeam & {
   renewed_at: string | null;
 };
 
-export type Test = {
+export type ShortTest = {
+  id: string;
+  name: string;
+};
+
+export type Test = ShortTest & {
   code: string;
   deleted_at: string | null;
-  id: string;
   is_enabled: boolean;
-  name: string;
   updated_at: string;
   version: number;
 };
@@ -115,21 +123,27 @@ export type TestHistoryRun = {
   status: RunStatus;
 };
 
-export type TestWithSummary = Test & {
-  summary: {
-    gif_url: string | null;
-    last_runs: SuiteRun[];
-  };
+export type TestSummaryRun = {
+  created_at: string;
+  gif_url: string | null;
+  id: string;
+  status: RunStatus;
+};
+
+export type TestSummary = {
+  gif_url: string | null;
+  last_runs: TestSummaryRun[];
+  test_id: string;
 };
 
 export type Trigger = {
+  color: string;
   created_at: string;
   deployment_branches: string | null;
   deployment_environment: DeploymentEnvironment | null;
   deployment_integration_id: string | null;
   environment_id: string | null;
   id: string;
-  is_default: boolean;
   name: string;
   next_at: string | null;
   repeat_minutes: number | null;
@@ -157,7 +171,7 @@ export type CreateCode = {
 export type Modal =
   | "createTest"
   | "environments"
-  | "deleteTest"
+  | "deleteTests"
   | "teamSettings"
   | "triggers";
 
@@ -259,5 +273,4 @@ export type State = {
     expiresIn?: number;
     message: string;
   } | null;
-  triggerId: string | null;
 };

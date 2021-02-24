@@ -48,12 +48,13 @@ export default function Options({
   useOnClickOutside({ onClickOutside: onClose, ref });
 
   return (
-    <Box
-      a11yTitle={"environment options"}
-      ref={ref}
-      style={{ position: "relative" }}
-    >
-      <StyledButton className="env-options" onClick={onClick} plain>
+    <Box ref={ref} style={{ position: "relative" }}>
+      <StyledButton
+        a11yTitle={"environment options"}
+        className="env-options"
+        onClick={onClick}
+        plain
+      >
         <Box>
           <More size={edgeSize.small} />
         </Box>

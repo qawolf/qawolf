@@ -37,8 +37,8 @@ export default function ConfirmDeleteEnvironment({
 
     setError("");
     deleteEnvironment({ variables: { id: environment.id } }).then(
-      ({ data }) => {
-        onClose(data?.deleteEnvironment.id);
+      (response) => {
+        onClose(response?.data?.deleteEnvironment.id);
       }
     );
   };

@@ -2,7 +2,6 @@ import { Box } from "grommet";
 import kebabCase from "lodash/kebabCase";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { RiLinksFill } from "react-icons/ri";
 import styled from "styled-components";
 
 import {
@@ -12,6 +11,7 @@ import {
   transition,
   transitionDuration,
 } from "../../theme/theme-new";
+import LinkIcon from "../shared-new/icons/Link";
 import Text from "../shared-new/Text";
 import Divider from "./Layout/Divider";
 
@@ -65,7 +65,7 @@ export default function SubHeader({ children }: Props): JSX.Element {
             >
               {children}
             </Text>
-            <RiLinksFill size={edgeSize.medium} style={{ transition }} />
+            <LinkIcon size={edgeSize.medium} style={{ transition }} />
           </StyledBox>
         </a>
       </Link>

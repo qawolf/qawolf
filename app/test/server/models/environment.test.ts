@@ -1,5 +1,4 @@
 import {
-  createDefaultEnvironments,
   createEnvironment,
   deleteEnvironment,
   findEnvironment,
@@ -26,23 +25,6 @@ const options = { db, logger };
 beforeAll(async () => {
   await db("users").insert(buildUser({}));
   return db("teams").insert([buildTeam({}), buildTeam({ i: 2 })]);
-});
-
-describe("createDefaultEnvironments", () => {
-  afterAll(() => db("environments").del());
-
-  it("creates default environments for a team", async () => {
-    await createDefaultEnvironments("teamId", options);
-
-    const environments = await db("environments")
-      .select("*")
-      .orderBy("name", "asc");
-
-    expect(environments).toMatchObject([
-      { name: "Production", team_id: "teamId" },
-      { name: "Staging", team_id: "teamId" },
-    ]);
-  });
 });
 
 describe("createEnvironment", () => {

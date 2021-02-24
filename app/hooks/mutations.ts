@@ -125,8 +125,8 @@ type CreateSuiteData = {
 };
 
 type CreateSuiteVariables = {
+  environment_id: string | null;
   test_ids: string[];
-  trigger_id: string;
 };
 
 type CreateTestData = {
@@ -134,7 +134,7 @@ type CreateTestData = {
 };
 
 type CreateTestVariables = {
-  trigger_id?: string | null;
+  team_id: string;
   url: string;
 };
 
@@ -172,10 +172,7 @@ type DeleteTestsVariables = {
 };
 
 type DeleteTriggerData = {
-  deleteTrigger: {
-    default_trigger_id: string;
-    id: string;
-  };
+  deleteTrigger: Trigger;
 };
 
 type DeleteTriggerVariables = {
@@ -473,12 +470,6 @@ export const useCreateTrigger = (): MutationTuple<
     {
       // cannot redirect to new trigger until trigger list loads
       awaitRefetchQueries: true,
-      onCompleted: (response) => {
-        const { createTrigger } = response || {};
-        if (!createTrigger) return;
-
-        state.setTriggerId(createTrigger.id);
-      },
       onError,
       refetchQueries: ["testTriggers", "triggers"],
     }
@@ -519,8 +510,9 @@ export const useDeleteTests = (
   return useMutation<DeleteTestsData, DeleteTestsVariables>(
     deleteTestsMutation,
     {
+      awaitRefetchQueries: true,
       onError,
-      refetchQueries: ["dashboard"],
+      refetchQueries: ["tests"],
       variables,
     }
   );

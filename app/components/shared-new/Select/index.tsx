@@ -1,4 +1,4 @@
-import { Box } from "grommet";
+import { Box, BoxProps } from "grommet";
 import { ReactNode, useRef, useState } from "react";
 
 import { useOnClickOutside } from "../../../hooks/onClickOutside";
@@ -13,21 +13,25 @@ type Type = "dark" | "light";
 type Props = {
   children: ReactNode[];
   direction?: Direction;
+  flex?: BoxProps["flex"];
   hasError?: boolean;
   isDisabled?: boolean;
   label: string;
   noBorderSide?: Side;
   type?: Type;
+  width?: BoxProps["width"];
 };
 
 export default function Select({
   children,
   direction,
+  flex,
   hasError,
   isDisabled,
   label,
   noBorderSide,
   type,
+  width,
 }: Props): JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -42,7 +46,12 @@ export default function Select({
   useOnClickOutside({ onClickOutside: handleClose, ref });
 
   return (
-    <Box ref={ref} style={{ position: "relative" }} width="full">
+    <Box
+      flex={flex}
+      ref={ref}
+      style={{ position: "relative" }}
+      width={width || "full"}
+    >
       <Button
         IconComponent={direction === "up" ? Selector : ArrowDown}
         iconPosition="right"

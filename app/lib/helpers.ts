@@ -39,38 +39,6 @@ export const durationToText = (
   return `${minutesText} ${seconds}s`;
 };
 
-const isSameDay = (date: Date, compare: Date): boolean => {
-  return (
-    date.getDate() === compare.getDate() &&
-    date.getMonth() === compare.getMonth() &&
-    date.getFullYear() === compare.getFullYear()
-  );
-};
-
-export const formatDate = (timestamp: string): string => {
-  const date = new Date(Number(timestamp) || timestamp);
-  const time = date
-    .toLocaleTimeString("en-US", {
-      hour: "numeric",
-      hour12: true,
-      minute: "numeric",
-    })
-    .toLowerCase();
-
-  let day = date.toLocaleDateString("en-US", {
-    day: "2-digit",
-    month: "short",
-  });
-
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-
-  if (isSameDay(date, new Date())) day = "Today";
-  else if (isSameDay(date, tomorrow)) day = "Tomorrow";
-
-  return `${day} at ${time}`;
-};
-
 export const formatLogBackground = (logLevel: Log["severity"]): string => {
   if (logLevel === "error") return "danger10";
   if (logLevel === "warning") return "warning10";

@@ -64,8 +64,8 @@ export default function Form({
   );
   const [hasDeployError, setHasDeployError] = useState(false);
   // environment
-  const [environmentId, setEnvironmentId] = useState<string | null>(
-    editTrigger?.environment_id || stateEnvironmentId
+  const [environmentId, setEnvironmentId] = useState<string>(
+    editTrigger?.environment_id || stateEnvironmentId || ""
   );
 
   // try to use a sensible default name

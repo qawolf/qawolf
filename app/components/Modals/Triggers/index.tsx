@@ -15,7 +15,7 @@ type Props = {
 };
 
 export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
-  const { teamId, triggerId } = useContext(StateContext);
+  const { teamId } = useContext(StateContext);
 
   const [deleteTrigger, setDeleteTrigger] = useState<Trigger | null>(null);
   const [editTrigger, setEditTrigger] = useState<Trigger | null>(null);
@@ -23,18 +23,15 @@ export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
 
   const isRendered = useRef(false);
 
-  const { data } = useTriggers(
-    { team_id: teamId },
-    { skipOnCompleted: false, triggerId }
-  );
+  const { data, loading } = useTriggers({ team_id: teamId });
 
-  const { data: testTriggersData } = useTestTriggers({ test_ids: testIds });
+  const {
+    data: testTriggersData,
+    loading: testTriggersLoading,
+  } = useTestTriggers({ test_ids: testIds });
   const testTriggers = testTriggersData?.testTriggers || [];
 
-  // do not show "All tests" trigger
-  const triggers = data?.triggers
-    ? data.triggers.filter((t) => !t.is_default)
-    : null;
+  const triggers = data?.triggers || null;
 
   useEffect(() => {
     if (!data?.triggers || isRendered.current) return;
@@ -68,12 +65,14 @@ export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
             closeModal={closeModal}
             editTrigger={editTrigger}
             onBack={handleBack}
+            testIds={testIds}
             triggers={triggers || []}
           />
         )}
         {!deleteTrigger && !editTrigger && !isCreate && (
           <EditTriggers
             closeModal={closeModal}
+            isLoading={loading || testTriggersLoading}
             onCreate={handleCreate}
             onDelete={handleDelete}
             onEdit={handleEdit}

@@ -97,14 +97,14 @@ export const createSlackIntegrationUrlMutation = gql`
 `;
 
 export const createSuiteMutation = gql`
-  mutation createSuite($test_ids: [ID!], $trigger_id: ID!) {
-    createSuite(test_ids: $test_ids, trigger_id: $trigger_id)
+  mutation createSuite($environment_id: ID, $test_ids: [ID!]!) {
+    createSuite(environment_id: $environment_id, test_ids: $test_ids)
   }
 `;
 
 export const createTestMutation = gql`
-  mutation createTest($trigger_id: ID, $url: String!) {
-    createTest(trigger_id: $trigger_id, url: $url) {
+  mutation createTest($team_id: ID!, $url: String!) {
+    createTest(team_id: $team_id, url: $url) {
       ...TestFragment
     }
   }
@@ -168,10 +168,10 @@ export const deleteTestsMutation = gql`
 export const deleteTriggerMutation = gql`
   mutation deleteTrigger($id: ID!) {
     deleteTrigger(id: $id) {
-      default_trigger_id
-      id
+      ...TriggerFragment
     }
   }
+  ${triggerFragment}
 `;
 
 export const joinMailingListMutation = gql`

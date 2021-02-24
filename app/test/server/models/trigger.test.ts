@@ -12,9 +12,9 @@ import {
 } from "../utils";
 
 const {
+  buildTriggerColor,
   createTrigger,
   deleteTrigger,
-  findDefaultTriggerForTeam,
   findTrigger,
   findTriggersForGitHubIntegration,
   findTriggersForTeam,
@@ -51,6 +51,52 @@ beforeAll(async () => {
 describe("trigger model", () => {
   afterEach(jest.restoreAllMocks);
 
+  describe("buildTriggerColor", () => {
+    const colors = ["red", "blue", "green"];
+
+    it("returns the first unused color if possible", () => {
+      expect(buildTriggerColor([], colors)).toBe("red");
+      expect(buildTriggerColor([{ color: "blue" }] as Trigger[], colors)).toBe(
+        "red"
+      );
+
+      expect(buildTriggerColor([{ color: "red" }] as Trigger[], colors)).toBe(
+        "blue"
+      );
+      expect(
+        buildTriggerColor(
+          [{ color: "red" }, { color: "blue" }, { color: "blue" }] as Trigger[],
+          colors
+        )
+      ).toBe("green");
+    });
+
+    it("returns the next color otherwise", () => {
+      expect(
+        buildTriggerColor(
+          [
+            { color: "red" },
+            { color: "blue" },
+            { color: "green" },
+          ] as Trigger[],
+          colors
+        )
+      ).toBe("red");
+
+      expect(
+        buildTriggerColor(
+          [
+            { color: "red" },
+            { color: "blue" },
+            { color: "green" },
+            { color: "red" },
+          ] as Trigger[],
+          colors
+        )
+      ).toBe("blue");
+    });
+  });
+
   describe("createTrigger", () => {
     afterEach(() => db("triggers").del());
 
@@ -74,40 +120,9 @@ describe("trigger model", () => {
           deployment_integration_id: null,
           environment_id: null,
           id: expect.any(String),
-          is_default: false,
           name: "Schedule (once an hour)",
           next_at: expect.any(Date),
           repeat_minutes: 60,
-          team_id: "teamId",
-        },
-      ]);
-    });
-
-    it("creates a new default trigger", async () => {
-      await createTrigger(
-        {
-          creator_id: "userId",
-          is_default: true,
-          name: "All Tests",
-          repeat_minutes: null,
-          team_id: "teamId",
-        },
-        options
-      );
-
-      const triggers = await db.select("*").from("triggers");
-
-      expect(triggers).toMatchObject([
-        {
-          creator_id: "userId",
-          deployment_branches: null,
-          deployment_environment: null,
-          deployment_integration_id: null,
-          id: expect.any(String),
-          is_default: true,
-          name: "All Tests",
-          next_at: null,
-          repeat_minutes: null,
           team_id: "teamId",
         },
       ]);
@@ -140,7 +155,6 @@ describe("trigger model", () => {
           deployment_integration_id: "integrationId",
           environment_id: "environmentId",
           id: "deployTriggerId",
-          is_default: false,
           name: "Hourly (Staging)",
           repeat_minutes: 60,
         },
@@ -150,10 +164,7 @@ describe("trigger model", () => {
 
   describe("deleteTrigger", () => {
     beforeAll(async () => {
-      return db("triggers").insert([
-        buildTrigger({}),
-        buildTrigger({ i: 2, is_default: true }),
-      ]);
+      return db("triggers").insert(buildTrigger({}));
     });
 
     afterAll(() => db("triggers").del());
@@ -164,7 +175,6 @@ describe("trigger model", () => {
       expect(trigger).toMatchObject({
         deleted_at: expect.any(String),
         id: "triggerId",
-        is_default: false,
       });
 
       const dbTrigger = await db
@@ -173,52 +183,6 @@ describe("trigger model", () => {
         .where({ id: "triggerId" })
         .first();
       expect(dbTrigger.deleted_at).toBeTruthy();
-    });
-
-    it("throws an error if trigger is default", async () => {
-      await expect(deleteTrigger("trigger2Id", options)).rejects.toThrowError(
-        "cannot delete"
-      );
-    });
-  });
-
-  describe("findDefaultTriggerForTeam", () => {
-    beforeAll(async () => {
-      await db("teams").insert(buildTeam({ i: 3 }));
-      return db("triggers").insert([
-        buildTrigger({
-          is_default: true,
-          name: "All Tests",
-          team_id: "team3Id",
-        }),
-        buildTrigger({ i: 2, is_default: false, team_id: "team3Id" }),
-      ]);
-    });
-
-    afterAll(async () => {
-      await db("triggers").del();
-      return db("teams").where({ id: "team3Id" }).del();
-    });
-
-    it("finds the default trigger for a team", async () => {
-      const trigger = await findDefaultTriggerForTeam("team3Id", options);
-      expect(trigger).toMatchObject({ is_default: true, name: "All Tests" });
-    });
-
-    it("throws an error if a team has no default trigger", async () => {
-      await db("triggers").where({ is_default: true }).del();
-
-      await expect(
-        findDefaultTriggerForTeam("team3Id", options)
-      ).rejects.toThrowError("not found");
-
-      await db("triggers").insert(
-        buildTrigger({
-          is_default: true,
-          name: "All Tests",
-          team_id: "team3Id",
-        })
-      );
     });
   });
 
@@ -305,9 +269,8 @@ describe("trigger model", () => {
           deleted_at: minutesFromNow(),
           id: "deletedTriggerId",
         },
-        buildTrigger({ i: 2, is_default: true, name: "All Tests" }),
-        buildTrigger({ i: 3, team_id: "team2Id" }),
-        buildTrigger({ i: 4, name: "B Trigger" }),
+        buildTrigger({ i: 2, team_id: "team2Id" }),
+        buildTrigger({ i: 3, name: "B Trigger" }),
       ]);
     });
 
@@ -317,9 +280,8 @@ describe("trigger model", () => {
       const triggers = await findTriggersForTeam("teamId", options);
 
       expect(triggers).toMatchObject([
-        { id: "trigger2Id", name: "All Tests" },
         { id: "triggerId", name: "A Trigger" },
-        { id: "trigger4Id", name: "B Trigger" },
+        { id: "trigger3Id", name: "B Trigger" },
       ]);
     });
   });
@@ -563,20 +525,6 @@ describe("trigger model", () => {
       await expect(
         updateTrigger({ id: "fakeId", name: "name" }, options)
       ).rejects.toThrowError("not found");
-    });
-
-    it("throws an error if trying to rename default trigger", async () => {
-      await db("triggers")
-        .where({ id: "triggerId" })
-        .update({ is_default: true });
-
-      await expect(
-        updateTrigger({ id: "triggerId", name: "newName" }, options)
-      ).rejects.toThrowError("default trigger");
-
-      await db("triggers")
-        .where({ id: "triggerId" })
-        .update({ is_default: false });
     });
   });
 

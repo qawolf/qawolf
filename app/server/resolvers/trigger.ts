@@ -6,14 +6,12 @@ import {
 import {
   createTrigger,
   deleteTrigger,
-  findDefaultTriggerForTeam,
   findTriggersForTeam,
   updateTrigger,
 } from "../models/trigger";
 import {
   Context,
   CreateTriggerMutation,
-  DeleteTrigger,
   IdQuery,
   TeamIdQuery,
   Trigger,
@@ -70,14 +68,11 @@ export const deleteTriggerResolver = async (
   _: Record<string, unknown>,
   { id }: IdQuery,
   { db, logger, teams }: Context
-): Promise<DeleteTrigger> => {
+): Promise<Trigger> => {
   const log = logger.prefix("deleteTriggerResolver");
   log.debug("trigger", id);
 
-  const team = await ensureTriggerAccess(
-    { trigger_id: id, teams },
-    { db, logger }
-  );
+  await ensureTriggerAccess({ trigger_id: id, teams }, { db, logger });
 
   const trigger = await db.transaction(async (trx) => {
     await deleteTestTriggersForTrigger({ trigger_id: id }, { db: trx, logger });
@@ -85,13 +80,9 @@ export const deleteTriggerResolver = async (
     return deleteTrigger(id, { db: trx, logger });
   });
 
-  const defaultTrigger = await findDefaultTriggerForTeam(team.id, {
-    db,
-    logger,
-  });
-
   log.debug("deleted trigger", id);
-  return { default_trigger_id: defaultTrigger.id, id: trigger.id };
+
+  return trigger;
 };
 
 /**

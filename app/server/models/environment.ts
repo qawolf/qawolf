@@ -1,7 +1,6 @@
 import { ClientError } from "../errors";
 import { Environment, ModelOptions } from "../types";
 import { cuid } from "../utils";
-import { deleteEnvironmentVariablesForEnvironment } from "./environment_variable";
 
 type CreateEnvironment = {
   name: string;
@@ -11,32 +10,6 @@ type CreateEnvironment = {
 type UpdateEnvironment = {
   id: string;
   name: string;
-};
-
-const defaultEnvironments = ["Production", "Staging"];
-
-export const createDefaultEnvironments = async (
-  team_id: string,
-  { db, logger }: ModelOptions
-): Promise<Environment[]> => {
-  const log = logger.prefix("createDefaultEnvironments");
-
-  const environments = defaultEnvironments.map((name) => {
-    return {
-      id: cuid(),
-      name,
-      team_id,
-    };
-  });
-
-  await db("environments").insert(environments);
-
-  log.debug(
-    "created",
-    environments.map((e) => e.id)
-  );
-
-  return environments;
 };
 
 export const createEnvironment = async (
@@ -78,14 +51,7 @@ export const deleteEnvironment = async (
   const log = logger.prefix("deleteEnvironment");
 
   const environment = await findEnvironment(id, { db, logger });
-
-  await db.transaction(async (trx) => {
-    await trx("triggers")
-      .where({ environment_id: id })
-      .update({ environment_id: null });
-    await deleteEnvironmentVariablesForEnvironment(id, { db: trx, logger });
-    await trx("environments").where({ id }).del();
-  });
+  await db("environments").where({ id }).del();
 
   log.debug("deleted", id);
 

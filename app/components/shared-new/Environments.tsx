@@ -37,6 +37,12 @@ const StyledBox = styled(Box)`
       background: ${colors.gray6};
     }
   }
+
+  &:active {
+    #${dividerId} {
+      background: ${colors.gray4};
+    }
+  }
 `;
 
 export default function Environments({
@@ -92,7 +98,7 @@ export default function Environments({
         />
         <Box
           background={colors.gray8}
-          id="environments-divider"
+          id={dividerId}
           width={borderSize.xsmall}
         />
         <Select

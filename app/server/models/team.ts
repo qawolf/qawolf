@@ -5,8 +5,6 @@ import environment from "../environment";
 import { ModelOptions, Team, TeamPlan } from "../types";
 import { buildApiKey, cuid } from "../utils";
 import { decrypt, encrypt } from "./encrypt";
-import { createDefaultEnvironments } from "./environment";
-import { createTrigger, DEFAULT_TRIGGER_NAME } from "./trigger";
 
 const DEFAULT_NAME = "My Team";
 
@@ -29,13 +27,13 @@ type ValidateApiKeyForTeam = {
   team_id: string;
 };
 
-export const createFreeTeamWithTrigger = async (
-  creator_id: string,
-  { db, logger }: ModelOptions
-): Promise<Team> => {
+export const createDefaultTeam = async ({
+  db,
+  logger,
+}: ModelOptions): Promise<Team> => {
   const id = cuid();
 
-  const log = logger.prefix("createFreeTeamWithTrigger");
+  const log = logger.prefix("createDefaultTeam");
   log.debug(id);
 
   const team = {
@@ -56,19 +54,6 @@ export const createFreeTeamWithTrigger = async (
 
   await db("teams").insert(team);
   log.debug("created", team);
-
-  await createTrigger(
-    {
-      creator_id,
-      is_default: true,
-      name: DEFAULT_TRIGGER_NAME,
-      repeat_minutes: null,
-      team_id: team.id,
-    },
-    { db, logger }
-  );
-
-  await createDefaultEnvironments(team.id, { db, logger });
 
   return team;
 };

@@ -51,8 +51,8 @@ export default function Environment({
       <RadioButtonGroup
         name="environment"
         onChange={handleChange}
-        options={[{ label: copy.none, value: null }]}
-        value={null}
+        options={[{ label: copy.none, value: "" }]}
+        value=""
       />
     );
   }

@@ -11,6 +11,7 @@ import {
   RunnerRun,
   RunResult,
   RunStatus,
+  RunWithGif,
   SuiteRun,
   Test,
 } from "../types";
@@ -26,7 +27,7 @@ type CreateRunsForTests = {
 
 type FindLatestRuns = {
   test_id: string;
-  trigger_id: string;
+  trigger_id: string | null;
 };
 
 export type UpdateRun = {
@@ -88,30 +89,28 @@ export const createRunsForTests = async (
 export const findLatestRuns = async (
   { test_id, trigger_id }: FindLatestRuns,
   { db, logger }: ModelOptions
-): Promise<SuiteRun[]> => {
+): Promise<RunWithGif[]> => {
   const log = logger.prefix("findLatestRuns");
 
   log.debug("test", test_id, "trigger", trigger_id);
 
-  const runs = await db
+  const query = db("runs")
     .select("runs.*" as "*")
-    .select("tests.name AS test_name")
-    .select("tests.deleted_at AS test_deleted_at")
-    .from("runs")
-    .innerJoin("suites", "runs.suite_id", "suites.id")
-    .innerJoin("tests", "runs.test_id", "tests.id")
-    .where({ test_id, trigger_id })
-    .orderBy("created_at", "desc")
-    .limit(10);
+    .where({ test_id })
+    .innerJoin("suites", "runs.suite_id", "suites.id");
+
+  if (trigger_id) query.andWhere({ trigger_id });
+
+  const runs = await query.orderBy("created_at", "desc").limit(5);
 
   log.debug(`found ${runs.length} runs`);
 
-  return runs.map((run: Run & { test_deleted_at: string | null }) => {
+  return runs.map((run: Run) => {
     const gif_url = run.completed_at
       ? createStorageReadAccessUrl(`${run.id}.gif`)
       : null;
 
-    return { ...run, gif_url, is_test_deleted: !!run.test_deleted_at };
+    return { ...run, gif_url };
   });
 };
 
@@ -198,7 +197,7 @@ export const findSuiteRunForRunner = async (
   return db.transaction(async (trx) => {
     const row = await trx
       .select("runs.*")
-      .select("triggers.environment_id AS environment_id")
+      .select("suites.environment_id AS environment_id")
       .select("suites.environment_variables AS environment_variables")
       .select("suites.team_id AS team_id")
       .select("teams.helpers AS helpers")
@@ -207,7 +206,6 @@ export const findSuiteRunForRunner = async (
       .select("tests.version AS test_version")
       .from("runs")
       .innerJoin("suites", "runs.suite_id", "suites.id")
-      .innerJoin("triggers", "triggers.id", "suites.trigger_id")
       .innerJoin("teams", "suites.team_id", "teams.id")
       .innerJoin("tests", "runs.test_id", "tests.id")
       .andWhere({ "runs.id": run_id })

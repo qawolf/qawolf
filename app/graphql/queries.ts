@@ -8,7 +8,6 @@ import {
   runFragment,
   runnerFragment,
   suiteFragment,
-  suiteRunFragment,
   teamFragment,
   testFragment,
   triggerFragment,
@@ -22,28 +21,6 @@ export const currentUserQuery = gql`
     }
   }
   ${userFragment}
-`;
-
-export const dashboardQuery = gql`
-  query dashboard($trigger_id: ID!) {
-    dashboard(trigger_id: $trigger_id) {
-      suites {
-        ...SuiteFragment
-      }
-      tests {
-        ...TestFragment
-        summary {
-          gif_url
-          last_runs {
-            ...SuiteRunFragment
-          }
-        }
-      }
-    }
-  }
-  ${suiteFragment}
-  ${testFragment}
-  ${suiteRunFragment}
 `;
 
 export const environmentsQuery = gql`
@@ -89,9 +66,10 @@ export const runnerQuery = gql`
   ${runnerFragment}
 `;
 
-export const suiteQuery = gql`
+export const shortSuiteQuery = gql`
   query suite($id: ID!) {
     suite(id: $id) {
+      created_at
       environment_id
       environment_variables
       id
@@ -100,6 +78,15 @@ export const suiteQuery = gql`
       trigger_name
     }
   }
+`;
+
+export const suiteQuery = gql`
+  query suite($id: ID!) {
+    suite(id: $id) {
+      ...SuiteFragment
+    }
+  }
+  ${suiteFragment}
 `;
 
 export const teamQuery = gql`
@@ -148,11 +135,35 @@ export const testHistoryQuery = gql`
   }
 `;
 
+export const testSummariesQuery = gql`
+  query testSummaries($test_ids: [ID!]!, $trigger_id: ID) {
+    testSummaries(test_ids: $test_ids, trigger_id: $trigger_id) {
+      gif_url
+      last_runs {
+        created_at
+        gif_url
+        id
+        status
+      }
+      test_id
+    }
+  }
+`;
+
 export const testTriggersQuery = gql`
   query testTriggers($test_ids: [ID!]!) {
     testTriggers(test_ids: $test_ids) {
       test_id
       trigger_ids
+    }
+  }
+`;
+
+export const testsQuery = gql`
+  query tests($team_id: ID!) {
+    tests(team_id: $team_id) {
+      id
+      name
     }
   }
 `;

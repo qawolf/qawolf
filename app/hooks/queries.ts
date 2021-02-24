@@ -4,15 +4,17 @@ import { useRouter } from "next/router";
 
 import {
   currentUserQuery,
-  dashboardQuery,
   environmentsQuery,
   environmentVariablesQuery,
   integrationsQuery,
   runnerQuery,
+  shortSuiteQuery,
   suiteQuery,
   teamQuery,
   testHistoryQuery,
   testQuery,
+  testsQuery,
+  testSummariesQuery,
   testTriggersQuery,
   triggersQuery,
 } from "../graphql/queries";
@@ -27,29 +29,19 @@ import {
   Invite,
   Run,
   Runner,
+  ShortTest,
   Suite,
   Team,
   Test,
   TestHistoryRun,
+  TestSummary,
   TestTriggers,
-  TestWithSummary,
   Trigger,
   User,
 } from "../lib/types";
 
 type CurrentUserData = {
   currentUser: User;
-};
-
-type DashboardData = {
-  dashboard: {
-    suites: Suite[];
-    tests: TestWithSummary[];
-  };
-};
-
-type DashboardVariables = {
-  trigger_id?: string | null;
 };
 
 type EnvironmentsData = {
@@ -128,12 +120,29 @@ type TestHistoryVariables = {
   id: string;
 };
 
+type TestSummariesData = {
+  testSummaries: TestSummary[];
+};
+
+type TestSummariesVariables = {
+  test_ids: string[];
+  trigger_id: string | null;
+};
+
 type TestTriggersData = {
   testTriggers: TestTriggers[];
 };
 
 type TestTriggersVariables = {
   test_ids: string[];
+};
+
+type TestsData = {
+  tests: ShortTest[];
+};
+
+type TestsVariables = {
+  team_id: string;
 };
 
 type TriggersData = {
@@ -161,18 +170,6 @@ export const useCurrentUser = (): QueryResult<CurrentUserData> => {
     },
     onError,
     skip: isServer() || !localStorage.getItem(JWT_KEY),
-  });
-};
-
-export const useDashboard = (
-  variables: DashboardVariables
-): QueryResult<DashboardData, DashboardVariables> => {
-  return useQuery<DashboardData, DashboardVariables>(dashboardQuery, {
-    fetchPolicy,
-    nextFetchPolicy,
-    onError,
-    skip: !variables.trigger_id,
-    variables,
   });
 };
 
@@ -244,28 +241,26 @@ export const useRunner = (
 
 export const useSuite = (
   variables: SuiteVariables,
-  { teamId, triggerId }: { teamId: string; triggerId: string }
+  { includeRuns, teamId }: { includeRuns?: boolean; teamId: string }
 ): QueryResult<SuiteData, SuiteVariables> => {
   const { replace } = useRouter();
 
-  return useQuery<SuiteData, SuiteVariables>(suiteQuery, {
+  const query = includeRuns ? suiteQuery : shortSuiteQuery;
+
+  return useQuery<SuiteData, SuiteVariables>(query, {
     fetchPolicy,
     nextFetchPolicy,
     onCompleted: (response) => {
       const { suite } = response || {};
       if (!suite) return;
-      // update team and trigger ids in global state as needed
+      // update team id in global state as needed
       if (suite.team_id !== teamId) {
         state.setTeamId(suite.team_id);
-      }
-      // redirect to correct route if invalid trigger id in url
-      if (suite.trigger_id !== triggerId) {
-        state.setTriggerId(suite.trigger_id);
       }
     },
     onError: (error) => {
       if (error.message.includes("not found")) {
-        replace(routes.tests);
+        replace(routes.suites);
       }
     },
     skip: !variables.id,
@@ -315,6 +310,20 @@ export const useTestHistory = (
   });
 };
 
+export const useTestSummaries = (
+  variables: TestSummariesVariables
+): QueryResult<TestSummariesData, TestSummariesVariables> => {
+  return useQuery<TestSummariesData, TestSummariesVariables>(
+    testSummariesQuery,
+    {
+      fetchPolicy,
+      // if null is passed as an id, skip the query (this happens prehydration)
+      skip: !variables.test_ids.length || variables.test_ids.some((id) => !id),
+      variables,
+    }
+  );
+};
+
 export const useTestTriggers = (
   variables: TestTriggersVariables
 ): QueryResult<TestTriggersData, TestTriggersVariables> => {
@@ -326,28 +335,22 @@ export const useTestTriggers = (
   });
 };
 
+export const useTests = (
+  variables: TestsVariables
+): QueryResult<TestsData, TestsVariables> => {
+  return useQuery<TestsData, TestsVariables>(testsQuery, {
+    fetchPolicy,
+    skip: !variables.team_id,
+    variables,
+  });
+};
+
 export const useTriggers = (
-  variables: TriggersVariables,
-  {
-    skipOnCompleted,
-    triggerId,
-  }: { skipOnCompleted: boolean; triggerId: string }
+  variables: TriggersVariables
 ): QueryResult<TriggersData, TriggersVariables> => {
   return useQuery<TriggersData, TriggersVariables>(triggersQuery, {
     fetchPolicy,
     nextFetchPolicy,
-    // ensure that valid trigger is selected
-    onCompleted: (response) => {
-      const { triggers } = response || {};
-      if (skipOnCompleted || !triggers?.length) return;
-
-      const currentTrigger = triggers.find((t) => t.id === triggerId);
-      const newSelectedTriggerId = currentTrigger?.id || triggers[0].id;
-
-      if (triggerId !== newSelectedTriggerId) {
-        state.setTriggerId(newSelectedTriggerId);
-      }
-    },
     onError,
     skip: !variables.team_id,
     variables,

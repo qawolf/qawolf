@@ -22,27 +22,6 @@ type AuthenticatedUser {
   user: User!
 }
 
-"A grouper for data used by the dashboard"
-type Dashboard {
-  "List of the most recent 50 suites in this trigger, from newest to oldest"
-  suites: [Suite!]!
-
-  "List of all tests in this trigger, ordered alphabetically by test name ascending."
-  tests: [Test!]!
-
-  "ID of the test trigger that this dashboard data is for"
-  trigger_id: ID!
-}
-
-"A response from the deleteTrigger mutation"
-type DeleteTrigger {
-  "ID of the default trigger"
-  default_trigger_id: ID!
-
-  "ID of the deleted trigger"
-  id: ID!
-}
-
 "Environment for a deployment"
 enum DeploymentEnvironment {
   "Preview"
@@ -195,6 +174,9 @@ type Run {
   "Associated environment ID"
   environment_id: ID
 
+  "URL for gif from the test run, if any"
+  gif_url: String
+
   "Test run ID"
   id: ID!
 
@@ -264,7 +246,7 @@ type Suite {
   "Date and time at which the suite was created (trigger test run began)"
   created_at: String!
 
-  "Associated test trigger environment ID"
+  "Associated environment ID"
   environment_id: ID
 
   "A JSON object with key:value env variables, with decrypted values."
@@ -279,17 +261,23 @@ type Suite {
   "ID of the team that owns the associated test trigger"
   team_id: ID!
 
+  "Associated test trigger color"
+  trigger_color: String
+
   "Associated test trigger ID"
-  trigger_id: ID!
+  trigger_id: ID
 
   "Associated test trigger name"
-  trigger_name: String!
+  trigger_name: String
 }
 
 "One run for one test that is part of a test trigger we are running all at once"
 type SuiteRun {
   "Date and time at which the run finished, if it is done"
   completed_at: String
+
+  "Date and time at which the run was created"
+  created_at: String!
 
   "Secure URL to a GIF of the run"
   gif_url: String
@@ -381,9 +369,6 @@ type Test {
   "A name for the test, for display in UI"
   name: String!
 
-  "Summary of most recent runs of this test"
-  summary: TestSummary
-
   "Date and time at which this test was last updated"
   updated_at: String!
 
@@ -405,8 +390,11 @@ type TestSummary {
   "URL for a GIF of the most recent test run"
   gif_url: String
 
-  "The most recent 10 runs of this test, in descending order of when they started"
-  last_runs: [SuiteRun!]!
+  "The most recent 5 runs of this test, in descending order of when they started"
+  last_runs: [Run!]!
+
+  "The test ID"
+  test_id: ID!
 }
 
 "A list of trigger IDs for a test"
@@ -420,6 +408,9 @@ type TestTriggers {
 
 "A test trigger"
 type Trigger {
+  "The color associated with this trigger"
+  color: String!
+
   "The branches to run tests on for the GitHub integration (comma separated list)."
   deployment_branches: String
 
@@ -434,9 +425,6 @@ type Trigger {
 
   "Test trigger ID"
   id: String!
-
-  "True if this is the default test trigger for the team that owns it"
-  is_default: Boolean!
 
   "A name for the trigger, for users to identify it in the UI"
   name: String!
@@ -659,40 +647,36 @@ type Mutation {
   ): String!
 
   """
-  Creates a new test suite for one or more tests from a single test trigger.
-  Returns the ID of the created suite.
+  Creates a new test suite for one or more tests, optionally specifying
+  an environment. Returns the ID of the created suite.
 
-  Requires that you have access to the team that owns the trigger, and that
+  Requires that you have access to the team that owns the tests, and that
   the team's plan limit for test runs has not been reached.
   """
   createSuite(
     """
-    List of test IDs to include in the suite. Only those that are
-    enabled and not deleted will be included, and any that are not
-    in the specified test trigger will be ignored.
+    Environment ID
     """
-    test_ids: [ID!]
+    environment_id: ID
 
     """
-    Trigger ID
+    List of test IDs to include in the suite. Only those that are
+    enabled and not deleted will be included.
     """
-    trigger_id: ID!
+    test_ids: [ID!]!
   ): String!
 
   """
   Creates a new test. The URL is used as the first page the browser
   will visit in the test, but this can be changed later.
 
-  Requires that you are logged in and a member of at least one team.
+  Requires that you are on the team.
   """
   createTest(
     """
-    ID of test trigger to put the test in. If not provided, it will be
-    put in the default test trigger for the authenticated user's team.
-    If the user is on multiple teams and you don't specify a trigger ID,
-    creation will fail.
+    Team ID
     """
-    trigger_id: ID
+    team_id: ID!
 
     """
     The URL to navigate to first in the test browser (the URL
@@ -721,8 +705,7 @@ type Mutation {
   ): EnvironmentVariable!
 
   """
-  Soft deletes a test trigger record by ID. You cannot delete the
-  default test trigger for a team. All tests are removed from a
+  Soft deletes a test trigger record by ID. All tests are removed from a
   trigger when it is soft deleted, but the tests themselves are
   not deleted an remain in any other triggers as well as the default
   trigger.
@@ -734,7 +717,7 @@ type Mutation {
     Test trigger ID
     """
     id: ID!
-  ): DeleteTrigger!
+  ): Trigger!
 
   """
   Soft deletes one or more tests by ID. Tests are removed from
@@ -898,9 +881,7 @@ type Mutation {
 
     """
     Updated trigger name. If this field is omitted, it will
-    not be changed. If it is `null`, it will be cleared. If
-    `trigger.is_default` is `true`, an error will occur. The
-    default trigger cannot be renamed.
+    not be changed. If it is `null`, it will be cleared.
     """
     name: String
 
@@ -1091,13 +1072,6 @@ type Query {
   currentUser: User
 
   """
-  Returns dashboard data (tests and suites) for a single test trigger.
-
-  One of the teams you are on must have access to the test trigger.
-  """
-  dashboard("The trigger ID" trigger_id: ID!): Dashboard!
-
-  """
   Returns the latest email that matches the criteria.
 
   You must be on the team that owns the test email address.
@@ -1198,9 +1172,29 @@ type Query {
   ): TestResult!
 
   """
+  Returns a test summary for each test ID. If 'trigger_id' is provided,
+  then the 'TestSummary.last_runs' will be filtered by that trigger.
+
+  Requires that one of the teams you are on owns the tests.
+  """
+  testSummaries(
+    "The test IDs"
+    test_ids: [ID!]!
+    "The trigger ID"
+    trigger_id: ID
+  ): [TestSummary!]!
+
+  """
   Returns a test trigger for each test ID.
 
   Requires that one of the teams you are on owns the tests.
   """
   testTriggers("The test IDs" test_ids: [ID!]!): [TestTriggers!]!
+
+  """
+  Returns a list of tests for the team ID.
+
+  Requires that you are on the team.
+  """
+  tests("The team ID" team_id: ID!): [Test!]!
 }

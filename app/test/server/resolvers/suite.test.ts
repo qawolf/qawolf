@@ -8,9 +8,9 @@ import {
 import { minutesFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
 import {
+  buildEnvironment,
   buildTeam,
   buildTest,
-  buildTestTrigger,
   buildTrigger,
   buildUser,
   testContext,
@@ -23,6 +23,7 @@ const suites = [
     created_at: timestamp,
     creator_github_login: "spirit",
     creator_id: null,
+    environment_id: null,
     environment_variables: encrypt(JSON.stringify({ hello: "world" })),
     id: "suiteId",
     repeat_minutes: 60,
@@ -34,8 +35,8 @@ const suites = [
     created_at: timestamp,
     creator_github_login: null,
     creator_id: null,
+    environment_id: null,
     environment_variables: null,
-
     id: "suite2Id",
     repeat_minutes: 60,
     team_id: "teamId",
@@ -51,29 +52,26 @@ const context = { ...testContext, api_key: "apiKey", db };
 beforeAll(async () => {
   await db("users").insert(user);
   await db("teams").insert(teams);
+
+  await db("environments").insert(buildEnvironment({}));
 });
 
 describe("createSuiteResolver", () => {
   beforeAll(async () => {
-    await db("triggers").insert(buildTrigger({}));
-    await db("tests").insert([buildTest({}), buildTest({ i: 2 })]);
-    return db("test_triggers").insert([
-      buildTestTrigger(),
-      { ...buildTestTrigger(), id: "testTrigger2Id", test_id: "test2Id" },
-    ]);
+    return db("tests").insert([buildTest({}), buildTest({ i: 2 })]);
   });
 
   afterAll(async () => {
+    await db("runs").del();
     await db("suites").del();
-    await db("triggers").del();
-    await db("tests").del();
-    return db("test_triggers").del();
+
+    return db("tests").del();
   });
 
-  it("creates a suite for a trigger with all tests", async () => {
+  it("creates a suite for tests", async () => {
     const suiteId = await createSuiteResolver(
       {},
-      { test_ids: null, trigger_id: "triggerId" },
+      { environment_id: null, test_ids: ["testId", "test2Id"] },
       context
     );
 
@@ -84,8 +82,9 @@ describe("createSuiteResolver", () => {
       .first();
     expect(suite).toMatchObject({
       creator_id: user.id,
+      environment_id: null,
       team_id: teams[0].id,
-      trigger_id: "triggerId",
+      trigger_id: null,
     });
 
     const runs = await db("runs").select("*").where({ suite_id: suite.id });
@@ -98,7 +97,7 @@ describe("createSuiteResolver", () => {
   it("creates a suite for a trigger with selected tests", async () => {
     const suiteId = await createSuiteResolver(
       {},
-      { test_ids: ["testId"], trigger_id: "triggerId" },
+      { environment_id: "environmentId", test_ids: ["testId"] },
       context
     );
 
@@ -109,43 +108,56 @@ describe("createSuiteResolver", () => {
       .first();
     expect(suite).toMatchObject({
       creator_id: user.id,
+      environment_id: "environmentId",
       team_id: teams[0].id,
-      trigger_id: "triggerId",
+      trigger_id: null,
     });
 
     const runs = await db("runs").select("*").where({ suite_id: suite.id });
     expect(runs).toMatchObject([{ suite_id: suite.id, test_id: "testId" }]);
-
-    await db("runs").del();
-    await db("test_triggers").del();
-    await db("tests").del();
   });
 
   it("throws an error if team is not enabled", async () => {
     await expect(
       createSuiteResolver(
         {},
-        { trigger_id: "triggerId" },
+        { environment_id: null, test_ids: ["testId"] },
         { ...context, teams: [{ ...teams[0], is_enabled: false }] }
       )
     ).rejects.toThrowError("team disabled, please contact support");
   });
 
-  it("throws an error if no tests exist for a team", async () => {
+  it("throws an error if no tests", async () => {
     await expect(
-      createSuiteResolver({}, { trigger_id: "triggerId" }, context)
+      createSuiteResolver({}, { environment_id: null, test_ids: [] }, context)
     ).rejects.toThrowError("tests to run");
+  });
+
+  it("throws an error if trying to create suite with tests from multiple teams", async () => {
+    const team2 = buildTeam({ i: 2 });
+
+    await db("teams").insert(team2);
+    await db("tests").insert(buildTest({ i: 10, team_id: "team2Id" }));
+
+    await expect(
+      createSuiteResolver(
+        {},
+        { environment_id: null, test_ids: ["testId", "test10Id"] },
+        { ...context, teams: [...teams, team2] }
+      )
+    ).rejects.toThrowError("different teams");
+
+    await db("tests").where({ id: "test10Id" }).del();
+    await db("teams").where({ id: "team2Id" }).del();
   });
 });
 
 describe("suiteResolver", () => {
-  beforeAll(async () => {
+  beforeAll(() => {
     return db("triggers").insert(buildTrigger({}));
   });
 
-  afterAll(async () => {
-    return db("triggers").del();
-  });
+  afterAll(() => db("triggers").del());
 
   it("returns a suite", async () => {
     const findSuiteSpy = jest
@@ -158,22 +170,47 @@ describe("suiteResolver", () => {
       ...suites[0],
       environment_id: null,
       environment_variables: JSON.stringify({ hello: "world" }),
+      trigger_color: "#4545E5",
       trigger_name: "trigger1",
     });
 
     expect(findSuiteSpy.mock.calls[0][0]).toEqual("suiteId");
   });
 
-  it("throws an error if trigger deleted", async () => {
+  it("returns a suite without a trigger", async () => {
+    jest
+      .spyOn(suiteModel, "findSuite")
+      .mockResolvedValue({ ...suites[0], trigger_id: null });
+
+    const suite = await suiteResolver({}, { id: "suiteId" }, context);
+
+    expect(suite).toEqual({
+      ...suites[0],
+      environment_id: null,
+      environment_variables: JSON.stringify({ hello: "world" }),
+      trigger_color: null,
+      trigger_id: null,
+      trigger_name: null,
+    });
+  });
+
+  it("returns a suite with a deleted trigger trigger", async () => {
     await db("triggers").update({ deleted_at: minutesFromNow() });
 
-    jest.spyOn(suiteModel, "findSuite").mockResolvedValue(suites[0]);
+    jest
+      .spyOn(suiteModel, "findSuite")
+      .mockResolvedValue({ ...suites[0], trigger_id: null });
 
-    await expect(
-      suiteResolver({}, { id: "suiteId" }, context)
-    ).rejects.toThrowError("not found");
+    const suite = await suiteResolver({}, { id: "suiteId" }, context);
 
-    await db("triggers").update({ deleted_at: null });
+    expect(suite).toEqual({
+      ...suites[0],
+      environment_id: null,
+      environment_variables: JSON.stringify({ hello: "world" }),
+      trigger_color: null,
+      trigger_id: null,
+      trigger_name: null,
+    });
   });
 });
 

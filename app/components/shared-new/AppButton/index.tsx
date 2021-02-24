@@ -14,8 +14,10 @@ import {
 import Text from "../Text";
 import {
   activeBackground,
+  activeSecondaryBackground,
   background,
   hoverBackground,
+  hoverSecondaryBackground,
   textColor,
   Type,
 } from "./config";
@@ -25,6 +27,7 @@ type Props = {
   IconComponent?: Icon;
   a11yTitle?: string;
   className?: string;
+  color?: string;
   hasError?: boolean;
   href?: string;
   hoverType?: Type;
@@ -44,6 +47,7 @@ function AppButton({
   IconComponent,
   a11yTitle,
   className,
+  color,
   href,
   iconPosition,
   isDisabled,
@@ -72,14 +76,18 @@ function AppButton({
           hasLabel: !!label,
           iconPosition,
           justify,
+          type,
         })}
       >
         {!!IconComponent && (
-          <IconComponent color={textColor[type]} size={edgeSize.small} />
+          <IconComponent
+            color={color || textColor[type]}
+            size={edgeSize.small}
+          />
         )}
         {!!label && (
           <Text
-            color={textColor[type]}
+            color={color || textColor[type]}
             margin={getTextMargin(!!IconComponent, iconPosition)}
             size="component"
             style={overflowStyle}
@@ -141,9 +149,13 @@ const StyledAppButton = styled(AppButton)`
   &:hover {
     ${(props) =>
       `
-    background: ${hoverBackground[props.hoverType || props.type]};
+    background: ${
+      hoverSecondaryBackground[props.hoverType] || hoverBackground[props.type]
+    };
 
+    p, 
     svg {
+      color: ${textColor[props.hoverType || props.type]};
       fill: ${textColor[props.hoverType || props.type]};
     }
     `}
@@ -154,11 +166,13 @@ const StyledAppButton = styled(AppButton)`
 
   &:active {
     ${(props) => `
-    background: ${activeBackground[props.hoverType || props.type]};
+    background: ${
+      activeSecondaryBackground[props.hoverType] || activeBackground[props.type]
+    };
     `}
 
     ${(props) => props.type === "dark" && `border-color: ${colors.gray4};`}
-    ${(props) => props.type === "secondary" && `border-color: ${colors.gray7};`}
+    ${(props) => props.type === "secondary" && `border-color: ${colors.gray9};`}
   }
 `;
 

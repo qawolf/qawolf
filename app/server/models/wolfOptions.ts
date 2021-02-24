@@ -73,6 +73,7 @@ export const WOLF_NAMES = [
   "Dusty",
   "Echo",
   "Edward",
+  "Elise",
   "Ellie",
   "Eloise",
   "Elton",

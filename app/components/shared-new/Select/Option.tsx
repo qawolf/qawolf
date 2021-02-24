@@ -15,9 +15,9 @@ type Props = {
   IconComponent?: Icon;
   className?: string;
   isSelected?: boolean;
-  label: string;
+  label: JSX.Element | string;
   noIcon?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
   type?: "danger";
 };
 
@@ -44,8 +44,9 @@ function Option({
         {!!IconComponent && (
           <IconComponent color={color} size={edgeSize.small} />
         )}
-        <Text
-          color={color}
+        <Box
+          align="center"
+          direction="row"
           margin={
             noIcon
               ? { left: "xxxsmall" }
@@ -55,11 +56,16 @@ function Option({
                     : `calc(${edgeSize.small} + ${edgeSize.xxsmall})`,
                 }
           }
-          size="component"
-          style={overflowStyle}
+          width="full"
         >
-          {label}
-        </Text>
+          {typeof label === "string" ? (
+            <Text color={color} size="component" style={overflowStyle}>
+              {label}
+            </Text>
+          ) : (
+            label
+          )}
+        </Box>
       </Box>
     </Button>
   );
@@ -72,6 +78,10 @@ const StyledOption = styled(Option)`
     transition: color ${transitionDuration};
   }
 
+  svg {
+    transition: all ${transitionDuration};
+  }
+
   &:hover {
     background: ${(props) =>
       props.type === "danger" ? colors.danger5 : colors.gray2};
@@ -82,12 +92,17 @@ const StyledOption = styled(Option)`
       p {
         color: ${colors.gray0};
       }
+
+      svg {
+        fill: ${colors.gray0};
+        stroke: ${colors.gray0};
+      }
     `}
   }
 
   &:active {
     background: ${(props) =>
-      props.type === "danger" ? colors.danger7 : colors.gray3};
+      props.type === "danger" ? colors.danger6 : colors.gray3};
   }
 `;
 

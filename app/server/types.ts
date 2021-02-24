@@ -198,6 +198,7 @@ export type Suite = {
   alert_sent_at?: string;
   created_at: string;
   creator_id: string | null;
+  environment_id: string | null;
   environment_variables: string | null;
   id: string;
   team_id: string;
@@ -275,6 +276,7 @@ export type TestUpdate = {
 };
 
 export type Trigger = {
+  color: string;
   created_at?: string;
   creator_id: string;
   deleted_at: string | null;
@@ -283,7 +285,6 @@ export type Trigger = {
   deployment_integration_id: string | null;
   environment_id: string | null;
   id: string;
-  is_default: boolean;
   name: string;
   next_at: string | null;
   repeat_minutes: number | null;
@@ -343,12 +344,12 @@ export type CreateSlackIntegrationMutation = {
 };
 
 export type CreateSuiteMutation = {
-  test_ids?: string[] | null;
-  trigger_id: string;
+  environment_id: string | null;
+  test_ids: string[];
 };
 
 export type CreateTestMutation = {
-  trigger_id: string | null;
+  team_id: string;
   url: string;
 };
 
@@ -365,11 +366,6 @@ export type CreateTriggerMutation = {
 
 export type CreateUrlMutation = {
   redirect_uri: string;
-};
-
-export type DeleteTrigger = {
-  default_trigger_id: string;
-  id: string;
 };
 
 export type DeleteTestsMutation = {
@@ -503,14 +499,18 @@ export type RunResult = Run & {
   video_url: string | null;
 };
 
+export type RunWithGif = Run & {
+  gif_url: string | null;
+};
+
 export type RunnerResult = {
   api_key?: string;
   ws_url?: string;
 };
 
 export type SuiteResult = Suite & {
-  environment_id: string;
-  trigger_name: string;
+  trigger_color: string | null;
+  trigger_name: string | null;
 };
 
 export type TeamIdQuery = {
@@ -526,6 +526,11 @@ export type TestQuery = {
   run_id?: string;
 };
 
+export type TestSummariesQuery = {
+  test_ids: string[];
+  trigger_id: string | null;
+};
+
 export type TestResult = {
   run: RunResult | null;
   test: Test;
@@ -533,7 +538,8 @@ export type TestResult = {
 
 export type TestSummary = {
   gif_url: string | null;
-  last_runs: SuiteRun[];
+  last_runs: RunWithGif[];
+  test_id: string;
 };
 
 export type TestTriggers = {

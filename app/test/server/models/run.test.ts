@@ -52,7 +52,7 @@ describe("run model", () => {
     ]);
     await db("triggers").insert([
       buildTrigger({}),
-      buildTrigger({ i: 2, is_default: true, team_id: "team3Id" }),
+      buildTrigger({ i: 2, team_id: "team3Id" }),
     ]);
 
     await db("suites").insert([
@@ -161,6 +161,20 @@ describe("run model", () => {
   });
 
   describe("findLatestRuns", () => {
+    beforeAll(async () => {
+      await db("suites").insert(
+        buildSuite({ i: 10, trigger_id: "trigger2Id" })
+      );
+      return db("runs").insert(
+        buildRun({ i: 10, suite_id: "suite10Id", test_id: "test2Id" })
+      );
+    });
+
+    afterAll(async () => {
+      await db("runs").where({ id: "run10Id" }).del();
+      return db("suites").where({ id: "suite10Id" }).del();
+    });
+
     it("returns the latest runs for a test and trigger", async () => {
       const runs = await findLatestRuns(
         {
@@ -171,6 +185,23 @@ describe("run model", () => {
       );
 
       expect(runs).toMatchObject([
+        { id: "run3Id" },
+        { id: "run4Id" },
+        { id: "run7Id" },
+      ]);
+    });
+
+    it("does not filter by trigger if trigger not specified", async () => {
+      const runs = await findLatestRuns(
+        {
+          test_id: "test2Id",
+          trigger_id: null,
+        },
+        options
+      );
+
+      expect(runs).toMatchObject([
+        { id: "run10Id" },
         { id: "run3Id" },
         { id: "run4Id" },
         { id: "run7Id" },
@@ -262,9 +293,6 @@ describe("run model", () => {
       await db("teams").update({ helpers: "helpers" });
 
       await db("environments").insert(buildEnvironment({ team_id: "team3Id" }));
-      await db("triggers")
-        .where({ id: "triggerId" })
-        .update({ environment_id: "environmentId" });
 
       return db("environment_variables").insert(
         buildEnvironmentVariable({
@@ -276,7 +304,6 @@ describe("run model", () => {
 
     afterAll(async () => {
       await db("teams").update({ helpers: "" });
-      await db("triggers").update({ environment_id: null });
 
       await db("environment_variables").del();
       return db("environments").del();
@@ -284,6 +311,7 @@ describe("run model", () => {
 
     it("returns a run and associated test version", async () => {
       await db("suites").update({
+        environment_id: "environmentId",
         environment_variables: encrypt(
           JSON.stringify({ SUITE_VARIABLE: "suite_value" })
         ),
@@ -310,10 +338,15 @@ describe("run model", () => {
         version: 11,
       });
 
-      await db("suites").update({ environment_variables: null });
+      await db("suites").update({
+        environment_id: null,
+        environment_variables: null,
+      });
     });
 
     it("does not include suite variables if none specified", async () => {
+      await db("suites").update({ environment_id: "environmentId" });
+
       jest
         .spyOn(storageService, "getArtifactsOptions")
         .mockResolvedValue(artifacts);
@@ -325,6 +358,29 @@ describe("run model", () => {
         code: 'const x = "hello"',
         env: JSON.stringify({
           ENV_VARIABLE: "secret",
+          QAWOLF_TEAM_API_KEY: "qawolf_testapikey",
+          QAWOLF_TEAM_INBOX: "test@dev.qawolf.email",
+        }),
+        helpers: "helpers",
+        id: "run6Id",
+        test_id: "test4Id",
+        version: 11,
+      });
+
+      await db("suites").update({ environment_id: null });
+    });
+
+    it("does not include environment variables if none specified", async () => {
+      jest
+        .spyOn(storageService, "getArtifactsOptions")
+        .mockResolvedValue(artifacts);
+
+      const run = await findSuiteRunForRunner("run6Id", options);
+
+      expect(run).toEqual({
+        artifacts,
+        code: 'const x = "hello"',
+        env: JSON.stringify({
           QAWOLF_TEAM_API_KEY: "qawolf_testapikey",
           QAWOLF_TEAM_INBOX: "test@dev.qawolf.email",
         }),

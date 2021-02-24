@@ -72,7 +72,9 @@ const StyledText = styled(Text)`
   `}
 
   ${(props) =>
-    (props.size === "component" || props.size === "componentParagraph") &&
+    ["component", "componentParagraph", "componentSmall"].includes(
+      props.size
+    ) &&
     `
   font-family: Inter;
   font-weight: 400;
@@ -81,6 +83,13 @@ const StyledText = styled(Text)`
     font-family: ${fontFamily.componentBold};
     font-weight: ${fontWeight.semibold};
   }
+  `}
+
+  ${(props) =>
+    props.size === "componentMedium" &&
+    `
+  font-family: Inter Medium;
+  font-weight: 500;
   `}
 
   ${(props) =>

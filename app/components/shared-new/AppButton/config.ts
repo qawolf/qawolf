@@ -19,6 +19,10 @@ export const activeBackground: { [type in Type]: BoxProps["background"] } = {
   tertiary: colors.gray6,
 };
 
+export const activeSecondaryBackground: { [type: string]: string } = {
+  danger: colors.danger6,
+};
+
 export const background: { [type in Type]: BoxProps["background"] } = {
   danger: colors.danger5,
   dark: colors.gray10,
@@ -29,12 +33,16 @@ export const background: { [type in Type]: BoxProps["background"] } = {
 };
 
 export const hoverBackground: { [type in Type]: string } = {
-  danger: colors.dangerDark,
+  danger: colors.danger6,
   dark: colors.gray10,
   ghost: colors.gray2,
   primary: colors.primaryDark,
   secondary: colors.gray0,
   tertiary: colors.gray7,
+};
+
+export const hoverSecondaryBackground: { [type: string]: string } = {
+  danger: colors.danger5,
 };
 
 export const textColor: { [type in Type]: string } = {

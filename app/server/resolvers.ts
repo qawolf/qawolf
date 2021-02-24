@@ -1,5 +1,4 @@
 import { createGitHubSignInUrlResolver } from "./resolvers/auth";
-import { dashboardResolver } from "./resolvers/dashboard";
 import { emailResolver } from "./resolvers/email";
 import {
   createEnvironmentResolver,
@@ -42,7 +41,7 @@ import {
   deleteTestsResolver,
   testResolver,
   testsResolver,
-  testSummaryResolver,
+  testSummariesResolver,
   updateTestResolver,
 } from "./resolvers/test";
 import {
@@ -65,16 +64,9 @@ import {
 } from "./resolvers/user";
 
 export const resolvers = {
-  Dashboard: {
-    suites: suitesResolver,
-    tests: testsResolver,
-  },
   Team: {
     invites: teamInvitesResolver,
     users: teamUsersResolver,
-  },
-  Test: {
-    summary: testSummaryResolver,
   },
   Suite: {
     runs: suiteRunsResolver,
@@ -111,7 +103,6 @@ export const resolvers = {
   },
   Query: {
     currentUser: currentUserResolver,
-    dashboard: dashboardResolver,
     email: emailResolver,
     environments: environmentsResolver,
     environmentVariables: environmentVariablesResolver,
@@ -121,7 +112,9 @@ export const resolvers = {
     team: teamResolver,
     test: testResolver,
     testHistory: testHistoryResolver,
+    testSummaries: testSummariesResolver,
     testTriggers: testTriggersResolver,
+    tests: testsResolver,
     triggers: triggersResolver,
   },
 };

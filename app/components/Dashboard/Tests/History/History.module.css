@@ -1,8 +1,0 @@
-.suiteBorder {
-  opacity: 0;
-}
-
-.suiteBorderSelected,
-.suiteButton:hover .suiteBorder {
-  opacity: 1;
-}
