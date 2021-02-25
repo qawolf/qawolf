@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 
+import { routes } from "../../../../lib/routes";
 import { TestTriggers, Trigger } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import Divider from "../../../shared-new/Divider";
@@ -19,15 +20,15 @@ export default function SelectTrigger({
   testTriggers,
   triggers,
 }: Props): JSX.Element {
-  const { pathname, replace, query } = useRouter();
+  const { replace, query } = useRouter();
   const triggerId = query.trigger_id as string;
 
   const handleAllTriggersClick = (): void => {
-    replace(pathname); // clear query
+    replace(routes.tests); // clear query
   };
 
   const handleTriggerClick = (triggerId: string): void => {
-    replace(`${pathname}/?trigger_id=${triggerId}`);
+    replace(`${routes.tests}?trigger_id=${triggerId}`);
   };
 
   const optionsHtml = triggers.map((trigger) => {

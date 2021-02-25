@@ -13,6 +13,7 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   target: DropProps["target"];
+  testCount: number;
 };
 
 const width = "240px";
@@ -23,6 +24,7 @@ export default function EnvironmentsMenu({
   isOpen,
   onClose,
   target,
+  testCount,
 }: Props): JSX.Element {
   if (!isOpen) return null;
 
@@ -43,7 +45,7 @@ export default function EnvironmentsMenu({
       <Option
         isSelected={e.id === environmentId}
         key={e.id}
-        label={copy.runTests(e.name)}
+        label={copy.runTests(testCount, e.name)}
         onClick={() => handleClick(e.id)}
       />
     );

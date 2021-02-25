@@ -203,8 +203,10 @@ export const copy = {
   runLines: (count: number): string =>
     `Run ${count} line${count === 1 ? "" : "s"}`,
   runsPass: "Passing tests",
-  runTests: (environment?: string | null): string =>
-    `Run tests${environment ? `: ${environment}` : ""}`,
+  runTests: (count: number, environment?: string | null): string =>
+    `Run ${count} test${count === 1 ? "" : "s"}${
+      environment ? ` on ${environment}` : ""
+    }`,
   oneTeamMember: "1 team member",
   other: "Other",
   otherDeploy: "Don't see the tool you use? Let us know!",

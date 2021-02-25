@@ -1,4 +1,5 @@
 import { Box } from "grommet";
+import { useRouter } from "next/router";
 
 import { RunStatus, SuiteRun } from "../../../../lib/types";
 import { borderSize } from "../../../../theme/theme-new";
@@ -11,7 +12,6 @@ type Props = {
   runs: SuiteRun[];
   search: string;
   setCheckedTestIds: (runIds: string[]) => void;
-  status: RunStatus | null;
 };
 
 export default function List({
@@ -19,8 +19,10 @@ export default function List({
   runs,
   search,
   setCheckedTestIds,
-  status,
 }: Props): JSX.Element {
+  const { query } = useRouter();
+  const status = (query.status || null) as RunStatus | null;
+
   const handleRunCheck = (testId: string): void => {
     const index = checkedTestIds.indexOf(testId);
     if (index > -1) {
