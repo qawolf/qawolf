@@ -32,9 +32,15 @@ export default function Suite({ suiteId }: Props): JSX.Element {
     return () => stopPolling();
   }, [startPolling, stopPolling, suite]);
 
+  // clear checked test ids if suite changes
+  useEffect(() => {
+    if (suiteId) setCheckedTestIds([]);
+  }, [suiteId]);
+
   const innerHtml = suite ? (
     <>
       <Header
+        checkedTestIds={checkedTestIds}
         search={search}
         setSearch={setSearch}
         setStatus={setStatus}
@@ -54,10 +60,7 @@ export default function Suite({ suiteId }: Props): JSX.Element {
   );
 
   return (
-    <Box
-      pad={{ bottom: "medium", horizontal: "medium", top: "large" }}
-      width="full"
-    >
+    <Box pad="medium" width="full">
       {innerHtml}
     </Box>
   );

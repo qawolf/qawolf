@@ -443,9 +443,15 @@ export const useCreateSuite = (): MutationTuple<
   CreateSuiteData,
   CreateSuiteVariables
 > => {
+  const { push } = useRouter();
+
   return useMutation<CreateSuiteData, CreateSuiteVariables>(
     createSuiteMutation,
     {
+      onCompleted: (response) => {
+        const { createSuite } = response || {};
+        if (createSuite) push(`${routes.suites}/${createSuite}`);
+      },
       onError,
       refetchQueries: ["dashboard"],
     }

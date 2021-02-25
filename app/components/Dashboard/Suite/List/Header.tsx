@@ -57,7 +57,7 @@ export default function Header({
         onChange={handleClick}
       />
       {checkedTestIds.length ? (
-        <Text color="gray9" margin={{ left: "small" }} size="componentBold">
+        <Text color="gray9" size="componentBold">
           {copy.selected(checkedTestIds.length)}
         </Text>
       ) : (
