@@ -61,7 +61,8 @@ export default function EnvironmentName({
       }).then(onClose);
     } else {
       createEnvironment({ variables: { name, team_id: teamId } }).then(
-        ({ data }) => {
+        (response) => {
+          const { data } = response || {};
           // show newly created environment if possible
           if (setSelectedEnvironmentId) {
             setSelectedEnvironmentId(data?.createEnvironment.id);

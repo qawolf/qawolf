@@ -186,6 +186,18 @@ export type Modal =
   | "teamSettings"
   | "triggers";
 
+export type MutableListFunction = (
+  properties: MutableListFields,
+  callback: () => void
+) => void;
+
+export type MutableListFields = {
+  id: string;
+  name: string;
+};
+
+export type MutableListType = "environment" | "group";
+
 export type NavigationOption = "code" | "logs" | "helpers";
 
 export type NavigationType = "dark" | "light";

@@ -9,6 +9,7 @@ import Text from "../../../shared-new/Text";
 import AddEnvironment from "./AddEnvironment";
 import EnvironmentName, { id as formInputId } from "./EnvironmentName";
 import ListItem from "./ListItem";
+import MutableList from "../../../shared-new/MutableList";
 
 type Props = {
   environmentId: string;
@@ -71,7 +72,7 @@ export default function Environments({
         flex={false}
         height={edgeSize.large}
         justify="center"
-        margin={{ horizontal: "medium", top: "medium" }}
+        margin={{ bottom: "xxsmall", horizontal: "medium", top: "medium" }}
       >
         <Text color="gray9" size="componentHeader">
           {copy.environments}
@@ -79,7 +80,6 @@ export default function Environments({
       </Box>
       <Box
         height="full"
-        margin={{ top: "xxsmall" }}
         overflow={{ vertical: "auto" }}
         pad={{ bottom: "medium", horizontal: "medium" }}
       >

@@ -101,7 +101,7 @@ export const copy = {
   envVariableDeleteConfirm:
     "The following environment variable will be permanently deleted. Are you sure you want to continue?",
   envVariableNamePlaceholder: "MY_VAR",
-  envVariableNew: "Add variable",
+  envVariableNew: "Create variable",
   envVariableValuePlaceholder: "value",
   envVariables: "Environment variables",
   envVariablesDetail:
@@ -115,7 +115,7 @@ export const copy = {
   environmentDeleteConfirm2: "to confirm.",
   environmentEdit: (name: string): string =>
     name ? `Edit ${name} environment` : "",
-  environmentNew: "Add environment",
+  environmentNew: "Create environment",
   environmentNotSelected: "No environment",
   environments: "Environments",
   frequency: "Frequency",
@@ -128,6 +128,8 @@ export const copy = {
   gitHubComplete: "🎉 All set! You can close this page.",
   gitHubRepo: "GitHub repository",
   goHome: "Go Home",
+  group: "Group",
+  groupNew: "Create group",
   growRevenue: "Grow revenue",
   growRevenueDetail:
     "2/3 of consumers abandon a purchase when they find a bug.",
