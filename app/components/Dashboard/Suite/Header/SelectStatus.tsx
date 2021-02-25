@@ -19,15 +19,16 @@ export default function SelectStatus({ runs }: Props): JSX.Element {
 
   const suiteId = query.suite_id as string;
   const status = (query.status || null) as RunStatus | null;
+  const baseRoute = `${routes.suites}/${suiteId}`;
 
   const label = getLabelForStatus(status);
 
   const handleAllClick = (): void => {
-    replace(`${routes.suites}/${suiteId}`); // clear query
+    replace(baseRoute); // clear query
   };
 
   const handleClick = (status: RunStatus): void => {
-    replace(`${routes.suites}/${suiteId}/?status=${status}`);
+    replace(`${baseRoute}?status=${status}`);
   };
 
   const optionsHtml = statuses.map((s) => {
