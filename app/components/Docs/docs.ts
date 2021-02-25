@@ -120,10 +120,10 @@ export const docs: Section[] = [
         href: `${routes.docs}/get-inbox`,
         name: "getInbox",
       },
-      // {
-      //   href: `${routes.docs}/launch`,
-      //   name: "launch",
-      // },
+      {
+        href: `${routes.docs}/launch`,
+        name: "launch",
+      },
     ],
     name: "API",
   },

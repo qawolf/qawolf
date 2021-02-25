@@ -30,7 +30,7 @@ const message = await waitForMessage({ timeout: 3 * 60000 });
 
 <SubHeader>Arguments</SubHeader>
 
-**[options]** (Object):
+**[options]** (Object)
 
 - [new] (boolean): Create a new and unique email. Default: `false`. When `false` it returns the default inbox for your team.
 
@@ -39,13 +39,21 @@ const message = await waitForMessage({ timeout: 3 * 60000 });
 - [email] (string): An email address to send your email to.
 - [waitForMessage] (Function): Wait for a message sent to the email address.
 
-<SubHeader>waitForMessage([options]) Arguments</SubHeader>
+<Header>waitForMessage([options])</Header>
 
 Get the next message sent to the email address returned from `getInbox`.
 
 If a message is not received before the timeout, an error is thrown.
 
-**[options]** (Object):
+```js
+// wait for a message up to 1 minute
+const { subject, text } = await waitForMessage();
+assert(subject.includes("hello"));
+```
+
+<SubHeader>Arguments</SubHeader>
+
+**[options]** (Object)
 
 - [after] (Date): Find a message sent after this date. Default: When `getInbox` was called.
 - [timeout] (number): Time in milliseconds to wait for a message. Default: 60000.

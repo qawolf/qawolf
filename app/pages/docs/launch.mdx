@@ -1,0 +1,60 @@
+import Header from "../../components/Docs/Header";
+import Layout from "../../components/Docs/Layout";
+import Playwright from "../../components/Docs/Playwright";
+import SubHeader from "../../components/Docs/SubHeader";
+
+<Layout>
+
+<Header>launch([options])</Header>
+
+Launch a Playwright <Playwright browser /> and <Playwright context />.
+
+By default, this blocks google analytics and tag manager tracking to prevent your tests from interfering with your analytics. <a className="open-intercom">Message us</a> if you are using another analytics provider and we will block them too.
+
+```js
+// launch a chromium browser and context
+const { browser, context } = await launch();
+// create a page in the context to use in our test
+const page = await context.newPage();
+
+// slow down each action down by 2 seconds
+const { context } = await launch({ slowMo: 2000 });
+
+// launch a webkit (safari) browser and context
+const { context } = await launch({ browser: "webkit" });
+
+// emulate an iphone to test a responsive site
+// full list of devices: https://github.com/microsoft/playwright/blob/v1.8.0/src/server/deviceDescriptors.js
+const { context } = await launch({ ...devices["iPhone 8"] });
+
+// emulate a camera and screen for testing recording
+const { context } = await launch({
+  args: [
+    "--use-fake-device-for-media-stream",
+    "--use-file-for-fake-video-capture=/root/files/wolf.mjpeg",
+    "--use-fake-ui-for-media-stream",
+  ],
+});
+
+// accept permission prompts
+const { context } = await launch({
+  permissions: ["clipboard-read", "clipboard-write", "geolocation"],
+});
+```
+
+<SubHeader>Arguments</SubHeader>
+
+You can use any option available on <Playwright launch /> or <Playwright newContext />, including these commonly used ones:
+
+**[options]** (Object)
+
+- [allowTracking] (boolean): Enable analytics tracking. Default: false.
+- [args] (Array<string\>): Arguments to pass to the browser launch. Useful for testing the camera.
+- [browser] ("chromium" | "firefox" | "webkit"): Type of browser to launch. Default: "chromium".
+- [devtools] (boolean): Open devtools. Default: false.
+- [permissions] (Array<string\>): Accept <Playwright permission /> prompts. Default: none.
+- [slowMo] (number): Slow down each action by a number of milliseconds. Default: 0.
+
+**Returns:** `Promise<{ browser, context }>`
+
+</Layout>

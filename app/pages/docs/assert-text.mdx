@@ -1,5 +1,6 @@
 import Header from "../../components/Docs/Header";
 import Layout from "../../components/Docs/Layout";
+import Playwright from "../../components/Docs/Playwright";
 import SubHeader from "../../components/Docs/SubHeader";
 
 <Layout>
@@ -20,11 +21,11 @@ await assertText(page, "Pass", { selector: ".result", timeout: 60000 });
 
 <SubHeader>Arguments</SubHeader>
 
-**page** ([Page](https://playwright.dev/docs/api/class-page)): The page to search for text.
+**page** (<Playwright page />): The page to search for text.
 
 **text** (string): Text to assert exists.
 
-**[options]** (Object):
+**[options]** (Object)
 
 - [selector] (string): Selector of an element to find text. Default: Search the page.
 - [timeout] (number): Time in milliseconds to wait for the text. Default: 30000.
