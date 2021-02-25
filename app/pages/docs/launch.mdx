@@ -10,7 +10,7 @@ import SubHeader from "../../components/Docs/SubHeader";
 
 Launch a Playwright <Playwright browser /> and <Playwright context />.
 
-By default, we block google analytics and tag manager to avoid interfering with your analytics. <MessageUs/> and we can block other analytics providers.
+By default, we block Google Analytics and Google Tag Manager to avoid interfering with your analytics. <MessageUs/> and we can block other analytics providers.
 
 ```js
 // launch a chromium browser and context
@@ -49,12 +49,12 @@ You can use any option available on <Playwright launch /> or <Playwright newCont
 
 **[options]** (Object)
 
-- [allowTracking] (boolean): Enable analytics tracking. Default: false.
-- [args] (Array<string\>): Arguments to pass to the browser launch. Useful for testing the camera.
-- [browser] ("chromium" | "firefox" | "webkit"): Type of browser to launch. Default: "chromium".
-- [devtools] (boolean): Open devtools. Default: false.
-- [permissions] (Array<string\>): Accept <Playwright permission /> prompts. Default: none.
-- [slowMo] (number): Slow down each action by a number of milliseconds. Default: 0.
+- [allowTracking] (boolean): Enable analytics tracking. Default: `false`
+- [args] (Array<string\>): Arguments to pass to the browser launch. Useful for testing the camera. Default: `[]`
+- [browser] ("chromium" | "firefox" | "webkit"): Type of browser to launch. Default: `"chromium"`
+- [devtools] (boolean): Open devtools. Default: `false`
+- [permissions] (Array<string\>): Accept <Playwright permission /> prompts. Default: `[]`
+- [slowMo] (number): Slow down each action by a number of milliseconds. Default: `0`
 
 **Returns:** `Promise<{ browser, context }>`
 

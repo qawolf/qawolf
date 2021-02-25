@@ -7,7 +7,7 @@ import SubHeader from "../../components/Docs/SubHeader";
 
 <Header>assertText(page, text[, options])</Header>
 
-Assert text is on the page (or element).
+Assert text is on the page, or element if a selector is specified in options.
 
 If the text is not found before the timeout, an error is thrown.
 
@@ -27,8 +27,8 @@ await assertText(page, "Pass", { selector: ".result", timeout: 60000 });
 
 **[options]** (Object)
 
-- [selector] (string): Selector of an element to find text. Default: Search the page.
-- [timeout] (number): Time in milliseconds to wait for the text. Default: 30000.
+- [selector] (string): Selector of an element to find text. Default: Search the page
+- [timeout] (number): Time in milliseconds to wait for the text. Default: `30000`
 
 **Returns:** `Promise<void>`
 

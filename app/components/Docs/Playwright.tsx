@@ -1,7 +1,14 @@
+import React from "react";
+import ExternalLink from "./ExternalLink";
+
 type Props = {
   browser?: boolean;
   context?: boolean;
+  devices?: boolean;
+  launch?: boolean;
+  newContext?: boolean;
   page?: boolean;
+  permission?: boolean;
 };
 
 const options = {
@@ -42,9 +49,5 @@ const options = {
 export default function Playwright(props: Props): JSX.Element {
   const key = Object.keys(props)[0];
   const { href, text } = options[key];
-  return (
-    <a href={href} target="_blank">
-      {text}
-    </a>
-  );
+  return <ExternalLink href={href}>{text}</ExternalLink>;
 }
