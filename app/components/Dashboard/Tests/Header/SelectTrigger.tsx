@@ -62,7 +62,7 @@ export default function SelectTrigger({
         label={copy.allTriggers}
         onClick={handleAllTriggersClick}
       />
-      <Divider {...dividerProps} />
+      {!!optionsHtml.length && <Divider {...dividerProps} />}
       {optionsHtml}
       <Divider {...dividerProps} />
       <TriggerOption

@@ -663,7 +663,7 @@ type Mutation {
 
   """
   Creates a new test suite for one or more tests, optionally specifying
-  an environment. Returns the ID of the created suite.
+  an environment ID and variables. Returns the ID of the created suite.
 
   Requires that you have access to the team that owns the tests, and that
   the team's plan limit for test runs has not been reached.
@@ -673,6 +673,9 @@ type Mutation {
     Environment ID
     """
     environment_id: ID
+
+    "A JSON object with key:value env variables, with decrypted values."
+    environment_variables: String
 
     """
     List of test IDs to include in the suite. Only those that are
