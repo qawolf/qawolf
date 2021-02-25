@@ -16,7 +16,7 @@ import {
 } from "../../../theme/theme-new";
 import Text from "../Text";
 import NameInput from "./NameInput";
-import Options, { className } from "./Options";
+import Options, { id } from "./Options";
 
 type Props = {
   editId: string;
@@ -34,7 +34,7 @@ const StyledBox = styled(Box)`
   cursor: pointer;
   transition: background ${transitionDuration};
 
-  .${className} {
+  #${id} {
     opacity: 0;
     transition: opacity ${transitionDuration};
   }
@@ -42,7 +42,7 @@ const StyledBox = styled(Box)`
   &:hover {
     background: ${colors.gray2};
 
-    .${className} {
+    #${id} {
       opacity: 1;
     }
   }

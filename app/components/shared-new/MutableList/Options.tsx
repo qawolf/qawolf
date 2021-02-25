@@ -10,6 +10,7 @@ import More from "../icons/More";
 import Option from "../Select/Option";
 
 type Props = {
+  className?: string;
   isOpen: boolean;
   onClick: (e: MouseEvent) => void;
   onClose: () => void;
@@ -18,24 +19,11 @@ type Props = {
   type: MutableListType;
 };
 
-export const className = "item-options";
-
-const StyledButton = styled(Button)`
-  svg {
-    fill: ${colors.gray6};
-    transition: fill ${transitionDuration};
-  }
-
-  &:hover {
-    svg {
-      fill: ${colors.gray9};
-    }
-  }
-`;
-
+export const id = "item-options";
 const width = "160px";
 
-export default function Options({
+function Options({
+  className,
   isOpen,
   onClick,
   onClose,
@@ -47,16 +35,17 @@ export default function Options({
 
   return (
     <Box ref={ref}>
-      <StyledButton
+      <Button
         a11yTitle={`${type} options`}
         className={className}
+        id={id}
         onClick={onClick}
         plain
       >
         <Box>
           <More size={edgeSize.small} />
         </Box>
-      </StyledButton>
+      </Button>
       {isOpen && (
         <Drop
           align={{ right: "right", top: "bottom" }}
@@ -73,3 +62,28 @@ export default function Options({
     </Box>
   );
 }
+
+const StyledOptions = styled(Options)`
+  svg {
+    fill: ${colors.gray6};
+    transition: fill ${transitionDuration};
+  }
+
+  ${(props) =>
+    props.isOpen &&
+    `
+  opacity: 1 !important;
+
+  svg {
+    fill: ${colors.gray9};
+  }
+`}
+
+  &:hover {
+    svg {
+      fill: ${colors.gray9};
+    }
+  }
+`;
+
+export default StyledOptions;
