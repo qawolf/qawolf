@@ -21,6 +21,12 @@ export type EnvironmentVariable = {
   value: string;
 };
 
+export type Group = {
+  id: string;
+  name: string;
+  team_id: string;
+};
+
 export type Integration = {
   github_repo_name: string;
   id: string;
@@ -182,6 +188,7 @@ export type CreateCode = {
 export type Modal =
   | "createTest"
   | "environments"
+  | "deleteGroup"
   | "deleteTests"
   | "teamSettings"
   | "triggers";
@@ -279,6 +286,7 @@ type SignUp = {
 };
 
 type ModalState = {
+  group?: MutableListFields;
   name: Modal | null;
   teamId?: string;
   testIds?: string[];

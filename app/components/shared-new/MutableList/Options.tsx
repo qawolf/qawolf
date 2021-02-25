@@ -34,7 +34,7 @@ function Options({
   const ref = useRef<HTMLDivElement>(null);
 
   return (
-    <Box ref={ref}>
+    <Box flex={false} ref={ref}>
       <Button
         a11yTitle={`${type} options`}
         className={className}

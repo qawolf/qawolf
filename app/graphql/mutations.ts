@@ -3,6 +3,7 @@ import { gql } from "@apollo/client";
 import {
   environmentFragment,
   environmentVariableFragment,
+  groupFragment,
   integrationFragment,
   inviteFragment,
   teamFragment,
@@ -56,6 +57,15 @@ export const createGitHubIntegrationsMutation = gql`
     }
   }
   ${integrationFragment}
+`;
+
+export const createGroupMutation = gql`
+  mutation createGroup($name: String!, $team_id: ID!) {
+    createGroup(name: $name, team_id: $team_id) {
+      ...GroupFragment
+    }
+  }
+  ${groupFragment}
 `;
 
 export const createInvitesMutation = gql`
@@ -164,6 +174,15 @@ export const deleteEnvironmentVariableMutation = gql`
   ${environmentVariableFragment}
 `;
 
+export const deleteGroupMutation = gql`
+  mutation deleteGroup($id: ID!) {
+    deleteGroup(id: $id) {
+      ...GroupFragment
+    }
+  }
+  ${groupFragment}
+`;
+
 export const deleteTestsMutation = gql`
   mutation deleteTests($ids: [ID!]!) {
     deleteTests(ids: $ids) {
@@ -248,6 +267,15 @@ export const updateEnvironmentVariableMutation = gql`
     }
   }
   ${environmentVariableFragment}
+`;
+
+export const updateGroupMutation = gql`
+  mutation updateGroup($id: ID!, $name: String!) {
+    updateGroup(id: $id, name: $name) {
+      ...GroupFragment
+    }
+  }
+  ${groupFragment}
 `;
 
 export const updateTriggerMutation = gql`

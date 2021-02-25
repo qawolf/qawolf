@@ -93,7 +93,11 @@ export default function ListItem({
       justify="between"
       margin={{ bottom: borderSize.small }}
       onClick={handleClick}
-      pad={{ left: "xsmall", right: "xxsmall", vertical: "xxsmall" }}
+      pad={{
+        left: type === "group" ? "xxsmall" : "xsmall",
+        right: "xxsmall",
+        vertical: "xxsmall",
+      }}
       round={borderSize.small}
     >
       <Text color="gray9" size="component" style={overflowStyle}>

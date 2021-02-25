@@ -17,7 +17,7 @@ type Props = {
   onSave: MutableListFunction;
   overflow?: BoxProps["overflow"];
   pad?: BoxProps["pad"];
-  selectedId: string;
+  selectedId: string | null;
   type: MutableListType;
 };
 

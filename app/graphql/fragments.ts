@@ -17,6 +17,14 @@ export const environmentVariableFragment = gql`
   }
 `;
 
+export const groupFragment = gql`
+  fragment GroupFragment on Group {
+    id
+    name
+    team_id
+  }
+`;
+
 export const integrationFragment = gql`
   fragment IntegrationFragment on Integration {
     github_repo_name

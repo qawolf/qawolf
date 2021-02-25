@@ -130,6 +130,7 @@ export const copy = {
   goHome: "Go Home",
   group: "Group",
   groupNew: "Create group",
+  groups: "Test groups",
   growRevenue: "Grow revenue",
   growRevenueDetail:
     "2/3 of consumers abandon a purchase when they find a bug.",

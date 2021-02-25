@@ -16,6 +16,7 @@ import Text from "../../shared-new/Text";
 import { StateContext } from "../../StateContext";
 import { UserContext } from "../../UserContext";
 import Actions from "./Actions";
+import Groups from "./Groups";
 import UserMenu from "./UserMenu";
 
 const StyledBox = styled(Box)`
@@ -83,8 +84,9 @@ export default function Header(): JSX.Element {
           </StyledBox>
         </Button>
         <UserMenu isOpen={isOpen} onClose={handleClose} />
+        <Actions teamId={teamId} />
+        <Groups teamId={teamId} />
       </Box>
-      <Actions teamId={teamId} />
     </Box>
   );
 }
