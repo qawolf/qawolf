@@ -6,14 +6,14 @@ import SubHeader from "../../components/Docs/SubHeader";
 
 <Header>getInbox([options])</Header>
 
-Use `getInbox` to get an email address and receive an email message in your test.
+Get an email address and receive an email message in your test.
 
 ```js
-// get the default inbox for your team
+// get your team's email address
 // ex. my-team@qawolf.email
 const { email, waitForMessage } = getInbox();
 
-// get a unique inbox for your team
+// get a new email address
 // ex. my-team+a25sa5q@qawolf.email
 const { email, waitForMessage } = getInbox({ new: true });
 
@@ -32,7 +32,7 @@ const message = await waitForMessage({ timeout: 3 * 60000 });
 
 **[options]** (Object)
 
-- [new] (boolean): Create a new and unique email. Default: `false`. When `false` it returns the default inbox for your team.
+- [new] (boolean): Get a new email address. Default: `false`.
 
 **Returns:** `{ email, waitForMessage }`
 
