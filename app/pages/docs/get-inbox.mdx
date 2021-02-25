@@ -1,0 +1,73 @@
+import Link from "next/link";
+
+import Header from "../../components/Docs/Header";
+import Layout from "../../components/Docs/Layout";
+import SubHeader from "../../components/Docs/SubHeader";
+
+<Layout>
+
+<Header>getInbox([options])</Header>
+
+Get an email address and receive an email message in your test.
+
+See the <Link href="receive-an-email">Receive an Email guide</Link>.
+
+```js
+// get your team's email address
+// Example: my-team@qawolf.email
+const { email, waitForMessage } = getInbox();
+
+// get a new email address
+// Example: my-team+a25sa5q@qawolf.email
+const { email, waitForMessage } = getInbox({ new: true });
+
+// use the email to fill out a form
+await page.fill('[name="email"]', email);
+await page.click('[aria-label="Sign up with email"]');
+
+// wait for a message up to 1 minute
+const message = await waitForMessage();
+
+// wait for a message up to 3 minutes
+const message = await waitForMessage({ timeout: 3 * 60000 });
+```
+
+<SubHeader>Arguments</SubHeader>
+
+**[options]** (Object)
+
+- [new] (boolean): Get a new email address. Default: `false`
+
+**Returns:** `{ email, waitForMessage }`
+
+- [email] (string): An email address to send your email to.
+- [waitForMessage] (Function): Wait for a message sent to the email address.
+
+<Header>waitForMessage([options])</Header>
+
+Get the next message sent to the email address returned from `getInbox`.
+
+If a message is not received before the timeout, an error is thrown.
+
+```js
+// wait for a message up to 1 minute
+const { subject, text } = await waitForMessage();
+assert(subject.includes("hello"));
+```
+
+<SubHeader>Arguments</SubHeader>
+
+**[options]** (Object)
+
+- [after] (Date): Find a message sent after this date. Default: When `getInbox` was called
+- [timeout] (number): Time in milliseconds to wait for a message. Default: `60000`
+
+**Returns:** `Promise<Message>`
+
+- from (string): The sender. Example: `"Tug the QA Wolf <tug@qawolf.com>"`
+- html (string): Html body of the email. Example: `"<div\>I'm the email body</div\>"`
+- subject (string): Subject of the email. Example: `"🐺 Hi there!"`
+- text (string): Text body of the email. Example: `"I'm the email body"`
+- to (string): The recipient of the email. Example: `"qawolf@spirit.qawolf.email"`
+
+</Layout>
