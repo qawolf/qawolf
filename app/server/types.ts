@@ -346,6 +346,11 @@ export type CreateGitHubIntegrationsMutation = {
   team_id: string;
 };
 
+export type CreateGroupMutation = {
+  name: string;
+  team_id: string;
+};
+
 export type CreateInviteMutation = {
   emails: string[];
   team_id: string;
@@ -435,6 +440,11 @@ export type UpdateEnvironmentVariableMutation = {
   id: string;
   name: string;
   value: string;
+};
+
+export type UpdateGroupMutation = {
+  id: string;
+  name: string;
 };
 
 export type UpdateTriggerMutation = {

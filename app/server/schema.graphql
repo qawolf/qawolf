@@ -98,6 +98,18 @@ type EnvironmentVariables {
   variables: [EnvironmentVariable!]!
 }
 
+"A group of tests"
+type Group {
+  "Group ID"
+  id: ID!
+
+  "Group name"
+  name: String!
+
+  "Team associated with this group"
+  team_id: ID!
+}
+
 "Valid types for Integration.type"
 enum IntegrationType {
   "GitHub (https://github.com/)"
@@ -548,8 +560,20 @@ type Mutation {
   ): [Integration!]!
 
   """
-  Create a new test trigger. The trigger is given an automatic
-  unique name, which can then be changed using `updateTrigger`.
+  Create a new test group.
+
+  Requires that you have access to the team.
+  """
+  createGroup(
+    "Name of the group"
+    name: String!
+
+    "ID of the team that should own the group"
+    team_id: ID!
+  ): Group!
+
+  """
+  Create a new test trigger.
 
   Requires that you have access to the team.
   """
@@ -726,6 +750,14 @@ type Mutation {
   ): EnvironmentVariable!
 
   """
+  Delete a test group. All tests in this group will no longer have
+  an associated group.
+
+  Requires that you have access to the team that owns the group.
+  """
+  deleteGroup("ID of the group" id: ID!): Group!
+
+  """
   Soft deletes a test trigger record by ID. All tests are removed from a
   trigger when it is soft deleted, but the tests themselves are
   not deleted an remain in any other triggers as well as the default
@@ -866,6 +898,19 @@ type Mutation {
     "Updated environment variable value"
     value: String!
   ): EnvironmentVariable!
+
+  """
+  Update a test group.
+
+  Requires that you have access to the team that owns the group.
+  """
+  updateGroup(
+    "ID of the group"
+    id: ID!
+
+    "New name of the group"
+    name: String!
+  ): Group!
 
   """
   Updates a test trigger by ID.
@@ -1143,12 +1188,11 @@ type Query {
   ): Runner
 
   """
-  Returns all test triggers for a single team by team ID. The default trigger is
-  always first, followed by other triggers ordered by name ascending.
+  Returns all groups for a single team by team ID.
 
   Requires that you have access to the team.
   """
-  triggers("The team ID" team_id: ID!): [Trigger!]!
+  groups("The team ID" team_id: ID!): [Group!]!
 
   """
   Returns all integrations for a single team by team ID.
@@ -1225,4 +1269,12 @@ type Query {
   Requires that you are on the team.
   """
   tests("The team ID" team_id: ID!): [Test!]!
+
+  """
+  Returns all test triggers for a single team by team ID. The default trigger is
+  always first, followed by other triggers ordered by name ascending.
+
+  Requires that you have access to the team.
+  """
+  triggers("The team ID" team_id: ID!): [Trigger!]!
 }
