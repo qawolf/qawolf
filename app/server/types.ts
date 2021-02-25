@@ -351,6 +351,7 @@ export type CreateSlackIntegrationMutation = {
 
 export type CreateSuiteMutation = {
   environment_id: string | null;
+  environment_variables: string | null;
   test_ids: string[];
 };
 

@@ -6,14 +6,13 @@ import {
   findSuitesForTeam,
 } from "../models/suite";
 import { findEnabledTests } from "../models/test";
-import { findTrigger, findTriggerOrNull } from "../models/trigger";
+import { findTriggerOrNull } from "../models/trigger";
 import {
   Context,
   CreateSuiteMutation,
   IdQuery,
   SuiteResult,
   TeamIdQuery,
-  Trigger,
 } from "../types";
 import {
   ensureEnvironmentAccess,
@@ -30,7 +29,7 @@ const SUITES_LIMIT = 25;
  */
 export const createSuiteResolver = async (
   _: Record<string, unknown>,
-  { environment_id, test_ids }: CreateSuiteMutation,
+  { environment_id, environment_variables, test_ids }: CreateSuiteMutation,
   { db, logger, teams, user: contextUser }: Context
 ): Promise<string> => {
   const log = logger.prefix("createSuiteResolver");
@@ -67,10 +66,15 @@ export const createSuiteResolver = async (
       throw new ClientError("no tests to run");
     }
 
+    const formattedVariables = environment_variables?.length
+      ? JSON.parse(environment_variables)
+      : null;
+
     const { suite } = await createSuiteForTests(
       {
         creator_id: user.id,
         environment_id,
+        environment_variables: formattedVariables,
         team_id: testTeams[0].id,
         tests,
       },

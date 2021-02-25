@@ -1,4 +1,4 @@
-import { encrypt } from "../../../server/models/encrypt";
+import { decrypt, encrypt } from "../../../server/models/encrypt";
 import * as suiteModel from "../../../server/models/suite";
 import {
   createSuiteResolver,
@@ -71,7 +71,11 @@ describe("createSuiteResolver", () => {
   it("creates a suite for tests", async () => {
     const suiteId = await createSuiteResolver(
       {},
-      { environment_id: null, test_ids: ["testId", "test2Id"] },
+      {
+        environment_id: null,
+        environment_variables: "",
+        test_ids: ["testId", "test2Id"],
+      },
       context
     );
 
@@ -83,6 +87,7 @@ describe("createSuiteResolver", () => {
     expect(suite).toMatchObject({
       creator_id: user.id,
       environment_id: null,
+      environment_variables: null,
       team_id: teams[0].id,
       trigger_id: null,
     });
@@ -97,7 +102,11 @@ describe("createSuiteResolver", () => {
   it("creates a suite for a trigger with selected tests", async () => {
     const suiteId = await createSuiteResolver(
       {},
-      { environment_id: "environmentId", test_ids: ["testId"] },
+      {
+        environment_id: "environmentId",
+        environment_variables: JSON.stringify({ hello: "world" }),
+        test_ids: ["testId"],
+      },
       context
     );
 
@@ -113,6 +122,10 @@ describe("createSuiteResolver", () => {
       trigger_id: null,
     });
 
+    expect(decrypt(suite.environment_variables)).toBe(
+      JSON.stringify({ hello: "world" })
+    );
+
     const runs = await db("runs").select("*").where({ suite_id: suite.id });
     expect(runs).toMatchObject([{ suite_id: suite.id, test_id: "testId" }]);
   });
@@ -121,7 +134,11 @@ describe("createSuiteResolver", () => {
     await expect(
       createSuiteResolver(
         {},
-        { environment_id: null, test_ids: ["testId"] },
+        {
+          environment_id: null,
+          environment_variables: null,
+          test_ids: ["testId"],
+        },
         { ...context, teams: [{ ...teams[0], is_enabled: false }] }
       )
     ).rejects.toThrowError("team disabled, please contact support");
@@ -129,7 +146,11 @@ describe("createSuiteResolver", () => {
 
   it("throws an error if no tests", async () => {
     await expect(
-      createSuiteResolver({}, { environment_id: null, test_ids: [] }, context)
+      createSuiteResolver(
+        {},
+        { environment_id: null, environment_variables: null, test_ids: [] },
+        context
+      )
     ).rejects.toThrowError("tests to run");
   });
 
@@ -142,7 +163,11 @@ describe("createSuiteResolver", () => {
     await expect(
       createSuiteResolver(
         {},
-        { environment_id: null, test_ids: ["testId", "test10Id"] },
+        {
+          environment_id: null,
+          environment_variables: null,
+          test_ids: ["testId", "test10Id"],
+        },
         { ...context, teams: [...teams, team2] }
       )
     ).rejects.toThrowError("different teams");

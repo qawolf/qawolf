@@ -126,6 +126,7 @@ type CreateSuiteData = {
 
 type CreateSuiteVariables = {
   environment_id: string | null;
+  environment_variables?: string | null;
   test_ids: string[];
 };
 
@@ -442,9 +443,15 @@ export const useCreateSuite = (): MutationTuple<
   CreateSuiteData,
   CreateSuiteVariables
 > => {
+  const { push } = useRouter();
+
   return useMutation<CreateSuiteData, CreateSuiteVariables>(
     createSuiteMutation,
     {
+      onCompleted: (response) => {
+        const { createSuite } = response || {};
+        if (createSuite) push(`${routes.suites}/${createSuite}`);
+      },
       onError,
       refetchQueries: ["dashboard"],
     }

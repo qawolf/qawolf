@@ -7,16 +7,44 @@ import Header from "./Header";
 import RunCard from "./RunCard";
 
 type Props = {
+  checkedTestIds: string[];
   runs: SuiteRun[];
   search: string;
+  setCheckedTestIds: (runIds: string[]) => void;
   status: RunStatus | null;
 };
 
-export default function List({ runs, search, status }: Props): JSX.Element {
+export default function List({
+  checkedTestIds,
+  runs,
+  search,
+  setCheckedTestIds,
+  status,
+}: Props): JSX.Element {
+  const handleRunCheck = (testId: string): void => {
+    const index = checkedTestIds.indexOf(testId);
+    if (index > -1) {
+      const newSelectedTestIds = [...checkedTestIds];
+      newSelectedTestIds.splice(index, 1);
+
+      setCheckedTestIds(newSelectedTestIds);
+    } else {
+      setCheckedTestIds([...checkedTestIds, testId]);
+    }
+  };
+
   const filteredRuns = filterRuns({ runs, search, status });
 
   const runsHtml = filteredRuns.map((run, i) => {
-    return <RunCard key={run.id} noBorder={!i} run={run} />;
+    return (
+      <RunCard
+        isChecked={checkedTestIds.includes(run.test_id)}
+        key={run.id}
+        noBorder={!i}
+        onCheck={() => handleRunCheck(run.test_id)}
+        run={run}
+      />
+    );
   });
 
   return (
@@ -25,7 +53,11 @@ export default function List({ runs, search, status }: Props): JSX.Element {
       margin={{ top: "medium" }}
       round={borderSize.small}
     >
-      <Header runs={filteredRuns} />
+      <Header
+        checkedTestIds={checkedTestIds}
+        runs={filteredRuns}
+        setCheckedTestIds={setCheckedTestIds}
+      />
       <Box overflow={{ vertical: "scroll" }}>
         <Box flex={false}>{runsHtml}</Box>
       </Box>
