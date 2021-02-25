@@ -28,7 +28,7 @@ export default function SelectTrigger({
   };
 
   const handleTriggerClick = (triggerId: string): void => {
-    replace(`${routes.tests}/?trigger_id=${triggerId}`);
+    replace(`${routes.tests}?trigger_id=${triggerId}`);
   };
 
   const optionsHtml = triggers.map((trigger) => {
