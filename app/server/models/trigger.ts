@@ -142,9 +142,18 @@ export const createTrigger = async (
     repeat_minutes: repeat_minutes || null,
     team_id,
   };
-  await db("triggers").insert(trigger);
 
-  log.debug(`create ${trigger.id}`);
+  try {
+    await db("triggers").insert(trigger);
+  } catch (error) {
+    if (error.message.includes("triggers_unique_name_team_id")) {
+      throw new ClientError("trigger name must be unique");
+    }
+
+    throw error;
+  }
+
+  log.debug("created", trigger.id);
 
   return trigger;
 };

@@ -8,6 +8,7 @@ import {
   Environment,
   EnvironmentVariable,
   GitHubCommitStatus,
+  Group,
   Integration,
   IntegrationType,
   Invite,
@@ -49,6 +50,12 @@ type BuildEnvironmentVariable = {
 
 type BuildGitHubCommitStatus = {
   i?: number;
+};
+
+type BuildGroup = {
+  i?: number;
+  name?: string;
+  team_id?: string;
 };
 
 type BuildIntegration = {
@@ -221,6 +228,16 @@ export const buildGitHubCommitStatus = ({
     sha: "sha",
     suite_id: "suiteId",
     trigger_id: "triggerId",
+  };
+};
+
+export const buildGroup = ({ i, name, team_id }: BuildGroup): Group => {
+  const finalI = i || 1;
+
+  return {
+    id: `group${finalI === 1 ? "" : i}Id`,
+    name: name || `group${finalI}`,
+    team_id: team_id || "teamId",
   };
 };
 

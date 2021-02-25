@@ -116,6 +116,14 @@ export type GitHubCommitStatus = {
   updated_at?: string;
 };
 
+export type Group = {
+  created_at?: string;
+  id: string;
+  name: string;
+  team_id: string;
+  updated_at?: string;
+};
+
 export type Invite = {
   accepted_at: string | null;
   created_at?: string;
