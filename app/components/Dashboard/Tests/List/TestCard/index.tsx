@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { routes } from "../../../../../lib/routes";
 import { ShortTest, TestSummary, Trigger } from "../../../../../lib/types";
-import { borderSize, overflowStyle } from "../../../../../theme/theme-new";
+import { border, overflowStyle } from "../../../../../theme/theme-new";
 import CheckBox from "../../../../shared-new/CheckBox";
 import TestGif from "../../../../shared-new/TestGif";
 import Text from "../../../../shared-new/Text";
@@ -35,11 +35,7 @@ export default function TestCard({
   return (
     <Box
       align="center"
-      border={
-        noBorder
-          ? undefined
-          : { color: "gray3", side: "top", size: borderSize.xsmall }
-      }
+      border={noBorder ? undefined : { ...border, side: "top" }}
       direction="row"
       justify="between"
       pad={{ horizontal: "small" }}

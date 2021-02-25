@@ -13,6 +13,7 @@ type Props = { suiteId: string };
 export default function Suite({ suiteId }: Props): JSX.Element {
   const { teamId } = useContext(StateContext);
 
+  const [checkedTestIds, setCheckedTestIds] = useState<string[]>([]);
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<RunStatus | null>(null);
 
@@ -40,7 +41,13 @@ export default function Suite({ suiteId }: Props): JSX.Element {
         status={status}
         suite={suite}
       />
-      <List runs={suite.runs} search={search} status={status} />
+      <List
+        checkedTestIds={checkedTestIds}
+        runs={suite.runs}
+        search={search}
+        setCheckedTestIds={setCheckedTestIds}
+        status={status}
+      />
     </>
   ) : (
     <Spinner />
