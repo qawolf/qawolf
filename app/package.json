@@ -11,7 +11,9 @@
     "migrate:run": "ts-node node_modules/.bin/knex migrate:latest --knexfile=server/knexfile.ts",
     "migrate:run:dev": "DOTENV_PATH=../.env ts-node node_modules/.bin/knex migrate:latest --knexfile=server/knexfile.ts",
     "start": "next start",
-    "test": "jest"
+    "test": "jest",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "author": "QA Wolf Inc. <hello@qawolf.com>",
   "license": "Business-Source-License-1.1",
@@ -68,9 +70,14 @@
     "video.js": "^7.10.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.13.1",
     "@graphql-eslint/eslint-plugin": "^0.6.0",
     "@graphql-tools/webpack-loader": "^6.3.1",
     "@netlify/plugin-nextjs": "^2.0.0",
+    "@storybook/addon-actions": "^6.1.20",
+    "@storybook/addon-essentials": "^6.1.20",
+    "@storybook/addon-links": "^6.1.20",
+    "@storybook/react": "^6.1.20",
     "@types/bcrypt": "^3.0.0",
     "@types/classnames": "^2.2.11",
     "@types/debounce": "^1.2.0",
@@ -92,6 +99,7 @@
     "@types/video.js": "^7.3.11",
     "@typescript-eslint/eslint-plugin": "^4.7.0",
     "@typescript-eslint/parser": "^4.7.0",
+    "babel-loader": "^8.2.2",
     "eslint": "^7.16.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-jest": "^24.1.3",
