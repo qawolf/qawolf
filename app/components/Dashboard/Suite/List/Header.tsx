@@ -48,7 +48,6 @@ export default function Header({
       }
       direction="row"
       flex={false}
-      gap={edgeSize.small}
       pad="small"
     >
       <CheckBox
@@ -57,18 +56,23 @@ export default function Header({
         onChange={handleClick}
       />
       {checkedTestIds.length ? (
-        <Text color="gray9" size="componentBold">
+        <Text color="gray9" margin={{ left: "small" }} size="componentBold">
           {copy.selected(checkedTestIds.length)}
         </Text>
       ) : (
-        <>
+        <Box
+          align="center"
+          direction="row"
+          gap={edgeSize.small}
+          margin={{ left: "small" }}
+        >
           {!!failCount && <StatusSummary count={failCount} status="fail" />}
           {!!passCount && <StatusSummary count={passCount} status="pass" />}
           {!!createdCount && (
             <StatusSummary count={createdCount} status="created" />
           )}
           {!runs.length && <StatusSummary count={0} status={null} />}
-        </>
+        </Box>
       )}
     </Box>
   );
