@@ -41,7 +41,11 @@ export default function Header(): JSX.Element {
   const team = user?.teams.find((t) => t.id === teamId);
 
   return (
-    <Box overflow={{ vertical: "auto" }} pad={{ horizontal: "medium" }}>
+    <Box
+      fill="vertical"
+      overflow={{ vertical: "auto" }}
+      pad={{ horizontal: "medium" }}
+    >
       <Box flex={false} ref={ref} style={{ position: "relative" }}>
         <Button a11yTitle="user menu" onClick={handleClick} plain>
           <StyledBox
