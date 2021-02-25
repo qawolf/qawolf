@@ -16,6 +16,7 @@ const {
   createTrigger,
   deleteTrigger,
   findTrigger,
+  findTriggerOrNull,
   findTriggersForGitHubIntegration,
   findTriggersForTeam,
   findPendingTriggers,
@@ -211,6 +212,24 @@ describe("trigger model", () => {
       );
 
       await db("triggers").update({ deleted_at: null });
+    });
+  });
+
+  describe("findTriggerOrNull", () => {
+    beforeAll(() => db("triggers").insert(buildTrigger({})));
+
+    afterAll(() => db("triggers").del());
+
+    it("finds a trigger", async () => {
+      const trigger = await findTriggerOrNull("triggerId", options);
+
+      expect(trigger).toMatchObject({ id: "triggerId" });
+    });
+
+    it("returns null if trigger not found", async () => {
+      const trigger = await findTriggerOrNull("fakeId", options);
+
+      expect(trigger).toBeNull();
     });
   });
 

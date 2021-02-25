@@ -84,4 +84,23 @@ describe("buildSuiteHtml", () => {
 
     expect(html).toMatchSnapshot();
   });
+
+  it("builds html for success email with no trigger", () => {
+    const html = buildSuiteHtml({
+      runs: [
+        {
+          gif_url: "https://gif.gif",
+          id: "runId",
+          is_test_deleted: false,
+          status: "pass",
+          test_id: "testId",
+          test_name: "logIn",
+        },
+      ],
+      suite_id: "suiteId",
+      trigger: null,
+    });
+
+    expect(html).toMatchSnapshot();
+  });
 });

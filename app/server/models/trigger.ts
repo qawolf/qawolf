@@ -167,6 +167,20 @@ export const findTrigger = async (
   return trigger;
 };
 
+export const findTriggerOrNull = async (
+  id: string,
+  { db, logger }: ModelOptions
+): Promise<Trigger | null> => {
+  const log = logger.prefix("findTriggerOrNull");
+  log.debug(`find ${id}`);
+
+  const trigger = await db("triggers").where({ id }).first();
+
+  log.debug(trigger ? "found" : "not found");
+
+  return trigger || null;
+};
+
 export const findTriggersForGitHubIntegration = async (
   github_repo_id: number,
   { db, logger }: ModelOptions

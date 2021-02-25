@@ -9,7 +9,7 @@ import { randomChoice } from "../../utils";
 type BuildSuiteMessage = {
   runs: SuiteRun[];
   suite: Suite;
-  trigger: Trigger;
+  trigger: Trigger | null;
   user: User | null;
 };
 
@@ -22,7 +22,7 @@ type SendSlackAlert = {
   integrationId: string;
   runs: SuiteRun[];
   suite: Suite;
-  trigger: Trigger;
+  trigger: Trigger | null;
 };
 
 export const buildMessageForSuite = ({
@@ -35,12 +35,13 @@ export const buildMessageForSuite = ({
   const wolfVariant = user?.wolf_variant || "white";
 
   const failingRuns = runs.filter((r) => r.status === "fail");
-
   const status = failingRuns.length ? "failed." : "passed!";
 
+  const triggerName = trigger?.name || "manually triggered";
+
   const suiteHref = new URL(`/suites/${suite.id}`, environment.APP_URL).href;
-  const headline = `${wolfName} here: <${suiteHref}|${trigger.name} tests> ${status}`;
-  const text = `${trigger.name} tests ${status}`;
+  const headline = `${wolfName} here: <${suiteHref}|${triggerName} tests> ${status}`;
+  const text = `${triggerName} tests ${status}`;
 
   const runBlocks = failingRuns.map((run) => {
     return {

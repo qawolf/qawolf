@@ -24,14 +24,14 @@ type SendEmailForSuite = {
   logger: Logger;
   runs: SuiteRun[];
   suite_id: string;
-  trigger: Trigger;
+  trigger: Trigger | null;
   user: User;
 };
 
 type SendEmailAlert = {
   runs: SuiteRun[];
   suite: Suite;
-  trigger: Trigger;
+  trigger: Trigger | null;
 };
 
 const buildFrom = (wolfName: string): MailDataRequired["from"] => {
@@ -108,10 +108,11 @@ export const sendEmailForSuite = async ({
   log.debug(user.email);
 
   const is_fail = runs.some((r) => r.status === "fail");
+  const triggerName = trigger?.name || "manually triggered";
 
   const subject = is_fail
-    ? `🐺 Oh no! Your ${trigger.name} tests failed.`
-    : `🎉 All good! Your ${trigger.name} tests passed.`;
+    ? `🐺 Oh no! Your ${triggerName} tests failed.`
+    : `🎉 All good! Your ${triggerName} tests passed.`;
 
   try {
     const message = {

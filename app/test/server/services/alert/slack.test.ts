@@ -79,6 +79,10 @@ describe("buildMessageForSuite", () => {
       buildMessageForSuite({ runs, suite, trigger, user })
     ).toMatchSnapshot();
 
+    expect(
+      buildMessageForSuite({ runs, suite, trigger: null, user })
+    ).toMatchSnapshot();
+
     await db("runs").where({ id: "runId" }).update({ status: "fail" });
   });
 });

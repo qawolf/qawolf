@@ -6,7 +6,7 @@ import {
   findSuitesForTeam,
 } from "../models/suite";
 import { findEnabledTests } from "../models/test";
-import { findTrigger } from "../models/trigger";
+import { findTrigger, findTriggerOrNull } from "../models/trigger";
 import {
   Context,
   CreateSuiteMutation,
@@ -96,16 +96,9 @@ export const suiteResolver = async (
   await ensureSuiteAccess({ suite_id: id, teams }, { db, logger });
 
   const suite = await findSuite(id, { db, logger });
-  let trigger: Trigger | null = null;
-
-  if (suite.trigger_id) {
-    // TODO: do not throw error in find trigger if trigger deleted
-    try {
-      trigger = await findTrigger(suite.trigger_id, { db, logger });
-    } catch (e) {
-      trigger = null;
-    }
-  }
+  const trigger = suite.trigger_id
+    ? await findTriggerOrNull(suite.trigger_id, { db, logger })
+    : null;
 
   return {
     ...suite,
