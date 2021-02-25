@@ -278,11 +278,13 @@ export const useSuite = (
 };
 
 export const useSuites = (
-  variables: SuitesVariables
+  variables: SuitesVariables,
+  { pollInterval }: { pollInterval?: number }
 ): QueryResult<SuitesData, SuitesVariables> => {
   return useQuery<SuitesData, SuitesVariables>(suitesQuery, {
     fetchPolicy,
     onError,
+    pollInterval,
     skip: !variables.team_id,
     variables,
   });
@@ -331,12 +333,14 @@ export const useTestHistory = (
 };
 
 export const useTestSummaries = (
-  variables: TestSummariesVariables
+  variables: TestSummariesVariables,
+  { pollInterval }: { pollInterval?: number }
 ): QueryResult<TestSummariesData, TestSummariesVariables> => {
   return useQuery<TestSummariesData, TestSummariesVariables>(
     testSummariesQuery,
     {
       fetchPolicy,
+      pollInterval,
       // if null is passed as an id, skip the query (this happens prehydration)
       skip: !variables.test_ids.length || variables.test_ids.some((id) => !id),
       variables,
