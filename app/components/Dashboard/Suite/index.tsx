@@ -2,7 +2,6 @@ import { Box } from "grommet";
 import { useContext, useEffect, useState } from "react";
 
 import { useSuite } from "../../../hooks/queries";
-import { RunStatus } from "../../../lib/types";
 import Spinner from "../../shared-new/Spinner";
 import { StateContext } from "../../StateContext";
 import Header from "./Header";
@@ -15,7 +14,6 @@ export default function Suite({ suiteId }: Props): JSX.Element {
 
   const [checkedTestIds, setCheckedTestIds] = useState<string[]>([]);
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState<RunStatus | null>(null);
 
   const { data, startPolling, stopPolling } = useSuite(
     { id: suiteId },
@@ -43,8 +41,6 @@ export default function Suite({ suiteId }: Props): JSX.Element {
         checkedTestIds={checkedTestIds}
         search={search}
         setSearch={setSearch}
-        setStatus={setStatus}
-        status={status}
         suite={suite}
       />
       <List
@@ -52,7 +48,6 @@ export default function Suite({ suiteId }: Props): JSX.Element {
         runs={suite.runs}
         search={search}
         setCheckedTestIds={setCheckedTestIds}
-        status={status}
       />
     </>
   ) : (

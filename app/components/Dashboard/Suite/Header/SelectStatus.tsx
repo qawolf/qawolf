@@ -1,3 +1,6 @@
+import { useRouter } from "next/router";
+
+import { routes } from "../../../../lib/routes";
 import { RunStatus, SuiteRun } from "../../../../lib/types";
 import Divider from "../../../shared-new/Divider";
 import Select from "../../../shared-new/Select";
@@ -6,22 +9,25 @@ import StatusOption from "./StatusOption";
 
 type Props = {
   runs: SuiteRun[];
-  setStatus: (status: RunStatus | null) => void;
-  status: RunStatus | null;
 };
 
 const statuses: RunStatus[] = ["fail", "pass", "created"];
 const width = "240px";
 
-export default function SelectStatus({
-  runs,
-  setStatus,
-  status,
-}: Props): JSX.Element {
+export default function SelectStatus({ runs }: Props): JSX.Element {
+  const { replace, query } = useRouter();
+
+  const suiteId = query.suite_id as string;
+  const status = (query.status || null) as RunStatus | null;
+
   const label = getLabelForStatus(status);
 
-  const handleClick = (status: RunStatus | null): void => {
-    setStatus(status);
+  const handleAllClick = (): void => {
+    replace(`${routes.suites}/${suiteId}`); // clear query
+  };
+
+  const handleClick = (status: RunStatus): void => {
+    replace(`${routes.suites}/${suiteId}/?status=${status}`);
   };
 
   const optionsHtml = statuses.map((s) => {
@@ -43,7 +49,7 @@ export default function SelectStatus({
       <StatusOption
         count={runs.length}
         isSelected={!status}
-        onClick={() => handleClick(null)}
+        onClick={handleAllClick}
         status={null}
       />
       <Divider margin={{ vertical: "xxxsmall" }} />

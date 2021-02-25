@@ -2,7 +2,7 @@ import { Box } from "grommet";
 
 import { useCreateSuite } from "../../../../hooks/mutations";
 import { timestampToText } from "../../../../lib/helpers";
-import { RunStatus, Suite } from "../../../../lib/types";
+import { Suite } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import Button from "../../../shared-new/AppButton";
 import ColorDot from "../../../shared-new/ColorDot";
@@ -16,8 +16,6 @@ type Props = {
   checkedTestIds: string[];
   search: string;
   setSearch: (search: string) => void;
-  setStatus: (status: RunStatus | null) => void;
-  status: RunStatus | null;
   suite: Suite;
 };
 
@@ -25,8 +23,6 @@ export default function Header({
   checkedTestIds,
   search,
   setSearch,
-  setStatus,
-  status,
   suite,
 }: Props): JSX.Element {
   const [createSuite, { loading }] = useCreateSuite();
@@ -83,7 +79,7 @@ export default function Header({
         margin={{ top: "large" }}
       >
         <Search search={search} setSearch={setSearch} />
-        <SelectStatus runs={suite.runs} setStatus={setStatus} status={status} />
+        <SelectStatus runs={suite.runs} />
       </Box>
     </Box>
   );
