@@ -1,5 +1,6 @@
 import Header from "../../components/Docs/Header";
 import Layout from "../../components/Docs/Layout";
+import MessageUs from "../../components/Docs/MessageUs";
 import Playwright from "../../components/Docs/Playwright";
 import SubHeader from "../../components/Docs/SubHeader";
 
@@ -9,7 +10,7 @@ import SubHeader from "../../components/Docs/SubHeader";
 
 Launch a Playwright <Playwright browser /> and <Playwright context />.
 
-By default, this blocks google analytics and tag manager tracking to prevent your tests from interfering with your analytics. <a className="open-intercom">Message us</a> if you are using another analytics provider and we will block them too.
+By default, we block google analytics and tag manager to avoid interfering with your analytics. <MessageUs/> and we can block other analytics providers.
 
 ```js
 // launch a chromium browser and context

@@ -108,10 +108,10 @@ export const docs: Section[] = [
     IconComponent: RiPlugFill,
     color: "#6E9DFA",
     docs: [
-      // {
-      //   href: `${routes.docs}/globals`,
-      //   name: "Globals",
-      // },
+      {
+        href: `${routes.docs}/globals`,
+        name: "Globals",
+      },
       {
         href: `${routes.docs}/assert-text`,
         name: "assertText",

@@ -1,0 +1,30 @@
+import Header from "../../components/Docs/Header";
+import Layout from "../../components/Docs/Layout";
+import MessageUs from "../../components/Docs/MessageUs";
+import Playwright from "../../components/Docs/Playwright";
+
+<Layout>
+
+<Header>Globals</Header>
+
+QA Wolf provides globals to your test so you can quickly create tests. <MessageUs/> us if you would like other helpers.
+
+```js
+// Generate a random name
+const name = faker.name.findName();
+console.log(name);
+```
+
+The globals available in your test are:
+
+- [assert](https://nodejs.org/api/assert.html#assert_assert_value_message): Assert a value is truthy. See the [Add an Assertion guide](./add-an-assertion).
+- [assertText](./assert-text): Assert text shows up. See the [Add an Assertion guide](./add-an-assertion).
+- [axios](https://github.com/axios/axios#axios-api): Make an API request. See the [Call an API guide](./call-an-api).
+- <Playwright devices />: Devices to emulate. See the <a href="launch">
+    launch doc
+  </a>.
+- [faker](https://github.com/marak/Faker.js/#api): Generate random test data.
+- [getInbox](./getInbox): Receive an email in your test. See the [Receive an Email guide](./receive-an-email).
+- [launch](./launch): Launch a browser.
+
+</Layout>

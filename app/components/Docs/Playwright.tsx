@@ -13,6 +13,11 @@ const options = {
     href: "https://playwright.dev/docs/api/class-browsercontext",
     text: "Context",
   },
+  devices: {
+    href:
+      "https://github.com/microsoft/playwright/blob/v1.8.0/src/server/deviceDescriptors.js",
+    text: "devices",
+  },
   launch: {
     href:
       "https://playwright.dev/docs/api/class-browsertype#browsertypelaunchoptions",
