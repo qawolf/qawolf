@@ -1,10 +1,10 @@
-import { Box, Drop, DropProps } from "grommet";
-import { MouseEvent } from "react";
+import { DropProps } from "grommet";
 
 import { state } from "../../../../lib/state";
 import { Environment } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import { edgeSize } from "../../../../theme/theme-new";
+import Drop from "../../../shared-new/Drop";
 import Option from "../../../shared-new/Select/Option";
 
 type Props = {
@@ -33,13 +33,6 @@ export default function EnvironmentsMenu({
     onClose();
   };
 
-  const handleClickOutside = (e: MouseEvent<HTMLDocument>) => {
-    // ignore clicks on the button
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if ((target as any).contains(e.target as HTMLButtonElement)) return;
-    onClose();
-  };
-
   const optionsHtml = environments.map((e) => {
     return (
       <Option
@@ -51,17 +44,15 @@ export default function EnvironmentsMenu({
     );
   });
 
-  // use drop to avoid hover activating divider
   return (
     <Drop
       align={{ right: "right", top: "bottom" }}
-      onClickOutside={handleClickOutside}
+      onClickOutside={onClose}
       style={{ marginTop: edgeSize.xxxsmall }}
       target={target}
+      width={width}
     >
-      <Box pad={{ vertical: "xxxsmall" }} width={width}>
-        {optionsHtml}
-      </Box>
+      {optionsHtml}
     </Drop>
   );
 }

@@ -1,19 +1,19 @@
 import { Box } from "grommet";
-import { useState } from "react";
 
+import {
+  useCreateEnvironment,
+  useUpdateEnvironment,
+} from "../../../../hooks/mutations";
 import { useEnvironments } from "../../../../hooks/queries";
-import { Environment } from "../../../../lib/types";
+import { MutableListArgs, MutableListFields } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import { edgeSize } from "../../../../theme/theme";
-import Text from "../../../shared-new/Text";
-import AddEnvironment from "./AddEnvironment";
-import EnvironmentName, { id as formInputId } from "./EnvironmentName";
-import ListItem from "./ListItem";
 import MutableList from "../../../shared-new/MutableList";
+import Text from "../../../shared-new/Text";
 
 type Props = {
   environmentId: string;
-  onDelete: (environment: Environment) => void;
+  onDelete: (fields: MutableListFields) => void;
   setSelectedEnvironmentId: (environmentId: string) => void;
   teamId: string;
 };
@@ -26,45 +26,50 @@ export default function Environments({
   setSelectedEnvironmentId,
   teamId,
 }: Props): JSX.Element {
-  const [editEnvironmentId, setEditEnvironmentId] = useState<string | null>(
-    null
-  );
-  const [isCreate, setIsCreate] = useState(false);
-
   const { data } = useEnvironments({ team_id: teamId }, { environmentId });
+  const environments = data?.environments;
 
-  const handleClose = (): void => {
-    setEditEnvironmentId(null);
-    setIsCreate(false);
+  const [
+    createEnvironment,
+    { loading: isCreateLoading },
+  ] = useCreateEnvironment();
+  const [
+    updateEnvironment,
+    { loading: isEditLoading },
+  ] = useUpdateEnvironment();
+
+  const handleSave = ({ callback, fields, name }: MutableListArgs): void => {
+    if (isCreateLoading || isEditLoading) return;
+
+    if (fields) {
+      const environment = environments?.find((e) => e.id === fields.id);
+
+      updateEnvironment({
+        optimisticResponse: environment
+          ? {
+              updateEnvironment: {
+                ...environment,
+                name,
+              },
+            }
+          : undefined,
+        variables: { id: fields.id, name },
+      }).then(callback);
+    } else {
+      createEnvironment({ variables: { name, team_id: teamId } }).then(
+        (response) => {
+          const { data } = response || {};
+
+          // show newly created environment if possible
+          if (setSelectedEnvironmentId) {
+            setSelectedEnvironmentId(data?.createEnvironment.id);
+          }
+
+          callback();
+        }
+      );
+    }
   };
-
-  const handleCreate = (): void => {
-    setEditEnvironmentId(null); // clear existing forms
-    setIsCreate(true);
-    // focus form if it already exists
-    document.getElementById(formInputId)?.focus();
-  };
-
-  const handleEdit = (environmentId: string): void => {
-    setEditEnvironmentId(environmentId);
-    setIsCreate(false);
-  };
-
-  const environmentsHtml = (data?.environments || []).map((environment) => {
-    return (
-      <ListItem
-        editEnvironmentId={editEnvironmentId}
-        environment={environment}
-        isSelected={environment.id === environmentId}
-        key={environment.id}
-        onClose={handleClose}
-        onClick={() => setSelectedEnvironmentId(environment.id)}
-        onDelete={() => onDelete(environment)}
-        onEdit={() => handleEdit(environment.id)}
-        teamId={teamId}
-      />
-    );
-  });
 
   return (
     <Box flex={false} width={width}>
@@ -78,21 +83,16 @@ export default function Environments({
           {copy.environments}
         </Text>
       </Box>
-      <Box
-        height="full"
+      <MutableList
+        fieldsList={environments}
+        onClick={setSelectedEnvironmentId}
+        onDelete={onDelete}
         overflow={{ vertical: "auto" }}
         pad={{ bottom: "medium", horizontal: "medium" }}
-      >
-        {environmentsHtml}
-        {isCreate && (
-          <EnvironmentName
-            onClose={handleClose}
-            setSelectedEnvironmentId={setSelectedEnvironmentId}
-            teamId={teamId}
-          />
-        )}
-        <AddEnvironment onClick={handleCreate} />
-      </Box>
+        onSave={handleSave}
+        selectedId={environmentId}
+        type="environment"
+      />
     </Box>
   );
 }

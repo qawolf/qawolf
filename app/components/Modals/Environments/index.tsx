@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 import { useContext, useState } from "react";
 
-import { Environment, EnvironmentVariable } from "../../../lib/types";
+import { EnvironmentVariable, MutableListFields } from "../../../lib/types";
 import Modal from "../../shared-new/Modal";
 import { StateContext } from "../../StateContext";
 import Environments from "./Environments";
@@ -25,7 +25,7 @@ export default function EnvironmentsModal({ closeModal }: Props): JSX.Element {
   const [
     deleteEnvironment,
     setDeleteEnvironment,
-  ] = useState<Environment | null>(null);
+  ] = useState<MutableListFields | null>(null);
 
   const [
     deleteEnvironmentVariable,
@@ -46,7 +46,7 @@ export default function EnvironmentsModal({ closeModal }: Props): JSX.Element {
     setDeleteEnvironmentVariable(null);
   };
 
-  const handleDeleteEnvironment = (environment: Environment): void => {
+  const handleDeleteEnvironment = (environment: MutableListFields): void => {
     setDeleteEnvironment(environment);
   };
 

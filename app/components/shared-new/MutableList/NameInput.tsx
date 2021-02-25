@@ -1,9 +1,10 @@
 import { Box } from "grommet";
 import { ChangeEvent, KeyboardEvent, useRef, useState } from "react";
+
 import { useOnClickOutside } from "../../../hooks/onClickOutside";
 import {
-  MutableListFunction,
   MutableListFields,
+  MutableListFunction,
   MutableListType,
 } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
@@ -12,17 +13,15 @@ import TextInput from "../AppTextInput";
 
 type Props = {
   fields?: MutableListFields;
-  onCreate: MutableListFunction;
   onCloseForm: () => void;
-  onUpdate: MutableListFunction;
+  onSave: MutableListFunction;
   type: MutableListType;
 };
 
 export default function NameInput({
   fields,
-  onCreate,
   onCloseForm,
-  onUpdate,
+  onSave,
   type,
 }: Props): JSX.Element {
   const ref = useRef<HTMLInputElement>(null);
@@ -38,11 +37,7 @@ export default function NameInput({
       return;
     }
 
-    if (fields) {
-      onUpdate(fields, onCloseForm);
-    } else {
-      onCreate(fields, onCloseForm);
-    }
+    onSave({ callback: onCloseForm, fields, name });
   };
 
   const handleBlur = (): void => {

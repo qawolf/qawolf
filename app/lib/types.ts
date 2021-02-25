@@ -186,10 +186,13 @@ export type Modal =
   | "teamSettings"
   | "triggers";
 
-export type MutableListFunction = (
-  properties: MutableListFields,
-  callback: () => void
-) => void;
+export type MutableListArgs = {
+  callback: () => void;
+  fields?: MutableListFields;
+  name: string;
+};
+
+export type MutableListFunction = (args: MutableListArgs) => void;
 
 export type MutableListFields = {
   id: string;

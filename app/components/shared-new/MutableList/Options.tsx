@@ -1,11 +1,12 @@
 import { Box, Button } from "grommet";
 import { MouseEvent, useRef } from "react";
 import styled from "styled-components";
-import { useOnClickOutside } from "../../../hooks/onClickOutside";
+
+import { MutableListType } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import { colors, edgeSize, transitionDuration } from "../../../theme/theme-new";
+import Drop from "../Drop";
 import More from "../icons/More";
-import Menu from "../Menu";
 import Option from "../Select/Option";
 
 type Props = {
@@ -14,7 +15,10 @@ type Props = {
   onClose: () => void;
   onDelete: () => void;
   onEdit: () => void;
+  type: MutableListType;
 };
+
+export const className = "item-options";
 
 const StyledButton = styled(Button)`
   svg {
@@ -37,16 +41,15 @@ export default function Options({
   onClose,
   onDelete,
   onEdit,
+  type,
 }: Props): JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
 
-  useOnClickOutside({ onClickOutside: onClose, ref });
-
   return (
-    <Box ref={ref} style={{ position: "relative" }}>
+    <Box ref={ref}>
       <StyledButton
-        a11yTitle={"environment options"}
-        className="env-options"
+        a11yTitle={`${type} options`}
+        className={className}
         onClick={onClick}
         plain
       >
@@ -55,16 +58,17 @@ export default function Options({
         </Box>
       </StyledButton>
       {isOpen && (
-        <Menu
-          direction="down"
+        <Drop
+          align={{ right: "right", top: "bottom" }}
           onClick={onClose}
-          right={`-${edgeSize.xxsmall}`}
-          top={`calc(${edgeSize.xxxsmall} + ${edgeSize.small})`}
+          onClickOutside={onClose}
+          target={ref.current}
+          style={{ marginLeft: edgeSize.xxsmall, marginTop: edgeSize.xxxsmall }}
           width={width}
         >
           <Option label={copy.rename} noIcon onClick={onEdit} />
           <Option label={copy.delete} noIcon onClick={onDelete} type="danger" />
-        </Menu>
+        </Drop>
       )}
     </Box>
   );

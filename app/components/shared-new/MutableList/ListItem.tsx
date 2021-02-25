@@ -1,9 +1,10 @@
 import { Box } from "grommet";
 import { MouseEvent, useState } from "react";
 import styled from "styled-components";
+
 import {
-  MutableListFunction,
   MutableListFields,
+  MutableListFunction,
   MutableListType,
 } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
@@ -13,9 +14,9 @@ import {
   overflowStyle,
   transitionDuration,
 } from "../../../theme/theme-new";
-import NameInput from "./NameInput";
 import Text from "../Text";
-import Options from "./Options";
+import NameInput from "./NameInput";
+import Options, { className } from "./Options";
 
 type Props = {
   editId: string;
@@ -23,10 +24,9 @@ type Props = {
   isSelected: boolean;
   onClick: () => void;
   onCloseForm: () => void;
-  onCreate: MutableListFunction;
   onDelete: () => void;
   onEdit: () => void;
-  onUpdate: MutableListFunction;
+  onSave: MutableListFunction;
   type: MutableListType;
 };
 
@@ -34,7 +34,7 @@ const StyledBox = styled(Box)`
   cursor: pointer;
   transition: background ${transitionDuration};
 
-  .item-options {
+  .${className} {
     opacity: 0;
     transition: opacity ${transitionDuration};
   }
@@ -42,7 +42,7 @@ const StyledBox = styled(Box)`
   &:hover {
     background: ${colors.gray2};
 
-    .item-options {
+    .${className} {
       opacity: 1;
     }
   }
@@ -54,10 +54,9 @@ export default function ListItem({
   isSelected,
   onClick,
   onCloseForm,
-  onCreate,
   onDelete,
   onEdit,
-  onUpdate,
+  onSave,
   type,
 }: Props): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
@@ -65,9 +64,9 @@ export default function ListItem({
   if (fields.id === editId) {
     return (
       <NameInput
+        fields={fields}
         onCloseForm={onCloseForm}
-        onCreate={onCreate}
-        onUpdate={onUpdate}
+        onSave={onSave}
         type={type}
       />
     );
@@ -106,6 +105,7 @@ export default function ListItem({
         onClose={handleOptionsClose}
         onDelete={onDelete}
         onEdit={onEdit}
+        type={type}
       />
     </StyledBox>
   );

@@ -1,20 +1,20 @@
 import { Box, BoxProps } from "grommet";
 import { useState } from "react";
+
 import {
-  MutableListFunction,
   MutableListFields,
+  MutableListFunction,
   MutableListType,
 } from "../../../lib/types";
+import CreateButton from "./CreateButton";
 import ListItem from "./ListItem";
 import NameInput from "./NameInput";
-import CreateButton from "./CreateButton";
 
 type Props = {
   fieldsList?: MutableListFields[] | null;
   onClick: (id: string) => void;
-  onCreate: MutableListFunction;
   onDelete: (fields: MutableListFields) => void;
-  onUpdate: MutableListFunction;
+  onSave: MutableListFunction;
   overflow?: BoxProps["overflow"];
   pad?: BoxProps["pad"];
   selectedId: string;
@@ -26,9 +26,8 @@ export default function MutableList({
   overflow,
   pad,
   onClick,
-  onCreate,
   onDelete,
-  onUpdate,
+  onSave,
   selectedId,
   type,
 }: Props): JSX.Element {
@@ -62,10 +61,9 @@ export default function MutableList({
         key={f.id}
         onClick={() => onClick(f.id)}
         onCloseForm={handleCloseForm}
-        onCreate={onCreate}
         onDelete={() => onDelete(f)}
         onEdit={() => handleEdit(f.id)}
-        onUpdate={onUpdate}
+        onSave={onSave}
         type={type}
       />
     );
@@ -75,12 +73,7 @@ export default function MutableList({
     <Box height="full" overflow={overflow} pad={pad}>
       {listItemsHtml}
       {isCreate && (
-        <NameInput
-          onCloseForm={handleCloseForm}
-          onCreate={onCreate}
-          onUpdate={onUpdate}
-          type={type}
-        />
+        <NameInput onCloseForm={handleCloseForm} onSave={onSave} type={type} />
       )}
       <CreateButton onClick={handleCreate} type={type} />
     </Box>
