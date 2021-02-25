@@ -251,11 +251,7 @@ export const useRunner = (
 
 export const useSuite = (
   variables: SuiteVariables,
-  {
-    includeRuns,
-    pollInterval,
-    teamId,
-  }: { includeRuns?: boolean; pollInterval?: number; teamId: string }
+  { includeRuns, teamId }: { includeRuns?: boolean; teamId: string }
 ): QueryResult<SuiteData, SuiteVariables> => {
   const { replace } = useRouter();
 
@@ -276,7 +272,6 @@ export const useSuite = (
         replace(routes.suites);
       }
     },
-    pollInterval,
     skip: !variables.id,
     variables,
   });
