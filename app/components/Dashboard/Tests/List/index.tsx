@@ -32,7 +32,13 @@ export default function List({
       ? null
       : (query.trigger_id as string) || null;
 
-  const { data, loading } = useTestSummaries({ test_ids, trigger_id });
+  const { data, loading } = useTestSummaries(
+    {
+      test_ids,
+      trigger_id,
+    },
+    { pollInterval: 10 * 1000 }
+  );
 
   if (!tests) return <Spinner />;
 

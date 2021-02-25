@@ -17,7 +17,7 @@ export default function Tests(): JSX.Element {
   const [search, setSearch] = useState("");
   const [checkedTestIds, setCheckedTestIds] = useState<string[]>([]);
 
-  const { data, startPolling, stopPolling } = useTests({ team_id: teamId });
+  const { data } = useTests({ team_id: teamId });
 
   const { data: triggersData } = useTriggers({ team_id: teamId });
 
@@ -31,14 +31,6 @@ export default function Tests(): JSX.Element {
     testTriggers: testTriggersData?.testTriggers,
     trigger_id,
   });
-
-  useEffect(() => {
-    startPolling(10 * 1000);
-
-    return () => {
-      stopPolling();
-    };
-  }, [startPolling, stopPolling, teamId]);
 
   // clear checked tests when filters change
   useEffect(() => {

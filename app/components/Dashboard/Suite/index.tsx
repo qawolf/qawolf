@@ -17,20 +17,11 @@ export default function Suite({ suiteId }: Props): JSX.Element {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<RunStatus | null>(null);
 
-  const { data, startPolling, stopPolling } = useSuite(
+  const { data } = useSuite(
     { id: suiteId },
-    { includeRuns: true, teamId }
+    { includeRuns: true, pollInterval: 3 * 1000, teamId }
   );
   const suite = data?.suite;
-
-  // poll for updates if some runs in progress
-  useEffect(() => {
-    if (suite?.runs.some((r) => r.status === "created")) {
-      startPolling(3 * 1000);
-    }
-
-    return () => stopPolling();
-  }, [startPolling, stopPolling, suite]);
 
   // clear checked test ids if suite changes
   useEffect(() => {
