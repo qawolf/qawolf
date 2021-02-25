@@ -1,0 +1,61 @@
+import Header from "../../components/Docs/Header";
+import Layout from "../../components/Docs/Layout";
+import SubHeader from "../../components/Docs/SubHeader";
+
+<Layout>
+
+<Header>getInbox([options])</Header>
+
+Use `getInbox` to get an email address and receive an email message in your test.
+
+```js
+// get the default inbox for your team
+// ex. my-team@qawolf.email
+const { email, waitForMessage } = getInbox();
+
+// get a unique inbox for your team
+// ex. my-team+a25sa5q@qawolf.email
+const { email, waitForMessage } = getInbox({ new: true });
+
+// use the email to fill out a form
+await page.fill('[name="email"]', email);
+await page.click('[aria-label="Sign up with email"]');
+
+// wait for a message up to 1 minute
+const message = await waitForMessage();
+
+// wait for a message up to 3 minutes
+const message = await waitForMessage({ timeout: 3 * 60000 });
+```
+
+<SubHeader>Arguments</SubHeader>
+
+**[options]** (Object):
+
+- [new] (boolean): Create a new and unique email. Default: `false`. When `false` it returns the default inbox for your team.
+
+**Returns:** `{ email, waitForMessage }`
+
+- [email] (string): An email address to send your email to.
+- [waitForMessage] (Function): Wait for a message sent to the email address.
+
+<SubHeader>waitForMessage([options]) Arguments</SubHeader>
+
+Get the next message sent to the email address returned from `getInbox`.
+
+If a message is not received before the timeout, an error is thrown.
+
+**[options]** (Object):
+
+- [after] (Date): Find a message sent after this date. Default: When `getInbox` was called.
+- [timeout] (number): Time in milliseconds to wait for a message. Default: 60000.
+
+**Returns:** `Promise<Message>`
+
+- from (string): The sender. Ex. "Tug the QA Wolf <tug@qawolf.com>"
+- html (string): Html body of the email. Ex. "<div\>I'm the email body</div\>"
+- subject (string): Subject of the email. Ex. "🐺 Hi there!"
+- text (string): Text body of the email. Ex. "I'm the email body".
+- to (string): The recipient of the email. Ex. "qawolf@spirit.qawolf.email"
+
+</Layout>

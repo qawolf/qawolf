@@ -5,6 +5,7 @@ import { IoTrailSign } from "react-icons/io5";
 import {
   RiCodeSSlashFill,
   RiNotification2Fill,
+  RiPlugFill,
   RiRocketFill,
 } from "react-icons/ri";
 
@@ -102,6 +103,29 @@ export const docs: Section[] = [
       },
     ],
     name: "Guides",
+  },
+  {
+    IconComponent: RiPlugFill,
+    color: "#6E9DFA",
+    docs: [
+      // {
+      //   href: `${routes.docs}/globals`,
+      //   name: "Globals",
+      // },
+      {
+        href: `${routes.docs}/assert-text`,
+        name: "assertText",
+      },
+      {
+        href: `${routes.docs}/get-inbox`,
+        name: "getInbox",
+      },
+      // {
+      //   href: `${routes.docs}/launch`,
+      //   name: "launch",
+      // },
+    ],
+    name: "API",
   },
 ];
 
