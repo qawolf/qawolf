@@ -97,8 +97,16 @@ export const createSlackIntegrationUrlMutation = gql`
 `;
 
 export const createSuiteMutation = gql`
-  mutation createSuite($environment_id: ID, $test_ids: [ID!]!) {
-    createSuite(environment_id: $environment_id, test_ids: $test_ids)
+  mutation createSuite(
+    $environment_id: ID
+    $environment_variables: String
+    $test_ids: [ID!]!
+  ) {
+    createSuite(
+      environment_id: $environment_id
+      environment_variables: $environment_variables
+      test_ids: $test_ids
+    )
   }
 `;
 

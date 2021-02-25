@@ -2,7 +2,7 @@ import { minutesFromNow } from "../../../shared/utils";
 import { findRunsForSuite } from "../../models/run";
 import { findSuite, updateSuite } from "../../models/suite";
 import { findTeam } from "../../models/team";
-import { findTrigger, findTriggerOrNull } from "../../models/trigger";
+import { findTriggerOrNull } from "../../models/trigger";
 import { ModelOptions, SuiteRun, Team } from "../../types";
 import { sendEmailAlert } from "./email";
 import { sendSlackAlert } from "./slack";
