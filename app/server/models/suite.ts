@@ -1,6 +1,13 @@
 import { minutesFromNow } from "../../shared/utils";
 import { ClientError } from "../errors";
-import { FormattedVariables, ModelOptions, Run, Suite, Test } from "../types";
+import {
+  FormattedVariables,
+  ModelOptions,
+  Run,
+  Suite,
+  SuiteResult,
+  Test,
+} from "../types";
 import { cuid } from "../utils";
 import { encrypt } from "./encrypt";
 import { createRunsForTests } from "./run";
@@ -41,9 +48,9 @@ type CreatedSuite = {
   suite: Suite;
 };
 
-type FindSuitesForTrigger = {
+type FindSuitesForTeam = {
   limit: number;
-  trigger_id: string;
+  team_id: string;
 };
 
 type UpdateSuite = {
@@ -181,22 +188,23 @@ export const findSuite = async (
   return suite;
 };
 
-export const findSuitesForTrigger = async (
-  { limit, trigger_id }: FindSuitesForTrigger,
+export const findSuitesForTeam = async (
+  { limit, team_id }: FindSuitesForTeam,
   { db, logger }: ModelOptions
-): Promise<Suite[]> => {
-  const log = logger.prefix("findSuitesForTrigger");
+): Promise<SuiteResult[]> => {
+  const log = logger.prefix("findSuitesForTeam");
+  log.debug("team", team_id, "limit", limit);
 
-  log.debug("trigger", trigger_id);
-
-  const suites = await db
-    .select("*")
-    .from("suites")
-    .where({ trigger_id })
+  const suites = await db("suites")
+    .select("suites.*" as "*")
+    .select("triggers.color AS trigger_color")
+    .select("triggers.name AS trigger_name")
+    .leftJoin("triggers", "suites.trigger_id", "triggers.id")
+    .where({ "suites.team_id": team_id })
     .orderBy("created_at", "desc")
     .limit(limit);
 
-  log.debug(`found ${suites.length} suites for trigger ${trigger_id}`);
+  log.debug(`found ${suites.length} suites`);
 
   return suites;
 };

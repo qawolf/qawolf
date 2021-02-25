@@ -3,28 +3,27 @@ import { decrypt } from "../models/encrypt";
 import {
   createSuiteForTests,
   findSuite,
-  findSuitesForTrigger,
+  findSuitesForTeam,
 } from "../models/suite";
 import { findEnabledTests } from "../models/test";
-import { findTrigger } from "../models/trigger";
+import { findTrigger, findTriggerOrNull } from "../models/trigger";
 import {
   Context,
   CreateSuiteMutation,
   IdQuery,
-  Suite,
   SuiteResult,
+  TeamIdQuery,
   Trigger,
-  TriggerIdQuery,
 } from "../types";
 import {
   ensureEnvironmentAccess,
   ensureSuiteAccess,
+  ensureTeamAccess,
   ensureTestAccess,
-  ensureTriggerAccess,
   ensureUser,
 } from "./utils";
 
-const SUITES_LIMIT = 50;
+const SUITES_LIMIT = 25;
 
 /**
  * @returns The created suite ID
@@ -97,16 +96,9 @@ export const suiteResolver = async (
   await ensureSuiteAccess({ suite_id: id, teams }, { db, logger });
 
   const suite = await findSuite(id, { db, logger });
-  let trigger: Trigger | null = null;
-
-  if (suite.trigger_id) {
-    // TODO: do not throw error in find trigger if trigger deleted
-    try {
-      trigger = await findTrigger(suite.trigger_id, { db, logger });
-    } catch (e) {
-      trigger = null;
-    }
-  }
+  const trigger = suite.trigger_id
+    ? await findTriggerOrNull(suite.trigger_id, { db, logger })
+    : null;
 
   return {
     ...suite,
@@ -119,24 +111,17 @@ export const suiteResolver = async (
 };
 
 /**
- * @returns All suites for a single trigger, up to SUITES_LIMIT, most recent first.
+ * @returns All suites for a single team, up to SUITES_LIMIT, most recent first.
  */
 export const suitesResolver = async (
-  { trigger_id }: TriggerIdQuery,
   _: Record<string, unknown>,
+  { team_id }: TeamIdQuery,
   { db, logger, teams }: Context
-): Promise<Suite[]> => {
+): Promise<SuiteResult[]> => {
   const log = logger.prefix("suitesResolver");
 
-  log.debug("trigger", trigger_id);
+  log.debug("team", team_id);
+  ensureTeamAccess({ team_id, teams, logger });
 
-  await ensureTriggerAccess({ teams, trigger_id }, { db, logger });
-
-  return findSuitesForTrigger(
-    {
-      limit: SUITES_LIMIT,
-      trigger_id,
-    },
-    { db, logger }
-  );
+  return findSuitesForTeam({ limit: SUITES_LIMIT, team_id }, { db, logger });
 };

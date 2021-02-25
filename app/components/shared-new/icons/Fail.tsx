@@ -1,10 +1,11 @@
-export default function Fail(): JSX.Element {
+type Props = { width?: string };
+
+export default function Fail({ width }: Props): JSX.Element {
   return (
     <svg
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
       fill="none"
+      viewBox="0 0 16 16"
+      width={width || "16"}
       xmlns="http://www.w3.org/2000/svg"
     >
       <circle cx="8" cy="8" r="7" fill="#DB4B4B" />

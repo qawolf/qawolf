@@ -6,6 +6,7 @@ import {
   findPendingRun,
   findRun,
   findRunsForSuite,
+  findStatusCountsForSuite,
   findSuiteRunForRunner,
   findTestHistory,
   updateRun,
@@ -285,6 +286,26 @@ describe("run model", () => {
           test_name: "testName2",
         },
       ]);
+    });
+  });
+
+  describe("findStatusCountsForSuite", () => {
+    it("returns status counts for a suite", async () => {
+      const counts = await findStatusCountsForSuite("suiteId", options);
+
+      expect(counts).toEqual({
+        created: 1,
+        fail: 0,
+        pass: 0,
+      });
+
+      const counts2 = await findStatusCountsForSuite("suite2Id", options);
+
+      expect(counts2).toEqual({
+        created: 1,
+        fail: 0,
+        pass: 1,
+      });
     });
   });
 

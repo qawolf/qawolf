@@ -224,13 +224,17 @@ describe("suitesResolver", () => {
   });
 
   it("returns suites for a team", async () => {
-    const findSuitesForTriggerSpy = jest
-      .spyOn(suiteModel, "findSuitesForTrigger")
-      .mockResolvedValue(suites);
+    const findSuitesforTeamSpy = jest
+      .spyOn(suiteModel, "findSuitesForTeam")
+      .mockResolvedValue(
+        suites.map((s) => {
+          return { ...s, trigger_color: "pink", trigger_name: "trigger1" };
+        })
+      );
 
     const formattedSuites = await suitesResolver(
-      { trigger_id: "triggerId" },
       {},
+      { team_id: "teamId" },
       context
     );
 
@@ -239,21 +243,23 @@ describe("suitesResolver", () => {
         created_at: timestamp,
         id: "suiteId",
         repeat_minutes: 60,
+        trigger_color: "pink",
         team_id: "teamId",
-        trigger_name: "schedule",
+        trigger_name: "trigger1",
       },
       {
         created_at: timestamp,
         id: "suite2Id",
         repeat_minutes: 60,
+        trigger_color: "pink",
         team_id: "teamId",
-        trigger_name: "schedule",
+        trigger_name: "trigger1",
       },
     ]);
 
-    expect(findSuitesForTriggerSpy.mock.calls[0][0]).toEqual({
-      limit: 50,
-      trigger_id: "triggerId",
+    expect(findSuitesforTeamSpy.mock.calls[0][0]).toEqual({
+      limit: 25,
+      team_id: "teamId",
     });
   });
 });

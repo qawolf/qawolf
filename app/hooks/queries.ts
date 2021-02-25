@@ -10,6 +10,7 @@ import {
   runnerQuery,
   shortSuiteQuery,
   suiteQuery,
+  suitesQuery,
   teamQuery,
   testHistoryQuery,
   testQuery,
@@ -31,6 +32,7 @@ import {
   Runner,
   ShortTest,
   Suite,
+  SuiteSummary,
   Team,
   Test,
   TestHistoryRun,
@@ -87,6 +89,14 @@ type SuiteData = {
 
 type SuiteVariables = {
   id: string | null;
+};
+
+type SuitesData = {
+  suites: SuiteSummary[];
+};
+
+type SuitesVariables = {
+  team_id: string | null;
 };
 
 type TeamData = {
@@ -249,7 +259,6 @@ export const useSuite = (
 
   return useQuery<SuiteData, SuiteVariables>(query, {
     fetchPolicy,
-    nextFetchPolicy,
     onCompleted: (response) => {
       const { suite } = response || {};
       if (!suite) return;
@@ -264,6 +273,17 @@ export const useSuite = (
       }
     },
     skip: !variables.id,
+    variables,
+  });
+};
+
+export const useSuites = (
+  variables: SuitesVariables
+): QueryResult<SuitesData, SuitesVariables> => {
+  return useQuery<SuitesData, SuitesVariables>(suitesQuery, {
+    fetchPolicy,
+    onError,
+    skip: !variables.team_id,
     variables,
   });
 };

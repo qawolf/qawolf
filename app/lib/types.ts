@@ -71,6 +71,12 @@ export type ShortSuite = {
   trigger_name: string | null;
 };
 
+export type StatusCounts = {
+  created: number;
+  fail: number;
+  pass: number;
+};
+
 export type Suite = ShortSuite & {
   runs: SuiteRun[];
 };
@@ -85,6 +91,10 @@ export type SuiteRun = {
   status: RunStatus;
   test_id: string;
   test_name: string;
+};
+
+export type SuiteSummary = ShortSuite & {
+  status_counts: StatusCounts;
 };
 
 export type ShortTeam = {

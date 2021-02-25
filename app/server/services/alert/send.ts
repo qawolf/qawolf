@@ -2,7 +2,7 @@ import { minutesFromNow } from "../../../shared/utils";
 import { findRunsForSuite } from "../../models/run";
 import { findSuite, updateSuite } from "../../models/suite";
 import { findTeam } from "../../models/team";
-import { findTrigger } from "../../models/trigger";
+import { findTrigger, findTriggerOrNull } from "../../models/trigger";
 import { ModelOptions, SuiteRun, Team } from "../../types";
 import { sendEmailAlert } from "./email";
 import { sendSlackAlert } from "./slack";
@@ -47,7 +47,7 @@ export const sendAlert = async (
     return;
   }
 
-  const trigger = await findTrigger(suite.trigger_id, options);
+  const trigger = await findTriggerOrNull(suite.trigger_id, options);
 
   if (team.is_email_alert_enabled) {
     await sendEmailAlert({ runs, suite, trigger }, options);

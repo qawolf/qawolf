@@ -241,6 +241,18 @@ type SendLoginCode {
   email: String!
 }
 
+"Count of runs with each status for a suite"
+type StatusCounts {
+  "The number of runs that are in progress"
+  created: Int!
+
+  "The number of runs that failed"
+  fail: Int!
+
+  "The number of runs that passed"
+  pass: Int!
+}
+
 "All the test runs for one run of a test trigger"
 type Suite {
   "Date and time at which the suite was created (trigger test run began)"
@@ -257,6 +269,9 @@ type Suite {
 
   "Associated test runs"
   runs: [SuiteRun!]!
+
+  "Count of runs with each status"
+  status_counts: StatusCounts!
 
   "ID of the team that owns the associated test trigger"
   team_id: ID!
@@ -1149,6 +1164,13 @@ type Query {
   Requires that one of the teams you are on owns the test suite.
   """
   suite("The suite ID" id: ID!): Suite!
+
+  """
+  Returns the 25 most recent suite summaries.
+
+  Requires that you are on the team.
+  """
+  suites("The team ID" team_id: ID!): [Suite!]!
 
   """
   Returns a single team by ID.

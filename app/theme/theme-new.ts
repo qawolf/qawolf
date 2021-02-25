@@ -14,6 +14,11 @@ export const breakpoints = {
   medium: { value: 1264 },
 };
 
+export const border = {
+  color: "gray3",
+  size: borderSize.xsmall,
+};
+
 export const boxShadow = "0px 4px 16px rgba(21, 27, 38, 0.16)";
 
 export const colors = {

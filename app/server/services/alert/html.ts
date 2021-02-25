@@ -10,7 +10,7 @@ type BuildLoginCodeHtml = {
 type BuildSuiteHtml = {
   runs: SuiteRun[];
   suite_id: string;
-  trigger: Trigger;
+  trigger: Trigger | null;
 };
 
 const buildFailingRunHtml = ({ gif_url, id, test_name }: SuiteRun): string => {
@@ -84,9 +84,10 @@ export const buildSuiteHtml = ({
   trigger,
 }: BuildSuiteHtml): string => {
   const failingRuns = runs.filter((r) => r.status === "fail");
+  const triggerName = trigger?.name || "manually triggered";
 
   const suiteHref = new URL(`/suites/${suite_id}`, environment.APP_URL).href;
-  const anchor = `<a href='${suiteHref}'>${trigger.name} tests</a>`;
+  const anchor = `<a href='${suiteHref}'>${triggerName} tests</a>`;
 
   if (!failingRuns.length) {
     return `<p>All good! Your ${anchor} all passed.`;

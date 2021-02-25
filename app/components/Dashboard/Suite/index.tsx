@@ -25,7 +25,7 @@ export default function Suite({ suiteId }: Props): JSX.Element {
   // poll for updates if some runs in progress
   useEffect(() => {
     if (suite?.runs.some((r) => r.status === "created")) {
-      startPolling(10 * 1000);
+      startPolling(3 * 1000);
     }
 
     return () => stopPolling();

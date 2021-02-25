@@ -3,6 +3,7 @@ import {
   RunStatus,
   ShortTest,
   SuiteRun,
+  SuiteSummary,
   TestSummaryRun,
   TestTriggers,
 } from "../../lib/types";
@@ -99,4 +100,13 @@ export const getRunCountForStatus = (
   status: RunStatus
 ): number => {
   return runs.filter((r) => r.status === status).length;
+};
+
+export const getStatusForSuite = ({
+  status_counts,
+}: SuiteSummary): RunStatus => {
+  if (status_counts.created) return "created";
+  if (status_counts.fail) return "fail";
+
+  return "pass";
 };

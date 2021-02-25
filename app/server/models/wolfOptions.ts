@@ -96,6 +96,7 @@ export const WOLF_NAMES = [
   "Goose",
   "Granite",
   "Harper",
+  "Harriet",
   "Harry",
   "Hawk",
   "Hazel",

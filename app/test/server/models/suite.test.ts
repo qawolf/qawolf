@@ -3,7 +3,7 @@ import {
   createSuite,
   createSuiteForTests,
   findSuite,
-  findSuitesForTrigger,
+  findSuitesForTeam,
   updateSuite,
 } from "../../../server/models/suite";
 import { minutesFromNow } from "../../../shared/utils";
@@ -204,57 +204,41 @@ describe("suite model", () => {
     });
   });
 
-  describe("findSuitesForTrigger", () => {
+  describe("findSuitesForTeam", () => {
     beforeAll(async () => {
       await db("suites").insert([
-        buildSuite({}),
         buildSuite({
-          created_at: new Date("2000").toISOString(),
-          creator_id: "userId",
-          i: 2,
+          created_at: new Date("2020").toISOString(),
         }),
-        buildSuite({ i: 3, team_id: "team2Id", trigger_id: "trigger2Id" }),
+        buildSuite({ i: 2, team_id: "team2Id" }),
+        buildSuite({ i: 3, trigger_id: "triggerId" }),
       ]);
+
+      return db("suites").where({ id: "suiteId" }).update({ trigger_id: null });
     });
 
     afterAll(() => db("suites").del());
 
-    it("returns suites for a trigger", async () => {
-      const suites = await findSuitesForTrigger(
-        {
-          limit: 20,
-          trigger_id: "triggerId",
-        },
+    it("finds suites for a team", async () => {
+      const suites = await findSuitesForTeam(
+        { limit: 5, team_id: "teamId" },
         options
       );
 
       expect(suites).toMatchObject([
-        {
-          id: "suiteId",
-          team_id: "teamId",
-        },
-        {
-          id: "suite2Id",
-          team_id: "teamId",
-        },
+        { id: "suite3Id", trigger_color: "#4545E5", trigger_name: "trigger1" },
+        { id: "suiteId", trigger_color: null, trigger_name: null },
       ]);
     });
 
     it("respects the specified limit", async () => {
-      const suites = await findSuitesForTrigger(
-        {
-          limit: 1,
-          trigger_id: "triggerId",
-        },
+      const suites = await findSuitesForTeam(
+        { limit: 1, team_id: "teamId" },
         options
       );
 
       expect(suites).toMatchObject([
-        {
-          id: "suiteId",
-          team_id: "teamId",
-          trigger_id: "triggerId",
-        },
+        { id: "suite3Id", trigger_color: "#4545E5", trigger_name: "trigger1" },
       ]);
     });
   });
