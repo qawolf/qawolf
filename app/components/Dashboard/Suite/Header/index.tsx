@@ -67,7 +67,7 @@ export default function Header({
         <Button
           IconComponent={Play}
           isDisabled={loading}
-          label={copy.runTests()}
+          label={copy.runTests(test_ids.length)}
           onClick={handleClick}
           type="secondary"
         />
