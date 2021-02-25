@@ -209,6 +209,7 @@ describe("suite model", () => {
       await db("suites").insert([
         buildSuite({
           created_at: new Date("2020").toISOString(),
+          environment_id: "environmentId",
         }),
         buildSuite({ i: 2, team_id: "team2Id" }),
         buildSuite({ i: 3, trigger_id: "triggerId" }),
@@ -226,8 +227,18 @@ describe("suite model", () => {
       );
 
       expect(suites).toMatchObject([
-        { id: "suite3Id", trigger_color: "#4545E5", trigger_name: "trigger1" },
-        { id: "suiteId", trigger_color: null, trigger_name: null },
+        {
+          id: "suite3Id",
+          environment_name: null,
+          trigger_color: "#4545E5",
+          trigger_name: "trigger1",
+        },
+        {
+          id: "suiteId",
+          environment_name: "Staging",
+          trigger_color: null,
+          trigger_name: null,
+        },
       ]);
     });
 
@@ -238,7 +249,12 @@ describe("suite model", () => {
       );
 
       expect(suites).toMatchObject([
-        { id: "suite3Id", trigger_color: "#4545E5", trigger_name: "trigger1" },
+        {
+          id: "suite3Id",
+          environment_name: null,
+          trigger_color: "#4545E5",
+          trigger_name: "trigger1",
+        },
       ]);
     });
   });

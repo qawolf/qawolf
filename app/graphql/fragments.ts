@@ -80,6 +80,7 @@ export const suiteFragment = gql`
   fragment SuiteFragment on Suite {
     created_at
     environment_id
+    environment_name
     environment_variables
     id
     runs {

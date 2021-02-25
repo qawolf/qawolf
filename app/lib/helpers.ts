@@ -1,4 +1,5 @@
-import { Log } from "./types";
+import { copy } from "../theme/copy";
+import { Log, ShortSuite } from "./types";
 
 const monthNames = [
   "Jan",

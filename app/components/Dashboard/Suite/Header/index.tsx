@@ -9,6 +9,7 @@ import ColorDot from "../../../shared-new/ColorDot";
 import Play from "../../../shared-new/icons/Play";
 import Search from "../../../shared-new/Search";
 import Text from "../../../shared-new/Text";
+import { formatSuiteName } from "../../helpers";
 import SelectStatus from "./SelectStatus";
 
 type Props = {
@@ -61,7 +62,7 @@ export default function Header({
             margin={{ right: "xxsmall" }}
             size="componentBold"
           >
-            {suite.trigger_name || copy.manuallyTriggered}
+            {formatSuiteName(suite)}
           </Text>
           <Text color="gray7" size="component">
             {timestampToText(suite.created_at)}

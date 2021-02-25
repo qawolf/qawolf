@@ -220,7 +220,7 @@ export const copy = {
   selected: (count: number): string => `${count} selected`,
   sendInvites: "Send invites",
   setEnvVariables: "Set environment variables",
-  settings: "Settings",
+  settings: "Team settings",
   share: "Share run",
   shareFail: "Error copying",
   shareSuccess: "Copied link!",

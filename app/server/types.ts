@@ -516,6 +516,7 @@ export type RunnerResult = {
 };
 
 export type SuiteResult = Suite & {
+  environment_name: string | null;
   trigger_color: string | null;
   trigger_name: string | null;
 };

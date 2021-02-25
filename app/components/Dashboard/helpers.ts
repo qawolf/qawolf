@@ -1,6 +1,7 @@
 import { timeToText } from "../../lib/helpers";
 import {
   RunStatus,
+  ShortSuite,
   ShortTest,
   SuiteRun,
   SuiteSummary,
@@ -77,6 +78,13 @@ export const filterTests = ({
   }
 
   return filteredTests;
+};
+
+export const formatSuiteName = (suite: ShortSuite): string => {
+  if (suite.trigger_name) return suite.trigger_name;
+  if (!suite.environment_name) return copy.manuallyTriggered;
+
+  return `${copy.manuallyTriggered}: ${suite.environment_name}`;
 };
 
 export const getLabelForRun = (run: TestSummaryRun): string => {
