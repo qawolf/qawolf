@@ -4,12 +4,11 @@ import Link from "next/link";
 import { timestampToText } from "../../../../lib/helpers";
 import { routes } from "../../../../lib/routes";
 import { SuiteSummary } from "../../../../lib/types";
-import { copy } from "../../../../theme/copy";
 import { border, edgeSize } from "../../../../theme/theme-new";
 import ColorDot from "../../../shared-new/ColorDot";
 import StatusIcon from "../../../shared-new/StatusIcon";
 import Text from "../../../shared-new/Text";
-import { getStatusForSuite } from "../../helpers";
+import { formatSuiteName, getStatusForSuite } from "../../helpers";
 import StatusCounts from "./StatusCounts";
 
 type Props = { suite: SuiteSummary };
@@ -17,6 +16,8 @@ type Props = { suite: SuiteSummary };
 export default function SuiteCard({ suite }: Props): JSX.Element {
   const status = getStatusForSuite(suite);
   const timestamp = timestampToText(suite.created_at);
+
+  const label = formatSuiteName(suite);
 
   return (
     <Link href={`${routes.suites}/${suite.id}`}>
@@ -39,7 +40,7 @@ export default function SuiteCard({ suite }: Props): JSX.Element {
                   />
                 )}
                 <Text color="gray9" size="componentBold">
-                  {suite.trigger_name || copy.manuallyTriggered}
+                  {label}
                 </Text>
               </Box>
               <Text color="gray7" margin={{ top: "xxxsmall" }} size="component">

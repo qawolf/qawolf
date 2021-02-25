@@ -63,6 +63,7 @@ export type Runner = {
 export type ShortSuite = {
   created_at: string;
   environment_id: string | null;
+  environment_name: string | null;
   environment_variables: string | null;
   id: string;
   team_id: string;

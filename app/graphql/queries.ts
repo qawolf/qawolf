@@ -71,6 +71,7 @@ export const shortSuiteQuery = gql`
     suite(id: $id) {
       created_at
       environment_id
+      environment_name
       environment_variables
       id
       team_id
@@ -94,6 +95,7 @@ export const suitesQuery = gql`
     suites(team_id: $team_id) {
       created_at
       environment_id
+      environment_name
       id
       status_counts {
         created

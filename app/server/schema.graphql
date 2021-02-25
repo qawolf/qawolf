@@ -261,6 +261,9 @@ type Suite {
   "Associated environment ID"
   environment_id: ID
 
+  "Associated environment name"
+  environment_name: String
+
   "A JSON object with key:value env variables, with decrypted values."
   environment_variables: String
 

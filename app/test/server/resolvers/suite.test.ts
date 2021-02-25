@@ -187,13 +187,14 @@ describe("suiteResolver", () => {
   it("returns a suite", async () => {
     const findSuiteSpy = jest
       .spyOn(suiteModel, "findSuite")
-      .mockResolvedValue(suites[0]);
+      .mockResolvedValue({ ...suites[0], environment_id: "environmentId" });
 
     const suite = await suiteResolver({}, { id: "suiteId" }, context);
 
     expect(suite).toEqual({
       ...suites[0],
-      environment_id: null,
+      environment_id: "environmentId",
+      environment_name: "Staging",
       environment_variables: JSON.stringify({ hello: "world" }),
       trigger_color: "#4545E5",
       trigger_name: "trigger1",
@@ -212,6 +213,7 @@ describe("suiteResolver", () => {
     expect(suite).toEqual({
       ...suites[0],
       environment_id: null,
+      environment_name: null,
       environment_variables: JSON.stringify({ hello: "world" }),
       trigger_color: null,
       trigger_id: null,
@@ -231,6 +233,7 @@ describe("suiteResolver", () => {
     expect(suite).toEqual({
       ...suites[0],
       environment_id: null,
+      environment_name: null,
       environment_variables: JSON.stringify({ hello: "world" }),
       trigger_color: null,
       trigger_id: null,
@@ -253,7 +256,12 @@ describe("suitesResolver", () => {
       .spyOn(suiteModel, "findSuitesForTeam")
       .mockResolvedValue(
         suites.map((s) => {
-          return { ...s, trigger_color: "pink", trigger_name: "trigger1" };
+          return {
+            ...s,
+            environment_name: "staging",
+            trigger_color: "pink",
+            trigger_name: "trigger1",
+          };
         })
       );
 
@@ -266,6 +274,7 @@ describe("suitesResolver", () => {
     expect(formattedSuites).toMatchObject([
       {
         created_at: timestamp,
+        environment_name: "staging",
         id: "suiteId",
         repeat_minutes: 60,
         trigger_color: "pink",
@@ -274,6 +283,7 @@ describe("suitesResolver", () => {
       },
       {
         created_at: timestamp,
+        environment_name: "staging",
         id: "suite2Id",
         repeat_minutes: 60,
         trigger_color: "pink",
