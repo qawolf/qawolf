@@ -22,35 +22,43 @@ type WaitForMessage = {
   timeout?: number;
 };
 
+type WaitForMessageContext = {
+  apiKey: string;
+  calledAt: Date;
+  to: string;
+};
+
 export const getInbox = (
   args: GetInbox = {},
   context: GetInboxContext
 ): GetInboxResult => {
-  const apiKey = context.apiKey;
-
   let email = context.inbox;
   if (args.new) {
     const [inbox, domain] = email.split("@");
     email = `${inbox}+${slug()}@${domain}`;
   }
 
-  const calledAt = new Date();
-
-  const waitForMessage = async ({
-    after,
-    timeout,
-  }: WaitForMessage = {}): Promise<Email> => {
+  async function waitFn(
+    this: WaitForMessageContext,
+    { after, timeout }: WaitForMessage = {}
+  ): Promise<Email> {
     if (after && !(after instanceof Date)) {
       throw new Error("after must be a Date");
     }
 
     return pollForEmail({
-      apiKey,
-      createdAfter: (after || calledAt).toISOString(),
+      apiKey: this.apiKey,
+      createdAfter: (after || this.calledAt).toISOString(),
       timeoutMs: timeout || 60000,
-      to: email,
+      to: this.to,
     });
-  };
+  }
+
+  const waitForMessage = waitFn.bind({
+    apiKey: context.apiKey,
+    calledAt: new Date(),
+    to: email,
+  });
 
   return { email, waitForMessage };
 };
