@@ -569,10 +569,19 @@ export const useDeleteGroup = (): MutationTuple<
   DeleteGroupData,
   DeleteGroupVariables
 > => {
+  const { query, replace } = useRouter();
+
   return useMutation<DeleteGroupData, DeleteGroupVariables>(
     deleteGroupMutation,
     {
       awaitRefetchQueries: true,
+      // redirect to tests if deleted current group
+      onCompleted: (data) => {
+        const { deleteGroup } = data || {};
+        if (!deleteGroup) return;
+
+        if (query.group_id === deleteGroup.id) replace(routes.tests);
+      },
       onError,
       refetchQueries: ["groups"],
     }
