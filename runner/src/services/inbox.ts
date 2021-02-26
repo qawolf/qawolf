@@ -1,7 +1,10 @@
 import { slug } from "cuid";
+import Debug from "debug";
 
 import { Email } from "../types";
 import { pollForEmail } from "./api";
+
+const debug = Debug("qawolf:inbox");
 
 export type GetInbox = {
   new?: boolean;
@@ -32,6 +35,7 @@ export const getInbox = (
   args: GetInbox = {},
   context: GetInboxContext
 ): GetInboxResult => {
+  debug(`getInbox ${JSON.stringify(args)} ${JSON.stringify(context)}`);
   let email = context.inbox;
   if (args.new) {
     const [inbox, domain] = email.split("@");
@@ -42,6 +46,8 @@ export const getInbox = (
     this: WaitForMessageContext,
     { after, timeout }: WaitForMessage = {}
   ): Promise<Email> {
+    debug(`waitFn ${JSON.stringify(this)}`);
+
     if (after && !(after instanceof Date)) {
       throw new Error("after must be a Date");
     }
@@ -54,11 +60,15 @@ export const getInbox = (
     });
   }
 
-  const waitForMessage = waitFn.bind({
+  const waitFnContext = {
     apiKey: context.apiKey,
     calledAt: new Date(),
     to: email,
-  });
+  };
+
+  debug(`waitFn bind ${JSON.stringify(waitFnContext)}`);
+
+  const waitForMessage = waitFn.bind(waitFnContext);
 
   return { email, waitForMessage };
 };

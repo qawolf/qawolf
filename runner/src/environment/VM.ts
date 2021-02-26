@@ -1,5 +1,6 @@
 import assert from "assert";
 import axios from "axios";
+import Debug from "debug";
 import faker from "faker";
 import { devices } from "playwright";
 import { assertText } from "qawolf";
@@ -9,6 +10,8 @@ import { GetInbox, getInbox } from "../services/inbox";
 import { Logger } from "../services/Logger";
 import { launch, LaunchOptions, LaunchResult } from "./launch";
 import { TransformCode, transformCode } from "./transformCode";
+
+const debug = Debug("qawolf:VM");
 
 type VMOptions = {
   display?: string;
@@ -59,12 +62,19 @@ export class VM {
       devices,
       faker,
       getInbox: (options: GetInbox) => {
-        return getInbox(options, {
+        const context = {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           apiKey: this._env.QAWOLF_TEAM_API_KEY!,
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           inbox: this._env.QAWOLF_TEAM_INBOX!,
-        });
+        };
+
+        debug(
+          `sandbox getInbox ${JSON.stringify(options)} ${JSON.stringify(
+            context
+          )}`
+        );
+        return getInbox(options, context);
       },
       launch: async (launchOptions: LaunchOptions) => {
         process.env.DISPLAY = vmOptions.display || ":0.0";
@@ -120,6 +130,9 @@ export class VM {
   }
 
   setEnv(env: Record<string, string | undefined>): void {
+    debug(
+      `set env: assign ${JSON.stringify(env)} to ${JSON.stringify(this._env)}`
+    );
     Object.assign(this._env, env);
   }
 }
