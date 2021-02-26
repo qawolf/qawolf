@@ -10,20 +10,11 @@ type GraphQLRequestData = {
   variables: Record<string, unknown>;
 };
 
-type PollForEamil = {
+type PollForEmail = {
   apiKey: string;
-  createdAfter: string;
+  createdAfter: Date;
   timeoutMs: number;
   to: string;
-};
-
-type PollForQuery = {
-  apiKey: string;
-  dataKey: string;
-  logName: string;
-  requestData: GraphQLRequestData;
-  timeoutError: string;
-  timeoutMs: number;
 };
 
 type RunFinishedParams = {
@@ -43,6 +34,7 @@ type UpdateRunner = {
 };
 
 const debug = Debug("qawolf:api");
+const debugPublic = Debug("qawolf:public");
 
 const emailQuery = `
 query email($created_after: String!, $to: String!) {
@@ -119,58 +111,6 @@ export const mutateWithRetry = async (
   });
 };
 
-export const pollForQuery = async ({
-  apiKey,
-  dataKey,
-  logName,
-  timeoutError,
-  timeoutMs,
-  requestData,
-}: PollForQuery): // eslint-disable-next-line @typescript-eslint/no-explicit-any
-Promise<any> => {
-  return Promise.race([
-    retry(
-      async (_, attempt) => {
-        debug("%s attempt %s", logName, attempt);
-
-        try {
-          const result = await axios.post(
-            `${config.API_URL}/graphql`,
-            requestData,
-            { headers: { authorization: apiKey } }
-          );
-
-          const errors = result.data?.errors;
-          if (errors?.length > 0) {
-            debug("%s failed %o", logName, errors);
-            throw new Error("GraphQL Errors " + JSON.stringify(errors));
-          }
-
-          if (!(result.data?.data || {})[dataKey]) {
-            debug("%s not found", dataKey);
-            throw new Error("Not found");
-          }
-
-          return result.data?.data[dataKey];
-        } catch (e) {
-          debug(`${logName} failed ${e} ${JSON.stringify(e.response.data)}`);
-          throw e;
-        }
-      },
-      {
-        factor: 1,
-        minTimeout: 3000,
-        retries: Math.round(timeoutMs / 3000),
-      }
-    ),
-    new Promise((_, reject) => {
-      setTimeout(() => {
-        reject(new Error(timeoutError));
-      }, timeoutMs);
-    }),
-  ]);
-};
-
 export const notifyRunStarted = async ({
   run_id,
 }: RunStartedParams): Promise<void> => {
@@ -211,21 +151,59 @@ export const pollForEmail = async ({
   createdAfter,
   timeoutMs,
   to,
-}: PollForEamil): Promise<Email> => {
-  return pollForQuery({
-    apiKey,
-    dataKey: "email",
-    logName: "pollForEmail",
-    requestData: {
-      query: emailQuery,
-      variables: {
-        created_after: createdAfter,
-        to,
-      },
+}: PollForEmail): Promise<Email> => {
+  let timeout = false;
+
+  const requestPromise = retry(
+    async (_, attempt) => {
+      if (timeout) return;
+
+      try {
+        debugPublic(`wait for email to ${to}, attempt ${attempt}`);
+
+        const result = await axios.post(
+          `${config.API_URL}/graphql`,
+          {
+            query: emailQuery,
+            variables: {
+              created_after: createdAfter.toISOString(),
+              to,
+            },
+          },
+          { headers: { authorization: apiKey } }
+        );
+
+        const { data, errors } = result?.data || {};
+        if (errors?.length > 0) {
+          throw new Error("GraphQL Errors " + JSON.stringify(errors));
+        }
+
+        const email = data?.email;
+        if (!email) throw new Error(`email to ${to} not received`);
+
+        debugPublic(`found email to ${to} with subject ${email.subject}`);
+
+        return email;
+      } catch (e) {
+        debug(`pollForEmail failed ${e} ${JSON.stringify(e.response?.data)}`);
+        throw e;
+      }
     },
-    timeoutError: `Email to ${to} not received`,
-    timeoutMs,
+    {
+      factor: 1,
+      minTimeout: 3000,
+      retries: Math.round(timeoutMs / 3000),
+    }
+  );
+
+  const timeoutPromise = new Promise<Email>((_, reject) => {
+    setTimeout(() => {
+      timeout = true;
+      reject(new Error(`Email to ${to} not found`));
+    }, timeoutMs);
   });
+
+  return Promise.race([requestPromise, timeoutPromise]);
 };
 
 export const updateRunner = async ({
