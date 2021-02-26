@@ -35,8 +35,8 @@ export const context = async ({
   const logger = new Logger({ prefix: "graphql" });
 
   const authToken = req.headers.authorization || "";
-
   const api_key = authToken.includes(API_KEY_PREFIX) ? authToken : null;
+
   if (authToken && !api_key) {
     logger.debug("clear invalid api key", authToken);
   }
