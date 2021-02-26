@@ -27,6 +27,8 @@ export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
 
   const { data: testTriggersData } = useTestTriggers({ test_ids: testIds });
   const testTriggers = testTriggersData?.testTriggers || [];
+  const isTestTriggersLoading =
+    !!testIds.length && !testTriggersData?.testTriggers;
 
   const triggers = data?.triggers || null;
 
@@ -69,7 +71,7 @@ export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
         {!deleteTrigger && !editTrigger && !isCreate && (
           <EditTriggers
             closeModal={closeModal}
-            isLoading={loading || !testTriggersData?.testTriggers}
+            isLoading={loading || isTestTriggersLoading}
             onCreate={handleCreate}
             onDelete={handleDelete}
             onEdit={handleEdit}
