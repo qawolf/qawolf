@@ -26,7 +26,7 @@ export default function Editor(): JSX.Element {
   return (
     <ThemeContext.Extend value={theme}>
       <WithProviders>
-        {width && width < breakpoints.medium.value ? (
+        {width && width < breakpoints.small.value ? (
           <EditorMobile mode={mode} />
         ) : (
           <Box background="gray0" height="100vh" overflow="hidden">

@@ -8,7 +8,7 @@ export const withNoMobile = <P extends Record<string, unknown>>(
   return function WrappedComponent(props: P): JSX.Element {
     const { width } = useWindowSize();
 
-    if (width && width < breakpoints.medium.value) return <NoMobile />;
+    if (width && width < breakpoints.small.value) return <NoMobile />;
 
     return <Component {...props} />;
   };
