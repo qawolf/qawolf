@@ -6,6 +6,7 @@ import { copy } from "../../../../theme/copy";
 import { borderSize, colors, edgeSize } from "../../../../theme/theme-new";
 import Button from "../../../shared-new/AppButton";
 import Divider from "../../../shared-new/Divider";
+import Folder from "../../../shared-new/icons/Folder";
 import Lightning from "../../../shared-new/icons/Lightning";
 import Trash from "../../../shared-new/icons/Trash";
 
@@ -16,13 +17,16 @@ type Props = {
 export default function Actions({ checkedTests }: Props): JSX.Element {
   if (!checkedTests.length) return null;
 
+  const tests = checkedTests.map(({ id, name }) => {
+    return { id, name };
+  });
+
   const handleDeleteClick = (): void => {
-    state.setModal({
-      name: "deleteTests",
-      tests: checkedTests.map(({ id, name }) => {
-        return { id, name };
-      }),
-    });
+    state.setModal({ name: "deleteTests", tests });
+  };
+
+  const handleGroupClick = (): void => {
+    state.setModal({ name: "editTestsGroup", tests });
   };
 
   const handleTriggersClick = (): void => {
@@ -37,10 +41,16 @@ export default function Actions({ checkedTests }: Props): JSX.Element {
       <Button
         IconComponent={Lightning}
         label={copy.editTriggers}
-        margin={{ right: "xxsmall" }}
         onClick={handleTriggersClick}
         type="ghost"
       />
+      <Button
+        IconComponent={Folder}
+        label={copy.assignToGroup}
+        margin={{ horizontal: "xxsmall" }}
+        onClick={handleGroupClick}
+        type="ghost"
+      ></Button>
       <Button
         IconComponent={Trash}
         color={colors.danger5}

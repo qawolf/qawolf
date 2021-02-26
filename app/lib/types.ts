@@ -188,6 +188,7 @@ export type CreateCode = {
 
 export type Modal =
   | "createTest"
+  | "editTestsGroup"
   | "environments"
   | "deleteGroup"
   | "deleteTests"

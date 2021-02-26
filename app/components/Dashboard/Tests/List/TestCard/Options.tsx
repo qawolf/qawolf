@@ -8,6 +8,7 @@ import { edgeSize } from "../../../../../theme/theme-new";
 import Button from "../../../../shared-new/AppButton";
 import Divider from "../../../../shared-new/Divider";
 import Drop from "../../../../shared-new/Drop";
+import Folder from "../../../../shared-new/icons/Folder";
 import Lightning from "../../../../shared-new/icons/Lightning";
 import More from "../../../../shared-new/icons/More";
 import Trash from "../../../../shared-new/icons/Trash";
@@ -29,6 +30,10 @@ export default function Options({ test }: Props): JSX.Element {
 
   const handleDeleteClick = (): void => {
     state.setModal({ name: "deleteTests", tests: [test] });
+  };
+
+  const handleGroupClick = (): void => {
+    state.setModal({ name: "editTestsGroup", tests: [test] });
   };
 
   const handleTriggersClick = (): void => {
@@ -56,6 +61,11 @@ export default function Options({ test }: Props): JSX.Element {
             IconComponent={Lightning}
             label={copy.editTriggers}
             onClick={handleTriggersClick}
+          />
+          <Option
+            IconComponent={Folder}
+            label={copy.assignToGroup}
+            onClick={handleGroupClick}
           />
           <Divider margin={{ vertical: "xxxsmall" }} />
           <Option
