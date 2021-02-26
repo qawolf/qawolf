@@ -1,6 +1,7 @@
 import { Box } from "grommet";
+import isEqual from "lodash/isEqual";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import { useTests, useTestTriggers, useTriggers } from "../../../hooks/queries";
 import { StateContext } from "../../StateContext";
@@ -10,7 +11,10 @@ import List from "./List";
 
 export default function Tests(): JSX.Element {
   const { query } = useRouter();
+  const group_id = (query.group_id as string) || null;
   const trigger_id = query.trigger_id as string;
+
+  const testIdsRef = useRef<string[]>([]);
 
   const { teamId } = useContext(StateContext);
 
@@ -26,17 +30,30 @@ export default function Tests(): JSX.Element {
   });
 
   const tests = filterTests({
+    group_id,
     search,
     tests: data?.tests,
     testTriggers: testTriggersData?.testTriggers,
     trigger_id,
   });
 
-  // clear checked tests when filters change
+  // clear checked tests when selected group or trigger changes
   useEffect(() => {
     setCheckedTestIds([]);
-    // including data?.tests ensures we reset after deleting tests
-  }, [data?.tests, trigger_id]);
+  }, [group_id, trigger_id]);
+
+  // clear checked tests when list changes
+  useEffect(() => {
+    const sortedTestsIds = (data?.tests || []).map((t) => t.id);
+    sortedTestsIds.sort();
+
+    // use ids because don't want to clear selection if groups change
+    // unless we are changing assigned group from the group page
+    if (query.group_id || !isEqual(testIdsRef.current, sortedTestsIds)) {
+      testIdsRef.current = sortedTestsIds;
+      setCheckedTestIds([]);
+    }
+  }, [data?.tests]);
 
   const testTriggers = testTriggersData?.testTriggers || [];
   const triggers = triggersData?.triggers || [];

@@ -7,6 +7,7 @@ import {
   findTestForRun,
   findTestsForTeam,
   updateTest,
+  updateTestsGroup,
 } from "../models/test";
 import { deleteTestTriggersForTests } from "../models/test_trigger";
 import {
@@ -20,6 +21,7 @@ import {
   TestSummariesQuery,
   TestSummary,
   UpdateTestMutation,
+  UpdateTestsGroupMutation,
 } from "../types";
 import { ensureTeamAccess, ensureTestAccess, ensureUser } from "./utils";
 
@@ -160,4 +162,21 @@ export const updateTestResolver = async (
   await ensureTestAccess({ teams, test_id: args.id }, { db, logger });
   const test = await updateTest(args, { db, logger });
   return test;
+};
+
+export const updateTestsGroupResolver = async (
+  _: Record<string, unknown>,
+  { group_id, test_ids }: UpdateTestsGroupMutation,
+  { db, logger, teams }: Context
+): Promise<Test[]> => {
+  const log = logger.prefix("updateTestsGroupResolver");
+  log.debug("group", group_id, "tests", test_ids);
+
+  await Promise.all(
+    test_ids.map((test_id) => {
+      return ensureTestAccess({ teams, test_id }, { db, logger });
+    })
+  );
+
+  return updateTestsGroup({ group_id, test_ids }, { db, logger });
 };

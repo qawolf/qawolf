@@ -6,6 +6,7 @@ import { RunWithGif } from "../../../server/types";
 import { minutesFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
 import {
+  buildGroup,
   buildRun,
   buildTeam,
   buildTeamUser,
@@ -23,6 +24,7 @@ const {
   testSummariesResolver,
   testsResolver,
   updateTestResolver,
+  updateTestsGroupResolver,
 } = testResolvers;
 
 const run = buildRun({ code: "run code" });
@@ -286,5 +288,21 @@ describe("updateTestResolver", () => {
       is_enabled: true,
       version: 13,
     });
+  });
+});
+
+describe("updateTestsGroupResolver", () => {
+  beforeAll(() => db("groups").insert(buildGroup({})));
+
+  afterAll(() => db("groups").del());
+
+  it("updates the group for tests", async () => {
+    const tests = await updateTestsGroupResolver(
+      {},
+      { group_id: "groupId", test_ids: ["testId"] },
+      context
+    );
+
+    expect(tests).toMatchObject([{ group_id: "groupId", id: "testId" }]);
   });
 });

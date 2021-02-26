@@ -6,6 +6,7 @@ import {
   currentUserQuery,
   environmentsQuery,
   environmentVariablesQuery,
+  groupsQuery,
   integrationsQuery,
   runnerQuery,
   shortSuiteQuery,
@@ -26,6 +27,7 @@ import { state } from "../lib/state";
 import {
   Environment,
   EnvironmentVariable,
+  Group,
   Integration,
   Invite,
   Run,
@@ -63,6 +65,14 @@ type EnvironmentVariablesData = {
 
 type EnvironmentVariablesVariables = {
   environment_id: string;
+};
+
+type GroupsData = {
+  groups: Group[];
+};
+
+type GroupsVariables = {
+  team_id: string;
 };
 
 type IntegrationsData = {
@@ -223,6 +233,17 @@ export const useEnvironmentVariables = (
       variables,
     }
   );
+};
+
+export const useGroups = (
+  variables: GroupsVariables
+): QueryResult<GroupsData, GroupsVariables> => {
+  return useQuery<GroupsData, GroupsVariables>(groupsQuery, {
+    fetchPolicy,
+    onError,
+    skip: !variables.team_id,
+    variables,
+  });
 };
 
 export const useIntegrations = (

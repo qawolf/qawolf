@@ -21,6 +21,12 @@ export type EnvironmentVariable = {
   value: string;
 };
 
+export type Group = {
+  id: string;
+  name: string;
+  team_id: string;
+};
+
 export type Integration = {
   github_repo_name: string;
   id: string;
@@ -115,6 +121,7 @@ export type Team = ShortTeam & {
 };
 
 export type ShortTest = {
+  group_id: string | null;
   id: string;
   name: string;
 };
@@ -181,16 +188,34 @@ export type CreateCode = {
 
 export type Modal =
   | "createTest"
+  | "editTestsGroup"
   | "environments"
+  | "deleteGroup"
   | "deleteTests"
   | "teamSettings"
   | "triggers";
+
+export type MutableListArgs = {
+  callback: () => void;
+  fields?: MutableListFields;
+  name: string;
+};
+
+export type MutableListFunction = (args: MutableListArgs) => void;
+
+export type MutableListFields = {
+  id: string;
+  name: string;
+};
+
+export type MutableListType = "environment" | "group";
 
 export type NavigationOption = "code" | "logs" | "helpers";
 
 export type NavigationType = "dark" | "light";
 
 export type SelectedTest = {
+  group_id?: string;
   id: string;
   name: string;
 };
@@ -264,6 +289,7 @@ type SignUp = {
 };
 
 type ModalState = {
+  group?: MutableListFields;
   name: Modal | null;
   teamId?: string;
   testIds?: string[];

@@ -2,65 +2,72 @@ import { Box } from "grommet";
 import { MouseEvent, useState } from "react";
 import styled from "styled-components";
 
-import { Environment } from "../../../../lib/types";
-import { copy } from "../../../../theme/copy";
+import {
+  MutableListFields,
+  MutableListFunction,
+  MutableListType,
+} from "../../../lib/types";
+import { copy } from "../../../theme/copy";
 import {
   borderSize,
   colors,
   overflowStyle,
   transitionDuration,
-} from "../../../../theme/theme-new";
-import Text from "../../../shared-new/Text";
-import EnvironmentName from "./EnvironmentName";
-import Options from "./Options";
+} from "../../../theme/theme-new";
+import Text from "../Text";
+import NameInput from "./NameInput";
+import Options, { id } from "./Options";
 
 type Props = {
-  editEnvironmentId: string;
-  environment: Environment;
+  editId: string;
+  fields: MutableListFields;
   isSelected: boolean;
-  onClose: () => void;
   onClick: () => void;
+  onCloseForm: () => void;
   onDelete: () => void;
   onEdit: () => void;
-  teamId: string;
+  onSave: MutableListFunction;
+  type: MutableListType;
 };
 
 const StyledBox = styled(Box)`
   cursor: pointer;
   transition: background ${transitionDuration};
 
-  .env-options {
+  #${id} {
     opacity: 0;
-    transiton: opacity ${transitionDuration};
+    transition: opacity ${transitionDuration};
   }
 
   &:hover {
     background: ${colors.gray2};
 
-    .env-options {
+    #${id} {
       opacity: 1;
     }
   }
 `;
 
 export default function ListItem({
-  editEnvironmentId,
-  environment,
+  editId,
+  fields,
   isSelected,
-  onClose,
   onClick,
+  onCloseForm,
   onDelete,
   onEdit,
-  teamId,
+  onSave,
+  type,
 }: Props): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
 
-  if (environment.id === editEnvironmentId) {
+  if (fields.id === editId) {
     return (
-      <EnvironmentName
-        environment={environment}
-        onClose={onClose}
-        teamId={teamId}
+      <NameInput
+        fields={fields}
+        onCloseForm={onCloseForm}
+        onSave={onSave}
+        type={type}
       />
     );
   }
@@ -70,7 +77,7 @@ export default function ListItem({
   };
 
   const handleOptionsClick = (e: MouseEvent): void => {
-    e.stopPropagation(); // do not change selected environment
+    e.stopPropagation(); // do not click on larger element
     setIsOpen((prev) => !prev);
   };
 
@@ -78,19 +85,23 @@ export default function ListItem({
 
   return (
     <StyledBox
-      a11yTitle={`${copy.environment} ${environment.name}`}
+      a11yTitle={`${copy[type]} ${fields.name}`}
       align="center"
       background={isSelected ? "gray2" : "transparent"}
       direction="row"
       flex={false}
       justify="between"
-      margin={{ bottom: "2px" }}
+      margin={{ bottom: borderSize.small }}
       onClick={handleClick}
-      pad={{ left: "xsmall", right: "xxsmall", vertical: "xxsmall" }}
+      pad={{
+        left: type === "group" ? "xxsmall" : "xsmall",
+        right: "xxsmall",
+        vertical: "xxsmall",
+      }}
       round={borderSize.small}
     >
       <Text color="gray9" size="component" style={overflowStyle}>
-        {environment.name}
+        {fields.name}
       </Text>
       <Options
         isOpen={isOpen}
@@ -98,6 +109,7 @@ export default function ListItem({
         onClose={handleOptionsClose}
         onDelete={onDelete}
         onEdit={onEdit}
+        type={type}
       />
     </StyledBox>
   );

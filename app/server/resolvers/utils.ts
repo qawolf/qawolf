@@ -3,6 +3,7 @@ import { AuthenticationError } from "../errors";
 import { Logger } from "../Logger";
 import { findEnvironment } from "../models/environment";
 import { findEnvironmentVariable } from "../models/environment_variable";
+import { findGroup } from "../models/group";
 import { findSuite } from "../models/suite";
 import { findTest } from "../models/test";
 import { findTrigger } from "../models/trigger";
@@ -15,6 +16,11 @@ type EnsureEnvironmentAccess = {
 
 type EnsureEnvironmentVariableAccess = {
   environment_variable_id: string;
+  teams: Team[] | null;
+};
+
+type EnsureGroupAccess = {
+  group_id: string;
   teams: Team[] | null;
 };
 
@@ -115,6 +121,26 @@ export const ensureEnvironmentVariableAccess = async (
       environment_variable_id
     );
     throw new AuthenticationError("cannot access environment variable");
+  }
+
+  return selectedTeam;
+};
+
+export const ensureGroupAccess = async (
+  { group_id, teams }: EnsureGroupAccess,
+  options: ModelOptions
+): Promise<Team> => {
+  const log = options.logger.prefix("ensureGroupAccess");
+
+  const teamIds = ensureTeams({ teams, logger: log }).map((team) => team.id);
+  log.debug("ensure teams", teamIds, "can access group", group_id);
+
+  const group = await findGroup(group_id, options);
+  const selectedTeam = teams!.find((team) => group.team_id === team.id);
+
+  if (!selectedTeam) {
+    log.error("teams", teamIds, "cannot access group", group_id);
+    throw new AuthenticationError("cannot access group");
   }
 
   return selectedTeam;

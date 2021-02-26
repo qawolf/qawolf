@@ -1,16 +1,16 @@
 import { Box, Button } from "grommet";
 import styled from "styled-components";
 
-import { copy } from "../../../../theme/copy";
-import {
-  colors,
-  edgeSize,
-  transitionDuration,
-} from "../../../../theme/theme-new";
-import Add from "../../../shared-new/icons/Add";
-import Text from "../../../shared-new/Text";
+import { MutableListType } from "../../../lib/types";
+import { copy } from "../../../theme/copy";
+import { colors, edgeSize, transitionDuration } from "../../../theme/theme-new";
+import Add from "../icons/Add";
+import Text from "../Text";
 
-type Props = { onClick: () => void };
+type Props = {
+  onClick: () => void;
+  type: MutableListType;
+};
 
 const StyledButton = styled(Button)`
   p,
@@ -31,13 +31,13 @@ const StyledButton = styled(Button)`
 
 const color = colors.gray6;
 
-export default function AddEnvironment({ onClick }: Props): JSX.Element {
+export default function CreateButton({ onClick, type }: Props): JSX.Element {
   return (
     <StyledButton onClick={onClick} plain>
       <Box align="center" direction="row" flex={false} pad="xxsmall">
         <Add color={color} size={edgeSize.small} />
         <Text color={color} margin={{ left: "xxsmall" }} size="component">
-          {copy.environmentNew}
+          {copy[`${type}New`]}
         </Text>
       </Box>
     </StyledButton>

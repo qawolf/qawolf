@@ -116,6 +116,14 @@ export type GitHubCommitStatus = {
   updated_at?: string;
 };
 
+export type Group = {
+  created_at?: string;
+  id: string;
+  name: string;
+  team_id: string;
+  updated_at?: string;
+};
+
 export type Invite = {
   accepted_at: string | null;
   created_at?: string;
@@ -258,6 +266,7 @@ export type Test = {
   creator_id: string;
   code: string;
   deleted_at: string | null;
+  group_id: string | null;
   id: string;
   is_enabled: boolean;
   name: string;
@@ -335,6 +344,11 @@ export type CreateEnvironmentVariableMutation = {
 
 export type CreateGitHubIntegrationsMutation = {
   installation_id: number;
+  team_id: string;
+};
+
+export type CreateGroupMutation = {
+  name: string;
   team_id: string;
 };
 
@@ -429,6 +443,11 @@ export type UpdateEnvironmentVariableMutation = {
   value: string;
 };
 
+export type UpdateGroupMutation = {
+  id: string;
+  name: string;
+};
+
 export type UpdateTriggerMutation = {
   deployment_branches?: string | null;
   deployment_environment?: DeploymentEnvironment | null;
@@ -472,6 +491,11 @@ export type UpdateTestMutation = {
   is_enabled?: boolean;
   name?: string;
   version?: number;
+};
+
+export type UpdateTestsGroupMutation = {
+  group_id: string | null;
+  test_ids: string[];
 };
 
 export type UpdateUserMutation = {

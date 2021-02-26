@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import { ChangeEvent, useState } from "react";
 
 import { useDeleteEnvironment } from "../../../../hooks/mutations";
-import { Environment } from "../../../../lib/types";
+import { MutableListFields } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import TextInput from "../../../shared-new/AppTextInput";
 import ConfirmDelete from "../../../shared-new/Modal/ConfirmDelete";
@@ -11,7 +11,7 @@ import Text from "../../../shared-new/Text";
 
 type Props = {
   closeModal: () => void;
-  environment: Environment;
+  environment: MutableListFields;
   onClose: (deletedEnvironmentId?: string) => void;
 };
 
@@ -30,7 +30,7 @@ export default function ConfirmDeleteEnvironment({
   };
 
   const handleDelete = (): void => {
-    if (name !== environment.name) {
+    if (name.toLowerCase() !== environment.name.toLowerCase()) {
       setError(copy.mustMatch);
       return;
     }

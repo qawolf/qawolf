@@ -24,6 +24,8 @@ export const copy = {
   api: "API",
   apiDetail: "Trigger tests by calling the QA Wolf API:",
   apiKeyHere: "API KEY HERE",
+  assignToGroup: "Assign to group",
+  assignToGroupDetail: "Choose a group for the following tests:",
   back: "Back",
   backToDashboard: "Back to dashboard",
   blog: "Blog",
@@ -90,6 +92,7 @@ export const copy = {
     "Debug with video, logs, and the exact line a test failed on.",
   edit: "Edit",
   editTest: "Edit test",
+  editTestsGroup: "Assign tests to group",
   editTrigger: "Edit trigger",
   editTriggers: "Edit triggers",
   email: "Email",
@@ -101,7 +104,7 @@ export const copy = {
   envVariableDeleteConfirm:
     "The following environment variable will be permanently deleted. Are you sure you want to continue?",
   envVariableNamePlaceholder: "MY_VAR",
-  envVariableNew: "Add variable",
+  envVariableNew: "Create variable",
   envVariableValuePlaceholder: "value",
   envVariables: "Environment variables",
   envVariablesDetail:
@@ -115,7 +118,7 @@ export const copy = {
   environmentDeleteConfirm2: "to confirm.",
   environmentEdit: (name: string): string =>
     name ? `Edit ${name} environment` : "",
-  environmentNew: "Add environment",
+  environmentNew: "Create environment",
   environmentNotSelected: "No environment",
   environments: "Environments",
   frequency: "Frequency",
@@ -128,6 +131,13 @@ export const copy = {
   gitHubComplete: "🎉 All set! You can close this page.",
   gitHubRepo: "GitHub repository",
   goHome: "Go Home",
+  group: "Group",
+  groupDelete: "Delete group",
+  groupDeleteConfirm:
+    "Are you sure? This will permanently this group. Please type",
+  groupDeleteConfirm2: "to confirm.",
+  groupNew: "Create group",
+  groups: "Test groups",
   growRevenue: "Grow revenue",
   growRevenueDetail:
     "2/3 of consumers abandon a purchase when they find a bug.",

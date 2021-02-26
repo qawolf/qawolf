@@ -3,6 +3,7 @@ import { gql } from "@apollo/client";
 import {
   environmentFragment,
   environmentVariableFragment,
+  groupFragment,
   integrationFragment,
   inviteFragment,
   runFragment,
@@ -42,6 +43,15 @@ export const environmentVariablesQuery = gql`
     }
   }
   ${environmentVariableFragment}
+`;
+
+export const groupsQuery = gql`
+  query groups($team_id: ID!) {
+    groups(team_id: $team_id) {
+      ...GroupFragment
+    }
+  }
+  ${groupFragment}
 `;
 
 export const integrationsQuery = gql`
@@ -183,6 +193,7 @@ export const testTriggersQuery = gql`
 export const testsQuery = gql`
   query tests($team_id: ID!) {
     tests(team_id: $team_id) {
+      group_id
       id
       name
     }

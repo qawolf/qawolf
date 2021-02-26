@@ -189,6 +189,9 @@ export const theme = {
       },
     },
     drop: {
+      border: {
+        radius: borderSize.small,
+      },
       extend: (): CSSProperties => {
         return {
           boxShadow,

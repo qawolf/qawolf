@@ -13,6 +13,12 @@ import {
   updateEnvironmentVariableResolver,
 } from "./resolvers/environment_variable";
 import { createGitHubIntegrationsResolver } from "./resolvers/github";
+import {
+  createGroupResolver,
+  deleteGroupResolver,
+  groupsResolver,
+  updateGroupResolver,
+} from "./resolvers/group";
 import { integrationsResolver } from "./resolvers/integration";
 import {
   acceptInviteResolver,
@@ -44,6 +50,7 @@ import {
   testsResolver,
   testSummariesResolver,
   updateTestResolver,
+  updateTestsGroupResolver,
 } from "./resolvers/test";
 import {
   testTriggersResolver,
@@ -78,6 +85,7 @@ export const resolvers = {
     createEnvironment: createEnvironmentResolver,
     createEnvironmentVariable: createEnvironmentVariableResolver,
     createGitHubIntegrations: createGitHubIntegrationsResolver,
+    createGroup: createGroupResolver,
     createInvites: createInvitesResolver,
     createSignInUrl: createGitHubSignInUrlResolver,
     createSlackIntegration: createSlackIntegrationResolver,
@@ -87,6 +95,7 @@ export const resolvers = {
     createTrigger: createTriggerResolver,
     deleteEnvironment: deleteEnvironmentResolver,
     deleteEnvironmentVariable: deleteEnvironmentVariableResolver,
+    deleteGroup: deleteGroupResolver,
     deleteTests: deleteTestsResolver,
     deleteTrigger: deleteTriggerResolver,
     joinMailingList: joinMailingListResolver,
@@ -95,11 +104,13 @@ export const resolvers = {
     signInWithGitHub: signInWithGitHubResolver,
     updateEnvironment: updateEnvironmentResolver,
     updateEnvironmentVariable: updateEnvironmentVariableResolver,
+    updateGroup: updateGroupResolver,
     updateRun: updateRunResolver,
     updateRunner: updateRunnerResolver,
     updateTeam: updateTeamResolver,
     updateTest: updateTestResolver,
     updateTestTriggers: updateTestTriggersResolver,
+    updateTestsGroup: updateTestsGroupResolver,
     updateTrigger: updateTriggerResolver,
     updateUser: updateUserResolver,
   },
@@ -108,6 +119,7 @@ export const resolvers = {
     email: emailResolver,
     environments: environmentsResolver,
     environmentVariables: environmentVariablesResolver,
+    groups: groupsResolver,
     integrations: integrationsResolver,
     runner: runnerResolver,
     suite: suiteResolver,
