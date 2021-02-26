@@ -59,7 +59,7 @@ export default function EditTriggers({
 
   let innerHtml: JSX.Element;
 
-  if (triggers?.length) {
+  if (!isLoading && triggers?.length) {
     const triggersHtml = triggers.map((t) => {
       const state = getSelectState({
         testIds,
