@@ -96,6 +96,7 @@ export const createTest = async (
     creator_id,
     code,
     deleted_at: null,
+    group_id: null,
     id: cuid(),
     is_enabled: true,
     name,

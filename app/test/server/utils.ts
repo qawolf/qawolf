@@ -130,6 +130,7 @@ type BuildTest = {
   code?: string;
   creator_id?: string;
   deleted_at?: string;
+  group_id?: string;
   i?: number;
   id?: string;
   is_enabled?: boolean;
@@ -418,6 +419,7 @@ export const buildTest = ({
   code,
   creator_id,
   deleted_at,
+  group_id,
   i,
   id,
   is_enabled,
@@ -435,6 +437,7 @@ export const buildTest = ({
     creator_id: creator_id || "userId",
     code: code || 'const x = "hello"',
     deleted_at: deleted_at || null,
+    group_id: group_id || null,
     id: id || `test${finalI === 1 ? "" : i}Id`,
     is_enabled: is_enabled === undefined ? true : is_enabled,
     name: name || `test${finalI === 1 ? "" : i}`,

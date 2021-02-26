@@ -96,6 +96,7 @@ describe("createTest", () => {
       code: "code",
       creator_id: "userId",
       deleted_at: null,
+      group_id: null,
       id: expect.any(String),
       is_enabled: true,
       name: "My Test",

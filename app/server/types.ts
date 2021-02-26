@@ -266,6 +266,7 @@ export type Test = {
   creator_id: string;
   code: string;
   deleted_at: string | null;
+  group_id: string | null;
   id: string;
   is_enabled: boolean;
   name: string;
