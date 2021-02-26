@@ -35,6 +35,11 @@ type UpdateTestToPending = {
   runner_locations: string[];
 };
 
+type UpdateTestsGroup = {
+  group_id: string | null;
+  test_ids: string[];
+};
+
 export const buildTestName = async (
   team_id: string,
   { db, logger }: ModelOptions
@@ -331,4 +336,26 @@ export const updateTestToPending = async (
   log.debug(options, didUpdate ? "updated" : "skipped");
 
   return didUpdate;
+};
+
+export const updateTestsGroup = async (
+  { group_id, test_ids }: UpdateTestsGroup,
+  { db, logger }: ModelOptions
+): Promise<Test[]> => {
+  const log = logger.prefix("updateTestsGroup");
+  log.debug("group", group_id, "tests", test_ids);
+
+  const tests = await db("tests")
+    .whereIn("id", test_ids)
+    .andWhere({ deleted_at: null });
+  const testIds = tests.map((t) => t.id);
+
+  const updated_at = new Date().toISOString();
+
+  await db("tests").whereIn("id", testIds).update({ group_id, updated_at });
+  log.debug("updated", testIds);
+
+  return tests.map((t) => {
+    return { ...t, group_id, updated_at };
+  });
 };

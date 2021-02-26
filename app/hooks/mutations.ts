@@ -29,6 +29,7 @@ import {
   updateGroupMutation,
   updateTeamMutation,
   updateTestMutation,
+  updateTestsGroupMutation,
   updateTestTriggersMutation,
   updateTriggerMutation,
   updateUserMutation,
@@ -296,6 +297,15 @@ type UpdateTestTriggersData = {
 export type UpdateTestTriggersVariables = {
   add_trigger_id: string | null;
   remove_trigger_id: string | null;
+  test_ids: string[];
+};
+
+type UpdateTestsGroupData = {
+  updateTestsGroup: Test[];
+};
+
+type UpdateTestsGroupVariables = {
+  group_id: string | null;
   test_ids: string[];
 };
 
@@ -744,6 +754,16 @@ export const useUpdateTestTriggers = (): MutationTuple<
 > => {
   return useMutation<UpdateTestTriggersData, UpdateTestTriggersVariables>(
     updateTestTriggersMutation,
+    { onError }
+  );
+};
+
+export const useUpdateTestsGroup = (): MutationTuple<
+  UpdateTestsGroupData,
+  UpdateTestsGroupVariables
+> => {
+  return useMutation<UpdateTestsGroupData, UpdateTestsGroupVariables>(
+    updateTestsGroupMutation,
     { onError }
   );
 };

@@ -121,6 +121,7 @@ export type Team = ShortTeam & {
 };
 
 export type ShortTest = {
+  group_id: string | null;
   id: string;
   name: string;
 };

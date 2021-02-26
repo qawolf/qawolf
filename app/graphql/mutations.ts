@@ -278,31 +278,6 @@ export const updateGroupMutation = gql`
   ${groupFragment}
 `;
 
-export const updateTriggerMutation = gql`
-  mutation updateTrigger(
-    $deployment_branches: String
-    $deployment_environment: DeploymentEnvironment
-    $deployment_integration_id: ID
-    $environment_id: ID
-    $id: ID!
-    $name: String
-    $repeat_minutes: Int
-  ) {
-    updateTrigger(
-      deployment_branches: $deployment_branches
-      deployment_environment: $deployment_environment
-      deployment_integration_id: $deployment_integration_id
-      environment_id: $environment_id
-      id: $id
-      name: $name
-      repeat_minutes: $repeat_minutes
-    ) {
-      ...TriggerFragment
-    }
-  }
-  ${triggerFragment}
-`;
-
 export const updateTestTriggersMutation = gql`
   mutation updateTestTriggers(
     $add_trigger_id: ID
@@ -360,6 +335,40 @@ export const updateTestMutation = gql`
     }
   }
   ${testFragment}
+`;
+
+export const updateTestsGroupMutation = gql`
+  mutation updateTestsGroup($group_id: ID, $test_ids: [ID!]!) {
+    updateTestsGroup(group_id: $group_id, test_ids: $test_ids) {
+      ...TestFragment
+    }
+  }
+  ${testFragment}
+`;
+
+export const updateTriggerMutation = gql`
+  mutation updateTrigger(
+    $deployment_branches: String
+    $deployment_environment: DeploymentEnvironment
+    $deployment_integration_id: ID
+    $environment_id: ID
+    $id: ID!
+    $name: String
+    $repeat_minutes: Int
+  ) {
+    updateTrigger(
+      deployment_branches: $deployment_branches
+      deployment_environment: $deployment_environment
+      deployment_integration_id: $deployment_integration_id
+      environment_id: $environment_id
+      id: $id
+      name: $name
+      repeat_minutes: $repeat_minutes
+    ) {
+      ...TriggerFragment
+    }
+  }
+  ${triggerFragment}
 `;
 
 export const updateUserMutation = gql`

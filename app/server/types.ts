@@ -493,6 +493,11 @@ export type UpdateTestMutation = {
   version?: number;
 };
 
+export type UpdateTestsGroupMutation = {
+  group_id: string | null;
+  test_ids: string[];
+};
+
 export type UpdateUserMutation = {
   onboarded_at: string;
 };

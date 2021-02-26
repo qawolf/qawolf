@@ -50,6 +50,7 @@ import {
   testsResolver,
   testSummariesResolver,
   updateTestResolver,
+  updateTestsGroupResolver,
 } from "./resolvers/test";
 import {
   testTriggersResolver,
@@ -109,6 +110,7 @@ export const resolvers = {
     updateTeam: updateTeamResolver,
     updateTest: updateTestResolver,
     updateTestTriggers: updateTestTriggersResolver,
+    updateTestsGroup: updateTestsGroupResolver,
     updateTrigger: updateTriggerResolver,
     updateUser: updateUserResolver,
   },

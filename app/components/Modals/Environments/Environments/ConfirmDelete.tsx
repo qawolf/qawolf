@@ -30,7 +30,7 @@ export default function ConfirmDeleteEnvironment({
   };
 
   const handleDelete = (): void => {
-    if (name !== environment.name) {
+    if (name.toLowerCase() !== environment.name.toLowerCase()) {
       setError(copy.mustMatch);
       return;
     }

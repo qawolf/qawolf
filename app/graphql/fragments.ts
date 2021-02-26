@@ -119,6 +119,7 @@ export const testFragment = gql`
   fragment TestFragment on Test {
     code
     deleted_at
+    group_id
     id
     is_enabled
     name

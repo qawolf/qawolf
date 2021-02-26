@@ -193,6 +193,7 @@ export const testTriggersQuery = gql`
 export const testsQuery = gql`
   query tests($team_id: ID!) {
     tests(team_id: $team_id) {
+      group_id
       id
       name
     }

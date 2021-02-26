@@ -7,13 +7,16 @@ import {
 } from "../../../server/models/group";
 import { Group } from "../../../server/types";
 import { prepareTestDb } from "../db";
-import { buildGroup, buildTeam, logger } from "../utils";
+import { buildGroup, buildTeam, buildTest, buildUser, logger } from "../utils";
 
 const db = prepareTestDb();
 const options = { db, logger };
 
-beforeAll(() => {
-  return db("teams").insert([buildTeam({}), buildTeam({ i: 2 })]);
+beforeAll(async () => {
+  await db("users").insert(buildUser({}));
+  await db("teams").insert([buildTeam({}), buildTeam({ i: 2 })]);
+
+  return db("tests").insert(buildTest({}));
 });
 
 describe("group model", () => {
@@ -49,13 +52,16 @@ describe("group model", () => {
     afterEach(() => db("groups").del());
 
     it("deletes a group", async () => {
-      const group = await deleteGroup("groupId", { db, logger });
+      await db("tests").update({ group_id: "groupId" });
 
+      const group = await deleteGroup("groupId", { db, logger });
       expect(group).toMatchObject({ id: "groupId" });
 
       const dbGroup = await db("groups").where({ id: "groupId" }).first();
-
       expect(dbGroup).toBeFalsy();
+
+      const test = await db("tests").first();
+      expect(test.group_id).toBeNull();
     });
   });
 

@@ -5,6 +5,7 @@ import * as utils from "../../../server/utils";
 import { minutesFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
 import {
+  buildGroup,
   buildRun,
   buildRunner,
   buildTeam,
@@ -26,6 +27,7 @@ const {
   findTestForRun,
   findTestsForTeam,
   updateTest,
+  updateTestsGroup,
 } = testModel;
 
 const db = prepareTestDb();
@@ -481,5 +483,52 @@ describe("updateTest", () => {
       id: "test3Id",
       version: 12,
     });
+  });
+});
+
+describe("updateTestsGroup", () => {
+  beforeAll(async () => {
+    await db("groups").insert([buildGroup({}), buildGroup({ i: 2 })]);
+    return db("tests").insert([
+      buildTest({
+        i: 1,
+      }),
+      buildTest({ i: 2 }),
+      buildTest({ deleted_at: minutesFromNow(), i: 3 }),
+      buildTest({ i: 4 }),
+    ]);
+  });
+
+  afterAll(async () => {
+    await db("groups").del();
+    return db("tests").del();
+  });
+
+  it("updates the group for tests", async () => {
+    const tests = await updateTestsGroup(
+      { group_id: "groupId", test_ids: ["testId", "test2Id", "test3Id"] },
+      options
+    );
+    expect(tests).toMatchObject([
+      { group_id: "groupId", id: "testId" },
+      { group_id: "groupId", id: "test2Id" },
+    ]);
+
+    const otherTests = await db("tests")
+      .where({ group_id: null })
+      .orderBy("id", "asc");
+    expect(otherTests).toMatchObject([{ group_id: null }, { group_id: null }]);
+
+    const tests2 = await updateTestsGroup(
+      { group_id: "group2Id", test_ids: ["testId"] },
+      options
+    );
+    expect(tests2).toMatchObject([{ group_id: "group2Id", id: "testId" }]);
+
+    const tests3 = await updateTestsGroup(
+      { group_id: null, test_ids: ["testId"] },
+      options
+    );
+    expect(tests3).toMatchObject([{ group_id: null, id: "testId" }]);
   });
 });
