@@ -94,7 +94,6 @@ export const copy = {
   editTriggers: "Edit triggers",
   email: "Email",
   emailPlaceholder: "you@awesome.com",
-  emptyTests: "You don't have any tests yet!",
   emptyTestsSearch: "No tests found",
   encrypted: "Encrypted",
   enterUrl: "Enter your URL to create a test",

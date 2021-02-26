@@ -36,9 +36,15 @@ export default function Suites(): JSX.Element {
           {copy.runHistory}
         </Text>
       </Box>
-      <Box overflow={{ vertical: "scroll" }}>
-        <Box flex={false}>{suitesHtml}</Box>
-      </Box>
+      {!!suites.length ? (
+        <Box overflow={{ vertical: "scroll" }}>
+          <Box flex={false}>{suitesHtml}</Box>
+        </Box>
+      ) : (
+        <Text color="gray9" margin="medium" size="component">
+          {copy.noHistory}
+        </Text>
+      )}
     </Box>
   );
 }
