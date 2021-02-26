@@ -63,31 +63,33 @@ export default function EditTestsGroup({
   return (
     <ThemeContext.Extend value={theme}>
       <Modal a11yTitle="edit tests group" closeModal={closeModal}>
-        <Box pad="medium">
-          <Header closeModal={closeModal} label={copy.editTestsGroup} />
-          <Text color="gray9" margin={{ top: "xxsmall" }} size="component">
-            {copy.assignToGroupDetail}
-          </Text>
-          <Text
-            color="gray9"
-            margin={{ vertical: "medium" }}
-            size="componentBold"
-          >
-            {testNames}
-          </Text>
-          <RadioButtonGroup
-            name="group"
-            onChange={handleChange}
-            options={[...options, { label: copy.none, value: "" }]}
-            value={groupId}
-          />
-          <Buttons
-            onPrimaryClick={handleClick}
-            onSecondaryClick={closeModal}
-            primaryIsDisabled={loading}
-            primaryLabel={copy.assignToGroup}
-            secondaryLabel={copy.cancel}
-          />
+        <Box pad="medium" overflow={{ vertical: "auto" }}>
+          <Box flex={false}>
+            <Header closeModal={closeModal} label={copy.editTestsGroup} />
+            <Text color="gray9" margin={{ top: "xxsmall" }} size="component">
+              {copy.assignToGroupDetail}
+            </Text>
+            <Text
+              color="gray9"
+              margin={{ vertical: "medium" }}
+              size="componentBold"
+            >
+              {testNames}
+            </Text>
+            <RadioButtonGroup
+              name="group"
+              onChange={handleChange}
+              options={[...options, { label: copy.none, value: "" }]}
+              value={groupId}
+            />
+            <Buttons
+              onPrimaryClick={handleClick}
+              onSecondaryClick={closeModal}
+              primaryIsDisabled={loading}
+              primaryLabel={copy.assignToGroup}
+              secondaryLabel={copy.cancel}
+            />
+          </Box>
         </Box>
       </Modal>
     </ThemeContext.Extend>
