@@ -35,8 +35,11 @@ export const context = async ({
   const logger = new Logger({ prefix: "graphql" });
 
   const authToken = req.headers.authorization || "";
+  logger.debug("auth token", authToken);
 
   const api_key = authToken.includes(API_KEY_PREFIX) ? authToken : null;
+  logger.debug("api key", api_key);
+
   const ip = formatIp((req.headers["x-forwarded-for"] as string) || null);
   const user_id = authToken.includes(API_KEY_PREFIX)
     ? null

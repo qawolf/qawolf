@@ -128,12 +128,16 @@ export const pollForQuery = async ({
   requestData,
 }: PollForQuery): // eslint-disable-next-line @typescript-eslint/no-explicit-any
 Promise<any> => {
+  debug("pollForQuery: api key", apiKey);
+
   return Promise.race([
     retry(
       async (_, attempt) => {
         debug("%s attempt %s", logName, attempt);
 
         try {
+          debug("pollForQuery: api key request", apiKey);
+
           const result = await axios.post(
             `${config.API_URL}/graphql`,
             requestData,
@@ -212,6 +216,8 @@ export const pollForEmail = async ({
   timeoutMs,
   to,
 }: PollForEamil): Promise<Email> => {
+  debug("pollForEmail:", apiKey);
+
   return pollForQuery({
     apiKey,
     dataKey: "email",
