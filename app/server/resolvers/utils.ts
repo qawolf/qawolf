@@ -231,7 +231,3 @@ export const ensureUser = ({ logger, user }: EnsureUser): User => {
 
   return user;
 };
-
-export const formatTeam = (team: Team): Team => {
-  return { ...team, api_key: decrypt(team.api_key) };
-};

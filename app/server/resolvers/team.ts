@@ -1,7 +1,6 @@
-import { decrypt } from "../models/encrypt";
 import { findTeam, updateTeam } from "../models/team";
 import { Context, IdQuery, Team, UpdateTeamMutation } from "../types";
-import { ensureTeamAccess, formatTeam } from "./utils";
+import { ensureTeamAccess } from "./utils";
 
 export const teamResolver = async (
   _: Record<string, unknown>,
@@ -13,9 +12,7 @@ export const teamResolver = async (
 
   ensureTeamAccess({ logger, team_id: id, teams });
 
-  const team = await findTeam(id, { db, logger });
-
-  return formatTeam(team);
+  return findTeam(id, { db, logger });
 };
 
 /**
@@ -31,7 +28,5 @@ export const updateTeamResolver = async (
 
   ensureTeamAccess({ logger, team_id: args.id, teams });
 
-  const team = await updateTeam(args, { db, logger });
-
-  return formatTeam(team);
+  return updateTeam(args, { db, logger });
 };

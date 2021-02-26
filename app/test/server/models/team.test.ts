@@ -61,7 +61,9 @@ describe("team model", () => {
 
     it("finds a team", async () => {
       const team = await findTeam("teamId", options);
+
       expect(team).toMatchObject({ id: "teamId" });
+      expect(team.api_key).toMatch("qawolf_");
     });
 
     it("throws an error if team not found", async () => {
@@ -134,6 +136,9 @@ describe("team model", () => {
           renewed_at: null,
         },
       ]);
+
+      expect(teams[0].api_key).toMatch("qawolf_");
+      expect(teams[1].api_key).toMatch("qawolf_");
     });
 
     it("returns null if no teams found", async () => {
@@ -167,9 +172,11 @@ describe("team model", () => {
       const updatedTeam = await db.select("*").from("teams").first();
 
       expect(team.alert_integration_id).toBe("integrationId");
+      expect(team.api_key).toMatch("qawolf_");
       expect(team.is_email_alert_enabled).toBe(false);
       expect(team).toEqual({
         ...updatedTeam,
+        api_key: expect.any(String),
         updated_at: (updatedTeam.updated_at as Date).toISOString(),
       });
 
@@ -185,9 +192,11 @@ describe("team model", () => {
       const updatedTeam2 = await db.select("*").from("teams").first();
 
       expect(team2.alert_integration_id).toBeNull();
+      expect(team2.api_key).toMatch("qawolf_");
       expect(team2.is_email_alert_enabled).toBe(true);
       expect(team2).toEqual({
         ...updatedTeam2,
+        api_key: expect.any(String),
         updated_at: (updatedTeam2.updated_at as Date).toISOString(),
       });
     });
@@ -200,9 +209,11 @@ describe("team model", () => {
 
       const updatedTeam = await db.select("*").from("teams").first();
 
+      expect(team.api_key).toMatch("qawolf_");
       expect(team.helpers).toBe("helpers");
       expect(team).toEqual({
         ...updatedTeam,
+        api_key: expect.any(String),
         updated_at: (updatedTeam.updated_at as Date).toISOString(),
       });
     });
@@ -215,9 +226,11 @@ describe("team model", () => {
 
       const updatedTeam = await db.select("*").from("teams").first();
 
+      expect(team.api_key).toMatch("qawolf_");
       expect(team.name).toBe("new name");
       expect(team).toEqual({
         ...updatedTeam,
+        api_key: expect.any(String),
         updated_at: (updatedTeam.updated_at as Date).toISOString(),
       });
     });
@@ -233,6 +246,7 @@ describe("team model", () => {
       expect(team.is_enabled).toBe(false);
       expect(team).toEqual({
         ...updatedTeam,
+        api_key: expect.any(String),
         updated_at: (updatedTeam.updated_at as Date).toISOString(),
       });
     });
@@ -255,6 +269,7 @@ describe("team model", () => {
       const updatedTeam = await db.select("*").from("teams").first();
       expect(updatedTeam).toEqual({
         ...team,
+        api_key: expect.any(String),
         is_enabled: true,
         plan: "business",
         renewed_at: new Date(renewed_at),
@@ -273,6 +288,7 @@ describe("team model", () => {
       const updatedTeam = await db.select("*").from("teams").first();
       expect(updatedTeam).toEqual({
         ...team,
+        api_key: expect.any(String),
         next_trigger_id: "nextTriggerId",
         updated_at: expect.anything(),
       });
