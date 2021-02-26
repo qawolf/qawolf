@@ -25,6 +25,7 @@ export const copy = {
   apiDetail: "Trigger tests by calling the QA Wolf API:",
   apiKeyHere: "API KEY HERE",
   assignToGroup: "Assign to group",
+  assignToGroupDetail: "Choose a group for the following tests:",
   back: "Back",
   backToDashboard: "Back to dashboard",
   blog: "Blog",

@@ -17,16 +17,12 @@ type Props = {
 export default function Actions({ checkedTests }: Props): JSX.Element {
   if (!checkedTests.length) return null;
 
-  const tests = checkedTests.map(({ id, name }) => {
-    return { id, name };
-  });
-
   const handleDeleteClick = (): void => {
-    state.setModal({ name: "deleteTests", tests });
+    state.setModal({ name: "deleteTests", tests: checkedTests });
   };
 
   const handleGroupClick = (): void => {
-    state.setModal({ name: "editTestsGroup", tests });
+    state.setModal({ name: "editTestsGroup", tests: checkedTests });
   };
 
   const handleTriggersClick = (): void => {

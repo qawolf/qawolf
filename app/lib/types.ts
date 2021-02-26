@@ -215,6 +215,7 @@ export type NavigationOption = "code" | "logs" | "helpers";
 export type NavigationType = "dark" | "light";
 
 export type SelectedTest = {
+  group_id?: string;
   id: string;
   name: string;
 };
