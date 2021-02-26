@@ -53,7 +53,7 @@ export default function Tests(): JSX.Element {
       testIdsRef.current = sortedTestsIds;
       setCheckedTestIds([]);
     }
-  }, [data?.tests]);
+  }, [data?.tests, query.group_id]);
 
   const testTriggers = testTriggersData?.testTriggers || [];
   const triggers = triggersData?.triggers || [];

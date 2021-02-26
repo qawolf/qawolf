@@ -55,8 +55,19 @@ function Options({
           style={{ marginLeft: edgeSize.xxsmall, marginTop: edgeSize.xxxsmall }}
           width={width}
         >
-          <Option label={copy.rename} noIcon onClick={onEdit} />
-          <Option label={copy.delete} noIcon onClick={onDelete} type="danger" />
+          <Option
+            a11yTitle={`rename ${type}`}
+            label={copy.rename}
+            noIcon
+            onClick={onEdit}
+          />
+          <Option
+            a11yTitle={`delete ${type}`}
+            label={copy.delete}
+            noIcon
+            onClick={onDelete}
+            type="danger"
+          />
         </Drop>
       )}
     </Box>
