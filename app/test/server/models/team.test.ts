@@ -134,6 +134,9 @@ describe("team model", () => {
           renewed_at: null,
         },
       ]);
+
+      expect(teams[0].api_key).toMatch("qawolf_");
+      expect(teams[1].api_key).toMatch("qawolf_");
     });
 
     it("returns null if no teams found", async () => {
