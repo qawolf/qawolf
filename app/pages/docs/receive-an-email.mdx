@@ -1,82 +1,47 @@
+import Link from "next/link";
+
 import Header from "../../components/Docs/Header";
 import Layout from "../../components/Docs/Layout";
 import SubHeader from "../../components/Docs/SubHeader";
+import Video from "../../components/Docs/Video";
 
 <Layout>
 
 <Header>Receive an Email</Header>
 
-In this tutorial we will receive an email in a test. This is helpful for scenarios like:
+In this tutorial, we'll receive an email in a test. You might want this for testing:
 
 - Sign in with a login code
 - Password reset
 - Email notifications after an event happens
 
-<SubHeader>Get Email Address</SubHeader>
+<Video youTubeId="9i-aVQo057o" />
 
-QA Wolf provides a helper method called `getInbox`. This method returns an object with the following keys:
+<SubHeader>Test Receiving an Email</SubHeader>
+
+QA Wolf provides a <Link href="get-inbox">getInbox</Link> method that returns:
 
 - `email`: your team's email address
 - `waitForMessage`: function that waits for an email message to the test address
 
-You can optionally pass `{ new: true }` to `getInbox` to get a unique email address.
+Let's use <Link href="get-inbox">getInbox</Link> and <Link href="get-inbox#wait-for-message-arguments">waitForMessage</Link> in our test.
+
+Below we 1) get an email address, 2) fill out the form, and 3) wait for a message and assert it's content.
 
 ```js
-const { email, waitForMessage } = getInbox(); // default inbox for your team
-const { email, waitForMessage } = getInbox({ new: true }); // unique inbox
-```
+const { context } = await launch();
+const page = await context.newPage();
+await page.goto("https://ismyemailworking.com");
 
-<SubHeader>Use Email Address</SubHeader>
-
-Now let's use the email address in your test.
-
-In the example below, we 1) get an email address, 2) fill out the sign form, and 3) get the login code from the email subject line.
-
-```js
-// get email address
+// use our test email to fill out the form
 const { email, waitForMessage } = getInbox();
+await page.fill("#verify_email", email);
+await page.click("#content_cob_check");
 
-// fill out sign in form
-await page.fill('[name="email"]', email);
-await page.click('[aria-label="Sign up with email"]');
-
-// get login code from email subject
-const { subject } = await waitForMessage();
-const code = subject.split(": ")[1].split("-").join("");
-```
-
-The message returned by `waitForMessage` has the following fields:
-
-- `from`: sender of the email
-- `html`: HTML body of the email if it exists
-- `subject`: subject line of the email
-- `text`: email body in plain text formatting
-- `to`: recipient of the email
-
-<SubHeader>Configure waitForMessage</SubHeader>
-
-You can optionally specify `timeout` and `after` when calling `waitForMessage`.
-
-Use the `timeout` option to specify how long in milliseconds QA Wolf should wait to receive an email before throwing an error. The default value is `60000` (1 minute). This means that QA Wolf waits up to 1 minute to receive an email message. If none is received by then, the test fails.
-
-```js
-const { subject } = await waitForMessage({ timeout: 2 * 60 * 1000 }); // 2 minutes
-```
-
-Use the `after` option to wait for an email that is received after a specified `Date`.
-
-For example, at QA Wolf we use the same test to test sign up and log in. When we log in the second time, we need to make sure to get the latest login code. Otherwise, `waitForMessage` would return the email with the first login code immediately.
-
-```js
-// keep track of when we log in the second time
-const after = new Date();
-
-// log in
-await page.fill('[name="email"]', email);
-await page.click('[aria-label="Log in with email"]');
-
-// get login code from email sent after specified date
-const { subject } = await waitForMessage({ after });
+// wait for a message and check it starts with "Congratulations"
+const message = await waitForMessage();
+console.log(message);
+assert(message.text.startsWith("Congratulations"));
 ```
 
 </Layout>
