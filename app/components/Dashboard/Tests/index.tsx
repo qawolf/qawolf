@@ -9,7 +9,9 @@ import { filterTests } from "../helpers";
 import Header from "./Header";
 import List from "./List";
 
-export default function Tests(): JSX.Element {
+type Props = { groupName: string | null };
+
+export default function Tests({ groupName }: Props): JSX.Element {
   const { query } = useRouter();
   const group_id = (query.group_id as string) || null;
   const trigger_id = query.trigger_id as string;
@@ -66,6 +68,7 @@ export default function Tests(): JSX.Element {
     <Box pad="medium" width="full">
       <Header
         checkedTests={checkedTests}
+        groupName={groupName}
         search={search}
         setSearch={setSearch}
         tests={tests}
