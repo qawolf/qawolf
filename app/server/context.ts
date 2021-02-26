@@ -5,6 +5,7 @@ import { AuthenticationError } from "./errors";
 import { Logger } from "./Logger";
 import { findTeamsForUser } from "./models/team";
 import { findUser } from "./models/user";
+import { formatTeam } from "./resolvers/utils";
 import { verifyAccessToken } from "./services/access";
 import { Context } from "./types";
 import { API_KEY_PREFIX } from "./utils";

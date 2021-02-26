@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { AuthenticationError } from "../errors";
 import { Logger } from "../Logger";
+import { decrypt } from "../models/encrypt";
 import { findEnvironment } from "../models/environment";
 import { findEnvironmentVariable } from "../models/environment_variable";
 import { findSuite } from "../models/suite";
@@ -229,4 +230,8 @@ export const ensureUser = ({ logger, user }: EnsureUser): User => {
   }
 
   return user;
+};
+
+export const formatTeam = (team: Team): Team => {
+  return { ...team, api_key: decrypt(team.api_key) };
 };

@@ -108,11 +108,7 @@ export const findTeamsForUser = async (
     .where({ user_id })
     .orderBy("name", "asc");
 
-  return teams.length
-    ? teams.map((t: Team) => {
-        return { ...t, api_key: decrypt(t.api_key) };
-      })
-    : null;
+  return teams.length ? teams : null;
 };
 
 export const updateTeam = async (

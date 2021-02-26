@@ -32,7 +32,7 @@ import {
   User,
 } from "../types";
 import { buildLoginCode } from "../utils";
-import { ensureTeamAccess, ensureUser } from "./utils";
+import { ensureTeamAccess, ensureUser, formatTeam } from "./utils";
 
 type CreateUserWithTrigger = {
   emailFields?: CreateUserWithEmail;
@@ -46,10 +46,11 @@ const buildAuthenticatedUser = async (
 ): Promise<AuthenticatedUser> => {
   const access_token = signAccessToken(user.id);
   const teams = await findTeamsForUser(user.id, options);
+  const formattedTeams = (teams || []).map((t) => formatTeam(t));
 
   return {
     access_token,
-    user: { ...user, teams: teams || [] },
+    user: { ...user, teams: formattedTeams },
   };
 };
 
@@ -120,8 +121,8 @@ export const currentUserResolver = async (
     log.debug("no current user");
     return null;
   }
-
-  const currentUser = { ...contextUser, teams: teams || [] };
+  const formattedTeams = (teams || []).map((t) => formatTeam(t));
+  const currentUser = { ...contextUser, teams: formattedTeams };
 
   log.debug("current user", currentUser.id);
 
@@ -293,5 +294,7 @@ export const updateUserResolver = async (
     { db, logger }
   );
 
-  return { ...updatedUser, teams: teams || [] };
+  const formattedTeams = (teams || []).map((t) => formatTeam(t));
+
+  return { ...updatedUser, teams: formattedTeams };
 };
