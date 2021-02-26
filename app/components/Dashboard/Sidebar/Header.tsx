@@ -3,6 +3,7 @@ import { useContext, useRef, useState } from "react";
 import styled from "styled-components";
 
 import { useOnClickOutside } from "../../../hooks/onClickOutside";
+import { Group } from "../../../lib/types";
 import {
   borderSize,
   colors,
@@ -19,6 +20,8 @@ import Actions from "./Actions";
 import Groups from "./Groups";
 import UserMenu from "./UserMenu";
 
+type Props = { groups: Group[] | null };
+
 const StyledBox = styled(Box)`
   transition: background ${transitionDuration};
 
@@ -27,7 +30,7 @@ const StyledBox = styled(Box)`
   }
 `;
 
-export default function Header(): JSX.Element {
+export default function Header({ groups }: Props): JSX.Element {
   const { teamId } = useContext(StateContext);
   const { user, wolf } = useContext(UserContext);
 
@@ -85,7 +88,7 @@ export default function Header(): JSX.Element {
         </Button>
         <UserMenu isOpen={isOpen} onClose={handleClose} />
         <Actions teamId={teamId} />
-        <Groups teamId={teamId} />
+        <Groups groups={groups} teamId={teamId} />
       </Box>
     </Box>
   );

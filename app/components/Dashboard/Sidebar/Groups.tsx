@@ -2,23 +2,22 @@ import { Box } from "grommet";
 import { useRouter } from "next/router";
 
 import { useCreateGroup, useUpdateGroup } from "../../../hooks/mutations";
-import { useGroups } from "../../../hooks/queries";
 import { routes } from "../../../lib/routes";
 import { state } from "../../../lib/state";
-import { MutableListArgs, MutableListFields } from "../../../lib/types";
+import { Group, MutableListArgs, MutableListFields } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import { borderSize } from "../../../theme/theme-new";
 import MutableList from "../../shared-new/MutableList";
 import Text from "../../shared-new/Text";
 
-type Props = { teamId: string | null };
+type Props = {
+  groups: Group[] | null;
+  teamId: string;
+};
 
-export default function Groups({ teamId }: Props): JSX.Element {
+export default function Groups({ groups, teamId }: Props): JSX.Element {
   const { query, replace } = useRouter();
   const groupId = (query.group_id as string) || null;
-
-  const { data } = useGroups({ team_id: teamId });
-  const groups = data?.groups;
 
   const [createGroup, { loading: isCreateLoading }] = useCreateGroup();
   const [updateGroup, { loading: isEditLoading }] = useUpdateGroup();

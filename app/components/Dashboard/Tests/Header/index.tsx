@@ -10,6 +10,7 @@ import SelectTrigger from "./SelectTrigger";
 
 type Props = {
   checkedTests: ShortTest[];
+  groupName: string | null;
   search: string;
   setSearch: (search: string) => void;
   tests: ShortTest[] | null;
@@ -19,6 +20,7 @@ type Props = {
 
 export default function Header({
   checkedTests,
+  groupName,
   search,
   setSearch,
   testTriggers,
@@ -41,7 +43,7 @@ export default function Header({
             margin={{ right: "medium" }}
             size="componentHeader"
           >
-            {copy.allTests}
+            {groupName || copy.allTests}
           </Text>
         </Box>
         <Box align="center" direction="row">
