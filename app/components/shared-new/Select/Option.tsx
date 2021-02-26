@@ -24,6 +24,7 @@ type Props = {
 
 function Option({
   IconComponent: PropsIconComponent,
+  a11yTitle,
   className,
   isSelected,
   label,
