@@ -36,7 +36,7 @@ export default function Suites(): JSX.Element {
           {copy.runHistory}
         </Text>
       </Box>
-      {!!suites.length ? (
+      {suites.length ? (
         <Box overflow={{ vertical: "scroll" }}>
           <Box flex={false}>{suitesHtml}</Box>
         </Box>

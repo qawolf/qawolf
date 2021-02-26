@@ -2,8 +2,8 @@ import { Box, ThemeContext } from "grommet";
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 
-import Spinner from "../components/shared-new/Spinner";
 import Logo from "../components/shared-new/icons/Logo";
+import Spinner from "../components/shared-new/Spinner";
 import Text from "../components/shared-new/Text";
 import { StateContext } from "../components/StateContext";
 import { useEnsureUser } from "../hooks/ensureUser";

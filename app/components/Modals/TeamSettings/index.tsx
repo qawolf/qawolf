@@ -5,8 +5,8 @@ import { useTeam } from "../../../hooks/queries";
 import { copy } from "../../../theme/copy";
 import EditableText from "../../shared/EditableText";
 import Layer from "../../shared/Layer";
-import Spinner from "../../shared-new/Spinner";
 import Text from "../../shared/Text";
+import Spinner from "../../shared-new/Spinner";
 import Alerts from "./Alerts";
 import Members from "./Members";
 
