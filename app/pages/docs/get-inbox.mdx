@@ -51,11 +51,31 @@ If a message is not received before the timeout, an error is thrown.
 
 ```js
 // wait for a message up to 1 minute
-const { subject, text } = await waitForMessage();
+const { subject } = await waitForMessage();
+assert(subject.includes("hello"));
+
+// wait for a message up to 2 minutes
+const { subject, text } = await waitForMessage({ timeout: 120000 });
 assert(subject.includes("hello"));
 ```
 
-<SubHeader>Arguments</SubHeader>
+Use the `after` option to wait for an email that is received after a specified `Date`.
+
+For example, at QA Wolf we use the same test to test sign up and log in. When we log in the second time, we need to make sure to get the latest login code. Otherwise, `waitForMessage` would return the email with the first login code immediately.
+
+```js
+// keep track of when we log in the second time
+const after = new Date();
+
+// log in
+await page.fill('[name="email"]', email);
+await page.click('[aria-label="Log in with email"]');
+
+// get login code from email sent after specified date
+const { subject } = await waitForMessage({ after });
+```
+
+<SubHeader>waitForMessage Arguments</SubHeader>
 
 **[options]** (Object)
 
@@ -64,10 +84,10 @@ assert(subject.includes("hello"));
 
 **Returns:** `Promise<Message>`
 
-- from (string): The sender. Example: `"Tug the QA Wolf <tug@qawolf.com>"`
-- html (string): Html body of the email. Example: `"<div\>I'm the email body</div\>"`
-- subject (string): Subject of the email. Example: `"🐺 Hi there!"`
-- text (string): Text body of the email. Example: `"I'm the email body"`
-- to (string): The recipient of the email. Example: `"qawolf@spirit.qawolf.email"`
+- from (string): Sender of the email. Example: `"Tug the QA Wolf <tug@qawolf.com>"`
+- html (string): HTML body of the email. Example: `"<div\>I'm the email body</div\>"`
+- subject (string): Subject line of the email. Example: `"🐺 Hi there!"`
+- text (string): Email body in plain text. Example: `"I'm the email body"`
+- to (string): Recipient of the email. Example: `"qawolf@spirit.qawolf.email"`
 
 </Layout>
