@@ -67,7 +67,10 @@ describe("currentUserResolver", () => {
   it("returns user if user exists", async () => {
     const user = await currentUserResolver({}, {}, context);
 
-    expect(user).toEqual({ ...context.user, teams });
+    expect(user).toMatchObject({
+      ...context.user,
+      teams,
+    });
   });
 
   it("returns null otherwise", async () => {
@@ -322,6 +325,7 @@ describe("signInWithGitHubResolver", () => {
 
     expect(access_token).toBe("signedToken");
     expect(user).toMatchObject(gitHubUser);
+    expect(user.teams[0].api_key).toMatch("qawolf_");
 
     expect(userModel.createUserWithGitHub).not.toBeCalled();
   });
@@ -374,6 +378,7 @@ describe("signInWithGitHubResolver", () => {
       ...gitHubUser2,
       teams: [{ plan: "free" }],
     });
+    expect(user.teams[0].api_key).toMatch("qawolf_");
 
     const users = await db.select("*").from("users");
     expect(users).toHaveLength(2);

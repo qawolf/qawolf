@@ -69,6 +69,7 @@ export const copy = {
   deleteGroup: "Delete group",
   deleteOk: "Yes, delete",
   deleteTests: "Delete tests",
+  deleteTestsConfirm: (count: number): string => `Delete ${count} tests`,
   deleteTrigger: "Delete trigger",
   delightUsers: "Delight users",
   delightUsersDetail:
@@ -93,7 +94,6 @@ export const copy = {
   editTriggers: "Edit triggers",
   email: "Email",
   emailPlaceholder: "you@awesome.com",
-  emptyTests: "You don't have any tests yet!",
   emptyTestsSearch: "No tests found",
   encrypted: "Encrypted",
   enterUrl: "Enter your URL to create a test",

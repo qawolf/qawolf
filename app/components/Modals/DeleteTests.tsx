@@ -26,12 +26,15 @@ export default function ConfirmDeleteTests({
   const testIds = tests.map((test) => test.id);
   const [deleteTests, { loading }] = useDeleteTests({ ids: testIds });
 
+  const confirmValue =
+    tests.length === 1 ? tests[0].name : copy.deleteTestsConfirm(tests.length);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setValue(e.target.value);
   };
 
   const handleDelete = (): void => {
-    if (value.toLowerCase() !== copy.confirm.toLowerCase()) {
+    if (value.toLowerCase() !== confirmValue.toLowerCase()) {
       setError(copy.mustMatch);
       return;
     }
@@ -57,8 +60,7 @@ export default function ConfirmDeleteTests({
               margin={{ top: "xxsmall" }}
               size="componentParagraph"
             >
-              {copy.confirmDelete("tests")} {copy.pleaseType}{" "}
-              <b>{copy.confirm}</b> {copy.environmentDeleteConfirm2}
+              {copy.confirmDelete("tests")}
             </Text>
             <Text
               color="gray9"
@@ -67,11 +69,19 @@ export default function ConfirmDeleteTests({
             >
               {testNames}
             </Text>
+            <Text
+              color="gray9"
+              margin={{ bottom: "medium" }}
+              size="componentParagraph"
+            >
+              {copy.pleaseType} <b>{confirmValue}</b>{" "}
+              {copy.environmentDeleteConfirm2}
+            </Text>
             <TextInput
               autoFocus
               error={error}
               onChange={handleChange}
-              placeholder={copy.confirm}
+              placeholder={confirmValue}
               value={value}
             />
           </ConfirmDelete>

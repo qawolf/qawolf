@@ -27,6 +27,10 @@ type ValidateApiKeyForTeam = {
   team_id: string;
 };
 
+export const formatTeam = (team: Team): Team => {
+  return { ...team, api_key: decrypt(team.api_key) };
+};
+
 export const createDefaultTeam = async ({
   db,
   logger,
@@ -55,7 +59,7 @@ export const createDefaultTeam = async ({
   await db("teams").insert(team);
   log.debug("created", team);
 
-  return team;
+  return formatTeam(team);
 };
 
 export const findTeam = async (
@@ -73,7 +77,7 @@ export const findTeam = async (
 
   log.debug("found", id);
 
-  return team;
+  return formatTeam(team);
 };
 
 export const findTeamForEmail = async (
@@ -108,7 +112,7 @@ export const findTeamsForUser = async (
     .where({ user_id })
     .orderBy("name", "asc");
 
-  return teams.length ? teams : null;
+  return teams.length ? teams.map((t: Team) => formatTeam(t)) : null;
 };
 
 export const updateTeam = async (
@@ -166,7 +170,7 @@ export const validateApiKeyForTeam = async (
 
   const team = await findTeam(team_id, { db, logger });
 
-  if (api_key !== decrypt(team.api_key)) {
+  if (api_key !== team.api_key) {
     log.error("invalid api key");
     throw new Error("invalid api key");
   }
