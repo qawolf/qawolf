@@ -31,5 +31,7 @@ export const updateTeamResolver = async (
 
   ensureTeamAccess({ logger, team_id: args.id, teams });
 
-  return updateTeam(args, { db, logger });
+  const team = await updateTeam(args, { db, logger });
+
+  return { ...team, api_key: decrypt(team.api_key) };
 };

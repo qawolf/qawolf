@@ -2,7 +2,7 @@ import { Box, ThemeContext } from "grommet";
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 
-import Spinner from "../components/shared/Spinner";
+import Spinner from "../components/shared-new/Spinner";
 import Logo from "../components/shared-new/icons/Logo";
 import Text from "../components/shared-new/Text";
 import { StateContext } from "../components/StateContext";
@@ -54,7 +54,7 @@ export default function GitHubIntegration(): JSX.Element {
   return (
     <ThemeContext.Extend value={theme}>
       {!data?.createGitHubIntegrations && !error ? (
-        <Spinner />
+        <Spinner margin={{ top: edgeSize.xxxlarge }} />
       ) : (
         <Box align="center" margin={{ top: "large" }}>
           <Logo width={edgeSize.xxxlarge} />

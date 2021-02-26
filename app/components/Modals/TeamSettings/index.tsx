@@ -5,7 +5,7 @@ import { useTeam } from "../../../hooks/queries";
 import { copy } from "../../../theme/copy";
 import EditableText from "../../shared/EditableText";
 import Layer from "../../shared/Layer";
-import Spinner from "../../shared/Spinner";
+import Spinner from "../../shared-new/Spinner";
 import Text from "../../shared/Text";
 import Alerts from "./Alerts";
 import Members from "./Members";
@@ -57,7 +57,7 @@ export default function TeamSettings({
             <Members invites={team.invites} users={team.users} />
           </Box>
         ) : (
-          <Spinner noMargin />
+          <Spinner />
         )}
       </Box>
     </Layer>
