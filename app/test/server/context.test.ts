@@ -69,6 +69,8 @@ describe("context", () => {
       teams: [{ id: "teamId", plan: "free" }],
       user: { id: "userId" },
     });
+
+    expect(result.teams[0].api_key).toMatch("qawolf_");
   });
 
   it("returns api key if possible", async () => {

@@ -69,12 +69,8 @@ describe("currentUserResolver", () => {
 
     expect(user).toMatchObject({
       ...context.user,
-      teams: teams.map((t) => {
-        return { id: t.id };
-      }),
+      teams,
     });
-
-    expect(user.teams[0].api_key).toMatch("qawolf_");
   });
 
   it("returns null otherwise", async () => {
@@ -448,6 +444,5 @@ describe("updateUserResolver", () => {
     const user = await updateUserResolver({}, { onboarded_at }, context);
 
     expect(user).toMatchObject({ id: "userId", onboarded_at });
-    expect(user.teams[0].api_key).toMatch("qawolf_");
   });
 });

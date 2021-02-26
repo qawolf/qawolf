@@ -112,7 +112,7 @@ export const findTeamsForUser = async (
     .where({ user_id })
     .orderBy("name", "asc");
 
-  return teams.length ? teams.map((t) => formatTeam(t)) : null;
+  return teams.length ? teams.map((t: Team) => formatTeam(t)) : null;
 };
 
 export const updateTeam = async (
