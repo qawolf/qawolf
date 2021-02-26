@@ -11,6 +11,7 @@ import ListItem from "./ListItem";
 import NameInput from "./NameInput";
 
 type Props = {
+  hideCreateButton?: boolean;
   fieldsList?: MutableListFields[] | null;
   onClick: (id: string) => void;
   onDelete: (fields: MutableListFields) => void;
@@ -23,6 +24,7 @@ type Props = {
 
 export default function MutableList({
   fieldsList,
+  hideCreateButton,
   overflow,
   pad,
   onClick,
@@ -75,7 +77,7 @@ export default function MutableList({
       {isCreate && (
         <NameInput onCloseForm={handleCloseForm} onSave={onSave} type={type} />
       )}
-      <CreateButton onClick={handleCreate} type={type} />
+      {!hideCreateButton && <CreateButton onClick={handleCreate} type={type} />}
     </Box>
   );
 }

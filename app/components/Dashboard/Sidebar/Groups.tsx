@@ -61,6 +61,7 @@ export default function Groups({ groups, teamId }: Props): JSX.Element {
       </Box>
       <MutableList
         fieldsList={groups}
+        hideCreateButton={!teamId}
         onClick={handleClick}
         onDelete={handleDelete}
         onSave={handleSave}
