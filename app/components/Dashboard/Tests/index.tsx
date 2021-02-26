@@ -29,6 +29,7 @@ export default function Tests(): JSX.Element {
   });
 
   const tests = filterTests({
+    group_id: (query.group_id as string) || null,
     search,
     tests: data?.tests,
     testTriggers: testTriggersData?.testTriggers,
@@ -46,7 +47,8 @@ export default function Tests(): JSX.Element {
     sortedTestsIds.sort();
 
     // use ids because don't want to clear selection if groups change
-    if (!isEqual(testIdsRef.current, sortedTestsIds)) {
+    // unless we are changing assigned group from the group page
+    if (query.group_id || !isEqual(testIdsRef.current, sortedTestsIds)) {
       testIdsRef.current = sortedTestsIds;
       setCheckedTestIds([]);
     }

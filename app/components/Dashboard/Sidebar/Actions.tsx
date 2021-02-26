@@ -17,7 +17,7 @@ import DashboardLink from "./DashboardLink";
 type Props = { teamId: string };
 
 export default function Actions({ teamId }: Props): JSX.Element {
-  const { pathname } = useRouter();
+  const { pathname, query } = useRouter();
 
   const handleEnvironmentsClick = (): void => {
     state.setModal({ name: "environments" });
@@ -36,7 +36,7 @@ export default function Actions({ teamId }: Props): JSX.Element {
       <DashboardLink
         IconComponent={List}
         href={routes.tests}
-        isSelected={pathname.includes(routes.tests)}
+        isSelected={pathname.includes(routes.tests) && !query.group_id}
         label={copy.allTests}
       />
       <DashboardLink

@@ -17,6 +17,7 @@ type FilterRuns = {
 };
 
 type FilterTests = {
+  group_id: string | null;
   search: string;
   testTriggers?: TestTriggers[];
   tests?: ShortTest[];
@@ -46,6 +47,7 @@ export const filterRuns = ({
 };
 
 export const filterTests = ({
+  group_id,
   search,
   testTriggers,
   tests,
@@ -54,6 +56,10 @@ export const filterTests = ({
   if (!tests || (trigger_id && !testTriggers)) return null;
 
   let filteredTests = [...tests];
+
+  if (group_id) {
+    filteredTests = filteredTests.filter((t) => t.group_id === group_id);
+  }
 
   if (search) {
     filteredTests = filteredTests.filter((t) => {
