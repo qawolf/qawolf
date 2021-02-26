@@ -129,6 +129,10 @@ export const copy = {
   gitHubRepo: "GitHub repository",
   goHome: "Go Home",
   group: "Group",
+  groupDelete: "Delete group",
+  groupDeleteConfirm:
+    "Are you sure? This will permanently this group. Please type",
+  groupDeleteConfirm2: "to confirm.",
   groupNew: "Create group",
   groups: "Test groups",
   growRevenue: "Grow revenue",
