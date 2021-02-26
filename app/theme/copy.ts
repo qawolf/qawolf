@@ -69,6 +69,7 @@ export const copy = {
   deleteGroup: "Delete group",
   deleteOk: "Yes, delete",
   deleteTests: "Delete tests",
+  deleteTestsConfirm: (count: number): string => `Delete ${count} tests`,
   deleteTrigger: "Delete trigger",
   delightUsers: "Delight users",
   delightUsersDetail:
