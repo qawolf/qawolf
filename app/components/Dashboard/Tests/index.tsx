@@ -11,6 +11,7 @@ import List from "./List";
 
 export default function Tests(): JSX.Element {
   const { query } = useRouter();
+  const group_id = (query.group_id as string) || null;
   const trigger_id = query.trigger_id as string;
 
   const testIdsRef = useRef<string[]>([]);
@@ -29,17 +30,17 @@ export default function Tests(): JSX.Element {
   });
 
   const tests = filterTests({
-    group_id: (query.group_id as string) || null,
+    group_id,
     search,
     tests: data?.tests,
     testTriggers: testTriggersData?.testTriggers,
     trigger_id,
   });
 
-  // clear checked tests when selected trigger changes
+  // clear checked tests when selected group or trigger changes
   useEffect(() => {
     setCheckedTestIds([]);
-  }, [trigger_id]);
+  }, [group_id, trigger_id]);
 
   // clear checked tests when list changes
   useEffect(() => {
