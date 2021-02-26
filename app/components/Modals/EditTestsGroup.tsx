@@ -2,6 +2,7 @@ import { Box, RadioButtonGroup, ThemeContext } from "grommet";
 import { ChangeEvent, useContext, useState } from "react";
 
 import { useUpdateTestsGroup } from "../../hooks/mutations";
+import { useOnHotKey } from "../../hooks/onHotKey";
 import { useGroups } from "../../hooks/queries";
 import { SelectedTest } from "../../lib/types";
 import { copy } from "../../theme/copy";
@@ -51,6 +52,8 @@ export default function EditTestsGroup({
       },
     }).then(closeModal);
   };
+
+  useOnHotKey({ hotKey: "Enter", onHotKey: handleClick });
 
   const testNames = tests.map((test) => test.name).join(", ");
   const options = (groups || []).map((g) => {
