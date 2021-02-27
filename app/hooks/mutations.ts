@@ -549,7 +549,7 @@ export const useDeleteEnvironment = ({
       onCompleted: ({ deleteEnvironment }) => {
         if (!deleteEnvironment || deleteEnvironment.id !== environmentId)
           return;
-        // clear selected environment from state
+        // clear deleted environment from state
         state.setEnvironmentId(null);
       },
       onError,
