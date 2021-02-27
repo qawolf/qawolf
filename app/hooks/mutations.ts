@@ -538,16 +538,16 @@ export const useCreateTrigger = (): MutationTuple<
 };
 
 export const useDeleteEnvironment = ({
-  environmentId,
+  currentEnvironmentId,
 }: {
-  environmentId: string | null;
+  currentEnvironmentId: string | null;
 }): MutationTuple<DeleteEnvironmentData, DeleteEnvironmentVariables> => {
   return useMutation<DeleteEnvironmentData, DeleteEnvironmentVariables>(
     deleteEnvironmentMutation,
     {
       awaitRefetchQueries: true,
       onCompleted: ({ deleteEnvironment }) => {
-        if (!deleteEnvironment || deleteEnvironment.id !== environmentId)
+        if (!deleteEnvironment || deleteEnvironment.id !== currentEnvironmentId)
           return;
         // clear deleted environment from state
         state.setEnvironmentId(null);

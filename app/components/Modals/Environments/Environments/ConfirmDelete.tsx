@@ -27,7 +27,7 @@ export default function ConfirmDeleteEnvironment({
   const [name, setName] = useState("");
 
   const [deleteEnvironment, { loading }] = useDeleteEnvironment({
-    environmentId,
+    currentEnvironmentId: environmentId,
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
