@@ -93,6 +93,13 @@ describe("team model", () => {
       );
 
       expect(team2).toMatchObject({ id: "teamId" });
+
+      const team3 = await findTeamForEmail(
+        "pumpkin+1@dev.qawolf.email",
+        options
+      );
+
+      expect(team3).toMatchObject({ id: "teamId" });
     });
 
     it("returns null if team not found", async () => {

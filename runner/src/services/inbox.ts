@@ -4,6 +4,7 @@ import { Email } from "../types";
 import { pollForEmail } from "./api";
 
 export type GetInbox = {
+  id?: string;
   new?: boolean;
 };
 
@@ -29,9 +30,9 @@ export const getInbox = (
   const apiKey = context.apiKey;
   const calledAt = new Date();
   let email = context.inbox;
-  if (args.new) {
+  if (args.id || args.new) {
     const [inbox, domain] = email.split("@");
-    email = `${inbox}+${slug()}@${domain}`;
+    email = `${inbox}+${args.id || slug()}@${domain}`;
   }
 
   const waitForMessage = ({
