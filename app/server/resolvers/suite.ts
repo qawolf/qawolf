@@ -111,6 +111,7 @@ export const suiteResolver = async (
 
   return {
     ...suite,
+    environment_id: environment?.id || null,
     environment_name: environment?.name || null,
     environment_variables: suite.environment_variables
       ? decrypt(suite.environment_variables)

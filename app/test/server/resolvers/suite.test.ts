@@ -234,7 +234,7 @@ describe("suiteResolver", () => {
 
     expect(suite).toEqual({
       ...suites[0],
-      environment_id: "deletedId",
+      environment_id: null,
       environment_name: null,
       environment_variables: JSON.stringify({ hello: "world" }),
       trigger_color: null,
