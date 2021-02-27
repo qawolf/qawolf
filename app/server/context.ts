@@ -38,7 +38,7 @@ export const context = async ({
   const api_key = authToken.includes(API_KEY_PREFIX) ? authToken : null;
 
   if (authToken && !api_key) {
-    logger.debug("clear invalid api key", authToken);
+    logger.debug("not api key", authToken);
   }
 
   const ip = formatIp((req.headers["x-forwarded-for"] as string) || null);
