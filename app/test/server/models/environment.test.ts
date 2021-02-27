@@ -179,13 +179,13 @@ describe("findEnvironmentOrNull", () => {
   afterAll(() => db("environments").del());
 
   it("finds an environment", async () => {
-    const environment = await findEnvironment("environmentId", options);
+    const environment = await findEnvironmentOrNull("environmentId", options);
 
     expect(environment).toMatchObject({ name: "Staging", team_id: "teamId" });
   });
 
   it("returns null if environment not found", async () => {
-    const environment = await findEnvironment("fakeId", options);
+    const environment = await findEnvironmentOrNull("fakeId", options);
 
     expect(environment).toBeNull();
   });
