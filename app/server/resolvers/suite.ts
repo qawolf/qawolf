@@ -1,6 +1,6 @@
 import { ClientError } from "../errors";
 import { decrypt } from "../models/encrypt";
-import { findEnvironment } from "../models/environment";
+import { findEnvironmentOrNull } from "../models/environment";
 import {
   createSuiteForTests,
   findSuite,
@@ -103,7 +103,7 @@ export const suiteResolver = async (
   const suite = await findSuite(id, { db, logger });
 
   const environment = suite.environment_id
-    ? await findEnvironment(suite.environment_id, { db, logger })
+    ? await findEnvironmentOrNull(suite.environment_id, { db, logger })
     : null;
   const trigger = suite.trigger_id
     ? await findTriggerOrNull(suite.trigger_id, { db, logger })
@@ -111,6 +111,7 @@ export const suiteResolver = async (
 
   return {
     ...suite,
+    environment_id: environment?.id || null,
     environment_name: environment?.name || null,
     environment_variables: suite.environment_variables
       ? decrypt(suite.environment_variables)

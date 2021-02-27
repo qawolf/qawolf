@@ -221,12 +221,14 @@ describe("suiteResolver", () => {
     });
   });
 
-  it("returns a suite with a deleted trigger trigger", async () => {
+  it("returns a suite with a deleted environment and trigger", async () => {
     await db("triggers").update({ deleted_at: minutesFromNow() });
 
-    jest
-      .spyOn(suiteModel, "findSuite")
-      .mockResolvedValue({ ...suites[0], trigger_id: null });
+    jest.spyOn(suiteModel, "findSuite").mockResolvedValue({
+      ...suites[0],
+      environment_id: "deletedId",
+      trigger_id: null,
+    });
 
     const suite = await suiteResolver({}, { id: "suiteId" }, context);
 

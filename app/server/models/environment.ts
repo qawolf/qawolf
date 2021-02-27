@@ -97,6 +97,23 @@ export const findEnvironmentIdForRun = async (
   return row?.environment_id || null;
 };
 
+export const findEnvironmentOrNull = async (
+  id: string,
+  { db, logger }: ModelOptions
+): Promise<Environment | null> => {
+  const log = logger.prefix("findEnvironmentOrNull");
+  log.debug("envrionment", id);
+
+  const environment = await db("environments")
+    .select("*")
+    .where({ id })
+    .first();
+
+  log.debug(environment ? "found" : "not found");
+
+  return environment || null;
+};
+
 export const findEnvironmentsForTeam = async (
   team_id: string,
   { db, logger }: ModelOptions
