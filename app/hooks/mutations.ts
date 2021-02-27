@@ -537,14 +537,21 @@ export const useCreateTrigger = (): MutationTuple<
   );
 };
 
-export const useDeleteEnvironment = (): MutationTuple<
-  DeleteEnvironmentData,
-  DeleteEnvironmentVariables
-> => {
+export const useDeleteEnvironment = ({
+  environmentId,
+}: {
+  environmentId: string | null;
+}): MutationTuple<DeleteEnvironmentData, DeleteEnvironmentVariables> => {
   return useMutation<DeleteEnvironmentData, DeleteEnvironmentVariables>(
     deleteEnvironmentMutation,
     {
       awaitRefetchQueries: true,
+      onCompleted: ({ deleteEnvironment }) => {
+        if (!deleteEnvironment || deleteEnvironment.id !== environmentId)
+          return;
+        // clear selected environment from state
+        state.setEnvironmentId(null);
+      },
       onError,
       refetchQueries: ["environments"],
     }
