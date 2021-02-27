@@ -40,13 +40,13 @@ const message = await waitForMessage({ timeout: 3 * 60000 });
 
 **[options]** (Object)
 
-- [id](string): Get an email address with the specified id. Default: `null`
-- [new](boolean): Get a new email address. Default: `false`
+- [id] (string): Get an email address with the specified id. Default: `null`
+- [new] (boolean): Get a new email address. Default: `false`
 
 **Returns:** `{ email, waitForMessage }`
 
-- [email](string): An email address to send your email to.
-- [waitForMessage](Function): Wait for a message sent to the email address.
+- email (string): An email address to send your email to.
+- waitForMessage (Function): Wait for a message sent to the email address.
 
 <Header>waitForMessage([options])</Header>
 
@@ -84,8 +84,8 @@ const { subject } = await waitForMessage({ after });
 
 **[options]** (Object)
 
-- [after](Date): Find a message sent after this date. Default: When `getInbox` was called
-- [timeout](number): Time in milliseconds to wait for a message. Default: `60000`
+- [after]&nbsp(Date): Find a message sent after this date. Default: When `getInbox` was called
+- [timeout]&nbsp(number): Time in milliseconds to wait for a message. Default: `60000`
 
 **Returns:** `Promise<Message>`
 
