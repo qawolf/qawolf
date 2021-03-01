@@ -14,15 +14,15 @@ See the <Link href="receive-an-email">Receive an Email guide</Link>.
 
 ```js
 // get your team's email address
-// Example: my-team@qawolf.email
+// example: my-team@qawolf.email
 const { email, waitForMessage } = getInbox();
 
 // get a new email address
-// Example: my-team+a25sa5q@qawolf.email
+// example: my-team+a25sa5q@qawolf.email
 const { email, waitForMessage } = getInbox({ new: true });
 
 // get a custom email address
-// Example: my-team+admin@qawolf.email
+// example: my-team+admin@qawolf.email
 const { email, waitForMessage } = getInbox({ id: "admin" });
 
 // use the email to fill out a form
