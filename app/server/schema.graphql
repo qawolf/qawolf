@@ -342,6 +342,9 @@ type Team {
   "Team helper code, for sharing functionality between tests"
   helpers: String!
 
+  "Team helper code version, incremented as the helper code changes"
+  helpers_version: Int!
+
   "Team ID"
   id: ID!
 

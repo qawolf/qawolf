@@ -31,6 +31,7 @@ export default function HelpersEditor({ onKeyDown }: Props): JSX.Element {
   useEnvTypes({ env, monaco });
 
   const debouncedUpdateTeam = debounce(updateTeam, DEBOUNCE_MS);
+  const helpers_version = team.helpers_version + 1;
 
   const editorDidMount = ({ editor, monaco }) => {
     setEditor(editor);
@@ -39,24 +40,26 @@ export default function HelpersEditor({ onKeyDown }: Props): JSX.Element {
 
     editor.onDidChangeModelContent(() => {
       if (!team) return; // do not overwrite if team not loaded
+      console.log("ON CHANGE", helpers_version);
 
       const helpers = editor.getValue();
+      if (helpers === team.helpers) return;
 
       debouncedUpdateTeam({
         optimisticResponse: {
-          updateTeam: { ...team, helpers },
+          updateTeam: { ...team, helpers, helpers_version },
         },
-        variables: { helpers, id: teamId },
+        variables: { helpers, helpers_version, id: teamId },
       });
     });
   };
 
   useEffect(() => {
-    if (!editor) return;
+    if (!editor || !team) return;
 
-    editor.setValue(team?.helpers || "");
+    editor.setValue(team.helpers);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editor, team?.id]);
+  }, [editor, teamId]);
 
   return (
     <EditorComponent

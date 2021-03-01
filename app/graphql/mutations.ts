@@ -299,6 +299,7 @@ export const updateTeamMutation = gql`
   mutation updateTeam(
     $alert_integration_id: String
     $helpers: String
+    $helpers_version: Int
     $id: ID!
     $is_email_alert_enabled: Boolean
     $name: String
@@ -306,6 +307,7 @@ export const updateTeamMutation = gql`
     updateTeam(
       alert_integration_id: $alert_integration_id
       helpers: $helpers
+      helpers_version: $helpers_version
       id: $id
       is_email_alert_enabled: $is_email_alert_enabled
       name: $name
