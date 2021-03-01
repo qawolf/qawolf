@@ -992,6 +992,15 @@ type Mutation {
     helpers: String
 
     """
+    Updated helpers version number. If omitted or `null`,
+    the version will not be updated. If this is provided and is
+    not higher than the current version, the update will fail.
+    This is done to prevent out-of-order updates from being
+    accepted.
+    """
+    helpers_version: Int
+
+    """
     Team ID
     """
     id: ID!

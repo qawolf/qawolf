@@ -78,13 +78,14 @@ describe("updateTeamResolver", () => {
   it("updates a team helpers", async () => {
     const team = await updateTeamResolver(
       {},
-      { helpers: "helpers", id: "teamId" },
+      { helpers: "helpers", helpers_version: 1, id: "teamId" },
       context
     );
 
     expect(team).toMatchObject({
       api_key: "qawolf_api_key",
       helpers: "helpers",
+      helpers_version: 1,
     });
   });
 
