@@ -23,7 +23,7 @@ export default function Tests({ groupName }: Props): JSX.Element {
   const [search, setSearch] = useState("");
   const [checkedTestIds, setCheckedTestIds] = useState<string[]>([]);
 
-  const { data } = useTests({ team_id: teamId });
+  const { data, startPolling, stopPolling } = useTests({ team_id: teamId });
 
   const { data: triggersData } = useTriggers({ team_id: teamId });
 
@@ -38,6 +38,15 @@ export default function Tests({ groupName }: Props): JSX.Element {
     testTriggers: testTriggersData?.testTriggers,
     trigger_id,
   });
+
+  // poll periodically for tests
+  useEffect(() => {
+    startPolling(30 * 1000);
+
+    return () => {
+      stopPolling();
+    };
+  }, [teamId]);
 
   // clear checked tests when selected group or trigger changes
   useEffect(() => {
