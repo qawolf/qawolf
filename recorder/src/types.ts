@@ -43,6 +43,11 @@ export interface ElementAction {
   value?: string | null;
 }
 
+export interface ElementChoice {
+  selectors: string[];
+  text: string;
+}
+
 export interface LogEvent {
   level: string;
   message: string;

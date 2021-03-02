@@ -4,6 +4,17 @@ export type ElementDescriptor = {
   tag: string;
 };
 
+export const getAssertText = (element: HTMLElement): string => {
+  let text = (element as HTMLInputElement).value || element.innerText || "";
+  if (!text.length || text.length > 100) return "";
+
+  // serialize newlines etc
+  text = JSON.stringify(text);
+
+  // remove wrapper quotes
+  return text.substring(1, text.length - 1);
+};
+
 export const getDescriptor = (element: HTMLElement): ElementDescriptor => {
   const tag = element.tagName.toLowerCase();
 

@@ -15,6 +15,30 @@ beforeAll(async () => {
 
 afterAll(() => browser.close());
 
+describe("getAssertText", () => {
+  const getAssertText = async (selector: string): Promise<string> =>
+    page.evaluate(
+      ({ selector }) => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const target = document.querySelector(selector) as HTMLInputElement;
+        return qawolf.getAssertText(target);
+      },
+      { selector }
+    );
+
+  beforeAll(() =>
+    setBody(page, '<input value="123"><div>howdy.<br/>how are you?</div>')
+  );
+
+  it("gets the input's value", async () => {
+    expect(await getAssertText("input")).toEqual("123");
+  });
+
+  it("gets the element's inner text", async () => {
+    expect(await getAssertText("div")).toEqual("howdy.\\nhow are you?");
+  });
+});
+
 describe("getDescriptor", () => {
   const getDescriptor = async (selector: string): Promise<ElementDescriptor> =>
     page.evaluate(
