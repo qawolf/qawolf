@@ -75,7 +75,8 @@ const StyledContent = styled(Content)`
   }
 
   li,
-  p {
+  p,
+  table {
     font-size: ${text.xsmall.size};
     line-height: ${text.xsmall.height};
     margin-top: ${edgeSize.small};
@@ -92,6 +93,19 @@ const StyledContent = styled(Content)`
 
   pre {
     margin-bottom: 0;
+  }
+
+  table,
+  td,
+  th {
+    border: 1px solid ${colors.textLight};
+  }
+
+  td,
+  th {
+    padding: ${edgeSize.xxsmall};
+    vertical-align: top;
+    width: 50%;
   }
 
   @media screen and (min-width: ${width.content}) {
