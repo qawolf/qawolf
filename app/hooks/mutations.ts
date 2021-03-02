@@ -274,6 +274,7 @@ type UpdateTeamData = {
 
 type UpdateTeamVariables = {
   helpers?: string;
+  helpers_version?: number;
   id: string;
   name?: string;
 };

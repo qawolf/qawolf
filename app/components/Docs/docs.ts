@@ -113,6 +113,10 @@ export const docs: Section[] = [
         name: "Globals",
       },
       {
+        href: `${routes.docs}/assert-element`,
+        name: "assertElement",
+      },
+      {
         href: `${routes.docs}/assert-text`,
         name: "assertText",
       },

@@ -33,6 +33,16 @@ export class Logger extends EventEmitter {
 
       const pwIndex = message?.indexOf("pw:api");
       if (pwIndex > -1) {
+        // ignore some verbose logs
+        if (
+          message.indexOf("browserContext.exposeBinding") > -1 ||
+          message.indexOf("cdpSession.send") > -1 ||
+          message.indexOf("chromiumBrowserContext.newCDPSession") > -1 ||
+          message.indexOf("route.abort") > -1 ||
+          message.indexOf("route.continue") > -1
+        )
+          return;
+
         // start the message after the time
         this.log("playwright", "verbose", message.substring(pwIndex));
         return;

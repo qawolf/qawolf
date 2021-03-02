@@ -240,6 +240,7 @@ export type Team = {
   id: string;
   inbox: string;
   helpers: string;
+  helpers_version: number;
   is_email_alert_enabled: boolean;
   is_enabled: boolean;
   name: string;
@@ -480,6 +481,7 @@ export type UpdateRunnerMutation = {
 export type UpdateTeamMutation = {
   alert_integration_id?: string | null;
   helpers?: string | null;
+  helpers_version?: number;
   id: string;
   is_email_alert_enabled?: boolean;
   name?: string | null;

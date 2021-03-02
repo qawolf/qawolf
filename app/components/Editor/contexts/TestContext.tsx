@@ -13,6 +13,7 @@ type TestContextValue = {
   controller: TestController | null;
   hasWriteAccess: boolean;
   isTestLoading: boolean;
+  refetchTeam: () => void | null;
   run: Run | null;
   suite: Suite | null;
   team: Team | null;
@@ -24,6 +25,7 @@ export const TestContext = createContext<TestContextValue>({
   controller: null,
   hasWriteAccess: false,
   isTestLoading: true,
+  refetchTeam: null,
   run: null,
   suite: null,
   team: null,
@@ -40,7 +42,7 @@ export const TestProvider: FC = ({ children }) => {
   const run_id = query.run_id as string;
   const test_id = query.test_id as string;
 
-  const { data: teamData } = useTeam({ id: teamId });
+  const { data: teamData, refetch: refetchTeam } = useTeam({ id: teamId });
   const { data, loading, startPolling, stopPolling } = useTest({
     id: test_id,
     run_id,
@@ -85,6 +87,7 @@ export const TestProvider: FC = ({ children }) => {
     // only consider the test loading the first time it loads (when there is no test data)
     // this prevents the loading placeholder from flashing every poll
     isTestLoading: !data && loading,
+    refetchTeam,
     run,
     suite,
     team,

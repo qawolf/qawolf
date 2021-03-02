@@ -386,6 +386,7 @@ export const buildTeam = ({
     alert_integration_id: null,
     api_key: apiKey ? encrypt(apiKey) : encrypt(buildApiKey()),
     helpers: "",
+    helpers_version: 0,
     id: `team${finalI === 1 ? "" : i}Id`,
     inbox: inbox || `${cuid()}@dev.qawolf.email`,
     is_email_alert_enabled: true,

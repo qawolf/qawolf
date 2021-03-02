@@ -1,0 +1,34 @@
+import Header from "../../components/Docs/Header";
+import Layout from "../../components/Docs/Layout";
+import Playwright from "../../components/Docs/Playwright";
+import SubHeader from "../../components/Docs/SubHeader";
+
+<Layout>
+
+<Header>assertElement(page, selector[, options])</Header>
+
+Assert element is on the page.
+
+If the element is not found before the timeout, an error is thrown.
+
+```js
+// assert the page has the element with selector "#my-element" within 30 seconds
+await assertElement(page, "#my-element");
+
+// assert the page has the element with selector ".submit" within 60 seconds
+await assertElement(page, ".submit", { timeout: 60000 });
+```
+
+<SubHeader>Arguments</SubHeader>
+
+**page** (<Playwright page />): The page to search for text.
+
+**selector** (string): Selector of element to assert exists.
+
+**[options]** (Object)
+
+- [timeout] (number): Time in milliseconds to wait for the element. Default: `30000`
+
+**Returns:** `Promise<void>`
+
+</Layout>

@@ -1,9 +1,25 @@
 import { Frame, Page } from "playwright";
 
+export interface AssertElementOptions {
+  timeout?: number;
+}
+
 export interface AssertTextOptions {
   selector?: string;
   timeout?: number;
 }
+
+export const assertElement = async (
+  pageOrFrame: Page | Frame,
+  selector: string,
+  options?: AssertElementOptions
+): Promise<void> => {
+  try {
+    await pageOrFrame.waitForSelector(selector, options);
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const assertText = async (
   pageOrFrame: Page | Frame,
