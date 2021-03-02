@@ -46,7 +46,7 @@ export default function Tests({ groupName }: Props): JSX.Element {
     return () => {
       stopPolling();
     };
-  }, [teamId]);
+  }, [startPolling, stopPolling, teamId]);
 
   // clear checked tests when selected group or trigger changes
   useEffect(() => {
