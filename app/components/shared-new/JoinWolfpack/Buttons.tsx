@@ -6,7 +6,7 @@ import { copy } from "../../../theme/copy";
 import { breakpoints, edgeSize } from "../../../theme/theme-new";
 import Button from "../Button";
 
-const calendlyHref = "https://calendly.com/qawolf/30min";
+const calendlyHref = "https://calendly.com/jperl/30min";
 
 export const handleScheduleClick = (): void => {
   window.open(calendlyHref, "_blank");
