@@ -98,7 +98,8 @@ const StyledContent = styled(Content)`
   table,
   td,
   th {
-    border: 1px solid ${colors.textLight};
+    border: 1px solid ${colors.fill20};
+    border-collapse: collapse;
   }
 
   td,
