@@ -126,7 +126,8 @@ const StyledContent = styled(Content)`
     }
 
     li,
-    p {
+    p,
+    table {
       font-size: ${textDesktop.xsmall.size};
       line-height: ${textDesktop.xsmall.height};
       margin-top: ${edgeSize.medium};
