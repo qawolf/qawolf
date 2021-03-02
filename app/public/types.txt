@@ -26675,6 +26675,21 @@ declare function launch(
 }>;
 
 /**
+ * Assert the page or frame contains the specified element by selector.
+ * 
+ * If the element is not found before timeout, an error is thrown.
+ * 
+ * ```js
+ * await assertElement(page, "#my-element");
+ * ```
+ *
+ * ```js
+ * await assertText(page, ".submit", { timeout: 1000 });
+ * ```
+ */
+declare function assertElement(page: import('playwright').Page | import('playwright').Frame, selector: string, options?: { timeout?: number }): Promise<void>;
+
+/**
  * Assert the page or frame contains the specified text. You can specify the element to check by passing a selector, otherwise it defaults to body.
  * 
  * If the element is not found or if the element does not contain the specified text before timeout, an error is thrown.

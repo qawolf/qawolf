@@ -2,7 +2,7 @@ import assert from "assert";
 import axios from "axios";
 import faker from "faker";
 import { devices } from "playwright";
-import { assertText } from "qawolf";
+import { assertElement, assertText } from "qawolf";
 import { NodeVM } from "vm2";
 
 import { GetInbox, getInbox } from "../services/inbox";
@@ -54,6 +54,7 @@ export class VM {
   _buildSandbox(vmOptions: VMOptions): any {
     return {
       assert,
+      assertElement,
       assertText,
       axios,
       devices,
