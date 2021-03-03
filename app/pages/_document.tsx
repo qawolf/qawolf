@@ -11,6 +11,9 @@ import { ServerStyleSheet } from "styled-components";
 const description =
   "QA Wolf is a tool that helps you create and run browser tests. Set up end-to-end tests in minutes without leaving the browser.";
 
+// https://docsearch.algolia.com/docs/dropdown
+const docSearchJSVersion = "2.6.3";
+
 const intercomAppId = process.env.NEXT_PUBLIC_INTERCOM_APP_ID;
 const postHogApiHost = process.env.NEXT_PUBLIC_POSTHOG_API_HOST;
 const postHogApiKey = process.env.NEXT_PUBLIC_POSTHOG_API_KEY;
@@ -51,6 +54,10 @@ class MyDocument extends Document {
         <Head>
           <link rel="apple-touch-icon" href="/logo192.png" />
           <link rel="manifest" href="/manifest.json" />
+          <link
+            rel="stylesheet"
+            href={`https://cdn.jsdelivr.net/npm/docsearch.js@${docSearchJSVersion}/dist/cdn/docsearch.min.css`}
+          />
           <meta name="description" content={description} />
           <meta name="twitter:description" content={description} />
           {/* PostHog */}
@@ -78,6 +85,9 @@ class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
+          <script
+            src={`https://cdn.jsdelivr.net/npm/docsearch.js@${docSearchJSVersion}/dist/cdn/docsearch.min.js`}
+          />
         </body>
       </Html>
     );

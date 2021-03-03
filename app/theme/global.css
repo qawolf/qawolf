@@ -103,3 +103,75 @@ p {
   font-weight: normal;
   font-style: normal;
 }
+
+/* Algolia DocSearch */
+
+/* Main dropdown wrapper */
+.algolia-autocomplete .ds-dropdown-menu {
+  font-family: Circular;
+  font-size: 18px;
+  line-height: 28px;
+  width: 640px;
+}
+
+/* Main category (eg. Getting Started) */
+.algolia-autocomplete .algolia-docsearch-suggestion--category-header {
+  border: none;
+}
+
+.algolia-autocomplete .ds-dropdown-menu [class^="ds-dataset-"] {
+  color: #60708a;
+  border: 1px solid #e9ecf2;
+  border-radius: 2px;
+}
+
+.algolia-autocomplete .ds-dropdown-menu [class^="ds-dataset-"] {
+  box-shadow: 0px 4px 16px rgba(21, 27, 38, 0.16);
+}
+
+/* Category (eg. Downloads) */
+.algolia-autocomplete .algolia-docsearch-suggestion--subcategory-column {
+  color: #60708a;
+}
+
+.algolia-autocomplete .algolia-docsearch-suggestion--content:before,
+.algolia-autocomplete .algolia-docsearch-suggestion--subcategory-column:before {
+  background: #e9ecf2;
+}
+
+/* Title (eg. Bootstrap CDN) */
+.algolia-autocomplete .algolia-docsearch-suggestion--title {
+  color: #17174c;
+  font-family: Circular Medium;
+  font-weight: normal;
+}
+
+/* Description description (eg. Bootstrap currently works...) */
+.algolia-autocomplete .algolia-docsearch-suggestion--text {
+  color: #60708a;
+  font-size: 14px;
+  line-height: 24px;
+}
+
+/* Highlighted text */
+.algolia-autocomplete .algolia-docsearch-suggestion--highlight {
+  background: #f2f4f7;
+  color: #4545e5;
+}
+
+.algolia-autocomplete
+  .algolia-docsearch-suggestion--text
+  .algolia-docsearch-suggestion--highlight {
+  box-shadow: inset 0 -2px 0 0 #4545e5;
+}
+
+.algolia-autocomplete .algolia-docsearch-suggestion--category-header {
+  color: #17174c;
+}
+
+.algolia-autocomplete
+  .algolia-docsearch-suggestion--category-header
+  .algolia-docsearch-suggestion--category-header-lvl0
+  .algolia-docsearch-suggestion--highlight {
+  box-shadow: none;
+}
