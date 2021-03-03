@@ -6,6 +6,7 @@ export {
   buildCueValueForTag,
   getCueTypesConfig,
 } from "./cues";
+export { getCues, getTagValue } from "./getCues";
 export {
   getClickableGroup,
   getInputElementValue,

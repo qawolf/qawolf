@@ -14,6 +14,12 @@ export type Action =
 
 export type Callback<S = void, T = void> = (data?: S) => T;
 
+export type Cue = {
+  level: number; // 0 is target, 1 is parent, etc.
+  penalty: number; // Cue type penalty plus PENALTY_PER_LEVEL
+  value: string;
+};
+
 export interface Doc {
   attrs: Record<string, string>;
   name: string;
