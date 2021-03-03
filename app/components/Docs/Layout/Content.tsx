@@ -40,6 +40,7 @@ const StyledContent = styled(Content)`
   color: ${colors.textLight};
   font-family: ${fontFamily.normal};
   padding: 0 ${edgeSize.medium};
+  word-break: break-word;
 
   a,
   b,
