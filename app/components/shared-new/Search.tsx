@@ -1,4 +1,4 @@
-import { Box } from "grommet";
+import { Box, BoxProps } from "grommet";
 import { ChangeEvent, useRef } from "react";
 
 import { useOnHotKey } from "../../hooks/onHotKey";
@@ -9,11 +9,18 @@ import SearchIcon from "./icons/Search";
 import Text from "./Text";
 
 type Props = {
+  id?: string;
+  margin?: BoxProps["margin"];
   search: string;
   setSearch: (search: string) => void;
 };
 
-export default function Search({ search, setSearch }: Props): JSX.Element {
+export default function Search({
+  id,
+  margin,
+  search,
+  setSearch,
+}: Props): JSX.Element {
   const ref = useRef<HTMLInputElement>(null);
 
   const handleHotKey = (e: KeyboardEvent): void => {
@@ -30,7 +37,7 @@ export default function Search({ search, setSearch }: Props): JSX.Element {
 
   return (
     <Box
-      margin={{ right: "small" }}
+      margin={margin || { right: "small" }}
       style={{ position: "relative" }}
       width="full"
     >
@@ -44,6 +51,7 @@ export default function Search({ search, setSearch }: Props): JSX.Element {
         }}
       />
       <TextInput
+        id={id}
         onChange={handleChange}
         pad={{ left: edgeSize.large, right: edgeSize.xlarge }}
         placeholder={copy.search}
