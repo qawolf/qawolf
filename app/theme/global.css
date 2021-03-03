@@ -149,6 +149,8 @@ p {
 /* Description description (eg. Bootstrap currently works...) */
 .algolia-autocomplete .algolia-docsearch-suggestion--text {
   color: #60708a;
+  font-size: 14px;
+  line-height: 24px;
 }
 
 /* Highlighted text */
