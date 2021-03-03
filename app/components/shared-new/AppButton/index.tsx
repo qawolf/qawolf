@@ -9,6 +9,7 @@ import {
   colors,
   edgeSize,
   overflowStyle,
+  transition,
   transitionDuration,
 } from "../../../theme/theme-new";
 import Text from "../Text";
@@ -65,6 +66,7 @@ function AppButton({
       margin={margin}
       onClick={onClick}
       plain
+      style={{ transition }}
     >
       <Box
         align="center"
@@ -114,7 +116,6 @@ const StyledAppButton = styled(AppButton)`
   background: ${(props) => `${background[props.type]}`};
   border-radius: ${borderSize.small};
   height: ${edgeSize.large};
-  transition: all ${transitionDuration};
 
   ${(props) => !!props.isDisabled && "cursor: wait;"}
   ${(props) => !!props.width && `width: ${props.width};`}
