@@ -1,6 +1,6 @@
 import { Box, ThemeContext } from "grommet";
 import { useRouter } from "next/router";
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 
 import { useAlgoliaDocSearch } from "../../../hooks/algolia";
 import { theme } from "../../../theme/theme-new";
@@ -12,6 +12,8 @@ type Props = { children: ReactNode };
 
 export default function Layout({ children }: Props): JSX.Element {
   const { pathname } = useRouter();
+
+  useAlgoliaDocSearch();
 
   return (
     <ThemeContext.Extend value={theme}>

@@ -40,5 +40,5 @@ export const useAlgoliaDocSearch = (): void => {
     }, 200);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [handleSelected]);
 };
