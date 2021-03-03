@@ -25,6 +25,7 @@ export const useAlgoliaDocSearch = (): void => {
   useEffect(() => {
     if (!algoliaApiKey) return;
 
+    // instantiate docsearch when it is available
     const interval = setInterval((): void => {
       if (!(window as any).docsearch) return;
 
