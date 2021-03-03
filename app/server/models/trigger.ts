@@ -10,12 +10,8 @@ export const TRIGGER_COLORS = [
   "#C54BDE",
   "#56BBD6",
   "#8BC22D",
-  "#EBC963",
-  "#DA4E94",
   "#E59C59",
-  "#EF86B4",
-  "#6E9DFA",
-  "#B899F8",
+  "#DA4E94",
   "#ABB3C2",
   "#667080",
 ];
