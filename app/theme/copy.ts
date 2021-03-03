@@ -95,6 +95,9 @@ export const copy = {
   editTestsGroup: "Assign tests to group",
   editTrigger: "Edit trigger",
   editTriggers: "Edit triggers",
+  editTriggersDetail: "Choose which triggers you want to assign",
+  editTriggersForTests: (count: number): string =>
+    `Edit triggers for ${count} test${count === 1 ? "" : "s"}`,
   email: "Email",
   emailPlaceholder: "you@awesome.com",
   emptyTestsSearch: "No tests found",
@@ -278,6 +281,8 @@ export const copy = {
   triggerDeleteConfirm:
     "Are you sure? This will permanently delete this trigger. Please type",
   triggerDeleteConfirm2: "to confirm.",
+  triggersDetail:
+    "Use triggers to run your tests on a schedule, on deployment, or with an API call",
   triggersEmpty: "No triggers created",
   triggerId: "trigger_id",
   triggerNamePlaceholder: "Name your trigger",
