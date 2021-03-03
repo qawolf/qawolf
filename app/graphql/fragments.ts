@@ -106,12 +106,11 @@ export const suiteFragment = gql`
     }
     team_id
     trigger {
-      color
-      id
-      name
+      ...ShortTriggerFragment
     }
   }
   ${suiteRunFragment}
+  ${shortTriggerFragment}
 `;
 
 export const teamFragment = gql`
