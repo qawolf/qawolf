@@ -45,6 +45,7 @@ export default function ListItem({
         {!isDisabled && (
           <Box margin={{ right: "small" }}>
             <CheckBox
+              a11yTitle={`assign ${trigger.name}`}
               checked={selectState === "all"}
               indeterminate={selectState === "some"}
               onChange={onClick}
