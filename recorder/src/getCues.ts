@@ -4,11 +4,10 @@ import { isDynamic } from "./isDynamic";
 import { Cue } from "./types";
 
 const PENALTY_MAP = {
-  alt: 20,
+  alt: 10,
   "aria-label": 8,
-  class: 12,
-  // High penalty because it is unlikely to be unique given that the value is always the same
-  contenteditable: 30,
+  class: 15,
+  contenteditable: 10,
   // prefer test attributes
   "data-cy": 0,
   "data-e2e": 0,
@@ -18,12 +17,12 @@ const PENALTY_MAP = {
   id: 5,
   name: 10,
   placeholder: 10,
-  role: 20,
+  role: 10,
   src: 15,
-  tag: 40,
+  tag: 15,
   text: 10,
   title: 10,
-  type: 20,
+  type: 10,
   value: 10,
 };
 
@@ -53,17 +52,12 @@ export function getCues(element: HTMLElement, level: number): Cue[] {
 
   for (let i = 0; i < attributes.length; i++) {
     let { name, value } = attributes[i];
+    if (name === "class") continue;
 
-    let penalty = PENALTY_MAP[name];
+    let penalty = PENALTY_MAP[name] || 10;
 
     // prefer test attributes
     if (name.match(/^data-test.*/) || name.match(/^qa-.*/)) penalty = 0;
-
-    if (penalty === undefined) {
-      //
-      console.debug("qawolf: ignore attribute with unknown penalty", name);
-      continue;
-    }
 
     if (
       // allow dynamic values for test and allowlist attributes
@@ -84,19 +78,16 @@ export function getCues(element: HTMLElement, level: number): Cue[] {
     });
   }
 
-  element.classList.forEach((className) => {
-    if (isDynamic(className)) {
-      console.debug("qawolf: ignore dynamic class", className);
-      return;
-    }
+  // element.classList.forEach((className) => {
+  //   if (isDynamic(className)) return;
 
-    cues.push({
-      level,
-      penalty: PENALTY_MAP.class,
-      type: "class",
-      value: `.${cssEscape(className)}`,
-    });
-  });
+  //   cues.push({
+  //     level,
+  //     penalty: PENALTY_MAP.class,
+  //     type: "class",
+  //     value: `.${cssEscape(className)}`,
+  //   });
+  // });
 
   return cues.sort((a, b) => a.penalty - b.penalty);
 }

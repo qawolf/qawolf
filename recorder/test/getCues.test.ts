@@ -225,6 +225,19 @@ describe("getCues", () => {
     `);
   });
 
+  it("gets other attributes", async () => {
+    await page.setContent(`
+  <html>
+    <body>
+      <a data-cta="sign up">Sign Up</a>
+    </body>
+  </html>
+  `);
+
+    const cues = await getCues("a");
+    expect(cues).toMatchInlineSnapshot();
+  });
+
   it("gets tagname based on sibling order", async () => {
     await page.setContent(`
   <html>
