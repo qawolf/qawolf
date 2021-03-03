@@ -103,3 +103,42 @@ p {
   font-weight: normal;
   font-style: normal;
 }
+
+/* Algolia DocSearch */
+
+/* Main dropdown wrapper */
+.algolia-autocomplete .ds-dropdown-menu {
+  font-family: Circular;
+  font-size: 18px;
+  line-height: 28px;
+  width: 500px;
+}
+
+/* Main category (eg. Getting Started) */
+.algolia-autocomplete .algolia-docsearch-suggestion--category-header {
+  color: #60708a;
+  border: 1px solid #e9ecf2;
+  border-radius: 2px;
+}
+
+/* Category (eg. Downloads) */
+.algolia-autocomplete .algolia-docsearch-suggestion--subcategory-column {
+  color: #60708a;
+}
+
+/* Title (eg. Bootstrap CDN) */
+.algolia-autocomplete .algolia-docsearch-suggestion--title {
+  color: #17174c;
+  font-family: Circular Medium;
+  font-weight: normal;
+}
+
+/* Description description (eg. Bootstrap currently works...) */
+.algolia-autocomplete .algolia-docsearch-suggestion--text {
+  color: #60708a;
+}
+
+/* Highlighted text */
+.algolia-autocomplete .algolia-docsearch-suggestion--highlight {
+  color: #4545e5;
+}

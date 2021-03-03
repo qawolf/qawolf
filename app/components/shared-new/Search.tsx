@@ -10,16 +10,16 @@ import Text from "./Text";
 
 type Props = {
   id?: string;
-  margin?: BoxProps["margin"];
   search: string;
   setSearch: (search: string) => void;
+  width?: BoxProps["width"];
 };
 
 export default function Search({
   id,
-  margin,
   search,
   setSearch,
+  width,
 }: Props): JSX.Element {
   const ref = useRef<HTMLInputElement>(null);
 
@@ -37,9 +37,9 @@ export default function Search({
 
   return (
     <Box
-      margin={margin || { right: "small" }}
+      margin={{ right: "small" }}
       style={{ position: "relative" }}
-      width="full"
+      width={width || "full"}
     >
       <SearchIcon
         color={colors.gray5}
