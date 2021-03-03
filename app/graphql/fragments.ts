@@ -70,6 +70,16 @@ export const runnerFragment = gql`
   }
 `;
 
+export const shortTriggerFragment = gql`
+  fragment ShortTriggerFragment on Trigger {
+    color
+    deployment_integration_id
+    id
+    name
+    repeat_minutes
+  }
+`;
+
 export const suiteRunFragment = gql`
   fragment SuiteRunFragment on SuiteRun {
     completed_at
@@ -95,8 +105,11 @@ export const suiteFragment = gql`
       ...SuiteRunFragment
     }
     team_id
-    trigger_id
-    trigger_name
+    trigger {
+      color
+      id
+      name
+    }
   }
   ${suiteRunFragment}
 `;

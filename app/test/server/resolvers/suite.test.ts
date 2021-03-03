@@ -5,6 +5,7 @@ import {
   suiteResolver,
   suitesResolver,
 } from "../../../server/resolvers/suite";
+import { Trigger } from "../../../server/types";
 import { minutesFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
 import {
@@ -29,7 +30,6 @@ const suites = [
     repeat_minutes: 60,
     team_id: "teamId",
     trigger_id: "triggerId",
-    trigger_name: "schedule",
   },
   {
     created_at: timestamp,
@@ -41,7 +41,6 @@ const suites = [
     repeat_minutes: 60,
     team_id: "teamId",
     trigger_id: "triggerId",
-    trigger_name: "schedule",
   },
 ];
 const user = buildUser({});
@@ -185,19 +184,22 @@ describe("suiteResolver", () => {
   afterAll(() => db("triggers").del());
 
   it("returns a suite", async () => {
-    const findSuiteSpy = jest
-      .spyOn(suiteModel, "findSuite")
-      .mockResolvedValue({ ...suites[0], environment_id: "environmentId" });
+    const findSuiteSpy = jest.spyOn(suiteModel, "findSuite").mockResolvedValue({
+      ...suites[0],
+      environment_id: "environmentId",
+    });
 
     const suite = await suiteResolver({}, { id: "suiteId" }, context);
 
-    expect(suite).toEqual({
+    expect(suite).toMatchObject({
       ...suites[0],
       environment_id: "environmentId",
       environment_name: "Staging",
       environment_variables: JSON.stringify({ hello: "world" }),
-      trigger_color: "#4545E5",
-      trigger_name: "trigger1",
+      trigger: {
+        id: "triggerId",
+      },
+      trigger_id: "triggerId",
     });
 
     expect(findSuiteSpy.mock.calls[0][0]).toEqual("suiteId");
@@ -215,9 +217,8 @@ describe("suiteResolver", () => {
       environment_id: null,
       environment_name: null,
       environment_variables: JSON.stringify({ hello: "world" }),
-      trigger_color: null,
+      trigger: null,
       trigger_id: null,
-      trigger_name: null,
     });
   });
 
@@ -237,9 +238,8 @@ describe("suiteResolver", () => {
       environment_id: null,
       environment_name: null,
       environment_variables: JSON.stringify({ hello: "world" }),
-      trigger_color: null,
+      trigger: null,
       trigger_id: null,
-      trigger_name: null,
     });
   });
 });
@@ -261,8 +261,10 @@ describe("suitesResolver", () => {
           return {
             ...s,
             environment_name: "staging",
-            trigger_color: "pink",
-            trigger_name: "trigger1",
+            trigger: {
+              color: "pink",
+              name: "trigger1",
+            } as Trigger,
           };
         })
       );
@@ -279,18 +281,22 @@ describe("suitesResolver", () => {
         environment_name: "staging",
         id: "suiteId",
         repeat_minutes: 60,
-        trigger_color: "pink",
         team_id: "teamId",
-        trigger_name: "trigger1",
+        trigger: {
+          color: "pink",
+          name: "trigger1",
+        },
       },
       {
         created_at: timestamp,
         environment_name: "staging",
         id: "suite2Id",
         repeat_minutes: 60,
-        trigger_color: "pink",
         team_id: "teamId",
-        trigger_name: "trigger1",
+        trigger: {
+          color: "pink",
+          name: "trigger1",
+        },
       },
     ]);
 

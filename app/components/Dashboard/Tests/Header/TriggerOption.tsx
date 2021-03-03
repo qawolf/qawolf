@@ -2,10 +2,10 @@ import { Box } from "grommet";
 
 import { Trigger } from "../../../../lib/types";
 import { overflowStyle } from "../../../../theme/theme-new";
-import ColorDot from "../../../shared-new/ColorDot";
 import CountBadge from "../../../shared-new/CountBadge";
 import Option from "../../../shared-new/Select/Option";
 import Text from "../../../shared-new/Text";
+import TriggerIcon from "../../../shared-new/TriggerIcon";
 
 type Props = {
   count: number;
@@ -25,9 +25,7 @@ export default function TriggerOption({
   const labelHtml = (
     <Box align="center" direction="row" justify="between" width="full">
       <Box align="center" direction="row">
-        {!!trigger && (
-          <ColorDot color={trigger.color} margin={{ right: "xxsmall" }} />
-        )}
+        <TriggerIcon trigger={trigger} />
         <Text color="gray9" size="component" style={overflowStyle}>
           {label || trigger?.name}
         </Text>

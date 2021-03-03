@@ -1,6 +1,7 @@
 import { Box, Button } from "grommet";
 import styled from "styled-components";
 
+import { getTriggerIconComponent } from "../../../lib/helpers";
 import { Trigger } from "../../../lib/types";
 import {
   borderSize,
@@ -15,7 +16,7 @@ import Edit from "../../shared-new/icons/Edit";
 import Indeterminate from "../../shared-new/icons/Indeterminate";
 import Trash from "../../shared-new/icons/Trash";
 import Text from "../../shared-new/Text";
-import { getTriggerIconComponent, SelectState } from "./helpers";
+import { SelectState } from "./helpers";
 
 type Props = {
   className?: string;

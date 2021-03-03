@@ -8,6 +8,7 @@ import {
   inviteFragment,
   runFragment,
   runnerFragment,
+  shortTriggerFragment,
   suiteFragment,
   teamFragment,
   testFragment,
@@ -85,10 +86,12 @@ export const shortSuiteQuery = gql`
       environment_variables
       id
       team_id
-      trigger_id
-      trigger_name
+      trigger {
+        ...ShortTriggerFragment
+      }
     }
   }
+  ${shortTriggerFragment}
 `;
 
 export const suiteQuery = gql`
@@ -113,11 +116,12 @@ export const suitesQuery = gql`
         pass
       }
       team_id
-      trigger_color
-      trigger_id
-      trigger_name
+      trigger {
+        ...ShortTriggerFragment
+      }
     }
   }
+  ${shortTriggerFragment}
 `;
 
 export const teamQuery = gql`

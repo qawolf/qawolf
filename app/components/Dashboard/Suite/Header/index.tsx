@@ -5,10 +5,10 @@ import { timestampToText } from "../../../../lib/helpers";
 import { Suite } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import Button from "../../../shared-new/AppButton";
-import ColorDot from "../../../shared-new/ColorDot";
 import Play from "../../../shared-new/icons/Play";
 import Search from "../../../shared-new/Search";
 import Text from "../../../shared-new/Text";
+import TriggerIcon from "../../../shared-new/TriggerIcon";
 import { formatSuiteName } from "../../helpers";
 import SelectStatus from "./SelectStatus";
 
@@ -47,12 +47,7 @@ export default function Header({
     <Box flex={false}>
       <Box align="center" direction="row" justify="between">
         <Box align="center" direction="row">
-          {!!suite.trigger_color && (
-            <ColorDot
-              color={suite.trigger_color}
-              margin={{ right: "xxsmall" }}
-            />
-          )}
+          <TriggerIcon trigger={suite.trigger} />
           <Text
             color="gray9"
             margin={{ right: "xxsmall" }}

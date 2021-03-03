@@ -291,14 +291,8 @@ type Suite {
   "ID of the team that owns the associated test trigger"
   team_id: ID!
 
-  "Associated test trigger color"
-  trigger_color: String
-
-  "Associated test trigger ID"
-  trigger_id: ID
-
-  "Associated test trigger name"
-  trigger_name: String
+  "Associated test trigger"
+  trigger: Trigger
 }
 
 "One run for one test that is part of a test trigger we are running all at once"

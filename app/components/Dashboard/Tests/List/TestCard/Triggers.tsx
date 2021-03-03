@@ -17,10 +17,9 @@ export default function Triggers({ triggers }: Props): JSX.Element {
   const triggersHtml = triggers.map((t) => {
     return (
       <TriggerBadge
-        color={t.color}
         key={t.id}
-        name={t.name}
         onClick={() => handleTriggerClick(t.id)}
+        trigger={t}
       />
     );
   });

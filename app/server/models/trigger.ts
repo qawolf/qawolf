@@ -7,12 +7,17 @@ const DAILY_HOUR = 16; // 9 am PST
 const MINUTES_PER_DAY = 24 * 60;
 export const TRIGGER_COLORS = [
   "#4545E5",
-  "#CA45E5",
-  "#45CAE5",
-  "#7EE2E5",
-  "#44C76B",
+  "#C54BDE",
+  "#56BBD6",
+  "#8BC22D",
+  "#EBC963",
+  "#DA4E94",
+  "#E59C59",
   "#EF86B4",
-  "#213866",
+  "#6E9DFA",
+  "#B899F8",
+  "#ABB3C2",
+  "#667080",
 ];
 
 type CreateTrigger = {
