@@ -115,7 +115,10 @@ p {
 }
 
 /* Main category (eg. Getting Started) */
-.algolia-autocomplete .algolia-docsearch-suggestion--category-header,
+.algolia-autocomplete .algolia-docsearch-suggestion--category-header {
+  border: none;
+}
+
 .algolia-autocomplete .ds-dropdown-menu [class^="ds-dataset-"] {
   color: #60708a;
   border: 1px solid #e9ecf2;
