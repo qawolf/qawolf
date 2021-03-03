@@ -164,3 +164,14 @@ p {
   .algolia-docsearch-suggestion--highlight {
   box-shadow: inset 0 -2px 0 0 #4545e5;
 }
+
+.algolia-autocomplete .algolia-docsearch-suggestion--category-header {
+  color: #17174c;
+}
+
+.algolia-autocomplete
+  .algolia-docsearch-suggestion--category-header
+  .algolia-docsearch-suggestion--category-header-lvl0
+  .algolia-docsearch-suggestion--highlight {
+  box-shadow: none;
+}
