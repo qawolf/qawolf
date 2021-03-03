@@ -19,7 +19,7 @@ export default function ApiFields({ editTriggerId }: Props): JSX.Element {
   const apiKey = team?.api_key || copy.apiKeyHere;
   const triggerId = editTriggerId || team?.next_trigger_id || copy.triggerId;
 
-  const apiCall = `curl -H "Authorization: ${apiKey}" https://www.qawolf.com/api/suites --data '{"trigger_id": "${triggerId}"}'`;
+  const apiCall = `curl -H "Authorization: ${apiKey}" -H "Content-Type: application/json" https://www.qawolf.com/api/suites -d '{"env": { "MY_VARIABLE": "secret" }, "trigger_id": "${triggerId}"}'`;
 
   return (
     <>

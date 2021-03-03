@@ -198,17 +198,22 @@ export const findSuitesForTeam = async (
   const suites = await db("suites")
     .select("suites.*" as "*")
     .select("environments.name AS environment_name")
-    .select("triggers.color AS trigger_color")
-    .select("triggers.name AS trigger_name")
     .leftJoin("environments", "suites.environment_id", "environments.id")
-    .leftJoin("triggers", "suites.trigger_id", "triggers.id")
     .where({ "suites.team_id": team_id })
     .orderBy("created_at", "desc")
     .limit(limit);
 
+  const triggers = await db("triggers").whereIn(
+    "id",
+    suites.map((s) => s.trigger_id)
+  );
+
   log.debug(`found ${suites.length} suites`);
 
-  return suites;
+  return suites.map((s) => {
+    const trigger = triggers.find((t) => t.id === s.trigger_id) || null;
+    return { ...s, trigger };
+  });
 };
 
 export const updateSuite = async (

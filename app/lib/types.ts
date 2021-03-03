@@ -73,9 +73,7 @@ export type ShortSuite = {
   environment_variables: string | null;
   id: string;
   team_id: string;
-  trigger_color: string | null;
-  trigger_id: string | null;
-  trigger_name: string | null;
+  trigger: ShortTrigger | null;
 };
 
 export type StatusCounts = {
@@ -155,17 +153,20 @@ export type TestSummary = {
   test_id: string;
 };
 
-export type Trigger = {
+export type ShortTrigger = {
   color: string;
+  deployment_integration_id: string | null;
+  id: string;
+  name: string;
+  repeat_minutes: number | null;
+};
+
+export type Trigger = ShortTrigger & {
   created_at: string;
   deployment_branches: string | null;
   deployment_environment: DeploymentEnvironment | null;
-  deployment_integration_id: string | null;
   environment_id: string | null;
-  id: string;
-  name: string;
   next_at: string | null;
-  repeat_minutes: number | null;
 };
 
 export type User = {

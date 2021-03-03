@@ -1,4 +1,5 @@
 import { Box } from "grommet";
+import { ReactNode } from "react";
 
 import { useUpdateTestTriggers } from "../../../hooks/mutations";
 import { useOnHotKey } from "../../../hooks/onHotKey";
@@ -7,8 +8,8 @@ import { copy } from "../../../theme/copy";
 import Divider from "../../shared-new/Divider";
 import Add from "../../shared-new/icons/Add";
 import Buttons from "../../shared-new/Modal/Buttons";
-import Header from "../../shared-new/Modal/Header";
 import Text from "../../shared-new/Text";
+import Header from "./Header";
 import { buildUpdateTestTriggersResponse, getSelectState } from "./helpers";
 import ListItem from "./ListItem";
 
@@ -57,10 +58,10 @@ export default function EditTriggers({
     });
   };
 
-  let innerHtml: JSX.Element;
+  let innerHtml: ReactNode;
 
   if (!isLoading && triggers?.length) {
-    const triggersHtml = triggers.map((t) => {
+    const triggersHtml = triggers.map((t, i) => {
       const state = getSelectState({
         testIds,
         testTriggers,
@@ -71,6 +72,7 @@ export default function EditTriggers({
         <ListItem
           isDisabled={!testIds.length}
           key={t.id}
+          noBorder={i === triggers.length - 1}
           onClick={() => handleClick(t.id)}
           onDelete={() => onDelete(t)}
           onEdit={() => onEdit(t)}
@@ -80,11 +82,7 @@ export default function EditTriggers({
       );
     });
 
-    innerHtml = (
-      <Box gap="xxxsmall" margin={{ vertical: "medium" }}>
-        {triggersHtml}
-      </Box>
-    );
+    innerHtml = triggersHtml;
   } else {
     innerHtml = (
       <Text
@@ -100,8 +98,8 @@ export default function EditTriggers({
 
   return (
     <Box flex={false}>
-      <Header closeModal={closeModal} label={copy.editTriggers} />
-      <Divider margin={{ top: "medium" }} />
+      <Header closeModal={closeModal} testCount={testIds.length} />
+      <Divider />
       {innerHtml}
       <Buttons
         onPrimaryClick={closeModal}

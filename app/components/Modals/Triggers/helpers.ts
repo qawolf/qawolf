@@ -1,4 +1,3 @@
-import { Icon } from "grommet-icons";
 import capitalize from "lodash/capitalize";
 
 import {
@@ -8,10 +7,6 @@ import {
   TriggerFields,
 } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
-import Calendar from "../../shared-new/icons/Calendar";
-import Clock from "../../shared-new/icons/Clock";
-import Plug from "../../shared-new/icons/Plug";
-import Rocket from "../../shared-new/icons/Rocket";
 
 export type SelectState = "all" | "none" | "some";
 export type TriggerMode = "api" | "deployment" | "schedule";
@@ -162,14 +157,6 @@ export const getSelectState = ({
   if (testIds.some(testFn)) return "some";
 
   return "none";
-};
-
-export const getTriggerIconComponent = (trigger: Trigger): Icon => {
-  if (trigger.deployment_integration_id) return Rocket;
-  if (trigger.repeat_minutes === 60) return Clock;
-  if (trigger.repeat_minutes) return Calendar;
-
-  return Plug;
 };
 
 export const labelTextProps = {
