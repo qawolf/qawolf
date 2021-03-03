@@ -16,7 +16,10 @@ export const useAlgoliaDocSearch = (): void => {
     input.setVal("");
 
     const url = new URL(suggestion.url);
-    push(`${url.pathname}${url.hash}`);
+
+    push(`${url.pathname}${url.hash}`).then(() => {
+      if (!url.hash) window.scrollTo(0, 0);
+    });
   };
 
   useEffect(() => {
