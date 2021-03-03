@@ -8,6 +8,7 @@ import {
   inviteFragment,
   teamFragment,
   testFragment,
+  testTriggersFragment,
   triggerFragment,
   userFragment,
 } from "./fragments";
@@ -289,10 +290,10 @@ export const updateTestTriggersMutation = gql`
       remove_trigger_id: $remove_trigger_id
       test_ids: $test_ids
     ) {
-      test_id
-      trigger_ids
+      ...TestTriggersFragment
     }
   }
+  ${testTriggersFragment}
 `;
 
 export const updateTeamMutation = gql`

@@ -92,7 +92,7 @@ export default function List({
         setCheckedTestIds={setCheckedTestIds}
         tests={tests}
       />
-      <Box overflow={{ vertical: "scroll" }}>
+      <Box overflow={{ vertical: "auto" }}>
         <Box flex={false}>{testsHtml}</Box>
       </Box>
     </Box>

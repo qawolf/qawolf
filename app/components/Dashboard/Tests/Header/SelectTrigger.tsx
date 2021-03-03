@@ -16,19 +16,26 @@ type Props = {
 const dividerProps = { margin: { vertical: "xxxsmall" } };
 const width = "320px";
 
+const buildTestsPath = (groupId?: string): string => {
+  if (!groupId) return routes.tests;
+  return `${routes.tests}/${groupId}`;
+};
+
 export default function SelectTrigger({
   testTriggers,
   triggers,
 }: Props): JSX.Element {
   const { replace, query } = useRouter();
+
+  const groupId = query.group_id as string;
   const triggerId = query.trigger_id as string;
 
   const handleAllTriggersClick = (): void => {
-    replace(routes.tests); // clear query
+    replace(buildTestsPath(groupId)); // clear query
   };
 
   const handleTriggerClick = (triggerId: string): void => {
-    replace(`${routes.tests}?trigger_id=${triggerId}`);
+    replace(`${buildTestsPath(groupId)}?trigger_id=${triggerId}`);
   };
 
   const optionsHtml = triggers.map((trigger) => {

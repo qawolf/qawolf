@@ -60,7 +60,7 @@ export default function List({
         runs={filteredRuns}
         setCheckedTestIds={setCheckedTestIds}
       />
-      <Box overflow={{ vertical: "scroll" }}>
+      <Box overflow={{ vertical: "auto" }}>
         <Box flex={false}>{runsHtml}</Box>
       </Box>
     </Box>

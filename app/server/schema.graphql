@@ -429,6 +429,9 @@ type TestSummary {
 
 "A list of trigger IDs for a test"
 type TestTriggers {
+  "The group ID of the test"
+  group_id: ID
+
   "The test ID"
   test_id: ID!
 

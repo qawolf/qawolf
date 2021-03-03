@@ -576,6 +576,7 @@ export type TestSummary = {
 };
 
 export type TestTriggers = {
+  group_id: string | null;
   test_id: string;
   trigger_ids: string[];
 };

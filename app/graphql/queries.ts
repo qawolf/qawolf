@@ -12,6 +12,7 @@ import {
   suiteFragment,
   teamFragment,
   testFragment,
+  testTriggersFragment,
   triggerFragment,
   userFragment,
 } from "./fragments";
@@ -188,10 +189,10 @@ export const testSummariesQuery = gql`
 export const testTriggersQuery = gql`
   query testTriggers($test_ids: [ID!]!) {
     testTriggers(test_ids: $test_ids) {
-      test_id
-      trigger_ids
+      ...TestTriggersFragment
     }
   }
+  ${testTriggersFragment}
 `;
 
 export const testsQuery = gql`

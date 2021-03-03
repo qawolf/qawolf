@@ -141,6 +141,14 @@ export const testFragment = gql`
   }
 `;
 
+export const testTriggersFragment = gql`
+  fragment TestTriggersFragment on TestTriggers {
+    group_id
+    test_id
+    trigger_ids
+  }
+`;
+
 export const triggerFragment = gql`
   fragment TriggerFragment on Trigger {
     color

@@ -37,7 +37,7 @@ export default function Suites(): JSX.Element {
         </Text>
       </Box>
       {suites.length ? (
-        <Box overflow={{ vertical: "scroll" }}>
+        <Box overflow={{ vertical: "auto" }}>
           <Box flex={false}>{suitesHtml}</Box>
         </Box>
       ) : (
