@@ -1,4 +1,5 @@
 import { Box } from "grommet";
+import { useRouter } from "next/router";
 
 import { ShortTest, TestTriggers, Trigger } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
@@ -27,7 +28,14 @@ export default function Header({
   tests,
   triggers,
 }: Props): JSX.Element {
+  const { query } = useRouter();
+  const groupId = query.group_id as string;
+
   const selectedTests = checkedTests.length ? checkedTests : tests;
+
+  const selectedTestTriggers = testTriggers.filter((t) => {
+    return !groupId || t.group_id === groupId;
+  });
 
   return (
     <Box flex={false}>
@@ -53,7 +61,10 @@ export default function Header({
       </Box>
       <Box align="center" direction="row" justify="between">
         <Search search={search} setSearch={setSearch} />
-        <SelectTrigger testTriggers={testTriggers} triggers={triggers} />
+        <SelectTrigger
+          testTriggers={selectedTestTriggers}
+          triggers={triggers}
+        />
       </Box>
     </Box>
   );

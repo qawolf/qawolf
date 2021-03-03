@@ -107,7 +107,7 @@ export const buildUpdateTestTriggersResponse = ({
       if (removeIndex > -1) trigger_ids.splice(removeIndex, 1);
     }
 
-    return { test_id: t.test_id, trigger_ids };
+    return { ...t, trigger_ids };
   });
 };
 

@@ -41,7 +41,7 @@ describe("testTriggersResolver", () => {
     );
 
     expect(testTriggers).toEqual([
-      { test_id: "testId", trigger_ids: ["triggerId"] },
+      { group_id: null, test_id: "testId", trigger_ids: ["triggerId"] },
     ]);
   });
 });
@@ -74,8 +74,8 @@ describe("updateTestTriggersResolver", () => {
       context
     );
     expect(testTriggers).toEqual([
-      { test_id: "testId", trigger_ids: ["triggerId"] },
-      { test_id: "test2Id", trigger_ids: ["triggerId"] },
+      { group_id: null, test_id: "testId", trigger_ids: ["triggerId"] },
+      { group_id: null, test_id: "test2Id", trigger_ids: ["triggerId"] },
     ]);
 
     const dbTestTriggers = await db
@@ -106,8 +106,8 @@ describe("updateTestTriggersResolver", () => {
     );
 
     expect(testTriggers).toEqual([
-      { test_id: "testId", trigger_ids: ["trigger2Id"] },
-      { test_id: "test2Id", trigger_ids: [] },
+      { group_id: null, test_id: "testId", trigger_ids: ["trigger2Id"] },
+      { group_id: null, test_id: "test2Id", trigger_ids: [] },
     ]);
 
     const dbTestTriggers = await db.select("*").from("test_triggers");
