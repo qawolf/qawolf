@@ -20,13 +20,21 @@ export const useAlgoliaDocSearch = (): void => {
   };
 
   useEffect(() => {
-    if (!algoliaApiKey || !(window as any).docsearch) return;
+    if (!algoliaApiKey) return;
 
-    (window as any).docsearch({
-      apiKey: algoliaApiKey,
-      handleSelected,
-      indexName: "qawolf",
-      inputSelector: "#algolia-search",
-    });
+    const interval = setInterval((): void => {
+      if (!(window as any).docsearch) return;
+
+      (window as any).docsearch({
+        apiKey: algoliaApiKey,
+        handleSelected,
+        indexName: "qawolf",
+        inputSelector: "#algolia-search",
+      });
+
+      clearInterval(interval);
+    }, 200);
+
+    return () => clearInterval(interval);
   }, []);
 };
