@@ -13,8 +13,6 @@ type Props = { children: ReactNode };
 export default function Layout({ children }: Props): JSX.Element {
   const { pathname } = useRouter();
 
-  useAlgoliaDocSearch();
-
   return (
     <ThemeContext.Extend value={theme}>
       <Box>

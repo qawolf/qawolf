@@ -9,12 +9,14 @@ export const useAlgoliaDocSearch = (): void => {
 
   // https://docsearch.algolia.com/docs/behavior#handleselected
   const handleSelected = (
-    _: Record<string, unknown>,
+    input: { setVal: (value: string) => void },
     __: Record<string, unknown>,
     suggestion: { url: string }
   ): void => {
+    input.setVal("");
+
     const url = new URL(suggestion.url);
-    push(url.pathname);
+    push(`${url.pathname}${url.hash}`);
   };
 
   useEffect(() => {

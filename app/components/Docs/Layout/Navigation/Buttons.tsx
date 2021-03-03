@@ -1,6 +1,7 @@
 import { Box } from "grommet";
 import { useContext, useState } from "react";
 import styled from "styled-components";
+import { useAlgoliaDocSearch } from "../../../../hooks/algolia";
 
 import { routes } from "../../../../lib/routes";
 import { copy } from "../../../../theme/copy";
@@ -28,8 +29,9 @@ const StyledBox = styled(Box)`
 
 export default function Buttons(): JSX.Element {
   const { user } = useContext(UserContext);
-
   const [search, setSearch] = useState("");
+
+  useAlgoliaDocSearch();
 
   return (
     <StyledBox align="center" direction="row" justify="between">
