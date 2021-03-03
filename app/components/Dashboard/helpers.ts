@@ -87,7 +87,7 @@ export const filterTests = ({
 };
 
 export const formatSuiteName = (suite: ShortSuite): string => {
-  if (suite.trigger_name) return suite.trigger_name;
+  if (suite.trigger?.name) return suite.trigger.name;
   if (!suite.environment_name) return copy.manuallyTriggered;
 
   return `${copy.manuallyTriggered}: ${suite.environment_name}`;

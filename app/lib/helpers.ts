@@ -1,9 +1,4 @@
-import { Icon } from "grommet-icons";
-
-import Clock from "../components/shared-new/icons/Clock";
-import Plug from "../components/shared-new/icons/Plug";
-import Rocket from "../components/shared-new/icons/Rocket";
-import { Log, ShortTrigger } from "./types";
+import { Log } from "./types";
 
 const monthNames = [
   "Jan",
@@ -78,13 +73,6 @@ export const formatTimestamp = (timestamp: string): string => {
   const ms = `${date.getMilliseconds()}`.padEnd(3, "0");
 
   return `${h}:${m}:${s}.${ms}`;
-};
-
-export const getTriggerIconComponent = (trigger: ShortTrigger): Icon => {
-  if (trigger.deployment_integration_id) return Rocket;
-  if (trigger.repeat_minutes) return Clock;
-
-  return Plug;
 };
 
 export const isValidURL = (url: string): boolean => {

@@ -1,7 +1,6 @@
 import { Box, Button } from "grommet";
 import styled from "styled-components";
 
-import { getTriggerIconComponent } from "../../../lib/helpers";
 import { Trigger } from "../../../lib/types";
 import {
   borderSize,
@@ -16,6 +15,7 @@ import Edit from "../../shared-new/icons/Edit";
 import Indeterminate from "../../shared-new/icons/Indeterminate";
 import Trash from "../../shared-new/icons/Trash";
 import Text from "../../shared-new/Text";
+import TriggerIcon from "../../shared-new/TriggerIcon";
 import { SelectState } from "./helpers";
 
 type Props = {
@@ -36,7 +36,6 @@ function ListItem({
   selectState,
   trigger,
 }: Props): JSX.Element {
-  const IconComponent = getTriggerIconComponent(trigger);
   const SelectIconComponent = selectState === "all" ? Check : Indeterminate;
 
   const color = selectState !== "none" ? colors.gray0 : colors.gray9;
@@ -52,13 +51,8 @@ function ListItem({
       >
         <Box align="center" direction="row" justify="between" pad="xxsmall">
           <Box align="center" direction="row">
-            <IconComponent color={color} size={edgeSize.small} />
-            <Text
-              color={color}
-              margin={{ left: "xxsmall" }}
-              size="component"
-              style={overflowStyle}
-            >
+            <TriggerIcon trigger={trigger} />
+            <Text color={color} size="component" style={overflowStyle}>
               {trigger.name}
             </Text>
           </Box>

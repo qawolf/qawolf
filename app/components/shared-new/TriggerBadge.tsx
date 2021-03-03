@@ -26,7 +26,7 @@ function TriggerBadge({
   trigger,
 }: Props): JSX.Element {
   let label = copy.manuallyTriggered;
-  if (name) label = name;
+  if (trigger.name) label = trigger.name;
   else if (isLoading) label = copy.loading;
 
   const innerHtml = (
