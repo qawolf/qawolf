@@ -29,7 +29,13 @@ export const docs: Section[] = [
     IconComponent: Paw,
     color: "primaryFill",
     name: "Overview",
-    docs: [{ href: `${routes.docs}/why-qa-wolf`, name: "Why QA Wolf?" }],
+    docs: [
+      { href: `${routes.docs}/why-qa-wolf`, name: "Why QA Wolf?" },
+      {
+        href: `${routes.docs}/your-testing-strategy`,
+        name: "Your Testing Strategy",
+      },
+    ],
   },
   {
     IconComponent: RiCodeSSlashFill,

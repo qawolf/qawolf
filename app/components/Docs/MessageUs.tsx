@@ -1,3 +1,5 @@
-export default function MessageUs(): JSX.Element {
-  return <a className="open-intercom">Message us</a>;
+type Props = { label?: string };
+
+export default function MessageUs({ label }: Props): JSX.Element {
+  return <a className="open-intercom">{label || "Message us"}</a>;
 }
