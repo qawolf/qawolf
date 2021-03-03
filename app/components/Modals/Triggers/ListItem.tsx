@@ -57,7 +57,11 @@ export default function ListItem({
           {trigger.name}
         </Text>
       </Box>
-      <EditDeleteButtons onDelete={onDelete} onEdit={onEdit} />
+      <EditDeleteButtons
+        name={trigger.name}
+        onDelete={onDelete}
+        onEdit={onEdit}
+      />
     </StyledBox>
   );
 }
