@@ -13,7 +13,7 @@
   "scripts": {
     "clean": "rimraf build tmp",
     "build": "NODE_ENV=production npx webpack --config webpack.config.js",
-    "build:watch": "npx webpack --config webpack.config.js --watch",
+    "build:watch": "npx webpack --config webpack.config.js --watch --progress",
     "lint": "eslint --ext .ts,.tsx --config .eslintrc.json --no-eslintrc src",
     "test": "jest",
     "test:speed": "ts-node -O '{\"module\":\"commonjs\"}' ./test/performance/speed.ts"

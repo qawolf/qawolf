@@ -21,6 +21,11 @@ export type Cue = {
   value: string;
 };
 
+export type CueSet = {
+  cues: Cue[];
+  penalty: number;
+};
+
 export interface Doc {
   attrs: Record<string, string>;
   name: string;

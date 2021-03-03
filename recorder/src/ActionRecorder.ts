@@ -1,6 +1,6 @@
 import { resolveAction } from "./resolveAction";
 import { getInputElementValue } from "./element";
-import { getSelector } from "./getSelector";
+import { getSelector } from "./generateSelectors";
 import { Action, Callback, ElementAction, PossibleAction } from "./types";
 
 type ActionCallback = Callback<ElementAction>;
