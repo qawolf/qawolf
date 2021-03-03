@@ -28,7 +28,7 @@ export default function TestName({ groupName, testName }: Props): JSX.Element {
             size="componentSmall"
             style={overflowStyle}
           >
-            {testName}
+            {groupName}
           </Text>
         </Box>
       )}
