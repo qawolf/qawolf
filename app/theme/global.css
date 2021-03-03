@@ -158,3 +158,9 @@ p {
   background: #f2f4f7;
   color: #4545e5;
 }
+
+.algolia-autocomplete
+  .algolia-docsearch-suggestion--text
+  .algolia-docsearch-suggestion--highlight {
+  box-shadow: inset 0 -2px 0 0 #4545e5;
+}
