@@ -16,29 +16,30 @@ beforeAll(async () => {
   await page.goto("file://" + require.resolve("./ActionRecorderTestPage.html"));
 
   await page.setContent(`
-  <html>
-  <body>
-    <button>
-      <div>
-        <span>inner</span>
-      </div><
-    /button>
-    <button data-test="nested-svg">
-      <svg>
-        <circle></circle>
-      </svg>
-      <div>
-        <span>Nested SVG text button</span>
-      </div>
-    </button>
-  </body>
+<html>
+<body>
+  <button>
+    <div>
+      <span>inner</span>
+    </div><
+  /button>
+  <button data-test="nested-svg">
+    <svg>
+      <circle></circle>
+    </svg>
+    <div>
+      <span>Nested SVG text button</span>
+    </div>
+  </button>
   <button data-test="nested-link">
     <a>
       <span>nested link</span>
     </a>
   </button>
-  <h1></h1>
-</html>`);
+  <h1><span id="empty"></span></h1>
+</body>
+</html>
+`);
 });
 
 afterAll(() => browser.close());
@@ -90,6 +91,14 @@ it("gets sibling elements but not svg descendants", async () => {
     `);
 });
 
+it("omits invisible elements", async () => {
+  expect(await getTargets("h1")).toMatchInlineSnapshot(`
+    Array [
+      "h1",
+    ]
+  `);
+});
+
 it("omits nested click targets", async () => {
   expect(await getTargets('[data-test="nested-link"]')).toMatchInlineSnapshot(`
       Array [
@@ -106,12 +115,4 @@ it("works on nested click targets", async () => {
         "span",
       ]
     `);
-});
-
-it("returns the target if there are no descendants", async () => {
-  expect(await getTargets("h1")).toMatchInlineSnapshot(`
-    Array [
-      "h1",
-    ]
-  `);
 });

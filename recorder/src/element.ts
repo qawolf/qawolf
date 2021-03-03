@@ -1,5 +1,3 @@
-import { getXpath } from "./serialize";
-
 // --
 // from playwright to match their text engine
 const cachedText = new Map<Element | ShadowRoot, string>();
@@ -78,15 +76,9 @@ export const getTopmostEditableElement = (
 ): HTMLElement => {
   if (!element.isContentEditable) return element;
 
-  console.debug("qawolf: get editable ancestor for", getXpath(element));
-
   let ancestor = element;
   do {
     if (!ancestor.parentElement || !ancestor.parentElement.isContentEditable) {
-      console.debug(
-        `qawolf: found editable ancestor: ${ancestor.tagName}`,
-        getXpath(ancestor)
-      );
       return ancestor;
     }
 

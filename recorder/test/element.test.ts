@@ -1,175 +1,136 @@
-import { Browser, Page } from "playwright";
+import { Browser, BrowserContext, Page } from "playwright";
+
 import { QAWolfWeb } from "../src";
-import { launch, TEST_URL } from "./utils";
+import { launch } from "./utils";
 
 let browser: Browser;
+let context: BrowserContext;
 let page: Page;
 
 beforeAll(async () => {
   browser = await launch();
-  const context = await browser.newContext();
+  context = await browser.newContext();
   page = await context.newPage();
+
+  // workaround since we need to navigate for init script
+  await page.goto("file://" + require.resolve("./ActionRecorderTestPage.html"));
 });
 
 afterAll(() => browser.close());
 
 describe("getInputElementValue", () => {
+  const getInputElementValue = async (selector: string): Promise<string> =>
+    page.evaluate(
+      ({ selector }) => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const target = document.querySelector(selector) as HTMLInputElement;
+        return qawolf.getInputElementValue(target);
+      },
+      { selector }
+    );
+
+  beforeAll(() =>
+    page.setContent(`
+<html>
+<body>
+  <input type="text" value="text value">
+  <h1 contenteditable="true">Edit me!</h1>
+  <input contenteditable="true" value="my value" />
+  <input id="empty">
+</body>    
+</html>`)
+  );
+
   it("gets value from text input", async () => {
-    await page.goto(`${TEST_URL}text-inputs`);
-
-    const value = await page.evaluate(() => {
-      const web: QAWolfWeb = (window as any).qawolf;
-      const element = document.querySelector(
-        '[data-qa="html-text-input"]'
-      ) as HTMLInputElement;
-      if (!element) throw new Error("element not found");
-
-      element.value = "I have value";
-
-      return web.getInputElementValue(element);
-    });
-
-    expect(value).toEqual("I have value");
+    expect(await getInputElementValue("input")).toEqual("text value");
   });
 
   it("gets value from contenteditable element", async () => {
-    await page.goto(`${TEST_URL}content-editables`);
-
-    const value = await page.evaluate(() => {
-      const web: QAWolfWeb = (window as any).qawolf;
-      const element = document.querySelector(
-        '[data-qa="content-editable"]'
-      ) as HTMLInputElement;
-      if (!element) throw new Error("element not found");
-
-      return web.getInputElementValue(element);
-    });
-
-    expect(value).toEqual("Edit me!");
+    expect(await getInputElementValue('[contenteditable="true"]')).toEqual(
+      "Edit me!"
+    );
   });
 
   it("gets value from input element that also has contenteditable attribute", async () => {
-    await page.goto(`${TEST_URL}text-inputs`);
-
-    const value = await page.evaluate(() => {
-      const web: QAWolfWeb = (window as any).qawolf;
-      const element = document.querySelector(
-        '[data-qa="html-text-input-content-editable"]'
-      ) as HTMLInputElement;
-      if (!element) throw new Error("element not found");
-
-      element.value = "I have value";
-
-      return web.getInputElementValue(element);
-    });
-
-    expect(value).toEqual("I have value");
+    expect(await getInputElementValue('input[contenteditable="true"]')).toEqual(
+      "my value"
+    );
   });
 
   it("gets empty string value when field is empty", async () => {
-    await page.goto(`${TEST_URL}text-inputs`);
-
-    const value = await page.evaluate(() => {
-      const web: QAWolfWeb = (window as any).qawolf;
-      const element = document.querySelector(
-        '[data-qa="html-text-input"]'
-      ) as HTMLInputElement;
-      if (!element) throw new Error("element not found");
-
-      element.value = "";
-
-      return web.getInputElementValue(element);
-    });
-
-    expect(value).toBe("");
+    expect(await getInputElementValue("#empty")).toBe("");
   });
 });
 
 describe("getTopmostEditableElement", () => {
-  beforeAll(() => page.goto(`${TEST_URL}content-editables`));
+  const getTopmostEditableElementId = async (id: string): Promise<string> =>
+    page.evaluate(
+      ({ id }) => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const target = document.getElementById(id) as HTMLInputElement;
+        const element = qawolf.getTopmostEditableElement(target);
+        return element.id;
+      },
+      { id }
+    );
+
+  beforeAll(() =>
+    page.setContent(`
+<html>
+<body>
+<div id="1">
+  <div contenteditable="true" id="2">
+    <div contenteditable="true" id="3"></div>
+  </div>
+</div>
+</body>    
+</html>`)
+  );
 
   it("chooses the topmost isContentEditable ancestor", async () => {
-    const xpath = await page.evaluate(() => {
-      const web: QAWolfWeb = (window as any).qawolf;
-      const element = document.querySelector(".ql-editor > p") as HTMLElement;
-      if (!element) throw new Error("element not found");
-
-      const ancestor = web.getTopmostEditableElement(element);
-      return web.getXpath(ancestor);
-    });
-
-    expect(xpath).toEqual("//*[@id='root']/div[3]/div/div/div[2]/div[1]");
+    expect(await getTopmostEditableElementId("3")).toEqual("2");
   });
 
   it("chooses the original element when its parent is not isContentEditable", async () => {
-    const xpath = await page.evaluate(() => {
-      const web: QAWolfWeb = (window as any).qawolf;
-      const element = document.querySelector(".ql-editor") as HTMLElement;
-      if (!element) throw new Error("element not found");
-
-      const ancestor = web.getTopmostEditableElement(element);
-      return web.getXpath(ancestor);
-    });
-
-    expect(xpath).toEqual("//*[@id='root']/div[3]/div/div/div[2]/div[1]");
+    expect(await getTopmostEditableElementId("2")).toEqual("2");
   });
 
   it("chooses the original element when it is not isContentEditable", async () => {
-    const xpath = await page.evaluate(() => {
-      const web: QAWolfWeb = (window as any).qawolf;
-      const element = document.querySelector("[data-qa=quill]") as HTMLElement;
-      if (!element) throw new Error("element not found");
-
-      const ancestor = web.getTopmostEditableElement(element);
-      return web.getXpath(ancestor);
-    });
-
-    expect(xpath).toEqual("//*[@id='root']/div[3]/div");
+    expect(await getTopmostEditableElementId("1")).toEqual("1");
   });
 });
 
 describe("isVisible", () => {
-  beforeAll(() => page.goto(`${TEST_URL}login`));
+  const isVisible = async (selector: string): Promise<boolean> =>
+    page.evaluate(
+      ({ selector }) => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const target = document.querySelector(selector) as HTMLInputElement;
+        return qawolf.isVisible(target);
+      },
+      { selector }
+    );
+
+  beforeAll(() =>
+    page.setContent(`
+<html>
+<body>
+  <span id="visible">visible</span>
+  <div id="empty"></div>
+  <div id="display-none" style="display: none">not displayed</div>
+</body>    
+</html>`)
+  );
 
   it("returns true if element is visible", async () => {
-    const isElementVisible = await page.evaluate(() => {
-      const web: QAWolfWeb = (window as any).qawolf;
-      const element = document.getElementById("username");
-      if (!element) throw new Error("element not found");
-
-      return web.isVisible(element);
-    });
-
-    expect(isElementVisible).toBe(true);
+    expect(await isVisible("#visible")).toBe(true);
   });
 
   it("returns false if element has no width", async () => {
-    const isElementVisible = await page.evaluate(() => {
-      const web: QAWolfWeb = (window as any).qawolf;
-      const element = document.getElementById("username");
-      if (!element) throw new Error("element not found");
-
-      element.style.border = "0";
-      element.style.padding = "0";
-      element.style.width = "0";
-
-      return web.isVisible(element);
-    });
-
-    expect(isElementVisible).toBe(false);
+    expect(await isVisible("#empty")).toBe(false);
   });
 
   it("returns false if element is display:none", async () => {
-    const isElementVisible = await page.evaluate(() => {
-      const web: QAWolfWeb = (window as any).qawolf;
-      const element = document.getElementById("password");
-      if (!element) throw new Error("element not found");
-
-      element.style.display = "none";
-
-      return web.isVisible(element);
-    });
-
-    expect(isElementVisible).toBe(false);
+    expect(await isVisible("#display-none")).toBe(false);
   });
 });
