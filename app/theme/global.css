@@ -115,15 +115,25 @@ p {
 }
 
 /* Main category (eg. Getting Started) */
-.algolia-autocomplete .algolia-docsearch-suggestion--category-header {
+.algolia-autocomplete .algolia-docsearch-suggestion--category-header,
+.algolia-autocomplete .ds-dropdown-menu [class^="ds-dataset-"] {
   color: #60708a;
   border: 1px solid #e9ecf2;
   border-radius: 2px;
 }
 
+.algolia-autocomplete .ds-dropdown-menu [class^="ds-dataset-"] {
+  box-shadow: 0px 4px 16px rgba(21, 27, 38, 0.16);
+}
+
 /* Category (eg. Downloads) */
 .algolia-autocomplete .algolia-docsearch-suggestion--subcategory-column {
   color: #60708a;
+}
+
+.algolia-autocomplete .algolia-docsearch-suggestion--content:before,
+.algolia-autocomplete .algolia-docsearch-suggestion--subcategory-column:before {
+  background: #e9ecf2;
 }
 
 /* Title (eg. Bootstrap CDN) */
@@ -140,5 +150,6 @@ p {
 
 /* Highlighted text */
 .algolia-autocomplete .algolia-docsearch-suggestion--highlight {
+  background: #f2f4f7;
   color: #4545e5;
 }
