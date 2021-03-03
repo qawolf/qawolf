@@ -60,6 +60,7 @@ export function getCues(element: HTMLElement, level: number): Cue[] {
     if (name.match(/^data-test.*/) || name.match(/^qa-.*/)) penalty = 0;
 
     if (penalty === undefined) {
+      //
       console.debug("qawolf: ignore attribute with unknown penalty", name);
       continue;
     }
@@ -70,7 +71,7 @@ export function getCues(element: HTMLElement, level: number): Cue[] {
       !["placeholder", "href", "src", "value"].includes(name) &&
       isDynamic(value)
     ) {
-      console.debug("qawolf: ignore dynamic attribute", name);
+      // ignore dynamic attribute
       continue;
     }
 

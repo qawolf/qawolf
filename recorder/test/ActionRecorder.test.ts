@@ -19,9 +19,7 @@ const actionsOfType = (type: Action): ElementAction[] => {
 };
 
 beforeAll(async () => {
-  browser = await launch({
-    startRecorder: true,
-  });
+  browser = await launch({ startRecorder: true });
   context = await browser.newContext();
   await context.exposeBinding(
     "qawElementAction",

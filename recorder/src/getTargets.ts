@@ -1,12 +1,15 @@
 import { isVisible } from "./element";
+import { Target } from "./types";
+
+type OnElementAddedToGroupFn = (element: HTMLElement, depth: number) => void;
 
 type TraverseClickableElementsInput = {
   ancestorChain?: string[];
   depth?: number;
   direction?: "up" | "down";
   element: HTMLElement;
-  group: HTMLElement[];
   maxDepth?: number;
+  onElementAddedToGroup: OnElementAddedToGroupFn;
 };
 
 const BUTTON_INPUT_TYPES = ["button", "image", "reset", "submit"];
@@ -37,8 +40,8 @@ const traverseClickableElements = (
     depth = 0,
     direction = "up",
     element,
-    group,
     maxDepth = MAX_CLICKABLE_ELEMENT_TRAVERSE_DEPTH,
+    onElementAddedToGroup,
   } = input;
 
   // Regardless of which direction we're moving, stop if we hit an invisible element
@@ -50,8 +53,8 @@ const traverseClickableElements = (
     traverseClickableElements({
       direction: "down",
       element,
-      group,
       maxDepth,
+      onElementAddedToGroup,
     });
     return;
   }
@@ -72,17 +75,18 @@ const traverseClickableElements = (
     if (element.parentElement) {
       traverseClickableElements({
         ancestorChain: [lowerTagName, ...ancestorChain],
+        depth: newDepth,
         direction,
         element: element.parentElement,
-        group,
         maxDepth,
-        depth: newDepth,
+        onElementAddedToGroup,
       });
     }
   } else {
     // If we make it this far, this element should be part of the current group.
     // We add elements to the group only on the way down to avoid adding any twice.
-    group.push(element);
+    // Let caller do additional things with each element as we add it
+    onElementAddedToGroup(element, Math.abs(depth));
 
     const newAncestorChain = [...ancestorChain, lowerTagName];
     console.debug(
@@ -97,11 +101,11 @@ const traverseClickableElements = (
         // Call self for each child element, incrementing depth
         traverseClickableElements({
           ancestorChain: newAncestorChain,
+          depth: newDepth,
           direction,
           element: child as HTMLElement,
-          group,
           maxDepth,
-          depth: newDepth,
+          onElementAddedToGroup,
         });
       }
     }
@@ -119,19 +123,27 @@ const traverseClickableElements = (
  * @return An array of HTMLElement that make up the target group. If `element`
  *   itself is not clickable, the array is just the target.
  */
-export const getTargets = (
-  target: HTMLElement,
-  isClick: boolean
-): HTMLElement[] => {
-  let targets: HTMLElement[] = [];
+export const getTargets = (target: HTMLElement, isClick: boolean): Target[] => {
+  let targets: Target[] = [];
 
   if (isClick) {
     // Recursive function that will mutate clickableElements array. A recursive
     // function is better than loops to avoid blocking UI paint.
-    traverseClickableElements({ element: target, group: targets });
+    traverseClickableElements({
+      element: target,
+      onElementAddedToGroup: (element, level) => {
+        targets.push({ element, level });
+      },
+    });
   }
 
   // getTargets may have returned an empty array or it may not have been a click.
   // In that case return the provided target.
-  return targets.length > 0 ? targets : [target];
+  if (targets.length < 1) {
+    targets = [{ element: target, level: 0 }];
+  }
+
+  targets.sort((a, b) => a.level - b.level);
+
+  return targets;
 };

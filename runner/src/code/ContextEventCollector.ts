@@ -12,7 +12,7 @@ import { Protocol } from "playwright/types/protocol";
 import config from "../config";
 import { forEachPage } from "../environment/forEach";
 import { ElementEvent, WindowAction, WindowEvent } from "../types";
-import { FrameTracker } from "./FrameTracker";
+// import { FrameTracker } from "./FrameTracker";
 
 const debug = Debug("qawolf:ContextEventCollector");
 
@@ -34,7 +34,7 @@ export class ContextEventCollector extends EventEmitter {
   readonly _activeSessions = new Set<CDPSession>();
   readonly _attributes: string[];
   readonly _context: BrowserContext;
-  readonly _frameTracker: FrameTracker;
+  // readonly _frameTracker: FrameTracker;
   readonly _pageNavigationHistory = new Map<Page, LastPageNavigation>();
 
   public static async create(
@@ -50,22 +50,22 @@ export class ContextEventCollector extends EventEmitter {
     const attributes = config.DEFAULT_ATTRIBUTE_LIST.split(",");
     this._attributes = attributes;
     this._context = context;
-    this._frameTracker = new FrameTracker({ attributes, context });
+    // this._frameTracker = new FrameTracker({ attributes, context });
   }
 
   async _create(): Promise<void> {
-    await this._frameTracker.trackFrames();
+    // await this._frameTracker.trackFrames();
 
     await this._context.exposeBinding(
       "qawElementAction",
       async ({ frame, page }: BindingOptions, elementEvent: ElementEvent) => {
         const event: ElementEvent = { ...elementEvent, page };
 
-        const selector = this._frameTracker.getFrameSelector(frame);
-        if (selector) {
-          event.frame = frame;
-          event.frameSelector = selector;
-        }
+        // const selector = this._frameTracker.getFrameSelector(frame);
+        // if (selector) {
+        //   event.frame = frame;
+        //   event.frameSelector = selector;
+        // }
 
         debug(`emit %j`, event);
         this.emit("elementevent", event);

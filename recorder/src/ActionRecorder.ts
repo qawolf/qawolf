@@ -1,27 +1,17 @@
 import { resolveAction } from "./resolveAction";
 import { getInputElementValue } from "./element";
-// import { buildSelector } from "./selector";
+import { getSelector } from "./getSelector";
 import { Action, Callback, ElementAction, PossibleAction } from "./types";
-
-function buildSelector(...args): any {
-  return null;
-}
 
 type ActionCallback = Callback<ElementAction>;
 
-type ConstructorOptions = {
-  attribute?: string;
-};
-
 export class ActionRecorder {
-  private _attributes: string[];
   private _lastReceivedAction: PossibleAction;
   private _lastRecordedAction: ElementAction;
   private _onDispose: Callback[] = [];
 
-  constructor(options: ConstructorOptions = {}) {
-    this._attributes = (options.attribute || "").split(",");
-    console.debug("ActionRecorder: created", options);
+  constructor() {
+    console.debug("ActionRecorder: created");
     this.start();
   }
 
@@ -83,11 +73,10 @@ export class ActionRecorder {
     // so we can skip building a selector and emitting it.
     if (!action) return;
 
-    const selector = buildSelector({
-      attributes: this._attributes,
-      isClick: action === "click",
-      target: event.target as HTMLElement,
-    });
+    const { value: selector } = getSelector(
+      event.target as HTMLElement,
+      action === "click"
+    );
 
     const elementAction: ElementAction = {
       action,

@@ -45,3 +45,14 @@ export type PossibleAction = {
   time: number;
   value: string | null;
 };
+
+export type Selector = {
+  elementText?: string;
+  penalty: number;
+  value: string;
+};
+
+export type Target = {
+  element: HTMLElement;
+  level: number;
+};
