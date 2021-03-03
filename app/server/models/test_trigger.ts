@@ -105,7 +105,10 @@ export const findTestTriggersForTests = async (
   const log = logger.prefix("findTestTriggersForTests");
   log.debug(testIds);
 
-  const tests = await db("tests").whereIn("id", testIds);
+  const tests = await db("tests")
+    .select("group_id")
+    .select("id")
+    .whereIn("id", testIds);
 
   const testTriggers = await db("test_triggers")
     .select("test_triggers.*")

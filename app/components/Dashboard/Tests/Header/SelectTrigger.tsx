@@ -16,7 +16,7 @@ type Props = {
 const dividerProps = { margin: { vertical: "xxxsmall" } };
 const width = "320px";
 
-const buildBasePath = (groupId?: string): string => {
+const buildTestsPath = (groupId?: string): string => {
   if (!groupId) return routes.tests;
   return `${routes.tests}/${groupId}`;
 };
@@ -31,11 +31,11 @@ export default function SelectTrigger({
   const triggerId = query.trigger_id as string;
 
   const handleAllTriggersClick = (): void => {
-    replace(buildBasePath(groupId)); // clear query
+    replace(buildTestsPath(groupId)); // clear query
   };
 
   const handleTriggerClick = (triggerId: string): void => {
-    replace(`${buildBasePath(groupId)}?trigger_id=${triggerId}`);
+    replace(`${buildTestsPath(groupId)}?trigger_id=${triggerId}`);
   };
 
   const optionsHtml = triggers.map((trigger) => {
