@@ -3,15 +3,16 @@ import Link from "next/link";
 
 import { routes } from "../../../../../lib/routes";
 import { ShortTest, TestSummary, Trigger } from "../../../../../lib/types";
-import { border, overflowStyle } from "../../../../../theme/theme-new";
+import { border } from "../../../../../theme/theme-new";
 import CheckBox from "../../../../shared-new/CheckBox";
 import TestGif from "../../../../shared-new/TestGif";
-import Text from "../../../../shared-new/Text";
 import Options from "./Options";
 import RunBars from "./RunBars";
+import TestName from "./TestName";
 import Triggers from "./Triggers";
 
 type Props = {
+  groupName: string | null;
   isChecked: boolean;
   isSummaryLoading: boolean;
   noBorder?: boolean;
@@ -22,6 +23,7 @@ type Props = {
 };
 
 export default function TestCard({
+  groupName,
   isChecked,
   isSummaryLoading,
   noBorder,
@@ -63,14 +65,7 @@ export default function TestCard({
                   isRunning={!!runs?.length && !runs[0].gif_url}
                   testName={test.name}
                 />
-                <Text
-                  color="gray9"
-                  margin={{ left: "small" }}
-                  size="componentMedium"
-                  style={overflowStyle}
-                >
-                  {test.name}
-                </Text>
+                <TestName groupName={groupName} testName={test.name} />
               </Box>
             </a>
           </Link>

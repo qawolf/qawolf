@@ -24,7 +24,6 @@ export default function Dashboard(): JSX.Element {
 
   const { data } = useGroups({ team_id: teamId });
   const groups = data?.groups || null;
-  const groupName = groups?.find((g) => g.id === query.group_id)?.name || null;
 
   const [updateUser] = useUpdateUser();
 
@@ -41,7 +40,7 @@ export default function Dashboard(): JSX.Element {
     state.setDashboardUri(asPath);
   }, [asPath]);
 
-  let innerHtml = <Tests groupName={groupName} />;
+  let innerHtml = <Tests groups={groups} />;
   if (pathname.includes(routes.suites) && query.suite_id) {
     innerHtml = <Suite suiteId={query.suite_id as string} />;
   } else if (pathname.includes(routes.suites)) {

@@ -4,14 +4,15 @@ import { useRouter } from "next/router";
 import { useContext, useEffect, useRef, useState } from "react";
 
 import { useTests, useTestTriggers, useTriggers } from "../../../hooks/queries";
+import { Group } from "../../../lib/types";
 import { StateContext } from "../../StateContext";
 import { filterTests } from "../helpers";
 import Header from "./Header";
 import List from "./List";
 
-type Props = { groupName: string | null };
+type Props = { groups: Group[] | null };
 
-export default function Tests({ groupName }: Props): JSX.Element {
+export default function Tests({ groups }: Props): JSX.Element {
   const { query } = useRouter();
   const group_id = (query.group_id as string) || null;
   const trigger_id = query.trigger_id as string;
@@ -72,6 +73,7 @@ export default function Tests({ groupName }: Props): JSX.Element {
   const checkedTests = (tests || []).filter((t) =>
     checkedTestIds.includes(t.id)
   );
+  const groupName = groups?.find((g) => g.id === query.group_id)?.name || null;
 
   return (
     <Box pad="medium" width="full">
@@ -86,6 +88,7 @@ export default function Tests({ groupName }: Props): JSX.Element {
       />
       <List
         checkedTestIds={checkedTestIds}
+        groups={groups}
         setCheckedTestIds={setCheckedTestIds}
         tests={tests}
         testTriggers={testTriggers}
