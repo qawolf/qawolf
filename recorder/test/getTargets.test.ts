@@ -1,114 +1,117 @@
-// TODO...
+import { Browser, BrowserContext, Page } from "playwright";
 
-// describe("getTargets", () => {
-//   beforeAll(() => page.goto(`${TEST_URL}buttons`));
+import { QAWolfWeb } from "../src";
+import { launch } from "./utils";
 
-//   it("returns a clickable group", async () => {
-//     const group = await page.evaluate(() => {
-//       const web: QAWolfWeb = (window as any).qawolf;
-//       const element = document.querySelector("#nested span") as HTMLElement;
-//       if (!element) throw new Error("element not found");
+let browser: Browser;
+let context: BrowserContext;
+let page: Page;
 
-//       return web.getTargets(element).map((el) => el.tagName);
-//     });
+beforeAll(async () => {
+  browser = await launch();
+  context = await browser.newContext();
+  page = await context.newPage();
 
-//     expect(group).toMatchInlineSnapshot(`
-//       Array [
-//         "BUTTON",
-//         "DIV",
-//         "SPAN",
-//       ]
-//     `);
-//   });
+  // workaround since we need to navigate for init script
+  await page.goto("file://" + require.resolve("./ActionRecorderTestPage.html"));
 
-//   it("group has all elements when target is the topmost element in group", async () => {
-//     const group = await page.evaluate(() => {
-//       const web: QAWolfWeb = (window as any).qawolf;
-//       const element = document.querySelector("#nested") as HTMLElement;
-//       if (!element) throw new Error("element not found");
+  await page.setContent(`
+  <html>
+  <body>
+    <button>
+      <div>
+        <span>inner</span>
+      </div><
+    /button>
+    <button data-test="nested-svg">
+      <svg>
+        <circle></circle>
+      </svg>
+      <div>
+        <span>Nested SVG text button</span>
+      </div>
+    </button>
+  </body>
+  <button data-test="nested-link">
+    <a>
+      <span>nested link</span>
+    </a>
+  </button>
+  <h1></h1>
+</html>`);
+});
 
-//       return web.getTargets(element).map((el) => el.tagName);
-//     });
+afterAll(() => browser.close());
 
-//     expect(group).toMatchInlineSnapshot(`
-//       Array [
-//         "BUTTON",
-//         "DIV",
-//         "SPAN",
-//       ]
-//     `);
-//   });
+const getTargets = async (
+  selector: string,
+  isClick = true
+): Promise<string[]> =>
+  page.evaluate(
+    ({ isClick, selector }) => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      const target = document.querySelector(selector) as HTMLElement;
+      return qawolf
+        .getTargets(target, isClick)
+        .map((target) => target.tagName.toLowerCase());
+    },
+    { isClick, selector }
+  );
 
-//   it("group has sibling elements and does not have svg descendants", async () => {
-//     const group = await page.evaluate(() => {
-//       const web: QAWolfWeb = (window as any).qawolf;
-//       const element = document.querySelector(
-//         '[data-for-test="nested-svg"] > svg > circle'
-//       ) as HTMLElement;
-//       if (!element) throw new Error("element not found");
+it("gets clickable targets", async () => {
+  expect(await getTargets("span")).toMatchInlineSnapshot(`
+      Array [
+        "button",
+        "div",
+        "span",
+      ]
+    `);
+});
 
-//       return web.getTargets(element).map((el) => el.tagName);
-//     });
+it("gets all elements when target is the topmost element in group", async () => {
+  expect(await getTargets("button")).toMatchInlineSnapshot(`
+      Array [
+        "button",
+        "div",
+        "span",
+      ]
+    `);
+});
 
-//     expect(group).toMatchInlineSnapshot(`
-//       Array [
-//         "BUTTON",
-//         "svg",
-//         "DIV",
-//         "SPAN",
-//       ]
-//     `);
-//   });
+it("gets sibling elements but not svg descendants", async () => {
+  expect(await getTargets('[data-test="nested-svg"] > svg > circle'))
+    .toMatchInlineSnapshot(`
+      Array [
+        "button",
+        "svg",
+        "div",
+        "span",
+      ]
+    `);
+});
 
-//   it("group omits nested button groups", async () => {
-//     const group = await page.evaluate(() => {
-//       const web: QAWolfWeb = (window as any).qawolf;
-//       const element = document.querySelector(
-//         '[data-for-test="nested-svg-with-nested-link"]'
-//       ) as HTMLElement;
-//       if (!element) throw new Error("element not found");
+it("omits nested click targets", async () => {
+  expect(await getTargets('[data-test="nested-link"]')).toMatchInlineSnapshot(`
+      Array [
+        "button",
+      ]
+    `);
+});
 
-//       return web.getTargets(element).map((el) => el.tagName);
-//     });
+it("works on nested click targets", async () => {
+  expect(await getTargets('[data-test="nested-link"] a'))
+    .toMatchInlineSnapshot(`
+      Array [
+        "a",
+        "span",
+      ]
+    `);
+});
 
-//     expect(group).toMatchInlineSnapshot(`
-//       Array [
-//         "BUTTON",
-//         "svg",
-//         "DIV",
-//         "SPAN",
-//       ]
-//     `);
-//   });
-
-//   it("works on a nested button group", async () => {
-//     const group = await page.evaluate(() => {
-//       const web: QAWolfWeb = (window as any).qawolf;
-//       const element = document.querySelector(
-//         '[data-for-test="nested-svg-with-nested-link"] > a > span'
-//       ) as HTMLElement;
-//       if (!element) throw new Error("element not found");
-
-//       return web.getTargets(element).map((el) => el.tagName);
-//     });
-
-//     expect(group).toMatchInlineSnapshot(`
-//       Array [
-//         "A",
-//         "SPAN",
-//       ]
-//     `);
-//   });
-
-//   it("returns empty array if the element is not clickable", async () => {
-//     const groupLength = await page.evaluate(() => {
-//       const web: QAWolfWeb = (window as any).qawolf;
-//       const element = document.querySelector("h3") as HTMLElement;
-//       if (!element) throw new Error("element not found");
-
-//       return web.getTargets(element).length;
-//     });
-
-//     expect(groupLength).toBe(0);
-//   });
-// });
+it("returns the target if there are no descendants", async () => {
+  expect(await getTargets("h1")).toMatchInlineSnapshot(`
+    Array [
+      "h1",
+    ]
+  `);
+});

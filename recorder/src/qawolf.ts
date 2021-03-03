@@ -1,10 +1,11 @@
-export { resolveAction } from "./resolveAction";
+export { ActionRecorder } from "./ActionRecorder";
 export { getCues, getTagValue } from "./getCues";
 export {
   getInputElementValue,
   getTopmostEditableElement,
   isVisible,
 } from "./element";
-export { ActionRecorder } from "./ActionRecorder";
+export { getTargets } from "./getTargets";
+export { resolveAction } from "./resolveAction";
 export { buildElementText, isMatch } from "./selectorEngine";
 export { getXpath, nodeToDoc } from "./serialize";

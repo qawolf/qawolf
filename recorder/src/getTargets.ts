@@ -132,6 +132,6 @@ export const getTargets = (
   }
 
   // getTargets may have returned an empty array or it may not have been a click.
-  // In that care return the provided target.
+  // In that case return the provided target.
   return targets.length > 0 ? targets : [target];
 };
