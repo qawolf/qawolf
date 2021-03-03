@@ -1,7 +1,11 @@
 import { resolveAction } from "./resolveAction";
 import { getInputElementValue } from "./element";
-import { buildSelector } from "./selector";
+// import { buildSelector } from "./selector";
 import { Action, Callback, ElementAction, PossibleAction } from "./types";
+
+function buildSelector(...args): any {
+  return null;
+}
 
 type ActionCallback = Callback<ElementAction>;
 

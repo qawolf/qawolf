@@ -1,6 +1,5 @@
-import { Cue } from "./cues";
-import { elementText } from "./elementText";
-import { Evaluator } from "./types";
+import { elementText } from "./element";
+import { Cue, Evaluator } from "./types";
 
 let evaluator: Evaluator;
 try {
