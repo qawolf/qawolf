@@ -42,19 +42,13 @@ export default function NameInput({
     onSave({ callback: onCloseForm, fields, name });
   };
 
-  const handleBlur = (): void => {
-    handleSave();
-    ref.current?.blur();
-  };
-
-  const handleClickOutside = (): void => {
-    if (fields) handleBlur();
-  };
-
-  useOnClickOutside({ onClickOutside: handleClickOutside, ref });
+  useOnClickOutside({ onClickOutside: handleSave, ref });
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>): void => {
-    if (e.key === "Enter") handleBlur();
+    if (["Enter", "Escape"].includes(e.key)) {
+      e.stopPropagation();
+      handleSave();
+    }
   };
 
   return (
