@@ -1,3 +1,4 @@
+import { debug } from "./debug";
 import { batchRankCueSets } from "./generateCuesSets";
 import { getXpath } from "./qawolf";
 import { buildSelectorForCues, evaluatorQuerySelector } from "./selectorEngine";
@@ -70,17 +71,17 @@ export function getSelector(
   let i = 0;
   for (const cueSet of cueSetGenerator) {
     const selector = buildSelectorForCues(cueSet.cues);
-    console.debug("qawolf: evaluate selector", i++, selector);
+    debug("evaluate selector", i++, selector);
 
     const startEvaluate = Date.now();
     const matchedElement = evaluatorQuerySelector(
       selector,
       target.ownerDocument
     );
-    console.debug("qawolf: evaluate took", Date.now() - startEvaluate);
+    debug("evaluate took", Date.now() - startEvaluate);
 
     if (isMatch(target, matchedElement)) {
-      console.debug("qawolf: took", Date.now() - start);
+      debug("getSelector took", Date.now() - start);
       return { penalty: cueSet.penalty, value: selector };
     }
 

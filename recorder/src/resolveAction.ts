@@ -1,3 +1,4 @@
+import { debug } from "./debug";
 import { getTopmostEditableElement, isVisible } from "./element";
 import { nodeToDoc } from "./serialize";
 import { Action, Doc, PossibleAction } from "./types";
@@ -51,7 +52,7 @@ export const resolveAction = (
 ): Action | undefined => {
   // Never emit actions for untrusted events
   if (!possibleAction.isTrusted) {
-    console.debug("resolveAction: ignoring untrusted action");
+    debug("resolveAction: ignoring untrusted action");
     return;
   }
 
@@ -63,7 +64,7 @@ export const resolveAction = (
     ["fill", "press"].includes(lastPossibleAction.action) &&
     possibleAction.time - lastPossibleAction.time < 50
   ) {
-    console.debug("resolveAction: ignoring system-initiated click");
+    debug("resolveAction: ignoring system-initiated click");
     return;
   }
 
@@ -75,7 +76,7 @@ export const resolveAction = (
 
   // Never emit actions on invisible targets
   if (!isVisible(target, window.getComputedStyle(target))) {
-    console.debug("resolveAction: ignoring action on invisible target");
+    debug("resolveAction: ignoring action on invisible target");
     return;
   }
 
@@ -85,9 +86,7 @@ export const resolveAction = (
   if (targetDoc.name === "select") {
     // On selects, ignore everything except fill actions (input / change events)
     if (action !== "fill") {
-      console.debug(
-        "resolveAction: ignoring non-fill action on a select element"
-      );
+      debug("resolveAction: ignoring non-fill action on a select element");
       return;
     }
     action = "selectOption";
@@ -97,16 +96,14 @@ export const resolveAction = (
     action === "press" &&
     !shouldTrackKeyPress(possibleAction.value, targetDoc)
   ) {
-    console.debug(
+    debug(
       "resolveAction: ignoring press action for an unimportant key or target"
     );
     return;
   }
 
   if (action === "fill" && !shouldTrackFill(targetDoc)) {
-    console.debug(
-      "resolveAction: ignoring fill action for an unimportant target"
-    );
+    debug("resolveAction: ignoring fill action for an unimportant target");
     return;
   }
 

@@ -1,6 +1,7 @@
-import { resolveAction } from "./resolveAction";
+import { debug } from "./debug";
 import { getInputElementValue } from "./element";
 import { getSelector } from "./generateSelectors";
+import { resolveAction } from "./resolveAction";
 import { Action, Callback, ElementAction, PossibleAction } from "./types";
 
 type ActionCallback = Callback<ElementAction>;
@@ -11,13 +12,13 @@ export class ActionRecorder {
   private _onDispose: Callback[] = [];
 
   constructor() {
-    console.debug("ActionRecorder: created");
+    debug("ActionRecorder: created");
     this.start();
   }
 
   public stop(): void {
     this._onDispose.forEach((d) => d());
-    console.debug("ActionRecorder: stopped");
+    debug("ActionRecorder: stopped");
   }
 
   private listen(
@@ -43,13 +44,11 @@ export class ActionRecorder {
     event: MouseEvent | KeyboardEvent | Event,
     value?: string
   ): void {
-    console.debug(`ActionRecorder: ${action} action detected`, event);
+    debug(`ActionRecorder: ${action} action detected`, event);
 
     const actionCallback: ActionCallback = (window as any).qawElementAction;
     if (!actionCallback) {
-      console.debug(
-        "ActionRecorder: can't record actions without an action callback"
-      );
+      debug("ActionRecorder: can't record actions without an action callback");
       return;
     }
 
@@ -97,11 +96,11 @@ export class ActionRecorder {
       elementAction.selector === this._lastRecordedAction.selector &&
       elementAction.value === this._lastRecordedAction.value
     ) {
-      console.debug(`ActionRecorder: skipping duplicate ${action}`);
+      debug(`ActionRecorder: skipping duplicate ${action}`);
       return;
     }
 
-    console.debug(`ActionRecorder: ${action} action recorded:`, elementAction);
+    debug(`ActionRecorder: ${action} action recorded:`, elementAction);
 
     this._lastRecordedAction = elementAction;
 
@@ -137,6 +136,6 @@ export class ActionRecorder {
       this.recordAction("press", event, (event as KeyboardEvent).key);
     });
 
-    console.debug("ActionRecorder: started");
+    debug("ActionRecorder: started");
   }
 }
