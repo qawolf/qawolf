@@ -1,3 +1,4 @@
+import { elementText } from "./element";
 import { Cue, Evaluator } from "./types";
 
 let evaluator: Evaluator;
@@ -47,7 +48,7 @@ export const buildSelectorForCues = (cues: Cue[]): string => {
 };
 
 export const buildElementText = (element: HTMLElement): string => {
-  const text = (element.innerText || "").trim();
+  const text = elementText(element).trim();
   return text.length > 100 ? "" : text;
 };
 
