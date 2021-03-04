@@ -22,4 +22,8 @@ describe("combine", () => {
       [2, 3, 4],
     ]);
   });
+
+  it("returns an empty array if no combinations", () => {
+    expect(combine([1], 2)).toEqual([]);
+  });
 });

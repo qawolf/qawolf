@@ -5,7 +5,22 @@ import { isDynamic } from "./isDynamic";
 import { buildElementText } from "./selectorEngine";
 import { Cue } from "./types";
 
-const IGNORE_ATTRIBUTES = new Set(["class", "data-reactid"]);
+const ALLOW_VALUE_ELEMENTS = new Set(["BUTTON", "OPTION"]);
+const ALLOW_VALUE_INPUT_TYPES = new Set([
+  "button",
+  "checkbox",
+  "radio",
+  "submit",
+]);
+
+const allowValueCue = (element: HTMLElement): boolean => {
+  const type = element.tagName;
+  return (
+    ALLOW_VALUE_ELEMENTS.has(type) ||
+    (type === "INPUT" &&
+      ALLOW_VALUE_INPUT_TYPES.has((element as HTMLInputElement).type))
+  );
+};
 
 const PENALTY_MAP = {
   alt: 10,
@@ -39,6 +54,8 @@ const PENALTY_MAP = {
   width: 100,
   xmlns: 100,
 };
+
+const IGNORE_ATTRIBUTES = new Set(["class", "data-reactid"]);
 
 /**
  * Get the element's cues in ascending penalty
@@ -81,6 +98,7 @@ export function getCues(element: HTMLElement, level: number): Cue[] {
   for (let i = 0; i < attributes.length; i++) {
     let { name, value } = attributes[i];
     if (IGNORE_ATTRIBUTES.has(name)) continue;
+    if (name === "value" && !allowValueCue(element)) continue;
 
     // rank unknown attributes the same as a class
     let penalty = PENALTY_MAP[name] || PENALTY_MAP.class;

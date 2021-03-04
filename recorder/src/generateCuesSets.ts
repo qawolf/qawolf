@@ -27,14 +27,18 @@ export function* generateMultiLevelCues(
       yield buildCueSet([relativeCue, targetCues[k]]);
 
       // yield 1 relative and 2 target combinations
-      yield* twoTargetCues.map((cues) =>
-        buildCueSet([relativeCue, ...cues])
-      ) as any;
+      if (twoTargetCues.length) {
+        yield* twoTargetCues.map((cues) =>
+          buildCueSet([relativeCue, ...cues])
+        ) as any;
+      }
 
       // yield 2 relative and 1 target combinations
-      yield* twoRelativeCues.map((cues) => {
-        buildCueSet([...cues, targetCues[k]]);
-      }) as any;
+      if (twoRelativeCues.length) {
+        yield* twoRelativeCues.map((cues) => {
+          buildCueSet([...cues, targetCues[k]]);
+        }) as any;
+      }
     }
   }
 }
@@ -62,7 +66,7 @@ export function* generateCueSets(
   let level = 1;
   let parent = target.parentElement;
   while (level - 1 < descendants.length || parent) {
-    if (parent)
+    if (parent) {
       yield* generateMultiLevelCues(
         targetCues,
         twoTargetCues,
@@ -70,15 +74,17 @@ export function* generateCueSets(
         // negative so it is sorted higher when combined into a selector
         level * -1
       );
+    }
 
     const descendant = descendants[level - 1] as HTMLElement;
-    if (descendant)
+    if (descendant) {
       yield* generateMultiLevelCues(
         targetCues,
         twoTargetCues,
         descendant,
         level
       );
+    }
 
     if (parent) parent = parent.parentElement;
     level += 1;
