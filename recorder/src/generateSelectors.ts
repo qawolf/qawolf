@@ -42,6 +42,7 @@ function contains(target: DOMRect, element: DOMRect) {
 }
 
 function isMatch(target: HTMLElement, element: HTMLElement) {
+  if (!element) return false;
   if (element === target) return true;
 
   if (!canContain(target)) return false;
@@ -56,7 +57,10 @@ function isMatch(target: HTMLElement, element: HTMLElement) {
   );
 }
 
-export function getSelector(element: HTMLElement): Selector | null {
+export function getSelector(
+  element: HTMLElement,
+  timeout = 500
+): Selector | null {
   const start = Date.now();
 
   const target = getLikelyTarget(element);
@@ -79,6 +83,8 @@ export function getSelector(element: HTMLElement): Selector | null {
       console.debug("qawolf: took", Date.now() - start);
       return { penalty: cueSet.penalty, value: selector };
     }
+
+    if (Date.now() - start > timeout) break;
   }
 
   // while (true) {

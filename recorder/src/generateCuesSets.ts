@@ -8,12 +8,46 @@ export const buildCueSet = (cues: Cue[]): CueSet => {
   return { cues, penalty, valueLength };
 };
 
+export function* generateMultiLevelCues(
+  targetCues: Cue[],
+  twoTargetCues: Cue[][],
+  relative: HTMLElement,
+  level: number
+): Generator<CueSet, void, unknown> {
+  // yield relative and target cue combinations
+  const relativeCues = getCues(relative, level);
+
+  for (let j = 0; j < relativeCues.length; j++) {
+    const relativeCue = relativeCues[j];
+
+    const twoRelativeCues = combine(relativeCues, 2);
+
+    for (let k = 0; k < targetCues.length; k++) {
+      // yield 1 relative and 1 target combinations
+      yield buildCueSet([relativeCue, targetCues[k]]);
+
+      // yield 1 relative and 2 target combinations
+      yield* twoTargetCues.map((cues) =>
+        buildCueSet([relativeCue, ...cues])
+      ) as any;
+
+      // yield 2 relative and 1 target combinations
+      yield* twoRelativeCues.map((cues) => {
+        buildCueSet([...cues, targetCues[k]]);
+      }) as any;
+    }
+  }
+}
+
 export function* generateCueSets(
   target: HTMLElement
 ): Generator<CueSet, void, unknown> {
   // yield 1 target cue sets
-  const targetCues = getCues(target, 0);
+  let targetCues = getCues(target, 0);
   yield* targetCues.map((cue) => buildCueSet([cue])) as any;
+
+  // do not combine text cues because they are very expensive to evaluate
+  targetCues = targetCues.filter((c) => c.type !== "text");
 
   // yield 2 target cue sets
   const twoTargetCues = combine(targetCues, 2);
@@ -23,37 +57,32 @@ export function* generateCueSets(
   const threeTargetCues = combine(targetCues, 3);
   yield* threeTargetCues.map(buildCueSet) as any;
 
-  // TODO descendants too
-  let parent = target.parentElement;
+  const descendants = target.querySelectorAll("*");
+
   let level = 1;
-  while (parent) {
-    // yield parent and target cue combinations
-    const parentCues = getCues(parent, level++);
-    for (let i = 0; i < parentCues.length; i++) {
-      const parentCue = parentCues[i];
+  let parent = target.parentElement;
+  while (level - 1 < descendants.length || parent) {
+    if (parent)
+      yield* generateMultiLevelCues(
+        targetCues,
+        twoTargetCues,
+        parent,
+        // negative so it is sorted higher when combined into a selector
+        level * -1
+      );
 
-      for (let y = 0; y < targetCues.length; y++) {
-        // yield 1 parent and 1 target combinations
-        yield buildCueSet([parentCue, targetCues[y]]);
+    const descendant = descendants[level - 1] as HTMLElement;
+    if (descendant)
+      yield* generateMultiLevelCues(
+        targetCues,
+        twoTargetCues,
+        descendant,
+        level
+      );
 
-        // yield 1 parent and 2 target combinations
-        yield* twoTargetCues.map((cues) =>
-          buildCueSet([parentCue, ...cues])
-        ) as any;
-      }
-    }
-    // TODO 2 parent & 1 target? maybe?
-
-    parent = target.parentElement;
-
-    // don't go past 5 levels from the element
-    // TODO make configurable
-    if (level > 5) return;
-
-    // TODO introduce target cues
+    if (parent) parent = parent.parentElement;
+    level += 1;
   }
-
-  // TODO this should just never stop, only be timing based....
 }
 
 /**

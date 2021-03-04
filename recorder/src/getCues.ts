@@ -23,6 +23,8 @@ const PENALTY_MAP = {
   role: 10,
   src: 15,
   tag: 15,
+  // worse than two tags
+  tagnth: 31,
   text: 10,
   title: 10,
   type: 10,
@@ -47,17 +49,17 @@ export function getCues(element: HTMLElement, level: number): Cue[] {
   const cues: Cue[] = [
     {
       level,
-      penalty: PENALTY_MAP.tag,
+      penalty: tagValue.includes("nth") ? PENALTY_MAP.tagnth : PENALTY_MAP.tag,
       type: "tag",
       value: tagValue,
     },
   ];
 
   if (level === 0) {
+    // only get the target (level 0) text since it is expensive to calculate
+    // usually that is the only one we care to target as well
     const text = buildElementText(element);
     if (text) {
-      // only get the target (level 0) text since it is expensive to calculate
-      // usually that is the only one we care to target as well
       cues.push({
         level,
         penalty: PENALTY_MAP.text,
