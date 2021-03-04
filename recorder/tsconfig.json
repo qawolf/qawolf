@@ -8,7 +8,7 @@
     "outDir": "./build",
     "rootDir": "./src",
     "sourceMap": true,
-    "target": "ES2019"
+    "target": "esnext"
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]

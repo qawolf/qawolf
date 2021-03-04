@@ -1,6 +1,8 @@
-import cssEscapePolyfill from "css.escape";
+// use polyfill since some sites override the CSS.escape
+import cssEscape from "css.escape";
 
 import { isDynamic } from "./isDynamic";
+import { buildElementText } from "./selectorEngine";
 import { Cue } from "./types";
 
 const IGNORE_ATTRIBUTES = new Set(["class", "data-reactid"]);
@@ -8,9 +10,6 @@ const IGNORE_ATTRIBUTES = new Set(["class", "data-reactid"]);
 const PENALTY_MAP = {
   alt: 10,
   "aria-label": 8,
-  // discount classes since they are often presentational
-  // 1 class is worse than 2 placeholders
-  class: 21,
   contenteditable: 10,
   // prefer test attributes
   "data-cy": 0,
@@ -27,27 +26,17 @@ const PENALTY_MAP = {
   text: 10,
   title: 10,
   type: 10,
+  // TODO only allow this for certain element types (select, radio, etc)
   value: 10,
-  // svg attributes
+  // penalize presentation attributes
+  // discount classes so 1 is worse than 2 placeholders
+  // since they are oftten presentational
+  class: 21,
   height: 100,
   viewBox: 100,
   width: 100,
   xmlns: 100,
 };
-
-// TODO add tests...
-function escapeCss(value: string) {
-  // it does weird things with numbers ex: "24" -> "\32 4"
-  if (!isNaN(Number(value))) return value;
-
-  // TODO "Email\ Address"
-  // TODO see if we can short circuit this and only use when needed
-  return (
-    cssEscapePolyfill(value)
-      // \/enterprise\/demo\/ -> /enterprise/demo
-      .replaceAll("\\/", "/")
-  );
-}
 
 /**
  * Get the element's cues in ascending penalty
@@ -63,6 +52,20 @@ export function getCues(element: HTMLElement, level: number): Cue[] {
       value: tagValue,
     },
   ];
+
+  if (level === 0) {
+    const text = buildElementText(element);
+    if (text) {
+      // only get the target (level 0) text since it is expensive to calculate
+      // usually that is the only one we care to target as well
+      cues.push({
+        level,
+        penalty: PENALTY_MAP.text,
+        type: "text",
+        value: text,
+      });
+    }
+  }
 
   // For body and html, we never have more than one, so
   // just 'tag' cue is needed and we can save some time.
@@ -98,7 +101,9 @@ export function getCues(element: HTMLElement, level: number): Cue[] {
       level,
       penalty,
       type: isId ? "id" : "attribute",
-      value: isId ? `#${escapeCss(value)}` : `[${name}="${escapeCss(value)}"]`,
+      value: isId
+        ? `#${cssEscape(value)}`
+        : `[${name}="${value.replaceAll('"', `\\"`)}"]`,
     });
   }
 
@@ -109,11 +114,11 @@ export function getCues(element: HTMLElement, level: number): Cue[] {
       level,
       penalty: PENALTY_MAP.class,
       type: "class",
-      value: `.${escapeCss(className)}`,
+      value: `.${cssEscape(className)}`,
     });
   });
 
-  return cues.sort((a, b) => a.penalty - b.penalty);
+  return cues;
 }
 
 export const getTagValue = (element: HTMLElement): string => {

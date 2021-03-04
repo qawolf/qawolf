@@ -73,10 +73,7 @@ export class ActionRecorder {
     // so we can skip building a selector and emitting it.
     if (!action) return;
 
-    const { value: selector } = getSelector(
-      event.target as HTMLElement,
-      action === "click"
-    );
+    const { value: selector } = getSelector(event.target as HTMLElement);
 
     const elementAction: ElementAction = {
       action,

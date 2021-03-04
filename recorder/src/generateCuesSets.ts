@@ -4,7 +4,8 @@ import { Cue, CueSet } from "./types";
 
 export const buildCueSet = (cues: Cue[]): CueSet => {
   const penalty = cues.reduce((a, b) => a + b.penalty, 0);
-  return { cues, penalty };
+  const valueLength = cues.reduce((a, b) => a + b.value.length, 0);
+  return { cues, penalty, valueLength };
 };
 
 export function* combineCues(
@@ -12,8 +13,10 @@ export function* combineCues(
   otherCues: Cue[]
 ): Generator<CueSet, void, unknown> {
   // yield 2 cue selectors
-  for (let i = 0; i < otherCues.length; i++)
-    yield buildCueSet([cue, otherCues[i]]);
+  for (let i = 0; i < otherCues.length; i++) {
+    const otherCue = otherCues[i];
+    yield buildCueSet([cue, otherCue]);
+  }
 
   // yield 3 cue selectors
   if (otherCues.length > 1) {
@@ -72,23 +75,23 @@ export function* batchRankCueSets(
     batch.push(cueSet);
 
     if (batch.length >= batchSize) {
-      batch.sort((a, b) => a.penalty - b.penalty);
-      console.debug(
-        "qawolf: took to generate",
-        Date.now() - start,
-        batch.length
-      );
+      batch.sort(compareCueSet);
       yield* batch as any;
       batch = [];
       start = Date.now();
     }
   }
 
-  batch.sort((a, b) => a.penalty - b.penalty);
-  console.log(
-    "qawolf: batch took to generate",
-    Date.now() - start,
-    batch.length
-  );
+  batch.sort(compareCueSet);
   yield* batch as any;
 }
+
+const compareCueSet = (a: CueSet, b: CueSet): number => {
+  const value = a.penalty - b.penalty;
+
+  if (value === 0) {
+    return a.valueLength - b.valueLength;
+  }
+
+  return value;
+};

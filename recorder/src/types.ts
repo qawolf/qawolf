@@ -24,6 +24,7 @@ export type Cue = {
 export type CueSet = {
   cues: Cue[];
   penalty: number;
+  valueLength: number;
 };
 
 export interface Doc {

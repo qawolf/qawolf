@@ -1,57 +1,40 @@
-// export function buildSelector(
-//   cues: Cue[],
-//   targetElements: HTMLElement[],
-//   maxPenalty?: number
-// ): Selector | null {
-//   const penalty = getPenalty(cues);
-//   if (maxPenalty !== undefined && penalty > maxPenalty) return null;
-
 import { batchRankCueSets } from "./generateCuesSets";
-import { getTargets } from "./getTargets";
 import { getXpath } from "./qawolf";
 import { buildSelectorForCues, evaluatorQuerySelector } from "./selectorEngine";
 import { Selector } from "./types";
 
-//   const selector = buildSelectorForCues(cues);
-//   // console.log("built selector", selector, "from cues", cues);
+function overlap(target: HTMLElement, other: HTMLElement) {
+  const rect = target.getBoundingClientRect();
+  const otherRect = other.getBoundingClientRect();
 
-//   const matchedElement = evaluatorQuerySelector(
-//     selector,
-//     targetElements[0].ownerDocument
-//   );
+  return (
+    rect.top + rect.height > otherRect.top &&
+    rect.left + rect.width > otherRect.left &&
+    rect.bottom - rect.height < otherRect.bottom &&
+    rect.right - rect.width < otherRect.right
+  );
+}
 
-//   if (!matchedElement || !targetElements.includes(matchedElement)) {
-//     // console.log(matchedElement, "does not match targets", targetElements);
-//     return null;
-//   }
-
-//   return {
-//     penalty,
-//     value: selector,
-//   };
-// }
-
-export function getSelector(
-  target: HTMLElement,
-  isClick: boolean
-): Selector | null {
+export function getSelector(target: HTMLElement): Selector | null {
   const start = Date.now();
 
-  const targets = getTargets(target, isClick);
-  const targetElements = targets.map((t) => t.element);
+  // const targets = getTargets(target, isClick);
+  // const targetElements = targets.map((t) => t.element);
 
   const cueSetGenerator = batchRankCueSets(target);
 
   let i = 0;
   for (const cueSet of cueSetGenerator) {
+    // TODO try :visible selector too
     const selector = buildSelectorForCues(cueSet.cues);
     console.debug("qawolf: evaluate selector", i++, selector);
 
     const matchedElement = evaluatorQuerySelector(
       selector,
-      targetElements[0].ownerDocument
+      target.ownerDocument
     );
-    if (targetElements.includes(matchedElement)) {
+
+    if (target === matchedElement || overlap(target, matchedElement)) {
       console.debug("qawolf: took", Date.now() - start);
       return { penalty: cueSet.penalty, value: selector };
     }

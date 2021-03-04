@@ -1,4 +1,3 @@
-import { elementText } from "./element";
 import { Cue, Evaluator } from "./types";
 
 let evaluator: Evaluator;
@@ -18,14 +17,15 @@ export const buildSelectorForCues = (cues: Cue[]): string => {
 
   const parts = [];
 
-  const hasText = cues.some((c) => c.type === "text");
+  let hasText = false;
 
   levels.forEach((level) => {
     const cuesForLevel = cues.filter((cue) => cue.level === level);
 
     const textCues = cuesForLevel.filter((cue) => cue.type === "text");
-    if (textCues.length) {
+    if (textCues.length === 1) {
       parts.push(`text=${textCues[0].value}`);
+      hasText = true;
       return;
     }
 
@@ -35,15 +35,17 @@ export const buildSelectorForCues = (cues: Cue[]): string => {
       return 0;
     });
 
-    const cssSelector = cuesForLevel.map((cue) => cue.value).join("");
-    parts.push(hasText ? `css=${cssSelector}` : cssSelector);
+    const cssSelector = cuesForLevel
+      .map((cue) => (cue.type === "text" ? `:text("${cue.value}")` : cue.value))
+      .join("");
+    parts.push(cssSelector);
   });
 
   return hasText ? parts.join(" >> ") : parts.join(" ");
 };
 
 export const buildElementText = (element: HTMLElement): string | undefined => {
-  const text = elementText(element).trim();
+  const text = element.innerText.trim();
 
   if (!text || text.length > 100) return undefined;
 
