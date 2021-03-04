@@ -60,7 +60,7 @@ function isMatch(target: HTMLElement, element: HTMLElement) {
 
 export function getSelector(
   element: HTMLElement,
-  timeout = 500
+  timeout = 1000
 ): Selector | null {
   const start = Date.now();
 
@@ -85,7 +85,7 @@ export function getSelector(
       return { penalty: cueSet.penalty, value: selector };
     }
 
-    if (Date.now() - start > timeout) break;
+    if (timeout > 0 && Date.now() - start > timeout) break;
   }
 
   // while (true) {
