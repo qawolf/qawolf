@@ -7,21 +7,6 @@ const algoliaApiKey = process.env.NEXT_PUBLIC_ALGOLIA_API_KEY;
 export const useAlgoliaDocSearch = (): void => {
   const { push } = useRouter();
 
-  // https://docsearch.algolia.com/docs/behavior#handleselected
-  const handleSelected = (
-    input: { setVal: (value: string) => void },
-    __: Record<string, unknown>,
-    suggestion: { url: string }
-  ): void => {
-    input.setVal("");
-
-    const url = new URL(suggestion.url);
-
-    push(`${url.pathname}${url.hash}`).then(() => {
-      if (!url.hash) window.scrollTo(0, 0);
-    });
-  };
-
   useEffect(() => {
     if (!algoliaApiKey) return;
 
@@ -31,7 +16,20 @@ export const useAlgoliaDocSearch = (): void => {
 
       (window as any).docsearch({
         apiKey: algoliaApiKey,
-        handleSelected,
+        // https://docsearch.algolia.com/docs/behavior#handleselected
+        handleSelected: (
+          input: { setVal: (value: string) => void },
+          __: Record<string, unknown>,
+          suggestion: { url: string }
+        ): void => {
+          input.setVal("");
+
+          const url = new URL(suggestion.url);
+
+          push(`${url.pathname}${url.hash}`).then(() => {
+            if (!url.hash) window.scrollTo(0, 0);
+          });
+        },
         indexName: "qawolf",
         inputSelector: "#algolia-search",
       });
@@ -40,5 +38,5 @@ export const useAlgoliaDocSearch = (): void => {
     }, 200);
 
     return () => clearInterval(interval);
-  }, [handleSelected]);
+  }, [push]);
 };
