@@ -3,21 +3,63 @@ import { getXpath } from "./qawolf";
 import { buildSelectorForCues, evaluatorQuerySelector } from "./selectorEngine";
 import { Selector } from "./types";
 
-function overlap(target: HTMLElement, other: HTMLElement) {
-  // TODO cache
-  const rect = target.getBoundingClientRect();
-  const otherRect = other.getBoundingClientRect();
+const ALLOW_CHILDREN_TARGETS = new Set([
+  "button",
+  "checkbox",
+  "image",
+  "radio",
+  "reset",
+  "submit",
+]);
 
+function canContain(target: HTMLElement) {
+  if (target.isContentEditable) return false;
+  if (target.tagName !== "INPUT") return true;
+  return ALLOW_CHILDREN_TARGETS.has((target as HTMLInputElement).type);
+}
+
+function getLikelyTarget(target: HTMLElement): HTMLElement {
   return (
-    rect.top + rect.height > otherRect.top &&
-    rect.left + rect.width > otherRect.left &&
-    rect.bottom - rect.height < otherRect.bottom &&
-    rect.right - rect.width < otherRect.right
+    target.closest(
+      "a,button,input,label,select,[role=button],[role=checkbox],[role=radio]"
+    ) || target
   );
 }
 
-export function getSelector(target: HTMLElement): Selector | null {
+/**
+ * Check the target contains the middle point of the element
+ */
+function contains(target: DOMRect, element: DOMRect) {
+  const elementMiddleX = element.x + element.width / 2;
+  const elementMiddleY = element.y + element.height / 2;
+
+  return (
+    target.x <= elementMiddleX &&
+    elementMiddleX <= target.x + target.width &&
+    target.y <= elementMiddleY &&
+    elementMiddleY <= target.y + target.height
+  );
+}
+
+function isMatch(target: HTMLElement, element: HTMLElement) {
+  if (element === target) return true;
+
+  if (!canContain(target)) return false;
+
+  return (
+    // check the target contains the element
+    contains(target.getBoundingClientRect(), element.getBoundingClientRect()) &&
+    // make sure the elements in are in the same tree
+    // ex. a modal might be on top but we don't want
+    // to consider the element behind it as matches
+    (target.contains(element) || element.contains(target))
+  );
+}
+
+export function getSelector(element: HTMLElement): Selector | null {
   const start = Date.now();
+
+  const target = getLikelyTarget(element);
 
   const cueSetGenerator = batchRankCueSets(target);
 
@@ -33,7 +75,7 @@ export function getSelector(target: HTMLElement): Selector | null {
     );
     console.debug("qawolf: evaluate took", Date.now() - startEvaluate);
 
-    if (target === matchedElement || overlap(target, matchedElement)) {
+    if (isMatch(target, matchedElement)) {
       console.debug("qawolf: took", Date.now() - start);
       return { penalty: cueSet.penalty, value: selector };
     }
