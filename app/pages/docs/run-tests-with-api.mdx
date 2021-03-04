@@ -1,0 +1,68 @@
+import Link from "next/link";
+
+import AssignTrigger from "../../components/Docs/AssignTrigger";
+import CreateTrigger from "../../components/Docs/CreateTrigger";
+import ExternalLink from "../../components/Docs/ExternalLink";
+import Header from "../../components/Docs/Header";
+import Image from "../../components/Docs/Image";
+import Layout from "../../components/Docs/Layout";
+import SubHeader from "../../components/Docs/SubHeader";
+import ViewRunHistory from "../../components/Docs/ViewRunHistory";
+
+<Layout>
+
+<Header>Run Tests with API</Header>
+
+In this tutorial, we'll trigger our tests by calling the QA Wolf API.
+
+<SubHeader>Create API Trigger</SubHeader>
+
+<CreateTrigger description="when we call the QA Wolf API" />
+
+Select the "API" tab on the right.
+
+<Image
+  alt="Create trigger"
+  height={571}
+  src="/docs/run-tests-with-api/create-trigger.png"
+  width={485}
+/>
+
+You can rename your trigger, or keep the default name ("API" in our example). If you have created <Link href="use-environment-variables">environments</Link>, you will also need to select one for your trigger.
+
+You'll notice a gray box that provides an example of how to call the QA Wolf API. Copy this example as we'll use it later. Don't worry, you can always access it again by editing the trigger.
+
+<Image
+  alt="Create trigger example"
+  height={142}
+  src="/docs/run-tests-with-api/create-trigger-example.png"
+  width={442}
+/>
+
+Once you are done, click the "Create trigger" button to save your trigger.
+
+<SubHeader>Assign API Trigger to Test</SubHeader>
+
+<AssignTrigger doc="run-tests-with-api" />
+
+<SubHeader>Run Tests by Calling QA Wolf API</SubHeader>
+
+Let's revisit the API call example we copied when we created our trigger:
+
+`curl -H "Authorization: qawolf_api_key" -H "Content-Type: application/json" https://www.qawolf.com/api/suites -d '{"env": { "MY_VARIABLE": "secret" }, "trigger_id": "xxxv8y6ii000008mocm506o3l"}'`
+
+This API call includes a few parts:
+
+- The <ExternalLink href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization">Authorization header</ExternalLink> provides your team's API key (`-H "Authorization: qawolf_api_key"`)
+- The `trigger_id` in the request body tells QA Wolf to run tests assigned to that trigger (`"trigger_id": "xxxv8y6ii000008mocm506o3l"`)
+- The optional `env` object in the request body passes additional environment variables to your tests (`"env": { "MY_VARIABLE": "secret" }`)
+
+If you paste this command into your terminal and run it, you'll get a response that looks like:
+
+`{"url":"https://spirit.qawolf.com/suites/suiteId"}`
+
+This `url` provided links to the results page for your tests.
+
+<ViewRunHistory description="when you call the QA Wolf API" />
+
+</Layout>

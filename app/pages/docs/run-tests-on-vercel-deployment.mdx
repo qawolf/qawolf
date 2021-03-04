@@ -1,9 +1,11 @@
 import Link from "next/link";
 
 import AssignTrigger from "../../components/Docs/AssignTrigger";
+import ChooseEnvironment from "../../components/Docs/ChooseEnvironment";
 import CreateTrigger from "../../components/Docs/CreateTrigger";
 import Header from "../../components/Docs/Header";
 import Image from "../../components/Docs/Image";
+import InstallGitHubApp from "../../components/Docs/InstallGitHubApp";
 import Layout from "../../components/Docs/Layout";
 import SubHeader from "../../components/Docs/SubHeader";
 import ViewRunHistory from "../../components/Docs/ViewRunHistory";
@@ -18,45 +20,7 @@ In this tutorial, we'll set up our tests to run when <a href="https://vercel.com
 
 <CreateTrigger description="on Vercel deployments" />
 
-Click this button to open a popup with options to create a trigger.
-
-Select the "Deployment" tab in the middle, and choose Vercel as your deploy service. You can also optionally rename your trigger.
-
-<Image
-  alt="Create deploy trigger"
-  height={301}
-  src="/docs/run-tests-on-vercel-deployment/create-deploy-trigger.png"
-  width={483}
-/>
-
-Now we'll connect our GitHub repository (repo) to QA Wolf. Click the "Connect GitHub repository" button to get started.
-
-<Image
-  alt="Connect GitHub repository"
-  height={321}
-  src="/docs/run-tests-on-vercel-deployment/github-repo.png"
-  width={400}
-/>
-
-A new tab will open and visit GitHub. You will be asked to choose the repo(s) you want QA Wolf to access.
-
-<Image
-  alt="Install GitHub App"
-  height={528}
-  src="/docs/run-on-netlify-deployment/install-github-app.png"
-  width={400}
-/>
-
-Choose the repo(s) you want to test and click the green "Install" button. After the installation succeeds, the new tab will close.
-
-Confirm the repo you want to test is now selected in the dropdown.
-
-<Image
-  alt="Choose GitHub repo"
-  height={166}
-  src="/docs/run-tests-on-vercel-deployment/choose-repo.png"
-  width={486}
-/>
+<InstallGitHubApp service="vercel" />
 
 ### Choose Deployment Type
 
@@ -86,18 +50,7 @@ If you only want your tests to run on specific GitHub branches, choose "Select" 
   width={488}
 />
 
-### Choose Environment
-
-If you have created any <Link href="use-environment-variables">environments</Link>, choose the one to use when your tests run.
-
-<Image
-  alt="Choose environment"
-  height={161}
-  src="/docs/run-tests-on-vercel-deployment/choose-environment.png"
-  width={489}
-/>
-
-Press the "Create trigger" button to save your new trigger. 🎉
+<ChooseEnvironment />
 
 <SubHeader>Assign Deployment Trigger to Test</SubHeader>
 

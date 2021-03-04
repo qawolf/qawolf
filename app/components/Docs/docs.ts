@@ -34,7 +34,7 @@ export const docs: Section[] = [
   },
   {
     IconComponent: RiRocketFill,
-    color: "#77D9C8",
+    color: "#C54BDE",
     docs: [
       { href: `${routes.docs}/create-a-test`, name: "Create a Test" },
       {
@@ -51,8 +51,12 @@ export const docs: Section[] = [
         name: "Run Tests on Vercel Deployment",
       },
       {
-        href: `${routes.docs}/run-on-netlify-deployment`,
-        name: "Run on Netlify Deployment",
+        href: `${routes.docs}/run-tests-on-netlify-deployment`,
+        name: "Run Tests on Netlify Deployment",
+      },
+      {
+        href: `${routes.docs}/run-tests-with-api`,
+        name: "Run Tests with API",
       },
       {
         href: `${routes.docs}/send-slack-alerts`,
@@ -67,7 +71,7 @@ export const docs: Section[] = [
   },
   {
     IconComponent: IoTrailSign,
-    color: "#AA61F2",
+    color: "#56BBD6",
     docs: [
       { href: `${routes.docs}/add-an-assertion`, name: "Add an Assertion" },
       {
@@ -95,7 +99,7 @@ export const docs: Section[] = [
   },
   {
     IconComponent: RiPlugFill,
-    color: "#6E9DFA",
+    color: "#8BC22D",
     docs: [
       {
         href: `${routes.docs}/globals`,

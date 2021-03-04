@@ -36,6 +36,7 @@ export default function CreateTrigger({ description }: Props): JSX.Element {
         src="/docs/run-tests-on-a-schedule/add-trigger-dashboard-selected.png"
         width={1600}
       />
+      <p>Click this button to open a popup with options to create a trigger.</p>
     </>
   );
 }
