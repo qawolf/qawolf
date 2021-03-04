@@ -1,10 +1,12 @@
 import Link from "next/link";
 
+import AssignTrigger from "../../components/Docs/AssignTrigger";
 import CreateTrigger from "../../components/Docs/CreateTrigger";
 import Header from "../../components/Docs/Header";
 import Image from "../../components/Docs/Image";
 import Layout from "../../components/Docs/Layout";
 import SubHeader from "../../components/Docs/SubHeader";
+import ViewRunHistory from "../../components/Docs/ViewRunHistory";
 
 <Layout>
 
@@ -16,7 +18,7 @@ In this tutorial, we'll schedule our tests to run every day. This helps ensure o
 
 <CreateTrigger description="every day" />
 
-Clicking this button opens a popup with options to create a trigger. Make sure you are on the "Schedule" tab.
+Click this button to open a popup with options to create a trigger. Make sure you are on the "Schedule" tab.
 
 <Image
   alt="Create trigger"
@@ -33,39 +35,8 @@ Once you are done, click the "Create trigger" button to save your trigger.
 
 <SubHeader>Assign Schedule Trigger to Test</SubHeader>
 
-Now that we've created our trigger, let's assign it to a test. You can assign triggers to tests any time by clicking the "Edit triggers" button in the top right corner of the editor, or by selecting tests in the dashboard.
+<AssignTrigger doc="run-tests-on-a-schedule" />
 
-The checkboxes indicate whether a trigger is assigned to the selected tests. Clicking on this checkbox will toggle whether the trigger is assigned to your test.
-
-<Image
-  alt="Edit triggers for test"
-  height={247}
-  src="/docs/run-tests-on-a-schedule/edit-triggers.png"
-  width={488}
-/>
-
-When you are done, click the "Done" button to close the popup.
-
-You can also edit or delete triggers by hovering over them and clicking the relevant button.
-
-<Image
-  alt="Edit or delete trigger"
-  height={247}
-  src="/docs/run-tests-on-a-schedule/edit-trigger.png"
-  width={491}
-/>
-
-<SubHeader>View Run History</SubHeader>
-
-🎉 Congratulations - now your tests will run every day!
-
-You can see your test runs in the "Run history" page of the <a href="https://www.qawolf.com/suites" target="_blank">dashboard</a>.
-
-<Image
-  alt="Run history"
-  height={292}
-  src="/docs/run-tests-on-a-schedule/history.png"
-  width={277}
-/>
+<ViewRunHistory description="every day" />
 
 </Layout>

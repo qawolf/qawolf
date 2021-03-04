@@ -47,8 +47,8 @@ export const docs: Section[] = [
         name: "Run Tests on a Schedule",
       },
       {
-        href: `${routes.docs}/run-on-vercel-deployment`,
-        name: "Run on Vercel Deployment",
+        href: `${routes.docs}/run-tests-on-vercel-deployment`,
+        name: "Run Tests on Vercel Deployment",
       },
       {
         href: `${routes.docs}/run-on-netlify-deployment`,

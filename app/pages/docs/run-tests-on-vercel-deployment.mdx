@@ -1,38 +1,41 @@
 import Link from "next/link";
 
+import AssignTrigger from "../../components/Docs/AssignTrigger";
+import CreateTrigger from "../../components/Docs/CreateTrigger";
 import Header from "../../components/Docs/Header";
 import Image from "../../components/Docs/Image";
 import Layout from "../../components/Docs/Layout";
 import SubHeader from "../../components/Docs/SubHeader";
+import ViewRunHistory from "../../components/Docs/ViewRunHistory";
 
 <Layout>
 
-<Header>Run on Vercel Deployment</Header>
+<Header>Run Tests on Vercel Deployment</Header>
 
 In this tutorial, we'll set up our tests to run when <a href="https://vercel.com/" target="_blank">Vercel</a> <a href="https://vercel.com/docs/platform/deployments" target="_blank">deploys</a> our site. This helps ensure our critical workflows don't break when we make changes.
 
 <SubHeader>Create Deployment Trigger</SubHeader>
 
-Open a test you want to run on Vercel deployments. Click the "Add trigger" button in the top right corner to open the triggers menu.
+<CreateTrigger description="on Vercel deployments" />
+
+Click this button to open a popup with options to create a trigger.
+
+Select the "Deployment" tab in the middle, and choose Vercel as your deploy service. You can also optionally rename your trigger.
 
 <Image
-  alt="Add trigger"
-  height={221}
-  src="/docs/run-on-schedule/add-trigger.png"
-  width={1600}
+  alt="Create deploy trigger"
+  height={301}
+  src="/docs/run-tests-on-vercel-deployment/create-deploy-trigger.png"
+  width={483}
 />
-
-A popup will open with options to create a trigger. Click on the "Deployment" tab in the middle.
-
-Make sure that Vercel is selected as your deploy service. You can also optionally rename your trigger.
 
 Now we'll connect our GitHub repository (repo) to QA Wolf. Click the "Connect GitHub repository" button to get started.
 
 <Image
   alt="Connect GitHub repository"
-  height={482}
-  src="/docs/run-on-vercel-deployment/github-repo.png"
-  width={600}
+  height={321}
+  src="/docs/run-tests-on-vercel-deployment/github-repo.png"
+  width={400}
 />
 
 A new tab will open and visit GitHub. You will be asked to choose the repo(s) you want QA Wolf to access.
@@ -50,22 +53,22 @@ Confirm the repo you want to test is now selected in the dropdown.
 
 <Image
   alt="Choose GitHub repo"
-  height={332}
-  src="/docs/run-on-vercel-deployment/choose-repo.png"
-  width={974}
+  height={166}
+  src="/docs/run-tests-on-vercel-deployment/choose-repo.png"
+  width={486}
 />
 
 ### Choose Deployment Type
 
 Vercel has <a href="https://vercel.com/docs/platform/deployments#deployment-types" target="\_blank">two types of deployments</a>: **production** and **preview**. Production deployments happen when you merge to your production branch or run the `vercel --prod` command. Preview deployments are all other deployments, like deployments of commits in a GitHub pull request.
 
-QA Wolf allows you to run your tests on all deployments (preview and production), just preview deployments, or just production deployments. Choose which deployments you want to test in the popup. In this case, we want to only test preview deployments:
+QA Wolf allows you to run your tests on all deployments (preview and production), just preview deployments, or just production deployments. Choose which deployments you want to test in the popup. In our example, we choose to only test preview deployments:
 
 <Image
   alt="Choose deployment"
-  height={148}
-  src="/docs/run-on-vercel-deployment/choose-deployment.png"
-  width={976}
+  height={74}
+  src="/docs/run-tests-on-vercel-deployment/choose-deployment.png"
+  width={488}
 />
 
 ### Choose Branches (Optional)
@@ -78,34 +81,27 @@ If you only want your tests to run on specific GitHub branches, choose "Select" 
 
 <Image
   alt="Choose branches"
-  height={156}
-  src="/docs/run-on-vercel-deployment/choose-branches.png"
-  width={976}
+  height={78}
+  src="/docs/run-tests-on-vercel-deployment/choose-branches.png"
+  width={488}
 />
 
 ### Choose Environment
 
-Finally, specify which <Link href="use-environment-variables">environment</Link> you want to use when your tests run.
+If you have created any <Link href="use-environment-variables">environments</Link>, choose the one to use when your tests run.
 
 <Image
   alt="Choose environment"
-  height={322}
-  src="/docs/run-on-vercel-deployment/choose-environment.png"
-  width={978}
+  height={161}
+  src="/docs/run-tests-on-vercel-deployment/choose-environment.png"
+  width={489}
 />
 
 Press the "Create trigger" button to save your new trigger. 🎉
 
-After your trigger is created, the popup will show a list of triggers and whether they are assigned to your test.
+<SubHeader>Assign Deployment Trigger to Test</SubHeader>
 
-Clicking on the trigger will toggle whether it is assigned to your test. You can also edit or delete a trigger from this popup.
-
-<Image
-  alt="Edit triggers for test"
-  height={498}
-  src="/docs/run-on-vercel-deployment/edit-triggers.png"
-  width={978}
-/>
+<AssignTrigger doc="run-tests-on-vercel-deployment" />
 
 <SubHeader>Update Tests to Use Deployment URL</SubHeader>
 
@@ -140,13 +136,11 @@ Now when you make a pull request on GitHub, your tests will run after your Verce
 
 <Image
   alt="See QA Wolf results in GitHub"
-  height={403}
-  src="/docs/run-on-vercel-deployment/github-checks.png"
-  width={1200}
+  height={202}
+  src="/docs/run-tests-on-vercel-deployment/github-checks.png"
+  width={600}
 />
 
-<SubHeader>Conclusion</SubHeader>
-
-Now that our tests run on Vercel deployments, let's <Link href="send-slack-alerts">alert our team</Link> when they fail.
+<ViewRunHistory description="on Vercel deployments" />
 
 </Layout>
