@@ -8,46 +8,42 @@ export const buildCueSet = (cues: Cue[]): CueSet => {
   return { cues, penalty, valueLength };
 };
 
-export function* combineCues(
-  cue: Cue,
-  otherCues: Cue[]
-): Generator<CueSet, void, unknown> {
-  // yield 2 cue selectors
-  for (let i = 0; i < otherCues.length; i++) {
-    const otherCue = otherCues[i];
-    yield buildCueSet([cue, otherCue]);
-  }
-
-  // yield 3 cue selectors
-  if (otherCues.length > 1) {
-    const cueSets = combine(otherCues, 2);
-    yield* cueSets.map((s) => buildCueSet(s)) as any;
-  }
-}
-
 export function* generateCueSets(
   target: HTMLElement
 ): Generator<CueSet, void, unknown> {
+  // yield 1 target cue sets
   const targetCues = getCues(target, 0);
+  yield* targetCues.map((cue) => buildCueSet([cue])) as any;
 
-  // generate target cue combinations
-  for (let i = 0; i < targetCues.length; i++) {
-    const cue = targetCues[i];
-    // yield 1 cue selector
-    yield buildCueSet([cue]);
+  // yield 2 target cue sets
+  const twoTargetCues = combine(targetCues, 2);
+  yield* twoTargetCues.map(buildCueSet) as any;
 
-    const otherCues = [...targetCues.slice(0, i), ...targetCues.slice(i + 1)];
-    yield* combineCues(cue, otherCues);
-  }
+  // yield 3 target cue sets
+  const threeTargetCues = combine(targetCues, 3);
+  yield* threeTargetCues.map(buildCueSet) as any;
 
+  // TODO descendants too
   let parent = target.parentElement;
   let level = 1;
   while (parent) {
-    // generate parent and target cue combinations
+    // yield parent and target cue combinations
     const parentCues = getCues(parent, level++);
     for (let i = 0; i < parentCues.length; i++) {
-      yield* combineCues(parentCues[i], targetCues);
+      const parentCue = parentCues[i];
+
+      for (let y = 0; y < targetCues.length; y++) {
+        // yield 1 parent and 1 target combinations
+        yield buildCueSet([parentCue, targetCues[y]]);
+
+        // yield 1 parent and 2 target combinations
+        yield* twoTargetCues.map((cues) =>
+          buildCueSet([parentCue, ...cues])
+        ) as any;
+      }
     }
+    // TODO 2 parent & 1 target? maybe?
+
     parent = target.parentElement;
 
     // don't go past 5 levels from the element
@@ -56,6 +52,8 @@ export function* generateCueSets(
 
     // TODO introduce target cues
   }
+
+  // TODO this should just never stop, only be timing based....
 }
 
 /**

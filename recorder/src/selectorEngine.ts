@@ -17,7 +17,7 @@ export const buildSelectorForCues = (cues: Cue[]): string => {
 
   const parts = [];
 
-  let hasText = false;
+  let useMultipleEngines = false;
 
   levels.forEach((level) => {
     const cuesForLevel = cues.filter((cue) => cue.level === level);
@@ -25,7 +25,7 @@ export const buildSelectorForCues = (cues: Cue[]): string => {
     const textCues = cuesForLevel.filter((cue) => cue.type === "text");
     if (textCues.length === 1) {
       parts.push(`text=${textCues[0].value}`);
-      hasText = true;
+      useMultipleEngines = true;
       return;
     }
 
@@ -36,20 +36,19 @@ export const buildSelectorForCues = (cues: Cue[]): string => {
     });
 
     const cssSelector = cuesForLevel
-      .map((cue) => (cue.type === "text" ? `:text("${cue.value}")` : cue.value))
+      .map((cue) =>
+        cue.type === "text" ? `:has-text("${cue.value}")` : cue.value
+      )
       .join("");
     parts.push(cssSelector);
   });
 
-  return hasText ? parts.join(" >> ") : parts.join(" ");
+  return useMultipleEngines ? parts.join(" >> ") : parts.join(" ");
 };
 
-export const buildElementText = (element: HTMLElement): string | undefined => {
-  const text = element.innerText.trim();
-
-  if (!text || text.length > 100) return undefined;
-
-  return text;
+export const buildElementText = (element: HTMLElement): string => {
+  const text = (element.innerText || "").trim();
+  return text.length > 100 ? "" : text;
 };
 
 export const evaluatorQuerySelector = (

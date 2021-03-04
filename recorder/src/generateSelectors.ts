@@ -4,6 +4,7 @@ import { buildSelectorForCues, evaluatorQuerySelector } from "./selectorEngine";
 import { Selector } from "./types";
 
 function overlap(target: HTMLElement, other: HTMLElement) {
+  // TODO cache
   const rect = target.getBoundingClientRect();
   const otherRect = other.getBoundingClientRect();
 
@@ -18,21 +19,19 @@ function overlap(target: HTMLElement, other: HTMLElement) {
 export function getSelector(target: HTMLElement): Selector | null {
   const start = Date.now();
 
-  // const targets = getTargets(target, isClick);
-  // const targetElements = targets.map((t) => t.element);
-
   const cueSetGenerator = batchRankCueSets(target);
 
   let i = 0;
   for (const cueSet of cueSetGenerator) {
-    // TODO try :visible selector too
     const selector = buildSelectorForCues(cueSet.cues);
     console.debug("qawolf: evaluate selector", i++, selector);
 
+    const startEvaluate = Date.now();
     const matchedElement = evaluatorQuerySelector(
       selector,
       target.ownerDocument
     );
+    console.debug("qawolf: evaluate took", Date.now() - startEvaluate);
 
     if (target === matchedElement || overlap(target, matchedElement)) {
       console.debug("qawolf: took", Date.now() - start);

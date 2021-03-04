@@ -5,7 +5,6 @@ export {
   getTopmostEditableElement,
   isVisible,
 } from "./element";
-export { getTargets } from "./getTargets";
 export { resolveAction } from "./resolveAction";
 export { buildElementText, isMatch } from "./selectorEngine";
 export { getXpath, nodeToDoc } from "./serialize";
