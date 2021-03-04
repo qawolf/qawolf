@@ -2,12 +2,7 @@ import { Icon } from "grommet-icons";
 import flatten from "lodash/flatten";
 import { IconType } from "react-icons";
 import { IoTrailSign } from "react-icons/io5";
-import {
-  RiCodeSSlashFill,
-  RiNotification2Fill,
-  RiPlugFill,
-  RiRocketFill,
-} from "react-icons/ri";
+import { RiPlugFill, RiRocketFill } from "react-icons/ri";
 
 import { routes } from "../../lib/routes";
 import Paw from "../shared-new/icons/Paw";
@@ -38,7 +33,7 @@ export const docs: Section[] = [
     ],
   },
   {
-    IconComponent: RiCodeSSlashFill,
+    IconComponent: RiRocketFill,
     color: "#77D9C8",
     docs: [
       { href: `${routes.docs}/create-a-test`, name: "Create a Test" },
@@ -46,23 +41,11 @@ export const docs: Section[] = [
         href: `${routes.docs}/convert-actions-to-code`,
         name: "Convert Actions to Code",
       },
-      { href: `${routes.docs}/add-an-assertion`, name: "Add an Assertion" },
+
       {
-        href: `${routes.docs}/use-environment-variables`,
-        name: "Use Environment Variables",
+        href: `${routes.docs}/run-tests-on-a-schedule`,
+        name: "Run Tests on a Schedule",
       },
-      {
-        href: `${routes.docs}/reuse-helper-code`,
-        name: "Reuse Helper Code",
-      },
-    ],
-    name: "Create Tests",
-  },
-  {
-    IconComponent: RiRocketFill,
-    color: "#F2D479",
-    docs: [
-      { href: `${routes.docs}/run-on-schedule`, name: "Run on Schedule" },
       {
         href: `${routes.docs}/run-on-vercel-deployment`,
         name: "Run on Vercel Deployment",
@@ -71,13 +54,6 @@ export const docs: Section[] = [
         href: `${routes.docs}/run-on-netlify-deployment`,
         name: "Run on Netlify Deployment",
       },
-    ],
-    name: "Run Tests",
-  },
-  {
-    IconComponent: RiNotification2Fill,
-    color: "#F26185",
-    docs: [
       {
         href: `${routes.docs}/send-slack-alerts`,
         name: "Send Slack Alerts",
@@ -87,12 +63,21 @@ export const docs: Section[] = [
         name: "Send Email Alerts",
       },
     ],
-    name: "Alert Your Team",
+    name: "Get Started",
   },
   {
     IconComponent: IoTrailSign,
     color: "#AA61F2",
     docs: [
+      { href: `${routes.docs}/add-an-assertion`, name: "Add an Assertion" },
+      {
+        href: `${routes.docs}/use-environment-variables`,
+        name: "Use Environment Variables",
+      },
+      {
+        href: `${routes.docs}/reuse-helper-code`,
+        name: "Reuse Helper Code",
+      },
       {
         href: `${routes.docs}/receive-an-email`,
         name: "Receive an Email",
