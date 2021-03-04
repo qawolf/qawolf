@@ -1,9 +1,14 @@
 import { Box, Button } from "grommet";
-import { useRouter } from "next/router";
+import { useState } from "react";
+import styled from "styled-components";
 
-import { colors, edgeSize } from "../../../../theme/theme-new";
+import {
+  colors,
+  edgeSize,
+  transitionDuration,
+} from "../../../../theme/theme-new";
 import Text from "../../../shared-new/Text";
-import { Section as SectionType } from "../../docs";
+import { Doc, Section as SectionType } from "../../docs";
 import SectionLinks, { iconSize } from "./SectionLinks";
 
 type Props = {
@@ -11,33 +16,41 @@ type Props = {
   section: SectionType;
 };
 
-export default function Section({ pathname, section }: Props): JSX.Element {
-  const { push } = useRouter();
+const shouldBeOpen = (docs: Doc[], pathname: string): boolean => {
+  const matchingDoc = docs.find((doc) => doc.href === pathname);
 
+  return !!matchingDoc;
+};
+
+const StyledButton = styled(Button)`
+  border-radius: ${edgeSize.xxsmall};
+  transition: background ${transitionDuration};
+
+  &:hover {
+    background: ${colors.fill10};
+  }
+`;
+
+export default function Section({ pathname, section }: Props): JSX.Element {
   const { IconComponent, color, docs, name } = section;
 
-  const isOpen = !!docs.find((doc) => doc.href === pathname);
+  const [isOpen, setIsOpen] = useState(shouldBeOpen(docs, pathname));
 
   const handleClick = (): void => {
-    // open the section's first doc
-    push(docs[0].href);
+    if (shouldBeOpen(docs, pathname)) return;
+    setIsOpen((prev) => !prev);
   };
 
   return (
     <>
-      <Button
+      <StyledButton
         a11yTitle={`toggle ${name} docs`}
+        margin={{ top: edgeSize.small }}
         onClick={handleClick}
         plain
         style={{ cursor: "pointer" }}
       >
-        <Box
-          align="center"
-          direction="row"
-          flex={false}
-          height="32px"
-          margin={{ top: edgeSize.small }}
-        >
+        <Box align="center" direction="row" flex={false} height="32px">
           <Box
             align="center"
             background={color}
@@ -53,7 +66,7 @@ export default function Section({ pathname, section }: Props): JSX.Element {
             {name}
           </Text>
         </Box>
-      </Button>
+      </StyledButton>
       <SectionLinks docs={docs} isOpen={isOpen} pathname={pathname} />
     </>
   );

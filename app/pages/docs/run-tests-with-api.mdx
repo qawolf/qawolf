@@ -53,9 +53,9 @@ Let's revisit the API call example we copied when we created our trigger. If you
 
 This API call includes a few parts:
 
-- The <ExternalLink href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization">Authorization header</ExternalLink> provides your team's API key (`-H "Authorization: qawolf_api_key"`)
-- The `trigger_id` in the request body tells QA Wolf to run tests assigned to that trigger (`"trigger_id": "xxxv8y6ii000008mocm506o3l"`)
-- The optional `env` object in the request body passes additional environment variables to your tests (`"env": { "MY_VARIABLE": "secret" }`)
+- The <ExternalLink href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization">Authorization header</ExternalLink> provides your team's API key: `-H "Authorization: qawolf_api_key"`
+- The `trigger_id` in the request body tells QA Wolf to run tests assigned to that trigger: `"trigger_id": "xxxv8y6ii000008mocm506o3l"`
+- The optional `env` object in the request body passes additional environment variables to your tests: `"env": { "MY_VARIABLE": "secret" }`
 
 If you paste this command into your terminal and run it, you'll get a response that looks like:
 
