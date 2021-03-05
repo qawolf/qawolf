@@ -1,23 +1,18 @@
-import { Browser, BrowserContext, Page } from "playwright";
+import { Page } from "playwright";
 
 import { QAWolfWeb } from "../src";
 import { CueSet } from "../src/types";
-import { launch } from "./utils";
+import { launch, LaunchResult } from "./utils";
 
-let browser: Browser;
-let context: BrowserContext;
+let launched: LaunchResult;
 let page: Page;
 
 beforeAll(async () => {
-  browser = await launch();
-  context = await browser.newContext();
-  page = await context.newPage();
-
-  // workaround since we need to navigate for init script
-  await page.goto("file://" + require.resolve("./ActionRecorderTestPage.html"));
+  launched = await launch();
+  page = launched.page;
 });
 
-afterAll(() => browser.close());
+afterAll(() => launched.browser.close());
 
 describe("generateSortedCueSets", () => {
   let cueSets: CueSet[];

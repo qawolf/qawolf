@@ -1,22 +1,23 @@
 import { Browser, Page } from "playwright";
 import { QAWolfWeb } from "../src";
-import { launch, TEST_URL } from "./utils";
+import { launch } from "./utils";
 
 let browser: Browser;
 let page: Page;
 
 beforeAll(async () => {
-  browser = await launch();
-  const context = await browser.newContext();
-  page = await context.newPage();
-  await page.goto(`${TEST_URL}login`);
+  const launched = await launch();
+  browser = launched.browser;
+  page = launched.page;
 });
 
 afterAll(() => browser.close());
 
 describe("nodeToDoc", () => {
   it("serializes tag name and attributes", async () => {
-    await page.goto(`${TEST_URL}images`);
+    await page.setContent(
+      `<html><body><img alt="spirit" src="logo192.png"></body></html>`
+    );
 
     const doc = await page.evaluate(() => {
       const web: QAWolfWeb = (window as any).qawolf;

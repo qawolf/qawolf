@@ -1,8 +1,13 @@
 import fs from "fs";
-import { platform } from "os";
 import path from "path";
-import playwright, { Browser, BrowserContext, LaunchOptions } from "playwright";
+import playwright, { Browser, BrowserContext, Page } from "playwright";
 import webpackConfig from "../webpack.config";
+
+export type LaunchResult = {
+  browser: Browser;
+  context: BrowserContext;
+  page: Page;
+};
 
 let recorderScript: string;
 
@@ -18,52 +23,29 @@ const getRecorderScriptAsString = async (): Promise<string> => {
   return recorderScript;
 };
 
-export const TEST_URL = process.env.TEST_URL || "http://localhost:5000/";
-
-export const DEFAULT_ATTRIBUTE_LIST =
-  "data-cy,data-e2e,data-qa,/^data-test.*/,/^qa-.*/";
-
-type BrowserName = "chromium" | "firefox" | "webkit";
-
-export const parseBrowserName = (name?: string): BrowserName => {
+export const parseBrowserName = (
+  name?: string
+): "chromium" | "firefox" | "webkit" => {
   if (name === "firefox" || name === "webkit") return name;
 
   return "chromium";
 };
 
-export const getLaunchOptions = (
-  browserName: BrowserName,
-  options: LaunchOptions = {}
-): LaunchOptions => {
-  const launchOptions = {
-    ...options,
-  };
-
-  const defaultArgs: string[] = [];
-
-  if (browserName === "chromium" && platform() === "linux") {
-    // We use --no-sandbox because we cannot change the USER for certain CIs (like GitHub).
-    // "Ensure your Dockerfile does not set the USER instruction, otherwise you will not be able to access GITHUB_WORKSPACE"
-    defaultArgs.push("--no-sandbox");
-  }
-
-  return {
-    args: defaultArgs,
-    // override args if they are provided
-    ...launchOptions,
-  };
-};
-
-export const launch = async (
-  options: LaunchOptions & { startRecorder?: boolean } = {}
-): Promise<Browser> => {
-  const { startRecorder, ...otherOptions } = options;
-
+export const launch = async ({
+  devtools,
+  startRecorder,
+}: { devtools?: boolean; startRecorder?: boolean } = {}): Promise<
+  LaunchResult
+> => {
   const browserName = parseBrowserName(process.env.QAWOLF_BROWSER);
 
-  const launchOptions = getLaunchOptions(browserName, otherOptions);
+  const options = {
+    args: browserName === "chromium" ? ["--no-sandbox"] : [],
+    devtools,
+    headless: !devtools,
+  };
 
-  const browser = await playwright[browserName].launch(launchOptions);
+  const browser = await playwright[browserName].launch(options);
 
   // The better way to do this long term would be to get a "context"
   // event added to Browser class in Playwright.
@@ -85,5 +67,11 @@ export const launch = async (
     return context;
   };
 
-  return browser;
+  const context = await browser.newContext();
+  const page = await context.newPage();
+
+  // workaround since we need to navigate for init script
+  await page.goto("file://" + require.resolve("./fixtures/empty.html"));
+
+  return { browser, context, page };
 };

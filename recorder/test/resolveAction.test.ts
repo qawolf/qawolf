@@ -1,8 +1,9 @@
-import { Browser, BrowserContext, Page } from "playwright";
-import { launch } from "./utils";
+import { Page } from "playwright";
+
 import { QAWolfWeb } from "../src";
-import { Action, Doc, PossibleAction } from "../src/types";
 import { shouldTrackFill, shouldTrackKeyPress } from "../src/resolveAction";
+import { Action, Doc, PossibleAction } from "../src/types";
+import { launch, LaunchResult } from "./utils";
 
 function doc(name: string, isContentEditable = false, type?: string): Doc {
   return {
@@ -14,20 +15,18 @@ function doc(name: string, isContentEditable = false, type?: string): Doc {
   };
 }
 describe("resolveAction", () => {
-  let browser: Browser;
-  let context: BrowserContext;
+  let launched: LaunchResult;
 
   beforeAll(async () => {
-    browser = await launch();
-    context = await browser.newContext();
+    launched = await launch();
   });
 
-  afterAll(() => browser.close());
+  afterAll(() => launched.browser.close());
 
   const getFreshPage = async (): Promise<Page> => {
-    const page: Page = await context.newPage();
+    const page: Page = await launched.context.newPage();
     await page.goto(
-      "file://" + require.resolve("./resolveActionTestPage.html")
+      "file://" + require.resolve("./fixtures/resolveAction.html")
     );
     return page;
   };

@@ -1,19 +1,15 @@
-import { Browser, BrowserContext, Page } from "playwright";
+import { Browser, Page } from "playwright";
 
 import { QAWolfWeb } from "../src";
 import { launch } from "./utils";
 
 let browser: Browser;
-let context: BrowserContext;
 let page: Page;
 
 beforeAll(async () => {
-  browser = await launch();
-  context = await browser.newContext();
-  page = await context.newPage();
-
-  // workaround since we need to navigate for init script
-  await page.goto("file://" + require.resolve("./ActionRecorderTestPage.html"));
+  const launched = await launch();
+  browser = launched.browser;
+  page = launched.page;
 });
 
 afterAll(() => browser.close());
