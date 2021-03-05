@@ -1,4 +1,3 @@
-import { debug } from "./debug";
 import { getXpath } from "./element";
 import { generateSortedCueSets } from "./generateCueSets";
 import { isMatch, Rect } from "./isMatch";
@@ -22,25 +21,19 @@ export function getSelector(
   const rectCache = new Map<HTMLElement, Rect>();
 
   const target = getLikelyTarget(element);
-
   const cueSets = generateSortedCueSets(target);
 
-  let i = 0;
   for (const cueSet of cueSets) {
     const selector = buildSelectorForCues(cueSet.cues);
-    debug("evaluate selector", i++, selector);
 
-    const startEvaluate = Date.now();
     const matchedElement = evaluatorQuerySelector(
       selector,
       // We must pass `target.ownerDocument` rather than `document`
       // because sometimes this is called from other frames.
       target.ownerDocument
     );
-    debug("evaluate took", Date.now() - startEvaluate);
 
     if (matchedElement && isMatch(matchedElement, target, rectCache)) {
-      debug("getSelector took", Date.now() - start);
       return { penalty: cueSet.penalty, value: selector };
     }
 
