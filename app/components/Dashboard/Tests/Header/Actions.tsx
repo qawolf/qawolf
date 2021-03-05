@@ -42,7 +42,7 @@ export default function Actions({ checkedTests }: Props): JSX.Element {
       />
       <Button
         IconComponent={Folder}
-        label={copy.assignToGroup}
+        label={copy.addToGroup}
         margin={{ horizontal: "xxsmall" }}
         onClick={handleGroupClick}
         type="ghost"

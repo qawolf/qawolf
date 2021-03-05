@@ -64,7 +64,7 @@ export default function Options({ test }: Props): JSX.Element {
           />
           <Option
             IconComponent={Folder}
-            label={copy.assignToGroup}
+            label={copy.addToGroup}
             onClick={handleGroupClick}
           />
           <Divider margin={{ vertical: "xxxsmall" }} />

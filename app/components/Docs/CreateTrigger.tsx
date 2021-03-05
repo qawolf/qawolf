@@ -32,7 +32,7 @@ export default function CreateTrigger({ description }: Props): JSX.Element {
       </p>
       <Image
         alt="Add trigger from dashboard with tests selected"
-        height={342}
+        height={349}
         src="/docs/run-tests-on-a-schedule/add-trigger-dashboard-selected.png"
         width={1600}
       />
