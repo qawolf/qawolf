@@ -2,32 +2,32 @@ import { Meta, Story } from "@storybook/react/types-6-0";
 import { Box, ThemeContext } from "grommet";
 import React from "react";
 
-import CheckBox, { Props } from "../components/shared-new/CheckBox";
-import Rocket from "../components/shared-new/icons/Rocket";
+import Folder from "../components/shared-new/icons/Folder";
+import RadioButton, { Props } from "../components/shared-new/RadioButton";
 import Text from "../components/shared-new/Text";
 import { colors, edgeSize } from "../theme/theme-new";
 import theme from "./theme";
 
 export default {
-  title: "CheckBox",
-  component: CheckBox,
+  title: "RadioButton",
+  component: RadioButton,
   argTypes: {},
 } as Meta;
 
 const Template: Story<Props> = (props) => {
   return (
     <ThemeContext.Extend value={theme}>
-      <CheckBox {...props} />
+      <RadioButton {...props} />
     </ThemeContext.Extend>
   );
 };
 
 const labelHtml = (
   <>
-    <Box align="center" direction="row">
-      <Rocket color={colors.primary} size={edgeSize.small} />
+    <Box align="center" direction="row" margin={{ left: "xxsmall" }}>
+      <Folder color={colors.gray9} size={edgeSize.small} />
       <Text color="gray9" margin={{ left: "xxsmall" }} size="component">
-        My Trigger
+        My Group
       </Text>
     </Box>
   </>
@@ -36,12 +36,16 @@ const labelHtml = (
 export const Basic = Template.bind({});
 Basic.args = {
   checked: true,
-  indeterminate: false,
+};
+
+export const TextLabel = Template.bind({});
+TextLabel.args = {
+  checked: true,
+  label: "Click me",
 };
 
 export const Label = Template.bind({});
 Label.args = {
   checked: true,
-  indeterminate: false,
   label: labelHtml,
 };

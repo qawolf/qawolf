@@ -6,9 +6,9 @@ import {
 import { ChangeEvent } from "react";
 import styled from "styled-components";
 
-import { colors, transitionDuration } from "../../theme/theme-new";
+import { colors, edgeSize, transitionDuration } from "../../theme/theme-new";
 
-type Props = RadioButtonProps & {
+export type Props = RadioButtonProps & {
   className?: string;
   onChange: (e?: ChangeEvent<HTMLInputElement>) => void;
   value?: number | string;
@@ -25,6 +25,8 @@ function RadioButton({ className, ...props }: Props): JSX.Element {
 const StyledRadioButton = styled(RadioButton)`
   input:not([disabled]) + div,
   input:not([disabled]) + span {
+    border-radius: 100%;
+
     svg {
       transition: fill ${transitionDuration};
     }
