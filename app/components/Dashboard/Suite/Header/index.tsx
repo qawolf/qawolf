@@ -2,7 +2,7 @@ import { Box } from "grommet";
 
 import { useCreateSuite } from "../../../../hooks/mutations";
 import { timestampToText } from "../../../../lib/helpers";
-import { Suite } from "../../../../lib/types";
+import { Suite, SuiteRun } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import Button from "../../../shared-new/AppButton";
 import Play from "../../../shared-new/icons/Play";
@@ -14,6 +14,7 @@ import SelectStatus from "./SelectStatus";
 
 type Props = {
   checkedTestIds: string[];
+  filteredRuns: SuiteRun[];
   search: string;
   setSearch: (search: string) => void;
   suite: Suite;
@@ -21,6 +22,7 @@ type Props = {
 
 export default function Header({
   checkedTestIds,
+  filteredRuns,
   search,
   setSearch,
   suite,
@@ -29,7 +31,7 @@ export default function Header({
 
   const test_ids = checkedTestIds.length
     ? checkedTestIds
-    : suite.runs.map((r) => r.test_id);
+    : filteredRuns.map((r) => r.test_id);
 
   const handleClick = (): void => {
     if (!test_ids.length) return;
@@ -61,7 +63,7 @@ export default function Header({
         </Box>
         <Button
           IconComponent={Play}
-          isDisabled={loading}
+          isDisabled={loading || !test_ids.length}
           label={copy.runTests(test_ids.length)}
           onClick={handleClick}
           type="secondary"

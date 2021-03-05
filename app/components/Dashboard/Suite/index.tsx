@@ -1,15 +1,21 @@
 import { Box } from "grommet";
+import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 
 import { useSuite } from "../../../hooks/queries";
+import { RunStatus } from "../../../lib/types";
 import Spinner from "../../shared-new/Spinner";
 import { StateContext } from "../../StateContext";
+import { filterRuns } from "../helpers";
 import Header from "./Header";
 import List from "./List";
 
 type Props = { suiteId: string };
 
 export default function Suite({ suiteId }: Props): JSX.Element {
+  const { query } = useRouter();
+  const status = (query.status || null) as RunStatus | null;
+
   const { teamId } = useContext(StateContext);
 
   const [checkedTestIds, setCheckedTestIds] = useState<string[]>([]);
@@ -35,18 +41,20 @@ export default function Suite({ suiteId }: Props): JSX.Element {
     if (suiteId) setCheckedTestIds([]);
   }, [suiteId]);
 
+  const filteredRuns = filterRuns({ runs: suite?.runs || [], search, status });
+
   const innerHtml = suite ? (
     <>
       <Header
         checkedTestIds={checkedTestIds}
+        filteredRuns={filteredRuns}
         search={search}
         setSearch={setSearch}
         suite={suite}
       />
       <List
         checkedTestIds={checkedTestIds}
-        runs={suite.runs}
-        search={search}
+        runs={filteredRuns}
         setCheckedTestIds={setCheckedTestIds}
       />
     </>

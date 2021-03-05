@@ -1,28 +1,21 @@
 import { Box } from "grommet";
-import { useRouter } from "next/router";
 
-import { RunStatus, SuiteRun } from "../../../../lib/types";
+import { SuiteRun } from "../../../../lib/types";
 import { borderSize } from "../../../../theme/theme-new";
-import { filterRuns } from "../../helpers";
 import Header from "./Header";
 import RunCard from "./RunCard";
 
 type Props = {
   checkedTestIds: string[];
   runs: SuiteRun[];
-  search: string;
   setCheckedTestIds: (runIds: string[]) => void;
 };
 
 export default function List({
   checkedTestIds,
   runs,
-  search,
   setCheckedTestIds,
 }: Props): JSX.Element {
-  const { query } = useRouter();
-  const status = (query.status || null) as RunStatus | null;
-
   const handleRunCheck = (testId: string): void => {
     const index = checkedTestIds.indexOf(testId);
     if (index > -1) {
@@ -35,9 +28,7 @@ export default function List({
     }
   };
 
-  const filteredRuns = filterRuns({ runs, search, status });
-
-  const runsHtml = filteredRuns.map((run, i) => {
+  const runsHtml = runs.map((run, i) => {
     return (
       <RunCard
         isChecked={checkedTestIds.includes(run.test_id)}
@@ -57,7 +48,7 @@ export default function List({
     >
       <Header
         checkedTestIds={checkedTestIds}
-        runs={filteredRuns}
+        runs={runs}
         setCheckedTestIds={setCheckedTestIds}
       />
       <Box overflow={{ vertical: "auto" }}>

@@ -1,5 +1,4 @@
 import { Box, Button } from "grommet";
-import { useState } from "react";
 import styled from "styled-components";
 
 import {
@@ -8,21 +7,17 @@ import {
   transitionDuration,
 } from "../../../../theme/theme-new";
 import Text from "../../../shared-new/Text";
-import { Doc, Section as SectionType } from "../../docs";
+import { Section as SectionType } from "../../docs";
 import SectionLinks, { iconSize } from "./SectionLinks";
 
 type Props = {
+  isOpen: boolean;
+  onClick: () => void;
   pathname: string;
   section: SectionType;
 };
 
-const shouldBeOpen = (docs: Doc[], pathname: string): boolean => {
-  const matchingDoc = docs.find((doc) => doc.href === pathname);
-
-  return !!matchingDoc;
-};
-
-const StyledButton = styled(Button)`
+const StyledBox = styled(Box)`
   border-radius: ${edgeSize.xxsmall};
   transition: background ${transitionDuration};
 
@@ -31,26 +26,31 @@ const StyledButton = styled(Button)`
   }
 `;
 
-export default function Section({ pathname, section }: Props): JSX.Element {
+export default function Section({
+  isOpen,
+  onClick,
+  pathname,
+  section,
+}: Props): JSX.Element {
   const { IconComponent, color, docs, name } = section;
-
-  const [isOpen, setIsOpen] = useState(shouldBeOpen(docs, pathname));
-
-  const handleClick = (): void => {
-    if (shouldBeOpen(docs, pathname)) return;
-    setIsOpen((prev) => !prev);
-  };
+  const isCurrent = docs.find((d) => d.href === pathname);
 
   return (
     <>
-      <StyledButton
+      <Button
         a11yTitle={`toggle ${name} docs`}
         margin={{ top: edgeSize.small }}
-        onClick={handleClick}
+        onClick={onClick}
         plain
         style={{ cursor: "pointer" }}
       >
-        <Box align="center" direction="row" flex={false} height="32px">
+        <StyledBox
+          align="center"
+          background={isCurrent ? "fill10" : "transparent"}
+          direction="row"
+          flex={false}
+          height="32px"
+        >
           <Box
             align="center"
             background={color}
@@ -62,11 +62,15 @@ export default function Section({ pathname, section }: Props): JSX.Element {
           >
             <IconComponent color={colors.white} size={edgeSize.medium} />
           </Box>
-          <Text color="textDark" size="xxsmall" weight="medium">
+          <Text
+            color={isCurrent ? "primary" : "textDark"}
+            size="xxsmall"
+            weight="medium"
+          >
             {name}
           </Text>
-        </Box>
-      </StyledButton>
+        </StyledBox>
+      </Button>
       <SectionLinks docs={docs} isOpen={isOpen} pathname={pathname} />
     </>
   );

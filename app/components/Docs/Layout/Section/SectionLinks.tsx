@@ -1,10 +1,12 @@
 import { Box } from "grommet";
+import styled from "styled-components";
 
 import { edgeSize } from "../../../../theme/theme";
 import { Doc } from "../../docs";
 import SectionLink from "./SectionLink";
 
 type Props = {
+  className?: string;
   docs: Doc[];
   isOpen: boolean;
   pathname: string;
@@ -12,13 +14,7 @@ type Props = {
 
 export const iconSize = edgeSize.large;
 
-export default function SectionLinks({
-  docs,
-  isOpen,
-  pathname,
-}: Props): JSX.Element {
-  if (!isOpen) return null;
-
+function SectionLinks({ className, docs, pathname }: Props): JSX.Element {
   const sectionLinksHtml = docs.map((doc) => {
     return (
       <SectionLink
@@ -30,8 +26,27 @@ export default function SectionLinks({
   });
 
   return (
-    <Box flex={false} margin={{ left: iconSize }} pad={{ left: "xxxsmall" }}>
+    <Box
+      className={className}
+      flex={false}
+      margin={{ left: iconSize }}
+      pad={{ left: "xxxsmall" }}
+    >
       {sectionLinksHtml}
     </Box>
   );
 }
+
+const StyledSectionLinks = styled(SectionLinks)`
+  // each link is 40 px tall including margin
+  height: ${({ docs }) => `${docs.length * 40}px`};
+  overflow: hidden;
+  transition: height 100ms ease-in-out;
+  ${(props) =>
+    !props.isOpen &&
+    `
+  height: 0;
+  `}
+`;
+
+export default StyledSectionLinks;
