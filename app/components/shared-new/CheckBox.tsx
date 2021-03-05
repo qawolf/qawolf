@@ -5,6 +5,7 @@ import { borderSize, colors, transitionDuration } from "../../theme/theme-new";
 
 type Props = CheckBoxProps & {
   className?: string;
+  hasError?: boolean;
   onChange?: () => void;
 };
 
@@ -30,6 +31,8 @@ const StyledCheckBox = styled(CheckBox)`
     svg {
       fill: ${colors.gray0};
     }
+
+    ${(props) => props.hasError && `border-color: ${colors.danger5};`}
 
     &:hover {
       ${(props) =>

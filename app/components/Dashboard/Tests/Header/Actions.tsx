@@ -12,9 +12,13 @@ import Trash from "../../../shared-new/icons/Trash";
 
 type Props = {
   checkedTests: ShortTest[];
+  hasGroups: boolean;
 };
 
-export default function Actions({ checkedTests }: Props): JSX.Element {
+export default function Actions({
+  checkedTests,
+  hasGroups,
+}: Props): JSX.Element {
   if (!checkedTests.length) return null;
 
   const handleDeleteClick = (): void => {
@@ -40,13 +44,15 @@ export default function Actions({ checkedTests }: Props): JSX.Element {
         onClick={handleTriggersClick}
         type="ghost"
       />
-      <Button
-        IconComponent={Folder}
-        label={copy.assignToGroup}
-        margin={{ horizontal: "xxsmall" }}
-        onClick={handleGroupClick}
-        type="ghost"
-      ></Button>
+      {hasGroups && (
+        <Button
+          IconComponent={Folder}
+          label={copy.addToGroup}
+          margin={{ horizontal: "xxsmall" }}
+          onClick={handleGroupClick}
+          type="ghost"
+        ></Button>
+      )}
       <Button
         IconComponent={Trash}
         color={colors.danger5}

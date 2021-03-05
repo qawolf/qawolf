@@ -1,17 +1,19 @@
-import { Box, RadioButtonGroup, ThemeContext } from "grommet";
-import { ChangeEvent, useContext, useState } from "react";
+import { Box, ThemeContext } from "grommet";
+import { useContext, useState } from "react";
 
-import { useUpdateTestsGroup } from "../../hooks/mutations";
-import { useOnHotKey } from "../../hooks/onHotKey";
-import { useGroups } from "../../hooks/queries";
-import { SelectedTest } from "../../lib/types";
-import { copy } from "../../theme/copy";
-import { theme } from "../../theme/theme-new";
-import Modal from "../shared-new/Modal";
-import Buttons from "../shared-new/Modal/Buttons";
-import Header from "../shared-new/Modal/Header";
-import Text from "../shared-new/Text";
-import { StateContext } from "../StateContext";
+import { useUpdateTestsGroup } from "../../../hooks/mutations";
+import { useOnHotKey } from "../../../hooks/onHotKey";
+import { useGroups } from "../../../hooks/queries";
+import { SelectedTest } from "../../../lib/types";
+import { copy } from "../../../theme/copy";
+import { theme } from "../../../theme/theme-new";
+import Divider from "../../shared-new/Divider";
+import Modal from "../../shared-new/Modal";
+import Buttons from "../../shared-new/Modal/Buttons";
+import Header from "../../shared-new/Modal/Header";
+import Text from "../../shared-new/Text";
+import { StateContext } from "../../StateContext";
+import ListItem from "./ListItem";
 
 type Props = {
   closeModal: () => void;
@@ -40,10 +42,6 @@ export default function EditTestsGroup({
     getInitialGroupId(tests)
   );
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setGroupId(e.target.value);
-  };
-
   const handleClick = (): void => {
     updateTestsGroup({
       variables: {
@@ -55,9 +53,15 @@ export default function EditTestsGroup({
 
   useOnHotKey({ hotKey: "Enter", onHotKey: handleClick });
 
-  const testNames = tests.map((test) => test.name).join(", ");
-  const options = (groups || []).map((g) => {
-    return { label: g.name, value: g.id };
+  const optionsHtml = (groups || []).map((g) => {
+    return (
+      <ListItem
+        group={g}
+        isChecked={g.id === groupId}
+        key={g.id}
+        onClick={setGroupId}
+      />
+    );
   });
 
   return (
@@ -65,28 +69,29 @@ export default function EditTestsGroup({
       <Modal a11yTitle="edit tests group" closeModal={closeModal}>
         <Box pad="medium" overflow={{ vertical: "auto" }}>
           <Box flex={false}>
-            <Header closeModal={closeModal} label={copy.editTestsGroup} />
-            <Text color="gray9" margin={{ top: "xxsmall" }} size="component">
-              {copy.assignToGroupDetail}
-            </Text>
+            <Header
+              closeModal={closeModal}
+              label={copy.editTestsGroup(tests.length)}
+            />
             <Text
               color="gray9"
-              margin={{ vertical: "medium" }}
-              size="componentBold"
+              margin={{ bottom: "medium", top: "xxsmall" }}
+              size="component"
             >
-              {testNames}
+              {copy.addToGroupDetail}
             </Text>
-            <RadioButtonGroup
-              name="group"
-              onChange={handleChange}
-              options={[...options, { label: copy.none, value: "" }]}
-              value={groupId}
+            <ListItem
+              group={null}
+              isChecked={groupId === ""}
+              onClick={setGroupId}
             />
+            {optionsHtml}
+            <Divider />
             <Buttons
               onPrimaryClick={handleClick}
               onSecondaryClick={closeModal}
               primaryIsDisabled={loading}
-              primaryLabel={copy.assignToGroup}
+              primaryLabel={copy.addToGroup}
               secondaryLabel={copy.cancel}
             />
           </Box>

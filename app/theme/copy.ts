@@ -24,8 +24,8 @@ export const copy = {
   api: "API",
   apiDetail: "Trigger tests by calling the QA Wolf API:",
   apiKeyHere: "API KEY HERE",
-  assignToGroup: "Assign to group",
-  assignToGroupDetail: "Choose a group for the following tests:",
+  addToGroup: "Add to group",
+  addToGroupDetail: "Tests can only belong to one group at a time",
   back: "Back",
   backToDashboard: "Back to dashboard",
   blog: "Blog",
@@ -70,8 +70,10 @@ export const copy = {
   deleted: "(Deleted)",
   deleteGroup: "Delete group",
   deleteOk: "Yes, delete",
-  deleteTests: "Delete tests",
-  deleteTestsConfirm: (count: number): string => `Delete ${count} tests`,
+  deleteTests: (count: number): string =>
+    `Delete${count === 1 ? "" : ` ${count}`} test${count === 1 ? "" : "s"}`,
+  deleteTestsDetail:
+    "Are you sure? Deleting tests is permanent and cannot be undone",
   deleteTrigger: "Delete trigger",
   delightUsers: "Delight users",
   delightUsersDetail:
@@ -92,12 +94,13 @@ export const copy = {
     "Debug with video, logs, and the exact line a test failed on.",
   edit: "Edit",
   editTest: "Edit test",
-  editTestsGroup: "Assign tests to group",
+  editTestsGroup: (count: number): string =>
+    `Add ${count === 1 ? "" : `${count} tests `}to a group`,
   editTrigger: "Edit trigger",
   editTriggers: "Edit triggers",
   editTriggersDetail: "Choose which triggers you want to assign",
   editTriggersForTests: (count: number): string =>
-    `Edit triggers for ${count} test${count === 1 ? "" : "s"}`,
+    `Edit triggers${count === 1 ? "" : ` for ${count} tests`}`,
   email: "Email",
   emailPlaceholder: "you@awesome.com",
   emptyTestsSearch: "No tests found",
@@ -137,8 +140,7 @@ export const copy = {
   group: "Group",
   groupDelete: "Delete group",
   groupDeleteConfirm:
-    "Are you sure? This will permanently this group. Please type",
-  groupDeleteConfirm2: "to confirm.",
+    "Are you sure? This will permanently delete this group, but not the tests inside it",
   groupNew: "Create group",
   groups: "Test groups",
   growRevenue: "Grow revenue",
@@ -147,6 +149,7 @@ export const copy = {
   helpers: "Helpers",
   history: "History",
   hourly: "Hourly",
+  iUnderstand: "I understand",
   inProgress: "In progress",
   invalidUrl: "Not a valid URL",
   joinMailingList: "Join our mailing list",
@@ -174,6 +177,7 @@ export const copy = {
   netlifyDeploy: "Your tests will run on Netlify deploy previews.",
   next: "Next",
   noEmail: "Please enter a valid email address",
+  noGroup: "No group",
   noHistory: "No history yet",
   noMobile:
     "Woof. We're not mobile friendly yet. Please try again on a larger screen!",

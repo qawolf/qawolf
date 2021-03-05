@@ -1,13 +1,14 @@
-import { Box, ThemeContext } from "grommet";
-import { ChangeEvent, useState } from "react";
+import { Box, Button, ThemeContext } from "grommet";
+import { useRef, useState } from "react";
 
 import { useDeleteTests } from "../../hooks/mutations";
+import { useOnHotKey } from "../../hooks/onHotKey";
 import { SelectedTest } from "../../lib/types";
 import { copy } from "../../theme/copy";
 import { theme } from "../../theme/theme-new";
-import TextInput from "../shared-new/AppTextInput";
+import CheckBox from "../shared-new/CheckBox";
 import Modal from "../shared-new/Modal";
-import ConfirmDelete from "../shared-new/Modal/ConfirmDelete";
+import Buttons from "../shared-new/Modal/Buttons";
 import Header from "../shared-new/Modal/Header";
 import Text from "../shared-new/Text";
 
@@ -17,71 +18,69 @@ type Props = {
 };
 
 export default function DeleteTests({ closeModal, tests }: Props): JSX.Element {
-  const [error, setError] = useState("");
-  const [value, setValue] = useState("");
+  const ref = useRef<HTMLButtonElement>(null);
+
+  const [hasError, setHasError] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
 
   const testIds = tests.map((test) => test.id);
   const [deleteTests, { loading }] = useDeleteTests({ ids: testIds });
 
-  const confirmValue =
-    tests.length === 1 ? tests[0].name : copy.deleteTestsConfirm(tests.length);
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setValue(e.target.value);
+  const handleClick = (): void => {
+    setHasError(false);
+    setIsChecked((prev) => !prev);
+    // prevents enter press from toggling checkbox
+    ref.current?.blur();
   };
 
   const handleDelete = (): void => {
-    if (value.toLowerCase() !== confirmValue.toLowerCase()) {
-      setError(copy.mustMatch);
+    if (!isChecked) {
+      setHasError(true);
       return;
     }
 
-    setError("");
+    setHasError(false);
     deleteTests().then(closeModal);
   };
 
-  const testNames = tests.map((test) => test.name).join(", ");
+  useOnHotKey({ hotKey: "Enter", onHotKey: handleDelete });
 
   return (
     <ThemeContext.Extend value={theme}>
       <Modal a11yTitle="delete test modal" closeModal={closeModal}>
         <Box pad="medium">
-          <Header closeModal={closeModal} label={copy.deleteTests} />
-          <ConfirmDelete
-            isDeleteDisabled={loading}
-            onCancel={closeModal}
-            onDelete={handleDelete}
+          <Header
+            closeModal={closeModal}
+            label={copy.deleteTests(tests.length)}
+          />
+          <Text
+            color="gray9"
+            margin={{ bottom: "medium", top: "xxsmall" }}
+            size="componentParagraph"
           >
-            <Text
-              color="gray9"
-              margin={{ top: "xxsmall" }}
-              size="componentParagraph"
-            >
-              {copy.confirmDelete("tests")}
-            </Text>
-            <Text
-              color="gray9"
-              margin={{ vertical: "medium" }}
-              size="componentBold"
-            >
-              {testNames}
-            </Text>
-            <Text
-              color="gray9"
-              margin={{ bottom: "medium" }}
-              size="componentParagraph"
-            >
-              {copy.pleaseType} <b>{confirmValue}</b>{" "}
-              {copy.environmentDeleteConfirm2}
-            </Text>
-            <TextInput
-              autoFocus
-              error={error}
-              onChange={handleChange}
-              placeholder={confirmValue}
-              value={value}
-            />
-          </ConfirmDelete>
+            {copy.deleteTestsDetail}
+          </Text>
+          <Button
+            a11yTitle="confirm delete"
+            onClick={handleClick}
+            plain
+            ref={ref}
+          >
+            <Box align="center" direction="row" width="120px">
+              <CheckBox checked={isChecked} hasError={hasError} />
+              <Text color="gray9" margin={{ left: "xxsmall" }} size="component">
+                {copy.iUnderstand}
+              </Text>
+            </Box>
+          </Button>
+          <Buttons
+            onPrimaryClick={handleDelete}
+            onSecondaryClick={closeModal}
+            primaryIsDisabled={loading}
+            primaryLabel={copy.delete}
+            primaryType="danger"
+            secondaryLabel={copy.cancel}
+          />
         </Box>
       </Modal>
     </ThemeContext.Extend>
