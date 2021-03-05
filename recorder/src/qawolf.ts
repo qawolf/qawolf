@@ -1,4 +1,8 @@
 export { ActionRecorder } from "./ActionRecorder";
+export {
+  generateRelativeCueSets,
+  generateSortedCueSets,
+} from "./generateCueSets";
 export { getCues, getTagCue } from "./getCues";
 export {
   getInputElementValue,

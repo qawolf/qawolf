@@ -21,6 +21,7 @@ export function* generateCueSets(
 ): Generator<CueSet, void, unknown> {
   // yield 1 target cue sets
   let targetCues = getCues(target, 0);
+
   yield* targetCues.map((cue) => buildCueSet([cue])) as any;
 
   // do not combine text cues because they are very expensive to evaluate
@@ -73,31 +74,28 @@ export function* generateRelativeCueSets(
   level: number
 ): Generator<CueSet, void, unknown> {
   const relativeCues = getCues(relative, level);
+  if (!relativeCues.length) return;
 
+  // combine relative with target cues
+  for (let i = 0; i < relativeCues.length; i++) {
+    const relativeCue = relativeCues[i];
+
+    // yield 1 relative and 1 target cue
+    for (let j = 0; j < targetCues.length; j++) {
+      yield buildCueSet([relativeCue, targetCues[j]]);
+    }
+
+    // yield 1 relative and 2 target cues
+    for (let j = 0; j < twoTargetCueSets.length; j++) {
+      yield buildCueSet([relativeCue, ...twoTargetCueSets[j]]);
+    }
+  }
+
+  // combine 2 relative and 1 target cues
   const twoRelativeCues = combine(relativeCues, 2);
-
-  // combine relative and target cues
-  for (let j = 0; j < relativeCues.length; j++) {
-    const relativeCue = relativeCues[j];
-
-    // combine with each target cue
-    for (let k = 0; k < targetCues.length; k++) {
-      // yield 1 relative and 1 target cue
-      yield buildCueSet([relativeCue, targetCues[k]]);
-
-      // yield 1 relative and 2 target cues
-      if (twoTargetCueSets.length) {
-        yield* twoTargetCueSets.map((cues) =>
-          buildCueSet([relativeCue, ...cues])
-        ) as any;
-      }
-
-      // yield 2 relative and 1 target cues
-      if (twoRelativeCues.length) {
-        yield* twoRelativeCues.map((cues) => {
-          buildCueSet([...cues, targetCues[k]]);
-        }) as any;
-      }
+  for (let i = 0; i < twoRelativeCues.length; i++) {
+    for (let j = 0; j < targetCues.length; j++) {
+      yield buildCueSet([...twoRelativeCues[i], targetCues[j]]);
     }
   }
 }
@@ -112,7 +110,8 @@ export function* generateSortedCueSets(
   // batch then sort cues by penalty
   let batch: CueSet[] = [];
   for (const cueSet of generator) {
-    batch.push(cueSet);
+    // sometimes it yields undefined
+    if (cueSet) batch.push(cueSet);
 
     if (batch.length >= batchSize) {
       batch.sort(compareCueSet);
