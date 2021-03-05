@@ -1,12 +1,24 @@
 import { Box } from "grommet";
+import { useContext } from "react";
 
+import { useTeam } from "../../../hooks/queries";
 import { copy } from "../../../theme/copy";
 import { border, edgeSize } from "../../../theme/theme-new";
+import Spinner from "../../shared-new/Spinner";
 import Text from "../../shared-new/Text";
+import { StateContext } from "../../StateContext";
+import Team from "./Team";
 
 const maxWidth = "640px";
 
 export default function Settings(): JSX.Element {
+  const { teamId } = useContext(StateContext);
+
+  const { data } = useTeam({ id: teamId });
+  const team = data?.team || null;
+
+  if (!team) return <Spinner />;
+
   return (
     <Box width="full">
       <Box border={{ ...border, side: "bottom" }} justify="center" pad="medium">
@@ -16,7 +28,9 @@ export default function Settings(): JSX.Element {
           </Text>
         </Box>
       </Box>
-      <Box pad="medium" style={{ maxWidth }}></Box>
+      <Box pad="medium" style={{ maxWidth }}>
+        <Team team={team} />
+      </Box>
     </Box>
   );
 }

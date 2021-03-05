@@ -117,7 +117,7 @@ const StyledAppButton = styled(AppButton)`
   border-radius: ${borderSize.small};
   height: ${edgeSize.large};
 
-  ${(props) => !!props.isDisabled && "cursor: wait;"}
+  ${(props) => !!props.isDisabled && "cursor: not-allowed;"}
   ${(props) => !!props.width && `width: ${props.width};`}
 
   ${(props) =>
