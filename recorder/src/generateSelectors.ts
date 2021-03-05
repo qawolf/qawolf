@@ -1,9 +1,10 @@
 import { debug } from "./debug";
-import { batchRankCueSets } from "./generateCuesSets";
+import { generateSortedCueSets } from "./generateCueSets";
 import { getXpath } from "./qawolf";
 import { buildSelectorForCues, evaluatorQuerySelector } from "./selectorEngine";
 import { Selector } from "./types";
 
+// TODO move to match...
 const ALLOW_CHILDREN_TARGETS = new Set([
   "button",
   "checkbox",
@@ -66,16 +67,18 @@ export function getSelector(
 
   const target = getLikelyTarget(element);
 
-  const cueSetGenerator = batchRankCueSets(target);
+  const cueSets = generateSortedCueSets(target);
 
   let i = 0;
-  for (const cueSet of cueSetGenerator) {
+  for (const cueSet of cueSets) {
     const selector = buildSelectorForCues(cueSet.cues);
     debug("evaluate selector", i++, selector);
 
     const startEvaluate = Date.now();
     const matchedElement = evaluatorQuerySelector(
       selector,
+      // We must pass `target.ownerDocument` rather than `document`
+      // because sometimes this is called from other frames.
       target.ownerDocument
     );
     debug("evaluate took", Date.now() - startEvaluate);
@@ -87,19 +90,6 @@ export function getSelector(
 
     if (timeout > 0 && Date.now() - start > timeout) break;
   }
-
-  // while (true) {
-  //   if (duration > maxTimeout) break;
-  //   else if (duration > minTimeout && bestSelector) break;
-
-  //   const { done: isDone, value: selector } = selectors.next();
-  //   if (isDone || !selector) break;
-
-  //   if (!bestSelector || selector.value < bestSelector) bestSelector = selector;
-
-  //   // stop if we receive a great selector
-  //   if (bestSelector?.value === 0) return selector;
-  // }
 
   return { penalty: 1000, value: getXpath(target) };
 }

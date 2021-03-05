@@ -1,4 +1,3 @@
-import { elementText } from "./element";
 import { Cue, Evaluator } from "./types";
 
 let evaluator: Evaluator;
@@ -9,6 +8,44 @@ try {
   // this will only error on server side tests that
   // do not require the evaluator but depend on this file
 }
+
+// -- copied from playwright to match their text engine --
+function shouldSkipForTextMatching(element: Element | ShadowRoot): boolean {
+  return (
+    element.nodeName === "SCRIPT" ||
+    element.nodeName === "STYLE" ||
+    (document.head && document.head.contains(element))
+  );
+}
+
+export function elementText(root: Element | ShadowRoot): string {
+  let value = "";
+
+  if (!shouldSkipForTextMatching(root)) {
+    if (
+      root instanceof HTMLInputElement &&
+      (root.type === "submit" || root.type === "button")
+    ) {
+      value = root.value;
+    } else {
+      for (let child = root.firstChild; child; child = child.nextSibling) {
+        if (child.nodeType === Node.ELEMENT_NODE)
+          value += elementText(child as Element);
+        else if (child.nodeType === Node.TEXT_NODE)
+          value += child.nodeValue || "";
+
+        // skip long text
+        if (value.length > 100) break;
+      }
+      if ((root as Element).shadowRoot)
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        value += elementText((root as Element).shadowRoot!);
+    }
+  }
+
+  return value;
+}
+// --
 
 export const buildSelectorForCues = (cues: Cue[]): string => {
   const levels = [...new Set(cues.map((cue) => cue.level))];
@@ -57,12 +94,4 @@ export const evaluatorQuerySelector = (
   root?: Node
 ): HTMLElement => {
   return evaluator.querySelector(selector, root || document);
-};
-
-export const isMatch = (selector: string, target: Node): boolean => {
-  // We must pass `target.ownerDocument` rather than `document`
-  // because sometimes this is called from other frames.
-  const result = evaluatorQuerySelector(selector, target.ownerDocument);
-
-  return result === target;
 };

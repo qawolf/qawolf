@@ -6,5 +6,5 @@ export {
   isVisible,
 } from "./element";
 export { resolveAction } from "./resolveAction";
-export { buildElementText, isMatch } from "./selectorEngine";
+export { buildElementText, buildSelectorForCues } from "./selectorEngine";
 export { getXpath, nodeToDoc } from "./serialize";
