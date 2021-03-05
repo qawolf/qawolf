@@ -1,8 +1,9 @@
 import { Box } from "grommet";
+import { useState } from "react";
 import styled from "styled-components";
 
 import { breakpoints, edgeSize, height, width } from "../../../theme/theme-new";
-import { docs } from "../docs";
+import { docs, Section as SectionType } from "../docs";
 import Section from "./Section";
 import Wolf from "./Wolf";
 
@@ -26,9 +27,35 @@ const StyledBox = styled(Box)`
   }
 `;
 
+const getInitialState = (sections: SectionType[], pathname: string): string => {
+  const matchingSection = sections.find((s) => {
+    return !!s.docs.find((d) => d.href === pathname);
+  });
+
+  return matchingSection?.name || "";
+};
+
 export default function Sidebar({ pathname }: Props): JSX.Element {
+  const [openSection, setOpenSection] = useState(
+    getInitialState(docs, pathname)
+  );
+
+  const handleClick = (sectionName: string): void => {
+    setOpenSection((prev) => {
+      return prev === sectionName ? "" : sectionName;
+    });
+  };
+
   const sectionsHtml = docs.map((section, i) => {
-    return <Section key={i} pathname={pathname} section={section} />;
+    return (
+      <Section
+        isOpen={section.name === openSection}
+        key={i}
+        onClick={() => handleClick(section.name)}
+        pathname={pathname}
+        section={section}
+      />
+    );
   });
 
   return (

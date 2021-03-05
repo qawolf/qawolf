@@ -7,6 +7,7 @@ import {
 } from "../../../server/models/test_trigger";
 import { prepareTestDb } from "../db";
 import {
+  buildGroup,
   buildTeam,
   buildTest,
   buildTrigger,
@@ -208,6 +209,8 @@ describe("test trigger model", () => {
 
   describe("findTestTriggersForTests", () => {
     beforeAll(async () => {
+      await db("groups").insert(buildGroup({}));
+
       await db("triggers").insert([
         buildTrigger({ i: 2 }),
         buildTrigger({ i: 3 }),
@@ -219,7 +222,10 @@ describe("test trigger model", () => {
         },
       ]);
 
-      await db("tests").insert([buildTest({ i: 2 }), buildTest({ i: 3 })]);
+      await db("tests").insert([
+        buildTest({ group_id: "groupId", i: 2 }),
+        buildTest({ i: 3 }),
+      ]);
 
       return db("test_triggers").insert([
         { id: "testTriggerId", test_id: "testId", trigger_id: "triggerId" },
@@ -235,8 +241,11 @@ describe("test trigger model", () => {
     });
 
     afterAll(async () => {
+      await db("groups").del();
+
       await db("test_triggers").del();
       await db("triggers").del();
+
       return db("tests").del();
     });
 
@@ -253,11 +262,16 @@ describe("test trigger model", () => {
 
       expect(testTriggers).toEqual([
         {
+          group_id: null,
           test_id: "testId",
           trigger_ids: ["trigger2Id", "trigger4Id", "triggerId"],
         },
-        { test_id: "test2Id", trigger_ids: ["trigger3Id"] },
-        { test_id: "test3Id", trigger_ids: [] },
+        {
+          group_id: "groupId",
+          test_id: "test2Id",
+          trigger_ids: ["trigger3Id"],
+        },
+        { group_id: null, test_id: "test3Id", trigger_ids: [] },
       ]);
     });
   });

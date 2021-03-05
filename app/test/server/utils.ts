@@ -8,6 +8,7 @@ import {
   Environment,
   EnvironmentVariable,
   GitHubCommitStatus,
+  Group,
   Integration,
   IntegrationType,
   Invite,
@@ -49,6 +50,12 @@ type BuildEnvironmentVariable = {
 
 type BuildGitHubCommitStatus = {
   i?: number;
+};
+
+type BuildGroup = {
+  i?: number;
+  name?: string;
+  team_id?: string;
 };
 
 type BuildIntegration = {
@@ -123,6 +130,7 @@ type BuildTest = {
   code?: string;
   creator_id?: string;
   deleted_at?: string;
+  group_id?: string;
   i?: number;
   id?: string;
   is_enabled?: boolean;
@@ -221,6 +229,16 @@ export const buildGitHubCommitStatus = ({
     sha: "sha",
     suite_id: "suiteId",
     trigger_id: "triggerId",
+  };
+};
+
+export const buildGroup = ({ i, name, team_id }: BuildGroup): Group => {
+  const finalI = i || 1;
+
+  return {
+    id: `group${finalI === 1 ? "" : i}Id`,
+    name: name || `group${finalI}`,
+    team_id: team_id || "teamId",
   };
 };
 
@@ -368,6 +386,7 @@ export const buildTeam = ({
     alert_integration_id: null,
     api_key: apiKey ? encrypt(apiKey) : encrypt(buildApiKey()),
     helpers: "",
+    helpers_version: 0,
     id: `team${finalI === 1 ? "" : i}Id`,
     inbox: inbox || `${cuid()}@dev.qawolf.email`,
     is_email_alert_enabled: true,
@@ -401,6 +420,7 @@ export const buildTest = ({
   code,
   creator_id,
   deleted_at,
+  group_id,
   i,
   id,
   is_enabled,
@@ -418,6 +438,7 @@ export const buildTest = ({
     creator_id: creator_id || "userId",
     code: code || 'const x = "hello"',
     deleted_at: deleted_at || null,
+    group_id: group_id || null,
     id: id || `test${finalI === 1 ? "" : i}Id`,
     is_enabled: is_enabled === undefined ? true : is_enabled,
     name: name || `test${finalI === 1 ? "" : i}`,

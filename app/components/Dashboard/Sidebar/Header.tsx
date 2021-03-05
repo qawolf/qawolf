@@ -3,6 +3,7 @@ import { useContext, useRef, useState } from "react";
 import styled from "styled-components";
 
 import { useOnClickOutside } from "../../../hooks/onClickOutside";
+import { Group } from "../../../lib/types";
 import {
   borderSize,
   colors,
@@ -16,7 +17,10 @@ import Text from "../../shared-new/Text";
 import { StateContext } from "../../StateContext";
 import { UserContext } from "../../UserContext";
 import Actions from "./Actions";
+import Groups from "./Groups";
 import UserMenu from "./UserMenu";
+
+type Props = { groups: Group[] | null };
 
 const StyledBox = styled(Box)`
   transition: background ${transitionDuration};
@@ -26,7 +30,7 @@ const StyledBox = styled(Box)`
   }
 `;
 
-export default function Header(): JSX.Element {
+export default function Header({ groups }: Props): JSX.Element {
   const { teamId } = useContext(StateContext);
   const { user, wolf } = useContext(UserContext);
 
@@ -41,7 +45,11 @@ export default function Header(): JSX.Element {
   const team = user?.teams.find((t) => t.id === teamId);
 
   return (
-    <Box overflow={{ vertical: "auto" }} pad={{ horizontal: "medium" }}>
+    <Box
+      fill="vertical"
+      overflow={{ vertical: "auto" }}
+      pad={{ horizontal: "medium" }}
+    >
       <Box flex={false} ref={ref} style={{ position: "relative" }}>
         <Button a11yTitle="user menu" onClick={handleClick} plain>
           <StyledBox
@@ -79,8 +87,9 @@ export default function Header(): JSX.Element {
           </StyledBox>
         </Button>
         <UserMenu isOpen={isOpen} onClose={handleClose} />
+        <Actions teamId={teamId} />
+        <Groups groups={groups} teamId={teamId} />
       </Box>
-      <Actions teamId={teamId} />
     </Box>
   );
 }

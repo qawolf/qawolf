@@ -52,7 +52,8 @@ export default function CreateTest({ closeModal }: Props): JSX.Element {
     createTest({
       variables: { team_id: teamId, url: parsedUrl },
     }).then(
-      ({ data }) => {
+      (response) => {
+        const { data } = response || {};
         if (!data?.createTest) return;
         const { code, id, version } = data.createTest;
 

@@ -1,4 +1,4 @@
-import { Box, Button } from "grommet";
+import { Box, Button, ButtonProps } from "grommet";
 import { Icon } from "grommet-icons";
 import styled from "styled-components";
 
@@ -13,6 +13,7 @@ import Text from "../Text";
 
 type Props = {
   IconComponent?: Icon;
+  a11yTitle?: ButtonProps["a11yTitle"];
   className?: string;
   isSelected?: boolean;
   label: JSX.Element | string;
@@ -23,6 +24,7 @@ type Props = {
 
 function Option({
   IconComponent: PropsIconComponent,
+  a11yTitle,
   className,
   isSelected,
   label,
@@ -35,7 +37,7 @@ function Option({
   const color = type === "danger" ? colors.danger5 : colors.gray9;
 
   return (
-    <Button className={className} onClick={onClick} plain>
+    <Button a11yTitle={a11yTitle} className={className} onClick={onClick} plain>
       <Box
         align="center"
         direction="row"

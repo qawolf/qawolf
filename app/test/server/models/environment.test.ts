@@ -3,6 +3,7 @@ import {
   deleteEnvironment,
   findEnvironment,
   findEnvironmentIdForRun,
+  findEnvironmentOrNull,
   findEnvironmentsForTeam,
   updateEnvironment,
 } from "../../../server/models/environment";
@@ -165,6 +166,26 @@ describe("findEnvironmentIdForRun", () => {
 
   it("returns null if run does not have an environment", async () => {
     const environment = await findEnvironmentIdForRun("run2Id", options);
+
+    expect(environment).toBeNull();
+  });
+});
+
+describe("findEnvironmentOrNull", () => {
+  beforeAll(() => {
+    return db("environments").insert(buildEnvironment({}));
+  });
+
+  afterAll(() => db("environments").del());
+
+  it("finds an environment", async () => {
+    const environment = await findEnvironmentOrNull("environmentId", options);
+
+    expect(environment).toMatchObject({ name: "Staging", team_id: "teamId" });
+  });
+
+  it("returns null if environment not found", async () => {
+    const environment = await findEnvironmentOrNull("fakeId", options);
 
     expect(environment).toBeNull();
   });

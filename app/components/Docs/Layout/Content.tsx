@@ -40,6 +40,7 @@ const StyledContent = styled(Content)`
   color: ${colors.textLight};
   font-family: ${fontFamily.normal};
   padding: 0 ${edgeSize.medium};
+  word-break: break-word;
 
   a,
   b,
@@ -75,7 +76,8 @@ const StyledContent = styled(Content)`
   }
 
   li,
-  p {
+  p,
+  table {
     font-size: ${text.xsmall.size};
     line-height: ${text.xsmall.height};
     margin-top: ${edgeSize.small};
@@ -92,6 +94,20 @@ const StyledContent = styled(Content)`
 
   pre {
     margin-bottom: 0;
+  }
+
+  table,
+  td,
+  th {
+    border: 1px solid ${colors.fill20};
+    border-collapse: collapse;
+  }
+
+  td,
+  th {
+    padding: ${edgeSize.xxsmall};
+    vertical-align: top;
+    width: 50%;
   }
 
   @media screen and (min-width: ${width.content}) {
@@ -112,7 +128,8 @@ const StyledContent = styled(Content)`
     }
 
     li,
-    p {
+    p,
+    table {
       font-size: ${textDesktop.xsmall.size};
       line-height: ${textDesktop.xsmall.height};
       margin-top: ${edgeSize.medium};

@@ -230,14 +230,16 @@ describe("suite model", () => {
         {
           id: "suite3Id",
           environment_name: null,
-          trigger_color: "#4545E5",
-          trigger_name: "trigger1",
+          trigger: {
+            color: "#4545E5",
+            id: "triggerId",
+            name: "trigger1",
+          },
         },
         {
           id: "suiteId",
           environment_name: "Staging",
-          trigger_color: null,
-          trigger_name: null,
+          trigger: null,
         },
       ]);
     });
@@ -252,8 +254,11 @@ describe("suite model", () => {
         {
           id: "suite3Id",
           environment_name: null,
-          trigger_color: "#4545E5",
-          trigger_name: "trigger1",
+          trigger: {
+            color: "#4545E5",
+            id: "triggerId",
+            name: "trigger1",
+          },
         },
       ]);
     });

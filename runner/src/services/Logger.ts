@@ -18,10 +18,11 @@ export class Logger extends EventEmitter {
 
   constructor() {
     super();
-    this._capturePlaywrightLogs();
+    this._captureDebugLogs();
   }
 
-  _capturePlaywrightLogs(): void {
+  _captureDebugLogs(): void {
+    // expose some of our logs
     // playwright's logger sink stopped providing detailed pw:api logs
     // after they moved to an internal wire protocol in >= 1.4.x
     // so we intercept them at the debug package
@@ -31,11 +32,32 @@ export class Logger extends EventEmitter {
       const [message] = args;
 
       const pwIndex = message?.indexOf("pw:api");
-      if (pwIndex < 0) return;
+      if (pwIndex > -1) {
+        // ignore some verbose logs
+        if (
+          message.indexOf("browserContext.exposeBinding") > -1 ||
+          message.indexOf("cdpSession.send") > -1 ||
+          message.indexOf("chromiumBrowserContext.newCDPSession") > -1 ||
+          message.indexOf("route.abort") > -1 ||
+          message.indexOf("route.continue") > -1
+        )
+          return;
 
-      // start the message after the time
-      const sanitized = message.substring(pwIndex);
-      this.log("playwright", "verbose", sanitized);
+        // start the message after the time
+        this.log("playwright", "verbose", message.substring(pwIndex));
+        return;
+      }
+
+      const qawolfIndex = message?.indexOf("qawolf:public");
+      if (qawolfIndex > -1) {
+        // start the message after the time
+        this.log(
+          "qawolf",
+          "verbose",
+          message.substring(qawolfIndex).replace("qawolf:public", "qawolf:")
+        );
+        return;
+      }
     };
   }
 

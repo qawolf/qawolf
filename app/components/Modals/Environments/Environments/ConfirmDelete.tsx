@@ -1,17 +1,18 @@
 import { Box } from "grommet";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 
 import { useDeleteEnvironment } from "../../../../hooks/mutations";
-import { Environment } from "../../../../lib/types";
+import { MutableListFields } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import TextInput from "../../../shared-new/AppTextInput";
 import ConfirmDelete from "../../../shared-new/Modal/ConfirmDelete";
 import Header from "../../../shared-new/Modal/Header";
 import Text from "../../../shared-new/Text";
+import { StateContext } from "../../../StateContext";
 
 type Props = {
   closeModal: () => void;
-  environment: Environment;
+  environment: MutableListFields;
   onClose: (deletedEnvironmentId?: string) => void;
 };
 
@@ -20,17 +21,21 @@ export default function ConfirmDeleteEnvironment({
   environment,
   onClose,
 }: Props): JSX.Element {
+  const { environmentId } = useContext(StateContext);
+
   const [error, setError] = useState("");
   const [name, setName] = useState("");
 
-  const [deleteEnvironment, { loading }] = useDeleteEnvironment();
+  const [deleteEnvironment, { loading }] = useDeleteEnvironment({
+    currentEnvironmentId: environmentId,
+  });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setName(e.target.value);
   };
 
   const handleDelete = (): void => {
-    if (name !== environment.name) {
+    if (name.toLowerCase() !== environment.name.toLowerCase()) {
       setError(copy.mustMatch);
       return;
     }

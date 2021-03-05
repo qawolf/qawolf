@@ -1,6 +1,7 @@
 import { Box, Button } from "grommet";
 import styled from "styled-components";
 
+import { ShortTrigger } from "../../lib/types";
 import { copy } from "../../theme/copy";
 import {
   borderSize,
@@ -8,26 +9,24 @@ import {
   edgeSize,
   transitionDuration,
 } from "../../theme/theme-new";
-import ColorDot from "./ColorDot";
 import Text from "./Text";
+import TriggerIcon from "./TriggerIcon";
 
 type Props = {
   className?: string;
-  color?: string | null;
   isLoading?: boolean;
-  name?: string | null;
   onClick?: () => void;
+  trigger: ShortTrigger | null;
 };
 
 function TriggerBadge({
-  color,
   className,
   isLoading,
-  name,
   onClick,
+  trigger,
 }: Props): JSX.Element {
   let label = copy.manuallyTriggered;
-  if (name) label = name;
+  if (trigger?.name) label = trigger.name;
   else if (isLoading) label = copy.loading;
 
   const innerHtml = (
@@ -40,8 +39,8 @@ function TriggerBadge({
       pad={{ horizontal: "xsmall" }}
       round="xlarge"
     >
-      {!!color && <ColorDot color={color} margin={{ right: "xxsmall" }} />}
-      <Text color="gray9" size="component">
+      <TriggerIcon trigger={trigger} />
+      <Text color="gray7" size="componentSmall">
         {label}
       </Text>
     </Box>

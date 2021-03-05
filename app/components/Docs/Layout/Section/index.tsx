@@ -1,42 +1,55 @@
 import { Box, Button } from "grommet";
-import { useRouter } from "next/router";
+import styled from "styled-components";
 
-import { colors, edgeSize } from "../../../../theme/theme-new";
+import {
+  colors,
+  edgeSize,
+  transitionDuration,
+} from "../../../../theme/theme-new";
 import Text from "../../../shared-new/Text";
 import { Section as SectionType } from "../../docs";
 import SectionLinks, { iconSize } from "./SectionLinks";
 
 type Props = {
+  isOpen: boolean;
+  onClick: () => void;
   pathname: string;
   section: SectionType;
 };
 
-export default function Section({ pathname, section }: Props): JSX.Element {
-  const { push } = useRouter();
+const StyledBox = styled(Box)`
+  border-radius: ${edgeSize.xxsmall};
+  transition: background ${transitionDuration};
 
+  &:hover {
+    background: ${colors.fill10};
+  }
+`;
+
+export default function Section({
+  isOpen,
+  onClick,
+  pathname,
+  section,
+}: Props): JSX.Element {
   const { IconComponent, color, docs, name } = section;
-
-  const isOpen = !!docs.find((doc) => doc.href === pathname);
-
-  const handleClick = (): void => {
-    // open the section's first doc
-    push(docs[0].href);
-  };
+  const isCurrent = docs.find((d) => d.href === pathname);
 
   return (
     <>
       <Button
         a11yTitle={`toggle ${name} docs`}
-        onClick={handleClick}
+        margin={{ top: edgeSize.small }}
+        onClick={onClick}
         plain
         style={{ cursor: "pointer" }}
       >
-        <Box
+        <StyledBox
           align="center"
+          background={isCurrent ? "fill10" : "transparent"}
           direction="row"
           flex={false}
           height="32px"
-          margin={{ top: edgeSize.small }}
         >
           <Box
             align="center"
@@ -49,10 +62,14 @@ export default function Section({ pathname, section }: Props): JSX.Element {
           >
             <IconComponent color={colors.white} size={edgeSize.medium} />
           </Box>
-          <Text color="textDark" size="xxsmall" weight="medium">
+          <Text
+            color={isCurrent ? "primary" : "textDark"}
+            size="xxsmall"
+            weight="medium"
+          >
             {name}
           </Text>
-        </Box>
+        </StyledBox>
       </Button>
       <SectionLinks docs={docs} isOpen={isOpen} pathname={pathname} />
     </>

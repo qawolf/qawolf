@@ -1,11 +1,12 @@
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 
-import Spinner from "../../components/shared/Spinner";
+import Spinner from "../../components/shared-new/Spinner";
 import { StateContext } from "../../components/StateContext";
 import { useEnsureUser } from "../../hooks/ensureUser";
 import { useCreateSlackIntegration } from "../../hooks/mutations";
 import { routes } from "../../lib/routes";
+import { edgeSize } from "../../theme/theme-new";
 
 export default function Slack(): JSX.Element {
   useEnsureUser();
@@ -43,5 +44,5 @@ export default function Slack(): JSX.Element {
     }
   }, [called, code, createSlackIntegration, state, team_id]);
 
-  return <Spinner />;
+  return <Spinner margin={{ top: edgeSize.xxxlarge }} />;
 }

@@ -69,8 +69,8 @@ export default function RunTests({ tests }: Props): JSX.Element {
       <Button
         IconComponent={Play}
         a11yTitle="run tests"
-        isDisabled={loading}
-        label={copy.runTests(selected?.name)}
+        isDisabled={loading || !test_ids.length}
+        label={copy.runTests(test_ids.length, selected?.name)}
         noBorderSide={selected ? "right" : undefined}
         onClick={handleRunClick}
         type="secondary"
@@ -96,6 +96,7 @@ export default function RunTests({ tests }: Props): JSX.Element {
               isOpen={isOpen}
               onClose={handleMenuClose}
               target={ref.current}
+              testCount={test_ids.length}
             />
           </Box>
         </>

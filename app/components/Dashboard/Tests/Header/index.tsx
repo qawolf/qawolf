@@ -1,4 +1,5 @@
 import { Box } from "grommet";
+import { useRouter } from "next/router";
 
 import { ShortTest, TestTriggers, Trigger } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
@@ -10,6 +11,8 @@ import SelectTrigger from "./SelectTrigger";
 
 type Props = {
   checkedTests: ShortTest[];
+  hasGroups: boolean;
+  groupName: string | null;
   search: string;
   setSearch: (search: string) => void;
   tests: ShortTest[] | null;
@@ -19,13 +22,22 @@ type Props = {
 
 export default function Header({
   checkedTests,
+  groupName,
+  hasGroups,
   search,
   setSearch,
   testTriggers,
   tests,
   triggers,
 }: Props): JSX.Element {
+  const { query } = useRouter();
+  const groupId = query.group_id as string;
+
   const selectedTests = checkedTests.length ? checkedTests : tests;
+
+  const selectedTestTriggers = testTriggers.filter((t) => {
+    return !groupId || t.group_id === groupId;
+  });
 
   return (
     <Box flex={false}>
@@ -41,17 +53,20 @@ export default function Header({
             margin={{ right: "medium" }}
             size="componentHeader"
           >
-            {copy.allTests}
+            {groupName || copy.allTests}
           </Text>
         </Box>
         <Box align="center" direction="row">
-          <Actions checkedTests={checkedTests} />
+          <Actions checkedTests={checkedTests} hasGroups={hasGroups} />
           <Buttons tests={selectedTests} />
         </Box>
       </Box>
       <Box align="center" direction="row" justify="between">
         <Search search={search} setSearch={setSearch} />
-        <SelectTrigger testTriggers={testTriggers} triggers={triggers} />
+        <SelectTrigger
+          testTriggers={selectedTestTriggers}
+          triggers={triggers}
+        />
       </Box>
     </Box>
   );

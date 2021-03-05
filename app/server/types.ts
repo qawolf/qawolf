@@ -116,6 +116,14 @@ export type GitHubCommitStatus = {
   updated_at?: string;
 };
 
+export type Group = {
+  created_at?: string;
+  id: string;
+  name: string;
+  team_id: string;
+  updated_at?: string;
+};
+
 export type Invite = {
   accepted_at: string | null;
   created_at?: string;
@@ -232,6 +240,7 @@ export type Team = {
   id: string;
   inbox: string;
   helpers: string;
+  helpers_version: number;
   is_email_alert_enabled: boolean;
   is_enabled: boolean;
   name: string;
@@ -258,6 +267,7 @@ export type Test = {
   creator_id: string;
   code: string;
   deleted_at: string | null;
+  group_id: string | null;
   id: string;
   is_enabled: boolean;
   name: string;
@@ -335,6 +345,11 @@ export type CreateEnvironmentVariableMutation = {
 
 export type CreateGitHubIntegrationsMutation = {
   installation_id: number;
+  team_id: string;
+};
+
+export type CreateGroupMutation = {
+  name: string;
   team_id: string;
 };
 
@@ -429,6 +444,11 @@ export type UpdateEnvironmentVariableMutation = {
   value: string;
 };
 
+export type UpdateGroupMutation = {
+  id: string;
+  name: string;
+};
+
 export type UpdateTriggerMutation = {
   deployment_branches?: string | null;
   deployment_environment?: DeploymentEnvironment | null;
@@ -461,6 +481,7 @@ export type UpdateRunnerMutation = {
 export type UpdateTeamMutation = {
   alert_integration_id?: string | null;
   helpers?: string | null;
+  helpers_version?: number;
   id: string;
   is_email_alert_enabled?: boolean;
   name?: string | null;
@@ -472,6 +493,11 @@ export type UpdateTestMutation = {
   is_enabled?: boolean;
   name?: string;
   version?: number;
+};
+
+export type UpdateTestsGroupMutation = {
+  group_id: string | null;
+  test_ids: string[];
 };
 
 export type UpdateUserMutation = {
@@ -517,8 +543,7 @@ export type RunnerResult = {
 
 export type SuiteResult = Suite & {
   environment_name: string | null;
-  trigger_color: string | null;
-  trigger_name: string | null;
+  trigger: Trigger | null;
 };
 
 export type TeamIdQuery = {
@@ -551,6 +576,7 @@ export type TestSummary = {
 };
 
 export type TestTriggers = {
+  group_id: string | null;
   test_id: string;
   trigger_ids: string[];
 };

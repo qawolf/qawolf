@@ -1,4 +1,5 @@
 import { timeToText } from "../../lib/helpers";
+import { routes } from "../../lib/routes";
 import {
   RunStatus,
   ShortSuite,
@@ -17,6 +18,7 @@ type FilterRuns = {
 };
 
 type FilterTests = {
+  group_id: string | null;
   search: string;
   testTriggers?: TestTriggers[];
   tests?: ShortTest[];
@@ -24,6 +26,16 @@ type FilterTests = {
 };
 
 export const noTriggerId = "none";
+
+export const buildTestsPath = (
+  groupId: string | null,
+  triggerId: string | null
+): string => {
+  const query = triggerId ? `?trigger_id=${triggerId}` : "";
+
+  if (!groupId) return `${routes.tests}${query}`;
+  return `${routes.tests}/${groupId}${query}`;
+};
 
 export const filterRuns = ({
   runs,
@@ -46,6 +58,7 @@ export const filterRuns = ({
 };
 
 export const filterTests = ({
+  group_id,
   search,
   testTriggers,
   tests,
@@ -54,6 +67,10 @@ export const filterTests = ({
   if (!tests || (trigger_id && !testTriggers)) return null;
 
   let filteredTests = [...tests];
+
+  if (group_id) {
+    filteredTests = filteredTests.filter((t) => t.group_id === group_id);
+  }
 
   if (search) {
     filteredTests = filteredTests.filter((t) => {
@@ -81,7 +98,7 @@ export const filterTests = ({
 };
 
 export const formatSuiteName = (suite: ShortSuite): string => {
-  if (suite.trigger_name) return suite.trigger_name;
+  if (suite.trigger?.name) return suite.trigger.name;
   if (!suite.environment_name) return copy.manuallyTriggered;
 
   return `${copy.manuallyTriggered}: ${suite.environment_name}`;

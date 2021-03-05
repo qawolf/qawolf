@@ -41,6 +41,8 @@ describe("teamResolver", () => {
 describe("updateTeamResolver", () => {
   beforeAll(async () => {
     await db("teams").insert(buildTeam({}));
+    await db("teams").update({ api_key: encrypt("qawolf_api_key") });
+
     await db("users").insert(buildUser({}));
     await db("integrations").insert(buildIntegration({}));
 
@@ -68,6 +70,7 @@ describe("updateTeamResolver", () => {
 
     expect(team).toMatchObject({
       alert_integration_id: "integrationId",
+      api_key: "qawolf_api_key",
       is_email_alert_enabled: false,
     });
   });
@@ -75,11 +78,15 @@ describe("updateTeamResolver", () => {
   it("updates a team helpers", async () => {
     const team = await updateTeamResolver(
       {},
-      { helpers: "helpers", id: "teamId" },
+      { helpers: "helpers", helpers_version: 1, id: "teamId" },
       context
     );
 
-    expect(team.helpers).toBe("helpers");
+    expect(team).toMatchObject({
+      api_key: "qawolf_api_key",
+      helpers: "helpers",
+      helpers_version: 1,
+    });
   });
 
   it("updates a team name", async () => {
@@ -89,6 +96,9 @@ describe("updateTeamResolver", () => {
       context
     );
 
-    expect(team.name).toBe("another name");
+    expect(team).toMatchObject({
+      api_key: "qawolf_api_key",
+      name: "another name",
+    });
   });
 });

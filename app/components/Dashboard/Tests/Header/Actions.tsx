@@ -6,23 +6,27 @@ import { copy } from "../../../../theme/copy";
 import { borderSize, colors, edgeSize } from "../../../../theme/theme-new";
 import Button from "../../../shared-new/AppButton";
 import Divider from "../../../shared-new/Divider";
+import Folder from "../../../shared-new/icons/Folder";
 import Lightning from "../../../shared-new/icons/Lightning";
 import Trash from "../../../shared-new/icons/Trash";
 
 type Props = {
   checkedTests: ShortTest[];
+  hasGroups: boolean;
 };
 
-export default function Actions({ checkedTests }: Props): JSX.Element {
+export default function Actions({
+  checkedTests,
+  hasGroups,
+}: Props): JSX.Element {
   if (!checkedTests.length) return null;
 
   const handleDeleteClick = (): void => {
-    state.setModal({
-      name: "deleteTests",
-      tests: checkedTests.map(({ id, name }) => {
-        return { id, name };
-      }),
-    });
+    state.setModal({ name: "deleteTests", tests: checkedTests });
+  };
+
+  const handleGroupClick = (): void => {
+    state.setModal({ name: "editTestsGroup", tests: checkedTests });
   };
 
   const handleTriggersClick = (): void => {
@@ -37,10 +41,18 @@ export default function Actions({ checkedTests }: Props): JSX.Element {
       <Button
         IconComponent={Lightning}
         label={copy.editTriggers}
-        margin={{ right: "xxsmall" }}
         onClick={handleTriggersClick}
         type="ghost"
       />
+      {hasGroups && (
+        <Button
+          IconComponent={Folder}
+          label={copy.addToGroup}
+          margin={{ horizontal: "xxsmall" }}
+          onClick={handleGroupClick}
+          type="ghost"
+        ></Button>
+      )}
       <Button
         IconComponent={Trash}
         color={colors.danger5}

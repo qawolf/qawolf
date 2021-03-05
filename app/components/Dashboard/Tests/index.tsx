@@ -1,16 +1,23 @@
 import { Box } from "grommet";
+import isEqual from "lodash/isEqual";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import { useTests, useTestTriggers, useTriggers } from "../../../hooks/queries";
+import { Group } from "../../../lib/types";
 import { StateContext } from "../../StateContext";
 import { filterTests } from "../helpers";
 import Header from "./Header";
 import List from "./List";
 
-export default function Tests(): JSX.Element {
+type Props = { groups: Group[] | null };
+
+export default function Tests({ groups }: Props): JSX.Element {
   const { query } = useRouter();
+  const group_id = (query.group_id as string) || null;
   const trigger_id = query.trigger_id as string;
+
+  const testIdsRef = useRef<string[]>([]);
 
   const { teamId } = useContext(StateContext);
 
@@ -26,25 +33,39 @@ export default function Tests(): JSX.Element {
   });
 
   const tests = filterTests({
+    group_id,
     search,
     tests: data?.tests,
     testTriggers: testTriggersData?.testTriggers,
     trigger_id,
   });
 
+  // poll periodically for tests
   useEffect(() => {
-    startPolling(10 * 1000);
+    startPolling(30 * 1000);
 
     return () => {
       stopPolling();
     };
   }, [startPolling, stopPolling, teamId]);
 
-  // clear checked tests when filters change
+  // clear checked tests when selected group or trigger changes
   useEffect(() => {
     setCheckedTestIds([]);
-    // including data?.tests ensures we reset after deleting tests
-  }, [data?.tests, trigger_id]);
+  }, [group_id, trigger_id]);
+
+  // clear checked tests when list changes
+  useEffect(() => {
+    const sortedTestsIds = (data?.tests || []).map((t) => t.id);
+    sortedTestsIds.sort();
+
+    // use ids because don't want to clear selection if groups change
+    // unless we are changing assigned group from the group page
+    if (query.group_id || !isEqual(testIdsRef.current, sortedTestsIds)) {
+      testIdsRef.current = sortedTestsIds;
+      setCheckedTestIds([]);
+    }
+  }, [data?.tests, query.group_id]);
 
   const testTriggers = testTriggersData?.testTriggers || [];
   const triggers = triggersData?.triggers || [];
@@ -52,11 +73,14 @@ export default function Tests(): JSX.Element {
   const checkedTests = (tests || []).filter((t) =>
     checkedTestIds.includes(t.id)
   );
+  const groupName = groups?.find((g) => g.id === query.group_id)?.name || null;
 
   return (
     <Box pad="medium" width="full">
       <Header
         checkedTests={checkedTests}
+        groupName={groupName}
+        hasGroups={!!groups?.length}
         search={search}
         setSearch={setSearch}
         tests={tests}
@@ -65,6 +89,7 @@ export default function Tests(): JSX.Element {
       />
       <List
         checkedTestIds={checkedTestIds}
+        groups={groups}
         setCheckedTestIds={setCheckedTestIds}
         tests={tests}
         testTriggers={testTriggers}

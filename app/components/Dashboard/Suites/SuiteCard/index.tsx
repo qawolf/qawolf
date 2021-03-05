@@ -5,9 +5,9 @@ import { timestampToText } from "../../../../lib/helpers";
 import { routes } from "../../../../lib/routes";
 import { SuiteSummary } from "../../../../lib/types";
 import { border, edgeSize } from "../../../../theme/theme-new";
-import ColorDot from "../../../shared-new/ColorDot";
 import StatusIcon from "../../../shared-new/StatusIcon";
 import Text from "../../../shared-new/Text";
+import TriggerIcon from "../../../shared-new/TriggerIcon";
 import { formatSuiteName, getStatusForSuite } from "../../helpers";
 import StatusCounts from "./StatusCounts";
 
@@ -33,12 +33,7 @@ export default function SuiteCard({ suite }: Props): JSX.Element {
             <StatusIcon status={status} width={edgeSize.large} />
             <Box margin={{ left: "small" }}>
               <Box align="center" direction="row">
-                {!!suite.trigger_color && (
-                  <ColorDot
-                    color={suite.trigger_color}
-                    margin={{ right: "xxsmall" }}
-                  />
-                )}
+                <TriggerIcon trigger={suite.trigger} />
                 <Text color="gray9" size="componentBold">
                   {label}
                 </Text>

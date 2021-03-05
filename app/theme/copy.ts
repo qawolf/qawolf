@@ -24,6 +24,8 @@ export const copy = {
   api: "API",
   apiDetail: "Trigger tests by calling the QA Wolf API:",
   apiKeyHere: "API KEY HERE",
+  addToGroup: "Add to group",
+  addToGroupDetail: "Tests can only belong to one group at a time",
   back: "Back",
   backToDashboard: "Back to dashboard",
   blog: "Blog",
@@ -68,7 +70,10 @@ export const copy = {
   deleted: "(Deleted)",
   deleteGroup: "Delete group",
   deleteOk: "Yes, delete",
-  deleteTests: "Delete tests",
+  deleteTests: (count: number): string =>
+    `Delete${count === 1 ? "" : ` ${count}`} test${count === 1 ? "" : "s"}`,
+  deleteTestsDetail:
+    "Are you sure? Deleting tests is permanent and cannot be undone",
   deleteTrigger: "Delete trigger",
   delightUsers: "Delight users",
   delightUsersDetail:
@@ -89,11 +94,15 @@ export const copy = {
     "Debug with video, logs, and the exact line a test failed on.",
   edit: "Edit",
   editTest: "Edit test",
+  editTestsGroup: (count: number): string =>
+    `Add ${count === 1 ? "" : `${count} tests `}to a group`,
   editTrigger: "Edit trigger",
   editTriggers: "Edit triggers",
+  editTriggersDetail: "Choose which triggers you want to assign",
+  editTriggersForTests: (count: number): string =>
+    `Edit triggers${count === 1 ? "" : ` for ${count} tests`}`,
   email: "Email",
   emailPlaceholder: "you@awesome.com",
-  emptyTests: "You don't have any tests yet!",
   emptyTestsSearch: "No tests found",
   encrypted: "Encrypted",
   enterUrl: "Enter your URL to create a test",
@@ -101,12 +110,12 @@ export const copy = {
   envVariableDeleteConfirm:
     "The following environment variable will be permanently deleted. Are you sure you want to continue?",
   envVariableNamePlaceholder: "MY_VAR",
-  envVariableNew: "Add variable",
+  envVariableNew: "Create variable",
   envVariableValuePlaceholder: "value",
   envVariables: "Environment variables",
   envVariablesDetail:
     "Use environment variables for values that you don’t want visible in your code or to change the behavior of your test based on the environment",
-  envVariablesEmpty: "No variables added to this environment",
+  envVariablesEmpty: "No variables created for this environment",
   envVariablesNoEnvironment: "Please select an environment to see variables",
   environment: "Environment",
   environmentDelete: "Delete environment",
@@ -115,7 +124,7 @@ export const copy = {
   environmentDeleteConfirm2: "to confirm.",
   environmentEdit: (name: string): string =>
     name ? `Edit ${name} environment` : "",
-  environmentNew: "Add environment",
+  environmentNew: "Create environment",
   environmentNotSelected: "No environment",
   environments: "Environments",
   frequency: "Frequency",
@@ -128,12 +137,19 @@ export const copy = {
   gitHubComplete: "🎉 All set! You can close this page.",
   gitHubRepo: "GitHub repository",
   goHome: "Go Home",
+  group: "Group",
+  groupDelete: "Delete group",
+  groupDeleteConfirm:
+    "Are you sure? This will permanently delete this group, but not the tests inside it",
+  groupNew: "Create group",
+  groups: "Test groups",
   growRevenue: "Grow revenue",
   growRevenueDetail:
     "2/3 of consumers abandon a purchase when they find a bug.",
   helpers: "Helpers",
   history: "History",
   hourly: "Hourly",
+  iUnderstand: "I understand",
   inProgress: "In progress",
   invalidUrl: "Not a valid URL",
   joinMailingList: "Join our mailing list",
@@ -161,6 +177,7 @@ export const copy = {
   netlifyDeploy: "Your tests will run on Netlify deploy previews.",
   next: "Next",
   noEmail: "Please enter a valid email address",
+  noGroup: "No group",
   noHistory: "No history yet",
   noMobile:
     "Woof. We're not mobile friendly yet. Please try again on a larger screen!",
@@ -203,8 +220,10 @@ export const copy = {
   runLines: (count: number): string =>
     `Run ${count} line${count === 1 ? "" : "s"}`,
   runsPass: "Passing tests",
-  runTests: (environment?: string | null): string =>
-    `Run tests${environment ? `: ${environment}` : ""}`,
+  runTests: (count: number, environment?: string | null): string =>
+    `Run ${count} test${count === 1 ? "" : "s"}${
+      environment ? ` on ${environment}` : ""
+    }`,
   oneTeamMember: "1 team member",
   other: "Other",
   otherDeploy: "Don't see the tool you use? Let us know!",
@@ -266,6 +285,8 @@ export const copy = {
   triggerDeleteConfirm:
     "Are you sure? This will permanently delete this trigger. Please type",
   triggerDeleteConfirm2: "to confirm.",
+  triggersDetail:
+    "Use triggers to run your tests on a schedule, on deployment, or with an API call",
   triggersEmpty: "No triggers created",
   triggerId: "trigger_id",
   triggerNamePlaceholder: "Name your trigger",

@@ -109,6 +109,21 @@ declare function launch(
 }>;
 
 /**
+ * Assert the page or frame contains the specified element by selector.
+ * 
+ * If the element is not found before timeout, an error is thrown.
+ * 
+ * \`\`\`js
+ * await assertElement(page, "#my-element");
+ * \`\`\`
+ *
+ * \`\`\`js
+ * await assertText(page, ".submit", { timeout: 1000 });
+ * \`\`\`
+ */
+declare function assertElement(page: import('playwright').Page | import('playwright').Frame, selector: string, options?: { timeout?: number }): Promise<void>;
+
+/**
  * Assert the page or frame contains the specified text. You can specify the element to check by passing a selector, otherwise it defaults to body.
  * 
  * If the element is not found or if the element does not contain the specified text before timeout, an error is thrown.
@@ -139,8 +154,17 @@ declare function assertText(page: import('playwright').Page | import('playwright
  * \`\`\`
  * 
  * \`\`\`js
- * // Call with { new: true } to get a fresh inbox.
+ * // get your team's email address
+ * // example: my-team@qawolf.email
+ * const { email, waitForMessage } = getInbox();
+ * 
+ * // get a new email address
+ * // example: my-team+a25sa5q@qawolf.email
  * const { email, waitForMessage } = getInbox({ new: true });
+ * 
+ * // get a custom email address
+ * // example: my-team+admin@qawolf.email
+ * const { email, waitForMessage } = getInbox({ id: "admin" });
  * 
  * // Pass after to wait for a message after that date.
  * // If not provided it will for a message after when getInbox was called.
@@ -151,7 +175,7 @@ declare function assertText(page: import('playwright').Page | import('playwright
  * const message = await waitForMessage({ timeout: 120000 });
  * \`\`\`
  */
-declare function getInbox(options?: { new?: boolean; }): 
+declare function getInbox(options?: { id?: string; new?: boolean; }): 
   {
     email: string; 
     waitForMessage: function({ after?: Date, timeout?: number }): Promise<{ from: string; html: string; subject: string; text: string; to: string; }>;

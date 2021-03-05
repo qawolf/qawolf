@@ -1,0 +1,71 @@
+import Link from "next/link";
+
+import ExternalLink from "../../components/Docs/ExternalLink";
+import Header from "../../components/Docs/Header";
+import Layout from "../../components/Docs/Layout";
+import MessageUs from "../../components/Docs/MessageUs";
+import SubHeader from "../../components/Docs/SubHeader";
+
+<Layout>
+
+<Header>Your Testing Strategy</Header>
+
+This guide provides a strategy for getting started with testing. It is written for teams who do not yet have automated end-to-end tests.
+
+<SubHeader>Why have automated tests?</SubHeader>
+
+You may be wondering if automated testing is worth it, especially if you don't have tests now.
+
+We struggled with the same question at our previous jobs. But after building QA Wolf and using it to test QA Wolf (meta), we can confidently say that we are glad to have automated tests.
+
+As developers, automated tests help us ship much faster. Before, we would have to manually check that our critical workflows weren't broken on every release. Now we can test all of our features in just a few minutes.
+
+Automated tests also positively impact your company. It is much easier and cheaper to fix a bug if you find it before a customer does. In addition, customers are more likely to pay for and recommend a high quality product.
+
+<SubHeader>Commit to trying automated testing</SubHeader>
+
+The first step is to commit to trying automated testing. We recommend giving it one week to see how it goes. With QA Wolf, you should be able to set up your first test in a few minutes.
+
+After a week, you can reevaluate whether you want to continue with automated testing.
+
+<SubHeader>Create your first test</SubHeader>
+
+Now that you're committed, let's get started! 🏁
+
+Start by thinking of a single test to run on production. This test should cover a workflow that is core to your product. Here are few examples:
+
+- Amazon: Add an item to the cart
+- Netflix: Log in and start watching a movie
+- QA Wolf: Sign up and create a test
+
+Now create a test for the critical path you chose. <Link href="/docs/create-a-test"><a>Learn how to create a test with QA Wolf here</a></Link>.
+
+<SubHeader>Run tests on a schedule</SubHeader>
+
+After you've created your first test, run it on a schedule. This helps ensure that your critical paths aren't broken.
+
+We recommend running your test once a day to get started. <Link href="/docs/run-tests-on-a-schedule">Learn how to run a test on a schedule here</Link>.
+
+As you get more comfortable with automated testing, you can add a few more tests. While QA Wolf does support cross browser testing, we recommend testing on just Chromium (Chrome) until you know your tests work.
+
+For many teams, running tests on a schedule is enough. After setting up a few tests on production, you can also schedule them to run on staging. This helps catch bugs earlier in the development process.
+
+<SubHeader>Optional: Run tests on deployment</SubHeader>
+
+You can also run your tests every time you deploy. By running your tests on deployment, you can quickly catch issues with specific releases.
+
+QA Wolf supports running tests on <Link href="/docs/run-tests-on-vercel-deployment">Vercel</Link> and <Link href="/docs/run-tests-on-netlify-deployment">Netlify</Link> deployments out of the box.
+
+If you have a different deployment process, you can also trigger your tests by <Link href="/docs/run-tests-with-api">calling the QA Wolf API</Link>.
+
+<SubHeader>Get help</SubHeader>
+
+If you get stuck or have any questions, do not hesitate to reach out. You can find us in <ExternalLink href="https://slack.qawolf.com">our community Slack</ExternalLink> or <MessageUs label="on Intercom" />.
+
+<SubHeader>Conclusion</SubHeader>
+
+🎉 Congratulations - you're running automated tests! You're well on your way to shipping a high quality product faster.
+
+If you need ideas for your next test, check out <Link href="/docs/receive-an-email">our guides</Link> for inspiration.
+
+</Layout>

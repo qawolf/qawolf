@@ -1,6 +1,6 @@
 import debounce from "debounce";
 import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import { useUpdateTeam } from "../../../hooks/mutations";
 import { StateContext } from "../../StateContext";
@@ -21,7 +21,9 @@ const DEBOUNCE_MS = 250;
 export default function HelpersEditor({ onKeyDown }: Props): JSX.Element {
   const { env } = useContext(RunnerContext);
   const { teamId } = useContext(StateContext);
-  const { hasWriteAccess, team } = useContext(TestContext);
+  const { hasWriteAccess, refetchTeam, team } = useContext(TestContext);
+
+  const helpersVersionRef = useRef(team?.helpers_version);
 
   const [editor, setEditor] = useState<Editor | null>(null);
   const [monaco, setMonaco] = useState<typeof monacoEditor | null>(null);
@@ -29,6 +31,21 @@ export default function HelpersEditor({ onKeyDown }: Props): JSX.Element {
   const [updateTeam] = useUpdateTeam();
 
   useEnvTypes({ env, monaco });
+
+  useEffect(() => {
+    if (refetchTeam) refetchTeam();
+  }, [refetchTeam]);
+
+  // update current team helpers version so it works in callback
+  useEffect(() => {
+    if (team) helpersVersionRef.current = team.helpers_version;
+  }, [team]);
+
+  useEffect(() => {
+    if (editor && team && editor.getValue() !== team.helpers) {
+      editor.setValue(team.helpers);
+    }
+  }, [editor, team]);
 
   const debouncedUpdateTeam = debounce(updateTeam, DEBOUNCE_MS);
 
@@ -38,25 +55,20 @@ export default function HelpersEditor({ onKeyDown }: Props): JSX.Element {
     includeTypes(monaco);
 
     editor.onDidChangeModelContent(() => {
-      if (!team) return; // do not overwrite if team not loaded
-
       const helpers = editor.getValue();
+      if (!team || helpers === team.helpers) return;
+
+      helpersVersionRef.current += 1;
+      const helpers_version = helpersVersionRef.current;
 
       debouncedUpdateTeam({
         optimisticResponse: {
-          updateTeam: { ...team, helpers },
+          updateTeam: { ...team, helpers, helpers_version },
         },
-        variables: { helpers, id: teamId },
+        variables: { helpers, helpers_version, id: teamId },
       });
     });
   };
-
-  useEffect(() => {
-    if (!editor) return;
-
-    editor.setValue(team?.helpers || "");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editor, team?.id]);
 
   return (
     <EditorComponent

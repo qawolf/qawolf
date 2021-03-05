@@ -1,25 +1,20 @@
 import { Box } from "grommet";
 
-import { RunStatus, SuiteRun } from "../../../../lib/types";
+import { SuiteRun } from "../../../../lib/types";
 import { borderSize } from "../../../../theme/theme-new";
-import { filterRuns } from "../../helpers";
 import Header from "./Header";
 import RunCard from "./RunCard";
 
 type Props = {
   checkedTestIds: string[];
   runs: SuiteRun[];
-  search: string;
   setCheckedTestIds: (runIds: string[]) => void;
-  status: RunStatus | null;
 };
 
 export default function List({
   checkedTestIds,
   runs,
-  search,
   setCheckedTestIds,
-  status,
 }: Props): JSX.Element {
   const handleRunCheck = (testId: string): void => {
     const index = checkedTestIds.indexOf(testId);
@@ -33,9 +28,7 @@ export default function List({
     }
   };
 
-  const filteredRuns = filterRuns({ runs, search, status });
-
-  const runsHtml = filteredRuns.map((run, i) => {
+  const runsHtml = runs.map((run, i) => {
     return (
       <RunCard
         isChecked={checkedTestIds.includes(run.test_id)}
@@ -55,10 +48,10 @@ export default function List({
     >
       <Header
         checkedTestIds={checkedTestIds}
-        runs={filteredRuns}
+        runs={runs}
         setCheckedTestIds={setCheckedTestIds}
       />
-      <Box overflow={{ vertical: "scroll" }}>
+      <Box overflow={{ vertical: "auto" }}>
         <Box flex={false}>{runsHtml}</Box>
       </Box>
     </Box>

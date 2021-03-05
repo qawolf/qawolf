@@ -2,38 +2,36 @@ import { Box } from "grommet";
 
 import { useCreateSuite } from "../../../../hooks/mutations";
 import { timestampToText } from "../../../../lib/helpers";
-import { RunStatus, Suite } from "../../../../lib/types";
+import { Suite, SuiteRun } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import Button from "../../../shared-new/AppButton";
-import ColorDot from "../../../shared-new/ColorDot";
 import Play from "../../../shared-new/icons/Play";
 import Search from "../../../shared-new/Search";
 import Text from "../../../shared-new/Text";
+import TriggerIcon from "../../../shared-new/TriggerIcon";
 import { formatSuiteName } from "../../helpers";
 import SelectStatus from "./SelectStatus";
 
 type Props = {
   checkedTestIds: string[];
+  filteredRuns: SuiteRun[];
   search: string;
   setSearch: (search: string) => void;
-  setStatus: (status: RunStatus | null) => void;
-  status: RunStatus | null;
   suite: Suite;
 };
 
 export default function Header({
   checkedTestIds,
+  filteredRuns,
   search,
   setSearch,
-  setStatus,
-  status,
   suite,
 }: Props): JSX.Element {
   const [createSuite, { loading }] = useCreateSuite();
 
   const test_ids = checkedTestIds.length
     ? checkedTestIds
-    : suite.runs.map((r) => r.test_id);
+    : filteredRuns.map((r) => r.test_id);
 
   const handleClick = (): void => {
     if (!test_ids.length) return;
@@ -51,12 +49,7 @@ export default function Header({
     <Box flex={false}>
       <Box align="center" direction="row" justify="between">
         <Box align="center" direction="row">
-          {!!suite.trigger_color && (
-            <ColorDot
-              color={suite.trigger_color}
-              margin={{ right: "xxsmall" }}
-            />
-          )}
+          <TriggerIcon trigger={suite.trigger} />
           <Text
             color="gray9"
             margin={{ right: "xxsmall" }}
@@ -70,8 +63,8 @@ export default function Header({
         </Box>
         <Button
           IconComponent={Play}
-          isDisabled={loading}
-          label={copy.runTests()}
+          isDisabled={loading || !test_ids.length}
+          label={copy.runTests(test_ids.length)}
           onClick={handleClick}
           type="secondary"
         />
@@ -83,7 +76,7 @@ export default function Header({
         margin={{ top: "large" }}
       >
         <Search search={search} setSearch={setSearch} />
-        <SelectStatus runs={suite.runs} setStatus={setStatus} status={status} />
+        <SelectStatus runs={suite.runs} />
       </Box>
     </Box>
   );

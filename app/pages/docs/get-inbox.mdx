@@ -1,0 +1,98 @@
+import Link from "next/link";
+
+import Header from "../../components/Docs/Header";
+import Layout from "../../components/Docs/Layout";
+import SubHeader from "../../components/Docs/SubHeader";
+
+<Layout>
+
+<Header>getInbox([options])</Header>
+
+Get an email address and receive an email message in your test.
+
+See the <Link href="receive-an-email">Receive an Email guide</Link>.
+
+```js
+// get your team's email address
+// example: my-team@qawolf.email
+const { email, waitForMessage } = getInbox();
+
+// get a new email address
+// example: my-team+a25sa5q@qawolf.email
+const { email, waitForMessage } = getInbox({ new: true });
+
+// get a custom email address
+// example: my-team+admin@qawolf.email
+const { email, waitForMessage } = getInbox({ id: "admin" });
+
+// use the email to fill out a form
+await page.fill('[name="email"]', email);
+await page.click('[aria-label="Sign up with email"]');
+
+// wait for a message up to 1 minute
+const message = await waitForMessage();
+
+// wait for a message up to 3 minutes
+const message = await waitForMessage({ timeout: 3 * 60000 });
+```
+
+<SubHeader>Arguments</SubHeader>
+
+**[options]** (Object)
+
+- [id] (string): Get an email address with the specified id. Default: `null`
+- [new] (boolean): Get a new email address. Default: `false`
+
+**Returns:** `{ email, waitForMessage }`
+
+- email (string): An email address to send your email to.
+- waitForMessage (Function): Wait for a message sent to the email address.
+
+<Header>waitForMessage([options])</Header>
+
+Get the next message sent to the email address returned from `getInbox`.
+
+If a message is not received before the timeout, an error is thrown.
+
+```js
+// wait for a message up to 1 minute
+const { subject } = await waitForMessage();
+assert(subject.includes("hello"));
+
+// wait for a message up to 2 minutes
+const { subject, text } = await waitForMessage({ timeout: 120000 });
+assert(subject.includes("hello"));
+```
+
+Use the `after` option to wait for an email that is received after a specified `Date`.
+
+For example, at QA Wolf we use the same test to test sign up and log in. When we log in the second time, we need to make sure to get the latest login code. Otherwise, `waitForMessage` would return the email with the first login code immediately.
+
+```js
+// keep track of when we log in the second time
+const after = new Date();
+
+// log in
+await page.fill('[name="email"]', email);
+await page.click('[aria-label="Log in with email"]');
+
+// get login code from email sent after specified date
+const { subject } = await waitForMessage({ after });
+```
+
+<SubHeader>waitForMessage Arguments</SubHeader>
+
+**[options]** (Object)
+
+- [after] (Date): Find a message sent after this date. Default: When `getInbox` was called
+- [timeout] (number): Time in milliseconds to wait for a message. Default: `60000`
+
+**Returns:** `Promise<Message>`
+
+- from (string): Sender of the email. Example: `"Tug the QA Wolf <tug@qawolf.com>"`
+- html (string): HTML body of the email. Example: `"<div\>I'm the email body</div\>"`
+- subject (string): Subject line of the email. Example: `"🐺 Hi there!"`
+- text (string): Email body in plain text. Example: `"I'm the email body"`
+- to (string): Recipient of the email. Example: `"qawolf@spirit.qawolf.email"`
+
+</Layout>

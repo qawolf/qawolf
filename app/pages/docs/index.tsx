@@ -7,7 +7,7 @@ export default function Docs(): JSX.Element {
   const { replace } = useRouter();
 
   useEffect(() => {
-    replace(`${routes.docs}/what-is-qa-wolf`);
+    replace(`${routes.docs}/why-qa-wolf`);
   }, [replace]);
 
   return null;

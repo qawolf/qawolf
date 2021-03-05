@@ -4,9 +4,11 @@ import { useContext, useEffect } from "react";
 
 import { useEnsureUser } from "../../hooks/ensureUser";
 import { useUpdateUser } from "../../hooks/mutations";
+import { useGroups } from "../../hooks/queries";
 import { routes } from "../../lib/routes";
 import { state } from "../../lib/state";
 import { theme } from "../../theme/theme-new";
+import { StateContext } from "../StateContext";
 import { UserContext } from "../UserContext";
 import Sidebar from "./Sidebar";
 import Suite from "./Suite";
@@ -17,7 +19,11 @@ export default function Dashboard(): JSX.Element {
   useEnsureUser();
 
   const { asPath, pathname, query } = useRouter();
+  const { teamId } = useContext(StateContext);
   const { user } = useContext(UserContext);
+
+  const { data } = useGroups({ team_id: teamId });
+  const groups = data?.groups || null;
 
   const [updateUser] = useUpdateUser();
 
@@ -34,7 +40,7 @@ export default function Dashboard(): JSX.Element {
     state.setDashboardUri(asPath);
   }, [asPath]);
 
-  let innerHtml = <Tests />;
+  let innerHtml = <Tests groups={groups} />;
   if (pathname.includes(routes.suites) && query.suite_id) {
     innerHtml = <Suite suiteId={query.suite_id as string} />;
   } else if (pathname.includes(routes.suites)) {
@@ -44,7 +50,7 @@ export default function Dashboard(): JSX.Element {
   return (
     <ThemeContext.Extend value={theme}>
       <Box direction="row" height="100vh">
-        <Sidebar />
+        <Sidebar groups={groups} />
         {innerHtml}
       </Box>
     </ThemeContext.Extend>

@@ -21,6 +21,12 @@ export type EnvironmentVariable = {
   value: string;
 };
 
+export type Group = {
+  id: string;
+  name: string;
+  team_id: string;
+};
+
 export type Integration = {
   github_repo_name: string;
   id: string;
@@ -67,9 +73,7 @@ export type ShortSuite = {
   environment_variables: string | null;
   id: string;
   team_id: string;
-  trigger_color: string | null;
-  trigger_id: string | null;
-  trigger_name: string | null;
+  trigger: ShortTrigger | null;
 };
 
 export type StatusCounts = {
@@ -107,6 +111,7 @@ export type Team = ShortTeam & {
   alert_integration_id: string | null;
   api_key: string;
   helpers: string;
+  helpers_version: number;
   inbox: string;
   is_email_alert_enabled: boolean;
   is_enabled: boolean;
@@ -115,6 +120,7 @@ export type Team = ShortTeam & {
 };
 
 export type ShortTest = {
+  group_id: string | null;
   id: string;
   name: string;
 };
@@ -147,17 +153,20 @@ export type TestSummary = {
   test_id: string;
 };
 
-export type Trigger = {
+export type ShortTrigger = {
   color: string;
+  deployment_integration_id: string | null;
+  id: string;
+  name: string;
+  repeat_minutes: number | null;
+};
+
+export type Trigger = ShortTrigger & {
   created_at: string;
   deployment_branches: string | null;
   deployment_environment: DeploymentEnvironment | null;
-  deployment_integration_id: string | null;
   environment_id: string | null;
-  id: string;
-  name: string;
   next_at: string | null;
-  repeat_minutes: number | null;
 };
 
 export type User = {
@@ -181,16 +190,34 @@ export type CreateCode = {
 
 export type Modal =
   | "createTest"
+  | "editTestsGroup"
   | "environments"
+  | "deleteGroup"
   | "deleteTests"
   | "teamSettings"
   | "triggers";
+
+export type MutableListArgs = {
+  callback: () => void;
+  fields?: MutableListFields;
+  name: string;
+};
+
+export type MutableListFunction = (args: MutableListArgs) => void;
+
+export type MutableListFields = {
+  id: string;
+  name: string;
+};
+
+export type MutableListType = "environment" | "group";
 
 export type NavigationOption = "code" | "logs" | "helpers";
 
 export type NavigationType = "dark" | "light";
 
 export type SelectedTest = {
+  group_id?: string;
   id: string;
   name: string;
 };
@@ -198,6 +225,7 @@ export type SelectedTest = {
 export type Side = "left" | "right";
 
 export type TestTriggers = {
+  group_id: string | null;
   test_id: string;
   trigger_ids: string[];
 };
@@ -264,6 +292,7 @@ type SignUp = {
 };
 
 type ModalState = {
+  group?: MutableListFields;
   name: Modal | null;
   teamId?: string;
   testIds?: string[];

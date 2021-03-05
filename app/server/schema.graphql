@@ -98,6 +98,18 @@ type EnvironmentVariables {
   variables: [EnvironmentVariable!]!
 }
 
+"A group of tests"
+type Group {
+  "Group ID"
+  id: ID!
+
+  "Group name"
+  name: String!
+
+  "Team associated with this group"
+  team_id: ID!
+}
+
 "Valid types for Integration.type"
 enum IntegrationType {
   "GitHub (https://github.com/)"
@@ -279,14 +291,8 @@ type Suite {
   "ID of the team that owns the associated test trigger"
   team_id: ID!
 
-  "Associated test trigger color"
-  trigger_color: String
-
-  "Associated test trigger ID"
-  trigger_id: ID
-
-  "Associated test trigger name"
-  trigger_name: String
+  "Associated test trigger"
+  trigger: Trigger
 }
 
 "One run for one test that is part of a test trigger we are running all at once"
@@ -329,6 +335,9 @@ type Team {
 
   "Team helper code, for sharing functionality between tests"
   helpers: String!
+
+  "Team helper code version, incremented as the helper code changes"
+  helpers_version: Int!
 
   "Team ID"
   id: ID!
@@ -378,6 +387,9 @@ type Test {
   "Date and time at which this test was deleted, if it was"
   deleted_at: String
 
+  "The ID of a group associated with this test"
+  group_id: ID
+
   "Test ID"
   id: ID!
 
@@ -417,6 +429,9 @@ type TestSummary {
 
 "A list of trigger IDs for a test"
 type TestTriggers {
+  "The group ID of the test"
+  group_id: ID
+
   "The test ID"
   test_id: ID!
 
@@ -548,8 +563,20 @@ type Mutation {
   ): [Integration!]!
 
   """
-  Create a new test trigger. The trigger is given an automatic
-  unique name, which can then be changed using `updateTrigger`.
+  Create a new test group.
+
+  Requires that you have access to the team.
+  """
+  createGroup(
+    "Name of the group"
+    name: String!
+
+    "ID of the team that should own the group"
+    team_id: ID!
+  ): Group!
+
+  """
+  Create a new test trigger.
 
   Requires that you have access to the team.
   """
@@ -726,6 +753,14 @@ type Mutation {
   ): EnvironmentVariable!
 
   """
+  Delete a test group. All tests in this group will no longer have
+  an associated group.
+
+  Requires that you have access to the team that owns the group.
+  """
+  deleteGroup("ID of the group" id: ID!): Group!
+
+  """
   Soft deletes a test trigger record by ID. All tests are removed from a
   trigger when it is soft deleted, but the tests themselves are
   not deleted an remain in any other triggers as well as the default
@@ -868,77 +903,17 @@ type Mutation {
   ): EnvironmentVariable!
 
   """
-  Updates a test trigger by ID.
+  Update a test group.
 
-  Requires that you have access to the team that owns the trigger.
+  Requires that you have access to the team that owns the group.
   """
-  updateTrigger(
-    """
-    Updated value for this field. If this field is omitted, it will
-    not be changed. If it is `null`, it will be cleared.
-    """
-    deployment_branches: String
-
-    """
-    Updated value for this field. If this field is omitted, it will
-    not be changed. If it is `null`, it will be cleared.
-    """
-    deployment_environment: DeploymentEnvironment
-
-    """
-    Updated deployment integration ID. If this field is omitted, it will not be
-    changed. If it is `null`, it will be cleared.
-    """
-    deployment_integration_id: ID
-
-    """
-    Updated environment ID. If this field is omitted, it will not be changed.
-    If it is `null`, it will be cleared.
-    """
-    environment_id: ID
-
-    "Test trigger ID"
+  updateGroup(
+    "ID of the group"
     id: ID!
 
-    """
-    Updated trigger name. If this field is omitted, it will
-    not be changed. If it is `null`, it will be cleared.
-    """
-    name: String
-
-    """
-    Updated time in minutes between test runs for the trigger.
-    If this field is omitted, it will not be changed. If it
-    is `null`, it will be cleared. Whenever you change this
-    value, the next upcoming run is also immediately rescheduled.
-    """
-    repeat_minutes: Int
-  ): Trigger!
-
-  """
-  Adds one or more tests to a trigger. Returns the updated
-  test_trigger relationships.
-
-  Requires that you have access to the team that owns the trigger.
-  """
-  updateTestTriggers(
-    """
-    ID of test trigger to add all the tests to. If this field is set,
-    `remove_trigger_id` may not be set.
-    """
-    add_trigger_id: ID
-
-    """
-    ID of test trigger to remove all the tests from. If this field is set,
-    `add_trigger_id` may not be set.
-    """
-    remove_trigger_id: ID
-
-    """
-    List of test IDs to add to / remove from the test trigger.
-    """
-    test_ids: [ID!]
-  ): [TestTriggers!]!
+    "New name of the group"
+    name: String!
+  ): Group!
 
   """
   Updates information about a test run by run ID. A runner service calls
@@ -1017,6 +992,15 @@ type Mutation {
     helpers: String
 
     """
+    Updated helpers version number. If omitted or `null`,
+    the version will not be updated. If this is provided and is
+    not higher than the current version, the update will fail.
+    This is done to prevent out-of-order updates from being
+    accepted.
+    """
+    helpers_version: Int
+
+    """
     Team ID
     """
     id: ID!
@@ -1071,6 +1055,94 @@ type Mutation {
     """
     version: Int
   ): Test!
+
+  """
+  Adds one or more tests to a trigger. Returns the updated
+  test_trigger relationships.
+
+  Requires that you have access to the team that owns the trigger.
+  """
+  updateTestTriggers(
+    """
+    ID of test trigger to add all the tests to. If this field is set,
+    `remove_trigger_id` may not be set.
+    """
+    add_trigger_id: ID
+
+    """
+    ID of test trigger to remove all the tests from. If this field is set,
+    `add_trigger_id` may not be set.
+    """
+    remove_trigger_id: ID
+
+    """
+    List of test IDs to add to / remove from the test trigger.
+    """
+    test_ids: [ID!]
+  ): [TestTriggers!]!
+
+  """
+  Updates the group ID of the specified tests.
+
+  Requires that you have access to the team that owns the tests.
+  """
+  updateTestsGroup(
+    """
+    Updated value for this field. If it is `null`, it will be cleared.
+    """
+    group_id: ID
+
+    "List of test IDs"
+    test_ids: [ID!]!
+  ): [Test!]!
+
+  """
+  Updates a test trigger by ID.
+
+  Requires that you have access to the team that owns the trigger.
+  """
+  updateTrigger(
+    """
+    Updated value for this field. If this field is omitted, it will
+    not be changed. If it is `null`, it will be cleared.
+    """
+    deployment_branches: String
+
+    """
+    Updated value for this field. If this field is omitted, it will
+    not be changed. If it is `null`, it will be cleared.
+    """
+    deployment_environment: DeploymentEnvironment
+
+    """
+    Updated deployment integration ID. If this field is omitted, it will not be
+    changed. If it is `null`, it will be cleared.
+    """
+    deployment_integration_id: ID
+
+    """
+    Updated environment ID. If this field is omitted, it will not be changed.
+    If it is `null`, it will be cleared.
+    """
+    environment_id: ID
+
+    "Test trigger ID"
+    id: ID!
+
+    """
+    Updated trigger name. If this field is omitted, it will
+    not be changed. If it is `null`, it will be cleared.
+    """
+    name: String
+
+    """
+    Updated time in minutes between test runs for the trigger.
+    If this field is omitted, it will not be changed. If it
+    is `null`, it will be cleared. Whenever you change this
+    value, the next upcoming run is also immediately rescheduled.
+    """
+    repeat_minutes: Int
+  ): Trigger!
 
   """
   Update the currently authenticated user record.
@@ -1143,12 +1215,11 @@ type Query {
   ): Runner
 
   """
-  Returns all test triggers for a single team by team ID. The default trigger is
-  always first, followed by other triggers ordered by name ascending.
+  Returns all groups for a single team by team ID.
 
   Requires that you have access to the team.
   """
-  triggers("The team ID" team_id: ID!): [Trigger!]!
+  groups("The team ID" team_id: ID!): [Group!]!
 
   """
   Returns all integrations for a single team by team ID.
@@ -1225,4 +1296,12 @@ type Query {
   Requires that you are on the team.
   """
   tests("The team ID" team_id: ID!): [Test!]!
+
+  """
+  Returns all test triggers for a single team by team ID. The default trigger is
+  always first, followed by other triggers ordered by name ascending.
+
+  Requires that you have access to the team.
+  """
+  triggers("The team ID" team_id: ID!): [Trigger!]!
 }

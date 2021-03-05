@@ -11,6 +11,7 @@ const DEFAULT_NAME = "My Team";
 type UpdateTeam = {
   alert_integration_id?: string | null;
   helpers?: string;
+  helpers_version?: number;
   id: string;
   is_email_alert_enabled?: boolean;
   is_enabled?: boolean;
@@ -27,6 +28,10 @@ type ValidateApiKeyForTeam = {
   team_id: string;
 };
 
+export const formatTeam = (team: Team): Team => {
+  return { ...team, api_key: decrypt(team.api_key) };
+};
+
 export const createDefaultTeam = async ({
   db,
   logger,
@@ -40,6 +45,7 @@ export const createDefaultTeam = async ({
     alert_integration_id: null,
     api_key: encrypt(buildApiKey()),
     helpers: "",
+    helpers_version: 0,
     id,
     inbox: `${cuid()}@${environment.EMAIL_DOMAIN}`,
     is_email_alert_enabled: true,
@@ -55,7 +61,7 @@ export const createDefaultTeam = async ({
   await db("teams").insert(team);
   log.debug("created", team);
 
-  return team;
+  return formatTeam(team);
 };
 
 export const findTeam = async (
@@ -73,7 +79,7 @@ export const findTeam = async (
 
   log.debug("found", id);
 
-  return team;
+  return formatTeam(team);
 };
 
 export const findTeamForEmail = async (
@@ -108,13 +114,14 @@ export const findTeamsForUser = async (
     .where({ user_id })
     .orderBy("name", "asc");
 
-  return teams.length ? teams : null;
+  return teams.length ? teams.map((t: Team) => formatTeam(t)) : null;
 };
 
 export const updateTeam = async (
   {
     alert_integration_id,
     helpers,
+    helpers_version,
     id,
     is_email_alert_enabled,
     is_enabled,
@@ -128,6 +135,7 @@ export const updateTeam = async (
   { db, logger }: ModelOptions
 ): Promise<Team> => {
   const log = logger.prefix("updateTeam");
+  const team = await findTeam(id, { db, logger });
 
   const updates: Partial<Team> = {
     updated_at: minutesFromNow(),
@@ -136,7 +144,19 @@ export const updateTeam = async (
   if (alert_integration_id !== undefined) {
     updates.alert_integration_id = alert_integration_id;
   }
+
   if (!isNil(helpers)) updates.helpers = helpers;
+  // do not overwrite current helpers with older version
+  /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
+  if (!isNil(helpers_version) && team.helpers_version >= helpers_version!) {
+    log.debug(
+      `ignore: team ${id} current helpers version ${team.helpers_version} >= update version ${helpers_version}`
+    );
+    return team;
+  } else if (!isNil(helpers_version)) {
+    updates.helpers_version = helpers_version;
+  }
+
   if (!isNil(is_email_alert_enabled)) {
     updates.is_email_alert_enabled = is_email_alert_enabled;
   }
@@ -150,7 +170,6 @@ export const updateTeam = async (
     updates.stripe_subscription_id = stripe_subscription_id;
   }
 
-  const team = await findTeam(id, { db, logger });
   await db("teams").where({ id }).update(updates);
   log.debug("updated", id, updates);
 
@@ -166,7 +185,7 @@ export const validateApiKeyForTeam = async (
 
   const team = await findTeam(team_id, { db, logger });
 
-  if (api_key !== decrypt(team.api_key)) {
+  if (api_key !== team.api_key) {
     log.error("invalid api key");
     throw new Error("invalid api key");
   }

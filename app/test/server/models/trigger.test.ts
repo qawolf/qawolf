@@ -161,6 +161,24 @@ describe("trigger model", () => {
         },
       ]);
     });
+
+    it("throws an error if trigger name taken", async () => {
+      await db("triggers").insert(buildTrigger({}));
+
+      await expect(
+        (async (): Promise<Trigger> => {
+          return createTrigger(
+            {
+              creator_id: "userId",
+              name: "trigger1",
+              repeat_minutes: 60,
+              team_id: "teamId",
+            },
+            options
+          );
+        })()
+      ).rejects.toThrowError("name must be unique");
+    });
   });
 
   describe("deleteTrigger", () => {

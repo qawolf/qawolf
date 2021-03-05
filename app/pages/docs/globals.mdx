@@ -1,0 +1,53 @@
+import Link from "next/link";
+
+import ExternalLink from "../../components/Docs/ExternalLink";
+import Header from "../../components/Docs/Header";
+import Layout from "../../components/Docs/Layout";
+import MessageUs from "../../components/Docs/MessageUs";
+import Playwright from "../../components/Docs/Playwright";
+
+<Layout>
+
+<Header>Globals</Header>
+
+QA Wolf provides globals to help you create tests quickly. <MessageUs/> us if you would like other globals / helpers.
+
+The globals available in your test are:
+
+- <ExternalLink href="https://nodejs.org/api/assert.html#assert_assert_value_message">
+    assert
+  </ExternalLink>
+  : Assert a value is truthy. See the <Link href="add-an-assertion">
+    Add an Assertion guide
+  </Link>
+  .
+- <Link href="assert-element">assertElement</Link>: Assert element shows up.
+- <Link href="assert-text">assertText</Link>: Assert text shows up. See the <Link href="add-an-assertion">
+    Add an Assertion guide
+  </Link>.
+- <ExternalLink href="https://github.com/axios/axios#axios-api">
+    axios
+  </ExternalLink>
+  : Make an API request. See the <Link href="call-an-api">
+    Call an API guide
+  </Link>
+  .
+- <Playwright devices />: Devices to emulate. See the <Link href="launch">
+    launch doc
+  </Link>.
+- <ExternalLink href="https://github.com/marak/Faker.js/#api">
+    faker
+  </ExternalLink>
+  : Generate random test data.
+
+```js
+// Generate a random name
+const name = faker.name.findName();
+console.log(name);
+```
+
+- <Link href="get-inbox">getInbox</Link>: Receive an email in your test. See
+  the <Link href="receive-an-email">Receive an Email guide</Link>.
+- <Link href="launch">launch</Link>: Launch a browser.
+
+</Layout>

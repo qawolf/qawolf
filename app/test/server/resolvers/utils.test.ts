@@ -4,6 +4,7 @@ import * as triggerModel from "../../../server/models/trigger";
 import {
   ensureEnvironmentAccess,
   ensureEnvironmentVariableAccess,
+  ensureGroupAccess,
   ensureSuiteAccess,
   ensureTeamAccess,
   ensureTeams,
@@ -16,6 +17,7 @@ import { prepareTestDb } from "../db";
 import {
   buildEnvironment,
   buildEnvironmentVariable,
+  buildGroup,
   buildSuite,
   buildTeam,
   logger,
@@ -131,6 +133,58 @@ describe("ensureEnvironmentVariableAccess", () => {
     const team = await ensureEnvironmentVariableAccess(
       {
         environment_variable_id: "environmentVariableId",
+        teams,
+      },
+      options
+    );
+
+    expect(team).toEqual(teams[0]);
+  });
+});
+
+describe("ensureGroupAccess", () => {
+  beforeAll(async () => {
+    await db("teams").insert([buildTeam({}), buildTeam({ i: 2 })]);
+
+    await db("groups").insert([
+      buildGroup({}),
+      buildGroup({ i: 2, team_id: "team2Id" }),
+    ]);
+  });
+
+  afterAll(async () => {
+    await db("groups").del();
+    return db("teams").del();
+  });
+
+  it("throws an error if teams not provided", async () => {
+    await expect(
+      ensureGroupAccess(
+        {
+          group_id: "groupId",
+          teams: null,
+        },
+        options
+      )
+    ).rejects.toThrowError("no teams");
+  });
+
+  it("throws an error if teams do not have access", async () => {
+    await expect(
+      ensureGroupAccess(
+        {
+          group_id: "group2Id",
+          teams,
+        },
+        options
+      )
+    ).rejects.toThrowError("cannot access group");
+  });
+
+  it("returns selected team if teams have access", async () => {
+    const team = await ensureGroupAccess(
+      {
+        group_id: "groupId",
         teams,
       },
       options

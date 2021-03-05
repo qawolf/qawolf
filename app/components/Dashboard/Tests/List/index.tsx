@@ -2,15 +2,16 @@ import { Box } from "grommet";
 import { useRouter } from "next/router";
 
 import { useTestSummaries } from "../../../../hooks/queries";
-import { ShortTest, TestTriggers, Trigger } from "../../../../lib/types";
+import { Group, ShortTest, TestTriggers, Trigger } from "../../../../lib/types";
 import { borderSize } from "../../../../theme/theme-new";
-import Spinner from "../../../shared/Spinner";
+import Spinner from "../../../shared-new/Spinner";
 import { noTriggerId } from "../../helpers";
 import Header from "./Header";
 import TestCard from "./TestCard";
 
 type Props = {
   checkedTestIds: string[];
+  groups: Group[] | null;
   setCheckedTestIds: (testIds: string[]) => void;
   tests: ShortTest[] | null;
   testTriggers: TestTriggers[];
@@ -19,6 +20,7 @@ type Props = {
 
 export default function List({
   checkedTestIds,
+  groups,
   setCheckedTestIds,
   tests,
   testTriggers,
@@ -32,7 +34,13 @@ export default function List({
       ? null
       : (query.trigger_id as string) || null;
 
-  const { data, loading } = useTestSummaries({ test_ids, trigger_id });
+  const { data, loading } = useTestSummaries(
+    {
+      test_ids,
+      trigger_id,
+    },
+    { pollInterval: 10 * 1000 }
+  );
 
   if (!tests) return <Spinner />;
 
@@ -53,12 +61,15 @@ export default function List({
       testTriggers.find((t) => t.test_id === test.id)?.trigger_ids || [];
     const filteredTriggers = triggers.filter((t) => triggerIds.includes(t.id));
 
+    const groupName = groups?.find((g) => g.id === test.group_id)?.name || null;
     const summary = (data?.testSummaries || []).find(
       (s) => s.test_id === test.id
     );
 
     return (
       <TestCard
+        groupName={groupName}
+        hasGroups={!!groups?.length}
         isChecked={checkedTestIds.includes(test.id)}
         isSummaryLoading={loading}
         key={test.id}
@@ -82,7 +93,7 @@ export default function List({
         setCheckedTestIds={setCheckedTestIds}
         tests={tests}
       />
-      <Box overflow={{ vertical: "scroll" }}>
+      <Box overflow={{ vertical: "auto" }}>
         <Box flex={false}>{testsHtml}</Box>
       </Box>
     </Box>

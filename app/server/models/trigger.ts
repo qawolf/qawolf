@@ -7,12 +7,13 @@ const DAILY_HOUR = 16; // 9 am PST
 const MINUTES_PER_DAY = 24 * 60;
 export const TRIGGER_COLORS = [
   "#4545E5",
-  "#CA45E5",
-  "#45CAE5",
-  "#7EE2E5",
-  "#44C76B",
-  "#EF86B4",
-  "#213866",
+  "#C54BDE",
+  "#56BBD6",
+  "#8BC22D",
+  "#E59C59",
+  "#DA4E94",
+  "#ABB3C2",
+  "#667080",
 ];
 
 type CreateTrigger = {
@@ -142,9 +143,18 @@ export const createTrigger = async (
     repeat_minutes: repeat_minutes || null,
     team_id,
   };
-  await db("triggers").insert(trigger);
 
-  log.debug(`create ${trigger.id}`);
+  try {
+    await db("triggers").insert(trigger);
+  } catch (error) {
+    if (error.message.includes("triggers_unique_name_team_id")) {
+      throw new ClientError("trigger name must be unique");
+    }
+
+    throw error;
+  }
+
+  log.debug("created", trigger.id);
 
   return trigger;
 };
@@ -154,9 +164,9 @@ export const findTrigger = async (
   { db, logger }: ModelOptions
 ): Promise<Trigger> => {
   const log = logger.prefix("findTrigger");
-  log.debug(`find ${id}`);
+  log.debug("trigger", id);
 
-  const trigger = await db.select("*").from("triggers").where({ id }).first();
+  const trigger = await db("triggers").where({ id }).first();
 
   if (!trigger || trigger.deleted_at) {
     log.error(`not found ${id}`);

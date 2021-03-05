@@ -17,6 +17,14 @@ export const environmentVariableFragment = gql`
   }
 `;
 
+export const groupFragment = gql`
+  fragment GroupFragment on Group {
+    id
+    name
+    team_id
+  }
+`;
+
 export const integrationFragment = gql`
   fragment IntegrationFragment on Integration {
     github_repo_name
@@ -62,6 +70,16 @@ export const runnerFragment = gql`
   }
 `;
 
+export const shortTriggerFragment = gql`
+  fragment ShortTriggerFragment on Trigger {
+    color
+    deployment_integration_id
+    id
+    name
+    repeat_minutes
+  }
+`;
+
 export const suiteRunFragment = gql`
   fragment SuiteRunFragment on SuiteRun {
     completed_at
@@ -87,10 +105,12 @@ export const suiteFragment = gql`
       ...SuiteRunFragment
     }
     team_id
-    trigger_id
-    trigger_name
+    trigger {
+      ...ShortTriggerFragment
+    }
   }
   ${suiteRunFragment}
+  ${shortTriggerFragment}
 `;
 
 export const teamFragment = gql`
@@ -98,6 +118,7 @@ export const teamFragment = gql`
     alert_integration_id
     api_key
     helpers
+    helpers_version
     id
     inbox
     is_email_alert_enabled
@@ -111,11 +132,20 @@ export const testFragment = gql`
   fragment TestFragment on Test {
     code
     deleted_at
+    group_id
     id
     is_enabled
     name
     updated_at
     version
+  }
+`;
+
+export const testTriggersFragment = gql`
+  fragment TestTriggersFragment on TestTriggers {
+    group_id
+    test_id
+    trigger_ids
   }
 `;
 

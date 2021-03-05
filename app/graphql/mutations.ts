@@ -3,10 +3,12 @@ import { gql } from "@apollo/client";
 import {
   environmentFragment,
   environmentVariableFragment,
+  groupFragment,
   integrationFragment,
   inviteFragment,
   teamFragment,
   testFragment,
+  testTriggersFragment,
   triggerFragment,
   userFragment,
 } from "./fragments";
@@ -56,6 +58,15 @@ export const createGitHubIntegrationsMutation = gql`
     }
   }
   ${integrationFragment}
+`;
+
+export const createGroupMutation = gql`
+  mutation createGroup($name: String!, $team_id: ID!) {
+    createGroup(name: $name, team_id: $team_id) {
+      ...GroupFragment
+    }
+  }
+  ${groupFragment}
 `;
 
 export const createInvitesMutation = gql`
@@ -164,6 +175,15 @@ export const deleteEnvironmentVariableMutation = gql`
   ${environmentVariableFragment}
 `;
 
+export const deleteGroupMutation = gql`
+  mutation deleteGroup($id: ID!) {
+    deleteGroup(id: $id) {
+      ...GroupFragment
+    }
+  }
+  ${groupFragment}
+`;
+
 export const deleteTestsMutation = gql`
   mutation deleteTests($ids: [ID!]!) {
     deleteTests(ids: $ids) {
@@ -250,29 +270,13 @@ export const updateEnvironmentVariableMutation = gql`
   ${environmentVariableFragment}
 `;
 
-export const updateTriggerMutation = gql`
-  mutation updateTrigger(
-    $deployment_branches: String
-    $deployment_environment: DeploymentEnvironment
-    $deployment_integration_id: ID
-    $environment_id: ID
-    $id: ID!
-    $name: String
-    $repeat_minutes: Int
-  ) {
-    updateTrigger(
-      deployment_branches: $deployment_branches
-      deployment_environment: $deployment_environment
-      deployment_integration_id: $deployment_integration_id
-      environment_id: $environment_id
-      id: $id
-      name: $name
-      repeat_minutes: $repeat_minutes
-    ) {
-      ...TriggerFragment
+export const updateGroupMutation = gql`
+  mutation updateGroup($id: ID!, $name: String!) {
+    updateGroup(id: $id, name: $name) {
+      ...GroupFragment
     }
   }
-  ${triggerFragment}
+  ${groupFragment}
 `;
 
 export const updateTestTriggersMutation = gql`
@@ -286,16 +290,17 @@ export const updateTestTriggersMutation = gql`
       remove_trigger_id: $remove_trigger_id
       test_ids: $test_ids
     ) {
-      test_id
-      trigger_ids
+      ...TestTriggersFragment
     }
   }
+  ${testTriggersFragment}
 `;
 
 export const updateTeamMutation = gql`
   mutation updateTeam(
     $alert_integration_id: String
     $helpers: String
+    $helpers_version: Int
     $id: ID!
     $is_email_alert_enabled: Boolean
     $name: String
@@ -303,6 +308,7 @@ export const updateTeamMutation = gql`
     updateTeam(
       alert_integration_id: $alert_integration_id
       helpers: $helpers
+      helpers_version: $helpers_version
       id: $id
       is_email_alert_enabled: $is_email_alert_enabled
       name: $name
@@ -332,6 +338,40 @@ export const updateTestMutation = gql`
     }
   }
   ${testFragment}
+`;
+
+export const updateTestsGroupMutation = gql`
+  mutation updateTestsGroup($group_id: ID, $test_ids: [ID!]!) {
+    updateTestsGroup(group_id: $group_id, test_ids: $test_ids) {
+      ...TestFragment
+    }
+  }
+  ${testFragment}
+`;
+
+export const updateTriggerMutation = gql`
+  mutation updateTrigger(
+    $deployment_branches: String
+    $deployment_environment: DeploymentEnvironment
+    $deployment_integration_id: ID
+    $environment_id: ID
+    $id: ID!
+    $name: String
+    $repeat_minutes: Int
+  ) {
+    updateTrigger(
+      deployment_branches: $deployment_branches
+      deployment_environment: $deployment_environment
+      deployment_integration_id: $deployment_integration_id
+      environment_id: $environment_id
+      id: $id
+      name: $name
+      repeat_minutes: $repeat_minutes
+    ) {
+      ...TriggerFragment
+    }
+  }
+  ${triggerFragment}
 `;
 
 export const updateUserMutation = gql`

@@ -27,7 +27,7 @@ export default function SectionLinks({ doc, isSelected }: Props): JSX.Element {
         <StyledBox
           background={isSelected ? "fill10" : "transparent"}
           pad={{ horizontal: "xxsmall", vertical: "xxxsmall" }}
-          round="xxxsmall"
+          round="xxsmall"
           width="full"
         >
           <Text

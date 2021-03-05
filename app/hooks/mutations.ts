@@ -7,6 +7,7 @@ import {
   createEnvironmentMutation,
   createEnvironmentVariableMutation,
   createGitHubIntegrationsMutation,
+  createGroupMutation,
   createInvitesMutation,
   createSignInUrlMutation,
   createSlackIntegrationMutation,
@@ -16,6 +17,7 @@ import {
   createTriggerMutation,
   deleteEnvironmentMutation,
   deleteEnvironmentVariableMutation,
+  deleteGroupMutation,
   deleteTestsMutation,
   deleteTriggerMutation,
   joinMailingListMutation,
@@ -24,8 +26,10 @@ import {
   signInWithGitHubMutation,
   updateEnvironmentMutation,
   updateEnvironmentVariableMutation,
+  updateGroupMutation,
   updateTeamMutation,
   updateTestMutation,
+  updateTestsGroupMutation,
   updateTestTriggersMutation,
   updateTriggerMutation,
   updateUserMutation,
@@ -38,6 +42,7 @@ import {
   AuthenticatedUser,
   Environment,
   EnvironmentVariable,
+  Group,
   Integration,
   Invite,
   State,
@@ -83,6 +88,15 @@ type CreateGitHubIntegrationsVariables = {
 
 type CreateGitHubIntegrationsData = {
   createGitHubIntegrations: Integration[];
+};
+
+type CreateGroupData = {
+  createGroup: Group;
+};
+
+type CreateGroupVariables = {
+  name: string;
+  team_id: string;
 };
 
 type CreateInvitesData = {
@@ -164,6 +178,14 @@ type DeleteEnvironmentVariableVariables = {
   id: string;
 };
 
+type DeleteGroupData = {
+  deleteGroup: Group;
+};
+
+type DeleteGroupVariables = {
+  id: string;
+};
+
 type DeleteTestsData = {
   deleteTests: Test[];
 };
@@ -237,12 +259,22 @@ type UpdateEnvironmentVariableVariables = {
   value: string;
 };
 
+type UpdateGroupData = {
+  updateGroup: Group;
+};
+
+type UpdateGroupVariables = {
+  id: string;
+  name: string;
+};
+
 type UpdateTeamData = {
   updateTeam: Team;
 };
 
 type UpdateTeamVariables = {
   helpers?: string;
+  helpers_version?: number;
   id: string;
   name?: string;
 };
@@ -266,6 +298,15 @@ type UpdateTestTriggersData = {
 export type UpdateTestTriggersVariables = {
   add_trigger_id: string | null;
   remove_trigger_id: string | null;
+  test_ids: string[];
+};
+
+type UpdateTestsGroupData = {
+  updateTestsGroup: Test[];
+};
+
+type UpdateTestsGroupVariables = {
+  group_id: string | null;
   test_ids: string[];
 };
 
@@ -366,6 +407,20 @@ export const useCreateEnvironmentVariable = (): MutationTuple<
     onError,
     refetchQueries: ["environmentVariables"],
   });
+};
+
+export const useCreateGroup = (): MutationTuple<
+  CreateGroupData,
+  CreateGroupVariables
+> => {
+  return useMutation<CreateGroupData, CreateGroupVariables>(
+    createGroupMutation,
+    {
+      awaitRefetchQueries: true,
+      onError,
+      refetchQueries: ["groups"],
+    }
+  );
 };
 
 export const useCreateGitHubIntegrations = (
@@ -483,14 +538,21 @@ export const useCreateTrigger = (): MutationTuple<
   );
 };
 
-export const useDeleteEnvironment = (): MutationTuple<
-  DeleteEnvironmentData,
-  DeleteEnvironmentVariables
-> => {
+export const useDeleteEnvironment = ({
+  currentEnvironmentId,
+}: {
+  currentEnvironmentId: string | null;
+}): MutationTuple<DeleteEnvironmentData, DeleteEnvironmentVariables> => {
   return useMutation<DeleteEnvironmentData, DeleteEnvironmentVariables>(
     deleteEnvironmentMutation,
     {
       awaitRefetchQueries: true,
+      onCompleted: ({ deleteEnvironment }) => {
+        if (!deleteEnvironment || deleteEnvironment.id !== currentEnvironmentId)
+          return;
+        // clear deleted environment from state
+        state.setEnvironmentId(null);
+      },
       onError,
       refetchQueries: ["environments"],
     }
@@ -509,6 +571,29 @@ export const useDeleteEnvironmentVariable = (): MutationTuple<
     onError,
     refetchQueries: ["environmentVariables"],
   });
+};
+
+export const useDeleteGroup = (): MutationTuple<
+  DeleteGroupData,
+  DeleteGroupVariables
+> => {
+  const { query, replace } = useRouter();
+
+  return useMutation<DeleteGroupData, DeleteGroupVariables>(
+    deleteGroupMutation,
+    {
+      awaitRefetchQueries: true,
+      // redirect to tests if deleted current group
+      onCompleted: (data) => {
+        const { deleteGroup } = data || {};
+        if (!deleteGroup) return;
+
+        if (query.group_id === deleteGroup.id) replace(routes.tests);
+      },
+      onError,
+      refetchQueries: ["groups"],
+    }
+  );
 };
 
 export const useDeleteTests = (
@@ -649,6 +734,19 @@ export const useUpdateEnvironmentVariable = (): MutationTuple<
   });
 };
 
+export const useUpdateGroup = (): MutationTuple<
+  UpdateGroupData,
+  UpdateGroupVariables
+> => {
+  return useMutation<UpdateGroupData, UpdateGroupVariables>(
+    updateGroupMutation,
+    {
+      onError,
+      refetchQueries: ["groups"],
+    }
+  );
+};
+
 export const useUpdateTeam = (): MutationTuple<
   UpdateTeamData,
   UpdateTeamVariables
@@ -673,6 +771,16 @@ export const useUpdateTestTriggers = (): MutationTuple<
 > => {
   return useMutation<UpdateTestTriggersData, UpdateTestTriggersVariables>(
     updateTestTriggersMutation,
+    { onError }
+  );
+};
+
+export const useUpdateTestsGroup = (): MutationTuple<
+  UpdateTestsGroupData,
+  UpdateTestsGroupVariables
+> => {
+  return useMutation<UpdateTestsGroupData, UpdateTestsGroupVariables>(
+    updateTestsGroupMutation,
     { onError }
   );
 };

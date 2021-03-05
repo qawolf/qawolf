@@ -1,0 +1,35 @@
+import Header from "../../components/Docs/Header";
+import Layout from "../../components/Docs/Layout";
+import Playwright from "../../components/Docs/Playwright";
+import SubHeader from "../../components/Docs/SubHeader";
+
+<Layout>
+
+<Header>assertText(page, text[, options])</Header>
+
+Assert text is on the page, or element if a selector is specified in options.
+
+If the text is not found before the timeout, an error is thrown.
+
+```js
+// assert the page has the text "Saved" within 30 seconds
+await assertText(page, "Saved");
+
+// assert the element with selector ".result" has the text "Pass" within 60 seconds
+await assertText(page, "Pass", { selector: ".result", timeout: 60000 });
+```
+
+<SubHeader>Arguments</SubHeader>
+
+**page** (<Playwright page />): The page to search for text.
+
+**text** (string): Text to assert exists.
+
+**[options]** (Object)
+
+- [selector] (string): Selector of an element to find text. Default: Search the page
+- [timeout] (number): Time in milliseconds to wait for the text. Default: `30000`
+
+**Returns:** `Promise<void>`
+
+</Layout>

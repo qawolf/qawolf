@@ -2,11 +2,7 @@ import { Icon } from "grommet-icons";
 import flatten from "lodash/flatten";
 import { IconType } from "react-icons";
 import { IoTrailSign } from "react-icons/io5";
-import {
-  RiCodeSSlashFill,
-  RiNotification2Fill,
-  RiRocketFill,
-} from "react-icons/ri";
+import { RiPlugFill, RiRocketFill } from "react-icons/ri";
 
 import { routes } from "../../lib/routes";
 import Paw from "../shared-new/icons/Paw";
@@ -29,50 +25,39 @@ export const docs: Section[] = [
     color: "primaryFill",
     name: "Overview",
     docs: [
-      { href: `${routes.docs}/what-is-qa-wolf`, name: "What is QA Wolf?" },
+      { href: `${routes.docs}/why-qa-wolf`, name: "Why QA Wolf?" },
+      {
+        href: `${routes.docs}/your-testing-strategy`,
+        name: "Your Testing Strategy",
+      },
     ],
   },
   {
-    IconComponent: RiCodeSSlashFill,
-    color: "#77D9C8",
+    IconComponent: RiRocketFill,
+    color: "#C54BDE",
     docs: [
       { href: `${routes.docs}/create-a-test`, name: "Create a Test" },
       {
         href: `${routes.docs}/convert-actions-to-code`,
         name: "Convert Actions to Code",
       },
-      { href: `${routes.docs}/add-an-assertion`, name: "Add an Assertion" },
+
       {
-        href: `${routes.docs}/use-environment-variables`,
-        name: "Use Environment Variables",
+        href: `${routes.docs}/run-tests-on-a-schedule`,
+        name: "Run Tests on a Schedule",
       },
       {
-        href: `${routes.docs}/reuse-helper-code`,
-        name: "Reuse Helper Code",
-      },
-    ],
-    name: "Create Tests",
-  },
-  {
-    IconComponent: RiRocketFill,
-    color: "#F2D479",
-    docs: [
-      { href: `${routes.docs}/run-on-schedule`, name: "Run on Schedule" },
-      {
-        href: `${routes.docs}/run-on-vercel-deployment`,
-        name: "Run on Vercel Deployment",
+        href: `${routes.docs}/run-tests-on-vercel-deployment`,
+        name: "Run Tests on Vercel Deployment",
       },
       {
-        href: `${routes.docs}/run-on-netlify-deployment`,
-        name: "Run on Netlify Deployment",
+        href: `${routes.docs}/run-tests-on-netlify-deployment`,
+        name: "Run Tests on Netlify Deployment",
       },
-    ],
-    name: "Run Tests",
-  },
-  {
-    IconComponent: RiNotification2Fill,
-    color: "#F26185",
-    docs: [
+      {
+        href: `${routes.docs}/run-tests-with-api`,
+        name: "Run Tests with API",
+      },
       {
         href: `${routes.docs}/send-slack-alerts`,
         name: "Send Slack Alerts",
@@ -82,12 +67,21 @@ export const docs: Section[] = [
         name: "Send Email Alerts",
       },
     ],
-    name: "Alert Your Team",
+    name: "Get Started",
   },
   {
     IconComponent: IoTrailSign,
-    color: "#AA61F2",
+    color: "#56BBD6",
     docs: [
+      { href: `${routes.docs}/add-an-assertion`, name: "Add an Assertion" },
+      {
+        href: `${routes.docs}/use-environment-variables`,
+        name: "Use Environment Variables",
+      },
+      {
+        href: `${routes.docs}/reuse-helper-code`,
+        name: "Reuse Helper Code",
+      },
       {
         href: `${routes.docs}/receive-an-email`,
         name: "Receive an Email",
@@ -102,6 +96,33 @@ export const docs: Section[] = [
       },
     ],
     name: "Guides",
+  },
+  {
+    IconComponent: RiPlugFill,
+    color: "#8BC22D",
+    docs: [
+      {
+        href: `${routes.docs}/globals`,
+        name: "Globals",
+      },
+      {
+        href: `${routes.docs}/assert-element`,
+        name: "assertElement",
+      },
+      {
+        href: `${routes.docs}/assert-text`,
+        name: "assertText",
+      },
+      {
+        href: `${routes.docs}/get-inbox`,
+        name: "getInbox",
+      },
+      {
+        href: `${routes.docs}/launch`,
+        name: "launch",
+      },
+    ],
+    name: "API",
   },
 ];
 

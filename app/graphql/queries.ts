@@ -3,13 +3,16 @@ import { gql } from "@apollo/client";
 import {
   environmentFragment,
   environmentVariableFragment,
+  groupFragment,
   integrationFragment,
   inviteFragment,
   runFragment,
   runnerFragment,
+  shortTriggerFragment,
   suiteFragment,
   teamFragment,
   testFragment,
+  testTriggersFragment,
   triggerFragment,
   userFragment,
 } from "./fragments";
@@ -44,6 +47,15 @@ export const environmentVariablesQuery = gql`
   ${environmentVariableFragment}
 `;
 
+export const groupsQuery = gql`
+  query groups($team_id: ID!) {
+    groups(team_id: $team_id) {
+      ...GroupFragment
+    }
+  }
+  ${groupFragment}
+`;
+
 export const integrationsQuery = gql`
   query integrations($team_id: ID!) {
     integrations(team_id: $team_id) {
@@ -75,10 +87,12 @@ export const shortSuiteQuery = gql`
       environment_variables
       id
       team_id
-      trigger_id
-      trigger_name
+      trigger {
+        ...ShortTriggerFragment
+      }
     }
   }
+  ${shortTriggerFragment}
 `;
 
 export const suiteQuery = gql`
@@ -103,11 +117,12 @@ export const suitesQuery = gql`
         pass
       }
       team_id
-      trigger_color
-      trigger_id
-      trigger_name
+      trigger {
+        ...ShortTriggerFragment
+      }
     }
   }
+  ${shortTriggerFragment}
 `;
 
 export const teamQuery = gql`
@@ -174,15 +189,16 @@ export const testSummariesQuery = gql`
 export const testTriggersQuery = gql`
   query testTriggers($test_ids: [ID!]!) {
     testTriggers(test_ids: $test_ids) {
-      test_id
-      trigger_ids
+      ...TestTriggersFragment
     }
   }
+  ${testTriggersFragment}
 `;
 
 export const testsQuery = gql`
   query tests($team_id: ID!) {
     tests(team_id: $team_id) {
+      group_id
       id
       name
     }

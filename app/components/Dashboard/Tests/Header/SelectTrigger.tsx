@@ -4,7 +4,7 @@ import { TestTriggers, Trigger } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import Divider from "../../../shared-new/Divider";
 import Select from "../../../shared-new/Select";
-import { noTriggerId } from "../../helpers";
+import { buildTestsPath, noTriggerId } from "../../helpers";
 import TriggerOption from "./TriggerOption";
 
 type Props = {
@@ -19,15 +19,17 @@ export default function SelectTrigger({
   testTriggers,
   triggers,
 }: Props): JSX.Element {
-  const { pathname, replace, query } = useRouter();
+  const { replace, query } = useRouter();
+
+  const groupId = (query.group_id as string) || null;
   const triggerId = query.trigger_id as string;
 
   const handleAllTriggersClick = (): void => {
-    replace(pathname); // clear query
+    replace(buildTestsPath(groupId, null)); // clear query
   };
 
   const handleTriggerClick = (triggerId: string): void => {
-    replace(`${pathname}/?trigger_id=${triggerId}`);
+    replace(buildTestsPath(groupId, triggerId));
   };
 
   const optionsHtml = triggers.map((trigger) => {
