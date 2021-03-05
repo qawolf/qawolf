@@ -11,5 +11,6 @@ export {
   getXpath,
   isVisible,
 } from "./element";
+export { isMatch } from "./isMatch";
 export { resolveAction } from "./resolveAction";
 export { buildElementText, buildSelectorForCues } from "./selectorEngine";
