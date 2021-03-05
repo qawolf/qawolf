@@ -3,23 +3,18 @@ import cssEscape from "css.escape";
 
 import { isDynamic } from "./isDynamic";
 import { buildElementText } from "./selectorEngine";
-import { Cue } from "./types";
+import { Cue, CueType } from "./types";
 
-const ALLOW_VALUE_ELEMENTS = new Set(["BUTTON", "OPTION"]);
-const ALLOW_VALUE_INPUT_TYPES = new Set([
-  "button",
-  "checkbox",
-  "radio",
-  "submit",
+const ALLOW_DYNAMIC_ATTRIBUTES = new Set([
+  "href",
+  "placeholder",
+  "src",
+  "value",
 ]);
 
-const allowValueCue = (element: HTMLElement): boolean => {
-  const type = element.tagName;
-  return (
-    ALLOW_VALUE_ELEMENTS.has(type) ||
-    (type === "INPUT" &&
-      ALLOW_VALUE_INPUT_TYPES.has((element as HTMLInputElement).type))
-  );
+const ALLOW_VALUE_ATTRIBUTE = {
+  input_types: new Set(["button", "checkbox", "radio", "submit"]),
+  tags: new Set(["BUTTON", "OPTION"]),
 };
 
 const PENALTY_MAP = {
@@ -43,7 +38,6 @@ const PENALTY_MAP = {
   text: 10,
   title: 10,
   type: 10,
-  // TODO only allow this for certain element types (select, radio, etc)
   value: 10,
   // penalize presentation attributes
   // discount classes so 1 is worse than 2 placeholders
@@ -55,23 +49,22 @@ const PENALTY_MAP = {
   xmlns: 100,
 };
 
-const IGNORE_ATTRIBUTES = new Set(["class", "data-reactid"]);
+const SKIP_ATTRIBUTES = new Set(["class", "data-reactid"]);
 
 /**
  * Get the element's cues in ascending penalty
  */
 export function getCues(element: HTMLElement, level: number): Cue[] {
-  const tagValue = getTagValue(element);
+  const cues: Cue[] = [getTagCue(element, level)];
 
-  const cues: Cue[] = [
-    {
-      level,
-      penalty: tagValue.includes("nth") ? PENALTY_MAP.tagnth : PENALTY_MAP.tag,
-      type: "tag",
-      value: tagValue,
-    },
-  ];
+  // For body and html, we never have more than one, so
+  // just 'tag' cue is needed and we can save some time.
+  if (["HTML", "BODY"].includes(element.tagName)) {
+    cues[0].penalty = 0;
+    return cues;
+  }
 
+  // TODO add test...
   if (level === 0) {
     // only get the target (level 0) text since it is expensive to calculate
     // usually that is the only one we care to target as well
@@ -86,19 +79,15 @@ export function getCues(element: HTMLElement, level: number): Cue[] {
     }
   }
 
-  // For body and html, we never have more than one, so
-  // just 'tag' cue is needed and we can save some time.
-  if (["html", "body"].includes(tagValue)) {
-    cues[0].penalty = 0;
-    return cues;
-  }
-
   const attributes = element.attributes;
 
   for (let i = 0; i < attributes.length; i++) {
     let { name, value } = attributes[i];
-    if (IGNORE_ATTRIBUTES.has(name)) continue;
-    if (name === "value" && !allowValueCue(element)) continue;
+    if (
+      SKIP_ATTRIBUTES.has(name) ||
+      (name === "value" && !skipValueCue(element))
+    )
+      continue;
 
     // rank unknown attributes the same as a class
     let penalty = PENALTY_MAP[name] || PENALTY_MAP.class;
@@ -109,7 +98,7 @@ export function getCues(element: HTMLElement, level: number): Cue[] {
     if (
       // allow dynamic values for test and allowlist attributes
       penalty !== 0 &&
-      !["placeholder", "href", "src", "value"].includes(name) &&
+      !ALLOW_DYNAMIC_ATTRIBUTES.has(name) &&
       isDynamic(value)
     ) {
       // ignore dynamic attribute
@@ -141,9 +130,17 @@ export function getCues(element: HTMLElement, level: number): Cue[] {
   return cues;
 }
 
-export const getTagValue = (element: HTMLElement): string => {
+export const getTagCue = (element: HTMLElement, level: number): Cue => {
+  const cue = {
+    level,
+    penalty: PENALTY_MAP.tag,
+    type: "tag" as CueType,
+  };
+
   const value = element.tagName.toLowerCase();
-  if (!element.parentElement) return value;
+  if (!element.parentElement) {
+    return { ...cue, value };
+  }
 
   const siblings = element.parentElement.children;
   const sameTagSiblings: HTMLElement[] = [];
@@ -153,11 +150,23 @@ export const getTagValue = (element: HTMLElement): string => {
       sameTagSiblings.push(sibling as HTMLElement);
     }
   }
-
-  if (sameTagSiblings.length < 2) return value;
+  if (sameTagSiblings.length < 2) return { ...cue, value };
 
   const nthIndex = sameTagSiblings.indexOf(element) + 1;
-  if (nthIndex === 1) return value;
+  if (nthIndex === 1) return { ...cue, value };
 
-  return `${value}:nth-of-type(${nthIndex})`;
+  return {
+    ...cue,
+    penalty: PENALTY_MAP.tagnth,
+    value: `${value}:nth-of-type(${nthIndex})`,
+  };
+};
+
+export const skipValueCue = (element: HTMLElement): boolean => {
+  const tag = element.tagName;
+  return (
+    ALLOW_VALUE_ATTRIBUTE.tags.has(tag) ||
+    (tag === "INPUT" &&
+      ALLOW_VALUE_ATTRIBUTE.input_types.has((element as HTMLInputElement).type))
+  );
 };

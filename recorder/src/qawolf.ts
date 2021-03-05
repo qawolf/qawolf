@@ -1,5 +1,5 @@
 export { ActionRecorder } from "./ActionRecorder";
-export { getCues, getTagValue } from "./getCues";
+export { getCues, getTagCue } from "./getCues";
 export {
   getInputElementValue,
   getTopmostEditableElement,
