@@ -62,7 +62,11 @@ export default function Section({
           >
             <IconComponent color={colors.white} size={edgeSize.medium} />
           </Box>
-          <Text color="textDark" size="xxsmall" weight="medium">
+          <Text
+            color={isCurrent ? "primary" : "textDark"}
+            size="xxsmall"
+            weight="medium"
+          >
             {name}
           </Text>
         </StyledBox>
