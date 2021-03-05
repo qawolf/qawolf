@@ -210,14 +210,14 @@ export const theme = {
     responsiveBreakpoint: null,
   },
   radioButton: {
-    border: { color: colors.gray7, width: borderSize.xsmall },
+    border: { color: colors.gray4, width: borderSize.xsmall },
     check: {
-      color: colors.gray9,
+      color: colors.primary,
       extend: (): CSSProperties => {
         return { transition };
       },
     },
-    color: colors.gray9,
+    color: colors.primary,
     container: {
       extend: (): CSSProperties => {
         return {
@@ -227,7 +227,7 @@ export const theme = {
         };
       },
     },
-    hover: { border: { color: colors.gray8 } },
+    hover: { border: { color: colors.gray6 } },
     gap: edgeSize.xxsmall,
     size: edgeSize.small,
   },
