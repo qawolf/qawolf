@@ -3,6 +3,7 @@ import { Icon } from "grommet-icons";
 
 import { copy } from "../../../theme/copy";
 import Button from "../AppButton";
+import { Type } from "../AppButton/config";
 import Divider from "../Divider";
 
 type Props = {
@@ -12,6 +13,7 @@ type Props = {
   onSecondaryClick: () => void;
   primaryIsDisabled?: boolean;
   primaryLabel?: string;
+  primaryType?: Type;
   secondaryLabel: string;
   showDivider?: boolean;
 };
@@ -23,6 +25,7 @@ export default function Buttons({
   onSecondaryClick,
   primaryIsDisabled,
   primaryLabel,
+  primaryType,
   secondaryLabel,
   showDivider,
 }: Props): JSX.Element {
@@ -47,7 +50,7 @@ export default function Buttons({
           isDisabled={primaryIsDisabled}
           label={primaryLabel || copy.done}
           onClick={onPrimaryClick}
-          type="primary"
+          type={primaryType || "primary"}
         />
       </Box>
     </>

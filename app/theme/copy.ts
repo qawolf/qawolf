@@ -70,8 +70,10 @@ export const copy = {
   deleted: "(Deleted)",
   deleteGroup: "Delete group",
   deleteOk: "Yes, delete",
-  deleteTests: "Delete tests",
-  deleteTestsConfirm: (count: number): string => `Delete ${count} tests`,
+  deleteTests: (count: number): string =>
+    `Delete${count === 1 ? "" : ` ${count}`} test${count === 1 ? "" : "s"}`,
+  deleteTestsDetail:
+    "Are you sure? Deleting tests is permanent and cannot be undone",
   deleteTrigger: "Delete trigger",
   delightUsers: "Delight users",
   delightUsersDetail:
@@ -148,6 +150,7 @@ export const copy = {
   helpers: "Helpers",
   history: "History",
   hourly: "Hourly",
+  iUnderstand: "I understand",
   inProgress: "In progress",
   invalidUrl: "Not a valid URL",
   joinMailingList: "Join our mailing list",
