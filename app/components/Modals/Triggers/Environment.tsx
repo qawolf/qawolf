@@ -1,8 +1,9 @@
-import { Box, RadioButtonGroup } from "grommet";
+import { Box } from "grommet";
 import { ChangeEvent, useContext } from "react";
 
 import { useEnvironments } from "../../../hooks/queries";
 import { copy } from "../../../theme/copy";
+import RadioButtonGroup from "../../shared-new/RadioButtonGroup";
 import Text from "../../shared-new/Text";
 import { StateContext } from "../../StateContext";
 

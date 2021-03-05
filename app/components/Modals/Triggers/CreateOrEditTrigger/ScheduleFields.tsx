@@ -1,7 +1,7 @@
-import { RadioButtonGroup } from "grommet";
 import { ChangeEvent } from "react";
 
 import { copy } from "../../../../theme/copy";
+import RadioButtonGroup from "../../../shared-new/RadioButtonGroup";
 import Text from "../../../shared-new/Text";
 import { labelTextProps, repeatMinutesOptions } from "../helpers";
 

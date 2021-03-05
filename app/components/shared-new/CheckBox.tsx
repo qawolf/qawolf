@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { borderSize, colors, transitionDuration } from "../../theme/theme-new";
 
-type Props = CheckBoxProps & {
+export type Props = CheckBoxProps & {
   className?: string;
   hasError?: boolean;
   onChange?: () => void;
@@ -22,6 +22,26 @@ function CheckBox({ className, ...props }: Props): JSX.Element {
 const StyledCheckBox = styled(CheckBox)`
   background: ${colors.gray0};
 
+  &:hover {
+    input:not([disabled]) + div,
+    input:not([disabled]) + span {
+      ${(props) =>
+        props.checked
+          ? `background: ${colors.primaryDark}; border-color: ${colors.primaryDark};`
+          : `border-color: ${colors.gray6};`}
+    }
+  }
+
+  &:active {
+    input:not([disabled]) + div,
+    input:not([disabled]) + span {
+      ${(props) =>
+        props.checked
+          ? `background: ${colors.primaryDarker}; border-color: ${colors.primaryDarker};`
+          : `border-color: ${colors.gray9};`}
+    }
+  }
+
   input:not([disabled]) + div,
   input:not([disabled]) + span {
     background: ${(props) => (props.checked ? colors.primary : "transparent")};
@@ -33,20 +53,6 @@ const StyledCheckBox = styled(CheckBox)`
     }
 
     ${(props) => props.hasError && `border-color: ${colors.danger5};`}
-
-    &:hover {
-      ${(props) =>
-        props.checked
-          ? `background: ${colors.primaryDark}; border-color: ${colors.primaryDark};`
-          : `border-color: ${colors.gray6};`}
-    }
-
-    &:active {
-      ${(props) =>
-        props.checked
-          ? `background: ${colors.primaryDarker}; border-color: ${colors.primaryDarker};`
-          : `border-color: ${colors.gray9};`}
-    }
   }
 
   ${(props) =>
