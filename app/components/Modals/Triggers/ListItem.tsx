@@ -56,6 +56,7 @@ export default function ListItem({
 
   return (
     <StyledBox
+      a11yTitle={`trigger ${trigger.name}`}
       align="center"
       border={
         noBorder
