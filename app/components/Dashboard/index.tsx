@@ -10,6 +10,7 @@ import { state } from "../../lib/state";
 import { theme } from "../../theme/theme-new";
 import { StateContext } from "../StateContext";
 import { UserContext } from "../UserContext";
+import Settings from "./Settings";
 import Sidebar from "./Sidebar";
 import Suite from "./Suite";
 import Suites from "./Suites";
@@ -45,6 +46,8 @@ export default function Dashboard(): JSX.Element {
     innerHtml = <Suite suiteId={query.suite_id as string} />;
   } else if (pathname.includes(routes.suites)) {
     innerHtml = <Suites />;
+  } else if (pathname.includes(routes.settings)) {
+    innerHtml = <Settings />;
   }
 
   return (

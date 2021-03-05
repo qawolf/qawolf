@@ -6,7 +6,7 @@ import {
 import { ChangeEvent } from "react";
 import styled from "styled-components";
 
-import { colors, edgeSize, transitionDuration } from "../../theme/theme-new";
+import { colors, transitionDuration } from "../../theme/theme-new";
 
 export type Props = RadioButtonProps & {
   className?: string;

@@ -239,7 +239,7 @@ export const copy = {
   selected: (count: number): string => `${count} selected`,
   sendInvites: "Send invites",
   setEnvVariables: "Set environment variables",
-  settings: "Team settings",
+  settings: "Settings",
   share: "Share run",
   shareFail: "Error copying",
   shareSuccess: "Copied link!",
@@ -270,7 +270,7 @@ export const copy = {
   subjectToFairUse:
     "Each plan is subject to our fair use policy. Starter plans are limited to non-commercial use.",
   teamName: "Team name:",
-  teamSettings: "Settings & members",
+  teamSettings: "Team settings",
   terms: "Terms",
   testAcrossBrowsers: "Test in Chromium, Firefox, and WebKit",
   testCount: (count: number): string =>

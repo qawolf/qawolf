@@ -194,7 +194,6 @@ export type Modal =
   | "environments"
   | "deleteGroup"
   | "deleteTests"
-  | "teamSettings"
   | "triggers";
 
 export type MutableListArgs = {
@@ -294,7 +293,6 @@ type SignUp = {
 type ModalState = {
   group?: MutableListFields;
   name: Modal | null;
-  teamId?: string;
   testIds?: string[];
   tests?: SelectedTest[];
 };

@@ -87,7 +87,7 @@ export default function Header({ groups }: Props): JSX.Element {
           </StyledBox>
         </Button>
         <UserMenu isOpen={isOpen} onClose={handleClose} />
-        <Actions teamId={teamId} />
+        <Actions />
         <Groups groups={groups} teamId={teamId} />
       </Box>
     </Box>

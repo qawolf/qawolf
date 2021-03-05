@@ -10,6 +10,7 @@ export const routes = {
   notFound: "/404",
   pricing: "/pricing",
   run: "/run",
+  settings: "/settings",
   signUp: "/sign-up",
   slack: "/slack",
   suites: "/suites",

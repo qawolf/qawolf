@@ -9,22 +9,22 @@ import DeleteGroup from "./DeleteGroup";
 import DeleteTests from "./DeleteTests";
 import EditTestsGroup from "./EditTestsGroup";
 import Environments from "./Environments";
-import TeamSettings from "./TeamSettings";
 import Triggers from "./Triggers";
 
 export default function Modals(): JSX.Element {
   const { pathname } = useRouter();
 
   const { modal } = useContext(StateContext);
-  const { group, name, teamId, testIds, tests } = modal || {};
+  const { group, name, testIds, tests } = modal || {};
 
   const closeModal = () => state.setModal({ name: null });
 
   const isTest = pathname.includes(`${routes.test}/`); // include slash to not match dashboard
 
+  const isSettings = pathname.includes(routes.settings);
   const isSuites = pathname.includes(routes.suites);
   const isTests = pathname.includes(routes.tests);
-  const isDashboard = isSuites || isTests;
+  const isDashboard = isSettings || isSuites || isTests;
 
   if (isTests && name === "createTest") {
     return <CreateTest closeModal={closeModal} />;
@@ -44,10 +44,6 @@ export default function Modals(): JSX.Element {
 
   if ((isDashboard || isTest) && name === "environments") {
     return <Environments closeModal={closeModal} />;
-  }
-
-  if (isDashboard && name === "teamSettings" && teamId) {
-    return <TeamSettings closeModal={closeModal} teamId={teamId} />;
   }
 
   if ((isDashboard || isTest) && name === "triggers" && testIds) {

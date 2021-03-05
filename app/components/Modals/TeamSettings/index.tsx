@@ -17,6 +17,7 @@ type Props = {
 
 const WIDTH = "640px";
 
+// TODO: delete
 export default function TeamSettings({
   closeModal,
   teamId,
