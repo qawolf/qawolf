@@ -140,8 +140,7 @@ export const copy = {
   group: "Group",
   groupDelete: "Delete group",
   groupDeleteConfirm:
-    "Are you sure? This will permanently this group. Please type",
-  groupDeleteConfirm2: "to confirm.",
+    "Are you sure? This will permanently delete this group, but not the tests inside it",
   groupNew: "Create group",
   groups: "Test groups",
   growRevenue: "Grow revenue",
