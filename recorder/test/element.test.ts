@@ -1,6 +1,7 @@
 import { Browser, Page } from "playwright";
 
 import { QAWolfWeb } from "../src";
+import { ElementDescriptor } from "../src/element";
 import { launch } from "./utils";
 
 let browser: Browser;
@@ -13,6 +14,43 @@ beforeAll(async () => {
 });
 
 afterAll(() => browser.close());
+
+describe("getDescriptor", () => {
+  const getDescriptor = async (selector: string): Promise<ElementDescriptor> =>
+    page.evaluate(
+      ({ selector }) => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const target = document.querySelector(selector) as HTMLInputElement;
+        return qawolf.getDescriptor(target);
+      },
+      { selector }
+    );
+
+  beforeAll(() =>
+    page.setContent(`
+<html>
+<body>
+<input type="text">
+<h1 contenteditable="true"></h1>
+</body>    
+</html>`)
+  );
+
+  it("gets a descriptor for an element", async () => {
+    expect(await getDescriptor("input")).toEqual({
+      inputType: "text",
+      isContentEditable: false,
+      isInput: true,
+      tag: "input",
+    });
+
+    expect(await getDescriptor("h1")).toEqual({
+      isContentEditable: true,
+      isInput: false,
+      tag: "h1",
+    });
+  });
+});
 
 describe("getInputElementValue", () => {
   const getInputElementValue = async (selector: string): Promise<string> =>
@@ -93,6 +131,26 @@ describe("getTopmostEditableElement", () => {
 
   it("chooses the original element when it is not isContentEditable", async () => {
     expect(await getTopmostEditableElementId("1")).toEqual("1");
+  });
+});
+
+describe("getXpath", () => {
+  const getXpath = async (selector: string): Promise<string> =>
+    page.evaluate(
+      ({ selector }) => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const target = document.querySelector(selector) as HTMLInputElement;
+        return qawolf.getXpath(target);
+      },
+      { selector }
+    );
+
+  beforeAll(() =>
+    page.setContent(`<html><body><div><span></span></div></body></html>`)
+  );
+
+  it("gets an xpath", async () => {
+    expect(await getXpath("span")).toEqual("/html/body/div/span");
   });
 });
 

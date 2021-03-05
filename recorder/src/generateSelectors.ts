@@ -1,24 +1,9 @@
 import { debug } from "./debug";
+import { getXpath } from "./element";
 import { generateSortedCueSets } from "./generateCueSets";
-import { getXpath } from "./qawolf";
+import { isMatch, Rect } from "./isMatch";
 import { buildSelectorForCues, evaluatorQuerySelector } from "./selectorEngine";
 import { Selector } from "./types";
-
-// TODO move to match...
-const ALLOW_CHILDREN_TARGETS = new Set([
-  "button",
-  "checkbox",
-  "image",
-  "radio",
-  "reset",
-  "submit",
-]);
-
-function canContain(target: HTMLElement) {
-  if (target.isContentEditable) return false;
-  if (target.tagName !== "INPUT") return true;
-  return ALLOW_CHILDREN_TARGETS.has((target as HTMLInputElement).type);
-}
 
 function getLikelyTarget(target: HTMLElement): HTMLElement {
   return (
@@ -28,42 +13,13 @@ function getLikelyTarget(target: HTMLElement): HTMLElement {
   );
 }
 
-/**
- * Check the target contains the middle point of the element
- */
-function contains(target: DOMRect, element: DOMRect) {
-  const elementMiddleX = element.x + element.width / 2;
-  const elementMiddleY = element.y + element.height / 2;
-
-  return (
-    target.x <= elementMiddleX &&
-    elementMiddleX <= target.x + target.width &&
-    target.y <= elementMiddleY &&
-    elementMiddleY <= target.y + target.height
-  );
-}
-
-function isMatch(target: HTMLElement, element: HTMLElement) {
-  if (!element) return false;
-  if (element === target) return true;
-
-  if (!canContain(target)) return false;
-
-  return (
-    // check the target contains the element
-    contains(target.getBoundingClientRect(), element.getBoundingClientRect()) &&
-    // make sure the elements in are in the same tree
-    // ex. a modal might be on top but we don't want
-    // to consider the element behind it as matches
-    (target.contains(element) || element.contains(target))
-  );
-}
-
 export function getSelector(
   element: HTMLElement,
   timeout = 1000
 ): Selector | null {
   const start = Date.now();
+
+  const rectCache = new Map<HTMLElement, Rect>();
 
   const target = getLikelyTarget(element);
 
@@ -83,7 +39,7 @@ export function getSelector(
     );
     debug("evaluate took", Date.now() - startEvaluate);
 
-    if (isMatch(target, matchedElement)) {
+    if (matchedElement && isMatch(matchedElement, target, rectCache)) {
       debug("getSelector took", Date.now() - start);
       return { penalty: cueSet.penalty, value: selector };
     }

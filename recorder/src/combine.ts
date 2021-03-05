@@ -3,7 +3,7 @@ const doCombine = <T>(
   remaining: number,
   combination: T[],
   result: T[][]
-) => {
+): void => {
   if (remaining === 0) {
     if (combination.length > 0) {
       result.push(combination);

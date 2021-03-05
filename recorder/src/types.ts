@@ -29,11 +29,6 @@ export type CueSet = {
   valueLength: number;
 };
 
-export interface Doc {
-  attrs: Record<string, string>;
-  name: string;
-}
-
 export interface ElementAction {
   action: Action;
   selector: string;

@@ -92,6 +92,6 @@ export const buildElementText = (element: HTMLElement): string => {
 export const evaluatorQuerySelector = (
   selector: string,
   root?: Node
-): HTMLElement => {
+): HTMLElement | null => {
   return evaluator.querySelector(selector, root || document);
 };

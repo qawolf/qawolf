@@ -1,21 +1,45 @@
-export const isVisible = (
-  element: Element,
-  computedStyle?: CSSStyleDeclaration
-): boolean => {
-  const htmlElement = element as HTMLElement;
-  if (htmlElement.offsetWidth <= 0 || htmlElement.offsetHeight <= 0) {
-    return false;
+export type ElementDescriptor = {
+  isContentEditable: boolean;
+  isInput: boolean;
+  inputType?: string;
+  tag: string;
+};
+
+export const getDescriptor = (element: HTMLElement): ElementDescriptor => {
+  const tag = element.tagName.toLowerCase();
+
+  const descriptor: ElementDescriptor = {
+    isContentEditable: element.isContentEditable,
+    isInput: tag === "input",
+    tag,
+  };
+
+  if (descriptor.isInput) {
+    descriptor.inputType = (element as HTMLInputElement).type;
   }
 
-  if (computedStyle && computedStyle.visibility === "hidden") {
-    return false;
+  return descriptor;
+};
+
+/**
+ * @summary Returns the current "value" of an element. Pass in an event `target`.
+ *   For example, returns the `.value` or the `.innerText` of a content-editable.
+ *   If no value can be determined, returns `null`.
+ */
+export const getInputElementValue = (
+  element: HTMLInputElement
+): string | null => {
+  let inputValue: string;
+
+  // In the wild, we've seen examples of input elements with `contenteditable=true`,
+  // but an `input` never has inner text, so we check for `input` tag name here.
+  if (element.isContentEditable && element.tagName.toLowerCase() !== "input") {
+    inputValue = element.innerText;
+  } else {
+    inputValue = element.value;
   }
 
-  if (computedStyle && computedStyle.display === "none") {
-    return false;
-  }
-
-  return true;
+  return typeof inputValue === "string" ? inputValue : null;
 };
 
 /**
@@ -43,23 +67,58 @@ export const getTopmostEditableElement = (
   return element;
 };
 
-/**
- * @summary Returns the current "value" of an element. Pass in an event `target`.
- *   For example, returns the `.value` or the `.innerText` of a content-editable.
- *   If no value can be determined, returns `null`.
- */
-export const getInputElementValue = (
-  element: HTMLInputElement
-): string | null => {
-  let inputValue: string;
+const buildXpath = (node: Node | null): string => {
+  // only build xpaths for elements
+  if (!node || node.nodeType !== 1) return "";
 
-  // In the wild, we've seen examples of input elements with `contenteditable=true`,
-  // but an `input` never has inner text, so we check for `input` tag name here.
-  if (element.isContentEditable && element.tagName.toLowerCase() !== "input") {
-    inputValue = element.innerText;
-  } else {
-    inputValue = element.value;
+  const element = node as Element;
+  if (element.id) {
+    // xpath has no way to escape quotes so use the opposite
+    // https://stackoverflow.com/a/14822893
+    const quote = element.id.includes(`'`) ? `"` : `'`;
+    return `//*[@id=${quote}${element.id}${quote}]`;
   }
 
-  return typeof inputValue === "string" ? inputValue : null;
+  const children = element.parentNode ? element.parentNode.children : [];
+  const sames = [].filter.call(children, (x: Element) => {
+    return x.tagName === element.tagName;
+  });
+
+  const result =
+    buildXpath(element.parentNode) +
+    "/" +
+    element.tagName.toLowerCase() +
+    (sames.length > 1
+      ? "[" + ([].indexOf.call(sames, element as never) + 1) + "]"
+      : "");
+
+  return result;
+};
+
+export const getXpath = (node: Node): string => {
+  const result = buildXpath(node);
+
+  return result
+    .replace("svg", "*[name()='svg']")
+    .replace("path", "*[name()='path']");
+};
+
+export const isVisible = (
+  element: Element,
+  computedStyle?: CSSStyleDeclaration
+): boolean => {
+  const htmlElement = element as HTMLElement;
+  if (htmlElement.offsetWidth <= 0 || htmlElement.offsetHeight <= 0) {
+    return false;
+  }
+
+  if (computedStyle && computedStyle.visibility === "hidden") {
+    return false;
+  }
+
+  if (computedStyle && computedStyle.display === "none") {
+    return false;
+  }
+
+  return true;
 };

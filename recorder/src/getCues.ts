@@ -82,7 +82,7 @@ export function getCues(element: HTMLElement, level: number): Cue[] {
   const attributes = element.attributes;
 
   for (let i = 0; i < attributes.length; i++) {
-    let { name, value } = attributes[i];
+    const { name, value } = attributes[i];
     if (
       SKIP_ATTRIBUTES.has(name) ||
       (name === "value" && !skipValueCue(element))

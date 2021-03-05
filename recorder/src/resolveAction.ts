@@ -1,7 +1,11 @@
 import { debug } from "./debug";
-import { getTopmostEditableElement, isVisible } from "./element";
-import { nodeToDoc } from "./serialize";
-import { Action, Doc, PossibleAction } from "./types";
+import {
+  ElementDescriptor,
+  getDescriptor,
+  getTopmostEditableElement,
+  isVisible,
+} from "./element";
+import { Action, PossibleAction } from "./types";
 
 /**
  * The full list:
@@ -80,10 +84,10 @@ export const resolveAction = (
     return;
   }
 
-  const targetDoc = nodeToDoc(target);
+  const targetDescriptor = getDescriptor(target);
   let action = possibleAction.action as Action;
 
-  if (targetDoc.name === "select") {
+  if (targetDescriptor.tag === "select") {
     // On selects, ignore everything except fill actions (input / change events)
     if (action !== "fill") {
       debug("resolveAction: ignoring non-fill action on a select element");
@@ -94,7 +98,7 @@ export const resolveAction = (
 
   if (
     action === "press" &&
-    !shouldTrackKeyPress(possibleAction.value, targetDoc)
+    !shouldTrackKeyPress(possibleAction.value, targetDescriptor)
   ) {
     debug(
       "resolveAction: ignoring press action for an unimportant key or target"
@@ -102,7 +106,7 @@ export const resolveAction = (
     return;
   }
 
-  if (action === "fill" && !shouldTrackFill(targetDoc)) {
+  if (action === "fill" && !shouldTrackFill(targetDescriptor)) {
     debug("resolveAction: ignoring fill action for an unimportant target");
     return;
   }
@@ -110,20 +114,17 @@ export const resolveAction = (
   return action;
 };
 
-export const shouldTrackFill = (target: Doc): boolean => {
-  const { contenteditable, type } = target.attrs || {};
-
+export const shouldTrackFill = (target: ElementDescriptor): boolean => {
   // Some inputs emit "change" with a value but really can't or shouldn't be
   // "filled in" with that value. Checkbox and radio should work without filling
   // because there will be click events. File isn't supported.
-  if (["checkbox", "radio", "file"].includes(type)) return false;
+  if (["checkbox", "radio", "file"].includes(target.tag)) return false;
 
   // Track value changes for all input and textarea
-  if (["input", "textarea"].includes(target.name)) return true;
+  if (["input", "textarea"].includes(target.tag)) return true;
 
   // Track value changes for all contenteditable elements
-  if (typeof contenteditable === "string" && contenteditable !== "false")
-    return true;
+  if (target.isContentEditable) return true;
 
   // Don't track value changes for anything else
   return false;
@@ -137,12 +138,14 @@ export const shouldTrackFill = (target: Doc): boolean => {
  * @param {Object} target Some details about the event target.
  * @return {Boolean} True if we should include this key as part of the playback script.
  */
-export const shouldTrackKeyPress = (key: string, target: Doc): boolean => {
-  if (target.name === "input") return KEYS_TO_TRACK_FOR_INPUT.has(key);
-  if (target.name === "textarea") return KEYS_TO_TRACK_FOR_TEXTAREA.has(key);
+export const shouldTrackKeyPress = (
+  key: string,
+  target: ElementDescriptor
+): boolean => {
+  if (target.tag === "input") return KEYS_TO_TRACK_FOR_INPUT.has(key);
+  if (target.tag === "textarea") return KEYS_TO_TRACK_FOR_TEXTAREA.has(key);
 
-  const { contenteditable } = target.attrs || {};
-  if (typeof contenteditable === "string" && contenteditable !== "false") {
+  if (target.isContentEditable) {
     return KEYS_TO_TRACK_FOR_CONTENTEDITABLE.has(key);
   }
 

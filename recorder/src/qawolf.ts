@@ -5,10 +5,11 @@ export {
 } from "./generateCueSets";
 export { getCues, getTagCue } from "./getCues";
 export {
+  getDescriptor,
   getInputElementValue,
   getTopmostEditableElement,
+  getXpath,
   isVisible,
 } from "./element";
 export { resolveAction } from "./resolveAction";
 export { buildElementText, buildSelectorForCues } from "./selectorEngine";
-export { getXpath, nodeToDoc } from "./serialize";
