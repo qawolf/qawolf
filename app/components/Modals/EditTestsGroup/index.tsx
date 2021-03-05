@@ -24,7 +24,7 @@ const getInitialGroupId = (tests: SelectedTest[]): string | null => {
   const groupIds = Array.from(new Set(tests.map((t) => t.group_id)));
   if (groupIds.length !== 1) return null;
 
-  return groupIds[0] || null;
+  return groupIds[0] || "";
 };
 
 export default function EditTestsGroup({
