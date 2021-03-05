@@ -1,6 +1,7 @@
 import { Box, ThemeContext } from "grommet";
 
 import { useDeleteGroup } from "../../hooks/mutations";
+import { useOnHotKey } from "../../hooks/onHotKey";
 import { MutableListFields } from "../../lib/types";
 import { copy } from "../../theme/copy";
 import { theme } from "../../theme/theme-new";
@@ -20,6 +21,8 @@ export default function DeleteGroup({ closeModal, group }: Props): JSX.Element {
   const handleDelete = (): void => {
     deleteGroup({ variables: { id: group.id } }).then(closeModal);
   };
+
+  useOnHotKey({ hotKey: "Enter", onHotKey: handleDelete });
 
   return (
     <ThemeContext.Extend value={theme}>
