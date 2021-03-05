@@ -69,6 +69,7 @@ export default function List({
     return (
       <TestCard
         groupName={groupName}
+        hasGroups={!!groups?.length}
         isChecked={checkedTestIds.includes(test.id)}
         isSummaryLoading={loading}
         key={test.id}

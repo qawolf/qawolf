@@ -11,6 +11,7 @@ import SelectTrigger from "./SelectTrigger";
 
 type Props = {
   checkedTests: ShortTest[];
+  hasGroups: boolean;
   groupName: string | null;
   search: string;
   setSearch: (search: string) => void;
@@ -22,6 +23,7 @@ type Props = {
 export default function Header({
   checkedTests,
   groupName,
+  hasGroups,
   search,
   setSearch,
   testTriggers,
@@ -55,7 +57,7 @@ export default function Header({
           </Text>
         </Box>
         <Box align="center" direction="row">
-          <Actions checkedTests={checkedTests} />
+          <Actions checkedTests={checkedTests} hasGroups={hasGroups} />
           <Buttons tests={selectedTests} />
         </Box>
       </Box>

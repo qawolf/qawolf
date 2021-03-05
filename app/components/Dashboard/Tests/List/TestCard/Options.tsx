@@ -14,11 +14,14 @@ import More from "../../../../shared-new/icons/More";
 import Trash from "../../../../shared-new/icons/Trash";
 import Option from "../../../../shared-new/Select/Option";
 
-type Props = { test: ShortTest };
+type Props = {
+  hasGroups: boolean;
+  test: ShortTest;
+};
 
 const width = "240px";
 
-export default function Options({ test }: Props): JSX.Element {
+export default function Options({ hasGroups, test }: Props): JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -62,11 +65,13 @@ export default function Options({ test }: Props): JSX.Element {
             label={copy.editTriggers}
             onClick={handleTriggersClick}
           />
-          <Option
-            IconComponent={Folder}
-            label={copy.addToGroup}
-            onClick={handleGroupClick}
-          />
+          {hasGroups && (
+            <Option
+              IconComponent={Folder}
+              label={copy.addToGroup}
+              onClick={handleGroupClick}
+            />
+          )}
           <Divider margin={{ vertical: "xxxsmall" }} />
           <Option
             IconComponent={Trash}

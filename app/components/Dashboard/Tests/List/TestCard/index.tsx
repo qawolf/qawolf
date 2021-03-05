@@ -13,6 +13,7 @@ import Triggers from "./Triggers";
 
 type Props = {
   groupName: string | null;
+  hasGroups: boolean;
   isChecked: boolean;
   isSummaryLoading: boolean;
   noBorder?: boolean;
@@ -24,6 +25,7 @@ type Props = {
 
 export default function TestCard({
   groupName,
+  hasGroups,
   isChecked,
   isSummaryLoading,
   noBorder,
@@ -74,7 +76,7 @@ export default function TestCard({
       <Box align="center" direction="row" flex={false}>
         <Triggers triggers={triggers} />
         <RunBars runs={runs} />
-        <Options test={test} />
+        <Options hasGroups={hasGroups} test={test} />
       </Box>
     </Box>
   );

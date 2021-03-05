@@ -80,6 +80,7 @@ export default function Tests({ groups }: Props): JSX.Element {
       <Header
         checkedTests={checkedTests}
         groupName={groupName}
+        hasGroups={!!groups?.length}
         search={search}
         setSearch={setSearch}
         tests={tests}
