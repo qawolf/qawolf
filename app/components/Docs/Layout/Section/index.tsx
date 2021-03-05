@@ -7,7 +7,7 @@ import {
   transitionDuration,
 } from "../../../../theme/theme-new";
 import Text from "../../../shared-new/Text";
-import { Doc, Section as SectionType } from "../../docs";
+import { Section as SectionType } from "../../docs";
 import SectionLinks, { iconSize } from "./SectionLinks";
 
 type Props = {
@@ -15,12 +15,6 @@ type Props = {
   onClick: () => void;
   pathname: string;
   section: SectionType;
-};
-
-const shouldBeOpen = (docs: Doc[], pathname: string): boolean => {
-  const matchingDoc = docs.find((doc) => doc.href === pathname);
-
-  return !!matchingDoc;
 };
 
 const StyledBox = styled(Box)`

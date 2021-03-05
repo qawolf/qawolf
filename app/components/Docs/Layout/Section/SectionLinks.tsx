@@ -14,12 +14,7 @@ type Props = {
 
 export const iconSize = edgeSize.large;
 
-function SectionLinks({
-  className,
-  docs,
-  isOpen,
-  pathname,
-}: Props): JSX.Element {
+function SectionLinks({ className, docs, pathname }: Props): JSX.Element {
   const sectionLinksHtml = docs.map((doc) => {
     return (
       <SectionLink
