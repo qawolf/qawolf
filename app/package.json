@@ -5,15 +5,15 @@
   "scripts": {
     "build": "next build",
     "build:types": "ts-node ./scripts/generateTypesFile.ts",
+    "build-storybook": "build-storybook",
     "dev": "next dev",
     "lint": "eslint . --ext graphql,ts,tsx",
     "migrate:make": "DOTENV_PATH=../.env ts-node node_modules/.bin/knex migrate:make --knexfile=server/knexfile.ts",
     "migrate:run": "ts-node node_modules/.bin/knex migrate:latest --knexfile=server/knexfile.ts",
     "migrate:run:dev": "DOTENV_PATH=../.env ts-node node_modules/.bin/knex migrate:latest --knexfile=server/knexfile.ts",
     "start": "next start",
-    "test": "jest",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "test": "jest"
   },
   "author": "QA Wolf Inc. <hello@qawolf.com>",
   "license": "Business-Source-License-1.1",
