@@ -3,7 +3,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import { breakpoints, edgeSize, height, width } from "../../../theme/theme-new";
-import { docs,Section as SectionType } from "../docs";
+import { docs, Section as SectionType } from "../docs";
 import Section from "./Section";
 import Wolf from "./Wolf";
 
