@@ -5,7 +5,7 @@ import { TestTriggers, Trigger } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import Divider from "../../../shared-new/Divider";
 import Select from "../../../shared-new/Select";
-import { noTriggerId } from "../../helpers";
+import { buildTestsPath, noTriggerId } from "../../helpers";
 import TriggerOption from "./TriggerOption";
 
 type Props = {
@@ -15,11 +15,6 @@ type Props = {
 
 const dividerProps = { margin: { vertical: "xxxsmall" } };
 const width = "320px";
-
-const buildTestsPath = (groupId?: string): string => {
-  if (!groupId) return routes.tests;
-  return `${routes.tests}/${groupId}`;
-};
 
 export default function SelectTrigger({
   testTriggers,
