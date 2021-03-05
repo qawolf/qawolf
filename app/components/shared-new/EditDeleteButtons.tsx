@@ -13,14 +13,16 @@ type Props = {
   onEdit: () => void;
 };
 
+const className = "button";
+
 export const StyledBox = styled(Box)`
-  button {
+  .${className} {
     opacity: 0;
     transition: opacity ${transitionDuration};
   }
 
   &:hover {
-    button {
+    .${className} {
       opacity: 1;
     }
   }
@@ -38,12 +40,14 @@ export default function EditDeleteButtons({
       <Button
         IconComponent={Edit}
         a11yTitle={`${copy.edit}${nameText}`}
+        className={className}
         onClick={onEdit}
         type="ghost"
       />
       <Button
         IconComponent={Trash}
         a11yTitle={`${copy.delete}${nameText}`}
+        className={className}
         hoverType="danger"
         margin={{ left: "xxsmall" }}
         onClick={onDelete}

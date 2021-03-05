@@ -1,4 +1,4 @@
-import { Box } from "grommet";
+import { Box, Button } from "grommet";
 
 import { Trigger } from "../../../lib/types";
 import { borderSize, overflowStyle } from "../../../theme/theme-new";
@@ -29,6 +29,31 @@ export default function ListItem({
   selectState,
   trigger,
 }: Props): JSX.Element {
+  const innerHtml = (
+    <Box align="center" direction="row">
+      {!isDisabled && (
+        <Box margin={{ right: "small" }}>
+          <CheckBox
+            checked={selectState === "all"}
+            indeterminate={selectState === "some"}
+          />
+        </Box>
+      )}
+      <TriggerIcon trigger={trigger} />
+      <Text color="gray9" size="component" style={overflowStyle}>
+        {trigger.name}
+      </Text>
+    </Box>
+  );
+
+  const triggerHtml = isDisabled ? (
+    innerHtml
+  ) : (
+    <Button a11yTitle={`assign ${trigger.name}`} onClick={onClick} plain>
+      {innerHtml}
+    </Button>
+  );
+
   return (
     <StyledBox
       align="center"
@@ -41,22 +66,7 @@ export default function ListItem({
       flex={false}
       justify="between"
     >
-      <Box align="center" direction="row">
-        {!isDisabled && (
-          <Box margin={{ right: "small" }}>
-            <CheckBox
-              a11yTitle={`assign ${trigger.name}`}
-              checked={selectState === "all"}
-              indeterminate={selectState === "some"}
-              onChange={onClick}
-            />
-          </Box>
-        )}
-        <TriggerIcon trigger={trigger} />
-        <Text color="gray9" size="component" style={overflowStyle}>
-          {trigger.name}
-        </Text>
-      </Box>
+      {triggerHtml}
       <EditDeleteButtons
         name={trigger.name}
         onDelete={onDelete}

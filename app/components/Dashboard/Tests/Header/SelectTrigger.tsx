@@ -1,11 +1,10 @@
 import { useRouter } from "next/router";
 
-import { routes } from "../../../../lib/routes";
 import { TestTriggers, Trigger } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import Divider from "../../../shared-new/Divider";
 import Select from "../../../shared-new/Select";
-import { noTriggerId } from "../../helpers";
+import { buildTestsPath, noTriggerId } from "../../helpers";
 import TriggerOption from "./TriggerOption";
 
 type Props = {
@@ -16,26 +15,21 @@ type Props = {
 const dividerProps = { margin: { vertical: "xxxsmall" } };
 const width = "320px";
 
-const buildTestsPath = (groupId?: string): string => {
-  if (!groupId) return routes.tests;
-  return `${routes.tests}/${groupId}`;
-};
-
 export default function SelectTrigger({
   testTriggers,
   triggers,
 }: Props): JSX.Element {
   const { replace, query } = useRouter();
 
-  const groupId = query.group_id as string;
+  const groupId = (query.group_id as string) || null;
   const triggerId = query.trigger_id as string;
 
   const handleAllTriggersClick = (): void => {
-    replace(buildTestsPath(groupId)); // clear query
+    replace(buildTestsPath(groupId, null)); // clear query
   };
 
   const handleTriggerClick = (triggerId: string): void => {
-    replace(`${buildTestsPath(groupId)}?trigger_id=${triggerId}`);
+    replace(buildTestsPath(groupId, triggerId));
   };
 
   const optionsHtml = triggers.map((trigger) => {

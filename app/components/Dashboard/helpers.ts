@@ -1,4 +1,5 @@
 import { timeToText } from "../../lib/helpers";
+import { routes } from "../../lib/routes";
 import {
   RunStatus,
   ShortSuite,
@@ -25,6 +26,16 @@ type FilterTests = {
 };
 
 export const noTriggerId = "none";
+
+export const buildTestsPath = (
+  groupId: string | null,
+  triggerId: string | null
+): string => {
+  const query = triggerId ? `?trigger_id=${triggerId}` : "";
+
+  if (!groupId) return `${routes.tests}${query}`;
+  return `${routes.tests}/${groupId}${query}`;
+};
 
 export const filterRuns = ({
   runs,
