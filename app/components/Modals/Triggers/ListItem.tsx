@@ -44,6 +44,7 @@ export default function ListItem({
     <Box align="center" direction="row">
       <Box margin={{ right: "small" }}>
         <CheckBox
+          a11yTitle={`assign ${trigger.name}`}
           checked={selectState === "all"}
           indeterminate={selectState === "some"}
           label={labelHtml}
