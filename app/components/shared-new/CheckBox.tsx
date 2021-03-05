@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { borderSize, colors, transitionDuration } from "../../theme/theme-new";
 
-type Props = CheckBoxProps & {
+export type Props = CheckBoxProps & {
   className?: string;
   hasError?: boolean;
   onChange?: () => void;

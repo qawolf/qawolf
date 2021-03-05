@@ -1,4 +1,4 @@
-import { Box, RadioButton } from "grommet";
+import { Box } from "grommet";
 
 import { Group } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
@@ -10,8 +10,8 @@ import {
 } from "../../../theme/theme-new";
 import Folder from "../../shared-new/icons/Folder";
 import FolderEmpty from "../../shared-new/icons/FolderEmpty";
+import RadioButton from "../../shared-new/RadioButton";
 import Text from "../../shared-new/Text";
-import Radio from "./Radio";
 
 type Props = {
   group: Group | null;

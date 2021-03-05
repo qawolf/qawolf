@@ -1,9 +1,9 @@
-import { RadioButtonGroup } from "grommet";
 import capitalize from "lodash/capitalize";
 import { ChangeEvent, useEffect } from "react";
 
 import { DeploymentEnvironment } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
+import RadioButtonGroup from "../../../shared-new/RadioButtonGroup";
 import Text from "../../../shared-new/Text";
 import { labelTextProps } from "../helpers";
 import DeployBranches from "./DeployBranches";

@@ -228,6 +228,15 @@ export const theme = {
       },
     },
     hover: { border: { color: colors.gray6 } },
+    icon: {
+      extend: (): string => {
+        return `
+        circle {
+          r: 8;
+        }
+      `;
+      },
+    },
     gap: edgeSize.xxsmall,
     size: edgeSize.small,
   },

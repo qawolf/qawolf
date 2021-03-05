@@ -1,4 +1,4 @@
-import { Box, Button } from "grommet";
+import { Box } from "grommet";
 
 import { Trigger } from "../../../lib/types";
 import { borderSize, overflowStyle } from "../../../theme/theme-new";
