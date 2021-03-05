@@ -15,6 +15,7 @@ type Props = {
   onChange: (e?: ChangeEvent<HTMLInputElement>) => void;
   options: Option[];
   value: number | string;
+  wrap?: BoxProps["wrap"];
 };
 
 export default function RadioButtonGroup({
@@ -24,6 +25,7 @@ export default function RadioButtonGroup({
   onChange,
   options,
   value,
+  wrap,
 }: Props): JSX.Element {
   const radioButtonsHtml = options.map((option) => {
     return (
@@ -40,7 +42,7 @@ export default function RadioButtonGroup({
   });
 
   return (
-    <Box direction={direction} gap={gap}>
+    <Box direction={direction} gap={gap} wrap={wrap}>
       {radioButtonsHtml}
     </Box>
   );
