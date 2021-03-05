@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 
-import { routes } from "../../../../lib/routes";
 import { TestTriggers, Trigger } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import Divider from "../../../shared-new/Divider";
