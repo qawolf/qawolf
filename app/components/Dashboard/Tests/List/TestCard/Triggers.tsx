@@ -10,10 +10,10 @@ type Props = { triggers: Trigger[] };
 
 export default function Triggers({ triggers }: Props): JSX.Element {
   const { replace, query } = useRouter();
-  const groupId = query.group_id as string;
+  const groupId = (query.group_id as string) || null;
 
   const handleTriggerClick = (triggerId: string): void => {
-    replace(`${buildTestsPath(groupId)}?trigger_id=${triggerId}`);
+    replace(buildTestsPath(groupId, triggerId));
   };
 
   const triggersHtml = triggers.map((t) => {

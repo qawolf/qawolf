@@ -27,9 +27,14 @@ type FilterTests = {
 
 export const noTriggerId = "none";
 
-export const buildTestsPath = (groupId?: string): string => {
-  if (!groupId) return routes.tests;
-  return `${routes.tests}/${groupId}`;
+export const buildTestsPath = (
+  groupId: string | null,
+  triggerId: string | null
+): string => {
+  const query = triggerId ? `?trigger_id=${triggerId}` : "";
+
+  if (!groupId) return `${routes.tests}${query}`;
+  return `${routes.tests}/${groupId}${query}`;
 };
 
 export const filterRuns = ({
