@@ -21,7 +21,10 @@ beforeAll(async () => {
   <button id="outside" style="${fixedSize} left: 500px">outside</button>
 </div>
 <div id="unrelated" style="${fixedSize}">overlap</div>
-<div id="exact-match-overlap" style="${fixedSize} top: 500px"><input type="date" style="${fixedSize} top: 500px"></div>
+<div id="exact-match-overlap" style="${fixedSize} top: 500px">
+  <input type="date" style="${fixedSize} top: 500px">
+  <textarea style="${fixedSize} top: 500px" />
+</div>
 `
   );
 });
@@ -64,5 +67,7 @@ describe("isMatch", () => {
     expect(await isMatch("#exact-match-overlap", "input[type=date]")).toBe(
       false
     );
+
+    expect(await isMatch("#exact-match-overlap", "textarea")).toBe(false);
   });
 });

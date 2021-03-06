@@ -1,6 +1,5 @@
 export type ElementDescriptor = {
   isContentEditable: boolean;
-  isInput: boolean;
   inputType?: string;
   tag: string;
 };
@@ -10,11 +9,10 @@ export const getDescriptor = (element: HTMLElement): ElementDescriptor => {
 
   const descriptor: ElementDescriptor = {
     isContentEditable: element.isContentEditable,
-    isInput: tag === "input",
     tag,
   };
 
-  if (descriptor.isInput) {
+  if (tag === "input") {
     descriptor.inputType = (element as HTMLInputElement).type;
   }
 

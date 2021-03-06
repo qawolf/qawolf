@@ -17,9 +17,11 @@ const MATCH_POSITION_INPUT_TYPES = new Set([
 ]);
 
 export function allowPositionMatch(target: ElementDescriptor): boolean {
-  if (target.isContentEditable) return false;
+  if (target.isContentEditable || target.tag === "textarea") return false;
 
-  return !target.isInput || MATCH_POSITION_INPUT_TYPES.has(target.inputType);
+  return (
+    target.tag !== "input" || MATCH_POSITION_INPUT_TYPES.has(target.inputType)
+  );
 }
 
 export function isMatch(

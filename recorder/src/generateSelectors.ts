@@ -7,8 +7,9 @@ import { Selector } from "./types";
 
 function getLikelyTarget(target: HTMLElement): HTMLElement {
   return (
+    // XXX we may want to gate this for click actions only
     target.closest(
-      "a,button,input,label,[role=button],[role=checkbox],[role=radio]"
+      "a,button,input,label,textarea,[contenteditable=true],[role=button],[role=checkbox],[role=radio]"
     ) || target
   );
 }
