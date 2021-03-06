@@ -11,14 +11,18 @@ beforeAll(async () => {
   browser = launched.browser;
   page = launched.page;
 
+  const fixedSize = "position: fixed; height: 50px; width: 50px;";
+
   await setBody(
     page,
     `
-<div id="parent" style="position: absolute; top: 0px; left: 0px;">
+<div id="parent" style="${fixedSize}">
   <button id="inside">inside</button>
-  <button id="outside" style="position: absolute; left: 300px">outside</button>
+  <button id="outside" style="${fixedSize} left: 500px">outside</button>
 </div>
-<div id="unrelated" style="position: absolute; top: 0px; left: 0px;">overlap</div>`
+<div id="unrelated" style="${fixedSize}">overlap</div>
+<div id="exact-match-overlap" style="${fixedSize} top: 500px"><input type="date" style="${fixedSize} top: 500px"></div>
+`
   );
 });
 
@@ -41,22 +45,24 @@ describe("isMatch", () => {
   };
 
   it("returns true if element matches target", async () => {
-    const result = await isMatch("#parent", "#parent");
-    expect(result).toBe(true);
+    expect(await isMatch("#parent", "#parent")).toBe(true);
   });
 
-  it("returns true if element is inside target", async () => {
-    const result = await isMatch("#parent", "#inside");
-    expect(result).toBe(true);
+  it("returns true if the middle of the element is inside target", async () => {
+    expect(await isMatch("#inside", "#parent")).toBe(true);
   });
 
-  it("returns false if element is outside target", async () => {
-    const result = await isMatch("#parent", "#outside");
-    expect(result).toBe(false);
+  it("returns false if the middle of the element is outside target", async () => {
+    expect(await isMatch("#outside", "#parent")).toBe(false);
   });
 
-  it("return false if element is inside but not related", async () => {
-    const result = await isMatch("#unrelated", "#parent");
-    expect(result).toBe(false);
+  it("return false if middle of the element is inside but not related", async () => {
+    expect(await isMatch("#unrelated", "#parent")).toBe(false);
+  });
+
+  it("return false if element middle overlaps but target requires exact match", async () => {
+    expect(await isMatch("#exact-match-overlap", "input[type=date]")).toBe(
+      false
+    );
   });
 });

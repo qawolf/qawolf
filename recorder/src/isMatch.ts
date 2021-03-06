@@ -7,7 +7,7 @@ export type Rect = {
   y: number;
 };
 
-const INPUT_ALLOW_DESCENDANT_MATCH = new Set([
+const MATCH_POSITION_INPUT_TYPES = new Set([
   "button",
   "checkbox",
   "image",
@@ -16,13 +16,19 @@ const INPUT_ALLOW_DESCENDANT_MATCH = new Set([
   "submit",
 ]);
 
+export function allowPositionMatch(target: ElementDescriptor): boolean {
+  if (target.isContentEditable) return false;
+
+  return !target.isInput || MATCH_POSITION_INPUT_TYPES.has(target.inputType);
+}
+
 export function isMatch(
   element: HTMLElement,
   target: HTMLElement,
   cache: Map<HTMLElement, Rect>
 ): boolean {
   if (element === target) return true;
-  if (requireExactMatch(getDescriptor(target))) return false;
+  if (!allowPositionMatch(getDescriptor(target))) return false;
 
   // check if the middle of the element is within the target
   let targetRect = cache.get(target);
@@ -62,10 +68,4 @@ export function isWithin(other: Rect, container: Rect): boolean {
     container.y <= middle.y &&
     middle.y <= container.y + container.height
   );
-}
-
-function requireExactMatch(target: ElementDescriptor): boolean {
-  if (target.isContentEditable) return true;
-
-  return target.isInput && !INPUT_ALLOW_DESCENDANT_MATCH.has(target.inputType);
 }
