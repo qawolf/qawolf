@@ -29,5 +29,13 @@ export default function Invite(): JSX.Element {
     });
   };
 
-  return <InviteInput email={email} setEmail={setEmail} />;
+  return (
+    <InviteInput
+      addEmail={addEmail}
+      email={email}
+      emails={emails}
+      removeEmail={removeEmail}
+      setEmail={setEmail}
+    />
+  );
 }

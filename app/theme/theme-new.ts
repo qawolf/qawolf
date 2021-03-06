@@ -244,6 +244,11 @@ export const theme = {
     size: edgeSize.small,
   },
   text,
+  textInput: {
+    extend: (): CSSProperties => {
+      return { caretColor: colors.gray9 };
+    },
+  },
 };
 
 export const transitionDuration = "0.2s ease-in-out";

@@ -1,4 +1,4 @@
-import { Box, Keyboard } from "grommet";
+import { Box } from "grommet";
 import { KeyboardEvent } from "react";
 import styled from "styled-components";
 
@@ -6,12 +6,17 @@ import {
   border,
   borderSize,
   colors,
+  edgeSize,
   transitionDuration,
 } from "../../../../theme/theme-new";
+import Email from "./Email";
 import TextInput from "./TextInput";
 
 type Props = {
+  addEmail: (email: string) => void;
   email: string;
+  emails: string[];
+  removeEmail: (email: string) => void;
   setEmail: (email: string) => void;
 };
 
@@ -29,30 +34,52 @@ const StyledBox = styled(Box)`
   }
 `;
 
-export default function InviteInput({ email, setEmail }: Props): JSX.Element {
+export default function InviteInput({
+  addEmail,
+  email,
+  emails,
+  removeEmail,
+  setEmail,
+}: Props): JSX.Element {
+  const emailsHtml = emails.map((email, i) => {
+    return (
+      <Email email={email} key={`${email}-${i}`} removeEmail={removeEmail} />
+    );
+  });
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>): void => {
-    // TODO
+    if (email.length && ["Enter", ","].includes(e.key)) {
+      e.preventDefault();
+      addEmail(email);
+      setEmail("");
+    }
   };
 
+  const padHorizontal = `calc(${
+    emails.length ? edgeSize.xxxsmall : edgeSize.xsmall
+  } - ${borderSize.xsmall})`;
+
   return (
-    <>
-      <Keyboard onKeyDown={handleKeyDown}>
-        <StyledBox
-          align="center"
-          border={border}
-          direction="row"
-          round={borderSize.small}
-          wrap
-        >
-          <Box flex style={{ minWidth }}>
-            <TextInput onChange={handleChange} value={email} />
-          </Box>
-        </StyledBox>
-      </Keyboard>
-    </>
+    <StyledBox
+      align="center"
+      border={border}
+      direction="row"
+      pad={{ horizontal: padHorizontal }}
+      round={borderSize.small}
+      wrap
+    >
+      {emailsHtml}
+      <Box flex style={{ minWidth }}>
+        <TextInput
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          value={email}
+        />
+      </Box>
+    </StyledBox>
   );
 }

@@ -1,5 +1,5 @@
 import { TextInput as GrommetTextInput } from "grommet";
-import { ChangeEvent } from "react";
+import { ChangeEvent, KeyboardEvent } from "react";
 import styled from "styled-components";
 
 import { copy } from "../../../../theme/copy";
@@ -14,6 +14,7 @@ import {
 
 type Props = {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
   value: string;
 };
 
@@ -24,17 +25,22 @@ const StyledGrommetTextInput = styled(GrommetTextInput)`
   font-size: ${textDesktop.component.size};
   font-weight: ${fontWeight.normal};
   line-height: ${edgeSize.large};
-  padding: 0 ${edgeSize.xsmall};
+  padding: 0;
 
   &::placeholder {
     color: ${colors.gray5};
   }
 `;
 
-export default function TextInput({ onChange, value }: Props): JSX.Element {
+export default function TextInput({
+  onChange,
+  onKeyDown,
+  value,
+}: Props): JSX.Element {
   return (
     <StyledGrommetTextInput
       onChange={onChange}
+      onKeyDown={onKeyDown}
       placeholder={copy.invitePlacholder}
       plain
       value={value}
