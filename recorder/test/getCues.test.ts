@@ -174,12 +174,16 @@ describe("getCues", () => {
 
     const cues = await getCues("a");
     expect(
-      cues.filter((c) => c.type === "attribute").map((c) => c.value)
+      cues
+        .filter((c) => c.type === "attribute")
+        .map((c) => `${c.penalty}${c.value}`)
     ).toEqual([
-      '[data-cy="cypress"]',
-      '[data-test="test"]',
-      '[data-test-company="test-company"]',
-      '[qa-company="qa-company"]',
+      '0[data-cy="cypress"]',
+      '0[data-e2e="e2e"]',
+      '0[data-qa="qa"]',
+      '0[data-test="test"]',
+      '0[data-test-company="test-company"]',
+      '0[qa-company="qa-company"]',
     ]);
   });
 

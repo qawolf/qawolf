@@ -90,7 +90,9 @@ export function getCues(element: HTMLElement, level: number): Cue[] {
       continue;
 
     // rank unknown attributes the same as a class
-    let penalty = PENALTY_MAP[name] || PENALTY_MAP.class;
+    let penalty = PENALTY_MAP[name];
+
+    if (typeof penalty === "undefined") penalty = PENALTY_MAP.class;
 
     // prefer test attributes
     if (name.match(/^data-test.*/) || name.match(/^qa-.*/)) penalty = 0;

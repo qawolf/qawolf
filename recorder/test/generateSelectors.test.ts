@@ -7,14 +7,18 @@ let launched: LaunchResult;
 let page: Page;
 
 beforeAll(async () => {
-  launched = await launch();
+  launched = await launch({ devtools: true });
   page = launched.page;
 });
 
-afterAll(() => launched.browser.close());
+// afterAll(() => launched.browser.close());
 
-const expectSelector = async (selector: string): Promise<void> => {
+const expectSelector = async (
+  selector: string,
+  expected?: string
+): Promise<void> => {
   const element = await page.$(selector);
+  if (!element) throw new Error(`${selector} not found`);
 
   const builtSelector = await page.evaluate(
     ({ element }) => {
@@ -25,40 +29,65 @@ const expectSelector = async (selector: string): Promise<void> => {
     { element }
   );
 
-  expect(builtSelector).toEqual(selector);
+  expect(builtSelector).toEqual(expected || selector);
 };
 
-it("targets ancestor cues when required", async () => {
-  await setBody(page, `<li><input></li><li><input></li>`);
-  await expectSelector("li:nth-of-type(2) input");
-});
-
-it("returns html & body tags", async () => {
-  await page.evaluate(() => {
-    document.querySelector("html").setAttribute("data-qa", "main");
-    document.querySelector("body").setAttribute("data-qa", "container");
+describe.skip("getSelector", () => {
+  it("prefers test attributes", async () => {
+    await setBody(page, `<button data-qa="html-button">Submit</button>`);
+    await expectSelector('[data-qa="html-button"]');
   });
 
-  await expectSelector("html");
-  await expectSelector("body");
+  it("short circuits to html and body", async () => {
+    await page.evaluate(() => {
+      document.querySelector("html").setAttribute("data-qa", "main");
+      document.querySelector("body").setAttribute("data-qa", "container");
+    });
+
+    await expectSelector("html");
+    await expectSelector("body");
+  });
+
+  it.each([
+    ["<a><img></a>", "a"],
+    ["<button><img></button>", "button"],
+    ["<label><img></label>", "label"],
+    ['<div role="button"><img></div>', '[role="button"]'],
+    ['<div role="checkbox"><img></div>', '[role="checkbox"]'],
+    ['<div role="radio"><img></div>', '[role="radio"]'],
+  ])("targets the likely ancestor %o", async (body, expected) => {
+    await setBody(page, body);
+    await expectSelector("img", expected);
+  });
+
+  it("uses ancestor cues when required", async () => {
+    await setBody(page, `<li><input></li><li><input></li>`);
+    await expectSelector("li:nth-of-type(2) input");
+  });
 });
 
-const TEST_URL = "http://localhost:5000/";
+// TODO options
+// ["<select><option>Hello></option></select>", "option"],
 
-//   describe("buttons", () => {
-//     beforeAll(() => page.goto(`${TEST_URL}buttons`));
-//     it.each([
-//       // selects the target
-//       [['[data-qa="html-button"]', '[data-qa="html-button"]']],
-//       [[".quote-button", "text=Button \"with\" extra 'quotes'"]],
-//       // selects the ancestor
-//       [["#html-button-child", '[data-qa="html-button-with-children"]']],
-//       [[".MuiButton-label", '[data-qa="material-button"]']],
-//       [".second-half.type-two"],
-//       // selects the better selector for target despite having clickable ancestors
-//       [['[data-for-test="selection"]', "text=Better attribute on span"]],
-//     ])("builds expected selector %o", (selector) => expectSelector(selector));
+// describe.only("replace", () => {
+//   const TEST_URL = "http://localhost:5000/";
+
+//   beforeAll(() => page.goto(`${TEST_URL}buttons`));
+
+//   it.each([
+//     // selects the target
+//     [['[data-qa="html-button"]', '[data-qa="html-button"]']],
+//     [[".quote-button", "text=Button \"with\" extra 'quotes'"]],
+//     // selects the ancestor
+//     [["#html-button-child", '[data-qa="html-button-with-children"]']],
+//     [[".MuiButton-label", '[data-qa="material-button"]']],
+//     [".second-half.type-two"],
+//     // selects the better selector for target despite having clickable ancestors
+//     [['[data-for-test="selection"]', "text=Better attribute on span"]],
+//   ])("builds expected selector %o", (options) => {
+//     return expectSelector(options[0], options[1]);
 //   });
+
 //   describe("date pickers", () => {
 //     beforeAll(() => page.goto(`${TEST_URL}date-pickers`));
 //     it.each([
@@ -190,4 +219,4 @@ const TEST_URL = "http://localhost:5000/";
 //         ],
 //       ],
 //     ])("builds expected selector %o", (selector) => expectSelector(selector));
-//   });
+// });
