@@ -60,7 +60,7 @@ export function getCues(element: HTMLElement, level: number): Cue[] {
   // For body and html, we never have more than one, so
   // just 'tag' cue is needed and we can save some time.
   if (["HTML", "BODY"].includes(element.tagName)) {
-    cues[0].penalty = 0;
+    if (level === 0) cues[0].penalty = 0;
     return cues;
   }
 

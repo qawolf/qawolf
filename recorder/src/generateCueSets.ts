@@ -144,6 +144,10 @@ export function* generateRelativeCueSets({
   }
 }
 
+function filterTestAttributeCues(cues: Cue[]): Cue[] {
+  return cues.filter((c) => c.penalty === 0);
+}
+
 export function* generateSortedCueSets(
   target: HTMLElement,
   // 25 ms to generate 2000 cues on my machine
@@ -151,19 +155,53 @@ export function* generateSortedCueSets(
 ): Generator<CueSet, void, unknown> {
   const generator = generateCueSets(target);
 
+  // collect the closest test attribute cue
+  let testAttributeCue: Cue | null = null;
+
+  function prepareBatch() {
+    let sorted = batch.sort(compareCueSet);
+
+    // include the test attribute
+    if (testAttributeCue) {
+      sorted.forEach((s) => {
+        if (!s.cues.some((c) => c.penalty === 0)) {
+          s.cues.push(testAttributeCue);
+        }
+      });
+    }
+
+    batch = [];
+    return sorted;
+  }
+
   // batch then sort cues by penalty
   let batch: CueSet[] = [];
   for (const cueSet of generator) {
     // sometimes it yields undefined
-    if (cueSet) batch.push(cueSet);
+    if (!cueSet) continue;
+
+    batch.push(cueSet);
+
+    // track the closest test attribute cue
+    cueSet.cues
+      .filter((c) => c.penalty === 0)
+      .forEach((cue) => {
+        if (
+          !testAttributeCue ||
+          Math.abs(testAttributeCue.level) > Math.abs(cue.level)
+        ) {
+          testAttributeCue = cue;
+        }
+      });
 
     if (batch.length >= batchSize) {
-      batch.sort(compareCueSet);
-      yield* batch as any;
-      batch = [];
+      const batchToYield = prepareBatch();
+      yield* batchToYield as any;
     }
   }
 
-  batch.sort(compareCueSet);
-  yield* batch as any;
+  if (batch.length) {
+    const batchToYield = prepareBatch();
+    yield* batchToYield as any;
+  }
 }

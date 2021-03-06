@@ -8,7 +8,7 @@ import { Selector } from "./types";
 function getLikelyTarget(target: HTMLElement): HTMLElement {
   return (
     target.closest(
-      "a,button,label,[role=button],[role=checkbox],[role=radio]"
+      "a,button,input,label,[role=button],[role=checkbox],[role=radio]"
     ) || target
   );
 }
