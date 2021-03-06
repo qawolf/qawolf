@@ -32,7 +32,7 @@ const expectSelector = async (
   expect(builtSelector).toEqual(expected || selector);
 };
 
-describe.skip("getSelector", () => {
+describe("getSelector", () => {
   it("prefers test attributes", async () => {
     await setBody(page, `<button data-qa="html-button">Submit</button>`);
     await expectSelector('[data-qa="html-button"]');
@@ -58,6 +58,11 @@ describe.skip("getSelector", () => {
   ])("targets the likely ancestor %o", async (body, expected) => {
     await setBody(page, body);
     await expectSelector("img", expected);
+  });
+
+  it("targets the selector on the descendant despite having likely ancestor", async () => {
+    await setBody(page, '<a><img data-qa="child"></a>');
+    await expectSelector("img", '[data-qa="child"]');
   });
 
   it("uses ancestor cues when required", async () => {

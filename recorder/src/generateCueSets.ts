@@ -2,18 +2,31 @@ import { combine } from "./combine";
 import { getCues } from "./getCues";
 import { Cue, CueSet } from "./types";
 
-function compareCueSet(a: CueSet, b: CueSet): number {
-  // sort by lowest penalty
-  const value = a.penalty - b.penalty;
-  // then by shortest value
-  if (value === 0) return a.valueLength - b.valueLength;
-  return value;
-}
-
 export function buildCueSet(cues: Cue[]): CueSet {
+  const distance = Math.max(...cues.map((a) => Math.abs(a.level)));
   const penalty = cues.reduce((a, b) => a + b.penalty, 0);
   const valueLength = cues.reduce((a, b) => a + b.value.length, 0);
-  return { cues, penalty, valueLength };
+
+  // penalize cues by distance
+  // otherwise it will try a bunch of invalid cues first
+  // and run out of time before finding a match
+  // if we penalize too much it will stop at a worse target selector
+  const distanceFactor = 1 + Math.log(distance + 1);
+
+  return {
+    cues,
+    penalty: penalty * distanceFactor,
+    valueLength,
+  };
+}
+
+export function compareCueSet(a: CueSet, b: CueSet): number {
+  // sort by penalty
+  const value = a.penalty - b.penalty;
+  if (value !== 0) return value;
+
+  // then by shortest value
+  return a.valueLength - b.valueLength;
 }
 
 export function* generateCueSets(
@@ -80,6 +93,9 @@ export function* generateRelativeCueSets(
   for (let i = 0; i < relativeCues.length; i++) {
     const relativeCue = relativeCues[i];
 
+    // yield 1 relative cue
+    yield buildCueSet([relativeCue]);
+
     // yield 1 relative and 1 target cue
     for (let j = 0; j < targetCues.length; j++) {
       yield buildCueSet([relativeCue, targetCues[j]]);
@@ -91,12 +107,21 @@ export function* generateRelativeCueSets(
     }
   }
 
-  // combine 2 relative and 1 target cues
   const twoRelativeCues = combine(relativeCues, 2);
   for (let i = 0; i < twoRelativeCues.length; i++) {
+    // yield 2 relative cues
+    yield buildCueSet(twoRelativeCues[i]);
+
+    // combine 2 relative and 1 target cues
     for (let j = 0; j < targetCues.length; j++) {
       yield buildCueSet([...twoRelativeCues[i], targetCues[j]]);
     }
+  }
+
+  // yield 3 relative cues
+  const threeRelativeCues = combine(relativeCues, 3);
+  for (let i = 0; i < threeRelativeCues.length; i++) {
+    yield buildCueSet(threeRelativeCues[i]);
   }
 }
 

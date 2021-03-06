@@ -55,7 +55,7 @@ describe("generateSortedCueSets", () => {
     ]);
   });
 
-  it("generates target and relative cue sets", async () => {
+  it("generates relative cue sets", async () => {
     const values = cueSets
       .map((set) => set.cues)
       // choose the descendant cues
@@ -64,10 +64,13 @@ describe("generateSortedCueSets", () => {
       .sort((a, b) => a.length - b.length);
 
     expect(values).toEqual([
+      "1span",
       "1span 0a",
+      '1[data-test="child"]',
       '1span 0[href="link"]',
       '1[data-test="child"] 0a',
       '1span 0a 0[href="link"]',
+      '1span 1[data-test="child"]',
       '1span 0[data-test="target"]',
       '1span 1[data-test="child"] 0a',
       '1span 0a 0[data-test="target"]',
