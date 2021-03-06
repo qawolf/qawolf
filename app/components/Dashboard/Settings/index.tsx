@@ -7,6 +7,7 @@ import { border, edgeSize } from "../../../theme/theme-new";
 import Spinner from "../../shared-new/Spinner";
 import Text from "../../shared-new/Text";
 import { StateContext } from "../../StateContext";
+import Members from "./Members";
 import Team from "./Team";
 
 const maxWidth = "640px";
@@ -28,8 +29,11 @@ export default function Settings(): JSX.Element {
           </Text>
         </Box>
       </Box>
-      <Box pad="medium" style={{ maxWidth }}>
-        <Team team={team} />
+      <Box overflow={{ vertical: "auto" }}>
+        <Box flex={false} pad="medium" style={{ maxWidth }}>
+          <Team team={team} />
+          <Members team={team} />
+        </Box>
       </Box>
     </Box>
   );

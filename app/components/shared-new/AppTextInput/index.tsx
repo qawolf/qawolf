@@ -16,7 +16,7 @@ import {
   edgeSize,
   fontFamily,
   fontWeight,
-  text,
+  textDesktop,
   transition,
 } from "../../../theme/theme-new";
 import { Size } from "../Text/config";
@@ -91,7 +91,7 @@ function TextInput(
   const style = {
     borderColor: error ? colors.danger5 : undefined,
     fontFamily: fontFamily[finalSize],
-    fontSize: text[finalSize].size,
+    fontSize: textDesktop[finalSize].size,
     paddingBottom: 0,
     paddingLeft: pad?.left || `calc(${edgeSize.xsmall} - ${borderSize.xsmall})`,
     paddingRight:

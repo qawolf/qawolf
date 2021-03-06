@@ -19,14 +19,12 @@ export default function Team({ team }: Props): JSX.Element {
   const [name, setName] = useState(team.name);
 
   const [updateTeam, { loading }] = useUpdateTeam();
-  const isNameChange = name !== team.name;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setName(e.target.value);
   };
 
   const handleSave = (): void => {
-    if (!isNameChange) return;
     if (!name) {
       setError(copy.required);
       return;
@@ -70,7 +68,7 @@ export default function Team({ team }: Props): JSX.Element {
         width="full"
       />
       <Button
-        isDisabled={!isNameChange || loading}
+        isDisabled={name === team.name || loading}
         label={copy.save}
         margin={{ top: "medium" }}
         onClick={handleSave}

@@ -50,6 +50,7 @@ export const createInvitesResolver = async (
 
   const promises = emails.map((email) => {
     return (async (): Promise<Invite> => {
+      // TODO: ignore invalid emails
       const invite = await createInvite(
         { creator_id: id, email, team_id },
         { db, logger }

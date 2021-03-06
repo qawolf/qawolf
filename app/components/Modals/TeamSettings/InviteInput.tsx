@@ -58,7 +58,7 @@ export default function InviteInput({
           <Box flex style={{ minWidth: MIN_WIDTH }}>
             <TextInput
               onChange={handleChange}
-              placeholder={copy.placeholderInvite}
+              placeholder={copy.invitePlacholder}
               plain
               style={{
                 fontSize: fontSize.medium,
