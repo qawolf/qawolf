@@ -2,7 +2,7 @@ import { Page } from "playwright";
 
 import { QAWolfWeb } from "../src";
 import { CueSet } from "../src/types";
-import { launch, LaunchResult } from "./utils";
+import { launch, LaunchResult, setBody } from "./utils";
 
 let launched: LaunchResult;
 let page: Page;
@@ -29,13 +29,10 @@ describe("generateSortedCueSets", () => {
     );
 
   beforeAll(async () => {
-    await page.setContent(`
-    <html>
-      <body>
-        <div data-test="parent"><a data-test="target" href="link"><span data-test="child"></span></a></div>
-      </body>
-    </html>
-    `);
+    await setBody(
+      page,
+      `<div data-test="parent"><a data-test="target" href="link"><span data-test="child"></span></a></div>`
+    );
 
     cueSets = await generateSortedCueSets('[data-test="target"]');
   });

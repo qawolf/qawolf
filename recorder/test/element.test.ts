@@ -2,7 +2,7 @@ import { Browser, Page } from "playwright";
 
 import { QAWolfWeb } from "../src";
 import { ElementDescriptor } from "../src/element";
-import { launch } from "./utils";
+import { launch, setBody } from "./utils";
 
 let browser: Browser;
 let page: Page;
@@ -27,13 +27,7 @@ describe("getDescriptor", () => {
     );
 
   beforeAll(() =>
-    page.setContent(`
-<html>
-<body>
-<input type="text">
-<h1 contenteditable="true"></h1>
-</body>    
-</html>`)
+    setBody(page, '<input type="text"><h1 contenteditable="true"></h1>')
   );
 
   it("gets a descriptor for an element", async () => {
@@ -64,15 +58,13 @@ describe("getInputElementValue", () => {
     );
 
   beforeAll(() =>
-    page.setContent(`
-<html>
-<body>
-  <input type="text" value="text value">
-  <h1 contenteditable="true">Edit me!</h1>
-  <input contenteditable="true" value="my value" />
-  <input id="empty">
-</body>    
-</html>`)
+    setBody(
+      page,
+      `<input type="text" value="text value">
+<h1 contenteditable="true">Edit me!</h1>
+<input contenteditable="true" value="my value" />
+<input id="empty">`
+    )
   );
 
   it("gets value from text input", async () => {
@@ -109,16 +101,15 @@ describe("getTopmostEditableElement", () => {
     );
 
   beforeAll(() =>
-    page.setContent(`
-<html>
-<body>
+    setBody(
+      page,
+      `
 <div id="1">
   <div contenteditable="true" id="2">
     <div contenteditable="true" id="3"></div>
   </div>
-</div>
-</body>    
-</html>`)
+</div>`
+    )
   );
 
   it("chooses the topmost isContentEditable ancestor", async () => {
@@ -145,9 +136,7 @@ describe("getXpath", () => {
       { selector }
     );
 
-  beforeAll(() =>
-    page.setContent(`<html><body><div><span></span></div></body></html>`)
-  );
+  beforeAll(() => setBody(page, `<div><span></span></div>`));
 
   it("gets an xpath", async () => {
     expect(await getXpath("span")).toEqual("/html/body/div/span");
@@ -166,14 +155,13 @@ describe("isVisible", () => {
     );
 
   beforeAll(() =>
-    page.setContent(`
-<html>
-<body>
-  <span id="visible">visible</span>
-  <div id="empty"></div>
-  <div id="display-none" style="display: none">not displayed</div>
-</body>    
-</html>`)
+    setBody(
+      page,
+      `
+<span id="visible">visible</span>
+<div id="empty"></div>
+<div id="display-none" style="display: none">not displayed</div>`
+    )
   );
 
   it("returns true if element is visible", async () => {

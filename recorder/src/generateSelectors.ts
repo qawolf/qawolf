@@ -1,3 +1,4 @@
+import { debug } from "./debug";
 import { getXpath } from "./element";
 import { generateSortedCueSets } from "./generateCueSets";
 import { isMatch, Rect } from "./isMatch";
@@ -32,6 +33,8 @@ export function getSelector(
       // because sometimes this is called from other frames.
       target.ownerDocument
     );
+
+    debug("selector", selector, "evaluated  to", matchedElement);
 
     if (matchedElement && isMatch(matchedElement, target, rectCache)) {
       return { penalty: cueSet.penalty, value: selector };

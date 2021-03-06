@@ -1,7 +1,7 @@
 import { Browser, Page } from "playwright";
 
 import { QAWolfWeb } from "../src";
-import { launch } from "./utils";
+import { launch, setBody } from "./utils";
 
 let browser: Browser;
 let page: Page;
@@ -11,16 +11,15 @@ beforeAll(async () => {
   browser = launched.browser;
   page = launched.page;
 
-  await page.setContent(`
-<html>
-<body>
+  await setBody(
+    page,
+    `
 <div id="parent" style="position: absolute; top: 0px; left: 0px;">
   <button id="inside">inside</button>
   <button id="outside" style="position: absolute; left: 300px">outside</button>
 </div>
-<div id="unrelated" style="position: absolute; top: 0px; left: 0px;">overlap</div>
-</body>    
-</html>`);
+<div id="unrelated" style="position: absolute; top: 0px; left: 0px;">overlap</div>`
+  );
 });
 
 afterAll(() => browser.close());

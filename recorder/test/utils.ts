@@ -75,3 +75,7 @@ export const launch = async ({
 
   return { browser, context, page };
 };
+
+export const setBody = async (page: Page, content: string): Promise<void> => {
+  await page.setContent(`<html><body>${content}</body></html`);
+};

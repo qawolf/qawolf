@@ -3,7 +3,7 @@ import { Browser, Page } from "playwright";
 import { QAWolfWeb } from "../src";
 import { buildSelectorForCues } from "../src/selectorEngine";
 import { Cue } from "../src/types";
-import { launch } from "./utils";
+import { launch, setBody } from "./utils";
 
 let browser: Browser;
 let page: Page;
@@ -21,13 +21,8 @@ describe("buildElementText", () => {
     elementText: string,
     expectedText: string | undefined
   ) => {
-    await page.setContent(`
-        <html>
-          <body>
-            <header>${elementText}</header>
-          </body>
-        </html>
-      `);
+    await setBody(page, `<header>${elementText}</header>`);
+
     const textSelector = await page.evaluate(
       ({ selector }) => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
