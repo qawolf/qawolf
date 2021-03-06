@@ -34,7 +34,14 @@ export function getSelector(
       target.ownerDocument
     );
 
-    debug("selector", selector, "evaluated  to", matchedElement);
+    debug(
+      "selector",
+      selector,
+      "evaluated  to",
+      matchedElement,
+      "cues",
+      cueSet.cues
+    );
 
     if (matchedElement && isMatch(matchedElement, target, rectCache)) {
       return { penalty: cueSet.penalty, value: selector };

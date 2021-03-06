@@ -60,25 +60,25 @@ describe("generateSortedCueSets", () => {
       .map((set) => set.cues)
       // choose the descendant cues
       .filter((s) => s.some((c) => c.level > 0))
-      .map((s) => s.map((c) => c.value).join(" "))
+      .map((s) => s.map((c) => `${c.level}${c.value}`).join(" "))
       .sort((a, b) => a.length - b.length);
 
     expect(values).toEqual([
-      "span a",
-      'span [href="link"]',
-      'span a [href="link"]',
-      '[data-test="child"] a',
-      'span [data-test="target"]',
-      'span [data-test="child"] a',
-      'span a [data-test="target"]',
-      '[data-test="child"] [href="link"]',
-      '[data-test="child"] a [href="link"]',
-      'span [data-test="child"] [href="link"]',
-      'span [data-test="target"] [href="link"]',
-      '[data-test="child"] [data-test="target"]',
-      '[data-test="child"] a [data-test="target"]',
-      'span [data-test="child"] [data-test="target"]',
-      '[data-test="child"] [data-test="target"] [href="link"]',
+      "1span 0a",
+      '1span 0[href="link"]',
+      '1[data-test="child"] 0a',
+      '1span 0a 0[href="link"]',
+      '1span 0[data-test="target"]',
+      '1span 1[data-test="child"] 0a',
+      '1span 0a 0[data-test="target"]',
+      '1[data-test="child"] 0[href="link"]',
+      '1[data-test="child"] 0a 0[href="link"]',
+      '1span 1[data-test="child"] 0[href="link"]',
+      '1[data-test="child"] 0[data-test="target"]',
+      '1span 0[data-test="target"] 0[href="link"]',
+      '1[data-test="child"] 0a 0[data-test="target"]',
+      '1span 1[data-test="child"] 0[data-test="target"]',
+      '1[data-test="child"] 0[data-test="target"] 0[href="link"]',
     ]);
   });
 });

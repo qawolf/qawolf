@@ -50,8 +50,8 @@ export function elementText(root: Element | ShadowRoot): string {
 export const buildSelectorForCues = (cues: Cue[]): string => {
   const levels = [...new Set(cues.map((cue) => cue.level))];
 
-  // sort descending
-  levels.sort((a, b) => b - a);
+  // sort ascending
+  levels.sort((a, b) => a - b);
 
   const parts = [];
 

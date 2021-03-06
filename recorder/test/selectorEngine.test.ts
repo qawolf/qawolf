@@ -75,7 +75,7 @@ describe("buildSelectorForCues", () => {
 
     const selector = buildSelectorForCues(cues);
 
-    expect(selector).toEqual('[data-qa="search"] input.search-input#search');
+    expect(selector).toEqual('input.search-input#search [data-qa="search"]');
   });
 
   it("includes text selector if applicable", () => {
@@ -90,7 +90,7 @@ describe("buildSelectorForCues", () => {
     ];
 
     const selector = buildSelectorForCues(cues);
-    expect(selector).toEqual('#container >> text="Submit"');
+    expect(selector).toEqual('text="Submit" >> #container');
   });
 
   it("orders selectors based on level", () => {
@@ -103,6 +103,6 @@ describe("buildSelectorForCues", () => {
 
     const selector = buildSelectorForCues(cues);
 
-    expect(selector).toEqual("nav .search-input #search");
+    expect(selector).toEqual("#search .search-input nav");
   });
 });
