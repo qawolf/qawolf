@@ -7,7 +7,6 @@ export const copy = {
   addSlackChannel: "Add Slack channel",
   addTrigger: "Add trigger",
   aka: "A.K.A.",
-  alertEmail: "Email",
   alertSlack: ({
     channel,
     team_name,

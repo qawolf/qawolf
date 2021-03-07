@@ -59,6 +59,8 @@ export default function Invite({ users }: Props): JSX.Element {
     });
   };
 
+  const isDisabled = loading || (!emails.length && !email.length);
+
   return (
     <Box align="center" direction="row">
       <InviteInput
@@ -69,7 +71,7 @@ export default function Invite({ users }: Props): JSX.Element {
         setEmail={setEmail}
       />
       <Button
-        isDisabled={!emails.length || loading}
+        isDisabled={isDisabled}
         label={copy.sendInvites}
         margin={{ left: "small" }}
         onClick={handleClick}

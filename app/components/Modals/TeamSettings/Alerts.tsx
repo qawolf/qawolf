@@ -64,10 +64,7 @@ export default function Alerts({ team }: Props): JSX.Element {
       <RadioButtonGroup
         name="alerts"
         onChange={handleChange}
-        options={[
-          { label: copy.alertEmail, value: emailValue },
-          ...slackOptions,
-        ]}
+        options={[{ label: copy.email, value: emailValue }, ...slackOptions]}
         value={
           team.is_email_alert_enabled ? emailValue : team.alert_integration_id
         }

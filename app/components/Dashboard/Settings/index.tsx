@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 import { useContext } from "react";
 
-import { useTeam } from "../../../hooks/queries";
+import { useIntegrations, useTeam } from "../../../hooks/queries";
 import { copy } from "../../../theme/copy";
 import { border, edgeSize } from "../../../theme/theme-new";
 import Spinner from "../../shared-new/Spinner";
@@ -19,6 +19,11 @@ export default function Settings(): JSX.Element {
   const { data } = useTeam({ id: teamId });
   const team = data?.team || null;
 
+  const { data: integrationsData } = useIntegrations({ team_id: teamId });
+  const slackIntegrations = (integrationsData?.integrations || []).filter(
+    (i) => i.type === "slack"
+  );
+
   if (!team) return <Spinner />;
 
   return (
@@ -34,7 +39,7 @@ export default function Settings(): JSX.Element {
         <Box flex={false} pad="medium" style={{ maxWidth }}>
           <Team team={team} />
           <Members team={team} />
-          <Alerts team={team} />
+          <Alerts integrations={slackIntegrations} team={team} />
         </Box>
       </Box>
     </Box>
