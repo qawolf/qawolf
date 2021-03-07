@@ -1,9 +1,12 @@
 import * as EmailValidator from "email-validator";
+import { Box } from "grommet";
 import { useContext, useState } from "react";
 
-import { useCreateInvites } from "../../../hooks/mutations";
-import { User } from "../../../lib/types";
-import { StateContext } from "../../StateContext";
+import { useCreateInvites } from "../../../../hooks/mutations";
+import { User } from "../../../../lib/types";
+import { copy } from "../../../../theme/copy";
+import Button from "../../../shared-new/AppButton";
+import { StateContext } from "../../../StateContext";
 import InviteInput from "./InviteInput";
 
 type Props = { users: User[] };
@@ -16,26 +19,24 @@ export default function Invite({ users }: Props): JSX.Element {
 
   const [createInvites, { loading }] = useCreateInvites();
 
-  const addEmail = (newEmail: string) => {
+  const addEmail = (newEmail: string): void => {
     setEmails((prev) => {
       return [...prev, newEmail];
     });
   };
 
-  const removeEmail = (removeEmail: string) => {
+  const removeEmail = (emailToRemove: string): void => {
     setEmails((prev) => {
-      const removeIndex = prev.indexOf(removeEmail);
-      const newEmails = [...prev];
+      const removeIndex = prev.indexOf(emailToRemove);
+      const updatedEmails = [...prev];
 
-      if (removeIndex >= 0) {
-        newEmails.splice(removeIndex, 1);
-      }
+      if (removeIndex > -1) updatedEmails.splice(removeIndex, 1);
 
-      return newEmails;
+      return updatedEmails;
     });
   };
 
-  const handleClick = () => {
+  const handleClick = (): void => {
     if (!teamId) return;
     // de-duplicate emails, including current input value
     const uniqueEmails = Array.from(new Set([...emails, email]));
@@ -58,15 +59,24 @@ export default function Invite({ users }: Props): JSX.Element {
     });
   };
 
+  const isDisabled = loading || (!emails.length && !email.length);
+
   return (
-    <InviteInput
-      addEmail={addEmail}
-      email={email}
-      emails={emails}
-      isLoading={loading}
-      onClick={handleClick}
-      removeEmail={removeEmail}
-      setEmail={setEmail}
-    />
+    <Box align="center" direction="row">
+      <InviteInput
+        addEmail={addEmail}
+        email={email}
+        emails={emails}
+        removeEmail={removeEmail}
+        setEmail={setEmail}
+      />
+      <Button
+        isDisabled={isDisabled}
+        label={copy.sendInvites}
+        margin={{ left: "small" }}
+        onClick={handleClick}
+        type="primary"
+      />
+    </Box>
   );
 }

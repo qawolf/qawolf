@@ -119,6 +119,11 @@ export type Team = ShortTeam & {
   renewed_at: string | null;
 };
 
+export type TeamWithUsers = Team & {
+  invites: Invite[];
+  users: User[];
+};
+
 export type ShortTest = {
   group_id: string | null;
   id: string;
@@ -194,7 +199,6 @@ export type Modal =
   | "environments"
   | "deleteGroup"
   | "deleteTests"
-  | "teamSettings"
   | "triggers";
 
 export type MutableListArgs = {
@@ -294,7 +298,6 @@ type SignUp = {
 type ModalState = {
   group?: MutableListFields;
   name: Modal | null;
-  teamId?: string;
   testIds?: string[];
   tests?: SelectedTest[];
 };

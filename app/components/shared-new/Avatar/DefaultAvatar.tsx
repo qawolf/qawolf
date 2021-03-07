@@ -9,7 +9,7 @@ export default function DefaultAvatar({ color }: Props): JSX.Element {
   return (
     <Box
       align="center"
-      background="gray3"
+      background="gray2"
       data-test="avatar-default"
       fill
       justify="center"

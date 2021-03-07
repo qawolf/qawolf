@@ -14,17 +14,11 @@ import List from "../../shared-new/icons/List";
 import Share from "../../shared-new/icons/Share";
 import DashboardLink from "./DashboardLink";
 
-type Props = { teamId: string };
-
-export default function Actions({ teamId }: Props): JSX.Element {
+export default function Actions(): JSX.Element {
   const { pathname, query } = useRouter();
 
   const handleEnvironmentsClick = (): void => {
     state.setModal({ name: "environments" });
-  };
-
-  const handleSettingsClick = (): void => {
-    state.setModal({ name: "teamSettings", teamId });
   };
 
   const handleTriggersClick = (): void => {
@@ -57,9 +51,9 @@ export default function Actions({ teamId }: Props): JSX.Element {
       />
       <DashboardLink
         IconComponent={Gear}
-        isSelected={false}
-        label={copy.settings}
-        onClick={handleSettingsClick}
+        href={routes.settings}
+        isSelected={pathname.includes(routes.settings)}
+        label={copy.teamSettings}
       />
       <DashboardLink
         IconComponent={Book}

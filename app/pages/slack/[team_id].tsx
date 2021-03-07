@@ -1,8 +1,7 @@
 import { useRouter } from "next/router";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 
 import Spinner from "../../components/shared-new/Spinner";
-import { StateContext } from "../../components/StateContext";
 import { useEnsureUser } from "../../hooks/ensureUser";
 import { useCreateSlackIntegration } from "../../hooks/mutations";
 import { routes } from "../../lib/routes";
@@ -10,8 +9,6 @@ import { edgeSize } from "../../theme/theme-new";
 
 export default function Slack(): JSX.Element {
   useEnsureUser();
-
-  const { dashboardUri } = useContext(StateContext);
 
   const { asPath, query, replace } = useRouter();
   const { code, state, team_id } = query as { [param: string]: string };
@@ -21,8 +18,7 @@ export default function Slack(): JSX.Element {
       redirect_uri: `${routes.slack}/${team_id}`,
       slack_code: code || "",
       team_id: team_id || "",
-    },
-    { dashboardUri }
+    }
   );
 
   // should not be on this page if no code or state
@@ -33,7 +29,7 @@ export default function Slack(): JSX.Element {
     const hasState = asPath.includes("state=");
 
     if (error || !hasCode || !hasState) {
-      replace(routes.tests);
+      replace(routes.settings);
     }
   }, [asPath, error, replace]);
 

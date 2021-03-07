@@ -1,3 +1,5 @@
+import * as EmailValidator from "email-validator";
+
 import {
   createInvite,
   findInvitesForTeam,
@@ -48,7 +50,9 @@ export const createInvitesResolver = async (
   const { id } = ensureUser({ logger, user });
   ensureTeamAccess({ logger, team_id, teams });
 
-  const promises = emails.map((email) => {
+  const validEmails = emails.filter((e) => EmailValidator.validate(e));
+
+  const promises = validEmails.map((email) => {
     return (async (): Promise<Invite> => {
       const invite = await createInvite(
         { creator_id: id, email, team_id },

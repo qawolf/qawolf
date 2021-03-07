@@ -29,13 +29,12 @@ import {
   EnvironmentVariable,
   Group,
   Integration,
-  Invite,
   Run,
   Runner,
   ShortTest,
   Suite,
   SuiteSummary,
-  Team,
+  TeamWithUsers,
   Test,
   TestHistoryRun,
   TestSummary,
@@ -110,10 +109,7 @@ type SuitesVariables = {
 };
 
 type TeamData = {
-  team: Team & {
-    invites: Invite[];
-    users: User[];
-  };
+  team: TeamWithUsers;
 };
 
 type TeamVariables = {

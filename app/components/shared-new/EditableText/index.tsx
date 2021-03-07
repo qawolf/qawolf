@@ -7,7 +7,7 @@ import {
   colors,
   edgeSize,
   overflowStyle,
-  transitionDuration,
+  transition,
 } from "../../../theme/theme-new";
 import Edit from "../icons/Edit";
 import Text from "../Text";
@@ -23,7 +23,7 @@ type Props = {
 };
 
 const StyledBox = styled(Box)`
-  transition: background ${transitionDuration}, border-color: ${transitionDuration};
+  transition: ${transition};
 
   &:hover {
     background: ${colors.gray2};
