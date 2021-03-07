@@ -1,6 +1,6 @@
 import { Box } from "grommet";
-import { routes } from "../../../../lib/routes";
 
+import { routes } from "../../../../lib/routes";
 import { copy } from "../../../../theme/copy";
 import { border, overflowStyle } from "../../../../theme/theme-new";
 import Avatar from "../../../shared-new/Avatar";
