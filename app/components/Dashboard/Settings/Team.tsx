@@ -58,22 +58,24 @@ export default function Team({ team }: Props): JSX.Element {
       <Text color="gray9" margin={{ bottom: "xxsmall" }} size="componentBold">
         {copy.teamName}
       </Text>
-      <TextInput
-        error={error}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        placeholder={copy.teamNamePlaceholder}
-        ref={ref}
-        value={name}
-        width="full"
-      />
-      <Button
-        isDisabled={name === team.name || loading}
-        label={copy.save}
-        margin={{ top: "medium" }}
-        onClick={handleSave}
-        type="primary"
-      />
+      <Box align="center" direction="row" width="full">
+        <TextInput
+          error={error}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          placeholder={copy.teamNamePlaceholder}
+          ref={ref}
+          value={name}
+          width="full"
+        />
+        <Button
+          isDisabled={name === team.name || loading}
+          label={copy.save}
+          margin={{ left: "small" }}
+          onClick={handleSave}
+          type="primary"
+        />
+      </Box>
     </Box>
   );
 }
