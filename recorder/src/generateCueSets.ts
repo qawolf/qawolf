@@ -1,7 +1,7 @@
 import { combine } from "./combine";
 import { getDescriptor } from "./element";
 import { getCues } from "./getCues";
-import { allowPositionMatch } from "./isMatch";
+import { allowPositionMatch } from "./isElementMatch";
 import { Cue, CueSet } from "./types";
 
 type GenerateRelativeCueSets = {

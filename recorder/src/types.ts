@@ -49,6 +49,13 @@ export type PossibleAction = {
   value: string | null;
 };
 
+export type Rect = {
+  height: number;
+  width: number;
+  x: number;
+  y: number;
+};
+
 export type Selector = {
   elementText?: string;
   penalty: number;

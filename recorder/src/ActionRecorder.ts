@@ -2,14 +2,21 @@ import { debug } from "./debug";
 import { getInputElementValue } from "./element";
 import { getSelector } from "./generateSelectors";
 import { resolveAction } from "./resolveAction";
-import { Action, Callback, ElementAction, PossibleAction } from "./types";
+import {
+  Action,
+  Callback,
+  ElementAction,
+  PossibleAction,
+  Selector,
+} from "./types";
 
 type ActionCallback = Callback<ElementAction>;
 
 export class ActionRecorder {
-  private _lastReceivedAction: PossibleAction;
-  private _lastRecordedAction: ElementAction;
-  private _onDispose: Callback[] = [];
+  _lastReceivedAction: PossibleAction;
+  _lastRecordedAction: ElementAction;
+  _onDispose: Callback[] = [];
+  _selectorCache = new Map<HTMLElement, Selector>();
 
   constructor() {
     debug("ActionRecorder: created");
@@ -21,7 +28,7 @@ export class ActionRecorder {
     debug("ActionRecorder: stopped");
   }
 
-  private listen(
+  listen(
     eventName: "click" | "input" | "change" | "keydown",
     handler: (ev: MouseEvent | KeyboardEvent | Event) => any
   ): void {
@@ -39,7 +46,7 @@ export class ActionRecorder {
     );
   }
 
-  private recordAction(
+  recordAction(
     action: Action,
     event: MouseEvent | KeyboardEvent | Event,
     value?: string
@@ -72,7 +79,11 @@ export class ActionRecorder {
     // so we can skip building a selector and emitting it.
     if (!action) return;
 
-    const { value: selector } = getSelector(event.target as HTMLElement);
+    const { value: selector } = getSelector(
+      event.target as HTMLElement,
+      1000,
+      this._selectorCache
+    );
 
     const elementAction: ElementAction = {
       action,

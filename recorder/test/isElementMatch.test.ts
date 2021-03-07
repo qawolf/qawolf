@@ -31,8 +31,8 @@ beforeAll(async () => {
 
 afterAll(() => browser.close());
 
-describe("isMatch", () => {
-  const isMatch = async (
+describe("isElementMatch", () => {
+  const isElementMatch = async (
     elementSelector: string,
     targetSelector: string
   ): Promise<boolean> => {
@@ -41,33 +41,35 @@ describe("isMatch", () => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
         const element = document.querySelector(elementSelector) as HTMLElement;
         const target = document.querySelector(targetSelector) as HTMLElement;
-        return qawolf.isMatch(element, target, new Map());
+        return qawolf.isElementMatch(element, target, new Map());
       },
       { elementSelector, targetSelector }
     );
   };
 
   it("returns true if element matches target", async () => {
-    expect(await isMatch("#parent", "#parent")).toBe(true);
+    expect(await isElementMatch("#parent", "#parent")).toBe(true);
   });
 
   it("returns true if the middle of the element is inside target", async () => {
-    expect(await isMatch("#inside", "#parent")).toBe(true);
+    expect(await isElementMatch("#inside", "#parent")).toBe(true);
   });
 
   it("returns false if the middle of the element is outside target", async () => {
-    expect(await isMatch("#outside", "#parent")).toBe(false);
+    expect(await isElementMatch("#outside", "#parent")).toBe(false);
   });
 
   it("return false if middle of the element is inside but not related", async () => {
-    expect(await isMatch("#unrelated", "#parent")).toBe(false);
+    expect(await isElementMatch("#unrelated", "#parent")).toBe(false);
   });
 
   it("return false if element middle overlaps but target requires exact match", async () => {
-    expect(await isMatch("#exact-match-overlap", "input[type=date]")).toBe(
+    expect(
+      await isElementMatch("#exact-match-overlap", "input[type=date]")
+    ).toBe(false);
+
+    expect(await isElementMatch("#exact-match-overlap", "textarea")).toBe(
       false
     );
-
-    expect(await isMatch("#exact-match-overlap", "textarea")).toBe(false);
   });
 });

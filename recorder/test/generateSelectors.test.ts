@@ -2,6 +2,7 @@ import { Page } from "playwright";
 
 import { launch, LaunchResult, setBody } from "./utils";
 import { QAWolfWeb } from "../src";
+import { Selector } from "../src/types";
 
 let launched: LaunchResult;
 let page: Page;
@@ -74,6 +75,30 @@ describe("getSelector", () => {
   it("escapes special characters", async () => {
     await setBody(page, `<div id="special:id"></div>`);
     await expectSelector("#special\\:id");
+  });
+
+  it("short circuits to cached selector when it matches", async () => {
+    // for valid selectors
+    await setBody(page, `<div id="parent"><input class="cached"></div>`);
+
+    const result = await page.evaluate(() => {
+      const element = document.querySelector("input");
+      const cache = new Map<HTMLElement, Selector>();
+      cache.set(element, { penalty: 10, value: ".cached" });
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      return qawolf.getSelector(element, 0, cache)?.value;
+    });
+    expect(result).toEqual(".cached");
+
+    // not for non-matching selectors
+    const result2 = await page.evaluate(() => {
+      const element = document.querySelector("input");
+      const cache = new Map<HTMLElement, Selector>();
+      cache.set(element, { penalty: 10, value: "div" });
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      return qawolf.getSelector(element, 0, cache)?.value;
+    });
+    expect(result2).toEqual("input");
   });
 
   it("short circuits to html and body", async () => {

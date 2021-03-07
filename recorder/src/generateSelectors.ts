@@ -1,9 +1,7 @@
-import { debug } from "./debug";
 import { getXpath } from "./element";
 import { generateSortedCueSets } from "./generateCueSets";
-import { isMatch, Rect } from "./isMatch";
-import { buildSelectorForCues, evaluatorQuerySelector } from "./selectorEngine";
-import { Selector } from "./types";
+import { buildSelectorForCues, isSelectorMatch } from "./selectorEngine";
+import { Rect, Selector } from "./types";
 
 function getLikelyTarget(target: HTMLElement): HTMLElement {
   return (
@@ -15,37 +13,35 @@ function getLikelyTarget(target: HTMLElement): HTMLElement {
 }
 
 export function getSelector(
-  element: HTMLElement,
-  timeout = 1000
+  target: HTMLElement,
+  timeout = 1000,
+  selectorCache?: Map<HTMLElement, Selector>
 ): Selector | null {
   const start = Date.now();
 
   const rectCache = new Map<HTMLElement, Rect>();
 
-  const target = getLikelyTarget(element);
-  const cueSets = generateSortedCueSets(target);
+  if (selectorCache && selectorCache.has(target)) {
+    const selectorFromCache = selectorCache.get(target);
+    const isMatch = isSelectorMatch(selectorFromCache.value, target, rectCache);
+    if (isMatch) return selectorFromCache;
+    selectorCache.delete(target);
+  }
+
+  const likelyTarget = getLikelyTarget(target);
+  const cueSets = generateSortedCueSets(likelyTarget);
 
   for (const cueSet of cueSets) {
     const selector = buildSelectorForCues(cueSet.cues);
 
-    const matchedElement = evaluatorQuerySelector(
-      selector,
-      // We must pass `target.ownerDocument` rather than `document`
-      // because sometimes this is called from other frames.
-      target.ownerDocument
-    );
-
-    debug(
-      "selector",
-      selector,
-      "evaluated  to",
-      matchedElement,
-      "cues",
-      cueSet.cues
-    );
-
-    if (matchedElement && isMatch(matchedElement, target, rectCache)) {
-      return { penalty: cueSet.penalty, value: selector };
+    const isMatch = isSelectorMatch(selector, likelyTarget, rectCache);
+    if (isMatch) {
+      const result = { penalty: cueSet.penalty, value: selector };
+      if (selectorCache) {
+        selectorCache.set(target, result);
+        selectorCache.set(likelyTarget, result);
+      }
+      return result;
     }
 
     if (timeout > 0 && Date.now() - start > timeout) break;

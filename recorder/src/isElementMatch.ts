@@ -1,11 +1,5 @@
 import { ElementDescriptor, getDescriptor } from "./element";
-
-export type Rect = {
-  height: number;
-  width: number;
-  x: number;
-  y: number;
-};
+import { Rect } from "./types";
 
 const MATCH_POSITION_INPUT_TYPES = new Set([
   "button",
@@ -24,7 +18,7 @@ export function allowPositionMatch(target: ElementDescriptor): boolean {
   );
 }
 
-export function isMatch(
+export function isElementMatch(
   element: HTMLElement,
   target: HTMLElement,
   cache: Map<HTMLElement, Rect>

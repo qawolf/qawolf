@@ -1,4 +1,5 @@
-import { Cue, Evaluator } from "./types";
+import { isElementMatch } from "./isElementMatch";
+import { Cue, Evaluator, Rect } from "./types";
 
 let evaluator: Evaluator;
 try {
@@ -94,4 +95,19 @@ export const evaluatorQuerySelector = (
   root?: Node
 ): HTMLElement | null => {
   return evaluator.querySelector(selector, root || document);
+};
+
+export const isSelectorMatch = (
+  selector: string,
+  target: HTMLElement,
+  rectCache: Map<HTMLElement, Rect>
+): boolean => {
+  const matchedElement = evaluatorQuerySelector(
+    selector,
+    // We must pass `target.ownerDocument` rather than `document`
+    // because sometimes this is called from other frames.
+    target.ownerDocument
+  );
+
+  return !!matchedElement && isElementMatch(matchedElement, target, rectCache);
 };
