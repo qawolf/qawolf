@@ -1,10 +1,17 @@
+import * as EmailValidator from "email-validator";
+import { Box } from "grommet";
 import { useContext, useState } from "react";
 
 import { useCreateInvites } from "../../../../hooks/mutations";
+import { User } from "../../../../lib/types";
+import { copy } from "../../../../theme/copy";
+import Button from "../../../shared-new/AppButton";
 import { StateContext } from "../../../StateContext";
 import InviteInput from "./InviteInput";
 
-export default function Invite(): JSX.Element {
+type Props = { users: User[] };
+
+export default function Invite({ users }: Props): JSX.Element {
   const { teamId } = useContext(StateContext);
 
   const [emails, setEmails] = useState<string[]>([]);
@@ -29,13 +36,45 @@ export default function Invite(): JSX.Element {
     });
   };
 
+  const handleClick = (): void => {
+    if (!teamId) return;
+    // de-duplicate emails, including current input value
+    const uniqueEmails = Array.from(new Set([...emails, email]));
+    // filter out invalid emails and emails of existing team members
+    const userEmails = new Set(users.map((user) => user.email));
+    const filteredEmails = uniqueEmails.filter((uniqueEmail) => {
+      return (
+        EmailValidator.validate(uniqueEmail) && !userEmails.has(uniqueEmail)
+      );
+    });
+
+    if (!filteredEmails.length) return;
+
+    createInvites({
+      variables: { emails: filteredEmails, team_id: teamId },
+    }).then((response) => {
+      if (!(response || {}).data) return;
+      setEmails([]);
+      setEmail("");
+    });
+  };
+
   return (
-    <InviteInput
-      addEmail={addEmail}
-      email={email}
-      emails={emails}
-      removeEmail={removeEmail}
-      setEmail={setEmail}
-    />
+    <Box align="center" direction="row">
+      <InviteInput
+        addEmail={addEmail}
+        email={email}
+        emails={emails}
+        removeEmail={removeEmail}
+        setEmail={setEmail}
+      />
+      <Button
+        isDisabled={loading}
+        label={copy.sendInvites}
+        margin={{ left: "small" }}
+        onClick={handleClick}
+        type="primary"
+      />
+    </Box>
   );
 }

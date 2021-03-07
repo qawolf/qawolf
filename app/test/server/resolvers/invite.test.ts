@@ -62,7 +62,10 @@ describe("createInvitesResolver", () => {
 
     await createInvitesResolver(
       {},
-      { emails: ["aspen@qawolf.com", "pumpkin@qawolf.com"], team_id: "teamId" },
+      {
+        emails: ["aspen@qawolf.com", "pumpkin@qawolf.com", "invalid"],
+        team_id: "teamId",
+      },
       context
     );
 

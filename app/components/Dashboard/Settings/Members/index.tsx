@@ -16,7 +16,7 @@ export default function Members({ team }: Props): JSX.Element {
       <Text color="gray9" margin={{ bottom: "xxsmall" }} size="componentBold">
         {copy.invite}
       </Text>
-      <Invite />
+      <Invite users={team.users} />
     </Box>
   );
 }

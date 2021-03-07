@@ -113,10 +113,12 @@ export type Team = ShortTeam & {
   helpers: string;
   helpers_version: number;
   inbox: string;
+  invites: Invite[];
   is_email_alert_enabled: boolean;
   is_enabled: boolean;
   next_trigger_id: string;
   renewed_at: string | null;
+  users: User[];
 };
 
 export type ShortTest = {

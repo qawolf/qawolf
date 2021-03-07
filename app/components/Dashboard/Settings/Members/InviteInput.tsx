@@ -1,3 +1,4 @@
+import * as EmailValidator from "email-validator";
 import { Box } from "grommet";
 import { KeyboardEvent } from "react";
 import styled from "styled-components";
@@ -43,7 +44,12 @@ export default function InviteInput({
 }: Props): JSX.Element {
   const emailsHtml = emails.map((email, i) => {
     return (
-      <Email email={email} key={`${email}-${i}`} removeEmail={removeEmail} />
+      <Email
+        email={email}
+        isValid={EmailValidator.validate(email)}
+        key={`${email}-${i}`}
+        removeEmail={removeEmail}
+      />
     );
   });
 
@@ -68,6 +74,7 @@ export default function InviteInput({
       align="center"
       border={border}
       direction="row"
+      fill="horizontal"
       pad={{ horizontal: padHorizontal }}
       round={borderSize.small}
       wrap
