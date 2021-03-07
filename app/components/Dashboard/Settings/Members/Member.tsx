@@ -39,7 +39,7 @@ export default function Member({
         </Text>
       </Box>
       {!!isPending && (
-        <Text color="gray7" size="componentSmall">
+        <Text color="gray7" size="component">
           {copy.pending}
         </Text>
       )}
