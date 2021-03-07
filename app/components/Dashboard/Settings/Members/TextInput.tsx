@@ -20,7 +20,7 @@ type Props = {
 
 const StyledGrommetTextInput = styled(GrommetTextInput)`
   border-radius: ${borderSize.small};
-  height: ${edgeSize.large};
+  height: calc(${edgeSize.large} - 2 * ${borderSize.xsmall});
   font-family: ${fontFamily.component};
   font-size: ${textDesktop.component.size};
   font-weight: ${fontWeight.normal};

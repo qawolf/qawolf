@@ -42,7 +42,7 @@ export default function AddSlack(): JSX.Element {
       iconColor="plain"
       justify="center"
       margin={{ top: "medium" }}
-      message={copy.slackIntegration}
+      message={copy.addSlackChannel}
       onClick={handleClick}
     />
   );

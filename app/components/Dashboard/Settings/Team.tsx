@@ -3,14 +3,14 @@ import { KeyboardEvent, useRef } from "react";
 import { ChangeEvent, useState } from "react";
 
 import { useUpdateTeam } from "../../../hooks/mutations";
-import { Team as TeamType } from "../../../lib/types";
+import { TeamWithUsers } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import { border } from "../../../theme/theme-new";
 import Button from "../../shared-new/AppButton";
 import TextInput from "../../shared-new/AppTextInput";
 import Text from "../../shared-new/Text";
 
-type Props = { team: TeamType };
+type Props = { team: TeamWithUsers };
 
 export default function Team({ team }: Props): JSX.Element {
   const ref = useRef<HTMLInputElement>(null);

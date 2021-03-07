@@ -34,7 +34,7 @@ import {
   ShortTest,
   Suite,
   SuiteSummary,
-  Team,
+  TeamWithUsers,
   Test,
   TestHistoryRun,
   TestSummary,
@@ -109,7 +109,7 @@ type SuitesVariables = {
 };
 
 type TeamData = {
-  team: Team;
+  team: TeamWithUsers;
 };
 
 type TeamVariables = {

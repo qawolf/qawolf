@@ -1,13 +1,13 @@
 import { Box } from "grommet";
 
-import { Team as TeamType } from "../../../../lib/types";
+import { TeamWithUsers } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import Divider from "../../../shared-new/Divider";
 import Text from "../../../shared-new/Text";
 import Invite from "./Invite";
 import Member from "./Member";
 
-type Props = { team: TeamType };
+type Props = { team: TeamWithUsers };
 
 const maxHeight = "320px";
 

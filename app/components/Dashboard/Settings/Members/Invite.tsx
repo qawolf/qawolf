@@ -69,7 +69,7 @@ export default function Invite({ users }: Props): JSX.Element {
         setEmail={setEmail}
       />
       <Button
-        isDisabled={loading}
+        isDisabled={!emails.length || loading}
         label={copy.sendInvites}
         margin={{ left: "small" }}
         onClick={handleClick}

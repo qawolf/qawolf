@@ -32,6 +32,7 @@ export type Props = {
   hasError?: boolean;
   href?: string;
   hoverType?: Type;
+  iconColor?: string;
   iconPosition?: Side;
   isDisabled?: boolean;
   isSelected?: boolean;
@@ -50,6 +51,7 @@ function AppButton({
   className,
   color,
   href,
+  iconColor,
   iconPosition,
   isDisabled,
   justify,
@@ -83,7 +85,7 @@ function AppButton({
       >
         {!!IconComponent && (
           <IconComponent
-            color={color || textColor[type]}
+            color={iconColor || color || textColor[type]}
             size={edgeSize.small}
           />
         )}

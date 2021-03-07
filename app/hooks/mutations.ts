@@ -459,8 +459,7 @@ export const useCreateSignInUrl = (
 };
 
 export const useCreateSlackIntegration = (
-  variables: CreateSlackIntegrationVariables,
-  { dashboardUri }: { dashboardUri: string }
+  variables: CreateSlackIntegrationVariables
 ): MutationTuple<
   CreateSlackIntegrationData,
   CreateSlackIntegrationVariables
@@ -474,7 +473,7 @@ export const useCreateSlackIntegration = (
     awaitRefetchQueries: true,
     onCompleted: (response) => {
       if (!response) return;
-      replace(dashboardUri || routes.tests);
+      replace(routes.settings);
     },
     onError,
     refetchQueries: ["integrations", "team"],

@@ -7,6 +7,7 @@ import { border, edgeSize } from "../../../theme/theme-new";
 import Spinner from "../../shared-new/Spinner";
 import Text from "../../shared-new/Text";
 import { StateContext } from "../../StateContext";
+import Alerts from "./Alerts";
 import Members from "./Members";
 import Team from "./Team";
 
@@ -33,6 +34,7 @@ export default function Settings(): JSX.Element {
         <Box flex={false} pad="medium" style={{ maxWidth }}>
           <Team team={team} />
           <Members team={team} />
+          <Alerts team={team} />
         </Box>
       </Box>
     </Box>
