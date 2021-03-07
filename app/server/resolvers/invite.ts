@@ -50,6 +50,7 @@ export const createInvitesResolver = async (
   const { id } = ensureUser({ logger, user });
   ensureTeamAccess({ logger, team_id, teams });
 
+  // ignore invalid emails
   const validEmails = emails.filter((e) => EmailValidator.validate(e));
 
   const promises = validEmails.map((email) => {
