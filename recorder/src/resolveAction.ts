@@ -118,7 +118,7 @@ export const shouldTrackFill = (target: ElementDescriptor): boolean => {
   // Some inputs emit "change" with a value but really can't or shouldn't be
   // "filled in" with that value. Checkbox and radio should work without filling
   // because there will be click events. File isn't supported.
-  if (["checkbox", "radio", "file"].includes(target.tag)) return false;
+  if (["checkbox", "radio", "file"].includes(target.inputType)) return false;
 
   // Track value changes for all input and textarea
   if (["input", "textarea"].includes(target.tag)) return true;

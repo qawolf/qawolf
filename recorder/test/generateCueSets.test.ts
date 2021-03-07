@@ -45,9 +45,6 @@ describe("generateSortedCueSets", () => {
       .sort((a, b) => a.length - b.length);
 
     expect(values).toEqual([
-      "a",
-      '[href="link"]',
-      'a [href="link"]',
       '[data-test="target"]',
       'a [data-test="target"]',
       '[data-test="target"] [href="link"]',
@@ -64,12 +61,8 @@ describe("generateSortedCueSets", () => {
       .sort((a, b) => a.length - b.length);
 
     expect(values).toEqual([
-      "1span",
-      "1span 0a",
       '1[data-test="child"]',
-      '1span 0[href="link"]',
       '1[data-test="child"] 0a',
-      '1span 0a 0[href="link"]',
       '1span 1[data-test="child"]',
       '1span 0[data-test="target"]',
       '1span 1[data-test="child"] 0a',
@@ -80,6 +73,7 @@ describe("generateSortedCueSets", () => {
       '1[data-test="child"] 0[data-test="target"]',
       '1span 0[data-test="target"] 0[href="link"]',
       '1[data-test="child"] 0a 0[data-test="target"]',
+      '1span 0a 0[href="link"] 0[data-test="target"]',
       '1span 1[data-test="child"] 0[data-test="target"]',
       '1[data-test="child"] 0[data-test="target"] 0[href="link"]',
     ]);

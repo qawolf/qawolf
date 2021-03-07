@@ -144,10 +144,6 @@ export function* generateRelativeCueSets({
   }
 }
 
-function filterTestAttributeCues(cues: Cue[]): Cue[] {
-  return cues.filter((c) => c.penalty === 0);
-}
-
 export function* generateSortedCueSets(
   target: HTMLElement,
   // 25 ms to generate 2000 cues on my machine
@@ -159,19 +155,33 @@ export function* generateSortedCueSets(
   let testAttributeCue: Cue | null = null;
 
   function prepareBatch() {
-    let sorted = batch.sort(compareCueSet);
+    let prepared = batch;
 
     // include the test attribute
     if (testAttributeCue) {
-      sorted.forEach((s) => {
-        if (!s.cues.some((c) => c.penalty === 0)) {
-          s.cues.push(testAttributeCue);
+      // store unique cue sets
+      const uniqueSets = new Map<string, CueSet>();
+
+      batch.forEach((cueSet) => {
+        if (!cueSet.cues.some((c) => c.penalty === 0)) {
+          cueSet.cues.push(testAttributeCue);
         }
+
+        // de-dupe by concatenating sorted cues
+        const key = cueSet.cues
+          .map((c) => c.value)
+          .sort()
+          .join(" ");
+        uniqueSets.set(key, cueSet);
       });
+
+      prepared = [...uniqueSets.values()];
     }
 
+    prepared = prepared.sort(compareCueSet);
     batch = [];
-    return sorted;
+
+    return prepared;
   }
 
   // batch then sort cues by penalty

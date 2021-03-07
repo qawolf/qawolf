@@ -12,7 +12,6 @@ const descriptor = (
   inputType?: string
 ): ElementDescriptor => ({
   isContentEditable,
-  isInput: tag === "input",
   inputType,
   tag,
 });

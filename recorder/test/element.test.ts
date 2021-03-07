@@ -34,13 +34,11 @@ describe("getDescriptor", () => {
     expect(await getDescriptor("input")).toEqual({
       inputType: "text",
       isContentEditable: false,
-      isInput: true,
       tag: "input",
     });
 
     expect(await getDescriptor("h1")).toEqual({
       isContentEditable: true,
-      isInput: false,
       tag: "h1",
     });
   });
