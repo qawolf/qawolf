@@ -34,7 +34,7 @@ const KEYS_TO_TRACK_FOR_TEXTAREA = new Set([
  * These are key presses that we want to include when playing back as long as they
  * aren't being pressed as part of editing some input text.
  */
-const KEYS_TO_TRACK_FOR_NON_INPUT = new Set([
+export const KEYS_TO_TRACK_FOR_NON_INPUT = new Set([
   "ArrowDown",
   "ArrowLeft",
   "ArrowRight",
