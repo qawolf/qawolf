@@ -28,7 +28,7 @@ export const buildEventCode = (
   const args: string[] = [];
 
   const selector = (event as ElementEvent).selector;
-  if (selector !== undefined) {
+  if (selector !== undefined && event.action !== "keyboard.press") {
     args.push(formatSelector(selector));
   }
 

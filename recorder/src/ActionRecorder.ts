@@ -73,11 +73,15 @@ export class ActionRecorder {
     // so we can skip building a selector and emitting it.
     if (!action) return;
 
-    const selector = getSelector(
-      event.target as HTMLElement,
-      1000,
-      this._selectorCache
-    );
+    let selector = "";
+
+    if (action !== "keyboard.press") {
+      selector = getSelector(
+        event.target as HTMLElement,
+        1000,
+        this._selectorCache
+      );
+    }
 
     const elementAction: ElementAction = {
       action,

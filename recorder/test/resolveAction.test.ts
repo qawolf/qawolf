@@ -2,7 +2,7 @@ import { Page } from "playwright";
 
 import { QAWolfWeb } from "../src";
 import { ElementDescriptor } from "../src/element";
-import { shouldTrackFill, shouldTrackKeyPress } from "../src/resolveAction";
+import { resolvePress, shouldTrackFill } from "../src/resolveAction";
 import { Action, PossibleAction } from "../src/types";
 import { launch, LaunchResult } from "./utils";
 
@@ -87,7 +87,7 @@ describe("resolveAction", () => {
 
       const mockAction: PossibleAction = {
         action: "click",
-        isTrusted: false,
+        isTrusted: true,
         target,
         time: Date.now(),
         value: null,
@@ -109,17 +109,38 @@ describe("resolveAction", () => {
       ) as HTMLElement;
 
       const mockAction: PossibleAction = {
-        action: "click",
-        isTrusted: false,
+        action: "press",
+        isTrusted: true,
         target,
         time: Date.now(),
-        value: null,
+        value: "Enter",
       };
 
       return qawolf.resolveAction(mockAction, undefined);
     });
 
     expect(result).toBe(undefined);
+  });
+
+  it("returns keyboard.press for actions on invisible targets", async () => {
+    const page = await getFreshPage();
+
+    const result = await page.evaluate(() => {
+      const qawolf: QAWolfWeb = (window as any).qawolf;
+      const target = document.querySelector("html") as HTMLElement;
+
+      const mockAction: PossibleAction = {
+        action: "press",
+        isTrusted: true,
+        target,
+        time: Date.now(),
+        value: "Escape",
+      };
+
+      return qawolf.resolveAction(mockAction, undefined);
+    });
+
+    expect(result).toBe("keyboard.press");
   });
 
   it("returns 'selectInput' for 'fill' action on a select", async () => {
@@ -165,7 +186,7 @@ describe("resolveAction", () => {
   });
 });
 
-describe("should track helpers", () => {
+describe("fill and press helpers", () => {
   const descriptor = (
     tag: string,
     isContentEditable = false,
@@ -174,6 +195,38 @@ describe("should track helpers", () => {
     isContentEditable,
     inputType,
     tag,
+  });
+
+  describe("resolvePress", () => {
+    it("pressing Arrow/Escape/Delete/Tab for non-inputs creates a keyboard.press step", () => {
+      ["ArrowLeft", "Delete", "Enter", "Escape", "Tab"].forEach((key) => {
+        expect(resolvePress(key, descriptor("html"))).toBe("keyboard.press");
+      });
+    });
+
+    it("pressing Arrow keys in an input or text area does not create a press step", () => {
+      ["input", "textarea"].forEach((tag) => {
+        expect(resolvePress("ArrowLeft", descriptor(tag))).toBe(null);
+      });
+    });
+
+    it("pressing Enter/Escape/Tab in an input creates a press step", () => {
+      ["Enter", "Escape", "Tab"].forEach((key) => {
+        expect(resolvePress(key, descriptor("input"))).toBe("press");
+      });
+    });
+
+    it("pressing Escape/Tab in a textarea creates a press step", () => {
+      ["Escape", "Tab"].forEach((key) => {
+        expect(resolvePress(key, descriptor("input"))).toBe("press");
+      });
+    });
+
+    it("pressing Escape/Tab in a contenteditable creates a press step", () => {
+      ["Escape", "Tab"].forEach((key) => {
+        expect(resolvePress(key, descriptor("div", true))).toBe("press");
+      });
+    });
   });
 
   describe("shouldTrackFill", () => {
@@ -195,38 +248,6 @@ describe("should track helpers", () => {
 
     it("typing into a non-content editable, non-input does not create a fill step", () => {
       expect(shouldTrackFill(descriptor("div"))).toBe(false);
-    });
-  });
-
-  describe("shouldTrackKeyPress", () => {
-    it("pressing Arrow/Escape/Delete/Tab for non-inputs creates a press step", () => {
-      ["ArrowLeft", "Delete", "Enter", "Escape", "Tab"].forEach((key) => {
-        expect(shouldTrackKeyPress(key, descriptor("html"))).toBe(true);
-      });
-    });
-
-    it("pressing Arrow keys in an input or text area does not create a press step", () => {
-      ["input", "textarea"].forEach((tag) => {
-        expect(shouldTrackKeyPress("ArrowLeft", descriptor(tag))).toBe(false);
-      });
-    });
-
-    it("pressing Enter/Escape/Tab in an input creates a press step", () => {
-      ["Enter", "Escape", "Tab"].forEach((key) => {
-        expect(shouldTrackKeyPress(key, descriptor("input"))).toBe(true);
-      });
-    });
-
-    it("pressing Escape/Tab in a textarea creates a press step", () => {
-      ["Escape", "Tab"].forEach((key) => {
-        expect(shouldTrackKeyPress(key, descriptor("input"))).toBe(true);
-      });
-    });
-
-    it("pressing Escape/Tab in a contenteditable creates a press step", () => {
-      ["Escape", "Tab"].forEach((key) => {
-        expect(shouldTrackKeyPress(key, descriptor("div", true))).toBe(true);
-      });
     });
   });
 });

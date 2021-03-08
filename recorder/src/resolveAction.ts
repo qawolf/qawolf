@@ -78,14 +78,31 @@ export const resolveAction = (
     possibleAction.target as HTMLElement
   );
 
+  let action = possibleAction.action as Action;
+
+  const targetDescriptor = getDescriptor(target);
+
+  if (action === "press") {
+    const pressAction = resolvePress(possibleAction.value, targetDescriptor);
+
+    if (!pressAction) {
+      debug(
+        "resolveAction: ignoring press action for an unimportant key or target"
+      );
+      return;
+    }
+
+    action = pressAction;
+
+    // skip the target visibility check for keyboard.press which has no target
+    if (action === "keyboard.press") return action;
+  }
+
   // Never emit actions on invisible targets
   if (!isVisible(target, window.getComputedStyle(target))) {
     debug("resolveAction: ignoring action on invisible target");
     return;
   }
-
-  const targetDescriptor = getDescriptor(target);
-  let action = possibleAction.action as Action;
 
   if (targetDescriptor.tag === "select") {
     // On selects, ignore everything except fill actions (input / change events)
@@ -96,22 +113,36 @@ export const resolveAction = (
     action = "selectOption";
   }
 
-  if (
-    action === "press" &&
-    !shouldTrackKeyPress(possibleAction.value, targetDescriptor)
-  ) {
-    debug(
-      "resolveAction: ignoring press action for an unimportant key or target"
-    );
-    return;
-  }
-
   if (action === "fill" && !shouldTrackFill(targetDescriptor)) {
     debug("resolveAction: ignoring fill action for an unimportant target");
     return;
   }
 
   return action;
+};
+
+/**
+ * @summary Determines whether a key press event should be included as part of the
+ *   test code being built. Some keys are always included and some are included only
+ *   when we're not editing text, i.e. the target isn't an input of some sort.
+ */
+export const resolvePress = (
+  key: string,
+  target: ElementDescriptor
+): "keyboard.press" | "press" | null => {
+  if (target.tag === "input") {
+    return KEYS_TO_TRACK_FOR_INPUT.has(key) ? "press" : null;
+  }
+
+  if (target.tag === "textarea") {
+    return KEYS_TO_TRACK_FOR_TEXTAREA.has(key) ? "press" : null;
+  }
+
+  if (target.isContentEditable) {
+    return KEYS_TO_TRACK_FOR_CONTENTEDITABLE.has(key) ? "press" : null;
+  }
+
+  return KEYS_TO_TRACK_FOR_NON_INPUT.has(key) ? "keyboard.press" : null;
 };
 
 export const shouldTrackFill = (target: ElementDescriptor): boolean => {
@@ -128,26 +159,4 @@ export const shouldTrackFill = (target: ElementDescriptor): boolean => {
 
   // Don't track value changes for anything else
   return false;
-};
-
-/**
- * @summary Determines whether a key press event should be included as part of the
- *   test code being built. Some keys are always included and some are included only
- *   when we're not editing text, i.e. the target isn't an input of some sort.
- * @param {String} key The name of the key that was pressed.
- * @param {Object} target Some details about the event target.
- * @return {Boolean} True if we should include this key as part of the playback script.
- */
-export const shouldTrackKeyPress = (
-  key: string,
-  target: ElementDescriptor
-): boolean => {
-  if (target.tag === "input") return KEYS_TO_TRACK_FOR_INPUT.has(key);
-  if (target.tag === "textarea") return KEYS_TO_TRACK_FOR_TEXTAREA.has(key);
-
-  if (target.isContentEditable) {
-    return KEYS_TO_TRACK_FOR_CONTENTEDITABLE.has(key);
-  }
-
-  return KEYS_TO_TRACK_FOR_NON_INPUT.has(key);
 };

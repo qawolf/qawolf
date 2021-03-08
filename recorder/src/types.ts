@@ -8,6 +8,7 @@ export type Action =
   | "goBack"
   | "goForward"
   | "goto"
+  | "keyboard.press"
   | "press"
   | "reload"
   | "selectOption";

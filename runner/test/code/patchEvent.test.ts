@@ -61,6 +61,15 @@ describe("buildEventCode", () => {
       buildEventCode({ action: "reload", page: 0 as any }, "page")
     ).toEqual(`await page.reload({ waitUntil: "domcontentloaded" });`);
   });
+
+  it("skips the selector for keyboard.press", () => {
+    expect(
+      buildEventCode(
+        { ...clickEvent, action: "keyboard.press", value: "Escape" },
+        "page"
+      )
+    ).toEqual(`await page.keyboard.press("Escape");`);
+  });
 });
 
 describe("declareSourceVariable", () => {
