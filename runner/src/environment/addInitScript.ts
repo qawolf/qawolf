@@ -15,13 +15,12 @@ export const addInitScript = async (context: BrowserContext): Promise<void> => {
   // reload the recorder script without needing to restart the
   // runner server.
   const webScript = await readFile(recorderScriptPath, "utf8");
-  const attribute = JSON.stringify(config.DEFAULT_ATTRIBUTE_LIST);
 
   const script = `
 (() => {
   ${webScript}
 
-  new qawolf.ActionRecorder({ attribute: ${attribute} });
+  window.qawInstance = new qawolf.ActionRecorder();
 })();
 `;
 

@@ -1,49 +1,32 @@
-import { Browser, BrowserContext } from "playwright";
-
 import { CodeUpdater } from "../../src/code/CodeUpdater";
-import { launch } from "../../src/environment/launch";
-import { TEST_URL } from "../utils";
+import { launch, setBody, sleep } from "../utils";
 
-describe("CodeUpdater", () => {
-  let browser: Browser;
-  let context: BrowserContext;
+it("updates code", async () => {
+  const { browser, context, page } = await launch();
 
-  const updater = new CodeUpdater({});
+  await setBody(page, "<button>Hello</button>");
 
-  beforeAll(async () => {
-    const launchResult = await launch({ headless: true });
+  const updater = new CodeUpdater({ page });
+  updater.setContext(context);
 
-    browser = launchResult.browser;
-    context = launchResult.context;
-
-    updater.setContext(context);
-
-    updater.updateCode({
-      code: "// 🐺 QA Wolf will create code here",
-      version: 1,
-    });
+  updater.updateCode({
+    code: "// 🐺 QA Wolf will create code here",
+    version: 1,
   });
 
-  afterAll(() => browser.close());
+  await updater.enable();
 
-  it("updates code", async () => {
-    const page = await context.newPage();
-    await page.goto(TEST_URL);
+  await page.click("button");
 
-    updater._variables.page = page;
+  // let events propagate
+  await sleep(0);
 
-    await updater.enable();
+  // we do not expect the code to create the page
+  // since we enabled the updater after those steps
+  expect(updater._code).toMatchInlineSnapshot(`
+    "await page.click(\\"text=Hello\\");
+    // 🐺 QA Wolf will create code here"
+  `);
 
-    await page.click("a");
-
-    // let events propagate
-    await new Promise((r) => setTimeout(r, 0));
-
-    // we do not expect the code to create the page
-    // since we enabled the updater after those steps
-    expect(updater._code).toMatchInlineSnapshot(`
-      "await page.click(\\"text=Buttons\\");
-      // 🐺 QA Wolf will create code here"
-    `);
-  });
+  await browser.close();
 });

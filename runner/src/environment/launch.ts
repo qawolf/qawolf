@@ -66,8 +66,12 @@ const chromiumArgs = [
   "--window-position=0,0",
 ];
 
-export const getBrowserName = (name?: BrowserName): BrowserName => {
-  if (name && BROWSER_NAMES.includes(name)) return name;
+export const getBrowserName = (name?: string): BrowserName => {
+  let providedName = name || process.env.QAWOLF_BROWSER;
+
+  if (providedName && BROWSER_NAMES.includes(providedName as BrowserName)) {
+    return providedName as BrowserName;
+  }
 
   return "chromium";
 };

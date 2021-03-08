@@ -31,7 +31,6 @@ type LastPageNavigation = {
 
 export class ContextEventCollector extends EventEmitter {
   readonly _activeSessions = new Set<CDPSession>();
-  readonly _attributes: string[];
   readonly _context: BrowserContext;
   readonly _pageNavigationHistory = new Map<Page, LastPageNavigation>();
 
@@ -45,8 +44,6 @@ export class ContextEventCollector extends EventEmitter {
 
   protected constructor(context: BrowserContext) {
     super();
-    const attributes = config.DEFAULT_ATTRIBUTE_LIST.split(",");
-    this._attributes = attributes;
     this._context = context;
   }
 
