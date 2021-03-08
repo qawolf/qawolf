@@ -1,6 +1,14 @@
+import handler from "serve-handler";
+import http from "http";
+import path from "path";
 import { Browser, BrowserContext, Page } from "playwright";
 
 import { launch as launchBrowserContext } from "../src/environment/launch";
+
+export type FixturesServer = {
+  close: () => void;
+  url: string;
+};
 
 export type LaunchResult = {
   browser: Browser;
@@ -30,11 +38,31 @@ export const randomString = (): string =>
 
 export const setBody = async (page: Page, content: string): Promise<void> => {
   await page.setContent(`<html><body>${content}</body></html`);
+
   // we need to restart it after setting content
   // probabbly due to the way playwright overwrites the document when setting content
   await page.evaluate(() => {
     (window as any).qawInstance.stop();
     (window as any).qawInstance.start();
+  });
+};
+
+export const serveFixtures = async (): Promise<FixturesServer> => {
+  const server = http.createServer((request, response) => {
+    return handler(request, response, {
+      public: path.join(__dirname, "./fixtures"),
+    });
+  });
+
+  return new Promise((resolve) => {
+    server.listen(0, () => {
+      const port = (server.address() as any).port;
+
+      resolve({
+        close: () => server.close(),
+        url: `http://127.0.0.1:${port}`,
+      });
+    });
   });
 };
 

@@ -3,7 +3,7 @@ import { Browser } from "playwright";
 
 import { Environment } from "../../src/environment/Environment";
 import { RunOptions, RunProgress } from "../../src/types";
-import { TEST_URL } from "../utils";
+import { sleep } from "../utils";
 
 const runOptions: RunOptions = {
   code: "",
@@ -53,13 +53,15 @@ describe("run", () => {
     await environment.run(
       {
         ...runOptions,
-        code: `const { context } = await launch({ headless: true });\nconst page = await context.newPage();\nawait page.goto("${TEST_URL}");\n// 🐺 QA Wolf will create code here`,
+        code: `const { context } = await launch({ headless: true });\nconst page = await context.newPage();\n// 🐺 QA Wolf will create code here`,
       },
       []
     );
 
-    await environment._variables.page.click("a");
-    expect(updatedCode).toContain('await page.click("text=Buttons");');
+    await environment._variables.page.goto("http://example.org");
+    await sleep(0);
+
+    expect(updatedCode).toContain('await page.goto("http://example.org/"');
     await environment.close();
   });
 

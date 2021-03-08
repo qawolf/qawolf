@@ -6,7 +6,6 @@ on:
       - ".github/workflows/test_runner.yml"
       - "recorder/**"
       - "runner/**"
-      - "sandbox/**"
 
 jobs:
   test:
@@ -37,15 +36,6 @@ jobs:
       - name: Build and copy recorder script
         run: npm run build:recorder-script
         working-directory: ./runner
-
-      - name: Start sandbox
-        run: |
-          npm install --no-package-lock --no-save serve-handler
-          ./bin/serve.js &
-        working-directory: ./sandbox
-
-      - name: Wait for sandbox
-        run: npx wait-on http://localhost:5000
 
       - name: Test runner
         run: |
