@@ -5,10 +5,10 @@ import { ChangeEvent, useState } from "react";
 import { useUpdateTeam } from "../../../hooks/mutations";
 import { TeamWithUsers } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
-import { border } from "../../../theme/theme-new";
-import Button from "../../shared-new/AppButton";
-import TextInput from "../../shared-new/AppTextInput";
-import Text from "../../shared-new/Text";
+import { border } from "../../../theme/theme";
+import Button from "../../shared/AppButton";
+import TextInput from "../../shared/AppTextInput";
+import Text from "../../shared/Text";
 
 type Props = { team: TeamWithUsers };
 

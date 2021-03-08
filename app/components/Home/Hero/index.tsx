@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 import styled from "styled-components";
 
-import { breakpoints, height } from "../../../theme/theme-new";
+import { breakpoints, height } from "../../../theme/theme";
 import DemoVideo from "./DemoVideo";
 import GetStarted from "./GetStarted";
 import Planets from "./Planets";

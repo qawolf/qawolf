@@ -3,8 +3,8 @@ import Image from "next/image";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { breakpoints, edgeSize, offset } from "../../../../theme/theme-new";
-import Section from "../../../shared-new/Section";
+import { breakpoints, edgeSize, offset } from "../../../../theme/theme";
+import Section from "../../../shared/Section";
 import PlayButton from "./PlayButton";
 import Video from "./Video";
 

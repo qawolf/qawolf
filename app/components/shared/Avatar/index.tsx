@@ -5,21 +5,22 @@ import DefaultAvatar from "./DefaultAvatar";
 
 type Props = {
   avatarUrl?: string | null;
-  wolfVariant: string;
+  wolfColor: string;
 };
 
-export default function Avatar({ avatarUrl, wolfVariant }: Props): JSX.Element {
+export default function Avatar({ avatarUrl, wolfColor }: Props): JSX.Element {
   return (
     <Box
-      height={edgeSize.large}
+      flex={false}
+      height={edgeSize.medium}
       overflow="hidden"
       round="full"
-      width={edgeSize.large}
+      width={edgeSize.medium}
     >
       {avatarUrl ? (
         <Image fit="contain" src={avatarUrl} />
       ) : (
-        <DefaultAvatar wolfVariant={wolfVariant} />
+        <DefaultAvatar color={wolfColor} />
       )}
     </Box>
   );

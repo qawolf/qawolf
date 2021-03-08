@@ -3,8 +3,8 @@ import { useRef, useState } from "react";
 
 import { useOnClickOutside } from "../../../hooks/onClickOutside";
 import { copy } from "../../../theme/copy";
-import Button from "../../shared-new/AppButton";
-import History from "../../shared-new/icons/History";
+import Button from "../../shared/AppButton";
+import History from "../../shared/icons/History";
 import RunList from "./RunList";
 
 type Props = { testId: string | null };

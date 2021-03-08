@@ -1,12 +1,7 @@
 import { Box } from "grommet";
 import styled from "styled-components";
 
-import {
-  breakpoints,
-  edgeSize,
-  offset,
-  width,
-} from "../../../../theme/theme-new";
+import { breakpoints, edgeSize, offset, width } from "../../../../theme/theme";
 import RocketContainer from "./RocketContainer";
 import Tagline from "./Tagline";
 

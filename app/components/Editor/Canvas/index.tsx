@@ -34,7 +34,7 @@ export default function Canvas({
 
   return (
     <>
-      <Box alignSelf="center" background="darkGray">
+      <Box alignSelf="center" background="gray9">
         {showPlaceholder && (
           <Placeholder height={height} mode={mode} width={width} />
         )}

@@ -1,7 +1,7 @@
 import { Box, BoxProps } from "grommet";
 import styled from "styled-components";
 
-import { breakpoints, edgeSize } from "../../../../theme/theme-new";
+import { breakpoints, edgeSize } from "../../../../theme/theme";
 import Rocket from "./Rocket";
 import RocketMobile from "./Rocket/RocketMobile";
 

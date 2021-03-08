@@ -5,8 +5,8 @@ import Link from "next/link";
 import styled from "styled-components";
 
 import { routes } from "../../lib/routes";
-import { edgeSize, width } from "../../theme/theme-new";
-import Text from "../shared-new/Text";
+import { edgeSize, width } from "../../theme/theme";
+import Text from "../shared/Text";
 
 type Props = {
   date: string;

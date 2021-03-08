@@ -2,16 +2,11 @@ import { Box } from "grommet";
 
 import { Group } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
-import {
-  border,
-  colors,
-  edgeSize,
-  overflowStyle,
-} from "../../../theme/theme-new";
-import Folder from "../../shared-new/icons/Folder";
-import FolderEmpty from "../../shared-new/icons/FolderEmpty";
-import RadioButton from "../../shared-new/RadioButton";
-import Text from "../../shared-new/Text";
+import { border, colors, edgeSize, overflowStyle } from "../../../theme/theme";
+import Folder from "../../shared/icons/Folder";
+import FolderEmpty from "../../shared/icons/FolderEmpty";
+import RadioButton from "../../shared/RadioButton";
+import Text from "../../shared/Text";
 
 type Props = {
   group: Group | null;

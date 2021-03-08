@@ -1,13 +1,8 @@
 import { Box } from "grommet";
 import styled from "styled-components";
 
-import {
-  breakpoints,
-  edgeSize,
-  text,
-  textDesktop,
-} from "../../theme/theme-new";
-import Text from "../shared-new/Text";
+import { breakpoints, edgeSize, text, textDesktop } from "../../theme/theme";
+import Text from "../shared/Text";
 
 type Props = { error?: string };
 

@@ -1,125 +1,104 @@
-import classNames from "classnames";
-import debounce from "debounce";
 import { Box, Button } from "grommet";
-import { Edit } from "grommet-icons";
-import { useEffect, useRef, useState } from "react";
-import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
+import { ChangeEvent, useState } from "react";
+import styled from "styled-components";
 
 import {
+  borderSize,
   colors,
   edgeSize,
-  fontFamily,
-  fontSize,
-  hoverTransition,
-  iconSize,
-  lineHeight,
+  overflowStyle,
+  transition,
 } from "../../../theme/theme";
-import styles from "./EditableText.module.css";
+import Edit from "../icons/Edit";
+import Text from "../Text";
+import TextInput from "./TextInput";
 
 type Props = {
-  bold?: boolean;
   disabled?: boolean;
-  name?: string;
-  maxWidth?: string;
-  onChange: (value: string) => void;
+  isEdit: boolean;
+  onSave: (value: string) => void;
+  placeholder: string;
+  setIsEdit: (isEdit: boolean) => void;
   value: string;
 };
 
-const DEBOUNCE_MS = 250;
-const iconMargin = edgeSize.small;
+const StyledBox = styled(Box)`
+  transition: ${transition};
+
+  &:hover {
+    background: ${colors.gray2};
+  }
+
+  &:active {
+    background: transparent;
+    border-color: ${colors.primary};
+  }
+`;
 
 export default function EditableText({
-  bold,
   disabled,
-  maxWidth,
-  name,
-  onChange,
+  isEdit,
+  onSave,
+  placeholder,
+  setIsEdit,
   value,
 }: Props): JSX.Element {
-  const ref = useRef(null);
-  const textValue = useRef(value);
-  const [isFocus, setIsFocus] = useState(false);
-  const debouncedOnChange = debounce(onChange, DEBOUNCE_MS);
+  const [editedValue, setEditedValue] = useState(value);
 
-  // update the value when it changes (except in edit mode)
-  useEffect(() => {
-    if (isFocus) return;
-    textValue.current = value;
-  }, [isFocus, value]);
+  const BoxComponent = disabled ? Box : StyledBox;
 
-  const handleBlur = () => {
-    if (!document.activeElement) return;
-    (document.activeElement as HTMLInputElement).blur();
+  const textHtml = (
+    <BoxComponent
+      align="center"
+      border={{ color: "transparent", size: "xsmall" }}
+      direction="row"
+      height={edgeSize.large}
+      pad={{ horizontal: "xxsmall" }}
+      round={borderSize.small}
+    >
+      <Text
+        color="gray9"
+        margin={disabled ? undefined : { right: "xxsmall" }}
+        size="componentHeader"
+        style={{ maxWidth: "378px", ...overflowStyle }}
+      >
+        {value}
+      </Text>
+      {!disabled && <Edit color={colors.gray9} size={edgeSize.small} />}
+    </BoxComponent>
+  );
 
-    setIsFocus(false);
+  if (disabled) return textHtml;
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setEditedValue(e.target.value);
   };
 
-  const handleChange = (e: ContentEditableEvent) => {
-    const newValue = e.target.value;
-    textValue.current = newValue;
-    debouncedOnChange(newValue);
+  const handleSave = (): void => {
+    setIsEdit(false);
+
+    if (!editedValue) {
+      setEditedValue(value);
+      return;
+    }
+
+    onSave(editedValue);
   };
 
-  const handleClick = () => {
-    if (disabled) return;
-    setIsFocus(true);
-  };
-
-  const handleEnter = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key !== "Enter") return;
-    // do not add line break
-    e.preventDefault();
-    handleBlur();
-  };
-
-  const handleFocus = () => {
-    if (!ref.current || disabled) return;
-    setIsFocus(true);
-    (ref.current as HTMLInputElement).focus();
-  };
-
-  const family = bold ? fontFamily.bold : fontFamily.normal;
+  if (isEdit) {
+    return (
+      <TextInput
+        onChange={handleChange}
+        onSave={handleSave}
+        placeholder={placeholder}
+        value={editedValue}
+      />
+    );
+  }
 
   return (
-    <Box
-      align="center"
-      className={classNames(styles.rename, { [styles.disabled]: !!disabled })}
-      data-test={`editable-text-${name || ""}`}
-      direction="row"
-      margin={{ left: `calc(-${iconSize} - ${iconMargin})` }}
-      style={{ maxWidth }}
-    >
-      <Button
-        disabled={disabled}
-        margin={{ right: iconMargin }}
-        onClick={handleFocus}
-        plain
-        style={{
-          opacity: isFocus ? 1 : undefined,
-          transition: hoverTransition,
-        }}
-      >
-        <Edit color="black" size={iconSize} />
-      </Button>
-      <ContentEditable
-        className={styles.contentEditable}
-        disabled={disabled}
-        html={textValue.current}
-        innerRef={ref}
-        onBlur={handleBlur}
-        onChange={handleChange}
-        onClick={handleClick}
-        onKeyPress={handleEnter}
-        spellCheck={false}
-        style={{
-          color: colors.black,
-          fontFamily: family,
-          fontSize: fontSize.large,
-          lineHeight: lineHeight.large,
-          minWidth: edgeSize.small,
-          textOverflow: isFocus ? undefined : "ellipsis",
-        }}
-      />
-    </Box>
+    <Button plain onClick={() => setIsEdit(true)}>
+      {textHtml}
+    </Button>
   );
 }

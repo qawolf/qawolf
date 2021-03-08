@@ -8,8 +8,8 @@ import {
   edgeSize,
   transitionDuration,
   width,
-} from "../../../theme/theme-new";
-import Text from "../../shared-new/Text";
+} from "../../../theme/theme";
+import Text from "../../shared/Text";
 import { Doc } from "../docs";
 
 type Props = {

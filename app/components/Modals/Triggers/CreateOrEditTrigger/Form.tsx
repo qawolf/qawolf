@@ -8,9 +8,9 @@ import {
   TriggerFields,
 } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
-import TextInput from "../../../shared-new/AppTextInput";
-import Buttons from "../../../shared-new/Modal/Buttons";
-import Text from "../../../shared-new/Text";
+import TextInput from "../../../shared/AppTextInput";
+import Buttons from "../../../shared/Modal/Buttons";
+import Text from "../../../shared/Text";
 import { StateContext } from "../../../StateContext";
 import Environment from "../Environment";
 import {

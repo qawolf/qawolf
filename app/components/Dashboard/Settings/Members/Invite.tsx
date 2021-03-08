@@ -5,7 +5,7 @@ import { useContext, useState } from "react";
 import { useCreateInvites } from "../../../../hooks/mutations";
 import { User } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
-import Button from "../../../shared-new/AppButton";
+import Button from "../../../shared/AppButton";
 import { StateContext } from "../../../StateContext";
 import InviteInput from "./InviteInput";
 

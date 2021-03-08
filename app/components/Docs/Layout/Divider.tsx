@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 import styled from "styled-components";
 
-import { borderSize, breakpoints, edgeSize } from "../../../theme/theme-new";
+import { borderSize, breakpoints, edgeSize } from "../../../theme/theme";
 
 const StyledBox = styled(Box)`
   margin: ${edgeSize.medium} 0;

@@ -3,7 +3,7 @@ import { FC } from "react";
 import styled from "styled-components";
 
 import { ValueProp as ValuePropType } from "../../../lib/types";
-import { breakpoints, edgeSize } from "../../../theme/theme-new";
+import { breakpoints, edgeSize } from "../../../theme/theme";
 import DetailText from "../DetailText";
 
 type Props = ValuePropType & {

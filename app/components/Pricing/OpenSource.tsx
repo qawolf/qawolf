@@ -1,9 +1,9 @@
 import { Box } from "grommet";
 
 import { copy } from "../../theme/copy";
-import { colors } from "../../theme/theme-new";
-import Button from "../shared-new/Button";
-import Text from "../shared-new/Text";
+import { colors } from "../../theme/theme";
+import Button from "../shared/Button";
+import Text from "../shared/Text";
 
 const href = "mailto:hello@qawolf.com";
 

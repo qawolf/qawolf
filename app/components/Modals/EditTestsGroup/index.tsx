@@ -1,4 +1,4 @@
-import { Box, ThemeContext } from "grommet";
+import { Box } from "grommet";
 import { useContext, useState } from "react";
 
 import { useUpdateTestsGroup } from "../../../hooks/mutations";
@@ -6,12 +6,11 @@ import { useOnHotKey } from "../../../hooks/onHotKey";
 import { useGroups } from "../../../hooks/queries";
 import { SelectedTest } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
-import { theme } from "../../../theme/theme-new";
-import Divider from "../../shared-new/Divider";
-import Modal from "../../shared-new/Modal";
-import Buttons from "../../shared-new/Modal/Buttons";
-import Header from "../../shared-new/Modal/Header";
-import Text from "../../shared-new/Text";
+import Divider from "../../shared/Divider";
+import Modal from "../../shared/Modal";
+import Buttons from "../../shared/Modal/Buttons";
+import Header from "../../shared/Modal/Header";
+import Text from "../../shared/Text";
 import { StateContext } from "../../StateContext";
 import ListItem from "./ListItem";
 
@@ -65,38 +64,36 @@ export default function EditTestsGroup({
   });
 
   return (
-    <ThemeContext.Extend value={theme}>
-      <Modal a11yTitle="edit tests group" closeModal={closeModal}>
-        <Box pad="medium" overflow={{ vertical: "auto" }}>
-          <Box flex={false}>
-            <Header
-              closeModal={closeModal}
-              label={copy.editTestsGroup(tests.length)}
-            />
-            <Text
-              color="gray9"
-              margin={{ bottom: "medium", top: "xxsmall" }}
-              size="component"
-            >
-              {copy.addToGroupDetail}
-            </Text>
-            <ListItem
-              group={null}
-              isChecked={groupId === ""}
-              onClick={setGroupId}
-            />
-            {optionsHtml}
-            <Divider />
-            <Buttons
-              onPrimaryClick={handleClick}
-              onSecondaryClick={closeModal}
-              primaryIsDisabled={loading}
-              primaryLabel={copy.addToGroup}
-              secondaryLabel={copy.cancel}
-            />
-          </Box>
+    <Modal a11yTitle="edit tests group" closeModal={closeModal}>
+      <Box pad="medium" overflow={{ vertical: "auto" }}>
+        <Box flex={false}>
+          <Header
+            closeModal={closeModal}
+            label={copy.editTestsGroup(tests.length)}
+          />
+          <Text
+            color="gray9"
+            margin={{ bottom: "medium", top: "xxsmall" }}
+            size="component"
+          >
+            {copy.addToGroupDetail}
+          </Text>
+          <ListItem
+            group={null}
+            isChecked={groupId === ""}
+            onClick={setGroupId}
+          />
+          {optionsHtml}
+          <Divider />
+          <Buttons
+            onPrimaryClick={handleClick}
+            onSecondaryClick={closeModal}
+            primaryIsDisabled={loading}
+            primaryLabel={copy.addToGroup}
+            secondaryLabel={copy.cancel}
+          />
         </Box>
-      </Modal>
-    </ThemeContext.Extend>
+      </Box>
+    </Modal>
   );
 }

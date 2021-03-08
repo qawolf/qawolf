@@ -4,9 +4,9 @@ import Link from "next/link";
 import { routes } from "../../lib/routes";
 import { AuthMode } from "../../lib/types";
 import { copy } from "../../theme/copy";
-import { edgeSize } from "../../theme/theme-new";
-import Logo from "../shared-new/icons/Logo";
-import Text from "../shared-new/Text";
+import { edgeSize } from "../../theme/theme";
+import Logo from "../shared/icons/Logo";
+import Text from "../shared/Text";
 
 type Props = { mode: AuthMode };
 

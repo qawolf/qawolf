@@ -1,109 +1,184 @@
-import classNames from "classnames";
-import {
-  Box,
-  BoxProps,
-  Button as GrommetButton,
-  ButtonProps,
-  TextProps,
-} from "grommet";
+import { Box, BoxProps, Button as GrommetButton } from "grommet";
 import { Icon } from "grommet-icons";
-import { CSSProperties } from "react";
-import { IconType } from "react-icons";
+import styled from "styled-components";
 
 import {
+  borderSize,
+  breakpoints,
   colors,
   edgeSize,
-  hoverTransition,
-  lineHeight,
+  transition,
+  transitionDuration,
 } from "../../../theme/theme";
 import Text from "../Text";
-import styles from "./Button.module.css";
+import Anchor from "./Anchor";
+import {
+  background,
+  height,
+  heightDesktop,
+  pad,
+  round,
+  Size,
+  textSize,
+  Type,
+} from "./config";
 
 type Props = {
-  IconComponent?: Icon | IconType | null;
-  dataTest?: string;
+  IconComponent?: Icon;
+  borderColor?: string;
+  className?: string;
   disabled?: boolean;
-  fill?: ButtonProps["fill"];
+  fill?: BoxProps["fill"];
   href?: string;
-  isSecondary?: boolean;
+  label: string;
   margin?: BoxProps["margin"];
-  message: string | null;
-  noBorder?: boolean;
   onClick?: () => void;
-  style?: CSSProperties;
-  textSize?: TextProps["size"];
-  width?: BoxProps["width"];
+  size: Size;
+  type?: Type;
 };
 
-export default function Button({
+function Button({
   IconComponent,
-  dataTest,
+  className,
   disabled,
   fill,
   href,
-  isSecondary,
+  label,
   margin,
-  message,
-  noBorder,
   onClick,
-  style,
-  textSize,
-  width,
+  size,
+  type,
 }: Props): JSX.Element {
-  const background = isSecondary ? "transparent" : "brand";
-  const borderColor = isSecondary ? "black" : "brand";
+  const finalSize = size || "small";
+  const finalType = type || "primary";
+
+  const color = ["invisibleDark", "outlineDark"].includes(type)
+    ? "textDark"
+    : "white";
+
+  let padding = pad[finalSize] as string;
+  if (["outlineDark", "outlineLight"].includes(type)) {
+    const borderWidth = ["medium", "large"].includes(size)
+      ? borderSize.medium
+      : borderSize.small;
+
+    padding = `calc(${edgeSize[padding]} - ${borderWidth})`;
+  }
+
+  const innerHtml = (
+    <Box
+      align="center"
+      background={background[finalType]}
+      className={className}
+      direction="row"
+      fill={fill}
+      height={height[finalSize]}
+      justify="center"
+      pad={{ horizontal: padding }}
+      round={round[finalSize]}
+    >
+      {!!IconComponent && (
+        <IconComponent
+          color={color}
+          size={edgeSize.medium}
+          style={{ marginRight: edgeSize.small, transition }}
+        />
+      )}
+      <Text color={color} size={textSize[finalSize]} weight="medium">
+        {label}
+      </Text>
+    </Box>
+  );
+
+  if (href) {
+    return (
+      <Anchor href={href} margin={margin} size={finalSize}>
+        {innerHtml}
+      </Anchor>
+    );
+  }
 
   return (
     <GrommetButton
-      a11yTitle={message || "button"}
-      data-test={dataTest}
+      a11yTitle={label}
       disabled={disabled}
-      fill={fill}
-      href={href}
       margin={margin}
       onClick={onClick}
       plain
     >
-      <Box
-        align="center"
-        background={background}
-        border={{ color: noBorder ? "transparent" : borderColor }}
-        className={classNames({
-          [styles.defaultButton]: !isSecondary,
-          [styles.secondaryButton]: isSecondary,
-        })}
-        direction="row"
-        justify="center"
-        pad={{ horizontal: "medium", vertical: "small" }}
-        round="small"
-        style={{
-          ...(style || {}),
-          transition: hoverTransition,
-          whiteSpace: "nowrap",
-        }}
-        width={width}
-      >
-        {!!IconComponent && (
-          <IconComponent
-            color={colors.black}
-            size={lineHeight.medium}
-            style={{
-              marginRight: message ? edgeSize.small : undefined,
-              transition: hoverTransition,
-            }}
-          />
-        )}
-        {!!message && (
-          <Text
-            color="black"
-            size={textSize || "medium"}
-            style={{ transition: hoverTransition }}
-            weight="bold"
-          >
-            {message}
-          </Text>
-        )}
-      </Box>
+      {innerHtml}
     </GrommetButton>
   );
 }
+
+const StyledButton = styled(Button)`
+  height: ${(props) => height[props.size] || height.small};
+  transition: background ${transitionDuration};
+
+  ${(props) =>
+    props.type === "outlineLight" &&
+    `
+    border: ${borderSize.small} solid ${colors.primaryFillLight};
+  `}
+
+  &:hover {
+    background: ${colors.primaryHover};
+  }
+
+  ${(props) =>
+    props.type === "invisibleDark" &&
+    `
+      &:hover {
+        background: ${colors.fill10};
+      }
+    `}
+
+  ${(props) =>
+    (props.type === "invisibleLight" || props.type === "outlineLight") &&
+    `
+      &:hover {
+        background: ${colors.primaryFillLight};
+
+        h1,h2,h3,h4,h5,h6,p {
+          color: ${colors.textDark};
+        }
+      }
+    `}
+
+  ${(props) =>
+    props.type === "outlineDark" &&
+    `
+      border: ${borderSize.small} solid ${props.borderColor || colors.fill50};
+
+      &:hover {
+        background: ${props.borderColor || colors.fill50};
+
+        ${
+          !props.borderColor &&
+          `
+        h1,h2,h3,h4,h5,h6,p {
+          color: ${colors.white};
+        }
+
+        svg {
+          fill: ${colors.white};
+        }        
+        `
+        }
+      }
+    `}
+
+  ${(props) =>
+    ["medium", "large"].includes(props.size) &&
+    `
+    border-width: ${borderSize.medium};
+  `}
+
+  @media screen and (min-width: ${breakpoints.medium.value}px) {
+    ${(props) => `
+      height: ${heightDesktop[props.size]};
+    `}
+  }
+`;
+
+export default StyledButton;

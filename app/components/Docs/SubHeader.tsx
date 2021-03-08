@@ -10,9 +10,9 @@ import {
   height,
   transition,
   transitionDuration,
-} from "../../theme/theme-new";
-import LinkIcon from "../shared-new/icons/Link";
-import Text from "../shared-new/Text";
+} from "../../theme/theme";
+import LinkIcon from "../shared/icons/Link";
+import Text from "../shared/Text";
 import Divider from "./Layout/Divider";
 
 type Props = { children: string };

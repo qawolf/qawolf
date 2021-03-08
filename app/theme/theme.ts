@@ -1,9 +1,85 @@
-import { ThemeValue } from "grommet";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { isSafari } from "../lib/detection";
-import { breakpoints } from "./theme-new";
+import { ThemeType } from "grommet";
+import { CSSProperties } from "react";
 
-export const codeFontFamily = "Consolas, Monaco, monospace";
+import Check from "../components/shared/icons/Check";
+import Indeterminate from "../components/shared/icons/Indeterminate";
+
+export const borderSize = {
+  xsmall: "1px",
+  small: "2px",
+  medium: "4px",
+};
+
+export const breakpoints = {
+  small: { value: 960 },
+  medium: { value: 1264 },
+};
+
+export const border = {
+  color: "gray3",
+  size: borderSize.xsmall,
+};
+
+export const boxShadow = "0px 4px 16px rgba(21, 27, 38, 0.16)";
+
+export const canvasSize = {
+  height: 800,
+  width: 1288,
+};
+
+export const colors = {
+  code: "#0E8A7D",
+  codeBlue: "#6E9DFA",
+  codeHighlight: "#213866",
+  codePink: "#EF86B4",
+  codePurple: "#B899F8",
+  danger2: "#FAE6E6",
+  danger4: "#F07D7D",
+  danger5: "#DB4B4B",
+  danger6: "#C23232",
+  danger7: "#AD1F1F",
+  danger9: "#66141B",
+  danger10: "#33050D",
+  darkYellow: "#F2D479",
+  error: "#DE4343",
+  fill0: "#F5F6FA",
+  fill10: "#F2F4F7",
+  fill20: "#E6E7EB",
+  fill30: "#CED3E0",
+  fill50: "#7282A3",
+  gray0: "#FFFFFF",
+  gray1: "#FAFBFC",
+  gray2: "#F2F4F7",
+  gray3: "#E9ECF2",
+  gray4: "#C9D0DB",
+  gray5: "#ABB3C2",
+  gray6: "#8992A3",
+  gray7: "#667080",
+  gray8: "#404857",
+  gray9: "#2A3140",
+  gray10: "#151B26",
+  lightGray: "#F0F3F5",
+  lightPurple: "#8E9CF5",
+  primary: "#4545E5",
+  primaryDark: "#2F2FC2",
+  primaryDarker: "#1D1DA3",
+  primaryFill: "#4545E5",
+  primaryFillLight: "#8E9CF5",
+  primaryHover: "#695EFF",
+  primaryTextLight: "#ABB5F5",
+  success5: "#44C76B",
+  success6: "#2DAD54",
+  success7: "#1B943F",
+  teal: "#45D8E5",
+  textDark: "#17174C",
+  textLight: "#60708A",
+  warning4: "#EBC963",
+  warning9: "#615013",
+  warning10: "#332B05",
+  white: "#FFFFFF",
+};
 
 export const customFontLinks = [
   "/fonts/circular-black.woff2",
@@ -18,63 +94,16 @@ export const customFontLinks = [
   "/fonts/inter-regular.woff",
   "/fonts/inter-semibold.woff2",
   "/fonts/inter-semibold.woff",
-  "/fonts/sofiapro-bold-webfont.ttf",
-  "/fonts/sofiapro-bold-webfont.woff",
-  "/fonts/sofiapro-regular-webfont.ttf",
-  "/fonts/sofiapro-regular-webfont.woff",
 ];
 
-export const wolfAnimationEasing = "ease-in-out";
-
-export const wolfAnimationOptions = {
-  duration: isSafari() ? 0 : 4000,
-  fill: "forwards" as const,
-};
-
-export const colors = {
-  black: "#1C2F46",
-  blue: "#4545E6",
-  borderBlue: "#D2E0E2",
-  borderGray: "#DADFE2",
-  borderLight: "#D3D9E0",
-  brand: "#44E5E7",
-  darkGray: "#233140",
-  darkYellow: "#F2D479",
-  editorPurple: "#B4C2FF",
-  errorRed: "#DE4343",
-  fadedBlue: "#387286",
-  gray: "#979797",
-  green: "#1C857E",
-  lightBlue: "#E8F1F1",
-  lightBrand: "#3DC6C9",
-  lightGray: "#F0F3F5",
-  lightGreen: "#C2F3E4",
-  lightPurple: "#8E9CF5",
-  lightRed: "#E6C8D1",
-  limeGreen: "#44E69B",
-  navy: "#27646B",
-  outlineGray: "#7282A3",
-  pink: "#FF8DB4",
-  purple: "#7867B3",
-  red: "#E3728D",
-  teal: "#45D8E5",
-  textDark: "#17174D",
-  textGray: "#60708A",
-  textLight: "#ABB5F5",
-  textLighter: "#8A95A6",
-  white: "#FFFFFF",
-  yellow: "#FFCE54",
-};
-
-export const canvasSize = {
-  height: 800,
-  width: 1288,
-};
+export const disabledOpacity = 0.4;
 
 export const edgeSize = {
-  xsmall: "4px",
-  small: "8px",
-  medium: "16px",
+  xxxsmall: "4px",
+  xxsmall: "8px",
+  xsmall: "12px",
+  small: "16px",
+  medium: "24px",
   large: "32px",
   xlarge: "40px",
   xxlarge: "48px",
@@ -82,24 +111,32 @@ export const edgeSize = {
 };
 
 export const fontFamily = {
-  bold: "Sofia Pro Bold, sans-serif",
-  normal: "Sofia Pro, sans-serif",
+  bold: "Circular Black",
+  component: "Inter",
+  componentBold: "Inter Semibold",
+  componentMedium: "Inter Medium",
+  componentHeader: "Inter Semibold",
+  componentLarge: "Inter Semibold",
+  componentParagraph: "Inter",
+  componentSmall: "Inter",
+  eyebrow: "Plex Mono Semibold",
+  medium: "Circular Medium",
+  normal: "Circular",
 };
 
-export const fontSize = {
-  medium: "16px",
-  large: "20px",
-  xxlarge: "48px",
+export const fontWeight = {
+  bold: 900,
+  semibold: 600,
+  medium: 500,
+  normal: 400,
 };
 
-export const hoverTransition = "all 0.32s";
-export const iconSize = "16px";
+export const height = {
+  navigation: "80px",
+};
 
-export const lineHeight = {
-  small: "20px",
-  medium: "22px",
-  large: "28px",
-  xxlarge: "38px",
+export const offset = {
+  demoVideo: "-80px",
 };
 
 export const overflowStyle = {
@@ -108,82 +145,149 @@ export const overflowStyle = {
   whiteSpace: "nowrap" as const,
 };
 
-export const theme: ThemeValue = {
-  anchor: { color: colors.brand },
+export const text = {
+  xxsmall: { height: "24px", size: "14px" },
+  xsmall: { height: "24px", size: "16px" },
+  small: { height: "28px", size: "18px" },
+  medium: { height: "32px", size: "22px" },
+  large: { height: "36px", size: "28px" },
+  xlarge: { height: "40px", size: "36px" },
+  xxlarge: { height: "52px", size: "46px" },
+  component: { height: "16px", size: "14px" },
+  componentBold: { height: "16px", size: "14px" },
+  componentHeader: { height: "24px", size: "18px" },
+  componentLarge: { height: "20px", size: "16px" },
+  componentMedium: { height: "16px", size: "14px" },
+  componentParagraph: { height: "20px", size: "14px" },
+  componentSmall: { height: "16px", size: "12px" },
+  eyebrow: { height: "18px", size: "16px" },
+};
+
+export const textDesktop = {
+  xxsmall: { height: "24px", size: "14px" },
+  xsmall: { height: "28px", size: "18px" },
+  small: { height: "30px", size: "20px" },
+  medium: { height: "40px", size: "28px" },
+  large: { height: "52px", size: "40px" },
+  xlarge: { height: "62px", size: "56px" },
+  xxlarge: { height: "84px", size: "76px" },
+  component: { height: "16px", size: "14px" },
+  componentBold: { height: "16px", size: "14px" },
+  componentHeader: { height: "24px", size: "18px" },
+  componentLarge: { height: "20px", size: "16px" },
+  componentMedium: { height: "16px", size: "14px" },
+  componentParagraph: { height: "20px", size: "14px" },
+  componentSmall: { height: "16px", size: "12px" },
+  eyebrow: { height: "18px", size: "16px" },
+};
+
+export const theme: ThemeType = {
   box: {
-    responsiveBreakpoint: null,
+    // prevent default grommet styling on mobile as we handle manually
+    responsiveBreakpoint: "1px",
+  },
+  button: {
+    disabled: {
+      opacity: disabledOpacity,
+    },
   },
   checkBox: {
-    border: { color: { light: colors.gray } },
-    color: colors.fadedBlue,
-    hover: {
-      border: { color: { light: colors.black } },
+    border: {
+      color: colors.gray4,
+      width: borderSize.xsmall,
     },
+    check: {
+      radius: borderSize.small,
+    },
+    color: colors.primary,
+    icon: {
+      size: edgeSize.small,
+    },
+    icons: {
+      checked: Check,
+      indeterminate: Indeterminate,
+    },
+    size: edgeSize.small,
   },
   global: {
-    borderSize: {
-      small: "2px",
-      medium: "4px",
-      large: "8px",
+    borderSize,
+    colors,
+    control: {
+      border: {
+        radius: edgeSize.xsmall,
+        width: borderSize.medium,
+      },
     },
-    breakpoints: {
-      ...breakpoints,
-      large: { edgeSize },
-      small: { ...breakpoints.small, edgeSize },
-    },
-    colors: {
-      ...colors,
-      control: colors.brand,
-      placeholder: colors.textLighter,
-    },
+    drop: {
+      border: {
+        radius: borderSize.small,
+      },
+      extend: (): CSSProperties => {
+        return {
+          boxShadow,
+        };
+      },
+    } as any,
     edgeSize,
     focus: {
       border: {
         color: "transparent",
       },
     },
-    font: {
-      family: fontFamily.normal,
-      weight: 400,
-    },
   },
   layer: {
-    extend: (): { [style: string]: string } => {
-      return { cursor: "pointer" };
+    border: {
+      radius: edgeSize.xxsmall,
     },
+    overlay: {
+      background: "rgba(21, 27, 38, 0.6)",
+    },
+    responsiveBreakpoint: null,
   },
-  meter: { color: colors.fadedBlue },
-  select: {
-    background: colors.white,
-  },
-  text: {
-    xxsmall: {
-      height: "11px",
-      size: "8px",
+  radioButton: {
+    border: { color: colors.gray4, width: borderSize.xsmall },
+    check: {
+      color: colors.primary,
+      extend: (): CSSProperties => {
+        return { transition };
+      },
     },
-    xsmall: {
-      height: "17px",
-      size: "12px",
+    color: colors.primary,
+    container: {
+      extend: (): CSSProperties => {
+        return {
+          fontFamily: fontFamily.component,
+          fontSize: textDesktop.component.size,
+          lineHeight: textDesktop.component.height,
+        };
+      },
     },
-    small: {
-      height: lineHeight.small,
-      size: "14px",
+    hover: { border: { color: colors.gray6 } },
+    icon: {
+      extend: (): string => {
+        return `
+        circle {
+          r: 8;
+        }
+      `;
+      },
     },
-    medium: {
-      height: lineHeight.medium,
-      size: fontSize.medium,
+    gap: edgeSize.xxsmall,
+    size: edgeSize.small,
+  } as any,
+  text,
+  textInput: {
+    extend: (): CSSProperties => {
+      return { caretColor: colors.gray9 };
     },
-    large: {
-      height: lineHeight.large,
-      size: fontSize.large,
-    },
-    xlarge: {
-      height: "38px",
-      size: "32px",
-    },
-    xxlarge: {
-      height: lineHeight.xxlarge,
-      size: fontSize.xxlarge,
-    },
-  },
+  } as any,
+};
+
+export const transitionDuration = "0.2s ease-in-out";
+export const transition = `all ${transitionDuration}`;
+
+export const width = {
+  content: "1080px",
+  demoVideoPlay: "216px",
+  docsSidebar: "280px",
 };

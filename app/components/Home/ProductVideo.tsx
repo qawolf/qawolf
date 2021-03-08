@@ -27,7 +27,7 @@ export default function ProductVideo({
         muted
         playsInline
         src={src}
-        style={{ borderRadius: edgeSize.medium, width: "100%", zIndex: 1 }}
+        style={{ borderRadius: edgeSize.small, width: "100%", zIndex: 1 }}
       />
       <Box
         background={background}

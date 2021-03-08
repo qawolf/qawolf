@@ -3,9 +3,9 @@ import { useState } from "react";
 import { useUpdateTest } from "../../../hooks/mutations";
 import { Test } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
-import { borderSize, edgeSize } from "../../../theme/theme-new";
-import Divider from "../../shared-new/Divider";
-import EditableText from "../../shared-new/EditableText";
+import { borderSize, edgeSize } from "../../../theme/theme";
+import Divider from "../../shared/Divider";
+import EditableText from "../../shared/EditableText";
 
 type Props = {
   disabled?: boolean;

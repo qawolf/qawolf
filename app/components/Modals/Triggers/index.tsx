@@ -3,7 +3,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 
 import { useTestTriggers, useTriggers } from "../../../hooks/queries";
 import { Trigger } from "../../../lib/types";
-import Modal from "../../shared-new/Modal";
+import Modal from "../../shared/Modal";
 import { StateContext } from "../../StateContext";
 import ConfirmDelete from "./ConfirmDelete";
 import CreateOrEditTrigger from "./CreateOrEditTrigger";

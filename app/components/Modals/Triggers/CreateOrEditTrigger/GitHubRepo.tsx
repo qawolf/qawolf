@@ -4,10 +4,10 @@ import { useContext, useEffect, useState } from "react";
 
 import { useIntegrations } from "../../../../hooks/queries";
 import { copy } from "../../../../theme/copy";
-import Button from "../../../shared-new/AppButton";
-import Select from "../../../shared-new/Select";
-import Option from "../../../shared-new/Select/Option";
-import Text from "../../../shared-new/Text";
+import Button from "../../../shared/AppButton";
+import Select from "../../../shared/Select";
+import Option from "../../../shared/Select/Option";
+import Text from "../../../shared/Text";
 import { StateContext } from "../../../StateContext";
 import { labelTextProps } from "../helpers";
 

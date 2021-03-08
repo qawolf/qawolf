@@ -4,10 +4,10 @@ import styled from "styled-components";
 
 import { routes } from "../../../../lib/routes";
 import { copy } from "../../../../theme/copy";
-import { edgeSize, width } from "../../../../theme/theme-new";
-import Button from "../../../shared-new/Button";
-import GitHubStars from "../../../shared-new/GitHubStars";
-import Search from "../../../shared-new/Search";
+import { edgeSize, width } from "../../../../theme/theme";
+import Button from "../../../shared/Button";
+import GitHubStars from "../../../shared/GitHubStars";
+import Search from "../../../shared/Search";
 import { UserContext } from "../../../UserContext";
 
 const searchWidth = "240px"; // algolia sets it to this width automatically

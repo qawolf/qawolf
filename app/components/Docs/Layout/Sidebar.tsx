@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { breakpoints, edgeSize, height, width } from "../../../theme/theme-new";
+import { breakpoints, edgeSize, height, width } from "../../../theme/theme";
 import { docs, Section as SectionType } from "../docs";
 import Section from "./Section";
 import Wolf from "./Wolf";

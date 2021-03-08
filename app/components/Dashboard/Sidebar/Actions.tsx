@@ -4,14 +4,14 @@ import { useRouter } from "next/router";
 import { routes } from "../../../lib/routes";
 import { state } from "../../../lib/state";
 import { copy } from "../../../theme/copy";
-import { borderSize } from "../../../theme/theme-new";
-import Book from "../../shared-new/icons/Book";
-import Configure from "../../shared-new/icons/Configure";
-import DotCircle from "../../shared-new/icons/DotCircle";
-import Gear from "../../shared-new/icons/Gear";
-import Lightning from "../../shared-new/icons/Lightning";
-import List from "../../shared-new/icons/List";
-import Share from "../../shared-new/icons/Share";
+import { borderSize } from "../../../theme/theme";
+import Book from "../../shared/icons/Book";
+import Configure from "../../shared/icons/Configure";
+import DotCircle from "../../shared/icons/DotCircle";
+import Gear from "../../shared/icons/Gear";
+import Lightning from "../../shared/icons/Lightning";
+import List from "../../shared/icons/List";
+import Share from "../../shared/icons/Share";
 import DashboardLink from "./DashboardLink";
 
 export default function Actions(): JSX.Element {

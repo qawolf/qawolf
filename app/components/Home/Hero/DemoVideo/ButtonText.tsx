@@ -2,8 +2,8 @@ import { Box } from "grommet";
 import styled from "styled-components";
 
 import { copy } from "../../../../theme/copy";
-import { breakpoints, edgeSize, width } from "../../../../theme/theme-new";
-import Text from "../../../shared-new/Text";
+import { breakpoints, edgeSize, width } from "../../../../theme/theme";
+import Text from "../../../shared/Text";
 
 const StyledBox = styled(Box)`
   display: none;

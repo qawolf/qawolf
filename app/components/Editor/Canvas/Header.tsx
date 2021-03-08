@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 
-import { edgeSize } from "../../../theme/theme-new";
-import { borderSize } from "../../../theme/theme-new";
+import { edgeSize } from "../../../theme/theme";
+import { borderSize } from "../../../theme/theme";
 import CodeToggle from "./CodeToggle";
 
 export default function Header(): JSX.Element {

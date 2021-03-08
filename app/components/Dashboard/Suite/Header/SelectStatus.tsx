@@ -2,8 +2,8 @@ import { useRouter } from "next/router";
 
 import { routes } from "../../../../lib/routes";
 import { RunStatus, SuiteRun } from "../../../../lib/types";
-import Divider from "../../../shared-new/Divider";
-import Select from "../../../shared-new/Select";
+import Divider from "../../../shared/Divider";
+import Select from "../../../shared/Select";
 import { getLabelForStatus } from "../../helpers";
 import StatusOption from "./StatusOption";
 

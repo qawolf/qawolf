@@ -4,8 +4,8 @@ import { ChangeEvent } from "react";
 import { useUpdateTeam } from "../../../../hooks/mutations";
 import { Integration, Team, TeamWithUsers } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
-import Divider from "../../../shared-new/Divider";
-import Text from "../../../shared-new/Text";
+import Divider from "../../../shared/Divider";
+import Text from "../../../shared/Text";
 import AddSlackChannel from "./AddSlackChannel";
 import Alert, { emailValue } from "./Alert";
 

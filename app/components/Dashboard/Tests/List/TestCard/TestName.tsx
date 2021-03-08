@@ -1,12 +1,8 @@
 import { Box } from "grommet";
 
-import {
-  colors,
-  edgeSize,
-  overflowStyle,
-} from "../../../../../theme/theme-new";
-import Folder from "../../../../shared-new/icons/Folder";
-import Text from "../../../../shared-new/Text";
+import { colors, edgeSize, overflowStyle } from "../../../../../theme/theme";
+import Folder from "../../../../shared/icons/Folder";
+import Text from "../../../../shared/Text";
 
 type Props = {
   groupName: string | null;

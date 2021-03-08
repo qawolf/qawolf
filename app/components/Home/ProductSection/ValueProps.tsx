@@ -2,8 +2,8 @@ import { Box } from "grommet";
 import styled from "styled-components";
 
 import { ValueProp } from "../../../lib/types";
-import { breakpoints, edgeSize } from "../../../theme/theme-new";
-import Button from "../../shared-new/Button";
+import { breakpoints, edgeSize } from "../../../theme/theme";
+import Button from "../../shared/Button";
 import DetailText from "../DetailText";
 
 type Props = {

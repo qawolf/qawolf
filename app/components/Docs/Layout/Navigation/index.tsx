@@ -1,5 +1,5 @@
-import Logo from "../../../shared-new/Logo";
-import Wrapper from "../../../shared-new/Navigation/Wrapper";
+import Logo from "../../../shared/Logo";
+import Wrapper from "../../../shared/Navigation/Wrapper";
 import Buttons from "./Buttons";
 import SelectDoc from "./SelectDoc";
 

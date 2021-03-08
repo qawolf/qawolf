@@ -4,11 +4,11 @@ import styled from "styled-components";
 
 import { routes } from "../../../lib/routes";
 import { copy } from "../../../theme/copy";
-import { width } from "../../../theme/theme-new";
-import Button from "../../shared-new/Button";
-import GitHubStars from "../../shared-new/GitHubStars";
-import Logo from "../../shared-new/Logo";
-import Wrapper from "../../shared-new/Navigation/Wrapper";
+import { width } from "../../../theme/theme";
+import Button from "../../shared/Button";
+import GitHubStars from "../../shared/GitHubStars";
+import Logo from "../../shared/Logo";
+import Wrapper from "../../shared/Navigation/Wrapper";
 import { UserContext } from "../../UserContext";
 
 type Props = { isJsx?: boolean };

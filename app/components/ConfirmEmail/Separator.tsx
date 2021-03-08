@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-import { breakpoints } from "../../theme/theme-new";
-import Text from "../shared-new/Text";
+import { breakpoints } from "../../theme/theme";
+import Text from "../shared/Text";
 
 const StyledText = styled(Text)`
   display: none;

@@ -3,11 +3,11 @@ import { Box } from "grommet";
 import { durationToText, timestampToText } from "../../../lib/helpers";
 import { Run, Suite } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
-import { borderSize } from "../../../theme/theme-new";
-import LabeledBox from "../../shared-new/LabeledBox";
-import StatusBadge from "../../shared-new/StatusBadge";
-import Text from "../../shared-new/Text";
-import TriggerBadge from "../../shared-new/TriggerBadge";
+import { borderSize } from "../../../theme/theme";
+import LabeledBox from "../../shared/LabeledBox";
+import StatusBadge from "../../shared/StatusBadge";
+import Text from "../../shared/Text";
+import TriggerBadge from "../../shared/TriggerBadge";
 
 type Props = {
   run: Run;

@@ -1,6 +1,6 @@
 import { Box } from "grommet";
 
-import { borderSize, edgeSize } from "../../../../../theme/theme-new";
+import { borderSize, edgeSize } from "../../../../../theme/theme";
 
 export const boxProps = {
   height: edgeSize.medium,

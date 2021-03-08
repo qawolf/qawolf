@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { breakpoints, edgeSize } from "../../../../../theme/theme-new";
+import { breakpoints, edgeSize } from "../../../../../theme/theme";
 
 const StyledDiv = styled.div`
   margin: 0 auto ${edgeSize.xlarge};

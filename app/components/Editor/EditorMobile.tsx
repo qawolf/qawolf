@@ -1,10 +1,10 @@
 import { Box } from "grommet";
 import { useContext } from "react";
 
-import { edgeSize, overflowStyle } from "../../theme/theme-new";
+import { edgeSize, overflowStyle } from "../../theme/theme";
 import NoMobile from "../NoMobile";
-import StatusBadge from "../shared-new/StatusBadge";
-import Text from "../shared-new/Text";
+import StatusBadge from "../shared/StatusBadge";
+import Text from "../shared/Text";
 import TestVideo from "./Canvas/TestVideo";
 import { TestContext } from "./contexts/TestContext";
 import { Mode } from "./hooks/mode";

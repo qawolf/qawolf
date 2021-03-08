@@ -1,12 +1,12 @@
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 
-import Spinner from "../../components/shared-new/Spinner";
+import Spinner from "../../components/shared/Spinner";
 import { UserContext } from "../../components/UserContext";
 import { useAcceptInvite } from "../../hooks/mutations";
 import { routes } from "../../lib/routes";
 import { state } from "../../lib/state";
-import { edgeSize } from "../../theme/theme-new";
+import { edgeSize } from "../../theme/theme";
 
 export default function Invite(): JSX.Element {
   const [acceptInvite, { data, loading, error }] = useAcceptInvite();

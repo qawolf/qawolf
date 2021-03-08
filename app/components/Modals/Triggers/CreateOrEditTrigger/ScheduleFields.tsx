@@ -1,8 +1,8 @@
 import { ChangeEvent } from "react";
 
 import { copy } from "../../../../theme/copy";
-import RadioButtonGroup from "../../../shared-new/RadioButtonGroup";
-import Text from "../../../shared-new/Text";
+import RadioButtonGroup from "../../../shared/RadioButtonGroup";
+import Text from "../../../shared/Text";
 import { labelTextProps, repeatMinutesOptions } from "../helpers";
 
 type Props = {

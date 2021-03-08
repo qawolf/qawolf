@@ -3,9 +3,9 @@ import Link from "next/link";
 
 import { routes } from "../../../../../lib/routes";
 import { ShortTest, TestSummary, Trigger } from "../../../../../lib/types";
-import { border } from "../../../../../theme/theme-new";
-import CheckBox from "../../../../shared-new/CheckBox";
-import TestGif from "../../../../shared-new/TestGif";
+import { border } from "../../../../../theme/theme";
+import CheckBox from "../../../../shared/CheckBox";
+import TestGif from "../../../../shared/TestGif";
 import Options from "./Options";
 import RunBars from "./RunBars";
 import TestName from "./TestName";

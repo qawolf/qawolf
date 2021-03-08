@@ -1,8 +1,8 @@
 import { Box } from "grommet";
 
 import { StatusCounts as StatusCountsType } from "../../../../lib/types";
-import { edgeSize } from "../../../../theme/theme-new";
-import StatusSummary from "../../../shared-new/StatusSummary";
+import { edgeSize } from "../../../../theme/theme";
+import StatusSummary from "../../../shared/StatusSummary";
 
 type Props = {
   statusCounts: StatusCountsType;

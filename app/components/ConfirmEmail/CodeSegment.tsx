@@ -8,7 +8,7 @@ import {
   edgeSize,
   fontFamily,
   textDesktop,
-} from "../../theme/theme-new";
+} from "../../theme/theme";
 
 type Props = {
   className?: string;

@@ -7,9 +7,9 @@ import {
   colors,
   edgeSize,
   transitionDuration,
-} from "../../../../theme/theme-new";
-import Close from "../../../shared-new/icons/Close";
-import Text from "../../../shared-new/Text";
+} from "../../../../theme/theme";
+import Close from "../../../shared/icons/Close";
+import Text from "../../../shared/Text";
 
 type Props = {
   className?: string;

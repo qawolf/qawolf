@@ -2,9 +2,9 @@ import { Box } from "grommet";
 
 import { ShortTest } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
-import { borderSize } from "../../../../theme/theme-new";
-import CheckBox from "../../../shared-new/CheckBox";
-import Text from "../../../shared-new/Text";
+import { borderSize } from "../../../../theme/theme";
+import CheckBox from "../../../shared/CheckBox";
+import Text from "../../../shared/Text";
 
 type Props = {
   checkedTestIds: string[];

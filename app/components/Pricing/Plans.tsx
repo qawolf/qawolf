@@ -3,9 +3,9 @@ import styled from "styled-components";
 
 import { routes } from "../../lib/routes";
 import { copy } from "../../theme/copy";
-import { breakpoints } from "../../theme/theme-new";
-import Section from "../shared-new/Section";
-import Text from "../shared-new/Text";
+import { breakpoints } from "../../theme/theme";
+import Section from "../shared/Section";
+import Text from "../shared/Text";
 import OpenSource from "./OpenSource";
 import Plan, { PlanType } from "./Plan";
 

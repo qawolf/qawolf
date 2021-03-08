@@ -1,16 +1,16 @@
-import { Box, ThemeContext } from "grommet";
+import { Box } from "grommet";
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 
-import Logo from "../components/shared-new/icons/Logo";
-import Spinner from "../components/shared-new/Spinner";
-import Text from "../components/shared-new/Text";
+import Logo from "../components/shared/icons/Logo";
+import Spinner from "../components/shared/Spinner";
+import Text from "../components/shared/Text";
 import { StateContext } from "../components/StateContext";
 import { useEnsureUser } from "../hooks/ensureUser";
 import { useCreateGitHubIntegrations } from "../hooks/mutations";
 import { routes } from "../lib/routes";
 import { copy } from "../theme/copy";
-import { edgeSize, theme } from "../theme/theme-new";
+import { edgeSize } from "../theme/theme";
 
 export default function GitHubIntegration(): JSX.Element {
   useEnsureUser();
@@ -51,24 +51,22 @@ export default function GitHubIntegration(): JSX.Element {
     }
   }, [data?.createGitHubIntegrations]);
 
+  if (!data?.createGitHubIntegrations && !error) {
+    return <Spinner margin={{ top: edgeSize.xxxlarge }} />;
+  }
+
   return (
-    <ThemeContext.Extend value={theme}>
-      {!data?.createGitHubIntegrations && !error ? (
-        <Spinner margin={{ top: edgeSize.xxxlarge }} />
-      ) : (
-        <Box align="center" margin={{ top: "large" }}>
-          <Logo width={edgeSize.xxxlarge} />
-          <Text
-            color={error ? "danger" : "gray9"}
-            margin={{ top: "large" }}
-            size="componentHeader"
-          >
-            {error
-              ? `${copy.somethingWrong}: ${error.message}`
-              : copy.gitHubComplete}
-          </Text>
-        </Box>
-      )}
-    </ThemeContext.Extend>
+    <Box align="center" margin={{ top: "large" }}>
+      <Logo width={edgeSize.xxxlarge} />
+      <Text
+        color={error ? "danger" : "gray9"}
+        margin={{ top: "large" }}
+        size="componentHeader"
+      >
+        {error
+          ? `${copy.somethingWrong}: ${error.message}`
+          : copy.gitHubComplete}
+      </Text>
+    </Box>
   );
 }

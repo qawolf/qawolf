@@ -1,19 +1,20 @@
 import { Box } from "grommet";
 
-import WolfHead from "../../shared-new/icons/WolfHead";
+import { edgeSize } from "../../../theme/theme";
+import WolfHead from "../icons/WolfHead";
 
-type Props = { wolfVariant: string };
+type Props = { color: string };
 
-export default function DefaultAvatar({ wolfVariant }: Props): JSX.Element {
+export default function DefaultAvatar({ color }: Props): JSX.Element {
   return (
     <Box
       align="center"
-      background="brand"
+      background="gray2"
       data-test="avatar-default"
       fill
       justify="center"
     >
-      <WolfHead color={wolfVariant} width="24px" />
+      <WolfHead color={color} width={edgeSize.small} />
     </Box>
   );
 }

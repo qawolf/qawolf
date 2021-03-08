@@ -1,6 +1,6 @@
 import { copy } from "../../../../theme/copy";
-import Tabs from "../../../shared-new/Tabs";
-import Tab from "../../../shared-new/Tabs/Tab";
+import Tabs from "../../../shared/Tabs";
+import Tab from "../../../shared/Tabs/Tab";
 import { TriggerMode } from "../helpers";
 
 const options: TriggerMode[] = ["schedule", "deployment", "api"];

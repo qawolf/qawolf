@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 import styled from "styled-components";
 
-import { breakpoints } from "../../../../theme/theme-new";
+import { breakpoints } from "../../../../theme/theme";
 import Layer from "../../../shared/Layer";
 
 type Props = { onClickOutside: () => void };

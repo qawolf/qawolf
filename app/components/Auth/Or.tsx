@@ -1,7 +1,7 @@
 import { Box, BoxProps } from "grommet";
 
 import { copy } from "../../theme/copy";
-import Text from "../shared-new/Text";
+import Text from "../shared/Text";
 
 const dividerProps: BoxProps = {
   background: "fill20",

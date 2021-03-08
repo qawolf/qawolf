@@ -6,9 +6,9 @@ import {
 } from "../../../../hooks/mutations";
 import { EnvironmentVariable } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
-import { edgeSize } from "../../../../theme/theme-new";
-import TextInput from "../../../shared-new/AppTextInput";
-import ListItemForm from "../../../shared-new/ListItemForm";
+import { edgeSize } from "../../../../theme/theme";
+import TextInput from "../../../shared/AppTextInput";
+import ListItemForm from "../../../shared/ListItemForm";
 
 type Props = {
   environmentId: string;

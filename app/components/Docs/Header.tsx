@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-import Text from "../shared-new/Text";
+import Text from "../shared/Text";
 
 type Props = { children: string };
 

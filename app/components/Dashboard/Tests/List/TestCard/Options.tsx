@@ -4,15 +4,15 @@ import { useRef, useState } from "react";
 import { state } from "../../../../../lib/state";
 import { ShortTest } from "../../../../../lib/types";
 import { copy } from "../../../../../theme/copy";
-import { edgeSize } from "../../../../../theme/theme-new";
-import Button from "../../../../shared-new/AppButton";
-import Divider from "../../../../shared-new/Divider";
-import Drop from "../../../../shared-new/Drop";
-import Folder from "../../../../shared-new/icons/Folder";
-import Lightning from "../../../../shared-new/icons/Lightning";
-import More from "../../../../shared-new/icons/More";
-import Trash from "../../../../shared-new/icons/Trash";
-import Option from "../../../../shared-new/Select/Option";
+import { edgeSize } from "../../../../../theme/theme";
+import Button from "../../../../shared/AppButton";
+import Divider from "../../../../shared/Divider";
+import Drop from "../../../../shared/Drop";
+import Folder from "../../../../shared/icons/Folder";
+import Lightning from "../../../../shared/icons/Lightning";
+import More from "../../../../shared/icons/More";
+import Trash from "../../../../shared/icons/Trash";
+import Option from "../../../../shared/Select/Option";
 
 type Props = {
   hasGroups: boolean;

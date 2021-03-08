@@ -6,10 +6,10 @@ import { JWT_KEY } from "../../../lib/client";
 import { routes } from "../../../lib/routes";
 import { state } from "../../../lib/state";
 import { copy } from "../../../theme/copy";
-import Divider from "../../shared-new/Divider";
-import LogOut from "../../shared-new/icons/LogOut";
-import Menu from "../../shared-new/Menu";
-import Option from "../../shared-new/Select/Option";
+import Divider from "../../shared/Divider";
+import LogOut from "../../shared/icons/LogOut";
+import Menu from "../../shared/Menu";
+import Option from "../../shared/Select/Option";
 import { StateContext } from "../../StateContext";
 import { UserContext } from "../../UserContext";
 

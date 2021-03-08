@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { breakpoints, edgeSize } from "../../theme/theme-new";
+import { breakpoints, edgeSize } from "../../theme/theme";
 
 type Props = {
   tellaId?: string;

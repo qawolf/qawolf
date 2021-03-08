@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-import { breakpoints, edgeSize } from "../../theme/theme-new";
-import Text from "../shared-new/Text";
+import { breakpoints, edgeSize } from "../../theme/theme";
+import Text from "../shared/Text";
 
 type Props = {
   detail: string;

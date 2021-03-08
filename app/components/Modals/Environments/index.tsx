@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import { useContext, useState } from "react";
 
 import { EnvironmentVariable, MutableListFields } from "../../../lib/types";
-import Modal from "../../shared-new/Modal";
+import Modal from "../../shared/Modal";
 import { StateContext } from "../../StateContext";
 import Environments from "./Environments";
 import ConfirmDeleteEnvironment from "./Environments/ConfirmDelete";

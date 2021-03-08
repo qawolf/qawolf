@@ -3,15 +3,11 @@ import Link from "next/link";
 
 import { routes } from "../../../../../lib/routes";
 import { SuiteRun } from "../../../../../lib/types";
-import {
-  border,
-  edgeSize,
-  overflowStyle,
-} from "../../../../../theme/theme-new";
-import CheckBox from "../../../../shared-new/CheckBox";
-import StatusIcon from "../../../../shared-new/StatusIcon";
-import TestGif from "../../../../shared-new/TestGif";
-import Text from "../../../../shared-new/Text";
+import { border, edgeSize, overflowStyle } from "../../../../../theme/theme";
+import CheckBox from "../../../../shared/CheckBox";
+import StatusIcon from "../../../../shared/StatusIcon";
+import TestGif from "../../../../shared/TestGif";
+import Text from "../../../../shared/Text";
 import Details from "./Details";
 
 type Props = {

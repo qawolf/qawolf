@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { breakpoints } from "../../../../../theme/theme-new";
+import { breakpoints } from "../../../../../theme/theme";
 import Flame from "./Flame";
 import InnerFlame from "./InnerFlame";
 import RocketIcon from "./RocketIcon";

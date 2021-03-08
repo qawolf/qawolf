@@ -9,7 +9,7 @@ import {
   edgeSize,
   transition,
   width,
-} from "../../../../theme/theme-new";
+} from "../../../../theme/theme";
 import ButtonText from "./ButtonText";
 
 const StyledBox = styled(Box)`

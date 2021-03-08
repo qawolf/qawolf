@@ -12,7 +12,7 @@ import {
   textDesktop,
   transitionDuration,
   width,
-} from "../../../theme/theme-new";
+} from "../../../theme/theme";
 import FooterLinks from "./FooterLinks";
 
 type Props = {

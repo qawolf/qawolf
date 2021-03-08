@@ -4,10 +4,10 @@ import Link from "next/link";
 import { timestampToText } from "../../../../lib/helpers";
 import { routes } from "../../../../lib/routes";
 import { SuiteSummary } from "../../../../lib/types";
-import { border, edgeSize } from "../../../../theme/theme-new";
-import StatusIcon from "../../../shared-new/StatusIcon";
-import Text from "../../../shared-new/Text";
-import TriggerIcon from "../../../shared-new/TriggerIcon";
+import { border, edgeSize } from "../../../../theme/theme";
+import StatusIcon from "../../../shared/StatusIcon";
+import Text from "../../../shared/Text";
+import TriggerIcon from "../../../shared/TriggerIcon";
 import { formatSuiteName, getStatusForSuite } from "../../helpers";
 import StatusCounts from "./StatusCounts";
 

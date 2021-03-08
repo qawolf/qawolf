@@ -1,11 +1,11 @@
 import { Box, Keyboard } from "grommet";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import { AuthMode } from "../../lib/types";
 import { copy } from "../../theme/copy";
-import Button from "../shared-new/Button";
-import Text from "../shared-new/Text";
-import TextInput from "../shared-new/TextInput";
+import Button from "../shared/Button";
+import Text from "../shared/Text";
+import TextInput from "../shared/TextInput";
 
 type Props = {
   disabled: boolean;
@@ -22,11 +22,6 @@ export default function EmailForm({
 }: Props): JSX.Element {
   const [email, setEmail] = useState("");
   const ref = useRef<HTMLInputElement>(null);
-
-  // focus input
-  useEffect(() => {
-    if (ref.current) ref.current.focus();
-  }, []);
 
   const handleClick = () => {
     onSubmit(email);
@@ -50,6 +45,7 @@ export default function EmailForm({
           {copy.email}
         </Text>
         <TextInput
+          autoFocus
           name="email"
           onChange={handleEmailChange}
           placeholder={copy.emailPlaceholder}

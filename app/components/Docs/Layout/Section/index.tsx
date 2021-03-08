@@ -1,12 +1,8 @@
 import { Box, Button } from "grommet";
 import styled from "styled-components";
 
-import {
-  colors,
-  edgeSize,
-  transitionDuration,
-} from "../../../../theme/theme-new";
-import Text from "../../../shared-new/Text";
+import { colors, edgeSize, transitionDuration } from "../../../../theme/theme";
+import Text from "../../../shared/Text";
 import { Section as SectionType } from "../../docs";
 import SectionLinks, { iconSize } from "./SectionLinks";
 

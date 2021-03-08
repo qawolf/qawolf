@@ -3,9 +3,9 @@ import { Box } from "grommet";
 import { durationToText } from "../../../../../lib/helpers";
 import { SuiteRun } from "../../../../../lib/types";
 import { copy } from "../../../../../theme/copy";
-import { colors, edgeSize } from "../../../../../theme/theme-new";
-import Timer from "../../../../shared-new/icons/Timer";
-import Text from "../../../../shared-new/Text";
+import { colors, edgeSize } from "../../../../../theme/theme";
+import Timer from "../../../../shared/icons/Timer";
+import Text from "../../../../shared/Text";
 
 type Props = { run: SuiteRun };
 

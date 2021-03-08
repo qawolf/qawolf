@@ -4,10 +4,10 @@ import styled from "styled-components";
 
 import { useJoinMailingList } from "../../../hooks/mutations";
 import { copy } from "../../../theme/copy";
-import { edgeSize, width } from "../../../theme/theme-new";
-import Button from "../../shared-new/Button";
-import Text from "../../shared-new/Text";
-import TextInput from "../../shared-new/TextInput";
+import { edgeSize, width } from "../../../theme/theme";
+import Button from "../../shared/Button";
+import Text from "../../shared/Text";
+import TextInput from "../../shared/TextInput";
 
 const StyledBox = styled(Box)`
   padding: 0 ${edgeSize.medium};

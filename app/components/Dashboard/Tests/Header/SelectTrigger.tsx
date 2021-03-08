@@ -2,8 +2,8 @@ import { useRouter } from "next/router";
 
 import { TestTriggers, Trigger } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
-import Divider from "../../../shared-new/Divider";
-import Select from "../../../shared-new/Select";
+import Divider from "../../../shared/Divider";
+import Select from "../../../shared/Select";
 import { buildTestsPath, noTriggerId } from "../../helpers";
 import TriggerOption from "./TriggerOption";
 

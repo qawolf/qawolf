@@ -7,7 +7,7 @@ import {
 } from "../../../../hooks/mutations";
 import { Trigger, TriggerFields } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
-import Header from "../../../shared-new/Modal/Header";
+import Header from "../../../shared/Modal/Header";
 import { StateContext } from "../../../StateContext";
 import Form from "./Form";
 

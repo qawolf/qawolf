@@ -1,4 +1,4 @@
-import { Box, ThemeContext } from "grommet";
+import { Box } from "grommet";
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 
@@ -7,7 +7,6 @@ import { useUpdateUser } from "../../hooks/mutations";
 import { useGroups } from "../../hooks/queries";
 import { routes } from "../../lib/routes";
 import { state } from "../../lib/state";
-import { theme } from "../../theme/theme-new";
 import { StateContext } from "../StateContext";
 import { UserContext } from "../UserContext";
 import Settings from "./Settings";
@@ -51,11 +50,9 @@ export default function Dashboard(): JSX.Element {
   }
 
   return (
-    <ThemeContext.Extend value={theme}>
-      <Box direction="row" height="100vh">
-        <Sidebar groups={groups} />
-        {innerHtml}
-      </Box>
-    </ThemeContext.Extend>
+    <Box direction="row" height="100vh">
+      <Sidebar groups={groups} />
+      {innerHtml}
+    </Box>
   );
 }

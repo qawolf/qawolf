@@ -3,9 +3,9 @@ import { ReactNode, useContext } from "react";
 
 import { copy } from "../../../theme/copy";
 import Paw from "../../shared/icons/Paw";
-import WolfButton from "../../shared-new/icons/WolfButton";
-import WolfSitting from "../../shared-new/icons/WolfSitting";
-import Text from "../../shared-new/Text";
+import WolfButton from "../../shared/icons/WolfButton";
+import WolfSitting from "../../shared/icons/WolfSitting";
+import Text from "../../shared/Text";
 import { UserContext } from "../../UserContext";
 import { RunnerContext } from "../contexts/RunnerContext";
 import { TestContext } from "../contexts/TestContext";

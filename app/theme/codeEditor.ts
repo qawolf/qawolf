@@ -1,6 +1,6 @@
 import type * as monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
 
-import { colors } from "./theme-new";
+import { colors } from "./theme";
 
 export const background = colors.gray10;
 

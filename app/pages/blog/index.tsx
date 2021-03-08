@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import BlogLink from "../../components/Blog/BlogLink";
 import Layout from "../../components/Blog/Layout";
-import { edgeSize, width } from "../../theme/theme-new";
+import { edgeSize, width } from "../../theme/theme";
 
 const posts = [
   {
