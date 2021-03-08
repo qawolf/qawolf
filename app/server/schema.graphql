@@ -822,6 +822,9 @@ type Mutation {
     you obtain an access token to accept the invite.
     """
     invite_id: ID
+
+    "Whether or not the user is subscribed to email updates"
+    is_subscribed: Boolean
   ): SendLoginCode!
 
   """
@@ -871,6 +874,9 @@ type Mutation {
     the invite.
     """
     invite_id: ID
+
+    "Whether or not the user is subscribed to email updates"
+    is_subscribed: Boolean
   ): AuthenticatedUser!
 
   """

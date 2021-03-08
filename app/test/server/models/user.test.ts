@@ -49,7 +49,11 @@ describe("user model", () => {
 
     beforeAll(() => {
       return createUserWithEmail(
-        { email: "acorn@qawolf.com", login_code: "ABCDEF" },
+        {
+          email: "acorn@qawolf.com",
+          is_subscribed: true,
+          login_code: "ABCDEF",
+        },
         options
       );
     });
@@ -125,7 +129,10 @@ describe("user model", () => {
     });
 
     it("creates a new user from email", async () => {
-      await createUserWithEmail({ email, login_code: "ABCDEF" }, options);
+      await createUserWithEmail(
+        { email, is_subscribed: true, login_code: "ABCDEF" },
+        options
+      );
 
       const user = await db("users")
         .select("*")
@@ -139,6 +146,7 @@ describe("user model", () => {
         github_login: null,
         id: expect.any(String),
         is_enabled: true,
+        is_subscribed: true,
         login_code_digest: expect.any(String),
         login_code_expires_at: expect.any(Date),
         name: null,
@@ -172,6 +180,7 @@ describe("user model", () => {
           email: "Buck@QAWOLF.com",
           github_id: 345,
           github_login: "spirit",
+          is_subscribed: false,
           name: "name",
           wolf_name,
           wolf_number,
@@ -192,6 +201,7 @@ describe("user model", () => {
         github_id: 345,
         github_login: "spirit",
         is_enabled: true,
+        is_subscribed: false,
         name: "name",
         onboarded_at: null,
         wolf_name: "Lena",

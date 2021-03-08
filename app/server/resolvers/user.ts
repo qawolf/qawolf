@@ -133,7 +133,7 @@ export const currentUserResolver = async (
  */
 export const sendLoginCodeResolver = async (
   _: Record<string, unknown>,
-  { email, invite_id }: SendLoginCodeMutation,
+  { email, invite_id, is_subscribed }: SendLoginCodeMutation,
   { db, logger }: Context
 ): Promise<SendLoginCode> => {
   const log = logger.prefix("sendLoginCodeResolver");
@@ -154,6 +154,7 @@ export const sendLoginCodeResolver = async (
       {
         emailFields: {
           email,
+          is_subscribed,
           login_code,
           wolf_name: invite?.wolf_name,
           wolf_number: invite?.wolf_number,
@@ -210,11 +211,20 @@ export const signInWithEmailResolver = async (
  */
 export const signInWithGitHubResolver = async (
   _: Record<string, unknown>,
-  { github_code, github_state, invite_id }: SignInWithGitHubMutation,
+  {
+    github_code,
+    github_state,
+    invite_id,
+    is_subscribed,
+  }: SignInWithGitHubMutation,
   { db, logger }: Context
 ): Promise<AuthenticatedUser> => {
   const log = logger.prefix("signInWithGitHubResolver");
-  const gitHubFields = await findGitHubFields({ github_code, github_state });
+  const gitHubFields = await findGitHubFields({
+    github_code,
+    github_state,
+    is_subscribed,
+  });
   const existingUser = await findUser(
     // look up by email OR GitHub ID
     { email: gitHubFields.email, github_id: gitHubFields.github_id },
@@ -245,6 +255,7 @@ export const signInWithGitHubResolver = async (
       {
         gitHubFields: {
           ...gitHubFields,
+          is_subscribed,
           wolf_name: invite?.wolf_name,
           wolf_number: invite?.wolf_number,
           wolf_variant: invite?.wolf_variant,

@@ -53,18 +53,19 @@ export type SlackWebhook = {
 };
 
 // Model types
-type WolfFields = {
+type CreateUserFields = {
+  is_subscribed: boolean;
   wolf_name?: string | null;
   wolf_number?: number | null;
   wolf_variant?: string | null;
 };
 
-export type CreateUserWithEmail = WolfFields & {
+export type CreateUserWithEmail = CreateUserFields & {
   email: string;
   login_code: string;
 };
 
-export type CreateUserWithGitHub = GitHubFields & WolfFields;
+export type CreateUserWithGitHub = GitHubFields & CreateUserFields;
 
 export type DeploymentEnvironment = "preview" | "production";
 
@@ -316,6 +317,7 @@ export type User = {
   github_login: string | null;
   id: string;
   is_enabled?: boolean;
+  is_subscribed?: boolean;
   login_code_digest: string | null;
   login_code_expires_at: string | null;
   name: string | null;
@@ -416,6 +418,7 @@ export type RunTestStatus = {
 export type SendLoginCodeMutation = {
   email: string;
   invite_id?: string | null;
+  is_subscribed?: boolean;
 };
 
 export type SendLoginCode = {
@@ -431,6 +434,7 @@ export type SignInWithGitHubMutation = {
   github_code: string;
   github_state: string;
   invite_id?: string | null;
+  is_subscribed?: boolean;
 };
 
 export type UpdateEnvironmentMutation = {
