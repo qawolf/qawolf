@@ -2,13 +2,7 @@ import { debug } from "./debug";
 import { getInputElementValue } from "./element";
 import { getSelector } from "./generateSelectors";
 import { resolveAction } from "./resolveAction";
-import {
-  Action,
-  Callback,
-  ElementAction,
-  PossibleAction,
-  Selector,
-} from "./types";
+import { Action, Callback, ElementAction, PossibleAction } from "./types";
 
 type ActionCallback = Callback<ElementAction>;
 
@@ -16,7 +10,7 @@ export class ActionRecorder {
   _lastReceivedAction: PossibleAction;
   _lastRecordedAction: ElementAction;
   _onDispose: Callback[] = [];
-  _selectorCache = new Map<HTMLElement, Selector>();
+  _selectorCache = new Map<HTMLElement, string>();
 
   constructor() {
     debug("ActionRecorder: created");
@@ -79,7 +73,7 @@ export class ActionRecorder {
     // so we can skip building a selector and emitting it.
     if (!action) return;
 
-    const { value: selector } = getSelector(
+    const selector = getSelector(
       event.target as HTMLElement,
       1000,
       this._selectorCache

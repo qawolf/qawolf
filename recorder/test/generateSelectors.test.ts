@@ -2,7 +2,6 @@ import { Page } from "playwright";
 
 import { launch, LaunchResult, setBody } from "./utils";
 import { QAWolfWeb } from "../src";
-import { Selector } from "../src/types";
 
 let launched: LaunchResult;
 let page: Page;
@@ -25,7 +24,7 @@ const expectSelector = async (
     ({ element }) => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const target = qawolf.getTopmostEditableElement(element as HTMLElement);
-      return qawolf.getSelector(target, 0)?.value;
+      return qawolf.getSelector(target, 0);
     },
     { element }
   );
@@ -83,20 +82,20 @@ describe("getSelector", () => {
 
     const result = await page.evaluate(() => {
       const element = document.querySelector("input");
-      const cache = new Map<HTMLElement, Selector>();
-      cache.set(element, { penalty: 10, value: ".cached" });
+      const cache = new Map<HTMLElement, string>();
+      cache.set(element, ".cached");
       const qawolf: QAWolfWeb = (window as any).qawolf;
-      return qawolf.getSelector(element, 0, cache)?.value;
+      return qawolf.getSelector(element, 0, cache);
     });
     expect(result).toEqual(".cached");
 
     // not for non-matching selectors
     const result2 = await page.evaluate(() => {
       const element = document.querySelector("input");
-      const cache = new Map<HTMLElement, Selector>();
-      cache.set(element, { penalty: 10, value: "div" });
+      const cache = new Map<HTMLElement, string>();
+      cache.set(element, "div");
       const qawolf: QAWolfWeb = (window as any).qawolf;
-      return qawolf.getSelector(element, 0, cache)?.value;
+      return qawolf.getSelector(element, 0, cache);
     });
     expect(result2).toEqual("input");
   });

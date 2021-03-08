@@ -56,12 +56,6 @@ export type Rect = {
   y: number;
 };
 
-export type Selector = {
-  elementText?: string;
-  penalty: number;
-  value: string;
-};
-
 export type Target = {
   element: HTMLElement;
   level: number;

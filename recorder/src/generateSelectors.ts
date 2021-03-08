@@ -1,7 +1,7 @@
 import { getXpath } from "./element";
 import { generateSortedCueSets } from "./generateCueSets";
 import { buildSelectorForCues, isSelectorMatch } from "./selectorEngine";
-import { Rect, Selector } from "./types";
+import { Rect } from "./types";
 
 function getLikelyTarget(target: HTMLElement): HTMLElement {
   return (
@@ -15,15 +15,15 @@ function getLikelyTarget(target: HTMLElement): HTMLElement {
 export function getSelector(
   target: HTMLElement,
   timeout = 1000,
-  selectorCache?: Map<HTMLElement, Selector>
-): Selector | null {
+  selectorCache?: Map<HTMLElement, string>
+): string | null {
   const start = Date.now();
 
   const rectCache = new Map<HTMLElement, Rect>();
 
   if (selectorCache && selectorCache.has(target)) {
     const selectorFromCache = selectorCache.get(target);
-    const isMatch = isSelectorMatch(selectorFromCache.value, target, rectCache);
+    const isMatch = isSelectorMatch(selectorFromCache, target, rectCache);
     if (isMatch) return selectorFromCache;
     selectorCache.delete(target);
   }
@@ -36,16 +36,15 @@ export function getSelector(
 
     const isMatch = isSelectorMatch(selector, likelyTarget, rectCache);
     if (isMatch) {
-      const result = { penalty: cueSet.penalty, value: selector };
       if (selectorCache) {
-        selectorCache.set(target, result);
-        selectorCache.set(likelyTarget, result);
+        selectorCache.set(target, selector);
+        selectorCache.set(likelyTarget, selector);
       }
-      return result;
+      return selector;
     }
 
     if (timeout > 0 && Date.now() - start > timeout) break;
   }
 
-  return { penalty: 1000, value: getXpath(target) };
+  return getXpath(target);
 }
