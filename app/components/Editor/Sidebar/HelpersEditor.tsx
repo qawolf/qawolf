@@ -38,9 +38,13 @@ export default function HelpersEditor({ onKeyDown }: Props): JSX.Element {
   }, [refetchTeam]);
 
   useEffect(() => {
+    console.log("TEAM", team?.helpers_version, helpersVersionRef.current);
     if (!editor || !team) return;
 
-    if (team.helpers_version > helpersVersionRef.current) {
+    if (
+      !editor.getValue() ||
+      team.helpers_version > helpersVersionRef.current
+    ) {
       editor.setValue(team.helpers);
     }
   }, [editor, team]);
