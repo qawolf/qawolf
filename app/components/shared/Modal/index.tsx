@@ -20,6 +20,7 @@ export default function Modal({
 }: Props): JSX.Element {
   return (
     <Layer
+      data-hj-suppress
       margin={{ vertical: "xlarge" }}
       onClickOutside={closeModal}
       onEsc={closeModal}
