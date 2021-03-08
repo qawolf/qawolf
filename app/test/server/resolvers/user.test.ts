@@ -137,7 +137,7 @@ describe("sendLoginCodeResolver", () => {
 
     const result = await sendLoginCodeResolver(
       {},
-      { email, is_subscribed: true },
+      { email },
       { ...context, user: null }
     );
 
@@ -145,7 +145,6 @@ describe("sendLoginCodeResolver", () => {
 
     expect(newUser).toMatchObject({
       email,
-      is_subscribed: true,
       login_code_digest: expect.any(String),
       login_code_expires_at: expect.any(Date),
     });
@@ -171,7 +170,7 @@ describe("sendLoginCodeResolver", () => {
 
     const result = await sendLoginCodeResolver(
       {},
-      { email, invite_id: invite.id, is_subscribed: false },
+      { email, invite_id: invite.id },
       { ...context, user: null }
     );
 
@@ -179,7 +178,6 @@ describe("sendLoginCodeResolver", () => {
 
     expect(newUser).toMatchObject({
       email,
-      is_subscribed: false,
       login_code_digest: expect.any(String),
       login_code_expires_at: expect.any(Date),
       wolf_name: invite.wolf_name,
@@ -211,7 +209,7 @@ describe("signInWithEmailResolver", () => {
 
   beforeAll(async () => {
     user = await userModel.createUserWithEmail(
-      { email: "spice@qawolf.com", is_subscribed: true, login_code },
+      { email: "spice@qawolf.com", login_code },
       options
     );
 
@@ -345,7 +343,6 @@ describe("signInWithGitHubResolver", () => {
         github_code: "code",
         github_state: "state",
         invite_id: invite.id,
-        is_subscribed: true,
       },
       { ...context, user: null }
     );
@@ -353,7 +350,6 @@ describe("signInWithGitHubResolver", () => {
     expect(access_token).toBeTruthy();
 
     expect(user).toMatchObject({
-      is_subscribed: true,
       wolf_name: invite.wolf_name,
       wolf_number: invite.wolf_number,
       wolf_variant: invite.wolf_variant,
@@ -377,14 +373,13 @@ describe("signInWithGitHubResolver", () => {
 
     const { access_token, user } = await signInWithGitHubResolver(
       {},
-      { github_code: "code", github_state: "state", is_subscribed: false },
+      { github_code: "code", github_state: "state" },
       { ...context, user: null }
     );
 
     expect(access_token).toBe("signedToken");
     expect(user).toMatchObject({
       ...gitHubUser2,
-      is_subscribed: false,
       teams: [{ plan: "free" }],
     });
     expect(user.teams[0].api_key).toMatch("qawolf_");
@@ -409,7 +404,7 @@ describe("signInWithGitHubResolver", () => {
 
   it("allows sign in if email already taken", async () => {
     const user = await userModel.createUserWithEmail(
-      { email: "spice@qawolf.com", is_subscribed: false, login_code: "ABCDEF" },
+      { email: "spice@qawolf.com", login_code: "ABCDEF" },
       options
     );
 

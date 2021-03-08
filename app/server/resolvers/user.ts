@@ -154,7 +154,6 @@ export const sendLoginCodeResolver = async (
       {
         emailFields: {
           email,
-          is_subscribed,
           login_code,
           wolf_name: invite?.wolf_name,
           wolf_number: invite?.wolf_number,
@@ -223,7 +222,6 @@ export const signInWithGitHubResolver = async (
   const gitHubFields = await findGitHubFields({
     github_code,
     github_state,
-    is_subscribed,
   });
   const existingUser = await findUser(
     // look up by email OR GitHub ID
@@ -255,7 +253,6 @@ export const signInWithGitHubResolver = async (
       {
         gitHubFields: {
           ...gitHubFields,
-          is_subscribed,
           wolf_name: invite?.wolf_name,
           wolf_number: invite?.wolf_number,
           wolf_variant: invite?.wolf_variant,

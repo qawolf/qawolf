@@ -53,19 +53,18 @@ export type SlackWebhook = {
 };
 
 // Model types
-type CreateUserFields = {
-  is_subscribed: boolean;
+type WolfFields = {
   wolf_name?: string | null;
   wolf_number?: number | null;
   wolf_variant?: string | null;
 };
 
-export type CreateUserWithEmail = CreateUserFields & {
+export type CreateUserWithEmail = WolfFields & {
   email: string;
   login_code: string;
 };
 
-export type CreateUserWithGitHub = GitHubFields & CreateUserFields;
+export type CreateUserWithGitHub = GitHubFields & WolfFields;
 
 export type DeploymentEnvironment = "preview" | "production";
 
@@ -209,6 +208,11 @@ export type StatusCounts = {
   pass: number;
 };
 
+export type Subscriber = {
+  email: string;
+  id: string;
+};
+
 export type Suite = {
   alert_sent_at?: string;
   created_at: string;
@@ -317,7 +321,6 @@ export type User = {
   github_login: string | null;
   id: string;
   is_enabled?: boolean;
-  is_subscribed?: boolean;
   login_code_digest: string | null;
   login_code_expires_at: string | null;
   name: string | null;

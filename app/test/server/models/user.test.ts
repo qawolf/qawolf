@@ -51,7 +51,6 @@ describe("user model", () => {
       return createUserWithEmail(
         {
           email: "acorn@qawolf.com",
-          is_subscribed: true,
           login_code: "ABCDEF",
         },
         options
@@ -129,10 +128,7 @@ describe("user model", () => {
     });
 
     it("creates a new user from email", async () => {
-      await createUserWithEmail(
-        { email, is_subscribed: true, login_code: "ABCDEF" },
-        options
-      );
+      await createUserWithEmail({ email, login_code: "ABCDEF" }, options);
 
       const user = await db("users")
         .select("*")
@@ -180,7 +176,6 @@ describe("user model", () => {
           email: "Buck@QAWOLF.com",
           github_id: 345,
           github_login: "spirit",
-          is_subscribed: false,
           name: "name",
           wolf_name,
           wolf_number,
