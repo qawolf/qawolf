@@ -1,4 +1,4 @@
-import { Box, Keyboard, ThemeContext } from "grommet";
+import { Box, Keyboard } from "grommet";
 import { useRouter } from "next/router";
 import { ChangeEvent, useContext, useState } from "react";
 
@@ -7,7 +7,6 @@ import { isValidURL, parseUrl } from "../../lib/helpers";
 import { routes } from "../../lib/routes";
 import { state } from "../../lib/state";
 import { copy } from "../../theme/copy";
-import { theme } from "../../theme/theme-new";
 import TextInput from "../shared-new/AppTextInput";
 import Modal from "../shared-new/Modal";
 import Buttons from "../shared-new/Modal/Buttons";
@@ -78,29 +77,27 @@ export default function CreateTest({ closeModal }: Props): JSX.Element {
   };
 
   return (
-    <ThemeContext.Extend value={theme}>
-      <Modal a11yTitle="create test modal" closeModal={closeModal}>
-        <Box pad="medium">
-          <Header closeModal={closeModal} label={copy.enterUrl} />
-          <Keyboard onEnter={handleCreate}>
-            <TextInput
-              autoFocus
-              error={error}
-              margin={{ top: "medium" }}
-              onChange={handleChange}
-              placeholder={copy.urlPlaceholder}
-              value={url}
-            />
-          </Keyboard>
-          <Buttons
-            onPrimaryClick={handleCreate}
-            onSecondaryClick={closeModal}
-            primaryIsDisabled={isLoading}
-            primaryLabel={copy.createTest}
-            secondaryLabel={copy.cancel}
+    <Modal a11yTitle="create test modal" closeModal={closeModal}>
+      <Box pad="medium">
+        <Header closeModal={closeModal} label={copy.enterUrl} />
+        <Keyboard onEnter={handleCreate}>
+          <TextInput
+            autoFocus
+            error={error}
+            margin={{ top: "medium" }}
+            onChange={handleChange}
+            placeholder={copy.urlPlaceholder}
+            value={url}
           />
-        </Box>
-      </Modal>
-    </ThemeContext.Extend>
+        </Keyboard>
+        <Buttons
+          onPrimaryClick={handleCreate}
+          onSecondaryClick={closeModal}
+          primaryIsDisabled={isLoading}
+          primaryLabel={copy.createTest}
+          secondaryLabel={copy.cancel}
+        />
+      </Box>
+    </Modal>
   );
 }

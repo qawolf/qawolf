@@ -1,16 +1,11 @@
-import { Box, BoxProps, ThemeContext } from "grommet";
+import { Box, BoxProps } from "grommet";
 import { useContext } from "react";
 import styled from "styled-components";
 
 import { useEnvironments } from "../../hooks/queries";
 import { state } from "../../lib/state";
 import { copy } from "../../theme/copy";
-import {
-  borderSize,
-  colors,
-  theme,
-  transitionDuration,
-} from "../../theme/theme-new";
+import { borderSize, colors, transitionDuration } from "../../theme/theme-new";
 import { StateContext } from "../StateContext";
 import Button from "./AppButton";
 import Configure from "./icons/Configure";
@@ -82,34 +77,28 @@ export default function Environments({
   });
 
   return (
-    <ThemeContext.Extend value={theme}>
-      <StyledBox
-        alignSelf="center"
-        direction="row"
-        round={borderSize.small}
-        width={width || "200px"}
+    <StyledBox
+      alignSelf="center"
+      direction="row"
+      round={borderSize.small}
+      width={width || "200px"}
+    >
+      <Button
+        IconComponent={Configure}
+        a11yTitle={copy.environmentEdit(selectedEnvironment?.name)}
+        noBorderSide="right"
+        onClick={openEnvironmentsModal}
+        type="dark"
+      />
+      <Box background={colors.gray8} id={dividerId} width={borderSize.xsmall} />
+      <Select
+        direction={direction || "up"}
+        label={label}
+        noBorderSide="left"
+        type="dark"
       >
-        <Button
-          IconComponent={Configure}
-          a11yTitle={copy.environmentEdit(selectedEnvironment?.name)}
-          noBorderSide="right"
-          onClick={openEnvironmentsModal}
-          type="dark"
-        />
-        <Box
-          background={colors.gray8}
-          id={dividerId}
-          width={borderSize.xsmall}
-        />
-        <Select
-          direction={direction || "up"}
-          label={label}
-          noBorderSide="left"
-          type="dark"
-        >
-          {optionsHtml}
-        </Select>
-      </StyledBox>
-    </ThemeContext.Extend>
+        {optionsHtml}
+      </Select>
+    </StyledBox>
   );
 }

@@ -1,7 +1,6 @@
-import { Box, BoxProps, ThemeContext } from "grommet";
+import { Box, BoxProps } from "grommet";
 import { ReactNode } from "react";
 
-import { theme } from "../../../theme/theme-new";
 import Layer from "../Layer";
 
 type Props = {
@@ -20,16 +19,14 @@ export default function Modal({
   width,
 }: Props): JSX.Element {
   return (
-    <ThemeContext.Extend value={theme}>
-      <Layer
-        margin={{ vertical: "xlarge" }}
-        onClickOutside={closeModal}
-        onEsc={closeModal}
-      >
-        <Box a11yTitle={a11yTitle} width={width || defaultWidth}>
-          {children}
-        </Box>
-      </Layer>
-    </ThemeContext.Extend>
+    <Layer
+      margin={{ vertical: "xlarge" }}
+      onClickOutside={closeModal}
+      onEsc={closeModal}
+    >
+      <Box a11yTitle={a11yTitle} width={width || defaultWidth}>
+        {children}
+      </Box>
+    </Layer>
   );
 }

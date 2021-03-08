@@ -1,11 +1,10 @@
-import { Box, Button, ThemeContext } from "grommet";
+import { Box, Button } from "grommet";
 import { useRef, useState } from "react";
 
 import { useDeleteTests } from "../../hooks/mutations";
 import { useOnHotKey } from "../../hooks/onHotKey";
 import { SelectedTest } from "../../lib/types";
 import { copy } from "../../theme/copy";
-import { theme } from "../../theme/theme-new";
 import CheckBox from "../shared-new/CheckBox";
 import Modal from "../shared-new/Modal";
 import Buttons from "../shared-new/Modal/Buttons";
@@ -46,43 +45,41 @@ export default function DeleteTests({ closeModal, tests }: Props): JSX.Element {
   useOnHotKey({ hotKey: "Enter", onHotKey: handleDelete });
 
   return (
-    <ThemeContext.Extend value={theme}>
-      <Modal a11yTitle="delete test modal" closeModal={closeModal}>
-        <Box pad="medium">
-          <Header
-            closeModal={closeModal}
-            label={copy.deleteTests(tests.length)}
-          />
-          <Text
-            color="gray9"
-            margin={{ bottom: "medium", top: "xxsmall" }}
-            size="componentParagraph"
-          >
-            {copy.deleteTestsDetail}
-          </Text>
-          <Button
-            a11yTitle="confirm delete"
-            onClick={handleClick}
-            plain
-            ref={ref}
-          >
-            <Box align="center" direction="row" width="120px">
-              <CheckBox checked={isChecked} hasError={hasError} />
-              <Text color="gray9" margin={{ left: "xxsmall" }} size="component">
-                {copy.iUnderstand}
-              </Text>
-            </Box>
-          </Button>
-          <Buttons
-            onPrimaryClick={handleDelete}
-            onSecondaryClick={closeModal}
-            primaryIsDisabled={loading}
-            primaryLabel={copy.delete}
-            primaryType="danger"
-            secondaryLabel={copy.cancel}
-          />
-        </Box>
-      </Modal>
-    </ThemeContext.Extend>
+    <Modal a11yTitle="delete test modal" closeModal={closeModal}>
+      <Box pad="medium">
+        <Header
+          closeModal={closeModal}
+          label={copy.deleteTests(tests.length)}
+        />
+        <Text
+          color="gray9"
+          margin={{ bottom: "medium", top: "xxsmall" }}
+          size="componentParagraph"
+        >
+          {copy.deleteTestsDetail}
+        </Text>
+        <Button
+          a11yTitle="confirm delete"
+          onClick={handleClick}
+          plain
+          ref={ref}
+        >
+          <Box align="center" direction="row" width="120px">
+            <CheckBox checked={isChecked} hasError={hasError} />
+            <Text color="gray9" margin={{ left: "xxsmall" }} size="component">
+              {copy.iUnderstand}
+            </Text>
+          </Box>
+        </Button>
+        <Buttons
+          onPrimaryClick={handleDelete}
+          onSecondaryClick={closeModal}
+          primaryIsDisabled={loading}
+          primaryLabel={copy.delete}
+          primaryType="danger"
+          secondaryLabel={copy.cancel}
+        />
+      </Box>
+    </Modal>
   );
 }

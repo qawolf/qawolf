@@ -40,7 +40,7 @@ function DetailText({
         {message}
       </StyledText>
       <Text
-        color="textGray"
+        color="textLight"
         size="small"
         textAlign={finalTextAlign}
         weight="normal"

@@ -35,6 +35,10 @@ const StyledGrommetTextInput = styled(GrommetTextInput)`
     border-color: ${colors.primaryFill};
   }
 
+  &::placeholder {
+    color: ${colors.gray5};
+  }
+
   @media screen and (min-width: ${breakpoints.medium.value}px) {
     font-size: ${textDesktop.xsmall.size};
     height: 56px;

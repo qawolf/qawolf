@@ -1,8 +1,8 @@
-import { Box, ThemeContext } from "grommet";
+import { Box } from "grommet";
 import React, { FC } from "react";
 
 import { useWindowSize } from "../../hooks/windowSize";
-import { breakpoints, theme } from "../../theme/theme-new";
+import { breakpoints } from "../../theme/theme-new";
 import Application from "./Application";
 import { RunnerProvider } from "./contexts/RunnerContext";
 import { TestProvider } from "./contexts/TestContext";
@@ -24,20 +24,18 @@ export default function Editor(): JSX.Element {
   const { width } = useWindowSize();
 
   return (
-    <ThemeContext.Extend value={theme}>
-      <WithProviders>
-        {width && width < breakpoints.small.value ? (
-          <EditorMobile mode={mode} />
-        ) : (
-          <Box background="gray0" height="100vh" overflow="hidden">
-            <Header mode={mode} />
-            <Box direction="row" fill justify="between">
-              <Sidebar />
-              <Application mode={mode} />
-            </Box>
+    <WithProviders>
+      {width && width < breakpoints.small.value ? (
+        <EditorMobile mode={mode} />
+      ) : (
+        <Box background="gray0" height="100vh" overflow="hidden">
+          <Header mode={mode} />
+          <Box direction="row" fill justify="between">
+            <Sidebar />
+            <Application mode={mode} />
           </Box>
-        )}
-      </WithProviders>
-    </ThemeContext.Extend>
+        </Box>
+      )}
+    </WithProviders>
   );
 }
