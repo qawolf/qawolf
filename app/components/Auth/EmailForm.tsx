@@ -1,5 +1,5 @@
 import { Box, Keyboard } from "grommet";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import { AuthMode } from "../../lib/types";
 import { copy } from "../../theme/copy";

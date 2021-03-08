@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import { ReactNode, useContext } from "react";
 
 import { copy } from "../../../theme/copy";
-import Paw from "../../shared/icons/Paw";
+import Paw from "../../shared-new/icons/Paw";
 import WolfButton from "../../shared-new/icons/WolfButton";
 import WolfSitting from "../../shared-new/icons/WolfSitting";
 import Text from "../../shared-new/Text";
