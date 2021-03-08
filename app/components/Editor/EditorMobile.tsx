@@ -19,7 +19,7 @@ export default function EditorMobile({ mode }: Props): JSX.Element {
   const videoUrl = run?.video_url;
 
   return (
-    <Box align="center" pad="small">
+    <Box align="center" data-hj-suppress pad="small">
       <Box
         align="center"
         direction="row"

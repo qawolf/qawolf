@@ -28,7 +28,12 @@ export default function Editor(): JSX.Element {
       {width && width < breakpoints.small.value ? (
         <EditorMobile mode={mode} />
       ) : (
-        <Box background="gray0" height="100vh" overflow="hidden">
+        <Box
+          background="gray0"
+          data-hj-suppress
+          height="100vh"
+          overflow="hidden"
+        >
           <Header mode={mode} />
           <Box direction="row" fill justify="between">
             <Sidebar />

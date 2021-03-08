@@ -50,7 +50,7 @@ export default function Dashboard(): JSX.Element {
   }
 
   return (
-    <Box direction="row" height="100vh">
+    <Box data-hj-suppress direction="row" height="100vh">
       <Sidebar groups={groups} />
       {innerHtml}
     </Box>
