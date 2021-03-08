@@ -23,7 +23,7 @@ export default function HelpersEditor({ onKeyDown }: Props): JSX.Element {
   const { teamId } = useContext(StateContext);
   const { hasWriteAccess, refetchTeam, team } = useContext(TestContext);
 
-  const helpersVersionRef = useRef(team?.helpers_version);
+  const helpersVersionRef = useRef(team?.helpers_version || -1);
 
   const [editor, setEditor] = useState<Editor | null>(null);
   const [monaco, setMonaco] = useState<typeof monacoEditor | null>(null);
@@ -42,9 +42,10 @@ export default function HelpersEditor({ onKeyDown }: Props): JSX.Element {
   }, [team]);
 
   useEffect(() => {
-    if (editor && team && editor.getValue() !== team.helpers) {
+    if (!editor || !team) return;
+
+    if (team.helpers_version > helpersVersionRef.current)
       editor.setValue(team.helpers);
-    }
   }, [editor, team]);
 
   const debouncedUpdateTeam = debounce(updateTeam, DEBOUNCE_MS);
