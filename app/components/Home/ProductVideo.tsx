@@ -1,6 +1,6 @@
 import { Box } from "grommet";
 
-import { edgeSize } from "../../theme/theme";
+import { edgeSize } from "../../theme/theme-new";
 
 type Props = {
   background: string;
@@ -27,7 +27,7 @@ export default function ProductVideo({
         muted
         playsInline
         src={src}
-        style={{ borderRadius: edgeSize.medium, width: "100%", zIndex: 1 }}
+        style={{ borderRadius: edgeSize.small, width: "100%", zIndex: 1 }}
       />
       <Box
         background={background}

@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import { CSSProperties } from "react";
 import styled from "styled-components";
 
-import { colors } from "../../../../theme/theme";
+import { colors } from "../../../../theme/theme-new";
 import { star } from "./keyframes";
 
 type Props = {

@@ -76,34 +76,6 @@ p {
     url("/fonts/ibm-plex-mono-semibold.woff") format("woff");
 }
 
-@font-face {
-  font-display: block;
-  font-family: "Sofia Pro";
-  font-weight: 400;
-  src: url("/fonts/sofiapro-regular-webfont.woff") format("woff"),
-    url("/fonts/sofiapro-regular-webfont.ttf") format("truetype");
-}
-
-@font-face {
-  font-display: block;
-  font-family: "Sofia Pro Bold";
-  font-weight: 700;
-  src: url("/fonts/sofiapro-bold-webfont.woff") format("woff"),
-    url("/fonts/sofiapro-bold-webfont.ttf") format("truetype");
-}
-
-.u400 {
-  font-family: "Sofia Pro", sans-serif;
-  font-weight: normal;
-  font-style: normal;
-}
-
-.u700 {
-  font-family: "Sofia Pro Bold", sans-serif;
-  font-weight: normal;
-  font-style: normal;
-}
-
 /* Algolia DocSearch */
 
 /* Main dropdown wrapper */

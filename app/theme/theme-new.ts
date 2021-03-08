@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+import { ThemeType } from "grommet";
 import { CSSProperties } from "react";
 
 import Check from "../components/shared-new/icons/Check";
@@ -20,6 +23,11 @@ export const border = {
 };
 
 export const boxShadow = "0px 4px 16px rgba(21, 27, 38, 0.16)";
+
+export const canvasSize = {
+  height: 800,
+  width: 1288,
+};
 
 export const colors = {
   code: "#0E8A7D",
@@ -51,6 +59,7 @@ export const colors = {
   gray8: "#404857",
   gray9: "#2A3140",
   gray10: "#151B26",
+  lightPurple: "#8E9CF5",
   primary: "#4545E5",
   primaryDark: "#2F2FC2",
   primaryDarker: "#1D1DA3",
@@ -68,6 +77,21 @@ export const colors = {
   warning10: "#332B05",
   white: "#FFFFFF",
 };
+
+export const customFontLinks = [
+  "/fonts/circular-black.woff2",
+  "/fonts/circular-black.woff",
+  "/fonts/circular-medium.woff2",
+  "/fonts/circular-medium.woff",
+  "/fonts/circular-regular.woff2",
+  "/fonts/circular-regular.woff",
+  "/fonts/ibm-plex-mono-semibold.woff2",
+  "/fonts/ibm-plex-mono-semibold.woff",
+  "/fonts/inter-regular.woff2",
+  "/fonts/inter-regular.woff",
+  "/fonts/inter-semibold.woff2",
+  "/fonts/inter-semibold.woff",
+];
 
 export const disabledOpacity = 0.4;
 
@@ -154,7 +178,7 @@ export const textDesktop = {
   eyebrow: { height: "18px", size: "16px" },
 };
 
-export const theme = {
+export const theme: ThemeType = {
   box: {
     // prevent default grommet styling on mobile as we handle manually
     responsiveBreakpoint: "1px",
@@ -200,8 +224,13 @@ export const theme = {
           boxShadow,
         };
       },
-    },
+    } as any,
     edgeSize,
+    focus: {
+      border: {
+        color: "transparent",
+      },
+    },
   },
   layer: {
     border: {
@@ -242,13 +271,13 @@ export const theme = {
     },
     gap: edgeSize.xxsmall,
     size: edgeSize.small,
-  },
+  } as any,
   text,
   textInput: {
     extend: (): CSSProperties => {
       return { caretColor: colors.gray9 };
     },
-  },
+  } as any,
 };
 
 export const transitionDuration = "0.2s ease-in-out";

@@ -7,7 +7,7 @@ import {
 import { useEnvironments } from "../../../../hooks/queries";
 import { MutableListArgs, MutableListFields } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
-import { edgeSize } from "../../../../theme/theme";
+import { edgeSize } from "../../../../theme/theme-new";
 import MutableList from "../../../shared-new/MutableList";
 import Text from "../../../shared-new/Text";
 
