@@ -117,6 +117,7 @@ export class ContextEventCollector extends EventEmitter {
           const event: WindowEvent = {
             action: "goto",
             page,
+            time: Date.now(),
             value: currentHistoryEntry.url,
           };
 
@@ -139,6 +140,7 @@ export class ContextEventCollector extends EventEmitter {
             action: "popup",
             page,
             popup: dynamicPage,
+            time: Date.now(),
             value: dynamicPage.url(),
           };
 
@@ -234,6 +236,7 @@ export class ContextEventCollector extends EventEmitter {
           const event: WindowEvent = {
             action,
             page,
+            time: Date.now(),
             value: url,
           };
 

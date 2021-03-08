@@ -8,9 +8,10 @@ import { ContextEventCollector } from "./ContextEventCollector";
 import { parseActionExpressions } from "./parseCode";
 import { PATCH_HANDLE } from "./patch";
 import { patchEvent, PatchEventOptions } from "./patchEvent";
-import { patchFill, PatchFillOptions } from "./patchFill";
-import { patchPopup, PatchPopupOptions } from "./patchPopup";
+import { patchFill } from "./patchFill";
+import { patchPopup } from "./patchPopup";
 import { patchReload } from "./patchReload";
+import { patchSelectOption } from "./patchSelectOption";
 
 const debug = Debug("qawolf:CodeUpdater");
 
@@ -19,9 +20,10 @@ export const updateCode = (options: PatchEventOptions): string | null => {
   const patchIndex = code.indexOf(PATCH_HANDLE);
   if (patchIndex < 0) return null;
 
-  if (event.action === "fill") return patchFill(options as PatchFillOptions);
-  if (event.action === "popup") return patchPopup(options as PatchPopupOptions);
+  if (event.action === "fill") return patchFill(options);
+  if (event.action === "popup") return patchPopup(options);
   if (event.action === "reload") return patchReload(options);
+  if (event.action === "selectOption") return patchSelectOption(options);
 
   return patchEvent(options);
 };
@@ -30,7 +32,7 @@ export class CodeUpdater extends EventEmitter {
   _code = "";
   _collector?: ContextEventCollector;
   _context?: BrowserContext;
-  _enabled = false;
+  _enabledAt: number | false = false;
   _testId: string | undefined = "";
   _variables: Variables;
   _version = -1;
@@ -41,7 +43,7 @@ export class CodeUpdater extends EventEmitter {
   }
 
   async _collectEvents(): Promise<void> {
-    if (this._collector || !this._enabled || !this._context) return;
+    if (this._collector || !this._enabledAt || !this._context) return;
 
     this._collector = await ContextEventCollector.create(this._context);
     this._collector.on("elementevent", (event) => this._handleEvent(event));
@@ -49,7 +51,15 @@ export class CodeUpdater extends EventEmitter {
   }
 
   _handleEvent(event: ElementEvent | WindowEvent): void {
-    if (!this._enabled) return;
+    if (!this._enabledAt) return;
+
+    if (event.time < this._enabledAt) {
+      debug(
+        "ignore event triggered before enabled %o",
+        omit(event, "frame", "page")
+      );
+      return;
+    }
 
     debug("handle page event %o", omit(event, "frame", "page"));
 
@@ -79,12 +89,12 @@ export class CodeUpdater extends EventEmitter {
 
   disable(): void {
     debug("disable");
-    this._enabled = false;
+    this._enabledAt = false;
   }
 
   async enable(): Promise<void> {
     debug("enable");
-    this._enabled = true;
+    this._enabledAt = Date.now();
     await this._collectEvents();
   }
 

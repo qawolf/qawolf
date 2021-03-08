@@ -59,12 +59,17 @@ it("records fill actions when typing", async () => {
   await page.type("body", "yo");
 
   await waitForExpect(() => {
-    expect(actionsOfType("fill").length).toBe(1);
+    expect(actionsOfType("fill")).toHaveLength(4);
   }, 10000);
 
   await page.close();
 
-  expect(actionsOfType("fill").map((action) => action.value)).toEqual(["sup"]);
+  expect(actionsOfType("fill").map((a) => a.value)).toEqual([
+    "s",
+    "su",
+    "sup", // input
+    "sup", // change
+  ]);
 });
 
 // Playwright is unable to do selectOption such that it
@@ -88,18 +93,18 @@ it.skip("records selectOption actions", async () => {
   expect(action.value).toBe("one");
 });
 
-it("records press actions", async () => {
+it("records keyboard.press actions", async () => {
   const page = await getFreshPage();
 
   await page.keyboard.press("Escape");
 
   await waitForExpect(() => {
-    expect(actionsOfType("press").length).toBe(1);
+    expect(actionsOfType("keyboard.press").length).toBe(1);
   }, 10000);
 
   await page.close();
 
-  expect(actionsOfType("press").map((action) => action.value))
+  expect(actionsOfType("keyboard.press").map((action) => action.value))
     .toMatchInlineSnapshot(`
     Array [
       "Escape",
@@ -122,7 +127,7 @@ it("stop and start work", async () => {
   });
   await page.keyboard.press("Escape");
   await page.waitForTimeout(1000);
-  expect(actionsOfType("press").length).toEqual(1);
+  expect(actionsOfType("keyboard.press").length).toEqual(1);
 
   await page.close();
 });

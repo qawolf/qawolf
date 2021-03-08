@@ -6,7 +6,7 @@ import {
   PatchEventOptions,
 } from "./patchEvent";
 
-export const findFillExpression = (
+export const findSelectOptionExpression = (
   options: PatchEventOptions
 ): ActionExpression | null => {
   const { initializeCode, variable } = findSourceVariables(options);
@@ -14,33 +14,20 @@ export const findFillExpression = (
 
   const { expressions, event } = options;
 
-  const [secondToLastExpression, lastExpression] = [
-    expressions[expressions.length - 2],
-    expressions[expressions.length - 1],
-  ];
+  const lastExpression = expressions[expressions.length - 1];
 
   const isMatch = (expression: ActionExpression | null) =>
     expression &&
-    expression.method === "fill" &&
+    expression.method === "selectOption" &&
     expression.variable === variable &&
-    expression.args[0]?.text === (event as ElementEvent).selector &&
-    expression.args[1]?.text !== undefined;
+    expression.args[0]?.text === (event as ElementEvent).selector;
 
   if (isMatch(lastExpression)) return lastExpression;
-
-  // match the second to last fill if it
-  // precedes a press on the same variable
-  if (
-    lastExpression?.method === "press" &&
-    lastExpression?.variable === variable &&
-    isMatch(secondToLastExpression)
-  )
-    return secondToLastExpression;
 
   return null;
 };
 
-export const updateFill = (
+export const updateSelectOption = (
   code: string,
   fill: ActionExpression,
   value: string
@@ -56,13 +43,15 @@ export const updateFill = (
   return beforeArg + updatedArg + afterArg;
 };
 
-export const patchFill = (options: PatchEventOptions): string | null => {
+export const patchSelectOption = (
+  options: PatchEventOptions
+): string | null => {
   // update the matching fill if we find one
-  const matchingFill = findFillExpression(options);
+  const matchingAction = findSelectOptionExpression(options);
 
-  if (matchingFill) {
+  if (matchingAction) {
     const { code, event } = options;
-    return updateFill(code, matchingFill, event.value || "");
+    return updateSelectOption(code, matchingAction, event.value || "");
   }
 
   return patchEvent(options);

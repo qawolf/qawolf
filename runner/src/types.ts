@@ -97,6 +97,7 @@ export interface ElementEvent {
   frame?: Frame;
   frameSelector?: string;
   selector: string;
+  time: number;
   value?: string | null;
 }
 
@@ -106,6 +107,7 @@ export interface WindowEvent {
   action: WindowAction;
   page: Page;
   popup?: Page;
+  time: number;
   value?: string | null;
 }
 

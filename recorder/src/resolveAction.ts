@@ -56,7 +56,7 @@ export const resolveAction = (
 ): Action | undefined => {
   // Never emit actions for untrusted events
   if (!possibleAction.isTrusted) {
-    debug("resolveAction: ignoring untrusted action");
+    debug("resolveAction: skip untrusted action");
     return;
   }
 
@@ -65,10 +65,10 @@ export const resolveAction = (
   if (
     possibleAction.action === "click" &&
     lastPossibleAction &&
-    ["fill", "press"].includes(lastPossibleAction.action) &&
+    ["fill", "keyboard.press", "press"].includes(lastPossibleAction.action) &&
     possibleAction.time - lastPossibleAction.time < 50
   ) {
-    debug("resolveAction: ignoring system-initiated click");
+    debug("resolveAction: skip system-initiated click");
     return;
   }
 
@@ -83,16 +83,14 @@ export const resolveAction = (
   const targetDescriptor = getDescriptor(target);
 
   if (action === "press") {
-    const pressAction = resolvePress(possibleAction.value, targetDescriptor);
+    action = resolvePress(possibleAction.value, targetDescriptor);
 
-    if (!pressAction) {
+    if (!action) {
       debug(
-        "resolveAction: ignoring press action for an unimportant key or target"
+        "resolveAction: skip press action for an unimportant key or target"
       );
       return;
     }
-
-    action = pressAction;
 
     // skip the target visibility check for keyboard.press which has no target
     if (action === "keyboard.press") return action;
@@ -100,21 +98,21 @@ export const resolveAction = (
 
   // Never emit actions on invisible targets
   if (!isVisible(target, window.getComputedStyle(target))) {
-    debug("resolveAction: ignoring action on invisible target");
+    debug("resolveAction: skip action on invisible target");
     return;
   }
 
   if (targetDescriptor.tag === "select") {
     // On selects, ignore everything except fill actions (input / change events)
     if (action !== "fill") {
-      debug("resolveAction: ignoring non-fill action on a select element");
+      debug("resolveAction: skip non-fill action on a select element");
       return;
     }
     action = "selectOption";
   }
 
   if (action === "fill" && !shouldTrackFill(targetDescriptor)) {
-    debug("resolveAction: ignoring fill action for an unimportant target");
+    debug("resolveAction: skip fill action for an unimportant target");
     return;
   }
 

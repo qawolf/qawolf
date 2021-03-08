@@ -8,7 +8,6 @@ type ActionCallback = Callback<ElementAction>;
 
 export class ActionRecorder {
   _lastReceivedAction: PossibleAction;
-  _lastRecordedAction: ElementAction;
   _onDispose: Callback[] = [];
   _selectorCache = new Map<HTMLElement, string>();
 
@@ -94,24 +93,7 @@ export class ActionRecorder {
       elementAction.value = typeof value === "string" ? value : "";
     }
 
-    // Fills come from both "input" and "change" events for completeness, but this
-    // means that we could end up emitting back-to-back fills with the same value.
-    // We can check here to avoid that. (For press and click, back-to-back identical
-    // events could be valid.)
-    if (
-      ((action === "fill" && this._lastRecordedAction.action === "fill") ||
-        (action === "selectOption" &&
-          this._lastRecordedAction.action === "selectOption")) &&
-      elementAction.selector === this._lastRecordedAction.selector &&
-      elementAction.value === this._lastRecordedAction.value
-    ) {
-      debug(`ActionRecorder: skipping duplicate ${action}`);
-      return;
-    }
-
     debug(`ActionRecorder: ${action} action recorded:`, elementAction);
-
-    this._lastRecordedAction = elementAction;
 
     actionCallback(elementAction);
   }
