@@ -1,4 +1,3 @@
-import * as Sentry from "@sentry/browser";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -28,12 +27,6 @@ export const useRunProgress = ({
 
     const onRunProgress = (value: RunProgress): void => {
       setProgress(value);
-
-      if (value.status === "fail") {
-        Sentry.captureMessage(
-          `Test preview failed: ${(query.test_id as string) || run?.test_id}`
-        );
-      }
     };
 
     const onRunStopped = (): void => setProgress(null);

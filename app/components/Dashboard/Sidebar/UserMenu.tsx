@@ -4,7 +4,6 @@ import { useContext } from "react";
 import { resetIntercom } from "../../../hooks/intercom";
 import { JWT_KEY } from "../../../lib/client";
 import { routes } from "../../../lib/routes";
-import { updateSentryUser } from "../../../lib/sentry";
 import { state } from "../../../lib/state";
 import { copy } from "../../../theme/copy";
 import Divider from "../../shared-new/Divider";
@@ -31,7 +30,7 @@ export default function UserMenu({ isOpen, onClose }: Props): JSX.Element {
     localStorage.removeItem(JWT_KEY);
     state.clear();
     resetIntercom();
-    updateSentryUser({ email: null });
+
     replace(routes.home);
   };
 

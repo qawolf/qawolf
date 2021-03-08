@@ -3,7 +3,6 @@ import { createContext, FC, useContext, useEffect } from "react";
 import { updateIntercomUser } from "../hooks/intercom";
 import { useIdentifyPostHog } from "../hooks/postHog";
 import { useCurrentUser } from "../hooks/queries";
-import { updateSentryUser } from "../lib/sentry";
 import { state } from "../lib/state";
 import { User, Wolf } from "../lib/types";
 import { StateContext } from "./StateContext";
@@ -56,7 +55,6 @@ export const UserProvider: FC = ({ children }) => {
     if (!user) return;
 
     updateIntercomUser(user.email);
-    updateSentryUser({ email: user.email, id: user.id });
   }, [user]);
 
   useIdentifyPostHog(user);

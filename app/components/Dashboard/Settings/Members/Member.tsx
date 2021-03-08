@@ -1,5 +1,6 @@
 import { Box } from "grommet";
 
+import { routes } from "../../../../lib/routes";
 import { copy } from "../../../../theme/copy";
 import { border, overflowStyle } from "../../../../theme/theme-new";
 import Avatar from "../../../shared-new/Avatar";
@@ -8,20 +9,26 @@ import Text from "../../../shared-new/Text";
 type Props = {
   avatarUrl?: string | null;
   email: string;
-  isPending?: boolean;
+  inviteId?: string;
   wolfColor: string;
 };
 
 export default function Member({
   avatarUrl,
   email,
-  isPending,
+  inviteId,
   wolfColor,
 }: Props): JSX.Element {
+  const inviteLink = inviteId
+    ? `${window.location.origin}${routes.invite}/${inviteId}`
+    : undefined;
+
   return (
     <Box
       align="center"
       border={{ ...border, side: "top" }}
+      data-invite-email={inviteId ? email : undefined}
+      data-invite-link={inviteLink}
       direction="row"
       flex={false}
       justify="between"
@@ -38,7 +45,7 @@ export default function Member({
           {email}
         </Text>
       </Box>
-      {!!isPending && (
+      {!!inviteId && (
         <Text color="gray7" size="component">
           {copy.pending}
         </Text>

@@ -25,7 +25,12 @@ export default function Members({ team }: Props): JSX.Element {
 
   const invitesHtml = team.invites.map((i) => {
     return (
-      <Member email={i.email} isPending key={i.id} wolfColor={i.wolf_variant} />
+      <Member
+        email={i.email}
+        inviteId={i.id}
+        key={i.id}
+        wolfColor={i.wolf_variant}
+      />
     );
   });
 

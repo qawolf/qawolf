@@ -1,5 +1,4 @@
 import "../theme/global.css";
-import "../lib/sentry";
 
 import { ApolloProvider } from "@apollo/client";
 import { MDXProvider } from "@mdx-js/react";
