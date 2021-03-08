@@ -1,7 +1,7 @@
 import { Squash as HamburgerIcon } from "hamburger-react";
 import styled from "styled-components";
 
-import { breakpoints, colors } from "../../theme/theme-new";
+import { breakpoints, colors } from "../../theme/theme";
 
 type Props = {
   breakpoint?: string;

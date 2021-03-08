@@ -1,4 +1,4 @@
-import { colors } from "./theme-new";
+import { colors } from "./theme";
 
 export type WolfColors = {
   back: string;

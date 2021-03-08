@@ -7,7 +7,7 @@ import {
   edgeSize,
   overflowStyle,
   transitionDuration,
-} from "../../../theme/theme-new";
+} from "../../../theme/theme";
 import Check from "../icons/Check";
 import Text from "../Text";
 

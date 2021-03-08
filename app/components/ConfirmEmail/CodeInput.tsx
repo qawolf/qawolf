@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-import { breakpoints, edgeSize } from "../../theme/theme-new";
+import { breakpoints, edgeSize } from "../../theme/theme";
 import CodeSegment from "./CodeSegment";
 import Separator from "./Separator";
 

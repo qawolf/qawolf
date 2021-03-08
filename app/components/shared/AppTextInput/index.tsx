@@ -18,7 +18,7 @@ import {
   fontWeight,
   textDesktop,
   transition,
-} from "../../../theme/theme-new";
+} from "../../../theme/theme";
 import { Size } from "../Text/config";
 import ErrorBadge from "./ErrorBadge";
 

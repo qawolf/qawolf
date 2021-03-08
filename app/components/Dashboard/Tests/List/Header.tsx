@@ -2,7 +2,7 @@ import { Box } from "grommet";
 
 import { ShortTest } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
-import { borderSize } from "../../../../theme/theme-new";
+import { borderSize } from "../../../../theme/theme";
 import CheckBox from "../../../shared/CheckBox";
 import Text from "../../../shared/Text";
 

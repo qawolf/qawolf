@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import Highlight, { defaultProps, Language } from "prism-react-renderer";
 import styled from "styled-components";
 
-import { edgeSize, text, width } from "../../../theme/theme-new";
+import { edgeSize, text, width } from "../../../theme/theme";
 import { theme } from "./theme";
 
 type PropsTypes = {

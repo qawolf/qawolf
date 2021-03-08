@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { breakpoints } from "../../../../theme/theme-new";
+import { breakpoints } from "../../../../theme/theme";
 import BluePlanet from "./BluePlanet";
 import PurplePlanet from "./PurplePlanet";
 import TealPlanet from "./TealPlanet";

@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 import styled from "styled-components";
 
-import { edgeSize, width } from "../../../theme/theme-new";
+import { edgeSize, width } from "../../../theme/theme";
 import { Doc, flattenedDocs } from "../docs";
 import Divider from "./Divider";
 import FooterLink from "./FooterLink";
@@ -15,7 +15,7 @@ const StyledBox = styled(Box)`
   @media screen and (min-width: ${width.content}) {
     margin-bottom: ${edgeSize.xlarge};
   }
-`
+`;
 
 export default function FooterLinks({ pathname }: Props): JSX.Element {
   const docIndex = flattenedDocs.findIndex(({ href }) => href === pathname);
@@ -33,12 +33,7 @@ export default function FooterLinks({ pathname }: Props): JSX.Element {
   return (
     <>
       <Divider />
-      <StyledBox
-        align="center"
-        direction="row"
-        justify="between"
-        width="full"
-      >
+      <StyledBox align="center" direction="row" justify="between" width="full">
         <FooterLink doc={docPrev} type="previous" />
         <FooterLink doc={docNext} type="next" />
       </StyledBox>

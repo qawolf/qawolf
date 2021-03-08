@@ -1,4 +1,4 @@
-import { edgeSize, width } from "../../../theme/theme-new";
+import { edgeSize, width } from "../../../theme/theme";
 
 export default function WolfJetpack(): JSX.Element {
   return (

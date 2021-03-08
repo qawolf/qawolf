@@ -3,7 +3,7 @@ import { Box } from "grommet";
 import { state } from "../../../../lib/state";
 import { ShortTest } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
-import { borderSize, colors, edgeSize } from "../../../../theme/theme-new";
+import { borderSize, colors, edgeSize } from "../../../../theme/theme";
 import Button from "../../../shared/AppButton";
 import Divider from "../../../shared/Divider";
 import Folder from "../../../shared/icons/Folder";

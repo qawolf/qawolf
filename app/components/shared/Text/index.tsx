@@ -9,7 +9,7 @@ import {
   fontWeight,
   textDesktop,
   transitionDuration,
-} from "../../../theme/theme-new";
+} from "../../../theme/theme";
 import { defaultTag, hoverColor, Size, Weight } from "./config";
 
 type Props = {

@@ -10,7 +10,7 @@ import {
   edgeSize,
   overflowStyle,
   transitionDuration,
-} from "../../../theme/theme-new";
+} from "../../../theme/theme";
 import Avatar from "../../shared/Avatar";
 import Logo from "../../shared/icons/Logo";
 import Text from "../../shared/Text";

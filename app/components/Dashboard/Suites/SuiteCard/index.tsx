@@ -4,7 +4,7 @@ import Link from "next/link";
 import { timestampToText } from "../../../../lib/helpers";
 import { routes } from "../../../../lib/routes";
 import { SuiteSummary } from "../../../../lib/types";
-import { border, edgeSize } from "../../../../theme/theme-new";
+import { border, edgeSize } from "../../../../theme/theme";
 import StatusIcon from "../../../shared/StatusIcon";
 import Text from "../../../shared/Text";
 import TriggerIcon from "../../../shared/TriggerIcon";

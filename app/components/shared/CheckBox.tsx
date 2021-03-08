@@ -1,7 +1,7 @@
 import { Box, CheckBox as GrommetCheckBox, CheckBoxProps } from "grommet";
 import styled from "styled-components";
 
-import { borderSize, colors, transitionDuration } from "../../theme/theme-new";
+import { borderSize, colors, transitionDuration } from "../../theme/theme";
 
 export type Props = CheckBoxProps & {
   className?: string;

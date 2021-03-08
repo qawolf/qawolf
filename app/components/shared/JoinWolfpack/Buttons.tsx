@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { routes } from "../../../lib/routes";
 import { copy } from "../../../theme/copy";
-import { breakpoints, edgeSize } from "../../../theme/theme-new";
+import { breakpoints, edgeSize } from "../../../theme/theme";
 import Button from "../Button";
 
 const calendlyHref = "https://calendly.com/jperl/30min";

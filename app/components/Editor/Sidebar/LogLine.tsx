@@ -8,7 +8,7 @@ import {
   formatTimestamp,
 } from "../../../lib/helpers";
 import { Log } from "../../../lib/types";
-import { borderSize } from "../../../theme/theme-new";
+import { borderSize } from "../../../theme/theme";
 
 type Props = {
   log: Log;

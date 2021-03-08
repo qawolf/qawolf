@@ -1,7 +1,7 @@
 import { Box, BoxProps } from "grommet";
 
 import { NavigationType } from "../../../lib/types";
-import { borderSize } from "../../../theme/theme-new";
+import { borderSize } from "../../../theme/theme";
 
 type Props = {
   children: JSX.Element[];

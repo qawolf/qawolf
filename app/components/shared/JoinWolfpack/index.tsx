@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 import styled from "styled-components";
 
-import { breakpoints } from "../../../theme/theme-new";
+import { breakpoints } from "../../../theme/theme";
 import Section from "../Section";
 import Buttons from "./Buttons";
 import HeaderText from "./HeaderText";

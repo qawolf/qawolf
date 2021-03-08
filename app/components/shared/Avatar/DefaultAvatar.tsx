@@ -1,6 +1,6 @@
 import { Box } from "grommet";
 
-import { edgeSize } from "../../../theme/theme-new";
+import { edgeSize } from "../../../theme/theme";
 import WolfHead from "../icons/WolfHead";
 
 type Props = { color: string };

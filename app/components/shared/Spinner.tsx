@@ -1,7 +1,7 @@
 import { Box, BoxProps } from "grommet";
 import styled, { keyframes } from "styled-components";
 
-import { edgeSize } from "../../theme/theme-new";
+import { edgeSize } from "../../theme/theme";
 import Paw from "./icons/Paw";
 
 type Props = {

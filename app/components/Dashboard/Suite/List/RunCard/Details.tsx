@@ -3,7 +3,7 @@ import { Box } from "grommet";
 import { durationToText } from "../../../../../lib/helpers";
 import { SuiteRun } from "../../../../../lib/types";
 import { copy } from "../../../../../theme/copy";
-import { colors, edgeSize } from "../../../../../theme/theme-new";
+import { colors, edgeSize } from "../../../../../theme/theme";
 import Timer from "../../../../shared/icons/Timer";
 import Text from "../../../../shared/Text";
 

@@ -5,7 +5,7 @@ import React from "react";
 import CheckBox, { Props } from "../components/shared/CheckBox";
 import Rocket from "../components/shared/icons/Rocket";
 import Text from "../components/shared/Text";
-import { colors, edgeSize } from "../theme/theme-new";
+import { colors, edgeSize } from "../theme/theme";
 import theme from "./theme";
 
 export default {

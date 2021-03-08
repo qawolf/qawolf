@@ -1,6 +1,6 @@
 import { Box, Button } from "grommet";
 
-import { borderSize, transitionDuration } from "../../theme/theme-new";
+import { borderSize, transitionDuration } from "../../theme/theme";
 
 type Props = {
   a11yTitle: string;

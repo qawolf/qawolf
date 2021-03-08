@@ -1,7 +1,7 @@
 import { Box, BoxProps } from "grommet";
 import { ReactNode } from "react";
 
-import { edgeSize } from "../../theme/theme-new";
+import { edgeSize } from "../../theme/theme";
 import Text from "./Text";
 
 type Props = {

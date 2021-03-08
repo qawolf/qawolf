@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 import { useContext } from "react";
 
-import { edgeSize, overflowStyle } from "../../theme/theme-new";
+import { edgeSize, overflowStyle } from "../../theme/theme";
 import NoMobile from "../NoMobile";
 import StatusBadge from "../shared/StatusBadge";
 import Text from "../shared/Text";

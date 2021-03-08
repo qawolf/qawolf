@@ -3,8 +3,8 @@ import Link from "next/link";
 import { ReactNode } from "react";
 import styled from "styled-components";
 
-import { breakpoints } from "../../../theme/theme-new";
-import { height, heightDesktop,Size } from "./config";
+import { breakpoints } from "../../../theme/theme";
+import { height, heightDesktop, Size } from "./config";
 
 type Props = {
   children: ReactNode;

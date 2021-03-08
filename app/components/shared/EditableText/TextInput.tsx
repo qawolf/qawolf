@@ -2,7 +2,7 @@ import { Box, Keyboard } from "grommet";
 import { ChangeEvent, useRef } from "react";
 
 import { useOnClickOutside } from "../../../hooks/onClickOutside";
-import { edgeSize } from "../../../theme/theme-new";
+import { edgeSize } from "../../../theme/theme";
 import AppTextInput from "../AppTextInput";
 
 type Props = {

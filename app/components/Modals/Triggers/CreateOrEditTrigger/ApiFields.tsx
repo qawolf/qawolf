@@ -3,7 +3,7 @@ import { useContext } from "react";
 
 import { useTeam } from "../../../../hooks/queries";
 import { copy } from "../../../../theme/copy";
-import { borderSize, colors, textDesktop } from "../../../../theme/theme-new";
+import { borderSize, colors, textDesktop } from "../../../../theme/theme";
 import Text from "../../../shared/Text";
 import { StateContext } from "../../../StateContext";
 import { labelTextProps } from "../helpers";

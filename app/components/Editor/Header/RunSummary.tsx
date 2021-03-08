@@ -3,7 +3,7 @@ import { Box } from "grommet";
 import { durationToText, timestampToText } from "../../../lib/helpers";
 import { Run, Suite } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
-import { borderSize } from "../../../theme/theme-new";
+import { borderSize } from "../../../theme/theme";
 import LabeledBox from "../../shared/LabeledBox";
 import StatusBadge from "../../shared/StatusBadge";
 import Text from "../../shared/Text";

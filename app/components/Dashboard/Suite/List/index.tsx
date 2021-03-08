@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 
 import { SuiteRun } from "../../../../lib/types";
-import { borderSize } from "../../../../theme/theme-new";
+import { borderSize } from "../../../../theme/theme";
 import Header from "./Header";
 import RunCard from "./RunCard";
 

@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import styled from "styled-components";
 
 import { copy } from "../../theme/copy";
-import { transitionDuration } from "../../theme/theme-new";
+import { transitionDuration } from "../../theme/theme";
 import Button from "./AppButton";
 import Edit from "./icons/Edit";
 import Trash from "./icons/Trash";

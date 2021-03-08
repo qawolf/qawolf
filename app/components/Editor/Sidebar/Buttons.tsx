@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { useOnHotKey } from "../../../hooks/onHotKey";
 import { state } from "../../../lib/state";
 import { copy } from "../../../theme/copy";
-import { borderSize, edgeSize } from "../../../theme/theme-new";
+import { borderSize, edgeSize } from "../../../theme/theme";
 import Button from "../../shared/AppButton";
 import Environments from "../../shared/Environments";
 import Edit from "../../shared/icons/Edit";

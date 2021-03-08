@@ -3,11 +3,7 @@ import Link from "next/link";
 
 import { routes } from "../../../../../lib/routes";
 import { SuiteRun } from "../../../../../lib/types";
-import {
-  border,
-  edgeSize,
-  overflowStyle,
-} from "../../../../../theme/theme-new";
+import { border, edgeSize, overflowStyle } from "../../../../../theme/theme";
 import CheckBox from "../../../../shared/CheckBox";
 import StatusIcon from "../../../../shared/StatusIcon";
 import TestGif from "../../../../shared/TestGif";

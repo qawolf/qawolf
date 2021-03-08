@@ -3,7 +3,7 @@ import { DropProps } from "grommet";
 import { state } from "../../../../lib/state";
 import { Environment } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
-import { edgeSize } from "../../../../theme/theme-new";
+import { edgeSize } from "../../../../theme/theme";
 import Drop from "../../../shared/Drop";
 import Option from "../../../shared/Select/Option";
 

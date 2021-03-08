@@ -10,7 +10,7 @@ import { useEnsureUser } from "../hooks/ensureUser";
 import { useCreateGitHubIntegrations } from "../hooks/mutations";
 import { routes } from "../lib/routes";
 import { copy } from "../theme/copy";
-import { edgeSize } from "../theme/theme-new";
+import { edgeSize } from "../theme/theme";
 
 export default function GitHubIntegration(): JSX.Element {
   useEnsureUser();

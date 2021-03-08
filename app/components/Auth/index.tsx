@@ -4,7 +4,7 @@ import { useContext, useEffect } from "react";
 
 import { routes } from "../../lib/routes";
 import { AuthMode } from "../../lib/types";
-import { edgeSize } from "../../theme/theme-new";
+import { edgeSize } from "../../theme/theme";
 import { UserContext } from "../UserContext";
 import Email from "./Email";
 import GitHub from "./GitHub";

@@ -9,7 +9,7 @@ import {
   colors,
   edgeSize,
   transitionDuration,
-} from "../../../../theme/theme-new";
+} from "../../../../theme/theme";
 import Email from "./Email";
 import TextInput from "./TextInput";
 

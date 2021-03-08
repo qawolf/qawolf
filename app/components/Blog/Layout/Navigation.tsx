@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import { routes } from "../../../lib/routes";
 import { copy } from "../../../theme/copy";
-import { width } from "../../../theme/theme-new";
+import { width } from "../../../theme/theme";
 import Button from "../../shared/Button";
 import GitHubStars from "../../shared/GitHubStars";
 import Logo from "../../shared/Logo";

@@ -1,7 +1,7 @@
 import { BoxProps, TextProps } from "grommet";
 
 import { Side } from "../../../lib/types";
-import { borderSize, edgeSize } from "../../../theme/theme-new";
+import { borderSize, edgeSize } from "../../../theme/theme";
 import { Type } from "./config";
 
 type GetBoxPad = {

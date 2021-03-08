@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { routes } from "../../lib/routes";
 import { copy } from "../../theme/copy";
-import { breakpoints } from "../../theme/theme-new";
+import { breakpoints } from "../../theme/theme";
 import Section from "../shared/Section";
 import Text from "../shared/Text";
 import OpenSource from "./OpenSource";

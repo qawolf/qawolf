@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import React, { FC } from "react";
 
 import { useWindowSize } from "../../hooks/windowSize";
-import { breakpoints } from "../../theme/theme-new";
+import { breakpoints } from "../../theme/theme";
 import Application from "./Application";
 import { RunnerProvider } from "./contexts/RunnerContext";
 import { TestProvider } from "./contexts/TestContext";

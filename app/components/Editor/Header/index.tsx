@@ -7,7 +7,7 @@ import { timeToText } from "../../../lib/helpers";
 import { routes } from "../../../lib/routes";
 import { state } from "../../../lib/state";
 import { copy } from "../../../theme/copy";
-import { borderSize, edgeSize } from "../../../theme/theme-new";
+import { borderSize, edgeSize } from "../../../theme/theme";
 import Button from "../../shared/AppButton";
 import Divider from "../../shared/Divider";
 import ArrowLeft from "../../shared/icons/ArrowLeft";

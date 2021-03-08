@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import { useRouter } from "next/router";
 
 import { Trigger } from "../../../../../lib/types";
-import { edgeSize } from "../../../../../theme/theme-new";
+import { edgeSize } from "../../../../../theme/theme";
 import TriggerBadge from "../../../../shared/TriggerBadge";
 import { buildTestsPath } from "../../../helpers";
 

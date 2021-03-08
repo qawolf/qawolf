@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import { MutableListType } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
-import { colors, edgeSize, transitionDuration } from "../../../theme/theme-new";
+import { colors, edgeSize, transitionDuration } from "../../../theme/theme";
 import Drop from "../Drop";
 import More from "../icons/More";
 import Option from "../Select/Option";

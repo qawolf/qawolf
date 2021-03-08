@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { state } from "../../../../../lib/state";
 import { ShortTest } from "../../../../../lib/types";
 import { copy } from "../../../../../theme/copy";
-import { edgeSize } from "../../../../../theme/theme-new";
+import { edgeSize } from "../../../../../theme/theme";
 import Button from "../../../../shared/AppButton";
 import Divider from "../../../../shared/Divider";
 import Drop from "../../../../shared/Drop";

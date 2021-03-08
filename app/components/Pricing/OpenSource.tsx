@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 
 import { copy } from "../../theme/copy";
-import { colors } from "../../theme/theme-new";
+import { colors } from "../../theme/theme";
 import Button from "../shared/Button";
 import Text from "../shared/Text";
 

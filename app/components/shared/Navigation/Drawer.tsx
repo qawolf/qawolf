@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import { routes } from "../../../lib/routes";
 import { copy } from "../../../theme/copy";
-import { breakpoints, edgeSize, height } from "../../../theme/theme-new";
+import { breakpoints, edgeSize, height } from "../../../theme/theme";
 import { UserContext } from "../../UserContext";
 import Button from "../Button";
 import QaWolfLinks from "./QaWolfLinks";

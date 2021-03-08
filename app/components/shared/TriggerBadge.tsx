@@ -8,7 +8,7 @@ import {
   colors,
   edgeSize,
   transitionDuration,
-} from "../../theme/theme-new";
+} from "../../theme/theme";
 import Text from "./Text";
 import TriggerIcon from "./TriggerIcon";
 

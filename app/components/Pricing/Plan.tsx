@@ -8,7 +8,7 @@ import {
   edgeSize,
   text,
   textDesktop,
-} from "../../theme/theme-new";
+} from "../../theme/theme";
 import Button from "../shared/Button";
 import Paw from "../shared/icons/Paw";
 import Text from "../shared/Text";

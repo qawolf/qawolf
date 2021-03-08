@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { routes } from "../../../lib/routes";
 import { NavigationType } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
-import { breakpoints, edgeSize } from "../../../theme/theme-new";
+import { breakpoints, edgeSize } from "../../../theme/theme";
 import { UserContext } from "../../UserContext";
 import Button from "../Button";
 

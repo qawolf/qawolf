@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 
 import { Trigger } from "../../../../lib/types";
-import { overflowStyle } from "../../../../theme/theme-new";
+import { overflowStyle } from "../../../../theme/theme";
 import CountBadge from "../../../shared/CountBadge";
 import Option from "../../../shared/Select/Option";
 import Text from "../../../shared/Text";

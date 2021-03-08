@@ -8,7 +8,7 @@ import {
   edgeSize,
   overflowStyle,
   transition,
-} from "../../../theme/theme-new";
+} from "../../../theme/theme";
 import Edit from "../icons/Edit";
 import Text from "../Text";
 import TextInput from "./TextInput";

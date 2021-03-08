@@ -10,7 +10,7 @@ import {
   fontFamily,
   fontWeight,
   textDesktop,
-} from "../../../../theme/theme-new";
+} from "../../../../theme/theme";
 
 type Props = {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;

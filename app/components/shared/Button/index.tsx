@@ -9,7 +9,7 @@ import {
   edgeSize,
   transition,
   transitionDuration,
-} from "../../../theme/theme-new";
+} from "../../../theme/theme";
 import Text from "../Text";
 import Anchor from "./Anchor";
 import {

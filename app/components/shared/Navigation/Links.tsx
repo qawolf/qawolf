@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import styled from "styled-components";
 
 import { NavigationType } from "../../../lib/types";
-import { breakpoints } from "../../../theme/theme-new";
+import { breakpoints } from "../../../theme/theme";
 import Logo from "../Logo";
 import QaWolfLinks from "./QaWolfLinks";
 

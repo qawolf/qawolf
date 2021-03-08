@@ -10,7 +10,7 @@ import {
   borderSize,
   colors,
   transitionDuration,
-} from "../../../../theme/theme-new";
+} from "../../../../theme/theme";
 import Button from "../../../shared/AppButton";
 import ArrowDown from "../../../shared/icons/ArrowDown";
 import Play from "../../../shared/icons/Play";

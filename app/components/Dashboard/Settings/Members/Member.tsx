@@ -2,7 +2,7 @@ import { Box } from "grommet";
 
 import { routes } from "../../../../lib/routes";
 import { copy } from "../../../../theme/copy";
-import { border, overflowStyle } from "../../../../theme/theme-new";
+import { border, overflowStyle } from "../../../../theme/theme";
 import Avatar from "../../../shared/Avatar";
 import Text from "../../../shared/Text";
 

@@ -2,7 +2,7 @@ import { Box } from "grommet";
 
 import { SuiteRun } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
-import { borderSize, edgeSize } from "../../../../theme/theme-new";
+import { borderSize, edgeSize } from "../../../../theme/theme";
 import CheckBox from "../../../shared/CheckBox";
 import StatusSummary from "../../../shared/StatusSummary";
 import Text from "../../../shared/Text";

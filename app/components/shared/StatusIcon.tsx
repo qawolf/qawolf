@@ -1,5 +1,5 @@
 import { RunStatus } from "../../lib/types";
-import { colors, edgeSize } from "../../theme/theme-new";
+import { colors, edgeSize } from "../../theme/theme";
 import DotCircle from "./icons/DotCircle";
 import Fail from "./icons/Fail";
 import Pass from "./icons/Pass";

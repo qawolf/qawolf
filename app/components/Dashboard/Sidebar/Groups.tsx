@@ -6,7 +6,7 @@ import { routes } from "../../../lib/routes";
 import { state } from "../../../lib/state";
 import { Group, MutableListArgs, MutableListFields } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
-import { borderSize } from "../../../theme/theme-new";
+import { borderSize } from "../../../theme/theme";
 import MutableList from "../../shared/MutableList";
 import Text from "../../shared/Text";
 

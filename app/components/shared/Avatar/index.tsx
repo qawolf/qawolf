@@ -1,6 +1,6 @@
 import { Box, Image } from "grommet";
 
-import { edgeSize } from "../../../theme/theme-new";
+import { edgeSize } from "../../../theme/theme";
 import DefaultAvatar from "./DefaultAvatar";
 
 type Props = {

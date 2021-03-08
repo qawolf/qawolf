@@ -10,7 +10,7 @@ import {
   edgeSize,
   overflowStyle,
   transitionDuration,
-} from "../theme/theme-new";
+} from "../theme/theme";
 import Close from "./shared/icons/Close";
 import Text from "./shared/Text";
 import { StateContext } from "./StateContext";

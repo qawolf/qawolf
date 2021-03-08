@@ -6,12 +6,7 @@ import { RiStarLine } from "react-icons/ri";
 import styled from "styled-components";
 
 import { copy } from "../../theme/copy";
-import {
-  borderSize,
-  colors,
-  edgeSize,
-  transition,
-} from "../../theme/theme-new";
+import { borderSize, colors, edgeSize, transition } from "../../theme/theme";
 import Text from "./Text";
 
 type Props = {

@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import { useJoinMailingList } from "../../../hooks/mutations";
 import { copy } from "../../../theme/copy";
-import { edgeSize, width } from "../../../theme/theme-new";
+import { edgeSize, width } from "../../../theme/theme";
 import Button from "../../shared/Button";
 import Text from "../../shared/Text";
 import TextInput from "../../shared/TextInput";

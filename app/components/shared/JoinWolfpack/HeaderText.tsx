@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import styled from "styled-components";
 
 import { copy } from "../../../theme/copy";
-import { breakpoints } from "../../../theme/theme-new";
+import { breakpoints } from "../../../theme/theme";
 import Text from "../Text";
 
 const StyledText = styled(Text)`

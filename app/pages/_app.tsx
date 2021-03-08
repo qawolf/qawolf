@@ -15,7 +15,7 @@ import { UserProvider } from "../components/UserContext";
 import { useBootIntercom } from "../hooks/intercom";
 import { client } from "../lib/client";
 import { copy } from "../theme/copy";
-import { customFontLinks, theme } from "../theme/theme-new";
+import { customFontLinks, theme } from "../theme/theme";
 
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
   useBootIntercom();

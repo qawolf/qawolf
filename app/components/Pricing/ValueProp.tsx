@@ -8,7 +8,7 @@ import {
   edgeSize,
   text,
   textDesktop,
-} from "../../theme/theme-new";
+} from "../../theme/theme";
 import Text from "../shared/Text";
 
 type Props = { label: string };

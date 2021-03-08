@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 
 import { Trigger } from "../../../lib/types";
-import { borderSize, overflowStyle } from "../../../theme/theme-new";
+import { borderSize, overflowStyle } from "../../../theme/theme";
 import CheckBox from "../../shared/CheckBox";
 import EditDeleteButtons, { StyledBox } from "../../shared/EditDeleteButtons";
 import Text from "../../shared/Text";

@@ -1,6 +1,6 @@
 import { BoxProps } from "grommet";
 
-import { edgeSize } from "../../../theme/theme-new";
+import { edgeSize } from "../../../theme/theme";
 import { Size as TextSize } from "../Text/config";
 
 export type Size = "small" | "medium" | "large";

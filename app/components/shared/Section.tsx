@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import { CSSProperties, ReactNode } from "react";
 import styled from "styled-components";
 
-import { breakpoints, edgeSize, width } from "../../theme/theme-new";
+import { breakpoints, edgeSize, width } from "../../theme/theme";
 
 type Props = {
   background?: string;

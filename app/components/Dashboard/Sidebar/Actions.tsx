@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { routes } from "../../../lib/routes";
 import { state } from "../../../lib/state";
 import { copy } from "../../../theme/copy";
-import { borderSize } from "../../../theme/theme-new";
+import { borderSize } from "../../../theme/theme";
 import Book from "../../shared/icons/Book";
 import Configure from "../../shared/icons/Configure";
 import DotCircle from "../../shared/icons/DotCircle";

@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 
 import { useTestSummaries } from "../../../../hooks/queries";
 import { Group, ShortTest, TestTriggers, Trigger } from "../../../../lib/types";
-import { borderSize } from "../../../../theme/theme-new";
+import { borderSize } from "../../../../theme/theme";
 import Spinner from "../../../shared/Spinner";
 import { noTriggerId } from "../../helpers";
 import Header from "./Header";

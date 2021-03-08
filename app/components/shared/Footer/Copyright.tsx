@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import styled from "styled-components";
 
 import { copy } from "../../../theme/copy";
-import { breakpoints, edgeSize } from "../../../theme/theme-new";
+import { breakpoints, edgeSize } from "../../../theme/theme";
 import LogoCircle from "../icons/LogoCircle";
 import Text from "../Text";
 

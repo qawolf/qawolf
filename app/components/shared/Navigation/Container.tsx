@@ -8,7 +8,7 @@ import {
   colors,
   edgeSize,
   height,
-} from "../../../theme/theme-new";
+} from "../../../theme/theme";
 
 type Props = {
   children: ReactNode;

@@ -3,7 +3,7 @@ import { Box } from "grommet";
 import { useDeleteEnvironmentVariable } from "../../../../hooks/mutations";
 import { EnvironmentVariable } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
-import { edgeSize, overflowStyle } from "../../../../theme/theme-new";
+import { edgeSize, overflowStyle } from "../../../../theme/theme";
 import Divider from "../../../shared/Divider";
 import ConfirmDelete from "../../../shared/Modal/ConfirmDelete";
 import Header from "../../../shared/Modal/Header";

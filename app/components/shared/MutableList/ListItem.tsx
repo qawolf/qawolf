@@ -13,7 +13,7 @@ import {
   colors,
   overflowStyle,
   transitionDuration,
-} from "../../../theme/theme-new";
+} from "../../../theme/theme";
 import Text from "../Text";
 import NameInput from "./NameInput";
 import Options, { id } from "./Options";

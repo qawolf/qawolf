@@ -10,7 +10,7 @@ import {
   height,
   transition,
   transitionDuration,
-} from "../../theme/theme-new";
+} from "../../theme/theme";
 import LinkIcon from "../shared/icons/Link";
 import Text from "../shared/Text";
 import Divider from "./Layout/Divider";

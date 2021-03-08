@@ -11,7 +11,7 @@ import {
   text,
   textDesktop,
   transition,
-} from "../../theme/theme-new";
+} from "../../theme/theme";
 
 type Props = {
   autoFocus?: boolean;

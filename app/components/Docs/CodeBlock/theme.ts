@@ -1,6 +1,6 @@
 import type { PrismTheme } from "prism-react-renderer";
 
-import { colors } from "../../../theme/theme-new";
+import { colors } from "../../../theme/theme";
 
 // edited dracula theme here
 // https://github.com/FormidableLabs/prism-react-renderer/blob/master/src/themes/dracula.js

@@ -5,7 +5,7 @@ import Spinner from "../../components/shared/Spinner";
 import { useEnsureUser } from "../../hooks/ensureUser";
 import { useCreateSlackIntegration } from "../../hooks/mutations";
 import { routes } from "../../lib/routes";
-import { edgeSize } from "../../theme/theme-new";
+import { edgeSize } from "../../theme/theme";
 
 export default function Slack(): JSX.Element {
   useEnsureUser();

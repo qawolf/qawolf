@@ -3,7 +3,7 @@ import { ChangeEvent, useRef } from "react";
 
 import { useOnHotKey } from "../../hooks/onHotKey";
 import { copy } from "../../theme/copy";
-import { borderSize, colors, edgeSize } from "../../theme/theme-new";
+import { borderSize, colors, edgeSize } from "../../theme/theme";
 import TextInput from "./AppTextInput";
 import SearchIcon from "./icons/Search";
 import Text from "./Text";

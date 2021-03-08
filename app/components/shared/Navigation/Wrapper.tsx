@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import { ReactNode } from "react";
 import styled from "styled-components";
 
-import { borderSize, edgeSize, height, width } from "../../../theme/theme-new";
+import { borderSize, edgeSize, height, width } from "../../../theme/theme";
 
 type Props = { children: ReactNode };
 

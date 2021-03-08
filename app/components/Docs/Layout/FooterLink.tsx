@@ -8,7 +8,7 @@ import {
   edgeSize,
   transitionDuration,
   width,
-} from "../../../theme/theme-new";
+} from "../../../theme/theme";
 import Text from "../../shared/Text";
 import { Doc } from "../docs";
 

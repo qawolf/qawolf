@@ -1,6 +1,6 @@
 import { Box, Drop, DropProps } from "grommet";
 
-import { borderSize, edgeSize } from "../../theme/theme-new";
+import { borderSize, edgeSize } from "../../theme/theme";
 import Text from "./Text";
 
 type Props = {

@@ -1,4 +1,4 @@
-import { canvasSize } from "../theme/theme-new";
+import { canvasSize } from "../theme/theme";
 
 type Size = {
   height: number;

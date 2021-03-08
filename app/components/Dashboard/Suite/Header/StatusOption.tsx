@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 
 import { RunStatus } from "../../../../server/types";
-import { overflowStyle } from "../../../../theme/theme-new";
+import { overflowStyle } from "../../../../theme/theme";
 import CountBadge from "../../../shared/CountBadge";
 import Option from "../../../shared/Select/Option";
 import StatusIcon from "../../../shared/StatusIcon";

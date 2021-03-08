@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { breakpoints, colors, height, width } from "../../../theme/theme-new";
+import { breakpoints, colors, height, width } from "../../../theme/theme";
 import GitHubStars from "../GitHubStars";
 import Hamburger from "../Hamburger";
 import Buttons from "./Buttons";

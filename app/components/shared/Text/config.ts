@@ -1,6 +1,6 @@
 import { TextProps } from "grommet";
 
-import { colors } from "../../../theme/theme-new";
+import { colors } from "../../../theme/theme";
 
 export type Size =
   | "xxsmall"

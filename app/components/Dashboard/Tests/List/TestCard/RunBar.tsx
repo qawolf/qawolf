@@ -9,7 +9,7 @@ import {
   colors,
   edgeSize,
   transitionDuration,
-} from "../../../../../theme/theme-new";
+} from "../../../../../theme/theme";
 import Tooltip from "../../../../shared/Tooltip";
 import { getLabelForRun } from "../../../helpers";
 import { boxProps } from "./RunBarEmpty";

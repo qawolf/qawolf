@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { useEnvironments } from "../../hooks/queries";
 import { state } from "../../lib/state";
 import { copy } from "../../theme/copy";
-import { borderSize, colors, transitionDuration } from "../../theme/theme-new";
+import { borderSize, colors, transitionDuration } from "../../theme/theme";
 import { StateContext } from "../StateContext";
 import Button from "./AppButton";
 import Configure from "./icons/Configure";

@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import styled from "styled-components";
 
 import { ValueProp } from "../../../lib/types";
-import { breakpoints } from "../../../theme/theme-new";
+import { breakpoints } from "../../../theme/theme";
 import Section from "../../shared/Section";
 import HeaderText from "../HeaderText";
 import ProductGif from "../ProductVideo";

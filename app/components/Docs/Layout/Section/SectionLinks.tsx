@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 import styled from "styled-components";
 
-import { edgeSize } from "../../../../theme/theme-new";
+import { edgeSize } from "../../../../theme/theme";
 import { Doc } from "../../docs";
 import SectionLink from "./SectionLink";
 

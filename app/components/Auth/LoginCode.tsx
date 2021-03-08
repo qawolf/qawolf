@@ -3,7 +3,7 @@ import { RiKey2Line } from "react-icons/ri";
 
 import { AuthMode } from "../../lib/types";
 import { copy } from "../../theme/copy";
-import { colors, edgeSize } from "../../theme/theme-new";
+import { colors, edgeSize } from "../../theme/theme";
 import Text from "../shared/Text";
 
 type Props = { mode: AuthMode };

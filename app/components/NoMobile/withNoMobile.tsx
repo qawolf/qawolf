@@ -1,5 +1,5 @@
 import { useWindowSize } from "../../hooks/windowSize";
-import { breakpoints } from "../../theme/theme-new";
+import { breakpoints } from "../../theme/theme";
 import NoMobile from "./index";
 
 export const withNoMobile = <P extends Record<string, unknown>>(

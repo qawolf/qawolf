@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { EnvironmentVariable } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
-import { overflowStyle } from "../../../../theme/theme-new";
+import { overflowStyle } from "../../../../theme/theme";
 import EditDeleteButtons, {
   StyledBox,
 } from "../../../shared/EditDeleteButtons";

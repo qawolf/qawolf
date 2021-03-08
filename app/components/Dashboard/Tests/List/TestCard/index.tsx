@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { routes } from "../../../../../lib/routes";
 import { ShortTest, TestSummary, Trigger } from "../../../../../lib/types";
-import { border } from "../../../../../theme/theme-new";
+import { border } from "../../../../../theme/theme";
 import CheckBox from "../../../../shared/CheckBox";
 import TestGif from "../../../../shared/TestGif";
 import Options from "./Options";

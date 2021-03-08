@@ -7,7 +7,7 @@ import {
   colors,
   edgeSize,
   transitionDuration,
-} from "../../../../theme/theme-new";
+} from "../../../../theme/theme";
 import Close from "../../../shared/icons/Close";
 import Text from "../../../shared/Text";
 

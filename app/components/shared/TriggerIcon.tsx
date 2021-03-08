@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import { Icon } from "grommet-icons";
 
 import { ShortTrigger } from "../../lib/types";
-import { edgeSize } from "../../theme/theme-new";
+import { edgeSize } from "../../theme/theme";
 import Clock from "./icons/Clock";
 import Plug from "./icons/Plug";
 import Rocket from "./icons/Rocket";

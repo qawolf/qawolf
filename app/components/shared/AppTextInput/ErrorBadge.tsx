@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 import { forwardRef, Ref } from "react";
 
-import { borderSize } from "../../../theme/theme-new";
+import { borderSize } from "../../../theme/theme";
 import Text from "../Text";
 
 type Props = { error: string };

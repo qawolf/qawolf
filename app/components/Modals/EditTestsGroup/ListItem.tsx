@@ -2,12 +2,7 @@ import { Box } from "grommet";
 
 import { Group } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
-import {
-  border,
-  colors,
-  edgeSize,
-  overflowStyle,
-} from "../../../theme/theme-new";
+import { border, colors, edgeSize, overflowStyle } from "../../../theme/theme";
 import Folder from "../../shared/icons/Folder";
 import FolderEmpty from "../../shared/icons/FolderEmpty";
 import RadioButton from "../../shared/RadioButton";

@@ -9,7 +9,7 @@ import {
   colors,
   edgeSize,
   overflowStyle,
-} from "../../../../theme/theme-new";
+} from "../../../../theme/theme";
 import Email from "../../../shared/icons/Email";
 import RadioButton from "../../../shared/RadioButton";
 import Text from "../../../shared/Text";

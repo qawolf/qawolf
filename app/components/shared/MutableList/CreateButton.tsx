@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { MutableListType } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
-import { colors, edgeSize, transitionDuration } from "../../../theme/theme-new";
+import { colors, edgeSize, transitionDuration } from "../../../theme/theme";
 import Add from "../icons/Add";
 import Text from "../Text";
 

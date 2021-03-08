@@ -1,6 +1,6 @@
 import { defaultProps } from "grommet";
 
-import { edgeSize, theme } from "../theme/theme-new";
+import { edgeSize, theme } from "../theme/theme";
 
 const defaultTheme = defaultProps.theme;
 

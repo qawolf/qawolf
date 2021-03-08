@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import Link from "next/link";
 import styled from "styled-components";
 
-import { colors, edgeSize, transition } from "../../../../theme/theme-new";
+import { colors, edgeSize, transition } from "../../../../theme/theme";
 import Text from "../../../shared/Text";
 import { Doc } from "../../docs";
 

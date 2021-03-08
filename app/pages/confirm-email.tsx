@@ -12,7 +12,7 @@ import { UserContext } from "../components/UserContext";
 import { useSignInWithEmail } from "../hooks/mutations";
 import { routes } from "../lib/routes";
 import { copy } from "../theme/copy";
-import { breakpoints, edgeSize } from "../theme/theme-new";
+import { breakpoints, edgeSize } from "../theme/theme";
 
 const StyledBox = styled(Box)`
   flex-direction: column;

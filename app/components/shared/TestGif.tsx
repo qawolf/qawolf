@@ -2,7 +2,7 @@ import { Box, BoxProps, Image } from "grommet";
 import { useContext } from "react";
 
 import { copy } from "../../theme/copy";
-import { borderSize } from "../../theme/theme-new";
+import { borderSize } from "../../theme/theme";
 import { UserContext } from "../UserContext";
 import WolfHead from "./icons/WolfHead";
 import Spinner from "./Spinner";

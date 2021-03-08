@@ -3,7 +3,7 @@ import { useContext } from "react";
 
 import { useSuites } from "../../../hooks/queries";
 import { copy } from "../../../theme/copy";
-import { border, edgeSize } from "../../../theme/theme-new";
+import { border, edgeSize } from "../../../theme/theme";
 import Spinner from "../../shared/Spinner";
 import Text from "../../shared/Text";
 import { StateContext } from "../../StateContext";

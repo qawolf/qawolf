@@ -5,7 +5,7 @@ import React from "react";
 import Folder from "../components/shared/icons/Folder";
 import RadioButton, { Props } from "../components/shared/RadioButton";
 import Text from "../components/shared/Text";
-import { colors, edgeSize } from "../theme/theme-new";
+import { colors, edgeSize } from "../theme/theme";
 import theme from "./theme";
 
 export default {

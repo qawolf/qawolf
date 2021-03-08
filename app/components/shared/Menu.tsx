@@ -2,7 +2,7 @@ import { Box, BoxProps } from "grommet";
 import { ReactNode } from "react";
 import styled, { keyframes } from "styled-components";
 
-import { boxShadow, edgeSize } from "../../theme/theme-new";
+import { boxShadow, edgeSize } from "../../theme/theme";
 
 export type Direction = "down" | "up";
 

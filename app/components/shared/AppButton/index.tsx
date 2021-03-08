@@ -11,7 +11,7 @@ import {
   overflowStyle,
   transition,
   transitionDuration,
-} from "../../../theme/theme-new";
+} from "../../../theme/theme";
 import Text from "../Text";
 import {
   activeBackground,
