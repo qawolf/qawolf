@@ -23,7 +23,7 @@ export default function HelpersEditor({ onKeyDown }: Props): JSX.Element {
   const { teamId } = useContext(StateContext);
   const { hasWriteAccess, refetchTeam, team } = useContext(TestContext);
 
-  const helpersVersionRef = useRef(team?.helpers_version);
+  const helpersVersionRef = useRef(team?.helpers_version || -1);
 
   const [editor, setEditor] = useState<Editor | null>(null);
   const [monaco, setMonaco] = useState<typeof monacoEditor | null>(null);
@@ -36,14 +36,19 @@ export default function HelpersEditor({ onKeyDown }: Props): JSX.Element {
     if (refetchTeam) refetchTeam();
   }, [refetchTeam]);
 
-  // update current team helpers version so it works in callback
   useEffect(() => {
-    if (team) helpersVersionRef.current = team.helpers_version;
-  }, [team]);
+    if (!editor || !team) return;
 
-  useEffect(() => {
-    if (editor && team && editor.getValue() !== team.helpers) {
+    if (
+      !editor.getValue() ||
+      team.helpers_version > helpersVersionRef.current
+    ) {
       editor.setValue(team.helpers);
+    }
+
+    // update current team helpers version so it works in callback
+    if (team.helpers_version > -1) {
+      helpersVersionRef.current = team.helpers_version;
     }
   }, [editor, team]);
 
