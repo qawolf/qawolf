@@ -1,0 +1,77 @@
+import ExternalLink from "../../components/Docs/ExternalLink";
+import Header from "../../components/Docs/Header";
+import Image from "../../components/Docs/Image";
+import Layout from "../../components/Docs/Layout";
+import SubHeader from "../../components/Docs/SubHeader";
+
+<Layout>
+
+<Header>Manage Alerts</Header>
+
+In this tutorial, we'll learn how to manage alerts. QA Wolf alerts your team whenever your tests run, providing details about how many tests passed or failed.
+
+You can choose to alert your team with <ExternalLink href="https://www.slack.com">Slack</ExternalLink> or email whenever your tests run.
+
+<SubHeader>Update Alert Settings</SubHeader>
+
+To update your alert settings, first visit the <ExternalLink href="https://www.qawolf.com/settings">Team settings page</ExternalLink>. You can access this page from sidebar of the dashboard.
+
+<Image
+  alt="Open team settings"
+  height={356}
+  src="/docs/invite-team-members/dashboard.png"
+  width={1600}
+/>
+
+The alert settings are at the bottom of the settings page. By default, your team will receive email alerts.
+
+<Image
+  alt="Alert settings"
+  height={1130}
+  src="/docs/manage-alerts/alert-settings.png"
+  width={1587}
+/>
+
+<SubHeader>Add a Slack Channel</SubHeader>
+
+To receive Slack alerts, you first need to add a Slack channel. Click the "Add Slack channel" button to start this process.
+
+<Image
+  alt="Add slack channel"
+  height={160}
+  src="/docs/manage-alerts/add-slack-channel.png"
+  width={600}
+/>
+
+Select the channel to post the alerts to and click "Allow".
+
+<Image
+  alt="Accept Slack permissions"
+  height={300}
+  src="/docs/manage-alerts/accept-slack-permissions.png"
+  width={400}
+/>
+
+You will be redirected to the settings page. Make sure your desired channel is now selected.
+
+<Image
+  alt="Choose Slack channel"
+  height={215}
+  src="/docs/manage-alerts/choose-slack-channel.png"
+  width={616}
+/>
+
+<SubHeader>Conclusion</SubHeader>
+
+When your tests run, you will receive alerts in your selected channel (email or Slack).
+
+The alerts will link to any failing tests with a video, logs, and the status of each line of code.
+
+<Image
+  alt="Failed test"
+  height={813}
+  src="/docs/manage-alerts/failed-test.png"
+  width={1600}
+/>
+
+</Layout>
