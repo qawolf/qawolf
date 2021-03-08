@@ -3,8 +3,8 @@
 import { ThemeType } from "grommet";
 import { CSSProperties } from "react";
 
-import Check from "../components/shared-new/icons/Check";
-import Indeterminate from "../components/shared-new/icons/Indeterminate";
+import Check from "../components/shared/icons/Check";
+import Indeterminate from "../components/shared/icons/Indeterminate";
 
 export const borderSize = {
   xsmall: "1px",

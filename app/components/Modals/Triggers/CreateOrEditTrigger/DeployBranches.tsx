@@ -3,9 +3,9 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 import { copy } from "../../../../theme/copy";
 import { edgeSize } from "../../../../theme/theme-new";
-import Button from "../../../shared-new/AppButton";
-import TextInput from "../../../shared-new/AppTextInput";
-import Text from "../../../shared-new/Text";
+import Button from "../../../shared/AppButton";
+import TextInput from "../../../shared/AppTextInput";
+import Text from "../../../shared/Text";
 import { labelTextProps } from "../helpers";
 
 type Props = {

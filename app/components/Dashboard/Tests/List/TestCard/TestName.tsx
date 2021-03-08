@@ -5,8 +5,8 @@ import {
   edgeSize,
   overflowStyle,
 } from "../../../../../theme/theme-new";
-import Folder from "../../../../shared-new/icons/Folder";
-import Text from "../../../../shared-new/Text";
+import Folder from "../../../../shared/icons/Folder";
+import Text from "../../../../shared/Text";
 
 type Props = {
   groupName: string | null;

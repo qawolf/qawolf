@@ -3,7 +3,7 @@ import NextImage from "next/image";
 import styled from "styled-components";
 
 import { breakpoints, edgeSize } from "../../theme/theme-new";
-import Text from "../shared-new/Text";
+import Text from "../shared/Text";
 
 type Props = {
   alt: string;

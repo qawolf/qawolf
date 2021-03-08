@@ -4,8 +4,8 @@ import styled from "styled-components";
 import { routes } from "../../../../lib/routes";
 import { copy } from "../../../../theme/copy";
 import { breakpoints, edgeSize } from "../../../../theme/theme-new";
-import Button from "../../../shared-new/Button";
-import Text from "../../../shared-new/Text";
+import Button from "../../../shared/Button";
+import Text from "../../../shared/Text";
 
 type Props = { basis: BoxProps["basis"] };
 

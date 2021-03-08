@@ -4,11 +4,11 @@ import { useCreateSuite } from "../../../../hooks/mutations";
 import { timestampToText } from "../../../../lib/helpers";
 import { Suite, SuiteRun } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
-import Button from "../../../shared-new/AppButton";
-import Play from "../../../shared-new/icons/Play";
-import Search from "../../../shared-new/Search";
-import Text from "../../../shared-new/Text";
-import TriggerIcon from "../../../shared-new/TriggerIcon";
+import Button from "../../../shared/AppButton";
+import Play from "../../../shared/icons/Play";
+import Search from "../../../shared/Search";
+import Text from "../../../shared/Text";
+import TriggerIcon from "../../../shared/TriggerIcon";
 import { formatSuiteName } from "../../helpers";
 import SelectStatus from "./SelectStatus";
 

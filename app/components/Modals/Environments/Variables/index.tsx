@@ -2,8 +2,8 @@ import { Box } from "grommet";
 
 import { EnvironmentVariable } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
-import Header from "../../../shared-new/Modal/Header";
-import Text from "../../../shared-new/Text";
+import Header from "../../../shared/Modal/Header";
+import Text from "../../../shared/Text";
 import List from "./List";
 
 type Props = {

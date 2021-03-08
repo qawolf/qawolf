@@ -2,9 +2,9 @@ import { Box } from "grommet";
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 
-import Logo from "../components/shared-new/icons/Logo";
-import Spinner from "../components/shared-new/Spinner";
-import Text from "../components/shared-new/Text";
+import Logo from "../components/shared/icons/Logo";
+import Spinner from "../components/shared/Spinner";
+import Text from "../components/shared/Text";
 import { StateContext } from "../components/StateContext";
 import { useEnsureUser } from "../hooks/ensureUser";
 import { useCreateGitHubIntegrations } from "../hooks/mutations";

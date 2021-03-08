@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 
 import { edgeSize } from "../../../theme/theme-new";
-import WolfHead from "../../shared-new/icons/WolfHead";
+import WolfHead from "../icons/WolfHead";
 
 type Props = { color: string };
 

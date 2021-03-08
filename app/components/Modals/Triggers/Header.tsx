@@ -1,6 +1,6 @@
 import { copy } from "../../../theme/copy";
-import ModalHeader from "../../shared-new/Modal/Header";
-import Text from "../../shared-new/Text";
+import ModalHeader from "../../shared/Modal/Header";
+import Text from "../../shared/Text";
 
 type Props = {
   closeModal: () => void;

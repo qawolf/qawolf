@@ -5,7 +5,7 @@ import { useCreateSignInUrl } from "../../hooks/mutations";
 import { routes } from "../../lib/routes";
 import { AuthMode } from "../../lib/types";
 import { copy } from "../../theme/copy";
-import Button from "../shared-new/Button";
+import Button from "../shared/Button";
 
 type Props = { mode: AuthMode };
 

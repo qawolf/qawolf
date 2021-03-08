@@ -10,9 +10,9 @@ import {
   edgeSize,
   overflowStyle,
 } from "../../../../theme/theme-new";
-import Email from "../../../shared-new/icons/Email";
-import RadioButton from "../../../shared-new/RadioButton";
-import Text from "../../../shared-new/Text";
+import Email from "../../../shared/icons/Email";
+import RadioButton from "../../../shared/RadioButton";
+import Text from "../../../shared/Text";
 
 type Props = {
   integration?: Integration;

@@ -11,8 +11,8 @@ import {
   overflowStyle,
   transitionDuration,
 } from "../theme/theme-new";
-import Close from "./shared-new/icons/Close";
-import Text from "./shared-new/Text";
+import Close from "./shared/icons/Close";
+import Text from "./shared/Text";
 import { StateContext } from "./StateContext";
 
 const maxWidth = "480px";

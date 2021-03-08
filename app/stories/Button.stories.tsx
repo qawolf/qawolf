@@ -2,9 +2,9 @@ import { Meta, Story } from "@storybook/react/types-6-0";
 import { ThemeContext } from "grommet";
 import React from "react";
 
-import Button, { Props } from "../components/shared-new/AppButton";
-import Rocket from "../components/shared-new/icons/Rocket";
-import Trash from "../components/shared-new/icons/Trash";
+import Button, { Props } from "../components/shared/AppButton";
+import Rocket from "../components/shared/icons/Rocket";
+import Trash from "../components/shared/icons/Trash";
 import theme from "./theme";
 
 export default {

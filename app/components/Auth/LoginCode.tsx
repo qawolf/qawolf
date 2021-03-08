@@ -4,7 +4,7 @@ import { RiKey2Line } from "react-icons/ri";
 import { AuthMode } from "../../lib/types";
 import { copy } from "../../theme/copy";
 import { colors, edgeSize } from "../../theme/theme-new";
-import Text from "../shared-new/Text";
+import Text from "../shared/Text";
 
 type Props = { mode: AuthMode };
 

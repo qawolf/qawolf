@@ -6,11 +6,11 @@ import { useOnHotKey } from "../../../hooks/onHotKey";
 import { useGroups } from "../../../hooks/queries";
 import { SelectedTest } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
-import Divider from "../../shared-new/Divider";
-import Modal from "../../shared-new/Modal";
-import Buttons from "../../shared-new/Modal/Buttons";
-import Header from "../../shared-new/Modal/Header";
-import Text from "../../shared-new/Text";
+import Divider from "../../shared/Divider";
+import Modal from "../../shared/Modal";
+import Buttons from "../../shared/Modal/Buttons";
+import Header from "../../shared/Modal/Header";
+import Text from "../../shared/Text";
 import { StateContext } from "../../StateContext";
 import ListItem from "./ListItem";
 

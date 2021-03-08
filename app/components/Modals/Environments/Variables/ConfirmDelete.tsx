@@ -4,10 +4,10 @@ import { useDeleteEnvironmentVariable } from "../../../../hooks/mutations";
 import { EnvironmentVariable } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import { edgeSize, overflowStyle } from "../../../../theme/theme-new";
-import Divider from "../../../shared-new/Divider";
-import ConfirmDelete from "../../../shared-new/Modal/ConfirmDelete";
-import Header from "../../../shared-new/Modal/Header";
-import Text from "../../../shared-new/Text";
+import Divider from "../../../shared/Divider";
+import ConfirmDelete from "../../../shared/Modal/ConfirmDelete";
+import Header from "../../../shared/Modal/Header";
+import Text from "../../../shared/Text";
 
 type Props = {
   closeModal: () => void;

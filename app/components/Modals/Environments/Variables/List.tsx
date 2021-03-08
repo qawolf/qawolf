@@ -4,10 +4,10 @@ import { ReactNode, useEffect, useState } from "react";
 import { useEnvironmentVariables } from "../../../../hooks/queries";
 import { EnvironmentVariable } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
-import Divider from "../../../shared-new/Divider";
-import Add from "../../../shared-new/icons/Add";
-import ModalButtons from "../../../shared-new/Modal/Buttons";
-import Text from "../../../shared-new/Text";
+import Divider from "../../../shared/Divider";
+import Add from "../../../shared/icons/Add";
+import ModalButtons from "../../../shared/Modal/Buttons";
+import Text from "../../../shared/Text";
 import Form, { id as formInputId } from "./Form";
 import ListItem, { nameWidth } from "./ListItem";
 

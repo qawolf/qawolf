@@ -6,7 +6,7 @@ import { routes } from "../../../lib/routes";
 import { copy } from "../../../theme/copy";
 import { breakpoints, edgeSize, height } from "../../../theme/theme-new";
 import { UserContext } from "../../UserContext";
-import Button from "..//Button";
+import Button from "../Button";
 import QaWolfLinks from "./QaWolfLinks";
 
 const basis = "1/2";

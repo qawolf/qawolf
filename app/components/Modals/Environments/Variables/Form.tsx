@@ -7,8 +7,8 @@ import {
 import { EnvironmentVariable } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import { edgeSize } from "../../../../theme/theme-new";
-import TextInput from "../../../shared-new/AppTextInput";
-import ListItemForm from "../../../shared-new/ListItemForm";
+import TextInput from "../../../shared/AppTextInput";
+import ListItemForm from "../../../shared/ListItemForm";
 
 type Props = {
   environmentId: string;

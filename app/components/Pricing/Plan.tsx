@@ -9,9 +9,9 @@ import {
   text,
   textDesktop,
 } from "../../theme/theme-new";
-import Button from "../shared-new/Button";
-import Paw from "../shared-new/icons/Paw";
-import Text from "../shared-new/Text";
+import Button from "../shared/Button";
+import Paw from "../shared/icons/Paw";
+import Text from "../shared/Text";
 import Price from "./Price";
 
 export type PlanType = {

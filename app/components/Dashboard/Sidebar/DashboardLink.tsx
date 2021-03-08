@@ -9,7 +9,7 @@ import {
   edgeSize,
   transitionDuration,
 } from "../../../theme/theme-new";
-import Text from "../../shared-new/Text";
+import Text from "../../shared/Text";
 
 type Props = {
   IconComponent: Icon;

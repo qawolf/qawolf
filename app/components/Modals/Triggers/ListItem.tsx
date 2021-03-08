@@ -2,12 +2,10 @@ import { Box } from "grommet";
 
 import { Trigger } from "../../../lib/types";
 import { borderSize, overflowStyle } from "../../../theme/theme-new";
-import CheckBox from "../../shared-new/CheckBox";
-import EditDeleteButtons, {
-  StyledBox,
-} from "../../shared-new/EditDeleteButtons";
-import Text from "../../shared-new/Text";
-import TriggerIcon from "../../shared-new/TriggerIcon";
+import CheckBox from "../../shared/CheckBox";
+import EditDeleteButtons, { StyledBox } from "../../shared/EditDeleteButtons";
+import Text from "../../shared/Text";
+import TriggerIcon from "../../shared/TriggerIcon";
 import { SelectState } from "./helpers";
 
 type Props = {

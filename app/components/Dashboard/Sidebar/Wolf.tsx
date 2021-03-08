@@ -5,8 +5,8 @@ import styled from "styled-components";
 import { isServer } from "../../../lib/detection";
 import { copy } from "../../../theme/copy";
 import { transitionDuration } from "../../../theme/theme-new";
-import WolfSitting from "../../shared-new/icons/WolfSitting";
-import Text from "../../shared-new/Text";
+import WolfSitting from "../../shared/icons/WolfSitting";
+import Text from "../../shared/Text";
 import { UserContext } from "../../UserContext";
 
 const StyledBox = styled(Box)`

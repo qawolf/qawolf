@@ -6,7 +6,7 @@ import { NavigationType } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import { breakpoints, edgeSize } from "../../../theme/theme-new";
 import { UserContext } from "../../UserContext";
-import Button from "..//Button";
+import Button from "../Button";
 
 type Props = { type: NavigationType };
 

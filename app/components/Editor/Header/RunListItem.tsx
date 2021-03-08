@@ -6,8 +6,8 @@ import { timeToText } from "../../../lib/helpers";
 import { routes } from "../../../lib/routes";
 import { TestHistoryRun } from "../../../lib/types";
 import { colors, edgeSize, transitionDuration } from "../../../theme/theme-new";
-import StatusBadge from "../../shared-new/StatusBadge";
-import Text from "../../shared-new/Text";
+import StatusBadge from "../../shared/StatusBadge";
+import Text from "../../shared/Text";
 
 type Props = { run: TestHistoryRun };
 

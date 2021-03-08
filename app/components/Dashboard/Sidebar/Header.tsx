@@ -11,9 +11,9 @@ import {
   overflowStyle,
   transitionDuration,
 } from "../../../theme/theme-new";
-import Avatar from "../../shared-new/Avatar";
-import Logo from "../../shared-new/icons/Logo";
-import Text from "../../shared-new/Text";
+import Avatar from "../../shared/Avatar";
+import Logo from "../../shared/icons/Logo";
+import Text from "../../shared/Text";
 import { StateContext } from "../../StateContext";
 import { UserContext } from "../../UserContext";
 import Actions from "./Actions";

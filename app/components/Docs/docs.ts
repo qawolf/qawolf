@@ -5,7 +5,7 @@ import { IoTrailSign } from "react-icons/io5";
 import { RiPlugFill, RiRocketFill } from "react-icons/ri";
 
 import { routes } from "../../lib/routes";
-import Paw from "../shared-new/icons/Paw";
+import Paw from "../shared/icons/Paw";
 
 export type Doc = {
   href: string;

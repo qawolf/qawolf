@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { copy } from "../../../theme/copy";
 import { breakpoints } from "../../../theme/theme-new";
-import Section from "../../shared-new/Section";
+import Section from "../../shared/Section";
 import HeaderText from "../HeaderText";
 import ValueProp from "./ValueProp";
 import WolfBug from "./WolfBug";

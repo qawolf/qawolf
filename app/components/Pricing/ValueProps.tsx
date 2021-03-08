@@ -3,7 +3,7 @@ import { Box } from "grommet";
 import { routes } from "../../lib/routes";
 import { copy } from "../../theme/copy";
 import { edgeSize } from "../../theme/theme-new";
-import Button from "../shared-new/Button";
+import Button from "../shared/Button";
 import ValueProp from "./ValueProp";
 
 const valueProps = [

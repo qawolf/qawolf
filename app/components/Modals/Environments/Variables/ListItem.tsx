@@ -6,8 +6,8 @@ import { copy } from "../../../../theme/copy";
 import { overflowStyle } from "../../../../theme/theme-new";
 import EditDeleteButtons, {
   StyledBox,
-} from "../../../shared-new/EditDeleteButtons";
-import Text from "../../../shared-new/Text";
+} from "../../../shared/EditDeleteButtons";
+import Text from "../../../shared/Text";
 import Form from "./Form";
 
 type Props = {

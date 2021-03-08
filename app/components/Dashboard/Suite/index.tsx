@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 
 import { useSuite } from "../../../hooks/queries";
 import { RunStatus } from "../../../lib/types";
-import Spinner from "../../shared-new/Spinner";
+import Spinner from "../../shared/Spinner";
 import { StateContext } from "../../StateContext";
 import { filterRuns } from "../helpers";
 import Header from "./Header";

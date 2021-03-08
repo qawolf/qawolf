@@ -11,9 +11,9 @@ import {
   colors,
   transitionDuration,
 } from "../../../../theme/theme-new";
-import Button from "../../../shared-new/AppButton";
-import ArrowDown from "../../../shared-new/icons/ArrowDown";
-import Play from "../../../shared-new/icons/Play";
+import Button from "../../../shared/AppButton";
+import ArrowDown from "../../../shared/icons/ArrowDown";
+import Play from "../../../shared/icons/Play";
 import { StateContext } from "../../../StateContext";
 import EnvironmentsMenu from "./EnvironmentsMenu";
 

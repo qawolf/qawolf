@@ -5,7 +5,7 @@ import { RiArrowDownSLine } from "react-icons/ri";
 import styled from "styled-components";
 
 import { colors, edgeSize, text, width } from "../../../../theme/theme-new";
-import Text from "../../../shared-new/Text";
+import Text from "../../../shared/Text";
 import { docs, flattenedDocs } from "../../docs";
 
 const StyledDiv = styled.div`

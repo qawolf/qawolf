@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import Spinner from "../../components/shared-new/Spinner";
+import Spinner from "../../components/shared/Spinner";
 import { useEnsureUser } from "../../hooks/ensureUser";
 import { useCreateSlackIntegration } from "../../hooks/mutations";
 import { routes } from "../../lib/routes";

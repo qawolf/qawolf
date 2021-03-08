@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useTestSummaries } from "../../../../hooks/queries";
 import { Group, ShortTest, TestTriggers, Trigger } from "../../../../lib/types";
 import { borderSize } from "../../../../theme/theme-new";
-import Spinner from "../../../shared-new/Spinner";
+import Spinner from "../../../shared/Spinner";
 import { noTriggerId } from "../../helpers";
 import Header from "./Header";
 import TestCard from "./TestCard";

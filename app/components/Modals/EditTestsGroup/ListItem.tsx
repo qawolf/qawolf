@@ -8,10 +8,10 @@ import {
   edgeSize,
   overflowStyle,
 } from "../../../theme/theme-new";
-import Folder from "../../shared-new/icons/Folder";
-import FolderEmpty from "../../shared-new/icons/FolderEmpty";
-import RadioButton from "../../shared-new/RadioButton";
-import Text from "../../shared-new/Text";
+import Folder from "../../shared/icons/Folder";
+import FolderEmpty from "../../shared/icons/FolderEmpty";
+import RadioButton from "../../shared/RadioButton";
+import Text from "../../shared/Text";
 
 type Props = {
   group: Group | null;

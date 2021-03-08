@@ -3,10 +3,10 @@ import { ChangeEvent, useState } from "react";
 import { useDeleteTrigger } from "../../../hooks/mutations";
 import { Trigger } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
-import TextInput from "../../shared-new/AppTextInput";
-import ConfirmDelete from "../../shared-new/Modal/ConfirmDelete";
-import Header from "../../shared-new/Modal/Header";
-import Text from "../../shared-new/Text";
+import TextInput from "../../shared/AppTextInput";
+import ConfirmDelete from "../../shared/Modal/ConfirmDelete";
+import Header from "../../shared/Modal/Header";
+import Text from "../../shared/Text";
 
 type Props = {
   closeModal: () => void;

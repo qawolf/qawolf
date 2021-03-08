@@ -7,10 +7,10 @@ import { isValidURL, parseUrl } from "../../lib/helpers";
 import { routes } from "../../lib/routes";
 import { state } from "../../lib/state";
 import { copy } from "../../theme/copy";
-import TextInput from "../shared-new/AppTextInput";
-import Modal from "../shared-new/Modal";
-import Buttons from "../shared-new/Modal/Buttons";
-import Header from "../shared-new/Modal/Header";
+import TextInput from "../shared/AppTextInput";
+import Modal from "../shared/Modal";
+import Buttons from "../shared/Modal/Buttons";
+import Header from "../shared/Modal/Header";
 import { StateContext } from "../StateContext";
 
 type Props = { closeModal: () => void };

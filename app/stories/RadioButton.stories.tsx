@@ -2,9 +2,9 @@ import { Meta, Story } from "@storybook/react/types-6-0";
 import { Box, ThemeContext } from "grommet";
 import React from "react";
 
-import Folder from "../components/shared-new/icons/Folder";
-import RadioButton, { Props } from "../components/shared-new/RadioButton";
-import Text from "../components/shared-new/Text";
+import Folder from "../components/shared/icons/Folder";
+import RadioButton, { Props } from "../components/shared/RadioButton";
+import Text from "../components/shared/Text";
 import { colors, edgeSize } from "../theme/theme-new";
 import theme from "./theme";
 

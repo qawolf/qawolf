@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 
 import { Trigger } from "../../../../../lib/types";
 import { edgeSize } from "../../../../../theme/theme-new";
-import TriggerBadge from "../../../../shared-new/TriggerBadge";
+import TriggerBadge from "../../../../shared/TriggerBadge";
 import { buildTestsPath } from "../../../helpers";
 
 type Props = { triggers: Trigger[] };

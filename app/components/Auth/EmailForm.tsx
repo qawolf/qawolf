@@ -3,9 +3,9 @@ import { useRef, useState } from "react";
 
 import { AuthMode } from "../../lib/types";
 import { copy } from "../../theme/copy";
-import Button from "../shared-new/Button";
-import Text from "../shared-new/Text";
-import TextInput from "../shared-new/TextInput";
+import Button from "../shared/Button";
+import Text from "../shared/Text";
+import TextInput from "../shared/TextInput";
 
 type Props = {
   disabled: boolean;

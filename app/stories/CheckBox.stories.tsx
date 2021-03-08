@@ -2,9 +2,9 @@ import { Meta, Story } from "@storybook/react/types-6-0";
 import { Box, ThemeContext } from "grommet";
 import React from "react";
 
-import CheckBox, { Props } from "../components/shared-new/CheckBox";
-import Rocket from "../components/shared-new/icons/Rocket";
-import Text from "../components/shared-new/Text";
+import CheckBox, { Props } from "../components/shared/CheckBox";
+import Rocket from "../components/shared/icons/Rocket";
+import Text from "../components/shared/Text";
 import { colors, edgeSize } from "../theme/theme-new";
 import theme from "./theme";
 

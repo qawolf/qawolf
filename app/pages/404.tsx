@@ -1,8 +1,8 @@
 import { Box } from "grommet";
 import { useRouter } from "next/router";
 
-import Button from "../components/shared-new/AppButton";
-import Text from "../components/shared-new/Text";
+import Button from "../components/shared/AppButton";
+import Text from "../components/shared/Text";
 import { routes } from "../lib/routes";
 import { copy } from "../theme/copy";
 

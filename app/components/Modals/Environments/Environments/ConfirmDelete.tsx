@@ -4,10 +4,10 @@ import { ChangeEvent, useContext, useState } from "react";
 import { useDeleteEnvironment } from "../../../../hooks/mutations";
 import { MutableListFields } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
-import TextInput from "../../../shared-new/AppTextInput";
-import ConfirmDelete from "../../../shared-new/Modal/ConfirmDelete";
-import Header from "../../../shared-new/Modal/Header";
-import Text from "../../../shared-new/Text";
+import TextInput from "../../../shared/AppTextInput";
+import ConfirmDelete from "../../../shared/Modal/ConfirmDelete";
+import Header from "../../../shared/Modal/Header";
+import Text from "../../../shared/Text";
 import { StateContext } from "../../../StateContext";
 
 type Props = {

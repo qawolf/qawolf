@@ -2,10 +2,10 @@ import { Box } from "grommet";
 
 import { RunStatus } from "../../../../server/types";
 import { overflowStyle } from "../../../../theme/theme-new";
-import CountBadge from "../../../shared-new/CountBadge";
-import Option from "../../../shared-new/Select/Option";
-import StatusIcon from "../../../shared-new/StatusIcon";
-import Text from "../../../shared-new/Text";
+import CountBadge from "../../../shared/CountBadge";
+import Option from "../../../shared/Select/Option";
+import StatusIcon from "../../../shared/StatusIcon";
+import Text from "../../../shared/Text";
 import { getLabelForStatus } from "../../helpers";
 
 type Props = {

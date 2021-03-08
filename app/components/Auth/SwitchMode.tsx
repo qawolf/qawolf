@@ -4,7 +4,7 @@ import Link from "next/link";
 import { routes } from "../../lib/routes";
 import { AuthMode } from "../../lib/types";
 import { copy } from "../../theme/copy";
-import Text from "../shared-new/Text";
+import Text from "../shared/Text";
 
 type Props = { mode: AuthMode };
 

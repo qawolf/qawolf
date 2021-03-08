@@ -2,8 +2,8 @@ import { Box } from "grommet";
 
 import { TeamWithUsers } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
-import Divider from "../../../shared-new/Divider";
-import Text from "../../../shared-new/Text";
+import Divider from "../../../shared/Divider";
+import Text from "../../../shared/Text";
 import Invite from "./Invite";
 import Member from "./Member";
 

@@ -5,11 +5,11 @@ import { useOnHotKey } from "../../../hooks/onHotKey";
 import { state } from "../../../lib/state";
 import { copy } from "../../../theme/copy";
 import { borderSize, edgeSize } from "../../../theme/theme-new";
-import Button from "../../shared-new/AppButton";
-import Environments from "../../shared-new/Environments";
-import Edit from "../../shared-new/icons/Edit";
-import Play from "../../shared-new/icons/Play";
-import Stop from "../../shared-new/icons/Stop";
+import Button from "../../shared/AppButton";
+import Environments from "../../shared/Environments";
+import Edit from "../../shared/icons/Edit";
+import Play from "../../shared/icons/Play";
+import Stop from "../../shared/icons/Stop";
 import { StateContext } from "../../StateContext";
 import { Selection } from "../hooks/selection";
 

@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { ValueProp } from "../../../lib/types";
 import { breakpoints } from "../../../theme/theme-new";
-import Section from "../../shared-new/Section";
+import Section from "../../shared/Section";
 import HeaderText from "../HeaderText";
 import ProductGif from "../ProductVideo";
 import ValueProps from "./ValueProps";

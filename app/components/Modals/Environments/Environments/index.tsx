@@ -8,8 +8,8 @@ import { useEnvironments } from "../../../../hooks/queries";
 import { MutableListArgs, MutableListFields } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import { edgeSize } from "../../../../theme/theme-new";
-import MutableList from "../../../shared-new/MutableList";
-import Text from "../../../shared-new/Text";
+import MutableList from "../../../shared/MutableList";
+import Text from "../../../shared/Text";
 
 type Props = {
   environmentId: string;

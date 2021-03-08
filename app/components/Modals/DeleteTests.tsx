@@ -5,11 +5,11 @@ import { useDeleteTests } from "../../hooks/mutations";
 import { useOnHotKey } from "../../hooks/onHotKey";
 import { SelectedTest } from "../../lib/types";
 import { copy } from "../../theme/copy";
-import CheckBox from "../shared-new/CheckBox";
-import Modal from "../shared-new/Modal";
-import Buttons from "../shared-new/Modal/Buttons";
-import Header from "../shared-new/Modal/Header";
-import Text from "../shared-new/Text";
+import CheckBox from "../shared/CheckBox";
+import Modal from "../shared/Modal";
+import Buttons from "../shared/Modal/Buttons";
+import Header from "../shared/Modal/Header";
+import Text from "../shared/Text";
 
 type Props = {
   closeModal: () => void;

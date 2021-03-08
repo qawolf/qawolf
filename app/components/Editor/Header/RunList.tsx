@@ -3,8 +3,8 @@ import { Box } from "grommet";
 import { useTestHistory } from "../../../hooks/queries";
 import { copy } from "../../../theme/copy";
 import { edgeSize } from "../../../theme/theme-new";
-import Menu from "../../shared-new/Menu";
-import Text from "../../shared-new/Text";
+import Menu from "../../shared/Menu";
+import Text from "../../shared/Text";
 import RunListItem from "./RunListItem";
 
 type Props = {

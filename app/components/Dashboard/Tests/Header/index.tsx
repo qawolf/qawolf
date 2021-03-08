@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 
 import { ShortTest, TestTriggers, Trigger } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
-import Search from "../../../shared-new/Search";
-import Text from "../../../shared-new/Text";
+import Search from "../../../shared/Search";
+import Text from "../../../shared/Text";
 import Actions from "./Actions";
 import Buttons from "./Buttons";
 import SelectTrigger from "./SelectTrigger";

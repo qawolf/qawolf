@@ -3,8 +3,8 @@ import { Box } from "grommet";
 import { state } from "../../../../lib/state";
 import { ShortTest } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
-import Button from "../../../shared-new/AppButton";
-import Add from "../../../shared-new/icons/Add";
+import Button from "../../../shared/AppButton";
+import Add from "../../../shared/icons/Add";
 import RunTests from "./RunTests";
 
 type Props = { tests: ShortTest[] | null };

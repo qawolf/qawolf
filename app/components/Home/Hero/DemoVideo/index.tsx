@@ -4,7 +4,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import { breakpoints, edgeSize, offset } from "../../../../theme/theme-new";
-import Section from "../../../shared-new/Section";
+import Section from "../../../shared/Section";
 import PlayButton from "./PlayButton";
 import Video from "./Video";
 

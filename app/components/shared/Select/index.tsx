@@ -3,7 +3,7 @@ import { ReactNode, useRef, useState } from "react";
 
 import { useOnClickOutside } from "../../../hooks/onClickOutside";
 import { Side } from "../../../lib/types";
-import Button from "../../shared-new/AppButton";
+import Button from "../AppButton";
 import ArrowDown from "../icons/ArrowDown";
 import Selector from "../icons/Selector";
 import Menu, { Direction } from "../Menu";

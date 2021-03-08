@@ -5,8 +5,8 @@ import styled from "styled-components";
 
 import CodeError from "../components/ConfirmEmail/CodeError";
 import CodeInput from "../components/ConfirmEmail/CodeInput";
-import Logo from "../components/shared-new/icons/Logo";
-import Text from "../components/shared-new/Text";
+import Logo from "../components/shared/icons/Logo";
+import Text from "../components/shared/Text";
 import { StateContext } from "../components/StateContext";
 import { UserContext } from "../components/UserContext";
 import { useSignInWithEmail } from "../hooks/mutations";

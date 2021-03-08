@@ -3,9 +3,9 @@ import { Box } from "grommet";
 import { SuiteRun } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import { borderSize, edgeSize } from "../../../../theme/theme-new";
-import CheckBox from "../../../shared-new/CheckBox";
-import StatusSummary from "../../../shared-new/StatusSummary";
-import Text from "../../../shared-new/Text";
+import CheckBox from "../../../shared/CheckBox";
+import StatusSummary from "../../../shared/StatusSummary";
+import Text from "../../../shared/Text";
 import { getRunCountForStatus } from "../../helpers";
 
 type Props = {

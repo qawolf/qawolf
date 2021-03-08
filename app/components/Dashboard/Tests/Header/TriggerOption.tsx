@@ -2,10 +2,10 @@ import { Box } from "grommet";
 
 import { Trigger } from "../../../../lib/types";
 import { overflowStyle } from "../../../../theme/theme-new";
-import CountBadge from "../../../shared-new/CountBadge";
-import Option from "../../../shared-new/Select/Option";
-import Text from "../../../shared-new/Text";
-import TriggerIcon from "../../../shared-new/TriggerIcon";
+import CountBadge from "../../../shared/CountBadge";
+import Option from "../../../shared/Select/Option";
+import Text from "../../../shared/Text";
+import TriggerIcon from "../../../shared/TriggerIcon";
 
 type Props = {
   count: number;

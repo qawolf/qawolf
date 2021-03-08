@@ -1,6 +1,6 @@
 import { copy } from "../../theme/copy";
-import Section from "../shared-new/Section";
-import Text from "../shared-new/Text";
+import Section from "../shared/Section";
+import Text from "../shared/Text";
 import ValueProps from "./ValueProps";
 
 export default function Overview(): JSX.Element {

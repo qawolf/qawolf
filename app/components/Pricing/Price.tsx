@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import isNumber from "lodash/isNumber";
 
 import { copy } from "../../theme/copy";
-import Text from "../shared-new/Text";
+import Text from "../shared/Text";
 
 type Props = { price: number | string };
 

@@ -4,11 +4,11 @@ import { state } from "../../../../lib/state";
 import { ShortTest } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import { borderSize, colors, edgeSize } from "../../../../theme/theme-new";
-import Button from "../../../shared-new/AppButton";
-import Divider from "../../../shared-new/Divider";
-import Folder from "../../../shared-new/icons/Folder";
-import Lightning from "../../../shared-new/icons/Lightning";
-import Trash from "../../../shared-new/icons/Trash";
+import Button from "../../../shared/AppButton";
+import Divider from "../../../shared/Divider";
+import Folder from "../../../shared/icons/Folder";
+import Lightning from "../../../shared/icons/Lightning";
+import Trash from "../../../shared/icons/Trash";
 
 type Props = {
   checkedTests: ShortTest[];

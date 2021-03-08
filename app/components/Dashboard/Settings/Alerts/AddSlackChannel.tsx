@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { useCreateSlackIntegrationUrl } from "../../../../hooks/mutations";
 import { routes } from "../../../../lib/routes";
 import { copy } from "../../../../theme/copy";
-import Button from "../../../shared-new/AppButton";
+import Button from "../../../shared/AppButton";
 
 type Props = { teamId: string };
 

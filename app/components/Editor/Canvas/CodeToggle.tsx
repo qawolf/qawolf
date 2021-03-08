@@ -2,8 +2,8 @@ import { Box } from "grommet";
 import { useContext, useEffect, useState } from "react";
 
 import { copy } from "../../../theme/copy";
-import Text from "../../shared-new/Text";
-import Toggle from "../../shared-new/Toggle";
+import Text from "../../shared/Text";
+import Toggle from "../../shared/Toggle";
 import { RunnerContext } from "../contexts/RunnerContext";
 import { TestContext } from "../contexts/TestContext";
 

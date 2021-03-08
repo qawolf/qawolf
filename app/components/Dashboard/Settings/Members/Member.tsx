@@ -3,8 +3,8 @@ import { Box } from "grommet";
 import { routes } from "../../../../lib/routes";
 import { copy } from "../../../../theme/copy";
 import { border, overflowStyle } from "../../../../theme/theme-new";
-import Avatar from "../../../shared-new/Avatar";
-import Text from "../../../shared-new/Text";
+import Avatar from "../../../shared/Avatar";
+import Text from "../../../shared/Text";
 
 type Props = {
   avatarUrl?: string | null;
