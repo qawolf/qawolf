@@ -14,6 +14,7 @@ import {
 } from "../../theme/theme-new";
 
 type Props = {
+  autoFocus?: boolean;
   name?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
@@ -47,11 +48,12 @@ const StyledGrommetTextInput = styled(GrommetTextInput)`
 `;
 
 function TextInput(
-  { name, onChange, placeholder, value }: Props,
+  { autoFocus, name, onChange, placeholder, value }: Props,
   ref?: Ref<HTMLInputElement>
 ): JSX.Element {
   return (
     <StyledGrommetTextInput
+      autoFocus={autoFocus}
       name={name}
       onChange={onChange}
       placeholder={placeholder}

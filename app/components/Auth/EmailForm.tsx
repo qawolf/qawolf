@@ -23,11 +23,6 @@ export default function EmailForm({
   const [email, setEmail] = useState("");
   const ref = useRef<HTMLInputElement>(null);
 
-  // focus input
-  useEffect(() => {
-    if (ref.current) ref.current.focus();
-  }, []);
-
   const handleClick = () => {
     onSubmit(email);
   };
@@ -50,6 +45,7 @@ export default function EmailForm({
           {copy.email}
         </Text>
         <TextInput
+          autoFocus
           name="email"
           onChange={handleEmailChange}
           placeholder={copy.emailPlaceholder}
