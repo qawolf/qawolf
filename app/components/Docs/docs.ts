@@ -59,6 +59,10 @@ export const docs: Section[] = [
         name: "Run Tests with API",
       },
       {
+        href: `${routes.docs}/invite-team-members`,
+        name: "Invite Team Members",
+      },
+      {
         href: `${routes.docs}/send-slack-alerts`,
         name: "Send Slack Alerts",
       },
