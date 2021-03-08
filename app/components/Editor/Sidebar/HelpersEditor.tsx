@@ -1,5 +1,4 @@
 import debounce from "debounce";
-import isNil from "lodash/isNil";
 import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
 import { useContext, useEffect, useRef, useState } from "react";
 
@@ -38,7 +37,6 @@ export default function HelpersEditor({ onKeyDown }: Props): JSX.Element {
   }, [refetchTeam]);
 
   useEffect(() => {
-    console.log("TEAM", team?.helpers_version, helpersVersionRef.current);
     if (!editor || !team) return;
 
     if (
@@ -47,14 +45,12 @@ export default function HelpersEditor({ onKeyDown }: Props): JSX.Element {
     ) {
       editor.setValue(team.helpers);
     }
-  }, [editor, team]);
 
-  // update current team helpers version so it works in callback
-  useEffect(() => {
-    if (!isNil(team?.helpers_version)) {
+    // update current team helpers version so it works in callback
+    if (team.helpers_version > -1) {
       helpersVersionRef.current = team.helpers_version;
     }
-  }, [team?.helpers_version]);
+  }, [editor, team]);
 
   const debouncedUpdateTeam = debounce(updateTeam, DEBOUNCE_MS);
 
