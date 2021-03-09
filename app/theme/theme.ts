@@ -212,7 +212,7 @@ export const theme: ThemeType = {
   },
   global: {
     borderSize,
-    colors,
+    colors: { ...colors, placeholder: colors.gray5 },
     control: {
       border: {
         radius: edgeSize.xsmall,

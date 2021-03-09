@@ -23,7 +23,6 @@ type Props = {
 
 const StyledGrommetTextInput = styled(GrommetTextInput)`
   border-color: ${colors.fill20};
-  border-radius: ${edgeSize.xxsmall};
   color: ${colors.textDark};
   font-family: ${fontFamily.medium};
   font-size: ${text.xsmall.size};
@@ -34,10 +33,6 @@ const StyledGrommetTextInput = styled(GrommetTextInput)`
 
   &:focus {
     border-color: ${colors.primaryFill};
-  }
-
-  &::placeholder {
-    color: ${colors.gray5};
   }
 
   @media screen and (min-width: ${breakpoints.medium.value}px) {
@@ -51,6 +46,8 @@ function TextInput(
   { autoFocus, name, onChange, placeholder, value }: Props,
   ref?: Ref<HTMLInputElement>
 ): JSX.Element {
+  const style = { borderRadius: edgeSize.xxsmall };
+
   return (
     <StyledGrommetTextInput
       autoFocus={autoFocus}
@@ -59,6 +56,7 @@ function TextInput(
       placeholder={placeholder}
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ref={ref as any}
+      style={style}
       value={value}
     />
   );

@@ -11,6 +11,7 @@ import {
 import styled from "styled-components";
 
 import {
+  border,
   borderSize,
   colors,
   edgeSize,
@@ -39,25 +40,12 @@ type Props = {
 };
 
 const StyledGrommetTextInput = styled(GrommetTextInput)`
-  border-color: ${colors.gray3};
-  border-radius: ${borderSize.small};
-  border-width: ${borderSize.xsmall};
-  color: ${colors.textDark};
-  font-weight: ${fontWeight.normal};
-  height: ${edgeSize.large};
-  line-height: ${edgeSize.large};
-  transition: ${transition};
-
   &:hover {
-    border-color: ${colors.gray5};
+    border-color: ${colors.gray5} !important;
   }
 
   &:focus {
-    border-color: ${colors.primary};
-  }
-
-  &::placeholder {
-    color: ${colors.gray5};
+    border-color: ${colors.primary} !important;
   }
 `;
 
@@ -89,15 +77,22 @@ function TextInput(
   const finalSize = size || "component";
 
   const style = {
-    borderColor: error ? colors.danger5 : undefined,
+    borderColor: error ? colors.danger5 : colors.gray3,
+    borderRadius: borderSize.small,
+    borderWidth: borderSize.xsmall,
+    color: colors.gray9,
     fontFamily: fontFamily[finalSize],
+    fontWeight: fontWeight.normal,
     fontSize: textDesktop[finalSize].size,
+    height: edgeSize.large,
+    lineHeight: edgeSize.large,
     paddingBottom: 0,
     paddingLeft: pad?.left || `calc(${edgeSize.xsmall} - ${borderSize.xsmall})`,
     paddingRight:
       pad?.right ||
       `calc(${edgeSize.xsmall} - ${borderSize.xsmall} + ${errorWidth}px)`,
     paddingTop: 0,
+    transition,
   };
 
   return (
