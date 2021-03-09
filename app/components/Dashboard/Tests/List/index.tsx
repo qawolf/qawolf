@@ -13,6 +13,7 @@ type Props = {
   checkedTestIds: string[];
   groups: Group[] | null;
   setCheckedTestIds: (testIds: string[]) => void;
+  testIds: string[];
   tests: ShortTest[] | null;
   testTriggers: TestTriggers[];
   triggers: Trigger[];
@@ -22,13 +23,13 @@ export default function List({
   checkedTestIds,
   groups,
   setCheckedTestIds,
+  testIds,
   tests,
   testTriggers,
   triggers,
 }: Props): JSX.Element {
   const { query } = useRouter();
 
-  const test_ids = (tests || []).map((t) => t.id);
   const trigger_id =
     query.trigger_id === noTriggerId
       ? null
@@ -36,7 +37,8 @@ export default function List({
 
   const { data, loading } = useTestSummaries(
     {
-      test_ids,
+      // tests includes only filtered tests, so do not rerun query just if search changes
+      test_ids: testIds,
       trigger_id,
     },
     { pollInterval: 10 * 1000 }

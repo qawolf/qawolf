@@ -74,6 +74,7 @@ export default function Tests({ groups }: Props): JSX.Element {
     checkedTestIds.includes(t.id)
   );
   const groupName = groups?.find((g) => g.id === query.group_id)?.name || null;
+  const testIds = (data?.tests || []).map((t) => t.id);
 
   return (
     <Box pad="medium" width="full">
@@ -91,6 +92,7 @@ export default function Tests({ groups }: Props): JSX.Element {
         checkedTestIds={checkedTestIds}
         groups={groups}
         setCheckedTestIds={setCheckedTestIds}
+        testIds={testIds}
         tests={tests}
         testTriggers={testTriggers}
         triggers={triggers}
