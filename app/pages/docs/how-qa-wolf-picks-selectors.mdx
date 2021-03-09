@@ -1,0 +1,63 @@
+import Link from "next/link";
+
+import Header from "../../components/Docs/Header";
+import Layout from "../../components/Docs/Layout";
+import SubHeader from "../../components/Docs/SubHeader";
+
+<Layout>
+
+<Header>How QA Wolf Picks Selectors</Header>
+
+As you use your site, QA Wolf picks the best selector for each element (like a button or text input) that you interact with. This guide explores how QA Wolf chooses selectors.
+
+<SubHeader>QA Wolf Selector Logic</SubHeader>
+
+### Target Attributes
+
+QA Wolf first tries to target elements with test attributes like `data-cy`, `data-e2e`, `data-qa`, `data-test`, or `data-testid`.
+
+For example, if you click on a button with the following HTML:
+
+```html
+<button data-qa="submit">Submit</button>
+```
+
+QA Wolf will create test code targeting the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors" target="_blank">CSS selector</a> `[data-qa="submit"]`:
+
+```js
+await page.click('[data-qa="submit"]');
+```
+
+When you run your test, Playwright will look for an element where the `data-qa` attribute is set to `submit`. If it cannot find an element where `data-qa` equals `submit` before timing out, the test fails.
+
+### Default Selector Logic
+
+If the element does not have a test attribute like `data-qa`, QA Wolf falls back to its default selector logic.
+
+In a nutshell, the default selector logic chooses the best available CSS or text selector for the target element. It prefers attributes like `id` over attributes like `href`. If there is not a matching selector for the target element alone, QA Wolf will try to find one that includes an ancestor.
+
+The default selector logic checks that the selector does not match a different element. It also does its best to avoid using dynamic `class` and `id` attributes.
+
+As a last resort, QA Wolf will target an element by its <a href="https://developer.mozilla.org/en-US/docs/Web/XPath" target="_blank">XPath</a>.
+
+<SubHeader>Selector Best Practices</SubHeader>
+
+A best practice in testing is to use test attributes like `data-qa` or `data-test` in your front end code. These selectors make your tests more robust to changes in your application code.
+
+If possible, you should consider updating your front end code to include test attributes. Don't worry - you don't need to do this all at once. If a test attribute is not included for a test step, QA Wolf will fall back to the <Link href="#qa-wolf-selector-logic"><a>default selector logic</a></Link>.
+
+For example, let's say we have a submit button with the following HTML:
+
+```html
+<button>Submit</button>
+```
+
+To explicity label our element for use in testing, we'll add a `data-qa` attribute with the value of `submit`:
+
+```html
+<button data-qa="submit">Submit</button>
+```
+
+Now even as the text, CSS classes, and other attributes of our submit button change, the `data-qa` attribute will always label it as the `submit` element to use in tests.
+
+</Layout>

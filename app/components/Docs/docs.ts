@@ -38,11 +38,6 @@ export const docs: Section[] = [
     docs: [
       { href: `${routes.docs}/create-a-test`, name: "Create a Test" },
       {
-        href: `${routes.docs}/convert-actions-to-code`,
-        name: "Convert Actions to Code",
-      },
-
-      {
         href: `${routes.docs}/run-tests-on-a-schedule`,
         name: "Run Tests on a Schedule",
       },
@@ -89,6 +84,10 @@ export const docs: Section[] = [
       {
         href: `${routes.docs}/call-an-api`,
         name: "Call an API",
+      },
+      {
+        href: `${routes.docs}/how-qa-wolf-picks-selectors`,
+        name: "How QA Wolf Picks Selectors",
       },
       {
         href: `${routes.docs}/use-localhost`,
