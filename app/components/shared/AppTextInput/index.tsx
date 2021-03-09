@@ -40,22 +40,12 @@ type Props = {
 };
 
 const StyledGrommetTextInput = styled(GrommetTextInput)`
-  color: ${colors.textDark};
-  font-weight: ${fontWeight.normal};
-  height: ${edgeSize.large};
-  line-height: ${edgeSize.large};
-  transition: ${transition};
-
   &:hover {
     border-color: ${colors.gray5};
   }
 
   &:focus {
     border-color: ${colors.primary};
-  }
-
-  &::placeholder {
-    color: ${colors.gray5};
   }
 `;
 
@@ -90,14 +80,19 @@ function TextInput(
     borderColor: error ? colors.danger5 : colors.gray3,
     borderRadius: borderSize.small,
     borderWidth: borderSize.xsmall,
+    color: colors.gray9,
     fontFamily: fontFamily[finalSize],
+    fontWeight: fontWeight.normal,
     fontSize: textDesktop[finalSize].size,
+    height: edgeSize.large,
+    lineHeight: edgeSize.large,
     paddingBottom: 0,
     paddingLeft: pad?.left || `calc(${edgeSize.xsmall} - ${borderSize.xsmall})`,
     paddingRight:
       pad?.right ||
       `calc(${edgeSize.xsmall} - ${borderSize.xsmall} + ${errorWidth}px)`,
     paddingTop: 0,
+    transition,
   };
 
   return (
