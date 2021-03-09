@@ -50,15 +50,13 @@ export class CodeUpdater extends EventEmitter {
     this._collector.on("windowevent", (event) => this._handleEvent(event));
   }
 
-  _handleEvent(event: ElementEvent | WindowEvent): void {
-    if (!this._enabledAt) return;
-
-    if (event.time < this._enabledAt) {
+  _handleEvent(event: ElementEvent | WindowEvent): boolean {
+    if (!this._enabledAt || event.time < this._enabledAt) {
       debug(
         "ignore event triggered before enabled %o",
         omit(event, "frame", "page")
       );
-      return;
+      return false;
     }
 
     debug("handle page event %o", omit(event, "frame", "page"));
@@ -72,7 +70,7 @@ export class CodeUpdater extends EventEmitter {
 
     if (!updatedCode) {
       debug(`skip update: no changes`);
-      return;
+      return false;
     }
 
     this._code = updatedCode;
@@ -85,6 +83,7 @@ export class CodeUpdater extends EventEmitter {
       version: this._version,
     };
     this.emit("codeupdated", update);
+    return true;
   }
 
   disable(): void {
@@ -93,6 +92,8 @@ export class CodeUpdater extends EventEmitter {
   }
 
   async enable(): Promise<void> {
+    if (this._enabledAt) return;
+
     debug("enable");
     this._enabledAt = Date.now();
     await this._collectEvents();

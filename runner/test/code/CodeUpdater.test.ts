@@ -1,4 +1,5 @@
 import { CodeUpdater } from "../../src/code/CodeUpdater";
+import { WindowAction, WindowEvent } from "../../src/types";
 import {
   FixturesServer,
   launch,
@@ -33,6 +34,20 @@ beforeEach(() => {
 afterAll(async () => {
   server.close();
   await launched.browser.close();
+});
+
+it("ignores events triggered before enabled", async () => {
+  updater.disable();
+  await updater.enable();
+
+  const reloadEvent: WindowEvent = {
+    action: "reload",
+    page: launched.page,
+    time: Date.now(),
+  };
+
+  expect(updater._handleEvent({ ...reloadEvent, time: 1 })).toBe(false);
+  expect(updater._handleEvent(reloadEvent)).toBe(true);
 });
 
 it("updates code for a click", async () => {
