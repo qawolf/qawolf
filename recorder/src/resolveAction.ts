@@ -7,6 +7,12 @@ import {
 } from "./element";
 import { Action, PossibleAction } from "./types";
 
+type ResolveAction = {
+  lastPossibleAction?: PossibleAction | undefined;
+  lastRecordedAction?: PossibleAction;
+  possibleAction: PossibleAction;
+};
+
 /**
  * The full list:
  * https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
@@ -50,10 +56,11 @@ export const KEYS_TO_TRACK_FOR_NON_INPUT = new Set([
   "Tab",
 ]);
 
-export const resolveAction = (
-  possibleAction: PossibleAction,
-  lastPossibleAction: PossibleAction | undefined
-): Action | undefined => {
+export const resolveAction = ({
+  lastPossibleAction,
+  lastRecordedAction,
+  possibleAction,
+}: ResolveAction): Action | undefined => {
   // Never emit actions for untrusted events
   if (!possibleAction.isTrusted) {
     debug("resolveAction: skip untrusted action");
@@ -69,6 +76,21 @@ export const resolveAction = (
     possibleAction.time - lastPossibleAction.time < 50
   ) {
     debug("resolveAction: skip system-initiated click");
+    return;
+  }
+
+  // Fills come from both "input" and "change" events for completeness, but this
+  // means that we could end up emitting back-to-back fills with the same value.
+  // We can check here to avoid that. (For press and click, back-to-back identical
+  // events could be valid.)
+  if (
+    lastRecordedAction &&
+    ["fill", "selectOption"].includes(possibleAction.action) &&
+    possibleAction.action === lastRecordedAction.action &&
+    possibleAction.target === lastRecordedAction.target &&
+    possibleAction.value === lastRecordedAction.value
+  ) {
+    debug(`resolveAction: skip duplicate ${possibleAction.action}`);
     return;
   }
 

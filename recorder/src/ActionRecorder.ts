@@ -8,6 +8,7 @@ type ActionCallback = Callback<ElementAction>;
 
 export class ActionRecorder {
   _lastReceivedAction: PossibleAction;
+  _lastRecordedAction: PossibleAction;
   _onDispose: Callback[] = [];
   _selectorCache = new Map<HTMLElement, string>();
 
@@ -22,7 +23,7 @@ export class ActionRecorder {
   }
 
   listen(
-    eventName: "click" | "input" | "change" | "keydown",
+    eventName: "click" | "mousedown" | "input" | "change" | "keydown",
     handler: (ev: MouseEvent | KeyboardEvent | Event) => any
   ): void {
     document.addEventListener(eventName, handler, {
@@ -64,13 +65,19 @@ export class ActionRecorder {
       value,
     };
 
-    action = resolveAction(possibleAction, this._lastReceivedAction);
+    action = resolveAction({
+      lastPossibleAction: this._lastReceivedAction,
+      lastRecordedAction: this._lastRecordedAction,
+      possibleAction,
+    });
 
     this._lastReceivedAction = possibleAction;
 
     // If no action was returned, this isn't an event we care about
     // so we can skip building a selector and emitting it.
     if (!action) return;
+
+    this._lastRecordedAction = possibleAction;
 
     let selector = "";
 
@@ -107,6 +114,12 @@ export class ActionRecorder {
       if ((event as MouseEvent).button !== 0) return;
 
       this.recordAction("click", event);
+    });
+
+    this.listen("mousedown", (event) => {
+      const target = event.target;
+
+      // TODO if visible...
     });
 
     //////// INPUT EVENTS ////////
