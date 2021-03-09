@@ -3,7 +3,7 @@ import { Browser } from "playwright";
 
 import { Environment } from "../../src/environment/Environment";
 import { RunOptions, RunProgress } from "../../src/types";
-import { sleep } from "../utils";
+import { FixturesServer, serveFixtures, sleep } from "../utils";
 
 const runOptions: RunOptions = {
   code: "",
@@ -29,6 +29,14 @@ describe("close", () => {
 });
 
 describe("run", () => {
+  let server: FixturesServer;
+
+  beforeAll(async () => {
+    server = await serveFixtures();
+  });
+
+  afterAll(() => server.close());
+
   it("disables the updater until runs are complete", async () => {
     const environment = new Environment();
 
@@ -37,9 +45,9 @@ describe("run", () => {
       code: "",
     });
 
-    expect(environment.updater._enabled).toBe(false);
+    expect(environment.updater._enabledAt).toBe(false);
     await runPromise;
-    expect(environment.updater._enabled).toBe(true);
+    expect(environment.updater._enabledAt).toBeTruthy();
 
     await environment.close();
   });
@@ -53,15 +61,15 @@ describe("run", () => {
     await environment.run(
       {
         ...runOptions,
-        code: `const { context } = await launch({ headless: true });\nconst page = await context.newPage();\n// 🐺 QA Wolf will create code here`,
+        code: `const { context } = await launch({ headless: true });\nconst page = await context.newPage();\nawait page.goto("${server.url}/Environment");\n// 🐺 QA Wolf will create code here`,
       },
       []
     );
 
-    await environment._variables.page.goto("http://example.org");
+    await environment._variables.page.click("button");
     await sleep(0);
 
-    expect(updatedCode).toContain('await page.goto("http://example.org/"');
+    expect(updatedCode).toContain('await page.click("text=Hello");');
     await environment.close();
   });
 
@@ -164,11 +172,11 @@ describe("stop", () => {
 
     const run = environment._inProgress[0];
 
-    expect(environment.updater._enabled).toBe(false);
+    expect(environment.updater._enabledAt).toBe(false);
     await environment.stop();
     expect(run.stopped).toBe(true);
     expect(environment._inProgress.length).toEqual(0);
-    expect(environment.updater._enabled).toBe(true);
+    expect(environment.updater._enabledAt).toBeTruthy();
 
     await runPromise;
 
