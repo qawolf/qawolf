@@ -11,6 +11,7 @@ import {
 import styled from "styled-components";
 
 import {
+  border,
   borderSize,
   colors,
   edgeSize,
@@ -39,9 +40,6 @@ type Props = {
 };
 
 const StyledGrommetTextInput = styled(GrommetTextInput)`
-  border-color: ${colors.gray3};
-  border-radius: ${borderSize.small};
-  border-width: ${borderSize.xsmall};
   color: ${colors.textDark};
   font-weight: ${fontWeight.normal};
   height: ${edgeSize.large};
@@ -89,7 +87,9 @@ function TextInput(
   const finalSize = size || "component";
 
   const style = {
-    borderColor: error ? colors.danger5 : undefined,
+    borderColor: error ? colors.danger5 : colors.gray3,
+    borderRadius: borderSize.small,
+    borderWidth: borderSize.xsmall,
     fontFamily: fontFamily[finalSize],
     fontSize: textDesktop[finalSize].size,
     paddingBottom: 0,
