@@ -69,21 +69,27 @@ export const getTokens = (value: string): string[] => {
 export const isDynamic = (value: string): boolean => {
   if (!value || typeof value !== "string") return true;
 
+  // ignore styled components classes
+  if (value.startsWith("Styled")) return true;
+
   const tokens = getTokens(value);
 
   let words = 0;
   let numbers = 0;
-  let mixed = 0;
 
-  tokens.forEach((token) => {
-    if (allWords.has(token)) words += 1;
-    else if (!isNaN(Number(token))) numbers += 1;
-    else if (/\d/.test(token)) mixed += 1;
-  });
+  for (let i = 0; i < tokens.length; i++) {
+    const token = tokens[i];
 
-  // allow numbers if the other tokens are words
-  if (words + numbers === tokens.length) return false;
+    if (allWords.has(token)) {
+      words += 1;
+    } else if (!isNaN(Number(token))) {
+      numbers += 1;
+    } else if (/\d/.test(token)) {
+      // mark letter and number combinations as dynamic, ex 123v9c3
+      return true;
+    }
+  }
 
-  // If half or more tokens are dynamic, mark value as dynamic
-  return (words - mixed) / tokens.length <= 0.5;
+  // If half or less of the tokens are known, mark value as dynamic
+  return (words + numbers) / tokens.length <= 0.5;
 };
