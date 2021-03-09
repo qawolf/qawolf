@@ -26,12 +26,7 @@ export default function MailingList({ mode }: Props): JSX.Element {
   );
 
   return (
-    <Box
-      align="center"
-      direction="row"
-      justify="center"
-      margin={{ top: "small" }}
-    >
+    <Box align="center" direction="row" justify="center">
       <CheckBox
         checked={isSubscribed}
         label={labelHtml}
