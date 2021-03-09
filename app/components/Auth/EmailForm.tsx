@@ -36,14 +36,6 @@ export default function EmailForm({
   return (
     <Keyboard onEnter={handleClick}>
       <Box flex={false}>
-        <Text
-          color="textDark"
-          margin={{ bottom: "xxsmall" }}
-          size="xsmall"
-          weight="medium"
-        >
-          {copy.email}
-        </Text>
         <TextInput
           autoFocus
           name="email"

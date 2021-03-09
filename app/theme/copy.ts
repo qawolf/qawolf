@@ -169,6 +169,7 @@ export const copy = {
   logOut: "Log out",
   logs: "Logs",
   loveOpenSource: "We 💖 open source",
+  mailingListSubscribe: "Subscribe to our mailing list",
   manuallyTriggered: "Manually triggered",
   meet: "Meet your QA Wolf",
   members: "Members",

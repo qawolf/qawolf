@@ -219,6 +219,7 @@ type SendLoginCodeData = {
 type SendLoginCodeVariables = {
   email: string;
   invite_id?: string | null;
+  is_subscribed?: boolean;
 };
 
 type SignInWithEmailData = {
@@ -238,6 +239,7 @@ type SignInWithGitHubVariables = {
   github_code: string;
   github_state: string;
   invite_id?: string | null;
+  is_subscribed?: boolean;
 };
 
 type UpdateEnvironmentData = {

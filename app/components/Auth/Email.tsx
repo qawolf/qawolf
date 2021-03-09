@@ -10,9 +10,9 @@ import EmailForm from "./EmailForm";
 type Props = { mode: AuthMode };
 
 export default function Email({ mode }: Props): JSX.Element {
-  const { signUp } = useContext(StateContext);
-  const [errorMessage, setErrorMessage] = useState("");
+  const { isSubscribed, signUp } = useContext(StateContext);
 
+  const [errorMessage, setErrorMessage] = useState("");
   const [sendLoginCode, { error, loading }] = useSendLoginCode();
 
   // set error message if needed
@@ -29,7 +29,11 @@ export default function Email({ mode }: Props): JSX.Element {
     }
 
     sendLoginCode({
-      variables: { email, invite_id: signUp.inviteId },
+      variables: {
+        email,
+        invite_id: signUp.inviteId,
+        is_subscribed: isSubscribed,
+      },
     });
   };
 

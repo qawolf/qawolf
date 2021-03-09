@@ -26,7 +26,7 @@ const labelHtml = (
   <>
     <Box align="center" direction="row">
       <Rocket color={colors.primary} size={edgeSize.small} />
-      <Text color="gray9" margin={{ left: "xxsmall" }} size="component">
+      <Text color="gray9" size="component">
         My Trigger
       </Text>
     </Box>
