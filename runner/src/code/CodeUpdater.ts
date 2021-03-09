@@ -8,10 +8,9 @@ import { ContextEventCollector } from "./ContextEventCollector";
 import { parseActionExpressions } from "./parseCode";
 import { PATCH_HANDLE } from "./patch";
 import { patchEvent, PatchEventOptions } from "./patchEvent";
-import { patchFill } from "./patchFill";
+import { patchFillOrSelectOption } from "./patchFillOrSelectOption";
 import { patchPopup } from "./patchPopup";
 import { patchReload } from "./patchReload";
-import { patchSelectOption } from "./patchSelectOption";
 
 const debug = Debug("qawolf:CodeUpdater");
 
@@ -20,10 +19,11 @@ export const updateCode = (options: PatchEventOptions): string | null => {
   const patchIndex = code.indexOf(PATCH_HANDLE);
   if (patchIndex < 0) return null;
 
-  if (event.action === "fill") return patchFill(options);
+  if (["fill", "selectOption"].includes(event.action))
+    return patchFillOrSelectOption(options);
+
   if (event.action === "popup") return patchPopup(options);
   if (event.action === "reload") return patchReload(options);
-  if (event.action === "selectOption") return patchSelectOption(options);
 
   return patchEvent(options);
 };

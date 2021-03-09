@@ -2,11 +2,11 @@ import { parseActionExpressions } from "../../src/code/parseCode";
 import { PATCH_HANDLE } from "../../src/code/patch";
 import {
   buildEventCode,
-  declareSourceVariable,
   findLastPageVariable,
-  findSourceVariables,
+  prepareSourceVariables,
   formatSelector,
   patchEvent,
+  prepareSourceVariable,
 } from "../../src/code/patchEvent";
 import { ElementEvent } from "../../src/types";
 
@@ -14,10 +14,13 @@ import { ElementEvent } from "../../src/types";
 // so we do not need to construct a page for the test
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+const time = Date.now();
+
 const clickEvent: ElementEvent = {
   action: "click",
   selector: ".input",
   page: "p1" as any,
+  time,
 };
 
 describe("formatSelector", () => {
@@ -53,12 +56,12 @@ describe("buildEventCode", () => {
   });
 
   it("builds waitUntil option for goto and reload", () => {
-    expect(buildEventCode({ action: "goto", page: 0 as any }, "page")).toEqual(
-      `await page.goto({ waitUntil: "domcontentloaded" });`
-    );
+    expect(
+      buildEventCode({ action: "goto", page: 0 as any, time }, "page")
+    ).toEqual(`await page.goto({ waitUntil: "domcontentloaded" });`);
 
     expect(
-      buildEventCode({ action: "reload", page: 0 as any }, "page")
+      buildEventCode({ action: "reload", page: 0 as any, time }, "page")
     ).toEqual(`await page.reload({ waitUntil: "domcontentloaded" });`);
   });
 
@@ -72,25 +75,31 @@ describe("buildEventCode", () => {
   });
 });
 
-describe("declareSourceVariable", () => {
+describe("prepareSourceVariable", () => {
   const frame = {} as any;
   const page = { bringToFront: 1 } as any;
 
   it("declares a page", () => {
     const variables: any = {};
-    expect(declareSourceVariable(page, variables)).toEqual("page");
+    expect(
+      prepareSourceVariable({ declare: true, pageOrFrame: page, variables })
+    ).toEqual("page");
     expect(variables.page).toEqual(page);
   });
 
   it("declares a frame", () => {
     const variables: any = {};
-    expect(declareSourceVariable(frame, variables)).toEqual("frame");
+    expect(
+      prepareSourceVariable({ declare: true, pageOrFrame: frame, variables })
+    ).toEqual("frame");
     expect(variables.frame).toEqual(frame);
   });
 
   it("increments to find an unused variable", () => {
     const variables: any = { page: "" };
-    expect(declareSourceVariable(page, variables)).toEqual("page2");
+    expect(
+      prepareSourceVariable({ declare: true, pageOrFrame: page, variables })
+    ).toEqual("page2");
     expect(variables.page2).toEqual(page);
   });
 });
@@ -112,10 +121,10 @@ describe("findLastPageVariable", () => {
   });
 });
 
-describe("findSourceVariables", () => {
+describe("prepareSourceVariables", () => {
   it("initializes the frame if it does not exist", () => {
     expect(
-      findSourceVariables({
+      prepareSourceVariables({
         event: {
           ...clickEvent,
           frame: "f1" as any,
@@ -134,7 +143,7 @@ describe("findSourceVariables", () => {
 
   it("reuses the frame that exists", () => {
     expect(
-      findSourceVariables({
+      prepareSourceVariables({
         event: {
           ...clickEvent,
           frame: "f2" as any,
@@ -153,10 +162,11 @@ describe("findSourceVariables", () => {
 
   it("initializes a new page for a goto", () => {
     expect(
-      findSourceVariables({
+      prepareSourceVariables({
         event: {
           action: "goto",
           page: { bringToFront: 1, name: "p3" } as any,
+          time,
           value: "https://google.com",
         },
         expressions: [],
@@ -171,10 +181,11 @@ describe("findSourceVariables", () => {
 
   it("reuses the page that exists", () => {
     expect(
-      findSourceVariables({
+      prepareSourceVariables({
         event: {
           action: "goto",
           page: "p1" as any,
+          time,
           value: "https://google.com",
         },
         expressions: [],
@@ -193,7 +204,7 @@ describe("findSourceVariables", () => {
     );
 
     expect(
-      findSourceVariables({
+      prepareSourceVariables({
         event: clickEvent,
         expressions,
         variables: {
@@ -222,6 +233,7 @@ describe("patchEvent", () => {
         event: {
           action: "goto",
           page: { bringToFront: 1, name: "p2" } as any,
+          time,
           value: "https://google.com",
         },
         variables: { page: "p1" },

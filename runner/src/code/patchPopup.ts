@@ -1,10 +1,10 @@
 import { selectAwaitChildExpression } from "./parseCode";
 import { patch, PATCH_HANDLE } from "./patch";
-import { findSourceVariables, PatchEventOptions } from "./patchEvent";
+import { prepareSourceVariables, PatchEventOptions } from "./patchEvent";
 import { WindowEvent } from "../types";
 
 export const patchPopup = (options: PatchEventOptions): string | null => {
-  const { pageVariable } = findSourceVariables(options);
+  const { pageVariable } = prepareSourceVariables(options);
 
   const { code, event, expressions, variables } = options;
 
