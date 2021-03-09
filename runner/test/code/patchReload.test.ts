@@ -12,6 +12,7 @@ describe("reload", () => {
     event: {
       action: "reload",
       page: "p1" as any,
+      time: Date.now(),
     },
     variables: { page: "p1" },
   };

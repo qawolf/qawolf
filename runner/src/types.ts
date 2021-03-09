@@ -84,7 +84,12 @@ export type BrowserName = "chromium" | "firefox" | "webkit";
 
 export type Callback<S = void, T = void> = (data?: S) => T;
 
-export type ElementAction = "click" | "fill" | "press" | "selectOption";
+export type ElementAction =
+  | "click"
+  | "fill"
+  | "keyboard.press"
+  | "press"
+  | "selectOption";
 
 export interface ElementEvent {
   action: ElementAction;
@@ -92,6 +97,7 @@ export interface ElementEvent {
   frame?: Frame;
   frameSelector?: string;
   selector: string;
+  time: number;
   value?: string | null;
 }
 
@@ -101,6 +107,7 @@ export interface WindowEvent {
   action: WindowAction;
   page: Page;
   popup?: Page;
+  time: number;
   value?: string | null;
 }
 

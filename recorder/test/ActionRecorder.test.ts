@@ -1,16 +1,17 @@
-import { Browser, BrowserContext, Page } from "playwright";
+import { Page } from "playwright";
 import waitForExpect from "wait-for-expect";
-import { launch } from "./utils";
+
+import { launch, LaunchResult } from "./utils";
 import { Action, ElementAction } from "../src/types";
 
 let actions: ElementAction[] = [];
-
-let browser: Browser;
-let context: BrowserContext;
+let launched: LaunchResult;
 
 const getFreshPage = async (): Promise<Page> => {
-  const page: Page = await context.newPage();
-  await page.goto("file://" + require.resolve("./ActionRecorderTestPage.html"));
+  const page = await launched.context.newPage();
+  await page.goto(
+    "file://" + require.resolve("./fixtures/ActionRecorder.html")
+  );
   return page;
 };
 
@@ -19,11 +20,9 @@ const actionsOfType = (type: Action): ElementAction[] => {
 };
 
 beforeAll(async () => {
-  browser = await launch({
-    startRecorder: true,
-  });
-  context = await browser.newContext();
-  await context.exposeBinding(
+  launched = await launch({ startRecorder: true });
+
+  await launched.context.exposeBinding(
     "qawElementAction",
     (_: Record<string, any>, elementAction: ElementAction) => {
       actions.push(elementAction);
@@ -31,7 +30,7 @@ beforeAll(async () => {
   );
 });
 
-afterAll(() => browser.close());
+afterAll(() => launched.browser.close());
 
 beforeEach(() => {
   actions = [];
@@ -39,23 +38,30 @@ beforeEach(() => {
 
 it("records click actions", async () => {
   const page = await getFreshPage();
-
   await page.click(".textInput");
   await page.click("body");
-
   await waitForExpect(() => {
     expect(actionsOfType("click").length).toBe(2);
   }, 10000);
-
   await page.close();
 
-  expect(actionsOfType("click").map((action) => action.selector))
-    .toMatchInlineSnapshot(`
-    Array [
-      ".textInput",
-      "body",
-    ]
-  `);
+  expect(actionsOfType("click").map((action) => action.selector)).toEqual([
+    '[type="text"]',
+    "body",
+  ]);
+});
+
+it("records click for hiding target", async () => {
+  const page = await getFreshPage();
+  await page.click("#hide-me");
+  await waitForExpect(() => {
+    expect(actionsOfType("click").length).toBe(1);
+  }, 10000);
+  await page.close();
+
+  expect(actionsOfType("click").map((action) => action.selector)).toEqual([
+    "#hide-me",
+  ]);
 });
 
 it("records fill actions when typing", async () => {
@@ -66,17 +72,17 @@ it("records fill actions when typing", async () => {
   await page.type("body", "yo");
 
   await waitForExpect(() => {
-    expect(actionsOfType("fill").length).toBe(1);
+    expect(actionsOfType("fill")).toHaveLength(4);
   }, 10000);
 
   await page.close();
 
-  expect(actionsOfType("fill").map((action) => action.value))
-    .toMatchInlineSnapshot(`
-    Array [
-      "sup",
-    ]
-  `);
+  expect(actionsOfType("fill").map((a) => a.value)).toEqual([
+    "s",
+    "su",
+    "sup", // input
+    "sup", // change
+  ]);
 });
 
 // Playwright is unable to do selectOption such that it
@@ -100,18 +106,18 @@ it.skip("records selectOption actions", async () => {
   expect(action.value).toBe("one");
 });
 
-it("records press actions", async () => {
+it("records keyboard.press actions", async () => {
   const page = await getFreshPage();
 
   await page.keyboard.press("Escape");
 
   await waitForExpect(() => {
-    expect(actionsOfType("press").length).toBe(1);
+    expect(actionsOfType("keyboard.press").length).toBe(1);
   }, 10000);
 
   await page.close();
 
-  expect(actionsOfType("press").map((action) => action.value))
+  expect(actionsOfType("keyboard.press").map((action) => action.value))
     .toMatchInlineSnapshot(`
     Array [
       "Escape",
@@ -126,24 +132,15 @@ it("stop and start work", async () => {
     (window as any).qawInstance.stop();
   });
   await page.keyboard.press("Escape");
+  await page.waitForTimeout(1000);
+  expect(actionsOfType("press").length).toEqual(0);
 
   await page.evaluate(() => {
     (window as any).qawInstance.start();
   });
   await page.keyboard.press("Escape");
-
-  let failed = false;
-  try {
-    await waitForExpect(() => {
-      expect(actionsOfType("press").length).toBe(2);
-    }, 10000);
-    failed = true;
-  } catch (error) {
-    // Throwing is what we want because we expect the second press
-    // to never come through.
-  }
-
-  expect(failed).toBe(false);
+  await page.waitForTimeout(1000);
+  expect(actionsOfType("keyboard.press").length).toEqual(1);
 
   await page.close();
 });

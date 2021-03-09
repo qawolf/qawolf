@@ -1,4 +1,3 @@
-const path = require("path");
 const util = require("util");
 const webpack = require("webpack");
 const webpackConfig = require("../../webpack.config");

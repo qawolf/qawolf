@@ -1,17 +1,10 @@
-import { Variables, WindowEvent } from "../types";
-import { ActionExpression, selectAwaitChildExpression } from "./parseCode";
+import { WindowEvent } from "../types";
+import { selectAwaitChildExpression } from "./parseCode";
 import { patch, PATCH_HANDLE } from "./patch";
-import { findSourceVariables } from "./patchEvent";
+import { PatchEventOptions,prepareSourceVariables } from "./patchEvent";
 
-export type PatchPopupOptions = {
-  code: string;
-  event: WindowEvent;
-  expressions: (ActionExpression | null)[];
-  variables: Variables;
-};
-
-export const patchPopup = (options: PatchPopupOptions): string | null => {
-  const { pageVariable } = findSourceVariables(options);
+export const patchPopup = (options: PatchEventOptions): string | null => {
+  const { pageVariable } = prepareSourceVariables(options);
 
   const { code, event, expressions, variables } = options;
 
@@ -28,7 +21,7 @@ export const patchPopup = (options: PatchPopupOptions): string | null => {
     popupVariable = `page${index}`;
     index += 1;
   } while (Object.keys(variables).includes(popupVariable));
-  variables[popupVariable] = event.popup;
+  variables[popupVariable] = (event as WindowEvent).popup;
 
   const { statement } = triggerExpression;
 

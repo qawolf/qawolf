@@ -1,16 +1,16 @@
 import {
-  findSourceVariables,
   patchEvent,
   PatchEventOptions,
+  prepareSourceVariables,
 } from "./patchEvent";
 
 export const patchReload = (options: PatchEventOptions): string | null => {
   const { expressions } = options;
-  // skip the reload if the last expression is a reload
-  const { variable } = findSourceVariables(options);
+  const { variable } = prepareSourceVariables(options);
 
   const lastExpression = expressions[expressions.length - 1];
 
+  // skip the reload if the last expression is a reload
   const shouldSkip =
     lastExpression?.method === "reload" &&
     lastExpression?.variable === variable;

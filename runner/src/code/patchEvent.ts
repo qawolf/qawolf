@@ -4,13 +4,20 @@ import { ElementEvent, Variables, WindowEvent } from "../types";
 import { ActionExpression } from "./parseCode";
 import { patch, PATCH_HANDLE } from "./patch";
 
-export type FindSourceOptions = {
+type PrepareSourceVariable = {
+  declare?: boolean;
+  pageOrFrame: Frame | Page;
+  variables: Variables;
+};
+
+export type PrepareSourceVariables = {
+  declare?: boolean;
   expressions: (ActionExpression | null)[];
   event: ElementEvent | WindowEvent;
   variables: Variables;
 };
 
-export type PatchEventOptions = FindSourceOptions & {
+export type PatchEventOptions = PrepareSourceVariables & {
   code: string;
 };
 
@@ -28,7 +35,7 @@ export const buildEventCode = (
   const args: string[] = [];
 
   const selector = (event as ElementEvent).selector;
-  if (selector !== undefined) {
+  if (selector !== undefined && event.action !== "keyboard.press") {
     args.push(formatSelector(selector));
   }
 
@@ -42,27 +49,6 @@ export const buildEventCode = (
 
   const line = `await ${variable}.${event.action}(${args.join(", ")});`;
   return line;
-};
-
-export const declareSourceVariable = (
-  pageOrFrame: Frame | Page,
-  variables: Variables
-): string => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const prefix = (pageOrFrame as any).bringToFront ? "page" : "frame";
-
-  let index = 1;
-  let key: string;
-
-  do {
-    key = `${prefix}${index === 1 ? "" : index}`;
-    index += 1;
-  } while (Object.keys(variables).includes(key));
-
-  // store it to prevent re-declaring it for future actions during code gen
-  variables[key] = pageOrFrame;
-
-  return key;
 };
 
 export const findLastPageVariable = (
@@ -82,11 +68,36 @@ export const findLastPageVariable = (
   return null;
 };
 
-export const findSourceVariables = ({
+export const prepareSourceVariable = ({
+  declare,
+  pageOrFrame,
+  variables,
+}: PrepareSourceVariable): string => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const prefix = (pageOrFrame as any).bringToFront ? "page" : "frame";
+
+  let index = 1;
+  let key: string;
+
+  do {
+    key = `${prefix}${index === 1 ? "" : index}`;
+    index += 1;
+  } while (Object.keys(variables).includes(key));
+
+  if (declare) {
+    // store it to prevent re-declaring it for future actions during code gen
+    variables[key] = pageOrFrame;
+  }
+
+  return key;
+};
+
+export const prepareSourceVariables = ({
+  declare,
   event,
   expressions,
   variables,
-}: FindSourceOptions): SourceVariables => {
+}: PrepareSourceVariables): SourceVariables => {
   let pageVariable = Object.keys(variables).find(
     (name) => variables[name] === event.page
   );
@@ -94,7 +105,11 @@ export const findSourceVariables = ({
   let initializeCode = "";
 
   if (!pageVariable && event.action === "goto") {
-    pageVariable = declareSourceVariable(event.page, variables);
+    pageVariable = prepareSourceVariable({
+      declare,
+      pageOrFrame: event.page,
+      variables,
+    });
     initializeCode = `const ${pageVariable} = await context.newPage();\n`;
   } else if (!pageVariable) {
     throw new Error("No matching page found");
@@ -111,7 +126,12 @@ export const findSourceVariables = ({
     );
 
     if (!frameVariable) {
-      frameVariable = declareSourceVariable(elementEvent.frame, variables);
+      frameVariable = prepareSourceVariable({
+        declare,
+        pageOrFrame: elementEvent.frame,
+        variables,
+      });
+
       const selector = formatSelector(elementEvent.frameSelector);
       initializeCode = `const ${frameVariable} = await (await ${pageVariable}.waitForSelector(${selector})).contentFrame();\n`;
     }
@@ -144,7 +164,13 @@ export const formatSelector = (value: string | null): string => {
 };
 
 export const patchEvent = (options: PatchEventOptions): string | null => {
-  const { initializeCode, variable } = findSourceVariables(options);
+  const { initializeCode, variable } = prepareSourceVariables({
+    ...options,
+    // we will patch the initialize code so we want to declare the variable
+    // to prevent it from needing reinitialization on future events
+    declare: true,
+  });
+
   const eventCode = buildEventCode(options.event, variable);
   return patch(options.code, `${initializeCode}${eventCode}\n${PATCH_HANDLE}`);
 };

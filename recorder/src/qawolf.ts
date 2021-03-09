@@ -1,18 +1,17 @@
-export { getAttribute, getRegexAttribute } from "./attribute";
-export { resolveAction } from "./resolveAction";
+export { ActionRecorder } from "./ActionRecorder";
 export {
-  buildCues,
-  buildCuesForElement,
-  buildCueValueForTag,
-  getCueTypesConfig,
-} from "./cues";
+  generateRelativeCueSets,
+  generateSortedCueSets,
+} from "./generateCueSets";
+export { getSelector } from "./generateSelectors";
+export { getCues, getTagCue } from "./getCues";
 export {
-  getClickableGroup,
+  getDescriptor,
   getInputElementValue,
   getTopmostEditableElement,
+  getXpath,
   isVisible,
 } from "./element";
-export { ActionRecorder } from "./ActionRecorder";
-export { buildSelector, clearSelectorCache } from "./selector";
-export { buildElementText, isMatch } from "./selectorEngine";
-export { getXpath, nodeToDoc } from "./serialize";
+export { isElementMatch } from "./isElementMatch";
+export { resolveAction } from "./resolveAction";
+export { buildElementText, buildSelectorForCues } from "./selectorEngine";

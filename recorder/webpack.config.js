@@ -36,7 +36,7 @@ module.exports = {
     extensions: [".ts", ".js"],
   },
   optimization: {
-    minimize: process.env.NODE_ENV !== "development",
+    minimize: process.env.NODE_ENV === "production",
   },
   output: {
     filename: "qawolf.recorder.js",

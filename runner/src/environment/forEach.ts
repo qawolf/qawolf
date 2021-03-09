@@ -1,9 +1,4 @@
-import { BrowserContext, Frame, Page } from "playwright";
-
-type FrameParams = {
-  frame: Frame;
-  page: Page;
-};
+import { BrowserContext, Page } from "playwright";
 
 export const forEachPage = async (
   context: BrowserContext,
@@ -14,19 +9,4 @@ export const forEachPage = async (
   const pagePromises = context.pages().map((page) => pageFn(page));
 
   await Promise.all(pagePromises);
-};
-
-export const forEachFrame = async (
-  context: BrowserContext,
-  frameFn: (params: FrameParams) => any // eslint-disable-line @typescript-eslint/no-explicit-any
-): Promise<void> => {
-  await forEachPage(context, async (page) => {
-    const framePromises = page
-      .frames()
-      .map((frame) => frameFn({ page, frame }));
-
-    page.on("frameattached", (frame) => frameFn({ page, frame }));
-
-    await Promise.all(framePromises);
-  });
 };

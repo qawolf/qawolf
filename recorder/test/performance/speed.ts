@@ -1,10 +1,10 @@
 import { BrowserContext } from "playwright";
-import { DEFAULT_ATTRIBUTE_LIST, launch } from "../utils";
+import { launch } from "../utils";
 import { QAWolfWeb } from "../../src";
 
 type EvalArguments = {
-  selector: string,
-  isClick?: boolean
+  selector: string;
+  isClick?: boolean;
 };
 
 type EvalResult = {
@@ -26,13 +26,9 @@ const timeOnce = async (
 
   await page.goto("file://" + require.resolve(`./${pageName}.html`));
 
-  const result = await page.evaluate(
-    pageFn,
-    {
-      attributes: DEFAULT_ATTRIBUTE_LIST.split(","),
-      ...evalArguments
-    }
-  );
+  const result = await page.evaluate(pageFn, {
+    ...evalArguments,
+  });
 
   await page.waitForTimeout(10000);
 
@@ -65,17 +61,12 @@ const runMultipleAndAverage = async (
 
 switch (process.argv[2]) {
   case "selector":
-    pageFn = ({ attributes, isClick, selector }) => {
+    pageFn = ({ selector }) => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const target = document.querySelector(selector);
-  
+
       const start = Date.now();
-      const generatedSelector = qawolf.buildSelector({
-        attributes,
-        clearCache: true,
-        isClick,
-        target: target as HTMLElement,
-      });
+      const generatedSelector = qawolf.getSelector(target);
       const end = Date.now();
       return { result: generatedSelector, ms: end - start };
     };
@@ -83,15 +74,18 @@ switch (process.argv[2]) {
       for (let index = 0; index < 2; index++) {
         const isClick = !!index;
         // These are here as a sort of baseline
-        await runMultipleAndAverage(context, "simple", { selector: "p", isClick });
-    
+        await runMultipleAndAverage(context, "simple", {
+          selector: "p",
+          isClick,
+        });
+
         await runMultipleAndAverage(
           context,
           "changelog",
           { selector: "body", isClick },
           "changelog - body"
         );
-    
+
         // At the time of creation, these were extremely slow for clicks. Let's keep them fast.
         await runMultipleAndAverage(
           context,
@@ -99,14 +93,14 @@ switch (process.argv[2]) {
           { selector: "a", isClick },
           "changelog - top"
         );
-    
+
         await runMultipleAndAverage(
           context,
           "changelog",
           { selector: "#user-content-030-may-29-2013", isClick },
           "changelog - bottom"
         );
-    
+
         await runMultipleAndAverage(
           context,
           "changelog",
@@ -121,19 +115,25 @@ switch (process.argv[2]) {
     pageFn = ({ selector }) => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const target = document.querySelector(selector);
-  
+
       const start = Date.now();
-      const result = qawolf.buildCueValueForTag(target as HTMLElement);
+      const result = qawolf.getCues(target, 0);
       const end = Date.now();
       return { result, ms: end - start };
     };
     runFn = async (context: BrowserContext) => {
       await runMultipleAndAverage(context, "simple", { selector: "p" });
-      await runMultipleAndAverage(context, "changelog", { selector: "article" });
-      await runMultipleAndAverage(context, "changelog", { selector: "#lasth2" });
-      await runMultipleAndAverage(context, "changelog", { selector: "#lastul" });
+      await runMultipleAndAverage(context, "changelog", {
+        selector: "article",
+      });
+      await runMultipleAndAverage(context, "changelog", {
+        selector: "#lasth2",
+      });
+      await runMultipleAndAverage(context, "changelog", {
+        selector: "#lastul",
+      });
       return null;
-    }
+    };
     break;
 
   default:
@@ -146,15 +146,14 @@ Usage: npm run test:speed -- selector
 }
 
 const run = async () => {
-  const browser = await launch({
+  const launched = await launch({
     // devtools: true,
-    headless: true,
   });
-  const context = await browser.newContext();
+  const context = await launched.browser.newContext();
 
   await runFn(context);
 
-  await browser.close();
+  await launched.browser.close();
 };
 
 run().catch(console.error.bind(console));

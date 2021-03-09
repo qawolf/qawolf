@@ -42,6 +42,7 @@ describe("isDynamic", () => {
     "intercom-123v9c3",
     "StyledBox-sc-13pk1d4-0",
     "StyledLayer-rmtehz-0",
+    "StyledRadioButton__StyledRadioButtonContainer-g1f6ld-0",
     "TSPr2b",
     "u_0_b",
   ])("is dynamic: %s", (example) => {
