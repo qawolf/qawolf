@@ -12,8 +12,8 @@ describe("forEachPage", () => {
 
     let index = 0;
     await forEachPage(context, (page: Page) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       page.evaluate(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (index: number) => ((window as any).index = index),
         index++
       );

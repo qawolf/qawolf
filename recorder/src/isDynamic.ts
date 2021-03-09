@@ -90,6 +90,6 @@ export const isDynamic = (value: string): boolean => {
     }
   }
 
-  // If half or less of the tokens are known, mark value as dynamic
+  // If known tokens are not more than half the tokens, consider it dynamic
   return (words + numbers) / tokens.length <= 0.5;
 };

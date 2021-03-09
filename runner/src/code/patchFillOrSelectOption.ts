@@ -1,9 +1,9 @@
 import { ElementEvent } from "../types";
 import { ActionExpression } from "./parseCode";
 import {
-  prepareSourceVariables,
   patchEvent,
   PatchEventOptions,
+  prepareSourceVariables,
 } from "./patchEvent";
 
 export const findExpressionToUpdate = (

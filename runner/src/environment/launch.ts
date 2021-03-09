@@ -67,7 +67,7 @@ const chromiumArgs = [
 ];
 
 export const getBrowserName = (name?: string): BrowserName => {
-  let providedName = name || process.env.QAWOLF_BROWSER;
+  const providedName = name || process.env.QAWOLF_BROWSER;
 
   if (providedName && BROWSER_NAMES.includes(providedName as BrowserName)) {
     return providedName as BrowserName;

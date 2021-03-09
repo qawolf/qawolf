@@ -108,15 +108,17 @@ describe("getCues", () => {
     );
 
     const divCues = await getCues("div");
-    expect(divCues.map((cues) => cues.value)).toEqual([
+    expect(
+      divCues.map((cues) => cues.value).sort((a, b) => a.length - b.length)
+    ).toEqual([
       "div",
-      "Submit",
-      '[aria-label="aria label"]',
-      '[contenteditable="true"]',
-      '[href="http://example.org"]',
       "#id",
+      "Submit",
       '[name="name"]',
       '[role="button"]',
+      '[contenteditable="true"]',
+      '[aria-label="aria label"]',
+      '[href="http://example.org"]',
     ]);
 
     const imgCues = await getCues("img");

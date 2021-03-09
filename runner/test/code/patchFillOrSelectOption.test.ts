@@ -6,7 +6,6 @@ import {
   patchFillOrSelectOption,
   updateExpression,
 } from "../../src/code/patchFillOrSelectOption";
-import { ElementEvent } from "../../src/types";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 

@@ -1,5 +1,5 @@
 import { CodeUpdater } from "../../src/code/CodeUpdater";
-import { WindowAction, WindowEvent } from "../../src/types";
+import { WindowEvent } from "../../src/types";
 import {
   FixturesServer,
   launch,
@@ -69,6 +69,7 @@ it("updates code for a fill inside a frame", async () => {
     await launched.page.waitForSelector('[data-qa="frame"]')
   ).contentFrame();
 
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   await frame!.fill("input", "hello");
 
   // let events propagate

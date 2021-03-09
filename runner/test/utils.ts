@@ -1,7 +1,7 @@
-import handler from "serve-handler";
 import http from "http";
 import path from "path";
 import { Browser, BrowserContext, Page } from "playwright";
+import handler from "serve-handler";
 
 import { launch as launchBrowserContext } from "../src/environment/launch";
 
@@ -42,7 +42,9 @@ export const setBody = async (page: Page, content: string): Promise<void> => {
   // we need to restart it after setting content
   // probabbly due to the way playwright overwrites the document when setting content
   await page.evaluate(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).qawInstance.stop();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).qawInstance.start();
   });
 };
@@ -56,6 +58,7 @@ export const serveFixtures = async (): Promise<FixturesServer> => {
 
   return new Promise((resolve) => {
     server.listen(0, () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const port = (server.address() as any).port;
 
       resolve({

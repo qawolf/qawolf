@@ -3,10 +3,10 @@ import { PATCH_HANDLE } from "../../src/code/patch";
 import {
   buildEventCode,
   findLastPageVariable,
-  prepareSourceVariables,
   formatSelector,
   patchEvent,
   prepareSourceVariable,
+  prepareSourceVariables,
 } from "../../src/code/patchEvent";
 import { ElementEvent } from "../../src/types";
 

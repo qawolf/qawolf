@@ -41,7 +41,7 @@ const PENALTY_MAP = {
   value: 10,
   // penalize presentation attributes
   // discount classes so 1 is worse than 2 placeholders
-  // since they are oftten presentational
+  // since they are often presentational
   class: 21,
   height: 100,
   viewBox: 100,

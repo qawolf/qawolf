@@ -1,7 +1,7 @@
 import {
-  prepareSourceVariables,
   patchEvent,
   PatchEventOptions,
+  prepareSourceVariables,
 } from "./patchEvent";
 
 export const patchReload = (options: PatchEventOptions): string | null => {

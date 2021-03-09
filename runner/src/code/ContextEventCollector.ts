@@ -9,7 +9,6 @@ import {
 } from "playwright";
 import { Protocol } from "playwright/types/protocol";
 
-import config from "../config";
 import { forEachPage } from "../environment/forEach";
 import { ElementEvent, WindowAction, WindowEvent } from "../types";
 
@@ -70,10 +69,11 @@ export class ContextEventCollector extends EventEmitter {
         { frameElement }
       );
       return selector || fallbackSelector;
-    } catch (error) {}
+    } catch (error) {
+      // Due to timing, there's a possibility that `frameElement()`
+      // throws due to the frame's parent having been closed/disposed.
+    }
 
-    // Due to timing, there's a possibility that `frameElement()`
-    // throws due to the frame's parent having been closed/disposed.
     return fallbackSelector;
   }
 

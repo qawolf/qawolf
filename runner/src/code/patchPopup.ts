@@ -1,7 +1,7 @@
+import { WindowEvent } from "../types";
 import { selectAwaitChildExpression } from "./parseCode";
 import { patch, PATCH_HANDLE } from "./patch";
-import { prepareSourceVariables, PatchEventOptions } from "./patchEvent";
-import { WindowEvent } from "../types";
+import { PatchEventOptions,prepareSourceVariables } from "./patchEvent";
 
 export const patchPopup = (options: PatchEventOptions): string | null => {
   const { pageVariable } = prepareSourceVariables(options);
