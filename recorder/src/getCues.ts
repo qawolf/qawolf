@@ -64,7 +64,6 @@ export function getCues(element: HTMLElement, level: number): Cue[] {
     return cues;
   }
 
-  // TODO add test...
   if (level === 0) {
     // only get the target (level 0) text since it is expensive to calculate
     // usually that is the only one we care to target as well
@@ -72,7 +71,8 @@ export function getCues(element: HTMLElement, level: number): Cue[] {
     if (text) {
       cues.push({
         level,
-        penalty: PENALTY_MAP.text,
+        // penalize long text more
+        penalty: Math.max(PENALTY_MAP.text, Math.round(text.length / 2)),
         type: "text",
         value: text,
       });
@@ -89,9 +89,9 @@ export function getCues(element: HTMLElement, level: number): Cue[] {
     )
       continue;
 
-    // rank unknown attributes the same as a class
     let penalty = PENALTY_MAP[name];
 
+    // rank unknown attributes the same as a class
     if (typeof penalty === "undefined") penalty = PENALTY_MAP.class;
 
     // prefer test attributes

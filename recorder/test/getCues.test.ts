@@ -187,6 +187,27 @@ describe("getCues", () => {
     ]);
   });
 
+  it("has text for level 0", async () => {
+    await setBody(
+      page,
+      `<a>short text</a><a>long text will be penalized more</a>`
+    );
+
+    const result = await getCues("a");
+    expect(
+      result
+        .filter((c) => c.type === "text")
+        .map((c) => `${c.penalty}${c.value}`)
+    ).toEqual(["10short text"]);
+
+    const result2 = await getCues("a:nth-of-type(2)");
+    expect(
+      result2
+        .filter((c) => c.type === "text")
+        .map((c) => `${c.penalty}${c.value}`)
+    ).toEqual(["16long text will be penalized more"]);
+  });
+
   it("has unspecified attributes", async () => {
     await setBody(page, `<a data-cta="sign up">Sign Up</a>`);
 
