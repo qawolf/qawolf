@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import ExternalLink from "../../components/Docs/ExternalLink";
 import Header from "../../components/Docs/Header";
 import Image from "../../components/Docs/Image";
 import Layout from "../../components/Docs/Layout";
@@ -10,73 +11,142 @@ import Video from "../../components/Docs/Video";
 
 <Header>Create a Test</Header>
 
-QA Wolf helps you create tests on your web application. As you use your site, your actions are converted to <a href="https://playwright.dev/docs/core-concepts" target="_blank">Playwright</a> test code.
+QA Wolf helps you create tests fast.
 
-In this tutorial, we'll create a test on <a href='http://todomvc.com/examples/react' target="_blank">TodoMVC</a>.
+You can get started right from the browser, with no installation or setup required. QA Wolf also converts your actions to <ExternalLink href="https://playwright.dev/docs/core-concepts">Playwright</ExternalLink> test code, so you don't have to spend time writing boilerplate or learning a test framework.
 
-<Video tellaId="ckh6kl6vp000008jj8hfpbt8o" />
+In this tutorial, we'll create our first test.
 
-<SubHeader>Open Editor</SubHeader>
+<SubHeader>Create a Test</SubHeader>
 
-If you haven't already, [sign up for QA Wolf](/sign-up).
+If you haven't already, <ExternalLink href="https://www.qawolf.com/sign-up">sign up for QA Wolf</ExternalLink>.
 
-If you just signed up, you will automatically be redirected to the test editor.
-
-Otherwise, click the <strong>Create test</strong> button on the dashboard.
+To create a test, click the "Create test" button in the top right corner of the dashboard.
 
 <Image
   alt="Create test button"
-  height={262}
+  height={374}
   src="/docs/create-a-test/create-test-button.png"
   width={1600}
 />
 
-<SubHeader>Create a Test</SubHeader>
-
-Enter the URL you want to test in the input below your QA Wolf.
+Enter the URL you want to test in the input. In our example, we'll create a test on <a href='http://todomvc.com/examples/react' target="_blank">TodoMVC</a>. Then click the "Create test" button to create your test.
 
 <Image
   alt="Enter URL"
-  height={398}
+  height={804}
   src="/docs/create-a-test/enter-url.png"
-  width={800}
+  width={1600}
 />
 
-Note: If you want to test a local URL like `localhost:3000`, you need to use our local runner. <a className="open-intercom">Chat with us</a> and we'll help you get set up.
+Note: If you want to test a local URL like `localhost:3000`, you need to use our local runner. See <Link href="/docs/use-localhost">this guide</Link> to learn how.
 
-After the page loads, go through the workflow you want to test in the browser. In our example, we 1) created a todo item, 2) completed it, and 3) cleared completed todos.
+After the page loads, go through the workflow you want to test in the browser on the right side of the editor. In our example, we 1) create a todo item, 2) complete it, and 3) clear completed todos.
 
 <Image
   alt="Create a test in the browser"
-  height={398}
+  height={799}
   src="/docs/create-a-test/created-test.png"
-  width={800}
+  width={1600}
 />
 
-As you use your site, your actions are converted to <a href="https://playwright.dev/docs/core-concepts" target="_blank">Playwright</a> test code. You can edit this code as you like, and you have full access to the <a href="https://playwright.dev/docs/api/playwright-module" target="_blank">Playwright API</a>.
+As you use your site, your actions are converted to <ExternalLink href="https://playwright.dev/docs/core-concepts">Playwright</ExternalLink> test code on the left side of the editor. You can edit this code as you like, and you have full access to the <ExternalLink href="https://playwright.dev/docs/api/class-playwright" target="_blank">Playwright API</ExternalLink>.
 
 <SubHeader>Run a Test</SubHeader>
 
-Now that we have our test, let's run it by clicking the "Run" button. As your test runs, the current line of code is indicated by 🐺. ✅ appears next to passing lines and ❌ appears next to failing lines.
+Now that we have our test, let's run it by clicking the "Run test" button at the bottom of the code pane. You can also press `⌘` + `Enter` (or `Ctrl` + `Enter`) to run your test.
+
+As your test runs, the current line of code is indicated by paw icon. A green checkmark appears next to passing lines and a red "X" appears next to failing lines.
 
 <Image
   alt="Run tests"
-  height={398}
+  height={799}
   src="/docs/create-a-test/run-test.png"
-  width={800}
+  width={1600}
 />
 
-You can view the logs from your test by clicking the "Logs" option next to "Code" above the code editor.
+You can view the logs from your test by clicking the "Logs" tab of the code pane.
 
 <Image
   alt="View logs"
-  height={398}
+  height={801}
   src="/docs/create-a-test/view-logs.png"
-  width={800}
+  width={1600}
 />
+
+<SubHeader>Run Selected Code</SubHeader>
+
+Instead of re-running your test every time you make a change, you can run specific lines of code.
+
+Let's say we want to add an assertion and check that it works. In our example, we'll assert that the text "todos" appears on the page.
+
+We'll add the following line to our test code: `await assertText(page, "todos");` This code calls the QA Wolf <Link href="/docs/assert-text">assertText</Link> helper to check that the text "todos" is on the page.
+
+Next we'll highlight this line in the code editor. The run button now says "Run 1 line".
+
+<Image
+  alt="Run 1 line"
+  height={797}
+  src="/docs/create-a-test/run-1-line.png"
+  width={1600}
+/>
+
+Click the run button or press `⌘`/`Ctrl` + `Enter` to run the selected code. In our example, the assertion worked.
+
+<Image
+  alt="Run selected code"
+  height={362}
+  src="/docs/create-a-test/run-selected-code.png"
+  width={480}
+/>
+
+<SubHeader>Toggle Code Creation</SubHeader>
+
+As you use your site, QA Wolf converts your actions to test code. You can turn auto code creation on or off depending on your needs.
+
+Above the browser, there is a toggle with the label "Create code". When this toggle is set to on, your actions will be converted to test code.
+
+<Image
+  alt="Create code toggle"
+  height={794}
+  src="/docs/create-a-test/create-code-toggle.png"
+  width={1600}
+/>
+
+When the create code toggle is set to on, you'll notice that the comment below is added to your test code:
+
+```js
+// 🐺 QA Wolf will create code here
+```
+
+This comment tells QA Wolf where to insert new test code. If you want to insert test code in a different place (like in the middle of your test), move this comment where you want the new test code to go.
+
+If you delete the `// 🐺 QA Wolf will create code here` comment, you'll notice that the create code toggle is set to off. Turn the toggle on again to add this comment back to your code.
+
+Clicking on the toggle also turns off auto code generation. Now when you use your site, your actions will **not** be converted to test code.
+
+<Image
+  alt="Code creation turned off"
+  height={797}
+  src="/docs/create-a-test/create-code-off.png"
+  width={1600}
+/>
+
+You can turn code creation on and off as often as you like.
+
+One caveat is that code generation does not work while a test is running. QA Wolf will wait until your test passes or fails before converting additional actions to code.
 
 <SubHeader>Conclusion</SubHeader>
 
 Congratulations - you've created your first test with QA Wolf! 🎉
+
+Now let's learn how to run your test:
+
+- <Link href="/docs/run-tests-on-a-schedule">on a schedule</Link>
+- <Link href="/docs/run-tests-on-vercel-deployment">on Vercel deployment</Link>
+- <Link href="/docs/run-tests-on-netlify-deployment">
+    on Netlify deployment
+  </Link>
+- <Link href="/docs/run-tests-with-api">by calling the QA Wolf API</Link>
 
 </Layout>
