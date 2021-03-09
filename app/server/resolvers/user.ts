@@ -1,5 +1,6 @@
 import environment from "../environment";
 import { findInvite } from "../models/invite";
+import { createSubscriber } from "../models/subscriber";
 import { createDefaultTeam, findTeamsForUser } from "../models/team";
 import { createTeamUser } from "../models/team_user";
 import {
@@ -34,10 +35,11 @@ import {
 import { buildLoginCode } from "../utils";
 import { ensureTeamAccess, ensureUser } from "./utils";
 
-type CreateUserWithTrigger = {
+type CreateUserWithTeam = {
   emailFields?: CreateUserWithEmail;
   gitHubFields?: CreateUserWithGitHub;
   hasInvite?: boolean;
+  isSubscribed?: boolean;
 };
 
 const buildAuthenticatedUser = async (
@@ -70,7 +72,7 @@ const postNewUserMessageToSlack = async (
 };
 
 const createUserWithTeam = async (
-  { emailFields, gitHubFields, hasInvite }: CreateUserWithTrigger,
+  { emailFields, gitHubFields, hasInvite, isSubscribed }: CreateUserWithTeam,
   { db, logger }: ModelOptions
 ): Promise<User> => {
   if (!emailFields && !gitHubFields) {
@@ -90,6 +92,10 @@ const createUserWithTeam = async (
       ? await createUserWithGitHub(gitHubFields, { db: trx, logger })
       : // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         await createUserWithEmail(emailFields!, { db: trx, logger });
+
+    if (isSubscribed) {
+      await createSubscriber(user.email, { db: trx, logger });
+    }
 
     if (!hasInvite) {
       const team = await createDefaultTeam({
@@ -160,6 +166,7 @@ export const sendLoginCodeResolver = async (
           wolf_variant: invite?.wolf_variant,
         },
         hasInvite: !!invite,
+        isSubscribed: is_subscribed,
       },
       { db, logger }
     );
@@ -258,6 +265,7 @@ export const signInWithGitHubResolver = async (
           wolf_variant: invite?.wolf_variant,
         },
         hasInvite: !!invite,
+        isSubscribed: is_subscribed,
       },
       { db, logger }
     );

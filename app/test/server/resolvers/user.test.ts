@@ -137,7 +137,7 @@ describe("sendLoginCodeResolver", () => {
 
     const result = await sendLoginCodeResolver(
       {},
-      { email },
+      { email, is_subscribed: true },
       { ...context, user: null }
     );
 
@@ -162,6 +162,9 @@ describe("sendLoginCodeResolver", () => {
       },
     });
 
+    const subscribers = await db("subscribers").where({ email }).first();
+    expect(subscribers).toBeTruthy();
+
     await db.transaction(async (trx) => deleteUser(newUser.id, trx));
   });
 
@@ -170,7 +173,7 @@ describe("sendLoginCodeResolver", () => {
 
     const result = await sendLoginCodeResolver(
       {},
-      { email, invite_id: invite.id },
+      { email, invite_id: invite.id, is_subscribed: false },
       { ...context, user: null }
     );
 
@@ -197,6 +200,9 @@ describe("sendLoginCodeResolver", () => {
         updated_at: undefined,
       },
     });
+
+    const subscribers = await db("subscribers").where({ email }).first();
+    expect(subscribers).toBeFalsy();
 
     await db.transaction(async (trx) => deleteUser(newUser.id, trx));
   });
@@ -343,6 +349,7 @@ describe("signInWithGitHubResolver", () => {
         github_code: "code",
         github_state: "state",
         invite_id: invite.id,
+        is_subscribed: true,
       },
       { ...context, user: null }
     );
@@ -361,6 +368,12 @@ describe("signInWithGitHubResolver", () => {
       .where({ user_id: user.id });
     expect(teamUsers).toEqual([]);
 
+    const subscribers = await db("subscribers")
+      .where({ email: gitHubUser2.email })
+      .first();
+    expect(subscribers).toBeTruthy();
+
+    await db("subscribers").where({ email: gitHubUser2.email }).del();
     await db("users").where({ id: user.id }).del();
   });
 
@@ -373,7 +386,7 @@ describe("signInWithGitHubResolver", () => {
 
     const { access_token, user } = await signInWithGitHubResolver(
       {},
-      { github_code: "code", github_state: "state" },
+      { github_code: "code", github_state: "state", is_subscribed: false },
       { ...context, user: null }
     );
 
@@ -398,6 +411,11 @@ describe("signInWithGitHubResolver", () => {
       { team_id: "teamId" },
       { team_id: user.teams[0].id, role: "admin" },
     ]);
+
+    const subscribers = await db("subscribers")
+      .where({ email: gitHubUser2.email })
+      .first();
+    expect(subscribers).toBeFalsy();
 
     expect(userModel.updateGitHubFields).not.toBeCalled();
   });
