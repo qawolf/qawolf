@@ -32,11 +32,11 @@ import {
   updateRunResolver,
 } from "./resolvers/run";
 import { runnerResolver, updateRunnerResolver } from "./resolvers/runner";
-import { joinMailingListResolver } from "./resolvers/sendgrid";
 import {
   createSlackIntegrationResolver,
   createSlackIntegrationUrlResolver,
 } from "./resolvers/slack";
+import { createSubscriberResolver } from "./resolvers/subscriber";
 import {
   createSuiteResolver,
   suiteResolver,
@@ -90,6 +90,7 @@ export const resolvers = {
     createSignInUrl: createGitHubSignInUrlResolver,
     createSlackIntegration: createSlackIntegrationResolver,
     createSlackIntegrationUrl: createSlackIntegrationUrlResolver,
+    createSubscriber: createSubscriberResolver,
     createSuite: createSuiteResolver,
     createTest: createTestResolver,
     createTrigger: createTriggerResolver,
@@ -98,7 +99,6 @@ export const resolvers = {
     deleteGroup: deleteGroupResolver,
     deleteTests: deleteTestsResolver,
     deleteTrigger: deleteTriggerResolver,
-    joinMailingList: joinMailingListResolver,
     sendLoginCode: sendLoginCodeResolver,
     signInWithEmail: signInWithEmailResolver,
     signInWithGitHub: signInWithGitHubResolver,

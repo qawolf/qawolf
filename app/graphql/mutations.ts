@@ -107,6 +107,12 @@ export const createSlackIntegrationUrlMutation = gql`
   }
 `;
 
+export const createSubscriberMutation = gql`
+  mutation createSubscriber($email: String!) {
+    createSubscriber(email: $email)
+  }
+`;
+
 export const createSuiteMutation = gql`
   mutation createSuite(
     $environment_id: ID
@@ -200,12 +206,6 @@ export const deleteTriggerMutation = gql`
     }
   }
   ${triggerFragment}
-`;
-
-export const joinMailingListMutation = gql`
-  mutation joinMailingList($email: String!) {
-    joinMailingList(email: $email)
-  }
 `;
 
 export const sendLoginCodeMutation = gql`

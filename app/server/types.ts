@@ -369,6 +369,10 @@ export type CreateSlackIntegrationMutation = {
   team_id: string;
 };
 
+export type CreateSubscriberMutation = {
+  email: string;
+};
+
 export type CreateSuiteMutation = {
   environment_id: string | null;
   environment_variables: string | null;
@@ -397,10 +401,6 @@ export type CreateUrlMutation = {
 
 export type DeleteTestsMutation = {
   ids: string[];
-};
-
-export type JoinMailingListMutation = {
-  email: string;
 };
 
 export type RunnerRun = {

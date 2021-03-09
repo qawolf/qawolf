@@ -266,7 +266,6 @@ export const copy = {
   status: "Status",
   stopRunning: "Stop running",
   subscribe: "Subscribe",
-  subscribeError: "Something went wrong, please try again",
   subscribeSuccess: "Thanks for subscribing 🎉",
   subjectToFairUse:
     "Each plan is subject to our fair use policy. Starter plans are limited to non-commercial use.",

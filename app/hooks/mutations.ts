@@ -12,6 +12,7 @@ import {
   createSignInUrlMutation,
   createSlackIntegrationMutation,
   createSlackIntegrationUrlMutation,
+  createSubscriberMutation,
   createSuiteMutation,
   createTestMutation,
   createTriggerMutation,
@@ -20,7 +21,6 @@ import {
   deleteGroupMutation,
   deleteTestsMutation,
   deleteTriggerMutation,
-  joinMailingListMutation,
   sendLoginCodeMutation,
   signInWithEmailMutation,
   signInWithGitHubMutation,
@@ -134,6 +134,14 @@ type CreateSlackIntegrationUrlVariables = {
   redirect_uri: string;
 };
 
+type CreateSubscriberData = {
+  createSubscriber: boolean;
+};
+
+type CreateSubscriberVariables = {
+  email: string;
+};
+
 type CreateSuiteData = {
   createSuite: string;
 };
@@ -200,14 +208,6 @@ type DeleteTriggerData = {
 
 type DeleteTriggerVariables = {
   id: string;
-};
-
-type JoinMailingListData = {
-  joinMailingList: boolean;
-};
-
-type JoinMailingListVariables = {
-  email: string;
 };
 
 type SendLoginCodeData = {
@@ -495,6 +495,16 @@ export const useCreateSlackIntegrationUrl = (
   >(createSlackIntegrationUrlMutation, { onError, variables });
 };
 
+export const useCreateSubscriber = (): MutationTuple<
+  CreateSubscriberData,
+  CreateSubscriberVariables
+> => {
+  return useMutation<CreateSubscriberData, CreateSubscriberVariables>(
+    createSubscriberMutation,
+    { onError }
+  );
+};
+
 export const useCreateSuite = (): MutationTuple<
   CreateSuiteData,
   CreateSuiteVariables
@@ -622,16 +632,6 @@ export const useDeleteTrigger = (): MutationTuple<
       onError,
       refetchQueries: ["triggers"],
     }
-  );
-};
-
-export const useJoinMailingList = (): MutationTuple<
-  JoinMailingListData,
-  JoinMailingListVariables
-> => {
-  return useMutation<JoinMailingListData, JoinMailingListVariables>(
-    joinMailingListMutation,
-    { onError }
   );
 };
 

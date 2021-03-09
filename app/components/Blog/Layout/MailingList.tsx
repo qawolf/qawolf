@@ -1,8 +1,9 @@
+import * as EmailValidator from "email-validator";
 import { Box, Keyboard } from "grommet";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { useJoinMailingList } from "../../../hooks/mutations";
+import { useCreateSubscriber } from "../../../hooks/mutations";
 import { copy } from "../../../theme/copy";
 import { edgeSize, width } from "../../../theme/theme";
 import Button from "../../shared/Button";
@@ -19,16 +20,22 @@ const StyledBox = styled(Box)`
 
 export default function MailingList(): JSX.Element {
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
 
-  const [joinMailingList, { data, loading }] = useJoinMailingList();
+  const [createSubscriber, { data, loading }] = useCreateSubscriber();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setEmail(e.target.value);
   };
 
   const handleClick = (): void => {
-    if (!email || loading) return;
-    joinMailingList({ variables: { email } });
+    if (!EmailValidator.validate(email)) {
+      setError(copy.noEmail);
+      return;
+    }
+
+    setError("");
+    createSubscriber({ variables: { email } });
   };
 
   return (
@@ -44,6 +51,7 @@ export default function MailingList(): JSX.Element {
             value={email}
           />
           <Button
+            disabled={loading}
             label={copy.subscribe}
             margin={{ left: "small" }}
             onClick={handleClick}
@@ -51,14 +59,14 @@ export default function MailingList(): JSX.Element {
           />
         </Box>
       </Keyboard>
-      {!!data && (
+      {!!(data?.createSubscriber || error) && (
         <Text
-          color={data.joinMailingList ? "primaryFill" : "error"}
+          color={error ? "error" : "primary"}
           margin={{ top: "small" }}
           size="xsmall"
           weight="normal"
         >
-          {data.joinMailingList ? copy.subscribeSuccess : copy.subscribeError}
+          {error ? copy.noEmail : copy.subscribeSuccess}
         </Text>
       )}
     </StyledBox>
