@@ -24,6 +24,7 @@ describe("popup", () => {
           action: "popup",
           page: "p1" as any,
           popup: "p2" as any,
+          time: Date.now(),
         },
         expressions: parseActionExpressions(code),
         variables: { page: "p1" },
