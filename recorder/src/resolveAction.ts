@@ -7,10 +7,9 @@ import {
 } from "./element";
 import { Action, PossibleAction } from "./types";
 
-type ResolveAction = {
-  lastPossibleAction?: PossibleAction | undefined;
-  lastRecordedAction?: PossibleAction;
-  possibleAction: PossibleAction;
+type ResolvedAction = {
+  action: Action;
+  selector?: string;
 };
 
 /**
@@ -57,10 +56,12 @@ export const KEYS_TO_TRACK_FOR_NON_INPUT = new Set([
 ]);
 
 export const resolveAction = ({
-  lastPossibleAction,
-  lastRecordedAction,
+  lastReceivedAction,
   possibleAction,
-}: ResolveAction): Action | undefined => {
+}: {
+  lastReceivedAction?: PossibleAction;
+  possibleAction: PossibleAction;
+}): ResolvedAction | undefined => {
   // Never emit actions for untrusted events
   if (!possibleAction.isTrusted) {
     debug("resolveAction: skip untrusted action");
@@ -71,9 +72,9 @@ export const resolveAction = ({
   // ex. "Enter" triggers a click on a submit input
   if (
     possibleAction.action === "click" &&
-    lastPossibleAction &&
-    ["fill", "keyboard.press", "press"].includes(lastPossibleAction.action) &&
-    possibleAction.time - lastPossibleAction.time < 50
+    lastReceivedAction &&
+    ["fill", "keyboard.press", "press"].includes(lastReceivedAction.action) &&
+    possibleAction.time - lastReceivedAction.time < 50
   ) {
     debug("resolveAction: skip system-initiated click");
     return;
@@ -84,11 +85,11 @@ export const resolveAction = ({
   // We can check here to avoid that. (For press and click, back-to-back identical
   // events could be valid.)
   if (
-    lastRecordedAction &&
+    lastReceivedAction &&
     ["fill", "selectOption"].includes(possibleAction.action) &&
-    possibleAction.action === lastRecordedAction.action &&
-    possibleAction.target === lastRecordedAction.target &&
-    possibleAction.value === lastRecordedAction.value
+    possibleAction.action === lastReceivedAction.action &&
+    possibleAction.target === lastReceivedAction.target &&
+    possibleAction.value === lastReceivedAction.value
   ) {
     debug(`resolveAction: skip duplicate ${possibleAction.action}`);
     return;
@@ -115,11 +116,25 @@ export const resolveAction = ({
     }
 
     // skip the target visibility check for keyboard.press which has no target
-    if (action === "keyboard.press") return action;
+    if (action === "keyboard.press") return { action };
   }
 
-  // Never emit actions on invisible targets
   if (!isVisible(target, window.getComputedStyle(target))) {
+    // if the last received action was a visible mousedown use it's selector
+    if (
+      action === "click" &&
+      lastReceivedAction &&
+      lastReceivedAction.action === "mousedown" &&
+      lastReceivedAction.selector
+    ) {
+      debug(
+        "resolveAction: use selector from previously visible mousedown",
+        lastReceivedAction.selector,
+        lastReceivedAction.target
+      );
+      return { action, selector: lastReceivedAction.selector };
+    }
+
     debug("resolveAction: skip action on invisible target");
     return;
   }
@@ -138,7 +153,7 @@ export const resolveAction = ({
     return;
   }
 
-  return action;
+  return { action };
 };
 
 /**

@@ -51,6 +51,19 @@ it("records click actions", async () => {
   ]);
 });
 
+it("records click for hiding target", async () => {
+  const page = await getFreshPage();
+  await page.click("#hide-me");
+  await waitForExpect(() => {
+    expect(actionsOfType("click").length).toBe(1);
+  }, 10000);
+  await page.close();
+
+  expect(actionsOfType("click").map((action) => action.selector)).toEqual([
+    "#hide-me",
+  ]);
+});
+
 it("records fill actions when typing", async () => {
   const page = await getFreshPage();
 

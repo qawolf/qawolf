@@ -1,3 +1,4 @@
+import { debug } from "./debug";
 import { getXpath } from "./element";
 import { generateSortedCueSets } from "./generateCueSets";
 import { buildSelectorForCues, isSelectorMatch } from "./selectorEngine";
@@ -40,6 +41,7 @@ export function getSelector(
         selectorCache.set(target, selector);
         selectorCache.set(likelyTarget, selector);
       }
+      debug(`found selector ${selector} for target`, target);
       return selector;
     }
 

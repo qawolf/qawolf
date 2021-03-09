@@ -43,8 +43,9 @@ export interface LogEvent {
 }
 
 export type PossibleAction = {
-  action: Action;
+  action: Action | "mousedown";
   isTrusted: boolean;
+  selector?: string;
   target: HTMLElement;
   time: number;
   value: string | null;

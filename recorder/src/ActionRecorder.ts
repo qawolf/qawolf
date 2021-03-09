@@ -1,5 +1,5 @@
 import { debug } from "./debug";
-import { getInputElementValue } from "./element";
+import { getInputElementValue, isVisible } from "./element";
 import { getSelector } from "./generateSelectors";
 import { resolveAction } from "./resolveAction";
 import { Action, Callback, ElementAction, PossibleAction } from "./types";
@@ -8,7 +8,6 @@ type ActionCallback = Callback<ElementAction>;
 
 export class ActionRecorder {
   _lastReceivedAction: PossibleAction;
-  _lastRecordedAction: PossibleAction;
   _onDispose: Callback[] = [];
   _selectorCache = new Map<HTMLElement, string>();
 
@@ -65,9 +64,8 @@ export class ActionRecorder {
       value,
     };
 
-    action = resolveAction({
-      lastPossibleAction: this._lastReceivedAction,
-      lastRecordedAction: this._lastRecordedAction,
+    const resolvedAction = resolveAction({
+      lastReceivedAction: this._lastReceivedAction,
       possibleAction,
     });
 
@@ -75,32 +73,31 @@ export class ActionRecorder {
 
     // If no action was returned, this isn't an event we care about
     // so we can skip building a selector and emitting it.
-    if (!action) return;
-
-    this._lastRecordedAction = possibleAction;
+    if (!resolvedAction) return;
 
     let selector = "";
 
-    if (action !== "keyboard.press") {
-      selector = getSelector(
-        event.target as HTMLElement,
-        1000,
-        this._selectorCache
-      );
+    if (resolvedAction.action !== "keyboard.press") {
+      selector =
+        resolvedAction.selector ||
+        getSelector(event.target as HTMLElement, 1000, this._selectorCache);
     }
 
     const elementAction: ElementAction = {
-      action,
+      action: resolvedAction.action,
       selector,
       time,
     };
 
     if (value !== undefined) {
-      // Value should be coerced to an empty string
+      // value should be coerced to an empty string
       elementAction.value = typeof value === "string" ? value : "";
     }
 
-    debug(`ActionRecorder: ${action} action recorded:`, elementAction);
+    debug(
+      `ActionRecorder: ${elementAction.action} action recorded:`,
+      elementAction
+    );
 
     actionCallback(elementAction);
   }
@@ -116,10 +113,26 @@ export class ActionRecorder {
       this.recordAction("click", event);
     });
 
+    // generate a selector for a visible mousedown
+    // in case the click's target becomes invisible
+    // we can fallback to this selector
     this.listen("mousedown", (event) => {
-      const target = event.target;
+      debug("ActionRecorder: mousedown action detected", event);
 
-      // TODO if visible...
+      const target = event.target as HTMLElement;
+      if (!event.isTrusted || !isVisible(target)) return;
+
+      const selector = getSelector(target, 1000, this._selectorCache);
+      if (!selector) return;
+
+      this._lastReceivedAction = {
+        action: "mousedown",
+        isTrusted: event.isTrusted,
+        selector,
+        target,
+        time: Date.now(),
+        value: undefined,
+      };
     });
 
     //////// INPUT EVENTS ////////
