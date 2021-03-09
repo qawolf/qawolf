@@ -39,10 +39,11 @@ export default function HelpersEditor({ onKeyDown }: Props): JSX.Element {
   useEffect(() => {
     if (!editor || !team) return;
 
-    if (
-      !editor.getValue() ||
-      team.helpers_version > helpersVersionRef.current
-    ) {
+    const value = editor.getValue();
+    const hasNewerVersion = team.helpers_version > helpersVersionRef.current;
+    const isChanged = value !== team.helpers;
+
+    if (!value || (hasNewerVersion && isChanged)) {
       editor.setValue(team.helpers);
     }
 

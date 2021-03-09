@@ -59,13 +59,15 @@ export default function CreateOrEditTrigger({
         closeModal={closeModal}
         label={editTrigger ? copy.editTrigger : copy.createTrigger}
       />
-      <Form
-        editTrigger={editTrigger}
-        isLoading={createLoading || updateLoading}
-        onBack={onBack}
-        onSave={handleSave}
-        triggers={triggers}
-      />
+      {!!teamId && (
+        <Form
+          editTrigger={editTrigger}
+          isLoading={createLoading || updateLoading}
+          onBack={onBack}
+          onSave={handleSave}
+          triggers={triggers}
+        />
+      )}
     </Box>
   );
 }
