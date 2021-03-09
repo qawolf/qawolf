@@ -17,13 +17,17 @@ beforeAll(async () => {
     page,
     `
 <div id="parent" style="${fixedSize}">
-  <button id="inside">inside</button>
-  <button id="outside" style="${fixedSize} left: 500px">outside</button>
+  <div id="inside">inside</div>
+  <div id="outside" style="${fixedSize} left: 500px">outside</div>
 </div>
 <div id="unrelated" style="${fixedSize}">overlap</div>
 <div id="exact-match-overlap" style="${fixedSize} top: 500px">
   <input type="date" style="${fixedSize} top: 500px">
-  <textarea style="${fixedSize} top: 500px" />
+  <textarea style="${fixedSize} top: 500px"></textarea>
+</div>
+<div id="boundary" style="${fixedSize} left:500px; top: 500px;">
+    <div id="same-boundary"></div>
+    <button><div>match button</div></button>
 </div>
 `
   );
@@ -71,5 +75,19 @@ describe("isElementMatch", () => {
     expect(await isElementMatch("#exact-match-overlap", "textarea")).toBe(
       false
     );
+  });
+
+  it("return false if element crosses a click boundary", async () => {
+    expect(await isElementMatch("#boundary button", "#boundary")).toBe(false);
+
+    expect(await isElementMatch("#boundary button div", "#boundary")).toBe(
+      false
+    );
+
+    expect(await isElementMatch("#same-boundary", "#boundary")).toBe(true);
+
+    expect(
+      await isElementMatch("#boundary button div", "#boundary button")
+    ).toBe(true);
   });
 });
