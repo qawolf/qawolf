@@ -12,6 +12,7 @@ import {
   createSignInUrlMutation,
   createSlackIntegrationMutation,
   createSlackIntegrationUrlMutation,
+  createSubscriberMutation,
   createSuiteMutation,
   createTestMutation,
   createTriggerMutation,
@@ -20,7 +21,6 @@ import {
   deleteGroupMutation,
   deleteTestsMutation,
   deleteTriggerMutation,
-  joinMailingListMutation,
   sendLoginCodeMutation,
   signInWithEmailMutation,
   signInWithGitHubMutation,
@@ -134,6 +134,14 @@ type CreateSlackIntegrationUrlVariables = {
   redirect_uri: string;
 };
 
+type CreateSubscriberData = {
+  createSubscriber: boolean;
+};
+
+type CreateSubscriberVariables = {
+  email: string;
+};
+
 type CreateSuiteData = {
   createSuite: string;
 };
@@ -202,14 +210,6 @@ type DeleteTriggerVariables = {
   id: string;
 };
 
-type JoinMailingListData = {
-  joinMailingList: boolean;
-};
-
-type JoinMailingListVariables = {
-  email: string;
-};
-
 type SendLoginCodeData = {
   sendLoginCode: {
     email: string;
@@ -219,6 +219,7 @@ type SendLoginCodeData = {
 type SendLoginCodeVariables = {
   email: string;
   invite_id?: string | null;
+  is_subscribed?: boolean;
 };
 
 type SignInWithEmailData = {
@@ -238,6 +239,7 @@ type SignInWithGitHubVariables = {
   github_code: string;
   github_state: string;
   invite_id?: string | null;
+  is_subscribed?: boolean;
 };
 
 type UpdateEnvironmentData = {
@@ -493,6 +495,16 @@ export const useCreateSlackIntegrationUrl = (
   >(createSlackIntegrationUrlMutation, { onError, variables });
 };
 
+export const useCreateSubscriber = (): MutationTuple<
+  CreateSubscriberData,
+  CreateSubscriberVariables
+> => {
+  return useMutation<CreateSubscriberData, CreateSubscriberVariables>(
+    createSubscriberMutation,
+    { onError }
+  );
+};
+
 export const useCreateSuite = (): MutationTuple<
   CreateSuiteData,
   CreateSuiteVariables
@@ -620,16 +632,6 @@ export const useDeleteTrigger = (): MutationTuple<
       onError,
       refetchQueries: ["triggers"],
     }
-  );
-};
-
-export const useJoinMailingList = (): MutationTuple<
-  JoinMailingListData,
-  JoinMailingListVariables
-> => {
-  return useMutation<JoinMailingListData, JoinMailingListVariables>(
-    joinMailingListMutation,
-    { onError }
   );
 };
 

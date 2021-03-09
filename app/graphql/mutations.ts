@@ -107,6 +107,12 @@ export const createSlackIntegrationUrlMutation = gql`
   }
 `;
 
+export const createSubscriberMutation = gql`
+  mutation createSubscriber($email: String!) {
+    createSubscriber(email: $email)
+  }
+`;
+
 export const createSuiteMutation = gql`
   mutation createSuite(
     $environment_id: ID
@@ -202,15 +208,17 @@ export const deleteTriggerMutation = gql`
   ${triggerFragment}
 `;
 
-export const joinMailingListMutation = gql`
-  mutation joinMailingList($email: String!) {
-    joinMailingList(email: $email)
-  }
-`;
-
 export const sendLoginCodeMutation = gql`
-  mutation sendLoginCode($email: String!, $invite_id: ID) {
-    sendLoginCode(email: $email, invite_id: $invite_id) {
+  mutation sendLoginCode(
+    $email: String!
+    $invite_id: ID
+    $is_subscribed: Boolean
+  ) {
+    sendLoginCode(
+      email: $email
+      invite_id: $invite_id
+      is_subscribed: $is_subscribed
+    ) {
       email
     }
   }
@@ -233,11 +241,13 @@ export const signInWithGitHubMutation = gql`
     $github_code: String!
     $github_state: String!
     $invite_id: ID
+    $is_subscribed: Boolean
   ) {
     signInWithGitHub(
       github_code: $github_code
       github_state: $github_state
       invite_id: $invite_id
+      is_subscribed: $is_subscribed
     ) {
       access_token
       user {

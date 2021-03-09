@@ -9,7 +9,7 @@ import { UserContext } from "../UserContext";
 import Email from "./Email";
 import GitHub from "./GitHub";
 import Header from "./Header";
-import LoginCode from "./LoginCode";
+import MailingList from "./MailingList";
 import Or from "./Or";
 import SwitchMode from "./SwitchMode";
 
@@ -41,7 +41,7 @@ export default function Auth({ mode }: Props): JSX.Element {
           <GitHub mode={mode} />
           <Or />
           <Email mode={mode} />
-          <LoginCode mode={mode} />
+          <MailingList mode={mode} />
           <SwitchMode mode={mode} />
         </Box>
       </Box>

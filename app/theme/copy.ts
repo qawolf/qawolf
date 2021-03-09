@@ -163,12 +163,11 @@ export const copy = {
   logIn: "Log in",
   logInWithEmail: "Log in with email",
   logInWithGitHub: "Log in with GitHub",
-  loginCode: (mode: "logIn" | "signUp"): string =>
-    `We'll email you a code to ${mode === "logIn" ? "log in" : "sign up"}`,
   loginCodeSent: "Enter the 6-letter code we sent to ",
   logOut: "Log out",
   logs: "Logs",
   loveOpenSource: "We 💖 open source",
+  mailingListSubscribe: "Receive product and company updates",
   manuallyTriggered: "Manually triggered",
   meet: "Meet your QA Wolf",
   members: "Members",
@@ -265,7 +264,6 @@ export const copy = {
   status: "Status",
   stopRunning: "Stop running",
   subscribe: "Subscribe",
-  subscribeError: "Something went wrong, please try again",
   subscribeSuccess: "Thanks for subscribing 🎉",
   subjectToFairUse:
     "Each plan is subject to our fair use policy. Starter plans are limited to non-commercial use.",

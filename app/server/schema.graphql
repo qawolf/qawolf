@@ -692,6 +692,16 @@ type Mutation {
   ): String!
 
   """
+  Join the QA Wolf email list.
+  """
+  createSubscriber(
+    """
+    Email address
+    """
+    email: String
+  ): Boolean!
+
+  """
   Creates a new test suite for one or more tests, optionally specifying
   an environment ID and variables. Returns the ID of the created suite.
 
@@ -789,16 +799,6 @@ type Mutation {
   ): [Test!]!
 
   """
-  Join the QA Wolf email list.
-  """
-  joinMailingList(
-    """
-    Email address
-    """
-    email: String
-  ): Boolean!
-
-  """
   A multi-purpose mutation that always ends with sending a magic logic code
   to an email address, which can then be used as a parameter value for the
   `signInWithEmail` mutation.
@@ -822,6 +822,9 @@ type Mutation {
     you obtain an access token to accept the invite.
     """
     invite_id: ID
+
+    "Whether or not the user is subscribed to email updates"
+    is_subscribed: Boolean
   ): SendLoginCode!
 
   """
@@ -871,6 +874,9 @@ type Mutation {
     the invite.
     """
     invite_id: ID
+
+    "Whether or not the user is subscribed to email updates"
+    is_subscribed: Boolean
   ): AuthenticatedUser!
 
   """

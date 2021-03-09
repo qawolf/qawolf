@@ -44,6 +44,12 @@ export default function DeleteTests({ closeModal, tests }: Props): JSX.Element {
 
   useOnHotKey({ hotKey: "Enter", onHotKey: handleDelete });
 
+  const labelHtml = (
+    <Text color="gray9" size="component">
+      {copy.iUnderstand}
+    </Text>
+  );
+
   return (
     <Modal a11yTitle="delete test modal" closeModal={closeModal}>
       <Box pad="medium">
@@ -65,10 +71,11 @@ export default function DeleteTests({ closeModal, tests }: Props): JSX.Element {
           ref={ref}
         >
           <Box align="center" direction="row" width="120px">
-            <CheckBox checked={isChecked} hasError={hasError} />
-            <Text color="gray9" margin={{ left: "xxsmall" }} size="component">
-              {copy.iUnderstand}
-            </Text>
+            <CheckBox
+              checked={isChecked}
+              hasError={hasError}
+              label={labelHtml}
+            />
           </Box>
         </Button>
         <Buttons

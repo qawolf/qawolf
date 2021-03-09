@@ -49,7 +49,10 @@ describe("user model", () => {
 
     beforeAll(() => {
       return createUserWithEmail(
-        { email: "acorn@qawolf.com", login_code: "ABCDEF" },
+        {
+          email: "acorn@qawolf.com",
+          login_code: "ABCDEF",
+        },
         options
       );
     });

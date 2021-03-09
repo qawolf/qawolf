@@ -200,6 +200,7 @@ export const theme: ThemeType = {
       radius: borderSize.small,
     },
     color: colors.primary,
+    gap: edgeSize.xxsmall,
     icon: {
       size: edgeSize.small,
     },

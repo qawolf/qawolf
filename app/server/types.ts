@@ -208,6 +208,11 @@ export type StatusCounts = {
   pass: number;
 };
 
+export type Subscriber = {
+  email: string;
+  id: string;
+};
+
 export type Suite = {
   alert_sent_at?: string;
   created_at: string;
@@ -364,6 +369,10 @@ export type CreateSlackIntegrationMutation = {
   team_id: string;
 };
 
+export type CreateSubscriberMutation = {
+  email: string;
+};
+
 export type CreateSuiteMutation = {
   environment_id: string | null;
   environment_variables: string | null;
@@ -394,10 +403,6 @@ export type DeleteTestsMutation = {
   ids: string[];
 };
 
-export type JoinMailingListMutation = {
-  email: string;
-};
-
 export type RunnerRun = {
   artifacts: SaveArtifacts;
   code: string;
@@ -416,6 +421,7 @@ export type RunTestStatus = {
 export type SendLoginCodeMutation = {
   email: string;
   invite_id?: string | null;
+  is_subscribed?: boolean;
 };
 
 export type SendLoginCode = {
@@ -431,6 +437,7 @@ export type SignInWithGitHubMutation = {
   github_code: string;
   github_state: string;
   invite_id?: string | null;
+  is_subscribed?: boolean;
 };
 
 export type UpdateEnvironmentMutation = {

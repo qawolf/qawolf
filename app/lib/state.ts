@@ -8,6 +8,7 @@ export const defaultState: StateType = {
   editorSidebarWidth: 480,
   email: null,
   environmentId: null,
+  isSubscribed: true,
   modal: { name: null },
   run: null,
   signUp: {},
@@ -77,6 +78,10 @@ class State extends EventEmitter {
 
   setEnvironmentId(environmentId: StateType["environmentId"]): void {
     this._setState({ environmentId });
+  }
+
+  setIsSubscribed(isSubscribed: StateType["isSubscribed"]): void {
+    this._setState({ isSubscribed });
   }
 
   setPendingRun(options: RunOptions | null): void {

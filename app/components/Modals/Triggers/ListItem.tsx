@@ -28,7 +28,7 @@ export default function ListItem({
   trigger,
 }: Props): JSX.Element {
   const labelHtml = (
-    <Box align="center" direction="row">
+    <Box align="center" direction="row" margin={{ left: "xxsmall" }}>
       <TriggerIcon trigger={trigger} />
       <Text color="gray9" size="component" style={overflowStyle}>
         {trigger.name}

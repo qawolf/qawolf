@@ -307,6 +307,7 @@ export type State = {
   editorSidebarWidth: number;
   email: string | null;
   environmentId: string | null;
+  isSubscribed: boolean;
   modal: ModalState;
   run: RunOptions | null;
   signUp: SignUp;

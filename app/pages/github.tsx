@@ -14,12 +14,13 @@ export default function GitHub(): JSX.Element {
     replace,
   } = useRouter();
 
-  const { signUp } = useContext(StateContext);
+  const { isSubscribed, signUp } = useContext(StateContext);
 
   const [signInWithGitHub, { called, error }] = useSignInWithGitHub(
     {
       github_code: (code || "") as string,
       github_state: (state || "") as string,
+      is_subscribed: isSubscribed,
     },
     { signUp }
   );
