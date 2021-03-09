@@ -41,11 +41,11 @@ type Props = {
 
 const StyledGrommetTextInput = styled(GrommetTextInput)`
   &:hover {
-    border-color: ${colors.gray5};
+    border-color: ${colors.gray5} !important;
   }
 
   &:focus {
-    border-color: ${colors.primary};
+    border-color: ${colors.primary} !important;
   }
 `;
 
