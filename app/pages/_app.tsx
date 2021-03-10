@@ -13,12 +13,14 @@ import { StateProvider } from "../components/StateContext";
 import Toast from "../components/Toast";
 import { UserProvider } from "../components/UserContext";
 import { useBootIntercom } from "../hooks/intercom";
+import { useSegmentPage } from "../hooks/segment";
 import { client } from "../lib/client";
 import { copy } from "../theme/copy";
 import { customFontLinks, theme } from "../theme/theme";
 
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
   useBootIntercom();
+  useSegmentPage();
 
   const customFontHtml = customFontLinks.map((href, i) => {
     return <link as="font" crossOrigin="" href={href} key={i} rel="preload" />;

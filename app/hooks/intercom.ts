@@ -2,22 +2,24 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-const intercomAppId = process.env.NEXT_PUBLIC_INTERCOM_APP_ID;
+import { isServer } from "../lib/detection";
+
+const hasIntercom = !isServer() && (window as any).Intercom;
 
 const bootOptions = {
-  app_id: intercomAppId,
+  app_id: process.env.NEXT_PUBLIC_INTERCOM_APP_ID,
   custom_launcher_selector: ".open-intercom",
 };
 
 export const resetIntercom = (): void => {
-  if (!intercomAppId) return;
+  if (!hasIntercom) return;
 
   (window as any).Intercom("shutdown");
   (window as any).Intercom("boot", bootOptions);
 };
 
 export const updateIntercomUser = (email: string): void => {
-  if (!intercomAppId) return;
+  if (!hasIntercom) return;
 
   (window as any).Intercom("boot", {
     ...bootOptions,
@@ -29,13 +31,13 @@ export const useBootIntercom = (): void => {
   const { asPath } = useRouter();
 
   useEffect(() => {
-    if (!intercomAppId) return;
+    if (!hasIntercom) return;
 
     (window as any).Intercom("boot", bootOptions);
   }, []);
 
   useEffect(() => {
-    if (!intercomAppId) return;
+    if (!hasIntercom) return;
 
     (window as any).Intercom("update");
   }, [asPath]);

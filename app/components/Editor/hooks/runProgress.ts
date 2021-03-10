@@ -1,8 +1,10 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
+import { trackSegmentEvent } from "../../../hooks/segment";
 import { RunnerClient } from "../../../lib/runner";
 import { Run, RunProgress } from "../../../lib/types";
+import { UserContext } from "../../UserContext";
 
 export type RunProgressHook = {
   progress: RunProgress | null;
@@ -19,6 +21,7 @@ export const useRunProgress = ({
   runner,
 }: UseRunProgress): RunProgressHook => {
   const { query } = useRouter();
+  const { user } = useContext(UserContext);
 
   const [progress, setProgress] = useState<RunProgress | null>(null);
 
@@ -27,6 +30,12 @@ export const useRunProgress = ({
 
     const onRunProgress = (value: RunProgress): void => {
       setProgress(value);
+
+      if (value.status === "fail") {
+        trackSegmentEvent("Test Preview Failed", {
+          email: user?.email,
+        });
+      }
     };
 
     const onRunStopped = (): void => setProgress(null);
@@ -38,7 +47,7 @@ export const useRunProgress = ({
       runner.off("runprogress", onRunProgress);
       runner.off("runstopped", onRunStopped);
     };
-  }, [query.test_id, runner, run?.test_id]);
+  }, [query.test_id, runner, run?.test_id, user?.email]);
 
   useEffect(() => {
     if (!run) return;
