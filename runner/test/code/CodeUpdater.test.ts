@@ -25,10 +25,7 @@ beforeAll(async () => {
 });
 
 beforeEach(() => {
-  updater.updateCode({
-    code: "// 🐺 QA Wolf will create code here",
-    version: Date.now(),
-  });
+  updater._code = "// 🐺 QA Wolf will create code here";
 });
 
 afterAll(async () => {
