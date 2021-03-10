@@ -1,7 +1,6 @@
 import { createContext, FC, useContext, useEffect } from "react";
 
 import { updateIntercomUser } from "../hooks/intercom";
-import { useIdentifyPostHog } from "../hooks/postHog";
 import { useCurrentUser } from "../hooks/queries";
 import { state } from "../lib/state";
 import { User, Wolf } from "../lib/types";
@@ -56,8 +55,6 @@ export const UserProvider: FC = ({ children }) => {
 
     updateIntercomUser(user.email);
   }, [user]);
-
-  useIdentifyPostHog(user);
 
   const value = { isLoggedIn, isUserLoading: !user && loading, user, wolf };
 
