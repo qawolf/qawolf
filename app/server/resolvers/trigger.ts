@@ -18,6 +18,7 @@ import {
   UpdateTriggerMutation,
 } from "../types";
 import { cuid } from "../utils";
+import { trackSegmentEvent } from "./segment";
 import { ensureTeamAccess, ensureTriggerAccess, ensureUser } from "./utils";
 
 /**
@@ -56,6 +57,7 @@ export const createTriggerResolver = async (
     return trigger;
   });
 
+  trackSegmentEvent(user.id, "Trigger Created");
   log.debug(`created trigger ${trigger.id} for team ${team_id}`);
 
   return trigger;

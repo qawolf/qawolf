@@ -17,19 +17,19 @@ export const identifySegmentUser = ({ id, email }: User): void => {
 
 export const trackSegmentEvent = (
   event: string,
-  payload?: Record<string, unknown>
+  properties?: Record<string, unknown>
 ): void => {
   if (!hasSegment) return;
 
-  (window as any).analytics.track(event, payload);
+  (window as any).analytics.track(event, properties);
 };
 
-export const useSegmentPage = (): void => {
+export const useSegmentPage = (user?: User | null): void => {
   const { pathname } = useRouter();
 
   useEffect(() => {
-    if (!hasSegment) return;
+    if (!hasSegment || !user) return;
 
-    (window as any).analytics.page(pathname);
-  }, [pathname]);
+    (window as any).analytics.page(pathname, { email: user });
+  }, [pathname, user]);
 };
