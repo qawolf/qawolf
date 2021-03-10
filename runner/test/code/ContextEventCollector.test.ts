@@ -10,6 +10,7 @@ import {
   LaunchResult,
   serveFixtures,
   setBody,
+  sleep,
 } from "../utils";
 
 let events: ElementEvent[];
@@ -87,6 +88,7 @@ it("collects back button press and new tab with typed address", async () => {
   if (getBrowserName() !== "chromium") return;
 
   await page.goBack();
+  await sleep(0);
 
   expect(windowEvents.pop()?.action).toBe("goBack");
   expect(windowEvents.pop()?.action).toBe("goto");
@@ -98,6 +100,8 @@ it("collects a new typed address after back button press (rewritten browser hist
 
   await page.goBack();
   await page.goto(`${server.url}/empty`);
+
+  await sleep(0);
 
   const lastEvent = windowEvents.pop();
   expect(lastEvent?.action).toBe("goto");
@@ -112,6 +116,8 @@ it("collects reload button", async () => {
   if (getBrowserName() !== "chromium") return;
 
   await page.reload();
+  await sleep(0);
+
   expect(windowEvents.pop()?.action).toBe("reload");
 });
 
@@ -127,6 +133,8 @@ it("collects popup from window.open", async () => {
   await waitUntil(() => windowEvents.find((event) => event.action === "popup"));
 
   await page2.close();
+
+  await sleep(0);
 
   expect(windowEvents.pop()?.action).toBe("popup");
 });
@@ -145,6 +153,8 @@ it("collects popup from blank target click", async () => {
   // To be safe, make sure we've collected the popup event by now
   await waitUntil(() => windowEvents.find((event) => event.action === "popup"));
   await page2.close();
+
+  await sleep(0);
 
   expect(windowEvents.pop()?.action).toBe("popup");
 });
