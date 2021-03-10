@@ -35,15 +35,15 @@ const expectSelector = async (
 describe("getSelector", () => {
   describe("ancestor cues", () => {
     it.each([
-      ["<a><img></a>", "a"],
-      ["<button><img></button>", "button"],
-      ['<div role="button"><img></div>', '[role="button"]'],
-      ['<div role="checkbox"><img></div>', '[role="checkbox"]'],
-      ['<div role="radio"><img></div>', '[role="radio"]'],
-      ["<label><img></label>", "label"],
+      ["<a><x-child-element /></a>", "a"],
+      ["<button><x-child-element /></button>", "button"],
+      ['<div role="button"><x-child-element /></div>', '[role="button"]'],
+      ['<div role="checkbox"><x-child-element /></div>', '[role="checkbox"]'],
+      ['<div role="radio"><x-child-element /></div>', '[role="radio"]'],
+      ["<label><x-child-element /></label>", "label"],
     ])("targets the likely ancestor %o", async (body, expected) => {
       await setBody(page, body);
-      await expectSelector("img", expected);
+      await expectSelector("x-child-element", expected);
     });
 
     it("targets the better selector on the descendant despite having likely ancestor", async () => {
@@ -75,6 +75,14 @@ describe("getSelector", () => {
     it("does not pick a descendant across a click boundary", async () => {
       await setBody(page, `<div><button data-qa="hello">hello</button></div>`);
       await expectSelector("div");
+    });
+
+    it("picks a descendant with a better selector", async () => {
+      await setBody(
+        page,
+        `<a style="display: flex"><span><svg aria-label="Home"></svg></span></a>`
+      );
+      await expectSelector("a", '[aria-label="Home"]');
     });
   });
 
