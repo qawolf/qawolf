@@ -174,6 +174,7 @@ export const copy = {
   mustMatch: "Must match",
   myTests: "My tests",
   name: "Name",
+  nameWolf: "Name your wolf",
   netlify: "Netlify",
   netlifyDeploy: "Your tests will run on Netlify deploy previews.",
   next: "Next",
@@ -301,9 +302,10 @@ export const copy = {
   watchTime: "in 1 minute",
   welcome: "Welcome to QA Wolf!",
   welcome2: "Sign up to create and run tests",
-  wolfIntro: (wolfName: string): string => {
-    return `Hi, I'm ${wolfName}!`;
-  },
+  wolfIntro:
+    "Hi there! I'm your QA Wolf. QA Wolf helps you set up tests fast, so you can focus on shipping.",
+  wolfIntro2:
+    "I'm going to quickly show you the basics. Start by giving me a name:",
   woof: "Woof.",
   woof2: "Woof woof woof.",
   zeroSetup: "Zero setup",
