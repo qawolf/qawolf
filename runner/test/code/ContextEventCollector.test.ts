@@ -88,8 +88,8 @@ it("collects back button press and new tab with typed address", async () => {
 
   await page.goBack();
 
-  expect(windowEvents[0].action).toBe("goto");
-  expect(windowEvents[1].action).toBe("goBack");
+  expect(windowEvents.pop()?.action).toBe("goBack");
+  expect(windowEvents.pop()?.action).toBe("goto");
 });
 
 it("collects a new typed address after back button press (rewritten browser history)", async () => {
@@ -99,10 +99,12 @@ it("collects a new typed address after back button press (rewritten browser hist
   await page.goBack();
   await page.goto(`${server.url}/empty`);
 
-  expect(windowEvents[0].action).toBe("goto");
-  expect(windowEvents[1].action).toBe("goBack");
-  expect(windowEvents[2].action).toBe("goto");
-  expect(windowEvents[2].value).toBe(`${server.url}/empty`);
+  const lastEvent = windowEvents.pop();
+  expect(lastEvent?.action).toBe("goto");
+  expect(lastEvent?.value).toBe(`${server.url}/empty`);
+
+  expect(windowEvents.pop()?.action).toBe("goBack");
+  expect(windowEvents.pop()?.action).toBe("goto");
 });
 
 it("collects reload button", async () => {
@@ -110,7 +112,7 @@ it("collects reload button", async () => {
   if (getBrowserName() !== "chromium") return;
 
   await page.reload();
-  expect(windowEvents[1].action).toBe("reload");
+  expect(windowEvents.pop()?.action).toBe("reload");
 });
 
 it("collects popup from window.open", async () => {
@@ -126,7 +128,7 @@ it("collects popup from window.open", async () => {
 
   await page2.close();
 
-  expect(windowEvents[1].action).toBe("popup");
+  expect(windowEvents.pop()?.action).toBe("popup");
 });
 
 it("collects popup from blank target click", async () => {
@@ -144,5 +146,5 @@ it("collects popup from blank target click", async () => {
   await waitUntil(() => windowEvents.find((event) => event.action === "popup"));
   await page2.close();
 
-  expect(windowEvents[1].action).toBe("popup");
+  expect(windowEvents.pop()?.action).toBe("popup");
 });
