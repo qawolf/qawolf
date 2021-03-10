@@ -38,6 +38,10 @@ describe("buildElementText", () => {
     expect(textSelector).toBe(expectedText);
   };
 
+  it("replaces newlines", async () => {
+    await expectText("hello \n world", "hello world");
+  });
+
   it("returns selector", async () => {
     await expectText("leaves", "leaves");
   });

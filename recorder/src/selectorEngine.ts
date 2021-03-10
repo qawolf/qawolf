@@ -86,7 +86,7 @@ export const buildSelectorForCues = (cues: Cue[]): string => {
 };
 
 export const buildElementText = (element: HTMLElement): string => {
-  const text = elementText(element).trim();
+  const text = elementText(element).replace(/\s+/g, " ").trim();
   return text.length > 100 ? "" : text;
 };
 
