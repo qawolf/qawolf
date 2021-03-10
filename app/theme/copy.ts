@@ -175,6 +175,7 @@ export const copy = {
   myTests: "My tests",
   name: "Name",
   nameWolf: "Name your wolf",
+  nameWolfMaxLength: "Character limit reached",
   netlify: "Netlify",
   netlifyDeploy: "Your tests will run on Netlify deploy previews.",
   next: "Next",
@@ -214,6 +215,10 @@ export const copy = {
     `Run on ${repoName} deployment`,
   runTagline: "Run tests without rocket science",
   runTest: "Run test",
+  runTestIntro:
+    "As you use your site, test code is created in the code editor. You can edit this code as you like.",
+  runTestIntro2:
+    'Let\'s run our test by clicking the blue "Run test" button or by pressing',
   runsFail: "Failing tests",
   runGroup: (count: number): string =>
     `Run ${count ? `${count} ` : ""}test${count === 1 ? "" : "s"}`,
@@ -303,9 +308,8 @@ export const copy = {
   welcome: "Welcome to QA Wolf!",
   welcome2: "Sign up to create and run tests",
   wolfIntro:
-    "Hi there! I'm your QA Wolf. QA Wolf helps you set up tests fast, so you can focus on shipping.",
-  wolfIntro2:
-    "I'm going to quickly show you the basics. Start by giving me a name:",
+    "Nice to meet you, I'm your QA Wolf! I will help you set up tests fast, so you can focus on shipping.",
+  wolfIntro2: "Let's start by giving me a name:",
   woof: "Woof.",
   woof2: "Woof woof woof.",
   zeroSetup: "Zero setup",
