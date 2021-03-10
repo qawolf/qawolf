@@ -30,6 +30,6 @@ export const useSegmentPage = (user?: User | null): void => {
   useEffect(() => {
     if (!hasSegment || !user) return;
 
-    (window as any).analytics.page(pathname, { email: user });
+    (window as any).analytics.page(pathname, { email: user.email });
   }, [pathname, user]);
 };
