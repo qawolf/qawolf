@@ -15,6 +15,15 @@ export const identifySegmentUser = ({ id, email }: User): void => {
   });
 };
 
+export const trackSegmentEvent = (
+  event: string,
+  payload?: Record<string, unknown>
+): void => {
+  if (!hasSegment) return;
+
+  (window as any).analytics.track(event, payload);
+};
+
 export const useSegmentPage = (): void => {
   const { pathname } = useRouter();
 
