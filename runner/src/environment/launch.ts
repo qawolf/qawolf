@@ -34,13 +34,14 @@ const LAUNCH_OPTIONS = [
   "args",
   "devtools",
   "env",
+  "executablePath",
   "firefoxUserPrefs",
   "proxy",
   "slowMo",
   "timeout",
 ] as const;
 
-const BROWSER_NAMES = ["chromium", "firefox", "webkit"] as const;
+const BROWSER_NAMES = ["chrome", "chromium", "firefox", "webkit"] as const;
 
 export type BrowserName = typeof BROWSER_NAMES[number];
 
@@ -59,12 +60,33 @@ export type LaunchResult = {
   context: BrowserContext;
 };
 
-const chromiumArgs = [
-  "--disable-gpu",
-  "--disable-dev-shm-usage",
-  "--no-sandbox",
-  "--window-position=0,0",
-];
+export const getBrowserLaunchOptions = (
+  name: BrowserName,
+  options: LaunchOptions
+) => {
+  const args = ["chrome", "chromium"].includes(name)
+    ? [
+        "--disable-gpu",
+        "--disable-dev-shm-usage",
+        "--no-sandbox",
+        "--window-position=0,0",
+      ]
+    : [];
+
+  args.push(...(options.args || []));
+
+  const launchOptions = {
+    ...pick(options, LAUNCH_OPTIONS),
+    args,
+    headless: typeof options.headless === "boolean" ? options.headless : false,
+  };
+
+  if (name === "chrome") {
+    launchOptions.executablePath = "/opt/google/chrome/chrome";
+  }
+
+  return launchOptions;
+};
 
 export const getBrowserName = (name?: string): BrowserName => {
   const providedName = name || process.env.QAWOLF_BROWSER;
@@ -81,14 +103,10 @@ export const launch = async (
 ): Promise<LaunchResult> => {
   const browserName = getBrowserName(options.browser);
 
-  const args = browserName === "chromium" ? chromiumArgs : [];
-  args.push(...(options.args || []));
+  const browserType = browserName === "chrome" ? "chromium" : browserName;
+  const launchOptions = getBrowserLaunchOptions(browserName, options);
 
-  const browser = await playwright[browserName].launch({
-    ...pick(options, LAUNCH_OPTIONS),
-    args,
-    headless: typeof options.headless === "boolean" ? options.headless : false,
-  });
+  const browser = await playwright[browserType].launch(launchOptions);
 
   // The better way to do this long term would be to get a "context"
   // event added to Browser class in Playwright.
