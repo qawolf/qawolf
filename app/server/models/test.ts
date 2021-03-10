@@ -8,6 +8,7 @@ import { cuid } from "../utils";
 type CreateTest = {
   code: string;
   creator_id: string;
+  group_id?: string | null;
   team_id: string;
 };
 
@@ -86,7 +87,7 @@ export const countIncompleteTests = async (
 };
 
 export const createTest = async (
-  { code, creator_id, team_id }: CreateTest,
+  { code, creator_id, group_id, team_id }: CreateTest,
   { db, logger }: ModelOptions
 ): Promise<Test> => {
   const log = logger.prefix("createTest");
@@ -101,7 +102,7 @@ export const createTest = async (
     creator_id,
     code,
     deleted_at: null,
-    group_id: null,
+    group_id: group_id || null,
     id: cuid(),
     is_enabled: true,
     name,

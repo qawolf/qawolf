@@ -11,7 +11,6 @@ import {
 import styled from "styled-components";
 
 import {
-  border,
   borderSize,
   colors,
   edgeSize,

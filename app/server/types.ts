@@ -380,6 +380,7 @@ export type CreateSuiteMutation = {
 };
 
 export type CreateTestMutation = {
+  group_id: string | null;
   team_id: string;
   url: string;
 };
