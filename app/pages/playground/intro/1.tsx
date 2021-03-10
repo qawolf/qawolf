@@ -24,7 +24,7 @@ export default function Intro1(): JSX.Element {
   };
 
   const handleClick = (): void => {
-    // TODO: save wolf name if one entered
+    // TODO: save wolf name if it changed
     push(`${routes.playground}/intro/2`);
   };
 
