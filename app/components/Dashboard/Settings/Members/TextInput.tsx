@@ -1,11 +1,9 @@
 import { TextInput as GrommetTextInput } from "grommet";
 import { ChangeEvent, KeyboardEvent } from "react";
-import styled from "styled-components";
 
 import { copy } from "../../../../theme/copy";
 import {
   borderSize,
-  colors,
   edgeSize,
   fontFamily,
   fontWeight,
@@ -18,31 +16,28 @@ type Props = {
   value: string;
 };
 
-const StyledGrommetTextInput = styled(GrommetTextInput)`
-  border-radius: ${borderSize.small};
-  height: calc(${edgeSize.large} - 2 * ${borderSize.xsmall});
-  font-family: ${fontFamily.component};
-  font-size: ${textDesktop.component.size};
-  font-weight: ${fontWeight.normal};
-  line-height: ${edgeSize.large};
-  padding: 0;
-
-  &::placeholder {
-    color: ${colors.gray5};
-  }
-`;
-
 export default function TextInput({
   onChange,
   onKeyDown,
   value,
 }: Props): JSX.Element {
+  const style = {
+    borderRadius: borderSize.small,
+    fontFamily: fontFamily.component,
+    fontSize: textDesktop.component.size,
+    fontWeight: fontWeight.normal,
+    height: `calc(${edgeSize.large} - 2 * ${borderSize.xsmall})`,
+    lineHeight: edgeSize.large,
+    padding: 0,
+  };
+
   return (
-    <StyledGrommetTextInput
+    <GrommetTextInput
       onChange={onChange}
       onKeyDown={onKeyDown}
       placeholder={copy.invitePlacholder}
       plain
+      style={style}
       value={value}
     />
   );
