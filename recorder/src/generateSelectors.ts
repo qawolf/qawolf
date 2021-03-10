@@ -1,15 +1,14 @@
 import { debug } from "./debug";
 import { getXpath } from "./element";
 import { generateSortedCueSets } from "./generateCueSets";
+import { CLICK_TYPES } from "./isElementMatch";
 import { buildSelectorForCues, isSelectorMatch } from "./selectorEngine";
 import { Rect } from "./types";
 
 function getLikelyTarget(target: HTMLElement): HTMLElement {
   return (
     // XXX we may want to gate this for click actions only
-    target.closest(
-      "a,button,input,label,textarea,[contenteditable=true],[role=button],[role=checkbox],[role=radio]"
-    ) || target
+    target.closest(CLICK_TYPES) || target
   );
 }
 
