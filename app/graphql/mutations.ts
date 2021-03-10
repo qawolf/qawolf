@@ -128,8 +128,8 @@ export const createSuiteMutation = gql`
 `;
 
 export const createTestMutation = gql`
-  mutation createTest($team_id: ID!, $url: String!) {
-    createTest(team_id: $team_id, url: $url) {
+  mutation createTest($group_id: ID, $team_id: ID!, $url: String!) {
+    createTest(group_id: $group_id, team_id: $team_id, url: $url) {
       ...TestFragment
     }
   }

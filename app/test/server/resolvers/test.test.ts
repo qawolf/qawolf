@@ -42,6 +42,8 @@ beforeAll(async () => {
       buildTeamUser({ i: 2, team_id: "team2Id", user_id: "user2Id" }),
     ]);
 
+    await trx("groups").insert(buildGroup({}));
+
     await trx("triggers").insert([
       buildTrigger({}),
       buildTrigger({ i: 2, team_id: "team2Id" }),
@@ -86,13 +88,14 @@ describe("createTestResolver", () => {
   it("creates a test", async () => {
     const test = await createTestResolver(
       {},
-      { team_id: "teamId", url: "https://google.com" },
+      { group_id: "groupId", team_id: "teamId", url: "https://google.com" },
       context
     );
 
     expect(test).toMatchObject({
       team_id: "teamId",
       creator_id: "userId",
+      group_id: "groupId",
       id: expect.any(String),
       name: "My Test 2",
     });
@@ -104,7 +107,7 @@ describe("createTestResolver", () => {
     await expect(
       createTestResolver(
         {},
-        { team_id: "teamId", url: "https://qawolf.com" },
+        { group_id: "groupId", team_id: "teamId", url: "https://qawolf.com" },
         context
       )
     ).rejects.toThrowError("recursion requires an enterprise plan");
@@ -292,10 +295,6 @@ describe("updateTestResolver", () => {
 });
 
 describe("updateTestsGroupResolver", () => {
-  beforeAll(() => db("groups").insert(buildGroup({})));
-
-  afterAll(() => db("groups").del());
-
   it("updates the group for tests", async () => {
     const tests = await updateTestsGroupResolver(
       {},

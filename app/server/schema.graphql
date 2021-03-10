@@ -732,6 +732,11 @@ type Mutation {
   """
   createTest(
     """
+    Optional group ID
+    """
+    group_id: ID
+
+    """
     Team ID
     """
     team_id: ID!

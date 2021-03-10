@@ -23,7 +23,12 @@ import {
   UpdateTestMutation,
   UpdateTestsGroupMutation,
 } from "../types";
-import { ensureTeamAccess, ensureTestAccess, ensureUser } from "./utils";
+import {
+  ensureGroupAccess,
+  ensureTeamAccess,
+  ensureTestAccess,
+  ensureUser,
+} from "./utils";
 
 const ALLOW_LIST = ["flaurida", "jperl"];
 
@@ -32,13 +37,14 @@ const ALLOW_LIST = ["flaurida", "jperl"];
  */
 export const createTestResolver = async (
   _: Record<string, unknown>,
-  { team_id, url }: CreateTestMutation,
+  { group_id, team_id, url }: CreateTestMutation,
   { db, logger, user: contextUser, teams }: Context
 ): Promise<Test> => {
   const log = logger.prefix("createTestResolver");
 
   const user = ensureUser({ logger, user: contextUser });
   ensureTeamAccess({ logger, team_id, teams });
+  if (group_id) await ensureGroupAccess({ group_id, teams }, { db, logger });
 
   log.debug(user.id);
 
@@ -56,6 +62,7 @@ export const createTestResolver = async (
     {
       code,
       creator_id: user.id,
+      group_id,
       team_id: team_id,
     },
     { db, logger }

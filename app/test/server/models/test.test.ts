@@ -37,6 +37,7 @@ beforeAll(async () => {
   await db("users").insert(buildUser({}));
   await db("teams").insert(buildTeam({}));
   await db("triggers").insert(buildTrigger({}));
+  await db("groups").insert(buildGroup({}));
 });
 
 afterAll(() => jest.restoreAllMocks());
@@ -80,13 +81,14 @@ describe("buildTestName", () => {
 });
 
 describe("createTest", () => {
-  afterAll(() => db("tests").del());
+  afterEach(() => db("tests").del());
 
   it("creates a new test", async () => {
     await createTest(
       {
         code: "code",
         creator_id: "userId",
+        group_id: null,
         team_id: "teamId",
       },
       options
@@ -104,6 +106,24 @@ describe("createTest", () => {
       name: "My Test",
       team_id: "teamId",
       version: 0,
+    });
+  });
+
+  it("creates a new test with a group", async () => {
+    await createTest(
+      {
+        code: "code",
+        creator_id: "userId",
+        group_id: "groupId",
+        team_id: "teamId",
+      },
+      options
+    );
+
+    const tests = await db.select("*").from("tests").where({ code: "code" });
+
+    expect(tests[0]).toMatchObject({
+      group_id: "groupId",
     });
   });
 });
@@ -488,7 +508,7 @@ describe("updateTest", () => {
 
 describe("updateTestsGroup", () => {
   beforeAll(async () => {
-    await db("groups").insert([buildGroup({}), buildGroup({ i: 2 })]);
+    await db("groups").insert(buildGroup({ i: 2 }));
     return db("tests").insert([
       buildTest({
         i: 1,
@@ -500,7 +520,7 @@ describe("updateTestsGroup", () => {
   });
 
   afterAll(async () => {
-    await db("groups").del();
+    await db("groups").where({ id: "group2Id" }).del();
     return db("tests").del();
   });
 
