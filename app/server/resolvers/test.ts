@@ -23,6 +23,7 @@ import {
   UpdateTestMutation,
   UpdateTestsGroupMutation,
 } from "../types";
+import { trackSegmentEvent } from "./segment";
 import {
   ensureGroupAccess,
   ensureTeamAccess,
@@ -55,6 +56,8 @@ export const createTestResolver = async (
     log.error("recursion", user.id);
     throw new ClientError("recursion requires an enterprise plan");
   }
+
+  trackSegmentEvent(user, "Test Created");
 
   const code = `const { context } = await launch();\nconst page = await context.newPage();\nawait page.goto('${url}', { waitUntil: "domcontentloaded" });\n// 🐺 QA Wolf will create code here`;
 

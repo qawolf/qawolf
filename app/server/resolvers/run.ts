@@ -20,6 +20,7 @@ import {
   SuiteRun,
   UpdateRunMutation,
 } from "../types";
+import { trackSegmentEvent } from "./segment";
 import { ensureTestAccess } from "./utils";
 
 type ShouldRetry = {
