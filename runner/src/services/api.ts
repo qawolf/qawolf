@@ -191,6 +191,7 @@ export const pollForEmail = async ({
     },
     {
       factor: 1,
+      maxTimeout: 3000,
       minTimeout: 3000,
       retries: Math.round(timeoutMs / 3000),
     }
