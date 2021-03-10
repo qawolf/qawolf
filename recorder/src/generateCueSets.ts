@@ -192,14 +192,13 @@ export function* generateSortedCueSets(
 
     batch.push(cueSet);
 
-    // track the closest test attribute cue
+    // track the closest ancestor/target test attribute cue to always include
+    // we don't always include descendant test attributes since those
+    // could be across a click boundary
     cueSet.cues
-      .filter((c) => c.penalty === 0)
+      .filter((c) => c.penalty === 0 && c.level <= 0)
       .forEach((cue) => {
-        if (
-          !testAttributeCue ||
-          Math.abs(testAttributeCue.level) > Math.abs(cue.level)
-        ) {
+        if (!testAttributeCue || cue.level > testAttributeCue.level) {
           testAttributeCue = cue;
         }
       });

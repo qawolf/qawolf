@@ -71,6 +71,13 @@ describe("getSelector", () => {
     });
   });
 
+  describe("descendant cues", () => {
+    it("does not pick a descendant across a click boundary", async () => {
+      await setBody(page, `<div><button data-qa="hello">hello</button></div>`);
+      await expectSelector("div");
+    });
+  });
+
   it("escapes special characters", async () => {
     await setBody(page, `<div id="special:id"></div>`);
     await expectSelector("#special\\:id");
@@ -120,7 +127,7 @@ describe("getSelector", () => {
   });
 
   describe("test attributes", () => {
-    it("includes closest test attribute", async () => {
+    it("includes ancestor test attributes", async () => {
       await setBody(
         page,
         `<fieldset data-qa="my-radio-group"><input type="radio" value="cat"></fieldset>`
