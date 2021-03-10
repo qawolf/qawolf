@@ -307,6 +307,9 @@ export const copy = {
   watchTime: "in 1 minute",
   welcome: "Welcome to QA Wolf!",
   welcome2: "Sign up to create and run tests",
+  wolfGreeting: (wolfName: string): string => {
+    return `Hi, I'm ${wolfName}!`;
+  },
   wolfIntro:
     "Nice to meet you, I'm your QA Wolf! I will help you set up tests fast, so you can focus on shipping.",
   wolfIntro2: "Let's start by giving me a name:",

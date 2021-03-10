@@ -35,7 +35,7 @@ export default function Wolf(): JSX.Element {
         size="componentBold"
         textAlign="center"
       >
-        {copy.wolfIntro(wolf.name)}
+        {copy.wolfGreeting(wolf.name)}
       </Text>
       <WolfSitting color={wolf.variant} />
     </StyledBox>
