@@ -57,7 +57,7 @@ export const createTriggerResolver = async (
     return trigger;
   });
 
-  trackSegmentEvent(user.id, "Trigger Created");
+  trackSegmentEvent(user, "Trigger Created");
   log.debug(`created trigger ${trigger.id} for team ${team_id}`);
 
   return trigger;
