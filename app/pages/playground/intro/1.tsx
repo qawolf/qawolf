@@ -40,6 +40,7 @@ export default function Intro1(): JSX.Element {
       <Keyboard onEnter={handleClick}>
         <Box align="center" direction="row" margin={{ top: "medium" }}>
           <TextInput
+            id="wolf-name"
             maxLength={maxLength}
             onChange={handleChange}
             placeholder="Spirit"

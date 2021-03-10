@@ -15,6 +15,7 @@ import {
 
 type Props = {
   autoFocus?: boolean;
+  id?: string;
   maxLength?: number;
   name?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -44,7 +45,7 @@ const StyledGrommetTextInput = styled(GrommetTextInput)`
 `;
 
 function TextInput(
-  { autoFocus, maxLength, name, onChange, placeholder, value }: Props,
+  { autoFocus, id, maxLength, name, onChange, placeholder, value }: Props,
   ref?: Ref<HTMLInputElement>
 ): JSX.Element {
   const style = { borderRadius: edgeSize.xxsmall };
@@ -52,6 +53,7 @@ function TextInput(
   return (
     <StyledGrommetTextInput
       autoFocus={autoFocus}
+      id={id}
       maxLength={maxLength}
       name={name}
       onChange={onChange}
