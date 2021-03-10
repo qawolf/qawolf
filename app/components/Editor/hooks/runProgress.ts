@@ -32,7 +32,7 @@ export const useRunProgress = ({
       setProgress(value);
 
       if (value.status === "fail") {
-        trackSegmentEvent("Test preview failed", {
+        trackSegmentEvent("Test Preview Failed", {
           email: user?.email,
         });
       }
