@@ -6,7 +6,10 @@ RUN apt-get update && apt-get install -y curl gnupg2 && \
   # use latest nginx
   curl http://nginx.org/keys/nginx_signing.key --output nginx_signing.key && apt-key add nginx_signing.key &&\
   # use node 14
-  curl -sL https://deb.nodesource.com/setup_14.x | bash -
+  curl -sL https://deb.nodesource.com/setup_14.x | bash - &&\
+  # chrome stable
+  curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - &&\
+  echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
 
 COPY scripts/nginx.list /etc/apt/sources.list.d/nginx.list
 
@@ -39,6 +42,8 @@ RUN apt-get update && \
   libgstreamer-plugins-bad1.0-0 \
   gstreamer1.0-plugins-good \
   gstreamer1.0-libav \
+  # chrome
+  google-chrome-stable \
   # chromium
   libnss3 \
   libxss1 \
