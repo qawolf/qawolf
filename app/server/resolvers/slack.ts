@@ -71,12 +71,14 @@ export const createSlackIntegrationUrlResolver = (
 export const sendSlackUpdateResolver = async (
   _: Record<string, unknown>,
   { message }: SendSlackUpdateMutation,
-  { logger, user }: Context
+  { logger, user: contextUser }: Context
 ): Promise<boolean> => {
   const log = logger.prefix("sendSlackUpdateResolver");
-  log.debug("user", user?.id);
+  const user = ensureUser({ logger, user: contextUser });
 
-  if (environment.SLACK_UPDATES_WEBHOOK && user) {
+  log.debug("user", user.id);
+
+  if (environment.SLACK_UPDATES_WEBHOOK) {
     try {
       await postMessageToSlack({
         message: {
