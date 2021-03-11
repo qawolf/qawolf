@@ -78,11 +78,9 @@ export const sendSlackUpdateResolver = async (
 
   if (environment.SLACK_UPDATES_WEBHOOK && user) {
     try {
-      const detail = user ? ` - ${user.email}` : "";
-
       await postMessageToSlack({
         message: {
-          text: `${message}${detail}`,
+          text: `${message} - ${user.email}`,
         },
         webhook_url: environment.SLACK_UPDATES_WEBHOOK,
       });
