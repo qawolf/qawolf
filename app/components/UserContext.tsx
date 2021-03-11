@@ -1,8 +1,8 @@
 import { createContext, FC, useContext, useEffect } from "react";
 
 import { updateIntercomUser } from "../hooks/intercom";
-import { useIdentifyPostHog } from "../hooks/postHog";
 import { useCurrentUser } from "../hooks/queries";
+import { identifySegmentUser, useSegmentPage } from "../hooks/segment";
 import { state } from "../lib/state";
 import { User, Wolf } from "../lib/types";
 import { StateContext } from "./StateContext";
@@ -54,10 +54,11 @@ export const UserProvider: FC = ({ children }) => {
   useEffect(() => {
     if (!user) return;
 
+    identifySegmentUser(user);
     updateIntercomUser(user.email);
   }, [user]);
 
-  useIdentifyPostHog(user);
+  useSegmentPage(user);
 
   const value = { isLoggedIn, isUserLoading: !user && loading, user, wolf };
 

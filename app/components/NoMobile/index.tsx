@@ -1,11 +1,11 @@
 import { Box } from "grommet";
 
-import { useSendPostHogEvent } from "../../hooks/postHog";
+import { useTrackSegmentEvent } from "../../hooks/segment";
 import { copy } from "../../theme/copy";
 import Text from "../shared/Text";
 
 export default function NoMobile(): JSX.Element {
-  useSendPostHogEvent("noMobile");
+  useTrackSegmentEvent("Mobile Viewed");
 
   return (
     <Box>

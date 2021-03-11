@@ -833,6 +833,11 @@ type Mutation {
   ): SendLoginCode!
 
   """
+  Sends an update to the Slack updates webhook if it exists.
+  """
+  sendSlackUpdate("The message to send in Slack" message: String!): Boolean!
+
+  """
   Completes a login request, returning a valid access token. This is
   the second step of email login after the `sendLoginCode` mutation.
 

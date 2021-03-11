@@ -1,6 +1,8 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import { useSendSlackUpdate } from "../../../hooks/mutations";
+import { trackSegmentEvent } from "../../../hooks/segment";
 import { RunnerClient } from "../../../lib/runner";
 import { Run, RunProgress } from "../../../lib/types";
 
@@ -19,6 +21,7 @@ export const useRunProgress = ({
   runner,
 }: UseRunProgress): RunProgressHook => {
   const { query } = useRouter();
+  const [sendSlackUpdate] = useSendSlackUpdate();
 
   const [progress, setProgress] = useState<RunProgress | null>(null);
 
@@ -27,6 +30,11 @@ export const useRunProgress = ({
 
     const onRunProgress = (value: RunProgress): void => {
       setProgress(value);
+
+      if (value.status === "fail") {
+        trackSegmentEvent("Test Preview Failed");
+        sendSlackUpdate({ variables: { message: "🕵️‍♀️ Test Preview Failed" } });
+      }
     };
 
     const onRunStopped = (): void => setProgress(null);
@@ -38,7 +46,7 @@ export const useRunProgress = ({
       runner.off("runprogress", onRunProgress);
       runner.off("runstopped", onRunStopped);
     };
-  }, [query.test_id, runner, run?.test_id]);
+  }, [query.test_id, runner, run?.test_id, sendSlackUpdate]);
 
   useEffect(() => {
     if (!run) return;
