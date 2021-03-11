@@ -76,7 +76,7 @@ export const sendSlackUpdateResolver = async (
   const log = logger.prefix("sendSlackUpdateResolver");
   log.debug("user", user?.id);
 
-  if (environment.SLACK_UPDATES_WEBHOOK) {
+  if (environment.SLACK_UPDATES_WEBHOOK && user) {
     try {
       const detail = user ? ` - ${user.email}` : "";
 
