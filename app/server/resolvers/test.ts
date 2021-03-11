@@ -57,7 +57,7 @@ export const createTestResolver = async (
     throw new ClientError("recursion requires an enterprise plan");
   }
 
-  trackSegmentEvent(user, "Test Created");
+  trackSegmentEvent(user, "Test Created", { url });
 
   const code = `const { context } = await launch();\nconst page = await context.newPage();\nawait page.goto('${url}', { waitUntil: "domcontentloaded" });\n// 🐺 QA Wolf will create code here`;
 
