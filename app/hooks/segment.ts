@@ -33,3 +33,12 @@ export const useSegmentPage = (user?: User | null): void => {
     (window as any).analytics.page(pathname, { email: user.email });
   }, [pathname, user]);
 };
+
+export const useTrackSegmentEvent = (
+  event: string,
+  properties?: Record<string, unknown>
+): void => {
+  useEffect(() => {
+    trackSegmentEvent(event, properties);
+  }, [event, properties]);
+};

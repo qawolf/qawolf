@@ -1,11 +1,14 @@
+import environment from "../environment";
 import { createIntegration } from "../models/integration";
 import { updateTeam } from "../models/team";
+import { postMessageToSlack } from "../services/alert/slack";
 import { createSlackIntegrationUrl, findSlackWebhook } from "../services/slack";
 import {
   Context,
   CreateSlackIntegrationMutation,
   CreateUrlMutation,
   Integration,
+  SendSlackUpdateMutation,
 } from "../types";
 import { ensureTeamAccess, ensureUser } from "./utils";
 
@@ -63,4 +66,33 @@ export const createSlackIntegrationUrlResolver = (
   log.debug("url for user", user.id);
 
   return url;
+};
+
+export const sendSlackUpdateResolver = async (
+  _: Record<string, unknown>,
+  { message }: SendSlackUpdateMutation,
+  { logger, user: contextUser }: Context
+): Promise<boolean> => {
+  const log = logger.prefix("sendSlackUpdateResolver");
+  const user = ensureUser({ logger, user: contextUser });
+
+  log.debug("user", user.id);
+
+  if (environment.SLACK_UPDATES_WEBHOOK) {
+    try {
+      await postMessageToSlack({
+        message: {
+          text: `${message} - ${user.email}`,
+        },
+        webhook_url: environment.SLACK_UPDATES_WEBHOOK,
+      });
+
+      return true;
+    } catch (error) {
+      log.alert("error", error.message);
+      return false;
+    }
+  }
+
+  return false;
 };

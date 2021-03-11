@@ -224,6 +224,12 @@ export const sendLoginCodeMutation = gql`
   }
 `;
 
+export const sendSlackUpdateMutation = gql`
+  mutation sendSlackUpdate($message: String!) {
+    sendSlackUpdate(message: $message)
+  }
+`;
+
 export const signInWithEmailMutation = gql`
   mutation signInWithEmail($email: String!, $login_code: String!) {
     signInWithEmail(email: $email, login_code: $login_code) {

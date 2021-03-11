@@ -8,6 +8,7 @@ import {
 import { createTeamUser } from "../models/team_user";
 import { sendEmailForInvite } from "../services/alert/email";
 import { Context, CreateInviteMutation, IdQuery, Invite, Team } from "../types";
+import { trackSegmentEvent } from "./segment";
 import { ensureTeamAccess, ensureUser } from "./utils";
 
 /**
@@ -67,6 +68,8 @@ export const createInvitesResolver = async (
   });
 
   const invites = await Promise.all(promises);
+  trackSegmentEvent(user, "Team Member Invited");
+
   return invites;
 };
 
