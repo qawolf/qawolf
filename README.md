@@ -2,7 +2,7 @@
 
 <h1 align="center">QA Wolf - Ship confidently</h1>
 
-<p align="center">Set up browser tests in minutes to discover bugs before your users do</p>
+<p align="center">Set up browser tests in minutes to find bugs before your users do</p>
 
 <p align="center">
 <a align="center" href="https://twitter.com/intent/tweet?text=%F0%9F%90%BA+QA+Wolf%3A+Ship+confidently&url=https%3A%2F%2Fqawolf.com"><img src="https://img.shields.io/twitter/url/https/github.com/tterb/hyde.svg?style=social" alt="tweet" /></a>
@@ -23,26 +23,11 @@
 
 ## 🐺 What is QA Wolf?
 
-QA Wolf helps you create, run, and debug end-to-end tests directly from the browser. We aspire to be the easiest way for developers to set up browser tests.
+QA Wolf helps you create, run, and maintain end-to-end tests 10x faster.
 
-We found browser testing too difficult and often gave up on it entirely in our previous jobs. We built QA Wolf for people like us who want to ship confidently 🚀 by creating browser tests easily.
+We found browser testing too difficult and often gave up on it entirely in our previous jobs. We built QA Wolf for developers like us who want to spend less time testing and more time shipping 🚀
 
-<br/>
-
-## 🤔 Is QA Wolf a good fit for you?
-
-<br/>
-
-| 🐺 Yes                                                                                              | 🦌 No                                                                      |
-| :-------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------- |
-| ✅ You are a developer, or at least comfortable with code                                           | ✖️ You are not comfortable with code                                       |
-| ✅ You want to get going quickly with an out of the box solution                                    | ✖️ You need a lot of configuration options                                 |
-| ✅ You want to create tests without installing / learning a test framework                          | ✖️ You don't want your browser tests written in JavaScript with Playwright |
-| ✅ You want to run your tests against a public URL on deployment (Netlify, Vercel) or on a schedule | ✖️ You want to run your tests in your own CI                               |
-
-<br/>
-
-Curious yet? [🚀 Start testing here](https://www.qawolf.com/sign-up).
+<a href="https://www.qawolf.com/docs/why-qa-wolf">Learn more here</a>
 
 <br/>
 
