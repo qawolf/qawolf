@@ -146,8 +146,8 @@ export function* generateRelativeCueSets({
 
 export function* generateSortedCueSets(
   target: HTMLElement,
-  // 25 ms to generate 2000 cues on my machine
-  batchSize = 2000
+  // 20 ms to generate 4000 cue sets on my machine
+  batchSize = 4000
 ): Generator<CueSet, void, unknown> {
   const generator = generateCueSets(target);
 
