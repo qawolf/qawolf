@@ -35,6 +35,7 @@ type Props = {
   onClick?: () => void;
   size: Size;
   type?: Type;
+  width?: BoxProps["width"];
 };
 
 function Button({
@@ -48,6 +49,7 @@ function Button({
   onClick,
   size,
   type,
+  width,
 }: Props): JSX.Element {
   const finalSize = size || "small";
   const finalType = type || "primary";
@@ -76,6 +78,7 @@ function Button({
       justify="center"
       pad={{ horizontal: padding }}
       round={round[finalSize]}
+      width={width}
     >
       {!!IconComponent && (
         <IconComponent

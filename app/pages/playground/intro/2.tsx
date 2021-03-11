@@ -22,7 +22,12 @@ export default function Intro2(): JSX.Element {
         <WolfButton color="blue" />
       </Box>
       <Box alignSelf="center" margin={{ top: "medium" }}>
-        <Button label={copy.next} size="medium" />
+        <Button
+          label={copy.next}
+          size="medium"
+          type="outlineDark"
+          width="160px"
+        />
       </Box>
     </Layout>
   );
