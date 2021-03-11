@@ -16,9 +16,10 @@ export default function Intro4(): JSX.Element {
     <Layout step={step}>
       <Text {...textProps}>{copy.runSelectedCode}</Text>
       <BsArrowReturnLeft {...iconProps} />
-      <Text {...textProps} margin={{ top: "medium" }}>
+      <Text {...textProps} margin={{ vertical: "medium" }}>
         {copy.runSelectedCode2}
       </Text>
+      <Text {...textProps}>{copy.runSelectedCode3}</Text>
       <NextButton step={step} />
     </Layout>
   );
