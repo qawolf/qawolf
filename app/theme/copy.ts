@@ -44,6 +44,7 @@ export const copy = {
   codeLoveDetail:
     "Your test code uses the best selector and best-in-class open source tools.",
   communitySupport: "Community support",
+  complete: "Complete",
   confirm: "Confirm",
   confirmDelete: (entity: string): string =>
     `Are you sure you want to delete the following ${entity}?`,
@@ -228,6 +229,10 @@ export const copy = {
   runLines: (count: number): string =>
     `Run ${count} line${count === 1 ? "" : "s"}`,
   runsPass: "Passing tests",
+  runSelectedCode:
+    "You can run selected lines of code by highlighting them in the code editor and pressing the run button. Try running just the last line of code.",
+  runSelectedCode2:
+    "This is useful if you want to run specific test steps without waiting for your entire test to re-run.",
   runTests: (count: number, environment?: string | null): string =>
     `Run ${count} test${count === 1 ? "" : "s"}${
       environment ? ` on ${environment}` : ""
