@@ -27,6 +27,10 @@ const StyledBox = styled(Box)`
   &:hover {
     background: ${colors.gray2};
   }
+
+  &:active {
+    background: ${colors.gray3};
+  }
 `;
 
 export default function DashboardLink({

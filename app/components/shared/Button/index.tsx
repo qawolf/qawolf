@@ -25,6 +25,7 @@ import {
 
 type Props = {
   IconComponent?: Icon;
+  a11yTitle?: string;
   borderColor?: string;
   className?: string;
   disabled?: boolean;
@@ -40,6 +41,7 @@ type Props = {
 
 function Button({
   IconComponent,
+  a11yTitle,
   className,
   disabled,
   fill,
@@ -103,7 +105,7 @@ function Button({
 
   return (
     <GrommetButton
-      a11yTitle={label}
+      a11yTitle={a11yTitle || label}
       disabled={disabled}
       margin={margin}
       onClick={onClick}

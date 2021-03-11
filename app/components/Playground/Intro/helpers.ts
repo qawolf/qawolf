@@ -1,3 +1,10 @@
+import { colors, edgeSize } from "../../../theme/theme";
+
+export const iconProps = {
+  color: colors.gray9,
+  size: edgeSize.xxlarge,
+};
+
 export const textProps = {
   color: "gray9",
   size: "medium" as const,

@@ -1,6 +1,6 @@
 export const copy = {
   acceptInviteLogIn: "Please log in to accept this invite",
-  acceptInviteSignUp: "Please sign up to accept this invite",
+  acceptInviteSignUp: "Please sign up to accept this invitef",
   accountExists: "Already have an account?",
   accountNotExists: "No account yet?",
   add: "Add",
@@ -36,6 +36,8 @@ export const copy = {
   checkEmail: "Check your email for a code",
   chooseGitHubRepo: "Choose GitHub repository",
   choosePlan: "Choose plan",
+  clickMe: "Click me",
+  clickMeClicked: "Clicked!",
   close: "Close",
   code: "Code",
   codeLove: "Code you’ll 💖",
@@ -235,6 +237,10 @@ export const copy = {
   otherDeploy: "Don't see the tool you use? Let us know!",
   pleaseType: "Please type",
   tenTeamMembers: "Up to 10 team members",
+  toggleCreateCode:
+    'You can toggle auto code creation on and off by clicking the "Create code" toggle above. Try turning it off, then clicking the "Click me" button below.',
+  toggleCreateCode2:
+    "This is useful if you want to use the browser without it generating code.",
   save: "Save",
   saveTest: "Save Test",
   schedule: "Schedule",
