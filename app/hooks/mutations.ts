@@ -22,6 +22,7 @@ import {
   deleteTestsMutation,
   deleteTriggerMutation,
   sendLoginCodeMutation,
+  sendSlackUpdateMutation,
   signInWithEmailMutation,
   signInWithGitHubMutation,
   updateEnvironmentMutation,
@@ -221,6 +222,14 @@ type SendLoginCodeVariables = {
   email: string;
   invite_id?: string | null;
   is_subscribed?: boolean;
+};
+
+type SendSlackUpdateData = {
+  sendSlackUpdate: boolean;
+};
+
+type SendSlackUpdateVariables = {
+  message: string;
 };
 
 type SignInWithEmailData = {
@@ -656,6 +665,16 @@ export const useSendLoginCode = (): MutationTuple<
       },
       onError,
     }
+  );
+};
+
+export const useSendSlackUpdate = (): MutationTuple<
+  SendSlackUpdateData,
+  SendSlackUpdateVariables
+> => {
+  return useMutation<SendSlackUpdateData, SendSlackUpdateVariables>(
+    sendSlackUpdateMutation,
+    { onError }
   );
 };
 

@@ -35,6 +35,7 @@ import { runnerResolver, updateRunnerResolver } from "./resolvers/runner";
 import {
   createSlackIntegrationResolver,
   createSlackIntegrationUrlResolver,
+  sendSlackUpdateResolver,
 } from "./resolvers/slack";
 import { createSubscriberResolver } from "./resolvers/subscriber";
 import {
@@ -100,6 +101,7 @@ export const resolvers = {
     deleteTests: deleteTestsResolver,
     deleteTrigger: deleteTriggerResolver,
     sendLoginCode: sendLoginCodeResolver,
+    sendSlackUpdate: sendSlackUpdateResolver,
     signInWithEmail: signInWithEmailResolver,
     signInWithGitHub: signInWithGitHubResolver,
     updateEnvironment: updateEnvironmentResolver,

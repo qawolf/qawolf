@@ -429,6 +429,10 @@ export type SendLoginCode = {
   email: string;
 };
 
+export type SendSlackUpdateMutation = {
+  message: string;
+};
+
 export type SignInWithEmailMutation = {
   email: string;
   login_code: string;
