@@ -245,6 +245,9 @@ export const theme: ThemeType = {
     },
     responsiveBreakpoint: null,
   },
+  meter: {
+    color: colors.success5,
+  },
   radioButton: {
     border: { color: colors.gray4, width: borderSize.xsmall },
     check: {

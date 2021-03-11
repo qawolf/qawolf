@@ -29,7 +29,7 @@ export default function Intro1(): JSX.Element {
   };
 
   return (
-    <Layout>
+    <Layout step={1}>
       <Text {...textProps} margin={{ bottom: "medium" }}>
         {copy.wolfIntro}
       </Text>
