@@ -40,5 +40,5 @@ export const useTrackSegmentEvent = (
 ): void => {
   useEffect(() => {
     trackSegmentEvent(event, properties);
-  }, []);
+  }, [event, properties]);
 };

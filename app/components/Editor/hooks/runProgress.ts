@@ -46,7 +46,7 @@ export const useRunProgress = ({
       runner.off("runprogress", onRunProgress);
       runner.off("runstopped", onRunStopped);
     };
-  }, [query.test_id, runner, run?.test_id]);
+  }, [query.test_id, runner, run?.test_id, sendSlackUpdate]);
 
   useEffect(() => {
     if (!run) return;
