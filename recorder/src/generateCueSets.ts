@@ -18,11 +18,11 @@ export function buildCueSet(cues: Cue[]): CueSet {
   const penalty = cues.reduce((a, b) => a + b.penalty, 0);
   const valueLength = cues.reduce((a, b) => a + b.value.length, 0);
 
-  // penalize cues by distance
+  // penalize cues by distance if further than 3 levels
   // otherwise it will try a bunch of invalid cues first
   // and run out of time before finding a match
   // if we penalize too much it will stop at a worse target selector
-  const distanceFactor = 1 + Math.log(distance + 1);
+  const distanceFactor = 1 + Math.log(Math.max(distance - 3, 1));
 
   return {
     cues,
@@ -146,8 +146,8 @@ export function* generateRelativeCueSets({
 
 export function* generateSortedCueSets(
   target: HTMLElement,
-  // 25 ms to generate 2000 cues on my machine
-  batchSize = 2000
+  // 20 ms to generate 4000 cue sets on my machine
+  batchSize = 4000
 ): Generator<CueSet, void, unknown> {
   const generator = generateCueSets(target);
 
