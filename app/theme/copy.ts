@@ -241,6 +241,8 @@ export const copy = {
     'You can toggle auto code creation on and off by clicking the "Create code" toggle above. Try turning it off, then clicking the "Click me" button below.',
   toggleCreateCode2:
     "This is useful if you want to use the browser without it generating code.",
+  toggleCreateCode3:
+    'Notice how no code was created? Now try turning code creation back on again and clicking the "Click me" button again.',
   save: "Save",
   saveTest: "Save Test",
   schedule: "Schedule",
