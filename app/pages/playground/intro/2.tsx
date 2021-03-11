@@ -15,8 +15,8 @@ export default function Intro2(): JSX.Element {
       <Text {...textProps}>{copy.runTestIntro}</Text>
       <BsArrowReturnLeft color={colors.gray9} size={edgeSize.xxlarge} />
       <Text {...textProps} margin={{ vertical: "medium" }}>
-        {copy.runTestIntro2} <code>⌘</code> / <code>Ctrl</code> +{" "}
-        <code>Enter</code>.
+        {copy.runTestIntro2} <code>⌘</code>
+        &nbsp;(or <code>Ctrl</code>) + <code>Enter</code>.
       </Text>
       <Box alignSelf="center">
         <WolfButton color="blue" />
