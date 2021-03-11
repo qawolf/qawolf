@@ -1,6 +1,5 @@
-import { BsArrowUpLeft } from "react-icons/bs";
+import { BsArrowReturnLeft } from "react-icons/bs";
 
-import ClickButton from "../../../components/Playground/Intro/ClickButton";
 import {
   iconProps,
   textProps,
@@ -15,9 +14,11 @@ const step = 4;
 export default function Intro4(): JSX.Element {
   return (
     <Layout step={step}>
-      <BsArrowUpLeft {...iconProps} />
-      <Text {...textProps}>{copy.toggleCreateCode3}</Text>
-      <ClickButton />
+      <Text {...textProps}>{copy.runSelectedCode}</Text>
+      <BsArrowReturnLeft {...iconProps} />
+      <Text {...textProps} margin={{ top: "medium" }}>
+        {copy.runSelectedCode2}
+      </Text>
       <NextButton step={step} />
     </Layout>
   );

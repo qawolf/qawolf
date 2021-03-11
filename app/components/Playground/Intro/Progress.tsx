@@ -5,7 +5,7 @@ import Text from "../../shared/Text";
 
 type Props = { step: number };
 
-const max = 5;
+const max = 4;
 
 export default function Progress({ step }: Props): JSX.Element {
   const values = [{ value: step }];
