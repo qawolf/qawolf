@@ -85,7 +85,7 @@ export function getCues(element: HTMLElement, level: number): Cue[] {
     const { name, value } = attributes[i];
     if (
       SKIP_ATTRIBUTES.has(name) ||
-      (name === "value" && !skipValueCue(element))
+      (name === "value" && !allowValueCue(element))
     )
       continue;
 
@@ -164,8 +164,9 @@ export const getTagCue = (element: HTMLElement, level: number): Cue => {
   };
 };
 
-export const skipValueCue = (element: HTMLElement): boolean => {
+export const allowValueCue = (element: HTMLElement): boolean => {
   const tag = element.tagName;
+
   return (
     ALLOW_VALUE_ATTRIBUTE.tags.has(tag) ||
     (tag === "INPUT" &&
