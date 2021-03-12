@@ -9,7 +9,6 @@ import Button from "../../../components/shared/Button";
 import Text from "../../../components/shared/Text";
 import TextInput from "../../../components/shared/TextInput";
 import { useUpdateWolf } from "../../../hooks/mutations";
-import { useOnHotKey } from "../../../hooks/onHotKey";
 import { useWolf } from "../../../hooks/queries";
 import { routes } from "../../../lib/routes";
 import { copy } from "../../../theme/copy";
@@ -46,8 +45,6 @@ export default function CreateATest1(): JSX.Element {
       });
     } else push(route);
   };
-
-  useOnHotKey({ hotKey: "Enter", onHotKey: handleClick });
 
   return (
     <Layout>
