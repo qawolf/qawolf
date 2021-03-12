@@ -19,7 +19,7 @@ const ALLOW_VALUE_ATTRIBUTE = {
 
 const PENALTY_MAP = {
   alt: 10,
-  "aria-label": 8,
+  "aria-label": 5,
   contenteditable: 10,
   // prefer test attributes
   "data-cy": 0,
@@ -27,7 +27,7 @@ const PENALTY_MAP = {
   "data-qa": 0,
   for: 5,
   href: 15,
-  id: 5,
+  id: 8,
   name: 10,
   placeholder: 10,
   role: 10,
