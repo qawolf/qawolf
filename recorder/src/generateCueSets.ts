@@ -146,9 +146,11 @@ export function* generateRelativeCueSets({
 
 export function* generateSortedCueSets(
   target: HTMLElement,
-  // 20 ms to generate 4000 cue sets on my machine
-  batchSize = 4000
+  // 30 ms to generate 4000 cue sets on my machine
+  timePerBatch = 30
 ): Generator<CueSet, void, unknown> {
+  let start = Date.now();
+
   const generator = generateCueSets(target);
 
   // collect the closest test attribute cue
@@ -203,9 +205,10 @@ export function* generateSortedCueSets(
         }
       });
 
-    if (batch.length >= batchSize) {
+    if (timePerBatch > 0 && Date.now() - start >= timePerBatch) {
       const batchToYield = prepareBatch();
       yield* batchToYield as any;
+      start = Date.now();
     }
   }
 

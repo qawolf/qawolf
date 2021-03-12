@@ -15,14 +15,17 @@ beforeAll(async () => {
 afterAll(() => launched.browser.close());
 
 describe("getCues", () => {
-  const getCues = async (selector: string): Promise<Cue[]> =>
+  const getCues = async (
+    selector: string,
+    maxClasses?: number
+  ): Promise<Cue[]> =>
     page.evaluate(
-      ({ selector }) => {
+      ({ maxClasses, selector }) => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
         const target = document.querySelector(selector) as HTMLElement;
-        return qawolf.getCues(target, 0);
+        return qawolf.getCues(target, 0, maxClasses);
       },
-      { selector }
+      { maxClasses, selector }
     );
 
   it("allows specific dynamic attributes", async () => {
@@ -147,10 +150,21 @@ describe("getCues", () => {
   it("has non-dynamic classes", async () => {
     await setBody(page, `<a class="s215asf hello">Submit</a>`);
 
-    const cues = await getCues("a");
-    expect(cues.filter((c) => c.type === "class").map((c) => c.value)).toEqual([
-      ".hello",
-    ]);
+    const result = await getCues("a");
+    expect(
+      result.filter((c) => c.type === "class").map((c) => c.value)
+    ).toEqual([".hello"]);
+
+    await setBody(
+      page,
+      `<a class="hello world grid flex small large button">Submit</a>`
+    );
+
+    // limits # of classes
+    const result2 = await getCues("a", 5);
+    expect(
+      result2.filter((c) => c.type === "class").map((c) => c.value)
+    ).toEqual([".hello", ".world", ".grid", ".flex", ".small"]);
   });
 
   it("has id", async () => {

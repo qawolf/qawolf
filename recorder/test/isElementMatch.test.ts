@@ -10,32 +10,92 @@ beforeAll(async () => {
   const launched = await launch();
   browser = launched.browser;
   page = launched.page;
-
-  const fixedSize = "position: fixed; height: 50px; width: 50px;";
-
-  await setBody(
-    page,
-    `
-<div id="parent" style="${fixedSize}">
-  <div id="inside">inside</div>
-  <div id="outside" style="${fixedSize} left: 500px">outside</div>
-</div>
-<div id="unrelated" style="${fixedSize}">overlap</div>
-<div id="exact-match-overlap" style="${fixedSize} top: 500px">
-  <input type="date" style="${fixedSize} top: 500px">
-  <textarea style="${fixedSize} top: 500px"></textarea>
-</div>
-<div id="boundary" style="${fixedSize} left:500px; top: 500px;">
-    <div id="same-boundary"></div>
-    <button><div>match button</div></button>
-</div>
-`
-  );
 });
 
 afterAll(() => browser.close());
 
+describe("hasCommonAncestor", () => {
+  beforeAll(async () => {
+    await setBody(
+      page,
+      `
+  <div id="top">
+    <div id="1">
+      <div id="2">
+        <div id="3">
+          <div id="4">
+            <div id="5" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="6" />
+  </div>`
+    );
+  });
+
+  const hasCommonAncestor = async (
+    elementId: string,
+    otherId: string
+  ): Promise<boolean> => {
+    return page.evaluate(
+      ({ elementId, otherId }) => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const element = document.getElementById(elementId) as HTMLElement;
+        const target = document.getElementById(otherId) as HTMLElement;
+        return qawolf.hasCommonAncestor(element, target);
+      },
+      { elementId, otherId }
+    );
+  };
+
+  it("returns false if no common ancestor within max levels", async () => {
+    expect(await hasCommonAncestor("5", "6")).toBe(false);
+  });
+
+  it("returns true if element is a descendant or ancestor", async () => {
+    expect(await hasCommonAncestor("top", "5")).toBe(true);
+    expect(await hasCommonAncestor("5", "top")).toBe(true);
+  });
+
+  it("returns true if the common ancestor within max levels", async () => {
+    expect(await hasCommonAncestor("6", "1")).toBe(true);
+    expect(await hasCommonAncestor("6", "2")).toBe(true);
+    expect(await hasCommonAncestor("6", "3")).toBe(true);
+    expect(await hasCommonAncestor("6", "4")).toBe(true);
+  });
+});
+
 describe("isElementMatch", () => {
+  beforeAll(async () => {
+    const fixedSize = "position: fixed; height: 50px; width: 50px;";
+
+    await setBody(
+      page,
+      `
+  <div id="parent" style="${fixedSize}">
+    <div id="inside">inside</div>
+    <div id="outside" style="${fixedSize} left: 500px">outside</div>
+  </div>
+  <div>
+    <div>
+      <div>
+        <div id="unrelated" style="${fixedSize}">overlap</div>
+      </div>
+    </div>
+  </div>
+  <div id="exact-match-overlap" style="${fixedSize} top: 500px">
+    <input type="date" style="${fixedSize} top: 500px">
+    <textarea style="${fixedSize} top: 500px"></textarea>
+  </div>
+  <div id="boundary" style="${fixedSize} left:500px; top: 500px;">
+      <div id="same-boundary"></div>
+      <button><div>match button</div></button>
+  </div>
+  `
+    );
+  });
+
   const isElementMatch = async (
     elementSelector: string,
     targetSelector: string

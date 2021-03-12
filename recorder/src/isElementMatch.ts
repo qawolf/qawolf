@@ -21,6 +21,32 @@ export function allowPositionMatch(target: ElementDescriptor): boolean {
   );
 }
 
+export function hasCommonAncestor(
+  element: HTMLElement,
+  other: HTMLElement,
+  maxSiblingLevels = 3
+): boolean {
+  const isDescendant = element.contains(other) || other.contains(element);
+  if (isDescendant) return true;
+
+  const ancestors = new Set([element]);
+
+  let ancestor = element.parentElement;
+  for (let i = 0; ancestor && i < maxSiblingLevels; i++) {
+    ancestors.add(ancestor);
+    ancestor = ancestor.parentElement;
+  }
+
+  let otherAncestor = other;
+  for (let i = 0; otherAncestor && i < maxSiblingLevels + 1; i++) {
+    if (ancestors.has(otherAncestor)) return true;
+
+    otherAncestor = otherAncestor.parentElement;
+  }
+
+  return false;
+}
+
 export function isElementMatch(
   element: HTMLElement,
   target: HTMLElement,
@@ -28,12 +54,6 @@ export function isElementMatch(
 ): boolean {
   if (element === target) return true;
   if (!allowPositionMatch(getDescriptor(target))) return false;
-
-  // make sure the elements in are in the same tree
-  // ex. a modal might be on top but we don't want
-  // to consider the element behind it as a match
-  const isSameTree = target.contains(element) || element.contains(target);
-  if (!isSameTree) return false;
 
   // check the middle of the element is within the target
   let targetRect = cache.get(target);
@@ -54,8 +74,14 @@ export function isElementMatch(
   // ex. we don't want to click on a button within our target
   const isSameBoundary =
     element.closest(CLICK_TYPES) === target.closest(CLICK_TYPES);
+  if (!isSameBoundary) return false;
 
-  return isSameBoundary;
+  // make sure the elements have a nearby common ancestor
+  // ex. a modal might be on top but we don't want
+  // to consider the element behind it as a match
+  if (!hasCommonAncestor(element, target)) return false;
+
+  return true;
 }
 
 /**

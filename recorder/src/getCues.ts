@@ -19,7 +19,7 @@ const ALLOW_VALUE_ATTRIBUTE = {
 
 const PENALTY_MAP = {
   alt: 10,
-  "aria-label": 8,
+  "aria-label": 5,
   contenteditable: 10,
   // prefer test attributes
   "data-cy": 0,
@@ -27,7 +27,7 @@ const PENALTY_MAP = {
   "data-qa": 0,
   for: 5,
   href: 15,
-  id: 5,
+  id: 8,
   name: 10,
   placeholder: 10,
   role: 10,
@@ -54,7 +54,11 @@ const SKIP_ATTRIBUTES = new Set(["class", "data-reactid"]);
 /**
  * Get the element's cues in ascending penalty
  */
-export function getCues(element: HTMLElement, level: number): Cue[] {
+export function getCues(
+  element: HTMLElement,
+  level: number,
+  maxClasses = 5
+): Cue[] {
   const cues: Cue[] = [getTagCue(element, level)];
 
   // For body and html, we never have more than one, so
@@ -85,7 +89,7 @@ export function getCues(element: HTMLElement, level: number): Cue[] {
     const { name, value } = attributes[i];
     if (
       SKIP_ATTRIBUTES.has(name) ||
-      (name === "value" && !skipValueCue(element))
+      (name === "value" && !allowValueCue(element))
     )
       continue;
 
@@ -118,8 +122,16 @@ export function getCues(element: HTMLElement, level: number): Cue[] {
     });
   }
 
-  element.classList.forEach((className) => {
-    if (isDynamic(className)) return;
+  // atomic css with composed classes can create a tremendous number of combinations
+  // limit the included classes to avoid overwhelming the ranking of better combinations
+  let includedClasses = 0;
+  for (
+    let i = 0;
+    includedClasses < maxClasses && i < element.classList.length;
+    i++
+  ) {
+    const className = element.classList[i];
+    if (isDynamic(className)) continue;
 
     cues.push({
       level,
@@ -127,7 +139,9 @@ export function getCues(element: HTMLElement, level: number): Cue[] {
       type: "class",
       value: `.${cssEscape(className)}`,
     });
-  });
+
+    includedClasses += 1;
+  }
 
   return cues;
 }
@@ -164,8 +178,9 @@ export const getTagCue = (element: HTMLElement, level: number): Cue => {
   };
 };
 
-export const skipValueCue = (element: HTMLElement): boolean => {
+export const allowValueCue = (element: HTMLElement): boolean => {
   const tag = element.tagName;
+
   return (
     ALLOW_VALUE_ATTRIBUTE.tags.has(tag) ||
     (tag === "INPUT" &&
