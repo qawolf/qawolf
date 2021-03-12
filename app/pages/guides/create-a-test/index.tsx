@@ -1,4 +1,4 @@
-import { Box, Keyboard } from "grommet";
+import { Box } from "grommet";
 import { useRouter } from "next/router";
 import { ChangeEvent, useEffect, useState } from "react";
 
@@ -9,6 +9,7 @@ import Button from "../../../components/shared/Button";
 import Text from "../../../components/shared/Text";
 import TextInput from "../../../components/shared/TextInput";
 import { useUpdateWolf } from "../../../hooks/mutations";
+import { useOnHotKey } from "../../../hooks/onHotKey";
 import { useWolf } from "../../../hooks/queries";
 import { routes } from "../../../lib/routes";
 import { copy } from "../../../theme/copy";
@@ -46,6 +47,8 @@ export default function CreateATest1(): JSX.Element {
     } else push(route);
   };
 
+  useOnHotKey({ hotKey: "Enter", onHotKey: handleClick });
+
   return (
     <Layout>
       <Text {...textProps}>{copy.wolfIntro}</Text>
@@ -56,25 +59,23 @@ export default function CreateATest1(): JSX.Element {
       <Text {...textProps} margin={{ top: "medium" }} textAlign="start">
         {copy.wolfIntro3}
       </Text>
-      <Keyboard onEnter={handleClick}>
-        <Box align="center" direction="row" margin={{ top: "medium" }}>
-          <TextInput
-            id="wolf-name"
-            maxLength={maxLength}
-            onChange={handleChange}
-            placeholder={wolf?.name || copy.loading}
-            value={name}
+      <Box align="center" direction="row" margin={{ top: "medium" }}>
+        <TextInput
+          id="wolf-name"
+          maxLength={maxLength}
+          onChange={handleChange}
+          placeholder={wolf?.name || copy.loading}
+          value={name}
+        />
+        <Box flex={false} margin={{ left: "small" }}>
+          <Button
+            disabled={loading || !wolf}
+            label={copy.nameWolf}
+            onClick={handleClick}
+            size="medium"
           />
-          <Box flex={false} margin={{ left: "small" }}>
-            <Button
-              disabled={loading || !wolf}
-              label={copy.nameWolf}
-              onClick={handleClick}
-              size="medium"
-            />
-          </Box>
         </Box>
-      </Keyboard>
+      </Box>
       <Text
         color="error"
         margin={{ top: "xxsmall" }}
