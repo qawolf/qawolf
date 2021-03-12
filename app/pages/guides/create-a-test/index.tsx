@@ -26,7 +26,7 @@ export default function CreateATest1(): JSX.Element {
   const [updateWolf, { loading }] = useUpdateWolf();
 
   const { data, error } = useWolf({ user_id: userId });
-  const wolfName = data?.wolf?.name || null;
+  const wolf = data?.wolf || null;
 
   useEffect(() => {
     if (!userId || error) replace(routes.notFound);
@@ -37,18 +37,13 @@ export default function CreateATest1(): JSX.Element {
   };
 
   const handleClick = (): void => {
-    const route = `${routes.guides}/create-a-test/2`;
-    const defaultRoute = `${route}?wolf=${wolfName}`;
+    const route = `${routes.guides}/create-a-test/2?user_id=${userId}`;
 
-    if (name && name !== wolfName) {
-      updateWolf({ variables: { name, user_id: userId } }).then((response) => {
-        const { data } = response || {};
-
-        if (data?.updateWolf) {
-          push(`${route}?wolf=${data.updateWolf.name}`);
-        } else push(defaultRoute);
+    if (name && name !== wolf.name) {
+      updateWolf({ variables: { name, user_id: userId } }).then(() => {
+        push(route);
       });
-    } else push(defaultRoute);
+    } else push(route);
   };
 
   return (
@@ -57,7 +52,7 @@ export default function CreateATest1(): JSX.Element {
       <Text {...textProps} margin={{ bottom: "medium" }}>
         {copy.wolfIntro2}
       </Text>
-      <Wolf color="blue" />
+      <Wolf color={wolf?.variant} />
       <Text {...textProps} margin={{ top: "medium" }} textAlign="start">
         {copy.wolfIntro3}
       </Text>
@@ -67,12 +62,12 @@ export default function CreateATest1(): JSX.Element {
             id="wolf-name"
             maxLength={maxLength}
             onChange={handleChange}
-            placeholder={wolfName || copy.loading}
+            placeholder={wolf?.name || copy.loading}
             value={name}
           />
           <Box flex={false} margin={{ left: "small" }}>
             <Button
-              disabled={loading || !wolfName}
+              disabled={loading || !wolf}
               label={copy.nameWolf}
               onClick={handleClick}
               size="medium"

@@ -89,6 +89,9 @@ export const client = new ApolloClient({
       TestTriggers: {
         keyFields: ["test_id"],
       },
+      Wolf: {
+        keyFields: ["number"],
+      },
     },
   }),
   link: authLink.concat(versionLink).concat(errorLink).concat(httpLink),

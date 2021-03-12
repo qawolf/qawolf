@@ -412,7 +412,6 @@ export const useWolf = (
   variables: WolfVariables
 ): QueryResult<WolfData, WolfVariables> => {
   return useQuery<WolfData, WolfVariables>(wolfQuery, {
-    fetchPolicy,
     onError,
     skip: !variables.user_id,
     variables,

@@ -3,7 +3,9 @@ import styled, { keyframes } from "styled-components";
 
 import WolfSitting from "../../shared/icons/WolfSitting";
 
-type Props = { color: string };
+type Props = { color?: string };
+
+const height = "134px";
 
 const wolfKeyFrames = keyframes`
 0% {
@@ -26,8 +28,8 @@ const StyledBox = styled(Box)`
 
 export default function Wolf({ color }: Props): JSX.Element {
   return (
-    <StyledBox alignSelf="center">
-      <WolfSitting animate color={color} />
+    <StyledBox alignSelf="center" height={height}>
+      {!!color && <WolfSitting animate color={color} />}
     </StyledBox>
   );
 }
