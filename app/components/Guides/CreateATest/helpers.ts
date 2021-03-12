@@ -1,4 +1,9 @@
+import { isServer } from "../../../lib/detection";
 import { colors, edgeSize } from "../../../theme/theme";
+
+export const getUserId = (): string => {
+  return isServer() ? "" : localStorage.getItem("userId");
+};
 
 export const iconProps = {
   color: colors.gray9,

@@ -1,8 +1,8 @@
 import { Box } from "grommet";
-import { useRouter } from "next/router";
 import { BsArrowLeft } from "react-icons/bs";
 
 import { patchHandle } from "../../../components/Editor/Canvas/CodeToggle";
+import { getUserId } from "../../../components/Guides/CreateATest/helpers";
 import {
   iconProps,
   textProps,
@@ -18,8 +18,7 @@ const wolfHeight = "152px";
 const step = 2;
 
 export default function CreateATest2(): JSX.Element {
-  const { asPath } = useRouter();
-  const userId = asPath.split("user_id=")[1] || "";
+  const userId = getUserId();
 
   const { data } = useWolf({ user_id: userId });
   const wolf = data?.wolf || null;

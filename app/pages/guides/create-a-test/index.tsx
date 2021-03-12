@@ -29,6 +29,10 @@ export default function CreateATest1(): JSX.Element {
   const wolf = data?.wolf || null;
 
   useEffect(() => {
+    localStorage.setItem("userId", userId);
+  }, [userId]);
+
+  useEffect(() => {
     if (!userId || error) replace(routes.notFound);
   }, [error, replace, userId]);
 
@@ -37,7 +41,7 @@ export default function CreateATest1(): JSX.Element {
   };
 
   const handleClick = (): void => {
-    const route = `${routes.guides}/create-a-test/2?user_id=${userId}`;
+    const route = `${routes.guides}/create-a-test/2`;
 
     if (name && name !== wolf.name) {
       updateWolf({ variables: { name, user_id: userId } }).then(() => {

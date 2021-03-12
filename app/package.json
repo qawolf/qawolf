@@ -58,6 +58,7 @@
     "querystring": "^0.2.0",
     "re-resizable": "^6.9.0",
     "react": "16.13.1",
+    "react-confetti": "^6.0.1",
     "react-contenteditable": "^3.3.5",
     "react-dom": "16.13.1",
     "react-icons": "^4.2.0",
