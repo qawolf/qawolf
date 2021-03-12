@@ -2,9 +2,9 @@ import { Box, Keyboard } from "grommet";
 import { useRouter } from "next/router";
 import { ChangeEvent, useState } from "react";
 
-import { textProps } from "../../../components/Playground/Intro/helpers";
-import Layout from "../../../components/Playground/Intro/Layout";
-import Wolf from "../../../components/Playground/Intro/Wolf";
+import { textProps } from "../../../components/Guides/CreateATest/helpers";
+import Layout from "../../../components/Guides/CreateATest/Layout";
+import Wolf from "../../../components/Guides/CreateATest/Wolf";
 import Button from "../../../components/shared/Button";
 import Text from "../../../components/shared/Text";
 import TextInput from "../../../components/shared/TextInput";
@@ -14,7 +14,7 @@ import { transition } from "../../../theme/theme";
 
 const maxLength = 12;
 
-export default function Intro1(): JSX.Element {
+export default function CreateATest1(): JSX.Element {
   const { push } = useRouter();
 
   const [name, setName] = useState("");
@@ -25,7 +25,7 @@ export default function Intro1(): JSX.Element {
 
   const handleClick = (): void => {
     // TODO: save wolf name if it changed
-    push(`${routes.playground}/intro/2`);
+    push(`${routes.guides}/create-a-test/2`);
   };
 
   return (

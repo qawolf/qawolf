@@ -13,7 +13,7 @@ export default function NextButton({ step }: Props): JSX.Element {
   const { push } = useRouter();
 
   const handleClick = (): void => {
-    push(`${routes.playground}/intro/${step + 1}`);
+    push(`${routes.guides}/create-a-test/${step + 1}`);
   };
 
   return (
