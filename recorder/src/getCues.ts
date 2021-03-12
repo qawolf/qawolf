@@ -54,7 +54,11 @@ const SKIP_ATTRIBUTES = new Set(["class", "data-reactid"]);
 /**
  * Get the element's cues in ascending penalty
  */
-export function getCues(element: HTMLElement, level: number): Cue[] {
+export function getCues(
+  element: HTMLElement,
+  level: number,
+  maxClasses = 5
+): Cue[] {
   const cues: Cue[] = [getTagCue(element, level)];
 
   // For body and html, we never have more than one, so
@@ -118,8 +122,16 @@ export function getCues(element: HTMLElement, level: number): Cue[] {
     });
   }
 
-  element.classList.forEach((className) => {
-    if (isDynamic(className)) return;
+  // atomic css with composed classes can create a tremendous number of combinations
+  // limit the included classes to avoid overwhelming the ranking of better combinations
+  let includedClasses = 0;
+  for (
+    let i = 0;
+    includedClasses < maxClasses && i < element.classList.length;
+    i++
+  ) {
+    const className = element.classList[i];
+    if (isDynamic(className)) continue;
 
     cues.push({
       level,
@@ -127,7 +139,9 @@ export function getCues(element: HTMLElement, level: number): Cue[] {
       type: "class",
       value: `.${cssEscape(className)}`,
     });
-  });
+
+    includedClasses += 1;
+  }
 
   return cues;
 }
