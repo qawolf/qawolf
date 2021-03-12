@@ -2,10 +2,9 @@ import { Box, Keyboard } from "grommet";
 import { useRouter } from "next/router";
 import { ChangeEvent, useContext, useState } from "react";
 
-import { useCreateTest } from "../../hooks/mutations";
+import { CreateTestData, useCreateTest } from "../../hooks/mutations";
 import { isValidURL, parseUrl } from "../../lib/helpers";
 import { routes } from "../../lib/routes";
-import { state } from "../../lib/state";
 import { copy } from "../../theme/copy";
 import TextInput from "../shared/AppTextInput";
 import Modal from "../shared/Modal";
@@ -25,7 +24,12 @@ export default function CreateTest({ closeModal }: Props): JSX.Element {
   const [isLoading, setIsLoading] = useState(false);
   const [url, setUrl] = useState("");
 
-  const [createTest] = useCreateTest();
+  const [createTest] = useCreateTest(({ createTest }: CreateTestData) => {
+    closeModal();
+
+    const params = url.includes("localhost") ? "?local=1" : "";
+    push(`${routes.test}/${createTest.id}${params}`);
+  });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setUrl(e.target.value);
@@ -52,30 +56,10 @@ export default function CreateTest({ closeModal }: Props): JSX.Element {
 
     createTest({
       variables: { group_id: groupId || null, team_id: teamId, url: parsedUrl },
-    }).then(
-      (response) => {
-        const { data } = response || {};
-        if (!data?.createTest) return;
-        const { code, id, version } = data.createTest;
-
-        state.setPendingRun({
-          code,
-          env: {},
-          restart: true,
-          test_id: id,
-          version,
-        });
-
-        closeModal();
-
-        const params = url.includes("localhost") ? "?local=1" : "";
-        push(`${routes.test}/${id}${params}`);
-      },
-      () => {
-        setError(copy.somethingWrong);
-        setIsLoading(false);
-      }
-    );
+    }).catch(() => {
+      setError(copy.somethingWrong);
+      setIsLoading(false);
+    });
   };
 
   return (

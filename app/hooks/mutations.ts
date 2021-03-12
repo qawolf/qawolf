@@ -155,7 +155,7 @@ type CreateSuiteVariables = {
   test_ids: string[];
 };
 
-type CreateTestData = {
+export type CreateTestData = {
   createTest: Test;
 };
 
@@ -545,11 +545,23 @@ export const useCreateSuite = (): MutationTuple<
   );
 };
 
-export const useCreateTest = (): MutationTuple<
-  CreateTestData,
-  CreateTestVariables
-> => {
+export const useCreateTest = (
+  callback?: (data: CreateTestData) => void
+): MutationTuple<CreateTestData, CreateTestVariables> => {
   return useMutation<CreateTestData, CreateTestVariables>(createTestMutation, {
+    onCompleted: (data: CreateTestData) => {
+      const { code, id, version } = data.createTest;
+
+      state.setPendingRun({
+        code,
+        env: {},
+        restart: true,
+        test_id: id,
+        version,
+      });
+
+      if (callback) callback(data);
+    },
     onError,
     refetchQueries: ["tests"],
   });
