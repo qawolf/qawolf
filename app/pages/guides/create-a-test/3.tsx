@@ -36,7 +36,7 @@ export default function CreateATest3(): JSX.Element {
         <Text {...textProps} margin={{ top: "medium" }}>
           {copy.toggleCreateCode3}
         </Text>
-        {isClicked && <NextButton step={step} />}
+        <NextButton step={step} />
       </Box>
     </Layout>
   );

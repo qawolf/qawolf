@@ -231,7 +231,7 @@ export const copy = {
   runSelectedCode:
     "You can run specific lines of code without re-running your entire test. This is helpful for adding assertions and editing your test.",
   runSelectedCode2:
-    'Now highlight and run the last line of code to click the "Next" button.',
+    'Now highlight and run the last line of code, which will click the "Next" button.',
   runTests: (count: number, environment?: string | null): string =>
     `Run ${count} test${count === 1 ? "" : "s"}${
       environment ? ` on ${environment}` : ""
@@ -242,7 +242,7 @@ export const copy = {
   pleaseType: "Please type",
   tenTeamMembers: "Up to 10 team members",
   toggleCreateCode:
-    'Click the "Create code" toggle above to turn code creation off. Then click the "Click me" button below.',
+    'Click the "Create code" toggle above to turn off code creation. Then click the "Click me" button below.',
   toggleCreateCode2:
     "See how no code was created? You can turn off code creation to use your site without updating your test.",
   toggleCreateCode3:

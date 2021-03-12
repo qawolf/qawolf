@@ -18,7 +18,7 @@ export default function Intro4(): JSX.Element {
         {copy.runSelectedCode2}
       </Text>
       <Box alignSelf="center" width="480px">
-        <Image height={60} src="/playground/highlight-line.png" width={850} />
+        <Image height={49} src="/playground/highlight-line.png" width={765} />
         <Box height={edgeSize.xxsmall} />
         <Image height={132} src="/playground/run-1-line.png" width={958} />
       </Box>
