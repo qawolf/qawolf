@@ -19,6 +19,9 @@ export default function Intro3(): JSX.Element {
       <Text {...textProps}>{copy.toggleCreateCode}</Text>
       <ClickButton />
       <Text {...textProps}>{copy.toggleCreateCode2}</Text>
+      <Text {...textProps} margin={{ top: "medium" }}>
+        {copy.toggleCreateCode3}
+      </Text>
       <NextButton step={step} />
     </Layout>
   );

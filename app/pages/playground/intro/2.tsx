@@ -1,5 +1,5 @@
 import { Box } from "grommet";
-import { BsArrowReturnLeft } from "react-icons/bs";
+import { BsArrowLeft } from "react-icons/bs";
 
 import {
   iconProps,
@@ -16,11 +16,13 @@ const step = 2;
 export default function Intro2(): JSX.Element {
   return (
     <Layout step={step}>
-      <Text {...textProps}>{copy.runTestIntro}</Text>
-      <BsArrowReturnLeft {...iconProps} />
+      <Text {...textProps} margin={{ bottom: "medium" }}>
+        {copy.runTestIntro}
+      </Text>
+      <BsArrowLeft {...iconProps} />
       <Text {...textProps} margin={{ vertical: "medium" }}>
-        {copy.runTestIntro2} <code>⌘</code>
-        &nbsp;(or <code>Ctrl</code>) + <code>Enter</code>.
+        {copy.runTestIntro2} <code>⌘</code> / <code>Ctrl</code> +{" "}
+        <code>Enter</code>.
       </Text>
       <Box alignSelf="center">
         <WolfButton color="blue" />

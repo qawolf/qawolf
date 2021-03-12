@@ -12,7 +12,7 @@ import { routes } from "../../../lib/routes";
 import { copy } from "../../../theme/copy";
 import { transition } from "../../../theme/theme";
 
-const maxLength = 14;
+const maxLength = 12;
 
 export default function Intro1(): JSX.Element {
   const { push } = useRouter();
@@ -29,13 +29,14 @@ export default function Intro1(): JSX.Element {
   };
 
   return (
-    <Layout step={1}>
+    <Layout>
+      <Text {...textProps}>{copy.wolfIntro}</Text>
       <Text {...textProps} margin={{ bottom: "medium" }}>
-        {copy.wolfIntro}
+        {copy.wolfIntro2}
       </Text>
       <Wolf color="blue" />
       <Text {...textProps} margin={{ top: "medium" }} textAlign="start">
-        {copy.wolfIntro2}
+        {copy.wolfIntro3}
       </Text>
       <Keyboard onEnter={handleClick}>
         <Box align="center" direction="row" margin={{ top: "medium" }}>

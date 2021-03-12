@@ -217,10 +217,9 @@ export const copy = {
     `Run on ${repoName} deployment`,
   runTagline: "Run tests without rocket science",
   runTest: "Run test",
-  runTestIntro:
-    "As you use your site, test code is created in the code editor. You can edit this code as you like.",
+  runTestIntro: "As you use your site, test code is created on the left.",
   runTestIntro2:
-    'Let\'s run our test by clicking the blue "Run test" button or by pressing',
+    'Now run your test by clicking the "Run test" button or by pressing',
   runsFail: "Failing tests",
   runGroup: (count: number): string =>
     `Run ${count ? `${count} ` : ""}test${count === 1 ? "" : "s"}`,
@@ -229,11 +228,9 @@ export const copy = {
     `Run ${count} line${count === 1 ? "" : "s"}`,
   runsPass: "Passing tests",
   runSelectedCode:
-    "You can run selected lines of code by highlighting them in the code editor and pressing the run button.",
+    "You can run specific lines of code without re-running your entire test. This is helpful for adding assertions and editing your test.",
   runSelectedCode2:
-    "This is useful if you want to run specific steps without waiting for your entire test to re-run.",
-  runSelectedCode3:
-    'Try highlighting and running the last line of code to click the "Next" button.',
+    'Now highlight and run the last line of code to click the "Next" button.',
   runTests: (count: number, environment?: string | null): string =>
     `Run ${count} test${count === 1 ? "" : "s"}${
       environment ? ` on ${environment}` : ""
@@ -244,9 +241,11 @@ export const copy = {
   pleaseType: "Please type",
   tenTeamMembers: "Up to 10 team members",
   toggleCreateCode:
-    'You can toggle auto code creation on and off by clicking the "Create code" toggle above. Try turning it off, then clicking the "Click me" button below.',
+    'Click the "Create code" toggle above to turn code creation off. Then click the "Click me" button below.',
   toggleCreateCode2:
-    'Notice how no code was created? This is useful if you want to use the browser without generating code. Now turn code creation back on and click the "Next" button below.',
+    "See how no code was created? You can turn off code creation to use your site without updating your test.",
+  toggleCreateCode3:
+    'Now turn code creation back on and click the "Next" button below.',
   save: "Save",
   saveTest: "Save Test",
   schedule: "Schedule",
@@ -322,9 +321,9 @@ export const copy = {
   wolfGreeting: (wolfName: string): string => {
     return `Hi, I'm ${wolfName}!`;
   },
-  wolfIntro:
-    "Nice to meet you, I'm your QA Wolf! I will help you set up tests fast, so you can focus on shipping.",
-  wolfIntro2: "Let's start by giving me a name:",
+  wolfIntro: "Nice to meet you, I'm your QA Wolf!",
+  wolfIntro2: "I will help you set up tests fast, so you can ship confidently.",
+  wolfIntro3: "Let's start by giving me a name:",
   woof: "Woof.",
   woof2: "Woof woof woof.",
   zeroSetup: "Zero setup",

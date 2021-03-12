@@ -5,11 +5,13 @@ import Progress from "./Progress";
 
 type Props = {
   children: ReactNode;
-  step: number;
+  step?: number;
 };
 
+const maxWidth = "680px";
+
 export default function Layout({ children, step }: Props): JSX.Element {
-  const showProgress = step > 1;
+  const showProgress = !!step;
 
   return (
     <Box align="center" height="100vh" justify="center">
@@ -17,7 +19,8 @@ export default function Layout({ children, step }: Props): JSX.Element {
         height="full"
         justify={showProgress ? "between" : "center"}
         overflow={{ vertical: "auto" }}
-        pad={{ horizontal: "25%", vertical: "medium" }}
+        pad={{ vertical: "medium" }}
+        style={{ maxWidth }}
       >
         <Box flex={false}>{children}</Box>
         {showProgress && <Progress step={step} />}
