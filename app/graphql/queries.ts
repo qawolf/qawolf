@@ -15,6 +15,7 @@ import {
   testTriggersFragment,
   triggerFragment,
   userFragment,
+  wolfFragment,
 } from "./fragments";
 
 export const currentUserQuery = gql`
@@ -212,4 +213,13 @@ export const triggersQuery = gql`
     }
   }
   ${triggerFragment}
+`;
+
+export const wolfQuery = gql`
+  query wolf($user_id: ID!) {
+    wolf(user_id: $user_id) {
+      ...WolfFragment
+    }
+  }
+  ${wolfFragment}
 `;

@@ -217,8 +217,9 @@ export const copy = {
     `Run on ${repoName} deployment`,
   runTagline: "Run tests without rocket science",
   runTest: "Run test",
-  runTestIntro: "As you use your site, test code is created on the left.",
-  runTestIntro2:
+  runTestIntro: (wolfName: string): string => `${wolfName} it is then!`,
+  runTestIntro2: "As you use your site, test code is created on the left.",
+  runTestIntro3:
     'Now run your test by clicking the "Run test" button or by pressing',
   runsFail: "Failing tests",
   runGroup: (count: number): string =>
@@ -322,7 +323,7 @@ export const copy = {
     return `Hi, I'm ${wolfName}!`;
   },
   wolfIntro: "Nice to meet you, I'm your QA Wolf!",
-  wolfIntro2: "I will help you set up tests fast, so you can ship confidently.",
+  wolfIntro2: "I help you set up tests fast, so you can ship confidently.",
   wolfIntro3: "Let's start by giving me a name:",
   woof: "Woof.",
   woof2: "Woof woof woof.",

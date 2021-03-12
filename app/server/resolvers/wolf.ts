@@ -1,3 +1,6 @@
+import capitalize from "lodash/capitalize";
+
+import { ClientError } from "../errors";
 import { findUser, updateUser } from "../models/user";
 import { Context, UpdateWolfMutation, User, Wolf, WolfQuery } from "../types";
 
@@ -18,7 +21,7 @@ export const updateWolfResolver = async (
   log.debug("user", user_id);
 
   const user = await updateUser(
-    { id: user_id, wolf_name: name },
+    { id: user_id, wolf_name: capitalize(name) },
     { db, logger }
   );
 
@@ -36,7 +39,7 @@ export const wolfResolver = async (
   const user = await findUser({ id: user_id }, { db, logger });
   if (!user) {
     log.error("user", user_id, "not fuond");
-    throw new Error("not found");
+    throw new ClientError("wolf not found");
   }
 
   return buildWolf(user);

@@ -17,12 +17,24 @@ describe("updateWolfResolver", () => {
   it("updates a wolf name for a user", async () => {
     const wolf = await updateWolfResolver(
       {},
-      { name: "new name", user_id: "userId" },
+      { name: "Finn", user_id: "userId" },
       context
     );
 
     expect(wolf).toEqual({
-      name: "new name",
+      name: "Finn",
+      number: user.wolf_number,
+      variant: user.wolf_variant,
+    });
+
+    const wolf2 = await updateWolfResolver(
+      {},
+      { name: "buzz", user_id: "userId" },
+      context
+    );
+
+    expect(wolf2).toEqual({
+      name: "Buzz",
       number: user.wolf_number,
       variant: user.wolf_variant,
     });

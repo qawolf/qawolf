@@ -11,6 +11,7 @@ import {
   testTriggersFragment,
   triggerFragment,
   userFragment,
+  wolfFragment,
 } from "./fragments";
 
 export const acceptInviteMutation = gql`
@@ -397,4 +398,13 @@ export const updateUserMutation = gql`
     }
   }
   ${userFragment}
+`;
+
+export const updateWolfMutation = gql`
+  mutation updateWolf($name: String!, $user_id: ID!) {
+    updateWolf(name: $name, user_id: $user_id) {
+      ...WolfFragment
+    }
+  }
+  ${wolfFragment}
 `;

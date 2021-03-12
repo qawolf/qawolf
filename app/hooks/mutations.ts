@@ -34,6 +34,7 @@ import {
   updateTestTriggersMutation,
   updateTriggerMutation,
   updateUserMutation,
+  updateWolfMutation,
 } from "../graphql/mutations";
 import { currentUserQuery } from "../graphql/queries";
 import { client, JWT_KEY } from "../lib/client";
@@ -53,6 +54,7 @@ import {
   Trigger,
   TriggerFields,
   User,
+  Wolf,
 } from "../lib/types";
 
 type AcceptInviteData = {
@@ -336,6 +338,15 @@ type UpdateUserData = {
 
 type UpdateUserVariables = {
   onboarded_at: string;
+};
+
+type UpdateWolfData = {
+  updateWolf: Wolf;
+};
+
+type UpdateWolfVariables = {
+  name: string;
+  user_id: string;
 };
 
 const onError = noop;
@@ -821,6 +832,15 @@ export const useUpdateUser = (): MutationTuple<
   UpdateUserVariables
 > => {
   return useMutation<UpdateUserData, UpdateUserVariables>(updateUserMutation, {
+    onError,
+  });
+};
+
+export const useUpdateWolf = (): MutationTuple<
+  UpdateWolfData,
+  UpdateWolfVariables
+> => {
+  return useMutation<UpdateWolfData, UpdateWolfVariables>(updateWolfMutation, {
     onError,
   });
 };

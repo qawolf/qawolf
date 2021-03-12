@@ -19,6 +19,7 @@ import {
   testSummariesQuery,
   testTriggersQuery,
   triggersQuery,
+  wolfQuery,
 } from "../graphql/queries";
 import { JWT_KEY } from "../lib/client";
 import { isServer } from "../lib/detection";
@@ -41,6 +42,7 @@ import {
   TestTriggers,
   Trigger,
   User,
+  Wolf,
 } from "../lib/types";
 
 type CurrentUserData = {
@@ -167,6 +169,14 @@ type TriggersData = {
 
 type TriggersVariables = {
   team_id: string | null;
+};
+
+type WolfData = {
+  wolf: Wolf;
+};
+
+type WolfVariables = {
+  user_id: string;
 };
 
 const fetchPolicy = "cache-and-network";
@@ -394,6 +404,17 @@ export const useTriggers = (
     nextFetchPolicy,
     onError,
     skip: !variables.team_id,
+    variables,
+  });
+};
+
+export const useWolf = (
+  variables: WolfVariables
+): QueryResult<WolfData, WolfVariables> => {
+  return useQuery<WolfData, WolfVariables>(wolfQuery, {
+    fetchPolicy,
+    onError,
+    skip: !variables.user_id,
     variables,
   });
 };

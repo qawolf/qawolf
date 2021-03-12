@@ -1,4 +1,5 @@
 import { Box } from "grommet";
+import { useRouter } from "next/router";
 import { BsArrowLeft } from "react-icons/bs";
 
 import {
@@ -14,14 +15,20 @@ import { copy } from "../../../theme/copy";
 const step = 2;
 
 export default function CreateATest2(): JSX.Element {
+  const { asPath } = useRouter();
+  const wolfName = asPath.split("wolf=")[1] || "";
+
   return (
     <Layout step={step}>
-      <Text {...textProps} margin={{ bottom: "medium" }}>
-        {copy.runTestIntro}
-      </Text>
+      <Box>
+        {!!wolfName && (
+          <Text {...textProps}>{copy.runTestIntro(wolfName)}</Text>
+        )}
+        <Text {...textProps}>{copy.runTestIntro2}</Text>
+      </Box>
       <BsArrowLeft {...iconProps} />
       <Text {...textProps} margin={{ vertical: "medium" }}>
-        {copy.runTestIntro2} <code>⌘</code> / <code>Ctrl</code> +{" "}
+        {copy.runTestIntro3} <code>⌘</code> / <code>Ctrl</code> +{" "}
         <code>Enter</code>.
       </Text>
       <Box alignSelf="center">
