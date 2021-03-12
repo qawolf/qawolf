@@ -31,12 +31,14 @@ type UpdateUser = {
   id: string;
   login_code?: string | null;
   onboarded_at?: string;
+  wolf_name?: string;
 };
 
 export const EXPIRED_CODE_ERROR =
   "That code is expired, check your email for a new code and try again";
 const INVALID_CODE_ERROR = "That code wasn't valid, please try again";
 const LOGIN_CODE_EXPIRY_MINUTES = 30;
+const WOLF_NAME_MAX_LENGTH = 12;
 
 export const randomWolfName = (): string => {
   return randomChoice(WOLF_NAMES);
@@ -224,7 +226,7 @@ export const updateGitHubFields = async (
 };
 
 export const updateUser = async (
-  { id, login_code, onboarded_at }: UpdateUser,
+  { id, login_code, onboarded_at, wolf_name }: UpdateUser,
   { db, logger }: ModelOptions
 ): Promise<User> => {
   const log = logger.prefix("updateUser");
@@ -247,6 +249,13 @@ export const updateUser = async (
   }
   if (onboarded_at) {
     updates.onboarded_at = onboarded_at;
+  }
+
+  if (wolf_name && wolf_name.length > WOLF_NAME_MAX_LENGTH) {
+    throw new Error(`Wolf name exceeds max length ${WOLF_NAME_MAX_LENGTH}`);
+  }
+  if (wolf_name) {
+    updates.wolf_name = wolf_name;
   }
 
   if (Object.keys(updates).length < 2) {

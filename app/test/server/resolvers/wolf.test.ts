@@ -1,4 +1,7 @@
-import { wolfResolver } from "../../../server/resolvers/wolf";
+import {
+  updateWolfResolver,
+  wolfResolver,
+} from "../../../server/resolvers/wolf";
 import { Wolf } from "../../../server/types";
 import { prepareTestDb } from "../db";
 import { buildUser, testContext } from "../utils";
@@ -9,6 +12,26 @@ const context = { ...testContext, db };
 const user = buildUser({});
 
 beforeAll(() => db("users").insert(user));
+
+describe("updateWolfResolver", () => {
+  it("updates a wolf name for a user", async () => {
+    const wolf = await updateWolfResolver(
+      {},
+      { name: "new name", user_id: "userId" },
+      context
+    );
+
+    expect(wolf).toEqual({
+      name: "new name",
+      number: user.wolf_number,
+      variant: user.wolf_variant,
+    });
+
+    await db("users")
+      .where({ id: user.id })
+      .update({ wolf_name: user.wolf_name });
+  });
+});
 
 describe("wolfResolver", () => {
   it("returns a wolf for a user", async () => {
