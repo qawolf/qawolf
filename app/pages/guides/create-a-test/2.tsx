@@ -2,6 +2,7 @@ import { Box } from "grommet";
 import { useRouter } from "next/router";
 import { BsArrowLeft } from "react-icons/bs";
 
+import { patchHandle } from "../../../components/Editor/Canvas/CodeToggle";
 import {
   iconProps,
   textProps,
@@ -27,7 +28,9 @@ export default function CreateATest2(): JSX.Element {
     <Layout step={step}>
       <Box>
         {!!wolf && <Text {...textProps}>{copy.runTestIntro(wolf.name)}</Text>}
-        <Text {...textProps}>{copy.runTestIntro2}</Text>
+        <Text {...textProps}>
+          {copy.runTestIntro2} <code>{patchHandle}</code>
+        </Text>
       </Box>
       <BsArrowLeft {...iconProps} />
       <Text {...textProps} margin={{ vertical: "medium" }}>

@@ -5,7 +5,7 @@ import Toggle from "../../shared/Toggle";
 import { RunnerContext } from "../contexts/RunnerContext";
 import { TestContext } from "../contexts/TestContext";
 
-const patchHandle = "// 🐺 QA Wolf will create code here";
+export const patchHandle = "// 🐺 QA Wolf will create code here";
 
 export default function CodeToggle(): JSX.Element {
   const { isRunnerConnected, mouseLineNumber, progress } = useContext(

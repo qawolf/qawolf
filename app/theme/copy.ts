@@ -218,7 +218,8 @@ export const copy = {
   runTagline: "Run tests without rocket science",
   runTest: "Run test",
   runTestIntro: (wolfName: string): string => `${wolfName} it is then!`,
-  runTestIntro2: "As you use your site, test code is created on the left.",
+  runTestIntro2:
+    "As you use your site, test code is created on the left where it says",
   runTestIntro3:
     'Now run your test by clicking the "Run test" button or by pressing',
   runsFail: "Failing tests",
