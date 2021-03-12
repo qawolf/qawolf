@@ -38,7 +38,7 @@ const ALLOW_LIST = ["flaurida", "jperl"];
  */
 export const createTestResolver = async (
   _: Record<string, unknown>,
-  { group_id, team_id, url }: CreateTestMutation,
+  { group_id, name, team_id, url }: CreateTestMutation,
   { db, logger, user: contextUser, teams }: Context
 ): Promise<Test> => {
   const log = logger.prefix("createTestResolver");
@@ -66,6 +66,7 @@ export const createTestResolver = async (
       code,
       creator_id: user.id,
       group_id,
+      name,
       team_id: team_id,
     },
     { db, logger }

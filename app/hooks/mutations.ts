@@ -161,6 +161,7 @@ export type CreateTestData = {
 
 type CreateTestVariables = {
   group_id: string | null;
+  name?: string | null;
   team_id: string;
   url: string;
 };

@@ -737,6 +737,11 @@ type Mutation {
     group_id: ID
 
     """
+    Optional name
+    """
+    name: String
+
+    """
     Team ID
     """
     team_id: ID!

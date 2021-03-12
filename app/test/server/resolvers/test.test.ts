@@ -88,7 +88,12 @@ describe("createTestResolver", () => {
   it("creates a test", async () => {
     const test = await createTestResolver(
       {},
-      { group_id: "groupId", team_id: "teamId", url: "https://google.com" },
+      {
+        group_id: "groupId",
+        name: null,
+        team_id: "teamId",
+        url: "https://google.com",
+      },
       context
     );
 
@@ -97,7 +102,26 @@ describe("createTestResolver", () => {
       creator_id: "userId",
       group_id: "groupId",
       id: expect.any(String),
-      name: "My Test 2",
+      name: "My Test",
+    });
+
+    await db("tests").where({ id: test.id }).del();
+  });
+
+  it("creates a test with a name", async () => {
+    const test = await createTestResolver(
+      {},
+      {
+        group_id: "groupId",
+        name: "Guides: Create a Test",
+        team_id: "teamId",
+        url: "https://google.com",
+      },
+      context
+    );
+
+    expect(test).toMatchObject({
+      name: "Guides: Create a Test",
     });
 
     await db("tests").where({ id: test.id }).del();
@@ -107,7 +131,12 @@ describe("createTestResolver", () => {
     await expect(
       createTestResolver(
         {},
-        { group_id: "groupId", team_id: "teamId", url: "https://qawolf.com" },
+        {
+          group_id: "groupId",
+          name: null,
+          team_id: "teamId",
+          url: "https://qawolf.com",
+        },
         context
       )
     ).rejects.toThrowError("recursion requires an enterprise plan");

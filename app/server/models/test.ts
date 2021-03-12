@@ -5,10 +5,16 @@ import { ClientError } from "../errors";
 import { ModelOptions, Test } from "../types";
 import { cuid } from "../utils";
 
+type BuildTestName = {
+  name?: string | null;
+  team_id: string;
+};
+
 type CreateTest = {
   code: string;
   creator_id: string;
   group_id?: string | null;
+  name?: string | null;
   team_id: string;
 };
 
@@ -41,20 +47,25 @@ type UpdateTestsGroup = {
   test_ids: string[];
 };
 
+const formatTestName = (name: string, testNumber: number): string => {
+  return `${name}${testNumber === 1 ? "" : ` ${testNumber}`}`;
+};
+
 export const buildTestName = async (
-  team_id: string,
+  { name, team_id }: BuildTestName,
   { db, logger }: ModelOptions
 ): Promise<string> => {
+  const proposedName = name || "My Test";
   const tests = await findTestsForTeam(team_id, { db, logger });
 
   const testNames = new Set(tests.map((test) => test.name));
-  let testNumber = tests.length + 1;
+  let testNumber = 1;
 
-  while (testNames.has(`My Test${testNumber === 1 ? "" : ` ${testNumber}`}`)) {
+  while (testNames.has(formatTestName(proposedName, testNumber))) {
     testNumber++;
   }
 
-  return `My Test${testNumber === 1 ? "" : ` ${testNumber}`}`;
+  return formatTestName(proposedName, testNumber);
 };
 
 export const countIncompleteTests = async (
@@ -87,15 +98,14 @@ export const countIncompleteTests = async (
 };
 
 export const createTest = async (
-  { code, creator_id, group_id, team_id }: CreateTest,
+  { code, creator_id, group_id, name, team_id }: CreateTest,
   { db, logger }: ModelOptions
 ): Promise<Test> => {
   const log = logger.prefix("createTest");
-
   log.debug("team", team_id);
-  const timestamp = minutesFromNow();
 
-  const name = await buildTestName(team_id, { db, logger });
+  const timestamp = minutesFromNow();
+  const uniqueName = await buildTestName({ name, team_id }, { db, logger });
 
   const test = {
     created_at: timestamp,
@@ -105,7 +115,7 @@ export const createTest = async (
     group_id: group_id || null,
     id: cuid(),
     is_enabled: true,
-    name,
+    name: uniqueName,
     team_id,
     updated_at: timestamp,
     version: 0,
