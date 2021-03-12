@@ -27,9 +27,11 @@ const StyledBox = styled(Box)`
 `;
 
 export default function Wolf({ color }: Props): JSX.Element {
+  if (!color) return <Box height={height} />;
+
   return (
     <StyledBox alignSelf="center" height={height}>
-      {!!color && <WolfSitting animate color={color} />}
+      <WolfSitting animate color={color} />
     </StyledBox>
   );
 }
