@@ -5,7 +5,9 @@ import { copy } from "../../../theme/copy";
 import Button from "../../shared/Button";
 import { width } from "./NextButton";
 
-export default function ClickButton(): JSX.Element {
+type Props = { onClick: () => void };
+
+export default function ClickButton({ onClick }: Props): JSX.Element {
   const [isClicked, setIsClicked] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout>(null);
 
@@ -26,7 +28,10 @@ export default function ClickButton(): JSX.Element {
     };
   }, [isClicked]);
 
-  const handleClick = (): void => setIsClicked(true);
+  const handleClick = (): void => {
+    setIsClicked(true);
+    onClick();
+  };
 
   return (
     <Box alignSelf="center" margin={{ vertical: "medium" }}>

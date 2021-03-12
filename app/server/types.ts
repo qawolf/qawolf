@@ -516,6 +516,11 @@ export type UpdateUserMutation = {
   onboarded_at: string;
 };
 
+export type UpdateWolfMutation = {
+  name: string;
+  user_id: string;
+};
+
 export type UseTestSessionMutation = {
   test_id: string;
 };
@@ -599,6 +604,10 @@ export type TriggerIdQuery = {
 
 export type Wolf = {
   name: string;
-  number: string;
+  number: number;
   variant: string;
+};
+
+export type WolfQuery = {
+  user_id: string;
 };
