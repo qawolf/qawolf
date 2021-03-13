@@ -244,6 +244,7 @@ export const copy = {
   other: "Other",
   otherDeploy: "Don't see the tool you use? Let us know!",
   pleaseType: "Please type",
+  startTutorial: "Start tutorial",
   tenTeamMembers: "Up to 10 team members",
   toggleCreateCode:
     'Click the "Create code" toggle above to turn off code creation. Then click the "Click me" button below.',

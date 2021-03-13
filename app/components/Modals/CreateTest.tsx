@@ -24,7 +24,7 @@ export default function CreateTest({ closeModal }: Props): JSX.Element {
   const [isLoading, setIsLoading] = useState(false);
   const [url, setUrl] = useState("");
 
-  const [createTest] = useCreateTest(({ createTest }: CreateTestData) => {
+  const [createTest] = useCreateTest(({ createTest }: CreateTestData): void => {
     closeModal();
 
     const params = url.includes("localhost") ? "?local=1" : "";
