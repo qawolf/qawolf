@@ -90,7 +90,7 @@ export const client = new ApolloClient({
         keyFields: ["test_id"],
       },
       Wolf: {
-        keyFields: ["name"],
+        keyFields: ["number"],
       },
     },
   }),
