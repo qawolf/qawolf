@@ -30,9 +30,11 @@ export const useSelection = (): SelectionHook => {
       startLineNumber,
     } = event.selection;
 
-    // model changes are caused when clicking o
-    if (event.source !== "model") {
-      setMouseLineNumber(endLineNumber);
+    if (["keyboard", "mouse"].includes(event.source)) {
+      setMouseLineNumber(startLineNumber);
+    } else {
+      // clear line number on other model changes
+      setMouseLineNumber(null);
     }
 
     // selection is empty if it starts and ends the same place

@@ -31,8 +31,6 @@ import {
   ensureUser,
 } from "./utils";
 
-const ALLOW_LIST = ["flaurida", "jperl"];
-
 /**
  * @returns The new test object
  */
@@ -48,14 +46,6 @@ export const createTestResolver = async (
   if (group_id) await ensureGroupAccess({ group_id, teams }, { db, logger });
 
   log.debug(user.id);
-
-  if (
-    url.includes("qawolf.com") &&
-    !ALLOW_LIST.includes(user.github_login || "")
-  ) {
-    log.error("recursion", user.id);
-    throw new ClientError("recursion requires an enterprise plan");
-  }
 
   trackSegmentEvent(user, "Test Created", { acValue: url });
 
