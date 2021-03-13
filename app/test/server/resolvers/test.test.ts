@@ -113,7 +113,7 @@ describe("createTestResolver", () => {
       {},
       {
         group_id: "groupId",
-        name: "Guides: Create a Test",
+        name: "Guide: Create a Test",
         team_id: "teamId",
         url: "https://google.com",
       },
@@ -121,7 +121,7 @@ describe("createTestResolver", () => {
     );
 
     expect(test).toMatchObject({
-      name: "Guides: Create a Test",
+      name: "Guide: Create a Test",
     });
 
     await db("tests").where({ id: test.id }).del();

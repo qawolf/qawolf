@@ -39,7 +39,7 @@ export default function StartTutorial(): JSX.Element {
   const handleClick = (): void => {
     createTest({
       variables: {
-        name: "Guides: Create a Test",
+        name: "Guide: Create a Test",
         team_id: teamId,
         url: `${window.location.origin}${routes.guides}/create-a-test?user_id=${user.id}`,
       },
