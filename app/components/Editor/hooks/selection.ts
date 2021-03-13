@@ -33,7 +33,7 @@ export const useSelection = (): SelectionHook => {
     if (["keyboard", "mouse"].includes(event.source)) {
       setMouseLineNumber(startLineNumber);
     } else {
-      // clear selection on other model changes
+      // clear line number on other model changes
       setMouseLineNumber(null);
     }
 

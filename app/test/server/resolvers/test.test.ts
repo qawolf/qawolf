@@ -126,21 +126,6 @@ describe("createTestResolver", () => {
 
     await db("tests").where({ id: test.id }).del();
   });
-
-  it("throws an error if testing qawolf.com", async () => {
-    await expect(
-      createTestResolver(
-        {},
-        {
-          group_id: "groupId",
-          name: null,
-          team_id: "teamId",
-          url: "https://qawolf.com",
-        },
-        context
-      )
-    ).rejects.toThrowError("recursion requires an enterprise plan");
-  });
 });
 
 describe("deleteTestsResolver", () => {
