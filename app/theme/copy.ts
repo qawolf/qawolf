@@ -224,7 +224,7 @@ export const copy = {
   runTestIntro2:
     "As you use your site, test code is created on the left where it says",
   runTestIntro3:
-    'Now run your test by clicking the "Run test" button or by pressing',
+    'Now run your test by clicking the blue "Run test" button or by pressing',
   runsFail: "Failing tests",
   runGroup: (count: number): string =>
     `Run ${count ? `${count} ` : ""}test${count === 1 ? "" : "s"}`,
