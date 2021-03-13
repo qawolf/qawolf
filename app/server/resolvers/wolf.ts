@@ -38,7 +38,7 @@ export const wolfResolver = async (
 
   const user = await findUser({ id: user_id }, { db, logger });
   if (!user) {
-    log.error("user", user_id, "not fuond");
+    log.error("user", user_id, "not found");
     throw new ClientError("wolf not found");
   }
 
