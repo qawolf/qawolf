@@ -1,6 +1,6 @@
 export const copy = {
   acceptInviteLogIn: "Please log in to accept this invite",
-  acceptInviteSignUp: "Please sign up to accept this invitef",
+  acceptInviteSignUp: "Please sign up to accept this invite",
   accountExists: "Already have an account?",
   accountNotExists: "No account yet?",
   add: "Add",
