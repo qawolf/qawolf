@@ -21,7 +21,6 @@ const StyledBox = styled(Box)`
 `;
 
 export default function StartTutorial(): JSX.Element {
-  const { push } = useRouter();
   const { width } = useWindowSize();
 
   const { teamId } = useContext(StateContext);
@@ -29,7 +28,7 @@ export default function StartTutorial(): JSX.Element {
 
   const [createTest, { loading }] = useCreateTest(
     ({ createTest }: CreateTestData): void => {
-      push(`${routes.test}/${createTest.id}`);
+      window.open(`${routes.test}/${createTest.id}`, "_blank");
     }
   );
 
