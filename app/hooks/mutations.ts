@@ -34,6 +34,7 @@ import {
   updateTestTriggersMutation,
   updateTriggerMutation,
   updateUserMutation,
+  updateWolfMutation,
 } from "../graphql/mutations";
 import { currentUserQuery } from "../graphql/queries";
 import { client, JWT_KEY } from "../lib/client";
@@ -53,6 +54,7 @@ import {
   Trigger,
   TriggerFields,
   User,
+  Wolf,
 } from "../lib/types";
 
 type AcceptInviteData = {
@@ -153,12 +155,13 @@ type CreateSuiteVariables = {
   test_ids: string[];
 };
 
-type CreateTestData = {
+export type CreateTestData = {
   createTest: Test;
 };
 
 type CreateTestVariables = {
-  group_id: string | null;
+  group_id?: string | null;
+  name?: string | null;
   team_id: string;
   url: string;
 };
@@ -336,6 +339,15 @@ type UpdateUserData = {
 
 type UpdateUserVariables = {
   onboarded_at: string;
+};
+
+type UpdateWolfData = {
+  updateWolf: Wolf;
+};
+
+type UpdateWolfVariables = {
+  name: string;
+  user_id: string;
 };
 
 const onError = noop;
@@ -534,11 +546,23 @@ export const useCreateSuite = (): MutationTuple<
   );
 };
 
-export const useCreateTest = (): MutationTuple<
-  CreateTestData,
-  CreateTestVariables
-> => {
+export const useCreateTest = (
+  callback?: (data: CreateTestData) => void
+): MutationTuple<CreateTestData, CreateTestVariables> => {
   return useMutation<CreateTestData, CreateTestVariables>(createTestMutation, {
+    onCompleted: (data: CreateTestData) => {
+      const { code, id, version } = data.createTest;
+
+      state.setPendingRun({
+        code,
+        env: {},
+        restart: true,
+        test_id: id,
+        version,
+      });
+
+      if (callback) callback(data);
+    },
     onError,
     refetchQueries: ["tests"],
   });
@@ -821,6 +845,15 @@ export const useUpdateUser = (): MutationTuple<
   UpdateUserVariables
 > => {
   return useMutation<UpdateUserData, UpdateUserVariables>(updateUserMutation, {
+    onError,
+  });
+};
+
+export const useUpdateWolf = (): MutationTuple<
+  UpdateWolfData,
+  UpdateWolfVariables
+> => {
+  return useMutation<UpdateWolfData, UpdateWolfVariables>(updateWolfMutation, {
     onError,
   });
 };

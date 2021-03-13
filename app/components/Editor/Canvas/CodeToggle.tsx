@@ -1,13 +1,11 @@
-import { Box } from "grommet";
 import { useContext, useEffect, useState } from "react";
 
 import { copy } from "../../../theme/copy";
-import Text from "../../shared/Text";
 import Toggle from "../../shared/Toggle";
 import { RunnerContext } from "../contexts/RunnerContext";
 import { TestContext } from "../contexts/TestContext";
 
-const patchHandle = "// 🐺 QA Wolf will create code here";
+export const patchHandle = "// 🐺 QA Wolf will create code here";
 
 export default function CodeToggle(): JSX.Element {
   const { isRunnerConnected, mouseLineNumber, progress } = useContext(
@@ -45,16 +43,11 @@ export default function CodeToggle(): JSX.Element {
   };
 
   return (
-    <Box align="center" direction="row">
-      <Toggle
-        a11yTitle={`toggle ${copy.createCode}`}
-        disabled={!isRunnerConnected || progress?.status === "created"}
-        isOn={isOn}
-        onClick={handleClick}
-      />
-      <Text color="gray9" margin={{ left: "xxsmall" }} size="component">
-        {copy.createCode}
-      </Text>
-    </Box>
+    <Toggle
+      isDisabled={!isRunnerConnected || progress?.status === "created"}
+      isOn={isOn}
+      label={copy.createCode}
+      onClick={handleClick}
+    />
   );
 }

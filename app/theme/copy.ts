@@ -36,6 +36,8 @@ export const copy = {
   checkEmail: "Check your email for a code",
   chooseGitHubRepo: "Choose GitHub repository",
   choosePlan: "Choose plan",
+  clickMe: "Click me",
+  clickMeClicked: "Clicked!",
   close: "Close",
   code: "Code",
   codeLove: "Code you’ll 💖",
@@ -159,6 +161,9 @@ export const copy = {
   joinWolfPack: "Join the wolf pack",
   key: "Key",
   lastUsed: "Last used",
+  learnedBasics: "Congratulations, you’ve mastered the basics of QA Wolf!",
+  learnedBasics2:
+    "Click the back arrow in the top left corner to return to the dashboard.",
   loading: "Loading...",
   logIn: "Log in",
   logInWithEmail: "Log in with email",
@@ -174,6 +179,8 @@ export const copy = {
   mustMatch: "Must match",
   myTests: "My tests",
   name: "Name",
+  nameWolf: "Name your wolf",
+  nameWolfMaxLength: "Character limit reached",
   netlify: "Netlify",
   netlifyDeploy: "Your tests will run on Netlify deploy previews.",
   next: "Next",
@@ -213,6 +220,11 @@ export const copy = {
     `Run on ${repoName} deployment`,
   runTagline: "Run tests without rocket science",
   runTest: "Run test",
+  runTestIntro: (wolfName: string): string => `${wolfName} it is then!`,
+  runTestIntro2:
+    "As you use your site, test code is created on the left where it says",
+  runTestIntro3:
+    'Now run your test by clicking the blue "Run test" button or by pressing',
   runsFail: "Failing tests",
   runGroup: (count: number): string =>
     `Run ${count ? `${count} ` : ""}test${count === 1 ? "" : "s"}`,
@@ -220,6 +232,10 @@ export const copy = {
   runLines: (count: number): string =>
     `Run ${count} line${count === 1 ? "" : "s"}`,
   runsPass: "Passing tests",
+  runSelectedCode:
+    "You can run specific lines of code without re-running your entire test. This is helpful for adding assertions and editing your test.",
+  runSelectedCode2:
+    'Now highlight and run the last line of code, which will click the "Next" button.',
   runTests: (count: number, environment?: string | null): string =>
     `Run ${count} test${count === 1 ? "" : "s"}${
       environment ? ` on ${environment}` : ""
@@ -228,7 +244,14 @@ export const copy = {
   other: "Other",
   otherDeploy: "Don't see the tool you use? Let us know!",
   pleaseType: "Please type",
+  startTutorial: "Start tutorial",
   tenTeamMembers: "Up to 10 team members",
+  toggleCreateCode:
+    'Click the "Create code" toggle above to turn off code creation. Then click the "Click me" button below.',
+  toggleCreateCode2:
+    "See how no code was created? You can turn off code creation to use your site without updating your test.",
+  toggleCreateCode3:
+    'Now turn code creation back on and click the "Next" button below.',
   save: "Save",
   saveTest: "Save Test",
   schedule: "Schedule",
@@ -301,9 +324,12 @@ export const copy = {
   watchTime: "in 1 minute",
   welcome: "Welcome to QA Wolf!",
   welcome2: "Sign up to create and run tests",
-  wolfIntro: (wolfName: string): string => {
+  wolfGreeting: (wolfName: string): string => {
     return `Hi, I'm ${wolfName}!`;
   },
+  wolfIntro: "Nice to meet you, I'm your QA Wolf!",
+  wolfIntro2: "I help you set up tests fast, so you can ship confidently.",
+  wolfIntro3: "Let's start by giving me a name:",
   woof: "Woof.",
   woof2: "Woof woof woof.",
   zeroSetup: "Zero setup",

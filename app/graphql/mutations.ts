@@ -11,6 +11,7 @@ import {
   testTriggersFragment,
   triggerFragment,
   userFragment,
+  wolfFragment,
 } from "./fragments";
 
 export const acceptInviteMutation = gql`
@@ -128,8 +129,13 @@ export const createSuiteMutation = gql`
 `;
 
 export const createTestMutation = gql`
-  mutation createTest($group_id: ID, $team_id: ID!, $url: String!) {
-    createTest(group_id: $group_id, team_id: $team_id, url: $url) {
+  mutation createTest(
+    $group_id: ID
+    $name: String
+    $team_id: ID!
+    $url: String!
+  ) {
+    createTest(group_id: $group_id, name: $name, team_id: $team_id, url: $url) {
       ...TestFragment
     }
   }
@@ -397,4 +403,13 @@ export const updateUserMutation = gql`
     }
   }
   ${userFragment}
+`;
+
+export const updateWolfMutation = gql`
+  mutation updateWolf($name: String!, $user_id: ID!) {
+    updateWolf(name: $name, user_id: $user_id) {
+      ...WolfFragment
+    }
+  }
+  ${wolfFragment}
 `;

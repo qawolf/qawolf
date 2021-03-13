@@ -25,6 +25,7 @@ import {
 
 type Props = {
   IconComponent?: Icon;
+  a11yTitle?: string;
   borderColor?: string;
   className?: string;
   disabled?: boolean;
@@ -35,10 +36,12 @@ type Props = {
   onClick?: () => void;
   size: Size;
   type?: Type;
+  width?: BoxProps["width"];
 };
 
 function Button({
   IconComponent,
+  a11yTitle,
   className,
   disabled,
   fill,
@@ -48,6 +51,7 @@ function Button({
   onClick,
   size,
   type,
+  width,
 }: Props): JSX.Element {
   const finalSize = size || "small";
   const finalType = type || "primary";
@@ -76,6 +80,7 @@ function Button({
       justify="center"
       pad={{ horizontal: padding }}
       round={round[finalSize]}
+      width={width}
     >
       {!!IconComponent && (
         <IconComponent
@@ -100,7 +105,7 @@ function Button({
 
   return (
     <GrommetButton
-      a11yTitle={label}
+      a11yTitle={a11yTitle || label}
       disabled={disabled}
       margin={margin}
       onClick={onClick}

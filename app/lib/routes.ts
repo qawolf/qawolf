@@ -4,6 +4,7 @@ export const routes = {
   docs: "/docs",
   gitHub: "/github",
   gitHubIntegration: "/github-integration",
+  guides: "/guides",
   home: "/",
   invite: "/invite",
   logIn: "/log-in",

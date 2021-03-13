@@ -52,8 +52,14 @@ describe("buildTestName", () => {
       .spyOn(testModel, "findTestsForTeam")
       .mockReturnValue(Promise.resolve([]));
 
-    const testName = await buildTestName("teamId", options);
+    const testName = await buildTestName({ team_id: "teamId" }, options);
     expect(testName).toBe("My Test");
+
+    const testName2 = await buildTestName(
+      { name: "Guides: Create a Test", team_id: "teamId" },
+      options
+    );
+    expect(testName2).toBe("Guides: Create a Test");
   });
 
   it("returns incremented name if possible", async () => {
@@ -61,22 +67,33 @@ describe("buildTestName", () => {
       .spyOn(testModel, "findTestsForTeam")
       .mockReturnValue(Promise.resolve([{ name: "My Test" }] as Test[]));
 
-    const testName = await buildTestName("teamId", options);
+    const testName = await buildTestName({ team_id: "teamId" }, options);
     expect(testName).toBe("My Test 2");
+  });
+
+  it("returns incremented name if possible and name specified", async () => {
+    jest
+      .spyOn(testModel, "findTestsForTeam")
+      .mockReturnValue(
+        Promise.resolve([{ name: "Guides: Create a Test" }] as Test[])
+      );
+
+    const testName = await buildTestName(
+      { name: "Guides: Create a Test", team_id: "teamId" },
+      options
+    );
+    expect(testName).toBe("Guides: Create a Test 2");
   });
 
   it("keeps incrementing until unique name found", async () => {
     jest
       .spyOn(testModel, "findTestsForTeam")
       .mockReturnValue(
-        Promise.resolve([
-          { name: "My Test 3" },
-          { name: "My Test 4" },
-        ] as Test[])
+        Promise.resolve([{ name: "My Test" }, { name: "My Test 2" }] as Test[])
       );
 
-    const testName = await buildTestName("teamId", options);
-    expect(testName).toBe("My Test 5");
+    const testName = await buildTestName({ team_id: "teamId" }, options);
+    expect(testName).toBe("My Test 3");
   });
 });
 
@@ -124,6 +141,38 @@ describe("createTest", () => {
 
     expect(tests[0]).toMatchObject({
       group_id: "groupId",
+    });
+  });
+
+  it("creates a new test with a custom name", async () => {
+    await createTest(
+      {
+        code: "code",
+        creator_id: "userId",
+        name: "Guides: Create a Test",
+        team_id: "teamId",
+      },
+      options
+    );
+
+    const tests = await db.select("*").from("tests").where({ code: "code" });
+
+    expect(tests[0]).toMatchObject({
+      name: "Guides: Create a Test",
+    });
+
+    const test2 = await createTest(
+      {
+        code: "code",
+        creator_id: "userId",
+        name: "Guides: Create a Test",
+        team_id: "teamId",
+      },
+      options
+    );
+
+    expect(test2).toMatchObject({
+      name: "Guides: Create a Test 2",
     });
   });
 });

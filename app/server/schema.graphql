@@ -737,6 +737,11 @@ type Mutation {
     group_id: ID
 
     """
+    Optional name
+    """
+    name: String
+
+    """
     Team ID
     """
     team_id: ID!
@@ -1171,6 +1176,17 @@ type Mutation {
     """
     onboarded_at: String!
   ): User!
+
+  """
+  Update the wolf for a user by user ID.
+  """
+  updateWolf(
+    "The new wolf name"
+    name: String!
+
+    "The user ID"
+    user_id: ID!
+  ): Wolf!
 }
 
 "Queries allow you to retrieve but not modify data"
@@ -1320,4 +1336,9 @@ type Query {
   Requires that you have access to the team.
   """
   triggers("The team ID" team_id: ID!): [Trigger!]!
+
+  """
+  Returns the wolf for the specified user by user ID.
+  """
+  wolf("The user ID" user_id: ID!): Wolf!
 }

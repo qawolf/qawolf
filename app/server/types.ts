@@ -381,6 +381,7 @@ export type CreateSuiteMutation = {
 
 export type CreateTestMutation = {
   group_id: string | null;
+  name: string | null;
   team_id: string;
   url: string;
 };
@@ -516,6 +517,11 @@ export type UpdateUserMutation = {
   onboarded_at: string;
 };
 
+export type UpdateWolfMutation = {
+  name: string;
+  user_id: string;
+};
+
 export type UseTestSessionMutation = {
   test_id: string;
 };
@@ -599,6 +605,10 @@ export type TriggerIdQuery = {
 
 export type Wolf = {
   name: string;
-  number: string;
+  number: number;
   variant: string;
+};
+
+export type WolfQuery = {
+  user_id: string;
 };

@@ -178,3 +178,11 @@ export const userFragment = gql`
     wolf_variant
   }
 `;
+
+export const wolfFragment = gql`
+  fragment WolfFragment on Wolf {
+    name
+    number
+    variant
+  }
+`;

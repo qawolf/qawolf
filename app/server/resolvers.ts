@@ -71,6 +71,7 @@ import {
   teamUsersResolver,
   updateUserResolver,
 } from "./resolvers/user";
+import { updateWolfResolver, wolfResolver } from "./resolvers/wolf";
 
 export const resolvers = {
   Team: {
@@ -115,6 +116,7 @@ export const resolvers = {
     updateTestsGroup: updateTestsGroupResolver,
     updateTrigger: updateTriggerResolver,
     updateUser: updateUserResolver,
+    updateWolf: updateWolfResolver,
   },
   Query: {
     currentUser: currentUserResolver,
@@ -133,5 +135,6 @@ export const resolvers = {
     testTriggers: testTriggersResolver,
     tests: testsResolver,
     triggers: triggersResolver,
+    wolf: wolfResolver,
   },
 };

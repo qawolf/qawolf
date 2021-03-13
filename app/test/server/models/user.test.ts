@@ -365,6 +365,26 @@ describe("user model", () => {
       });
     });
 
+    it("updates wolf name on user", async () => {
+      await updateUser({ id: "spirit", wolf_name: "new name" }, { db, logger });
+
+      const user = await findUser({ id: "spirit" }, { db, logger });
+
+      expect(user).toMatchObject({
+        id: "spirit",
+        wolf_name: "new name",
+      });
+    });
+
+    it("throws an error if wolf name too long", async () => {
+      await expect(
+        updateUser(
+          { id: "spirit", wolf_name: "this wolf name is too long" },
+          options
+        )
+      ).rejects.toThrowError("exceeds max length");
+    });
+
     it("throws an error if user not found", async () => {
       await expect(
         updateUser({ id: "fakeId", onboarded_at }, { db, logger })
