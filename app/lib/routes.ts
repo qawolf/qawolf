@@ -2,6 +2,7 @@ export const routes = {
   blog: "/blog",
   confirmEmail: "/confirm-email",
   docs: "/docs",
+  getStarted: "/get-started",
   gitHub: "/github",
   gitHubIntegration: "/github-integration",
   guides: "/guides",

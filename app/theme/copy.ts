@@ -322,8 +322,7 @@ export const copy = {
   video: "Video",
   watchCreate: "Watch Jon create a test",
   watchTime: "in 1 minute",
-  welcome: "Welcome to QA Wolf!",
-  welcome2: "Sign up to create and run tests",
+  welcome: "Welcome to QA Wolf",
   wolfGreeting: (wolfName: string): string => {
     return `Hi, I'm ${wolfName}!`;
   },

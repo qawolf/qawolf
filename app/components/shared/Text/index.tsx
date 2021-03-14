@@ -93,9 +93,12 @@ const StyledText = styled(Text)`
   `}
 
   ${(props) =>
-    ["componentBold", "componentHeader", "componentLarge"].includes(
-      props.size
-    ) &&
+    [
+      "componentBold",
+      "componentHeader",
+      "componentLarge",
+      "componentXLarge",
+    ].includes(props.size) &&
     `
   font-family: Inter Semibold;
   font-weight: 600;

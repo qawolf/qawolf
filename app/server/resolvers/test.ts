@@ -1,4 +1,3 @@
-import { ClientError } from "../errors";
 import { findLatestRuns, findRunResult } from "../models/run";
 import {
   createTest,
@@ -47,7 +46,8 @@ export const createTestResolver = async (
 
   log.debug(user.id);
 
-  trackSegmentEvent(user, "Test Created", { acValue: url });
+  const event = name ? "Guide Created" : "Test Created";
+  trackSegmentEvent(user, event, { acValue: url });
 
   const code = `const { context } = await launch();\nconst page = await context.newPage();\nawait page.goto('${url}', { waitUntil: "domcontentloaded" });\n// 🐺 QA Wolf will create code here`;
 

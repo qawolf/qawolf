@@ -9,6 +9,7 @@ import { routes } from "../../lib/routes";
 import { state } from "../../lib/state";
 import { StateContext } from "../StateContext";
 import { UserContext } from "../UserContext";
+import GetStarted from "./GetStarted";
 import Settings from "./Settings";
 import Sidebar from "./Sidebar";
 import Suite from "./Suite";
@@ -45,6 +46,8 @@ export default function Dashboard(): JSX.Element {
     innerHtml = <Suite suiteId={query.suite_id as string} />;
   } else if (pathname.includes(routes.suites)) {
     innerHtml = <Suites />;
+  } else if (pathname.includes(routes.getStarted)) {
+    innerHtml = <GetStarted />;
   } else if (pathname.includes(routes.settings)) {
     innerHtml = <Settings />;
   }

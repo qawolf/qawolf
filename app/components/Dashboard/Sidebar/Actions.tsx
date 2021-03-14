@@ -6,9 +6,9 @@ import { state } from "../../../lib/state";
 import { copy } from "../../../theme/copy";
 import { borderSize } from "../../../theme/theme";
 import Book from "../../shared/icons/Book";
+import Clipboard from "../../shared/icons/Clipboard";
 import Configure from "../../shared/icons/Configure";
 import DotCircle from "../../shared/icons/DotCircle";
-import Gear from "../../shared/icons/Gear";
 import Lightning from "../../shared/icons/Lightning";
 import List from "../../shared/icons/List";
 import Share from "../../shared/icons/Share";
@@ -27,6 +27,12 @@ export default function Actions(): JSX.Element {
 
   return (
     <Box gap={borderSize.small} margin={{ top: "medium" }}>
+      <DashboardLink
+        IconComponent={Clipboard}
+        href={routes.getStarted}
+        isSelected={pathname.includes(routes.getStarted)}
+        label={copy.getStarted}
+      />
       <DashboardLink
         IconComponent={List}
         href={routes.tests}
@@ -48,12 +54,6 @@ export default function Actions(): JSX.Element {
         IconComponent={Lightning}
         label={copy.triggers}
         onClick={handleTriggersClick}
-      />
-      <DashboardLink
-        IconComponent={Gear}
-        href={routes.settings}
-        isSelected={pathname.includes(routes.settings)}
-        label={copy.teamSettings}
       />
       <DashboardLink
         IconComponent={Book}
