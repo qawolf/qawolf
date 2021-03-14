@@ -14,7 +14,7 @@ export default function GetStarted(): JSX.Element {
       width="full"
     >
       <Box flex={false} width={width}>
-        <Welcome />
+        <Welcome wolfColor="black" />
       </Box>
     </Box>
   );
