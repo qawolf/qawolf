@@ -157,6 +157,21 @@ type Invite {
   wolf_variant: String!
 }
 
+"Status of a user's onboarding in context of a team"
+type Onboarding {
+  "Whether the current team has assigned a trigger to a test"
+  has_added_trigger_to_test: Boolean!
+
+  "Whether the current user has completed the interactive tutorial"
+  has_completed_tutorial: Boolean!
+
+  "Whether the current team has created a test"
+  has_created_test: Boolean!
+
+  "Whether the current team has at least one other user or invite"
+  has_invited_user: Boolean!
+}
+
 "Status of a test run"
 enum RunStatus {
   "Created (in progress)"
@@ -1259,6 +1274,13 @@ type Query {
   Requires that you have access to the team.
   """
   integrations("The team ID" team_id: ID!): [Integration!]!
+
+  """
+  Returns the onboarding status for a user on a team by team ID.
+
+  Requires that you have access to the team.
+  """
+  onboarding("The team ID" team_id: ID!): [Onboarding!]!
 
   """
   Returns the last 8 runs for a test by ID.

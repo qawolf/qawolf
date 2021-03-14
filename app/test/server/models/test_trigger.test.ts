@@ -4,6 +4,7 @@ import {
   deleteTestTriggersForTests,
   deleteTestTriggersForTrigger,
   findTestTriggersForTests,
+  hasTestTrigger,
 } from "../../../server/models/test_trigger";
 import { prepareTestDb } from "../db";
 import {
@@ -244,9 +245,9 @@ describe("test trigger model", () => {
       await db("groups").del();
 
       await db("test_triggers").del();
-      await db("triggers").del();
+      await db("triggers").whereNot({ id: "triggerId" }).del();
 
-      return db("tests").del();
+      return db("tests").whereNot({ id: "testId" }).del();
     });
 
     it("finds test triggers for tests", async () => {
@@ -273,6 +274,32 @@ describe("test trigger model", () => {
         },
         { group_id: null, test_id: "test3Id", trigger_ids: [] },
       ]);
+    });
+  });
+
+  describe("hasTestTrigger", () => {
+    beforeAll(async () => {
+      await db("test_triggers").insert({
+        id: "testTriggerId",
+        test_id: "testId",
+        trigger_id: "triggerId",
+      });
+
+      return db("teams").insert(buildTeam({ i: 2 }));
+    });
+
+    afterAll(async () => {
+      await db("test_triggers").del();
+
+      return db("teams").where({ id: "team2Id" }).del();
+    });
+
+    it("returns true if team has test trigger", async () => {
+      expect(await hasTestTrigger("teamId", options)).toBe(true);
+    });
+
+    it("returns false if team does not have test trigger", async () => {
+      expect(await hasTestTrigger("team2Id", options)).toBe(false);
     });
   });
 });

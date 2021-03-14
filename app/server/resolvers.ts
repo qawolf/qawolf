@@ -25,6 +25,7 @@ import {
   createInvitesResolver,
   teamInvitesResolver,
 } from "./resolvers/invite";
+import { onboardingResolver } from "./resolvers/onboarding";
 import {
   statusCountsResolver,
   suiteRunsResolver,
@@ -125,6 +126,7 @@ export const resolvers = {
     environmentVariables: environmentVariablesResolver,
     groups: groupsResolver,
     integrations: integrationsResolver,
+    onboarding: onboardingResolver,
     runner: runnerResolver,
     suite: suiteResolver,
     suites: suitesResolver,

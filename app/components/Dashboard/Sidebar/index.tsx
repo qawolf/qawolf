@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 import { useRouter } from "next/router";
-import { routes } from "../../../lib/routes";
 
+import { routes } from "../../../lib/routes";
 import { Group } from "../../../lib/types";
 import { borderSize } from "../../../theme/theme";
 import Header from "./Header";

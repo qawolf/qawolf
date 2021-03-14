@@ -272,6 +272,19 @@ export const deleteTests = async (
   return tests;
 };
 
+export const hasTest = async (
+  team_id: string,
+  { db, logger }: ModelOptions
+): Promise<boolean> => {
+  const log = logger.prefix("hasTest");
+  log.debug("team", team_id);
+
+  const test = await db("tests").where({ team_id }).first();
+  log.debug(test ? `found ${test.id}` : "not found");
+
+  return !!test;
+};
+
 export const updateTest = async (
   { code, id, is_enabled, name, runner_requested_at, version }: UpdateTest,
   { db, logger }: ModelOptions

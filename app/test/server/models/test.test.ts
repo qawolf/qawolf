@@ -26,6 +26,7 @@ const {
   findTest,
   findTestForRun,
   findTestsForTeam,
+  hasTest,
   updateTest,
   updateTestsGroup,
 } = testModel;
@@ -469,6 +470,20 @@ describe("findTestsForTeam", () => {
     const tests = await findTestsForTeam("fakeId", options);
 
     expect(tests).toEqual([]);
+  });
+});
+
+describe("hasTest", () => {
+  beforeAll(() => db("tests").insert(buildTest({})));
+
+  afterAll(() => db("tests").del());
+
+  it("returns true if team has test trigger", async () => {
+    expect(await hasTest("teamId", options)).toBe(true);
+  });
+
+  it("returns false if team does not have test trigger", async () => {
+    expect(await hasTest("team2Id", options)).toBe(false);
   });
 });
 

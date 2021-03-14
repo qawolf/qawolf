@@ -544,6 +544,13 @@ export type IdQuery = {
   id: string;
 };
 
+export type Onboarding = {
+  has_added_trigger_to_test: boolean;
+  has_completed_tutorial: boolean;
+  has_created_test: boolean;
+  has_invited_user: boolean;
+};
+
 export type RunResult = Run & {
   environment_id: string | null;
   logs_url: string | null;
