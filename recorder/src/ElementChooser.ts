@@ -1,5 +1,6 @@
 import { getAssertText } from "./element";
-import { Callback, ElementChoice } from "./types";
+import { generateSelectors } from "./generateSelectors";
+import { Callback, ElementChoice, RankedSelector } from "./types";
 
 type ChoiceCallback = Callback<ElementChoice>;
 
@@ -40,14 +41,23 @@ export class ElementChooser {
     this._shadowRoot = this._shadowParent.attachShadow({ mode: "open" });
   }
 
-  _chooseElement(target: EventTarget): void {
+  _onChooseElement(target: HTMLElement): void {
     const callback: ChoiceCallback = (window as any).qawElementChoice;
     if (!callback) return;
 
-    const text = getAssertText(target as HTMLElement);
+    const text = getAssertText(target);
 
-    // TODO generate selectors
-    callback({ selectors: [], text });
+    const selectors: RankedSelector[] = [];
+    const selectorsIterator = generateSelectors(target, 10000);
+
+    for (const selector of selectorsIterator) {
+      selectors.push(selector);
+      selectors.sort((a, b) => a.penalty - b.penalty);
+
+      callback({ selectors, text });
+
+      if (selectors.length > 20) break;
+    }
   }
 
   _onMouseDown = (event: MouseEvent): void => {
@@ -55,9 +65,10 @@ export class ElementChooser {
 
     // mark as chosen
     this._chooserElement.style.background = "rgba(233, 110, 164, 0.5)";
+
     document.removeEventListener("mousemove", this._onMouseMouse, true);
 
-    this._chooseElement(event.target);
+    this._onChooseElement(event.target as HTMLElement);
   };
 
   _onMouseMouse = (event: MouseEvent): void => {

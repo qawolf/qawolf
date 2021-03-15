@@ -44,7 +44,7 @@ export interface ElementAction {
 }
 
 export interface ElementChoice {
-  selectors: string[];
+  selectors: RankedSelector[];
   text: string;
 }
 

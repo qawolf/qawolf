@@ -67,9 +67,12 @@ it("chooses an element on click", async () => {
 
   await page.waitForTimeout(0);
 
-  // check the element choice
   expect(choice).toEqual({
-    selectors: [],
+    selectors: [
+      { penalty: 15, selector: "select" },
+      { penalty: 30, selector: "body select" },
+      { penalty: 30, selector: "html select" },
+    ],
     text: "a",
   });
 });
