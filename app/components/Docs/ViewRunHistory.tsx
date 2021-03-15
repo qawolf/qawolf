@@ -19,7 +19,7 @@ export default function ViewRunHistory({ description }: Props): JSX.Element {
         alt="Run history"
         height={292}
         src="/docs/run-tests-on-a-schedule/history.png"
-        width={277}
+        width={276}
       />
     </>
   );
