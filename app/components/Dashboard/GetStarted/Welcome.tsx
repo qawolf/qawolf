@@ -14,7 +14,6 @@ type Props = {
 };
 
 const max = 4;
-const minWolfWidth = "144px";
 
 export default function Welcome({
   completeCount,
@@ -53,7 +52,7 @@ export default function Welcome({
           />
         </Box>
       </Box>
-      <Box flex={false} style={{ minWidth: minWolfWidth }}>
+      <Box flex={false}>
         {!!wolfColor && <WolfIconComponent color={wolfColor} />}
       </Box>
     </Box>
