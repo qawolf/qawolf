@@ -66,6 +66,17 @@ export const integrationsQuery = gql`
   ${integrationFragment}
 `;
 
+export const onboardingQuery = gql`
+  query onboarding($team_id: ID!) {
+    onboarding(team_id: $team_id) {
+      has_added_trigger_to_test
+      has_completed_tutorial
+      has_created_test
+      has_invited_user
+    }
+  }
+`;
+
 export const runnerQuery = gql`
   query runner($run_id: ID, $should_request_runner: Boolean, $test_id: ID) {
     runner(

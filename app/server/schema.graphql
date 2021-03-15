@@ -1280,7 +1280,7 @@ type Query {
 
   Requires that you have access to the team.
   """
-  onboarding("The team ID" team_id: ID!): [Onboarding!]!
+  onboarding("The team ID" team_id: ID!): Onboarding!
 
   """
   Returns the last 8 runs for a test by ID.

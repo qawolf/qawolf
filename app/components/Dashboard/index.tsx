@@ -41,15 +41,15 @@ export default function Dashboard(): JSX.Element {
     state.setDashboardUri(asPath);
   }, [asPath]);
 
-  let innerHtml = <Tests groups={groups} />;
+  let innerHtml = <Tests groups={groups} teamId={teamId} />;
   if (pathname.includes(routes.suites) && query.suite_id) {
-    innerHtml = <Suite suiteId={query.suite_id as string} />;
+    innerHtml = <Suite suiteId={query.suite_id as string} teamId={teamId} />;
   } else if (pathname.includes(routes.suites)) {
-    innerHtml = <Suites />;
+    innerHtml = <Suites teamId={teamId} />;
   } else if (pathname.includes(routes.getStarted)) {
-    innerHtml = <GetStarted />;
+    innerHtml = <GetStarted teamId={teamId} />;
   } else if (pathname.includes(routes.settings)) {
-    innerHtml = <Settings />;
+    innerHtml = <Settings teamId={teamId} />;
   }
 
   return (
