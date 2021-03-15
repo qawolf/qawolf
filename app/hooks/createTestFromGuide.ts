@@ -1,9 +1,12 @@
+import { ApolloError } from "@apollo/client";
 import { useRouter } from "next/router";
 
 import { routes } from "../lib/routes";
 import { CreateTestData, useCreateTest } from "./mutations";
 
 type CreateTestFromGuide = {
+  called: boolean;
+  error: ApolloError | null;
   loading: boolean;
   onClick: () => void;
 };
@@ -23,7 +26,7 @@ export const useCreateTestFromGuide = ({
 }: UseCreateTestFromGuide): CreateTestFromGuide => {
   const { push } = useRouter();
 
-  const [createTest, { loading }] = useCreateTest(
+  const [createTest, { called, error, loading }] = useCreateTest(
     ({ createTest }: CreateTestData): void => {
       push(`${routes.test}/${createTest.id}`);
     }
@@ -39,5 +42,5 @@ export const useCreateTestFromGuide = ({
     });
   };
 
-  return { loading, onClick: handleClick };
+  return { called, error: error || null, loading, onClick: handleClick };
 };

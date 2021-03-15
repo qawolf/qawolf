@@ -3,12 +3,10 @@ import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 
 import { useEnsureUser } from "../../hooks/ensureUser";
-import { useUpdateUser } from "../../hooks/mutations";
 import { useGroups } from "../../hooks/queries";
 import { routes } from "../../lib/routes";
 import { state } from "../../lib/state";
 import { StateContext } from "../StateContext";
-import { UserContext } from "../UserContext";
 import GetStarted from "./GetStarted";
 import Settings from "./Settings";
 import Sidebar from "./Sidebar";
@@ -21,20 +19,9 @@ export default function Dashboard(): JSX.Element {
 
   const { asPath, pathname, query } = useRouter();
   const { teamId } = useContext(StateContext);
-  const { user } = useContext(UserContext);
 
   const { data } = useGroups({ team_id: teamId });
   const groups = data?.groups || null;
-
-  const [updateUser] = useUpdateUser();
-
-  // show create test modal once if not onboarded
-  useEffect(() => {
-    if (!pathname.includes(routes.tests) || !user || user.onboarded_at) return;
-
-    state.setModal({ name: "createTest" });
-    updateUser({ variables: { onboarded_at: new Date().toISOString() } });
-  }, [pathname, updateUser, user]);
 
   // update the current location in global state for use in editor back button
   useEffect(() => {
