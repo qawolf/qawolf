@@ -2,6 +2,7 @@ import { Page } from "playwright";
 
 import { launch, LaunchResult, setBody } from "./utils";
 import { QAWolfWeb } from "../src";
+import { RankedSelector } from "../src/types";
 
 let launched: LaunchResult;
 let page: Page;
@@ -13,26 +14,76 @@ beforeAll(async () => {
 
 afterAll(() => launched.browser.close());
 
-const expectSelector = async (
-  selector: string,
-  expected?: string
-): Promise<void> => {
-  const element = await page.$(selector);
-  if (!element) throw new Error(`${selector} not found`);
+describe("generateSelectors", () => {
+  const generateSelectors = async (
+    selector: string,
+    limit = 10
+  ): Promise<RankedSelector[]> => {
+    const element = await page.$(selector);
+    if (!element) throw new Error(`${selector} not found`);
 
-  const builtSelector = await page.evaluate(
-    ({ element }) => {
-      const qawolf: QAWolfWeb = (window as any).qawolf;
-      const target = qawolf.getTopmostEditableElement(element as HTMLElement);
-      return qawolf.getSelector(target, 0);
-    },
-    { element }
-  );
+    const result = await page.evaluate(
+      ({ element, limit }) => {
+        const result: RankedSelector[] = [];
 
-  expect(builtSelector).toEqual(expected || selector);
-};
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+
+        const generator = qawolf.generateSelectors(element as HTMLElement, 0);
+        for (let value of generator) {
+          result.push(value);
+          if (result.length >= limit) break;
+        }
+
+        return result;
+      },
+      { element, limit }
+    );
+
+    return result;
+  };
+
+  it("generates multiple selectors", async () => {
+    await setBody(
+      page,
+      '<input aria-label="phone number" id="phone" placeholder="Enter your phone number">'
+    );
+
+    const values = await generateSelectors("input");
+    expect(values.map((v) => v.selector)).toEqual([
+      '[aria-label="phone number"]',
+      "#phone",
+      '[placeholder="Enter your phone number"]',
+      '[aria-label="phone number"]#phone',
+      "input",
+      '[aria-label="phone number"][placeholder="Enter your phone number"]',
+      '#phone[placeholder="Enter your phone number"]',
+      'body [aria-label="phone number"]',
+      'html [aria-label="phone number"]',
+      'input[aria-label="phone number"]',
+    ]);
+  });
+});
 
 describe("getSelector", () => {
+  const expectSelector = async (
+    selector: string,
+    expected?: string
+  ): Promise<void> => {
+    const element = await page.$(selector);
+    if (!element) throw new Error(`${selector} not found`);
+
+    const builtSelector = await page.evaluate(
+      ({ element }) => {
+        const qawolf: QAWolfWeb = (window as any).qawolf;
+        const target = qawolf.getTopmostEditableElement(element as HTMLElement);
+        return qawolf.getSelector(target, 0);
+      },
+      { element }
+    );
+
+    expect(builtSelector).toEqual(expected || selector);
+  };
+
   describe("ancestor cues", () => {
     it.each([
       ["<a><x-child-element /></a>", "a"],
@@ -115,8 +166,8 @@ describe("getSelector", () => {
 
     const result = await page.evaluate(() => {
       const element = document.querySelector("input");
-      const cache = new Map<HTMLElement, string>();
-      cache.set(element, ".cached");
+      const cache = new Map<HTMLElement, RankedSelector>();
+      cache.set(element, { penalty: 0, selector: ".cached" });
       const qawolf: QAWolfWeb = (window as any).qawolf;
       return qawolf.getSelector(element, 0, cache);
     });
@@ -125,8 +176,8 @@ describe("getSelector", () => {
     // not for non-matching selectors
     const result2 = await page.evaluate(() => {
       const element = document.querySelector("input");
-      const cache = new Map<HTMLElement, string>();
-      cache.set(element, "div");
+      const cache = new Map<HTMLElement, RankedSelector>();
+      cache.set(element, { penalty: 0, selector: "div" });
       const qawolf: QAWolfWeb = (window as any).qawolf;
       return qawolf.getSelector(element, 0, cache);
     });

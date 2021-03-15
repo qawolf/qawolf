@@ -62,6 +62,11 @@ export type PossibleAction = {
   value: string | null;
 };
 
+export type RankedSelector = {
+  penalty: number;
+  selector: string;
+};
+
 export type Rect = {
   height: number;
   width: number;

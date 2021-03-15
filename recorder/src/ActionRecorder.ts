@@ -2,14 +2,20 @@ import { debug } from "./debug";
 import { getInputElementValue, isVisible } from "./element";
 import { getSelector } from "./generateSelectors";
 import { resolveAction } from "./resolveAction";
-import { Action, Callback, ElementAction, PossibleAction } from "./types";
+import {
+  Action,
+  Callback,
+  ElementAction,
+  PossibleAction,
+  RankedSelector,
+} from "./types";
 
 type ActionCallback = Callback<ElementAction>;
 
 export class ActionRecorder {
   _lastReceivedAction: PossibleAction;
   _onDispose: Callback[] = [];
-  _selectorCache = new Map<HTMLElement, string>();
+  _selectorCache = new Map<HTMLElement, RankedSelector>();
 
   constructor() {
     debug("ActionRecorder: created");

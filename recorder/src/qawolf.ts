@@ -3,7 +3,7 @@ export {
   generateRelativeCueSets,
   generateSortedCueSets,
 } from "./generateCueSets";
-export { getSelector } from "./generateSelectors";
+export { generateSelectors, getSelector } from "./generateSelectors";
 export { getCues, getTagCue } from "./getCues";
 export {
   getAssertText,
