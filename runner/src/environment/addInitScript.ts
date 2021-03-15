@@ -20,7 +20,7 @@ export const addInitScript = async (context: BrowserContext): Promise<void> => {
 (() => {
   ${webScript}
 
-  window.qawInstance = new qawolf.ActionRecorder();
+  window.qawActionRecorder = new qawolf.ActionRecorder();
 })();
 `;
 

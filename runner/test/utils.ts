@@ -43,9 +43,9 @@ export const setBody = async (page: Page, content: string): Promise<void> => {
   // probabbly due to the way playwright overwrites the document when setting content
   await page.evaluate(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any).qawInstance.stop();
+    (window as any).qawActionRecorder.stop();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any).qawInstance.start();
+    (window as any).qawActionRecorder.start();
   });
 };
 
