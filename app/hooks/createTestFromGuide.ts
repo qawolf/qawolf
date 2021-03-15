@@ -13,14 +13,14 @@ type CreateTestFromGuide = {
 
 type UseCreateTestFromGuide = {
   href: string;
-  name: string;
+  guide: string;
   teamId: string;
   userId: string;
 };
 
 export const useCreateTestFromGuide = ({
   href,
-  name,
+  guide,
   teamId,
   userId,
 }: UseCreateTestFromGuide): CreateTestFromGuide => {
@@ -35,7 +35,7 @@ export const useCreateTestFromGuide = ({
   const handleClick = (): void => {
     createTest({
       variables: {
-        name,
+        guide,
         team_id: teamId,
         url: `${window.location.origin}${routes.guides}${href}?user_id=${userId}`,
       },

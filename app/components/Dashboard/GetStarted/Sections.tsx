@@ -24,8 +24,8 @@ export default function Sections({
   userId,
 }: Props): JSX.Element {
   const { loading, onClick: onLearnClick } = useCreateTestFromGuide({
+    guide: "Create a Test",
     href: "/create-a-test",
-    name: "Guide: Create a Test",
     teamId,
     userId,
   });

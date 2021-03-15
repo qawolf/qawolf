@@ -72,7 +72,7 @@ export const getWolfColors = (color?: string | null): WolfColors => {
       return {
         back: colors.gray4,
         ear: "#FABED3",
-        earShadow: colors.gray6,
+        earShadow: colors.gray5,
         eyebrow: colors.gray0,
         front: colors.gray0,
         line: colors.gray9,

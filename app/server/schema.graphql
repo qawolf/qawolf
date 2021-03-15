@@ -752,9 +752,9 @@ type Mutation {
     group_id: ID
 
     """
-    Optional name
+    Optional name of guide for test
     """
-    name: String
+    guide: String
 
     """
     Team ID

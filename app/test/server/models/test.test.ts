@@ -57,7 +57,7 @@ describe("buildTestName", () => {
     expect(testName).toBe("My Test");
 
     const testName2 = await buildTestName(
-      { name: "Guide: Create a Test", team_id: "teamId" },
+      { guide: "Create a Test", team_id: "teamId" },
       options
     );
     expect(testName2).toBe("Guide: Create a Test");
@@ -80,7 +80,7 @@ describe("buildTestName", () => {
       );
 
     const testName = await buildTestName(
-      { name: "Guide: Create a Test", team_id: "teamId" },
+      { guide: "Create a Test", team_id: "teamId" },
       options
     );
     expect(testName).toBe("Guide: Create a Test 2");
@@ -119,6 +119,7 @@ describe("createTest", () => {
       creator_id: "userId",
       deleted_at: null,
       group_id: null,
+      guide: null,
       id: expect.any(String),
       is_enabled: true,
       name: "My Test",
@@ -145,12 +146,12 @@ describe("createTest", () => {
     });
   });
 
-  it("creates a new test with a custom name", async () => {
+  it("creates a new test for a guide", async () => {
     await createTest(
       {
         code: "code",
         creator_id: "userId",
-        name: "Guide: Create a Test",
+        guide: "Create a Test",
         team_id: "teamId",
       },
       options
@@ -159,6 +160,7 @@ describe("createTest", () => {
     const tests = await db.select("*").from("tests").where({ code: "code" });
 
     expect(tests[0]).toMatchObject({
+      guide: "Create a Test",
       name: "Guide: Create a Test",
     });
 
@@ -166,7 +168,7 @@ describe("createTest", () => {
       {
         code: "code",
         creator_id: "userId",
-        name: "Guide: Create a Test",
+        guide: "Create a Test",
         team_id: "teamId",
       },
       options
@@ -478,11 +480,19 @@ describe("hasTest", () => {
 
   afterAll(() => db("tests").del());
 
-  it("returns true if team has test trigger", async () => {
+  it("returns true if team has test", async () => {
     expect(await hasTest("teamId", options)).toBe(true);
   });
 
-  it("returns false if team does not have test trigger", async () => {
+  it("returns false if team has test that is a guide", async () => {
+    await db("tests").update({ guide: "Create a Test" });
+
+    expect(await hasTest("teamId", options)).toBe(false);
+
+    await db("tests").update({ guide: null });
+  });
+
+  it("returns false if team does not have test", async () => {
     expect(await hasTest("team2Id", options)).toBe(false);
   });
 });

@@ -28,8 +28,8 @@ export default function StartTutorial(): JSX.Element {
   const { user } = useContext(UserContext);
 
   const { loading, onClick: createTestFromGuide } = useCreateTestFromGuide({
+    guide: "Create a Test",
     href: "/create-a-test",
-    name: "Guide: Create a Test",
     teamId,
     userId: user?.id,
   });

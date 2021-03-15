@@ -3,7 +3,15 @@ import { getWolfColors } from "../../../theme/wolf";
 type Props = { color?: string };
 
 export default function WolfGuideClosed({ color }: Props): JSX.Element {
-  const { back, eyebrow, front, line, shadow, sparkle } = getWolfColors(color);
+  const {
+    back,
+    earShadow,
+    eyebrow,
+    front,
+    line,
+    shadow,
+    sparkle,
+  } = getWolfColors(color);
 
   return (
     <svg
@@ -164,7 +172,7 @@ export default function WolfGuideClosed({ color }: Props): JSX.Element {
       />
       <path
         d="M31.0722 39.3481C30.9847 39.2605 30.8096 39.2605 30.7221 39.1728C39.825 29.1826 73.4355 46.4464 73.4355 46.4464C85.9519 52.1427 92.779 57.0501 91.9913 58.8905C90.7659 61.9576 92.4289 66.6899 94.1794 70.1952C89.3654 70.1952 81.7506 58.8905 38.5996 41.7142C36.1488 40.7502 33.698 40.0492 31.1598 39.4357L31.0722 39.3481Z"
-        fill={shadow}
+        fill={earShadow}
       />
       <path
         fillRule="evenodd"

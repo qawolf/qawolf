@@ -22,8 +22,8 @@ export default function Tutorial(): JSX.Element {
     error,
     onClick: createTestFromGuide,
   } = useCreateTestFromGuide({
+    guide: "Create a Test",
     href: "/create-a-test",
-    name: "Guide: Create a Test",
     teamId,
     userId: user?.id,
   });
