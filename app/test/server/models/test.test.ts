@@ -340,6 +340,8 @@ describe("pending tests", () => {
   describe("countIncompleteTests", () => {
     it("counts tests assigned to and requesting a runner", async () => {
       const result = await countIncompleteTests("eastus2", options);
+      result.sort((a, b) => (a < b ? 1 : -1));
+
       expect(result).toEqual([
         { count: 2, location: "eastus2" },
         { count: 2, location: "westus2" },
