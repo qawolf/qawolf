@@ -47,7 +47,7 @@ export const createTestResolver = async (
   log.debug(user.id);
 
   const event = guide ? "Guide Created" : "Test Created";
-  trackSegmentEvent(user, event, { acValue: url });
+  trackSegmentEvent(user, event, { acValue: guide || url });
 
   const code = `const { context } = await launch();\nconst page = await context.newPage();\nawait page.goto('${url}', { waitUntil: "domcontentloaded" });\n// 🐺 QA Wolf will create code here`;
 
