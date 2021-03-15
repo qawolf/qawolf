@@ -126,3 +126,19 @@ export const findTestTriggersForTests = async (
 
   return result;
 };
+
+export const hasTestTrigger = async (
+  team_id: string,
+  { db, logger }: ModelOptions
+): Promise<boolean> => {
+  const log = logger.prefix("hasTestTrigger");
+  log.debug("team", team_id);
+
+  const testTrigger = await db("test_triggers")
+    .innerJoin("triggers", "test_triggers.trigger_id", "triggers.id")
+    .where({ team_id })
+    .first();
+  log.debug(testTrigger ? `found ${testTrigger.id}` : "not found");
+
+  return !!testTrigger;
+};

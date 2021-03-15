@@ -275,6 +275,7 @@ export type Test = {
   group_id: string | null;
   id: string;
   is_enabled: boolean;
+  is_guide?: boolean;
   name: string;
   runner_locations?: string | null;
   runner_requested_at?: string | null;
@@ -381,7 +382,7 @@ export type CreateSuiteMutation = {
 
 export type CreateTestMutation = {
   group_id: string | null;
-  name: string | null;
+  guide: string | null;
   team_id: string;
   url: string;
 };
@@ -542,6 +543,13 @@ export type EnvironmentIdQuery = {
 
 export type IdQuery = {
   id: string;
+};
+
+export type Onboarding = {
+  has_added_trigger_to_test: boolean;
+  has_completed_tutorial: boolean;
+  has_created_test: boolean;
+  has_invited_user: boolean;
 };
 
 export type RunResult = Run & {

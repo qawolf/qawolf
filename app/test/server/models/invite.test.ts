@@ -3,6 +3,7 @@ import {
   deleteInvite,
   findInvite,
   findInvitesForTeam,
+  hasInvitedUser,
   updateInvite,
 } from "../../../server/models/invite";
 import { WOLF_NAMES, WOLF_VARIANTS } from "../../../server/models/wolfOptions";
@@ -202,6 +203,31 @@ describe("invite model", () => {
       const invites = await findInvitesForTeam("teamId", options);
 
       expect(invites).toMatchObject([{ id: "inviteId" }]);
+    });
+  });
+
+  describe("hasInvitedUser", () => {
+    it("returns false if only one user and no invites", async () => {
+      expect(await hasInvitedUser("teamId", options)).toBe(false);
+    });
+
+    it("returns true if multiple users", async () => {
+      await db("team_users").insert([
+        buildTeamUser({}),
+        buildTeamUser({ i: 2, user_id: "user2Id" }),
+      ]);
+
+      expect(await hasInvitedUser("teamId", options)).toBe(true);
+
+      await db("team_users").del();
+    });
+
+    it("returns true if one user and one invite", async () => {
+      await db("invites").insert(buildInvite({}));
+
+      expect(await hasInvitedUser("teamId", options)).toBe(true);
+
+      await db("invites").del();
     });
   });
 

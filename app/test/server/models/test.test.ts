@@ -26,6 +26,7 @@ const {
   findTest,
   findTestForRun,
   findTestsForTeam,
+  hasTest,
   updateTest,
   updateTestsGroup,
 } = testModel;
@@ -56,7 +57,7 @@ describe("buildTestName", () => {
     expect(testName).toBe("My Test");
 
     const testName2 = await buildTestName(
-      { name: "Guide: Create a Test", team_id: "teamId" },
+      { guide: "Create a Test", team_id: "teamId" },
       options
     );
     expect(testName2).toBe("Guide: Create a Test");
@@ -79,7 +80,7 @@ describe("buildTestName", () => {
       );
 
     const testName = await buildTestName(
-      { name: "Guide: Create a Test", team_id: "teamId" },
+      { guide: "Create a Test", team_id: "teamId" },
       options
     );
     expect(testName).toBe("Guide: Create a Test 2");
@@ -118,6 +119,7 @@ describe("createTest", () => {
       creator_id: "userId",
       deleted_at: null,
       group_id: null,
+      guide: null,
       id: expect.any(String),
       is_enabled: true,
       name: "My Test",
@@ -144,12 +146,12 @@ describe("createTest", () => {
     });
   });
 
-  it("creates a new test with a custom name", async () => {
+  it("creates a new test for a guide", async () => {
     await createTest(
       {
         code: "code",
         creator_id: "userId",
-        name: "Guide: Create a Test",
+        guide: "Create a Test",
         team_id: "teamId",
       },
       options
@@ -158,6 +160,7 @@ describe("createTest", () => {
     const tests = await db.select("*").from("tests").where({ code: "code" });
 
     expect(tests[0]).toMatchObject({
+      guide: "Create a Test",
       name: "Guide: Create a Test",
     });
 
@@ -165,7 +168,7 @@ describe("createTest", () => {
       {
         code: "code",
         creator_id: "userId",
-        name: "Guide: Create a Test",
+        guide: "Create a Test",
         team_id: "teamId",
       },
       options
@@ -337,6 +340,8 @@ describe("pending tests", () => {
   describe("countIncompleteTests", () => {
     it("counts tests assigned to and requesting a runner", async () => {
       const result = await countIncompleteTests("eastus2", options);
+      result.sort((a, b) => (a < b ? 1 : -1));
+
       expect(result).toEqual([
         { count: 2, location: "eastus2" },
         { count: 2, location: "westus2" },
@@ -469,6 +474,28 @@ describe("findTestsForTeam", () => {
     const tests = await findTestsForTeam("fakeId", options);
 
     expect(tests).toEqual([]);
+  });
+});
+
+describe("hasTest", () => {
+  beforeAll(() => db("tests").insert(buildTest({})));
+
+  afterAll(() => db("tests").del());
+
+  it("returns true if team has test", async () => {
+    expect(await hasTest("teamId", options)).toBe(true);
+  });
+
+  it("returns false if team has test that is a guide", async () => {
+    await db("tests").update({ guide: "Create a Test" });
+
+    expect(await hasTest("teamId", options)).toBe(false);
+
+    await db("tests").update({ guide: null });
+  });
+
+  it("returns false if team does not have test", async () => {
+    expect(await hasTest("team2Id", options)).toBe(false);
   });
 });
 

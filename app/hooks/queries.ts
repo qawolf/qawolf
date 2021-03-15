@@ -8,6 +8,7 @@ import {
   environmentVariablesQuery,
   groupsQuery,
   integrationsQuery,
+  onboardingQuery,
   runnerQuery,
   shortSuiteQuery,
   suiteQuery,
@@ -30,6 +31,7 @@ import {
   EnvironmentVariable,
   Group,
   Integration,
+  Onboarding,
   Run,
   Runner,
   ShortTest,
@@ -81,6 +83,14 @@ type IntegrationsData = {
 };
 
 type IntegrationsVariables = {
+  team_id: string;
+};
+
+type OnboardingData = {
+  onboarding: Onboarding;
+};
+
+type OnboardingVariables = {
   team_id: string;
 };
 
@@ -257,6 +267,17 @@ export const useIntegrations = (
 ): QueryResult<IntegrationsData, IntegrationsVariables> => {
   return useQuery<IntegrationsData, IntegrationsVariables>(integrationsQuery, {
     fetchPolicy,
+    onError,
+    skip: !variables.team_id,
+    variables,
+  });
+};
+
+export const useOnboarding = (
+  variables: OnboardingVariables
+): QueryResult<OnboardingData, OnboardingVariables> => {
+  return useQuery<OnboardingData, OnboardingVariables>(onboardingQuery, {
+    fetchPolicy: "network-only",
     onError,
     skip: !variables.team_id,
     variables,

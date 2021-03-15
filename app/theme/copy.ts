@@ -6,6 +6,9 @@ export const copy = {
   add: "Add",
   addSlackChannel: "Add Slack channel",
   addTrigger: "Add trigger",
+  addTriggerToTest: "Add a trigger to your test",
+  addTriggerToTestDetail:
+    "Assign a trigger to your test so it runs on a schedule, on deployment, or with an API call.",
   aka: "A.K.A.",
   alertSlack: ({
     channel,
@@ -44,6 +47,7 @@ export const copy = {
   codeLoveDetail:
     "Your test code uses the best selector and best-in-class open source tools.",
   communitySupport: "Community support",
+  completeCount: (count: number): string => `${count} of 4 complete`,
   confirm: "Confirm",
   confirmDelete: (entity: string): string =>
     `Are you sure you want to delete the following ${entity}?`,
@@ -58,6 +62,8 @@ export const copy = {
   createCode: "Create code",
   created: "Created",
   createFirstTest: "Create your first test",
+  createFirstTestDetail:
+    "Create a test for a critical path to find bugs before customers do.",
   createOnline: "Create and run tests online",
   createTagline: "Create tests at warp speed",
   createTest: "Create test",
@@ -156,11 +162,17 @@ export const copy = {
   invalidUrl: "Not a valid URL",
   invite: "Enter emails to invite",
   invitePlacholder: "name@company.com",
+  inviteWolfpack: "Invite your wolfpack",
+  inviteWolfpackDetail:
+    "Invite team members so they can see your test results and contribute to your test suite.",
   joinMailingList: "Join our mailing list",
   joinSlack: "Join Slack",
   joinWolfPack: "Join the wolf pack",
   key: "Key",
   lastUsed: "Last used",
+  learnMore: "Learn more",
+  learnQaWolf: "Learn how to use QA Wolf",
+  learnQaWolfDetail: "Learn how to create a test in our interactive tutorial.",
   learnedBasics: "Congratulations, you’ve mastered the basics of QA Wolf!",
   learnedBasics2:
     "Click the back arrow in the top left corner to return to the dashboard.",
@@ -173,6 +185,7 @@ export const copy = {
   logs: "Logs",
   loveOpenSource: "We 💖 open source",
   mailingListSubscribe: "Receive product and company updates",
+  manageTriggers: "Manage triggers",
   manuallyTriggered: "Manually triggered",
   meet: "Meet your QA Wolf",
   members: "Members",
@@ -197,6 +210,7 @@ export const copy = {
   notRunYet: "Not run yet",
   notStarted: "Preparing",
   onPremise: "Run on-premise",
+  openSettings: "Open settings",
   openSourceDiscount:
     "Ask us about our free or discounted plans for open source projects.",
   or: "or",
@@ -244,6 +258,7 @@ export const copy = {
   other: "Other",
   otherDeploy: "Don't see the tool you use? Let us know!",
   pleaseType: "Please type",
+  revisitTutorial: "Revisit tutorial",
   startTutorial: "Start tutorial",
   tenTeamMembers: "Up to 10 team members",
   toggleCreateCode:
@@ -322,8 +337,9 @@ export const copy = {
   video: "Video",
   watchCreate: "Watch Jon create a test",
   watchTime: "in 1 minute",
-  welcome: "Welcome to QA Wolf!",
-  welcome2: "Sign up to create and run tests",
+  welcome: "Welcome to QA Wolf",
+  welcomeDetail:
+    "Thank you for signing up! Follow these steps to start creating, running, and maintaining tests faster.",
   wolfGreeting: (wolfName: string): string => {
     return `Hi, I'm ${wolfName}!`;
   },

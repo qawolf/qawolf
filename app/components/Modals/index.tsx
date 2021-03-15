@@ -21,12 +21,14 @@ export default function Modals(): JSX.Element {
 
   const isTest = pathname.includes(`${routes.test}/`); // include slash to not match dashboard
 
+  const isGetStarted = pathname.includes(routes.getStarted);
   const isSettings = pathname.includes(routes.settings);
   const isSuites = pathname.includes(routes.suites);
   const isTests = pathname.includes(routes.tests);
-  const isDashboard = isSettings || isSuites || isTests;
 
-  if (isTests && name === "createTest") {
+  const isDashboard = isGetStarted || isSettings || isSuites || isTests;
+
+  if ((isGetStarted || isTests) && name === "createTest") {
     return <CreateTest closeModal={closeModal} />;
   }
 

@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useContext } from "react";
 import styled from "styled-components";
 
-import { CreateTestData, useCreateTest } from "../../hooks/mutations";
+import { useCreateTestFromGuide } from "../../hooks/createTestFromGuide";
 import { useWindowSize } from "../../hooks/windowSize";
 import { routes } from "../../lib/routes";
 import { copy } from "../../theme/copy";
@@ -27,23 +27,22 @@ export default function StartTutorial(): JSX.Element {
   const { teamId } = useContext(StateContext);
   const { user } = useContext(UserContext);
 
-  const [createTest, { loading }] = useCreateTest(
-    ({ createTest }: CreateTestData): void => {
-      push(`${routes.test}/${createTest.id}`);
-    }
-  );
+  const { loading, onClick: createTestFromGuide } = useCreateTestFromGuide({
+    guide: "Create a Test",
+    href: "/create-a-test",
+    teamId,
+    userId: user?.id,
+  });
 
   const isMobile = width && width < breakpoints.medium.value;
-  if (isMobile || !teamId || !user) return null;
+  if (isMobile) return null;
 
   const handleClick = (): void => {
-    createTest({
-      variables: {
-        name: "Guide: Create a Test",
-        team_id: teamId,
-        url: `${window.location.origin}${routes.guides}/create-a-test?user_id=${user.id}`,
-      },
-    });
+    if (teamId && user) {
+      createTestFromGuide();
+    } else {
+      push(routes.signUp);
+    }
   };
 
   return (

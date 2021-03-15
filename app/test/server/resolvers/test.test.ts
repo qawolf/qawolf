@@ -90,7 +90,7 @@ describe("createTestResolver", () => {
       {},
       {
         group_id: "groupId",
-        name: null,
+        guide: null,
         team_id: "teamId",
         url: "https://google.com",
       },
@@ -101,6 +101,7 @@ describe("createTestResolver", () => {
       team_id: "teamId",
       creator_id: "userId",
       group_id: "groupId",
+      guide: null,
       id: expect.any(String),
       name: "My Test",
     });
@@ -108,12 +109,12 @@ describe("createTestResolver", () => {
     await db("tests").where({ id: test.id }).del();
   });
 
-  it("creates a test with a name", async () => {
+  it("creates a test for a guide", async () => {
     const test = await createTestResolver(
       {},
       {
         group_id: "groupId",
-        name: "Guide: Create a Test",
+        guide: "Create a Test",
         team_id: "teamId",
         url: "https://google.com",
       },
@@ -121,6 +122,7 @@ describe("createTestResolver", () => {
     );
 
     expect(test).toMatchObject({
+      guide: "Create a Test",
       name: "Guide: Create a Test",
     });
 

@@ -4,22 +4,20 @@ import { useContext } from "react";
 
 import { useTestTriggers } from "../../../hooks/queries";
 import { timeToText } from "../../../lib/helpers";
-import { routes } from "../../../lib/routes";
 import { state } from "../../../lib/state";
 import { copy } from "../../../theme/copy";
 import { borderSize, edgeSize } from "../../../theme/theme";
 import Button from "../../shared/AppButton";
 import Divider from "../../shared/Divider";
-import ArrowLeft from "../../shared/icons/ArrowLeft";
 import Edit from "../../shared/icons/Edit";
 import Lightning from "../../shared/icons/Lightning";
 import StatusBadge from "../../shared/StatusBadge";
 import Text from "../../shared/Text";
-import { StateContext } from "../../StateContext";
 import { RunnerContext } from "../contexts/RunnerContext";
 import { TestContext } from "../contexts/TestContext";
 import { buildTestHref } from "../helpers";
 import { Mode } from "../hooks/mode";
+import BackButton from "./BackButton";
 import RunSummary from "./RunSummary";
 import TestHistory from "./TestHistory";
 import TestName from "./TestName";
@@ -31,7 +29,6 @@ export default function Header({ mode }: Props): JSX.Element {
     query: { test_id },
   } = useRouter();
 
-  const { dashboardUri } = useContext(StateContext);
   const { progress } = useContext(RunnerContext);
   const { run, suite, test } = useContext(TestContext);
 
@@ -58,13 +55,7 @@ export default function Header({ mode }: Props): JSX.Element {
         width="full"
       >
         <Box align="center" direction="row">
-          <Button
-            IconComponent={ArrowLeft}
-            a11yTitle={copy.backToDashboard}
-            href={dashboardUri || routes.tests}
-            margin={{ right: "xxxsmall" }}
-            type="ghost"
-          />
+          <BackButton />
           <TestName disabled={mode !== "test"} test={test} />
           {!!run && (
             <Text color="gray7" margin={{ right: "small" }} size="component">

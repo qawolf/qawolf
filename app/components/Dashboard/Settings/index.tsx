@@ -1,21 +1,19 @@
 import { Box } from "grommet";
-import { useContext } from "react";
 
 import { useIntegrations, useTeam } from "../../../hooks/queries";
 import { copy } from "../../../theme/copy";
 import { border, edgeSize } from "../../../theme/theme";
 import Spinner from "../../shared/Spinner";
 import Text from "../../shared/Text";
-import { StateContext } from "../../StateContext";
 import Alerts from "./Alerts";
 import Members from "./Members";
 import Team from "./Team";
 
 const maxWidth = "640px";
 
-export default function Settings(): JSX.Element {
-  const { teamId } = useContext(StateContext);
+type Props = { teamId: string };
 
+export default function Settings({ teamId }: Props): JSX.Element {
   const { data } = useTeam({ id: teamId });
   const team = data?.team || null;
 

@@ -7,6 +7,7 @@ import { routes } from "../../../lib/routes";
 import { state } from "../../../lib/state";
 import { copy } from "../../../theme/copy";
 import Divider from "../../shared/Divider";
+import Gear from "../../shared/icons/Gear";
 import LogOut from "../../shared/icons/LogOut";
 import Menu from "../../shared/Menu";
 import Option from "../../shared/Select/Option";
@@ -19,7 +20,7 @@ type Props = {
 };
 
 export default function UserMenu({ isOpen, onClose }: Props): JSX.Element {
-  const { replace } = useRouter();
+  const { push, replace } = useRouter();
 
   const { teamId } = useContext(StateContext);
   const { user } = useContext(UserContext);
@@ -32,6 +33,11 @@ export default function UserMenu({ isOpen, onClose }: Props): JSX.Element {
     resetIntercom();
 
     replace(routes.home);
+  };
+
+  const handleSettingsClick = (): void => {
+    push(routes.settings);
+    onClose();
   };
 
   const handleTeamClick = (teamId: string): void => {
@@ -55,6 +61,11 @@ export default function UserMenu({ isOpen, onClose }: Props): JSX.Element {
     <Menu direction="down">
       {optionsHtml}
       <Divider margin={{ vertical: "xxxsmall" }} />
+      <Option
+        IconComponent={Gear}
+        label={copy.teamSettings}
+        onClick={handleSettingsClick}
+      />
       <Option
         IconComponent={LogOut}
         label={copy.logOut}

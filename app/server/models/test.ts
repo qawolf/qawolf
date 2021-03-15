@@ -6,7 +6,7 @@ import { ModelOptions, Test } from "../types";
 import { cuid } from "../utils";
 
 type BuildTestName = {
-  name?: string | null;
+  guide?: string | null;
   team_id: string;
 };
 
@@ -14,7 +14,7 @@ type CreateTest = {
   code: string;
   creator_id: string;
   group_id?: string | null;
-  name?: string | null;
+  guide?: string | null;
   team_id: string;
 };
 
@@ -52,10 +52,10 @@ const formatTestName = (name: string, testNumber: number): string => {
 };
 
 export const buildTestName = async (
-  { name, team_id }: BuildTestName,
+  { guide, team_id }: BuildTestName,
   { db, logger }: ModelOptions
 ): Promise<string> => {
-  const proposedName = name || "My Test";
+  const proposedName = guide ? `Guide: ${guide}` : "My Test";
   const tests = await findTestsForTeam(team_id, { db, logger });
 
   const testNames = new Set(tests.map((test) => test.name));
@@ -98,14 +98,14 @@ export const countIncompleteTests = async (
 };
 
 export const createTest = async (
-  { code, creator_id, group_id, name, team_id }: CreateTest,
+  { code, creator_id, group_id, guide, team_id }: CreateTest,
   { db, logger }: ModelOptions
 ): Promise<Test> => {
   const log = logger.prefix("createTest");
   log.debug("team", team_id);
 
   const timestamp = minutesFromNow();
-  const uniqueName = await buildTestName({ name, team_id }, { db, logger });
+  const uniqueName = await buildTestName({ guide, team_id }, { db, logger });
 
   const test = {
     created_at: timestamp,
@@ -113,6 +113,7 @@ export const createTest = async (
     code,
     deleted_at: null,
     group_id: group_id || null,
+    guide: guide || null,
     id: cuid(),
     is_enabled: true,
     name: uniqueName,
@@ -270,6 +271,19 @@ export const deleteTests = async (
   log.debug("deleted", ids);
 
   return tests;
+};
+
+export const hasTest = async (
+  team_id: string,
+  { db, logger }: ModelOptions
+): Promise<boolean> => {
+  const log = logger.prefix("hasTest");
+  log.debug("team", team_id);
+
+  const test = await db("tests").where({ guide: null, team_id }).first();
+  log.debug(test ? `found ${test.id}` : "not found");
+
+  return !!test;
 };
 
 export const updateTest = async (

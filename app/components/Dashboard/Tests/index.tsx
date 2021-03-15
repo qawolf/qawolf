@@ -1,25 +1,25 @@
 import { Box } from "grommet";
 import isEqual from "lodash/isEqual";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useTests, useTestTriggers, useTriggers } from "../../../hooks/queries";
 import { Group } from "../../../lib/types";
-import { StateContext } from "../../StateContext";
 import { filterTests } from "../helpers";
 import Header from "./Header";
 import List from "./List";
 
-type Props = { groups: Group[] | null };
+type Props = {
+  groups: Group[] | null;
+  teamId: string;
+};
 
-export default function Tests({ groups }: Props): JSX.Element {
+export default function Tests({ groups, teamId }: Props): JSX.Element {
   const { query } = useRouter();
   const group_id = (query.group_id as string) || null;
   const trigger_id = query.trigger_id as string;
 
   const testIdsRef = useRef<string[]>([]);
-
-  const { teamId } = useContext(StateContext);
 
   const [search, setSearch] = useState("");
   const [checkedTestIds, setCheckedTestIds] = useState<string[]>([]);

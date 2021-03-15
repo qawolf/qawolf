@@ -1,4 +1,3 @@
-import { ClientError } from "../errors";
 import { findLatestRuns, findRunResult } from "../models/run";
 import {
   createTest,
@@ -36,7 +35,7 @@ import {
  */
 export const createTestResolver = async (
   _: Record<string, unknown>,
-  { group_id, name, team_id, url }: CreateTestMutation,
+  { group_id, guide, team_id, url }: CreateTestMutation,
   { db, logger, user: contextUser, teams }: Context
 ): Promise<Test> => {
   const log = logger.prefix("createTestResolver");
@@ -47,7 +46,8 @@ export const createTestResolver = async (
 
   log.debug(user.id);
 
-  trackSegmentEvent(user, "Test Created", { acValue: url });
+  const event = guide ? "Guide Created" : "Test Created";
+  trackSegmentEvent(user, event, { acValue: url });
 
   const code = `const { context } = await launch();\nconst page = await context.newPage();\nawait page.goto('${url}', { waitUntil: "domcontentloaded" });\n// 🐺 QA Wolf will create code here`;
 
@@ -56,7 +56,7 @@ export const createTestResolver = async (
       code,
       creator_id: user.id,
       group_id,
-      name,
+      guide,
       team_id: team_id,
     },
     { db, logger }

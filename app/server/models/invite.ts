@@ -136,6 +136,27 @@ export const findInvite = async (
   return invite;
 };
 
+export const hasInvitedUser = async (
+  team_id: string,
+  { db, logger }: ModelOptions
+): Promise<boolean> => {
+  const log = logger.prefix("hasInvitedUser");
+  log.debug("team", team_id);
+
+  const teamUsers = await db("team_users").where({ team_id }).limit(2);
+  if (teamUsers.length > 1) {
+    log.debug("multiple team users");
+    return true;
+  } else {
+    log.debug(`${teamUsers.length} one team user`);
+  }
+
+  const invite = await db("invites").where({ team_id }).first();
+  log.debug(invite ? `found invite ${invite.id}` : "invite not found");
+
+  return !!invite;
+};
+
 export const updateInvite = async (
   id: string,
   { db, logger }: ModelOptions

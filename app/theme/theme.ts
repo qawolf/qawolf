@@ -160,6 +160,7 @@ export const text = {
   componentMedium: { height: "16px", size: "14px" },
   componentParagraph: { height: "20px", size: "14px" },
   componentSmall: { height: "16px", size: "12px" },
+  componentXLarge: { height: "32px", size: "22px" },
   eyebrow: { height: "18px", size: "16px" },
 };
 
@@ -178,6 +179,7 @@ export const textDesktop = {
   componentMedium: { height: "16px", size: "14px" },
   componentParagraph: { height: "20px", size: "14px" },
   componentSmall: { height: "16px", size: "12px" },
+  componentXLarge: { height: "32px", size: "22px" },
   eyebrow: { height: "18px", size: "16px" },
 };
 

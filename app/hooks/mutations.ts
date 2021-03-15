@@ -161,7 +161,7 @@ export type CreateTestData = {
 
 type CreateTestVariables = {
   group_id?: string | null;
-  name?: string | null;
+  guide?: string | null;
   team_id: string;
   url: string;
 };
@@ -375,13 +375,12 @@ const handleAuthenticatedUser = ({
   localStorage.setItem(JWT_KEY, access_token);
   updateCurrentUser(user);
 
-  // redirect to stored redirect uri if possible
-  if (signUp.redirectUri) {
-    replace(signUp.redirectUri);
-    return;
-  }
+  let route = routes.tests;
 
-  replace(routes.tests);
+  if (signUp.redirectUri) route = signUp.redirectUri;
+  else if (!user.onboarded_at) route = routes.tutorial;
+
+  replace(route);
 };
 
 export const useAcceptInvite = (): MutationTuple<

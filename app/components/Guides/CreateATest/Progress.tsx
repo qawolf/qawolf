@@ -1,6 +1,6 @@
-import { Box, Meter } from "grommet";
+import { Box } from "grommet";
 
-import { colors } from "../../../theme/theme";
+import Meter from "../../shared/Meter";
 import Text from "../../shared/Text";
 
 type Props = { step: number };
@@ -8,20 +8,11 @@ type Props = { step: number };
 const max = 4;
 
 export default function Progress({ step }: Props): JSX.Element {
-  const values = [{ value: step }];
   const label = `Step ${step} of ${max}`;
 
   return (
     <Box align="center" alignSelf="center">
-      <Meter
-        a11yTitle="progress"
-        background={colors.gray2}
-        margin="0"
-        max={max}
-        round
-        thickness="xsmall"
-        values={values}
-      />
+      <Meter a11yTitle="progress" max={max} value={step} />
       <Text
         color="gray7"
         margin={{ top: "xxsmall" }}

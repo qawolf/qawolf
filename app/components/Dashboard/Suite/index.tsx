@@ -1,22 +1,22 @@
 import { Box } from "grommet";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useSuite } from "../../../hooks/queries";
 import { RunStatus } from "../../../lib/types";
 import Spinner from "../../shared/Spinner";
-import { StateContext } from "../../StateContext";
 import { filterRuns } from "../helpers";
 import Header from "./Header";
 import List from "./List";
 
-type Props = { suiteId: string };
+type Props = {
+  suiteId: string;
+  teamId: string;
+};
 
-export default function Suite({ suiteId }: Props): JSX.Element {
+export default function Suite({ suiteId, teamId }: Props): JSX.Element {
   const { query } = useRouter();
   const status = (query.status || null) as RunStatus | null;
-
-  const { teamId } = useContext(StateContext);
 
   const [checkedTestIds, setCheckedTestIds] = useState<string[]>([]);
   const [search, setSearch] = useState("");
