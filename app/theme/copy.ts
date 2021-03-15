@@ -8,7 +8,7 @@ export const copy = {
   addTrigger: "Add trigger",
   addTriggerToTest: "Add a trigger to your test",
   addTriggerToTestDetail:
-    "Check that your site is working by running tests on a schedule, on deployment, or with an API call.",
+    "Make sure your site works by running tests on a schedule, on deployment, or with an API call.",
   aka: "A.K.A.",
   alertSlack: ({
     channel,
