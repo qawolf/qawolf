@@ -173,7 +173,7 @@ export const copy = {
   learnMore: "Learn more",
   learnQaWolf: "Learn how to use QA Wolf",
   learnQaWolfDetail:
-    "Follow our interactive tutorial to learn the basics of QA Wolf. This includes how to toggle code creation on/off and how to run a part of your test.",
+    "Follow our interactive tutorial to learn the basics of QA Wolf. You will learn how to toggle code creation on/off and how to run selected lines of code.",
   learnedBasics: "Congratulations, you’ve mastered the basics of QA Wolf!",
   learnedBasics2:
     "Click the back arrow in the top left corner to return to the dashboard.",
