@@ -29,7 +29,7 @@ export default function GetStarted({ teamId }: Props): JSX.Element {
       Object.values(onboarding).filter((v) => v === true).length
     : 0;
 
-  const handleToggleOptn = (section: SectionType): void => {
+  const handleToggleOpen = (section: SectionType): void => {
     setOpenSection((prev) => {
       if (prev === section) return null;
       return section;
@@ -44,7 +44,7 @@ export default function GetStarted({ teamId }: Props): JSX.Element {
         wolfColor={wolf?.variant}
       />
       <Sections
-        onToggleOpen={handleToggleOptn}
+        onToggleOpen={handleToggleOpen}
         onboarding={onboarding}
         openSection={openSection}
         teamId={teamId}
