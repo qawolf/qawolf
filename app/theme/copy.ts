@@ -8,7 +8,7 @@ export const copy = {
   addTrigger: "Add trigger",
   addTriggerToTest: "Add a trigger to your test",
   addTriggerToTestDetail:
-    "Assign a trigger to your test so it runs on a schedule, on deployment, or with an API call.",
+    "Make sure your site works by running tests on a schedule, on deployment, or with an API call.",
   aka: "A.K.A.",
   alertSlack: ({
     channel,
@@ -172,7 +172,8 @@ export const copy = {
   lastUsed: "Last used",
   learnMore: "Learn more",
   learnQaWolf: "Learn how to use QA Wolf",
-  learnQaWolfDetail: "Learn how to create a test in our interactive tutorial.",
+  learnQaWolfDetail:
+    "Follow our interactive tutorial to learn the basics of QA Wolf. You will learn how to toggle code creation on/off and how to run selected lines of code.",
   learnedBasics: "Congratulations, you’ve mastered the basics of QA Wolf!",
   learnedBasics2:
     "Click the back arrow in the top left corner to return to the dashboard.",
@@ -339,7 +340,7 @@ export const copy = {
   watchTime: "in 1 minute",
   welcome: "Welcome to QA Wolf",
   welcomeDetail:
-    "Thank you for signing up! Follow these steps to start creating, running, and maintaining tests faster.",
+    "Let’s start shipping confidently! Follow these steps to create, run, and maintain tests 10x faster. 🚀",
   wolfGreeting: (wolfName: string): string => {
     return `Hi, I'm ${wolfName}!`;
   },
