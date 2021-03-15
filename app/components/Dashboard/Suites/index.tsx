@@ -1,12 +1,10 @@
 import { Box } from "grommet";
-import { useContext } from "react";
 
 import { useSuites } from "../../../hooks/queries";
 import { copy } from "../../../theme/copy";
 import { border, edgeSize } from "../../../theme/theme";
 import Spinner from "../../shared/Spinner";
 import Text from "../../shared/Text";
-import { StateContext } from "../../StateContext";
 import SuiteCard from "./SuiteCard";
 
 type Props = { teamId: string };

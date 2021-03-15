@@ -1,5 +1,4 @@
 import { Box } from "grommet";
-import { useContext } from "react";
 
 import { useIntegrations, useTeam } from "../../../hooks/queries";
 import { copy } from "../../../theme/copy";

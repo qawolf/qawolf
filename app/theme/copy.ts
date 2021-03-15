@@ -162,6 +162,7 @@ export const copy = {
   joinWolfPack: "Join the wolf pack",
   key: "Key",
   lastUsed: "Last used",
+  learnQaWolf: "Learn how to use QA Wolf",
   learnedBasics: "Congratulations, you’ve mastered the basics of QA Wolf!",
   learnedBasics2:
     "Click the back arrow in the top left corner to return to the dashboard.",

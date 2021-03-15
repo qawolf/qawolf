@@ -18,7 +18,7 @@ export default function Welcome({
   wolfColor,
 }: Props): JSX.Element {
   return (
-    <Box {...containerProps} align="center" direction="row">
+    <Box {...containerProps} align="center" direction="row" pad="medium">
       <Box margin={{ right: "xxlarge" }}>
         <Text
           color="gray9"
