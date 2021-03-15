@@ -2,21 +2,27 @@ import { Box } from "grommet";
 
 import { copy } from "../../../theme/copy";
 import WolfGuideClosed from "../../shared/icons/WolfGuideClosed";
+import WolfGuideOpen from "../../shared/icons/WolfGuideOpen";
 import Meter from "../../shared/Meter";
 import Text from "../../shared/Text";
 import { containerProps } from "./helpers";
 
 type Props = {
   completeCount: number;
+  isOpen: boolean;
   wolfColor: string;
 };
 
 const max = 4;
+const minWolfWidth = "144px";
 
 export default function Welcome({
   completeCount,
+  isOpen,
   wolfColor,
 }: Props): JSX.Element {
+  const WolfIconComponent = isOpen ? WolfGuideOpen : WolfGuideClosed;
+
   return (
     <Box
       {...containerProps}
@@ -47,8 +53,8 @@ export default function Welcome({
           />
         </Box>
       </Box>
-      <Box flex={false}>
-        <WolfGuideClosed color={wolfColor} />
+      <Box flex={false} style={{ minWidth: minWolfWidth }}>
+        {!!wolfColor && <WolfIconComponent color={wolfColor} />}
       </Box>
     </Box>
   );

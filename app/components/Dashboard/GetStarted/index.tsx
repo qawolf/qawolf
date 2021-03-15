@@ -38,7 +38,11 @@ export default function GetStarted({ teamId }: Props): JSX.Element {
 
   const innerHtml = onboarding ? (
     <Box flex={false} pad={{ horizontal: "medium" }} style={{ maxWidth }}>
-      <Welcome completeCount={completeCount} wolfColor={wolf?.variant} />
+      <Welcome
+        completeCount={completeCount}
+        isOpen={!!openSection}
+        wolfColor={wolf?.variant}
+      />
       <Sections
         onToggleOpen={handleToggleOptn}
         onboarding={onboarding}
