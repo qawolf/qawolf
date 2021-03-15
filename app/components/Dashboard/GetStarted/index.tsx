@@ -2,7 +2,6 @@ import { Box } from "grommet";
 import { useEffect, useState } from "react";
 
 import { useOnboarding } from "../../../hooks/queries";
-import { edgeSize } from "../../../theme/theme";
 import Spinner from "../../shared/Spinner";
 import { getOpenSection, Section as SectionType } from "./helpers";
 import Sections from "./Sections";
@@ -35,12 +34,7 @@ export default function GetStarted({ teamId }: Props): JSX.Element {
   };
 
   const innerHtml = onboarding ? (
-    <Box
-      flex={false}
-      gap={edgeSize.medium}
-      pad={{ horizontal: "medium" }}
-      style={{ maxWidth }}
-    >
+    <Box flex={false} pad={{ horizontal: "medium" }} style={{ maxWidth }}>
       <Welcome completeCount={completeCount} wolfColor="white" />
       <Sections
         onToggleOpen={handleToggleOptn}

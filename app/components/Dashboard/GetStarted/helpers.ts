@@ -12,7 +12,7 @@ export const containerProps = {
 
 export const buttonLabels: { [section in Section]: string } = {
   addTrigger: "",
-  createTest: "",
+  createTest: copy.createTest,
   inviteUser: "",
   learn: copy.startTutorial,
 };
@@ -23,21 +23,21 @@ export const completeButtonLabels = {
 
 export const details: { [section in Section]: string } = {
   addTrigger: "",
-  createTest: "",
+  createTest: copy.createFirstTestDetail,
   inviteUser: "",
   learn: copy.learnQaWolfDetail,
 };
 
 export const docsHref: { [section in Section]: string } = {
   addTrigger: "",
-  createTest: "",
+  createTest: `${routes.docs}/create-a-test`,
   inviteUser: "",
   learn: `${routes.docs}/create-a-test`,
 };
 
 export const labels: { [section in Section]: string } = {
   addTrigger: "",
-  createTest: "",
+  createTest: copy.createFirstTest,
   inviteUser: "",
   learn: copy.learnQaWolf,
 };

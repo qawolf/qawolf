@@ -1,7 +1,10 @@
+import { Box } from "grommet";
 import { useContext } from "react";
 
 import { useCreateTestFromGuide } from "../../../hooks/createTestFromGuide";
+import { state } from "../../../lib/state";
 import { Onboarding } from "../../../lib/types";
+import { edgeSize } from "../../../theme/theme";
 import { UserContext } from "../../UserContext";
 import { Section as SectionType } from "./helpers";
 import Section from "./Section";
@@ -28,8 +31,12 @@ export default function Sections({
     userId: user?.id,
   });
 
+  const handleCreateClick = (): void => {
+    state.setModal({ name: "createTest" });
+  };
+
   return (
-    <>
+    <Box gap={edgeSize.medium}>
       <Section
         isComplete={onboarding.has_completed_tutorial}
         isDisabled={loading || !user}
@@ -38,6 +45,13 @@ export default function Sections({
         onToggleOpen={onToggleOpen}
         section="learn"
       />
-    </>
+      <Section
+        isComplete={onboarding.has_created_test}
+        isOpen={openSection === "createTest"}
+        onButtonClick={handleCreateClick}
+        onToggleOpen={onToggleOpen}
+        section="createTest"
+      />
+    </Box>
   );
 }

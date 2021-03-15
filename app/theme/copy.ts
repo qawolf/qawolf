@@ -59,6 +59,8 @@ export const copy = {
   createCode: "Create code",
   created: "Created",
   createFirstTest: "Create your first test",
+  createFirstTestDetail:
+    "Create a test for a critical path to find bugs before customers do.",
   createOnline: "Create and run tests online",
   createTagline: "Create tests at warp speed",
   createTest: "Create test",
