@@ -15,15 +15,17 @@ import {
 import Header from "./Header";
 
 type Props = {
+  buttonHref?: string;
   isComplete: boolean;
   isDisabled?: boolean;
   isOpen: boolean;
-  onButtonClick: () => void;
+  onButtonClick?: () => void;
   onToggleOpen: (section: SectionType) => void;
   section: SectionType;
 };
 
 export default function Section({
+  buttonHref,
   isComplete,
   isDisabled,
   isOpen,
@@ -48,6 +50,7 @@ export default function Section({
           </Text>
           <Box align="center" direction="row" margin={{ top: "medium" }}>
             <Button
+              href={buttonHref}
               isDisabled={isDisabled}
               label={buttonLabel}
               margin={{ right: "small" }}

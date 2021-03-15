@@ -1,8 +1,9 @@
 import { Box } from "grommet";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { useOnboarding } from "../../../hooks/queries";
 import Spinner from "../../shared/Spinner";
+import { UserContext } from "../../UserContext";
 import { getOpenSection, Section as SectionType } from "./helpers";
 import Sections from "./Sections";
 import Welcome from "./Welcome";
@@ -12,6 +13,7 @@ type Props = { teamId: string };
 const maxWidth = "800px";
 
 export default function GetStarted({ teamId }: Props): JSX.Element {
+  const { user, wolf } = useContext(UserContext);
   const [openSection, setOpenSection] = useState<SectionType | null>(null);
 
   const { data } = useOnboarding({ team_id: teamId });
@@ -23,7 +25,8 @@ export default function GetStarted({ teamId }: Props): JSX.Element {
   }, [onboarding]);
 
   const completeCount = onboarding
-    ? Object.values(onboarding).filter((v) => v).length
+    ? // filter that it equals true since typename is also included
+      Object.values(onboarding).filter((v) => v === true).length
     : 0;
 
   const handleToggleOptn = (section: SectionType): void => {
@@ -35,12 +38,13 @@ export default function GetStarted({ teamId }: Props): JSX.Element {
 
   const innerHtml = onboarding ? (
     <Box flex={false} pad={{ horizontal: "medium" }} style={{ maxWidth }}>
-      <Welcome completeCount={completeCount} wolfColor="white" />
+      <Welcome completeCount={completeCount} wolfColor={wolf?.variant} />
       <Sections
         onToggleOpen={handleToggleOptn}
         onboarding={onboarding}
         openSection={openSection}
         teamId={teamId}
+        userId={user?.id}
       />
     </Box>
   ) : (

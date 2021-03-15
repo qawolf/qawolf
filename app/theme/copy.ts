@@ -6,6 +6,9 @@ export const copy = {
   add: "Add",
   addSlackChannel: "Add Slack channel",
   addTrigger: "Add trigger",
+  addTriggerToTest: "Add a trigger to your test",
+  addTriggerToTestDetail:
+    "Assign a trigger to your test so it runs on a schedule, on deployment, or with an API call.",
   aka: "A.K.A.",
   alertSlack: ({
     channel,
@@ -159,6 +162,9 @@ export const copy = {
   invalidUrl: "Not a valid URL",
   invite: "Enter emails to invite",
   invitePlacholder: "name@company.com",
+  inviteWolfpack: "Invite your wolfpack",
+  inviteWolfpackDetail:
+    "Invite team members so they can see your test results and contribute to your test suite.",
   joinMailingList: "Join our mailing list",
   joinSlack: "Join Slack",
   joinWolfPack: "Join the wolf pack",
@@ -179,6 +185,7 @@ export const copy = {
   logs: "Logs",
   loveOpenSource: "We 💖 open source",
   mailingListSubscribe: "Receive product and company updates",
+  manageTriggers: "Manage triggers",
   manuallyTriggered: "Manually triggered",
   meet: "Meet your QA Wolf",
   members: "Members",
@@ -203,6 +210,7 @@ export const copy = {
   notRunYet: "Not run yet",
   notStarted: "Preparing",
   onPremise: "Run on-premise",
+  openSettings: "Open settings",
   openSourceDiscount:
     "Ask us about our free or discounted plans for open source projects.",
   or: "or",

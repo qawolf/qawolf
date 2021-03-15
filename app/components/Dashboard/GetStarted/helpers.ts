@@ -11,9 +11,9 @@ export const containerProps = {
 };
 
 export const buttonLabels: { [section in Section]: string } = {
-  addTrigger: "",
+  addTrigger: copy.manageTriggers,
   createTest: copy.createTest,
-  inviteUser: "",
+  inviteUser: copy.openSettings,
   learn: copy.startTutorial,
 };
 
@@ -22,23 +22,23 @@ export const completeButtonLabels = {
 };
 
 export const details: { [section in Section]: string } = {
-  addTrigger: "",
+  addTrigger: copy.addTriggerToTestDetail,
   createTest: copy.createFirstTestDetail,
-  inviteUser: "",
+  inviteUser: copy.inviteWolfpackDetail,
   learn: copy.learnQaWolfDetail,
 };
 
 export const docsHref: { [section in Section]: string } = {
-  addTrigger: "",
+  addTrigger: `${routes.docs}/run-tests-on-a-schedule`,
   createTest: `${routes.docs}/create-a-test`,
-  inviteUser: "",
+  inviteUser: `${routes.docs}/invite-team-members`,
   learn: `${routes.docs}/create-a-test`,
 };
 
 export const labels: { [section in Section]: string } = {
-  addTrigger: "",
+  addTrigger: copy.addTriggerToTest,
   createTest: copy.createFirstTest,
-  inviteUser: "",
+  inviteUser: copy.inviteWolfpack,
   learn: copy.learnQaWolf,
 };
 
