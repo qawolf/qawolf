@@ -1,4 +1,6 @@
+import { routes } from "../../../lib/routes";
 import { Onboarding } from "../../../lib/types";
+import { copy } from "../../../theme/copy";
 import { edgeSize } from "../../../theme/theme";
 
 export type Section = "addTrigger" | "createTest" | "inviteUser" | "learn";
@@ -6,6 +8,38 @@ export type Section = "addTrigger" | "createTest" | "inviteUser" | "learn";
 export const containerProps = {
   background: "gray0",
   round: edgeSize.xxsmall,
+};
+
+export const buttonLabels: { [section in Section]: string } = {
+  addTrigger: "",
+  createTest: "",
+  inviteUser: "",
+  learn: copy.startTutorial,
+};
+
+export const completeButtonLabels = {
+  learn: copy.revisitTutorial,
+};
+
+export const details: { [section in Section]: string } = {
+  addTrigger: "",
+  createTest: "",
+  inviteUser: "",
+  learn: copy.learnQaWolfDetail,
+};
+
+export const docsHref: { [section in Section]: string } = {
+  addTrigger: "",
+  createTest: "",
+  inviteUser: "",
+  learn: `${routes.docs}/create-a-test`,
+};
+
+export const labels: { [section in Section]: string } = {
+  addTrigger: "",
+  createTest: "",
+  inviteUser: "",
+  learn: copy.learnQaWolf,
 };
 
 export const getOpenSection = (onboarding: Onboarding): Section | null => {

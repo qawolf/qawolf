@@ -5,12 +5,13 @@ import ArrowDown from "../../../shared/icons/ArrowDown";
 import ArrowUp from "../../../shared/icons/ArrowUp";
 import Check from "../../../shared/icons/Check";
 import Text from "../../../shared/Text";
+import { labels,Section } from "../helpers";
 
 type Props = {
   isComplete: boolean;
   isOpen: boolean;
-  label: string;
-  onClick: () => void;
+  onClick: (section: Section) => void;
+  section: Section;
 };
 
 const iconSize = edgeSize.medium;
@@ -18,18 +19,25 @@ const iconSize = edgeSize.medium;
 export default function Header({
   isComplete,
   isOpen,
-  label,
   onClick,
+  section,
 }: Props): JSX.Element {
   const IconComponent = isOpen ? ArrowUp : ArrowDown;
 
+  const handleClick = (): void => onClick(section);
+  const label = labels[section];
+
   return (
-    <Button a11yTitle={label} onClick={onClick} plain>
+    <Button a11yTitle={label} onClick={handleClick} plain>
       <Box
         align="center"
         direction="row"
         justify="between"
-        pad={{ bottom: "small", horizontal: "medium", top: "medium" }}
+        pad={{
+          bottom: isOpen ? "small" : "medium",
+          horizontal: "medium",
+          top: "medium",
+        }}
       >
         <Box align="center" direction="row">
           <Box

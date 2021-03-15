@@ -41,6 +41,7 @@ export type Props = {
   margin?: ButtonProps["margin"];
   noBorderSide?: Side;
   onClick?: () => void;
+  openNewPage?: boolean;
   type: Type;
   width?: BoxProps["width"];
 };
@@ -58,6 +59,7 @@ function AppButton({
   label,
   margin,
   onClick,
+  openNewPage,
   type,
 }: Props): JSX.Element {
   const innerHtml = (
@@ -106,7 +108,7 @@ function AppButton({
   if (href) {
     return (
       <Link href={href}>
-        <a>{innerHtml}</a>
+        <a target={openNewPage ? "_blank" : undefined}>{innerHtml}</a>
       </Link>
     );
   }

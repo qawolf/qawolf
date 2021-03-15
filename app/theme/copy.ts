@@ -162,7 +162,9 @@ export const copy = {
   joinWolfPack: "Join the wolf pack",
   key: "Key",
   lastUsed: "Last used",
+  learnMore: "Learn more",
   learnQaWolf: "Learn how to use QA Wolf",
+  learnQaWolfDetail: "Learn how to create a test in our interactive tutorial.",
   learnedBasics: "Congratulations, you’ve mastered the basics of QA Wolf!",
   learnedBasics2:
     "Click the back arrow in the top left corner to return to the dashboard.",
@@ -246,6 +248,7 @@ export const copy = {
   other: "Other",
   otherDeploy: "Don't see the tool you use? Let us know!",
   pleaseType: "Please type",
+  revisitTutorial: "Revisit tutorial",
   startTutorial: "Start tutorial",
   tenTeamMembers: "Up to 10 team members",
   toggleCreateCode:

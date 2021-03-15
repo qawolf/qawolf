@@ -2,11 +2,10 @@ import { Box } from "grommet";
 import { useEffect, useState } from "react";
 
 import { useOnboarding } from "../../../hooks/queries";
-import { copy } from "../../../theme/copy";
 import { edgeSize } from "../../../theme/theme";
 import Spinner from "../../shared/Spinner";
 import { getOpenSection, Section as SectionType } from "./helpers";
-import Section from "./Section";
+import Sections from "./Sections";
 import Welcome from "./Welcome";
 
 type Props = { teamId: string };
@@ -28,7 +27,7 @@ export default function GetStarted({ teamId }: Props): JSX.Element {
     ? Object.values(onboarding).filter((v) => v).length
     : 0;
 
-  const handleSectionClick = (section: SectionType): void => {
+  const handleToggleOptn = (section: SectionType): void => {
     setOpenSection((prev) => {
       if (prev === section) return null;
       return section;
@@ -43,11 +42,11 @@ export default function GetStarted({ teamId }: Props): JSX.Element {
       style={{ maxWidth }}
     >
       <Welcome completeCount={completeCount} wolfColor="white" />
-      <Section
-        isComplete={onboarding.has_completed_tutorial}
-        isOpen={openSection === "learn"}
-        label={copy.learnQaWolf}
-        onClick={() => handleSectionClick("learn")}
+      <Sections
+        onToggleOpen={handleToggleOptn}
+        onboarding={onboarding}
+        openSection={openSection}
+        teamId={teamId}
       />
     </Box>
   ) : (
