@@ -43,7 +43,7 @@ export interface ElementAction {
   value?: string | null;
 }
 
-export interface ElementChoice {
+export interface ElementChosen {
   selectors: RankedSelector[];
   text: string;
 }

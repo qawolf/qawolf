@@ -1,8 +1,8 @@
 import { getAssertText } from "./element";
 import { generateSelectors } from "./generateSelectors";
-import { Callback, ElementChoice, RankedSelector } from "./types";
+import { Callback, ElementChosen, RankedSelector } from "./types";
 
-type ChoiceCallback = Callback<ElementChoice>;
+type ElementChosenCallback = Callback<ElementChosen>;
 
 export class ElementChooser {
   _chooserElement: HTMLElement;
@@ -42,7 +42,7 @@ export class ElementChooser {
   }
 
   _onChooseElement(target: HTMLElement): void {
-    const callback: ChoiceCallback = (window as any).qawElementChoice;
+    const callback: ElementChosenCallback = (window as any).qawElementChosen;
     if (!callback) return;
 
     const text = getAssertText(target);

@@ -6,6 +6,7 @@ import { Browser } from "playwright";
 import { CodeUpdater } from "../code/CodeUpdater";
 import { Logger } from "../services/Logger";
 import { RunHook, RunOptions, RunProgress, Variables } from "../types";
+import { ElementChooser } from "./ElementChooser";
 import { Run } from "./Run";
 import { VM } from "./VM";
 
@@ -16,12 +17,17 @@ export class Environment extends EventEmitter {
   readonly _vm: VM;
 
   _browser?: Browser;
+  _chooser = new ElementChooser();
   _inProgress: Run[] = [];
   _variables: Variables = {};
   _updater = new CodeUpdater(this._variables);
 
   constructor() {
     super();
+
+    this._chooser.on("elementchosen", (event) =>
+      this.emit("elementchosen", event)
+    );
 
     this._logger.on("logscreated", (logs) => this.emit("logscreated", logs));
 
@@ -33,7 +39,10 @@ export class Environment extends EventEmitter {
       logger: this._logger,
       onLaunch: async (launched) => {
         this._browser = launched.browser;
-        await this._updater.setContext(launched.context);
+        await Promise.all([
+          this._chooser.setContext(launched.context),
+          this._updater.setContext(launched.context),
+        ]);
       },
     });
 

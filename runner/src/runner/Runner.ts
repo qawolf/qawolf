@@ -2,7 +2,13 @@ import { EventEmitter } from "events";
 
 import { Environment } from "../environment/Environment";
 import { Log } from "../services/Logger";
-import { CodeUpdate, RunHook, RunOptions, RunProgress } from "../types";
+import {
+  CodeUpdate,
+  ElementChosen,
+  RunHook,
+  RunOptions,
+  RunProgress,
+} from "../types";
 import { LogArtifactHook } from "./LogArtifactHook";
 import { StatusReporterHook } from "./StatusReporterHook";
 import { VideoArtifactsHook } from "./VideoArtifactsHook";
@@ -48,6 +54,10 @@ export class Runner extends EventEmitter {
       this.emit("codeupdated", update)
     );
 
+    environment.on("elementchosen", (event: ElementChosen) =>
+      this.emit("elementchosen", event)
+    );
+
     environment.on("logscreated", (logs: Log[]) =>
       this.emit("logscreated", logs)
     );
@@ -86,8 +96,16 @@ export class Runner extends EventEmitter {
     await this._environment.run(options, this._hooks);
   }
 
+  async startElementChooser(): Promise<void> {
+    await this._environment?._chooser.start();
+  }
+
   async stop(): Promise<void> {
     await this._environment?.stop();
+  }
+
+  async stopElementChooser(): Promise<void> {
+    await this._environment?._chooser.stop();
   }
 
   updateCode(update: CodeUpdate): boolean {

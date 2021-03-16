@@ -34,7 +34,9 @@ export class SocketServer {
     this._runner = runner;
     this._io = new SocketIoServer(httpServer, { transports: ["websocket"] });
     this._io.on("connect", this._onConnect.bind(this));
+
     this._publish(this._runner, { event: "codeupdated", to: "code" });
+    this._publish(this._runner, { event: "elementchosen", to: "chooser" });
     this._publish(this._runner, { event: "logs", to: "logs" });
     this._publish(this._runner, { event: "logscreated", to: "logs" });
     this._publish(this._runner, { event: "runprogress", to: "run" });
@@ -87,7 +89,9 @@ export class SocketServer {
     this._subscriptions.subscribe(socket, message);
 
     const { type } = message;
-    if (type === "logs") {
+    if (type === "chooser") {
+      this._runner.startElementChooser();
+    } else if (type === "logs") {
       // send initial logs
       socket.emit("logs", this._runner.logs);
     } else if (type === "run" && this._runner.progress()) {
@@ -101,7 +105,12 @@ export class SocketServer {
 
   _onUnsubscribe(socket: Socket, { type }: SubscribeMessage): void {
     this._subscriptions.unsubscribe(socket, type);
-    if (type === "users") this._emitUsers();
+
+    if (type === "chooser") {
+      this._runner.stopElementChooser();
+    } else if (type === "users") {
+      this._emitUsers();
+    }
   }
 
   _publish(

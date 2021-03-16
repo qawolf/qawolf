@@ -2,9 +2,9 @@ import { Page } from "playwright";
 
 import { launch, LaunchResult } from "./utils";
 import { QAWolfWeb } from "../src";
-import { ElementChoice } from "../src/types";
+import { ElementChosen } from "../src/types";
 
-let choice: ElementChoice;
+let chosen: ElementChosen;
 let launched: LaunchResult;
 let page: Page;
 
@@ -22,9 +22,9 @@ beforeAll(async () => {
   });
 
   await launched.context.exposeBinding(
-    "qawElementChoice",
-    (_: Record<string, any>, value: ElementChoice) => {
-      choice = value;
+    "qawElementChosen",
+    (_: Record<string, any>, value: ElementChosen) => {
+      chosen = value;
     }
   );
 });
@@ -67,7 +67,7 @@ it("chooses an element on click", async () => {
 
   await page.waitForTimeout(0);
 
-  expect(choice).toEqual({
+  expect(chosen).toEqual({
     selectors: [
       { penalty: 15, selector: "select" },
       { penalty: 30, selector: "body select" },
