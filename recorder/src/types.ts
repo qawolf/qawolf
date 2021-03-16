@@ -15,7 +15,13 @@ export type Action =
 
 export type Callback<S = void, T = void> = (data?: S) => T;
 
-export type CueType = "attribute" | "class" | "id" | "tag" | "text";
+export type CueType =
+  | "attribute"
+  | "class"
+  | "id"
+  | "modifier"
+  | "tag"
+  | "text";
 
 export type Cue = {
   level: number; // 0 is target, 1 is parent, etc.

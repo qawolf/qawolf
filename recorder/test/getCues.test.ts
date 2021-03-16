@@ -117,6 +117,7 @@ describe("getCues", () => {
       "div",
       "#id",
       "Submit",
+      ":visible",
       '[name="name"]',
       '[role="button"]',
       '[contenteditable="true"]',
@@ -127,6 +128,7 @@ describe("getCues", () => {
     const imgCues = await getCues("img");
     expect(imgCues.map((cues) => cues.value)).toEqual([
       "img",
+      ":visible",
       '[alt="alt"]',
       '[src="wolf.png"]',
       '[title="title"]',
@@ -135,6 +137,7 @@ describe("getCues", () => {
     const inputCues = await getCues("input");
     expect(inputCues.map((cues) => cues.value)).toEqual([
       "input",
+      ":visible",
       '[placeholder="placeholder"]',
       '[type="number"]',
     ]);
@@ -143,6 +146,7 @@ describe("getCues", () => {
     expect(labelCues.map((cues) => cues.value)).toEqual([
       "label",
       "Label",
+      ":visible",
       '[for="id"]',
     ]);
   });
@@ -179,7 +183,11 @@ describe("getCues", () => {
   it("has tag cue", async () => {
     await setBody(page, `<a>1</a><a>2</a>`);
     const cues = await getCues("a:nth-of-type(2)");
-    expect(cues.map((c) => c.value)).toEqual(["a:nth-of-type(2)", "2"]);
+    expect(cues.map((c) => c.value)).toEqual([
+      "a:nth-of-type(2)",
+      "2",
+      ":visible",
+    ]);
   });
 
   it("has test attributes", async () => {
@@ -237,21 +245,21 @@ describe("getCues", () => {
     await setBody(page, `<a name="bu32879fDi">Submit</a>`);
 
     const cues = await getCues("a");
-    expect(cues.map((c) => c.value)).toEqual(["a", "Submit"]);
+    expect(cues.map((c) => c.value)).toEqual(["a", "Submit", ":visible"]);
   });
 
   it("skips empty attr values", async () => {
     await setBody(page, `<input role>`);
 
     const cues = await getCues("input");
-    expect(cues.map((c) => c.value)).toEqual(["input"]);
+    expect(cues.map((c) => c.value)).toEqual(["input", ":visible"]);
   });
 
   it("skips specific attributes", async () => {
     await setBody(page, `<input data-reactid="1">`);
 
     const cues = await getCues("input");
-    expect(cues.map((c) => c.value)).toEqual(["input"]);
+    expect(cues.map((c) => c.value)).toEqual(["input", ":visible"]);
   });
 });
 

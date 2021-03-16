@@ -69,8 +69,14 @@ export const buildSelectorForCues = (cues: Cue[]): string => {
     }
 
     cuesForLevel.sort((a, b) => {
+      // put modifiers last
+      if (a.type === "modifier") return 1;
+      if (b.type === "modifier") return -1;
+
+      // put tags first
       if (a.type === "tag") return -1;
       if (b.type === "tag") return 1;
+
       return 0;
     });
 
@@ -79,6 +85,7 @@ export const buildSelectorForCues = (cues: Cue[]): string => {
         cue.type === "text" ? `:has-text("${cue.value}")` : cue.value
       )
       .join("");
+
     parts.push(cssSelector);
   });
 
