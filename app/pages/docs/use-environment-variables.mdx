@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import Header from "../../components/Docs/Header";
 import Image from "../../components/Docs/Image";
 import Layout from "../../components/Docs/Layout";
@@ -11,55 +13,86 @@ Environment variables are secret values that you can use in your test code. Beca
 
 Environment variables can also be used to change the behavior of your test by group. For example, you may want to write a test that goes to one URL for staging and a different URL for production.
 
-In this tutorial, we'll use environment variables in our QA Wolf test.
+In this tutorial, we'll learn how use environment variables in our tests.
 
-<SubHeader>Create an Environment Variable</SubHeader>
+<SubHeader>Create an Environment</SubHeader>
 
-Environments are collections of environment variables in QA Wolf. Learn more about managing environments <a href="#manage-environments">here</a>.
+Environments are groups of environment variables. You can create, rename, and delete environments from the test editor and from the dashboard.
 
-You can edit the variables in an environment by clicking on the configure button next to the environment name. You can do this from the test editor or from the dashboard.
+Let's create an environment if you don't have one already. In our example, we'll create an environment called "Staging".
+
+Open the environments popup by clicking the "Environments" button in the sidebar of the dashboard, or the configure button in the bottom left corner of the test editor.
 
 <Image
-  alt="Manage environment variables from editor"
-  height={1280}
-  src="/docs/use-environment-variables/configure-editor.png"
+  alt="Edit environments from dashboard"
+  height={348}
+  src="/docs/use-environment-variables/edit-environments.png"
   width={1600}
 />
 
 <Image
-  alt="Manage environment variables from dashboard"
-  height={294}
-  src="/docs/use-environment-variables/configure-dashboard.png"
-  width={1430}
+  alt="Edit environments from test editor"
+  height={758}
+  src="/docs/use-environment-variables/edit-environments-editor.png"
+  width={1600}
 />
 
-Clicking on the configure button opens a popup where you can manage environment variables. In this tutorial, we'll add a variable to the Production environment.
-
-To create an environment variable, click on the "Create variable" button at the bottom of the popup.
+Create an environment by clicking the "Create environment" button on the left side of the popup.
 
 <Image
-  alt="Create variable button"
-  height={950}
-  src="/docs/use-environment-variables/add-variable.png"
-  width={1162}
+  alt="Create an environment"
+  height={384}
+  src="/docs/use-environment-variables/create-environment.png"
+  width={800}
 />
 
-Provide the name of the variable in the create form. In our example, we name our variable `TODO_TEXT` and give it a value of `secret todo`.
+Type the environment name in the input and press enter to save your environment.
 
 <Image
-  alt="Create an environment variable"
-  height={1062}
+  alt="Save an environment"
+  height={110}
+  src="/docs/use-environment-variables/save-environment.png"
+  width={206}
+/>
+
+You can rename and delete environments by hovering over them and clicking the options button.
+
+<Image
+  alt="Edit an environment"
+  height={152}
+  src="/docs/use-environment-variables/edit-environment.png"
+  width={216}
+/>
+
+<SubHeader>Create an Environment Variable</SubHeader>
+
+Now that we have an environment, let's add some variables to it.
+
+Click the "Create variable" button in the right side of the environments popup to create a variable.
+
+<Image
+  alt="Create environment variable"
+  height={385}
   src="/docs/use-environment-variables/create-environment-variable.png"
-  width={1184}
+  width={800}
 />
 
-After pressing the "Save" button, the environment variable will be saved. If you hover over it, you will see options to edit or delete it.
+Enter the variable name and value into the form. We'll name our varaiable `TODO_TEXT` and give it a value of `secret todo`. Click "Save" to save your variable.
 
 <Image
-  alt="Saved environment variable"
-  height={756}
-  src="/docs/use-environment-variables/saved-environment-variable.png"
-  width={1168}
+  alt="Save environment variable"
+  height={434}
+  src="/docs/use-environment-variables/save-environment-variable.png"
+  width={800}
+/>
+
+Your variable will be encrypted and saved. You can edit and delete environment variables by hovering over them and clicking the relevant button.
+
+<Image
+  alt="Edit environment variable"
+  height={284}
+  src="/docs/use-environment-variables/edit-environment-variable.png"
+  width={800}
 />
 
 Click "Done" to close the popup.
@@ -68,69 +101,68 @@ Click "Done" to close the popup.
 
 We can now use our `TODO_TEXT` environment variable in our test. Environment variables are accessible under `process.env`.
 
-First, make sure you are viewing a test in the editor to update the code. In our example, we'll replace a hard-coded todo value with the value saved as `TODO_TEXT` (`secret todo`). We'll change this line of code:
+First, open your test in the editor. Make sure your desired environment is selected in the bottom left corner of the test editor.
+
+<Image
+  alt="Choose environment in editor"
+  height={753}
+  src="/docs/use-environment-variables/choose-environment.png"
+  width={1600}
+/>
+
+In our example, we'll replace a hard-coded todo value with the value saved as `TODO_TEXT` (`secret todo`). We'll change this line of code:
 
 ```js
-await page.fill(".new-todo", "todo");
+await page.fill('[placeholder="What needs to be done?"]', "todo");
 ```
 
 To this line of code:
 
 ```js
-await page.fill(".new-todo", process.env.TODO_TEXT);
+await page.fill(
+  '[placeholder="What needs to be done?"]',
+  process.env.TODO_TEXT
+);
 ```
 
 In the code editor, we can delete the existing todo value (`"todo"`) and replace it with `process.env.TODO_TEXT`. You'll notice as you type `process.env.` that your environment variables will be shown as suggestions.
 
 <Image
   alt="Use environment variable in editor"
-  height={478}
+  height={72}
   src="/docs/use-environment-variables/use-environment-variable.png"
-  width={1052}
+  width={800}
 />
 
 If we run our test, it will now create a todo with the value `secret todo`, which comes from our environment variable.
 
 <Image
   alt="Run a test with an environment variable"
-  height={789}
+  height={758}
   src="/docs/use-environment-variables/run-test-environment-variable.png"
   width={1600}
 />
 
-<SubHeader>Assign Environment to Group</SubHeader>
+<SubHeader>Assign Environment to Trigger</SubHeader>
 
-Each group of tests in QA Wolf can be assigned an environment. This means that when this group runs, it will use the variables specified in the assigned environment.
+Environments can be assigned to <Link href="/docs/run-tests-on-a-schedule"><a>triggers</a></Link> in QA Wolf. This means that when tests runs are created by the trigger, they will have access to the variables in the assigned environment.
 
-Go to the <a href="https://www.qawolf.com/tests" target="_blank">dashboard</a> and make sure the group you want to modify is selected.
-
-Open the environments dropdown at the top of the dashboard. Click on the environment you want to assign to the group. In our example, we'll assign the Production environment to the All Tests group.
+To add an environment to a trigger, open the triggers popup.
 
 <Image
-  alt="Assign an environment to a group"
-  height={303}
-  src="/docs/use-environment-variables/assign-environment-to-group.png"
+  alt="Add trigger from dashboard"
+  height={353}
+  src="/docs/run-tests-on-a-schedule/add-trigger-dashboard.png"
   width={1600}
 />
 
-<SubHeader>Manage Environments</SubHeader>
-
-You can create, rename, and delete environments in QA Wolf. To manage environments, click the "Edit environments" button in the dropdown.
+Edit the trigger so that your desired environment is selected.
 
 <Image
-  alt="Edit environments"
-  height={348}
-  src="/docs/use-environment-variables/edit-environments.png"
-  width={630}
-/>
-
-Create an environment by pressing the "Create environment" button. Hover over an existing environment to reveal options to edit or delete.
-
-<Image
-  alt="Edit environments popup"
-  height={650}
-  src="/docs/use-environment-variables/edit-environments-popup.png"
-  width={1162}
+  alt="Edit trigger environment"
+  height={454}
+  src="/docs/use-environment-variables/edit-trigger-environment.png"
+  width={488}
 />
 
 </Layout>
