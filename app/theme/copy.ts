@@ -290,6 +290,7 @@ export const copy = {
   scheduleOneClick: "Schedule or run tests on deployments with one click",
   search: "Search",
   select: "Select",
+  selectElement: "Select element",
   selected: (count: number): string => `${count} selected`,
   sendInvites: "Send invites",
   setEnvVariables: "Set environment variables",

@@ -1,8 +1,12 @@
+import { Box } from "grommet";
+import { useRef, useState } from "react";
 import styled from "styled-components";
 
-import { colors } from "../../../theme/theme";
+import { copy } from "../../../theme/copy";
+import { colors, edgeSize } from "../../../theme/theme";
 import Button from "../../shared/AppButton";
 import Select from "../../shared/icons/Select";
+import Tooltip from "../../shared/Tooltip";
 
 type Props = {
   className?: string;
@@ -10,19 +14,37 @@ type Props = {
   isDisabled: boolean;
 };
 
-function SelectButton({ className, isDisabled }: Props): JSX.Element {
+function SelectButton({ className, isActive, isDisabled }: Props): JSX.Element {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isHover, setIsHover] = useState(false);
+
   // TODO: fill out
   const handleClick = (): void => {};
 
   return (
-    <Button
-      IconComponent={Select}
-      a11yTitle="choose element"
-      className={className}
-      isDisabled={isDisabled}
-      onClick={handleClick}
-      type="ghost"
-    />
+    <>
+      <Box
+        onMouseEnter={() => setIsHover(true)}
+        onMouseLeave={() => setIsHover(false)}
+        ref={ref}
+      >
+        <Button
+          IconComponent={Select}
+          a11yTitle="choose element"
+          className={className}
+          isDisabled={isDisabled}
+          onClick={handleClick}
+          type="ghost"
+        />
+      </Box>
+      <Tooltip
+        align={{ right: "right", top: "bottom" }}
+        isVisible={isHover}
+        label={isActive ? copy.cancel : copy.selectElement}
+        style={{ marginTop: edgeSize.xxsmall }}
+        target={ref.current}
+      />
+    </>
   );
 }
 

@@ -32,7 +32,6 @@ export const canvasSize = {
 export const colors = {
   code: "#0E8A7D",
   codeBlue: "#6E9DFA",
-  codeCyan: "#7EE2E5",
   codeHighlight: "#213866",
   codePink: "#EF86B4",
   codePurple: "#B899F8",

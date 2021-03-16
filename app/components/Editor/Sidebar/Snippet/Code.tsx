@@ -1,20 +1,8 @@
 import { Box } from "grommet";
-import Highlight, { defaultProps, Language } from "prism-react-renderer";
-import styled from "styled-components";
+import Highlight, { defaultProps } from "prism-react-renderer";
 
-import {
-  border,
-  borderSize,
-  colors,
-  textDesktop,
-} from "../../../../theme/theme";
-
-const StyledCode = styled.code`
-  color: ${colors.codeCyan};
-  font-family: Menlo, Monaco, "Courier New", monospace;
-  font-size: ${textDesktop.xxsmall.size};
-  line-height: ${textDesktop.xxsmall.height};
-`;
+import { theme } from "../../../../theme/prismCodeBlock";
+import { border, borderSize } from "../../../../theme/theme";
 
 export default function Code(): JSX.Element {
   // TODO
@@ -25,10 +13,28 @@ export default function Code(): JSX.Element {
       background="gray10"
       border={{ ...border, color: "gray8" }}
       margin={{ vertical: "medium" }}
+      overflow="auto"
       pad="xsmall"
       round={borderSize.small}
     >
-      <StyledCode>{code}</StyledCode>
+      <Highlight
+        {...defaultProps}
+        code={code.trim()}
+        language="javascript"
+        theme={theme}
+      >
+        {({ className, getLineProps, getTokenProps, style, tokens }) => (
+          <pre className={className} style={{ ...style, margin: 0 }}>
+            {tokens.map((line, i) => (
+              <div key={i} {...getLineProps({ line, key: i })}>
+                {line.map((token, key) => (
+                  <span key={key} {...getTokenProps({ token, key })} />
+                ))}
+              </div>
+            ))}
+          </pre>
+        )}
+      </Highlight>
     </Box>
   );
 }

@@ -2,8 +2,8 @@ import { Box } from "grommet";
 import Highlight, { defaultProps, Language } from "prism-react-renderer";
 import styled from "styled-components";
 
-import { edgeSize, fontFamily, text, width } from "../../../theme/theme";
-import { theme } from "./theme";
+import { theme } from "../../theme/prismCodeBlock";
+import { edgeSize, width } from "../../theme/theme";
 
 type PropsTypes = {
   children: string;
@@ -12,9 +12,6 @@ type PropsTypes = {
 
 const StyledPre = styled.pre`
   border-radius: ${edgeSize.xxsmall};
-  font-family: ${fontFamily.code};
-  font-size: ${text.xxsmall.size};
-  line-height: ${text.xxsmall.height};
   margin-top: 6px; // outer pre already includes 18px of margin
   overflow-x: auto;
   padding: ${edgeSize.xsmall} ${edgeSize.small};

@@ -1,26 +1,31 @@
 import { Box, Drop, DropProps } from "grommet";
+import { CSSProperties } from "react";
 
 import { borderSize, edgeSize } from "../../theme/theme";
 import Text from "./Text";
 
 type Props = {
+  align?: DropProps["align"];
   isVisible: boolean;
   label: string;
   target: DropProps["target"];
+  style?: CSSProperties;
 };
 
 export default function Tooltip({
+  align,
   isVisible,
   label,
   target,
+  style,
 }: Props): JSX.Element {
   if (!isVisible) return null;
 
   return (
     <Drop
-      align={{ bottom: "top" }}
+      align={align || { bottom: "top" }}
       plain
-      style={{ marginBottom: edgeSize.xxsmall }}
+      style={style || { marginBottom: edgeSize.xxsmall }}
       target={target}
     >
       <Box
