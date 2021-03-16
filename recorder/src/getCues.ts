@@ -39,6 +39,8 @@ const PENALTY_MAP = {
   title: 10,
   type: 10,
   value: 10,
+  // prefer not to use it but sometimes we need to
+  visible: 100,
   // penalize presentation attributes
   // discount classes so 1 is worse than 2 placeholders
   // since they are often presentational
@@ -81,6 +83,13 @@ export function getCues(
         value: text,
       });
     }
+
+    cues.push({
+      level,
+      penalty: PENALTY_MAP.visible,
+      type: "modifier",
+      value: ":visible",
+    });
   }
 
   const attributes = element.attributes;

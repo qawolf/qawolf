@@ -74,12 +74,15 @@ describe("buildSelectorForCues", () => {
         value: '[data-qa="search"]',
       },
       { level: 0, penalty: 0, type: "tag", value: "input" },
+      { level: 0, penalty: 0, type: "modifier", value: ":visible" },
       { level: 0, penalty: 0, type: "id", value: "#search" },
     ];
 
     const selector = buildSelectorForCues(cues);
 
-    expect(selector).toEqual('input.search-input#search [data-qa="search"]');
+    expect(selector).toEqual(
+      'input.search-input#search:visible [data-qa="search"]'
+    );
   });
 
   it("includes text selector if applicable", () => {

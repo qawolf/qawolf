@@ -47,8 +47,12 @@ describe("generateSortedCueSets", () => {
     expect(values).toEqual([
       '[data-test="target"]',
       'a [data-test="target"]',
+      ':visible [data-test="target"]',
+      'a :visible [data-test="target"]',
       '[data-test="target"] [href="link"]',
       'a [data-test="target"] [href="link"]',
+      ':visible [data-test="target"] [href="link"]',
+      'a :visible [href="link"] [data-test="target"]',
     ]);
   });
 
@@ -67,14 +71,22 @@ describe("generateSortedCueSets", () => {
       '1span 0[data-test="target"]',
       '1span 1[data-test="child"] 0a',
       '1span 0a 0[data-test="target"]',
+      '1[data-test="child"] 0:visible',
+      '1[data-test="child"] 0a 0:visible',
       '1[data-test="child"] 0[href="link"]',
+      '1span 1[data-test="child"] 0:visible',
+      '1span 0:visible 0[data-test="target"]',
       '1[data-test="child"] 0a 0[href="link"]',
+      '1span 0a 0:visible 0[data-test="target"]',
       '1span 1[data-test="child"] 0[href="link"]',
       '1[data-test="child"] 0[data-test="target"]',
       '1span 0[data-test="target"] 0[href="link"]',
       '1[data-test="child"] 0a 0[data-test="target"]',
       '1span 0a 0[href="link"] 0[data-test="target"]',
+      '1[data-test="child"] 0:visible 0[href="link"]',
       '1span 1[data-test="child"] 0[data-test="target"]',
+      '1[data-test="child"] 0:visible 0[data-test="target"]',
+      '1span 0:visible 0[href="link"] 0[data-test="target"]',
       '1[data-test="child"] 0[data-test="target"] 0[href="link"]',
     ]);
   });

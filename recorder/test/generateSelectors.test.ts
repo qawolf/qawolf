@@ -91,6 +91,24 @@ describe("getSelector", () => {
     await expectSelector("#special\\:id");
   });
 
+  it("includes :visible modifier when needed", async () => {
+    // make the visible element untargetable by nth-of-type
+    await setBody(
+      page,
+      `
+<div>
+  <div><input style="visibility: hidden"></div>
+  <div><input style="visibility: hidden"></div>
+</div>
+<div>
+  <div><input style="visibility: hidden"></div>
+  <div><input></div>
+</div>`
+    );
+
+    await expectSelector("input:visible");
+  });
+
   it("short circuits to cached selector when it matches", async () => {
     // for valid selectors
     await setBody(page, `<div id="parent"><input class="cached"></div>`);
