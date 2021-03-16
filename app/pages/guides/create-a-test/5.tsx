@@ -62,7 +62,7 @@ export default function CreateATest5(): JSX.Element {
           {copy.learnedBasics2}
         </Text>
         <Box alignSelf="center">
-          <Image height={62} src="/guides/dashboard.png" width={283} />
+          <Image height={45} src="/guides/dashboard.png" width={264} />
         </Box>
       </Layout>
     </>
