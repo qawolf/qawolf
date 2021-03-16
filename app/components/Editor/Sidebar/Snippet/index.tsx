@@ -3,6 +3,7 @@ import { Box } from "grommet";
 import { border } from "../../../../theme/theme";
 import Action from "./Action";
 import Buttons from "./Buttons";
+import Code from "./Code";
 import Selector from "./Selector";
 
 type Props = { isVisible: boolean };
@@ -21,6 +22,7 @@ export default function Snippet({ isVisible }: Props): JSX.Element {
         <Action />
         <Selector />
       </Box>
+      <Code />
       <Buttons />
     </Box>
   );
