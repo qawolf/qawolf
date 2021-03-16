@@ -2,15 +2,19 @@ import { useContext, useEffect, useState } from "react";
 
 import { copy } from "../../../theme/copy";
 import Toggle from "../../shared/Toggle";
-import { RunnerContext } from "../contexts/RunnerContext";
 import { TestContext } from "../contexts/TestContext";
+
+type Props = {
+  isDisabled: boolean;
+  mouseLineNumber: number | null;
+};
 
 export const patchHandle = "// 🐺 QA Wolf will create code here";
 
-export default function CodeToggle(): JSX.Element {
-  const { isRunnerConnected, mouseLineNumber, progress } = useContext(
-    RunnerContext
-  );
+export default function CodeToggle({
+  isDisabled,
+  mouseLineNumber,
+}: Props): JSX.Element {
   const { code, controller } = useContext(TestContext);
 
   // track isOn in state so toggle will update instantly
@@ -44,7 +48,7 @@ export default function CodeToggle(): JSX.Element {
 
   return (
     <Toggle
-      isDisabled={!isRunnerConnected || progress?.status === "created"}
+      isDisabled={isDisabled}
       isOn={isOn}
       label={copy.createCode}
       onClick={handleClick}
