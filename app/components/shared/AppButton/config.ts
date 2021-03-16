@@ -9,6 +9,7 @@ export type Type =
   | "ghost"
   | "primary"
   | "secondary"
+  | "snippet"
   | "success"
   | "tertiary";
 
@@ -19,6 +20,7 @@ export const activeBackground: { [type in Type]: BoxProps["background"] } = {
   ghost: colors.gray3,
   primary: colors.primaryDarker,
   secondary: colors.gray0,
+  snippet: colors.gray9,
   success: colors.success7,
   tertiary: colors.gray6,
 };
@@ -34,6 +36,7 @@ export const background: { [type in Type]: BoxProps["background"] } = {
   ghost: colors.gray0,
   primary: colors.primary,
   secondary: colors.gray0,
+  snippet: colors.gray9,
   success: colors.success5,
   tertiary: colors.gray8,
 };
@@ -45,6 +48,7 @@ export const hoverBackground: { [type in Type]: string } = {
   ghost: colors.gray2,
   primary: colors.primaryDark,
   secondary: colors.gray0,
+  snippet: colors.gray9,
   success: colors.success6,
   tertiary: colors.gray7,
 };
@@ -60,6 +64,7 @@ export const textColor: { [type in Type]: string } = {
   ghost: colors.gray9,
   primary: colors.gray0,
   secondary: colors.gray9,
+  snippet: colors.gray0,
   success: colors.gray0,
   tertiary: colors.gray0,
 };

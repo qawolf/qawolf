@@ -1,11 +1,11 @@
 import { Box } from "grommet";
+import { useContext } from "react";
 
 import { edgeSize } from "../../../theme/theme";
 import { borderSize } from "../../../theme/theme";
-import CodeToggle from "./CodeToggle";
-import { useContext } from "react";
-import SelectButton from "./SelectButton";
 import { RunnerContext } from "../contexts/RunnerContext";
+import CodeToggle from "./CodeToggle";
+import SelectButton from "./SelectButton";
 
 export default function Header(): JSX.Element {
   const { isRunnerConnected, mouseLineNumber, progress } = useContext(

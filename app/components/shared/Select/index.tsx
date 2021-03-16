@@ -8,10 +8,11 @@ import ArrowDown from "../icons/ArrowDown";
 import Selector from "../icons/Selector";
 import Menu, { Direction } from "../Menu";
 
-type Type = "dark" | "light";
+type Type = "dark" | "secondary" | "snippet";
 
 type Props = {
   children: ReactNode[];
+  className?: string;
   direction?: Direction;
   flex?: BoxProps["flex"];
   hasError?: boolean;
@@ -24,6 +25,7 @@ type Props = {
 
 export default function Select({
   children,
+  className,
   direction,
   flex,
   hasError,
@@ -54,13 +56,14 @@ export default function Select({
     >
       <Button
         IconComponent={direction === "up" ? Selector : ArrowDown}
+        className={className}
         iconPosition="right"
         hasError={hasError}
         isDisabled={isDisabled}
         label={label}
         noBorderSide={noBorderSide}
         onClick={handleClick}
-        type={type === "dark" ? "dark" : "secondary"}
+        type={type || "secondary"}
       />
       {isOpen && (
         <Menu direction={direction} onClick={handleClose}>

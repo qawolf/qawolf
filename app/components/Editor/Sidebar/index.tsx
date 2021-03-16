@@ -16,6 +16,7 @@ import CodeEditor from "./CodeEditor";
 import HelpersEditor from "./HelpersEditor";
 import Navigation from "./Navigation";
 import RunLogs from "./RunLogs";
+import Snippet from "./Snippet";
 
 const enable = {
   top: false,
@@ -38,6 +39,9 @@ export default function Sidebar(): JSX.Element {
   const [selected, setSelected] = useState<NavigationOption>("code");
 
   const isTestDeleted = !!test?.deleted_at;
+  // TODO: replace
+  const isSnippetVisible = true;
+  const isActionDisabled = isTestDeleted || isSnippetVisible;
 
   const handleResizeStop: ResizeCallback = (_, __, ___, delta): void => {
     state.setEditorSidebarWidth(editorSidebarWidth + delta.width);
@@ -46,7 +50,7 @@ export default function Sidebar(): JSX.Element {
   const isRunning = query.test_id && progress && !progress?.completed_at;
 
   const handleAction = (): void => {
-    if (isTestDeleted) return;
+    if (isActionDisabled) return;
 
     if (run) {
       // edit the test
@@ -93,14 +97,17 @@ export default function Sidebar(): JSX.Element {
           <HelpersEditor onKeyDown={handleEditorKeyDown} />
         )}
         <RunLogs isVisible={selected === "logs"} />
-        <Buttons
-          isActionDisabled={isTestDeleted}
-          isRun={!!query.run_id}
-          isRunLoading={!run}
-          isRunning={isRunning}
-          onAction={handleAction}
-          selection={selection}
-        />
+        <Snippet isVisible={isSnippetVisible} />
+        {!isSnippetVisible && (
+          <Buttons
+            isActionDisabled={isActionDisabled}
+            isRun={!!query.run_id}
+            isRunLoading={!run}
+            isRunning={isRunning}
+            onAction={handleAction}
+            selection={selection}
+          />
+        )}
       </Box>
     </Resizable>
   );

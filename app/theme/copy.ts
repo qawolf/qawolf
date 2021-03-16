@@ -5,8 +5,10 @@ export const copy = {
   acceptInviteSignUp: "Please sign up to accept this invite",
   accountExists: "Already have an account?",
   accountNotExists: "No account yet?",
+  action: "Action",
   add: "Add",
   addSlackChannel: "Add Slack channel",
+  addSnippet: "Add snippet",
   addTrigger: "Add trigger",
   addTriggerToTest: "Add a trigger to your test",
   addTriggerToTestDetail:
@@ -269,6 +271,7 @@ export const copy = {
   otherDeploy: "Don't see the tool you use? Let us know!",
   pleaseType: "Please type",
   revisitTutorial: "Revisit tutorial",
+  selector: "Selector",
   startTutorial: "Start tutorial",
   stepCount: (count: number): string => `Step ${count} of 5`,
   tenTeamMembers: "Up to 10 team members",

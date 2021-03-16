@@ -1,17 +1,16 @@
 import { Box } from "grommet";
 import { useContext } from "react";
 
-import { useOnHotKey } from "../../../hooks/onHotKey";
-import { state } from "../../../lib/state";
-import { copy } from "../../../theme/copy";
-import { borderSize, edgeSize } from "../../../theme/theme";
-import Button from "../../shared/AppButton";
-import Environments from "../../shared/Environments";
-import Edit from "../../shared/icons/Edit";
-import Play from "../../shared/icons/Play";
-import Stop from "../../shared/icons/Stop";
-import { StateContext } from "../../StateContext";
-import { Selection } from "../hooks/selection";
+import { useOnHotKey } from "../../../../hooks/onHotKey";
+import { state } from "../../../../lib/state";
+import { copy } from "../../../../theme/copy";
+import { borderSize, edgeSize } from "../../../../theme/theme";
+import Button from "../../../shared/AppButton";
+import Environments from "../../../shared/Environments";
+import Stop from "../../../shared/icons/Stop";
+import { StateContext } from "../../../StateContext";
+import { Selection } from "../../hooks/selection";
+import RunButton from "./RunButton";
 
 const width = `calc(50% - (${edgeSize.xxsmall} / 2))`;
 
@@ -47,11 +46,6 @@ export default function Buttons({
 
   useOnHotKey({ hotKey: "s", onHotKey: handleAutosave, requireMeta: true });
 
-  const testLabel = selection
-    ? copy.runLines(selection.endLine - selection.startLine + 1)
-    : copy.runTest;
-  const runLabel = isRunLoading ? copy.loading : copy.editTest;
-
   return (
     <Box
       border={{ color: "gray9", side: "top", size: borderSize.xsmall }}
@@ -77,14 +71,13 @@ export default function Buttons({
           width={width}
         />
       ) : (
-        <Button
-          IconComponent={isRun ? Edit : Play}
+        <RunButton
           isDisabled={isActionDisabled}
-          justify="center"
-          label={isRun ? runLabel : testLabel}
-          onClick={onAction}
-          type={isRun ? "dark" : "primary"}
-          width={isRun ? "100%" : width}
+          isRun={isRun}
+          isRunLoading={isRunLoading}
+          onAction={onAction}
+          selection={selection}
+          width={width}
         />
       )}
     </Box>

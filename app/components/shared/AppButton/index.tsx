@@ -132,7 +132,7 @@ const StyledAppButton = styled(AppButton)`
   ${(props) => !!props.width && `width: ${props.width};`}
 
   ${(props) =>
-    props.type === "dark" &&
+    ["dark", "snippet"].includes(props.type) &&
     `
   border: ${borderSize.xsmall} solid ${colors.gray8};
   `}
@@ -147,6 +147,12 @@ const StyledAppButton = styled(AppButton)`
     props.type === "secondary" &&
     `
   border: ${borderSize.xsmall} solid ${colors.gray3};
+  `}
+
+  ${(props) =>
+    props.type === "snippet" &&
+    `
+  border: ${borderSize.xsmall} solid ${colors.gray8};
   `}
 
   ${(props) =>
@@ -184,7 +190,9 @@ const StyledAppButton = styled(AppButton)`
     }
     `}
 
-    ${(props) => props.type === "dark" && `border-color: ${colors.gray6};`}
+    ${(props) =>
+      ["dark", "snippet"].includes(props.type) &&
+      `border-color: ${colors.gray6};`}
     ${(props) => props.type === "secondary" && `border-color: ${colors.gray5};`}
   }
 
@@ -197,7 +205,9 @@ const StyledAppButton = styled(AppButton)`
     };
     `}
 
-    ${(props) => props.type === "dark" && `border-color: ${colors.gray4};`}
+    ${(props) =>
+      ["dark", "snippet"].includes(props.type) &&
+      `border-color: ${colors.gray4};`}
     ${(props) => props.type === "secondary" && `border-color: ${colors.gray9};`}
   }
 `;
