@@ -37,13 +37,13 @@ export type ElementAction =
   | "selectOption";
 
 export interface ElementChosen {
-  selectors: RankedSelector[];
+  selectors: string[];
   text: string;
 }
 
 export interface ElementChooserValue {
   active: boolean;
-  selectors?: RankedSelector[];
+  selectors?: string[];
   text?: string;
 }
 
@@ -68,11 +68,6 @@ export type Email = {
 export interface LogEvent {
   level: string;
   message: string;
-}
-
-export interface RankedSelector {
-  penalty: number;
-  selector: string;
 }
 
 export type Run = {

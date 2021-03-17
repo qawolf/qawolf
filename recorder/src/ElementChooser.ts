@@ -50,13 +50,14 @@ export class ElementChooser {
 
     for (const selector of selectorsIterator) {
       selectors.push(selector);
+
       selectors.sort((a, b) => {
         const penaltyDistance = a.penalty - b.penalty;
         if (penaltyDistance !== 0) return penaltyDistance;
         return a.selector.localeCompare(b.selector);
       });
 
-      callback({ selectors, text });
+      callback({ selectors: selectors.map((s) => s.selector), text });
 
       if (selectors.length > 20) break;
     }

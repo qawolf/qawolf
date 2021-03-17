@@ -68,12 +68,12 @@ it("chooses an element on click", async () => {
 
   expect(chosen).toEqual({
     selectors: [
-      { penalty: 15, selector: "select" },
-      { penalty: 30, selector: "body select" },
-      { penalty: 30, selector: "html select" },
-      { penalty: 115, selector: "select:visible" },
-      { penalty: 130, selector: "body select:visible" },
-      { penalty: 130, selector: "html select:visible" },
+      "select",
+      "body select",
+      "html select",
+      "select:visible",
+      "body select:visible",
+      "html select:visible",
     ],
     text: "a",
   });
