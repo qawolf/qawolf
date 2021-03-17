@@ -18,9 +18,7 @@ export class ElementChooser {
       this._shadowRoot.appendChild(this._chooserElement);
     }
 
-    // reset the style
-    const style = this._chooserElement.style;
-    style.background = "rgba(233, 110, 164, 0.2)";
+    this._resetChooser();
   }
 
   _attachShadow(): void {
@@ -52,7 +50,11 @@ export class ElementChooser {
 
     for (const selector of selectorsIterator) {
       selectors.push(selector);
-      selectors.sort((a, b) => a.penalty - b.penalty);
+      selectors.sort((a, b) => {
+        const penaltyDistance = a.penalty - b.penalty;
+        if (penaltyDistance !== 0) return penaltyDistance;
+        return a.selector.localeCompare(b.selector);
+      });
 
       callback({ selectors, text });
 
@@ -82,15 +84,19 @@ export class ElementChooser {
     style.left = box.left + "px";
     style.top = box.top + "px";
     style.width = box.width + "px";
-    style.display = "fixed";
   };
 
   _onScroll = (): void => {
-    // clear the selection
+    this._resetChooser(false);
+  };
+
+  _resetChooser = (visible = true): void => {
     const { style } = this._chooserElement;
-    style.display = "none";
+
     style.height = "0px";
     style.width = "0px";
+    style.display = visible ? "block" : "none";
+    style.background = "rgba(233, 110, 164, 0.2)";
   };
 
   start(): void {
@@ -109,6 +115,8 @@ export class ElementChooser {
   }
 
   stop(): void {
+    this._chooserElement.style.display = "none";
+
     document.removeEventListener("click", stopEvent, true);
     document.removeEventListener("mouseup", stopEvent, true);
 

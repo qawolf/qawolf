@@ -97,6 +97,7 @@ export class Runner extends EventEmitter {
   }
 
   async startElementChooser(): Promise<void> {
+    this._environment?.updater.disable();
     await this._environment?._chooser.start();
   }
 
@@ -106,6 +107,7 @@ export class Runner extends EventEmitter {
 
   async stopElementChooser(): Promise<void> {
     await this._environment?._chooser.stop();
+    await this._environment?.updater.enable();
   }
 
   updateCode(update: CodeUpdate): boolean {
