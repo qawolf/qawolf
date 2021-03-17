@@ -12,14 +12,17 @@ type Props = {
   className?: string;
   isActive: boolean;
   isDisabled: boolean;
+  onClick?: () => void;
 };
 
-function SelectButton({ className, isActive, isDisabled }: Props): JSX.Element {
+function SelectButton({
+  className,
+  isActive,
+  isDisabled,
+  onClick,
+}: Props): JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
   const [isHover, setIsHover] = useState(false);
-
-  // TODO: fill out
-  const handleClick = (): void => {};
 
   return (
     <>
@@ -33,7 +36,7 @@ function SelectButton({ className, isActive, isDisabled }: Props): JSX.Element {
           a11yTitle="choose element"
           className={className}
           isDisabled={isDisabled}
-          onClick={handleClick}
+          onClick={onClick}
           type="ghost"
         />
       </Box>

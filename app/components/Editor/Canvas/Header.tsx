@@ -4,18 +4,29 @@ import { useContext } from "react";
 import { edgeSize } from "../../../theme/theme";
 import { borderSize } from "../../../theme/theme";
 import { RunnerContext } from "../contexts/RunnerContext";
+import { useElementChooser } from "../hooks/elementChooser";
 import CodeToggle from "./CodeToggle";
 import SelectButton from "./SelectButton";
 
 export default function Header(): JSX.Element {
-  const { isRunnerConnected, mouseLineNumber, progress } = useContext(
+  const { isRunnerConnected, mouseLineNumber, runner, progress } = useContext(
     RunnerContext
   );
-  // TODO: comment back in
-  // const isDisabled = !isRunnerConnected || progress?.status === "created";
-  const isDisabled = false;
-  // TODO: fill out
-  const isActive = true;
+  const isDisabled = !isRunnerConnected || progress?.status === "created";
+
+  const { startElementChooser, stopElementChooser, value } = useElementChooser(
+    runner
+  );
+
+  const isActive = !!value?.active;
+
+  const onChooseToggle = () => {
+    if (isActive) {
+      stopElementChooser();
+    } else {
+      startElementChooser();
+    }
+  };
 
   return (
     <Box
@@ -28,7 +39,11 @@ export default function Header(): JSX.Element {
       pad="small"
     >
       <CodeToggle isDisabled={isDisabled} mouseLineNumber={mouseLineNumber} />
-      <SelectButton isActive={isActive} isDisabled={isDisabled} />
+      <SelectButton
+        isActive={isActive}
+        isDisabled={isDisabled}
+        onClick={onChooseToggle}
+      />
     </Box>
   );
 }

@@ -40,7 +40,7 @@ export default function Sidebar(): JSX.Element {
 
   const isTestDeleted = !!test?.deleted_at;
   // TODO: replace
-  const isSnippetVisible = true;
+  const isSnippetVisible = false;
   const isActionDisabled = isTestDeleted || isSnippetVisible;
 
   const handleResizeStop: ResizeCallback = (_, __, ___, delta): void => {
