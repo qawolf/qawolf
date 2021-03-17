@@ -1,14 +1,18 @@
 import { Box } from "grommet";
+import { useState } from "react";
 
 import { border } from "../../../../theme/theme";
 import Action from "./Action";
 import Buttons from "./Buttons";
+import ChooseElement from "./ChooseElement";
 import Code from "./Code";
 import Selector from "./Selector";
 
 type Props = { isVisible: boolean };
 
 export default function Snippet({ isVisible }: Props): JSX.Element {
+  const [hasElement, setHasElement] = useState(false);
+
   if (!isVisible) return null;
 
   return (
@@ -18,12 +22,18 @@ export default function Snippet({ isVisible }: Props): JSX.Element {
       flex={false}
       pad="medium"
     >
-      <Box align="center" direction="row" justify="between">
-        <Action />
-        <Selector />
-      </Box>
-      <Code />
-      <Buttons />
+      {hasElement ? (
+        <>
+          <Box align="center" direction="row" justify="between">
+            <Action />
+            <Selector />
+          </Box>
+          <Code />
+          <Buttons />
+        </>
+      ) : (
+        <ChooseElement />
+      )}
     </Box>
   );
 }

@@ -40,7 +40,7 @@ function SelectButton({ className, isActive, isDisabled }: Props): JSX.Element {
       <Tooltip
         align={{ right: "right", top: "bottom" }}
         isVisible={isHover}
-        label={isActive ? copy.cancel : copy.selectElement}
+        label={isActive ? copy.cancel : copy.chooseElement}
         style={{ marginTop: edgeSize.xxsmall }}
         target={ref.current}
       />

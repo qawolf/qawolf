@@ -41,6 +41,10 @@ export const copy = {
   branchesPlaceholder: "Example: develop,main",
   cancel: "Cancel",
   checkEmail: "Check your email for a code",
+  chooseElement: "Choose element",
+  chooseElementDetail:
+    "Select an element, then add a snippet with your chosen action and selector.",
+  chooseElementHeader: "Choose an element in the browser",
   chooseGitHubRepo: "Choose GitHub repository",
   choosePlan: "Choose plan",
   clickMe: "Click me",
@@ -290,7 +294,6 @@ export const copy = {
   scheduleOneClick: "Schedule or run tests on deployments with one click",
   search: "Search",
   select: "Select",
-  selectElement: "Select element",
   selected: (count: number): string => `${count} selected`,
   sendInvites: "Send invites",
   setEnvVariables: "Set environment variables",

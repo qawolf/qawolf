@@ -1,0 +1,48 @@
+export default function BrowserElement(): JSX.Element {
+  return (
+    <svg
+      fill="none"
+      viewBox="0 0 48 48"
+      width="48"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect
+        x="1"
+        y="1"
+        width="46"
+        height="46"
+        rx="1"
+        stroke="#ABB3C2"
+        strokeWidth="2"
+      />
+      <rect
+        x="7"
+        y="23"
+        width="10"
+        height="18"
+        rx="1"
+        stroke="#ABB3C2"
+        strokeWidth="2"
+      />
+      <rect
+        x="7"
+        y="7"
+        width="34"
+        height="10"
+        rx="1"
+        stroke="#ABB3C2"
+        strokeWidth="2"
+      />
+      <rect
+        x="23"
+        y="23"
+        width="18"
+        height="18"
+        rx="1"
+        fill="#FAE6E6"
+        stroke="#DB4B4B"
+        strokeWidth="2"
+      />
+    </svg>
+  );
+}
