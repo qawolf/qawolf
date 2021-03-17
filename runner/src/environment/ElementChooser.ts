@@ -16,8 +16,6 @@ export class ElementChooser extends EventEmitter {
     this._active = active;
 
     if (!active) {
-      // stop emitting chooser values
-      this._contextEmitter?.removeAllListeners();
       // clear the previous chosen value
       this._lastElementChosen = null;
     }
@@ -30,6 +28,9 @@ export class ElementChooser extends EventEmitter {
     this._context = context;
     this._setActive(false);
 
+    // stop emitting chooser values
+    this._contextEmitter?.removeAllListeners();
+
     // emit to a separate emitter per context
     const contextEmitter = new EventEmitter();
     this._contextEmitter = contextEmitter;
@@ -37,7 +38,10 @@ export class ElementChooser extends EventEmitter {
     contextEmitter.on("qawElementChosen", (event: ElementChosen) => {
       this._lastElementChosen = event;
       debug("emit %j", this.value);
-      this.emit("elementchooser", this.value);
+
+      if (this._active) {
+        this.emit("elementchooser", this.value);
+      }
     });
 
     await context.exposeBinding("qawElementChosen", async (_, event) =>

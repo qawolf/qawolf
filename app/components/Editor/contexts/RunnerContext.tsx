@@ -2,6 +2,7 @@ import { createContext, FC, useContext, useEffect } from "react";
 
 import { RunProgress } from "../../../lib/types";
 import { ConnectRunnerHook, useConnectRunner } from "../hooks/connectRunner";
+import { ElementChooserHook, useElementChooser } from "../hooks/elementChooser";
 import { EnvHook, useEnv } from "../hooks/env";
 import { RunnerHook, useRunner } from "../hooks/runner";
 import { useRunProgress } from "../hooks/runProgress";
@@ -10,6 +11,7 @@ import { SelectionHook, useSelection } from "../hooks/selection";
 import { TestContext } from "./TestContext";
 
 type RunnerContext = ConnectRunnerHook &
+  ElementChooserHook &
   EnvHook &
   RunnerHook &
   SelectionHook & {
@@ -21,6 +23,7 @@ type RunnerContext = ConnectRunnerHook &
 
 export const RunnerContext = createContext<RunnerContext>({
   apiKey: null,
+  elementChooserValue: { active: false },
   env: null,
   isRunnerConnected: false,
   isRunnerLoading: false,
@@ -31,6 +34,8 @@ export const RunnerContext = createContext<RunnerContext>({
   runTest: () => null,
   selection: null,
   shouldRequestRunner: false,
+  startElementChooser: () => null,
+  stopElementChooser: () => null,
   stopTest: () => null,
   wsUrl: null,
 });
@@ -40,6 +45,13 @@ export const RunnerProvider: FC = ({ children }) => {
   const { isRunnerConnected, runner } = useRunner();
 
   const { controller, run, suite, team } = useContext(TestContext);
+
+  const {
+    elementChooserValue,
+    startElementChooser,
+    stopElementChooser,
+  } = useElementChooser(runner);
+
   const { env } = useEnv({
     apiKey: team?.api_key,
     inbox: team?.inbox,
@@ -66,6 +78,7 @@ export const RunnerProvider: FC = ({ children }) => {
 
   const value = {
     apiKey,
+    elementChooserValue,
     env,
     isRunnerConnected,
     isRunnerLoading,
@@ -76,6 +89,8 @@ export const RunnerProvider: FC = ({ children }) => {
     runTest,
     selection,
     shouldRequestRunner,
+    startElementChooser,
+    stopElementChooser,
     stopTest,
     wsUrl,
   };

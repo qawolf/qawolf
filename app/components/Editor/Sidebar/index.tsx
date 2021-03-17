@@ -34,13 +34,18 @@ export default function Sidebar(): JSX.Element {
   const { editorSidebarWidth } = useContext(StateContext);
 
   const { controller, run, suite, team, test } = useContext(TestContext);
-  const { progress, runTest, selection, stopTest } = useContext(RunnerContext);
+  const {
+    elementChooserValue,
+    progress,
+    runTest,
+    selection,
+    stopTest,
+  } = useContext(RunnerContext);
 
   const [selected, setSelected] = useState<NavigationOption>("code");
 
   const isTestDeleted = !!test?.deleted_at;
-  // TODO: replace
-  const isSnippetVisible = false;
+  const isSnippetVisible = elementChooserValue.active;
   const isActionDisabled = isTestDeleted || isSnippetVisible;
 
   const handleResizeStop: ResizeCallback = (_, __, ___, delta): void => {

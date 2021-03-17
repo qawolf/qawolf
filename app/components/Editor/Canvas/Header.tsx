@@ -4,21 +4,21 @@ import { useContext } from "react";
 import { edgeSize } from "../../../theme/theme";
 import { borderSize } from "../../../theme/theme";
 import { RunnerContext } from "../contexts/RunnerContext";
-import { useElementChooser } from "../hooks/elementChooser";
 import CodeToggle from "./CodeToggle";
 import SelectButton from "./SelectButton";
 
 export default function Header(): JSX.Element {
-  const { isRunnerConnected, mouseLineNumber, runner, progress } = useContext(
-    RunnerContext
-  );
+  const {
+    elementChooserValue,
+    isRunnerConnected,
+    mouseLineNumber,
+    progress,
+    startElementChooser,
+    stopElementChooser,
+  } = useContext(RunnerContext);
   const isDisabled = !isRunnerConnected || progress?.status === "created";
 
-  const { startElementChooser, stopElementChooser, value } = useElementChooser(
-    runner
-  );
-
-  const isActive = !!value?.active;
+  const isActive = elementChooserValue.active;
 
   const onChooseToggle = () => {
     if (isActive) {
