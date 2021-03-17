@@ -14,7 +14,12 @@ type User = {
 
 type SubscribeData = User | undefined;
 
-export type SubscribeType = "chooser" | "code" | "logs" | "run" | "users";
+export type SubscribeType =
+  | "code"
+  | "elementchooser"
+  | "logs"
+  | "run"
+  | "users";
 
 export type SubscribeMessage = {
   type: SubscribeType;
@@ -31,8 +36,8 @@ export class SubscriptionTracker {
   readonly _subscriptions = new Map<SubscribeType, SubscriptionCollection>();
 
   constructor() {
-    this._subscriptions.set("chooser", { data: [], ids: [] });
     this._subscriptions.set("code", { data: [], ids: [] });
+    this._subscriptions.set("elementchooser", { data: [], ids: [] });
     this._subscriptions.set("logs", { data: [], ids: [] });
     this._subscriptions.set("run", { data: [], ids: [] });
     this._subscriptions.set("users", { data: [], ids: [] });

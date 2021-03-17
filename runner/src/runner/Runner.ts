@@ -4,7 +4,7 @@ import { Environment } from "../environment/Environment";
 import { Log } from "../services/Logger";
 import {
   CodeUpdate,
-  ElementChosen,
+  ElementChooserValue,
   RunHook,
   RunOptions,
   RunProgress,
@@ -54,8 +54,8 @@ export class Runner extends EventEmitter {
       this.emit("codeupdated", update)
     );
 
-    environment.on("elementchosen", (event: ElementChosen) =>
-      this.emit("elementchosen", event)
+    environment.on("elementchooser", (event: ElementChooserValue) =>
+      this.emit("elementchooser", event)
     );
 
     environment.on("logscreated", (logs: Log[]) =>
@@ -98,7 +98,7 @@ export class Runner extends EventEmitter {
 
   async startElementChooser(): Promise<void> {
     this._environment?.updater.disable();
-    await this._environment?._chooser.start();
+    await this._environment?._elementChooser.start();
   }
 
   async stop(): Promise<void> {
@@ -106,7 +106,7 @@ export class Runner extends EventEmitter {
   }
 
   async stopElementChooser(): Promise<void> {
-    await this._environment?._chooser.stop();
+    await this._environment?._elementChooser.stop();
     await this._environment?.updater.enable();
   }
 

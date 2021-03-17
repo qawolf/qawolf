@@ -41,6 +41,12 @@ export interface ElementChosen {
   text: string;
 }
 
+export interface ElementChooserValue {
+  active: boolean;
+  selectors?: RankedSelector[];
+  text?: string;
+}
+
 export interface ElementEvent {
   action: ElementAction;
   page: Page;

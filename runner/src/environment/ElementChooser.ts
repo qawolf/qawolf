@@ -2,61 +2,85 @@ import Debug from "debug";
 import { EventEmitter } from "events";
 import { BrowserContext } from "playwright";
 
-import { ElementChosen } from "../types";
+import { ElementChosen, ElementChooserValue } from "../types";
 
 const debug = Debug("qawolf:ElementChooser");
 
 export class ElementChooser extends EventEmitter {
+  _active = false;
   _context?: BrowserContext;
   _contextEmitter?: EventEmitter;
+  _lastElementChosen: ElementChosen | null = null;
+
+  _setActive(active: boolean): void {
+    this._active = active;
+
+    if (!active) {
+      // stop emitting chooser values
+      this._contextEmitter?.removeAllListeners();
+      // clear the previous chosen value
+      this._lastElementChosen = null;
+    }
+
+    debug("emit %j", this.value);
+    this.emit("elementchooser", this.value);
+  }
 
   async setContext(context: BrowserContext): Promise<void> {
     this._context = context;
+    this._setActive(false);
 
-    // stop listening to the last context emitter
-    if (this._contextEmitter) this._contextEmitter.removeAllListeners();
-
+    // emit to a separate emitter per context
     const contextEmitter = new EventEmitter();
     this._contextEmitter = contextEmitter;
 
-    contextEmitter.on("elementchosen", (event) => {
-      debug("emit %j", event);
-      this.emit("elementchosen", event);
+    contextEmitter.on("qawElementChosen", (event: ElementChosen) => {
+      this._lastElementChosen = event;
+      debug("emit %j", this.value);
+      this.emit("elementchooser", this.value);
     });
 
-    await context.exposeBinding(
-      "qawElementChosen",
-      async (_, event: ElementChosen) => {
-        contextEmitter.emit("elementchosen", event);
-      }
+    await context.exposeBinding("qawElementChosen", async (_, event) =>
+      contextEmitter.emit("qawElementChosen", event)
     );
   }
 
   async start(): Promise<void> {
-    const promises = (this._context?.pages() || []).map((page) => {
-      if (page.isClosed()) return;
+    this._setActive(true);
 
-      return page.evaluate(() => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const qawolf: any = (window as any).qawolf;
-        return qawolf.elementChooser.start();
+    const promises = (this._context?.pages() || [])
+      .filter((page) => !page.isClosed())
+      .map((page) => {
+        return page.evaluate(() => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const qawolf: any = (window as any).qawolf;
+          return qawolf.elementElementChooser.start();
+        });
       });
-    });
 
     await Promise.all(promises);
   }
 
   async stop(): Promise<void> {
-    const promises = (this._context?.pages() || []).map((page) => {
-      if (page.isClosed()) return;
+    this._setActive(false);
 
-      return page.evaluate(() => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const qawolf: any = (window as any).qawolf;
-        return qawolf.elementChooser.stop();
+    const promises = (this._context?.pages() || [])
+      .filter((page) => !page.isClosed())
+      .map((page) => {
+        return page.evaluate(() => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const qawolf: any = (window as any).qawolf;
+          return qawolf.elementElementChooser.stop();
+        });
       });
-    });
 
     await Promise.all(promises);
+  }
+
+  get value(): ElementChooserValue {
+    return {
+      ...(this._lastElementChosen || {}),
+      active: this._active,
+    };
   }
 }

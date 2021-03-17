@@ -17,7 +17,7 @@ export class Environment extends EventEmitter {
   readonly _vm: VM;
 
   _browser?: Browser;
-  _chooser = new ElementChooser();
+  _elementChooser = new ElementChooser();
   _inProgress: Run[] = [];
   _variables: Variables = {};
   _updater = new CodeUpdater(this._variables);
@@ -25,8 +25,8 @@ export class Environment extends EventEmitter {
   constructor() {
     super();
 
-    this._chooser.on("elementchosen", (event) =>
-      this.emit("elementchosen", event)
+    this._elementChooser.on("elementchooser", (event) =>
+      this.emit("elementchooser", event)
     );
 
     this._logger.on("logscreated", (logs) => this.emit("logscreated", logs));
@@ -40,7 +40,7 @@ export class Environment extends EventEmitter {
       onLaunch: async (launched) => {
         this._browser = launched.browser;
         await Promise.all([
-          this._chooser.setContext(launched.context),
+          this._elementChooser.setContext(launched.context),
           this._updater.setContext(launched.context),
         ]);
       },
