@@ -269,12 +269,10 @@ export const copy = {
   startTutorial: "Start tutorial",
   stepCount: (count: number): string => `Step ${count} of 5`,
   tenTeamMembers: "Up to 10 team members",
-  toggleCreateCode:
-    'Click the "Create code" toggle above to turn off code creation. Then click the "Click me" button below.',
-  toggleCreateCode2:
-    "See how no code was created? You can turn off code creation to use your site without updating your test.",
+  toggleCreateCode: "Toggle code creation",
+  toggleCreateCode2: 'Click the "Create code" toggle',
   toggleCreateCode3:
-    'Now turn code creation back on and click the "Next" button below.',
+    'above the browser to turn off code creation, then click the "Click me" button below.',
   save: "Save",
   saveTest: "Save Test",
   schedule: "Schedule",

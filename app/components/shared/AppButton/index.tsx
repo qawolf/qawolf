@@ -79,13 +79,17 @@ function AppButton({
         direction={iconPosition === "right" ? "row-reverse" : "row"}
         fill
         justify={justify || "between"}
-        pad={getBoxPad({
-          hasIcon: !!IconComponent,
-          hasLabel: !!label,
-          iconPosition,
-          justify,
-          type,
-        })}
+        pad={
+          isLarge
+            ? { horizontal: "small" }
+            : getBoxPad({
+                hasIcon: !!IconComponent,
+                hasLabel: !!label,
+                iconPosition,
+                justify,
+                type,
+              })
+        }
       >
         {!!IconComponent && (
           <IconComponent
@@ -97,7 +101,7 @@ function AppButton({
           <Text
             color={color || textColor[type]}
             margin={getTextMargin(!!IconComponent, iconPosition)}
-            size={isLarge ? "componentParagraphLarge" : "component"}
+            size={isLarge ? "buttonLarge" : "component"}
             style={overflowStyle}
           >
             {label}

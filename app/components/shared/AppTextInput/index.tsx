@@ -77,7 +77,7 @@ function TextInput(
     setErrorWidth(errorRef.current?.clientWidth || 0);
   }, [error]);
 
-  const finalSize = isLarge ? "componentParagraphLarge" : size || "component";
+  const finalSize = isLarge ? "buttonLarge" : size || "component";
 
   const style = {
     borderColor: error ? colors.danger5 : colors.gray3,
@@ -90,10 +90,13 @@ function TextInput(
     height: isLarge ? edgeSize.xxlarge : edgeSize.large,
     lineHeight: edgeSize.large,
     paddingBottom: 0,
-    paddingLeft: pad?.left || `calc(${edgeSize.xsmall} - ${borderSize.xsmall})`,
-    paddingRight:
-      pad?.right ||
-      `calc(${edgeSize.xsmall} - ${borderSize.xsmall} + ${errorWidth}px)`,
+    paddingLeft: isLarge
+      ? edgeSize.small
+      : pad?.left || `calc(${edgeSize.xsmall} - ${borderSize.xsmall})`,
+    paddingRight: isLarge
+      ? edgeSize.small
+      : pad?.right ||
+        `calc(${edgeSize.xsmall} - ${borderSize.xsmall} + ${errorWidth}px)`,
     paddingTop: 0,
     transition,
   };

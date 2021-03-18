@@ -1,17 +1,16 @@
 import { Box } from "grommet";
+import Image from "next/image";
 import { useState } from "react";
-import { BsArrowUpLeft } from "react-icons/bs";
 
 import ClickButton from "../../../components/Guides/CreateATest/ClickButton";
-import {
-  iconProps,
-  textProps,
-} from "../../../components/Guides/CreateATest/helpers";
+import { headerProps } from "../../../components/Guides/CreateATest/helpers";
+import { textProps } from "../../../components/Guides/CreateATest/helpers";
 import Layout from "../../../components/Guides/CreateATest/Layout";
 import NextButton from "../../../components/Guides/CreateATest/NextButton";
+import Section from "../../../components/Guides/CreateATest/Section";
+import Button from "../../../components/shared/AppButton";
 import Text from "../../../components/shared/Text";
 import { copy } from "../../../theme/copy";
-import { transitionDuration } from "../../../theme/theme";
 
 const step = 4;
 
@@ -22,22 +21,33 @@ export default function CreateATest4(): JSX.Element {
 
   return (
     <Layout>
-      <BsArrowUpLeft {...iconProps} />
-      <Text {...textProps}>{copy.toggleCreateCode}</Text>
-      <ClickButton onClick={handleClick} />
       <Box
-        style={{
-          cursor: isClicked ? "auto" : "default",
-          opacity: isClicked ? 1 : 0,
-          transition: `opacity ${transitionDuration}`,
-        }}
+        {...headerProps}
+        align="center"
+        background="lightGreen"
+        pad={{ vertical: "xxlarge" }}
       >
-        <Text {...textProps}>{copy.toggleCreateCode2}</Text>
-        <Text {...textProps} margin={{ top: "medium" }}>
-          {copy.toggleCreateCode3}
-        </Text>
-        <NextButton step={step} />
+        <Image
+          alt="toggle code off"
+          height="48"
+          src="/guides/create-code-off.png"
+          width="178"
+        />
       </Box>
+      <Section label={copy.toggleCreateCode} step={step}>
+        <Text {...textProps}>
+          <b>{copy.toggleCreateCode2}</b> {copy.toggleCreateCode3}
+        </Text>
+        <Box
+          align="center"
+          direction="row"
+          justify="between"
+          margin={{ top: "xlarge" }}
+        >
+          <ClickButton onClick={handleClick} />
+          <NextButton noMargin step={step} />
+        </Box>
+      </Section>
     </Layout>
   );
 }

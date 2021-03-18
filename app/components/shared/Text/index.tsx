@@ -73,6 +73,7 @@ const StyledText = styled(Text)`
 
   ${(props) =>
     [
+      "buttonLarge",
       "component",
       "componentParagraph",
       "componentParagraphLarge",

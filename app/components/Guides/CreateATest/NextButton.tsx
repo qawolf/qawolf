@@ -5,9 +5,12 @@ import { routes } from "../../../lib/routes";
 import { copy } from "../../../theme/copy";
 import Button from "../../shared/AppButton";
 
-type Props = { step: number };
+type Props = {
+  noMargin?: boolean;
+  step: number;
+};
 
-export default function NextButton({ step }: Props): JSX.Element {
+export default function NextButton({ noMargin, step }: Props): JSX.Element {
   const { push } = useRouter();
 
   const handleClick = (): void => {
@@ -15,7 +18,7 @@ export default function NextButton({ step }: Props): JSX.Element {
   };
 
   return (
-    <Box align="end" margin={{ top: "xlarge" }}>
+    <Box align="end" margin={noMargin ? undefined : { top: "xlarge" }}>
       <Button isLarge label={copy.next} onClick={handleClick} type="primary" />
     </Box>
   );

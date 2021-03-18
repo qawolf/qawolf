@@ -38,7 +38,7 @@ export default function Wolf({ color }: Props): JSX.Element {
   );
 
   return (
-    <Box {...headerProps} background="gray1" pad={{ vertical: "xxlarge" }}>
+    <Box {...headerProps} background="gray1">
       {innerHtml}
     </Box>
   );

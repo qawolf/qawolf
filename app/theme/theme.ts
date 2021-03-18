@@ -61,6 +61,7 @@ export const colors = {
   gray9: "#2A3140",
   gray10: "#151B26",
   lightGray: "#F0F3F5",
+  lightGreen: "#E6FAEC",
   lightPurple: "#8E9CF5",
   lightYellow: "#FBF5DD",
   primary: "#4545E5",
@@ -114,6 +115,7 @@ export const edgeSize = {
 
 export const fontFamily = {
   bold: "Circular Black",
+  buttonLarge: "Inter",
   component: "Inter",
   componentBold: "Inter Semibold",
   componentMedium: "Inter Medium",
@@ -157,6 +159,7 @@ export const text = {
   large: { height: "36px", size: "28px" },
   xlarge: { height: "40px", size: "36px" },
   xxlarge: { height: "52px", size: "46px" },
+  buttonLarge: { height: "24px", size: "16px" },
   component: { height: "16px", size: "14px" },
   componentBold: { height: "16px", size: "14px" },
   componentHeader: { height: "24px", size: "18px" },
@@ -179,6 +182,7 @@ export const textDesktop = {
   large: { height: "52px", size: "40px" },
   xlarge: { height: "62px", size: "56px" },
   xxlarge: { height: "84px", size: "76px" },
+  buttonLarge: { height: "24px", size: "16px" },
   component: { height: "16px", size: "14px" },
   componentBold: { height: "16px", size: "14px" },
   componentHeader: { height: "24px", size: "18px" },
