@@ -1,43 +1,38 @@
 import { Box } from "grommet";
-import { useState } from "react";
-import { BsArrowUpLeft } from "react-icons/bs";
+import Image from "next/image";
 
-import ClickButton from "../../../components/Guides/CreateATest/ClickButton";
-import {
-  iconProps,
-  textProps,
-} from "../../../components/Guides/CreateATest/helpers";
+import { headerProps } from "../../../components/Guides/CreateATest/helpers";
+import { textProps } from "../../../components/Guides/CreateATest/helpers";
 import Layout from "../../../components/Guides/CreateATest/Layout";
 import NextButton from "../../../components/Guides/CreateATest/NextButton";
+import Section from "../../../components/Guides/CreateATest/Section";
 import Text from "../../../components/shared/Text";
 import { copy } from "../../../theme/copy";
-import { transitionDuration } from "../../../theme/theme";
 
 const step = 3;
 
 export default function CreateATest3(): JSX.Element {
-  const [isClicked, setIsClicked] = useState(false);
-
-  const handleClick = (): void => setIsClicked(true);
-
   return (
     <Layout>
-      <BsArrowUpLeft {...iconProps} />
-      <Text {...textProps}>{copy.toggleCreateCode}</Text>
-      <ClickButton onClick={handleClick} />
       <Box
-        style={{
-          cursor: isClicked ? "auto" : "default",
-          opacity: isClicked ? 1 : 0,
-          transition: `opacity ${transitionDuration}`,
-        }}
+        {...headerProps}
+        align="center"
+        background="lightYellow"
+        pad={{ vertical: "xxlarge" }}
       >
-        <Text {...textProps}>{copy.toggleCreateCode2}</Text>
-        <Text {...textProps} margin={{ top: "medium" }}>
-          {copy.toggleCreateCode3}
+        <Image
+          alt="run test"
+          height="80"
+          src="/guides/run-test.png"
+          width="480"
+        />
+      </Box>
+      <Section label={copy.runTestIntro} step={step}>
+        <Text {...textProps}>
+          <b>{copy.runTestIntro2}</b> {copy.runTestIntro3}
         </Text>
         <NextButton step={step} />
-      </Box>
+      </Section>
     </Layout>
   );
 }

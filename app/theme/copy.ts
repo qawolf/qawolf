@@ -242,8 +242,10 @@ export const copy = {
     `Run on ${repoName} deployment`,
   runTagline: "Run tests without rocket science",
   runTest: "Run test",
+  runTestIntro: "Run your test",
+  runTestIntro2: 'Click the "Run test" button',
   runTestIntro3:
-    'Now run your test by clicking the blue "Run test" button or by pressing',
+    "in the bottom right corner of the code editor to run your test.",
   runsFail: "Failing tests",
   runGroup: (count: number): string =>
     `Run ${count ? `${count} ` : ""}test${count === 1 ? "" : "s"}`,

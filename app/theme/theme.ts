@@ -62,6 +62,7 @@ export const colors = {
   gray10: "#151B26",
   lightGray: "#F0F3F5",
   lightPurple: "#8E9CF5",
+  lightYellow: "#FBF5DD",
   primary: "#4545E5",
   primary1: "#E6E6FA",
   primaryDark: "#2F2FC2",

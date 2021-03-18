@@ -1,28 +1,43 @@
 import { Box } from "grommet";
-import Image from "next/image";
+import { useState } from "react";
+import { BsArrowUpLeft } from "react-icons/bs";
 
-import { textProps } from "../../../components/Guides/CreateATest/helpers";
+import ClickButton from "../../../components/Guides/CreateATest/ClickButton";
+import {
+  iconProps,
+  textProps,
+} from "../../../components/Guides/CreateATest/helpers";
 import Layout from "../../../components/Guides/CreateATest/Layout";
 import NextButton from "../../../components/Guides/CreateATest/NextButton";
 import Text from "../../../components/shared/Text";
 import { copy } from "../../../theme/copy";
-import { edgeSize } from "../../../theme/theme";
+import { transitionDuration } from "../../../theme/theme";
 
 const step = 4;
 
 export default function CreateATest4(): JSX.Element {
+  const [isClicked, setIsClicked] = useState(false);
+
+  const handleClick = (): void => setIsClicked(true);
+
   return (
     <Layout>
-      <Text {...textProps}>{copy.runSelectedCode}</Text>
-      <Text {...textProps} margin={{ vertical: "medium" }}>
-        {copy.runSelectedCode2}
-      </Text>
-      <Box alignSelf="center" width="480px">
-        <Image height={60} src="/guides/highlight-line.png" width={850} />
-        <Box height={edgeSize.xxsmall} />
-        <Image height={132} src="/guides/run-1-line.png" width={958} />
+      <BsArrowUpLeft {...iconProps} />
+      <Text {...textProps}>{copy.toggleCreateCode}</Text>
+      <ClickButton onClick={handleClick} />
+      <Box
+        style={{
+          cursor: isClicked ? "auto" : "default",
+          opacity: isClicked ? 1 : 0,
+          transition: `opacity ${transitionDuration}`,
+        }}
+      >
+        <Text {...textProps}>{copy.toggleCreateCode2}</Text>
+        <Text {...textProps} margin={{ top: "medium" }}>
+          {copy.toggleCreateCode3}
+        </Text>
+        <NextButton step={step} />
       </Box>
-      <NextButton step={step} />
     </Layout>
   );
 }
