@@ -99,6 +99,7 @@ const StyledText = styled(Text)`
     [
       "componentBold",
       "componentHeader",
+      "componentHeaderLarge",
       "componentLarge",
       "componentXLarge",
     ].includes(props.size) &&

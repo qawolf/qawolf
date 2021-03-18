@@ -14,7 +14,11 @@ const width = "680px";
 export default function Section({ children, label, pad }: Props): JSX.Element {
   return (
     <Box alignSelf="center" flex={false} pad={pad || "xlarge"} width={width}>
-      <Text color="gray9" margin={{ bottom: "xxsmall" }} size="componentXLarge">
+      <Text
+        color="gray9"
+        margin={{ bottom: "xxsmall" }}
+        size="componentHeaderLarge"
+      >
         {label}
       </Text>
       {children}

@@ -9,6 +9,7 @@ import {
 } from "../../../components/Guides/CreateATest/helpers";
 import Layout from "../../../components/Guides/CreateATest/Layout";
 import NextButton from "../../../components/Guides/CreateATest/NextButton";
+import Section from "../../../components/Guides/CreateATest/Section";
 import WolfButton from "../../../components/shared/icons/WolfButton";
 import Text from "../../../components/shared/Text";
 import { useWolf } from "../../../hooks/queries";
@@ -25,21 +26,31 @@ export default function CreateATest2(): JSX.Element {
 
   return (
     <Layout>
-      <Box>
-        {!!wolf && <Text {...textProps}>{copy.runTestIntro(wolf.name)}</Text>}
-        <Text {...textProps}>
-          {copy.runTestIntro2} <code>{patchHandle}</code>
-        </Text>
-      </Box>
-      <BsArrowLeft {...iconProps} />
-      <Text {...textProps} margin={{ vertical: "medium" }}>
-        {copy.runTestIntro3} <code>⌘</code> / <code>Ctrl</code> +{" "}
-        <code>Enter</code>.
-      </Text>
-      <Box alignSelf="center" height={wolfHeight}>
-        {!!wolf && <WolfButton color={wolf.variant} />}
-      </Box>
-      <NextButton step={step} />
+      <Section label={copy.getCode}>
+        {!!wolf && (
+          <Text {...textProps} margin={{ bottom: "xxsmall" }}>
+            {copy.getCode2(wolf.name)}
+          </Text>
+        )}
+        <Text {...textProps}>{copy.getCode3}</Text>
+        <Text {...textProps}>{copy.getCode4}</Text>
+      </Section>
     </Layout>
   );
+
+  //   <Box>
+
+  //   <Text {...textProps}>
+  //     {copy.runTestIntro2} <code>{patchHandle}</code>
+  //   </Text>
+  // </Box>
+  // <BsArrowLeft {...iconProps} />
+  // <Text {...textProps} margin={{ vertical: "medium" }}>
+  //   {copy.runTestIntro3} <code>⌘</code> / <code>Ctrl</code> +{" "}
+  //   <code>Enter</code>.
+  // </Text>
+  // <Box alignSelf="center" height={wolfHeight}>
+  //   {!!wolf && <WolfButton color={wolf.variant} />}
+  // </Box>
+  // <NextButton step={step} />
 }

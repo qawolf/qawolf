@@ -138,6 +138,11 @@ export const copy = {
   frequency: "Frequency",
   frequencyDaily: "Every day",
   frequencyHourly: "Every hour",
+  getCode: "Use your site — get code",
+  getCode2: (wolfName: string): string => `${wolfName} it is then!`,
+  getCode3:
+    "As you use your website, test code is created on the left where it says:",
+  getCode4: '"// 🐺 QA Wolf will create code here".',
   getInTouch: "Get in touch",
   getStarted: "Get started",
   gitHub: "GitHub",
@@ -235,9 +240,6 @@ export const copy = {
     `Run on ${repoName} deployment`,
   runTagline: "Run tests without rocket science",
   runTest: "Run test",
-  runTestIntro: (wolfName: string): string => `${wolfName} it is then!`,
-  runTestIntro2:
-    "As you use your site, test code is created on the left where it says",
   runTestIntro3:
     'Now run your test by clicking the blue "Run test" button or by pressing',
   runsFail: "Failing tests",

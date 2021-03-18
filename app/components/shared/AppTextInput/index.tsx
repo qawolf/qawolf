@@ -87,7 +87,7 @@ function TextInput(
     fontFamily: fontFamily[finalSize],
     fontWeight: fontWeight.normal,
     fontSize: textDesktop[finalSize].size,
-    height: isLarge ? edgeSize.xlarge : edgeSize.large,
+    height: isLarge ? edgeSize.xxlarge : edgeSize.large,
     lineHeight: edgeSize.large,
     paddingBottom: 0,
     paddingLeft: pad?.left || `calc(${edgeSize.xsmall} - ${borderSize.xsmall})`,

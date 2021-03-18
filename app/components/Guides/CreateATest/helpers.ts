@@ -6,7 +6,6 @@ export const getUserId = (): string => {
 };
 
 export const headerProps = {
-  fill: true,
   justify: "center" as const,
 };
 
