@@ -8,7 +8,6 @@ import { textProps } from "../../../components/Guides/CreateATest/helpers";
 import Layout from "../../../components/Guides/CreateATest/Layout";
 import NextButton from "../../../components/Guides/CreateATest/NextButton";
 import Section from "../../../components/Guides/CreateATest/Section";
-import Button from "../../../components/shared/AppButton";
 import Text from "../../../components/shared/Text";
 import { copy } from "../../../theme/copy";
 
@@ -18,6 +17,11 @@ export default function CreateATest4(): JSX.Element {
   const [isClicked, setIsClicked] = useState(false);
 
   const handleClick = (): void => setIsClicked(true);
+  const clickMeHtml = isClicked ? (
+    copy.toggleCreateCode2
+  ) : (
+    <b>{copy.toggleCreateCode2}</b>
+  );
 
   return (
     <Layout>
@@ -36,8 +40,18 @@ export default function CreateATest4(): JSX.Element {
       </Box>
       <Section label={copy.toggleCreateCode} step={step}>
         <Text {...textProps}>
-          <b>{copy.toggleCreateCode2}</b> {copy.toggleCreateCode3}
+          {clickMeHtml} {copy.toggleCreateCode3}
         </Text>
+        {isClicked && (
+          <>
+            <Text {...textProps} margin={{ vertical: "small" }}>
+              {copy.toggleCreateCode4}
+            </Text>
+            <Text {...textProps}>
+              <b>{copy.toggleCreateCode5}</b> {copy.toggleCreateCode6}
+            </Text>
+          </>
+        )}
         <Box
           align="center"
           direction="row"
@@ -45,7 +59,7 @@ export default function CreateATest4(): JSX.Element {
           margin={{ top: "xlarge" }}
         >
           <ClickButton onClick={handleClick} />
-          <NextButton noMargin step={step} />
+          <NextButton isDisabled={!isClicked} noMargin step={step} />
         </Box>
       </Section>
     </Layout>

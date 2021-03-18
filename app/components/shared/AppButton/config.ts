@@ -5,6 +5,7 @@ import { colors } from "../../../theme/theme";
 export type Type =
   | "danger"
   | "dark"
+  | "disabled"
   | "ghost"
   | "primary"
   | "secondary"
@@ -14,6 +15,7 @@ export type Type =
 export const activeBackground: { [type in Type]: BoxProps["background"] } = {
   danger: colors.danger7,
   dark: colors.gray10,
+  disabled: colors.gray2,
   ghost: colors.gray3,
   primary: colors.primaryDarker,
   secondary: colors.gray0,
@@ -28,6 +30,7 @@ export const activeSecondaryBackground: { [type: string]: string } = {
 export const background: { [type in Type]: BoxProps["background"] } = {
   danger: colors.danger5,
   dark: colors.gray10,
+  disabled: colors.gray2,
   ghost: colors.gray0,
   primary: colors.primary,
   secondary: colors.gray0,
@@ -38,6 +41,7 @@ export const background: { [type in Type]: BoxProps["background"] } = {
 export const hoverBackground: { [type in Type]: string } = {
   danger: colors.danger6,
   dark: colors.gray10,
+  disabled: colors.gray2,
   ghost: colors.gray2,
   primary: colors.primaryDark,
   secondary: colors.gray0,
@@ -52,6 +56,7 @@ export const hoverSecondaryBackground: { [type: string]: string } = {
 export const textColor: { [type in Type]: string } = {
   danger: colors.gray0,
   dark: colors.gray0,
+  disabled: colors.gray5,
   ghost: colors.gray9,
   primary: colors.gray0,
   secondary: colors.gray9,

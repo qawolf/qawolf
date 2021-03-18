@@ -21,7 +21,7 @@ export const getBoxPad = ({
 }: GetBoxPad): BoxProps["pad"] => {
   if (justify === "center") return undefined;
 
-  const hasBorder = ["dark", "secondary"].includes(type);
+  const hasBorder = ["dark", "disabled", "secondary"].includes(type);
   const border = borderSize.xsmall;
 
   const xsmall = hasBorder ? `calc(${edgeSize.xsmall} - ${border})` : "xsmall";

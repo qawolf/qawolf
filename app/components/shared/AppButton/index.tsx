@@ -138,6 +138,12 @@ const StyledAppButton = styled(AppButton)`
   `}
 
   ${(props) =>
+    props.type === "disabled" &&
+    `
+  border: ${borderSize.xsmall} solid ${colors.gray3};
+  `}
+
+  ${(props) =>
     props.type === "secondary" &&
     `
   border: ${borderSize.xsmall} solid ${colors.gray3};

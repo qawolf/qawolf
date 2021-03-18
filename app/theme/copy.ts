@@ -273,6 +273,10 @@ export const copy = {
   toggleCreateCode2: 'Click the "Create code" toggle',
   toggleCreateCode3:
     'above the browser to turn off code creation, then click the "Click me" button below.',
+  toggleCreateCode4:
+    "See how no code was created? You can turn off code creation to use your site without upating your test.",
+  toggleCreateCode5: "Now turn code creation back on",
+  toggleCreateCode6: "and move on to the next step.",
   save: "Save",
   saveTest: "Save Test",
   schedule: "Schedule",
