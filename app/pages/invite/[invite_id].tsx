@@ -36,7 +36,7 @@ export default function Invite(): JSX.Element {
   // redirect to dashboard once invite accepted
   useEffect(() => {
     if (data?.acceptInvite && user) {
-      const route = user.onboarded_at ? routes.tests : routes.tutorial;
+      const route = user.onboarded_at ? routes.tests : routes.getStarted;
       push(route);
     }
   }, [data, push, user]);

@@ -18,5 +18,4 @@ export const routes = {
   suites: "/suites",
   test: "/test",
   tests: "/tests",
-  tutorial: "/tutorial",
 };
