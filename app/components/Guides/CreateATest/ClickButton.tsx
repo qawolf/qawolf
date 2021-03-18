@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 
 import { copy } from "../../../theme/copy";
 import Button from "../../shared/Button";
-import { width } from "./NextButton";
 
 type Props = { onClick: () => void };
 
@@ -40,7 +39,6 @@ export default function ClickButton({ onClick }: Props): JSX.Element {
         label={isClicked ? copy.clickMeClicked : copy.clickMe}
         onClick={handleClick}
         size="medium"
-        width={width}
       />
     </Box>
   );
