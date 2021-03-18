@@ -2,10 +2,12 @@ import { Box } from "grommet";
 import styled, { keyframes } from "styled-components";
 
 import WolfSitting from "../../shared/icons/WolfSitting";
+import { headerProps } from "./helpers";
 
 type Props = { color?: string };
 
-const height = "134px";
+const height = "200px";
+const width = "180";
 
 const wolfKeyFrames = keyframes`
 0% {
@@ -27,11 +29,17 @@ const StyledBox = styled(Box)`
 `;
 
 export default function Wolf({ color }: Props): JSX.Element {
-  if (!color) return <Box height={height} />;
+  const innerHtml = color ? (
+    <StyledBox alignSelf="center" flex={false} height={height}>
+      <WolfSitting animate color={color} width={width} />
+    </StyledBox>
+  ) : (
+    <Box flex={false} height={height} />
+  );
 
   return (
-    <StyledBox alignSelf="center" height={height}>
-      <WolfSitting animate color={color} />
-    </StyledBox>
+    <Box {...headerProps} background="gray2">
+      {innerHtml}
+    </Box>
   );
 }

@@ -6,10 +6,11 @@ type Props = {
   animate?: boolean;
   className?: string;
   color: string;
+  width?: string;
 };
 
-function WolfSitting({ className, color }: Props): JSX.Element {
-  return <WolfSittingIcon className={className} color={color} />;
+function WolfSitting({ className, color, width }: Props): JSX.Element {
+  return <WolfSittingIcon className={className} color={color} width={width} />;
 }
 
 const tailWagKeyFrames = keyframes`

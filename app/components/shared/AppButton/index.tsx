@@ -35,6 +35,7 @@ export type Props = {
   iconColor?: string;
   iconPosition?: Side;
   isDisabled?: boolean;
+  isLarge?: boolean;
   isSelected?: boolean;
   justify?: BoxProps["justify"];
   label?: string;
@@ -55,6 +56,7 @@ function AppButton({
   iconColor,
   iconPosition,
   isDisabled,
+  isLarge,
   justify,
   label,
   margin,
@@ -95,7 +97,7 @@ function AppButton({
           <Text
             color={color || textColor[type]}
             margin={getTextMargin(!!IconComponent, iconPosition)}
-            size="component"
+            size={isLarge ? "componentParagraphLarge" : "component"}
             style={overflowStyle}
           >
             {label}
@@ -119,7 +121,7 @@ function AppButton({
 const StyledAppButton = styled(AppButton)`
   background: ${(props) => `${background[props.type]}`};
   border-radius: ${borderSize.small};
-  height: ${edgeSize.large};
+  height: ${(props) => (props.isLarge ? edgeSize.xlarge : edgeSize.large)};
 
   ${(props) => !!props.isDisabled && "cursor: not-allowed;"}
   ${(props) => !!props.width && `width: ${props.width};`}

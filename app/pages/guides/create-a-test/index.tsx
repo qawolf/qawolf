@@ -4,10 +4,11 @@ import { ChangeEvent, useEffect, useState } from "react";
 
 import { textProps } from "../../../components/Guides/CreateATest/helpers";
 import Layout from "../../../components/Guides/CreateATest/Layout";
+import Section from "../../../components/Guides/CreateATest/Section";
 import Wolf from "../../../components/Guides/CreateATest/Wolf";
-import Button from "../../../components/shared/Button";
+import Button from "../../../components/shared/AppButton";
+import TextInput from "../../../components/shared/AppTextInput";
 import Text from "../../../components/shared/Text";
-import TextInput from "../../../components/shared/TextInput";
 import { useUpdateWolf } from "../../../hooks/mutations";
 import { useWolf } from "../../../hooks/queries";
 import { routes } from "../../../lib/routes";
@@ -52,40 +53,45 @@ export default function CreateATest1(): JSX.Element {
 
   return (
     <Layout>
-      <Text {...textProps}>{copy.wolfIntro}</Text>
-      <Text {...textProps} margin={{ bottom: "medium" }}>
-        {copy.wolfIntro2}
-      </Text>
       <Wolf color={wolf?.variant} />
-      <Text {...textProps} margin={{ top: "medium" }} textAlign="start">
-        {copy.wolfIntro3}
-      </Text>
-      <Box align="center" direction="row" margin={{ top: "medium" }}>
-        <TextInput
-          id="wolf-name"
-          maxLength={maxLength}
-          onChange={handleChange}
-          placeholder={wolf?.name || copy.loading}
-          value={name}
-        />
-        <Box flex={false} margin={{ left: "small" }}>
-          <Button
-            disabled={loading || !wolf}
-            label={copy.nameWolf}
-            onClick={handleClick}
-            size="medium"
-          />
-        </Box>
-      </Box>
-      <Text
-        color="error"
-        margin={{ top: "xxsmall" }}
-        size="xsmall"
-        style={{ opacity: name.length === maxLength ? "1" : "0", transition }}
-        weight="medium"
+      <Section
+        label={copy.wolfIntro}
+        // ignore error text in bottom padding
+        pad={{ bottom: "xxsmall", horizontal: "xlarge", top: "xlarge" }}
       >
-        {copy.nameWolfMaxLength}
-      </Text>
+        <Text {...textProps} margin={{ bottom: "xsmall" }}>
+          {copy.wolfIntro2}
+        </Text>
+        <Text {...textProps}>{copy.wolfIntro3}</Text>
+        <Box align="center" direction="row" margin={{ top: "xlarge" }}>
+          <TextInput
+            id="wolf-name"
+            isLarge
+            maxLength={maxLength}
+            onChange={handleChange}
+            placeholder={wolf?.name || copy.loading}
+            value={name}
+            width="full"
+          />
+          <Box flex={false} margin={{ left: "small" }}>
+            <Button
+              isDisabled={loading || !wolf}
+              isLarge
+              label={copy.nameWolf}
+              onClick={handleClick}
+              type="primary"
+            />
+          </Box>
+        </Box>
+        <Text
+          color="error"
+          margin={{ top: "xxsmall" }}
+          size="componentParagraphLarge"
+          style={{ opacity: name.length === maxLength ? "1" : "0", transition }}
+        >
+          {copy.nameWolfMaxLength}
+        </Text>
+      </Section>
     </Layout>
   );
 }

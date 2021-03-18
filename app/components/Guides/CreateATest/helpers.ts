@@ -5,6 +5,11 @@ export const getUserId = (): string => {
   return isServer() ? "" : localStorage.getItem("userId");
 };
 
+export const headerProps = {
+  fill: true,
+  justify: "center" as const,
+};
+
 export const iconProps = {
   color: colors.gray9,
   size: edgeSize.xxlarge,
@@ -12,6 +17,5 @@ export const iconProps = {
 
 export const textProps = {
   color: "gray9",
-  size: "medium" as const,
-  weight: "normal" as const,
+  size: "componentParagraphLarge" as const,
 };

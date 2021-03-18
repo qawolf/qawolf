@@ -3,11 +3,13 @@ import { getWolfColors } from "../../../../theme/wolf";
 type Props = {
   className?: string;
   color: string;
+  width?: string;
 };
 
 export default function WolfSittingIcon({
   className,
   color,
+  width,
 }: Props): JSX.Element {
   const {
     back,
@@ -24,7 +26,7 @@ export default function WolfSittingIcon({
     <svg
       className={className}
       viewBox="0 0 400 441"
-      width="120"
+      width={width || "120"}
       xmlns="http://www.w3.org/2000/svg"
     >
       <g id="wolf-tail">

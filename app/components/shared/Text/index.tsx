@@ -72,9 +72,12 @@ const StyledText = styled(Text)`
   `}
 
   ${(props) =>
-    ["component", "componentParagraph", "componentSmall"].includes(
-      props.size
-    ) &&
+    [
+      "component",
+      "componentParagraph",
+      "componentParagraphLarge",
+      "componentSmall",
+    ].includes(props.size) &&
     `
   font-family: Inter;
   font-weight: 400;
