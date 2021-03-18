@@ -26,7 +26,7 @@ export default function CreateATest2(): JSX.Element {
 
   return (
     <Layout>
-      <Section label={copy.getCode}>
+      <Section label={copy.getCode} step={step}>
         {!!wolf && (
           <Text {...textProps} margin={{ bottom: "xxsmall" }}>
             {copy.getCode2(wolf.name)}
