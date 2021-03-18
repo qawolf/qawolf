@@ -120,7 +120,8 @@ function AppButton({
 
 const StyledAppButton = styled(AppButton)`
   background: ${(props) => `${background[props.type]}`};
-  border-radius: ${borderSize.small};
+  border-radius: ${(props) =>
+    props.isLarge ? borderSize.medium : borderSize.small};
   height: ${(props) => (props.isLarge ? edgeSize.xxlarge : edgeSize.large)};
 
   ${(props) => !!props.isDisabled && "cursor: not-allowed;"}

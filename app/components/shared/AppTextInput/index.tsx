@@ -81,7 +81,7 @@ function TextInput(
 
   const style = {
     borderColor: error ? colors.danger5 : colors.gray3,
-    borderRadius: borderSize.small,
+    borderRadius: isLarge ? borderSize.medium : borderSize.small,
     borderWidth: borderSize.xsmall,
     color: colors.gray9,
     fontFamily: fontFamily[finalSize],
