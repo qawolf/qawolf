@@ -1,5 +1,5 @@
 import { Box } from "grommet";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
 import { border } from "../../../../theme/theme";
 import { RunnerContext } from "../../contexts/RunnerContext";
@@ -7,17 +7,20 @@ import Action from "./Action";
 import Buttons from "./Buttons";
 import ChooseElement from "./ChooseElement";
 import Code from "./Code";
+import { ActionType, buildCode } from "./helpers";
 import Selector from "./Selector";
 
 type Props = { isVisible: boolean };
 
 export default function Snippet({ isVisible }: Props): JSX.Element {
-  const { elementChooserValue } = useContext(RunnerContext);
+  const { elementChooserValue, stopElementChooser } = useContext(RunnerContext);
 
-  const [action, setAction] = useState<string>(null);
+  const [action, setAction] = useState<ActionType>(null);
   const [selector, setSelector] = useState<string>(null);
 
   if (!isVisible) return null;
+
+  const code = buildCode(action, selector, elementChooserValue?.text || "");
 
   return (
     <Box
@@ -41,8 +44,8 @@ export default function Snippet({ isVisible }: Props): JSX.Element {
               value={selector}
             />
           </Box>
-          <Code />
-          <Buttons />
+          <Code code={code} />
+          <Buttons onCancel={stopElementChooser} />
         </>
       ) : (
         <ChooseElement />

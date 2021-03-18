@@ -36,11 +36,11 @@ export const buildEventCode = (
 
   const selector = (event as ElementEvent).selector;
   if (selector !== undefined && event.action !== "keyboard.press") {
-    args.push(formatSelector(selector));
+    args.push(formatArgument(selector));
   }
 
   if (event.value !== undefined) {
-    args.push(JSON.stringify(event.value));
+    args.push(formatArgument(event.value));
   }
 
   if (["goto", "reload"].includes(event.action)) {
@@ -132,7 +132,7 @@ export const prepareSourceVariables = ({
         variables,
       });
 
-      const selector = formatSelector(elementEvent.frameSelector);
+      const selector = formatArgument(elementEvent.frameSelector);
       initializeCode = `const ${frameVariable} = await (await ${pageVariable}.waitForSelector(${selector})).contentFrame();\n`;
     }
   }
@@ -155,12 +155,20 @@ export const prepareSourceVariables = ({
   };
 };
 
-export const formatSelector = (value: string | null): string => {
+export const formatArgument = (value: string | null): string => {
   if (value === null) return "";
 
-  if (!value.includes(`"`)) return `"${value}"`;
-  if (!value.includes(`'`)) return `'${value}'`;
-  return "`" + value.replace(/`/g, "\\`") + "`";
+  // serialize newlines etc
+  let escaped = JSON.stringify(value);
+  // remove wrapper quotes
+  escaped = escaped.substring(1, escaped.length - 1);
+  // allow unescaped quotes
+  escaped = escaped.replace(/\\"/g, '"');
+
+  if (!escaped.includes(`"`)) return `"${escaped}"`;
+  if (!escaped.includes(`'`)) return `'${escaped}'`;
+
+  return "`" + escaped.replace(/`/g, "\\`") + "`";
 };
 
 export const patchEvent = (options: PatchEventOptions): string | null => {

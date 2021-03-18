@@ -4,10 +4,11 @@ import Highlight, { defaultProps } from "prism-react-renderer";
 import { theme } from "../../../../theme/prismCodeBlock";
 import { border, borderSize } from "../../../../theme/theme";
 
-export default function Code(): JSX.Element {
-  // TODO buildCode
-  const code = 'await assertText(page, "hello");';
+type Props = {
+  code: string;
+};
 
+export default function Code({ code }: Props): JSX.Element {
   return (
     <Box
       background="gray10"

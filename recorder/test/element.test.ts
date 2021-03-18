@@ -27,7 +27,10 @@ describe("getAssertText", () => {
     );
 
   beforeAll(() =>
-    setBody(page, '<input value="123"><div>howdy.<br/>how are you?</div>')
+    setBody(
+      page,
+      `<input value="123"><div>howdy. how are you?</div><span>""quoted"" 'text' \`allowed\`</span>`
+    )
   );
 
   it("gets the input's value", async () => {
@@ -35,7 +38,11 @@ describe("getAssertText", () => {
   });
 
   it("gets the element's inner text", async () => {
-    expect(await getAssertText("div")).toEqual("howdy.\\nhow are you?");
+    expect(await getAssertText("div")).toEqual("howdy. how are you?");
+
+    expect(await getAssertText("span")).toEqual(
+      `""quoted"" 'text' \`allowed\``
+    );
   });
 });
 

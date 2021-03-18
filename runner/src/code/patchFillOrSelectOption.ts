@@ -1,6 +1,7 @@
 import { ElementEvent } from "../types";
 import { ActionExpression } from "./parseCode";
 import {
+  formatArgument,
   patchEvent,
   PatchEventOptions,
   prepareSourceVariables,
@@ -50,7 +51,10 @@ export const updateExpression = (
 
   // -2 for value quotes
   const beforeArg = code.substring(0, valueArg.end - valueLength - 2);
-  const updatedArg = JSON.stringify(value);
+
+  // serialize newlines etc
+  const updatedArg = formatArgument(value);
+
   const afterArg = code.substring(valueArg.end);
 
   return beforeArg + updatedArg + afterArg;

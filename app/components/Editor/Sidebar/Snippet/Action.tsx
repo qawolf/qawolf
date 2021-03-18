@@ -3,14 +3,19 @@ import { useEffect } from "react";
 
 import { copy } from "../../../../theme/copy";
 import Text from "../../../shared/Text";
-import { labelProps, selectWidth } from "./helpers";
+import {
+  ActionType,
+  buildActionOptions,
+  labelProps,
+  selectWidth,
+} from "./helpers";
 import Select from "./Select";
 
 type Props = {
   hasText: boolean;
   isFillable?: boolean;
-  onSelectAction: (option: string) => void;
-  value: string;
+  onSelectAction: (option: ActionType) => void;
+  value: ActionType | null;
 };
 
 export default function Action({
@@ -19,16 +24,13 @@ export default function Action({
   onSelectAction,
   value,
 }: Props): JSX.Element {
-  const options = isFillable
-    ? ["Fill", "Fill email", "Hover"]
-    : ["Click", "Hover", "Upload file"];
-
-  if (hasText) options.unshift("Assert text");
+  const options = buildActionOptions(hasText, isFillable);
+  const optionsHash = options.join("");
 
   useEffect(() => {
-    const defaultAction = options.includes("Fill") ? "Fill" : "Click";
+    const defaultAction = optionsHash.includes("Fill") ? "Fill" : "Click";
     onSelectAction(defaultAction);
-  }, [onSelectAction, isFillable]);
+  }, [onSelectAction, optionsHash]);
 
   return (
     <Box width={selectWidth}>
