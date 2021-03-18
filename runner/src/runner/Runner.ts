@@ -106,8 +106,12 @@ export class Runner extends EventEmitter {
   }
 
   async stopElementChooser(): Promise<void> {
-    await this._environment?._elementChooser.stop();
-    await this._environment?.updater.enable();
+    // do it at the same time to avoid enabling
+    // after it should be disabled again
+    await Promise.all([
+      this._environment?._elementChooser.stop(),
+      this._environment?.updater.enable(),
+    ]);
   }
 
   updateCode(update: CodeUpdate): boolean {

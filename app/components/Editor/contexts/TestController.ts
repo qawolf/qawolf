@@ -5,6 +5,8 @@ import { client } from "../../../lib/client";
 import { RunnerClient } from "../../../lib/runner";
 import { CodeUpdate, Run, Test } from "../../../lib/types";
 
+export const PATCH_HANDLE = "// 🐺 QA Wolf will create code here";
+
 // Sync the test code between the database and runner.
 // We do this outside of hooks to avoid performance overhead.
 export class TestController extends EventEmitter {

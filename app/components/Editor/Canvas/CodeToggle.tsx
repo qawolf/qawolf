@@ -3,13 +3,12 @@ import { useContext, useEffect, useState } from "react";
 import { copy } from "../../../theme/copy";
 import Toggle from "../../shared/Toggle";
 import { TestContext } from "../contexts/TestContext";
+import { PATCH_HANDLE } from "../contexts/TestController";
 
 type Props = {
   isDisabled: boolean;
   mouseLineNumber: number | null;
 };
-
-export const patchHandle = "// 🐺 QA Wolf will create code here";
 
 export default function CodeToggle({
   isDisabled,
@@ -18,10 +17,10 @@ export default function CodeToggle({
   const { code, controller } = useContext(TestContext);
 
   // track isOn in state so toggle will update instantly
-  const [isOn, setIsOn] = useState(!!code?.includes(patchHandle));
+  const [isOn, setIsOn] = useState(!!code?.includes(PATCH_HANDLE));
 
   useEffect(() => {
-    setIsOn(!!code?.includes(patchHandle));
+    setIsOn(!!code?.includes(PATCH_HANDLE));
   }, [code]);
 
   const handleClick = (): void => {
@@ -29,7 +28,7 @@ export default function CodeToggle({
 
     if (isOn) {
       // replace up to one leading newline
-      const regex = new RegExp(`\n?${patchHandle}`, "g");
+      const regex = new RegExp(`\n?${PATCH_HANDLE}`, "g");
       controller.updateCode(code.replace(regex, ""));
       setIsOn(false);
     } else {
@@ -37,9 +36,9 @@ export default function CodeToggle({
       const insertIndex = mouseLineNumber ? mouseLineNumber - 1 : lines.length;
 
       // if the selected line is empty, insert it there
-      if (lines[insertIndex] === "") lines[insertIndex] = patchHandle;
+      if (lines[insertIndex] === "") lines[insertIndex] = PATCH_HANDLE;
       // otherwise insert it after the line
-      else lines.splice(insertIndex + 1, 0, patchHandle);
+      else lines.splice(insertIndex + 1, 0, PATCH_HANDLE);
 
       controller.updateCode(lines.join("\n"));
       setIsOn(true);
