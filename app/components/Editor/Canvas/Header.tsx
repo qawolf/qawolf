@@ -16,12 +16,13 @@ export default function Header(): JSX.Element {
     startElementChooser,
     stopElementChooser,
   } = useContext(RunnerContext);
+
+  const isChooserActive = elementChooserValue.active;
+
   const isDisabled = !isRunnerConnected || progress?.status === "created";
 
-  const isActive = elementChooserValue.active;
-
   const onChooseToggle = () => {
-    if (isActive) {
+    if (isChooserActive) {
       stopElementChooser();
     } else {
       startElementChooser();
@@ -38,9 +39,12 @@ export default function Header(): JSX.Element {
       justify="between"
       pad="small"
     >
-      <CodeToggle isDisabled={isDisabled} mouseLineNumber={mouseLineNumber} />
+      <CodeToggle
+        isDisabled={isChooserActive || isDisabled}
+        mouseLineNumber={mouseLineNumber}
+      />
       <SelectButton
-        isActive={isActive}
+        isActive={isChooserActive}
         isDisabled={isDisabled}
         onClick={onChooseToggle}
       />
