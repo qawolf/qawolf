@@ -8,7 +8,7 @@ import { PATCH_HANDLE } from "../../src/code/patch";
 
 describe("buildActionExpression", () => {
   const statements = buildStatements(
-    "await page.click('.hello');\nawait page2.fill('.hello', 'world')\nconst hello = 'world';\nawait something();"
+    "await page.click('.hello');\nawait page2.fill('.hello', 'world')\nawait page.fill(`'template'`, `\"args\"`);\nconst hello = 'world';\nawait something();"
   );
 
   it("parses the variable, method, and arguments", () => {
@@ -28,11 +28,22 @@ describe("buildActionExpression", () => {
       statement: statements[1],
       variable: "page2",
     });
+
+    // parses the text from template args
+    expect(buildActionExpression(statements[2])).toEqual({
+      args: [
+        { end: 92, text: "'template'" },
+        { end: 102, text: '"args"' },
+      ],
+      method: "fill",
+      statement: statements[2],
+      variable: "page",
+    });
   });
 
   it("returns null if the statement is not a call expression on a variable's property", () => {
-    expect(buildActionExpression(statements[2])).toEqual(null);
     expect(buildActionExpression(statements[3])).toEqual(null);
+    expect(buildActionExpression(statements[4])).toEqual(null);
   });
 });
 

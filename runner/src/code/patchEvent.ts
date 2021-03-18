@@ -156,7 +156,7 @@ export const prepareSourceVariables = ({
 };
 
 export const formatArgument = (value: string | null): string => {
-  if (value === null) return "";
+  if (value === null) return '""';
 
   // serialize newlines etc
   let escaped = JSON.stringify(value);

@@ -51,8 +51,9 @@ export const buildCode = (
   return "";
 };
 
+// keep in sync with runner
 export const formatArgument = (value: string | null): string => {
-  if (value === null) return "";
+  if (value === null) return '""';
 
   // serialize newlines etc
   let escaped = JSON.stringify(value);
@@ -63,6 +64,7 @@ export const formatArgument = (value: string | null): string => {
 
   if (!escaped.includes(`"`)) return `"${escaped}"`;
   if (!escaped.includes(`'`)) return `'${escaped}'`;
+
   return "`" + escaped.replace(/`/g, "\\`") + "`";
 };
 

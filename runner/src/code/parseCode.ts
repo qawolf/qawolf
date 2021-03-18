@@ -42,8 +42,9 @@ export const buildActionExpression = (
 
   const args: Argument[] = callExpression.arguments.map((argument) => {
     let text;
-    if (ts.isStringLiteral(argument))
+    if (ts.isStringLiteral(argument) || ts.isTemplateLiteral(argument)) {
       text = (argument as ts.StringLiteral).text;
+    }
 
     return {
       end: argument.end,
