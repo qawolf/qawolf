@@ -98,3 +98,13 @@ it("stop hides the chooser and start shows it again", async () => {
   await page.hover("select");
   expect(await getChooserStyle()).toMatchObject({ display: "block" });
 });
+
+it("updates text when the value changes", async () => {
+  await page.click("input");
+  await page.waitForTimeout(0);
+  expect(chosen).toMatchObject({ text: "123" });
+
+  await page.fill("input", "999");
+  await page.waitForTimeout(0);
+  expect(chosen).toMatchObject({ text: "999" });
+});

@@ -9,6 +9,7 @@ import { Callback, ElementChosen, RankedSelector } from "./types";
 type ElementChosenCallback = Callback<ElementChosen>;
 
 export class ElementChooser {
+  _onDispose: Callback[] = [];
   _chooserElement: HTMLElement;
   _shadowParent: HTMLElement;
   _shadowRoot: ShadowRoot;
@@ -71,6 +72,25 @@ export class ElementChooser {
 
       if (selectors.length > 20) break;
     }
+
+    if (isFillable) {
+      const updateText = () => {
+        callback({
+          isFillable,
+          selectors: selectors.map((s) => s.selector),
+          text: getAssertText(target),
+        });
+      };
+
+      // track the text changes
+      target.addEventListener("change", updateText, true);
+      target.addEventListener("input", updateText, true);
+
+      this._onDispose.push(() => {
+        target.removeEventListener("change", updateText, true);
+        target.removeEventListener("input", updateText, true);
+      });
+    }
   }
 
   _onMouseDown = (event: MouseEvent): void => {
@@ -79,7 +99,12 @@ export class ElementChooser {
     // mark as chosen
     this._chooserElement.style.background = "rgba(233, 110, 164, 0.5)";
 
+    // do not allow choosing another element
+    document.removeEventListener("mousedown", this._onMouseDown, true);
     document.removeEventListener("mousemove", this._onMouseMouse, true);
+
+    // prevent clicking on something else
+    document.addEventListener("mousedown", stopEvent, true);
 
     this._onChooseElement(event.target as HTMLElement);
   };
@@ -117,6 +142,7 @@ export class ElementChooser {
     if (this._started) return;
     this._started = true;
 
+    // prevent mouseup / click so you can select an item in a dropdown
     document.addEventListener("click", stopEvent, true);
     document.addEventListener("mouseup", stopEvent, true);
 
@@ -126,14 +152,20 @@ export class ElementChooser {
   }
 
   stop(): void {
+    if (!this._started) return;
+
     this._chooserElement.style.display = "none";
 
     document.removeEventListener("click", stopEvent, true);
+    document.removeEventListener("mousedown", stopEvent, true);
     document.removeEventListener("mouseup", stopEvent, true);
 
     document.removeEventListener("mousedown", this._onMouseDown, true);
     document.removeEventListener("mousemove", this._onMouseMouse, true);
     document.removeEventListener("scroll", this._onScroll, true);
+
+    this._onDispose.forEach((cb) => cb());
+    this._onDispose = [];
 
     this._started = false;
   }
