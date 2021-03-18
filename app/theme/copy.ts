@@ -1,3 +1,5 @@
+import { patchHandle } from "../components/Editor/Canvas/CodeToggle";
+
 export const copy = {
   acceptInviteLogIn: "Please log in to accept this invite",
   acceptInviteSignUp: "Please sign up to accept this invite",
@@ -140,9 +142,9 @@ export const copy = {
   frequencyHourly: "Every hour",
   getCode: "Use your site — get code",
   getCode2: (wolfName: string): string => `${wolfName} it is then!`,
-  getCode3:
-    "As you use your website, test code is created on the left where it says:",
-  getCode4: '"// 🐺 QA Wolf will create code here".',
+  getCode3: `As you use your website, test code is created on the left where it says: "${patchHandle}".`,
+  getCode4: 'Click the "Next" button below',
+  getCode5: "to add the next line of test code.",
   getInTouch: "Get in touch",
   getStarted: "Get started",
   gitHub: "GitHub",
