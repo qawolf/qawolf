@@ -166,6 +166,7 @@ export const text = {
   componentSmall: { height: "16px", size: "12px" },
   componentXLarge: { height: "32px", size: "22px" },
   eyebrow: { height: "18px", size: "16px" },
+  eyebrowLarge: { height: "24px", size: "16px" },
 };
 
 export const textDesktop = {
@@ -187,6 +188,7 @@ export const textDesktop = {
   componentSmall: { height: "16px", size: "12px" },
   componentXLarge: { height: "32px", size: "22px" },
   eyebrow: { height: "18px", size: "16px" },
+  eyebrowLarge: { height: "24px", size: "16px" },
 };
 
 export const theme: ThemeType = {

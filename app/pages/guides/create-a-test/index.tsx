@@ -16,6 +16,7 @@ import { copy } from "../../../theme/copy";
 import { transition } from "../../../theme/theme";
 
 const maxLength = 12;
+const step = 1;
 
 export default function CreateATest1(): JSX.Element {
   const { asPath, push, replace } = useRouter();
@@ -58,8 +59,9 @@ export default function CreateATest1(): JSX.Element {
         label={copy.wolfIntro}
         // ignore error text in bottom padding
         pad={{ bottom: "xxsmall", horizontal: "xlarge", top: "xlarge" }}
+        step={step}
       >
-        <Text {...textProps} margin={{ bottom: "xsmall" }}>
+        <Text {...textProps} margin={{ bottom: "small" }}>
           {copy.wolfIntro2}
         </Text>
         <Text {...textProps}>{copy.wolfIntro3}</Text>

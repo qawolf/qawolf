@@ -47,7 +47,6 @@ export const copy = {
   codeLoveDetail:
     "Your test code uses the best selector and best-in-class open source tools.",
   communitySupport: "Community support",
-  completeCount: (count: number): string => `${count} of 4 complete`,
   confirm: "Confirm",
   confirmDelete: (entity: string): string =>
     `Are you sure you want to delete the following ${entity}?`,
@@ -263,6 +262,7 @@ export const copy = {
   pleaseType: "Please type",
   revisitTutorial: "Revisit tutorial",
   startTutorial: "Start tutorial",
+  stepCount: (count: number): string => `Step ${count} of 5`,
   tenTeamMembers: "Up to 10 team members",
   toggleCreateCode:
     'Click the "Create code" toggle above to turn off code creation. Then click the "Click me" button below.',

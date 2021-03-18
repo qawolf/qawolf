@@ -77,6 +77,7 @@ const StyledText = styled(Text)`
       "componentParagraph",
       "componentParagraphLarge",
       "componentSmall",
+      "eyebrowLarge",
     ].includes(props.size) &&
     `
   font-family: Inter;

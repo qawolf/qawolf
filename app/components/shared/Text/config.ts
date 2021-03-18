@@ -20,7 +20,8 @@ export type Size =
   | "componentParagraphLarge"
   | "componentSmall"
   | "componentXLarge"
-  | "eyebrow";
+  | "eyebrow"
+  | "eyebrowLarge";
 
 export type Weight = "bold" | "medium" | "normal";
 
@@ -43,6 +44,7 @@ export const defaultTag: { [size in Size]: TextProps["as"] } = {
   componentSmall: "p",
   componentXLarge: "h1",
   eyebrow: "h2",
+  eyebrowLarge: "h2",
 };
 
 export const hoverColor = {
