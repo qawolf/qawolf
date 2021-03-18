@@ -28,9 +28,9 @@ export default function CreateATest4(): JSX.Element {
       >
         <Image
           alt="toggle code creation"
-          height="48"
+          height="80"
           src={`/guides/create-code-${isClicked ? "on" : "off"}.png`}
-          width="174"
+          width="290"
         />
       </Box>
       <Section label={copy.toggleCreateCode} step={step}>
