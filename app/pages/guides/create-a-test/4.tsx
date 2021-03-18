@@ -12,7 +12,7 @@ const step = 4;
 
 export default function CreateATest4(): JSX.Element {
   return (
-    <Layout step={step}>
+    <Layout>
       <Text {...textProps}>{copy.runSelectedCode}</Text>
       <Text {...textProps} margin={{ vertical: "medium" }}>
         {copy.runSelectedCode2}

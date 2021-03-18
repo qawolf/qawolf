@@ -21,7 +21,7 @@ export default function CreateATest3(): JSX.Element {
   const handleClick = (): void => setIsClicked(true);
 
   return (
-    <Layout step={step}>
+    <Layout>
       <BsArrowUpLeft {...iconProps} />
       <Text {...textProps}>{copy.toggleCreateCode}</Text>
       <ClickButton onClick={handleClick} />

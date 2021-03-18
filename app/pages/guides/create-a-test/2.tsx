@@ -24,7 +24,7 @@ export default function CreateATest2(): JSX.Element {
   const wolf = data?.wolf || null;
 
   return (
-    <Layout step={step}>
+    <Layout>
       <Box>
         {!!wolf && <Text {...textProps}>{copy.runTestIntro(wolf.name)}</Text>}
         <Text {...textProps}>
