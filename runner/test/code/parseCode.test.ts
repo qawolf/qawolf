@@ -13,7 +13,7 @@ describe("buildActionExpression", () => {
 
   it("parses the variable, method, and arguments", () => {
     expect(buildActionExpression(statements[0])).toEqual({
-      args: [{ end: 25, text: ".hello" }],
+      args: [{ end: 25, pos: 17, text: ".hello" }],
       method: "click",
       statement: statements[0],
       variable: "page",
@@ -21,8 +21,8 @@ describe("buildActionExpression", () => {
 
     expect(buildActionExpression(statements[1])).toEqual({
       args: [
-        { end: 53, text: ".hello" },
-        { end: 62, text: "world" },
+        { end: 53, pos: 45, text: ".hello" },
+        { end: 62, pos: 54, text: "world" },
       ],
       method: "fill",
       statement: statements[1],
@@ -32,8 +32,8 @@ describe("buildActionExpression", () => {
     // parses the text from template args
     expect(buildActionExpression(statements[2])).toEqual({
       args: [
-        { end: 92, text: "'template'" },
-        { end: 102, text: '"args"' },
+        { end: 92, pos: 80, text: "'template'" },
+        { end: 102, pos: 93, text: '"args"' },
       ],
       method: "fill",
       statement: statements[2],

@@ -4,6 +4,7 @@ import { buildStatements } from "../ast";
 import { PATCH_HANDLE } from "./patch";
 
 type Argument = {
+  pos: number;
   end: number;
   text?: string;
 };
@@ -47,6 +48,7 @@ export const buildActionExpression = (
     }
 
     return {
+      pos: argument.pos,
       end: argument.end,
       text,
     };
