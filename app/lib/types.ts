@@ -271,6 +271,7 @@ export type CodeUpdate = {
 
 export interface ElementChooserValue {
   active: boolean;
+  isFillable?: boolean;
   selectors?: string[];
   text?: string;
 }

@@ -1,5 +1,5 @@
 import { Box } from "grommet";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { border } from "../../../../theme/theme";
 import { RunnerContext } from "../../contexts/RunnerContext";
@@ -14,6 +14,9 @@ type Props = { isVisible: boolean };
 export default function Snippet({ isVisible }: Props): JSX.Element {
   const { elementChooserValue } = useContext(RunnerContext);
 
+  const [action, setAction] = useState<string>(null);
+  const [selector, setSelector] = useState<string>(null);
+
   if (!isVisible) return null;
 
   return (
@@ -26,8 +29,17 @@ export default function Snippet({ isVisible }: Props): JSX.Element {
       {elementChooserValue.selectors ? (
         <>
           <Box align="center" direction="row" justify="between">
-            <Action />
-            <Selector />
+            <Action
+              hasText={!!elementChooserValue?.text}
+              isFillable={elementChooserValue?.isFillable}
+              onSelectAction={setAction}
+              value={action}
+            />
+            <Selector
+              options={elementChooserValue.selectors || []}
+              onSelectOption={setSelector}
+              value={selector}
+            />
           </Box>
           <Code />
           <Buttons />

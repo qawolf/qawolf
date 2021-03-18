@@ -1,32 +1,39 @@
 import { Box } from "grommet";
+import { useEffect } from "react";
 
 import { copy } from "../../../../theme/copy";
 import Text from "../../../shared/Text";
 import { labelProps, selectWidth } from "./helpers";
 import Select from "./Select";
 
-export default function Action(): JSX.Element {
-  // TODO
-  const options = [
-    "Assert text",
-    "Click",
-    "Fill",
-    "Fill email",
-    "Hover",
-    "Upload file",
-  ];
+type Props = {
+  hasText: boolean;
+  isFillable?: boolean;
+  onSelectAction: (option: string) => void;
+  value: string;
+};
 
-  // TODO
-  const handleClick = (option: string): void => {};
+export default function Action({
+  hasText,
+  isFillable,
+  onSelectAction,
+  value,
+}: Props): JSX.Element {
+  const options = isFillable
+    ? ["Fill", "Fill email", "Hover"]
+    : ["Click", "Hover", "Upload file"];
+
+  if (hasText) options.unshift("Assert text");
+
+  useEffect(() => {
+    const defaultAction = options.includes("Fill") ? "Fill" : "Click";
+    onSelectAction(defaultAction);
+  }, [onSelectAction, isFillable]);
 
   return (
     <Box width={selectWidth}>
       <Text {...labelProps}>{copy.action}</Text>
-      <Select
-        onClick={handleClick}
-        options={options}
-        value="Assert text"
-      ></Select>
+      <Select onClick={onSelectAction} options={options} value={value}></Select>
     </Box>
   );
 }

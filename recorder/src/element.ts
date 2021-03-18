@@ -4,6 +4,25 @@ export type ElementDescriptor = {
   tag: string;
 };
 
+const CLICK_INPUT_TYPES = new Set([
+  "button",
+  "checkbox",
+  "image",
+  "radio",
+  "reset",
+  "submit",
+]);
+
+export const isFillable = (element: ElementDescriptor): boolean => {
+  if (element.isContentEditable || element.tag === "textarea") return true;
+
+  if (element.tag === "input" && !CLICK_INPUT_TYPES.has(element.inputType)) {
+    return true;
+  }
+
+  return false;
+};
+
 export const getAssertText = (element: HTMLElement): string => {
   let text = (element as HTMLInputElement).value || element.innerText || "";
   if (!text.length || text.length > 100) return "";

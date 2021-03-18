@@ -44,6 +44,7 @@ export interface ElementAction {
 }
 
 export interface ElementChosen {
+  isFillable: boolean;
   selectors: string[];
   text: string;
 }

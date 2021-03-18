@@ -1,7 +1,6 @@
 import { combine } from "./combine";
-import { getDescriptor } from "./element";
+import { getDescriptor, isFillable } from "./element";
 import { getCues } from "./getCues";
-import { allowPositionMatch } from "./isElementMatch";
 import { Cue, CueSet } from "./types";
 
 type GenerateRelativeCueSets = {
@@ -59,7 +58,7 @@ export function* generateCueSets(
   const threeTargetCues = combine(targetCues, 3);
   yield* threeTargetCues.map(buildCueSet) as any;
 
-  const exactMatchOnly = !allowPositionMatch(getDescriptor(target));
+  const exactMatchOnly = isFillable(getDescriptor(target));
 
   const descendants = target.querySelectorAll("*");
   let level = 1;

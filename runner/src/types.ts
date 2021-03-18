@@ -37,15 +37,12 @@ export type ElementAction =
   | "selectOption";
 
 export interface ElementChosen {
+  isFillable: boolean;
   selectors: string[];
   text: string;
 }
 
-export interface ElementChooserValue {
-  active: boolean;
-  selectors?: string[];
-  text?: string;
-}
+export type ElementChooserValue = Partial<ElementChosen> & { active: boolean };
 
 export interface ElementEvent {
   action: ElementAction;

@@ -67,6 +67,7 @@ it("chooses an element on click", async () => {
   await page.waitForTimeout(0);
 
   expect(chosen).toEqual({
+    isFillable: false,
     selectors: [
       "select",
       "body select",

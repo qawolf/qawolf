@@ -5,7 +5,7 @@ import { theme } from "../../../../theme/prismCodeBlock";
 import { border, borderSize } from "../../../../theme/theme";
 
 export default function Code(): JSX.Element {
-  // TODO
+  // TODO buildCode
   const code = 'await assertText(page, "hello");';
 
   return (
@@ -19,7 +19,7 @@ export default function Code(): JSX.Element {
     >
       <Highlight
         {...defaultProps}
-        code={code.trim()}
+        code={code}
         language="javascript"
         theme={theme}
       >

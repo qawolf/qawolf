@@ -1,4 +1,8 @@
-import { getAssertText } from "./element";
+import {
+  getAssertText,
+  getDescriptor,
+  isFillable as isElementFillable,
+} from "./element";
 import { generateSelectors } from "./generateSelectors";
 import { Callback, ElementChosen, RankedSelector } from "./types";
 
@@ -43,6 +47,8 @@ export class ElementChooser {
     const callback: ElementChosenCallback = (window as any).qawElementChosen;
     if (!callback) return;
 
+    const isFillable = isElementFillable(getDescriptor(target));
+
     const text = getAssertText(target);
 
     const selectors: RankedSelector[] = [];
@@ -57,7 +63,11 @@ export class ElementChooser {
         return a.selector.localeCompare(b.selector);
       });
 
-      callback({ selectors: selectors.map((s) => s.selector), text });
+      callback({
+        isFillable,
+        selectors: selectors.map((s) => s.selector),
+        text,
+      });
 
       if (selectors.length > 20) break;
     }
