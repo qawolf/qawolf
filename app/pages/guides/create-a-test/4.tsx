@@ -17,11 +17,6 @@ export default function CreateATest4(): JSX.Element {
   const [isClicked, setIsClicked] = useState(false);
 
   const handleClick = (): void => setIsClicked(true);
-  const clickMeHtml = isClicked ? (
-    copy.toggleCreateCode2
-  ) : (
-    <b>{copy.toggleCreateCode2}</b>
-  );
 
   return (
     <Layout>
@@ -39,12 +34,14 @@ export default function CreateATest4(): JSX.Element {
         />
       </Box>
       <Section label={copy.toggleCreateCode} step={step}>
-        <Text {...textProps}>
-          {clickMeHtml} {copy.toggleCreateCode3}
-        </Text>
+        {!isClicked && (
+          <Text {...textProps}>
+            <b>{copy.toggleCreateCode2}</b> {copy.toggleCreateCode3}
+          </Text>
+        )}
         {isClicked && (
           <>
-            <Text {...textProps} margin={{ vertical: "small" }}>
+            <Text {...textProps} margin={{ bottom: "small" }}>
               {copy.toggleCreateCode4}
             </Text>
             <Text {...textProps}>
