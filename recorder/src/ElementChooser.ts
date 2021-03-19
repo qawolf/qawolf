@@ -10,8 +10,8 @@ import { Callback, ElementChosen, RankedSelector } from "./types";
 type ElementChosenCallback = Callback<ElementChosen>;
 
 export class ElementChooser {
-  _onDispose: Callback[] = [];
   _chooserElement: HTMLElement;
+  _onDispose: Callback[] = [];
   _pawElement: HTMLElement;
   _shadowParent: HTMLElement;
   _shadowRoot: ShadowRoot;
@@ -29,8 +29,8 @@ export class ElementChooser {
 
       const { style } = this._chooserElement;
       style.alignItems = "center";
-      style.display = "flex";
       style.borderRadius = "2px";
+      style.display = "flex";
       style.justifyContent = "center";
       style.position = "fixed";
     }
@@ -48,15 +48,75 @@ export class ElementChooser {
     style.left = "0";
     style.pointerEvents = "none";
     style.position = "fixed";
-    style.top = "0";
     style.right = "0";
-    // max possible
-    style.zIndex = "2147483647";
+    style.top = "0";
+    style.zIndex = "2147483647"; // max possible
     document.documentElement.appendChild(this._shadowParent);
     this._shadowRoot = this._shadowParent.attachShadow({ mode: "open" });
   }
 
-  _onChooseElement(
+  _onMouseDown = (event: MouseEvent): void => {
+    stopEvent(event);
+
+    // do not allow choosing another element
+    document.removeEventListener("mousedown", this._onMouseDown, true);
+    document.removeEventListener("mousemove", this._onMouseMouse, true);
+
+    // prevent clicking on something else
+    document.addEventListener("mousedown", stopEvent, true);
+
+    // we must make two raf calls to separate painting the chosen ui
+    // from generating selectors or the ui will get blocked
+    requestAnimationFrame(() => {
+      // mark it as chosen
+      this._chooserElement.style.border = "1px solid rgb(15, 120, 243)";
+      this._pawElement.style.visibility = "visible";
+
+      const callback: ElementChosenCallback = (window as any).qawElementChosen;
+      if (!callback) return;
+
+      // notify element chosen immediately so choose placeholder goes away
+      const target = event.target as HTMLElement;
+      const isFillable = isElementFillable(getDescriptor(target));
+      const text = getAssertText(target);
+      callback({ isFillable, selectors: [], text });
+
+      // separate raf to prevent blocking the ui update
+      requestAnimationFrame(() => {
+        this._generateSelectors(target, isFillable, text, callback);
+      });
+    });
+  };
+
+  _onMouseMouse = (event: MouseEvent): void => {
+    const element = event.composedPath()[0] as HTMLElement;
+    if (!element || !element.getBoundingClientRect) return;
+
+    // move to the current element
+    const box = element.getBoundingClientRect();
+    const style = this._chooserElement.style;
+    style.height = box.height + "px";
+    style.left = box.left + "px";
+    style.top = box.top + "px";
+    style.width = box.width + "px";
+  };
+
+  _onScroll = (): void => {
+    this._resetChooser(false);
+  };
+
+  _resetChooser = (visible = true): void => {
+    this._pawElement.style.visibility = "hidden";
+
+    const { style } = this._chooserElement;
+    style.visibility = visible ? "visible" : "hidden";
+    style.background = "rgba(15, 120, 243, 0.15)";
+    style.border = "";
+    style.height = "0px";
+    style.width = "0px";
+  };
+
+  _generateSelectors(
     target: HTMLElement,
     isFillable: boolean,
     text: string,
@@ -102,65 +162,6 @@ export class ElementChooser {
       });
     }
   }
-
-  _onMouseDown = (event: MouseEvent): void => {
-    stopEvent(event);
-
-    // do not allow choosing another element
-    document.removeEventListener("mousedown", this._onMouseDown, true);
-    document.removeEventListener("mousemove", this._onMouseMouse, true);
-
-    // prevent clicking on something else
-    document.addEventListener("mousedown", stopEvent, true);
-
-    requestAnimationFrame(() => {
-      // mark as chosen
-      this._chooserElement.style.border = "1px solid rgb(15, 120, 243)";
-      this._pawElement.style.visibility = "visible";
-
-      const callback: ElementChosenCallback = (window as any).qawElementChosen;
-      if (!callback) return;
-
-      // notify element chosen immediately so choose placeholder goes away
-      const target = event.target as HTMLElement;
-      const isFillable = isElementFillable(getDescriptor(target));
-      const text = getAssertText(target);
-      callback({ isFillable, selectors: [], text });
-
-      // allow ui update to happen before generating selectors
-      requestAnimationFrame(() => {
-        this._onChooseElement(target, isFillable, text, callback);
-      });
-    });
-  };
-
-  _onMouseMouse = (event: MouseEvent): void => {
-    const element = event.composedPath()[0] as HTMLElement;
-    if (!element || !element.getBoundingClientRect) return;
-
-    // move to the current element
-    const box = element.getBoundingClientRect();
-    const style = this._chooserElement.style;
-    style.height = box.height + "px";
-    style.left = box.left + "px";
-    style.top = box.top + "px";
-    style.width = box.width + "px";
-  };
-
-  _onScroll = (): void => {
-    this._resetChooser(false);
-  };
-
-  _resetChooser = (visible = true): void => {
-    this._pawElement.style.visibility = "hidden";
-
-    const { style } = this._chooserElement;
-    style.visibility = visible ? "visible" : "hidden";
-    style.background = "rgba(15, 120, 243, 0.15)";
-    style.border = "";
-    style.height = "0px";
-    style.width = "0px";
-  };
 
   start(): void {
     this._attachShadow();
