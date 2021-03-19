@@ -4,6 +4,7 @@ const ClickActions = ["Click", "Hover", "Upload image"] as const;
 const FillActions = ["Fill", "Fill test email", "Hover"] as const;
 
 export type ActionType =
+  | "Assert element"
   | "Assert text"
   | typeof ClickActions[number]
   | typeof FillActions[number];
@@ -26,6 +27,10 @@ export const buildCode = (
   selector: string,
   text: string
 ): string => {
+  if (action === "Assert element") {
+    return `await assertElement(page, ${formatArgument(selector)});`;
+  }
+
   if (action === "Assert text") {
     return `await assertText(page, ${formatArgument(text)});`;
   }
@@ -39,7 +44,7 @@ export const buildCode = (
   }
 
   if (action === "Fill test email") {
-    return `const { email, waitForMessage } = getInbox();\nawait page.fill(${selectorArgument}, email);\n// send the email then check the message \n// const message = await waitForMessage();\n// console.log(message);`;
+    return `const { email, waitForMessage } = getInbox();\nawait page.fill(${selectorArgument}, email);\n// send the email then wait for the message\n// const message = await waitForMessage();`;
   }
 
   if (action === "Hover") return `await page.hover(${selectorArgument});`;

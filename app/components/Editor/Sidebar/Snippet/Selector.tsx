@@ -9,10 +9,12 @@ import Select from "./Select";
 type Props = {
   onSelectOption: (option: string) => void;
   options: string[];
+  isDisabled?: boolean;
   value?: string;
 };
 
 export default function Selector({
+  isDisabled,
   onSelectOption,
   options,
   value,
@@ -34,10 +36,10 @@ export default function Selector({
     <Box fill="horizontal" margin={{ left: "small" }}>
       <Text {...labelProps}>{copy.selector}</Text>
       <Select
+        isDisabled={isDisabled}
         onClick={onSelectOption}
         options={options}
-        width="full"
-        value={value || "..."}
+        value={value || ""}
       ></Select>
     </Box>
   );

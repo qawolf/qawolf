@@ -4,12 +4,14 @@ import SharedSelect from "../../../shared/Select";
 import Option from "../../../shared/Select/Option";
 
 type Props = {
+  isDisabled?: boolean;
   onClick: (option: string) => void;
   options: string[];
   value: string;
 };
 
 export default function Select({
+  isDisabled,
   onClick,
   options,
   value,
@@ -26,7 +28,12 @@ export default function Select({
   });
 
   return (
-    <SharedSelect direction="up" label={value} type="snippet">
+    <SharedSelect
+      isDisabled={isDisabled}
+      direction="up"
+      label={value}
+      type="snippet"
+    >
       <Box flex={false}>{optionsHtml}</Box>
     </SharedSelect>
   );

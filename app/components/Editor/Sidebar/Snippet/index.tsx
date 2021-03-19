@@ -1,6 +1,7 @@
 import { Box } from "grommet";
 import { useContext, useState } from "react";
 
+import { useOnHotKey } from "../../../../hooks/onHotKey";
 import { border } from "../../../../theme/theme";
 import { RunnerContext } from "../../contexts/RunnerContext";
 import { TestContext } from "../../contexts/TestContext";
@@ -23,7 +24,7 @@ export default function Snippet({ isVisible }: Props): JSX.Element {
   const [action, setAction] = useState<ActionType>(null);
   const [selector, setSelector] = useState<string>(null);
 
-  if (!isVisible) return null;
+  const hasChosenElement = !!elementChooserValue.selectors;
 
   const snippetCode = buildCode(
     action,
@@ -32,6 +33,8 @@ export default function Snippet({ isVisible }: Props): JSX.Element {
   );
 
   const addSnippet = () => {
+    if (!hasChosenElement) return;
+
     const lines = controller.code.split("\n");
     const snippetLines = snippetCode.split("\n");
 
@@ -60,6 +63,12 @@ export default function Snippet({ isVisible }: Props): JSX.Element {
     });
   };
 
+  useOnHotKey({ hotKey: "Escape", onHotKey: stopElementChooser });
+  useOnHotKey({ hotKey: "Enter", onHotKey: addSnippet, requireMeta: true });
+
+  if (!isVisible) return null;
+
+  const selectorIsDisabled = action === "Assert text";
   return (
     <Box
       background="gray9"
@@ -67,7 +76,7 @@ export default function Snippet({ isVisible }: Props): JSX.Element {
       flex={false}
       pad="medium"
     >
-      {elementChooserValue.selectors ? (
+      {hasChosenElement ? (
         <>
           <Box align="center" direction="row" justify="between">
             <Action
@@ -77,9 +86,10 @@ export default function Snippet({ isVisible }: Props): JSX.Element {
               value={action}
             />
             <Selector
+              isDisabled={selectorIsDisabled}
               options={elementChooserValue.selectors || []}
               onSelectOption={setSelector}
-              value={selector}
+              value={selectorIsDisabled ? "" : selector}
             />
           </Box>
           <Code code={snippetCode} />
