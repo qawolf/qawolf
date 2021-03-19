@@ -6,10 +6,12 @@ type Props = {
   animate?: boolean;
   className?: string;
   color: string;
+  noGrab?: boolean;
+  width?: string;
 };
 
-function WolfSitting({ className, color }: Props): JSX.Element {
-  return <WolfSittingIcon className={className} color={color} />;
+function WolfSitting({ className, color, width }: Props): JSX.Element {
+  return <WolfSittingIcon className={className} color={color} width={width} />;
 }
 
 const tailWagKeyFrames = keyframes`
@@ -33,7 +35,7 @@ const StyledWolfSitting = styled(WolfSitting)`
   }
 
   &:hover {
-    cursor: grab;
+    ${(props) => !props.noGrab && "cursor: grab;"}
 
     #wolf-tail {
       ${animationMixin};

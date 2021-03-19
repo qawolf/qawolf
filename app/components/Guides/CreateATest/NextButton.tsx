@@ -3,13 +3,19 @@ import { useRouter } from "next/router";
 
 import { routes } from "../../../lib/routes";
 import { copy } from "../../../theme/copy";
-import Button from "../../shared/Button";
+import Button from "../../shared/AppButton";
 
-type Props = { step: number };
+type Props = {
+  isDisabled?: boolean;
+  noMargin?: boolean;
+  step: number;
+};
 
-export const width = "160px";
-
-export default function NextButton({ step }: Props): JSX.Element {
+export default function NextButton({
+  isDisabled,
+  noMargin,
+  step,
+}: Props): JSX.Element {
   const { push } = useRouter();
 
   const handleClick = (): void => {
@@ -17,13 +23,12 @@ export default function NextButton({ step }: Props): JSX.Element {
   };
 
   return (
-    <Box alignSelf="center" margin={{ top: "medium" }}>
+    <Box align="end" margin={noMargin ? undefined : { top: "xlarge" }}>
       <Button
+        isLarge
         label={copy.next}
         onClick={handleClick}
-        size="medium"
-        type="outlineDark"
-        width={width}
+        type={isDisabled ? "disabled" : "primary"}
       />
     </Box>
   );

@@ -1,9 +1,11 @@
 import { Box } from "grommet";
 import { useContext, useEffect, useState } from "react";
 
+import { useUpdateUser } from "../../../hooks/mutations";
 import { useOnboarding } from "../../../hooks/queries";
 import Spinner from "../../shared/Spinner";
 import { UserContext } from "../../UserContext";
+import Header from "./Header";
 import { getOpenSection, Section as SectionType } from "./helpers";
 import Sections from "./Sections";
 import Welcome from "./Welcome";
@@ -18,6 +20,16 @@ export default function GetStarted({ teamId }: Props): JSX.Element {
 
   const { data } = useOnboarding({ team_id: teamId });
   const onboarding = data?.onboarding || null;
+
+  const [updateUser] = useUpdateUser();
+
+  useEffect(() => {
+    if (user && !user.onboarded_at) {
+      updateUser({
+        variables: { onboarded_at: new Date().toISOString() },
+      });
+    }
+  }, [updateUser, user]);
 
   useEffect(() => {
     if (!onboarding) return;
@@ -56,14 +68,16 @@ export default function GetStarted({ teamId }: Props): JSX.Element {
   );
 
   return (
-    <Box
-      align="center"
-      background="gray2"
-      overflow={{ vertical: "auto" }}
-      pad={{ vertical: "xxlarge" }}
-      width="full"
-    >
-      {innerHtml}
+    <Box background="gray2" width="full">
+      <Header />
+      <Box
+        align="center"
+        overflow={{ vertical: "auto" }}
+        pad={{ vertical: "medium" }}
+        width="full"
+      >
+        {innerHtml}
+      </Box>
     </Box>
   );
 }

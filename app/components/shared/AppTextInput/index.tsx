@@ -27,7 +27,9 @@ type Props = {
   error?: string;
   id?: string;
   isDisabled?: boolean;
+  isLarge?: boolean;
   margin?: BoxProps["margin"];
+  maxLength?: number;
   name?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
@@ -54,7 +56,9 @@ function TextInput(
     error,
     id,
     isDisabled,
+    isLarge,
     margin,
+    maxLength,
     name,
     onChange,
     onKeyDown,
@@ -73,23 +77,26 @@ function TextInput(
     setErrorWidth(errorRef.current?.clientWidth || 0);
   }, [error]);
 
-  const finalSize = size || "component";
+  const finalSize = isLarge ? "buttonLarge" : size || "component";
 
   const style = {
     borderColor: error ? colors.danger5 : colors.gray3,
-    borderRadius: borderSize.small,
+    borderRadius: isLarge ? borderSize.medium : borderSize.small,
     borderWidth: borderSize.xsmall,
     color: colors.gray9,
     fontFamily: fontFamily[finalSize],
     fontWeight: fontWeight.normal,
     fontSize: textDesktop[finalSize].size,
-    height: edgeSize.large,
+    height: isLarge ? edgeSize.xxlarge : edgeSize.large,
     lineHeight: edgeSize.large,
     paddingBottom: 0,
-    paddingLeft: pad?.left || `calc(${edgeSize.xsmall} - ${borderSize.xsmall})`,
-    paddingRight:
-      pad?.right ||
-      `calc(${edgeSize.xsmall} - ${borderSize.xsmall} + ${errorWidth}px)`,
+    paddingLeft: isLarge
+      ? edgeSize.small
+      : pad?.left || `calc(${edgeSize.xsmall} - ${borderSize.xsmall})`,
+    paddingRight: isLarge
+      ? edgeSize.small
+      : pad?.right ||
+        `calc(${edgeSize.xsmall} - ${borderSize.xsmall} + ${errorWidth}px)`,
     paddingTop: 0,
     transition,
   };
@@ -100,6 +107,7 @@ function TextInput(
         autoFocus={autoFocus}
         disabled={isDisabled}
         id={id}
+        maxLength={maxLength}
         name={name}
         onChange={onChange}
         onKeyDown={onKeyDown}

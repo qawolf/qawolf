@@ -60,9 +60,14 @@ export const colors = {
   gray8: "#404857",
   gray9: "#2A3140",
   gray10: "#151B26",
+  lightBlue: "#E2F3FB",
   lightGray: "#F0F3F5",
+  lightGreen: "#E6FAEC",
+  lightPink: "#FAE6EF",
   lightPurple: "#8E9CF5",
+  lightYellow: "#FBF5DD",
   primary: "#4545E5",
+  primary1: "#E6E6FA",
   primaryDark: "#2F2FC2",
   primaryDarker: "#1D1DA3",
   primaryFill: "#4545E5",
@@ -96,7 +101,7 @@ export const customFontLinks = [
   "/fonts/inter-semibold.woff",
 ];
 
-export const disabledOpacity = 0.4;
+export const disabledOpacity = 1;
 
 export const edgeSize = {
   xxxsmall: "4px",
@@ -112,12 +117,15 @@ export const edgeSize = {
 
 export const fontFamily = {
   bold: "Circular Black",
+  buttonLarge: "Inter",
   component: "Inter",
   componentBold: "Inter Semibold",
   componentMedium: "Inter Medium",
   componentHeader: "Inter Semibold",
+  componentHeaderLarge: "Inter Semibold",
   componentLarge: "Inter Semibold",
   componentParagraph: "Inter",
+  componentParagraphLarge: "Inter",
   componentSmall: "Inter",
   eyebrow: "Plex Mono Semibold",
   medium: "Circular Medium",
@@ -153,15 +161,19 @@ export const text = {
   large: { height: "36px", size: "28px" },
   xlarge: { height: "40px", size: "36px" },
   xxlarge: { height: "52px", size: "46px" },
+  buttonLarge: { height: "24px", size: "16px" },
   component: { height: "16px", size: "14px" },
   componentBold: { height: "16px", size: "14px" },
   componentHeader: { height: "24px", size: "18px" },
+  componentHeaderLarge: { height: "40px", size: "28px" },
   componentLarge: { height: "20px", size: "16px" },
   componentMedium: { height: "16px", size: "14px" },
   componentParagraph: { height: "20px", size: "14px" },
+  componentParagraphLarge: { height: "28px", size: "18px" },
   componentSmall: { height: "16px", size: "12px" },
   componentXLarge: { height: "32px", size: "22px" },
   eyebrow: { height: "18px", size: "16px" },
+  eyebrowLarge: { height: "24px", size: "16px" },
 };
 
 export const textDesktop = {
@@ -172,15 +184,19 @@ export const textDesktop = {
   large: { height: "52px", size: "40px" },
   xlarge: { height: "62px", size: "56px" },
   xxlarge: { height: "84px", size: "76px" },
+  buttonLarge: { height: "24px", size: "16px" },
   component: { height: "16px", size: "14px" },
   componentBold: { height: "16px", size: "14px" },
   componentHeader: { height: "24px", size: "18px" },
+  componentHeaderLarge: { height: "40px", size: "28px" },
   componentLarge: { height: "20px", size: "16px" },
   componentMedium: { height: "16px", size: "14px" },
   componentParagraph: { height: "20px", size: "14px" },
+  componentParagraphLarge: { height: "28px", size: "18px" },
   componentSmall: { height: "16px", size: "12px" },
   componentXLarge: { height: "32px", size: "22px" },
   eyebrow: { height: "18px", size: "16px" },
+  eyebrowLarge: { height: "24px", size: "16px" },
 };
 
 export const theme: ThemeType = {

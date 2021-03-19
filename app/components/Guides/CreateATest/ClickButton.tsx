@@ -1,11 +1,11 @@
-import { Box } from "grommet";
 import { useEffect, useRef, useState } from "react";
 
 import { copy } from "../../../theme/copy";
-import Button from "../../shared/Button";
-import { width } from "./NextButton";
+import Button from "../../shared/AppButton";
 
 type Props = { onClick: () => void };
+
+const width = "98px"; // prevent resizing on click
 
 export default function ClickButton({ onClick }: Props): JSX.Element {
   const [isClicked, setIsClicked] = useState(false);
@@ -34,14 +34,14 @@ export default function ClickButton({ onClick }: Props): JSX.Element {
   };
 
   return (
-    <Box alignSelf="center" margin={{ vertical: "medium" }}>
-      <Button
-        a11yTitle={copy.clickMe}
-        label={isClicked ? copy.clickMeClicked : copy.clickMe}
-        onClick={handleClick}
-        size="medium"
-        width={width}
-      />
-    </Box>
+    <Button
+      a11yTitle={copy.clickMe}
+      isLarge
+      justify="center"
+      label={isClicked ? copy.clickMeClicked : copy.clickMe}
+      onClick={handleClick}
+      type="success"
+      width={width}
+    />
   );
 }

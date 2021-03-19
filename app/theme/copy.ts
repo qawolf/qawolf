@@ -1,3 +1,5 @@
+import { patchHandle } from "../components/Editor/Canvas/CodeToggle";
+
 export const copy = {
   acceptInviteLogIn: "Please log in to accept this invite",
   acceptInviteSignUp: "Please sign up to accept this invite",
@@ -138,6 +140,11 @@ export const copy = {
   frequency: "Frequency",
   frequencyDaily: "Every day",
   frequencyHourly: "Every hour",
+  getCode: "Use your site — get code",
+  getCode2: (wolfName: string): string => `${wolfName} it is then!`,
+  getCode3: `As you use your website, test code is created on the left where it says: "${patchHandle}".`,
+  getCode4: 'Click the "Next" button below',
+  getCode5: "to add the next line of test code.",
   getInTouch: "Get in touch",
   getStarted: "Get started",
   gitHub: "GitHub",
@@ -175,7 +182,9 @@ export const copy = {
   learnQaWolfDetail:
     "Follow our interactive tutorial to learn the basics of QA Wolf. You will learn how to toggle code creation on/off and how to run selected lines of code.",
   learnedBasics: "Congratulations, you’ve mastered the basics of QA Wolf!",
-  learnedBasics2:
+  learnedBasics2: "Your QA Wolf",
+  learnedBasics3: "will tag along for your journey.",
+  learnedBasics4:
     "Click the back arrow in the top left corner to return to the dashboard.",
   loading: "Loading...",
   logIn: "Log in",
@@ -235,11 +244,10 @@ export const copy = {
     `Run on ${repoName} deployment`,
   runTagline: "Run tests without rocket science",
   runTest: "Run test",
-  runTestIntro: (wolfName: string): string => `${wolfName} it is then!`,
-  runTestIntro2:
-    "As you use your site, test code is created on the left where it says",
+  runTestIntro: "Run your test",
+  runTestIntro2: 'Click the "Run test" button',
   runTestIntro3:
-    'Now run your test by clicking the blue "Run test" button or by pressing',
+    "in the bottom right corner of the code editor to run your test.",
   runsFail: "Failing tests",
   runGroup: (count: number): string =>
     `Run ${count ? `${count} ` : ""}test${count === 1 ? "" : "s"}`,
@@ -247,10 +255,11 @@ export const copy = {
   runLines: (count: number): string =>
     `Run ${count} line${count === 1 ? "" : "s"}`,
   runsPass: "Passing tests",
-  runSelectedCode:
-    "You can run specific lines of code without re-running your entire test. This is helpful for adding assertions and editing your test.",
+  runSelectedCode: "Run selected code",
   runSelectedCode2:
-    'Now highlight and run the last line of code, which will click the "Next" button.',
+    "You can run specific lines of code without re-running your entire test. This is helpful for adding assertions and editing your test.",
+  runSelectedCode3: "Highlight and run the last line of code,",
+  runSelectedCode4: 'which will automatically click this step’s "Next" button.',
   runTests: (count: number, environment?: string | null): string =>
     `Run ${count} test${count === 1 ? "" : "s"}${
       environment ? ` on ${environment}` : ""
@@ -261,13 +270,16 @@ export const copy = {
   pleaseType: "Please type",
   revisitTutorial: "Revisit tutorial",
   startTutorial: "Start tutorial",
+  stepCount: (count: number): string => `Step ${count} of 5`,
   tenTeamMembers: "Up to 10 team members",
-  toggleCreateCode:
-    'Click the "Create code" toggle above to turn off code creation. Then click the "Click me" button below.',
-  toggleCreateCode2:
-    "See how no code was created? You can turn off code creation to use your site without updating your test.",
+  toggleCreateCode: "Toggle code creation",
+  toggleCreateCode2: 'Click the "Create code" toggle',
   toggleCreateCode3:
-    'Now turn code creation back on and click the "Next" button below.',
+    'above the browser to turn off code creation, then click the "Click me" button below.',
+  toggleCreateCode4:
+    "See how no code was created? You can turn off code creation to use your site without upating your test.",
+  toggleCreateCode5: "Now turn code creation back on",
+  toggleCreateCode6: "and move on to the next step.",
   save: "Save",
   saveTest: "Save Test",
   schedule: "Schedule",

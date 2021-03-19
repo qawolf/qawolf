@@ -35,6 +35,7 @@ export type Props = {
   iconColor?: string;
   iconPosition?: Side;
   isDisabled?: boolean;
+  isLarge?: boolean;
   isSelected?: boolean;
   justify?: BoxProps["justify"];
   label?: string;
@@ -55,6 +56,7 @@ function AppButton({
   iconColor,
   iconPosition,
   isDisabled,
+  isLarge,
   justify,
   label,
   margin,
@@ -62,6 +64,8 @@ function AppButton({
   openNewPage,
   type,
 }: Props): JSX.Element {
+  const finalType = isDisabled ? "disabled" : type;
+
   const innerHtml = (
     <Button
       a11yTitle={a11yTitle || label}
@@ -81,21 +85,22 @@ function AppButton({
           hasIcon: !!IconComponent,
           hasLabel: !!label,
           iconPosition,
+          isLarge,
           justify,
-          type,
+          type: finalType,
         })}
       >
         {!!IconComponent && (
           <IconComponent
-            color={iconColor || color || textColor[type]}
+            color={iconColor || color || textColor[finalType]}
             size={edgeSize.small}
           />
         )}
         {!!label && (
           <Text
-            color={color || textColor[type]}
+            color={color || textColor[finalType]}
             margin={getTextMargin(!!IconComponent, iconPosition)}
-            size="component"
+            size={isLarge ? "buttonLarge" : "component"}
             style={overflowStyle}
           >
             {label}
@@ -117,9 +122,11 @@ function AppButton({
 }
 
 const StyledAppButton = styled(AppButton)`
-  background: ${(props) => `${background[props.type]}`};
-  border-radius: ${borderSize.small};
-  height: ${edgeSize.large};
+  background: ${(props) =>
+    `${background[props.isDisabled ? "disabled" : props.type]}`};
+  border-radius: ${(props) =>
+    props.isLarge ? borderSize.medium : borderSize.small};
+  height: ${(props) => (props.isLarge ? edgeSize.xxlarge : edgeSize.large)};
 
   ${(props) => !!props.isDisabled && "cursor: not-allowed;"}
   ${(props) => !!props.width && `width: ${props.width};`}
@@ -128,6 +135,12 @@ const StyledAppButton = styled(AppButton)`
     props.type === "dark" &&
     `
   border: ${borderSize.xsmall} solid ${colors.gray8};
+  `}
+
+  ${(props) =>
+    (props.isDisabled || props.type === "disabled") &&
+    `
+  border: ${borderSize.xsmall} solid ${colors.gray3};
   `}
 
   ${(props) =>
@@ -155,13 +168,19 @@ const StyledAppButton = styled(AppButton)`
     ${(props) =>
       `
     background: ${
-      hoverSecondaryBackground[props.hoverType] || hoverBackground[props.type]
+      hoverSecondaryBackground[
+        props.isDisabled ? "disabled" : props.hoverType
+      ] || hoverBackground[props.isDisabled ? "disabled" : props.type]
     };
 
     p, 
     svg {
-      color: ${textColor[props.hoverType || props.type]};
-      fill: ${textColor[props.hoverType || props.type]};
+      color: ${
+        textColor[props.isDisabled ? "disabled" : props.hoverType || props.type]
+      };
+      fill: ${
+        textColor[props.isDisabled ? "disabled" : props.hoverType || props.type]
+      };
     }
     `}
 
@@ -172,7 +191,9 @@ const StyledAppButton = styled(AppButton)`
   &:active {
     ${(props) => `
     background: ${
-      activeSecondaryBackground[props.hoverType] || activeBackground[props.type]
+      activeSecondaryBackground[
+        props.isDisabled ? "disabled" : props.hoverType
+      ] || activeBackground[props.isDisabled ? "disabled" : props.type]
     };
     `}
 

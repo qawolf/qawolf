@@ -378,7 +378,7 @@ const handleAuthenticatedUser = ({
   let route = routes.tests;
 
   if (signUp.redirectUri) route = signUp.redirectUri;
-  else if (!user.onboarded_at) route = routes.tutorial;
+  else if (!user.onboarded_at) route = routes.getStarted;
 
   replace(route);
 };

@@ -1,70 +1,38 @@
 import { Box } from "grommet";
 import Image from "next/image";
-import Confetti from "react-confetti";
-import { BsArrowUpLeft } from "react-icons/bs";
 
 import {
-  iconProps,
+  headerProps,
   textProps,
 } from "../../../components/Guides/CreateATest/helpers";
-import { getUserId } from "../../../components/Guides/CreateATest/helpers";
 import Layout from "../../../components/Guides/CreateATest/Layout";
-import Paw from "../../../components/shared/icons/Paw";
-import WolfSitting from "../../../components/shared/icons/WolfSitting";
+import NextButton from "../../../components/Guides/CreateATest/NextButton";
+import Section from "../../../components/Guides/CreateATest/Section";
 import Text from "../../../components/shared/Text";
-import { useWolf } from "../../../hooks/queries";
-import { useWindowSize } from "../../../hooks/windowSize";
 import { copy } from "../../../theme/copy";
-import { colors, edgeSize } from "../../../theme/theme";
 
-const confettiColors = [
-  colors.codeBlue,
-  colors.codePink,
-  colors.codePurple,
-  colors.danger5,
-  colors.darkYellow,
-  colors.primary,
-  colors.success5,
-  colors.teal,
-];
-const wolfHeight = "174px";
+const step = 5;
 
 export default function CreateATest5(): JSX.Element {
-  const { height, width } = useWindowSize();
-
-  const userId = getUserId();
-
-  const { data } = useWolf({ user_id: userId });
-  const wolf = data?.wolf || null;
-
   return (
-    <>
-      <Confetti colors={confettiColors} height={height} width={width} />
-      <Layout>
-        <Box alignSelf="center" height={wolfHeight}>
-          {!!wolf && (
-            <>
-              <WolfSitting animate color={wolf.variant} />{" "}
-              <Box align="center" direction="row">
-                <Text {...textProps} margin={{ right: "xxsmall" }}>
-                  {wolf.name}
-                </Text>
-                <Paw color={colors.gray9} size={edgeSize.medium} />
-              </Box>
-            </>
-          )}
-        </Box>
-        <Text {...textProps} margin={{ vertical: "medium" }}>
-          {copy.learnedBasics}
+    <Layout>
+      <Box {...headerProps} background="lightBlue">
+        <Image
+          alt="run selected code"
+          height="144"
+          src="/guides/run-selected-code.png"
+          width="480"
+        />
+      </Box>
+      <Section label={copy.runSelectedCode} step={step}>
+        <Text {...textProps} margin={{ bottom: "small" }}>
+          {copy.runSelectedCode2}
         </Text>
-        <BsArrowUpLeft {...iconProps} />
-        <Text {...textProps} margin={{ bottom: "medium" }}>
-          {copy.learnedBasics2}
+        <Text {...textProps}>
+          <b>{copy.runSelectedCode3}</b> {copy.runSelectedCode4}
         </Text>
-        <Box alignSelf="center">
-          <Image height={45} src="/guides/dashboard.png" width={264} />
-        </Box>
-      </Layout>
-    </>
+        <NextButton step={step} />
+      </Section>
+    </Layout>
   );
 }

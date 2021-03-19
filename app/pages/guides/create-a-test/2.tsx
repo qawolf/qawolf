@@ -1,20 +1,18 @@
 import { Box } from "grommet";
-import { BsArrowLeft } from "react-icons/bs";
+import Image from "next/image";
 
-import { patchHandle } from "../../../components/Editor/Canvas/CodeToggle";
-import { getUserId } from "../../../components/Guides/CreateATest/helpers";
 import {
-  iconProps,
+  getUserId,
+  headerProps,
   textProps,
 } from "../../../components/Guides/CreateATest/helpers";
 import Layout from "../../../components/Guides/CreateATest/Layout";
 import NextButton from "../../../components/Guides/CreateATest/NextButton";
-import WolfButton from "../../../components/shared/icons/WolfButton";
+import Section from "../../../components/Guides/CreateATest/Section";
 import Text from "../../../components/shared/Text";
 import { useWolf } from "../../../hooks/queries";
 import { copy } from "../../../theme/copy";
 
-const wolfHeight = "152px";
 const step = 2;
 
 export default function CreateATest2(): JSX.Element {
@@ -24,22 +22,27 @@ export default function CreateATest2(): JSX.Element {
   const wolf = data?.wolf || null;
 
   return (
-    <Layout step={step}>
-      <Box>
-        {!!wolf && <Text {...textProps}>{copy.runTestIntro(wolf.name)}</Text>}
-        <Text {...textProps}>
-          {copy.runTestIntro2} <code>{patchHandle}</code>
+    <Layout>
+      <Box {...headerProps} background="primary1">
+        <Image
+          alt="get code from actions"
+          height="161"
+          src="/guides/get-code.png"
+          width="480"
+        />
+      </Box>
+      <Section label={copy.getCode} step={step}>
+        {!!wolf && (
+          <Text {...textProps} margin={{ bottom: "xxsmall" }}>
+            {copy.getCode2(wolf.name)}
+          </Text>
+        )}
+        <Text {...textProps}>{copy.getCode3}</Text>
+        <Text {...textProps} margin={{ top: "xxsmall" }}>
+          <b>{copy.getCode4}</b> {copy.getCode5}
         </Text>
-      </Box>
-      <BsArrowLeft {...iconProps} />
-      <Text {...textProps} margin={{ vertical: "medium" }}>
-        {copy.runTestIntro3} <code>⌘</code> / <code>Ctrl</code> +{" "}
-        <code>Enter</code>.
-      </Text>
-      <Box alignSelf="center" height={wolfHeight}>
-        {!!wolf && <WolfButton color={wolf.variant} />}
-      </Box>
-      <NextButton step={step} />
+        <NextButton step={step} />
+      </Section>
     </Layout>
   );
 }
