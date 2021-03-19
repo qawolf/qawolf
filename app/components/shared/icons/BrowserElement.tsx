@@ -39,8 +39,8 @@ export default function BrowserElement(): JSX.Element {
         width="18"
         height="18"
         rx="1"
-        fill="#FAE6E6"
-        stroke="#DB4B4B"
+        fill="#D2E2FA"
+        stroke="#0F78F3"
         strokeWidth="2"
       />
     </svg>
