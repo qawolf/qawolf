@@ -20,7 +20,7 @@ const actionsOfType = (type: Action): ElementAction[] => {
 };
 
 beforeAll(async () => {
-  launched = await launch({ startRecorder: true });
+  launched = await launch();
 
   await launched.context.exposeBinding(
     "qawElementAction",

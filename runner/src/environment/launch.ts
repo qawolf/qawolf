@@ -63,7 +63,7 @@ export type LaunchResult = {
 export const getBrowserLaunchOptions = (
   name: BrowserName,
   options: LaunchOptions
-) => {
+): LaunchOptions => {
   const args = ["chrome", "chromium"].includes(name)
     ? [
         "--disable-gpu",

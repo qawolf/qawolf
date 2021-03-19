@@ -1,4 +1,5 @@
 import { Page } from "playwright";
+import waitForExpect from "wait-for-expect";
 
 import { launch, LaunchResult } from "./utils";
 import { QAWolfWeb } from "../src";
@@ -84,26 +85,27 @@ it("highlights an element while hovered", async () => {
 
 it("chooses an element on click", async () => {
   await page.click("select");
-  await page.waitForTimeout(1000);
 
-  expect(await getChooserStyle()).toMatchObject({
-    border: "1px solid rgb(15, 120, 243)",
-  });
+  await waitForExpect(async () => {
+    expect(await getChooserStyle()).toMatchObject({
+      border: "1px solid rgb(15, 120, 243)",
+    });
+  }, 1000);
 
-  await page.waitForTimeout(1000);
-
-  expect(chosen).toMatchObject({
-    isFillable: false,
-    selectors: expect.arrayContaining([
-      "select",
-      "body select",
-      "html select",
-      "select:visible",
-      "body select:visible",
-      "html select:visible",
-    ]),
-    text: "a",
-  });
+  await waitForExpect(async () => {
+    expect(chosen).toMatchObject({
+      isFillable: false,
+      selectors: expect.arrayContaining([
+        "select",
+        "body select",
+        "html select",
+        "select:visible",
+        "body select:visible",
+        "html select:visible",
+      ]),
+      text: "a",
+    });
+  }, 1000);
 
   const paw = await page.$("#qawolf-chooser > svg");
   expect(await paw.evaluate((el) => el.style.visibility)).toEqual("visible");
@@ -111,12 +113,13 @@ it("chooses an element on click", async () => {
 
 it("stop hides the chooser and start shows it again", async () => {
   await page.click("select");
-  await page.waitForTimeout(1000);
 
-  expect(await getChooserStyle()).toMatchObject({
-    pawVisibility: "visible",
-    visibility: "visible",
-  });
+  await waitForExpect(async () => {
+    expect(await getChooserStyle()).toMatchObject({
+      pawVisibility: "visible",
+      visibility: "visible",
+    });
+  }, 1000);
 
   await page.evaluate(() => {
     const qawolf: QAWolfWeb = (window as any).qawolf;
@@ -141,10 +144,14 @@ it("stop hides the chooser and start shows it again", async () => {
 
 it("updates text when the value changes", async () => {
   await page.click("input");
-  await page.waitForTimeout(100);
-  expect(chosen).toMatchObject({ text: "123" });
+
+  await waitForExpect(() => {
+    expect(chosen).toMatchObject({ text: "123" });
+  }, 1000);
 
   await page.fill("input", "999");
-  await page.waitForTimeout(100);
-  expect(chosen).toMatchObject({ text: "999" });
+
+  await waitForExpect(() => {
+    expect(chosen).toMatchObject({ text: "999" });
+  }, 1000);
 });

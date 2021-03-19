@@ -3,6 +3,10 @@ import path from "path";
 import playwright, { Browser, BrowserContext, Page } from "playwright";
 import webpackConfig from "../webpack.config";
 
+type LaunchOptions = {
+  devtools?: boolean;
+};
+
 export type LaunchResult = {
   browser: Browser;
   context: BrowserContext;
@@ -31,10 +35,7 @@ export const parseBrowserName = (
   return "chromium";
 };
 
-export const launch = async ({
-  devtools,
-  startRecorder,
-}: { devtools?: boolean; startRecorder?: boolean } = {}): Promise<
+export const launch = async ({ devtools }: LaunchOptions = {}): Promise<
   LaunchResult
 > => {
   const browserName = parseBrowserName(process.env.QAWOLF_BROWSER);

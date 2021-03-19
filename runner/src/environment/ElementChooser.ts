@@ -2,7 +2,7 @@ import Debug from "debug";
 import { EventEmitter } from "events";
 import { BrowserContext } from "playwright";
 
-import { ElementChosen, ElementChooserValue } from "../types";
+import { ElementChooserValue,ElementChosen } from "../types";
 
 const debug = Debug("qawolf:ElementChooser");
 
