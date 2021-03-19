@@ -2,6 +2,7 @@ import { edgeSize } from "../../../../theme/theme";
 
 const ClickActions = [
   "Assert element",
+  "Assert text",
   "Click",
   "Hover",
   "Upload image",
@@ -9,14 +10,13 @@ const ClickActions = [
 
 const FillActions = [
   "Assert element",
+  "Assert text",
   "Fill",
   "Fill test email",
   "Hover",
 ] as const;
 
 export type ActionType =
-  | "Assert element"
-  | "Assert text"
   | typeof ClickActions[number]
   | typeof FillActions[number];
 
@@ -28,7 +28,7 @@ export const buildActionOptions = (
     ? [...FillActions]
     : [...ClickActions];
 
-  if (hasText) options.splice(1, 0, "Assert text");
+  if (!hasText) options.splice(options.indexOf("Assert text"), 1);
 
   return options;
 };
@@ -61,7 +61,7 @@ export const buildCode = (
   if (action === "Hover") return `await page.hover(${selectorArgument});`;
 
   if (action === "Upload image") {
-    return `page.on('filechooser', (chooser) => chooser.setFiles('/root/files/avatar.png'));\nawait page.click(${selectorArgument});`;
+    return `page.once('filechooser', (chooser) => chooser.setFiles('/root/files/avatar.png'));\nawait page.click(${selectorArgument});`;
   }
 
   return "";
