@@ -52,17 +52,7 @@ export const launch = async ({
   const originalNewContext = browser.newContext.bind(browser);
   browser.newContext = async (...args): Promise<BrowserContext> => {
     const context = await originalNewContext(...args);
-    await context.addInitScript(`
-(() => {
-  ${await getRecorderScriptAsString()}
-
-  ${
-    startRecorder
-      ? "window.qawInstance = new window.qawolf.ActionRecorder();"
-      : ""
-  }
-})();
-`);
+    await context.addInitScript(await getRecorderScriptAsString());
 
     return context;
   };

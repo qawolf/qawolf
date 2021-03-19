@@ -1,4 +1,3 @@
-import { debug } from "./debug";
 import { getXpath } from "./element";
 import { generateSortedCueSets } from "./generateCueSets";
 import { CLICK_TYPES } from "./isElementMatch";
@@ -43,7 +42,6 @@ export function* generateSelectors(
     const isMatch = isSelectorMatch(selector, likelyTarget, rectCache);
     if (isMatch) {
       const rankedSelector = { penalty: cueSet.penalty, selector };
-      debug(`found selector ${selector} for target`, target);
       if (selectorCache) {
         selectorCache.set(target, rankedSelector);
         selectorCache.set(likelyTarget, rankedSelector);

@@ -17,6 +17,9 @@ export { hasCommonAncestor, isElementMatch } from "./isElementMatch";
 export { resolveAction } from "./resolveAction";
 export { buildElementText, buildSelectorForCues } from "./selectorEngine";
 
+import { ActionRecorder } from "./ActionRecorder";
 import { ElementChooser } from "./ElementChooser";
 
-export const elementChooser = new ElementChooser();
+export const actionRecorder = new ActionRecorder();
+
+export const elementChooser = new ElementChooser(actionRecorder);

@@ -14,15 +14,6 @@ export const addInitScript = async (context: BrowserContext): Promise<void> => {
   // on this load happening at launch time. This allows us to hot
   // reload the recorder script without needing to restart the
   // runner server.
-  const webScript = await readFile(recorderScriptPath, "utf8");
-
-  const script = `
-(() => {
-  ${webScript}
-
-  window.qawActionRecorder = new qawolf.ActionRecorder();
-})();
-`;
-
+  const script = await readFile(recorderScriptPath, "utf8");
   await context.addInitScript(script);
 };
