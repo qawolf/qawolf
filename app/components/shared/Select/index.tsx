@@ -69,6 +69,7 @@ export default function Select({
           align={direction === "up" ? { bottom: "top" } : { top: "bottom" }}
           onClick={handleClose}
           onClickOutside={handleClose}
+          stretch="align"
           style={
             direction === "up"
               ? { marginBottom: edgeSize.xxxsmall }
