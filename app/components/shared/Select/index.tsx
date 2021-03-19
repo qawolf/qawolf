@@ -1,17 +1,18 @@
 import { Box, BoxProps } from "grommet";
 import { ReactNode, useRef, useState } from "react";
 
-import { useOnClickOutside } from "../../../hooks/onClickOutside";
 import { Side } from "../../../lib/types";
+import { edgeSize } from "../../../theme/theme";
 import Button from "../AppButton";
+import Drop from "../Drop";
 import ArrowDown from "../icons/ArrowDown";
 import Selector from "../icons/Selector";
-import Menu, { Direction } from "../Menu";
+import { Direction } from "../Menu";
 
 type Type = "dark" | "secondary" | "snippet";
 
 type Props = {
-  children: ReactNode[];
+  children: ReactNode | ReactNode[];
   className?: string;
   direction?: Direction;
   flex?: BoxProps["flex"];
@@ -39,13 +40,11 @@ export default function Select({
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClick = (): void => {
-    if (!children.length) return;
+    if (Array.isArray(children) && !children.length) return;
     setIsOpen((prev) => !prev);
   };
 
   const handleClose = (): void => setIsOpen(false);
-
-  useOnClickOutside({ onClickOutside: handleClose, ref });
 
   return (
     <Box
@@ -66,9 +65,19 @@ export default function Select({
         type={type || "secondary"}
       />
       {isOpen && (
-        <Menu direction={direction} onClick={handleClose}>
+        <Drop
+          align={direction === "up" ? { bottom: "top" } : { top: "bottom" }}
+          onClick={handleClose}
+          onClickOutside={handleClose}
+          style={
+            direction === "up"
+              ? { marginBottom: edgeSize.xxxsmall }
+              : { marginTop: edgeSize.xxxsmall }
+          }
+          target={ref.current}
+        >
           {children}
-        </Menu>
+        </Drop>
       )}
     </Box>
   );
