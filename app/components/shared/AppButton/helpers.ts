@@ -1,5 +1,5 @@
 import { BoxProps, ButtonProps, TextProps } from "grommet";
-import { Icon } from "grommet";
+import { Icon } from "grommet-icons";
 
 import { Side } from "../../../lib/types";
 import { borderSize, edgeSize } from "../../../theme/theme";
