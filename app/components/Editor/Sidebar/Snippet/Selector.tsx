@@ -22,10 +22,9 @@ export default function Selector({
   if (value && !options.includes(value)) {
     onSelectOption(null);
   }
-
   // choose the first available selector
   // if nothing is selected
-  if (!value && options.length) {
+  else if (!value && options.length) {
     onSelectOption(options[0]);
   }
 
@@ -36,7 +35,7 @@ export default function Selector({
         isDisabled={isDisabled}
         onClick={onSelectOption}
         options={options}
-        value={value || ""}
+        value={value || (isDisabled ? "" : "...")}
       />
     </Box>
   );
