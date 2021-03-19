@@ -60,6 +60,7 @@ export const colors = {
   gray8: "#404857",
   gray9: "#2A3140",
   gray10: "#151B26",
+  lightBlue: "#E2F3FB",
   lightGray: "#F0F3F5",
   lightGreen: "#E6FAEC",
   lightPurple: "#8E9CF5",
@@ -99,7 +100,7 @@ export const customFontLinks = [
   "/fonts/inter-semibold.woff",
 ];
 
-export const disabledOpacity = 0.4;
+export const disabledOpacity = 1;
 
 export const edgeSize = {
   xxxsmall: "4px",

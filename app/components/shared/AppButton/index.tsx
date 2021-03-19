@@ -64,6 +64,8 @@ function AppButton({
   openNewPage,
   type,
 }: Props): JSX.Element {
+  const finalType = isDisabled ? "disabled" : type;
+
   const innerHtml = (
     <Button
       a11yTitle={a11yTitle || label}
@@ -79,27 +81,24 @@ function AppButton({
         direction={iconPosition === "right" ? "row-reverse" : "row"}
         fill
         justify={justify || "between"}
-        pad={
-          isLarge
-            ? { horizontal: "small" }
-            : getBoxPad({
-                hasIcon: !!IconComponent,
-                hasLabel: !!label,
-                iconPosition,
-                justify,
-                type,
-              })
-        }
+        pad={getBoxPad({
+          hasIcon: !!IconComponent,
+          hasLabel: !!label,
+          iconPosition,
+          isLarge,
+          justify,
+          type: finalType,
+        })}
       >
         {!!IconComponent && (
           <IconComponent
-            color={iconColor || color || textColor[type]}
+            color={iconColor || color || textColor[finalType]}
             size={edgeSize.small}
           />
         )}
         {!!label && (
           <Text
-            color={color || textColor[type]}
+            color={color || textColor[finalType]}
             margin={getTextMargin(!!IconComponent, iconPosition)}
             size={isLarge ? "buttonLarge" : "component"}
             style={overflowStyle}
@@ -123,7 +122,8 @@ function AppButton({
 }
 
 const StyledAppButton = styled(AppButton)`
-  background: ${(props) => `${background[props.type]}`};
+  background: ${(props) =>
+    `${background[props.isDisabled ? "disabled" : props.type]}`};
   border-radius: ${(props) =>
     props.isLarge ? borderSize.medium : borderSize.small};
   height: ${(props) => (props.isLarge ? edgeSize.xxlarge : edgeSize.large)};
@@ -138,7 +138,7 @@ const StyledAppButton = styled(AppButton)`
   `}
 
   ${(props) =>
-    props.type === "disabled" &&
+    (props.isDisabled || props.type === "disabled") &&
     `
   border: ${borderSize.xsmall} solid ${colors.gray3};
   `}
@@ -168,13 +168,19 @@ const StyledAppButton = styled(AppButton)`
     ${(props) =>
       `
     background: ${
-      hoverSecondaryBackground[props.hoverType] || hoverBackground[props.type]
+      hoverSecondaryBackground[
+        props.isDisabled ? "disabled" : props.hoverType
+      ] || hoverBackground[props.isDisabled ? "disabled" : props.type]
     };
 
     p, 
     svg {
-      color: ${textColor[props.hoverType || props.type]};
-      fill: ${textColor[props.hoverType || props.type]};
+      color: ${
+        textColor[props.isDisabled ? "disabled" : props.hoverType || props.type]
+      };
+      fill: ${
+        textColor[props.isDisabled ? "disabled" : props.hoverType || props.type]
+      };
     }
     `}
 
@@ -185,7 +191,9 @@ const StyledAppButton = styled(AppButton)`
   &:active {
     ${(props) => `
     background: ${
-      activeSecondaryBackground[props.hoverType] || activeBackground[props.type]
+      activeSecondaryBackground[
+        props.isDisabled ? "disabled" : props.hoverType
+      ] || activeBackground[props.isDisabled ? "disabled" : props.type]
     };
     `}
 

@@ -56,7 +56,7 @@ export const hoverSecondaryBackground: { [type: string]: string } = {
 export const textColor: { [type in Type]: string } = {
   danger: colors.gray0,
   dark: colors.gray0,
-  disabled: colors.gray5,
+  disabled: colors.gray6,
   ghost: colors.gray9,
   primary: colors.gray0,
   secondary: colors.gray9,
