@@ -13,9 +13,12 @@ import {
 import Text from "../Text";
 import {
   activeBackground,
+  activeBorderColor,
   activeSecondaryBackground,
   background,
+  borderColor,
   hoverBackground,
+  hoverBorderColor,
   hoverSecondaryBackground,
   textColor,
 } from "./config";
@@ -63,7 +66,6 @@ function AppButton(props: Props): JSX.Element {
           iconPosition,
           isLarge,
           justify,
-          type: finalType,
         })}
       >
         {!!IconComponent && (
@@ -106,30 +108,10 @@ const StyledAppButton = styled(AppButton)`
 
   ${(props) => !!props.isDisabled && "cursor: not-allowed;"}
   ${(props) => !!props.width && `width: ${props.width};`}
-
-  ${(props) =>
-    ["dark", "snippet"].includes(props.type) &&
-    `
-  border: ${borderSize.xsmall} solid ${colors.gray8};
-  `}
-
-  ${(props) =>
-    useDisabledStyle(props) &&
-    `
-  border: ${borderSize.xsmall} solid ${colors.gray3};
-  `}
-
-  ${(props) =>
-    props.type === "secondary" &&
-    `
-  border: ${borderSize.xsmall} solid ${colors.gray3};
-  `}
-
-  ${(props) =>
-    props.type === "snippet" &&
-    `
-  border: ${borderSize.xsmall} solid ${colors.gray8};
-  `}
+  border: 1px solid ${(props) =>
+    useDisabledStyle(props)
+      ? borderColor.disabled
+      : borderColor[props.type] || background[props.type]};
 
   ${(props) =>
     !!props.noBorderSide &&
@@ -154,18 +136,18 @@ const StyledAppButton = styled(AppButton)`
       hoverSecondaryBackground[props.hoverType] || hoverBackground[props.type]
     };
 
+    border-color: ${
+      hoverBorderColor[props.type] ||
+      hoverSecondaryBackground[props.hoverType] ||
+      hoverBackground[props.type]
+    };
+
     p, 
     svg {
       color: ${textColor[props.hoverType || props.type]};
       fill: ${textColor[props.hoverType || props.type]};
     }
     `}
-
-    ${(props) =>
-      !props.isDisabled &&
-      ["dark", "snippet"].includes(props.type) &&
-      `border-color: ${colors.gray6};`}
-    ${(props) => props.type === "secondary" && `border-color: ${colors.gray5};`}
   }
 
   &:active {
@@ -175,16 +157,13 @@ const StyledAppButton = styled(AppButton)`
     background: ${
       activeSecondaryBackground[props.hoverType] || activeBackground[props.type]
     };
-    `}
 
-    ${(props) =>
-      !props.isDisabled &&
-      ["dark", "snippet"].includes(props.type) &&
-      `border-color: ${colors.gray4};`}
-    ${(props) =>
-      !props.isDisabled &&
-      props.type === "secondary" &&
-      `border-color: ${colors.gray9};`}
+    border-color: ${
+      activeBorderColor[props.type] ||
+      activeSecondaryBackground[props.hoverType] ||
+      activeBackground[props.type]
+    };
+    `}
   }
 
   ${(props) =>

@@ -11,7 +11,6 @@ type GetBoxPad = {
   iconPosition?: Side;
   isLarge?: boolean;
   justify?: BoxProps["justify"];
-  type: Type;
 };
 
 export type Props = {
@@ -43,22 +42,16 @@ export const getBoxPad = ({
   iconPosition,
   isLarge,
   justify,
-  type,
 }: GetBoxPad): BoxProps["pad"] => {
   if (justify === "center") return undefined;
 
-  const hasBorder = ["dark", "disabled", "secondary"].includes(type);
   const border = borderSize.xsmall;
 
   const defaultXSmallPad = isLarge ? edgeSize.small : edgeSize.xsmall;
   const defaultXXSmallPad = isLarge ? edgeSize.small : edgeSize.xxsmall;
 
-  const xsmall = hasBorder
-    ? `calc(${defaultXSmallPad} - ${border})`
-    : defaultXSmallPad;
-  const xxsmall = hasBorder
-    ? `calc(${defaultXXSmallPad} - ${border})`
-    : defaultXXSmallPad;
+  const xsmall = `calc(${defaultXSmallPad} - ${border})`;
+  const xxsmall = `calc(${defaultXXSmallPad} - ${border})`;
 
   if (!hasLabel) return { horizontal: xxsmall };
   if (!hasIcon) return { horizontal: xsmall };

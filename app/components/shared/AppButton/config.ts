@@ -1,5 +1,3 @@
-import { BoxProps } from "grommet";
-
 import { colors } from "../../../theme/theme";
 
 export type Type =
@@ -13,7 +11,7 @@ export type Type =
   | "success"
   | "tertiary";
 
-export const activeBackground: { [type in Type]: BoxProps["background"] } = {
+export const activeBackground: { [type in Type]: string } = {
   danger: colors.danger7,
   dark: colors.gray10,
   disabled: colors.gray2,
@@ -25,11 +23,17 @@ export const activeBackground: { [type in Type]: BoxProps["background"] } = {
   tertiary: colors.gray6,
 };
 
+export const activeBorderColor: { [type: string]: string } = {
+  dark: colors.gray4,
+  secondary: colors.gray9,
+  snippet: colors.gray4,
+};
+
 export const activeSecondaryBackground: { [type: string]: string } = {
   danger: colors.danger6,
 };
 
-export const background: { [type in Type]: BoxProps["background"] } = {
+export const background: { [type in Type]: string } = {
   danger: colors.danger5,
   dark: colors.gray10,
   disabled: colors.gray2,
@@ -39,6 +43,13 @@ export const background: { [type in Type]: BoxProps["background"] } = {
   snippet: colors.gray9,
   success: colors.success5,
   tertiary: colors.gray8,
+};
+
+export const borderColor: { [type: string]: string } = {
+  dark: colors.gray8,
+  disabled: colors.gray3,
+  secondary: colors.gray3,
+  snippet: colors.gray8,
 };
 
 export const hoverBackground: { [type in Type]: string } = {
@@ -51,6 +62,12 @@ export const hoverBackground: { [type in Type]: string } = {
   snippet: colors.gray9,
   success: colors.success6,
   tertiary: colors.gray7,
+};
+
+export const hoverBorderColor: { [type: string]: string } = {
+  dark: colors.gray6,
+  secondary: colors.gray6,
+  snippet: colors.gray6,
 };
 
 export const hoverSecondaryBackground: { [type: string]: string } = {
