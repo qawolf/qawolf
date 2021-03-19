@@ -23,7 +23,7 @@ type RunnerContext = ConnectRunnerHook &
 
 export const RunnerContext = createContext<RunnerContext>({
   apiKey: null,
-  elementChooserValue: { active: false },
+  elementChooserValue: { isActive: false },
   env: null,
   isRunnerConnected: false,
   isRunnerLoading: false,

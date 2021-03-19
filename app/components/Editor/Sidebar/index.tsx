@@ -44,9 +44,9 @@ export default function Sidebar(): JSX.Element {
 
   const [selected, setSelected] = useState<NavigationOption>("code");
 
+  const isChooserActive = elementChooserValue.isActive;
   const isTestDeleted = !!test?.deleted_at;
-  const isSnippetVisible = elementChooserValue.active;
-  const isActionDisabled = isTestDeleted || isSnippetVisible;
+  const isActionDisabled = isTestDeleted || isChooserActive;
 
   const handleResizeStop: ResizeCallback = (_, __, ___, delta): void => {
     state.setEditorSidebarWidth(editorSidebarWidth + delta.width);
@@ -102,8 +102,8 @@ export default function Sidebar(): JSX.Element {
           <HelpersEditor onKeyDown={handleEditorKeyDown} />
         )}
         <RunLogs isVisible={selected === "logs"} />
-        <Snippet isVisible={isSnippetVisible} />
-        {!isSnippetVisible && (
+        <Snippet isVisible={isChooserActive} />
+        {!isChooserActive && (
           <Buttons
             isActionDisabled={isActionDisabled}
             isRun={!!query.run_id}

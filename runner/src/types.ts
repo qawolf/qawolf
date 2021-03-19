@@ -42,7 +42,9 @@ export interface ElementChosen {
   text: string;
 }
 
-export type ElementChooserValue = Partial<ElementChosen> & { active: boolean };
+export type ElementChooserValue = Partial<ElementChosen> & {
+  isActive: boolean;
+};
 
 export interface ElementEvent {
   action: ElementAction;

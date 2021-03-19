@@ -2,20 +2,20 @@ import Debug from "debug";
 import { EventEmitter } from "events";
 import { BrowserContext } from "playwright";
 
-import { ElementChooserValue,ElementChosen } from "../types";
+import { ElementChooserValue, ElementChosen } from "../types";
 
 const debug = Debug("qawolf:ElementChooser");
 
 export class ElementChooser extends EventEmitter {
-  _active = false;
   _context?: BrowserContext;
   _contextEmitter?: EventEmitter;
+  _isActive = false;
   _lastElementChosen: ElementChosen | null = null;
 
-  _setActive(active: boolean): void {
-    this._active = active;
+  _setActive(value: boolean): void {
+    this._isActive = value;
 
-    if (!active) {
+    if (!value) {
       // clear the previous chosen value
       this._lastElementChosen = null;
     }
@@ -39,7 +39,7 @@ export class ElementChooser extends EventEmitter {
       this._lastElementChosen = event;
       debug("emit %j", this.value);
 
-      if (this._active) {
+      if (this._isActive) {
         this.emit("elementchooser", this.value);
       }
     });
@@ -84,7 +84,7 @@ export class ElementChooser extends EventEmitter {
   get value(): ElementChooserValue {
     return {
       ...(this._lastElementChosen || {}),
-      active: this._active,
+      isActive: this._isActive,
     };
   }
 }

@@ -17,7 +17,7 @@ export default function Header(): JSX.Element {
     stopElementChooser,
   } = useContext(RunnerContext);
 
-  const isChooserActive = elementChooserValue.active;
+  const isChooserActive = elementChooserValue.isActive;
 
   const isDisabled = !isRunnerConnected || progress?.status === "created";
 

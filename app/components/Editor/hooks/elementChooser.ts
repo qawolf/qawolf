@@ -12,13 +12,13 @@ export type ElementChooserHook = {
 export const useElementChooser = (
   runner: RunnerClient | null
 ): ElementChooserHook => {
-  const [value, setValue] = useState<ElementChooserValue>({ active: false });
+  const [value, setValue] = useState<ElementChooserValue>({ isActive: false });
 
   useEffect(() => {
     if (!runner) return;
 
     // clear on disconnect
-    const onDisconnect = (): void => setValue({ active: false });
+    const onDisconnect = (): void => setValue({ isActive: false });
     runner.on("disconnect", onDisconnect);
 
     const onEvent = (value: ElementChooserValue): void => setValue(value);
