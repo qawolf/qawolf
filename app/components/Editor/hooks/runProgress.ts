@@ -60,7 +60,7 @@ export const useRunProgress = ({
       current_line: run.current_line,
       status: run.status,
     });
-  }, [run]);
+  }, [run, user?.email]);
 
   return {
     progress,

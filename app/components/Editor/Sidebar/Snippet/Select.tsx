@@ -1,5 +1,3 @@
-import { Box } from "grommet";
-
 import SharedSelect from "../../../shared/Select";
 import Option from "../../../shared/Select/Option";
 
@@ -34,7 +32,7 @@ export default function Select({
       label={value}
       type="snippet"
     >
-      <Box flex={false}>{optionsHtml}</Box>
+      {optionsHtml}
     </SharedSelect>
   );
 }

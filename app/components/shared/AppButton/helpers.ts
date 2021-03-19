@@ -1,4 +1,5 @@
-import { BoxProps, TextProps } from "grommet";
+import { BoxProps, ButtonProps, TextProps } from "grommet";
+import { Icon } from "grommet";
 
 import { Side } from "../../../lib/types";
 import { borderSize, edgeSize } from "../../../theme/theme";
@@ -11,6 +12,29 @@ type GetBoxPad = {
   isLarge?: boolean;
   justify?: BoxProps["justify"];
   type: Type;
+};
+
+export type Props = {
+  IconComponent?: Icon;
+  a11yTitle?: string;
+  className?: string;
+  color?: string;
+  hasError?: boolean;
+  href?: string;
+  hoverType?: Type;
+  iconColor?: string;
+  iconPosition?: Side;
+  isDisabled?: boolean;
+  isLarge?: boolean;
+  isSelected?: boolean;
+  justify?: BoxProps["justify"];
+  label?: string;
+  margin?: ButtonProps["margin"];
+  noBorderSide?: Side;
+  onClick?: () => void;
+  openNewPage?: boolean;
+  type: Type;
+  width?: BoxProps["width"];
 };
 
 export const getBoxPad = ({
@@ -53,4 +77,10 @@ export const getTextMargin = (
 
   if (iconPosition === "left") return { left: "xxsmall" };
   return { right: "xxsmall" };
+};
+
+export const useDisabledStyle = ({ isDisabled, type }: Props): boolean => {
+  if (type === "disabled") return true;
+
+  return isDisabled && type === "primary";
 };

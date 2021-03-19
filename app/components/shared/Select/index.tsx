@@ -12,7 +12,7 @@ import { Direction } from "../Menu";
 type Type = "dark" | "secondary" | "snippet";
 
 type Props = {
-  children: ReactNode | ReactNode[];
+  children: ReactNode[];
   className?: string;
   direction?: Direction;
   flex?: BoxProps["flex"];
@@ -40,7 +40,7 @@ export default function Select({
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClick = (): void => {
-    if (Array.isArray(children) && !children.length) return;
+    if (!children.length) return;
     setIsOpen((prev) => !prev);
   };
 
