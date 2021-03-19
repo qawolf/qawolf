@@ -40,7 +40,7 @@ export default function Selector({
         onClick={onSelectOption}
         options={options}
         value={value || ""}
-      ></Select>
+      />
     </Box>
   );
 }

@@ -32,7 +32,7 @@ export default function Action({
   return (
     <Box flex={false} width={width}>
       <Text {...labelProps}>{copy.action}</Text>
-      <Select onClick={onSelectAction} options={options} value={value}></Select>
+      <Select onClick={onSelectAction} options={options} value={value} />
     </Box>
   );
 }
