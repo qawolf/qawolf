@@ -106,8 +106,9 @@ export class Runner extends EventEmitter {
   }
 
   async stopElementChooser(): Promise<void> {
-    // do it at the same time to avoid enabling
-    // after it should be disabled again
+    // run both immediately instead of waiting to enable
+    // otherwise a subsequent updater.disable could be overridden
+    // by our delayed updater.enable call
     await Promise.all([
       this._environment?._elementChooser.stop(),
       this._environment?.updater.enable(),

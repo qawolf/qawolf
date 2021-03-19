@@ -13,16 +13,6 @@ const CLICK_INPUT_TYPES = new Set([
   "submit",
 ]);
 
-export const isFillable = (element: ElementDescriptor): boolean => {
-  if (element.isContentEditable || element.tag === "textarea") return true;
-
-  if (element.tag === "input" && !CLICK_INPUT_TYPES.has(element.inputType)) {
-    return true;
-  }
-
-  return false;
-};
-
 export const getAssertText = (element: HTMLElement): string => {
   const text = (element as HTMLInputElement).value || element.innerText || "";
   if (!text.length || text.length > 500) return "";
@@ -124,6 +114,16 @@ export const getXpath = (node: Node): string => {
   return result
     .replace("svg", "*[name()='svg']")
     .replace("path", "*[name()='path']");
+};
+
+export const isFillable = (element: ElementDescriptor): boolean => {
+  if (element.isContentEditable || element.tag === "textarea") return true;
+
+  if (element.tag === "input" && !CLICK_INPUT_TYPES.has(element.inputType)) {
+    return true;
+  }
+
+  return false;
 };
 
 export const isVisible = (
