@@ -25,10 +25,16 @@ export const getBoxPad = ({
 
   const hasBorder = ["dark", "disabled", "secondary"].includes(type);
   const border = borderSize.xsmall;
-  const defaultPad = isLarge ? edgeSize.small : edgeSize.xsmall;
 
-  const xsmall = hasBorder ? `calc(${defaultPad} - ${border})` : defaultPad;
-  const xxsmall = hasBorder ? `calc(${defaultPad} - ${border})` : defaultPad;
+  const defaultXSmallPad = isLarge ? edgeSize.small : edgeSize.xsmall;
+  const defaultXXSmallPad = isLarge ? edgeSize.small : edgeSize.xxsmall;
+
+  const xsmall = hasBorder
+    ? `calc(${defaultXSmallPad} - ${border})`
+    : defaultXSmallPad;
+  const xxsmall = hasBorder
+    ? `calc(${defaultXXSmallPad} - ${border})`
+    : defaultXXSmallPad;
 
   if (!hasLabel) return { horizontal: xxsmall };
   if (!hasIcon) return { horizontal: xsmall };
