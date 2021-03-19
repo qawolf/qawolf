@@ -32,28 +32,27 @@ export default function Snippet({ isVisible }: Props): JSX.Element {
     elementChooserValue?.text || ""
   );
 
-  const addSnippet = () => {
+  const addRunSnippet = () => {
     if (!hasChosenElement) return;
 
-    const lines = controller.code.split("\n");
-    const snippetLines = snippetCode.split("\n");
-
-    let patchIndex = lines.findIndex((l) => l.includes(PATCH_HANDLE));
-    if (patchIndex < 0) patchIndex = lines.length;
+    // patch at the handle or the bottom if there is no patch handle
+    const codeLines = controller.code.split("\n");
+    let patchIndex = codeLines.findIndex((l) => l.includes(PATCH_HANDLE));
+    if (patchIndex < 0) patchIndex = codeLines.length;
 
     // insert the snippet
-    lines.splice(patchIndex, 0, ...snippetLines);
+    const snippetLines = snippetCode.split("\n");
+    codeLines.splice(patchIndex, 0, ...snippetLines);
 
-    const code = lines.join("\n");
-
-    controller.updateCode(code);
+    const updatedCode = codeLines.join("\n");
+    controller.updateCode(updatedCode);
 
     // this will enable code generation so make sure to call it before
     // run test which will disable code generation
     stopElementChooser();
 
     runTest({
-      code,
+      code: updatedCode,
       selection: {
         startLine: patchIndex + 1,
         endLine: patchIndex + 1 + snippetLines.length,
@@ -63,8 +62,8 @@ export default function Snippet({ isVisible }: Props): JSX.Element {
     });
   };
 
+  useOnHotKey({ hotKey: "Enter", onHotKey: addRunSnippet, requireMeta: true });
   useOnHotKey({ hotKey: "Escape", onHotKey: stopElementChooser });
-  useOnHotKey({ hotKey: "Enter", onHotKey: addSnippet, requireMeta: true });
 
   if (!isVisible) return null;
 
@@ -93,7 +92,7 @@ export default function Snippet({ isVisible }: Props): JSX.Element {
             />
           </Box>
           <Code code={snippetCode} />
-          <Buttons onAddSnippet={addSnippet} onCancel={stopElementChooser} />
+          <Buttons onAddSnippet={addRunSnippet} onCancel={stopElementChooser} />
         </>
       ) : (
         <ChooseElement />
