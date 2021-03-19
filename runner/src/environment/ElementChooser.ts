@@ -58,7 +58,8 @@ export class ElementChooser extends EventEmitter {
         return page.evaluate(() => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const qawolf: any = (window as any).qawolf;
-          return qawolf.elementChooser.start();
+          qawolf.actionRecorder.stop();
+          qawolf.elementChooser.start();
         });
       });
 
@@ -74,7 +75,8 @@ export class ElementChooser extends EventEmitter {
         return page.evaluate(() => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const qawolf: any = (window as any).qawolf;
-          return qawolf.elementChooser.stop();
+          qawolf.elementChooser.stop();
+          qawolf.actionRecorder.start();
         });
       });
 

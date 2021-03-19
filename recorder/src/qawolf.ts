@@ -22,4 +22,4 @@ import { ElementChooser } from "./ElementChooser";
 
 export const actionRecorder = new ActionRecorder();
 
-export const elementChooser = new ElementChooser(actionRecorder);
+export const elementChooser = new ElementChooser();
