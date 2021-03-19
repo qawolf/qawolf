@@ -9,7 +9,7 @@ let launched: LaunchResult;
 let page: Page;
 
 beforeAll(async () => {
-  launched = await launch();
+  launched = await launch({ devtools: true });
   page = launched.page;
 
   await launched.context.exposeBinding(
@@ -31,7 +31,7 @@ beforeEach(async () => {
   });
 });
 
-afterAll(() => launched.browser.close());
+// afterAll(() => launched.browser.close());
 
 async function getChooserStyle() {
   const chooser = await page.$("#qawolf-chooser");
@@ -44,7 +44,7 @@ async function getChooserStyle() {
   return style;
 }
 
-it("highlights an element while hovered", async () => {
+it.only("highlights an element while hovered", async () => {
   await page.hover("input");
 
   expect(await getChooserStyle()).toEqual({
