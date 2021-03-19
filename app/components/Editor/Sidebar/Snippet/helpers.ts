@@ -1,7 +1,18 @@
 import { edgeSize } from "../../../../theme/theme";
 
-const ClickActions = ["Click", "Hover", "Upload image"] as const;
-const FillActions = ["Fill", "Fill test email", "Hover"] as const;
+const ClickActions = [
+  "Assert element",
+  "Click",
+  "Hover",
+  "Upload image",
+] as const;
+
+const FillActions = [
+  "Assert element",
+  "Fill",
+  "Fill test email",
+  "Hover",
+] as const;
 
 export type ActionType =
   | "Assert element"
@@ -17,7 +28,7 @@ export const buildActionOptions = (
     ? [...FillActions]
     : [...ClickActions];
 
-  if (hasText) options.unshift("Assert text");
+  if (hasText) options.splice(1, 0, "Assert text");
 
   return options;
 };
