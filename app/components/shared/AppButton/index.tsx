@@ -176,12 +176,12 @@ const StyledAppButton = styled(AppButton)`
       activeSecondaryBackground[props.hoverType] || activeBackground[props.type]
     };
     `}
-  }
 
-  ${(props) =>
-    ["dark", "snippet"].includes(props.type) &&
-    `border-color: ${colors.gray4};`}
-  ${(props) => props.type === "secondary" && `border-color: ${colors.gray9};`}
+    ${(props) =>
+      ["dark", "snippet"].includes(props.type) &&
+      `border-color: ${colors.gray4};`}
+    ${(props) => props.type === "secondary" && `border-color: ${colors.gray9};`}
+  }
 
   ${(props) =>
     props.isDisabled &&
