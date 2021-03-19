@@ -34,7 +34,11 @@ function Toggle({
       onClick={onClick}
       plain
     >
-      <Box align="center" direction="row">
+      <Box
+        align="center"
+        direction="row"
+        style={{ opacity: isDisabled ? 0.4 : 1 }}
+      >
         <Box
           align={align}
           background={background}
