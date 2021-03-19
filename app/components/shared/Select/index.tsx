@@ -1,4 +1,4 @@
-import { Box, BoxProps } from "grommet";
+import { Box, BoxProps, DropProps } from "grommet";
 import { ReactNode, useRef, useState } from "react";
 
 import { Side } from "../../../lib/types";
@@ -20,6 +20,7 @@ type Props = {
   isDisabled?: boolean;
   label: string;
   noBorderSide?: Side;
+  stretch?: DropProps["stretch"];
   type?: Type;
   width?: BoxProps["width"];
 };
@@ -33,6 +34,7 @@ export default function Select({
   isDisabled,
   label,
   noBorderSide,
+  stretch,
   type,
   width,
 }: Props): JSX.Element {
@@ -69,7 +71,7 @@ export default function Select({
           align={direction === "up" ? { bottom: "top" } : { top: "bottom" }}
           onClick={handleClose}
           onClickOutside={handleClose}
-          stretch="align"
+          stretch={stretch || true}
           style={
             direction === "up"
               ? { marginBottom: edgeSize.xxxsmall }

@@ -30,6 +30,7 @@ export default function Select({
       isDisabled={isDisabled}
       direction="up"
       label={value}
+      stretch="align"
       type="snippet"
     >
       {optionsHtml}
