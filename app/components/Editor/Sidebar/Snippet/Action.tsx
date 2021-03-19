@@ -1,5 +1,4 @@
 import { Box } from "grommet";
-import { useEffect } from "react";
 
 import { copy } from "../../../../theme/copy";
 import Text from "../../../shared/Text";
@@ -22,12 +21,11 @@ export default function Action({
   value,
 }: Props): JSX.Element {
   const options = buildActionOptions(hasText, isFillable);
-  const optionsHash = options.join("");
 
-  useEffect(() => {
-    const defaultAction = optionsHash.includes("Fill") ? "Fill" : "Click";
+  if (!value || !options.includes(value)) {
+    const defaultAction = options.includes("Fill") ? "Fill" : "Click";
     onSelectAction(defaultAction);
-  }, [onSelectAction, optionsHash]);
+  }
 
   return (
     <Box flex={false} width={width}>
