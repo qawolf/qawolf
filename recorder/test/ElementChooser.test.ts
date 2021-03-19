@@ -39,6 +39,7 @@ async function getChooserStyle() {
   const style = await chooser.evaluate((element) => {
     const {
       background,
+      border,
       display,
       height,
       left,
@@ -51,6 +52,7 @@ async function getChooserStyle() {
 
     return {
       background,
+      border,
       display,
       height,
       left,
@@ -68,36 +70,38 @@ it("highlights an element while hovered", async () => {
   await page.hover("input");
 
   expect(await getChooserStyle()).toEqual({
-    background: "rgba(15, 120, 243, 0.15)",
+    background: expect.stringContaining("rgba(15, 120, 243, 0.15)"),
+    border: "",
     display: "flex",
-    height: "21px",
-    left: "8px",
+    height: "100px",
+    left: "300px",
     pawVisibility: "hidden",
-    top: "8px",
+    top: "300px",
     visibility: "visible",
-    width: "153px",
+    width: "50px",
   });
 });
 
 it("chooses an element on click", async () => {
   await page.click("select");
+  await page.waitForTimeout(1000);
 
   expect(await getChooserStyle()).toMatchObject({
-    background: "rgba(15, 120, 243, 0.15)",
+    border: "1px solid rgb(15, 120, 243)",
   });
 
-  await page.waitForTimeout(0);
+  await page.waitForTimeout(1000);
 
-  expect(chosen).toEqual({
+  expect(chosen).toMatchObject({
     isFillable: false,
-    selectors: [
+    selectors: expect.arrayContaining([
       "select",
       "body select",
       "html select",
       "select:visible",
       "body select:visible",
       "html select:visible",
-    ],
+    ]),
     text: "a",
   });
 
@@ -107,6 +111,8 @@ it("chooses an element on click", async () => {
 
 it("stop hides the chooser and start shows it again", async () => {
   await page.click("select");
+  await page.waitForTimeout(1000);
+
   expect(await getChooserStyle()).toMatchObject({
     pawVisibility: "visible",
     visibility: "visible",

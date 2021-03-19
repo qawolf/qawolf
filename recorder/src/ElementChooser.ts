@@ -3,7 +3,6 @@ import {
   getAssertText,
   getDescriptor,
   isFillable as isElementFillable,
-  isVisible,
 } from "./element";
 import { generateSelectors } from "./generateSelectors";
 import { Callback, ElementChosen, RankedSelector } from "./types";
@@ -123,7 +122,7 @@ export class ElementChooser {
 
     requestAnimationFrame(() => {
       // mark as chosen
-      this._chooserElement.style.border = "1px solid rgba(15, 120, 243, 1)";
+      this._chooserElement.style.border = "1px solid rgb(15, 120, 243)";
       this._pawElement.style.visibility = "visible";
 
       const callback: ElementChosenCallback = (window as any).qawElementChosen;
