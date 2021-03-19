@@ -42,7 +42,7 @@ export default function Wolf({
     <Box {...headerProps} background={background || "gray1"}>
       {!!color && (
         <BoxComponent alignSelf="center" flex={false}>
-          <WolfSitting animate color={color} width={width} />
+          <WolfSitting animate color={color} noGrab width={width} />
         </BoxComponent>
       )}
     </Box>

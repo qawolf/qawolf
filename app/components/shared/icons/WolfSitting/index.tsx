@@ -6,6 +6,7 @@ type Props = {
   animate?: boolean;
   className?: string;
   color: string;
+  noGrab?: boolean;
   width?: string;
 };
 
@@ -34,7 +35,7 @@ const StyledWolfSitting = styled(WolfSitting)`
   }
 
   &:hover {
-    cursor: grab;
+    ${(props) => !props.noGrab && "cursor: grab;"}
 
     #wolf-tail {
       ${animationMixin};
