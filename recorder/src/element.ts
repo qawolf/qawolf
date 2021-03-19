@@ -25,7 +25,7 @@ export const isFillable = (element: ElementDescriptor): boolean => {
 
 export const getAssertText = (element: HTMLElement): string => {
   const text = (element as HTMLInputElement).value || element.innerText || "";
-  if (!text.length || text.length > 100) return "";
+  if (!text.length || text.length > 500) return "";
   return text;
 };
 
