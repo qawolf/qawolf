@@ -3,8 +3,10 @@ import Image from "next/image";
 import { useState } from "react";
 
 import ClickButton from "../../../components/Guides/CreateATest/ClickButton";
-import { headerProps } from "../../../components/Guides/CreateATest/helpers";
-import { textProps } from "../../../components/Guides/CreateATest/helpers";
+import {
+  headerProps,
+  textProps,
+} from "../../../components/Guides/CreateATest/helpers";
 import Layout from "../../../components/Guides/CreateATest/Layout";
 import NextButton from "../../../components/Guides/CreateATest/NextButton";
 import Section from "../../../components/Guides/CreateATest/Section";
@@ -20,12 +22,7 @@ export default function CreateATest4(): JSX.Element {
 
   return (
     <Layout>
-      <Box
-        {...headerProps}
-        align="center"
-        background="lightGreen"
-        pad={{ vertical: "xxlarge" }}
-      >
+      <Box {...headerProps} align="center" background="lightGreen">
         <Image
           alt="toggle code creation"
           height="80"

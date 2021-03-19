@@ -253,10 +253,11 @@ export const copy = {
   runLines: (count: number): string =>
     `Run ${count} line${count === 1 ? "" : "s"}`,
   runsPass: "Passing tests",
-  runSelectedCode:
-    "You can run specific lines of code without re-running your entire test. This is helpful for adding assertions and editing your test.",
+  runSelectedCode: "Run selected code",
   runSelectedCode2:
-    'Now highlight and run the last line of code, which will click the "Next" button.',
+    "You can run specific lines of code without re-running your entire test. This is helpful for adding assertions and editing your test.",
+  runSelectedCode3: "Highlight and run the last line of code,",
+  runSelectedCode4: 'which will automatically click this step’s "Next" button.',
   runTests: (count: number, environment?: string | null): string =>
     `Run ${count} test${count === 1 ? "" : "s"}${
       environment ? ` on ${environment}` : ""

@@ -1,28 +1,38 @@
 import { Box } from "grommet";
 import Image from "next/image";
 
-import { textProps } from "../../../components/Guides/CreateATest/helpers";
+import {
+  headerProps,
+  textProps,
+} from "../../../components/Guides/CreateATest/helpers";
 import Layout from "../../../components/Guides/CreateATest/Layout";
 import NextButton from "../../../components/Guides/CreateATest/NextButton";
+import Section from "../../../components/Guides/CreateATest/Section";
 import Text from "../../../components/shared/Text";
 import { copy } from "../../../theme/copy";
-import { edgeSize } from "../../../theme/theme";
 
-const step = 4;
+const step = 5;
 
-export default function CreateATest4(): JSX.Element {
+export default function CreateATest5(): JSX.Element {
   return (
     <Layout>
-      <Text {...textProps}>{copy.runSelectedCode}</Text>
-      <Text {...textProps} margin={{ vertical: "medium" }}>
-        {copy.runSelectedCode2}
-      </Text>
-      <Box alignSelf="center" width="480px">
-        <Image height={60} src="/guides/highlight-line.png" width={850} />
-        <Box height={edgeSize.xxsmall} />
-        <Image height={132} src="/guides/run-1-line.png" width={958} />
+      <Box {...headerProps} align="center" background="lightBlue">
+        <Image
+          alt="run selected code"
+          height="144"
+          src="/guides/run-selected-code.png"
+          width="480"
+        />
       </Box>
-      <NextButton step={step} />
+      <Section label={copy.runSelectedCode} step={step}>
+        <Text {...textProps} margin={{ bottom: "small" }}>
+          {copy.runSelectedCode2}
+        </Text>
+        <Text {...textProps}>
+          <b>{copy.runSelectedCode3}</b> {copy.runSelectedCode4}
+        </Text>
+        <NextButton step={step} />
+      </Section>
     </Layout>
   );
 }

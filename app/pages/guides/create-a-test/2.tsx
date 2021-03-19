@@ -4,8 +4,8 @@ import Image from "next/image";
 import {
   getUserId,
   headerProps,
+  textProps,
 } from "../../../components/Guides/CreateATest/helpers";
-import { textProps } from "../../../components/Guides/CreateATest/helpers";
 import Layout from "../../../components/Guides/CreateATest/Layout";
 import NextButton from "../../../components/Guides/CreateATest/NextButton";
 import Section from "../../../components/Guides/CreateATest/Section";
