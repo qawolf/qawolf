@@ -1,10 +1,11 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { useSendSlackUpdate } from "../../../hooks/mutations";
 import { trackSegmentEvent } from "../../../hooks/segment";
 import { RunnerClient } from "../../../lib/runner";
 import { Run, RunProgress } from "../../../lib/types";
+import { UserContext } from "../../UserContext";
 
 export type RunProgressHook = {
   progress: RunProgress | null;
@@ -21,6 +22,8 @@ export const useRunProgress = ({
   runner,
 }: UseRunProgress): RunProgressHook => {
   const { query } = useRouter();
+  const { user } = useContext(UserContext);
+
   const [sendSlackUpdate] = useSendSlackUpdate();
 
   const [progress, setProgress] = useState<RunProgress | null>(null);
@@ -32,7 +35,7 @@ export const useRunProgress = ({
       setProgress(value);
 
       if (value.status === "fail") {
-        trackSegmentEvent("Test Preview Failed");
+        trackSegmentEvent("Test Preview Failed", { email: user?.email });
         sendSlackUpdate({ variables: { message: "🕵️‍♀️ Test Preview Failed" } });
       }
     };
