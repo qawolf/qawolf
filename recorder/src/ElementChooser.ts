@@ -3,6 +3,7 @@ import {
   getAssertText,
   getDescriptor,
   isFillable as isElementFillable,
+  isVisible,
 } from "./element";
 import { generateSelectors } from "./generateSelectors";
 import { Callback, ElementChosen, RankedSelector } from "./types";
@@ -63,14 +64,12 @@ export class ElementChooser {
     this._shadowRoot = this._shadowParent.attachShadow({ mode: "open" });
   }
 
-  _onChooseElement(target: HTMLElement): void {
-    const callback: ElementChosenCallback = (window as any).qawElementChosen;
-    if (!callback) return;
-
-    const isFillable = isElementFillable(getDescriptor(target));
-
-    const text = getAssertText(target);
-
+  _onChooseElement(
+    target: HTMLElement,
+    isFillable: boolean,
+    text: string,
+    callback: ElementChosenCallback
+  ): void {
     const selectors: RankedSelector[] = [];
     const selectorsIterator = generateSelectors(target, 10000);
 
@@ -127,9 +126,18 @@ export class ElementChooser {
       this._chooserElement.style.border = "1px solid rgba(15, 120, 243, 1)";
       this._pawElement.style.visibility = "visible";
 
-      // allow ui update to happen first
+      const callback: ElementChosenCallback = (window as any).qawElementChosen;
+      if (!callback) return;
+
+      // notify element chosen immediately so choose placeholder goes away
+      const target = event.target as HTMLElement;
+      const isFillable = isElementFillable(getDescriptor(target));
+      const text = getAssertText(target);
+      callback({ isFillable, selectors: [], text });
+
+      // allow ui update to happen before generating selectors
       requestAnimationFrame(() => {
-        this._onChooseElement(event.target as HTMLElement);
+        this._onChooseElement(target, isFillable, text, callback);
       });
     });
   };
