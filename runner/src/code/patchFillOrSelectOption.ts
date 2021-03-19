@@ -1,6 +1,7 @@
 import { ElementEvent } from "../types";
 import { ActionExpression } from "./parseCode";
 import {
+  formatArgument,
   patchEvent,
   PatchEventOptions,
   prepareSourceVariables,
@@ -46,14 +47,19 @@ export const updateExpression = (
   value: string
 ): string => {
   const valueArg = expression.args[1];
-  const valueLength = valueArg.text?.length || 0;
 
-  // -2 for value quotes
-  const beforeArg = code.substring(0, valueArg.end - valueLength - 2);
-  const updatedArg = JSON.stringify(value);
+  const beforeArg = code.substring(0, valueArg.pos);
+
+  // match the same padding
+  const [valuePadding] = code
+    .substring(valueArg.pos, valueArg.end)
+    .match(/(^\s*)/) || [" "];
+
+  const updatedValue = formatArgument(value);
+
   const afterArg = code.substring(valueArg.end);
 
-  return beforeArg + updatedArg + afterArg;
+  return beforeArg + valuePadding + updatedValue + afterArg;
 };
 
 export const patchFillOrSelectOption = (

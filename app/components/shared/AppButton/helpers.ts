@@ -1,4 +1,5 @@
-import { BoxProps, TextProps } from "grommet";
+import { BoxProps, ButtonProps, TextProps } from "grommet";
+import { Icon } from "grommet-icons";
 
 import { Side } from "../../../lib/types";
 import { borderSize, edgeSize } from "../../../theme/theme";
@@ -10,7 +11,29 @@ type GetBoxPad = {
   iconPosition?: Side;
   isLarge?: boolean;
   justify?: BoxProps["justify"];
+};
+
+export type Props = {
+  IconComponent?: Icon;
+  a11yTitle?: string;
+  className?: string;
+  color?: string;
+  hasError?: boolean;
+  href?: string;
+  hoverType?: Type;
+  iconColor?: string;
+  iconPosition?: Side;
+  isDisabled?: boolean;
+  isLarge?: boolean;
+  isSelected?: boolean;
+  justify?: BoxProps["justify"];
+  label?: string;
+  margin?: ButtonProps["margin"];
+  noBorderSide?: Side;
+  onClick?: () => void;
+  openNewPage?: boolean;
   type: Type;
+  width?: BoxProps["width"];
 };
 
 export const getBoxPad = ({
@@ -19,16 +42,16 @@ export const getBoxPad = ({
   iconPosition,
   isLarge,
   justify,
-  type,
 }: GetBoxPad): BoxProps["pad"] => {
   if (justify === "center") return undefined;
 
-  const hasBorder = ["dark", "disabled", "secondary"].includes(type);
   const border = borderSize.xsmall;
-  const defaultPad = isLarge ? edgeSize.small : edgeSize.xsmall;
 
-  const xsmall = hasBorder ? `calc(${defaultPad} - ${border})` : defaultPad;
-  const xxsmall = hasBorder ? `calc(${defaultPad} - ${border})` : defaultPad;
+  const defaultXSmallPad = isLarge ? edgeSize.small : edgeSize.xsmall;
+  const defaultXXSmallPad = isLarge ? edgeSize.small : edgeSize.xxsmall;
+
+  const xsmall = `calc(${defaultXSmallPad} - ${border})`;
+  const xxsmall = `calc(${defaultXXSmallPad} - ${border})`;
 
   if (!hasLabel) return { horizontal: xxsmall };
   if (!hasIcon) return { horizontal: xsmall };
@@ -47,4 +70,10 @@ export const getTextMargin = (
 
   if (iconPosition === "left") return { left: "xxsmall" };
   return { right: "xxsmall" };
+};
+
+export const useDisabledStyle = ({ isDisabled, type }: Props): boolean => {
+  if (type === "disabled") return true;
+
+  return isDisabled && type === "primary";
 };

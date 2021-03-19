@@ -1,17 +1,19 @@
 import { Box, BoxProps } from "grommet";
 import { ReactNode, useRef, useState } from "react";
 
-import { useOnClickOutside } from "../../../hooks/onClickOutside";
 import { Side } from "../../../lib/types";
+import { edgeSize } from "../../../theme/theme";
 import Button from "../AppButton";
+import Drop from "../Drop";
 import ArrowDown from "../icons/ArrowDown";
 import Selector from "../icons/Selector";
-import Menu, { Direction } from "../Menu";
+import { Direction } from "../Menu";
 
-type Type = "dark" | "light";
+type Type = "dark" | "secondary" | "snippet";
 
 type Props = {
   children: ReactNode[];
+  className?: string;
   direction?: Direction;
   flex?: BoxProps["flex"];
   hasError?: boolean;
@@ -24,6 +26,7 @@ type Props = {
 
 export default function Select({
   children,
+  className,
   direction,
   flex,
   hasError,
@@ -43,7 +46,9 @@ export default function Select({
 
   const handleClose = (): void => setIsOpen(false);
 
-  useOnClickOutside({ onClickOutside: handleClose, ref });
+  const dropWidth = ref.current
+    ? `${ref.current.getBoundingClientRect().width}px`
+    : "100%";
 
   return (
     <Box
@@ -54,18 +59,29 @@ export default function Select({
     >
       <Button
         IconComponent={direction === "up" ? Selector : ArrowDown}
+        className={className}
         iconPosition="right"
         hasError={hasError}
         isDisabled={isDisabled}
         label={label}
         noBorderSide={noBorderSide}
         onClick={handleClick}
-        type={type === "dark" ? "dark" : "secondary"}
+        type={type || "secondary"}
       />
       {isOpen && (
-        <Menu direction={direction} onClick={handleClose}>
+        <Drop
+          align={direction === "up" ? { bottom: "top" } : { top: "bottom" }}
+          onClick={handleClose}
+          onClickOutside={handleClose}
+          style={{
+            marginBottom: direction === "up" ? edgeSize.xxxsmall : undefined,
+            marginTop: direction === "up" ? undefined : edgeSize.xxxsmall,
+          }}
+          target={ref.current}
+          width={dropWidth}
+        >
           {children}
-        </Menu>
+        </Drop>
       )}
     </Box>
   );

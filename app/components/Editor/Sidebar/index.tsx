@@ -16,6 +16,7 @@ import CodeEditor from "./CodeEditor";
 import HelpersEditor from "./HelpersEditor";
 import Navigation from "./Navigation";
 import RunLogs from "./RunLogs";
+import Snippet from "./Snippet";
 
 const enable = {
   top: false,
@@ -33,11 +34,19 @@ export default function Sidebar(): JSX.Element {
   const { editorSidebarWidth } = useContext(StateContext);
 
   const { controller, run, suite, team, test } = useContext(TestContext);
-  const { progress, runTest, selection, stopTest } = useContext(RunnerContext);
+  const {
+    elementChooserValue,
+    progress,
+    runTest,
+    selection,
+    stopTest,
+  } = useContext(RunnerContext);
 
   const [selected, setSelected] = useState<NavigationOption>("code");
 
+  const isChooserActive = elementChooserValue.isActive;
   const isTestDeleted = !!test?.deleted_at;
+  const isActionDisabled = isTestDeleted || isChooserActive;
 
   const handleResizeStop: ResizeCallback = (_, __, ___, delta): void => {
     state.setEditorSidebarWidth(editorSidebarWidth + delta.width);
@@ -46,7 +55,7 @@ export default function Sidebar(): JSX.Element {
   const isRunning = query.test_id && progress && !progress?.completed_at;
 
   const handleAction = (): void => {
-    if (isTestDeleted) return;
+    if (isActionDisabled) return;
 
     if (run) {
       // edit the test
@@ -93,14 +102,17 @@ export default function Sidebar(): JSX.Element {
           <HelpersEditor onKeyDown={handleEditorKeyDown} />
         )}
         <RunLogs isVisible={selected === "logs"} />
-        <Buttons
-          isActionDisabled={isTestDeleted}
-          isRun={!!query.run_id}
-          isRunLoading={!run}
-          isRunning={isRunning}
-          onAction={handleAction}
-          selection={selection}
-        />
+        <Snippet isVisible={isChooserActive} />
+        {!isChooserActive && (
+          <Buttons
+            isActionDisabled={isActionDisabled}
+            isRun={!!query.run_id}
+            isRunLoading={!run}
+            isRunning={isRunning}
+            onAction={handleAction}
+            selection={selection}
+          />
+        )}
       </Box>
     </Resizable>
   );

@@ -43,6 +43,12 @@ export interface ElementAction {
   value?: string | null;
 }
 
+export interface ElementChosen {
+  isFillable: boolean;
+  selectors: string[];
+  text: string;
+}
+
 export interface LogEvent {
   level: string;
   message: string;
@@ -55,6 +61,11 @@ export type PossibleAction = {
   target: HTMLElement;
   time: number;
   value: string | null;
+};
+
+export type RankedSelector = {
+  penalty: number;
+  selector: string;
 };
 
 export type Rect = {

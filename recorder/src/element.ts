@@ -4,6 +4,21 @@ export type ElementDescriptor = {
   tag: string;
 };
 
+const CLICK_INPUT_TYPES = new Set([
+  "button",
+  "checkbox",
+  "image",
+  "radio",
+  "reset",
+  "submit",
+]);
+
+export const getAssertText = (element: HTMLElement): string => {
+  const text = (element as HTMLInputElement).value || element.innerText || "";
+  if (!text.length || text.length > 500) return "";
+  return text;
+};
+
 export const getDescriptor = (element: HTMLElement): ElementDescriptor => {
   const tag = element.tagName.toLowerCase();
 
@@ -99,6 +114,16 @@ export const getXpath = (node: Node): string => {
   return result
     .replace("svg", "*[name()='svg']")
     .replace("path", "*[name()='path']");
+};
+
+export const isFillable = (element: ElementDescriptor): boolean => {
+  if (element.isContentEditable || element.tag === "textarea") return true;
+
+  if (element.tag === "input" && !CLICK_INPUT_TYPES.has(element.inputType)) {
+    return true;
+  }
+
+  return false;
 };
 
 export const isVisible = (

@@ -1,9 +1,7 @@
-import { Box, BoxProps, Button, ButtonProps } from "grommet";
-import { Icon } from "grommet-icons";
+import { Box, Button } from "grommet";
 import Link from "next/link";
 import styled from "styled-components";
 
-import { Side } from "../../../lib/types";
 import {
   borderSize,
   colors,
@@ -15,56 +13,37 @@ import {
 import Text from "../Text";
 import {
   activeBackground,
+  activeBorderColor,
   activeSecondaryBackground,
   background,
+  borderColor,
   hoverBackground,
+  hoverBorderColor,
   hoverSecondaryBackground,
   textColor,
-  Type,
 } from "./config";
-import { getBoxPad, getTextMargin } from "./helpers";
+import { getBoxPad, getTextMargin, Props, useDisabledStyle } from "./helpers";
 
-export type Props = {
-  IconComponent?: Icon;
-  a11yTitle?: string;
-  className?: string;
-  color?: string;
-  hasError?: boolean;
-  href?: string;
-  hoverType?: Type;
-  iconColor?: string;
-  iconPosition?: Side;
-  isDisabled?: boolean;
-  isLarge?: boolean;
-  isSelected?: boolean;
-  justify?: BoxProps["justify"];
-  label?: string;
-  margin?: ButtonProps["margin"];
-  noBorderSide?: Side;
-  onClick?: () => void;
-  openNewPage?: boolean;
-  type: Type;
-  width?: BoxProps["width"];
-};
+function AppButton(props: Props): JSX.Element {
+  const {
+    IconComponent,
+    a11yTitle,
+    className,
+    color,
+    href,
+    iconColor,
+    iconPosition,
+    isDisabled,
+    isLarge,
+    justify,
+    label,
+    margin,
+    onClick,
+    openNewPage,
+    type,
+  } = props;
 
-function AppButton({
-  IconComponent,
-  a11yTitle,
-  className,
-  color,
-  href,
-  iconColor,
-  iconPosition,
-  isDisabled,
-  isLarge,
-  justify,
-  label,
-  margin,
-  onClick,
-  openNewPage,
-  type,
-}: Props): JSX.Element {
-  const finalType = isDisabled ? "disabled" : type;
+  const finalType = useDisabledStyle(props) ? "disabled" : type;
 
   const innerHtml = (
     <Button
@@ -87,7 +66,6 @@ function AppButton({
           iconPosition,
           isLarge,
           justify,
-          type: finalType,
         })}
       >
         {!!IconComponent && (
@@ -123,31 +101,17 @@ function AppButton({
 
 const StyledAppButton = styled(AppButton)`
   background: ${(props) =>
-    `${background[props.isDisabled ? "disabled" : props.type]}`};
+    `${background[useDisabledStyle(props) ? "disabled" : props.type]}`};
   border-radius: ${(props) =>
     props.isLarge ? borderSize.medium : borderSize.small};
   height: ${(props) => (props.isLarge ? edgeSize.xxlarge : edgeSize.large)};
 
   ${(props) => !!props.isDisabled && "cursor: not-allowed;"}
   ${(props) => !!props.width && `width: ${props.width};`}
-
-  ${(props) =>
-    props.type === "dark" &&
-    `
-  border: ${borderSize.xsmall} solid ${colors.gray8};
-  `}
-
-  ${(props) =>
-    (props.isDisabled || props.type === "disabled") &&
-    `
-  border: ${borderSize.xsmall} solid ${colors.gray3};
-  `}
-
-  ${(props) =>
-    props.type === "secondary" &&
-    `
-  border: ${borderSize.xsmall} solid ${colors.gray3};
-  `}
+  border: 1px solid ${(props) =>
+    useDisabledStyle(props)
+      ? borderColor.disabled
+      : borderColor[props.type] || background[props.type]};
 
   ${(props) =>
     !!props.noBorderSide &&
@@ -166,40 +130,48 @@ const StyledAppButton = styled(AppButton)`
 
   &:hover {
     ${(props) =>
+      !props.isDisabled &&
       `
     background: ${
-      hoverSecondaryBackground[
-        props.isDisabled ? "disabled" : props.hoverType
-      ] || hoverBackground[props.isDisabled ? "disabled" : props.type]
+      hoverSecondaryBackground[props.hoverType] || hoverBackground[props.type]
+    };
+
+    border-color: ${
+      hoverBorderColor[props.type] ||
+      hoverSecondaryBackground[props.hoverType] ||
+      hoverBackground[props.type]
     };
 
     p, 
     svg {
-      color: ${
-        textColor[props.isDisabled ? "disabled" : props.hoverType || props.type]
-      };
-      fill: ${
-        textColor[props.isDisabled ? "disabled" : props.hoverType || props.type]
-      };
+      color: ${textColor[props.hoverType || props.type]};
+      fill: ${textColor[props.hoverType || props.type]};
     }
     `}
-
-    ${(props) => props.type === "dark" && `border-color: ${colors.gray6};`}
-    ${(props) => props.type === "secondary" && `border-color: ${colors.gray5};`}
   }
 
   &:active {
-    ${(props) => `
+    ${(props) =>
+      !props.isDisabled &&
+      `
     background: ${
-      activeSecondaryBackground[
-        props.isDisabled ? "disabled" : props.hoverType
-      ] || activeBackground[props.isDisabled ? "disabled" : props.type]
+      activeSecondaryBackground[props.hoverType] || activeBackground[props.type]
+    };
+
+    border-color: ${
+      activeBorderColor[props.type] ||
+      activeSecondaryBackground[props.hoverType] ||
+      activeBackground[props.type]
     };
     `}
-
-    ${(props) => props.type === "dark" && `border-color: ${colors.gray4};`}
-    ${(props) => props.type === "secondary" && `border-color: ${colors.gray9};`}
   }
+
+  ${(props) =>
+    props.isDisabled &&
+    !useDisabledStyle(props) &&
+    `
+    opacity: 0.4;
+  `}
 `;
 
 export default StyledAppButton;

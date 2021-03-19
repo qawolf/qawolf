@@ -46,8 +46,8 @@ describe("findExpressionToUpdate", () => {
       })
     ).toEqual({
       args: [
-        { end: 23, text: "input" },
-        { end: 27, text: "" },
+        { end: 23, pos: 16, text: "input" },
+        { end: 27, pos: 24, text: "" },
       ],
       method: "fill",
       statement: expect.any(Object),
@@ -65,8 +65,8 @@ describe("findExpressionToUpdate", () => {
       })
     ).toEqual({
       args: [
-        { end: 23, text: "input" },
-        { end: 32, text: "world" },
+        { end: 23, pos: 16, text: "input" },
+        { end: 32, pos: 24, text: "world" },
       ],
       method: "fill",
       statement: expect.any(Object),

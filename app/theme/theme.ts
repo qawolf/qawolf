@@ -73,6 +73,7 @@ export const colors = {
   primaryFill: "#4545E5",
   primaryFillLight: "#8E9CF5",
   primaryHover: "#695EFF",
+  primaryLight: "#E6E6FA",
   primaryTextLight: "#ABB5F5",
   success5: "#44C76B",
   success6: "#2DAD54",
@@ -118,6 +119,7 @@ export const edgeSize = {
 export const fontFamily = {
   bold: "Circular Black",
   buttonLarge: "Inter",
+  code: 'Menlo, Monaco, "Courier New", monospace',
   component: "Inter",
   componentBold: "Inter Semibold",
   componentMedium: "Inter Medium",

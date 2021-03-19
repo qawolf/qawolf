@@ -2,7 +2,13 @@ import { EventEmitter } from "events";
 
 import { Environment } from "../environment/Environment";
 import { Log } from "../services/Logger";
-import { CodeUpdate, RunHook, RunOptions, RunProgress } from "../types";
+import {
+  CodeUpdate,
+  ElementChooserValue,
+  RunHook,
+  RunOptions,
+  RunProgress,
+} from "../types";
 import { LogArtifactHook } from "./LogArtifactHook";
 import { StatusReporterHook } from "./StatusReporterHook";
 import { VideoArtifactsHook } from "./VideoArtifactsHook";
@@ -48,6 +54,10 @@ export class Runner extends EventEmitter {
       this.emit("codeupdated", update)
     );
 
+    environment.on("elementchooser", (event: ElementChooserValue) =>
+      this.emit("elementchooser", event)
+    );
+
     environment.on("logscreated", (logs: Log[]) =>
       this.emit("logscreated", logs)
     );
@@ -86,8 +96,23 @@ export class Runner extends EventEmitter {
     await this._environment.run(options, this._hooks);
   }
 
+  async startElementChooser(): Promise<void> {
+    this._environment?.updater.disable();
+    await this._environment?._elementChooser.start();
+  }
+
   async stop(): Promise<void> {
     await this._environment?.stop();
+  }
+
+  async stopElementChooser(): Promise<void> {
+    // run both immediately instead of waiting to enable
+    // otherwise a subsequent updater.disable could be overridden
+    // by our delayed updater.enable call
+    await Promise.all([
+      this._environment?._elementChooser.stop(),
+      this._environment?.updater.enable(),
+    ]);
   }
 
   updateCode(update: CodeUpdate): boolean {

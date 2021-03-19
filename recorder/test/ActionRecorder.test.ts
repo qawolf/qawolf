@@ -20,7 +20,7 @@ const actionsOfType = (type: Action): ElementAction[] => {
 };
 
 beforeAll(async () => {
-  launched = await launch({ startRecorder: true });
+  launched = await launch();
 
   await launched.context.exposeBinding(
     "qawElementAction",
@@ -129,14 +129,14 @@ it("stop and start work", async () => {
   const page = await getFreshPage();
 
   await page.evaluate(() => {
-    (window as any).qawInstance.stop();
+    (window as any).qawolf.actionRecorder.stop();
   });
   await page.keyboard.press("Escape");
   await page.waitForTimeout(1000);
   expect(actionsOfType("press").length).toEqual(0);
 
   await page.evaluate(() => {
-    (window as any).qawInstance.start();
+    (window as any).qawolf.actionRecorder.start();
   });
   await page.keyboard.press("Escape");
   await page.waitForTimeout(1000);

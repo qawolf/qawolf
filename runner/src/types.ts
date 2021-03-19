@@ -7,12 +7,54 @@ export type Artifacts = {
   videoUrl: string | null;
 };
 
+export type BrowserName = "chromium" | "firefox" | "webkit";
+
+export type Callback<S = void, T = void> = (data?: S) => T;
+
 export type CodeUpdate = {
   code: string;
   generated?: boolean;
   test_id?: string;
   version: number;
 };
+
+export interface CustomVideoMarkerMetadata {
+  lineCode: string;
+  lineNum: number;
+  startTime: number;
+}
+
+export interface CustomVideoMetadata {
+  markers?: CustomVideoMarkerMetadata[];
+  timings?: number[];
+}
+
+export type ElementAction =
+  | "click"
+  | "fill"
+  | "keyboard.press"
+  | "press"
+  | "selectOption";
+
+export interface ElementChosen {
+  isFillable: boolean;
+  selectors: string[];
+  text: string;
+}
+
+export type ElementChooserValue = Partial<ElementChosen> & {
+  isActive: boolean;
+};
+
+export interface ElementEvent {
+  action: ElementAction;
+  page: Page;
+  frame?: Frame;
+  frameSelector?: string;
+  selector: string;
+  time: number;
+  value?: string | null;
+}
 
 export type Email = {
   from: string;
@@ -21,6 +63,11 @@ export type Email = {
   text: string;
   to: string;
 };
+
+export interface LogEvent {
+  level: string;
+  message: string;
+}
 
 export type Run = {
   artifacts?: Artifacts;
@@ -69,37 +116,8 @@ export type Suite = {
   runs: Run[];
 };
 
-export interface CustomVideoMarkerMetadata {
-  lineCode: string;
-  lineNum: number;
-  startTime: number;
-}
-
-export interface CustomVideoMetadata {
-  markers?: CustomVideoMarkerMetadata[];
-  timings?: number[];
-}
-
-export type BrowserName = "chromium" | "firefox" | "webkit";
-
-export type Callback<S = void, T = void> = (data?: S) => T;
-
-export type ElementAction =
-  | "click"
-  | "fill"
-  | "keyboard.press"
-  | "press"
-  | "selectOption";
-
-export interface ElementEvent {
-  action: ElementAction;
-  page: Page;
-  frame?: Frame;
-  frameSelector?: string;
-  selector: string;
-  time: number;
-  value?: string | null;
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Variables = { [key: string]: any };
 
 export type WindowAction = "goBack" | "goto" | "popup" | "reload";
 
@@ -110,11 +128,3 @@ export interface WindowEvent {
   time: number;
   value?: string | null;
 }
-
-export interface LogEvent {
-  level: string;
-  message: string;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type Variables = { [key: string]: any };

@@ -1,7 +1,6 @@
 import { combine } from "./combine";
-import { getDescriptor } from "./element";
+import { getDescriptor, isFillable } from "./element";
 import { getCues } from "./getCues";
-import { allowPositionMatch } from "./isElementMatch";
 import { Cue, CueSet } from "./types";
 
 type GenerateRelativeCueSets = {
@@ -59,7 +58,7 @@ export function* generateCueSets(
   const threeTargetCues = combine(targetCues, 3);
   yield* threeTargetCues.map(buildCueSet) as any;
 
-  const exactMatchOnly = !allowPositionMatch(getDescriptor(target));
+  const exactMatchOnly = isFillable(getDescriptor(target));
 
   const descendants = target.querySelectorAll("*");
   let level = 1;
@@ -153,34 +152,33 @@ export function* generateSortedCueSets(
 
   const generator = generateCueSets(target);
 
+  const yieldedHashes = new Set<string>();
+
   // collect the closest test attribute cue
   let testAttributeCue: Cue | null = null;
 
-  function prepareBatch() {
-    let prepared = batch;
+  function prepareBatch(): CueSet[] {
+    const prepared: CueSet[] = [];
 
-    // include the test attribute
-    if (testAttributeCue) {
-      // store unique cue sets
-      const uniqueSets = new Map<string, CueSet>();
-
-      batch.forEach((cueSet) => {
-        if (!cueSet.cues.some((c) => c.penalty === 0)) {
-          cueSet.cues.push(testAttributeCue);
+    batch
+      // sort so we take the lower penalty duplicates first
+      .sort(compareCueSet)
+      .forEach((cueSet) => {
+        // include the test attribute
+        if (testAttributeCue && !cueSet.cues.some((c) => c.penalty === 0)) {
+          cueSet.cues.unshift(testAttributeCue);
         }
 
-        // de-dupe by concatenating sorted cues
-        const key = cueSet.cues
+        const hash = cueSet.cues
           .map((c) => c.value)
           .sort()
-          .join(" ");
-        uniqueSets.set(key, cueSet);
+          .join(",");
+        if (yieldedHashes.has(hash)) return;
+
+        yieldedHashes.add(hash);
+        prepared.push(cueSet);
       });
 
-      prepared = [...uniqueSets.values()];
-    }
-
-    prepared = prepared.sort(compareCueSet);
     batch = [];
 
     return prepared;

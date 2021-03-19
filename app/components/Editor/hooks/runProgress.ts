@@ -1,10 +1,10 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 
 import { useSendSlackUpdate } from "../../../hooks/mutations";
 import { trackSegmentEvent } from "../../../hooks/segment";
 import { RunnerClient } from "../../../lib/runner";
 import { Run, RunProgress } from "../../../lib/types";
+import { UserContext } from "../../UserContext";
 
 export type RunProgressHook = {
   progress: RunProgress | null;
@@ -20,21 +20,22 @@ export const useRunProgress = ({
   run,
   runner,
 }: UseRunProgress): RunProgressHook => {
-  const { query } = useRouter();
-  const [sendSlackUpdate] = useSendSlackUpdate();
+  const { user } = useContext(UserContext);
 
+  const [sendSlackUpdate] = useSendSlackUpdate();
   const [progress, setProgress] = useState<RunProgress | null>(null);
+
+  const notifyPreviewFail = useCallback(() => {
+    trackSegmentEvent("Test Preview Failed", { email: user?.email });
+    sendSlackUpdate({ variables: { message: "🕵️‍♀️ Test Preview Failed" } });
+  }, [sendSlackUpdate, user?.email]);
 
   useEffect(() => {
     if (!runner) return;
 
     const onRunProgress = (value: RunProgress): void => {
       setProgress(value);
-
-      if (value.status === "fail") {
-        trackSegmentEvent("Test Preview Failed");
-        sendSlackUpdate({ variables: { message: "🕵️‍♀️ Test Preview Failed" } });
-      }
+      if (value.status === "fail") notifyPreviewFail();
     };
 
     const onRunStopped = (): void => setProgress(null);
@@ -46,7 +47,7 @@ export const useRunProgress = ({
       runner.off("runprogress", onRunProgress);
       runner.off("runstopped", onRunStopped);
     };
-  }, [query.test_id, runner, run?.test_id, sendSlackUpdate]);
+  }, [notifyPreviewFail, runner]);
 
   useEffect(() => {
     if (!run) return;
@@ -57,7 +58,7 @@ export const useRunProgress = ({
       current_line: run.current_line,
       status: run.status,
     });
-  }, [run]);
+  }, [run, user?.email]);
 
   return {
     progress,

@@ -3,7 +3,7 @@ import { PATCH_HANDLE } from "../../src/code/patch";
 import {
   buildEventCode,
   findLastPageVariable,
-  formatSelector,
+  formatArgument,
   patchEvent,
   prepareSourceVariable,
   prepareSourceVariables,
@@ -23,20 +23,31 @@ const clickEvent: ElementEvent = {
   time,
 };
 
-describe("formatSelector", () => {
+describe("formatArgument", () => {
+  it("returns an empty string for null", () => {
+    expect(formatArgument(null)).toEqual('""');
+  });
+
+  it("serializes newlines", () => {
+    expect(
+      formatArgument(`line 1
+line 2`)
+    ).toEqual('"line 1\\nline 2"');
+  });
+
   it("uses double quotes by default", () => {
-    expect(formatSelector("a")).toBe(`"a"`);
+    expect(formatArgument("a")).toBe(`"a"`);
   });
 
   it("uses single quotes when there are double quotes in the selector", () => {
-    expect(formatSelector('"a"')).toBe(`'"a"'`);
+    expect(formatArgument('"a"')).toBe(`'"a"'`);
   });
 
   it("uses backtick when there are double and single quotes", () => {
-    expect(formatSelector(`text="a" and 'b'`)).toBe("`text=\"a\" and 'b'`");
+    expect(formatArgument(`text="a" and 'b'`)).toBe("`text=\"a\" and 'b'`");
 
     // escapes backtick
-    expect(formatSelector("text=\"a\" and 'b' and `c`")).toBe(
+    expect(formatArgument("text=\"a\" and 'b' and `c`")).toBe(
       "`text=\"a\" and 'b' and \\`c\\``"
     );
   });

@@ -1,12 +1,14 @@
-import { patchHandle } from "../components/Editor/Canvas/CodeToggle";
+import { PATCH_HANDLE } from "../components/Editor/contexts/TestController";
 
 export const copy = {
   acceptInviteLogIn: "Please log in to accept this invite",
   acceptInviteSignUp: "Please sign up to accept this invite",
   accountExists: "Already have an account?",
   accountNotExists: "No account yet?",
+  action: "Action",
   add: "Add",
   addSlackChannel: "Add Slack channel",
+  addSnippet: "Add snippet",
   addTrigger: "Add trigger",
   addTriggerToTest: "Add a trigger to your test",
   addTriggerToTestDetail:
@@ -39,6 +41,10 @@ export const copy = {
   branchesPlaceholder: "Example: develop,main",
   cancel: "Cancel",
   checkEmail: "Check your email for a code",
+  chooseElement: "Choose element",
+  chooseElementDetail:
+    "Select an element, then add a snippet with your chosen action and selector.",
+  chooseElementHeader: "Choose an element in the browser",
   chooseGitHubRepo: "Choose GitHub repository",
   choosePlan: "Choose plan",
   clickMe: "Click me",
@@ -142,7 +148,7 @@ export const copy = {
   frequencyHourly: "Every hour",
   getCode: "Use your site — get code",
   getCode2: (wolfName: string): string => `${wolfName} it is then!`,
-  getCode3: `As you use your website, test code is created on the left where it says: "${patchHandle}".`,
+  getCode3: `As you use your website, test code is created on the left where it says: "${PATCH_HANDLE}".`,
   getCode4: 'Click the "Next" button below',
   getCode5: "to add the next line of test code.",
   getInTouch: "Get in touch",
@@ -269,6 +275,7 @@ export const copy = {
   otherDeploy: "Don't see the tool you use? Let us know!",
   pleaseType: "Please type",
   revisitTutorial: "Revisit tutorial",
+  selector: "Selector",
   startTutorial: "Start tutorial",
   stepCount: (count: number): string => `Step ${count} of 5`,
   tenTeamMembers: "Up to 10 team members",

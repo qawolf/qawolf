@@ -2,14 +2,21 @@ import { debug } from "./debug";
 import { getInputElementValue, isVisible } from "./element";
 import { getSelector } from "./generateSelectors";
 import { resolveAction } from "./resolveAction";
-import { Action, Callback, ElementAction, PossibleAction } from "./types";
+import {
+  Action,
+  Callback,
+  ElementAction,
+  PossibleAction,
+  RankedSelector,
+} from "./types";
 
 type ActionCallback = Callback<ElementAction>;
 
 export class ActionRecorder {
   _lastReceivedAction: PossibleAction;
   _onDispose: Callback[] = [];
-  _selectorCache = new Map<HTMLElement, string>();
+  _selectorCache = new Map<HTMLElement, RankedSelector>();
+  _started = false;
 
   constructor() {
     debug("ActionRecorder: created");
@@ -17,7 +24,10 @@ export class ActionRecorder {
   }
 
   public stop(): void {
+    if (!this._started) return;
     this._onDispose.forEach((d) => d());
+    this._onDispose = [];
+    this._started = false;
     debug("ActionRecorder: stopped");
   }
 
@@ -103,6 +113,9 @@ export class ActionRecorder {
   }
 
   public start(): void {
+    if (this._started) return;
+    this._started = true;
+
     //////// MOUSE EVENTS ////////
 
     this.listen("click", (event) => {

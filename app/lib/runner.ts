@@ -9,7 +9,7 @@ type ConnectOptions = {
   wsUrl?: string | null;
 };
 
-type SubscriptionType = "code" | "logs" | "run" | "users";
+type SubscriptionType = "code" | "elementchooser" | "logs" | "run" | "users";
 
 type User = {
   email: string;
@@ -25,6 +25,7 @@ type SubscriptionMessage = {
 const EVENTS = [
   "codeupdated",
   "connect",
+  "elementchooser",
   "disconnect",
   "logs",
   "logscreated",
@@ -101,12 +102,24 @@ export class RunnerClient extends EventEmitter {
     this._sendRun();
   }
 
+  startElementChooser(): void {
+    if (!this._socket?.connected) return;
+
+    this._socket.emit("startelementchooser");
+  }
+
   stop(): void {
     state.setPendingRun(null);
 
     if (this._socket?.connected) {
       this._socket.emit("stop");
     }
+  }
+
+  stopElementChooser(): void {
+    if (!this._socket?.connected) return;
+
+    this._socket.emit("stopelementchooser");
   }
 
   setBrowserReady(ready: boolean): void {

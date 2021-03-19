@@ -1,25 +1,8 @@
-import { ElementDescriptor, getDescriptor } from "./element";
+import { getDescriptor, isFillable } from "./element";
 import { Rect } from "./types";
 
 export const CLICK_TYPES =
   "a,button,input,label,textarea,[contenteditable=true],[role=button],[role=checkbox],[role=radio]";
-
-const MATCH_POSITION_INPUT_TYPES = new Set([
-  "button",
-  "checkbox",
-  "image",
-  "radio",
-  "reset",
-  "submit",
-]);
-
-export function allowPositionMatch(target: ElementDescriptor): boolean {
-  if (target.isContentEditable || target.tag === "textarea") return false;
-
-  return (
-    target.tag !== "input" || MATCH_POSITION_INPUT_TYPES.has(target.inputType)
-  );
-}
 
 export function hasCommonAncestor(
   element: HTMLElement,
@@ -53,7 +36,9 @@ export function isElementMatch(
   cache: Map<HTMLElement, Rect>
 ): boolean {
   if (element === target) return true;
-  if (!allowPositionMatch(getDescriptor(target))) return false;
+
+  // do not allow position match if the element is fillable
+  if (isFillable(getDescriptor(target))) return false;
 
   // check the middle of the element is within the target
   let targetRect = cache.get(target);

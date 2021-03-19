@@ -40,12 +40,12 @@ export const setBody = async (page: Page, content: string): Promise<void> => {
   await page.setContent(`<html><body>${content}</body></html`);
 
   // we need to restart it after setting content
-  // probabbly due to the way playwright overwrites the document when setting content
+  // probably due to the way playwright overwrites the document when setting content
   await page.evaluate(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any).qawInstance.stop();
+    (window as any).qawolf.actionRecorder.stop();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any).qawInstance.start();
+    (window as any).qawolf.actionRecorder.start();
   });
 };
 

@@ -269,6 +269,13 @@ export type CodeUpdate = {
   version: number;
 };
 
+export interface ElementChooserValue {
+  isActive: boolean;
+  isFillable?: boolean;
+  selectors?: string[];
+  text?: string;
+}
+
 export type Log = {
   message: string;
   severity: "info" | "warning" | "error";

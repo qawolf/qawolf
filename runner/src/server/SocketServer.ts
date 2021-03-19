@@ -34,7 +34,12 @@ export class SocketServer {
     this._runner = runner;
     this._io = new SocketIoServer(httpServer, { transports: ["websocket"] });
     this._io.on("connect", this._onConnect.bind(this));
+
     this._publish(this._runner, { event: "codeupdated", to: "code" });
+    this._publish(this._runner, {
+      event: "elementchooser",
+      to: "elementchooser",
+    });
     this._publish(this._runner, { event: "logs", to: "logs" });
     this._publish(this._runner, { event: "logscreated", to: "logs" });
     this._publish(this._runner, { event: "runprogress", to: "run" });
@@ -69,10 +74,12 @@ export class SocketServer {
     socket.on("codeupdated", (message) => this._onCodeUpdated(message));
     socket.on("disconnect", () => this._onDisconnect(socket));
     socket.on("run", (message) => this._runner.run(message));
+    socket.on("startelementchooser", () => this._runner.startElementChooser());
     socket.on("stop", async () => {
       this._subscriptions.emit("run", { data: null, event: "runstopped" });
       await this._runner.stop();
     });
+    socket.on("stopelementchooser", () => this._runner.stopElementChooser());
     socket.on("subscribe", (message) => this._onSubscribe(socket, message));
     socket.on("unsubscribe", (message) => this._onUnsubscribe(socket, message));
   }
@@ -87,7 +94,10 @@ export class SocketServer {
     this._subscriptions.subscribe(socket, message);
 
     const { type } = message;
-    if (type === "logs") {
+    if (type === "elementchooser") {
+      const chooser = this._runner._environment?._elementChooser;
+      if (chooser) socket.emit("elementchooser", chooser.value);
+    } else if (type === "logs") {
       // send initial logs
       socket.emit("logs", this._runner.logs);
     } else if (type === "run" && this._runner.progress()) {
@@ -101,6 +111,7 @@ export class SocketServer {
 
   _onUnsubscribe(socket: Socket, { type }: SubscribeMessage): void {
     this._subscriptions.unsubscribe(socket, type);
+
     if (type === "users") this._emitUsers();
   }
 
