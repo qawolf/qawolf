@@ -16,7 +16,7 @@ const step = 3;
 export default function CreateATest3(): JSX.Element {
   return (
     <Layout>
-      <Box {...headerProps} align="center" background="lightYellow">
+      <Box {...headerProps} background="lightYellow">
         <Image
           alt="run test"
           height="80"

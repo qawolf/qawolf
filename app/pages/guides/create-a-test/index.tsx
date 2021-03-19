@@ -54,7 +54,7 @@ export default function CreateATest1(): JSX.Element {
 
   return (
     <Layout>
-      <Wolf color={wolf?.variant} />
+      <Wolf animate color={wolf?.variant} />
       <Section
         label={copy.wolfIntro}
         // ignore error text in bottom padding

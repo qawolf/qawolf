@@ -23,7 +23,7 @@ export default function CreateATest2(): JSX.Element {
 
   return (
     <Layout>
-      <Box {...headerProps} align="center" background="primary1">
+      <Box {...headerProps} background="primary1">
         <Image
           alt="get code from actions"
           height="161"

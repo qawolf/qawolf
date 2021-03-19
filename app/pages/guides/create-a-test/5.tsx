@@ -16,7 +16,7 @@ const step = 5;
 export default function CreateATest5(): JSX.Element {
   return (
     <Layout>
-      <Box {...headerProps} align="center" background="lightBlue">
+      <Box {...headerProps} background="lightBlue">
         <Image
           alt="run selected code"
           height="144"

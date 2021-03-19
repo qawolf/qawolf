@@ -4,9 +4,12 @@ import styled, { keyframes } from "styled-components";
 import WolfSitting from "../../shared/icons/WolfSitting";
 import { headerProps } from "./helpers";
 
-type Props = { color?: string };
+type Props = {
+  animate?: boolean;
+  background?: string;
+  color?: string;
+};
 
-const height = "200px";
 const width = "180";
 
 const wolfKeyFrames = keyframes`
@@ -28,18 +31,20 @@ const StyledBox = styled(Box)`
   animation: ${wolfKeyFrames} 0.8s ease-in-out;
 `;
 
-export default function Wolf({ color }: Props): JSX.Element {
-  const innerHtml = color ? (
-    <StyledBox alignSelf="center" flex={false} height={height}>
-      <WolfSitting animate color={color} width={width} />
-    </StyledBox>
-  ) : (
-    <Box flex={false} height={height} />
-  );
+export default function Wolf({
+  animate,
+  background,
+  color,
+}: Props): JSX.Element {
+  const BoxComponent = animate ? StyledBox : Box;
 
   return (
-    <Box {...headerProps} background="gray1">
-      {innerHtml}
+    <Box {...headerProps} background={background || "gray1"}>
+      {!!color && (
+        <BoxComponent alignSelf="center" flex={false}>
+          <WolfSitting animate color={color} width={width} />
+        </BoxComponent>
+      )}
     </Box>
   );
 }

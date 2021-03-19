@@ -8,7 +8,7 @@ type Props = {
   children: ReactNode;
   label: string;
   pad?: BoxProps["pad"];
-  step: number;
+  step?: number;
 };
 
 const width = "680px";
@@ -21,12 +21,14 @@ export default function Section({
 }: Props): JSX.Element {
   return (
     <Box alignSelf="center" flex={false} pad={pad || "xlarge"} width={width}>
-      <Text color="gray6" size="eyebrowLarge">
-        {copy.stepCount(step)}
-      </Text>
+      {!!step && (
+        <Text color="gray6" size="eyebrowLarge">
+          {copy.stepCount(step)}
+        </Text>
+      )}
       <Text
         color="gray9"
-        margin={{ bottom: "small", top: "xxxsmall" }}
+        margin={{ bottom: "small" }}
         size="componentHeaderLarge"
       >
         {label}

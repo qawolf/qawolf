@@ -182,7 +182,9 @@ export const copy = {
   learnQaWolfDetail:
     "Follow our interactive tutorial to learn the basics of QA Wolf. You will learn how to toggle code creation on/off and how to run selected lines of code.",
   learnedBasics: "Congratulations, you’ve mastered the basics of QA Wolf!",
-  learnedBasics2:
+  learnedBasics2: "Your QA Wolf",
+  learnedBasics3: "will tag along for your journey.",
+  learnedBasics4:
     "Click the back arrow in the top left corner to return to the dashboard.",
   loading: "Loading...",
   logIn: "Log in",

@@ -63,6 +63,7 @@ export const colors = {
   lightBlue: "#E2F3FB",
   lightGray: "#F0F3F5",
   lightGreen: "#E6FAEC",
+  lightPink: "#FAE6EF",
   lightPurple: "#8E9CF5",
   lightYellow: "#FBF5DD",
   primary: "#4545E5",

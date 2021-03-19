@@ -22,7 +22,7 @@ export default function CreateATest4(): JSX.Element {
 
   return (
     <Layout>
-      <Box {...headerProps} align="center" background="lightGreen">
+      <Box {...headerProps} background="lightGreen">
         <Image
           alt="toggle code creation"
           height="80"
