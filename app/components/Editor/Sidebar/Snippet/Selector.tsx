@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 import { copy } from "../../../../theme/copy";
 import Text from "../../../shared/Text";
-import { labelProps, selectWidth } from "./helpers";
+import { labelProps } from "./helpers";
 import Select from "./Select";
 
 type Props = {
@@ -31,11 +31,12 @@ export default function Selector({
   }
 
   return (
-    <Box width={selectWidth}>
+    <Box fill="horizontal" margin={{ left: "small" }}>
       <Text {...labelProps}>{copy.selector}</Text>
       <Select
         onClick={onSelectOption}
         options={options}
+        width="full"
         value={value || "..."}
       ></Select>
     </Box>

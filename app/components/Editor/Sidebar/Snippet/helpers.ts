@@ -1,7 +1,7 @@
 import { edgeSize } from "../../../../theme/theme";
 
 const ClickActions = ["Click", "Hover", "Upload image"] as const;
-const FillActions = ["Fill", "Fill email", "Hover"] as const;
+const FillActions = ["Fill", "Fill test email", "Hover"] as const;
 
 export type ActionType =
   | "Assert text"
@@ -38,7 +38,7 @@ export const buildCode = (
     return `await page.fill(${selectorArgument}, ${formatArgument(text)});`;
   }
 
-  if (action === "Fill email") {
+  if (action === "Fill test email") {
     return `const { email, waitForMessage } = getInbox();\nawait page.fill(${selectorArgument}, email);\n// send the email then check the message \n// const message = await waitForMessage();\n// console.log(message);`;
   }
 
@@ -73,5 +73,3 @@ export const labelProps = {
   margin: { bottom: edgeSize.xxsmall },
   size: "componentBold" as const,
 };
-
-export const selectWidth = `calc(50% - ${edgeSize.small} /2)`;

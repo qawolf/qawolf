@@ -3,12 +3,7 @@ import { useEffect } from "react";
 
 import { copy } from "../../../../theme/copy";
 import Text from "../../../shared/Text";
-import {
-  ActionType,
-  buildActionOptions,
-  labelProps,
-  selectWidth,
-} from "./helpers";
+import { ActionType, buildActionOptions, labelProps } from "./helpers";
 import Select from "./Select";
 
 type Props = {
@@ -17,6 +12,8 @@ type Props = {
   onSelectAction: (option: ActionType) => void;
   value: ActionType | null;
 };
+
+const width = "156px";
 
 export default function Action({
   hasText,
@@ -33,7 +30,7 @@ export default function Action({
   }, [onSelectAction, optionsHash]);
 
   return (
-    <Box width={selectWidth}>
+    <Box flex={false} width={width}>
       <Text {...labelProps}>{copy.action}</Text>
       <Select onClick={onSelectAction} options={options} value={value}></Select>
     </Box>
