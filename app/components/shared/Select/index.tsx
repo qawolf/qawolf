@@ -1,4 +1,4 @@
-import { Box, BoxProps, DropProps } from "grommet";
+import { Box, BoxProps } from "grommet";
 import { ReactNode, useRef, useState } from "react";
 
 import { Side } from "../../../lib/types";
@@ -20,7 +20,6 @@ type Props = {
   isDisabled?: boolean;
   label: string;
   noBorderSide?: Side;
-  stretch?: DropProps["stretch"];
   type?: Type;
   width?: BoxProps["width"];
 };
@@ -34,7 +33,6 @@ export default function Select({
   isDisabled,
   label,
   noBorderSide,
-  stretch,
   type,
   width,
 }: Props): JSX.Element {
@@ -47,6 +45,10 @@ export default function Select({
   };
 
   const handleClose = (): void => setIsOpen(false);
+
+  const dropWidth = ref.current
+    ? `${ref.current.getBoundingClientRect().width}px`
+    : "100%";
 
   return (
     <Box
@@ -71,13 +73,12 @@ export default function Select({
           align={direction === "up" ? { bottom: "top" } : { top: "bottom" }}
           onClick={handleClose}
           onClickOutside={handleClose}
-          stretch={stretch || true}
-          style={
-            direction === "up"
-              ? { marginBottom: edgeSize.xxxsmall }
-              : { marginTop: edgeSize.xxxsmall }
-          }
+          style={{
+            marginBottom: direction === "up" ? edgeSize.xxxsmall : undefined,
+            marginTop: direction === "up" ? undefined : edgeSize.xxxsmall,
+          }}
           target={ref.current}
+          width={dropWidth}
         >
           {children}
         </Drop>
