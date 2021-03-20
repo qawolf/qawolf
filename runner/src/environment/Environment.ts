@@ -56,6 +56,10 @@ export class Environment extends EventEmitter {
     await this._browser?.close();
   }
 
+  get elementChooser(): ElementChooser {
+    return this._elementChooser;
+  }
+
   get logger(): Logger {
     return this._logger;
   }

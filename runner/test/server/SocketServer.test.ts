@@ -163,6 +163,15 @@ describe("SocketServer", () => {
       expect(spy.mock.calls[0][1]).toEqual({ type: "code" });
     });
 
+    it("sends chooser value", async () => {
+      runner._environment?.elementChooser._setActive(true);
+      const spy = jest.fn();
+      socket.on("elementchooser", spy);
+      socket.emit("subscribe", { type: "elementchooser" });
+      await waitUntil(() => spy.mock.calls.length > 0);
+      expect(spy.mock.calls[0][0]).toEqual({ isActive: true });
+    });
+
     it("sends initial logs", async () => {
       const spy = jest.fn();
       socket.on("logs", spy);
@@ -221,12 +230,14 @@ describe("SocketServer", () => {
 
     const data = { example: 1 };
     runner.emit("codeupdated", data);
+    runner.emit("elementchooser", data);
     runner.emit("logs", data);
     runner.emit("logscreated", data);
     runner.emit("runprogress", data);
 
     expect(spy.mock.calls).toEqual([
       ["code", { data, event: "codeupdated" }],
+      ["elementchooser", { data, event: "elementchooser" }],
       ["logs", { data, event: "logs" }],
       ["logs", { data, event: "logscreated" }],
       ["run", { data, event: "runprogress" }],

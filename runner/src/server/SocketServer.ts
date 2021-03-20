@@ -95,7 +95,7 @@ export class SocketServer {
 
     const { type } = message;
     if (type === "elementchooser") {
-      const chooser = this._runner._environment?._elementChooser;
+      const chooser = this._runner._environment?.elementChooser;
       if (chooser) socket.emit("elementchooser", chooser.value);
     } else if (type === "logs") {
       // send initial logs

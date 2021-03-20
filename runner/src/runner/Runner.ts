@@ -98,7 +98,7 @@ export class Runner extends EventEmitter {
 
   async startElementChooser(): Promise<void> {
     this._environment?.updater.disable();
-    await this._environment?._elementChooser.start();
+    await this._environment?.elementChooser.start();
   }
 
   async stop(): Promise<void> {
@@ -110,7 +110,7 @@ export class Runner extends EventEmitter {
     // otherwise a subsequent updater.disable could be overridden
     // by our delayed updater.enable call
     await Promise.all([
-      this._environment?._elementChooser.stop(),
+      this._environment?.elementChooser.stop(),
       this._environment?.updater.enable(),
     ]);
   }
