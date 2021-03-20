@@ -48,7 +48,7 @@ After the page loads, go through the workflow you want to test in the browser on
 
 <Image
   alt="Create a test in the browser"
-  height={799}
+  height={778}
   src="/docs/create-a-test/created-test.png"
   width={1600}
 />
@@ -63,7 +63,7 @@ As your test runs, the current line of code is indicated by paw icon. A green ch
 
 <Image
   alt="Run tests"
-  height={799}
+  height={784}
   src="/docs/create-a-test/run-test.png"
   width={1600}
 />
@@ -72,35 +72,90 @@ You can view the logs from your test by clicking the "Logs" tab of the code pane
 
 <Image
   alt="View logs"
-  height={801}
+  height={784}
   src="/docs/create-a-test/view-logs.png"
   width={1600}
+/>
+
+<SubHeader>Add a Snippet</SubHeader>
+
+If you want more control over the generated code, you can use "snippets".
+
+Snippets are pieces of code where you choose the element selector, as well as the action to
+take on that element. Examples of supported actions include making an assertion,
+uploading an image, and receiving an email.
+
+Let's add a snippet to assert that the text "React" appears on the page. Start by clicking the "Choose element" button above the right corner of the browser.
+
+<Image
+  alt="Choose element"
+  height={783}
+  src="/docs/create-a-test/choose-element.png"
+  width={1600}
+/>
+
+Next choose which element you want to generate a snippet for by clicking on it. In our example, we select the "React" text in the top left corner of TodoMVC.
+
+<Image
+  alt="Click element"
+  height={781}
+  src="/docs/create-a-test/click-element.png"
+  width={1600}
+/>
+
+Finally, choose the desired action and selector (if applicable) in the snippet widget. In our example, we choose the action "Assert text".
+
+<Image
+  alt="Add snippet"
+  height={781}
+  src="/docs/create-a-test/add-snippet.png"
+  width={1600}
+/>
+
+The snippet widget shows the code that will be added. After we click the "Add snippet" button, the following line of code will be added:
+
+```js
+await assertText(page, "React");
+```
+
+Click the "Add snippet" button to add your snippet.
+
+<Image
+  alt="Add snippet button"
+  height={237}
+  src="/docs/create-a-test/add-snippet-button.png"
+  width={582}
+/>
+
+The snippet will then be added and ran. Our assertion passed!
+
+<Image
+  alt="Run snippet"
+  height={292}
+  src="/docs/create-a-test/run-snippet.png"
+  width={581}
 />
 
 <SubHeader>Run Selected Code</SubHeader>
 
 Instead of re-running your test every time you make a change, you can run specific lines of code.
 
-Let's say we want to add an assertion and check that it works. In our example, we'll assert that the text "todos" appears on the page.
+Let's run our assertion again to confirm that it works. Start by highlighting the last line of code in the code editor.
 
-We'll add the following line to our test code: `await assertText(page, "todos");` This code calls the QA Wolf <Link href="/docs/assert-text">assertText</Link> helper to check that the text "todos" is on the page.
+<Image
+  alt="Highlight line"
+  height={291}
+  src="/docs/create-a-test/highlight-line.png"
+  width={581}
+/>
 
-Next we'll highlight this line in the code editor. The run button now says "Run 1 line".
+The run button now says "Run 1 line". Click the run button or press `⌘`/`Ctrl` + `Enter` to run the selected code.
 
 <Image
   alt="Run 1 line"
-  height={797}
+  height={780}
   src="/docs/create-a-test/run-1-line.png"
   width={1600}
-/>
-
-Click the run button or press `⌘`/`Ctrl` + `Enter` to run the selected code. In our example, the assertion worked.
-
-<Image
-  alt="Run selected code"
-  height={362}
-  src="/docs/create-a-test/run-selected-code.png"
-  width={480}
 />
 
 <SubHeader>Toggle Code Creation</SubHeader>
@@ -111,7 +166,7 @@ Above the browser, there is a toggle with the label "Create code". When this tog
 
 <Image
   alt="Create code toggle"
-  height={794}
+  height={781}
   src="/docs/create-a-test/create-code-toggle.png"
   width={1600}
 />
@@ -130,7 +185,7 @@ Clicking on the toggle also turns off auto code generation. Now when you use you
 
 <Image
   alt="Code creation turned off"
-  height={797}
+  height={780}
   src="/docs/create-a-test/create-code-off.png"
   width={1600}
 />
