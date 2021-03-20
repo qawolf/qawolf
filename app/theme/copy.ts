@@ -9,6 +9,12 @@ export const copy = {
   add: "Add",
   addSlackChannel: "Add Slack channel",
   addSnippet: "Add snippet",
+  addSnippetIntro: "Add a snippet",
+  addSnippetIntro2:
+    'To choose an action (like add an assertion) or selector, first click the "Choose element" button.',
+  addSnippetIntro3: "Then select this text.",
+  addSnippetIntro4:
+    'Finally, choose "Assert text" from the Action menu. Click the "Add snippet" button to add the assertion.',
   addTrigger: "Add trigger",
   addTriggerToTest: "Add a trigger to your test",
   addTriggerToTestDetail:
@@ -277,7 +283,7 @@ export const copy = {
   revisitTutorial: "Revisit tutorial",
   selector: "Selector",
   startTutorial: "Start tutorial",
-  stepCount: (count: number): string => `Step ${count} of 5`,
+  stepCount: (count: number): string => `Step ${count} of 6`,
   tenTeamMembers: "Up to 10 team members",
   toggleCreateCode: "Toggle code creation",
   toggleCreateCode2: 'Click the "Create code" toggle',

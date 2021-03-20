@@ -10,27 +10,34 @@ import NextButton from "../../../components/Guides/CreateATest/NextButton";
 import Section from "../../../components/Guides/CreateATest/Section";
 import Text from "../../../components/shared/Text";
 import { copy } from "../../../theme/copy";
+import { edgeSize } from "../../../theme/theme";
 
 const step = 5;
 
 export default function CreateATest5(): JSX.Element {
   return (
     <Layout>
-      <Box {...headerProps} background="lightBlue">
+      <Box {...headerProps} background="peach">
         <Image
-          alt="run selected code"
-          height="144"
-          src="/guides/run-selected-code.png"
+          alt="choose element"
+          height="48"
+          src="/guides/choose-element.png"
+          width="480"
+        />
+        <Box height={edgeSize.medium} />
+        <Image
+          alt="add snippet"
+          height="232"
+          src="/guides/add-snippet.png"
           width="480"
         />
       </Box>
-      <Section label={copy.runSelectedCode} step={step}>
-        <Text {...textProps} margin={{ bottom: "small" }}>
-          {copy.runSelectedCode2}
+      <Section label={copy.addSnippetIntro} step={step}>
+        <Text {...textProps}>{copy.addSnippetIntro2}</Text>
+        <Text {...textProps} margin={{ vertical: "small" }}>
+          <b>{copy.addSnippetIntro3}</b>
         </Text>
-        <Text {...textProps}>
-          <b>{copy.runSelectedCode3}</b> {copy.runSelectedCode4}
-        </Text>
+        <Text {...textProps}>{copy.addSnippetIntro4}</Text>
         <NextButton step={step} />
       </Section>
     </Layout>
