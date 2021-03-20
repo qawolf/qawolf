@@ -194,4 +194,37 @@ await page.goto("http://localhost:1001");
 
     await runner.close();
   });
+
+  it("starts and stops an element chooser", async () => {
+    const runner = new Runner();
+
+    let events: string[] = [];
+
+    runner._environment = {
+      elementChooser: {
+        start() {
+          events.push("elementChooser.start");
+        },
+        stop() {
+          events.push("elementChooser.stop");
+        },
+      },
+      updater: {
+        enable() {
+          events.push("updater.enable");
+        },
+        disable() {
+          events.push("updater.disable");
+        },
+      },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any;
+
+    runner.startElementChooser();
+    expect(events).toEqual(["updater.disable", "elementChooser.start"]);
+
+    events = [];
+    runner.stopElementChooser();
+    expect(events).toEqual(["elementChooser.stop", "updater.enable"]);
+  });
 });
