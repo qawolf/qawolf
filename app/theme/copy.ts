@@ -11,7 +11,7 @@ export const copy = {
   addSnippet: "Add snippet",
   addSnippetIntro: "Add a snippet",
   addSnippetIntro2:
-    'If you want to create code for specific action (like adding an assertion) or selector, first click the "Choose element" button.',
+    'To choose an action (like add an assertion) or selector, first click the "Choose element" button.',
   addSnippetIntro3: "Then select this text.",
   addSnippetIntro4:
     'Finally, choose "Assert text" from the Action menu. Click the "Add snippet" button to add the assertion.',
